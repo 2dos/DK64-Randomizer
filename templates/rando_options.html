@@ -1,0 +1,601 @@
+{% from 'macros.html' import list_selector, toggle_input %}
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col border panel">
+            <h2 class="title">MAJOR ITEMS</h2>
+            <div class="flex-container">
+                <div class="flex-column-container"  style="margin-bottom: 10px;">
+                    <div class="form-check form-switch item-switch" style="max-height: 24px;">
+                        <label data-toggle="tooltip" title="Items are shuffled amongst each other.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="shuffle_items"
+                                    id="shuffle_items"
+                                    display_name="Item Randomizer"
+                                    value="True"/>
+                            Item Randomizer
+                        </label>
+                        <span id="non_item_rando_warning" data-toggle="tooltip" title="With item rando disabled, you cannot start without items you get from the Training Grounds in vanilla!">
+                            <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" class="warning-icon" stroke="#ffff00" fill="#ffff00">
+                                <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
+                            </svg>
+                        </span>
+                        {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.", 15, 1) }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
+                    <div class="form-check form-switch item-switch" style="max-height: 24px;">
+                        <label data-toggle="tooltip" title="Sparkling enemies can drop major items. Highly chaotic, adding lots of checks all over the world.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="enemy_drop_rando"
+                                    id="enemy_drop_rando"
+                                    display_name="Dropsanity"
+                                    value="True"/>
+                            Dropsanity
+                        </label>
+                    </div>
+                    <div class="item-select">
+                        <p class="select-title">Move Randomizer</p>
+                        <select name="move_rando"
+                                id="move_rando"
+                                display_name="Move Randomizer"
+                                class="form-select"
+                                aria-label="Randomization type"
+                                data-toggle="tooltip"
+                                title="Determines if and how moves are randomized.&#10;-Vanilla: Moves are in their vanilla locations and can only be bought by their normal kongs.&#10;-Shuffle: Moves can be randomized to different shops, but must still be bought by their normal kong. Shared moves can be bought by any kong.&#10;-Cross Kong Purchases: Kongs can now purchase another kongs moves. Shop Indicator will still show which kong buys the move.">
+                            <option id="move_off"
+                                    selected
+                                    value="off"
+                                    title="Moves are in their vanilla locations and can only be bought by their normal kongs.">
+                                Vanilla
+                            </option>
+                            <option id="move_on" value="on">
+                                Shuffle
+                            </option>
+                            <option id="move_on_cross_purchase" value="cross_purchase">
+                                Cross Kong Purchases
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-select">
+                        <p class="select-title">Ice Trap Frequency</p>
+                        <select name="ice_trap_frequency"
+                                id="ice_trap_frequency"
+                                display_name="Ice Trap Frequency"
+                                class="form-select"
+                                aria-label="Ice Trap Frequency"
+                                data-toggle="tooltip"
+                                title="Frequency of ice traps attempted to be placed into the world.&#10;-Rare: 4 ice traps.&#10;-Mild: 10 ice traps.&#10;-Common: 32 ice traps.&#10;-Frequent: 64 ice traps.&#10;-Pain: 100 ice traps.">
+                            <option id="rare" value="rare">Rare</option>
+                            <option id="mild" selected value="mild">Mild</option>
+                            <option id="common" value="common">Common</option>
+                            <option id="frequent" value="frequent">Frequent</option>
+                            <option id="pain" value="pain">Pain</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex-column-container" style="flex-grow: 1">
+                    <div class="item-select" style="margin-top: 0; max-height: 34px;">
+                        <button
+                            class="btn btn-secondary btn-custom-large"
+                            type="button"
+                            href="#"
+                            id="starting_moves_modal"
+                            display_name="Customize Starting Moves"
+                            data-bs-toggle="modal"
+                            data-bs-target="#starting_moves_Modal"
+                            data-toggle="tooltip"
+                            title="Customize your starting moves. Start with more items, fewer items, certain items, and more.">
+                            Customize Starting Moves
+                            <span id="shared_shop_warning" data-toggle="tooltip" title="When all moves are purchased in shops, you are extremely likely to run into fill problems if you do not start with enough shared moves! Seeds that do generate will have fill biases - consider starting with training moves.">
+                                <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 18 18" class="warning-icon" style="overflow: visible; margin-bottom: 7px;" stroke="#ffff00" fill="#ffff00">
+                                    <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <h2 class="title">SHUFFLED LOCATIONS</h2>
+            <div class="flex-container">
+                {{ toggle_input("random_patches", "Random Dirt Patch Locations", "Dirt Patches for Rainbow Coins are in random locations.", False, "Dirt Patches") }}
+                {{ toggle_input("coin_rando", "Random Banana Coin Locations", "Shuffle the locations of coins within each Level.", False, "Banana Coins") }}
+                {{ toggle_input("random_fairies", "Random Banana Fairy Locations", "Fairy checks are in random locations.", False, "Banana Fairies") }}
+                {{ toggle_input("crown_placement_rando", "Random Battle Crown Pad Locations", "Crown Locations are randomized. There's 1 in each level, except Isles which has two.", False, "Battle Crowns") }}
+                {{ toggle_input("random_crates", "Random Melon Crate Locations", "Melon Crate Locations are randomized.", False, "Melon Crates") }}
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Colored Banana Locations are randomized.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="cb_rando_enabled"
+                                id="cb_rando_enabled"
+                                display_name="Randomize CB Locations"
+                                value="True"/>
+                        Colored Bananas
+                    </label>
+                    {{ list_selector(cb_rando_levels, "cb_rando_list", "LEVELS", "This will open a popup that will let you customize what levels have CB rando in the game.&#10;This defaults to All options.", 8, 1) }}
+                {# Remove end </div> as it's included in the macro for formatting #}
+            </div>
+            <div class="flex-container">
+                <div class="item-select">
+                    <p class="select-title">Kasplats</p>
+                    <select name="kasplat_rando_setting"
+                            id="kasplat_rando_setting"
+                            display_name="Random Kasplat Locations"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Determines if and how Kasplats are randomized.&#10;-Vanilla: Kasplats are in their vanilla locations.&#10;-Vanilla Locations: Random placement of kasplats between existing spawns.&#10;-Location Shuffle: Random placement of kasplats with new and interesting locations.">
+                        <option id="off" selected value="off">
+                            Vanilla
+                        </option>
+                        <option id="vanilla_locations" value="vanilla_locations">
+                            Vanilla Locations
+                        </option>
+                        <option id="location_shuffle" value="location_shuffle">
+                            Location Shuffle
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Bananaports</p>
+                    <div class="d-flex">
+                        <select name="bananaport_placement_rando"
+                                id="bananaport_placement_rando"
+                                display_name="Random Bananaport Locations"
+                                class="form-select"
+                                aria-label="Randomization type"
+                                data-toggle="tooltip"
+                                title="Shuffle the locations of bananaports within each Level.&#10;-Off: Bananaports are in their vanilla locations.&#10;-Vanilla Only: Random placement of bananaports solely within the pool of vanilla locations.&#10;-Half-Vanilla: One bananaport in each pair is vanilla, the other is in a random location.&#10;-On: Both bananaports in each pair are in a random location (with a couple exceptions for technical reasons).">
+                            <option id="off" selected value="off">
+                                Off
+                            </option>
+                            <option id="vanilla_only" value="vanilla_only">
+                                Vanilla Only
+                            </option>
+                            <option id="half_vanilla" value="half_vanilla">
+                                Half-Vanilla
+                            </option>
+                            <option id="on" value="on">
+                                On
+                            </option>
+                        </select>
+                        <div style="padding: 5px;">
+                            {{ list_selector(vanilla_warps, "warp_level_list", "LEVEL SELECTOR", "This will open a popup that will let you customize what levels' warps are in the pool. Any level not selected will have its vanilla warp locations.&#10;This defaults to All levels.", 10, 1) }}
+                        {# Remove end </div> as it's included in the macro for formatting #}
+                    </div>
+                </div>
+            </div>
+            <div class="flex-container" style="margin-top: 20px;">
+                {{ toggle_input("wrinkly_location_rando", "Random Wrinkly Door Locations", "Wrinkly Door Locations are randomized.", False, "Wrinkly Doors") }}
+                {{ toggle_input("tns_location_rando", "Random Troff 'n' Scoff Portal Locations", "T&S Portal Locations are randomized.", False, "Troff 'n' Scoff Portals") }}
+                {{ toggle_input("vanilla_door_rando", "Vanilla Door Shuffle", "Wrinkly Doors and T&S Portals are shuffled among the vanilla locations.") }}
+                {{ toggle_input("dos_door_rando", "Dos' Doors", "Vanilla Door Shuffle with some restrictions:&#10;- One T&S per level&#10;- One hint door in each lobby&#10;- DK Portal Rando enabled") }}
+                <div class="item-select">
+                    <p class="select-title">DK Portals</p>
+                    <select name="dk_portal_location_rando_v2"
+                            id="dk_portal_location_rando_v2"
+                            display_name="Random DK Portal Locations"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="DK Portal Locations are randomized.">
+                        <option id="off" selected value="off">
+                            Vanilla
+                        </option>
+                        <option id="main_only" value="main_only" title="Will only place portals in the main level maps of the 7 levels">
+                            Main Maps only
+                        </option>
+                        <option id="on" value="on">
+                            On
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+            <div class="col border panel">
+                <h2 class="title">GLOBAL</h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="All normal enemies that spawn in the world are randomized.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="enemy_rando"
+                                id="enemy_rando"
+                                display_name="Shuffle Enemies"
+                                value="True"/>
+                        Shuffle Enemies
+                    </label>
+                    {{ list_selector(enemies, "enemies", "ENEMIES", "This will open a popup that will let you customize what enemies appear in the game.&#10;This defaults to All options.", 16, 1) }}
+                {# Remove end </div> as it's included in the macro for formatting #}
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Bonus Barrels are randomly chosen from the pool of available Bonus Barrels.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="bonus_barrel_rando"
+                               id="bonus_barrel_rando"
+                               display_name="Shuffle Bonus Barrels"
+                               value="True"/>
+                        Shuffle Bonus Barrels
+                    </label>
+                    {{ list_selector(minigames, "minigames_list", "MINIGAME SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.", 18, 1) }}
+                {# Remove end </div> as it's included in the macro for formatting #}
+                {{ toggle_input("enemy_speed_rando", "Shuffle Enemy Speed", "Enemy speeds are randomized.") }}
+                {{ toggle_input("randomize_enemy_sizes", "Random Enemy Size", "The size of enemies is randomized.") }}
+                {{ toggle_input("boss_location_rando", "Shuffle Boss Location", "The boss you can get in a level is different than normal.") }}
+                {{ toggle_input("kong_rando", "Shuffle Kongs", "Starting kong and kong locations have been randomized.") }}
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="The order of KRools boxing match will randomly order the sequence.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="krool_phase_order_rando"
+                                display_name="Shuffle K. Rool Phases"
+                                value="True"/>
+                        Shuffle K Rool Phases
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="The order of the Helm minigame rooms will randomly order the sequence.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="helm_phase_order_rando"
+                                display_name="Shuffle Helm Rooms"
+                                value="True"/>
+                        Shuffle Helm Rooms
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="The kong you use to fight a boss is different instead of what is normally required.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="boss_kong_rando"
+                                id="boss_kong_rando"
+                                display_name="Shuffle Boss Kong Required"
+                                value="True"/>
+                        Shuffle Boss Kong Required
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="K. Rool phases can be found in the T&S, and T&S bosses can be encountered as an endgame phase.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="krool_in_boss_pool"
+                                id="krool_in_boss_pool"
+                                display_name="Shuffle Boss Kong Required"
+                                value="True"/>
+                        K Rool Phases as Bosses
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="All Replenishables in the game are randomized.&#10;*Homing Ammo, Regular Ammo, Oranges, Film, Crystals">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="randomize_pickups"
+                                display_name="Randomize Pickups"
+                                value="True"/>
+                        Randomize Pickups
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Shuffle the locations of shops (including Snides) within each Level/Isles.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="shuffle_shops"
+                                id="shuffle_shops"
+                                display_name="Shuffle Shop Locations"
+                                value="True"/>
+                        Shuffle Shop Locations
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Randomizes the location you spawn in when starting a new file and when selecting the 'Exit to Spawn' option.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="random_starting_region"
+                                id="random_starting_region"
+                                display_name="Random Starting Location"
+                                value="True"/>
+                        Random Starting Location
+                    </label>
+                </div>
+                <div class="spacer"></div>
+            </div>
+            <div class="flex-container">
+                <div class="item-select">
+                    <p class="select-title">Entrance Randomizer</p>
+                    <select name="level_randomization"
+                            id="level_randomization"
+                            display_name="Entrance Randomizer"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Determines how entrances are randomized and placed.&#10;-Level Order: Randomize only the order that the levels are in.&#10;-Complex Level Order: Same as 'Level Order', but the order of level entry won't be linear. Additionally, other protections that regular Level Order enforces to make it better to play will be removed.&#10;-Loading Zones: Randomize every entrance except for Helm/Helm Lobby.&#10;-Decoupled Loading Zones: Randomize every entrance except for Helm/Helm Lobby. Going back through a entrance will take you somewhere else.&#10;-Vanilla: All entrances are the same as the base game.">
+                        <option selected value="level_order">
+                            Level Order
+                        </option>
+                        <option value="level_order_complex">
+                            Complex Level Order
+                        </option>
+                        <option value="loadingzone">
+                            Loading Zones
+                        </option>
+                        <option value="loadingzonesdecoupled">
+                            Decoupled Loading Zones
+                        </option>
+                        <option value="vanilla">
+                            Vanilla
+                        </option>
+                    </select>
+                    <div class="form-check form-switch" style="padding-top:10px;">
+                        <label data-toggle="tooltip"
+                                style="font-size:14px;"
+                                title="Shuffle the location of Hideout Helm. If enabled, Helm and Helm Lobby will be in random locations.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="shuffle_helm_location"
+                                    id="shuffle_helm_location"
+                                    display_name="Shuffle Helm Location / Include Helm"
+                                    value="True"/>
+                            <span id="shuffle_helm_location_label">Shuffle Helm Location</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Random Shop Prices</p>
+                    <select name="random_prices"
+                            id="random_prices"
+                            display_name="Random Shop Prices"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="All prices in shops are randomized to a random number.&#10;-Vanilla: Same cost as base game.&#10;-Free: All moves are free.&#10;-Low: Moves cost 1-4 coins most of the time. (Avg: 2.5)&#10;-Medium: Moves cost 1-8 coins most of the time. (Avg: 4.5)&#10;-High: Moves cost 1-12 coins most of the time. (Avg: 6.5)&#10;-Extreme: Moves cost 10+ coins most of the time. (Avg: 11, starting Shockwave required!)&#10;WARNING: Extreme Prices is an enormous strain on coin logic and is VERY difficult to fill with. Only pick this if you're confident your settings give access to enough coins early.">
+                        <option value="vanilla">
+                            Vanilla
+                        </option>
+                        <option value="free">
+                            Free
+                        </option>
+                        <option selected value="low">
+                            Low
+                        </option>
+                        <option value="medium">
+                            Medium
+                        </option>
+                        <option value="high">
+                            High
+                        </option>
+                        <option id="extreme_price_option" value="extreme">
+                            Extreme
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Random Puzzle Solutions</p>
+                    <select name="puzzle_rando_difficulty"
+                            id="puzzle_rando_difficulty"
+                            display_name="Random Puzzle Solutions"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Shuffles the solutions to various puzzles in the game.">
+                        <option value="off">
+                            Off
+                        </option>
+                        <option value="easy">
+                            Easy
+                        </option>
+                        <option selected value="medium">
+                            Medium
+                        </option>
+                        <option value="hard">
+                            Hard
+                        </option>
+                        <option value="chaos" title="Values picked can be any range between easy, medium and hard">
+                            Chaos
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Cross-Map Bananaports</p>
+                    <div class="customize-select">
+                    <select name="bananaport_rando"
+                            id="bananaport_rando"
+                            display_name="Cross-Map Bananaports"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Random mappings of bananaport locations.">
+                        <option id="off" selected value="off">
+                            Off
+                        </option>
+                        <option id="crossmap_coupled" value="crossmap_coupled">
+                            Coupled
+                        </option>
+                        <option id="crossmap_decoupled" value="crossmap_decoupled">
+                            Decoupled
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="item-select">
+                <p class="select-title">Switchsanity</p>
+                <select name="switchsanity"
+                        id="switchsanity"
+                        display_name="Switchsanity"
+                        class="form-select"
+                        aria-label="Randomization type"
+                        data-toggle="tooltip"
+                        title="Randomizes various pads and switches in the game to other pads or switches, resulting in different requirements to access various areas.&#10;- Off: Switchsanity will be disabled.&#10;- Helm Access: Only the Isles Monkeyport pad and the Helm Lobby Gone pad will be altered.&#10;- All: All switches that can be altered will be altered.">
+                    <option value="off" selected>
+                        Off
+                    </option>
+                    <option value="helm_access">
+                        Helm Access Only
+                    </option>
+                    <option value="all">
+                        All
+                    </option>
+                </select>
+            </div>
+            <div class="spacer"></div>
+        </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade"
+     id="starting_moves_Modal"
+     tabindex="-1"
+     aria-labelledby="starting_moves_ModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 1250px;">
+        <div class="modal-content modal-content-tall">
+            <div class="modal-header">
+                <h3 class="modal-title title" id="starting_moves_ModalLabel">CUSTOMIZE STARTING MOVES</h3>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <b>Place your items into a number of item pools, then choose how many of each pool's items you want given to you at the start of the seed.</b>
+                <br/>
+                <b>To move items, select them from any list and click the item pool you want them to be in.</b>
+                <br/>
+                <em>Use the presets at the bottom as quick actions.</em>
+                <div class="flex-container" style="justify-content: space-around; margin-top: 15px;">
+                    <div id="starting_moves_list_column_1" class="flex-column-container">
+                        <b id="starting_moves_list_all_1" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_1" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_1" style="font-style: italic; color: red;">Start with None</b>
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_1">Pool 1</button>
+                        <select id="starting_moves_list_1" name="starting_moves_list_1" class="starting_moves_list multi-select" multiple>
+                            {% for item in custom_starting_moves %}
+                                <option id="starting_move_{{item.value}}" class="starting_moves_option">{{item.name}}</option>
+                            {% endfor %}
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_1"
+                                id="starting_moves_list_count_1"
+                                class="form-control center-div move_count_button"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                    <div id="starting_moves_list_column_2" class="flex-column-container">
+                        <b id="starting_moves_list_all_2" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_2" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_2" style="font-style: italic; color: red;">Start with None</b>
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_2">Pool 2</button>
+                        <select id="starting_moves_list_2" name="starting_moves_list_2" class="starting_moves_list multi-select" multiple>
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_2"
+                                id="starting_moves_list_count_2"
+                                class="form-control center-div move_count_button"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                    <div id="starting_moves_list_column_3" class="flex-column-container">
+                        <b id="starting_moves_list_all_3" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_3" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_3" style="font-style: italic; color: red;">Start with None</b>
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_3">Pool 3</button>
+                        <select id="starting_moves_list_3" name="starting_moves_list_3" class="starting_moves_list multi-select" multiple>
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_3"
+                                id="starting_moves_list_count_3"
+                                class="form-control center-div move_count_button"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                    <div id="starting_moves_list_column_4" class="flex-column-container">
+                        <b id="starting_moves_list_all_4" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_4" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_4" style="font-style: italic; color: red;">Start with None</b>
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_4">Pool 4</button>
+                        <select id="starting_moves_list_4" name="starting_moves_list_4" class="starting_moves_list multi-select" multiple>
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_4"
+                                id="starting_moves_list_count_4"
+                                class="form-control center-div move_count_button"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                    <div id="starting_moves_list_column_5" class="flex-column-container">
+                        <b id="starting_moves_list_all_5" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_5" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_5" style="font-style: italic; color: red;">Start with None</b>
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_5">Pool 5</button>
+                        <select id="starting_moves_list_5" name="starting_moves_list_5" class="starting_moves_list multi-select" multiple>
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_5"
+                                id="starting_moves_list_count_5"
+                                class="form-control center-div move_count_button"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="starting_moves_reset">No Item Start</button>
+                <button type="button" class="btn btn-secondary" id="starting_moves_start_vanilla">Vanilla Start</button>
+                <button type="button" class="btn btn-secondary" id="starting_moves_start_all">Start With All</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        })
+    });
+</script>

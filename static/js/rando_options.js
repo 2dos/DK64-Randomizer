@@ -480,6 +480,31 @@ document
   .getElementById("faster_checks_enabled")
   .addEventListener("click", disable_faster_checks);
 
+// Force Vanilla Door Rando on and enforce DK Portal Rando is enabled
+function toggle_dos_door_rando() {
+  const dosDoorRando  = document.getElementById("dos_door_rando");
+  const vanillaDoorShuffle = document.getElementById("vanilla_door_rando");
+  const dkPortalRandoSelect = document.getElementById("dk_portal_location_rando_v2");
+  const dkPortalRandoVanilla = document.querySelector("#dk_portal_location_rando_v2 option[id='off']");
+
+  if (dosDoorRando.checked) {
+    vanillaDoorShuffle.checked = true;
+    vanillaDoorShuffle.setAttribute("disabled", "disabled");
+    if (dkPortalRandoSelect.value == "off") {
+      dkPortalRandoSelect.value = "main_only";
+    }
+    dkPortalRandoVanilla.setAttribute("disabled", "disabled");
+    toggle_vanilla_door_rando();
+  } else {
+    vanillaDoorShuffle.removeAttribute("disabled");
+    dkPortalRandoVanilla.removeAttribute("disabled");
+  }
+}
+
+document
+  .getElementById("dos_door_rando")
+  .addEventListener("click", toggle_dos_door_rando);
+
 // Force Wrinkly and T&S Rando to be on when Vanilla Door Rando is on
 function toggle_vanilla_door_rando() {
   const vanillaDoorShuffle = document.getElementById("vanilla_door_rando");
@@ -576,7 +601,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 // Change between "Default" and "Randomize" for major item music selection
@@ -593,7 +618,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 // Change between "Default" and "Randomize" for minor item music selection
@@ -610,7 +635,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 // Change between "Default" and "Randomize" for event music selection
@@ -627,7 +652,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 function toggle_key_settings() {
@@ -661,6 +686,8 @@ function toggle_medals_box() {
 async function enable_plandomizer() {
   const plandoTab = document.getElementById("nav-plando-tab");
   if (document.getElementById("enable_plandomizer").checked) {
+    // Open up a Modal stating that we're loading the Plando tab
+    $("#plando-modal").modal("show");    
     try {
       await setup_pyodide();
     } catch (error) {
@@ -669,6 +696,7 @@ async function enable_plandomizer() {
     // Load ui.__init__.py
     await run_python_file("ui/__init__.py");
     plandoTab.style.display = "";
+    $("#plando-modal").modal("hide");
   } else {
     plandoTab.style.display = "none";
   }
@@ -1148,8 +1176,8 @@ function toggle_item_rando() {
   if (disabled || !shopsInPool) {
     elements.smallerShops.checked = false;
   }
-  elements.moveVanilla.toggleAttribute("disabled", shopsInPool);
-  elements.moveRando.toggleAttribute("disabled", shopsInPool);
+  elements.moveVanilla.toggleAttribute("disabled", shopsInPool && !disabled);
+  elements.moveRando.toggleAttribute("disabled", shopsInPool && !disabled);
   elements.enemyDropRando.toggleAttribute("disabled", disabled);
   if (disabled) {
     elements.enemyDropRando.checked = false;
@@ -2060,6 +2088,87 @@ document
     moveSelectedStartingMoves(5);
   });
 
+document
+  .getElementById("starting_moves_modal")
+  .addEventListener("click", function (event) {
+    assessAllItemPoolCounts();
+  });
+
+document
+  .getElementById("starting_moves_list_count_1").addEventListener("change", function (event) {
+    assessItemPoolCount(1);
+  });
+
+document
+  .getElementById("starting_moves_list_count_2").addEventListener("change", function (event) {
+    assessItemPoolCount(2);
+  });
+
+document
+  .getElementById("starting_moves_list_count_3").addEventListener("change", function (event) {
+    assessItemPoolCount(3);
+  });
+
+document
+  .getElementById("starting_moves_list_count_4").addEventListener("change", function (event) {
+    assessItemPoolCount(4);
+  });
+
+document
+  .getElementById("starting_moves_list_count_5").addEventListener("change", function (event) {
+    assessItemPoolCount(5);
+  });
+
+function assessAllItemPoolCounts() {
+  // Determine the label/coloring status of all item pools at once. This also shows and hides entire columns.
+  found_not_empty_item_pool = false;
+  for (let i = 5; i >= 1; i--) {
+    assessItemPoolCount(i);
+
+    const list_selector = document.getElementById("starting_moves_list_" + i);
+    const selector_column = document.getElementById("starting_moves_list_column_" + i);
+    selector_column.removeAttribute("hidden");
+    const number_of_moves_in_pool = Array.from(list_selector.options).filter(option => !option.hidden).length;
+    if (!found_not_empty_item_pool && number_of_moves_in_pool > 0) {
+      found_not_empty_item_pool = true;
+      for (let j = i+2; j <= 5; j++) {
+        const empty_selector_column = document.getElementById("starting_moves_list_column_" + j);
+        empty_selector_column.setAttribute("hidden", "hidden");
+      }
+    }
+  }
+}
+
+function assessItemPoolCount(target_list_id) {
+  // Determine if the given item pool is starting with all, some, or none of the item in the list and update the UI accordingly.
+  const move_count = document.getElementById("starting_moves_list_count_" + target_list_id);
+  const list_selector = document.getElementById("starting_moves_list_" + target_list_id);
+  const mover_button = document.getElementById("starting_moves_list_mover_" + target_list_id);
+  const all_label = document.getElementById("starting_moves_list_all_" + target_list_id);
+  all_label.setAttribute("hidden", "hidden");
+  const some_label = document.getElementById("starting_moves_list_some_" + target_list_id);
+  some_label.setAttribute("hidden", "hidden");
+  const none_label = document.getElementById("starting_moves_list_none_" + target_list_id);
+  none_label.setAttribute("hidden", "hidden");
+  const number_of_moves_in_pool = Array.from(list_selector.options).filter(option => !option.hidden).length;
+  if (move_count.value == 0 || number_of_moves_in_pool == 0) {
+    none_label.removeAttribute("hidden");
+    list_selector.style = "border-color: red";
+    move_count.style = "border-color: red";
+    mover_button.style = "border-color: red";
+  } else if (move_count.value >= number_of_moves_in_pool) {
+      all_label.removeAttribute("hidden");
+      list_selector.style = "border-color: green";
+      move_count.style = "border-color: green";
+      mover_button.style = "border-color: green";
+  } else {
+    some_label.removeAttribute("hidden");
+    list_selector.style = "border-color: orange";
+    move_count.style = "border-color: orange";
+    mover_button.style = "border-color: orange";
+  }
+}
+
 function moveSelectedStartingMoves(target_list_id) {
   let selected_moves = [];
   for (let i = 1; i <= 5; i++) {
@@ -2084,7 +2193,7 @@ function moveSelectedStartingMoves(target_list_id) {
     }
     target_selector.appendChild(moved_move);
   }
-  savesettings();
+  assessAllItemPoolCounts();
 }
 
 // Move all starting moves back to list #1.
@@ -2175,6 +2284,7 @@ function update_ui_states() {
   enable_plandomizer(null);
   toggle_medals_box(null);
   toggle_vanilla_door_rando(null);
+  toggle_dos_door_rando(null);
   validate_fast_start_status(null);
 
   const sliders = document.getElementsByClassName("pretty-slider");

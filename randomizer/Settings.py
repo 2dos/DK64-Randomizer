@@ -50,7 +50,7 @@ from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.Songs import song_data
 from randomizer.Lists.Switches import SwitchData
-from randomizer.Patching.Lib import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem
+from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.ShuffleBosses import (
@@ -111,7 +111,7 @@ class Settings:
         if self.hard_troff_n_scoff:
             self.troff_min = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8]  # Add 20% to the minimum for hard T&S
         # In hard level progression we go through levels in a random order, so we set every level's troff min weight to the largest weight
-        if self.hard_level_progression:
+        if self.level_randomization == LevelRandomization.level_order_complex:
             self.troff_min = [self.troff_min[-1] for x in self.troff_min]
 
         CompleteVanillaPrices()
@@ -313,33 +313,34 @@ class Settings:
                 # Some barriers can only show up once
                 if item in (BarrierItems.Bean, BarrierItems.Pearl, BarrierItems.CompanyCoin):
                     locked_blocker_items.append(item)
-        elif self.randomize_blocker_required_amounts:
-            if self.blocker_max > 0:
-                choice_list = range(1, self.blocker_max)
-                if self.blocker_max < 7:
-                    # Can't create a random list with purely the range. Too small of a list
-                    choice_list = [int(x / 10) for x in range(10, (self.blocker_max * 10) + 9)]
-                randomlist = random.choices(choice_list, k=7)
-                b_lockers = randomlist
-                if self.shuffle_loading_zones == ShuffleLoadingZones.all or self.hard_level_progression:
-                    b_lockers.append(random.randint(1, self.blocker_max))
-                    random.shuffle(b_lockers)
+        else:
+            if self.randomize_blocker_required_amounts:
+                if self.blocker_max > 0:
+                    choice_list = range(1, self.blocker_max)
+                    if self.blocker_max < 7:
+                        # Can't create a random list with purely the range. Too small of a list
+                        choice_list = [int(x / 10) for x in range(10, (self.blocker_max * 10) + 9)]
+                    randomlist = random.choices(choice_list, k=7)
+                    b_lockers = randomlist
+                    if self.shuffle_loading_zones == ShuffleLoadingZones.all or self.hard_level_progression:
+                        b_lockers.append(random.randint(1, self.blocker_max))
+                        random.shuffle(b_lockers)
+                    else:
+                        b_lockers.append(1)
+                        b_lockers.sort()
                 else:
-                    b_lockers.append(1)
-                    b_lockers.sort()
-            else:
-                b_lockers = [0, 0, 0, 0, 0, 0, 0, 0]
-            self.blocker_0 = b_lockers[0]
-            self.blocker_1 = b_lockers[1]
-            self.blocker_2 = b_lockers[2]
-            self.blocker_3 = b_lockers[3]
-            self.blocker_4 = b_lockers[4]
-            self.blocker_5 = b_lockers[5]
-            self.blocker_6 = b_lockers[6]
-            if self.maximize_helm_blocker:
-                self.blocker_7 = self.blocker_max
-            else:
-                self.blocker_7 = b_lockers[7]
+                    b_lockers = [0, 0, 0, 0, 0, 0, 0, 0]
+                self.blocker_0 = b_lockers[0]
+                self.blocker_1 = b_lockers[1]
+                self.blocker_2 = b_lockers[2]
+                self.blocker_3 = b_lockers[3]
+                self.blocker_4 = b_lockers[4]
+                self.blocker_5 = b_lockers[5]
+                self.blocker_6 = b_lockers[6]
+                if self.maximize_helm_blocker:
+                    self.blocker_7 = self.blocker_max
+                else:
+                    self.blocker_7 = b_lockers[7]
             # Store banana values in array
             self.BLockerEntryCount = [
                 self.blocker_0,
@@ -755,6 +756,7 @@ class Settings:
             "exit": 0,
         }
         self.vanilla_door_rando = False
+        self.dos_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
@@ -878,22 +880,16 @@ class Settings:
         # If we are *guaranteed* to start with a slam, place it in the training grounds reward slot and don't make it hintable, as before
         if Items.ProgressiveSlam in guaranteed_starting_moves:
             self.start_with_slam = True
-        elif not self.shuffle_items:
-            raise Ex.SettingsIncompatibleException("With Item Rando disabled, you must start with at least one Slam, Climbing, and all Training Barrel moves. Error code: IR-1")
         else:
             self.start_with_slam = False
         # If we are *guaranteed* to start with ALL training moves, put them in their vanilla locations and don't make them hintable, as before
         if Items.Vines in guaranteed_starting_moves and Items.Barrels in guaranteed_starting_moves and Items.Oranges in guaranteed_starting_moves and Items.Swim in guaranteed_starting_moves:
             self.training_barrels = TrainingBarrels.normal
-        elif not self.shuffle_items:
-            raise Ex.SettingsIncompatibleException("With Item Rando disabled, you must start with at least one Slam, Climbing, and all Training Barrel moves. Error code: IR-2")
         else:
             self.training_barrels = TrainingBarrels.shuffled
         # If Climbing is a guaranteed starting move, treat it like the others as well.
         if Items.Climbing in guaranteed_starting_moves:
             self.climbing_status = ClimbingStatus.normal
-        elif not self.shuffle_items:
-            raise Ex.SettingsIncompatibleException("With Item Rando disabled, you must start with at least one Slam, Climbing, and all Training Barrel moves. Error code: IR-3")
         else:
             self.climbing_status = ClimbingStatus.shuffled
 
@@ -962,6 +958,12 @@ class Settings:
             ]
             ItemPool.JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt]
 
+        # Dos' Doors require all of these to be on - it's a variant on vanilla door shuffle
+        if self.dos_door_rando:
+            self.vanilla_door_rando = True
+            # The UI should force this, but DK Portal Rando must be at least somewhat enabled for Dos' Doors
+            if self.dk_portal_location_rando_v2 == DKPortalRando.off:
+                self.dk_portal_location_rando_v2 = DKPortalRando.main_only
         # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
         if self.vanilla_door_rando:
             self.wrinkly_location_rando = True
@@ -2152,6 +2154,9 @@ class Settings:
         ]
         selected_region_world = random.choice(region_data)
         valid_starting_regions = []
+        banned_starting_regions = []
+        if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko):
+            banned_starting_regions.append(Regions.KremIsleMouth)
         if self.enable_plandomizer and self.plandomizer_dict["plando_starting_exit"] != -1:
             # Plandomizer code for random starting location
             planned_transition = self.plandomizer_dict["plando_starting_exit"]
@@ -2200,6 +2205,11 @@ class Settings:
                                 "exit_name": ShufflableExits[relevant_transition].back.name,
                             }
                         )
+        if any(banned_starting_regions):
+            valid_starting_regions = [region for region in valid_starting_regions if region["region"] not in banned_starting_regions]
+            # The only way for this to happen is if someone plandos a settings-banned region as their starting region
+            if len(valid_starting_regions) == 0:
+                raise Ex.PlandoIncompatibleException("Planned starting region is invalid.")
         self.starting_region = random.choice(valid_starting_regions)
         for x in range(2):
             spoiler.RegionList[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]

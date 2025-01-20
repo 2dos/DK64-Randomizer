@@ -1,16 +1,15 @@
 """Place fairies into the world."""
 
-import js
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Lists.FairyLocations import fairy_locations, relocated_5ds_fairy
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 
-def ReplaceShipFairy(spoiler):
+def ReplaceShipFairy(ROM_COPY: LocalROM):
     """Replace the fairy inside 5DS with an easier to get fairy."""
-    ROM_COPY = LocalROM()
-    file_start = js.pointer_addresses[16]["entries"][Maps.Galleon5DShipDKTiny]["pointing_to"]
+    file_start = getPointerLocation(TableNames.Spawners, Maps.Galleon5DShipDKTiny)
     ROM_COPY.seek(file_start)
     fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     offset = 2
@@ -130,11 +129,10 @@ def ReplaceShipFairy(spoiler):
             ROM_COPY.writeMultipleBytes(y, 1)
 
 
-def PlaceFairies(spoiler):
+def PlaceFairies(spoiler, ROM_COPY: LocalROM):
     """Write Fairies to ROM."""
-    ReplaceShipFairy(spoiler)
+    ReplaceShipFairy(ROM_COPY)
     sav = spoiler.settings.rom_data
-    ROM_COPY = LocalROM()
     ROM_COPY.seek(sav + 0xE0)
     ROM_COPY.writeMultipleBytes(0, 2)
     if spoiler.settings.random_fairies:
@@ -164,7 +162,7 @@ def PlaceFairies(spoiler):
                     action_maps.append(fairy_locations[level][item].map)
         # Pull all character spawner files that are part of the action map list
         for map in action_maps:
-            file_start = js.pointer_addresses[16]["entries"][map]["pointing_to"]
+            file_start = getPointerLocation(TableNames.Spawners, map)
             ROM_COPY.seek(file_start)
             fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             offset = 2

@@ -979,7 +979,7 @@ enemy_location_list = {
     Locations.CastleUpperCaveEnemy_NearPit: EnemyLoc(Maps.CastleUpperCave, Enemies.Bat, 5, [], True),
     Locations.CastleUpperCaveEnemy_NearEntrance: EnemyLoc(Maps.CastleUpperCave, Enemies.Krossbones, 6, [], True),
     # Kut Out
-    Locations.CastleKKOEnemy_CenterEnemy: EnemyLoc(Maps.CastleBoss, Enemies.Ghost, 7, [], True, False),
+    Locations.CastleKKOEnemy_CenterEnemy: EnemyLoc(Maps.CastleBoss, Enemies.Ghost, 7, [enemies_not_ground_simple], True, False),
     Locations.CastleKKOEnemy_WaterEnemy00: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 8, [], True, False),
     Locations.CastleKKOEnemy_WaterEnemy01: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 9, [], True, False),
     Locations.CastleKKOEnemy_WaterEnemy02: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 10, [], True, False),

@@ -15,11 +15,19 @@ from flask import Blueprint, Flask, jsonify, make_response, redirect, render_tem
 from flask_cors import CORS
 from flask_session import Session
 from opentelemetry import trace
-from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+from opentelemetry import metrics
+from opentelemetry.exporter.otlp.proto.http.metric_exporter import OTLPMetricExporter
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry.instrumentation.redis import RedisInstrumentor
 from opentelemetry.sdk.trace import TracerProvider
+
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from redis import Redis, from_url
 from rq import Queue
@@ -32,6 +40,7 @@ from oauth import DiscordAuth
 from functools import wraps
 from swagger_ui import flask_api_doc
 from werkzeug.middleware.proxy_fix import ProxyFix
+from opentelemetry_instrumentation_rq import RQInstrumentor
 
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
 
@@ -48,27 +57,34 @@ resource = Resource(
     }
 )
 
-# Set up the TracerProvider and Span Exporter
-trace.set_tracer_provider(TracerProvider(resource=resource))
-tracer_provider = trace.get_tracer_provider()
-
-# Configure OTLP Exporter for sending traces to the collector
-otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4317")
-
-# Add the BatchSpanProcessor to the TracerProvider
-span_processor = BatchSpanProcessor(otlp_exporter)
-tracer_provider.add_span_processor(span_processor)
-
 app = Flask(__name__, static_folder="", template_folder="templates")
-FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 flask_api_doc(app, config_path="./swagger.yaml", url_prefix="/api/doc", title="API doc")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
 # Configure Redis for storing the session data on the server-side
 app.config["SESSION_TYPE"] = "redis"
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_USE_SIGNER"] = True
-app.config["SESSION_REDIS"] = from_url("redis://redis:6379")
+redis_conn = Redis(host="redis", port=6379)
+app.config["SESSION_REDIS"] = redis_conn
+
+# check the args we started the script with
+if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
+    # Set up the TracerProvider and Span Exporter
+    trace.set_tracer_provider(TracerProvider(resource=resource))
+    tracer_provider = trace.get_tracer_provider()
+
+    # # Configure OTLP Exporter for sending traces to the collector
+    otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/traces")
+
+    # # Add the BatchSpanProcessor to the TracerProvider
+    span_processor = BatchSpanProcessor(otlp_exporter)
+    tracer_provider.add_span_processor(span_processor)
+    reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
+    meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
+    metrics.set_meter_provider(meterProvider)
+    RQInstrumentor().instrument()
+    RequestsInstrumentor().instrument()
+    RedisInstrumentor().instrument()
+    FlaskInstrumentor().instrument_app(app)
 
 # Create and initialize the Flask-Session object AFTER `app` has been configured
 server_session = Session(app)
@@ -98,7 +114,6 @@ class TaskThread(threading.Thread):
             self.result = self.target(self.kwargs.get("args")[0])
 
 
-redis_conn = Redis(host="redis", port=6379)
 task_queue_high = Queue("tasks_high_priority", connection=redis_conn)  # High-priority queue
 task_queue_low = Queue("tasks_low_priority", connection=redis_conn)  # Low-priority queue
 CORS(app, origins=["https://dev.dk64randomizer.com", "https://dk64randomizer.com"])
@@ -123,7 +138,7 @@ discord = DiscordAuth(
     environ.get("REDIRECT", "http://localhost:8000/admin"),
     "463917049782075395",
 )
-admin_roles = ["550784070188138508"]
+admin_roles = ["550784070188138508", "550784038600835101"]
 
 
 def enforce_api_restrictions():
@@ -276,7 +291,7 @@ def task_status(task_id):
     if task.result:
         # make sure we clear the task from the queue if it's done
         result = copy.copy(task.result)
-        task.delete()
+        # task.delete()
         return set_response(json.dumps({"result": result, "status": "finished"}), 200)
     # If the task failed, return the error message
     if task.exc_info:
@@ -309,7 +324,6 @@ def get_presets():
     presets_to_return = []
     presets = update_presets()
     presets = presets.get(branch, [])
-    print(presets)
     if return_blank is None:
         presets_to_return = [preset for preset in presets if preset.get("settings_string") is not None]
     else:
@@ -353,7 +367,7 @@ def admin_portal():
         session.pop("admin")
         return set_response("You do not have permission to access this page.", 403, "text/html")
     local_presets = update_presets()
-    return render_template("admin.html.jinja2", local_presets=local_presets)
+    return render_template("admin.html", local_presets=local_presets)
 
 
 @api.route("/admin/presets", methods=["PUT", "DELETE"])
@@ -364,7 +378,8 @@ def admin_presets():
 
     content = request.json
     local_presets = update_presets()
-    branch = request.args.get("branch")
+    # Check if branch is in the body
+    branch = content.get("branch", "")
     if branch not in ["master", "dev"]:
         return set_response(json.dumps({"message": "Invalid branch"}), 400)
     if request.method == "PUT":

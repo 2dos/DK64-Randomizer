@@ -1,0 +1,34 @@
+{# Variables and classes not defined here are in plandomizer.html #}
+<div class="tab-pane plando-pane fade"
+     id="nav-plando-{{panelName}}"
+     role="tabpanel"
+     aria-labelledby="nav-plando-{{panelName}}-tab">
+    <h2 class="title">{{panel["name"]}}</h2>
+    {% for kong, locations in panel["locations"] %}
+        <h3 class="title">{{kong}}</h3>
+        <div class="flex-container flex-center">
+            {% for location in locations %}
+                <div class="location-picker">
+                    <label for="plando_{{location["value"]}}_item" class="location-label">
+                        {{location["name"]}}
+                    </label>
+                    <div id="plando_{{location["value"]}}_item_wrapper"
+                         data-toggle="tooltip"
+                         title>
+                        <select id="plando_{{location["value"]}}_item"
+                                name="plando_{{location["value"]}}_item"
+                                class="form-select plando-item-select">
+                            <option value="">-- Randomize --</option>
+                            {% for item in plando_items|plando_item_restrict(location) %}
+                                <option value="{{item["value"]}}"
+                                    {{plando_option_class_annotation(panel["name"], kong, location["value"], item["value"])}}>
+                                    {{item["name"]}}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

@@ -7,7 +7,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Settings import KongModels, RandomModels
 from randomizer.Settings import Settings
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import applyCharacterSpawnerChanges, SpawnerChange
+from randomizer.Patching.Library.Generic import applyCharacterSpawnerChanges, SpawnerChange
 
 turtle_models = [
     Model.Diddy,  # Diddy
@@ -452,7 +452,7 @@ def applyCosmeticModelSwaps(settings: Settings, ROM_COPY: ROM):
             rabbit_caves_change = SpawnerChange(Maps.CavesChunkyIgloo, 1)
             rabbit_caves_change.new_scale = 40
             spawner_changes.append(rabbit_caves_change)
-            applyCharacterSpawnerChanges(spawner_changes)
+            applyCharacterSpawnerChanges(ROM_COPY, spawner_changes)
     if model_setting != RandomModels.off:
         panic_fairy_model_index = random.choice(panic_models)
         turtle_model_index = random.choice(turtle_models)

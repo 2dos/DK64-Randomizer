@@ -4,43 +4,44 @@
     "version": "0.0.0",
     "author": "DK64Devs <devs@dk64randomizer.com>",
     "scripts": {
-      "start": "npm install && electron .",
-      "pack": "electron-builder --dir --publish=never",
-      "dist": "electron-builder --publish=never",
-      "distall": "electron-builder -mwl --publish=never"
+        "start": "npm install && electron .",
+        "pack": "electron-builder --dir --publish=never",
+        "dist": "electron-builder --publish=never",
+        "distall": "electron-builder -mwl --publish=never"
     },
     "build": {
-      "appId": "dk64randomizer",
-      "artifactName": "dk64randomizer.${ext}",
-      "dmg": {
-        "contents": [
-          {
-            "x": 110,
-            "y": 150
-          },
-          {
-            "x": 240,
-            "y": 150,
-            "type": "link",
-            "path": "/Applications"
-          }
-        ]
-      },
-      "linux": {
-        "icon": "static/img/dk.png",
-        "target": "deb"
-      },
-      "win": {
-        "target": "nsis",
-        "icon": "static/img/dk.png"
-      }
+        "appId": "dk64randomizer",
+        "artifactName": "dk64randomizer.${ext}",
+        "dmg": {
+            "contents": [
+                {
+                    "x": 110,
+                    "y": 150
+                },
+                {
+                    "x": 240,
+                    "y": 150,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
+        },
+        "linux": {
+            "icon": "static/img/dk.png",
+            "target": "deb"
+        },
+        "win": {
+            "target": "nsis",
+            "icon": "static/img/dk.png"
+        }
     },
     "dependencies": {
-      "node-static": "^0.7.11",
-      "purgecss": "^5.0.0"
+        "node-static": "^0.7.11",
+        "nunjucks": "^3.2.4",
+        "purgecss": "^5.0.0"
     },
     "devDependencies": {
-      "electron": "^28.1.0",
-      "electron-builder": "^24.9.1"
+        "electron": "^28.1.0",
+        "electron-builder": "^24.9.1"
     }
-  }
+}

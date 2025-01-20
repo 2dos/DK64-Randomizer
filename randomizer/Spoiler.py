@@ -57,7 +57,7 @@ from randomizer.Settings import Settings
 from randomizer.ShuffleBosses import HardBossesEnabled
 from randomizer.ShuffleExits import ShufflableExits
 from randomizer.ShuffleKasplats import constants, shufflable
-from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected
 
 if TYPE_CHECKING:
     from randomizer.Lists.Location import Location
@@ -146,8 +146,6 @@ class Spoiler:
         self.tied_hint_regions = [HintRegion.NoRegion] * 35
         self.settings.finalize_world_settings(self)
         self.settings.update_valid_locations(self)
-        if not self.settings.is_valid_item_pool():
-            raise Ex.SettingsIncompatibleException("Item pool is not a valid combination of items and cannot successfully fill the world.")
 
     def FlushAllExcessSpoilerData(self):
         """Flush all spoiler data that is not needed for the final result."""
@@ -307,6 +305,7 @@ class Spoiler:
         settings["Randomize Banana Fairies"] = self.settings.random_fairies
         settings["Randomize Battle Arenas"] = self.settings.crown_placement_rando
         settings["Vanilla Door Shuffle"] = self.settings.vanilla_door_rando
+        settings["Dos' Doors"] = self.settings.dos_door_rando
         settings["Randomize Wrinkly Doors"] = self.settings.wrinkly_location_rando
         settings["Randomize T&S Portals"] = self.settings.tns_location_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando_difficulty.name

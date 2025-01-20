@@ -15,7 +15,8 @@ from randomizer.Enums.Settings import MusicFilters, WinConditionComplex
 from randomizer.Lists.Songs import song_data, song_idx_list
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
-from randomizer.Patching.Lib import IsItemSelected, Overlay
+from randomizer.Patching.Library.Generic import IsItemSelected, Overlay
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.ASMPatcher import writeValue, populateOverlayOffsets, getROMAddress
 
 storage_banks = {
@@ -346,6 +347,7 @@ def requestNewSong(
 
 
 def insertUploaded(
+    ROM_COPY: ROM,
     settings: Settings,
     uploaded_songs: list,
     uploaded_song_names: list,
@@ -419,7 +421,6 @@ def insertUploaded(
     location_filter = IsItemSelected(settings.music_filtering, settings.music_filtering_selected, MusicFilters.location)
 
     # Place Songs
-    ROM_COPY = ROM()
     for song_enum in songs_to_be_replaced:
         song = song_data[song_enum]
         selected_bank = None
@@ -462,8 +463,7 @@ def insertUploaded(
                 song.output_name = new_song.name
                 song.output_name_short = new_song.name_short
                 song.shuffled = True
-                entry_data = js.pointer_addresses[0]["entries"][song.mem_idx]
-                ROM_COPY.seek(entry_data["pointing_to"])
+                ROM_COPY.seek(getPointerLocation(TableNames.MusicMIDI, song.mem_idx))
                 zipped_data = gzip.compress(new_song_data, compresslevel=9)
                 ROM_COPY.writeBytes(zipped_data)
 
@@ -473,7 +473,7 @@ TYPE_ARRAY = 0x1FEE200
 TYPE_VALUES = [SongType.BGM, SongType.Event, SongType.MajorItem, SongType.MinorItem]
 
 
-def randomize_music(settings: Settings):
+def randomize_music(settings: Settings, ROM_COPY: ROM):
     """Randomize music passed from the misc music settings.
 
     Args:
@@ -498,8 +498,6 @@ def randomize_music(settings: Settings):
             settings.music_majoritems_randomized = True
             settings.music_minoritems_randomized = True
             settings.music_events_randomized = True
-
-    ROM_COPY = ROM()
 
     NON_BGM_DATA = [
         # Minor Items
@@ -558,10 +556,10 @@ def randomize_music(settings: Settings):
         # Skip "Silence".
         if song.mem_idx == 0:
             continue
-        song_info = js.pointer_addresses[0]["entries"][song.mem_idx]
+        song_info = js.pointer_addresses[TableNames.MusicMIDI]["entries"][song.mem_idx]
         ROM_COPY.seek(song_info["pointing_to"])
         rom_data = ROM_COPY.readBytes(song_info["compressed_size"])
-        uncompressed_data_table = js.pointer_addresses[26]["entries"][0]
+        uncompressed_data_table = js.pointer_addresses[TableNames.UncompressedFileSizes]["entries"][0]
         ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song.mem_idx))
         song_size = ROM_COPY.readBytes(4)
         song_rom_data[song.mem_idx] = {"name": song.name, "data": rom_data, "size": song_size, "memory": song.memory}
@@ -580,6 +578,7 @@ def randomize_music(settings: Settings):
                 if settings.music_bgm_randomized:
                     # Insert all of the custom songs.
                     insertUploaded(
+                        ROM_COPY,
                         settings,
                         list(js.cosmetics.bgm),
                         list(js.cosmetic_names.bgm),
@@ -596,7 +595,7 @@ def randomize_music(settings: Settings):
                             assigned_songs.append(song)
                             assigned_names.append(name)
                             assigned_extensions.append(extension)
-                    insertUploaded(settings, assigned_songs, assigned_names, assigned_extensions, SongType.BGM)
+                    insertUploaded(ROM_COPY, settings, assigned_songs, assigned_names, assigned_extensions, SongType.BGM)
             # Generate the list of BGM songs
             song_list = []
             pre_shuffled_songs = []
@@ -618,16 +617,16 @@ def randomize_music(settings: Settings):
                         # replacing it. (At the moment, they should always be
                         # the same.)
                         assigned_song = song_data[assigned_song_enum]
-                        assigned_songs[assigned_song.channel - 1].append(js.pointer_addresses[0]["entries"][assigned_song.mem_idx])
-                        assigned_locations[assigned_song.channel - 1].append(js.pointer_addresses[0]["entries"][song.mem_idx])
+                        assigned_songs[assigned_song.channel - 1].append(js.pointer_addresses[TableNames.MusicMIDI]["entries"][assigned_song.mem_idx])
+                        assigned_locations[assigned_song.channel - 1].append(js.pointer_addresses[TableNames.MusicMIDI]["entries"][song.mem_idx])
             for song in song_data.values():
                 if song.type == SongType.BGM:
                     # For testing, flip these two lines
-                    # song_list.append(pointer_addresses[0]["entries"][song.mem_idx])
+                    # song_list.append(pointer_addresses[TableNames.MusicMIDI]["entries"][song.mem_idx])
                     if song.shuffled:
-                        pre_shuffled_songs[song.channel - 1].append(js.pointer_addresses[0]["entries"][song.mem_idx])
+                        pre_shuffled_songs[song.channel - 1].append(js.pointer_addresses[TableNames.MusicMIDI]["entries"][song.mem_idx])
                     else:
-                        song_list[song.channel - 1].append(js.pointer_addresses[0]["entries"][song.mem_idx])
+                        song_list[song.channel - 1].append(js.pointer_addresses[TableNames.MusicMIDI]["entries"][song.mem_idx])
             for channel_index in range(12):
                 # Remove assigned locations.
                 open_locations = [x for x in song_list[channel_index] if x not in assigned_locations[channel_index]]
@@ -647,23 +646,23 @@ def randomize_music(settings: Settings):
                     open_songs = open_locations.copy()
                 location_pool = open_locations + assigned_locations[channel_index] + pre_shuffled_songs[channel_index].copy()
                 song_pool = open_songs + assigned_songs[channel_index] + pre_shuffled_songs[channel_index].copy()
-                shuffle_music(settings, music_data, music_names, location_pool, song_pool, song_rom_data)
+                shuffle_music(ROM_COPY, settings, music_data, music_names, location_pool, song_pool, song_rom_data)
         # If the user was a poor sap and selected chaos put DK rap for everything
         # Don't assign songs, the user must learn from their mistake
         else:
             # Find the DK rap in the list
             rap_song_data = song_data[Songs.DKRap]
-            rap = js.pointer_addresses[0]["entries"][rap_song_data.mem_idx]
+            rap = js.pointer_addresses[TableNames.MusicMIDI]["entries"][rap_song_data.mem_idx]
             # Find all BGM songs
             song_list = []
             for song in song_data.values():
                 if song.type == SongType.BGM:
-                    song_list.append(js.pointer_addresses[0]["entries"][song.mem_idx])
+                    song_list.append(js.pointer_addresses[TableNames.MusicMIDI]["entries"][song.mem_idx])
 
             # Load the DK Rap song data
             ROM_COPY.seek(rap["pointing_to"])
             stored_data = ROM_COPY.readBytes(rap["compressed_size"])
-            uncompressed_data_table = js.pointer_addresses[26]["entries"][0]
+            uncompressed_data_table = js.pointer_addresses[TableNames.UncompressedFileSizes]["entries"][0]
             # Replace all songs as the DK rap
             for song in song_list:
                 ROM_COPY.seek(song["pointing_to"])
@@ -683,6 +682,7 @@ def randomize_music(settings: Settings):
                 if type_data.setting:
                     # Insert all of the custom songs.
                     insertUploaded(
+                        ROM_COPY,
                         settings,
                         list(type_data.files),
                         list(type_data.names),
@@ -699,7 +699,7 @@ def randomize_music(settings: Settings):
                             assigned_songs.append(song)
                             assigned_names.append(name)
                             assigned_extensions.append(extension)
-                    insertUploaded(settings, assigned_songs, assigned_names, assigned_extensions, type_data.song_type)
+                    insertUploaded(ROM_COPY, settings, assigned_songs, assigned_names, assigned_extensions, type_data.song_type)
             # Load the list of items in that group
             group_items = []
             shuffled_group_items = []
@@ -712,15 +712,15 @@ def randomize_music(settings: Settings):
                         continue
                     assigned_song_enum = getVanillaSongAssignedToLocation(settings, song_location)
                     if assigned_song_enum is not None:
-                        assigned_item_locations.append(js.pointer_addresses[0]["entries"][song.mem_idx])
+                        assigned_item_locations.append(js.pointer_addresses[TableNames.MusicMIDI]["entries"][song.mem_idx])
                         assigned_item = song_data[assigned_song_enum]
-                        assigned_items.append(js.pointer_addresses[0]["entries"][assigned_item.mem_idx])
+                        assigned_items.append(js.pointer_addresses[TableNames.MusicMIDI]["entries"][assigned_item.mem_idx])
             for song in song_data.values():
                 if song.type == type_data.song_type:
                     if song.shuffled:
-                        shuffled_group_items.append(js.pointer_addresses[0]["entries"][song.mem_idx])
+                        shuffled_group_items.append(js.pointer_addresses[TableNames.MusicMIDI]["entries"][song.mem_idx])
                     else:
-                        group_items.append(js.pointer_addresses[0]["entries"][song.mem_idx])
+                        group_items.append(js.pointer_addresses[TableNames.MusicMIDI]["entries"][song.mem_idx])
             # Remove assigned locations.
             open_locations = [x for x in group_items if x not in assigned_item_locations]
             # If we're keeping vanilla songs in vanilla locations, do not
@@ -740,11 +740,11 @@ def randomize_music(settings: Settings):
                 open_songs = open_locations.copy()
             location_pool = open_locations + assigned_item_locations + shuffled_group_items.copy()
             song_pool = open_songs + assigned_items + shuffled_group_items.copy()
-            shuffle_music(settings, music_data, music_names, location_pool, song_pool, song_rom_data)
+            shuffle_music(ROM_COPY, settings, music_data, music_names, location_pool, song_pool, song_rom_data)
     return music_data, music_names
 
 
-def shuffle_music(settings, music_data, music_names, pool_to_shuffle, shuffled_list, song_rom_data):
+def shuffle_music(ROM_COPY: ROM, settings, music_data, music_names, pool_to_shuffle, shuffled_list, song_rom_data):
     """Shuffle the music pool based on the OG list and the shuffled list.
 
     Args:
@@ -752,12 +752,11 @@ def shuffle_music(settings, music_data, music_names, pool_to_shuffle, shuffled_l
         shuffled_list (list): Shuffled order list.
         song_rom_data (dict): The original song data from the ROM.
     """
-    uncompressed_data_table = js.pointer_addresses[26]["entries"][0]
+    uncompressed_data_table = js.pointer_addresses[TableNames.UncompressedFileSizes]["entries"][0]
     stored_song_data = {}
     stored_song_sizes = {}
     # For each song in the shuffled list, randomize it into the pool using the shuffled list as a base
     # First loop over all songs to read data from ROM
-    ROM_COPY = ROM()
     for song in pool_to_shuffle:
         ROM_COPY.seek(song["pointing_to"])
         stored_data = ROM_COPY.readBytes(song["compressed_size"])

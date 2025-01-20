@@ -41,7 +41,7 @@ cranky_0 = [
     MoveType(MoveIndexes.special, 1, 3),
     MoveType(MoveIndexes.special, 2, 5),
     MoveType(MoveIndexes.special, 3, 7),
-    MoveType(MoveIndexes.nothing),
+    MoveType(MoveIndexes.special, 3, 7),
     MoveType(MoveIndexes.slam, DEFAULT_SLAM_PURCHASE, 5),
     MoveType(MoveIndexes.nothing),
     MoveType(MoveIndexes.slam, DEFAULT_SLAM_PURCHASE, 7),
@@ -49,9 +49,9 @@ cranky_0 = [
 ]
 cranky_1 = [
     MoveType(MoveIndexes.special, 1, 3),
-    MoveType(MoveIndexes.nothing),
+    MoveType(MoveIndexes.special, 1, 3),
     MoveType(MoveIndexes.special, 2, 5),
-    MoveType(MoveIndexes.nothing),
+    MoveType(MoveIndexes.special, 2, 5),
     MoveType(MoveIndexes.slam, DEFAULT_SLAM_PURCHASE, 5),
     MoveType(MoveIndexes.special, 3, 7),
     MoveType(MoveIndexes.slam, DEFAULT_SLAM_PURCHASE, 7),
@@ -60,7 +60,7 @@ cranky_1 = [
 
 funky = [
     MoveType(MoveIndexes.gun, 1, 3),
-    MoveType(MoveIndexes.nothing),
+    MoveType(MoveIndexes.gun, 1, 3),
     MoveType(MoveIndexes.ammo_belt, 1, 3),
     MoveType(MoveIndexes.nothing),
     MoveType(MoveIndexes.gun, 2, 5),
@@ -70,9 +70,9 @@ funky = [
 ]
 
 candy = [
-    MoveType(MoveIndexes.nothing),
     MoveType(MoveIndexes.instrument, 1, 3),
-    MoveType(MoveIndexes.nothing),
+    MoveType(MoveIndexes.instrument, 1, 3),
+    MoveType(MoveIndexes.instrument, 1, 3),
     MoveType(MoveIndexes.instrument, 2, 5),
     MoveType(MoveIndexes.nothing),
     MoveType(MoveIndexes.instrument, 3, 7),

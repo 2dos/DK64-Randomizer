@@ -68,6 +68,13 @@ async function generate_seed_from_patch(event) {
                 patchElement.classList.add("is-invalid");
             }
         } else {
+            if (typeof window.romFile === "undefined") {
+                document.getElementById("rom").select();
+                if (!document.getElementById("rom").classList.contains("is-invalid")) {
+                    document.getElementById("rom").classList.add("is-invalid");
+                    return;
+                }
+            }
             // Apply the patch
             await apply_patch(loaded_patch, true)
          }
@@ -344,7 +351,7 @@ function export_settings_string(event) {
 // Event binding for generating a seed
 document.getElementById("trigger_download_event").addEventListener("click", generate_seed);
 
-function generate_seed(event) {
+async function generate_seed(event) {
     /**
      * Generate a seed based off the current settings.
      *
@@ -362,6 +369,14 @@ function generate_seed(event) {
             document.getElementById("rom").classList.add("is-invalid");
         }
     } else {
+        // Do a double check that romFile var exists, if its not, then the rom file is not loaded, throw an invalid class on the rom file box.
+        if (typeof window.romFile === "undefined") {
+            document.getElementById("rom").select();
+            if (!document.getElementById("rom").classList.contains("is-invalid")) {
+                document.getElementById("rom").classList.add("is-invalid");
+                return;
+            }
+        }
         // The data is serialized outside of the loop, because validation occurs
         // here and we might stop before attempting to generate a seed.
         let plando_enabled = document.getElementById("enable_plandomizer").checked;
@@ -391,13 +406,16 @@ js.plando_errors = plando_errors
                 return;
             }
         }
+        apply_conversion();
 
         // Start the progress bar
-        let gif_fairy = get_hash_images("browser", "loading-fairy")
-        console.log(gif_fairy)
-        let gif_dead = get_hash_images("browser", "loading-dead")
-        document.getElementById("progress-fairy").src = `data:image/gif;base64,${gif_fairy[0]}`;
-        document.getElementById("progress-dead").src = `data:image/gif;base64,${gif_dead[0]}`;
+        get_hash_images("browser", "loading-fairy")
+        get_hash_images("browser", "loading-dead")
+        // Append the gif_fairy to the bottom of the DOM, we just want to validate its working
+        // If there isin't already an src set them
+        //document.getElementById("progress-fairy").src = gif_fairy;
+        //document.getElementById("progress-dead").src = gif_dead;
+
 
         $("#progressmodal").modal("show");
         $("#patchprogress").width(0);
@@ -406,8 +424,6 @@ js.plando_errors = plando_errors
         if (!form_data["seed"]) {
             form_data["seed"] = Math.floor(Math.random() * 900000 + 100000).toString();
         }
-
-        apply_conversion();
 
         let branch, url;
         if (window.location.hostname === "dev.dk64randomizer.com" || window.location.hostname === "dk64randomizer.com") {
@@ -537,7 +553,6 @@ async function import_settings_string(event) {
     }
 
     update_ui_states(null);
-    savesettings();
     generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.");
 }
 

@@ -59,7 +59,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Patching.Lib import IsItemSelected, getProgHintBarrierItem
+from randomizer.Patching.Library.Generic import IsItemSelected, getProgHintBarrierItem
 from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
@@ -412,7 +412,7 @@ class LogicVarHolder:
         has_all = True
         if not self.settings.fast_start_beginning_of_game:
             has_all = all(
-                self.spoiler.LocationList[loc].item in ownedItems
+                self.spoiler.LocationList[loc].inaccessible or self.spoiler.LocationList[loc].item in ownedItems
                 for loc in (
                     Locations.IslesSwimTrainingBarrel,
                     Locations.IslesVinesTrainingBarrel,

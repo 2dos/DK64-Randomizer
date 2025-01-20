@@ -113,7 +113,12 @@ async function generateSpoiler(spoiler) {
         if (formatted_spoiler["End Game"]["K. Rool"]) {
             const kRoolData = formatted_spoiler["End Game"]["K. Rool"];
             if (kRoolData["K Rool Phases"]) {
-                formatted_spoiler["Bosses"]["The Final Battle"] = kRoolData["K Rool Phases"].slice();
+                const order_names = ["First", "Second", "Third", "Fourth", "Fifth"]
+                let order_data = {}
+                kRoolData["K Rool Phases"].forEach((boss, index) => {
+                    order_data[`${order_names[index]} Phase`] = boss;
+                })
+                formatted_spoiler["Bosses"]["The Final Battle"] = order_data;
                 delete kRoolData["K Rool Phases"];
             }
             if (kRoolData["Keys Required for K Rool"]) {
@@ -145,7 +150,7 @@ async function generateSpoiler(spoiler) {
           
             return isIterable && !isString && !isMapping;
           });
-        const rendered = await env.render("spoiler_new.html.jinja2", { "spoiler": formatted_spoiler, "lzr_type": lzr_type });
+        const rendered = await env.render("spoiler_new.html", { "spoiler": formatted_spoiler, "lzr_type": lzr_type });
         document.getElementById("spoiler_log_text").value = JSON.stringify(cloned_spoiler, null, 4);
         document.getElementById("spoiler_log_text").innerHTML = rendered;
     } catch (error) {

@@ -438,11 +438,8 @@ bean_small_im.paste(bean_im.resize((32, 16)), (0, 8), bean_im.resize((32, 16)))
 bean_small_im.save(f"{disp_dir}bean32.png")
 bean_small_im.resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}bean44.png")
 
-# Question Mark
-qmark_im = Image.new(mode="RGBA", size=(32, 32))
-raw_qmark_im = Image.open(f"{hash_dir}question_mark.png")
-qmark_im.paste(raw_qmark_im, (8, 0), raw_qmark_im)
-qmark_im.save(f"{disp_dir}qmark32.png")
+# Wrinkly
+Image.open(f"{hash_dir}wrinkly.png").resize((32, 32)).save(f"{disp_dir}wrinkly32.png")
 
 # Pearl
 pearl_im = Image.open(f"{hash_dir}pearl.png")
@@ -545,7 +542,7 @@ skins = {
     "funky": ("funky_head", None, "displays"),
     "candy": ("candy_head", None, "displays"),
     "snide": ("snide_head", None, "displays"),
-    "hint": ("qmark32", None, "displays"),
+    "hint": ("wrinkly32", None, "displays"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32

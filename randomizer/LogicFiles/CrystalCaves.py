@@ -163,7 +163,7 @@ LogicRegions = {
         TransitionFront(Regions.IglooArea, lambda l: True, Transitions.CavesDiddyToIgloo),
     ]),
 
-    Regions.LankyIgloo: Region("Lanky Igloo", HintRegion.Igloo, Levels.CrystalCaves, False, TransitionFront(Regions.CrystalCavesMain, lambda l: ((l.balloon or l.advanced_platforming) and l.islanky) or (l.settings.free_trade_items and l.advanced_platforming and (l.isdiddy or l.istiny))), [
+    Regions.LankyIgloo: Region("Lanky Igloo", HintRegion.Igloo, Levels.CrystalCaves, False, TransitionFront(Regions.CrystalCavesEntryHandler, lambda l: ((l.balloon or l.advanced_platforming) and l.islanky) or (l.settings.free_trade_items and l.advanced_platforming and (l.isdiddy or l.istiny))), [
         LocationLogic(Locations.CavesLanky5DoorIgloo, lambda l: ((l.balloon or l.advanced_platforming) and l.islanky) or (l.settings.free_trade_items and l.advanced_platforming and (l.isdiddy or l.istiny))),
     ], [], [
         TransitionFront(Regions.IglooArea, lambda l: True, Transitions.CavesLankyToIgloo),

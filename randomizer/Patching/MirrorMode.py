@@ -3,7 +3,7 @@
 import js
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Settings import Settings
-from randomizer.Patching.Lib import TableNames, getRawFile, writeRawFile
+from randomizer.Patching.Library.Assets import TableNames, getRawFile, writeRawFile
 
 
 def FlipDisplayList(ROM_COPY: LocalROM, data: bytearray, start: int, end: int, table: int, file: int):
@@ -37,7 +37,7 @@ def ApplyMirrorMode(settings: Settings, ROM_COPY: LocalROM):
     for tbl in (TableNames.ActorGeometry, TableNames.ModelTwoGeometry, TableNames.MapGeometry):
         file_count = len(js.pointer_addresses[tbl]["entries"])
         for file_index in range(file_count):
-            data = bytearray(getRawFile(tbl, file_index, True))
+            data = bytearray(getRawFile(ROM_COPY, tbl, file_index, True))
             if len(data) == 0:
                 continue
             if tbl == TableNames.MapGeometry:

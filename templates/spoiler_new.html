@@ -1,0 +1,282 @@
+{% set ignored_attrs = ["Settings", "Spoiler Hints Data", "Generated Time", "Selected Minigames", "Item Pool", "Enemy Placement (Stringified JSON)"] %}
+<div class="accordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header collapsed"
+                id="spoilerhead-master">
+            {# Collapsable Header #}
+            <button class="accordion-button collapsed" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#spoileritem-master"
+                aria-expanded="false"
+                aria-controls="spoileritem-master">
+                {% if "Generated Time" in spoiler %}
+                    Spoiler Log (Generated: {{ spoiler["Generated Time"] | timeconvert }})
+                {% else %}
+                    Spoiler Log
+                {% endif %}
+            </button>
+        </h2>
+        <div class="spoiler-item collapse" id="spoileritem-master">
+            {# Navigation Bar #}
+            <nav class="navbar">
+                <div class="container">
+                    <div class="nav nav-underline" id="spoiler-nav-group">
+                        {% for item, obj in spoiler %}
+                            {% if spoiler[item] != {} and item not in ignored_attrs %}
+                                <li class="nav-item">
+                                    {% if loop.index == "0" %}
+                                        <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#spoilerContent{{ loop.index }}" href="#" onclick="updateFilteredSpoilerTabs()" id="spoilerTab{{ loop.index }}">{{ item }}</a>
+                                    {% else %}
+                                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#spoilerContent{{ loop.index }}" href="#" onclick="updateFilteredSpoilerTabs()" id="spoilerTab{{ loop.index }}">{{ item }}</a>
+                                    {% endif %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </nav>
+            {# Search #}
+            <div class="row">
+                <div class="col-md-5 m-3 text-start">
+                    <div class="small fw-light">Filter Spoiler Log</div>
+                    <div class="input-group">
+                        <input class="form-control border" type="search" value="" id="spoilerFilterSearch" onkeyup="filterSpoilerSearch(this)" onclick="setTimeout(() => {filterSpoilerSearch(this)}, 10)">
+                    </div>
+                </div>
+            </div>
+            {# Content #}
+            <div class="tab-content pb-2">
+                {% for item, obj in spoiler %}
+                    {% if spoiler[item] != {} and item not in ignored_attrs %}
+                        {% set tab_cls = "" %}
+                        {% if loop.index == "0" %}
+                            {% set tab_cls = " show active" %}
+                        {% endif %}
+                        <div class="tab-pane fade{{ tab_cls }}" id="spoilerContent{{ loop.index }}">
+                            <div class="container mt-4">
+                                {% if spoiler[item] is mapping %}
+                                    {% if item == "Way of the Hoard" %}
+                                        <div class="p-2 text-start border">
+                                            {{ spoiler[item] | length }} Items are on the Way of the Hoard
+                                        </div>
+                                    {% endif %}
+                                    {% if item == "Playthrough" %}
+                                        {% for sphere_index, obj in spoiler[item] %}
+                                            <div class="spoiler-group">
+                                                <div class="spoiler-subsection-head d-flex collapsed"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#spoilerContent{{ loop.index }}_{{ sphere_index }}"
+                                                    aria-expanded="false"
+                                                    aria-controls="spoilerContent{{ loop.index }}_{{ sphere_index }}">
+                                                    <div class="flex-fill">
+                                                        <h4>
+                                                            Sphere {{ sphere_index }}
+                                                        </h4>
+                                                        <div class="small fw-light text-start ps-2 pb-2">
+                                                            {% if spoiler[item][sphere_index]["Available GBs"] != 1 %}
+                                                                {{ spoiler[item][sphere_index]["Available GBs"] }} GBs available
+                                                            {% else %}
+                                                                {{ spoiler[item][sphere_index]["Available GBs"] }} GB available
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-end small fw-light p-2 pe-4 position-relative">
+                                                        <div class="position-absolute top-50 start-0 translate-middle spoiler-subsection-expand"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="collapse mb-5" id="spoilerContent{{ loop.index }}_{{ sphere_index }}">
+                                                    <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
+                                                        <tbody>
+                                                            {% for item2, obj in spoiler[item][sphere_index] %}
+                                                                {% if item2 != "Available GBs" %}
+                                                                    <tr>
+                                                                        <td>{{ item2 }}</td>
+                                                                        {% if spoiler[item][sphere_index][item2] is iterable and (spoiler[item][sphere_index][item2] is not string and spoiler[item][sphere_index][item2] is not mapping) %}
+                                                                            <td>{{ spoiler[item][sphere_index][item2]|join(", ") }}</td>
+                                                                        {% else %}
+                                                                            <td>{{ spoiler[item][sphere_index][item2] }}</td>
+                                                                        {% endif %}
+                                                                    </tr>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% elif item == "Cosmetics" or item == "Requirements" or item == "Bosses" or item == "Items" or item == "Items (Sorted by Item)" or item == "Shuffled Exits (Sorted by destination)" or item == "Colored Banana Locations" or item == "Wrinkly Door Locations" or item == "Shuffled Bananaport Locations" or item == "T&S Portal Locations" or item == "Enemy Placement" or item == "Paths" or item == "WotH Paths" or item == "Other Paths" or item == "End Game" or item == "Hints" or item == "Misc Custom Locations" %}
+                                    {# Attributes with sub-dicts #}
+                                        {% set local_loop = loop.index %}
+                                        {% for sub_group, obj in spoiler[item] %}
+                                            {% if spoiler[item][sub_group] != {} %}
+                                                <div class="spoiler-group">
+                                                    <div class="spoiler-subsection-head d-flex collapsed"
+                                                    id="spoilerDropdown{{ local_loop }}_{{ sub_group | filterId }}"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#spoilerContent{{ local_loop }}_{{ sub_group | filterId }}"
+                                                    aria-expanded="false"
+                                                    aria-controls="spoilerContent{{ local_loop }}_{{ sub_group | filterId }}">
+                                                        <div class="flex-fill">
+                                                            <h4>{{ sub_group }}</h4>
+                                                            <div class="small fw-light text-start ps-2 pb-2">
+                                                                {% if spoiler[item][sub_group] | length == 1 %}
+                                                                    1 Item
+                                                                {% else %}
+                                                                    {{ spoiler[item][sub_group] | length }} Items
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-end small fw-light p-2 pe-4 position-relative">
+                                                            <div class="position-absolute top-50 start-0 translate-middle spoiler-subsection-expand"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="collapse mb-5" id="spoilerContent{{ local_loop }}_{{ sub_group | filterId }}">
+                                                        <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
+                                                            <tbody>
+                                                                {% for item2, obj in spoiler[item][sub_group] %}
+                                                                    <tr>
+                                                                        {% if item in ("Items", "Items (Sorted by Item)") %}
+                                                                            {% if item2 == "Diddy Kong" %}
+                                                                                <td>Japes Kong</td>
+                                                                            {% elif item2 == "Lanky Kong" %}
+                                                                                <td>Llama Temple Kong</td>
+                                                                            {% elif item2 == "Tiny Kong" %}
+                                                                                <td>Tiny Temple Kong</td>
+                                                                            {% elif item2 == "Chunky Kong" %}
+                                                                                <td>Factory Kong</td>
+                                                                            {% else %}
+                                                                                <td>{{ item2 }}</td>
+                                                                            {% endif %}
+                                                                        {% else %}
+                                                                            <td>{{ item2 }}</td>
+                                                                        {% endif %}
+                                                                        {% if spoiler[item][sub_group][item2] | isIterable %}
+                                                                            <td>{{ spoiler[item][sub_group][item2]|join("<br>")|safe }}</td>
+                                                                        {% else %}
+                                                                            <td>
+                                                                                {{ spoiler[item][sub_group][item2] }}
+                                                                                {% if item == "Cosmetics" and sub_group == "Colors" and "Color" in item2 %}
+                                                                                    <span class="color-demo-box"
+                                                                                        style="background-color:{{ spoiler[item][sub_group][item2] }}">&nbsp;</span>
+                                                                                {% endif %}
+                                                                            </td>
+                                                                        {% endif %}
+                                                                    </tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="spoiler-group">
+                                            <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
+                                                <tbody>
+                                                    {% for item2, obj in spoiler[item] %}
+                                                        <tr>
+                                                            <td>{{ item2 }}</td>
+                                                            {% if item == "Shuffled Exits" %}
+                                                                {% if lzr_type == "coupled" %}
+                                                                    <td class="directional_divider">↔</td>
+                                                                {% elif lzr_type == "decoupled" %}
+                                                                    <td class="directional_divider">→</td>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            {% if spoiler[item][item2] is iterable and (spoiler[item][item2] is not string and spoiler[item][item2] is not mapping) %}
+                                                                <td>{{ spoiler[item][item2]|join("<br>")|safe }}</td>
+                                                            {% else %}
+                                                                <td>{{ spoiler[item][item2] }}</td>
+                                                            {% endif %}
+                                                            {% if item == "Way of the Hoard" %}
+                                                                <td>
+                                                                    <a class="no-decoration"
+                                                                        onclick="
+                                                                            document.getElementById('spoilerTab{{ spoiler | wothpathindex }}').click();
+                                                                            if (document.getElementById('spoilerDropdown{{ spoiler | wothpathindex }}_{{ spoiler[item][item2] | filterId }}').getAttribute('aria-expanded') == 'false') {
+                                                                                document.getElementById('spoilerDropdown{{ spoiler | wothpathindex }}_{{ spoiler[item][item2] | filterId }}').click()
+                                                                            }
+                                                                        " 
+                                                                        href="#spoilerDropdown{{ spoiler | wothpathindex }}_{{ spoiler[item][item2] | filterId }}">
+                                                                        Go to path
+                                                                    </a>
+                                                                </td>
+                                                            {% endif %}
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endif %}
+                                {% elif spoiler[item] == "True" or spoiler[item] == "False" %}
+                                    <div class="spoiler-group">
+                                        {{ spoiler[item] }}
+                                    </div>
+                                {% elif spoiler[item] is iterable and (spoiler[item] is not string and spoiler[item] is not mapping) %}
+                                    <div class="spoiler-group">
+                                        <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
+                                            <tbody>
+                                                {% for item2 in spoiler[item] %}
+                                                    <tr>
+                                                        <td>{{ item2 }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% else %}
+                                    <div class="spoiler-group">
+                                        {{ spoiler[item] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% if "Settings" in spoiler %}
+        <div class="accordion-item">
+            <h2 class="accordion-header collapsed"
+                    id="spoilerhead-settings">
+                {# Collapsable Header #}
+                <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#spoileritem-settings"
+                    aria-expanded="false"
+                    aria-controls="spoileritem-settings">
+                    Settings
+                </button>
+            </h2>
+            <div class="spoiler-item collapse" id="spoileritem-settings">
+                <div class="p-4 text-start">
+                    <div class="fw-bold">
+                        Settings String
+                    </div>
+                    <div class="fs-6 fw-light p-2 rounded" style="background-color: rgba(0, 0, 0, 0.3)">
+                        {{ spoiler["Settings"]["Settings String"] }}
+                    </div>
+                </div>
+                <table class="table table-hover table-striped ignore-width" style="min-width:100%; text-align: left">
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item, obj in spoiler["Settings"] %}
+                            {% if item not in ("Generation Timestamp", "Settings String", "Seed", "algorithm", "Unlock Time")%}
+                                <tr>
+                                    <td>{{ item }}</td>
+                                    <td>{{ spoiler["Settings"][item] }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+</div>

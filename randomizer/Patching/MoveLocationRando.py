@@ -9,7 +9,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Lib import setItemReferenceName
+from randomizer.Patching.Library.Generic import setItemReferenceName
 from randomizer.CompileHints import getHelmProgItems
 
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
@@ -156,9 +156,8 @@ def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: in
                     spoiler.text_changes[19] = [data]
 
 
-def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler, kong_slot: int, kongs: list, level_override=None):
+def writeMoveDataToROM(ROM_COPY: LocalROM, arr: list, enable_hints: bool, spoiler, kong_slot: int, kongs: list, level_override=None):
     """Write move data to ROM."""
-    ROM_COPY = LocalROM()
     for xi, x in enumerate(arr):
         if x["move_type"] == "flag":
             flag_dict = {
@@ -211,7 +210,7 @@ def dictEqual(dict1: dict, dict2: dict) -> bool:
     return True
 
 
-def randomize_moves(spoiler):
+def randomize_moves(spoiler, ROM_COPY: LocalROM):
     """Randomize Move locations based on move_data from spoiler."""
     varspaceOffset = spoiler.settings.rom_data
     movespaceOffset = spoiler.settings.move_location_data
@@ -264,28 +263,27 @@ def randomize_moves(spoiler):
                     if is_shared:
                         applied_kong = Kongs.any
                     kong_lists[shop][kong][level] = applied_kong
-        ROM_COPY = LocalROM()
         ROM_COPY.seek(movespaceOffset)
-        writeMoveDataToROM(dk_crankymoves, hint_enabled, spoiler, 0, kong_lists[0][0])
-        writeMoveDataToROM(diddy_crankymoves, hint_enabled, spoiler, 1, kong_lists[0][1])
-        writeMoveDataToROM(lanky_crankymoves, hint_enabled, spoiler, 2, kong_lists[0][2])
-        writeMoveDataToROM(tiny_crankymoves, hint_enabled, spoiler, 3, kong_lists[0][3])
-        writeMoveDataToROM(chunky_crankymoves, hint_enabled, spoiler, 4, kong_lists[0][4])
-        writeMoveDataToROM(dk_funkymoves, hint_enabled, spoiler, 0, kong_lists[1][0])
-        writeMoveDataToROM(diddy_funkymoves, hint_enabled, spoiler, 1, kong_lists[1][1])
-        writeMoveDataToROM(lanky_funkymoves, hint_enabled, spoiler, 2, kong_lists[1][2])
-        writeMoveDataToROM(tiny_funkymoves, hint_enabled, spoiler, 3, kong_lists[1][3])
-        writeMoveDataToROM(chunky_funkymoves, hint_enabled, spoiler, 4, kong_lists[1][4])
-        writeMoveDataToROM(dk_candymoves, hint_enabled, spoiler, 0, kong_lists[2][0])
-        writeMoveDataToROM(diddy_candymoves, hint_enabled, spoiler, 1, kong_lists[2][1])
-        writeMoveDataToROM(lanky_candymoves, hint_enabled, spoiler, 2, kong_lists[2][2])
-        writeMoveDataToROM(tiny_candymoves, hint_enabled, spoiler, 3, kong_lists[2][3])
-        writeMoveDataToROM(chunky_candymoves, hint_enabled, spoiler, 4, kong_lists[2][4])
-        writeMoveDataToROM(training_moves, hint_enabled, spoiler, 0, [Kongs.any, Kongs.any, Kongs.any, Kongs.any], 7)
-        writeMoveDataToROM(bfi_move, hint_enabled, spoiler, 0, [Kongs.tiny], 7)
+        writeMoveDataToROM(ROM_COPY, dk_crankymoves, hint_enabled, spoiler, 0, kong_lists[0][0])
+        writeMoveDataToROM(ROM_COPY, diddy_crankymoves, hint_enabled, spoiler, 1, kong_lists[0][1])
+        writeMoveDataToROM(ROM_COPY, lanky_crankymoves, hint_enabled, spoiler, 2, kong_lists[0][2])
+        writeMoveDataToROM(ROM_COPY, tiny_crankymoves, hint_enabled, spoiler, 3, kong_lists[0][3])
+        writeMoveDataToROM(ROM_COPY, chunky_crankymoves, hint_enabled, spoiler, 4, kong_lists[0][4])
+        writeMoveDataToROM(ROM_COPY, dk_funkymoves, hint_enabled, spoiler, 0, kong_lists[1][0])
+        writeMoveDataToROM(ROM_COPY, diddy_funkymoves, hint_enabled, spoiler, 1, kong_lists[1][1])
+        writeMoveDataToROM(ROM_COPY, lanky_funkymoves, hint_enabled, spoiler, 2, kong_lists[1][2])
+        writeMoveDataToROM(ROM_COPY, tiny_funkymoves, hint_enabled, spoiler, 3, kong_lists[1][3])
+        writeMoveDataToROM(ROM_COPY, chunky_funkymoves, hint_enabled, spoiler, 4, kong_lists[1][4])
+        writeMoveDataToROM(ROM_COPY, dk_candymoves, hint_enabled, spoiler, 0, kong_lists[2][0])
+        writeMoveDataToROM(ROM_COPY, diddy_candymoves, hint_enabled, spoiler, 1, kong_lists[2][1])
+        writeMoveDataToROM(ROM_COPY, lanky_candymoves, hint_enabled, spoiler, 2, kong_lists[2][2])
+        writeMoveDataToROM(ROM_COPY, tiny_candymoves, hint_enabled, spoiler, 3, kong_lists[2][3])
+        writeMoveDataToROM(ROM_COPY, chunky_candymoves, hint_enabled, spoiler, 4, kong_lists[2][4])
+        writeMoveDataToROM(ROM_COPY, training_moves, hint_enabled, spoiler, 0, [Kongs.any, Kongs.any, Kongs.any, Kongs.any], 7)
+        writeMoveDataToROM(ROM_COPY, bfi_move, hint_enabled, spoiler, 0, [Kongs.tiny], 7)
 
 
-def getNextSlot(spoiler, item: Items) -> int:
+def getNextSlot(spoiler, ROM_COPY: LocalROM, item: Items) -> int:
     """Get slot for progressive item with pre-given moves."""
     slots = []
     if item == Items.ProgressiveAmmoBelt:
@@ -296,7 +294,6 @@ def getNextSlot(spoiler, item: Items) -> int:
         slots = [0xF, 0x10, 0x11]
     if len(slots) == 0:
         return None
-    ROM_COPY = LocalROM()
     for slot in slots:
         offset = int(slot >> 3)
         check = int(slot % 8)
@@ -307,7 +304,7 @@ def getNextSlot(spoiler, item: Items) -> int:
     return None
 
 
-def place_pregiven_moves(spoiler):
+def place_pregiven_moves(spoiler, ROM_COPY: LocalROM):
     """Place pre-given moves."""
     item_order = [
         Items.BaboonBlast,
@@ -353,7 +350,6 @@ def place_pregiven_moves(spoiler):
         Items.Shockwave,
         Items.Climbing,
     ]
-    ROM_COPY = LocalROM()
     progressives = (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam)
     name_str = "Extra Training"
     for item in spoiler.pregiven_items:
@@ -361,7 +357,7 @@ def place_pregiven_moves(spoiler):
         if item is not None and item != Items.NoItem:
             new_slot = None
             if item in progressives:
-                new_slot = getNextSlot(spoiler, item)
+                new_slot = getNextSlot(spoiler, ROM_COPY, item)
             elif item in item_order:
                 new_slot = item_order.index(item)
             elif item == Items.CameraAndShockwave:
