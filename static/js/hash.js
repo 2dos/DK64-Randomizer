@@ -140,20 +140,19 @@ async function get_hash_images(type = "local", mode = "hash") {
     tempCtx.drawImage(canvas, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(tempCanvas, 0, 0);
-
+    if (
+      ctx
+        .getImageData(0, 0, imageInfo.width, imageInfo.height)
+        .data.every((val) => val === 0)
+    ) {
+      continue;
+    }
     // Save as base64-encoded PNG if in hash mode
     if (mode === "hash") {
       const imgBase64 = canvas.toDataURL("image/png").split(",")[1]; // Get base64 PNG data
       loadedImages.push(imgBase64); // Add image to the list of loaded images
     } else {
       // check if the canvas is empty or transparent
-      if (
-        ctx
-          .getImageData(0, 0, imageInfo.width, imageInfo.height)
-          .data.every((val) => val === 0)
-      ) {
-        continue;
-      }
       const imgBase64 = canvas.toDataURL("image/png").split(",")[1]; // Get base64 PNG data
       gifFrames.push(imgBase64); // Handle GIF frames
     }

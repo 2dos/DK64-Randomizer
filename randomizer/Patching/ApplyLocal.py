@@ -327,6 +327,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             js.document.getElementById("hashdiv").innerHTML = ""
             # clear the innerHTML of the hash element
             js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
+            # Clear all the styles of the hash element
+            js.document.getElementById("hash" + str(order)).style.transform = "rotate(180deg)"
             order += 1
     # if the hash is not set, just put the text in the spoiler log
     if js.document.getElementById("hash0").src == "":

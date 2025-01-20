@@ -53,12 +53,12 @@ async function apply_patch(data, run_async) {
             .async("uint8array")
             .then(async function (fileContent) {
               if (run_async == true) {
-                  // load pyodide
+                // load pyodide
                 await setup_pyodide();
                 console.log("Applying Xdelta Patch");
                 apply_conversion();
-                apply_xdelta(fileContent);   
-                window["event_response_data"] = data;  
+                apply_xdelta(fileContent);
+                window["event_response_data"] = data;
                 // Return the promise for pyodide.runPythonAsync
                 return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
 try:
@@ -69,8 +69,7 @@ import js
 from randomizer.Patching.ApplyLocal import patching_response
 patching_response(str(js.event_response_data), from_patch_gen=True)
                 `);
-              }
-              else{
+              } else {
                 shared_url_ui(data);
               }
             });
@@ -93,23 +92,27 @@ async function shared_url_ui(data) {
 
   // Extract the contents of the zip file
   let zip = await JSZip.loadAsync(decodedData);
-  let promises = Object.keys(zip.files).map(async file_name => {
-      let content = await zip.file(file_name).async("arraybuffer");
-      let variable_name = file_name.split(".")[0];
-      extracted_variables[variable_name] = content;
+  let promises = Object.keys(zip.files).map(async (file_name) => {
+    let content = await zip.file(file_name).async("arraybuffer");
+    let variable_name = file_name.split(".")[0];
+    extracted_variables[variable_name] = content;
   });
 
   // Wait for all files to be processed
   await Promise.all(promises);
 
   let seed_id = new TextDecoder("utf-8").decode(extracted_variables["seed_id"]);
-  let version = extracted_variables["version"] ? new TextDecoder("utf-8").decode(extracted_variables["version"]) : "0.0.0";
+  let version = extracted_variables["version"]
+    ? new TextDecoder("utf-8").decode(extracted_variables["version"])
+    : "0.0.0";
 
   let hash_id;
   try {
-      hash_id = new TextDecoder("utf-8").decode(extracted_variables["seed_number"]);
+    hash_id = new TextDecoder("utf-8").decode(
+      extracted_variables["seed_number"]
+    );
   } catch (error) {
-      hash_id = null;
+    hash_id = null;
   }
   let current_version = await getVersion();
   // Make sure we re-load the seed id for patch file creation
@@ -125,49 +128,79 @@ async function shared_url_ui(data) {
   let minor = split_current_version[1];
   let patch = split_current_version[2];
   if (major !== patch_major || minor !== patch_minor) {
-      document.getElementById("patch_version_warning").hidden = false;
-      document.getElementById("patch_warning_message").innerHTML = 
-          `This patch was generated with version ${patch_major}.${patch_minor}.${patch_patch} of the randomizer, but you are using version ${major}.${minor}.${patch}. Cosmetic packs have been disabled for this patch.`;
+    document.getElementById("patch_version_warning").hidden = false;
+    document.getElementById(
+      "patch_warning_message"
+    ).innerHTML = `This patch was generated with version ${patch_major}.${patch_minor}.${patch_patch} of the randomizer, but you are using version ${major}.${minor}.${patch}. Cosmetic packs have been disabled for this patch.`;
   }
-  let json_data = new TextDecoder("utf-8").decode(extracted_variables["spoiler_log"]);
-  await generateSpoiler(json_data)
-  // Insert a text div into the document.getElementById("hashdiv") and set the innerHTML to the "No ROM loaded" message
-  document.getElementById("hashdiv").innerHTML = "Shared Link, No Hash Images Loaded.";
+  let json_data = new TextDecoder("utf-8").decode(
+    extracted_variables["spoiler_log"]
+  );
+  await generateSpoiler(json_data);
+  setTimeout(async () => {
+    let hash_data = [];
+    try {
+      apply_conversion();
+      hash_data = await get_hash_images("browser", "hash");
+    } catch (error) {
+      console.log(error)
 
-  document.getElementById("nav-settings-tab").style.display = "";
-  document.getElementById("spoiler_log_block").style.display = "";
-  document.getElementById("generated_seed_id").innerHTML = seed_id;
+    }
+    if (hash_data.length > 0) {
+      document.getElementById("hashdiv").innerHTML = "";
+      for (let i = 0; i < hash_data.length; i++) {
+        let img = document.getElementById("hash" + i);
+        img.src = "data:image/jpeg;base64," + hash_data[i];
+        img.style = "";
+        // Flip Horizontally
+        if (i % 2 == 1) {
+          img.style = "transform: scaleX(-1);";
+        }
+      }
+    } else {
+      document.getElementById("hashdiv").innerHTML =
+        "No ROM Cached, No Hash Images Loaded.";
+    }
+    document.getElementById("nav-settings-tab").style.display = "";
+    document.getElementById("spoiler_log_block").style.display = "";
+    document.getElementById("generated_seed_id").innerHTML = seed_id;
 
-  // Set the current URL to the seed ID so that it can be shared without reloading the page
-  window.history.pushState("generated_seed", hash_id, `/randomizer?seed_id=${hash_id}`);
+    // Set the current URL to the seed ID so that it can be shared without reloading the page
+    window.history.pushState(
+      "generated_seed",
+      hash_id,
+      `/randomizer?seed_id=${hash_id}`
+    );
 
-  try {
-      document.getElementById("download_unlocked_spoiler_button").onclick = () => unlock_spoiler_log(hash_id);
+    try {
+      document.getElementById("download_unlocked_spoiler_button").onclick = () =>
+        unlock_spoiler_log(hash_id);
       document.getElementById("download_unlocked_spoiler_button").hidden = false;
-  } catch (error) {
+    } catch (error) {
       document.getElementById("download_unlocked_spoiler_button").hidden = true;
       document.getElementById("download_unlocked_spoiler_button").onclick = null;
-  }
+    }
 
-  $("#nav-settings-tab").tab("show");
-  check_seed_info_tab();
+    $("#nav-settings-tab").tab("show");
+    check_seed_info_tab();
+  }, 500);
 }
 async function getVersion() {
   try {
-    const response = await fetch('/version.py');
+    const response = await fetch("/version.py");
     const text = await response.text();
-    
+
     // Use regex to capture the version string
     const versionMatch = text.match(/version\s*=\s*['"](.+?)['"]/);
     if (versionMatch && versionMatch[1]) {
       const version = versionMatch[1];
-      console.log('Version:', version);
+      console.log("Version:", version);
       return version;
     } else {
-      throw new Error('Version not found');
+      throw new Error("Version not found");
     }
   } catch (error) {
-    console.error('Error fetching version:', error);
+    console.error("Error fetching version:", error);
   }
 }
 async function apply_download() {
@@ -186,8 +219,8 @@ async function apply_download() {
   $("#progressmodal").modal("show");
   $("#patchprogress").width(0);
   $("#progress-text").text("Initializing");
-  get_hash_images("browser", "loading-fairy")
-  get_hash_images("browser", "loading-dead")
+  get_hash_images("browser", "loading-fairy");
+  get_hash_images("browser", "loading-dead");
 
   apply_patch(window.event_response_data, true);
 }
