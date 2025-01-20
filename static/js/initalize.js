@@ -590,14 +590,14 @@ function filebox() {
       var db = romdatabase.result;
       var tx = db.transaction("ROMStorage", "readwrite");
       var store = tx.objectStore("ROMStorage");
+      // Make sure we load the file into the rompatcher
+      romFile = await new MarcFile(file, _parseROM);
       // Store it in the database
       await store.put({ ROM: "N64", value: file });
       console.log("Successfully stored file in the database.");
     } catch (error) {
       console.log("Error storing file in the database:", error);
     }
-    // Make sure we load the file into the rompatcher
-    romFile = new MarcFile(file, _parseROM);
   };
 
   input.click();
@@ -777,26 +777,26 @@ async function load_file_from_db() {
     var getROM = store.get("N64");
     getROM.onsuccess = async function () {
       // When we pull it from the DB load it in as a global var
-      setTimeout(() => {
-        try {
-          // Disable the generate seed button if we have a ROM
-          romFile = new MarcFile(getROM.result.value);
-          window.romFile = romFile;
-            document.getElementById("rom").placeholder = "Using cached ROM";
-            document.getElementById("rom").value = "Using cached ROM";
-            document.getElementById("rom_2").placeholder = "Using cached ROM";
-            document.getElementById("rom_2").value = "Using cached ROM";
-            document.getElementById("rom_3").placeholder = "Using cached ROM";
-            document.getElementById("rom_3").value = "Using cached ROM";
-            // On each of these set the class to "is-valid" to show the user it's been loaded
-            document.getElementById("rom").classList.add("is-valid");
-            document.getElementById("rom_2").classList.add("is-valid");
-            document.getElementById("rom_3").classList.add("is-valid");
-          try_to_load_from_args();
-        } catch {
-          try_to_load_from_args();
-        }
-      }, 0);
+      try {
+        // Disable the generate seed button if we have a ROM
+        romFile = await new MarcFile(getROM.result.value);
+        window.romFile = romFile;
+        console.log("ROM Loaded from database");
+        document.getElementById("rom").placeholder = "Using cached ROM";
+        document.getElementById("rom").value = "Using cached ROM";
+        document.getElementById("rom_2").placeholder = "Using cached ROM";
+        document.getElementById("rom_2").value = "Using cached ROM";
+        document.getElementById("rom_3").placeholder = "Using cached ROM";
+        document.getElementById("rom_3").value = "Using cached ROM";
+        // On each of these set the class to "is-valid" to show the user it's been loaded
+        document.getElementById("rom").classList.add("is-valid");
+        document.getElementById("rom_2").classList.add("is-valid");
+        document.getElementById("rom_3").classList.add("is-valid");
+        try_to_load_from_args();
+      } catch {
+        console.log("Failed to load ROM from database");
+        try_to_load_from_args();
+      }
     };
   } catch {
     try_to_load_from_args();
