@@ -387,7 +387,7 @@ EnemyMetaData = {
         e_type=EnemySubtype.Water,
         crown_enabled=False,
         minigame_enabled=False,
-        interaction=InteractionMethods(kill_melee=False),
+        interaction=InteractionMethods(kill_melee=False, kill_gun=False, kill_shockwave=False),
         default_size=100,
         size_cap=100,  # Too big causes the game to crash, so just gonna limit it to size 100. Size 127 seems to be fine
     ),  #
@@ -397,7 +397,7 @@ EnemyMetaData = {
         aggro=1,
         crown_enabled=False,
         minigame_enabled=False,
-        interaction=InteractionMethods(kill_melee=False),
+        interaction=InteractionMethods(kill_melee=False, kill_gun=False, kill_shockwave=False),
         default_size=110,
         size_cap=110,  # Runs the same code as the shuri, lets not tempt fate
     ),

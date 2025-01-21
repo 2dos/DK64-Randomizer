@@ -368,14 +368,14 @@ void movePelletWrapper(actorData* actor) {
 	unkProjectileCode_2(actor);
 }
 
-static short good_gamemode_list[] = {
+static unsigned char good_gamemode_list[] = {
 	GAMEMODE_ADVENTURE,
 	GAMEMODE_RAP,
 	GAMEMODE_SNIDEGAMES,
 };
 
 void fixHelmTimerDisable(void) {
-	if (inShortList(Gamemode, &good_gamemode_list, 3)) {
+	if (inU8List(Gamemode, &good_gamemode_list, 3)) {
 		return;
 	}
 	HelmTimerShown = 0;

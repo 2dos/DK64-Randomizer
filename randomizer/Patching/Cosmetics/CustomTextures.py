@@ -24,8 +24,11 @@ def writeTransition(settings: Settings, ROM_COPY: ROM) -> None:
     if len(file_data) == 0:
         return
     selected_transition = random.choice(file_data)
-    settings.custom_transition = selected_transition[1].split("/")[-1]  # File Name
     im_f = Image.open(BytesIO(bytes(selected_transition[0])))
+    w, h = im_f.size
+    if w != 64 or h != 64:
+        return
+    settings.custom_transition = selected_transition[1].split("/")[-1]  # File Name
     writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4, ROM_COPY)
 
 

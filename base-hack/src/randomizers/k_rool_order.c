@@ -65,7 +65,7 @@ void swap_ending_cutscene_model(void) {
 	*(short*)(0x80755764) = model;
 }
 
-static short maps_with_extended_end_cs[] = {
+static unsigned char maps_with_extended_end_cs[] = {
 	// MAP_KROOLDK, // n64 lol
 	// MAP_KROOLDIDDY, // n64 lol
 	// MAP_KROOLLANKY, // n64 lol
@@ -101,7 +101,7 @@ void completeBoss(void) {
 		if (Rando.k_rool_order[i] == CurrentMap) {
 			if ((i == 4) || (Rando.k_rool_order[i + 1] == 0xFF)) {
 				// Ending phase
-				if (inShortList(CurrentMap, &maps_with_extended_end_cs, sizeof(maps_with_extended_end_cs) >> 1)) {
+				if (inU8List(CurrentMap, &maps_with_extended_end_cs, sizeof(maps_with_extended_end_cs))) {
 					playCutscene(CurrentActorPointer_0, 0x1A, 1);
 					renderingParamsData* render = Player->rendering_param_pointer;
 					render->scale_x = 0.0f;

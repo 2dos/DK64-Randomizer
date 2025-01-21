@@ -33,6 +33,7 @@ from helm_doors import getHelmDoorModel
 from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
 from port_krool_spawners import updateCutsceneScripts, updateSpawnerFiles, updatePathFiles
+from fixIceMaze import generateIceMaze
 
 # Infrastructure for recomputing DK64 global pointer tables
 # from BuildNames import maps
@@ -62,6 +63,7 @@ createTextFile("assets/credits")
 createSquishFile("assets/credits")
 generateYellowWrinkly()
 generateSprintSwitch()
+generateIceMaze()
 
 getHelmDoorModel(6022, 6023, "crown_door.bin")
 getHelmDoorModel(6024, 6025, "coin_door.bin")
@@ -418,6 +420,7 @@ file_dict = [
     File(name="Galleon K. Rool Ship", pointer_table_index=TableNames.ModelTwoGeometry, file_index=305, source_file="galleon_ship_krool.bin", target_size=0x2500),
     File(name="Banana Medal", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x90, source_file="updated_medal.bin", do_not_delete_source=True),
     File(name="Mushroom Red (Mush Puzzle)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x1BE, source_file="updated_mush_0x1BE.bin", do_not_delete_source=True),
+    File(name="Ice Maze", pointer_table_index=TableNames.ModelTwoGeometry, file_index=522, source_file="assets/Gong/ice_maze.bin", do_not_delete_source=True),
 ]
 
 cutscene_scripts = buildScripts()

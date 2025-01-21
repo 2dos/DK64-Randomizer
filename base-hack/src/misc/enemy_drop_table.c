@@ -50,6 +50,12 @@ void buildItemDrops(void) {
     }
 }
 
+static drop_item default_drop = {
+    .dropped_object = 0x2F,
+    .drop_count = 1,
+    .drop_music = SONG_MELONSLICEDROP,
+};
+
 void spawnEnemyDrops(actorData* actor) {
     /**
      * @brief Handle the spawning of enemy drops. Based on a vanilla function with the same name.
@@ -67,24 +73,24 @@ void spawnEnemyDrops(actorData* actor) {
         spawnActorWithFlag(0x2F, actor->xPos, actor->yPos, actor->zPos, 0xFFF, 1, -1, 0);
         return;
     }
-    int entry_index = -1;
+    drop_item *item_data = 0;
     int actor_index = actor->actorType;
     for (int i = 0; i < DROP_COUNT; i++) {
         if (actor_index == drops[i].source_object) {
-            entry_index = i;
+            item_data = &drops[i];
         }
     }
-    if (entry_index < 0) {
+    if (!item_data) {
         return;
     }
-    int song = drops[entry_index].drop_music;
+    int song = item_data->drop_music;
     if (song > 0) {
         if (!Rando.enemy_item_rando) {
             playSong(song, 1.0f);
         }
     }
-    int drop_count = drops[entry_index].drop_count;
-    int drop_type = drops[entry_index].dropped_object;
+    int drop_count = item_data->drop_count;
+    int drop_type = item_data->dropped_object;
     if (drop_count <= 0) {
         return;
     }

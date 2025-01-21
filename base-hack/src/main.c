@@ -5,7 +5,7 @@
 
 #define LAG_CAP 10
 static short past_lag[LAG_CAP] = {};
-static short instrument_cs_indexes[] = {0, 4, 7, 8, 9};
+static unsigned char instrument_cs_indexes[] = {0, 4, 7, 8, 9};
 static char lag_counter = 0;
 static float current_avg_lag = 0;
 static char has_loaded = 0;
@@ -166,7 +166,7 @@ void cFuncLoop(void) {
 	// }
 	if (CurrentMap == MAP_HELM) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
-			if (inShortList(CutsceneIndex, &instrument_cs_indexes[0], 5)) {
+			if (inU8List(CutsceneIndex, &instrument_cs_indexes[0], 5)) {
 				if (checkFlag(FLAG_MODIFIER_HELMBOM,FLAGTYPE_PERMANENT)) {
 					setFlag(0x50,0,FLAGTYPE_TEMPORARY); // Prevent Helm Door hardlock
 				}
@@ -187,7 +187,7 @@ void cFuncLoop(void) {
 	current_avg_lag /= LAG_CAP;
 }
 
-static short mj_falling_cutscenes[] = {
+static unsigned char mj_falling_cutscenes[] = {
 	8, 2, 16, 18, 17
 };
 
@@ -257,7 +257,7 @@ void earlyFrame(void) {
 		}
 	} else if (CurrentMap == MAP_FACTORYJACK) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)) {
-			if (inShortList(CutsceneIndex, &mj_falling_cutscenes[0], sizeof(mj_falling_cutscenes) >> 1)) {
+			if (inU8List(CutsceneIndex, &mj_falling_cutscenes, sizeof(mj_falling_cutscenes))) {
 				// Falling off Mad Jack
 				if (Player) {
 					Player->control_state = 0xC;

@@ -1047,14 +1047,18 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_CAVES5DIDK:
 				if (param2 == ICE_MAZE) {
-					if (behaviour_pointer->switch_pressed == index) {
-						if ((behaviour_pointer->contact_actor_type >= 2) && (behaviour_pointer->contact_actor_type <= 6)) { // isKong
-							if (canHitSwitch()) {
-								int index = convertSubIDToIndex(id);
-								int* m2location = (int*)ObjectModel2Pointer;
-								ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-								setSomeTimer(_object->object_type);
-								return 1;
+					if (index == 4) {
+						return standingOnM2Object(ICE_MAZE);
+					} else {
+						if (behaviour_pointer->switch_pressed == index) {
+							if ((behaviour_pointer->contact_actor_type >= 2) && (behaviour_pointer->contact_actor_type <= 6)) { // isKong
+								if (canHitSwitch()) {
+									int index = convertSubIDToIndex(id);
+									int* m2location = (int*)ObjectModel2Pointer;
+									ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+									setSomeTimer(_object->object_type);
+									return 1;
+								}
 							}
 						}
 					}
