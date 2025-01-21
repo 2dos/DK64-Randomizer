@@ -809,9 +809,9 @@
 | By middle exit of giant mushroom | 5 |  | 
 | Around Tiny BP | 10 |  | 
 | Behind ladder to BBlast | 5 |  | 
-| Behind ladder leading to Giant Mushroom middle entrance | 10 | `l.climbing` | 
-| Around baboon blast platform | 10 | `l.climbing` | 
-| On BBlast pad | 5 | `l.climbing` | 
+| Behind ladder leading to Giant Mushroom middle entrance | 10 |  | 
+| Around baboon blast platform | 10 |  | 
+| On BBlast pad | 5 |  | 
 | On path to giant mushroom middle entrance | 15 |  | 
 | Entrance of Light room | 5 |  | 
 | Each side of back T&S on top of giant mushroom | 10 |  | 
@@ -838,7 +838,7 @@
 | In purple tunnel (Donkey) | 5 |  | 
 | In blue tunnel (Donkey) | 5 |  | 
 | Path to thornvine barn (Donkey) | 5 |  | 
-| Path to Baboon Blast pad (Donkey) | 2 | `l.climbing` | 
+| Path to Baboon Blast pad (Donkey) | 2 |  | 
 | Path to Baboon Blast pad (Donkey) | 3 |  | 
 | On thornvine barn switch (Donkey) | 5 | `l.strongKong` | 
 | W5 (Donkey) | 5 |  | 
@@ -880,7 +880,7 @@
 | Barn area right side | Balloon |  | 
 | Barn area left side | Balloon |  | 
 | Around beanstalk | Balloon |  | 
-| At first giant mushroom level by rocketbarrel barrel | Balloon | `l.climbing` | 
+| At first giant mushroom level by rocketbarrel barrel | Balloon |  | 
 | By second level entrance | Balloon |  | 
 | By high W5 | Balloon |  | 
 | By T&S on top of giant mushroom | Balloon |  | 

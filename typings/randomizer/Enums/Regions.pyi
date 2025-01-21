@@ -260,3 +260,4 @@ class Regions(IntEnum):
     CrankyIsles = 257
     Snide = 258
     AlcoveBeyondHatch = 259
+    MushroomBlastLevelExterior = 260

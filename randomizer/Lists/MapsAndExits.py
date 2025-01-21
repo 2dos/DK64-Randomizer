@@ -141,6 +141,7 @@ RegionMapList = {
     Regions.MushroomMiddle: Maps.ForestGiantMushroom,
     Regions.MushroomUpperMid: Maps.ForestGiantMushroom,
     Regions.MushroomLowerExterior: Maps.FungiForest,
+    Regions.MushroomBlastLevelExterior: Maps.FungiForest,
     Regions.MushroomUpper: Maps.ForestGiantMushroom,
     Regions.MushroomNightDoor: Maps.ForestGiantMushroom,
     Regions.MushroomNightExterior: Maps.FungiForest,

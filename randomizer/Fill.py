@@ -1149,16 +1149,20 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
                 if location.item in ItemPool.Keys():
                     continue
                 # We do need to double check our work sometimes - this item might be required to beat the game if it's needed to get into a level
-                spoiler.LogicVariables.assumeAztecEntry = False
-                spoiler.LogicVariables.assumeLevel4Entry = False
-                spoiler.LogicVariables.assumeLevel8Entry = False
-                spoiler.LogicVariables.assumeUpperIslesAccess = False
-                spoiler.LogicVariables.assumeKRoolAccess = False  # This item may also be needed to access K. Rool because of the aforementioned level entry
-                # Confirm that banning this item makes the game unbeatable
-                spoiler.Reset()
-                spoiler.LogicVariables.BanItems([location.item])
-                if GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable):
-                    # If the game is still beatable when banned with the other assumptions, this item is definitely not WotH
+                doubleCheckBeatsGame = False
+                # Only do this double-checking outside of LZR. The assumptions blocking level entry in LZR are less burdened with assumptions, so it's more likely to be accurate on the first pass.
+                if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
+                    spoiler.LogicVariables.assumeAztecEntry = False
+                    spoiler.LogicVariables.assumeLevel4Entry = False
+                    spoiler.LogicVariables.assumeLevel8Entry = False
+                    spoiler.LogicVariables.assumeUpperIslesAccess = False
+                    spoiler.LogicVariables.assumeKRoolAccess = False  # This item may also be needed to access K. Rool because of the aforementioned level entry
+                    # Quickly check beatability after banning this item banning this item makes the game unbeatable
+                    spoiler.Reset()
+                    spoiler.LogicVariables.BanItems([location.item])
+                    doubleCheckBeatsGame = GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable)
+                # If the game is still beatable when banned with the other assumptions (or if we're skipping the double checking), this item is definitely not WotH
+                if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all or doubleCheckBeatsGame:
                     WothLocations.remove(locationId)
                     spoiler.other_paths[locationId] = spoiler.woth_paths[locationId]
                     del spoiler.woth_paths[locationId]
@@ -1748,7 +1752,10 @@ def FillShuffledKeys(spoiler: Spoiler, placed_types: List[Types], placed_items: 
                     potential_locations = [
                         loc
                         for loc in spoiler.LocationList
-                        if spoiler.LocationList[loc].level == last_level and spoiler.LocationList[loc].type in spoiler.settings.shuffled_location_types and not spoiler.LocationList[loc].inaccessible
+                        if spoiler.LocationList[loc].level == last_level
+                        and spoiler.LocationList[loc].type in spoiler.settings.shuffled_location_types
+                        and not spoiler.LocationList[loc].inaccessible
+                        and loc in spoiler.settings.GetValidLocationsForItem(Items.HideoutHelmKey)
                     ]
                 # Outside of item rando, the only eligible location is the boss in level 8. This should filter down to only one location.
                 else:
@@ -1970,7 +1977,10 @@ def Fill(spoiler: Spoiler) -> None:
                 potential_locations = [
                     loc
                     for loc in spoiler.LocationList
-                    if spoiler.LocationList[loc].level == last_level and spoiler.LocationList[loc].type in spoiler.settings.shuffled_location_types and not spoiler.LocationList[loc].inaccessible
+                    if spoiler.LocationList[loc].level == last_level
+                    and spoiler.LocationList[loc].type in spoiler.settings.shuffled_location_types
+                    and not spoiler.LocationList[loc].inaccessible
+                    and loc in spoiler.settings.GetValidLocationsForItem(Items.HideoutHelmKey)
                 ]
                 selected_location = choice(potential_locations)
                 spoiler.LocationList[selected_location].PlaceItem(spoiler, Items.HideoutHelmKey)

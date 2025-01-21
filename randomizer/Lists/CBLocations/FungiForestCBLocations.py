@@ -683,8 +683,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FungiForest,
         name="Behind ladder leading to Giant Mushroom middle entrance",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLowerExterior,
-        logic=lambda l: l.climbing,
+        region=Regions.MushroomBlastLevelExterior,
         locations=[[5, 1.0, 697, 595, 1251], [5, 1.0, 757, 595, 1300]],
     ),
     ColoredBananaGroup(
@@ -692,8 +691,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FungiForest,
         name="Around baboon blast platform",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLowerExterior,
-        logic=lambda l: l.climbing,
+        region=Regions.MushroomBlastLevelExterior,
         locations=[
             [1, 1.0, 407, 589, 846],
             [1, 1.0, 354, 589, 843],
@@ -712,8 +710,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FungiForest,
         name="On BBlast pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLowerExterior,
-        logic=lambda l: l.climbing,
+        region=Regions.MushroomBlastLevelExterior,
         locations=[[5, 1.0, 340, 605, 951]],
     ),
     ColoredBananaGroup(
@@ -1321,9 +1318,8 @@ ColoredBananaGroupList = [
         map_id=Maps.FungiForest,
         name="Path to Baboon Blast pad (Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLowerExterior,
+        region=Regions.MushroomBlastLevelExterior,
         vanilla=True,
-        logic=lambda l: l.climbing,
         locations=[
             [1, 1.0, 458.903564453125, 570.3333740234375, 862.6621704101562],
             [1, 1.0, 461.7091369628906, 495.3333740234375, 857.4607543945312],
@@ -2145,8 +2141,7 @@ BalloonList = [
         name="At first giant mushroom level by rocketbarrel barrel",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLowerExterior,
-        logic=lambda l: l.climbing,
+        region=Regions.MushroomBlastLevelExterior,
         points=[[523, 590, 505], [245, 580, 819]],
     ),
     Balloon(

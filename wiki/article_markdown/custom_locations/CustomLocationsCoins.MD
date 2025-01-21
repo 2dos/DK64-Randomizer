@@ -550,7 +550,7 @@
 | On the pink tunnel rim on the Giant Mushroom side | 3 | `l.jetpack and l.isdiddy` | 
 | Behind the lowest ladder in the Giant Mushroom area | 2 |  | 
 | Around the lower platform in the Giant Mushroom Area | 6 |  | 
-| Behind the second lowest ladder in the Giant Mushroom Area | 2 | `l.climbing` | 
+| Behind the second lowest ladder in the Giant Mushroom Area | 2 |  | 
 | Above the second lowest ladder in the Giant Mushroom Area | 2 |  | 
 | On the entryways to the 3 top rooms in the Giant Mushroom Area | 3 |  | 
 | On the Giant Mushroom top | 12 | `(l.jetpack and l.isdiddy) or (l.islanky and l.handstand)` | 
@@ -569,7 +569,7 @@
 | Behind the well exit | 3 |  | 
 | Near the thornvine barn | 3 |  | 
 | On Thorny Hedge | 3 | `l.isdonkey and l.strongKong` | 
-| Around BBlast Pad | 3 | `l.climbing` | 
+| Around BBlast Pad | 3 |  | 
 | Behind Clock | 3 |  | 
 | On Mushroom near Mill far tag | 3 | `l.climbing` | 
 | Around Crown Pad | 3 |  | 
