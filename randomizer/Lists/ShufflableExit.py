@@ -92,7 +92,7 @@ ShufflableExits = {
 
     # Angry Aztec Exits
     Transitions.AztecTempleToStart: ShufflableExit("Angry Aztec Tiny Temple to Main", Regions.TempleStart, TransitionBack(Regions.AngryAztecOasis, "From Tiny Temple", "Angry Aztec Main from Tiny Temple")),
-    Transitions.AztecMainToDonkey: ShufflableExit("Angry Aztec Main to Donkey 5DTemple", Regions.AngryAztecOasis, TransitionBack(Regions.DonkeyTemple, "From Aztec Main", "Angry Aztec DK 5DTemple", Transitions.AztecDonkeyToMain), ExitCategories.AztecExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
+    Transitions.AztecMainToDonkey: ShufflableExit("Angry Aztec Main to Donkey 5DTemple", Regions.AngryAztecMain, TransitionBack(Regions.DonkeyTemple, "From Aztec Main", "Angry Aztec DK 5DTemple", Transitions.AztecDonkeyToMain), ExitCategories.AztecExterior, entryKongs={Kongs.donkey}, regionKongs={Kongs.donkey}, move=True),
     Transitions.AztecDonkeyToMain: ShufflableExit("Angry Aztec Donkey 5DTemple to Main", Regions.DonkeyTemple, TransitionBack(Regions.AngryAztecMain, "From DK 5DTemple", "Angry Aztec Main from DK 5DTemple", Transitions.AztecMainToDonkey)),
     Transitions.AztecMainToDiddy: ShufflableExit("Angry Aztec Main to Diddy 5DTemple", Regions.AngryAztecMain, TransitionBack(Regions.DiddyTemple, "From Aztec Main", "Angry Aztec Diddy 5DTemple", Transitions.AztecDiddyToMain), ExitCategories.AztecExterior, entryKongs={Kongs.diddy}, regionKongs={Kongs.diddy}, move=True),
     Transitions.AztecDiddyToMain: ShufflableExit("Angry Aztec Diddy 5DTemple to Main", Regions.DiddyTemple, TransitionBack(Regions.AngryAztecMain, "From Diddy 5DTemple", "Angry Aztec Main from Diddy 5DTemple", Transitions.AztecMainToDiddy)),
