@@ -3237,8 +3237,7 @@ CustomLocations = {
             z=1296.0,
             rot_y=534,
             max_size=64,
-            logic_region=Regions.MushroomLowerExterior,
-            logic=lambda l: l.climbing,
+            logic_region=Regions.MushroomBlastLevelExterior,
             group=4,
         ),
         # CrownLocation(
@@ -3248,7 +3247,7 @@ CustomLocations = {
         #     y=589,
         #     z=1297,
         #     max_size=64,
-        #     logic_region=Regions.MushroomLowerExterior,
+        #     logic_region=Regions.MushroomBlastLevelExterior,
         #     group=4,
         # ),
         CustomLocation(

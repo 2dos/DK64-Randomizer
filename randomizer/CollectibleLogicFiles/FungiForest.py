@@ -49,12 +49,14 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 2nd Ladder
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # After 2nd Ladder
     ],
+    Regions.MushroomBlastLevelExterior: [
+        Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 2),  # On the ladder up to this level
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Around BBlast pad
+    ],
     Regions.MushroomLowerExterior: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 13),
-        Collectible(Collectibles.banana, Kongs.donkey, lambda l: l.climbing, None, 2),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
 
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.climbing, None, 3),  # Around BBlast pad
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 5),  # Around Tiny BP
     ],
     Regions.ForestBaboonBlast: [

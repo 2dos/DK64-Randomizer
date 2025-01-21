@@ -160,7 +160,7 @@ REGION_KLUMPS = {
     Regions.RandD: [Regions.RandDUpper],
     Regions.MiddleCore: [Regions.SpinningCore, Regions.UpperCore],
     Regions.MushroomUpperExterior: [Regions.MushroomNightExterior],
-    Regions.MushroomLowerExterior: [Regions.MushroomUpperMidExterior, Regions.GiantMushroomArea],
+    Regions.MushroomLowerExterior: [Regions.MushroomUpperMidExterior, Regions.MushroomBlastLevelExterior, Regions.GiantMushroomArea],
     Regions.MillArea: [Regions.ForestTopOfMill, Regions.ForestVeryTopOfMill],
     Regions.CrystalCavesMain: [Regions.CavesBlueprintPillar, Regions.CavesBananaportSpire, Regions.CavesBonusCave],
 }

@@ -607,10 +607,9 @@ fairy_locations = {
         FairyData(
             name="Above BBlast Entrance",
             map=Maps.FungiForest,
-            region=Regions.MushroomLowerExterior,
+            region=Regions.MushroomBlastLevelExterior,
             fence=Fence(126, 941, 545, 1020),
             spawn_y=764,
-            logic=lambda l: l.camera and l.climbing,
         ),
         FairyData(
             name="Near Crown",

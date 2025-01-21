@@ -276,7 +276,7 @@
 | Fungi Forest | Near Giant Mushroom |  |  | 
 | Fungi Forest | Near Yellow Tunnel | DirtPatch, Bananaport |  | 
 | Fungi Forest | Near Lower Baboon Blast Ladder |  |  | 
-| Fungi Forest | Near Baboon Blast |  | `l.climbing` | 
+| Fungi Forest | Near Baboon Blast |  |  | 
 | Fungi Forest | Above Upper Baboon Blast Ladder |  |  | 
 | Fungi Forest | Highest Giant Mushroom Platform |  |  | 
 | Fungi Forest | Behind Rabbit |  |  | 
