@@ -1,5 +1,5 @@
-import os
-import shutil
+"""Fix the collision surrounding the Ice Maze."""
+
 import zlib
 
 from BuildClasses import ROMPointerFile
@@ -11,9 +11,7 @@ ice_maze_file = "assets/Gong/ice_maze.bin"
 
 
 def is_clockwise(polygon):
-    """
-    Determines if the polygon is ordered in a clockwise direction.
-    """
+    """Determine if the polygon is ordered in a clockwise direction."""
     total = 0
     for i in range(len(polygon)):
         x1, y1 = polygon[i]
@@ -23,9 +21,7 @@ def is_clockwise(polygon):
 
 
 def point_in_triangle(pt, v1, v2, v3):
-    """
-    Checks if a point is inside the triangle formed by vertices v1, v2, and v3.
-    """
+    """Check if a point is inside the triangle formed by vertices v1, v2, and v3."""
 
     def sign(p1, p2, p3):
         return (p1[0] - p3[0]) * (p2[1] - p3[1]) - (p2[0] - p3[0]) * (p1[1] - p3[1])
@@ -37,9 +33,7 @@ def point_in_triangle(pt, v1, v2, v3):
 
 
 def ear_clip_triangulation(polygon):
-    """
-    Triangulates a simple polygon using the ear clipping method.
-    """
+    """Triangulate a simple polygon using the ear clipping method."""
     if len(polygon) < 3:
         raise ValueError("A polygon must have at least 3 vertices.")
 
