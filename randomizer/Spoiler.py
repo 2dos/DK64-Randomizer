@@ -1054,9 +1054,9 @@ class Spoiler:
                         containerMaps[containerMapId] = {"container_map": containerMapId, "zones": []}  # DK Isles
                     loading_zone_mapping = {}
                     loading_zone_mapping["vanilla_map"] = GetMapId(self.settings, vanillaBack.regionId)
-                    loading_zone_mapping["vanilla_exit"] = GetExitId(vanillaBack)
+                    loading_zone_mapping["vanilla_exit"] = GetExitId(self.settings, vanillaBack)
                     loading_zone_mapping["new_map"] = GetMapId(self.settings, shuffledBack.regionId)
-                    loading_zone_mapping["new_exit"] = GetExitId(shuffledBack)
+                    loading_zone_mapping["new_exit"] = GetExitId(self.settings, shuffledBack)
                     containerMaps[containerMapId]["zones"].append(loading_zone_mapping)
                 except Exception as ex:
                     print("Exit Update Error with:")

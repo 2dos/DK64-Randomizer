@@ -6,6 +6,7 @@ from enum import IntEnum
 from typing import TYPE_CHECKING
 
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Settings import HelmSetting
 from randomizer.LogicClasses import Regions, TransitionBack
 from randomizer.Enums.Maps import Maps
 
@@ -651,11 +652,18 @@ def GetMapId(settings, regionId) -> Maps:
     return RegionMapList[regionId]
 
 
-def GetExitId(back: TransitionBack) -> int:
+def GetExitId(settings, back: TransitionBack) -> int:
     """Get exit id of a transition."""
     if back.regionId in ENTRY_HANDLERS:
         return -1
     mapId = RegionMapList[back.regionId]
+    if mapId == Maps.HideoutHelm:
+        entry_mapping = {
+            HelmSetting.default: 0,
+            HelmSetting.skip_start: 3,
+            HelmSetting.skip_all: 4,
+        }
+        return entry_mapping.get(settings.helm_setting, 0)
     if mapId in MapExitTable:
         return MapExitTable[mapId].index(back.name)
     else:

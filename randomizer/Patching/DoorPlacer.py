@@ -552,7 +552,7 @@ def getStoryDestination(spoiler, level: Levels) -> dict:
     if Transitions.IslesToHelm in spoiler.shuffled_exit_data:
         shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesToHelm]
         map_id = GetMapId(spoiler.settings, shuffledBack.regionId)
-        exit_id = GetExitId(shuffledBack)
+        exit_id = GetExitId(spoiler.settings, shuffledBack)
     if map_id == Maps.HideoutHelm:
         helm_start = spoiler.settings.helm_setting
         if helm_start == HelmSetting.default:

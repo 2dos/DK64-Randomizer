@@ -573,7 +573,30 @@ with open(ROMName, "rb") as rom:
         fh.write(MUSH_TEXTURE_START.to_bytes(4, "big"))
         fh.seek(0x3A4)
         fh.write((MUSH_TEXTURE_START + 1).to_bytes(4, "big"))
-
+    # Hint Item
+    kong_textures = {
+        "dk": 0x1360,
+        "diddy": 0x135D,
+        "lanky": 0x135E,
+        "tiny": 0x135F,
+        "chunky": 0x135C,
+    }
+    for kong, tex in kong_textures.items():
+        rom.seek(actor_table + (0xD1 << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"hint_item_actor_{kong}.bin", "wb") as fh:
+            fh.write(data[:0xBE4])
+            for x in range(5):
+                fh.write(tex.to_bytes(2, "big"))
+            fh.write((0).to_bytes(2, "big"))
     # Make inside match outside
     # SHINE_TEXTURE = 0xBAB
     # with open("updated_medal.bin", "r+b") as fh:

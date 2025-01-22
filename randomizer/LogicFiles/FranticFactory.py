@@ -42,7 +42,7 @@ LogicRegions = {
         Event(Events.FactoryW2aTagged, lambda l: True),
         Event(Events.FactoryW3aTagged, lambda l: True),
     ], [
-        TransitionFront(Regions.Testing, lambda l: (Events.TestingGateOpened in l.Events or l.CanPhase() or l.generalclips) and l.climbing),
+        TransitionFront(Regions.Testing, lambda l: (Events.TestingGateOpened in l.Events or l.CanPhase()) and l.climbing),
         TransitionFront(Regions.LowerCore, lambda l: Events.HatchOpened in l.Events or l.CanPhase()),
         TransitionFront(Regions.AlcoveBeyondHatch, lambda l: Events.HatchOpened in l.Events),  # Not sure how easy it is to get there, especially without damage boosting
     ]),
