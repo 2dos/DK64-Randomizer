@@ -1380,11 +1380,11 @@ shrinkModel(False, "", 0x10, 1 / 0.15, "shrink_cranky.bin", True),
 shrinkModel(False, "", 0x11, 1 / 0.15, "shrink_funky.bin", True),
 shrinkModel(False, "", 0x12, 1 / 0.15, "shrink_candy.bin", True),
 shrinkModel(False, "", 0x1E, 1 / 0.15, "shrink_snide.bin", True),
-shrinkModel(False, "hint_item_actor_dk.bin", 0, 1 / 0.15, "shrink_qmark_dk.bin", True)
-shrinkModel(False, "hint_item_actor_diddy.bin", 0, 1 / 0.15, "shrink_qmark_diddy.bin", True)
-shrinkModel(False, "hint_item_actor_lanky.bin", 0, 1 / 0.15, "shrink_qmark_lanky.bin", True)
-shrinkModel(False, "hint_item_actor_tiny.bin", 0, 1 / 0.15, "shrink_qmark_tiny.bin", True)
-shrinkModel(False, "hint_item_actor_chunky.bin", 0, 1 / 0.15, "shrink_qmark_chunky.bin", True)
+shrinkModel(True, "hint_item_actor_dk.bin", 0, 1 / 0.15, "shrink_qmark_dk.bin", True)
+shrinkModel(True, "hint_item_actor_diddy.bin", 0, 1 / 0.15, "shrink_qmark_diddy.bin", True)
+shrinkModel(True, "hint_item_actor_lanky.bin", 0, 1 / 0.15, "shrink_qmark_lanky.bin", True)
+shrinkModel(True, "hint_item_actor_tiny.bin", 0, 1 / 0.15, "shrink_qmark_tiny.bin", True)
+shrinkModel(True, "hint_item_actor_chunky.bin", 0, 1 / 0.15, "shrink_qmark_chunky.bin", True)
 FINAL_RACE_HOOP = "shrink_race_hoop.bin"
 shrinkModel(True, "race_hoop_om1.bin", 0, 1 / 0.15, FINAL_RACE_HOOP, False)
 
