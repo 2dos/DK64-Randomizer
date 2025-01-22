@@ -100,6 +100,26 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  discord_bot:
+    build:
+      context: ./discord_bot/
+      dockerfile: ./Dockerfile
+      args:
+        - BRANCH=${BRANCH:-LOCAL}
+        - DISCORD_APP_TOKEN=${DISCORD_APP_TOKEN}
+        - API_KEY=${API_KEY}
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - task_network
+    depends_on:
+      - redis
+      - dev_worker
+      - nginx
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
   dev_worker:
     build:
       context: ./
