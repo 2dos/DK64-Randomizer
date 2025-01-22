@@ -421,12 +421,12 @@
 | Creepy Castle | Next to Stairs to Drawing Drawbridge | Boss, Dk_Portal, Wrinkly |  | 
 | Creepy Castle | Battlement with Rocketbarrel Barrel - left | Boss, Dk_Portal, Wrinkly |  | 
 | Creepy Castle | Battlement with Rocketbarrel Barrel - right | Boss, Dk_Portal, Wrinkly |  | 
-| Creepy Castle | Moat - Underwater by Diddy Barrel | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Creepy Castle | Moat - Under Drawing Drawbridge | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Creepy Castle | Moat - Next to Tunnel Entrance - left | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Creepy Castle | Moat - Next to Tunnel Entrance - right | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Creepy Castle | Moat - Next to Ladder - left | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Creepy Castle | Moat - Next to Ladder - right | Boss, Dk_Portal, Wrinkly | `l.swim` | 
+| Creepy Castle | Moat - Underwater by Diddy Barrel | Wrinkly, Boss | `l.swim` | 
+| Creepy Castle | Moat - Under Drawing Drawbridge | Wrinkly, Boss | `l.swim` | 
+| Creepy Castle | Moat - Next to Tunnel Entrance - left | Wrinkly, Boss | `l.swim` | 
+| Creepy Castle | Moat - Next to Tunnel Entrance - right | Wrinkly, Boss | `l.swim` | 
+| Creepy Castle | Moat - Next to Ladder - left | Wrinkly, Boss | `l.swim` | 
+| Creepy Castle | Moat - Next to Ladder - right | Wrinkly, Boss | `l.swim` | 
 | Castle Tree | Inside the Tree | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Library | Library - Room with Big Books - left | Wrinkly |  | 
 | Castle Library | Library - Room with big Books - back | Wrinkly |  | 

@@ -360,7 +360,7 @@
 | Crystal Caves | Next to Donkey 1DC - left |  |  | 
 | Crystal Caves | Near Rotating Room (1) |  |  | 
 | Crystal Caves | Near Rotating Room (2) |  |  | 
-| Crystal Caves | High Cabin Kasplat Platform | DirtPatch, MelonCrate |  | 
+| Crystal Caves | High Cabin Kasplat Platform | MelonCrate |  | 
 | Crystal Caves | Near Rotating Room Rocketbarrel |  |  | 
 | Crystal Caves | Near Tiny 5DC |  |  | 
 | Crystal Caves | Near Tag barrel at 5D Cabin |  |  | 
