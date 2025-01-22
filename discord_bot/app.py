@@ -4,6 +4,7 @@ import discord
 from discord import app_commands
 import requests
 import asyncio
+import logging
 import os
 from opentelemetry import trace
 
@@ -18,6 +19,9 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.resources import Resource
 
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 # Define a resource to identify your service
 resource = Resource(
@@ -74,15 +78,15 @@ client.tree = tree
 @client.event
 async def on_ready():
     """Event when the bot is ready."""
-    print(f"We have logged in as {client.user}")
+    logger.info(f"We have logged in as {client.user}")
     client.activity = discord.Game(name="DK64 Randomizer")
     await client.change_presence(activity=client.activity)
     for guild in client.guilds:
-        print(f"Syncing commands to guild {guild.name}")
+        logger.info(f"Syncing commands to guild {guild.name}")
         guild_obj = discord.Object(id=guild.id)
         tree.copy_global_to(guild=guild_obj)
         await tree.sync(guild=guild_obj)
-    print("Commands synced to all guilds!")
+    logger.info("Commands synced to all guilds!")
 
 
 @client.event
@@ -101,12 +105,12 @@ async def on_message(message):
 @client.event
 async def on_guild_join(guild: discord.Guild):
     """Event when the bot joins a guild."""
-    print(f"Joined guild {guild.name} with {guild.member_count} members!")
-    print("Syncing commands to guild")
+    logger.info(f"Joined guild {guild.name} with {guild.member_count} members!")
+    logger.info("Syncing commands to guild")
     guild_obj = discord.Object(id=guild.id)
     tree.copy_global_to(guild=guild_obj)
     await tree.sync(guild=guild_obj)
-    print("Commands synced to guild!")
+    logger.info("Commands synced to guild!")
 
 
 @client.tree.command(name="generate")
@@ -127,7 +131,7 @@ async def generate(interaction: discord.Interaction, version: discord.app_comman
         return
 
     if preset.value != "custom":
-        print(f"generate {version.value} with {preset.value}")
+        logger.info(f"generate {version.value} with {preset.value}")
         settings_string = ""
         if version.value == "dev":
             for preset_obj in dev_presets:
@@ -141,7 +145,7 @@ async def generate(interaction: discord.Interaction, version: discord.app_comman
                     break
         settings_dict = convert_settings(settings_string, version.value)
     else:
-        print(f"generate {version.value} with custom settings: {settings}")
+        logger.info(f"generate {version.value} with custom settings: {settings}")
         settings_dict = convert_settings(settings, version.value)
 
     task_data = submit_task(version.value, settings_dict)
@@ -172,7 +176,7 @@ async def generate(interaction: discord.Interaction, version: discord.app_comman
                     await interaction.followup.send("Task failed! Please try again later.", ephemeral=True)
                     break
             except Exception as e:
-                print(e)
+                logger.error(e)
                 await interaction.followup.send("An error occurred while checking task status.", ephemeral=True)
                 break
             await asyncio.sleep(5)  # Check every 5 seconds
