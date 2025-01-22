@@ -3627,10 +3627,10 @@
             "type": "Neighbourhood",
             "Requires": true
         },
-        "tn-52-58": {
-            "id": "tn-52-58",
+        "tn-56-58": {
+            "id": "tn-56-58",
             "Name": "Angry Aztec Main to Donkey 5DTemple",
-            "source": "angryaztecoasis",
+            "source": "angryaztecmain",
             "target": "donkeytemple",
             "sourceType": "Region",
             "targetType": "Location",

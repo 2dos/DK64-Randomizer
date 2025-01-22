@@ -31044,9 +31044,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "No Game"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31068,9 +31066,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Batty Barrel Bandit (Slow)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31092,9 +31088,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Batty Barrel Bandit (Progressive Speed)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31116,9 +31110,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Batty Barrel Bandit (Medium)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31140,9 +31132,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Batty Barrel Bandit (Fast)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31164,9 +31154,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Big Bug Bash (4 Bugs)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31188,9 +31176,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Big Bug Bash (6 Bugs)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31212,9 +31198,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Big Bug Bash (8 Bugs)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31236,9 +31220,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Big Bug Bash (10 Bugs)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31308,9 +31290,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Busy Barrel Barrage (45 seconds, Slow Respawn)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31380,9 +31360,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Busy Barrel Barrage (45 seconds, Medium Respawn)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31452,9 +31430,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Busy Barrel Barrage (60 seconds, Random Spawns)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31476,9 +31452,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Mad Maze Maul (60 seconds, 5 enemies)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31500,9 +31474,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Mad Maze Maul (60 seconds, 7 enemies)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31546,9 +31518,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Mad Maze Maul (120 seconds, 11 enemies, beefy enemies)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31581,9 +31551,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Mad Maze Maul (125 seconds, 10 enemies, need gun)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31605,9 +31573,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Minecart Mayhem (30 seconds, 1 TNT)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31629,9 +31595,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Minecart Mayhem (45 seconds, 2 TNT)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31653,9 +31617,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Minecart Mayhem (60 seconds, 2 TNT)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31677,9 +31639,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Beaver Bother (12 Beavers)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31701,9 +31661,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Beaver Bother (15 Slow Beavers)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31725,9 +31683,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Beaver Bother (15 Fast Beavers)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31749,9 +31705,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Teetering Turtle Trouble (45 seconds, 2.5% help chance)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31773,9 +31727,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Teetering Turtle Trouble (45 seconds, 4% help chance)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31797,9 +31749,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Teetering Turtle Trouble (60 seconds, 5% help chance)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31821,9 +31771,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Teetering Turtle Trouble (60 seconds, 7.5% help chance)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31845,9 +31793,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Stealthy Snoop (50 seconds)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31869,9 +31815,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Stealthy Snoop (60 seconds)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31893,9 +31837,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Stealthy Snoop (70 seconds)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31917,9 +31859,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Stealthy Snoop (90 seconds)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31941,9 +31881,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Stash Snatch (60 seconds, 6 coins)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31965,9 +31903,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Stash Snatch (60 seconds, 16 coins)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -31989,9 +31925,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Stash Snatch (120 seconds, 4 coins, Stash Snatch Hybrid)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32013,9 +31947,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Stash Snatch (120 seconds, 33 coins)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32047,9 +31979,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Splish Splash Salvage (8 coins)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32078,9 +32008,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Splish Splash Salvage (10 coins)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32109,9 +32037,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Splish Splash Salvage (15 coins)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32140,9 +32066,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Speedy Swing Sortie (40 seconds, 9 coins)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32207,9 +32131,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Speedy Swing Sortie (45 seconds, 14 coins, need twirl)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32238,9 +32160,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Speedy Swing Sortie (60 seconds, 6 coins)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32262,9 +32182,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Krazy Kong Klamour (10 Bananas, Slow Flicker)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32286,9 +32204,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Krazy Kong Klamour (15 Bananas, Slow Flicker)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32310,9 +32226,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Krazy Kong Klamour (5 Bananas, Fast Flicker)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32334,9 +32248,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Krazy Kong Klamour (10 Bananas, Fast Flicker)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32358,9 +32270,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Searchlight Seek (4 Klaptraps)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32382,9 +32292,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Searchlight Seek (6 Klaptraps)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32406,9 +32314,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Searchlight Seek (8 Klaptraps)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32430,9 +32336,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Searchlight Seek (10 Klaptraps)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32454,9 +32358,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Kremling Kosh (18 points)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32478,9 +32380,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Kremling Kosh (22 points)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32502,9 +32402,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Kremling Kosh (25 points)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32526,9 +32424,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Kremling Kosh (28 points)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32550,9 +32446,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Peril Path Panic (6 points)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32574,9 +32468,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Peril Path Panic (8 points)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32598,9 +32490,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Peril Path Panic (10 points)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32622,9 +32512,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Peril Path Panic (12 points)"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32646,9 +32534,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Hideout Helm: DK Rambi"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32693,9 +32579,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Hideout Helm: DK Targets"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32724,9 +32608,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Hideout Helm: Diddy Kremlings"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32778,9 +32660,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Hideout Helm: Diddy Rocketbarrel"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32802,9 +32682,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Hideout Helm: Lanky Maze"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32885,9 +32763,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Hideout Helm: Lanky Shooting"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32909,9 +32785,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Hideout Helm: Tiny Mushroom"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32943,9 +32817,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Hideout Helm: Tiny Ponytail Twirl"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -32980,9 +32852,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Hideout Helm: Chunky Hidden Kremling"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -33017,9 +32887,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Hideout Helm: Chunky Shooting"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -33041,9 +32909,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Rambi Arena"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -33065,9 +32931,7 @@
             "Types": "Minigame",
             "Class": "Check",
             "Requires": true,
-            "Persona": {
-                "Name": "Enguarde Arena"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -33096,9 +32960,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Barrel Training"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -33127,9 +32989,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Orange Training"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -33158,9 +33018,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Vine Training"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -33189,9 +33047,7 @@
                     }
                 ]
             },
-            "Persona": {
-                "Name": "Dive Training"
-            },
+            "Persona": null,
             "Rewards": {
                 "combinator": "and",
                 "rules": [

@@ -67,7 +67,7 @@ def minigame_to_edge(id, minigame):
     requires = req2["Requires"] if req2 is not None else True
 
     id = 'm-'+id.name.lower()
-    return CheckEdge(id, minigame.name, "", Items.NoItem, "Minigame", "Check", requires, {"Name": minigame.name}).to_dict()
+    return CheckEdge(id, minigame.name, "", Items.NoItem, "Minigame", "Check", requires).to_dict()
 
     # return {
     #     "id": id.name.lower(),
