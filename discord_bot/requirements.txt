@@ -1,0 +1,4 @@
+discord.py
+requests
+opentelemetry-exporter-otlp-proto-http
+opentelemetry-instrumentation-requests
