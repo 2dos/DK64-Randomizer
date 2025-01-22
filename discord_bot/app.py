@@ -100,7 +100,7 @@ async def on_message(message):
 # When we're added to a guild, register the commands
 @client.event
 async def on_guild_join(guild: discord.Guild):
-    """Event when the bot joins a guild."""
+    """Called when the bot joins a guild."""
     print(f"Joined guild {guild.name} with {guild.member_count} members!")
     print("Syncing commands to guild")
     guild_obj = discord.Object(id=guild.id)
@@ -110,7 +110,7 @@ async def on_guild_join(guild: discord.Guild):
 
 
 @client.tree.command(name="generate")
-@app_commands.describe(version="Generate a seed for Stable or Dev.", preset="Choose a preset or provide custom settings string.")
+@app_commands.describe(version="Generate a seed for Stable or Dev.", preset="Choose a preset or provide custom settings string.", settings="Custom settings string for the seed generation.")
 @app_commands.choices(version=[app_commands.Choice(name="Stable", value="stable"), app_commands.Choice(name="Dev", value="dev")], preset=preset_choices)
 async def generate(interaction: discord.Interaction, version: discord.app_commands.Choice[str], preset: discord.app_commands.Choice[str], settings: str = None):
     """Generate a seed for the user."""
