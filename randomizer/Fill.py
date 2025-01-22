@@ -1149,20 +1149,23 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
                 if location.item in ItemPool.Keys():
                     continue
                 # We do need to double check our work sometimes - this item might be required to beat the game if it's needed to get into a level
-                doubleCheckBeatsGame = False
                 # Only do this double-checking outside of LZR. The assumptions blocking level entry in LZR are less burdened with assumptions, so it's more likely to be accurate on the first pass.
-                if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
+                skipDoubleCheck = spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all
+                doubleCheckBeatsGame = False
+                if not skipDoubleCheck:
                     spoiler.LogicVariables.assumeAztecEntry = False
                     spoiler.LogicVariables.assumeLevel4Entry = False
                     spoiler.LogicVariables.assumeLevel8Entry = False
                     spoiler.LogicVariables.assumeUpperIslesAccess = False
                     spoiler.LogicVariables.assumeKRoolAccess = False  # This item may also be needed to access K. Rool because of the aforementioned level entry
-                    # Quickly check beatability after banning this item banning this item makes the game unbeatable
+                    # Quickly check beatability after deleting this item - does removing this item make the game unbeatable?
                     spoiler.Reset()
-                    spoiler.LogicVariables.BanItems([location.item])
-                    doubleCheckBeatsGame = GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable)
+                    item = location.item
+                    location.item = None
+                    doubleCheckBeatsGame = GetAccessibleLocations(spoiler, assumedItems, SearchMode.CheckBeatable)  # We still assume Kongs here!
+                    location.PlaceItem(spoiler, item)
                 # If the game is still beatable when banned with the other assumptions (or if we're skipping the double checking), this item is definitely not WotH
-                if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all or doubleCheckBeatsGame:
+                if skipDoubleCheck or doubleCheckBeatsGame:
                     WothLocations.remove(locationId)
                     spoiler.other_paths[locationId] = spoiler.woth_paths[locationId]
                     del spoiler.woth_paths[locationId]

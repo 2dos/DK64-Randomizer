@@ -118,7 +118,6 @@ class LogicVarHolder:
         """
         self.latest_owned_items = []
         self.found_test_item = False
-        self.banned_items = []
 
         self.donkey = Kongs.donkey in self.settings.starting_kong_list
         self.diddy = Kongs.diddy in self.settings.starting_kong_list
@@ -325,8 +324,7 @@ class LogicVarHolder:
 
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
-        # Except for banned items - these items aren't allowed to be used by the logic
-        ownedItems = [item for item in ownedItems if item not in self.banned_items]
+        ownedItems = [item for item in ownedItems]
         item_counts = Counter(ownedItems)
         self.latest_owned_items = ownedItems
         self.found_test_item = self.found_test_item or Items.TestItem in ownedItems
@@ -423,8 +421,6 @@ class LogicVarHolder:
         self.allTrainingChecks = self.allTrainingChecks or has_all
 
         self.Slam = item_counts[Items.ProgressiveSlam] + STARTING_SLAM
-        if Items.ProgressiveSlam in self.banned_items:  # If slam is banned, prevent logic from owning a better slam
-            self.Slam = STARTING_SLAM
         self.AmmoBelts = item_counts[Items.ProgressiveAmmoBelt]
         self.InstUpgrades = item_counts[Items.ProgressiveInstrumentUpgrade]
         self.Melons = 1
@@ -1231,91 +1227,8 @@ class LogicVarHolder:
         required_level_order = max(2, min(ceil(self.settings.rareware_gb_fairies / 2), 5))  # At least level 2 to give space for fairy placements, at most level 5 to allow shenanigans
         return have_enough_fairies and is_correct_kong and self.HasFillRequirementsForLevel(self.settings.level_order[required_level_order])
 
-    def BanItems(self, items):
-        """Prevent an item from being picked up by the logic."""
-        self.banned_items = items
-        # Also remove logical ownership of each item - this covers cases where you start with the move flag (not the training barrels, just raw start with like the camera/shockwave setting)
-        for item in items:
-            if item == Items.Vines:
-                self.vines = False
-            elif item == Items.Swim:
-                self.swim = False
-            elif item == Items.Barrels:
-                self.barrels = False
-            elif item == Items.Oranges:
-                self.oranges = False
-            elif item == Items.Climbing:
-                self.climbing = False
-            elif item == Items.BaboonBlast:
-                self.blast = False
-            elif item == Items.StrongKong:
-                self.strongKong = False
-            elif item == Items.GorillaGrab:
-                self.grab = False
-            elif item == Items.ChimpyCharge:
-                self.charge = False
-            elif item == Items.RocketbarrelBoost:
-                self.jetpack = False
-            elif item == Items.SimianSpring:
-                self.spring = False
-            elif item == Items.Orangstand:
-                self.handstand = False
-            elif item == Items.BaboonBalloon:
-                self.balloon = False
-            elif item == Items.OrangstandSprint:
-                self.sprint = False
-            elif item == Items.MiniMonkey:
-                self.mini = False
-            elif item == Items.PonyTailTwirl:
-                self.twirl = False
-            elif item == Items.Monkeyport:
-                self.monkeyport = False
-            elif item == Items.HunkyChunky:
-                self.hunkyChunky = False
-            elif item == Items.PrimatePunch:
-                self.punch = False
-            elif item == Items.GorillaGone:
-                self.gorillaGone = False
-            elif item == Items.Coconut:
-                self.coconut = False
-            elif item == Items.Peanut:
-                self.peanut = False
-            elif item == Items.Grape:
-                self.grape = False
-            elif item == Items.Feather:
-                self.feather = False
-            elif item == Items.Pineapple:
-                self.pineapple = False
-            elif item == Items.HomingAmmo:
-                self.homing = False
-            elif item == Items.SniperSight:
-                self.scope = False
-            elif item == Items.Bongos:
-                self.bongos = False
-            elif item == Items.Guitar:
-                self.guitar = False
-            elif item == Items.Trombone:
-                self.trombone = False
-            elif item == Items.Saxophone:
-                self.saxophone = False
-            elif item == Items.Triangle:
-                self.triangle = False
-            elif item == Items.CameraAndShockwave:
-                self.camera = False
-                self.shockwave = False
-            elif item == Items.Camera:
-                self.camera = False
-            elif item == Items.Shockwave:
-                self.shockwave = False
-            elif item == Items.ProgressiveSlam:
-                self.Slam = STARTING_SLAM
-                # Banned slams are also handled with care in Update() specially
-
     def HasAllItems(self):
         """Return if you have all progression items."""
-        # You may now own the banned item
-        self.latest_owned_items.extend(self.banned_items)
-        self.banned_items = []
         self.Update(self.latest_owned_items)
         # If you didn't beat the game, you obviously don't have all the progression items - this covers the possible need for camera and each key
         if not self.WinConditionMet():
