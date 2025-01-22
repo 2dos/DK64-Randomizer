@@ -100,7 +100,7 @@ async def on_message(message):
 # When we're added to a guild, register the commands
 @client.event
 async def on_guild_join(guild: discord.Guild):
-    """Called when the bot joins a guild."""
+    """Event when the bot joins a guild."""
     print(f"Joined guild {guild.name} with {guild.member_count} members!")
     print("Syncing commands to guild")
     guild_obj = discord.Object(id=guild.id)
