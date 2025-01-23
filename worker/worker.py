@@ -18,7 +18,7 @@ from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry._logs import set_logger_provider, get_logger
+from opentelemetry._logs import set_logger_provider
 from opentelemetry.sdk._logs import LoggerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
@@ -83,9 +83,7 @@ if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     logger_provider = LoggerProvider(resource=resource)
     # set the providers
     set_logger_provider(logger_provider)
-    logger = get_logger(__name__)
-else:
-    logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class PriorityAwareWorker(Worker):
@@ -97,17 +95,17 @@ class PriorityAwareWorker(Worker):
         user_ip = job.meta.get("ip", "unknown")
         job_branch = job.meta.get("branch", "stable")
         if job_branch != BRANCH and BRANCH != "LOCAL":
-            logger.info(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
+            logger.log(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
             # Check how long the job has been in the queue
             try:
                 if job.enqueued_at is not None and (job.enqueued_at - job.started_at).total_seconds() > 60 * 60 * 24:
-                    logger.warning(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
+                    logger.log(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
                     job.cancel()
             except Exception:
-                logger.error(f"Failed to check job duration, cancelling it")
+                logger.log(f"Failed to check job duration, cancelling it")
             return
 
-        logger.info(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip}) with metadata: {json.dumps(job.meta)}")
+        logger.log(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip}) with metadata: {json.dumps(job.meta)}")
 
         # Process the job
         super().execute_job(job, queue)
