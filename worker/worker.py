@@ -95,17 +95,17 @@ class PriorityAwareWorker(Worker):
         user_ip = job.meta.get("ip", "unknown")
         job_branch = job.meta.get("branch", "stable")
         if job_branch != BRANCH and BRANCH != "LOCAL":
-            logger.log(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
+            logger.info(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
             # Check how long the job has been in the queue
             try:
                 if job.enqueued_at is not None and (job.enqueued_at - job.started_at).total_seconds() > 60 * 60 * 24:
-                    logger.log(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
+                    logger.info(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
                     job.cancel()
             except Exception:
-                logger.log(f"Failed to check job duration, cancelling it")
+                logger.info(f"Failed to check job duration, cancelling it")
             return
 
-        logger.log(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip}) with metadata: {json.dumps(job.meta)}")
+        logger.info(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip}) with metadata: {json.dumps(job.meta)}")
 
         # Process the job
         super().execute_job(job, queue)
