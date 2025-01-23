@@ -27,7 +27,8 @@ from opentelemetry.sdk.resources import Resource
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
 from opentelemetry.instrumentation.redis import RedisInstrumentor
 from opentelemetry.sdk.trace import TracerProvider
-
+from opentelemetry._logs import set_logger_provider, get_logger
+from opentelemetry.sdk._logs import LoggerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from redis import Redis, from_url
 from rq import Queue
@@ -46,7 +47,6 @@ COOLDOWN_PERIOD = 300  # 5 minutes in seconds
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Define a resource to identify your service
 resource = Resource(
@@ -68,6 +68,10 @@ app.config["SESSION_REDIS"] = redis_conn
 
 # check the args we started the script with
 if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
+    # create the providers
+    logger_provider = LoggerProvider(resource=resource)
+    # set the providers
+    set_logger_provider(logger_provider)
     # Set up the TracerProvider and Span Exporter
     trace.set_tracer_provider(TracerProvider(resource=resource))
     tracer_provider = trace.get_tracer_provider()
@@ -85,6 +89,10 @@ if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     RequestsInstrumentor().instrument()
     RedisInstrumentor().instrument()
     FlaskInstrumentor().instrument_app(app)
+    logger = get_logger(__name__)
+else:
+    logger = logging.getLogger(__name__)
+
 
 # Create and initialize the Flask-Session object AFTER `app` has been configured
 server_session = Session(app)
@@ -222,7 +230,7 @@ def get_user_ip():
 def submit_task():
     """Submit a task to the worker queue."""
     data = request.json
-    branch = request.args.get("branch", "dev")
+    branch = request.args.get("branch", "stable")
     if os.environ.get("TEST_REDIS") == "1":
         # Start the task immediately if we're using a fake Redis server
         # Make it a thread, and we're going to directly import and call the function
