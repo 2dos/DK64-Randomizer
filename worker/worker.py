@@ -33,6 +33,7 @@ from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, P
 from randomizer.Lists.Warps import VanillaBananaportSelector
 from randomizer.Lists.WrinklyHints import PointSpreadSelector
 from version import version
+import logging
 from tasks import generate_seed
 from opentelemetry_instrumentation_rq import RQInstrumentor
 from randomizer.Lists.Exceptions import SettingsIncompatibleException, PlandoIncompatibleException
@@ -42,7 +43,7 @@ from opentelemetry.instrumentation.redis import RedisInstrumentor
 listen = ["tasks_high_priority", "tasks_low_priority"]  # High-priority first
 redis_conn = Redis(host="redis", port=6379)
 job_timeout = 300  # Timeout in seconds (5 minutes)
-
+logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
 BRANCH = os.environ.get("BRANCH", "LOCAL")
@@ -89,17 +90,17 @@ class PriorityAwareWorker(Worker):
         user_ip = job.meta.get("ip", "unknown")
         job_branch = job.meta.get("branch", "dev")
         if job_branch != BRANCH and BRANCH != "LOCAL":
-            print(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
+            logger.info(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
             # Check how long the job has been in the queue
             try:
                 if job.enqueued_at is not None and (job.enqueued_at - job.started_at).total_seconds() > 60 * 60 * 24:
-                    print(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
+                    logger.warn(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
                     job.cancel()
             except Exception:
-                print(f"Failed to check job duration, cancelling it")
+                logger.error(f"Failed to check job duration, cancelling it")
             return
 
-        print(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip})")
+        logger.info(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip}) with metadata: {json.dumps(job.meta)}")
 
         # Process the job
         super().execute_job(job, queue)
