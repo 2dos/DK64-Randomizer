@@ -27,7 +27,7 @@ from opentelemetry.sdk.resources import Resource
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
 from opentelemetry.instrumentation.redis import RedisInstrumentor
 from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry._logs import set_logger_provider, get_logger
+from opentelemetry._logs import set_logger_provider
 from opentelemetry.sdk._logs import LoggerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from redis import Redis, from_url
@@ -89,9 +89,7 @@ if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     RequestsInstrumentor().instrument()
     RedisInstrumentor().instrument()
     FlaskInstrumentor().instrument_app(app)
-    logger = get_logger(__name__)
-else:
-    logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 # Create and initialize the Flask-Session object AFTER `app` has been configured
