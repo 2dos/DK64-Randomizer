@@ -18,7 +18,8 @@ from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
-
+from opentelemetry._logs import set_logger_provider, get_logger
+from opentelemetry.sdk._logs import LoggerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Enums.Types import ItemRandoSelector, KeySelector
@@ -43,7 +44,6 @@ from opentelemetry.instrumentation.redis import RedisInstrumentor
 listen = ["tasks_high_priority", "tasks_low_priority"]  # High-priority first
 redis_conn = Redis(host="redis", port=6379)
 job_timeout = 300  # Timeout in seconds (5 minutes)
-logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
 BRANCH = os.environ.get("BRANCH", "LOCAL")
@@ -79,6 +79,13 @@ if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     FlaskInstrumentor().instrument_app(app)
     RQInstrumentor().instrument()
     RedisInstrumentor().instrument()
+    # create the providers
+    logger_provider = LoggerProvider(resource=resource)
+    # set the providers
+    set_logger_provider(logger_provider)
+    logger = get_logger(__name__)
+else:
+    logger = logging.getLogger(__name__)
 
 
 class PriorityAwareWorker(Worker):
@@ -88,13 +95,13 @@ class PriorityAwareWorker(Worker):
         """Process a job from the queue."""
         # Log which queue the job came from and its metadata
         user_ip = job.meta.get("ip", "unknown")
-        job_branch = job.meta.get("branch", "dev")
+        job_branch = job.meta.get("branch", "stable")
         if job_branch != BRANCH and BRANCH != "LOCAL":
             logger.info(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
             # Check how long the job has been in the queue
             try:
                 if job.enqueued_at is not None and (job.enqueued_at - job.started_at).total_seconds() > 60 * 60 * 24:
-                    logger.warn(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
+                    logger.warning(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
                     job.cancel()
             except Exception:
                 logger.error(f"Failed to check job duration, cancelling it")

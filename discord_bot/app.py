@@ -13,7 +13,7 @@ from opentelemetry import metrics
 
 from opentelemetry.exporter.otlp.proto.http.metric_exporter import OTLPMetricExporter
 from opentelemetry.sdk.metrics import MeterProvider
-from opentelemetry._logs import set_logger_provider
+from opentelemetry._logs import set_logger_provider, get_logger
 from opentelemetry.sdk._logs import LoggerProvider
 from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
@@ -22,7 +22,6 @@ from opentelemetry.sdk.resources import Resource
 
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
-logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Define a resource to identify your service
@@ -53,7 +52,9 @@ if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
     metrics.set_meter_provider(meterProvider)
     RequestsInstrumentor().instrument()
-
+    logger = get_logger(__name__)
+else:
+    logger = logging.getLogger(__name__)
 
 intents = discord.Intents.default()
 intents.message_content = True
