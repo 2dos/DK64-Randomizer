@@ -14,6 +14,7 @@ from copy import deepcopy
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Lists.Location import LocationListOriginal
 from randomizer.Lists.Minigame import MinigameRequirements
@@ -34,13 +35,15 @@ for region_id, region in RegionsOriginalCopy.items():
     for location in region.locations:
         checkList[location.id] = {
             "region": region_id,
-            "logic": location.logic
+            "logic": location.logic,
+            "bonusBarrel": location.bonusBarrel
         }
 
 medal_regions = [Regions.JungleJapesMedals, Regions.AngryAztecMedals, Regions.FranticFactoryMedals,
           Regions.GloomyGalleonMedals, Regions.FungiForestMedals, Regions.CrystalCavesMedals, Regions.CreepyCastleMedals]
 
 def location_to_edge(id, location):
+
 
     region = checkList[id]["region"] if id in checkList else None
     source = RegionNode(region, '') if region else None
@@ -55,7 +58,26 @@ def location_to_edge(id, location):
     if logic != True:
         logic = parse_ast_to_dict(logic,  None)
 
-    return CheckEdge('li-'+id.name.lower(), location.name, source, target, location.type.name, "Check", logic,location.kong.name).to_dict()
+    checkId = 'li-'+id.name.lower()
+
+    bb = checkList[id]["bonusBarrel"] if id in checkList else None
+    checkMinigameNode = None
+    if bb:
+        checkMinigameNode = {
+            "id":checkId+"-mg",
+            "Name": location.name + " Minigame",
+            "Class": "Item",
+            "Type": "Minigame"
+        }
+
+    if bb == MinigameType.HelmBarrel:
+        target = id.name.lower()
+        logic = { "combinator": "AND", "rules": [ { "Name": checkId+"-mg" } ] }
+
+    return { 
+        "node": checkMinigameNode,
+        "edge" : CheckEdge(checkId, location.name, source, target, location.type.name, "Check", logic,location.kong.name).to_dict()
+    }
 
 
 def minigame_to_edge(id, minigame):
@@ -178,11 +200,14 @@ def collectible_to_edge(collectible, region, index):
 def build_checks():
 
     edges = {}
+    nodes = {}
 
 
     for id, location in LocationListOriginal.items():
-        e = location_to_edge(id, location)
-        edges[e['id']] = e
+        lte = location_to_edge(id, location)
+        edges[lte['edge']['id']] = lte['edge']
+        if lte['node']:
+            nodes[lte['node']['id']] = lte['node']
 
     for id, minigame in MinigameRequirements.items():
         e = minigame_to_edge(id, minigame)
@@ -199,10 +224,12 @@ def build_checks():
             c = collectible_to_edge(collectible, region, index)
             edges[c.id] = c.to_dict()
 
-    return edges
+    return {'edges': edges, 'nodes': nodes}
 
+bc = build_checks()
 world = {
-    "checks_edges": build_checks()
+    "checks_edges": bc['edges'],
+    "checks_nodes": bc['nodes'],
 }
 
 with open('./tools/cave_logic/Deltas/checks_edges.json', 'w') as json_file:

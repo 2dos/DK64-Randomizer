@@ -10,16 +10,17 @@ from warps import build_warps
 from levels import build_levels
 
 regions = build_regions()
+checks = build_checks()
 
 world = {
     "id": "newgen1",
     "world": {
         "worlds": {},
         "regions": {**build_levels(), **regions['nodes']},
-        "edges": {**regions['edges'], **build_checks(), **build_exits(), **build_events(), **build_warps()},
+        "edges": {**regions['edges'], **checks['edges'], **build_exits(), **build_events(), **build_warps()},
         "locations": {},
         "subChecks": {},
-        "items": {**build_items(), **build_collectibles()},
+        "items": {**build_items(), **build_collectibles(), **checks['nodes']},
     },
     "settings": {
         "gameMode": "spoil",

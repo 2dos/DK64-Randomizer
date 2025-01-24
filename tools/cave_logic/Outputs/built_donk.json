@@ -16957,19 +16957,26 @@
                 "id": "li-helmdonkey1",
                 "Name": "Helm Donkey Barrel 1",
                 "source": "hideouthelmdonkeyroom",
-                "target": "noitem",
+                "target": "helmdonkey1",
                 "type": "Location",
                 "sourceType": "Region",
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": true,
+                "Requires": {
+                    "combinator": "AND",
+                    "rules": [
+                        {
+                            "Name": "li-helmdonkey1-mg"
+                        }
+                    ]
+                },
                 "Persona": "donkey",
                 "Rewards": {
                     "combinator": "and",
                     "rules": [
                         {
-                            "Name": "noitem",
+                            "Name": "helmdonkey1",
                             "Amount": 1
                         }
                     ]
@@ -16979,19 +16986,26 @@
                 "id": "li-helmdonkey2",
                 "Name": "Helm Donkey Barrel 2",
                 "source": "hideouthelmdonkeyroom",
-                "target": "noitem",
+                "target": "helmdonkey2",
                 "type": "Location",
                 "sourceType": "Region",
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": true,
+                "Requires": {
+                    "combinator": "AND",
+                    "rules": [
+                        {
+                            "Name": "li-helmdonkey2-mg"
+                        }
+                    ]
+                },
                 "Persona": "donkey",
                 "Rewards": {
                     "combinator": "and",
                     "rules": [
                         {
-                            "Name": "noitem",
+                            "Name": "helmdonkey2",
                             "Amount": 1
                         }
                     ]
@@ -17001,19 +17015,26 @@
                 "id": "li-helmdiddy1",
                 "Name": "Helm Diddy Barrel 1",
                 "source": "hideouthelmdiddyroom",
-                "target": "noitem",
+                "target": "helmdiddy1",
                 "type": "Location",
                 "sourceType": "Region",
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": true,
+                "Requires": {
+                    "combinator": "AND",
+                    "rules": [
+                        {
+                            "Name": "li-helmdiddy1-mg"
+                        }
+                    ]
+                },
                 "Persona": "diddy",
                 "Rewards": {
                     "combinator": "and",
                     "rules": [
                         {
-                            "Name": "noitem",
+                            "Name": "helmdiddy1",
                             "Amount": 1
                         }
                     ]
@@ -17023,19 +17044,26 @@
                 "id": "li-helmdiddy2",
                 "Name": "Helm Diddy Barrel 2",
                 "source": "hideouthelmdiddyroom",
-                "target": "noitem",
+                "target": "helmdiddy2",
                 "type": "Location",
                 "sourceType": "Region",
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": true,
+                "Requires": {
+                    "combinator": "AND",
+                    "rules": [
+                        {
+                            "Name": "li-helmdiddy2-mg"
+                        }
+                    ]
+                },
                 "Persona": "diddy",
                 "Rewards": {
                     "combinator": "and",
                     "rules": [
                         {
-                            "Name": "noitem",
+                            "Name": "helmdiddy2",
                             "Amount": 1
                         }
                     ]
@@ -17045,19 +17073,26 @@
                 "id": "li-helmlanky1",
                 "Name": "Helm Lanky Barrel 1",
                 "source": "hideouthelmlankyroom",
-                "target": "noitem",
+                "target": "helmlanky1",
                 "type": "Location",
                 "sourceType": "Region",
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": true,
+                "Requires": {
+                    "combinator": "AND",
+                    "rules": [
+                        {
+                            "Name": "li-helmlanky1-mg"
+                        }
+                    ]
+                },
                 "Persona": "lanky",
                 "Rewards": {
                     "combinator": "and",
                     "rules": [
                         {
-                            "Name": "noitem",
+                            "Name": "helmlanky1",
                             "Amount": 1
                         }
                     ]
@@ -17067,19 +17102,26 @@
                 "id": "li-helmlanky2",
                 "Name": "Helm Lanky Barrel 2",
                 "source": "hideouthelmlankyroom",
-                "target": "noitem",
+                "target": "helmlanky2",
                 "type": "Location",
                 "sourceType": "Region",
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": true,
+                "Requires": {
+                    "combinator": "AND",
+                    "rules": [
+                        {
+                            "Name": "li-helmlanky2-mg"
+                        }
+                    ]
+                },
                 "Persona": "lanky",
                 "Rewards": {
                     "combinator": "and",
                     "rules": [
                         {
-                            "Name": "noitem",
+                            "Name": "helmlanky2",
                             "Amount": 1
                         }
                     ]
@@ -17089,19 +17131,26 @@
                 "id": "li-helmtiny1",
                 "Name": "Helm Tiny Barrel 1",
                 "source": "hideouthelmtinyroom",
-                "target": "noitem",
+                "target": "helmtiny1",
                 "type": "Location",
                 "sourceType": "Region",
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": true,
+                "Requires": {
+                    "combinator": "AND",
+                    "rules": [
+                        {
+                            "Name": "li-helmtiny1-mg"
+                        }
+                    ]
+                },
                 "Persona": "tiny",
                 "Rewards": {
                     "combinator": "and",
                     "rules": [
                         {
-                            "Name": "noitem",
+                            "Name": "helmtiny1",
                             "Amount": 1
                         }
                     ]
@@ -17111,19 +17160,26 @@
                 "id": "li-helmtiny2",
                 "Name": "Helm Tiny Barrel 2",
                 "source": "hideouthelmtinyroom",
-                "target": "noitem",
+                "target": "helmtiny2",
                 "type": "Location",
                 "sourceType": "Region",
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": true,
+                "Requires": {
+                    "combinator": "AND",
+                    "rules": [
+                        {
+                            "Name": "li-helmtiny2-mg"
+                        }
+                    ]
+                },
                 "Persona": "tiny",
                 "Rewards": {
                     "combinator": "and",
                     "rules": [
                         {
-                            "Name": "noitem",
+                            "Name": "helmtiny2",
                             "Amount": 1
                         }
                     ]
@@ -17133,19 +17189,26 @@
                 "id": "li-helmchunky1",
                 "Name": "Helm Chunky Barrel 1",
                 "source": "hideouthelmchunkyroom",
-                "target": "noitem",
+                "target": "helmchunky1",
                 "type": "Location",
                 "sourceType": "Region",
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": true,
+                "Requires": {
+                    "combinator": "AND",
+                    "rules": [
+                        {
+                            "Name": "li-helmchunky1-mg"
+                        }
+                    ]
+                },
                 "Persona": "chunky",
                 "Rewards": {
                     "combinator": "and",
                     "rules": [
                         {
-                            "Name": "noitem",
+                            "Name": "helmchunky1",
                             "Amount": 1
                         }
                     ]
@@ -17155,19 +17218,26 @@
                 "id": "li-helmchunky2",
                 "Name": "Helm Chunky Barrel 2",
                 "source": "hideouthelmchunkyroom",
-                "target": "noitem",
+                "target": "helmchunky2",
                 "type": "Location",
                 "sourceType": "Region",
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": true,
+                "Requires": {
+                    "combinator": "AND",
+                    "rules": [
+                        {
+                            "Name": "li-helmchunky2-mg"
+                        }
+                    ]
+                },
                 "Persona": "chunky",
                 "Rewards": {
                     "combinator": "and",
                     "rules": [
                         {
-                            "Name": "noitem",
+                            "Name": "helmchunky2",
                             "Amount": 1
                         }
                     ]
@@ -89541,6 +89611,324 @@
                 "Name": "CreepyCastle Chunky Banana",
                 "AltNames": [],
                 "Type": "Collectible"
+            },
+            "li-islestinyazteclobby-mg": {
+                "id": "li-islestinyazteclobby-mg",
+                "Name": "Isles Tiny Aztec Lobby Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-islesdiddysnideslobby-mg": {
+                "id": "li-islesdiddysnideslobby-mg",
+                "Name": "Isles Diddy Snides Spring Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-islesdiddysummit-mg": {
+                "id": "li-islesdiddysummit-mg",
+                "Name": "Isles Diddy Summit Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-isleslankycastlelobby-mg": {
+                "id": "li-isleslankycastlelobby-mg",
+                "Name": "Isles Lanky Castle Lobby Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-isleschunkyhelmlobby-mg": {
+                "id": "li-isleschunkyhelmlobby-mg",
+                "Name": "Isles Chunky Helm Lobby Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-japeslankygrapegate-mg": {
+                "id": "li-japeslankygrapegate-mg",
+                "Name": "Japes Lanky Grape Gate Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-japestinyfeathergatebarrel-mg": {
+                "id": "li-japestinyfeathergatebarrel-mg",
+                "Name": "Japes Tiny Feather Gate Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-japeschunkygiantbonusbarrel-mg": {
+                "id": "li-japeschunkygiantbonusbarrel-mg",
+                "Name": "Japes Chunky Giant Bonus Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-japeslankyslope-mg": {
+                "id": "li-japeslankyslope-mg",
+                "Name": "Japes Lanky Slope Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-aztecdonkeyquicksandcave-mg": {
+                "id": "li-aztecdonkeyquicksandcave-mg",
+                "Name": "Aztec Donkey Sealed Quicksand Tunnel Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-aztecchunkycagedbarrel-mg": {
+                "id": "li-aztecchunkycagedbarrel-mg",
+                "Name": "Aztec Chunky Giant Caged Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-azteclanky5doortemple-mg": {
+                "id": "li-azteclanky5doortemple-mg",
+                "Name": "Aztec Lanky 5 Door Temple Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-aztecchunky5doortemple-mg": {
+                "id": "li-aztecchunky5doortemple-mg",
+                "Name": "Aztec Chunky 5 Door Temple Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-azteclankyllamatemplebarrel-mg": {
+                "id": "li-azteclankyllamatemplebarrel-mg",
+                "Name": "Aztec Lanky Llama Temple Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-factorydiddyblocktower-mg": {
+                "id": "li-factorydiddyblocktower-mg",
+                "Name": "Factory Diddy Block Tower Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-factorylankytestingroombarrel-mg": {
+                "id": "li-factorylankytestingroombarrel-mg",
+                "Name": "Factory Lanky Testing Room Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-factorydiddychunkyroombarrel-mg": {
+                "id": "li-factorydiddychunkyroombarrel-mg",
+                "Name": "Factory Diddy Storage Room Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-factorychunkybyarcade-mg": {
+                "id": "li-factorychunkybyarcade-mg",
+                "Name": "Factory Chunky Barrel by Arcade Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-factorytinyproductionroom-mg": {
+                "id": "li-factorytinyproductionroom-mg",
+                "Name": "Factory Tiny Production Twirl Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-galleondiddygoldtower-mg": {
+                "id": "li-galleondiddygoldtower-mg",
+                "Name": "Galleon Diddy Gold Tower Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-galleonlankygoldtower-mg": {
+                "id": "li-galleonlankygoldtower-mg",
+                "Name": "Galleon Lanky Gold Tower Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-galleontinysubmarine-mg": {
+                "id": "li-galleontinysubmarine-mg",
+                "Name": "Galleon Tiny Submarine Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-galleontiny2doorship-mg": {
+                "id": "li-galleontiny2doorship-mg",
+                "Name": "Galleon Tiny 2 Door Ship Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-galleondonkey5doorship-mg": {
+                "id": "li-galleondonkey5doorship-mg",
+                "Name": "Galleon Donkey 5 Door Ship Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-galleondiddy5doorship-mg": {
+                "id": "li-galleondiddy5doorship-mg",
+                "Name": "Galleon Diddy 5 Door Ship Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-galleonchunky5doorship-mg": {
+                "id": "li-galleonchunky5doorship-mg",
+                "Name": "Galleon Chunky 5 Door Ship Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-forestdiddytopofmushroom-mg": {
+                "id": "li-forestdiddytopofmushroom-mg",
+                "Name": "Forest Diddy Top of Mushroom Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-foresttinymushroombarrel-mg": {
+                "id": "li-foresttinymushroombarrel-mg",
+                "Name": "Forest Tiny Mushroom Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-forestdonkeybaboonblast-mg": {
+                "id": "li-forestdonkeybaboonblast-mg",
+                "Name": "Forest Donkey Baboon Blast Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-forestlankycoloredmushrooms-mg": {
+                "id": "li-forestlankycoloredmushrooms-mg",
+                "Name": "Forest Lanky Colored Mushroom Slam Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-forestdiddyowlrace-mg": {
+                "id": "li-forestdiddyowlrace-mg",
+                "Name": "Forest Diddy Owl Race Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-forestdonkeybarn-mg": {
+                "id": "li-forestdonkeybarn-mg",
+                "Name": "Forest Donkey Thornvine Barn Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-cavesdonkeybaboonblast-mg": {
+                "id": "li-cavesdonkeybaboonblast-mg",
+                "Name": "Caves Donkey Baboon Blast Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-cavesdiddyjetpackbarrel-mg": {
+                "id": "li-cavesdiddyjetpackbarrel-mg",
+                "Name": "Caves Diddy Jetpack Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-cavestinycavebarrel-mg": {
+                "id": "li-cavestinycavebarrel-mg",
+                "Name": "Caves Tiny Mini Cave Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-caveschunky5doorcabin-mg": {
+                "id": "li-caveschunky5doorcabin-mg",
+                "Name": "Caves Chunky 5 Door Cabin Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-castlediddyabovecastle-mg": {
+                "id": "li-castlediddyabovecastle-mg",
+                "Name": "Castle Diddy Above Castle Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-castlechunkytree-mg": {
+                "id": "li-castlechunkytree-mg",
+                "Name": "Castle Chunky Tree Sniping Barrel Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-castlediddyballroom-mg": {
+                "id": "li-castlediddyballroom-mg",
+                "Name": "Castle Diddy Ballroom Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-castlelankytower-mg": {
+                "id": "li-castlelankytower-mg",
+                "Name": "Castle Lanky Tower Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-castlechunkycrypt-mg": {
+                "id": "li-castlechunkycrypt-mg",
+                "Name": "Castle Chunky Crypt Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-castletinyoverchasm-mg": {
+                "id": "li-castletinyoverchasm-mg",
+                "Name": "Castle Tiny Over Chasm Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-castlelankydungeon-mg": {
+                "id": "li-castlelankydungeon-mg",
+                "Name": "Castle Lanky Dungeon Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-helmdonkey1-mg": {
+                "id": "li-helmdonkey1-mg",
+                "Name": "Helm Donkey Barrel 1 Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-helmdonkey2-mg": {
+                "id": "li-helmdonkey2-mg",
+                "Name": "Helm Donkey Barrel 2 Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-helmdiddy1-mg": {
+                "id": "li-helmdiddy1-mg",
+                "Name": "Helm Diddy Barrel 1 Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-helmdiddy2-mg": {
+                "id": "li-helmdiddy2-mg",
+                "Name": "Helm Diddy Barrel 2 Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-helmlanky1-mg": {
+                "id": "li-helmlanky1-mg",
+                "Name": "Helm Lanky Barrel 1 Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-helmlanky2-mg": {
+                "id": "li-helmlanky2-mg",
+                "Name": "Helm Lanky Barrel 2 Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-helmtiny1-mg": {
+                "id": "li-helmtiny1-mg",
+                "Name": "Helm Tiny Barrel 1 Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-helmtiny2-mg": {
+                "id": "li-helmtiny2-mg",
+                "Name": "Helm Tiny Barrel 2 Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-helmchunky1-mg": {
+                "id": "li-helmchunky1-mg",
+                "Name": "Helm Chunky Barrel 1 Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
+            },
+            "li-helmchunky2-mg": {
+                "id": "li-helmchunky2-mg",
+                "Name": "Helm Chunky Barrel 2 Minigame",
+                "Class": "Item",
+                "Type": "Minigame"
             }
         }
     },
