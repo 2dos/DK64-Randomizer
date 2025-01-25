@@ -28,7 +28,7 @@ from opentelemetry.instrumentation.requests import RequestsInstrumentor
 from opentelemetry.instrumentation.redis import RedisInstrumentor
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry._logs import set_logger_provider
-from opentelemetry.sdk._logs import LoggerProvider
+from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from redis import Redis, from_url
 from rq import Queue
@@ -65,6 +65,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
 app.config["SESSION_TYPE"] = "redis"
 redis_conn = Redis(host="redis", port=6379)
 app.config["SESSION_REDIS"] = redis_conn
+logger = logging.getLogger(__name__)
 
 # check the args we started the script with
 if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
@@ -89,7 +90,8 @@ if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     RequestsInstrumentor().instrument()
     RedisInstrumentor().instrument()
     FlaskInstrumentor().instrument_app(app)
-logger = logging.getLogger(__name__)
+    handler = LoggingHandler(level=logging.DEBUG, logger_provider=logger_provider)
+    logger.addHandler(handler)
 
 
 # Create and initialize the Flask-Session object AFTER `app` has been configured
