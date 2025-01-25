@@ -72545,9 +72545,20 @@
             },
             "tn-119-118": {
                 "id": "tn-119-118",
-                "Name": "Fungi Forest Main to Giant Mushroom (Middle High)",
+                "Name": "Fungi Forest Main to Giant Mushroom (Middle Low)",
                 "source": "mushroomlowerexterior",
                 "target": "mushroomlower",
+                "sourceType": "Region",
+                "targetType": "Location",
+                "Class": "Transition",
+                "type": "Neighbourhood",
+                "Requires": true
+            },
+            "tn-119-120": {
+                "id": "tn-119-120",
+                "Name": "Fungi Forest Main to Giant Mushroom (Middle High)",
+                "source": "mushroomlowerexterior",
+                "target": "mushroomupper",
                 "sourceType": "Region",
                 "targetType": "Location",
                 "Class": "Transition",
