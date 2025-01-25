@@ -209,7 +209,7 @@ def update_presets(force=False):
             local_presets = json.load(f)
             cached_local_presets = local_presets
     else:
-        local_presets = {"master": [], "dev": []}
+        local_presets = {"stable": [], "dev": []}
         cached_local_presets = local_presets
     return local_presets
 
@@ -388,7 +388,7 @@ def admin_presets():
     local_presets = update_presets()
     # Check if branch is in the body
     branch = content.get("branch", "")
-    if branch not in ["master", "dev"]:
+    if branch not in ["stable", "dev"]:
         return set_response(json.dumps({"message": "Invalid branch"}), 400)
     if request.method == "PUT":
         preset_name = content.get("name")
@@ -558,7 +558,7 @@ def get_selector_info():
     """Get the selector data for the randomizer."""
     # If the branch arg is master call os.environ.get("WORKER_URL_MASTER") with requests
     # Else call os.environ.get("WORKER_URL_DEV") with requests
-    url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "master" else environ.get("WORKER_URL_DEV")
+    url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "stable" else environ.get("WORKER_URL_DEV")
     if not url:
         url = "http://127.0.0.1:8000"
     response = requests.get(f"{url}/get_selector_info")
@@ -569,7 +569,7 @@ def get_selector_info():
 @enforce_api_restrictions()
 def convert_settings():
     """Convert settings for the randomizer."""
-    url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "master" else environ.get("WORKER_URL_DEV")
+    url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "stable" else environ.get("WORKER_URL_DEV")
     if not url:
         url = "http://127.0.0.1:8000"
     data = request.get_json()

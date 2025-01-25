@@ -40,7 +40,7 @@ class DK64:
 
     def load_presets(self):
         """Load and return available seed presets."""
-        for branch in ["master", "dev"]:
+        for branch in ["stable", "dev"]:
             try:
                 resp = requests.get(self.preset_endpoint % branch, headers={"x-api-key": self.api_key})
                 presets = resp.json()
@@ -60,7 +60,7 @@ class DK64:
         presets = []
         if race:
             presets = self.master_presets
-            branch = "master"
+            branch = "stable"
         else:
             presets = self.dev_presets
             branch = "dev"
