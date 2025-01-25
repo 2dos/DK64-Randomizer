@@ -173,7 +173,7 @@ def enforce_api_restrictions():
             # Check if they provide a branch in their args, if they don't, default to 'dev'
             if "branch" not in request.args:
                 args_copy = request.args.to_dict()
-                args_copy["branch"] = "dev"
+                args_copy["branch"] = "stable"
                 request.args = args_copy
 
             return func(*args, **kwargs)
