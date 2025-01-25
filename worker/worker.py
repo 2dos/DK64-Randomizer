@@ -19,7 +19,7 @@ from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry._logs import set_logger_provider
-from opentelemetry.sdk._logs import LoggerProvider
+from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Enums.Types import ItemRandoSelector, KeySelector
@@ -71,6 +71,7 @@ otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/t
 # # Add the BatchSpanProcessor to the TracerProvider
 span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
+logger = logging.getLogger(__name__)
 
 if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
@@ -83,7 +84,8 @@ if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     logger_provider = LoggerProvider(resource=resource)
     # set the providers
     set_logger_provider(logger_provider)
-logger = logging.getLogger(__name__)
+    handler = LoggingHandler(level=logging.DEBUG, logger_provider=logger_provider)
+    logger.addHandler(handler)
 
 
 class PriorityAwareWorker(Worker):
@@ -95,16 +97,19 @@ class PriorityAwareWorker(Worker):
         user_ip = job.meta.get("ip", "unknown")
         job_branch = job.meta.get("branch", "stable")
         if job_branch != BRANCH and BRANCH != "LOCAL":
+            print(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
             logger.info(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
             # Check how long the job has been in the queue
             try:
                 if job.enqueued_at is not None and (job.enqueued_at - job.started_at).total_seconds() > 60 * 60 * 24:
+                    print(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
                     logger.info(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
                     job.cancel()
             except Exception:
+                print(f"Failed to check job duration, cancelling it")
                 logger.info(f"Failed to check job duration, cancelling it")
             return
-
+        print(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip}) with metadata: {json.dumps(job.meta)}")
         logger.info(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip}) with metadata: {json.dumps(job.meta)}")
 
         # Process the job

@@ -14,7 +14,7 @@ from opentelemetry import metrics
 from opentelemetry.exporter.otlp.proto.http.metric_exporter import OTLPMetricExporter
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry._logs import set_logger_provider
-from opentelemetry.sdk._logs import LoggerProvider
+from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
 from opentelemetry.sdk.trace import TracerProvider
@@ -32,6 +32,7 @@ resource = Resource(
         "deployment.environment": os.environ.get("BRANCH", "LOCAL"),
     }
 )
+logger = logging.getLogger(__name__)
 
 # check the args we started the script with
 if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
@@ -52,8 +53,8 @@ if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
     metrics.set_meter_provider(meterProvider)
     RequestsInstrumentor().instrument()
-logger = logging.getLogger(__name__)
-
+    handler = LoggingHandler(level=logging.DEBUG, logger_provider=logger_provider)
+    logger.addHandler(handler)
 intents = discord.Intents.default()
 intents.message_content = True
 
