@@ -1485,7 +1485,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     hinted_location_text = level_colors[region.level] + region.getHintRegionName() + level_colors[region.level]
                     message += f" Try looking in the {hinted_location_text}."
                 else:
-                    hinted_location_text = level_colors[region.level] + level_list[location.level] + level_colors[Levels.DKIsles]
+                    hinted_location_text = level_colors[region.level] + level_list[location.level] + level_colors[region.level]
                     message += f" Try collecting colored bananas in {hinted_location_text}."
             else:
                 # Option B: hint the kong + level the item is in, using similar systems as other hints to instead hint kasplats/shops/specific types of items
