@@ -7,8 +7,8 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import HardModeSelected, KongModels, SlamRequirement, HardBossesSelected
-from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
+from randomizer.Enums.Settings import SlamRequirement, HardBossesSelected
+from randomizer.Lists.Exceptions import BossOutOfLocationsException, PlandoIncompatibleException
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Library.Generic import IsItemSelected
 
@@ -51,7 +51,7 @@ def HardBossesEnabled(settings, check: HardBossesSelected) -> bool:
     return IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, check)
 
 
-def ShuffleBossKongs(settings):
+def ShuffleBossKongs(settings, locked_levels=[]):
     """Shuffle the kongs required for the bosses."""
     vanillaBossKongs = {
         Maps.JapesBoss: Kongs.donkey,
@@ -70,6 +70,9 @@ def ShuffleBossKongs(settings):
 
     boss_kongs = []
     for level in range(7):
+        if level in locked_levels:
+            boss_kongs.append(settings.boss_kongs[level])
+            continue
         boss_map = settings.boss_maps[level]
         if settings.boss_kong_rando:
             kong = random.choice(GetKongOptionsForBoss(boss_map, HardBossesEnabled(settings, HardBossesSelected.alternative_mad_jack_kongs)))
@@ -146,140 +149,6 @@ def ShuffleKKOPhaseOrder(settings):
     for phase_slot in range(3):
         kko_phase_subset.append(kko_phases[phase_slot])
     return kko_phase_subset.copy()
-
-
-# Commented out for now, will delete later if things stick as-is
-# def ShuffleBossesBasedOnOwnedItemsOLD(settings, ownedKongs: dict, ownedMoves: dict):
-#     """Perform Boss Location & Boss Kong rando, ensuring each first boss can be beaten with an unlocked kong and owned moves."""
-#     try:
-#         bossLevelOptions = {0, 1, 2, 3, 4, 5, 6}
-#         # Find levels we can place Dogadon 2 (most restrictive)
-#         forestBossOptions = [x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x] and Items.HunkyChunky in ownedMoves[x] and Items.Barrels in ownedMoves[x]]
-#         if not settings.kong_rando and not settings.boss_location_rando and 4 not in forestBossOptions:
-#             raise ItemPlacementException("Items not placed to allow vanilla Dogadon 2.")
-#         # Then find levels we can place Mad jack (next most restrictive)
-#         tinyFactoryBossOptions = [
-#             x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])
-#         ]
-#         donkeyFactoryBossOptions = []
-#         chunkyFactoryBossOptions = []
-#         if HardBossesEnabled(settings, HardBossesSelected.alternative_mad_jack_kongs):
-#             if settings.kong_model_tiny == KongModels.default:
-#                 tinyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
-#             if settings.kong_model_dk == KongModels.default:
-#                 donkeyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
-#             if settings.kong_model_chunky == KongModels.default:
-#                 chunkyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
-#         factoryBossOptions = list(set(tinyFactoryBossOptions + donkeyFactoryBossOptions + chunkyFactoryBossOptions))
-#         # This sequence of placing Dogadon 2 and Mad Jack will only fail if both Hunky Chunky and Twirl are placed in level 7
-#         # If we have fewer options for Dogadon 2, place that first
-#         forestBossKong = None
-#         bossTryingToBePlaced = "Dogadon 2"
-#         if len(forestBossOptions) < len(factoryBossOptions):
-#             forestBossIndex = random.choice(forestBossOptions)
-#             forestBossKong = Kongs.chunky
-#             if forestBossIndex in factoryBossOptions:
-#                 factoryBossOptions.remove(forestBossIndex)
-#         # Otherwise place Factory first
-#         bossTryingToBePlaced = "Mad Jack"
-#         if HardBossesEnabled(settings, HardBossesSelected.alternative_mad_jack_kongs):
-#             factoryBossIndex = random.choice(factoryBossOptions)
-#             factoryBossKongOptions = []
-#             if factoryBossIndex in tinyFactoryBossOptions:
-#                 factoryBossKongOptions.append(Kongs.tiny)
-#             if factoryBossIndex in donkeyFactoryBossOptions:
-#                 factoryBossKongOptions.append(Kongs.donkey)
-#             if factoryBossIndex in chunkyFactoryBossOptions:
-#                 factoryBossKongOptions.append(Kongs.chunky)
-#             factoryBossKong = random.choice(factoryBossKongOptions)
-#         else:
-#             factoryBossIndex = random.choice(factoryBossOptions)
-#             factoryBossKong = Kongs.tiny
-#         if factoryBossIndex in forestBossOptions:
-#             forestBossOptions.remove(factoryBossIndex)
-#         # Then place Dogadon 2 (if Mad Jack was placed first)
-#         if forestBossKong is None:
-#             bossTryingToBePlaced = "Dogadon 2 (second)"
-#             forestBossIndex = random.choice(forestBossOptions)
-#             forestBossKong = Kongs.chunky
-
-#         bossLevelOptions.remove(forestBossIndex)
-#         bossLevelOptions.remove(factoryBossIndex)
-
-#         # Place the barrels-required bosses
-#         bossTryingToBePlaced = "barrels-locked bosses"
-#         barrelsBossOptions = [x for x in bossLevelOptions if Items.Barrels in ownedMoves[x]]
-#         random.shuffle(barrelsBossOptions)
-#         cavesBossIndex = barrelsBossOptions.pop()
-#         cavesBossKong = random.choice(ownedKongs[cavesBossIndex])
-#         bossLevelOptions.remove(cavesBossIndex)
-#         japesBossIndex = barrelsBossOptions.pop()
-#         japesBossKong = random.choice(ownedKongs[japesBossIndex])
-#         bossLevelOptions.remove(japesBossIndex)
-#         aztecBossIndex = barrelsBossOptions.pop()
-#         aztecBossKong = random.choice(ownedKongs[aztecBossIndex])
-#         bossLevelOptions.remove(aztecBossIndex)
-
-#         # Place the last 2 freely
-#         bossTryingToBePlaced = "the easy bosses to place (if this breaks here something REALLY strange happened)"
-#         remainingBosses = list(bossLevelOptions)
-#         random.shuffle(remainingBosses)
-#         galleonBossIndex = remainingBosses.pop()
-#         galleonBossKong = random.choice(ownedKongs[galleonBossIndex])
-#         castleBossIndex = remainingBosses.pop()
-#         castleBossKong = random.choice(ownedKongs[castleBossIndex])
-#         newBossMaps = []
-#         newBossKongs = []
-#         for level in range(0, 7):
-#             if level == japesBossIndex:
-#                 newBossMaps.append(Maps.JapesBoss)
-#                 newBossKongs.append(japesBossKong)
-#             elif level == aztecBossIndex:
-#                 newBossMaps.append(Maps.AztecBoss)
-#                 newBossKongs.append(aztecBossKong)
-#             elif level == factoryBossIndex:
-#                 newBossMaps.append(Maps.FactoryBoss)
-#                 newBossKongs.append(factoryBossKong)
-#             elif level == galleonBossIndex:
-#                 newBossMaps.append(Maps.GalleonBoss)
-#                 newBossKongs.append(galleonBossKong)
-#             elif level == forestBossIndex:
-#                 newBossMaps.append(Maps.FungiBoss)
-#                 newBossKongs.append(forestBossKong)
-#             elif level == cavesBossIndex:
-#                 newBossMaps.append(Maps.CavesBoss)
-#                 newBossKongs.append(cavesBossKong)
-#             elif level == castleBossIndex:
-#                 newBossMaps.append(Maps.CastleBoss)
-#                 newBossKongs.append(castleBossKong)
-#         # print("New Boss Order: " + str(newBossMaps))
-#         # print("New Boss Kongs: " + str(newBossKongs))
-#         if len(newBossMaps) < 7:
-#             raise FillException("Invalid boss order with fewer than the 7 required main levels.")
-#     except Exception as ex:
-#         if isinstance(ex.args[0], str) and "index out of range" in ex.args[0]:
-#             print("Unlucky move placement fill :(")
-#             raise BossOutOfLocationsException("No valid locations to place " + bossTryingToBePlaced)
-#         if isinstance(ex.args[0], str) and "pop from empty list" in ex.args[0]:
-#             print("Barrels bad.")
-#             raise BossOutOfLocationsException("No valid locations to place " + bossTryingToBePlaced)
-#         raise FillException("Something went wrong while assigning bosses.")
-
-#     # Only apply this shuffle if the settings permit it
-#     # If kongs are random we have to shuffle bosses and locations or else we might break logic
-#     if settings.kong_rando or settings.boss_location_rando:
-#         settings.boss_maps = newBossMaps
-#     else:
-#         settings.boss_maps = getBosses(settings)
-#     if settings.kong_rando or settings.boss_kong_rando:
-#         # If we shuffle kongs but not locations, we must forcibly sort the array with the known valid kongs
-#         if not settings.boss_location_rando:
-#             settings.boss_kongs = [japesBossKong, aztecBossKong, factoryBossKong, galleonBossKong, forestBossKong, cavesBossKong, castleBossKong]
-#         else:
-#             settings.boss_kongs = newBossKongs
-#     else:
-#         settings.boss_kongs = ShuffleBossKongs(settings)
-#     settings.kutout_kongs = ShuffleKutoutKongs(settings.boss_maps, settings.boss_kongs, settings.boss_kong_rando)
 
 
 def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
@@ -522,3 +391,39 @@ def updateKRoolSettings(spoiler, phase):
         spoiler.settings.krool_dillo2 = not spoiler.settings.krool_dillo2
     elif phase == Maps.CastleBoss:
         spoiler.settings.krool_kutout = not spoiler.settings.krool_kutout
+
+
+def PlandoBosses(spoiler):
+    """Fix bosses into their plando'd positions and then randomly fill the rest. This fill supercedes the standard boss placement algorithm."""
+    if spoiler.settings.enable_plandomizer:
+        filledBosses = []
+        filledLevels = []
+        for level in range(7):
+            level_order = -1
+            for order in spoiler.settings.level_order:
+                if level == spoiler.settings.level_order[order]:
+                    level_order = order - 1  # Classic off-by-one here: the UI goes 0-6 and the level order goes 1-7
+                    break
+            # If we intend to plando this boss, send it in there
+            if spoiler.settings.plandomizer_dict["plando_boss_order_" + str(level_order)] != -1:
+                bossMap = Maps(spoiler.settings.plandomizer_dict["plando_boss_order_" + str(level_order)])
+                plannedKong = spoiler.settings.plandomizer_dict["plando_boss_kong_" + str(level_order)]
+                eligibleKongs = GetKongOptionsForBoss(bossMap, HardBossesEnabled(spoiler.settings, HardBossesSelected.alternative_mad_jack_kongs))
+                if plannedKong != -1:
+                    # If the planned Kong is incompatible with this boss, ship it back
+                    if plannedKong not in eligibleKongs:
+                        raise PlandoIncompatibleException(str(Kongs(plannedKong).name) + " is not eligible to fight " + str(bossMap.name))
+                    spoiler.settings.boss_kongs[level] = Kongs(plannedKong)
+                else:
+                    spoiler.settings.boss_kongs[level] = random.choice(eligibleKongs)
+                spoiler.settings.boss_maps[level] = bossMap
+                filledBosses.append(bossMap)
+                filledLevels.append(level)
+        for level in range(7):
+            if level in filledLevels:
+                continue
+            remainingBosses = [boss for boss in getBosses(spoiler.settings) if boss not in filledBosses]
+            bossMap = random.choice(remainingBosses)
+            spoiler.settings.boss_maps[level] = bossMap
+        spoiler.settings.boss_kongs = ShuffleBossKongs(spoiler.settings, locked_levels=filledLevels)
+        spoiler.settings.kutout_kongs = ShuffleKutoutKongs(spoiler.settings.boss_maps, spoiler.settings.boss_kongs, spoiler.settings.boss_kong_rando)

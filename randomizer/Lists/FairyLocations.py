@@ -691,7 +691,7 @@ fairy_locations = {
         FairyData(
             name="Lower Giant Mushroom Interior",
             map=Maps.ForestGiantMushroom,
-            region=Regions.MushroomLowerMid,
+            region=Regions.MushroomLowerBetweenLadders,
             fence=Fence(202, 338, 659, 650),
             spawn_y=357,
         ),

@@ -2945,7 +2945,7 @@ door_locations = {
         DoorData(
             name="Inside the Mushroom - halfway along the Dead End",
             map=Maps.ForestGiantMushroom,
-            logicregion=Regions.MushroomLowerMid,
+            logicregion=Regions.MushroomLowerBetweenLadders,
             location=[229.0, 217.0, 880.2, 147.5],
             rx=-3,
             rz=-3,
