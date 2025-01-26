@@ -276,6 +276,7 @@ void handleBugEnemy(void) {
         CurrentActorPointer_0->obj_props_bitfield &= 0xFFFF7FFF;
         CurrentActorPointer_0->shadow_intensity -= 8;
         CurrentActorPointer_0->yPos -= 8.0f;
+        CurrentActorPointer_0->hSpeed = 0.0f;
         if (CurrentActorPointer_0->shadow_intensity < 0) {
             CurrentActorPointer_0->shadow_intensity = 0;
             CurrentActorPointer_0->control_state = 0x40;

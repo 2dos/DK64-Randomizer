@@ -491,7 +491,7 @@ AlterHeadSize:
     beq $t7, $zero, AlterHeadSize_Finish
     nop
     lhu $s0, 0x172 ($t7) ; Model Index
-    slti $a1, $s0, 0xED
+    sltiu $a1, $s0, 0xED
     beq $a1, $zero, AlterHeadSize_Finish ; Not within first 0xED models
     nop
     lui $t7, hi(big_head_actors)
@@ -499,6 +499,9 @@ AlterHeadSize:
     lbu $t7, lo(big_head_actors) ($t7)
     addiu $a1, $zero, 0xFD
     beq $a1, $t7, AlterHeadSize_Finish ; Not allowed for big head mode
+    nop
+    sltiu $a1, $t7, 90
+    beqz $a1, AlterHeadSize_Finish ; Bone index too big (Might cause anim crashes with Funky)
     nop
     ; Model has tied bone
     sll $t7, $t7, 1
@@ -527,7 +530,7 @@ AlterHeadSize_0:
     beq $t7, $zero, AlterHeadSize_0_Finish
     nop
     lhu $s0, 0x172 ($t7) ; Model Index
-    slti $a1, $s0, 0xED
+    sltiu $a1, $s0, 0xED
     beq $t9, $zero, AlterHeadSize_0_Finish ; Not within first 0xED actors
     nop
     lui $t9, hi(big_head_actors)
@@ -535,6 +538,9 @@ AlterHeadSize_0:
     lbu $t9, lo(big_head_actors) ($t9)
     addiu $s0, $zero, 0xFD
     beq $s0, $t9, AlterHeadSize_0_Finish ; Not allowed for big head mode
+    nop
+    sltiu $s0, $t9, 90
+    beqz $s0, AlterHeadSize_Finish ; Bone index too big (Might cause anim crashes with Funky)
     nop
     ; Model has tied bone
     sll $t9, $t9, 1

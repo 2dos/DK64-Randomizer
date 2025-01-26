@@ -130,7 +130,13 @@ file_dict = [
     File(name="Kong (Lanky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=601, source_file="kong_lanky_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Kong (Tiny) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=602, source_file="kong_tiny_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Kong (Chunky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=603, source_file="kong_chunky_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    File(name="Question Mark Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=638, source_file="question_mark_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Question Mark DK Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=638, source_file="question_mark_dk_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Question Mark Diddy Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=649, source_file="question_mark_diddy_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Question Mark Lanky Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=650, source_file="question_mark_lanky_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Question Mark Tiny Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=651, source_file="question_mark_tiny_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(
+        name="Question Mark Chunky Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=652, source_file="question_mark_chunky_om2.bin", do_not_extract=True, do_not_delete_source=True
+    ),
     File(name="Fairy Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=604, source_file="fairy_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(
         name="DPad Image",
@@ -1266,6 +1272,7 @@ colorblind_changes = [
     [0x103A, 0x103A],  # Dillo
     [0x103D, 0x103E],  # Dillo
     [0xE6C, 0xE6C],  # Diddy back star texture
+    [0x135C, 0x1360],  # Hint Item
 ]
 
 file_dict.append(
@@ -1375,7 +1382,11 @@ shrinkModel(False, "", 0x10, 1 / 0.15, "shrink_cranky.bin", True),
 shrinkModel(False, "", 0x11, 1 / 0.15, "shrink_funky.bin", True),
 shrinkModel(False, "", 0x12, 1 / 0.15, "shrink_candy.bin", True),
 shrinkModel(False, "", 0x1E, 1 / 0.15, "shrink_snide.bin", True),
-shrinkModel(False, "", 0xD1, 1 / 0.15, "shrink_qmark.bin", True)
+shrinkModel(True, "hint_item_actor_dk.bin", 0, 1 / 0.15, "shrink_qmark_dk.bin", True)
+shrinkModel(True, "hint_item_actor_diddy.bin", 0, 1 / 0.15, "shrink_qmark_diddy.bin", True)
+shrinkModel(True, "hint_item_actor_lanky.bin", 0, 1 / 0.15, "shrink_qmark_lanky.bin", True)
+shrinkModel(True, "hint_item_actor_tiny.bin", 0, 1 / 0.15, "shrink_qmark_tiny.bin", True)
+shrinkModel(True, "hint_item_actor_chunky.bin", 0, 1 / 0.15, "shrink_qmark_chunky.bin", True)
 FINAL_RACE_HOOP = "shrink_race_hoop.bin"
 shrinkModel(True, "race_hoop_om1.bin", 0, 1 / 0.15, FINAL_RACE_HOOP, False)
 
@@ -1440,7 +1451,21 @@ model_changes = [
     ModelChange(0x116, "candy_model.bin"),
     ModelChange(0x117, "funky_model.bin"),
     ModelChange(0x118, "scarab_actor.bin"),
-    ModelChange(0x119, "shrink_qmark.bin"),
+    # DK
+    ModelChange(0x119, "shrink_qmark_dk.bin"),
+    ModelChange(0x11A, "hint_item_actor_dk.bin"),
+    # Diddy
+    ModelChange(0x11B, "shrink_qmark_diddy.bin"),
+    ModelChange(0x11C, "hint_item_actor_diddy.bin"),
+    # Lanky
+    ModelChange(0x11D, "shrink_qmark_lanky.bin"),
+    ModelChange(0x11E, "hint_item_actor_lanky.bin"),
+    # Tiny
+    ModelChange(0x11F, "shrink_qmark_tiny.bin"),
+    ModelChange(0x120, "hint_item_actor_tiny.bin"),
+    # Chunky
+    ModelChange(0x121, "shrink_qmark_chunky.bin"),
+    ModelChange(0x122, "hint_item_actor_chunky.bin"),
     ModelChange(0x73, "blast_barrel.bin"),
     ModelChange(0x8B, "rocketbarrel_attachment.bin"),
     ModelChange(0x7B, "cannon.bin"),

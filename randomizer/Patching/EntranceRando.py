@@ -10,9 +10,9 @@ from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 valid_lz_types = [9, 12, 13, 16]
 
 
-def getOneByteExit(back):
+def getOneByteExit(settings, back):
     """Convert 'getExitId' output to something acceptable to write to a 1-byte value."""
-    value = GetExitId(back)
+    value = GetExitId(settings, back)
     if value < 0:
         return value + 0x100
     return value
@@ -24,7 +24,7 @@ def getEntranceDict(spoiler, transition: Transitions, vanilla_map: Maps, vanilla
         shuffledBack = spoiler.shuffled_exit_data[transition]
         return {
             "map": GetMapId(spoiler.settings, shuffledBack.regionId),
-            "exit": GetExitId(shuffledBack),
+            "exit": GetExitId(spoiler.settings, shuffledBack),
         }
     return {
         "map": vanilla_map,
@@ -114,12 +114,12 @@ def randomize_entrances(spoiler, ROM_COPY: LocalROM):
             else:
                 shuffledBack = spoiler.shuffled_exit_data[transition]
                 ROM_COPY.write(GetMapId(spoiler.settings, shuffledBack.regionId))
-                ROM_COPY.write(getOneByteExit(shuffledBack))
+                ROM_COPY.write(getOneByteExit(spoiler.settings, shuffledBack))
         # /* 0x088 */ unsigned short enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         for world_index, transition in enumerate(enter_transitions):
             shuffledBack = spoiler.shuffled_exit_data[transition]
             map_id = GetMapId(spoiler.settings, shuffledBack.regionId)
-            exit_id = GetExitId(shuffledBack)
+            exit_id = GetExitId(spoiler.settings, shuffledBack)
             spoiler.settings.level_portal_destinations[world_index] = {
                 "map": map_id,
                 "exit": exit_id,
