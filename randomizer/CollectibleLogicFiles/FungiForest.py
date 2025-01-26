@@ -43,9 +43,11 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),
     ],
-    Regions.MushroomLowerMid: [
+    Regions.MushroomLowerBetweenLadders: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 1st Ladder
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # After 1st Ladder
+    ],
+    Regions.MushroomLowerMid: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 2nd Ladder
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # After 2nd Ladder
     ],

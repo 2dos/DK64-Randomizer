@@ -2020,6 +2020,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     Types.Cranky,
                     Types.Funky,
                     Types.Candy,
+                    Types.Snide,
                     Types.Constant,
                     Types.IslesMedal,
                     Types.Climbing,

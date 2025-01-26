@@ -92,15 +92,20 @@ LogicRegions = {
               and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky),
         Event(Events.DonkeyMushroomSwitch, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.donkey)
     ], [
-        TransitionFront(Regions.MushroomLowerMid, lambda l: l.climbing),
+        TransitionFront(Regions.MushroomLowerBetweenLadders, lambda l: l.climbing),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True, Transitions.ForestLowerMushroomToMain),
         TransitionFront(Regions.MushroomUpper, lambda l: Events.MushroomCannonsSpawned in l.Events),
+    ]),
+
+    Regions.MushroomLowerBetweenLadders: Region("Mushroom Lower Between Ladders", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [], [], [
+        TransitionFront(Regions.MushroomLower, lambda l: True),
+        TransitionFront(Regions.MushroomLowerMid, lambda l: l.climbing),
     ]),
 
     Regions.MushroomLowerMid: Region("Mushroom Lower Middle", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestTinyMushroomBarrel, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.istiny and l.climbing, MinigameType.BonusBarrel),
     ], [], [
-        TransitionFront(Regions.MushroomLower, lambda l: True),
+        TransitionFront(Regions.MushroomLowerBetweenLadders, lambda l: True),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True, Transitions.ForestLowerMushroomToLowerExterior),
     ]),
 
