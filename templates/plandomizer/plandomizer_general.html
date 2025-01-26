@@ -249,9 +249,9 @@
             <h2 class="title">Ordering</h2>
             <div class="item-select wide-select">
                 <p class="select-title">Level Order</p>
-                <div style="font-style: italic;">
+                <p style="font-style: italic;">
                     This planned level order is ignored in non-complex level order shuffle if Kongs are not in the item pool!
-                </div>
+                </p>
                 {% for i in range(0, 8) %}
                     <label id="plando_level_order_div_{{i}}"
                         class="flex-container select-order">
@@ -320,6 +320,62 @@
                                     {{phase["name"]}}
                                   </option>
                                 {% endfor %}
+                            </select>
+                        </div>
+                    </label>
+                {% endfor %}
+            </div>
+            <div class="item-select wide-select">
+                <p class="select-title">Boss Order</p>
+                <p style="font-style: italic;">
+                    If you plando any T&S bosses, the SLO requirement to be able to beat bosses by or before each level may be violated. Keep this in mind when placing other items. You must choose a boss in order to choose a Kong.
+                </p>
+                {% for i in range(0, 7) %}
+                    <label id="plando_boss_order_div_{{i}}"
+                        class="flex-container select-order">
+                        <span class="order-label">Level {{i+1}}:</span>
+                        <div id="plando_boss_order_{{i}}_wrapper"
+                             data-toggle="tooltip"
+                             title>
+                            <select id="plando_boss_order_{{i}}"
+                                    name="plando_boss_order_{{i}}"
+                                    class="form-select order-select">
+                                <option value="" selected">
+                                    -- Randomize --
+                                </option>
+                                {% for phase in plando_phases %}
+                                  <option value="{{phase["value"]}}"
+                                  {% if "Boss" in phase["value"] %}
+                                    class="plando-krool-phase"
+                                  {% else %}
+                                    class="plando-tns-boss"
+                                  {% endif %}
+                                  >
+                                    {{phase["name"]}}
+                                  </option>
+                                {% endfor %}
+                            </select>
+                            <select id="plando_boss_kong_{{i}}"
+                                    name="plando_boss_kong_{{i}}"
+                                    class="form-select order-select">
+                                <option value="" selected">
+                                    -- Randomize --
+                                </option>
+                                <option value="donkey">
+                                    Donkey
+                                </option>
+                                <option value="diddy">
+                                    Diddy
+                                </option>
+                                <option value="lanky">
+                                    Lanky
+                                </option>
+                                <option value="tiny">
+                                    Tiny
+                                </option>
+                                <option value="chunky">
+                                    Chunky
+                                </option>
                             </select>
                         </div>
                     </label>

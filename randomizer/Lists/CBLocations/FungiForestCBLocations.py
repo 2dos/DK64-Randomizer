@@ -1158,7 +1158,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="Up first ladder up each path",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLowerMid,
+        region=Regions.MushroomLowerBetweenLadders,
         locations=[[5, 1.0, 122, 275, 621], [5, 1.0, 779, 275, 601]],
     ),
     ColoredBananaGroup(
@@ -1821,7 +1821,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="First ladder up mushroom (2 custom, 3 Chunky)",  # Altered 3 vanilla so there's no jankness with other kongs
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLowerMid,
+        region=Regions.MushroomLowerBetweenLadders,
         locations=[
             [1, 1.0, 448.25, 207.75, 918.25],
             [1, 1.0, 446.875, 168, 918, 75],
@@ -1924,7 +1924,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="Lowest bunch up mushroom (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomLowerMid,
+        region=Regions.MushroomLowerBetweenLadders,
         vanilla=True,
         locations=[[5, 1.0, 617.3297119140625, 216.20155334472656, 840.7553100585938]],
     ),

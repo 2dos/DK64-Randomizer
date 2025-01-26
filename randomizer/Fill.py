@@ -2905,9 +2905,11 @@ def WipeBossRequirements(settings: Settings) -> None:
     for i in range(0, 7):
         # Assume T&S amounts will be attainable for now
         settings.BossBananas[i] = 0
-        # Assume starting kong can beat all the bosses for now
-        settings.boss_kongs[i] = settings.starting_kong
-        settings.boss_maps[i] = Maps.GalleonBoss  # This requires nothing, allowing the fill to proceed as normal
+        # The standard boss placement algorithm assumes the starting kong can beat all the bosses for now
+        # If we are plandoing bosses, then we can't undo boss choices here because they've already been made
+        if not settings.boss_plando:
+            settings.boss_kongs[i] = settings.starting_kong
+            settings.boss_maps[i] = Maps.GalleonBoss  # This requires nothing, allowing the fill to proceed as normal
 
 
 def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
@@ -3081,7 +3083,9 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
         settings.BossBananas = [0, 0, 0, 0, 0, 0, 0, 0]
     # Update values based on actual level progression
     ShuffleExits.UpdateLevelProgression(settings)
-    ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs, ownedMoves)
+    # We only need to shuffle bosses based on these calculated items if they aren't placed already
+    if not settings.boss_plando:
+        ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs, ownedMoves)
     settings.owned_kongs_by_level = ownedKongs
     settings.owned_moves_by_level = ownedMoves
 
@@ -3476,7 +3480,9 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     # Only if keys are shuffled off of bosses do we need to reshuffle the bosses
     if not isKeyItemRando:
         # Place boss locations based on kongs and moves found for each level
-        ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs, ownedMoves)
+        # We only need to shuffle bosses based on these calculated items if they aren't placed already
+        if not spoiler.settings.boss_plando:
+            ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs, ownedMoves)
         settings.owned_kongs_by_level = ownedKongs
         settings.owned_moves_by_level = ownedMoves
 

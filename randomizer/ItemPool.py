@@ -23,6 +23,7 @@ from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Patching.Library.Generic import getIceTrapCount, IsItemSelected
+from randomizer.ShuffleBosses import PlandoBosses
 
 
 def getHelmKey(settings) -> Items:
@@ -142,6 +143,9 @@ def PlaceConstants(spoiler):
                 item = random.choice(GetItemsFromPlandoItem(plando_item))
             spoiler.LocationList[int(location_id)].PlaceItem(spoiler, item)
             settings.plandomizer_items_placed.append(item)
+        # If any bosses are plando'd, do it now ahead of placing any items randomly.
+        # Doing it here has the added benefit of rerolling on fill failure.
+        PlandoBosses(spoiler)
 
 
 def AllItemsUnrestricted(settings):
