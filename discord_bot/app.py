@@ -74,6 +74,8 @@ preset_names = list({preset_name.lower(): preset_name for preset_name in dev_pre
 preset_choices = [app_commands.Choice(name=preset_name, value=preset_name) for preset_name in preset_names]
 # Add the custom preset choice
 preset_choices.append(app_commands.Choice(name="Custom", value="custom"))
+version_choices = [app_commands.Choice(name="Dev", value="dev")]
+# version_choices.append(app_commands.Choice(name="Stable", value="stable"))
 
 
 client = discord.Client(intents=intents)
@@ -121,7 +123,7 @@ async def on_guild_join(guild: discord.Guild):
 
 @client.tree.command(name="generate")
 @app_commands.describe(version="Generate a seed for Stable or Dev.", preset="Choose a preset or provide custom settings string.", settings="Custom settings string for the seed generation.")
-@app_commands.choices(version=[app_commands.Choice(name="Stable", value="stable"), app_commands.Choice(name="Dev", value="dev")], preset=preset_choices)
+@app_commands.choices(version=version_choices, preset=preset_choices)
 async def generate(interaction: discord.Interaction, version: discord.app_commands.Choice[str], preset: discord.app_commands.Choice[str], settings: str = None):
     """Generate a seed for the user."""
     if version.value not in ["stable", "dev"]:
