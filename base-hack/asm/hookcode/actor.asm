@@ -540,7 +540,7 @@ AlterHeadSize_0:
     beq $s0, $t9, AlterHeadSize_0_Finish ; Not allowed for big head mode
     nop
     sltiu $s0, $t9, 90
-    beqz $s0, AlterHeadSize_Finish ; Bone index too big (Might cause anim crashes with Funky)
+    beqz $s0, AlterHeadSize_0_Finish ; Bone index too big (Might cause anim crashes with Funky)
     nop
     ; Model has tied bone
     sll $t9, $t9, 1
