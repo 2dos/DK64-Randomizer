@@ -429,7 +429,7 @@ js.plando_errors = plando_errors
         if (window.location.hostname === "dev.dk64randomizer.com" || window.location.hostname === "dk64randomizer.com") {
             branch = "dev";
             if (!window.location.hostname.toLowerCase().includes("dev")) {
-                branch = "master";
+                branch = "stable";
                 url = "https://api.dk64rando.com/api";
             } else {
                 url = "https://api.dk64rando.com/api";
@@ -460,6 +460,10 @@ async function import_settings_string(event) {
     document.getElementById("settings_string").value = document.getElementById("settings_string").value.trim();
     const settingsString = document.getElementById("settings_string").value;
     const settings = decrypt_settings_string_enum(settingsString);
+    // Remove enable_plandomizer from the settings object
+    if (settings.hasOwnProperty("enable_plandomizer")) {
+        delete settings["enable_plandomizer"];
+    }
 
     // Clear all select boxes on the page except those in the nav-cosmetics div
     const selects = document.getElementsByTagName("select");
