@@ -3793,6 +3793,9 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
             found_incompatibilities += "Cannot turn off Item Randomizer without starting with all Training Moves. "
         if settings.climbing_status != ClimbingStatus.normal:
             found_incompatibilities += "Cannot turn off Item Randomizer without starting with Climbing. "
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava):
+        if settings.no_healing:
+            found_incompatibilities += "Cannot turn on 'Water is Lava' whilst turning disabling healing. "
     if not settings.is_valid_item_pool():
         found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
     if found_incompatibilities != "":

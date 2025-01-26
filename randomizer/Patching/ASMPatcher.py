@@ -2808,7 +2808,7 @@ def patchAssembly(ROM_COPY, spoiler):
                 shuffled_back = spoiler.shuffled_exit_data[race_exit["tied_transition"]]
                 writeValue(ROM_COPY, address_head + 0, Overlay.Static, race_exit["race_map"], offset_dict, 4)
                 writeValue(ROM_COPY, address_head + 4, Overlay.Static, GetMapId(settings, shuffled_back.regionId), offset_dict, 4)
-                writeValue(ROM_COPY, address_head + 8, Overlay.Static, GetExitId(shuffled_back), offset_dict, 4)
+                writeValue(ROM_COPY, address_head + 8, Overlay.Static, GetExitId(settings, shuffled_back), offset_dict, 4)
         if ENABLE_BLAST_LZR:
             addr_hi = getHiSym("blastWarpHandler")
             addr_lo = getLoSym("blastWarpHandler")

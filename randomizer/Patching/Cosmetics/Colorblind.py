@@ -16,7 +16,7 @@ from randomizer.Patching.Library.Image import (
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, getRawFile, writeRawFile
 from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Kongs import Kongs
-from PIL import ImageEnhance
+from PIL import ImageEnhance, Image
 
 
 def changeVertexColor(num_data: list[int], offset: int, new_color: list[int]) -> list[int]:
@@ -811,3 +811,18 @@ def recolorMushrooms(mode: ColorblindMode, ROM_COPY: ROM):
         mushroom_image_side_2 = getImageFile(ROM_COPY, 25, files_table_25_side_2[file], True, 64, 32, TextureFormat.RGBA5551)
         mushroom_image_side_2 = maskMushroomImage(mushroom_image_side_2, reference_mushroom_image_side2, file_color, True)
         writeColorImageToROM(mushroom_image_side_2, 25, files_table_25_side_2[file], 64, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+
+
+def recolorHintItem(mode: ColorblindMode, ROM_COPY: ROM):
+    """Recolor the hint item for colorblind mode."""
+    textures = {
+        Kongs.donkey: 0x1360,
+        Kongs.diddy: 0x135D,
+        Kongs.lanky: 0x135E,
+        Kongs.tiny: 0x135F,
+        Kongs.chunky: 0x135C,
+    }
+    for kong, texture in textures.items():
+        color = getKongItemColor(mode, kong)
+        im = Image.new("RGBA", (32, 32), color)
+        writeColorImageToROM(im, 25, texture, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
