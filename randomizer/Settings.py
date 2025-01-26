@@ -1350,7 +1350,7 @@ class Settings:
             for i in range(len(phases)):
                 phases[i] = int(phases[i])
         orderedPhases = []
-        # TODO: Fix logic (lol)
+        # TODO: Fix logic (lol) (update: copilot autofilled "this is a mess" so now it has to stay forever)
         for map_id in phases:
             if map_id == Maps.KroolDonkeyPhase:
                 self.krool_donkey = True
@@ -1377,8 +1377,10 @@ class Settings:
             elif map_id == Maps.CastleBoss:
                 self.krool_kutout = True
             orderedPhases.append(map_id)
-
         self.krool_order = orderedPhases
+
+        # Identify if any bosses are plando'd. If so, then the normal boss placement algorithm will be discarded for a random placement.
+        self.boss_plando = self.enable_plandomizer and any([self.plandomizer_dict["plando_boss_order_" + str(i)] != -1 for i in range(7)])
 
         # Helm Order
         self.helm_donkey = False

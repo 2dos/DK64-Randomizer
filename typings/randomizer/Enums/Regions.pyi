@@ -261,3 +261,4 @@ class Regions(IntEnum):
     Snide = 258
     AlcoveBeyondHatch = 259
     MushroomBlastLevelExterior = 260
+    MushroomLowerBetweenLadders = 261

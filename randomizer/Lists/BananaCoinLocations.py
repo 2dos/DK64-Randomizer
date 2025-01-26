@@ -5565,7 +5565,7 @@ BananaCoinGroupList = {
             map_id=Maps.ForestGiantMushroom,
             name="At the dead ends at the bottom",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.MushroomLowerMid,
+            region=Regions.MushroomLowerBetweenLadders,
             locations=[
                 [1.0, 110, 278, 529],
                 [1.0, 790, 278, 533],
