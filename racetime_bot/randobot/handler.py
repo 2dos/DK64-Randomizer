@@ -29,21 +29,21 @@ class RandoHandler(RaceHandler):
             await self.send_message(
                 "Welcome to DK64R! " + random.choice(self.greetings) + "THIS IS CURRENT IN DEV MODE ONLY. USE AT YOUR OWN RISK.",
                 actions=[
-                    msg_actions.Action(
-                        label="Roll Seed",
-                        help_text="Create a seed using the latest release",
-                        message="!seed '${preset}' ${--password} ${--spoiler}",
-                        submit="Roll Race Seed",
-                        survey=msg_actions.Survey(
-                            msg_actions.SelectInput(
-                                name="preset",
-                                label="Preset",
-                                options={key: value["name"] for key, value in self.dk64.master_presets.items()},
-                            ),
-                            msg_actions.BoolInput(name="--password", label="Password Protect", default=True),
-                            msg_actions.BoolInput(name="--spoiler", label="Generate Spoiler Log", default=False),
-                        ),
-                    ),
+                    # msg_actions.Action(
+                    #     label="Roll Seed",
+                    #     help_text="Create a seed using the latest release",
+                    #     message="!seed '${preset}' ${--password} ${--spoiler}",
+                    #     submit="Roll Race Seed",
+                    #     survey=msg_actions.Survey(
+                    #         msg_actions.SelectInput(
+                    #             name="preset",
+                    #             label="Preset",
+                    #             options={key: value["name"] for key, value in self.dk64.master_presets.items()},
+                    #         ),
+                    #         msg_actions.BoolInput(name="--password", label="Password Protect", default=True),
+                    #         msg_actions.BoolInput(name="--spoiler", label="Generate Spoiler Log", default=False),
+                    #     ),
+                    # ),
                     msg_actions.Action(
                         label="Roll Dev Seed",
                         help_text="Create a seed using the latest release and release a spoiler log",
