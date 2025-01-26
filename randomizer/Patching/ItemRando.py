@@ -402,9 +402,11 @@ def writeShopData(ROM_COPY: LocalROM, location: int, item_type: MoveTypes, flag:
     ROM_COPY.writeMultipleBytes(kong, 1)
     ROM_COPY.writeMultipleBytes(price, 1)
 
+
 def getHintKongFromFlag(flag: int) -> int:
     """Get the kong associated with a hint from it's flag."""
     return (flag - 0x384) % 5
+
 
 def getActorIndex(item):
     """Get actor index from item."""

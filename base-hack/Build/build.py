@@ -134,7 +134,9 @@ file_dict = [
     File(name="Question Mark Diddy Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=649, source_file="question_mark_diddy_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Question Mark Lanky Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=650, source_file="question_mark_lanky_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Question Mark Tiny Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=651, source_file="question_mark_tiny_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    File(name="Question Mark Chunky Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=652, source_file="question_mark_chunky_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(
+        name="Question Mark Chunky Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=652, source_file="question_mark_chunky_om2.bin", do_not_extract=True, do_not_delete_source=True
+    ),
     File(name="Fairy Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=604, source_file="fairy_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(
         name="DPad Image",

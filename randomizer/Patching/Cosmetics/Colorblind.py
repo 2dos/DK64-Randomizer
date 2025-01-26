@@ -812,6 +812,7 @@ def recolorMushrooms(mode: ColorblindMode, ROM_COPY: ROM):
         mushroom_image_side_2 = maskMushroomImage(mushroom_image_side_2, reference_mushroom_image_side2, file_color, True)
         writeColorImageToROM(mushroom_image_side_2, 25, files_table_25_side_2[file], 64, 32, False, TextureFormat.RGBA5551, ROM_COPY)
 
+
 def recolorHintItem(mode: ColorblindMode, ROM_COPY: ROM):
     """Recolor the hint item for colorblind mode."""
     textures = {
