@@ -138,6 +138,7 @@ RegionMapList = {
     Regions.ForestMinecarts: Maps.ForestMinecarts,
     Regions.GiantMushroomArea: Maps.FungiForest,
     Regions.MushroomLower: Maps.ForestGiantMushroom,
+    Regions.MushroomLowerBetweenLadders: Maps.ForestGiantMushroom,
     Regions.MushroomLowerMid: Maps.ForestGiantMushroom,
     Regions.MushroomMiddle: Maps.ForestGiantMushroom,
     Regions.MushroomUpperMid: Maps.ForestGiantMushroom,
