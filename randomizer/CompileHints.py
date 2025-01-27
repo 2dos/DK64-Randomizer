@@ -1418,7 +1418,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 elif item.type == Types.Shockwave:
                     item_name = "fairy moves"
                     item_color = "\x06"
-                elif item.type == Types.TrainingBarrel:
+                elif item.type in (Types.TrainingBarrel, Types.Climbing):
                     item_name = "training moves"
                 elif item.type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
                     item_name = "shopkeepers"

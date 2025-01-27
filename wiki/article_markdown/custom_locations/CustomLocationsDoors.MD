@@ -22,8 +22,8 @@
 | Jungle Japes | Behind Rambi Door - watery room - right | Boss, Dk_Portal, Wrinkly |  | 
 | Jungle Japes | Top of Lanky's Useless Slope - left | Wrinkly, Dk_Portal | `(l.islanky and l.handstand) or l.CanPhase()` | 
 | Jungle Japes | Top of Lanky's Useless Slope - right | Wrinkly, Dk_Portal | `(l.islanky and l.handstand) or l.CanPhase()` | 
-| Jungle Japes | Underwater by Warp 2 | Boss, Dk_Portal, Wrinkly | `l.swim` | 
-| Jungle Japes | Underwater by Chunky's underground | Boss, Dk_Portal, Wrinkly | `l.swim` | 
+| Jungle Japes | Underwater by Warp 2 | Boss, Wrinkly | `l.swim` | 
+| Jungle Japes | Underwater by Chunky's underground | Boss, Wrinkly | `l.swim` | 
 | Jungle Japes | Next to Funky - right | Boss, Dk_Portal, Wrinkly |  | 
 | Jungle Japes | Next to Lanky's Painting Room - left | Boss, Dk_Portal, Wrinkly | `(l.handstand and l.islanky) or (l.twirl and l.istiny)` | 
 | Jungle Japes | Next to Lanky's Painting Room - right | Boss, Dk_Portal, Wrinkly | `(l.handstand and l.islanky) or (l.twirl and l.istiny)` | 

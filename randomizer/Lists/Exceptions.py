@@ -79,3 +79,7 @@ class SettingsIncompatibleException(FillException):
 
 class PlandoIncompatibleException(FillException):
     """Exception triggered when plando settings conflict with base settings."""
+
+
+class LocationsFailureException(FillException):
+    """Exception triggered when not all locations are reachable after placing random locations."""
