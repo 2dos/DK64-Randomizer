@@ -8,6 +8,7 @@ import json
 import os
 from waitress import serve
 from opentelemetry import trace
+import json
 
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry import metrics
@@ -147,7 +148,7 @@ def get_selector_info():
         "faster_checks": FasterCheckSelector,
         "cb_rando_levels": CBRandoSelector,
     }
-    return jsonify(selector_data)
+    return json.dumps(selector_data, sort_keys=False)
 
 
 @api.route("/convert_settings", methods=["POST"])
