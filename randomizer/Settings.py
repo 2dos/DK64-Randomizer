@@ -834,7 +834,7 @@ class Settings:
         self.points_list_active_moves = 5
         self.points_list_bean = 3
         # Progressive hints
-        self.progressive_hint_item = None
+        self.progressive_hint_item = ProgressiveHintItem.off
         self.enable_progressive_hints = False  # Deprecated
         self.progressive_hint_text = 0  # Deprecated
         self.progressive_hint_count = 0
