@@ -333,7 +333,7 @@
                 {% for i in range(0, 7) %}
                     <label id="plando_boss_order_div_{{i}}"
                         class="flex-container select-order">
-                        <span class="order-label">Level {{i+1}}:</span>
+                        <span class="order-label">{{cb_rando_levels[i].name}}:</span>
                         <div id="plando_boss_order_{{i}}_wrapper"
                              data-toggle="tooltip"
                              title>

@@ -399,15 +399,10 @@ def PlandoBosses(spoiler):
         filledBosses = []
         filledLevels = []
         for level in range(7):
-            level_order = -1
-            for order in spoiler.settings.level_order:
-                if level == spoiler.settings.level_order[order]:
-                    level_order = order - 1  # Classic off-by-one here: the UI goes 0-6 and the level order goes 1-7
-                    break
             # If we intend to plando this boss, send it in there
-            if spoiler.settings.plandomizer_dict["plando_boss_order_" + str(level_order)] != -1:
-                bossMap = Maps(spoiler.settings.plandomizer_dict["plando_boss_order_" + str(level_order)])
-                plannedKong = spoiler.settings.plandomizer_dict["plando_boss_kong_" + str(level_order)]
+            if spoiler.settings.plandomizer_dict["plando_boss_order_" + str(level)] != -1:
+                bossMap = Maps(spoiler.settings.plandomizer_dict["plando_boss_order_" + str(level)])
+                plannedKong = spoiler.settings.plandomizer_dict["plando_boss_kong_" + str(level)]
                 eligibleKongs = GetKongOptionsForBoss(bossMap, HardBossesEnabled(spoiler.settings, HardBossesSelected.alternative_mad_jack_kongs))
                 if plannedKong != -1:
                     # If the planned Kong is incompatible with this boss, ship it back

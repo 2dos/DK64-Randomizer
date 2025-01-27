@@ -373,6 +373,7 @@ door_locations = {
             location=[1475.0, 160.0, 1605.0, 351.0],
             group=5,
             moveless=False,
+            door_type=[DoorType.boss, DoorType.wrinkly],
             logic=lambda l: l.swim,
         ),
         DoorData(
@@ -382,6 +383,7 @@ door_locations = {
             location=[2151.0, 160.0, 1587.0, 350.0],
             group=5,
             moveless=False,
+            door_type=[DoorType.boss, DoorType.wrinkly],
             logic=lambda l: l.swim,
         ),
         DoorData(

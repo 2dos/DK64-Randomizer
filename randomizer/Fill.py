@@ -113,9 +113,9 @@ def KasplatShuffle(spoiler: Spoiler, LogicVariables: LogicVarHolder) -> None:
                     else:
                         # This is the first VerifyWorld check, and serves as the canary in the coal mine
                         # If we get to this point in the code, the world itself is likely unstable from some combination of settings or bugs
-                        js.postMessage("Settings combination is likely unstable.")
+                        js.postMessage("Not all locations reached.")
                         ResetShuffledKasplatLocations(spoiler)
-                        raise Ex.SettingsIncompatibleException("Settings combination is likely unstable - report this to the devs!")
+                        raise Ex.LocationsFailureException("Unexpected failure to reach all locations - report this to the devs!")
                 return
             except Ex.KasplatPlacementException:
                 retries += 1
