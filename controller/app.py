@@ -562,7 +562,7 @@ def get_selector_info():
     if not url:
         url = "http://127.0.0.1:8000"
     response = requests.get(f"{url}/get_selector_info")
-    return set_response(response.json(), response.status_code)
+    return set_response(response.text, response.status_code)
 
 
 @api.route("/convert_settings", methods=["POST"])
