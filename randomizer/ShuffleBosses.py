@@ -395,7 +395,7 @@ def updateKRoolSettings(spoiler, phase):
 
 def PlandoBosses(spoiler):
     """Fix bosses into their plando'd positions and then randomly fill the rest. This fill supercedes the standard boss placement algorithm."""
-    if spoiler.settings.enable_plandomizer:
+    if spoiler.settings.boss_plando:
         filledBosses = []
         filledLevels = []
         for level in range(7):
@@ -414,11 +414,12 @@ def PlandoBosses(spoiler):
                 spoiler.settings.boss_maps[level] = bossMap
                 filledBosses.append(bossMap)
                 filledLevels.append(level)
+        remainingBosses = [boss for boss in getBosses(spoiler.settings) if boss not in filledBosses]
         for level in range(7):
             if level in filledLevels:
                 continue
-            remainingBosses = [boss for boss in getBosses(spoiler.settings) if boss not in filledBosses]
             bossMap = random.choice(remainingBosses)
             spoiler.settings.boss_maps[level] = bossMap
+            remainingBosses.remove(bossMap)
         spoiler.settings.boss_kongs = ShuffleBossKongs(spoiler.settings, locked_levels=filledLevels)
         spoiler.settings.kutout_kongs = ShuffleKutoutKongs(spoiler.settings.boss_maps, spoiler.settings.boss_kongs, spoiler.settings.boss_kong_rando)
