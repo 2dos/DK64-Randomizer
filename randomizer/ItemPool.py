@@ -144,8 +144,9 @@ def PlaceConstants(spoiler):
             spoiler.LocationList[int(location_id)].PlaceItem(spoiler, item)
             settings.plandomizer_items_placed.append(item)
         # If any bosses are plando'd, do it now ahead of placing any items randomly.
-        # Doing it here has the added benefit of rerolling on fill failure.
-        PlandoBosses(spoiler)
+        if spoiler.settings.boss_plando:
+            # Doing it here has the added benefit of rerolling on fill failure.
+            PlandoBosses(spoiler)
 
 
 def AllItemsUnrestricted(settings):
