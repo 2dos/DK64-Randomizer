@@ -1162,7 +1162,15 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
                     spoiler.Reset()
                     item = location.item
                     location.item = None
-                    doubleCheckBeatsGame = GetAccessibleLocations(spoiler, assumedItems, SearchMode.CheckBeatable)  # We still assume Kongs here!
+                    # We still assume Kongs here!
+                    assumedItems = ItemPool.Kongs(spoiler.settings)
+                    if item in assumedItems:  # Except for if it's the item we're testing
+                        assumedItems.remove(item)
+                    # Check if we still have every woth location
+                    accessibleItems = GetAccessibleLocations(spoiler, assumedItems, SearchMode.GetReachable)
+                    inaccessibleWoths = [loc for loc in WothLocations if loc not in accessibleItems]
+                    if not any(inaccessibleWoths):
+                        doubleCheckBeatsGame = True
                     location.PlaceItem(spoiler, item)
                 # If the game is still beatable when banned with the other assumptions (or if we're skipping the double checking), this item is definitely not WotH
                 if skipDoubleCheck or doubleCheckBeatsGame:
