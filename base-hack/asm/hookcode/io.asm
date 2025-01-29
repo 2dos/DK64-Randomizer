@@ -129,3 +129,10 @@ adjustExitRead:
         lui $v0, hi(ExitCount)
         j 0x806C97E8
         lbu $v0, lo(ExitCount) ($v0)
+
+invertPan:
+    addiu $t7, $zero, 0x7F
+    subu $t6, $t7, $t6
+    sb $t6, 0x41 ($sp)
+    j 0x80737710
+    lw $t7, 0x5C ($sp)

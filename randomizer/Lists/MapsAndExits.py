@@ -653,18 +653,11 @@ def GetMapId(settings, regionId) -> Maps:
     return RegionMapList[regionId]
 
 
-def GetExitId(settings, back: TransitionBack) -> int:
+def GetExitId(back: TransitionBack) -> int:
     """Get exit id of a transition."""
     if back.regionId in ENTRY_HANDLERS:
         return -1
     mapId = RegionMapList[back.regionId]
-    if mapId == Maps.HideoutHelm:
-        entry_mapping = {
-            HelmSetting.default: 0,
-            HelmSetting.skip_start: 3,
-            HelmSetting.skip_all: 4,
-        }
-        return entry_mapping.get(settings.helm_setting, 0)
     if mapId in MapExitTable:
         return MapExitTable[mapId].index(back.name)
     else:

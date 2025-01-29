@@ -2172,7 +2172,7 @@ class Settings:
                 raise Ex.PlandoIncompatibleException(f"No region found for {planned_transition}")
             if region in RegionMapList:
                 tied_map = GetMapId(self, region)
-                tied_exit = GetExitId(self, planned_back_transition)
+                tied_exit = GetExitId(planned_back_transition)
                 valid_starting_regions.append(
                     {
                         "region": region,
@@ -2197,7 +2197,7 @@ class Settings:
                     tied_map = GetMapId(self, region)
                     for transition in transitions:
                         relevant_transition = ShufflableExits[transition].back.reverse
-                        tied_exit = GetExitId(self, ShufflableExits[relevant_transition].back)
+                        tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
                         valid_starting_regions.append(
                             {
                                 "region": region,
