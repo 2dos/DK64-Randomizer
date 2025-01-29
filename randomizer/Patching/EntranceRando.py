@@ -9,9 +9,10 @@ from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 valid_lz_types = [9, 12, 13, 16]
 
+
 def getFilteredExit(settings, mapId, exit):
     """Filter the output of GetExitID."""
-    
+
     if mapId == Maps.HideoutHelm:
         entry_mapping = {
             HelmSetting.default: 0,
@@ -20,6 +21,7 @@ def getFilteredExit(settings, mapId, exit):
         }
         return entry_mapping.get(settings.helm_setting, 0)
     return exit
+
 
 def getOneByteExit(back):
     """Convert 'getExitId' output to something acceptable to write to a 1-byte value."""
