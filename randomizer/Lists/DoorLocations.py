@@ -777,7 +777,7 @@ door_locations = {
         DoorData(
             name="Near Cranky's",
             map=Maps.AngryAztec,
-            logicregion=Regions.AngryAztecMain,
+            logicregion=Regions.AngryAztecConnectorTunnel,
             location=[2787.908, 120.0, 2674.299, 198.0],
             group=3,
             moveless=False,
