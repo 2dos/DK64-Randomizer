@@ -133,6 +133,6 @@ adjustExitRead:
 invertPan:
     addiu $t7, $zero, 0x7F
     subu $t6, $t7, $t6
-    sb $t6, 0x41 ($sp)
-    j 0x80737710
     lw $t7, 0x5C ($sp)
+    j 0x80737710
+    sb $t6, 0x41 ($t7)

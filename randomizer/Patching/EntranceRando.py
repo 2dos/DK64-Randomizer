@@ -12,7 +12,6 @@ valid_lz_types = [9, 12, 13, 16]
 
 def getFilteredExit(settings, mapId, exit):
     """Filter the output of GetExitID."""
-
     if mapId == Maps.HideoutHelm:
         entry_mapping = {
             HelmSetting.default: 0,
