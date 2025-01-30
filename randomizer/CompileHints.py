@@ -3118,7 +3118,7 @@ def GenerateMultipathDict(
             [Items.Cranky, Items.Peanut, Items.Pineapple, Items.Grape, Items.Oranges, Items.Coconut],
         ]
         verse_names = ["Donkey", "Tiny", "Lanky", "Diddy", "Chunky", "The Fridge"]
-        verse_colors = ["\x04", "\x07", "\x06", "\x05", "\x08", "\x0A"]
+        verse_colors = ["\x04", "\x07", "\x06", "\x05", "\x08", "\x0a"]
         # Determine which keys and kongs this location is on the path to
         for woth_loc in spoiler.woth_paths.keys():
             if location in spoiler.woth_paths[woth_loc]:

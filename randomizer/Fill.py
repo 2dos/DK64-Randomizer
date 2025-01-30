@@ -3181,6 +3181,8 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
         settings.troff_6,
         settings.troff_7,
     ]
+    # Reshuffle these values to the correct level index
+    ShuffleExits.UpdateLevelProgression(settings)
 
     # Cap the B. Locker amounts based on a random fraction of accessible GBs
     BLOCKER_MIN = 0.4
@@ -3806,6 +3808,8 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
             found_incompatibilities += "Cannot turn on 'Water is Lava' whilst turning disabling healing. "
     if not settings.is_valid_item_pool():
         found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
+    if settings.krool_access and Items.HideoutHelmKey in settings.starting_keys_list_selected:
+        found_incompatibilities += "Cannot start with Key 8 and guarantee Key 8 to be required at the same time. "
     if found_incompatibilities != "":
         raise Ex.SettingsIncompatibleException(found_incompatibilities)
 

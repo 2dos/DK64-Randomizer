@@ -201,7 +201,7 @@ def drawSplitString_test(input: str):
     # Put your code here to handle string_copy (don't handle "input")
 
 
-test_string = "SOMETHING IN THE \x0AIGLOO AREA\x0A IS ON THE PATH TO \x04KEY 4\x04."
+test_string = "SOMETHING IN THE \x0aIGLOO AREA\x0a IS ON THE PATH TO \x04KEY 4\x04."
 print("WORKING CASE:")
 drawSplitString(test_string)
 wipeColors()
