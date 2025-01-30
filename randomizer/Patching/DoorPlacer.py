@@ -423,14 +423,15 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                                 lim = 1
                             for k in range(lim):
                                 item_data = []
-                                for coord_index in range(3):
-                                    if k == 1 and coord_index == 1:
-                                        item_data.append(int(float_to_hex(door.location[coord_index] - 30), 16))  # y
-                                    else:
-                                        item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
                                 default_scale = door.scale
                                 if door.default_placed == DoorType.dk_portal:
                                     default_scale = 2
+                                for coord_index in range(3):
+                                    if k == 1 and coord_index == 1:
+                                        y_offset = 30 * default_scale
+                                        item_data.append(int(float_to_hex(door.location[coord_index] - y_offset), 16))  # y
+                                    else:
+                                        item_data.append(int(float_to_hex(door.location[coord_index]), 16))  # x y z
                                 item_data.append(int(float_to_hex([default_scale, 0.35 * default_scale][k]), 16))  # Scale
                                 item_data.append(0xFFFEFEFF)
                                 item_data.append(0x001BFFE1)
@@ -552,7 +553,7 @@ def getStoryDestination(spoiler, level: Levels) -> dict:
     if Transitions.IslesToHelm in spoiler.shuffled_exit_data:
         shuffledBack = spoiler.shuffled_exit_data[Transitions.IslesToHelm]
         map_id = GetMapId(spoiler.settings, shuffledBack.regionId)
-        exit_id = GetExitId(spoiler.settings, shuffledBack)
+        exit_id = GetExitId(shuffledBack)
     if map_id == Maps.HideoutHelm:
         helm_start = spoiler.settings.helm_setting
         if helm_start == HelmSetting.default:

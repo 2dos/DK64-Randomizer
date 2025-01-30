@@ -2808,7 +2808,7 @@ def patchAssembly(ROM_COPY, spoiler):
                 shuffled_back = spoiler.shuffled_exit_data[race_exit["tied_transition"]]
                 writeValue(ROM_COPY, address_head + 0, Overlay.Static, race_exit["race_map"], offset_dict, 4)
                 writeValue(ROM_COPY, address_head + 4, Overlay.Static, GetMapId(settings, shuffled_back.regionId), offset_dict, 4)
-                writeValue(ROM_COPY, address_head + 8, Overlay.Static, GetExitId(settings, shuffled_back), offset_dict, 4)
+                writeValue(ROM_COPY, address_head + 8, Overlay.Static, GetExitId(shuffled_back), offset_dict, 4)
         if ENABLE_BLAST_LZR:
             addr_hi = getHiSym("blastWarpHandler")
             addr_lo = getLoSym("blastWarpHandler")
@@ -3121,6 +3121,8 @@ def patchAssembly(ROM_COPY, spoiler):
         # Invert G_TRI2 Call
         writeValue(ROM_COPY, 0x8065DFBE, Overlay.Static, 0x0206, offset_dict)
         writeValue(ROM_COPY, 0x8065DFC6, Overlay.Static, 0x0604, offset_dict)
+        # Invert pan
+        writeHook(ROM_COPY, 0x80737708, Overlay.Static, "invertPan", offset_dict)
 
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold):
         writeFloatUpper(ROM_COPY, 0x806D3682, Overlay.Static, 100, offset_dict)  # Change fall too far threshold

@@ -1,6 +1,6 @@
 """Randomize Entrances passed from Misc options."""
 
-from randomizer.Enums.Settings import ShuffleLoadingZones
+from randomizer.Enums.Settings import ShuffleLoadingZones, HelmSetting
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -10,9 +10,21 @@ from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 valid_lz_types = [9, 12, 13, 16]
 
 
-def getOneByteExit(settings, back):
+def getFilteredExit(settings, mapId, exit):
+    """Filter the output of GetExitID."""
+    if mapId == Maps.HideoutHelm:
+        entry_mapping = {
+            HelmSetting.default: 0,
+            HelmSetting.skip_start: 3,
+            HelmSetting.skip_all: 4,
+        }
+        return entry_mapping.get(settings.helm_setting, 0)
+    return exit
+
+
+def getOneByteExit(back):
     """Convert 'getExitId' output to something acceptable to write to a 1-byte value."""
-    value = GetExitId(settings, back)
+    value = GetExitId(back)
     if value < 0:
         return value + 0x100
     return value
@@ -22,13 +34,14 @@ def getEntranceDict(spoiler, transition: Transitions, vanilla_map: Maps, vanilla
     """Create the LZR Entrance dict for a locally stored entrance."""
     if transition in spoiler.shuffled_exit_data:
         shuffledBack = spoiler.shuffled_exit_data[transition]
+        map_id = GetMapId(spoiler.settings, shuffledBack.regionId)
         return {
-            "map": GetMapId(spoiler.settings, shuffledBack.regionId),
-            "exit": GetExitId(spoiler.settings, shuffledBack),
+            "map": map_id,
+            "exit": getFilteredExit(spoiler.settings, map_id, GetExitId(shuffledBack)),
         }
     return {
         "map": vanilla_map,
-        "exit": vanilla_exit,
+        "exit": getFilteredExit(spoiler.settings, vanilla_map, vanilla_exit),
     }
 
 
@@ -68,7 +81,7 @@ def randomize_entrances(spoiler, ROM_COPY: LocalROM):
                                 ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
                                 ROM_COPY.writeMultipleBytes(zone["new_map"], 2)
                                 ROM_COPY.seek(cont_map_lzs_address + start + 0x14)
-                                ROM_COPY.writeMultipleBytes(zone["new_exit"], 2)
+                                ROM_COPY.writeMultipleBytes(getFilteredExit(spoiler.settings, zone["new_map"], zone["new_exit"]), 2)
                                 if zone["new_map"] == Maps.HideoutHelm:
                                     # Set to LZ Type 9, which does the Helm filtering
                                     ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
@@ -113,13 +126,14 @@ def randomize_entrances(spoiler, ROM_COPY: LocalROM):
                 ROM_COPY.write(1)
             else:
                 shuffledBack = spoiler.shuffled_exit_data[transition]
-                ROM_COPY.write(GetMapId(spoiler.settings, shuffledBack.regionId))
-                ROM_COPY.write(getOneByteExit(spoiler.settings, shuffledBack))
+                map_id = GetMapId(spoiler.settings, shuffledBack.regionId)
+                ROM_COPY.write(map_id)
+                ROM_COPY.write(getFilteredExit(spoiler.settings, map_id, getOneByteExit(shuffledBack)))
         # /* 0x088 */ unsigned short enter_levels[7]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
         for world_index, transition in enumerate(enter_transitions):
             shuffledBack = spoiler.shuffled_exit_data[transition]
             map_id = GetMapId(spoiler.settings, shuffledBack.regionId)
-            exit_id = GetExitId(spoiler.settings, shuffledBack)
+            exit_id = GetExitId(shuffledBack)
             spoiler.settings.level_portal_destinations[world_index] = {
                 "map": map_id,
                 "exit": exit_id,
