@@ -2580,12 +2580,6 @@ door_locations = {
             moveless=False,
             door_type=[DoorType.wrinkly],
             kong_lst=[Kongs.diddy],
-            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
-            or (
-                s.settings.activate_all_bananaports == ActivateAllBananaports.all
-                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
-                and s.settings.bananaport_rando == BananaportRando.off
-            ),
         ),
     ],
     Levels.FungiForest: [
