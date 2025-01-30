@@ -382,7 +382,7 @@ def portModelTwoToActor(model_two_index: int, input_file: str, output_file: str,
                 fh.write(raw.to_bytes(2, "big"))
         # Write data to temp files
         fh.seek(dl_start_pointer)
-        dl_data = b"\xDA\x38\x00\x03\x04\x00\x00\x00" + fh.read(dl_size)
+        dl_data = b"\xda\x38\x00\x03\x04\x00\x00\x00" + fh.read(dl_size)
         fh.seek(vert_start_pointer)
         vert_data = fh.read(vert_size)
     # Write
