@@ -49,32 +49,32 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  # randobot:
-  #   build:
-  #     context: ./
-  #     dockerfile: ./racetime_bot/Dockerfile
-  #     args:
-  #       - BRANCH=${BRANCH:-LOCAL}
-  #       - CATEGORY_SLUG=${CATEGORY_SLUG}
-  #       - RGG_CLIENT_ID=${RGG_CLIENT_ID}
-  #       - RGG_CLIENT_SECRET=${RGG_CLIENT_SECRET}
-  #       - DISCORD_WEBHOOK=${DISCORD_WEBHOOK}
-  #       - API_KEY=${API_KEY}
-  #   depends_on:
-  #     - controller
-  #   restart: always
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - BRANCH=${BRANCH:-LOCAL}
-  #   deploy:
-  #     replicas: ${RANDOBOT_REPLICAS:-1}
-  #     update_config:
-  #       parallelism: 1
-  #       delay: 10s
-  #       order: start-first
-  #   extra_hosts:
-  #     - "host.docker.internal:host-gateway"
+  randobot:
+    build:
+      context: ./
+      dockerfile: ./racetime_bot/Dockerfile
+      args:
+        - BRANCH=${BRANCH:-LOCAL}
+        - CATEGORY_SLUG=${CATEGORY_SLUG}
+        - RGG_CLIENT_ID=${RGG_CLIENT_ID}
+        - RGG_CLIENT_SECRET=${RGG_CLIENT_SECRET}
+        - DISCORD_WEBHOOK=${DISCORD_WEBHOOK}
+        - API_KEY=${API_KEY}
+    depends_on:
+      - controller
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - BRANCH=${BRANCH:-LOCAL}
+    deploy:
+      replicas: ${RANDOBOT_REPLICAS:-1}
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   nginx:
     build:
