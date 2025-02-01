@@ -57,6 +57,7 @@ class DK64:
     def roll_seed(self, preset, race, password, spoiler):
         """Generate a seed and return its public URL."""
         # Roll with provided preset for non-draft races.
+        self.load_presets()
         presets = []
         if race:
             presets = self.master_presets
@@ -70,7 +71,6 @@ class DK64:
                 json.dumps({"settings": presets[preset]["settings_string"]}),
                 headers={"Content-Type": "application/json", "x-api-key": self.api_key},
             )
-            print(converted_settings.text)
             converted_settings = converted_settings.json()
             if spoiler:
                 converted_settings["generate_spoilerlog"] = True
