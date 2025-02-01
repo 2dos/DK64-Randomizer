@@ -29,7 +29,7 @@ class DK64:
         self.dev_seed_url = "https://dev.dk64randomizer.com/randomizer?seed_id=%s"
         self.live_seed_url = "https://dk64randomizer.com/randomizer?seed_id=%s"
         self.seed_endpoint = "https://api.dk64rando.com/api/submit-task?branch=%s"
-        self.json_converter = "https://api.dk64rando.com/api/convert_settings"
+        self.json_converter = "https://api.dk64rando.com/api/convert_settings?branch=%s"
         self.preset_endpoint = "https://api.dk64rando.com/api/get_presets?return_blank=false&branch=%s"
         self.data_endpoint = "https://api.dk64rando.com/api/get_seed?hash=%s"
         self.status_endpoint = "https://api.dk64rando.com/api/task-status/%s"
@@ -58,15 +58,15 @@ class DK64:
         """Generate a seed and return its public URL."""
         # Roll with provided preset for non-draft races.
         presets = []
-        # if race:
-        #     presets = self.master_presets
-        #     branch = "stable"
-        # else:
-        presets = self.dev_presets
-        branch = "dev"
+        if race:
+            presets = self.master_presets
+            branch = "stable"
+        else:
+            presets = self.dev_presets
+            branch = "dev"
         if preset is not None:
             converted_settings = requests.post(
-                self.json_converter,
+                self.json_converter % branch,
                 json.dumps({"settings": presets[preset]["settings_string"]}),
                 headers={"Content-Type": "application/json", "x-api-key": self.api_key},
             )
