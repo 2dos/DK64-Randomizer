@@ -58,18 +58,20 @@ class DK64:
         """Generate a seed and return its public URL."""
         # Roll with provided preset for non-draft races.
         presets = []
-        if race:
-            presets = self.master_presets
-            branch = "stable"
-        else:
-            presets = self.dev_presets
-            branch = "dev"
+        # if race:
+        #     presets = self.master_presets
+        #     branch = "stable"
+        # else:
+        presets = self.dev_presets
+        branch = "dev"
         if preset is not None:
             converted_settings = requests.post(
                 self.json_converter,
                 json.dumps({"settings": presets[preset]["settings_string"]}),
                 headers={"Content-Type": "application/json", "x-api-key": self.api_key},
-            ).json()
+            )
+            print(converted_settings.text)
+            converted_settings = converted_settings.json()
             if spoiler:
                 converted_settings["generate_spoilerlog"] = True
             else:
