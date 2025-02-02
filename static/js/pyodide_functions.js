@@ -101,7 +101,8 @@ async function shared_url_ui(data) {
   // Wait for all files to be processed
   await Promise.all(promises);
 
-  let seed_id = new TextDecoder("utf-8").decode(extracted_variables["seed_number"]);
+  let seed_number = new TextDecoder("utf-8").decode(extracted_variables["seed_number"]);
+  let seed_id = new TextDecoder("utf-8").decode(extracted_variables["seed_id"]);
   let version = extracted_variables["version"]
     ? new TextDecoder("utf-8").decode(extracted_variables["version"])
     : "0.0.0";
@@ -163,8 +164,8 @@ async function shared_url_ui(data) {
     // Set the current URL to the seed ID so that it can be shared without reloading the page
     window.history.pushState(
       "generated_seed",
-      seed_id,
-      `/randomizer?seed_id=${seed_id}`
+      seed_number,
+      `/randomizer?seed_id=${seed_number}`
     );
 
     try {
