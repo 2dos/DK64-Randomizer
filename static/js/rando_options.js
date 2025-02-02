@@ -1190,8 +1190,10 @@ function toggle_item_rando() {
   }
   elements.nonItemRandoWarning.toggleAttribute("hidden", !disabled);
   elements.sharedShopWarning.toggleAttribute("hidden", shopsInPool && !disabled);
-  elements.kongRando.toggleAttribute("disabled", kongsInPool);
-  elements.kongRando.checked = kongsInPool;
+  if (!disabled) {
+    elements.kongRando.toggleAttribute("disabled", kongsInPool);
+    elements.kongRando.checked = kongsInPool;
+  }
 
   if (!disabled && shopsInPool) {
     if (elements.moveVanilla.selected || elements.moveRando.selected) {

@@ -15,7 +15,7 @@
 <p align="center">
     Python/C based builder and patching system for randomizing DK64 entirely within your browser.
     <br />
-    <a href="https://dev.dk64randomizer.com/wiki/"><strong>Explore the docs »</strong></a>
+    <a href="https://dk64randomizer.com/wiki/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://dk64randomizer.com/">Live Site</a>
@@ -31,12 +31,16 @@
 
 
 ## Table of Contents
+- [Table of Contents](#table-of-contents)
 - [About the project](#about-the-project)
 - [Getting Started](#getting-started)
   - [Requirements](#requirements)
   - [Installation](#installation)
 - [Usage](#usage)
 - [FAQ](#faq)
+  - [Q: Is this randomizer beatable?](#q-is-this-randomizer-beatable)
+  - [Q: Can I use this on console hardware?](#q-can-i-use-this-on-console-hardware)
+  - [Q: Where can I report issues?](#q-where-can-i-report-issues)
 - [Contributing](#contributing)
 
 ## About the project
