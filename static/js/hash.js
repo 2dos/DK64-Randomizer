@@ -151,7 +151,6 @@ async function get_hash_images(type = "local", mode = "hash") {
     }
     // Save as base64-encoded PNG if in hash mode
     if (mode === "hash") {
-      console.log("created")
       const imgBase64 = canvas.toDataURL("image/png").split(",")[1]; // Get base64 PNG data
       loadedImages.push(imgBase64); // Add image to the list of loaded images
     } else {
