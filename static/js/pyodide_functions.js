@@ -101,16 +101,14 @@ async function shared_url_ui(data) {
   // Wait for all files to be processed
   await Promise.all(promises);
 
-  let seed_id = new TextDecoder("utf-8").decode(extracted_variables["seed_id"]);
+  let seed_id = new TextDecoder("utf-8").decode(extracted_variables["seed_number"]);
   let version = extracted_variables["version"]
     ? new TextDecoder("utf-8").decode(extracted_variables["version"])
     : "0.0.0";
 
   let hash_id;
   try {
-    hash_id = new TextDecoder("utf-8").decode(
-      extracted_variables["seed_number"]
-    );
+    hash_id = JSON.parse(new TextDecoder("utf-8").decode(extracted_variables["hash"]));
   } catch (error) {
     hash_id = null;
   }
@@ -148,14 +146,11 @@ async function shared_url_ui(data) {
     }
     if (hash_data.length > 0) {
       document.getElementById("hashdiv").innerHTML = "";
-      for (let i = 0; i < hash_data.length; i++) {
+      for (let i = 0; i < hash_id.length; i++) {
         let img = document.getElementById("hash" + i);
-        img.src = "data:image/jpeg;base64," + hash_data[i];
-        img.style = "";
+        img.src = "data:image/jpeg;base64," + hash_data[hash_id[i]];
         // Flip Horizontally
-        if (i % 2 == 1) {
-          img.style = "transform: scaleX(-1);";
-        }
+        img.style = "transform: scaleX(-1);";
       }
     } else {
       document.getElementById("hashdiv").innerHTML =
@@ -168,13 +163,13 @@ async function shared_url_ui(data) {
     // Set the current URL to the seed ID so that it can be shared without reloading the page
     window.history.pushState(
       "generated_seed",
-      hash_id,
-      `/randomizer?seed_id=${hash_id}`
+      seed_id,
+      `/randomizer?seed_id=${seed_id}`
     );
 
     try {
       document.getElementById("download_unlocked_spoiler_button").onclick = () =>
-        unlock_spoiler_log(hash_id);
+        unlock_spoiler_log(seed_id);
       document.getElementById("download_unlocked_spoiler_button").hidden = false;
     } catch (error) {
       document.getElementById("download_unlocked_spoiler_button").hidden = true;
