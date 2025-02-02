@@ -1,46 +1,31 @@
 #include "../../include/common.h"
 
+typedef struct coinHUDStruct {
+	/* 0x000 */ maps map_id;
+	/* 0x004 */ unsigned char *addr;
+} coinHUDStruct;
+
+static coinHUDStruct CoinHUDElements[] = {
+	{.map_id = MAP_AZTECBEETLE, .addr = &Rando.coinreq_aztecbeetle},
+	{.map_id = MAP_JAPESMINECART, .addr = &Rando.coinreq_japescart},
+	{.map_id = MAP_FUNGIMINECART, .addr = &Rando.coinreq_fungicart},
+	{.map_id = MAP_CAVESBEETLERACE, .addr = &Rando.coinreq_cavesbeetle},
+	{.map_id = MAP_FACTORYCARRACE, .addr = &Rando.coinreq_factorycar},
+	{.map_id = MAP_CASTLECARRACE, .addr = &Rando.coinreq_castlecar},
+	{.map_id = MAP_GALLEONSEALRACE, .addr = &Rando.coinreq_sealrace},
+	{.map_id = MAP_CASTLEMINECART, .addr = &Rando.coinreq_castlecart},
+};
+
 Gfx* writeHUDAmount(char* str_location, char* format, int value, int item_index, Gfx* dl) {
-	int found = 0;
-	int amt = -1;
 	if (item_index == 0xB) {
-		switch(CurrentMap) {
-			case MAP_AZTECBEETLE:
-				amt = Rando.coinreq_aztecbeetle;
-				break;
-			case MAP_JAPESMINECART:
-				amt = Rando.coinreq_japescart;
-				break;
-			case MAP_FUNGIMINECART:
-				amt = Rando.coinreq_fungicart;
-				break;
-			case MAP_CAVESBEETLERACE:
-				amt = Rando.coinreq_cavesbeetle;
-				break;
-			case MAP_FACTORYCARRACE:
-				amt = Rando.coinreq_factorycar;
-				break;
-			case MAP_CASTLECARRACE:
-				amt = Rando.coinreq_castlecar;
-				break;
-			case MAP_GALLEONSEALRACE:
-				amt = Rando.coinreq_sealrace;
-				break;
-			case MAP_CASTLEMINECART:
-				amt = Rando.coinreq_castlecart;
-				break;
-			default:
-			break;
-		}
-		if (amt > -1) {
-			found = 1;
+		for (int i = 0; i < 8; i++) {
+			if (CoinHUDElements[i].map_id == CurrentMap) {
+				dk_strFormat(str_location,"%dl%d", value, *CoinHUDElements[i].addr);
+				gSPMatrix(dl++, (int)&style6Mtx[0], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+				return dl;
+			}
 		}
 	}
-	if (found) {
-		dk_strFormat(str_location,"%dl%d",value,amt);
-		gSPMatrix(dl++, (int)&style6Mtx[0], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-	} else {
-		dk_strFormat(str_location,"%d",value);
-	}
+	dk_strFormat(str_location,"%d",value);
 	return dl;
 }

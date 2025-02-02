@@ -144,7 +144,7 @@ class RaceBound:
                 return new_angle
 
 
-def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
+def writeRandomCastleCarRace(ROM_COPY: LocalROM):
     """Write random castle car race pathing."""
     # Castle Car Race
     placement_bubbles = []
@@ -257,6 +257,10 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM, spoiler):
         if point_filtered >= len(enemy_car_checkpoints):
             point_filtered = len(enemy_car_checkpoints) - 1
         coords = enemy_car_checkpoints[point_filtered]
+        if len(coords) != 3:
+            raise Exception("Invalid tuple size for Castle Car Race.")
+        if slot in (22, 23):  # Positions used for the end of Castle Car Race
+            raise Exception("Invalid slot for Castle Car Race.")
         for item in coords:
             ROM_COPY.writeMultipleBytes(item, 2)
     # Write checkpoint file
@@ -608,4 +612,4 @@ def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
                 ROM_COPY.writeMultipleBytes(x, 2)
                 ROM_COPY.writeMultipleBytes(y, 2)
                 ROM_COPY.writeMultipleBytes(z, 2)
-        writeRandomCastleCarRace(ROM_COPY, spoiler)
+        writeRandomCastleCarRace(ROM_COPY)
