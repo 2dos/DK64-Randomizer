@@ -85,7 +85,7 @@ def build_levels():
         },
         "dkisles": {
             "id": "dkisles",
-            "Name": "DK 5Isles",
+            "Name": "DK Isles",
             "Class": "Region",
             "Type": "Level",
             "Colour": "#FFD700",
@@ -99,12 +99,37 @@ def build_levels():
         }
     }
 
-    return levels
+    level_edges = {}
+    for id, region in levels.items():
+        level_id = id.lower()
+        edge_id = "rr-" + level_id + "-world"
+        level_edge = {
+            "id": edge_id,
+            "Name": region['Name'] + " World",
+            "source": "world",
+            "target": level_id,
+            "sourceType": "Region",
+            "targetType":  "Region",
+            "Class":  "Region",
+            "type":  "World"
+        }
+        level_edges[level_edge['id']] = level_edge
 
 
-world = {
-    "regions": build_levels()
-}
+    levels['world'] = {
+        "id": "world",
+        "Name": "World",
+        "Class": "Region",
+        "Type": "World",
+        "Colour": "#FFFFFF",
+    }
+    return {
+        "nodes": levels,
+        "edges": level_edges
+        }
+
+
+world = build_levels()
 
 with open('./tools/cave_logic/Deltas/level_nodes.json', 'w') as json_file:
     json.dump(world, json_file, indent=4)

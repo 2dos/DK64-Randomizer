@@ -11,13 +11,14 @@ from levels import build_levels
 
 regions = build_regions()
 checks = build_checks()
+levels = build_levels()
 
 world = {
     "id": "newgen1",
     "world": {
         "worlds": {},
-        "regions": {**build_levels(), **regions['nodes']},
-        "edges": {**regions['edges'], **checks['edges'], **build_exits(), **build_events(), **build_warps()},
+        "regions": {**levels['nodes'], **regions['nodes']},
+        "edges": {**levels['edges'],**regions['edges'], **checks['edges'], **build_exits(), **build_events(), **build_warps()},
         "locations": {},
         "subChecks": {},
         "items": {**build_items(), **build_collectibles(), **checks['nodes']},

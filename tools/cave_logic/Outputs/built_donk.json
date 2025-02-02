@@ -61,7 +61,7 @@
             },
             "dkisles": {
                 "id": "dkisles",
-                "Name": "DK 5Isles",
+                "Name": "DK Isles",
                 "Class": "Region",
                 "Type": "Level",
                 "Colour": "#FFD700"
@@ -72,6 +72,13 @@
                 "Class": "Region",
                 "Type": "Level",
                 "Colour": "#FF00FF"
+            },
+            "world": {
+                "id": "world",
+                "Name": "World",
+                "Class": "Region",
+                "Type": "World",
+                "Colour": "#FFFFFF"
             },
             "gamestart": {
                 "id": "gamestart",
@@ -1467,6 +1474,106 @@
             }
         },
         "edges": {
+            "rr-junglejapes-world": {
+                "id": "rr-junglejapes-world",
+                "Name": "Jungle Japes World",
+                "source": "world",
+                "target": "junglejapes",
+                "sourceType": "Region",
+                "targetType": "Region",
+                "Class": "Region",
+                "type": "World"
+            },
+            "rr-angryaztec-world": {
+                "id": "rr-angryaztec-world",
+                "Name": "Angry Aztec World",
+                "source": "world",
+                "target": "angryaztec",
+                "sourceType": "Region",
+                "targetType": "Region",
+                "Class": "Region",
+                "type": "World"
+            },
+            "rr-franticfactory-world": {
+                "id": "rr-franticfactory-world",
+                "Name": "Frantic Factory World",
+                "source": "world",
+                "target": "franticfactory",
+                "sourceType": "Region",
+                "targetType": "Region",
+                "Class": "Region",
+                "type": "World"
+            },
+            "rr-gloomygalleon-world": {
+                "id": "rr-gloomygalleon-world",
+                "Name": "Gloomy Galleon World",
+                "source": "world",
+                "target": "gloomygalleon",
+                "sourceType": "Region",
+                "targetType": "Region",
+                "Class": "Region",
+                "type": "World"
+            },
+            "rr-fungiforest-world": {
+                "id": "rr-fungiforest-world",
+                "Name": "Fungi Forest World",
+                "source": "world",
+                "target": "fungiforest",
+                "sourceType": "Region",
+                "targetType": "Region",
+                "Class": "Region",
+                "type": "World"
+            },
+            "rr-crystalcaves-world": {
+                "id": "rr-crystalcaves-world",
+                "Name": "Crystal Caves World",
+                "source": "world",
+                "target": "crystalcaves",
+                "sourceType": "Region",
+                "targetType": "Region",
+                "Class": "Region",
+                "type": "World"
+            },
+            "rr-creepycastle-world": {
+                "id": "rr-creepycastle-world",
+                "Name": "Creepy Castle World",
+                "source": "world",
+                "target": "creepycastle",
+                "sourceType": "Region",
+                "targetType": "Region",
+                "Class": "Region",
+                "type": "World"
+            },
+            "rr-hideouthelm-world": {
+                "id": "rr-hideouthelm-world",
+                "Name": "Hideout Helm World",
+                "source": "world",
+                "target": "hideouthelm",
+                "sourceType": "Region",
+                "targetType": "Region",
+                "Class": "Region",
+                "type": "World"
+            },
+            "rr-dkisles-world": {
+                "id": "rr-dkisles-world",
+                "Name": "DK Isles World",
+                "source": "world",
+                "target": "dkisles",
+                "sourceType": "Region",
+                "targetType": "Region",
+                "Class": "Region",
+                "type": "World"
+            },
+            "rr-shops-world": {
+                "id": "rr-shops-world",
+                "Name": "Shops World",
+                "source": "world",
+                "target": "shops",
+                "sourceType": "Region",
+                "targetType": "Region",
+                "Class": "Region",
+                "type": "World"
+            },
             "rr-gamestart-level": {
                 "id": "rr-gamestart-level",
                 "Name": "Game Start Level",
