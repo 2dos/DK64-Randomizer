@@ -16963,14 +16963,7 @@
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": {
-                    "combinator": "AND",
-                    "rules": [
-                        {
-                            "Name": "li-helmdonkey1-mg"
-                        }
-                    ]
-                },
+                "Requires": true,
                 "Persona": "donkey",
                 "Rewards": {
                     "combinator": "and",
@@ -16992,14 +16985,7 @@
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": {
-                    "combinator": "AND",
-                    "rules": [
-                        {
-                            "Name": "li-helmdonkey2-mg"
-                        }
-                    ]
-                },
+                "Requires": true,
                 "Persona": "donkey",
                 "Rewards": {
                     "combinator": "and",
@@ -17021,14 +17007,7 @@
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": {
-                    "combinator": "AND",
-                    "rules": [
-                        {
-                            "Name": "li-helmdiddy1-mg"
-                        }
-                    ]
-                },
+                "Requires": true,
                 "Persona": "diddy",
                 "Rewards": {
                     "combinator": "and",
@@ -17050,14 +17029,7 @@
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": {
-                    "combinator": "AND",
-                    "rules": [
-                        {
-                            "Name": "li-helmdiddy2-mg"
-                        }
-                    ]
-                },
+                "Requires": true,
                 "Persona": "diddy",
                 "Rewards": {
                     "combinator": "and",
@@ -17079,14 +17051,7 @@
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": {
-                    "combinator": "AND",
-                    "rules": [
-                        {
-                            "Name": "li-helmlanky1-mg"
-                        }
-                    ]
-                },
+                "Requires": true,
                 "Persona": "lanky",
                 "Rewards": {
                     "combinator": "and",
@@ -17108,14 +17073,7 @@
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": {
-                    "combinator": "AND",
-                    "rules": [
-                        {
-                            "Name": "li-helmlanky2-mg"
-                        }
-                    ]
-                },
+                "Requires": true,
                 "Persona": "lanky",
                 "Rewards": {
                     "combinator": "and",
@@ -17137,14 +17095,7 @@
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": {
-                    "combinator": "AND",
-                    "rules": [
-                        {
-                            "Name": "li-helmtiny1-mg"
-                        }
-                    ]
-                },
+                "Requires": true,
                 "Persona": "tiny",
                 "Rewards": {
                     "combinator": "and",
@@ -17166,14 +17117,7 @@
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": {
-                    "combinator": "AND",
-                    "rules": [
-                        {
-                            "Name": "li-helmtiny2-mg"
-                        }
-                    ]
-                },
+                "Requires": true,
                 "Persona": "tiny",
                 "Rewards": {
                     "combinator": "and",
@@ -17195,14 +17139,7 @@
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": {
-                    "combinator": "AND",
-                    "rules": [
-                        {
-                            "Name": "li-helmchunky1-mg"
-                        }
-                    ]
-                },
+                "Requires": true,
                 "Persona": "chunky",
                 "Rewards": {
                     "combinator": "and",
@@ -17224,14 +17161,7 @@
                 "targetType": "Item",
                 "Types": "Constant",
                 "Class": "Check",
-                "Requires": {
-                    "combinator": "AND",
-                    "rules": [
-                        {
-                            "Name": "li-helmchunky2-mg"
-                        }
-                    ]
-                },
+                "Requires": true,
                 "Persona": "chunky",
                 "Rewards": {
                     "combinator": "and",
