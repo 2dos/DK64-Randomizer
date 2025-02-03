@@ -89289,6 +89289,12 @@
                 "Class": "Hint",
                 "Type": "Hint"
             },
+            "snidebomhint": {
+                "id": "snidehelmhint",
+                "Name": "Snide Helm Hint",
+                "Class": "Hint",
+                "Type": "Hint"
+            },
             "coin_donkey": {
                 "id": "coin_donkey",
                 "Key": "coin_donkey",

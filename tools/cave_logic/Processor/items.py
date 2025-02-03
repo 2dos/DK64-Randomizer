@@ -52,6 +52,13 @@ def build_items():
             "Type": "Hint"
         }
 
+    edges['snidebomhint'] = {
+        "id": "snidehelmhint",
+        "Name": "Snide Helm Hint",
+        "Class": "Hint",
+        "Type": "Hint"
+    }
+
     return edges
 
 world = {

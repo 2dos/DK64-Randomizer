@@ -2171,6 +2171,12 @@
             "Name": "Castle DK",
             "Class": "Hint",
             "Type": "Hint"
+        },
+        "snidebomhint": {
+            "id": "snidehelmhint",
+            "Name": "Snide Helm Hint",
+            "Class": "Hint",
+            "Type": "Hint"
         }
     }
 }
