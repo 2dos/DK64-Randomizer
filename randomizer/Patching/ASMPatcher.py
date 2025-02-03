@@ -1768,14 +1768,13 @@ def patchAssembly(ROM_COPY, spoiler):
         # I don't think we can sneak in creating the other JALs necessary to calculate distance.
         # We could make this part of "better fairy camera"? This means those calcuations don't need to be made.
 
-
     if JP_TEXTBOX_SIZES:
         writeValue(ROM_COPY, 0x8075A788, Overlay.Static, 0x40026666, offset_dict, 4)
         writeValue(ROM_COPY, 0x8075A78C, Overlay.Static, 0x60000000, offset_dict, 4)
         writeValue(ROM_COPY, 0x8075A790, Overlay.Static, 0x4064B333, offset_dict, 4)
         writeValue(ROM_COPY, 0x8075A794, Overlay.Static, 0x20000000, offset_dict, 4)
-        writeFloat(ROM_COPY, 0X8075A7A0, Overlay.Static, 165.6, offset_dict)
-        writeFloat(ROM_COPY, 0X8075A7A4, Overlay.Static, 96.6, offset_dict)
+        writeFloat(ROM_COPY, 0x8075A7A0, Overlay.Static, 165.6, offset_dict)
+        writeFloat(ROM_COPY, 0x8075A7A4, Overlay.Static, 96.6, offset_dict)
         writeValue(ROM_COPY, 0x8075A7A8, Overlay.Static, 0x4056A666, offset_dict, 4)
         writeValue(ROM_COPY, 0x8075A7AC, Overlay.Static, 0x60000000, offset_dict, 4)
         writeValue(ROM_COPY, 0x8075E4A0, Overlay.Static, 0x40633333, offset_dict, 4)

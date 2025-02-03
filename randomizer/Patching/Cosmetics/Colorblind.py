@@ -772,6 +772,7 @@ def recolorPotions(settings, colorblind_mode: ColorblindMode, ROM_COPY: ROM):
                 val |= local_channel << shift
             ROM_COPY.writeMultipleBytes(val, 2)
 
+
 def maskMushroomImage(im_f, reference_image, color, side_2=False):
     """Apply RGB mask to mushroom image."""
     w, h = im_f.size
