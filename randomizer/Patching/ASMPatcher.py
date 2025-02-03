@@ -98,6 +98,8 @@ CAMERA_RESET_REDUCTION = True
 PAL_DOGADON_REMATCH_FIRE = True
 REMOVE_CS_BARS = False
 GREATER_CAMERA_CONTROL = True
+JP_TEXTBOX_SIZES = True
+FRAMEBUFFER_STORE_FIX = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -1765,6 +1767,26 @@ def patchAssembly(ROM_COPY, spoiler):
         # Thankfully currentactor is loaded into a0.
         # I don't think we can sneak in creating the other JALs necessary to calculate distance.
         # We could make this part of "better fairy camera"? This means those calcuations don't need to be made.
+
+    if JP_TEXTBOX_SIZES:
+        writeValue(ROM_COPY, 0x8075A788, Overlay.Static, 0x40026666, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8075A78C, Overlay.Static, 0x60000000, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8075A790, Overlay.Static, 0x4064B333, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8075A794, Overlay.Static, 0x20000000, offset_dict, 4)
+        writeFloat(ROM_COPY, 0x8075A7A0, Overlay.Static, 165.6, offset_dict)
+        writeFloat(ROM_COPY, 0x8075A7A4, Overlay.Static, 96.6, offset_dict)
+        writeValue(ROM_COPY, 0x8075A7A8, Overlay.Static, 0x4056A666, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8075A7AC, Overlay.Static, 0x60000000, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8075E4A0, Overlay.Static, 0x40633333, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8075E4A4, Overlay.Static, 0x20000000, offset_dict, 4)
+        writeValue(ROM_COPY, 0x806A42B6, Overlay.Static, 0x6000, offset_dict)  # Increase a malloc
+
+    if FRAMEBUFFER_STORE_FIX:
+        writeHook(ROM_COPY, 0x8070A848, Overlay.Static, "disableFBStore", offset_dict)
+        writeHook(ROM_COPY, 0x8070B05C, Overlay.Static, "disableFBZip0", offset_dict)
+        writeHook(ROM_COPY, 0x80709BC4, Overlay.Static, "disableFBZip1", offset_dict)
+        writeHook(ROM_COPY, 0x8061134C, Overlay.Static, "disableFBZip2", offset_dict)
+        writeHook(ROM_COPY, 0x80629230, Overlay.Static, "disableFBMisc", offset_dict)
 
     # Spawn Enemy Drops function
     enemy_drop_addrs = [

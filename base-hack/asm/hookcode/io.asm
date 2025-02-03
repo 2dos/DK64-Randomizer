@@ -136,3 +136,59 @@ invertPan:
     lw $t7, 0x5C ($sp)
     j 0x80737710
     sb $t6, 0x41 ($t7)
+
+disableFBStore:
+    ; If FB pointer is null, do not store framebuffer
+    beq $a0, $zero, disableFBStore_jump
+    lui $a3, 0x8074
+    j 0x8070A850
+    lui $t0, 0x8074
+
+    disableFBStore_jump:
+        jr $ra
+        nop
+
+disableFBZip0:
+    beq $a0, $zero, disableFBZip0_jump
+    lui $t6, 0x8075
+    j 0x8070B064
+    addiu $sp, $sp, -0x50
+
+    disableFBZip0_jump:
+        jr $ra
+        nop
+
+disableFBZip1:
+    beq $a2, $zero, disableFBZip1_jump
+    nop
+    addiu $sp, $sp, -0xC0
+    j 0x80709BCC
+    sw $ra, 0x3C ($sp)
+
+    disableFBZip1_jump:
+        jr $ra
+        nop
+
+disableFBZip2:
+    beq $a0, $zero, disableFBZip2_jump
+    lui $t6, 0x807F
+    j 0x80611354
+    lw $t6, 0x5A64 ($t6)
+
+    disableFBZip2_jump:
+        jr $ra
+        nop
+
+disableFBMisc:
+    lw $a0, 0x5D80 ($a0)
+    beq $a0, $zero, disableFBMisc_jump
+    nop
+    jal 0x8070A848
+    nop
+    j 0x80629238
+    nop
+
+    disableFBMisc_jump:
+        lw $ra, 0x14 ($sp)
+        jr $ra
+        addiu $sp, $sp, 0x20
