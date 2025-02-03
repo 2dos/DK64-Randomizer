@@ -1,6 +1,6 @@
 // Class to store the image information
 class ImageInfo {
-  constructor(name, format, table, index, width, height, mode) {
+  constructor(name, format, table, index, width, height, mode, read_offset = 0) {
     this.name = name;
     this.format = format;
     this.table = table;
@@ -8,6 +8,7 @@ class ImageInfo {
     this.width = width;
     this.height = height;
     this.mode = mode;
+    this.read_offset = read_offset;
   }
 }
 
@@ -16,15 +17,15 @@ async function get_hash_images(type = "local", mode = "hash") {
   // List of images with properties like format, size, etc.
   const images = [
     new ImageInfo("bongos", "rgba16", 25, 5548, 40, 40, "hash"),
-    new ImageInfo("crown", "rgba16", 25, 5893, 44, 44, "hash"),
+    new ImageInfo("crown", "rgba16", 25, 5893, 44, 44, "hash", -1),
     new ImageInfo("dk_coin", "rgba16", 7, 500, 48, 44, "hash"),
-    new ImageInfo("fairy", "rgba32", 25, 5869, 32, 32, "hash"),
+    new ImageInfo("fairy", "rgba32", 25, 5869, 32, 32, "hash", -1),
     new ImageInfo("guitar", "rgba16", 25, 5547, 40, 40, "hash"),
-    new ImageInfo("nin_coin", "rgba16", 25, 5912, 44, 44, "hash"),
+    new ImageInfo("nin_coin", "rgba16", 25, 5912, 44, 44, "hash", -1),
     new ImageInfo("orange", "rgba16", 7, 309, 32, 32, "hash"),
     new ImageInfo("rainbow_coin", "rgba16", 25, 5963, 48, 44, "hash"),
-    new ImageInfo("rw_coin", "rgba16", 25, 5905, 44, 44, "hash"),
-    new ImageInfo("saxophone", "rgba16", 25, 5549, 40, 40, "hash"),
+    new ImageInfo("rw_coin", "rgba16", 25, 5905, 44, 44, "hash", -1),
+    new ImageInfo("saxophone", "rgba16", 25, 5549, 40, 40, "hash", -1),
   ];
 
   // Append additional fairy and explosion images to the list
@@ -90,12 +91,13 @@ async function get_hash_images(type = "local", mode = "hash") {
         false
       );
     let imgSize = imgEnd - imgStart;
+    imgSize += imageInfo.read_offset;
     // Read the image data from the ROM
     romType.seek(imgStart);
     let imgData = Uint8Array.from(romType.readBytes(imgSize));
     // Decompress image data if necessary
     let dec = imgData;
-    if (imageInfo.table === 25) {
+    if (imageInfo.table === 25 ) {
       dec = new pako.inflate(imgData); // Use pako for zlib decompression
     }
     // Create canvas and draw image based on format (rgba16/rgba32)
@@ -140,10 +142,10 @@ async function get_hash_images(type = "local", mode = "hash") {
     tempCtx.drawImage(canvas, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(tempCanvas, 0, 0);
-    if (
+    if (mode !== "hash" && 
       ctx
-        .getImageData(0, 0, imageInfo.width, imageInfo.height)
-        .data.every((val) => val === 0)
+      .getImageData(0, 0, imageInfo.width, imageInfo.height)
+      .data.every((val) => val === 0)
     ) {
       continue;
     }
