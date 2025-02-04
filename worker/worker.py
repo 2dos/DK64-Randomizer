@@ -55,7 +55,7 @@ resource = Resource(
         "service.version": str(version),
         "deployment.environment": BRANCH,
         "container.id": next((l.rsplit("/", 1)[-1] for l in open("/proc/self/cgroup") if "docker" in l), "") if os.path.exists("/proc/self/cgroup") else "",
-        "container.name": socket.gethostname(),   
+        "container.name": socket.gethostname(),
     }
 )
 

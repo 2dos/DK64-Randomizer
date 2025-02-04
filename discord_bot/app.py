@@ -32,7 +32,7 @@ resource = Resource(
         "service.version": "1.0",
         "deployment.environment": os.environ.get("BRANCH", "LOCAL"),
         "container.id": next((l.rsplit("/", 1)[-1] for l in open("/proc/self/cgroup") if "docker" in l), "") if os.path.exists("/proc/self/cgroup") else "",
-        "container.name": socket.gethostname(),   
+        "container.name": socket.gethostname(),
     }
 )
 logger = logging.getLogger(__name__)
