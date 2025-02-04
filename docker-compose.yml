@@ -4,6 +4,8 @@ services:
     ports:
       - "6379:6379"
     restart: always
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=redis,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
     networks:
       - task_network
     volumes:
@@ -40,6 +42,7 @@ services:
       - WORKER_URL_MASTER=http://master_worker:8000
       - BRANCH=${BRANCH:-LOCAL}
       - COPY_FILES=${COPY_FILES:-./}
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=controller,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
     deploy:
       replicas: ${CONTROLLER_REPLICAS:-2}
       update_config:
@@ -67,6 +70,7 @@ services:
       - .env
     environment:
       - BRANCH=${BRANCH:-LOCAL}
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=racetime_bot,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
     deploy:
       replicas: ${RANDOBOT_REPLICAS:-1}
       update_config:
@@ -84,6 +88,8 @@ services:
         - NGINX=${NGINX:-LOCAL}
     env_file:
       - .env
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=nginx,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
     ports:
       - target: 80
         published: 80
@@ -111,6 +117,8 @@ services:
     env_file:
       - .env
     restart: always
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=discord_bot,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
     networks:
       - task_network
     depends_on:
@@ -138,6 +146,7 @@ services:
       - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
       - BRANCH=${BRANCH:-LOCAL}
       - COPY_FILES=${COPY_FILES:-./}
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=dev_worker,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
     volumes:
       - ./dk64.z64:/app/worker/dk64.z64
       - ./generated_seeds/:/app/worker/generated_seeds/
@@ -171,6 +180,7 @@ services:
   #     - CLIENT_SECRET=${CLIENT_SECRET}
   #     - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
   #     - BRANCH=${MASTER_BRANCH:-master}
+  #     - OTEL_RESOURCE_ATTRIBUTES=service.name=master_worker,service.version=1.0.0,deployment.environment=${MASTER_BRANCH:-master}
   #   volumes:
   #     - ./dk64.z64:/app/worker/dk64.z64
   #     - ./generated_seeds/:/app/worker/generated_seeds/
