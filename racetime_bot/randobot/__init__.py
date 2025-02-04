@@ -29,7 +29,7 @@ logging.basicConfig(level=logging.INFO)
 # Define a resource to identify your service
 resource = Resource(
     attributes={
-        "service.name": "discord_bot",
+        "service.name": "racetime_bot",
         "service.version": "1.0",
         "deployment.environment": os.environ.get("BRANCH", "LOCAL"),
         "container.id": next((l.rsplit("/", 1)[-1] for l in open("/proc/self/cgroup") if "docker" in l), "") if os.path.exists("/proc/self/cgroup") else "",
