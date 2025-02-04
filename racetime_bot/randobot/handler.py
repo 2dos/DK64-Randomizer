@@ -217,8 +217,6 @@ class RandoHandler(RaceHandler):
         """Check the status of the seed generation."""
         await sleep(1)
         status, data = self.dk64.get_status(self.state["seed_id"])
-        print(status)
-        print(data)
         if status == 0:
             self.state["status_checks"] += 1
             if self.state["status_checks"] < self.max_status_checks:

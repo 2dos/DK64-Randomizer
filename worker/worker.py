@@ -8,7 +8,7 @@ import json
 import os
 from waitress import serve
 from opentelemetry import trace
-import json
+import socket
 
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry import metrics
@@ -54,6 +54,8 @@ resource = Resource(
         "service.name": "worker-" + BRANCH,
         "service.version": str(version),
         "deployment.environment": BRANCH,
+        "container.id": next((l.rsplit("/", 1)[-1] for l in open("/proc/self/cgroup") if "docker" in l), "") if os.path.exists("/proc/self/cgroup") else "",
+        "container.name": socket.gethostname(),
     }
 )
 
