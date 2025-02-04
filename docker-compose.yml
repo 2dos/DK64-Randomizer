@@ -70,7 +70,7 @@ services:
       - .env
     environment:
       - BRANCH=${BRANCH:-LOCAL}
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=randobot,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=racetime_bot,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
     deploy:
       replicas: ${RANDOBOT_REPLICAS:-1}
       update_config:
