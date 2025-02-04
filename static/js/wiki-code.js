@@ -461,4 +461,16 @@ function filterHTML(element, output_html) {
             updateImage(e.target.getAttribute("src"), alt_text == "image" ? "" : alt_text);
         });
     }
+
+    // Modify links
+    const links = document.getElementsByTagName("a");
+    for (let i = 0; i < links.length; i++) {
+        href = links[i].getAttribute("href");
+        if (href) {
+            if (href.substring(0, 2) == "./") {
+                console.log("Modifying link...");
+                links[i].setAttribute("href", `?title=${href.substring(2)}`)
+            }
+        }
+    }
 }
