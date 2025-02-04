@@ -215,18 +215,21 @@ class RandoHandler(RaceHandler):
 
     async def check_seed_status(self):
         """Check the status of the seed generation."""
-        await sleep(1)
+        await sleep(5)
         status, data = self.dk64.get_status(self.state["seed_id"])
         if status == 0:
             self.state["status_checks"] += 1
             if self.state["status_checks"] < self.max_status_checks:
                 await self.check_seed_status()
+            else:
+                self.state["seed_id"] = None
+                await self.send_message("Sorry, but it looks like the seed is taking too long to generate.")
         elif status == 1:
             self.state["result_data"] = data.json()["result"]
             await self.load_seed_hash()
         elif status >= 2:
             self.state["seed_id"] = None
-            await self.send_message("Sorry, but it looks like the seed failed to generate. Use " "!seed to try again.")
+            await self.send_message("Sorry, but it looks like the seed failed to generate. Use !seed to try again.")
 
     async def load_seed_hash(self):
         """When the seed is ready, get the data."""
