@@ -7,6 +7,7 @@ import copy
 import secrets
 import threading
 import time
+import socket
 from datetime import UTC, datetime
 from os import environ, path, walk
 
@@ -54,6 +55,8 @@ resource = Resource(
         "service.name": "controller",
         "service.version": str(version),
         "deployment.environment": os.environ.get("BRANCH", "LOCAL"),
+        "container.id": next((l.rsplit("/", 1)[-1] for l in open("/proc/self/cgroup") if "docker" in l), "") if os.path.exists("/proc/self/cgroup") else "",
+        "container.name": socket.gethostname(),
     }
 )
 

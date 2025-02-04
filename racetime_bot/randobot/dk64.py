@@ -62,9 +62,11 @@ class DK64:
         if race:
             presets = self.master_presets
             branch = "stable"
+            logger.info("Rolling Stable Seed")
         else:
             presets = self.dev_presets
             branch = "dev"
+            logger.info("Rolling Dev Seed")
         if preset is not None:
             converted_settings = requests.post(
                 self.json_converter % branch,
@@ -72,6 +74,7 @@ class DK64:
                 headers={"Content-Type": "application/json", "x-api-key": self.api_key},
             )
             converted_settings = converted_settings.json()
+            logger.info(f"Converted settings for preset {preset} for {branch} branch.")
             if spoiler:
                 converted_settings["generate_spoilerlog"] = True
             else:
@@ -86,8 +89,12 @@ class DK64:
                 headers={"Content-Type": "application/json", "x-api-key": self.api_key},
                 json=req_body,
             ).json()
+            logger.info(f"Rolled seed with preset {preset} for {branch} branch.")
+            logger.info(f"Seed ID: {data['task_id']}")
             data["id"] = data["task_id"]
             return data["task_id"]
+        else:
+            logger.error("No preset provided.")
         return None, None
 
     def get_status(self, seed_id):
@@ -96,6 +103,8 @@ class DK64:
             self.status_endpoint % seed_id,
             headers={"x-api-key": self.api_key},
         )
+        logger.info(f"Checking status of seed {seed_id}")
+        logger.info(f"Status: {data.json()['status']}")
         if data.status_code == 200 and data.json()["status"] in ["failure", "stopped", "error"] or data.json().get("error", False):
             return 2, data
         elif data.status_code == 200 and data.json()["status"] == "finished":
