@@ -1152,6 +1152,7 @@ def patchAssembly(ROM_COPY, spoiler):
         0x00,  # FLAG_FIRSTJAPESGATE,
         0x17E,  # FLAG_FTT_BLOCKER,
         0x18C,  # FLAG_FIRST_COIN_COLLECTION
+        0x164,  # BBlast first time cutscene
     ]
 
     ACTOR_DEF_START = getSym("actor_defs")
@@ -1662,6 +1663,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
         writeFunction(ROM_COPY, 0x80027E68, Overlay.Critter, "fairyQueenCutsceneInit", offset_dict)  # BFI, Init Cutscene Setup
         writeFunction(ROM_COPY, 0x80028104, Overlay.Critter, "fairyQueenCutsceneCheck", offset_dict)  # BFI, Cutscene Play
+        writeFunction(ROM_COPY, 0x80028014, Overlay.Critter, "fairyQueenCheckSpeedup", offset_dict)  # BFI, Cutscene Prep
         # Flag Stuff
         writeFunction(ROM_COPY, 0x80024CF0, Overlay.Menu, "countFlagsDuplicate", offset_dict)  # Flag change to FLUT
         writeFunction(ROM_COPY, 0x80024854, Overlay.Menu, "checkFlagDuplicate", offset_dict)  # Flag change to FLUT

@@ -147,3 +147,4 @@
 .definelabel sendActorSignal, 0x80724994
 .definelabel disappearPeel, 0x8002E7A0
 .definelabel resetLankyKR, 0x8002EA14
+.definelabel unkSoundFunction, 0x80605314

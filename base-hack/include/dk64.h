@@ -477,6 +477,7 @@ extern short getScreenDist(short x, short y);
 extern int getDistanceCap(short input_dist);
 
 extern void customDamageCode(void);
+extern void unkSoundFunction(void *actor, int unk);
 
 //vanilla data
 extern OSThread* __osActiveQueue;

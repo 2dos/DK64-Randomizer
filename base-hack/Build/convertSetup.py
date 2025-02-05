@@ -193,6 +193,7 @@ def getObjectModifications(target_map: Maps) -> list:
             ObjectTypes.modeltwo, ObjectChangeType.add, Maps.Isles, 0x6, new_id=0x100, obj_type=132, x=2457.471, y=1280, z=3458.604, rx=0, ry=166, rz=0, scale=1.18
         ),  # Factory Lobby Barricade
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x2C, y=715),  # Factory Diddy Prod GB
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x7, y=475),  # Factory Last Prod Elevator
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CD, y=178.5), # Factory Spring Coins
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CE, y=178.5), # Factory Spring Coins
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CF, y=178.5), # Factory Spring Coins
