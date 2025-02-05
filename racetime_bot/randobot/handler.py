@@ -8,6 +8,7 @@ from racetime_bot import RaceHandler, monitor_cmd, can_moderate, can_monitor, ms
 
 logger = logging.getLogger(__name__)
 
+
 class RandoHandler(RaceHandler):
     """RandoBot race handler. Generates seeds, presets, and frustration."""
 
