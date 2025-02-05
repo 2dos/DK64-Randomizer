@@ -205,7 +205,7 @@ def writeKongColors(settings: Settings, ROM_COPY: ROM):
                     # if this palette color is not randomized (but might be a custom color) and isn't krusha's kong indicator:
                     elif palette.fill_type != PaletteFillType.kong:
                         color = colors_dict[custom_setting]
-                        if index == 1: # IS THE CHECKERED PATTERN
+                        if index == 1:  # IS THE CHECKERED PATTERN
                             color = getRGBFromHash(color)
                             for i in range(3):
                                 color[i] = 255 - color[i]
