@@ -3,7 +3,10 @@
 from asyncio import sleep
 import random
 import requests
+import logging
 from racetime_bot import RaceHandler, monitor_cmd, can_moderate, can_monitor, msg_actions
+
+logger = logging.getLogger(__name__)
 
 
 class RandoHandler(RaceHandler):
@@ -291,7 +294,9 @@ class RandoHandler(RaceHandler):
         }
         if self.dk64.discord_webhook and not self.data.get("unlisted", False):
             requests.post(self.dk64.discord_webhook, json=embed_data)
+        logger.info("Password Selected? %s" % self.state["result_data"].get("password"))
         if self.state["result_data"].get("password"):
+            logger.info("Result Send Message! Password: %(password)s" % {"password": self.state["result_data"]["password"]})
             # await self.send_message("Seed generated! Password: %(password)s" % {"password": self.state["result_data"]["password"]})
             # DM the password to the user
             await self.send_message(f"Seed generated! Password: {self.state['result_data']['password']}", direct_to=self.data.get("opened_by", {}).get("id"))
