@@ -236,6 +236,8 @@ int fairyQueenCutsceneInit(int start, int count, flagtypes type) {
     if (fairies_in_possession < fairy_limit) {
         // Not enough fairies
         CurrentActorPointer_0->control_state = 10;
+    } else {
+        CurrentActorPointer_0->control_state = 3;
     }
     return fairies_in_possession;
 }
@@ -247,7 +249,7 @@ void fairyQueenCutsceneCheck(void) {
     if (CurrentActorPointer_0->control_state == 10) {
         float dx = CurrentActorPointer_0->xPos - Player->xPos;
         float dz = CurrentActorPointer_0->zPos - Player->zPos;
-        if ((dx * dx) + (dz * dz) < 10000.0f) {
+        if ((dx * dx) + (dz * dz) < 8100.0f) {
             // In Range
             if (!checkFlag(0x79, FLAGTYPE_TEMPORARY)) {
                 playCutscene(Player, 3, 1);
@@ -257,6 +259,11 @@ void fairyQueenCutsceneCheck(void) {
         }
     }
     renderActor(CurrentActorPointer_0, 0);
+}
+
+void fairyQueenCheckSpeedup(void *actor, int unk) {
+    unkSoundFunction(actor, unk);
+    fairyQueenCutsceneInit(0x24D, 20, FLAGTYPE_PERMANENT);
 }
 
 #define STORED_COUNT 18
