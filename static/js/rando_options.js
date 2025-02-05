@@ -693,12 +693,18 @@ async function enable_plandomizer() {
     } catch (error) {
       console.log("Error setting up Pyodide:", error);
     }
-    // Load ui.__init__.py
-    await run_python_file("ui/__init__.py");
+    try{
+      // Load ui.__init__.py
+      await run_python_file("ui/__init__.py");
+    }
+    catch (error) {
+      console.log("Error running ui/__init__.py:", error);
+    }
     plandoTab.style.display = "";
     $("#plando-modal").modal("hide");
   } else {
     plandoTab.style.display = "none";
+    $("#plando-modal").modal("hide");
   }
 }
 
@@ -1184,8 +1190,10 @@ function toggle_item_rando() {
   }
   elements.nonItemRandoWarning.toggleAttribute("hidden", !disabled);
   elements.sharedShopWarning.toggleAttribute("hidden", shopsInPool && !disabled);
-  elements.kongRando.toggleAttribute("disabled", kongsInPool);
-  elements.kongRando.checked = kongsInPool;
+  if (!disabled) {
+    elements.kongRando.toggleAttribute("disabled", kongsInPool);
+    elements.kongRando.checked = kongsInPool;
+  }
 
   if (!disabled && shopsInPool) {
     if (elements.moveVanilla.selected || elements.moveRando.selected) {

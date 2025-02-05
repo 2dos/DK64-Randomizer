@@ -132,7 +132,7 @@ class DoorData:
         self.placed = DoorType.boss
         portal_region = spoiler.RegionList[self.logicregion]
         boss_region_id = GetBossLobbyRegionIdForRegion(self.logicregion, portal_region)
-        portal_region.exits.append(TransitionFront(boss_region_id, lambda l: self.logic))
+        portal_region.exits.append(TransitionFront(boss_region_id, self.logic))
 
     def updateDoorTypeLogic(self, spoiler):
         """Update door type list depending on enabled settings."""

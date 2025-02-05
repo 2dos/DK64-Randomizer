@@ -7,13 +7,16 @@ from randomizer.Patching.Library.Image import (
     TextureFormat,
     maskImage,
     getImageFile,
+    getImageFromAddress,
     getKongItemColor,
     writeColorImageToROM,
     ExtraTextures,
     getBonusSkinOffset,
     rgba32to5551,
 )
+from randomizer.Patching.Library.Generic import Overlay
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, getRawFile, writeRawFile
+from randomizer.Patching.ASMPatcher import getROMAddress, populateOverlayOffsets
 from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Kongs import Kongs
 from PIL import ImageEnhance, Image
@@ -679,7 +682,7 @@ def getPotionColor(colorblind_mode: ColorblindMode, kong: Kongs) -> list[int]:
     return new_color.copy()
 
 
-def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
+def recolorPotions(settings, colorblind_mode: ColorblindMode, ROM_COPY: ROM):
     """Overwrite potion colors."""
     # Actor:
     file = [[0xED, 0xEE, 0xEF, 0xF0, 0xF1, 0xF2], [0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA]]
@@ -744,17 +747,30 @@ def recolorPotions(colorblind_mode: ColorblindMode, ROM_COPY: ROM):
         data = bytearray(num_data)  # convert num_data back to binary string
         writeRawFile(TableNames.ModelTwoGeometry, file_index, True, data, ROM_COPY)
 
-    return
-    # DK Arcade sprites
-    # for file in range(8, 14):
-    #     index = file - 8
-    #     if index < 5:
-    #         color = getKongItemColor(colorblind_mode, index)
-    #     else:
-    #         color = "#FFFFFF"
-    #     potion_image = getImageFile(6, file, False, 20, 20, TextureFormat.RGBA5551)
-    #     potion_image = maskPotionImage(potion_image, color, secondary_color[index])
-    #     writeColorImageToROM(potion_image, 6, file, 20, 20, False, TextureFormat.RGBA5551, ROM_COPY)
+    ROM_COPY.seek(settings.rom_data + 0x15A)
+    arcade_sprite = int.from_bytes(ROM_COPY.readBytes(1), "big")
+    if arcade_sprite == 0:
+        return
+    kong = arcade_sprite - 1
+    if kong == Kongs.any:
+        color = "#FFFFFF"
+    elif kong < 5:
+        color = getKongItemColor(colorblind_mode, kong)
+    offset_dict = populateOverlayOffsets(ROM_COPY)
+    addr = getROMAddress(0x8003AE58, Overlay.Arcade, offset_dict)
+    potion_image = getImageFromAddress(ROM_COPY, addr, 20, 20, False, 800, TextureFormat.RGBA5551)
+    potion_image = maskPotionImage(potion_image, color, getPotionColor(colorblind_mode, kong))
+    px = potion_image.load()
+    ROM_COPY.seek(addr)
+    for y in range(20):
+        for x in range(20):
+            px_data = px[x, y]
+            val = 1 if px_data[3] > 128 else 0
+            for c in range(3):
+                local_channel = (px_data[c] >> 3) & 0x1F
+                shift = 1 + (5 * (2 - c))
+                val |= local_channel << shift
+            ROM_COPY.writeMultipleBytes(val, 2)
 
 
 def maskMushroomImage(im_f, reference_image, color, side_2=False):

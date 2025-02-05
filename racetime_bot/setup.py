@@ -25,6 +25,8 @@ setup(
         "isodate>=0.6.1,<0.7",
         "racetime_bot>=1.5.0,<3.0",
         "requests>=2.25.1,<3.0",
+        "opentelemetry-exporter-otlp-proto-http",
+        "opentelemetry-instrumentation-requests",
     ],
     packages=find_packages(),
     entry_points={

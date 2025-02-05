@@ -124,7 +124,7 @@ typedef struct varspace {
 	/* 0x157 */ char free_source_ttemple; // Kong who frees the kong in Tiny Temple
 	/* 0x158 */ char free_target_factory; // Kong you free in Factory
 	/* 0x159 */ char free_source_factory; // Kong who frees the kong in Factory
-	/* 0x15A */ char unk_15a;
+	/* 0x15A */ char arcade_reward_idx; // Purely used for the arcade sprite in colorblind mode
 	/* 0x15B */ char auto_keys; // 0 = Vanilla, 1 = Keys turn in as soon as you get them
 	/* 0x15C */ short matching_game_sounds[8]; // Sound effect 0 is treated as "sound not randomized"
 	/* 0x16C */ char piano_game_order[7]; // Each item denotes a key, normally CBCDECA (2123420). A = 0, 1 = B, 2 = C, 3 = D, 4 = E, 5 = F

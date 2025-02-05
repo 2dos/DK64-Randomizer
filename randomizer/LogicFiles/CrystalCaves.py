@@ -201,7 +201,7 @@ LogicRegions = {
         TransitionFront(Regions.TinyCabin, lambda l: (l.saxophone and l.istiny) or l.CanPhase() or l.CanSkew(True), Transitions.CavesCabinToTiny),
         TransitionFront(Regions.ChunkyCabin, lambda l: (l.triangle and l.ischunky) or l.CanPhase() or l.CanSkew(True), Transitions.CavesCabinToChunky),
         TransitionFront(Regions.CandyCaves, lambda l: l.candyAccess),
-        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.jetpack and l.isdiddy) or (l.balloon or l.islanky) or l.CanMoonkick() or ((l.isdiddy or l.istiny or (l.islanky and not l.isKrushaAdjacent(Kongs.lanky))) and l.advanced_platforming) or l.CanPhase())),
+        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.jetpack and l.isdiddy) or (l.balloon and l.islanky) or l.CanMoonkick() or ((l.isdiddy or l.istiny or (l.islanky and not l.isKrushaAdjacent(Kongs.lanky))) and l.advanced_platforming) or l.CanPhase())),
     ]),
 
     Regions.RotatingCabin: Region("Rotating Cabin", HintRegion.Cabins, Levels.CrystalCaves, False, None, [
