@@ -674,9 +674,29 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 					}
 				} else if (param2 == JAPES_DKCAGESWITCH) {
-					if (checkFlag(DKJAPESCAGEGB_OPEN, FLAGTYPE_PERMANENT)) {
-						behaviour_pointer->current_state = 20;
-						behaviour_pointer->next_state = 20;
+					if(index == 0){
+						if (checkFlag(DKJAPESCAGEGB_OPEN, FLAGTYPE_PERMANENT)) {
+							behaviour_pointer->current_state = 20;
+							behaviour_pointer->next_state = 20;
+						}
+					} else if(index == 1){
+						// Obtain bamboo gate variables
+						int bambooGateIndex = convertIDToIndex(64);
+						int* m2location = (int*)ObjectModel2Pointer;
+						ModelTwoData* gateModelTwoPointer = getObjectArrayAddr(m2location,0x90,bambooGateIndex);
+						if (gateModelTwoPointer) {
+							// If pointer exists with that id, check behaviour
+							behaviour_data* bambooGateBehaviour = gateModelTwoPointer->behaviour_pointer;
+							if (bambooGateBehaviour) {
+								// If behaviour exists (always should do, but always good to check) initialize the gate
+								if(bambooGateIndex != -1 && bambooGateBehaviour->pause_state == RUNSTATE_PAUSED){
+									// Bamboo gate is initialized
+									return 1;
+								}
+							}
+						}
+						// Bamboo gate is presumably not initialized
+						return 0;
 					}
 				} else if (param2 == JAPES_MOUNTAINGB) {
 					if (index == 0) {
