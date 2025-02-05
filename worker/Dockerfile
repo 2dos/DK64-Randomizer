@@ -20,6 +20,7 @@ ENV TZ=UTC
 # Conditionally clone the repository if BRANCH is not LOCAL
 RUN git config --global core.compression 0 && \
     git clone --depth 1 --branch $BRANCH https://github.com/2dos/DK64-Randomizer.git /app
+COPY randomizer/Encryption.py /app/randomizer/Encryption.py
 WORKDIR /app/worker
 
 # Install dependencies
