@@ -2354,6 +2354,12 @@ door_locations = {
             group=12,
             moveless=False,
             door_type=[DoorType.wrinkly],
+            dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.galleon_lighthouse_gate)
+            or (
+                s.settings.activate_all_bananaports == ActivateAllBananaports.all
+                and s.settings.bananaport_placement_rando == ShufflePortLocations.off
+                and s.settings.bananaport_rando == BananaportRando.off
+            ),
         ),
         DoorData(
             name="Tiny's 5D ship",
