@@ -170,7 +170,7 @@ async function shared_url_ui(data) {
 
     try {
       document.getElementById("download_unlocked_spoiler_button").onclick = () =>
-        unlock_spoiler_log(seed_id);
+        unlock_spoiler_log(seed_number);
       document.getElementById("download_unlocked_spoiler_button").hidden = false;
     } catch (error) {
       document.getElementById("download_unlocked_spoiler_button").hidden = true;
