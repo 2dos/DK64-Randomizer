@@ -705,8 +705,7 @@ ColoredBananaGroupList = [
         map_id=Maps.GloomyGalleon,
         name="Alcove behind Enguarde plank",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.LighthouseUnderwater,
-        logic=lambda l: Events.LighthouseEnguarde in l.Events or l.CanPhaseswim(),
+        region=Regions.LighthouseEnguardeDoor,
         locations=[
             [5, 1.2, 881, 1465, 4900],
             [5, 1.2, 777, 1465, 4966],
@@ -1011,8 +1010,7 @@ ColoredBananaGroupList = [
         map_id=Maps.GalleonLighthouse,
         name="Ladder at the bottom",
         konglist=[Kongs.donkey],
-        region=Regions.Lighthouse,
-        logic=lambda l: l.climbing,
+        region=Regions.LighthouseAboveLadder,
         locations=[
             [1, 1.0, 450, 16, 287],
             [1, 1.0, 450, 59, 288],
@@ -1026,8 +1024,7 @@ ColoredBananaGroupList = [
         map_id=Maps.GalleonLighthouse,
         name="Around first floor platforms",
         konglist=[Kongs.donkey],
-        region=Regions.Lighthouse,
-        logic=lambda l: l.climbing,
+        region=Regions.LighthouseAboveLadder,
         locations=[
             [1, 1.0, 332, 200, 352],
             [1, 1.0, 303, 200, 425],
@@ -1046,8 +1043,7 @@ ColoredBananaGroupList = [
         map_id=Maps.GalleonLighthouse,
         name="Around the top of the lighthouse",
         konglist=[Kongs.donkey],
-        region=Regions.Lighthouse,
-        logic=lambda l: l.climbing,
+        region=Regions.LighthouseAboveLadder,
         locations=[
             [1, 1.0, 428, 720, 414],
             [1, 1.0, 400, 720, 461],
@@ -1061,8 +1057,7 @@ ColoredBananaGroupList = [
         map_id=Maps.GalleonLighthouse,
         name="Around the bottom of the lighthouse",
         konglist=[Kongs.donkey],
-        region=Regions.Lighthouse,
-        logic=lambda l: l.climbing,
+        region=Regions.LighthouseAboveLadder,
         locations=[
             [1, 1.0, 379, 0, 221],
             [1, 1.0, 286, 0, 269],
@@ -1317,9 +1312,8 @@ ColoredBananaGroupList = [
         map_id=Maps.GloomyGalleon,
         name="In alcove behind Enguarde box (Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.LighthouseUnderwater,
+        region=Regions.LighthouseEnguardeDoor,
         vanilla=True,
-        logic=lambda l: (Events.LighthouseEnguarde in l.Events or l.CanPhaseswim()),
         locations=[
             [1, 1.0, 945.9843139648438, 1429.8197021484375, 4678.3828125],
             [1, 1.0, 895.1714477539062, 1457.6646728515625, 4727.05419921875],
@@ -1719,8 +1713,7 @@ ColoredBananaGroupList = [
         map_id=Maps.GalleonLighthouse,
         name="Group 1 up the lighthouse (Donkey)",
         konglist=[Kongs.donkey],
-        region=Regions.Lighthouse,
-        logic=lambda l: l.climbing,
+        region=Regions.LighthouseAboveLadder,
         vanilla=True,
         locations=[
             [5, 1.0, 550.31982421875, 343.0, 467.5648193359375],
@@ -1732,8 +1725,7 @@ ColoredBananaGroupList = [
         map_id=Maps.GalleonLighthouse,
         name="Group 2 up the lighthouse (Donkey)",
         konglist=[Kongs.donkey],
-        region=Regions.Lighthouse,
-        logic=lambda l: l.climbing,
+        region=Regions.LighthouseAboveLadder,
         vanilla=True,
         locations=[
             [5, 1.0, 379.747802734375, 505.0, 392.3007507324219],
@@ -1861,8 +1853,7 @@ BalloonList = [
         name="Around top",
         speed=6,
         konglist=[Kongs.donkey],
-        region=Regions.Lighthouse,
-        logic=lambda l: l.climbing,
+        region=Regions.LighthouseAboveLadder,
         points=[
             [372, 800, 315],
             [298, 807, 418],

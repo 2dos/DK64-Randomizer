@@ -38,9 +38,11 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 5),
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 4),
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut, None, 1),  # On Guitar pad
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
+    ],
+    Regions.TempleGuitarPad: [
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On Guitar pad
     ],
     Regions.TempleUnderwater: [
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 7),
@@ -103,28 +105,32 @@ LogicRegions = {
     Regions.AztecBaboonBlast: [
     ],
     Regions.DonkeyTemple: [
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.coconut or l.CanPhase(), None, 2),
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.coconut or l.CanPhase(), None, 2),  # By second switch
     ],
     Regions.DiddyTemple: [
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.peanut or l.CanPhase(), None, 1),  # First dead end
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.peanut or l.CanPhase(), None, 1),  # Second dead end
+    ],
+    Regions.DiddyTempleDeadEndRight: [
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # Second dead end
     ],
     Regions.LankyTemple: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),
     ],
-    Regions.TinyTemple: [
+    Regions.TinyTempleEntrance: [
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 1),  # Under first switch
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.feather or l.CanPhase(), None, 1),  # Under second switch
+    ],
+    Regions.TinyTemple: [
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 1),  # Under second switch
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.feather or l.CanPhase(), None, 1),  # Dead end
     ],
     Regions.ChunkyTemple: [
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 2),
 
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.pineapple or l.CanPhase(), None, 1),  # Start of second section
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.pineapple or l.CanPhase(), None, 1),  # Under second pineapple switch
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 1),  # Start of second section
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 1),  # Under second pineapple switch
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.pineapple or l.CanPhase(), None, 1),  # Under third pineapple switch
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.pineapple or l.CanPhase(), None, 1),  # In front of door to GB
     ],
@@ -135,14 +141,17 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 6),
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Warp 1
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: (((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase()) and l.grape, None, 2),
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.grape or l.CanPhase()) and l.can_use_vines, None, 1),  # Matching game
 
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 3),
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 5),  # Instrument pad
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape or l.CanPhase()) and l.can_use_vines, None, 2),  # Matching game room
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # By tag barrel
+    ],
+    Regions.LlamaTempleMatching: [
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.can_use_vines, None, 1),  # Matching game left vines
+
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.can_use_vines, None, 2),  # Matching game right vines
     ],
     Regions.LlamaTempleBack: [
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 2),
