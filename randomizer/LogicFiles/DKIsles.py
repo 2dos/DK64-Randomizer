@@ -235,13 +235,13 @@ LogicRegions = {
         TransitionFront(Regions.RarewareGBRoom, lambda l: l.CanGetRarewareGB()),
     ]),
 
-    Regions.RarewareGBRoom: Region("Rareware GB Room", HintRegion.RarewareRoom, Levels.DKIsles, False, None, [
+    Regions.RarewareGBRoom: Region("Rareware GB Room", HintRegion.OuterIsles, Levels.DKIsles, False, None, [
         LocationLogic(Locations.RarewareBanana, lambda l: True),
     ], [], [
         TransitionFront(Regions.BananaFairyRoom, lambda l: True),
     ]),
 
-    # All lobies take you to themselves when you die
+    # All lobbies take you to themselves when you die
     Regions.JungleJapesLobby: Region("Jungle Japes Lobby", HintRegion.EarlyLobbies, Levels.DKIsles, True, None, [
         LocationLogic(Locations.IslesLankyInstrumentPad, lambda l: l.chunky and l.trombone and l.lanky and l.barrels),
         LocationLogic(Locations.JapesDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),

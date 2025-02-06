@@ -349,11 +349,17 @@ LogicRegions = {
 
     Regions.ThornvineBarn: Region("Thornvine Barn", HintRegion.Mills, Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and l.climbing and (l.can_use_vines or l.advanced_platforming or l.settings.bonus_barrels == MinigameBarrels.skip), MinigameType.BonusBarrel),  # Krusha can make it by jumping onto the beam first.
-        LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.isdonkey and l.Slam and l.camera and l.climbing),
         LocationLogic(Locations.MelonCrate_Location11, lambda l: True),
         LocationLogic(Locations.ForestThornBarnEnemy_Enemy, lambda l: True),
     ], [], [
         TransitionFront(Regions.ThornvineArea, lambda l: True, Transitions.ForestBarnToMain),
+        TransitionFront(Regions.ThornvineBarnAboveLadder, lambda l: l.climbing),
+    ]),
+
+    Regions.ThornvineBarnAboveLadder: Region("Thornvine Barn Above Ladder", HintRegion.Mills, Levels.FungiForest, False, None, [
+        LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.isdonkey and l.Slam and l.camera),
+    ], [], [
+        TransitionFront(Regions.ThornvineBarn, lambda l: True),
     ]),
 
     Regions.WormArea: Region("Worm Area", HintRegion.ForestCenterAndBeanstalk, Levels.FungiForest, True, -1, [

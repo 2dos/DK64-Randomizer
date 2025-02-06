@@ -3,21 +3,21 @@
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
 | Jungle Japes | Near Funky |  |  | 
-| Jungle Japes | On Painting Hill |  | `((l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick() or ((l.CanPhase() or l.generalclips) and (l.istiny or l.isdiddy)))` | 
+| Jungle Japes | On Painting Hill |  |  | 
 | Jungle Japes | Next to level entrance |  |  | 
 | Jungle Japes | On Tree (Starting Area) |  | `l.climbing` | 
 | Jungle Japes | Next to first tunnel entrance |  |  | 
 | Jungle Japes | Diddy Cavern |  |  | 
 | Jungle Japes | Inside Diddy's Cavern |  |  | 
 | Jungle Japes | Inside the first tunnel - later half |  |  | 
-| Jungle Japes | Painting Hill | MelonCrate | `(l.handstand and l.islanky) or l.CanMoonkick() or ((l.CanPhase() or l.generalclips) and (l.istiny or l.isdiddy))` | 
+| Jungle Japes | Painting Hill | MelonCrate |  | 
 | Jungle Japes | Shellhive Island |  |  | 
 | Jungle Japes | Near Stump |  |  | 
 | Jungle Japes | Near Log |  |  | 
 | Jungle Japes | Near the Vine Pit |  |  | 
 | Jungle Japes | Vine Pit |  |  | 
-| Jungle Japes | Lanky Alcove Hill |  | `(l.handstand and l.lanky) or (l.CanPhase() and (l.isdiddy or l.istiny))` | 
-| Jungle Japes | On the useless Lanky ramp |  | `(l.handstand and l.islanky) or l.CanPhase()` | 
+| Jungle Japes | Lanky Alcove Hill |  |  | 
+| Jungle Japes | On the useless Lanky ramp |  |  | 
 | Jungle Japes | Cranky-tunnel Crossing |  |  | 
 | Jungle Japes | In the Rambi Cave | CrownPad, Bananaport |  | 
 | Jungle Japes | Fairy Pool |  |  | 
@@ -63,7 +63,7 @@
 | --- | ---- | ------------ | ----- |
 | Aztec Tiny Temple | Tiny Temple: Vulture Room |  | `l.CanSlamSwitch(Levels.AngryAztec, 1) and l.grape and l.islanky` | 
 | Angry Aztec | Oasis |  |  | 
-| Aztec Chunky5DTemple | Chunky 5DT |  | `((l.pineapple and l.ischunky) or l.CanPhase())` | 
+| Aztec Chunky5DTemple | Chunky 5DT |  |  | 
 | Aztec Tiny Temple | Tiny Temple: Main room back-left |  |  | 
 | Aztec Tiny Temple | Tiny Temple: Starting Room (Low) |  |  | 
 | Aztec Tiny Temple | Tiny Temple: Starting Room (High) |  | `l.CanSlamSwitch(Levels.AngryAztec, 1) and l.diddy` | 
@@ -107,19 +107,19 @@
 | Angry Aztec | Vanilla Tunnel Warp 3 |  |  | 
 | Angry Aztec | Vanilla Funky Warp 4 |  |  | 
 | Angry Aztec | Vanilla Tunnel Warp 5 |  |  | 
-| Aztec Donkey5DTemple | DK 5DT: Dead End |  | `(l.coconut and l.isdonkey) or l.CanPhase()` | 
+| Aztec Donkey5DTemple | DK 5DT: Dead End |  |  | 
 | Aztec Diddy5DTemple | Diddy 5DT: Dead End |  | `(l.peanut and l.isdiddy) or l.CanPhase()` | 
 | Aztec Lanky5DTemple | Lanky 5DT: Dead End |  | `(l.grape and l.islanky) or l.CanPhase()` | 
-| Aztec Lanky5DTemple | Lanky 5DT: Near Vanilla Balloon |  | `(l.grape and l.islanky) or l.CanPhase()` | 
+| Aztec Lanky5DTemple | Lanky 5DT: Near Vanilla Balloon |  |  | 
 | Aztec Tiny5DTemple | Tiny 5DT: Dead End |  | `(l.feather and l.istiny) or l.CanPhase(), group=7` | 
-| Aztec Chunky5DTemple | Chunky 5DT: Path Split (1) |  | `(l.pineapple and l.ischunky) or l.CanPhase()` | 
-| Aztec Chunky5DTemple | Chunky 5DT: Path Split (2) |  | `(l.pineapple and l.ischunky) or l.CanPhase()` | 
+| Aztec Chunky5DTemple | Chunky 5DT: Path Split (1) |  |  | 
+| Aztec Chunky5DTemple | Chunky 5DT: Path Split (2) |  |  | 
 | Aztec Llama Temple | Llama Temple: Llama Right |  |  | 
 | Aztec Llama Temple | Llama Temple Entrance |  |  | 
 | Aztec Llama Temple | Llama Temple: Next to Llama Right |  |  | 
 | Aztec Llama Temple | Llama Temple: Next to Llama Left |  |  | 
 | Aztec Llama Temple | Llama Temple: Llama Left |  |  | 
-| Aztec Llama Temple | Llama Temple: Matching Room |  | `(l.grape and l.lanky) or l.CanPhase()` | 
+| Aztec Llama Temple | Llama Temple: Matching Room |  |  | 
 | Aztec Llama Temple | Llama Temple: Vanilla Close Warp 1 |  |  | 
 | Aztec Llama Temple | Llama Temple: Vanilla Matching Warp 1 |  |  | 
 | Aztec Llama Temple | Llama Temple: Vanilla Lava Warp 2 |  |  | 
@@ -238,8 +238,8 @@
 | Galleon Sick Bay | Seasick Ship: Behind Spinning Barrels |  | `(l.punch and l.ischunky) or l.CanPhase()` | 
 | Galleon Lighthouse | Lighthouse: Bottom Left |  |  | 
 | Galleon Lighthouse | Lighthouse: Back Right |  |  | 
-| Galleon Lighthouse | Lighthouse: Behind Whomp's Fortress floor 2 |  | `l.climbing` | 
-| Galleon Lighthouse | Lighthouse: On top of Whomp's Fortress |  | `l.climbing` | 
+| Galleon Lighthouse | Lighthouse: Behind Whomp's Fortress floor 2 |  |  | 
+| Galleon Lighthouse | Lighthouse: On top of Whomp's Fortress |  |  | 
 
 # Fungi Forest
 | Map | Name | Banned Types | Logic |
@@ -349,7 +349,7 @@
 | Crystal Caves | Under Small Boulder | DirtPatch, MelonCrate |  | 
 | Crystal Caves | Near Primate Punch wall near entrance |  |  | 
 | Crystal Caves | Near Gorilla Gone Room |  |  | 
-| Crystal Caves | In Gorilla Gone Room |  | `(l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| Crystal Caves | In Gorilla Gone Room |  |  | 
 | Crystal Caves | Near Kasplat Spire |  |  | 
 | Crystal Caves | Near Funky's |  |  | 
 | Crystal Caves | Near Funky under Diddy's barrel |  |  | 
@@ -440,8 +440,8 @@
 | Castle Lower Cave | Crypt Hub: Near Funky's |  |  | 
 | Castle Lower Cave | Behind Mausoleum Entrance |  |  | 
 | Castle Crypt | 3Kong crypt entrance |  |  | 
-| Castle Crypt | Chunky Crypt: Near Coffin |  | `(l.pineapple and l.ischunky) or l.CanPhase() or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
-| Castle Crypt | Diddy Crypt: Near Coffin |  | `(l.peanut and l.isdiddy) or l.CanPhase() or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
+| Castle Crypt | Chunky Crypt: Near Coffin |  |  | 
+| Castle Crypt | Diddy Crypt: Near Coffin |  |  | 
 | Castle Crypt | Crypt: Vanilla Far Warp 1 |  |  | 
 | Castle Crypt | Crypt: Vanilla Close Warp 1 |  |  | 
 | Castle Crypt | Crypt: Vanilla Close Warp 2 |  |  | 

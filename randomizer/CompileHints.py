@@ -1981,7 +1981,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             Maps.ForestMillFront: [Regions.GrinderRoom],  # The Mini entrance counts
             Maps.CastleMuseum: [Regions.MuseumBehindGlass],  # Weird, but technically a connector between MP and Mini entrances
             Maps.CastleBallroom: [Regions.Ballroom],  # Also weird, as one side is all-kong and the other side is a MP pad
-            Maps.CastleCrypt: [Regions.Crypt],  # Similar to Ballroom, just replace MP pad with a Coconut + Grab locked door
+            Maps.CastleCrypt: [Regions.Crypt, Regions.CryptDonkeyRoom],  # Similar to Ballroom, just replace MP pad with a Coconut + Grab locked door
             Maps.JapesMountain: [Regions.Mine],  # If Diddy Minecart is WotH, we want to hint the way to get into the mountain, not the Minecart entrance
             # These are not real connectors, as one of their entrances is a one-way ticket to zilch
             # Maps.CastleGreenhouse: [Regions.Greenhouse],  # Always kicks you out to Castle Main

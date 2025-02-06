@@ -173,7 +173,7 @@ fairy_locations = {
             region=Regions.TinyTemple,
             is_vanilla=True,
             spawn_xyz=[1178, 95, 704],
-            logic=lambda l: l.camera and ((l.feather and l.mini and l.istiny) or l.CanPhase()),
+            logic=lambda l: l.camera and ((l.mini and l.istiny) or l.CanPhase()),
             natural_index=1,
         ),
         FairyData(
@@ -248,7 +248,6 @@ fairy_locations = {
             region=Regions.ChunkyTemple,
             fence=Fence(600, 601, 678, 1222),
             spawn_y=94,
-            logic=lambda l: l.camera and ((l.pineapple and l.ischunky) or l.CanPhase()),
         ),
         FairyData(
             name="Diddy 5DT",
@@ -263,7 +262,6 @@ fairy_locations = {
             region=Regions.LankyTemple,
             fence=Fence(426, 621, 496, 1209),
             spawn_y=94,
-            logic=lambda l: l.camera and ((l.grape and l.islanky) or l.CanPhase()),
         ),
         FairyData(
             name="Start of Llama Temple",
@@ -522,10 +520,9 @@ fairy_locations = {
         FairyData(
             name="Top of Lighthouse",
             map=Maps.GalleonLighthouse,
-            region=Regions.Lighthouse,
+            region=Regions.LighthouseAboveLadder,
             fence=Fence(421, 386, 452, 594),
             spawn_y=779,
-            logic=lambda l: l.camera and l.climbing,
         ),
         FairyData(
             name="Mermaid Window",
@@ -567,10 +564,10 @@ fairy_locations = {
         FairyData(
             name="Thornvine Barn",
             map=Maps.ForestThornvineBarn,
-            region=Regions.ThornvineBarn,
+            region=Regions.ThornvineBarnAboveLadder,
             is_vanilla=True,
             spawn_xyz=[497, 162, 502],
-            logic=lambda l: l.isdonkey and l.Slam and l.camera and l.climbing,
+            logic=lambda l: l.isdonkey and l.Slam and l.camera,
             natural_index=1,
         ),
         FairyData(
@@ -753,10 +750,9 @@ fairy_locations = {
         FairyData(
             name="Gorilla Gone Room",
             map=Maps.CrystalCaves,
-            region=Regions.CrystalCavesMain,
+            region=Regions.CavesGGRoom,
             fence=Fence(2461, 402, 2684, 542),
             spawn_y=76,
-            logic=lambda l: l.camera and ((l.chunky and l.punch) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
         ),
         FairyData(
             name="Ice Castle Roof",

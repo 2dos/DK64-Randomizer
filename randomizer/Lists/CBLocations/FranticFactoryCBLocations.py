@@ -1148,9 +1148,8 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Pipe in corner of Chunky's room (Lanky)",
         konglist=[Kongs.lanky],
-        region=Regions.BeyondHatch,
+        region=Regions.FactoryStoragePipe,
         vanilla=True,
-        logic=lambda l: l.handstand,
         locations=[
             [1, 1.0, 1612.77197265625, 209.3333282470703, 484.9771728515625],
             [1, 1.0, 1543.5341796875, 193.69114685058594, 490.4968566894531],

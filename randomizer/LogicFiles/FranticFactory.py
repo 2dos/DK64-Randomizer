@@ -146,8 +146,15 @@ LogicRegions = {
         TransitionFront(Regions.LowerCore, lambda l: True),
         TransitionFront(Regions.CrankyFactory, lambda l: l.crankyAccess),
         TransitionFront(Regions.CandyFactory, lambda l: l.candyAccess),
+        TransitionFront(Regions.FactoryStoragePipe, lambda l: l.islanky and l.handstand),
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
         TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.FactoryMainToBBlast)
+    ]),
+
+    Regions.FactoryStoragePipe: Region("Factory Storage Pipe", HintRegion.Storage, Levels.FranticFactory, False, None, [], [
+        # If we were to move the switch to Chunky's cage back up this pipe, the event would go here.
+    ], [
+        TransitionFront(Regions.BeyondHatch, lambda l: True),
     ]),
 
     Regions.FactoryArcadeTunnel: Region("Arcade Tunnel", HintRegion.Storage, Levels.FranticFactory, False, None, [
