@@ -119,7 +119,7 @@ LogicRegions = {
     ]),
 
     Regions.CastleTreePastPunch: Region("Castle Tree Past Punch", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleChunkyTree, lambda l: (((l.scope or l.settings.hard_shooting) and l.pineapple) or l.CanPhase()) and (l.ischunky or l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.CastleChunkyTree, lambda l: (((l.scope or l.settings.hard_shooting) and l.pineapple and l.ischunky) or l.CanPhase()) and (l.ischunky or l.settings.free_trade_items), MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.CastleTree, lambda l: True),
     ]),
