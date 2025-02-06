@@ -38,9 +38,11 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.coconut, None, 1),  # On plank in water
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # By BP
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # By punchable wall
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: (l.punch or l.CanPhase()) and l.pineapple, None, 1),  # In Chunky's room
+    ],
+    Regions.CastleTreePastPunch: [
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # In Chunky's room
 
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (l.punch or l.CanPhase()), None, 3),  # In Chunky's room
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # In Chunky's room
     ],
     Regions.Library: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # In switch room
@@ -98,13 +100,20 @@ LogicRegions = {
     ],
     Regions.Crypt: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # On W2
-        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # In minecart room
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On W1
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.charge or l.generalclips or l.CanPhase()) and l.peanut, None, 1),  # In Diddy's room
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and (l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))) or l.generalclips or l.CanPhase(), None, 2),  # In tombs in Chunky's room
+    ],
+    Regions.CryptDonkeyRoom: [
+        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # In minecart room
+    ],
+    Regions.CryptDiddyRoom: [
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # In Diddy's room
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: (l.charge and l.peanut) or l.CanPhase() or l.generalclips, None, 3),  # In Diddy's room
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (l.punch and (l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors))) or l.CanPhase() or l.generalclips, None, 3),  # In tombs in Chunky's room
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.charge or l.CanPhase() or l.generalclips, None, 3),  # In Diddy's room
+    ],
+    Regions.CryptChunkyRoom: [
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch or l.generalclips or l.CanPhase(), None, 2),  # In tombs in Chunky's room
+
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch or l.CanPhase() or l.generalclips, None, 3),  # In tombs in Chunky's room
     ],
     Regions.Mausoleum: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.sprint or l.generalclips or l.CanPhase()), None, 1),

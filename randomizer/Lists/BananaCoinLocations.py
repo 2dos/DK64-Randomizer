@@ -1364,8 +1364,7 @@ BananaCoinGroupList = {
             map_id=Maps.JungleJapes,
             name="On top of right slippery slope",
             konglist=[Kongs.lanky],
-            region=Regions.JapesBeyondCoconutGate2,
-            logic=lambda l: l.handstand,
+            region=Regions.JapesUselessSlope,
             locations=[
                 [1.0, 2214, 338, 3280],
                 [1.0, 2247, 338, 3268],
@@ -1722,8 +1721,7 @@ BananaCoinGroupList = {
             map_id=Maps.JungleJapes,
             name="Around the Baboon Blast Pad",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
-            region=Regions.JungleJapesStart,
-            logic=lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing,
+            region=Regions.JapesBlastPadPlatform,
             locations=[
                 [1.0, 2433.09033203125, 530.0, 1123.9302978515625],
                 [1.0, 2488.2314453125, 530.0, 1157.3780517578125],
@@ -2396,7 +2394,7 @@ BananaCoinGroupList = {
             map_id=Maps.AztecChunky5DTemple,
             name="First Switch",
             konglist=[Kongs.chunky],
-            region=Regions.ChunkyTemple,
+            region=Regions.ChunkyTempleEntrance,
             locations=[
                 [1.0, 641, 65, 383],
             ],
@@ -2407,7 +2405,6 @@ BananaCoinGroupList = {
             name="On torches",
             konglist=[Kongs.chunky],
             region=Regions.ChunkyTemple,
-            logic=lambda l: (l.pineapple and l.ischunky) or l.CanPhase(),
             locations=[
                 [1.0, 689, 143, 1008],
                 [1.0, 589, 143, 1014],
@@ -2419,7 +2416,6 @@ BananaCoinGroupList = {
             name="On stairs",
             konglist=[Kongs.chunky],
             region=Regions.ChunkyTemple,
-            logic=lambda l: (l.pineapple and l.ischunky) or l.CanPhase(),
             locations=[
                 [1.0, 643, 94, 1688],
                 [1.0, 642, 103, 1713],
@@ -2437,6 +2433,15 @@ BananaCoinGroupList = {
                 [1.0, 479, 57, 599],
                 [1.0, 381, 57, 600],
                 [1.0, 681, 57, 955],
+            ],
+        ),
+        BananaCoinGroup(
+            group=35,
+            map_id=Maps.AztecDiddy5DTemple,
+            name="Behind some pillars",
+            konglist=[Kongs.diddy],
+            region=Regions.DiddyTempleDeadEndRight,
+            locations=[
                 [1.0, 161, 57, 955],
             ],
         ),
@@ -2460,7 +2465,6 @@ BananaCoinGroupList = {
             name="Starting Staircase",
             konglist=[Kongs.lanky],
             region=Regions.LankyTemple,
-            logic=lambda l: (l.grape and l.islanky) or l.CanPhase(),
             locations=[
                 [1.0, 707, 34, 486],
                 [1.0, 213, 34, 486],
@@ -2484,7 +2488,7 @@ BananaCoinGroupList = {
             name="Fairy Side Room",
             konglist=[Kongs.tiny],
             region=Regions.TinyTemple,
-            logic=lambda l: (l.feather and l.istiny and l.mini) or l.CanPhase(),
+            logic=lambda l: (l.istiny and l.mini) or l.CanPhase(),
             locations=[
                 [1.0, 1207, 47, 583],
                 [1.0, 1206, 47, 727],
@@ -2498,7 +2502,7 @@ BananaCoinGroupList = {
             name="Other Side Room",
             konglist=[Kongs.tiny],
             region=Regions.TinyTemple,
-            logic=lambda l: (l.feather and l.istiny and l.mini) or l.CanPhase(),
+            logic=lambda l: (l.istiny and l.mini) or l.CanPhase(),
             locations=[
                 [1.0, 59, 47, 610],
                 [1.0, 73, 47, 597],
@@ -2539,8 +2543,7 @@ BananaCoinGroupList = {
             map_id=Maps.AztecLlamaTemple,
             name="Matching Game Room",
             konglist=[Kongs.lanky],
-            region=Regions.LlamaTemple,
-            logic=lambda l: (l.grape and l.islanky) or l.CanPhase(),
+            region=Regions.LlamaTempleMatching,
             locations=[
                 [1.0, 1093, 641, 2580],
                 [1.0, 1113, 641, 2591],
@@ -2646,8 +2649,7 @@ BananaCoinGroupList = {
             map_id=Maps.AztecTinyTemple,
             name="On Diddy's Guitar Pad",
             konglist=[Kongs.diddy],
-            region=Regions.TempleStart,
-            logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.isdiddy and l.peanut,
+            region=Regions.TempleGuitarPad,
             locations=[
                 [1.0, 1367.7171630859375, 538.5, 578.090576171875],
             ],
@@ -2754,8 +2756,8 @@ BananaCoinGroupList = {
             map_id=Maps.AztecLlamaTemple,
             name="Matching Game Room Vines",
             konglist=[Kongs.lanky],
-            region=Regions.LlamaTemple,
-            logic=lambda l: ((l.grape and l.islanky) or l.CanPhase()) and l.can_use_vines,
+            region=Regions.LlamaTempleMatching,
+            logic=lambda l: l.can_use_vines,
             locations=[
                 [1.0, 900.880859375, 691.3333129882812, 2207.316650390625],
                 [1.0, 827.7755737304688, 691.3333129882812, 2168.489501953125],
@@ -2770,25 +2772,47 @@ BananaCoinGroupList = {
             region=Regions.DiddyTemple,
             logic=lambda l: (l.peanut and l.isdiddy) or l.CanPhase(),
             locations=[
-                [1.0, 116.1932373046875, 88.0, 1077.492431640625],
                 [1.0, 1057.60205078125, 50.5, 569.7957153320312],
             ],
             vanilla=True,
         ),
         BananaCoinGroup(
-            # Moveless
+            group=60,
+            map_id=Maps.AztecDiddy5DTemple,
+            name="Dead Ends",
+            konglist=[Kongs.diddy],
+            region=Regions.DiddyTempleDeadEndRight,
+            locations=[
+                [1.0, 116.1932373046875, 88.0, 1077.492431640625],
+            ],
+            vanilla=True,
+        ),
+        BananaCoinGroup(
+            # Under the first switch
             group=61,
             map_id=Maps.AztecTiny5DTemple,
             name="Under Feather Switches and at Dead Ends",
             konglist=[Kongs.tiny],
-            region=Regions.TinyTemple,
+            region=Regions.TinyTempleEntrance,
             locations=[
                 [1.0, 645.4479370117188, 20.5, 370.3265075683594],
             ],
             vanilla=True,
         ),
         BananaCoinGroup(
-            # Requires feather
+            # Under the second switch
+            group=61,
+            map_id=Maps.AztecTiny5DTemple,
+            name="Under Feather Switches and at Dead Ends",
+            konglist=[Kongs.tiny],
+            region=Regions.TinyTemple,
+            locations=[
+                [1.0, 641.8150024414062, 87.0, 1198.519775390625],
+            ],
+            vanilla=True,
+        ),
+        BananaCoinGroup(
+            # Dead end coin
             group=61,
             map_id=Maps.AztecTiny5DTemple,
             name="Under Feather Switches and at Dead Ends",
@@ -2796,8 +2820,19 @@ BananaCoinGroupList = {
             region=Regions.TinyTemple,
             logic=lambda l: (l.feather and l.istiny) or l.CanPhase(),
             locations=[
-                [1.0, 641.8150024414062, 87.0, 1198.519775390625],
                 [1.0, 331.8021545410156, 138.66665649414062, 1419.3331298828125],
+            ],
+            vanilla=True,
+        ),
+        BananaCoinGroup(
+            group=62,
+            map_id=Maps.AztecChunky5DTemple,
+            name="Around the temple",
+            konglist=[Kongs.chunky],
+            region=Regions.ChunkyTemple,
+            locations=[
+                [1.0, 639.6046752929688, 85.0, 1242.0648193359375],
+                [1.0, 642.6415405273438, 122.66666412353516, 1924.775390625],
             ],
             vanilla=True,
         ),
@@ -2809,8 +2844,6 @@ BananaCoinGroupList = {
             region=Regions.ChunkyTemple,
             logic=lambda l: (l.pineapple and l.ischunky) or l.CanPhase(),
             locations=[
-                [1.0, 639.6046752929688, 85.0, 1242.0648193359375],
-                [1.0, 642.6415405273438, 122.66666412353516, 1924.775390625],
                 [1.0, 341.9595031738281, 122.66666412353516, 1988.3603515625],
                 [1.0, 1179.842041015625, 160.1666717529297, 2103.085205078125],
             ],
@@ -4400,8 +4433,7 @@ BananaCoinGroupList = {
             map_id=Maps.GalleonLighthouse,
             name="Lighthouse Climb (1)",
             konglist=[Kongs.donkey],
-            region=Regions.Lighthouse,
-            logic=lambda l: l.climbing,
+            region=Regions.LighthouseAboveLadder,
             locations=[
                 [1.0, 449, 460, 365],
                 [1.0, 449, 500, 365],
@@ -4413,8 +4445,7 @@ BananaCoinGroupList = {
             map_id=Maps.GalleonLighthouse,
             name="Lighthouse Climb (2)",
             konglist=[Kongs.donkey],
-            region=Regions.Lighthouse,
-            logic=lambda l: l.climbing,
+            region=Regions.LighthouseAboveLadder,
             locations=[
                 [1.0, 381, 640, 533],
                 [1.0, 381, 590, 533],
@@ -4426,8 +4457,7 @@ BananaCoinGroupList = {
             map_id=Maps.GalleonLighthouse,
             name="Top of Lighthouse",
             konglist=[Kongs.donkey],
-            region=Regions.Lighthouse,
-            logic=lambda l: l.climbing,
+            region=Regions.LighthouseAboveLadder,
             locations=[
                 [1.0, 553, 720, 401],
                 [1.0, 515, 720, 362],
@@ -4641,8 +4671,7 @@ BananaCoinGroupList = {
             map_id=Maps.GloomyGalleon,
             name="Behind Enguarde Door",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.LighthouseUnderwater,
-            logic=lambda l: Events.LighthouseEnguarde in l.Events or l.CanPhaseswim(),
+            region=Regions.LighthouseEnguardeDoor,
             locations=[
                 [1.0, 1004.564697265625, 1460.0, 4952.32666015625],
                 [1.0, 996.052978515625, 1460.0, 4959.49755859375],
@@ -5983,8 +6012,7 @@ BananaCoinGroupList = {
             map_id=Maps.CrystalCaves,
             name="Behind the first ice wall",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.CrystalCavesMain,
-            logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
+            region=Regions.CavesGGRoom,
             locations=[
                 [1.0, 2403, 70, 230],
                 [1.0, 2402, 70, 194],
@@ -6554,8 +6582,7 @@ BananaCoinGroupList = {
             map_id=Maps.CrystalCaves,
             name="Gorilla Gone Cavern",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.CrystalCavesMain,
-            logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
+            region=Regions.CavesGGRoom,
             locations=[
                 [1.0, 2679.595703125, 13.5, 557.9171752929688],
                 [1.0, 2464.411376953125, 13.5, 560.7271118164062],
@@ -7253,8 +7280,7 @@ BananaCoinGroupList = {
             map_id=Maps.CastleCrypt,
             name="On Diddy Coffin",
             konglist=[Kongs.diddy],
-            region=Regions.Crypt,
-            logic=lambda l: (l.peanut or l.CanPhase() or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.isdiddy,
+            region=Regions.CryptDiddyRoom,
             locations=[
                 [1.0, 2009, 68, 288],
                 [1.0, 2005, 68, 486],
@@ -7267,8 +7293,7 @@ BananaCoinGroupList = {
             map_id=Maps.CastleCrypt,
             name="On incorrect Minecart levers",
             konglist=[Kongs.donkey],
-            region=Regions.Crypt,
-            logic=lambda l: (l.coconut or l.CanPhase() or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.isdonkey,
+            region=Regions.CryptDonkeyRoom,
             locations=[
                 [1.0, 1607, 81, 2323],
                 [1.0, 1434, 81, 2318],
@@ -7280,8 +7305,8 @@ BananaCoinGroupList = {
             map_id=Maps.CastleCrypt,
             name="Inside Chunky's Coffin",
             konglist=[Kongs.chunky],
-            region=Regions.Crypt,
-            logic=lambda l: (((l.pineapple or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.Slam) or l.CanPhase()) and l.ischunky,
+            region=Regions.CryptChunkyRoom,
+            logic=lambda l: (l.Slam or l.CanPhase()) and l.ischunky,
             locations=[
                 [1.0, 1000, 160, 2903],
                 [1.0, 1000, 160, 2817],
@@ -7544,8 +7569,7 @@ BananaCoinGroupList = {
             map_id=Maps.CastleTree,
             name="In Chunky's Tree area",
             konglist=[Kongs.chunky],
-            region=Regions.CastleTree,
-            logic=lambda l: (l.punch or l.CanPhase()) and l.ischunky,
+            region=Regions.CastleTreePastPunch,
             locations=[
                 [1.0, 1066, 350, 395],
                 [1.0, 1064, 350, 250],
@@ -7717,8 +7741,8 @@ BananaCoinGroupList = {
             map_id=Maps.CastleCrypt,
             name="Inside Chunky Coffins",
             konglist=[Kongs.chunky],
-            region=Regions.Crypt,
-            logic=lambda l: ((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.ischunky and l.punch) or l.CanPhase() or l.generalclips,
+            region=Regions.CryptChunkyRoom,
+            logic=lambda l: (l.ischunky and l.punch) or l.CanPhase() or l.generalclips,
             locations=[
                 [1.0, 732.0772094726562, 191.0411834716797, 2947.914794921875],
                 [1.0, 733.7160034179688, 190.70660400390625, 2951.262939453125],
@@ -7731,8 +7755,8 @@ BananaCoinGroupList = {
             map_id=Maps.CastleCrypt,
             name="Inside Diddy Coffins",
             konglist=[Kongs.diddy],
-            region=Regions.Crypt,
-            logic=lambda l: ((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.isdiddy and l.charge) or l.CanPhase() or l.generalclips,
+            region=Regions.CryptDiddyRoom,
+            logic=lambda l: (l.isdiddy and l.charge) or l.CanPhase() or l.generalclips,
             locations=[
                 [1.0, 2044.2547607421875, 4.043132781982422, 718.1364135742188],
                 [1.0, 2056.055419921875, 4.325083255767822, 719.5173950195312],
@@ -7840,8 +7864,7 @@ BananaCoinGroupList = {
             map_id=Maps.CastleTree,
             name="On pathway to Chunky Bonus",
             konglist=[Kongs.chunky],
-            region=Regions.CastleTree,
-            logic=lambda l: (l.punch or l.CanPhase()) and l.ischunky,
+            region=Regions.CastleTreePastPunch,
             locations=[
                 [1.0, 1219.075439453125, 350.0, 321.3106384277344],
                 [1.0, 1201.170166015625, 350.0, 328.4452209472656],

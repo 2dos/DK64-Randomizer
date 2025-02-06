@@ -1090,8 +1090,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestThornvineBarn,
         name="On boxes on upper level",
         konglist=[Kongs.donkey],
-        region=Regions.ThornvineBarn,
-        logic=lambda l: l.climbing,
+        region=Regions.ThornvineBarnAboveLadder,
         locations=[
             [5, 1.0, 207, 185, 100],
             [5, 1.0, 500, 185, 644],
@@ -1102,8 +1101,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestThornvineBarn,
         name="On ladder",
         konglist=[Kongs.donkey],
-        region=Regions.ThornvineBarn,
-        logic=lambda l: l.climbing,
+        region=Regions.ThornvineBarnAboveLadder,
         locations=[
             [1, 1.0, 180, 140, 514],
             [1, 1.0, 180, 110, 514],

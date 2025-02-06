@@ -13,7 +13,6 @@ LogicRegions = {
     Regions.CrystalCavesMain: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Warp 1
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 5),  # Near BBlast
-        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: ((l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)) and l.coconut, None, 1),  # Warp 1
 
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # Near Funky
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # Near Bonus
@@ -27,19 +26,23 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 10),  # River To Igloo
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini or l.CanPhase(), None, 1),  # Warp 3 cave
 
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls), None, 1),  # Gorilla Gone room
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls), None, 3),  # Gorilla Gone room
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # On small boulder switch
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.barrels, None, 1),  # Underneath small boulder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # On bridge to small boulder switch
 
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: (l.punch or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)) and l.chunky, None, 3),  # Gorilla Gone room
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),  # On ice castle
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # In water below Funky
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl, None, 2),  # Pillar above warps
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # In front of tunnel to W4 cave
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # On slippery slope to Cranky
+    ],
+    Regions.CavesGGRoom: [
+        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # GG room balloon
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Gorilla Gone room
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # GG room singles
+
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # GG room coins
     ],
     Regions.CavesSnideArea: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # Near Snide
@@ -129,13 +132,15 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 10),  # River
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.balloon or l.CanPhase(), None, 1),  # Top of Lanky cabin
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Waterfall area, on ledge below Lanky Cabin
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # In corner near rocketbarrel
+    ],
+    Regions.CavesSprintCabinRoof: [
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Top of Lanky cabin
     ],
     Regions.RotatingCabin: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),

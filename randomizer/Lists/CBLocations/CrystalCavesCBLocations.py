@@ -49,8 +49,7 @@ ColoredBananaGroupList = [
         map_id=Maps.CrystalCaves,
         name="Gorilla Gone Tunnel (2 custom, 3 Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.CrystalCavesMain,
-        logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
+        region=Regions.CavesGGRoom,
         locations=[
             [1, 1.0, 2494, 13, 188],
             [1, 1.0, 2570, 13, 244],
@@ -64,8 +63,7 @@ ColoredBananaGroupList = [
         map_id=Maps.CrystalCaves,
         name="Around Gorilla Gone room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.CrystalCavesMain,
-        logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
+        region=Regions.CavesGGRoom,
         locations=[
             [1, 1.0, 2502, 13, 390],
             [1, 1.0, 2465, 13, 445],
@@ -617,8 +615,7 @@ ColoredBananaGroupList = [
         map_id=Maps.CrystalCaves,
         name="On Lanky 1DC",
         konglist=[Kongs.diddy, Kongs.lanky],
-        region=Regions.CabinArea,
-        logic=lambda l: (l.jetpack and l.isdiddy) or (l.balloon and l.islanky),
+        region=Regions.CavesSprintCabinRoof,
         locations=[
             [1, 1.0, 2237, 394, 1969],
             [1, 1.0, 2220, 394, 1903],
@@ -696,7 +693,7 @@ ColoredBananaGroupList = [
         map_id=Maps.CrystalCaves,
         name="In front of the T&S on DK 1DC",
         konglist=[Kongs.diddy],
-        region=Regions.CabinArea,
+        region=Regions.CavesRotatingCabinRoof,
         locations=[[5, 1.0, 2837, 432, 2509]],
     ),
     ColoredBananaGroup(
@@ -1376,9 +1373,8 @@ ColoredBananaGroupList = [
         map_id=Maps.CrystalCaves,
         name="On trombone pad on Lanky cabin (Lanky)",
         konglist=[Kongs.diddy, Kongs.lanky],
-        region=Regions.CabinArea,
+        region=Regions.CavesSprintCabinRoof,
         vanilla=True,
-        logic=lambda l: (l.jetpack and l.isdiddy) or (l.balloon and l.islanky) or l.CanPhase(),
         locations=[[5, 1.0, 2382.422119140625, 414.1666564941406, 1830.9127197265625]],
     ),
     ColoredBananaGroup(
@@ -1478,9 +1474,8 @@ ColoredBananaGroupList = [
         map_id=Maps.CrystalCaves,
         name="On Gorilla Gone pad (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.CrystalCavesMain,
+        region=Regions.CavesGGRoom,
         vanilla=True,
-        logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
         locations=[[5, 1.0, 2581.2197265625, 33.5, 586.1724243164062]],
     ),
     ColoredBananaGroup(
@@ -2113,9 +2108,8 @@ BalloonList = [
         name="In gorilla gone room (Donkey)",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.CrystalCavesMain,
+        region=Regions.CavesGGRoom,
         vanilla=True,
-        logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
         points=[[2698, 83, 501], [2519, 81, 572]],
     ),
     Balloon(

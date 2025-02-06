@@ -22,11 +22,13 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),  # Around entrance to underground
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # In first tunnel
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing, None, 3),  # Around BBlast pad
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.swim, None, 3),  # In river
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.swim, None, 2),  # In river
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By DK Portal
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.swim, None, 3),  # In river
+    ],
+    Regions.JapesBlastPadPlatform: [
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Around BBlast pad
     ],
     Regions.JapesHill: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.climbing, None, 1),  # Tree by Funky's
@@ -47,10 +49,12 @@ LogicRegions = {
     Regions.JungleJapesMain: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # W3
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.climbing, None, 2),  # Treetops, Painting room side
-        Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.handstand, None, 3),  # To painting room
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # By Snide's
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.CanPhase()) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
+    ],
+    Regions.JapesPaintingRoomHill: [
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 3),  # Slope to painting room
     ],
     Regions.JapesTnSAlcove: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # By Troff n Scoff
@@ -58,7 +62,6 @@ LogicRegions = {
     Regions.JapesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 2),
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 2),
-
     ],
     Regions.JapesBeyondCoconutGate1: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 10),
@@ -74,8 +77,8 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 3),  # By Diddy BP
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: Events.Rambi in l.Events or l.CanPhase(), None, 1),  # In breakable hut
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 1),  # To Lanky BP room
-        Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.handstand, None, 6),  # On slippery slopes
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.handstand, None, 1),  # On top of slippery slope
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 2),  # Base of slippery slopes
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.handstand, None, 2),  # To bonus barrel on slippery slope
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.climbing, None, 1),  # On treetop in Cranky area
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: Events.Rambi in l.Events or l.CanPhase(), None, 1),  # In breakable hut
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),  # In Lanky BP room
@@ -89,6 +92,10 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.CanPhase(), None, 3),  # In rambi box cage
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),  # By Diddy BP
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # By Lanky BP
+    ],
+    Regions.JapesUselessSlope: [
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 2),  # On useless slippery slope
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # On top of slippery slope
     ],
     Regions.JapesBeyondFeatherGate: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini or l.CanPhase(), None, 3),  # In hollow trunk to the left

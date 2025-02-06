@@ -19,7 +19,7 @@
 | Jungle Japes | Japes Kasplat: Hillside Alcove |  | 
 | Japes Mountain | Japes Kasplat: Inside the Mountain |  | 
 | Japes Tiny Hive | Japes Kasplat: Inside the Shell |  | 
-| Jungle Japes | Japes Kasplat: Painting Room Hill | `(l.lanky and l.handstand) or (l.tiny and l.twirl) or l.CanMoonkick() or ((l.CanPhase() or l.generalclips) and (l.istiny or l.isdiddy))` | 
+| Jungle Japes | Japes Kasplat: Painting Room Hill |  | 
 | Jungle Japes | Japes Kasplat: Minecart Exit |  | 
 
 # Angry Aztec
@@ -40,7 +40,7 @@
 | Aztec Tiny Temple | Aztec Kasplat: Free Tiny Room |  | 
 | Aztec Chunky5DTemple | Aztec Kasplat: Chunky 5-Door Temple | `(l.pineapple and l.ischunky) or l.CanPhase()` | 
 | Angry Aztec | Aztec Kasplat: Behind the Beetle Race |  | 
-| Aztec Llama Temple | Aztec Kasplat: Lanky Matching Game | `l.grape or l.CanPhase()` | 
+| Aztec Llama Temple | Aztec Kasplat: Lanky Matching Game |  | 
 | Aztec Tiny Temple | Aztec Kasplat: Tiny Temple Mini Monkey |  | 
 | Aztec Donkey5DTemple | Aztec Kasplat: Donkey 5-Door Temple | `(l.coconut or l.CanPhase()) and l.isdonkey` | 
 
@@ -76,7 +76,7 @@
 | Gloomy Galleon | Galleon Kasplat: Musical Cactus |  | 
 | Gloomy Galleon | Galleon Kasplat: On the Crown Pad | `(l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False)` | 
 | Gloomy Galleon | Galleon Kasplat: Next to Cranky's |  | 
-| Galleon Lighthouse | Galleon Kasplat: Atop Whomp's Lighthouse | `l.climbing` | 
+| Galleon Lighthouse | Galleon Kasplat: Atop Whomp's Lighthouse |  | 
 | Galleon Mechafish | Galleon Kasplat: In the Mechfish |  | 
 | Gloomy Galleon | Galleon Kasplat: Lanky Gold Tower | `(Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming))` | 
 | Galleon Sick Bay | Galleon Kasplat: Sickbay |  | 
@@ -131,7 +131,7 @@
 | Crystal Caves | Caves Kasplat: With the Giant Kosha |  | 
 | Caves Diddy Igloo | Caves Kasplat: In Diddy Igloo |  | 
 | Caves Donkey Cabin | Caves Kasplat: DK Shooting Cabin |  | 
-| Crystal Caves | Caves Kasplat: Gorilla Gone Cave | `(l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| Crystal Caves | Caves Kasplat: Gorilla Gone Cave |  | 
 | Crystal Caves | Caves Kasplat: Starting Area |  | 
 
 # Creepy Castle
@@ -153,7 +153,7 @@
 | Castle Greenhouse | Castle Kasplat: Greenhouse |  | 
 | Castle Museum | Castle Kasplat: Museum Mysterious Pedestal | `l.monkeyport or l.CanPhase()` | 
 | Castle Dungeon | Castle Kasplat: Caged in the Dungeon | `l.punch or l.CanPhase()` | 
-| Castle Crypt | Castle Kasplat: Entrance to Minecart | `l.coconut or l.CanPhase() or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)` | 
+| Castle Crypt | Castle Kasplat: Entrance to Minecart |  | 
 | Castle Library | Castle Kasplat: Library |  | 
 | Creepy Castle | Castle Kasplat: In the Clouds | `l.jetpack` | 
 

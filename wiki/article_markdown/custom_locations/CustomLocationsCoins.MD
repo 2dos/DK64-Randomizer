@@ -151,7 +151,7 @@
 | Around small torch near Lanky kasplat | 3 |  | 
 | Against right wall in Lanky kasplat room | 3 |  | 
 | Against left wall in Lanky kasplat room | 3 |  | 
-| On top of right slippery slope | 3 | `l.handstand` | 
+| On top of right slippery slope | 3 |  | 
 | Around Tiny hut | 4 |  | 
 | Around Lanky hut | 4 |  | 
 | Around Donkey hut | 4 |  | 
@@ -167,7 +167,7 @@
 | Around torch in the middle of fairy room on water surface | 4 |  | 
 | Near entrance portal | 3 |  | 
 | Main Area Underwater (1) | 3 | `l.swim` | 
-| Around the Baboon Blast Pad | 3 | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
+| Around the Baboon Blast Pad | 3 |  | 
 | Start of first tunnel | 3 |  | 
 | Diddy Cavern (1) | 3 |  | 
 | Fairy Pool | 5 | `l.swim` | 
@@ -275,14 +275,17 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | First Switch | 1 |  | 
-| On torches | 2 | `(l.pineapple and l.ischunky) or l.CanPhase()` | 
-| On stairs | 3 | `(l.pineapple and l.ischunky) or l.CanPhase()` | 
-| Around the temple | 4 | `(l.pineapple and l.ischunky) or l.CanPhase()` | 
+| On torches | 2 |  | 
+| On stairs | 3 |  | 
+| Around the temple | 2 |  | 
+| Around the temple | 2 | `(l.pineapple and l.ischunky) or l.CanPhase()` | 
 ## Aztec Diddy5DTemple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| Behind some pillars | 4 | `(l.peanut and l.isdiddy) or l.CanPhase()` | 
-| Dead Ends | 2 | `(l.peanut and l.isdiddy) or l.CanPhase()` | 
+| Behind some pillars | 3 | `(l.peanut and l.isdiddy) or l.CanPhase()` | 
+| Behind some pillars | 1 |  | 
+| Dead Ends | 1 | `(l.peanut and l.isdiddy) or l.CanPhase()` | 
+| Dead Ends | 1 |  | 
 ## Aztec Donkey5DTemple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -291,26 +294,27 @@
 ## Aztec Lanky5DTemple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| Starting Staircase | 2 | `(l.grape and l.islanky) or l.CanPhase()` | 
+| Starting Staircase | 2 |  | 
 | Final Corridors | 2 | `(l.grape and l.islanky) or l.CanPhase()` | 
 ## Aztec Tiny5DTemple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| Fairy Side Room | 4 | `(l.feather and l.istiny and l.mini) or l.CanPhase()` | 
-| Other Side Room | 4 | `(l.feather and l.istiny and l.mini) or l.CanPhase()` | 
+| Fairy Side Room | 4 | `(l.istiny and l.mini) or l.CanPhase()` | 
+| Other Side Room | 4 | `(l.istiny and l.mini) or l.CanPhase()` | 
 | Under Feather Switches and at Dead Ends | 1 |  | 
-| Under Feather Switches and at Dead Ends | 2 | `(l.feather and l.istiny) or l.CanPhase()` | 
+| Under Feather Switches and at Dead Ends | 1 |  | 
+| Under Feather Switches and at Dead Ends | 1 | `(l.feather and l.istiny) or l.CanPhase()` | 
 ## Aztec Llama Temple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Left Bannister | 5 |  | 
 | Right Bannister | 5 |  | 
-| Matching Game Room | 3 | `(l.grape and l.islanky) or l.CanPhase()` | 
+| Matching Game Room | 3 |  | 
 | Around the right lava room platform | 4 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming)) and l.istiny` | 
 | Around the left lava room platform | 4 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming)) and l.istiny` | 
 | Around Instrument Pad | 5 |  | 
 | Near Tag Barrel | 3 |  | 
-| Matching Game Room Vines | 2 | `((l.grape and l.islanky) or l.CanPhase()) and l.can_use_vines` | 
+| Matching Game Room Vines | 2 | `l.can_use_vines` | 
 ## Aztec Tiny Temple
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -319,7 +323,7 @@
 | Around Lanky Pedestal | 8 |  | 
 | On KONG Letters | 4 |  | 
 | Underwater tunnels | 3 |  | 
-| On Diddy's Guitar Pad | 1 | `l.CanSlamSwitch(Levels.AngryAztec, 1) and l.isdiddy and l.peanut` | 
+| On Diddy's Guitar Pad | 1 |  | 
 | Around the Upper Lanky Pedestal | 4 |  | 
 | Starting Corner (1) | 3 |  | 
 | Starting Corner (2) | 3 |  | 
@@ -447,7 +451,7 @@
 | Lighthouse Underwater corner (Stack) | 4 |  | 
 | Mermaid Palace Roof | 2 |  | 
 | On Mermaid Palace Shells | 5 |  | 
-| Behind Enguarde Door | 3 | `Events.LighthouseEnguarde in l.Events or l.CanPhaseswim()` | 
+| Behind Enguarde Door | 3 |  | 
 | On Rafter near Funky's | 4 | `Events.WaterRaised in l.Events or l.CanMoonkick()` | 
 | Around Cranky's Lab | 5 |  | 
 | Tunnel to Chests Area | 3 |  | 
@@ -474,9 +478,9 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Lighthouse Entry | 4 |  | 
-| Lighthouse Climb (1) | 3 | `l.climbing` | 
-| Lighthouse Climb (2) | 3 | `l.climbing` | 
-| Top of Lighthouse | 2 | `l.climbing` | 
+| Lighthouse Climb (1) | 3 |  | 
+| Lighthouse Climb (2) | 3 |  | 
+| Top of Lighthouse | 2 |  | 
 ## Galleon Mechafish
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -642,7 +646,7 @@
 | ---- | ------ | ----- |
 | Near the DK Portal | 4 |  | 
 | Crystal near level entry | 3 |  | 
-| Behind the first ice wall | 2 | `(l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| Behind the first ice wall | 2 |  | 
 | Around the lower thick pillar near Ice Castle | 5 |  | 
 | Around Ice Castle Tag | 6 |  | 
 | Ice Castle Battlements (1) | 4 | `l.isdiddy or (l.islanky and (l.balloon or l.advanced_platforming)) or l.istiny` | 
@@ -671,7 +675,7 @@
 | Near the Sprint Cabin Headphones | 5 |  | 
 | On stalactite in the Giant Kosha area | 2 |  | 
 | Back of Bonus Cave | 5 | `Events.CavesW3bTagged in l.Events` | 
-| Gorilla Gone Cavern | 3 | `(l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)` | 
+| Gorilla Gone Cavern | 3 |  | 
 | Giant Boulder Cavern | 3 |  | 
 | Giant Kosha Room | 3 |  | 
 | In Snide's Cavern | 3 |  | 
@@ -823,11 +827,11 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On Wall Torch | 2 |  | 
-| On Diddy Coffin | 4 | `(l.peanut or l.CanPhase() or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.isdiddy` | 
-| On incorrect Minecart levers | 3 | `(l.coconut or l.CanPhase() or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.isdonkey` | 
-| Inside Chunky's Coffin | 4 | `(((l.pineapple or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.Slam) or l.CanPhase()) and l.ischunky` | 
-| Inside Chunky Coffins | 3 | `((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.ischunky and l.punch) or l.CanPhase() or l.generalclips` | 
-| Inside Diddy Coffins | 3 | `((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.isdiddy and l.charge) or l.CanPhase() or l.generalclips` | 
+| On Diddy Coffin | 4 |  | 
+| On incorrect Minecart levers | 3 |  | 
+| Inside Chunky's Coffin | 4 | `(l.Slam or l.CanPhase()) and l.ischunky` | 
+| Inside Chunky Coffins | 3 | `(l.ischunky and l.punch) or l.CanPhase() or l.generalclips` | 
+| Inside Diddy Coffins | 3 | `(l.isdiddy and l.charge) or l.CanPhase() or l.generalclips` | 
 ## Castle Mausoleum
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -879,8 +883,8 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Underwater in the DK Tree area | 4 | `l.swim and ((l.coconut) or l.generalclips or l.CanPhase()) and l.isdonkey` | 
-| In Chunky's Tree area | 4 | `(l.punch or l.CanPhase()) and l.ischunky` | 
-| On pathway to Chunky Bonus | 3 | `(l.punch or l.CanPhase()) and l.ischunky` | 
+| In Chunky's Tree area | 4 |  | 
+| On pathway to Chunky Bonus | 3 |  | 
 ## Castle Baboon Blast
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
