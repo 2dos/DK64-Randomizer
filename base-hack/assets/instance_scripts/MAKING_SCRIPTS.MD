@@ -21,7 +21,7 @@ Object Scripts are separated into blocks. Each block can contain up to 5 conditi
 |EXEC|Executes an in-game function|4: First parameter is the execution function index, last 3 are arguments| `EXEC 0 | 1 2 3` |
 |ENDBLOCK|Terminates a block|None|`ENDBLOCK`|
 ## Saving a script
-For Randomizer, due to the frequent nature of collaboration, the "Save Map Scripts to PC" functionality of editor is not used. Instead, we store the scripts that have been modified to be different to vanilla in some way inside the Randomizer repository in a `.script` file. 
+For Randomizer, due to the frequent nature of collaboration, the "Save Map Scripts to PC" functionality of editor is not used. Instead, we store the scripts that have been modified to be different to vanilla in some way inside the Randomizer repository in a `.json` file. 
 ### Creating a map directory
 **Only do this bit if your script is part of a map which has no other previously modified scripts in it**
 To create a map directory that is correctly interpretted by the Randomizer base hack build routine, you need to do some minor formatting.
@@ -35,27 +35,39 @@ Example `.map` file for Mechanical Fish:
 ### Creating a script File
 Script files contain the code for your modified script as well as some header information that is used to correctly write your code to the right spot in ROM.
 
-**1** | Create a `.script` file which is named appropriately. For example, if your script modifies the Arcade Round 1 Golden Banana, you would create a file with a name like `arcade_gb.script`
-**2** | Create a .data section in your file:
+**1** | Create a `.json` file which is named appropriately. For example, if your script modifies the Arcade Round 1 Golden Banana, you would create a file with a name like `arcade_gb.json`
+**2** | Define the attribtues for the header information in your file:
+```json
+{
+  "id": 5,
+  "behav_9C": 0,
+  "ignore": false,
+  "output_version": 2,
+  "script": []
+}
 ```
-.data
-id = 0x0
-behav_9C = 0
+The ID is the object ID that you are modifying (can either be hex or decimal). To find the object ID, see either the output from `objectScriptGrabber.py` or the [script viewer](https://theballaam96.github.io/object_script_viewer.html). If you are adding a completely new script, ensure your ID is unique and include `behav_9C = 0` in your header
+**3** | Create the code section of your file:
+```json
+{
+  "id": 5,
+  "behav_9C": 0,
+  "ignore": false,
+  "output_version": 2,
+  "script": [
+    {
+      "conditions": [
+        {"function": 0, "inverted" false, "parameters": [1, 2, 3]},
+        {"function": 0, "inverted" true, "parameters": [1, 2, 3]}
+      ],
+      "executions": [
+        {"function": 0, "parameters": [1, 2, 3]},
+      ]
+    }
+  ]
+}
 ```
-The ID is the object ID that you are modifying (can either be hex or decimal). To find the object ID, see either the output from `objectScriptGrabber.py` or the [script viewer](https://theballaam96.github.io/object_script_viewer.html). If you are adding a completely new script, ensure your ID is unique and include `behav_9C = 0` in your .data header
-**3** | Create the .code section of your file:
-```
-.data
-id = 0x0
-behav_9C = 0
-.code
-COND 0 | 1 2 3
-CONDINV 0 | 1 2 3
-EXEC 0 | 1 2 3
-ENDBLOCK
-(...)
-```
-The code section is the COND/EXEC/etc code that is from the script editor, which can be copy and pasted over into the document.
+The code section is the COND/EXEC/etc code that is from the script editor formatted as json objects.
 
 ## Further Questions
 If you have any further questions, please ask inside the [DK64 Randomizer discord](https://discord.dk64randomizer.com) in the #dev-discussion channel
