@@ -9,7 +9,7 @@ from randomizer.Enums.Settings import CharacterColors, KongModels
 from randomizer.Settings import Settings
 from randomizer.Patching.Library.Generic import PaletteFillType
 from randomizer.Patching.Library.DataTypes import int_to_list
-from randomizer.Patching.Library.Image import getKongItemColor, getRGBFromHash
+from randomizer.Patching.Library.Image import getKongItemColor
 from randomizer.Patching.Library.Assets import TableNames, getRawFile, writeRawFile
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Cosmetics.Krusha import kong_index_mapping
@@ -108,8 +108,8 @@ def writeKongColors(settings: Settings, ROM_COPY: ROM):
             "chunky",
             4,
             [
-                KongPalette("main", 3769, PaletteFillType.checkered),
-                KongPalette("other", 3687, PaletteFillType.block),
+                KongPalette("main", 3769, PaletteFillType.checkered, "other"),
+                KongPalette("main", 3687, PaletteFillType.block),
             ],
         ),
         KongPaletteSetting(
@@ -193,6 +193,9 @@ def writeKongColors(settings: Settings, ROM_COPY: ROM):
             for index in range(len(arr)):
                 base_setting = f"{kong.kong}_{palette.name}_colors"
                 custom_setting = f"{kong.kong}_{palette.name}_custom_color"
+                if index == 1:  # IS THE CHECKERED PATTERN
+                    base_setting = f"{kong.kong}_{palette.alt_name}_colors"
+                    custom_setting = f"{kong.kong}_{palette.alt_name}_custom_color"
                 if (settings.override_cosmetics and colors_dict[base_setting] != CharacterColors.vanilla) or (palette.fill_type == PaletteFillType.kong):
                     color = None
                     # if this palette color is randomized, and isn't krusha's kong indicator:
@@ -205,11 +208,6 @@ def writeKongColors(settings: Settings, ROM_COPY: ROM):
                     # if this palette color is not randomized (but might be a custom color) and isn't krusha's kong indicator:
                     elif palette.fill_type != PaletteFillType.kong:
                         color = colors_dict[custom_setting]
-                        if index == 1:  # IS THE CHECKERED PATTERN
-                            color = getRGBFromHash(color)
-                            for i in range(3):
-                                color[i] = 255 - color[i]
-                            color = f"#{('{:02X}' * 3).format(color[0], color[1], color[2])}"
                         if not color:
                             color = DEFAULT_COLOR
                     # if this is krusha's kong indicator:
