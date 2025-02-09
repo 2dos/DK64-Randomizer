@@ -726,7 +726,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     }
     # Your training in Gorilla Gone, Monkeyport, Climbing and Vines are always pointless hints if Key 8 is in Helm, so let's not
     if spoiler.settings.key_8_helm and Locations.HelmKey in spoiler.woth_paths.keys():
-        useless_moves = [Items.Vines, Items.Climbing]
+        useless_moves = [Items.Vines]
         if not spoiler.settings.switchsanity:
             useless_moves.extend([Items.Monkeyport, Items.GorillaGone])
         useless_locations[Items.HideoutHelmKey] = [
@@ -1561,21 +1561,27 @@ def compileHints(spoiler: Spoiler) -> bool:
         for loc in spoiler.woth_locations:
             if loc not in hinted_path_locations:
                 continue
-            # When choosing hint doors, consider ALL goals when restricting door choice
-            hint_door_options = set()
-            for goal_location in [goal for goal in multipath_dict_goals[loc] if goal in spoiler.accessible_hints_for_location.keys()]:
-                if len(hint_door_options) == 0:
-                    hint_door_options = set(spoiler.accessible_hints_for_location[goal_location])
-                else:
-                    hint_door_options = hint_door_options & set(spoiler.accessible_hints_for_location[goal_location])
             hint_location = None
-            # If this location's goals do restrict the hint doors, choose your hint door carefully
-            if len(hint_door_options) > 0:
-                hint_options = getHintLocationsForAccessibleHintItems(hint_door_options)
+            # When choosing hint location, consider ALL goals when restricting location choice
+            goal_hint_options = set()  # This represents the set of accessible hint items without acquiring any goals this item is on the path to
+            for goal_location in [goal for goal in multipath_dict_goals[loc] if goal in spoiler.accessible_hints_for_location.keys()]:
+                if len(goal_hint_options) == 0:
+                    goal_hint_options = set(spoiler.accessible_hints_for_location[goal_location])
+                else:
+                    goal_hint_options = goal_hint_options & set(spoiler.accessible_hints_for_location[goal_location])
+            # The best hint doors for this item are the ones that are accessible without this item
+            # It isn't necessary to put the hint in one of these, as you still receive valuable information from a multipath hint either way,
+            # but it is much nicer to the player to put the hint in an accessible door
+            premier_hint_location_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[loc])
+            if len(premier_hint_location_options) > 0:
+                hint_location = random.choice(premier_hint_location_options)
+            # If there isn't a premier hint location available, we should still respect this location's goals
+            elif len(goal_hint_options) > 0:
+                hint_options = getHintLocationsForAccessibleHintItems(goal_hint_options)
                 if len(hint_options) > 0:
                     hint_location = random.choice(hint_options)
-            # If this location's goals do not restrict hint door location OR all the restricted hint door options are taken (staggeringly unlikely), get a random hint door
-            if len(hint_door_options) == 0 or hint_location is None:
+            # If this the previous approach failed to get a hint door (staggeringly unlikely) or the item doesn't lock any goals, get a random hint door
+            if hint_location is None:
                 hint_location = getRandomHintLocation()
 
             globally_hinted_location_ids.append(loc)
