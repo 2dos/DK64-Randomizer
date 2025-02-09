@@ -823,7 +823,11 @@ def ParePlaythrough(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> Non
             location.item = None
             # Check if the game is still beatable
             spoiler.Reset()
-            if GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable):
+            gameIsBeatable = GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable)
+            # Make note of what hints are accessible without this WotH candidate in case it gets hinted later.
+            # This may miss hints available after the win condition is met, but those hints are never practically getting seen anyway.
+            AccessibleHintsForLocation[locationId] = spoiler.LogicVariables.Hints.copy()
+            if gameIsBeatable:
                 # If the game is still beatable, this is an unnecessary location. We remove it from the playthrough, as it is not strictly required.
                 sphere.locations.remove(locationId)
                 # In non-item rando, put back the items on a delay
@@ -838,9 +842,7 @@ def ParePlaythrough(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> Non
             else:
                 # If the game is not beatable without this item, don't remove it from the playthrough and add the item back. This is now a WotH candidate.
                 location.PlaceItem(spoiler, item)
-                # Make note of what hints are accessible without this WotH candidate in case it gets hinted later
-                AccessibleHintsForLocation[locationId] = spoiler.LogicVariables.Hints.copy()
-                # Some items have inherent door restrictions depending on the settings
+                # Some important items have inherent door restrictions depending on the settings
                 restrictions = getDoorRestrictionsForItem(spoiler, item)
                 if len(restrictions) > 0:
                     AccessibleHintsForLocation[locationId] = [hint for hint in AccessibleHintsForLocation[locationId] if hint in restrictions]
@@ -3647,6 +3649,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         replacements = []
         human_replacements = {}
         ShuffleWarpsCrossMap(
+            spoiler,
             replacements,
             human_replacements,
             spoiler.settings.bananaport_rando == BananaportRando.crossmap_coupled,
