@@ -12,7 +12,7 @@ if (location.hostname === "dev.dk64randomizer.com") {
   branch = "dev";
 } else if (location.hostname === "dk64randomizer.com") {
   base_url = "https://api.dk64rando.com/api";
-  branch = "master";
+  branch = "stable";
 } else {
   base_url = `${location.origin}/api`;
   branch = "dev";
@@ -1040,6 +1040,39 @@ function loadDataFromIndexedDB(key) {
   });
 }
 
+function check_spoiler_unlocked(hash) {
+  console.log("Checking for Unlocked spoiler log");
+  // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
+  // Get the website location
+  if (window.location.hostname == "dev.dk64randomizer.com") {
+    var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=dev";
+  } else if (window.location.hostname == "dk64randomizer.com") {
+    var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=master";
+  } else {
+    var url = "http://localhost:8000/api/get_spoiler_log?branch=dev";
+  }
+  $.ajax({
+    url: url,
+    type: "GET",
+    data: {
+      hash: hash,
+    },
+    success: function (data, textStatus, xhr) {
+      if (xhr.status === 200) {
+        console.log("Success");
+        document.getElementById("download_unlocked_spoiler_button").removeAttribute("hidden");
+        document.getElementById("download_spoiler_button").hidden = true;
+        document.getElementById("download_unlocked_spoiler_button").onclick = () => unlock_spoiler_log(hash);
+      } else if (xhr.status === 425) {
+        console.log("Not unlocked yet");
+        document.getElementById("download_unlocked_spoiler_button").hidden = true;
+        document.getElementById("download_spoiler_button").removeAttribute("hidden");
+      }
+    }
+
+  });
+}
+
 function unlock_spoiler_log(hash) {
   console.log("Unlocking spoiler log");
   // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
@@ -1192,8 +1225,7 @@ async function preset_select_changed(event) {
       document.getElementById("generate_seed").disabled = false;
     }, 2000);
   }, 0);
-
-  }
+}
 function trigger_preset_event(event) {
   const element = document.getElementById("presets");
   let presets = null;
@@ -1341,8 +1373,7 @@ function trigger_preset_event(event) {
   );
 }
 
-
-// on the id presets if the index is changed to not 0 enable the apply_preset button 
+// on the id presets if the index is changed to not 0 enable the apply_preset button
 // if its 0 disable the apply_preset button
 function disable_apply_preset_button() {
   if (document.getElementById("presets").selectedIndex === 0) {
@@ -1351,7 +1382,9 @@ function disable_apply_preset_button() {
     document.getElementById("apply_preset").disabled = false;
   }
 }
-document.getElementById("presets").addEventListener("change", disable_apply_preset_button);
+document
+  .getElementById("presets")
+  .addEventListener("change", disable_apply_preset_button);
 
 document
   .getElementById("apply_preset")
@@ -1486,12 +1519,15 @@ function load_settings(json) {
   }
   all_elements = document.querySelectorAll("#form input, #form select");
   const elementsCache = Object.fromEntries(
-    Object.keys(json).map((key) => [key, Array.from(all_elements).filter(el => el.name === key)])
+    Object.keys(json).map((key) => [
+      key,
+      Array.from(all_elements).filter((el) => el.name === key),
+    ])
   );
 
   // Define a queue to batch DOM updates
   const updateQueue = [];
-  let updated_values = []
+  let updated_values = [];
   for (const [key, value] of Object.entries(json)) {
     const elements = elementsCache[key];
     if (!elements?.length) continue;
