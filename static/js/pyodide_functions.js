@@ -167,15 +167,8 @@ async function shared_url_ui(data) {
       seed_number,
       `/randomizer?seed_id=${seed_number}`
     );
+    check_spoiler_unlocked(seed_number);
 
-    try {
-      document.getElementById("download_unlocked_spoiler_button").onclick = () =>
-        unlock_spoiler_log(seed_number);
-      document.getElementById("download_unlocked_spoiler_button").hidden = false;
-    } catch (error) {
-      document.getElementById("download_unlocked_spoiler_button").hidden = true;
-      document.getElementById("download_unlocked_spoiler_button").onclick = null;
-    }
 
     $("#nav-settings-tab").tab("show");
     check_seed_info_tab();
