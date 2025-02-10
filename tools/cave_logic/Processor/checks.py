@@ -21,7 +21,7 @@ from randomizer.Lists.Minigame import MinigameRequirements
 from randomizer.Lists.KasplatLocations import KasplatLocationList
 from randomizer.Logic import RegionsOriginal, CollectibleRegionsOriginal
 from tools.cave_logic.ast_logic import ast_to_json, normalise_name, get_level_name
-from tools.cave_logic.Processor.Classes import CheckEdge, RegionNode
+from tools.cave_logic.Processor.Classes import CheckEdge, RegionNode, QueryLogic
 
 
 def strip_name(name):
@@ -131,12 +131,12 @@ def collectible_to_edge(collectible, region, index):
     reward_type = collectible.type.name
     multiplier = 1
 
-    if collectible.type == Collectibles.bunch:
-        reward_type = Collectibles.banana.name
-        multiplier = 5
-    if collectible.type == Collectibles.balloon:
-        reward_type = Collectibles.banana.name
-        multiplier = 10
+    # if collectible.type == Collectibles.bunch:
+    #     reward_type = Collectibles.banana.name
+    #     multiplier = 5
+    # if collectible.type == Collectibles.balloon:
+    #     reward_type = Collectibles.banana.name
+    #     multiplier = 10
 
     reward_name = reward_type + "_" + \
         get_level_name(portal_region.level.name) + "_" + collectible.kong.name
@@ -170,25 +170,25 @@ def collectible_to_edge(collectible, region, index):
     normalised_reward = normalise_name(reward_name.lower())
 
     coll = CheckEdge(strip_name(name), name, RegionNode(portal_region, ''), normalised_reward, collectible.type.name, "Collectible", requires, {"Name": collectible.kong.name})
-    # coll.set_reward_amount(normalised_reward, collectible.amount * multiplier)
+    coll.Rewards = QueryLogic('and', [{"Name": normalised_reward, "Amount": collectible.amount * multiplier}])
 
-    rewards = [
-            {
-                "Name": reward_name.lower(),
-                "Amount": collectible.amount * multiplier
-            }
-        ]
+    # rewards = [
+    #         {
+    #             "Name": reward_name.lower(),
+    #             "Amount": collectible.amount * multiplier
+    #         }
+    #     ]
     
-    if(reward_type == Collectibles.banana.name):
-        rewards.append({
-            "Name": level_reward.lower(),
-            "Amount": collectible.amount * multiplier
-        })
+    # if(reward_type == Collectibles.banana.name):
+    #     rewards.append({
+    #         "Name": level_reward.lower(),
+    #         "Amount": collectible.amount * multiplier
+    #     })
 
-    coll.set_multiple_rewards({
-        "combinator": "AND",
-        "rules": rewards
-    })
+    # coll.set_multiple_rewards({
+    #     "combinator": "AND",
+    #     "rules": rewards
+    # })
 
     if coll.source and coll.source == "japest&salcove":
         coll.source = "japestnsalcove"

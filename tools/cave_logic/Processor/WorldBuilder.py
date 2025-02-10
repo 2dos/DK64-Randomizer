@@ -12,16 +12,17 @@ from levels import build_levels
 regions = build_regions()
 checks = build_checks()
 levels = build_levels()
+collectibles = build_collectibles()
 
 world = {
     "id": "newgen1",
     "world": {
         "worlds": {},
         "regions": {**levels['nodes'], **regions['nodes']},
-        "edges": {**levels['edges'],**regions['edges'], **checks['edges'], **build_exits(), **build_events(), **build_warps()},
+        "edges": {**levels['edges'],**regions['edges'], **checks['edges'], **build_exits(), **build_events(), **build_warps(), **collectibles['edges']},
         "locations": {},
         "subChecks": {},
-        "items": {**build_items(), **build_collectibles(), **checks['nodes']},
+        "items": {**build_items(), **collectibles['nodes'], **checks['nodes']},
     },
     "settings": {
         "gameMode": "spoil",
