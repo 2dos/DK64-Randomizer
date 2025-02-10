@@ -348,12 +348,15 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         try:
             js.document.getElementById("download_unlocked_spoiler_button").onclick = lambda x: js.unlock_spoiler_log(hash_id)
             js.document.getElementById("download_unlocked_spoiler_button").hidden = False
+            js.document.getElementById("download_spoiler_button").hidden = True
         except Exception:
             js.document.getElementById("download_unlocked_spoiler_button").hidden = True
             js.document.getElementById("download_unlocked_spoiler_button").onclick = None
+            js.document.getElementById("download_spoiler_button").hidden = False
     else:
         js.document.getElementById("download_unlocked_spoiler_button").hidden = True
         js.document.getElementById("download_unlocked_spoiler_button").onclick = None
+        js.document.getElementById("download_spoiler_button").hidden = False
     if from_patch_gen is True:
         ROM_COPY.fixSecurityValue()
         ROM_COPY.save(f"dk64r-rom-{seed_id}.z64")
