@@ -20,8 +20,6 @@ world = {
         "worlds": {},
         "regions": {**levels['nodes'], **regions['nodes']},
         "edges": {**levels['edges'],**regions['edges'], **checks['edges'], **build_exits(), **build_events(), **build_warps(), **collectibles['edges']},
-        "locations": {},
-        "subChecks": {},
         "items": {**build_items(), **collectibles['nodes'], **checks['nodes']},
     },
     "settings": {

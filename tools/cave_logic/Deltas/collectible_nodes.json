@@ -2,933 +2,667 @@
     "nodes": {
         "coin_donkey": {
             "id": "coin_donkey",
-            "Key": "coin_donkey",
             "Name": "Donkey Coin",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "coin_diddy": {
             "id": "coin_diddy",
-            "Key": "coin_diddy",
             "Name": "Diddy Coin",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "coin_lanky": {
             "id": "coin_lanky",
-            "Key": "coin_lanky",
             "Name": "Lanky Coin",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "coin_tiny": {
             "id": "coin_tiny",
-            "Key": "coin_tiny",
             "Name": "Tiny Coin",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "coin_chunky": {
             "id": "coin_chunky",
-            "Key": "coin_chunky",
             "Name": "Chunky Coin",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_isles": {
             "id": "banana_isles",
-            "Key": "banana_isles",
             "Name": "DKIsles Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_isles_donkey": {
             "id": "banana_isles_donkey",
-            "Key": "banana_isles_donkey",
             "Name": "DKIsles Donkey Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_isles_donkey": {
             "id": "bunch_isles_donkey",
-            "Key": "bunch_isles_donkey",
             "Name": "DKIsles Donkey Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_isles_donkey": {
             "id": "balloon_isles_donkey",
-            "Key": "balloon_isles_donkey",
             "Name": "DKIsles Donkey Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_isles_diddy": {
             "id": "banana_isles_diddy",
-            "Key": "banana_isles_diddy",
             "Name": "DKIsles Diddy Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_isles_diddy": {
             "id": "bunch_isles_diddy",
-            "Key": "bunch_isles_diddy",
             "Name": "DKIsles Diddy Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_isles_diddy": {
             "id": "balloon_isles_diddy",
-            "Key": "balloon_isles_diddy",
             "Name": "DKIsles Diddy Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_isles_lanky": {
             "id": "banana_isles_lanky",
-            "Key": "banana_isles_lanky",
             "Name": "DKIsles Lanky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_isles_lanky": {
             "id": "bunch_isles_lanky",
-            "Key": "bunch_isles_lanky",
             "Name": "DKIsles Lanky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_isles_lanky": {
             "id": "balloon_isles_lanky",
-            "Key": "balloon_isles_lanky",
             "Name": "DKIsles Lanky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_isles_tiny": {
             "id": "banana_isles_tiny",
-            "Key": "banana_isles_tiny",
             "Name": "DKIsles Tiny Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_isles_tiny": {
             "id": "bunch_isles_tiny",
-            "Key": "bunch_isles_tiny",
             "Name": "DKIsles Tiny Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_isles_tiny": {
             "id": "balloon_isles_tiny",
-            "Key": "balloon_isles_tiny",
             "Name": "DKIsles Tiny Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_isles_chunky": {
             "id": "banana_isles_chunky",
-            "Key": "banana_isles_chunky",
             "Name": "DKIsles Chunky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_isles_chunky": {
             "id": "bunch_isles_chunky",
-            "Key": "bunch_isles_chunky",
             "Name": "DKIsles Chunky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_isles_chunky": {
             "id": "balloon_isles_chunky",
-            "Key": "balloon_isles_chunky",
             "Name": "DKIsles Chunky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_japes": {
             "id": "banana_japes",
-            "Key": "banana_japes",
             "Name": "JungleJapes Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_japes_donkey": {
             "id": "banana_japes_donkey",
-            "Key": "banana_japes_donkey",
             "Name": "JungleJapes Donkey Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_japes_donkey": {
             "id": "bunch_japes_donkey",
-            "Key": "bunch_japes_donkey",
             "Name": "JungleJapes Donkey Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_japes_donkey": {
             "id": "balloon_japes_donkey",
-            "Key": "balloon_japes_donkey",
             "Name": "JungleJapes Donkey Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_japes_diddy": {
             "id": "banana_japes_diddy",
-            "Key": "banana_japes_diddy",
             "Name": "JungleJapes Diddy Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_japes_diddy": {
             "id": "bunch_japes_diddy",
-            "Key": "bunch_japes_diddy",
             "Name": "JungleJapes Diddy Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_japes_diddy": {
             "id": "balloon_japes_diddy",
-            "Key": "balloon_japes_diddy",
             "Name": "JungleJapes Diddy Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_japes_lanky": {
             "id": "banana_japes_lanky",
-            "Key": "banana_japes_lanky",
             "Name": "JungleJapes Lanky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_japes_lanky": {
             "id": "bunch_japes_lanky",
-            "Key": "bunch_japes_lanky",
             "Name": "JungleJapes Lanky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_japes_lanky": {
             "id": "balloon_japes_lanky",
-            "Key": "balloon_japes_lanky",
             "Name": "JungleJapes Lanky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_japes_tiny": {
             "id": "banana_japes_tiny",
-            "Key": "banana_japes_tiny",
             "Name": "JungleJapes Tiny Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_japes_tiny": {
             "id": "bunch_japes_tiny",
-            "Key": "bunch_japes_tiny",
             "Name": "JungleJapes Tiny Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_japes_tiny": {
             "id": "balloon_japes_tiny",
-            "Key": "balloon_japes_tiny",
             "Name": "JungleJapes Tiny Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_japes_chunky": {
             "id": "banana_japes_chunky",
-            "Key": "banana_japes_chunky",
             "Name": "JungleJapes Chunky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_japes_chunky": {
             "id": "bunch_japes_chunky",
-            "Key": "bunch_japes_chunky",
             "Name": "JungleJapes Chunky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_japes_chunky": {
             "id": "balloon_japes_chunky",
-            "Key": "balloon_japes_chunky",
             "Name": "JungleJapes Chunky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_aztec": {
             "id": "banana_aztec",
-            "Key": "banana_aztec",
             "Name": "AngryAztec Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_aztec_donkey": {
             "id": "banana_aztec_donkey",
-            "Key": "banana_aztec_donkey",
             "Name": "AngryAztec Donkey Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_aztec_donkey": {
             "id": "bunch_aztec_donkey",
-            "Key": "bunch_aztec_donkey",
             "Name": "AngryAztec Donkey Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_aztec_donkey": {
             "id": "balloon_aztec_donkey",
-            "Key": "balloon_aztec_donkey",
             "Name": "AngryAztec Donkey Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_aztec_diddy": {
             "id": "banana_aztec_diddy",
-            "Key": "banana_aztec_diddy",
             "Name": "AngryAztec Diddy Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_aztec_diddy": {
             "id": "bunch_aztec_diddy",
-            "Key": "bunch_aztec_diddy",
             "Name": "AngryAztec Diddy Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_aztec_diddy": {
             "id": "balloon_aztec_diddy",
-            "Key": "balloon_aztec_diddy",
             "Name": "AngryAztec Diddy Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_aztec_lanky": {
             "id": "banana_aztec_lanky",
-            "Key": "banana_aztec_lanky",
             "Name": "AngryAztec Lanky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_aztec_lanky": {
             "id": "bunch_aztec_lanky",
-            "Key": "bunch_aztec_lanky",
             "Name": "AngryAztec Lanky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_aztec_lanky": {
             "id": "balloon_aztec_lanky",
-            "Key": "balloon_aztec_lanky",
             "Name": "AngryAztec Lanky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_aztec_tiny": {
             "id": "banana_aztec_tiny",
-            "Key": "banana_aztec_tiny",
             "Name": "AngryAztec Tiny Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_aztec_tiny": {
             "id": "bunch_aztec_tiny",
-            "Key": "bunch_aztec_tiny",
             "Name": "AngryAztec Tiny Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_aztec_tiny": {
             "id": "balloon_aztec_tiny",
-            "Key": "balloon_aztec_tiny",
             "Name": "AngryAztec Tiny Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_aztec_chunky": {
             "id": "banana_aztec_chunky",
-            "Key": "banana_aztec_chunky",
             "Name": "AngryAztec Chunky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_aztec_chunky": {
             "id": "bunch_aztec_chunky",
-            "Key": "bunch_aztec_chunky",
             "Name": "AngryAztec Chunky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_aztec_chunky": {
             "id": "balloon_aztec_chunky",
-            "Key": "balloon_aztec_chunky",
             "Name": "AngryAztec Chunky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_factory": {
             "id": "banana_factory",
-            "Key": "banana_factory",
             "Name": "FranticFactory Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_factory_donkey": {
             "id": "banana_factory_donkey",
-            "Key": "banana_factory_donkey",
             "Name": "FranticFactory Donkey Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_factory_donkey": {
             "id": "bunch_factory_donkey",
-            "Key": "bunch_factory_donkey",
             "Name": "FranticFactory Donkey Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_factory_donkey": {
             "id": "balloon_factory_donkey",
-            "Key": "balloon_factory_donkey",
             "Name": "FranticFactory Donkey Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_factory_diddy": {
             "id": "banana_factory_diddy",
-            "Key": "banana_factory_diddy",
             "Name": "FranticFactory Diddy Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_factory_diddy": {
             "id": "bunch_factory_diddy",
-            "Key": "bunch_factory_diddy",
             "Name": "FranticFactory Diddy Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_factory_diddy": {
             "id": "balloon_factory_diddy",
-            "Key": "balloon_factory_diddy",
             "Name": "FranticFactory Diddy Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_factory_lanky": {
             "id": "banana_factory_lanky",
-            "Key": "banana_factory_lanky",
             "Name": "FranticFactory Lanky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_factory_lanky": {
             "id": "bunch_factory_lanky",
-            "Key": "bunch_factory_lanky",
             "Name": "FranticFactory Lanky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_factory_lanky": {
             "id": "balloon_factory_lanky",
-            "Key": "balloon_factory_lanky",
             "Name": "FranticFactory Lanky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_factory_tiny": {
             "id": "banana_factory_tiny",
-            "Key": "banana_factory_tiny",
             "Name": "FranticFactory Tiny Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_factory_tiny": {
             "id": "bunch_factory_tiny",
-            "Key": "bunch_factory_tiny",
             "Name": "FranticFactory Tiny Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_factory_tiny": {
             "id": "balloon_factory_tiny",
-            "Key": "balloon_factory_tiny",
             "Name": "FranticFactory Tiny Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_factory_chunky": {
             "id": "banana_factory_chunky",
-            "Key": "banana_factory_chunky",
             "Name": "FranticFactory Chunky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_factory_chunky": {
             "id": "bunch_factory_chunky",
-            "Key": "bunch_factory_chunky",
             "Name": "FranticFactory Chunky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_factory_chunky": {
             "id": "balloon_factory_chunky",
-            "Key": "balloon_factory_chunky",
             "Name": "FranticFactory Chunky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_galleon": {
             "id": "banana_galleon",
-            "Key": "banana_galleon",
             "Name": "GloomyGalleon Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_galleon_donkey": {
             "id": "banana_galleon_donkey",
-            "Key": "banana_galleon_donkey",
             "Name": "GloomyGalleon Donkey Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_galleon_donkey": {
             "id": "bunch_galleon_donkey",
-            "Key": "bunch_galleon_donkey",
             "Name": "GloomyGalleon Donkey Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_galleon_donkey": {
             "id": "balloon_galleon_donkey",
-            "Key": "balloon_galleon_donkey",
             "Name": "GloomyGalleon Donkey Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_galleon_diddy": {
             "id": "banana_galleon_diddy",
-            "Key": "banana_galleon_diddy",
             "Name": "GloomyGalleon Diddy Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_galleon_diddy": {
             "id": "bunch_galleon_diddy",
-            "Key": "bunch_galleon_diddy",
             "Name": "GloomyGalleon Diddy Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_galleon_diddy": {
             "id": "balloon_galleon_diddy",
-            "Key": "balloon_galleon_diddy",
             "Name": "GloomyGalleon Diddy Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_galleon_lanky": {
             "id": "banana_galleon_lanky",
-            "Key": "banana_galleon_lanky",
             "Name": "GloomyGalleon Lanky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_galleon_lanky": {
             "id": "bunch_galleon_lanky",
-            "Key": "bunch_galleon_lanky",
             "Name": "GloomyGalleon Lanky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_galleon_lanky": {
             "id": "balloon_galleon_lanky",
-            "Key": "balloon_galleon_lanky",
             "Name": "GloomyGalleon Lanky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_galleon_tiny": {
             "id": "banana_galleon_tiny",
-            "Key": "banana_galleon_tiny",
             "Name": "GloomyGalleon Tiny Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_galleon_tiny": {
             "id": "bunch_galleon_tiny",
-            "Key": "bunch_galleon_tiny",
             "Name": "GloomyGalleon Tiny Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_galleon_tiny": {
             "id": "balloon_galleon_tiny",
-            "Key": "balloon_galleon_tiny",
             "Name": "GloomyGalleon Tiny Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_galleon_chunky": {
             "id": "banana_galleon_chunky",
-            "Key": "banana_galleon_chunky",
             "Name": "GloomyGalleon Chunky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_galleon_chunky": {
             "id": "bunch_galleon_chunky",
-            "Key": "bunch_galleon_chunky",
             "Name": "GloomyGalleon Chunky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_galleon_chunky": {
             "id": "balloon_galleon_chunky",
-            "Key": "balloon_galleon_chunky",
             "Name": "GloomyGalleon Chunky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_forest": {
             "id": "banana_forest",
-            "Key": "banana_forest",
             "Name": "FungiForest Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_forest_donkey": {
             "id": "banana_forest_donkey",
-            "Key": "banana_forest_donkey",
             "Name": "FungiForest Donkey Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_forest_donkey": {
             "id": "bunch_forest_donkey",
-            "Key": "bunch_forest_donkey",
             "Name": "FungiForest Donkey Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_forest_donkey": {
             "id": "balloon_forest_donkey",
-            "Key": "balloon_forest_donkey",
             "Name": "FungiForest Donkey Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_forest_diddy": {
             "id": "banana_forest_diddy",
-            "Key": "banana_forest_diddy",
             "Name": "FungiForest Diddy Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_forest_diddy": {
             "id": "bunch_forest_diddy",
-            "Key": "bunch_forest_diddy",
             "Name": "FungiForest Diddy Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_forest_diddy": {
             "id": "balloon_forest_diddy",
-            "Key": "balloon_forest_diddy",
             "Name": "FungiForest Diddy Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_forest_lanky": {
             "id": "banana_forest_lanky",
-            "Key": "banana_forest_lanky",
             "Name": "FungiForest Lanky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_forest_lanky": {
             "id": "bunch_forest_lanky",
-            "Key": "bunch_forest_lanky",
             "Name": "FungiForest Lanky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_forest_lanky": {
             "id": "balloon_forest_lanky",
-            "Key": "balloon_forest_lanky",
             "Name": "FungiForest Lanky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_forest_tiny": {
             "id": "banana_forest_tiny",
-            "Key": "banana_forest_tiny",
             "Name": "FungiForest Tiny Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_forest_tiny": {
             "id": "bunch_forest_tiny",
-            "Key": "bunch_forest_tiny",
             "Name": "FungiForest Tiny Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_forest_tiny": {
             "id": "balloon_forest_tiny",
-            "Key": "balloon_forest_tiny",
             "Name": "FungiForest Tiny Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_forest_chunky": {
             "id": "banana_forest_chunky",
-            "Key": "banana_forest_chunky",
             "Name": "FungiForest Chunky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_forest_chunky": {
             "id": "bunch_forest_chunky",
-            "Key": "bunch_forest_chunky",
             "Name": "FungiForest Chunky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_forest_chunky": {
             "id": "balloon_forest_chunky",
-            "Key": "balloon_forest_chunky",
             "Name": "FungiForest Chunky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_caves": {
             "id": "banana_caves",
-            "Key": "banana_caves",
             "Name": "CrystalCaves Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_caves_donkey": {
             "id": "banana_caves_donkey",
-            "Key": "banana_caves_donkey",
             "Name": "CrystalCaves Donkey Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_caves_donkey": {
             "id": "bunch_caves_donkey",
-            "Key": "bunch_caves_donkey",
             "Name": "CrystalCaves Donkey Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_caves_donkey": {
             "id": "balloon_caves_donkey",
-            "Key": "balloon_caves_donkey",
             "Name": "CrystalCaves Donkey Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_caves_diddy": {
             "id": "banana_caves_diddy",
-            "Key": "banana_caves_diddy",
             "Name": "CrystalCaves Diddy Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_caves_diddy": {
             "id": "bunch_caves_diddy",
-            "Key": "bunch_caves_diddy",
             "Name": "CrystalCaves Diddy Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_caves_diddy": {
             "id": "balloon_caves_diddy",
-            "Key": "balloon_caves_diddy",
             "Name": "CrystalCaves Diddy Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_caves_lanky": {
             "id": "banana_caves_lanky",
-            "Key": "banana_caves_lanky",
             "Name": "CrystalCaves Lanky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_caves_lanky": {
             "id": "bunch_caves_lanky",
-            "Key": "bunch_caves_lanky",
             "Name": "CrystalCaves Lanky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_caves_lanky": {
             "id": "balloon_caves_lanky",
-            "Key": "balloon_caves_lanky",
             "Name": "CrystalCaves Lanky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_caves_tiny": {
             "id": "banana_caves_tiny",
-            "Key": "banana_caves_tiny",
             "Name": "CrystalCaves Tiny Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_caves_tiny": {
             "id": "bunch_caves_tiny",
-            "Key": "bunch_caves_tiny",
             "Name": "CrystalCaves Tiny Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_caves_tiny": {
             "id": "balloon_caves_tiny",
-            "Key": "balloon_caves_tiny",
             "Name": "CrystalCaves Tiny Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_caves_chunky": {
             "id": "banana_caves_chunky",
-            "Key": "banana_caves_chunky",
             "Name": "CrystalCaves Chunky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_caves_chunky": {
             "id": "bunch_caves_chunky",
-            "Key": "bunch_caves_chunky",
             "Name": "CrystalCaves Chunky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_caves_chunky": {
             "id": "balloon_caves_chunky",
-            "Key": "balloon_caves_chunky",
             "Name": "CrystalCaves Chunky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_castle": {
             "id": "banana_castle",
-            "Key": "banana_castle",
             "Name": "CreepyCastle Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_castle_donkey": {
             "id": "banana_castle_donkey",
-            "Key": "banana_castle_donkey",
             "Name": "CreepyCastle Donkey Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_castle_donkey": {
             "id": "bunch_castle_donkey",
-            "Key": "bunch_castle_donkey",
             "Name": "CreepyCastle Donkey Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_castle_donkey": {
             "id": "balloon_castle_donkey",
-            "Key": "balloon_castle_donkey",
             "Name": "CreepyCastle Donkey Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_castle_diddy": {
             "id": "banana_castle_diddy",
-            "Key": "banana_castle_diddy",
             "Name": "CreepyCastle Diddy Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_castle_diddy": {
             "id": "bunch_castle_diddy",
-            "Key": "bunch_castle_diddy",
             "Name": "CreepyCastle Diddy Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_castle_diddy": {
             "id": "balloon_castle_diddy",
-            "Key": "balloon_castle_diddy",
             "Name": "CreepyCastle Diddy Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_castle_lanky": {
             "id": "banana_castle_lanky",
-            "Key": "banana_castle_lanky",
             "Name": "CreepyCastle Lanky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_castle_lanky": {
             "id": "bunch_castle_lanky",
-            "Key": "bunch_castle_lanky",
             "Name": "CreepyCastle Lanky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_castle_lanky": {
             "id": "balloon_castle_lanky",
-            "Key": "balloon_castle_lanky",
             "Name": "CreepyCastle Lanky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_castle_tiny": {
             "id": "banana_castle_tiny",
-            "Key": "banana_castle_tiny",
             "Name": "CreepyCastle Tiny Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_castle_tiny": {
             "id": "bunch_castle_tiny",
-            "Key": "bunch_castle_tiny",
             "Name": "CreepyCastle Tiny Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_castle_tiny": {
             "id": "balloon_castle_tiny",
-            "Key": "balloon_castle_tiny",
             "Name": "CreepyCastle Tiny Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "banana_castle_chunky": {
             "id": "banana_castle_chunky",
-            "Key": "banana_castle_chunky",
             "Name": "CreepyCastle Chunky Banana",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "bunch_castle_chunky": {
             "id": "bunch_castle_chunky",
-            "Key": "bunch_castle_chunky",
             "Name": "CreepyCastle Chunky Bunch",
-            "AltNames": [],
             "Type": "Collectible"
         },
         "balloon_castle_chunky": {
             "id": "balloon_castle_chunky",
-            "Key": "balloon_castle_chunky",
             "Name": "CreepyCastle Chunky Balloon",
-            "AltNames": [],
             "Type": "Collectible"
         }
     },
@@ -944,7 +678,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -966,7 +700,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -988,7 +722,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1010,7 +744,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1032,7 +766,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1054,7 +788,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1076,7 +810,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1098,7 +832,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1120,7 +854,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1142,7 +876,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1164,7 +898,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1186,7 +920,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1208,7 +942,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1230,7 +964,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1252,7 +986,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1274,7 +1008,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1296,7 +1030,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1318,7 +1052,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1340,7 +1074,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1362,7 +1096,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1384,7 +1118,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1406,7 +1140,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1428,7 +1162,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1450,7 +1184,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1472,7 +1206,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1494,7 +1228,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1516,7 +1250,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1538,7 +1272,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1560,7 +1294,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1582,7 +1316,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1604,7 +1338,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1626,7 +1360,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1648,7 +1382,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1670,7 +1404,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1692,7 +1426,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1714,7 +1448,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1736,7 +1470,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1758,7 +1492,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1780,7 +1514,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1802,7 +1536,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1824,7 +1558,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1846,7 +1580,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1868,7 +1602,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1890,7 +1624,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1912,7 +1646,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1934,7 +1668,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1956,7 +1690,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -1978,7 +1712,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2000,7 +1734,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2022,7 +1756,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2044,7 +1778,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2066,7 +1800,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2088,7 +1822,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2110,7 +1844,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2132,7 +1866,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2154,7 +1888,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2176,7 +1910,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2198,7 +1932,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2220,7 +1954,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2242,7 +1976,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2264,7 +1998,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2286,7 +2020,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2308,7 +2042,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2330,7 +2064,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2352,7 +2086,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2374,7 +2108,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2396,7 +2130,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2418,7 +2152,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2440,7 +2174,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2462,7 +2196,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2484,7 +2218,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2506,7 +2240,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2528,7 +2262,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2550,7 +2284,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2572,7 +2306,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2594,7 +2328,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2616,7 +2350,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2638,7 +2372,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2660,7 +2394,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2682,7 +2416,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2704,7 +2438,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2726,7 +2460,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2748,7 +2482,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2770,7 +2504,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2792,7 +2526,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2814,7 +2548,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2836,7 +2570,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2858,7 +2592,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2880,7 +2614,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2902,7 +2636,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2924,7 +2658,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2946,7 +2680,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2968,7 +2702,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -2990,7 +2724,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3012,7 +2746,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3034,7 +2768,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3056,7 +2790,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3078,7 +2812,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3100,7 +2834,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3122,7 +2856,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3144,7 +2878,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3166,7 +2900,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3188,7 +2922,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3210,7 +2944,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3232,7 +2966,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3254,7 +2988,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3276,7 +3010,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3298,7 +3032,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3320,7 +3054,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3342,7 +3076,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3364,7 +3098,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3386,7 +3120,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3408,7 +3142,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3430,7 +3164,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3452,7 +3186,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3474,7 +3208,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3496,7 +3230,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3518,7 +3252,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3540,7 +3274,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3562,7 +3296,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3584,7 +3318,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3606,7 +3340,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3628,7 +3362,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3650,7 +3384,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [
@@ -3672,7 +3406,7 @@
             "Types": "Multi",
             "Class": "SideEffect",
             "Requires": true,
-            "Persona": null,
+            "Persona": "any",
             "Rewards": {
                 "combinator": "and",
                 "rules": [

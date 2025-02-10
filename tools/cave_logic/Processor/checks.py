@@ -119,7 +119,7 @@ def kasplat_to_edge(key, kasplat):
     Class = "Custom Check" if kasplat.vanilla else "Check"
     source = RegionNode(kasplat.region_id, '') if region else None
 
-    return CheckEdge(key, kasplat.name,source, Items.NoItem, "Kasplat", Class, requires, {"Name": kasplat.name})
+    return CheckEdge(key, kasplat.name,source, Items.NoItem, "Kasplat", Class, requires)
 
 
 def collectible_to_edge(collectible, region, index):
@@ -169,7 +169,7 @@ def collectible_to_edge(collectible, region, index):
 
     normalised_reward = normalise_name(reward_name.lower())
 
-    coll = CheckEdge(strip_name(name), name, RegionNode(portal_region, ''), normalised_reward, collectible.type.name, "Collectible", requires, {"Name": collectible.kong.name})
+    coll = CheckEdge(strip_name(name), name, RegionNode(portal_region, ''), normalised_reward, collectible.type.name, "Collectible", requires, collectible.kong.name)
     coll.Rewards = QueryLogic('and', [{"Name": normalised_reward, "Amount": collectible.amount * multiplier}])
 
     # rewards = [

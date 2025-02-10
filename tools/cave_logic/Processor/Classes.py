@@ -122,7 +122,7 @@ class QueryLogic:
 class CheckEdge:
     """A node representing a region in the logic graph."""
 
-    def __init__(self, id, Name: str, source: RegionNode | str, target: Items | Collectibles | str, Types, Class, Logic: object | bool = True, Persona=None):
+    def __init__(self, id, Name: str, source: RegionNode | str, target: Items | Collectibles | str, Types, Class, Logic: object | bool = True, Persona='any'):
         self.id = id
         self.Name = Name
         self.source = source.id if isinstance(source, RegionNode) else source

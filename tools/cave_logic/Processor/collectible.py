@@ -30,7 +30,7 @@ def side_effect_edge(id,source, target, name, amount):
         "Types": "Multi",
         "Class": "SideEffect",
         "Requires": True,
-        "Persona": None,
+        "Persona": 'any',
         "Rewards": {
             "combinator": "and",
             "rules": [
@@ -45,9 +45,7 @@ def side_effect_edge(id,source, target, name, amount):
 def collectible_node(id, name):
     return {
         "id": id,
-        "Key": id,
         "Name": name,
-        "AltNames": [],
         "Type": 'Collectible'
     }
 
@@ -68,13 +66,7 @@ def build_collectibles():
             continue
 
         coin_id = Collectibles.coin.name + "_" + kong.name
-        coin =  {
-            "id": coin_id,
-            "Key": coin_id,
-            "Name": kong.name.title() + " " + Collectibles.coin.name.title(),
-            "AltNames": [],
-            "Type": "Collectible"
-            }
+        coin =  collectible_node(coin_id, kong.name.title() + " " + Collectibles.coin.name.title())
 
         nodes[coin['id']] = coin
 
