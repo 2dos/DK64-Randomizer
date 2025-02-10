@@ -3,7 +3,10 @@
 from asyncio import sleep
 import random
 import requests
+import logging
 from racetime_bot import RaceHandler, monitor_cmd, can_moderate, can_monitor, msg_actions
+
+logger = logging.getLogger(__name__)
 
 
 class RandoHandler(RaceHandler):
@@ -29,21 +32,21 @@ class RandoHandler(RaceHandler):
             await self.send_message(
                 "Welcome to DK64R! " + random.choice(self.greetings) + "THIS IS CURRENT IN DEV MODE ONLY. USE AT YOUR OWN RISK.",
                 actions=[
-                    msg_actions.Action(
-                        label="Roll Seed",
-                        help_text="Create a seed using the latest release",
-                        message="!seed '${preset}' ${--password} ${--spoiler}",
-                        submit="Roll Race Seed",
-                        survey=msg_actions.Survey(
-                            msg_actions.SelectInput(
-                                name="preset",
-                                label="Preset",
-                                options={key: value["name"] for key, value in self.dk64.master_presets.items()},
-                            ),
-                            msg_actions.BoolInput(name="--password", label="Password Protect", default=True),
-                            msg_actions.BoolInput(name="--spoiler", label="Generate Spoiler Log", default=False),
-                        ),
-                    ),
+                    # msg_actions.Action(
+                    #     label="Roll Seed",
+                    #     help_text="Create a seed using the latest release",
+                    #     message="!seed '${preset}' ${--password} ${--spoiler}",
+                    #     submit="Roll Race Seed",
+                    #     survey=msg_actions.Survey(
+                    #         msg_actions.SelectInput(
+                    #             name="preset",
+                    #             label="Preset",
+                    #             options={key: value["name"] for key, value in self.dk64.master_presets.items()},
+                    #         ),
+                    #         msg_actions.BoolInput(name="--password", label="Password Protect", default=True),
+                    #         msg_actions.BoolInput(name="--spoiler", label="Generate Spoiler Log", default=False),
+                    #     ),
+                    # ),
                     msg_actions.Action(
                         label="Roll Dev Seed",
                         help_text="Create a seed using the latest release and release a spoiler log",
@@ -215,18 +218,21 @@ class RandoHandler(RaceHandler):
 
     async def check_seed_status(self):
         """Check the status of the seed generation."""
-        await sleep(1)
+        await sleep(5)
         status, data = self.dk64.get_status(self.state["seed_id"])
         if status == 0:
             self.state["status_checks"] += 1
             if self.state["status_checks"] < self.max_status_checks:
                 await self.check_seed_status()
+            else:
+                self.state["seed_id"] = None
+                await self.send_message("Sorry, but it looks like the seed is taking too long to generate.")
         elif status == 1:
             self.state["result_data"] = data.json()["result"]
             await self.load_seed_hash()
         elif status >= 2:
             self.state["seed_id"] = None
-            await self.send_message("Sorry, but it looks like the seed failed to generate. Use " "!seed to try again.")
+            await self.send_message("Sorry, but it looks like the seed failed to generate. Use !seed to try again.")
 
     async def load_seed_hash(self):
         """When the seed is ready, get the data."""
@@ -288,7 +294,9 @@ class RandoHandler(RaceHandler):
         }
         if self.dk64.discord_webhook and not self.data.get("unlisted", False):
             requests.post(self.dk64.discord_webhook, json=embed_data)
+        logger.info("Password Selected? %s" % self.state["result_data"].get("password"))
         if self.state["result_data"].get("password"):
+            logger.info("Result Send Message! Password: %(password)s" % {"password": self.state["result_data"]["password"]})
             # await self.send_message("Seed generated! Password: %(password)s" % {"password": self.state["result_data"]["password"]})
             # DM the password to the user
             await self.send_message(f"Seed generated! Password: {self.state['result_data']['password']}", direct_to=self.data.get("opened_by", {}).get("id"))

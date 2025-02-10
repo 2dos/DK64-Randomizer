@@ -138,7 +138,7 @@ void setActorDamage(int actor, int new_damage) {
     actor_health_damage[actor].damage_applied = new_damage;
 }
 
-static short kremling_krossbone_maps[] = {
+static unsigned char kremling_krossbone_maps[] = {
     MAP_BARRAGE_EASY,
     MAP_BARRAGE_NORMAL,
     MAP_BARRAGE_HARD,
@@ -151,7 +151,7 @@ void swapKremlingModel(void) {
         return;
     }
     int kremling_model = 0x31;
-    if (inShortList(CurrentMap, &kremling_krossbone_maps, sizeof(kremling_krossbone_maps) >> 1)) {
+    if (inU8List(CurrentMap, &kremling_krossbone_maps, sizeof(kremling_krossbone_maps))) {
         kremling_model = 0x42;
     }
     CharSpawnerActorData[59].model = kremling_model;

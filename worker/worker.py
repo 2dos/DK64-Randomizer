@@ -8,6 +8,7 @@ import json
 import os
 from waitress import serve
 from opentelemetry import trace
+import socket
 
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry import metrics
@@ -18,7 +19,8 @@ from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.wsgi import OpenTelemetryMiddleware
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
-
+from opentelemetry._logs import set_logger_provider
+from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Enums.Types import ItemRandoSelector, KeySelector
@@ -33,6 +35,7 @@ from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, P
 from randomizer.Lists.Warps import VanillaBananaportSelector
 from randomizer.Lists.WrinklyHints import PointSpreadSelector
 from version import version
+import logging
 from tasks import generate_seed
 from opentelemetry_instrumentation_rq import RQInstrumentor
 from randomizer.Lists.Exceptions import SettingsIncompatibleException, PlandoIncompatibleException
@@ -42,7 +45,6 @@ from opentelemetry.instrumentation.redis import RedisInstrumentor
 listen = ["tasks_high_priority", "tasks_low_priority"]  # High-priority first
 redis_conn = Redis(host="redis", port=6379)
 job_timeout = 300  # Timeout in seconds (5 minutes)
-
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
 BRANCH = os.environ.get("BRANCH", "LOCAL")
@@ -52,8 +54,15 @@ resource = Resource(
         "service.name": "worker-" + BRANCH,
         "service.version": str(version),
         "deployment.environment": BRANCH,
+        "container.id": next((l.rsplit("/", 1)[-1] for l in open("/proc/self/cgroup") if "docker" in l), "") if os.path.exists("/proc/self/cgroup") else "",
+        "container.name": socket.gethostname(),
     }
 )
+
+
+app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
+api = Blueprint("worker_api", __name__)
+
 
 span = trace.get_current_span()
 trace.set_tracer_provider(TracerProvider(resource=resource))
@@ -65,15 +74,21 @@ otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/t
 # # Add the BatchSpanProcessor to the TracerProvider
 span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
+logger = logging.getLogger(__name__)
 
-reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
-meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
-metrics.set_meter_provider(meterProvider)
-FlaskInstrumentor().instrument_app(app)
-app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
-api = Blueprint("worker_api", __name__)
-RQInstrumentor().instrument()
-RedisInstrumentor().instrument()
+if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
+    reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
+    meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
+    metrics.set_meter_provider(meterProvider)
+    FlaskInstrumentor().instrument_app(app)
+    RQInstrumentor().instrument()
+    RedisInstrumentor().instrument()
+    # create the providers
+    logger_provider = LoggerProvider(resource=resource)
+    # set the providers
+    set_logger_provider(logger_provider)
+    handler = LoggingHandler(level=logging.DEBUG, logger_provider=logger_provider)
+    logger.addHandler(handler)
 
 
 class PriorityAwareWorker(Worker):
@@ -83,19 +98,22 @@ class PriorityAwareWorker(Worker):
         """Process a job from the queue."""
         # Log which queue the job came from and its metadata
         user_ip = job.meta.get("ip", "unknown")
-        job_branch = job.meta.get("branch", "dev")
+        job_branch = job.meta.get("branch", "stable")
         if job_branch != BRANCH and BRANCH != "LOCAL":
             print(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
+            logger.info(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
             # Check how long the job has been in the queue
             try:
                 if job.enqueued_at is not None and (job.enqueued_at - job.started_at).total_seconds() > 60 * 60 * 24:
                     print(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
+                    logger.info(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
                     job.cancel()
             except Exception:
                 print(f"Failed to check job duration, cancelling it")
+                logger.info(f"Failed to check job duration, cancelling it")
             return
-
-        print(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip})")
+        print(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip}) with metadata: {json.dumps(job.meta)}")
+        logger.info(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip}) with metadata: {json.dumps(job.meta)}")
 
         # Process the job
         super().execute_job(job, queue)
@@ -132,7 +150,7 @@ def get_selector_info():
         "faster_checks": FasterCheckSelector,
         "cb_rando_levels": CBRandoSelector,
     }
-    return jsonify(selector_data)
+    return json.dumps(selector_data, sort_keys=False)
 
 
 @api.route("/convert_settings", methods=["POST"])

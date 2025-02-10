@@ -290,7 +290,7 @@ for pel_index, pellet in enumerate(pellets):
     tracker_im.paste(pel_im, (gap * pel_index, 0), pel_im)
 for kong_index, kong in enumerate(kongs):
     for sub_index, sub in enumerate(kong_submoves):
-        move_im = Image.open(f"{getDir('assets/file_screen/')}tracker_images/{kong}{sub}.png")
+        move_im = Image.open(f"{getDir('assets/file_screen/')}tracker_images/{kong}{sub}.png").convert("RGBA")
         move_im = move_im.resize((dim, dim))
         tracker_im.paste(move_im, ((gap * kong_index), ((sub_index + 2) * gap)), move_im)
 for move_index, move in enumerate(extra_moves):

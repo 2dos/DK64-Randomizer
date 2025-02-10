@@ -707,6 +707,7 @@ export enum SettingsStringEnum {
     cb_rando_list_selected = 202,
     crown_enemy_difficulty = 203,
     dk_portal_location_rando_v2 = 204,
+    dos_door_rando = 205,
 }
 
 export enum SettingsStringDataType {
@@ -1005,6 +1006,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.starting_moves_list_count_4: SettingsStringDataType.int16,
     SettingsStringEnum.starting_moves_list_5: SettingsStringDataType.list,
     SettingsStringEnum.starting_moves_list_count_5: SettingsStringDataType.int16,
+    SettingsStringEnum.dos_door_rando: SettingsStringDataType.bool,
 }
 
 export const SettingsStringListTypeMap = {

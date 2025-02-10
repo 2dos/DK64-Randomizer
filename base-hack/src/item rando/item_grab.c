@@ -80,7 +80,11 @@ static const item_info item_detection_data[] = {
     {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Nothing
     {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Reversed Controls)
     {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Slowed)
-    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0xD2}, // Hint Item
+    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x11B}, // Hint Item (DK)
+    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x11D}, // Hint Item (Diddy)
+    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x11F}, // Hint Item (Lanky)
+    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x121}, // Hint Item (Tiny)
+    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x123}, // Hint Item (Chunky)
 };
 
 void displayMedalOverlay(int flag, int item_type) {
@@ -712,6 +716,10 @@ void getItem(int object_type) {
             hh_item = HHITEM_FAKEITEM;
             break;
         case 0x27E:
+        case 649:
+        case 650:
+        case 651:
+        case 652:
             // Hint item
             forceDance();
             playSound(0x2EA, 0x7FFF, 63.0f, 1.0f, 5, 0);

@@ -276,6 +276,7 @@ void handleBugEnemy(void) {
         CurrentActorPointer_0->obj_props_bitfield &= 0xFFFF7FFF;
         CurrentActorPointer_0->shadow_intensity -= 8;
         CurrentActorPointer_0->yPos -= 8.0f;
+        CurrentActorPointer_0->hSpeed = 0.0f;
         if (CurrentActorPointer_0->shadow_intensity < 0) {
             CurrentActorPointer_0->shadow_intensity = 0;
             CurrentActorPointer_0->control_state = 0x40;
@@ -378,7 +379,7 @@ void kioskBugEnd(void) {
     renderActor(CurrentActorPointer_0, 0);
 }
 
-static short valid_stomp_states[] = {
+static unsigned char valid_stomp_states[] = {
     0x17, // Jumping
     0x30, // Bouncing
     0x19, // Bouncing (From Mushroom)
@@ -393,7 +394,7 @@ int stompHandler(void* unk0, playerData* player, int unk1) {
     if (!unkCollisionFunc(unk1, 1)) { // Not sure what this signifies?
         return 0;
     }
-    if (inShortList(player->control_state, &valid_stomp_states[0], sizeof(valid_stomp_states) >> 1)) {
+    if (inU8List(player->control_state, &valid_stomp_states[0], sizeof(valid_stomp_states))) {
         if (player->yVelocity < 0.0f) {
             // Player is descending
             return 1;

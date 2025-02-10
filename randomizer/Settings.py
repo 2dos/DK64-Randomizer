@@ -756,6 +756,7 @@ class Settings:
             "exit": 0,
         }
         self.vanilla_door_rando = False
+        self.dos_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
@@ -833,7 +834,7 @@ class Settings:
         self.points_list_active_moves = 5
         self.points_list_bean = 3
         # Progressive hints
-        self.progressive_hint_item = None
+        self.progressive_hint_item = ProgressiveHintItem.off
         self.enable_progressive_hints = False  # Deprecated
         self.progressive_hint_text = 0  # Deprecated
         self.progressive_hint_count = 0
@@ -957,6 +958,12 @@ class Settings:
             ]
             ItemPool.JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt]
 
+        # Dos' Doors require all of these to be on - it's a variant on vanilla door shuffle
+        if self.dos_door_rando:
+            self.vanilla_door_rando = True
+            # The UI should force this, but DK Portal Rando must be at least somewhat enabled for Dos' Doors
+            if self.dk_portal_location_rando_v2 == DKPortalRando.off:
+                self.dk_portal_location_rando_v2 = DKPortalRando.main_only
         # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
         if self.vanilla_door_rando:
             self.wrinkly_location_rando = True
@@ -1343,7 +1350,7 @@ class Settings:
             for i in range(len(phases)):
                 phases[i] = int(phases[i])
         orderedPhases = []
-        # TODO: Fix logic (lol)
+        # TODO: Fix logic (lol) (update: copilot autofilled "this is a mess" so now it has to stay forever)
         for map_id in phases:
             if map_id == Maps.KroolDonkeyPhase:
                 self.krool_donkey = True
@@ -1370,8 +1377,10 @@ class Settings:
             elif map_id == Maps.CastleBoss:
                 self.krool_kutout = True
             orderedPhases.append(map_id)
-
         self.krool_order = orderedPhases
+
+        # Identify if any bosses are plando'd. If so, then the normal boss placement algorithm will be discarded for a random placement.
+        self.boss_plando = self.enable_plandomizer and any([self.plandomizer_dict["plando_boss_order_" + str(i)] != -1 for i in range(7)])
 
         # Helm Order
         self.helm_donkey = False

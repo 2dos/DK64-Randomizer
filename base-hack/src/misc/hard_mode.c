@@ -251,7 +251,7 @@ typedef enum challenge_type {
     /* 0x002 */ CHALLENGE_DARK_WORLD,
 } challenge_type;
 
-static short banned_challenge_maps[] = {
+static unsigned char banned_challenge_maps[] = {
     MAP_TESTMAP,
     MAP_DKARCADE,
     MAP_JETPAC,
@@ -264,7 +264,7 @@ static short banned_challenge_maps[] = {
 };
 
 challenge_type getMemoryChallengeType(maps map) {
-    if (inShortList(map, &banned_challenge_maps[0], sizeof(banned_challenge_maps) >> 1)) {
+    if (inU8List(map, &banned_challenge_maps[0], sizeof(banned_challenge_maps))) {
         return CHALLENGE_NONE;
     }
     if (getBitArrayValue(&is_dark_world_mc, map)) {
@@ -273,7 +273,7 @@ challenge_type getMemoryChallengeType(maps map) {
     return CHALLENGE_SKY;
 }
 
-static short blast_maps[] = {
+static unsigned char blast_maps[] = {
     MAP_JAPESBBLAST,
     MAP_AZTECBBLAST,
     MAP_FACTORYBBLAST,
@@ -300,7 +300,7 @@ int isDarkWorld(maps map, int chunk) {
             return 0;
         }
     }
-    if (inShortList(CurrentMap, &blast_maps[0], sizeof(blast_maps) >> 1)) {
+    if (inU8List(CurrentMap, &blast_maps[0], sizeof(blast_maps))) {
         return 0;
     }
     return 1;
@@ -422,7 +422,7 @@ void fallDamageWrapper(int action, void* actor, int player_index) {
     setAction(action, actor, player_index);
 }
 
-static short stalactite_spawn_bans[] = {
+static unsigned char stalactite_spawn_bans[] = {
     0x6E, // Baboon Balloon
     0x3E, // Backflip
     0x87, // Entering Portal
@@ -434,7 +434,7 @@ void* spawnStalactite(short actor, float x, float y, float z, int unk0, int unk1
         return (void*)0;
     }
     if (Player) {
-        if (inShortList(Player->control_state, &stalactite_spawn_bans[0], sizeof(stalactite_spawn_bans) >> 1)) {
+        if (inU8List(Player->control_state, &stalactite_spawn_bans, sizeof(stalactite_spawn_bans))) {
             return (void*)0;
         }
     }

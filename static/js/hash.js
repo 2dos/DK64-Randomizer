@@ -1,6 +1,6 @@
 // Class to store the image information
 class ImageInfo {
-  constructor(name, format, table, index, width, height, mode) {
+  constructor(name, format, table, index, width, height, mode, read_offset = 0) {
     this.name = name;
     this.format = format;
     this.table = table;
@@ -8,23 +8,24 @@ class ImageInfo {
     this.width = width;
     this.height = height;
     this.mode = mode;
+    this.read_offset = read_offset;
   }
 }
 
 // Main function to load hash images
-function get_hash_images(type = "local", mode = "hash") {
+async function get_hash_images(type = "local", mode = "hash") {
   // List of images with properties like format, size, etc.
   const images = [
     new ImageInfo("bongos", "rgba16", 25, 5548, 40, 40, "hash"),
-    new ImageInfo("crown", "rgba16", 25, 5893, 44, 44, "hash"),
+    new ImageInfo("crown", "rgba16", 25, 5893, 44, 44, "hash", -1),
     new ImageInfo("dk_coin", "rgba16", 7, 500, 48, 44, "hash"),
-    new ImageInfo("fairy", "rgba32", 25, 5869, 32, 32, "hash"),
+    new ImageInfo("fairy", "rgba32", 25, 5869, 32, 32, "hash", -1),
     new ImageInfo("guitar", "rgba16", 25, 5547, 40, 40, "hash"),
-    new ImageInfo("nin_coin", "rgba16", 25, 5912, 44, 44, "hash"),
+    new ImageInfo("nin_coin", "rgba16", 25, 5912, 44, 44, "hash", -1),
     new ImageInfo("orange", "rgba16", 7, 309, 32, 32, "hash"),
     new ImageInfo("rainbow_coin", "rgba16", 25, 5963, 48, 44, "hash"),
-    new ImageInfo("rw_coin", "rgba16", 25, 5905, 44, 44, "hash"),
-    new ImageInfo("saxophone", "rgba16", 25, 5549, 40, 40, "hash"),
+    new ImageInfo("rw_coin", "rgba16", 25, 5905, 44, 44, "hash", -1),
+    new ImageInfo("saxophone", "rgba16", 25, 5549, 40, 40, "hash", -1),
   ];
 
   // Append additional fairy and explosion images to the list
@@ -59,29 +60,44 @@ function get_hash_images(type = "local", mode = "hash") {
   let gifFrames = [];
 
   // Set romType to the provided romFile (direct access)
-  let romType = romFile;
-  
+  let romType = window.romFile;
+
   // Filter images based on the mode ('hash', 'loading-fairy', or 'loading-dead')
   let filteredList = images.filter((image) => image.mode === mode);
-  console.log(filteredList)
   // Loop through filtered images and load data from the ROM
   for (let imageInfo of filteredList) {
     // Seek to the pointer table entry for the current image
     romType.seek(ptrOffset + imageInfo.table * 4);
-    let ptrTable = ptrOffset + new DataView(Uint8Array.from(romType.readBytes(4)).buffer).getUint32(0, false);
+    let ptrTable =
+      ptrOffset +
+      new DataView(Uint8Array.from(romType.readBytes(4)).buffer).getUint32(
+        0,
+        false
+      );
     // Read Bytes comes back as comma seperated bytes, merge them together
     // Seek to the start and end of the image data
     romType.seek(ptrTable + imageInfo.index * 4);
-    let imgStart = ptrOffset + new DataView(Uint8Array.from(romType.readBytes(4)).buffer).getUint32(0, false);
+    let imgStart =
+      ptrOffset +
+      new DataView(Uint8Array.from(romType.readBytes(4)).buffer).getUint32(
+        0,
+        false
+      );
     romType.seek(ptrTable + (imageInfo.index + 1) * 4);
-    let imgEnd = ptrOffset + new DataView(Uint8Array.from(romType.readBytes(4)).buffer).getUint32(0, false);
+    let imgEnd =
+      ptrOffset +
+      new DataView(Uint8Array.from(romType.readBytes(4)).buffer).getUint32(
+        0,
+        false
+      );
     let imgSize = imgEnd - imgStart;
+    imgSize += imageInfo.read_offset;
     // Read the image data from the ROM
     romType.seek(imgStart);
     let imgData = Uint8Array.from(romType.readBytes(imgSize));
     // Decompress image data if necessary
     let dec = imgData;
-    if (imageInfo.table === 25) {
+    if (imageInfo.table === 25 ) {
       dec = new pako.inflate(imgData); // Use pako for zlib decompression
     }
     // Create canvas and draw image based on format (rgba16/rgba32)
@@ -126,20 +142,67 @@ function get_hash_images(type = "local", mode = "hash") {
     tempCtx.drawImage(canvas, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(tempCanvas, 0, 0);
-    
-
+    if (mode !== "hash" && 
+      ctx
+      .getImageData(0, 0, imageInfo.width, imageInfo.height)
+      .data.every((val) => val === 0)
+    ) {
+      continue;
+    }
     // Save as base64-encoded PNG if in hash mode
     if (mode === "hash") {
       const imgBase64 = canvas.toDataURL("image/png").split(",")[1]; // Get base64 PNG data
       loadedImages.push(imgBase64); // Add image to the list of loaded images
     } else {
+      // check if the canvas is empty or transparent
       const imgBase64 = canvas.toDataURL("image/png").split(",")[1]; // Get base64 PNG data
       gifFrames.push(imgBase64); // Handle GIF frames
     }
   }
-  // TODO: Handle GIF creation logic if necessary
   if (mode !== "hash") {
-    return [gifFrames[3]]
+    let canvas;
+    if (mode === "loading-fairy") {
+      canvas = document.getElementById("progress-fairy");
+    }
+    if (mode === "loading-dead") {
+      canvas = document.getElementById("progress-dead");
+    }
+
+    const ctx = canvas.getContext("2d");
+    canvas.width = 44;
+    canvas.height = 44;
+
+    let frameIndex = 0;
+    const frameRate = 100; // Time per frame in milliseconds
+
+    // Function to load an image from a Base64 string
+    function loadImage(base64) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = (err) => reject(err);
+        img.src = base64;
+      });
+    }
+
+    // Function to animate the frames
+    async function animateFrames() {
+      const images = await Promise.all(
+        gifFrames.map((frame) => loadImage(`data:image/png;base64,${frame}`))
+      ); // Preload all frames
+      function renderFrame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+        ctx.drawImage(images[frameIndex], 0, 0, canvas.width, canvas.height); // Draw current frame
+
+        frameIndex = (frameIndex + 1) % images.length; // Loop to the next frame
+        setTimeout(renderFrame, frameRate); // Schedule the next frame
+      }
+
+      renderFrame(); // Start the animation
+    }
+
+    // Start the animation
+    animateFrames().catch(console.error);
   }
   return loadedImages; // Return base64-encoded images
 }

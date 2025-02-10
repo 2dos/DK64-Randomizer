@@ -223,8 +223,7 @@ KasplatLocationList = {
             xmax=583,
             zmin=1778,
             zmax=1927,
-            region=Regions.JungleJapesMain,
-            additional_logic=lambda l: (l.lanky and l.handstand) or (l.tiny and l.twirl) or l.CanMoonkick() or ((l.CanPhase() or l.generalclips) and (l.istiny or l.isdiddy)),
+            region=Regions.JapesPaintingRoomHill,
         ),
         KasplatLocation(
             name="Japes Kasplat: Minecart Exit",
@@ -415,8 +414,7 @@ KasplatLocationList = {
             xmax=1161,
             zmin=2130,
             zmax=2332,
-            region=Regions.LlamaTemple,
-            additional_logic=lambda l: l.grape or l.CanPhase(),
+            region=Regions.LlamaTempleMatching,
         ),
         # Problematic - too easy to miss if you play the instrument, race to the cage, and free the kong before the respawn
         # KasplatLocation(
@@ -755,8 +753,7 @@ KasplatLocationList = {
             xmax=475,
             zmin=501,
             zmax=530,
-            region=Regions.Lighthouse,
-            additional_logic=lambda l: l.climbing,
+            region=Regions.LighthouseAboveLadder,
         ),
         KasplatLocation(
             name="Galleon Kasplat: In the Mechfish",
@@ -1266,8 +1263,7 @@ KasplatLocationList = {
             xmax=2674,
             zmin=391,
             zmax=543,
-            region=Regions.CrystalCavesMain,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls),
+            region=Regions.CavesGGRoom,
         ),
         KasplatLocation(
             name="Caves Kasplat: Starting Area",
@@ -1456,8 +1452,7 @@ KasplatLocationList = {
             xmax=1582,
             zmin=2265,
             zmax=2406,
-            region=Regions.Crypt,
-            additional_logic=lambda l: l.coconut or l.CanPhase() or l.generalclips or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors),
+            region=Regions.CryptDonkeyRoom,
         ),
         KasplatLocation(
             name="Castle Kasplat: Library",

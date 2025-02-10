@@ -1092,7 +1092,8 @@
     "cb_rando_enabled": 201,
     "cb_rando_list_selected": 202,
     "crown_enemy_difficulty": 203,
-    "dk_portal_location_rando_v2": 204
+    "dk_portal_location_rando_v2": 204,
+    "dos_door_rando": 205
   },
   /*
     SettingsStringDataType:
@@ -1661,7 +1662,8 @@
     "SettingsStringEnum.starting_moves_list_5": {
       "obj": "SettingsStringDataType.list"
     },
-    "SettingsStringEnum.starting_moves_list_count_5": { "obj": "SettingsStringDataType.int16" }
+    "SettingsStringEnum.starting_moves_list_count_5": { "obj": "SettingsStringDataType.int16" },
+    "SettingsStringEnum.dos_door_rando": { "obj": "SettingsStringDataType.bool" }
   },
   // ALL LIST SETTINGS NEED AN ENTRY HERE!
   // Another map for list settings, for the underlying data type of the list.

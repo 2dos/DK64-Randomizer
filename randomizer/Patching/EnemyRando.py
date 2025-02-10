@@ -553,15 +553,22 @@ def writeEnemy(spoiler, ROM_COPY: LocalROM, cont_map_spawner_address: int, new_e
 def randomize_enemies_0(spoiler):
     """Determine randomized enemies."""
     data = {}
+    noise_management_dict = {}  # Prevent known game freezes
     pkmn = []
     resetPkmnSnap()
     for loc in enemy_location_list:
         if enemy_location_list[loc].enable_randomization:
-            new_enemy = enemy_location_list[loc].placeNewEnemy(spoiler.settings.enemies_selected, True)
-            setPkmnSnapEnemy(new_enemy)
+            sound_safeguard = False
             map = enemy_location_list[loc].map
             if map not in data:
                 data[map] = []
+                noise_management_dict[map] = 0
+            sound_safeguard = noise_management_dict[map] > 2
+            new_enemy = enemy_location_list[loc].placeNewEnemy(spoiler.settings.enemies_selected, True, sound_safeguard)
+            if map == Maps.ForestAnthill or not enemy_location_list[loc].respawns and EnemyMetaData[new_enemy].audio_engine_burden:
+                noise_management_dict[map] += 1
+            if enemy_location_list[loc].respawns:
+                setPkmnSnapEnemy(new_enemy)
             data[map].append(
                 {
                     "enemy": new_enemy,

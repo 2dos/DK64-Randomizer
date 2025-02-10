@@ -40,6 +40,9 @@ void addHelmTime(helm_hurry_items item, int multiplier) {
     if (Rando.helm_hurry_mode) {
         if (item != HHITEM_NOTHING) {
             HelmStartTime += (Rando.helm_hurry_bonuses[(int)(item) - 1] * multiplier);
+            if (HelmStartTime < 0) {
+                HelmStartTime = 0;
+            }
         }
     }
 }
@@ -95,6 +98,8 @@ void saveHelmHurryTime(void) {
         int save_value = HelmCurrentTime;
         if (save_value > 65535) {
             save_value = 65535; // Allows for 18h12m15s of time
+        } else if (save_value < 0) {
+            save_value = 0;
         }
         SaveExtraData(EGD_HELMHURRYIGT, 0, save_value);
     }

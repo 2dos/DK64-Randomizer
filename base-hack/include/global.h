@@ -325,6 +325,7 @@ extern void giveOrange(void);
 extern void giveMelon(void);
 extern void giveCrystal(void);
 extern int inShortList(int target, short* list, int count);
+extern int inU8List(int target, unsigned char* list, int count);
 
 extern int CrownDoorCheck(void);
 extern int CoinDoorCheck(void);
@@ -345,6 +346,8 @@ extern void callIceTrap(void);
 extern int getPatchWorld(int index);
 extern int getCrateWorld(int index);
 extern int getCrateFlag(int id);
+
+extern void initItemCheckDenominators(void);
 
 extern void initItemRando(void);
 extern void initQoL(void);

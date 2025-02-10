@@ -96,8 +96,10 @@ KLAPTRAPS_IN_SEARCHLIGHT_SEEK = 1
 FAIRY_LOAD_FIX = True
 CAMERA_RESET_REDUCTION = True
 PAL_DOGADON_REMATCH_FIRE = True
-REMOVE_CS_BARS = True
+REMOVE_CS_BARS = False
 GREATER_CAMERA_CONTROL = True
+JP_TEXTBOX_SIZES = True
+FRAMEBUFFER_STORE_FIX = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -687,16 +689,22 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
 
     if GREATER_CAMERA_CONTROL:
         NULL_FUNCTION = 0x806E1864
+        TURN_FUNCTION = 0x806EA628
         FUNCTION_TABLE = {
-            0x24: 0x806E607C,  # R_FUNCTION
+            # 0x24: 0x806E607C,  # R_FUNCTION
             0x34: 0x806EA200,  # CL_FUNCTION
             0x38: 0x806EA26C,  # CR_FUNCTION
         }
 
         for x in range(107):
-            if x == 0:
+            if x in (0, 4):
                 continue
             rom_base_addr = getROMAddress(0x80751004 + (0x44 * x), Overlay.Static, offset_dict)
+            ROM_COPY.seek(rom_base_addr + 4)
+            always_function = int.from_bytes(ROM_COPY.readBytes(4), "big")
+            if always_function == TURN_FUNCTION:
+                # If you can turn the camera with the control stick, ban using the C buttons for that
+                continue
             for offset in FUNCTION_TABLE:
                 ROM_COPY.seek(rom_base_addr + offset)
                 original_function = int.from_bytes(ROM_COPY.readBytes(4), "big")
@@ -1144,6 +1152,7 @@ def patchAssembly(ROM_COPY, spoiler):
         0x00,  # FLAG_FIRSTJAPESGATE,
         0x17E,  # FLAG_FTT_BLOCKER,
         0x18C,  # FLAG_FIRST_COIN_COLLECTION
+        0x164,  # BBlast first time cutscene
     ]
 
     ACTOR_DEF_START = getSym("actor_defs")
@@ -1654,6 +1663,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
         writeFunction(ROM_COPY, 0x80027E68, Overlay.Critter, "fairyQueenCutsceneInit", offset_dict)  # BFI, Init Cutscene Setup
         writeFunction(ROM_COPY, 0x80028104, Overlay.Critter, "fairyQueenCutsceneCheck", offset_dict)  # BFI, Cutscene Play
+        writeFunction(ROM_COPY, 0x80028014, Overlay.Critter, "fairyQueenCheckSpeedup", offset_dict)  # BFI, Cutscene Prep
         # Flag Stuff
         writeFunction(ROM_COPY, 0x80024CF0, Overlay.Menu, "countFlagsDuplicate", offset_dict)  # Flag change to FLUT
         writeFunction(ROM_COPY, 0x80024854, Overlay.Menu, "checkFlagDuplicate", offset_dict)  # Flag change to FLUT
@@ -1759,6 +1769,26 @@ def patchAssembly(ROM_COPY, spoiler):
         # Thankfully currentactor is loaded into a0.
         # I don't think we can sneak in creating the other JALs necessary to calculate distance.
         # We could make this part of "better fairy camera"? This means those calcuations don't need to be made.
+
+    if JP_TEXTBOX_SIZES:
+        writeValue(ROM_COPY, 0x8075A788, Overlay.Static, 0x40026666, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8075A78C, Overlay.Static, 0x60000000, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8075A790, Overlay.Static, 0x4064B333, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8075A794, Overlay.Static, 0x20000000, offset_dict, 4)
+        writeFloat(ROM_COPY, 0x8075A7A0, Overlay.Static, 165.6, offset_dict)
+        writeFloat(ROM_COPY, 0x8075A7A4, Overlay.Static, 96.6, offset_dict)
+        writeValue(ROM_COPY, 0x8075A7A8, Overlay.Static, 0x4056A666, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8075A7AC, Overlay.Static, 0x60000000, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8075E4A0, Overlay.Static, 0x40633333, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8075E4A4, Overlay.Static, 0x20000000, offset_dict, 4)
+        writeValue(ROM_COPY, 0x806A42B6, Overlay.Static, 0x6000, offset_dict)  # Increase a malloc
+
+    if FRAMEBUFFER_STORE_FIX:
+        writeHook(ROM_COPY, 0x8070A848, Overlay.Static, "disableFBStore", offset_dict)
+        writeHook(ROM_COPY, 0x8070B05C, Overlay.Static, "disableFBZip0", offset_dict)
+        writeHook(ROM_COPY, 0x80709BC4, Overlay.Static, "disableFBZip1", offset_dict)
+        writeHook(ROM_COPY, 0x8061134C, Overlay.Static, "disableFBZip2", offset_dict)
+        writeHook(ROM_COPY, 0x80629230, Overlay.Static, "disableFBMisc", offset_dict)
 
     # Spawn Enemy Drops function
     enemy_drop_addrs = [
@@ -3115,6 +3145,8 @@ def patchAssembly(ROM_COPY, spoiler):
         # Invert G_TRI2 Call
         writeValue(ROM_COPY, 0x8065DFBE, Overlay.Static, 0x0206, offset_dict)
         writeValue(ROM_COPY, 0x8065DFC6, Overlay.Static, 0x0604, offset_dict)
+        # Invert pan
+        writeHook(ROM_COPY, 0x80737708, Overlay.Static, "invertPan", offset_dict)
 
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold):
         writeFloatUpper(ROM_COPY, 0x806D3682, Overlay.Static, 100, offset_dict)  # Change fall too far threshold

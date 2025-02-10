@@ -480,6 +480,31 @@ document
   .getElementById("faster_checks_enabled")
   .addEventListener("click", disable_faster_checks);
 
+// Force Vanilla Door Rando on and enforce DK Portal Rando is enabled
+function toggle_dos_door_rando() {
+  const dosDoorRando  = document.getElementById("dos_door_rando");
+  const vanillaDoorShuffle = document.getElementById("vanilla_door_rando");
+  const dkPortalRandoSelect = document.getElementById("dk_portal_location_rando_v2");
+  const dkPortalRandoVanilla = document.querySelector("#dk_portal_location_rando_v2 option[id='off']");
+
+  if (dosDoorRando.checked) {
+    vanillaDoorShuffle.checked = true;
+    vanillaDoorShuffle.setAttribute("disabled", "disabled");
+    if (dkPortalRandoSelect.value == "off") {
+      dkPortalRandoSelect.value = "main_only";
+    }
+    dkPortalRandoVanilla.setAttribute("disabled", "disabled");
+    toggle_vanilla_door_rando();
+  } else {
+    vanillaDoorShuffle.removeAttribute("disabled");
+    dkPortalRandoVanilla.removeAttribute("disabled");
+  }
+}
+
+document
+  .getElementById("dos_door_rando")
+  .addEventListener("click", toggle_dos_door_rando);
+
 // Force Wrinkly and T&S Rando to be on when Vanilla Door Rando is on
 function toggle_vanilla_door_rando() {
   const vanillaDoorShuffle = document.getElementById("vanilla_door_rando");
@@ -576,7 +601,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 // Change between "Default" and "Randomize" for major item music selection
@@ -593,7 +618,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 // Change between "Default" and "Randomize" for minor item music selection
@@ -610,7 +635,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 // Change between "Default" and "Randomize" for event music selection
@@ -627,7 +652,7 @@ document
         select.value = "default_value";
       }
     }
-    savemusicsettings();
+    //savemusicsettings();
   });
 
 function toggle_key_settings() {
@@ -661,16 +686,25 @@ function toggle_medals_box() {
 async function enable_plandomizer() {
   const plandoTab = document.getElementById("nav-plando-tab");
   if (document.getElementById("enable_plandomizer").checked) {
+    // Open up a Modal stating that we're loading the Plando tab
+    $("#plando-modal").modal("show");    
     try {
       await setup_pyodide();
     } catch (error) {
       console.log("Error setting up Pyodide:", error);
     }
-    // Load ui.__init__.py
-    await run_python_file("ui/__init__.py");
+    try{
+      // Load ui.__init__.py
+      await run_python_file("ui/__init__.py");
+    }
+    catch (error) {
+      console.log("Error running ui/__init__.py:", error);
+    }
     plandoTab.style.display = "";
+    $("#plando-modal").modal("hide");
   } else {
     plandoTab.style.display = "none";
+    $("#plando-modal").modal("hide");
   }
 }
 
@@ -1156,8 +1190,10 @@ function toggle_item_rando() {
   }
   elements.nonItemRandoWarning.toggleAttribute("hidden", !disabled);
   elements.sharedShopWarning.toggleAttribute("hidden", shopsInPool && !disabled);
-  elements.kongRando.toggleAttribute("disabled", kongsInPool);
-  elements.kongRando.checked = kongsInPool;
+  if (!disabled) {
+    elements.kongRando.toggleAttribute("disabled", kongsInPool);
+    elements.kongRando.checked = kongsInPool;
+  }
 
   if (!disabled && shopsInPool) {
     if (elements.moveVanilla.selected || elements.moveRando.selected) {
@@ -1278,7 +1314,6 @@ function item_rando_list_changed(evt) {
   } else {
     kongRando.removeAttribute("disabled");
   }
-  savesettings();
 }
 
 // Validate Fast Start Status
@@ -2167,7 +2202,6 @@ function moveSelectedStartingMoves(target_list_id) {
     target_selector.appendChild(moved_move);
   }
   assessAllItemPoolCounts();
-  savesettings();
 }
 
 // Move all starting moves back to list #1.
@@ -2258,6 +2292,7 @@ function update_ui_states() {
   enable_plandomizer(null);
   toggle_medals_box(null);
   toggle_vanilla_door_rando(null);
+  toggle_dos_door_rando(null);
   validate_fast_start_status(null);
 
   const sliders = document.getElementsByClassName("pretty-slider");

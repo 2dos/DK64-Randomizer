@@ -103,10 +103,12 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
         Levels.CrystalCaves: [],
         Levels.CreepyCastle: [],
     }
-    # Reset Doors
+    # Reset (unreserved) Doors
     for level in door_locations:
         for door in door_locations[level]:
-            door.placed = door.default_placed
+            if not spoiler.settings.dos_door_rando or not door.dos_door:
+                # In Dos' Doors, there are exactly two doors that need to not be undone by this process: the two extra Japes doors
+                door.placed = door.default_placed
             if shuffle_wrinkly and not vanilla_doors_placed:
                 if door.placed == DoorType.wrinkly:
                     door.placed = DoorType.null
@@ -288,14 +290,21 @@ def ShuffleVanillaDoors(spoiler):
         human_hint_doors[level_list[level]] = {}
         human_portal_doors[level_list[level]] = {}
         # Find the vanilla doors that are valid hint locations and clear their door
+        # In Dos' Doors, this section finds exactly 6 doors per level
         vanilla_door_indexes = []
         for door_index, door in enumerate(door_locations[level]):
-            if door.default_placed != DoorType.null and door.default_placed != DoorType.dk_portal:
+            # This catches all default Wrinkly and T&S locations in addition to the additional doors needed for Dos' Doors as needed
+            if (door.default_placed != DoorType.null and door.default_placed != DoorType.dk_portal) or (door.dos_door and spoiler.settings.dos_door_rando):
+                # In Dos' Doors, we only need one lobby door, so ignore the rest
+                if spoiler.settings.dos_door_rando and door.default_placed == DoorType.wrinkly and not door.dos_door:
+                    continue
                 door.placed = DoorType.null
                 vanilla_door_indexes.append(door_index)
         random.shuffle(vanilla_door_indexes)
-        # One random vanilla T&S per level is locked to being a T&S
-        locked_tns_options = [idx for idx in vanilla_door_indexes if door_locations[level][idx].default_placed == DoorType.boss and DoorType.boss in door_locations[level][idx].door_type]
+        # One random vanilla T&S per level is locked to being a T&S - One non-vanilla location is eligible in Japes in Dos' Doors (hence that DoorType.null eligibility)
+        locked_tns_options = [
+            idx for idx in vanilla_door_indexes if door_locations[level][idx].default_placed in (DoorType.boss, DoorType.null) and DoorType.boss in door_locations[level][idx].door_type
+        ]
         locked_tns_index = random.choice(locked_tns_options)
         locked_tns = door_locations[level][locked_tns_index]
         locked_tns.assignPortal(spoiler)
@@ -303,10 +312,16 @@ def ShuffleVanillaDoors(spoiler):
         shuffled_door_data[level].append((locked_tns_index, DoorType.boss))
         vanilla_door_indexes.remove(locked_tns_index)
         # All other locations are fair game for hint doors - place one per kong
-        for kong in range(5):
+        for kong in [0, 3, 4, 2, 1]:  # The order of operations here matters because of our good friend Crystal Caves, which has restricted access to certain T&S locations
             assignee = Kongs(kong % 5)
-            # Pick a door, any door
-            selected_door_index = vanilla_door_indexes.pop(0)  # This should never fail
+            if level == Levels.CrystalCaves:
+                # Caves must consider the kong_lst for each door - there's one T&S that only Diddy can logically access as well as one only Diddy/Lanky can logically access
+                filtered_doors = [idx for idx in vanilla_door_indexes if assignee in door_locations[level][idx].kongs]
+                selected_door_index = random.choice(filtered_doors)
+                vanilla_door_indexes.remove(selected_door_index)
+            else:
+                # Everywhere else? Pick a door, any door
+                selected_door_index = vanilla_door_indexes.pop(0)  # This should never fail
             selected_door = door_locations[level][selected_door_index]
             # Assign it to this Kong
             selected_door.assignDoor(assignee)

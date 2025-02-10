@@ -113,9 +113,9 @@ def KasplatShuffle(spoiler: Spoiler, LogicVariables: LogicVarHolder) -> None:
                     else:
                         # This is the first VerifyWorld check, and serves as the canary in the coal mine
                         # If we get to this point in the code, the world itself is likely unstable from some combination of settings or bugs
-                        js.postMessage("Settings combination is likely unstable.")
+                        js.postMessage("Not all locations reached.")
                         ResetShuffledKasplatLocations(spoiler)
-                        raise Ex.SettingsIncompatibleException("Settings combination is likely unstable - report this to the devs!")
+                        raise Ex.LocationsFailureException("Unexpected failure to reach all locations - report this to the devs!")
                 return
             except Ex.KasplatPlacementException:
                 retries += 1
@@ -823,7 +823,11 @@ def ParePlaythrough(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> Non
             location.item = None
             # Check if the game is still beatable
             spoiler.Reset()
-            if GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable):
+            gameIsBeatable = GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable)
+            # Make note of what hints are accessible without this WotH candidate in case it gets hinted later.
+            # This may miss hints available after the win condition is met, but those hints are never practically getting seen anyway.
+            AccessibleHintsForLocation[locationId] = spoiler.LogicVariables.Hints.copy()
+            if gameIsBeatable:
                 # If the game is still beatable, this is an unnecessary location. We remove it from the playthrough, as it is not strictly required.
                 sphere.locations.remove(locationId)
                 # In non-item rando, put back the items on a delay
@@ -838,9 +842,7 @@ def ParePlaythrough(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> Non
             else:
                 # If the game is not beatable without this item, don't remove it from the playthrough and add the item back. This is now a WotH candidate.
                 location.PlaceItem(spoiler, item)
-                # Make note of what hints are accessible without this WotH candidate in case it gets hinted later
-                AccessibleHintsForLocation[locationId] = spoiler.LogicVariables.Hints.copy()
-                # Some items have inherent door restrictions depending on the settings
+                # Some important items have inherent door restrictions depending on the settings
                 restrictions = getDoorRestrictionsForItem(spoiler, item)
                 if len(restrictions) > 0:
                     AccessibleHintsForLocation[locationId] = [hint for hint in AccessibleHintsForLocation[locationId] if hint in restrictions]
@@ -1149,16 +1151,31 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
                 if location.item in ItemPool.Keys():
                     continue
                 # We do need to double check our work sometimes - this item might be required to beat the game if it's needed to get into a level
-                spoiler.LogicVariables.assumeAztecEntry = False
-                spoiler.LogicVariables.assumeLevel4Entry = False
-                spoiler.LogicVariables.assumeLevel8Entry = False
-                spoiler.LogicVariables.assumeUpperIslesAccess = False
-                spoiler.LogicVariables.assumeKRoolAccess = False  # This item may also be needed to access K. Rool because of the aforementioned level entry
-                # Confirm that banning this item makes the game unbeatable
-                spoiler.Reset()
-                spoiler.LogicVariables.BanItems([location.item])
-                if GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable):
-                    # If the game is still beatable when banned with the other assumptions, this item is definitely not WotH
+                # Only do this double-checking outside of LZR. The assumptions blocking level entry in LZR are less burdened with assumptions, so it's more likely to be accurate on the first pass.
+                skipDoubleCheck = spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all
+                doubleCheckBeatsGame = False
+                if not skipDoubleCheck:
+                    spoiler.LogicVariables.assumeAztecEntry = False
+                    spoiler.LogicVariables.assumeLevel4Entry = False
+                    spoiler.LogicVariables.assumeLevel8Entry = False
+                    spoiler.LogicVariables.assumeUpperIslesAccess = False
+                    spoiler.LogicVariables.assumeKRoolAccess = False  # This item may also be needed to access K. Rool because of the aforementioned level entry
+                    # Quickly check beatability after deleting this item - does removing this item make the game unbeatable?
+                    spoiler.Reset()
+                    item = location.item
+                    location.item = None
+                    # We still assume Kongs here!
+                    assumedItems = ItemPool.Kongs(spoiler.settings)
+                    if item in assumedItems:  # Except for if it's the item we're testing
+                        assumedItems.remove(item)
+                    # Check if we still have every woth location
+                    accessibleItems = GetAccessibleLocations(spoiler, assumedItems, SearchMode.GetReachable)
+                    inaccessibleWoths = [loc for loc in WothLocations if loc not in accessibleItems]
+                    if not any(inaccessibleWoths):
+                        doubleCheckBeatsGame = True
+                    location.PlaceItem(spoiler, item)
+                # If the game is still beatable when banned with the other assumptions (or if we're skipping the double checking), this item is definitely not WotH
+                if skipDoubleCheck or doubleCheckBeatsGame:
                     WothLocations.remove(locationId)
                     spoiler.other_paths[locationId] = spoiler.woth_paths[locationId]
                     del spoiler.woth_paths[locationId]
@@ -1748,7 +1765,10 @@ def FillShuffledKeys(spoiler: Spoiler, placed_types: List[Types], placed_items: 
                     potential_locations = [
                         loc
                         for loc in spoiler.LocationList
-                        if spoiler.LocationList[loc].level == last_level and spoiler.LocationList[loc].type in spoiler.settings.shuffled_location_types and not spoiler.LocationList[loc].inaccessible
+                        if spoiler.LocationList[loc].level == last_level
+                        and spoiler.LocationList[loc].type in spoiler.settings.shuffled_location_types
+                        and not spoiler.LocationList[loc].inaccessible
+                        and loc in spoiler.settings.GetValidLocationsForItem(Items.HideoutHelmKey)
                     ]
                 # Outside of item rando, the only eligible location is the boss in level 8. This should filter down to only one location.
                 else:
@@ -1970,7 +1990,10 @@ def Fill(spoiler: Spoiler) -> None:
                 potential_locations = [
                     loc
                     for loc in spoiler.LocationList
-                    if spoiler.LocationList[loc].level == last_level and spoiler.LocationList[loc].type in spoiler.settings.shuffled_location_types and not spoiler.LocationList[loc].inaccessible
+                    if spoiler.LocationList[loc].level == last_level
+                    and spoiler.LocationList[loc].type in spoiler.settings.shuffled_location_types
+                    and not spoiler.LocationList[loc].inaccessible
+                    and loc in spoiler.settings.GetValidLocationsForItem(Items.HideoutHelmKey)
                 ]
                 selected_location = choice(potential_locations)
                 spoiler.LocationList[selected_location].PlaceItem(spoiler, Items.HideoutHelmKey)
@@ -2892,9 +2915,11 @@ def WipeBossRequirements(settings: Settings) -> None:
     for i in range(0, 7):
         # Assume T&S amounts will be attainable for now
         settings.BossBananas[i] = 0
-        # Assume starting kong can beat all the bosses for now
-        settings.boss_kongs[i] = settings.starting_kong
-        settings.boss_maps[i] = Maps.GalleonBoss  # This requires nothing, allowing the fill to proceed as normal
+        # The standard boss placement algorithm assumes the starting kong can beat all the bosses for now
+        # If we are plandoing bosses, then we can't undo boss choices here because they've already been made
+        if not settings.boss_plando:
+            settings.boss_kongs[i] = settings.starting_kong
+            settings.boss_maps[i] = Maps.GalleonBoss  # This requires nothing, allowing the fill to proceed as normal
 
 
 def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
@@ -3068,7 +3093,9 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
         settings.BossBananas = [0, 0, 0, 0, 0, 0, 0, 0]
     # Update values based on actual level progression
     ShuffleExits.UpdateLevelProgression(settings)
-    ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs, ownedMoves)
+    # We only need to shuffle bosses based on these calculated items if they aren't placed already
+    if not settings.boss_plando:
+        ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs, ownedMoves)
     settings.owned_kongs_by_level = ownedKongs
     settings.owned_moves_by_level = ownedMoves
 
@@ -3156,6 +3183,8 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
         settings.troff_6,
         settings.troff_7,
     ]
+    # Reshuffle these values to the correct level index
+    ShuffleExits.UpdateLevelProgression(settings)
 
     # Cap the B. Locker amounts based on a random fraction of accessible GBs
     BLOCKER_MIN = 0.4
@@ -3463,7 +3492,9 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     # Only if keys are shuffled off of bosses do we need to reshuffle the bosses
     if not isKeyItemRando:
         # Place boss locations based on kongs and moves found for each level
-        ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs, ownedMoves)
+        # We only need to shuffle bosses based on these calculated items if they aren't placed already
+        if not spoiler.settings.boss_plando:
+            ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs, ownedMoves)
         settings.owned_kongs_by_level = ownedKongs
         settings.owned_moves_by_level = ownedMoves
 
@@ -3598,7 +3629,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
         SetProgressiveHintDoorLogic(spoiler)
     # T&S and Wrinkly Door Shuffle
-    if spoiler.settings.vanilla_door_rando:
+    if spoiler.settings.vanilla_door_rando:  # Includes Dos' Doors
         ShuffleVanillaDoors(spoiler)
         if spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
             ShuffleDoors(spoiler, True)
@@ -3618,6 +3649,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         replacements = []
         human_replacements = {}
         ShuffleWarpsCrossMap(
+            spoiler,
             replacements,
             human_replacements,
             spoiler.settings.bananaport_rando == BananaportRando.crossmap_coupled,
@@ -3774,8 +3806,13 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
             found_incompatibilities += "Cannot turn off Item Randomizer without starting with all Training Moves. "
         if settings.climbing_status != ClimbingStatus.normal:
             found_incompatibilities += "Cannot turn off Item Randomizer without starting with Climbing. "
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava):
+        if settings.no_healing:
+            found_incompatibilities += "Cannot turn on 'Water is Lava' whilst turning disabling healing. "
     if not settings.is_valid_item_pool():
         found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
+    if settings.krool_access and Items.HideoutHelmKey in settings.starting_keys_list_selected:
+        found_incompatibilities += "Cannot start with Key 8 and guarantee Key 8 to be required at the same time. "
     if found_incompatibilities != "":
         raise Ex.SettingsIncompatibleException(found_incompatibilities)
 

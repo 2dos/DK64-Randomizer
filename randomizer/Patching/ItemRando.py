@@ -40,7 +40,7 @@ model_two_indexes = {
     Types.Funky: 0x260,
     Types.Candy: 0x261,
     Types.Snide: 0x262,
-    Types.Hint: 0x27E,
+    Types.Hint: [638, 649, 650, 651, 652],
 }
 
 model_two_scales = {
@@ -106,7 +106,13 @@ actor_indexes = {
     Types.Funky: CustomActors.FunkyItem,
     Types.Candy: CustomActors.CandyItem,
     Types.Snide: CustomActors.SnideItem,
-    Types.Hint: CustomActors.HintItem,
+    Types.Hint: [
+        CustomActors.HintItemDK,
+        CustomActors.HintItemDiddy,
+        CustomActors.HintItemLanky,
+        CustomActors.HintItemTiny,
+        CustomActors.HintItemChunky,
+    ],
 }
 model_indexes = {
     Types.Banana: 0x69,
@@ -129,7 +135,7 @@ model_indexes = {
     Types.Funky: 0x12,
     Types.Candy: 0x13,
     Types.Snide: 0x1F,
-    Types.Hint: 0xD2,
+    Types.Hint: [0x11B, 0x11D, 0x11F, 0x121, 0x123],
 }
 
 TRAINING_LOCATIONS = (
@@ -297,7 +303,12 @@ def alterTextboxRequirements(spoiler):
     all_text = ""
     if pearl_req == 5:
         all_text = "ALL "
-    appendTextboxChange(spoiler, 23, 0, "PLEASE TRY AND GET THEM BACK", f"PLEASE TRY AND GET {all_text}{NUMBERS_AS_WORDS[pearl_req]} OF THEM BACK")
+    plea_including_pearl_count = f"PLEASE TRY AND GET {all_text}{NUMBERS_AS_WORDS[pearl_req]} OF THEM BACK"
+    for x in textboxes:
+        if x.location == Locations.GalleonTinyPearls and x.textbox_index == 0:
+            x.text_replace = plea_including_pearl_count
+            x.replacement_text = f"IF YOU HELP ME FIND {all_text}{NUMBERS_AS_WORDS[pearl_req]} OF THEM, I WILL REWARD YOU WITH A |"
+    appendTextboxChange(spoiler, 23, 0, "PLEASE TRY AND GET THEM BACK", plea_including_pearl_count)
     fairy_req = spoiler.settings.rareware_gb_fairies
     if fairy_req != 20:
         appendTextboxChange(spoiler, 30, 0, "FIND THEM ALL", f"FIND {fairy_req} OF THEM")
@@ -392,6 +403,11 @@ def writeShopData(ROM_COPY: LocalROM, location: int, item_type: MoveTypes, flag:
     ROM_COPY.writeMultipleBytes(price, 1)
 
 
+def getHintKongFromFlag(flag: int) -> int:
+    """Get the kong associated with a hint from it's flag."""
+    return (flag - 0x384) % 5
+
+
 def getActorIndex(item):
     """Get actor index from item."""
     if item.new_item is None:
@@ -420,6 +436,8 @@ def getActorIndex(item):
         if item.new_flag in kong_flags:
             slot = kong_flags.index(item.new_flag)
         return actor_indexes[Types.Kong][slot]
+    elif item.new_item == Types.Hint:
+        return actor_indexes[Types.Hint][getHintKongFromFlag(item.new_flag)]
     return actor_indexes[item.new_item]
 
 
@@ -831,6 +849,8 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                                     Items.IceTrapSlow: -2,
                                 }
                                 model = trap_types.get(item.new_subitem, -4) + 0x10000
+                            elif item.new_item == Types.Hint:
+                                model = model_indexes[Types.Hint][getHintKongFromFlag(item.new_flag)]
                             ROM_COPY.seek(0x1FF1040 + (2 * (item.old_flag - 589)))
                             ROM_COPY.writeMultipleBytes(model, 2)
             if item.new_item == Types.Hint:
@@ -976,6 +996,8 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                                 if item_slot["flag"] in kong_flags:
                                     slot = kong_flags.index(item_slot["flag"])
                                 item_obj_index = model_two_indexes[Types.Kong][slot]
+                            elif item_slot["obj"] == Types.Hint:
+                                item_obj_index = model_two_indexes[Types.Hint][getHintKongFromFlag(item_slot["flag"])]
                             else:
                                 item_obj_index = model_two_indexes[item_slot["obj"]]
                             ROM_COPY.writeMultipleBytes(item_obj_index, 2)

@@ -66,7 +66,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_NearLowWarp5, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearPinkTunnelBounceTag, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearGMRocketbarrel, lambda l: True),
-        LocationLogic(Locations.ForestMainEnemy_BetweenRBAndYellowTunnel, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_BetweenYellowTunnelAndRB, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearCranky, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_NearPinkTunnelGM, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_GMRearTag, lambda l: True),
@@ -78,6 +78,7 @@ LogicRegions = {
         TransitionFront(Regions.FungiForestStart, lambda l: True),
         TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestMainToLowerMushroom),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: (l.jetpack and l.isdiddy) or (l.advanced_platforming and l.twirl and l.istiny)),
+        TransitionFront(Regions.MushroomBlastLevelExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.MushroomUpperMidExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.MushroomNightExterior, lambda l: l.jetpack and l.isdiddy),
@@ -91,38 +92,49 @@ LogicRegions = {
               and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky),
         Event(Events.DonkeyMushroomSwitch, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.donkey)
     ], [
-        TransitionFront(Regions.MushroomLowerMid, lambda l: l.climbing),
+        TransitionFront(Regions.MushroomLowerBetweenLadders, lambda l: l.climbing),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True, Transitions.ForestLowerMushroomToMain),
         TransitionFront(Regions.MushroomUpper, lambda l: Events.MushroomCannonsSpawned in l.Events),
+    ]),
+
+    Regions.MushroomLowerBetweenLadders: Region("Mushroom Lower Between Ladders", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [], [], [
+        TransitionFront(Regions.MushroomLower, lambda l: True),
+        TransitionFront(Regions.MushroomLowerMid, lambda l: l.climbing),
     ]),
 
     Regions.MushroomLowerMid: Region("Mushroom Lower Middle", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestTinyMushroomBarrel, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.istiny and l.climbing, MinigameType.BonusBarrel),
     ], [], [
-        TransitionFront(Regions.MushroomLower, lambda l: True),
+        TransitionFront(Regions.MushroomLowerBetweenLadders, lambda l: True),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True, Transitions.ForestLowerMushroomToLowerExterior),
     ]),
 
     Regions.MushroomUpperMidExterior: Region("Mushroom Upper Mid Exterior", HintRegion.MushroomExterior, Levels.FungiForest, False, None, [], [], [
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
-        TransitionFront(Regions.MushroomLowerExterior, lambda l: True),
+        TransitionFront(Regions.MushroomBlastLevelExterior, lambda l: True),
         TransitionFront(Regions.MushroomMiddle, lambda l: True, Transitions.ForestLowerExteriorToUpperMushroom),
+    ]),
+
+    Regions.MushroomBlastLevelExterior: Region("Mushroom Blast Level Exterior", HintRegion.MushroomExterior, Levels.FungiForest, False, None, [
+        LocationLogic(Locations.ForestMainEnemy_NearBBlast, lambda l: True),
+    ], [], [
+        TransitionFront(Regions.MushroomLowerExterior, lambda l: True),
+        TransitionFront(Regions.MushroomUpperMidExterior, lambda l: l.climbing),
+        TransitionFront(Regions.ForestBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.ForestMainToBBlast)
     ]),
 
     Regions.MushroomLowerExterior: Region("Mushroom Lower Exterior", HintRegion.MushroomExterior, Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestKasplatLowerMushroomExterior, lambda l: not l.settings.kasplat_rando),
-        LocationLogic(Locations.ForestMainEnemy_NearBBlast, lambda l: l.climbing),
     ], [], [
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
-        TransitionFront(Regions.MushroomUpperMidExterior, lambda l: l.climbing),
+        TransitionFront(Regions.MushroomBlastLevelExterior, lambda l: l.climbing),
         TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestLowerExteriorToLowerMushroom),
-        TransitionFront(Regions.ForestBaboonBlast, lambda l: l.blast and l.isdonkey and l.climbing)  # , Transitions.ForestMainToBBlast)
     ]),
 
     Regions.ForestBaboonBlast: Region("Forest Baboon Blast", HintRegion.MushroomExterior, Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestDonkeyBaboonBlast, lambda l: l.isdonkey, MinigameType.BonusBarrel),
     ], [], [
-        TransitionFront(Regions.MushroomLowerExterior, lambda l: True)
+        TransitionFront(Regions.MushroomBlastLevelExterior, lambda l: True)
     ]),
 
     Regions.MushroomMiddle: Region("Mushroom Middle", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [
@@ -337,11 +349,17 @@ LogicRegions = {
 
     Regions.ThornvineBarn: Region("Thornvine Barn", HintRegion.Mills, Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and l.climbing and (l.can_use_vines or l.advanced_platforming or l.settings.bonus_barrels == MinigameBarrels.skip), MinigameType.BonusBarrel),  # Krusha can make it by jumping onto the beam first.
-        LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.isdonkey and l.Slam and l.camera and l.climbing),
         LocationLogic(Locations.MelonCrate_Location11, lambda l: True),
         LocationLogic(Locations.ForestThornBarnEnemy_Enemy, lambda l: True),
     ], [], [
         TransitionFront(Regions.ThornvineArea, lambda l: True, Transitions.ForestBarnToMain),
+        TransitionFront(Regions.ThornvineBarnAboveLadder, lambda l: l.climbing),
+    ]),
+
+    Regions.ThornvineBarnAboveLadder: Region("Thornvine Barn Above Ladder", HintRegion.Mills, Levels.FungiForest, False, None, [
+        LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.isdonkey and l.Slam and l.camera),
+    ], [], [
+        TransitionFront(Regions.ThornvineBarn, lambda l: True),
     ]),
 
     Regions.WormArea: Region("Worm Area", HintRegion.ForestCenterAndBeanstalk, Levels.FungiForest, True, -1, [

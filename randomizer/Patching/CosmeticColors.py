@@ -25,6 +25,7 @@ from randomizer.Patching.Cosmetics.Colorblind import (
     recolorBlueprintModelTwo,
     recolorPotions,
     recolorMushrooms,
+    recolorHintItem,
     writeKasplatHairColorToROM,
     maskBlueprintImage,
     maskLaserImage,
@@ -382,8 +383,9 @@ def overwrite_object_colors(settings, ROM_COPY: ROM):
         recolorRotatingRoomTiles(mode, ROM_COPY)
         recolorBlueprintModelTwo(mode, ROM_COPY)
         recolorKlaptraps(mode, ROM_COPY)
-        recolorPotions(mode, ROM_COPY)
+        recolorPotions(settings, mode, ROM_COPY)
         recolorMushrooms(mode, ROM_COPY)
+        recolorHintItem(mode, ROM_COPY)
         for kong_index in range(5):
             # file = 4120
             # # Kasplat Hair

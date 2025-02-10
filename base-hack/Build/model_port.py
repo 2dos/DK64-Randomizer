@@ -382,7 +382,7 @@ def portModelTwoToActor(model_two_index: int, input_file: str, output_file: str,
                 fh.write(raw.to_bytes(2, "big"))
         # Write data to temp files
         fh.seek(dl_start_pointer)
-        dl_data = b"\xDA\x38\x00\x03\x04\x00\x00\x00" + fh.read(dl_size)
+        dl_data = b"\xda\x38\x00\x03\x04\x00\x00\x00" + fh.read(dl_size)
         fh.seek(vert_start_pointer)
         vert_data = fh.read(vert_size)
     # Write
@@ -525,13 +525,15 @@ def loadNewModels():
     for kong in ("dk", "diddy", "lanky", "tiny", "chunky", "any"):
         portalModel_M2(f"{MODEL_DIRECTORY}potion_{kong}.vtx", f"{MODEL_DIRECTORY}potion.dl", 0, f"potion_{kong}", 0x90)  # Potions - Model 2
         portalModel_Actor(f"{MODEL_DIRECTORY}potion_{kong}.vtx", None, f"potion_{kong}", 0xB8)  # Actors
+        if kong != "any":
+            portActorToModelTwo(0, f"hint_item_actor_{kong}.bin", f"question_mark_{kong}", 0x90, True, 0.5)
     # Kongs
     portActorToModelTwo(3, "dk_base.bin", "kong_dk", 0x90, True, 0.5)
     portActorToModelTwo(0, "", "kong_diddy", 0x90, True, 0.5)
     portActorToModelTwo(5, "lanky_base.bin", "kong_lanky", 0x90, True, 0.5)
     portActorToModelTwo(8, "tiny_base.bin", "kong_tiny", 0x90, True, 0.5)
     portActorToModelTwo(0xB, "", "kong_chunky", 0x90, True, 0.5)
-    portActorToModelTwo(0xD1, "", "question_mark", 0x90, True, 0.5)
+
     # portalModel_M2(f"{MODEL_DIRECTORY}dk_head.vtx", f"{MODEL_DIRECTORY}dk_head.dl", 0, "kong_dk", 0x90)
     # ripCollision(0x48, 0x67, "k_rool_cutscenes")
     # Misc

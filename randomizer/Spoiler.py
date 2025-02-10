@@ -305,6 +305,7 @@ class Spoiler:
         settings["Randomize Banana Fairies"] = self.settings.random_fairies
         settings["Randomize Battle Arenas"] = self.settings.crown_placement_rando
         settings["Vanilla Door Shuffle"] = self.settings.vanilla_door_rando
+        settings["Dos' Doors"] = self.settings.dos_door_rando
         settings["Randomize Wrinkly Doors"] = self.settings.wrinkly_location_rando
         settings["Randomize T&S Portals"] = self.settings.tns_location_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando_difficulty.name
@@ -679,7 +680,7 @@ class Spoiler:
         if self.settings.random_crates:
             humanspoiler["Shuffled Melon Crates"] = self.human_crates
         humanspoiler["Settings"]["Shuffled Bananaport Levels"] = False
-        if self.settings.bananaport_placement_rando != ShufflePortLocations.off:
+        if self.settings.bananaport_placement_rando != ShufflePortLocations.off and self.settings.bananaport_rando == BananaportRando.off:
             shuffled_warp_levels = [x.name for x in self.settings.warp_level_list_selected]
             if len(shuffled_warp_levels) == 0:
                 humanspoiler["Settings"]["Shuffled Bananaport Levels"] = True
@@ -687,7 +688,7 @@ class Spoiler:
                 humanspoiler["Settings"]["Shuffled Bananaport Levels"] = shuffled_warp_levels
             humanspoiler["Shuffled Bananaport Locations"] = self.human_warps
         if self.settings.bananaport_rando != BananaportRando.off:
-            humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
+            humanspoiler["Shuffled Bananaport Connections (Source -> Destination)"] = self.human_warp_locations
         if self.settings.wrinkly_location_rando:
             prog_hint_setting = self.settings.progressive_hint_item
             item_types = self.settings.shuffled_location_types

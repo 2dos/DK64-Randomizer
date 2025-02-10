@@ -121,8 +121,12 @@ class CustomActors(IntEnum):
     SnideItem = auto()
     ZingerFlamethrower = auto()
     Scarab = auto()
-    HintItem = auto()
+    HintItemDK = auto()
     KopDummy = auto()
+    HintItemDiddy = auto()
+    HintItemLanky = auto()
+    HintItemTiny = auto()
+    HintItemChunky = auto()
 
 
 POTIONS = (
@@ -222,7 +226,11 @@ db = [
     InGameItem(name="Funky Item", actor=CustomActors.FunkyItem, is_custom=True, model_two=0x260, base=base_kong, bounce=True),
     InGameItem(name="Candy Item", actor=CustomActors.CandyItem, is_custom=True, model_two=0x261, base=base_kong, bounce=True),
     InGameItem(name="Snide Item", actor=CustomActors.SnideItem, is_custom=True, model_two=0x262, base=base_kong, bounce=True),
-    InGameItem(name="Hint Item", actor=CustomActors.HintItem, is_custom=True, model_two=0x27E, base=base_kong, bounce=True),
+    InGameItem(name="Hint Item (DK)", actor=CustomActors.HintItemDK, is_custom=True, model_two=638, base=base_kong, bounce=True),
+    InGameItem(name="Hint Item (Diddy)", actor=CustomActors.HintItemDiddy, is_custom=True, model_two=649, base=base_kong, bounce=True),
+    InGameItem(name="Hint Item (Lanky)", actor=CustomActors.HintItemLanky, is_custom=True, model_two=650, base=base_kong, bounce=True),
+    InGameItem(name="Hint Item (Tiny)", actor=CustomActors.HintItemTiny, is_custom=True, model_two=651, base=base_kong, bounce=True),
+    InGameItem(name="Hint Item (Chunky)", actor=CustomActors.HintItemChunky, is_custom=True, model_two=652, base=base_kong, bounce=True),
 ]
 
 db2 = [
@@ -302,7 +310,11 @@ db2 = [
     ItemRandoDef(0x0260, CollectableTypes.Null, None, CustomActors.FunkyItem, Hitbox(8, 4, 13), True),  # Funky
     ItemRandoDef(0x0261, CollectableTypes.Null, None, CustomActors.CandyItem, Hitbox(8, 4, 13), True),  # Candy
     ItemRandoDef(0x0262, CollectableTypes.Null, None, CustomActors.SnideItem, Hitbox(8, 4, 13), True),  # Snide
-    ItemRandoDef(0x027E, CollectableTypes.Null, None, CustomActors.HintItem, Hitbox(8, 4, 13), True),  # Hint
+    ItemRandoDef(0x027E, CollectableTypes.Null, None, CustomActors.HintItemDK, Hitbox(8, 4, 13), True),  # Hint
+    ItemRandoDef(0x0289, CollectableTypes.Null, None, CustomActors.HintItemDiddy, Hitbox(8, 4, 13), True),  # Hint
+    ItemRandoDef(0x028A, CollectableTypes.Null, None, CustomActors.HintItemLanky, Hitbox(8, 4, 13), True),  # Hint
+    ItemRandoDef(0x028B, CollectableTypes.Null, None, CustomActors.HintItemTiny, Hitbox(8, 4, 13), True),  # Hint
+    ItemRandoDef(0x028C, CollectableTypes.Null, None, CustomActors.HintItemChunky, Hitbox(8, 4, 13), True),  # Hint
 ]
 
 item_drops = [
@@ -589,8 +601,36 @@ with open("src/lib_items.c", "w") as fh:
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.HintItem,
+                "actor_type": 345 + CustomActors.HintItemDK,
                 "model": 0x11A,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Hint Item
+            {
+                "actor_type": 345 + CustomActors.HintItemDiddy,
+                "model": 0x11C,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Hint Item
+            {
+                "actor_type": 345 + CustomActors.HintItemLanky,
+                "model": 0x11E,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Hint Item
+            {
+                "actor_type": 345 + CustomActors.HintItemTiny,
+                "model": 0x120,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Hint Item
+            {
+                "actor_type": 345 + CustomActors.HintItemChunky,
+                "model": 0x122,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
@@ -640,7 +680,11 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, 345 + CustomActors.Bean, "&beanCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.Pearl, "&pearlCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.Fairy, "&fairyDuplicateCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.HintItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.HintItemDK, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.HintItemDiddy, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.HintItemLanky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.HintItemTiny, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.HintItemChunky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
     actor_data = initActor(actor_data, 345 + CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, 345 + CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)

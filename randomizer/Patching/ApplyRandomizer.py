@@ -27,7 +27,8 @@ from randomizer.Enums.Settings import (
     WrinklyHints,
 )
 from randomizer.Enums.Transitions import Transitions
-from randomizer.Enums.Types import Types, BarrierItems
+from randomizer.Enums.Types import Types
+import randomizer.ItemPool as ItemPool
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
@@ -702,6 +703,22 @@ def patching_response(spoiler):
     spoiler.arcade_item_reward = Items.NintendoCoin
     spoiler.jetpac_item_reward = Items.RarewareCoin
     place_randomized_items(spoiler, flut_items.copy(), ROM_COPY)  # Has to be after kong rando cosmetic and moves
+    # Arcade detection for colorblind mode
+    arcade_item_index = 0
+    potion_pools = [
+        ItemPool.DonkeyMoves,
+        ItemPool.DiddyMoves,
+        ItemPool.LankyMoves,
+        ItemPool.TinyMoves,
+        ItemPool.ChunkyMoves,
+        ItemPool.ImportantSharedMoves + ItemPool.JunkSharedMoves + ItemPool.TrainingBarrelAbilities() + ItemPool.ClimbingAbilities() + [Items.Shockwave, Items.Camera, Items.CameraAndShockwave],
+    ]
+    for index, lst in enumerate(potion_pools):
+        if spoiler.arcade_item_reward in lst:
+            arcade_item_index = 1 + index
+    ROM_COPY.seek(sav + 0x15A)
+    ROM_COPY.writeMultipleBytes(arcade_item_index, 1)
+    # Other funcs
     place_pregiven_moves(spoiler, ROM_COPY)
     remove_existing_indicators(spoiler, ROM_COPY)
     place_door_locations(spoiler, ROM_COPY)

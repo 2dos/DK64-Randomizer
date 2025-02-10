@@ -7,6 +7,7 @@ import copy
 import secrets
 import threading
 import time
+import socket
 from datetime import UTC, datetime
 from os import environ, path, walk
 
@@ -27,7 +28,8 @@ from opentelemetry.sdk.resources import Resource
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
 from opentelemetry.instrumentation.redis import RedisInstrumentor
 from opentelemetry.sdk.trace import TracerProvider
-
+from opentelemetry._logs import set_logger_provider
+from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from redis import Redis, from_url
 from rq import Queue
@@ -46,7 +48,6 @@ COOLDOWN_PERIOD = 300  # 5 minutes in seconds
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Define a resource to identify your service
 resource = Resource(
@@ -54,24 +55,12 @@ resource = Resource(
         "service.name": "controller",
         "service.version": str(version),
         "deployment.environment": os.environ.get("BRANCH", "LOCAL"),
+        "container.id": next((l.rsplit("/", 1)[-1] for l in open("/proc/self/cgroup") if "docker" in l), "") if os.path.exists("/proc/self/cgroup") else "",
+        "container.name": socket.gethostname(),
     }
 )
 
-# Set up the TracerProvider and Span Exporter
-trace.set_tracer_provider(TracerProvider(resource=resource))
-tracer_provider = trace.get_tracer_provider()
-
-# # Configure OTLP Exporter for sending traces to the collector
-otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/traces")
-
-# # Add the BatchSpanProcessor to the TracerProvider
-span_processor = BatchSpanProcessor(otlp_exporter)
-tracer_provider.add_span_processor(span_processor)
-reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
-meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
-metrics.set_meter_provider(meterProvider)
 app = Flask(__name__, static_folder="", template_folder="templates")
-FlaskInstrumentor().instrument_app(app)
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 flask_api_doc(app, config_path="./swagger.yaml", url_prefix="/api/doc", title="API doc")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
@@ -79,9 +68,35 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
 app.config["SESSION_TYPE"] = "redis"
 redis_conn = Redis(host="redis", port=6379)
 app.config["SESSION_REDIS"] = redis_conn
-RQInstrumentor().instrument()
-RequestsInstrumentor().instrument()
-RedisInstrumentor().instrument()
+logger = logging.getLogger(__name__)
+
+# check the args we started the script with
+if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
+    # create the providers
+    logger_provider = LoggerProvider(resource=resource)
+    # set the providers
+    set_logger_provider(logger_provider)
+    # Set up the TracerProvider and Span Exporter
+    trace.set_tracer_provider(TracerProvider(resource=resource))
+    tracer_provider = trace.get_tracer_provider()
+
+    # # Configure OTLP Exporter for sending traces to the collector
+    otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/traces")
+
+    # # Add the BatchSpanProcessor to the TracerProvider
+    span_processor = BatchSpanProcessor(otlp_exporter)
+    tracer_provider.add_span_processor(span_processor)
+    reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
+    meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
+    metrics.set_meter_provider(meterProvider)
+    RQInstrumentor().instrument()
+    RequestsInstrumentor().instrument()
+    RedisInstrumentor().instrument()
+    FlaskInstrumentor().instrument_app(app)
+    handler = LoggingHandler(level=logging.DEBUG, logger_provider=logger_provider)
+    logger.addHandler(handler)
+
+
 # Create and initialize the Flask-Session object AFTER `app` has been configured
 server_session = Session(app)
 
@@ -161,7 +176,7 @@ def enforce_api_restrictions():
             # Check if they provide a branch in their args, if they don't, default to 'dev'
             if "branch" not in request.args:
                 args_copy = request.args.to_dict()
-                args_copy["branch"] = "dev"
+                args_copy["branch"] = "stable"
                 request.args = args_copy
 
             return func(*args, **kwargs)
@@ -197,7 +212,7 @@ def update_presets(force=False):
             local_presets = json.load(f)
             cached_local_presets = local_presets
     else:
-        local_presets = {"master": [], "dev": []}
+        local_presets = {"stable": [], "dev": []}
         cached_local_presets = local_presets
     return local_presets
 
@@ -218,7 +233,7 @@ def get_user_ip():
 def submit_task():
     """Submit a task to the worker queue."""
     data = request.json
-    branch = request.args.get("branch", "dev")
+    branch = request.args.get("branch", "stable")
     if os.environ.get("TEST_REDIS") == "1":
         # Start the task immediately if we're using a fake Redis server
         # Make it a thread, and we're going to directly import and call the function
@@ -376,7 +391,7 @@ def admin_presets():
     local_presets = update_presets()
     # Check if branch is in the body
     branch = content.get("branch", "")
-    if branch not in ["master", "dev"]:
+    if branch not in ["stable", "dev"]:
         return set_response(json.dumps({"message": "Invalid branch"}), 400)
     if request.method == "PUT":
         preset_name = content.get("name")
@@ -546,18 +561,18 @@ def get_selector_info():
     """Get the selector data for the randomizer."""
     # If the branch arg is master call os.environ.get("WORKER_URL_MASTER") with requests
     # Else call os.environ.get("WORKER_URL_DEV") with requests
-    url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "master" else environ.get("WORKER_URL_DEV")
+    url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "stable" else environ.get("WORKER_URL_DEV")
     if not url:
         url = "http://127.0.0.1:8000"
     response = requests.get(f"{url}/get_selector_info")
-    return set_response(response.json(), response.status_code)
+    return set_response(response.text, response.status_code)
 
 
 @api.route("/convert_settings", methods=["POST"])
 @enforce_api_restrictions()
 def convert_settings():
     """Convert settings for the randomizer."""
-    url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "master" else environ.get("WORKER_URL_DEV")
+    url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "stable" else environ.get("WORKER_URL_DEV")
     if not url:
         url = "http://127.0.0.1:8000"
     data = request.get_json()

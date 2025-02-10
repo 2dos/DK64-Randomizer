@@ -147,13 +147,23 @@ def getImageFromAddress(ROM_COPY: Union[LocalROM, ROM], rom_address: int, width:
                 green = (pix_data >> 16) & 0xFF
                 blue = (pix_data >> 8) & 0xFF
                 alpha = pix_data & 0xFF
-            else:
+            elif format == TextureFormat.RGBA5551:
                 offset = ((y * width) + x) * 2
                 pix_data = int.from_bytes(data[offset : offset + 2], "big")
                 red = ((pix_data >> 11) & 31) << 3
                 green = ((pix_data >> 6) & 31) << 3
                 blue = ((pix_data >> 1) & 31) << 3
                 alpha = (pix_data & 1) * 255
+            elif format == TextureFormat.IA8:
+                offset = (y * width) + x
+                pix_data = int.from_bytes(data[offset : offset + 1], "big")
+                intensity = int(((pix_data >> 4) / 0xF) * 255)
+                alpha = int(((pix_data & 0xF) / 0xF) * 255)
+                red = intensity
+                green = intensity
+                blue = intensity
+            else:
+                raise Exception(f"Unhandled Codec: {format}")
             pix[x, y] = (red, green, blue, alpha)
     return im_f
 
