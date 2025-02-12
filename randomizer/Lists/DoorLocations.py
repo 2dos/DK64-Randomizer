@@ -85,7 +85,6 @@ class DoorData:
         dk_portal_logic=None,
         dos_door=False,
         far_enough_from_wall = False,
-        test=False,
     ):
         """Initialize with provided data."""
         self.name = name
@@ -126,7 +125,6 @@ class DoorData:
         #     self.door_type = [DoorType.dk_portal]
         self.assigned_kong = None
         self.far_enough_from_wall = far_enough_from_wall or placed != DoorType.null or rx != 0 or scale <= 0.8  # Keep track of which doors wouldn't benefit enough from a Z-buffering fix [NYI]
-        self.test = test
 
     def assignDoor(self, kong):
         """Assign door to kong."""
@@ -707,6 +705,13 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
+            name="Next to level entrance",
+            map=Maps.JungleJapes,
+            logicregion=Regions.JungleJapesStart,
+            location=[714, 288, 830, 90],
+            group=11,
+        ),
+        DoorData(
             name="Against the mountain",
             map=Maps.JungleJapes,
             logicregion=Regions.JapesHillTop,
@@ -1182,7 +1187,7 @@ door_locations = {
             name="Diddy 5DT - Second right branch",
             map=Maps.AztecDiddy5DTemple,
             logicregion=Regions.DiddyTempleDeadEndRight,
-            location=[187, 57, 885, 222.80],
+            location=[193, 57, 891, 221],
             group=14,
             moveless=False,
             kong_lst=[Kongs.diddy],
@@ -1307,7 +1312,7 @@ door_locations = {
             name="Tiny Temple - Next to triangle pad",
             map=Maps.AztecTinyTemple,
             logicregion=Regions.TempleStart,
-            location=[1626, 215, 269, 11.95],
+            location=[1626, 215, 262.7, 15],
             group=11,
             kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         ),
@@ -1336,6 +1341,7 @@ door_locations = {
             map=Maps.AztecTinyTemple,
             logicregion=Regions.TempleKONGRoom,
             location=[87, 412.833, 1569.2, 86.04],  # Forwards is higher X (88.2), if I'd want to align it to the switch, instead of the wall
+            scale=0.79,
             group=11,
             door_type=[DoorType.boss, DoorType.wrinkly],
             kong_lst=[Kongs.diddy, Kongs.tiny],
@@ -1345,7 +1351,7 @@ door_locations = {
             name="Behind the llama cage",
             map=Maps.AngryAztec,
             logicregion=Regions.AngryAztecOasis,
-            location=[2093, 216, 1697, 312.5],
+            location=[2093, 216, 1597, 312.5],
             group=4,
         ),
         DoorData(
@@ -2312,7 +2318,7 @@ door_locations = {
             name="Lighthouse - Left",
             map=Maps.GalleonLighthouse,
             logicregion=Regions.Lighthouse,
-            location=[612, 0, 465, 90],
+            location=[605.8, 0, 465, 90],
             kong_lst=[Kongs.donkey],
             group=11,
             moveless=False,
@@ -2323,13 +2329,12 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
-            test=True,
         ),
         DoorData(
             name="Lighthouse - Back",
             map=Maps.GalleonLighthouse,
             logicregion=Regions.Lighthouse,
-            location=[319, 0, 590, 315],
+            location=[323, 0, 586, 312],
             kong_lst=[Kongs.donkey],
             group=11,
             moveless=False,
@@ -2340,7 +2345,6 @@ door_locations = {
                 and s.settings.bananaport_placement_rando == ShufflePortLocations.off
                 and s.settings.bananaport_rando == BananaportRando.off
             ),
-            test=True,
         ),
         DoorData(
             name="In Mermaid's Palace",
@@ -2412,8 +2416,8 @@ door_locations = {
             map=Maps.GloomyGalleon,
             logicregion=Regions.GloomyGalleonStart,
             location=[1994, 1609, 2924, 0],
-            group=2,
             rz=11,
+            group=2,
         ),
         DoorData(
             name="Pineapple gate tunnel - left",
@@ -4237,22 +4241,22 @@ door_locations = {
             group=13,
             kong_lst=[Kongs.diddy, Kongs.tiny],
         ),
-        DoorData(
-            name="Ballroom - Far Right Corner",
-            map=Maps.CastleBallroom,
-            logicregion=Regions.Ballroom,
-            location=[915.7, 40, 200, 305],
-            group=13,
-            kong_lst=[Kongs.diddy, Kongs.tiny],
-        ),
-        DoorData(
-            name="Ballroom - Far Left Corner",
-            map=Maps.CastleBallroom,
-            logicregion=Regions.Ballroom,
-            location=[185.4, 40, 200, 54.5],
-            group=13,
-            kong_lst=[Kongs.diddy, Kongs.tiny],
-        ),
+        # DoorData(
+        #     name="Ballroom - Far Right Corner",
+        #     map=Maps.CastleBallroom,
+        #     logicregion=Regions.Ballroom,
+        #     location=[915.7, 40, 200, 305],  # Invisible at these coordinates for some reason
+        #     group=13,
+        #     kong_lst=[Kongs.diddy, Kongs.tiny],
+        # ),
+        # DoorData(
+        #     name="Ballroom - Far Left Corner",
+        #     map=Maps.CastleBallroom,
+        #     logicregion=Regions.Ballroom,
+        #     location=[185.4, 40, 200, 54.5],  # Invisible at these coordiantes for some reason
+        #     group=13,
+        #     kong_lst=[Kongs.diddy, Kongs.tiny],
+        # ),
         DoorData(
             name="Museum - Far Left Side",
             map=Maps.CastleMuseum,
@@ -4319,10 +4323,10 @@ door_locations = {
             name="Library - Left wing",
             map=Maps.CastleLibrary,
             logicregion=Regions.Library,
-            location=[1028, 100, 658, 0],
+            location=[1028, 100, 651, 0],
             group=12,
             kong_lst=[Kongs.donkey],
-            test=True,
+            door_type=[DoorType.wrinkly],  # Enemy spawn nearby. Can be a ground enemy in combination with Enemy Rando filtering
         ),
         DoorData(
             name="Chunky crypt - between right coffins",
@@ -4413,9 +4417,8 @@ door_locations = {
             name="Dungeon - Diddy side",
             map=Maps.CastleDungeon,
             logicregion=Regions.Dungeon,
-            location=[683, 115, 2621, 225],
+            location=[687, 115, 2625, 223.5],
             group=18,
-            test=True,  # How did I forget to add the test tag to this?
         ),
         DoorData(
             name="Dungeon - DK side",
@@ -4431,6 +4434,7 @@ door_locations = {
             location=[477, 218.5, 2143, 90],
             rx=-26,
             group=6,
+            door_type=[DoorType.wrinkly],  # Too big of an X-rotation to guarantee an exit without re-entry. Feel free to test for 5.0
         ),
         DoorData(
             name="Next to dungeon door",
@@ -4448,6 +4452,7 @@ door_locations = {
             location=[476.8, 198.5, 852, 90],
             rx=-26,
             group=6,
+            door_type=[DoorType.wrinkly],  # Too big of an X-rotation to guarantee an exit without re-entry. Feel free to test for 5.0
         ),
         DoorData(
             name="Tombstone near lower door",

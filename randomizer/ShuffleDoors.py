@@ -184,7 +184,7 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
                     shuffled_door_data[level].append((selected_door_index, DoorType.boss))
         if shuffle_wrinkly:
             # Place one hint door per kong
-            for kong in range(5):  # NOTE: If testing all locations, replace "range(5) with range(len(door_locations[level]))"
+            for kong in range(5):  # NOTE: If testing all locations, replace "range(5) with range(len(available_doors))"
                 assignee = Kongs(kong % 5)
                 if len(available_doors) > 0:  # Should only fail if we don't have enough door locations
                     # Give plandomizer an opportunity to get the final say
@@ -204,6 +204,7 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
                         selected_door_index = available_doors.pop(0)  # Popping from the top of the list makes it possible to append the selected door back into the list, if it's a bad pick
                     # Make sure that the kong is eligible to be assigned to the selected door, and that the door location is suitable to be a hint door
                     while (assignee not in door_locations[level][selected_door_index].kongs) or (DoorType.wrinkly not in door_locations[level][selected_door_index].door_type):
+                        # If testing all locations, add a break here
                         if retry:
                             available_doors.append(selected_door_index)
                             selected_door_index = available_doors.pop(0)
@@ -215,7 +216,7 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
                     human_hint_doors[level_list[level]][str(Kongs(kong % 5).name).capitalize()] = selected_door.name
                     shuffled_door_data[level].append((selected_door_index, DoorType.wrinkly, (kong % 5)))
                     # Add logic for the new door location
-                    doorLocation = GetDoorLocationForKongAndLevel(kong, level)
+                    doorLocation = GetDoorLocationForKongAndLevel(kong, level)  # If testing all locations, replace "kong" with "kong % 5"
                     region = spoiler.RegionList[selected_door.logicregion]
                     region.locations.append(LocationLogic(doorLocation, selected_door.logic))
                     spoiler.LocationList[doorLocation].name = f"{level_to_name[level]} Hint Door: {selected_door.name}"
