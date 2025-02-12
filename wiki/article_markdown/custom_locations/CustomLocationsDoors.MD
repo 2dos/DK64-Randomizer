@@ -60,6 +60,7 @@
 | Japes Under Ground | Chunky underground - Kasplat platform | Boss, Wrinkly | `l.can_use_vines and l.pineapple and l.ischunky` | 
 | Jungle Japes | Next to the baboon blast pad | Boss, Dk_Portal, Wrinkly |  | 
 | Jungle Japes | Entrance door switch | Boss, Dk_Portal, Wrinkly | `l.can_use_vines and l.climbing` | 
+| Jungle Japes | Next to level entrance | Boss, Dk_Portal, Wrinkly |  | 
 | Jungle Japes | Against the mountain | Boss, Dk_Portal, Wrinkly |  | 
 
 # Angry Aztec
@@ -137,7 +138,7 @@
 | Aztec Tiny Temple | Tiny Temple - Tiny room - on the K | Boss, Wrinkly |  | 
 | Angry Aztec | Behind the llama cage | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | In the quicksand near 5-door temple | Wrinkly | `l.strongKong and l.isdonkey` | 
-| Angry Aztec | On top of llama temple | Boss, Dk_Portal, Wrinkly | `l.jetpack and l.diddy` | 
+| Angry Aztec | On top of llama temple | Wrinkly | `l.jetpack and l.diddy` | 
 | Aztec Tiny Race | Behind the start of beetle race | Wrinkly |  | 
 
 # Frantic Factory
@@ -244,8 +245,6 @@
 | Gloomy Galleon | Galleon Vanilla Level Entry | Boss, Dk_Portal, Wrinkly |  | 
 | Gloomy Galleon | Pineapple gate tunnel - right | Boss, Dk_Portal, Wrinkly |  | 
 | Gloomy Galleon | Pineapple gate tunnel - left | Boss, Dk_Portal, Wrinkly |  | 
-| Gloomy Galleon | Next to Cranky's ship | Boss, Dk_Portal, Wrinkly |  | 
-| Gloomy Galleon | Against Cranky's ship | Boss, Dk_Portal, Wrinkly |  | 
 | Galleon Sick Bay | Seasick ship - start left | Boss, Dk_Portal, Wrinkly |  | 
 | Galleon Sick Bay | Seasick ship - start right | Boss, Dk_Portal, Wrinkly |  | 
 | Galleon Sick Bay | Seasick ship - after cannons front left | Boss, Dk_Portal, Wrinkly |  | 
@@ -300,7 +299,7 @@
 | Forest Chunky Face Room | Chunky's Face Puzzle | Wrinkly |  | 
 | Forest Lanky Zingers Room | Lanky's 2-Mushroom Room | Boss, Dk_Portal, Wrinkly |  | 
 | Forest Mill Front | DK Lever puzzle Area | Wrinkly | `(l.isdonkey and l.CanSlamSwitch(Levels.FungiForest, 2)) or l.CanPhase() or l.generalclips` | 
-| Forest Mill Back | Mill - back side - Near Chunky Coins | Boss, Wrinkly |  | 
+| Forest Mill Back | Mill - back side - Near Chunky Coins | Boss, Dk_Portal, Wrinkly |  | 
 | Forest Winch Room | Winch Room - on the Winch | Wrinkly |  | 
 | Forest Mill Attic | Lanky's Attic | Boss, Dk_Portal, Wrinkly |  | 
 | Forest Thornvine Barn | DK's Barn - Between 2 Barrels near Switch | Boss, Wrinkly |  | 
@@ -382,12 +381,11 @@
 | Caves Diddy Upper Cabin | Diddy upper cabin - Back bookshelf | Boss, Dk_Portal, Wrinkly |  | 
 | Caves Tiny Cabin | Tiny cabin - Near corner | Boss, Dk_Portal, Wrinkly |  | 
 | Caves Tiny Cabin | Tiny cabin - Far corner | Boss, Dk_Portal, Wrinkly |  | 
-| Caves Chunky Cabin | Chunky cabin - Near corner | Boss, Dk_Portal, Wrinkly |  | 
-| Caves Chunky Cabin | Chunky cabin - Back shelf | Boss, Dk_Portal, Wrinkly |  | 
+| Caves Chunky Cabin | Chunky cabin - Near corner | Wrinkly |  | 
+| Caves Chunky Cabin | Chunky cabin - Back shelf | Wrinkly |  | 
 | Caves Donkey Igloo | Donkey igloo - Under the swords | Boss, Dk_Portal, Wrinkly |  | 
 | Caves Tiny Igloo | Tiny igloo - Back wall | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Near ice castle tag barrel | Boss, Dk_Portal, Wrinkly |  | 
-| Crystal Caves | Left small platform towards baboon blast | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Near Cranky | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Behind giant boulder ice wall | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Behind gorilla gone ice wall | Boss, Dk_Portal, Wrinkly |  | 
@@ -447,8 +445,6 @@
 | Castle Greenhouse | Greenhouse - Dead end | Wrinkly, Boss |  | 
 | Castle Greenhouse | Greenhouse - Also dead end | Wrinkly, Boss |  | 
 | Castle Ballroom | Ballroom - In Front of Monkeyport Pad | Boss, Dk_Portal, Wrinkly |  | 
-| Castle Ballroom | Ballroom - Far Right Corner | Boss, Dk_Portal, Wrinkly |  | 
-| Castle Ballroom | Ballroom - Far Left Corner | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Museum | Museum - Far Left Side | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Museum | Museum - Far Right Side | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Museum | Museum - Tiny side - near the statue | Boss, Wrinkly | `l.monkeyport` | 
@@ -456,22 +452,21 @@
 | Castle Tree | Tree - Near Coconut Gate | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Tree | Tree - Past Punch Gate | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Library | Library - Strong Kong Alcove | Boss, Dk_Portal, Wrinkly |  | 
-| Castle Library | Library - Enemy Gauntlet | Wrinkly |  | 
-| Castle Library | Library - Left wing | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Library | Library - Left wing | Wrinkly |  | 
 | Castle Crypt | Chunky crypt - between right coffins | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Crypt | Chunky crypt - between left coffins | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Crypt | Donkey crypt - behind the levers | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Crypt | Diddy crypt - right of the tomb | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Crypt | Diddy crypt - left of the tomb | Boss, Dk_Portal, Wrinkly |  | 
-| Castle Crypt | Crypt - Second intersection | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Crypt | Crypt - Second intersection | Wrinkly |  | 
 | Castle Lower Cave | Near the crypt staircase | Boss, Dk_Portal, Wrinkly |  | 
-| Castle Lower Cave | Behind the mausoleum | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Lower Cave | Behind the mausoleum | Wrinkly |  | 
 | Castle Mausoleum | Mausoleum - sprint corridor | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Dungeon | Dungeon - Lanky side | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Dungeon | Dungeon - Diddy side | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Dungeon | Dungeon - DK side | Boss, Dk_Portal, Wrinkly |  | 
-| Castle Upper Cave | Candy intersection | Boss, Dk_Portal, Wrinkly |  | 
-| Castle Upper Cave | Next to dungeon door | Boss, Dk_Portal, Wrinkly |  | 
-| Castle Upper Cave | Next to the chasm | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Upper Cave | Candy intersection | Wrinkly |  | 
+| Castle Upper Cave | Next to dungeon door | Wrinkly |  | 
+| Castle Upper Cave | Next to the chasm | Wrinkly |  | 
 | Creepy Castle | Tombstone near lower door | Boss, Wrinkly |  | 
 | Creepy Castle | Behind the shed | Boss, Dk_Portal, Wrinkly |  | 

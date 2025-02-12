@@ -319,7 +319,6 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Around the torch in the starting area | 4 |  | 
-| On frog ledge | 2 |  | 
 | Around Lanky Pedestal | 8 |  | 
 | On KONG Letters | 4 |  | 
 | Underwater tunnels | 3 |  | 

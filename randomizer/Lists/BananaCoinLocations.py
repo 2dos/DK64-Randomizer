@@ -2591,17 +2591,17 @@ BananaCoinGroupList = {
                 [1.0, 1816, 283, 610],
             ],
         ),
-        BananaCoinGroup(
-            group=47,
-            map_id=Maps.AztecTinyTemple,
-            name="On frog ledge",
-            konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.TempleStart,
-            locations=[
-                [1.0, 1820, 389, 1132],
-                [1.0, 1834, 389, 1117],
-            ],
-        ),
+        # BananaCoinGroup(  # Removed in favour of a DoorLocation
+        #     group=47,
+        #     map_id=Maps.AztecTinyTemple,
+        #     name="On frog ledge",
+        #     konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        #     region=Regions.TempleStart,
+        #     locations=[
+        #         [1.0, 1820, 389, 1132],
+        #         [1.0, 1834, 389, 1117],
+        #     ],
+        # ),
         BananaCoinGroup(
             group=48,
             map_id=Maps.AztecTinyTemple,
