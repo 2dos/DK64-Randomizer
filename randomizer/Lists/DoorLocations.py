@@ -84,7 +84,7 @@ class DoorData:
         door_type: list[DoorType] = [DoorType.boss, DoorType.dk_portal, DoorType.wrinkly],
         dk_portal_logic=None,
         dos_door=False,
-        far_enough_from_wall = False,
+        far_enough_from_wall=False,
     ):
         """Initialize with provided data."""
         self.name = name
