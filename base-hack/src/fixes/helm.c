@@ -85,7 +85,7 @@ void helmTime_exitKRool(void) {
 
 static unsigned char helm_entry_points[] = {0, 3, 4};
 
-int getHelmExit(void) {
+void initHelmSetup(void) {
 	int setting = Rando.fast_start_helm;
 	if (setting > 0) {
 		setPermFlag(FLAG_STORY_HELM); // Helm Story
@@ -97,6 +97,11 @@ int getHelmExit(void) {
 			setPermFlag(FLAG_MODIFIER_HELMBOM);
 		}
 	}
+}
+
+int getHelmExit(void) {
+	int setting = Rando.fast_start_helm;
+	initHelmSetup();
 	return helm_entry_points[setting];
 }
 

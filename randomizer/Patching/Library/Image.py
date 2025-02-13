@@ -202,6 +202,34 @@ def hueShift(im, amount: int):
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
 
+def hueShiftImageFromAddress(ROM_COPY: Union[ROM, LocalROM], address: int, width: int, height: int, format: TextureFormat, shift: int):
+    """Hue shift image located at a certain ROM address."""
+    size_per_px = {
+        TextureFormat.RGBA5551: 2,
+        TextureFormat.RGBA32: 4,
+    }
+    data_size_per_px = size_per_px.get(format, None)
+    if data_size_per_px is None:
+        raise Exception(f"Texture Format unsupported by this function. Let the devs know if you see this. Attempted format: {format.name}")
+    loaded_im = getImageFromAddress(ROM_COPY, address, width, height, False, data_size_per_px * width * height, format)
+    loaded_im = hueShift(loaded_im, shift)
+    loaded_px = loaded_im.load()
+    bytes_array = []
+    for y in range(height):
+        for x in range(width):
+            pix_data = list(loaded_px[x, y])
+            if format == TextureFormat.RGBA32:
+                bytes_array.extend(pix_data)
+            elif format == TextureFormat.RGBA5551:
+                red = int((pix_data[0] >> 3) << 11)
+                green = int((pix_data[1] >> 3) << 6)
+                blue = int((pix_data[2] >> 3) << 1)
+                alpha = int(pix_data[3] != 0)
+                value = red | green | blue | alpha
+                bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
+    px_data = bytearray(bytes_array)
+    ROM_COPY.seek(address)
+    ROM_COPY.writeBytes(px_data)
 
 def clampRGBA(n):
     """Restricts input to integer value between 0 and 255."""
