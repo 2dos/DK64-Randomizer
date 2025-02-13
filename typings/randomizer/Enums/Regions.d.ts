@@ -281,4 +281,5 @@ export enum Regions {
     CryptChunkyRoom = 280,
     CryptDonkeyRoom = 281,
     CryptDiddyRoom = 282,
+    ForestMillTopOfNightCage = 283,
 }

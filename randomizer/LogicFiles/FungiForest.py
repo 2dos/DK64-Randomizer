@@ -248,6 +248,10 @@ LogicRegions = {
         TransitionFront(Regions.HollowTreeArea, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.saxophone or (l.settings.free_trade_items and l.HasInstrument(Kongs.any))), Transitions.ForestAnthillToTree),
     ]),
 
+    Regions.ForestMillTopOfNightCage: Region("Mill top of Night Cage", HintRegion.Mills, Levels.FungiForest, False, None, [], [], [
+        TransitionFront(Regions.MillArea, lambda l: True),
+    ]),
+
     Regions.ForestVeryTopOfMill: Region("Very top of the Mill", HintRegion.Mills, Levels.FungiForest, False, None, [], [], [
         TransitionFront(Regions.ForestTopOfMill, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True),
@@ -257,6 +261,7 @@ LogicRegions = {
     Regions.ForestTopOfMill: Region("Top of the Mill", HintRegion.Mills, Levels.FungiForest, False, None, [], [], [
         TransitionFront(Regions.MillArea, lambda l: True),
         TransitionFront(Regions.MillAttic, lambda l: True, Transitions.ForestMainToAttic, time=Time.Night),
+        TransitionFront(Regions.ForestMillTopOfNightCage, lambda l: True),
     ]),
 
     Regions.MillArea: Region("Mill Area", HintRegion.Mills, Levels.FungiForest, True, None, [
@@ -283,6 +288,7 @@ LogicRegions = {
         TransitionFront(Regions.ThornvineBarn, lambda l: l.CanPhaseswim(), Transitions.ForestMainToBarn, isGlitchTransition=True),
         TransitionFront(Regions.ForestVeryTopOfMill, lambda l: l.climbing),
         TransitionFront(Regions.ForestTopOfMill, lambda l: l.balloon and l.islanky),
+        TransitionFront(Regions.ForestMillTopOfNightCage, lambda l: l.isdiddy or l.istiny or l.ischunky),
     ]),
 
     Regions.MillChunkyTinyArea: Region("Mill Back Room", HintRegion.Mills, Levels.FungiForest, False, -1, [

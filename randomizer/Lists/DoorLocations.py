@@ -2689,7 +2689,7 @@ door_locations = {
         DoorData(
             name="On top of Cage outside Conveyor Belt",
             map=Maps.FungiForest,
-            logicregion=Regions.ForestTopOfMill,
+            logicregion=Regions.ForestMillTopOfNightCage,
             location=[4312.0, 224.0, 3493.0, 134.82],
             group=4,
             moveless=False,
