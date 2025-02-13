@@ -71,6 +71,7 @@ class EnemyData:
         interaction: InteractionMethods = None,
         placeable=True,
         default_size=None,
+        audio_engine_burden=False,
     ) -> None:
         """Initialize with given parameters."""
         self.name = name
@@ -93,6 +94,9 @@ class EnemyData:
         self.interaction = interaction
         self.placeable = placeable
         self.default_size = default_size
+        self.audio_engine_burden = (
+            audio_engine_burden  # Enemies with this tag are known to cause game freezes due to overloading the SoundPlayer with events, causing it to lose its critically important event
+        )
         if air:
             self.minigame_enabled = False
 
@@ -134,13 +138,15 @@ class EnemyLoc:
                 for xi, x in enumerate(ENEMY_REPLACEMENT_PRIORITY[self.default_type]):
                     self.allowed_enemies[xi + 1] = getEnemyPermitted(x, banned_enemies)
 
-    def placeNewEnemy(self, enabled_enemies: List[Any], enable_speed: bool) -> Enemies:
+    def placeNewEnemy(self, enabled_enemies: List[Any], enable_speed: bool, sound_safeguard) -> Enemies:
         """Place new enemy in slot."""
         if self.enable_randomization:
             permitted = []
             for x in range(4):
                 if len(permitted) == 0:
                     permitted = [enemy for enemy in self.allowed_enemies[x] if (enemy in enabled_enemies or len(enabled_enemies) == 0) and EnemyMetaData[enemy].selector_enabled]
+                    if sound_safeguard:
+                        permitted = [enemy for enemy in permitted if not EnemyMetaData[enemy].audio_engine_burden]
             if len(permitted) > 0:
                 self.enemy = random.choice(permitted)
             if enable_speed and self.enemy in EnemyMetaData:
@@ -319,6 +325,7 @@ EnemyMetaData = {
         disruptive=1,
         interaction=InteractionMethods(kill_melee=False, kill_gun=False, kill_punch=True),
         default_size=50,
+        audio_engine_burden=True,
     ),  #
     Enemies.Kremling: EnemyData(
         name="Kremling",
@@ -447,6 +454,7 @@ EnemyMetaData = {
         crown_enabled=False,
         interaction=InteractionMethods(),
         default_size=55,
+        # audio_engine_burden=True,
     ),  # with projectiles, disruptive will need to be set to 2
     Enemies.Bat: EnemyData(
         name="Bat",
@@ -545,6 +553,7 @@ EnemyMetaData = {
 }
 
 enemies_nokill_gun = [enemy for enemy in EnemyMetaData if ((not EnemyMetaData[enemy].interaction.kill_gun) and (not EnemyMetaData[enemy].interaction.kill_melee)) or enemy == Enemies.Guard]
+enemies_noisy = [enemy for enemy in EnemyMetaData if EnemyMetaData[enemy].audio_engine_burden]
 enemies_shockwave_immune = [
     Enemies.Bat,
     Enemies.KlaptrapPurple,
@@ -583,11 +592,11 @@ enemy_location_list = {
     Locations.JapesLobbyEnemy_Enemy0: EnemyLoc(Maps.JungleJapesLobby, Enemies.BeaverBlue, 1, [], True),
     Locations.JapesLobbyEnemy_Enemy1: EnemyLoc(Maps.JungleJapesLobby, Enemies.BeaverBlue, 2, [], True),
     # Painting
-    Locations.JapesPaintingEnemy_Gauntlet0: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 2, enemies_nokill_gun, True),
-    Locations.JapesPaintingEnemy_Gauntlet1: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 3, enemies_nokill_gun, True),
-    Locations.JapesPaintingEnemy_Gauntlet2: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 4, enemies_nokill_gun, True),
-    Locations.JapesPaintingEnemy_Gauntlet3: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 5, enemies_nokill_gun, True),
-    Locations.JapesPaintingEnemy_Gauntlet4: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 6, enemies_nokill_gun, True),
+    Locations.JapesPaintingEnemy_Gauntlet0: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 2, enemies_nokill_gun, True, False),
+    Locations.JapesPaintingEnemy_Gauntlet1: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 3, enemies_nokill_gun, True, False),
+    Locations.JapesPaintingEnemy_Gauntlet2: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 4, enemies_nokill_gun, True, False),
+    Locations.JapesPaintingEnemy_Gauntlet3: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 5, enemies_nokill_gun, True, False),
+    Locations.JapesPaintingEnemy_Gauntlet4: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 6, enemies_nokill_gun, True, False),
     # Mountain
     Locations.JapesMountainEnemy_Start0: EnemyLoc(Maps.JapesMountain, Enemies.BeaverBlue, 1, [], True),
     Locations.JapesMountainEnemy_Start1: EnemyLoc(Maps.JapesMountain, Enemies.BeaverBlue, 2, [], True),
@@ -742,14 +751,14 @@ enemy_location_list = {
     Locations.FactoryMainEnemy_BHDM7: EnemyLoc(Maps.FranticFactory, Enemies.MrDice1, 42, [], False, False),
     Locations.FactoryMainEnemy_BHDM8: EnemyLoc(Maps.FranticFactory, Enemies.SirDomino, 43, [], False, False),
     Locations.FactoryMainEnemy_BHDM9: EnemyLoc(Maps.FranticFactory, Enemies.SirDomino, 44, [], False, False),
-    Locations.FactoryMainEnemy_1342Gauntlet0: EnemyLoc(Maps.FranticFactory, Enemies.ZingerRobo, 49, [], True),
-    Locations.FactoryMainEnemy_1342Gauntlet1: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 50, [], True),
-    Locations.FactoryMainEnemy_1342Gauntlet2: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 51, [], True),
-    Locations.FactoryMainEnemy_3124Gauntlet0: EnemyLoc(Maps.FranticFactory, Enemies.MrDice1, 52, [], True),
-    Locations.FactoryMainEnemy_3124Gauntlet1: EnemyLoc(Maps.FranticFactory, Enemies.SirDomino, 53, [], True),
-    Locations.FactoryMainEnemy_3124Gauntlet2: EnemyLoc(Maps.FranticFactory, Enemies.MrDice1, 54, [], True),
-    Locations.FactoryMainEnemy_4231Gauntlet0: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 55, [], True),
-    Locations.FactoryMainEnemy_4231Gauntlet1: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 56, [], True),
+    Locations.FactoryMainEnemy_1342Gauntlet0: EnemyLoc(Maps.FranticFactory, Enemies.ZingerRobo, 49, [], True, False),
+    Locations.FactoryMainEnemy_1342Gauntlet1: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 50, [], True, False),
+    Locations.FactoryMainEnemy_1342Gauntlet2: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 51, [], True, False),
+    Locations.FactoryMainEnemy_3124Gauntlet0: EnemyLoc(Maps.FranticFactory, Enemies.MrDice1, 52, [], True, False),
+    Locations.FactoryMainEnemy_3124Gauntlet1: EnemyLoc(Maps.FranticFactory, Enemies.SirDomino, 53, [], True, False),
+    Locations.FactoryMainEnemy_3124Gauntlet2: EnemyLoc(Maps.FranticFactory, Enemies.MrDice1, 54, [], True, False),
+    Locations.FactoryMainEnemy_4231Gauntlet0: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 55, [], True, False),
+    Locations.FactoryMainEnemy_4231Gauntlet1: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 56, [], True, False),
     # Lobby
     Locations.FactoryLobbyEnemy_Enemy0: EnemyLoc(Maps.FranticFactoryLobby, Enemies.ZingerRobo, 1, [], True),
     # Galleon
@@ -845,9 +854,9 @@ enemy_location_list = {
     Locations.ForestGMEnemy_Path0: EnemyLoc(Maps.ForestGiantMushroom, Enemies.ZingerLime, 3, [], False),
     Locations.ForestGMEnemy_Path1: EnemyLoc(Maps.ForestGiantMushroom, Enemies.ZingerLime, 4, [], False),
     # Lanky Attic
-    Locations.ForestLankyAtticEnemy_Gauntlet0: EnemyLoc(Maps.ForestMillAttic, Enemies.Bat, 1, enemies_nokill_gun, True),
-    Locations.ForestLankyAtticEnemy_Gauntlet1: EnemyLoc(Maps.ForestMillAttic, Enemies.Bat, 2, enemies_nokill_gun, True),
-    Locations.ForestLankyAtticEnemy_Gauntlet2: EnemyLoc(Maps.ForestMillAttic, Enemies.Bat, 3, enemies_nokill_gun, True),
+    Locations.ForestLankyAtticEnemy_Gauntlet0: EnemyLoc(Maps.ForestMillAttic, Enemies.Bat, 1, enemies_nokill_gun, True, False),
+    Locations.ForestLankyAtticEnemy_Gauntlet1: EnemyLoc(Maps.ForestMillAttic, Enemies.Bat, 2, enemies_nokill_gun, True, False),
+    Locations.ForestLankyAtticEnemy_Gauntlet2: EnemyLoc(Maps.ForestMillAttic, Enemies.Bat, 3, enemies_nokill_gun, True, False),
     # Mush Leap
     Locations.ForestLeapEnemy_Enemy0: EnemyLoc(Maps.ForestLankyZingersRoom, Enemies.ZingerLime, 1, [], True),
     Locations.ForestLeapEnemy_Enemy1: EnemyLoc(Maps.ForestLankyZingersRoom, Enemies.ZingerLime, 2, [], True),
@@ -872,29 +881,29 @@ enemy_location_list = {
     Locations.Caves5DIDKEnemy_Right: EnemyLoc(Maps.CavesDonkeyIgloo, Enemies.Kosha, 1, [], True),
     Locations.Caves5DIDKEnemy_Left: EnemyLoc(Maps.CavesDonkeyIgloo, Enemies.Kosha, 3, [], True),
     # Lanky 5DI
-    Locations.Caves5DILankyEnemy_First0: EnemyLoc(Maps.CavesLankyIgloo, Enemies.BeaverBlue, 1, [], False),
-    Locations.Caves5DILankyEnemy_First1: EnemyLoc(Maps.CavesLankyIgloo, Enemies.BeaverBlue, 2, [], False),
-    Locations.Caves5DILankyEnemy_Second0: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 3, [], False),
-    Locations.Caves5DILankyEnemy_Second1: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 4, [], False),
-    Locations.Caves5DILankyEnemy_Second2: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 5, [], False),
+    Locations.Caves5DILankyEnemy_First0: EnemyLoc(Maps.CavesLankyIgloo, Enemies.BeaverBlue, 1, [], False, False),
+    Locations.Caves5DILankyEnemy_First1: EnemyLoc(Maps.CavesLankyIgloo, Enemies.BeaverBlue, 2, [], False, False),
+    Locations.Caves5DILankyEnemy_Second0: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 3, [], False, False),
+    Locations.Caves5DILankyEnemy_Second1: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 4, [], False, False),
+    Locations.Caves5DILankyEnemy_Second2: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 5, [], False, False),
     # Tiny 5DI
     Locations.Caves5DITinyEnemy_BigEnemy: EnemyLoc(Maps.CavesTinyIgloo, Enemies.Kosha, 2, [Enemies.Guard], True),
     # Chunky 5DI
-    Locations.Caves5DIChunkyEnemy_Gauntlet00: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 2, [], False),
-    Locations.Caves5DIChunkyEnemy_Gauntlet01: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 3, [], False),
-    Locations.Caves5DIChunkyEnemy_Gauntlet02: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 4, [], False),
-    Locations.Caves5DIChunkyEnemy_Gauntlet03: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 5, [], False),
-    Locations.Caves5DIChunkyEnemy_Gauntlet04: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 6, [], False),
+    Locations.Caves5DIChunkyEnemy_Gauntlet00: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 2, [], False, False),
+    Locations.Caves5DIChunkyEnemy_Gauntlet01: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 3, [], False, False),
+    Locations.Caves5DIChunkyEnemy_Gauntlet02: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 4, [], False, False),
+    Locations.Caves5DIChunkyEnemy_Gauntlet03: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 5, [], False, False),
+    Locations.Caves5DIChunkyEnemy_Gauntlet04: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 6, [], False, False),
     # Lanky 1DC
     Locations.Caves1DCEnemy_Near: EnemyLoc(Maps.CavesLankyCabin, Enemies.Kosha, 2, [], True),
     Locations.Caves1DCEnemy_Far: EnemyLoc(Maps.CavesLankyCabin, Enemies.Kosha, 1, [], True),
     # DK 5DC
-    Locations.Caves5DCDKEnemy_Gauntlet0: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 1, enemies_nokill_gun + [Enemies.Bat], True),
-    Locations.Caves5DCDKEnemy_Gauntlet1: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 2, enemies_nokill_gun + [Enemies.Bat], True),
-    Locations.Caves5DCDKEnemy_Gauntlet2: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 3, enemies_nokill_gun + [Enemies.Bat], True),
-    Locations.Caves5DCDKEnemy_Gauntlet3: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 4, enemies_nokill_gun + [Enemies.Bat], True),
-    Locations.Caves5DCDKEnemy_Gauntlet4: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 5, enemies_nokill_gun + [Enemies.Bat], True),
-    Locations.Caves5DCDKEnemy_Gauntlet5: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 6, enemies_nokill_gun + [Enemies.Bat], True),
+    Locations.Caves5DCDKEnemy_Gauntlet0: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 1, enemies_nokill_gun + [Enemies.Bat], True, False),
+    Locations.Caves5DCDKEnemy_Gauntlet1: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 2, enemies_nokill_gun + [Enemies.Bat], True, False),
+    Locations.Caves5DCDKEnemy_Gauntlet2: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 3, enemies_nokill_gun + [Enemies.Bat], True, False),
+    Locations.Caves5DCDKEnemy_Gauntlet3: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 4, enemies_nokill_gun + [Enemies.Bat], True, False),
+    Locations.Caves5DCDKEnemy_Gauntlet4: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 5, enemies_nokill_gun + [Enemies.Bat], True, False),
+    Locations.Caves5DCDKEnemy_Gauntlet5: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 6, enemies_nokill_gun + [Enemies.Bat], True, False),
     # Diddy Enemies 5DC
     Locations.Caves5DCDiddyLowEnemy_CloseRight: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klump, 1, enemy_5dc_ban, True, False),
     Locations.Caves5DCDiddyLowEnemy_FarRight: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Kremling, 2, enemy_5dc_ban, True, False),
@@ -908,7 +917,7 @@ enemy_location_list = {
     Locations.Caves5DCDiddyUpperEnemy_Enemy0: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 1, [], True),
     Locations.Caves5DCDiddyUpperEnemy_Enemy1: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 2, [], True),
     # Tiny 5DC
-    Locations.Caves5DCTinyEnemy_Gauntlet0: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 1, [Enemies.Kosha, Enemies.Guard], True, False),
+    Locations.Caves5DCTinyEnemy_Gauntlet0: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 1, [Enemies.Kosha, Enemies.Guard] + enemies_noisy, True, False),
     Locations.Caves5DCTinyEnemy_Gauntlet1: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 2, [Enemies.Kosha, Enemies.Guard], True, False),
     Locations.Caves5DCTinyEnemy_Gauntlet2: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 3, [Enemies.Kosha, Enemies.Guard], True, False),
     Locations.Caves5DCTinyEnemy_Gauntlet3: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 4, [Enemies.Kosha, Enemies.Guard], True, False),
@@ -944,11 +953,11 @@ enemy_location_list = {
     Locations.CastleDungeonEnemy_ChairRoom: EnemyLoc(Maps.CastleDungeon, Enemies.Kosha, 2, [], True),
     Locations.CastleDungeonEnemy_OutsideLankyRoom: EnemyLoc(Maps.CastleDungeon, Enemies.Kosha, 3, [], True),
     # Shed
-    Locations.CastleShedEnemy_Gauntlet00: EnemyLoc(Maps.CastleShed, Enemies.Bat, 1, enemies_nokill_gun, True),
-    Locations.CastleShedEnemy_Gauntlet01: EnemyLoc(Maps.CastleShed, Enemies.Bat, 2, enemies_nokill_gun, True),
-    Locations.CastleShedEnemy_Gauntlet02: EnemyLoc(Maps.CastleShed, Enemies.Bat, 3, enemies_nokill_gun, True),
-    Locations.CastleShedEnemy_Gauntlet03: EnemyLoc(Maps.CastleShed, Enemies.Bat, 4, enemies_nokill_gun, True),
-    Locations.CastleShedEnemy_Gauntlet04: EnemyLoc(Maps.CastleShed, Enemies.Bat, 5, enemies_nokill_gun, True),
+    Locations.CastleShedEnemy_Gauntlet00: EnemyLoc(Maps.CastleShed, Enemies.Bat, 1, enemies_nokill_gun, True, False),
+    Locations.CastleShedEnemy_Gauntlet01: EnemyLoc(Maps.CastleShed, Enemies.Bat, 2, enemies_nokill_gun, True, False),
+    Locations.CastleShedEnemy_Gauntlet02: EnemyLoc(Maps.CastleShed, Enemies.Bat, 3, enemies_nokill_gun, True, False),
+    Locations.CastleShedEnemy_Gauntlet03: EnemyLoc(Maps.CastleShed, Enemies.Bat, 4, enemies_nokill_gun, True, False),
+    Locations.CastleShedEnemy_Gauntlet04: EnemyLoc(Maps.CastleShed, Enemies.Bat, 5, enemies_nokill_gun, True, False),
     # Lower Cave
     Locations.CastleLowCaveEnemy_NearCrypt: EnemyLoc(Maps.CastleLowerCave, Enemies.Kosha, 3, [], True),
     Locations.CastleLowCaveEnemy_StairRight: EnemyLoc(Maps.CastleLowerCave, Enemies.Kosha, 4, [], True),
@@ -1006,11 +1015,11 @@ enemy_location_list = {
     Locations.CastleMuseumEnemy_MainFloor3: EnemyLoc(Maps.CastleMuseum, Enemies.Ghost, 4, [], True),
     Locations.CastleMuseumEnemy_Start: EnemyLoc(Maps.CastleMuseum, Enemies.Kosha, 6, [], True),
     # Tower
-    Locations.CastleTowerEnemy_Gauntlet0: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 1, [], True),
-    Locations.CastleTowerEnemy_Gauntlet1: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 2, [], True),
-    Locations.CastleTowerEnemy_Gauntlet2: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 3, [], True),
-    Locations.CastleTowerEnemy_Gauntlet3: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 4, [], True),
-    Locations.CastleTowerEnemy_Gauntlet4: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 5, [], True),
+    Locations.CastleTowerEnemy_Gauntlet0: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 1, [], True, False),
+    Locations.CastleTowerEnemy_Gauntlet1: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 2, [], True, False),
+    Locations.CastleTowerEnemy_Gauntlet2: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 3, [], True, False),
+    Locations.CastleTowerEnemy_Gauntlet3: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 4, [], True, False),
+    Locations.CastleTowerEnemy_Gauntlet4: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 5, [], True, False),
     # Trash Can
     Locations.CastleTrashEnemy_Gauntlet0: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 1, [], False, False),
     Locations.CastleTrashEnemy_Gauntlet1: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 2, [], False, False),

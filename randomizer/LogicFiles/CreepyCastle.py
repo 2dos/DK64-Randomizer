@@ -107,15 +107,21 @@ LogicRegions = {
 
     Regions.CastleTree: Region("Castle Tree", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, -1, [  # Deathwarp as long as Main to CastleTreeDrain doesn't become a thing
         LocationLogic(Locations.CastleDonkeyTree, lambda l: ((l.scope and l.coconut) or l.generalclips or l.CanPhase()) and l.isdonkey),
-        LocationLogic(Locations.CastleChunkyTree, lambda l: (((l.scope or l.settings.hard_shooting) and l.pineapple and l.punch and l.ischunky) or l.CanPhase()) and (l.ischunky or l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleKasplatTree, lambda l: not l.settings.kasplat_rando and (l.coconut or l.CanPhase() or l.generalclips) and l.isdonkey),
         LocationLogic(Locations.CastleBananaFairyTree, lambda l: l.camera and l.swim and (((l.coconut or l.generalclips) and l.isdonkey) or l.CanPhase())),
         LocationLogic(Locations.CastleTreeEnemy_StartRoom0, lambda l: True),
         LocationLogic(Locations.CastleTreeEnemy_StartRoom1, lambda l: True),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleTreeToMain),
+        TransitionFront(Regions.CastleTreePastPunch, lambda l: (l.punch and l.ischunky) or l.CanPhase()),
         # This doesn't always require swim, but if you ever get the GB it does
         TransitionFront(Regions.CreepyCastleMain, lambda l: (((l.coconut and l.swim) or l.generalclips) and l.isdonkey) or l.CanPhase(), Transitions.CastleTreeDrainToMain),
+    ]),
+
+    Regions.CastleTreePastPunch: Region("Castle Tree Past Punch", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, None, [
+        LocationLogic(Locations.CastleChunkyTree, lambda l: (((l.scope or l.settings.hard_shooting) and l.pineapple and l.ischunky) or l.CanPhase()) and (l.ischunky or l.settings.free_trade_items), MinigameType.BonusBarrel),
+    ], [], [
+        TransitionFront(Regions.CastleTree, lambda l: True),
     ]),
 
     Regions.Library: Region("Library", HintRegion.CastleRooms, Levels.CreepyCastle, False, -1, [
@@ -221,17 +227,6 @@ LogicRegions = {
     ]),
 
     Regions.Crypt: Region("Crypt", HintRegion.CastleUnderground, Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleDiddyCrypt, lambda l: ((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.CanPhase() or l.generalclips) and l.charge and l.isdiddy),
-        LocationLogic(Locations.CastleChunkyCrypt, lambda l: ((((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.punch) or l.CanPhase() or l.generalclips) and l.ischunky) or ((l.CanPhase() or l.generalclips) and l.settings.free_trade_items), MinigameType.BonusBarrel),
-        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin0, lambda l: ((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.CanPhase() or l.generalclips) and l.isdiddy and l.charge),
-        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin1, lambda l: ((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.CanPhase() or l.generalclips) and l.isdiddy and l.charge),
-        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin2, lambda l: ((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.CanPhase() or l.generalclips) and l.isdiddy and l.charge),
-        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin3, lambda l: ((l.peanut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.CanPhase() or l.generalclips) and l.isdiddy and l.charge),
-        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin0, lambda l: ((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.CanPhase() or l.generalclips) and l.ischunky and l.Slam),
-        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin1, lambda l: ((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.CanPhase() or l.generalclips) and l.ischunky and l.Slam),
-        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin2, lambda l: ((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.CanPhase() or l.generalclips) and l.ischunky and l.Slam),
-        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin3, lambda l: ((l.pineapple or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) or l.CanPhase() or l.generalclips) and l.ischunky and l.Slam),
-        LocationLogic(Locations.CastleCryptEnemy_MinecartEntry, lambda l: (l.coconut and l.isdonkey) or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors) or l.CanPhase() or l.generalclips),
         LocationLogic(Locations.CastleCryptEnemy_Fork, lambda l: True),
         LocationLogic(Locations.CastleCryptEnemy_NearDiddy, lambda l: True),
         LocationLogic(Locations.CastleCryptEnemy_NearChunky, lambda l: True),
@@ -244,7 +239,36 @@ LogicRegions = {
         Event(Events.CryptW3bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.LowerCave, lambda l: True, Transitions.CastleCryptToLower),
-        TransitionFront(Regions.CastleMinecarts, lambda l: (((l.coconut or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors)) and l.grab and l.isdonkey) or l.generalclips or l.CanPhase()), Transitions.CastleCryptToCarts),
+        TransitionFront(Regions.CryptDonkeyRoom, lambda l: (l.coconut and l.isdonkey) or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors) or l.CanPhase() or l.generalclips),
+        TransitionFront(Regions.CryptDiddyRoom, lambda l: (l.peanut and l.isdiddy) or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors) or l.CanPhase() or l.generalclips),
+        TransitionFront(Regions.CryptChunkyRoom, lambda l: (l.pineapple and l.ischunky) or l.checkBarrier(RemovedBarriersSelected.castle_crypt_doors) or l.CanPhase() or l.generalclips),
+    ]),
+
+    Regions.CryptDonkeyRoom: Region("Crypt Donkey Room", HintRegion.CastleUnderground, Levels.CreepyCastle, False, None, [
+        LocationLogic(Locations.CastleCryptEnemy_MinecartEntry, lambda l: True),
+    ], [], [
+        TransitionFront(Regions.Crypt, lambda l: True),
+        TransitionFront(Regions.CastleMinecarts, lambda l: (l.grab and l.isdonkey) or l.generalclips or l.CanPhase(), Transitions.CastleCryptToCarts),
+    ]),
+
+    Regions.CryptDiddyRoom: Region("Crypt Diddy Room", HintRegion.CastleUnderground, Levels.CreepyCastle, False, None, [
+        LocationLogic(Locations.CastleDiddyCrypt, lambda l: l.charge and l.isdiddy),
+        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin0, lambda l: l.isdiddy and l.charge),
+        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin1, lambda l: l.isdiddy and l.charge),
+        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin2, lambda l: l.isdiddy and l.charge),
+        LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin3, lambda l: l.isdiddy and l.charge),
+    ], [], [
+        TransitionFront(Regions.Crypt, lambda l: True),
+    ]),
+
+    Regions.CryptChunkyRoom: Region("Crypt Chunky Room", HintRegion.CastleUnderground, Levels.CreepyCastle, False, None, [
+        LocationLogic(Locations.CastleChunkyCrypt, lambda l: (l.punch and l.ischunky) or ((l.ischunky or l.settings.free_trade_items) and (l.CanPhase() or l.generalclips)), MinigameType.BonusBarrel),
+        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin0, lambda l: l.ischunky and l.Slam),
+        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin1, lambda l: l.ischunky and l.Slam),
+        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin2, lambda l: l.ischunky and l.Slam),
+        LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin3, lambda l: l.ischunky and l.Slam),
+    ], [], [
+        TransitionFront(Regions.Crypt, lambda l: True),
     ]),
 
     Regions.CastleMinecarts: Region("Castle Minecarts", HintRegion.CastleUnderground, Levels.CreepyCastle, False, None, [

@@ -24,6 +24,7 @@ def generate_seed(settings_dict):
     try:
         if isinstance(settings_dict, str):
             settings_dict = json.loads(settings_dict)
+        delayed_timestamp = settings_dict.get("delayed_spoilerlog_release", 0)
         patch = open("./static/patches/shrink-dk64.bps", "rb")
         original = open("dk64.z64", "rb")
         patched = BytesIO(bps.patch(original, patch).read())
@@ -34,7 +35,7 @@ def generate_seed(settings_dict):
         spoiler = Spoiler(settings_obj)
         patch, spoiler, password = Generate_Spoiler(spoiler)
         spoiler.FlushAllExcessSpoilerData()
-        return update_seed_results(patch, spoiler, settings_dict, password)
+        return update_seed_results(patch, spoiler, settings_dict, password, delayed_timestamp)
 
     except Exception as e:
         print(traceback.format_exc())
@@ -67,11 +68,11 @@ def cleanup_settings(settings):
     return settings
 
 
-def update_seed_results(patch, spoiler, settings_dict, password):
+def update_seed_results(patch, spoiler, settings_dict, password, delayed_timestamp):
     """Update the seed results."""
     # Assuming post_body.get("delayed_spoilerlog_release") is an int, and its the number of hours to delay the spoiler log release convert that to time.time() + hours as seconds.
     try:
-        spoiler_log_release = int(settings_dict.get("delayed_spoilerlog_release", 0))
+        spoiler_log_release = int(delayed_timestamp)
     except ValueError:
         spoiler_log_release = 0
 

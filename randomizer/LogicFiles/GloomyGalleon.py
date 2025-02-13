@@ -112,8 +112,14 @@ LogicRegions = {
         Event(Events.LighthouseEnguarde, lambda l: l.lanky),
     ], [
         TransitionFront(Regions.LighthouseSurface, lambda l: True),
+        TransitionFront(Regions.LighthouseEnguardeDoor, lambda l: Events.LighthouseEnguarde in l.Events or l.CanPhaseswim()),
         TransitionFront(Regions.MermaidRoom, lambda l: (l.mini and l.istiny) or l.CanPhaseswim(), Transitions.GalleonLighthouseAreaToMermaid),
-        TransitionFront(Regions.GalleonBossLobby, lambda l: not l.settings.tns_location_rando),  # T&S past Enguarde is redundant with meme hole
+        TransitionFront(Regions.GalleonBossLobby, lambda l: not l.settings.tns_location_rando),
+    ]),
+
+    Regions.LighthouseEnguardeDoor: Region("Lighthouse Enguarde Door", HintRegion.Lighthouse, Levels.GloomyGalleon, False, None, [], [], [
+        TransitionFront(Regions.LighthouseUnderwater, lambda l: True),
+        TransitionFront(Regions.GalleonBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.LighthouseSnideAlcove: Region("Lighthouse Snide Alcove", HintRegion.Lighthouse, Levels.GloomyGalleon, True, None, [], [
@@ -130,14 +136,20 @@ LogicRegions = {
     ]),
 
     Regions.Lighthouse: Region("Lighthouse", HintRegion.Lighthouse, Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonDonkeyLighthouse, lambda l: Events.ActivatedLighthouse in l.Events and (l.isdonkey or l.settings.free_trade_items) and l.climbing),
         LocationLogic(Locations.RainbowCoin_Location09, lambda l: True),
         LocationLogic(Locations.GalleonLighthouseEnemy_Enemy0, lambda l: True),
         LocationLogic(Locations.GalleonLighthouseEnemy_Enemy1, lambda l: True),
-    ], [
-        Event(Events.ActivatedLighthouse, lambda l: l.grab and l.isdonkey and l.climbing),
-    ], [
+    ], [], [
         TransitionFront(Regions.LighthousePlatform, lambda l: True, Transitions.GalleonLighthouseToLighthouseArea),
+        TransitionFront(Regions.LighthouseAboveLadder, lambda l: l.climbing),
+    ]),
+
+    Regions.LighthouseAboveLadder: Region("Lighthouse Above Ladder", HintRegion.Lighthouse, Levels.GloomyGalleon, False, None, [
+        LocationLogic(Locations.GalleonDonkeyLighthouse, lambda l: Events.ActivatedLighthouse in l.Events and (l.isdonkey or l.settings.free_trade_items)),
+    ], [
+        Event(Events.ActivatedLighthouse, lambda l: l.grab and l.isdonkey),
+    ], [
+        TransitionFront(Regions.Lighthouse, lambda l: True),
     ]),
 
     Regions.MermaidRoom: Region("Mermaid Room", HintRegion.Lighthouse, Levels.GloomyGalleon, False, None, [

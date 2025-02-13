@@ -857,8 +857,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AztecDonkey5DTemple,
         name="First dead end",
         konglist=[Kongs.donkey],
-        region=Regions.DonkeyTemple,
-        logic=lambda l: l.coconut,
+        region=Regions.DonkeyTempleDeadEndRight,
         locations=[[5, 1.0, 140, 25, 500], [5, 1.0, 64, 25, 500]],
     ),
     ColoredBananaGroup(
@@ -867,7 +866,7 @@ ColoredBananaGroupList = [
         name="Second dead end",
         konglist=[Kongs.donkey],
         region=Regions.DonkeyTemple,
-        logic=lambda l: l.coconut,
+        logic=lambda l: (l.coconut and l.isdonkey) or l.CanPhase(),
         locations=[[5, 1.0, 1046, 62, 1082]],
     ),
     ColoredBananaGroup(
@@ -876,7 +875,7 @@ ColoredBananaGroupList = [
         name="Path to GB",
         konglist=[Kongs.donkey],
         region=Regions.DonkeyTemple,
-        logic=lambda l: l.coconut,
+        logic=lambda l: (l.coconut and l.isdonkey) or l.CanPhase(),
         locations=[
             [1, 1.0, 520, 20, 300],
             [1, 1.0, 620, 20, 300],
@@ -943,8 +942,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AztecDiddy5DTemple,
         name="Second dead end",
         konglist=[Kongs.diddy],
-        region=Regions.DiddyTemple,
-        logic=lambda l: l.peanut,
+        region=Regions.DiddyTempleDeadEndRight,
         locations=[[5, 1.0, 155, 62, 1013], [5, 1.0, 73, 62, 1013]],
     ),
     ColoredBananaGroup(
@@ -962,7 +960,6 @@ ColoredBananaGroupList = [
         name="Path to GB",
         konglist=[Kongs.lanky],
         region=Regions.LankyTemple,
-        logic=lambda l: l.grape,
         locations=[
             [1, 1.0, 370, 20, 320],
             [1, 1.0, 280, 20, 320],
@@ -983,6 +980,16 @@ ColoredBananaGroupList = [
             [1, 1.0, 460, 85, 950],
             [1, 1.0, 460, 85, 1050],
             [1, 1.0, 460, 85, 1150],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=61,
+        map_id=Maps.AztecLanky5DTemple,
+        name="Path to GB",
+        konglist=[Kongs.lanky],
+        region=Regions.LankyTemple,
+        logic=lambda l: l.grape or l.CanPhase(),
+        locations=[
             [1, 1.0, 300, 85, 1150],
             [1, 1.0, 150, 85, 1150],
         ],
@@ -992,7 +999,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AztecLanky5DTemple,
         name="Path to GB",
         konglist=[Kongs.lanky],
-        region=Regions.LankyTemple,
+        region=Regions.LankyTempleEntrance,
         locations=[[1, 1.0, 460, 20, 100], [1, 1.0, 460, 20, 173], [1, 1.0, 460, 20, 246], [1, 1.0, 460, 20, 320]],
     ),
     ColoredBananaGroup(
@@ -1010,7 +1017,6 @@ ColoredBananaGroupList = [
         name="Path to GB",
         konglist=[Kongs.tiny],
         region=Regions.TinyTemple,
-        logic=lambda l: l.feather,
         locations=[
             [1, 1.0, 726, 20, 300],
             [1, 1.0, 813, 20, 300],
@@ -1031,6 +1037,16 @@ ColoredBananaGroupList = [
             [1, 1.0, 640, 85, 900],
             [1, 1.0, 640, 85, 1030],
             [1, 1.0, 640, 85, 1160],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=63,
+        map_id=Maps.AztecTiny5DTemple,
+        name="Path to GB",
+        konglist=[Kongs.tiny],
+        region=Regions.TinyTemple,
+        logic=lambda l: l.feather or l.CanPhase(),
+        locations=[
             [1, 1.0, 790, 85, 1160],
             [1, 1.0, 940, 85, 1160],
         ],
@@ -1040,7 +1056,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AztecTiny5DTemple,
         name="Path to GB",
         konglist=[Kongs.tiny],
-        region=Regions.TinyTemple,
+        region=Regions.TinyTempleEntrance,
         locations=[[1, 1.0, 640, 20, 100], [1, 1.0, 640, 20, 166], [1, 1.0, 640, 20, 233], [1, 1.0, 640, 20, 300]],
     ),
     ColoredBananaGroup(
@@ -1058,7 +1074,6 @@ ColoredBananaGroupList = [
         name="Path to GB",
         konglist=[Kongs.chunky],
         region=Regions.ChunkyTemple,
-        logic=lambda l: l.pineapple,
         locations=[
             [1, 1.0, 726, 20, 300],
             [1, 1.0, 813, 20, 300],
@@ -1082,6 +1097,16 @@ ColoredBananaGroupList = [
             [1, 1.0, 640, 85, 1620],
             [1, 1.0, 640, 104, 1710],
             [1, 1.0, 640, 123, 1870],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=65,
+        map_id=Maps.AztecChunky5DTemple,
+        name="Path to GB",
+        konglist=[Kongs.chunky],
+        region=Regions.ChunkyTemple,
+        logic=lambda l: l.pineapple or l.CanPhase(),
+        locations=[
             [1, 1.0, 490, 123, 1870],
             [1, 1.0, 340, 123, 1870],
             [1, 1.0, 340, 123, 2100],
@@ -1093,7 +1118,7 @@ ColoredBananaGroupList = [
         map_id=Maps.AztecChunky5DTemple,
         name="Path to GB",
         konglist=[Kongs.chunky],
-        region=Regions.ChunkyTemple,
+        region=Regions.ChunkyTempleEntrance,
         locations=[[1, 1.0, 640, 20, 100], [1, 1.0, 640, 20, 166], [1, 1.0, 640, 20, 233], [1, 1.0, 640, 20, 300]],
     ),
     ColoredBananaGroup(
@@ -1459,9 +1484,9 @@ ColoredBananaGroupList = [
         map_id=Maps.AztecLlamaTemple,
         name="On vines in Matching game room (Lanky)",
         konglist=[Kongs.lanky],
-        region=Regions.LlamaTemple,
+        region=Regions.LlamaTempleMatching,
         vanilla=True,
-        logic=lambda l: (l.grape or l.CanPhase()) and l.can_use_vines,
+        logic=lambda l: l.can_use_vines,
         locations=[[5, 1.0, 792.3839721679688, 686.5, 2613.002685546875]],
     ),
     ColoredBananaGroup(
@@ -1850,7 +1875,7 @@ BalloonList = [
         name="First dead end",
         speed=5,
         konglist=[Kongs.donkey],
-        region=Regions.DonkeyTemple,
+        region=Regions.DonkeyTempleDeadEndRight,
         points=[[264, 60, 301], [130, 65, 322], [83, 60, 474], [130, 65, 322]],
     ),
     Balloon(
@@ -1886,7 +1911,7 @@ BalloonList = [
         name="Matching game room right side",
         speed=4,
         konglist=[Kongs.lanky],
-        region=Regions.LlamaTemple,
+        region=Regions.LlamaTempleMatching,
         points=[[1144, 760, 2142], [795, 810, 2142]],
     ),
     Balloon(

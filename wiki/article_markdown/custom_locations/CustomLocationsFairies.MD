@@ -17,7 +17,7 @@
 # Angry Aztec
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Aztec Tiny5DTemple | Tiny 5-Door Temple | `l.camera and ((l.feather and l.mini and l.istiny) or l.CanPhase())` | 
+| Aztec Tiny5DTemple | Tiny 5-Door Temple | `l.camera and ((l.mini and l.istiny) or l.CanPhase())` | 
 | Aztec Llama Temple | Llama Temple | `l.camera` | 
 | Angry Aztec | Vase Room | `l.camera and ((l.pineapple and l.chunky) or l.CanPhase())` | 
 | Angry Aztec | Oasis | `l.camera` | 
@@ -27,9 +27,9 @@
 | Angry Aztec | Around Totem | `l.camera` | 
 | Angry Aztec | Gong Tower | `l.camera` | 
 | Aztec Donkey5DTemple | Donkey 5DT | `l.camera and ((l.coconut and l.isdonkey) or l.CanPhase())` | 
-| Aztec Chunky5DTemple | Chunky 5DT | `l.camera and ((l.pineapple and l.ischunky) or l.CanPhase())` | 
+| Aztec Chunky5DTemple | Chunky 5DT | `l.camera` | 
 | Aztec Diddy5DTemple | Diddy 5DT | `l.camera` | 
-| Aztec Lanky5DTemple | Lanky 5DT | `l.camera and ((l.grape and l.islanky) or l.CanPhase())` | 
+| Aztec Lanky5DTemple | Lanky 5DT | `l.camera` | 
 | Aztec Llama Temple | Start of Llama Temple | `l.camera` | 
 | Aztec Llama Temple | Matching Room | `l.camera and ((l.grape and l.islanky) or l.CanPhase() or l.CanOStandTBSNoclip())` | 
 | Aztec Tiny Temple | Tiny Temple Start | `l.camera` | 
@@ -73,7 +73,7 @@
 | Gloomy Galleon | Around Cactus | `l.camera` | 
 | Gloomy Galleon | Around Lighthouse | `l.camera` | 
 | Galleon Sick Bay | Seasick Ship | `l.camera` | 
-| Galleon Lighthouse | Top of Lighthouse | `l.camera and l.climbing` | 
+| Galleon Lighthouse | Top of Lighthouse | `l.camera` | 
 | Galleon Mermaid Room | Mermaid Window | `l.camera` | 
 | Galleon5DShip Diddy Lanky Chunky | Lanky's 5-Door Ship | `l.camera` | 
 | Galleon2DShip | Tiny's 2-Door Ship | `l.camera` | 
@@ -83,7 +83,7 @@
 # Fungi Forest
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Forest Thornvine Barn | Thornvine Barn | `l.isdonkey and l.Slam and l.camera and l.climbing` | 
+| Forest Thornvine Barn | Thornvine Barn | `l.isdonkey and l.Slam and l.camera` | 
 | Forest Rafters | Dark Rafters | `l.guitar and l.isdiddy and l.camera` | 
 | Fungi Forest | Above Blue Tunnel | `l.camera` | 
 | Fungi Forest | Above the Clock | `l.camera` | 
@@ -112,7 +112,7 @@
 | Caves Diddy Upper Cabin | Diddy Candles Cabin | `l.camera and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()) and l.jetpack and l.isdiddy` | 
 | Caves Tiny Igloo | Tiny Igloo | `l.Slam and l.istiny and l.camera` | 
 | Crystal Caves | Level Start | `l.camera` | 
-| Crystal Caves | Gorilla Gone Room | `l.camera and ((l.chunky and l.punch) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls))` | 
+| Crystal Caves | Gorilla Gone Room | `l.camera` | 
 | Crystal Caves | Ice Castle Roof | `l.camera` | 
 | Crystal Caves | Near Small Boulder | `l.camera` | 
 | Crystal Caves | Bananaport Pillar | `l.camera` | 
