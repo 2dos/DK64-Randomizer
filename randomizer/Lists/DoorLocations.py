@@ -608,7 +608,6 @@ door_locations = {
             location=[903.167, 280, 1044.455, 180],
             group=11,
             placed=DoorType.dk_portal,
-            dos_door=True,
         ),
         DoorData(
             name="Diddy Mountain - Next to the slam switch",
@@ -710,6 +709,7 @@ door_locations = {
             logicregion=Regions.JungleJapesStart,
             location=[714, 288, 830, 90],
             group=11,
+            dos_door=True,
         ),
         DoorData(
             name="Against the mountain",

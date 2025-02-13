@@ -302,7 +302,7 @@ def ShuffleVanillaDoors(spoiler):
                 door.placed = DoorType.null
                 vanilla_door_indexes.append(door_index)
         random.shuffle(vanilla_door_indexes)
-        # One random vanilla T&S per level is locked to being a T&S - One non-vanilla location is eligible in Japes in Dos' Doors (hence that DoorType.null eligibility)
+        # One random vanilla T&S per level is locked to being a T&S - Two non-vanilla Japes locations are eligible in Dos' Doors (hence that DoorType.null eligibility)
         locked_tns_options = [
             idx for idx in vanilla_door_indexes if door_locations[level][idx].default_placed in (DoorType.boss, DoorType.null) and DoorType.boss in door_locations[level][idx].door_type
         ]
