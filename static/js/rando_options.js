@@ -830,6 +830,32 @@ document
   .getElementById("music_filtering")
   .addEventListener("click", disable_music_filtering_modal);
 
+function disable_custom_cb_locations_modal() {
+  const selector = document.getElementById("cb_rando_list_modal");
+  if (document.getElementById("cb_rando_enabled").checked) {
+    selector.removeAttribute("disabled");
+  } else {
+    selector.setAttribute("disabled", "disabled");
+  }
+}
+
+document
+  .getElementById("cb_rando_enabled")
+  .addEventListener("click", disable_custom_cb_locations_modal);
+
+function disable_misc_changes_modal() {
+  const selector = document.getElementById("misc_changes_modal");
+  if (document.getElementById("misc_changes_toggle").checked) {
+    selector.removeAttribute("disabled");
+  } else {
+    selector.setAttribute("disabled", "disabled");
+  }
+}
+
+document
+  .getElementById("misc_changes_toggle")
+  .addEventListener("click", disable_misc_changes_modal);
+
 // Hide the plando options for certain Helm phases if they are disabled
 function plando_hide_helm_options(evt) {
   const helmPhaseCount = parseInt(
@@ -2268,6 +2294,8 @@ function update_ui_states() {
   disable_hard_bosses_modal(null);
   disable_excluded_songs_modal(null);
   disable_music_filtering_modal(null);
+  disable_custom_cb_locations_modal(null);
+  disable_misc_changes_modal(null);
   toggle_bananaport_selector(null);
   disable_helm_hurry(null);
   disable_remove_barriers(null);
