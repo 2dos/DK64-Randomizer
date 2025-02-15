@@ -448,6 +448,22 @@ document
   .getElementById("helm_hurry")
   .addEventListener("click", disable_helm_hurry);
 
+// Disable Points Selector when Spoiler Hints are not set to Points
+function disable_points() {
+  const selector = document.getElementById("points_list_modal");
+  const disabled = document.getElementById("spoiler_hints").value !== "points";
+
+  if (disabled) {
+    selector.setAttribute("disabled", "disabled");
+  } else {
+    selector.removeAttribute("disabled");
+  }
+}
+
+document
+  .getElementById("spoiler_hints")
+  .addEventListener("change", disable_points);
+
 // Disable Remove Barriers Selector when Remove Barriers is off
 function disable_remove_barriers() {
   const selector = document.getElementById("remove_barriers_modal");
@@ -2298,6 +2314,7 @@ function update_ui_states() {
   disable_misc_changes_modal(null);
   toggle_bananaport_selector(null);
   disable_helm_hurry(null);
+  disable_points(null);
   disable_remove_barriers(null);
   disable_faster_checks(null);
   toggle_logic_type(null);
