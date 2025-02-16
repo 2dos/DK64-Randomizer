@@ -18,7 +18,7 @@ from randomizer.Spoiler import Spoiler
 from version import version
 
 
-def generate_seed(settings_dict):
+def generate_seed(settings_dict, branch="Unknown"):
     """Generate a seed with the given settings."""
     print("Running task with")
     try:
@@ -31,7 +31,7 @@ def generate_seed(settings_dict):
         if not settings_dict.get("seed"):
             settings_dict["seed"] = random.randint(0, 100000000)
         load_base_rom(default_file=patched)
-        settings_obj = Settings(cleanup_settings(settings_dict))
+        settings_obj = Settings(cleanup_settings(settings_dict), branch)
         spoiler = Spoiler(settings_obj)
         patch, spoiler, password = Generate_Spoiler(spoiler)
         spoiler.FlushAllExcessSpoilerData()

@@ -66,7 +66,7 @@ from version import version as randomizer_version
 class Settings:
     """Class used to store settings for seed generation."""
 
-    def __init__(self, form_data: dict):
+    def __init__(self, form_data: dict, branch: str):
         """Init all the settings using the form data to set the flags.
 
         Args:
@@ -81,6 +81,10 @@ class Settings:
         self.rom_data = 0x1FED020
         self.move_location_data = 0x1FEF000
         self.form_data = form_data
+
+        # Debugging
+        self.version = 4  # TODO: Get this dynamically
+        self.branch = branch
 
         self.apply_form_data(form_data)
         self.seed_id = str(self.seed)

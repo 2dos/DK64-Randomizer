@@ -21,7 +21,7 @@ if not APPLY_VARIABLES:
 
 settings_string = "fjNPw8MxDKY6IJUtjnqSszmCCXBHofUA4IhkQlS2Nc+EZ+PxGiUiWxClFcdqgQmC9AAO/AAbBAADDAADFAACbzgSGIyGOhbgKQWiltsC3ASSAaZM1UQoxSClFMBkyyvV+CgLcAQYCbwEDgbgAwgEcQIEgrkBQoGcwMFg7oBwwIuQQmQ1AdWRXgAynEpq1hJQlHdVqyWJGZitIEcnaFalL0VEWARMRQBWLLHI3ZLxd5FA5DsZe09AzycYcgDKpwRCAAXCgAXDAATDgATEAAPWgAPEgALFAAHFgAPGAALGgAHXAAWnyvQJLlS2eyyejYfAwjmSu1gYDOXVYDiqKymVFoxxSgBQVg0oBOKi0SRcQyKnjWlkGkRGujsADoBeEIQEhQWHVhGWCAiJEhaKCosSlwwMjRMXjg6PE5gQEJEUFN8DGpoGBpWZYAGVGZjhAGIAToBZACiAA"
 setting_data = decrypt_settings_string_enum(settings_string)
-settings = Settings(setting_data)
+settings = Settings(setting_data, "Test")
 spoiler = Spoiler(settings)
 settings.resolve_settings()
 # Couple settings needed for patching
@@ -82,6 +82,11 @@ class TestROM:
         if IO_LOGGING:
             io_logs.append({"action": "write", "value": value, "size": size})
         self.stream.write(value.to_bytes(size, "big"))
+
+    def writeBytes(self, bytes):
+        if IO_LOGGING:
+            io_logs.append({"action": "write", "value": 0, "size": len(bytes)})
+        self.stream.write(bytes)
 
 
 set_variables = {}
