@@ -690,24 +690,27 @@ function toggle_medals_box() {
     medal.removeAttribute("disabled");
   }
 }
-
+enabled_plando = false;
 // Enable and disable the Plandomizer tab
 async function enable_plandomizer() {
   const plandoTab = document.getElementById("nav-plando-tab");
   if (document.getElementById("enable_plandomizer").checked) {
     // Open up a Modal stating that we're loading the Plando tab
-    $("#plando-modal").modal("show");    
-    try {
-      await setup_pyodide();
-    } catch (error) {
-      console.log("Error setting up Pyodide:", error);
-    }
-    try{
-      // Load ui.__init__.py
-      await run_python_file("ui/__init__.py");
-    }
-    catch (error) {
-      console.log("Error running ui/__init__.py:", error);
+    if (!enabled_plando){
+      $("#plando-modal").modal("show");    
+      try {
+        await setup_pyodide();
+      } catch (error) {
+        console.log("Error setting up Pyodide:", error);
+      }
+      try{
+        // Load ui.__init__.py
+        await run_python_file("ui/__init__.py");
+        enabled_plando = true;
+      }
+      catch (error) {
+        console.log("Error running ui/__init__.py:", error);
+      }
     }
     plandoTab.style.display = "";
     $("#plando-modal").modal("hide");
