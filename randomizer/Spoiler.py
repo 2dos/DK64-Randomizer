@@ -394,6 +394,7 @@ class Spoiler:
             settings["Game Mode"] = "Helm Hurry"
         humanspoiler["Settings"] = settings
         humanspoiler["Randomizer Version"] = self.settings.version
+        humanspoiler["Generation Branch"] = self.settings.branch
         humanspoiler["Cosmetics"] = {}
         if self.settings.spoiler_hints != SpoilerHints.off:
             humanspoiler["Spoiler Hints Data"] = {}
