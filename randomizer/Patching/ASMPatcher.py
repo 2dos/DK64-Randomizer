@@ -2622,6 +2622,9 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict, 1)
         writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict, 1)
 
+    if settings.tns_location_rando:
+        writeHook(ROM_COPY, 0x805FFB8C, Overlay.Static, "flipKongRotation", offset_dict)
+
     writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase
     vanilla_props_values = {
         Maps.JapesBoss: 1,

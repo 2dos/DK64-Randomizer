@@ -716,3 +716,24 @@ setHappyFace:
     sb $t6, 0x1EC ($t7)
     j 0x806C5E44
     sh $t6, 0x1B6 ($v0)
+
+flipKongRotation:
+    lh $t4, 0xe6 ($v0) ; Load Kong Rotation
+    lui $t6, hi(CutsceneActive)
+    lbu $t6, lo(CutsceneActive) ($t6)
+    beqz $t6, flipKongRotation_finish ; If no cutscene is playing, dont flip
+    lui $t5, hi(CutsceneIndex)
+    lh $t5, lo(CutsceneIndex) ($t5)
+    addiu $t6, $zero, 28
+    bne $t5, $t6, flipKongRotation_finish ; If not the portal entry cutscene index, dont flip
+    nop
+    lui $t5, hi(CutsceneStateBitfield)
+    lhu $t5, lo(CutsceneStateBitfield) ($t5)
+    andi $t5, $t5, 4
+    beqz $t5, flipKongRotation_finish ; If not a global cutscene, dont flip
+    nop
+    xori $t4, $t4, 0x800 ; Flip rotation by flipping the 0x800 bit. This will lower by 2048 units if over/at 2048 and increase by 2048 if under
+
+    flipKongRotation_finish:
+        j 0x805FFB94
+        sh $t4, 0x10 ($s1)  ; Store into bitfield
