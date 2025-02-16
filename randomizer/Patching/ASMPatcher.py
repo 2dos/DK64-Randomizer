@@ -901,7 +901,7 @@ def fixBossProperties(ROM_COPY: LocalROM, offset_dict: dict, settings: Settings)
         ROM_COPY.writeMultipleBytes(raw_value, 4)
 
 def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
-    """Patches the version number into the stack trace."""
+    """Patch the version number into the stack trace."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
     VERSION_STRING_START = getSym("version_string")
     source_string = settings.branch.upper()[0]
