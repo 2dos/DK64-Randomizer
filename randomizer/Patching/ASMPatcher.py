@@ -910,7 +910,7 @@ def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
     major = settings.version.split(".")[0]
     addr = getROMAddress(VERSION_STRING_START, Overlay.Custom, offset_dict)
     ROM_COPY.seek(addr)
-    ROM_COPY.writeBytes(bytes(f"DK64R {major}.0{source_string}", "ascii"))
+    ROM_COPY.writeBytes(bytes(f"DK64R {major}.0{source_string}\n", "ascii"))
 
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
