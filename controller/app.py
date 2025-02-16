@@ -122,7 +122,7 @@ class TaskThread(threading.Thread):
         """Run the task in the background."""
         if not self.result_complete:
             self.result_complete = True
-            self.result = self.target(self.kwargs.get("args")[0], self.kwargs.get("args")[1])
+            self.result = self.target(self.kwargs.get("args")[0])
 
 
 task_queue_high = Queue("tasks_high_priority", connection=redis_conn)  # High-priority queue
@@ -241,8 +241,7 @@ def submit_task():
 
         global tasks
         json_data = json.loads(data.get("settings_data"))
-        print("Running local test")
-        task_thread = TaskThread(task_id="testingID", target=generate_seed, args=(json_data, "local"))
+        task_thread = TaskThread(task_id="testingID", target=generate_seed, args=(json_data,))
         tasks["testingID"] = task_thread
         task_thread.start()
         return set_response(json.dumps({"task_id": "testingID", "status": "queued", "priority": "High"}), 200)
@@ -263,11 +262,11 @@ def submit_task():
     # Determine the priority based on the cooldown period
     if last_submission_time is None or current_time - int(last_submission_time) > COOLDOWN_PERIOD:
         # High-priority queue
-        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, branch, meta={"ip": user_ip, "branch": branch}, retry=Retry(max=2))
+        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch}, retry=Retry(max=2))
         priority = "High"
     else:
         # Low-priority queue
-        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, branch, meta={"ip": user_ip, "branch": branch}, retry=Retry(max=1))
+        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch}, retry=Retry(max=1))
         priority = "Low"
 
     # Update the last submission time for this IP
