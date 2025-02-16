@@ -181,6 +181,7 @@ RegionMapList = {
     Regions.MushroomUpperMidExterior: Maps.FungiForest,
     Regions.ForestTopOfMill: Maps.FungiForest,
     Regions.ForestVeryTopOfMill: Maps.FungiForest,
+    Regions.ForestMillTopOfNightCage: Maps.FungiForest,
     # Caves
     Regions.CrystalCavesEntryHandler: Maps.CrystalCaves,
     Regions.CrystalCavesMain: Maps.CrystalCaves,
