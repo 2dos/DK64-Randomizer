@@ -577,7 +577,7 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0x1DC)
         ROM_COPY.writeMultipleBytes(1, 1)
 
-    if not spoiler.settings.fast_start_beginning_of_game:
+    if spoiler.settings.fast_start_beginning_of_game:
         # Write a null move to this spot if fast start beginning of game is off
         ROM_COPY.seek(spoiler.settings.move_location_data + (125 * 6))
         ROM_COPY.writeMultipleBytes(7, 2)
