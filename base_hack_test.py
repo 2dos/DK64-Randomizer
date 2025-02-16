@@ -1,6 +1,5 @@
 """Set debugging vars to the build."""
 
-import os
 import sys
 import json
 from typing import BinaryIO

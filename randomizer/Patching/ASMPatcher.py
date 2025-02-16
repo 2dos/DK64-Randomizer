@@ -907,7 +907,7 @@ def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
     source_string = settings.branch.upper()[0]
     if source_string is None:
         source_string = "U"
-    major = settings.version
+    major = settings.version.split(".")[0]
     addr = getROMAddress(VERSION_STRING_START, Overlay.Custom, offset_dict)
     ROM_COPY.seek(addr)
     ROM_COPY.writeBytes(bytes(f"DK64R {major}.0{source_string}", "ascii"))

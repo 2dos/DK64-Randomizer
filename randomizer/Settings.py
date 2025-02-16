@@ -5,6 +5,7 @@ import logging
 import math
 import random
 import os
+from version import version
 from copy import deepcopy
 from random import randint
 
@@ -84,7 +85,7 @@ class Settings:
         self.form_data = form_data
 
         # Debugging
-        self.version = 4  # TODO: Get this dynamically
+        self.version = version
         self.branch = os.environ.get("BRANCH", "LOCAL")
 
         self.apply_form_data(form_data)
