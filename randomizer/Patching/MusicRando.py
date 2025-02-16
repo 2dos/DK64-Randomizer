@@ -17,7 +17,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
 from randomizer.Patching.Library.Generic import IsItemSelected, Overlay
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
-from randomizer.Patching.ASMPatcher import writeValue, populateOverlayOffsets, getROMAddress
+from randomizer.Patching.Library.ASM import writeValue, populateOverlayOffsets, getROMAddress
 
 storage_banks = {
     0: 0x8000,

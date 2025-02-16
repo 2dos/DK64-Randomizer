@@ -106,10 +106,7 @@ class DoorData:
         self.default_placed = placed  # info about what door_type a door location is in vanilla
         self.dos_door = dos_door  # We need extra doors in Japes to make Dos' Doors work - this flag is for specifically that
         self.door_type = door_type.copy()  # denotes what types it can be
-        if dk_portal_logic is None:
-            self.dk_portal_logic = lambda s: False
-        else:
-            self.dk_portal_logic = dk_portal_logic
+        self.dk_portal_logic = dk_portal_logic
         if True:  # Disable if we figure it's not necessary
             if DoorType.dk_portal in self.door_type and self.logicregion in UNDERWATER_LOGIC_REGIONS:
                 # Disable portals in underwater regions
@@ -140,9 +137,14 @@ class DoorData:
 
     def updateDoorTypeLogic(self, spoiler):
         """Update door type list depending on enabled settings."""
-        if self.dk_portal_logic(spoiler) and self.logicregion not in UNDERWATER_LOGIC_REGIONS:
-            if DoorType.dk_portal not in self.door_type:
-                self.door_type.append(DoorType.dk_portal)
+        # If the door has logic that affects whether or not it can be a DK Portal
+        if self.dk_portal_logic is not None:
+            if self.dk_portal_logic(spoiler):
+                if self.logicregion not in UNDERWATER_LOGIC_REGIONS and DoorType.dk_portal not in self.door_type:
+                    self.door_type.append(DoorType.dk_portal)
+            else:
+                if DoorType.dk_portal in self.door_type:
+                    self.door_type.remove(DoorType.dk_portal)
         if spoiler.settings.dk_portal_location_rando_v2 == DKPortalRando.main_only:
             if self.map not in LEVEL_MAIN_MAPS and DoorType.dk_portal in self.door_type:
                 self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
