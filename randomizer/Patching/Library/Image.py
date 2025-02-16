@@ -202,6 +202,7 @@ def hueShift(im, amount: int):
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
 
+
 def hueShiftImageFromAddress(ROM_COPY: Union[ROM, LocalROM], address: int, width: int, height: int, format: TextureFormat, shift: int):
     """Hue shift image located at a certain ROM address."""
     size_per_px = {
@@ -230,6 +231,7 @@ def hueShiftImageFromAddress(ROM_COPY: Union[ROM, LocalROM], address: int, width
     px_data = bytearray(bytes_array)
     ROM_COPY.seek(address)
     ROM_COPY.writeBytes(px_data)
+
 
 def clampRGBA(n):
     """Restricts input to integer value between 0 and 255."""

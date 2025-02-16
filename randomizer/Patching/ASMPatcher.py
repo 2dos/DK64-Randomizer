@@ -212,6 +212,7 @@ WARPS_TOTAL = [
     WARPS_ISLES,
 ]
 
+
 class ColorBlindCrosshair:
     """Store all information regarding a colorblind crosshair color data."""
 

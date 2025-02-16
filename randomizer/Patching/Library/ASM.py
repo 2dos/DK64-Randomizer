@@ -1,3 +1,5 @@
+"""ASM Patcher library functions."""
+
 import js
 from randomizer.Patching.Library.Generic import Overlay
 from randomizer.Patching.Library.DataTypes import float_to_hex
@@ -30,6 +32,7 @@ OVERLAY_ENDS = {
     Overlay.Custom: 0x805FAE00,
 }
 CUSTOM_ACTORS_START = 345
+
 
 def populateOverlayOffsets(ROM_COPY) -> dict:
     """Populate the overlay offset database."""
@@ -198,6 +201,7 @@ def getVar(ref: str) -> int:
     if label_value is None:
         raise Exception(f"Couldn't find variable {ref}.")
     return label_value
+
 
 def getActorIndex(input: int) -> int:
     """Get actor index from provided value."""
