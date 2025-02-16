@@ -4,6 +4,7 @@ import json
 import logging
 import math
 import random
+import os
 from copy import deepcopy
 from random import randint
 
@@ -84,7 +85,7 @@ class Settings:
 
         # Debugging
         self.version = 4  # TODO: Get this dynamically
-        self.branch = branch
+        self.branch = os.environ.get("BRANCH", "LOCAL")
 
         self.apply_form_data(form_data)
         self.seed_id = str(self.seed)

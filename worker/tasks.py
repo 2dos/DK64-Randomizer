@@ -8,7 +8,6 @@ import traceback
 import zipfile
 from datetime import UTC, datetime
 from io import BytesIO
-import os
 
 from vidua import bps
 from randomizer.Enums.Settings import SettingsMap
@@ -32,7 +31,7 @@ def generate_seed(settings_dict):
         if not settings_dict.get("seed"):
             settings_dict["seed"] = random.randint(0, 100000000)
         load_base_rom(default_file=patched)
-        settings_obj = Settings(cleanup_settings(settings_dict), os.environ.get("BRANCH", "LOCAL"))
+        settings_obj = Settings(cleanup_settings(settings_dict))
         spoiler = Spoiler(settings_obj)
         patch, spoiler, password = Generate_Spoiler(spoiler)
         spoiler.FlushAllExcessSpoilerData()
