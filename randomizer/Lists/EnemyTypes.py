@@ -682,8 +682,8 @@ enemy_location_list = {
     # Llama Temple
     Locations.AztecLlamaEnemy_KongFreeInstrument: EnemyLoc(Maps.AztecLlamaTemple, Enemies.KlaptrapPurple, 5, [], True),
     Locations.AztecLlamaEnemy_DinoInstrument: EnemyLoc(Maps.AztecLlamaTemple, Enemies.KlaptrapPurple, 6, [], True),
-    Locations.AztecLlamaEnemy_Matching0: EnemyLoc(Maps.AztecLlamaTemple, Enemies.Kremling, 10, [], True),
-    Locations.AztecLlamaEnemy_Matching1: EnemyLoc(Maps.AztecLlamaTemple, Enemies.Kremling, 11, [], True),
+    Locations.AztecLlamaEnemy_Matching0: EnemyLoc(Maps.AztecLlamaTemple, Enemies.Kremling, 10, [enemies_not_ground_simple], True),
+    Locations.AztecLlamaEnemy_Matching1: EnemyLoc(Maps.AztecLlamaTemple, Enemies.Kremling, 11, [enemies_not_ground_simple], True),
     Locations.AztecLlamaEnemy_Right: EnemyLoc(Maps.AztecLlamaTemple, Enemies.Kremling, 14, [], True),
     Locations.AztecLlamaEnemy_Left: EnemyLoc(Maps.AztecLlamaTemple, Enemies.Kremling, 15, [], True),
     Locations.AztecLlamaEnemy_MelonCrate: EnemyLoc(Maps.AztecLlamaTemple, Enemies.KlaptrapPurple, 16, [], True),
