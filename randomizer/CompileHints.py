@@ -2160,6 +2160,9 @@ def compileHints(spoiler: Spoiler) -> bool:
                 and location.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing)
                 and not (spoiler.settings.key_8_helm and location_id == Locations.HelmKey)
             ):
+                # WotH Keys that are in Shops and have nothing else on the path to them will already be entirely covered and solved with the guaranteed multipath hint
+                if ItemList[location.item].type == Types.Key and location.type == Types.Shop and location_id in spoiler.woth_paths.keys() and len(spoiler.woth_paths[location_id]) == 1:
+                    continue
                 hintable_location_ids.append(location_id)
         random.shuffle(hintable_location_ids)
         placed_woth_hints = 0

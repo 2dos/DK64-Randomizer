@@ -24,12 +24,13 @@ void alterParentLocationTNS(int id) {
 				angle /= 360;
 				angle *= 4096;
 				int angle_int = angle;
-				float dx = PORTAL_DELTA * determineXRatioMovement(angle_int);
-				float dz = PORTAL_DELTA * determineZRatioMovement(angle_int);
+				// float dx = PORTAL_DELTA * determineXRatioMovement(angle_int);
+				// float dz = PORTAL_DELTA * determineZRatioMovement(angle_int);
+				float dx = 0;
+				float dz = 0;
 				parentData[i].positions.xPos = tied_object->xPos + dx;
 				parentData[i].positions.zPos = tied_object->zPos + dz;
-				int opp_angle = angle_int + 2048;
-				parentData[i].facing_angle = opp_angle & 0xFFF;
+				parentData[i].facing_angle = angle_int & 0xFFF;
 				return;
 			}
 		}

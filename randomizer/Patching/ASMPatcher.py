@@ -86,6 +86,7 @@ REMOVE_CS_BARS = False
 GREATER_CAMERA_CONTROL = True
 JP_TEXTBOX_SIZES = True
 FRAMEBUFFER_STORE_FIX = True
+BLOCK_FILE_DELETION_ON_CHECKSUM_MISMATCH = False
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -901,8 +902,25 @@ def fixBossProperties(ROM_COPY: LocalROM, offset_dict: dict, settings: Settings)
         ROM_COPY.writeMultipleBytes(raw_value, 4)
 
 
+def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
+    """Patch the version number into the stack trace."""
+    offset_dict = populateOverlayOffsets(ROM_COPY)
+    VERSION_STRING_START = getSym("version_string")
+    source_string = settings.branch.upper()[0]
+    if source_string is None:
+        source_string = "U"
+    major = settings.version.split(".")[0]
+    addr = getROMAddress(VERSION_STRING_START, Overlay.Custom, offset_dict)
+    string_to_write = f"DK64R {major}.0{source_string}\n"
+    if len(string_to_write) >= 0x10:
+        raise Exception("Invalid stack trace string")
+    ROM_COPY.seek(addr)
+    ROM_COPY.writeBytes(bytes(string_to_write, "ascii"))
+
+
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
+    patchVersionStack(ROM_COPY, spoiler.settings)
     offset_dict = populateOverlayOffsets(ROM_COPY)
     settings = spoiler.settings
     file_init_flags = [
