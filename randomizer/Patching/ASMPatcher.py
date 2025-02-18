@@ -901,6 +901,7 @@ def fixBossProperties(ROM_COPY: LocalROM, offset_dict: dict, settings: Settings)
         ROM_COPY.seek(rom_address)
         ROM_COPY.writeMultipleBytes(raw_value, 4)
 
+
 def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
     """Patch the version number into the stack trace."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
@@ -912,6 +913,7 @@ def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
     addr = getROMAddress(VERSION_STRING_START, Overlay.Custom, offset_dict)
     ROM_COPY.seek(addr)
     ROM_COPY.writeBytes(bytes(f"DK64R {major}.0{source_string}\n", "ascii"))
+
 
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
