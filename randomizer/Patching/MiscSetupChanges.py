@@ -299,8 +299,8 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
         spoiler.settings.misc_changes_selected,
         MiscChangesSelected.raise_fungi_dirt_patch,
     )
-    random_pufftoss_stars = IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.pufftoss_star_rando)
-    higher_pufftoss_stars = IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.pufftoss_star_raised)
+    random_pufftoss_stars = IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.pufftoss_star_rando, False)
+    higher_pufftoss_stars = IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.pufftoss_star_raised, False)
     removed_crypt_doors = IsItemSelected(
         spoiler.settings.remove_barriers_enabled,
         spoiler.settings.remove_barriers_selected,

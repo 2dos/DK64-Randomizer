@@ -359,7 +359,7 @@ def patching_response(spoiler):
         sav + 0x1E0,
     )
     writeMultiselector(
-        spoiler.settings.hard_mode,
+        spoiler.settings.hard_mode and len(spoiler.settings.hard_mode_selected) > 0,
         spoiler.settings.hard_mode_selected,
         HardSelector,
         HardModeSelected,
@@ -368,8 +368,8 @@ def patching_response(spoiler):
         sav + 0x0C6,
     )
 
-    is_dw = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world)
-    is_sky = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_sky)
+    is_dw = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world, False)
+    is_sky = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_sky, False)
     if is_dw and is_sky:
         # Memory challenge
         ROM_COPY.seek(sav + 0x0C6)
@@ -464,7 +464,7 @@ def patching_response(spoiler):
         else:
             spoiler.text_changes[8] = [data]
 
-    if IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando):
+    if IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando, False):
         # KKO Phase Order
         for phase_slot in range(3):
             ROM_COPY.seek(sav + 0x17B + phase_slot)
