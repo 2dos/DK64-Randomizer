@@ -26,6 +26,7 @@ from randomizer.Enums.Settings import (
     BananaportRando,
     CBRando,
     ClimbingStatus,
+    DamageAmount,
     DKPortalRando,
     FasterChecksSelected,
     FillAlgorithm,
@@ -3799,6 +3800,8 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
             found_incompatibilities += "Cannot turn off Fast Start with a Random Starting Location. "
         if not settings.start_with_slam:
             found_incompatibilities += "Cannot turn off Fast Start unless you are guaranteed to start with a Progressive Slam. "
+        if Types.Cranky in settings.shuffled_location_types:
+            found_incompatibilities += "Cannot turn off Fast start unless you start with Cranky. "
     if not settings.shuffle_items:
         if not settings.start_with_slam:
             found_incompatibilities += "Cannot turn off Item Randomizer without starting with a Progressive Slam. "
@@ -3808,7 +3811,11 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
             found_incompatibilities += "Cannot turn off Item Randomizer without starting with Climbing. "
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava):
         if settings.no_healing:
-            found_incompatibilities += "Cannot turn on 'Water is Lava' whilst turning disabling healing. "
+            found_incompatibilities += "Cannot turn on 'Water is Lava' whilst disabling healing. "
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.angry_caves):
+        if settings.perma_death:
+            if settings.damage_amount == DamageAmount.quad or settings.damage_amount == DamageAmount.ohko:
+                found_incompatibilities += "Cannot turn on 'Angry Caves' with a damage modifier higher than double damage with Irondonk enabled. "
     if not settings.is_valid_item_pool():
         found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
     if settings.krool_access and Items.HideoutHelmKey in settings.starting_keys_list_selected:
