@@ -77,12 +77,13 @@ class TestROM:
         return self.stream.read(count)
 
     def writeMultipleBytes(self, value: int, size: int):
-        """Binary IO write."""
+        """Binary IO write integer."""
         if IO_LOGGING:
             io_logs.append({"action": "write", "value": value, "size": size})
         self.stream.write(value.to_bytes(size, "big"))
 
     def writeBytes(self, bytes):
+        """Binary IO write."""
         if IO_LOGGING:
             io_logs.append({"action": "write", "value": 0, "size": len(bytes)})
         self.stream.write(bytes)
