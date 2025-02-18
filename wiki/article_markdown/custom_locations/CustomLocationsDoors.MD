@@ -57,11 +57,11 @@
 | Japes Lanky Cave | Painting room - Right of painting | Boss, Dk_Portal, Wrinkly |  | 
 | Japes Under Ground | Chunky underground - left wall | Boss, Dk_Portal, Wrinkly |  | 
 | Japes Under Ground | Chunky underground - right wall | Boss, Dk_Portal, Wrinkly |  | 
-| Japes Under Ground | Chunky underground - Kasplat platform | Boss, Wrinkly | `l.can_use_vines and l.pineapple and l.ischunky` | 
+| Japes Under Ground | Chunky underground - Kasplat platform | Wrinkly | `l.can_use_vines and l.pineapple and l.ischunky` | 
 | Jungle Japes | Next to the baboon blast pad | Boss, Dk_Portal, Wrinkly |  | 
 | Jungle Japes | Entrance door switch | Boss, Dk_Portal, Wrinkly | `l.can_use_vines and l.climbing` | 
 | Jungle Japes | Next to level entrance | Boss, Dk_Portal, Wrinkly |  | 
-| Jungle Japes | Against the mountain | Boss, Dk_Portal, Wrinkly |  | 
+| Jungle Japes | Against the mountain | Dk_Portal, Wrinkly |  | 
 
 # Angry Aztec
 | Map | Name | Door types acceptable in location | Logic |
@@ -91,7 +91,7 @@
 | Angry Aztec | Cranky Tunnel - Near Road to Cranky - right | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | 5Door Temple Staircase - front | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | 5Door Temple Staircase - back | Boss, Dk_Portal, Wrinkly |  | 
-| Angry Aztec | Entrance Tunnel - next to Coconut Switch | Boss, Dk_Portal, Wrinkly |  | 
+| Angry Aztec | Entrance Tunnel - next to Coconut Switch | Wrinkly |  | 
 | Angry Aztec | Entrance Tunnel - left (near the oasis end) | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | In the sealed quicksand tunnel | Wrinkly | `l.isdonkey and l.strongKong` | 
 | Angry Aztec | Near Tag Barrel near Snides - strong kong | Wrinkly | `l.isdonkey and l.strongKong` | 
@@ -105,7 +105,7 @@
 | Angry Aztec | Next to Llama Temple - left | Boss, Dk_Portal, Wrinkly |  | 
 | Angry Aztec | Llama Temple's switchless side | Boss, Dk_Portal |  | 
 | Aztec Tiny Temple | Tiny Temple - Main Room - left | Boss, Dk_Portal, Wrinkly |  | 
-| Aztec Tiny Temple | Tiny Temple - Main Room - back | Wrinkly, Dk_Portal |  | 
+| Aztec Tiny Temple | Tiny Temple - Main Room - back | Wrinkly |  | 
 | Aztec Tiny Temple | Tiny Temple - Across from Slope to Tiny Cage - left | Boss, Wrinkly |  | 
 | Aztec Tiny Temple | Tiny Temple - Across from Slope to Tiny Cage - right | Boss, Wrinkly |  | 
 | Aztec Tiny Temple | Tiny Temple - Next to Opening to Underwater Room | Boss, Wrinkly |  | 
@@ -130,9 +130,9 @@
 | Aztec Llama Temple | Llama Temple - Near top stairs - right | Boss, Dk_Portal, Wrinkly |  | 
 | Aztec Llama Temple | Llama Temple - Center torch below entrance | Boss, Dk_Portal, Wrinkly |  | 
 | Aztec Llama Temple | Llama Temple - Next to mini tunnel | Boss, Dk_Portal, Wrinkly |  | 
-| Aztec Tiny Temple | Tiny Temple - Behind the guitar pad | Boss, Dk_Portal, Wrinkly |  | 
+| Aztec Tiny Temple | Tiny Temple - Behind the guitar pad | Wrinkly, Dk_Portal |  | 
 | Aztec Tiny Temple | Tiny Temple - Little alcove above mini barrel | Boss, Dk_Portal, Wrinkly |  | 
-| Aztec Tiny Temple | Tiny Temple - Next to triangle pad | Boss, Dk_Portal, Wrinkly |  | 
+| Aztec Tiny Temple | Tiny Temple - Next to triangle pad | Wrinkly |  | 
 | Aztec Tiny Temple | Tiny Temple - Vulture room back wall | Boss, Wrinkly |  | 
 | Aztec Tiny Temple | Tiny Temple - Tiny room right wall | Boss, Wrinkly |  | 
 | Aztec Tiny Temple | Tiny Temple - Tiny room - on the K | Boss, Wrinkly |  | 
@@ -207,7 +207,7 @@
 | Gloomy Galleon | Cactus | Boss, Wrinkly |  | 
 | Gloomy Galleon | In hallway to Shipyard - Tiny switch | Boss, Dk_Portal, Wrinkly |  | 
 | Gloomy Galleon | In hallway to Shipyard - Lanky switch | Boss, Dk_Portal, Wrinkly |  | 
-| Gloomy Galleon | In hallway to Primate Punch Chests | Boss, Dk_Portal, Wrinkly |  | 
+| Gloomy Galleon | In hallway to Primate Punch Chests | Boss, Wrinkly |  | 
 | Gloomy Galleon | Under Baboon Blast pad | Boss, Wrinkly |  | 
 | Gloomy Galleon | Under RocketBarrel barrel | Boss, Wrinkly |  | 
 | Gloomy Galleon | Next to Cannonball game | Boss, Wrinkly | `l.CanGetOnCannonGamePlatform()` | 
@@ -281,7 +281,7 @@
 | Fungi Forest | Outside DK's Barn | Boss, Wrinkly |  | 
 | Fungi Forest | Next to Rabbit's House | Boss, Wrinkly |  | 
 | Fungi Forest | Owl Area - Near Rocketbarrel Barrel - far left | Boss, Wrinkly |  | 
-| Fungi Forest | Funky Area - Near Tiny Coins | Boss, Wrinkly |  | 
+| Fungi Forest | Funky Area - Near Tiny Coins | Wrinkly |  | 
 | Fungi Forest | Mushroom Area - Next to Tag Barrel near Cranky's | Boss, Dk_Portal, Wrinkly |  | 
 | Fungi Forest | Mushroom Area - Next to Rocketbarrel Barrel - left | Boss, Dk_Portal, Wrinkly |  | 
 | Fungi Forest | Mushroom Area - Next to Rocketbarrel Barrel - right | Boss, Dk_Portal, Wrinkly |  | 
@@ -352,7 +352,7 @@
 | Crystal Caves | Under Handstand Slope | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Mini Monkey Ledge | Wrinkly |  | 
 | Crystal Caves | Across from Snide | Boss, Dk_Portal, Wrinkly |  | 
-| Crystal Caves | Slope to Cranky with Mini Monkey Hole | Boss, Dk_Portal, Wrinkly |  | 
+| Crystal Caves | Slope to Cranky with Mini Monkey Hole | Wrinkly |  | 
 | Crystal Caves | Level Entrance - right | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Level Entrance - left | Boss, Dk_Portal, Wrinkly |  | 
 | Crystal Caves | Igloo Area - left of entrance | Wrinkly, Boss | `l.swim` | 
@@ -378,9 +378,9 @@
 | Caves Donkey Cabin | Donkey 5door cabin - Back wall | Boss, Dk_Portal, Wrinkly |  | 
 | Caves Diddy Upper Cabin | Diddy upper cabin - Near right corner | Boss, Dk_Portal, Wrinkly |  | 
 | Caves Diddy Upper Cabin | Diddy upper cabin - Far right corner | Boss, Dk_Portal, Wrinkly |  | 
-| Caves Diddy Upper Cabin | Diddy upper cabin - Back bookshelf | Boss, Dk_Portal, Wrinkly |  | 
+| Caves Diddy Upper Cabin | Diddy upper cabin - Back bookshelf | Wrinkly |  | 
 | Caves Tiny Cabin | Tiny cabin - Near corner | Boss, Dk_Portal, Wrinkly |  | 
-| Caves Tiny Cabin | Tiny cabin - Far corner | Boss, Dk_Portal, Wrinkly |  | 
+| Caves Tiny Cabin | Tiny cabin - Far corner | Wrinkly |  | 
 | Caves Chunky Cabin | Chunky cabin - Near corner | Wrinkly |  | 
 | Caves Chunky Cabin | Chunky cabin - Back shelf | Wrinkly |  | 
 | Caves Donkey Igloo | Donkey igloo - Under the swords | Boss, Dk_Portal, Wrinkly |  | 
@@ -441,7 +441,7 @@
 | Castle Mausoleum | Crypt - Under Lanky's Switch | Wrinkly |  | 
 | Creepy Castle | Castle Vanilla Level Entry | Boss, Dk_Portal, Wrinkly |  | 
 | Castle Tower | Lanky wind tower - Right of Entrance | Boss, Dk_Portal, Wrinkly |  | 
-| Castle Tower | Lanky wind tower - Left of Entrance | Boss, Dk_Portal, Wrinkly |  | 
+| Castle Tower | Lanky wind tower - Left of Entrance | Wrinkly |  | 
 | Castle Greenhouse | Greenhouse - Dead end | Wrinkly, Boss |  | 
 | Castle Greenhouse | Greenhouse - Also dead end | Wrinkly, Boss |  | 
 | Castle Ballroom | Ballroom - In Front of Monkeyport Pad | Boss, Dk_Portal, Wrinkly |  | 

@@ -683,7 +683,7 @@ door_locations = {
             logicregion=Regions.JapesCatacomb,
             location=[422, 20, 390.9, 3],
             group=12,
-            door_type=[DoorType.boss, DoorType.wrinkly],
+            door_type=[DoorType.wrinkly],
             logic=lambda l: l.can_use_vines and l.pineapple and l.ischunky,
             moveless=False,
             kong_lst=[Kongs.chunky],
@@ -720,6 +720,7 @@ door_locations = {
             location=[1702, 789, 2354, 134.65],
             rx=-12,
             group=5,
+            door_type=[DoorType.dk_portal, DoorType.wrinkly],
         ),
     ],
     Levels.AngryAztec: [
@@ -946,6 +947,7 @@ door_locations = {
             logicregion=Regions.AztecTunnelBeforeOasis,
             location=[1514.0, 120.0, 1107.8, 4.8],
             group=8,
+            door_type=[DoorType.wrinkly],
         ),
         DoorData(
             name="Entrance Tunnel - left (near the oasis end)",
@@ -1065,7 +1067,7 @@ door_locations = {
             location=[1789.0, 287.0, 813.0, 270.0],
             group=11,
             moveless=False,
-            door_type=[DoorType.wrinkly, DoorType.dk_portal],
+            door_type=[DoorType.wrinkly],
             kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         ),
         DoorData(
@@ -1298,6 +1300,7 @@ door_locations = {
             logicregion=Regions.TempleGuitarPad,
             location=[1370, 530, 531, 0],
             group=11,
+            door_type=[DoorType.wrinkly, DoorType.dk_portal],
             moveless=False,
             kong_lst=[Kongs.diddy],
         ),
@@ -1316,6 +1319,7 @@ door_locations = {
             logicregion=Regions.TempleStart,
             location=[1626, 215, 262.7, 15],
             group=11,
+            door_type=[DoorType.wrinkly],
             kong_lst=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         ),
         DoorData(
@@ -1950,6 +1954,7 @@ door_locations = {
             logicregion=Regions.GloomyGalleonStart,
             location=[3007.0, 1670.0, 3866.0, 135.42],
             group=2,
+            door_type=[DoorType.boss, DoorType.wrinkly],
         ),
         DoorData(
             name="Under Baboon Blast pad",
@@ -2808,7 +2813,7 @@ door_locations = {
             location=[1939.0, 224.0, 261.0, 31.5],
             group=3,
             moveless=False,
-            door_type=[DoorType.boss, DoorType.wrinkly],
+            door_type=[DoorType.wrinkly],
             dk_portal_logic=lambda s: isBarrierRemoved(s, RemovedBarriersSelected.forest_green_tunnel)
             or (
                 s.settings.activate_all_bananaports == ActivateAllBananaports.all
@@ -3444,6 +3449,7 @@ door_locations = {
             location=[1047.0, 190.0, 2426.0, 175.0],
             rz=5.5,
             group=8,
+            door_type=[DoorType.wrinkly],
         ),
         DoorData(
             name="Level Entrance - right",
@@ -3693,6 +3699,7 @@ door_locations = {
             logicregion=Regions.DiddyUpperCabin,
             location=[434, 42, 619, 180],
             scale=0.88,
+            door_type=[DoorType.wrinkly],
             group=21,
         ),
         DoorData(
@@ -3708,6 +3715,7 @@ door_locations = {
             logicregion=Regions.TinyCabin,
             location=[460, 0, 499, 180],
             group=22,
+            door_type=[DoorType.wrinkly],
         ),
         DoorData(
             name="Chunky cabin - Near corner",
@@ -4207,6 +4215,7 @@ door_locations = {
             logicregion=Regions.Tower,
             location=[630, 225, 519.3, 240],
             group=20,
+            # door_type=[DoorType.wrinkly],  # Should be far enough from a spawner, just doesn't look convincing in vanilla
             kong_lst=[Kongs.lanky],
         ),
         DoorData(
@@ -4215,6 +4224,7 @@ door_locations = {
             logicregion=Regions.Tower,
             location=[170, 225, 519, 120],
             group=20,
+            door_type=[DoorType.wrinkly],
             kong_lst=[Kongs.lanky],
         ),
         DoorData(
