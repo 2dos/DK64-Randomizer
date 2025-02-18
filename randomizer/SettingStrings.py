@@ -240,6 +240,9 @@ def encrypt_settings_string_enum(dict_data: dict):
             dict_data.pop(pop)
     dict_data = prune_settings(dict_data)
     bitstring = ""
+    for sort_this in ["starting_moves_list_1", "starting_moves_list_2", "starting_moves_list_3", "starting_moves_list_4", "starting_moves_list_5"]:
+        if sort_this in dict_data.keys():
+            dict_data[sort_this].sort()
     for key in dict_data:
         value = dict_data[key]
         # At this time, all strings represent ints, so just convert.
