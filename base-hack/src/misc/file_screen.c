@@ -799,7 +799,7 @@ void startFile(void) {
 	}
 	resetProgressive();
 	updateBarrierCounts();
-	if ((Rando.helm_hurry_mode) && (!ReadFile(DATA_HELMHURRYOFF, 0, 0, 0))) {
+	if ((Rando.helm_hurry_mode) && (!ReadExtraData(EGD_HELMHURRYDISABLE, 0))) {
 		QueueHelmTimer = 1;
 	}
 	setKongIgt();
