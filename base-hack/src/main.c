@@ -190,11 +190,6 @@ void cFuncLoop(void) {
 static unsigned char mj_falling_cutscenes[] = {
 	8, 2, 16, 18, 17
 };
-static unsigned char save_is_corrupt = 0;
-
-void hasDetectedCorruptedSave(void) {
-	save_is_corrupt = 1;
-}
 
 void earlyFrame(void) {
 	if (ObjectModel2Timer < 2) {
@@ -462,35 +457,18 @@ typedef struct menu_paad {
 } menu_paad;
 
 Gfx *displayMenuWarnings(Gfx *dl) {
-	int invalid_eeprom = EEPROMType != 2;
-	if ((EEPROMType != 2) || (save_is_corrupt)) {
+	if (EEPROMType != 2) {
 		actorData* actor = findActorWithType(0x146);
 		if (actor) {
 			menu_paad* paad = (menu_paad*)actor->paad;
 			if (paad->screen < 2) {
-				int y_info = 0;
-				int count = 0;
-				int top = 0;
-				int bottom = 0;
-				eeprom_warning_struct* warning_header = 0;
-				if (EEPROMType != 2) {
-					// EEPROM Warning
-					count = sizeof(warning_text)/sizeof(eeprom_warning_struct);
-					warning_header = &warning_text;
-					y_info = 130;
-					top = 200;
-					bottom = 700;
-				} else {
-					// Save Warning
-					count = sizeof(corrupt_warning_text)/sizeof(eeprom_warning_struct);
-					warning_header = &corrupt_warning_text;
-					y_info = 190;
-					top = 425;
-					bottom = 575;
-				}
+				int y_info = 130;
+				int count = sizeof(warning_text)/sizeof(eeprom_warning_struct);
+				int top = 200;
+				int bottom = 700;
 				dl = drawScreenRect(dl, 250, top, 1000, bottom, 3, 3, 3, 1);
 				for (int k = 0; k < count; k++) {
-					eeprom_warning_struct* local_warning = &warning_header[k];
+					eeprom_warning_struct* local_warning = &warning_text[k];
 					dl = drawInfoText(dl, local_warning->x_offset, y_info, local_warning->text, local_warning->error);
 					y_info += local_warning->margin_bottom;
 				}
