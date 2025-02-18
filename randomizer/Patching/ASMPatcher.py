@@ -911,8 +911,11 @@ def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
         source_string = "U"
     major = settings.version.split(".")[0]
     addr = getROMAddress(VERSION_STRING_START, Overlay.Custom, offset_dict)
+    string_to_write = f"DK64R {major}.0{source_string}\n"
+    if len(string_to_write) >= 0x10:
+        raise Exception("Invalid stack trace string")
     ROM_COPY.seek(addr)
-    ROM_COPY.writeBytes(bytes(f"DK64R {major}.0{source_string}\n", "ascii"))
+    ROM_COPY.writeBytes(bytes(string_to_write, "ascii"))
 
 
 def patchAssembly(ROM_COPY, spoiler):
@@ -2624,12 +2627,6 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80744700 + (i * 2), Overlay.Static, boss_map, offset_dict)
         writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict, 1)
         writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict, 1)
-
-    # Checksum mismatches
-    if BLOCK_FILE_DELETION_ON_CHECKSUM_MISMATCH:
-        writeFunction(ROM_COPY, 0x8060D294, Overlay.Static, "hasDetectedCorruptedSave", offset_dict)
-        writeFunction(ROM_COPY, 0x8060CFEC, Overlay.Static, "hasDetectedCorruptedSave", offset_dict)
-        writeFunction(ROM_COPY, 0x8060D070, Overlay.Static, "hasDetectedCorruptedSave", offset_dict)
 
     writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase
     vanilla_props_values = {
