@@ -426,6 +426,42 @@ def admin_presets():
             return set_response(json.dumps({"message": "Local presets deleted"}), 200)
 
 
+@api.route("/admin/presets/move", methods=["PUT"])
+def move_preset():
+    """Move a preset up or down in the list."""
+    if not session.get("admin", False):
+        return set_response(json.dumps({"message": "You do not have permission to access this page."}), 403)
+
+    content = request.json
+    moving_up = content.get("moving_up", False)
+    local_presets = update_presets()
+    # Check if branch is in the body
+    branch = content.get("branch", "")
+    if branch not in ["stable", "dev"]:
+        return set_response(json.dumps({"message": "Invalid branch"}), 400)
+    preset_name = content.get("name")
+    found_preset = False
+    for i, preset in enumerate(local_presets[branch]):
+        if preset.get("name").lower() == preset_name.lower():
+            if moving_up:
+                if i == 0:
+                    return set_response(json.dumps({"message": "Preset already at the top"}), 200)
+                local_presets[branch][i], local_presets[branch][i - 1] = local_presets[branch][i - 1], local_presets[branch][i]
+            else:
+                if i == len(local_presets[branch]) - 1:
+                    return set_response(json.dumps({"message": "Preset already at the bottom"}), 200)
+                local_presets[branch][i], local_presets[branch][i + 1] = local_presets[branch][i + 1], local_presets[branch][i]
+            found_preset = True
+            break
+    if not found_preset:
+        return set_response(json.dumps({"message": "Preset not found"}), 404)
+
+    with open("local_presets.json", "w") as f:
+        f.write(json.dumps(local_presets))
+    update_presets(True)
+    return set_response(json.dumps({"message": "Local presets updated"}), 200)
+
+
 @api.route("/get_seed", methods=["GET"])
 @enforce_api_restrictions()
 def get_seed():
