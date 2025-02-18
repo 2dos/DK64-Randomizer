@@ -50,12 +50,16 @@ int canOpenSpecificBLocker(int level) {
     return Rando.microhints != MICROHINTS_NONE;
 }
 
-int canOpenAllBLockersUntil(int level_cap) {
-    for (int level = 0; level < level_cap; level++) {
+int canOpenXBlockers(int count) {
+    int openable = 8;
+    for (int level = 0; level < 8; level++) {
         ItemRequirement req = {.count = BLockerDefaultArray[level], .item = Rando.b_locker_requirements[level]};
         if (!isItemRequirementSatisfied(&req)) {
-            return 0;
+            openable--;
         }
+    }
+    if (openable < count) {
+        return 0;
     }
     return Rando.microhints != MICROHINTS_NONE; 
 }
@@ -115,7 +119,7 @@ void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index) {
             setScriptRunState(behaviour_pointer, RUNSTATE_DISTANCERUN, 300);
             behaviour_pointer->next_state = 1;
         } else {
-            if (canOpenAllBLockersUntil(7)) {
+            if (canOpenXBlockers(7)) {
                 if (standingOnM2Object(index)) {
                     PlayCutsceneFromModelTwoScript(behaviour_pointer, 24, 1, 0);
                     behaviour_pointer->next_state = 6;

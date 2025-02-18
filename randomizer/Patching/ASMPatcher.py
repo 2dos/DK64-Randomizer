@@ -86,6 +86,7 @@ REMOVE_CS_BARS = False
 GREATER_CAMERA_CONTROL = True
 JP_TEXTBOX_SIZES = True
 FRAMEBUFFER_STORE_FIX = True
+BLOCK_FILE_DELETION_ON_CHECKSUM_MISMATCH = False
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -901,8 +902,22 @@ def fixBossProperties(ROM_COPY: LocalROM, offset_dict: dict, settings: Settings)
         ROM_COPY.writeMultipleBytes(raw_value, 4)
 
 
+def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
+    """Patch the version number into the stack trace."""
+    offset_dict = populateOverlayOffsets(ROM_COPY)
+    VERSION_STRING_START = getSym("version_string")
+    source_string = settings.branch.upper()[0]
+    if source_string is None:
+        source_string = "U"
+    major = settings.version.split(".")[0]
+    addr = getROMAddress(VERSION_STRING_START, Overlay.Custom, offset_dict)
+    ROM_COPY.seek(addr)
+    ROM_COPY.writeBytes(bytes(f"DK64R {major}.0{source_string}\n", "ascii"))
+
+
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
+    patchVersionStack(ROM_COPY, spoiler.settings)
     offset_dict = populateOverlayOffsets(ROM_COPY)
     settings = spoiler.settings
     file_init_flags = [
@@ -2609,6 +2624,12 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80744700 + (i * 2), Overlay.Static, boss_map, offset_dict)
         writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict, 1)
         writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict, 1)
+
+    # Checksum mismatches
+    if BLOCK_FILE_DELETION_ON_CHECKSUM_MISMATCH:
+        writeFunction(ROM_COPY, 0x8060D294, Overlay.Static, "hasDetectedCorruptedSave", offset_dict)
+        writeFunction(ROM_COPY, 0x8060CFEC, Overlay.Static, "hasDetectedCorruptedSave", offset_dict)
+        writeFunction(ROM_COPY, 0x8060D070, Overlay.Static, "hasDetectedCorruptedSave", offset_dict)
 
     writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase
     vanilla_props_values = {

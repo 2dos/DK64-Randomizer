@@ -190,6 +190,11 @@ void cFuncLoop(void) {
 static unsigned char mj_falling_cutscenes[] = {
 	8, 2, 16, 18, 17
 };
+static unsigned char save_is_corrupt = 0;
+
+void hasDetectedCorruptedSave(void) {
+	save_is_corrupt = 1;
+}
 
 void earlyFrame(void) {
 	if (ObjectModel2Timer < 2) {
@@ -445,11 +450,55 @@ static const eeprom_warning_struct warning_text[] = {
 	{.text="DISCORD.DK64RANDOMIZER.COM", .x_offset=-88, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 	{.text="FOR HELP", .x_offset=-8, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
 };
+static const eeprom_warning_struct corrupt_warning_text[] = {
+	{.text="YOUR SAVE MIGHT BE CORRUPTED.", .x_offset=-96, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="DUE TO AN UNEXPECTED.", .x_offset=-64, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+	{.text="INTERRUPTION MID-SAVE.", .x_offset=-70, .error=0, .margin_bottom=STANDARD_MARGIN_BOTTOM},
+};
 
 typedef struct menu_paad {
 	/* 0x000 */ char unk_00[0x12];
 	/* 0x012 */ unsigned char screen;
 } menu_paad;
+
+Gfx *displayMenuWarnings(Gfx *dl) {
+	int invalid_eeprom = EEPROMType != 2;
+	if ((EEPROMType != 2) || (save_is_corrupt)) {
+		actorData* actor = findActorWithType(0x146);
+		if (actor) {
+			menu_paad* paad = (menu_paad*)actor->paad;
+			if (paad->screen < 2) {
+				int y_info = 0;
+				int count = 0;
+				int top = 0;
+				int bottom = 0;
+				eeprom_warning_struct* warning_header = 0;
+				if (EEPROMType != 2) {
+					// EEPROM Warning
+					count = sizeof(warning_text)/sizeof(eeprom_warning_struct);
+					warning_header = &warning_text;
+					y_info = 130;
+					top = 200;
+					bottom = 700;
+				} else {
+					// Save Warning
+					count = sizeof(corrupt_warning_text)/sizeof(eeprom_warning_struct);
+					warning_header = &corrupt_warning_text;
+					y_info = 190;
+					top = 425;
+					bottom = 575;
+				}
+				dl = drawScreenRect(dl, 250, top, 1000, bottom, 3, 3, 3, 1);
+				for (int k = 0; k < count; k++) {
+					eeprom_warning_struct* local_warning = &warning_header[k];
+					dl = drawInfoText(dl, local_warning->x_offset, y_info, local_warning->text, local_warning->error);
+					y_info += local_warning->margin_bottom;
+				}
+			}
+		}
+	}
+	return dl;
+}
 
 Gfx* displayListModifiers(Gfx* dl) {
 	if (CurrentMap != MAP_NINTENDOLOGO) {
@@ -488,22 +537,7 @@ Gfx* displayListModifiers(Gfx* dl) {
 			dl = drawPixelTextContainer(dl, wait_x_offset, bar_text_y, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			dl = drawPixelTextContainer(dl, 110, bar_text_y + 20, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 		} else if (CurrentMap == MAP_MAINMENU) {
-			if (EEPROMType != 2) {
-				actorData* actor = findActorWithType(0x146);
-				if (actor) {
-					menu_paad* paad = (menu_paad*)actor->paad;
-					if (paad->screen < 2) {
-						// EEPROM Warning
-						dl = drawScreenRect(dl, 250, 200, 1000, 700, 3, 3, 3, 1);
-						int y_info = 130;
-						for (int k = 0; k < sizeof(warning_text)/sizeof(eeprom_warning_struct); k++) {
-							eeprom_warning_struct* local_warning = &warning_text[k];
-							dl = drawInfoText(dl, local_warning->x_offset, y_info, local_warning->text, local_warning->error);
-							y_info += local_warning->margin_bottom;
-						}
-					}
-				}
-			}
+			dl = displayMenuWarnings(dl);
 			dl = displaySongNameHandler(dl);
 		} else {
 			dl = drawTextPointers(dl);

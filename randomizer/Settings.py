@@ -4,6 +4,8 @@ import json
 import logging
 import math
 import random
+import os
+from version import version
 from copy import deepcopy
 from random import randint
 
@@ -81,6 +83,10 @@ class Settings:
         self.rom_data = 0x1FED020
         self.move_location_data = 0x1FEF000
         self.form_data = form_data
+
+        # Debugging
+        self.version = version
+        self.branch = os.environ.get("BRANCH", "LOCAL")
 
         self.apply_form_data(form_data)
         self.seed_id = str(self.seed)

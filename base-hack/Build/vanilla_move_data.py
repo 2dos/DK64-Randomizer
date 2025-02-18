@@ -95,7 +95,7 @@ training = {
 
 bfi = {"bfi": MoveType(MoveIndexes.flag, -2)}
 
-first_move = {"base_slam": MoveType(MoveIndexes.nothing)}
+first_move = {"base_slam": MoveType(MoveIndexes.slam)}
 
 
 def convertItem(fh: BinaryIO, item: dict, kong: int) -> int:
