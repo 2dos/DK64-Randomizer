@@ -86,6 +86,7 @@ REMOVE_CS_BARS = False
 GREATER_CAMERA_CONTROL = True
 JP_TEXTBOX_SIZES = True
 FRAMEBUFFER_STORE_FIX = True
+BLOCK_FILE_DELETION_ON_CHECKSUM_MISMATCH = False
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -2622,8 +2623,11 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict, 1)
         writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict, 1)
 
-    if settings.tns_location_rando:
-        writeHook(ROM_COPY, 0x805FFB8C, Overlay.Static, "flipKongRotation", offset_dict)
+    # Checksum mismatches
+    if BLOCK_FILE_DELETION_ON_CHECKSUM_MISMATCH:
+        writeFunction(ROM_COPY, 0x8060D294, Overlay.Static, "hasDetectedCorruptedSave", offset_dict)
+        writeFunction(ROM_COPY, 0x8060CFEC, Overlay.Static, "hasDetectedCorruptedSave", offset_dict)
+        writeFunction(ROM_COPY, 0x8060D070, Overlay.Static, "hasDetectedCorruptedSave", offset_dict)
 
     writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase
     vanilla_props_values = {
