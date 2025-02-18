@@ -67,6 +67,10 @@
                                 <select class="form-select" id="presets" disabled>
                                     <option value="" disabled selected>Select a preset</option>
                                 </select>
+                                <div style="display: flex; justify-content: space-evenly; padding-top: 10px;">
+                                    <a id="raise_button" class="btn btn-neutral" disabled onClick="move_preset(true)"><i class="fa fa-arrow-up"></i></a>
+                                    <a id="lower_button" class="btn btn-neutral" disabled onClick="move_preset(false)"><i class="fa fa-arrow-down"></i></a>
+                                </div>
                             </div>
                             <div class="item-select">
                                 <label for="name" class="select-title">Name</label>
@@ -91,6 +95,8 @@
 
                             var branchSelect = document.getElementById("branch");
                             var presetsSelect = document.getElementById("presets");
+                            var raiseButton = document.getElementById("raise_button");
+                            var lowerButton = document.getElementById("lower_button");
 
                             branchSelect.addEventListener("change", function () {
                                 presetsSelect.innerHTML = '<option value="" disabled selected>Select a preset</option>';
@@ -114,6 +120,9 @@
                                 var selectedPreset = local_presets[selectedBranch].find(
                                     (preset) => preset.name == presetsSelect.value
                                 );
+
+                                raiseButton.disabled = false;
+                                lowerButton.disabled = false;
 
                                 document.getElementById("name").value = selectedPreset.name;
                                 document.getElementById("description").value = selectedPreset.description;
@@ -178,6 +187,36 @@
                                     },
                                     error: function () {
                                         alert("Error deleting preset");
+                                    },
+                                });
+                            }
+
+                            function move_preset(moving_up) {
+                                var branch = branchSelect.value;
+                                var name = document.getElementById("name").value;
+
+                                if (!branch) {
+                                    alert("Please select a branch");
+                                    return;
+                                }
+
+                                var data = {
+                                    branch: branch,
+                                    name: name,
+                                    moving_up: moving_up,
+                                };
+
+                                $.ajax({
+                                    url: "/api/admin/presets/move",
+                                    type: "PUT",
+                                    data: JSON.stringify(data),
+                                    contentType: "application/json",
+                                    success: function () {
+                                        alert("Preset moved successfully");
+                                        location.reload();
+                                    },
+                                    error: function () {
+                                        alert("Error moving preset");
                                     },
                                 });
                             }
