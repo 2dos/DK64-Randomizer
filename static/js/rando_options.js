@@ -448,6 +448,22 @@ document
   .getElementById("helm_hurry")
   .addEventListener("click", disable_helm_hurry);
 
+// Disable Points Selector when Spoiler Hints are not set to Points
+function disable_points() {
+  const selector = document.getElementById("points_list_modal");
+  const disabled = document.getElementById("spoiler_hints").value !== "points";
+
+  if (disabled) {
+    selector.setAttribute("disabled", "disabled");
+  } else {
+    selector.removeAttribute("disabled");
+  }
+}
+
+document
+  .getElementById("spoiler_hints")
+  .addEventListener("change", disable_points);
+
 // Disable Remove Barriers Selector when Remove Barriers is off
 function disable_remove_barriers() {
   const selector = document.getElementById("remove_barriers_modal");
@@ -674,24 +690,27 @@ function toggle_medals_box() {
     medal.removeAttribute("disabled");
   }
 }
-
+enabled_plando = false;
 // Enable and disable the Plandomizer tab
 async function enable_plandomizer() {
   const plandoTab = document.getElementById("nav-plando-tab");
   if (document.getElementById("enable_plandomizer").checked) {
     // Open up a Modal stating that we're loading the Plando tab
-    $("#plando-modal").modal("show");    
-    try {
-      await setup_pyodide();
-    } catch (error) {
-      console.log("Error setting up Pyodide:", error);
-    }
-    try{
-      // Load ui.__init__.py
-      await run_python_file("ui/__init__.py");
-    }
-    catch (error) {
-      console.log("Error running ui/__init__.py:", error);
+    if (!enabled_plando){
+      $("#plando-modal").modal("show");    
+      try {
+        await setup_pyodide();
+      } catch (error) {
+        console.log("Error setting up Pyodide:", error);
+      }
+      try{
+        // Load ui.__init__.py
+        await run_python_file("ui/__init__.py");
+        enabled_plando = true;
+      }
+      catch (error) {
+        console.log("Error running ui/__init__.py:", error);
+      }
     }
     plandoTab.style.display = "";
     $("#plando-modal").modal("hide");
@@ -829,6 +848,32 @@ function disable_music_filtering_modal() {
 document
   .getElementById("music_filtering")
   .addEventListener("click", disable_music_filtering_modal);
+
+function disable_custom_cb_locations_modal() {
+  const selector = document.getElementById("cb_rando_list_modal");
+  if (document.getElementById("cb_rando_enabled").checked) {
+    selector.removeAttribute("disabled");
+  } else {
+    selector.setAttribute("disabled", "disabled");
+  }
+}
+
+document
+  .getElementById("cb_rando_enabled")
+  .addEventListener("click", disable_custom_cb_locations_modal);
+
+function disable_misc_changes_modal() {
+  const selector = document.getElementById("misc_changes_modal");
+  if (document.getElementById("misc_changes_toggle").checked) {
+    selector.removeAttribute("disabled");
+  } else {
+    selector.setAttribute("disabled", "disabled");
+  }
+}
+
+document
+  .getElementById("misc_changes_toggle")
+  .addEventListener("click", disable_misc_changes_modal);
 
 // Hide the plando options for certain Helm phases if they are disabled
 function plando_hide_helm_options(evt) {
@@ -2268,8 +2313,11 @@ function update_ui_states() {
   disable_hard_bosses_modal(null);
   disable_excluded_songs_modal(null);
   disable_music_filtering_modal(null);
+  disable_custom_cb_locations_modal(null);
+  disable_misc_changes_modal(null);
   toggle_bananaport_selector(null);
   disable_helm_hurry(null);
+  disable_points(null);
   disable_remove_barriers(null);
   disable_faster_checks(null);
   toggle_logic_type(null);

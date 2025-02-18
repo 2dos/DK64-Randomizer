@@ -12,6 +12,8 @@ paths:
   /submit-task:
     post:
       summary: Submit a task to generate a seed
+      parameters:
+        - $ref: '#/components/parameters/branch'
       requestBody:
         required: true
         content:
@@ -21,7 +23,7 @@ paths:
               properties:
                 settings_data:
                   type: string
-                  description: Settings data for the seed generation
+                  description: "JSON Body of the settings, as a string, this should be the output of convert_settings"
       responses:
         '200':
           description: Task submitted successfully
@@ -54,6 +56,7 @@ paths:
           required: true
           schema:
             type: string
+        - $ref: '#/components/parameters/branch'
       responses:
         '200':
           description: Task status retrieved successfully
@@ -91,6 +94,8 @@ paths:
   /get_version:
     get:
       summary: Get the version of the API
+      parameters:
+        - $ref: '#/components/parameters/branch'
       responses:
         '200':
           description: Version retrieved successfully
@@ -105,11 +110,12 @@ paths:
     get:
       summary: Get the list of presets
       parameters:
+        - $ref: '#/components/parameters/branch'
         - name: return_blank
           in: query
           required: false
           schema:
-            type: string
+            type: boolean
       responses:
         '200':
           description: Presets retrieved successfully
@@ -119,107 +125,11 @@ paths:
                 type: array
                 items:
                   type: object
-  /admin:
-    get:
-      summary: Access the admin portal
-      responses:
-        '200':
-          description: Admin portal accessed successfully
-          content:
-            text/html:
-              schema:
-                type: string
-        '403':
-          description: Unauthorized access
-          content:
-            text/html:
-              schema:
-                type: string
-  /admin/presets:
-    put:
-      summary: Update a local preset
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                settings_string:
-                  type: string
-      responses:
-        '200':
-          description: Local presets updated
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '403':
-          description: Unauthorized access
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '404':
-          description: Preset not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-    delete:
-      summary: Delete a local preset
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-      responses:
-        '200':
-          description: Local presets deleted
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '403':
-          description: Unauthorized access
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        '404':
-          description: Preset not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
   /get_seed:
     get:
       summary: Get the lanky file for a seed
       parameters:
+        - $ref: '#/components/parameters/branch'
         - name: hash
           in: query
           required: true
@@ -263,6 +173,7 @@ paths:
     get:
       summary: Get the spoiler log for a seed
       parameters:
+        - $ref: '#/components/parameters/branch'
         - name: hash
           in: query
           required: true
@@ -324,6 +235,7 @@ paths:
     get:
       summary: Get the current total of generated seeds
       parameters:
+        - $ref: '#/components/parameters/branch'
         - name: format
           in: query
           required: false
@@ -370,17 +282,10 @@ paths:
     get:
       summary: Get the selector data for the randomizer
       parameters:
-        - name: branch
-          in: query
-          required: false
-          schema:
-            type: string
+        - $ref: '#/components/parameters/branch'
       responses:
         '200':
-          description: |
-            Selector data retrieved successfully.
-            If the branch is 'master', it calls the master worker URL.
-            If the branch is 'dev', it calls the dev worker URL.
+          description: Selector data retrieved successfully.
           content:
             application/json:
               schema:
@@ -389,24 +294,32 @@ paths:
     post:
       summary: Convert settings
       parameters:
-        - name: branch
-          in: query
-          required: false
-          schema:
-            type: string
+        - $ref: '#/components/parameters/branch'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
+              properties:
+                settings:
+                  type: string
+                  description: "Settings string or JSON dictionary to be converted. It will automatically convert as needed."
       responses:
         '200':
-          description: |
-            Settings converted successfully.
-            If the branch is 'master', it calls the master worker URL.
-            If the branch is 'dev', it calls the dev worker URL.
+          description: Settings converted successfully.
           content:
             application/json:
               schema:
                 type: object
+
+components:
+  parameters:
+    branch:
+      name: branch
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [stable, dev]
+      description: Specifies whether to use the stable or dev branch for the API request.

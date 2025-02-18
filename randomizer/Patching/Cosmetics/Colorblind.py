@@ -16,7 +16,7 @@ from randomizer.Patching.Library.Image import (
 )
 from randomizer.Patching.Library.Generic import Overlay
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, getRawFile, writeRawFile
-from randomizer.Patching.ASMPatcher import getROMAddress, populateOverlayOffsets
+from randomizer.Patching.Library.ASM import getROMAddress, populateOverlayOffsets
 from randomizer.Patching.Patcher import ROM
 from randomizer.Enums.Kongs import Kongs
 from PIL import ImageEnhance, Image
