@@ -416,7 +416,7 @@ def IsItemSelected(
     bool_setting: bool,
     multiselector_setting: List[Union["MiscChangesSelected", Any]],
     check: Union["HardModeSelected", "MiscChangesSelected"],
-    result_if_empty: bool=True,
+    result_if_empty: bool = True,
 ) -> bool:
     """Determine whether a multiselector setting is enabled."""
     # Convert the list to a tuple before passing it to the cached function

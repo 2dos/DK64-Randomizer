@@ -1330,7 +1330,7 @@ class Settings:
             if self.krool_phase_order_rando:
                 phases = random.sample(phases, self.krool_phase_count)
             else:
-                phases = phases[:self.krool_phase_count]
+                phases = phases[: self.krool_phase_count]
         # Plandomized K. Rool algorithm
         if self.enable_plandomizer:
             planned_phases = []
@@ -1400,7 +1400,7 @@ class Settings:
             if self.helm_phase_order_rando:
                 rooms = random.sample(rooms, self.helm_phase_count)
             else:
-                rooms = rooms[:self.helm_phase_count]
+                rooms = rooms[: self.helm_phase_count]
         # Plandomized Helm room algorithm - only applies when we're already shuffling Helm Order!
         if self.enable_plandomizer and self.helm_phase_order_rando:
             planned_rooms = []
