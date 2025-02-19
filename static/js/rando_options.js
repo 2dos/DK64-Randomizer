@@ -1364,7 +1364,7 @@ function validate_fast_start_status(evt) {
   const isRandomStartingRegion = document.getElementById(
     "random_starting_region"
   ).checked;
-  const fastStart = document.getElementById("fast_start_beginning_of_game");
+  const fastStart = document.getElementById("fast_start_beginning_of_game_dummy");
 
   if (
     isRandomStartingRegion ||
