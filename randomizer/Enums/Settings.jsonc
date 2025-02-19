@@ -921,7 +921,7 @@
     "enemy_rando": 30,
     "enemy_speed_rando": 31,
     "faster_checks_enabled": 32,
-    "fast_start_beginning_of_game": 33,
+    "fast_start_beginning_of_game_dummy": 33,
     "fast_warps": 34,
     "fps_display": 35,
     "free_trade_setting": 36,
@@ -1286,7 +1286,7 @@
     "SettingsStringEnum.faster_checks_enabled": {
       "obj": "SettingsStringDataType.bool"
     },
-    "SettingsStringEnum.fast_start_beginning_of_game": {
+    "SettingsStringEnum.fast_start_beginning_of_game_dummy": {
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.fast_warps": { "obj": "SettingsStringDataType.bool" },

@@ -749,7 +749,7 @@ void wipeFileStats(void) {
 		ResetExtraData(EGD_KONGIGT, i);
 	}
 	ResetExtraData(EGD_HELMHURRYIGT, 0);
-	ResetExtraData(EGD_HELMHURRYDISABLE, 0);
+	setFlag(FLAG_HELM_HURRY_DISABLED, 0, FLAGTYPE_PERMANENT);
 }
 
 void setAllDefaultFlags(void) {
@@ -799,7 +799,7 @@ void startFile(void) {
 	}
 	resetProgressive();
 	updateBarrierCounts();
-	if ((Rando.helm_hurry_mode) && (!ReadFile(DATA_HELMHURRYOFF, 0, 0, 0))) {
+	if ((Rando.helm_hurry_mode) && (!checkFlag(FLAG_HELM_HURRY_DISABLED, FLAGTYPE_PERMANENT))) {
 		QueueHelmTimer = 1;
 	}
 	setKongIgt();

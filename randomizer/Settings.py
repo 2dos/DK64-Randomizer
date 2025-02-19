@@ -642,6 +642,7 @@ class Settings:
         #  Misc
         self.generate_spoilerlog = None
         self.fast_start_beginning_of_game = True
+        self.fast_start_beginning_of_game_dummy = True  # Decoupled from the actual setting for a little bit until we improve stability
         self.helm_setting = None
         self.helm_room_bonus_count = HelmBonuses.two
         self.quality_of_life = None
@@ -853,6 +854,7 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
+        self.fast_start_beginning_of_game = True  # Double make sure this is set
         # Correct the invalid items in the starting move lists and identify the total number of starting moves
         guaranteed_starting_moves = []
         self.starting_moves_list_counts = [

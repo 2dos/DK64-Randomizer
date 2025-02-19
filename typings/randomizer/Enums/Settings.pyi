@@ -483,7 +483,7 @@ class SettingsStringEnum(IntEnum):
     enemy_rando = 30
     enemy_speed_rando = 31
     faster_checks_enabled = 32
-    fast_start_beginning_of_game = 33
+    fast_start_beginning_of_game_dummy = 33
     fast_warps = 34
     fps_display = 35
     free_trade_setting = 36
@@ -787,7 +787,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.enemy_rando: SettingsStringDataType.bool,
     SettingsStringEnum.enemy_speed_rando: SettingsStringDataType.bool,
     SettingsStringEnum.faster_checks_enabled: SettingsStringDataType.bool,
-    SettingsStringEnum.fast_start_beginning_of_game: SettingsStringDataType.bool,
+    SettingsStringEnum.fast_start_beginning_of_game_dummy: SettingsStringDataType.bool,
     SettingsStringEnum.fast_warps: SettingsStringDataType.bool,
     SettingsStringEnum.fps_display: SettingsStringDataType.bool,
     SettingsStringEnum.free_trade_setting: FreeTradeSetting,

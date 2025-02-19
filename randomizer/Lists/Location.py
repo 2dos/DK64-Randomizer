@@ -141,7 +141,7 @@ class Location:
                     location_obj.inaccessible = False
 
 
-DROPSANITY_FLAG_START = 0x3CB
+DROPSANITY_FLAG_START = 0x3CC
 
 
 LocationListOriginal = {
