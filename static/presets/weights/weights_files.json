@@ -111,7 +111,7 @@
       "castle_car_race": 1,
       "jetpac": 1
     },
-    "fast_start_beginning_of_game": 1,
+    "fast_start_beginning_of_game_dummy": 1,
     "fast_warps": 1,
     "free_trade_setting": {
       "not_blueprints": 0.3,
@@ -533,7 +533,7 @@
       "castle_car_race": 0.7,
       "jetpac": 0.7
     },
-    "fast_start_beginning_of_game": 1,
+    "fast_start_beginning_of_game_dummy": 1,
     "fast_warps": 1,
     "free_trade_setting": {
       "none": 0.1,
@@ -975,7 +975,7 @@
       "castle_car_race": 0.7,
       "jetpac": 0.7
     },
-    "fast_start_beginning_of_game": 1,
+    "fast_start_beginning_of_game_dummy": 1,
     "fast_warps": 1,
     "free_trade_setting": {
       "none": 0.2,
@@ -1461,7 +1461,7 @@
       "castle_car_race": 0.7,
       "jetpac": 0.7
     },
-    "fast_start_beginning_of_game": 0.9,
+    "fast_start_beginning_of_game_dummy": 1,
     "fast_warps": 0.8,
     "free_trade_setting": {
       "none": 0.2,

@@ -3,6 +3,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 # Always On
 - DK Phase requires Baboon Blast
 - Faster Checks
+- Fast Start - Beginning of Game
 - Random Helm Length
 - Ice Traps Damage Player
 - Randomize Keys Required to Beat K. Rool
@@ -110,7 +111,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Castle Minecart: 70%
 	- Castle Car Race: 70%
 	- Jetpac: 70%
-- Fast Start - Beginning of Game: 90%
 - Fast Warps: 80%
 - Free Trade Agreement: 
 	- None: 20%

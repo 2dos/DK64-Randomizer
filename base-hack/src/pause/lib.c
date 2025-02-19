@@ -140,7 +140,7 @@ void checkItemDB(void) {
     initHints();
     stored_igt = getNewSaveTime();
     if (Rando.helm_hurry_mode) {
-        if (ReadFile(DATA_HELMHURRYOFF, 0, 0, 0)) {
+        if (ReadExtraData(EGD_HELMHURRYDISABLE, 0)) {
             stored_igt = IGT;
         }
     }

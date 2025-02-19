@@ -91,7 +91,8 @@
 #define FLAG_ITEM_CANDY 0x3C4
 #define FLAG_ITEM_SNIDE 0x3C5
 #define FLAG_MEDAL_ISLES_DK 0x3C6 // 0x3C6, 0x3C7, 0x3C8, 0x3C9, 0x3CA
-#define FLAG_ENEMY_KILLED_0 0x3CB // 0x3CB -> 0x574 (inc.) (426 flags)
+#define FLAG_HELM_HURRY_DISABLED 0x3CB
+#define FLAG_ENEMY_KILLED_0 0x3CC // 0x3CC -> 0x575 (inc.) (426 flags)
 
 #define MODEL_COUNT 0xED
 
