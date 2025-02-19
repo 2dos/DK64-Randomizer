@@ -48,7 +48,7 @@ def ShuffleBosses(boss_location_rando: bool, settings):
 
 def HardBossesEnabled(settings, check: HardBossesSelected) -> bool:
     """Return whether the hard bosses setting is on."""
-    return IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, check)
+    return IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, check, False)
 
 
 def ShuffleBossKongs(settings, locked_levels=[]):
@@ -175,7 +175,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
             if Kongs.chunky in ownedKongs[level] and Items.HunkyChunky in ownedMoves[level]:
                 bossOptions[level].append(Maps.FungiBoss)
             # Lanky Phase also needs Lanky and Trombone
-            is_beta_lanky = IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase)
+            is_beta_lanky = IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase, False)
             required_additional_item_lankyphase = Items.Grape if is_beta_lanky else Items.Trombone
             if spoiler.settings.krool_in_boss_pool and Kongs.lanky in ownedKongs[level] and required_additional_item_lankyphase in ownedMoves[level]:
                 bossOptions[level].append(Maps.KroolLankyPhase)

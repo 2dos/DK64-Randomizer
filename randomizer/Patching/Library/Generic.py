@@ -401,12 +401,13 @@ def is_item_selected_cached(
     bool_setting: bool,
     multiselector_setting: tuple,  # Change the type here
     check: Union["HardModeSelected", "MiscChangesSelected"],
+    result_if_empty: bool,
 ) -> bool:
     """Determine whether a multiselector setting is enabled."""
     if not bool_setting:
         return False
     if len(multiselector_setting) == 0:
-        return True
+        return result_if_empty
     return check in multiselector_setting
 
 
@@ -415,10 +416,11 @@ def IsItemSelected(
     bool_setting: bool,
     multiselector_setting: List[Union["MiscChangesSelected", Any]],
     check: Union["HardModeSelected", "MiscChangesSelected"],
+    result_if_empty: bool = True,
 ) -> bool:
     """Determine whether a multiselector setting is enabled."""
     # Convert the list to a tuple before passing it to the cached function
-    return is_item_selected_cached(bool_setting, tuple(multiselector_setting), check)
+    return is_item_selected_cached(bool_setting, tuple(multiselector_setting), check, result_if_empty)
 
 
 class SpawnerChange:

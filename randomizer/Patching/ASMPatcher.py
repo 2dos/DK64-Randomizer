@@ -387,15 +387,15 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
     writeValue(ROM_COPY, 0x806FF116, Overlay.Static, crosshair_img, offset_dict)
     writeValue(ROM_COPY, 0x806B78DA, Overlay.Static, crosshair_img, offset_dict)
 
-    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.pause_music):
+    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.pause_music, False):
         writeValue(ROM_COPY, 0x805FC890, Overlay.Static, 0, offset_dict, 4)  # Pause Theme
         writeValue(ROM_COPY, 0x805FC89C, Overlay.Static, 0, offset_dict, 4)  # Pause Start Theme
-    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.wrinkly):
+    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.wrinkly, False):
         writeValue(ROM_COPY, 0x8064F180, Overlay.Static, 0, offset_dict, 4)  # Wrinkly Theme
-    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.transformation):
+    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.transformation, False):
         writeValue(ROM_COPY, 0x8067E9E4, Overlay.Static, 0, offset_dict, 4)  # Transform Theme
         writeValue(ROM_COPY, 0x8067F7C0, Overlay.Static, 0, offset_dict, 4)  # Transform Theme
-    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.sub_areas):
+    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.sub_areas, False):
         # writeValue(ROM_COPY, 0x806025BC, Overlay.Static, 0, offset_dict, 4) # Disable `playLevelMusic` - Map Load
         writeValue(ROM_COPY, 0x8061DF74, Overlay.Static, 0, offset_dict, 4)  # Disable `playLevelMusic`
         writeValue(ROM_COPY, 0x806DB98C, Overlay.Static, 0, offset_dict, 4)  # Disable `playLevelMusic`
@@ -1078,7 +1078,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Boss stuff
     writeHook(ROM_COPY, 0x80028CCC, Overlay.Boss, "KRoolLankyPhaseFix", offset_dict)
-    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando):
+    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando, False):
         writeHook(ROM_COPY, 0x80032570, Overlay.Boss, "KKOPhaseHandler", offset_dict)
         writeHook(ROM_COPY, 0x80031B2C, Overlay.Boss, "KKOInitPhase", offset_dict)
         writeValue(ROM_COPY, 0x8003259A, Overlay.Boss, 4, offset_dict, 2)  # KKO Last Phase Check
@@ -1751,7 +1751,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x80713DE0, Overlay.Static, "finishHelmHurry", offset_dict)  # Change write
         writeValue(ROM_COPY, 0x807125CC, Overlay.Static, 0, offset_dict, 4)  # Prevent Helm Timer Overwrite
         writeValue(ROM_COPY, 0x807095BE, Overlay.Static, 0x2D4, offset_dict)  # Change Zipper with K. Rool Laugh
-    elif IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.strict_helm_timer):
+    elif IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.strict_helm_timer, False):
         # We cannot have both helm hurry and strict helm timer. Make helm hurry the most dominant setting
         writeValue(ROM_COPY, 0x8071256A, Overlay.Static, 0, offset_dict)  # Set start time of helm to 0 seconds
 
@@ -1862,7 +1862,7 @@ def patchAssembly(ROM_COPY, spoiler):
         for offset, value in enumerate(screen_shake_cap_patch[addr_head]):
             writeValue(ROM_COPY, addr_head + (4 * offset), Overlay.Static, value, offset_dict, 4)
 
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.angry_caves):
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.angry_caves, False):
         writeValue(ROM_COPY, 0x807480F4, Overlay.Static, 1, offset_dict, 4)  # Constant rockfall
         writeValue(ROM_COPY, 0x807480FC, Overlay.Static, 15, offset_dict, 4)  # Increase rockfall spawn rate (Every 20f -> 15f)
         writeValue(ROM_COPY, 0x806466D4, Overlay.Static, 0, offset_dict, 4)  # Kosha is alive no matter what
@@ -1903,12 +1903,12 @@ def patchAssembly(ROM_COPY, spoiler):
         for x in range(8):
             file_init_flags.append(0x1CD + x)  # B. Locker clear flag
 
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.hard_enemies):
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.hard_enemies, False):
         writeValue(ROM_COPY, 0x806B12DA, Overlay.Static, 0x3A9, offset_dict)  # Kasplat Shockwave Chance
         writeValue(ROM_COPY, 0x806B12FE, Overlay.Static, 0x3B3, offset_dict)  # Kasplat Shockwave Chance
         writeActorHealth(ROM_COPY, 259, 9)  # Increase kop health
 
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.lower_max_refill_amounts):
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.lower_max_refill_amounts, False):
         writeValue(ROM_COPY, 0x806F8F68, Overlay.Static, 0x24090000, offset_dict, 4)  # Standard Ammo: change from `(1 << ammo_belt) * 50` to a flat 50
         writeValue(ROM_COPY, 0x806F8FE4, Overlay.Static, 0x24190000, offset_dict, 4)  # Homing Ammo: change from `(1 << ammo_belt) * 50` to a flat 50
         writeValue(ROM_COPY, 0x806F9056, Overlay.Static, 5, offset_dict)  # Oranges: change from `(5 * ammo_belt) + 20` to `(5 * ammo_belt) + 5`
@@ -1916,7 +1916,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806F9186, Overlay.Static, 3, offset_dict)  # Film: change from `10 + fairy_count` to `3 + fairy_count`
         writeValue(ROM_COPY, 0x806F90C8, Overlay.Static, 0x24040000 | (10 * 150), offset_dict, 4)  # set min coconuts to 1500 (10 crystals)
 
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava):
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava, False):
         writeValue(ROM_COPY, 0x806677C4, Overlay.Static, 0, offset_dict, 4)  # Dynamic Surfaces
         # Static Surfaces
         writeValue(ROM_COPY, 0x80667ED2, Overlay.Static, 0x81, offset_dict)
@@ -1925,8 +1925,8 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80667EFA, Overlay.Static, 0x81, offset_dict)
         writeFunction(ROM_COPY, 0x8062F3F0, Overlay.Static, "replaceWaterTexture", offset_dict)  # Static water textures
 
-    is_dark_world = IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world)
-    is_sky = IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.donk_in_the_sky)
+    is_dark_world = IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world, False)
+    is_sky = IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.donk_in_the_sky, False)
     is_memory_challenge = is_dark_world and is_sky
     is_dark_world = is_dark_world and not is_memory_challenge
     is_sky = is_sky and not is_memory_challenge
@@ -2701,20 +2701,20 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x800331AA, Overlay.Boss, 0x4220, offset_dict)  # Random Square
     writeValue(ROM_COPY, 0x800339EE, Overlay.Boss, 0x4220, offset_dict)  # Stationary
 
-    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.fast_mad_jack):
+    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.fast_mad_jack, False):
         # MJ Fast Jumps
         for x in range(5):
             speed = 2 if x == 0 else 3
             writeFloat(ROM_COPY, 0x80036C40 + (4 * x), Overlay.Boss, speed, offset_dict)  # Phase x Jump speed
         writeValue(ROM_COPY, 0x8003343A, Overlay.Boss, 0x224, offset_dict)  # Force fast jumps
 
-    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.k_rool_toes_rando):
+    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.k_rool_toes_rando, False):
         # Random Toes
         for x in range(5):
             writeValue(ROM_COPY, 0x80036950 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x], offset_dict, 1)
             writeValue(ROM_COPY, 0x80036968 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x + 5], offset_dict, 1)
 
-    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase):
+    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase, False):
         # Spawn a K Rool balloon into the fight to trigger K Rool
         writeFunction(ROM_COPY, 0x806A7AA8, Overlay.Static, "popExistingBalloon", offset_dict)
         writeFunction(ROM_COPY, 0x8002EB64, Overlay.Boss, "spawnKRoolLankyBalloon", offset_dict)
@@ -2886,7 +2886,7 @@ def patchAssembly(ROM_COPY, spoiler):
         for xi, x in enumerate(sequence):
             writeValue(ROM_COPY, 0x807482E8 + xi, Overlay.Static, x, offset_dict, 1)
 
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies):
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies, False):
         order = settings.jetpac_enemy_order
         functions = [
             0x80029884,
@@ -2929,7 +2929,7 @@ def patchAssembly(ROM_COPY, spoiler):
         # Invert pan
         writeHook(ROM_COPY, 0x80737708, Overlay.Static, "invertPan", offset_dict)
 
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold):
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold, False):
         writeFloatUpper(ROM_COPY, 0x806D3682, Overlay.Static, 100, offset_dict)  # Change fall too far threshold
         writeFunction(ROM_COPY, 0x806D36B4, Overlay.Static, "fallDamageWrapper", offset_dict)
         writeFunction(ROM_COPY, 0x8067F540, Overlay.Static, "transformBarrelImmunity", offset_dict)

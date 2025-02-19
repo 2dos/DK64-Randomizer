@@ -1293,7 +1293,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
         # That means two slams are unhintable and we must account for the paths to the unhinted slams
         interesting_non_woth_items.append(Items.ProgressiveSlam)
     # With lava water, 3rd melon is very often required but falls into the same pitfalls as progressive slams
-    if spoiler.settings.hard_mode and HardModeSelected.water_is_lava in spoiler.settings.hard_mode_selected:
+    if IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.water_is_lava, False):
         interesting_non_woth_items.append(Items.ProgressiveInstrumentUpgrade)
     # Note down all the items on these interesting non-WotH paths
     items_on_interesting_non_woth_paths = set()
@@ -1313,7 +1313,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
     while Items.ProgressiveSlam in spoiler.pathless_moves:
         spoiler.pathless_moves.remove(Items.ProgressiveSlam)
     # Similarly, progressive instrument upgrades are also a nightmare for pathless - BEGONE
-    if spoiler.settings.hard_mode and HardModeSelected.water_is_lava in spoiler.settings.hard_mode_selected:
+    if IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.water_is_lava, False):
         while Items.ProgressiveInstrumentUpgrade in spoiler.pathless_moves:
             spoiler.pathless_moves.remove(Items.ProgressiveInstrumentUpgrade)
 
@@ -3809,10 +3809,10 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
             found_incompatibilities += "Cannot turn off Item Randomizer without starting with all Training Moves. "
         if settings.climbing_status != ClimbingStatus.normal:
             found_incompatibilities += "Cannot turn off Item Randomizer without starting with Climbing. "
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava):
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava, False):
         if settings.no_healing:
             found_incompatibilities += "Cannot turn on 'Water is Lava' whilst disabling healing. "
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.angry_caves):
+    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.angry_caves, False):
         if settings.perma_death:
             if settings.damage_amount == DamageAmount.quad or settings.damage_amount == DamageAmount.ohko:
                 found_incompatibilities += "Cannot turn on 'Angry Caves' with a damage modifier higher than double damage with Irondonk enabled. "

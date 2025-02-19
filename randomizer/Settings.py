@@ -952,7 +952,7 @@ class Settings:
                 }
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
-        if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.water_is_lava):
+        if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.water_is_lava, False):
             ItemList[Items.ProgressiveInstrumentUpgrade].playthrough = True
             ItemPool.ImportantSharedMoves = [
                 Items.ProgressiveSlam,
@@ -1335,7 +1335,10 @@ class Settings:
         if isinstance(self.krool_phase_count, str) is True:
             self.krool_phase_count = 5
         if self.krool_phase_count < len(phases):
-            phases = random.sample(phases, self.krool_phase_count)
+            if self.krool_phase_order_rando:
+                phases = random.sample(phases, self.krool_phase_count)
+            else:
+                phases = phases[: self.krool_phase_count]
         # Plandomized K. Rool algorithm
         if self.enable_plandomizer:
             planned_phases = []
@@ -1402,7 +1405,10 @@ class Settings:
         if isinstance(self.helm_phase_count, str) is True:
             self.helm_phase_count = 5
         if self.helm_phase_count < 5:
-            rooms = random.sample(rooms, self.helm_phase_count)
+            if self.helm_phase_order_rando:
+                rooms = random.sample(rooms, self.helm_phase_count)
+            else:
+                rooms = rooms[: self.helm_phase_count]
         # Plandomized Helm room algorithm - only applies when we're already shuffling Helm Order!
         if self.enable_plandomizer and self.helm_phase_order_rando:
             planned_rooms = []
@@ -1475,7 +1481,7 @@ class Settings:
             for slot in range(mill_lever_cap):
                 self.mill_levers[slot] = random.randint(1, 3)
 
-        if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies):
+        if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies, False):
             jetpac_levels = list(range(8))
             random.shuffle(jetpac_levels)
             self.jetpac_enemy_order = jetpac_levels

@@ -478,22 +478,22 @@ class LogicVarHolder:
     @lru_cache(maxsize=None)
     def IsLavaWater(self) -> bool:
         """Determine whether the water is lava water or not."""
-        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.water_is_lava)
+        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.water_is_lava, False)
 
     @lru_cache(maxsize=None)
     def HardBossesSettingEnabled(self, check: HardBossesSelected) -> bool:
         """Determine whether the hard bosses feature is enabled or not."""
-        return IsItemSelected(self.settings.hard_bosses, self.settings.hard_bosses_selected, check)
+        return IsItemSelected(self.settings.hard_bosses, self.settings.hard_bosses_selected, check, False)
 
     @lru_cache(maxsize=None)
     def IsHardFallDamage(self) -> bool:
         """Determine whether the lowered fall damage height threshold is enabled or not."""
-        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold)
+        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold, False)
 
     def canAccessHelm(self) -> bool:
         """Determine whether the player can access helm whilst the timer is active."""
-        if IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.strict_helm_timer):
-            return self.snideAccess
+        if IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.strict_helm_timer, False):
+            return self.snideAccess and len(self.Blueprints) > (4 + (2 * self.settings.helm_phase_count))
         return self.snideAccess or self.assumeFillSuccess
 
     @lru_cache(maxsize=None)

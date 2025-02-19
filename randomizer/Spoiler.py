@@ -327,7 +327,8 @@ class Spoiler:
         settings["Ice Traps Damage Player"] = self.settings.ice_traps_damage
         settings["Mirror Mode"] = self.settings.mirror_mode
         settings["Damage Amount"] = self.settings.damage_amount.name
-        settings["Hard Mode Enabled"] = self.settings.hard_mode
+        settings["Hard Mode Enabled"] = self.settings.hard_mode and len(self.settings.hard_mode_selected) > 0
+        settings["Hard Bosses Enabled"] = self.settings.hard_bosses and len(self.settings.hard_bosses_selected) > 0
         # settings["Krusha Slot"] = self.settings.krusha_ui.name
         settings["DK Model"] = self.settings.kong_model_dk.name
         settings["Diddy Model"] = self.settings.kong_model_diddy.name
@@ -487,8 +488,10 @@ class Spoiler:
             humanspoiler["End Game"]["Helm"]["Coin Door Item Amount"] = self.settings.coin_door_item_count
         if self.settings.shuffle_items:
             humanspoiler["Item Pool"] = list(set([enum.name for enum in self.settings.shuffled_location_types]))
-        if self.settings.hard_mode_selected:
+        if self.settings.hard_mode_selected and len(self.settings.hard_mode_selected) > 0:
             humanspoiler["Hard Mode"] = list(set([enum.name for enum in self.settings.hard_mode_selected]))
+        if self.settings.hard_bosses_selected and len(self.settings.hard_bosses_selected) > 0:
+            humanspoiler["Hard Bosses"] = list(set([enum.name for enum in self.settings.hard_bosses_selected]))
         humanspoiler["Items"] = {
             "Kongs": {},
             "Shops": {},
