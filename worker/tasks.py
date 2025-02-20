@@ -6,16 +6,22 @@ import random
 import time
 import traceback
 import zipfile
+import logging
 from datetime import UTC, datetime
 from io import BytesIO
-
+import sys
 from vidua import bps
+from rq import get_current_job
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from version import version
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
 def generate_seed(settings_dict):
@@ -30,6 +36,17 @@ def generate_seed(settings_dict):
         patched = BytesIO(bps.patch(original, patch).read())
         if not settings_dict.get("seed"):
             settings_dict["seed"] = random.randint(0, 100000000)
+        try:
+            job = get_current_job()
+            # If the job is not None, we are running in a worker.
+            if job is not None:
+                # If the job is not none, lets check our retries, if we are retrying lets update the seed to append the retry number.
+                if job.retries_left < job.meta["max_retries"]:
+                    logger.info("Retrying job: " + str(job.retries_left))
+                    current_retries = job.meta["max_retries"] - job.retries_left
+                    settings_dict["seed"] = str(settings_dict["seed"]) + "-" + str(current_retries)
+        except Exception as e:
+            logger.info(e)
         load_base_rom(default_file=patched)
         settings_obj = Settings(cleanup_settings(settings_dict))
         spoiler = Spoiler(settings_obj)
@@ -38,7 +55,7 @@ def generate_seed(settings_dict):
         return update_seed_results(patch, spoiler, settings_dict, password, delayed_timestamp)
 
     except Exception as e:
-        print(traceback.format_exc())
+        logger.info(traceback.format_exc())
         # Return the error and the type of error.
         error = str(type(e).__name__) + ": " + str(e)
         raise e
