@@ -36,6 +36,7 @@ from randomizer.Lists.Warps import VanillaBananaportSelector
 from randomizer.Lists.WrinklyHints import PointSpreadSelector
 from version import version
 import logging
+import sys
 from tasks import generate_seed
 from opentelemetry_instrumentation_rq import RQInstrumentor
 from randomizer.Lists.Exceptions import SettingsIncompatibleException, PlandoIncompatibleException
@@ -75,8 +76,9 @@ otlp_exporter = OTLPSpanExporter(endpoint="http://host.docker.internal:4318/v1/t
 span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
 logger = logging.getLogger(__name__)
-
-if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler(sys.stdout))
+if __name__ == "__main__" and os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     reader = PeriodicExportingMetricReader(OTLPMetricExporter(endpoint="http://host.docker.internal:4318/v1/metrics"))
     meterProvider = MeterProvider(resource=resource, metric_readers=[reader])
     metrics.set_meter_provider(meterProvider)

@@ -7,6 +7,7 @@ import copy
 import secrets
 import threading
 import time
+import sys
 import socket
 from datetime import UTC, datetime
 from os import environ, path, walk
@@ -69,9 +70,10 @@ app.config["SESSION_TYPE"] = "redis"
 redis_conn = Redis(host="redis", port=6379)
 app.config["SESSION_REDIS"] = redis_conn
 logger = logging.getLogger(__name__)
-
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler(sys.stdout))
 # check the args we started the script with
-if __name__ == "__main__" or os.environ.get("BRANCH", "LOCAL") != "LOCAL":
+if __name__ == "__main__" and os.environ.get("BRANCH", "LOCAL") != "LOCAL":
     # create the providers
     logger_provider = LoggerProvider(resource=resource)
     # set the providers
@@ -262,11 +264,13 @@ def submit_task():
     # Determine the priority based on the cooldown period
     if last_submission_time is None or current_time - int(last_submission_time) > COOLDOWN_PERIOD:
         # High-priority queue
-        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch}, retry=Retry(max=2))
+        max_retries = 4
+        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch, "max_retries": max_retries}, retry=Retry(max=max_retries))
         priority = "High"
     else:
         # Low-priority queue
-        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch}, retry=Retry(max=1))
+        max_retries = 3
+        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch, "max_retries": max_retries}, retry=Retry(max=max_retries))
         priority = "Low"
 
     # Update the last submission time for this IP
