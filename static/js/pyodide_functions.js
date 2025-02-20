@@ -18,11 +18,25 @@ async function plando_import_filebox() {
     let file = e.target.files[0];
     let json_text = await file.text();
     imported_plando_json = json_text;
-    pyodide.runPythonAsync(`
-        import js
-        from ui.plando_settings import import_plando_options
-        import_plando_options(js.imported_plando_json)
-      `);
+    // Apply settings string from the imported json
+    let json_content = JSON.parse(json_text);
+    let has_settings_string = json_content["Settings String"] != null;
+    // Inform the user their current settings will be erased.
+    message = "This will replace your current plandomizer settings. Continue?";
+    if (has_settings_string) {
+      message = "This will replace your current randomizer settings and plandomizer settings. Continue?";
+    }
+    if (window.confirm(message)) {
+      if (has_settings_string) {
+        document.getElementById("settings_string").value = JSON.parse(json_text)["Settings String"];
+        import_settings_string(null);
+      }
+      pyodide.runPythonAsync(`
+          import js
+          from ui.plando_settings import import_plando_options
+          import_plando_options(js.imported_plando_json)
+        `);
+    }
   };
 
   input.click();

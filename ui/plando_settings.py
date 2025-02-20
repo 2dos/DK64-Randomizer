@@ -94,10 +94,6 @@ async def import_plando_options(jsonString):
     """Import plando settings from a provided JSON file."""
     fileContents = json.loads(jsonString)
 
-    # Inform the user their current settings will be erased.
-    if not js.window.confirm("This will replace your current plandomizer settings. Continue?"):
-        return
-
     # First, ensure this is an actual valid plando file.
     validate_plando_file(fileContents)
 
@@ -107,10 +103,6 @@ async def import_plando_options(jsonString):
     # We need to record all hints and shop costs so we can validate them later.
     hintList = []
     shopCostList = []
-
-    if "Settings String" in fileContents.keys():
-        js.settings_string.value = fileContents["Settings String"]
-        js.import_settings_string(None)
 
     # Set all of the options specified in the plando file.
     for option, value in fileContents.items():

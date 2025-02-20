@@ -1626,10 +1626,12 @@ class Settings:
             self.shuffle_loading_zones = ShuffleLoadingZones.none
         self.shuffle_aztec_temples = self.shuffle_items and Types.Kong in self.shuffled_location_types
 
-        # Kong rando
-        # Temp until Slider UI binding gets fixed
+        # Kong rando - this is generally forced on in most settings, but it can be disabled
+        # Disabling this variable causes Kongs to not be placed during the fill, use with caution
         if self.starting_random:
             self.starting_kongs_count = randint(1, 5)
+        if Types.Kong in self.shuffled_location_types:
+            self.kong_rando = True
         if self.starting_kongs_count == 5:
             self.kong_rando = False
         if self.kong_rando:
