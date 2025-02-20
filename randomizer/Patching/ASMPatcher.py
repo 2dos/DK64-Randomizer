@@ -28,6 +28,7 @@ from randomizer.Enums.Settings import (
     ExtraCutsceneSkips,
     ExcludedSongs,
     ProgressiveHintItem,
+    WrinklyHints,
 )
 from randomizer.Patching.MiscSetupChanges import SpeedUpFungiRabbit
 from randomizer.Enums.Maps import Maps
@@ -1552,17 +1553,25 @@ def patchAssembly(ROM_COPY, spoiler):
         # We could make this part of "better fairy camera"? This means those calcuations don't need to be made.
 
     if JP_TEXTBOX_SIZES:
-        writeValue(ROM_COPY, 0x8075A788, Overlay.Static, 0x40026666, offset_dict, 4)
-        writeValue(ROM_COPY, 0x8075A78C, Overlay.Static, 0x60000000, offset_dict, 4)
-        writeValue(ROM_COPY, 0x8075A790, Overlay.Static, 0x4064B333, offset_dict, 4)
-        writeValue(ROM_COPY, 0x8075A794, Overlay.Static, 0x20000000, offset_dict, 4)
-        writeFloat(ROM_COPY, 0x8075A7A0, Overlay.Static, 165.6, offset_dict)
-        writeFloat(ROM_COPY, 0x8075A7A4, Overlay.Static, 96.6, offset_dict)
-        writeValue(ROM_COPY, 0x8075A7A8, Overlay.Static, 0x4056A666, offset_dict, 4)
-        writeValue(ROM_COPY, 0x8075A7AC, Overlay.Static, 0x60000000, offset_dict, 4)
-        writeValue(ROM_COPY, 0x8075E4A0, Overlay.Static, 0x40633333, offset_dict, 4)
-        writeValue(ROM_COPY, 0x8075E4A4, Overlay.Static, 0x20000000, offset_dict, 4)
-        writeValue(ROM_COPY, 0x806A42B6, Overlay.Static, 0x6000, offset_dict)  # Increase a malloc
+        needs_textboxes_for_hints = False
+        if settings.progressive_hint_item == ProgressiveHintItem.off:  # Progressive hints are disabled, hints are on doors
+            if settings.wrinkly_hints != WrinklyHints.off:  # Hints have something of value
+                needs_textboxes_for_hints = True
+        if settings.item_reward_previews:  # Textboxes will detail information about the item
+            needs_textboxes_for_hints = True
+        if needs_textboxes_for_hints:
+            writeValue(ROM_COPY, 0x8075A788, Overlay.Static, 0x40026666, offset_dict, 4)
+            writeValue(ROM_COPY, 0x8075A78C, Overlay.Static, 0x60000000, offset_dict, 4)
+            writeValue(ROM_COPY, 0x8075A790, Overlay.Static, 0x4064B333, offset_dict, 4)
+            writeValue(ROM_COPY, 0x8075A794, Overlay.Static, 0x20000000, offset_dict, 4)
+            writeFloat(ROM_COPY, 0x8075A7A0, Overlay.Static, 165.6, offset_dict)
+            writeFloat(ROM_COPY, 0x8075A7A4, Overlay.Static, 96.6, offset_dict)
+            writeValue(ROM_COPY, 0x8075A7A8, Overlay.Static, 0x4056A666, offset_dict, 4)
+            writeValue(ROM_COPY, 0x8075A7AC, Overlay.Static, 0x60000000, offset_dict, 4)
+            writeValue(ROM_COPY, 0x8075E4A0, Overlay.Static, 0x40633333, offset_dict, 4)
+            writeValue(ROM_COPY, 0x8075E4A4, Overlay.Static, 0x20000000, offset_dict, 4)
+            writeValue(ROM_COPY, 0x806A42B6, Overlay.Static, 0x6000, offset_dict)  # Increase a malloc
+            writeValue(ROM_COPY, 0x806F8C20, Overlay.Static, 0x5000, offset_dict)  # Remove GB HUD
 
     if FRAMEBUFFER_STORE_FIX:
         writeHook(ROM_COPY, 0x8070A848, Overlay.Static, "disableFBStore", offset_dict)
