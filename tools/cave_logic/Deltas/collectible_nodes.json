@@ -777,9 +777,9 @@
                 ]
             }
         },
-        "banana_isles_donkey_se": {
-            "id": "banana_isles_donkey_se",
-            "Name": "Banana Level DKIsles Donkey",
+        "banana_isles_donkey_all_se": {
+            "id": "banana_isles_donkey_all_se",
+            "Name": "All Banana Level DKIsles Donkey",
             "source": "banana_isles_donkey",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -801,7 +801,29 @@
         },
         "bunch_isles_donkey_se": {
             "id": "bunch_isles_donkey_se",
-            "Name": "Banana Level DKIsles Donkey",
+            "Name": "Kong Banana Level DKIsles Donkey",
+            "source": "bunch_isles_donkey",
+            "target": "banana_isles_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_isles_donkey",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_isles_donkey_all_se": {
+            "id": "bunch_isles_donkey_all_se",
+            "Name": "All Banana Level DKIsles Donkey",
             "source": "bunch_isles_donkey",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -823,7 +845,29 @@
         },
         "balloon_isles_donkey_se": {
             "id": "balloon_isles_donkey_se",
-            "Name": "Banana Level DKIsles Donkey",
+            "Name": "Kong Banana Level DKIsles Donkey",
+            "source": "balloon_isles_donkey",
+            "target": "banana_isles_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_isles_donkey",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_isles_donkey_all_se": {
+            "id": "balloon_isles_donkey_all_se",
+            "Name": "All Banana Level DKIsles Donkey",
             "source": "balloon_isles_donkey",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -843,9 +887,9 @@
                 ]
             }
         },
-        "banana_isles_diddy_se": {
-            "id": "banana_isles_diddy_se",
-            "Name": "Banana Level DKIsles Diddy",
+        "banana_isles_diddy_all_se": {
+            "id": "banana_isles_diddy_all_se",
+            "Name": "All Banana Level DKIsles Diddy",
             "source": "banana_isles_diddy",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -867,7 +911,29 @@
         },
         "bunch_isles_diddy_se": {
             "id": "bunch_isles_diddy_se",
-            "Name": "Banana Level DKIsles Diddy",
+            "Name": "Kong Banana Level DKIsles Diddy",
+            "source": "bunch_isles_diddy",
+            "target": "banana_isles_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_isles_diddy",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_isles_diddy_all_se": {
+            "id": "bunch_isles_diddy_all_se",
+            "Name": "All Banana Level DKIsles Diddy",
             "source": "bunch_isles_diddy",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -889,7 +955,29 @@
         },
         "balloon_isles_diddy_se": {
             "id": "balloon_isles_diddy_se",
-            "Name": "Banana Level DKIsles Diddy",
+            "Name": "Kong Banana Level DKIsles Diddy",
+            "source": "balloon_isles_diddy",
+            "target": "banana_isles_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_isles_diddy",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_isles_diddy_all_se": {
+            "id": "balloon_isles_diddy_all_se",
+            "Name": "All Banana Level DKIsles Diddy",
             "source": "balloon_isles_diddy",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -909,9 +997,9 @@
                 ]
             }
         },
-        "banana_isles_lanky_se": {
-            "id": "banana_isles_lanky_se",
-            "Name": "Banana Level DKIsles Lanky",
+        "banana_isles_lanky_all_se": {
+            "id": "banana_isles_lanky_all_se",
+            "Name": "All Banana Level DKIsles Lanky",
             "source": "banana_isles_lanky",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -933,7 +1021,29 @@
         },
         "bunch_isles_lanky_se": {
             "id": "bunch_isles_lanky_se",
-            "Name": "Banana Level DKIsles Lanky",
+            "Name": "Kong Banana Level DKIsles Lanky",
+            "source": "bunch_isles_lanky",
+            "target": "banana_isles_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_isles_lanky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_isles_lanky_all_se": {
+            "id": "bunch_isles_lanky_all_se",
+            "Name": "All Banana Level DKIsles Lanky",
             "source": "bunch_isles_lanky",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -955,7 +1065,29 @@
         },
         "balloon_isles_lanky_se": {
             "id": "balloon_isles_lanky_se",
-            "Name": "Banana Level DKIsles Lanky",
+            "Name": "Kong Banana Level DKIsles Lanky",
+            "source": "balloon_isles_lanky",
+            "target": "banana_isles_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_isles_lanky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_isles_lanky_all_se": {
+            "id": "balloon_isles_lanky_all_se",
+            "Name": "All Banana Level DKIsles Lanky",
             "source": "balloon_isles_lanky",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -975,9 +1107,9 @@
                 ]
             }
         },
-        "banana_isles_tiny_se": {
-            "id": "banana_isles_tiny_se",
-            "Name": "Banana Level DKIsles Tiny",
+        "banana_isles_tiny_all_se": {
+            "id": "banana_isles_tiny_all_se",
+            "Name": "All Banana Level DKIsles Tiny",
             "source": "banana_isles_tiny",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -999,7 +1131,29 @@
         },
         "bunch_isles_tiny_se": {
             "id": "bunch_isles_tiny_se",
-            "Name": "Banana Level DKIsles Tiny",
+            "Name": "Kong Banana Level DKIsles Tiny",
+            "source": "bunch_isles_tiny",
+            "target": "banana_isles_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_isles_tiny",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_isles_tiny_all_se": {
+            "id": "bunch_isles_tiny_all_se",
+            "Name": "All Banana Level DKIsles Tiny",
             "source": "bunch_isles_tiny",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -1021,7 +1175,29 @@
         },
         "balloon_isles_tiny_se": {
             "id": "balloon_isles_tiny_se",
-            "Name": "Banana Level DKIsles Tiny",
+            "Name": "Kong Banana Level DKIsles Tiny",
+            "source": "balloon_isles_tiny",
+            "target": "banana_isles_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_isles_tiny",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_isles_tiny_all_se": {
+            "id": "balloon_isles_tiny_all_se",
+            "Name": "All Banana Level DKIsles Tiny",
             "source": "balloon_isles_tiny",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -1041,9 +1217,9 @@
                 ]
             }
         },
-        "banana_isles_chunky_se": {
-            "id": "banana_isles_chunky_se",
-            "Name": "Banana Level DKIsles Chunky",
+        "banana_isles_chunky_all_se": {
+            "id": "banana_isles_chunky_all_se",
+            "Name": "All Banana Level DKIsles Chunky",
             "source": "banana_isles_chunky",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -1065,7 +1241,29 @@
         },
         "bunch_isles_chunky_se": {
             "id": "bunch_isles_chunky_se",
-            "Name": "Banana Level DKIsles Chunky",
+            "Name": "Kong Banana Level DKIsles Chunky",
+            "source": "bunch_isles_chunky",
+            "target": "banana_isles_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_isles_chunky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_isles_chunky_all_se": {
+            "id": "bunch_isles_chunky_all_se",
+            "Name": "All Banana Level DKIsles Chunky",
             "source": "bunch_isles_chunky",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -1087,7 +1285,29 @@
         },
         "balloon_isles_chunky_se": {
             "id": "balloon_isles_chunky_se",
-            "Name": "Banana Level DKIsles Chunky",
+            "Name": "Kong Banana Level DKIsles Chunky",
+            "source": "balloon_isles_chunky",
+            "target": "banana_isles_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_isles_chunky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_isles_chunky_all_se": {
+            "id": "balloon_isles_chunky_all_se",
+            "Name": "All Banana Level DKIsles Chunky",
             "source": "balloon_isles_chunky",
             "target": "banana_isles",
             "type": "sideeffect",
@@ -1107,9 +1327,9 @@
                 ]
             }
         },
-        "banana_japes_donkey_se": {
-            "id": "banana_japes_donkey_se",
-            "Name": "Banana Level JungleJapes Donkey",
+        "banana_japes_donkey_all_se": {
+            "id": "banana_japes_donkey_all_se",
+            "Name": "All Banana Level JungleJapes Donkey",
             "source": "banana_japes_donkey",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1131,7 +1351,29 @@
         },
         "bunch_japes_donkey_se": {
             "id": "bunch_japes_donkey_se",
-            "Name": "Banana Level JungleJapes Donkey",
+            "Name": "Kong Banana Level JungleJapes Donkey",
+            "source": "bunch_japes_donkey",
+            "target": "banana_japes_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_japes_donkey",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_japes_donkey_all_se": {
+            "id": "bunch_japes_donkey_all_se",
+            "Name": "All Banana Level JungleJapes Donkey",
             "source": "bunch_japes_donkey",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1153,7 +1395,29 @@
         },
         "balloon_japes_donkey_se": {
             "id": "balloon_japes_donkey_se",
-            "Name": "Banana Level JungleJapes Donkey",
+            "Name": "Kong Banana Level JungleJapes Donkey",
+            "source": "balloon_japes_donkey",
+            "target": "banana_japes_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_japes_donkey",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_japes_donkey_all_se": {
+            "id": "balloon_japes_donkey_all_se",
+            "Name": "All Banana Level JungleJapes Donkey",
             "source": "balloon_japes_donkey",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1173,9 +1437,9 @@
                 ]
             }
         },
-        "banana_japes_diddy_se": {
-            "id": "banana_japes_diddy_se",
-            "Name": "Banana Level JungleJapes Diddy",
+        "banana_japes_diddy_all_se": {
+            "id": "banana_japes_diddy_all_se",
+            "Name": "All Banana Level JungleJapes Diddy",
             "source": "banana_japes_diddy",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1197,7 +1461,29 @@
         },
         "bunch_japes_diddy_se": {
             "id": "bunch_japes_diddy_se",
-            "Name": "Banana Level JungleJapes Diddy",
+            "Name": "Kong Banana Level JungleJapes Diddy",
+            "source": "bunch_japes_diddy",
+            "target": "banana_japes_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_japes_diddy",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_japes_diddy_all_se": {
+            "id": "bunch_japes_diddy_all_se",
+            "Name": "All Banana Level JungleJapes Diddy",
             "source": "bunch_japes_diddy",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1219,7 +1505,29 @@
         },
         "balloon_japes_diddy_se": {
             "id": "balloon_japes_diddy_se",
-            "Name": "Banana Level JungleJapes Diddy",
+            "Name": "Kong Banana Level JungleJapes Diddy",
+            "source": "balloon_japes_diddy",
+            "target": "banana_japes_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_japes_diddy",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_japes_diddy_all_se": {
+            "id": "balloon_japes_diddy_all_se",
+            "Name": "All Banana Level JungleJapes Diddy",
             "source": "balloon_japes_diddy",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1239,9 +1547,9 @@
                 ]
             }
         },
-        "banana_japes_lanky_se": {
-            "id": "banana_japes_lanky_se",
-            "Name": "Banana Level JungleJapes Lanky",
+        "banana_japes_lanky_all_se": {
+            "id": "banana_japes_lanky_all_se",
+            "Name": "All Banana Level JungleJapes Lanky",
             "source": "banana_japes_lanky",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1263,7 +1571,29 @@
         },
         "bunch_japes_lanky_se": {
             "id": "bunch_japes_lanky_se",
-            "Name": "Banana Level JungleJapes Lanky",
+            "Name": "Kong Banana Level JungleJapes Lanky",
+            "source": "bunch_japes_lanky",
+            "target": "banana_japes_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_japes_lanky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_japes_lanky_all_se": {
+            "id": "bunch_japes_lanky_all_se",
+            "Name": "All Banana Level JungleJapes Lanky",
             "source": "bunch_japes_lanky",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1285,7 +1615,29 @@
         },
         "balloon_japes_lanky_se": {
             "id": "balloon_japes_lanky_se",
-            "Name": "Banana Level JungleJapes Lanky",
+            "Name": "Kong Banana Level JungleJapes Lanky",
+            "source": "balloon_japes_lanky",
+            "target": "banana_japes_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_japes_lanky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_japes_lanky_all_se": {
+            "id": "balloon_japes_lanky_all_se",
+            "Name": "All Banana Level JungleJapes Lanky",
             "source": "balloon_japes_lanky",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1305,9 +1657,9 @@
                 ]
             }
         },
-        "banana_japes_tiny_se": {
-            "id": "banana_japes_tiny_se",
-            "Name": "Banana Level JungleJapes Tiny",
+        "banana_japes_tiny_all_se": {
+            "id": "banana_japes_tiny_all_se",
+            "Name": "All Banana Level JungleJapes Tiny",
             "source": "banana_japes_tiny",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1329,7 +1681,29 @@
         },
         "bunch_japes_tiny_se": {
             "id": "bunch_japes_tiny_se",
-            "Name": "Banana Level JungleJapes Tiny",
+            "Name": "Kong Banana Level JungleJapes Tiny",
+            "source": "bunch_japes_tiny",
+            "target": "banana_japes_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_japes_tiny",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_japes_tiny_all_se": {
+            "id": "bunch_japes_tiny_all_se",
+            "Name": "All Banana Level JungleJapes Tiny",
             "source": "bunch_japes_tiny",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1351,7 +1725,29 @@
         },
         "balloon_japes_tiny_se": {
             "id": "balloon_japes_tiny_se",
-            "Name": "Banana Level JungleJapes Tiny",
+            "Name": "Kong Banana Level JungleJapes Tiny",
+            "source": "balloon_japes_tiny",
+            "target": "banana_japes_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_japes_tiny",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_japes_tiny_all_se": {
+            "id": "balloon_japes_tiny_all_se",
+            "Name": "All Banana Level JungleJapes Tiny",
             "source": "balloon_japes_tiny",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1371,9 +1767,9 @@
                 ]
             }
         },
-        "banana_japes_chunky_se": {
-            "id": "banana_japes_chunky_se",
-            "Name": "Banana Level JungleJapes Chunky",
+        "banana_japes_chunky_all_se": {
+            "id": "banana_japes_chunky_all_se",
+            "Name": "All Banana Level JungleJapes Chunky",
             "source": "banana_japes_chunky",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1395,7 +1791,29 @@
         },
         "bunch_japes_chunky_se": {
             "id": "bunch_japes_chunky_se",
-            "Name": "Banana Level JungleJapes Chunky",
+            "Name": "Kong Banana Level JungleJapes Chunky",
+            "source": "bunch_japes_chunky",
+            "target": "banana_japes_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_japes_chunky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_japes_chunky_all_se": {
+            "id": "bunch_japes_chunky_all_se",
+            "Name": "All Banana Level JungleJapes Chunky",
             "source": "bunch_japes_chunky",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1417,7 +1835,29 @@
         },
         "balloon_japes_chunky_se": {
             "id": "balloon_japes_chunky_se",
-            "Name": "Banana Level JungleJapes Chunky",
+            "Name": "Kong Banana Level JungleJapes Chunky",
+            "source": "balloon_japes_chunky",
+            "target": "banana_japes_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_japes_chunky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_japes_chunky_all_se": {
+            "id": "balloon_japes_chunky_all_se",
+            "Name": "All Banana Level JungleJapes Chunky",
             "source": "balloon_japes_chunky",
             "target": "banana_japes",
             "type": "sideeffect",
@@ -1437,9 +1877,9 @@
                 ]
             }
         },
-        "banana_aztec_donkey_se": {
-            "id": "banana_aztec_donkey_se",
-            "Name": "Banana Level AngryAztec Donkey",
+        "banana_aztec_donkey_all_se": {
+            "id": "banana_aztec_donkey_all_se",
+            "Name": "All Banana Level AngryAztec Donkey",
             "source": "banana_aztec_donkey",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1461,7 +1901,29 @@
         },
         "bunch_aztec_donkey_se": {
             "id": "bunch_aztec_donkey_se",
-            "Name": "Banana Level AngryAztec Donkey",
+            "Name": "Kong Banana Level AngryAztec Donkey",
+            "source": "bunch_aztec_donkey",
+            "target": "banana_aztec_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_aztec_donkey",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_aztec_donkey_all_se": {
+            "id": "bunch_aztec_donkey_all_se",
+            "Name": "All Banana Level AngryAztec Donkey",
             "source": "bunch_aztec_donkey",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1483,7 +1945,29 @@
         },
         "balloon_aztec_donkey_se": {
             "id": "balloon_aztec_donkey_se",
-            "Name": "Banana Level AngryAztec Donkey",
+            "Name": "Kong Banana Level AngryAztec Donkey",
+            "source": "balloon_aztec_donkey",
+            "target": "banana_aztec_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_aztec_donkey",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_aztec_donkey_all_se": {
+            "id": "balloon_aztec_donkey_all_se",
+            "Name": "All Banana Level AngryAztec Donkey",
             "source": "balloon_aztec_donkey",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1503,9 +1987,9 @@
                 ]
             }
         },
-        "banana_aztec_diddy_se": {
-            "id": "banana_aztec_diddy_se",
-            "Name": "Banana Level AngryAztec Diddy",
+        "banana_aztec_diddy_all_se": {
+            "id": "banana_aztec_diddy_all_se",
+            "Name": "All Banana Level AngryAztec Diddy",
             "source": "banana_aztec_diddy",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1527,7 +2011,29 @@
         },
         "bunch_aztec_diddy_se": {
             "id": "bunch_aztec_diddy_se",
-            "Name": "Banana Level AngryAztec Diddy",
+            "Name": "Kong Banana Level AngryAztec Diddy",
+            "source": "bunch_aztec_diddy",
+            "target": "banana_aztec_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_aztec_diddy",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_aztec_diddy_all_se": {
+            "id": "bunch_aztec_diddy_all_se",
+            "Name": "All Banana Level AngryAztec Diddy",
             "source": "bunch_aztec_diddy",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1549,7 +2055,29 @@
         },
         "balloon_aztec_diddy_se": {
             "id": "balloon_aztec_diddy_se",
-            "Name": "Banana Level AngryAztec Diddy",
+            "Name": "Kong Banana Level AngryAztec Diddy",
+            "source": "balloon_aztec_diddy",
+            "target": "banana_aztec_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_aztec_diddy",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_aztec_diddy_all_se": {
+            "id": "balloon_aztec_diddy_all_se",
+            "Name": "All Banana Level AngryAztec Diddy",
             "source": "balloon_aztec_diddy",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1569,9 +2097,9 @@
                 ]
             }
         },
-        "banana_aztec_lanky_se": {
-            "id": "banana_aztec_lanky_se",
-            "Name": "Banana Level AngryAztec Lanky",
+        "banana_aztec_lanky_all_se": {
+            "id": "banana_aztec_lanky_all_se",
+            "Name": "All Banana Level AngryAztec Lanky",
             "source": "banana_aztec_lanky",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1593,7 +2121,29 @@
         },
         "bunch_aztec_lanky_se": {
             "id": "bunch_aztec_lanky_se",
-            "Name": "Banana Level AngryAztec Lanky",
+            "Name": "Kong Banana Level AngryAztec Lanky",
+            "source": "bunch_aztec_lanky",
+            "target": "banana_aztec_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_aztec_lanky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_aztec_lanky_all_se": {
+            "id": "bunch_aztec_lanky_all_se",
+            "Name": "All Banana Level AngryAztec Lanky",
             "source": "bunch_aztec_lanky",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1615,7 +2165,29 @@
         },
         "balloon_aztec_lanky_se": {
             "id": "balloon_aztec_lanky_se",
-            "Name": "Banana Level AngryAztec Lanky",
+            "Name": "Kong Banana Level AngryAztec Lanky",
+            "source": "balloon_aztec_lanky",
+            "target": "banana_aztec_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_aztec_lanky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_aztec_lanky_all_se": {
+            "id": "balloon_aztec_lanky_all_se",
+            "Name": "All Banana Level AngryAztec Lanky",
             "source": "balloon_aztec_lanky",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1635,9 +2207,9 @@
                 ]
             }
         },
-        "banana_aztec_tiny_se": {
-            "id": "banana_aztec_tiny_se",
-            "Name": "Banana Level AngryAztec Tiny",
+        "banana_aztec_tiny_all_se": {
+            "id": "banana_aztec_tiny_all_se",
+            "Name": "All Banana Level AngryAztec Tiny",
             "source": "banana_aztec_tiny",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1659,7 +2231,29 @@
         },
         "bunch_aztec_tiny_se": {
             "id": "bunch_aztec_tiny_se",
-            "Name": "Banana Level AngryAztec Tiny",
+            "Name": "Kong Banana Level AngryAztec Tiny",
+            "source": "bunch_aztec_tiny",
+            "target": "banana_aztec_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_aztec_tiny",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_aztec_tiny_all_se": {
+            "id": "bunch_aztec_tiny_all_se",
+            "Name": "All Banana Level AngryAztec Tiny",
             "source": "bunch_aztec_tiny",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1681,7 +2275,29 @@
         },
         "balloon_aztec_tiny_se": {
             "id": "balloon_aztec_tiny_se",
-            "Name": "Banana Level AngryAztec Tiny",
+            "Name": "Kong Banana Level AngryAztec Tiny",
+            "source": "balloon_aztec_tiny",
+            "target": "banana_aztec_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_aztec_tiny",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_aztec_tiny_all_se": {
+            "id": "balloon_aztec_tiny_all_se",
+            "Name": "All Banana Level AngryAztec Tiny",
             "source": "balloon_aztec_tiny",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1701,9 +2317,9 @@
                 ]
             }
         },
-        "banana_aztec_chunky_se": {
-            "id": "banana_aztec_chunky_se",
-            "Name": "Banana Level AngryAztec Chunky",
+        "banana_aztec_chunky_all_se": {
+            "id": "banana_aztec_chunky_all_se",
+            "Name": "All Banana Level AngryAztec Chunky",
             "source": "banana_aztec_chunky",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1725,7 +2341,29 @@
         },
         "bunch_aztec_chunky_se": {
             "id": "bunch_aztec_chunky_se",
-            "Name": "Banana Level AngryAztec Chunky",
+            "Name": "Kong Banana Level AngryAztec Chunky",
+            "source": "bunch_aztec_chunky",
+            "target": "banana_aztec_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_aztec_chunky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_aztec_chunky_all_se": {
+            "id": "bunch_aztec_chunky_all_se",
+            "Name": "All Banana Level AngryAztec Chunky",
             "source": "bunch_aztec_chunky",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1747,7 +2385,29 @@
         },
         "balloon_aztec_chunky_se": {
             "id": "balloon_aztec_chunky_se",
-            "Name": "Banana Level AngryAztec Chunky",
+            "Name": "Kong Banana Level AngryAztec Chunky",
+            "source": "balloon_aztec_chunky",
+            "target": "banana_aztec_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_aztec_chunky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_aztec_chunky_all_se": {
+            "id": "balloon_aztec_chunky_all_se",
+            "Name": "All Banana Level AngryAztec Chunky",
             "source": "balloon_aztec_chunky",
             "target": "banana_aztec",
             "type": "sideeffect",
@@ -1767,9 +2427,9 @@
                 ]
             }
         },
-        "banana_factory_donkey_se": {
-            "id": "banana_factory_donkey_se",
-            "Name": "Banana Level FranticFactory Donkey",
+        "banana_factory_donkey_all_se": {
+            "id": "banana_factory_donkey_all_se",
+            "Name": "All Banana Level FranticFactory Donkey",
             "source": "banana_factory_donkey",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -1791,7 +2451,29 @@
         },
         "bunch_factory_donkey_se": {
             "id": "bunch_factory_donkey_se",
-            "Name": "Banana Level FranticFactory Donkey",
+            "Name": "Kong Banana Level FranticFactory Donkey",
+            "source": "bunch_factory_donkey",
+            "target": "banana_factory_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_factory_donkey",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_factory_donkey_all_se": {
+            "id": "bunch_factory_donkey_all_se",
+            "Name": "All Banana Level FranticFactory Donkey",
             "source": "bunch_factory_donkey",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -1813,7 +2495,29 @@
         },
         "balloon_factory_donkey_se": {
             "id": "balloon_factory_donkey_se",
-            "Name": "Banana Level FranticFactory Donkey",
+            "Name": "Kong Banana Level FranticFactory Donkey",
+            "source": "balloon_factory_donkey",
+            "target": "banana_factory_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_factory_donkey",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_factory_donkey_all_se": {
+            "id": "balloon_factory_donkey_all_se",
+            "Name": "All Banana Level FranticFactory Donkey",
             "source": "balloon_factory_donkey",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -1833,9 +2537,9 @@
                 ]
             }
         },
-        "banana_factory_diddy_se": {
-            "id": "banana_factory_diddy_se",
-            "Name": "Banana Level FranticFactory Diddy",
+        "banana_factory_diddy_all_se": {
+            "id": "banana_factory_diddy_all_se",
+            "Name": "All Banana Level FranticFactory Diddy",
             "source": "banana_factory_diddy",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -1857,7 +2561,29 @@
         },
         "bunch_factory_diddy_se": {
             "id": "bunch_factory_diddy_se",
-            "Name": "Banana Level FranticFactory Diddy",
+            "Name": "Kong Banana Level FranticFactory Diddy",
+            "source": "bunch_factory_diddy",
+            "target": "banana_factory_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_factory_diddy",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_factory_diddy_all_se": {
+            "id": "bunch_factory_diddy_all_se",
+            "Name": "All Banana Level FranticFactory Diddy",
             "source": "bunch_factory_diddy",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -1879,7 +2605,29 @@
         },
         "balloon_factory_diddy_se": {
             "id": "balloon_factory_diddy_se",
-            "Name": "Banana Level FranticFactory Diddy",
+            "Name": "Kong Banana Level FranticFactory Diddy",
+            "source": "balloon_factory_diddy",
+            "target": "banana_factory_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_factory_diddy",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_factory_diddy_all_se": {
+            "id": "balloon_factory_diddy_all_se",
+            "Name": "All Banana Level FranticFactory Diddy",
             "source": "balloon_factory_diddy",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -1899,9 +2647,9 @@
                 ]
             }
         },
-        "banana_factory_lanky_se": {
-            "id": "banana_factory_lanky_se",
-            "Name": "Banana Level FranticFactory Lanky",
+        "banana_factory_lanky_all_se": {
+            "id": "banana_factory_lanky_all_se",
+            "Name": "All Banana Level FranticFactory Lanky",
             "source": "banana_factory_lanky",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -1923,7 +2671,29 @@
         },
         "bunch_factory_lanky_se": {
             "id": "bunch_factory_lanky_se",
-            "Name": "Banana Level FranticFactory Lanky",
+            "Name": "Kong Banana Level FranticFactory Lanky",
+            "source": "bunch_factory_lanky",
+            "target": "banana_factory_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_factory_lanky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_factory_lanky_all_se": {
+            "id": "bunch_factory_lanky_all_se",
+            "Name": "All Banana Level FranticFactory Lanky",
             "source": "bunch_factory_lanky",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -1945,7 +2715,29 @@
         },
         "balloon_factory_lanky_se": {
             "id": "balloon_factory_lanky_se",
-            "Name": "Banana Level FranticFactory Lanky",
+            "Name": "Kong Banana Level FranticFactory Lanky",
+            "source": "balloon_factory_lanky",
+            "target": "banana_factory_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_factory_lanky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_factory_lanky_all_se": {
+            "id": "balloon_factory_lanky_all_se",
+            "Name": "All Banana Level FranticFactory Lanky",
             "source": "balloon_factory_lanky",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -1965,9 +2757,9 @@
                 ]
             }
         },
-        "banana_factory_tiny_se": {
-            "id": "banana_factory_tiny_se",
-            "Name": "Banana Level FranticFactory Tiny",
+        "banana_factory_tiny_all_se": {
+            "id": "banana_factory_tiny_all_se",
+            "Name": "All Banana Level FranticFactory Tiny",
             "source": "banana_factory_tiny",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -1989,7 +2781,29 @@
         },
         "bunch_factory_tiny_se": {
             "id": "bunch_factory_tiny_se",
-            "Name": "Banana Level FranticFactory Tiny",
+            "Name": "Kong Banana Level FranticFactory Tiny",
+            "source": "bunch_factory_tiny",
+            "target": "banana_factory_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_factory_tiny",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_factory_tiny_all_se": {
+            "id": "bunch_factory_tiny_all_se",
+            "Name": "All Banana Level FranticFactory Tiny",
             "source": "bunch_factory_tiny",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -2011,7 +2825,29 @@
         },
         "balloon_factory_tiny_se": {
             "id": "balloon_factory_tiny_se",
-            "Name": "Banana Level FranticFactory Tiny",
+            "Name": "Kong Banana Level FranticFactory Tiny",
+            "source": "balloon_factory_tiny",
+            "target": "banana_factory_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_factory_tiny",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_factory_tiny_all_se": {
+            "id": "balloon_factory_tiny_all_se",
+            "Name": "All Banana Level FranticFactory Tiny",
             "source": "balloon_factory_tiny",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -2031,9 +2867,9 @@
                 ]
             }
         },
-        "banana_factory_chunky_se": {
-            "id": "banana_factory_chunky_se",
-            "Name": "Banana Level FranticFactory Chunky",
+        "banana_factory_chunky_all_se": {
+            "id": "banana_factory_chunky_all_se",
+            "Name": "All Banana Level FranticFactory Chunky",
             "source": "banana_factory_chunky",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -2055,7 +2891,29 @@
         },
         "bunch_factory_chunky_se": {
             "id": "bunch_factory_chunky_se",
-            "Name": "Banana Level FranticFactory Chunky",
+            "Name": "Kong Banana Level FranticFactory Chunky",
+            "source": "bunch_factory_chunky",
+            "target": "banana_factory_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_factory_chunky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_factory_chunky_all_se": {
+            "id": "bunch_factory_chunky_all_se",
+            "Name": "All Banana Level FranticFactory Chunky",
             "source": "bunch_factory_chunky",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -2077,7 +2935,29 @@
         },
         "balloon_factory_chunky_se": {
             "id": "balloon_factory_chunky_se",
-            "Name": "Banana Level FranticFactory Chunky",
+            "Name": "Kong Banana Level FranticFactory Chunky",
+            "source": "balloon_factory_chunky",
+            "target": "banana_factory_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_factory_chunky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_factory_chunky_all_se": {
+            "id": "balloon_factory_chunky_all_se",
+            "Name": "All Banana Level FranticFactory Chunky",
             "source": "balloon_factory_chunky",
             "target": "banana_factory",
             "type": "sideeffect",
@@ -2097,9 +2977,9 @@
                 ]
             }
         },
-        "banana_galleon_donkey_se": {
-            "id": "banana_galleon_donkey_se",
-            "Name": "Banana Level GloomyGalleon Donkey",
+        "banana_galleon_donkey_all_se": {
+            "id": "banana_galleon_donkey_all_se",
+            "Name": "All Banana Level GloomyGalleon Donkey",
             "source": "banana_galleon_donkey",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2121,7 +3001,29 @@
         },
         "bunch_galleon_donkey_se": {
             "id": "bunch_galleon_donkey_se",
-            "Name": "Banana Level GloomyGalleon Donkey",
+            "Name": "Kong Banana Level GloomyGalleon Donkey",
+            "source": "bunch_galleon_donkey",
+            "target": "banana_galleon_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_galleon_donkey",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_galleon_donkey_all_se": {
+            "id": "bunch_galleon_donkey_all_se",
+            "Name": "All Banana Level GloomyGalleon Donkey",
             "source": "bunch_galleon_donkey",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2143,7 +3045,29 @@
         },
         "balloon_galleon_donkey_se": {
             "id": "balloon_galleon_donkey_se",
-            "Name": "Banana Level GloomyGalleon Donkey",
+            "Name": "Kong Banana Level GloomyGalleon Donkey",
+            "source": "balloon_galleon_donkey",
+            "target": "banana_galleon_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_galleon_donkey",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_galleon_donkey_all_se": {
+            "id": "balloon_galleon_donkey_all_se",
+            "Name": "All Banana Level GloomyGalleon Donkey",
             "source": "balloon_galleon_donkey",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2163,9 +3087,9 @@
                 ]
             }
         },
-        "banana_galleon_diddy_se": {
-            "id": "banana_galleon_diddy_se",
-            "Name": "Banana Level GloomyGalleon Diddy",
+        "banana_galleon_diddy_all_se": {
+            "id": "banana_galleon_diddy_all_se",
+            "Name": "All Banana Level GloomyGalleon Diddy",
             "source": "banana_galleon_diddy",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2187,7 +3111,29 @@
         },
         "bunch_galleon_diddy_se": {
             "id": "bunch_galleon_diddy_se",
-            "Name": "Banana Level GloomyGalleon Diddy",
+            "Name": "Kong Banana Level GloomyGalleon Diddy",
+            "source": "bunch_galleon_diddy",
+            "target": "banana_galleon_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_galleon_diddy",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_galleon_diddy_all_se": {
+            "id": "bunch_galleon_diddy_all_se",
+            "Name": "All Banana Level GloomyGalleon Diddy",
             "source": "bunch_galleon_diddy",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2209,7 +3155,29 @@
         },
         "balloon_galleon_diddy_se": {
             "id": "balloon_galleon_diddy_se",
-            "Name": "Banana Level GloomyGalleon Diddy",
+            "Name": "Kong Banana Level GloomyGalleon Diddy",
+            "source": "balloon_galleon_diddy",
+            "target": "banana_galleon_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_galleon_diddy",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_galleon_diddy_all_se": {
+            "id": "balloon_galleon_diddy_all_se",
+            "Name": "All Banana Level GloomyGalleon Diddy",
             "source": "balloon_galleon_diddy",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2229,9 +3197,9 @@
                 ]
             }
         },
-        "banana_galleon_lanky_se": {
-            "id": "banana_galleon_lanky_se",
-            "Name": "Banana Level GloomyGalleon Lanky",
+        "banana_galleon_lanky_all_se": {
+            "id": "banana_galleon_lanky_all_se",
+            "Name": "All Banana Level GloomyGalleon Lanky",
             "source": "banana_galleon_lanky",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2253,7 +3221,29 @@
         },
         "bunch_galleon_lanky_se": {
             "id": "bunch_galleon_lanky_se",
-            "Name": "Banana Level GloomyGalleon Lanky",
+            "Name": "Kong Banana Level GloomyGalleon Lanky",
+            "source": "bunch_galleon_lanky",
+            "target": "banana_galleon_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_galleon_lanky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_galleon_lanky_all_se": {
+            "id": "bunch_galleon_lanky_all_se",
+            "Name": "All Banana Level GloomyGalleon Lanky",
             "source": "bunch_galleon_lanky",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2275,7 +3265,29 @@
         },
         "balloon_galleon_lanky_se": {
             "id": "balloon_galleon_lanky_se",
-            "Name": "Banana Level GloomyGalleon Lanky",
+            "Name": "Kong Banana Level GloomyGalleon Lanky",
+            "source": "balloon_galleon_lanky",
+            "target": "banana_galleon_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_galleon_lanky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_galleon_lanky_all_se": {
+            "id": "balloon_galleon_lanky_all_se",
+            "Name": "All Banana Level GloomyGalleon Lanky",
             "source": "balloon_galleon_lanky",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2295,9 +3307,9 @@
                 ]
             }
         },
-        "banana_galleon_tiny_se": {
-            "id": "banana_galleon_tiny_se",
-            "Name": "Banana Level GloomyGalleon Tiny",
+        "banana_galleon_tiny_all_se": {
+            "id": "banana_galleon_tiny_all_se",
+            "Name": "All Banana Level GloomyGalleon Tiny",
             "source": "banana_galleon_tiny",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2319,7 +3331,29 @@
         },
         "bunch_galleon_tiny_se": {
             "id": "bunch_galleon_tiny_se",
-            "Name": "Banana Level GloomyGalleon Tiny",
+            "Name": "Kong Banana Level GloomyGalleon Tiny",
+            "source": "bunch_galleon_tiny",
+            "target": "banana_galleon_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_galleon_tiny",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_galleon_tiny_all_se": {
+            "id": "bunch_galleon_tiny_all_se",
+            "Name": "All Banana Level GloomyGalleon Tiny",
             "source": "bunch_galleon_tiny",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2341,7 +3375,29 @@
         },
         "balloon_galleon_tiny_se": {
             "id": "balloon_galleon_tiny_se",
-            "Name": "Banana Level GloomyGalleon Tiny",
+            "Name": "Kong Banana Level GloomyGalleon Tiny",
+            "source": "balloon_galleon_tiny",
+            "target": "banana_galleon_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_galleon_tiny",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_galleon_tiny_all_se": {
+            "id": "balloon_galleon_tiny_all_se",
+            "Name": "All Banana Level GloomyGalleon Tiny",
             "source": "balloon_galleon_tiny",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2361,9 +3417,9 @@
                 ]
             }
         },
-        "banana_galleon_chunky_se": {
-            "id": "banana_galleon_chunky_se",
-            "Name": "Banana Level GloomyGalleon Chunky",
+        "banana_galleon_chunky_all_se": {
+            "id": "banana_galleon_chunky_all_se",
+            "Name": "All Banana Level GloomyGalleon Chunky",
             "source": "banana_galleon_chunky",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2385,7 +3441,29 @@
         },
         "bunch_galleon_chunky_se": {
             "id": "bunch_galleon_chunky_se",
-            "Name": "Banana Level GloomyGalleon Chunky",
+            "Name": "Kong Banana Level GloomyGalleon Chunky",
+            "source": "bunch_galleon_chunky",
+            "target": "banana_galleon_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_galleon_chunky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_galleon_chunky_all_se": {
+            "id": "bunch_galleon_chunky_all_se",
+            "Name": "All Banana Level GloomyGalleon Chunky",
             "source": "bunch_galleon_chunky",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2407,7 +3485,29 @@
         },
         "balloon_galleon_chunky_se": {
             "id": "balloon_galleon_chunky_se",
-            "Name": "Banana Level GloomyGalleon Chunky",
+            "Name": "Kong Banana Level GloomyGalleon Chunky",
+            "source": "balloon_galleon_chunky",
+            "target": "banana_galleon_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_galleon_chunky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_galleon_chunky_all_se": {
+            "id": "balloon_galleon_chunky_all_se",
+            "Name": "All Banana Level GloomyGalleon Chunky",
             "source": "balloon_galleon_chunky",
             "target": "banana_galleon",
             "type": "sideeffect",
@@ -2427,9 +3527,9 @@
                 ]
             }
         },
-        "banana_forest_donkey_se": {
-            "id": "banana_forest_donkey_se",
-            "Name": "Banana Level FungiForest Donkey",
+        "banana_forest_donkey_all_se": {
+            "id": "banana_forest_donkey_all_se",
+            "Name": "All Banana Level FungiForest Donkey",
             "source": "banana_forest_donkey",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2451,7 +3551,29 @@
         },
         "bunch_forest_donkey_se": {
             "id": "bunch_forest_donkey_se",
-            "Name": "Banana Level FungiForest Donkey",
+            "Name": "Kong Banana Level FungiForest Donkey",
+            "source": "bunch_forest_donkey",
+            "target": "banana_forest_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_forest_donkey",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_forest_donkey_all_se": {
+            "id": "bunch_forest_donkey_all_se",
+            "Name": "All Banana Level FungiForest Donkey",
             "source": "bunch_forest_donkey",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2473,7 +3595,29 @@
         },
         "balloon_forest_donkey_se": {
             "id": "balloon_forest_donkey_se",
-            "Name": "Banana Level FungiForest Donkey",
+            "Name": "Kong Banana Level FungiForest Donkey",
+            "source": "balloon_forest_donkey",
+            "target": "banana_forest_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_forest_donkey",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_forest_donkey_all_se": {
+            "id": "balloon_forest_donkey_all_se",
+            "Name": "All Banana Level FungiForest Donkey",
             "source": "balloon_forest_donkey",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2493,9 +3637,9 @@
                 ]
             }
         },
-        "banana_forest_diddy_se": {
-            "id": "banana_forest_diddy_se",
-            "Name": "Banana Level FungiForest Diddy",
+        "banana_forest_diddy_all_se": {
+            "id": "banana_forest_diddy_all_se",
+            "Name": "All Banana Level FungiForest Diddy",
             "source": "banana_forest_diddy",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2517,7 +3661,29 @@
         },
         "bunch_forest_diddy_se": {
             "id": "bunch_forest_diddy_se",
-            "Name": "Banana Level FungiForest Diddy",
+            "Name": "Kong Banana Level FungiForest Diddy",
+            "source": "bunch_forest_diddy",
+            "target": "banana_forest_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_forest_diddy",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_forest_diddy_all_se": {
+            "id": "bunch_forest_diddy_all_se",
+            "Name": "All Banana Level FungiForest Diddy",
             "source": "bunch_forest_diddy",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2539,7 +3705,29 @@
         },
         "balloon_forest_diddy_se": {
             "id": "balloon_forest_diddy_se",
-            "Name": "Banana Level FungiForest Diddy",
+            "Name": "Kong Banana Level FungiForest Diddy",
+            "source": "balloon_forest_diddy",
+            "target": "banana_forest_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_forest_diddy",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_forest_diddy_all_se": {
+            "id": "balloon_forest_diddy_all_se",
+            "Name": "All Banana Level FungiForest Diddy",
             "source": "balloon_forest_diddy",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2559,9 +3747,9 @@
                 ]
             }
         },
-        "banana_forest_lanky_se": {
-            "id": "banana_forest_lanky_se",
-            "Name": "Banana Level FungiForest Lanky",
+        "banana_forest_lanky_all_se": {
+            "id": "banana_forest_lanky_all_se",
+            "Name": "All Banana Level FungiForest Lanky",
             "source": "banana_forest_lanky",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2583,7 +3771,29 @@
         },
         "bunch_forest_lanky_se": {
             "id": "bunch_forest_lanky_se",
-            "Name": "Banana Level FungiForest Lanky",
+            "Name": "Kong Banana Level FungiForest Lanky",
+            "source": "bunch_forest_lanky",
+            "target": "banana_forest_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_forest_lanky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_forest_lanky_all_se": {
+            "id": "bunch_forest_lanky_all_se",
+            "Name": "All Banana Level FungiForest Lanky",
             "source": "bunch_forest_lanky",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2605,7 +3815,29 @@
         },
         "balloon_forest_lanky_se": {
             "id": "balloon_forest_lanky_se",
-            "Name": "Banana Level FungiForest Lanky",
+            "Name": "Kong Banana Level FungiForest Lanky",
+            "source": "balloon_forest_lanky",
+            "target": "banana_forest_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_forest_lanky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_forest_lanky_all_se": {
+            "id": "balloon_forest_lanky_all_se",
+            "Name": "All Banana Level FungiForest Lanky",
             "source": "balloon_forest_lanky",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2625,9 +3857,9 @@
                 ]
             }
         },
-        "banana_forest_tiny_se": {
-            "id": "banana_forest_tiny_se",
-            "Name": "Banana Level FungiForest Tiny",
+        "banana_forest_tiny_all_se": {
+            "id": "banana_forest_tiny_all_se",
+            "Name": "All Banana Level FungiForest Tiny",
             "source": "banana_forest_tiny",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2649,7 +3881,29 @@
         },
         "bunch_forest_tiny_se": {
             "id": "bunch_forest_tiny_se",
-            "Name": "Banana Level FungiForest Tiny",
+            "Name": "Kong Banana Level FungiForest Tiny",
+            "source": "bunch_forest_tiny",
+            "target": "banana_forest_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_forest_tiny",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_forest_tiny_all_se": {
+            "id": "bunch_forest_tiny_all_se",
+            "Name": "All Banana Level FungiForest Tiny",
             "source": "bunch_forest_tiny",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2671,7 +3925,29 @@
         },
         "balloon_forest_tiny_se": {
             "id": "balloon_forest_tiny_se",
-            "Name": "Banana Level FungiForest Tiny",
+            "Name": "Kong Banana Level FungiForest Tiny",
+            "source": "balloon_forest_tiny",
+            "target": "banana_forest_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_forest_tiny",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_forest_tiny_all_se": {
+            "id": "balloon_forest_tiny_all_se",
+            "Name": "All Banana Level FungiForest Tiny",
             "source": "balloon_forest_tiny",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2691,9 +3967,9 @@
                 ]
             }
         },
-        "banana_forest_chunky_se": {
-            "id": "banana_forest_chunky_se",
-            "Name": "Banana Level FungiForest Chunky",
+        "banana_forest_chunky_all_se": {
+            "id": "banana_forest_chunky_all_se",
+            "Name": "All Banana Level FungiForest Chunky",
             "source": "banana_forest_chunky",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2715,7 +3991,29 @@
         },
         "bunch_forest_chunky_se": {
             "id": "bunch_forest_chunky_se",
-            "Name": "Banana Level FungiForest Chunky",
+            "Name": "Kong Banana Level FungiForest Chunky",
+            "source": "bunch_forest_chunky",
+            "target": "banana_forest_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_forest_chunky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_forest_chunky_all_se": {
+            "id": "bunch_forest_chunky_all_se",
+            "Name": "All Banana Level FungiForest Chunky",
             "source": "bunch_forest_chunky",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2737,7 +4035,29 @@
         },
         "balloon_forest_chunky_se": {
             "id": "balloon_forest_chunky_se",
-            "Name": "Banana Level FungiForest Chunky",
+            "Name": "Kong Banana Level FungiForest Chunky",
+            "source": "balloon_forest_chunky",
+            "target": "banana_forest_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_forest_chunky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_forest_chunky_all_se": {
+            "id": "balloon_forest_chunky_all_se",
+            "Name": "All Banana Level FungiForest Chunky",
             "source": "balloon_forest_chunky",
             "target": "banana_forest",
             "type": "sideeffect",
@@ -2757,9 +4077,9 @@
                 ]
             }
         },
-        "banana_caves_donkey_se": {
-            "id": "banana_caves_donkey_se",
-            "Name": "Banana Level CrystalCaves Donkey",
+        "banana_caves_donkey_all_se": {
+            "id": "banana_caves_donkey_all_se",
+            "Name": "All Banana Level CrystalCaves Donkey",
             "source": "banana_caves_donkey",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -2781,7 +4101,29 @@
         },
         "bunch_caves_donkey_se": {
             "id": "bunch_caves_donkey_se",
-            "Name": "Banana Level CrystalCaves Donkey",
+            "Name": "Kong Banana Level CrystalCaves Donkey",
+            "source": "bunch_caves_donkey",
+            "target": "banana_caves_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_caves_donkey",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_caves_donkey_all_se": {
+            "id": "bunch_caves_donkey_all_se",
+            "Name": "All Banana Level CrystalCaves Donkey",
             "source": "bunch_caves_donkey",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -2803,7 +4145,29 @@
         },
         "balloon_caves_donkey_se": {
             "id": "balloon_caves_donkey_se",
-            "Name": "Banana Level CrystalCaves Donkey",
+            "Name": "Kong Banana Level CrystalCaves Donkey",
+            "source": "balloon_caves_donkey",
+            "target": "banana_caves_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_caves_donkey",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_caves_donkey_all_se": {
+            "id": "balloon_caves_donkey_all_se",
+            "Name": "All Banana Level CrystalCaves Donkey",
             "source": "balloon_caves_donkey",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -2823,9 +4187,9 @@
                 ]
             }
         },
-        "banana_caves_diddy_se": {
-            "id": "banana_caves_diddy_se",
-            "Name": "Banana Level CrystalCaves Diddy",
+        "banana_caves_diddy_all_se": {
+            "id": "banana_caves_diddy_all_se",
+            "Name": "All Banana Level CrystalCaves Diddy",
             "source": "banana_caves_diddy",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -2847,7 +4211,29 @@
         },
         "bunch_caves_diddy_se": {
             "id": "bunch_caves_diddy_se",
-            "Name": "Banana Level CrystalCaves Diddy",
+            "Name": "Kong Banana Level CrystalCaves Diddy",
+            "source": "bunch_caves_diddy",
+            "target": "banana_caves_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_caves_diddy",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_caves_diddy_all_se": {
+            "id": "bunch_caves_diddy_all_se",
+            "Name": "All Banana Level CrystalCaves Diddy",
             "source": "bunch_caves_diddy",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -2869,7 +4255,29 @@
         },
         "balloon_caves_diddy_se": {
             "id": "balloon_caves_diddy_se",
-            "Name": "Banana Level CrystalCaves Diddy",
+            "Name": "Kong Banana Level CrystalCaves Diddy",
+            "source": "balloon_caves_diddy",
+            "target": "banana_caves_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_caves_diddy",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_caves_diddy_all_se": {
+            "id": "balloon_caves_diddy_all_se",
+            "Name": "All Banana Level CrystalCaves Diddy",
             "source": "balloon_caves_diddy",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -2889,9 +4297,9 @@
                 ]
             }
         },
-        "banana_caves_lanky_se": {
-            "id": "banana_caves_lanky_se",
-            "Name": "Banana Level CrystalCaves Lanky",
+        "banana_caves_lanky_all_se": {
+            "id": "banana_caves_lanky_all_se",
+            "Name": "All Banana Level CrystalCaves Lanky",
             "source": "banana_caves_lanky",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -2913,7 +4321,29 @@
         },
         "bunch_caves_lanky_se": {
             "id": "bunch_caves_lanky_se",
-            "Name": "Banana Level CrystalCaves Lanky",
+            "Name": "Kong Banana Level CrystalCaves Lanky",
+            "source": "bunch_caves_lanky",
+            "target": "banana_caves_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_caves_lanky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_caves_lanky_all_se": {
+            "id": "bunch_caves_lanky_all_se",
+            "Name": "All Banana Level CrystalCaves Lanky",
             "source": "bunch_caves_lanky",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -2935,7 +4365,29 @@
         },
         "balloon_caves_lanky_se": {
             "id": "balloon_caves_lanky_se",
-            "Name": "Banana Level CrystalCaves Lanky",
+            "Name": "Kong Banana Level CrystalCaves Lanky",
+            "source": "balloon_caves_lanky",
+            "target": "banana_caves_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_caves_lanky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_caves_lanky_all_se": {
+            "id": "balloon_caves_lanky_all_se",
+            "Name": "All Banana Level CrystalCaves Lanky",
             "source": "balloon_caves_lanky",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -2955,9 +4407,9 @@
                 ]
             }
         },
-        "banana_caves_tiny_se": {
-            "id": "banana_caves_tiny_se",
-            "Name": "Banana Level CrystalCaves Tiny",
+        "banana_caves_tiny_all_se": {
+            "id": "banana_caves_tiny_all_se",
+            "Name": "All Banana Level CrystalCaves Tiny",
             "source": "banana_caves_tiny",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -2979,7 +4431,29 @@
         },
         "bunch_caves_tiny_se": {
             "id": "bunch_caves_tiny_se",
-            "Name": "Banana Level CrystalCaves Tiny",
+            "Name": "Kong Banana Level CrystalCaves Tiny",
+            "source": "bunch_caves_tiny",
+            "target": "banana_caves_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_caves_tiny",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_caves_tiny_all_se": {
+            "id": "bunch_caves_tiny_all_se",
+            "Name": "All Banana Level CrystalCaves Tiny",
             "source": "bunch_caves_tiny",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -3001,7 +4475,29 @@
         },
         "balloon_caves_tiny_se": {
             "id": "balloon_caves_tiny_se",
-            "Name": "Banana Level CrystalCaves Tiny",
+            "Name": "Kong Banana Level CrystalCaves Tiny",
+            "source": "balloon_caves_tiny",
+            "target": "banana_caves_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_caves_tiny",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_caves_tiny_all_se": {
+            "id": "balloon_caves_tiny_all_se",
+            "Name": "All Banana Level CrystalCaves Tiny",
             "source": "balloon_caves_tiny",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -3021,9 +4517,9 @@
                 ]
             }
         },
-        "banana_caves_chunky_se": {
-            "id": "banana_caves_chunky_se",
-            "Name": "Banana Level CrystalCaves Chunky",
+        "banana_caves_chunky_all_se": {
+            "id": "banana_caves_chunky_all_se",
+            "Name": "All Banana Level CrystalCaves Chunky",
             "source": "banana_caves_chunky",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -3045,7 +4541,29 @@
         },
         "bunch_caves_chunky_se": {
             "id": "bunch_caves_chunky_se",
-            "Name": "Banana Level CrystalCaves Chunky",
+            "Name": "Kong Banana Level CrystalCaves Chunky",
+            "source": "bunch_caves_chunky",
+            "target": "banana_caves_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_caves_chunky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_caves_chunky_all_se": {
+            "id": "bunch_caves_chunky_all_se",
+            "Name": "All Banana Level CrystalCaves Chunky",
             "source": "bunch_caves_chunky",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -3067,7 +4585,29 @@
         },
         "balloon_caves_chunky_se": {
             "id": "balloon_caves_chunky_se",
-            "Name": "Banana Level CrystalCaves Chunky",
+            "Name": "Kong Banana Level CrystalCaves Chunky",
+            "source": "balloon_caves_chunky",
+            "target": "banana_caves_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_caves_chunky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_caves_chunky_all_se": {
+            "id": "balloon_caves_chunky_all_se",
+            "Name": "All Banana Level CrystalCaves Chunky",
             "source": "balloon_caves_chunky",
             "target": "banana_caves",
             "type": "sideeffect",
@@ -3087,9 +4627,9 @@
                 ]
             }
         },
-        "banana_castle_donkey_se": {
-            "id": "banana_castle_donkey_se",
-            "Name": "Banana Level CreepyCastle Donkey",
+        "banana_castle_donkey_all_se": {
+            "id": "banana_castle_donkey_all_se",
+            "Name": "All Banana Level CreepyCastle Donkey",
             "source": "banana_castle_donkey",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3111,7 +4651,29 @@
         },
         "bunch_castle_donkey_se": {
             "id": "bunch_castle_donkey_se",
-            "Name": "Banana Level CreepyCastle Donkey",
+            "Name": "Kong Banana Level CreepyCastle Donkey",
+            "source": "bunch_castle_donkey",
+            "target": "banana_castle_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_castle_donkey",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_castle_donkey_all_se": {
+            "id": "bunch_castle_donkey_all_se",
+            "Name": "All Banana Level CreepyCastle Donkey",
             "source": "bunch_castle_donkey",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3133,7 +4695,29 @@
         },
         "balloon_castle_donkey_se": {
             "id": "balloon_castle_donkey_se",
-            "Name": "Banana Level CreepyCastle Donkey",
+            "Name": "Kong Banana Level CreepyCastle Donkey",
+            "source": "balloon_castle_donkey",
+            "target": "banana_castle_donkey",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_castle_donkey",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_castle_donkey_all_se": {
+            "id": "balloon_castle_donkey_all_se",
+            "Name": "All Banana Level CreepyCastle Donkey",
             "source": "balloon_castle_donkey",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3153,9 +4737,9 @@
                 ]
             }
         },
-        "banana_castle_diddy_se": {
-            "id": "banana_castle_diddy_se",
-            "Name": "Banana Level CreepyCastle Diddy",
+        "banana_castle_diddy_all_se": {
+            "id": "banana_castle_diddy_all_se",
+            "Name": "All Banana Level CreepyCastle Diddy",
             "source": "banana_castle_diddy",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3177,7 +4761,29 @@
         },
         "bunch_castle_diddy_se": {
             "id": "bunch_castle_diddy_se",
-            "Name": "Banana Level CreepyCastle Diddy",
+            "Name": "Kong Banana Level CreepyCastle Diddy",
+            "source": "bunch_castle_diddy",
+            "target": "banana_castle_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_castle_diddy",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_castle_diddy_all_se": {
+            "id": "bunch_castle_diddy_all_se",
+            "Name": "All Banana Level CreepyCastle Diddy",
             "source": "bunch_castle_diddy",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3199,7 +4805,29 @@
         },
         "balloon_castle_diddy_se": {
             "id": "balloon_castle_diddy_se",
-            "Name": "Banana Level CreepyCastle Diddy",
+            "Name": "Kong Banana Level CreepyCastle Diddy",
+            "source": "balloon_castle_diddy",
+            "target": "banana_castle_diddy",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_castle_diddy",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_castle_diddy_all_se": {
+            "id": "balloon_castle_diddy_all_se",
+            "Name": "All Banana Level CreepyCastle Diddy",
             "source": "balloon_castle_diddy",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3219,9 +4847,9 @@
                 ]
             }
         },
-        "banana_castle_lanky_se": {
-            "id": "banana_castle_lanky_se",
-            "Name": "Banana Level CreepyCastle Lanky",
+        "banana_castle_lanky_all_se": {
+            "id": "banana_castle_lanky_all_se",
+            "Name": "All Banana Level CreepyCastle Lanky",
             "source": "banana_castle_lanky",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3243,7 +4871,29 @@
         },
         "bunch_castle_lanky_se": {
             "id": "bunch_castle_lanky_se",
-            "Name": "Banana Level CreepyCastle Lanky",
+            "Name": "Kong Banana Level CreepyCastle Lanky",
+            "source": "bunch_castle_lanky",
+            "target": "banana_castle_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_castle_lanky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_castle_lanky_all_se": {
+            "id": "bunch_castle_lanky_all_se",
+            "Name": "All Banana Level CreepyCastle Lanky",
             "source": "bunch_castle_lanky",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3265,7 +4915,29 @@
         },
         "balloon_castle_lanky_se": {
             "id": "balloon_castle_lanky_se",
-            "Name": "Banana Level CreepyCastle Lanky",
+            "Name": "Kong Banana Level CreepyCastle Lanky",
+            "source": "balloon_castle_lanky",
+            "target": "banana_castle_lanky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_castle_lanky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_castle_lanky_all_se": {
+            "id": "balloon_castle_lanky_all_se",
+            "Name": "All Banana Level CreepyCastle Lanky",
             "source": "balloon_castle_lanky",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3285,9 +4957,9 @@
                 ]
             }
         },
-        "banana_castle_tiny_se": {
-            "id": "banana_castle_tiny_se",
-            "Name": "Banana Level CreepyCastle Tiny",
+        "banana_castle_tiny_all_se": {
+            "id": "banana_castle_tiny_all_se",
+            "Name": "All Banana Level CreepyCastle Tiny",
             "source": "banana_castle_tiny",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3309,7 +4981,29 @@
         },
         "bunch_castle_tiny_se": {
             "id": "bunch_castle_tiny_se",
-            "Name": "Banana Level CreepyCastle Tiny",
+            "Name": "Kong Banana Level CreepyCastle Tiny",
+            "source": "bunch_castle_tiny",
+            "target": "banana_castle_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_castle_tiny",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_castle_tiny_all_se": {
+            "id": "bunch_castle_tiny_all_se",
+            "Name": "All Banana Level CreepyCastle Tiny",
             "source": "bunch_castle_tiny",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3331,7 +5025,29 @@
         },
         "balloon_castle_tiny_se": {
             "id": "balloon_castle_tiny_se",
-            "Name": "Banana Level CreepyCastle Tiny",
+            "Name": "Kong Banana Level CreepyCastle Tiny",
+            "source": "balloon_castle_tiny",
+            "target": "banana_castle_tiny",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_castle_tiny",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_castle_tiny_all_se": {
+            "id": "balloon_castle_tiny_all_se",
+            "Name": "All Banana Level CreepyCastle Tiny",
             "source": "balloon_castle_tiny",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3351,9 +5067,9 @@
                 ]
             }
         },
-        "banana_castle_chunky_se": {
-            "id": "banana_castle_chunky_se",
-            "Name": "Banana Level CreepyCastle Chunky",
+        "banana_castle_chunky_all_se": {
+            "id": "banana_castle_chunky_all_se",
+            "Name": "All Banana Level CreepyCastle Chunky",
             "source": "banana_castle_chunky",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3375,7 +5091,29 @@
         },
         "bunch_castle_chunky_se": {
             "id": "bunch_castle_chunky_se",
-            "Name": "Banana Level CreepyCastle Chunky",
+            "Name": "Kong Banana Level CreepyCastle Chunky",
+            "source": "bunch_castle_chunky",
+            "target": "banana_castle_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_castle_chunky",
+                        "Amount": 5
+                    }
+                ]
+            }
+        },
+        "bunch_castle_chunky_all_se": {
+            "id": "bunch_castle_chunky_all_se",
+            "Name": "All Banana Level CreepyCastle Chunky",
             "source": "bunch_castle_chunky",
             "target": "banana_castle",
             "type": "sideeffect",
@@ -3397,7 +5135,29 @@
         },
         "balloon_castle_chunky_se": {
             "id": "balloon_castle_chunky_se",
-            "Name": "Banana Level CreepyCastle Chunky",
+            "Name": "Kong Banana Level CreepyCastle Chunky",
+            "source": "balloon_castle_chunky",
+            "target": "banana_castle_chunky",
+            "type": "sideeffect",
+            "sourceType": "Item",
+            "targetType": "Item",
+            "Types": "Multi",
+            "Class": "SideEffect",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "banana_castle_chunky",
+                        "Amount": 10
+                    }
+                ]
+            }
+        },
+        "balloon_castle_chunky_all_se": {
+            "id": "balloon_castle_chunky_all_se",
+            "Name": "All Banana Level CreepyCastle Chunky",
             "source": "balloon_castle_chunky",
             "target": "banana_castle",
             "type": "sideeffect",

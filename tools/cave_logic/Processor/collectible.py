@@ -1,3 +1,4 @@
+
 import json
 import sys
 import os
@@ -9,16 +10,15 @@ parent_dir = os.path.abspath(os.path.join(
     os.path.dirname(__file__), '../../../'))
 sys.path.append(parent_dir)
 
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Collectibles import Collectibles
+from tools.cave_logic.ast_logic import level_names
 from tools.cave_logic.Processor.Classes import ItemNode, EventNode
 
-from tools.cave_logic.ast_logic import level_names
 
-from randomizer.Enums.Collectibles import Collectibles
-from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Items import Items
-
-def side_effect_edge(id,source, target, name, amount):
+def side_effect_edge(id, source, target, name, amount):
     return {
         "id": id,
         "Name": name,
@@ -42,6 +42,7 @@ def side_effect_edge(id,source, target, name, amount):
         }
     }
 
+
 def collectible_node(id, name):
     return {
         "id": id,
@@ -49,14 +50,28 @@ def collectible_node(id, name):
         "Type": 'Collectible'
     }
 
-def collectible_kong_node_and_side_effect(collectible: Collectibles,level_banana_id, kong_level_suffix, kong_level_name, multiplier):
+
+def collectible_kong_node_and_side_effect(collectible: Collectibles, level_banana_id, kong_level_suffix, kong_level_name, multiplier):
     kong_level_id = collectible.name + "_" + kong_level_suffix
-    bana = collectible_node(kong_level_id, kong_level_name + " " + collectible.name.title())
+    result = []
+    bana = collectible_node(
+        kong_level_id, kong_level_name + " " + collectible.name.title())
+    result.append(bana)
 
-    b_k_id = kong_level_id + "_se"
-    se = side_effect_edge(b_k_id, kong_level_id, level_banana_id, "Banana Level " + kong_level_name, multiplier)
+    # when collecting bunches and balloons we need 
+    # to account for them as single bananas
+    if collectible == Collectibles.bunch or collectible == Collectibles.balloon:
+        se_kong = side_effect_edge(kong_level_id + "_se", kong_level_id,
+                    "banana_"+kong_level_suffix, "Kong Banana Level " + kong_level_name, multiplier)
+        result.append(se_kong)
 
-    return [bana, se]
+    # for TnS
+    # we are accounting for all banana/bunches/balloons
+    se_all = side_effect_edge(kong_level_id + "_all_se", kong_level_id,
+                              level_banana_id, "All Banana Level " + kong_level_name, multiplier)
+    result.append(se_all)
+    return result
+
 
 def build_collectibles():
     nodes = {}
@@ -66,43 +81,51 @@ def build_collectibles():
             continue
 
         coin_id = Collectibles.coin.name + "_" + kong.name
-        coin =  collectible_node(coin_id, kong.name.title() + " " + Collectibles.coin.name.title())
+        coin = collectible_node(
+            coin_id, kong.name.title() + " " + Collectibles.coin.name.title())
 
         nodes[coin['id']] = coin
 
         rc = Items.RainbowCoin.name.lower()
         rc_kong = rc + "_" + kong.name
-        
-        edges[rc_kong] = side_effect_edge(rc_kong, rc, coin_id, "Rainbow Coin " + kong.name.title(), 5)
+
+        edges[rc_kong] = side_effect_edge(
+            rc_kong, rc, coin_id, "Rainbow Coin " + kong.name.title(), 5)
 
     for level in level_names:
-        
-        level_suffix = (level_names[level].lower()) 
+
+        level_suffix = (level_names[level].lower())
         level_banana_id = Collectibles.banana.name + "_" + level_suffix
-        lcb = collectible_node(level_banana_id, level + " " + Collectibles.banana.name.title())
+        lcb = collectible_node(level_banana_id, level +
+                               " " + Collectibles.banana.name.title())
         nodes[lcb['id']] = lcb
-        
 
         for kong in Kongs:
-                if kong == Kongs.any:
-                    continue
-                kong_level_suffix = level_suffix + "_" + kong.name
-                kong_level_name = level + " " + kong.name.title()
+            if kong == Kongs.any:
+                continue
+            kong_level_suffix = level_suffix + "_" + kong.name
+            kong_level_name = level + " " + kong.name.title()
 
-                arr = collectible_kong_node_and_side_effect(Collectibles.banana,level_banana_id, kong_level_suffix, kong_level_name, 1)
-                nodes[arr[0]['id']] = arr[0]
-                edges[arr[1]['id']] = arr[1]
+            arr = collectible_kong_node_and_side_effect(
+                Collectibles.banana, level_banana_id, kong_level_suffix, kong_level_name, 1)
+            nodes[arr[0]['id']] = arr[0]
+            edges[arr[1]['id']] = arr[1] 
 
-                arr = collectible_kong_node_and_side_effect(Collectibles.bunch,level_banana_id, kong_level_suffix, kong_level_name, 5)
-                nodes[arr[0]['id']] = arr[0]
-                edges[arr[1]['id']] = arr[1]
+            arr = collectible_kong_node_and_side_effect(
+                Collectibles.bunch, level_banana_id, kong_level_suffix, kong_level_name, 5)
+            nodes[arr[0]['id']] = arr[0]
+            edges[arr[1]['id']] = arr[1]
+            edges[arr[2]['id']] = arr[2]
 
-                arr = collectible_kong_node_and_side_effect(Collectibles.balloon,level_banana_id, kong_level_suffix, kong_level_name, 10)
-                nodes[arr[0]['id']] = arr[0]
-                edges[arr[1]['id']] = arr[1]
-               
-    return {'nodes':nodes, 'edges':edges}
 
+            arr = collectible_kong_node_and_side_effect(
+                Collectibles.balloon, level_banana_id, kong_level_suffix, kong_level_name, 10)
+            nodes[arr[0]['id']] = arr[0]
+            edges[arr[1]['id']] = arr[1]
+            edges[arr[2]['id']] = arr[2]
+
+
+    return {'nodes': nodes, 'edges': edges}
 
 
 # banana_galleon_diddy

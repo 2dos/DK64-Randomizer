@@ -57562,323 +57562,323 @@
         }
     },
     "checks_nodes": {
-        "li-islestinyazteclobby-mg": {
-            "id": "li-islestinyazteclobby-mg",
-            "Name": "Isles Tiny Aztec Lobby Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-islestinyazteclobby": {
+            "id": "rr-li-islestinyazteclobby",
+            "Name": "Isles Tiny Aztec Lobby Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-islesdiddysnideslobby-mg": {
-            "id": "li-islesdiddysnideslobby-mg",
-            "Name": "Isles Diddy Snides Spring Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-islesdiddysnideslobby": {
+            "id": "rr-li-islesdiddysnideslobby",
+            "Name": "Isles Diddy Snides Spring Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-islesdiddysummit-mg": {
-            "id": "li-islesdiddysummit-mg",
-            "Name": "Isles Diddy Summit Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-islesdiddysummit": {
+            "id": "rr-li-islesdiddysummit",
+            "Name": "Isles Diddy Summit Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-isleslankycastlelobby-mg": {
-            "id": "li-isleslankycastlelobby-mg",
-            "Name": "Isles Lanky Castle Lobby Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-isleslankycastlelobby": {
+            "id": "rr-li-isleslankycastlelobby",
+            "Name": "Isles Lanky Castle Lobby Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-isleschunkyhelmlobby-mg": {
-            "id": "li-isleschunkyhelmlobby-mg",
-            "Name": "Isles Chunky Helm Lobby Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-isleschunkyhelmlobby": {
+            "id": "rr-li-isleschunkyhelmlobby",
+            "Name": "Isles Chunky Helm Lobby Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-japeslankygrapegate-mg": {
-            "id": "li-japeslankygrapegate-mg",
-            "Name": "Japes Lanky Grape Gate Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-japeslankygrapegate": {
+            "id": "rr-li-japeslankygrapegate",
+            "Name": "Japes Lanky Grape Gate Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-japestinyfeathergatebarrel-mg": {
-            "id": "li-japestinyfeathergatebarrel-mg",
-            "Name": "Japes Tiny Feather Gate Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-japestinyfeathergatebarrel": {
+            "id": "rr-li-japestinyfeathergatebarrel",
+            "Name": "Japes Tiny Feather Gate Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-japeschunkygiantbonusbarrel-mg": {
-            "id": "li-japeschunkygiantbonusbarrel-mg",
-            "Name": "Japes Chunky Giant Bonus Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-japeschunkygiantbonusbarrel": {
+            "id": "rr-li-japeschunkygiantbonusbarrel",
+            "Name": "Japes Chunky Giant Bonus Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-japeslankyslope-mg": {
-            "id": "li-japeslankyslope-mg",
-            "Name": "Japes Lanky Slope Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-japeslankyslope": {
+            "id": "rr-li-japeslankyslope",
+            "Name": "Japes Lanky Slope Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-aztecdonkeyquicksandcave-mg": {
-            "id": "li-aztecdonkeyquicksandcave-mg",
-            "Name": "Aztec Donkey Sealed Quicksand Tunnel Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-aztecdonkeyquicksandcave": {
+            "id": "rr-li-aztecdonkeyquicksandcave",
+            "Name": "Aztec Donkey Sealed Quicksand Tunnel Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-aztecchunkycagedbarrel-mg": {
-            "id": "li-aztecchunkycagedbarrel-mg",
-            "Name": "Aztec Chunky Giant Caged Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-aztecchunkycagedbarrel": {
+            "id": "rr-li-aztecchunkycagedbarrel",
+            "Name": "Aztec Chunky Giant Caged Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-azteclanky5doortemple-mg": {
-            "id": "li-azteclanky5doortemple-mg",
-            "Name": "Aztec Lanky 5 Door Temple Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-azteclanky5doortemple": {
+            "id": "rr-li-azteclanky5doortemple",
+            "Name": "Aztec Lanky 5 Door Temple",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-aztecchunky5doortemple-mg": {
-            "id": "li-aztecchunky5doortemple-mg",
-            "Name": "Aztec Chunky 5 Door Temple Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-aztecchunky5doortemple": {
+            "id": "rr-li-aztecchunky5doortemple",
+            "Name": "Aztec Chunky 5 Door Temple",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-azteclankyllamatemplebarrel-mg": {
-            "id": "li-azteclankyllamatemplebarrel-mg",
-            "Name": "Aztec Lanky Llama Temple Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-azteclankyllamatemplebarrel": {
+            "id": "rr-li-azteclankyllamatemplebarrel",
+            "Name": "Aztec Lanky Llama Temple Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-factorydiddyblocktower-mg": {
-            "id": "li-factorydiddyblocktower-mg",
-            "Name": "Factory Diddy Block Tower Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-factorydiddyblocktower": {
+            "id": "rr-li-factorydiddyblocktower",
+            "Name": "Factory Diddy Block Tower",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-factorylankytestingroombarrel-mg": {
-            "id": "li-factorylankytestingroombarrel-mg",
-            "Name": "Factory Lanky Testing Room Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-factorylankytestingroombarrel": {
+            "id": "rr-li-factorylankytestingroombarrel",
+            "Name": "Factory Lanky Testing Room Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-factorydiddychunkyroombarrel-mg": {
-            "id": "li-factorydiddychunkyroombarrel-mg",
-            "Name": "Factory Diddy Storage Room Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-factorydiddychunkyroombarrel": {
+            "id": "rr-li-factorydiddychunkyroombarrel",
+            "Name": "Factory Diddy Storage Room Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-factorychunkybyarcade-mg": {
-            "id": "li-factorychunkybyarcade-mg",
-            "Name": "Factory Chunky Barrel by Arcade Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-factorychunkybyarcade": {
+            "id": "rr-li-factorychunkybyarcade",
+            "Name": "Factory Chunky Barrel by Arcade",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-factorytinyproductionroom-mg": {
-            "id": "li-factorytinyproductionroom-mg",
-            "Name": "Factory Tiny Production Twirl Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-factorytinyproductionroom": {
+            "id": "rr-li-factorytinyproductionroom",
+            "Name": "Factory Tiny Production Twirl",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-galleondiddygoldtower-mg": {
-            "id": "li-galleondiddygoldtower-mg",
-            "Name": "Galleon Diddy Gold Tower Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-galleondiddygoldtower": {
+            "id": "rr-li-galleondiddygoldtower",
+            "Name": "Galleon Diddy Gold Tower Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-galleonlankygoldtower-mg": {
-            "id": "li-galleonlankygoldtower-mg",
-            "Name": "Galleon Lanky Gold Tower Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-galleonlankygoldtower": {
+            "id": "rr-li-galleonlankygoldtower",
+            "Name": "Galleon Lanky Gold Tower Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-galleontinysubmarine-mg": {
-            "id": "li-galleontinysubmarine-mg",
-            "Name": "Galleon Tiny Submarine Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-galleontinysubmarine": {
+            "id": "rr-li-galleontinysubmarine",
+            "Name": "Galleon Tiny Submarine Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-galleontiny2doorship-mg": {
-            "id": "li-galleontiny2doorship-mg",
-            "Name": "Galleon Tiny 2 Door Ship Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-galleontiny2doorship": {
+            "id": "rr-li-galleontiny2doorship",
+            "Name": "Galleon Tiny 2 Door Ship",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-galleondonkey5doorship-mg": {
-            "id": "li-galleondonkey5doorship-mg",
-            "Name": "Galleon Donkey 5 Door Ship Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-galleondonkey5doorship": {
+            "id": "rr-li-galleondonkey5doorship",
+            "Name": "Galleon Donkey 5 Door Ship",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-galleondiddy5doorship-mg": {
-            "id": "li-galleondiddy5doorship-mg",
-            "Name": "Galleon Diddy 5 Door Ship Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-galleondiddy5doorship": {
+            "id": "rr-li-galleondiddy5doorship",
+            "Name": "Galleon Diddy 5 Door Ship",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-galleonchunky5doorship-mg": {
-            "id": "li-galleonchunky5doorship-mg",
-            "Name": "Galleon Chunky 5 Door Ship Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-galleonchunky5doorship": {
+            "id": "rr-li-galleonchunky5doorship",
+            "Name": "Galleon Chunky 5 Door Ship",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-forestdiddytopofmushroom-mg": {
-            "id": "li-forestdiddytopofmushroom-mg",
-            "Name": "Forest Diddy Top of Mushroom Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-forestdiddytopofmushroom": {
+            "id": "rr-li-forestdiddytopofmushroom",
+            "Name": "Forest Diddy Top of Mushroom Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-foresttinymushroombarrel-mg": {
-            "id": "li-foresttinymushroombarrel-mg",
-            "Name": "Forest Tiny Mushroom Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-foresttinymushroombarrel": {
+            "id": "rr-li-foresttinymushroombarrel",
+            "Name": "Forest Tiny Mushroom Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-forestdonkeybaboonblast-mg": {
-            "id": "li-forestdonkeybaboonblast-mg",
-            "Name": "Forest Donkey Baboon Blast Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-forestdonkeybaboonblast": {
+            "id": "rr-li-forestdonkeybaboonblast",
+            "Name": "Forest Donkey Baboon Blast",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-forestlankycoloredmushrooms-mg": {
-            "id": "li-forestlankycoloredmushrooms-mg",
-            "Name": "Forest Lanky Colored Mushroom Slam Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-forestlankycoloredmushrooms": {
+            "id": "rr-li-forestlankycoloredmushrooms",
+            "Name": "Forest Lanky Colored Mushroom Slam",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-forestdiddyowlrace-mg": {
-            "id": "li-forestdiddyowlrace-mg",
-            "Name": "Forest Diddy Owl Race Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-forestdiddyowlrace": {
+            "id": "rr-li-forestdiddyowlrace",
+            "Name": "Forest Diddy Owl Race",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-forestdonkeybarn-mg": {
-            "id": "li-forestdonkeybarn-mg",
-            "Name": "Forest Donkey Thornvine Barn Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-forestdonkeybarn": {
+            "id": "rr-li-forestdonkeybarn",
+            "Name": "Forest Donkey Thornvine Barn Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-cavesdonkeybaboonblast-mg": {
-            "id": "li-cavesdonkeybaboonblast-mg",
-            "Name": "Caves Donkey Baboon Blast Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-cavesdonkeybaboonblast": {
+            "id": "rr-li-cavesdonkeybaboonblast",
+            "Name": "Caves Donkey Baboon Blast",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-cavesdiddyjetpackbarrel-mg": {
-            "id": "li-cavesdiddyjetpackbarrel-mg",
-            "Name": "Caves Diddy Jetpack Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-cavesdiddyjetpackbarrel": {
+            "id": "rr-li-cavesdiddyjetpackbarrel",
+            "Name": "Caves Diddy Jetpack Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-cavestinycavebarrel-mg": {
-            "id": "li-cavestinycavebarrel-mg",
-            "Name": "Caves Tiny Mini Cave Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-cavestinycavebarrel": {
+            "id": "rr-li-cavestinycavebarrel",
+            "Name": "Caves Tiny Mini Cave Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-caveschunky5doorcabin-mg": {
-            "id": "li-caveschunky5doorcabin-mg",
-            "Name": "Caves Chunky 5 Door Cabin Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-caveschunky5doorcabin": {
+            "id": "rr-li-caveschunky5doorcabin",
+            "Name": "Caves Chunky 5 Door Cabin",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-castlediddyabovecastle-mg": {
-            "id": "li-castlediddyabovecastle-mg",
-            "Name": "Castle Diddy Above Castle Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-castlediddyabovecastle": {
+            "id": "rr-li-castlediddyabovecastle",
+            "Name": "Castle Diddy Above Castle",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-castlechunkytree-mg": {
-            "id": "li-castlechunkytree-mg",
-            "Name": "Castle Chunky Tree Sniping Barrel Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-castlechunkytree": {
+            "id": "rr-li-castlechunkytree",
+            "Name": "Castle Chunky Tree Sniping Barrel",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-castlediddyballroom-mg": {
-            "id": "li-castlediddyballroom-mg",
-            "Name": "Castle Diddy Ballroom Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-castlediddyballroom": {
+            "id": "rr-li-castlediddyballroom",
+            "Name": "Castle Diddy Ballroom",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-castlelankytower-mg": {
-            "id": "li-castlelankytower-mg",
-            "Name": "Castle Lanky Tower Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-castlelankytower": {
+            "id": "rr-li-castlelankytower",
+            "Name": "Castle Lanky Tower",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-castlechunkycrypt-mg": {
-            "id": "li-castlechunkycrypt-mg",
-            "Name": "Castle Chunky Crypt Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-castlechunkycrypt": {
+            "id": "rr-li-castlechunkycrypt",
+            "Name": "Castle Chunky Crypt",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-castletinyoverchasm-mg": {
-            "id": "li-castletinyoverchasm-mg",
-            "Name": "Castle Tiny Over Chasm Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-castletinyoverchasm": {
+            "id": "rr-li-castletinyoverchasm",
+            "Name": "Castle Tiny Over Chasm",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-castlelankydungeon-mg": {
-            "id": "li-castlelankydungeon-mg",
-            "Name": "Castle Lanky Dungeon Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-castlelankydungeon": {
+            "id": "rr-li-castlelankydungeon",
+            "Name": "Castle Lanky Dungeon",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-helmdonkey1-mg": {
-            "id": "li-helmdonkey1-mg",
-            "Name": "Helm Donkey Barrel 1 Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-helmdonkey1": {
+            "id": "rr-li-helmdonkey1",
+            "Name": "Helm Donkey Barrel 1",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-helmdonkey2-mg": {
-            "id": "li-helmdonkey2-mg",
-            "Name": "Helm Donkey Barrel 2 Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-helmdonkey2": {
+            "id": "rr-li-helmdonkey2",
+            "Name": "Helm Donkey Barrel 2",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-helmdiddy1-mg": {
-            "id": "li-helmdiddy1-mg",
-            "Name": "Helm Diddy Barrel 1 Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-helmdiddy1": {
+            "id": "rr-li-helmdiddy1",
+            "Name": "Helm Diddy Barrel 1",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-helmdiddy2-mg": {
-            "id": "li-helmdiddy2-mg",
-            "Name": "Helm Diddy Barrel 2 Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-helmdiddy2": {
+            "id": "rr-li-helmdiddy2",
+            "Name": "Helm Diddy Barrel 2",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-helmlanky1-mg": {
-            "id": "li-helmlanky1-mg",
-            "Name": "Helm Lanky Barrel 1 Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-helmlanky1": {
+            "id": "rr-li-helmlanky1",
+            "Name": "Helm Lanky Barrel 1",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-helmlanky2-mg": {
-            "id": "li-helmlanky2-mg",
-            "Name": "Helm Lanky Barrel 2 Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-helmlanky2": {
+            "id": "rr-li-helmlanky2",
+            "Name": "Helm Lanky Barrel 2",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-helmtiny1-mg": {
-            "id": "li-helmtiny1-mg",
-            "Name": "Helm Tiny Barrel 1 Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-helmtiny1": {
+            "id": "rr-li-helmtiny1",
+            "Name": "Helm Tiny Barrel 1",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-helmtiny2-mg": {
-            "id": "li-helmtiny2-mg",
-            "Name": "Helm Tiny Barrel 2 Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-helmtiny2": {
+            "id": "rr-li-helmtiny2",
+            "Name": "Helm Tiny Barrel 2",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-helmchunky1-mg": {
-            "id": "li-helmchunky1-mg",
-            "Name": "Helm Chunky Barrel 1 Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-helmchunky1": {
+            "id": "rr-li-helmchunky1",
+            "Name": "Helm Chunky Barrel 1",
+            "Class": "Region",
+            "Type": "Region"
         },
-        "li-helmchunky2-mg": {
-            "id": "li-helmchunky2-mg",
-            "Name": "Helm Chunky Barrel 2 Minigame",
-            "Class": "Item",
-            "Type": "Minigame"
+        "rr-li-helmchunky2": {
+            "id": "rr-li-helmchunky2",
+            "Name": "Helm Chunky Barrel 2",
+            "Class": "Region",
+            "Type": "Region"
         }
     }
 }

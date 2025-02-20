@@ -62,6 +62,7 @@ def location_to_edge(id, location):
 
     bb = checkList[id]["bonusBarrel"] if id in checkList else None
     checkMinigameNode = None
+    checkAsRegionNode = None
     if bb:
         checkMinigameNode = {
             "id":checkId+"-mg",
@@ -70,12 +71,19 @@ def location_to_edge(id, location):
             "Type": "Minigame"
         }
 
+        checkAsRegionNode = {
+            "id": "rr-" + checkId,
+            "Name": location.name,
+            "Class": "Region",
+            "Type": "Region"
+        }
+
     if bb == MinigameType.HelmBarrel:
         target = id.name.lower()
         logic = True #{ "combinator": "AND", "rules": [ { "Name": checkId+"-mg" } ] }
 
     return { 
-        "node": checkMinigameNode,
+        "node": checkAsRegionNode,
         "edge" : CheckEdge(checkId, location.name, source, target, location.type.name, "Check", logic,location.kong.name).to_dict()
     }
 
