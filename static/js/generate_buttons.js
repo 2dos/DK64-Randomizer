@@ -455,7 +455,9 @@ function uuidv4() {
 async function import_settings_string(event) {
     // Click event for importing settings from a string.
 
-    event.preventDefault();
+    if (event != null) {
+        event.preventDefault();
+    }
     
     document.getElementById("settings_string").value = document.getElementById("settings_string").value.trim();
     const settingsString = document.getElementById("settings_string").value;

@@ -1118,18 +1118,6 @@ function disable_music() {
 document
   .getElementById("random_music")
   .addEventListener("click", disable_music);
-// Enable Kong Rando if less than 5 starting kongs
-document
-  .getElementById("starting_kongs_count")
-  .addEventListener("change", function (evt) {
-    const kongRando = document.getElementById("kong_rando");
-    if (document.getElementById("starting_kongs_count").value == "5") {
-      kongRando.checked = false;
-      kongRando.setAttribute("disabled", "disabled");
-    } else {
-      kongRando.removeAttribute("disabled");
-    }
-  });
 
 // Disable K Rool options when Randomize All is selected
 function disable_krool_phases() {
@@ -1231,6 +1219,8 @@ function toggle_item_rando() {
   if (!disabled) {
     elements.kongRando.toggleAttribute("disabled", kongsInPool);
     elements.kongRando.checked = kongsInPool;
+  } else {
+    elements.kongRando.removeAttribute("disabled");
   }
 
   if (!disabled && shopsInPool) {
