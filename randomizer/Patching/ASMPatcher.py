@@ -1557,7 +1557,7 @@ def patchAssembly(ROM_COPY, spoiler):
         if settings.progressive_hint_item == ProgressiveHintItem.off:  # Progressive hints are disabled, hints are on doors
             if settings.wrinkly_hints != WrinklyHints.off:  # Hints have something of value
                 needs_textboxes_for_hints = True
-        if settings.item_reward_previews:
+        if settings.item_reward_previews:  # Textboxes will detail information about the item
             needs_textboxes_for_hints = True
         if needs_textboxes_for_hints:
             writeValue(ROM_COPY, 0x8075A788, Overlay.Static, 0x40026666, offset_dict, 4)
