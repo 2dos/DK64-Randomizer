@@ -162,38 +162,40 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  # master_worker:
-  #   build:
-  #     context: ./
-  #     dockerfile: ./worker/Dockerfile
-  #     args:
-  #       - BRANCH=${MASTER_BRANCH:-master}
-  #   depends_on:
-  #     - redis
-  #   restart: always
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - task_network
-  #   environment:
-  #     - CLIENT_ID=${CLIENT_ID}
-  #     - CLIENT_SECRET=${CLIENT_SECRET}
-  #     - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
-  #     - BRANCH=${MASTER_BRANCH:-master}
-  #     - OTEL_RESOURCE_ATTRIBUTES=service.name=master_worker,service.version=1.0.0,deployment.environment=${MASTER_BRANCH:-master}
-  #   volumes:
-  #     - ./dk64.z64:/app/worker/dk64.z64
-  #     - ./generated_seeds/:/app/worker/generated_seeds/
-  #     - ./current_total.cfg:/app/worker/current_total.cfg
-  #     - ./last_generated_time.cfg:/app/worker/last_generated_time.cfg
-  #   deploy:
-  #     replicas: ${MASTER_WORKER_REPLICAS:-3}
-  #     update_config:
-  #       parallelism: 1
-  #       delay: 10s
-  #       order: start-first
-  #   extra_hosts:
-  #     - "host.docker.internal:host-gateway"
+  master_worker:
+    build:
+      context: ./
+      dockerfile: ./worker/Dockerfile
+      args:
+        - BRANCH=${MASTER_BRANCH:-master}
+    depends_on:
+      - redis
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - task_network
+    environment:
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
+      - BRANCH=${MASTER_BRANCH:-master}
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=master_worker,service.version=1.0.0,deployment.environment=${MASTER_BRANCH:-master}
+    volumes:
+      - ./dk64.z64:/app/worker/dk64.z64
+      - ./generated_seeds/:/app/worker/generated_seeds/
+      - ./current_total.cfg:/app/worker/current_total.cfg
+      - ./last_generated_time.cfg:/app/worker/last_generated_time.cfg
+    deploy:
+      replicas: ${MASTER_WORKER_REPLICAS:-3}
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    profiles:
+      - master
 
 networks:
   task_network:
