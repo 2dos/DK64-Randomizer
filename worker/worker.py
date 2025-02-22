@@ -42,13 +42,15 @@ from opentelemetry_instrumentation_rq import RQInstrumentor
 from randomizer.Lists.Exceptions import SettingsIncompatibleException, PlandoIncompatibleException
 from opentelemetry.instrumentation.redis import RedisInstrumentor
 
-
-listen = ["tasks_high_priority", "tasks_low_priority"]  # High-priority first
+BRANCH = os.environ.get("BRANCH", "LOCAL")
+listen_branch = BRANCH
+if BRANCH == "master":
+    listen_branch = "stable"
+listen = [f"tasks_high_priority_{listen_branch}", f"tasks_low_priority_{listen_branch}"]  # High-priority first
 redis_conn = Redis(host="redis", port=6379)
 job_timeout = 300  # Timeout in seconds (5 minutes)
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
-BRANCH = os.environ.get("BRANCH", "LOCAL")
 # Define a resource to identify your service
 resource = Resource(
     attributes={
@@ -100,23 +102,6 @@ class PriorityAwareWorker(Worker):
         """Process a job from the queue."""
         # Log which queue the job came from and its metadata
         user_ip = job.meta.get("ip", "unknown")
-        job_branch = job.meta.get("branch", "stable")
-        mapped_branch = "dev"
-        if BRANCH == "master":
-            mapped_branch = "stable"
-        if job_branch != mapped_branch:
-            print(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
-            logger.info(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
-            # Check how long the job has been in the queue
-            try:
-                if job.enqueued_at is not None and (job.enqueued_at - job.started_at).total_seconds() > 60 * 60 * 24:
-                    print(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
-                    logger.info(f"Job {job.id} has been in the queue for over 24 hours, cancelling it")
-                    job.cancel()
-            except Exception:
-                print(f"Failed to check job duration, cancelling it")
-                logger.info(f"Failed to check job duration, cancelling it")
-            return
         print(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip}) with metadata: {json.dumps(job.meta)}")
         logger.info(f"Processing job {job.id} from queue '{queue.name}' (IP: {user_ip}) with metadata: {json.dumps(job.meta)}")
 
