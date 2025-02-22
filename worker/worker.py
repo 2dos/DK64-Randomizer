@@ -101,7 +101,10 @@ class PriorityAwareWorker(Worker):
         # Log which queue the job came from and its metadata
         user_ip = job.meta.get("ip", "unknown")
         job_branch = job.meta.get("branch", "stable")
-        if job_branch != BRANCH and BRANCH != "LOCAL":
+        mapped_branch = "dev"
+        if BRANCH == "master":
+            mapped_branch = "stable"
+        if job_branch != mapped_branch:
             print(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
             logger.info(f"Skipping job {job.id} from queue '{queue.name}' (IP: {user_ip}) due to branch mismatch (job branch: {job_branch}, expected: {BRANCH})")
             # Check how long the job has been in the queue

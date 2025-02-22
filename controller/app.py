@@ -334,7 +334,7 @@ def get_version():
 @enforce_api_restrictions()
 def get_presets():
     """Get the presets for the randomizer."""
-    branch = request.args.get("branch")
+    branch = request.args.get("branch", "stable")
     return_blank = request.args.get("return_blank")
     presets_to_return = []
     presets = update_presets()
@@ -394,7 +394,7 @@ def admin_presets():
     content = request.json
     local_presets = update_presets()
     # Check if branch is in the body
-    branch = content.get("branch", "")
+    branch = content.get("branch", "stable")
     if branch not in ["stable", "dev"]:
         return set_response(json.dumps({"message": "Invalid branch"}), 400)
     if request.method == "PUT":
@@ -440,7 +440,7 @@ def move_preset():
     moving_up = content.get("moving_up", False)
     local_presets = update_presets()
     # Check if branch is in the body
-    branch = content.get("branch", "")
+    branch = content.get("branch", "stable")
     if branch not in ["stable", "dev"]:
         return set_response(json.dumps({"message": "Invalid branch"}), 400)
     preset_name = content.get("name")
@@ -601,7 +601,7 @@ def get_selector_info():
     """Get the selector data for the randomizer."""
     # If the branch arg is master call os.environ.get("WORKER_URL_MASTER") with requests
     # Else call os.environ.get("WORKER_URL_DEV") with requests
-    url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "stable" else environ.get("WORKER_URL_DEV")
+    url = environ.get("WORKER_URL_DEV") if request.args.get("branch") == "dev" else environ.get("WORKER_URL_MASTER")
     if not url:
         url = "http://127.0.0.1:8000"
     response = requests.get(f"{url}/get_selector_info")
@@ -612,7 +612,7 @@ def get_selector_info():
 @enforce_api_restrictions()
 def convert_settings():
     """Convert settings for the randomizer."""
-    url = environ.get("WORKER_URL_MASTER") if request.args.get("branch") == "stable" else environ.get("WORKER_URL_DEV")
+    url = environ.get("WORKER_URL_DEV") if request.args.get("branch") == "dev" else environ.get("WORKER_URL_MASTER")
     if not url:
         url = "http://127.0.0.1:8000"
     data = request.get_json()
