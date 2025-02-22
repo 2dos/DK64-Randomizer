@@ -25,6 +25,7 @@ services:
     depends_on:
       - redis
       - dev_worker
+      - master_worker
       - nginx
     volumes:
       - ./generated_seeds/:/app/controller/generated_seeds/
