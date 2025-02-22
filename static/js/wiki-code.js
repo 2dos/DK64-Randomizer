@@ -370,8 +370,11 @@ function filterHTML(element, output_html) {
     const img_buttons = content_hook.getElementsByTagName("imgbtn");
     while (img_buttons.length > 0) {
         const btn_img = img_buttons[0].getAttribute("img");
-        const btn_href = img_buttons[0].getAttribute("href");
+        let btn_href = img_buttons[0].getAttribute("href");
         const btn_text = img_buttons[0].getAttribute("text");
+        if (btn_href.substring(0, 2) == "./") {
+            btn_href = `index.html?title=${btn_href.substring(2)}`
+        }
         img_buttons[0].outerHTML = `<div class="img-btn-container p-3 m-2 user-select-none" onclick="goTo('${btn_href}')"><img src=${btn_img} /><div class="img-btn-text">${btn_text}</div></div>`
     }
     // Image Info
