@@ -1046,7 +1046,7 @@ function check_spoiler_unlocked(hash) {
   if (window.location.hostname == "dev.dk64randomizer.com") {
     var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=dev";
   } else if (window.location.hostname == "dk64randomizer.com") {
-    var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=master";
+    var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=stable";
   } else {
     var url = "http://localhost:8000/api/get_spoiler_log?branch=dev";
   }
@@ -1079,7 +1079,7 @@ function unlock_spoiler_log(hash) {
   if (window.location.hostname == "dev.dk64randomizer.com") {
     var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=dev";
   } else if (window.location.hostname == "dk64randomizer.com") {
-    var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=master";
+    var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=stable";
   } else {
     var url = "http://localhost:8000/api/get_spoiler_log?branch=dev";
   }
