@@ -78,7 +78,7 @@ preset_choices = [app_commands.Choice(name=preset_name, value=preset_name) for p
 # Add the custom preset choice
 preset_choices.append(app_commands.Choice(name="Custom", value="custom"))
 version_choices = [app_commands.Choice(name="Dev", value="dev")]
-# version_choices.append(app_commands.Choice(name="Stable", value="stable"))
+version_choices.append(app_commands.Choice(name="Stable", value="stable"))
 
 
 client = discord.Client(intents=intents)
