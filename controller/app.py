@@ -315,11 +315,9 @@ def task_status(task_id):
         return set_response(json.dumps({"error": exceptdata}), 500)
 
     # Get the position in the queue
-    position = 0
-    if task in task_queue_high.jobs:
-        position = task_queue_high.jobs.index(task)
-    elif task in task_queue_low.jobs:
-        position = task_queue_low.jobs.index(task) + len(task_queue_high.jobs)
+    position = task.get_position()
+    if position is None:
+        position = 99
     return set_response(json.dumps({"task_id": task.id, "status": task.get_status(), "position": position}), 200)
 
 
