@@ -60,7 +60,7 @@ class DK64:
         self.load_presets()
         presets = []
         if race:
-            presets = self.master_presets
+            presets = self.stable_presets
             branch = "stable"
             logger.info("Rolling Stable Seed")
         else:
