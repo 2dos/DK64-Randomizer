@@ -41,7 +41,7 @@ class RandoHandler(RaceHandler):
                             msg_actions.SelectInput(
                                 name="preset",
                                 label="Preset",
-                                options={key: value["name"] for key, value in self.dk64.master_presets.items()},
+                                options={key: value["name"] for key, value in self.dk64.stable_presets.items()},
                             ),
                             msg_actions.BoolInput(name="--password", label="Password Protect", default=True),
                             msg_actions.BoolInput(name="--spoiler", label="Generate Spoiler Log", default=False),
@@ -199,7 +199,7 @@ class RandoHandler(RaceHandler):
                 await self.send_message("Sorry %(reply_to)s, I don't recognise that preset. Use " "%(res_cmd)s to see what is available." % {"res_cmd": res_cmd, "reply_to": reply_to or "friend"})
                 return
         else:
-            if preset not in self.dk64.master_presets:
+            if preset not in self.dk64.stable_presets:
                 res_cmd = "!presets"
                 await self.send_message("Sorry %(reply_to)s, I don't recognise that preset. Use " "%(res_cmd)s to see what is available." % {"res_cmd": res_cmd, "reply_to": reply_to or "friend"})
                 return
@@ -241,7 +241,7 @@ class RandoHandler(RaceHandler):
             self.state["result_data"].get("seed_number"),
         )
         if self.state["race"]:
-            url = self.dk64.master_seed_url
+            url = self.dk64.live_seed_url
         else:
             url = self.dk64.dev_seed_url
         await self.set_bot_raceinfo(
@@ -308,7 +308,7 @@ class RandoHandler(RaceHandler):
             for name, preset in self.dk64.dev_presets.items():
                 await self.send_message("%s – %s" % (name, preset["name"]))
         else:
-            for name, preset in self.dk64.master_presets.items():
+            for name, preset in self.dk64.stable_presets.items():
                 await self.send_message("%s – %s" % (name, preset["name"]))
 
     def _race_in_progress(self):
