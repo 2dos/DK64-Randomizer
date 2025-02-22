@@ -3,7 +3,9 @@
 import json
 import os
 import requests
-import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class DK64:
@@ -24,81 +26,88 @@ class DK64:
 
     def __init__(self):
         """Initialize the API class."""
-        if os.environ.get("DEV_SERVER", False):
-            self.seed_url = "https://dev.dk64randomizer.com/randomizer?seed_id=%s"
-            self.seed_endpoint = "https://dev-generate.dk64rando.com/generate"
-            self.json_converter = "https://dev-generate.dk64rando.com/convert_settings_string"
-            self.preset_endpoint = "https://dev-generate.dk64rando.com/get_presets"
-            self.data_endpoint = "https://dev-generate.dk64rando.com/get_seed_data"
-            self.status_endpoint = "https://dev-generate.dk64rando.com/status"
-        else:
-            self.seed_url = "https://dk64randomizer.com/randomizer?seed_id=%s"
-            self.seed_endpoint = "https://generate.dk64rando.com/generate"
-            self.json_converter = "https://generate.dk64rando.com/convert_settings_string"
-            self.preset_endpoint = "https://generate.dk64rando.com/get_presets"
-            self.data_endpoint = "https://generate.dk64rando.com/get_seed_data"
-            self.status_endpoint = "https://generate.dk64rando.com/status"
+        self.dev_seed_url = "https://dev.dk64randomizer.com/randomizer?seed_id=%s"
+        self.live_seed_url = "https://dk64randomizer.com/randomizer?seed_id=%s"
+        self.seed_endpoint = "https://api.dk64rando.com/api/submit-task?branch=%s"
+        self.json_converter = "https://api.dk64rando.com/api/convert_settings?branch=%s"
+        self.preset_endpoint = "https://api.dk64rando.com/api/get_presets?return_blank=false&branch=%s"
+        self.data_endpoint = "https://api.dk64rando.com/api/get_seed?hash=%s"
+        self.status_endpoint = "https://api.dk64rando.com/api/task-status/%s"
+
         self.discord_webhook = os.environ.get("DISCORD_WEBHOOK", None)
-        self.presets = self.load_presets()
+        self.api_key = os.environ.get("DK64_API_KEY", None)
+        self.load_presets()
 
     def load_presets(self):
         """Load and return available seed presets."""
-        presets = requests.get(self.preset_endpoint).json()
-        # turn the presets into a dict of name being the key with the settings_string as the value
-        presets_dict = {}
-        for preset in presets:
-            presets_dict[preset["name"].lower()] = preset
-        return presets_dict
+        for branch in ["stable", "dev"]:
+            try:
+                resp = requests.get(self.preset_endpoint % branch, headers={"x-api-key": self.api_key})
+                presets = resp.json()
+                logger.info(f"Loaded {len(presets)} {branch} presets.")
+            except Exception as e:
+                logger.error(f"Failed to load {branch} presets: {e}")
+                presets = []
+            # turn the presets into a dict of name being the key with the settings_string as the value
+            presets_dict = {}
+            for preset in presets:
+                presets_dict[preset["name"].lower()] = preset
+            setattr(self, f"{branch}_presets", presets_dict)
 
-    def roll_seed(self, preset, race):
+    def roll_seed(self, preset, race, password, spoiler):
         """Generate a seed and return its public URL."""
         # Roll with provided preset for non-draft races.
+        self.load_presets()
+        presets = []
+        if race:
+            presets = self.stable_presets
+            branch = "stable"
+            logger.info("Rolling Stable Seed")
+        else:
+            presets = self.dev_presets
+            branch = "dev"
+            logger.info("Rolling Dev Seed")
         if preset is not None:
             converted_settings = requests.post(
-                self.json_converter,
-                json.dumps({"settings_string": self.presets[preset]["settings_string"]}),
-                headers={"Content-Type": "application/json"},
-            ).json()
-            if race:
+                self.json_converter % branch,
+                json.dumps({"settings": presets[preset]["settings_string"]}),
+                headers={"Content-Type": "application/json", "x-api-key": self.api_key},
+            )
+            converted_settings = converted_settings.json()
+            logger.info(f"Converted settings for preset {preset} for {branch} branch.")
+            if spoiler:
+                converted_settings["generate_spoilerlog"] = True
+            else:
                 converted_settings["generate_spoilerlog"] = False
-            req_body = {"post_body": json.dumps(converted_settings)}
+            if password:
+                converted_settings["has_password"] = True
+            else:
+                converted_settings["has_password"] = False
+            req_body = {"settings_data": json.dumps(converted_settings)}
             data = requests.post(
-                self.seed_endpoint,
-                headers={"Content-Type": "application/json"},
-                params={"gen_key": time.time()},
+                self.seed_endpoint % branch,
+                headers={"Content-Type": "application/json", "x-api-key": self.api_key},
                 json=req_body,
             ).json()
-            data["id"] = data["start_time"]
-            return data["start_time"]
+            logger.info(f"Rolled seed with preset {preset} for {branch} branch.")
+            logger.info(f"Seed ID: {data['task_id']}")
+            data["id"] = data["task_id"]
+            return data["task_id"]
+        else:
+            logger.error("No preset provided.")
         return None, None
 
     def get_status(self, seed_id):
         """Get the status of a seed."""
         data = requests.get(
-            self.status_endpoint,
-            params={
-                "gen_key": seed_id,
-            },
+            self.status_endpoint % seed_id,
+            headers={"x-api-key": self.api_key},
         )
-        if data.status_code == 200 and data.json()["status"] in ["failure", "stopped", "error"]:
-            return 2
-        elif data.status_code == 200 and data.json()["status"] == "ready":
-            return 1
+        logger.info(f"Checking status of seed {seed_id}")
+        logger.info(f"Status: {data.json()['status']}")
+        if data.status_code == 200 and data.json()["status"] in ["failure", "stopped", "error"] or data.json().get("error", False):
+            return 2, data
+        elif data.status_code == 200 and data.json()["status"] == "finished":
+            return 1, data
         else:
-            return 0
-
-    def get_hash(self, seed_id):
-        """Get the hash for a seed."""
-        data = requests.get(
-            self.data_endpoint,
-            params={
-                "gen_key": seed_id,
-            },
-        ).json()
-        if data.get("status") == "complete":
-            return (
-                " ".join([next(iter(self.hash_map.get(index, {}).keys()), next(iter(self.hash_map.values()))) for index in data["hash"]]),
-                data.get("seed_number"),
-                self.seed_url,
-            )
-        return None, None, None
+            return 0, data

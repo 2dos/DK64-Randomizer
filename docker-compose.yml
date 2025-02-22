@@ -1,0 +1,201 @@
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: always
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=redis,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
+    networks:
+      - task_network
+    volumes:
+      - ./redis_data:/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  controller:
+    build:
+      context: ./
+      dockerfile: ./controller/Dockerfile
+      args:
+        - BRANCH=${BRANCH:-LOCAL}
+        - CLIENT_ID=${CLIENT_ID}
+        - CLIENT_SECRET=${CLIENT_SECRET}
+        - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
+    depends_on:
+      - redis
+      - dev_worker
+      - nginx
+    volumes:
+      - ./generated_seeds/:/app/controller/generated_seeds/
+      - ./current_total.cfg:/app/controller/current_total.cfg
+      - ./last_generated_time.cfg:/app/controller/last_generated_time.cfg
+      - ./local_presets.json:/app/controller/local_presets.json
+      - ./api_keys.cfg:/app/controller/api_keys.cfg
+    networks:
+      - task_network
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - WORKER_URL_DEV=http://dev_worker:8000
+      - WORKER_URL_MASTER=http://master_worker:8000
+      - BRANCH=${BRANCH:-LOCAL}
+      - COPY_FILES=${COPY_FILES:-./}
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=controller,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
+    deploy:
+      replicas: ${CONTROLLER_REPLICAS:-2}
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  randobot:
+    build:
+      context: ./
+      dockerfile: ./racetime_bot/Dockerfile
+      args:
+        - BRANCH=${BRANCH:-LOCAL}
+        - CATEGORY_SLUG=${CATEGORY_SLUG}
+        - RGG_CLIENT_ID=${RGG_CLIENT_ID}
+        - RGG_CLIENT_SECRET=${RGG_CLIENT_SECRET}
+        - DISCORD_WEBHOOK=${DISCORD_WEBHOOK}
+        - API_KEY=${API_KEY}
+    depends_on:
+      - controller
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - BRANCH=${BRANCH:-LOCAL}
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=racetime_bot,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
+    deploy:
+      replicas: ${RANDOBOT_REPLICAS:-1}
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  nginx:
+    build:
+      context: ./controller/
+      dockerfile: ./nginx.Dockerfile
+      args:
+        - NGINX=${NGINX:-LOCAL}
+    env_file:
+      - .env
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=nginx,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
+    ports:
+      - target: 80
+        published: 80
+        mode: host
+      - target: 443
+        published: 443
+        mode: host
+    restart: always
+    networks:
+      - task_network
+    volumes:
+      - ./certificate.crt:/etc/nginx/certificate.crt
+      - ./private.key:/etc/nginx/private.key
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  discord_bot:
+    build:
+      context: ./discord_bot/
+      dockerfile: ./Dockerfile
+      args:
+        - BRANCH=${BRANCH:-LOCAL}
+        - DISCORD_APP_TOKEN=${DISCORD_APP_TOKEN}
+        - API_KEY=${API_KEY}
+    env_file:
+      - .env
+    restart: always
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=discord_bot,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
+    networks:
+      - task_network
+    depends_on:
+      - redis
+      - dev_worker
+      - nginx
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  dev_worker:
+    build:
+      context: ./
+      dockerfile: ./worker/Dockerfile
+      args:
+        - BRANCH=${BRANCH:-LOCAL}
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    networks:
+      - task_network
+    environment:
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
+      - BRANCH=${BRANCH:-LOCAL}
+      - COPY_FILES=${COPY_FILES:-./}
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=dev_worker,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
+    volumes:
+      - ./dk64.z64:/app/worker/dk64.z64
+      - ./generated_seeds/:/app/worker/generated_seeds/
+      - ./current_total.cfg:/app/worker/current_total.cfg
+      - ./last_generated_time.cfg:/app/worker/last_generated_time.cfg
+    deploy:
+      replicas: ${WORKER_REPLICAS:-3}
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  master_worker:
+    build:
+      context: ./
+      dockerfile: ./worker/Dockerfile
+      args:
+        - BRANCH=${MASTER_BRANCH:-master}
+    depends_on:
+      - redis
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - task_network
+    environment:
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
+      - BRANCH=${MASTER_BRANCH:-master}
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=master_worker,service.version=1.0.0,deployment.environment=${MASTER_BRANCH:-master}
+    volumes:
+      - ./dk64.z64:/app/worker/dk64.z64
+      - ./generated_seeds/:/app/worker/generated_seeds/
+      - ./current_total.cfg:/app/worker/current_total.cfg
+      - ./last_generated_time.cfg:/app/worker/last_generated_time.cfg
+    deploy:
+      replicas: ${MASTER_WORKER_REPLICAS:-3}
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    profiles:
+      - master
+
+networks:
+  task_network:

@@ -17,9 +17,6 @@ void overlay_mod_boss(void) {
 		*(short*)(0x800359A8) = 14; // Microhint Cutscene
 		*(int*)(0x80028D54) = 0; // Delete flag set
 	}
-	if (DAMAGE_MASKING) {
-		writeFunction(0x80031524, &applyDamageMask);
-	}
 	
 	// Change Dillo Health based on map
 	if (Rando.short_bosses) {
@@ -31,43 +28,12 @@ void overlay_mod_boss(void) {
 	}
 
 	// Shoe
-	if (Rando.randomize_toes) {
-		for (int i = 0; i < 5; i++) {
-			ToeSet1[(4 * i) + 2] = Rando.k_rool_toes[i];
-			ToeSet2[(4 * i) + 2] = Rando.k_rool_toes[5 + i];
-		}
-	}
 	if (Rando.quality_of_life.vanilla_fixes) {
 		if (!(MovesBase[KONG_TINY].weapon_bitfield & 1)) {
 			*(int*)(0x8002FFE0) = 0; // Control State patch
 			*(int*)(0x8002FFE8) = 0; // Control State progress patch
 		}
 	}
-
-	writeFunction(0x8002D20C, &SpiderBossExtraCode); // Handle preventing spider boss being re-fightable
-
-	if (Rando.item_rando) {
-		writeFunction(0x80028650, &spawnBossReward); // Key Spawn
-	}
-	PatchKRoolCode();
-	if (Rando.quality_of_life.vanilla_fixes) {
-		*(short*)(0x800359A6) = 3; // Fix cutscene bug
-	}
-
-	// Change phase reset differential to 40.0f units
-	*(short*)(0x80033B26) = 0x4220; // Jumping Around
-	*(short*)(0x800331AA) = 0x4220; // Random Square
-	*(short*)(0x800339EE) = 0x4220; // Stationary
-	if (Rando.hard_mode.bosses) {
-		float targ_speed = 3.0f;
-		*(float*)(0x80036C40) = targ_speed; // Phase 1 Jump speed
-		*(float*)(0x80036C44) = targ_speed; // Phase 2
-		*(float*)(0x80036C48) = targ_speed; // ...
-		*(float*)(0x80036C4C) = targ_speed;
-		*(float*)(0x80036C50) = targ_speed;
-		*(short*)(0x8003343A) = 0x224; // Force fast jumps
-	}
-
 	if (Rando.music_rando_on) {
 		// Lower Crowd SFX Volume
 		*(short*)(0x80028F3E) = CROWD_VOLUME;

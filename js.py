@@ -17,5 +17,14 @@ def getFile(filename):
         return file.read()
 
 
+def getStringFile(filename):
+    """Fake function for loading files with Javascript."""
+    with open(filename, "r") as file:
+        return file.read()
+
+
 with open("./static/patches/pointer_addresses.json", "rb") as file:
     pointer_addresses = json.loads(file.read())
+
+with open("./static/patches/symbols.json", "rb") as file:
+    rom_symbols = json.loads(file.read())

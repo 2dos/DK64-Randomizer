@@ -23,6 +23,8 @@ typedef struct renderingParamsData {
 	/* 0x034 */ float scale_x;
 	/* 0x038 */ float scale_y;
 	/* 0x03C */ float scale_z;
+	/* 0x040 */ char unk_40[0x64-0x40];
+	/* 0x064 */ short animation;
 } renderingParamsData;
 
 typedef struct actor_subdata {
@@ -83,12 +85,15 @@ typedef struct actorData {
 	/* 0x04C */ void* model_file;
 	/* 0x050 */ char unk_50[0x58-0x50];
 	/* 0x058 */ int actorType;
-	/* 0x05C */ char unk_5C[0x60-0x5C];
+	/* 0x05C */ unsigned short interaction_bitfield;
+	/* 0x05E */ char unk_5E[0x60-0x5E];
 	/* 0x060 */ int obj_props_bitfield;
 	/* 0x064 */ int unk_64;
 	/* 0x068 */ char unk_68[0x6A-0x68];
 	/* 0x06A */ short grounded;
-	/* 0x06C */ char unk_6C[0x7C-0x6C];
+	/* 0x06C */ short unk_6C;
+	/* 0x06E */ short sound_slot;
+	/* 0x070 */ char unk_70[0x7C-0x70];
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
@@ -103,7 +108,8 @@ typedef struct actorData {
 	/* 0x0E4 */ short rot_x;
 	/* 0x0E6 */ short rot_y;
 	/* 0x0E8 */ short rot_z;
-	/* 0x0EA */ char unk_EA[0x4];
+	/* 0x0EA */ short unk_EA;
+	/* 0x0EC */ short unk_EC;
 	/* 0x0EE */ short rot_y_copy;
 	/* 0x0F0 */ short reward_index;
 	/* 0x0F2 */ char unk_F2[0xFD-0xF2];
@@ -114,7 +120,8 @@ typedef struct actorData {
 	/* 0x124 */ actor_subdata* data_pointer;
 	/* 0x128 */ short shadow_intensity;
 	/* 0x12A */ short draw_distance;
-	/* 0x12C */ char unk_12C[0x132-0x12C];
+	/* 0x12C */ short chunk;
+	/* 0x12E */ char unk_12E[0x132-0x12E];
 	/* 0x132 */ short subdata;
 	/* 0x134 */ short health;
 	/* 0x136 */ char unk_136[0x138-0x136];
@@ -133,7 +140,8 @@ typedef struct actorData {
 	/* 0x16D */ char unk_16D;
 	/* 0x16E */ char unk_16E;
 	/* 0x16F */ char unk_16F;
-	/* 0x170 */ char unk_170[0x174-0x170];
+	/* 0x170 */ char unk_170[0x172-0x170];
+	/* 0x172 */ short actor_model; // Custom slot. unused I think?? 
 	/* 0x174 */ void* paad;
 	/* 0x178 */ void* paad2;
 	/* 0x17C */ void* paad3;
@@ -192,7 +200,9 @@ typedef struct playerData {
 	/* 0x064 */ char unk_64[0x6A-0x64];
 	/* 0x06A */ short grounded_bitfield;
 	/* 0x06C */ short unk_bitfield;
-	/* 0x06E */ char unk_6E[0x7C-0x6E];
+	/* 0x06E */ char unk_6E[0x78-0x6E];
+	/* 0x078 */ unsigned char sfx_floor;
+	/* 0x079 */ char unk_79[0x7C-0x79];
 	/* 0x07C */ float xPos;
 	/* 0x080 */ float yPos;
 	/* 0x084 */ float zPos;
@@ -230,13 +240,18 @@ typedef struct playerData {
 	/* 0x148 */ char unk_148[0x154 - 0x148];
 	/* 0x154 */ unsigned char control_state;
 	/* 0x155 */ char control_state_progress;
-	/* 0x156 */ char unk_156[0x16A-0x156];
+	/* 0x156 */ char unk_156[0x15E - 0x156];
+	/* 0x15E */ unsigned char height;
+	/* 0x15F */ char unk_15F[0x168 - 0x15F];
+	/* 0x168 */ short updraft_target;
 	/* 0x16A */ unsigned char rgb_components[3];
 	/* 0x16D */ char unk_16D;
 	/* 0x16E */ char unk_16E; // shadow width or something
 	/* 0x16F */ char unk_16F[0x18A-0x16F];
 	/* 0x18A */ short moving_angle;
-	/* 0x18C */ char unk_18C[0x1B0-0x18C];
+	/* 0x18C */ char unk_18C[0x1A6-0x18C];
+	/* 0x1A6 */ short traction;
+	/* 0x1A8 */ char unk_1A8[0x1B0-0x1A8];
 	/* 0x1B0 */ float unk_1B0;
 	/* 0x1B4 */ char unk_1B4[0x1B8-0x1B4];
 	/* 0x1B8 */ float velocity_cap;
@@ -248,15 +263,19 @@ typedef struct playerData {
 	/* 0x1D0 */ short ostand_value;
 	/* 0x1D2 */ char unk_1D2[0x1D4-0x1D2];
 	/* 0x1D4 */ float blast_y_velocity;
-	/* 0x1D8 */ char unk_1D8[0x1E8-0x1D8];
+	/* 0x1D8 */ int unk_1D8;
+	/* 0x1DC */ char unk_1DC[0x1E8-0x1DC];
 	/* 0x1E8 */ float unk_1E8;
 	/* 0x1EC */ char unk_1EC[0x208-0x1EC];
 	/* 0x208 */ void* vehicle_actor_pointer;
 	/* 0x20C */ char was_gun_out;
-	/* 0x20D */ char unk_20D[0x23C - 0x20D];
+	/* 0x20D */ char unk_20D[0x210 - 0x20D];
+	/* 0x210 */ unsigned char gun_bone;
+	/* 0x211 */ char unk_211[0x23C - 0x211];
 	/* 0x23C */ short unk_rocketbarrel_value1;
 	/* 0x23E */ short unk_rocketbarrel_value2;
-	/* 0x240 */ char unk_240[0x248 - 0x240];
+	/* 0x240 */ short balloon_timer;
+	/* 0x242 */ char unk_242[0x248 - 0x242];
 	/* 0x248 */ short shockwave_timer;
 	/* 0x24A */ char unk_24A[0x254 - 0x24A];
 	/* 0x254 */ short invulnerability_timer;
@@ -267,7 +286,8 @@ typedef struct playerData {
 	/* 0x2BC */ floatPos grabPos;
 	/* 0x2C8 */ char unk_2C8[0x323 - 0x2C8];
 	/* 0x323 */ char unk_rocketbarrel_value3;
-	/* 0x324 */ char unk_324[0x328 - 0x324];
+	/* 0x324 */ unsigned char player_index;
+	/* 0x325 */ char unk_324[0x328 - 0x325];
 	/* 0x328 */ actorData* krool_timer_pointer;
 	/* 0x32C */ actorData* held_actor;
 	/* 0x330 */ char unk_330[0x340 - 0x330];
@@ -633,16 +653,18 @@ typedef struct placementData {
 } placementData;
 
 typedef struct hud_element {
-	/* 0x000 */ void* item_count_pointer;
+	/* 0x000 */ short* item_count_pointer;
 	/* 0x004 */ short visual_item_count;
 	/* 0x006 */ short hud_state_timer;
 	/* 0x008 */ int x;
 	/* 0x00C */ int y;
 	/* 0x010 */ float unk_10[4];
 	/* 0x020 */ int hud_state;
-	/* 0x024 */ char unk_24[0x28-0x24];
+	/* 0x024 */ int unk_24;
 	/* 0x028 */ placementData* placement_pointer;
-	/* 0x02C */ char unk_2C[0x30-0x2C];
+	/* 0x02C */ char infinite_setting;
+	/* 0x02D */ char unk_2D;
+	/* 0x02E */ char unk_2E[0x30-0x2E];
 } hud_element;
 
 typedef struct hudData {
@@ -1230,11 +1252,11 @@ typedef struct collected_item_struct {
 typedef struct quality_options {
 	unsigned char reduce_lag : 1;
 	unsigned char remove_cutscenes : 1; // 1
-	unsigned char fast_picture : 1;
-	unsigned char aztec_lobby_bonus : 1; // 3
+	unsigned char mountain_bridge_extended : 1;
+	unsigned char unused_3 : 1; // 3
 	unsigned char dance_skip : 1;
 	unsigned char fast_boot : 1; // 5
-	unsigned char fast_transform : 1;
+	unsigned char no_ship_timers : 1;
 	unsigned char ammo_swap : 1; // 7
 	unsigned char cb_indicator : 1;
 	unsigned char galleon_star : 1; // 9
@@ -1245,10 +1267,10 @@ typedef struct quality_options {
 	unsigned char hud_bp_multibunch : 1;
 	unsigned char homing_balloons : 1; // 15
 	unsigned char save_krool_progress : 1;
-	unsigned char cbs_visible : 1; // 17
+	unsigned char unused_17 : 1; // 17
 	unsigned char blueprint_compression : 1;
 	unsigned char fast_hints : 1; // 19
-	unsigned char brighten_mmm_enemies : 1;
+	unsigned char unused_20 : 1;
 	unsigned char global_instrument : 1; // 21
 	unsigned char fast_pause_transitions : 1;
 	unsigned char cannon_game_speed : 1; // 23
@@ -1266,7 +1288,7 @@ typedef struct kong_model_struct {
 	/* 0x000 */ int actor;
 	/* 0x004 */ int kong_index;
 	/* 0x008 */ int model;
-	/* 0x00C */ int unk0;
+	/* 0x00C */ int props_or;
 } kong_model_struct;
 
 typedef struct bonus_vanilla_info {
@@ -1301,7 +1323,7 @@ typedef struct tag_model_struct {
 } tag_model_struct;
 
 typedef struct mtx_item {
-	/* 0x000 */ char unk_0[0x40];
+	/* 0x000 */ float mf[4][4];
 } mtx_item;
 
 typedef struct actor_behaviour_def {
@@ -1313,12 +1335,14 @@ typedef struct actor_behaviour_def {
     /* 0x014 */ char str[0x1C];
 } actor_behaviour_def;
 
-typedef struct arbitrary_overlay {
+typedef struct move_text_overlay_struct {
 	/* 0x000 */ unsigned char type;
 	/* 0x001 */ unsigned char kong;
 	/* 0x002 */ short flag;
 	/* 0x004 */ char* string;
-} arbitrary_overlay;
+	/* 0x008 */ unsigned char used;
+	/* 0x009 */ char pad_9[3]; // Used to align with a 4-byte region
+} move_text_overlay_struct;
 
 typedef struct rgb {
 	/* 0x000 */ unsigned char red;
@@ -1495,47 +1519,48 @@ typedef struct stack_trace_address_struct {
 } stack_trace_address_struct;
 
 typedef struct moves_pregiven_bitfield {
-	unsigned char blast : 1; // 0
-	unsigned char strong_kong : 1; // 1
-	unsigned char grab : 1; // 2
-	unsigned char charge : 1; // 3
-	unsigned char rocketbarrel : 1; // 4
-	unsigned char spring : 1; // 5
-	unsigned char ostand : 1; // 6
-	unsigned char balloon : 1; // 7
-	unsigned char osprint : 1; // 0
-	unsigned char mini : 1; // 1
-	unsigned char twirl : 1; // 2
-	unsigned char monkeyport : 1; // 3
-	unsigned char hunky : 1; // 4
-	unsigned char punch : 1; // 5
-	unsigned char gone : 1; // 6
-	unsigned char slam_upgrade_0 : 1; // 7
-	unsigned char slam_upgrade_1 : 1; // 0
-	unsigned char slam_upgrade_2 : 1; // 1
-	unsigned char coconut : 1; // 2
-	unsigned char peanut : 1; // 3
-	unsigned char grape : 1; // 4
-	unsigned char feather : 1; // 5
-	unsigned char pineapple : 1; // 6
-	unsigned char bongos : 1; // 7
-	unsigned char guitar : 1; // 0
-	unsigned char trombone : 1; // 1
-	unsigned char sax : 1; // 2
-	unsigned char triangle : 1; // 3
-	unsigned char belt_upgrade_0 : 1; // 4
-	unsigned char belt_upgrade_1 : 1; // 5
-	unsigned char homing : 1; // 6
-	unsigned char sniper : 1; // 7
-	unsigned char ins_upgrade_0 : 1; // 0
-	unsigned char ins_upgrade_1 : 1; // 1
-	unsigned char ins_upgrade_2 : 1; // 2
-	unsigned char dive : 1; // 3
-	unsigned char oranges : 1; // 4
-	unsigned char barrels : 1; // 5
-	unsigned char vines : 1; // 6
-	unsigned char camera : 1; // 7
-	unsigned char shockwave : 1; // 0
+	unsigned char blast : 1; // 0 0x80
+	unsigned char strong_kong : 1; // 1 0x40
+	unsigned char grab : 1; // 2 0x20
+	unsigned char charge : 1; // 3 0x10
+	unsigned char rocketbarrel : 1; // 4 0x08
+	unsigned char spring : 1; // 5 0x04
+	unsigned char ostand : 1; // 6 0x02
+	unsigned char balloon : 1; // 7 0x01
+	unsigned char osprint : 1; // 0 0x80
+	unsigned char mini : 1; // 1 0x40
+	unsigned char twirl : 1; // 2 0x20
+	unsigned char monkeyport : 1; // 3 0x10
+	unsigned char hunky : 1; // 4 0x08
+	unsigned char punch : 1; // 5 0x04
+	unsigned char gone : 1; // 6 0x02
+	unsigned char slam_upgrade_0 : 1; // 7 0x01
+	unsigned char slam_upgrade_1 : 1; // 0 0x80
+	unsigned char slam_upgrade_2 : 1; // 1 0x40
+	unsigned char coconut : 1; // 2 0x20
+	unsigned char peanut : 1; // 3 0x10
+	unsigned char grape : 1; // 4 0x08
+	unsigned char feather : 1; // 5 0x04
+	unsigned char pineapple : 1; // 6 0x02
+	unsigned char bongos : 1; // 7 0x01
+	unsigned char guitar : 1; // 0 0x80
+	unsigned char trombone : 1; // 1 0x40
+	unsigned char sax : 1; // 2 0x20
+	unsigned char triangle : 1; // 3 0x10
+	unsigned char belt_upgrade_0 : 1; // 4 0x08
+	unsigned char belt_upgrade_1 : 1; // 5 0x04
+	unsigned char homing : 1; // 6 0x02
+	unsigned char sniper : 1; // 7 0x01
+	unsigned char ins_upgrade_0 : 1; // 0 0x80
+	unsigned char ins_upgrade_1 : 1; // 1 0x40
+	unsigned char ins_upgrade_2 : 1; // 2 0x20
+	unsigned char dive : 1; // 3 0x10
+	unsigned char oranges : 1; // 4 0x08
+	unsigned char barrels : 1; // 5 0x04
+	unsigned char vines : 1; // 6 0x02
+	unsigned char camera : 1; // 7 0x01
+	unsigned char shockwave : 1; // 0 0x80
+	unsigned char climbing : 1; // 1 0x40
 } moves_pregiven_bitfield;
 
 typedef struct weather_struct {
@@ -1714,13 +1739,13 @@ typedef struct RandomSwitchesSetting {
 
 typedef struct LZREntrance {
 	/* 0x000 */ unsigned char map;
-	/* 0x001 */ unsigned char exit;
+	/* 0x001 */ char exit;
 } LZREntrance;
 
 typedef struct ROMFlags {
 	unsigned char plando : 1; // 0x80
 	unsigned char spoiler : 1; // 0x40
-	unsigned char unk2 : 1; // 0x20
+	unsigned char pass_locked : 1; // 0x20
 	unsigned char unk3 : 1; // 0x10
 	unsigned char unk4 : 1; // 0x08
 	unsigned char unk5 : 1; // 0x04
@@ -1738,6 +1763,512 @@ typedef struct BooleanModelSwaps {
 	unsigned char unk6 : 1; // 0x02
 	unsigned char unk7 : 1; // 0x01
 } BooleanModelSwaps;
+
+typedef struct ItemRequirement {
+	/* 0x000 */ unsigned char item;
+	/* 0x001 */ unsigned char count;
+} ItemRequirement;
+
+typedef struct FreeTradeAgreement {
+	unsigned char major_items : 1; // 0x80
+	unsigned char blueprints : 1; // 0x40
+	unsigned char coins_cbs : 1; // 0x20
+	unsigned char balloons : 1; // 0x10
+	unsigned char unk4 : 1; // 0x08
+	unsigned char unk5 : 1; // 0x04
+	unsigned char unk6 : 1; // 0x02
+	unsigned char unk7 : 1; // 0x01
+} FreeTradeAgreement;
+
+typedef struct LocationVisuals {
+	unsigned char crowns : 1; // 0x80
+	unsigned char boss_doors : 1; // 0x40
+	unsigned char bonus_barrels : 1; // 0x20
+	unsigned char dirt_patches : 1; // 0x10
+	unsigned char unk4 : 1; // 0x08
+	unsigned char unk5 : 1; // 0x04
+	unsigned char unk6 : 1; // 0x02
+	unsigned char unk7 : 1; // 0x01
+} LocationVisuals;
+
+typedef struct path_segment_struct {
+	/* 0x000 */ short unk0;
+	/* 0x002 */ short x;
+	/* 0x004 */ short y;
+	/* 0x006 */ short z;
+	/* 0x008 */ char speed;
+	/* 0x009 */ char unk1;
+} path_segment_struct;
+
+typedef struct path_data_struct {
+	/* 0x000 */ void* tied_actor;
+	/* 0x004 */ path_segment_struct* segments;
+	/* 0x008 */ short segment_count;
+	/* 0x00A */ char unk_0A[2];
+	/* 0x00C */ float segment_position;
+	/* 0x010 */ int segment_index;
+	/* 0x014 */ char unk14;
+	/* 0x015 */ char unk15;
+	/* 0x016 */ char unk16;
+	/* 0x017 */ char unk17;
+	/* 0x018 */ int unk18;
+	/* 0x01C */ int path_cycle_count;
+	/* 0x020 */ char path_global_speed;
+	/* 0x021 */ char unk21;
+	/* 0x022 */ char unk_22[0x30-0x22];
+} path_data_struct;
+
+typedef struct pen_a_data {
+	/* 0x000 */ short x;
+	/* 0x002 */ short y;
+	/* 0x004 */ short z;
+	/* 0x006 */ unsigned char unk6;
+	/* 0x007 */ unsigned char unk7;
+	/* 0x008 */ unsigned char speed_cap;
+	/* 0x009 */ unsigned char unk9;
+} pen_a_data;
+
+typedef struct fence_collective_struct {
+	/* 0x000 */ char unk_00[0x14];
+	/* 0x014 */ pen_a_data* pen_A;
+} fence_collective_struct;
+
+typedef struct actor_bitfield {
+	// 0
+	unsigned char unknown_0 : 1;
+	unsigned char unknown_1 : 1;
+	unsigned char dk : 1;
+	unsigned char diddy : 1;
+	unsigned char lanky : 1;
+	unsigned char tiny : 1;
+	unsigned char chunky : 1;
+	unsigned char krusha : 1;
+	unsigned char rambi : 1;
+	unsigned char enguarde : 1;
+	// 10
+	unsigned char unknown_10 : 1;
+	unsigned char unknown_11 : 1;
+	unsigned char loading_zone_controller : 1;
+	unsigned char object_model_2_controller : 1;
+	unsigned char unknown_14 : 1;
+	unsigned char unknown_15 : 1;
+	unsigned char unknown_16 : 1;
+	unsigned char cannon_barrel : 1;
+	unsigned char rambi_crate : 1;
+	unsigned char barrel_diddy_5di : 1;
+	// 20
+	unsigned char camera_focus_point : 1;
+	unsigned char pushable_box : 1;
+	unsigned char barrel_spawner : 1;
+	unsigned char cannon : 1;
+	unsigned char race_hoop : 1;
+	unsigned char hunky_chunky_barrel : 1;
+	unsigned char tnt_barrel : 1;
+	unsigned char tnt_barrel_spawner : 1;
+	unsigned char bonus_barrel : 1;
+	unsigned char minecart : 1;
+	// 30
+	unsigned char fireball : 1;
+	unsigned char bridge_castle : 1;
+	unsigned char swinging_light : 1;
+	unsigned char vine : 1;
+	unsigned char kremling_kosh_controller : 1;
+	unsigned char melon_projectile : 1;
+	unsigned char peanut : 1;
+	unsigned char rocketbarrel : 1;
+	unsigned char pineapple : 1;
+	unsigned char large_brown_bridge : 1;
+	// 40
+	unsigned char mini_monkey_barrel : 1;
+	unsigned char orange : 1;
+	unsigned char grape : 1;
+	unsigned char feather : 1;
+	unsigned char laser : 1;
+	unsigned char golden_banana : 1;
+	unsigned char barrel_gun : 1;
+	unsigned char watermelon_slice : 1;
+	unsigned char coconut : 1;
+	unsigned char rocketbarrel_49 : 1;
+	// 50
+	unsigned char lime : 1;
+	unsigned char ammo_crate : 1;
+	unsigned char orange_pickup : 1;
+	unsigned char banana_coin : 1;
+	unsigned char dk_coin : 1;
+	unsigned char small_explosion : 1;
+	unsigned char orangstand_sprint_barrel : 1;
+	unsigned char strong_kong_barrel : 1;
+	unsigned char swinging_light_58 : 1;
+	unsigned char fireball_59 : 1;
+	// 60
+	unsigned char bananaporter : 1;
+	unsigned char boulder : 1;
+	unsigned char minecart_62 : 1;
+	unsigned char vase_o : 1;
+	unsigned char vase_colon : 1;
+	unsigned char vase_triangle : 1;
+	unsigned char vase_plus : 1;
+	unsigned char cannon_ball : 1;
+	unsigned char unknown_68 : 1;
+	unsigned char vine_69 : 1;
+	// 70
+	unsigned char counter : 1;
+	unsigned char kremling_red : 1;
+	unsigned char boss_key : 1;
+	unsigned char cannon_73 : 1;
+	unsigned char cannon_ball_74 : 1;
+	unsigned char blueprint_diddy : 1;
+	unsigned char blueprint_chunky : 1;
+	unsigned char blueprint_lanky : 1;
+	unsigned char blueprint_dk : 1;
+	unsigned char blueprint_tiny : 1;
+	// 80
+	unsigned char minecart_80 : 1;
+	unsigned char fire_spawner_dogadon : 1;
+	unsigned char boulder_debris : 1;
+	unsigned char spider_web : 1;
+	unsigned char steel_keg_spawner : 1;
+	unsigned char steel_keg : 1;
+	unsigned char crown : 1;
+	unsigned char minecart_87 : 1;
+	unsigned char unknown_88 : 1;
+	unsigned char fire : 1;
+	// 90
+	unsigned char ice_wall : 1;
+	unsigned char balloon_diddy : 1;
+	unsigned char stalactite : 1;
+	unsigned char rock_debris : 1;
+	unsigned char car : 1;
+	unsigned char pause_menu : 1;
+	unsigned char hunky_chunky_barrel_dogadon : 1;
+	unsigned char tnt_barrel_spawner_dogadon : 1;
+	unsigned char tag_barrel : 1;
+	unsigned char fireball_99 : 1;
+	// 100
+	unsigned char pad_1_diddy_5di : 1;
+	unsigned char pad_2_diddy_5di : 1;
+	unsigned char pad_3_diddy_5di : 1;
+	unsigned char pad_4_diddy_5di : 1;
+	unsigned char pad_5_diddy_5di : 1;
+	unsigned char pad_6_diddy_5di : 1;
+	unsigned char kong_reflection : 1;
+	unsigned char bonus_barrel_hideout_helm : 1;
+	unsigned char unknown_108 : 1;
+	unsigned char race_checkpoint : 1;
+	// 110
+	unsigned char cb_bunch : 1;
+	unsigned char balloon_chunky : 1;
+	unsigned char balloon_tiny : 1;
+	unsigned char balloon_lanky : 1;
+	unsigned char balloon_dk : 1;
+	unsigned char klumsys_cage : 1;
+	unsigned char chain : 1;
+	unsigned char beanstalk : 1;
+	unsigned char yellow_qmark : 1;
+	unsigned char cb_single_blue : 1;
+	// 120
+	unsigned char cb_single_yellow : 1;
+	unsigned char crystal_coconut : 1;
+	unsigned char dk_coin_122 : 1;
+	unsigned char kong_mirror : 1;
+	unsigned char barrel_gun_124 : 1;
+	unsigned char barrel_gun_125 : 1;
+	unsigned char fly_swatter : 1;
+	unsigned char searchlight : 1;
+	unsigned char headphones : 1;
+	unsigned char enguarde_crate : 1;
+	// 130
+	unsigned char apple : 1;
+	unsigned char worm : 1;
+	unsigned char enguarde_crate_unused : 1;
+	unsigned char barrel : 1;
+	unsigned char training_barrel : 1;
+	unsigned char boombox : 1;
+	unsigned char tag_barrel_136 : 1;
+	unsigned char tag_barrel_137 : 1;
+	unsigned char b_locker : 1;
+	unsigned char rainbow_coin_patch : 1;
+	// 140
+	unsigned char rainbow_coin : 1;
+	unsigned char unknown_141 : 1;
+	unsigned char unknown_142 : 1;
+	unsigned char unknown_143 : 1;
+	unsigned char unknown_144 : 1;
+	unsigned char cannon_seasick_chunky : 1;
+	unsigned char unknown_146 : 1;
+	unsigned char balloon_unused_k_rool : 1;
+	unsigned char rope : 1;
+	unsigned char banana_barrel : 1;
+	// 150
+	unsigned char banana_barrel_spawner : 1;
+	unsigned char unknown_151 : 1;
+	unsigned char unknown_152 : 1;
+	unsigned char unknown_153 : 1;
+	unsigned char unknown_154 : 1;
+	unsigned char unknown_155 : 1;
+	unsigned char wrinkly : 1;
+	unsigned char unknown_157 : 1;
+	unsigned char unknown_158 : 1;
+	unsigned char unknown_159 : 1;
+	// 160
+	unsigned char unknown_160 : 1;
+	unsigned char unknown_161 : 1;
+	unsigned char unknown_162 : 1;
+	unsigned char banana_fairy_bfi : 1;
+	unsigned char ice_tomato : 1;
+	unsigned char tag_barrel_king_kut_out : 1;
+	unsigned char king_kut_out_part : 1;
+	unsigned char cannon_167 : 1;
+	unsigned char unknown_168 : 1;
+	unsigned char puftup : 1;
+	// 170
+	unsigned char damage_source : 1;
+	unsigned char orange_171 : 1;
+	unsigned char unknown_172 : 1;
+	unsigned char cutscene_controller : 1;
+	unsigned char unknown_174 : 1;
+	unsigned char kaboom : 1;
+	unsigned char timer : 1;
+	unsigned char timer_controller : 1;
+	unsigned char beaver : 1;
+	unsigned char shockwave_mad_jack : 1;
+	// 180
+	unsigned char krash : 1;
+	unsigned char book : 1;
+	unsigned char klobber : 1;
+	unsigned char zinger : 1;
+	unsigned char snide : 1;
+	unsigned char army_dillo : 1;
+	unsigned char kremling : 1;
+	unsigned char klump : 1;
+	unsigned char camera : 1;
+	unsigned char cranky : 1;
+	// 190
+	unsigned char funky : 1;
+	unsigned char candy : 1;
+	unsigned char beetle : 1;
+	unsigned char mermaid : 1;
+	unsigned char vulture : 1;
+	unsigned char squawks : 1;
+	unsigned char cutscene_dk : 1;
+	unsigned char cutscene_diddy : 1;
+	unsigned char cutscene_lanky : 1;
+	unsigned char cutscene_tiny : 1;
+	// 200
+	unsigned char cutscene_chunky : 1;
+	unsigned char llama : 1;
+	unsigned char fairy_picture : 1;
+	unsigned char padlock_tns : 1;
+	unsigned char mad_jack : 1;
+	unsigned char klaptrap : 1;
+	unsigned char zinger_206 : 1;
+	unsigned char vulture_race : 1;
+	unsigned char klaptrap_purple : 1;
+	unsigned char klaptrap_red : 1;
+	// 210
+	unsigned char getout_controller : 1;
+	unsigned char klaptrap_skeleton : 1;
+	unsigned char beaver_gold : 1;
+	unsigned char fire_column_spawner : 1;
+	unsigned char minecart_tnt : 1;
+	unsigned char minecart_tnt_215 : 1;
+	unsigned char puftoss : 1;
+	unsigned char unknown_217 : 1;
+	unsigned char handle : 1;
+	unsigned char slot : 1;
+	// 220
+	unsigned char cannon_seasick_chunky_220 : 1;
+	unsigned char light_piece : 1;
+	unsigned char banana_peel : 1;
+	unsigned char fireball_spawner : 1;
+	unsigned char mushroom_man : 1;
+	unsigned char unknown_225 : 1;
+	unsigned char troff : 1;
+	unsigned char k_rools_foot : 1;
+	unsigned char bad_hit_detection_man : 1;
+	unsigned char k_rools_toe : 1;
+	// 230
+	unsigned char ruler : 1;
+	unsigned char toy_box : 1;
+	unsigned char text_overlay : 1;
+	unsigned char squawks_233 : 1;
+	unsigned char scoff : 1;
+	unsigned char robo_kremling : 1;
+	unsigned char dogadon : 1;
+	unsigned char unknown_237 : 1;
+	unsigned char kremling_238 : 1;
+	unsigned char bongos : 1;
+	// 240
+	unsigned char spotlight_fish : 1;
+	unsigned char kasplat_dk : 1;
+	unsigned char kasplat_diddy : 1;
+	unsigned char kasplat_lanky : 1;
+	unsigned char kasplat_tiny : 1;
+	unsigned char kasplat_chunky : 1;
+	unsigned char mechanical_fish : 1;
+	unsigned char seal : 1;
+	unsigned char banana_fairy : 1;
+	unsigned char squawks_with_spotlight : 1;
+	// 250
+	unsigned char owl : 1;
+	unsigned char spider_miniboss : 1;
+	unsigned char rabbit : 1;
+	unsigned char nintendo_logo : 1;
+	unsigned char cutscene_object : 1;
+	unsigned char shockwave : 1;
+	unsigned char minigame_controller : 1;
+	unsigned char fire_breath_spawner : 1;
+	unsigned char shockwave_258 : 1;
+	unsigned char guard : 1;
+	// 260
+	unsigned char text_overlay_260 : 1;
+	unsigned char robo_zinger : 1;
+	unsigned char krossbones : 1;
+	unsigned char fire_shockwave_dogadon : 1;
+	unsigned char squawks_264 : 1;
+	unsigned char light_beam : 1;
+	unsigned char dk_rap_controller : 1;
+	unsigned char shuri : 1;
+	unsigned char gimpfish : 1;
+	unsigned char mr_dice : 1;
+	// 270
+	unsigned char sir_domino : 1;
+	unsigned char mr_dice_271 : 1;
+	unsigned char rabbit_272 : 1;
+	unsigned char fireball_with_glasses : 1;
+	unsigned char unknown_274 : 1;
+	unsigned char k_lumsy : 1;
+	unsigned char spiderling : 1;
+	unsigned char squawks_277 : 1;
+	unsigned char projectile : 1;
+	unsigned char trap_bubble : 1;
+	// 280
+	unsigned char spider_silk_string : 1;
+	unsigned char k_rool_dk_phase : 1;
+	unsigned char retexturing_controller : 1;
+	unsigned char skeleton_head : 1;
+	unsigned char unknown_284 : 1;
+	unsigned char bat : 1;
+	unsigned char giant_clam : 1;
+	unsigned char unknown_287 : 1;
+	unsigned char tomato : 1;
+	unsigned char kritter_in_a_sheet : 1;
+	// 290
+	unsigned char puftup_290 : 1;
+	unsigned char kosha : 1;
+	unsigned char k_rool_diddy_phase : 1;
+	unsigned char k_rool_lanky_phase : 1;
+	unsigned char k_rool_tiny_phase : 1;
+	unsigned char k_rool_chunky_phase : 1;
+	unsigned char unknown_296 : 1;
+	unsigned char battle_crown_controller : 1;
+	unsigned char unknown_298 : 1;
+	unsigned char textbox : 1;
+	// 300
+	unsigned char snake : 1;
+	unsigned char turtle : 1;
+	unsigned char toy_car : 1;
+	unsigned char toy_car_303 : 1;
+	unsigned char camera_304 : 1;
+	unsigned char missile : 1;
+	unsigned char unknown_306 : 1;
+	unsigned char unknown_307 : 1;
+	unsigned char seal_308 : 1;
+	unsigned char kong_logo_instrument : 1;
+	// 310
+	unsigned char spotlight : 1;
+	unsigned char race_checkpoint_311 : 1;
+	unsigned char minecart_tnt_312 : 1;
+	unsigned char idle_particle : 1;
+	unsigned char rareware_logo : 1;
+	unsigned char unknown_315 : 1;
+	unsigned char kong_tag_barrel : 1;
+	unsigned char locked_kong_tag_barrel : 1;
+	unsigned char unknown_318 : 1;
+	unsigned char propeller_boat : 1;
+	// 320
+	unsigned char potion : 1;
+	unsigned char fairy_refill : 1;
+	unsigned char car_322 : 1;
+	unsigned char enemy_car : 1;
+	unsigned char text_overlay_controller : 1;
+	unsigned char shockwave_325 : 1;
+	unsigned char main_menu_controller : 1;
+	unsigned char kong : 1;
+	unsigned char klaptrap_328 : 1;
+	unsigned char fairy : 1;
+	// 330
+	unsigned char bug : 1;
+	unsigned char klaptrap_331 : 1;
+	unsigned char big_bug_bash_controller : 1;
+	unsigned char barrel_main_menu : 1;
+	unsigned char padlock_k_lumsy : 1;
+	unsigned char snides_menu : 1;
+	unsigned char training_barrel_controller : 1;
+	unsigned char multiplayer_model_main_menu : 1;
+	unsigned char end_sequence_controller : 1;
+	unsigned char arena_controller : 1;
+	// 340
+	unsigned char bug_340 : 1;
+	unsigned char unknown_341 : 1;
+	unsigned char try_again_dialog : 1;
+	unsigned char pause_menu_343 : 1;
+} actor_bitfield;
+
+typedef struct map_properties_bitfield {
+	// 807FBB64
+	unsigned char disable_first_person : 1; // 8000 0000
+	unsigned char menu_overlay : 1; // 4000 0000
+	unsigned char unk02 : 1; // 2000 0000
+	unsigned char in_training : 1; // 1000 0000 // Assume vines, amongst a couple other things
+	unsigned char keep_camera_behind_player : 1; // 0800 0000
+	unsigned char multiplayer : 1; // 0400 0000
+	unsigned char unk06 : 1; // 0200 0000 // 80634ba0
+	unsigned char unk07 : 1; // 0100 0000 // 806568f8 disable something rendering
+	
+	unsigned char disable_shockwave : 1; // 0080 0000
+	unsigned char unk09 : 1; // 0040 0000 // Maze minigames
+	unsigned char unk10 : 1; // 0020 0000 // Only in factory bblast
+	unsigned char is_crown : 1; // 0010 0000 // Used in bonus overlay calc
+	unsigned char minecart_overlay : 1; // 0008 0000
+	unsigned char disable_fall_too_far : 1; // 0004 0000
+	unsigned char disable_ledge_grabbing : 1; // 0002 0000 // Vanilla disables it in crowns
+	unsigned char pickups_respawn : 1; // 0001 0000 // Oranges/Ammo etc
+	
+	unsigned char unk16 : 1; // 0000 8000 // Enguarde leaving water something
+	unsigned char is_bonus : 1; // 0000 4000 // Used in bonus overlay calc
+	unsigned char race_overlay : 1; // 0000 2000
+	unsigned char water_overlay : 1; // 0000 1000
+	unsigned char disable_damage : 1; // 0000 0800
+	unsigned char void_to_parent : 1; // 0000 0400 // Void to parent when deathwarping - only set with crowns
+	unsigned char disable_guns_and_oranges : 1; // 0000 0200
+	unsigned char force_larger_draw_distance : 1; // 0000 0100
+	
+	unsigned char overhead_camera : 1; // 0000 0080 // Mazes
+	unsigned char far_camera : 1; // 0000 0040 // 8061d25c
+	unsigned char force_inline_underwater_camera : 1; // 0000 0020 // force camera to be in line with the player's vertical angle when underwater
+	unsigned char unk27 : 1; // 0000 0010 // 80622200 Something camera related
+	unsigned char unk28 : 1; // 0000 0008 // floor state something? 8061bc0c
+	unsigned char unk29 : 1; // 0000 0004 // Enabled during rabbit race. Checked 80621198
+	unsigned char disable_fairy_camera : 1; // 0000 0002
+	unsigned char boss_overlay : 1; // 0000 0001
+
+	// 807FBB68
+	unsigned char unk32 : 8;
+	unsigned char unk40 : 8;
+	unsigned char unk48 : 7;
+	// Start of used stuff
+	unsigned char unk55 : 1; // 0000 0100 // Something chunk related
+	
+	unsigned char unk56 : 1; // 0000 0080 // camera something?
+	unsigned char orangstand_slips : 1; // 0000 0040 // Makes orangstand slip
+	unsigned char unk58 : 1; // 0000 0020 // camera something?
+	unsigned char is_mini_room : 1; // 0000 0010 // Doubles sprite size, doubles scale of spawned actors?
+	unsigned char unk60 : 1; // 0000 0008 // Disable water ripple with something?
+	unsigned char unk61 : 1; // 0000 0004 // Something renderlight
+	unsigned char is_krool : 1; // 0000 0002
+	unsigned char disable_instrument : 1; // 0000 0001
+} map_properties_bitfield;
 
 typedef struct text_char_info {
 	/* 0x000 */ short x_start;
@@ -1767,3 +2298,60 @@ typedef struct vtx {
 typedef struct letter_data {
 	/* 0x000 */ vtx vtx_info[4];
 } letter_data;
+
+typedef struct char_spawner_paad {
+	/* 0x000 */ char unk_00[0xA];
+	/* 0x00A */ short x;
+	/* 0x00C */ short y;
+	/* 0x00E */ short z;
+	/* 0x010 */ char unk_10[0x2C-0x10];
+	/* 0x02C */ short counter;
+} char_spawner_paad;
+
+typedef struct collision_tree_struct {
+	/* 0x000 */ short actor_interaction;
+	/* 0x002 */ short target_interaction;
+	/* 0x004 */ void* function;
+	/* 0x008 */ unsigned char collision_type;
+	/* 0x009 */ unsigned char unk9;
+	/* 0x00A */ unsigned char force_break;
+	/* 0x00B */ unsigned char unkB;
+} collision_tree_struct;
+
+typedef struct move_overlay_paad {
+	/* 0x000 */ void* upper_text;
+	/* 0x004 */ void* lower_text;
+	/* 0x008 */ unsigned char opacity;
+	/* 0x009 */ unsigned char index;
+	/* 0x00A */ char unk_0A[0x10-0xA];
+	/* 0x010 */ mtx_item matrix_0;
+	/* 0x050 */ mtx_item matrix_1;
+	/* 0x090 */ int timer;
+	/* 0x094 */ actorData* shop_owner;
+} move_overlay_paad;
+
+typedef struct SingleExitStruct {
+    /* 0x000 */ short x;
+    /* 0x002 */ short y;
+    /* 0x004 */ short z;
+    /* 0x006 */ unsigned char player_angle;
+    /* 0x007 */ unsigned char camera_angle;
+    /* 0x008 */ unsigned char autowalk;
+    /* 0x009 */ unsigned char size;
+} SingleExitStruct;
+
+typedef struct FogMapping {
+	/* 0x000 */ rgb rgb;
+	/* 0x003 */ unsigned char map_index;
+	/* 0x004 */ short fog_entry;
+	/* 0x006 */ short fog_cap;
+} FogMapping;
+
+typedef struct FogData {
+	/* 0x000 */ unsigned char enabled;
+	/* 0x001 */ rgb rgb;
+	/* 0x004 */ unsigned char opacity;
+	/* 0x005 */ char pad5;
+	/* 0x006 */ short entry_range;
+	/* 0x008 */ short cap_range;
+} FogData;

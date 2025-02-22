@@ -152,9 +152,9 @@ def getFileInfo(pointer_table_index: int, file_index: int) -> PointerFile:
 def replaceROMFile(rom: BinaryIO, pointer_table_index: int, file_index: int, data: bytes, uncompressed_size: int, filename: str = ""):
     """Replace the ROM file."""
     # TODO: Get this working
-    if pointer_table_index == TableNames.Cutscenes and file_index == 0:
-        print(" - WARNING: Tried to replace Test Map cutscenes. This will replace global cutscenes, so it has been disabled for now to prevent crashes.")
-        return
+    # if pointer_table_index == TableNames.Cutscenes and file_index == 0:
+    #     print(" - WARNING: Tried to replace Test Map cutscenes. This will replace global cutscenes, so it has been disabled for now to prevent crashes.")
+    #     return
 
     # Align data to 2 byte boundary for DMA
     if len(data) % 2 == 1:
@@ -381,6 +381,17 @@ def dumpPointerTableDetails(filename: str, fr: BinaryIO, generate_json: bool):
 
     if generate_json:
         with open("../static/patches/pointer_addresses.json", "w") as fh:
+            unneeded_table_keys = ["starting_byte", "ending_byte", "total_entries", "address", "name"]
+            unneeded_file_keys = ["sha", "bit_set", "file_name", "map_index", "new_address"]
+            for table_index, table in enumerate(dataset):
+                for k in unneeded_table_keys:
+                    del table[k]
+                for file in table["entries"]:
+                    for k in unneeded_file_keys:
+                        del file[k]
+                    if table_index != 0:
+                        # del file["compressed_size"]
+                        del file["index"]
             fh.write(json.dumps(dataset))
 
 

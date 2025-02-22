@@ -1,10 +1,15 @@
 """Settings class and functions."""
 
 import json
+import logging
 import math
 import random
+import os
+from version import version
+from copy import deepcopy
 from random import randint
 
+from randomizer.Enums.Transitions import Transitions
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.LogicFiles.AngryAztec
@@ -20,12 +25,13 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Models import Model
+from randomizer.Enums.Models import Model, Sprite
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import *
 from randomizer.Enums.SongType import SongType
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Item import ItemList
@@ -35,18 +41,27 @@ from randomizer.Lists.Location import (
     DonkeyMoveLocations,
     LankyMoveLocations,
     PreGivenLocations,
+    ProgressiveHintLocations,
     SharedShopLocations,
     ShopLocationReference,
     TinyMoveLocations,
     TrainingBarrelLocations,
+    WrinklyHintLocations,
 )
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.Songs import song_data
-from randomizer.Patching.Lib import IsItemSelected, SwitchInfo, HelmDoorInfo, HelmDoorRandomInfo
+from randomizer.Lists.Switches import SwitchData
+from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
-from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
+from randomizer.ShuffleBosses import (
+    ShuffleBosses,
+    ShuffleBossKongs,
+    ShuffleKKOPhaseOrder,
+    ShuffleKutoutKongs,
+    ShuffleTinyPhaseToes,
+)
 from version import version as randomizer_version
 
 
@@ -68,6 +83,10 @@ class Settings:
         self.rom_data = 0x1FED020
         self.move_location_data = 0x1FEF000
         self.form_data = form_data
+
+        # Debugging
+        self.version = version
+        self.branch = os.environ.get("BRANCH", "LOCAL")
 
         self.apply_form_data(form_data)
         self.seed_id = str(self.seed)
@@ -94,16 +113,25 @@ class Settings:
             self.troff_max = int(self.troff_text)
         else:
             self.troff_max = 270
-        self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55]  # Weights for the minimum value of troff
+        self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.60]  # Weights for the minimum value of troff
         if self.hard_troff_n_scoff:
-            self.troff_min = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75]  # Add 20% to the minimum for hard T&S
+            self.troff_min = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8]  # Add 20% to the minimum for hard T&S
         # In hard level progression we go through levels in a random order, so we set every level's troff min weight to the largest weight
-        if self.hard_level_progression:
+        if self.level_randomization == LevelRandomization.level_order_complex:
             self.troff_min = [self.troff_min[-1] for x in self.troff_min]
 
         CompleteVanillaPrices()
         self.prices = VanillaPrices.copy()
-        self.level_order = {1: Levels.JungleJapes, 2: Levels.AngryAztec, 3: Levels.FranticFactory, 4: Levels.GloomyGalleon, 5: Levels.FungiForest, 6: Levels.CrystalCaves, 7: Levels.CreepyCastle}
+        self.level_order = {
+            1: Levels.JungleJapes,
+            2: Levels.AngryAztec,
+            3: Levels.FranticFactory,
+            4: Levels.GloomyGalleon,
+            5: Levels.FungiForest,
+            6: Levels.CrystalCaves,
+            7: Levels.CreepyCastle,
+            8: Levels.HideoutHelm,
+        }
 
         # Used by hints in level order rando
         # By default (and in LZR) assume you have access to everything everywhere so hints are unrestricted
@@ -130,15 +158,6 @@ class Settings:
             self.ApplyPlandomizerSettings()
 
             # Remove these as plando features get implemented
-            self.plandomizer_dict["plando_dirt_patches"] = -1
-            self.plandomizer_dict["plando_melon_crates"] = -1
-            self.plandomizer_dict["plando_battle_arenas"] = -1
-            self.plandomizer_dict["plando_fairies"] = -1
-            self.plandomizer_dict["plando_kasplats"] = -1
-            self.plandomizer_dict["plando_wrinkly_doors"] = -1
-            self.plandomizer_dict["plando_tns_portals"] = -1
-            self.plandomizer_dict["plando_starting_exit"] = -1
-            self.plandomizer_dict["plando_switchsanity"] = -1
             self.plandomizer_dict["plando_shop_location_rando"] = -1
             # ---------------------------------------------------
             # Prevent custom locations selected for plandomizer from being used by a different randomizer
@@ -153,17 +172,42 @@ class Settings:
                 Levels.CreepyCastle: [],
                 Levels.HideoutHelm: [],
             }
+            crown_to_level = {
+                Locations.JapesBattleArena: Levels.JungleJapes,
+                Locations.AztecBattleArena: Levels.AngryAztec,
+                Locations.FactoryBattleArena: Levels.FranticFactory,
+                Locations.GalleonBattleArena: Levels.GloomyGalleon,
+                Locations.ForestBattleArena: Levels.FungiForest,
+                Locations.CavesBattleArena: Levels.CrystalCaves,
+                Locations.CastleBattleArena: Levels.CreepyCastle,
+                Locations.IslesBattleArena2: Levels.DKIsles,
+                Locations.IslesBattleArena1: Levels.DKIsles,
+                Locations.HelmBattleArena: Levels.HideoutHelm,
+            }
             for key in ["plando_dirt_patches", "plando_melon_crates", "plando_battle_arenas"]:
-                if self.plandomizer_dict[key] != -1:
-                    for customloc in self.plandomizer_dict[key]:
-                        self.plandomizer_dict["reserved_custom_locations"][customloc["level"]].append(customloc["name"])
+                for customloc in self.plandomizer_dict[key]:
+                    selected_location = ""
+                    level = -1
+                    if key == "plando_battle_arenas":
+                        selected_location = self.plandomizer_dict[key][customloc]
+                        level = crown_to_level[int(customloc)]
+                    else:
+                        selected_location = customloc["location"]
+                        level = customloc["level"]
+                    if level != -1:
+                        self.plandomizer_dict["reserved_custom_locations"][level].append(selected_location)
         if self.music_selections is not None:
             self.ApplyMusicSelections()
 
         self.resolve_settings()
 
         # Generate the settings string - DO THIS LAST because the encryption method alters the form data
-        self.settings_string = encrypt_settings_string_enum(form_data)
+        try:
+            logger = logging.getLogger(__name__)
+            self.settings_string = encrypt_settings_string_enum(form_data)
+            logger.warning("Using settings string: " + self.settings_string)
+        except Exception as ex:
+            raise Ex.SettingsIncompatibleException("Settings string is in an invalid state. Try applying a preset and recreating your changes.")
 
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""
@@ -207,6 +251,7 @@ class Settings:
         self.troff_weight_4 = 0.8
         self.troff_weight_5 = 0.9
         self.troff_weight_6 = 1.0
+        self.troff_weight_7 = 1.0
         if self.level_randomization in (LevelRandomization.loadingzone, LevelRandomization.loadingzonesdecoupled) or self.hard_level_progression:
             self.troff_weight_0 = 1
             self.troff_weight_1 = 1
@@ -215,6 +260,7 @@ class Settings:
             self.troff_weight_4 = 1
             self.troff_weight_5 = 1
             self.troff_weight_6 = 1
+            self.troff_weight_7 = 1
 
         if self.randomize_cb_required_amounts:
             randomlist = []
@@ -228,33 +274,90 @@ class Settings:
             self.troff_4 = round(min(cbs[4] * self.troff_weight_4, 500))
             self.troff_5 = round(min(cbs[5] * self.troff_weight_5, 500))
             self.troff_6 = round(min(cbs[6] * self.troff_weight_6, 500))
-        if self.randomize_blocker_required_amounts:
-            if self.blocker_max > 0:
-                randomlist = random.choices(range(1, self.blocker_max), k=7)
-                b_lockers = randomlist
-                if self.shuffle_loading_zones == ShuffleLoadingZones.all or self.hard_level_progression:
-                    b_lockers.append(random.randint(1, self.blocker_max))
-                    random.shuffle(b_lockers)
-                else:
-                    b_lockers.append(1)
-                    b_lockers.sort()
-            else:
-                b_lockers = [0, 0, 0, 0, 0, 0, 0, 0]
-            self.blocker_0 = b_lockers[0]
-            self.blocker_1 = b_lockers[1]
-            self.blocker_2 = b_lockers[2]
-            self.blocker_3 = b_lockers[3]
-            self.blocker_4 = b_lockers[4]
-            self.blocker_5 = b_lockers[5]
-            self.blocker_6 = b_lockers[6]
-            if self.maximize_helm_blocker:
-                self.blocker_7 = self.blocker_max
-            else:
-                self.blocker_7 = b_lockers[7]
+            self.troff_7 = round(min(cbs[7] * self.troff_weight_7, 500))
+        self.BossBananas = [
+            self.troff_0,
+            self.troff_1,
+            self.troff_2,
+            self.troff_3,
+            self.troff_4,
+            self.troff_5,
+            self.troff_6,
+            self.troff_7,
+        ]
 
-        # Store banana values in array
-        self.EntryGBs = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
-        self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
+        self.BLockerEntryItems = [BarrierItems.GoldenBanana] * 8
+        self.BLockerEntryCount = [0] * 8
+
+        if self.chaos_blockers:
+            self.chaos_ratio = self.chaos_ratio / 100.0
+            self.blocker_limits = {
+                # Will give customization to this eventually, just need to get a proof of concept working
+                # BarrierItems.Nothing: 0,
+                # BarrierItems.Kong: 5,
+                # BarrierItems.Move: 41,
+                BarrierItems.GoldenBanana: 200,
+                BarrierItems.Blueprint: 40,
+                BarrierItems.Fairy: 20,
+                # BarrierItems.Key: 8,
+                BarrierItems.Crown: 10,
+                BarrierItems.CompanyCoin: 2,
+                BarrierItems.Medal: 40,
+                BarrierItems.Bean: 1,
+                BarrierItems.Pearl: 5,
+                BarrierItems.RainbowCoin: 16,
+                # BarrierItems.IceTrap: 10,
+                # BarrierItems.Percentage: 20,
+                # BarrierItems.ColoredBanana: 1000,
+            }
+            locked_blocker_items = []
+            for slot in range(8):
+                item = random.choice([key for key in self.blocker_limits.keys() if key not in locked_blocker_items])
+                count = random.randint(1, math.ceil(self.blocker_limits[item] * self.chaos_ratio))
+                self.BLockerEntryItems[slot] = item
+                self.BLockerEntryCount[slot] = count
+                # Some barriers can only show up once
+                if item in (BarrierItems.Bean, BarrierItems.Pearl, BarrierItems.CompanyCoin):
+                    locked_blocker_items.append(item)
+        else:
+            if self.randomize_blocker_required_amounts:
+                if self.blocker_max > 0:
+                    choice_list = range(1, self.blocker_max)
+                    if self.blocker_max < 7:
+                        # Can't create a random list with purely the range. Too small of a list
+                        choice_list = [int(x / 10) for x in range(10, (self.blocker_max * 10) + 9)]
+                    randomlist = random.choices(choice_list, k=7)
+                    b_lockers = randomlist
+                    if self.shuffle_loading_zones == ShuffleLoadingZones.all or self.hard_level_progression:
+                        b_lockers.append(random.randint(1, self.blocker_max))
+                        random.shuffle(b_lockers)
+                    else:
+                        b_lockers.append(1)
+                        b_lockers.sort()
+                else:
+                    b_lockers = [0, 0, 0, 0, 0, 0, 0, 0]
+                self.blocker_0 = b_lockers[0]
+                self.blocker_1 = b_lockers[1]
+                self.blocker_2 = b_lockers[2]
+                self.blocker_3 = b_lockers[3]
+                self.blocker_4 = b_lockers[4]
+                self.blocker_5 = b_lockers[5]
+                self.blocker_6 = b_lockers[6]
+                if self.maximize_helm_blocker:
+                    self.blocker_7 = self.blocker_max
+                else:
+                    self.blocker_7 = b_lockers[7]
+            # Store banana values in array
+            self.BLockerEntryCount = [
+                self.blocker_0,
+                self.blocker_1,
+                self.blocker_2,
+                self.blocker_3,
+                self.blocker_4,
+                self.blocker_5,
+                self.blocker_6,
+                self.blocker_7,
+            ]
 
     def generate_main(self):
         """Set Default items on main page."""
@@ -265,6 +368,7 @@ class Settings:
         self.disable_hard_minigames = None
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
+        self.ice_trap_frequency = IceTrapFrequency.mild
         self.start_with_slam = False
         self.random_patches = None
         self.random_crates = None
@@ -273,7 +377,8 @@ class Settings:
         self.boss_location_rando = None
         self.boss_kong_rando = None
         self.kasplat_rando_setting = None
-        self.puzzle_rando = None
+        self.puzzle_rando = None  # Deprecated
+        self.puzzle_rando_difficulty = PuzzleRando.off
         self.shuffle_shops = None
         self.switchsanity = SwitchsanityLevel.off
         self.switchsanity_data = {}
@@ -311,6 +416,7 @@ class Settings:
         self.troff_4 = None
         self.troff_5 = None
         self.troff_6 = None
+        self.troff_7 = None
         self.troff_min = None
         self.troff_max = None
         self.blocker_text = ""
@@ -335,7 +441,7 @@ class Settings:
         # krool_phase_count: int, [1-5]
         self.krool_phase_count = 5
         self.krool_random = False
-        self.balanced_krool_phases = False  # Affects the Chunky phase slam switch and all(!) blast barrels - this is likely to be split up later
+        self.cannons_require_blast = False  # Affects the Chunky phase slam switch and all(!) blast barrels - this is likely to be split up later
         # helm_phase_count: int, [1-5]
         self.helm_phase_count = 3
         self.helm_random = False
@@ -346,6 +452,11 @@ class Settings:
         self.starting_kong = Kongs.any
         self.starting_kongs_count = 5
         self.starting_random = False
+
+        self.disable_racing_patches = False
+
+        self.has_password = False
+        self.password = [1] * 8
 
         # bonus_barrels: MinigameBarrels
         # skip (auto-completed)
@@ -358,7 +469,15 @@ class Settings:
         # normal
         # random
         self.helm_barrels = MinigameBarrels.normal
+        self.training_barrels_minigames = MinigameBarrels.normal
         self.bonus_barrel_auto_complete = False
+
+        # Not making these a series of settings that can be toggled by the user yet.
+        # If people want to be able to toggle this, we can make a simple UI switch and the back-end has already been handled appropriately
+        self.sprint_barrel_requires_sprint = True
+        self.fix_lanky_tiny_prod = True
+
+        self.chaos_blockers = False
 
         # hard_shooting: bool
         self.hard_shooting = False
@@ -390,6 +509,11 @@ class Settings:
         # shuffled
         self.training_barrels = TrainingBarrels.normal
 
+        # climbing_status: ClimbingStatus
+        # normal
+        # shuffled
+        self.climbing_status = ClimbingStatus.normal
+
         # The status of camera & shockwave: ShockwaveStatus
         # vanilla - both located at Banana Fairy Isle
         # shuffled - located in a random valid location
@@ -403,6 +527,8 @@ class Settings:
         self.music_minoritems_randomized = False
         self.music_events_randomized = False
         self.random_music = False
+        self.music_vanilla_locations = False
+        self.music_disable_reverb = False
         self.music_selection_dict = {
             "vanilla": {},
             "custom": {},
@@ -415,12 +541,15 @@ class Settings:
 
         #  Unlock Moves - 0-40?
         self.starting_moves_count = 0
+        self.starting_moves_list_counts = []
+        self.starting_moves_lists = []
 
         #  Color
         self.colors = {}
         self.color_palettes = {}
         # Random Model Swaps
         self.random_models = RandomModels.off
+        self.random_enemy_colors = RandomModels.off
         self.bother_klaptrap_model = Model.KlaptrapGreen
         self.beetle_model = Model.Beetle
         self.rabbit_model = Model.Rabbit
@@ -430,6 +559,13 @@ class Settings:
         self.seek_klaptrap_model = Model.KlaptrapGreen
         self.fungi_tomato_model = Model.Tomato
         self.caves_tomato_model = Model.IceTomato
+        self.piano_burp_model = Model.KoshKremlingRed
+        self.spotlight_fish_model = Model.SpotlightFish
+        self.candy_cutscene_model = Model.Candy
+        self.funky_cutscene_model = Model.Funky
+        self.boot_cutscene_model = Model.Boot
+        #
+        self.minigame_melon_sprite = Sprite.BouncingMelon
         # DK
         self.dk_fur_colors = CharacterColors.vanilla
         self.dk_fur_custom_color = "#000000"
@@ -458,6 +594,9 @@ class Settings:
         self.rambi_skin_custom_color = "#000000"
         self.enguarde_skin_colors = CharacterColors.vanilla
         self.enguarde_skin_custom_color = "#000000"
+        # Misc
+        self.gb_colors = CharacterColors.vanilla
+        self.gb_custom_color = "#000000"
 
         self.disco_chunky = False
         self.dark_mode_textboxes = False
@@ -466,6 +605,11 @@ class Settings:
         self.menu_texture_name = "Default"
         self.wrinkly_rgb = [255, 255, 255]
         self.krusha_ui = KrushaUi.no_slot
+        self.kong_model_dk = KongModels.default
+        self.kong_model_diddy = KongModels.default
+        self.kong_model_lanky = KongModels.default
+        self.kong_model_tiny = KongModels.default
+        self.kong_model_chunky = KongModels.default
         self.krusha_kong = None
         self.misc_cosmetics = False
         self.remove_water_oscillation = False
@@ -476,16 +620,31 @@ class Settings:
         self.music_volume = 100
         self.true_widescreen = False
         self.troff_brighten = False
+        self.better_dirt_patch_cosmetic = False
         self.crosshair_outline = False
         self.camera_is_not_inverted = False
         self.sound_type = SoundType.stereo
         self.custom_music_proportion = 100
+        self.smoother_camera = False
         self.fill_with_custom_music = False
+        self.show_song_name = False
+
+        # Custom Textures
+        self.custom_transition = None
+        self.custom_troff_portal = None
+        self.painting_isles = None
+        self.painting_museum_krool = None
+        self.painting_museum_knight = None
+        self.painting_museum_swords = None
+        self.painting_treehouse_dolphin = None
+        self.painting_treehouse_candy = None
 
         #  Misc
         self.generate_spoilerlog = None
         self.fast_start_beginning_of_game = True
+        self.fast_start_beginning_of_game_dummy = True  # Decoupled from the actual setting for a little bit until we improve stability
         self.helm_setting = None
+        self.helm_room_bonus_count = HelmBonuses.two
         self.quality_of_life = None
         self.wrinkly_available = False
         self.shorten_boss = False
@@ -499,6 +658,7 @@ class Settings:
         self.medal_requirement = 15
         self.medal_cb_req = 75
         self.rareware_gb_fairies = 20
+        self.mermaid_gb_pearls = 5
         self.bananaport_rando = BananaportRando.off
         self.activate_all_bananaports = ActivateAllBananaports.off
         self.shop_indicator = False
@@ -507,7 +667,9 @@ class Settings:
         self.maximize_helm_blocker = False
         self.perma_death = False
         self.disable_tag_barrels = False
+        self.ice_traps_damage = False
         self.level_randomization = LevelRandomization.vanilla
+        self.shuffle_helm_location = False
         self.kong_rando = False
         self.kongs_for_progression = False
         self.wrinkly_hints = WrinklyHints.off
@@ -522,14 +684,23 @@ class Settings:
         self.kko_phase_order = [0, 0, 0]
         self.toe_order = [0] * 10
         self.mill_levers = [0] * 5
+        self.jetpac_enemy_order = list(range(8))
         self.crypt_levers = [1, 4, 3]
         self.diddy_rnd_doors = [[0] * 4, [0] * 4, [0] * 4]
         self.enemy_rando = False
-        self.crown_enemy_rando = CrownEnemyRando.off
+        self.crown_enemy_rando = CrownEnemyRando.off  # Deprecated
+        self.crown_enemy_difficulty = CrownEnemyDifficulty.vanilla
+        self.crown_difficulties = [CrownEnemyDifficulty.vanilla] * 10
         self.enemy_speed_rando = False
-        self.cb_rando = False
+        self.normalize_enemy_sizes = False
+        self.randomize_enemy_sizes = False
+        self.cb_rando = CBRando.off  # Deprecated
+        self.cb_rando_list_selected = []
+        self.cb_rando_enabled = False
         self.coin_rando = False
         self.crown_placement_rando = False
+        self.bananaport_placement_rando = ShufflePortLocations.off
+        self.useful_bananaport_placement = True
         self.override_cosmetics = True
         self.random_colors = False
         self.hard_level_progression = False
@@ -537,11 +708,69 @@ class Settings:
         self.hard_troff_n_scoff = False
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
+        self.dk_portal_location_rando = False  # Deprecated
+        self.dk_portal_location_rando_v2 = DKPortalRando.off
+        self.level_portal_destinations = [
+            {
+                "map": Maps.JungleJapes,
+                "exit": 15,
+            },
+            {
+                "map": Maps.AngryAztec,
+                "exit": 0,
+            },
+            {
+                "map": Maps.FranticFactory,
+                "exit": 0,
+            },
+            {
+                "map": Maps.GloomyGalleon,
+                "exit": 0,
+            },
+            {
+                "map": Maps.FungiForest,
+                "exit": 27,
+            },
+            {
+                "map": Maps.CrystalCaves,
+                "exit": 0,
+            },
+            {
+                "map": Maps.CreepyCastle,
+                "exit": 0,
+            },
+        ]
+        self.level_void_maps = [
+            Maps.JungleJapes,
+            Maps.AngryAztec,
+            Maps.FranticFactory,
+            Maps.GloomyGalleon,
+            Maps.FungiForest,
+            Maps.CrystalCaves,
+            Maps.CreepyCastle,
+        ]
+        self.level_entrance_regions = [
+            Regions.JungleJapesStart,
+            Regions.AngryAztecStart,
+            Regions.FranticFactoryStart,
+            Regions.GloomyGalleonStart,
+            Regions.FungiForestStart,
+            Regions.CrystalCavesMain,
+            Regions.CreepyCastleMain,
+        ]
+        self.mech_fish_entrance = {
+            "map": Maps.GalleonMechafish,
+            "exit": 0,
+        }
         self.vanilla_door_rando = False
+        self.dos_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
         self.hard_mode_selected = []
+        self.hard_bosses = False
+        self.hard_bosses_selected = []
+        self.mirror_mode = False
         self.faster_checks_enabled = False
         self.remove_barriers_enabled = False
         self.faster_checks_selected = []
@@ -552,14 +781,16 @@ class Settings:
         self.music_filtering_selected = []
         self.enemies_selected = []
         self.glitches_selected = []
-        self.starting_move_list_selected = []
-        self.random_starting_move_list_selected = []
         self.starting_keys_list_selected = []
         self.warp_level_list_selected = []
         self.select_keys = False
         self.helm_hurry = False
         self.colorblind_mode = ColorblindMode.off
-        self.win_condition = WinCondition.beat_krool
+        self.big_head_mode = BigHeadMode.off
+        self.win_condition = WinCondition.beat_krool  # Deprecated
+        self.win_condition_random = False
+        self.win_condition_item = WinConditionComplex.beat_krool
+        self.win_condition_count = 1
         self.key_8_helm = False
         self.k_rool_vanilla_requirement = False
         self.random_starting_region = False
@@ -569,7 +800,7 @@ class Settings:
         self.remove_wrinkly_puzzles = False
         self.smaller_shops = False
         self.alter_switch_allocation = False
-        self.switch_allocation = [1, 1, 1, 1, 2, 2, 3]
+        self.switch_allocation = [1, 1, 1, 1, 2, 2, 3, 3]
         self.item_reward_previews = False
         self.microhints_enabled = MicrohintsEnabled.off
         self.more_cutscene_skips = ExtraCutsceneSkips.off
@@ -578,6 +809,8 @@ class Settings:
         self.fungi_time_internal = FungiTimeSetting.day
         self.galleon_water = GalleonWaterSetting.lowered
         self.galleon_water_internal = GalleonWaterSetting.lowered
+        self.chunky_phase_slam_req = SlamRequirement.blue
+        self.chunky_phase_slam_req_internal = SlamRequirement.blue
         # Helm Hurry
         self.helmhurry_list_starting_time = 1200
         self.helmhurry_list_golden_banana = 20
@@ -595,19 +828,23 @@ class Settings:
         self.helmhurry_list_colored_bananas = 3
         self.helmhurry_list_ice_traps = -40
         # Point spread
-        self.points_list_kongs = 9
-        self.points_list_keys = 9
-        self.points_list_guns = 7
-        self.points_list_instruments = 7
-        self.points_list_training_moves = 5
+        self.points_list_kongs = 11
+        self.points_list_keys = 11
+        self.points_list_shopkeepers = 11
+        self.points_list_guns = 9
+        self.points_list_instruments = 9
+        self.points_list_training_moves = 7
         self.points_list_important_shared = 5
+        self.points_list_fairy_moves = 7
         self.points_list_pad_moves = 3
-        self.points_list_barrel_moves = 3
-        self.points_list_active_moves = 3
+        self.points_list_barrel_moves = 7
+        self.points_list_active_moves = 5
         self.points_list_bean = 3
         # Progressive hints
-        self.enable_progressive_hints = False
-        self.progressive_hint_text = 0
+        self.progressive_hint_item = ProgressiveHintItem.off
+        self.enable_progressive_hints = False  # Deprecated
+        self.progressive_hint_text = 0  # Deprecated
+        self.progressive_hint_count = 0
 
     def shuffle_prices(self, spoiler):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -617,82 +854,60 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
-        # Correct the invalid items in the starting move lists
-        copy_of_starting_move_list_selected = self.starting_move_list_selected.copy()
-        for item in copy_of_starting_move_list_selected:
-            if item in (Items.ProgressiveSlam2, Items.ProgressiveSlam3):
-                self.starting_move_list_selected.remove(item)
-                self.starting_move_list_selected.append(Items.ProgressiveSlam)
-            if item == Items.ProgressiveAmmoBelt2:
-                self.starting_move_list_selected.remove(item)
-                self.starting_move_list_selected.append(Items.ProgressiveAmmoBelt)
-            elif item in (Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3):
-                self.starting_move_list_selected.remove(item)
-                self.starting_move_list_selected.append(Items.ProgressiveInstrumentUpgrade)
-        copy_of_random_starting_move_list_selected = self.random_starting_move_list_selected.copy()
-        for item in copy_of_random_starting_move_list_selected:
-            if item in (Items.ProgressiveSlam2, Items.ProgressiveSlam3):
-                self.random_starting_move_list_selected.remove(item)
-                self.random_starting_move_list_selected.append(Items.ProgressiveSlam)
-            if item == Items.ProgressiveAmmoBelt2:
-                self.random_starting_move_list_selected.remove(item)
-                self.random_starting_move_list_selected.append(Items.ProgressiveAmmoBelt)
-            elif item in (Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3):
-                self.random_starting_move_list_selected.remove(item)
-                self.random_starting_move_list_selected.append(Items.ProgressiveInstrumentUpgrade)
+        self.fast_start_beginning_of_game = True  # Double make sure this is set
+        # Correct the invalid items in the starting move lists and identify the total number of starting moves
+        guaranteed_starting_moves = []
+        self.starting_moves_list_counts = [
+            self.starting_moves_list_count_1,
+            self.starting_moves_list_count_2,
+            self.starting_moves_list_count_3,
+            self.starting_moves_list_count_4,
+            self.starting_moves_list_count_5,
+        ]
+        self.starting_moves_lists = [self.starting_moves_list_1, self.starting_moves_list_2, self.starting_moves_list_3, self.starting_moves_list_4, self.starting_moves_list_5]
+        for i in range(len(self.starting_moves_lists)):
+            copy_of_list = self.starting_moves_lists[i].copy()
+            for item in copy_of_list:
+                # The additional fake progressive items are translated into the correct version
+                if item in (Items.ProgressiveSlam2, Items.ProgressiveSlam3):
+                    self.starting_moves_lists[i].remove(item)
+                    self.starting_moves_lists[i].append(Items.ProgressiveSlam)
+                if item == Items.ProgressiveAmmoBelt2:
+                    self.starting_moves_lists[i].remove(item)
+                    self.starting_moves_lists[i].append(Items.ProgressiveAmmoBelt)
+                elif item in (Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3):
+                    self.starting_moves_lists[i].remove(item)
+                    self.starting_moves_lists[i].append(Items.ProgressiveInstrumentUpgrade)
+            # If we are intending to place every item in this pool, these moves are guaranteed to be placed
+            if len(self.starting_moves_lists[i]) <= self.starting_moves_list_counts[i]:
+                self.starting_moves_list_counts[i] = len(self.starting_moves_lists[i])
+                guaranteed_starting_moves.extend(self.starting_moves_lists[i])
+        self.starting_moves_count = sum(self.starting_moves_list_counts)
+
         # Some settings have to be derived from the guaranteed starting moves - this needs to be done early in this method
         # If we are *guaranteed* to start with a slam, place it in the training grounds reward slot and don't make it hintable, as before
-        if Items.ProgressiveSlam in self.starting_move_list_selected or not self.shuffle_items:  # Non item rando must have this set to true
+        if Items.ProgressiveSlam in guaranteed_starting_moves:
             self.start_with_slam = True
-            if Items.ProgressiveSlam in self.starting_move_list_selected:
-                self.starting_move_list_selected.remove(Items.ProgressiveSlam)
         else:
             self.start_with_slam = False
         # If we are *guaranteed* to start with ALL training moves, put them in their vanilla locations and don't make them hintable, as before
-        if not self.shuffle_items or (  # Non item rando must start with training moves
-            Items.Vines in self.starting_move_list_selected
-            and Items.Barrels in self.starting_move_list_selected
-            and Items.Oranges in self.starting_move_list_selected
-            and Items.Swim in self.starting_move_list_selected
-        ):
+        if Items.Vines in guaranteed_starting_moves and Items.Barrels in guaranteed_starting_moves and Items.Oranges in guaranteed_starting_moves and Items.Swim in guaranteed_starting_moves:
             self.training_barrels = TrainingBarrels.normal
-            if Items.Vines in self.starting_move_list_selected:
-                self.starting_move_list_selected.remove(Items.Vines)
-            if Items.Barrels in self.starting_move_list_selected:
-                self.starting_move_list_selected.remove(Items.Barrels)
-            if Items.Oranges in self.starting_move_list_selected:
-                self.starting_move_list_selected.remove(Items.Oranges)
-            if Items.Swim in self.starting_move_list_selected:
-                self.starting_move_list_selected.remove(Items.Swim)
         else:
             self.training_barrels = TrainingBarrels.shuffled
-        self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)
+        # If Climbing is a guaranteed starting move, treat it like the others as well.
+        if Items.Climbing in guaranteed_starting_moves:
+            self.climbing_status = ClimbingStatus.normal
+        else:
+            self.climbing_status = ClimbingStatus.shuffled
 
         # Switchsanity handling
-        self.switchsanity_data = {
-            Switches.IslesMonkeyport: SwitchInfo("Isles Monkeyport Pad", Kongs.tiny, SwitchType.PadMove, 0x1C6, Maps.Isles, [0x38]),
-            Switches.IslesHelmLobbyGone: SwitchInfo("Helm Lobby Gone Pad", Kongs.chunky, SwitchType.PadMove, 0x1C7, Maps.HideoutHelmLobby, [3]),
-            Switches.IslesAztecLobbyFeather: SwitchInfo("Aztec Lobby Feather Switch", Kongs.tiny, SwitchType.GunSwitch, 0x1C8, Maps.AngryAztecLobby, [16]),
-            Switches.IslesFungiLobbyFeather: SwitchInfo("Forest Lobby Feather Switch", Kongs.tiny, SwitchType.GunSwitch, 0x1C9, Maps.FungiForestLobby, [5]),
-            Switches.IslesSpawnRocketbarrel: SwitchInfo("Isles Main Trombone Pad", Kongs.lanky, SwitchType.InstrumentPad, 0x1CA, Maps.Isles, [0x31]),
-            Switches.JapesFeather: SwitchInfo("Japes Hive Area Switches", Kongs.tiny, SwitchType.GunSwitch, 0x1CB, Maps.JungleJapes, [0x34, 0x35]),
-            Switches.JapesRambi: SwitchInfo("Japes Switch to Rambi", Kongs.donkey, SwitchType.GunSwitch, 0x1CC, Maps.JungleJapes, [0x123]),
-            Switches.JapesPainting: SwitchInfo("Japes Switch to Painting", Kongs.diddy, SwitchType.GunSwitch, 0x1CD, Maps.JungleJapes, [40]),
-            Switches.JapesDiddyCave: SwitchInfo("Japes Diddy Cave Switches", Kongs.diddy, SwitchType.GunSwitch, 0x1CE, Maps.JungleJapes, [0x29, 0x2A]),
-            Switches.AztecBlueprintDoor: SwitchInfo("Aztec Blueprint Door Switches", Kongs.donkey, SwitchType.GunSwitch, 0x1CF, Maps.AngryAztec, [0x9D, 0x9E]),
-            Switches.AztecLlamaCoconut: SwitchInfo("Aztec Llama Switch (1)", Kongs.donkey, SwitchType.GunSwitch, 0x1D0, Maps.AngryAztec, [13]),
-            Switches.AztecLlamaGrape: SwitchInfo("Aztec Llama Switch (2)", Kongs.lanky, SwitchType.GunSwitch, 0x1D1, Maps.AngryAztec, [14], [Switches.AztecLlamaCoconut]),
-            Switches.AztecLlamaFeather: SwitchInfo("Aztec Llama Switch (3)", Kongs.tiny, SwitchType.GunSwitch, 0x1D2, Maps.AngryAztec, [15], [Switches.AztecLlamaCoconut, Switches.AztecLlamaGrape]),
-            Switches.AztecQuicksandSwitch: SwitchInfo("Aztec Quicksand Tunnel Switch", Kongs.donkey, SwitchType.SlamSwitch, 0x1D3, Maps.AztecLlamaTemple, [0x69]),
-            Switches.AztecGuitar: SwitchInfo("Aztec Guitar Pad", Kongs.diddy, SwitchType.InstrumentPad, 0x1D4, Maps.AngryAztec, [0x44]),
-            Switches.GalleonLighthouse: SwitchInfo("Galleon Lighthouse Switches", Kongs.donkey, SwitchType.GunSwitch, 0x1D5, Maps.GloomyGalleon, [0xA, 0xB]),
-            Switches.GalleonShipwreck: SwitchInfo("Galleon Shipwreck Switches", Kongs.diddy, SwitchType.GunSwitch, 0x1D6, Maps.GloomyGalleon, [8, 9]),
-            Switches.GalleonCannonGame: SwitchInfo("Galleon Cannon Game Switches", Kongs.chunky, SwitchType.GunSwitch, 0x1D7, Maps.GloomyGalleon, [6, 7]),
-            Switches.FungiYellow: SwitchInfo("Forest Yellow Tunnel Switch", Kongs.lanky, SwitchType.GunSwitch, 0x1D8, Maps.FungiForest, [30]),
-            Switches.FungiGreenFeather: SwitchInfo("Forest Green Tunnel Switches (1)", Kongs.tiny, SwitchType.GunSwitch, 0x1D9, Maps.FungiForest, [0x18, 0x19]),
-            Switches.FungiGreenPineapple: SwitchInfo("Forest Green Tunnel Switches (2)", Kongs.chunky, SwitchType.GunSwitch, 0x1DA, Maps.FungiForest, [0x1A, 0x1B], [Switches.FungiGreenFeather]),
-        }
-
+        ShufflableExits[Transitions.AztecMainToLlama].entryKongs = {
+            Kongs.donkey,
+            Kongs.lanky,
+            Kongs.tiny,
+        }  # This might get changed here, reset this to the default now
+        self.switchsanity_data = deepcopy(SwitchData)
         if self.switchsanity != SwitchsanityLevel.off:
             kongs = GetKongs()
             for slot in self.switchsanity_data:
@@ -704,7 +919,7 @@ class Settings:
                     self.switchsanity_data[slot].kong = random.choice([Kongs.donkey, Kongs.lanky, Kongs.tiny])
                 else:
                     bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
-                    if self.enable_plandomizer and self.plandomizer_dict["plando_switchsanity"] != -1:
+                    if self.enable_plandomizer:
                         for switch in self.switchsanity_data[slot].tied_settings:
                             if str(switch.value) in self.plandomizer_dict["plando_switchsanity"].keys():
                                 bad_kongs.append(self.plandomizer_dict["plando_switchsanity"][str(switch.value)]["kong"])
@@ -718,7 +933,7 @@ class Settings:
                         else:
                             self.switchsanity_data[slot].switch_type = SwitchType.InstrumentPad
 
-            if self.enable_plandomizer and self.plandomizer_dict["plando_switchsanity"] != -1:
+            if self.enable_plandomizer:
                 for key in self.plandomizer_dict["plando_switchsanity"].keys():
                     if self.switchsanity == SwitchsanityLevel.helm_access:
                         if int(key) not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
@@ -728,15 +943,16 @@ class Settings:
                         self.switchsanity_data[int(key)].kong = planned_data["kong"]
                     if "switch_type" in planned_data.keys():
                         self.switchsanity_data[int(key)].switch_type = planned_data["switch_type"]
-                # Doublecheck validity
-                for slot in self.switchsanity_data:
-                    if len(self.switchsanity_data[slot].tied_settings) > 0:
-                        for switch in self.switchsanity_data[slot].tied_settings:
-                            if self.switchsanity_data[switch].kong == self.switchsanity_data[slot].kong:
-                                raise Ex.PlandoIncompatibleException(f"Same kong assigned for {self.switchsanity_data[switch].name} and {self.switchsanity_data[slot].name}.")
+            # If we've shuffled all loading zones, we need to account for some entrances changing hands
+            if self.switchsanity == SwitchsanityLevel.all and self.shuffle_loading_zones == ShuffleLoadingZones.all:
+                ShufflableExits[Transitions.AztecMainToLlama].entryKongs = {
+                    self.switchsanity_data[Switches.AztecLlamaCoconut].kong,
+                    self.switchsanity_data[Switches.AztecLlamaGrape].kong,
+                    self.switchsanity_data[Switches.AztecLlamaFeather].kong,
+                }
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
-        if self.hard_mode and HardModeSelected.water_is_lava in self.hard_mode_selected:
+        if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.water_is_lava, False):
             ItemList[Items.ProgressiveInstrumentUpgrade].playthrough = True
             ItemPool.ImportantSharedMoves = [
                 Items.ProgressiveSlam,
@@ -750,33 +966,30 @@ class Settings:
             ]
             ItemPool.JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt]
 
+        # Dos' Doors requires this to be on - it's a variant on vanilla door shuffle
+        if self.dos_door_rando:
+            self.vanilla_door_rando = True
         # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
         if self.vanilla_door_rando:
             self.wrinkly_location_rando = True
             self.tns_location_rando = True
 
-        # Move Location Rando
-        if self.move_rando == MoveRando.start_with:
-            self.starting_moves_count = 41
-            self.training_barrels = TrainingBarrels.normal
-            self.shockwave_status = ShockwaveStatus.start_with
-
         # Krusha Kong
-        if self.krusha_ui == KrushaUi.random:
-            slots = [x for x in range(5) if x != Kongs.chunky or not self.disco_chunky]  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
-            self.krusha_kong = random.choice(slots)
-        else:
-            self.krusha_kong = None
-            krusha_conversion = {
-                KrushaUi.no_slot: None,
-                KrushaUi.dk: Kongs.donkey,
-                KrushaUi.diddy: Kongs.diddy,
-                KrushaUi.lanky: Kongs.lanky,
-                KrushaUi.tiny: Kongs.tiny,
-                KrushaUi.chunky: Kongs.chunky,
-            }
-            if self.krusha_ui in krusha_conversion:
-                self.krusha_kong = krusha_conversion[self.krusha_ui]
+        # if self.krusha_ui == KrushaUi.random:
+        #     slots = [x for x in range(5) if x != Kongs.chunky or not self.disco_chunky]  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
+        #     self.krusha_kong = random.choice(slots)
+        # else:
+        #     self.krusha_kong = None
+        #     krusha_conversion = {
+        #         KrushaUi.no_slot: None,
+        #         KrushaUi.dk: Kongs.donkey,
+        #         KrushaUi.diddy: Kongs.diddy,
+        #         KrushaUi.lanky: Kongs.lanky,
+        #         KrushaUi.tiny: Kongs.tiny,
+        #         KrushaUi.chunky: Kongs.chunky,
+        #     }
+        #     if self.krusha_ui in krusha_conversion:
+        #         self.krusha_kong = krusha_conversion[self.krusha_ui]
 
         # Fungi Time of Day
         if self.fungi_time == FungiTimeSetting.random:
@@ -789,6 +1002,12 @@ class Settings:
             self.galleon_water_internal = random.choice([GalleonWaterSetting.lowered, GalleonWaterSetting.raised])
         else:
             self.galleon_water_internal = self.galleon_water
+
+        # Chunky Phase Slam Requirement
+        if self.chunky_phase_slam_req == SlamRequirement.random:
+            self.chunky_phase_slam_req_internal = random.choice([SlamRequirement.green, SlamRequirement.blue, SlamRequirement.red])
+        else:
+            self.chunky_phase_slam_req_internal = self.chunky_phase_slam_req
 
         # Helm Doors
         helmdoor_items = {
@@ -845,6 +1064,13 @@ class Settings:
         self.coin_door_random = self.coin_door_item in random_helm_door_settings
         crown_door_pool = {}
         coin_door_pool = {}
+        if self.chaos_blockers:
+            helmdoor_items[HelmDoorItem.req_gb].hard = HelmDoorRandomInfo(60, 100, 0.05)
+            helmdoor_items[HelmDoorItem.req_gb].medium = HelmDoorRandomInfo(30, 60, 0.1)
+            helmdoor_items[HelmDoorItem.req_gb].easy = HelmDoorRandomInfo(10, 30, 0.125)
+            helmdoor_items[HelmDoorItem.req_bp].hard.selection_weight = 0.05
+            helmdoor_items[HelmDoorItem.req_bp].medium.selection_weight = 0.1
+            helmdoor_items[HelmDoorItem.req_bp].easy.selection_weight = 0.125
         crown_diff = random_helm_door_settings.index(self.crown_door_item) if self.crown_door_item in random_helm_door_settings else None
         coin_diff = random_helm_door_settings.index(self.coin_door_item) if self.coin_door_item in random_helm_door_settings else None
         for item in helmdoor_items:
@@ -879,6 +1105,126 @@ class Settings:
             self.crown_door_item_count = min(self.crown_door_item_count, helmdoor_items[self.crown_door_item].absolute_max)
         if self.coin_door_item in helmdoor_items.keys():
             self.coin_door_item_count = min(self.coin_door_item_count, helmdoor_items[self.coin_door_item].absolute_max)
+        self.coin_door_item = DoorItemToBarrierItem(self.coin_door_item, True)
+        self.crown_door_item = DoorItemToBarrierItem(self.crown_door_item, False, True)
+
+        if self.has_password:
+            for x in range(8):
+                self.password[x] = random.randint(1, 6)
+
+        # Win Condition
+        wincon_items = {
+            WinConditionComplex.beat_krool: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.03),
+            ),
+            WinConditionComplex.dk_rap_items: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.04),
+                HelmDoorRandomInfo(1, 1, 0.04),
+                HelmDoorRandomInfo(1, 1, 0.02),
+            ),
+            WinConditionComplex.krem_kapture: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.03),
+            ),
+            WinConditionComplex.get_key8: HelmDoorInfo(1),
+            WinConditionComplex.req_gb: HelmDoorInfo(
+                201,
+                HelmDoorRandomInfo(80, 150, 0.1),
+                HelmDoorRandomInfo(60, 80, 0.1),
+                HelmDoorRandomInfo(40, 60, 0.15),
+            ),
+            WinConditionComplex.req_bp: HelmDoorInfo(
+                40,
+                HelmDoorRandomInfo(25, 35, 0.09),
+                HelmDoorRandomInfo(20, 25, 0.1),
+                HelmDoorRandomInfo(5, 20, 0.1),
+            ),
+            WinConditionComplex.req_companycoins: HelmDoorInfo(
+                2,
+                HelmDoorRandomInfo(1, 2, 0.05),
+            ),
+            WinConditionComplex.req_key: HelmDoorInfo(
+                8,
+                HelmDoorRandomInfo(7, 8, 0.05),
+                HelmDoorRandomInfo(7, 8, 0.1),
+                HelmDoorRandomInfo(7, 8, 0.1),
+            ),
+            WinConditionComplex.req_medal: HelmDoorInfo(
+                40,
+                HelmDoorRandomInfo(25, 35, 0.09),
+                HelmDoorRandomInfo(20, 25, 0.1),
+                HelmDoorRandomInfo(5, 20, 0.1),
+            ),
+            WinConditionComplex.req_crown: HelmDoorInfo(
+                10,
+                HelmDoorRandomInfo(7, 9, 0.1),
+                HelmDoorRandomInfo(4, 7, 0.1),
+                HelmDoorRandomInfo(2, 4, 0.06),
+            ),
+            WinConditionComplex.req_fairy: HelmDoorInfo(
+                20,
+                HelmDoorRandomInfo(12, 18, 0.1),
+                HelmDoorRandomInfo(8, 12, 0.12),
+                HelmDoorRandomInfo(1, 8, 0.18),
+            ),
+            WinConditionComplex.req_rainbowcoin: HelmDoorInfo(
+                16,
+                HelmDoorRandomInfo(10, 16, 0.11),
+                HelmDoorRandomInfo(6, 10, 0.14),
+                HelmDoorRandomInfo(3, 6, 0.18),
+            ),
+            WinConditionComplex.req_bean: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.05),
+                HelmDoorRandomInfo(1, 1, 0.01),
+            ),
+            WinConditionComplex.req_pearl: HelmDoorInfo(
+                5,
+                HelmDoorRandomInfo(4, 5, 0.05),
+                HelmDoorRandomInfo(3, 4, 0.1),
+                HelmDoorRandomInfo(1, 3, 0.13),
+            ),
+        }
+        random_win_con_settings = (
+            WinConditionComplex.easy_random,
+            WinConditionComplex.medium_random,
+            WinConditionComplex.hard_random,
+        )
+        self.win_condition_random = self.win_condition_item in random_win_con_settings
+        win_con_pool = {}
+        wc_diff = random_win_con_settings.index(self.win_condition_item) if self.win_condition_item in random_win_con_settings else None
+        for item in wincon_items:
+            data = wincon_items[item]
+            wc_info = data.getDifficultyInfo(wc_diff)
+            if wc_info is not None:
+                win_con_pool[item] = wc_info.chooseAmount()
+        if self.win_condition_random:
+            potential_items = list(win_con_pool.keys())
+            potential_item_weights = []
+            for x in potential_items:
+                data = wincon_items[x].getDifficultyInfo(wc_diff)
+                weight = 0 if data is None else data.selection_weight
+                potential_item_weights.append(weight)
+            selected_item = random.choices(potential_items, weights=potential_item_weights, k=1)[0]
+            self.win_condition_item = selected_item
+            self.win_condition_count = win_con_pool[selected_item]
+        if self.win_condition_item in helmdoor_items.keys():
+            self.win_condition_count = min(self.win_condition_count, wincon_items[self.win_condition_item].absolute_max)
+
+        if self.dk_portal_location_rando_v2 != DKPortalRando.off:
+            level_base_maps = [Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle]
+            self.level_portal_destinations = [
+                {
+                    "map": k,
+                    "exit": -1,
+                }
+                for k in level_base_maps
+            ]
 
         self.shuffled_location_types = []
         if self.shuffle_items:
@@ -891,7 +1237,8 @@ class Settings:
                     Types.Blueprint,
                     Types.Key,
                     Types.Medal,
-                    Types.Coin,
+                    Types.NintendoCoin,
+                    Types.RarewareCoin,
                     Types.Kong,
                     Types.Bean,
                     Types.Pearl,
@@ -900,6 +1247,12 @@ class Settings:
                     Types.FakeItem,
                     Types.JunkItem,
                     Types.CrateItem,
+                    Types.Cranky,
+                    Types.Funky,
+                    Types.Candy,
+                    Types.Snide,
+                    Types.Hint,
+                    Types.Shockwave,
                 ]
             else:
                 for item in self.item_rando_list_selected:
@@ -908,16 +1261,34 @@ class Settings:
                             self.shuffled_location_types.append(type)
                         if type in (Types.Bean, Types.Pearl) and item == ItemRandoListSelected.beanpearl:
                             self.shuffled_location_types.extend([Types.Bean, Types.Pearl])
+                        elif type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide) and item == ItemRandoListSelected.shopowners:
+                            shopowner_array = [Types.Funky, Types.Candy, Types.Snide]
+                            if self.fast_start_beginning_of_game or self.shuffle_loading_zones == ShuffleLoadingZones.all:
+                                # Only append cranky with settings that would require you to spawn the training barrels early
+                                # Also allow it in LZR
+                                shopowner_array.append(Types.Cranky)
+                            # If this owner is a guaranteed starting move, it's not a shuffled item type
+                            if type in guaranteed_starting_moves:
+                                shopowner_array.remove(type)
+                            self.shuffled_location_types.extend(shopowner_array)
             if self.enemy_drop_rando:  # Enemy location type handled separately for UI/UX reasons
                 self.shuffled_location_types.append(Types.Enemies)
             if Types.Shop in self.shuffled_location_types:
                 self.move_rando = MoveRando.item_shuffle
-                if self.shockwave_status not in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):
-                    self.shuffled_location_types.append(Types.Shockwave)
-                    self.shockwave_status = ShockwaveStatus.shuffled_decoupled  # Forced to be decoupled in item rando
                 if self.training_barrels != TrainingBarrels.normal:
                     self.shuffled_location_types.append(Types.TrainingBarrel)
+                if self.climbing_status != ClimbingStatus.normal:
+                    self.shuffled_location_types.append(Types.Climbing)
                 self.shuffled_location_types.append(Types.PreGivenMove)
+            if IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles) and Types.Medal in self.shuffled_location_types:
+                self.shuffled_location_types.append(Types.IslesMedal)
+            if Types.Shockwave not in self.shuffled_location_types:
+                self.shockwave_status = ShockwaveStatus.vanilla
+            elif Items.Camera in guaranteed_starting_moves and Items.Shockwave in guaranteed_starting_moves:
+                self.shockwave_status = ShockwaveStatus.start_with
+            else:
+                self.shockwave_status = ShockwaveStatus.shuffled_decoupled
+
         kongs = GetKongs()
 
         # B Locker and Troff n Scoff amounts Rando
@@ -929,50 +1300,95 @@ class Settings:
         self.krool_lanky = False
         self.krool_tiny = False
         self.krool_chunky = False
+        self.krool_dillo1 = False
+        self.krool_dillo2 = False
+        self.krool_dog1 = False
+        self.krool_dog2 = False
+        self.krool_madjack = False
+        self.krool_pufftoss = False
+        self.krool_kutout = False
 
-        phases = kongs.copy()
+        phases = [
+            Maps.KroolDonkeyPhase,
+            Maps.KroolDiddyPhase,
+            Maps.KroolLankyPhase,
+            Maps.KroolTinyPhase,
+            Maps.KroolChunkyPhase,
+        ]
+        if self.krool_in_boss_pool:
+            phases.extend(
+                [
+                    Maps.JapesBoss,
+                    Maps.AztecBoss,
+                    Maps.FactoryBoss,
+                    Maps.GalleonBoss,
+                    Maps.FungiBoss,
+                    Maps.CavesBoss,
+                    Maps.CastleBoss,
+                ]
+            )
+        possible_phases = phases.copy()
         if self.krool_phase_order_rando:
             random.shuffle(phases)
         if self.krool_random:
             self.krool_phase_count = randint(1, 5)
         if isinstance(self.krool_phase_count, str) is True:
             self.krool_phase_count = 5
-        if self.krool_phase_count < 5:
-            phases = random.sample(phases, self.krool_phase_count)
+        if self.krool_phase_count < len(phases):
+            if self.krool_phase_order_rando:
+                phases = random.sample(phases, self.krool_phase_count)
+            else:
+                phases = phases[: self.krool_phase_count]
         # Plandomized K. Rool algorithm
         if self.enable_plandomizer:
             planned_phases = []
             # Place planned phases and clear out others
             for i in range(len(phases)):
                 if self.plandomizer_dict["plando_krool_order_" + str(i)] != -1:  # Note that input validation guarantees this key exists in this dict
-                    phases[i] = Kongs(self.plandomizer_dict["plando_krool_order_" + str(i)])
-                    planned_phases.append(Kongs(self.plandomizer_dict["plando_krool_order_" + str(i)]))
+                    phases[i] = Maps(self.plandomizer_dict["plando_krool_order_" + str(i)])
+                    planned_phases.append(Maps(self.plandomizer_dict["plando_krool_order_" + str(i)]))
                 else:
-                    phases[i] = Kongs.any
+                    phases[i] = None
             # Fill cleared out phases with available phases
             for i in range(len(phases)):
-                if phases[i] == Kongs.any:
-                    available_phases = [kong for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky] if kong not in planned_phases]
+                if phases[i] is None:
+                    available_phases = [map_id for map_id in possible_phases if map_id not in planned_phases]
                     phases[i] = random.choice(available_phases)
                     planned_phases.append(phases[i])
+            for i in range(len(phases)):
+                phases[i] = int(phases[i])
         orderedPhases = []
-        for kong in phases:
-            if kong == Kongs.donkey:
+        # TODO: Fix logic (lol) (update: copilot autofilled "this is a mess" so now it has to stay forever)
+        for map_id in phases:
+            if map_id == Maps.KroolDonkeyPhase:
                 self.krool_donkey = True
-                orderedPhases.append(Kongs.donkey)
-            if kong == Kongs.diddy:
+            elif map_id == Maps.KroolDiddyPhase:
                 self.krool_diddy = True
-                orderedPhases.append(Kongs.diddy)
-            if kong == Kongs.lanky:
+            elif map_id == Maps.KroolLankyPhase:
                 self.krool_lanky = True
-                orderedPhases.append(Kongs.lanky)
-            if kong == Kongs.tiny:
+            elif map_id == Maps.KroolTinyPhase:
                 self.krool_tiny = True
-                orderedPhases.append(Kongs.tiny)
-            if kong == Kongs.chunky:
+            elif map_id == Maps.KroolChunkyPhase:
                 self.krool_chunky = True
-                orderedPhases.append(Kongs.chunky)
+            elif map_id == Maps.JapesBoss:
+                self.krool_dillo1 = True
+            elif map_id == Maps.AztecBoss:
+                self.krool_dog1 = True
+            elif map_id == Maps.FactoryBoss:
+                self.krool_madjack = True
+            elif map_id == Maps.GalleonBoss:
+                self.krool_pufftoss = True
+            elif map_id == Maps.FungiBoss:
+                self.krool_dog2 = True
+            elif map_id == Maps.CavesBoss:
+                self.krool_dillo2 = True
+            elif map_id == Maps.CastleBoss:
+                self.krool_kutout = True
+            orderedPhases.append(map_id)
         self.krool_order = orderedPhases
+
+        # Identify if any bosses are plando'd. If so, then the normal boss placement algorithm will be discarded for a random placement.
+        self.boss_plando = self.enable_plandomizer and any([self.plandomizer_dict["plando_boss_order_" + str(i)] != -1 for i in range(7)])
 
         # Helm Order
         self.helm_donkey = False
@@ -989,7 +1405,10 @@ class Settings:
         if isinstance(self.helm_phase_count, str) is True:
             self.helm_phase_count = 5
         if self.helm_phase_count < 5:
-            rooms = random.sample(rooms, self.helm_phase_count)
+            if self.helm_phase_order_rando:
+                rooms = random.sample(rooms, self.helm_phase_count)
+            else:
+                rooms = rooms[: self.helm_phase_count]
         # Plandomized Helm room algorithm - only applies when we're already shuffling Helm Order!
         if self.enable_plandomizer and self.helm_phase_order_rando:
             planned_rooms = []
@@ -1031,20 +1450,43 @@ class Settings:
             self.alter_switch_allocation = False
         if self.alter_switch_allocation:
             allocation = [1, 1, 1, 1, 2, 2, 3]  # 4 levels with lvl 1, 2 with lvl 2, 1 with lvl 3
-            random.shuffle(allocation)
+            if self.level_randomization in (LevelRandomization.level_order, LevelRandomization.level_order_complex):
+                # Add an extra 3 into the calculation
+                allocation.append(3)
+                random.shuffle(allocation)
+            else:
+                # If LZR, always make Helm SDSS
+                random.shuffle(allocation)
+                allocation.append(3)
             self.switch_allocation = allocation.copy()
+
+        if self.crown_enemy_difficulty != CrownEnemyDifficulty.vanilla:
+            self.crown_difficulties = [self.crown_enemy_difficulty] * 10
+            if self.crown_enemy_difficulty == CrownEnemyDifficulty.progressive:
+                allocation = [CrownEnemyDifficulty.easy] * 4
+                allocation.extend([CrownEnemyDifficulty.medium] * 4)
+                allocation.extend([CrownEnemyDifficulty.hard] * 2)
+                # Start out with a default of 4 easy, 4 medium, then 2 hard crowns
+                # Randomize placement for LZR (Matching level order will come from a different calculation)
+                random.shuffle(allocation)
+                self.crown_difficulties = allocation.copy()
 
         # Mill Levers
         mill_shortened = IsItemSelected(self.faster_checks_enabled, self.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor)
-        if not self.puzzle_rando and mill_shortened:
+        if self.puzzle_rando_difficulty == PuzzleRando.off and mill_shortened:
             self.mill_levers = [2, 3, 1, 0, 0]
-        elif self.puzzle_rando:
+        elif self.puzzle_rando_difficulty != PuzzleRando.off:
             mill_lever_cap = 3 if mill_shortened else 5
             self.mill_levers = [0] * 5
             for slot in range(mill_lever_cap):
                 self.mill_levers[slot] = random.randint(1, 3)
 
-        if self.puzzle_rando:
+        if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies, False):
+            jetpac_levels = list(range(8))
+            random.shuffle(jetpac_levels)
+            self.jetpac_enemy_order = jetpac_levels
+
+        if self.puzzle_rando_difficulty != PuzzleRando.off:
             # Crypt Levers
             self.crypt_levers = random.sample([x + 1 for x in range(6)], 3)
             # Diddy R&D Doors
@@ -1083,7 +1525,7 @@ class Settings:
             required_key_count = randint(0, 8)
         else:
             required_key_count = self.krool_key_count
-        key_8_required = self.krool_access or self.win_condition == WinCondition.get_key8
+        key_8_required = self.krool_access or self.win_condition_item == WinConditionComplex.get_key8
         # Remove the need for keys we intend to start with
         if self.select_keys:
             for key in self.starting_keys_list_selected:
@@ -1148,7 +1590,7 @@ class Settings:
         self.logical_fairy_requirement = min(20, max(self.rareware_gb_fairies + 1, int(self.rareware_gb_fairies * 1.2)))
 
         # Boss Rando
-        self.boss_maps = ShuffleBosses(self.boss_location_rando)
+        self.boss_maps = ShuffleBosses(self.boss_location_rando, self)
         self.boss_kongs = ShuffleBossKongs(self)
         self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
         self.kko_phase_order = ShuffleKKOPhaseOrder(self)
@@ -1166,10 +1608,15 @@ class Settings:
             self.helm_barrels = MinigameBarrels.skip
         elif self.bonus_barrel_rando:
             self.helm_barrels = MinigameBarrels.random
+        if self.fast_start_beginning_of_game:
+            self.training_barrels_minigames = MinigameBarrels.skip
+        elif self.bonus_barrel_rando:
+            self.training_barrels_minigames = MinigameBarrels.random
 
         # Loading Zone Rando
-        if self.level_randomization == LevelRandomization.level_order:
+        if self.level_randomization in (LevelRandomization.level_order, LevelRandomization.level_order_complex):
             self.shuffle_loading_zones = ShuffleLoadingZones.levels
+            self.hard_level_progression = self.level_randomization == LevelRandomization.level_order_complex
         elif self.level_randomization == LevelRandomization.loadingzone:
             self.shuffle_loading_zones = ShuffleLoadingZones.all
         elif self.level_randomization == LevelRandomization.loadingzonesdecoupled:
@@ -1177,11 +1624,14 @@ class Settings:
             self.decoupled_loading_zones = True
         elif self.level_randomization == LevelRandomization.vanilla:
             self.shuffle_loading_zones = ShuffleLoadingZones.none
+        self.shuffle_aztec_temples = self.shuffle_items and Types.Kong in self.shuffled_location_types
 
-        # Kong rando
-        # Temp until Slider UI binding gets fixed
+        # Kong rando - this is generally forced on in most settings, but it can be disabled
+        # Disabling this variable causes Kongs to not be placed during the fill, use with caution
         if self.starting_random:
             self.starting_kongs_count = randint(1, 5)
+        if Types.Kong in self.shuffled_location_types:
+            self.kong_rando = True
         if self.starting_kongs_count == 5:
             self.kong_rando = False
         if self.kong_rando:
@@ -1219,7 +1669,12 @@ class Settings:
             self.tiny_freeing_kong = Kongs.any
             self.chunky_freeing_kong = Kongs.any
             if self.shuffle_items and Types.Kong in self.shuffled_location_types:
-                self.kong_locations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
+                self.kong_locations = [
+                    Locations.DiddyKong,
+                    Locations.LankyKong,
+                    Locations.TinyKong,
+                    Locations.ChunkyKong,
+                ]
             else:
                 self.kong_locations = self.SelectKongLocations()
         else:
@@ -1257,21 +1712,31 @@ class Settings:
             self.kasplat_location_rando = True
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
-        if self.win_condition == WinCondition.all_fairies or self.crown_door_item == HelmDoorItem.req_fairy or self.coin_door_item == HelmDoorItem.req_fairy:
+        if self.win_condition_item == WinConditionComplex.req_fairy or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
             ItemList[Items.BananaFairy].playthrough = True
-        if self.crown_door_item == HelmDoorItem.req_rainbowcoin or self.coin_door_item == HelmDoorItem.req_rainbowcoin:
+        if self.win_condition_item == WinConditionComplex.req_rainbowcoin or self.crown_door_item == BarrierItems.RainbowCoin or self.coin_door_item == BarrierItems.RainbowCoin:
             ItemList[Items.RainbowCoin].playthrough = True
-        if self.win_condition == WinCondition.all_blueprints or self.crown_door_item == HelmDoorItem.req_bp or self.coin_door_item == HelmDoorItem.req_bp:
+        if self.win_condition_item == WinConditionComplex.req_bp or self.crown_door_item == BarrierItems.Blueprint or self.coin_door_item == BarrierItems.Blueprint:
             for item_index in ItemList:
                 if ItemList[item_index].type == Types.Blueprint:
                     ItemList[item_index].playthrough = True
-        if self.win_condition == WinCondition.all_medals or self.crown_door_item == HelmDoorItem.req_medal or self.coin_door_item == HelmDoorItem.req_medal:
+        if self.win_condition_item == WinConditionComplex.req_medal or self.crown_door_item == BarrierItems.Medal or self.coin_door_item == BarrierItems.Medal:
             ItemList[Items.BananaMedal].playthrough = True
-        if self.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown) or self.coin_door_item == HelmDoorItem.req_crown:
+        if self.win_condition_item == WinConditionComplex.req_crown or self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown:
             ItemList[Items.BattleCrown].playthrough = True
-        if self.crown_door_item == HelmDoorItem.req_bean or self.coin_door_item == HelmDoorItem.req_bean or Types.Bean in self.shuffled_location_types:
+        if (
+            self.win_condition_item == WinConditionComplex.req_bean
+            or self.crown_door_item == BarrierItems.Bean
+            or self.coin_door_item == BarrierItems.Bean
+            or Types.Bean in self.shuffled_location_types
+        ):
             ItemList[Items.Bean].playthrough = True
-        if self.crown_door_item == HelmDoorItem.req_pearl or self.coin_door_item == HelmDoorItem.req_pearl or Types.Pearl in self.shuffled_location_types:
+        if (
+            self.win_condition_item == WinConditionComplex.req_pearl
+            or self.crown_door_item == BarrierItems.Pearl
+            or self.coin_door_item == BarrierItems.Pearl
+            or Types.Pearl in self.shuffled_location_types
+        ):
             ItemList[Items.Pearl].playthrough = True
 
         self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none
@@ -1280,6 +1745,7 @@ class Settings:
         if IsItemSelected(self.quality_of_life, self.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles):
             self.remove_wrinkly_puzzles = True
 
+        # TODO: Rework this when minimal shops is implemented so it can take into account the starting move situation
         # Calculate the net balance of locations being added to the pool vs number of items being shuffled
         # Positive means we have more locations than items, negatives means we have more items than locations (very bad!)
         # The number is effectively (locations - items) so losing locations means we lower this value, losing items means we raise this value
@@ -1303,16 +1769,34 @@ class Settings:
         self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
         self.placed_shared_shops = 0
 
-        if self.progressive_hint_text == 0:
-            # Disable progressive hints if hint text is 0
-            self.enable_progressive_hints = False
+        prog_hint_max = {
+            ProgressiveHintItem.off: 0,
+            ProgressiveHintItem.req_gb: 201,
+            ProgressiveHintItem.req_bp: 40,
+            ProgressiveHintItem.req_key: 8,
+            ProgressiveHintItem.req_medal: 40,
+            ProgressiveHintItem.req_crown: 10,
+            ProgressiveHintItem.req_fairy: 20,
+            ProgressiveHintItem.req_rainbowcoin: 16,
+            ProgressiveHintItem.req_bean: 1,
+            ProgressiveHintItem.req_pearl: 5,
+            ProgressiveHintItem.req_cb: 3500,
+        }
+        prog_max = prog_hint_max.get(self.progressive_hint_item, 0)
+        if self.progressive_hint_count <= 0:
+            # Disable progressive hints if hint text is 0, or less than 0
+            self.progressive_hint_item = ProgressiveHintItem.off
+        elif self.progressive_hint_count > prog_max:
+            # Cap at prog max
+            self.progressive_hint_count = prog_max
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
         bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove]
         is_bad = location.type in bad_fake_types
-        if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko) or self.perma_death:
-            is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
+        if self.ice_traps_damage:
+            if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko) or self.perma_death:
+                is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
         return is_bad
 
     def finalize_world_settings(self, spoiler):
@@ -1331,35 +1815,28 @@ class Settings:
         spoiler.LocationList[Locations.IslesBarrelsTrainingBarrel].type = Types.TrainingBarrel
         spoiler.LocationList[Locations.IslesOrangesTrainingBarrel].default = Items.Oranges
         spoiler.LocationList[Locations.IslesOrangesTrainingBarrel].type = Types.TrainingBarrel
-        location_cap = 37  # Increment this for every new potential starting move added
-        if self.shockwave_status in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):
-            location_cap -= 2
-        if self.shockwave_status == ShockwaveStatus.shuffled:
-            location_cap -= 1
-        if self.start_with_slam:
-            location_cap -= 1
-        locations_to_add = self.starting_moves_count
-        # If the training barrels are shuffled in, we may have to remove the training barrel locations if we don't have enough starting moves to place
-        if self.training_barrels == TrainingBarrels.shuffled:
-            locations_to_add -= 4
-        if locations_to_add > location_cap:
-            locations_to_add = location_cap
-        first_pregiven_location = Locations.PreGiven_Location00
-        if not self.start_with_slam:
-            first_pregiven_location -= 1
-        first_empty_location = first_pregiven_location + locations_to_add
-        # If we have fewer starting items than training barrels, then we have to prevent some training barrels from having items
-        if locations_to_add < 0:
-            first_empty_location = first_pregiven_location
-            invalid_training_barrels = [Locations.IslesVinesTrainingBarrel, Locations.IslesSwimTrainingBarrel, Locations.IslesOrangesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel][
-                self.starting_moves_count :
-            ]
-            for locationId in invalid_training_barrels:
-                spoiler.LocationList[locationId].default = Items.NoItem
-                spoiler.LocationList[locationId].type = Types.Constant
-        # We need to block PreGiven locations depending on the id of the first empty location
+        # Always block PreGiven locations and only unblock them as we intentionally place moves there
+        for location_id in TrainingBarrelLocations:
+            spoiler.LocationList[location_id].inaccessible = True
         for location_id in PreGivenLocations:
-            spoiler.LocationList[location_id].inaccessible = location_id >= first_empty_location
+            spoiler.LocationList[location_id].inaccessible = True
+
+        if not IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
+            spoiler.LocationList[Locations.IslesDonkeyMedal].inaccessible = True
+            spoiler.LocationList[Locations.IslesDiddyMedal].inaccessible = True
+            spoiler.LocationList[Locations.IslesLankyMedal].inaccessible = True
+            spoiler.LocationList[Locations.IslesTinyMedal].inaccessible = True
+            spoiler.LocationList[Locations.IslesChunkyMedal].inaccessible = True
+
+        for location_id in ProgressiveHintLocations:
+            spoiler.LocationList[location_id].inaccessible = self.progressive_hint_item == ProgressiveHintItem.off
+
+        if self.progressive_hint_item != ProgressiveHintItem.off and not (Types.Hint in self.shuffled_location_types):
+            for location_id in WrinklyHintLocations:
+                spoiler.LocationList[location_id].inaccessible = True
+
+        if self.climbing_status == ClimbingStatus.shuffled:
+            spoiler.LocationList[Locations.IslesClimbing].inaccessible = True
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
@@ -1395,7 +1872,10 @@ class Settings:
                     # For each shop, get a pair of kongs
                     kongsToBeRemoved = kongPairs.pop()
                     # Determine which shop locations are accessible and inaccessible
-                    inaccessible_shops = [ShopLocationReference[level][vendor][kongsToBeRemoved[0]], ShopLocationReference[level][vendor][kongsToBeRemoved[1]]]
+                    inaccessible_shops = [
+                        ShopLocationReference[level][vendor][kongsToBeRemoved[0]],
+                        ShopLocationReference[level][vendor][kongsToBeRemoved[1]],
+                    ]
                     accessible_shops = [location_id for location_id in ShopLocationReference[level][vendor] if location_id not in inaccessible_shops]
                     for location_id in inaccessible_shops:
                         spoiler.LocationList[location_id].inaccessible = True
@@ -1403,6 +1883,15 @@ class Settings:
                     for location_id in accessible_shops:
                         spoiler.LocationList[location_id].inaccessible = False
                         spoiler.LocationList[location_id].smallerShopsInaccessible = False
+
+        if Types.Cranky in self.shuffled_location_types:
+            spoiler.LocationList[Locations.ShopOwner_Location00].inaccessible = True
+        if Types.Funky in self.shuffled_location_types:
+            spoiler.LocationList[Locations.ShopOwner_Location01].inaccessible = True
+        if Types.Candy in self.shuffled_location_types:
+            spoiler.LocationList[Locations.ShopOwner_Location02].inaccessible = True
+        if Types.Snide in self.shuffled_location_types:
+            spoiler.LocationList[Locations.ShopOwner_Location03].inaccessible = True
 
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
@@ -1436,7 +1925,7 @@ class Settings:
                 allKongMoveLocations.update(LankyMoveLocations.copy())
                 if self.training_barrels == TrainingBarrels.shuffled and Types.TrainingBarrel not in self.shuffled_location_types:
                     allKongMoveLocations.update(TrainingBarrelLocations.copy())
-                if self.shockwave_status in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with) and Types.Shockwave not in self.shuffled_location_types:
+                if self.shockwave_status == ShockwaveStatus.vanilla:
                     allKongMoveLocations.remove(Locations.CameraAndShockwave)
                 self.valid_locations[Types.Shop][Kongs.donkey] = allKongMoveLocations.copy()
                 self.valid_locations[Types.Shop][Kongs.diddy] = allKongMoveLocations.copy()
@@ -1448,19 +1937,30 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
             elif Locations.CameraAndShockwave in self.valid_locations[Types.Shop][Kongs.tiny]:
                 self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
-            if self.training_barrels == TrainingBarrels.shuffled and Types.TrainingBarrel not in self.shuffled_location_types:
-                for kong in Kongs:
-                    self.valid_locations[Types.Shop][kong].update(TrainingBarrelLocations.copy())
-            if self.starting_moves_count > 0:
-                for kong in Kongs:
-                    self.valid_locations[Types.Shop][kong].update(PreGivenLocations.copy())
             self.valid_locations[Types.Shockwave] = self.valid_locations[Types.Shop][Kongs.any]
             self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
+            self.valid_locations[Types.Climbing] = self.valid_locations[Types.Shop][Kongs.any]
 
         if self.shuffle_items and any(self.shuffled_location_types):
-            # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) - those can only be Kongs
+            # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) and Shop Owner Locations - those can only be Kongs and Shop Owners respectively
             shuffledLocations = [
-                location for location in spoiler.LocationList if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type != Types.Kong
+                location
+                for location in spoiler.LocationList
+                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Kong, Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
+            ]
+            shuffledLocationsShopOwner = [
+                location
+                for location in shuffledLocations  # Placing a shop owner in a shop owner location is boring and we don't want to do it ever
+                if spoiler.LocationList[location].type
+                not in (
+                    Types.Shop,
+                    Types.Shockwave,
+                    Types.PreGivenMove,
+                    Types.TrainingBarrel,
+                    Types.Climbing,
+                    Types.NintendoCoin,
+                    Types.RarewareCoin,
+                )
             ]
             shuffledNonMoveLocations = [location for location in shuffledLocations if spoiler.LocationList[location].type != Types.PreGivenMove]
             fairyBannedLocations = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].type != Types.Fairy]
@@ -1480,6 +1980,8 @@ class Settings:
                     self.valid_locations[Types.Shockwave] = locations_excluding_kong_shops.copy()
                 if Types.TrainingBarrel in self.shuffled_location_types:
                     self.valid_locations[Types.TrainingBarrel] = locations_excluding_kong_shops.copy()
+                if Types.Climbing in self.shuffled_location_types:
+                    self.valid_locations[Types.Climbing] = locations_excluding_kong_shops.copy()
                 self.valid_locations[Types.Shop][Kongs.any] = locations_excluding_kong_shops.copy()
                 # Kong-specific moves can go in any non-shared shop location
                 locations_excluding_shared_shops = [location for location in shuffledLocations if location not in SharedShopLocations]
@@ -1508,36 +2010,39 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.tiny]
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
-                self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
-            if Types.Crown in self.shuffled_location_types:
-                # Banned for technical reasons
-                banned_crown_locations = (
-                    Locations.HelmDonkeyMedal,
-                    Locations.HelmDiddyMedal,
-                    Locations.HelmLankyMedal,
-                    Locations.HelmTinyMedal,
-                    Locations.HelmChunkyMedal,
-                    Locations.HelmKey,
-                )
-                self.valid_locations[Types.Crown] = [location for location in shuffledNonMoveLocations if location not in banned_crown_locations]
-            if Types.Key in self.shuffled_location_types:
-                self.valid_locations[Types.Key] = shuffledNonMoveLocations.copy()
+                self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations]
+            regular_items = (
+                Types.Crown,
+                Types.Key,
+                Types.NintendoCoin,
+                Types.RarewareCoin,
+                Types.Pearl,
+                Types.Bean,
+                Types.Fairy,
+            )
+            for item in regular_items:
+                if item in self.shuffled_location_types:
+                    self.valid_locations[item] = shuffledNonMoveLocations.copy()
+            if Types.Hint in self.shuffled_location_types:
+                self.valid_locations[Types.Hint] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
             if Types.Medal in self.shuffled_location_types:
                 self.valid_locations[Types.Medal] = fairyBannedLocations.copy()
-            if Types.Coin in self.shuffled_location_types:
-                self.valid_locations[Types.Coin] = fairyBannedLocations.copy()
-            if Types.Pearl in self.shuffled_location_types:
-                self.valid_locations[Types.Pearl] = fairyBannedLocations.copy()
-            if Types.Bean in self.shuffled_location_types:
-                self.valid_locations[Types.Bean] = fairyBannedLocations.copy()
-            if Types.Fairy in self.shuffled_location_types:
-                self.valid_locations[Types.Fairy] = shuffledNonMoveLocations.copy()
+            shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky)
+            for item in shop_owner_items:
+                if item in self.shuffled_location_types:
+                    self.valid_locations[item] = shuffledLocationsShopOwner.copy()
+            if Types.Snide in self.shuffled_location_types:
+                # Snide can't be placed in/after expected Helm Access. To help out fill, we'll ban Snide from any locations in Helm
+                self.valid_locations[Types.Snide] = [x for x in shuffledLocationsShopOwner.copy() if spoiler.LocationList[x].level != Levels.HideoutHelm]
             if Types.RainbowCoin in self.shuffled_location_types:
                 self.valid_locations[Types.RainbowCoin] = [
-                    x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove)
+                    x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing)
                 ]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (
+                    # Miscellaneous issues
+                    Locations.NintendoCoin,
+                    Locations.RarewareCoin,
                     # Caves Beetle Race causes issues with a blueprint potentially being there
                     Locations.CavesLankyBeetleRace,
                     # Stuff that may be required to access other stuff - Not really fair
@@ -1556,16 +2061,21 @@ class Settings:
                     Locations.CastleLankyGreenhouse,
                     Locations.HelmBananaFairy1,
                     Locations.HelmBananaFairy2,
-                    # Miscellaneous issues
-                    Locations.NintendoCoin,
-                    Locations.RarewareCoin,
                 )
                 self.valid_locations[Types.FakeItem] = [x for x in shuffledNonMoveLocations if not self.isBadIceTrapLocation(spoiler.LocationList[x]) and x not in bad_fake_locations]
             if Types.JunkItem in self.shuffled_location_types:
                 self.valid_locations[Types.JunkItem] = [
                     x
-                    for x in fairyBannedLocations
-                    if spoiler.LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies)
+                    for x in shuffledNonMoveLocations
+                    if spoiler.LocationList[x].type
+                    not in (
+                        Types.Shop,
+                        Types.Shockwave,
+                        Types.Crown,
+                        Types.PreGivenMove,
+                        Types.CrateItem,
+                        Types.Enemies,
+                    )
                     and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)
                 ]
             if Types.Kong in self.shuffled_location_types:
@@ -1589,14 +2099,12 @@ class Settings:
                 # Blueprints cannot be on fairies
                 # Company coins cannot be on fairies
                 # Keys can be on fairies, but this is staggeringly rare
-                if Types.Key in self.shuffled_location_types and (self.crown_door_item == HelmDoorItem.req_key or self.coin_door_item == HelmDoorItem.req_key):
+                if Types.Key in self.shuffled_location_types and (self.crown_door_item == BarrierItems.Key or self.coin_door_item == BarrierItems.Key):
                     self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy1)
                     self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy2)
                 # Medals cannot be on fairies
                 # The big winner: Crowns will not be locked behind a crown door requirement
-                if Types.Crown in self.shuffled_location_types and (
-                    self.crown_door_item == HelmDoorItem.vanilla or self.crown_door_item == HelmDoorItem.req_crown or self.coin_door_item == HelmDoorItem.req_crown
-                ):
+                if Types.Crown in self.shuffled_location_types and (self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown):
                     self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy1)
                     self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy2)
                 # Fairies are the one exception: these are allowed to be vanilla
@@ -1661,6 +2169,9 @@ class Settings:
         ]
         selected_region_world = random.choice(region_data)
         valid_starting_regions = []
+        banned_starting_regions = []
+        if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko):
+            banned_starting_regions.append(Regions.KremIsleMouth)
         if self.enable_plandomizer and self.plandomizer_dict["plando_starting_exit"] != -1:
             # Plandomizer code for random starting location
             planned_transition = self.plandomizer_dict["plando_starting_exit"]
@@ -1673,9 +2184,17 @@ class Settings:
             if region_name == "":
                 raise Ex.PlandoIncompatibleException(f"No region found for {planned_transition}")
             if region in RegionMapList:
-                tied_map = GetMapId(region)
+                tied_map = GetMapId(self, region)
                 tied_exit = GetExitId(planned_back_transition)
-                valid_starting_regions.append({"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_name, "exit_name": ShufflableExits[planned_transition].back.name})
+                valid_starting_regions.append(
+                    {
+                        "region": region,
+                        "map": tied_map,
+                        "exit": tied_exit,
+                        "region_name": region_name,
+                        "exit_name": ShufflableExits[planned_transition].back.name,
+                    }
+                )
             else:
                 raise Ex.PlandoIncompatibleException(f"Starting position {planned_transition} has no map")
         else:
@@ -1688,20 +2207,31 @@ class Settings:
                 ]
                 if region in RegionMapList:
                     # Has tied map
-                    tied_map = GetMapId(region)
+                    tied_map = GetMapId(self, region)
                     for transition in transitions:
                         relevant_transition = ShufflableExits[transition].back.reverse
                         tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
                         valid_starting_regions.append(
-                            {"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_data.name, "exit_name": ShufflableExits[relevant_transition].back.name}
+                            {
+                                "region": region,
+                                "map": tied_map,
+                                "exit": tied_exit,
+                                "region_name": region_data.name,
+                                "exit_name": ShufflableExits[relevant_transition].back.name,
+                            }
                         )
+        if any(banned_starting_regions):
+            valid_starting_regions = [region for region in valid_starting_regions if region["region"] not in banned_starting_regions]
+            # The only way for this to happen is if someone plandos a settings-banned region as their starting region
+            if len(valid_starting_regions) == 0:
+                raise Ex.PlandoIncompatibleException("Planned starting region is invalid.")
         self.starting_region = random.choice(valid_starting_regions)
         for x in range(2):
             spoiler.RegionList[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
 
     def ApplyPlandomizerSettings(self):
         """Apply settings specified by the plandomizer."""
-        self.plandomizer_dict = json.loads(self.plandomizer_data)
+        self.plandomizer_dict = self.plandomizer_data
         # Leaving space here to handle things as needed, might be unnecessary
 
     def ApplyMusicSelections(self):
@@ -1719,6 +2249,36 @@ class Settings:
                     self.minoritems_songs_selected = True
                 elif song.type == SongType.Event:
                     self.events_songs_selected = True
+
+    def is_valid_item_pool(self):
+        """Confirm that the item pool is a valid combination of items. Must be run after valid locations are calculated without any restrictions."""
+        junk_space_available = 0
+        if self.shuffle_items:
+            if Types.Enemies in self.shuffled_location_types:
+                junk_space_available += 100  # Rough estimate, not to be used as factual
+            if Types.Shop in self.shuffled_location_types:
+                junk_space_available += 30  # Rough estimate, not to be used as factual
+            if Types.Kong in self.shuffled_location_types:
+                junk_space_available -= 5 - len(self.starting_kong_list)  # Not always this, Kongs in cages are so rare it may as well be
+            # Shopkeepers don't get placed in their vanilla locations (essentially a start with)
+            if Types.Cranky in self.shuffled_location_types:
+                junk_space_available -= 1
+                if len(self.valid_locations[Types.Cranky]) <= 0:
+                    return False
+            if Types.Funky in self.shuffled_location_types:
+                junk_space_available -= 1
+                if len(self.valid_locations[Types.Funky]) <= 0:
+                    return False
+            if Types.Candy in self.shuffled_location_types:
+                junk_space_available -= 1
+                if len(self.valid_locations[Types.Candy]) <= 0:
+                    return False
+            if Types.Snide in self.shuffled_location_types:
+                junk_space_available -= 1
+                if len(self.valid_locations[Types.Snide]) <= 0:
+                    return False
+            return junk_space_available >= 0
+        return True
 
     def __repr__(self):
         """Return printable version of the object as json.

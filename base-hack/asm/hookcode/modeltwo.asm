@@ -48,7 +48,29 @@ ObjectRotate:
     beq $v0, $at, ObjectRotate_ApplyRotate
     addiu $at, $zero, 0xB7
     beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x25F
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x260
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x261
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x262
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x27E
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x289
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x28A
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x28B
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x28C
+    beq $v0, $at, ObjectRotate_ApplyRotate
     addiu $at, $zero, 0x25D
+    beq $v0, $at, ObjectRotate_ApplyReverseRotate
+    addiu $at, $zero, 0x264
+    beq $v0, $at, ObjectRotate_ApplyReverseRotate
+    addiu $at, $zero, 0x265
     beq $v0, $at, ObjectRotate_ApplyReverseRotate
     nop
     j 0x80637150
@@ -66,3 +88,13 @@ ObjectRotate:
         cvt.d.s $f8, $f6
         j 0x80637178
         sub.d $f16, $f8, $f10
+
+WriteDefaultShopBone:
+    lwc1 $f0, 0x8 ($t9)
+    swc1 $f0, 0x0 ($t2)
+    lw $t3, 0x28 ($sp)
+    lwc1 $f0, 0x4 ($t9)
+    swc1 $f0, 0x0 ($t3)
+    lwc1 $f0, 0x0 ($t9)
+    j 0x8063366C
+    swc1 $f0, 0x0 ($a3)

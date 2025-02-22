@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>DK64 Randomizer</title>
+    <link href="./static/img/dk.png" rel="icon" />
+    <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
+    <link href="static/styles/styles.css" rel="stylesheet" />
+    <link href="./static/styles/gui.css" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body id="page-top">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <div class="container px-5">
+            <a class="navbar-brand" href="#page-top">DK64 Randomizer</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./wiki/Consoles-and-Emulators.html">Setup</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./wiki/home.html">Wiki</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://discord.dk64randomizer.com" target="_blank">Discord</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header class="masthead text-center">
+        <div class="masthead-content">
+            <div class="card" style="margin-top: 20px;">
+                <div class="tab-content">
+                    <div class="col border pb-3">
+                        <h2 class="title">Local Presets</h2>
+                        <div>
+                            Presets stored locally to the server, by entering a name, description, and settings string you can save a preset to the server to be used later.
+                        </div>
+                        <div>
+                            The value in Name is the only one that matters for deletion or creation, the preset dropdown just helps you select the preset you want to edit.
+                        </div>
+                        <div class="flex-container" style="justify-content: center;">
+                            <div class="item-select">
+                                <label for="branch" class="select-title">Branch</label>
+                                <select class="form-select" id="branch">
+                                    <option value="" disabled selected>Select a branch</option>
+                                    <option value="stable">Master</option>
+                                    <option value="dev">Dev</option>
+                                </select>
+                            </div>
+                            <div class="item-select">
+                                <label for="presets" class="select-title">Presets</label>
+                                <select class="form-select" id="presets" disabled>
+                                    <option value="" disabled selected>Select a preset</option>
+                                </select>
+                                <div style="display: flex; justify-content: space-evenly; padding-top: 10px;">
+                                    <a id="raise_button" class="btn btn-neutral" disabled onClick="move_preset(true)"><i class="fa fa-arrow-up"></i></a>
+                                    <a id="lower_button" class="btn btn-neutral" disabled onClick="move_preset(false)"><i class="fa fa-arrow-down"></i></a>
+                                </div>
+                            </div>
+                            <div class="item-select">
+                                <label for="name" class="select-title">Name</label>
+                                <textarea class="form-control" id="name" rows="6" cols="50"></textarea>
+                            </div>
+                            <div class="item-select">
+                                <label for="description" class="select-title">Description</label>
+                                <textarea class="form-control" id="description" rows="6" cols="50"></textarea>
+                            </div>
+                            <div class="item-select">
+                                <label for="settings" class="select-title">Settings String</label>
+                                <textarea class="form-control" id="settings" rows="6" cols="50"></textarea>
+                            </div>
+                        </div>
+                        <div class="flex-container" style="justify-content: center;">
+                            <a class="btn btn-danger btn-xl rounded-pill mt-5" onClick="delete_preset()">Delete</a>
+                            <a class="btn btn-success btn-xl rounded-pill mt-5" onClick="save_preset()">Save</a>
+                        </div>
+                        <script>
+                            // Use Flask-rendered local_presets
+                            var local_presets = {{ local_presets | tojson }};
+
+                            var branchSelect = document.getElementById("branch");
+                            var presetsSelect = document.getElementById("presets");
+                            var raiseButton = document.getElementById("raise_button");
+                            var lowerButton = document.getElementById("lower_button");
+
+                            branchSelect.addEventListener("change", function () {
+                                presetsSelect.innerHTML = '<option value="" disabled selected>Select a preset</option>';
+                                presetsSelect.disabled = false;
+
+                                var selectedBranch = branchSelect.value;
+                                local_presets[selectedBranch].forEach((preset) => {
+                                    var option = document.createElement("option");
+                                    option.text = preset.name;
+                                    option.value = preset.name;
+                                    presetsSelect.add(option);
+                                });
+
+                                document.getElementById("name").value = "";
+                                document.getElementById("description").value = "";
+                                document.getElementById("settings").value = "";
+                            });
+
+                            presetsSelect.addEventListener("change", function () {
+                                var selectedBranch = branchSelect.value;
+                                var selectedPreset = local_presets[selectedBranch].find(
+                                    (preset) => preset.name == presetsSelect.value
+                                );
+
+                                raiseButton.disabled = false;
+                                lowerButton.disabled = false;
+
+                                document.getElementById("name").value = selectedPreset.name;
+                                document.getElementById("description").value = selectedPreset.description;
+                                document.getElementById("settings").value = selectedPreset.settings_string;
+                            });
+
+                            function save_preset() {
+                                var branch = branchSelect.value;
+                                var name = document.getElementById("name").value;
+                                var description = document.getElementById("description").value;
+                                var settings = document.getElementById("settings").value;
+
+                                if (!branch) {
+                                    alert("Please select a branch");
+                                    return;
+                                }
+
+                                var data = {
+                                    branch: branch,
+                                    name: name,
+                                    description: description,
+                                    settings_string: settings,
+                                };
+
+                                $.ajax({
+                                    url: "/api/admin/presets",
+                                    type: "PUT",
+                                    data: JSON.stringify(data),
+                                    contentType: "application/json",
+                                    success: function () {
+                                        alert("Preset saved successfully");
+                                        location.reload();
+                                    },
+                                    error: function () {
+                                        alert("Error saving preset");
+                                    },
+                                });
+                            }
+
+                            function delete_preset() {
+                                var branch = branchSelect.value;
+                                var name = document.getElementById("name").value;
+
+                                if (!branch) {
+                                    alert("Please select a branch");
+                                    return;
+                                }
+
+                                var data = {
+                                    branch: branch,
+                                    name: name,
+                                };
+
+                                $.ajax({
+                                    url: "/api/admin/presets",
+                                    type: "DELETE",
+                                    data: JSON.stringify(data),
+                                    contentType: "application/json",
+                                    success: function () {
+                                        alert("Preset deleted successfully");
+                                        location.reload();
+                                    },
+                                    error: function () {
+                                        alert("Error deleting preset");
+                                    },
+                                });
+                            }
+
+                            function move_preset(moving_up) {
+                                var branch = branchSelect.value;
+                                var name = document.getElementById("name").value;
+
+                                if (!branch) {
+                                    alert("Please select a branch");
+                                    return;
+                                }
+
+                                var data = {
+                                    branch: branch,
+                                    name: name,
+                                    moving_up: moving_up,
+                                };
+
+                                $.ajax({
+                                    url: "/api/admin/presets/move",
+                                    type: "PUT",
+                                    data: JSON.stringify(data),
+                                    contentType: "application/json",
+                                    success: function () {
+                                        alert("Preset moved successfully");
+                                        location.reload();
+                                    },
+                                    error: function () {
+                                        alert("Error moving preset");
+                                    },
+                                });
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</body>
+
+</html>

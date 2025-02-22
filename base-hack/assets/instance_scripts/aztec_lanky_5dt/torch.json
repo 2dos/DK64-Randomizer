@@ -1,0 +1,37 @@
+{
+    "id": 18,
+    "behav_9C": 0,
+    "ignore": false,
+    "output_version": 2,
+    "script": [
+        {
+            "conditions": [
+                {"function":1,"inverted":false,"parameters":[0,0,0]},
+                {"function":45,"inverted":false,"parameters":[60,0,0]}
+            ],
+            "executions": [
+                {"function":1,"parameters":[1,0,0]},
+                {"function":38,"parameters":[2,0,0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function":1,"inverted":false,"parameters":[0,0,0]},
+                {"function":45,"inverted":true,"parameters":[60,0,0]}
+            ],
+            "executions": [
+                {"function":1,"parameters":[2,0,0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function":1,"inverted":false,"parameters":[2,0,0]},
+                {"function":45,"inverted":false,"parameters":[60,0,0]}
+            ],
+            "executions": [
+                {"function":86,"parameters":[1,0,0]},
+                {"function":38,"parameters":[2,0,0]}
+            ]
+        }
+    ]
+}

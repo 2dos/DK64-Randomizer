@@ -41,7 +41,7 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
     for level in CustomLocations:
         level_lst = CustomLocations[level]
         index_lst = list(range(len(level_lst)))
-        index_lst = [x for x in index_lst if level_lst[x].vanilla_crown or (not level_lst[x].selected and LocationTypes.CrownPad not in level_lst[x].banned_types)]
+        index_lst = [x for x in index_lst if level_lst[x].isValidLocation(LocationTypes.CrownPad) or level_lst[x].is_rotating_room]
         if spoiler.settings.enable_plandomizer:
             index_lst = [x for x in index_lst if level_lst[x].name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][level]]
         pick_count = 1
@@ -49,7 +49,7 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
             pick_count = 2
         crowns = random.sample(index_lst, pick_count)
         # Give plandomizer an opportunity to have the final say
-        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_battle_arenas"] != -1:
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_battle_arenas"] != {}:
             for i in range(pick_count):
                 location_to_string = str(crown_locations[global_crown_idx + i].value)
                 if spoiler.settings.plandomizer_dict["plando_battle_arenas"][location_to_string] != -1:

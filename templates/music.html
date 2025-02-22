@@ -1,0 +1,251 @@
+{% from 'macros.html' import list_selector, toggle_input %}
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col border panel">
+            <h2 class="title">MUSIC RANDO
+                <label data-toggle="tooltip" 
+                        title="Randomizes all Music Selections.">
+                    <input class="dice_checkbox"
+                            type="checkbox"
+                            name="random_music"
+                            id="random_music"
+                            display_name="Random Music"
+                            value="True"/>
+                    <label for="random_music"></label>
+                </label>
+            </h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Randomizes Background Music.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="music_bgm_randomized"
+                                id="music_bgm_randomized"
+                                display_name="Random Background Music"
+                                value="True"/>
+                        Random Background Music
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Randomizes Major Item Themes.">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="music_majoritems_randomized"
+                            id="music_majoritems_randomized"
+                            display_name="Random Major Item Themes"
+                            value="True"/>
+                        Random Major Item Themes
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Randomizes Minor Item Themes.">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="music_minoritems_randomized"
+                            id="music_minoritems_randomized"
+                            display_name="Random Minor Item Themes"
+                            value="True"/>
+                        Random Minor Item Themes
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Randomizes Event Themes.">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="music_events_randomized"
+                            id="music_events_randomized"
+                            display_name="Random Event Themes"
+                            value="True"/>
+                        Random Event Themes
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="If true, vanilla songs will not be shuffled anywhere but their original locations.">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="music_vanilla_locations"
+                            id="music_vanilla_locations"
+                            display_name="Keep Vanilla Song Placement"
+                            value="True"/>
+                        Keep Vanilla Song Placement
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="This option disables various songs.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="songs_excluded"
+                               id="songs_excluded"
+                               display_name="Disabled Songs"
+                               value="True"/>
+                        Disabled Songs
+                    </label>
+                    {{ list_selector(excluded_songs, "excluded_songs", "Disabled Songs", "This will open a popup that will let you customize what songs are disabled.", 4) }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="If true, songs will not have additional reverb while underwater or in tunnels.">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="music_disable_reverb"
+                            id="music_disable_reverb"
+                            display_name="Disable Dynamic Reverb"
+                            value="True"/>
+                        Disable Dynamic Reverb
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="This option enables music filtering options for .candy files.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="music_filtering"
+                               id="music_filtering"
+                               display_name="Music Filtering"
+                               value="True" checked/>
+                        Music Filtering
+                    </label>
+                    {{ list_selector(song_filters, "music_filtering", "Music Filtering", "This will open a popup that will let you customize how the game applies additional filters.", 2, 1, "These filters only work for .candy files.") }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
+            </div>
+        </div>
+        <div class="col border panel">
+            <h2 class="title">CUSTOM MUSIC</h2>
+            <p class="select-title">Cosmetics ZIP (Check <a style="text-decoration:underline" target="_blank" href="./wiki/Creating-Cosmetics-Data-packs.html">wiki</a> for format)</p>
+            <div class="input-group mb-3 file-select"
+                 style="margin: 0 auto">
+                <div class="input-group-text choose-file"
+                     style="background-color: #6c757d">
+                    <input class="btn btn-secondary file-button"
+                           type="button"
+                           value="Choose File"
+                           onClick="music_filebox()"
+                           id="choose_music_file">
+                </div>
+                <input class="form-control"
+                       id="music_file_text"
+                       type="text"
+                       readonly
+                       onClick="music_filebox()"
+                       placeholder="No File Chosen"/>
+            </div>
+            <div class="flex-container">
+                {{ toggle_input("fill_with_custom_music", "Fill game with provided songs", "Will fill each song slot available with a custom track, even if the amount of songs in that pack doesn't exceed the amount of song slots.") }}
+                {{ toggle_input("show_song_name", "Display song name in-game", "Will display the song name for 2 seconds upon it playing (Only applies to BGM).") }}
+            </div>
+            <div class="flex-container">
+                <div style="width:50%">
+                    <div class="item-group" style="margin-left:auto;margin-right:auto;max-width:200px;">
+                        <p class="select-title">Custom Music Fill (%)</p>
+                        <input class="form-control"
+                            min="0"
+                            max="100"
+                            name="custom_music_proportion"
+                            id="custom_music_proportion"
+                            display_name="Custom Music Fill"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="Proportion of songs that will be filled with custom music."
+                            default="100"
+                            placeholder="100"/>
+                    </div>
+                </div>
+                <div class="spacer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container border"
+     id="select_songs_panel"
+     style="padding-bottom: 24px;">
+    <h2 class="title">Select Songs</h2>
+    <div class="flex-container flex-center import-export-container">
+        <input id="import_music_selections"
+               class="btn btn-secondary settings-button"
+               type="button"
+               onClick="music_selection_filebox()"
+               value="Import Selections from File"/>
+        <input id="export_music_selections"
+               class="btn btn-secondary settings-button"
+               type="button"
+               value="Export Selections to File"/>
+        <input id="reset_music_selections"
+               class="btn btn-secondary settings-button"
+               type="button"
+               value="Reset Selections"/>
+    </div>
+    <div class="import-errors"
+         id="music_import_errors"
+         style="display: none;">
+    </div>
+    <div>
+        {% for categoryName, category in select_song_panel %}
+            <div class="flex-container flex-center expandable-toggle"
+                 id="{{categoryName}}_collapse_toggle">
+                <h3 class="title">{{category["name"]}}</h3>
+                <img src="static/img/expand_arrow.png"
+                     class="expand-arrow {{categoryName}}-expand-arrow">
+            </div>
+            <div class="flex-container flex-center expandable-container collapsed"
+                 id="{{categoryName}}">
+                {% for subCatName, subCategory in category["subcategories"] %}
+                    <h3 class="title">{{subCategory["name"]}}</h3>
+                    <div class="flex-container flex-center">
+                        {% for song in subCategory["songs"] %}
+                            <div class="location-picker">
+                                <label for="music_select_{{song['value']}}" class="location-label">
+                                    {{song["name"]}}
+                                </label>
+                                <div id="music_select_{{song['value']}}_wrapper"
+                                    data-toggle="tooltip"
+                                    title>
+                                    <select id="music_select_{{song['value']}}"
+                                            name="music_select_{{song['value']}}"
+                                            class="form-select {{subCategory['type']}}-select">
+                                        <option value="default_value">-- Default --</option>
+                                        <option value="" selected>-- Randomize --</option>
+                                        {% for select_song in select_songs[subCategory["type"]]|music_select_restrict(song['value']) %}
+                                            <option value="{{select_song['value']}}"
+                                                    class="original-song">
+                                                {{select_song["name"]}}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    $(function() {
+        var pattern = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+        var current = 0;
+
+        var keyHandler = function (event) {
+            // If the key isn't in the pattern, or isn't the current key in the pattern, reset
+            if (pattern.indexOf(event.key) < 0 || event.key !== pattern[current]) {
+                current = 0;
+                return;
+            }
+            // Update how much of the pattern is complete
+            current++;
+            // If complete, remove hidden and reset
+            if (pattern.length === current) {
+                current = 0;
+                $('.holiday').removeAttr('hidden');
+            }
+        };
+        // Listen for keydown events
+        document.addEventListener('keydown', keyHandler, false);
+    })
+</script>

@@ -67,14 +67,10 @@ int initFile_getInsUpgradeLevel(int inc_training) {
 	return instrument_upgrade_level;
 }
 
-#define DEFAULT_SLAM_LEVEL 0
 int initFile_getSlamLevel(int inc_training) {
 	int slams[] = {Rando.moves_pregiven.slam_upgrade_0, Rando.moves_pregiven.slam_upgrade_1, Rando.moves_pregiven.slam_upgrade_2};
-	int slam_level = DEFAULT_SLAM_LEVEL;
-	if (!Rando.fast_start_beginning) {
-		slam_level = 0;
-	}
-	for (int i = DEFAULT_SLAM_LEVEL; i < 3; i++) {
+	int slam_level = 0;
+	for (int i = 0; i < 3; i++) {
 		if (slams[i]) {
 			slam_level += 1;
 		}
@@ -170,6 +166,9 @@ void unlockMoves(void) {
 	}
 	if ((Rando.moves_pregiven.shockwave) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_SHOCKWAVE) || (initFile_checkTraining(PURCHASE_FLAG, -1, -2)))) {
 		setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
+	}
+	if ((Rando.moves_pregiven.climbing) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CLIMBING))) {
+		setFlagDuplicate(FLAG_ABILITY_CLIMBING, 1, FLAGTYPE_PERMANENT);
 	}
 	if ((Rando.moves_pregiven.dive) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_DIVE))) {
 		setFlagDuplicate(FLAG_TBARREL_DIVE, 1, FLAGTYPE_PERMANENT);

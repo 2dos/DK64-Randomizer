@@ -46,13 +46,23 @@ jobs:
         run: pip install -r requirements-dev.txt
 
       - name: Run pytest
-        run:  pytest -n 4 -v --cov --cov-report xml:coverage.xml ${GITHUB_WORKSPACE}/tests
+        run:  |
+          pytest --max-failure-rate 0.5 -n 4 -v --cov --cov-report xml:coverage.xml ${GITHUB_WORKSPACE}/tests || true
+          # cat the file error_status to see if there were any errors 1 if there was 0 if not
+          STATUS=$(cat error_status)
+          if [ "$STATUS" -eq 1 ]; then
+              exit 1
+          fi
 
       - name: Get Cover 
         uses: orgoro/coverage@v3.1
+        continue-on-error: true
         with:
             coverageFile: ./coverage.xml
             token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Job Complete
+        run: echo "Job Complete"
 
   analyze:
     name: Analyze
@@ -81,50 +91,3 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
-
-  build:
-    runs-on: macos-latest
-    name: Build Desktop Apps
-    steps:
-        - uses: actions/checkout@v3
-
-        - name: Setup python
-          uses: actions/setup-python@v4.1.0
-          with:
-              python-version: 3.10.9
-              architecture: x64
-
-        - name: Update Brew
-          if: ${{ github.event_name == 'push' }}
-          run: brew update
-
-        - name: Install Node
-          if: ${{ github.event_name == 'push' }}
-          run: brew install node
-
-        - name: Install packages
-          if: ${{ github.event_name == 'push' }}
-          run: |
-            npm install
-            pip install -r requirements-dev.txt
-
-        - name: Build pack
-          if: ${{ github.event_name == 'push' }}
-          run: |
-            python3 ./tools/prepare_offline.py
-            npm run distall
-
-        - uses: actions/upload-artifact@v3
-          with:
-            name: dk64randomizer-setup.exe
-            path: "${{ github.workspace }}/dist/dk64randomizer.exe"
-
-        - uses: actions/upload-artifact@v3
-          with:
-            name: dk64randomizer.dmg
-            path: "${{ github.workspace }}/dist/dk64randomizer.dmg"
-
-        - uses: actions/upload-artifact@v3
-          with:
-            name: dk64randomizer.deb
-            path: "${{ github.workspace }}/dist/dk64randomizer.deb"

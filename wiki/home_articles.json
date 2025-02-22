@@ -18,13 +18,13 @@
             "GeneralStrategies",
             "VanillaItemLocations",
             "CustomLocations",
-            "Season2Distributions"
+            "Season3Distributions"
         ]
     },
     {
         "head": "Racing and Sharing Seeds",
         "articles": [
-            "Season2Preset",
+            "Season3Preset",
             "NSAK_RacingRules",
             "GlitchlessRuleset",
             "AsyncRacing",

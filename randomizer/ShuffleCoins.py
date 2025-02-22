@@ -87,8 +87,28 @@ def ShuffleCoins(spoiler):
                             # Calculate the number of coins we have to place by lesser group so different coins in the same group can have different logic
                             coins_in_group = len(group.locations)
                             if coins_in_group > 0:
-                                spoiler.CollectibleRegions[group.region].append(Collectible(Collectibles.coin, selected_kong, group.logic, None, coins_in_group, name=group.name))
-                            level_placement.append({"group": group.group, "name": group.name, "kong": selected_kong, "level": level, "map": group.map, "locations": group.locations})
+                                if group.region not in spoiler.CollectibleRegions:
+                                    spoiler.CollectibleRegions[group.region] = []
+                                spoiler.CollectibleRegions[group.region].append(
+                                    Collectible(
+                                        Collectibles.coin,
+                                        selected_kong,
+                                        group.logic,
+                                        None,
+                                        coins_in_group,
+                                        name=group.name,
+                                    )
+                                )
+                            level_placement.append(
+                                {
+                                    "group": group.group,
+                                    "name": group.name,
+                                    "kong": selected_kong,
+                                    "level": level,
+                                    "map": group.map,
+                                    "locations": group.locations,
+                                }
+                            )
                         placed_coins += group_weight
                     # If all kongs have 0 unplaced, we're done here
                     if len(kong_specific_left.keys()) == 0:

@@ -1,11 +1,13 @@
 @echo off
 set test_on=%1
 set python_ver=%2
+set use_compiled=0
 cls
 setlocal EnableDelayedExpansion
 for /f %%a in ('copy /Z "%~dpf0" nul') do set "CR=%%a"
 echo Started: %date% %time% > rom/build.log
 echo Started: %date% %time%
+
 IF EXIST "rom/dk64.z64" (
     echo 'ROM Exists.' >> rom/build.log
 ) ELSE (
@@ -18,21 +20,22 @@ IF NOT DEFINED python_ver (set python_ver="python3")
 IF DEFINED test_on (echo "Building patch file" >> rom/build.log)  ELSE (set test_on="")
 echo.
 if %test_on% == --test (
-	call :runscript "Fixing Krusha's size", "build\write_krusha_variables.py"
 	echo 0 > Build/BuildingBPS.txt
 ) else (
-	echo -1 > krusha_setting.txt
 	echo 1 > Build/BuildingBPS.txt
 )
+call :runscript "Pulling actor data from ROM", "build\getDefaultData.py"
 call :runscript "Define Heap", "build\heap.py"
 call :runscript "Installing Packages", "build\install_packages.py"
 call :runscript "Pulling Images from ROM", "build\pull_images_from_rom.py"
 call :runscript "Modifying images from ROM", "build\createComplexImages.py"
-call :runscript "Building Cutscene Database", "build\build_cutscene_dict.py"
 call :runscript "Building Item Database", "build\item_dictionaries.py"
 call :runscript "Adjusting Pause Menu Variables", "build\adjust_pause_rotation.py"
 call :runscript "Building Hint Regions", "build\build_hint_regions.py"
 call :runscript "Building Dynamic Bitfields", "build\build_dynamic_bitfields.py"
+if %use_compiled% == 1 (
+	call :runscript "Compile Cranky's Lab", "build\pyinstaller_handler.py"
+)
 call :runscript "Compile C Code", "build\compile.py"
 
 <nul set /p=Running ARMIPS (Jumplist)!CR!
@@ -41,7 +44,16 @@ build\armips.exe asm/jump_list.asm
 call :setfinish runtime
 echo Running ARMIPS (Jumplist) [32mDONE[0m (%runtime%)
 
-call :runscript "Running Cranky's Lab", "build\build.py"
+if %use_compiled% == 0 (
+	call :runscript "Running Cranky's Lab", "build\build.py"
+) else (
+	<nul set /p=Running Cranky's Lab!CR!
+	call :setstart
+	build\dist\build.exe >> rom/build.log
+	call :setfinish runtime
+	echo Running Cranky's Lab [32mDONE[0m (%runtime%)
+)
+call :runscript "Building Cutscene Database", "build\build_cutscene_dict.py"
 
 <nul set /p=Building Symbols File!CR!
 call :setstart
@@ -57,7 +69,7 @@ call :runscript "Assessing Function Sizes", "build/assess_rom.py"
 if %test_on% == --test (
 	echo Applying test variables >> rom/build.log
 
-	call :runscript "Apply Test Variables", "test_variables_apply.py"
+	@REM call :runscript "Apply Test Variables", "..\base_hack_test.py"
 	call :runscript "Modifying Kong Colors", "build\generate_kong_color_images.py"
 )
 
@@ -71,6 +83,7 @@ echo Modify ROM CRC [32mDONE[0m (%runtime%)
 call :setstart
 %python_ver% build\dump_pointer_tables_vanilla.py >> rom/build.log
 %python_ver% build\dump_pointer_tables_modified.py >> rom/build.log
+%python_ver% build\symbol_json_builder.py >> rom/build.log
 call :setfinish runtime
 echo Dump pointer tables [32mDONE[0m (%runtime%)
 
@@ -86,11 +99,10 @@ del rom\dk64-randomizer-base-temp.z64
 del rom\dk64-randomizer-base.z64
 del rom\dk64-randomizer-base-dev.z64
 del rom\dk64-randomizer-base.wch
-del rom\dev-symbols.sym
+@REM del rom\dev-symbols.sym
 del rom\patch.bps
 
 :finish
-del krusha_setting.txt
 del Build\BuildingBPS.txt
 call :runscript "Removing unneccessary files", "build\cleanup.py"
 

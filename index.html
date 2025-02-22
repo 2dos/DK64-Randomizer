@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport"
@@ -56,15 +56,14 @@
         <header class="masthead text-center text-white">
             <div class="masthead-content">
                 <div class="container px-5">
-                    <img src="/base-hack/assets/DKTV/logo.png" width="50%">
+                    <img src="/static/img/logo.webp" width="50%">
                     <p style="font-weight: bold; font-size: 48px;" id="version">Version {{ version }}</p>
-                    <a class="btn btn-success btn-xl rounded-pill mt-5"
-                       onClick="render_page('./randomizer')">Play Now</a>
+                    <a class="btn btn-success btn-xl rounded-pill mt-5" href="./randomizer.html">Play Now</a>
                     <a class="btn btn-info btn-xl rounded-pill mt-5" href="#overview">More Info</a>
                 </div>
             </div>
         </header>
-        <div class="card bg-dark">
+        <div class="card">
             <section id="overview">
                 <div class="container px-5">
                     <div class="row gx-5 align-items-center">
@@ -197,13 +196,13 @@
             // Update the statistics every 60 seconds by querying the API for the latest data 
             // if the site is dev.dk64randomizer.com or dk64randomizer.com
             if (window.location.hostname == "dev.dk64randomizer.com") {
-                current_total_url = "https://dev-generate.dk64rando.com/current_total";
+                current_total_url = "https://api.dk64rando.com/api/current_total?branch=dev";
             }
             else if (window.location.hostname == "dk64randomizer.com") {
-                current_total_url = "https://generate.dk64rando.com/current_total";
+                current_total_url = "https://api.dk64rando.com/api/current_total?branch=master";
             }
             else {
-                current_total_url = "http://" + window.location.hostname + ":8000/current_total";
+                current_total_url = "http://" + window.location.hostname + ":8000/api/current_total?branch=dev";
             }
             function query_stats(){
                 $.ajax({
@@ -270,7 +269,7 @@
             <a href="https://discord.dk64randomizer.com" target="_blank" style="text-decoration: none">
                 <img src="./static/img/discord.png" alt="Discord" />
             </a>
-            <div style="font-size: small; color:#e3e3e3;">
+            <div class="footer-info">
                 <a id="live-version">DK64 Randomizer | </a>
                 <a href="https://dev.dk64randomizer.com">Dev Branch</a>
                 <br />
@@ -279,6 +278,8 @@
                 In-game characters, images and logos copyright © 1999-2024 Nintendo or Rareware respectively.
                 <br />
                 DK64Randomizer.com does not distribute copyright material.
+                <br />
+                <a href="./privacy.html">Privacy Policy</a>
             </div>
         </div>
 
@@ -336,7 +337,7 @@
         </script>
     </div>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function render_page(page) {
         xmlhttp = new XMLHttpRequest();

@@ -21,10 +21,10 @@ void updateSkipCheck(void) {
 	}
 }
 
-int isCutsceneSkipped(maps map, int cutscene) {
+int isCutsceneSkipped(int cutscene) {
 	int offset = (cutscene >> 5) & 1;
 	int shift = cutscene & 31;
-	if (cs_skip_db[(2 * map) + offset] & (1 << shift)) {
+	if (cs_skip_db[offset] & (1 << shift)) {
 		return 1;
 	}
 	return 0;
@@ -69,7 +69,7 @@ void pressToSkip(void) {
 	if (CutsceneStateBitfield & 4) { // Cutscene is global
 		return;
 	}
-	if (isCutsceneSkipped(CurrentMap, CutsceneIndex)) {
+	if (isCutsceneSkipped(CutsceneIndex)) {
 		CancelCutsceneInternals(CutsceneIndex);
 		clearQueuedCutsceneFunctions();
 		skip_cutscenes = 1;
@@ -103,7 +103,7 @@ void updateSkippableCutscenes(void) {
 	if (CurrentMap < 216) {
 		if (CutsceneBanks[0].cutscene_databank) {
 			for (int i = 0; i < 64; i++) {
-				if (isCutsceneSkipped(CurrentMap, i)) {
+				if (isCutsceneSkipped(i)) {
 					CancelCutsceneInternals(i);
 				}
 			}
@@ -123,12 +123,10 @@ void renderScreenTransitionCheck(int applied_transition) {
 	}
 	if (permit) {
 		if ((CurrentMap < 216) && ((CutsceneStateBitfield & 4) == 0)) {
-			if (isCutsceneSkipped(CurrentMap, CutsceneIndex)) {
+			if (isCutsceneSkipped(CutsceneIndex)) {
 				return;
 			}
 		}
 	}
-	if ((!Rando.true_widescreen) || (!WS_REMOVE_TRANSITIONS)) {
-    	renderScreenTransition(applied_transition);
-	}
+	renderScreenTransition(applied_transition);
 }

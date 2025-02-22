@@ -1,48 +1,67 @@
-if (typeof window.RufflePlayer !== "undefined") {
-  // Ruffle extension is loaded
-  var modal = document.createElement("div");
-  modal.style.position = "fixed";
-  modal.style.top = "0";
-  modal.style.left = "0";
-  modal.style.width = "100%";
-  modal.style.height = "100%";
-  modal.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-  modal.style.display = "flex";
-  modal.style.justifyContent = "center";
-  modal.style.alignItems = "center";
-  modal.style.zIndex = "9999";
+var jquery = $;
+// Initialize arrays for listeners, progression presets, and random settings presets
+const listeners = [];
+const progression_presets = [];
+const random_settings_presets = [];
 
-  var modalContent = document.createElement("div");
-  modalContent.style.backgroundColor = "#333";
-  modalContent.style.padding = "20px";
-  modalContent.style.borderRadius = "5px";
-  modalContent.style.textAlign = "center";
-
-  var message = document.createElement("p");
-  message.textContent =
-    "The Ruffle extension causes issues with this site (and we're not really sure why). Please disable it for this site.";
-  message.style.color = "#fff";
-  message.style.fontFamily = "Arial, sans-serif";
-  message.style.fontSize = "16px";
-
-  modalContent.appendChild(message);
-  modal.appendChild(modalContent);
-  document.body.appendChild(modal);
-
-  // Prevent scrolling while the modal is open
-  document.body.style.overflow = "hidden";
-
-  console.log("Ruffle extension is loaded");
+// Determine the correct URL for fetching presets based on the hostname
+let base_url;
+let branch;
+if (location.hostname === "dev.dk64randomizer.com") {
+  base_url = "https://api.dk64rando.com/api";
+  branch = "dev";
+} else if (location.hostname === "dk64randomizer.com") {
+  base_url = "https://api.dk64rando.com/api";
+  branch = "stable";
 } else {
-  // Ruffle extension is not loaded
-  console.log("Ruffle extension is not loaded");
+  base_url = `${location.origin}/api`;
+  branch = "dev";
 }
 
-// This is a wrapper script to just load the UI python scripts and call python as needed.
-async function run_python_file(file) {
-  console.log("Loading " + file)
-  await pyodide.runPythonAsync(await (await fetch(file)).text());
-}
+// Use fetch to get the presets and populate progression_presets and random_settings_presets
+$.ajax({
+  url: base_url + "/get_presets?return_blank=true" + "&branch=" + branch,
+  dataType: "json",
+  async: false,
+  success: function (data) {
+    progression_presets.push({
+      name: "-- Select a Preset --",
+      description: " ",
+    });
+    data.forEach((file) => {
+      progression_presets.push(file);
+    });
+  },
+});
+$.ajax({
+  url: "static/presets/weights/weights_files.json",
+  dataType: "json",
+  async: false,
+  success: function (data) {
+    data.forEach((file) => {
+      random_settings_presets.push(file);
+    });
+  },
+});
+
+$.ajax({
+  url: "./static/patches/pointer_addresses.json",
+  dataType: "json",
+  async: false,
+  success: function (data) {
+    pointer_addresses = data;
+  },
+});
+
+$.ajax({
+  url: "./static/patches/symbols.json",
+  dataType: "json",
+  async: false,
+  success: function (data) {
+    rom_symbols = data;
+  },
+});
+
 let user_agent = navigator.userAgent;
 if (window.location.protocol != "https:") {
   if (location.hostname != "localhost" && location.hostname != "127.0.0.1") {
@@ -55,14 +74,80 @@ if (location.hostname == "dk64randomizer.com") {
   document.getElementById("spoiler_warning_1").style.display = "none";
   document.getElementById("spoiler_warning_2").style.background = "";
   document.getElementById("spoiler_warning_3").style.display = "none";
-  document.getElementById("plandomizer_container").style.display = "none";
-  document.getElementById("widescreen_row").style.display = "none";
+  document.getElementById("spoiler_warning_4").style.display = "none";
 }
 if (location.hostname != "localhost") {
   document.getElementById("plando_string_section").style.display = "none";
 }
 
-run_python_file("ui/__init__.py");
+function decrypt_settings_string_enum(settings_string) {
+  // fetch the web endpoint /convert_settings_string using ajax syncronously
+  var response = $.ajax({
+    type: "POST",
+    url: base_url + "/convert_settings" + "?branch=" + branch,
+    data: JSON.stringify({ settings: settings_string }),
+    contentType: "application/json",
+    async: false,
+  }).responseText;
+  // Convert the json response to a string
+  var settings = JSON.parse(response);
+  return settings;
+}
+
+function encrypt_settings_string_enum(settings) {
+  // fetch the web endpoint /convert_settings_string using ajax syncronously
+  var response = $.ajax({
+    type: "POST",
+    url: base_url + "/convert_settings" + "?branch=" + branch,
+    data: JSON.stringify({ settings: JSON.stringify(settings) }),
+    contentType: "application/json",
+    async: false,
+  }).responseText;
+  // Convert the json response to a string
+  var set = JSON.parse(response);
+  var settings_string = set["settings_string"];
+  return settings_string;
+}
+
+async function try_to_load_from_args() {
+  /** Get the args from the URL and then load the seed from the server if it exists. */
+
+  let args = window.location.search;
+  if (args.startsWith("?")) {
+    args = args.substring(1);
+  }
+
+  // Split arguments by "&"
+  let argsArray = args.includes("&") ? args.split("&") : [args];
+  let argsDict = {};
+
+  // Populate argsDict with key-value pairs
+  argsArray.forEach((arg) => {
+    try {
+      let [key, value] = arg.split("=");
+      argsDict[key] = value;
+    } catch (e) {
+      // Continue silently on error
+    }
+  });
+
+  // If "seed_id" is provided in the URL, fetch seed data from the server
+  if ("seed_id" in argsDict) {
+    console.log("Getting the seed from the server");
+
+    let resp = await get_seed_from_server(argsDict["seed_id"]);
+
+    // Assuming patchingResponse is available globally as an async function
+    setTimeout(() => {
+      window.apply_patch(resp, false);
+    }, 0);
+  }
+
+  // Update the DOM: hide visual indicator and show tab-data
+  document.getElementById("visual_indicator").setAttribute("hidden", "true");
+  document.getElementById("tab-data").removeAttribute("hidden");
+}
+
 // Sleep function to run functions after X seconds
 async function sleep(seconds, func, args) {
   setTimeout(function () {
@@ -96,18 +181,7 @@ function toast_alert(text) {
   try {
     _LTracker.push({ text: text, agent: user_agent });
   } catch {}
-  Toastify({
-    text: text,
-    duration: 15000,
-    close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-    style: {
-      background: "#800000",
-    },
-    onClick: function () {},
-  }).showToast();
+  generateToast(text, true);
 }
 function getFile(file) {
   return $.ajax({
@@ -119,11 +193,17 @@ function getFile(file) {
 
 var valid_extensions = [".bin", ".candy"];
 
-function validFilename(filename, dir) {
+function validFilename(filename, dir, valid_extension = null) {
   if (filename.includes(dir)) {
-    for (let v = 0; v < valid_extensions.length; v++) {
-      var ext = valid_extensions[v];
-      if (filename.slice(0 - ext.length) == ext) {
+    if (valid_extension == null) {
+      for (let v = 0; v < valid_extensions.length; v++) {
+        var ext = valid_extensions[v];
+        if (filename.slice(0 - ext.length) == ext) {
+          return true;
+        }
+      }
+    } else {
+      if (filename.slice(0 - valid_extension.length) == valid_extension) {
         return true;
       }
     }
@@ -173,7 +253,7 @@ function sortLoadedMusic(musicList) {
     } else {
       return 0;
     }
-  })
+  });
 }
 var current_seed_data;
 var cosmetics;
@@ -183,11 +263,10 @@ var cosmetic_truncated_names = {
   bgm: [],
   majoritems: [],
   minoritems: [],
-  events: []
-}
+  events: [],
+};
 
-function load_music_file_from_db() {
-  console.log("Trying to load file from DB");
+async function load_music_file_from_db() {
   try {
     // If we actually have a file in the DB load it
     var db = musicdatabase.result;
@@ -197,15 +276,12 @@ function load_music_file_from_db() {
     // Get our music file
     var getMusicFile = store.get("music");
     getMusicFile.onsuccess = function () {
-      console.log("Successfully loaded file from DB");
       // When we pull it from the DB load it in as a global var
       try {
         cosmetic_pack_event(getMusicFile.result.value, true);
         $("#music_file_text").attr("placeholder", "Using cached music file");
         $("#music_file_text").val("Using cached music file");
-      } catch (error) {
-        console.log("Error loading music file from the database:", error);
-      }
+      } catch (error) {}
     };
   } catch (error) {
     console.log("Error accessing the music database:", error);
@@ -239,48 +315,6 @@ function music_filebox() {
   input.click();
 }
 
-var imported_music_json = "";
-
-function music_selection_filebox() {
-  let input = document.createElement("input");
-  input.type = "file";
-  input.accept = ".json";
-
-  input.onchange = async (e) => {
-    let file = e.target.files[0];
-    let json_text = await file.text();
-    imported_music_json = json_text;
-    pyodide.runPythonAsync(`
-      import js
-      from ui.music_select import import_music_selections
-      import_music_selections(js.imported_music_json)
-    `);
-  };
-
-  input.click();
-}
-
-var imported_plando_json = "";
-
-function plando_import_filebox() {
-  let input = document.createElement("input");
-  input.type = "file";
-  input.accept = ".json";
-
-  input.onchange = async (e) => {
-    let file = e.target.files[0];
-    let json_text = await file.text();
-    imported_plando_json = json_text;
-    pyodide.runPythonAsync(`
-      import js
-      from ui.plando_settings import import_plando_options
-      import_plando_options(js.imported_plando_json)
-    `);
-  };
-
-  input.click();
-}
-
 function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
   var fileReader = new FileReader();
   fileReader.onload = function (fileLoadedEvent) {
@@ -290,6 +324,9 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let majoritem_promises = [];
       let minoritem_promises = [];
       let event_promises = [];
+      let transition_promises = [];
+      let portal_promises = [];
+      let painting_promises = [];
 
       for (var filename of Object.keys(new_zip.files)) {
         if (validFilename(filename, "bgm/")) {
@@ -300,6 +337,12 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
           minoritem_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "events/")) {
           event_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/transitions/", ".png")) {
+          transition_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/tns_portal/", ".png")) {
+          portal_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/paintings/", ".png")) {
+          painting_promises.push(createMusicLoadPromise(new_zip, filename));
         }
       }
 
@@ -311,6 +354,9 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       sortLoadedMusic(minoritem_files);
       let event_files = await Promise.all(event_promises);
       sortLoadedMusic(event_files);
+      let transition_files = await Promise.all(transition_promises);
+      let portal_files = await Promise.all(portal_promises);
+      let painting_files = await Promise.all(painting_promises);
 
       // BGM
       let bgm = bgm_files.map((x) => x.file);
@@ -332,17 +378,35 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let event_names = event_files.map((x) => x.name);
       let event_ext = event_files.map((x) => x.extension);
 
+      // Transitions
+      let transitions = transition_files.map((x) => x.file);
+      let transition_names = transition_files.map((x) => x.name);
+
+      // T&S Portals
+      let tns_portals = portal_files.map((x) => x.file);
+      let tns_portal_names = portal_files.map((x) => x.name);
+
+      // Paintings
+      let paintings = painting_files.map((x) => x.file);
+      let painting_names = painting_files.map((x) => x.name);
+
       cosmetics = {
         bgm: bgm,
         majoritems: majoritems,
         minoritems: minoritems,
         events: events,
+        transitions: transitions,
+        tns_portals: tns_portals,
+        paintings: paintings,
       };
       cosmetic_names = {
         bgm: bgm_names,
         majoritems: majoritem_names,
         minoritems: minoritem_names,
         events: event_names,
+        transitions: transition_names,
+        tns_portals: tns_portal_names,
+        paintings: painting_names,
       };
       cosmetic_extensions = {
         bgm: bgm_ext,
@@ -370,16 +434,16 @@ function get_custom_song_display_name(songName) {
 
 async function update_music_select_options(isInitialLoad) {
   customSongDict = {
-    "BGM": cosmetic_names.bgm,
-    "MajorItem": cosmetic_names.majoritems,
-    "MinorItem": cosmetic_names.minoritems,
-    "Event": cosmetic_names.events,
-  }
+    BGM: cosmetic_names.bgm,
+    MajorItem: cosmetic_names.majoritems,
+    MinorItem: cosmetic_names.minoritems,
+    Event: cosmetic_names.events,
+  };
   cosmetic_truncated_names = {
     bgm: [],
     majoritems: [],
     minoritems: [],
-    events: []
+    events: [],
   };
   for (const [category, songs] of Object.entries(customSongDict)) {
     // Map each song's truncated name to its full string path.
@@ -397,107 +461,122 @@ async function update_music_select_options(isInitialLoad) {
 
     const dropdowns = document.getElementsByClassName(`${category}-select`);
     for (const dropdown of dropdowns) {
-      // Remove any existing custom music options from this dropdown.
-      for (let i = dropdown.options.length - 1; i >= 0; i--) {
-        const option = dropdown.options.item(i);
-        if (option.classList.contains("custom-song")) {
-          if (dropdown.value == option.value) {
-            dropdown.value = "";
-          }
-          dropdown.remove(i);
-        } else {
-          // We can safely break here, because all of the custom songs are
-          // guaranteed to be at the end of each dropdown. This speeds the
-          // process up considerably.
-          break;
+      // Only remove the custom-song options by setting innerHTML directly if needed
+      let customOptionsExist = dropdown.querySelector(".custom-song");
+      if (customOptionsExist) {
+        dropdown
+          .querySelectorAll(".custom-song")
+          .forEach((option) => option.remove());
+        // Clear the dropdown value if it was set to a custom song
+        if (
+          dropdown.value &&
+          dropdown.querySelector(`[value="${dropdown.value}"].custom-song`)
+        ) {
+          dropdown.value = "";
         }
       }
-      // Add new custom music options to this dropdown.
+
+      // Create a document fragment to hold the new custom options
+      const fragment = document.createDocumentFragment();
       for (const song of songs) {
         const opt = document.createElement("option");
         opt.value = get_truncated_song_name(song);
         opt.innerHTML = get_custom_song_display_name(song);
         opt.classList.add("custom-song");
-        dropdown.appendChild(opt);
+        fragment.appendChild(opt);
       }
+      // Append all custom options at once to the dropdown
+      dropdown.appendChild(fragment);
     }
   }
 
   // If this is the initial load, we want to read from the database and restore
   // custom song selections.
-  if (isInitialLoad) {
-    let musicDb = await loadDataFromIndexedDB("saved_music");
-    let musicDbContents = JSON.parse(musicDb);
-    for (const [selectName, selectValue] of Object.entries(musicDbContents)) {
-      selectElem = document.getElementById(selectName);
-      selectElem.value = selectValue;
-    }
-  }
+  // if (isInitialLoad) {
+  //   let musicDb = await loadDataFromIndexedDB("saved_music");
+  //   let musicDbContents = JSON.parse(musicDb);
+  //   for (const [selectName, selectValue] of Object.entries(musicDbContents)) {
+  //     selectElem = document.getElementById(selectName);
+  //     selectElem.value = selectValue;
+  //   }
+  // }
 }
 
 jq = $;
 
-function savesettings() {
-  var disabled = $("form").find(":input:disabled").removeAttr("disabled");
-  data = new FormData(document.querySelector("form"));
-  disabled.attr("disabled", "disabled");
-  json = Object.fromEntries(data.entries());
-  for (element of document.getElementsByTagName("select")) {
-    if (element.className.includes("selected")) {
-      length = element.options.length;
-      values = [];
-      for (let i = 0; i < length; i++) {
-        if (element.options.item(i).selected) {
-          values.push(element.options.item(i).value);
-        }
-      }
-      json[element.name] = values;
+async function savesettings() {
+  const form = document.querySelector("form");
+
+  // Collect form data and temporarily enable disabled inputs
+  const disabledInputs = Array.from(form.querySelectorAll(":disabled"));
+  disabledInputs.forEach((input) => input.removeAttribute("disabled"));
+
+  const formData = new FormData(form);
+
+  // Re-disable the inputs
+  disabledInputs.forEach((input) => input.setAttribute("disabled", "disabled"));
+
+  // Convert form data to JSON
+  const json = Object.fromEntries(formData.entries());
+
+  // Handle <select> elements
+  document.querySelectorAll("select").forEach((select) => {
+    if (select.classList.contains("selected")) {
+      json[select.name] = Array.from(select.options)
+        .filter((option) => option.selected)
+        .map((option) => option.value);
     }
-  }
-  var starting_move_box_buttons = $(":input[name^='starting_move_box_']:checked");
-  for (element of starting_move_box_buttons) {
-    if (element.id.includes("start")) {
-      json[element.name] = "start";
-    } else if (element.id.includes("random")) {
-      json[element.name] = "random";
+
+    if (select.id.startsWith("starting_moves_list_")) {
+      json[select.id] = Array.from(select.options).map((option) =>
+        option.id.slice(14)
+      );
     }
-  }
-  saveDataToIndexedDB("saved_settings", JSON.stringify(json));
+  });
+
+  // Handle inputs with specific naming convention
+  // Changed with the new selectors list
+  // document
+  //   .querySelectorAll("input[name^='starting_move_box_']:checked")
+  //   .forEach((input) => {
+  //     if (input.id.includes("start")) {
+  //       json[input.name] = "start";
+  //     } else if (input.id.includes("random")) {
+  //       json[input.name] = "random";
+  //     }
+  //   });
+  // Save JSON data to IndexedDB
+  await saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 }
 
 // Music settings have to be saved separately, because the value we're trying
 // to load may not exist on the page when load_data() is called.
-function savemusicsettings() {
-  music_json = {};
-  for (element of document.getElementsByTagName("select")) {
-    if (element.id.startsWith("music_select_")) {
-      music_json[element.id] = element.value;
-    }
-  }
-  saveDataToIndexedDB("saved_music", JSON.stringify(music_json));
-}
+// async function savemusicsettings() {
+//   const musicJson = {};
 
-$("#form input").on("input change", function (e) {
-  //This would be called if any of the input elements receive a change inside the form
-  savesettings();
-});
-$("#form select").on("change", function (e) {
-  //This would be called if any of the select elements receive a change inside the form
-  savesettings();
-  savemusicsettings();
+//   document.querySelectorAll("select[id^='music_select_']").forEach((select) => {
+//     musicJson[select.id] = select.value;
+//   });
+
+//   await saveDataToIndexedDB("saved_music", JSON.stringify(musicJson));
+// }
+
+document.querySelectorAll("#form input").forEach((input) => {
+  input.addEventListener("input", savesettings);
+  input.addEventListener("change", savesettings);
 });
 
-async function load_presets() {
-  await pyodide.runPythonAsync(`from ui.rando_options import preset_select_changed
-preset_select_changed(None)`);
-}
+document.querySelectorAll("#form select").forEach((select) => {
+  select.addEventListener("change", savesettings);
+  select.addEventListener("click", savesettings);
+});
 
 function filebox() {
   var input = document.createElement("input");
   input.type = "file";
   input.accept = ".z64,.n64,.v64";
 
-  input.onchange = (e) => {
+  input.onchange = async (e) => {
     var file = e.target.files[0];
     $("#rom").attr("placeholder", file.name);
     $("#rom").val(file.name);
@@ -505,80 +584,88 @@ function filebox() {
     $("#rom_2").attr("placeholder", file.name);
     $("#rom_3").val(file.name);
     $("#rom_3").attr("placeholder", file.name);
-    // Get the original fiile
+    // Get the original file
     try {
       var db = romdatabase.result;
       var tx = db.transaction("ROMStorage", "readwrite");
       var store = tx.objectStore("ROMStorage");
+      // Make sure we load the file into the rompatcher
+      romFile = await new MarcFile(file, _parseROM);
       // Store it in the database
-      store.put({ ROM: "N64", value: file });
-    } catch {}
-    // Make sure we load the file into the rompatcher
-    romFile = new MarcFile(file, _parseROM);
+      await store.put({ ROM: "N64", value: file });
+      console.log("Successfully stored file in the database.");
+    } catch (error) {
+      console.log("Error storing file in the database:", error);
+    }
   };
 
   input.click();
 }
-async function try_to_load_from_args() {
-  await pyodide.runPythonAsync(`from ui.generate_buttons import get_args
-get_args()`);
-}
+
 // This works on all devices/browsers, and uses IndexedDBShim as a final fallback
-var indexedDB =
-  window.indexedDB ||
-  window.mozIndexedDB ||
-  window.webkitIndexedDB ||
-  window.msIndexedDB ||
-  window.shimIndexedDB;
 
-// Open (or create) the database
-var seeddatabase = indexedDB.open("SeedStorage", 1);
-var settingsdatabase = indexedDB.open("SettingsDB", 1);
-var musicdatabase = indexedDB.open("MusicStorage", 1);
-var romdatabase = indexedDB.open("ROMStorage", 1);
+var seeddatabase;
+var settingsdatabase;
+var musicdatabase;
+var romdatabase;
 
-musicdatabase.onupgradeneeded = function () {
-  try {
-    var musicdb = musicdatabase.result;
-    musicdb.createObjectStore("MusicStorage", { keyPath: "music" });
-  } catch {}
-};
-musicdatabase.onsuccess = function () {
-  load_music_file_from_db();
-};
-settingsdatabase.onupgradeneeded = function () {
-  try {
-    var settingsdb = settingsdatabase.result;
-    settingsdb.createObjectStore("saved_settings");
-  } catch {}
-};
-settingsdatabase.onsuccess = function () {
-  load_data();
-};
-// Create the schema
-romdatabase.onupgradeneeded = function () {
-  try {
-    var db = romdatabase.result;
-    db.createObjectStore("ROMStorage", { keyPath: "ROM" });
-  } catch {}
-};
+function load_databases() {
+  var indexedDB =
+    window.indexedDB ||
+    window.mozIndexedDB ||
+    window.webkitIndexedDB ||
+    window.msIndexedDB ||
+    window.shimIndexedDB;
+  // Open (or create) the database
+  seeddatabase = indexedDB.open("SeedStorage", 1);
+  settingsdatabase = indexedDB.open("SettingsDB", 1);
+  musicdatabase = indexedDB.open("MusicStorage", 1);
+  romdatabase = indexedDB.open("ROMStorage", 1);
 
-seeddatabase.onupgradeneeded = function () {
-  try {
-    var seed_db = seeddatabase.result;
-    seed_db.createObjectStore("SeedStorage", {
-      keyPath: "id",
-    });
-  } catch {}
-};
+  musicdatabase.onupgradeneeded = async function () {
+    try {
+      var musicdb = musicdatabase.result;
+      musicdb.createObjectStore("MusicStorage", { keyPath: "music" });
+    } catch {}
+  };
+  musicdatabase.onsuccess = async function () {
+    load_music_file_from_db();
+  };
+  settingsdatabase.onupgradeneeded = async function () {
+    try {
+      var settingsdb = settingsdatabase.result;
+      settingsdb.createObjectStore("saved_settings");
+      preset_select_changed("default");
+    } catch {}
+  };
+  settingsdatabase.onsuccess = async function () {
+    load_data();
+  };
+  // Create the schema
+  romdatabase.onupgradeneeded = async function () {
+    try {
+      var db = romdatabase.result;
+      db.createObjectStore("ROMStorage", { keyPath: "ROM" });
+    } catch {}
+  };
 
-seeddatabase.onsuccess = function () {
-  load_old_seeds();
-};
+  seeddatabase.onupgradeneeded = async function () {
+    try {
+      var seed_db = seeddatabase.result;
+      seed_db.createObjectStore("SeedStorage", {
+        keyPath: "id",
+      });
+    } catch {}
+  };
 
-romdatabase.onsuccess = function () {
-  load_file_from_db();
-};
+  seeddatabase.onsuccess = async function () {
+    load_old_seeds();
+  };
+
+  romdatabase.onsuccess = async function () {
+    load_file_from_db();
+  };
+}
 
 function write_seed_history(seed_id, seed_data, seed_hash) {
   // Get the original fiile
@@ -596,22 +683,24 @@ function write_seed_history(seed_id, seed_data, seed_hash) {
       date: now,
     });
     // Write it to most_recent_seed_id and most_recent_seed_date on the UI page so we can display it
-    document.getElementById("most_recent_seed_id").innerHTML = "<strong>Most Recent Seed ID:</strong> " + seed_id;
-    document.getElementById("most_recent_seed_date").innerHTML = "<strong>Most Recent Seed Date:</strong> " + now.toLocaleDateString(
-      undefined,
-      {
+    document.getElementById("most_recent_seed_id").innerHTML =
+      "<strong>Most Recent Seed ID:</strong> " + seed_id;
+    document.getElementById("most_recent_seed_date").innerHTML =
+      "<strong>Most Recent Seed Date:</strong> " +
+      now.toLocaleDateString(undefined, {
         year: "numeric",
         month: "short",
         day: "2-digit",
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
-      }
-    );
-  } catch (error) {console.log(error)}
+      });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function load_old_seeds() {
+async function load_old_seeds() {
   try {
     // If we actually have a file in the DB load it
     var seed_db = seeddatabase.result;
@@ -654,8 +743,18 @@ function load_old_seeds() {
           hook.appendChild(option_el);
         }
         // Write the most recent seed to the UI
-        document.getElementById("most_recent_seed_id").innerHTML = "<strong>Most Recent Seed ID:</strong> " + sorted_array[0].seed_id;
-        document.getElementById("most_recent_seed_date").innerHTML = "<strong>Most Recent Seed Date:</strong> " + sorted_array[0].date.toLocaleDateString( undefined, {  year: "numeric",  month: "short",  day: "2-digit",  hour: "2-digit",  minute: "2-digit",  second: "2-digit",});
+        document.getElementById("most_recent_seed_id").innerHTML =
+          "<strong>Most Recent Seed ID:</strong> " + sorted_array[0].seed_id;
+        document.getElementById("most_recent_seed_date").innerHTML =
+          "<strong>Most Recent Seed Date:</strong> " +
+          sorted_array[0].date.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
       } catch {}
     };
   } catch {}
@@ -666,7 +765,7 @@ function get_previous_seed_data() {
   var text = sel.options[sel.selectedIndex].lanky_data;
   return text;
 }
-function load_file_from_db() {
+async function load_file_from_db() {
   try {
     // If we actually have a file in the DB load it
     var db = romdatabase.result;
@@ -675,26 +774,35 @@ function load_file_from_db() {
 
     // Get our ROM file
     var getROM = store.get("N64");
-    getROM.onsuccess = function () {
+    getROM.onsuccess = async function () {
       // When we pull it from the DB load it in as a global var
       try {
-        romFile = new MarcFile(getROM.result.value, _parseROM);
-        $("#rom").attr("placeholder", "Using cached ROM");
-        $("#rom").val("Using cached ROM");
-        $("#rom_2").attr("placeholder", "Using cached ROM");
-        $("#rom_3").attr("placeholder", "Using cached ROM");
-        $("#rom_3").val("Using cached ROM");
-        
-        try_to_load_from_args()
-
-      } catch {try_to_load_from_args()}
+        // Disable the generate seed button if we have a ROM
+        romFile = await new MarcFile(getROM.result.value);
+        window.romFile = romFile;
+        console.log("ROM Loaded from database");
+        document.getElementById("rom").placeholder = "Using cached ROM";
+        document.getElementById("rom").value = "Using cached ROM";
+        document.getElementById("rom_2").placeholder = "Using cached ROM";
+        document.getElementById("rom_2").value = "Using cached ROM";
+        document.getElementById("rom_3").placeholder = "Using cached ROM";
+        document.getElementById("rom_3").value = "Using cached ROM";
+        // On each of these set the class to "is-valid" to show the user it's been loaded
+        document.getElementById("rom").classList.add("is-valid");
+        document.getElementById("rom_2").classList.add("is-valid");
+        document.getElementById("rom_3").classList.add("is-valid");
+        try_to_load_from_args();
+      } catch {
+        console.log("Failed to load ROM from database");
+        try_to_load_from_args();
+      }
     };
-  } catch {try_to_load_from_args()}
+  } catch {
+    try_to_load_from_args();
+  }
 }
 var w;
 var CurrentRomHash;
-
-243;
 
 function base64ToArrayBuffer(base64) {
   var binaryString = atob(base64);
@@ -712,8 +820,8 @@ function to2Digit(value) {
   return `0${value}`;
 }
 
-gen_error_count = 0;
-previous_queue_position = null;
+let gen_error_count = 0;
+let previous_queue_position = null;
 
 function pushToHistory(message, emphasize = false) {
   let prog_hist = document.getElementById("progress-history");
@@ -737,7 +845,14 @@ function pushToHistory(message, emphasize = false) {
 function postToastMessage(message, is_warning, progress_ratio) {
   // Write Toast
   $("#progress-text").text(message);
-  pushToHistory(message);
+  pushToHistory(
+    message
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;")
+  );
   // Handle Progress Bar
   perc = Math.floor(100 * progress_ratio);
   if (is_warning) {
@@ -779,155 +894,118 @@ function wipeToastHistory() {
   document.getElementById("progress-history").innerHTML = "";
   previous_queue_position = null;
 }
-
-function generate_seed(url, json, git_branch) {
-  $.ajax(url, {
-    data: JSON.stringify({
-      branch: git_branch,
-      post_body: json,
-    }),
-    contentType: "application/json",
-    type: "POST",
+var sent_generating_status = false;
+function query_seed_status(url, task_id) {
+  $.ajax(url + "/task-status/" + task_id, {
     success: function (data, textStatus, xhr) {
-      if (xhr.status == 202) {
+      if (data["status"] == "queued") {
         console.log("seed gen waiting in queue");
-        // Get the position in the queue
         position = data["position"];
-        if (position != previous_queue_position) {
-          postToastMessage("Position in Queue: " + position, false, 0.4);
-          if (position == 0) {
-            postToastMessage("Your seed is now generating.");
-          }
+        postToastMessage("Seed is in Position: " + position, false, 0.4);
+        sent_generating_status = false;
+        setTimeout(function () {
+          query_seed_status(url, task_id);
+        }, 5000);
+      } else if (data["status"] == "started") {
+        if (!sent_generating_status) {
+          postToastMessage("Seed is generating", false, 0.6);
         }
-        previous_queue_position = position;
+        sent_generating_status = true;
+
         setTimeout(function () {
-          generate_seed(url, json, git_branch);
+          query_seed_status(url, task_id);
         }, 5000);
-      } else if (xhr.status == 201) {
-        console.log("seed gen queued");
-        postToastMessage("Seed Generation Queued", false, 0.3);
-        setTimeout(function () {
-          generate_seed(url, json, git_branch);
-        }, 5000);
-      } else if (xhr.status == 208) {
-        console.log(data);
-        postToastMessage(data, true, 1);
-      } else {
+      } else if (data["status"] == "finished") {
         postToastMessage(
           "Seed Generation Complete, applying cosmetics",
           false,
           0.8
         );
-        apply_patch(data, true);
+        sent_generating_status = false;
+        window.apply_patch(data["result"]["patch"], true);
+      } else if (data["status"] == "failed") {
+        resp = data["responseJSON"];
+        if (resp && resp["error"]) {
+          postToastMessage(resp["error"], true, 1);
+        } else {
+          postToastMessage("Something went wrong please try again", true, 1);
+        }
+        sent_generating_status = false;
       }
+    },
+    error: function (data, textStatus, xhr) {
+      resp = data["responseJSON"];
+      if (resp && resp["error"]) {
+        postToastMessage(resp["error"], true, 1);
+      } else {
+        postToastMessage("Something went wrong please try again", true, 1);
+      }
+    },
+  });
+}
+
+function submit_seed_generation(url, json, branch) {
+  $.ajax({
+    type: "POST",
+    url: url + "/submit-task?branch=" + branch,
+    data: JSON.stringify({
+      settings_data: json,
+    }),
+    contentType: "application/json",
+    success: function (data, textStatus, xhr) {
+      task_id = data["task_id"];
+      priority = data["priority"];
+      postToastMessage(
+        "Seed has been queued in the " + priority + " Priority Queue",
+        false,
+        0.3
+      );
+      query_seed_status(url, task_id);
     },
     error: function (data, textStatus, xhr) {
       postToastMessage("Something went wrong please try again", true, 1);
     },
   });
 }
-
-function apply_download() {
-  if (document.getElementById("rom").value.trim().length === 0 || !document.getElementById("rom").classList.contains("is-valid")) {
-    document.getElementById("rom").select();
-    if (!document.getElementById("rom").classList.contains("is-invalid")) {
-      document.getElementById("rom").classList.add("is-invalid");
-      return
-    }
-  }
-  console.log("Applying Download");
-  return pyodide.runPythonAsync(`
-    import js
-    from randomizer.Patching.ApplyLocal import patching_response
-    patching_response(str(js.event_response_data), from_patch_gen=True)
-  `);
+function getStringFile(file) {
+  return $.ajax({
+    type: "GET",
+    url: file,
+    async: false,
+  }).responseText;
 }
 // if the tab is set to seed info get the generate_seed button and change the text to "Download Seed" we want to check this on every nav tab change
 function check_seed_info_tab() {
-  
-  if (document.getElementById("nav-settings-tab").classList.contains("active")) {
+  if (
+    document.getElementById("nav-settings-tab").classList.contains("active")
+  ) {
     document.getElementById("generate_seed").value = "Download Seed";
     document.getElementById("generate_seed").onclick = null;
-    document.getElementById("generate_seed").onclick = function() {apply_download()};
-  }
-  else {
+    document.getElementById("generate_seed").onclick = function () {
+      apply_download();
+    };
+  } else {
     // if document.getElementById("download_patch_file").checked set it to Generate Patch File
     if (document.getElementById("download_patch_file").checked) {
       document.getElementById("generate_seed").value = "Generate Patch File";
-    }
-    else{
+    } else {
       document.getElementById("generate_seed").value = "Generate Seed";
     }
     // Remove the onclick event
     document.getElementById("generate_seed").onclick = null;
-    document.getElementById("generate_seed").onclick = function() {document.getElementById("trigger_download_event").click()};
+    document.getElementById("generate_seed").onclick = function () {
+      document.getElementById("trigger_download_event").click();
+    };
   }
 }
 function toggleDelayedSpoilerLogInput() {
-  var generateSpoilerLogCheckbox = document.getElementById('delayed_spoilerlog_container');
-  if (!document.getElementById('generate_spoilerlog').checked) {
-      generateSpoilerLogCheckbox.removeAttribute('hidden');
-  }
-  else {
-      generateSpoilerLogCheckbox.setAttribute('hidden', '');
-  }
-}
-
-// Call the function on page load to set the initial state
-toggleDelayedSpoilerLogInput();
-// check on any button with the nav-item class is clicked
-document.querySelectorAll(".nav-item").forEach((item) => {
-  item.addEventListener("click", () => {
-    check_seed_info_tab();
-  });
-});
-check_seed_info_tab();
-async function apply_patch(data, run_async) {
-  // Base64 decode the response
-  event_response_data = data;
-  var decodedData = base64ToArrayBuffer(data);
-  zip = new JSZip();
-
-  try {
-    // Load the zip file data into JSZip
-    const zipFile = await zip.loadAsync(decodedData);
-
-    // Create an array to store all the promises
-    const promises = [];
-    query_stats();
-    // Iterate over each file in the zip
-    zip.forEach(function (relativePath, zipEntry) {
-      if (!zipEntry.dir) {
-        // Extract the file content as a string or other appropriate format
-        // Store the file content in a variable with a name derived from the file name
-        fileName = zipEntry.name.replace(/[^a-zA-Z0-9]/g, "_");
-        if (fileName == "patch") {
-          // Create a promise for each async operation and add it to the array
-          const promise = zipEntry
-            .async("uint8array")
-            .then(function (fileContent) {
-              console.log("Applying Xdelta Patch");
-              apply_xdelta(fileContent);
-
-              if (run_async == true) {
-                // Return the promise for pyodide.runPythonAsync
-                return pyodide.runPythonAsync(`
-                import js
-                from randomizer.Patching.ApplyLocal import patching_response
-                patching_response(str(js.event_response_data), from_patch_gen=True)
-              `);
-              }
-            });
-
-          promises.push(promise);
-        }
-      }
-    });
-
-    // Wait for all the promises to resolve
-    await Promise.all(promises);
-  } catch (error) {
-    console.error("Error unzipping the file:", error);
+  var generateSpoilerLogCheckbox = document.getElementById(
+    "delayed_spoilerlog_container"
+  );
+  if (!document.getElementById("generate_spoilerlog").checked) {
+    generateSpoilerLogCheckbox.removeAttribute("hidden");
+  } else {
+    generateSpoilerLogCheckbox.setAttribute("hidden", "");
   }
 }
 
@@ -961,18 +1039,16 @@ function loadDataFromIndexedDB(key) {
   });
 }
 
-function unlock_spoiler_log(hash) {
-  console.log("Unlocking spoiler log");
+function check_spoiler_unlocked(hash) {
+  console.log("Checking for Unlocked spoiler log");
   // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
   // Get the website location
   if (window.location.hostname == "dev.dk64randomizer.com") {
-    var url = "https://dev-generate.dk64rando.com/get_spoiler_log";
-  }
-  else if (window.location.hostname == "dk64randomizer.com") {
-    var url = "https://generate.dk64rando.com/get_spoiler_log";
-  }
-  else {
-    var url = "http://localhost:8000/get_spoiler_log";
+    var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=dev";
+  } else if (window.location.hostname == "dk64randomizer.com") {
+    var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=master";
+  } else {
+    var url = "http://localhost:8000/api/get_spoiler_log?branch=dev";
   }
   $.ajax({
     url: url,
@@ -983,7 +1059,44 @@ function unlock_spoiler_log(hash) {
     success: function (data, textStatus, xhr) {
       if (xhr.status === 200) {
         console.log("Success");
-        save_text_as_file(JSON.stringify(data, null, 2), document.getElementById('generated_seed_id').innerHTML + '-spoilerlog.json')
+        document.getElementById("download_unlocked_spoiler_button").removeAttribute("hidden");
+        document.getElementById("download_spoiler_button").hidden = true;
+        document.getElementById("download_unlocked_spoiler_button").onclick = () => unlock_spoiler_log(hash);
+      } else if (xhr.status === 425) {
+        console.log("Not unlocked yet");
+        document.getElementById("download_unlocked_spoiler_button").hidden = true;
+        document.getElementById("download_spoiler_button").removeAttribute("hidden");
+      }
+    }
+
+  });
+}
+
+function unlock_spoiler_log(hash) {
+  console.log("Unlocking spoiler log");
+  // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
+  // Get the website location
+  if (window.location.hostname == "dev.dk64randomizer.com") {
+    var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=dev";
+  } else if (window.location.hostname == "dk64randomizer.com") {
+    var url = "https://api.dk64rando.com/api/get_spoiler_log?branch=master";
+  } else {
+    var url = "http://localhost:8000/api/get_spoiler_log?branch=dev";
+  }
+  $.ajax({
+    url: url,
+    type: "GET",
+    data: {
+      hash: hash,
+    },
+    success: function (data, textStatus, xhr) {
+      if (xhr.status === 200) {
+        console.log("Success");
+        save_text_as_file(
+          JSON.stringify(data, null, 2),
+          document.getElementById("generated_seed_id").innerHTML +
+            "-spoilerlog.json"
+        );
       } else if (xhr.status === 425) {
         console.log("Not unlocked yet");
         // set the contents of spoiler_log_download_messages to "The spoiler log is not unlocked yet."
@@ -1006,7 +1119,6 @@ function unlock_spoiler_log(hash) {
         setTimeout(function () {
           $("#download_modal").modal("hide");
         }, 5000);
-
       }
     },
     error: function (xhr, textStatus, errorThrown) {
@@ -1020,7 +1132,7 @@ function unlock_spoiler_log(hash) {
       setTimeout(function () {
         $("#download_modal").modal("hide");
       }, 5000);
-    }
+    },
   });
 }
 
@@ -1028,13 +1140,11 @@ function get_seed_from_server(hash) {
   // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
   // Get the website location
   if (window.location.hostname == "dev.dk64randomizer.com") {
-    var url = "https://dev-generate.dk64rando.com/get_seed";
-  }
-  else if (window.location.hostname == "dk64randomizer.com") {
-    var url = "https://generate.dk64rando.com/get_seed";
-  }
-  else {
-    var url = "http://localhost:8000/get_seed";
+    var url = "https://api.dk64rando.com/api/get_seed";
+  } else if (window.location.hostname == "dk64randomizer.com") {
+    var url = "https://api.dk64rando.com/api/get_seed";
+  } else {
+    var url = "http://localhost:8000/api/get_seed";
   }
   // Make the ajax call synchronously
   return_data = $.ajax({
@@ -1046,7 +1156,6 @@ function get_seed_from_server(hash) {
     },
     success: function (data, textStatus, xhr) {
       if (xhr.status === 200) {
-
         return data;
       } else {
         document.getElementById("spoiler_log_download_messages").innerHTML =
@@ -1073,7 +1182,7 @@ function get_seed_from_server(hash) {
       }, 5000);
       return_data = "There was an error downloading the seed.";
       return return_data;
-    }
+    },
   });
   // wait for the ajax call to finish
   while (return_data.readyState != 4) {
@@ -1082,71 +1191,487 @@ function get_seed_from_server(hash) {
   return return_data.responseText;
 }
 
-function load_data() {
-  try {
-    // make sure all sliders are initialized
-    for (element of document.getElementsByTagName("input")) {
-      if (element.hasAttribute("data-slider-value")) {
-        // check if the slider has already been initialized
-        if (!element.hasAttribute("data-slider-initialized")) {
-          element.setAttribute("data-slider-initialized", "true");
-          $("#" + element.name).slider();
-        }
+function should_reset_select_on_preset(selectElement) {
+  /** Return true if the element should be reset when applying a preset. */
+  if (document.querySelector("#nav-cosmetics").contains(selectElement)) {
+    return false;
+  }
+  if (document.querySelector("#nav-music").contains(selectElement) === true) {
+    return false;
+  }
+  if (selectElement.name.startsWith("plando_")) {
+    return false;
+  }
+  // This should now be obsolete, because of the #nav-music clause
+  if (selectElement.name.startsWith("music_select_")) {
+    return false;
+  }
+  if (selectElement.id === "random-weights") {
+    return false;
+  }
+  return true;
+}
+
+// Bind click event for "apply_preset"
+async function preset_select_changed(event) {
+  /** Trigger a change of the form via the JSON templates. */
+  // Disable the generate seed button
+  document.getElementById("generate_seed").disabled = true;
+  // Run trigger_presets_event in set timeout to allow the button to disable
+  setTimeout(() => {
+    trigger_preset_event(event);
+    setTimeout(() => {
+      document.getElementById("generate_seed").disabled = false;
+    }, 2000);
+  }, 0);
+}
+function trigger_preset_event(event) {
+  const element = document.getElementById("presets");
+  let presets = null;
+  // if event is a string lets select the second option in the progressions_presets
+  if (typeof event === "string" || event === "default") {
+    for (const val of progression_presets) {
+      if (val.name === "Beginner Settings") {
+        presets = val;
+        break;
       }
     }
-    var settingsdb = settingsdatabase.result;
-    transaction = settingsdb.transaction("saved_settings", "readonly");
-    objectStore = transaction.objectStore("saved_settings");
-    getRequest = objectStore.get("saved_settings");
-    getRequest.onerror = function (event) {
-      console.error("Failed to retrieve saved settings");
-    };
-    getRequest.onsuccess = function (event) {
-      try {
-        if (getRequest.result) {
-          json = JSON.parse(getRequest.result);
-          if (json !== null) {
-            for (var key in json) {
-              element = document.getElementsByName(key)[0];
-              if (json[key] == "True") {
-                element.checked = true;
-              } else if (json[key] == "False") {
-                element.checked = false;
-              } else if (key.includes("starting_move_box")) {
-                var starting_move_buttons = document.getElementsByName(key)
-                for (element of starting_move_buttons) {
-                  if (element.id.includes(json[key])) {
-                    element.checked = true;
-                  }
+  } else {
+    for (const val of progression_presets) {
+      if (val.name === element.value) {
+        presets = val;
+        break;
+      }
+    }
+  }
+
+  if (presets && "settings_string" in presets) {
+    // Define a queue to batch DOM updates
+    const updateQueue = [];
+
+    const settings = decrypt_settings_string_enum(presets.settings_string);
+
+    for (const select of document.getElementsByTagName("select")) {
+      if (should_reset_select_on_preset(select)) {
+        select.selectedIndex = -1;
+      }
+    }
+
+    // Uncheck all starting move radio buttons
+    for (const starting_move_button of document.querySelectorAll(
+      "input[name^='starting_move_box_']"
+    )) {
+      updateQueue.push(() => {
+        if (starting_move_button.checked) {
+          starting_move_button.checked = false;
+          starting_move_button.dispatchEvent(new Event("click"));
+        }
+      });
+    }
+
+    // Reset the "presets" select to default
+    updateQueue.push(() => {
+      if (document.getElementById("presets").selectedIndex !== 0) {
+        document.getElementById("presets").selectedIndex = 0;
+      }
+    });
+
+    // Apply new settings
+    for (let key in settings) {
+      updateQueue.push(() => {
+        try {
+          const element =
+            document.getElementsByName(key)[0] || document.getElementById(key);
+          if (!element) return;
+
+          if (typeof settings[key] === "boolean") {
+            if (element.checked !== settings[key]) {
+              element.checked = settings[key];
+              element.dispatchEvent(new Event("click"));
+            }
+            element.removeAttribute("disabled");
+          } else if (Array.isArray(settings[key])) {
+            if (key.startsWith("starting_moves_list_")) {
+              const select = document.getElementById(key);
+              settings[key].forEach((value) => {
+                const existing_option = document.getElementById(
+                  "starting_move_" + value
+                );
+                if (existing_option.parentNode !== select) {
+                  existing_option.parentNode.removeChild(existing_option);
+                  select.appendChild(existing_option);
+                }
+              });
+            } else {
+              const selector = document.getElementById(key);
+              if (selector && selector.tagName === "SELECT") {
+                const MapName = SettingsMap[key];
+                const flipped = Object.fromEntries(
+                  Object.entries(MapName).map(([k, v]) => [v, k])
+                );
+                const currentSelections = Array.from(
+                  selector.selectedOptions
+                ).map((opt) => opt.value);
+                const newSelections = settings[key].map(
+                  (item) => flipped[item]
+                );
+
+                if (
+                  JSON.stringify(currentSelections) !==
+                  JSON.stringify(newSelections)
+                ) {
+                  Array.from(selector.options).forEach((option) => {
+                    option.selected = newSelections.includes(option.value);
+                  });
                 }
               }
-              try {
-                element.value = json[key];
-                if (element.hasAttribute("data-slider-value")) {
-                  $("#" + key).slider("setValue", json[key]);
-                }
-                if (element.className.includes("selected")) {
-                  for (var i = 0; i < element.options.length; i++) {
-                    element.options[i].selected =
-                      json[key].indexOf(element.options[i].value) >= 0;
-                  }
-                }
-              } catch {}
             }
+          } else {
+            const selector = document.getElementById(key);
+            if (selector.tagName === "SELECT" && key !== "random-weights") {
+              const MapName = SettingsMap[key];
+              const flipped = Object.fromEntries(
+                Object.entries(MapName).map(([k, v]) => [v, k])
+              );
+              if (selector.value !== flipped[settings[key]]) {
+                selector.value = flipped[settings[key]];
+                Array.from(selector.options).forEach((option) => {
+                  option.selected = option.value === flipped[settings[key]];
+                });
+              }
+            } else if (selector.value !== settings[key]) {
+              selector.value = settings[key];
+            }
+            selector.removeAttribute("disabled");
           }
-          savesettings();
-        } else {
-          load_presets();
+        } catch (e) {
+          console.error(e);
         }
-        // Once all the options and toggles are set, trigger various UI events to set up enable/disable states correctly
-        var apply_preset_element = document.getElementById("apply_preset");
-        apply_preset_element.dispatchEvent(new Event('custom-update-ui-event'));
-      } catch {
-        load_presets();
+      });
+    }
+
+    // Process the update queue
+    function processQueue() {
+      const batchSize = 10; // Adjust batch size based on performance
+      for (let i = 0; i < batchSize && updateQueue.length; i++) {
+        const updateFn = updateQueue.shift();
+        updateFn();
       }
-    };
-  } catch {
-    load_presets();
+
+      if (updateQueue.length > 0) {
+        requestAnimationFrame(processQueue);
+      } else {
+        update_ui_states(null);
+      }
+    }
+
+    requestAnimationFrame(processQueue);
+  }
+  generateToast(
+    `"${presets.name}" preset applied.<br />All non-cosmetic settings have been overwritten.`
+  );
+}
+
+// on the id presets if the index is changed to not 0 enable the apply_preset button
+// if its 0 disable the apply_preset button
+function disable_apply_preset_button() {
+  if (document.getElementById("presets").selectedIndex === 0) {
+    document.getElementById("apply_preset").disabled = true;
+  } else {
+    document.getElementById("apply_preset").disabled = false;
   }
 }
-load_data();
+document
+  .getElementById("presets")
+  .addEventListener("change", disable_apply_preset_button);
+
+document
+  .getElementById("apply_preset")
+  .addEventListener("click", preset_select_changed);
+function set_preset_options() {
+  // Set the Blocker presets on the page
+
+  // Check what the selected dropdown item is
+  let element = document.getElementById("presets");
+  let children = [];
+
+  // Find all the items in the dropdown
+  for (let child of element.children) {
+    children.push(child.value);
+  }
+
+  // Find out dropdown item and set our selected item text to it
+  for (let val of progression_presets) {
+    if (!children.includes(val.name)) {
+      let opt = document.createElement("option");
+      opt.value = val.name;
+      opt.innerHTML = val.name;
+      opt.title = val.description;
+      element.appendChild(opt);
+
+      if (val.name === "-- Select a Preset --") {
+        opt.disabled = true;
+        opt.hidden = true;
+      }
+    }
+  }
+
+  // Set the default value of the dropdown
+  $("#presets").val("-- Select a Preset --");
+  // Disable the apply_preset button
+  document.getElementById("apply_preset").disabled = true;
+  // Toggle elements and update the page according to the preset
+  toggle_counts_boxes(null);
+  toggle_b_locker_boxes(null);
+  toggle_logic_type(null);
+  toggle_bananaport_selector(null);
+  update_door_one_num_access(null);
+  update_door_two_num_access(null);
+  update_win_con_num_access(null);
+  update_prog_hint_num_access(null);
+
+  // // Load the data
+  // load_data();
+}
+
+function set_random_weights_options() {
+  // Set the random settings presets on the page
+
+  let element = document.getElementById("random-weights");
+  let children = [];
+
+  // Take note of the items currently in the dropdown
+  for (let child of element.children) {
+    children.push(child.value);
+  }
+
+  // Add all of the random weights presets
+  for (let val of random_settings_presets) {
+    if (!children.includes(val.name)) {
+      let opt = document.createElement("option");
+      opt.value = val.name;
+      opt.innerHTML = val.name;
+      opt.title = val.description;
+      element.appendChild(opt);
+
+      // Select the "Standard" preset by default
+      if (val.name === "Standard") {
+        opt.selected = true;
+      }
+    }
+  }
+}
+
+function load_data() {
+  try {
+    initialize_sliders();
+    const settingsdb = settingsdatabase.result;
+    const transaction = settingsdb.transaction("saved_settings", "readonly");
+    const objectStore = transaction.objectStore("saved_settings");
+    const getRequest = objectStore.get("saved_settings");
+
+    getRequest.onerror = () =>
+      console.error("Failed to retrieve saved settings");
+
+    getRequest.onsuccess = async () => {
+      try {
+        if (getRequest.result) {
+          const json = JSON.parse(getRequest.result);
+          if (json) {
+            load_settings(json);
+          }
+        } else {
+          trigger_ui_update();
+        }
+      } catch (error) {
+        console.error("Error parsing settings:", error);
+        preset_select_changed("default");
+      }
+    };
+  } catch (error) {
+    console.error("Error initializing settings:", error);
+    preset_select_changed("default");
+  }
+}
+
+function initialize_sliders() {
+  const inputs = document.querySelectorAll("input[data-slider-value]");
+  inputs.forEach((input) => {
+    if (!input.hasAttribute("data-slider-initialized")) {
+      input.setAttribute("data-slider-initialized", "true");
+      $("#" + input.name).slider(); // Replace jQuery if possible with vanilla JS slider initialization
+    }
+  });
+}
+function load_settings(json) {
+  // if enable_plandomizer is not checked, remove every setting from the json that starts with plando_
+  if (!json["enable_plandomizer"]) {
+    for (const key in json) {
+      if (key.startsWith("plando_")) {
+        delete json[key];
+      }
+    }
+  }
+  // If enable_plandomizer is checked, remove just that setting from the json
+  if (json["enable_plandomizer"]) {
+    delete json["enable_plandomizer"];
+  }
+  all_elements = document.querySelectorAll("#form input, #form select");
+  const elementsCache = Object.fromEntries(
+    Object.keys(json).map((key) => [
+      key,
+      Array.from(all_elements).filter((el) => el.name === key),
+    ])
+  );
+
+  // Define a queue to batch DOM updates
+  const updateQueue = [];
+  let updated_values = [];
+  for (const [key, value] of Object.entries(json)) {
+    const elements = elementsCache[key];
+    if (!elements?.length) continue;
+
+    const element = elements[0];
+
+    updateQueue.push(() => {
+      let valueChanged = false;
+
+      // Boolean values for checkboxes
+      if (value === "True" || value === "False") {
+        if (element.checked !== (value === "True")) {
+          element.checked = value === "True";
+          valueChanged = true;
+        }
+        return;
+      }
+
+      // Radio button handling for "starting_move_box"
+      if (key.includes("starting_move_box")) {
+        elements.forEach((button) => {
+          if (button.checked !== button.id.includes(value)) {
+            button.checked = button.id.includes(value);
+            valueChanged = true;
+          }
+        });
+        return;
+      }
+
+      if (
+        element.name.startsWith("starting_moves_list_") &&
+        !element.name.startsWith("starting_moves_list_count")
+      ) {
+        const select = document.getElementById(key);
+        json[key].forEach((value) => {
+          const existing_option = document.getElementById(
+            "starting_move_" + value
+          );
+          const parentSelect = existing_option.parentNode;
+          if (existing_option.parentNode !== select) {
+            parentSelect.removeChild(existing_option);
+            select.appendChild(existing_option);
+            valueChanged = true;
+          }
+        });
+        return;
+      }
+
+      try {
+        // Check for noUiSlider changes
+        if (element.hasAttribute("data-slider-value")) {
+          const slider = document.getElementById(key);
+          if (slider?.noUiSlider?.get() != value) {
+            slider.noUiSlider.set(value);
+            valueChanged = true;
+          }
+        } else if (element.value !== value) {
+          element.value = value;
+          valueChanged = true;
+        }
+
+        // Multiple selection for elements with "selected" class
+        if (element.classList.contains("selected")) {
+          const currentValues = Array.from(element.options)
+            .filter((option) => option.selected)
+            .map((option) => option.value);
+          if (JSON.stringify(currentValues) !== JSON.stringify(value)) {
+            Array.from(element.options).forEach((option) => {
+              option.selected = value.includes(option.value);
+            });
+            valueChanged = true;
+          }
+        }
+      } catch (e) {
+        console.error(`Error setting value for ${key}:`, e);
+      }
+
+      // Trigger a click event if the value has changed
+      if (valueChanged) {
+        updated_values.push(element);
+      }
+    });
+  }
+
+  // Process the update queue in batches to avoid blocking
+  function processQueue() {
+    const batchSize = 10; // Adjust batch size based on performance needs
+    for (let i = 0; i < batchSize && updateQueue.length; i++) {
+      const updateFn = updateQueue.shift();
+      updateFn();
+    }
+
+    if (updateQueue.length > 0) {
+      requestAnimationFrame(processQueue);
+    } else {
+      trigger_ui_update();
+    }
+  }
+
+  requestAnimationFrame(processQueue);
+  // // Dispatch all the click events after the values have been set
+  // // Batch dispatch click events to avoid performance issues
+  // function batchDispatchClickEvents(elements) {
+  //   const batchSize = 10; // Adjust batch size based on performance needs
+  //   let index = 0;
+
+  //   function processBatch() {
+  //     for (let i = 0; i < batchSize && index < elements.length; i++, index++) {
+  //       console.log("Triggering click event for", elements[index]);
+  //       elements[index].dispatchEvent(new Event("change"));
+  //     }
+
+  //     if (index < elements.length) {
+  //       requestAnimationFrame(processBatch);
+  //     }
+  //   }
+
+  //   requestAnimationFrame(processBatch);
+  // }
+
+  // batchDispatchClickEvents(updated_values);
+}
+
+function trigger_ui_update() {
+  const apply_preset_element = document.getElementById("apply_preset");
+  if (apply_preset_element) {
+    apply_preset_element.dispatchEvent(new Event("custom-update-ui-event"));
+  }
+}
+
+// Ensure all functions are defined before calling them
+async function initialize() {
+  // Call the function on page load to set the initial state
+  await load_databases();
+  await toggleDelayedSpoilerLogInput();
+  await check_seed_info_tab();
+  // check on any button with the nav-item class is clicked
+  document.querySelectorAll(".nav-item").forEach((item) => {
+    item.addEventListener("click", async () => {
+      await check_seed_info_tab();
+    });
+  });
+  await set_preset_options();
+  await disable_apply_preset_button();
+  await set_random_weights_options();
+}
+// Initialize after ensuring all functions are loaded
+initialize();

@@ -1,19 +1,18 @@
 """Apply Coin Rando changes."""
 
-import js
-from randomizer.Patching.Lib import float_to_hex
+from randomizer.Patching.Library.DataTypes import float_to_hex
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
 
-def randomize_coins(spoiler):
+def randomize_coins(spoiler, ROM_COPY: LocalROM):
     """Place Coins into ROM."""
     if spoiler.settings.coin_rando:
-        ROM_COPY = LocalROM()
         for cont_map_id in range(216):
             # Wipe setup and paths of Coin information
             # SETUP
             coin_items = [0x1D, 0x24, 0x23, 0x1C, 0x27]  # Has to remain in this order
-            setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+            setup_table = getPointerLocation(TableNames.Setups, cont_map_id)
             ROM_COPY.seek(setup_table)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             # Model Two Coins
@@ -63,7 +62,14 @@ def randomize_coins(spoiler):
                     # Model Two Coins
                     for loc in new_coin["locations"]:
                         item_data = []
-                        item_data.extend([int(float_to_hex(loc[1]), 16), int(float_to_hex(loc[2]), 16), int(float_to_hex(loc[3]), 16), int(float_to_hex(loc[0]), 16)])
+                        item_data.extend(
+                            [
+                                int(float_to_hex(loc[1]), 16),
+                                int(float_to_hex(loc[2]), 16),
+                                int(float_to_hex(loc[3]), 16),
+                                int(float_to_hex(loc[0]), 16),
+                            ]
+                        )
                         item_data.append(2)
                         item_data.append(0x01C7FFFF)
                         for x in range(int((0x24 - 0x18) / 4)):

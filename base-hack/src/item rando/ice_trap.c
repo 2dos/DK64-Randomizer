@@ -10,224 +10,231 @@
  */
 #include "../../include/common.h"
 
-static char ice_trap_queued = 0;
-static const map_bitfield banned_trap_maps = {
-    .test_map = 0,
-    .funkys_store = 1, // Reason: Shop
-    .dk_arcade = 1, // Reason: Locked Movement
-    .k_rool_barrel_lankys_maze = 1, // Reason: Bonus
-    .jungle_japes_mountain = 0,
-    .crankys_lab = 1, // Reason: Shop
-    .jungle_japes_minecart = 1, // Reason: Locked Movement
-    .jungle_japes = 0,
-    .jungle_japes_army_dillo = 1, // Reason: Boss Map
-    .jetpac = 1, // Reason: Locked Movement
-    .kremling_kosh_very_easy = 1, // Reason: Locked Movement
-    .stealthy_snoop_normal_no_logo = 1, // Reason: Bonus
-    .jungle_japes_shell = 0,
-    .jungle_japes_lankys_cave = 0,
-    .angry_aztec_beetle_race = 1, // Reason: Locked Movement
-    .snides_hq = 1, // Reason: Shop
-    .angry_aztec_tinys_temple = 0,
-    .hideout_helm = 0,
-    .teetering_turtle_trouble_very_easy = 1, // Reason: Locked Movement
-    .angry_aztec_five_door_temple_dk = 0,
-    .angry_aztec_llama_temple = 0,
-    .angry_aztec_five_door_temple_diddy = 0,
-    .angry_aztec_five_door_temple_tiny = 0,
-    .angry_aztec_five_door_temple_lanky = 0,
-    .angry_aztec_five_door_temple_chunky = 0,
-    .candys_music_shop = 1, // Reason: Shop
-    .frantic_factory = 0,
-    .frantic_factory_car_race = 1, // Reason: Locked Movement
-    .hideout_helm_level_intros_game_over = 1, // Reason: Cutscene Map
-    .frantic_factory_power_shed = 0,
-    .gloomy_galleon = 0,
-    .gloomy_galleon_k_rools_ship = 0,
-    .batty_barrel_bandit_very_easy = 1, // Reason: Locked Movement
-    .jungle_japes_chunkys_cave = 0,
-    .dk_isles_overworld = 0,
-    .k_rool_barrel_dks_target_game = 1, // Reason: Bonus
-    .frantic_factory_crusher_room = 0,
-    .jungle_japes_barrel_blast = 1, // Reason: BBlast Course
-    .angry_aztec = 0,
-    .gloomy_galleon_seal_race = 1, // Reason: Locked Movement
-    .nintendo_logo = 1, // Reason: Cutscene Map
-    .angry_aztec_barrel_blast = 1, // Reason: BBlast Course
-    .troff_n_scoff = 1, // Reason: Bonus
-    .gloomy_galleon_shipwreck_diddy_lanky_chunky = 0,
-    .gloomy_galleon_treasure_chest = 0,
-    .gloomy_galleon_mermaid = 0,
-    .gloomy_galleon_shipwreck_dk_tiny = 0,
-    .gloomy_galleon_shipwreck_lanky_tiny = 0,
-    .fungi_forest = 0,
-    .gloomy_galleon_lighthouse = 0,
-    .k_rool_barrel_tinys_mushroom_game = 1, // Reason: Bonus
-    .gloomy_galleon_mechanical_fish = 0,
-    .fungi_forest_ant_hill = 0,
-    .battle_arena_beaver_brawl = 1, // Reason: Bonus
-    .gloomy_galleon_barrel_blast = 1, // Reason: BBlast Course
-    .fungi_forest_minecart = 1, // Reason: Locked Movement
-    .fungi_forest_diddys_barn = 0,
-    .fungi_forest_diddys_attic = 0,
-    .fungi_forest_lankys_attic = 0,
-    .fungi_forest_dks_barn = 0,
-    .fungi_forest_spider = 0,
-    .fungi_forest_front_part_of_mill = 0,
-    .fungi_forest_rear_part_of_mill = 0,
-    .fungi_forest_mushroom_puzzle = 0,
-    .fungi_forest_giant_mushroom = 0,
-    .stealthy_snoop_normal = 1, // Reason: Bonus
-    .mad_maze_maul_hard = 1, // Reason: Bonus
-    .stash_snatch_normal = 1, // Reason: Bonus
-    .mad_maze_maul_easy = 1, // Reason: Bonus
-    .mad_maze_maul_normal = 1, // Reason: Bonus
-    .fungi_forest_mushroom_leap = 0,
-    .fungi_forest_shooting_game = 0,
-    .crystal_caves = 0,
-    .battle_arena_kritter_karnage = 1, // Reason: Bonus
-    .stash_snatch_easy = 1, // Reason: Bonus
-    .stash_snatch_hard = 1, // Reason: Bonus
-    .dk_rap = 1, // Reason: Cutscene Map
-    .minecart_mayhem_easy = 1, // Reason: Locked Movement
-    .busy_barrel_barrage_easy = 1, // Reason: Locked Movement
-    .busy_barrel_barrage_normal = 1, // Reason: Locked Movement
-    .main_menu = 1, // Reason: Locked Movement
-    .title_screen_not_for_resale_version = 1, // Reason: Cutscene Map
-    .crystal_caves_beetle_race = 0,
-    .fungi_forest_dogadon = 1, // Reason: Boss Map
-    .crystal_caves_igloo_tiny = 0,
-    .crystal_caves_igloo_lanky = 0,
-    .crystal_caves_igloo_dk = 0,
-    .creepy_castle = 0,
-    .creepy_castle_ballroom = 0,
-    .crystal_caves_rotating_room = 0,
-    .crystal_caves_shack_chunky = 0,
-    .crystal_caves_shack_dk = 0,
-    .crystal_caves_shack_diddy_middle_part = 0,
-    .crystal_caves_shack_tiny = 0,
-    .crystal_caves_lankys_hut = 0,
-    .crystal_caves_igloo_chunky = 0,
-    .splish_splash_salvage_normal = 1, // Reason: Bonus
-    .k_lumsy = 0,
-    .crystal_caves_ice_castle = 0,
-    .speedy_swing_sortie_easy = 1, // Reason: Bonus
-    .crystal_caves_igloo_diddy = 0,
-    .krazy_kong_klamour_easy = 1, // Reason: Locked Movement
-    .big_bug_bash_very_easy = 1, // Reason: Locked Movement
-    .searchlight_seek_very_easy = 1, // Reason: Locked Movement
-    .beaver_bother_easy = 1, // Reason: Locked Movement
-    .creepy_castle_tower = 0,
-    .creepy_castle_minecart = 0,
-    .kong_battle_battle_arena = 1, // Reason: Multiplayer Map
-    .creepy_castle_crypt_lanky_tiny = 0,
-    .kong_battle_arena_1 = 1, // Reason: Multiplayer Map
-    .frantic_factory_barrel_blast = 1, // Reason: BBlast Course
-    .gloomy_galleon_pufftoss = 1, // Reason: Boss Map
-    .creepy_castle_crypt_dk_diddy_chunky = 0,
-    .creepy_castle_museum = 0,
-    .creepy_castle_library = 0,
-    .kremling_kosh_easy = 1, // Reason: Locked Movement
-    .kremling_kosh_normal = 1, // Reason: Locked Movement
-    .kremling_kosh_hard = 1, // Reason: Locked Movement
-    .teetering_turtle_trouble_easy = 1, // Reason: Locked Movement
-    .teetering_turtle_trouble_normal = 1, // Reason: Locked Movement
-    .teetering_turtle_trouble_hard = 1, // Reason: Locked Movement
-    .batty_barrel_bandit_easy = 1, // Reason: Locked Movement
-    .batty_barrel_bandit_normal = 1, // Reason: Locked Movement
-    .batty_barrel_bandit_hard = 1, // Reason: Locked Movement
-    .mad_maze_maul_insane = 1, // Reason: Bonus
-    .stash_snatch_insane = 1, // Reason: Bonus
-    .stealthy_snoop_very_easy = 1, // Reason: Bonus
-    .stealthy_snoop_easy = 1, // Reason: Bonus
-    .stealthy_snoop_hard = 1, // Reason: Bonus
-    .minecart_mayhem_normal = 1, // Reason: Locked Movement
-    .minecart_mayhem_hard = 1, // Reason: Locked Movement
-    .busy_barrel_barrage_hard = 1, // Reason: Locked Movement
-    .splish_splash_salvage_hard = 1, // Reason: Bonus
-    .splish_splash_salvage_easy = 1, // Reason: Bonus
-    .speedy_swing_sortie_normal = 1, // Reason: Bonus
-    .speedy_swing_sortie_hard = 1, // Reason: Bonus
-    .beaver_bother_normal = 1, // Reason: Locked Movement
-    .beaver_bother_hard = 1, // Reason: Locked Movement
-    .searchlight_seek_easy = 1, // Reason: Locked Movement
-    .searchlight_seek_normal = 1, // Reason: Locked Movement
-    .searchlight_seek_hard = 1, // Reason: Locked Movement
-    .krazy_kong_klamour_normal = 1, // Reason: Locked Movement
-    .krazy_kong_klamour_hard = 1, // Reason: Locked Movement
-    .krazy_kong_klamour_insane = 1, // Reason: Locked Movement
-    .peril_path_panic_very_easy = 1, // Reason: Locked Movement
-    .peril_path_panic_easy = 1, // Reason: Locked Movement
-    .peril_path_panic_normal = 1, // Reason: Locked Movement
-    .peril_path_panic_hard = 1, // Reason: Locked Movement
-    .big_bug_bash_easy = 1, // Reason: Locked Movement
-    .big_bug_bash_normal = 1, // Reason: Locked Movement
-    .big_bug_bash_hard = 1, // Reason: Locked Movement
-    .creepy_castle_dungeon = 0,
-    .hideout_helm_intro_story = 1, // Reason: Cutscene Map
-    .dk_isles_dk_theatre = 1, // Reason: Cutscene Map
-    .frantic_factory_mad_jack = 1, // Reason: Boss Map
-    .battle_arena_arena_ambush = 1, // Reason: Bonus
-    .battle_arena_more_kritter_karnage = 1, // Reason: Bonus
-    .battle_arena_forest_fracas = 1, // Reason: Bonus
-    .battle_arena_bish_bash_brawl = 1, // Reason: Bonus
-    .battle_arena_kamikaze_kremlings = 1, // Reason: Bonus
-    .battle_arena_plinth_panic = 1, // Reason: Bonus
-    .battle_arena_pinnacle_palaver = 1, // Reason: Bonus
-    .battle_arena_shockwave_showdown = 1, // Reason: Bonus
-    .creepy_castle_basement = 0,
-    .creepy_castle_tree = 0,
-    .k_rool_barrel_diddys_kremling_game = 1, // Reason: Bonus
-    .creepy_castle_chunkys_toolshed = 0,
-    .creepy_castle_trash_can = 0,
-    .creepy_castle_greenhouse = 0,
-    .jungle_japes_lobby = 0,
-    .hideout_helm_lobby = 0,
-    .dks_house = 0,
-    .rock_intro_story = 1, // Reason: Cutscene Map
-    .angry_aztec_lobby = 0,
-    .gloomy_galleon_lobby = 0,
-    .frantic_factory_lobby = 0,
-    .training_grounds = 0,
-    .dive_barrel = 1, // Reason: Bonus
-    .fungi_forest_lobby = 0,
-    .gloomy_galleon_submarine = 0,
-    .orange_barrel = 1, // Reason: Bonus
-    .barrel_barrel = 1, // Reason: Bonus
-    .vine_barrel = 1, // Reason: Bonus
-    .creepy_castle_crypt = 0,
-    .enguarde_arena = 1, // Reason: Enguarde-Only Room
-    .creepy_castle_car_race = 1, // Reason: Bonus
-    .crystal_caves_barrel_blast = 1, // Reason: BBlast Course
-    .creepy_castle_barrel_blast = 1, // Reason: BBlast Course
-    .fungi_forest_barrel_blast = 1, // Reason: BBlast Course
-    .fairy_island = 0,
-    .kong_battle_arena_2 = 1, // Reason: Multiplayer Map
-    .rambi_arena = 1, // Reason: Rambi-Only Room
-    .kong_battle_arena_3 = 1, // Reason: Multiplayer Map
-    .creepy_castle_lobby = 0,
-    .crystal_caves_lobby = 0,
-    .dk_isles_snides_room = 0,
-    .crystal_caves_army_dillo = 1, // Reason: Boss Map
-    .angry_aztec_dogadon = 1, // Reason: Boss Map
-    .training_grounds_end_sequence = 1, // Reason: Cutscene Map
-    .creepy_castle_king_kut_out = 1, // Reason: Boss Map
-    .crystal_caves_shack_diddy_upper_part = 0,
-    .k_rool_barrel_diddys_rocketbarrel_game = 1, // Reason: Bonus
-    .k_rool_barrel_lankys_shooting_game = 1, // Reason: Bonus
-    .k_rool_fight_dk_phase = 1, // Reason: Boss Map
-    .k_rool_fight_diddy_phase = 1, // Reason: Boss Map
-    .k_rool_fight_lanky_phase = 1, // Reason: Boss Map
-    .k_rool_fight_tiny_phase = 1, // Reason: Boss Map
-    .k_rool_fight_chunky_phase = 1, // Reason: Boss Map
-    .bloopers_ending = 1, // Reason: Cutscene Map
-    .k_rool_barrel_chunkys_hidden_kremling_game = 1, // Reason: Bonus
-    .k_rool_barrel_tinys_pony_tail_twirl_game = 1, // Reason: Bonus
-    .k_rool_barrel_chunkys_shooting_game = 1, // Reason: Bonus
-    .k_rool_barrel_dks_rambi_game = 1, // Reason: Rambi-Only Room
-    .k_lumsy_ending = 1, // Reason: Cutscene Map
-    .k_rools_shoe = 1, // Reason: Boss Map
-    .k_rools_arena = 1, // Reason: Cutscene Map
+ICE_TRAP_TYPES ice_trap_queued = ICETRAP_OFF;
+
+typedef enum ice_trap_map_state {
+    ICETRAPREQ_BANNED,
+    ICETRAPREQ_SUPER,
+    ICETRAPREQ_ALLOW,
+} ice_trap_map_state;
+
+static const char banned_trap_maps[] = {
+    /*.test_map =*/ ICETRAPREQ_ALLOW,
+    /*.funkys_store =*/ ICETRAPREQ_BANNED, // Reason: Shop
+    /*.dk_arcade =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.k_rool_barrel_lankys_maze =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.jungle_japes_mountain =*/ ICETRAPREQ_ALLOW,
+    /*.crankys_lab =*/ ICETRAPREQ_BANNED, // Reason: Shop
+    /*.jungle_japes_minecart =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.jungle_japes =*/ ICETRAPREQ_ALLOW,
+    /*.jungle_japes_army_dillo =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
+    /*.jetpac =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.kremling_kosh_very_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.stealthy_snoop_normal_no_logo =*/ ICETRAPREQ_BANNED, // Reason: Bonus
+    /*.jungle_japes_shell =*/ ICETRAPREQ_ALLOW,
+    /*.jungle_japes_lankys_cave =*/ ICETRAPREQ_ALLOW,
+    /*.angry_aztec_beetle_race =*/ ICETRAPREQ_SUPER, // Reason: Locked Movement
+    /*.snides_hq =*/ ICETRAPREQ_BANNED, // Reason: Shop
+    /*.angry_aztec_tinys_temple =*/ ICETRAPREQ_ALLOW,
+    /*.hideout_helm =*/ ICETRAPREQ_ALLOW,
+    /*.teetering_turtle_trouble_very_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.angry_aztec_five_door_temple_dk =*/ ICETRAPREQ_ALLOW,
+    /*.angry_aztec_llama_temple =*/ ICETRAPREQ_ALLOW,
+    /*.angry_aztec_five_door_temple_diddy =*/ ICETRAPREQ_ALLOW,
+    /*.angry_aztec_five_door_temple_tiny =*/ ICETRAPREQ_ALLOW,
+    /*.angry_aztec_five_door_temple_lanky =*/ ICETRAPREQ_ALLOW,
+    /*.angry_aztec_five_door_temple_chunky =*/ ICETRAPREQ_ALLOW,
+    /*.candys_music_shop =*/ ICETRAPREQ_BANNED, // Reason: Shop
+    /*.frantic_factory =*/ ICETRAPREQ_ALLOW,
+    /*.frantic_factory_car_race =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.hideout_helm_level_intros_game_over =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
+    /*.frantic_factory_power_shed =*/ ICETRAPREQ_ALLOW,
+    /*.gloomy_galleon =*/ ICETRAPREQ_ALLOW,
+    /*.gloomy_galleon_k_rools_ship =*/ ICETRAPREQ_ALLOW,
+    /*.batty_barrel_bandit_very_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.jungle_japes_chunkys_cave =*/ ICETRAPREQ_ALLOW,
+    /*.dk_isles_overworld =*/ ICETRAPREQ_ALLOW,
+    /*.k_rool_barrel_dks_target_game =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.frantic_factory_crusher_room =*/ ICETRAPREQ_ALLOW,
+    /*.jungle_japes_barrel_blast =*/ ICETRAPREQ_SUPER, // Reason: BBlast Course
+    /*.angry_aztec =*/ ICETRAPREQ_ALLOW,
+    /*.gloomy_galleon_seal_race =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.nintendo_logo =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
+    /*.angry_aztec_barrel_blast =*/ ICETRAPREQ_SUPER, // Reason: BBlast Course
+    /*.troff_n_scoff =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.gloomy_galleon_shipwreck_diddy_lanky_chunky =*/ ICETRAPREQ_ALLOW,
+    /*.gloomy_galleon_treasure_chest =*/ ICETRAPREQ_ALLOW,
+    /*.gloomy_galleon_mermaid =*/ ICETRAPREQ_ALLOW,
+    /*.gloomy_galleon_shipwreck_dk_tiny =*/ ICETRAPREQ_ALLOW,
+    /*.gloomy_galleon_shipwreck_lanky_tiny =*/ ICETRAPREQ_ALLOW,
+    /*.fungi_forest =*/ ICETRAPREQ_ALLOW,
+    /*.gloomy_galleon_lighthouse =*/ ICETRAPREQ_ALLOW,
+    /*.k_rool_barrel_tinys_mushroom_game =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.gloomy_galleon_mechanical_fish =*/ ICETRAPREQ_ALLOW,
+    /*.fungi_forest_ant_hill =*/ ICETRAPREQ_ALLOW,
+    /*.battle_arena_beaver_brawl =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.gloomy_galleon_barrel_blast =*/ ICETRAPREQ_SUPER, // Reason: BBlast Course
+    /*.fungi_forest_minecart =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.fungi_forest_diddys_barn =*/ ICETRAPREQ_ALLOW,
+    /*.fungi_forest_diddys_attic =*/ ICETRAPREQ_ALLOW,
+    /*.fungi_forest_lankys_attic =*/ ICETRAPREQ_ALLOW,
+    /*.fungi_forest_dks_barn =*/ ICETRAPREQ_ALLOW,
+    /*.fungi_forest_spider =*/ ICETRAPREQ_ALLOW,
+    /*.fungi_forest_front_part_of_mill =*/ ICETRAPREQ_ALLOW,
+    /*.fungi_forest_rear_part_of_mill =*/ ICETRAPREQ_ALLOW,
+    /*.fungi_forest_mushroom_puzzle =*/ ICETRAPREQ_ALLOW,
+    /*.fungi_forest_giant_mushroom =*/ ICETRAPREQ_ALLOW,
+    /*.stealthy_snoop_normal =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.mad_maze_maul_hard =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.stash_snatch_normal =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.mad_maze_maul_easy =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.mad_maze_maul_normal =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.fungi_forest_mushroom_leap =*/ ICETRAPREQ_ALLOW,
+    /*.fungi_forest_shooting_game =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves =*/ ICETRAPREQ_ALLOW,
+    /*.battle_arena_kritter_karnage =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.stash_snatch_easy =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.stash_snatch_hard =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.dk_rap =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
+    /*.minecart_mayhem_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.busy_barrel_barrage_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.busy_barrel_barrage_normal =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.main_menu =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.title_screen_not_for_resale_version =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
+    /*.crystal_caves_beetle_race =*/ ICETRAPREQ_ALLOW,
+    /*.fungi_forest_dogadon =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
+    /*.crystal_caves_igloo_tiny =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves_igloo_lanky =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves_igloo_dk =*/ ICETRAPREQ_ALLOW,
+    /*.creepy_castle =*/ ICETRAPREQ_ALLOW,
+    /*.creepy_castle_ballroom =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves_rotating_room =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves_shack_chunky =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves_shack_dk =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves_shack_diddy_middle_part =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves_shack_tiny =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves_lankys_hut =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves_igloo_chunky =*/ ICETRAPREQ_ALLOW,
+    /*.splish_splash_salvage_normal =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.k_lumsy =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves_ice_castle =*/ ICETRAPREQ_ALLOW,
+    /*.speedy_swing_sortie_easy =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.crystal_caves_igloo_diddy =*/ ICETRAPREQ_ALLOW,
+    /*.krazy_kong_klamour_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.big_bug_bash_very_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.searchlight_seek_very_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.beaver_bother_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.creepy_castle_tower =*/ ICETRAPREQ_ALLOW,
+    /*.creepy_castle_minecart =*/ ICETRAPREQ_ALLOW,
+    /*.kong_battle_battle_arena =*/ ICETRAPREQ_BANNED, // Reason: Multiplayer Map
+    /*.creepy_castle_crypt_lanky_tiny =*/ ICETRAPREQ_ALLOW,
+    /*.kong_battle_arena_1 =*/ ICETRAPREQ_BANNED, // Reason: Multiplayer Map
+    /*.frantic_factory_barrel_blast =*/ ICETRAPREQ_SUPER, // Reason: BBlast Course
+    /*.gloomy_galleon_pufftoss =*/ ICETRAPREQ_BANNED, // Reason: Boss Map
+    /*.creepy_castle_crypt_dk_diddy_chunky =*/ ICETRAPREQ_ALLOW,
+    /*.creepy_castle_museum =*/ ICETRAPREQ_ALLOW,
+    /*.creepy_castle_library =*/ ICETRAPREQ_ALLOW,
+    /*.kremling_kosh_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.kremling_kosh_normal =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.kremling_kosh_hard =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.teetering_turtle_trouble_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.teetering_turtle_trouble_normal =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.teetering_turtle_trouble_hard =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.batty_barrel_bandit_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.batty_barrel_bandit_normal =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.batty_barrel_bandit_hard =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.mad_maze_maul_insane =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.stash_snatch_insane =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.stealthy_snoop_very_easy =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.stealthy_snoop_easy =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.stealthy_snoop_hard =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.minecart_mayhem_normal =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.minecart_mayhem_hard =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.busy_barrel_barrage_hard =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.splish_splash_salvage_hard =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.splish_splash_salvage_easy =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.speedy_swing_sortie_normal =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.speedy_swing_sortie_hard =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.beaver_bother_normal =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.beaver_bother_hard =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.searchlight_seek_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.searchlight_seek_normal =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.searchlight_seek_hard =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.krazy_kong_klamour_normal =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.krazy_kong_klamour_hard =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.krazy_kong_klamour_insane =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.peril_path_panic_very_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.peril_path_panic_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.peril_path_panic_normal =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.peril_path_panic_hard =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.big_bug_bash_easy =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.big_bug_bash_normal =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.big_bug_bash_hard =*/ ICETRAPREQ_BANNED, // Reason: Locked Movement
+    /*.creepy_castle_dungeon =*/ ICETRAPREQ_ALLOW,
+    /*.hideout_helm_intro_story =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
+    /*.dk_isles_dk_theatre =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
+    /*.frantic_factory_mad_jack =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
+    /*.battle_arena_arena_ambush =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.battle_arena_more_kritter_karnage =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.battle_arena_forest_fracas =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.battle_arena_bish_bash_brawl =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.battle_arena_kamikaze_kremlings =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.battle_arena_plinth_panic =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.battle_arena_pinnacle_palaver =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.battle_arena_shockwave_showdown =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.creepy_castle_basement =*/ ICETRAPREQ_ALLOW,
+    /*.creepy_castle_tree =*/ ICETRAPREQ_ALLOW,
+    /*.k_rool_barrel_diddys_kremling_game =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.creepy_castle_chunkys_toolshed =*/ ICETRAPREQ_ALLOW,
+    /*.creepy_castle_trash_can =*/ ICETRAPREQ_ALLOW,
+    /*.creepy_castle_greenhouse =*/ ICETRAPREQ_ALLOW,
+    /*.jungle_japes_lobby =*/ ICETRAPREQ_ALLOW,
+    /*.hideout_helm_lobby =*/ ICETRAPREQ_ALLOW,
+    /*.dks_house =*/ ICETRAPREQ_ALLOW,
+    /*.rock_intro_story =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
+    /*.angry_aztec_lobby =*/ ICETRAPREQ_ALLOW,
+    /*.gloomy_galleon_lobby =*/ ICETRAPREQ_ALLOW,
+    /*.frantic_factory_lobby =*/ ICETRAPREQ_ALLOW,
+    /*.training_grounds =*/ ICETRAPREQ_ALLOW,
+    /*.dive_barrel =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.fungi_forest_lobby =*/ ICETRAPREQ_ALLOW,
+    /*.gloomy_galleon_submarine =*/ ICETRAPREQ_ALLOW,
+    /*.orange_barrel =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.barrel_barrel =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.vine_barrel =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.creepy_castle_crypt =*/ ICETRAPREQ_ALLOW,
+    /*.enguarde_arena =*/ ICETRAPREQ_BANNED, // Reason: Enguarde-Only Room
+    /*.creepy_castle_car_race =*/ ICETRAPREQ_BANNED, // Reason: Bonus
+    /*.crystal_caves_barrel_blast =*/ ICETRAPREQ_SUPER, // Reason: BBlast Course
+    /*.creepy_castle_barrel_blast =*/ ICETRAPREQ_SUPER, // Reason: BBlast Course
+    /*.fungi_forest_barrel_blast =*/ ICETRAPREQ_SUPER, // Reason: BBlast Course
+    /*.fairy_island =*/ ICETRAPREQ_ALLOW,
+    /*.kong_battle_arena_2 =*/ ICETRAPREQ_BANNED, // Reason: Multiplayer Map
+    /*.rambi_arena =*/ ICETRAPREQ_BANNED, // Reason: Rambi-Only Room
+    /*.kong_battle_arena_3 =*/ ICETRAPREQ_BANNED, // Reason: Multiplayer Map
+    /*.creepy_castle_lobby =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves_lobby =*/ ICETRAPREQ_ALLOW,
+    /*.dk_isles_snides_room =*/ ICETRAPREQ_ALLOW,
+    /*.crystal_caves_army_dillo =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
+    /*.angry_aztec_dogadon =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
+    /*.training_grounds_end_sequence =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
+    /*.creepy_castle_king_kut_out =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
+    /*.crystal_caves_shack_diddy_upper_part =*/ ICETRAPREQ_ALLOW,
+    /*.k_rool_barrel_diddys_rocketbarrel_game =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.k_rool_barrel_lankys_shooting_game =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.k_rool_fight_dk_phase =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
+    /*.k_rool_fight_diddy_phase =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
+    /*.k_rool_fight_lanky_phase =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
+    /*.k_rool_fight_tiny_phase =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
+    /*.k_rool_fight_chunky_phase =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
+    /*.bloopers_ending =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
+    /*.k_rool_barrel_chunkys_hidden_kremling_game =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.k_rool_barrel_tinys_pony_tail_twirl_game =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.k_rool_barrel_chunkys_shooting_game =*/ ICETRAPREQ_SUPER, // Reason: Bonus
+    /*.k_rool_barrel_dks_rambi_game =*/ ICETRAPREQ_SUPER, // Reason: Rambi-Only Room
+    /*.k_lumsy_ending =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
+    /*.k_rools_shoe =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
+    /*.k_rools_arena =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
 };
 static const movement_bitfield banned_trap_movement = {
     .null_state = 0,
@@ -411,22 +418,54 @@ void trapPlayer_New(void) {
     }
 }
 
+static const float bone_slow_scales[] = {0.4f, 0.38f, 0.3f};
+static const char bone_slow_bones[] = {1, 5, 6};
+
 void initIceTrap(void) {
     /**
      * @brief Initialize an ice trap
      */
-    trapPlayer_New();
-    Player->trap_bubble_timer = 200;
+    if ((ice_trap_queued == ICETRAP_BUBBLE) || (ice_trap_queued == ICETRAP_SUPERBUBBLE)) {
+        trapPlayer_New();
+        Player->trap_bubble_timer = 200;
+    } else if (ice_trap_queued == ICETRAP_REVERSECONTROLS) {
+        Player->strong_kong_ostand_bitfield |= 0x80;
+        Player->trap_bubble_timer = 240;
+    } else if (ice_trap_queued == ICETRAP_SLOWED) {
+        for (int i = 0; i < 3; i++) {
+            unkSpriteRenderFunc(0xF0);
+            unkSpriteRenderFunc_1(1);
+            loadSpriteFunction(0x8071F758);
+            attachSpriteToBone((void*)0x80720E2C, bone_slow_scales[i], Player, bone_slow_bones[i], 2);
+        }
+        Player->strong_kong_ostand_bitfield |= 0x08000000;
+        Player->trap_bubble_timer = 240;
+    }
     playSFX(0x2D4); // K Rool Laugh
-    customDamageCode();
-    ice_trap_queued = 0;
+    if (Rando.ice_traps_damage) {
+        customDamageCode();
+    }
+    ice_trap_queued = ICETRAP_OFF;
 }
 
-void queueIceTrap(void) {
+void queueIceTrap(ICE_TRAP_TYPES trap_type) {
     /**
      * @brief Call the ice trap queue-ing system
      */
-    ice_trap_queued = 1;
+    ice_trap_queued = trap_type;
+}
+
+int isBannedTrapMap(maps map, ICE_TRAP_TYPES type) {
+    ice_trap_map_state ban_state = banned_trap_maps[map];
+    if (ban_state == ICETRAPREQ_ALLOW) {
+        return 0;
+    }
+    if (ban_state == ICETRAPREQ_SUPER) {
+        if (type == ICETRAP_SUPERBUBBLE) {
+            return 0;
+        }
+    }
+    return 1;
 }
 
 void callIceTrap(void) {
@@ -453,19 +492,11 @@ void callIceTrap(void) {
                 return;
             }
             // Check Map
-            int offset = CurrentMap >> 3;
-            int check = CurrentMap % 8;
-            int is_banned = *(unsigned char*)((unsigned char*)(&banned_trap_maps) + offset) & (0x80 >> check);
-            if (is_banned) {
+            if (isBannedTrapMap(CurrentMap, ice_trap_queued)) {
                 return;
             }
             // Check Control State
-            int control_state = Player->control_state;
-            offset = control_state >> 3;
-            check = control_state % 8;
-            is_banned = *(unsigned char*)((unsigned char*)(&banned_trap_movement) + offset) & (0x80 >> check);
-
-            if (is_banned) {
+            if (getBitArrayValue(&banned_trap_movement, Player->control_state)) {
                 return;
             }
             initIceTrap();

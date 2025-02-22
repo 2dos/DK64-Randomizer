@@ -1,14 +1,5 @@
 {
    "level_order_rando_on":0,
-   "troff_scoff_count":[
-      25,
-      200,
-      300,
-      400,
-      410,
-      420,
-      8
-   ],
    "blocker_normal_count":[
       2,
       3,
@@ -25,10 +16,10 @@
    "fast_start_helm":1,
    "crown_door_open":1,
    "coin_door_open":1,
-   "true_widescreen":0,
    "pppanic_fairy_model":73,
-   "tttrouble_turtle_model":60,
    "cutscene_skip_setting":1,
+   "show_music_name":1,
+   "balloon_sound":1,
    "quality_of_life":{
       "reduce_lag":true,
       "remove_cutscenes":true,
@@ -130,7 +121,7 @@
       255,
       255
    ],
-   "damage_multiplier":0,
+   "damage_multiplier":1,
    "fps_on":1,
    "no_health_refill":0,
    "slam_prices":[
@@ -165,7 +156,6 @@
       3
    ],
    "enemy_item_rando": 1,
-   "move_rando_on":1,
    "remove_blockers":127,
    "resolve_bonus":0,
    "disable_drops":0,
@@ -206,22 +196,39 @@
    ],
    "fast_gbs":1,
    "remove_high_requirements":1,
-   "open_level_sections":1,
    "auto_keys":0,
    "starting_map":34,
    "starting_exit":0,
    "disco_chunky":1,
+   "required_helm_minigames":1,
    "krusha_slot":255,
+   "kong_models":[
+      0,
+      0,
+      0,
+      0,
+      0
+   ],
    "starting_kong":0,
    "rom_flags":{
       "plando":true,
-      "spoiler":true
+      "spoiler":true,
+      "pass_locked":true
    },
+   "password": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+   ],
    "test_zone":[
       48,
       0
    ],
-   "klaptrap_color_bbother":150,
    "kut_out_phases":[
       3,
       2,
@@ -235,34 +242,19 @@
       255,
       255
    ],
-   "kut_out_kong_order":[
-      1,
-      0,
-      0,
-      0,
-      0
-   ],
    "helm_hurry_mode":0,
    "win_condition":5,
    "version":2,
    "item_rando":1,
-   "vulture_item":47,
-   "japes_rock_item":76,
    "medal_cb_req":5,
    "remove_oscillation_effects":1,
    "rareware_gb_fairies":1,
    "call_parent_filter":0,
-   "location_visuals":7,
    "microhints":2,
    "misc_cosmetic_on":0,
-   "seasonal_changes":2,
+   "seasonal_changes":1,
    "colorblind_mode":0,
    "fungi_time_of_day_setting": 0,
-   "wrinkly_rgb":[
-      0,
-      0,
-      255
-   ],
    "mill_lever_order":[
       2,
       3,

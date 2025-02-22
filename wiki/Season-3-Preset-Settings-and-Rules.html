@@ -1,0 +1,218 @@
+<!-- DON'T EDIT THIS FILE. EDIT template.html INSTEAD -->
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <!-- General -->
+        <meta name="description" content="Welcome to the DK64 Randomizer Wiki. A comprehensive wiki on tricks, tips and guide to playing the best
+            monkey game randomizer on the Nintendo 64." />
+        <meta name="keywords" content="Donkey Kong 64, DK64, Randomizers, N64, Nintendo 64, Wiki, DK64R" />
+        <meta name="author" content="DK64R Team" />
+        <!-- Discord -->
+        <meta content="DK64 Randomizer Wiki" id="site_page_identifier" property="og:title" />
+        <meta content="Welcome to the DK64 Randomizer Wiki. A comprehensive wiki on tricks, tips and guides to playing the best monkey game randomizer on the Nintendo 64." property="og:description" />
+        <meta content="Donkey Kong 64 Randomizer Wiki" property="og:site_name" />
+        <meta content="https://raw.githubusercontent.com/2dos/DK64-Randomizer/master/static/img/logo.webp" property="og:image" />
+        <script type="text/javascript" src="../static/js/showdown.min.js"></script>
+        <title>Season 3 Preset</title>
+        <link href="../static/img/dk.png" rel="icon" />
+        <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
+              rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
+              rel="stylesheet"/>
+        <link href="../static/styles/styles.css" rel="stylesheet" />
+        <link href="../static/styles/gui.css" rel="stylesheet" type="text/css" />
+        <link href="../static/styles/wiki.css" rel="stylesheet" type="text/css" />
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    </head>
+    <body id="page-top">
+        <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+            <div class="container px-5">
+                <a class="navbar-brand" href="#page-top">DK64 Randomizer</a>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarResponsive"
+                        aria-controls="navbarResponsive"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="./Consoles-and-Emulators.html">Setup</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="./home.html">Wiki</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="https://discord.dk64randomizer.com"
+                               target="_blank">Discord</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <img src="../static/img/logo.webp"
+            alt="DK64 Randomizer"
+            class="center_image"
+            style="cursor: pointer; margin-top: 70px"/>
+        <div class="mt-4"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 p-0 hide-if-thin">
+                    <div class="px-3 mb-3">
+                        <div class="card bg-vdark">
+                            <div class="sidebar-link fs-6 p-3 user-select-none" onclick="goTo('home.html')">
+                                <i class="fa-solid fa-house"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-3 mb-3">
+                        <div class="card bg-vdark">
+                            <div class="sidebar-link fs-6 p-3 user-select-none" data-bs-toggle="modal" data-bs-target="#searchModal">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="position:sticky; top:80px" class="px-3">
+                        <div class="card bg-vdark fs-6">
+                            <div class="p-3 collapsable-header collapsed user-select-none" open="markdown_navigation_sidebar" onclick="toggleSidebarCollapse(this)">
+                                <i class="fa-solid fa-compass"></i>
+                            </div>
+                            <div id="markdown_navigation_sidebar" class="content-navigation-menu px-3 py-2 user-select-none" hidden></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="searchModalLabel">Search</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input class="form-control mr-sm-2" id="article-search" type="text" placeholder="Search" autocomplete="off" data-lpignore="true" data-form-type="other">
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="pr-6 col-sm-9 max-if-thin">
+                    <div class="card bg-vdark p-3">
+                        <h1 id="page-title">Season 3 Preset</h1>
+                        <div id="last-modified"></div>
+                        <hr />
+                        <div id="content-summary">
+                            Loading Article...
+                        </div>
+                        <div class="content-pane p-3 user-select-none" id="content-pane" hidden>
+                            <strong>Contents</strong> [<a href="#" onclick="hideContent(this)">Hide</a>]
+                            <hr id="content_hr" />
+                            <div id="markdown_navigation" class="content-navigation-menu"></div>
+                        </div>
+                        <div id="markdown_content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script id="redirect_handler">window.location.href="./index.html?title=Season-3-Preset-Settings-and-Rules";</script>
+        <script type="text/javascript" src="../static/js/wiki-code.js"></script>
+        <script src="../static/js/autocomplete.js"></script>
+        <script type="text/javascript">
+            function copyCode(element) {
+                let parent = element.parentElement.parentElement.parentElement;
+                if (!parent) {
+                    return;
+                }
+                parent = parent.getElementsByTagName("pre")[0];
+                if (!parent) {
+                    return;
+                }
+                const code_blocks = parent.getElementsByTagName("code");
+                if (code_blocks.length == 0) {
+                    return;
+                }
+                const copyText = code_blocks[0].innerText;
+                copyContent(copyText);
+                if (!parent.classList.contains("pulse")) {
+                    if (!element.classList.contains("pulse_display")) {
+                        parent.classList.add("pulse");
+                        element.classList.add("pulse_display");
+                        setTimeout(() => {
+                            parent.classList.remove("pulse");
+                        }, 300);
+                        setTimeout(() => {
+                            element.classList.remove("pulse_display");
+                        }, 1000);
+                    }
+                }
+            }
+
+            function toggleSidebarCollapse(element) {
+                const open_id = element.getAttribute("open");
+                const nav_hook = document.getElementById(open_id);
+                const hidden = nav_hook.getAttribute("hidden") != null;
+                if (hidden) {
+                    nav_hook.removeAttribute("hidden");
+                    element.classList.remove("collapsed");
+                } else {
+                    nav_hook.setAttribute("hidden", "hidden");
+                    element.classList.add("collapsed");
+                }
+            }
+
+            async function alterMarkdown(element) {
+                const converter = new showdown.Converter({tables: true, headerLevelStart: 2, strikethrough: true, rawHeaderId: true});
+                text = await filterMarkdown(element, converter);
+                let output_html = converter.makeHtml(text);
+                await filterHTML(element, output_html);
+            }
+            alterMarkdown(document.getElementById("markdown_content"));
+
+            function hideContent(e) {
+                const content = document.getElementById("markdown_navigation");
+                const content_hr = document.getElementById("content_hr")
+                const hidden = content.getAttribute("hidden") != null;
+                if (hidden) {
+                    e.innerText = "Hide";
+                    content.removeAttribute("hidden");
+                    content_hr.removeAttribute("hidden");
+                } else {
+                    e.innerText = "Show";
+                    content.setAttribute("hidden", "hidden");
+                    content_hr.setAttribute("hidden", "hidden");
+                }
+            }
+
+            async function prepSuggestions() {
+                const article_lst = await getSuggestions();
+                console.log(article_lst)
+                $('#article-search').typeahead({
+                    source: article_lst,
+                    displayText: (item) => {
+                        return item.name;
+                    },
+                    afterSelect: (item) => {
+                        window.location.href = item.link;
+                    }
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', e => {
+                prepSuggestions();
+            }, false);
+        </script>
+        <script type="text/javascript" src="../static/js/font-awesome.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    </body>
+</html>

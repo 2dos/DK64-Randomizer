@@ -127,5 +127,5 @@ void ArenaEarlyCompletionCheck(void) {
             }
         }
     }
-    addDLToOverlay(0x8002D010, CurrentActorPointer_0, 3);
+    addDLToOverlay((void*)0x8002D010, CurrentActorPointer_0, 3);
 }

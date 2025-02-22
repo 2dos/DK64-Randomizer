@@ -1,0 +1,17 @@
+Flask
+redis
+rq
+apscheduler==3.10.4
+flask-cors==4.0.2
+pillow
+requests
+waitress
+cryptography==43.0.1
+pyopenssl==24.2.1
+opentelemetry-exporter-otlp-proto-http
+opentelemetry-instrumentation-flask
+opentelemetry-instrumentation-rq
+opentelemetry-instrumentation-requests
+opentelemetry-instrumentation-redis
+swagger-ui-py
+flask-session

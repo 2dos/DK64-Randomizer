@@ -26,7 +26,8 @@ static char* text_rewards[] = {
     "RAINBOW COIN", // 12
     "GLODEN BANANE", // 13
     "NOTHING", // 14
-    "JUNK ITEM", // 15
+    "SHOPKEEPER", // 15
+    "JUNK ITEM", // 16
 };
 
 void handleDynamicItemText(char* location, char* format, int character) {
@@ -39,31 +40,11 @@ void handleDynamicItemText(char* location, char* format, int character) {
      */
     if (character == 0x7C) {
         // Dynamic Text
-        if ((TextItemName == 14) || (TextItemName > 15)) {
+        if ((TextItemName == 14) || (TextItemName > 16)) {
             TextItemName = 0;
         }
         dk_strFormat(location, "%s", text_rewards[(int)TextItemName]);
     } else {
         dk_strFormat(location, format, character);
-    }
-}
-char filename[FILENAME_LENGTH + 1] = "";
-
-void handleFilename(char* location, char* format, char* new_name) {
-    if (ENABLE_FILENAME) {
-        filename[FILENAME_LENGTH] = 0;
-        int has_hit_limit = 0;
-        for (int i = 0; i < (FILENAME_LENGTH); i++) {
-            int val = ReadExtraData(EGD_FILENAME, i);
-            if ((val == 0) || (has_hit_limit)) {
-                filename[i] = 0;
-                has_hit_limit = 1;
-            } else {
-                filename[i] = val;
-            }
-        }
-        dk_strFormat(location, format, &filename);
-    } else {
-        dk_strFormat(location, format, new_name);
     }
 }

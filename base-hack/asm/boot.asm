@@ -27,37 +27,10 @@ START:
 		LUI a2, hi(ItemRando_FLUT)
 		JAL dmaFileTransfer
 		ADDIU a2, a2, lo(ItemRando_FLUT)
-
-		// Very Early WS Boot Stuff
-		JAL loadWidescreen
-		ADDIU a0, r0, 0
-		JAL writeFunctionLoop
-		NOP
-		LUI v0, 0x8074
-		ADDIU t3, r0, 0xD00 ; New size of bank 0
-		SW t3, 0x52B0 (v0)
-		LUI v0, 0x8060
-		ADDIU t3, r0, 0x38 ; Phys Voice Count
-		SH t3, 0xDA2 (v0)
-		ADDIU t3, r0, 0x70 ; Virtual Voice Count
-		SH t3, 0xDA6 (v0)
     
 		//
 		LUI v0, 0x8001
 		ADDIU v0, v0, 0xDCC4
-		// Bypass Setup Checks
-		//LUI t3, 0x8075
-		//ADDIU t4, r0, 1
-		//SB t4, 0x00B0 (t3)
-		//LUI t3, 0x8074
-		//SB t4, 0x7D78 (t3)
-		// Write LZ Update
-		LUI t3, 0x8075
-		SB r0, 0x8E21 (t3) // Setup
-		SB r0, 0x8E22 (t3) // M2 Scripts
-		SB r0, 0x8E24 (t3) // Text
-		SB r0, 0x8E2A (t3) // Loading Zones
-		SB r0, 0x8E28 (t3) // Character Spawners
 
 		LUI t3, 0x2407
 		ADDIU t3, t3, 1
@@ -128,6 +101,15 @@ getFloatUpper:
 	sra 	$v0, $v0, 16
 	JR 		ra
 	andi 	$v0, $v0, 0xFFFF
+
+callFunc:
+	addi $sp, $sp, -8
+	sw $ra, 0x4 ($sp)
+	jalr $a0
+	nop
+	lw $ra, 0x4 ($sp)
+	jr $ra
+	addiu $sp, $sp, 8
 
 	
 .align 0x10

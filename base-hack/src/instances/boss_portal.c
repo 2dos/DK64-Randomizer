@@ -12,16 +12,6 @@
 #include "../../include/common.h"
 #define PORTAL_DELTA 40
 
-static const short tnsportal_flags[] = {
-	FLAG_PORTAL_JAPES,
-	FLAG_PORTAL_AZTEC,
-	FLAG_PORTAL_FACTORY,
-	FLAG_PORTAL_GALLEON,
-	FLAG_PORTAL_FUNGI,
-	FLAG_PORTAL_CAVES,
-	FLAG_PORTAL_CASTLE,
-};
-
 void alterParentLocationTNS(int id) {
 	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < 17; i++) {
@@ -34,12 +24,13 @@ void alterParentLocationTNS(int id) {
 				angle /= 360;
 				angle *= 4096;
 				int angle_int = angle;
-				float dx = PORTAL_DELTA * determineXRatioMovement(angle_int);
-				float dz = PORTAL_DELTA * determineZRatioMovement(angle_int);
+				// float dx = PORTAL_DELTA * determineXRatioMovement(angle_int);
+				// float dz = PORTAL_DELTA * determineZRatioMovement(angle_int);
+				float dx = 0;
+				float dz = 0;
 				parentData[i].positions.xPos = tied_object->xPos + dx;
 				parentData[i].positions.zPos = tied_object->zPos + dz;
-				int opp_angle = angle_int + 2048;
-				parentData[i].facing_angle = opp_angle & 0xFFF;
+				parentData[i].facing_angle = angle_int & 0xFFF;
 				return;
 			}
 		}
@@ -133,8 +124,13 @@ void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 				setPermFlag(tnsportal_flags[world]);
 				behaviour->next_state = 40;
 			} else {
-				behaviour->next_state = 2;
+				behaviour->next_state = 101;
+				behaviour->timer = 60;
 			}
+		}
+	} else if (behaviour->current_state == 101) {
+		if (behaviour->timer == 0) {
+			behaviour->next_state = 2;
 		}
 	}
 }

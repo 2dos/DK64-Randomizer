@@ -5,6 +5,7 @@ import json
 import os
 import sys
 import subprocess
+import re
 from copy import deepcopy
 from enum import IntEnum, auto
 
@@ -15,6 +16,7 @@ import randomizer.Lists.CBLocations.FranticFactoryCBLocations
 import randomizer.Lists.CBLocations.FungiForestCBLocations
 import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
+import randomizer.Lists.CBLocations.DKIslesCBLocations
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
 from randomizer.Lists.CustomLocations import CustomLocations
@@ -39,6 +41,7 @@ class Dumpers(IntEnum):
     Fairies = auto()
     Kasplats = auto()
     RandomSettings = auto()
+    PlandoColors = auto()
 
 
 def dump_to_dict(class_instance, deleted=[], enum_value=[], enum_name=[], logic_var=None, x_func=None, y_func=None, z_func=None) -> dict:
@@ -203,28 +206,33 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                         fh.write("| --- | ---- | --------------------------------- | ----- |\n")
                     groupings = {}
                     for y in data[x]:
+                        logic = ""
+                        if "logic" in y:
+                            logic = f"`{y['logic']}`"
                         if dumper in (Dumpers.ColoredBananas, Dumpers.Coins):
                             if dumper == Dumpers.Coins:
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
-                                groupings[y["map"]].append(f"| {y['name']} | {len(y['locations'])} | `{y.get('logic', '')}` | \n")
+                                groupings[y["map"]].append(f"| {y['name']} | {len(y['locations'])} | {logic} | \n")
                             elif y["class"] == "cb":
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
-                                groupings[y["map"]].append(f"| {y['name']} | {sum([a[0] for a in y['locations']])} | `{y.get('logic', '')}` | \n")
+                                groupings[y["map"]].append(f"| {y['name']} | {sum([a[0] for a in y['locations']])} | {logic} | \n")
                             elif y["class"] == "balloon":
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
-                                groupings[y["map"]].append(f"| {y['name']} | Balloon | `{y.get('logic', '')}` | \n")
+                                groupings[y["map"]].append(f"| {y['name']} | Balloon | {logic} | \n")
                         elif dumper == Dumpers.Fairies:
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | `{y.get('logic', '')}` | \n")
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {logic} | \n")
                         elif dumper == Dumpers.CustomLocations:
                             banned_types = y.get("banned_types", [])
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {', '.join([x.name for x in banned_types])} | `{y.get('logic', '')}` | \n")
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {', '.join([x.name for x in banned_types])} | {logic} | \n")
                         elif dumper == Dumpers.Kasplats:
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | `{y.get('additional_logic', '')}` | \n")
+                            if "additional_logic" in y:
+                                logic = f"`{y['additional_logic']}`"
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {logic} | \n")
                         elif dumper == Dumpers.Doors:
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y['door_type'].title()} | `{y.get('logic', '')}` | \n")
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {', '.join([z.name.title() for z in y['door_type']])} | {logic} | \n")
                     for group in groupings:
                         if dumper in (Dumpers.ColoredBananas, Dumpers.Coins):
                             # fh.write("<details>\n")
@@ -268,6 +276,10 @@ def dump_cb(format: str):
         Levels.CreepyCastle: {
             "cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList,
             "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList,
+        },
+        Levels.DKIsles: {
+            "cb": randomizer.Lists.CBLocations.DKIslesCBLocations.ColoredBananaGroupList,
+            "balloons": randomizer.Lists.CBLocations.DKIslesCBLocations.BalloonList,
         },
     }
     dumps = {}
@@ -313,7 +325,16 @@ def dump_custom_location(format: str):
         custom_location_data = []
         for custom_location in CustomLocations[level]:
             custom_location_data.append(
-                dump_to_dict(custom_location, ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"], ["map"], ["region"], "logic", getCustomX, getCustomY, getCustomZ)
+                dump_to_dict(
+                    custom_location,
+                    ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"],
+                    ["map"],
+                    ["region"],
+                    "logic",
+                    getCustomX,
+                    getCustomY,
+                    getCustomZ,
+                )
             )
         if format == "md":
             dumps[level] = custom_location_data
@@ -345,7 +366,16 @@ def dump_door(format: str):
         door_data = []
         for door in door_locations[level]:
             door_data.append(
-                dump_to_dict(door, ["rx", "rz", "group", "placed", "default_kong", "default_placed", "assigned_kong"], ["map", "kongs"], ["logicregion"], "logic", getDoorX, getDoorY, getDoorZ)
+                dump_to_dict(
+                    door,
+                    ["rx", "rz", "group", "placed", "default_kong", "default_placed", "assigned_kong"],
+                    ["map", "kongs"],
+                    ["logicregion"],
+                    "logic",
+                    getDoorX,
+                    getDoorY,
+                    getDoorZ,
+                )
             )
         if format == "md":
             dumps[level] = door_data
@@ -406,7 +436,18 @@ def dump_kasplat(format: str):
     for level in KasplatLocationList:
         kasplat_data = []
         for kasplat in KasplatLocationList[level]:
-            kasplat_data.append(dump_to_dict(kasplat, ["selected", "vanilla"], ["map", "kong_lst"], ["region_id"], "additional_logic", getKasplatX, getKasplatY, getKasplatZ))
+            kasplat_data.append(
+                dump_to_dict(
+                    kasplat,
+                    ["selected", "vanilla"],
+                    ["map", "kong_lst"],
+                    ["region_id"],
+                    "additional_logic",
+                    getKasplatX,
+                    getKasplatY,
+                    getKasplatZ,
+                )
+            )
         if format == "md":
             dumps[level] = kasplat_data
         else:
@@ -444,7 +485,7 @@ def checkIfMatchingList(list1: list, list2: list) -> bool:
 def getDisplayName(internal_name: str):
     """Get the displayed name on the site for an internal name."""
     directory = "./templates"
-    templates = [x for x in os.listdir(directory) if ".html.jinja2" in x and x not in ["spoiler.html.jinja2", "settings.html.jinja2"]]
+    templates = [x for x in os.listdir(directory) if ".html" in x and x not in ["spoiler.html", "spoiler_new.html", "settings.html"]]
     old_text = " ".join([x.capitalize() for x in internal_name.split("_")])
     for template in templates:
         with open(f"{directory}/{template}", "r") as jinja:
@@ -542,7 +583,62 @@ def dump_random_settings(format: str):
                 fh.write("\n")
 
 
-all_args = ["cb", "coin", "custom_location", "door", "fairy", "kasplat", "random_settings"]
+def dump_plando_colors(format: str):
+    """Dump all random settings information."""
+    if format != "md":
+        print("Not dumping to markdown format, cannot dump random settings.")
+        return
+    data = None
+    color_data = {
+        # Light, Dark
+        "4": ["#a36200", "#ffa010"],
+        "5": ["#b00000", "#ff0000"],
+        "6": ["#2828ff", "#0c7ded"],
+        "7": ["#8000ff", "#bb1cff"],
+        "8": ["#008000", "#59ff64"],
+        "9": ["#b00058", "#e84898"],
+        "a": ["#008080", "#3ee1e1"],
+        "b": ["#c04040", "#d25757"],
+        "c": ["#132958", "#b5cdff"],
+        "d": ["#275e1e", "#00ce0e"],
+    }
+    with open("randomizer/Patching/Library/Generic.py", "r") as fh:
+        lines = fh.readlines()
+        text = "{"
+        in_dict = False
+        for line in lines:
+            no_newline = line.replace("\n", "")
+            if no_newline == "}":
+                if in_dict:
+                    text += "}"
+                in_dict = False
+            if in_dict:
+                text += no_newline.strip()
+            if no_newline == "plando_colors = {":
+                in_dict = True
+        chars = list(color_data.keys())
+        for c in chars:
+            text = text.replace(f'"\\x0{c}"', f'"{c}"')
+        data = json.loads(re.sub(r",\s*([\]}])", r"\1", text))
+    with open(f"{LIST_DIRECTORY}/PlandoColors.MD", "w") as fh:
+        fh.write("This article covers the color formatting for plandomizer hints, and how to use it effectively\n")
+        fh.write("# Reference Images\n")
+        fh.write("<flex>\n")
+        fh.write("<imginfo header='Light Mode' subtitle='Lighter background for the vanilla feel' img='../static/img/light_mode.png'></imginfo>\n")
+        fh.write("<imginfo header='Dark Mode' subtitle='Dark background for those sensitive to brightness' img='../static/img/dark_mode.png'></imginfo>\n")
+        fh.write("</flex>\n")
+        fh.write("# Color Tags\n")
+        fh.write("| Primary Tag | Alternative Tags | Hex Colors | Example |\n")
+        fh.write("|-------------|------------------|------------|---------|\n")
+        for key in data:
+            primary_tag = f"[{data[key][0]}][/{data[key][0]}]"
+            alt_tags = [f"[{x}][/{x}]" for x in data[key][1:]]
+            fh.write(
+                f"| {primary_tag} | {'<br>'.join(alt_tags)} | Light Mode: {color_data[key][0].upper()}<br>Dark Mode: {color_data[key][1].upper()} | <span class='p-1' style='color:{color_data[key][0]}; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:{color_data[key][1]}; font-weight:bold'>DARK MODE</span> |\n"
+            )
+
+
+all_args = ["cb", "coin", "custom_location", "door", "fairy", "kasplat", "random_settings", "plando_colors"]
 valid_args = all_args + ["all"]
 args = sys.argv[2:]
 if "all" in args:

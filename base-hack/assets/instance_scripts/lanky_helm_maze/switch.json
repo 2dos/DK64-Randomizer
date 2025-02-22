@@ -1,0 +1,51 @@
+{
+    "id": 0,
+    "behav_9C": 0,
+    "ignore": false,
+    "output_version": 2,
+    "script": [
+        {
+            "conditions": [
+                {"function":1,"inverted":false,"parameters":[0,0,0]}
+            ],
+            "executions": [
+                {"function":38,"parameters":[3,1000,0]},
+                {"function":20,"parameters":[1,10,0]},
+                {"function":1,"parameters":[1,0,0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function":1,"inverted":false,"parameters":[1,0,0]},
+                {"function":2,"inverted":false,"parameters":[0,0,0]},
+                {"function":6,"inverted":false,"parameters":[7,65518,0]}
+            ],
+            "executions": [
+                {"function":38,"parameters":[1,0,0]},
+                {"function":17,"parameters":[1,1,0]},
+                {"function":89,"parameters":[1,40,0]},
+                {"function":15,"parameters":[326,0,0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function":1,"inverted":false,"parameters":[1,0,0]},
+                {"function":2,"inverted":false,"parameters":[0,0,0]},
+                {"function":6,"inverted":false,"parameters":[7,65518,0]}
+            ],
+            "executions": [
+                {"function":3,"parameters":[0,100,0]},
+                {"function":1,"parameters":[2,0,0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function":1,"inverted":false,"parameters":[2,0,0]},
+                {"function":4,"inverted":false,"parameters":[0,0,0]}
+            ],
+            "executions": [
+                {"function":38,"parameters":[2,0,0]}
+            ]
+        }
+    ]
+}

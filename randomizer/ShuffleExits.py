@@ -9,13 +9,13 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones, RemovedBarriersSelected
+from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones, RemovedBarriersSelected, CrownEnemyDifficulty
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Settings import Settings
-from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected
 
 # Used when level order rando is ON
 LobbyEntrancePool = [
@@ -26,6 +26,7 @@ LobbyEntrancePool = [
     Transitions.IslesMainToForestLobby,
     Transitions.IslesMainToCavesLobby,
     Transitions.IslesMainToCastleLobby,
+    Transitions.IslesMainToHelmLobby,
 ]
 
 # Root is the starting spawn, which is the main area of DK Isles.
@@ -145,7 +146,10 @@ def ShuffleExitsInPool(spoiler, frontpool, backpool):
             origins = [x for x in origins if ShufflableExits[ShufflableExits[x].back.reverse].category is not None]
             # Also validate the entry & region kongs overlap in reverse direction
             origins = [x for x in origins if ShufflableExits[backExit.back.reverse].entryKongs.issuperset(ShufflableExits[ShufflableExits[x].back.reverse].regionKongs)]
-        elif settings.decoupled_loading_zones and backExit.back.regionId in [Regions.JapesMinecarts, Regions.ForestMinecarts]:
+        elif settings.decoupled_loading_zones and backExit.back.regionId in [
+            Regions.JapesMinecarts,
+            Regions.ForestMinecarts,
+        ]:
             # In decoupled, we still have to prevent one-way minecart exits from leading to the minecarts themselves
             if Transitions.JapesCartsToMain in origins:
                 origins.remove(Transitions.JapesCartsToMain)
@@ -182,6 +186,25 @@ def AssumeExits(spoiler, frontpool, backpool, newpool):
         # When coupled, only transitions which have a reverse path can be included in the pools
         if not spoiler.settings.decoupled_loading_zones and exit.back.reverse is None:
             continue
+        # Don't shuffle the Aztec temples if they are not eligible to be shuffled
+        if not spoiler.settings.shuffle_aztec_temples and exitId in (
+            Transitions.AztecStartToTemple,
+            Transitions.AztecTempleToStart,
+            Transitions.AztecMainToLlama,
+            Transitions.AztecLlamaToMain,
+        ):
+            continue
+        # Don't shuffle the Prison if we're not automatically turning in keys
+        if not spoiler.settings.auto_keys and exitId in (Transitions.IslesMainToPrison, Transitions.IslesPrisonToMain):
+            continue
+        # Shuffling Helm's location is opt-in
+        if not spoiler.settings.shuffle_helm_location and exitId in (
+            Transitions.IslesMainToHelmLobby,
+            Transitions.IslesHelmLobbyToMain,
+            Transitions.IslesToHelm,
+            Transitions.HelmToIsles,
+        ):
+            continue
         # "front" is the entrance you go into, "back" is the exit you come out of
         frontpool.append(exitId)
         backpool.append(exitId)
@@ -208,9 +231,23 @@ def ShuffleExits(spoiler):
             new_level_order = GenerateLevelOrderUnrestricted(settings)
         ShuffleLevelExits(settings, newLevelOrder=new_level_order)
         if settings.alter_switch_allocation:
-            allocation = [1, 1, 1, 1, 2, 2, 3]
-            for x in range(7):
-                settings.switch_allocation[settings.level_order[x + 1]] = allocation[x]
+            allocation = [1, 1, 1, 1, 2, 2, 3, 3]
+            for x in range(8):
+                level = settings.level_order[x + 1]
+                settings.switch_allocation[level] = allocation[x]
+        if settings.crown_enemy_difficulty == CrownEnemyDifficulty.progressive:
+            # There's 4 levels of easy, 2 of medium, 2 of hard
+            # Both Isles crowns will be a random difficulty.
+            # One will either be easy or medium. The other will either be medium or hard.
+            allocation = [CrownEnemyDifficulty.easy] * 4
+            allocation.extend([CrownEnemyDifficulty.medium] * 2)
+            allocation.extend([CrownEnemyDifficulty.hard] * 2)
+            for x in range(8):
+                level = settings.level_order[x + 1]
+                settings.crown_difficulties[level] = allocation[x]
+            settings.crown_difficulties[8] = random.choice([CrownEnemyDifficulty.easy, CrownEnemyDifficulty.medium])
+            settings.crown_difficulties[9] = random.choice([CrownEnemyDifficulty.medium, CrownEnemyDifficulty.hard])
+
     elif settings.shuffle_loading_zones == ShuffleLoadingZones.all:
         frontpool = []
         backpool = []
@@ -243,8 +280,9 @@ def ExitShuffle(spoiler):
 
 
 def UpdateLevelProgression(settings: Settings):
-    """Update level progression."""
-    newEntryGBs = settings.EntryGBs.copy()
+    """Update level progression and reorder variables to match the actual level order."""
+    newBLockerEntryItems = settings.BLockerEntryItems.copy()
+    newBLockerEntryCount = settings.BLockerEntryCount.copy()
     newBossBananas = settings.BossBananas.copy()
     lobbies = [
         Regions.JungleJapesLobby,
@@ -254,6 +292,7 @@ def UpdateLevelProgression(settings: Settings):
         Regions.FungiForestLobby,
         Regions.CrystalCavesLobby,
         Regions.CreepyCastleLobby,
+        Regions.HideoutHelmLobby,
     ]
     for levelIndex in range(len(lobbies)):
         newIndex = levelIndex
@@ -262,9 +301,11 @@ def UpdateLevelProgression(settings: Settings):
             newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
             # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
             newIndex = lobbies.index(newDestRegion)
-        newEntryGBs[newIndex] = settings.EntryGBs[levelIndex]
+        newBLockerEntryItems[newIndex] = settings.BLockerEntryItems[levelIndex]
+        newBLockerEntryCount[newIndex] = settings.BLockerEntryCount[levelIndex]
         newBossBananas[newIndex] = settings.BossBananas[levelIndex]
-    settings.EntryGBs = newEntryGBs
+    settings.BLockerEntryItems = newBLockerEntryItems
+    settings.BLockerEntryCount = newBLockerEntryCount
     settings.BossBananas = newBossBananas
 
 
@@ -288,8 +329,9 @@ def ShuffleLevelExits(settings: Settings, newLevelOrder: dict = None):
         Transitions.IslesMainToForestLobby: Levels.FungiForest,
         Transitions.IslesMainToCavesLobby: Levels.CrystalCaves,
         Transitions.IslesMainToCastleLobby: Levels.CreepyCastle,
+        Transitions.IslesMainToHelmLobby: Levels.HideoutHelm,
     }
-    shuffledLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
+    shuffledLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None, 8: None}
 
     # For each back exit, select a random valid front entrance to attach to it
     # Assuming there are no inherently invalid level orders, but if there are, validation will check after this
@@ -334,29 +376,52 @@ def GenerateLevelOrderWithRestrictions(settings: Settings):
     else:
         newLevelOrder = GenerateLevelOrderForMultipleStartingKongs(settings)
     if None in newLevelOrder.values():
-        raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
+        raise Ex.EntrancePlacementException("Invalid level order with fewer than the 8 required main levels.")
     return newLevelOrder
 
 
 def GenerateLevelOrderUnrestricted(settings):
     """Generate a level order without Kong placement restrictions."""
-    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
-    unplacedLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
+    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None, 8: None}
+    unplacedLevels = [
+        Levels.JungleJapes,
+        Levels.AngryAztec,
+        Levels.FranticFactory,
+        Levels.GloomyGalleon,
+        Levels.FungiForest,
+        Levels.CrystalCaves,
+        Levels.CreepyCastle,
+        Levels.HideoutHelm,
+    ]
     if settings.enable_plandomizer:
         for i in range(len(newLevelOrder.keys())):
             if settings.plandomizer_dict["plando_level_order_" + str(i)] != -1:
                 newLevelOrder[i + 1] = Levels(settings.plandomizer_dict["plando_level_order_" + str(i)])
                 unplacedLevels.remove(newLevelOrder[i + 1])
+    # If HideoutHelm is not in unplacedLevels, it was already assigned by the
+    # plandomizer.
+    if not settings.shuffle_helm_location and Levels.HideoutHelm in unplacedLevels:
+        newLevelOrder[8] = Levels.HideoutHelm
+        unplacedLevels.remove(Levels.HideoutHelm)
     for i in range(len(newLevelOrder.keys())):
         if newLevelOrder[i + 1] is None:
-            newLevelOrder[i + 1] = random.choice(unplacedLevels)
+            # Helm can't be in levels 1 or 2 in Simple Level Order
+            if not settings.hard_level_progression and i < 2:
+                validLevels = [x for x in unplacedLevels if x != Levels.HideoutHelm]
+            else:
+                validLevels = unplacedLevels
+            newLevelOrder[i + 1] = random.choice(validLevels)
             unplacedLevels.remove(newLevelOrder[i + 1])
     return newLevelOrder
 
 
 def GenerateLevelOrderForOneStartingKong(settings):
     """Generate a level order given only starting with one kong and the need to find more kongs along the way."""
-    levelIndexChoices = {1, 2, 3, 4, 5, 6, 7}
+    levelIndexChoices = {1, 2, 3, 4, 5, 6, 7, 8}
+    # Place Helm if helm isn't in the pool
+    if not settings.shuffle_helm_location:
+        helmIndex = 8
+        levelIndexChoices.remove(8)
     # Decide where Aztec will go
     # Diddy can reasonably make progress if Aztec is first level
     if settings.starting_kong == Kongs.diddy:
@@ -415,6 +480,12 @@ def GenerateLevelOrderForOneStartingKong(settings):
     factoryIndex = random.choice(factoryOptions)
     levelIndexChoices.remove(factoryIndex)
 
+    # Helm can't be in levels 1 or 2
+    if settings.shuffle_helm_location:
+        helmOptions = list(levelIndexChoices.intersection({3, 4, 5, 6, 7, 8}))
+        helmIndex = random.choice(helmOptions)
+        levelIndexChoices.remove(helmIndex)
+
     # Decide the remaining level order randomly
     remainingLevels = list(levelIndexChoices)
     random.shuffle(remainingLevels)
@@ -430,6 +501,7 @@ def GenerateLevelOrderForOneStartingKong(settings):
         forestIndex: Levels.FungiForest,
         cavesIndex: Levels.CrystalCaves,
         castleIndex: Levels.CreepyCastle,
+        helmIndex: Levels.HideoutHelm,
     }
     settings.level_order = newLevelOrder
     return newLevelOrder
@@ -438,8 +510,9 @@ def GenerateLevelOrderForOneStartingKong(settings):
 def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
     """Generate a level order given starting with 2 to 4 kongs and the need to find more kongs along the way."""
     levelIndicesToFill = {1, 2, 3, 4, 5, 6, 7}
+    last_level_index = 7
     # Initialize level order
-    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
+    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None, 8: None}
     # Sort levels by most to least kongs
     kongsInLevels = {
         Levels.JungleJapes: 1 if Locations.DiddyKong in settings.kong_locations else 0,
@@ -450,9 +523,19 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
         Levels.CrystalCaves: 0,
         Levels.CreepyCastle: 0,
     }
+    if not settings.shuffle_helm_location:
+        # Pre-place Helm
+        newLevelOrder[8] = Levels.HideoutHelm
+    else:
+        kongsInLevels[Levels.HideoutHelm] = 0.5  # Make sure Helm is always the first one to be shuffled if you have something of zero index
+        levelIndicesToFill.add(8)
+        last_level_index = 8
     levelsSortedByKongs = [kongsInLevel[0] for kongsInLevel in sorted(kongsInLevels.items(), key=lambda x: x[1], reverse=True)]
+    if settings.shuffle_helm_location:
+        kongsInLevels[Levels.HideoutHelm] = 0  # Reset helm back to 0 (I hate this whole system more than you do)
     # Iterate over levels to place them in the level order
     kongsUnplaced = sum(kongsInLevels.values())
+
     for levelToPlace in levelsSortedByKongs:
         # Determine the latest this level can appear
         kongsUnplaced = kongsUnplaced - kongsInLevels[levelToPlace]
@@ -461,7 +544,7 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
         kongsAssumed = settings.starting_kongs_count + kongsUnplaced
         levelsReachable = []
         # Traverse through levels in order
-        for level in range(1, 8):
+        for level in range(1, (last_level_index + 1)):
             # If don't have 5 kongs yet, stop if don't have enough kongs to reach this level
             if kongsAssumed < 5 and level > kongsAssumed + 1:
                 break
@@ -479,7 +562,11 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
                     if lankyAccessible:
                         guitarDoorAccess = (
                             Kongs.diddy in settings.starting_kong_list
-                            or IsItemSelected(settings.remove_barriers_enabled, settings.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door)
+                            or IsItemSelected(
+                                settings.remove_barriers_enabled,
+                                settings.remove_barriers_selected,
+                                RemovedBarriersSelected.aztec_tunnel_door,
+                            )
                             or (Kongs.donkey in settings.starting_kong_list and settings.activate_all_bananaports == ActivateAllBananaports.all)
                         )
                         if not guitarDoorAccess or (
@@ -497,6 +584,9 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
                 kongsAssumed = kongsAssumed + kongsInLevels[newLevelOrder[level]]
         # Choose where levelWithKongs will go in new level order
         levelIndexOptions = list(levelIndicesToFill.intersection(levelsReachable))
+        if levelToPlace == Levels.HideoutHelm:
+            # Don't place Helm earlier than level 3
+            levelIndexOptions = [x for x in levelIndexOptions if x > 2]
         # If we hit one of the `break`s above, it's likely we can't logically access any level past it
         # If this happens, we got unlucky (settings dependending) and restart this process or else we crash
         # The most common instance of this is when Aztec is level 1 and you don't start with Diddy

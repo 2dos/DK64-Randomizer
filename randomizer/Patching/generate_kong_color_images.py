@@ -3,28 +3,16 @@
 import gzip
 import math
 
-import js
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import PaletteFillType, TextureFormat
+from randomizer.Patching.Library.Generic import PaletteFillType
+from randomizer.Patching.Library.Image import TextureFormat, convertRGBAToBytearray, clampRGBA, getImageFile
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 
-def convertRGBAToBytearray(rgba_lst):
-    """Convert RGBA list with 4 items (r,g,b,a) to a two-byte array in RGBA5551 format."""
-    twobyte = (rgba_lst[0] << 11) | (rgba_lst[1] << 6) | (rgba_lst[2] << 1) | (rgba_lst[3] & 1)
-    lower = twobyte % 256
-    upper = int(twobyte / 256) % 256
-    return [upper, lower]
-
-
-def clampRGBA(n):
-    """Restricts input to integer value between 0 and 255."""
-    return math.floor(max(0, min(n, 255)))
-
-
-def patchColorTranspose(name, x, y, patch_img, target_color):
+def patchColorTranspose(x: int, y: int, patch_img, target_color: list, image_index: int):
     """Transposes RGBA value from patch file to new palette."""
     currentPix = patch_img.getpixel((x, y))
-    if name == "tie":
+    if image_index in (3725, 0xE6C):
         redRef = (255, 0, 0, 1)
         yellowRef = (255, 255, 0, 1)
         if (abs(currentPix[0] - redRef[0]) < 20) and (abs(currentPix[1] - redRef[1]) < 20) and (abs(currentPix[2] - redRef[2]) < 20):
@@ -51,7 +39,11 @@ def patchColorTranspose(name, x, y, patch_img, target_color):
                 if (100 < (target_color[0] << 3) < 150) and (100 < (target_color[1] << 3) < 150) and (100 < (target_color[2] << 3) < 150):
                     ir, ig, ib = 255, 255, 255
                 else:
-                    ir, ig, ib = (255 - (target_color[0] << 3)), (255 - (target_color[1] << 3)), (255 - (target_color[2] << 3))
+                    ir, ig, ib = (
+                        (255 - (target_color[0] << 3)),
+                        (255 - (target_color[1] << 3)),
+                        (255 - (target_color[2] << 3)),
+                    )
 
                 return (
                     clampRGBA(unyellowness * (target_color[0] << 3) + (1 - unyellowness) * ir) >> 3,
@@ -62,7 +54,7 @@ def patchColorTranspose(name, x, y, patch_img, target_color):
         else:
             # quickly convert the read pixel from RGBA32 to RGBA5551 so it doesnt write garbage data later
             return (currentPix[0] >> 3, currentPix[1] >> 3, currentPix[2] >> 3, currentPix[3] & 1)
-    elif name == "clothes":
+    elif image_index == 3734:
         blueRef = (0, 90, 255, 1)
         if (abs(currentPix[0] - blueRef[0]) < 20) and (abs(currentPix[1] - blueRef[1]) < 20) and (abs(currentPix[2] - blueRef[2]) < 20):
             # if currentPix is exactly our reference colour or close enough to not be noticable
@@ -81,7 +73,7 @@ def patchColorTranspose(name, x, y, patch_img, target_color):
             return (currentPix[0] >> 3, currentPix[1] >> 3, currentPix[2] >> 3, currentPix[3] & 1)
 
 
-def convertColors(color_palettes):
+def convertColors(color_palettes, ROM_COPY: ROM):
     """Convert color into RGBA5551 format."""
     for palette in color_palettes:
         for zone in palette["zones"]:
@@ -160,16 +152,18 @@ def convertColors(color_palettes):
                     ext = convertRGBAToBytearray([0, 0, 0, 0])
                     bytes_array.extend(ext)
             elif zone["fill_type"] == PaletteFillType.patch:
-                if zone["image"] == 3725 or zone["image"] == 3734:
-                    # DK's tie or lanky's butt patch, respectively
-                    from randomizer.Patching.CosmeticColors import getFile
-
-                    patch_img = getFile(25, zone["image"], True, 32, 64, TextureFormat.RGBA5551)
+                if zone["image"] in (3725, 3734, 0xE6C):
+                    # DK's tie, lanky's butt patch and diddy's back star, respectively
+                    patch_img = getImageFile(ROM_COPY, 25, zone["image"], True, 32, 64, TextureFormat.RGBA5551)
 
                     safe = True
                     for y in range(64):
                         for x in range(32):
-                            ext = convertRGBAToBytearray(patchColorTranspose(zone["zone"], x, y, patch_img, rgba_list[0]))
+                            ext = convertRGBAToBytearray(patchColorTranspose(x, y, patch_img, rgba_list[0], zone["image"]))
+                            # Potentially fix the TA crash issues
+                            if y == 42:
+                                if (x >= 18 and x < 22) or (x >= 25):
+                                    ext = [0, 0]
                             bytes_array.extend(ext)
                             if len(bytes_array) == 2744:
                                 # its done copying all the bytes we care about (not the full 32x64); bail
@@ -248,12 +242,22 @@ def convertColors(color_palettes):
                                     if pix_channel > 31:
                                         pix_channel = 31
                                 pix_rgba.append(pix_channel)
-                        sparkle_px = [[28, 5], [27, 10], [21, 11], [25, 14], [23, 15], [23, 16], [26, 18], [20, 19], [25, 25]]
+                        sparkle_px = [
+                            [28, 5],
+                            [27, 10],
+                            [21, 11],
+                            [25, 14],
+                            [23, 15],
+                            [23, 16],
+                            [26, 18],
+                            [20, 19],
+                            [25, 25],
+                        ]
                         for px in sparkle_px:
                             if px[0] == x and px[1] == y:
                                 pix_rgba = [0xFF, 0xFF, 0xFF, 1]
                         bytes_array.extend(convertRGBAToBytearray(pix_rgba))
 
-            write_point = js.pointer_addresses[25]["entries"][zone["image"]]["pointing_to"]
-            ROM().seek(write_point)
-            ROM().writeBytes(gzip.compress(bytearray(bytes_array), compresslevel=9))
+            write_point = getPointerLocation(TableNames.TexturesGeometry, zone["image"])
+            ROM_COPY.seek(write_point)
+            ROM_COPY.writeBytes(gzip.compress(bytearray(bytes_array), compresslevel=9))

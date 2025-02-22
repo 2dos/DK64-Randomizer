@@ -7,7 +7,28 @@
         "${workspaceFolder}/tests"
     ],
     "python.testing.unittestEnabled": false,
+    "python.analysis.typeshedPaths": [
+        ".venv/Lib/site-packages",
+        "typings"
+    ],
     "files.associations": {
-        "common.h": "c"
+        "*.code": "c",
+        "common.h": "c",
+        "xtree": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "xutility": "c",
+        "common_enums.h": "c",
+        "dynamic_structs.h": "c",
+        "common_structs.h": "c",
+        "libaudio.h": "c",
+        "initializer_list": "c",
+        "list": "c",
+        "vector": "c",
+        "xstring": "c",
+        "xlocale": "c",
+        "algorithm": "c",
+        "iterator": "c"
     }
 }

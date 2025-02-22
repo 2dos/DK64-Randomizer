@@ -152,7 +152,7 @@ base-hack/build-cs/obj
 # Randomizer specific
 spoilerlog*.txt
 settings*.asm
-settings*.json
+/settings*.json
 *.z64
 *.n64
 *.v64
@@ -202,3 +202,21 @@ current_total.cfg
 last_generated_time.cfg
 generated_seeds/*
 local_presets.json
+base-hack/build/dir_hash.txt
+base-hack/build/skeleton/*.png
+/crowd_control/SDK/*
+/crowd_control/dumps/*
+base-hack/assets/cutscene_scripts/dk_phase
+base-hack/assets/cutscene_scripts/diddy_phase
+base-hack/assets/cutscene_scripts/lanky_phase
+base-hack/assets/cutscene_scripts/tiny_phase
+base-hack/build/createEncryption.py
+base-hack/actor_data.json
+certificate.crt
+private.key
+api_keys.cfg
+redis_data/
+redis_data/*
+randomizer/encryption.py
+static/js/compile_templates.js
+static/compiled.jsonc

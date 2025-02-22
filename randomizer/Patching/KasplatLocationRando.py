@@ -1,15 +1,21 @@
 """Apply Kasplat Locations."""
 
-import js
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Lists.KasplatLocations import KasplatLocationList
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 
-def randomize_kasplat_locations(spoiler):
+def randomize_kasplat_locations(spoiler, ROM_COPY: LocalROM):
     """Write replaced enemies to ROM."""
-    kasplat_types = [Enemies.KasplatDK, Enemies.KasplatDiddy, Enemies.KasplatLanky, Enemies.KasplatTiny, Enemies.KasplatChunky]
+    kasplat_types = [
+        Enemies.KasplatDK,
+        Enemies.KasplatDiddy,
+        Enemies.KasplatLanky,
+        Enemies.KasplatTiny,
+        Enemies.KasplatChunky,
+    ]
     vanilla_kasplat_maps = [
         Maps.JungleJapes,
         Maps.JapesUnderGround,
@@ -32,10 +38,9 @@ def randomize_kasplat_locations(spoiler):
         Maps.GloomyGalleonLobby,
     ]
     if spoiler.settings.kasplat_rando:
-        ROM_COPY = LocalROM()
         selected_kasplat_names = [name for name in spoiler.shuffled_kasplat_map.keys()]
         for cont_map_id in range(216):
-            cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
+            cont_map_spawner_address = getPointerLocation(TableNames.Spawners, cont_map_id)
             ROM_COPY.seek(cont_map_spawner_address)
             fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             offset = 2

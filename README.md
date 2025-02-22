@@ -1,15 +1,19 @@
 <div id="top"></div>
 <br />
-<div align="center">
+<div align="center" style="text-align:center">
   <a href="https://github.com/2dos/DK64-Randomizer">
-    <img src="static/img/logo.png" alt="Logo" width="650" height="300">
+    <img src="https://raw.githubusercontent.com/2dos/DK64-Randomizer/refs/heads/dev/static/img/logo.png" alt="Logo" width="381" height="300">
   </a>
 
-  <h3 align="center">DK64 Randomizer</h3>
+  <h1 align="center">DK64 Randomizer</h1>
+<img alt="Stable Branch Version" src="https://img.shields.io/badge/stable-3.0-darkgreen">
+<img alt="Dev Branch Version" src="https://img.shields.io/badge/dev-4.0-midnightblue">
+<img alt="GitHub License" src="https://img.shields.io/github/license/2dos/DK64-Randomizer?color=darkred">
+<img alt="Seeds Genned" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.dk64rando.com%2Fapi%2Fcurrent_total%3Fformat%3Dtotal_shield">
 
-  <p align="center">
+
+<p align="center">
     Python/C based builder and patching system for randomizing DK64 entirely within your browser.
-    Randomizer by 2dos, Ballaam and Killklli
     <br />
     <a href="https://dk64randomizer.com/wiki/"><strong>Explore the docs »</strong></a>
     <br />
@@ -24,113 +28,89 @@
   </p>
 </div>
 
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#building">Building</a></li>
-      </ul>
-    </li>
-    <li><a href="#contributing">Contributing</a></li>
-  </ol>
-</details>
 
-## About The Project
 
-DK64 Randomizer is a simple to use web based application that can randomize and patch DK64 for you for a full featured adventure.
-The application is entirely browser based in the end. All python code is run within your browser itself requiring only a webserver to serve the files and a local prebuilt version of your BPS file to patch for the base.
+## Table of Contents
+- [Table of Contents](#table-of-contents)
+- [About the project](#about-the-project)
+- [Getting Started](#getting-started)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [FAQ](#faq)
+  - [Q: Is this randomizer beatable?](#q-is-this-randomizer-beatable)
+  - [Q: Can I use this on console hardware?](#q-can-i-use-this-on-console-hardware)
+  - [Q: Where can I report issues?](#q-where-can-i-report-issues)
+- [Contributing](#contributing)
 
-Current Features:
+## About the project
 
-1. Randomizes the level order of DK64 (Hideout Helm always last)
-      - The level lobby entrances and exits are randomized and tied together
-      - Example: If Creepy Castle is level 1, then it only takes 1 GB to enter and 60 bananas to fight the boss under Vanilla rules
-      - Validation to ensure the seed is able to be beaten glitchless
-      - Unlock All Kongs must be turned on 
-      - For logic purposes, in Galleon, the Peanut Popgun door that opens the sunken ship area is already opened
-2. Options to modify the length of the game (changes the B Locker and Troff n Scoff counts)
-      - Fully customizable B Locker and Troff n Scoff requirements per level
-      - Four presets for each: Vanilla, Steady, Half and Hell
-3. Option to unlock all kongs from the start
-4. Option to unlock all moves from the start
-5. Option to unlock the fairy camera and shockwave attack (fairy queen rewards) from the start
-6. Option to enable the Tag Anywhere hack
-7. Option for a fast Hideout Helm start
-      - Start in Blast-o-matic room in front of Gorilla Grab lever
-      - I-II-III-IV-V doors opened
-      - The gates in front of the music pads are gone
-8. Option to open the Crown door in Helm
-9. Option to open the Nintendo and Rareware Coin door
-      - Note that you cannot collect the DK Arcade GB with this option enabled, as the program simply adds the coins to your inventory
-10. Option to enable quality-of-life changes
-      - Removes first time text
-      - Removes most cutscenes (including GB dances)
-      - Removes first time boss cutscenes
-      - Remove DK Rap and extra cutscenes from startup
-      - Story skip set to "On" by default (not locked to on)
-11. Option for Fast Start
-      - Training Barrels complete
-      - Start with Simian Slam
-      - Spawn in DK Isles
-      - Japes Lobby entrance open
-
+**DK64 Randomizer** is a tool that randomizes various elements of *Donkey Kong 64*, giving players a new and unpredictable experience each time they play. This randomizer shuffles item placements, Kongs, enemies, and more, creating a fresh and challenging take on the beloved classic.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Getting Started
 
-Generally if you want to just run the application locally, you can download a pre build package from our releases or go directly to the live site.
-If you want to build the application yourself and run it manually you can continue onto step two.
+### Requirements
+- **Base ROM of *Donkey Kong 64*:** You will need a legally obtained ROM of the US version of *Donkey Kong 64* for this randomizer to work. PAL, JP, Kiosk and the Lodgenet releases are not supported. No help will be provided to acquire this.
+- **Emulator or Console Setup:** Compatible with many platforms, more information about this can be found on our [wiki](https://dev.dk64randomizer.com/wiki/index.html?title=Consoles-and-Emulators)
+- **Python 3.11 or Higher:** The randomizer is largely coded implemented in Python, so make sure you have Python installed on your system.
 
-
-### Building
-
-For the cases you want to build the app locally and run as a dev environment
-
-1. Clone the repo
-   ```sh
-   git clone https://github.com/2dos/DK64-Randomizer.git
-   ```
-2. Building the patch file
-   1. Download ```n64chain-windows.zip``` from [here](https://github.com/tj90241/n64chain/releases/tag/9.1.0)
-   2. Extract to ```C:\n64chain```
-   3. Add ```C:\n64chain\tools\bin``` to your system %path% environment variable
-   4. Install ```Python 3```
-   5. Git clone (or download a zip + extract) this repo to somewhere convenient
-   6. Put ```dk64.z64``` (SHA1: CF806FF2603640A748FCA5026DED28802F1F4A50) in the ```./base-hack/rom``` subdirectory
-   7. `cd ./base-hack`
-   8. Run ```build.bat```
-3.  Run Local Webserver
-	1. Put ```dk64.z64``` (SHA1: CF806FF2603640A748FCA5026DED28802F1F4A50) in the main directory
-	2. Run: 
-		   ```sh
-		   python3 -m pip install -r ./requirements-dev.txt
-		   ```
-	  3. Run:
-			   ```sh
-			   python3 ./NoCacheHTTPServer.py
-			   ```
-	  4. Open your internet browser and navigate to ```localhost:8000```. You should now be looking at a locally hosted dk64randomizer site.
-   
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+### Installation
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/2dos/DK64-Randomizer.git
+   cd DK64-Randomizer
+   ```
+2. **Install Python Dependencies**:
+   ```bash
+   pip install -r requirements-dev.txt
+   ```
+3. **Place a DK64 ROM into the repo**:
+The US ROM needs to be named `dk64.z64` and placed into the base directory of the repository.
+4. **Run the Randomizer**:
+   Run `runner.py` to boot up a local copy of the randomizer webpage at `localhost:8000`. This can also be achieved with the `Run Server` task on VSCode.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## Usage
+
+1. **Load Your ROM**:
+   When prompted, provide the path to your *Donkey Kong 64* ROM file.
+   
+2. **Set Randomization Options**:
+   Customize your randomization preferences (items, Kongs, enemies, etc.) via the locally generated webpage.
+   
+3. **Generate ROM**:
+   Once settings are configured, generate a randomized ROM file by following the prompts.
+
+4. **Play**:
+   Load the newly generated ROM file into your platform of choice.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## FAQ
+
+### Q: Is this randomizer beatable?
+Yes! The randomizer includes logic to ensure that all generated seeds are beatable to 101% completion.
+
+### Q: Can I use this on console hardware?
+Yes, but you will need a flash cart like the EverDrive 64 to load the randomized ROM. The Wii U Virtual Console is also supported if you have a homebrewed Wii U.
+
+### Q: Where can I report issues?
+Please report any issues on the [GitHub Issues page](https://github.com/2dos/DK64-Randomizer/issues).
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Contributing
+We welcome contributions from the community! To contribute:
+1. Fork the repository.
+2. Create a new branch for your changes.
+3. Make your modifications.
+4. Submit a pull request.
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request to Dev
+For major changes, please open a discussion first to ensure your feature or change is something that we think would result in a better product.
 
 <p align="right">(<a href="#top">back to top</a>)</p>

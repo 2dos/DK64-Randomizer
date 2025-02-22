@@ -3,7 +3,10 @@
 from asyncio import sleep
 import random
 import requests
+import logging
 from racetime_bot import RaceHandler, monitor_cmd, can_moderate, can_monitor, msg_actions
+
+logger = logging.getLogger(__name__)
 
 
 class RandoHandler(RaceHandler):
@@ -27,34 +30,36 @@ class RandoHandler(RaceHandler):
         """Send introduction messages."""
         if not self.state.get("intro_sent") and not self._race_in_progress():
             await self.send_message(
-                "Welcome to DK64R! " + random.choice(self.greetings),
+                "Welcome to DK64R! " + random.choice(self.greetings) + "THIS IS CURRENT IN DEV MODE ONLY. USE AT YOUR OWN RISK.",
                 actions=[
                     msg_actions.Action(
-                        label="Roll seed",
+                        label="Roll Seed",
                         help_text="Create a seed using the latest release",
-                        message="!seed ${preset}",
-                        submit="Roll race seed",
+                        message="!seed '${preset}' ${--password} ${--spoiler}",
+                        submit="Roll Race Seed",
                         survey=msg_actions.Survey(
                             msg_actions.SelectInput(
                                 name="preset",
                                 label="Preset",
-                                options={key: value["name"] for key, value in self.dk64.presets.items()},
-                                default="season 2 race settings",
+                                options={key: value["name"] for key, value in self.dk64.master_presets.items()},
                             ),
+                            msg_actions.BoolInput(name="--password", label="Password Protect", default=True),
+                            msg_actions.BoolInput(name="--spoiler", label="Generate Spoiler Log", default=False),
                         ),
                     ),
                     msg_actions.Action(
-                        label="Roll Spoiler seed",
+                        label="Roll Dev Seed",
                         help_text="Create a seed using the latest release and release a spoiler log",
-                        message="!spoilerseed ${preset}",
-                        submit="Roll spoiler seed",
+                        message="!dev '${preset}' ${--password} ${--spoiler}",
+                        submit="Roll Dev Seed",
                         survey=msg_actions.Survey(
                             msg_actions.SelectInput(
                                 name="preset",
                                 label="Preset",
-                                options={key: value["name"] for key, value in self.dk64.presets.items()},
-                                default="season 2 race settings",
+                                options={key: value["name"] for key, value in self.dk64.dev_presets.items()},
                             ),
+                            msg_actions.BoolInput(name="--password", label="Password Protect", default=False),
+                            msg_actions.BoolInput(name="--spoiler", label="Generate Spoiler Log", default=False),
                         ),
                     ),
                     msg_actions.ActionLink(
@@ -117,8 +122,8 @@ class RandoHandler(RaceHandler):
             return
         await self.roll_and_send(args, message)
 
-    async def ex_spoilerseed(self, args, message):
-        """Handle !spoilerseed commands."""
+    async def ex_dev(self, args, message):
+        """Handle !dev commands."""
         if self._race_in_progress():
             return
         await self.roll_and_send(args, message)
@@ -173,7 +178,9 @@ class RandoHandler(RaceHandler):
             await self.send_message("Well excuuuuuse me princess, but I already rolled a seed. " "Don't get greedy!")
             return
         # merge the args into a single string for parsing
-        preset = " ".join(args)
+        preset = " ".join(arg for arg in args if not arg.startswith("--")).replace("'", "").strip()
+        password_protected = "--password" in args
+        spoiler_log = "--spoiler" in args
         try:
             command = str(message.get("message", "").split(" ")[0]).lower()
         except Exception:
@@ -182,15 +189,21 @@ class RandoHandler(RaceHandler):
             race = True
         else:
             race = False
-        await self.roll(preset=preset if args else "weekly", reply_to=reply_to, race=race)
+        await self.roll(preset=preset if args else "weekly", reply_to=reply_to, race=race, password_protected=password_protected, spoiler_log=spoiler_log)
 
-    async def roll(self, preset, reply_to, race):
+    async def roll(self, preset, reply_to, race, password_protected, spoiler_log):
         """Generate a seed and send it to the race room."""
-        if preset not in self.dk64.presets:
-            res_cmd = "!presets"
-            await self.send_message("Sorry %(reply_to)s, I don't recognise that preset. Use " "%(res_cmd)s to see what is available." % {"res_cmd": res_cmd, "reply_to": reply_to or "friend"})
-            return
-        seed_id = self.dk64.roll_seed(preset, race)
+        if not race:
+            if preset not in self.dk64.dev_presets:
+                res_cmd = "!presets"
+                await self.send_message("Sorry %(reply_to)s, I don't recognise that preset. Use " "%(res_cmd)s to see what is available." % {"res_cmd": res_cmd, "reply_to": reply_to or "friend"})
+                return
+        else:
+            if preset not in self.dk64.master_presets:
+                res_cmd = "!presets"
+                await self.send_message("Sorry %(reply_to)s, I don't recognise that preset. Use " "%(res_cmd)s to see what is available." % {"res_cmd": res_cmd, "reply_to": reply_to or "friend"})
+                return
+        seed_id = self.dk64.roll_seed(preset, race, password_protected, spoiler_log)
 
         await self.send_message("%(reply_to)s, your seed is generating. Please wait..." % {"reply_to": reply_to or "Okay"})
         if self.state.get("pinned_msg"):
@@ -200,25 +213,37 @@ class RandoHandler(RaceHandler):
         self.state["seed_id"] = seed_id
         self.state["status_checks"] = 0
         self.state["preset"] = preset
+        self.state["race"] = race
         await self.check_seed_status()
 
     async def check_seed_status(self):
         """Check the status of the seed generation."""
-        await sleep(1)
-        status = self.dk64.get_status(self.state["seed_id"])
+        await sleep(5)
+        status, data = self.dk64.get_status(self.state["seed_id"])
         if status == 0:
             self.state["status_checks"] += 1
             if self.state["status_checks"] < self.max_status_checks:
                 await self.check_seed_status()
+            else:
+                self.state["seed_id"] = None
+                await self.send_message("Sorry, but it looks like the seed is taking too long to generate.")
         elif status == 1:
+            self.state["result_data"] = data.json()["result"]
             await self.load_seed_hash()
         elif status >= 2:
             self.state["seed_id"] = None
-            await self.send_message("Sorry, but it looks like the seed failed to generate. Use " "!seed to try again.")
+            await self.send_message("Sorry, but it looks like the seed failed to generate. Use !seed to try again.")
 
     async def load_seed_hash(self):
         """When the seed is ready, get the data."""
-        seed_hash, public_id, url = self.dk64.get_hash(self.state["seed_id"])
+        seed_hash, public_id = (
+            " ".join([next(iter(self.dk64.hash_map.get(index, {}).keys()), next(iter(self.dk64.hash_map.values()))) for index in self.state["result_data"]["hash"]]),
+            self.state["result_data"].get("seed_number"),
+        )
+        if self.state["race"]:
+            url = self.dk64.master_seed_url
+        else:
+            url = self.dk64.dev_seed_url
         await self.set_bot_raceinfo(
             "%(seed_hash)s\n%(seed_url)s"
             % {
@@ -251,7 +276,11 @@ class RandoHandler(RaceHandler):
                         {"name": "Description", "value": self.data.get("info_user", "No description"), "inline": True},
                         {"name": "‎", "value": "‎", "inline": True},
                         {"name": "Preset Used", "value": self.state["preset"], "inline": True},
-                        {"name": "Race Opened By", "value": self.data.get("opened_by", {}).get("full_name", "Unknown User"), "inline": True},
+                        {
+                            "name": "Race Opened By",
+                            "value": self.data.get("opened_by", {}).get("full_name", "Unknown User"),
+                            "inline": True,
+                        },
                         {"name": "‎", "value": "‎", "inline": True},
                         {"name": "---------------------------------------------------------", "value": url % public_id},
                     ],
@@ -263,17 +292,23 @@ class RandoHandler(RaceHandler):
             "avatar_url": "https://mario.wiki.gallery/images/b/b3/DK64_Racecar.png",
             "attachments": [],
         }
-        if self.dk64.discord_webhook:
+        if self.dk64.discord_webhook and not self.data.get("unlisted", False):
             requests.post(self.dk64.discord_webhook, json=embed_data)
+        logger.info("Password Selected? %s" % self.state["result_data"].get("password"))
+        if self.state["result_data"].get("password"):
+            logger.info("Result Send Message! Password: %(password)s" % {"password": self.state["result_data"]["password"]})
+            # await self.send_message("Seed generated! Password: %(password)s" % {"password": self.state["result_data"]["password"]})
+            # DM the password to the user
+            await self.send_message(f"Seed generated! Password: {self.state['result_data']['password']}", direct_to=self.data.get("opened_by", {}).get("id"))
 
     async def send_presets(self, dev):
         """Send a list of known presets to the race room."""
         await self.send_message("Available presets:")
         if dev:
-            for name, preset in self.dk64.presets_dev.items():
+            for name, preset in self.dk64.dev_presets.items():
                 await self.send_message("%s – %s" % (name, preset["name"]))
         else:
-            for name, preset in self.dk64.presets.items():
+            for name, preset in self.dk64.master_presets.items():
                 await self.send_message("%s – %s" % (name, preset["name"]))
 
     def _race_in_progress(self):

@@ -1,0 +1,60 @@
+<div class="flex-container" style="margin-top: 15px;">
+    <div class="item-header">
+        <h2 class="title">HASH</h2>
+        <div>
+            <div id="hashdiv"></div>
+            <img id="hash0" style="transform:rotate(180deg);">
+            <img id="hash1" style="transform:rotate(180deg);">
+            <img id="hash2" style="transform:rotate(180deg);">
+            <img id="hash3" style="transform:rotate(180deg);">
+            <img id="hash4" style="transform:rotate(180deg);">
+        </div>
+    </div>
+    <div id="spoiler_log_block">
+        <h2 class="title">SPOILER LOG</h2>
+        <button class="btn btn-secondary"
+                type="button"
+                id="download_spoiler_button"
+                onClick="save_text_as_file(document.getElementById('spoiler_log_text').value, document.getElementById('generated_seed_id').innerHTML + '-spoilerlog.json')">
+            Download Spoiler Log
+        </button>
+        {# <button class="btn btn-secondary"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#spoiler"
+                aria-expanded="false"
+                aria-controls="spoiler">
+            Show Spoiler Log
+        </button> #}
+        <button class="btn btn-secondary"
+                type="button"
+                id="download_unlocked_spoiler_button"
+                hidden>
+            Download Spoiler Log (Unlocked)
+        </button>
+    </div>
+    <div class="item-header">
+        <h2 class="title">SEED ID</h2>
+        <h5 id="generated_seed_id">00000</h5>
+    </div>
+</div>
+<div class="flex-container" style="margin-top: 15px;">
+    <div class="d-flex justify-content-center my-3" style="width:100%">
+        <div id="spoiler" style="min-width: 90%; max-width: 90%">
+            <div id="spoiler_log_text"></div>
+        </div>
+    </div>
+</div>
+<div style="background:#ff5722; padding:8px;" id="spoiler_warning_1">
+    <h2 class="title">WARNING</h2>
+    <b>It is STRONGLY recommended you save the spoiler log right now in case you run into any trouble. This is a dev site, and there is a chance you may encounter bugs that need to be reported to the devs on the Discord.</b>
+    <button class="btn btn-secondary"
+            type="button"
+            onClick="save_text_as_file(document.getElementById('spoiler_log_text').value, document.getElementById('generated_seed_id').innerHTML + '-spoilerlog.json')">
+        <b>Download Spoiler Log</b>
+    </button>
+</div>
+<div style="background:#f40b0b; padding:8px;" id="patch_version_warning" hidden>
+    <h2 class="title">WARNING</h2>
+    <b id="patch_warning_message">This patch file is from a different version.</b>
+</div>

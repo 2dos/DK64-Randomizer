@@ -119,19 +119,76 @@ setFlag_ItemRando:
     j 0x80731300
     nop
 
-.definelabel nin_logo_width, 256 ; Normally 192
-.definelabel nin_logo_height, 132 ; Normally 48
-.definelabel nin_logo_x_offset, (hud_screen_wd - nin_logo_width) / 2
-.definelabel nin_logo_y_offset, (hud_screen_hd - nin_logo_height) / 2
-.definelabel nin_logo_x_offset_alloc, nin_logo_y_offset * hud_screen_wd
-.definelabel nin_write_position, (nin_logo_x_offset_alloc + nin_logo_x_offset) * 2
+adjustExitRead:
+    bgez $a0, adjustExitRead_checkCount
+    nop
+    j 0x806C97F0
+    nop
 
-fixTilePosition:
-    addiu $a1, $a1, (((hud_screen_wd/2)-160)*4) ;Move Tiles
-    j 0x8070F310 ;Return to Game
-    sw $a1, 0x5C($sp) ;Run Replaced Instruction
+    adjustExitRead_checkCount:
+        lui $v0, hi(ExitCount)
+        j 0x806C97E8
+        lbu $v0, lo(ExitCount) ($v0)
 
-fixNintendoLogoPosition:
-    lui $at, hi(nin_write_position) ;Upper Half of Nintendo Logo Write Position
-    j 0x805FB8B0 ; Return to Game
-    addiu $at, $at, lo(nin_write_position) ;Lower Half of Nintendo Logo Write Position
+invertPan:
+    addiu $t7, $zero, 0x7F
+    subu $t6, $t7, $t6
+    lw $t7, 0x5C ($sp)
+    j 0x80737710
+    sb $t6, 0x41 ($t7)
+
+disableFBStore:
+    ; If FB pointer is null, do not store framebuffer
+    beq $a0, $zero, disableFBStore_jump
+    lui $a3, 0x8074
+    j 0x8070A850
+    lui $t0, 0x8074
+
+    disableFBStore_jump:
+        jr $ra
+        nop
+
+disableFBZip0:
+    beq $a0, $zero, disableFBZip0_jump
+    lui $t6, 0x8075
+    j 0x8070B064
+    addiu $sp, $sp, -0x50
+
+    disableFBZip0_jump:
+        jr $ra
+        nop
+
+disableFBZip1:
+    beq $a2, $zero, disableFBZip1_jump
+    nop
+    addiu $sp, $sp, -0xC0
+    j 0x80709BCC
+    sw $ra, 0x3C ($sp)
+
+    disableFBZip1_jump:
+        jr $ra
+        nop
+
+disableFBZip2:
+    beq $a0, $zero, disableFBZip2_jump
+    lui $t6, 0x807F
+    j 0x80611354
+    lw $t6, 0x5A64 ($t6)
+
+    disableFBZip2_jump:
+        jr $ra
+        nop
+
+disableFBMisc:
+    lw $a0, 0x5D80 ($a0)
+    beq $a0, $zero, disableFBMisc_jump
+    nop
+    jal 0x8070A848
+    nop
+    j 0x80629238
+    nop
+
+    disableFBMisc_jump:
+        lw $ra, 0x14 ($sp)
+        jr $ra
+        addiu $sp, $sp, 0x20

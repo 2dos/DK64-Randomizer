@@ -1,3 +1,7 @@
+:root {
+    --stylish-dark: #101318;
+  }
+
 /* Revert link stylings */
 a {
     text-decoration: underline solid 1px !important;
@@ -90,10 +94,14 @@ pre.pulse {
 }
 #markdown_content h3 {
     font-weight: bold;
+    font-size: larger;
 }
 #markdown_content h4 {
     font-size: 1.1rem;
     font-weight: bold;
+}
+#markdown_content p, #markdown_content ul, #markdown_content ol {
+    color: #aaa;
 }
 .collapsable-header {
     background-color: rgba(var(--bs-black-rgb));
@@ -101,7 +109,7 @@ pre.pulse {
     cursor: pointer;
 }
 .collapsable-header.collapsed {
-    background-color: rgba(var(--bs-dark-rgb));
+    background-color: rgba(var(--stylish-dark));
 }
 .collapsable-header-caret {
     transition: transform 0.2s linear;
@@ -124,7 +132,7 @@ pre.pulse {
 
 #search_suggestions .search-item:hover {
     color: white;
-    background-color: rgba(var(--bs-dark-rgb));
+    background-color: rgba(var(--stylish-dark));
 }
 
 .sidebar-link, .collapsable-header {
@@ -171,9 +179,16 @@ pre.pulse {
     margin-top: 10px;
 }
 
+.show-if-thin {
+    display: none;
+}
+
 @media only screen and (max-width: 1000px) {
     .hide-if-thin {
         display: none;
+    }
+    .show-if-thin {
+        display: block;
     }
     .max-if-thin {
         width: 100%;
@@ -207,4 +222,14 @@ pre.pulse {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #888;
+}
+
+#search-container {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+/* Special darkness */
+.bg-vdark {
+    background-color: var(--stylish-dark);
 }

@@ -5,8 +5,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Dict, Tuple
 
 from randomizer.Enums.Settings import (
-    BananaportRando,
-    DeprecatedSettings,
     LogicType,
     SettingsStringDataType,
     SettingsStringEnum,
@@ -102,10 +100,9 @@ settingsExclusionMap = {
         ]
     },
     "shuffle_items": {False: ["item_rando_list_selected"]},
-    "starting_moves_count": {0: ["random_starting_move_list_selected"]},
     "enemy_rando": {False: ["enemies_selected"]},
     "bonus_barrel_rando": {False: ["minigames_list_selected", "disable_hard_minigames"]},
-    "bananaport_rando": {BananaportRando.off: ["warp_level_list_selected"]},
+    "cb_rando_enabled": {False: ["cb_rando_list_selected"]},
     "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
     "quality_of_life": {False: ["misc_changes_selected"]},
     "hard_mode": {False: ["hard_mode_selected"]},
@@ -116,11 +113,13 @@ settingsExclusionMap = {
             "points_list_guns"
             "points_list_instruments"
             "points_list_training_moves"
+            "points_list_fairy_moves"
             "points_list_important_shared"
             "points_list_pad_moves"
             "points_list_barrel_moves"
             "points_list_active_moves"
             "points_list_bean"
+            "points_list_shopkeepers"
         ],
         SpoilerHints.vial_colors: [
             "points_list_kongs"
@@ -128,11 +127,13 @@ settingsExclusionMap = {
             "points_list_guns"
             "points_list_instruments"
             "points_list_training_moves"
+            "points_list_fairy_moves"
             "points_list_important_shared"
             "points_list_pad_moves"
             "points_list_barrel_moves"
             "points_list_active_moves"
             "points_list_bean"
+            "points_list_shopkeepers"
         ],
     },
 }
@@ -143,10 +144,9 @@ def prune_settings(settings_dict: dict):
     settings_to_remove = ["plandomizer_data", "enable_song_select", "music_selections"]
     # Remove settings based on the exclusion map above.
     for keySetting, exclusions in settingsExclusionMap.items():
-        if settings_dict[keySetting] in exclusions:
+        if keySetting in settings_dict.keys() and settings_dict[keySetting] in exclusions:
             settings_to_remove.extend(exclusions[settings_dict[keySetting]])
     # Remove any deprecated settings.
-    settings_to_remove.extend(setting.name for setting in DeprecatedSettings)
     for pop in settings_to_remove:
         if pop in settings_dict:
             settings_dict.pop(pop)
@@ -181,6 +181,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "enguarde_skin_custom_color",
         "klaptrap_model",
         "random_models",
+        "random_enemy_colors",
         "misc_cosmetics",
         "disco_chunky",
         "dark_mode_textboxes",
@@ -191,12 +192,15 @@ def encrypt_settings_string_enum(dict_data: dict):
         "lanky_fur_custom_color",
         "rambi_skin_colors",
         "rambi_skin_custom_color",
+        "gb_colors",
+        "gb_custom_color",
         "random_colors",
         "random_music",
         "music_bgm_randomized",
         "music_events_randomized",
         "music_majoritems_randomized",
         "music_minoritems_randomized",
+        "music_vanilla_locations",
         "tiny_hair_colors",
         "tiny_clothes_colors",
         "tiny_hair_custom_color",
@@ -205,6 +209,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "remove_water_oscillation",
         "head_balloons",
         "colorblind_mode",
+        "big_head_mode",
         "search",
         "holiday_setting",
         "holiday_setting_offseason",
@@ -216,20 +221,28 @@ def encrypt_settings_string_enum(dict_data: dict):
         "true_widescreen",
         "camera_is_not_inverted",
         "sound_type",
+        "smoother_camera",
         "songs_excluded",
         "excluded_songs_selected",
         "music_filtering",
         "music_filtering_selected",
         "troff_brighten",
+        "better_dirt_patch_cosmetic",
         "crosshair_outline",
         "custom_music_proportion",
         "fill_with_custom_music",
+        "show_song_name",
         "delayed_spoilerlog_release",
+        "shockwave_status",  # Deprecated with starting move selector rework - this is now derived in the settings constructor
+        "music_disable_reverb",
     ]:
         if pop in dict_data:
             dict_data.pop(pop)
     dict_data = prune_settings(dict_data)
     bitstring = ""
+    for sort_this in ["starting_moves_list_1", "starting_moves_list_2", "starting_moves_list_3", "starting_moves_list_4", "starting_moves_list_5"]:
+        if sort_this in dict_data.keys():
+            dict_data[sort_this].sort()
     for key in dict_data:
         value = dict_data[key]
         # At this time, all strings represent ints, so just convert.
@@ -269,11 +282,15 @@ def encrypt_settings_string_enum(dict_data: dict):
                 else:
                     # The value is an enum.
                     max_value = max([member.value for member in key_list_data_type])
-                    bitstring += format(item.value, f"0{max_value.bit_length()}b")
+                    bitstring += format(item, f"0{max_value.bit_length()}b")
         else:
             # The value is an enum.
             max_value = max([member.value for member in key_data_type])
-            bitstring += format(value.value, f"0{max_value.bit_length()}b")
+            # If value is an int
+            if isinstance(value, int):
+                bitstring += format(value, f"0{max_value.bit_length()}b")
+            else:
+                bitstring += format(value.value, f"0{max_value.bit_length()}b")
 
     # Pad the bitstring with zeroes until the length is divisible by 6.
     remainder = len(bitstring) % 6
@@ -379,6 +396,6 @@ def decrypt_settings_string_enum(encrypted_string: str) -> Dict[str, Any]:
             bit_index += max_value.bit_length()
         # If this setting is not deprecated, add it.
         # The plando setting needs to be encoded in settings strings but not applied when decoding for logging purposes.
-        if key_enum not in DeprecatedSettings and key_enum != SettingsStringEnum.enable_plandomizer:
+        if key_enum != SettingsStringEnum.enable_plandomizer:
             settings_dict[key_name] = val
     return settings_dict

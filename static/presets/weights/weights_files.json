@@ -9,6 +9,12 @@
     },
     "alter_switch_allocation": 0,
     "auto_keys": 1,
+    "bananaport_placement_rando": {
+      "off": 0.7,
+      "vanilla_only": 0.2,
+      "half_vanilla": 0.08,
+      "on": 0.02
+    },
     "bananaport_rando": {
       "off": 1
     },
@@ -21,7 +27,28 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.3,
+    "cannons_require_blast": 0,
+    "cb_rando_enabled": 0.3,
+    "cb_rando_list_selected": {
+      "JungleJapes": 0.5,
+      "AngryAztec": 0.5,
+      "FranticFactory": 0.5,
+      "GloomyGalleon": 0.5,
+      "FungiForest": 0.5,
+      "CrystalCaves": 0.5,
+      "CreepyCastle": 0.5,
+      "DKIsles": 0
+    },
+    "chaos_blockers": 0,
+    "chaos_ratio": {
+      "min": 0,
+      "max": 0,
+      "mean": 0
+    },
+    "chunky_phase_slam_req": {
+      "green": 0.3,
+      "blue": 0.7
+    },
     "coin_door_item": {
       "vanilla": 0.2,
       "opened": 0.6,
@@ -43,8 +70,8 @@
       "max": 2,
       "mean": 1
     },
-    "crown_enemy_rando": {
-      "off": 0.2,
+    "crown_enemy_difficulty": {
+      "vanilla": 0.2,
       "easy": 0.5,
       "medium": 0.3
     },
@@ -55,6 +82,9 @@
     },
     "dim_solved_hints": 1,
     "disable_tag_barrels": 0.5,
+    "dk_portal_location_rando_v2": {
+      "off": 1.0
+    },
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 1,
@@ -63,6 +93,7 @@
     "enemy_drop_rando": 0,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.5,
+    "randomize_enemy_sizes": 0.9,
     "faster_checks_enabled": 1,
     "faster_checks_selected": {
       "factory_toy_monster_fight": 1,
@@ -72,7 +103,6 @@
       "factory_car_race": 1,
       "galleon_seal_race": 1,
       "galleon_mech_fish": 1,
-      "galleon_mermaid_gb": 1,
       "forest_mill_conveyor": 1,
       "forest_owl_race": 1,
       "forest_rabbit_race": 1,
@@ -81,6 +111,7 @@
       "castle_car_race": 1,
       "jetpac": 1
     },
+    "fast_start_beginning_of_game_dummy": 1,
     "fast_warps": 1,
     "free_trade_setting": {
       "not_blueprints": 0.3,
@@ -98,7 +129,8 @@
     },
     "glitches_selected": {},
     "hard_blockers": 0,
-    "hard_level_progression": 0,
+    "hard_bosses": 0,
+    "hard_bosses_selected": {},
     "hard_mode": 0,
     "hard_mode_selected": {},
     "hard_shooting": 0,
@@ -106,6 +138,11 @@
     "helm_hurry": 0,
     "helm_phase_order_rando": 0.8,
     "helm_random": 1,
+    "helm_room_bonus_count": {
+      "zero": 0.1,
+      "one": 0.3,
+      "two": 0.6
+    },
     "helm_setting": {
       "skip_start": 0.7,
       "skip_all": 0.3
@@ -185,6 +222,12 @@
       "max": 1800,
       "mean": 1200
     },
+    "ice_trap_frequency": {
+      "rare": 0.7,
+      "mild": 0.2,
+      "common": 0.1
+    },
+    "ice_traps_damage": 0.2,
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
@@ -192,11 +235,13 @@
       "blueprint": 0.7,
       "key": 0.85,
       "medal": 0.7,
-      "coin": 0.7,
+      "nintendocoin": 0.7,
+      "rarewarecoin": 0.7,
       "kong": 0.85,
       "rainbowcoin": 0.5,
       "beanpearl": 0.5,
-      "junkitem": 0.5
+      "junkitem": 0.5,
+      "shopowners": 0.2
     },
     "item_reward_previews": 1,
     "kasplat_rando_setting": {
@@ -205,15 +250,27 @@
     },
     "key_8_helm": 0.5,
     "keys_random": 1,
+    "kong_model_chunky": {
+      "default": 1
+    },
+    "kong_model_diddy": {
+      "default": 1
+    },
+    "kong_model_dk": {
+      "default": 1
+    },
+    "kong_model_lanky": {
+      "default": 1
+    },
+    "kong_model_tiny": {
+      "default": 1
+    },
     "kong_rando": 1,
     "krool_access": 0.7,
+    "krool_in_boss_pool": 0.8,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
-    "krusha_ui": {
-      "no_slot": 0.5,
-      "random": 0.5
-    },
     "level_randomization": {
       "vanilla": 0.5,
       "level_order": 0.5
@@ -227,11 +284,17 @@
       "max": 60,
       "mean": 30
     },
+    "mermaid_gb_pearls": {
+      "min": 1,
+      "max": 3,
+      "mean": 2
+    },
     "microhints_enabled": {
       "base": 0.25,
       "all": 0.75
     },
     "minigames_list_selected": {},
+    "mirror_mode": 0,
     "misc_changes_selected": {},
     "move_rando": {
       "cross_purchase": 1
@@ -241,12 +304,16 @@
     "open_lobbies": 0.9,
     "perma_death": 0,
     "portal_numbers": 1,
-    "progressive_hint_text": {
+    "progressive_hint_count": {
       "min": 30,
       "max": 60,
       "mean": 45
     },
-    "puzzle_rando": 0.5,
+    "puzzle_rando_difficulty": {
+      "off": 0.2,
+      "easy": 0.7,
+      "medium": 0.1
+    },
     "quality_of_life": 1,
     "random_crates": 0,
     "random_fairies": 0,
@@ -258,7 +325,6 @@
       "low": 0.3,
       "medium": 0.3
     },
-    "random_starting_move_list_selected": {},
     "random_starting_region": 0,
     "randomize_blocker_required_amounts": 1,
     "randomize_cb_required_amounts": 1,
@@ -279,21 +345,18 @@
       "factory_testing_gate": 0.75,
       "galleon_lighthouse_gate": 0.75,
       "galleon_shipyard_area_gate": 0.75,
-      "galleon_shipwreck_gates": 1,
+      "castle_crypt_doors": 0.75,
       "galleon_seasick_ship": 1,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
-      "caves_igloo_pads": 1
+      "caves_igloo_pads": 1,
+      "caves_ice_walls": 1
     },
     "select_keys": 0,
     "serious_hints": 0.7,
-    "shockwave_status": {
-      "vanilla": 0.3,
-      "shuffled": 0.2,
-      "start_with": 0.5
-    },
     "shop_indicator": 1,
     "shorten_boss": 1,
+    "shuffle_helm_location": 0,
     "shuffle_items": 1,
     "shuffle_shops": 0.5,
     "smaller_shops": 0.5,
@@ -301,11 +364,31 @@
     "starting_kong": {
       "any": 1
     },
-    "starting_move_list_selected": {},
     "starting_moves_count": {
       "min": 4,
       "max": 10,
       "mean": 4
+    },
+    "starting_moves_list_count_1": {
+      "min": 4,
+      "max": 10,
+      "mean": 4
+    },
+    "starting_moves_list_count_2": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_3": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_4": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_5": {
+      "min": 0,
+      "max": 0
     },
     "starting_random": 1,
     "switchsanity": {
@@ -320,15 +403,19 @@
     "vanilla_door_rando": 0,
     "warp_level_list_selected": {},
     "warp_to_isles": 1,
-    "win_condition": {
-      "beat_krool": 0.7,
-      "get_key8": 0.3
+    "win_condition_item": {
+      "easy_random": 1
     },
     "wrinkly_available": 1,
     "wrinkly_hints": {
       "standard": 1
     },
-    "wrinkly_location_rando": 0
+    "wrinkly_location_rando": 0,
+    "spoiler_hints": {
+      "off":1,
+      "vial_colors":0,
+      "points":0
+    }
   },
   {
     "name": "Standard",
@@ -340,10 +427,14 @@
     },
     "alter_switch_allocation": 0.5,
     "auto_keys": 1,
-    "bananaport_rando": {
+    "bananaport_placement_rando": {
       "off": 0.5,
-      "in_level": 0.3,
-      "crossmap_coupled": 0.2
+      "vanilla_only": 0.3,
+      "half_vanilla": 0.15,
+      "on": 0.05
+    },
+    "bananaport_rando": {
+      "off": 1
     },
     "blocker_text": {
       "min": 40,
@@ -354,7 +445,27 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.5,
+    "cannons_require_blast": 0.5,
+    "cb_rando_enabled": 0.5,
+    "cb_rando_list_selected": {
+      "JungleJapes": 0.7,
+      "AngryAztec": 0.7,
+      "FranticFactory": 0.7,
+      "GloomyGalleon": 0.7,
+      "FungiForest": 0.7,
+      "CrystalCaves": 0.7,
+      "CreepyCastle": 0.7,
+      "DKIsles": 0.2
+    },
+    "chaos_blockers": 0.25,
+    "chaos_ratio": {
+      "min": 10,
+      "max": 35,
+      "mean": 25
+    },
+    "chunky_phase_slam_req": {
+      "random": 1
+    },
     "coin_door_item": {
       "vanilla": 0.2,
       "opened": 0.2,
@@ -378,8 +489,8 @@
       "max": 2,
       "mean": 1
     },
-    "crown_enemy_rando": {
-      "off": 0.1,
+    "crown_enemy_difficulty": {
+      "vanilla": 0.1,
       "easy": 0.3,
       "medium": 0.4,
       "hard": 0.2
@@ -392,6 +503,10 @@
     },
     "dim_solved_hints": 0.5,
     "disable_tag_barrels": 0.5,
+    "dk_portal_location_rando_v2": {
+      "off": 0.9,
+      "main_only": 0.1
+    },
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.9,
@@ -400,6 +515,7 @@
     "enemy_drop_rando": 0.25,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.5,
+    "randomize_enemy_sizes": 0.9,
     "faster_checks_enabled": 1,
     "faster_checks_selected": {
       "factory_toy_monster_fight": 0.7,
@@ -409,7 +525,6 @@
       "factory_car_race": 0.7,
       "galleon_seal_race": 0.7,
       "galleon_mech_fish": 0.7,
-      "galleon_mermaid_gb": 0.7,
       "forest_mill_conveyor": 0.7,
       "forest_owl_race": 0.7,
       "forest_rabbit_race": 0.7,
@@ -418,6 +533,7 @@
       "castle_car_race": 0.7,
       "jetpac": 0.7
     },
+    "fast_start_beginning_of_game_dummy": 1,
     "fast_warps": 1,
     "free_trade_setting": {
       "none": 0.1,
@@ -436,7 +552,8 @@
     },
     "glitches_selected": {},
     "hard_blockers": 0.2,
-    "hard_level_progression": 0.4,
+    "hard_bosses": 0,
+    "hard_bosses_selected": {},
     "hard_mode": 0,
     "hard_mode_selected": {},
     "hard_shooting": 0.5,
@@ -444,6 +561,10 @@
     "helm_hurry": 0,
     "helm_phase_order_rando": 0.8,
     "helm_random": 1,
+    "helm_room_bonus_count": {
+      "one": 0.3,
+      "two": 0.7
+    },
     "helm_setting": {
       "default": 0.2,
       "skip_start": 0.6,
@@ -524,6 +645,13 @@
       "max": 1800,
       "mean": 1200
     },
+    "ice_trap_frequency": {
+      "rare": 0.5,
+      "mild": 0.3,
+      "common": 0.15,
+      "frequent": 0.05
+    },
+    "ice_traps_damage": 0.5,
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
@@ -532,14 +660,16 @@
       "blueprint": 0.7,
       "key": 0.85,
       "medal": 0.7,
-      "coin": 0.7,
+      "nintendocoin": 0.7,
+      "rarewarecoin": 0.7,
       "kong": 0.85,
       "fairy": 0.7,
       "rainbowcoin": 0.7,
       "beanpearl": 0.7,
       "fakeitem": 0.5,
       "junkitem": 0.5,
-      "crateitem": 0.5
+      "crateitem": 0.5,
+      "shopowners": 0.3
     },
     "item_reward_previews": 1,
     "kasplat_rando_setting": {
@@ -549,15 +679,27 @@
     },
     "key_8_helm": 0.5,
     "keys_random": 1,
+    "kong_model_chunky": {
+      "default": 1
+    },
+    "kong_model_diddy": {
+      "default": 1
+    },
+    "kong_model_dk": {
+      "default": 1
+    },
+    "kong_model_lanky": {
+      "default": 1
+    },
+    "kong_model_tiny": {
+      "default": 1
+    },
     "kong_rando": 1,
     "krool_access": 0.7,
+    "krool_in_boss_pool": 0.65,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
-    "krusha_ui": {
-      "no_slot": 0.5,
-      "random": 0.5
-    },
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.65,
@@ -572,12 +714,18 @@
       "max": 90,
       "mean": 40
     },
+    "mermaid_gb_pearls": {
+      "min": 2,
+      "max": 5,
+      "mean": 3
+    },
     "microhints_enabled": {
       "off": 0.3,
       "base": 0.35,
       "all": 0.35
     },
     "minigames_list_selected": {},
+    "mirror_mode": 0,
     "misc_changes_selected": {},
     "move_rando": {
       "on": 0.3,
@@ -588,12 +736,17 @@
     "open_lobbies": 0.6,
     "perma_death": 0,
     "portal_numbers": 1,
-    "progressive_hint_text": {
+    "progressive_hint_count": {
       "min": 30,
       "max": 100,
       "mean": 60
     },
-    "puzzle_rando": 0.5,
+    "puzzle_rando_difficulty": {
+      "off": 0.1,
+      "easy": 0.2,
+      "medium": 0.6,
+      "hard": 0.1
+    },
     "quality_of_life": 1,
     "random_crates": 0.3,
     "random_fairies": 0.2,
@@ -606,7 +759,6 @@
       "medium": 0.35,
       "high": 0.25
     },
-    "random_starting_move_list_selected": {},
     "random_starting_region": 0.3,
     "randomize_blocker_required_amounts": 1,
     "randomize_cb_required_amounts": 1,
@@ -627,22 +779,18 @@
       "factory_testing_gate": 0.75,
       "galleon_lighthouse_gate": 0.75,
       "galleon_shipyard_area_gate": 0.75,
-      "galleon_shipwreck_gates": 0.8,
+      "castle_crypt_doors": 0.75,
       "galleon_seasick_ship": 0.8,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
-      "caves_igloo_pads": 0.8
+      "caves_igloo_pads": 0.8,
+      "caves_ice_walls": 0.7
     },
     "select_keys": 0,
     "serious_hints": 0.3,
-    "shockwave_status": {
-      "vanilla": 0.2,
-      "shuffled": 0.2,
-      "shuffled_decoupled": 0.2,
-      "start_with": 0.4
-    },
     "shop_indicator": 1,
     "shorten_boss": 1,
+    "shuffle_helm_location": 0.5,
     "shuffle_items": 1,
     "shuffle_shops": 0.5,
     "smaller_shops": 0.5,
@@ -650,11 +798,31 @@
     "starting_kong": {
       "any": 1
     },
-    "starting_move_list_selected": {},
     "starting_moves_count": {
       "min": 2,
       "max": 10,
       "mean": 4
+    },
+    "starting_moves_list_count_1": {
+      "min": 2,
+      "max": 10,
+      "mean": 4
+    },
+    "starting_moves_list_count_2": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_3": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_4": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_5": {
+      "min": 0,
+      "max": 0
     },
     "starting_random": 1,
     "switchsanity": {
@@ -671,10 +839,8 @@
     "vanilla_door_rando": 0.4,
     "warp_level_list_selected": {},
     "warp_to_isles": 1,
-    "win_condition": {
-      "beat_krool": 0.6,
-      "get_key8": 0.25,
-      "all_keys": 0.15
+    "win_condition_item": {
+      "medium_random": 1
     },
     "wrinkly_available": 0.9,
     "wrinkly_hints": {
@@ -682,7 +848,12 @@
       "cryptic": 0.2,
       "item_hinting": 0.3
     },
-    "wrinkly_location_rando": 0.3
+    "wrinkly_location_rando": 0.3,
+    "spoiler_hints": {
+      "off":1,
+      "vial_colors":0,
+      "points":0
+    }
   },
   {
     "name": "Difficult",
@@ -694,9 +865,14 @@
     },
     "alter_switch_allocation": 0.8,
     "auto_keys": 1,
+    "bananaport_placement_rando": {
+      "off": 0.2,
+      "vanilla_only": 0.2,
+      "half_vanilla": 0.4,
+      "on": 0.2
+    },
     "bananaport_rando": {
-      "off": 0.5,
-      "in_level": 0.3,
+      "off": 0.8,
       "crossmap_coupled": 0.1,
       "crossmap_decoupled": 0.1
     },
@@ -709,7 +885,28 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.5,
+    "cannons_require_blast": 1,
+    "cb_rando_enabled": 0.6,
+    "cb_rando_list_selected": {
+      "JungleJapes": 0.9,
+      "AngryAztec": 0.9,
+      "FranticFactory": 0.9,
+      "GloomyGalleon": 0.9,
+      "FungiForest": 0.9,
+      "CrystalCaves": 0.9,
+      "CreepyCastle": 0.9,
+      "DKIsles": 0.5
+    },
+    "chaos_blockers": 0.6,
+    "chaos_ratio": {
+      "min": 25,
+      "max": 70,
+      "mean": 40
+    },
+    "chunky_phase_slam_req": {
+      "blue": 0.7,
+      "red": 0.3
+    },
     "coin_door_item": {
       "vanilla": 0.3,
       "hard_random": 0.3,
@@ -733,8 +930,8 @@
       "max": 2,
       "mean": 2
     },
-    "crown_enemy_rando": {
-      "off": 0.2,
+    "crown_enemy_difficulty": {
+      "vanilla": 0.2,
       "medium": 0.5,
       "hard": 0.3
     },
@@ -747,6 +944,11 @@
     },
     "dim_solved_hints": 0,
     "disable_tag_barrels": 0.5,
+    "dk_portal_location_rando_v2": {
+      "off": 0.5,
+      "main_only": 0.3,
+      "on": 0.2
+    },
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.5,
@@ -755,6 +957,7 @@
     "enemy_drop_rando": 0.6,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.7,
+    "randomize_enemy_sizes": 0.9,
     "faster_checks_enabled": 1,
     "faster_checks_selected": {
       "factory_toy_monster_fight": 0.7,
@@ -764,7 +967,6 @@
       "factory_car_race": 0.7,
       "galleon_seal_race": 0.7,
       "galleon_mech_fish": 0.7,
-      "galleon_mermaid_gb": 0.7,
       "forest_mill_conveyor": 0.7,
       "forest_owl_race": 0.7,
       "forest_rabbit_race": 0.7,
@@ -773,6 +975,7 @@
       "castle_car_race": 0.7,
       "jetpac": 0.7
     },
+    "fast_start_beginning_of_game_dummy": 1,
     "fast_warps": 1,
     "free_trade_setting": {
       "none": 0.2,
@@ -793,20 +996,33 @@
       "advanced_platforming": 1
     },
     "hard_blockers": 0.6,
-    "hard_level_progression": 0.6,
+    "hard_bosses": 0.6,
+    "hard_bosses_selected": {
+      "fast_mad_jack": 0.8,
+      "pufftoss_star_rando": 0.8,
+      "pufftoss_star_raised": 0.5,
+      "kut_out_phase_rando": 0.6
+    },
     "hard_mode": 0.2,
     "hard_mode_selected": {
-      "hard_bosses": 0.6,
-      "extra_hard_bosses": 0.25,
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
-      "reduced_fall_damage_threshold": 0.5
+      "reduced_fall_damage_threshold": 0.5,
+      "shuffled_jetpac_enemies": 0.2,
+      "lower_max_refill_amounts": 0.5,
+      "strict_helm_timer": 0.2,
+      "angry_caves": 0.05,
+      "donk_in_the_dark_world": 0,
+      "donk_in_the_sky": 0
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,
     "helm_hurry": 0.05,
     "helm_phase_order_rando": 0.8,
     "helm_random": 1,
+    "helm_room_bonus_count": {
+      "two": 1
+    },
     "helm_setting": {
       "default": 0.3,
       "skip_start": 0.7
@@ -886,6 +1102,13 @@
       "max": 1800,
       "mean": 1200
     },
+    "ice_trap_frequency": {
+      "mild": 0.45,
+      "common": 0.4,
+      "frequent": 0.1,
+      "pain": 0.05
+    },
+    "ice_traps_damage": 1,
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
@@ -894,14 +1117,16 @@
       "blueprint": 0.7,
       "key": 0.85,
       "medal": 0.7,
-      "coin": 0.7,
+      "nintendocoin": 0.7,
+      "rarewarecoin": 0.7,
       "kong": 0.85,
       "fairy": 0.7,
       "rainbowcoin": 0.7,
       "beanpearl": 0.7,
       "fakeitem": 0.7,
       "junkitem": 0.7,
-      "crateitem": 0.7
+      "crateitem": 0.7,
+      "shopowners": 0.3
     },
     "item_reward_previews": 1,
     "kasplat_rando_setting": {
@@ -911,15 +1136,27 @@
     },
     "key_8_helm": 0.5,
     "keys_random": 1,
+    "kong_model_chunky": {
+      "default": 1
+    },
+    "kong_model_diddy": {
+      "default": 1
+    },
+    "kong_model_dk": {
+      "default": 1
+    },
+    "kong_model_lanky": {
+      "default": 1
+    },
+    "kong_model_tiny": {
+      "default": 1
+    },
     "kong_rando": 1,
     "krool_access": 0.7,
+    "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
-    "krusha_ui": {
-      "no_slot": 0.5,
-      "random": 0.5
-    },
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.4,
@@ -936,12 +1173,18 @@
       "max": 90,
       "mean": 60
     },
+    "mermaid_gb_pearls": {
+      "min": 2,
+      "max": 5,
+      "mean": 4
+    },
     "microhints_enabled": {
       "off": 0.3,
       "base": 0.35,
       "all": 0.35
     },
     "minigames_list_selected": {},
+    "mirror_mode": 0.05,
     "misc_changes_selected": {
       "auto_dance_skip": 1,
       "fast_boot": 1,
@@ -980,12 +1223,16 @@
     "open_lobbies": 0.6,
     "perma_death": 0,
     "portal_numbers": 1,
-    "progressive_hint_text": {
+    "progressive_hint_count": {
       "min": 30,
       "max": 100,
       "mean": 70
     },
-    "puzzle_rando": 0.5,
+    "puzzle_rando_difficulty": {
+      "easy": 0.2,
+      "medium": 0.3,
+      "hard": 0.5
+    },
     "quality_of_life": 1,
     "random_crates": 0.6,
     "random_fairies": 0.6,
@@ -998,7 +1245,6 @@
       "high": 0.2,
       "extreme": 0.1
     },
-    "random_starting_move_list_selected": {},
     "random_starting_region": 0.6,
     "randomize_blocker_required_amounts": 1,
     "randomize_cb_required_amounts": 1,
@@ -1019,22 +1265,18 @@
       "factory_testing_gate": 0.75,
       "galleon_lighthouse_gate": 0.75,
       "galleon_shipyard_area_gate": 0.75,
-      "galleon_shipwreck_gates": 0.8,
+      "castle_crypt_doors": 0.75,
       "galleon_seasick_ship": 0.8,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
-      "caves_igloo_pads": 0.8
+      "caves_igloo_pads": 0.8,
+      "caves_ice_walls": 0.7
     },
     "select_keys": 0,
     "serious_hints": 0,
-    "shockwave_status": {
-      "vanilla": 0.2,
-      "shuffled": 0.3,
-      "shuffled_decoupled": 0.3,
-      "start_with": 0.2
-    },
     "shop_indicator": 1,
     "shorten_boss": 0.8,
+    "shuffle_helm_location": 0.7,
     "shuffle_items": 1,
     "shuffle_shops": 0.7,
     "smaller_shops": 0.5,
@@ -1042,11 +1284,31 @@
     "starting_kong": {
       "any": 1
     },
-    "starting_move_list_selected": {},
     "starting_moves_count": {
       "min": 0,
       "max": 10,
       "mean": 3
+    },
+    "starting_moves_list_count_1": {
+      "min": 0,
+      "max": 10,
+      "mean": 3
+    },
+    "starting_moves_list_count_2": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_3": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_4": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_5": {
+      "min": 0,
+      "max": 0
     },
     "starting_random": 1,
     "switchsanity": {
@@ -1063,14 +1325,8 @@
     "vanilla_door_rando": 0.6,
     "warp_level_list_selected": {},
     "warp_to_isles": 1,
-    "win_condition": {
-      "beat_krool": 0.45,
-      "get_key8": 0.25,
-      "all_fairies": 0.05,
-      "all_blueprints": 0.05,
-      "all_medals": 0.05,
-      "poke_snap": 0.05,
-      "all_keys": 0.1
+    "win_condition_item": {
+      "hard_random": 1
     },
     "wrinkly_available": 0.75,
     "wrinkly_hints": {
@@ -1078,7 +1334,12 @@
       "cryptic": 0.3,
       "item_hinting": 0.3
     },
-    "wrinkly_location_rando": 0.6
+    "wrinkly_location_rando": 0.6,
+    "spoiler_hints": {
+      "off":1,
+      "vial_colors":0,
+      "points":0
+    }
   },
   {
     "name": "Difficult with QoL Shuffle",
@@ -1090,9 +1351,14 @@
     },
     "alter_switch_allocation": 0.8,
     "auto_keys": 0.5,
+    "bananaport_placement_rando": {
+      "off": 0.2,
+      "vanilla_only": 0.2,
+      "half_vanilla": 0.4,
+      "on": 0.2
+    },
     "bananaport_rando": {
-      "off": 0.5,
-      "in_level": 0.3,
+      "off": 0.8,
       "crossmap_coupled": 0.1,
       "crossmap_decoupled": 0.1
     },
@@ -1105,7 +1371,28 @@
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.5,
+    "cannons_require_blast": 1,
+    "cb_rando_enabled": 0.6,
+    "cb_rando_list_selected": {
+      "JungleJapes": 0.9,
+      "AngryAztec": 0.9,
+      "FranticFactory": 0.9,
+      "GloomyGalleon": 0.9,
+      "FungiForest": 0.9,
+      "CrystalCaves": 0.9,
+      "CreepyCastle": 0.9,
+      "DKIsles": 0.5
+    },
+    "chaos_blockers": 0.6,
+    "chaos_ratio": {
+      "min": 25,
+      "max": 70,
+      "mean": 40
+    },
+    "chunky_phase_slam_req": {
+      "blue": 0.7,
+      "red": 0.3
+    },
     "coin_door_item": {
       "vanilla": 0.3,
       "hard_random": 0.3,
@@ -1129,8 +1416,8 @@
       "max": 2,
       "mean": 2
     },
-    "crown_enemy_rando": {
-      "off": 0.2,
+    "crown_enemy_difficulty": {
+      "vanilla": 0.2,
       "medium": 0.5,
       "hard": 0.3
     },
@@ -1143,6 +1430,11 @@
     },
     "dim_solved_hints": 0,
     "disable_tag_barrels": 0.5,
+    "dk_portal_location_rando_v2": {
+      "off": 0.5,
+      "main_only": 0.3,
+      "on": 0.2
+    },
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.5,
@@ -1151,6 +1443,7 @@
     "enemy_drop_rando": 0.6,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.7,
+    "randomize_enemy_sizes": 0.9,
     "faster_checks_enabled": 1,
     "faster_checks_selected": {
       "factory_toy_monster_fight": 0.7,
@@ -1160,7 +1453,6 @@
       "factory_car_race": 0.7,
       "galleon_seal_race": 0.7,
       "galleon_mech_fish": 0.7,
-      "galleon_mermaid_gb": 0.7,
       "forest_mill_conveyor": 0.7,
       "forest_owl_race": 0.7,
       "forest_rabbit_race": 0.7,
@@ -1169,6 +1461,7 @@
       "castle_car_race": 0.7,
       "jetpac": 0.7
     },
+    "fast_start_beginning_of_game_dummy": 1,
     "fast_warps": 0.8,
     "free_trade_setting": {
       "none": 0.2,
@@ -1189,20 +1482,33 @@
       "advanced_platforming": 1
     },
     "hard_blockers": 0.6,
-    "hard_level_progression": 0.6,
+    "hard_bosses": 0.6,
+    "hard_bosses_selected": {
+      "fast_mad_jack": 0.8,
+      "pufftoss_star_rando": 0.8,
+      "pufftoss_star_raised": 0.5,
+      "kut_out_phase_rando": 0.6
+    },
     "hard_mode": 0.2,
     "hard_mode_selected": {
-      "hard_bosses": 0.6,
-      "extra_hard_bosses": 0.25,
       "hard_enemies": 0.6,
       "water_is_lava": 0.25,
-      "reduced_fall_damage_threshold": 0.5
+      "reduced_fall_damage_threshold": 0.5,
+      "shuffled_jetpac_enemies": 0.2,
+      "lower_max_refill_amounts": 0.5,
+      "strict_helm_timer": 0.2,
+      "angry_caves": 0.05,
+      "donk_in_the_dark_world": 0,
+      "donk_in_the_sky": 0
     },
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.5,
     "helm_hurry": 0.05,
     "helm_phase_order_rando": 0.8,
     "helm_random": 1,
+    "helm_room_bonus_count": {
+      "two": 1
+    },
     "helm_setting": {
       "default": 0.3,
       "skip_start": 0.7
@@ -1282,6 +1588,13 @@
       "max": 1800,
       "mean": 1200
     },
+    "ice_trap_frequency": {
+      "mild": 0.45,
+      "common": 0.4,
+      "frequent": 0.1,
+      "pain": 0.05
+    },
+    "ice_traps_damage": 1,
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
@@ -1290,14 +1603,16 @@
       "blueprint": 0.7,
       "key": 0.85,
       "medal": 0.7,
-      "coin": 0.7,
+      "nintendocoin": 0.7,
+      "rarewarecoin": 0.7,
       "kong": 0.85,
       "fairy": 0.7,
       "rainbowcoin": 0.7,
       "beanpearl": 0.7,
       "fakeitem": 0.7,
       "junkitem": 0.7,
-      "crateitem": 0.7
+      "crateitem": 0.7,
+      "shopowners": 0.3
     },
     "item_reward_previews": 0.75,
     "kasplat_rando_setting": {
@@ -1307,15 +1622,27 @@
     },
     "key_8_helm": 0.5,
     "keys_random": 1,
+    "kong_model_chunky": {
+      "default": 1
+    },
+    "kong_model_diddy": {
+      "default": 1
+    },
+    "kong_model_dk": {
+      "default": 1
+    },
+    "kong_model_lanky": {
+      "default": 1
+    },
+    "kong_model_tiny": {
+      "default": 1
+    },
     "kong_rando": 1,
     "krool_access": 0.7,
+    "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
     "k_rool_vanilla_requirement": 0,
-    "krusha_ui": {
-      "no_slot": 0.5,
-      "random": 0.5
-    },
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.4,
@@ -1332,12 +1659,18 @@
       "max": 90,
       "mean": 60
     },
+    "mermaid_gb_pearls": {
+      "min": 2,
+      "max": 5,
+      "mean": 4
+    },
     "microhints_enabled": {
       "off": 0.3,
       "base": 0.35,
       "all": 0.35
     },
     "minigames_list_selected": {},
+    "mirror_mode": 0.05,
     "misc_changes_selected": {
       "auto_dance_skip": 0.8,
       "fast_boot": 0.75,
@@ -1376,12 +1709,16 @@
     "open_lobbies": 0.6,
     "perma_death": 0,
     "portal_numbers": 0.5,
-    "progressive_hint_text": {
+    "progressive_hint_count": {
       "min": 30,
       "max": 100,
       "mean": 70
     },
-    "puzzle_rando": 0.5,
+    "puzzle_rando_difficulty": {
+      "easy": 0.2,
+      "medium": 0.3,
+      "hard": 0.5
+    },
     "quality_of_life": 1,
     "random_crates": 0.6,
     "random_fairies": 0.6,
@@ -1394,7 +1731,6 @@
       "high": 0.2,
       "extreme": 0.1
     },
-    "random_starting_move_list_selected": {},
     "random_starting_region": 0.6,
     "randomize_blocker_required_amounts": 1,
     "randomize_cb_required_amounts": 1,
@@ -1415,22 +1751,18 @@
       "factory_testing_gate": 0.75,
       "galleon_lighthouse_gate": 0.75,
       "galleon_shipyard_area_gate": 0.75,
-      "galleon_shipwreck_gates": 0.8,
+      "castle_crypt_doors": 0.75,
       "galleon_seasick_ship": 0.8,
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
-      "caves_igloo_pads": 0.8
+      "caves_igloo_pads": 0.8,
+      "caves_ice_walls": 0.7
     },
     "select_keys": 0,
     "serious_hints": 0,
-    "shockwave_status": {
-      "vanilla": 0.2,
-      "shuffled": 0.3,
-      "shuffled_decoupled": 0.3,
-      "start_with": 0.2
-    },
     "shop_indicator": 0.5,
     "shorten_boss": 0.8,
+    "shuffle_helm_location": 0.7,
     "shuffle_items": 1,
     "shuffle_shops": 0.7,
     "smaller_shops": 0.5,
@@ -1438,11 +1770,31 @@
     "starting_kong": {
       "any": 1
     },
-    "starting_move_list_selected": {},
     "starting_moves_count": {
       "min": 0,
       "max": 10,
       "mean": 3
+    },
+    "starting_moves_list_count_1": {
+      "min": 0,
+      "max": 10,
+      "mean": 3
+    },
+    "starting_moves_list_count_2": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_3": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_4": {
+      "min": 0,
+      "max": 0
+    },
+    "starting_moves_list_count_5": {
+      "min": 0,
+      "max": 0
     },
     "starting_random": 1,
     "switchsanity": {
@@ -1459,14 +1811,8 @@
     "vanilla_door_rando": 0.6,
     "warp_level_list_selected": {},
     "warp_to_isles": 0.9,
-    "win_condition": {
-      "beat_krool": 0.45,
-      "get_key8": 0.25,
-      "all_fairies": 0.05,
-      "all_blueprints": 0.05,
-      "all_medals": 0.05,
-      "poke_snap": 0.05,
-      "all_keys": 0.1
+    "win_condition_item": {
+      "hard_random": 1
     },
     "wrinkly_available": 0.75,
     "wrinkly_hints": {
@@ -1475,6 +1821,11 @@
       "cryptic": 0.2,
       "item_hinting": 0.3
     },
-    "wrinkly_location_rando": 0.6
+    "wrinkly_location_rando": 0.6,
+    "spoiler_hints": {
+      "off":1,
+      "vial_colors":0,
+      "points":0
+    }
   }
 ]

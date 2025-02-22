@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport"
@@ -13,7 +13,7 @@
         <meta content="Homepage" property="og:title" />
         <meta content="Welcome to the DK64 Randomizer Wiki. A comprehensive wiki on tricks, tips and guides to playing the best monkey game randomizer on the Nintendo 64." property="og:description" />
         <meta content="Donkey Kong 64 Randomizer Wiki" property="og:site_name" />
-        <meta content="https://raw.githubusercontent.com/2dos/DK64-Randomizer/master/static/img/logo.png" property="og:image" />
+        <meta content="https://raw.githubusercontent.com/2dos/DK64-Randomizer/master/static/img/logo.webp" property="og:image" />
         <title>Donkey Kong 64 Randomizer Wiki</title>
         <link href="../static/img/dk.png" rel="icon" />
         <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
@@ -23,7 +23,8 @@
         <link href="../static/styles/styles.css" rel="stylesheet" />
         <link href="../static/styles/gui.css" rel="stylesheet" type="text/css" />
         <link href="../static/styles/wiki.css" rel="stylesheet" type="text/css" />
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
     </head>
     <body id="page-top">
         <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
@@ -60,17 +61,48 @@
                 </div>
             </div>
         </nav>
-        <img src="../static/img/logo.png"
+        <img src="../static/img/logo.webp"
             alt="DK64 Randomizer"
             class="center_image"
             style="cursor: pointer; margin-top: 70px"/>
-        <div class="container">
+        <div class="mt-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-1 p-0 hide-if-thin"></div>
+                    <div class="col-sm-10">
+                        <div class="mb-3 ps-0" style="width:fit-content; margin-left: auto">
+                            <div class="card bg-vdark">
+                                <div class="sidebar-link fs-6 p-3 user-select-none" data-bs-toggle="modal" data-bs-target="#searchModal">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 p-0 hide-if-thin"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="searchModalLabel">Search</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input class="form-control mr-sm-2" id="article-search" type="text" placeholder="Search" autocomplete="off" data-lpignore="true" data-form-type="other">
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- <div class="container">
             <div class="row">
                 <div class="col-sm-1 hide-if-thin"></div>
                 <div class="col-sm-10 max-if-thin">
                     <div class="row justify-content-end">
                         <div class="col-sm-3">
-                            <div class="card bg-dark px-2 pt-2 position-relative">
+                            <div class="card bg-vdark p-2 position-relative" id="search-container">
                                 <input class="form-control mr-sm-2" id="article-search" type="input" placeholder="Search" aria-label="Search">
                                 <div class="position-absolute" id="search_suggestions"></div>
                             </div>
@@ -79,12 +111,12 @@
                 </div>
                 <div class="col-sm-1 hide-if-thin"></div>
             </div>
-        </div>
+        </div> -->
         <div class="container">
             <div class="row">
                 <div class="col-sm-1 p-0 hide-if-thin"></div>
                 <div class="col-sm-10 max-if-thin">
-                    <div class="card bg-dark p-3">
+                    <div class="card bg-vdark p-3">
                         <h1 id="page-title">Welcome to the DK64 Randomizer Wiki</h1>
                         <hr />
                         <div class="container">
@@ -116,11 +148,41 @@
                 const articles = await fetch("./articles.json", {cache: "no-store"}).then(x => x.json());
                 const sorted_articles = articles.sort((a, b) => a.name > b.name ? 1 : ((b.name > a.name) ? -1 : 0));
                 const article_hook = document.getElementById("article-list");
-                article_hook.innerHTML = sorted_articles.map(article => `<li><a href="${getLink(article)}">${article.name}</a></li>`).join("");
+                article_hook.innerHTML = sorted_articles.map(article => {
+                    if (article.name.includes("Custom Locations: ")) {
+                        return "";
+                    }
+                    if (article.name.includes("Random Settings: ")) {
+                        return "";
+                    }
+                    return `<li><a href="${getLink(article)}">${article.name}</a></li>`;
+                }).join("");
             }
             fetchArticles();
         </script>
         <script type="text/javascript" src="../static/js/wiki-code.js"></script>
+        <script src="../static/js/autocomplete.js"></script>
+        <script type="text/javascript">
+            async function prepSuggestions() {
+                const article_lst = await getSuggestions();
+                $('#article-search').typeahead({
+                    source: article_lst,
+                    displayText: (item) => {
+                        return item.name;
+                    },
+                    afterSelect: (item) => {
+                        $(document).on('click', '.typeahead.dropdown-menu li', function() {
+                            window.location.href = item.link;
+                        });
+                    }
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', e => {
+                prepSuggestions();
+            }, false);
+        </script>
         <script type="text/javascript" src="../static/js/font-awesome.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </body>
 </html>

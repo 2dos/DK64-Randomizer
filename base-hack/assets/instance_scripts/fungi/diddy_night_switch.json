@@ -19,8 +19,7 @@
                 {"function":1,"inverted":false,"parameters":[1,0,0]},
                 {"function":17,"inverted":false,"parameters":[3,1,0]},
                 {"function":23,"inverted":false,"parameters":[28,0,0]},
-                {"function":37,"inverted":false,"parameters":[2,0,0]},
-                {"function":6,"inverted":false,"parameters":[7,65519,1]}
+                {"function":37,"inverted":false,"parameters":[2,0,0]}
             ],
             "executions": [
                 {"function":17,"parameters":[1,1,0]},
@@ -58,27 +57,6 @@
             ],
             "executions": [
                 {"function":1,"parameters":[5,0,0]}
-            ]
-        },
-        {
-            "conditions": [
-                {"function":1,"inverted":false,"parameters":[5,0,0]},
-                {"function":6,"inverted":true,"parameters":[7,65519,1]}
-            ],
-            "executions": [
-                {"function":17,"parameters":[1,1,0]},
-                {"function":5,"parameters":[10,20,0]},
-                {"function":84,"parameters":[10,1,0]},
-                {"function":1,"parameters":[6,0,0]}
-            ]
-        },
-        {
-            "conditions": [
-                {"function":1,"inverted":false,"parameters":[6,0,0]},
-                {"function":21,"inverted":true,"parameters":[1,0,0]}
-            ],
-            "executions": [
-                {"function":1,"parameters":[1,0,0]}
             ]
         }
     ]

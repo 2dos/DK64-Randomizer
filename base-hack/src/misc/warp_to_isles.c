@@ -3,13 +3,23 @@
 void writeWTI(int index) {
 	ExpandPauseMenu = index;
 	int init_y = 0x198;
-	if (Rando.true_widescreen) {
-		init_y = (2 * SCREEN_HD_FLOAT) - 72;
-	}
 	InitialPauseHeight = init_y - (0x28 * index);
 }
 
+static unsigned char isles_maps[] = {
+	MAP_ISLES,
+	MAP_FAIRYISLAND,
+	MAP_KLUMSY,
+	MAP_ISLES_SNIDEROOM,
+	MAP_TRAININGGROUNDS,
+	MAP_TREEHOUSE,
+};
+
 void handle_WTI(void) {
+	if (!checkFlagDuplicate(FLAG_ESCAPE, FLAGTYPE_PERMANENT)) {
+		writeWTI(0);
+		return;
+	}
 	if (isLobby(CurrentMap)) {
 		// Lobbies
 		writeWTI(1);
@@ -19,11 +29,8 @@ void handle_WTI(void) {
 	} else if ((CurrentMap == MAP_HELM) && (checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT))) {
 		// Helm (Only if BoM is off)
 		writeWTI(1);
-	} else if ((CurrentMap == MAP_ISLES) || (CurrentMap == MAP_FAIRYISLAND) || (CurrentMap == MAP_KLUMSY) || (CurrentMap == MAP_ISLES_SNIDEROOM)) {
+	} else if (inU8List(CurrentMap, &isles_maps, sizeof(isles_maps))) {
 		// Isles, BFI, K. Lumsy, Snide Room
-		writeWTI(1);
-	} else if ((checkFlagDuplicate(FLAG_ESCAPE, FLAGTYPE_PERMANENT)) && ((CurrentMap == MAP_TRAININGGROUNDS) || (CurrentMap == MAP_TREEHOUSE))) {
-		// TGrounds & Treehouse (Only if escaped from Isles)
 		writeWTI(1);
 	} else {
 		writeWTI(0);
@@ -31,6 +38,10 @@ void handle_WTI(void) {
 }
 
 void warpToIsles(void) {
-	initiateTransition(Rando.starting_map, Rando.starting_exit);
+	int exit = Rando.starting_exit;
+	if (Rando.starting_map == MAP_HELM) {
+		exit = getHelmExit();
+	}
+	initiateTransition(Rando.starting_map, exit);
 	fixHelmTimerCorrection();
 }

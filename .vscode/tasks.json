@@ -36,7 +36,7 @@
     {
       "label": "Validate C",
       "type": "shell",
-      "command": "Get-ChildItem -Path \"./base-hack/src\" -Recurse -Filter *.c |\nForeach-Object {\n${command:python.interpreterPath} -m cpplint --quiet --filter=-whitespace,-legal/copyright,-readability/casting,-runtime/int,-readability/fn_size $_.FullName\n}",
+      "command": "Get-ChildItem -Path \"./base-hack/src\" -Recurse -Filter *.c | Foreach-Object { ${command:python.interpreterPath} -m cpplint --quiet --filter=-whitespace,-legal/copyright,-readability/casting,-runtime/int,-readability/fn_size $_.FullName }",
       "problemMatcher": []
     },
     {
@@ -52,15 +52,20 @@
       "problemMatcher": []
     },
     {
+      "label": "Build base hack builder",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/base-hack ; ${command:python.interpreterPath} ./pyinstaller_handler.py",
+      "problemMatcher": []
+    },
+    {
       "label": "Lint Repo",
       "dependsOn": [
         "Format Repo",
         "Validate Styles",
         "Validate Docstrings",
-        //"Validate Jinja2",
         "Validate C",
-        "Update Custom Location Lists", // Also updates wiki
-        //"Update Wiki"
+        "Update Custom Location Lists",
+        "Generate PyI Stubs"
       ],
       "problemMatcher": []
     },
@@ -81,10 +86,35 @@
       }
     },
     {
+      "label": "Build Test Hack",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/base-hack/ ; ./build.bat --test ; cd ${workspaceFolder} ; ${command:python.interpreterPath} base_hack_test.py",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
       "label": "Run Server",
       "type": "shell",
       "command": "${command:python.interpreterPath} ./runner.py",
       "problemMatcher": []
+    },
+    {
+      "label": "Generate PyI Stubs",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./generate_stubs.py ${workspaceFolder}",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "isBackground": false
     }
   ]
 }

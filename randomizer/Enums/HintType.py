@@ -1,31 +1,9 @@
 """Hint Type enum."""
 
-from enum import IntEnum, auto
+from randomizer.JsonReader import generate_globals
 
+from typing import TYPE_CHECKING
 
-class HintType(IntEnum):
-    """Hint type enum."""
-
-    Joke = auto()
-    KRoolOrder = auto()
-    HelmOrder = auto()
-    MoveLocation = auto()
-    DirtPatch = auto()
-    BLocker = auto()
-    TroffNScoff = auto()
-    KongLocation = auto()
-    MedalsRequired = auto()
-    Entrance = auto()
-    RequiredKongHint = auto()
-    RequiredKeyHint = auto()
-    RequiredWinConditionHint = auto()
-    RequiredHelmDoorHint = auto()
-    FullShopWithItems = auto()
-    WothLocation = auto()
-    FoolishMove = auto()
-    FoolishRegion = auto()
-    ForeseenPathless = auto()
-    Multipath = auto()
-    RegionItemCount = auto()
-    ItemRegion = auto()
-    Plando = auto()
+if TYPE_CHECKING:
+    from randomizer.Enums.HintType import HintType
+globals().update(generate_globals(__file__))

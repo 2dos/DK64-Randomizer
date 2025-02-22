@@ -1,0 +1,40 @@
+{# Variables and classes not defined here are in plandomizer.html #}
+<div class="tab-pane plando-pane fade"
+     id="nav-plando-{{panelName}}"
+     role="tabpanel"
+     aria-labelledby="nav-plando-{{panelName}}-tab">
+    <h2 class="title">{{panel["name"]}}</h2>
+        <div class="flex-container flex-center">
+            {% for location in panel["locations"] %}
+                <div class="location-picker">
+                    <label for="plando_{{location["switch_loc"]}}_switch" class="location-label">
+                        {{location["name"]}}
+                    </label>
+                    <div id="plando_{{location["switch_loc"]}}_switch_wrapper"
+                         data-toggle="tooltip"
+                         title>
+                        <select id="plando_{{location["switch_loc"]}}_switch"
+                                name="plando_{{location["switch_loc"]}}_switch"
+                                class="form-select">
+                            <option value="">-- Randomize --</option>
+                            {% if location["switch_loc"] in plando_switches %}
+                                {% for switch in plando_switches[location["switch_loc"]] %}
+                                    <option value="{{switch["value"]}}"
+                                        {% if switch["value"] == location["vanilla_value"] %}selected{% endif %}>
+                                        {{switch["name"]}}
+                                    </option>
+                                {% endfor %}
+                            {% else %}
+                                {% for switch in plando_switches[location["switch_type"]] %}
+                                    <option value="{{switch["value"]}}"
+                                        {% if switch["value"] == location["vanilla_value"] %}selected{% endif %}>
+                                        {{switch["name"]}}
+                                    </option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+</div>

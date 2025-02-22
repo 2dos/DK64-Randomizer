@@ -9,6 +9,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.HintRegion import HintRegion, HINT_REGION_PAIRING, MEDAL_REWARD_REGIONS, SHOP_REGIONS
 from randomizer.Lists.EnemyTypes import enemy_location_list
 
 if TYPE_CHECKING:
@@ -23,7 +24,13 @@ if TYPE_CHECKING:
 class LocationLogic:
     """Logic for a location."""
 
-    def __init__(self, id: Union[int, Locations], logic: Callable, bonusBarrel: Optional[MinigameType] = None, isAuxiliary: bool = False) -> None:
+    def __init__(
+        self,
+        id: Union[int, Locations],
+        logic: Callable,
+        bonusBarrel: Optional[MinigameType] = None,
+        isAuxiliary: bool = False,
+    ) -> None:
         """Initialize with given parameters."""
         self.id = id
         self.logic = logic  # Lambda function for accessibility
@@ -84,7 +91,7 @@ class Region:
     def __init__(
         self,
         name: str,
-        hint_name: str,
+        hint_name: HintRegion,
         level: Levels,
         tagbarrel: bool,
         deathwarp: Optional[Union[int, TransitionFront, Regions]],
@@ -137,22 +144,38 @@ class Region:
         if self.level == Levels.DKIsles:
             return Regions.IslesMain
         elif self.level == Levels.JungleJapes:
-            return Regions.JungleJapesStart
+            return Regions.JungleJapesEntryHandler
         elif self.level == Levels.AngryAztec:
-            return Regions.AngryAztecStart
+            return Regions.AngryAztecEntryHandler
         elif self.level == Levels.FranticFactory:
-            return Regions.FranticFactoryStart
+            return Regions.FranticFactoryEntryHandler
         elif self.level == Levels.GloomyGalleon:
-            return Regions.GloomyGalleonStart
+            return Regions.GloomyGalleonEntryHandler
         elif self.level == Levels.FungiForest:
-            return Regions.FungiForestStart
+            return Regions.FungiForestEntryHandler
         elif self.level == Levels.CrystalCaves:
-            return Regions.CrystalCavesMain
+            return Regions.CrystalCavesEntryHandler
         elif self.level == Levels.CreepyCastle:
-            return Regions.CreepyCastleMain
+            return Regions.CreepyCastleEntryHandler
         elif self.level == Levels.HideoutHelm:
             return Regions.HideoutHelmEntry
         return Regions.GameStart
+
+    def getHintRegionName(self) -> str:
+        """Convert hint region enum to the name."""
+        return HINT_REGION_PAIRING.get(self.hint_name, "Unknown Region")
+
+    def isMedalRegion(self) -> bool:
+        """Return whether the associated hint region is a medal reward region."""
+        return self.hint_name in MEDAL_REWARD_REGIONS
+
+    def isCBRegion(self) -> bool:
+        """Return whether the associated hint region requires CBs to access (Bosses and medal rewards)."""
+        return self.hint_name in MEDAL_REWARD_REGIONS or self.hint_name == HintRegion.Bosses
+
+    def isShopRegion(self) -> bool:
+        """Return whether the associated hint region is a shop region."""
+        return self.hint_name in SHOP_REGIONS
 
 
 class TransitionBack:
@@ -180,9 +203,9 @@ class TransitionFront:
         isBananaportTransition: bool = False,
     ) -> None:
         """Initialize with given parameters."""
-        self.dest = dest  # Planning to remove this
+        self.dest = dest
         self.logic = logic  # Lambda function for accessibility
-        self.exitShuffleId = exitShuffleId  # Planning to remove this
+        self.exitShuffleId = exitShuffleId
         self.time = time
         self.assumed = assumed  # Indicates this is an assumed exit attached to the root
         self.isGlitchTransition = isGlitchTransition  # Indicates if this is a glitch-logic transition for this entrance
@@ -209,7 +232,18 @@ class Sphere:
 class ColoredBananaGroup:
     """Stores data for each group of colored bananas."""
 
-    def __init__(self, *, group=0, name="No Location", map_id=0, konglist=[], region=None, logic=None, vanilla=False, locations=[]) -> None:
+    def __init__(
+        self,
+        *,
+        group=0,
+        name="No Location",
+        map_id=0,
+        konglist=[],
+        region=None,
+        logic=None,
+        vanilla=False,
+        locations=[],
+    ) -> None:
         """Initialize with given parameters."""
         self.group = group
         self.name = name
@@ -227,7 +261,19 @@ class ColoredBananaGroup:
 class Balloon:
     """Stores data for each balloon."""
 
-    def __init__(self, *, id=0, name="No Location", map_id=0, speed=0, konglist=[], region=None, logic=None, vanilla=False, points=[]) -> None:
+    def __init__(
+        self,
+        *,
+        id=0,
+        name="No Location",
+        map_id=0,
+        speed=0,
+        konglist=[],
+        region=None,
+        logic=None,
+        vanilla=False,
+        points=[],
+    ) -> None:
         """Initialize with given parameters."""
         self.id = id
         self.name = name

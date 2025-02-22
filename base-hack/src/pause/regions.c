@@ -394,7 +394,7 @@ int setHintRegion(void) {
                     // 5 = Production Room
                     // 6 = Tunnel to Hatch
                     return REGION_FACTORYPROD;
-                } else if ((chunk == 7)) {
+                } else if (chunk == 7) {
                     // 7 = Room with the Hatch
                     // Chunk has 2 regions, subdivide by y position
                     if (py < 804) {
@@ -480,13 +480,13 @@ void getHintRegionText(void) {
     if (index < 0) {
         dk_memcpy(hint_region_text, "UNKNOWN", 8);
     } else {
-        char* text = getTextPointer(43, index, 0);
+        char* text = hint_region_names[index];
         wipeMemory(hint_region_text, 0x20);
         dk_memcpy(hint_region_text, text, 0x20);
     }
 }
 
-int* displayHintRegion(int* dl, int x, int y, float scale, char* text) {
+Gfx* displayHintRegion(Gfx* dl, int x, int y, float scale, char* text) {
     dl = printText(dl, x, y, scale, text);
     int y_req = 0x198;
     if (Rando.warp_to_isles_enabled) {
@@ -497,11 +497,6 @@ int* displayHintRegion(int* dl, int x, int y, float scale, char* text) {
     }
     int x_hint = 0x280;
     int y_bottom = 240;
-    if (Rando.true_widescreen) {
-        x_hint = SCREEN_WD << 1;
-        y_bottom = SCREEN_HD;
-    }
-    *(unsigned int*)(dl++) = 0xFA000000;
-    *(unsigned int*)(dl++) = 0xFFFFFFFF;
+    gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
     return printText(dl, x_hint, (y_bottom << 2) - 100, 0.45f, (char*)&hint_region_text);
 }

@@ -56,7 +56,7 @@ class TableNames(IntEnum):
     Unknown19 = auto()
     Unknown20 = auto()
     Autowalks = auto()
-    Unknown22 = auto()
+    Critters = auto()
     Exits = auto()
     RaceCheckpoints = auto()
     TexturesGeometry = auto()
@@ -795,3 +795,98 @@ class Overlay(IntEnum):
     Bonus = 8
     Arcade = 9
     Jetpac = 10
+
+
+class Vendors(IntEnum):
+    """Vendors Enum."""
+
+    Cranky = 0
+    Funky = 1
+    Candy = 2
+    Snide = 3
+
+
+class ExtraTextures(IntEnum):
+    """Extra Textures in Table 25 after the bonus skins."""
+
+    FakeGBShine = 0
+    RainbowCoin0 = auto()
+    RainbowCoin1 = auto()
+    RainbowCoin2 = auto()
+    MelonSurface = auto()
+    BonusShell = auto()
+    OSprintLogoLeft = auto()
+    OSprintLogoRight = auto()
+    BLockerItemMove = auto()
+    BLockerItemBlueprint = auto()
+    BLockerItemFairy = auto()
+    BLockerItemBean = auto()
+    BLockerItemPearl = auto()
+    BLockerItemRainbowCoin = auto()
+    BLockerItemIceTrap = auto()
+    BLockerItemPercentage = auto()
+    BLockerItemBalloon = auto()
+    BLockerItemCompanyCoin = auto()
+    BLockerItemKong = auto()
+    BeetleTex0 = auto()
+    BeetleTex1 = auto()
+    BeetleTex2 = auto()
+    BeetleTex3 = auto()
+    BeetleTex4 = auto()
+    BeetleTex5 = auto()
+    BeetleTex6 = auto()
+    Feather0 = auto()
+    Feather1 = auto()
+    Feather2 = auto()
+    Feather3 = auto()
+    Feather4 = auto()
+    Feather5 = auto()
+    Feather6 = auto()
+    Feather7 = auto()
+    FoolOverlay = auto()
+    MedalRim = auto()
+    MushTop0 = auto()
+    MushTop1 = auto()
+    ShellWood = auto()
+    ShellMetal = auto()
+    ShellQMark = auto()
+    RocketTop = auto()
+    BlastTop = auto()
+    Anniv25Sticker = auto()
+    Anniv25Barrel = auto()
+    BeanSpin01 = auto()
+    BeanSpin02 = auto()
+    BeanSpin03 = auto()
+    BeanSpin04 = auto()
+    BeanSpin05 = auto()
+    BeanSpin06 = auto()
+    BeanSpin07 = auto()
+    BeanSpin08 = auto()
+    BeanSpin09 = auto()
+    BeanSpin10 = auto()
+    BeanSpin11 = auto()
+    BeanSpin12 = auto()
+    KrushaFace1 = auto()
+    KrushaFace2 = auto()
+    KrushaFace3 = auto()
+    KrushaFace4 = auto()
+    KrushaFace5 = auto()
+    KrushaFace321 = auto()
+    KrushaFace322 = auto()
+    KrushaFace323 = auto()
+    KrushaFace324 = auto()
+    KrushaFace325 = auto()
+
+
+class MoveTypes(IntEnum):
+    """Move Types Enum."""
+
+    special = 0
+    slam = auto()
+    weapon = auto()
+    ammo_belt = auto()
+    instrument = auto()
+    flag = auto()
+    gb = auto()
+    gun_upgrade = auto()
+    instrument_upgrade = auto()

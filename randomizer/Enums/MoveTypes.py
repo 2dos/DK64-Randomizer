@@ -1,14 +1,9 @@
 """Move type enum."""
 
-from enum import IntEnum, auto
+from randomizer.JsonReader import generate_globals
+from typing import TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from randomizer.Enums.MoveTypes import MoveTypes
 
-class MoveTypes(IntEnum):
-    """Move type enum."""
-
-    Moves = 0
-    Slam = auto()
-    Guns = auto()
-    AmmoBelt = auto()
-    Instruments = auto()
-    Flag = auto()
+globals().update(generate_globals(__file__))

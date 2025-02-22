@@ -10,20 +10,6 @@
  */
 #include "../../include/common.h"
 
-void fixkey8(void) {
-	/**
-	 * @brief Fixes Fake Key at the end of Hideout Helm
-	 * 
-	 */
-	if (CurrentMap == MAP_HELM) { // Hideout Helm
-		if (checkFlag(FLAG_KEYHAVE_KEY8,FLAGTYPE_PERMANENT) == 0) { // Doesn't have Key 8
-			if (touchingModel2Object(0x5A)) {
-				setPermFlag(FLAG_KEYHAVE_KEY8); // Give Key 8
-			}
-		}
-	}
-}
-
 void fixHelmTimerCorrection(void) {
 	/**
 	 * @brief Fix a bug where pausing and then doing something other than unpausing that takes you out of the pause menu will not perform the helm timer correction
@@ -95,4 +81,30 @@ void helmTime_exitKRool(void) {
 	 */
 	initiateTransition(MAP_ISLES, 12);
 	fixHelmTimerCorrection();
+}
+
+static unsigned char helm_entry_points[] = {0, 3, 4};
+
+void initHelmSetup(void) {
+	int setting = Rando.fast_start_helm;
+	if (setting > 0) {
+		setPermFlag(FLAG_STORY_HELM); // Helm Story
+		setFlag(FLAG_HELM_ROMANDOORS_OPEN,1,FLAGTYPE_TEMPORARY); // Roman Numeral Doors
+		for (int j = 0; j < 4; j++) {
+			setFlag(FLAG_HELM_GATE_0 + j,1,FLAGTYPE_TEMPORARY); // Gates knocked down
+		}
+		if (setting == 2) {
+			setPermFlag(FLAG_MODIFIER_HELMBOM);
+		}
+	}
+}
+
+int getHelmExit(void) {
+	int setting = Rando.fast_start_helm;
+	initHelmSetup();
+	return helm_entry_points[setting];
+}
+
+void WarpToHelm(void) {
+	initiateTransition(MAP_HELM, getHelmExit());
 }

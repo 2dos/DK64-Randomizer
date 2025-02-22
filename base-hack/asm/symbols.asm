@@ -16,6 +16,7 @@
 .include "asm/variables/static.asm"
 
 //vanilla data
+.definelabel __osActiveQueue, 0x800100EC
 .definelabel TransitionSpeed, 0x807FD88C
 .definelabel CutsceneWillPlay, 0x8075533B
 .definelabel KRoolRound, 0x80750AD4
@@ -83,6 +84,7 @@
 .definelabel Player, 0x807FBB4C
 .definelabel SwapObject, 0x807FC924
 .definelabel Character, 0x8074E77C
+.definelabel KongIndex, 0x807FD584
 .definelabel Camera, 0x807FB968
 .definelabel ISGActive, 0x80755070
 .definelabel ISGTimestampMajor, 0x807F5CE0
@@ -131,6 +133,8 @@
 .definelabel HUD, 0x80754280
 .definelabel HelmMinigameFlags, 0x8074E7E0
 .definelabel textData, 0x80754A34
+.definelabel textCharData, 0x80754A18
+.definelabel textUnkData, 0x807549FC
 .definelabel LZFadeoutProgress, 0x807FD888
 .definelabel mapFloorPointer, 0x807F9514
 .definelabel mapFloorBlockCount, 0x807F9518
@@ -151,6 +155,11 @@
 .definelabel FileIndex, 0x807467C8
 .definelabel LockStackCount, 0x807F5A68
 .definelabel CutsceneBarState, 0x8076A0B3
+
+.definelabel PathData, 0x807FDBF8
+.definelabel MapProperties, 0x807FBB64
+
+.definelabel DefaultExit, 0x807FC908
 
 .definelabel TriggerArray, 0x807FDCB4
 .definelabel TriggerSize, 0x807FDCB0
@@ -192,7 +201,10 @@
 .definelabel CBTurnedInArray, 0x807FC930
 .definelabel charspawnerflags, 0x80755DA8
 .definelabel songData, 0x80745658
+.definelabel trackStateArray, 0x80745924
+.definelabel SongInWriteSlot, 0x80770560
 .definelabel songVolumes, 0x807454F0
+.definelabel compactSequencePlayers, 0x8076BF20
 .definelabel MusicTrackChannels, 0x807458DC
 .definelabel BoatSpeeds, 0x8075A04C
 .definelabel textParameter, 0x80750AC8
@@ -263,3 +275,5 @@
 .definelabel RambiArenaComboChain, 0x8002DEF0
 
 .definelabel StoredOrangeCount, 0x80029FA4
+
+.definelabel EnvironmentFog, 0x807F7360

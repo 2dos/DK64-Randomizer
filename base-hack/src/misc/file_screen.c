@@ -55,14 +55,14 @@ static tracker_struct tracker_info[] = {
 	{.min_x = 88, .max_x = 108, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_PUNCH}, // Punch
 	{.min_x = 88, .max_x = 108, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_GONE}, // Gone
 	{.min_x = 88, .max_x = 108, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_HUNKY}, // Hunky
-	{.min_x = 125, .max_x = 138, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY1}, // Key1
-	{.min_x = 141, .max_x = 157, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY2}, // Key2
-	{.min_x = 156, .max_x = 171, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY3}, // Key3
-	{.min_x = 173, .max_x = 189, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY4}, // Key4
-	{.min_x = 189, .max_x = 204, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY5}, // Key5
-	{.min_x = 205, .max_x = 220, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY6}, // Key6
-	{.min_x = 221, .max_x = 236, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY7}, // Key7
-	{.min_x = 237, .max_x = 252, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY8}, // Key8
+	{.min_x = 156, .max_x = 172, .min_y = 64, .max_y = 84, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY1}, // Key1
+	{.min_x = 172, .max_x = 189, .min_y = 64, .max_y = 84, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY2}, // Key2
+	{.min_x = 189, .max_x = 203, .min_y = 64, .max_y = 84, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY3}, // Key3
+	{.min_x = 205, .max_x = 221, .min_y = 64, .max_y = 84, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY4}, // Key4
+	{.min_x = 157, .max_x = 172, .min_y = 86, .max_y = 105, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY5}, // Key5
+	{.min_x = 173, .max_x = 188, .min_y = 86, .max_y = 105, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY6}, // Key6
+	{.min_x = 189, .max_x = 204, .min_y = 86, .max_y = 105, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY7}, // Key7
+	{.min_x = 205, .max_x = 220, .min_y = 86, .max_y = 105, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY8}, // Key8
 	{.min_x = 136, .max_x = 150, .min_y = 0, .max_y = 20, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CAMERA}, // Camera
 	{.min_x = 130, .max_x = 152, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SHOCKWAVE}, // Shockwave
 	{.min_x = 132, .max_x = 138, .min_y = 54, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
@@ -77,12 +77,17 @@ static tracker_struct tracker_info[] = {
 	{.min_x = 22, .max_x = 42, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_ORANGE}, // Orange
 	{.min_x = 44, .max_x = 64, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BARREL}, // Barrel
 	{.min_x = 66, .max_x = 86, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_VINE}, // Vine
-	{.min_x = 186, .max_x = 202, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_2}, // Melon_2
-	{.min_x = 202, .max_x = 219, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_3}, // Melon_3
-	{.min_x = 218, .max_x = 238, .min_y = 22, .max_y = 40, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_1}, // InsUpg_1
-	{.min_x = 239, .max_x = 249, .min_y = 25, .max_y = 39, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_2}, // InsUpg_2
-	{.min_x = 220, .max_x = 235, .min_y = 44, .max_y = 57, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_1}, // Belt_1
-	{.min_x = 236, .max_x = 244, .min_y = 44, .max_y = 58, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_2}, // Belt_2
+	{.min_x = 87, .max_x = 107, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CLIMB}, // Climbing
+	{.min_x = 176, .max_x = 192, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_2}, // Melon_2
+	{.min_x = 192, .max_x = 209, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_3}, // Melon_3
+	{.min_x = 218, .max_x = 238, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_1}, // InsUpg_1
+	{.min_x = 239, .max_x = 249, .min_y = 3, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_2}, // InsUpg_2
+	{.min_x = 220, .max_x = 235, .min_y = 22, .max_y = 36, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_1}, // Belt_1
+	{.min_x = 236, .max_x = 244, .min_y = 22, .max_y = 37, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_2}, // Belt_2
+	{.min_x = 135, .max_x = 149, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CRANKY}, // Cranky
+	{.min_x = 157, .max_x = 173, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_FUNKY}, // Funky
+	{.min_x = 177, .max_x = 194, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CANDY}, // Candy
+	{.min_x = 199, .max_x = 217, .min_y = 113, .max_y = 123, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SNIDE}, // Snide
 };
 
 void wipeTrackerCache(void) {
@@ -103,6 +108,50 @@ void wipeTrackerCache(void) {
 static unsigned char slam_screen_level = 0;
 static unsigned char belt_screen_level = 0;
 static unsigned char ins_screen_level = 0;
+
+typedef struct passMapping {
+	short button_required;
+	unsigned char btf_val;
+	char text_char;
+} passMapping;
+
+typedef enum passEnum {
+	PASSKEY_NULL,
+	PASSKEY_DU,
+	PASSKEY_DD,
+	PASSKEY_DL,
+	PASSKEY_DR,
+	PASSKEY_Z,
+	PASSKEY_S,
+} passEnum;
+
+#define L_Button 0x0020
+#define D_Up 0x0800
+#define D_Down 0x0400
+#define D_Left 0x0200
+#define D_Right 0x0100
+#define B_Button 0x4000
+#define A_Button 0x8000
+#define Z_Button 0x2000
+#define R_Button 0x0010
+#define Start_Button 0x1000
+#define C_Up 0x0008
+#define C_Down 0x0004
+#define C_Left 0x0002
+#define C_Right 0x0001
+
+static char passwordProgress = 0;
+static char acceptPassInput = 0;
+static char inputtedPass[8];
+static passMapping button_mapping_password[] = {
+	{.button_required = D_Up | C_Up, .btf_val = PASSKEY_DU, .text_char='U'},
+	{.button_required = D_Down | C_Down, .btf_val = PASSKEY_DD, .text_char='D'},
+	{.button_required = D_Left | C_Left, .btf_val = PASSKEY_DL, .text_char='L'},
+	{.button_required = D_Right | C_Right, .btf_val = PASSKEY_DR, .text_char='R'},
+	{.button_required = Z_Button, .btf_val = PASSKEY_Z, .text_char='Z'},
+	{.button_required = Start_Button, .btf_val = PASSKEY_S, .text_char='S'},
+};
+static char passTextDisplay[9];
 
 int isMovePregiven(int index) {
 	/**
@@ -166,6 +215,8 @@ int isMovePregiven(int index) {
 			return Rando.moves_pregiven.homing || initFile_checkTraining(PURCHASE_GUN, -1, 2);
 		case TRACKER_TYPE_SNIPER:
 			return Rando.moves_pregiven.sniper || initFile_checkTraining(PURCHASE_GUN, -1, 3);
+		case TRACKER_TYPE_CLIMB:
+			return Rando.moves_pregiven.climbing || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CLIMBING);
 		case TRACKER_TYPE_DIVE:
 			return Rando.moves_pregiven.dive || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_DIVE);
 		case TRACKER_TYPE_ORANGE:
@@ -212,6 +263,14 @@ int isMovePregiven(int index) {
 		case TRACKER_TYPE_KEY7:
 		case TRACKER_TYPE_KEY8:
 			if (Rando.keys_preturned & (1 << (index - TRACKER_TYPE_KEY1))) {
+				return 1;
+			}
+			return 0;
+		case TRACKER_TYPE_CRANKY:
+		case TRACKER_TYPE_FUNKY:
+		case TRACKER_TYPE_CANDY:
+		case TRACKER_TYPE_SNIDE:
+			if (Rando.check_shop_flags & (0x80 >> (index - TRACKER_TYPE_CRANKY))) {
 				return 1;
 			}
 			return 0;
@@ -296,6 +355,8 @@ int getEnabledState(int index) {
 			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_HOMING;
 		case TRACKER_TYPE_SNIPER:
 			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_SNIPER;
+		case TRACKER_TYPE_CLIMB:
+			return checkFlagDuplicate(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_DIVE:
 			return checkFlagDuplicate(FLAG_TBARREL_DIVE, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_ORANGE:
@@ -349,6 +410,11 @@ int getEnabledState(int index) {
 				}
 				return key_there;
 			}
+		case TRACKER_TYPE_CRANKY:
+		case TRACKER_TYPE_FUNKY:
+		case TRACKER_TYPE_CANDY:
+		case TRACKER_TYPE_SNIDE:
+			return checkFlagDuplicate(FLAG_ITEM_CRANKY + (index - TRACKER_TYPE_CRANKY), FLAGTYPE_PERMANENT);
 		default:
 			break;
 	}
@@ -362,27 +428,29 @@ void updateEnabledStates(void) {
 	slam_screen_level = 0;
 	belt_screen_level = 0;
 	ins_screen_level = 0;
-	for (int i = 0; i < 5; i++) {
-		int subtype = -1;
-		if (i < 4) {
-			// Training Moves
-			if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
-				subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
+	if (Rando.fast_start_beginning) {
+		for (int i = 0; i < 5; i++) {
+			int subtype = -1;
+			if (i < 4) {
+				// Training Moves
+				if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
+					subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
+				}
+			} else if (i == 4) {
+				// First Move
+				if (FirstMove_New.purchase_type == PURCHASE_FLAG) {
+					subtype = getMoveProgressiveFlagType(FirstMove_New.purchase_value);
+				}
 			}
-		} else if (i == 4) {
-			// First Move
-			if (FirstMove_New.purchase_type == PURCHASE_FLAG) {
-				subtype = getMoveProgressiveFlagType(FirstMove_New.purchase_value);
+			if (subtype == 0) {
+				slam_screen_level += 1;
+			} else if (subtype == 1) {
+				belt_screen_level += 1;
+			} else if (subtype == 2) {
+				ins_screen_level += 1;
 			}
+			
 		}
-		if (subtype == 0) {
-			slam_screen_level += 1;
-		} else if (subtype == 1) {
-			belt_screen_level += 1;
-		} else if (subtype == 2) {
-			ins_screen_level += 1;
-		}
-		
 	}
 	for (int i = 0; i < (int)(sizeof(tracker_info) / sizeof(tracker_struct)); i++) {
 		tracker_info[i].enabled = getEnabledState(tracker_info[i].type);
@@ -504,13 +572,10 @@ void modifyTrackerImage(int dl_offset) {
 
 int getTrackerYOffset(void) {
 	float y_temp = DEFAULT_TRACKER_Y_OFFSET;
-	if ((Rando.true_widescreen) && (CurrentMap == MAP_MAINMENU)) {
-		y_temp = DEFAULT_TRACKER_Y_OFFSET * (SCREEN_HD_FLOAT / 240.0f);
-	}
 	return y_temp;
 }
 
-int* display_file_images(int* dl, int y_offset) {
+Gfx* display_file_images(Gfx* dl, int y_offset) {
 	/**
 	 * @brief Display images on the file screen
 	 * 
@@ -520,15 +585,19 @@ int* display_file_images(int* dl, int y_offset) {
 	 * @return New Display List Address
 	 */
 	int tracker_x = 160;
-	if (Rando.true_widescreen) {
-		tracker_x = SCREEN_WD >> 1;
-	}
 	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, tracker_x, y_offset + getTrackerYOffset(),1.0f, 1.0f,0xFF);
 	modifyTrackerImage(y_offset);
+	if (CurrentMap == MAP_MAINMENU) {
+		int opacity = 0x80;
+		if (checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
+			opacity = 0xFF;
+		}
+		dl = drawImage(dl, 195, RGBA16, 32, 32, 1110, y_offset + 690, 4.0f, 4.0f, opacity);
+	}
 	return dl;
 }
 
-int* display_text(int* dl) {
+Gfx* display_text(Gfx* dl) {
 	/**
 	 * @brief Display Text on the file screen
 	 * 
@@ -536,10 +605,7 @@ int* display_text(int* dl) {
 	 * 
 	 * @return New Display List Address
 	 */
-	int y = FileScreenDLOffset - 320;
-	if (Rando.true_widescreen) {
-		y -= ((DEFAULT_TRACKER_Y_OFFSET - getTrackerYOffset()) * 2);
-	}
+	int y = FileScreenDLOffset - 402;
 	// Balanced IGT
 	// y += LINE_GAP;
 	int secs = IGT % 60;
@@ -548,10 +614,7 @@ int* display_text(int* dl) {
 	int hm = IGT / 60;
 	int minutes = hm % 60;
 	int hours = hm / 60;
-	float stat_x = 410;
-	if (Rando.true_widescreen) {
-		stat_x = SCREEN_WD + 90.0f;
-	}
+	float stat_x = 385.0f;
 	dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",hours,minutes,secs);
 	dl = drawText(dl, 1, stat_x, y + 80, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
 	// Percentage Counter
@@ -567,7 +630,7 @@ int* display_text(int* dl) {
 static unsigned char hash_textures[] = {48,49,50,51,55,62,63,64,65,76};
 #define INFO_Y_DIFF 50
 
-int* displayHash(int* dl, int y_offset) {
+Gfx* displayHash(Gfx* dl, int y_offset) {
 	/**
 	 * @brief Display seed hash on the file screen
 	 * 
@@ -580,10 +643,6 @@ int* displayHash(int* dl, int y_offset) {
 		int hash_index = Rando.hash[i] % 10;
 		int starting_x = 440.0f;
 		int hash_y = 920;
-		if (Rando.true_widescreen) {
-			starting_x = (SCREEN_WD << 1) - 200;
-			hash_y = (4 * SCREEN_HD) - 40;
-		}
 		dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, starting_x + (100 * i), hash_y - y_offset, 3.0f, 3.0f, 0xFF);
 	}
 	int info_y = 480 - y_offset;
@@ -593,6 +652,10 @@ int* displayHash(int* dl, int y_offset) {
 	}
 	if (Rando.rom_flags.spoiler) {
 		dl = displayCenteredText(dl, info_y / 4, "SPOILER GENNED", 1);
+		info_y += INFO_Y_DIFF;
+	}
+	if (Rando.rom_flags.pass_locked) {
+		dl = displayCenteredText(dl, info_y / 4, "LOCKED", 1);
 		info_y += INFO_Y_DIFF;
 	}
 	return dl;
@@ -685,11 +748,151 @@ void wipeFileStats(void) {
 	for (int i = 0; i < 5; i++) {
 		ResetExtraData(EGD_KONGIGT, i);
 	}
-	for (int i = 0; i < 8; i++) {
-		ResetExtraData(EGD_FILENAME, i);
-	}
 	ResetExtraData(EGD_HELMHURRYIGT, 0);
-	ResetExtraData(EGD_HELMHURRYDISABLE, 0);
+	setFlag(FLAG_HELM_HURRY_DISABLED, 0, FLAGTYPE_PERMANENT);
+}
+
+void setAllDefaultFlags(void) {
+	short* data = getFile(0x800, 0x1FFD800);
+	for (int i = 0; i < 0x400; i++) {
+		short flag = data[i];
+		if (flag == -1) {
+			return;
+		} else {
+			setPermFlag(flag);
+		}
+	}
+}
+
+void startFile(void) {
+	lockInput(1);
+	int file_empty = isFileEmpty(0);
+	fileStart(0);
+	if (file_empty) {
+		// New File
+		setAllDefaultFlags();
+		unlockMoves();
+		applyFastStart();
+		openCrownDoor();
+		giveCollectables();
+		if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {
+			setPermFlag(FLAG_MODIFIER_LLAMAFREE); // No item check
+		}
+		pre_turn_keys();
+		Character = Rando.starting_kong;
+		wipeFileStats();
+		if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
+			setPermFlag(FLAG_ARCADE_LEVER);
+		}
+		SaveToGlobal();
+		for (int i = 0; i < 4; i++) {
+			if (Rando.check_shop_flags & (0x80 >> i)) {
+				setPermFlag(FLAG_ITEM_CRANKY + i);
+			}
+		}
+		handleTimeOfDay(TODCALL_INITFILE);
+	} else {
+		// Dirty File
+		Character = Rando.starting_kong;
+		determineStartKong_PermaLossMode();
+		giveCollectables();
+	}
+	resetProgressive();
+	updateBarrierCounts();
+	if ((Rando.helm_hurry_mode) && (!checkFlag(FLAG_HELM_HURRY_DISABLED, FLAGTYPE_PERMANENT))) {
+		QueueHelmTimer = 1;
+	}
+	setKongIgt();
+	ForceStandardAmmo = 0;
+}
+
+int testPasswordSequence(void) {
+	if (Rando.password == 0) {
+		return 1; // Any password will work, we'll remove this once we get some stuff working
+	}
+	return encPass(&inputtedPass, &Rando.hash) == Rando.password;
+}
+
+void wipePassword(void) {
+	passwordProgress = 0;
+	for (int i = 0; i < 8; i++) {
+		inputtedPass[i] == PASSKEY_NULL;
+		passTextDisplay[i] = 0;
+	}
+}
+
+void handlePassword(void) {
+	short button_btf = *(short*)(&NewlyPressedControllerInput.Buttons);
+	if (button_btf == 0) {
+		acceptPassInput = 1;
+	} else if (acceptPassInput) {
+		if (passwordProgress >= 8) {
+			return;
+		}
+		int has_button = 0;
+		int button_sent = 0;
+		for (int i = 0; i < sizeof(button_mapping_password) >> 2; i++) {
+			if (button_mapping_password[i].button_required & button_btf) {
+				inputtedPass[passwordProgress] = button_mapping_password[i].btf_val;
+				passTextDisplay[passwordProgress++] = button_mapping_password[i].text_char;
+				acceptPassInput = 0;
+				playSFX(64); // Arcade walk
+				return;
+			}
+		}
+	}
+}
+
+void password_screen_code(actorData* actor, int buttons) {
+	menu_controller_paad* paad = actor->paad;
+	if (paad->screen_transition_progress == 0.0f) {
+		if (paad->unk_4 == 0.0f) {
+			if (buttons & 1) {
+				// A
+				if (passwordProgress == 8) {
+					if (testPasswordSequence()) {
+						playSFX(459); // Success
+						paad->prevent_action = 0;
+						paad->next_screen = 3; // file progress
+					} else {
+						playSFX(83); // Grunt
+						wipePassword();
+					}
+				}
+			} else if (buttons & 2) {
+				// B
+				playSFX(0x2C9);
+				paad->prevent_action = 0;
+				paad->next_screen = 2; // file select
+			} else {
+				// Inputting sequence
+				handlePassword();
+			}
+		}
+		initMenuBackground(paad,4);
+	}
+	updateMenuController(actor,paad,1);
+}
+
+void password_screen_init(actorData* actor) {
+	menu_controller_paad* paad = actor->paad;
+	displayMenuSprite(paad, (void*)0x80720CF0, 0x122, 0xD2, 0.75f, 2, 0); // A
+	displayMenuSprite(paad, (void*)0x80720D14, 0x23, 0xD2, 0.75f, 2, 0); // B
+	passwordProgress = 0;
+	wipePassword();
+}
+
+Gfx* password_screen_gfx(actorData* actor, Gfx* dl) {
+	float x2, y2;
+	menu_controller_paad* paad = actor->paad;
+	gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+	handleTextScrolling(paad, 160.0f, 25.0f, &x2, &y2, 5, 0, *(float*)(0x80033CB4));
+	dl = printText(dl, x2 * 4.0f, y2 * 4.0f, 0.6f, "ENTER PASSWORD");
+	handleTextScrolling(paad, 160.0f, 80.0f, &x2, &y2, 5, 0, 2.0f);
+	for (int i = passwordProgress; i < 8; i++) {
+		passTextDisplay[i] = '?';
+	}
+	return printText(dl, x2 * 4.0f, y2 * 4.0f, 1.0f, &passTextDisplay);
 }
 
 void file_progress_screen_code(actorData* actor, int buttons) {
@@ -715,51 +918,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 	if (paad->screen_transition_progress == 0.0f) {
 		if (paad->unk_4 == 0.0f) {
 			if (buttons & 1) { // A
-				lockInput(1);
-				int file_empty = isFileEmpty(0);
-				fileStart(0);
-				if (file_empty) {
-					// New File
-					setFlagDuplicate(0,1,FLAGTYPE_PERMANENT); // Set null flag as it ensures no=item stuff is actually no-item
-					unlockMoves();
-					applyFastStart();
-					openCrownDoor();
-					giveCollectables();
-					activateBananaports();
-					if(Rando.faster_checks.rabbit_race) {
-						setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
-					}
-					if (Rando.quality_of_life.caves_kosha_dead) {
-						setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
-					}
-					if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {
-						setPermFlag(FLAG_MODIFIER_LLAMAFREE); // No item check
-					}
-					pre_turn_keys();
-					Character = Rando.starting_kong;
-					wipeFileStats();
-					if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
-						setPermFlag(FLAG_ARCADE_LEVER);
-					}
-					SaveToGlobal();
-					if (Rando.galleon_water_raised) {
-						setPermFlag(FLAG_MODIFIER_GALLEONWATER);
-					}
-					handleTimeOfDay(TODCALL_INITFILE);
-				} else {
-					// Dirty File
-					Character = Rando.starting_kong;
-					determineStartKong_PermaLossMode();
-					giveCollectables();
-				}
-				if (ENABLE_FILENAME) {
-					writeDefaultFilename();
-				}
-				if ((Rando.helm_hurry_mode) && (!ReadFile(DATA_HELMHURRYOFF, 0, 0, 0))) {
-					QueueHelmTimer = 1;
-				}
-				setKongIgt();
-				ForceStandardAmmo = 0;
+				startFile();
 			} else if (buttons & 2) { // B
 				playSFX(0x2C9);
 				paad->prevent_action = 0;
@@ -771,13 +930,6 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					paad->next_screen = 5;
 				} else {
 					playSFX(Wrong);
-				}
-			} else if (buttons & 0x80) { // CD
-				// Go to filename editing
-				if (ENABLE_FILENAME) {
-					playSFX(0x2C9);
-					paad->prevent_action = 0;
-					paad->next_screen = 7;
 				}
 			}
 		}
@@ -791,7 +943,7 @@ static char* inverted_controls_str[] = {
 	"NON-INVERTED"
 };
 
-int* displayInverted(int* dl, int style, int x, int y, char* str, int unk0) {
+Gfx* displayInverted(Gfx* dl, int style, int x, int y, char* str, int unk0) {
 	/**
 	 * @brief Display the inverted controls text on the options screen
 	 * 
@@ -808,22 +960,6 @@ int* displayInverted(int* dl, int style, int x, int y, char* str, int unk0) {
 		InvertedControls = 1;
 	}
 	return displayText(dl, style, x, y, inverted_controls_str[(int)InvertedControls], unk0);
-}
-
-void initOptionScreen(void) {
-	/**
-	 * @brief Initialize Options Screen
-	 */
-	*(char*)(0x800338FC) = 5; // 5 Options
-	*(short*)(0x8002DA86) = 1; // Cap to 1
-	*(short*)(0x8002DA46) = getHi(&InvertedControls); // Up/Down Edit
-	*(short*)(0x8002DA4E) = getLo(&InvertedControls); // Up/Down Edit
-	*(short*)(0x8002DA1E) = getHi(&InvertedControls); // Up/Down Edit
-	*(short*)(0x8002DA22) = getLo(&InvertedControls); // Up/Down Edit
-	*(short*)(0x8002DADE) = getHi(&InvertedControls); // Save to global
-	*(short*)(0x8002DAE2) = getLo(&InvertedControls); // Save to global
-	*(short*)(0x8002DA88) = 0x1000; // Prevent Language Update
-	writeFunction(0x8002DEC4, &displayInverted); // Modify Function Call
 }
 
 static unsigned char previous_map_save = MAP_ISLES;
@@ -862,6 +998,7 @@ int updateLevelIGT(void) {
 		}
 	}
 	previous_map_save = CurrentMap;
+	updatePercentageKongStat();
 	SaveToGlobal();
 	return new_igt;
 }

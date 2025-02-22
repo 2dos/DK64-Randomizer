@@ -57,7 +57,8 @@ def removePatches(spoiler):
 def fillPlandoDict(plando_dict: dict, plando_input):
     """Fill the plando_dict variable, using input from the plandomizer_dict."""
     for patch in plando_input:
-        plando_dict[patch["level"]].append(patch["location"])
+        if patch["level"] != -1:
+            plando_dict[patch["level"]].append(patch["location"])
 
 
 def getPlandoDirtDistribution(plando_dict: dict):
@@ -121,18 +122,18 @@ def ShufflePatches(spoiler, human_spoiler):
         Levels.CrystalCaves: [],
         Levels.CreepyCastle: [],
     }
-    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
+    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != []:
         fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_dirt_patches"])
 
     for key in total_dirt_patch_list.keys():
         for SingleDirtPatchLocation in CustomLocations[key]:
-            if (SingleDirtPatchLocation.vanilla_patch or not SingleDirtPatchLocation.selected) and LocationTypes.DirtPatch not in SingleDirtPatchLocation.banned_types:
+            if SingleDirtPatchLocation.is_fungi_hidden_patch or SingleDirtPatchLocation.isValidLocation(LocationTypes.DirtPatch):
                 SingleDirtPatchLocation.setCustomLocation(False)
                 if not spoiler.settings.enable_plandomizer or (SingleDirtPatchLocation.name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][key]):
                     total_dirt_patch_list[key].append(SingleDirtPatchLocation)
 
     # Make sure plandomized Dirt Patches are handled first
-    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
+    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != []:
         distribution = getPlandoDirtDistribution(plando_dict)
         count = 0
         for level in plando_dict.keys():
@@ -162,7 +163,7 @@ def ShufflePatches(spoiler, human_spoiler):
         addPatch(spoiler, patch["patch"], patch["enum"], patch["name"], patch["level"])
         patch["patch"] = None
     # Resolve location-item combinations for plando
-    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
+    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != []:
         for item_placement in spoiler.settings.plandomizer_dict["plando_dirt_patches"]:
             for patch_index, patch in enumerate(sorted_patches):
                 if item_placement["location"] == patch["name"] and item_placement["level"] == patch["level"] and item_placement["reward"] != -1:
@@ -178,7 +179,7 @@ def select_random_dirt_from_area(area_dirt, amount, level, spoiler, human_spoile
         selected_patch = random.choice(area_dirt)  # selects a random patch from the list
         selected_patch_name = selected_patch.name
         # Give plandomizer an opportunity to get the final say
-        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != []:
             if len(plando_input[level]) > 1:
                 allow_same_group_dirt = True
             if len(plando_input[level]) > iterations:
@@ -188,7 +189,15 @@ def select_random_dirt_from_area(area_dirt, amount, level, spoiler, human_spoile
                 patch.setCustomLocation(True)
                 human_spoiler[level.name].append(patch.name)
                 local_map_index = len([x for x in spoiler.dirt_patch_placement if x["map"] == patch.map])
-                spoiler.dirt_patch_placement.append({"name": patch.name, "map": patch.map, "patch": patch, "level": level, "score": (patch.map * 100) + local_map_index})
+                spoiler.dirt_patch_placement.append(
+                    {
+                        "name": patch.name,
+                        "map": patch.map,
+                        "patch": patch,
+                        "level": level,
+                        "score": (patch.map * 100) + local_map_index,
+                    }
+                )
                 area_dirt.remove(selected_patch)
                 break
         if amount > 1 and not allow_same_group_dirt:  # if multiple patches are picked, remove patches from the same group, prevent them from being picked

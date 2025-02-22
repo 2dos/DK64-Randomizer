@@ -22,7 +22,7 @@
     lo, hi
 */
 
-static char version_string[] = "DK64R 3.0\n";
+char version_string[0x10] = "DK64R 4.0D\n";
 
 typedef struct crash_handler_info {
     /* 0x000 */ char unk_000[0x28];
@@ -45,7 +45,7 @@ static char* general_text[] = {
     "S1:%08X\tS2:%08X\tS3:%08X\n",
     "S4:%08X\tS5:%08X\tS6:%08X\n",
     "S7:%08X\tT8:%08X\tT9:%08X\n",
-    "GP:%08X\tSP:%08X\tS8:%08X\n",
+    "GP:%08X\tSP:%08X\tFP:%08X\n",
     "RA:%08X\tLO:%08X\tHI:%08X\n",
 };
 
@@ -130,7 +130,7 @@ void CrashHandler(crash_handler_info* info) {
         }
         flag >>= 1;
     }
-    printDebugText("PC:%08X\tFCSR:%08X\tTHREAD:%d\n", (int)info->pc, (int)info->fcsr, __osGetThreadId((void*)0), 0);
+    printDebugText("PC:%08X\tFCSR:%08X\tTHREAD:%d\n", (int)info->pc, (int)info->fcsr, __osGetThreadId(info), 0);
     for (int i = 0; i < 10; i++) {
         int reg_start = 3 * i;
         int v1 = info->general_registers[reg_start][1];
@@ -172,7 +172,14 @@ void CrashHandler(crash_handler_info* info) {
     }
 }
 
-void initStackTrace(void) {
-    writeFunction(0x80732314, &CrashHandler);
-    writeFunction(0x8073231C, &CrashHandler);
+OSThread* getFaultedThread(void) {
+    OSThread* thread = __osActiveQueue;
+    
+    while (thread->priority != -1) {
+        if (thread->priority > 0 && thread->priority < 0x7F && (thread->flags & 3)) {
+            return thread;
+        }
+        thread = thread->tlnext;
+    }
+    return 0;
 }

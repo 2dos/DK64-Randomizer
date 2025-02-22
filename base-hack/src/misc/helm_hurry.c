@@ -12,6 +12,7 @@
 
 static unsigned short gb_total = 0;
 static unsigned char kong_bitfield = 0;
+static unsigned char recently_disabled_helm_hurry = 0;
 
 int canSaveHelmHurry(void) {
     /**
@@ -23,10 +24,11 @@ int canSaveHelmHurry(void) {
         return 0;
     }
     if (Rando.helm_hurry_mode) {
-        if (ReadExtraData(EGD_HELMHURRYDISABLE, 0)) {
+        if (checkFlag(FLAG_HELM_HURRY_DISABLED, FLAGTYPE_PERMANENT) && (!recently_disabled_helm_hurry)) {
             return 0;
         }
     }
+    recently_disabled_helm_hurry = 0;
     return 1;
 }
 
@@ -40,6 +42,9 @@ void addHelmTime(helm_hurry_items item, int multiplier) {
     if (Rando.helm_hurry_mode) {
         if (item != HHITEM_NOTHING) {
             HelmStartTime += (Rando.helm_hurry_bonuses[(int)(item) - 1] * multiplier);
+            if (HelmStartTime < 0) {
+                HelmStartTime = 0;
+            }
         }
     }
 }
@@ -48,12 +53,9 @@ void checkTotalCache(void) {
     /**
      * @brief Compare variable values to their previously stored values to check for differences
      */
-    int current_gb_total = 0;
+    int current_gb_total = getTotalGBs();
     int current_kong_bitfield = 0;
     for (int kong = 0; kong < 5; kong++) {
-        for (int level = 0; level < 8; level++) {
-            current_gb_total += MovesBase[kong].gb_count[level];
-        }
         if (checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) {
             current_kong_bitfield |= (1 << kong);
         }
@@ -70,8 +72,9 @@ void checkTotalCache(void) {
 }
 
 void finishHelmHurry(void) {
+    setFlag(FLAG_HELM_HURRY_DISABLED, 1, FLAGTYPE_PERMANENT);
+    recently_disabled_helm_hurry = 1;
     save(); // Save all stats
-    SaveExtraData(EGD_HELMHURRYDISABLE, 0, 1); // disable saving
     SaveToGlobal();
     LoadGameOver();
 }
@@ -98,6 +101,8 @@ void saveHelmHurryTime(void) {
         int save_value = HelmCurrentTime;
         if (save_value > 65535) {
             save_value = 65535; // Allows for 18h12m15s of time
+        } else if (save_value < 0) {
+            save_value = 0;
         }
         SaveExtraData(EGD_HELMHURRYIGT, 0, save_value);
     }

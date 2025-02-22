@@ -19,7 +19,6 @@ extern void HunkyChunkyFix2(void);
 extern void EarlyFrameCode(void);
 extern void displayListCode(void);
 extern void GiveItemPointerToMulti(void);
-extern void CoinHUDReposition(void);
 extern void getLobbyExit(void);
 extern void SaveHelmHurryCheck(void);
 extern void PauseExtraSlotCode(void);
@@ -45,6 +44,7 @@ extern void GuardDeathHandle(void);
 extern void TextHandler(void);
 extern void GuardAutoclear(void);
 extern void ObjectRotate(void);
+extern void WriteDefaultShopBone(void);
 extern void SpriteFix(void);
 extern void PauseControl_Control(void);
 extern void PauseControl_Sprite(void);
@@ -67,12 +67,41 @@ extern void FixInvisibleText_0(void);
 extern void FixInvisibleText_1(void);
 extern void CrankyCoconutDonation(void);
 extern void AlwaysCandyInstrument(void);
-extern void fixTilePosition(void);
-extern void fixNintendoLogoPosition(void);
 
 extern void makeCannonsRequireBlast(void);
 extern void fixCannonBlastNoclip(void);
 
 extern void unscareBeaver(void);
 extern void scareBeaver(void);
+
+extern void tns_pad_height_patch(void);
+extern void tns_pad_height_patch_0(void);
+extern void scoff_patch(void);
+
+extern void AlterHeadSize(void);
+extern void AlterHeadSize_0(void);
 extern void ApplyTextRecolorHints(void);
+extern void expandTBarrelResponse(void);
+extern void fixLankyPhaseHandState(void);
+extern void disableRouletteNumbers(void);
+extern void updateBarrierNumbers(void);
+extern void capScreenShake(void);
+extern void blockTreeClimbing(void);
+extern void GoToPassword(void);
+
+extern void KRoolLankyPhaseFix(void);
+extern void KKOPhaseHandler(void);
+extern void KKOInitPhase(void);
+extern void MadJackShort(void);
+extern void PufftossShort(void);
+extern void DogadonRematchShort(void);
+extern void DilloRematchShort(void);
+extern void DKPhaseShort(void);
+extern void TinyPhaseShort(void);
+extern void ChunkyPhaseShort(void);
+extern void ChunkyPhaseAddedSave(void);
+
+extern void storeFairyData(void);
+extern void setSadFace(void);
+extern void setHappyFace(void);
+extern void checkKRoolPause(void);

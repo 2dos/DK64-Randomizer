@@ -13,7 +13,7 @@
 static char igt_text[20] = "IGT: 0000:00:00";
 static int stored_igt = 0;
 
-int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
+Gfx* printLevelIGT(Gfx* dl, int x, int y, float scale, char* str) {
     /**
      * @brief Print Level In-Game time to screen
      */
@@ -53,6 +53,7 @@ static char* items[] = {
     "ANTHILL SECOND REWARD",
     "TREASURE CHEST CLAMS",
     "DIRT PATCHES",
+    "WRINKLY DOORS",
     "MELON CRATES",
 };
 static char* raw_items[] = {
@@ -68,133 +69,104 @@ static char* raw_items[] = {
     "BEAN",
     "PEARLS",
     "RAINBOW COINS",
+    "HINTS",
     "JUNK ITEMS",
 };
 
 static char check_level = 0;
 static char level_check_text[0x18] = "";
 
-static unsigned char check_data[2][9][CHECK_TERMINATOR] = {}; // 8 items, 9 levels, numerator + denominator
+typedef struct CheckDataLevelStruct {
+    unsigned char level[9];
+} CheckDataLevelStruct;
+
+typedef struct CheckDataTypeStruct {
+    CheckDataLevelStruct type[CHECK_TERMINATOR];
+} CheckDataTypeStruct;
+
+typedef struct CheckDataStruct {
+    CheckDataTypeStruct numerator;
+    CheckDataTypeStruct denominator;
+} CheckDataStruct;
+
+// 7 main levels, isles, helm
+static CheckDataStruct check_data = {
+    .denominator = {
+        .type[CHECK_GB] =      {.level = {20, 20, 20, 20, 20, 20, 20, 21, 0}},
+        .type[CHECK_CROWN] =   {.level = {1, 1, 1, 1, 1, 1, 1, 2, 1}},
+        .type[CHECK_KEY] =     {.level = {1, 1, 1, 1, 1, 1, 1, 0, 1}},
+        .type[CHECK_MEDAL] =   {.level = {5, 5, 5, 5, 5, 5, 5, 0, 5}},
+        .type[CHECK_RWCOIN] =  {.level = {1, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_FAIRY] =   {.level = {2, 2, 2, 2, 2, 2, 2, 4, 2}},
+        .type[CHECK_NINCOIN] = {.level = {1, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_BP] =      {.level = {5, 5, 5, 5, 5, 5, 5, 5, 0}},
+        .type[CHECK_KONG] =    {.level = {5, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_BEAN] =    {.level = {0, 0, 0, 0, 1, 0, 0, 0, 0}},
+        .type[CHECK_PEARLS] =  {.level = {0, 0, 0, 5, 0, 0, 0, 0, 0}},
+        .type[CHECK_RAINBOW] = {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_HINTS] =   {.level = {5, 5, 5, 5, 5, 5, 5, 0, 0}},
+        .type[CHECK_CRATE] =   {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
+    }
+};
+
+void initItemCheckDenominators(void) {
+    if (Rando.isles_cb_rando) {
+        check_data.denominator.type[CHECK_MEDAL].level[LEVEL_ISLES] = 5;
+    }
+    for (int lvl = 0; lvl < 9; lvl++) {
+        int rainbow_count = 0;
+        int crate_count = 0;
+        for (int k = 0; k < 16; k++) {
+            if (k < 13) {
+                if (getCrateWorld(k) == lvl) {
+                    crate_count += 1;
+                }
+            }
+            if (getPatchWorld(k) == lvl) {
+                rainbow_count += 1;
+            }
+        }
+        check_data.denominator.type[CHECK_RAINBOW].level[lvl] = rainbow_count;
+        check_data.denominator.type[CHECK_CRATE].level[lvl] = crate_count;
+    }
+}
 
 void checkItemDB(void) {
     /**
      * @brief Check item database for variables, and change check screen totals to accommodate
      */
-    if ((!Rando.true_widescreen) || (!WS_REMOVE_TRANSITIONS)) {
-        renderScreenTransition(7);
-    }
+    //renderScreenTransition(7);
     initTracker();
     initHints();
     stored_igt = getNewSaveTime();
     if (Rando.helm_hurry_mode) {
-        if (ReadFile(DATA_HELMHURRYOFF, 0, 0, 0)) {
+        if (ReadExtraData(EGD_HELMHURRYDISABLE, 0)) {
             stored_igt = IGT;
         }
     }
     for (int i = 0; i < CHECK_TERMINATOR; i++) {
         // Wipe data upon every search
         for (int j = 0; j < 9; j++) {
-            check_data[0][j][i] = 0;
-            check_data[1][j][i] = 0;
+            check_data.numerator.type[i].level[j] = 0;
         }
         // Check FLUT
         for (int k = 0; k < (sizeof(item_db) / sizeof(check_struct)); k++) {
             if (item_db[k].type == i) {
-                int search_flag = item_db[k].flag;
                 int lvl = item_db[k].associated_level;
-                check_data[0][lvl][i] += checkFlag(search_flag, FLAGTYPE_PERMANENT);
+                check_data.numerator.type[i].level[lvl] += checkFlag(item_db[k].flag, FLAGTYPE_PERMANENT);
             }
         }
-        // Check Rainbow Flags
-        if (i == CHECK_RAINBOW) {
-            for (int k = 0; k < 16; k++) {
-                int search_flag = FLAG_RAINBOWCOIN_0 + k;
-                int lvl = getPatchWorld(k);
-                check_data[0][lvl][i] += checkFlag(search_flag, FLAGTYPE_PERMANENT);
+    }
+    // Check extra flags
+    for (int k = 0; k < 35; k++) {
+        if (k < 16)  {
+            if (k < 13) {
+                check_data.numerator.type[CHECK_CRATE].level[getCrateWorld(k)] += checkFlag(FLAG_MELONCRATE_0 + k, FLAGTYPE_PERMANENT);
             }
-        } else if (i == CHECK_CRATE) {
-            for (int k = 0; k < 13; k++) {
-                int search_flag = FLAG_MELONCRATE_0 + k;
-                int lvl = getCrateWorld(k);
-                check_data[0][lvl][i] += checkFlag(search_flag, FLAGTYPE_PERMANENT);
-            }
+            check_data.numerator.type[CHECK_RAINBOW].level[getPatchWorld(k)] += checkFlag(FLAG_RAINBOWCOIN_0 + k, FLAGTYPE_PERMANENT);
         }
-        // Get Denominator
-        for (int j = 0; j < 9; j++) {
-            int denominator = 0;
-            switch (i) {
-                case CHECK_GB:
-                    if (j < 8) {
-                        if (j == 7) {
-                            denominator = 21;
-                        } else {
-                            denominator = 20;
-                        }
-                    }
-                    break;
-                case CHECK_CROWN:
-                    if (j == 7) {
-                        denominator = 2;
-                    } else {
-                        denominator = 1;
-                    }
-                    break;
-                case CHECK_KEY:
-                    if (j != 7) {
-                        denominator = 1;
-                    }
-                    break;
-                case CHECK_MEDAL:
-                    if (j != 7) {
-                        denominator = 5;
-                    }
-                    break;
-                case CHECK_RWCOIN:
-                case CHECK_NINCOIN:
-                    check_data[1][0][i] = 1;
-                    break;
-                case CHECK_FAIRY:
-                    if (j == 7) {
-                        denominator = 4;
-                    } else {
-                        denominator = 2;
-                    }
-                    break;
-                case CHECK_BP:
-                    if (j < 8) {
-                        denominator = 5;
-                    }
-                    break;
-                case CHECK_KONG:
-                    check_data[1][0][i] = 5;
-                    break;
-                case CHECK_BEAN:
-                    if (j == 4) {
-                        denominator = 1;
-                    }
-                    break;
-                case CHECK_PEARLS:
-                    if (j == 3) {
-                        denominator = 5;
-                    }
-                    break;
-                case CHECK_RAINBOW:
-                    for (int k = 0; k < 16; k++) {
-                        if (getPatchWorld(k) == j) {
-                            denominator += 1;
-                        }
-                    }
-                    break;
-                case CHECK_CRATE:
-                    for (int k = 0; k < 13; k++) {
-                        if (getCrateWorld(k) == j) {
-                            denominator += 1;
-                        }
-                    }
-                break;
-            }
-            check_data[1][j][i] = denominator;
-        }
+        int hint_level = k / 5;
+        check_data.numerator.type[CHECK_HINTS].level[hint_level] += checkFlag(FLAG_WRINKLYVIEWED + k, FLAGTYPE_PERMANENT);
     }
 }
 
@@ -212,7 +184,7 @@ void handleCShifting(char* value, char limit) {
     }
 }
 
-int* pauseScreen3And4Header(int* dl) {
+Gfx* pauseScreen3And4Header(Gfx* dl) {
     /**
      * @brief Alter pause screen totals header to display the checks screen
      * 
@@ -223,9 +195,6 @@ int* pauseScreen3And4Header(int* dl) {
     pause_paad* paad = CurrentActorPointer_0->paad;
     display_billboard_fix = 0;
     int level_x = 0x280;
-    if (Rando.true_widescreen) {
-        level_x = SCREEN_WD * 2;
-    }
     if (paad->screen == PAUSESCREEN_TOTALS) {
         return printText(dl, level_x, 0x3C, 0.65f, "TOTALS");
     } else if (paad->screen == PAUSESCREEN_CHECKS) {
@@ -250,7 +219,7 @@ int* pauseScreen3And4Header(int* dl) {
 
 static char teststr[5] = "";
 
-int* drawTextPointers(int* dl) {
+Gfx* drawTextPointers(Gfx* dl) {
     if ((TBVoidByte & 2) && (display_billboard_fix)) {
         dk_strFormat((char *)teststr, "%d", hints_initialized);
         dl = drawPixelTextContainer(dl, 0, 0, teststr, 0, 0, 0, 0xFF, 1);
@@ -258,7 +227,7 @@ int* drawTextPointers(int* dl) {
     return dl;
 }
 
-int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text) {
+Gfx* pauseScreen3And4ItemName(Gfx* dl, int x, int y, float scale, char* text) {
     /**
      * @brief Changes the item name depending on the screen you're on
      */
@@ -272,7 +241,7 @@ int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text) {
     return dl;
 }
 
-int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk0, int scale) {
+Gfx* pauseScreen3And4Counter(int x, int y, int top, int bottom, Gfx* dl, int unk0, int scale) {
     /**
      * @brief Changes the counter on-screen depending on what screen you're on
      */
@@ -286,17 +255,17 @@ int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk
         if (check_level == 0) {
             // All
             for (int i = 0; i < 9; i++) {
-                top_num += check_data[0][i][item_index];
-                bottom_num += check_data[1][i][item_index];
+                top_num += check_data.numerator.type[item_index].level[i];
+                bottom_num += check_data.denominator.type[item_index].level[i];
             }
         } else {
             int lvl = check_level - 1;
-            if ((item_index == 4) || (item_index == 6) || (item_index == 8)) {
+            if ((item_index == CHECK_RWCOIN) || (item_index == CHECK_NINCOIN) || (item_index == CHECK_KONG)) {
                 // Nin/RW Coin, Kongs
                 lvl = 0;
             }
-            top_num = check_data[0][lvl][item_index];
-            bottom_num = check_data[1][lvl][item_index];
+            top_num = check_data.numerator.type[item_index].level[lvl];
+            bottom_num = check_data.denominator.type[item_index].level[lvl];
         }
         return printOutOfCounter(x, y, top_num, bottom_num, dl, unk0, scale);
     }
@@ -339,7 +308,7 @@ void updateFileVariables(void) {
     initCarousel_onPause();
 }
 
-int* handleOutOfCounters(int x, int y, int top, int bottom, int* dl, int unk0, int scale) {
+Gfx* handleOutOfCounters(int x, int y, int top, int bottom, Gfx* dl, int unk0, int scale) {
     /**
      * @brief Handle the "out of" counters to be corrected
      */
@@ -356,35 +325,6 @@ void initPauseMenu(void) {
      * @brief Initialize the pause menu changes for Rando
      */
     
-    writeFunction(0x806A84C8, &updateFileVariables); // Update file variables to transfer old locations to current
     initCarousel_onBoot();
-    if (Rando.item_rando) {
-        writeFunction(0x806A9D50, &handleOutOfCounters); // Print out of counter, depending on item rando state
-        writeFunction(0x806A9EFC, &handleOutOfCounters); // Print out of counter, depending on item rando state
-        *(int*)(0x806A9C80) = 0; // Show counter on Helm Menu - Kong specific screeen
-        *(int*)(0x806A9E54) = 0; // Show counter on Helm Menu - All Kongs screen
-        // *(int*)(0x806AA860) = 0x31EF0007; // ANDI $t7, $t7, 7 - Show GB (Kong Specific)
-        // *(int*)(0x806AADC4) = 0x33390007; // ANDI $t9, $t9, 7 - Show GB (All Kongs)
-        // *(int*)(0x806AADC8) = 0xAFB90058; // SW $t9, 0x58 ($sp) - Show GB (All Kongs)
-    }
-    if (Rando.quality_of_life.fast_pause_transitions) {
-        *(float*)(0x8075AC00) = 1.3f; // Pause Menu Progression Rate
-        *(int*)(0x806A901C) = 0; // NOP - Remove thud
-    }
-    // Prevent GBs being required to view extra screens
-    *(int*)(0x806A8624) = 0; // GBs doesn't lock other pause screens
-    *(int*)(0x806AB468) = 0; // Show R/Z Icon
-    *(int*)(0x806AB318) = 0x24060001; // ADDIU $a2, $r0, 1
-    *(int*)(0x806AB31C) = 0xA466C83C; // SH $a2, 0xC83C ($v1) | Overwrite trap func, Replace with overwrite of wheel segments
-    *(short*)(0x8075056C) = 201; // Change GB Item cap to 201
-    // In-Level IGT
-    writeFunction(0x8060DF28, &updateLevelIGT); // Modify Function Call
-    writeFunction(0x806ABB0C, &printLevelIGT); // Modify Function Call
-    *(short*)(0x806ABB32) = 106; // Adjust kong name height
-    // Disable Item Checks
-    *(int*)(0x806AB2E8) = 0;
-    *(int*)(0x806AB360) = 0;
-    *(short*)(0x806ABFCE) = FLAG_BP_JAPES_DK_HAS; // Change BP trigger to being collecting BP rather than turning it in
-    *(short*)(0x806A932A) = 0x2710; // Increase memory allocated for displaying the Pause menu (fixes hints corrupting the heap) Increase to 12500 at a later time
     initHintFlags();
 }

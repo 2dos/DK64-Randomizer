@@ -54,6 +54,26 @@ with open("asm/objects.asm", "w") as obj_asm:
                     if pth in strict_aliasing_avoids:
                         reduced_optimization = True
                 o_level = "-O1" if reduced_optimization else "-O2"
-                cmd = [f"{cwd}\\n64chain\\tools\\bin\\mips64-elf-gcc", "-Wall", o_level, "-mtune=vr4300", "-march=vr4300", "-mabi=32", "-fomit-frame-pointer", "-G0", "-c", pth]
-                subprocess.Popen(cmd).wait()
+                subprocess.run(
+                    [
+                        f"{cwd}\\n64chain\\tools\\bin\\mips64-elf-gcc",
+                        "-w",
+                        "-Wall",
+                        o_level,
+                        "-mtune=vr4300",
+                        "-march=vr4300",
+                        "-mabi=32",
+                        "-fomit-frame-pointer",
+                        "-fno-toplevel-reorder",
+                        "-G0",
+                        "-c",
+                        "-nostdinc",
+                        "-I.",
+                        "-Iinclude2",
+                        "-Iinclude2/libc",
+                        "-DTARGET_N64",
+                        "-DF3DEX2_GBI",
+                        pth,
+                    ]
+                )
                 shutil.move("./" + file.replace(".c", ".o"), "./obj/" + _o)

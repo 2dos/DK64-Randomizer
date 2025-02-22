@@ -6,11 +6,12 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Enable Shop Hints
 - Enable Tag Anywhere
 - Faster Checks
+- Fast Start - Beginning of Game
 - Fast Warps
 - Random Helm Length
 - Item Reward Previews
 - Randomize Keys Required to Beat K. Rool
-- Shuffle Kongs
+- Kong Rando
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
 - Misc Changes
@@ -27,59 +28,88 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 
 # Always Off
 - Progressive Switch Strength
-- Random Battle Crown Pad Locations
+- DK Phase requires Baboon Blast
+- Chaos B. Lockers
+- Crown Placement Rando
 - Enable Plandomizer
 - Dropsanity
 - Hard B. Lockers
-- Complex Level Progression
+- Hard Bosses
 - Hard Mode
 - Hard Shooting
 - Hard Troff n' Scoff
 - Helm Hurry Mode
 - Vanilla K. Rool Requirement
+- Mirror Mode
 - No Heals
 - No Melon Slice Drops
 - Irondonk
-- Random Melon Crate Locations
-- Random Banana Fairy Locations
-- Random Dirt Patch Locations
+- Random Crates
+- Random Fairies
+- Random Patches
 - Random Starting Location
 - Guaranteed Starting Keys
-- Random Troff 'n' Scoff Portal Locations
-- Vanilla Door Shuffle
-- Random Wrinkly Door Locations
+- Shuffle Helm Location / Include Helm
+- Tns Location Rando
+- Vanilla Door Rando
+- Wrinkly Location Rando
 
 # Other Settings
 - Activate Bananaports: 
 	- Off: 20%
 	- All: 60%
 	- Isles: 20%
-- Shuffle Bananaports: 
+- Random Bananaport Locations: 
+	- Off: 70%
+	- Vanilla Only: 20%
+	- Half Vanilla: 8%
+	- On: 2%
+- Cross-Map Bananaports: 
 	- Off: 100%
 - B. Locker Max: Between 30 and 70, usually close to 50
 - Auto Complete Bonus Barrels: 50%
 - Shuffle Bonus Barrels: 70%
-- Shuffle Boss Kong Required: 50%
-- Shuffle Boss Location: 80%
-- Random CB Locations: 30%
+- Shuffle Boss Kong Required: 80%
+- Boss Location Rando: 80%
+- Randomize CB Locations: 30%
+- Cb Rando List Selected: 
+	- Junglejapes: 50%
+	- Angryaztec: 50%
+	- Franticfactory: 50%
+	- Gloomygalleon: 50%
+	- Fungiforest: 50%
+	- Crystalcaves: 50%
+	- Creepycastle: 50%
+	- Dkisles: 0%
+- Chaos Ratio: Between 0 and 0, usually close to 0
+- Chunky Phase Slam Requirement: 
+	- Green: 30%
+	- Blue: 70%
 - Helm Door 2 Requirement Item: 
 	- Vanilla: 20%
 	- Opened: 60%
 	- Easy Random: 20%
 - Helm Door 2 Requirement Count: Between 1 and 6, usually close to 4
-- Random Banana Coin Locations: 50%
+- Coin Rando: 50%
 - Helm Door 1 Requirement Item: 
 	- Vanilla: 20%
 	- Opened: 60%
 	- Easy Random: 20%
 - Helm Door 1 Requirement Count: Between 1 and 2, usually close to 1
-- Crown Enemy Randomizer: 95%
+- Crown Enemy Randomizer: 
+	- Vanilla: 20%
+	- Easy: 50%
+	- Medium: 30%
 - Damage Multiplier: 
 	- Default: 50%
 	- Double: 50%
 - Tag Barrels Disabled: 50%
-- Progressive Hints: 50%
-- Shuffle Enemy Speed: 50%
+- Random DK Portal Locations: 
+	- Off: 100%
+- Enable Progressive Hints: 50%
+- Shuffle Enemies: 95%
+- Enemy Speed Rando: 50%
+- Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 
 	- Factory Toy Monster Fight: 100%
 	- Factory Piano Game: 100%
@@ -88,7 +118,6 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Factory Car Race: 100%
 	- Galleon Seal Race: 100%
 	- Galleon Mech Fish: 100%
-	- Galleon Mermaid Gb: 100%
 	- Forest Mill Conveyor: 100%
 	- Forest Owl Race: 100%
 	- Forest Rabbit Race: 100%
@@ -108,6 +137,10 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Galleon Water: 
 	- Random: 100%
 - Shuffle Helm Rooms: 80%
+- Helm Room Bonus Count: 
+	- Zero: 10%
+	- One: 30%
+	- Two: 60%
 - Helm Start Location: 
 	- Skip Start: 70%
 	- Skip All: 30%
@@ -126,6 +159,11 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Helmhurry List Pearl: Between 30 and 120, usually close to 50
 - Helmhurry List Rainbow Coin: Between 5 and 30, usually close to 15
 - Helmhurry List Starting Time: Between 900 and 1800, usually close to 1200
+- Ice Trap Frequency: 
+	- Rare: 70%
+	- Mild: 20%
+	- Common: 10%
+- Ice Traps Damage Player: 20%
 - Item Rando List Selected: 
 	- Shop: 95%
 	- Banana: 95%
@@ -133,20 +171,29 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Blueprint: 70%
 	- Key: 85%
 	- Medal: 70%
-	- Coin: 70%
+	- Nintendocoin: 70%
+	- Rarewarecoin: 70%
 	- Kong: 85%
 	- Rainbowcoin: 50%
 	- Beanpearl: 50%
 	- Junkitem: 50%
+	- Shopowners: 20%
 - Random Kasplat Locations: 
 	- Off: 30%
 	- Vanilla Locations: 70%
-- Lock Key 8 in Helm: 50%
+- Helm Key Lock: 50%
+- Kong Model Chunky: 
+	- Default: 100%
+- Kong Model Diddy: 
+	- Default: 100%
+- Kong Model Dk: 
+	- Default: 100%
+- Kong Model Lanky: 
+	- Default: 100%
+- Kong Model Tiny: 
+	- Default: 100%
 - Key 8 Required: 70%
 - Shuffle K. Rool Phases: 80%
-- Krusha Slot: 
-	- No Slot: 50%
-	- Random: 50%
 - Entrance Randomizer: 
 	- Vanilla: 50%
 	- Level Order: 50%
@@ -154,6 +201,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Glitchless: 100%
 - Maximize Helm B. Locker: 15%
 - Randomize Medal CB Requirement: Between 15 and 60, usually close to 30
+- Pearls for Mermaid GB: Between 1 and 3, usually close to 2
 - Extra Hints: 
 	- Base: 25%
 	- All: 75%
@@ -161,7 +209,10 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Cross Purchase: 100%
 - Open Lobbies: 90%
 - Progressive Hint 35 Requirement: Between 30 and 60, usually close to 45
-- Shuffle Puzzle Solutions: 50%
+- Random Puzzle Solutions: 
+	- Off: 20%
+	- Easy: 70%
+	- Medium: 10%
 - Random Shop Prices: 
 	- Vanilla: 20%
 	- Free: 20%
@@ -179,26 +230,29 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Factory Testing Gate: 75%
 	- Galleon Lighthouse Gate: 75%
 	- Galleon Shipyard Area Gate: 75%
-	- Galleon Shipwreck Gates: 100%
+	- Castle Crypt Doors: 75%
 	- Galleon Seasick Ship: 100%
 	- Forest Green Tunnel: 75%
 	- Forest Yellow Tunnel: 75%
 	- Caves Igloo Pads: 100%
+	- Caves Ice Walls: 100%
 - No Joke Hints: 70%
-- Banana Fairy Island Move Status: 
-	- Vanilla: 30%
-	- Shuffled: 20%
-	- Start With: 50%
 - Shuffle Shop Locations: 50%
 - Smaller Shops: 50%
-- Starting Kongs count: 
+- Starting Kong: 
 	- Any: 100%
-- Random Starting Move Count: Between 4 and 10, usually close to 4
+- Starting Moves Count: Between 4 and 10, usually close to 4
+- Move Count: 
+	- Min: 0%
+	- Max: 0%
 - Switchsanity: 
 	- Off: 100%
 - Troff n' Scoff Max: Between 100 and 300, usually close to 200
 - Win Condition: 
-	- Beat Krool: 70%
-	- Get Key8: 30%
+	- Easy Random: 100%
 - Wrinkly Hints: 
 	- Standard: 100%
+- Spoiler Hints: 
+	- Off: 100%
+	- Vial Colors: 0%
+	- Points: 0%

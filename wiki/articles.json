@@ -25,6 +25,11 @@
         "github": "Custom-Location-Lists"
     },
     {
+        "name": "Random Settings",
+        "link": "RandomSettings",
+        "github": "Random-Setting-Info"
+    },
+    {
         "name": "Switchsanity Switches",
         "link": "SwitchsanitySwitches",
         "github": "Switchsanity-Switches"
@@ -75,14 +80,14 @@
         "github": "NSAK-Racing-Rules"
     },
     {
-        "name": "Season 2 Distributions",
-        "link": "Season2Distributions",
+        "name": "Season 3 Distributions",
+        "link": "Season3Distributions",
         "github": "Distributions"
     },
     {
-        "name": "Season 2 Preset",
-        "link": "Season2Preset",
-        "github": "Season-2-Preset-Settings-and-Rules"
+        "name": "Season 3 Preset",
+        "link": "Season3Preset",
+        "github": "Season-3-Preset-Settings-and-Rules"
     },
     {
         "name": "Sharing a Seed",
@@ -151,6 +156,10 @@
     {
         "name": "Custom Locations: Miscellaneous",
         "link": "CustomLocationsMiscellaneous"
+    },
+    {
+        "name": "Plando Colors",
+        "link": "PlandoColors"
     },
     {
         "name": "Random Settings: Difficult",

@@ -5,18 +5,15 @@ from randomizer.Enums.Settings import RandomPrices
 from randomizer.Patching.Patcher import LocalROM
 
 
-def randomize_prices(spoiler):
+def randomize_prices(spoiler, ROM_COPY: LocalROM):
     """Write prices to ROM variable space based on settings."""
     if spoiler.settings.random_prices != RandomPrices.vanilla:
-        ROM_COPY = LocalROM()
         varspaceOffset = spoiler.settings.rom_data
-        ROM_COPY.seek(varspaceOffset + 0x35)
-        # /* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On
-        if spoiler.settings.random_prices != RandomPrices.vanilla:
-            ROM_COPY.write(1)
-        else:
-            ROM_COPY.write(0)
-        progressive_items = {Items.ProgressiveAmmoBelt: 2, Items.ProgressiveInstrumentUpgrade: 3, Items.ProgressiveSlam: 2}
+        progressive_items = {
+            Items.ProgressiveAmmoBelt: 2,
+            Items.ProgressiveInstrumentUpgrade: 3,
+            Items.ProgressiveSlam: 2,
+        }
         for item in progressive_items:
             if item not in spoiler.settings.prices:
                 spoiler.settings.prices[item] = []

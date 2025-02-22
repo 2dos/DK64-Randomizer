@@ -16,19 +16,7 @@ void qualityOfLife_fixes(void) {
 	/**
 	 * @brief Quality of life fixes to the game
 	 */
-	if (Rando.quality_of_life.remove_cutscenes) {
-		// Upon ROM Boot, set "Story Skip" to on
-		if (Gamemode == GAMEMODE_NINTENDOLOGO) {
-			StorySkip = 1;
-		}
-	}
 	if (Rando.quality_of_life.vanilla_fixes) {
-		// Set some flags in-game
-		setPermFlag(FLAG_FTT_CRANKY); // Cranky FTT
-		fixkey8();
-		if (ENABLE_SAVE_LOCK_REMOVAL) {
-			*(short*)(0x8060D60A) = 0; // Enable poll input during saving
-		}
 		// Prevent a bug where detransforming from Rambi shortly before getting hit will keep you locked as Rambi
 		if (CurrentMap == MAP_JAPES) {
 			if (Player) {
@@ -66,8 +54,23 @@ void qualityOfLife_fixes(void) {
 	}
 }
 
+int force_enable_diving_timer = 0;
+
+void dropWrapper(void* actor) {
+	clearTagSlide(actor);
+	force_enable_diving_timer = ObjectModel2Timer;
+}
+
 int CanDive_WithCheck(void) {
 	if (ObjectModel2Timer < 5) {
+		return 1;
+	}
+	if (ObjectModel2Timer >= force_enable_diving_timer) {
+		if ((ObjectModel2Timer - force_enable_diving_timer) < 2) {
+			return 1;
+		}
+	}
+	if (isGlobalCutscenePlaying(29)) {
 		return 1;
 	}
 	return CanDive();
@@ -84,17 +87,6 @@ void playTransformationSong(songs song, float volume) {
 
 static unsigned short previous_total_cbs = 0xFFFF;
 static unsigned char previous_world = 0xFF;
-
-static const short tnsportal_flags[] = {
-	// Troff n Scoff portal clear flags
-	FLAG_PORTAL_JAPES,
-	FLAG_PORTAL_AZTEC,
-	FLAG_PORTAL_FACTORY,
-	FLAG_PORTAL_GALLEON,
-	FLAG_PORTAL_FUNGI,
-	FLAG_PORTAL_CAVES,
-	FLAG_PORTAL_CASTLE,
-};
 
 #define SPRITE_ALPHA_OUT 8
 #define SPRITE_ALPHA_IN 44
@@ -125,7 +117,7 @@ int shouldDing(void) {
 	return 0;
 }
 
-int* renderIndicatorSprite(int* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec) {
+Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec) {
 	if (*timer == 0) {
 		return dl;
 	}
@@ -151,14 +143,10 @@ int* renderIndicatorSprite(int* dl, int sprite, int dim, unsigned char* timer, i
 		return dl;
 	}
 	dl = initDisplayList(dl);
-	*(unsigned int*)(dl++) = 0xE200001C;
-	*(unsigned int*)(dl++) = 0x00504240;
-	gDPSetPrimColor(dl, 0, 0, 0xFF, 0xFF, 0xFF, alpha_i);
-	dl += 2;
-	*(unsigned int*)(dl++) = 0xFCFF97FF;
-	*(unsigned int*)(dl++) = 0xFF2CFE7F;
-	*(unsigned int*)(dl++) = 0xE3001201;
-	*(unsigned int*)(dl++) = 0x00000000;
+	gDPSetRenderMode(dl++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+	gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, alpha_i);
+	gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+	gDPSetTextureFilter(dl++, G_TF_POINT);
 	int p2 = 0;
 	if (codec == IA8) {
 		p2 = 3;
@@ -166,12 +154,19 @@ int* renderIndicatorSprite(int* dl, int sprite, int dim, unsigned char* timer, i
 	return displayImage(dl++, sprite, p2, codec, width, height, 900, y, 2.0f, 2.0f, 0, 0.0f);
 }
 
-int* renderDingSprite(int* dl) {
+Gfx* renderDingSprite(Gfx* dl) {
 	return renderIndicatorSprite(dl, 114, !hasEnoughCBs(), &ding_sprite_timer, 48, 42, RGBA16);
 }
 
 void initDingSprite(void) {
 	ding_sprite_timer = SPRITE_ALPHA_END;
+}
+
+int getHomingCountWithAbilityCheck(item_ids item, int player) {
+	if (!(MovesBase[0].weapon_bitfield & 2)) {
+		return 0;
+	}
+	return getItemCount(item, player);
 }
 
 void playCBDing(void) {
@@ -226,52 +221,6 @@ void tagBarrelBackgroundKong(int kong_actor) {
 	Player->new_kong = kong_actor;
 }
 
-void preventMedalHUD(int item, int unk0, int unk1) {
-	/**
-	 * @brief Prevent Medal HUD from showing
-	 */
-	if (item != 0xA) {
-		displayItemOnHUD(item, unk0, unk1);
-	}
-}
-
-void initHUDDirection(placementData* hud_data, int item) {
-	/**
-	 * @brief Modified initialization of HUD Direction function to account for new medal changes.
-	 */
-	int x_direction = 0;
-	int y_direction = 0;
-	hud_data->unk_0C = 0;
-	switch(item) {
-		case 0x0: // CB
-		case 0xD: // CB T&S
-		case 0xE: // Move Cost
-			x_direction = -1;
-			break;
-		case 0x9: // GBs
-		case 0xC: // Blueprint
-			y_direction = 1;
-			break;
-		default:
-			x_direction = 1;
-		break;
-	}
-	hud_data->x_direction = x_direction * 0x30;
-	hud_data->y_direction = y_direction * 0x30;
-}
-
-void* getHUDSprite_HUD(int item) {
-	/**
-	 * @brief Override HUD Sprite for Medals to be a MultiBunch
-	 * @return Sprite Address
-	 */
-	if (item == 0xA) {
-		return sprite_table[0xA8];
-	} else {
-		return getHUDSprite(item);
-	}
-}
-
 void updateMultibunchCount(void) {
 	/**
 	 * @brief Get the total amount of colored bananas for a level.
@@ -280,9 +229,18 @@ void updateMultibunchCount(void) {
 	int count = getTotalCBCount();
 	MultiBunchCount = count;
 	if (HUD) {
-		HUD->item[0xA].visual_item_count = count;
+		HUD->item[ITEMID_MULTIBUNCH].visual_item_count = count;
 	}
 }
+
+typedef struct balloon_paad {
+	/* 0x000 */ char unk0;
+	/* 0x001 */ char speed;
+	/* 0x002 */ char local_path_index;
+	/* 0x003 */ char unk3;
+	/* 0x004 */ short unk4;
+	/* 0x006 */ short flag;
+} balloon_paad;
 
 void RabbitRaceInfiniteCode(void) {
 	/**
@@ -295,7 +253,7 @@ void RabbitRaceInfiniteCode(void) {
 		if (control_state == 0x1F) {
 			if (CurrentActorPointer_0->control_state_progress == 2) {
 				// Start
-				setHUDItemAsInfinite(5,0,1);
+				setHUDItemAsInfinite(ITEMID_CRYSTALS,0,1);
 			}
 		} else if ((control_state == 0x28) || (control_state == 0x1E)) {
 			if (CurrentActorPointer_0->control_state_progress == 0) {
@@ -333,7 +291,7 @@ int canPlayJetpac(void) {
 	if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN, FLAGTYPE_PERMANENT)) {
 		return 0;
 	} else {
-		return countFlagArray(FLAG_MEDAL_JAPES_DK, 40, 0);
+		return getMedalCount();
 	}
 }
 
@@ -371,14 +329,6 @@ void exitTrapBubbleController(void) {
 	}
 }
 
-static const char test_file_name[] = "BALLAAM";
-
-void writeDefaultFilename(void) {
-	for (int i = 0; i < FILENAME_LENGTH; i++) {
-		SaveExtraData(EGD_FILENAME, i, test_file_name[i]);
-	}
-}
-
 void fixChimpyCamBug(void) {
 	/**
 	 * @brief Things to be reset upon first boot of the game on PJ64 (Because PJ64 is weird)
@@ -388,8 +338,78 @@ void fixChimpyCamBug(void) {
 	SaveToFile(DATA_LANGUAGE, 0, 0, 0, Rando.default_camera_type);
 	SaveToFile(DATA_SOUNDTYPE, 0, 0, 0, Rando.default_sound_type);
 	wipeFileStats();
-	if (ENABLE_FILENAME) {
-		writeDefaultFilename();
-	}
 	SaveToGlobal();
 }
+
+void movePelletWrapper(actorData* actor) {
+	if (!(CurrentActorPointer_0->obj_props_bitfield & 0x10)) {
+		if ((Player->control_state == 2) && (Player->was_gun_out == 1)) {
+			int dist = getScreenDist(screenCenterX >> 1, screenCenterY >> 1);
+			int cap = getDistanceCap(dist);
+			if ((cap == 0) || (cap == 996)) {
+				// Lets not get into a div-by-0 mess
+				unkProjectileCode_2(actor);
+				return;
+			}
+			float dxz = CurrentActorPointer_0->hSpeed * 0.025f;
+			float dy = CurrentActorPointer_0->yVelocity * 0.025f;
+			float cap_f = cap;
+			float d_one_frame = dk_sqrt((dxz * dxz) + (dy * dy));
+			float ratio = cap_f / d_one_frame;
+			int rotation = CurrentActorPointer_0->rot_y_copy;
+			float dxz_ratio = dxz * ratio;
+
+			CurrentActorPointer_0->xPos += (dxz_ratio * determineXRatioMovement(rotation));
+			CurrentActorPointer_0->yPos += (dy * ratio);
+			CurrentActorPointer_0->zPos += (dxz_ratio * determineZRatioMovement(rotation));
+			return;
+		}
+	}
+	unkProjectileCode_2(actor);
+}
+
+static unsigned char good_gamemode_list[] = {
+	GAMEMODE_ADVENTURE,
+	GAMEMODE_RAP,
+	GAMEMODE_SNIDEGAMES,
+};
+
+void fixHelmTimerDisable(void) {
+	if (inU8List(Gamemode, &good_gamemode_list, 3)) {
+		return;
+	}
+	HelmTimerShown = 0;
+}
+
+// Segment framebuffer
+// Should help with framebuffer crashes
+
+// #define FB_SEGMENTATION 16
+// #define FB_HEIGHT_PER_SEG (240 / 16)
+// #define FB_WIDTH 320
+
+// typedef struct framebuffer_info {
+// 	/* 0x000 */ short* segment[FB_SEGMENTATION];
+// } framebuffer_info;
+
+// void* framebufferMalloc(void) {
+// 	framebuffer_info* data = dk_malloc(sizeof(framebuffer_info));
+// 	for (int i = 0; i = FB_SEGMENTATION; i++) {
+// 		data->segment[i] = dk_malloc(FB_WIDTH * FB_HEIGHT_PER_SEG * 2);
+// 	}
+// 	return data;
+// }
+
+// void storeFramebufferNew(framebuffer_info* dest, short* src) {
+// 	int global_px = 0;
+// 	for (int i = 0; i < FB_SEGMENTATION; i++) {
+// 		int local_px = 0;
+// 		for (int y = 0; y < FB_HEIGHT_PER_SEG; y++) {
+// 			for (int x = 0; x < FB_WIDTH; x++) {
+// 				dest->segment[i][local_px] = src[global_px] | 1;
+// 				local_px++;
+// 				global_px++;
+// 			}
+// 		}
+// 	}
+// }

@@ -1,5 +1,6 @@
 """Stores the data for the locations of colored bananas and balloons in Angry Aztec."""
 
+from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
@@ -47,7 +48,13 @@ ColoredBananaGroupList = [
         name="Hatch switch room left wall",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryStart,
-        locations=[[1, 1.0, 1064, 843, 2254], [1, 1.0, 1064, 843, 2205], [1, 1.0, 1064, 843, 2156], [1, 1.0, 1064, 843, 2107], [1, 1.0, 1064, 843, 2058]],
+        locations=[
+            [1, 1.0, 1064, 843, 2254],
+            [1, 1.0, 1064, 843, 2205],
+            [1, 1.0, 1064, 843, 2156],
+            [1, 1.0, 1064, 843, 2107],
+            [1, 1.0, 1064, 843, 2058],
+        ],
     ),
     ColoredBananaGroup(
         group=5,
@@ -95,7 +102,13 @@ ColoredBananaGroupList = [
         name="Tunnel to Snide room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
-        locations=[[1, 1.0, 1566, 1026, 1989], [1, 1.0, 1566, 1026, 1915], [1, 1.0, 1686, 1026, 1915], [1, 1.0, 1806, 1026, 1915], [1, 1.0, 1926, 1026, 1915]],
+        locations=[
+            [1, 1.0, 1566, 1026, 1989],
+            [1, 1.0, 1566, 1026, 1915],
+            [1, 1.0, 1686, 1026, 1915],
+            [1, 1.0, 1806, 1026, 1915],
+            [1, 1.0, 1926, 1026, 1915],
+        ],
     ),
     ColoredBananaGroup(
         group=10,
@@ -119,7 +132,13 @@ ColoredBananaGroupList = [
         name="Block tower room on top of DK coins stairs in front of window",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
-        locations=[[1, 1.0, 1988, 1110, 1504], [1, 1.0, 1988, 1110, 1440], [1, 1.0, 1988, 1110, 1376], [1, 1.0, 1988, 1110, 1312], [1, 1.0, 1988, 1110, 1248]],
+        locations=[
+            [1, 1.0, 1988, 1110, 1504],
+            [1, 1.0, 1988, 1110, 1440],
+            [1, 1.0, 1988, 1110, 1376],
+            [1, 1.0, 1988, 1110, 1312],
+            [1, 1.0, 1988, 1110, 1248],
+        ],
     ),
     ColoredBananaGroup(
         group=13,
@@ -159,7 +178,13 @@ ColoredBananaGroupList = [
         name="Block tower room on grate between Mini Monkey and Tag barrel",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
-        locations=[[1, 1.0, 2660, 1111, 1011], [1, 1.0, 2590, 1107, 1011], [1, 1.0, 2520, 1107, 1011], [1, 1.0, 2450, 1107, 1011], [1, 1.0, 2380, 1107, 1011]],
+        locations=[
+            [1, 1.0, 2660, 1111, 1011],
+            [1, 1.0, 2590, 1107, 1011],
+            [1, 1.0, 2520, 1107, 1011],
+            [1, 1.0, 2450, 1107, 1011],
+            [1, 1.0, 2380, 1107, 1011],
+        ],
     ),
     ColoredBananaGroup(
         group=18,
@@ -167,7 +192,10 @@ ColoredBananaGroupList = [
         name="Block tower room by tunnel to spinning wheel (1 custom, 1 Tiny bunch)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
-        locations=[[5, 1.0, 2258, 1132, 894], [5, 1.059999942779541, 2342.00390625, 1108.814697265625, 852.6431274414062]],
+        locations=[
+            [5, 1.0, 2258, 1132, 894],
+            [5, 1.059999942779541, 2342.00390625, 1108.814697265625, 852.6431274414062],
+        ],
     ),
     ColoredBananaGroup(
         group=19,
@@ -242,11 +270,17 @@ ColoredBananaGroupList = [
         name="Block tower (lower block towards R&D and tunnel to numbers game)",
         konglist=[Kongs.diddy, Kongs.lanky],
         region=Regions.Testing,
-        logic=lambda l: (l.spring and l.isdiddy) or (l.balloon and l.islanky),
+        logic=lambda l: ((l.spring or l.CanMoontail()) and l.isdiddy) or (l.balloon and l.islanky),
         locations=[[5, 1.0, 2495, 1152, 1296]],
     ),
     ColoredBananaGroup(
-        group=23, map_id=Maps.FranticFactory, name="Block tower (R block near top)", konglist=[Kongs.diddy], region=Regions.Testing, logic=lambda l: l.spring, locations=[[5, 1.0, 2416, 1432, 1338]]
+        group=23,
+        map_id=Maps.FranticFactory,
+        name="Block tower (R block near top)",
+        konglist=[Kongs.diddy],
+        region=Regions.Testing,
+        logic=lambda l: l.spring or l.CanMoontail(),
+        locations=[[5, 1.0, 2416, 1432, 1338]],
     ),
     ColoredBananaGroup(
         group=24,
@@ -254,7 +288,7 @@ ColoredBananaGroupList = [
         name="Block tower (middle D block on the right path up)",
         konglist=[Kongs.diddy],
         region=Regions.Testing,
-        logic=lambda l: l.spring,
+        logic=lambda l: l.spring or l.CanMoontail(),
         locations=[[5, 1.0, 2375, 1272, 1378]],
     ),
     ColoredBananaGroup(
@@ -271,7 +305,13 @@ ColoredBananaGroupList = [
         name="R&D Pole",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.RandD,
-        locations=[[1, 1.0, 3146, 1056, 1081], [1, 1.0, 3146, 1116, 1081], [1, 1.0, 3146, 1176, 1081], [1, 1.0, 3146, 1236, 1081], [1, 1.0, 3146, 1296, 1081]],
+        locations=[
+            [1, 1.0, 3146, 1056, 1081],
+            [1, 1.0, 3146, 1116, 1081],
+            [1, 1.0, 3146, 1176, 1081],
+            [1, 1.0, 3146, 1236, 1081],
+            [1, 1.0, 3146, 1296, 1081],
+        ],
     ),
     ColoredBananaGroup(
         group=27,
@@ -287,7 +327,13 @@ ColoredBananaGroupList = [
         name="Tunnel from pole to R&D room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.RandD,
-        locations=[[1, 1.0, 3280, 1264, 1066], [1, 1.0, 3355, 1264, 1060], [1, 1.0, 3430, 1264, 1054], [1, 1.0, 3505, 1264, 1048], [1, 1.0, 3580, 1264, 1042]],
+        locations=[
+            [1, 1.0, 3280, 1264, 1066],
+            [1, 1.0, 3355, 1264, 1060],
+            [1, 1.0, 3430, 1264, 1054],
+            [1, 1.0, 3505, 1264, 1048],
+            [1, 1.0, 3580, 1264, 1042],
+        ],
     ),
     ColoredBananaGroup(
         group=29,
@@ -318,8 +364,8 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="R&D in grate with 4 Chunky coins",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.RandD,
-        logic=lambda l: (l.grab and l.donkey) or l.phasewalk,
+        region=Regions.RandDUpper,
+        logic=lambda l: (l.grab and l.donkey) or l.CanPhase(),
         locations=[[5, 1.0, 4053, 1313, 784]],
     ),
     ColoredBananaGroup(
@@ -327,8 +373,14 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Tunnel from R&D room to above Power shed",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.RandD,
-        locations=[[1, 1.0, 4530, 1336, 936], [1, 1.0, 4455, 1336, 940], [1, 1.0, 4380, 1336, 944], [1, 1.0, 4305, 1336, 948], [1, 1.0, 4230, 1336, 952]],
+        region=Regions.RandDUpper,
+        locations=[
+            [1, 1.0, 4530, 1336, 936],
+            [1, 1.0, 4455, 1336, 940],
+            [1, 1.0, 4380, 1336, 944],
+            [1, 1.0, 4305, 1336, 948],
+            [1, 1.0, 4230, 1336, 952],
+        ],
     ),
     ColoredBananaGroup(
         group=32,
@@ -344,7 +396,7 @@ ColoredBananaGroupList = [
         name="Corners of Car race room (right)",
         konglist=[Kongs.tiny],
         region=Regions.FactoryTinyRaceLobby,
-        logic=lambda l: l.mini or l.phasewalk,
+        logic=lambda l: l.mini or l.CanPhase(),
         locations=[[5, 1.0, 3442, 1269, 1314], [5, 1.0, 3515, 1269, 1220]],
     ),
     ColoredBananaGroup(
@@ -353,7 +405,7 @@ ColoredBananaGroupList = [
         name="Corners of Car race room (left)",
         konglist=[Kongs.tiny],
         region=Regions.FactoryTinyRaceLobby,
-        logic=lambda l: l.mini or l.phasewalk,
+        logic=lambda l: l.mini or l.CanPhase(),
         locations=[[5, 1.0, 3632, 1269, 1310], [5, 1.0, 3555, 1269, 1410]],
     ),
     ColoredBananaGroup(
@@ -361,8 +413,8 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Diddy R&D room",
         konglist=[Kongs.diddy],
-        region=Regions.RandD,
-        logic=lambda l: l.guitar or l.phasewalk,
+        region=Regions.RandDUpper,
+        logic=lambda l: l.guitar or l.CanPhase(),
         locations=[
             [1, 1.0, 4340, 1336, 680],
             [1, 1.0, 4380, 1336, 740],
@@ -381,8 +433,8 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Diddy R&D room in front of 4 buttons",
         konglist=[Kongs.diddy],
-        region=Regions.RandD,
-        logic=lambda l: l.guitar or l.phasewalk,
+        region=Regions.RandDUpper,
+        logic=lambda l: l.guitar or l.CanPhase(),
         locations=[[5, 1.0, 4565, 1341, 273], [5, 1.0, 4593, 1341, 316], [5, 1.0, 4709, 1341, 485], [5, 1.0, 4735, 1341, 526]],
     ),
     ColoredBananaGroup(
@@ -390,8 +442,8 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Leading to Chunky R&D room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.RandD,
-        logic=lambda l: l.punch and l.chunky,
+        region=Regions.RandDUpper,
+        logic=lambda l: l.punch and l.chunky and l.climbing,
         locations=[[1, 1.0, 4404, 1421, 1396], [1, 1.0, 4346, 1417, 1355]],
     ),
     ColoredBananaGroup(
@@ -399,7 +451,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Leading to Chunky R&D room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.RandD,
+        region=Regions.RandDUpper,
         locations=[[1, 1.0, 4288, 1417, 1314], [1, 1.0, 4230, 1417, 1273], [1, 1.0, 4192, 1380, 1251]],
     ),
     ColoredBananaGroup(
@@ -408,7 +460,7 @@ ColoredBananaGroupList = [
         name="Chunky R&D room behind chest",
         konglist=[Kongs.chunky],
         region=Regions.RandD,
-        logic=lambda l: l.CanAccessRNDRoom() or (l.punch and l.triangle),
+        logic=lambda l: l.CanAccessRNDRoom() or (l.punch and l.triangle and l.climbing),
         locations=[[5, 1.0, 5000, 1341, 1748], [5, 1.0, 4980, 1341, 1778]],
     ),
     ColoredBananaGroup(
@@ -430,7 +482,13 @@ ColoredBananaGroupList = [
         locations=[[5, 1.0, 3330, 1311, 481], [5, 1.0, 3359, 1311, 444], [5, 1.0, 3386, 1311, 407]],
     ),
     ColoredBananaGroup(
-        group=41, map_id=Maps.FranticFactory, name="On F Key", konglist=[Kongs.lanky], region=Regions.RandD, logic=lambda l: l.CanAccessRNDRoom() or l.trombone, locations=[[5, 1.0, 3460, 1285, 424]]
+        group=41,
+        map_id=Maps.FranticFactory,
+        name="On F Key",
+        konglist=[Kongs.lanky],
+        region=Regions.RandD,
+        logic=lambda l: l.CanAccessRNDRoom() or l.trombone,
+        locations=[[5, 1.0, 3460, 1285, 424]],
     ),
     ColoredBananaGroup(
         group=42,
@@ -466,17 +524,24 @@ ColoredBananaGroupList = [
     #     name="On vines to Beaver Bother barrel",
     #     konglist=[Kongs.diddy],
     #     lregion=Regions.ChunkyRoomPlatform,
-    #     logic=lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.vines,
+    #     logic=lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.can_use_vines,
     #     locations=[[5, 1.0, 1327, 160, 839], [5, 1.0, 1237, 178, 840]],
     # ),
-    ColoredBananaGroup(group=45, map_id=Maps.FactoryPowerHut, name="On box-shaped vents", konglist=[Kongs.donkey], region=Regions.PowerHut, locations=[[5, 1.0, 185, 42, 93], [5, 1.0, 185, 42, 116]]),
+    ColoredBananaGroup(
+        group=45,
+        map_id=Maps.FactoryPowerHut,
+        name="On box-shaped vents",
+        konglist=[Kongs.donkey],
+        region=Regions.PowerHut,
+        locations=[[5, 1.0, 185, 42, 93], [5, 1.0, 185, 42, 116]],
+    ),
     ColoredBananaGroup(
         group=46,
         map_id=Maps.FranticFactory,
         name="In Dark room on box",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.punch or l.phasewalk,
+        logic=lambda l: l.punch or l.CanPhase(),
         locations=[[5, 1.0, 2130, 52, 528]],
     ),
     ColoredBananaGroup(
@@ -485,7 +550,7 @@ ColoredBananaGroupList = [
         name="On Simian Spring ledge with coins",
         konglist=[Kongs.diddy],
         region=Regions.BeyondHatch,
-        logic=lambda l: (l.spring and l.isdiddy) or l.phasewalk,
+        logic=lambda l: ((l.spring or l.CanMoontail()) and l.isdiddy) or l.CanPhase(),
         locations=[[5, 1.0, 1072, 182, 478], [5, 1.0, 1092, 182, 478]],
     ),
     ColoredBananaGroup(
@@ -510,7 +575,13 @@ ColoredBananaGroupList = [
         name="From BBlast pad to Tiny BP pole",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        locations=[[1, 1.0, 1294, 7, 216], [1, 1.0, 1294, 7, 296], [1, 1.0, 1294, 7, 376], [1, 1.0, 1294, 7, 456], [1, 1.0, 1294, 7, 536]],
+        locations=[
+            [1, 1.0, 1294, 7, 216],
+            [1, 1.0, 1294, 7, 296],
+            [1, 1.0, 1294, 7, 376],
+            [1, 1.0, 1294, 7, 456],
+            [1, 1.0, 1294, 7, 536],
+        ],
     ),
     ColoredBananaGroup(
         group=51,
@@ -635,7 +706,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room around center piece (higher floor)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MiddleCore,
+        region=Regions.SpinningCore,
         locations=[
             [1, 1.0, 646, 309, 1397],
             [1, 1.0, 693, 309, 1377],
@@ -654,15 +725,21 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room on spinning cylinder out from center piece",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MiddleCore,
-        locations=[[1, 1.0, 630, 309, 1209], [1, 1.0, 630, 309, 1155], [1, 1.0, 630, 309, 1101], [1, 1.0, 630, 309, 1047], [1, 1.0, 630, 309, 993]],
+        region=Regions.SpinningCore,
+        locations=[
+            [1, 1.0, 630, 309, 1209],
+            [1, 1.0, 630, 309, 1155],
+            [1, 1.0, 630, 309, 1101],
+            [1, 1.0, 630, 309, 1047],
+            [1, 1.0, 630, 309, 993],
+        ],
     ),
     ColoredBananaGroup(
         group=61,
         map_id=Maps.FranticFactory,
         name="Bunches on W4",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MiddleCore,
+        region=Regions.SpinningCore,
         locations=[[5, 1.0, 908, 436, 1534]],
     ),
     ColoredBananaGroup(
@@ -756,7 +833,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Pole room to arcade",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.FactoryArcadeTunnel,
         locations=[[5, 1.0, 1210, 1112, 984], [5, 1.0, 1352, 1112, 990]],
     ),
     ColoredBananaGroup(
@@ -764,7 +841,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Pole room to arcade around pole",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.FactoryArcadeTunnel,
         locations=[
             [1, 1.0, 1204, 1107, 844],
             [1, 1.0, 1202, 1107, 890],
@@ -783,15 +860,21 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Tunnel to Stash Snatch",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
-        locations=[[1, 1.0, 1275, 1107, 1408], [1, 1.0, 1274, 1107, 1482], [1, 1.0, 1273, 1107, 1557], [1, 1.0, 1272, 1107, 1632], [1, 1.0, 1271, 1107, 1708]],
+        region=Regions.FactoryArcadeTunnel,
+        locations=[
+            [1, 1.0, 1275, 1107, 1408],
+            [1, 1.0, 1274, 1107, 1482],
+            [1, 1.0, 1273, 1107, 1557],
+            [1, 1.0, 1272, 1107, 1632],
+            [1, 1.0, 1271, 1107, 1708],
+        ],
     ),
     ColoredBananaGroup(
         group=70,
         map_id=Maps.FranticFactory,
         name="Stash Snatch room",
         konglist=[Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.FactoryArcadeTunnel,
         logic=lambda l: l.punch,
         locations=[[5, 1.0, 1340, 1112, 1762], [5, 1.0, 1202, 1112, 1754]],
     ),
@@ -800,7 +883,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Under W5 table",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.FactoryArcadeTunnel,
         locations=[[5, 1.0, 1790, 1110, 1372]],
     ),
     ColoredBananaGroup(
@@ -808,7 +891,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Under table to Mini Monkey GB",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.FactoryArcadeTunnel,
         locations=[[5, 1.0, 1812, 1110, 1520], [5, 1.0, 1852, 1110, 1520], [5, 1.0, 1892, 1110, 1520]],
     ),
     ColoredBananaGroup(
@@ -816,7 +899,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="On table to Mini Monkey GB",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.FactoryArcadeTunnel,
         locations=[[5, 1.0, 1925, 1149, 1515], [5, 1.0, 1748, 1193, 1525]],
     ),
     ColoredBananaGroup(
@@ -824,7 +907,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="On DK Arcade",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.FactoryArcadeTunnel,
         locations=[[5, 1.0, 1862, 1172, 1228]],
     ),
     ColoredBananaGroup(
@@ -832,7 +915,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Tunnel to DK Arcade (5 custom, 5 Diddy)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.FactoryArcadeTunnel,
         locations=[
             [1, 1.0, 1682, 1107, 1372],
             [1, 1.0, 1512, 1107, 1370],
@@ -854,7 +937,14 @@ ColoredBananaGroupList = [
         region=Regions.Testing,
         locations=[[5, 1.0, 1296, 1159, 602], [5, 1.0, 1468, 1134, 768]],
     ),
-    ColoredBananaGroup(group=77, map_id=Maps.FranticFactory, name="Funky room on high boxes", konglist=[Kongs.diddy, Kongs.tiny], region=Regions.Testing, locations=[[5, 1.0, 1498, 1219, 790]]),
+    ColoredBananaGroup(
+        group=77,
+        map_id=Maps.FranticFactory,
+        name="Funky room on high boxes",
+        konglist=[Kongs.diddy, Kongs.tiny],
+        region=Regions.Testing,
+        locations=[[5, 1.0, 1498, 1219, 790]],
+    ),
     ColoredBananaGroup(
         group=78,
         map_id=Maps.FranticFactory,
@@ -917,18 +1007,24 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Production room spinning arms, inside ring (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MiddleCore,
+        region=Regions.SpinningCore,
         vanilla=True,
-        locations=[[5, 1.0, 740.1113891601562, 428.0, 1333.6373291015625], [5, 1.0, 483.6172790527344, 428.7723388671875, 1335.5596923828125]],
+        locations=[
+            [5, 1.0, 740.1113891601562, 428.0, 1333.6373291015625],
+            [5, 1.0, 483.6172790527344, 428.7723388671875, 1335.5596923828125],
+        ],
     ),
     ColoredBananaGroup(
         group=84,
         map_id=Maps.FranticFactory,
         name="Production room spinning arms, outside ring (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MiddleCore,
+        region=Regions.SpinningCore,
         vanilla=True,
-        locations=[[5, 1.0, 889.6050415039062, 428.30029296875, 1334.5589599609375], [5, 1.0, 354.6239318847656, 428.0, 1335.3211669921875]],
+        locations=[
+            [5, 1.0, 889.6050415039062, 428.30029296875, 1334.5589599609375],
+            [5, 1.0, 354.6239318847656, 428.0, 1335.3211669921875],
+        ],
     ),
     ColoredBananaGroup(
         group=85,
@@ -938,7 +1034,11 @@ ColoredBananaGroupList = [
         region=Regions.BeyondHatch,
         vanilla=True,
         logic=lambda l: l.punch,
-        locations=[[5, 1.0, 1960.4481201171875, 106.5, 584.5081787109375], [5, 1.0, 1961.8372802734375, 126.5, 677.7713012695312], [5, 1.0, 1952.3826904296875, 136.5, 768.63232421875]],
+        locations=[
+            [5, 1.0, 1960.4481201171875, 106.5, 584.5081787109375],
+            [5, 1.0, 1961.8372802734375, 126.5, 677.7713012695312],
+            [5, 1.0, 1952.3826904296875, 136.5, 768.63232421875],
+        ],
     ),
     ColoredBananaGroup(
         group=86,
@@ -962,7 +1062,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.Testing,
         vanilla=True,
-        logic=lambda l: l.spring,
+        logic=lambda l: l.spring or l.CanMoontail(),
         locations=[
             [5, 1.0, 2334.96826171875, 1120.81298828125, 1253.9190673828125],
             [5, 1.0, 2460.02587890625, 1474.8333740234375, 1258.8880615234375],
@@ -976,8 +1076,11 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.Testing,
         vanilla=True,
-        logic=lambda l: l.spring,
-        locations=[[5, 1.0, 2340.177490234375, 1192.8333740234375, 1337.7464599609375], [5, 1.0, 2501.7470703125, 1392.8333740234375, 1342.0328369140625]],
+        logic=lambda l: l.spring or l.CanMoontail(),
+        locations=[
+            [5, 1.0, 2340.177490234375, 1192.8333740234375, 1337.7464599609375],
+            [5, 1.0, 2501.7470703125, 1392.8333740234375, 1342.0328369140625],
+        ],
     ),
     ColoredBananaGroup(
         group=89,
@@ -1004,14 +1107,18 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.UpperCore,
         vanilla=True,
-        locations=[[5, 1.0, 540.67431640625, 623.0, 1692.7386474609375], [5, 1.0, 376.5771484375, 615.0, 1563.20947265625], [5, 1.0, 302.7023010253906, 615.0, 1410.3233642578125]],
+        locations=[
+            [5, 1.0, 540.67431640625, 623.0, 1692.7386474609375],
+            [5, 1.0, 376.5771484375, 615.0, 1563.20947265625],
+            [5, 1.0, 302.7023010253906, 615.0, 1410.3233642578125],
+        ],
     ),
     ColoredBananaGroup(
         group=91,
         map_id=Maps.FranticFactory,
         name="R&D upper walkway (Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.RandD,
+        region=Regions.RandDUpper,
         vanilla=True,
         locations=[
             [1, 1.0, 3983.73828125, 1336.0, 714.7798461914062],
@@ -1041,9 +1148,8 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Pipe in corner of Chunky's room (Lanky)",
         konglist=[Kongs.lanky],
-        region=Regions.BeyondHatch,
+        region=Regions.FactoryStoragePipe,
         vanilla=True,
-        logic=lambda l: l.handstand,
         locations=[
             [1, 1.0, 1612.77197265625, 209.3333282470703, 484.9771728515625],
             [1, 1.0, 1543.5341796875, 193.69114685058594, 490.4968566894531],
@@ -1067,7 +1173,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.lanky],
         region=Regions.UpperCore,
         vanilla=True,
-        logic=lambda l: l.handstand or l.phasewalk,
+        logic=lambda l: l.handstand or l.CanPhase(),
         locations=[
             [5, 1.0, 948.8671875, 818.39599609375, 1477.1390380859375],
             [5, 1.0, 847.3552856445312, 770.4682006835938, 1490.0218505859375],
@@ -1089,7 +1195,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Prod room on the middle steps between rotating cylinders and the spinning arms (Lanky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MiddleCore,
+        region=Regions.SpinningCore,
         vanilla=True,
         locations=[
             [5, 1.0, 551.6519165039062, 317.6666564941406, 996.9663696289062],
@@ -1209,7 +1315,7 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Arcade room, by Mini Monkey tunnel (Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.FactoryArcadeTunnel,
         vanilla=True,
         locations=[[5, 1.0, 1798.70751953125, 1192.0, 1525.5546875]],
     ),
@@ -1220,7 +1326,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.Testing,
         vanilla=True,
-        logic=lambda l: l.mini or l.phasewalk,
+        logic=lambda l: l.mini or l.CanPhase(),
         locations=[[5, 1.0, 2479.365234375, 1106.81640625, 850.234130859375]],
     ),
     ColoredBananaGroup(
@@ -1228,17 +1334,21 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="By middle window outside of production room (Tiny)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.AlcoveBeyondHatch,
         vanilla=True,
-        locations=[[5, 1.0, 598.0451049804688, 459.3333435058594, 1745.70458984375], [5, 1.0, 686.716552734375, 459.3333435058594, 1749.0380859375]],
+        locations=[
+            [5, 1.0, 598.0451049804688, 459.3333435058594, 1745.70458984375],
+            [5, 1.0, 686.716552734375, 459.3333435058594, 1749.0380859375],
+        ],
     ),
     ColoredBananaGroup(
         group=106,
         map_id=Maps.FranticFactory,
         name="On pole down hatch (Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.FranticFactoryStart,
         vanilla=True,
+        logic=lambda l: Events.HatchOpened in l.Events,
         locations=[
             [1, 1.0, 635.0736083984375, 717.8333129882812, 1891.0057373046875],
             [1, 1.0, 634.122802734375, 417.83331298828125, 1896.0335693359375],
@@ -1257,9 +1367,9 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Chunky R&D room left side (Chunky)",
         konglist=[Kongs.chunky],
-        region=Regions.RandD,
+        region=Regions.RandDUpper,
         vanilla=True,
-        logic=lambda l: (l.punch and l.triangle) or l.CanAccessRNDRoom(),
+        logic=lambda l: (l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
         locations=[
             [1, 1.0, 4655.8388671875, 1339.0, 1240.5621337890625],
             [1, 1.0, 4767.98388671875, 1339.0, 1316.2774658203125],
@@ -1273,9 +1383,9 @@ ColoredBananaGroupList = [
         map_id=Maps.FranticFactory,
         name="Chunky R&D room right side (Chunky)",
         konglist=[Kongs.chunky],
-        region=Regions.RandD,
+        region=Regions.RandDUpper,
         vanilla=True,
-        logic=lambda l: (l.punch and l.triangle) or l.CanAccessRNDRoom(),
+        logic=lambda l: (l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
         locations=[
             [1, 1.0, 4385.7177734375, 1339.0, 1695.80419921875],
             [1, 1.0, 4492.11083984375, 1339.0, 1768.3846435546875],
@@ -1323,7 +1433,11 @@ ColoredBananaGroupList = [
         region=Regions.InsideCore,
         vanilla=True,
         logic=lambda l: l.strongKong,
-        locations=[[5, 1.0, 303.0682373046875, 15.0, 459.1358642578125], [5, 1.0, 121.00019073486328, 15.0, 465.156494140625], [5, 1.0, 118.80945587158203, 15.0, 289.1971435546875]],
+        locations=[
+            [5, 1.0, 303.0682373046875, 15.0, 459.1358642578125],
+            [5, 1.0, 121.00019073486328, 15.0, 465.156494140625],
+            [5, 1.0, 118.80945587158203, 15.0, 289.1971435546875],
+        ],
     ),
     ColoredBananaGroup(
         group=112,
@@ -1332,7 +1446,10 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.FactoryBaboonBlast,
         vanilla=True,
-        locations=[[5, 1.0, 878.044921875, 722.0, 1174.5888671875], [5, 1.0, 1254.5228271484375, 734.0, 1300.882568359375]],
+        locations=[
+            [5, 1.0, 878.044921875, 722.0, 1174.5888671875],
+            [5, 1.0, 1254.5228271484375, 734.0, 1300.882568359375],
+        ],
     ),
     ColoredBananaGroup(
         group=113,
@@ -1341,7 +1458,10 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.FactoryBaboonBlast,
         vanilla=True,
-        locations=[[5, 1.0, 623.1658325195312, 719.0, 1043.0872802734375], [5, 1.0, 999.823486328125, 573.0, 1446.8406982421875]],
+        locations=[
+            [5, 1.0, 623.1658325195312, 719.0, 1043.0872802734375],
+            [5, 1.0, 999.823486328125, 573.0, 1446.8406982421875],
+        ],
     ),
 ]
 
@@ -1407,7 +1527,16 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
-        points=[[1978, 1080, 1942], [2170, 1076, 1900], [2309, 1084, 1932], [2183, 1080, 1953], [2000, 1078, 1898], [1804, 1082, 1946], [1662, 1084, 1915], [1795, 1078, 1900]],
+        points=[
+            [1978, 1080, 1942],
+            [2170, 1076, 1900],
+            [2309, 1084, 1932],
+            [2183, 1080, 1953],
+            [2000, 1078, 1898],
+            [1804, 1082, 1946],
+            [1662, 1084, 1915],
+            [1795, 1078, 1900],
+        ],
     ),
     Balloon(
         id=8,
@@ -1425,7 +1554,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.diddy],
         region=Regions.Testing,
-        logic=lambda l: l.spring,
+        logic=lambda l: l.spring or l.CanMoontail(),
         points=[[2418, 1620, 1224], [2494, 1610, 1300], [2418, 1625, 1376], [2342, 1615, 1300]],
     ),
     Balloon(
@@ -1489,7 +1618,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.tiny],
         region=Regions.Testing,
-        logic=lambda l: l.mini or l.phasewalk,
+        logic=lambda l: l.mini or l.CanPhase(),
         points=[[2450, 1160, 944], [2444, 1160, 860], [2583, 1160, 860], [2444, 1160, 860]],
     ),
     Balloon(
@@ -1507,7 +1636,7 @@ BalloonList = [
         name="Pole to R&D upper room",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.RandD,
+        region=Regions.RandDUpper,
         points=[[3126, 1340, 1001], [3240, 1340, 1010]],
     ),
     Balloon(
@@ -1517,7 +1646,15 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.RandD,
-        points=[[3751, 1360, 745], [4000, 1410, 692], [4122, 1405, 901], [4094, 1400, 1215], [3836, 1370, 1291], [3669, 1360, 1180], [3603, 1355, 932]],
+        points=[
+            [3751, 1360, 745],
+            [4000, 1410, 692],
+            [4122, 1405, 901],
+            [4094, 1400, 1215],
+            [3836, 1370, 1291],
+            [3669, 1360, 1180],
+            [3603, 1355, 932],
+        ],
     ),
     Balloon(
         id=20,
@@ -1553,8 +1690,8 @@ BalloonList = [
         name="Chunky R&D room",
         speed=4,
         konglist=[Kongs.chunky],
-        region=Regions.RandD,
-        logic=lambda l: (l.punch and l.triangle) or l.CanAccessRNDRoom(),
+        region=Regions.RandDUpper,
+        logic=lambda l: (l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom(),
         points=[[5086, 1580, 1562], [4830, 1560, 1948]],
     ),
     Balloon(
@@ -1591,7 +1728,7 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.punch or l.phasewalk,
+        logic=lambda l: l.punch or l.CanPhase(),
         points=[[2078, 150, 510], [2078, 150, 810]],
     ),
     Balloon(
@@ -1600,7 +1737,7 @@ BalloonList = [
         name="Arcade room",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.BeyondHatch,
+        region=Regions.FactoryArcadeTunnel,
         points=[[1646, 1165, 1285], [1656, 1160, 1454]],
     ),
     Balloon(
@@ -1610,7 +1747,14 @@ BalloonList = [
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.UpperCore,
-        points=[[500, 980, 1240], [640, 970, 1200], [762, 975, 1274], [742, 990, 1451], [575, 1000, 1466], [500, 990, 1373]],
+        points=[
+            [500, 980, 1240],
+            [640, 970, 1200],
+            [762, 975, 1274],
+            [742, 990, 1451],
+            [575, 1000, 1466],
+            [500, 990, 1373],
+        ],
     ),
     Balloon(
         id=30,
@@ -1627,7 +1771,7 @@ BalloonList = [
         name="Production room in front of middle window",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MiddleCore,
+        region=Regions.SpinningCore,
         points=[[598, 510, 1675], [704, 505, 1684]],
     ),
     Balloon(
@@ -1686,7 +1830,7 @@ BalloonList = [
         name="In Diddy's R&D room (back) (Diddy)",
         speed=3,
         konglist=[Kongs.diddy],
-        region=Regions.RandD,
+        region=Regions.RandDUpper,
         vanilla=True,
         logic=lambda l: l.guitar or l.CanAccessRNDRoom(),
         points=[[4539, 1484, 344], [4679, 1488, 571]],
@@ -1697,7 +1841,7 @@ BalloonList = [
         name="In Diddy's R&D room (front) (Diddy)",
         speed=5,
         konglist=[Kongs.diddy],
-        region=Regions.RandD,
+        region=Regions.RandDUpper,
         vanilla=True,
         logic=lambda l: l.guitar or l.CanAccessRNDRoom(),
         points=[[4413, 1498, 709], [4336, 1510, 583], [4244, 1502, 450]],
@@ -1708,7 +1852,7 @@ BalloonList = [
         name="In R&D above hatch to Chunky's room (Donkey)",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.RandD,
+        region=Regions.RandDUpper,
         vanilla=True,
         points=[[4665, 1389, 860], [4652, 1389, 1014]],
     ),
@@ -1730,7 +1874,14 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Testing,
         vanilla=True,
-        points=[[2612, 1080, 1673], [2733, 1060, 1696], [2751, 1066, 1940], [2547, 1068, 1947], [2537, 1066, 1870], [2554, 1060, 1725]],
+        points=[
+            [2612, 1080, 1673],
+            [2733, 1060, 1696],
+            [2751, 1066, 1940],
+            [2547, 1068, 1947],
+            [2537, 1066, 1870],
+            [2554, 1060, 1725],
+        ],
     ),
     Balloon(
         id=42,
@@ -1738,7 +1889,7 @@ BalloonList = [
         name="In Diddy's R&D room (left) (Diddy)",
         speed=6,
         konglist=[Kongs.diddy],
-        region=Regions.RandD,
+        region=Regions.RandDUpper,
         vanilla=True,
         logic=lambda l: l.guitar or l.CanAccessRNDRoom(),
         points=[[4313, 1484, 446], [4521, 1486, 315]],
@@ -1779,9 +1930,9 @@ BalloonList = [
         name="Chunky R&D room (Chunky)",
         speed=6,
         konglist=[Kongs.chunky],
-        region=Regions.RandD,
+        region=Regions.RandDUpper,
         vanilla=True,
-        logic=lambda l: ((l.punch and l.triangle) or l.CanAccessRNDRoom()),
+        logic=lambda l: ((l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()),
         points=[[4424, 1490, 1560], [4567, 1486, 1341]],
     ),
     Balloon(

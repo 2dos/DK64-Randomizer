@@ -11,6 +11,26 @@ const short normal_key_flags[] = {
 	FLAG_KEYHAVE_KEY7,
 	FLAG_KEYHAVE_KEY8
 };
+short tbarrel_flags[] = {
+	FLAG_TBARREL_BARREL,
+	FLAG_TBARREL_DIVE,
+	FLAG_TBARREL_ORANGE,
+	FLAG_TBARREL_VINE,
+};
+short bfi_move_flags[] = {
+	FLAG_ABILITY_CAMERA,
+	FLAG_ABILITY_SHOCKWAVE,
+};
+const short tnsportal_flags[] = {
+	// Troff n Scoff portal clear flags
+	FLAG_PORTAL_JAPES,
+	FLAG_PORTAL_AZTEC,
+	FLAG_PORTAL_FACTORY,
+	FLAG_PORTAL_GALLEON,
+	FLAG_PORTAL_FUNGI,
+	FLAG_PORTAL_CAVES,
+	FLAG_PORTAL_CASTLE,
+};
 const unsigned short slam_flags[] = {FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1, FLAG_ITEM_SLAM_2, FLAG_SHOPMOVE_SLAM_0, FLAG_SHOPMOVE_SLAM_1, FLAG_SHOPMOVE_SLAM_2};
 const unsigned short belt_flags[] = {FLAG_ITEM_BELT_0, FLAG_ITEM_BELT_1, FLAG_SHOPMOVE_BELT_0, FLAG_SHOPMOVE_BELT_1};
 const unsigned short instrument_flags[] = {FLAG_ITEM_INS_0, FLAG_ITEM_INS_1, FLAG_ITEM_INS_2, FLAG_SHOPMOVE_INS_0, FLAG_SHOPMOVE_INS_1, FLAG_SHOPMOVE_INS_2};
@@ -62,7 +82,7 @@ static const unsigned char training_maps[] = {
 	MAP_TBARREL_DIVE,
 	MAP_TBARREL_ORANGE,
 };
-static short shop_maps[] = {
+static unsigned char shop_maps[] = {
 	MAP_CRANKY,
 	MAP_CANDY,
 	MAP_FUNKY,
@@ -505,6 +525,250 @@ static const char overlay_indexes[] = {
 	OVERLAY_BOSS, // K. Rool's Shoe
 	OVERLAY_NONE, // K. Rool's Arena
 };
+
+#define UNAFFECTED_HEAD_MODEL -3
+
+const char big_head_actors[MODEL_COUNT] = {
+	UNAFFECTED_HEAD_MODEL, // No Model
+	0, // Diddy
+	0, // Diddy (Instrument)
+	0, // Diddy (Low Poly)
+	0, // DK
+	0, // DK (Low Poly)
+	0, // Lanky
+	0, // Lanky (Instrument)
+	0, // Lanky (Low Poly)
+	0, // Tiny
+	0, // Tiny (Instrument)
+	0, // Tiny (Low Poly)
+	0, // Chunky
+	0, // Chunky (Instrument)
+	0, // Disco Chunky
+	0, // Chunky (Low Poly)
+	0, // Invisible Chunky
+	0, // Cranky
+	0, // Funky
+	0, // Candy
+	0, // Rambi
+	UNAFFECTED_HEAD_MODEL, // Snake
+	0, // Turtle
+	8, // Seal // 0 for butt
+	0, // Enguarde
+	0, // Beaver (Low Poly)
+	0, // Beaver
+	0, // Beaver (Gold)
+	21, // Zinger // Big ass, 0 for eyes. Polled the easiest person to amuse
+	UNAFFECTED_HEAD_MODEL, // Squawks // -1 causes crashes
+	0, // Klobber // Might not work properly
+	3, // Snide // 0 for hench snide
+	0, // Kaboom // might not work properly
+	0, // Klaptrap (Green)
+	0, // Klaptrap (Purple)
+	0, // Klaptrap (Red)
+	UNAFFECTED_HEAD_MODEL, // Klaptrap (Teeth)
+	UNAFFECTED_HEAD_MODEL, // Mad Jack // Causes him to jump into the ceiling
+	1, // Krash
+	0, // Troff
+	UNAFFECTED_HEAD_MODEL, // Bad Hit Detection Man
+	8, // Sir Domino // Right eye
+	UNAFFECTED_HEAD_MODEL, // Mr. Dice
+	UNAFFECTED_HEAD_MODEL, // Ruler
+	0, // Robo-Kremling
+	0, // Scoff
+	0, // Beetle
+	UNAFFECTED_HEAD_MODEL, // Klaptrap (Teeth?)
+	UNAFFECTED_HEAD_MODEL, // Nintendo Logo
+	0, // Kremling
+	0, // Kremling (Red - Kosh)
+	0, // Kremling (Green - Kosh)
+	5, // Mechanical Fish // Tail Fin
+	UNAFFECTED_HEAD_MODEL, // Toy Car
+	UNAFFECTED_HEAD_MODEL, // Giant Clam
+	0, // Kasplat
+	UNAFFECTED_HEAD_MODEL, // Army Dillo // Causes collision issues with the TNT Barrel
+	UNAFFECTED_HEAD_MODEL, // Mr. Dice
+	0, // Klump
+	UNAFFECTED_HEAD_MODEL, // Puftoss // Inconsequential
+	UNAFFECTED_HEAD_MODEL, // Dogadon // Makes DDQ super easy
+	0, // Banana Fairy
+	3, // Llama
+	12, // Guard
+	2, // Robo-Zinger
+	UNAFFECTED_HEAD_MODEL, // Turntable
+	0, // Krossbones
+	UNAFFECTED_HEAD_MODEL, // Shuri
+	UNAFFECTED_HEAD_MODEL, // Gimpfish
+	0, // K. Lumsy
+	0, // Spider // Technically -1, but causes crashes
+	0, // Rabbit
+	UNAFFECTED_HEAD_MODEL, // Beanstalk
+	0, // K. Rool (Cutscene)
+	UNAFFECTED_HEAD_MODEL, // Fireball (With Glasses)
+	UNAFFECTED_HEAD_MODEL, // Skeleton Head // 0 for jaw
+	UNAFFECTED_HEAD_MODEL, // Skeleton Hand
+	0, // Vulture (Race)
+	0, // Vulture (Shooting)
+	0, // Bat // Jaw
+	UNAFFECTED_HEAD_MODEL, // Skull
+	18, // Tomato // Jaw
+	UNAFFECTED_HEAD_MODEL, // Kritter-in-a-Sheet
+	UNAFFECTED_HEAD_MODEL, // Fly
+	UNAFFECTED_HEAD_MODEL, // Fly Swatter
+	UNAFFECTED_HEAD_MODEL, // Fly Swatter
+	0, // Owl
+	17, // Book
+	UNAFFECTED_HEAD_MODEL, // Ship's Wheel
+	UNAFFECTED_HEAD_MODEL, // Spotlight Fish // -1, causes crashes
+	0, // Puftup // Jaw
+	0, // Mermaid
+	15, // Mushroom
+	UNAFFECTED_HEAD_MODEL, // Shockwave (Mad Jack)
+	UNAFFECTED_HEAD_MODEL, // Squawks // -1, causes crashes
+	0, // Worm (apple)
+	UNAFFECTED_HEAD_MODEL, // Cuckoo Bird
+	0, // Kosha
+	18, // Ice Tomato // Jaw
+	UNAFFECTED_HEAD_MODEL, // Army Dillo (No Shell)
+	UNAFFECTED_HEAD_MODEL, // Boombox
+	23, // B. Locker // Right eye
+	UNAFFECTED_HEAD_MODEL, // Escape Ship
+	UNAFFECTED_HEAD_MODEL, // Army Dillo's Cannon
+	0, // K. Rool (Fight)
+	UNAFFECTED_HEAD_MODEL, // Golden Banana
+	UNAFFECTED_HEAD_MODEL, // Shockwave
+	UNAFFECTED_HEAD_MODEL, // K. Rool's Glove
+	UNAFFECTED_HEAD_MODEL, // K. Rool's Foot
+	UNAFFECTED_HEAD_MODEL, // K. Rool's Toe
+	UNAFFECTED_HEAD_MODEL, // K. Rool's Toe
+	UNAFFECTED_HEAD_MODEL, // K. Rool's Toe
+	UNAFFECTED_HEAD_MODEL, // Microphone // -1, causes crashes
+	UNAFFECTED_HEAD_MODEL, // Desk (K. Rool)
+	UNAFFECTED_HEAD_MODEL, // Bell
+	UNAFFECTED_HEAD_MODEL, // Clapper Board
+	UNAFFECTED_HEAD_MODEL, // Cannon
+	UNAFFECTED_HEAD_MODEL, // Barrel?
+	UNAFFECTED_HEAD_MODEL, // Bonus Barrel
+	UNAFFECTED_HEAD_MODEL, // Hunky Chunky Barrel
+	UNAFFECTED_HEAD_MODEL, // Mini Monkey Barrel
+	UNAFFECTED_HEAD_MODEL, // Barrel
+	UNAFFECTED_HEAD_MODEL, // Pushable Box
+	UNAFFECTED_HEAD_MODEL, // TNT Barrel Spawner
+	UNAFFECTED_HEAD_MODEL, // Cannon
+	UNAFFECTED_HEAD_MODEL, // TNT Barrel
+	UNAFFECTED_HEAD_MODEL, // Rambi Crate
+	UNAFFECTED_HEAD_MODEL, // Enguarde Crate
+	UNAFFECTED_HEAD_MODEL, // Chain
+	UNAFFECTED_HEAD_MODEL, // Swinging Light
+	UNAFFECTED_HEAD_MODEL, // Minecart
+	UNAFFECTED_HEAD_MODEL, // Barrel
+	UNAFFECTED_HEAD_MODEL, // Bridge (Castle)
+	UNAFFECTED_HEAD_MODEL, // Large Brown Bridge
+	UNAFFECTED_HEAD_MODEL, // Feather
+	UNAFFECTED_HEAD_MODEL, // Laser
+	UNAFFECTED_HEAD_MODEL, // Golden Banana (Item Drop)
+	UNAFFECTED_HEAD_MODEL, // Rocketbarrel
+	UNAFFECTED_HEAD_MODEL, // Strong Kong Barrel
+	UNAFFECTED_HEAD_MODEL, // Orangstand Sprint Barrel
+	UNAFFECTED_HEAD_MODEL, // Diddy's Jetpack
+	UNAFFECTED_HEAD_MODEL, // Photo
+	UNAFFECTED_HEAD_MODEL, // Minecart (TNT)
+	UNAFFECTED_HEAD_MODEL, // Weird glitch texture (computer screen?)
+	UNAFFECTED_HEAD_MODEL, // BBB Slot
+	UNAFFECTED_HEAD_MODEL, // BBB Slot
+	UNAFFECTED_HEAD_MODEL, // BBB Slot
+	UNAFFECTED_HEAD_MODEL, // BBB Slot
+	UNAFFECTED_HEAD_MODEL, // BBB Lever
+	UNAFFECTED_HEAD_MODEL, // Tiny's Car
+	UNAFFECTED_HEAD_MODEL, // Missile
+	UNAFFECTED_HEAD_MODEL, // Swinging light
+	UNAFFECTED_HEAD_MODEL, // Bananaporter Zipper
+	UNAFFECTED_HEAD_MODEL, // Boulder
+	UNAFFECTED_HEAD_MODEL, // Vase (O)
+	UNAFFECTED_HEAD_MODEL, // Vase (:)
+	UNAFFECTED_HEAD_MODEL, // Vase (Triangle)
+	UNAFFECTED_HEAD_MODEL, // Vase (+)
+	UNAFFECTED_HEAD_MODEL, // Toy Box
+	UNAFFECTED_HEAD_MODEL, // Boat
+	UNAFFECTED_HEAD_MODEL, // Padlock
+	UNAFFECTED_HEAD_MODEL, // Cannon Ball
+	UNAFFECTED_HEAD_MODEL, // Vine
+	UNAFFECTED_HEAD_MODEL, // Vine
+	UNAFFECTED_HEAD_MODEL, // Counter
+	UNAFFECTED_HEAD_MODEL, // Key
+	UNAFFECTED_HEAD_MODEL, // Bongos
+	UNAFFECTED_HEAD_MODEL, // DK Star
+	UNAFFECTED_HEAD_MODEL, // Spotlight
+	UNAFFECTED_HEAD_MODEL, // Cannon (Seasick Chunky)
+	UNAFFECTED_HEAD_MODEL, // Boulder Debris
+	UNAFFECTED_HEAD_MODEL, // Spider Web
+	UNAFFECTED_HEAD_MODEL, // Steel Keg
+	UNAFFECTED_HEAD_MODEL, // Shockwave
+	UNAFFECTED_HEAD_MODEL, // Shockwave
+	UNAFFECTED_HEAD_MODEL, // Battle Crown
+	UNAFFECTED_HEAD_MODEL, // Buoy
+	UNAFFECTED_HEAD_MODEL, // Buoy (Green)
+	UNAFFECTED_HEAD_MODEL, // Nothing?
+	UNAFFECTED_HEAD_MODEL, // DK Banana Counter
+	UNAFFECTED_HEAD_MODEL, // Diddy Banana Counter
+	UNAFFECTED_HEAD_MODEL, // Tiny Banana Counter
+	UNAFFECTED_HEAD_MODEL, // Lanky Banana Counter
+	UNAFFECTED_HEAD_MODEL, // Chunky Banana Counter
+	UNAFFECTED_HEAD_MODEL, // Shockwave (Green)
+	UNAFFECTED_HEAD_MODEL, // Potion
+	UNAFFECTED_HEAD_MODEL, // Missile (Army Dillo)
+	UNAFFECTED_HEAD_MODEL, // Shockwave (Red)
+	UNAFFECTED_HEAD_MODEL, // Ice wall? 
+	UNAFFECTED_HEAD_MODEL, // Rareware Logo
+	UNAFFECTED_HEAD_MODEL, // Stalactite
+	UNAFFECTED_HEAD_MODEL, // Rock Debris
+	UNAFFECTED_HEAD_MODEL, // Spotlight (BONUS)
+	UNAFFECTED_HEAD_MODEL, // Tag Barrel
+	UNAFFECTED_HEAD_MODEL, // Krossbones Head
+	UNAFFECTED_HEAD_MODEL, // Lever", -- Gorilla Grab
+	UNAFFECTED_HEAD_MODEL, // K. Lumsy's Cage
+	UNAFFECTED_HEAD_MODEL, // Freeze Attack
+	UNAFFECTED_HEAD_MODEL, // 1 Pad (Diddy 5DI)
+	UNAFFECTED_HEAD_MODEL, // 2 Pad (Diddy 5DI)
+	UNAFFECTED_HEAD_MODEL, // 3 Pad (Diddy 5DI)
+	UNAFFECTED_HEAD_MODEL, // 4 Pad (Diddy 5DI)
+	UNAFFECTED_HEAD_MODEL, // 5 Pad (Diddy 5DI)
+	UNAFFECTED_HEAD_MODEL, // 6 Pad (Diddy 5DI)
+	UNAFFECTED_HEAD_MODEL, // Race Checkpoint
+	UNAFFECTED_HEAD_MODEL, // Padlock & Key
+	UNAFFECTED_HEAD_MODEL, // Finish Line
+	UNAFFECTED_HEAD_MODEL, // Shockwave (Green)
+	UNAFFECTED_HEAD_MODEL, // Shockwave (Blue)
+	UNAFFECTED_HEAD_MODEL, // Shockwave (Purple)
+	UNAFFECTED_HEAD_MODEL, // Question Mark
+	UNAFFECTED_HEAD_MODEL, // Flower (Instrument)
+	UNAFFECTED_HEAD_MODEL, // DK Logo (Instrument)
+	UNAFFECTED_HEAD_MODEL, // Golden Banana
+	UNAFFECTED_HEAD_MODEL, // Apple
+	UNAFFECTED_HEAD_MODEL, // Barrel
+	UNAFFECTED_HEAD_MODEL, // Flag
+	UNAFFECTED_HEAD_MODEL, // Flag
+	UNAFFECTED_HEAD_MODEL, // Boat
+	0, // Krusha (Gun)
+	UNAFFECTED_HEAD_MODEL, // King Kut Out Body
+	UNAFFECTED_HEAD_MODEL, // King Kut Out Head
+	UNAFFECTED_HEAD_MODEL, // King Kut Out Arm
+	UNAFFECTED_HEAD_MODEL, // King Kut Out Arm
+	UNAFFECTED_HEAD_MODEL, // Rainbow Coin Patch
+	UNAFFECTED_HEAD_MODEL, // Rope
+	UNAFFECTED_HEAD_MODEL, // DK Smoke Trail
+	UNAFFECTED_HEAD_MODEL, // Light (K. Rool fight)
+	UNAFFECTED_HEAD_MODEL, // Bonus Barrel (Hideout Helm)
+	UNAFFECTED_HEAD_MODEL, // Banana
+	UNAFFECTED_HEAD_MODEL, // Banana Barrel
+	UNAFFECTED_HEAD_MODEL, // Training Barrel
+	UNAFFECTED_HEAD_MODEL, // Pirate Photo
+	UNAFFECTED_HEAD_MODEL, // Butterfly
+	UNAFFECTED_HEAD_MODEL, // Barrel
+	UNAFFECTED_HEAD_MODEL, // Funky's Gun
+	UNAFFECTED_HEAD_MODEL, // Boot
+};
+
+
 char* levels[] = {
     "ALL",
     "JUNGLE JAPES",
@@ -522,14 +786,18 @@ overlays getOverlayFromMap(maps map) {
 	return overlay_indexes[map];
 }
 
+int getBitArrayValue(unsigned char* arr, int value) {
+	int offset = value >> 3;
+    int check = value % 8;
+	return arr[offset] & (0x80 >> check);
+}
+
 int inMinigame(maps map) {
-	int offset = map >> 3;
-    int check = map % 8;
-    return *(unsigned char*)((unsigned char*)(&minigame_maps_btf) + offset) & (0x80 >> check);
+	return getBitArrayValue(&minigame_maps_btf, map);
 }
 
 int inShop(maps map, int include_snide) {
-	return inShortList(map, &shop_maps[0], 3 + include_snide);
+	return inU8List(map, &shop_maps[0], 3 + include_snide);
 }
 
 void playSFX(short sfxIndex) {
@@ -630,49 +898,31 @@ void resetMapContainer(void) {
 	}
 }
 
-static const unsigned char dk_portal_maps[] = {
-	MAP_JAPES,
-	MAP_AZTEC,
-	MAP_FACTORY,
-	MAP_GALLEON,
-	MAP_FUNGI,
-	MAP_CAVES,
-	MAP_CASTLE,
-	MAP_JAPESLOBBY,
-	MAP_AZTECLOBBY,
-	MAP_FACTORYLOBBY,
-	MAP_GALLEONLOBBY,
-	MAP_FUNGILOBBY,
-	MAP_CAVESLOBBY,
-	MAP_CASTLELOBBY
-};
 void correctDKPortal(void) {
-	int is_portal_map = 0;
-	for (int i = 0; i < sizeof(dk_portal_maps); i++) {
-		if (dk_portal_maps[i] == CurrentMap) {
-			is_portal_map = 1;
-		}
-	}
-	if (is_portal_map) {
-		int portal_exit = isLobby(CurrentMap);
-		int exit = DestExit;
-		int portal_state = 2;
-		if (portal_exit == exit) {
+	int exit = DestExit;
+	int portal_state = 2;
+	if (isLobby(CurrentMap))  {
+		if (exit == 1) {
 			portal_state = 0;
 		}
+	} else {
 		if ((CurrentMap == MAP_JAPES) && (exit == 15)) {
 			portal_state = 0;
+		} else if ((CurrentMap == MAP_FUNGI) && (exit == 27)) {
+			portal_state = 0;
+		} else if (exit == -1) {
+			portal_state = 0;
 		}
-		int _count = ObjectModel2Count;
-		int* m2location = (int*)ObjectModel2Pointer;
-		for (int i = 0; i < _count; i++) {
-			ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
-			if (_object->object_type == 0x2AD) {
-				behaviour_data* behav = _object->behaviour_pointer;
-				if (behav) {
-					behav->current_state = portal_state;
-					//behav->next_state = portal_state;
-				}
+	}		
+	int _count = ObjectModel2Count;
+	int* m2location = (int*)ObjectModel2Pointer;
+	for (int i = 0; i < _count; i++) {
+		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
+		if (_object->object_type == 0x2AD) {
+			behaviour_data* behav = _object->behaviour_pointer;
+			if (behav) {
+				behav->current_state = portal_state;
+				//behav->next_state = portal_state;
 			}
 		}
 	}
@@ -800,11 +1050,7 @@ int getWrinklyLevelIndex(void) {
 }
 
 int getKeyFlag(int index) {
-    if ((Rando.level_order_rando_on) && (index < 7)) {
-        return Rando.key_flags[index];
-    } else {
-        return normal_key_flags[index];
-    }
+	return normal_key_flags[index];
 }
 
 int getKongFlag(int kong_index) {
@@ -812,20 +1058,6 @@ int getKongFlag(int kong_index) {
 		return 0;
 	}
 	return kong_flags[kong_index];
-}
-
-void initActor(int actor_index, int is_custom, void* func, int master_type, int health, int damage_given, int initial_interactions, int base) {
-	if (is_custom) {
-		actor_index = CUSTOM_ACTORS_START + actor_index;
-	}
-	actor_functions[actor_index] = func;
-	actor_master_types[actor_index] = master_type;
-	actor_health_damage[actor_index].init_health = health;
-	actor_health_damage[actor_index].damage_applied = damage_given;
-	actor_interactions[actor_index] = initial_interactions;
-	actor_extra_data_sizes[actor_index] = actor_extra_data_sizes[base];
-	actor_collisions[actor_index].collision_info = actor_collisions[base].collision_info;
-	actor_collisions[actor_index].unk_4 = actor_collisions[base].unk_4;
 }
 
 sprite_data_struct bean_sprite = {
@@ -837,8 +1069,21 @@ sprite_data_struct bean_sprite = {
 	.table = 1,
 	.width = 64,
 	.height = 32,
-	.image_count = 1,
-	.images = {6020},
+	.image_count = 12,
+	.images = {
+		BEANSPIN_SPRITE_START + 0,
+		BEANSPIN_SPRITE_START + 1,
+		BEANSPIN_SPRITE_START + 2,
+		BEANSPIN_SPRITE_START + 3,
+		BEANSPIN_SPRITE_START + 4,
+		BEANSPIN_SPRITE_START + 5,
+		BEANSPIN_SPRITE_START + 6,
+		BEANSPIN_SPRITE_START + 7,
+		BEANSPIN_SPRITE_START + 8,
+		BEANSPIN_SPRITE_START + 9,
+		BEANSPIN_SPRITE_START + 10,
+		BEANSPIN_SPRITE_START + 11,
+	},
 };
 
 sprite_data_struct pearl_sprite = {
@@ -867,6 +1112,73 @@ sprite_data_struct krool_sprite = {
 	.images = {0x383, 0x384},
 };
 
+sprite_data_struct feather_gun_sprite = {
+	.unk0 = 0xC7,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 32,
+	.height = 32,
+	.image_count = 8,
+	.images = {
+		FEATHER_SPRITE_START + 0,
+		FEATHER_SPRITE_START + 1,
+		FEATHER_SPRITE_START + 2,
+		FEATHER_SPRITE_START + 3,
+		FEATHER_SPRITE_START + 4,
+		FEATHER_SPRITE_START + 5,
+		FEATHER_SPRITE_START + 6,
+		FEATHER_SPRITE_START + 7,
+	},
+};
+
+sprite_data_struct fool_overlay_sprite = {
+	.unk0 = 0xC8,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 1,
+	.unk8 = -1,
+	.table = 1,
+	.width = 40,
+	.height = 16,
+	.image_count = 1,
+	.images = {
+		FOOL_SPRITE_START,
+	},
+};
+
+sprite_data_struct company_coin_sprite = {
+	.unk0 = 0xC9,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 44,
+	.height = 44,
+	.image_count = 16,
+	.images = {
+		0x170D,
+		0x170E,
+		0x170F,
+		0x1710,
+		0x0D48,
+		0x1711,
+		0x1712,
+		0x1713,
+		0x1714,
+		0x1715,
+		0x1716,
+		0x1717,
+		0x0D49,
+		0x1718,
+		0x1719,
+		0x171A,
+	},
+};
+
 void giveGB(int kong, int level) {
 	changeCollectableCount(8, 0, 1);
 	displayItemOnHUD(8, 0, 0);
@@ -875,7 +1187,7 @@ void giveGB(int kong, int level) {
 int getTotalCBCount(void) {
 	int world = getWorld(CurrentMap,1);
 	int count = 0;
-	if (world < 7) {
+	if (world < 8) {
 		for (int kong = 0; kong < 5; kong++) {
 			count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
 		}
@@ -899,14 +1211,19 @@ void giveOrange(void) {
 }
 
 void giveMelon(void) {
-	if (DAMAGE_MASKING) {
-		applyDamageMask(0, 1);
-	} else {
-		applyDamage(0, 1);
-	}
+	applyDamageMask(0, 1);
 }
 
 int inShortList(int target, short* list, int count) {
+	for (int i = 0; i < count; i++) {
+		if (list[i] == target) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int inU8List(int target, unsigned char* list, int count) {
 	for (int i = 0; i < count; i++) {
 		if (list[i] == target) {
 			return 1;
@@ -944,16 +1261,28 @@ int getCustomActorIndex(new_custom_actors offset) {
 	return CUSTOM_ACTORS_START + offset;
 }
 
-void spawnItemOverlay(int type, int kong, int index, int force) {
-	if (force) {
-		spawnActor(getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY), 0);
-	} else {
-		spawnActor(324,0);
+move_text_overlay_struct text_overlay_data[TEXT_OVERLAY_BUFFER] = {};
+
+int spawnItemOverlay(PURCHASE_TYPES type, int kong, int index, int force) {
+	for (int i = 0; i < TEXT_OVERLAY_BUFFER; i++) {
+		if (text_overlay_data[i].used) {
+			continue;
+		}
+		if (force) {
+			spawnActor(getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY), 0);
+		} else {
+			spawnActor(324,0);
+		}
+		move_overlay_paad * ovl_paad = LastSpawnedActor->paad;
+		ovl_paad->index = i;
+		text_overlay_data[i].type = type;
+		text_overlay_data[i].flag = index;
+		text_overlay_data[i].kong = kong;
+		text_overlay_data[i].string = (char*)0;
+		text_overlay_data[i].used = 1;
+		return i;
 	}
-    TextOverlayData.type = type;
-    TextOverlayData.flag = index;
-    TextOverlayData.kong = kong;
-	TextOverlayData.string = (char*)0;
+	return -1;
 }
 
 int giveSlamLevel(void) {
@@ -1045,11 +1374,6 @@ int isGamemode(gamemodes target_mode, int force_both) {
 }
 
 int has_key(int index) {
-	if (Rando.level_order_rando_on) {
-		if (index < 7) {
-			return checkFlagDuplicate(Rando.key_flags[index], FLAGTYPE_PERMANENT);
-		}
-	}
 	return checkFlagDuplicate(normal_key_flags[index], FLAGTYPE_PERMANENT);
 }
 
@@ -1061,23 +1385,37 @@ void* malloc_wipe(int size) {
 
 int filterSong(int* song_write) {
 	int song = *song_write;
-	if (Rando.disabled_music.events) {
-		if (music_types[song] == SONGTYPE_EVENT) {
-			*song_write = 0;
+	if ((Rando.disabled_music.events) || (Rando.disabled_music.shops)) {
+		if (Rando.disabled_music.events) {
+			if (music_types[song] == SONGTYPE_EVENT) {
+				*song_write = 0;
+				song = 0;
+			}
 		}
-	}
-	if (Rando.disabled_music.shops) {
-		if (
-			((song == 2) && (CurrentMap == MAP_CRANKY)) || // Cranky
-			((song == 6) && (CurrentMap == MAP_FUNKY)) || // Funky
-			((song == 31) && (CurrentMap == MAP_CANDY)) || // Candy
-			((song == 29) && (CurrentMap == MAP_SNIDE)) // Snide
-		) {
-			*song_write = 0;
+		if (Rando.disabled_music.shops) {
+			if (
+				((song == SONG_CRANKY) && (CurrentMap == MAP_CRANKY)) || // Cranky
+				((song == SONG_FUNKY) && (CurrentMap == MAP_FUNKY)) || // Funky
+				((song == SONG_CANDY) && (CurrentMap == MAP_CANDY)) || // Candy
+				((song == SONG_SNIDE) && (CurrentMap == MAP_SNIDE)) // Snide
+			) {
+				*song_write = 0;
+				song = 0;
+			}
 		}
 	}
 	return getTrackChannel(song);
 }
+
+static unsigned char galleon_underwater_maps[] = {
+	MAP_GALLEON2DS,
+	MAP_GALLEON5DSDIDDYLANKYCHUNKY,
+	MAP_GALLEON5DSDKTINY,
+	MAP_GALLEONMECHFISH,
+	MAP_GALLEONMERMAID,
+	MAP_GALLEONSUBMARINE,
+	MAP_GALLEONTREASURECHEST,
+};
 
 int applyDamageMask(int player_index, int damage) {
 	int applied_multiplier = Rando.damage_multiplier;
@@ -1089,9 +1427,12 @@ int applyDamageMask(int player_index, int damage) {
 		// King Kut out death cutscene, force to 0
 		applied_multiplier = 0;
 	} else if (Rando.hard_mode.lava_water) {
-		if (Player->grounded_bitfield & 6) {
+		if (Player->grounded_bitfield & 4) {
 			// Underwater
 			applied_multiplier = 1;
+			if (inU8List(CurrentMap, &galleon_underwater_maps, sizeof(galleon_underwater_maps))) {
+				applied_multiplier = 0;
+			}
 		}
 	}
 	return applyDamage(player_index, damage * applied_multiplier);
@@ -1122,4 +1463,288 @@ void* getFile(int size, int rom) {
 	void* loc = dk_malloc(size);
 	copyFromROM(rom,loc,&size,0,0,0,0);
 	return loc;
+}
+
+int getMedalCount(void) {
+	int regular_medals = countFlagArray(FLAG_MEDAL_JAPES_DK, 40, FLAGTYPE_PERMANENT);
+	if (Rando.isles_cb_rando) {
+		regular_medals += countFlagArray(FLAG_MEDAL_ISLES_DK, 5, FLAGTYPE_PERMANENT);
+	}
+	return regular_medals;
+}
+
+int isMedalFlag(int flag) {
+	if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
+		return 1;
+	}
+	return isFlagInRange(flag, FLAG_MEDAL_ISLES_DK, 5);
+}
+
+typedef struct flag_counting_struct {
+	/* 0x000 */ short flag_start;
+	/* 0x002 */ unsigned char item_count;
+	/* 0x003 */ unsigned char enabled;
+	/* 0x004 */ short* flag_array;
+} flag_counting_struct;
+
+static flag_counting_struct flag_counters[] = {
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_NONE
+	{.flag_start = 0, .item_count = 5, .enabled=2, .flag_array=(short*)&kong_flags}, // REQITEM_KONG
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_MOVE
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_GOLDENBANANA
+	{.flag_start = FLAG_BP_JAPES_DK_HAS, .item_count = 40, .enabled=1, .flag_array=(short*)0}, // REQITEM_BLUEPRINT
+	{.flag_start = FLAG_FAIRY_1, .item_count = 20, .enabled=1, .flag_array=(short*)0}, // REQITEM_FAIRY
+	{.flag_start = 0, .item_count = 8, .enabled=2, .flag_array=(short*)&normal_key_flags}, // REQITEM_KEY
+	{.flag_start = FLAG_CROWN_JAPES, .item_count = 10, .enabled=1, .flag_array=(short*)0}, // REQITEM_CROWN
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_COMPANYCOIN
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_MEDAL
+	{.flag_start = FLAG_COLLECTABLE_BEAN, .item_count = 1, .enabled=1, .flag_array=(short*)0}, // REQITEM_BEAN
+	{.flag_start = FLAG_PEARL_0_COLLECTED, .item_count = 5, .enabled=1, .flag_array=(short*)0}, // REQITEM_PEARL
+	{.flag_start = FLAG_RAINBOWCOIN_0, .item_count = 16, .enabled=1, .flag_array=(short*)0}, // REQITEM_RAINBOWCOIN
+	{.flag_start = FLAG_FAKEITEM, .item_count = 16, .enabled=1, .flag_array=(short*)0}, // REQITEM_ICETRAP
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_GAMEPERCENTAGE
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_COLOREDBANANA
+};
+
+static float percentage_rewards[] = {
+	0.4f, // GBs
+	0.5f, // Crowns
+	0.25f, // Keys
+	0.2f, // Medals
+	0.5f, // RW Coins
+	0.2f, // Fairies
+	0.5f, // Nintendo Coins
+};
+
+float getPercentageOfItem(int index, float percentage_per_item) {
+	float i_f = FileVariables[index];
+	return i_f * percentage_per_item;
+}
+
+int getGamePercentage(void) {
+	// This is a slightly modified version of the vanilla function
+	updateFilePercentage();
+	float percentage = 0;
+	float target = 100.4f;
+	if (Rando.isles_cb_rando) {
+		percentage_rewards[4] = 0.18f;
+		target = 100.5f;
+	}
+	for (int i = 0; i < 7; i++) {
+		percentage += getPercentageOfItem(i, percentage_rewards[i]);
+	}
+	if (percentage == target) {
+		return 101;
+	}
+	return percentage;
+}
+
+int getTotalMoveCount(void) {
+	int count = MovesBase[0].simian_slam + MovesBase[0].ammo_belt;
+	for (int kong = 0; kong < 5; kong++) {
+		for (int i = 0; i < 3; i++) {
+			if (MovesBase[kong].special_moves & (1 << i)) {
+				count += 1;
+			}
+		}
+		if (MovesBase[kong].weapon_bitfield & 1) {
+			count += 1;
+		}
+		if (MovesBase[kong].instrument_bitfield & 1) {
+			count += 1;
+		}
+	}
+	for (int i = 0; i < 4; i++) {
+		if (checkFlagDuplicate(tbarrel_flags[i], FLAGTYPE_PERMANENT)) {
+			count += 1;
+		}
+		if (i > 0) {
+			if (MovesBase[0].weapon_bitfield & (1 << i)) {
+				count += 1;
+			}
+			if (MovesBase[0].instrument_bitfield & (1 << i)) {
+				count += 1;
+			}
+		}
+		if (i < 2) {
+			if (checkFlagDuplicate(bfi_move_flags[i], FLAGTYPE_PERMANENT)) {
+				count += 1;
+			}
+		}
+	}
+	return count;
+}
+
+dynamic_flag_icetrap_junk isIceTrapFlag(int flag) {
+	if (isFlagInRange(flag, FLAG_FAKEITEM, 0x10)) {
+		// Default Allocation
+		return DYNFLAG_ICETRAP;
+	}
+	int junk_invasion = 0;
+	int junk_capacity = 100;
+	if (Rando.ice_trap_flag_alloc > 16) {
+		junk_invasion = Rando.ice_trap_flag_alloc - 16;
+		junk_capacity = 116 - Rando.ice_trap_flag_alloc;
+	}
+	if (isFlagInRange(flag, FLAG_JUNKITEM, junk_invasion)) {
+		return DYNFLAG_ICETRAP;
+	}
+	if (isFlagInRange(flag, FLAG_JUNKITEM + junk_invasion, junk_capacity)) {
+		return DYNFLAG_JUNK;
+	}
+	return DYNFLAG_NEITHER;
+}
+
+unsigned int cs_skip_db[2] = {0, 0};
+
+int getItemCountReq(requirement_item item) {
+	int enabled_state = flag_counters[item].enabled;
+	int item_count = flag_counters[item].item_count;
+	int count = 0;
+	if (enabled_state == 1) {
+		if (item == REQITEM_ICETRAP) {
+			int ice_trap_count = countFlagArray(flag_counters[item].flag_start, item_count, FLAGTYPE_PERMANENT);
+			if (Rando.ice_trap_flag_alloc > 16) {
+				int extra_count = Rando.ice_trap_flag_alloc - 16;
+				ice_trap_count += countFlagArray(FLAG_JUNKITEM, extra_count, FLAGTYPE_PERMANENT);
+			}
+			return ice_trap_count;
+		}
+		return countFlagArray(flag_counters[item].flag_start, item_count, FLAGTYPE_PERMANENT);
+	} else if (enabled_state == 2) {
+		for (int i = 0; i < item_count; i++) {
+			if (checkFlagDuplicate(flag_counters[item].flag_array[i], FLAGTYPE_PERMANENT)) {
+				count += 1;
+			}
+		}
+		return count;
+	}
+	switch(item) {
+		case REQITEM_MOVE:
+			return getTotalMoveCount();
+		case REQITEM_GOLDENBANANA:
+			return getTotalGBs();
+		case REQITEM_COMPANYCOIN:
+			if (checkFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN, FLAGTYPE_PERMANENT)) {
+				count += 1;
+			}
+			if (checkFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN, FLAGTYPE_PERMANENT)) {
+				count += 1;
+			}
+			return count;
+		case REQITEM_MEDAL:
+			return getMedalCount();
+		case REQITEM_GAMEPERCENTAGE:
+			return getGamePercentage();
+		case REQITEM_COLOREDBANANA:
+			for (int world = 0; world < 8; world++) {
+				for (int kong = 0; kong < 5; kong++) {
+					count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
+				}
+			}
+			return count;
+		default:
+			return 0;
+	}
+	return 0;
+}
+
+int isItemRequirementSatisfied(ItemRequirement* req) {
+	if (req->item == REQITEM_NONE) {
+		return 1;
+	}
+	return getItemCountReq(req->item) >= req->count;
+}
+
+purchase_struct* getShopData(vendors vendor, int kong, int level) {
+	if (vendor == SHOP_CRANKY) {
+		return &CrankyMoves_New[kong][level];
+	}
+	if (vendor == SHOP_FUNKY) {
+		return &FunkyMoves_New[kong][level];
+	}
+	if (vendor == SHOP_CANDY) {
+		return &CandyMoves_New[kong][level];
+	}
+	return 0;
+}
+
+void exitBoss(void) {
+	for (int i = 0; i < 5; i++) {
+		if (Rando.k_rool_order[i] == CurrentMap) {
+			initiateTransition(MAP_ISLES, 0xC);
+			return;
+		}
+	}
+	initiateTransition(MAP_TROFFNSCOFF, 2);
+}
+
+int isKrushaAdjacentModel(int kong) {
+	custom_kong_models slot_value = Rando.kong_models[kong];
+	if (slot_value == KONGMODEL_KRUSHA) {
+		return 1;
+	}
+	if (slot_value == KONGMODEL_KROOL_CUTSCENE) {
+		return 1;
+	}
+	if (slot_value == KONGMODEL_KROOL_FIGHT) {
+		return 1;
+	}
+	return 0;
+}
+
+int isGlobalCutscenePlaying(int cutscene_index) {
+	if (CutsceneActive != 1) {
+		return 0;
+	}
+	if (CutsceneIndex != cutscene_index) {
+		return 0;
+	}
+	if ((CutsceneStateBitfield & 4) != 0) {
+		return 1;
+	}
+	return 0;
+}
+
+int DetermineLevel_NewLevel(maps map) {
+	for (int i = 0; i < 8; i++) {
+		if (CurrentMap == LobbiesArray[i]) {
+			if (!checkFlag(FLAG_STORY_JAPES + i, FLAGTYPE_PERMANENT)) {
+				setFlag(FLAG_STORY_JAPES + i, 1, FLAGTYPE_PERMANENT);
+				if (StorySkip) {
+					return 0;
+				}
+				int world = getWorld(map, 0);
+				if (world == 8) {
+					world = 7;
+				} else if (world > 6) {
+					return 0;
+				}
+				initiateTransitionFade(MAP_HELM_INTROSGAMEOVER, 0xF + world, Mode);
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+void refillIfRefillable(item_ids item_id, int player, int change) {
+	int cap = getRefillCount(item_id, player);
+	int count = getItemCount(item_id, player);
+	if (count < cap) {
+		changeCollectableCount(item_id, player, change);
+	}
+}
+
+void refillHealthOnInit(void) {
+	initCharSpawnerActor();
+	if (CurrentActorPointer_0->obj_props_bitfield & 0x10) {
+		return;
+	}
+	refillHealth(0);
+}
+
+void refillPlayerHealthKKO(void* actor, int cutscene, int bitfield) {
+	playCutscene(actor, cutscene, bitfield);
+	refillHealth(0);
 }

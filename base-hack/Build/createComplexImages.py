@@ -55,6 +55,13 @@ def stroke(img: Image, stroke_color: tuple = (255, 255, 255), stroke_radius: int
     return output
 
 
+def bump_saturation(image: Image, factor: float) -> Image:
+    """Increase the saturation of the provided PIL image."""
+    enhancer = ImageEnhance.Color(image)
+    enhanced_image = enhancer.enhance(factor)
+    return enhanced_image
+
+
 print("Composing complex images")
 number_crop = [
     {
@@ -100,12 +107,36 @@ for kong in kongs:
     # im = im.resize((32,32))
     im.save(f"{base_dir}{kong}_face.png")
 
+disp_dir = getDir("assets/displays/")
+
+# Shop Owner Heads
+# Snide
+im = Image.new(mode="RGBA", size=(64, 64))
+snide_head_im = Image.open(f"{hash_dir}snide_face.png")
+im.paste(snide_head_im, (0, 16), snide_head_im)
+im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}snide_head.png")
+
+# Small 25y logo
+y25_im = Image.open(f"{disp_dir}25y.png")
+y25_im = y25_im.resize((32, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+y25_im.save(f"{disp_dir}y25_small.png")
+
+# Others
+other_shop_owners = ("candy", "cranky", "funky")
+for owner in other_shop_owners:
+    im = Image.new(mode="RGBA", size=(64, 64))
+    for x in range(4):
+        chunk_im = Image.open(f"{hash_dir}{owner}_face_{x}.png")
+        posx = (x % 2) * 32
+        posy = int(x / 2) * 32
+        im.paste(chunk_im, (posx, posy), chunk_im)
+    im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}{owner}_head.png")
+
 # Generate Shared Image
 im = Image.new(mode="RGBA", size=(64, 64))
 shared_x_move = [4, 16, 30, 10, 26]
 shared_y_move = [0, 0, 0, 23, 23]
 kong_z_order = [0, 1, 2, 3, 4]
-disp_dir = getDir("assets/displays/")
 for x in range(5):
     kong_index = kong_z_order[x]
     im1 = Image.open(f"{disp_dir}{kongs[kong_index]}_face.png")
@@ -114,6 +145,7 @@ bbox = im.getbbox()
 im = im.crop(bbox)
 im = im.resize(kong_res)
 im.save(f"{disp_dir}shared.png")
+im.resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}shared_flipped.png")
 im = Image.new(mode="RGBA", size=kong_res)
 im.save(f"{disp_dir}none.png")
 im = Image.new(mode="RGBA", size=(44, 44))
@@ -147,6 +179,15 @@ im2 = Image.new(mode="RGBA", size=(32, 32))
 Image.Image.paste(im1, im2, (61, 0))
 Image.Image.paste(im1, im, (65, 1))
 im1.save(f"{disp_dir}wxys.png")
+
+Image.open(f"{hash_dir}specialchars.png").crop((2, 0, 34, 32)).resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}perc44.png")
+
+# Bean Spin Images
+bean_dir = getDir("assets/bean_spin/")
+for x in range(12):
+    im = Image.open(f"{bean_dir}f{x + 1}a.png")
+    im = im.resize((64, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    im.save(f"{bean_dir}f{x + 1}a_64_32.png")
 
 # Generate Yellow Q Mark
 for idx in range(2):
@@ -227,7 +268,7 @@ tracker_im = Image.new(mode="RGBA", size=(254, 128))
 instruments = ("bongos", "guitar", "trombone", "sax", "triangle")
 pellets = ("coconut", "peanut", "grape", "feather", "pineapple")
 extra_moves = ("film", "shockwave", "slam", "homing_crate", "sniper")
-training_moves = ("swim", "orange", "barrel", "vine")
+training_moves = ("swim", "orange", "barrel", "vine", "climb")
 kong_submoves = ("_move", "pad", "barrel")
 dim = 20
 gap = int(dim * 1.1)
@@ -249,7 +290,7 @@ for pel_index, pellet in enumerate(pellets):
     tracker_im.paste(pel_im, (gap * pel_index, 0), pel_im)
 for kong_index, kong in enumerate(kongs):
     for sub_index, sub in enumerate(kong_submoves):
-        move_im = Image.open(f"{getDir('assets/file_screen/')}tracker_images/{kong}{sub}.png")
+        move_im = Image.open(f"{getDir('assets/file_screen/')}tracker_images/{kong}{sub}.png").convert("RGBA")
         move_im = move_im.resize((dim, dim))
         tracker_im.paste(move_im, ((gap * kong_index), ((sub_index + 2) * gap)), move_im)
 for move_index, move in enumerate(extra_moves):
@@ -288,16 +329,18 @@ for file_info in number_crop:
             key_im.paste(num_im, (targ_h - num_w - [5, 0, 2, -2, 0, -1, 0, -1][key_num - 1], 2), num_im)
             key_im = key_im.resize((20, 20))
             key_im.save(f"{getDir('assets/file_screen/key')}{key_num}.png")
-            tracker_im.paste(key_im, (249 - (small_gap * (9 - key_num)), 128 - dim), key_im)
+            key_row = int((key_num - 1) / 4)
+            key_col = int((key_num - 1) & 3)
+            tracker_im.paste(key_im, (249 - (small_gap * (6 - key_col)), 128 - dim - ((2 - key_row) * gap)), key_im)
 for melon in range(3):
     melon_im = Image.open(f"{hash_dir}melon.png")
     melon_im = melon_im.resize((dim, dim))
-    tracker_im.paste(melon_im, (200 - (small_gap * melon), 0), melon_im)
+    tracker_im.paste(melon_im, (190 - (small_gap * melon), 0), melon_im)
 prog_offset = 218
 for p_i, progressive in enumerate([f"{hash_dir}headphones.png", f"{disp_dir}standard_crate.png"]):
     prog_im = Image.open(progressive)
     prog_im = prog_im.resize((dim, dim))
-    tracker_im.paste(prog_im, (prog_offset, gap + (p_i * gap)), prog_im)
+    tracker_im.paste(prog_im, (prog_offset, (p_i * gap)), prog_im)
     num_im = Image.open(f"{hash_dir}01234.png")
     num_im = num_im.crop((30, 0, 45, 24))
     num_w, num_h = num_im.size
@@ -305,7 +348,11 @@ for p_i, progressive in enumerate([f"{hash_dir}headphones.png", f"{disp_dir}stan
     num_scale = num_size / num_h
     new_w = int(num_w * num_scale)
     num_im = num_im.resize((new_w, num_size))
-    tracker_im.paste(num_im, (prog_offset + [22, 17][p_i], int(gap + 3 + (p_i * small_gap * 1.2))), num_im)
+    tracker_im.paste(num_im, (prog_offset + [22, 17][p_i], int(3 + (p_i * small_gap * 1.2))), num_im)
+for h_i, head in enumerate(["cranky_head", "funky_head", "candy_head", "snide_head"]):
+    head_im = Image.open(f"{disp_dir}{head}.png")
+    head_im = head_im.resize((dim, dim))
+    tracker_im.paste(head_im, ((6 * gap) + (gap * h_i), 128 - dim), head_im)
 
 tracker_im.save(f"{getDir('assets/file_screen/')}tracker.png")
 
@@ -332,6 +379,16 @@ krusha_im = krusha_im.resize((64, 64))
 krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 krusha_im.save(f"{disp_dir}krusha_head64.png")
 
+# Krusha Heads 1-5
+for x in range(5):
+    krusha_im = Image.open(f"{disp_dir}krusha_head_{x + 1}.png")
+    krusha_im = krusha_im.resize((64, 64), Image.Resampling.NEAREST)
+    krusha_im = krusha_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    krusha_im.save(f"{disp_dir}krusha_head_{x + 1}_64.png")
+    krusha_im = Image.open(f"{disp_dir}krusha_head_{x + 1}.png")
+    krusha_im = krusha_im.resize((32, 32), Image.Resampling.NEAREST)
+    krusha_im.save(f"{disp_dir}krusha_head_{x + 1}_32.png")
+
 # Wrinkly
 wrinkly_im = Image.open(f"{hash_dir}wrinkly.png").resize((48, 48)).save(f"{disp_dir}wrinkly_sprite.png")
 
@@ -340,6 +397,7 @@ for bp in ("dk_bp", "lanky_bp"):
     bp_im = Image.open(f"{hash_dir}{bp}.png")
     bp_im = bp_im.crop((8, 2, 40, 34))
     bp_im.save(f"{disp_dir}{bp}.png")
+Image.open(f"{disp_dir}lanky_bp.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}lanky_bp44.png")
 
 # Shop indicator items (44x44)
 for item in ("crown_shop", "gb", "key", "medal"):
@@ -357,6 +415,13 @@ for coin in ("nin_coin", "rw_coin"):
     coin_im = Image.open(f"{hash_dir}{coin}.png")
     coin_im.save(f"{disp_dir}{coin}.png")
 
+# B Locker Misc
+arcade_dir = getDir("assets/arcade_jetpac/arcade/")
+# Image.open(f"{arcade_dir}potion_any.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}potion44.png")
+Image.open(f"{disp_dir}potion.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}potion44.png")
+Image.open(f"{hash_dir}rainbow_coin.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}rainbow_coin44.png")
+Image.open(f"{hash_dir}diddy_balloon.png").crop((0, 32, 32, 64)).resize((44, 44)).save(f"{disp_dir}balloon_head.png")
+
 # Bean
 bean_im = Image.open(f"{hash_dir}bean.png")
 bean_mask_im = Image.open(f"{disp_dir}bean_mask.png")
@@ -371,7 +436,10 @@ bean_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}bean.png")
 bean_small_im = Image.new(mode="RGBA", size=(32, 32))
 bean_small_im.paste(bean_im.resize((32, 16)), (0, 8), bean_im.resize((32, 16)))
 bean_small_im.save(f"{disp_dir}bean32.png")
+bean_small_im.resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}bean44.png")
 
+# Wrinkly
+Image.open(f"{hash_dir}wrinkly.png").resize((32, 32)).save(f"{disp_dir}wrinkly32.png")
 
 # Pearl
 pearl_im = Image.open(f"{hash_dir}pearl.png")
@@ -388,6 +456,7 @@ for y in range(32):
 pearl_im = pearl_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 pearl_im.save(f"{disp_dir}pearl.png")
 pearl_im.resize((32, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}pearl32.png")
+pearl_im.resize((44, 44)).save(f"{disp_dir}pearl44.png")
 
 # Arcade Sprites
 # blueprint
@@ -399,7 +468,6 @@ pearl_im.resize((32, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{dis
 # rainbow
 # rw coin
 
-arcade_dir = getDir("assets/arcade_jetpac/arcade/")
 dim = (20, 20)
 Image.open(f"{disp_dir}lanky_bp.png").resize(dim).save(f"{arcade_dir}blueprint.png")  # BP
 Image.open(f"{hash_dir}crown.png").resize(dim).save(f"{arcade_dir}crown.png")  # Crown
@@ -415,6 +483,7 @@ Image.open(f"{hash_dir}melon_slice.png").resize(dim).save(f"{arcade_dir}melon.pn
 gb_im = Image.open(f"{hash_dir}gb.png")
 gb_im = hueShift(gb_im, 10)
 gb_im.save(f"{disp_dir}fake_gb.png")
+gb_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}fake_gb_flipped.png")
 gb_im = Image.open(f"{disp_dir}gb.png")
 gb_im = hueShift(gb_im, 10)
 gb_im.transpose(Image.Transpose.FLIP_LEFT_RIGHT).save(f"{disp_dir}fake_gb_shop.png")
@@ -435,6 +504,9 @@ rain_im_1.save(f"{hash_dir}rainbow_1.png")  # Rainbow Coin
 rain_im_2 = Image.open(f"{hash_dir}modified_coin_side.png")
 rain_im_2 = maskImage(rain_im_2, 0, [42, 79, 112])
 rain_im_2.save(f"{hash_dir}rainbow_2.png")  # Rainbow Side
+
+
+Image.open(f"{hash_dir}fairy.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}fairy44.png")  # Fairy
 
 # Barrel Skins
 barrel_skin = Image.open(f"{hash_dir}bonus_skin.png")
@@ -466,6 +538,11 @@ skins = {
     "rainbow": ("rainbow_coin", None, "hash"),
     "fakegb": ("fake_gb", None, "displays"),
     "melon": ("melon_slice", None, "hash"),
+    "cranky": ("cranky_head", None, "displays"),
+    "funky": ("funky_head", None, "displays"),
+    "candy": ("candy_head", None, "displays"),
+    "snide": ("snide_head", None, "displays"),
+    "hint": ("wrinkly32", None, "displays"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32
@@ -485,6 +562,17 @@ for skin_type in skins:
         whole = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((BASE_SIZE, BASE_SIZE))
     if skin_type != "fakegb":
         whole = whole.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    # Handle dirt patches
+    dirt = Image.open(f"{hash_dir}dirt_face.png")
+    whole_dirt_resized = whole.resize((32, 32)).transpose(Image.Transpose.FLIP_LEFT_RIGHT).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    dirt_imw, dirt_imh = whole_dirt_resized.size
+    dirt_reward_px = whole_dirt_resized.load()
+    for x in range(dirt_imw):
+        for y in range(dirt_imh):
+            r, g, b, a = whole_dirt_resized.getpixel((x, y))
+            dirt_reward_px[x, y] = (r, g, b, 150 if a > 128 else 0)
+    dirt.paste(whole_dirt_resized, (0, 0), whole_dirt_resized)
+    dirt.save(f"{disp_dir}dirt_reward_{skin_type}.png")
     # Resize image to combat stretching
     whole_0 = Image.new(mode="RGBA", size=(BASE_SIZE, BASE_SIZE))
     whole = whole.resize((BASE_SIZE, int(BASE_SIZE * 0.8)))
@@ -507,6 +595,15 @@ for skin_type in skins:
         barrel_1.paste(right, (0, BASE_SIZE), right)
     barrel_0.save(f"{disp_dir}barrel_{skin_type}_0.png")
     barrel_1.save(f"{disp_dir}barrel_{skin_type}_1.png")
+
+# Win Con Logo
+base_im = Image.new(mode="RGBA", size=(64, 64))
+left_im = Image.open(f"{hash_dir}k_rool_head_left.png")
+right_im = Image.open(f"{hash_dir}k_rool_head_right.png")
+base_im.paste(left_im, (0, 0), left_im)
+base_im.paste(right_im, (32, 0), right_im)
+base_im = base_im.resize((32, 32))
+base_im.save(f"{disp_dir}win_con_logo.png")
 
 # # Christmas Theme
 # snow_by = []
@@ -574,8 +671,8 @@ w, h = bubble_im.size
 for y in range(h):
     for x in range(w):
         base = list(bubble_px[x, y])
-        bubble_px[x, y] = (0, 0, 0, base[3])
-bubble_im.save(f"{disp_dir}text_bubble_dark.png")
+        bubble_px[x, y] = (255, 255, 255, base[3])
+bubble_im.save(f"{disp_dir}text_bubble_light.png")
 
 # Warp pad stuff
 warp_top_im_total = Image.new(mode="RGBA", size=(64, 64))
@@ -622,12 +719,98 @@ for x in range(2):
 crosshair_im = Image.open(f"{hash_dir}gun_crosshair.png")
 stroke(crosshair_im, (0, 0, 0)).save(f"{disp_dir}crosshair.png")
 
+# Boss Heads
+bosses = ["dillo1", "dillo2", "dog1", "dog2", "kko", "mj", "pufftoss"]
+for boss in bosses:
+    boss_im = Image.open(f"{disp_dir}head_{boss}.png").resize((32, 32))
+    boss_im.save(f"{disp_dir}head32_{boss}.png")
+
+# Portal
+portal_dir = getDir("assets/portals/")
+tb_dir = getDir("assets/tagbarrel/")
+logo_im = Image.open(f"{portal_dir}logo_condensed.png")
+logo_w, logo_h = logo_im.size
+logo_dim = max(logo_w, logo_h)
+target_size = 55
+x_offset = int((logo_dim - logo_w) / 2)
+y_offset = int((logo_dim - logo_h) / 2)
+logo_im_base = Image.new(mode="RGBA", size=(logo_dim, logo_dim))
+logo_im_base.paste(logo_im, (x_offset, y_offset), logo_im)
+logo_im_base = logo_im_base.resize((target_size, target_size))
+placement_offset = int((63 - target_size) / 2)
+for x in range(2):
+    portal_im = Image.open(f"{portal_dir}Blank_portal_{x + 1}.png")
+    portal_im.paste(logo_im_base, (placement_offset, placement_offset), logo_im_base)
+    portal_im.save(f"{portal_dir}custom_portal_{x + 1}.png")
+    if x == 0:
+        portal_im = portal_im.resize((44, 44))
+        portal_im.save(f"{tb_dir}bottom_custom.png")
+
+# OSprint Layer
+tracker_dir = getDir("assets/file_screen/tracker_images/")
+barrel_size = 48
+barrel_offset = int((64 - barrel_size) >> 1)
+barrel_im = Image.open(f"{tracker_dir}lankybarrel.png").resize((barrel_size, barrel_size)).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+base_64_im = Image.new(mode="RGBA", size=(64, 64))
+base_64_im.paste(barrel_im, (barrel_offset, barrel_offset), barrel_im)
+barrel_im_left = base_64_im.crop((0, 0, 32, 64))
+barrel_im_right = base_64_im.crop((32, 0, 64, 64))
+barrel_im_left.save(f"{disp_dir}osprint_logo_left.png")
+barrel_im_right.save(f"{disp_dir}osprint_logo_right.png")
+
+# Beetle custom enemy
+for x in range(7):
+    beetle_im = Image.open(f"{hash_dir}beetle_img_{0xFC3 + x}.png")
+    beetle_im = hueShift(beetle_im, 100)
+    beetle_im = bump_saturation(beetle_im, 2)
+    beetle_im.save(f"{hash_dir}beetle_img_{0xFC3 + x}.png")
+
+# Ice Trap Medal Overlay
+font_im = Image.open(f"{hash_dir}white_font_early.png")
+f_im = font_im.crop((46, 0, 53, 16))
+o_im = font_im.crop((123, 0, 133, 16))
+l_im = font_im.crop((96, 0, 103, 16))
+font_im = Image.open(f"{hash_dir}white_font_late.png")
+ex_im = font_im.crop((75, 0, 79, 16))
+fool_im = Image.new(mode="RGBA", size=(40, 16))
+fool_im.paste(f_im, (2, 0), f_im)
+fool_im.paste(o_im, (8, 0), o_im)
+fool_im.paste(o_im, (17, 0), o_im)
+fool_im.paste(l_im, (28, 0), l_im)
+fool_im.paste(ex_im, (34, 0), ex_im)
+fool_im = fool_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+fool_im.save(f"{disp_dir}fool_overlay.png")
+
+
+def alterWood(image):
+    """Alter the wood color to our dark red color."""
+    output = hueShift(image, 315)
+    enhancer = ImageEnhance.Brightness(output)
+    output = enhancer.enhance(0.4)
+    return output
+
+
+# Cannons
+tag_dir = getDir("assets/tagbarrel/")
+barrel_left = Image.open(f"{tag_dir}plain_shell.png").crop((0, 0, 16, 64))
+barrel_right = Image.open(f"{tag_dir}plain_shell.png").crop((16, 0, 32, 64))
+barrel_left.save(f"{tag_dir}cannon_left.png")
+barrel_right.save(f"{tag_dir}cannon_right.png")
+support_im = Image.open(f"{hash_dir}cannon_support.png")
+base_im = Image.open(f"{hash_dir}cannon_base.png")
+barrel_base_im = Image.open(f"{hash_dir}barrel_bottom.png")
+alterWood(support_im).save(f"{tag_dir}cannon_support.png")
+alterWood(base_im).save(f"{tag_dir}cannon_base.png")
+alterWood(barrel_base_im).save(f"{tag_dir}barrel_base.png")
+
+
 rmve = [
     "01234.png",
     "56789.png",
     "boss_key.png",
     "WXYL.png",
     "specialchars.png",
+    "diddy_balloon.png",
     "red_qmark_0.png",
     "red_qmark_1.png",
     "headphones.png",
@@ -655,6 +838,20 @@ rmve = [
     "warp_top_1.png",
     "gun_crosshair.png",
     "wrinkly.png",
+    "dirt_face.png",
+    "candy_face_0.png",
+    "candy_face_1.png",
+    "candy_face_2.png",
+    "candy_face_3.png",
+    "cranky_face_0.png",
+    "cranky_face_1.png",
+    "cranky_face_2.png",
+    "cranky_face_3.png",
+    "funky_face_0.png",
+    "funky_face_1.png",
+    "funky_face_2.png",
+    "funky_face_3.png",
+    "snide_face.png",
 ]
 for kong in kongs:
     for x in range(2):

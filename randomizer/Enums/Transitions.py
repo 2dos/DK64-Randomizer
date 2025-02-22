@@ -21,12 +21,16 @@ class Transitions(IntEnum):
     CavesToIsles = auto()
     IslesToCastle = auto()
     CastleToIsles = auto()
+    IslesToHelm = auto()
+    HelmToIsles = auto()
 
     # DK Isles exits
     IslesMainToStart = auto()
     IslesStartToMain = auto()
     IslesStartToTreehouse = auto()
     IslesTreehouseToStart = auto()
+    IslesMainToPrison = auto()
+    IslesPrisonToMain = auto()
     IslesMainToFairy = auto()
     IslesFairyToMain = auto()
     IslesMainToSnideRoom = auto()
@@ -117,6 +121,8 @@ class Transitions(IntEnum):
     GalleonTreasureToChest = auto()
     GalleonChestToTreasure = auto()
     GalleonMainToBBlast = auto()
+    GalleonShipyardToMechFish = auto()
+    GalleonMechFishToShipyard = auto()
 
     # Fungi Forest Exits
     ForestMainToCarts = auto()

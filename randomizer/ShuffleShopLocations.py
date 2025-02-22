@@ -36,8 +36,8 @@ available_shops = {
     ],
     Levels.JungleJapes: [
         ShopLocation(Regions.CrankyGeneric, Maps.JungleJapes, Regions.JapesBeyondCoconutGate2, Regions.CrankyJapes),
-        ShopLocation(Regions.Snide, Maps.JungleJapes, Regions.JungleJapesMain, Regions.Snide),
-        ShopLocation(Regions.FunkyGeneric, Maps.JungleJapes, Regions.JungleJapesMain, Regions.FunkyJapes),
+        ShopLocation(Regions.Snide, Maps.JungleJapes, Regions.JapesHillTop, Regions.Snide),
+        ShopLocation(Regions.FunkyGeneric, Maps.JungleJapes, Regions.JapesHill, Regions.FunkyJapes),
     ],
     Levels.AngryAztec: [
         ShopLocation(Regions.CrankyGeneric, Maps.AngryAztec, Regions.AngryAztecConnectorTunnel, Regions.CrankyAztec),
@@ -53,8 +53,8 @@ available_shops = {
     ],
     Levels.GloomyGalleon: [
         ShopLocation(Regions.CrankyGeneric, Maps.GloomyGalleon, Regions.GloomyGalleonStart, Regions.CrankyGalleon),
-        ShopLocation(Regions.CandyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.CandyGalleon, locked=True),  # Locked because on water
-        ShopLocation(Regions.FunkyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.FunkyGalleon, locked=True),  # Locked because on water
+        ShopLocation(Regions.CandyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.CandyGalleon),
+        ShopLocation(Regions.FunkyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.FunkyGalleon),
         ShopLocation(Regions.Snide, Maps.GloomyGalleon, Regions.LighthouseSnideAlcove, Regions.Snide),
     ],
     Levels.FungiForest: [
@@ -87,8 +87,10 @@ def ShuffleShopLocations(spoiler):
     # Shuffle
     assortment = {}
     for level in available_shops:
-        # Don't shuffle Isles shops in entrance rando. This prevents having the one-entrance-locked Isles Snide room from being progression.
-        if level == Levels.DKIsles and spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all:
+        # Don't shuffle Isles shops in entrance rando.
+        # This prevents having the one-entrance-locked Isles Snide room from being progression.
+        # Also ban it with fast start beginning of game off. Introduces a lot of oddities about things
+        if level == Levels.DKIsles and (spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all or not spoiler.settings.fast_start_beginning_of_game):
             continue
         shop_array = available_shops[level]
         # Get list of shops in level
@@ -144,7 +146,14 @@ def ShuffleShopLocations(spoiler):
                 placement_index += 1
                 # Add exit to new containing region for logical access
                 region = spoiler.RegionList[shop.containing_region]
-                region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: True))
+                if shop.new_shop == Regions.CrankyGeneric:
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.crankyAccess))
+                elif shop.new_shop == Regions.FunkyGeneric:
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.funkyAccess))
+                elif shop.new_shop == Regions.CandyGeneric:
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.candyAccess))
+                elif shop.new_shop == Regions.Snide:
+                    region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: l.snideAccess))
         assortment[level] = assortment_in_level
     # Write Assortment to spoiler
     spoiler.shuffled_shop_locations = assortment

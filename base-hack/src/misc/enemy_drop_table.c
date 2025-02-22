@@ -50,43 +50,47 @@ void buildItemDrops(void) {
     }
 }
 
+static drop_item default_drop = {
+    .dropped_object = 0x2F,
+    .drop_count = 1,
+    .drop_music = SONG_MELONSLICEDROP,
+};
+
 void spawnEnemyDrops(actorData* actor) {
     /**
      * @brief Handle the spawning of enemy drops. Based on a vanilla function with the same name.
      * There's a few minor modifications to handle kasplat item duplication prevention amongst a couple other things.
      */
-    int level_data = *(int*)(0x807FBB64);
     if (player_count > 1) {
         return;
     }
-    if (level_data & 0x4000) {
+    if (MapProperties.is_bonus) {
         return;
-    }
-    int entry_index = -1;
-    int actor_index = actor->actorType;
-    for (int i = 0; i < DROP_COUNT; i++) {
-        if (actor_index == drops[i].source_object) {
-            entry_index = i;
-        }
     }
     if ((CurrentMap == MAP_CASTLEKUTOUT) && (Rando.hard_mode.lava_water)) {
         // Make sure KKO enemy always drops a melon slice
         playSong(SONG_MELONSLICEDROP, 1.0f);
         spawnActorWithFlag(0x2F, actor->xPos, actor->yPos, actor->zPos, 0xFFF, 1, -1, 0);
         return;
-    } else {
-        if (entry_index < 0) {
-            return;
+    }
+    drop_item *item_data = 0;
+    int actor_index = actor->actorType;
+    for (int i = 0; i < DROP_COUNT; i++) {
+        if (actor_index == drops[i].source_object) {
+            item_data = &drops[i];
         }
     }
-    int song = drops[entry_index].drop_music;
+    if (!item_data) {
+        return;
+    }
+    int song = item_data->drop_music;
     if (song > 0) {
         if (!Rando.enemy_item_rando) {
             playSong(song, 1.0f);
         }
     }
-    int drop_count = drops[entry_index].drop_count;
-    int drop_type = drops[entry_index].dropped_object;
+    int drop_count = item_data->drop_count;
+    int drop_type = item_data->dropped_object;
     if (drop_count <= 0) {
         return;
     }
@@ -145,25 +149,4 @@ void initItemDropTable(void) {
      * @brief Initialize the item drop data at ROM Boot
      */
     buildItemDrops();
-    *(short*)(0x806A5CA6) = getHi(&drops[0].source_object);
-    *(short*)(0x806A5CB6) = getLo(&drops[0].source_object);
-
-    *(short*)(0x806A5CBA) = getHi(&drops[0].source_object);
-    *(short*)(0x806A5CBE) = getLo(&drops[0].source_object);
-
-    *(short*)(0x806A5CD2) = getHi(&drops[0].source_object);
-    *(short*)(0x806A5CD6) = getLo(&drops[0].source_object);
-    // Spawn Enemy Drops function
-    writeFunction(0x806AD40C, &spawnEnemyDrops);
-    writeFunction(0x806AED14, &spawnEnemyDrops);
-    writeFunction(0x806AF5A4, &spawnEnemyDrops);
-    writeFunction(0x806B0218, &spawnEnemyDrops);
-    writeFunction(0x806B0704, &spawnEnemyDrops);
-    writeFunction(0x806B0C8C, &spawnEnemyDrops);
-    writeFunction(0x806B1C88, &spawnEnemyDrops);
-    writeFunction(0x806B4744, &spawnEnemyDrops);
-    writeFunction(0x806B5B90, &spawnEnemyDrops);
-    writeFunction(0x806B61E0, &spawnEnemyDrops);
-    writeFunction(0x806B744C, &spawnEnemyDrops);
-    writeFunction(0x806B9AB4, &spawnEnemyDrops);
 }

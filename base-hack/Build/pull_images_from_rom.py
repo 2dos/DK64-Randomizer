@@ -97,7 +97,31 @@ images = [
     ImageData("gun_crosshair", TextureFormat.IA8, TableNames.TexturesHUD, 0x38, 64, 64, False, False),
     ImageData("scoff_head", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xC9D, 48, 42, False, True),
     ImageData("wrinkly", TextureFormat.IA8, TableNames.TexturesGeometry, 0x1773, 64, 64, False, True),
+    ImageData("diddy_balloon", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x16C3, 32, 64, False, False),
+    ImageData("dirt_face", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x1379, 32, 32, False, False),
+    ImageData("snide_face", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x172E, 64, 32, False, False),
+    ImageData("white_font_early", TextureFormat.IA8, TableNames.TexturesHUD, 3, 176, 16, False, False),
+    ImageData("white_font_late", TextureFormat.IA8, TableNames.TexturesHUD, 4, 176, 16, False, False),
+    ImageData("question_mark", TextureFormat.IA8, TableNames.TexturesGeometry, 5923, 16, 32, False, True),
+    ImageData("k_rool_head_left", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x383, 32, 64, False, True),
+    ImageData("k_rool_head_right", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x384, 32, 64, False, True),
+    ImageData("medal_rim", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xBAB, 32, 32, False, False),
+    ImageData("mush_top_0", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x67F, 64, 32, False, False),
+    ImageData("mush_top_1", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x680, 64, 32, False, False),
+    ImageData("cannon_support", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12B5, 48, 32, False, False),
+    ImageData("cannon_base", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12B8, 44, 44, False, False),
+    ImageData("barrel_bottom", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xF14, 1, 1372, False, False),
 ]
+
+shop_owners = {
+    "candy": 0x172A,
+    "cranky": 0x1387,
+    "funky": 0x172F,
+}
+
+for owner in shop_owners:
+    for x in range(4):
+        images.append(ImageData(f"{owner}_face_{x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, shop_owners[owner] + x, 32, 32, False, False))
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]
 tex_idx = 0x273
@@ -106,6 +130,13 @@ for kong in kong_tex:
         images.append(ImageData(f"{kong}_face_{x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, tex_idx + x, 32, 64, False, True))
     tex_idx += 2
 
+for x in range(7):
+    size = 0xAB8
+    if x == 2:
+        size = 0xAF8
+    elif x == 6:
+        size = 0x560
+    images.append(ImageData(f"beetle_img_{0xFC3 + x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xFC3 + x, size >> 1, 1, False, False))
 
 if not os.path.exists("assets/hash"):
     os.mkdir("assets/hash")

@@ -1,26 +1,29 @@
 """Crown Randomizer Placement Code."""
 
-import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
-from randomizer.Patching.Lib import addNewScript, float_to_hex, getNextFreeID
+from randomizer.Patching.Library.Generic import addNewScript, getNextFreeID
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
+from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Patcher import LocalROM
 
 
 class CrownPlacementShortData:
     """Class to store small parts of information relevant to the placement algorithm."""
 
-    def __init__(self, map, coords, max_size, default, vanilla):
+    def __init__(self, map, coords, rot_x, rot_z, max_size, default, vanilla):
         """Initialize with provided data."""
         self.map = map
         self.coords = coords
+        self.rot_x = rot_x
+        self.rot_z = rot_z
         self.max_size = max_size
         self.default = default
         self.vanilla = vanilla
 
 
-def randomize_crown_pads(spoiler):
+def randomize_crown_pads(spoiler, ROM_COPY: LocalROM):
     """Place Crown Pads."""
     if spoiler.settings.crown_placement_rando:
         placements = []
@@ -38,12 +41,21 @@ def randomize_crown_pads(spoiler):
         ]
         new_vanilla_crowns = []
         action_maps = vanilla_crown_maps.copy()
-        ROM_COPY = LocalROM()
         for level in spoiler.crown_locations:
             for crown in spoiler.crown_locations[level]:
                 crown_data = CustomLocations[level][crown]
                 idx = spoiler.crown_locations[level][crown]
-                placements.append(CrownPlacementShortData(crown_data.map, crown_data.coords, crown_data.max_size, idx, crown_data.vanilla_crown))
+                placements.append(
+                    CrownPlacementShortData(
+                        crown_data.map,
+                        crown_data.coords,
+                        crown_data.rot_x,
+                        crown_data.rot_z,
+                        crown_data.max_size,
+                        idx,
+                        crown_data.vanilla_crown,
+                    )
+                )
                 if crown_data.vanilla_crown:
                     new_vanilla_crowns.append(crown_data.map)
                 if not crown_data.vanilla_crown:
@@ -57,7 +69,7 @@ def randomize_crown_pads(spoiler):
                     ROM_COPY.seek(sav + 0x195)
                     ROM_COPY.write(1)
             else:
-                setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+                setup_table = getPointerLocation(TableNames.Setups, cont_map_id)
                 ROM_COPY.seek(setup_table)
                 model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
                 persisted_m2 = []
@@ -79,7 +91,7 @@ def randomize_crown_pads(spoiler):
                     if crown.map == cont_map_id and not crown.vanilla:
                         # Place new crown
                         crown_scale = crown.max_size / 160
-                        selected_id = getNextFreeID(cont_map_id, crown_ids)
+                        selected_id = getNextFreeID(ROM_COPY, cont_map_id, crown_ids)
                         crown_ids.append(selected_id)
                         persisted_m2.append(
                             [
@@ -89,18 +101,18 @@ def randomize_crown_pads(spoiler):
                                 int(float_to_hex(crown_scale), 16),
                                 0x6B0BEE32,
                                 0x9B4D326F,
+                                int(float_to_hex(crown.rot_x), 16),
                                 0,
-                                0,
-                                0,
+                                int(float_to_hex(crown.rot_z), 16),
                                 0,
                                 (0x1C6 << 16) | selected_id,
                                 1 << 16,
                             ]
                         )
                         if crown.default == 0:
-                            addNewScript(cont_map_id, [selected_id], ScriptTypes.CrownMain)
+                            addNewScript(ROM_COPY, cont_map_id, [selected_id], ScriptTypes.CrownMain)
                         elif crown.default == 1:
-                            addNewScript(cont_map_id, [selected_id], ScriptTypes.CrownIsles2)
+                            addNewScript(ROM_COPY, cont_map_id, [selected_id], ScriptTypes.CrownIsles2)
                 ROM_COPY.seek(setup_table + 4 + (model2_count * 0x30))
                 mystery_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
                 extra_data = [mystery_count]

@@ -1,11 +1,9 @@
 """Vendor enum."""
 
-from enum import IntEnum, auto
+from randomizer.JsonReader import generate_globals
+from typing import TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from randomizer.Enums.VendorType import VendorType
 
-class VendorType(IntEnum):
-    """Vendor Type enum."""
-
-    Cranky = 0
-    Funky = auto()
-    Candy = auto()
+globals().update(generate_globals(__file__))

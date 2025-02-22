@@ -99,14 +99,10 @@ void handleSentItem(void) {
             setFlagDuplicate(FLAG_COLLECTABLE_BEAN, 1, FLAGTYPE_PERMANENT);
             break;
         case TRANSFER_ITEM_FAKEITEM:
-            queueIceTrap();
+            queueIceTrap(ICETRAP_BUBBLE); // For now, always make ice
             break;
         case TRANSFER_ITEM_JUNKITEM:
-            if (DAMAGE_MASKING) {
-                applyDamageMask(0, 1);
-            } else {
-                applyDamage(0, 1);
-            }
+            applyDamageMask(0, 1);
             break;
         case TRANSFER_ITEM_BABOONBLAST:
         case TRANSFER_ITEM_STRONGKONG:
@@ -241,9 +237,12 @@ void handleArchipelagoFeed(void) {
 void handleArchipelagoString(void) {
     if (canReceiveItem()) {
         if (FedString[0] != 0) {
-            spawnItemOverlay(8, 0, 1, 1);
-            TextOverlayData.string = dk_malloc(0x30);
-            dk_memcpy(TextOverlayData.string, &FedString[0], 0x21);
+            int vacant_spot = spawnItemOverlay(8, 0, 1, 1);
+            if (vacant_spot == -1) {
+                return;
+            }
+            text_overlay_data[vacant_spot].string = dk_malloc(0x30);
+            dk_memcpy(text_overlay_data[vacant_spot].string, &FedString[0], 0x21);
             FedString[0] = 0;
         }
     }

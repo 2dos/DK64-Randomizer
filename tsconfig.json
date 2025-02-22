@@ -1,0 +1,13 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "noEmit": true,
+        "allowJs": true,
+        "checkJs": false,
+        "target": "es6",
+        "resolveJsonModule": true,
+        "moduleResolution": "node",
+        "typeRoots": ["./typings"]
+    },
+    "include": ["./static/js/**/*.js"],
+}

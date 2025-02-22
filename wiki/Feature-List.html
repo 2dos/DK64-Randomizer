@@ -1,6 +1,6 @@
 <!-- DON'T EDIT THIS FILE. EDIT template.html INSTEAD -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport"
@@ -11,10 +11,10 @@
         <meta name="keywords" content="Donkey Kong 64, DK64, Randomizers, N64, Nintendo 64, Wiki, DK64R" />
         <meta name="author" content="DK64R Team" />
         <!-- Discord -->
-        <meta content="Feature List" property="og:title" />
+        <meta content="DK64 Randomizer Wiki" id="site_page_identifier" property="og:title" />
         <meta content="Welcome to the DK64 Randomizer Wiki. A comprehensive wiki on tricks, tips and guides to playing the best monkey game randomizer on the Nintendo 64." property="og:description" />
         <meta content="Donkey Kong 64 Randomizer Wiki" property="og:site_name" />
-        <meta content="https://raw.githubusercontent.com/2dos/DK64-Randomizer/master/static/img/logo.png" property="og:image" />
+        <meta content="https://raw.githubusercontent.com/2dos/DK64-Randomizer/master/static/img/logo.webp" property="og:image" />
         <script type="text/javascript" src="../static/js/showdown.min.js"></script>
         <title>Feature List</title>
         <link href="../static/img/dk.png" rel="icon" />
@@ -28,7 +28,7 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     </head>
     <body id="page-top">
-        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
             <div class="container px-5">
                 <a class="navbar-brand" href="#page-top">DK64 Randomizer</a>
                 <button class="navbar-toggler"
@@ -62,71 +62,72 @@
                 </div>
             </div>
         </nav>
-        <img src="../static/img/logo.png"
+        <img src="../static/img/logo.webp"
             alt="DK64 Randomizer"
             class="center_image"
             style="cursor: pointer; margin-top: 70px"/>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3 hide-if-thin"></div>
-                <div class="col-sm-9 pr-6 max-if-thin">
-                    <div class="row justify-content-end">
-                        <div class="col-sm-3">
-                            <div class="card bg-dark px-2 pt-2 position-relative">
-                                <input class="form-control mr-sm-2" id="article-search" type="input" placeholder="Search" aria-label="Search">
-                                <div class="position-absolute" id="search_suggestions"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="mt-4"></div>
         <div class="container">
             <div class="row">
                 <div class="col-sm-3 p-0 hide-if-thin">
                     <div class="px-3 mb-3">
-                        <div class="card bg-dark">
+                        <div class="card bg-vdark">
                             <div class="sidebar-link fs-6 p-3 user-select-none" onclick="goTo('home.html')">
-                                Home
+                                <i class="fa-solid fa-house"></i>
                             </div>
                         </div>
                     </div>
                     <div class="px-3 mb-3">
-                        <div class="card bg-dark fs-6">
-                            <div class="p-3 collapsable-header collapsed user-select-none" open="suggested_articles_content" onclick="toggleSidebarCollapse(this)">
-                                <i id="icon" class="fa fa-lg fa-caret-down collapsable-header-caret"></i>
-                                &nbsp;Suggested
+                        <div class="card bg-vdark">
+                            <div class="sidebar-link fs-6 p-3 user-select-none" data-bs-toggle="modal" data-bs-target="#searchModal">
+                                <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
-                            <div id="suggested_articles_content" class="sugg-articles content-navigation-menu px-3 py-2 user-select-none" hidden></div>
                         </div>
                     </div>
                     <div style="position:sticky; top:80px" class="px-3">
-                        <div class="card bg-dark fs-6">
+                        <div class="card bg-vdark fs-6">
                             <div class="p-3 collapsable-header collapsed user-select-none" open="markdown_navigation_sidebar" onclick="toggleSidebarCollapse(this)">
-                                <i id="icon" class="fa fa-lg fa-caret-down collapsable-header-caret"></i>
-                                &nbsp;Content
+                                <i class="fa-solid fa-compass"></i>
                             </div>
                             <div id="markdown_navigation_sidebar" class="content-navigation-menu px-3 py-2 user-select-none" hidden></div>
                         </div>
                     </div>
                 </div>
+                <!-- Modal -->
+                <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="searchModalLabel">Search</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input class="form-control mr-sm-2" id="article-search" type="text" placeholder="Search" autocomplete="off" data-lpignore="true" data-form-type="other">
+                        </div>
+                    </div>
+                    </div>
+                </div>
                 <div class="pr-6 col-sm-9 max-if-thin">
-                    <div class="card bg-dark p-3">
+                    <div class="card bg-vdark p-3">
                         <h1 id="page-title">Feature List</h1>
                         <div id="last-modified"></div>
                         <hr />
-                        <div id="content-summary"></div>
-                        <div class="content-pane p-3 user-select-none">
+                        <div id="content-summary">
+                            Loading Article...
+                        </div>
+                        <div class="content-pane p-3 user-select-none" id="content-pane" hidden>
                             <strong>Contents</strong> [<a href="#" onclick="hideContent(this)">Hide</a>]
                             <hr id="content_hr" />
                             <div id="markdown_navigation" class="content-navigation-menu"></div>
                         </div>
-                        <div id="markdown_content" ref="https://raw.githubusercontent.com/wiki/2dos/DK64-Randomizer/Feature-List.md"></div>
+                        <div id="markdown_content"></div>
                     </div>
                 </div>
             </div>
         </div>
+        <script id="redirect_handler">window.location.href="./index.html?title=Feature-List";</script>
         <script type="text/javascript" src="../static/js/wiki-code.js"></script>
+        <script src="../static/js/autocomplete.js"></script>
         <script type="text/javascript">
             function copyCode(element) {
                 let parent = element.parentElement.parentElement.parentElement;
@@ -192,7 +193,26 @@
                     content_hr.setAttribute("hidden", "hidden");
                 }
             }
+
+            async function prepSuggestions() {
+                const article_lst = await getSuggestions();
+                console.log(article_lst)
+                $('#article-search').typeahead({
+                    source: article_lst,
+                    displayText: (item) => {
+                        return item.name;
+                    },
+                    afterSelect: (item) => {
+                        window.location.href = item.link;
+                    }
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', e => {
+                prepSuggestions();
+            }, false);
         </script>
         <script type="text/javascript" src="../static/js/font-awesome.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </body>
 </html>

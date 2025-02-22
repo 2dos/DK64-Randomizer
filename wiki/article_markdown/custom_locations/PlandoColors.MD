@@ -1,0 +1,19 @@
+This article covers the color formatting for plandomizer hints, and how to use it effectively
+# Reference Images
+<flex>
+<imginfo header='Light Mode' subtitle='Lighter background for the vanilla feel' img='../static/img/light_mode.png'></imginfo>
+<imginfo header='Dark Mode' subtitle='Dark background for those sensitive to brightness' img='../static/img/dark_mode.png'></imginfo>
+</flex>
+# Color Tags
+| Primary Tag | Alternative Tags | Hex Colors | Example |
+|-------------|------------------|------------|---------|
+| [orange][/orange] | [woth][/woth]<br>[keys][/keys]<br>[donkey][/donkey]<br>[aztec][/aztec]<br>[freekongs][/freekongs]<br>[dogadon1][/dogadon1] | Light Mode: #A36200<br>Dark Mode: #FFA010 | <span class='p-1' style='color:#a36200; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#ffa010; font-weight:bold'>DARK MODE</span> |
+| [red][/red] | [foolish][/foolish]<br>[diddy][/diddy]<br>[helm][/helm] | Light Mode: #B00000<br>Dark Mode: #FF0000 | <span class='p-1' style='color:#b00000; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#ff0000; font-weight:bold'>DARK MODE</span> |
+| [blue][/blue] | [lanky][/lanky]<br>[galleon][/galleon]<br>[pufftoss][/pufftoss] | Light Mode: #2828FF<br>Dark Mode: #0C7DED | <span class='p-1' style='color:#2828ff; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#0c7ded; font-weight:bold'>DARK MODE</span> |
+| [purple][/purple] | [tiny][/tiny]<br>[forest][/forest]<br>[fungi][/fungi]<br>[dogadon2][/dogadon2] | Light Mode: #8000FF<br>Dark Mode: #BB1CFF | <span class='p-1' style='color:#8000ff; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#bb1cff; font-weight:bold'>DARK MODE</span> |
+| [lightgreen][/lightgreen] | [chunky][/chunky]<br>[japes][/japes]<br>[dillo1][/dillo1] | Light Mode: #008000<br>Dark Mode: #59FF64 | <span class='p-1' style='color:#008000; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#59ff64; font-weight:bold'>DARK MODE</span> |
+| [magenta][/magenta] | [castle][/castle]<br>[kutout][/kutout] | Light Mode: #B00058<br>Dark Mode: #E84898 | <span class='p-1' style='color:#b00058; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#e84898; font-weight:bold'>DARK MODE</span> |
+| [cyan][/cyan] | [caves][/caves]<br>[fridge][/fridge]<br>[dillo2][/dillo2] | Light Mode: #008080<br>Dark Mode: #3EE1E1 | <span class='p-1' style='color:#008080; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#3ee1e1; font-weight:bold'>DARK MODE</span> |
+| [rust][/rust] | [isles][/isles]<br>[training][/training] | Light Mode: #C04040<br>Dark Mode: #D25757 | <span class='p-1' style='color:#c04040; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#d25757; font-weight:bold'>DARK MODE</span> |
+| [paleblue][/paleblue] | [allkongs][/allkongs]<br>[factory][/factory]<br>[madjack][/madjack] | Light Mode: #132958<br>Dark Mode: #B5CDFF | <span class='p-1' style='color:#132958; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#b5cdff; font-weight:bold'>DARK MODE</span> |
+| [green][/green] | [jetpac][/jetpac] | Light Mode: #275E1E<br>Dark Mode: #00CE0E | <span class='p-1' style='color:#275e1e; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#00ce0e; font-weight:bold'>DARK MODE</span> |

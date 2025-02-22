@@ -22,58 +22,55 @@ function highlightInstancesOfText(find_text, in_text) {
 }
 
 function goTo(url, new_tab=false) {
+    if (url.indexOf("./") !== 0) {
+        window.location.href = url;
+        return;
+    }
+    const html_index = url.indexOf(".html");
+    if (html_index === -1) {
+        window.location.href = url;
+        return;
+    }
+    if (html_index === (url.length - 5)) {
+        window.location.href = `./index.html?title=${url.substring(2, url.length - 5)}`
+        return;
+    }
     window.location.href = url;
-}
-
-function handleSuggestionClick(url) {
-    document.getElementById("search_suggestions").innerHTML = "";
-    document.getElementById("article-search").value = "";
-    goTo(url);
 }
 
 function getLink(item) {
     if (Object.keys(item).includes("github")) {
-        return `./${item.github}.html`
+        return `./index.html?title=${item.github}`
     }
-    return `./${item.link}.html`
+    return `./index.html?title=${item.link}`
 }
 
-document.getElementById("article-search").addEventListener("keyup", (e) => {
-    const input_value = e.target.value;
-    if (articles.length == 0) {
-        return; // No articles
-    }
-    let matches = [];
-    if (input_value.length >= 1) {
-        articles.forEach(article => {
-            const score = getSearchScore(input_value, article.name);
-            if (score > 0) {
-                matches.push({
-                    "score": score,
-                    "text": highlightInstancesOfText(input_value, article.name),
-                    "link": getLink(article),
-                })
+let article_names = [];
+let articles_ready = false;
+async function getSuggestions() {
+    return new Promise((resolve) => {
+        const checkReady = () => {
+            if (articles_ready) {
+                resolve(article_names.slice());
+            } else {
+                setTimeout(checkReady, 100);
             }
-        })
-        matches = matches.sort((a, b) => a.score < b.score ? 1 : ((b.score < a.score) ? -1 : 0));
-    }
-    matches = matches.filter((item, index) => index < 5); // Clamp to 5 search results at most
-    const sugg_hook = document.getElementById("search_suggestions");
-    sugg_hook.innerHTML = matches.map(item => `
-        <div class="search-item user-select-none p-2" onclick="handleSuggestionClick('${item.link}')">
-            ${item.text}
-        </div>
-    `).join("");
-    const top_offset = e.target.clientTop + e.target.clientHeight;
-    const left_offset = e.target.clientLeft;
-    sugg_hook.style.top = `calc(${top_offset}px + 0.5rem)`;
-    sugg_hook.style.right = `calc(${left_offset}px + 0.5rem)`;
-    sugg_hook.style["min-width"] = `${e.target.clientWidth}px`;
-})
+        };
+        checkReady();
+    })
+}
 
 async function fetchArticles() {
     articles = await fetch("./articles.json", {cache: "no-store"}).then(x => x.json());
     sugg_articles = await fetch("./home_articles.json", {cache: "no-store"}).then(x => x.json());
+    // Populate search suggestions
+    article_names = articles.map(item => {
+        return {
+            "name": item.name,
+            "link": getLink(item),
+        };
+    });
+    articles_ready = true;
     // Populate Suggested Article Text
     const sugg_article_holders = document.getElementsByClassName("sugg-articles");
     if (sugg_article_holders.length == 0) {
@@ -349,6 +346,7 @@ function filterHTML(element, output_html) {
     })
     element.innerHTML = output_html;
     element.removeAttribute("ref");
+    document.getElementById("content-pane").removeAttribute("hidden");
     // Content Filtration
     const content_hook = document.getElementById("markdown_content");
     // Add classes to code blocks where their parent element isn't a pre-tag
@@ -376,6 +374,33 @@ function filterHTML(element, output_html) {
         const btn_text = img_buttons[0].getAttribute("text");
         img_buttons[0].outerHTML = `<div class="img-btn-container p-3 m-2 user-select-none" onclick="goTo('${btn_href}')"><img src=${btn_img} /><div class="img-btn-text">${btn_text}</div></div>`
     }
+    // Image Info
+    const image_info = content_hook.getElementsByTagName("imginfo");
+    while (image_info.length > 0) {
+        const info_img = image_info[0].getAttribute("img");
+        const has_text = image_info[0].hasAttribute("text");
+        const info_text = image_info[0].getAttribute("text");
+        const has_header = image_info[0].hasAttribute("header");
+        const info_header = image_info[0].getAttribute("header");
+        const has_subtitle = image_info[0].hasAttribute("subtitle");
+        const info_subtitle = image_info[0].getAttribute("subtitle");
+        image_info[0].outerHTML = `
+            <div class="card mx-2" style="width: 18rem;">
+                <img src=${info_img} class="card-img-top" alt="${info_text}" />
+                <div class="card-body">
+                    ${has_header ? `
+                        <h5 class="card-title">${info_header}</h5>
+                    ` : ""}
+                    ${has_subtitle ? `
+                        <h6 class="card-subtitle mb-2 text-body-secondary">${info_subtitle}</h6>
+                    ` : ""}
+                    ${has_text ? `
+                        <p class="card-text">${info_text}</p>
+                    ` : ""}
+                    </p>
+                </div>
+            </div>`
+    }
     // Font-Awesome icons <fa-icon>cls</fa-icon>
     const fa_icons = content_hook.getElementsByTagName("fa-icon");
     while (fa_icons.length > 0) {
@@ -388,6 +413,7 @@ function filterHTML(element, output_html) {
         const contents = flex_items[0].innerHTML;
         flex_items[0].outerHTML = `<div style="display:flex">${contents}</div>`
     }
+
     // BS Alerts
     const alert_types = {
         "primary": "fa-solid fa-circle-info",
@@ -422,6 +448,29 @@ function filterHTML(element, output_html) {
         }
         if (hash_hook) {
             hash_hook.scrollIntoView();
+        }
+    }
+
+    const imgs = document.getElementsByTagName("img");
+    for (let i = 0; i < imgs.length; i++) {
+        if (imgs[i].parentElement.classList.contains("img-btn-container")) {
+            continue;
+        }
+        imgs[i].addEventListener("click", (e) => {
+            const alt_text = e.target.getAttribute("alt");
+            updateImage(e.target.getAttribute("src"), alt_text == "image" ? "" : alt_text);
+        });
+    }
+
+    // Modify links
+    const links = document.getElementsByTagName("a");
+    for (let i = 0; i < links.length; i++) {
+        href = links[i].getAttribute("href");
+        if (href) {
+            if (href.substring(0, 2) == "./") {
+                console.log("Modifying link...");
+                links[i].setAttribute("href", `?title=${href.substring(2)}`)
+            }
         }
     }
 }

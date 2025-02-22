@@ -1,0 +1,477 @@
+{% from 'macros.html' import list_selector, properties_selector %}
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col border panel">
+            <h2 class="title">GLOBAL SETTINGS</h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Bonus Barrels outside of Helm auto complete.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="bonus_barrel_auto_complete"
+                               id="bonus_barrel_auto_complete"
+                               display_name="Auto Complete Bonus Barrels"
+                               value="True"/>
+                        Auto Complete Bonus Barrels
+                    </label>
+                </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="All lobbies will be open as if the key to K. Lumsy was already turned in.&#10;This does not affect K. Rool's ship.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="open_lobbies"
+                                   display_name="Open Lobbies"
+                                   value="True"/>
+                            Open Lobbies
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                            title="Various barriers to progression will be removed.">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="remove_barriers_enabled"
+                                id="remove_barriers_enabled"
+                                display_name="Remove Barriers"
+                                value="True"/>
+                            Remove Barriers
+                        </label>
+                        {{ list_selector(remove_barriers, "remove_barriers", "REMOVE BARRIERS", "This will open a popup that will let you customize what barriers are removed.&#10;This defaults to All options.", 12, 1) }}
+                        {# Remove end </div> as it's included in the macro for formatting #}
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Simian Slam switches will be adjusted to match the level order so that tougher switches will always be in later levels.&#10;The first four levels will have green switches, the next two will have blue and the final level will have red switches.&#10;In LZR, these are assigned to random levels with no regard for level order.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="alter_switch_allocation"
+                                   display_name="Progressive Switch Strength"
+                                   value="True"/>
+                            Progressive Switch Strength
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                            title="Speeds up several of the 'Slower' Checks in the game.">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="faster_checks_enabled"
+                                id="faster_checks_enabled"
+                                display_name="Faster Checks"
+                                value="True"/>
+                            Faster Checks
+                        </label>
+                        {{ list_selector(faster_checks, "faster_checks", "FASTER CHECKS", "This will open a popup that will let you customize what checks are sped up.&#10;This defaults to All options.", 12, 1) }}
+                        {# Remove end </div> as it's included in the macro for formatting #}
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Donkey Kong 64 with a few twists:&#10;- Hideout Helm timer starts as soon as you load up a file.&#10;- Picking up a blueprint gives you 2 extra minutes on the clock. Each kong freed gives you 5 minutes. Every Golden Banana collected gives you 30 seconds.&#10;- As soon as the time runs out, saving is disabled on your file.&#10;Aim is to get the highest percentage you can before the clock runs out.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="helm_hurry"
+                                   id="helm_hurry"
+                                   display_name="Helm Hurry Mode"
+                                   value="True"/>
+                            Helm Hurry Mode
+                        </label>
+                        {{ properties_selector(helm_hurry_items, "helmhurry_list", "HELM HURRY SELECTOR", "This will open a popup that will let you customize what how much time each item will give you.") }}
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                            title="Item rando with shops only. Reduces the number of items offered in shops to a maximum of 3."
+                            style="text-align: left">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="smaller_shops"
+                                id="smaller_shops"
+                                display_name="Smaller Shops"
+                                value="True"/>
+                            Smaller Shops
+                        </label>
+                    </div>
+                    <div class="spacer"></div>
+                    </div>
+                    <div class="flex-container">
+                        <div class="item-select">
+                            <p class="select-title">Logic</p>
+                            <div class="customize-select">
+                            <select name="logic_type"
+                                    id="logic_type"
+                                    display_name="Logic"
+                                    class="form-select"
+                                    aria-label="Logic"
+                                    data-toggle="tooltip"
+                                    title="If this is checked, then locations and entrances will be shuffled without logic.&#10;WARNING: This can lead to unbeatable seeds, or seeds that require a high level of glitch knowledge to complete.">
+                                <option id="glitchless" selected value="glitchless">
+                                    Glitchless Logic
+                                </option>
+                                <option id="glitch" value="glitch">
+                                    Glitch Logic
+                                </option>
+                                <option id="nologic" value="nologic">
+                                    No Logic
+                                </option>
+                            </select>
+                            <div style="padding: 5px;">
+                                {{ list_selector(glitches, "glitches", "GLITCHES", "This will open a popup that will let you customize what tricks are considered by logic with glitch logic.&#10;This defaults to All options.", 16, 1) }}
+                                {# Remove end </div> as it's included in the macro for formatting #}
+                            </div>
+                        </div>
+                        <div class="item-select">
+                            <p class="select-title">Win Condition</p>
+                            <div class="d-flex select-number-container" id="win_condition_container">
+                                <select name="win_condition_item"
+                                        id="win_condition_item"
+                                        display_name="Win Condition"
+                                        class="form-select center-div"
+                                        aria-label="Win Condition"
+                                        data-toggle="tooltip"
+                                        title="Alter the condition required to show the credits.">
+                                    <option selected id="beat_krool" value="beat_krool" title="">
+                                        Beat K Rool
+                                    </option>
+                                    <option id="get_key8" value="get_key8">
+                                        Acquire Key 8
+                                    </option>
+                                    <option id="krem_kapture" value="krem_kapture" title="Photograph all enemies using the fairy camera">
+                                        Kremling Kapture
+                                    </option>
+                                    <option id="dk_rap_items" value="dk_rap_items" title="Acquire all items referenced in the DK Rap">
+                                        Complete the DK Rap
+                                    </option>
+                                    <option id="easy_random" value="easy_random">
+                                        Random (Easy)
+                                    </option>
+                                    <option id="medium_random" value="medium_random">
+                                        Random (Medium)
+                                    </option>
+                                    <option id="hard_random" value="hard_random">
+                                        Random (Hard)
+                                    </option>
+                                    <option id="req_gb" value="req_gb">
+                                        Golden Bananas
+                                    </option>
+                                    <option id="req_bp" value="req_bp">
+                                        Blueprints
+                                    </option>
+                                    <option id="req_key" value="req_key">
+                                        Keys
+                                    </option>
+                                    <option id="req_medal" value="req_medal">
+                                        Medals
+                                    </option>
+                                    <option id="req_crown" value="req_crown">
+                                        Crowns
+                                    </option>
+                                    <option id="req_fairy" value="req_fairy">
+                                        Fairies
+                                    </option>
+                                    <option id="req_rainbowcoin" value="req_rainbowcoin">
+                                        Rainbow Coins
+                                    </option>
+                                    <option id="req_bean" value="req_bean">
+                                        Bean
+                                    </option>
+                                    <option id="req_pearl" value="req_pearl">
+                                        Pearls
+                                    </option>
+                                </select>
+                                <input min="0"
+                                        max="201"
+                                        name="win_condition_count"
+                                        id="win_condition_count"
+                                        display_name="Win Condition Item Count"
+                                        class="form-control center-div"
+                                        type="number"
+                                        data-toggle="tooltip"
+                                        title="Amount of the item specified to beat the game."
+                                        default="1"
+                                        placeholder="1"/>
+                            </div>
+                        </div>
+                        <div class="item-select">
+                            <p class="select-title">Free Trade Agreement</p>
+                            <select name="free_trade_setting"
+                                    id="free_trade_setting"
+                                    class="form-select"
+                                    aria-label="Randomization type"
+                                    display_name="Free Trade Agreement"
+                                    data-toggle="tooltip"
+                                    title="Allow Kongs to pick up items assigned to other kongs.&#10;-None: Kongs must pick up items assigned to them.&#10;-Major Collectibles except Blueprints: Keys, Crowns, and GBs can be picked up by any Kong.&#10;-Major Collectibles: Same as above plus Blueprints.">
+                                <option id="none" selected value="none">
+                                    None
+                                </option>
+                                <option id="not_blueprints" value="not_blueprints">
+                                    Major Collectibles except Blueprints
+                                </option>
+                                <option id="major_collectibles" value="major_collectibles">
+                                    Major Collectibles
+                                </option>
+                            </select>
+                        </div>
+                        <div class="item-select">
+                            <p class="select-title">Activate Bananaports</p>
+                            <select name="activate_all_bananaports"
+                                    id="activate_all_bananaports"
+                                    class="form-select"
+                                    aria-label="Activate Bananaports"
+                                    display_name="Activate Bananaports"
+                                    data-toggle="tooltip"
+                                    title="Determines which (if any) bananaports are activated by default.&#10;-Off: Bananaports are off by default.&#10;-Isles Only: Only the Bananaports in Isles are on by default.&#10;-All: All Bananaports are on by default.">
+                                <option selected id="off" value="off">
+                                    Off
+                                </option>
+                                <option id="isles" value="isles">
+                                    Isles Only
+                                </option>
+                                <option id="all" value="all">
+                                    All
+                                </option>
+                            </select>
+                        </div>
+                        <div class="item-select">
+                            <p class="select-title">Fungi Time</p>
+                            <select name="fungi_time"
+                                    id="fungi_time"
+                                    class="form-select center-div"
+                                    aria-label="Fungi Time"
+                                    display_name="Fungi Time"
+                                    data-toggle="tooltip"
+                                    title="Alter the time of day in Fungi.">
+                                <option selected id="day" value="day">Daytime Start</option>
+                                <option id="night" value="night">Nighttime Start</option>
+                                <option id="random" value="random">Random Start</option>
+                                <option id="dusk" value="dusk" title="All time-specific gates are closed.">Dusk</option>
+                                <option id="progressive" value="progressive" title="Time of day progressively changes.">Progressive</option>
+                            </select>
+                        </div>
+                        <div class="item-select">
+                            <p class="select-title">Galleon Water</p>
+                            <select name="galleon_water"
+                                    id="galleon_water"
+                                    display_name="Galleon Water"
+                                    class="form-select center-div"
+                                    aria-label="Galleon Water"
+                                    data-toggle="tooltip"
+                                    title="Alter the water level in Galleon.">
+                                <option selected id="lowered" value="lowered">Lowered</option>
+                                <option id="raised" value="raised">Raised</option>
+                                <option id="random" value="random">Random</option>
+                            </select>
+                        </div>
+                    </div>
+                    <h2 class="title">KONG MODELS</h2>
+                    <div class="flex-container">
+                        {% set kong_lst = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"] %}
+                        {% for kong in kong_lst %}
+                            <div class="item-select">   
+                                <p class="select-title">{{ kong }}</p>
+                                <select name="kong_model_{{ kong | lower }}"
+                                        id="kong_model_{{ kong | lower }}"
+                                        display_name="Kong Model - {{ kong }}"
+                                        class="form-select"
+                                        aria-label="{{ kong }}">
+                                    <option selected value="default">
+                                        Default
+                                    </option>
+                                    <option value="krusha">
+                                        Krusha
+                                    </option>
+                                    {#
+                                        {% if kong == "DK" %}
+                                            <option value="cranky">
+                                                Cranky
+                                            </option>
+                                        {% elif kong == "Tiny" %}
+                                            <option value="candy">
+                                                Candy
+                                            </option>
+                                        {% elif kong == "Diddy" %}
+                                            <option value="funky">
+                                                Funky
+                                            </option>
+                                        {% endif %}
+                                        
+                                        {% if kong != "Chunky" %}
+                                            {% if kong != "Lanky" %}
+                                                <option value="krool_fight">
+                                                    K. Rool (Fight Gear)
+                                                </option>
+                                                <option value="krool_cutscene">
+                                                    K. Rool (Cutscene Gear)
+                                                </option>
+                                            {% endif %}
+                                        {% endif %}
+                                    #}
+                                </select>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col border panel">
+            <h2 class="title">DIFFICULTY</h2>
+            <div class = "flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Tag Barrels, Boss Fights, Candy Upgrades etc don't heal you like they normally would.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="no_healing"
+                               display_name="No Heals"
+                               value="True"/>
+                        No Heals
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip" title="No melons are dropped from enemies.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="no_melons"
+                               display_name="No Melon Slice Drops"
+                               value="True"/>
+                        No Melon Slice Drops
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Ice Traps damage you.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="ice_traps_damage"
+                               id="ice_traps_damage"
+                               display_name="Ice Traps Damage Player"
+                               value="True"/>
+                        Ice Traps Damage Player
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="The game is horizontally mirrored.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="mirror_mode"
+                               id="mirror_mode"
+                               display_name="Mirror Mode"
+                               value="True"/>
+                        Mirror Mode
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Enabling this setting means logic may expect you to do some difficult shooting challenges without help. If this setting is disabled, then the following requirements exist:&#10;* Lanky's attic in Fungi Forest requires homing ammo.&#10;* Donkey's 5 door cabin in Crystal Caves requires homing ammo.&#10;* Tiny's trash can in Creepy Castle requires homing ammo. (This can be bypassed with Saxophone)&#10;* Chunky's tree banana in Creepy Castle requires sniper scope. (This requirement can be skipped by shooting from below the switch.)&#10;* Chunky's shooting barrel in Hideout Helm requires either sniper scope or homing ammo.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="hard_shooting"
+                               display_name="Hard Shooting"
+                               value="True"/>
+                        Hard Shooting
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="This option enables various harder gameplay features.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="hard_mode"
+                               id="hard_mode"
+                               display_name="Hard Mode"
+                               value="True"/>
+                        Hard Mode
+                    </label>
+                    {{ list_selector(hard_mode, "hard_mode", "HARD MODE", "This will open a popup that will let you customize what hard mode Options are active.", 10) }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="This option enables various harder challenges for boss fights.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="hard_bosses"
+                               id="hard_bosses"
+                               display_name="Hard Bosses"
+                               value="True"/>
+                        Hard Bosses
+                    </label>
+                    {{ list_selector(hard_bosses, "hard_bosses", "HARD BOSSES", "This will open a popup that will let you customize what bosses are made harder.", 10) }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="When a kong dies you can no longer use the kong excluding for boss fights, you can enter any boss arena with any kong and it will force you to the required kong, if a kong is dead all moves will be granted.&#10;WARNING: Seeds might become unbeatable.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="perma_death"
+                               display_name="Irondonk"
+                               value="True"/>
+                        Irondonk
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Disables tag barrels from spawning.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="disable_tag_barrels"
+                               id="disable_tag_barrels"
+                               display_name="Tag Barrels Disabled"
+                               value="True"/>
+                        Tag Barrels Disabled
+                    </label>
+                </div>
+                <div class="spacer"></div>
+            </div>
+            <div class = "flex-container">
+                <div class="item-select">
+                    <p class="select-title">Damage</p>
+                    <select name="damage_amount"
+                            id="damage_amount"
+                            display_name="Damage Multiplier"
+                            class="form-select center-div"
+                            aria-label="Damage Options">
+                        <option selected value="default">
+                            Normal
+                        </option>
+                        <option value="ohko">
+                            OHKO
+                        </option>
+                        <option value="double">
+                            Double Damage
+                        </option>
+                        <option value="quad">
+                            Quad Damage
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Crown Enemies</p>
+                    <select name="crown_enemy_difficulty"
+                            id="crown_enemy_difficulty"
+                            display_name="Crown Enemy Randomizer"
+                            class="form-select"
+                            aria-label="Crown Enemy Randomizer"
+                            data-toggle="tooltip"
+                            title="Battle Crown Enemies are Randomized.&#10;-Vanilla: No crown enemy randomization will take place.&#10;-Easy: Crown enemies are randomized with a bias towards the easier enemies.&#10;-Medium: Crown enemies are randomized with a bias towards the medium-difficulty enemies.&#10;-Hard: Crown enemies are randomized with a bias towards the hardest enemies.">
+                        <option selected id="vanilla" value="vanilla">
+                            Vanilla
+                        </option>
+                        <option id="easy" value="easy">
+                            Easy
+                        </option>
+                        <option id="medium" value="medium">
+                            Medium
+                        </option>
+                        <option id="hard" value="hard">
+                            Hard
+                        </option>
+                        <option id="progressive" value="progressive" title="The difficulty of crowns will scale up as you progress through the game.">
+                            Progressive Difficulty
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>

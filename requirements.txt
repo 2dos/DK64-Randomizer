@@ -1,12 +1,2 @@
-flask==3.0.0
-flask-cors==4.0.0
-flask-executor==1.0.0
-pyxdelta==0.1.2
-pillow==10.2.0
-boto3==1.28.43
-waitress==2.1.2
-GitPython==3.1.41
-cryptography==42.0.4
-apscheduler==3.10.4
-vidua==0.4.5
-pyopenssl==24.0.0
+-r worker/requirements.txt
+-r controller/requirements.txt

@@ -4,6 +4,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
 
 
@@ -104,14 +105,14 @@ fairy_locations = {
         FairyData(
             name="Near Kong Cage",
             map=Maps.JungleJapes,
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesHillTop,
             fence=Fence(1000, 2345, 1206, 2482),
             spawn_y=1040,
         ),
         FairyData(
             name="Near Mountain",
             map=Maps.JungleJapes,
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesHillTop,
             fence=Fence(1300, 1793, 1950, 2162),
             spawn_y=916,
         ),
@@ -172,7 +173,7 @@ fairy_locations = {
             region=Regions.TinyTemple,
             is_vanilla=True,
             spawn_xyz=[1178, 95, 704],
-            logic=lambda l: l.camera and ((l.feather and l.mini and l.istiny) or l.phasewalk),
+            logic=lambda l: l.camera and ((l.mini and l.istiny) or l.CanPhase()),
             natural_index=1,
         ),
         FairyData(
@@ -189,7 +190,7 @@ fairy_locations = {
             region=Regions.BetweenVinesByPortal,
             fence=Fence(127, 626, 463, 902),
             spawn_y=151,
-            logic=lambda l: l.camera and ((l.pineapple and l.chunky) or l.phasewalk),
+            logic=lambda l: l.camera and ((l.pineapple and l.chunky) or l.CanPhase()),
         ),
         FairyData(
             name="Oasis",
@@ -239,7 +240,7 @@ fairy_locations = {
             region=Regions.DonkeyTemple,
             fence=Fence(699, 259, 755, 870),
             spawn_y=67,
-            logic=lambda l: l.camera and ((l.coconut and l.isdonkey) or l.phasewalk),
+            logic=lambda l: l.camera and ((l.coconut and l.isdonkey) or l.CanPhase()),
         ),
         FairyData(
             name="Chunky 5DT",
@@ -247,7 +248,6 @@ fairy_locations = {
             region=Regions.ChunkyTemple,
             fence=Fence(600, 601, 678, 1222),
             spawn_y=94,
-            logic=lambda l: l.camera and ((l.pineapple and l.ischunky) or l.phasewalk),
         ),
         FairyData(
             name="Diddy 5DT",
@@ -262,7 +262,6 @@ fairy_locations = {
             region=Regions.LankyTemple,
             fence=Fence(426, 621, 496, 1209),
             spawn_y=94,
-            logic=lambda l: l.camera and ((l.grape and l.islanky) or l.phasewalk),
         ),
         FairyData(
             name="Start of Llama Temple",
@@ -277,7 +276,7 @@ fairy_locations = {
             region=Regions.LlamaTemple,
             fence=Fence(952, 2101, 1153, 2667),
             spawn_y=769,
-            logic=lambda l: l.camera and ((l.grape and l.islanky) or l.phasewalk or l.CanOStandTBSNoclip()),
+            logic=lambda l: l.camera and ((l.grape and l.islanky) or l.CanPhase() or l.CanOStandTBSNoclip()),
         ),
         FairyData(
             name="Tiny Temple Start",
@@ -289,7 +288,7 @@ fairy_locations = {
         FairyData(
             name="Tiny Temple Kong Cage Room",
             map=Maps.AztecTinyTemple,
-            region=Regions.TempleUnderwater,
+            region=Regions.TempleKONGRoom,
             fence=Fence(280, 1288, 721, 1614),
             spawn_y=442,
         ),
@@ -337,7 +336,7 @@ fairy_locations = {
         FairyData(
             name="Mid-section of Production Room",
             map=Maps.FranticFactory,
-            region=Regions.MiddleCore,
+            region=Regions.SpinningCore,
             fence=Fence(524, 986, 767, 1251),
             spawn_y=453,
         ),
@@ -365,14 +364,14 @@ fairy_locations = {
         FairyData(
             name="Arcade Tunnel",
             map=Maps.FranticFactory,
-            region=Regions.BeyondHatch,
+            region=Regions.FactoryArcadeTunnel,
             fence=Fence(1232, 1019, 1312, 1719),
             spawn_y=1137,
         ),
         FairyData(
             name="Arcade Room",
             map=Maps.FranticFactory,
-            region=Regions.BeyondHatch,
+            region=Regions.FactoryArcadeTunnel,
             fence=Fence(1798, 1511, 1898, 1528),
             spawn_y=1109,
         ),
@@ -382,7 +381,7 @@ fairy_locations = {
             region=Regions.Testing,
             fence=Fence(2311, 1184, 2565, 1439),
             spawn_y=1439,
-            logic=lambda l: l.camera and (l.spring and l.isdiddy),
+            logic=lambda l: l.camera and ((l.spring or l.CanMoontail()) and l.isdiddy),
         ),
         FairyData(
             name="Near Dartboard Boxes",
@@ -408,15 +407,15 @@ fairy_locations = {
         FairyData(
             name="Toy Monster Room",
             map=Maps.FranticFactory,
-            region=Regions.RandD,
+            region=Regions.RandDUpper,
             fence=Fence(4509, 1456, 5001, 1764),
             spawn_y=1483,
-            logic=lambda l: l.camera and ((l.triangle and l.punch and l.ischunky) or l.CanAccessRNDRoom()),
+            logic=lambda l: l.camera and ((l.triangle and l.punch and l.ischunky and l.climbing) or l.CanAccessRNDRoom()),
         ),
         FairyData(
             name="Diddy Research and Development Room",
             map=Maps.FranticFactory,
-            region=Regions.RandD,
+            region=Regions.RandDUpper,
             fence=Fence(4322, 387, 4672, 597),
             spawn_y=1455,
             logic=lambda l: l.camera and ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom()),
@@ -424,7 +423,7 @@ fairy_locations = {
         FairyData(
             name="Chute to Storage Room",
             map=Maps.FranticFactory,
-            region=Regions.RandD,
+            region=Regions.RandDUpper,
             fence=Fence(4513, 843, 4666, 998),
             spawn_y=1373,
         ),
@@ -434,7 +433,7 @@ fairy_locations = {
             region=Regions.BeyondHatch,
             fence=Fence(1820, 526, 2079, 874),
             spawn_y=60,
-            logic=lambda l: l.camera and ((l.punch and l.chunky) or l.phasewalk),
+            logic=lambda l: l.camera and ((l.punch and l.chunky) or l.CanPhase()),
         ),
         FairyData(
             name="Crusher Room",
@@ -521,7 +520,7 @@ fairy_locations = {
         FairyData(
             name="Top of Lighthouse",
             map=Maps.GalleonLighthouse,
-            region=Regions.Lighthouse,
+            region=Regions.LighthouseAboveLadder,
             fence=Fence(421, 386, 452, 594),
             spawn_y=779,
         ),
@@ -565,7 +564,7 @@ fairy_locations = {
         FairyData(
             name="Thornvine Barn",
             map=Maps.ForestThornvineBarn,
-            region=Regions.ThornvineBarn,
+            region=Regions.ThornvineBarnAboveLadder,
             is_vanilla=True,
             spawn_xyz=[497, 162, 502],
             logic=lambda l: l.isdonkey and l.Slam and l.camera,
@@ -600,19 +599,19 @@ fairy_locations = {
             region=Regions.FungiForestStart,
             fence=Fence(2067, 3098, 2335, 3237),
             spawn_y=540,
-            logic=lambda l: l.camera and (l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy)),
+            logic=lambda l: l.camera and (((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy)),
         ),
         FairyData(
             name="Above BBlast Entrance",
             map=Maps.FungiForest,
-            region=Regions.MushroomLowerExterior,
+            region=Regions.MushroomBlastLevelExterior,
             fence=Fence(126, 941, 545, 1020),
             spawn_y=764,
         ),
         FairyData(
             name="Near Crown",
             map=Maps.FungiForest,
-            region=Regions.MushroomLowerExterior,
+            region=Regions.MushroomUpperMidExterior,
             fence=Fence(652, 1516, 1169, 1623),
             spawn_y=1010,
         ),
@@ -689,7 +688,7 @@ fairy_locations = {
         FairyData(
             name="Lower Giant Mushroom Interior",
             map=Maps.ForestGiantMushroom,
-            region=Regions.MushroomLower,
+            region=Regions.MushroomLowerBetweenLadders,
             fence=Fence(202, 338, 659, 650),
             spawn_y=357,
         ),
@@ -729,7 +728,7 @@ fairy_locations = {
             region=Regions.DiddyUpperCabin,
             is_vanilla=True,
             spawn_xyz=[140, 100, 505],
-            logic=lambda l: l.camera and (l.guitar or l.oranges) and l.spring and l.jetpack and l.isdiddy,
+            logic=lambda l: l.camera and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()) and l.jetpack and l.isdiddy,
             natural_index=1,
         ),
         FairyData(
@@ -751,10 +750,9 @@ fairy_locations = {
         FairyData(
             name="Gorilla Gone Room",
             map=Maps.CrystalCaves,
-            region=Regions.CrystalCavesMain,
+            region=Regions.CavesGGRoom,
             fence=Fence(2461, 402, 2684, 542),
             spawn_y=76,
-            logic=lambda l: l.camera and ((l.chunky and l.punch) or l.phasewalk or l.CanPhaseswim()),
         ),
         FairyData(
             name="Ice Castle Roof",
@@ -883,7 +881,7 @@ fairy_locations = {
             region=Regions.CastleTree,
             is_vanilla=True,
             spawn_xyz=[1696, 400, 1054],
-            logic=lambda l: l.camera and l.swim and (((l.coconut or l.generalclips) and l.isdonkey) or l.phasewalk),
+            logic=lambda l: l.camera and l.swim and (((l.coconut or l.generalclips) and l.isdonkey) or l.CanPhase()),
             natural_index=1,
         ),
         FairyData(
@@ -950,7 +948,7 @@ fairy_locations = {
             region=Regions.Dungeon,
             fence=Fence(424, 175, 664, 1123),
             spawn_y=230,
-            logic=lambda l: l.camera and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.trombone and l.balloon and l.islanky,
+            logic=lambda l: l.camera and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.trombone and l.balloon and l.islanky,
         ),
         FairyData(
             name="Donkey Dungeon",
@@ -958,7 +956,7 @@ fairy_locations = {
             region=Regions.Dungeon,
             fence=Fence(1175, 1878, 1575, 2109),
             spawn_y=235,
-            logic=lambda l: l.camera and ((l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.phasewalk),
+            logic=lambda l: l.camera and ((l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.CanPhase()),
         ),
         FairyData(
             name="Above entrance to Mausoleum",
@@ -1087,7 +1085,7 @@ fairy_locations = {
             region=Regions.AngryAztecLobby,
             fence=Fence(945, 487, 1090, 746),
             spawn_y=72,
-            logic=lambda l: l.camera and (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk),
+            logic=lambda l: l.camera and (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()),
         ),
         FairyData(
             name="Creepy Castle Lobby",
@@ -1102,7 +1100,7 @@ fairy_locations = {
             region=Regions.CrystalCavesLobby,
             fence=Fence(160, 328, 342, 442),
             spawn_y=44,
-            logic=lambda l: l.camera and ((l.punch and l.chunky) or l.phasewalk or l.ledgeclip),
+            logic=lambda l: l.camera and ((l.punch and l.chunky) or l.CanPhase() or l.ledgeclip),
         ),
         FairyData(
             name="Snide Room",
@@ -1124,6 +1122,7 @@ fairy_locations = {
             region=Regions.TrainingGrounds,
             fence=Fence(756, 1111, 857, 1339),
             spawn_y=453,
+            logic=lambda l: l.camera and l.climbing,
         ),
         FairyData(
             name="Treehouse Windows",

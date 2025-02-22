@@ -10,13 +10,6 @@
  */
 #include "../../include/common.h"
 
-static short tbarrel_flags[] = {
-	FLAG_TBARREL_BARREL,
-	FLAG_TBARREL_DIVE,
-	FLAG_TBARREL_ORANGE,
-	FLAG_TBARREL_VINE,
-};
-
 int isTBarrelFlag(int flag) {
 	/**
 	 * @brief Is a flag a training move flag
@@ -84,7 +77,7 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 				base = MRT_NOBUY_BANANA;
 			} else if (isFlagInRange(shop_data->flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 				base = MRT_NOBUY_BLUEPRINT;
-			} else if (isFlagInRange(shop_data->flag, FLAG_MEDAL_JAPES_DK, 40)) {
+			} else if (isMedalFlag(shop_data->flag)) {
 				base = MRT_NOBUY_MEDAL;
 			} else if (subtype == 0) {
 				base = MRT_NOBUY_SLAM;
@@ -105,22 +98,22 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 			}
 		}
 	} else {
-		if (purchase_type == 0) { // Special Potion Moves
+		if (purchase_type == PURCHASE_MOVES) { // Special Potion Moves
 			base = MRT_CANBUY_BBLAST + (kong * 3) + (purchase_value - 1);
-		} else if (purchase_type == 1) { // Slams
+		} else if (purchase_type == PURCHASE_SLAM) { // Slams
 			base = MRT_CANBUY_SLAM;
-		} else if ((purchase_type == 2) && (purchase_value == 1)) { // Base Guns
+		} else if ((purchase_type == PURCHASE_GUN) && (purchase_value == 1)) { // Base Guns
 			base = MRT_CANBUY_COCONUT + kong;
-		} else if ((purchase_type == 2) && (purchase_value != 1)) { // Homing/Sniper
+		} else if ((purchase_type == PURCHASE_GUN) && (purchase_value != 1)) { // Homing/Sniper
 			base = MRT_CANBUY_HOMING + (purchase_value - 2);
-		} else if (purchase_type == 3) { // Ammo Belt
+		} else if (purchase_type == PURCHASE_AMMOBELT) { // Ammo Belt
 			base = MRT_CANBUY_AMMOBELT;
-		} else if ((purchase_type == 4) && (purchase_value == 1)) { // Base Instruments
+		} else if ((purchase_type == PURCHASE_INSTRUMENT) && (purchase_value == 1)) { // Base Instruments
 			base = MRT_CANBUY_BONGOS + kong;
-		} else if ((purchase_type == 4) && (purchase_value != 1)) { // Instrument Upgrades
+		} else if ((purchase_type == PURCHASE_INSTRUMENT) && (purchase_value != 1)) { // Instrument Upgrades
 			base = MRT_CANBUY_INSTRUMENTUPGRADE;
-		} else if (purchase_type == 5) {
-			int move_flags[] = {FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, -2};
+		} else if (purchase_type == PURCHASE_FLAG) {
+			int move_flags[] = {FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CLIMBING, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, -2};
 			base = 0;
 			int subtype = getMoveProgressiveFlagType(shop_data->flag);
 			if (subtype == 0) {
@@ -139,7 +132,9 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 					int flag = shop_data->flag;
 					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 						base = MRT_CANBUY_BLUEPRINT;
-					} else if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
+					} else if (isFlagInRange(flag, FLAG_WRINKLYVIEWED, 35)) {
+						base = MRT_CANBUY_HINT;
+					} else if (isMedalFlag(flag)) {
 						base = MRT_CANBUY_MEDAL;
 					} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
 						base = MRT_CANBUY_NINTENDO;
@@ -153,7 +148,7 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 						base = MRT_CANBUY_PEARL;
 					} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
 						base = MRT_CANBUY_FAIRY;
-					} else if (isFlagInRange(flag, FLAG_FAKEITEM, 0x10)) {
+					} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
 						base = MRT_CANBUY_FAKEITEM;
 					} else {
 						// Kongs
@@ -171,8 +166,10 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 					}
 				}
 			}
-		} else if (purchase_type == 6) {
+		} else if (purchase_type == PURCHASE_GB) {
 			base = MRT_CANBUY_BANANA;
+		} else if ((purchase_type >= PURCHASE_ICEBUBBLE) && (purchase_type <= PURCHASE_ICESLOW)) {
+			base = MRT_CANBUY_FAKEITEM;
 		}
 	}
 	return (base * 3) + shop_owner;

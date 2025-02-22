@@ -24,6 +24,7 @@ class PlandoItems(IntEnum):
     Swim = auto()
     Oranges = auto()
     Barrels = auto()
+    Climbing = auto()
 
     ProgressiveSlam = auto()
 
@@ -97,7 +98,10 @@ class PlandoItems(IntEnum):
 
     # BananaHoard is not used.
 
-    # Hints are not used as plando items.
+    Cranky = auto()
+    Funky = auto()
+    Candy = auto()
+    Snide = auto()
 
     # Five generic blueprint items to represent all specific blueprints.
     DonkeyBlueprint = auto()
@@ -105,6 +109,43 @@ class PlandoItems(IntEnum):
     LankyBlueprint = auto()
     TinyBlueprint = auto()
     ChunkyBlueprint = auto()
+
+    # Hints are individually placed as plando items.
+    JapesDonkeyHint = auto()
+    JapesDiddyHint = auto()
+    JapesLankyHint = auto()
+    JapesTinyHint = auto()
+    JapesChunkyHint = auto()
+    AztecDonkeyHint = auto()
+    AztecDiddyHint = auto()
+    AztecLankyHint = auto()
+    AztecTinyHint = auto()
+    AztecChunkyHint = auto()
+    FactoryDonkeyHint = auto()
+    FactoryDiddyHint = auto()
+    FactoryLankyHint = auto()
+    FactoryTinyHint = auto()
+    FactoryChunkyHint = auto()
+    GalleonDonkeyHint = auto()
+    GalleonDiddyHint = auto()
+    GalleonLankyHint = auto()
+    GalleonTinyHint = auto()
+    GalleonChunkyHint = auto()
+    ForestDonkeyHint = auto()
+    ForestDiddyHint = auto()
+    ForestLankyHint = auto()
+    ForestTinyHint = auto()
+    ForestChunkyHint = auto()
+    CavesDonkeyHint = auto()
+    CavesDiddyHint = auto()
+    CavesLankyHint = auto()
+    CavesTinyHint = auto()
+    CavesChunkyHint = auto()
+    CastleDonkeyHint = auto()
+    CastleDiddyHint = auto()
+    CastleLankyHint = auto()
+    CastleTinyHint = auto()
+    CastleChunkyHint = auto()
 
 
 ItemToPlandoItemMap = {
@@ -118,6 +159,7 @@ ItemToPlandoItemMap = {
     Items.Swim: PlandoItems.Swim,
     Items.Oranges: PlandoItems.Oranges,
     Items.Barrels: PlandoItems.Barrels,
+    Items.Climbing: PlandoItems.Climbing,
     Items.ProgressiveSlam: PlandoItems.ProgressiveSlam,
     Items.ProgressiveSlam2: PlandoItems.ProgressiveSlam,
     Items.ProgressiveSlam3: PlandoItems.ProgressiveSlam,
@@ -172,13 +214,17 @@ ItemToPlandoItemMap = {
     Items.Bean: PlandoItems.Bean,
     Items.Pearl: PlandoItems.Pearl,
     Items.RainbowCoin: PlandoItems.RainbowCoin,
-    Items.FakeItem: PlandoItems.FakeItem,
+    Items.IceTrapBubble: PlandoItems.FakeItem,
     # All of the individual junk items map to the same plando item.
     Items.JunkCrystal: PlandoItems.JunkItem,
     Items.JunkMelon: PlandoItems.JunkItem,
     Items.JunkAmmo: PlandoItems.JunkItem,
     Items.JunkFilm: PlandoItems.JunkItem,
     Items.JunkOrange: PlandoItems.JunkItem,
+    Items.Cranky: PlandoItems.Cranky,
+    Items.Funky: PlandoItems.Funky,
+    Items.Candy: PlandoItems.Candy,
+    Items.Snide: PlandoItems.Snide,
     # All of the individual blueprints map to the same five plando items.
     Items.JungleJapesDonkeyBlueprint: PlandoItems.DonkeyBlueprint,
     Items.JungleJapesDiddyBlueprint: PlandoItems.DiddyBlueprint,
@@ -220,6 +266,41 @@ ItemToPlandoItemMap = {
     Items.DKIslesLankyBlueprint: PlandoItems.LankyBlueprint,
     Items.DKIslesTinyBlueprint: PlandoItems.TinyBlueprint,
     Items.DKIslesChunkyBlueprint: PlandoItems.ChunkyBlueprint,
+    Items.JapesDonkeyHint: PlandoItems.JapesDonkeyHint,
+    Items.JapesDiddyHint: PlandoItems.JapesDiddyHint,
+    Items.JapesLankyHint: PlandoItems.JapesLankyHint,
+    Items.JapesTinyHint: PlandoItems.JapesTinyHint,
+    Items.JapesChunkyHint: PlandoItems.JapesChunkyHint,
+    Items.AztecDonkeyHint: PlandoItems.AztecDonkeyHint,
+    Items.AztecDiddyHint: PlandoItems.AztecDiddyHint,
+    Items.AztecLankyHint: PlandoItems.AztecLankyHint,
+    Items.AztecTinyHint: PlandoItems.AztecTinyHint,
+    Items.AztecChunkyHint: PlandoItems.AztecChunkyHint,
+    Items.FactoryDonkeyHint: PlandoItems.FactoryDonkeyHint,
+    Items.FactoryDiddyHint: PlandoItems.FactoryDiddyHint,
+    Items.FactoryLankyHint: PlandoItems.FactoryLankyHint,
+    Items.FactoryTinyHint: PlandoItems.FactoryTinyHint,
+    Items.FactoryChunkyHint: PlandoItems.FactoryChunkyHint,
+    Items.GalleonDonkeyHint: PlandoItems.GalleonDonkeyHint,
+    Items.GalleonDiddyHint: PlandoItems.GalleonDiddyHint,
+    Items.GalleonLankyHint: PlandoItems.GalleonLankyHint,
+    Items.GalleonTinyHint: PlandoItems.GalleonTinyHint,
+    Items.GalleonChunkyHint: PlandoItems.GalleonChunkyHint,
+    Items.ForestDonkeyHint: PlandoItems.ForestDonkeyHint,
+    Items.ForestDiddyHint: PlandoItems.ForestDiddyHint,
+    Items.ForestLankyHint: PlandoItems.ForestLankyHint,
+    Items.ForestTinyHint: PlandoItems.ForestTinyHint,
+    Items.ForestChunkyHint: PlandoItems.ForestChunkyHint,
+    Items.CavesDonkeyHint: PlandoItems.CavesDonkeyHint,
+    Items.CavesDiddyHint: PlandoItems.CavesDiddyHint,
+    Items.CavesLankyHint: PlandoItems.CavesLankyHint,
+    Items.CavesTinyHint: PlandoItems.CavesTinyHint,
+    Items.CavesChunkyHint: PlandoItems.CavesChunkyHint,
+    Items.CastleDonkeyHint: PlandoItems.CastleDonkeyHint,
+    Items.CastleDiddyHint: PlandoItems.CastleDiddyHint,
+    Items.CastleLankyHint: PlandoItems.CastleLankyHint,
+    Items.CastleTinyHint: PlandoItems.CastleTinyHint,
+    Items.CastleChunkyHint: PlandoItems.CastleChunkyHint,
 }
 
 PlandoItemToItemMap = {
@@ -233,6 +314,7 @@ PlandoItemToItemMap = {
     PlandoItems.Swim: Items.Swim,
     PlandoItems.Oranges: Items.Oranges,
     PlandoItems.Barrels: Items.Barrels,
+    PlandoItems.Climbing: Items.Climbing,
     PlandoItems.BaboonBlast: Items.BaboonBlast,
     PlandoItems.StrongKong: Items.StrongKong,
     PlandoItems.GorillaGrab: Items.GorillaGrab,
@@ -279,10 +361,49 @@ PlandoItemToItemMap = {
     PlandoItems.Bean: Items.Bean,
     PlandoItems.Pearl: Items.Pearl,
     PlandoItems.RainbowCoin: Items.RainbowCoin,
-    PlandoItems.FakeItem: Items.FakeItem,
+    PlandoItems.FakeItem: Items.IceTrapBubble,
     PlandoItems.ProgressiveSlam: Items.ProgressiveSlam,
     PlandoItems.ProgressiveAmmoBelt: Items.ProgressiveAmmoBelt,
     PlandoItems.ProgressiveInstrumentUpgrade: Items.ProgressiveInstrumentUpgrade,
+    PlandoItems.Cranky: Items.Cranky,
+    PlandoItems.Funky: Items.Funky,
+    PlandoItems.Candy: Items.Candy,
+    PlandoItems.Snide: Items.Snide,
+    PlandoItems.JapesDonkeyHint: Items.JapesDonkeyHint,
+    PlandoItems.JapesDiddyHint: Items.JapesDiddyHint,
+    PlandoItems.JapesLankyHint: Items.JapesLankyHint,
+    PlandoItems.JapesTinyHint: Items.JapesTinyHint,
+    PlandoItems.JapesChunkyHint: Items.JapesChunkyHint,
+    PlandoItems.AztecDonkeyHint: Items.AztecDonkeyHint,
+    PlandoItems.AztecDiddyHint: Items.AztecDiddyHint,
+    PlandoItems.AztecLankyHint: Items.AztecLankyHint,
+    PlandoItems.AztecTinyHint: Items.AztecTinyHint,
+    PlandoItems.AztecChunkyHint: Items.AztecChunkyHint,
+    PlandoItems.FactoryDonkeyHint: Items.FactoryDonkeyHint,
+    PlandoItems.FactoryDiddyHint: Items.FactoryDiddyHint,
+    PlandoItems.FactoryLankyHint: Items.FactoryLankyHint,
+    PlandoItems.FactoryTinyHint: Items.FactoryTinyHint,
+    PlandoItems.FactoryChunkyHint: Items.FactoryChunkyHint,
+    PlandoItems.GalleonDonkeyHint: Items.GalleonDonkeyHint,
+    PlandoItems.GalleonDiddyHint: Items.GalleonDiddyHint,
+    PlandoItems.GalleonLankyHint: Items.GalleonLankyHint,
+    PlandoItems.GalleonTinyHint: Items.GalleonTinyHint,
+    PlandoItems.GalleonChunkyHint: Items.GalleonChunkyHint,
+    PlandoItems.ForestDonkeyHint: Items.ForestDonkeyHint,
+    PlandoItems.ForestDiddyHint: Items.ForestDiddyHint,
+    PlandoItems.ForestLankyHint: Items.ForestLankyHint,
+    PlandoItems.ForestTinyHint: Items.ForestTinyHint,
+    PlandoItems.ForestChunkyHint: Items.ForestChunkyHint,
+    PlandoItems.CavesDonkeyHint: Items.CavesDonkeyHint,
+    PlandoItems.CavesDiddyHint: Items.CavesDiddyHint,
+    PlandoItems.CavesLankyHint: Items.CavesLankyHint,
+    PlandoItems.CavesTinyHint: Items.CavesTinyHint,
+    PlandoItems.CavesChunkyHint: Items.CavesChunkyHint,
+    PlandoItems.CastleDonkeyHint: Items.CastleDonkeyHint,
+    PlandoItems.CastleDiddyHint: Items.CastleDiddyHint,
+    PlandoItems.CastleLankyHint: Items.CastleLankyHint,
+    PlandoItems.CastleTinyHint: Items.CastleTinyHint,
+    PlandoItems.CastleChunkyHint: Items.CastleChunkyHint,
 }
 
 PlandoItemToItemListMap = {

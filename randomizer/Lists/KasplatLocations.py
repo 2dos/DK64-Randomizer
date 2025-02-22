@@ -5,6 +5,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
 
 
@@ -89,7 +90,9 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[427, 20, 456],
             region=Regions.JapesCatacomb,
-            additional_logic=lambda l: (l.vines and l.pineapple and l.ischunky) or (l.vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk,
+            additional_logic=lambda l: (l.can_use_vines and l.pineapple and l.ischunky)
+            or (l.can_use_vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items)
+            or l.CanPhase(),
             vanilla=True,
         ),
         KasplatLocation(
@@ -118,8 +121,8 @@ KasplatLocationList = {
             zmin=1910,
             zmax=1960,
             region=Regions.JungleJapesMain,
-            additional_logic=lambda l: ((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)
-            or ((l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.settings.free_trade_items),
+            additional_logic=lambda l: ((Events.JapesTinySwitch in l.Events or l.CanPhase() or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)
+            or ((l.CanPhase() or l.CanPhaseswim() or l.CanSkew(False)) and l.settings.free_trade_items),
         ),
         KasplatLocation(
             name="Japes Kasplat: Starting Area",
@@ -190,10 +193,26 @@ KasplatLocationList = {
             region=Regions.JapesTnSAlcove,
         ),
         KasplatLocation(
-            name="Japes Kasplat: Inside the Mountain", map_id=Maps.JapesMountain, kong_lst=[Kongs.diddy], coords=[551, 101, 1192], xmin=525, xmax=576, zmin=1078, zmax=1236, region=Regions.Mine
+            name="Japes Kasplat: Inside the Mountain",
+            map_id=Maps.JapesMountain,
+            kong_lst=[Kongs.diddy],
+            coords=[551, 101, 1192],
+            xmin=525,
+            xmax=576,
+            zmin=1078,
+            zmax=1236,
+            region=Regions.Mine,
         ),
         KasplatLocation(
-            name="Japes Kasplat: Inside the Shell", map_id=Maps.JapesTinyHive, kong_lst=[Kongs.tiny], coords=[1371, 213, 1400], xmin=1217, xmax=1468, zmin=1288, zmax=1482, region=Regions.TinyHive
+            name="Japes Kasplat: Inside the Shell",
+            map_id=Maps.JapesTinyHive,
+            kong_lst=[Kongs.tiny],
+            coords=[1371, 213, 1400],
+            xmin=1217,
+            xmax=1468,
+            zmin=1288,
+            zmax=1482,
+            region=Regions.TinyHive,
         ),
         KasplatLocation(
             name="Japes Kasplat: Painting Room Hill",
@@ -204,8 +223,7 @@ KasplatLocationList = {
             xmax=583,
             zmin=1778,
             zmax=1927,
-            region=Regions.JungleJapesMain,
-            additional_logic=lambda l: (l.lanky and l.handstand) or (l.tiny and l.twirl) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)),
+            region=Regions.JapesPaintingRoomHill,
         ),
         KasplatLocation(
             name="Japes Kasplat: Minecart Exit",
@@ -252,7 +270,7 @@ KasplatLocationList = {
             zmin=1525,
             zmax=1590,
             region=Regions.AngryAztecOasis,
-            additional_logic=lambda l: l.vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick(),
+            additional_logic=lambda l: ((l.can_use_vines or (l.jetpack and l.isdiddy)) and l.climbing) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick(),
         ),
         KasplatLocation(
             name="Aztec Kasplat: Near giant boulder",
@@ -271,7 +289,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.tiny],
             coords=[1363, 162, 738],
             region=Regions.AztecTunnelBeforeOasis,
-            additional_logic=lambda l: l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
+            additional_logic=lambda l: l.CanPhase() or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
             vanilla=True,
         ),
         KasplatLocation(
@@ -308,7 +326,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.diddy],
             coords=[3169, 445, 647],
             region=Regions.AngryAztecOasis,
-            additional_logic=lambda l: l.jetpack,
+            additional_logic=lambda l: l.jetpack and l.isdiddy and l.climbing,
             vanilla=True,
         ),
         KasplatLocation(
@@ -321,7 +339,7 @@ KasplatLocationList = {
             zmin=650,
             zmax=750,
             region=Regions.BetweenVinesByPortal,
-            additional_logic=lambda l: (l.chunky and l.pineapple) or l.phasewalk,
+            additional_logic=lambda l: (l.chunky and l.pineapple) or l.CanPhase(),
         ),
         KasplatLocation(
             name="Aztec Kasplat: Behind 5-Door Temple",
@@ -365,7 +383,7 @@ KasplatLocationList = {
             xmax=720,
             zmin=1200,
             zmax=1700,
-            region=Regions.TempleUnderwater,
+            region=Regions.TempleKONGRoom,
         ),
         KasplatLocation(
             name="Aztec Kasplat: Chunky 5-Door Temple",
@@ -373,7 +391,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[936, 122, 2027],
             region=Regions.ChunkyTemple,
-            additional_logic=lambda l: (l.pineapple and l.ischunky) or l.phasewalk,
+            additional_logic=lambda l: (l.pineapple and l.ischunky) or l.CanPhase(),
             vanilla=True,
         ),
         KasplatLocation(
@@ -396,8 +414,7 @@ KasplatLocationList = {
             xmax=1161,
             zmin=2130,
             zmax=2332,
-            region=Regions.LlamaTemple,
-            additional_logic=lambda l: l.grape or l.phasewalk,
+            region=Regions.LlamaTempleMatching,
         ),
         # Problematic - too easy to miss if you play the instrument, race to the cage, and free the kong before the respawn
         # KasplatLocation(
@@ -433,7 +450,7 @@ KasplatLocationList = {
             zmin=555,
             zmax=800,
             region=Regions.DonkeyTemple,
-            additional_logic=lambda l: (l.coconut or l.phasewalk) and l.isdonkey,
+            additional_logic=lambda l: (l.coconut or l.CanPhase()) and l.isdonkey,
         ),
     ],
     Levels.FranticFactory: [
@@ -468,7 +485,7 @@ KasplatLocationList = {
             xmax=700,
             zmin=1740,
             zmax=1820,
-            region=Regions.LowerCore,  # This guy is weird - no good logic region to put him in besides Production Room
+            region=Regions.AlcoveBeyondHatch,
         ),
         KasplatLocation(
             name="Factory Kasplat: Dark Room",
@@ -480,7 +497,7 @@ KasplatLocationList = {
             zmin=500,
             zmax=850,
             region=Regions.BeyondHatch,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.phasewalk,
+            additional_logic=lambda l: (l.punch and l.chunky) or l.CanPhase(),
         ),
         KasplatLocation(
             name="Factory Kasplat: Lowest Production Platform",
@@ -514,7 +531,7 @@ KasplatLocationList = {
             map_id=Maps.FranticFactory,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[4148, 1336, 1016],
-            region=Regions.RandD,
+            region=Regions.RandDUpper,
             vanilla=True,
         ),
         KasplatLocation(
@@ -557,7 +574,17 @@ KasplatLocationList = {
             zmax=2240,
             region=Regions.Testing,
         ),
-        KasplatLocation(name="Factory Kasplat: Power Hut", map_id=Maps.FactoryPowerHut, kong_lst=[Kongs.donkey], coords=[116, 2, 121], xmin=68, xmax=151, zmin=66, zmax=154, region=Regions.PowerHut),
+        KasplatLocation(
+            name="Factory Kasplat: Power Hut",
+            map_id=Maps.FactoryPowerHut,
+            kong_lst=[Kongs.donkey],
+            coords=[116, 2, 121],
+            xmin=68,
+            xmax=151,
+            zmin=66,
+            zmax=154,
+            region=Regions.PowerHut,
+        ),
         KasplatLocation(
             name="Factory Kasplat: By Car Race",
             map_id=Maps.FranticFactory,
@@ -579,7 +606,7 @@ KasplatLocationList = {
             zmin=859,
             zmax=942,
             region=Regions.Testing,
-            additional_logic=lambda l: l.mini or l.phasewalk,
+            additional_logic=lambda l: l.mini or l.CanPhase(),
         ),
         KasplatLocation(
             name="Factory Kasplat: Crusher Room",
@@ -692,7 +719,7 @@ KasplatLocationList = {
             zmin=2370,
             zmax=2500,
             region=Regions.GloomyGalleonStart,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanSkew(False),
+            additional_logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanSkew(False, False),
         ),
         # Problematic - insanely hard to kill and get blueprint, maybe move to entrance and reduce wander?
         # KasplatLocation(
@@ -726,10 +753,18 @@ KasplatLocationList = {
             xmax=475,
             zmin=501,
             zmax=530,
-            region=Regions.Lighthouse,
+            region=Regions.LighthouseAboveLadder,
         ),
         KasplatLocation(
-            name="Galleon Kasplat: In the Mechfish", map_id=Maps.GalleonMechafish, kong_lst=[Kongs.diddy], coords=[314, 25, 528], xmin=303, xmax=322, zmin=497, zmax=537, region=Regions.Mechafish
+            name="Galleon Kasplat: In the Mechfish",
+            map_id=Maps.GalleonMechafish,
+            kong_lst=[Kongs.diddy],
+            coords=[314, 25, 528],
+            xmin=303,
+            xmax=322,
+            zmin=497,
+            zmax=537,
+            region=Regions.Mechafish,
         ),
         KasplatLocation(
             name="Galleon Kasplat: Lanky Gold Tower",
@@ -744,7 +779,17 @@ KasplatLocationList = {
             additional_logic=lambda l: (Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming))
             and l.balloon,
         ),
-        KasplatLocation(name="Galleon Kasplat: Sickbay", map_id=Maps.GalleonSickBay, kong_lst=[Kongs.chunky], coords=[571, 21, 922], xmin=522, xmax=637, zmin=852, zmax=944, region=Regions.SickBay),
+        KasplatLocation(
+            name="Galleon Kasplat: Sickbay",
+            map_id=Maps.GalleonSickBay,
+            kong_lst=[Kongs.chunky],
+            coords=[571, 21, 922],
+            xmin=522,
+            xmax=637,
+            zmin=852,
+            zmax=944,
+            region=Regions.SickBay,
+        ),
         KasplatLocation(
             name="Galleon Kasplat: Middle Deck of Shipwreck",
             map_id=Maps.GloomyGalleon,
@@ -883,7 +928,7 @@ KasplatLocationList = {
             map_id=Maps.ForestGiantMushroom,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[329, 534, 402],
-            region=Regions.MushroomUpper,
+            region=Regions.MushroomMiddle,
             vanilla=True,
         ),
         KasplatLocation(
@@ -965,7 +1010,7 @@ KasplatLocationList = {
             xmax=4300,
             zmin=3609,
             zmax=3664,
-            region=Regions.MillArea,
+            region=Regions.ForestTopOfMill,
         ),
         KasplatLocation(
             name="Forest Kasplat: Minecart Exit Well",
@@ -989,8 +1034,28 @@ KasplatLocationList = {
             zmax=344,
             region=Regions.MushroomLankyMushroomsRoom,
         ),
-        KasplatLocation(name="Forest Kasplat: Spider Boss", map_id=Maps.ForestSpider, kong_lst=[Kongs.tiny], coords=[275, 173, 722], xmin=208, xmax=358, zmin=653, zmax=780, region=Regions.SpiderRoom),
-        KasplatLocation(name="Forest Kasplat: Winch Room", map_id=Maps.ForestWinchRoom, kong_lst=[Kongs.diddy], coords=[300, 1, 280], xmin=267, xmax=336, zmin=227, zmax=335, region=Regions.WinchRoom),
+        KasplatLocation(
+            name="Forest Kasplat: Spider Boss",
+            map_id=Maps.ForestSpider,
+            kong_lst=[Kongs.tiny],
+            coords=[275, 173, 722],
+            xmin=208,
+            xmax=358,
+            zmin=653,
+            zmax=780,
+            region=Regions.SpiderRoom,
+        ),
+        KasplatLocation(
+            name="Forest Kasplat: Winch Room",
+            map_id=Maps.ForestWinchRoom,
+            kong_lst=[Kongs.diddy],
+            coords=[300, 1, 280],
+            xmin=267,
+            xmax=336,
+            zmin=227,
+            zmax=335,
+            region=Regions.WinchRoom,
+        ),
         KasplatLocation(
             name="Forest Kasplat: Face Shooting Room",
             map_id=Maps.ForestChunkyFaceRoom,
@@ -1080,7 +1145,12 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Caves Kasplat: Mini Room by Funky", map_id=Maps.CrystalCaves, kong_lst=[Kongs.diddy, Kongs.tiny], coords=[3517, 286, 767], region=Regions.CavesBlueprintCave, vanilla=True
+            name="Caves Kasplat: Mini Room by Funky",
+            map_id=Maps.CrystalCaves,
+            kong_lst=[Kongs.diddy, Kongs.tiny],
+            coords=[3517, 286, 767],
+            region=Regions.CavesBlueprintCave,
+            vanilla=True,
         ),
         KasplatLocation(
             name="Caves Kasplat: On the Pillar",
@@ -1152,10 +1222,26 @@ KasplatLocationList = {
             region=Regions.CavesLankyRace,
         ),
         KasplatLocation(
-            name="Caves Kasplat: With the Giant Kosha", map_id=Maps.CrystalCaves, kong_lst=[Kongs.tiny], coords=[1768, 232, 3645], xmin=1753, xmax=1892, zmin=3543, zmax=3675, region=Regions.GiantKosha
+            name="Caves Kasplat: With the Giant Kosha",
+            map_id=Maps.CrystalCaves,
+            kong_lst=[Kongs.tiny],
+            coords=[1768, 232, 3645],
+            xmin=1753,
+            xmax=1892,
+            zmin=3543,
+            zmax=3675,
+            region=Regions.GiantKosha,
         ),
         KasplatLocation(
-            name="Caves Kasplat: In Diddy Igloo", map_id=Maps.CavesDiddyIgloo, kong_lst=[Kongs.diddy], coords=[265, 1, 290], xmin=192, xmax=333, zmin=201, zmax=391, region=Regions.DiddyIgloo
+            name="Caves Kasplat: In Diddy Igloo",
+            map_id=Maps.CavesDiddyIgloo,
+            kong_lst=[Kongs.diddy],
+            coords=[265, 1, 290],
+            xmin=192,
+            xmax=333,
+            zmin=201,
+            zmax=391,
+            region=Regions.DiddyIgloo,
         ),
         KasplatLocation(
             name="Caves Kasplat: DK Shooting Cabin",
@@ -1177,8 +1263,7 @@ KasplatLocationList = {
             xmax=2674,
             zmin=391,
             zmax=543,
-            region=Regions.CrystalCavesMain,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
+            region=Regions.CavesGGRoom,
         ),
         KasplatLocation(
             name="Caves Kasplat: Starting Area",
@@ -1224,7 +1309,7 @@ KasplatLocationList = {
             xmax=1720,
             zmin=1970,
             zmax=2090,
-            region=Regions.CreepyCastleMain,
+            region=Regions.CastleVeryBottom,
         ),
         KasplatLocation(
             name="Castle Kasplat: Ballroom",
@@ -1254,7 +1339,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey],
             coords=[937, 400, 1424],
             region=Regions.CastleTree,
-            additional_logic=lambda l: (l.coconut or l.phasewalk or l.generalclips) and l.isdonkey,
+            additional_logic=lambda l: (l.coconut or l.CanPhase() or l.generalclips) and l.isdonkey,
             vanilla=True,
         ),
         KasplatLocation(
@@ -1278,7 +1363,7 @@ KasplatLocationList = {
             map_id=Maps.CreepyCastle,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[66, 392, 911],
-            region=Regions.CreepyCastleMain,
+            region=Regions.CastleVeryBottom,
             vanilla=True,
         ),
         KasplatLocation(
@@ -1344,7 +1429,7 @@ KasplatLocationList = {
             zmin=1430,
             zmax=1568,
             region=Regions.MuseumBehindGlass,
-            additional_logic=lambda l: l.monkeyport or l.phasewalk,
+            additional_logic=lambda l: l.monkeyport or l.CanPhase(),
         ),
         KasplatLocation(
             name="Castle Kasplat: Caged in the Dungeon",
@@ -1356,7 +1441,7 @@ KasplatLocationList = {
             zmin=2208,
             zmax=2232,
             region=Regions.Dungeon,
-            additional_logic=lambda l: l.punch or l.phasewalk,
+            additional_logic=lambda l: l.punch or l.CanPhase(),
         ),
         KasplatLocation(
             name="Castle Kasplat: Entrance to Minecart",
@@ -1367,10 +1452,19 @@ KasplatLocationList = {
             xmax=1582,
             zmin=2265,
             zmax=2406,
-            region=Regions.Crypt,
-            additional_logic=lambda l: l.coconut or l.phasewalk or l.generalclips,
+            region=Regions.CryptDonkeyRoom,
         ),
-        KasplatLocation(name="Castle Kasplat: Library", map_id=Maps.CastleLibrary, kong_lst=[Kongs.donkey], coords=[354, 191, 495], xmin=257, xmax=430, zmin=456, zmax=573, region=Regions.Library),
+        KasplatLocation(
+            name="Castle Kasplat: Library",
+            map_id=Maps.CastleLibrary,
+            kong_lst=[Kongs.donkey],
+            coords=[354, 191, 495],
+            xmin=257,
+            xmax=430,
+            zmin=456,
+            zmax=573,
+            region=Regions.Library,
+        ),
         KasplatLocation(
             name="Castle Kasplat: In the Clouds",
             map_id=Maps.CreepyCastle,
@@ -1423,7 +1517,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[577, 71, 766],
             region=Regions.CreepyCastleLobby,
-            additional_logic=lambda l: (l.coconut and l.donkey) or l.phasewalk,
+            additional_logic=lambda l: (l.coconut and l.donkey) or l.CanPhase(),
             vanilla=True,
         ),
         KasplatLocation(
@@ -1432,7 +1526,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1674, 13, 685],
             region=Regions.CrystalCavesLobby,
-            additional_logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.ledgeclip,
+            additional_logic=lambda l: (l.punch and l.chunky) or l.CanPhase() or l.ledgeclip,
             vanilla=True,
         ),
         KasplatLocation(
@@ -1532,7 +1626,7 @@ KasplatLocationList = {
             zmin=653,
             zmax=708,
             region=Regions.AngryAztecLobby,
-            additional_logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
+            additional_logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase(),
         ),
         # Problematic - Can't tag anywhere in here in LZR which makes it super feels bad.
         # KasplatLocation(
@@ -1548,7 +1642,7 @@ KasplatLocationList = {
             zmin=372,
             zmax=374,
             region=Regions.Prison,
-            additional_logic=lambda l: (l.sprint and l.lanky) or l.phasewalk,
+            additional_logic=lambda l: (l.sprint and l.lanky) or l.CanPhase(),
         ),
         KasplatLocation(
             name="Isles Kasplat: Japes Lobby",

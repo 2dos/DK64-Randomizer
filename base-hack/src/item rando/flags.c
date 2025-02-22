@@ -111,7 +111,7 @@ int countFlagsDuplicate(int start, int count, flagtypes type) {
 
 static short flut_cache[40] = {};
 static unsigned char cache_spot = 0;
-static int flut_size = -1;
+int flut_size = -1;
 
 void cacheFlag(int input, int output) {
     /**
@@ -126,6 +126,37 @@ void cacheFlag(int input, int output) {
     cache_spot = (cache_spot + 1) % 20;
 }
 
+typedef struct flag_clamping_struct {
+    /* 0x000 */ short flag_start;
+    /* 0x002 */ short flag_count;
+} flag_clamping_struct;
+
+static const flag_clamping_struct clamp_bounds[] = {
+    {.flag_start = 0x1D5, .flag_count = 40}, // Blueprints
+    {.flag_start = 0x225, .flag_count = 40}, // Regular Medals
+    {.flag_start = 0x261, .flag_count = 10}, // Crowns
+    {.flag_start = 589, .flag_count = 20}, // Fairies
+    {.flag_start = 0x17B, .flag_count = 1}, // RW Coin
+    {.flag_start = 1, .flag_count = 0x1F}, // Japes GBs + Key 1
+    {.flag_start = 0x31, .flag_count = 0x1D}, // Aztec GBs + Key 2
+    {.flag_start = 0x70, .flag_count = 0x1C}, // Factory GBs + Key 3 + Nintendo Coin
+    {.flag_start = 0x9A, .flag_count = 0xF}, // Galleon GBs (Group 1) + Key 4
+    {.flag_start = 0xB6, .flag_count = 0x37}, // Galleon GBs (Group 2) + Fungi GBs (Group 1) + Key 5 + Pearls
+    {.flag_start = 0xF7, .flag_count = 0x23}, // Fungi GBs (Group 2) + Caves GBs (Group 1)
+    {.flag_start = 0x124, .flag_count = 0x23}, // Caves GBs (Group 2) + Key 6 + Castle GBs (Group 1) + Key 7 + Rareware GB
+    {.flag_start = 0x15E, .flag_count = 0x4}, // Castle GBs (Group 2)
+    {.flag_start = 0x17C, .flag_count = 0x2}, // Key 8 + First GB
+    {.flag_start = 0x18E, .flag_count = 0x22}, // Isles GBs
+    {.flag_start = FLAG_RAINBOWCOIN_0, .flag_count = 16}, // Rainbow Coins
+    {.flag_start = FLAG_COLLECTABLE_BEAN, .flag_count = 1}, // Bean
+    {.flag_start = FLAG_TBARREL_DIVE, .flag_count = 4}, // TBarrel Moves
+    {.flag_start = FLAG_MELONCRATE_0, .flag_count = 16}, // Melon Crates
+    {.flag_start = FLAG_ENEMY_KILLED_0, .flag_count = ENEMIES_TOTAL}, // Dropsanity
+    {.flag_start = FLAG_MEDAL_ISLES_DK, .flag_count = 5}, // Isles Medals
+    {.flag_start = FLAG_WRINKLYVIEWED, .flag_count = 35}, // Hints
+    {.flag_start = FLAG_ABILITY_CAMERA, .flag_count = 1}, // Climbing
+};
+
 int clampFlag(int flag) {
     /**
      * @brief Clamp flag to filter for flags only present in the FLUT.
@@ -134,67 +165,17 @@ int clampFlag(int flag) {
      * 
      * @return is flag in FLUT
      */
-    if ((flag >= 0x1D5) && (flag <= 0x1FC)) {
-        return 1; // Blueprints
-    }
-    if ((flag >= 0x225) && (flag <= 0x24C)) {
-        return 1; // Medal
-    }
-    if ((flag >= 0x261) && (flag <= 0x26A)) {
-        return 1; // Crown
-    }
-    if ((flag >= 589) && (flag <= 608)) {
-        return 1; // Fairy
-    }
-    if (flag == 0x17B) {
-        return 1; // RW Coin
-    }
-    if ((flag >= 0x1) && (flag <= 0x1F)) {
-        return 1; // Japes GBs + Key 1
-    }
-    if ((flag >= 0x31) && (flag <= 0x4D)) {
-        return 1; // Aztec GBs + Key 2
-    }
-    if ((flag >= 0x70) && (flag <= 0x8B)) {
-        return 1; // Factory GBs + Key 3 + Nintendo Coin
-    }
-    if ((flag >= 0x9A) && (flag <= 0xA8)) {
-        return 1; // Galleon GBs (Group 1) + Key 4
-    }
-    if ((flag >= 0xB6) && (flag <= 0xEC)) {
-        return 1; // Galleon GBs (Group 2) + Fungi GBs (Group 1) + Key 5 + Pearls
-    }
-    if ((flag >= 0xF7) && (flag <= 0x119)) {
-        return 1; // Fungi GBs (Group 2) + Caves GBs (Group 1)
-    }
-    if ((flag >= 0x124) && (flag <= 0x146)) {
-        return 1; // Caves GBs (Group 2) + Key 6 + Castle GBs (Group 1) + Key 7 + Rareware GB
-    }
-    if ((flag >= 0x15E) && (flag <= 0x161)) {
-        return 1; // Castle GBs (Group 2)
-    }
-    if ((flag == 0x17C) || (flag == 0x17D)) {
-        return 1; // Key 8 + First GB
-    }
-    if ((flag >= 0x18E) && (flag <= 0x1AF)) {
-        return 1; // Isles GBs
-    }
-    if ((flag >= FLAG_RAINBOWCOIN_0) && (flag < (FLAG_RAINBOWCOIN_0 + 16))) {
-        return 1; // Rainbow Coins
-    }
-    if (flag == FLAG_COLLECTABLE_BEAN) {
-        return 1; // Fungi Bean
-    }
-    if ((flag >= FLAG_MELONCRATE_0) && (flag < (FLAG_MELONCRATE_0 + 16))) {
-        return 1; // Melon Crates
-    }
-    if ((flag >= FLAG_ENEMY_KILLED_0) && (flag < (FLAG_ENEMY_KILLED_0 + ENEMIES_TOTAL))) {
-        return 1; // Enemies
+    for (int i = 0; i < sizeof(clamp_bounds)/sizeof(flag_clamping_struct); i++) {
+        int flag_start = clamp_bounds[i].flag_start;
+        int flag_end = flag_start + clamp_bounds[i].flag_count;
+        if ((flag >= flag_start) && (flag < flag_end)) {
+            return 1;
+        }
     }
     return 0;
 }
 
-void moveGiveHook(int kong, int type, int index, int is_jetpac) {
+void moveGiveHook(int kong, PURCHASE_TYPES type, int index, int is_jetpac) {
     /**
      * @brief Hook into the move give function, only for non-progressive moves purchased from Cranky, Candy and Funky
      * 
@@ -222,7 +203,7 @@ void moveGiveHook(int kong, int type, int index, int is_jetpac) {
 void displayKeyText(int flag) {
     for (int i = 0; i < 8; i++) {
         if (getKeyFlag(i) == flag) {
-            spawnItemOverlay(5, 0, getKeyFlag(i), 0);
+            spawnItemOverlay(PURCHASE_FLAG, 0, getKeyFlag(i), 0);
         }
     }
 }
@@ -299,6 +280,16 @@ static unsigned char jetpac_hh_bonus[] = {
 };
 
 static short banned_hh_items[] = {HHITEM_NOTHING, HHITEM_GB};
+static short flags_produce_overlay[] = {
+    FLAG_ABILITY_CLIMBING,
+    FLAG_TBARREL_BARREL,
+    FLAG_TBARREL_DIVE,
+    FLAG_TBARREL_ORANGE,
+    FLAG_TBARREL_VINE,
+    FLAG_COLLECTABLE_BEAN,
+    FLAG_ABILITY_CAMERA,
+    FLAG_ABILITY_SHOCKWAVE,
+};
 
 void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
     /**
@@ -340,7 +331,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
     } else {
         int flag_index = *flag;
         int spawn_overlay = 0;
-        int item_type = 0;
+        PURCHASE_TYPES item_type = 0;
         int item_index = 0;
         int item_kong = 0;
         if ((source == 1) && (!checkFlagDuplicate(flag_index, FLAGTYPE_PERMANENT)) && (Gamemode == GAMEMODE_ADVENTURE)) {
@@ -348,7 +339,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                 // Slam
                 item_index = giveSlamLevel();
                 spawn_overlay = 1;
-                item_type = 1;
+                item_type = PURCHASE_SLAM;
             } else if ((flag_index == FLAG_ITEM_BELT_0) || (flag_index == FLAG_ITEM_BELT_1)) {
                 // Belt
                 MovesBase[0].ammo_belt += 1;
@@ -358,7 +349,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                 }
                 CollectableBase.StandardAmmo = 50 * (1 << item_index);
                 spawn_overlay = 1;
-                item_type = 3;
+                item_type = PURCHASE_AMMOBELT;
             } else if ((flag_index >= FLAG_ITEM_INS_0) && (flag_index <= FLAG_ITEM_INS_2)) {
                 // Instrument Upgrade
                 item_index = 0;
@@ -372,7 +363,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                     MovesBase[i].instrument_bitfield |= (1 << item_index);
                 }
                 spawn_overlay = 1;
-                item_type = 4;
+                item_type = PURCHASE_INSTRUMENT;
                 if (item_index >= 2) {
                     // 3rd Melon
                     if (CollectableBase.Melons < 3) {
@@ -386,32 +377,25 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                     }
                 }
                 item_index += 1;
-            } else if ((flag_index >= FLAG_TBARREL_DIVE) && (flag_index <= FLAG_TBARREL_BARREL)) {
-                spawn_overlay = 1;
-                item_type = 5;
-                item_index = flag_index;
+            } else {
+                int is_shopkeeper = isFlagInRange(flag_index, FLAG_ITEM_CRANKY, 4);
+                int is_hint = isFlagInRange(flag_index, FLAG_WRINKLYVIEWED, 35) && Rando.hints_are_items == 1;
+                int is_kong = inShortList(flag_index, (short*)&kong_flags, sizeof(kong_flags) >> 1);
+                int is_special_flag = inShortList(flag_index, &flags_produce_overlay, sizeof(flags_produce_overlay) >> 1);
+                if ((is_shopkeeper) || (is_hint) || (is_kong) || (is_special_flag)) {
+                    spawn_overlay = 1;
+                    item_type = PURCHASE_FLAG;
+                    item_index = flag_index;
+                }
                 if (flag_index == FLAG_TBARREL_VINE) {
                     refreshPads(ITEMREFRESH_VINE);
-                }
-            } else if ((flag_index == FLAG_ABILITY_CAMERA) || (flag_index == FLAG_ABILITY_SHOCKWAVE)) {
-                if (flag_index == FLAG_ABILITY_CAMERA) {
+                } else if (flag_index == FLAG_ABILITY_CAMERA) {
                     if (CollectableBase.Film < 10) {
                         CollectableBase.Film = 10;
                     }
                 } else if (flag_index == FLAG_ABILITY_SHOCKWAVE) {
                     if (CollectableBase.Crystals < (10*150)) {
                         CollectableBase.Crystals = 10*150;
-                    }
-                }
-                spawn_overlay = 1;
-                item_type = 5;
-                item_index = flag_index;
-            } else {
-                for (int i = 0; i < 5; i++) {
-                    if (flag_index == kong_flags[i]) {
-                        spawn_overlay = 1;
-                        item_type = 5;
-                        item_index = flag_index;
                     }
                 }
             }
@@ -467,7 +451,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
             if (!checkFlag(vanilla_flag, FLAGTYPE_PERMANENT)) {
                 if (give_gb) {
                     int world = getWorld(CurrentMap, 1);
-                    if (world < 8) {
+                    if (world < 9) {
                         giveGB(Character, world);
                     }
                 } else if (give_rainbow) {
@@ -620,8 +604,8 @@ int getKongFromBonusFlag(int flag) {
      * 
      * @return kong index
      */
-    if ((Rando.any_kong_items & 1) == 0) {
-        for (int i = 0; i < 95; i++) {
+    if ((Rando.any_kong_items.major_items) == 0) {
+        for (int i = 0; i < BONUS_DATA_COUNT; i++) {
             if (bonus_data[i].flag == flag) {
                 return bonus_data[i].kong_actor;
             }

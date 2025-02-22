@@ -427,6 +427,8 @@ checkBeforeApplyingQuicksand: ; $t4 contains colliding_actor->actor_type
     beq $at, $t4, correctActor
     addiu $at, $zero, 0x11D
     beq $at, $t4, correctActor
+    addiu $at, $zero, 0x154
+    beq $at, $t4, correctActor
     nop
 
     applyQuicksand: ; not a flying enemy (or not aztec), apply quicksand just as usual
@@ -480,3 +482,237 @@ scareBeaver:
     addiu $a1, $zero, 35
     j 0x806AD730
     sb $a1, 0x144 ($a0)
+
+AlterHeadSize:
+    addiu $t1, $t1, 0x6
+    ; Check Actor
+    lui $t7, 0x8074
+    lw $t7, 0x6E20 ($t7) ; Focused Model
+    beq $t7, $zero, AlterHeadSize_Finish
+    nop
+    lhu $s0, 0x172 ($t7) ; Model Index
+    sltiu $a1, $s0, 0xED
+    beq $a1, $zero, AlterHeadSize_Finish ; Not within first 0xED models
+    nop
+    lui $t7, hi(big_head_actors)
+    addu $t7, $t7, $s0
+    lbu $t7, lo(big_head_actors) ($t7)
+    addiu $a1, $zero, 0xFD
+    beq $a1, $t7, AlterHeadSize_Finish ; Not allowed for big head mode
+    nop
+    sltiu $a1, $t7, 90
+    beqz $a1, AlterHeadSize_Finish ; Bone index too big (Might cause anim crashes with Funky)
+    nop
+    ; Model has tied bone
+    sll $t7, $t7, 1
+    lui $a1, 0x8074
+    addu $a1, $a1, $t7
+    sll $t7, $t7, 1
+    addu $a1, $a1, $t7
+    lui $t7, hi(HeadSize)
+    addu $t7, $t7, $s0
+    lbu $t7, lo(HeadSize) ($t7)
+    beqz $t7, AlterHeadSize_Finish
+    sll $t7, $t7, 8  ; Big Head Value
+    sh $t7, 0x7268 ($a1)
+    sh $t7, 0x726A ($a1)
+    sh $t7, 0x726C ($a1)
+
+    AlterHeadSize_Finish:
+        lw $s0, 0x38 ($a0)
+        j 0x8061A4D0
+        lhu $t7, 0x0 ($s7)
+
+AlterHeadSize_0:
+    ; Check Actor
+    lui $t7, 0x8074
+    lw $t7, 0x6E20 ($t7) ; Focused Model
+    beq $t7, $zero, AlterHeadSize_0_Finish
+    nop
+    lhu $s0, 0x172 ($t7) ; Model Index
+    sltiu $a1, $s0, 0xED
+    beq $t9, $zero, AlterHeadSize_0_Finish ; Not within first 0xED actors
+    nop
+    lui $t9, hi(big_head_actors)
+    addu $t9, $t9, $s0
+    lbu $t9, lo(big_head_actors) ($t9)
+    addiu $s0, $zero, 0xFD
+    beq $s0, $t9, AlterHeadSize_0_Finish ; Not allowed for big head mode
+    nop
+    sltiu $s0, $t9, 90
+    beqz $s0, AlterHeadSize_0_Finish ; Bone index too big (Might cause anim crashes with Funky)
+    nop
+    ; Model has tied bone
+    sll $t9, $t9, 1
+    lui $s0, 0x8074
+    addu $s0, $s0, $t9
+    sll $t9, $t9, 1
+    addu $s0, $s0, $t9
+    lui $t9, hi(HeadSize)
+    ; offset index
+    lhu $t7, 0x172 ($t7)
+    addu $t9, $t9, $t7
+    lui $t7, 0x8074
+    lw $t7, 0x6E20 ($t7) ; Focused Model
+    ;
+    lbu $t9, lo(HeadSize) ($t9)
+    beqz $t9, AlterHeadSize_0_Finish
+    sll $t9, $t9, 8  ; Big Head Value
+    sh $t9, 0x7268 ($s0)
+    sh $t9, 0x726A ($s0)
+    sh $t9, 0x726C ($s0)
+    
+    AlterHeadSize_0_Finish:
+        ; Run replaced code
+        sll $s1, $s1, 1
+        j 0x806198DC
+        addu $t9, $s5, $s1
+
+makeKongTranslucent:
+    lui $v1, hi(CurrentMap)
+    lw $v1, lo(CurrentMap) ($v1)
+    addiu $at, $zero, 0xCF
+    bne $v1, $at, makeKongTranslucent_finish ; not in chunky phase
+    nop
+    addiu $at, $zero, 0x2
+    bne $t1, $at, makeKongTranslucent_clearTranslucency ; not hunky
+    nop
+    lui $v1, hi(CutsceneActive)
+    lbu $v1, lo(CutsceneActive) ($v1)
+    addiu $at, $zero, 0x1
+    beq $v1, $at, makeKongTranslucent_clearTranslucency ; In Cutscene
+    nop
+    lui $v1, hi(CurrentActorPointer_0)
+    lw $v1, lo(CurrentActorPointer_0) ($v1)
+    ; Enable Translucency
+    lw $t2, 0x60 ($v1)
+    lui $at, 0xFFFF
+    ori $at, $at, 0x7FFF
+    and $t2, $t2, $at
+    sw $t2, 0x60 ($v1)
+    ; Reduce Translucency
+    lh $t2, 0x128 ($v1)
+    addiu $t2, $t2, -4
+    slti $at, $t2, 100
+    beq $at, $zero, makeKongTranslucent_setTranslucency
+    nop
+    addiu $t2, $zero, 100
+
+    makeKongTranslucent_setTranslucency:
+        b makeKongTranslucent_finish
+        sh $t2, 0x128 ($v1)
+
+    makeKongTranslucent_clearTranslucency:
+        lui $v1, hi(CurrentActorPointer_0)
+        lw $v1, lo(CurrentActorPointer_0) ($v1)
+        ; Disable Translucency
+        lw $t2, 0x60 ($v1)
+        ori $t2, $t2, 0x8000
+        sw $t2, 0x60 ($v1)
+
+    makeKongTranslucent_finish:
+        addiu $at, $zero, 0x1
+        j 0x806CB780
+        lui $v1, 0x8080
+
+expandTBarrelResponse:
+    lw $t6, 0x0 ($s1)
+    lw $t7, 0x58 ($t6) ; load actor type
+    addiu $at, $zero, 134 ; training barrel
+    beq $t7, $at, expandTBarrelResponse_isResponse
+    nop
+    j 0x80680ADC
+    addiu $at, $zero, 0x1C ; Regular Bonus
+
+    expandTBarrelResponse_isResponse:
+        j 0x80680AE4
+        nop
+
+fixLankyPhaseHandState:
+    lui $t0, hi(CutsceneActive)
+    lbu $t0, lo(CutsceneActive) ($t0)
+    beqz $t0, fixLankyPhaseHandState_nohead
+    nop
+    lui $t0, hi(CutsceneIndex)
+    lh $t0, lo(CutsceneIndex) ($t0)
+    addiu $t9, $zero, 26
+    beq $t0, $t9, fixLankyPhaseHandState_hashead
+    addiu $t9, $zero, 27
+    beq $t0, $t9, fixLankyPhaseHandState_hashead
+    addiu $t9, $zero, 28
+    beq $t0, $t9, fixLankyPhaseHandState_hashead
+    nop
+
+    fixLankyPhaseHandState_nohead:
+        lw $t0, 0x0 ($s1)
+        j 0x806C3268
+        addiu $t9, $zero, 1
+
+    fixLankyPhaseHandState_hashead:
+        lw $t0, 0x0 ($s1)
+        j 0x806C3268
+        addiu $t9, $zero, 5
+
+blockTreeClimbing:
+    jal canPlayerClimb
+    nop
+    bnez $v0, blockTreeClimbing_canclimb
+    nop
+    lbu $a0, 0x6 ($s3) ; check model 2 status
+    bnez $a0, blockTreeClimbing_noclimb ; is model 2, cannot climb
+    nop
+
+    blockTreeClimbing_canclimb:
+        or $a0, $s2, $zero
+        lw $a1, 0x64 ($sp)
+        j 0x8072F3E4
+        or $a2, $s3, $zero
+
+
+    blockTreeClimbing_noclimb:
+        j 0x8072F474
+        or $a0, $s2, $zero
+
+storeFairyData:
+    ; f16 = screen x
+    ; f4 = screen y
+    lui $at, hi(CurrentActorPointer_0)
+    lw $at, lo(CurrentActorPointer_0) ($at)
+    trunc.w.s $f16, $f16
+    trunc.w.s $f4, $f4
+    mfc1 $a0, $f16 ; x
+    mfc1 $a1, $f4 ; y
+    sh $a0, 0x1B0 ($at)
+    jal getScreenDist
+    sh $a1, 0x1B2 ($at)
+    jal getDistanceCap
+    or $a0, $v0, $zero
+    lui $a0, hi(CurrentActorPointer_0)
+    lw $a0, lo(CurrentActorPointer_0) ($a0)
+    or $a1, $zero, $zero
+    jal renderActor
+    sh $v0, 0x1B4 ($a0)
+    j 0x806C5FD8
+    nop
+
+setSadFace:
+    lui $v1, hi(CurrentActorPointer_0)
+    lw $v1, lo(CurrentActorPointer_0) ($v1)
+    sh $zero, 0x1B6 ($v1)
+    lbu $v1, 0x1EC ($v0)
+    addiu $t1, $zero, 1
+    beq $t1, $v1, setSadFace_finish ; If face is happy, do not overwrite with sad
+    nop
+    sb $t0, 0x1EC ($v0)
+
+    setSadFace_finish:
+        j 0x806C5E90
+        lui $v0, 0x8080
+
+setHappyFace:
+    addiu $t6, $zero, 1
+    lui $v0, hi(CurrentActorPointer_0)
+    lw $v0, lo(CurrentActorPointer_0) ($v0)
+    sb $t6, 0x1EC ($t7)
+    j 0x806C5E44
+    sh $t6, 0x1B6 ($v0)

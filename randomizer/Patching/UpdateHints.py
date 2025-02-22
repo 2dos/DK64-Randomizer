@@ -2,16 +2,14 @@
 
 import random
 
-import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.WrinklyHints import HintLocation, hints
-from randomizer.Patching.Lib import grabText, writeText
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, grabText, writeText
 from randomizer.Patching.Patcher import LocalROM
 
 
-def writeWrinklyHints(file_start_offset, text):
+def writeWrinklyHints(ROM_COPY: LocalROM, file_start_offset, text):
     """Write the text to ROM."""
-    ROM_COPY = LocalROM()
     ROM_COPY.seek(file_start_offset)
     ROM_COPY.writeMultipleBytes(len(text), 1)
     position = 0
@@ -85,7 +83,7 @@ def updateRandomHint(message: str, kongs_req=[], keywords=[], levels=[]):
     return False
 
 
-def PushHints(spoiler):
+def PushHints(spoiler, ROM_COPY: LocalROM):
     """Update the ROM with all hints."""
     hint_arr = []
     short_hint_arr = []
@@ -97,8 +95,8 @@ def PushHints(spoiler):
         if short_hint == "":
             short_hint = "error: missing hint - report this error to the discord"
         short_hint_arr.append([short_hint.upper()])
-    writeWrinklyHints(js.pointer_addresses[12]["entries"][41]["pointing_to"], hint_arr)
-    writeWrinklyHints(js.pointer_addresses[12]["entries"][45]["pointing_to"], short_hint_arr)
+    writeWrinklyHints(ROM_COPY, getPointerLocation(TableNames.Text, 41), hint_arr)
+    writeWrinklyHints(ROM_COPY, getPointerLocation(TableNames.Text, 45), short_hint_arr)
     spoiler.hint_list.pop("First Time Talk")  # The FTT needs to be written to the ROM but should not be found in the spoiler log
 
 
@@ -109,20 +107,20 @@ def wipeHints():
             hints[x].hint = ""
 
 
-def PushItemLocations(spoiler):
+def PushItemLocations(spoiler, ROM_COPY: LocalROM):
     """Push item hints to ROM."""
     text_arr = []
     for loc in spoiler.location_references:
         text_arr.append([loc.item_name.upper()])
         for subloc in loc.locations:
             text_arr.append([subloc.upper()])
-    writeWrinklyHints(js.pointer_addresses[12]["entries"][44]["pointing_to"], text_arr)
+    writeWrinklyHints(ROM_COPY, getPointerLocation(TableNames.Text, 44), text_arr)
 
 
-def replaceIngameText(spoiler):
+def replaceIngameText(spoiler, ROM_COPY: LocalROM):
     """Replace text in-game with defined modifications."""
     for file_index in spoiler.text_changes:
-        old_text = grabText(file_index)
+        old_text = grabText(ROM_COPY, file_index)
         modification_data = spoiler.text_changes[file_index]
         for mod in modification_data:
             if mod["mode"] == "replace":
@@ -138,11 +136,18 @@ def replaceIngameText(spoiler):
             elif mod["mode"] == "replace_whole":
                 # print(mod["target"])
                 old_text[mod["textbox_index"]] = ({"text": [mod["target"]]},)
-        writeText(file_index, old_text)
+        writeText(ROM_COPY, file_index, old_text)
 
 
 def PushHelpfulHints(spoiler, ROM_COPY: LocalROM):
     """Push the flags to ROM which control the dim_solved_hints setting."""
     for index, flag in enumerate(spoiler.tied_hint_flags.values()):
         ROM_COPY.seek(0x1FFE000 + (2 * index))
+        ROM_COPY.writeMultipleBytes(flag, 2)
+
+
+def PushHintTiedRegions(spoiler, ROM_COPY: LocalROM):
+    """Push the flags to ROM which control the dim_solved_hints setting."""
+    for index, flag in enumerate(spoiler.tied_hint_regions):
+        ROM_COPY.seek(0x1FFE080 + (2 * index))
         ROM_COPY.writeMultipleBytes(flag, 2)

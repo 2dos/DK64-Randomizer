@@ -4,7 +4,7 @@ import os
 import zlib
 
 from BuildClasses import ROMPointerFile
-from BuildEnums import TableNames
+from BuildEnums import TableNames, ExtraTextures
 from BuildLib import ROMName, intf_to_float, MODEL_DIRECTORY, getBonusSkinOffset
 
 temp_file = "temp.bin"
@@ -305,6 +305,97 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
             os.remove(f)
 
 
+def portModelTwoToActor(model_two_index: int, input_file: str, output_file: str, base_file_index: int, vtx_bottom_is_zero: bool, scale: float):
+    """Port Model Two object to an actor model."""
+    if input_file == "":
+        # Use Model Two Index
+        with open(ROMName, "rb") as rom:
+            model_f = ROMPointerFile(rom, TableNames.ModelTwoGeometry, model_two_index)
+            rom.seek(model_f.start)
+            data = rom.read(model_f.size)
+            if model_f.compressed:
+                data = zlib.decompress(data, (15 + 32))
+            with open(temp_file, "wb") as fh:
+                fh.write(data)
+    else:
+        # Use provided input file
+        with open(input_file, "rb") as fh:
+            with open(temp_file, "wb") as fg:
+                fg.write(fh.read())
+    vert_data = b""
+    dl_data = b""
+    # Read vert/dl data
+    with open(temp_file, "r+b") as fh:
+        fh.seek(0x40)
+        dl_start_pointer = int.from_bytes(fh.read(4), "big")
+        dl_end_pointer = int.from_bytes(fh.read(4), "big")
+        dl_size = dl_end_pointer - dl_start_pointer
+        dl_ins_count = int(dl_size / 8)
+        vert_start_pointer = int.from_bytes(fh.read(4), "big")
+        vert_end_pointer = int.from_bytes(fh.read(4), "big")
+        vert_size = vert_end_pointer - vert_start_pointer
+        vert_count = int(vert_size / 0x10)
+        # Prune DL
+        for d in range(dl_ins_count):
+            fh.seek(dl_start_pointer + (8 * d))
+            # Prune DL of bad instructions and segmented addresses
+            instruction = int.from_bytes(fh.read(1), "big")
+            if instruction == 1:
+                # Change seg address header from 8 to 3
+                fh.seek(dl_start_pointer + (d * 8) + 4)
+                fh.write((3).to_bytes(1, "big"))
+            elif instruction == 0xDA:
+                # Remove instruction
+                fh.seek(dl_start_pointer + (d * 8))
+                fh.write((0).to_bytes(4, "big"))
+                # # Change seg address header from 9 to 4
+                # fh.seek(dl_start_pointer + (d * 8) + 3)
+                # fh.write((3).to_bytes(1, "big"))
+                # fh.write((4).to_bytes(1, "big"))
+            elif instruction == 3:
+                # Remove instruction
+                fh.seek(dl_start_pointer + (d * 8))
+                fh.write((0).to_bytes(4, "big"))
+        # Fix Verts
+        if vtx_bottom_is_zero:
+            y_offset = None
+            for v in range(vert_count):
+                fh.seek(vert_start_pointer + (0x10 * v) + 2)
+                raw = int.from_bytes(fh.read(2), "big")
+                if raw > 0x7FFF:
+                    raw -= 0x10000
+                if y_offset is None or y_offset > raw:
+                    y_offset = raw
+            for v in range(vert_count):
+                fh.seek(vert_start_pointer + (0x10 * v) + 2)
+                raw = int.from_bytes(fh.read(2), "big")
+                if raw > 0x7FFF:
+                    raw -= 0x10000
+                raw -= y_offset
+                if raw < 0:
+                    raw += 0x10000
+                if raw < 0:
+                    raw = 0
+                elif raw > 0xFFFF:
+                    raw = 0xFFFF
+                fh.seek(vert_start_pointer + (0x10 * v) + 2)
+                fh.write(raw.to_bytes(2, "big"))
+        # Write data to temp files
+        fh.seek(dl_start_pointer)
+        dl_data = b"\xda\x38\x00\x03\x04\x00\x00\x00" + fh.read(dl_size)
+        fh.seek(vert_start_pointer)
+        vert_data = fh.read(vert_size)
+    # Write
+    with open("temp.vtx", "wb") as fh:
+        fh.write(vert_data)
+    with open("temp.dl", "wb") as fh:
+        fh.write(dl_data)
+    portalModel_Actor("temp.vtx", "temp.dl", output_file, base_file_index)
+    for f in ("temp.vtx", "temp.dl", "temp.bin"):
+        if os.path.exists(f):
+            os.remove(f)
+
+
 def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
     """Create a model two object based on a singular image."""
     with open(ROMName, "rb") as rom:
@@ -382,30 +473,45 @@ def ripCollision(collision_source_model: int, output_model: int, output_file: st
             fh.write((old + increase).to_bytes(4, "big"))
 
 
+def createMelon():
+    """Create melon model based off pearl."""
+    with open(ROMName, "rb") as rom:
+        with open("melon_3d_om2.bin", "wb") as fh:
+            pearl = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x1B4)
+            rom.seek(pearl.start)
+            pearl_data = rom.read(pearl.size)
+            if pearl.compressed:
+                pearl_data = zlib.decompress(pearl_data, (15 + 32))
+            fh.write(pearl_data)
+        with open("melon_3d_om2.bin", "r+b") as fh:
+            fh.seek(0xEC)
+            fh.write(getBonusSkinOffset(ExtraTextures.MelonSurface).to_bytes(4, "big"))
+
+
 def loadNewModels():
     """Load new models."""
     with open(f"{MODEL_DIRECTORY}rainbow_coin.dl", "r+b") as fh:
         fh.seek(0x74)
-        fh.write(getBonusSkinOffset(1).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.RainbowCoin0).to_bytes(4, "big"))
         fh.seek(0xEC)
-        fh.write(getBonusSkinOffset(2).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.RainbowCoin1).to_bytes(4, "big"))
         fh.seek(0x154)
-        fh.write(getBonusSkinOffset(3).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.RainbowCoin2).to_bytes(4, "big"))
         fh.seek(0x1FC)
-        fh.write(getBonusSkinOffset(3).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.RainbowCoin2).to_bytes(4, "big"))
         fh.seek(0x2D4)
-        fh.write(getBonusSkinOffset(1).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.RainbowCoin0).to_bytes(4, "big"))
         fh.seek(0x34C)
-        fh.write(getBonusSkinOffset(2).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.RainbowCoin1).to_bytes(4, "big"))
     with open(f"{MODEL_DIRECTORY}melon.dl", "r+b") as fh:
         fh.seek(0x144)
-        fh.write(getBonusSkinOffset(4).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.MelonSurface).to_bytes(4, "big"))
         fh.seek(0x164)
-        fh.write(getBonusSkinOffset(4).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.MelonSurface).to_bytes(4, "big"))
         fh.seek(0x2EC)
-        fh.write(getBonusSkinOffset(4).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.MelonSurface).to_bytes(4, "big"))
         fh.seek(0x30C)
-        fh.write(getBonusSkinOffset(4).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(ExtraTextures.MelonSurface).to_bytes(4, "big"))
     # Coins
     portalModel_M2(f"{MODEL_DIRECTORY}coin.vtx", f"{MODEL_DIRECTORY}nin_coin.dl", f"{MODEL_DIRECTORY}coin_overlay.dl", "nintendo_coin", 0x90)
     portalModel_M2(f"{MODEL_DIRECTORY}coin.vtx", f"{MODEL_DIRECTORY}rw_coin.dl", f"{MODEL_DIRECTORY}coin_overlay.dl", "rareware_coin", 0x90)
@@ -414,16 +520,34 @@ def loadNewModels():
     portActorToModelTwo(0x3C, "", "fairy", 0x90, True, 0.5)
     # Melon
     # portalModel_M2(f"{MODEL_DIRECTORY}melon.vtx", f"{MODEL_DIRECTORY}melon.dl", 0, "melon", 0x90)
-    createSpriteModelTwo(getBonusSkinOffset(4), 0.6, "melon")
+    createSpriteModelTwo(getBonusSkinOffset(ExtraTextures.MelonSurface), 0.6, "melon")
     # Potions
     for kong in ("dk", "diddy", "lanky", "tiny", "chunky", "any"):
         portalModel_M2(f"{MODEL_DIRECTORY}potion_{kong}.vtx", f"{MODEL_DIRECTORY}potion.dl", 0, f"potion_{kong}", 0x90)  # Potions - Model 2
         portalModel_Actor(f"{MODEL_DIRECTORY}potion_{kong}.vtx", None, f"potion_{kong}", 0xB8)  # Actors
+        if kong != "any":
+            portActorToModelTwo(0, f"hint_item_actor_{kong}.bin", f"question_mark_{kong}", 0x90, True, 0.5)
     # Kongs
     portActorToModelTwo(3, "dk_base.bin", "kong_dk", 0x90, True, 0.5)
-    portActorToModelTwo(0, "diddy_base.bin", "kong_diddy", 0x90, True, 0.5)
+    portActorToModelTwo(0, "", "kong_diddy", 0x90, True, 0.5)
     portActorToModelTwo(5, "lanky_base.bin", "kong_lanky", 0x90, True, 0.5)
     portActorToModelTwo(8, "tiny_base.bin", "kong_tiny", 0x90, True, 0.5)
     portActorToModelTwo(0xB, "", "kong_chunky", 0x90, True, 0.5)
+
     # portalModel_M2(f"{MODEL_DIRECTORY}dk_head.vtx", f"{MODEL_DIRECTORY}dk_head.dl", 0, "kong_dk", 0x90)
-    ripCollision(0x48, 0x67, "k_rool_cutscenes")
+    # ripCollision(0x48, 0x67, "k_rool_cutscenes")
+    # Misc
+    portModelTwoToActor(0x198, "", "bean", 0x68, True, 1.0)
+    portModelTwoToActor(0x1B4, "", "pearl", 0x68, True, 1.0)
+    portModelTwoToActor(0x90, "", "medal", 0x68, True, 1.0)
+    portModelTwoToActor(0, "nintendo_coin_om2.bin", "nintendo_coin", 0x68, True, 1.0)
+    portModelTwoToActor(0, "rareware_coin_om2.bin", "rareware_coin", 0x68, True, 1.0)
+    createMelon()
+    portModelTwoToActor(0, "melon_3d_om2.bin", "melon_3d", 0x68, True, 1.0)
+    portModelTwoToActor(694, "", "race_hoop", 0xC0, False, 1.0)
+    # Shop Owners
+    portActorToModelTwo(0x10, "", "cranky", 0x90, True, 0.5)
+    portActorToModelTwo(0x11, "", "funky", 0x90, True, 0.5)
+    portActorToModelTwo(0x12, "", "candy", 0x90, True, 0.5)
+    portActorToModelTwo(0x1E, "", "snide", 0x90, True, 0.5)
+    # portModelTwoToActor(0, "rainbow_coin_om2.bin", "rainbow_coin", 0x68, True, 1.0)

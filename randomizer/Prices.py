@@ -8,13 +8,22 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, SharedMoveLocations, TinyMoveLocations, TrainingBarrelLocations
+from randomizer.Lists.Location import (
+    ChunkyMoveLocations,
+    DiddyMoveLocations,
+    DonkeyMoveLocations,
+    LankyMoveLocations,
+    SharedMoveLocations,
+    TinyMoveLocations,
+    TrainingBarrelLocations,
+)
 
 VanillaPrices = {
     Items.Vines: 0,
     Items.Swim: 0,
     Items.Barrels: 0,
     Items.Oranges: 0,
+    Items.Climbing: 0,
     Items.Camera: 0,
     Items.Shockwave: 0,
     Items.CameraAndShockwave: 0,
@@ -186,13 +195,27 @@ FunkySequence = [
     Locations.AmmoBelt2,
     Locations.SniperSight,
 ]
-CandySequence = [[Locations.Bongos, Locations.Guitar, Locations.Trombone, Locations.Saxophone, Locations.Triangle], Locations.MusicUpgrade1, Locations.ThirdMelon, Locations.MusicUpgrade2]
+CandySequence = [
+    [Locations.Bongos, Locations.Guitar, Locations.Trombone, Locations.Saxophone, Locations.Triangle],
+    Locations.MusicUpgrade1,
+    Locations.ThirdMelon,
+    Locations.MusicUpgrade2,
+]
 DonkeySequence = [Locations.BaboonBlast, Locations.StrongKong, Locations.GorillaGrab]
 DiddySequence = [Locations.ChimpyCharge, Locations.RocketbarrelBoost, Locations.SimianSpring]
 LankySequence = [Locations.Orangstand, Locations.BaboonBalloon, Locations.OrangstandSprint]
 TinySequence = [Locations.MiniMonkey, Locations.PonyTailTwirl, Locations.Monkeyport]
 ChunkySequence = [Locations.HunkyChunky, Locations.PrimatePunch, Locations.GorillaGone]
-Sequences = [SlamProgressiveSequence, FunkySequence, CandySequence, DonkeySequence, DiddySequence, LankySequence, TinySequence, ChunkySequence]
+Sequences = [
+    SlamProgressiveSequence,
+    FunkySequence,
+    CandySequence,
+    DonkeySequence,
+    DiddySequence,
+    LankySequence,
+    TinySequence,
+    ChunkySequence,
+]
 
 """
 So for coin logic, we want to make sure the player can't spend coins incorrectly and lock themselves out.

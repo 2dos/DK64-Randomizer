@@ -12,7 +12,15 @@ from randomizer.Enums.WrinklyKong import WrinklyLocation
 class HintLocation:
     """Hint object for Wrinkly hint data locations."""
 
-    def __init__(self, name: str, kong: Kongs, location: WrinklyLocation, hint: str, level: Levels, banned_keywords: List[Union[Any, str]] = []) -> None:
+    def __init__(
+        self,
+        name: str,
+        kong: Kongs,
+        location: WrinklyLocation,
+        hint: str,
+        level: Levels,
+        banned_keywords: List[Union[Any, str]] = [],
+    ) -> None:
         """Create wrinkly hint object.
 
         Args:
@@ -35,7 +43,11 @@ class HintLocation:
 
 hints = [
     HintLocation(
-        "First Time Talk", Kongs.any, WrinklyLocation.ftt, "WELCOME TO THE DONKEY KONG 64 RANDOMIZER. MADE BY 2DOS, BALLAAM, KILLKLLI, SHADOWSHINE, CFOX, BISMUTH AND ZNERNICUS", Levels.DKIsles
+        "First Time Talk",
+        Kongs.any,
+        WrinklyLocation.ftt,
+        "WELCOME TO THE DONKEY KONG 64 RANDOMIZER. MADE BY 2DOS, BALLAAM, KILLKLLI, SHADOWSHINE, CFOX, BISMUTH AND ZNERNICUS",
+        Levels.DKIsles,
     ),
     HintLocation("Japes DK", Kongs.donkey, WrinklyLocation.japes, "", Levels.JungleJapes),
     HintLocation("Japes Diddy", Kongs.diddy, WrinklyLocation.japes, "", Levels.JungleJapes),
@@ -46,10 +58,31 @@ hints = [
     HintLocation("Aztec Diddy", Kongs.diddy, WrinklyLocation.aztec, "", Levels.AngryAztec),
     HintLocation("Aztec Lanky", Kongs.lanky, WrinklyLocation.aztec, "", Levels.AngryAztec),
     HintLocation("Aztec Tiny", Kongs.tiny, WrinklyLocation.aztec, "", Levels.AngryAztec),
-    HintLocation("Aztec Chunky", Kongs.chunky, WrinklyLocation.aztec, "", Levels.AngryAztec, banned_keywords=["Hunky Chunky", "Feather Bow"]),
+    HintLocation(
+        "Aztec Chunky",
+        Kongs.chunky,
+        WrinklyLocation.aztec,
+        "",
+        Levels.AngryAztec,
+        banned_keywords=["Hunky Chunky", "Feather Bow"],
+    ),
     HintLocation("Factory DK", Kongs.donkey, WrinklyLocation.factory, "", Levels.FranticFactory),
-    HintLocation("Factory Diddy", Kongs.diddy, WrinklyLocation.factory, "", Levels.FranticFactory, banned_keywords=["Gorilla Grab"]),
-    HintLocation("Factory Lanky", Kongs.lanky, WrinklyLocation.factory, "", Levels.FranticFactory, banned_keywords=["Gorilla Grab"]),
+    HintLocation(
+        "Factory Diddy",
+        Kongs.diddy,
+        WrinklyLocation.factory,
+        "",
+        Levels.FranticFactory,
+        banned_keywords=["Gorilla Grab"],
+    ),
+    HintLocation(
+        "Factory Lanky",
+        Kongs.lanky,
+        WrinklyLocation.factory,
+        "",
+        Levels.FranticFactory,
+        banned_keywords=["Gorilla Grab"],
+    ),
     HintLocation("Factory Tiny", Kongs.tiny, WrinklyLocation.factory, "", Levels.FranticFactory, banned_keywords=["Gorilla Grab"]),
     HintLocation("Factory Chunky", Kongs.chunky, WrinklyLocation.factory, "", Levels.FranticFactory),
     HintLocation("Galleon DK", Kongs.donkey, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
@@ -63,7 +96,14 @@ hints = [
     HintLocation("Fungi Tiny", Kongs.tiny, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
     HintLocation("Fungi Chunky", Kongs.chunky, WrinklyLocation.fungi, "", Levels.FungiForest),
     HintLocation("Caves DK", Kongs.donkey, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
-    HintLocation("Caves Diddy", Kongs.diddy, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch", "Rocketbarrel Boost"]),
+    HintLocation(
+        "Caves Diddy",
+        Kongs.diddy,
+        WrinklyLocation.caves,
+        "",
+        Levels.CrystalCaves,
+        banned_keywords=["Primate Punch", "Rocketbarrel Boost"],
+    ),
     HintLocation("Caves Lanky", Kongs.lanky, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
     HintLocation("Caves Tiny", Kongs.tiny, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
     HintLocation("Caves Chunky", Kongs.chunky, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
@@ -84,16 +124,18 @@ def ClearHintMessages() -> None:
 
 PointSpreadSelector = []
 PointSpreadBase = [
-    ("Kongs", 9),
-    ("Keys", 9),
-    ("Guns", 7),
-    ("Instruments", 7),
-    ("Training/Fairy Moves", 5),
+    ("Kongs", 11),
+    ("Keys", 11),
+    ("Guns", 9),
+    ("Instruments", 9),
+    ("Training Moves", 7),
+    ("Fairy Moves", 7),
     ("Important Shared", 5),
     ("Pad Moves", 3),
-    ("Barrel Moves", 3),
-    ("Active Moves", 3),
+    ("Barrel Moves", 7),
+    ("Active Moves", 5),
     ("Bean", 3),
+    ("Shopkeepers", 11),
 ]
 for item in PointSpreadBase:
-    PointSpreadSelector.append({"name": item[0], "value": item[0].replace("Training/Fairy", "training").lower().replace(" ", "_"), "tooltip": "", "default": item[1]})
+    PointSpreadSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})

@@ -15,9 +15,15 @@
 #define LIGHT_BRIGHTNESS 0xFF
 
 /*
-    Misc hard mode stuff in case it comes up:
-    Disable map geo rendering (donk in the sky):
-    - 0x80651598 > 0xA1E00002
+    DARK WORLD:
+    - Piano Game too hard
+    - Japes BBlast not darkened
+    - Treasure chests
+    - Bblast courses can be a big rough
+    - brighten rabbit race (WAY TOO DARK)
+
+    MEMORY CHALLENGE
+    - Mermaid is not working properly?
 */
 
 static const map_bitfield is_dark_world_mc = {
@@ -245,7 +251,7 @@ typedef enum challenge_type {
     /* 0x002 */ CHALLENGE_DARK_WORLD,
 } challenge_type;
 
-static short banned_challenge_maps[] = {
+static unsigned char banned_challenge_maps[] = {
     MAP_TESTMAP,
     MAP_DKARCADE,
     MAP_JETPAC,
@@ -258,29 +264,44 @@ static short banned_challenge_maps[] = {
 };
 
 challenge_type getMemoryChallengeType(maps map) {
-    if (inShortList(map, &banned_challenge_maps[0], sizeof(banned_challenge_maps) >> 1)) {
+    if (inU8List(map, &banned_challenge_maps[0], sizeof(banned_challenge_maps))) {
         return CHALLENGE_NONE;
     }
-    int offset = map >> 3;
-    int check = map % 8;
-    int is_dw = *(unsigned char*)((unsigned char*)(&is_dark_world_mc) + offset) & (0x80 >> check);
-    if (is_dw) {
+    if (getBitArrayValue(&is_dark_world_mc, map)) {
         return CHALLENGE_DARK_WORLD;
     }
     return CHALLENGE_SKY;
 }
 
+static unsigned char blast_maps[] = {
+    MAP_JAPESBBLAST,
+    MAP_AZTECBBLAST,
+    MAP_FACTORYBBLAST,
+    MAP_GALLEONBBLAST,
+    MAP_FUNGIBBLAST,
+    MAP_CAVESBBLAST,
+    MAP_CASTLEBBLAST,
+};
+
 int isDarkWorld(maps map, int chunk) {
     if (Rando.hard_mode.memory_challenge) {
         return getMemoryChallengeType(map) == CHALLENGE_DARK_WORLD;
-    }
-    if ((map == MAP_MAINMENU) || (map == MAP_ISLES)) {
-        return 0;
     }
     if (map == MAP_JAPES) {
         if (chunk == 3) { // Japes Main
             return 0;
         }
+    }
+    if (map == MAP_FACTORY) {
+        if (chunk == 5) { // Production
+            return 0;
+        }
+        if (chunk == 16) { // Testing
+            return 0;
+        }
+    }
+    if (inU8List(CurrentMap, &blast_maps[0], sizeof(blast_maps))) {
+        return 0;
     }
     return 1;
 }
@@ -295,9 +316,17 @@ void alterChunkLighting(int chunk) {
     }
 	if (chunk_count > 0) {
 		for (int i = 0; i < chunk_count; i++) {
-			ChunkLighting_Red[i] = DARK_WORLD_BRIGHTNESS;
-			ChunkLighting_Green[i] = DARK_WORLD_BRIGHTNESS;
-			ChunkLighting_Blue[i] = DARK_WORLD_BRIGHTNESS;
+            if (isDarkWorld(CurrentMap, i)) {
+                float brightness = DARK_WORLD_BRIGHTNESS;
+                if (CurrentMap == MAP_FUNGI) {
+                    if ((i >= 13) && (i <= 17)) {
+                        brightness = 0.1f;
+                    }
+                }
+                ChunkLighting_Red[i] = brightness;
+                ChunkLighting_Green[i] = brightness;
+                ChunkLighting_Blue[i] = brightness;
+            }
 		}
 	}
 }
@@ -340,12 +369,11 @@ int isSkyWorld(maps map) {
     return 0;
 }
 
-int* displayNoGeoChunk(int* dl, int chunk_index, int shift) {
+Gfx* displayNoGeoChunk(Gfx* dl, int chunk_index, int shift) {
     if (!isSkyWorld(CurrentMap)) {
         return displayChunk(dl, chunk_index, shift);
     }
-    *(int*)(dl++) = 0xE7000000;
-    *(int*)(dl++) = 0;
+    gDPPipeSync(dl++);
     return dl;
 }
 
@@ -383,6 +411,7 @@ void factoryShedFallImmunity(short exit) {
     unkLoadingZoneControllerFunction(exit);
 }
 
+
 void fallDamageWrapper(int action, void* actor, int player_index) {
     if (ObjectModel2Timer < 100) {
         return;
@@ -391,4 +420,99 @@ void fallDamageWrapper(int action, void* actor, int player_index) {
         return;
     }
     setAction(action, actor, player_index);
+}
+
+static unsigned char stalactite_spawn_bans[] = {
+    0x6E, // Baboon Balloon
+    0x3E, // Backflip
+    0x87, // Entering Portal
+    0x88, // Exiting Portal
+};
+
+void* spawnStalactite(short actor, float x, float y, float z, int unk0, int unk1, int unk2, void* unk3) {
+    if (ObjectModel2Timer < 90) { // Prevent 
+        return (void*)0;
+    }
+    if (Player) {
+        if (inU8List(Player->control_state, &stalactite_spawn_bans, sizeof(stalactite_spawn_bans))) {
+            return (void*)0;
+        }
+    }
+    return spawnActorSpawnerContainer(actor, x, y, z, unk0, unk1, unk2, unk3);
+}
+
+typedef struct balloon_data {
+    /* 0x000 */ int path;
+    /* 0x004 */ int speed;
+} balloon_data;
+
+static float pop_x;
+static float pop_z;
+static int pop_timer;
+
+void spawnKRoolLankyBalloon(void) {
+    balloon_data data = {.path = 1, .speed = 5};
+    spawnActorSpawnerContainer(147, 796.0f, 106.0f, 745.0f, 0, 0x3F000000, 0, &data);
+}
+
+void popExistingBalloon(void) {
+    pop_x = CurrentActorPointer_0->xPos;
+    pop_z = CurrentActorPointer_0->zPos;
+    pop_timer = 150;
+    sendActorSignal(3, 1, 0x2B, 0, 0);
+    spawnKRoolLankyBalloon();
+}
+
+void handleKRoolDirecting(void) {
+    int control_state = CurrentActorPointer_0->control_state;
+    if (control_state == 0x2B) {
+        float dx = CurrentActorPointer_0->xPos - pop_x;
+        float dz = CurrentActorPointer_0->zPos - pop_z;
+        float dxz = (dx * dx) + (dz * dz);
+        if (pop_timer > 0) {
+            pop_timer--;
+        }
+        if ((dxz < 400) || (pop_timer == 1)) {
+            // Within 20 units, or enough time has passed that we need to do an escape
+            disappearPeel(0);
+            CurrentActorPointer_0->control_state = 0x42;
+            CurrentActorPointer_0->control_state_progress = 0;
+            resetLankyKR();
+        }
+    }
+    generalActorHandle(0x23, pop_x, pop_z, 0, 0.0f);
+}
+
+typedef struct KRoolLanky178 {
+    /* 0x000 */ char pad_00[0x14];
+    /* 0x014 */ char hits;
+} KRoolLanky178;
+
+void incHitCounter(void* actor, int val) {
+    setActorSpeed(actor, val);
+    KRoolLanky178* aad178 = CurrentActorPointer_0->paad2;
+    aad178->hits++; 
+}
+
+void parseControllerInput(Controller * cont) {
+    getControllerInput(cont);
+    if (isGamemode(GAMEMODE_MAINMENU, 1)) {
+        return;
+    }
+    if ((CutsceneActive == 3) || (CutsceneActive == 4)) {
+        // In arcade/jetpac
+        // TODO: Flip these
+        return;
+    }
+    if (TBVoidByte & 3) {
+        // Is pausing/paused
+        return;
+    }
+    if (Player) {
+        if (Player->control_state == 0x42) {
+            // Tag Barrel
+            return;
+        }
+    }
+    cont->stickX = -cont->stickX;
 }

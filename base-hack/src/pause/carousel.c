@@ -10,14 +10,14 @@
  */
 #include "../../include/common.h"
 
-static short file_items[16] = {
+short file_items[16] = {
     0, 0, 0, 0, // GBs, Crowns, Keys, Medals
     0, 0, 0, 0, // RW, Fairy, Nintendo, BP
     0, 0, 0, 0, // Kongs, Beans, Pearls, Rainbow
-    0, 0, 0, 0, // Crates
+    0, 0, 0, 0, // Hints, Crates
 };
 
-static int file_sprites[17] = {
+int file_sprites[17] = {
     0x9, // GB
     0x807210EC, // Crown
     0x807210B8, // Key
@@ -30,15 +30,16 @@ static int file_sprites[17] = {
     (int)&bean_sprite, // Bean
     (int)&pearl_sprite, // Pearls
     0x80721378, // Rainbow Coins
+    0x80721530, // Hint
     0x80720710, // Crate
-    0, 0, 0,
+    0, 0,
     0, // Null Item, Leave Empty
 };
-static short file_item_caps[16] = {
+short file_item_caps[16] = {
     201, 10, 8, 40,
     1, 20, 1, 40,
     5, 1, 5, 16,
-    0, 0, 0, 0, // First here is Junk Items
+    35, 0, 0, 0, // Second here is Junk Items
 };
 
 void updatePauseScreenWheel(pause_paad* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
@@ -72,10 +73,6 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render, int is_totals) {
     }
     // Width information
     float width = 640.0f;
-    if (Rando.true_widescreen) {
-        width = SCREEN_WD_FLOAT * 2;
-        sprite->y = SCREEN_HD_FLOAT * 2;
-    }
     float right_bound = width * 1.5f;
     float left_bound = width * 0.5f;
     float quarter_width = width / 4.0f;
@@ -173,48 +170,51 @@ void handleSpriteCode(int control_type) {
     }
 }
 
+typedef struct CarouselBoundStruct {
+    /* 0x000 */ unsigned char check_type;
+    /* 0x001 */ unsigned char flag_count;
+    /* 0x002 */ short starting_flag;
+} CarouselBoundStruct;
+
+static CarouselBoundStruct carousel_bounds[] = {
+    {.check_type = CHECK_CRATE, .flag_count = ENEMIES_TOTAL, .starting_flag = FLAG_ENEMY_KILLED_0}, // Make sure this is always first
+    {.check_type = CHECK_PEARLS, .flag_count = 5, .starting_flag = FLAG_PEARL_0_COLLECTED},
+    {.check_type = CHECK_RAINBOW, .flag_count = 16, .starting_flag = FLAG_RAINBOWCOIN_0},
+    {.check_type = CHECK_HINTS, .flag_count = 35, .starting_flag = FLAG_WRINKLYVIEWED},
+    {.check_type = CHECK_BEAN, .flag_count = 1, .starting_flag = FLAG_COLLECTABLE_BEAN},
+};
+
 void initCarousel_onPause(void) {
     for (int i = 0; i < 8; i++) {
         file_items[i] = FileVariables[i];
     }
-    file_items[CHECK_KONG] = 0;
-    file_items[CHECK_BEAN] = checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
-    file_items[CHECK_PEARLS] = 0;
-    file_items[CHECK_RAINBOW] = 0;
-    file_items[CHECK_CRATE] = 0;
-    for (int i = 0; i < 5; i++) {
-        file_items[CHECK_KONG] += checkFlagDuplicate(kong_flags[i], FLAGTYPE_PERMANENT);
-        file_items[CHECK_PEARLS] += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
+    if (!Rando.enemy_item_rando) {
+        carousel_bounds[0].flag_count = 0;
     }
-    for (int i = 0; i < 16; i++) {
-        file_items[CHECK_RAINBOW] += checkFlagDuplicate(FLAG_RAINBOWCOIN_0 + i, FLAGTYPE_PERMANENT);
+    file_items[CHECK_KONG] = 0;
+    for (int i = 0; i < 5; i++) {
+        int check_type = carousel_bounds[i].check_type;
+        int start_flag = carousel_bounds[i].starting_flag;
+        int count = carousel_bounds[i].flag_count;
+        file_items[check_type] = 0;
+        for (int j = 0; j < count; j++) {
+            file_items[check_type] += checkFlagDuplicate(start_flag + j, FLAGTYPE_PERMANENT);
+        }
+        file_items[CHECK_KONG] += checkFlagDuplicate(kong_flags[i], FLAGTYPE_PERMANENT);
     }
     for (int i = 0; i < 100; i++) {
-        file_items[CHECK_CRATE] += checkFlagDuplicate(FLAG_JUNKITEM + i, FLAGTYPE_PERMANENT);
+        // Junk Item Check
+        if (isIceTrapFlag(FLAG_JUNKITEM + i) == DYNFLAG_JUNK) {
+            file_items[CHECK_CRATE] += checkFlagDuplicate(FLAG_JUNKITEM + i, FLAGTYPE_PERMANENT);
+        }
     }
 }
 
 void initCarousel_onBoot(void) {
-    *(short*)(0x806AB35A) = getHi(&file_sprites[0]);
-    *(short*)(0x806AB35E) = getLo(&file_sprites[0]);
-    *(short*)(0x806AB2CA) = getHi(&file_items[0]);
-    *(short*)(0x806AB2DA) = getLo(&file_items[0]);
-    *(short*)(0x806A9FC2) = getHi(&file_items[0]);
-    *(short*)(0x806AA036) = getLo(&file_items[0]);
-    *(short*)(0x806AA00E) = getHi(&file_item_caps[0]);
-    *(short*)(0x806AA032) = getLo(&file_item_caps[0]);
+    if (Rando.isles_cb_rando) {
+        file_item_caps[3] = 45;
+    }
     *(short*)(0x806AB2CE) = getHi(&file_items[CHECK_TERMINATOR]);
     *(short*)(0x806AB2D6) = getLo(&file_items[CHECK_TERMINATOR]);
     *(short*)(0x806AB3F6) = CHECK_TERMINATOR;
-    writeFunction(0x806AB3C4, &updatePauseScreenWheel); // Change Wheel to scroller
-    *(int*)(0x806AB3B4) = 0xAFB00018; // SW $s0, 0x18 ($sp). Change last param to index
-    *(int*)(0x806AB3A0) = 0xAFA90014; // SW $t1, 0x14 ($sp). Change 2nd-to-last param to local index
-    *(int*)(0x806AB444) = 0; // Prevent joystick sprite rendering
-    writeFunction(0x806AB528, &handleSpriteCode); // Change sprite control function
-    *(int*)(0x806AB52C) = 0x8FA40060; // LW $a0, 0x60 ($sp). Change param
-    *(short*)(0x806A8DB2) = 0x0029; // Swap left/right direction
-    *(short*)(0x806A8DBA) = 0xFFD8; // Swap left/right direction
-    *(short*)(0x806A8DB4) = 0x5420; // BEQL -> BNEL
-    *(short*)(0x806A8DF0) = 0x1020; // BNE -> BEQ
-    writeFunction(0x806A9F74, &pauseScreen3And4ItemName); // Item Name
 }

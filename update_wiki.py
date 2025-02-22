@@ -76,13 +76,20 @@ def createHTML(markdown_data: dict, template_text: str):
     if file is not None:
         file = markdown_data["path"].replace("./", "./article_markdown/")
     if "github" in markdown_data:
-        file = f"https://raw.githubusercontent.com/wiki/2dos/DK64-Randomizer/{markdown_data['github']}.md"
+        file = f"./index.html?title={markdown_data['github']}"
         html_file_name = markdown_data["github"]
     if html_file_name is not None:
         html_text = template_text.replace("<title></title>", f"<title>{pretty_name}</title>")
         html_text = html_text.replace('<meta content="" property="og:title" />', f'<meta content="{pretty_name}" property="og:title" />')
         html_text = html_text.replace('<h1 id="page-title"></h1>', f'<h1 id="page-title">{pretty_name}</h1>')
-        html_text = html_text.replace('<div id="markdown_content"></div>', f'<div id="markdown_content" ref="{file}"></div>')
+        if "github" in markdown_data:
+            html_text = html_text.replace(
+                '<script id="redirect_handler"></script>',
+                f'<script id="redirect_handler">window.location.href="{file}";</script>',
+            )
+        else:
+            html_text = html_text.replace('<div id="markdown_content"></div>', f'<div id="markdown_content" ref="{file}"></div>')
+            html_text = html_text.replace('<script id="redirect_handler"></script>', "")
         with open(f"./wiki/{html_file_name}.html", "w") as fh:
             fh.write("<!-- DON'T EDIT THIS FILE. EDIT template.html INSTEAD -->\n")
             fh.write(html_text)

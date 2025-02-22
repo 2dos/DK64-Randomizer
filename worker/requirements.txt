@@ -1,0 +1,11 @@
+flask==3.0.0
+pyxdelta==0.2.0
+pillow==10.3.0
+waitress==3.0.1
+redis
+rq
+vidua==0.4.5
+opentelemetry-exporter-otlp-proto-http
+opentelemetry-instrumentation-flask
+opentelemetry-instrumentation-rq
+opentelemetry-instrumentation-redis

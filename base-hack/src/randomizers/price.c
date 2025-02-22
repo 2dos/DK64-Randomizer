@@ -1,16 +1,13 @@
 #include "../../include/common.h"
 
-#define PURCHASE_MOVES 0
-#define PURCHASE_SLAM 1
-#define PURCHASE_GUN 2
-#define PURCHASE_AMMOBELT 3
-#define PURCHASE_INSTRUMENT 4
-#define PURCHASE_NOTHING -1
-
-void alter_price(int purchase_type, int purchase_value, int kong, int level, vendors shop_index) {
+void alter_price(purchase_struct* data) {
+	// int purchase_type, int purchase_value, int kong, int level, vendors shop_index
+	if (!data) {
+		return;
+	}
 	int write = -1;
-	if (purchase_type == PURCHASE_FLAG) {
-		int subtype = getMoveProgressiveFlagType(purchase_value);
+	if (data->purchase_type == PURCHASE_FLAG) {
+		int subtype = getMoveProgressiveFlagType(data->purchase_value);
 		if (subtype == 0) {
 			// Slam
 			write = Rando.slam_prices[MovesBase[0].simian_slam - 1];
@@ -29,29 +26,17 @@ void alter_price(int purchase_type, int purchase_value, int kong, int level, ven
 		}
 	}
 	if (write > -1) {
-		switch (shop_index) {
-			case SHOP_CRANKY:
-				CrankyMoves_New[kong][level].price = write;
-				break;
-			case SHOP_FUNKY:
-				FunkyMoves_New[kong][level].price = write;
-				break;
-			case SHOP_CANDY:
-				CandyMoves_New[kong][level].price = write;
-				break;
-			case SHOP_SNIDE:
-				break;
-			break;
-		}
+		data->price = write;
 	}
 }
 
 void priceTransplant(void) {
 	for (int kong = 0; kong < 5; kong++) {
-		for (int level = 0; level < LEVEL_COUNT; level++) {
-			alter_price(CrankyMoves_New[kong][level].purchase_type,CrankyMoves_New[kong][level].purchase_value,kong,level,SHOP_CRANKY);
-			alter_price(CandyMoves_New[kong][level].purchase_type,CandyMoves_New[kong][level].purchase_value,kong,level,SHOP_CANDY);
-			alter_price(FunkyMoves_New[kong][level].purchase_type,FunkyMoves_New[kong][level].purchase_value,kong,level,SHOP_FUNKY);
+		for (int level = 0; level < 8; level++) {
+			for (int vendor = 0; vendor < 3; vendor++) {
+				purchase_struct* data = getShopData(vendor, kong, level);
+				alter_price(data);	
+			}
 		}
 	}
 }

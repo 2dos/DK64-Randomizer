@@ -1,486 +1,551 @@
 <!DOCTYPE html>
-<head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <meta Http-Equiv="Cache-Control" Content="no-cache" />
-    <meta Http-Equiv="Pragma" Content="no-cache" />
-    <meta Http-Equiv="Expires" Content="0" />
-    <meta Http-Equiv="Pragma-directive: no-cache" />
-    <meta Http-Equiv="Cache-directive: no-cache" />
-    <link href="./static/img/dk.png" rel="icon" />
-    <title>DK64 Randomizer</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js" integrity="sha512-f0VlzJbcEB6KiW8ZVtL+5HWPDyW1+nJEjguZ5IVnSQkvZbwBt2RfCBY0CBO1PsMAqxxrG4Di6TfsCPP3ZRwKpA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type="text/javascript" src="static/js/md5.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css"
-          rel="stylesheet"/>
-    <link rel="stylesheet"
-          type="text/css"
-          href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link href="static/styles/styles.css" rel="stylesheet" />
-    <link href="./static/styles/gui.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
-        <div class="container px-5">
-            <a class="navbar-brand" href="#page-top">DK64 Randomizer</a>
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarResponsive"
-                    aria-controls="navbarResponsive"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="./">Overview</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="./wiki/Consoles-and-Emulators.html">Setup</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="./wiki/home.html">Wiki</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="https://discord.dk64randomizer.com"
-                           target="_blank">Discord</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="modal fade"
-         data-bs-backdrop="static"
-         data-bs-keyboard="false"
-         id="progressmodal">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content bg-dark" style="transform:translateY(0%)">
-                <div class="modal-body center bg-dark" style="width: 100%;">
-                    <h2>Patching ROM</h2>
-                    <p>This may take some time. Please be patient.</p>
-                    <div id="fairy-container">
-                        <div id="patchprogress" style="height:44px"></div>
-                        <img id="progress-fairy" width="44px" height="44px" src="" />
-                        <img id="progress-dead" width="44px" height="44px" src="" style="display:none" />
-                    </div>
-                    <div id="progress-text" style="color:white" class="justify-content-center d-flex w-100">
-                        Initializing
-                    </div>
-                    <div id="progress-history"></div>
-                    <div id="close-modal" style="display:none">
-                        <button class="btn btn-primary" id="close-modal-btn">Close</button>
-                    </div>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta Http-Equiv="Cache-Control" Content="no-cache" />
+        <meta Http-Equiv="Pragma" Content="no-cache" />
+        <meta Http-Equiv="Expires" Content="0" />
+        <meta Http-Equiv="Pragma-directive: no-cache" />
+        <meta Http-Equiv="Cache-directive: no-cache" />
+        <link href="./static/img/dk.png" rel="icon" />
+        <title>DK64 Randomizer</title>
+       
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css"
+            rel="stylesheet"/>
+               <link rel="stylesheet"
+            type="text/css"
+            href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <link href="static/styles/styles.css" rel="stylesheet" />
+        <link href="./static/styles/gui.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+            <div class="container px-5">
+                <a class="navbar-brand" href="#page-top">DK64 Randomizer</a>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarResponsive"
+                        aria-controls="navbarResponsive"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                            href="./wiki/Consoles-and-Emulators.html">Setup</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                            href="./wiki/home.html">Wiki</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                            href="https://discord.dk64randomizer.com"
+                            target="_blank">Discord</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="modal fade"
-         data-bs-backdrop="static"
-         data-bs-keyboard="false"
-         id="download_modal">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content bg-dark" style="transform:translateY(0%)">
-                <div class="modal-body center bg-dark" style="width: 100%;" id="spoiler_log_download_messages">
-                    <h2>Attempting to get Spoiler Log</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-    <img src="./static/img/logo.png"
-         alt="DK64 Randomizer"
-         class="center_image"
-         style="cursor: pointer; margin-top: 70px"
-         onClick="render_page('./index')"/>
-    <div style="width: 80%; min-width: 400px; max-width: 1500px"
-         class="center">
-        <div class="card bg-dark" style="max-width: 1500px">
-            <form id="form" action="/" method="POST">
-                <!--Create navbar-->
-                <div class="container" id="visual_indicator">
-                  <img style="
-                      width: 10%;
-                      height: 10%;
-                      margin: 10%;
-                      top: 50%;
-                      left: 40%;
-                    " src="./static/img/loading-icon-black.svg" />
-                  <script>
-                    var pyodide;
-                    var jquery = $;
-                    async function load_inital() {
-                      try {
-                        pyodide = await loadPyodide();
-                      } catch { }
-                      await pyodide.loadPackage("jinja2");
-                      await pyodide.loadPackage("micropip");
-                      ui_script = await (await fetch("generate_rando_ui.py")).text();
-                      await pyodide.runPythonAsync(ui_script).then(function (result) {
-                        var script = document.createElement("script");
-                        script.src = "./static/js/initalize.js";
-                        document.head.appendChild(script);
-
-                      });
-                    }
-                    
-                    function getFile(file) {
-                      return $.ajax({
-                          type: "GET",
-                          url: file,
-                          async: false
-                      }).responseText;
-                    }
-                    window.onload = load_delay;
-                    function load_delay() {
-                      // Delay a section so the page scripts can load
-                      setTimeout(function () {
-                        // load ./static/js/pyodide/pyodide.js
-                        var script = document.createElement("script");
-                        script.src = "./static/js/pyodide/pyodide.js";
-                        document.head.appendChild(script);
-                        // wait for pyodide to load
-                        setTimeout(async function () {
-                          load_inital();
-                        }, 1000);
-                      }, 1000);
-                    }
-                  </script>
-                </div>
-                <div class="container" id="tab-data" hidden></div>
-                <hr />
-                <div class="container" id="nav-gen-type-container">
-                    <nav style="display: inline-block; float: none; vertical-align: top;">
-                        <div class="nav nav-tabs" id="nav-gen-type" role="tablist">
-                            <button class="nav-link active"
-                                    id="nav-seed-gen-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#nav-seed-gen"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="nav-seed-gen"
-                                    aria-selected="true">
-                                Generate New Seed
-                            </button>
-                            <button class="nav-link"
-                                    id="nav-patch-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#nav-patch-data"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="nav-patch-data"
-                                    aria-selected="false">
-                                Generate from Patch File
-                            </button>
-                            <button class="nav-link"
-                                    id="nav-pastgen-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#nav-pastgen-data"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="nav-pastgen-data"
-                                    aria-selected="false"
-                                    style="display:none">
-                                Generate from Past Seed
-                            </button>
+        </nav>
+        <div class="modal fade"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            id="plando-modal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="transform:translateY(0%)">
+                    <div class="modal-body center" style="width: 100%;">
+                        <h2>Loading Plando UI</h2>
+                        <p>This may take some time. Please be patient.</p>
+                        <div id="plando-loading-container">
+                            <img style="
+                            width: 10%;
+                            height: 10%;
+                            margin: 10%;
+                            top: 50%;
+                            left: 40%;
+                            " src="./static/img/loading-icon-black.svg" />
                         </div>
-                    </nav>
-                    <!--Populate tabs-->
-                    <div class="tab-content" id="common_footer">
-                        <!--Normal Generation-->
-                        <div class="tab-pane fade show active"
-                             id="nav-seed-gen"
-                             role="tabpanel"
-                             aria-labelledby="nav-seed-gen-tab">
-                            <div style="width: 80%;" class="center">
-                                <div class="form-group" style="margin-bottom: 10px; text-align: center;">
-                                    <div class="row" style="margin-top: 10px">
-                                        <!--Randomize Seed-->
-                                        <div class="flex-container" style="justify-content: center;">
-                                            <div class="form-group item-select">
-                                                <label for="seed" class="select-title">
-                                                    Seed ID
-                                                </label>
-                                                <input name="seed" id="seed" placeholder="Auto fills when empty"/>
-                                            </div>
-                                            <div class="form-group item-select" style="min-width:300px;">
-                                                <label for="settings_string" class="select-title">
-                                                    Settings String
-                                                </label>
-                                                <span class="row settings-string-container">
-                                                    <input name="settings_string"
-                                                           id="settings_string"
-                                                           placeholder="Click Export or Copy Settings to fill"/>
-                                                    <img name="settings_string_copy"
-                                                         id="settings_string_copy"
-                                                         class="copy-icon"
-                                                         data-toggle="tooltip"
-                                                         title="Click to copy the settings string to your clipboard."
-                                                         src="./static/img/copy-to-clipboard.svg">
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <input id="import_settings"
-                                                       class="btn btn-primary settings_button"
-                                                       type="button"
-                                                       value="Import"/>
-                                                <input id="export_settings"
-                                                       class="btn btn-primary settings_button"
-                                                       type="button"
-                                                       value="Export"/>
+                        <div id="plando-progress-text" style="color:white" class="justify-content-center d-flex w-100">
+                            Initializing
+                        </div>
+                        <div id="plando-progress-history"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            id="progressmodal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="transform:translateY(0%)">
+                    <div class="modal-body center" style="width: 100%;">
+                        <h2>Patching ROM</h2>
+                        <p>This may take some time. Please be patient.</p>
+                        <div id="fairy-container">
+                            <div id="patchprogress" style="height:44px"></div>
+                            <canvas id="progress-fairy" width="44px" height="44px" src="" ></canvas>
+                            <canvas id="progress-dead" width="44px" height="44px" src="" style="display:none" ></canvas>
+                        </div>
+                        <div id="progress-text" style="color:white" class="justify-content-center d-flex w-100">
+                            Initializing
+                        </div>
+                        <div id="progress-history"></div>
+                        <div id="close-modal" style="display:none">
+                            <button class="btn btn-secondary" id="close-modal-btn">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            id="download_modal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="transform:translateY(0%)">
+                    <div class="modal-body center" style="width: 100%;" id="spoiler_log_download_messages">
+                        <h2>Attempting to get Spoiler Log</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img src="./static/img/logo.webp"
+            alt="DK64 Randomizer"
+            class="center_image"
+            style="cursor: pointer; margin-top: 70px"
+            onClick="render_page('./index')"/>
+        <div style="width: 80%; min-width: 400px; max-width: 1500px"
+            class="center">
+            <div id="nav-tab-list" style="max-width: 1500px"></div>
+            <div class="card" style="max-width: 1500px; border-top-left-radius: 0px">
+                <form id="form" action="/" method="POST">
+                    <!--Create navbar-->
+                    <div class="container" id="visual_indicator">
+                    <img style="
+                        width: 10%;
+                        height: 10%;
+                        margin: 10%;
+                        top: 50%;
+                        left: 40%;
+                        " src="./static/img/loading-icon-black.svg" />
+
+            
+                    </div>
+                    <div class="container" id="tab-data" hidden></div>
+
+
+                    <hr />
+                    <!-- Toasts -->
+                    <div id="toasts">
+                        <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+                    </div>
+                    <div class="container" id="nav-gen-type-container">
+                        <nav style="display: inline-block; float: none; vertical-align: top;">
+                            <div class="nav nav-tabs" id="nav-gen-type" role="tablist">
+                                <button class="nav-link active"
+                                        id="nav-seed-gen-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#nav-seed-gen"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="nav-seed-gen"
+                                        aria-selected="true">
+                                    Generate New Seed
+                                </button>
+                                <button class="nav-link"
+                                        id="nav-patch-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#nav-patch-data"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="nav-patch-data"
+                                        aria-selected="false">
+                                    Generate from Patch File
+                                </button>
+                                <button class="nav-link"
+                                        id="nav-pastgen-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#nav-pastgen-data"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="nav-pastgen-data"
+                                        aria-selected="false"
+                                        style="display:none">
+                                    Generate from Past Seed
+                                </button>
+                            </div>
+                        </nav>
+                        <!--Populate tabs-->
+                        <div class="tab-content" id="common_footer">
+                            <!--Normal Generation-->
+                            <div class="tab-pane fade show active"
+                                id="nav-seed-gen"
+                                role="tabpanel"
+                                aria-labelledby="nav-seed-gen-tab">
+                                <div style="width: 80%;" class="center">
+                                    <div class="form-group" style="margin-bottom: 10px; text-align: center;">
+                                        <div class="row" style="margin-top: 10px">
+                                            <!--Randomize Seed-->
+                                            <div class="flex-container" style="justify-content: center;">
+                                                <div class="form-group item-select">
+                                                    <label for="seed" class="select-title">
+                                                        Seed ID
+                                                    </label>
+                                                    <input name="seed" id="seed" placeholder="Auto fills when empty"/>
+                                                </div>
+                                                <div class="form-group item-select" style="min-width:300px;">
+                                                    <label for="settings_string" class="select-title">
+                                                        Settings String
+                                                    </label>
+                                                    <span class="row settings-string-container">
+                                                        <input name="settings_string"
+                                                            id="settings_string"
+                                                            placeholder="Click Export or Copy Settings to fill"/>
+                                                        <img name="settings_string_copy"
+                                                            id="settings_string_copy"
+                                                            class="copy-icon"
+                                                            data-toggle="tooltip"
+                                                            title="Click to copy the settings string to your clipboard."
+                                                            src="./static/img/copy-to-clipboard.svg">
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <input id="import_settings"
+                                                        class="btn btn-secondary settings_button"
+                                                        type="button"
+                                                        value="Import"/>
+                                                    <input id="export_settings"
+                                                        class="btn btn-secondary settings_button"
+                                                        type="button"
+                                                        value="Export"/>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="flex-container" style="justify-content: center;">
-                                            <div class="form-check form-switch item-switch" style="text-align: center">
-                                                <label data-toggle="tooltip"
-                                                       title="Used for Races to download generated ROM as patch file.">
-                                                    <input class="form-check-input"
-                                                           type="checkbox"
-                                                           id="download_patch_file"
-                                                           name="download_patch_file"
-                                                           value="True"/>
-                                                    Generate as Patch File
-                                                </label>
-                                            </div>
-                                            <div class="form-check form-switch item-switch" style="text-align: center">
-                                                <label data-toggle="tooltip"
-                                                       title="This option enables spoiler log files to be created on randomizer generation.">
-                                                    <input class="form-check-input"
-                                                           type="checkbox"
-                                                           id="generate_spoilerlog"
-                                                           name="generate_spoilerlog"
-                                                           value="True"
-                                                           checked
-                                                           onchange="toggleDelayedSpoilerLogInput()"/>
-                                                    Generate Spoiler Log
-                                                </label>
-                                            </div>
-                                            <div class="form-check form-switch item-switch" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                                <div>
+                                        <div class="row">
+                                            <div class="flex-container" style="justify-content: center;">
+                                                <div class="form-check form-switch item-switch" style="text-align: center">
                                                     <label data-toggle="tooltip"
-                                                        title="Enables the homebrew header to be written to the ROM. This makes the ROM viable on some platforms but can break other platforms. Click the link on the icon for more information.">
+                                                        title="Used for Races to download generated ROM as patch file.">
                                                         <input class="form-check-input"
                                                             type="checkbox"
-                                                            name="homebrew_header"
-                                                            id="homebrew_header"
+                                                            id="download_patch_file"
+                                                            name="download_patch_file"
                                                             value="True"/>
-                                                        Advanced ROM Header
+                                                        Generate as Patch File
                                                     </label>
-                                                    <a href="./wiki/Advanced-Homebrew-ROM-Header.html"
-                                                        title="Click me for more information"
-                                                        target="_blank">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" class="warning-icon" stroke="#ffff00" fill="#ffff00">
-                                                            <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
-                                                        </svg>
-                                                    </a>
                                                 </div>
-                                            </div>
-                                            <div id="delayed_spoilerlog_container" hidden class="form-check form-switch item-switch" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                                <div>
+                                                <div class="form-check form-switch item-switch" style="text-align: center">
                                                     <label data-toggle="tooltip"
-                                                           title="If set to 0, the spoiler log is not released. If set to a number higher than 0, the spoiler log will be available for download after that many hours.">
-                                                        <input type="number"
-                                                            id="delayed_spoilerlog_release"
-                                                            name="delayed_spoilerlog_release"
-                                                            value="0"
-                                                            min="0"
-                                                            step="1"
-                                                            max="168"
-                                                            style="margin-right: 5px; max-width: 8ch;"/>
-                                                        Delayed Spoiler Log Release
+                                                        title="This option enables spoiler log files to be created on randomizer generation.">
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="generate_spoilerlog"
+                                                            name="generate_spoilerlog"
+                                                            value="True"
+                                                            checked
+                                                            onchange="toggleDelayedSpoilerLogInput()"/>
+                                                        Generate Spoiler Log
                                                     </label>
+                                                </div>
+                                                <div class="form-check form-switch item-switch" style="text-align: center">
+                                                    <label data-toggle="tooltip"
+                                                        title="Locks entry into the file with a password. Used solely for races.">
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="has_password"
+                                                            name="has_password"
+                                                            value="True"/>
+                                                        Password lock
+                                                    </label>
+                                                </div>
+                                                <div class="form-check form-switch item-switch" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                                    <div>
+                                                        <label data-toggle="tooltip"
+                                                            title="Enables the homebrew header to be written to the ROM. This makes the ROM viable on some platforms but can break other platforms. Click the link on the icon for more information.">
+                                                            <input class="form-check-input"
+                                                                type="checkbox"
+                                                                name="homebrew_header"
+                                                                id="homebrew_header"
+                                                                value="True"/>
+                                                            Advanced ROM Header
+                                                        </label>
+                                                        <a href="./wiki/Advanced-Homebrew-ROM-Header.html"
+                                                            title="Click me for more information"
+                                                            target="_blank">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" class="warning-icon" stroke="#ffff00" fill="#ffff00">
+                                                                <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div id="delayed_spoilerlog_container" hidden class="form-check form-switch item-switch" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                                    <div>
+                                                        <label data-toggle="tooltip"
+                                                            title="If set to 0, the spoiler log is not released. If set to a number higher than 0, the spoiler log will be available for download after that many hours.">
+                                                            <input type="number"
+                                                                id="delayed_spoilerlog_release"
+                                                                name="delayed_spoilerlog_release"
+                                                                value="0"
+                                                                min="0"
+                                                                step="1"
+                                                                max="168"
+                                                                style="margin-right: 5px; max-width: 8ch;"/>
+                                                            Delayed Spoiler Log Release
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <label for="input-file-rom_1" class="select-title">
-                                            ROM File
-                                        </label>
-                                        <div class="input-group mb-3 file-select"
-                                             style="width: 50%; margin: 0 auto">
-                                            <div class="input-group-text choose-file"
-                                                 style="background-color: #6c757d">
-                                                <input class="btn btn-primary file-button"
-                                                       type="button"
-                                                       value="Choose File"
-                                                       onClick="filebox()"
-                                                       id="choose_rom">
+                                        <div class="row">
+                                            <label for="input-file-rom_1" class="select-title">
+                                                ROM File
+                                            </label>
+                                            <div class="input-group mb-3 file-select"
+                                                style="width: 50%; margin: 0 auto">
+                                                <div class="input-group-text choose-file"
+                                                    style="background-color: #6c757d">
+                                                    <input class="btn btn-secondary file-button"
+                                                        type="button"
+                                                        value="Choose File"
+                                                        onClick="filebox()"
+                                                        id="choose_rom">
+                                                </div>
+                                                <input class="form-control"
+                                                    id="rom"
+                                                    type="text"
+                                                    readonly
+                                                    onClick="filebox()"
+                                                    placeholder="No File Chosen"/>
                                             </div>
-                                            <input class="form-control"
-                                                   id="rom"
-                                                   type="text"
-                                                   readonly
-                                                   onClick="filebox()"
-                                                   placeholder="No File Chosen"/>
+                                        </div>
+                                        <br id="formbreak" />
+                                        <div class="settings-errors"
+                                            id="settings_errors"
+                                            style="display: none;">
+                                        </div>
+                                        <div style="background:#ff5722; padding:8px;" id="spoiler_warning_2">
+                                            <div class="row" id="spoiler_warning_3">
+                                                <h2 class="title" >FREQUENTLY FAILING?</h2>
+                                                <b style="padding-bottom: 16px;">If you are consistently failing seed generation on any given combination of settings (3+ attempts), do not continue uselessly trying to generate a seed! You've likely found a bug on the dev site that needs to be reported! Consult the <a href="https://discord.dk64randomizer.com" target="_blank" style="text-decoration: underline;">DK64 Rando Discord</a> for assistance!</b>
+                                            </div>
+                                            <input id="generate_seed"
+                                            class="btn btn-secondary"
+                                            style="width: 60%; height: 50px; text-align: center"
+                                            type="button"
+                                            value="Generate Seed"
+                                            disabled = ""/>
+                                            <input id="trigger_download_event" hidden/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Patch File-->
+                            <div class="tab-pane fade"
+                                id="nav-patch-data"
+                                role="tabpanel"
+                                aria-labelledby="nav-patch-tab">
+                                <div style="width: 80%;" class="center">
+                                    <div class="form-group" style="margin-bottom: 25px; text-align: center;">
+                                        <label for="patchfileloader" class="select-title">
+                                            Patch File
+                                        </label>
+                                        <input id="patchfileloader"
+                                            class="form-control"
+                                            type="file"
+                                            accept=".lanky"
+                                            style="margin-right: 5px; width: 50%; height: 100%; margin: 0 auto"/>
+                                        <div class="row">
+                                            <label for="input-file-rom_1" class="select-title">
+                                                ROM File
+                                            </label>
+                                            <div class="input-group mb-3 file-select"
+                                                style="width: 50%; margin: 0 auto">
+                                                <div class="input-group-text choose-file"
+                                                    style="background-color: #6c757d">
+                                                    <input class="btn btn-secondary file-button"
+                                                        type="button"
+                                                        value="Choose File"
+                                                        onClick="filebox()"
+                                                        id="choose_rom_2">
+                                                </div>
+                                                <input class="form-control"
+                                                    id="rom_2"
+                                                    type="text"
+                                                    readonly
+                                                    onClick="filebox()"
+                                                    placeholder="No File Chosen"/>
+                                            </div>
                                         </div>
                                     </div>
                                     <br id="formbreak" />
-                                    <div class="settings-errors"
-                                         id="settings_errors"
-                                         style="display: none;">
-                                    </div>
-                                    <div style="background:#ff5722; padding:8px;" id="spoiler_warning_2">
-                                        <div class="row" id="spoiler_warning_3">
-                                            <h2 class="title" >FREQUENTLY FAILING?</h2>
-                                            <b style="padding-bottom: 16px;">If you are consistently failing seed generation on any given combination of settings (3+ attempts), do not continue uselessly trying to generate a seed! You've likely found a bug on the dev site that needs to be reported! Consult the <a href="https://discord.dk64randomizer.com" target="_blank" style="text-decoration: underline;">DK64 Rando Discord</a> for assistance!</b>
-                                        </div>
-                                        <input id="generate_seed"
-                                           class="btn btn-primary"
-                                           style="width: 60%; height: 50px; text-align: center"
-                                           type="button"
-                                           value="Generate Seed"
-                                           disabled = ""/>
-                                        <input id="trigger_download_event" hidden/>
-                                    </div>
+                                    <input id="generate_lanky_seed"
+                                        class="btn btn-secondary"
+                                        style="width: 60%; height: 50px; text-align: center"
+                                        type="button"
+                                        value="Generate Seed from Patch"/>
                                 </div>
                             </div>
-                        </div>
-                        <!--Patch File-->
-                        <div class="tab-pane fade"
-                             id="nav-patch-data"
-                             role="tabpanel"
-                             aria-labelledby="nav-patch-tab">
-                            <div style="width: 80%;" class="center">
-                                <div class="form-group" style="margin-bottom: 25px; text-align: center;">
-                                    <label for="patchfileloader" class="select-title">
-                                        Patch File
-                                    </label>
-                                    <input id="patchfileloader"
-                                           class="form-control"
-                                           type="file"
-                                           accept=".lanky"
-                                           style="margin-right: 5px; width: 50%; height: 100%; margin: 0 auto"/>
-                                    <div class="row">
-                                        <label for="input-file-rom_1" class="select-title">
-                                            ROM File
-                                        </label>
-                                        <div class="input-group mb-3 file-select"
-                                             style="width: 50%; margin: 0 auto">
-                                            <div class="input-group-text choose-file"
-                                                 style="background-color: #6c757d">
-                                                <input class="btn btn-primary file-button"
-                                                       type="button"
-                                                       value="Choose File"
-                                                       onClick="filebox()"
-                                                       id="choose_rom_2">
-                                            </div>
-                                            <input class="form-control"
-                                                   id="rom_2"
-                                                   type="text"
-                                                   readonly
-                                                   onClick="filebox()"
-                                                   placeholder="No File Chosen"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br id="formbreak" />
-                                <input id="generate_lanky_seed"
-                                       class="btn btn-primary"
-                                       style="width: 60%; height: 50px; text-align: center"
-                                       type="button"
-                                       value="Generate Seed from Patch"/>
-                            </div>
-                        </div>
-                        <!--Past Generation-->
-                        <div class="tab-pane fade"
-                             id="nav-pastgen-data"
-                             role="tabpanel"
-                             aria-labelledby="nav-pastgen-tab">
-                            <div style="width: 80%;" class="center">
-                                <div class="form-group" style="margin-bottom: 25px; text-align: center;">
-                                    <div class="row">
-                                        <label for="pastgenlist" class="select-title">
-                                            Selected seed:
-                                        </label>
-                                        <select id="pastgenlist" class="form-select" style="width:50%;margin:0 auto;">
-                                        </select>
-                                    </div>
-                                    <div class="row">
-                                        <label for="input-file-rom_1" class="select-title">
-                                            ROM File
-                                        </label>
-                                        <div class="input-group mb-3 file-select"
-                                             style="width: 50%; margin: 0 auto">
-                                            <div class="input-group-text choose-file"
-                                                 style="background-color: #6c757d">
-                                                <input class="btn btn-primary file-button"
-                                                       type="button"
-                                                       value="Choose File"
-                                                       onClick="filebox()"
-                                                       id="choose_rom_3">
-                                            </div>
-                                            <input class="form-control"
-                                                   id="rom_3"
-                                                   type="text"
-                                                   readonly
-                                                   onClick="filebox()"
-                                                   placeholder="No File Chosen"/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-check form-switch item-switch" style="text-align: center; padding: 0;">
-                                            <label data-toggle="tooltip"
-                                                    title="Share your past seeds by generating it as a shareable patch file.">
-                                                <input class="form-check-input"
-                                                        type="checkbox"
-                                                        id="load_patch_file"
-                                                        name="load_patch_file"
-                                                        value="True"/>
-                                                Generate as Patch File
+                            <!--Past Generation-->
+                            <div class="tab-pane fade"
+                                id="nav-pastgen-data"
+                                role="tabpanel"
+                                aria-labelledby="nav-pastgen-tab">
+                                <div style="width: 80%;" class="center">
+                                    <div class="form-group" style="margin-bottom: 25px; text-align: center;">
+                                        <div class="row">
+                                            <label for="pastgenlist" class="select-title">
+                                                Selected seed:
                                             </label>
+                                            <select id="pastgenlist" class="form-select" style="width:50%;margin:0 auto;">
+                                            </select>
+                                        </div>
+                                        <div class="row">
+                                            <label for="input-file-rom_1" class="select-title">
+                                                ROM File
+                                            </label>
+                                            <div class="input-group mb-3 file-select"
+                                                style="width: 50%; margin: 0 auto">
+                                                <div class="input-group-text choose-file"
+                                                    style="background-color: #6c757d">
+                                                    <input class="btn btn-secondary file-button"
+                                                        type="button"
+                                                        value="Choose File"
+                                                        onClick="filebox()"
+                                                        id="choose_rom_3">
+                                                </div>
+                                                <input class="form-control"
+                                                    id="rom_3"
+                                                    type="text"
+                                                    readonly
+                                                    onClick="filebox()"
+                                                    placeholder="No File Chosen"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-check form-switch item-switch" style="text-align: center; padding: 0;">
+                                                <label data-toggle="tooltip"
+                                                        title="Share your past seeds by generating it as a shareable patch file.">
+                                                    <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="load_patch_file"
+                                                            name="load_patch_file"
+                                                            value="True"/>
+                                                    Generate as Patch File
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
+                                    <br id="formbreak" />
+                                    <input id="generate_pastgen_seed"
+                                        class="btn btn-secondary"
+                                        style="width: 60%; height: 50px; text-align: center"
+                                        type="button"
+                                        value="Generate Seed from History"/>
                                 </div>
-                                <br id="formbreak" />
-                                <input id="generate_pastgen_seed"
-                                       class="btn btn-primary"
-                                       style="width: 60%; height: 50px; text-align: center"
-                                       type="button"
-                                       value="Generate Seed from History"/>
                             </div>
                         </div>
                     </div>
+                </form>
+            </div>
+        </div>
+    </body>
+    <footer id="footer">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
+            <!-- Left Section: Statistics -->
+            <div id="footer-left" style="text-align: center;">
+                <h3>Statistics</h3>
+                <p id="total_generated_seeds"><strong>Total Generated Seeds:</strong> 0</p>
+                <p id="last_seed_generated"><strong>Last Seed Generated:</strong> -1 seconds ago</p>
+            </div>
+         
+
+            <!-- Middle Section: Existing Data -->
+            <div id="footer-middle" style="text-align: center;">
+                <a href="https://github.com/2dos/DK64-Randomizer" target="_blank" style="text-decoration: none">
+                    <img src="./static/img/github.png" alt="GitHub" />
+                </a>
+                <a href="./wiki/home.html" style="text-decoration: none">
+                    <img src="./static/img/wiki.png" alt="Wiki" />
+                </a>
+                <a href="https://discord.dk64randomizer.com" target="_blank" style="text-decoration: none">
+                    <img src="./static/img/discord.png" alt="Discord" />
+                </a>
+                <div class="footer-info">
+                    <a id="live-version">DK64 Randomizer | </a>
+                    <a href="https://dev.dk64randomizer.com">Dev Branch</a>
+                    <br />
+                    Randomizer by 2dos and Ballaam | Web Generator by Killklli
+                    <br />
+                    In-game characters, images and logos copyright © 1999-2024 Nintendo or Rareware respectively.
+                    <br />
+                    DK64Randomizer.com does not distribute copyright material.
+                    <br />
+                    <a href="./privacy.html">Privacy Policy</a>
                 </div>
-            </form>
-        </div>
-    </div>
-</body>
+            </div>
 
-
-<footer id="footer">
-    <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
-        <!-- Left Section: Statistics -->
-        <div id="footer-left" style="text-align: center;">
-            <h3>Statistics</h3>
-            <p id="total_generated_seeds"><strong>Total Generated Seeds:</strong> 0</p>
-            <p id="last_seed_generated"><strong>Last Seed Generated:</strong> -1 seconds ago</p>
+            <!-- Right Section: User Data -->
+            <div id="footer-right" style="text-align: center;">
+                <h4>Your Most Recent Seed</h4>
+                <p id="most_recent_seed_id"><strong>Most Recent Seed ID:</strong> None</p>
+                <p id="most_recent_seed_date"><strong>Most Recent Seed Date:</strong> None</p>
+            </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="./static/js/font-awesome.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js@1.11.2/src/toastify.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nunjucks/3.2.4/nunjucks.min.js" integrity="sha512-YvU0oaPCJSOIFni9rIOthOs5GgtU5kNZMKQG/Nt33t/H9g/1+TK7KJuMsCZS6v4O3+x253OZlTzPryrUtxxORw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js" defer integrity="sha512-f0VlzJbcEB6KiW8ZVtL+5HWPDyW1+nJEjguZ5IVnSQkvZbwBt2RfCBY0CBO1PsMAqxxrG4Di6TfsCPP3ZRwKpA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script type="text/javascript" src="static/js/md5.min.js" defer></script>
+        <script type="text/javascript" src="./static/js/rompatcher/crc.js" defer></script>
+        <script type="text/javascript" src="./static/js/rompatcher/formats/bps.js" defer></script>
+        <script type="text/javascript" src="./static/js/rompatcher/MarcFile.js" defer></script>
+        <script type="text/javascript" src="./static/js/rompatcher/formats/vcdiff.js" defer></script>
+
+        <script type="text/javascript" src="./static/js/rompatcher/RomPatcher.js" defer></script>
+        <script type="text/javascript" src="./static/js/rompatcher/filesaver.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Base64/1.3.0/base64.min.js" defer integrity="sha512-IFxgh3q1bUsg/sL6qotMkJZTOvPyYSS6mRSSIVnJndN5j9vWcQ+oJyHkelIkRAOaKgdU1ibHJOs4HX15sPtZKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js" defer integrity="sha512-g2TeAWw5GPnX7z0Kn8nFbYfeHcvAu/tx6d6mrLe/90mkCxO+RcptyYpksUz35EO337F83bZwcmUyHiHamspkfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="./static/js/compile_templates.js"></script>
+        <script src="./static/js/pyodide/pyodide.js" defer></script>    
         <script>
             // Update the statistics every 60 seconds by querying the API for the latest data 
             // if the site is dev.dk64randomizer.com or dk64randomizer.com
             if (window.location.hostname == "dev.dk64randomizer.com") {
-                current_total_url = "https://dev-generate.dk64rando.com/current_total";
+                current_total_url = "https://api.dk64rando.com/api/current_total?branch=dev";
             }
             else if (window.location.hostname == "dk64randomizer.com") {
-                current_total_url = "https://generate.dk64rando.com/current_total";
+                current_total_url = "https://api.dk64rando.com/api/current_total?branch=master";
             }
             else {
-                current_total_url = "http://" + window.location.hostname + ":8000/current_total";
+                current_total_url = "http://" + window.location.hostname + ":8000/api/current_total?branch=dev";
             }
+            let site_version = "";
             function query_stats(){
                 $.ajax({
                     url: current_total_url,
                     type: "GET",
                     dataType: "json",
-                    success: function (data) {
+                    success: function (data, status, xhr) {
+                        // We respond with a Version header, lets store that and if it changes after the first time we reload the page throw up an alert to the user
+                        if (site_version == "") {
+                            site_version = xhr.getResponseHeader("Version");
+                        }
+                        else if (site_version != xhr.getResponseHeader("Version")) {
+                            alert("A new version of the site is available, please refresh the page to get the latest version.");
+                            // force a reload of the page
+                            location.reload();
+                        }
                         // we want to parse the last_generated_time to just how long its been since then the format is "2023-12-20 10:40:42.962004"
                         // We want to tell them X Minutes/Seconds/Days ago
                         var last_generated_time = data.last_generated_time;
@@ -527,87 +592,239 @@
             }, 60000);
             // trigger it once on page load
             query_stats();
+
+            function updateFilteredSpoilerTabs() {
+                const nav_items = document.getElementById("spoiler-nav-group").getElementsByClassName("nav-item");
+                for (let n = 0; n < nav_items.length; n++) {
+                    let is_active = nav_items[n].getElementsByClassName("active").length > 0;
+                    if (is_active) {
+                        nav_items[n].removeAttribute("hidden");
+                    } else {
+                        const tied_id = nav_items[n].getElementsByClassName("nav-link")[0].getAttribute("data-bs-target").substring(1);
+                        const groups = document.getElementById(tied_id).getElementsByClassName("spoiler-group");
+                        let show = false;
+                        for (let g = 0; g < groups.length; g++) {
+                            if (!groups[g].hasAttribute("hidden")) {
+                                show = true;
+                            }
+                        }
+                        if (show) {
+                            nav_items[n].removeAttribute("hidden");
+                        } else {
+                            nav_items[n].setAttribute("hidden", "");
+                        }
+                    }
+                }
+            }
+            
+            function filterSpoilerSearch(el) {
+                const search_term = el.value.toLowerCase();
+                const spoiler_group = document.getElementById("spoiler").getElementsByClassName("spoiler-group");
+                for (let s = 0; s < spoiler_group.length; s++) {
+                    const table_elements = spoiler_group[s].getElementsByTagName("tr");
+                    // Reset hidden
+                    for (let t = 0; t < table_elements.length; t++) {
+                        table_elements[t].removeAttribute("hidden");
+                    }
+                    // Calculate what to show
+                    let show = true;
+                    if (search_term.length > 0) {
+                        show = false;
+                        for (let t = 0; t < table_elements.length; t++) {
+                            let local_show = false;
+                            const cell_elements = table_elements[t].getElementsByTagName("td");
+                            for (let c = 0; c < cell_elements.length; c++) {
+                                const cell_text = cell_elements[c].innerText.toLowerCase();
+                                if (cell_text.includes(search_term)) {
+                                    show = true;
+                                    local_show = true;
+                                }
+                            }
+                            if (local_show) {
+                                table_elements[t].removeAttribute("hidden");
+                            } else {
+                                table_elements[t].setAttribute("hidden", "");
+                            }
+                        }
+                    }
+                    if (show) {
+                        spoiler_group[s].removeAttribute("hidden");
+                    } else {
+                        spoiler_group[s].setAttribute("hidden", "");
+                    }
+                }
+                updateFilteredSpoilerTabs();
+            }
         </script>
-
-        <!-- Middle Section: Existing Data -->
-        <div id="footer-middle" style="text-align: center;">
-            <a href="https://github.com/2dos/DK64-Randomizer" target="_blank" style="text-decoration: none">
-                <img src="./static/img/github.png" alt="GitHub" />
-            </a>
-            <a href="./wiki/home.html" style="text-decoration: none">
-                <img src="./static/img/wiki.png" alt="Wiki" />
-            </a>
-            <a href="https://discord.dk64randomizer.com" target="_blank" style="text-decoration: none">
-                <img src="./static/img/discord.png" alt="Discord" />
-            </a>
-            <div style="font-size: small; color:#e3e3e3;">
-                <a id="live-version">DK64 Randomizer | </a>
-                <a href="https://dev.dk64randomizer.com">Dev Branch</a>
-                <br />
-                Randomizer by 2dos and Ballaam | Web Generator by Killklli
-                <br />
-                In-game characters, images and logos copyright © 1999-2024 Nintendo or Rareware respectively.
-                <br />
-                DK64Randomizer.com does not distribute copyright material.
-            </div>
-        </div>
-
-        <!-- Right Section: User Data -->
-        <div id="footer-right" style="text-align: center;">
-            <h4>Your Most Recent Seed</h4>
-            <p id="most_recent_seed_id"><strong>Most Recent Seed ID:</strong> None</p>
-            <p id="most_recent_seed_date"><strong>Most Recent Seed Date:</strong> None</p>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js@1.11.2/src/toastify.js"></script>
-    <script type="text/javascript" src="./static/js/webworker_main.js" defer></script>
-    <script type="text/javascript" src="./static/js/rompatcher/crc.js" defer></script>
-    <script type="text/javascript" src="./static/js/rompatcher/formats/bps.js" defer></script>
-    <script type="text/javascript" src="./static/js/rompatcher/MarcFile.js" defer></script>
-    <script type="text/javascript" src="./static/js/rompatcher/formats/vcdiff.js" defer></script>
-
-    <script type="text/javascript" src="./static/js/rompatcher/RomPatcher.js" defer></script>
-    <script type="text/javascript" src="./static/js/rompatcher/filesaver.js" defer></script>
-    <script>
-        function render_page(page) {
-            xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", page + ".html", false);
-            xmlhttp.send();
-            var data = xmlhttp.responseText;
-            document.documentElement.innerHTML = "";
-            document.open();
-            document.write(data);
-            document.close();
-            history.pushState({}, "page 1", "index");
-        }
-    </script>
-    <script>
-        $(function() {
-            $('[data-toggle="tooltip"]').tooltip({
-                trigger: 'hover'
-            })
-        })
-
-        $(document).ready(function () {
-            $("#generate_seed").on('click', function (event) {
-                event.preventDefault();
-                var el = $(this);
-                el.prop('disabled', true);
-                setTimeout(function(){el.prop('disabled', false);}, 2000);
+        <script>
+            function render_page(page) {
+                xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("GET", page + ".html", false);
+                xmlhttp.send();
+                var data = xmlhttp.responseText;
+                document.documentElement.innerHTML = "";
+                document.open();
+                document.write(data);
+                document.close();
+                history.pushState({}, "page 1", "index");
+            }
+        </script>
+        <script>
+            $(function() {
+                $('[data-toggle="tooltip"]').tooltip({
+                    trigger: 'hover'
+                })
             })
 
-            $("#generate_seed").removeAttr("disabled");
+            $(document).ready(function () {
+                $("#generate_seed").on('click', function (event) {
+                    event.preventDefault();
+                    var el = $(this);
+                    el.prop('disabled', true);
+                    setTimeout(function(){el.prop('disabled', false);}, 2000);
+                })
 
-            $("#settings_string").on('click', function (event) {
-                var input = $("#settings_string");
-                input.select();
-            })
+                $("#generate_seed").removeAttr("disabled");
 
-            $("#settings_string_copy").on('click', function (event) {
-                var input = $("#settings_string");
-                input.select();
-                navigator.clipboard.writeText(input.val());
+                $("#settings_string").on('click', function (event) {
+                    var input = $("#settings_string");
+                    input.select();
+                })
+
+                $("#settings_string_copy").on('click', function (event) {
+                    var input = $("#settings_string");
+                    input.select();
+                    navigator.clipboard.writeText(input.val());
+                })
             })
-        })
-    </script></footer>
+        </script>
+        <script>
+            // TOAST GENERATOR
+            const toastTrigger = document.getElementById('liveToastBtn')
+            const toastContainer = document.getElementById("toasts")
+
+            let toast_counter = 0;
+
+            function generateToast(message, error=false) {
+                toastContainer.getElementsByClassName("toast-container")[0].innerHTML += `
+                <div 
+                  id="liveToast${toast_counter}"
+                  class="toast align-items-center ${error ? 'text-bg-danger' : ''} border-0"
+                  role="${error ? "alert" : "status"}"
+                  ${error ? "data-bs-autohide='false'" : ""}
+                  aria-live="${error ? "assertive" : "polite"}"
+                  aria-atomic="true">
+                    <div class="toast-header">
+                        <strong class="me-auto">DK64 Randomizer (System)</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body text-start">
+                        ${message}
+                    </div>                  
+                </div>`
+                const toastEl = document.getElementById(`liveToast${toast_counter}`)
+                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEl)
+                toastBootstrap.show()
+                toast_counter += 1;
+            }
+        </script>
+        <script type="module">
+            // Create an async function to handle the script loading process
+            async function loadScripts() {
+                try {
+                    // Dynamically import init_variables.js first
+                    await import('./static/js/init_variables.js');
+        
+                    // Now load PlandoUtils.js
+                    await import('./static/js/PlandoUtils.js');
+        
+                    // Nunjucks configuration after PlandoUtils.js is loaded
+                    var env = nunjucks.configure('/templates', { autoescape: false, web: { useCache: true } });
+        
+                    // Use the imported functions from PlandoUtils
+                    env.addFilter("plando_custom_loc_restrict", PlandoCustomLocationFilter);
+                    env.addFilter("plando_custom_loc_item_restrict", PlandoCustomLocationItemFilter);
+                    env.addFilter("plando_minigame_restrict", PlandoMinigameFilter);
+                    env.addFilter("plando_shop_sort", PlandoShopSortFilter);
+                    env.addFilter("music_select_restrict", function(songList, location) {
+                        return songList;
+                    });
+                    env.addGlobal("plando_option_class_annotation", PlandoOptionClassAnnotation);
+                    env.addFilter("plando_item_restrict", function(itemList, location) {
+                        return itemList;
+                    });
+                    // TODO REWRITE: Need to Repoint the default URLs
+                    let base_url;
+                    let branch;
+                    if (location.hostname === "dev.dk64randomizer.com") {
+                      base_url =
+                        "https://api.dk64rando.com";
+                      branch = "dev";
+                    } else if (location.hostname === "dk64randomizer.com") {
+                      base_url = "https://api.dk64rando.com";
+                      branch = "stable";
+                    } else {
+                      base_url = `${location.origin}`;
+                        branch = "dev";
+                    }
+                    $.ajax({
+                        type: "GET",
+                        url: base_url + "/api/get_selector_info",
+                        data: { "branch": branch },
+                        success: function (data) {
+                            try {
+                                var selector_info = data;
+                                //console.log("Parsed selector_info:", selector_info);
+                                // Append the KongZones to the selector_info
+                                selector_info["kong_zones"] = KongZones;
+                                // Render templates
+                                var renderedHTML = env.render("base.html", selector_info);
+                                var navRenderedHTML = env.render("nav-tabs.html", {});
+                    
+                                // Inject into the DOM
+                                $("#tab-data").html(renderedHTML);
+                                $("#nav-tab-list").html(navRenderedHTML);
+                    
+                                // After rendering the HTML, dynamically load the other scripts
+                                loadAdditionalScripts();
+                            } catch (error) {
+                                console.error("Error processing response data:", error);
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            // Insert error to root of dom
+                            console.error("AJAX request failed:", errorThrown);
+                        }})
+                } catch (error) {
+                    console.error("Failed to load required modules:", error);
+                }
+            }
+        
+                // Function to dynamically load additional scripts after HTML is updated
+                function loadAdditionalScripts() {
+                    const scripts = [
+                        { src: './static/js/utils.js', defer: true },
+                        { src: './static/js/spoiler.js', defer: true },
+                        { src: './static/js/generate_buttons.js', defer: true },
+                        { src: './static/js/rando_options.js', defer: true },
+                        { src: './static/js/randomize_settings.js', defer: true },
+                        { src: './static/js/initalize.js', defer: true },
+                        { src: './static/js/music_select.js', defer: true },
+                        { src: "./static/js/hash.js", defer: true },
+                        { src: "./static/js/pyodide_functions.js", defer: true}
+                    ];
+            
+                    scripts.forEach(({ src, defer }) => {
+                        const script = document.createElement('script');
+                        script.src = src;
+                        script.defer = defer;
+                        document.body.appendChild(script);
+                    });
+                }
+            
+                // Call the async function to start the process
+                loadScripts();
+            </script>
+        
+    </footer>
+</html>
