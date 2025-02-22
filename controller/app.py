@@ -73,7 +73,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 # check the args we started the script with
-if __name__ == "__main__" and os.environ.get("BRANCH", "LOCAL") != "LOCAL":
+if __name__ == "__main__":
     # create the providers
     logger_provider = LoggerProvider(resource=resource)
     # set the providers
@@ -127,8 +127,10 @@ class TaskThread(threading.Thread):
             self.result = self.target(self.kwargs.get("args")[0])
 
 
-task_queue_high = Queue("tasks_high_priority", connection=redis_conn)  # High-priority queue
-task_queue_low = Queue("tasks_low_priority", connection=redis_conn)  # Low-priority queue
+task_queue_high_stable = Queue("tasks_high_priority_stable", connection=redis_conn)  # High-priority queue
+task_queue_low_stable = Queue("tasks_low_priority_stable", connection=redis_conn)  # Low-priority queue
+task_queue_low_dev = Queue("tasks_low_priority_dev", connection=redis_conn)  # Low-priority queue
+task_queue_high_dev = Queue("tasks_high_priority_dev", connection=redis_conn)  # High-priority queue
 CORS(app, origins=["https://dev.dk64randomizer.com", "https://dk64randomizer.com"])
 # Prepend all routes with /api
 secret_token = secrets.token_hex(256)
@@ -260,7 +262,12 @@ def submit_task():
     if last_submission_time is not None:
         last_submission_time = int(last_submission_time.decode())
     current_time = int(time.time())
-
+    if branch == "stable":
+        task_queue_high = task_queue_high_stable
+        task_queue_low = task_queue_low_stable
+    else:
+        task_queue_high = task_queue_high_dev
+        task_queue_low = task_queue_low_dev
     # Determine the priority based on the cooldown period
     if last_submission_time is None or current_time - int(last_submission_time) > COOLDOWN_PERIOD:
         # High-priority queue
@@ -315,11 +322,9 @@ def task_status(task_id):
         return set_response(json.dumps({"error": exceptdata}), 500)
 
     # Get the position in the queue
-    position = 0
-    if task in task_queue_high.jobs:
-        position = task_queue_high.jobs.index(task)
-    elif task in task_queue_low.jobs:
-        position = task_queue_low.jobs.index(task) + len(task_queue_high.jobs)
+    position = task.get_position()
+    if position is None:
+        position = 99
     return set_response(json.dumps({"task_id": task.id, "status": task.get_status(), "position": position}), 200)
 
 
