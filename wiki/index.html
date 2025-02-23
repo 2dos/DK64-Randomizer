@@ -88,7 +88,7 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="container" id="content-container">
             <div class="row">
                 <div class="col-sm-1 p-0 hide-if-thin" style="width:fit-content">
                     <div class="ps-3 mb-3" style="width:fit-content">
@@ -246,7 +246,7 @@
 
         </script>
         <script type="text/javascript" src="../static/js/wiki-code.js"></script>
-        <script src="../static/js/autocomplete.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/typeahead-standalone"></script>
         <script type="text/javascript">
             function copyCode(element) {
                 let parent = element.parentElement.parentElement.parentElement;
@@ -314,18 +314,25 @@
             }
 
             async function prepSuggestions() {
-                const article_lst = await getSuggestions();
-                $('#article-search').typeahead({
-                    source: article_lst,
-                    displayText: (item) => {
-                        return item.name;
+                const article_lst = await getSuggestions();                
+                const instance = window.typeahead({
+                    input: document.getElementById("article-search"),
+                    source: {
+                        local: article_lst,
+                        keys: ["name"],
                     },
-                    afterSelect: (item) => {
-                        $(document).on('click', '.typeahead.dropdown-menu li', function() {
-                            window.location.href = item.link;
-                        });
+                    autoSelect: true,
+                    hint: false,
+                    onSubmit: (e, item) => {
+                        window.location.href = item.link;
+                    },
+                    templates: {
+                        suggestion: (item, resultSet) => {
+                            console.log(item, resultSet)
+                            return `<div onClick="goTo('${item.link}')">${item.name}</div>`
+                        }
                     }
-                });
+                })
             }
 
             document.addEventListener('DOMContentLoaded', e => {
