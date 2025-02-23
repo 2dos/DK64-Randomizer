@@ -2057,6 +2057,7 @@ class Settings:
                     Locations.ForestDiddyRafters,
                     Locations.CavesTiny5DoorIgloo,
                     Locations.CavesDiddy5DoorCabinUpper,
+                    Locations.CavesTinyCaveBarrel,
                     Locations.CastleDonkeyTree,
                     Locations.CastleLankyGreenhouse,
                     Locations.HelmBananaFairy1,

@@ -67,7 +67,7 @@
             class="center_image"
             style="cursor: pointer; margin-top: 70px"/>
         <div class="mt-4"></div>
-        <div class="container">
+        <div class="container" id="content-container">
             <div class="row">
                 <div class="col-sm-3 p-0 hide-if-thin">
                     <div class="px-3 mb-3">
@@ -102,7 +102,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <input class="form-control mr-sm-2" id="article-search" type="text" placeholder="Search" autocomplete="off" data-lpignore="true" data-form-type="other">
+                            <input class="form-control mr-sm-2" id="article-search" type="search" placeholder="Search" autocomplete="off" data-lpignore="true" data-form-type="other">
                         </div>
                     </div>
                     </div>
@@ -127,7 +127,7 @@
         </div>
         <script id="redirect_handler">window.location.href="./index.html?title=Logic-Tips-and-Tricks";</script>
         <script type="text/javascript" src="../static/js/wiki-code.js"></script>
-        <script src="../static/js/autocomplete.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/typeahead-standalone"></script>
         <script type="text/javascript">
             function copyCode(element) {
                 let parent = element.parentElement.parentElement.parentElement;
@@ -195,17 +195,25 @@
             }
 
             async function prepSuggestions() {
-                const article_lst = await getSuggestions();
-                console.log(article_lst)
-                $('#article-search').typeahead({
-                    source: article_lst,
-                    displayText: (item) => {
-                        return item.name;
+                const article_lst = await getSuggestions();                
+                const instance = window.typeahead({
+                    input: document.getElementById("article-search"),
+                    source: {
+                        local: article_lst,
+                        keys: ["name"],
                     },
-                    afterSelect: (item) => {
+                    autoSelect: true,
+                    hint: false,
+                    onSubmit: (e, item) => {
                         window.location.href = item.link;
+                    },
+                    templates: {
+                        suggestion: (item, resultSet) => {
+                            console.log(item, resultSet)
+                            return `<div onClick="goTo('${item.link}')">${item.name}</div>`
+                        }
                     }
-                });
+                })
             }
 
             document.addEventListener('DOMContentLoaded', e => {

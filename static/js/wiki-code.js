@@ -61,8 +61,92 @@ async function getSuggestions() {
 }
 
 async function fetchArticles() {
-    articles = await fetch("./articles.json", {cache: "no-store"}).then(x => x.json());
-    sugg_articles = await fetch("./home_articles.json", {cache: "no-store"}).then(x => x.json());
+    const article_md = "https://raw.githubusercontent.com/wiki/2dos/DK64-Randomizer/Wiki-Site-Tree.md"
+    const article_data = await fetch(article_md, {cache: "no-store"}).then(x => x.text());
+    articles = [
+        {
+            "name": "Wiki Editing",
+            "link": "WikiEditing"
+        },
+        {
+            "name": "Custom Locations: Coins",
+            "link": "CustomLocationsCoins"
+        },
+        {
+            "name": "Custom Locations: Colored Bananas",
+            "link": "CustomLocationsColoredBananas"
+        },
+        {
+            "name": "Custom Locations: Doors",
+            "link": "CustomLocationsDoors"
+        },
+        {
+            "name": "Custom Locations: Fairies",
+            "link": "CustomLocationsFairies"
+        },
+        {
+            "name": "Custom Locations: Kasplats",
+            "link": "CustomLocationsKasplats"
+        },
+        {
+            "name": "Custom Locations: Miscellaneous",
+            "link": "CustomLocationsMiscellaneous"
+        },
+        {
+            "name": "Plando Colors",
+            "link": "PlandoColors"
+        },
+        {
+            "name": "Random Settings: Difficult",
+            "link": "RandomSettingsDifficult"
+        },
+        {
+            "name": "Random Settings: Difficult With Qol Shuffle",
+            "link": "RandomSettingsDifficultWithQolShuffle"
+        },
+        {
+            "name": "Random Settings: Easy",
+            "link": "RandomSettingsEasy"
+        },
+        {
+            "name": "Random Settings: Standard",
+            "link": "RandomSettingsStandard"
+        }
+    ];
+    sugg_articles = [];
+    let state = 0; // 0 = not in article list, 1 = article list, 2 = sugg list
+    article_data.split("\n").forEach(line => {
+        if (line == "## Article List") {
+            state = 1;
+            return;
+        } else if (line == "## New? Start Here section") {
+            articles_ready = true;
+            state = 2;
+            return;
+        }
+        if (state == 1) {
+            if (line.substring(0, 2) == "- ") {
+                const txt = line.substring(2);
+                articles.push({
+                    "name": txt,
+                    "link": txt.replaceAll(" ",""),
+                    "github": txt.replaceAll(" ","-"),
+                })
+            }
+        } else if (state == 2) {
+            if (line.length > 0) {
+                const is_sub = line.substring(0, 2) == "- ";
+                if (is_sub) {
+                    sugg_articles[sugg_articles.length - 1].articles.push(line.substring(2).replaceAll(" ",""));
+                } else {
+                    sugg_articles.push({
+                        "head": line,
+                        "articles": [],
+                    })
+                }
+            }
+        }
+    })
     // Populate search suggestions
     article_names = articles.map(item => {
         return {
@@ -96,6 +180,19 @@ async function fetchArticles() {
     sugg_article_html.push("</ul>")
     for (let s = 0; s < sugg_article_holders.length; s++) {
         sugg_article_holders[s].innerHTML = sugg_article_html.join("")
+    }
+    const article_list = document.getElementById("article-list");
+    if (article_list) {
+        const sorted_articles = articles.sort((a, b) => a.name > b.name ? 1 : ((b.name > a.name) ? -1 : 0));
+        article_list.innerHTML = sorted_articles.map(article => {
+            if (article.name.includes("Custom Locations: ")) {
+                return "";
+            }
+            if (article.name.includes("Random Settings: ")) {
+                return "";
+            }
+            return `<li><a href="${getLink(article)}">${article.name}</a></li>`;
+        }).join("");
     }
 }
 
@@ -466,13 +563,16 @@ function filterHTML(element, output_html) {
     }
 
     // Modify links
-    const links = document.getElementsByTagName("a");
-    for (let i = 0; i < links.length; i++) {
-        href = links[i].getAttribute("href");
-        if (href) {
-            if (href.substring(0, 2) == "./") {
-                console.log("Modifying link...");
-                links[i].setAttribute("href", `?title=${href.substring(2)}`)
+    const container = document.getElementById("content-container");
+    if (container) {
+        const links = container.getElementsByTagName("a");
+        for (let i = 0; i < links.length; i++) {
+            href = links[i].getAttribute("href");
+            if (href) {
+                if (href.substring(0, 2) == "./") {
+                    console.log("Modifying link...");
+                    links[i].setAttribute("href", `?title=${href.substring(2)}`)
+                }
             }
         }
     }

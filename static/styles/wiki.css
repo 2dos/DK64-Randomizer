@@ -118,21 +118,22 @@ pre.pulse {
     transform: rotate(-90deg);
 }
 
-#search_suggestions {
-    background-color: white;
+.tt-list {
     z-index: 2000;
+    color: white;
 }
 
-#search_suggestions .search-item {
+.tt-list .tt-suggestion {
     border-bottom: 1px solid darkslategray;
-    color: black;
+    background-color: #222222;
     cursor: pointer;
     transition: 0.2s linear;
+    padding: 10px;
 }
 
-#search_suggestions .search-item:hover {
+.tt-list .tt-suggestion:hover {
     color: white;
-    background-color: rgba(var(--stylish-dark));
+    background-color: #333333;
 }
 
 .sidebar-link, .collapsable-header {
