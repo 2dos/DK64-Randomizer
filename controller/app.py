@@ -538,7 +538,7 @@ def get_spoiler_log():
                 return set_response({"error": "Spoiler log is locked"}, 425)
 
             # Return the spoiler log
-            return set_response(jsonify(file_contents), 200)
+            return set_response(json.dumps(file_contents, sort_keys=False), 200)
     except json.JSONDecodeError:
         return set_response({"error": "Invalid JSON format in file"}, 500)
     except Exception as e:
