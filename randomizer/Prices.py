@@ -279,7 +279,7 @@ def KongCanBuy(spoiler, location_id, logic, kong, buy_empty=False):
     """Check if given kong can logically purchase the specified location."""
     location = spoiler.LocationList[location_id]
     # If nothing is sold here, return true
-    if not buy_empty and location.item is None or location.item == Items.NoItem:
+    if not buy_empty and (location.item is None or location.item == Items.NoItem):
         return True
     price = GetPriceAtLocation(logic.settings, location_id, location, logic.Slam, logic.AmmoBelts, logic.InstUpgrades)
 
