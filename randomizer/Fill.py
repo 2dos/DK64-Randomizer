@@ -2414,6 +2414,7 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
 
     # When a shared move is assigned to a shop in any particular level, that shop cannot also hold any kong-specific moves.
     # To avoid conflicts, first determine which level shops will have shared moves then remove these shops from each kong's valid locations list
+    training = []
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         # First place training moves that are not placed. These should be the first moves placed outside of starting moves. Placement order is in relative importance.
         training = [Items.Barrels, Items.Vines, Items.Swim, Items.Oranges]
