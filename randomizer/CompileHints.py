@@ -3165,7 +3165,7 @@ def GenerateMultipathDict(
                     camera_location_id = id
                     break
             if camera_location_id in spoiler.woth_paths.keys() and location in spoiler.woth_paths[camera_location_id]:
-                path_to_camera.append("taking photos")
+                path_to_camera.append("\x07taking photos\x07")
                 relevant_goal_locations.append(Locations(camera_location_id))
         # Some locations are useless to hint on the path to some goals - every hint we construct should be useful
         if location in TrainingBarrelLocations or location in PreGivenLocations or location == Locations.HelmKey:
