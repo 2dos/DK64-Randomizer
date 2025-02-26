@@ -457,7 +457,7 @@ typedef struct menu_paad {
 } menu_paad;
 
 Gfx *displayMenuWarnings(Gfx *dl) {
-	if (EEPROMType != 2) {
+	if (EEPROMType != EEPROM_TYPE_16K) {
 		actorData* actor = findActorWithType(0x146);
 		if (actor) {
 			menu_paad* paad = (menu_paad*)actor->paad;

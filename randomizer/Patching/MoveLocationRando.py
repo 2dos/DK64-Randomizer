@@ -167,6 +167,7 @@ def writeMoveDataToROM(ROM_COPY: LocalROM, arr: list, enable_hints: bool, spoile
                 "vine": 0x183,
                 "camera": 0x2FD,
                 "shockwave": 0x179,
+                "climbing": 0x297,
                 "camera_shockwave": 0xFFFE,
             }
             flag_index = 0xFFFF
