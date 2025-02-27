@@ -1215,7 +1215,13 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
                 raise Ex.FillException("Rare path calculation error - report this to the devs with your settings string. Error code PL-2")
     for goal, path in spoiler.rap_win_con_paths.items():
         if len(path) < 1:
-            raise Ex.FillException("Rare path calculation error - report this to the devs with your settings string. Error code PL-3")
+            # One verse is sometimes expected to have no items on the path
+            expectedEmptyPathVerses = []
+            # If your training moves are unshuffled, they don't end up on paths. Chunky Verse only requires barrels, so it no longer has any path requirements.
+            if spoiler.settings.training_barrels == TrainingBarrels.normal:
+                expectedEmptyPathVerses.append(Events.ChunkyVerse)
+            if rap_assoc_name[goal] not in expectedEmptyPathVerses:
+                raise Ex.FillException("Rare path calculation error - report this to the devs with your settings string. Error code PL-3")
 
 
 def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]], MajorItems: List[Items]) -> None:
