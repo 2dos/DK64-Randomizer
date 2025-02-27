@@ -862,7 +862,6 @@ class Spoiler:
             phase_name = boss_map_names.get(map_id, Maps(map_id).name)
             humanspoiler["WotH Paths"][phase_name] = path_dict
         if self.settings.win_condition_item == WinConditionComplex.dk_rap_items:
-            print(self.rap_win_con_paths)
             for verse_name, path in self.rap_win_con_paths.items():
                 path_dict = {}
                 for path_loc_id in path:
