@@ -315,6 +315,7 @@ export enum MinigamesListSelected {
     helm_minigames = 16,
     arenas = 17,
     training_minigames = 18,
+    arcade = 19,
 }
 
 export enum MiscChangesSelected {

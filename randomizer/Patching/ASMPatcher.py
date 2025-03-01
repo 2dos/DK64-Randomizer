@@ -2056,6 +2056,9 @@ def patchAssembly(ROM_COPY, spoiler):
         for index, value in enumerate(spoiler.arcade_order):
             writeValue(ROM_COPY, 0x8004A788 + index, Overlay.Arcade, value, offset_dict, 1)
 
+    writeHook(ROM_COPY, 0x805FE954, Overlay.Static, "ArcadeMapCheck", offset_dict)
+    writeHook(ROM_COPY, 0x80024FD4, Overlay.Arcade, "ArcadeIntroCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x800288FC, Overlay.Jetpac, "completeJetpac", offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_picture_taking):
         # Fast Camera Photo
         writeValue(ROM_COPY, 0x80699454, Overlay.Static, 0x5000, offset_dict)  # Fast tick/no mega-slowdown on Biz
@@ -2956,6 +2959,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8002B6D4, Overlay.Arcade, "arcadeExit", offset_dict)
     writeFunction(ROM_COPY, 0x8002FA58, Overlay.Arcade, "arcadeExit", offset_dict)
     # Fix arcade level setting logic
+    writeValue(ROM_COPY, 0x80024F24, Overlay.Arcade, 0, offset_dict, 4)  # Disable this only being present for story arcade
     writeFunction(ROM_COPY, 0x80024F34, Overlay.Arcade, "determineArcadeLevel", offset_dict)  # Change log
     writeValue(ROM_COPY, 0x80024F70, Overlay.Arcade, 0, offset_dict, 4)  # Prevent level set
     writeValue(ROM_COPY, 0x80024F50, Overlay.Arcade, 0, offset_dict, 4)  # Prevent level set

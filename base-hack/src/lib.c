@@ -306,6 +306,11 @@ static const map_bitfield minigame_maps_btf = {
     .k_lumsy_ending = 0,
     .k_rools_shoe = 0,
     .k_rools_arena = 0,
+	.arcade_25m = 1,
+	.arcade_50m = 1,
+	.arcade_75m = 1,
+	.arcade_100m = 1,
+	.jetpac_rocket = 1,
 };
 static const char overlay_indexes[] = {
 	OVERLAY_NONE, // Test Map
@@ -1504,6 +1509,8 @@ static flag_counting_struct flag_counters[] = {
 	{.flag_start = FLAG_FAKEITEM, .item_count = 16, .enabled=1, .flag_array=(short*)0}, // REQITEM_ICETRAP
 	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_GAMEPERCENTAGE
 	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_COLOREDBANANA
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_BOSSES
+	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_BONUSES
 };
 
 static float percentage_rewards[] = {
@@ -1596,6 +1603,7 @@ dynamic_flag_icetrap_junk isIceTrapFlag(int flag) {
 }
 
 unsigned int cs_skip_db[2] = {0, 0};
+static unsigned char unused_bonus_ids[] = {2, 29, 30, 32, 34, 35, 38, 41, 42, 52};
 
 int getItemCountReq(requirement_item item) {
 	int enabled_state = flag_counters[item].enabled;
@@ -1640,6 +1648,22 @@ int getItemCountReq(requirement_item item) {
 			for (int world = 0; world < 8; world++) {
 				for (int kong = 0; kong < 5; kong++) {
 					count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
+				}
+			}
+			return count;
+		case REQITEM_BOSSES:
+			for (int i = 0; i < 7; i++) {
+				if (checkFlag(normal_key_flags[i], FLAGTYPE_PERMANENT)) {
+					count += 1;
+				}
+			}
+			return count;
+		case REQITEM_BONUSES:
+			for (int i = 1; i < 54; i++) {
+				if (!inU8List(i, &unused_bonus_ids, sizeof(unused_bonus_ids))) {
+					if (checkFlag(bonus_data[i].flag, FLAGTYPE_PERMANENT)) {
+						count += 1;
+					}
 				}
 			}
 			return count;

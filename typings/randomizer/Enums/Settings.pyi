@@ -282,6 +282,7 @@ class MinigamesListSelected(IntEnum):
     helm_minigames = 16
     arenas = 17
     training_minigames = 18
+    arcade = 19
 
 class MiscChangesSelected(IntEnum):
     auto_dance_skip = 1

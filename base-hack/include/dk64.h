@@ -451,6 +451,8 @@ extern void spawnFireballExplosion(float x, float y, float z, float scale, char 
 extern void setChunkLighting(float red, float green, float blue, int chunk);
 extern void unkLoadingZoneControllerFunction(short exit);
 
+extern void nextJetpacLevel(void);
+
 extern void crankyCode(void);
 extern void funkyCode(void);
 extern void candyCode(void);

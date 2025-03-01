@@ -29,3 +29,12 @@ void initJetpac(void) {
 		*(short*)(0x80024D96) = getLo(&jetpacRewardText);
 	}
 }
+
+void completeJetpac(void) {
+	if (CurrentMap == MAP_JETPAC_ROCKET) {
+		resolveBonusContainer();
+		ExitFromBonus();
+		return;
+	}
+	nextJetpacLevel();
+}

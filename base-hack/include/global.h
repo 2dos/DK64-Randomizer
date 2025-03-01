@@ -36,6 +36,8 @@ extern void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1)
 extern int isBounceObject(int object);
 extern void genericStatUpdate(bonus_stat stat);
 
+extern void resolveBonusContainer(void);
+
 extern int getEnemyItem(int id);
 extern int getEnemyFlag(int id);
 extern void setEnemyDBPopulation(int value);

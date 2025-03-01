@@ -233,6 +233,11 @@ static const map_bitfield banned_map_btf = {
     .k_lumsy_ending = 1, // Reason: Cutscene Map
     .k_rools_shoe = 1, // Reason: Boss Map
     .k_rools_arena = 1, // Reason: Cutscene Map
+    .arcade_25m = 1, // Reason: Minigame.
+    .arcade_50m = 1, // Reason: Minigame.
+    .arcade_75m = 1, // Reason: Minigame.
+    .arcade_100m = 1, // Reason: Minigame.
+    .jetpac_rocket = 1, // Reason: Minigame.
 };
 
 static const movement_bitfield banned_movement_btf = {
