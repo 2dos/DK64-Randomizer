@@ -845,6 +845,8 @@ class Settings:
         self.enable_progressive_hints = False  # Deprecated
         self.progressive_hint_text = 0  # Deprecated
         self.progressive_hint_count = 0
+        # Misc
+        self.archipelago = False
 
     def shuffle_prices(self, spoiler):
         """Price randomization. Reuseable if we need to reshuffle prices."""

@@ -588,6 +588,7 @@ def patching_response(spoiler):
     rom_flags |= 0x80 if spoiler.settings.enable_plandomizer else 0
     rom_flags |= 0x40 if spoiler.settings.generate_spoilerlog else 0
     rom_flags |= 0x20 if spoiler.settings.has_password else 0
+    rom_flags |= 0x10 if spoiler.settings.archipelago else 0
     ROM_COPY.seek(sav + 0xC4)
     ROM_COPY.writeMultipleBytes(rom_flags, 1)
     password = None

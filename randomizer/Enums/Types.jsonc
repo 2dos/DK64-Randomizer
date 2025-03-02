@@ -32,7 +32,8 @@
     "Candy": 30,
     "Snide": 31,
     "IslesMedal": 32,
-    "ProgressiveHint": 33
+    "ProgressiveHint": 33,
+    "ArchipelagoItem": 34
   },
   "BarrierItems": {
     "Nothing": 0,

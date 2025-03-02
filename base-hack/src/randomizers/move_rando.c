@@ -631,7 +631,7 @@ void getNextMoveText(void) {
 			}
 		}
 	}
-	int override_string = Rando.archipelago && p_type == 8;
+	int override_string = isAPEnabled() && p_type == 8;
 	if ((has_data) || (paad->upper_text) || (paad->lower_text)) {
 		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 			used_overlay->kong = 0;

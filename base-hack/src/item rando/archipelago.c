@@ -11,7 +11,51 @@
 
 #include "../../include/common.h"
 
+static archipelago_data ap_info;
+
+int isAPEnabled(void) {
+    if (Rando.rom_flags.archipelago) {
+        return 1;
+    }
+    return 0;
+}
+
+void initAP(void) {
+    if (isAPEnabled()) {
+        APData = &ap_info;
+        ap_info.start_flag = FLAG_ENEMY_KILLED_0 + 16;
+        if (Rando.enemy_item_rando) {
+            ap_info.start_flag += ENEMIES_TOTAL;
+        }
+    }
+}
+
+void initAPCounter(void) {
+    if (isAPEnabled()) {
+        int counter = 0;
+        for (int i = 0; i < 16; i++) {
+            counter <<= 1;
+            if (checkFlag((ap_info.start_flag - 16) + i, FLAGTYPE_PERMANENT)) {
+                counter += 1;
+            }
+        }
+        ap_info.counter = counter;
+    }
+}
+
+void saveAPCounter(void) {
+    if (isAPEnabled()) {
+        int counter = ap_info.counter;
+        for (int i = 0; i < 16; i++) {
+            int state = counter & 1;
+            setFlag((ap_info.start_flag - 1) - i, state, FLAGTYPE_PERMANENT);
+            counter >>= 1;
+        }
+    }
+}
+
 void handleSentItem(void) {
+    archipelago_items FedItem = ap_info.fed_item;
     int check_count = -1;
     int check_start_flag = -1;
     int check_flag_index = 0;
@@ -225,25 +269,46 @@ int canReceiveItem(void) {
     return 0;
 }
 
-void handleArchipelagoFeed(void) {
-    if (canReceiveItem()) {
-        if (FedItem != TRANSFER_ITEM_NULL) {
-            handleSentItem();
-            FedItem = TRANSFER_ITEM_NULL;
-        }
+void handleArchipelagoFeed(void) {\
+    if (ap_info.connection > 0) {
+        ap_info.connection -= 1;
     }
-}
-
-void handleArchipelagoString(void) {
     if (canReceiveItem()) {
-        if (FedString[0] != 0) {
+        if (ap_info.fed_item != TRANSFER_ITEM_NULL) {
+            handleSentItem();
+            ap_info.fed_item = TRANSFER_ITEM_NULL;
+        }
+        if (ap_info.fed_string[0] != 0) {
             int vacant_spot = spawnItemOverlay(8, 0, 1, 1);
             if (vacant_spot == -1) {
                 return;
             }
             text_overlay_data[vacant_spot].string = dk_malloc(0x30);
-            dk_memcpy(text_overlay_data[vacant_spot].string, &FedString[0], 0x21);
-            FedString[0] = 0;
+            dk_memcpy(text_overlay_data[vacant_spot].string, &ap_info.fed_string, 0x21);
+            ap_info.fed_string[0] = 0;
         }
     }
+}
+
+int isFlagAPItem(int flag) {
+    if (isAPEnabled()) {
+        return isFlagInRange(flag, ap_info.start_flag, 1000 - 16);
+    }
+    return 0;
+}
+
+static char *ap_strings[] = {
+    "APCLIENT CONNECTED",
+    "APCLIENT DISCONNECTED"
+};
+
+Gfx *displayAPConnection(Gfx *dl) {
+    if (isAPEnabled()) {
+        int index = 1;
+        if (ap_info.connection > 0) {
+            index = 0;
+        }
+        dl = drawPixelTextContainer(dl, 15, 215, ap_strings[index], 0xFF, 0xFF, 0xFF, 0xFF, 1);
+    }
+    return dl;
 }

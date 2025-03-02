@@ -722,6 +722,7 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
             MinigameImageLoader(None, 25, 0x1775, 64, 64, TextureFormat.IA8),
             MinigameImageLoader("hint"),
         ),
+        Minigame8BitImage([Items.ArchipelagoItem], MinigameImageLoader("ap"), MinigameImageLoader("ap")),
     ]
     arcade_image_data = None
     jetpac_image_data = None
@@ -1182,8 +1183,8 @@ def patchAssembly(ROM_COPY, spoiler):
     static_expansion = 0x100
     if settings.enemy_drop_rando:
         static_expansion += 427  # Total Enemies
-    if False:  # TODO: Check Archipelago
-        static_expansion += 400  # Archipelago Flag size
+    if settings.archipelago:
+        static_expansion += 1000  # Archipelago Flag size
     expandSaveFile(ROM_COPY, static_expansion, balloon_patch_count, offset_dict)
     # 1-File Fixes
     writeValue(ROM_COPY, 0x8060CF34, Overlay.Static, 0x240E0001, offset_dict, 4)  # Slot 1

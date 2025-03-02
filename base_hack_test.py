@@ -281,7 +281,7 @@ with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
                     "plando",
                     "spoiler",
                     "pass_locked",
-                    "unk3",
+                    "archipelago",
                     "unk4",
                     "unk5",
                     "unk6",

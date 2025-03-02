@@ -348,6 +348,7 @@ void initHack(int source) {
             initItemRando();
 			initCosmetic();
 			initTextChanges();
+			initAP();
 
 			replace_zones(1);
 			loadHooks();

@@ -1746,7 +1746,7 @@ typedef struct ROMFlags {
 	unsigned char plando : 1; // 0x80
 	unsigned char spoiler : 1; // 0x40
 	unsigned char pass_locked : 1; // 0x20
-	unsigned char unk3 : 1; // 0x10
+	unsigned char archipelago : 1; // 0x10
 	unsigned char unk4 : 1; // 0x08
 	unsigned char unk5 : 1; // 0x04
 	unsigned char unk6 : 1; // 0x02

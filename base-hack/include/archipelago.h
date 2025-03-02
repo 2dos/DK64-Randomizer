@@ -67,7 +67,19 @@ typedef enum archipelago_items {
     /* 0x03E */ TRANSFER_ITEM_VINE,
 } archipelago_items;
 
-extern archipelago_items FedItem;
-extern char FedString[0x21]; // 0x20 characters followed by null terminator
+typedef struct archipelago_data {
+    /* 0x000 */ unsigned short counter;
+    /* 0x002 */ unsigned short start_flag;
+    /* 0x004 */ archipelago_items fed_item;
+    /* 0x008 */ char fed_string[0x21]; // 0x20 characters followed by null terminator
+    /* 0x029 */ unsigned char connection;
+} archipelago_data;
+
+extern archipelago_data *APData;
 extern void handleArchipelagoFeed(void);
-extern void handleArchipelagoString(void);
+extern int isFlagAPItem(int flag);
+extern void initAP(void);
+extern void initAPCounter(void);
+extern void saveAPCounter(void);
+extern int isAPEnabled(void);
+extern Gfx *displayAPConnection(Gfx *dl);

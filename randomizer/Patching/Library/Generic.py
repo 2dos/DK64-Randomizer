@@ -82,6 +82,7 @@ class CustomActors(IntEnum):
     HintItemLanky = auto()
     HintItemTiny = auto()
     HintItemChunky = auto()
+    ArchipelagoItem = auto()
 
 
 compatible_background_textures = {
@@ -551,6 +552,7 @@ def getItemNumberString(count: int, item_type: Types) -> str:
         Types.Snide: "Snide",
         Types.IslesMedal: "Medal",
         Types.ProgressiveHint: "Hint",
+        Types.ArchipelagoItem: "Archipelago Item"
     }
     name = names.get(item_type, item_type.name)
     if count != 1:

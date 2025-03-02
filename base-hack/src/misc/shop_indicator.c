@@ -148,13 +148,14 @@ typedef enum counter_items {
 	/* 0x013 */ COUNTER_RAINBOWCOIN,
 	/* 0x014 */ COUNTER_FAKEITEM,
 	/* 0x015 */ COUNTER_HINT,
-	/* 0x016 */ COUNTER_DILLO1,
-	/* 0x017 */ COUNTER_DOG1,
-	/* 0x018 */ COUNTER_MJ,
-	/* 0x019 */ COUNTER_PUFFTOSS,
-	/* 0x01A */ COUNTER_DOG2,
-	/* 0x01B */ COUNTER_DILLO2,
-	/* 0x01C */ COUNTER_KKO,
+	/* 0x016 */ COUNTER_AP,
+	/* 0x017 */ COUNTER_DILLO1,
+	/* 0x018 */ COUNTER_DOG1,
+	/* 0x019 */ COUNTER_MJ,
+	/* 0x01A */ COUNTER_PUFFTOSS,
+	/* 0x01B */ COUNTER_DOG2,
+	/* 0x01C */ COUNTER_DILLO2,
+	/* 0x01D */ COUNTER_KKO,
 } counter_items;
 
 int getCounterItem(vendors shop_index, int kong, int level) {
@@ -189,6 +190,8 @@ int getCounterItem(vendors shop_index, int kong, int level) {
 						return COUNTER_FAIRY;
 					} else if (isFlagInRange(flag, FLAG_WRINKLYVIEWED, 35)) {
 						return COUNTER_HINT;
+					} else if (isFlagAPItem(flag)) {
+						return COUNTER_AP;
 					} else if (isFlagInRange(flag, FLAG_RAINBOWCOIN_0, 16)) {
 						return COUNTER_RAINBOWCOIN;
 					} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
@@ -302,10 +305,10 @@ void updateCounterDisplay(void) {
 	if (paad->cap > 0) {
 		int kong_image = paad->kong_images[index];
 		int item_image = paad->item_images[index];
-		if ((kong_image < 0) || (kong_image > 0x15)) {
+		if ((kong_image < 0) || (kong_image >= COUNTER_DILLO1)) {
 			kong_image = 0;
 		}
-		if ((item_image < 0) || (item_image > 0x15)) {
+		if ((item_image < 0) || (item_image >= COUNTER_DILLO1)) {
 			item_image = 0;
 		}
 		if (paad->use_item_display) {

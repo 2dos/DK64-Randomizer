@@ -41,33 +41,17 @@ model_two_indexes = {
     Types.Candy: 0x261,
     Types.Snide: 0x262,
     Types.Hint: [638, 649, 650, 651, 652],
+    Types.ArchipelagoItem: 0x291,
 }
 
 model_two_scales = {
-    Types.Banana: 0.25,
+    # Anything not here is 0.25
     Types.Blueprint: 2,
     Types.NintendoCoin: 0.4,
     Types.RarewareCoin: 0.4,
     Types.Key: 0.17,
     Types.Crown: 0.25,
     Types.Medal: 0.22,
-    Types.Shop: 0.25,
-    Types.TrainingBarrel: 0.25,
-    Types.Climbing: 0.25,
-    Types.Shockwave: 0.25,
-    Types.NoItem: 0.25,  # No Item
-    Types.Kong: 0.25,
-    Types.Bean: 0.25,
-    Types.Pearl: 0.25,
-    Types.Fairy: 0.25,
-    Types.RainbowCoin: 0.25,
-    Types.FakeItem: 0.25,
-    Types.JunkItem: 0.25,
-    Types.Cranky: 0.25,
-    Types.Funky: 0.25,
-    Types.Candy: 0.25,
-    Types.Snide: 0.25,
-    Types.Hint: 0.25,
 }
 
 actor_indexes = {
@@ -113,6 +97,7 @@ actor_indexes = {
         CustomActors.HintItemTiny,
         CustomActors.HintItemChunky,
     ],
+    Types.ArchipelagoItem: CustomActors.ArchipelagoItem,
 }
 model_indexes = {
     Types.Banana: 0x69,
@@ -136,6 +121,7 @@ model_indexes = {
     Types.Candy: 0x13,
     Types.Snide: 0x1F,
     Types.Hint: [0x11B, 0x11D, 0x11F, 0x121, 0x123],
+    Types.ArchipelagoItem: 0x125,
 }
 
 TRAINING_LOCATIONS = (
@@ -260,6 +246,7 @@ text_rewards = {
     Types.Candy: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
     Types.Funky: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
     Types.Hint: ("\x04HINT\x04", "\x04LAYTON RIDDLE\x04"),
+    Types.ArchipelagoItem: ("\x04ARCHIPELAGO ITEM\x04", "\x04ANOTHER SCALLYWAG'S BOOTY\x04"),
 }
 
 level_names = {
@@ -577,8 +564,8 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                                 }
                             )
                         else:
-                            numerator = model_two_scales[item.new_item]
-                            denominator = model_two_scales[item.old_item]
+                            numerator = model_two_scales.get(item.new_item, 0.25)
+                            denominator = model_two_scales.get(item.old_item, 0.25)
                             upscale = numerator / denominator
                             map_items[map_id].append(
                                 {

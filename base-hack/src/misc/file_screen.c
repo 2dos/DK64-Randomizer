@@ -629,6 +629,12 @@ Gfx* display_text(Gfx* dl) {
 
 static unsigned char hash_textures[] = {48,49,50,51,55,62,63,64,65,76};
 #define INFO_Y_DIFF 50
+static char *flag_strings[] = {
+	"PLANDOMIZER",
+	"SPOILER GENNED",
+	"LOCKED",
+	"ARCHIPELAGO",
+};
 
 Gfx* displayHash(Gfx* dl, int y_offset) {
 	/**
@@ -646,17 +652,14 @@ Gfx* displayHash(Gfx* dl, int y_offset) {
 		dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, starting_x + (100 * i), hash_y - y_offset, 3.0f, 3.0f, 0xFF);
 	}
 	int info_y = 480 - y_offset;
-	if (Rando.rom_flags.plando) {
-		dl = displayCenteredText(dl, info_y / 4, "PLANDOMIZER", 1);
-		info_y += INFO_Y_DIFF;
-	}
-	if (Rando.rom_flags.spoiler) {
-		dl = displayCenteredText(dl, info_y / 4, "SPOILER GENNED", 1);
-		info_y += INFO_Y_DIFF;
-	}
-	if (Rando.rom_flags.pass_locked) {
-		dl = displayCenteredText(dl, info_y / 4, "LOCKED", 1);
-		info_y += INFO_Y_DIFF;
+	int andi = 0x80;
+	int rom_flags = *(unsigned char*)(&Rando.rom_flags);
+	for (int i = 0; i < 4; i++) {
+		if (rom_flags & andi) {
+			dl = displayCenteredText(dl, info_y / 4, flag_strings[i], 1);
+			info_y += INFO_Y_DIFF;
+		}
+		andi >>= 1;
 	}
 	return dl;
 }
@@ -797,6 +800,7 @@ void startFile(void) {
 		determineStartKong_PermaLossMode();
 		giveCollectables();
 	}
+	initAPCounter();
 	resetProgressive();
 	updateBarrierCounts();
 	if ((Rando.helm_hurry_mode) && (!checkFlag(FLAG_HELM_HURRY_DISABLED, FLAGTYPE_PERMANENT))) {
@@ -982,6 +986,7 @@ int updateLevelIGT(void) {
 	 * 
 	 * @return New in-game time
 	 */
+	saveAPCounter();
 	saveHelmHurryTime();
 	int new_igt = getNewSaveTime();
 	if (canSaveHelmHurry()) {

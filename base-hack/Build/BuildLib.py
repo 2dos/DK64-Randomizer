@@ -48,6 +48,7 @@ barrel_skins = (
     "candy",
     "snide",
     "hint",
+    "ap",
 )
 
 
