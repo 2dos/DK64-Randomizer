@@ -13,46 +13,6 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  controller:
-    build:
-      context: ./
-      dockerfile: ./controller/Dockerfile
-      args:
-        - BRANCH=${BRANCH:-LOCAL}
-        - CLIENT_ID=${CLIENT_ID}
-        - CLIENT_SECRET=${CLIENT_SECRET}
-        - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
-    depends_on:
-      - redis
-      - dev_worker
-      - master_worker
-      - nginx
-    volumes:
-      - ./generated_seeds/:/app/controller/generated_seeds/
-      - ./current_total.cfg:/app/controller/current_total.cfg
-      - ./last_generated_time.cfg:/app/controller/last_generated_time.cfg
-      - ./local_presets.json:/app/controller/local_presets.json
-      - ./api_keys.cfg:/app/controller/api_keys.cfg
-    networks:
-      - task_network
-    restart: always
-    env_file:
-      - .env
-    environment:
-      - WORKER_URL_DEV=http://dev_worker:8000
-      - WORKER_URL_MASTER=http://master_worker:8000
-      - BRANCH=${BRANCH:-LOCAL}
-      - COPY_FILES=${COPY_FILES:-./}
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=controller,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
-    deploy:
-      replicas: ${CONTROLLER_REPLICAS:-2}
-      update_config:
-        parallelism: 1
-        delay: 10s
-        order: start-first
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
   randobot:
     build:
       context: ./
@@ -195,8 +155,45 @@ services:
         order: start-first
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    profiles:
-      - master
 
+  controller:
+    build:
+      context: ./
+      dockerfile: ./controller/Dockerfile
+      args:
+        - BRANCH=${BRANCH:-LOCAL}
+        - CLIENT_ID=${CLIENT_ID}
+        - CLIENT_SECRET=${CLIENT_SECRET}
+        - REDIRECT=${REDIRECT:-http://localhost:8000/admin}
+    depends_on:
+      - redis
+      - dev_worker
+      - master_worker
+      - nginx
+    volumes:
+      - ./generated_seeds/:/app/controller/generated_seeds/
+      - ./current_total.cfg:/app/controller/current_total.cfg
+      - ./last_generated_time.cfg:/app/controller/last_generated_time.cfg
+      - ./local_presets.json:/app/controller/local_presets.json
+      - ./api_keys.cfg:/app/controller/api_keys.cfg
+    networks:
+      - task_network
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - WORKER_URL_DEV=http://dev_worker:8000
+      - WORKER_URL_MASTER=http://master_worker:8000
+      - BRANCH=${BRANCH:-LOCAL}
+      - COPY_FILES=${COPY_FILES:-./}
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=controller,service.version=1.0.0,deployment.environment=${BRANCH:-LOCAL}
+    deploy:
+      replicas: ${CONTROLLER_REPLICAS:-2}
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 networks:
   task_network:
