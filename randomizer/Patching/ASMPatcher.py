@@ -488,6 +488,12 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.homing, 0x806FFA76, 0x806FFA7A)
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.regular, 0x806FF0C6, 0x806FF0CA)
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.homing, 0x806FF0AA, 0x806FF0AE)
+    # Jetpac colors
+    JETPAC_FUEL = 0x0000FF  # Default 0xFF00FF
+    writeValue(ROM_COPY, 0x8002DD50, Overlay.Jetpac, (JETPAC_FUEL << 8) | 1, offset_dict, 4)  # Fuel Color
+    # Rocket gauge is decided by func_jetpac_080027BE8, but it's weird because it just zeros out 
+    #   the green channel rather than setting a new value
+    # 
     if has_dom:
         if settings.override_cosmetics:
             enemy_setting = RandomModels[js.document.getElementById("random_enemy_colors").value]
