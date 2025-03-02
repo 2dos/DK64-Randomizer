@@ -65,6 +65,7 @@ typedef enum archipelago_items {
     /* 0x03C */ TRANSFER_ITEM_ORANGE,
     /* 0x03D */ TRANSFER_ITEM_BARREL,
     /* 0x03E */ TRANSFER_ITEM_VINE,
+    /* 0x03F */ TRANSFER_ITEM_CLIMBING,
 } archipelago_items;
 
 typedef struct archipelago_data {

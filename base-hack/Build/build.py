@@ -2247,6 +2247,8 @@ with open(newROMName, "r+b") as fh:
         "ap_pearl_2",
         "ap_pearl_3",
         "ap_pearl_4",
+        "ap_pearl_5",
+        "ap32",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])

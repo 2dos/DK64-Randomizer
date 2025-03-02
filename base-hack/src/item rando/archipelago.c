@@ -255,6 +255,9 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_VINE:
             setFlagDuplicate(FLAG_TBARREL_VINE, 1, FLAGTYPE_PERMANENT);
             break;
+        case TRANSFER_ITEM_CLIMBING:
+            setFlagDuplicate(FLAG_ABILITY_CLIMBING, 1, FLAGTYPE_PERMANENT);
+            break;
         default:
         break;
     }
