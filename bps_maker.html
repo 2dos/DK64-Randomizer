@@ -1,4 +1,4 @@
-<html>
+<html data-bs-theme="dark">
     <head>
         <title>DK64 Randomizer - BPS Maker</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -86,8 +86,25 @@
             <div class="error hide" id="error_box">
                 ERROR TEXT
             </div>
+
+            <button type="button" class="btn btn-primary" id="vanillaErrorBtn" data-bs-toggle="modal" data-bs-target="#vanillaErrorModal" hidden></button>
+              
+            <div class="modal fade" id="vanillaErrorModal" tabindex="-1" aria-labelledby="vanillaErrorModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="vanillaErrorModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            This isn't a vanilla ROM
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         var target_rom;
         document.getElementById("rando_rom").addEventListener("change", function() {
@@ -117,15 +134,20 @@
             attributes: true
         }
         const callback = mutations => {  
-            mutations.forEach(mutation => {
+            mutations.forEach((mutation, index) => {
                 if (mutation.type === "attributes") {
+                    console.log(index)
                     if (targetNode.classList.contains("is-valid")) {
                         document.getElementsByClassName("rando_upload")[0].classList.remove("hide");
                         if (target_rom) {
                             document.getElementsByClassName("bps_download")[0].classList.remove("hide");
                         }
                     } else {
-                        clearProgress();
+                        if (index == 0) {
+                            console.log("Clicking btn")
+                            document.getElementById("vanillaErrorBtn").click();
+                            clearProgress();
+                        }
                     }
                 }
             });

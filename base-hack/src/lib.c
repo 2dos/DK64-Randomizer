@@ -898,6 +898,16 @@ void resetMapContainer(void) {
 	}
 }
 
+static unsigned char vanilla_portal_maps[] = {
+	MAP_JAPES,
+	MAP_AZTEC,
+	MAP_FACTORY,
+	MAP_GALLEON,
+	MAP_FUNGI,
+	MAP_CAVES,
+	MAP_CASTLE,
+};
+
 void correctDKPortal(void) {
 	int exit = DestExit;
 	int portal_state = 2;
@@ -909,6 +919,8 @@ void correctDKPortal(void) {
 		if ((CurrentMap == MAP_JAPES) && (exit == 15)) {
 			portal_state = 0;
 		} else if ((CurrentMap == MAP_FUNGI) && (exit == 27)) {
+			portal_state = 0;
+		} else if ((exit == 0) && (inU8List(CurrentMap, &vanilla_portal_maps, 7))) {
 			portal_state = 0;
 		} else if (exit == -1) {
 			portal_state = 0;
