@@ -86,6 +86,7 @@ function _parseROM() {
 
 function updateChecksums(file, startOffset, force) {
   if (file === romFile && file.fileSize > 33554432 && !force) {
+    throw new Error("This is not a vanilla DK64 US ROM");
     return false;
   }
 
