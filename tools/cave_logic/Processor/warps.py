@@ -39,7 +39,7 @@ def exit_to_edge(id, source, dest, exit_name, logic=True):
         logic = parse_ast_to_dict(logic,  None)
 
     forward_edge = RegionEdge(
-        id, source_region_node, dest_region_node, exit_name, logic)
+        id, source_region_node, dest_region_node, exit_name, 'Warp', logic)
     return forward_edge
 
 def getWarpFromSwapIndex(index):

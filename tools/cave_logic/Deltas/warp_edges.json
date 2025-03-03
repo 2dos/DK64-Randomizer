@@ -8,7 +8,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -29,7 +29,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -50,7 +50,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -71,7 +71,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -92,7 +92,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -113,7 +113,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -134,7 +134,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -155,7 +155,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -176,7 +176,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -197,7 +197,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -218,7 +218,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -239,7 +239,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -260,7 +260,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -281,7 +281,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -302,7 +302,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -323,7 +323,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -344,7 +344,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -365,7 +365,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -386,7 +386,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -407,7 +407,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -428,7 +428,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -449,7 +449,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -470,7 +470,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -491,7 +491,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -512,7 +512,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -533,7 +533,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -554,7 +554,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -575,7 +575,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -596,7 +596,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -617,7 +617,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -638,7 +638,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -659,7 +659,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -680,7 +680,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -701,7 +701,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -722,7 +722,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -743,7 +743,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -764,7 +764,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -785,7 +785,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -806,7 +806,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -827,7 +827,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -848,7 +848,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -869,7 +869,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -890,7 +890,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -911,7 +911,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -932,7 +932,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -953,7 +953,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -974,7 +974,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -995,7 +995,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1016,7 +1016,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1037,7 +1037,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1058,7 +1058,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1079,7 +1079,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1100,7 +1100,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1121,7 +1121,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1142,7 +1142,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1163,7 +1163,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1184,7 +1184,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1205,7 +1205,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1226,7 +1226,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1247,7 +1247,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1268,7 +1268,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1289,7 +1289,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1310,7 +1310,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1331,7 +1331,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1352,7 +1352,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1373,7 +1373,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1394,7 +1394,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1415,7 +1415,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1436,7 +1436,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1457,7 +1457,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1478,7 +1478,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1499,7 +1499,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1520,7 +1520,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1541,7 +1541,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1562,7 +1562,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1583,7 +1583,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1604,7 +1604,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1625,7 +1625,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1646,7 +1646,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1667,7 +1667,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1688,7 +1688,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1709,7 +1709,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1730,7 +1730,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1751,7 +1751,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1772,7 +1772,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1793,7 +1793,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1814,7 +1814,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1835,7 +1835,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1856,7 +1856,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [
@@ -1877,7 +1877,7 @@
             "sourceType": "Region",
             "targetType": "Location",
             "Class": "Transition",
-            "type": "Neighbourhood",
+            "Type": true,
             "Requires": {
                 "combinator": "and",
                 "rules": [

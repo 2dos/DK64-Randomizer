@@ -46,7 +46,7 @@ def strip_name(name):
     return name.replace(" ", "").replace(":", "").replace("-", "").replace("'", "").lower()
 
 
-def exit_to_edge(source, dest, exit_name, logic=True):
+def exit_to_edge(source, dest, exit_name, exit_type, logic=True):
 
     regionEdges = {}
 
@@ -66,7 +66,7 @@ def exit_to_edge(source, dest, exit_name, logic=True):
 
     class_id = "tn-"+str(source)+"-"+str(dest)
     forward_edge = RegionEdge(
-        class_id, source_region_node, dest_region_node, exit_name, logic)
+        class_id, source_region_node, dest_region_node, exit_name, logic,exit_type)
     regionEdges[forward_edge.id] = forward_edge.to_dict()
 
     return regionEdges
@@ -84,6 +84,7 @@ def build_exits():
                 source = shufflable_exit.region
                 dest = shufflable_exit.back.regionId
                 exit_name = shufflable_exit.name
+                exit_type = "Warp"
             else:
                 source = region_id
                 dest = exit.dest
@@ -93,9 +94,10 @@ def build_exits():
 
                 # need to construct the exit name
                 exit_name = source_name + " to " + dest_name
+                exit_type = "Neighbourhood"
             logic = exit.logic if exit.logic else True
 
-            r = exit_to_edge(source, dest, exit_name, logic)
+            r = exit_to_edge(source, dest, exit_name, exit_type, logic)
 
             edges.update(r)
 
@@ -105,7 +107,7 @@ def build_exits():
                 exit_source = region_id
                 exit_dest = ShufflableExits[exit_to_level].region
                 exit_name = region.name + " Exit Level"
-                rexit = exit_to_edge(exit_source, exit_dest, exit_name, True)
+                rexit = exit_to_edge(exit_source, exit_dest, exit_name, 'Warp', True)
 
                 edges.update(rexit)
 

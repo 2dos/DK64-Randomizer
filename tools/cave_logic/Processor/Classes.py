@@ -63,8 +63,7 @@ class RegionEdge:
                  target: RegionNode | str,
                  Name: str,
                  Logic: object | bool = True,
-                 Class: str = "Transition",
-                 type: str = "Neighbourhood",
+                 Type: str = "Neighbourhood",
                  ):
 
         if id is None:
@@ -78,8 +77,8 @@ class RegionEdge:
         self.target = target.id if isinstance(target, RegionNode) else target
         self.sourceType = "Region"
         self.targetType = "Location"
-        self.Class = Class
-        self.type = type
+        self.Class = "Transition"
+        self.Type = Type
         self.Requires = Logic
 
     def to_dict(self):
@@ -92,7 +91,7 @@ class RegionEdge:
             "sourceType": self.sourceType,
             "targetType": self.targetType,
             "Class": self.Class,
-            "type": self.type,
+            "Type": self.Type,
             "Requires": self.Requires
         }
 
