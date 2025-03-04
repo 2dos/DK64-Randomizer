@@ -695,6 +695,7 @@ door_locations = {
             location=[2433, 530, 1076.25, 333.5],
             group=11,
             moveless=False,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         ),
         DoorData(
             name="Entrance door switch",
