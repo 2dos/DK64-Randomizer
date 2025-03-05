@@ -489,11 +489,48 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.regular, 0x806FF0C6, 0x806FF0CA)
     ref_crosshair.writeRGBColors(ROM_COPY, offset_dict, ref_crosshair.homing, 0x806FF0AA, 0x806FF0AE)
     # Jetpac colors
-    JETPAC_FUEL = 0x0000FF  # Default 0xFF00FF
-    writeValue(ROM_COPY, 0x8002DD50, Overlay.Jetpac, (JETPAC_FUEL << 8) | 1, offset_dict, 4)  # Fuel Color
-    # Rocket gauge is decided by func_jetpac_080027BE8, but it's weird because it just zeros out 
-    #   the green channel rather than setting a new value
-    # 
+    JETPAC_RANDOM_COLORS = False
+    if JETPAC_RANDOM_COLORS:
+        JETPAC_FUEL = 0x0000FF  # Default 0xFF00FF
+        writeValue(ROM_COPY, 0x8002DD50, Overlay.Jetpac, (JETPAC_FUEL << 8) | 1, offset_dict, 4)  # Fuel Color
+        # Rocket gauge is decided by func_jetpac_080027BE8, but it's weird because it just zeros out
+        #   the green channel rather than setting a new value
+        #
+        JETPAC_PLATFORM_COLORS = [
+            {
+                "intensity": [0x88],
+                "channels": [False, True, True],
+            },
+            {
+                "intensity": [0x59],
+                "channels": [True, False, True],
+            }
+        ]
+        # Platform 0
+        writeValue(ROM_COPY, 0x80028C4A, Overlay.Jetpac, JETPAC_PLATFORM_COLORS[0]["intensity"][0], offset_dict)
+        for plat_index, plat in enumerate([0x80028C4C, 0x80028C54, 0x80028C58]):
+            j_channel_enabled = JETPAC_PLATFORM_COLORS[0]["channels"][plat_index]
+            base = 0xAFAE0000 if j_channel_enabled else 0xAFA00000
+            writeValue(ROM_COPY, plat, Overlay.Jetpac, base | (0x10 + (4 * plat_index)), offset_dict, 4)
+        # Platform 1
+        writeValue(ROM_COPY, 0x80028C72, Overlay.Jetpac, JETPAC_PLATFORM_COLORS[0]["intensity"][0], offset_dict)
+        for plat_index, plat in enumerate([0x80028C74, 0x80028C88, 0x80028C90]):
+            j_channel_enabled = JETPAC_PLATFORM_COLORS[0]["channels"][plat_index]
+            base = 0xAFAF0000 if j_channel_enabled else 0xAFA00000
+            writeValue(ROM_COPY, plat, Overlay.Jetpac, base | (0x10 + (4 * plat_index)), offset_dict, 4)
+        # Platform 2
+        writeValue(ROM_COPY, 0x80028C9A, Overlay.Jetpac, JETPAC_PLATFORM_COLORS[0]["intensity"][0], offset_dict)
+        for plat_index, plat in enumerate([0x80028C9C, 0x80028CB0, 0x80028CB8]):
+            j_channel_enabled = JETPAC_PLATFORM_COLORS[0]["channels"][plat_index]
+            base = 0xAFB80000 if j_channel_enabled else 0xAFA00000
+            writeValue(ROM_COPY, plat, Overlay.Jetpac, base | (0x10 + (4 * plat_index)), offset_dict, 4)
+        # Base Platform
+        writeValue(ROM_COPY, 0x80028CC2, Overlay.Jetpac, JETPAC_PLATFORM_COLORS[1]["intensity"][0], offset_dict)
+        writeValue(ROM_COPY, 0x80028CC6, Overlay.Jetpac, JETPAC_PLATFORM_COLORS[1]["intensity"][0], offset_dict)
+        for plat_index, plat in enumerate([0x80028CC8, 0x80028CCC, 0x80028CE4]):
+            j_channel_enabled = JETPAC_PLATFORM_COLORS[1]["channels"][plat_index]
+            base = 0xAFA80000 if j_channel_enabled else 0xAFA00000
+            writeValue(ROM_COPY, plat, Overlay.Jetpac, base | (0x10 + (4 * plat_index)), offset_dict, 4)
     if has_dom:
         if settings.override_cosmetics:
             enemy_setting = RandomModels[js.document.getElementById("random_enemy_colors").value]
@@ -556,10 +593,6 @@ def isFasterCheckEnabled(spoiler, fast_check: FasterChecksSelected):
 def isQoLEnabled(spoiler, misc_change: MiscChangesSelected):
     """Determine if a faster check setting is enabled."""
     return IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, misc_change)
-
-
-FLAG_ABILITY_CAMERA = 0x2FD
-
 
 def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, offset_dict: dict):
     """Expand Save file."""
@@ -1165,6 +1198,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806ADC66, Overlay.Static, 0x2F5, offset_dict)
     writeValue(ROM_COPY, 0x806ADD3A, Overlay.Static, 0x2F5, offset_dict)
     # Decouple Camera from Shockwave
+    FLAG_ABILITY_CAMERA = 0x2FD
     writeValue(ROM_COPY, 0x806E9812, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Usage
     writeValue(ROM_COPY, 0x806AB0F6, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Isles Fairies Display
     writeValue(ROM_COPY, 0x806AAFB6, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Other Fairies Display
@@ -1470,6 +1504,10 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8069C266, Overlay.Static, getActorIndex(spoiler.japes_rock_actor), offset_dict)
         # Melon Crates
         writeLabelValue(ROM_COPY, 0x80747EB0, Overlay.Static, "melonCrateItemHandler", offset_dict)
+        # Jetpac Reward Text
+        addr = getROMAddress(0x8002EABC, Overlay.Jetpac, offset_dict)
+        ROM_COPY.seek(addr)
+        ROM_COPY.writeBytes(bytes("REWARD COLLECTED\0", "ascii"))
     # Initialize fixed item scales
     writeFunction(ROM_COPY, 0x806F4918, Overlay.Static, "writeItemScale", offset_dict)  # Write scale to collision info
     writeValue(ROM_COPY, 0x806F491C, Overlay.Static, 0x87A40066, offset_dict, 4)
@@ -2062,9 +2100,39 @@ def patchAssembly(ROM_COPY, spoiler):
         for index, value in enumerate(spoiler.arcade_order):
             writeValue(ROM_COPY, 0x8004A788 + index, Overlay.Arcade, value, offset_dict, 1)
 
+    # Jetpac Platforms
+    if settings.puzzle_rando_difficulty in (PuzzleRando.medium, PuzzleRando.hard, PuzzleRando.chaos):
+        # self.jetpac_platform_data = [
+        #     (0xC0, 0x30, 4),
+        #     (0x20, 0x48, 4),
+        #     (0x78, 0x60, 2),
+        # ]
+        # Move platforms
+        writeValue(ROM_COPY, 0x80028C5E, Overlay.Jetpac, settings.jetpac_platform_data[0][0], offset_dict)
+        writeValue(ROM_COPY, 0x80028C62, Overlay.Jetpac, settings.jetpac_platform_data[0][1], offset_dict)
+        writeValue(ROM_COPY, 0x80028C6A, Overlay.Jetpac, settings.jetpac_platform_data[0][2], offset_dict)
+        writeValue(ROM_COPY, 0x80028C7E, Overlay.Jetpac, settings.jetpac_platform_data[1][0], offset_dict)
+        writeValue(ROM_COPY, 0x80028C82, Overlay.Jetpac, settings.jetpac_platform_data[1][1], offset_dict)
+        writeValue(ROM_COPY, 0x80028C86, Overlay.Jetpac, settings.jetpac_platform_data[1][2], offset_dict)
+        writeValue(ROM_COPY, 0x80028CA6, Overlay.Jetpac, settings.jetpac_platform_data[2][0], offset_dict)
+        writeValue(ROM_COPY, 0x80028CAA, Overlay.Jetpac, settings.jetpac_platform_data[2][1], offset_dict)
+        writeValue(ROM_COPY, 0x80028CAE, Overlay.Jetpac, settings.jetpac_platform_data[2][2], offset_dict)
+        # Move Rocket segments
+        px_0 = settings.jetpac_platform_data[0][0]
+        py_0 = settings.jetpac_platform_data[0][1]
+        pw_0 = settings.jetpac_platform_data[0][2]
+        px_1 = settings.jetpac_platform_data[1][0]
+        py_1 = settings.jetpac_platform_data[1][1]
+        pw_1 = settings.jetpac_platform_data[1][2]
+        writeFloatUpper(ROM_COPY, 0x800276DA, Overlay.Jetpac, px_0 + (pw_0 * 4), offset_dict)
+        writeFloatUpper(ROM_COPY, 0x800276E2, Overlay.Jetpac, py_0 - 16, offset_dict)
+        writeFloatUpper(ROM_COPY, 0x800276EA, Overlay.Jetpac, px_1 + (pw_1 * 4), offset_dict)
+        writeFloatUpper(ROM_COPY, 0x800276F2, Overlay.Jetpac, py_1 - 16, offset_dict)
+
     writeHook(ROM_COPY, 0x805FE954, Overlay.Static, "ArcadeMapCheck", offset_dict)
     writeHook(ROM_COPY, 0x80024FD4, Overlay.Arcade, "ArcadeIntroCheck", offset_dict)
     writeFunction(ROM_COPY, 0x800288FC, Overlay.Jetpac, "completeJetpac", offset_dict)
+    writeFunction(ROM_COPY, 0x80024BD0, Overlay.Jetpac, "exitJetpac", offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_picture_taking):
         # Fast Camera Photo
         writeValue(ROM_COPY, 0x80699454, Overlay.Static, 0x5000, offset_dict)  # Fast tick/no mega-slowdown on Biz

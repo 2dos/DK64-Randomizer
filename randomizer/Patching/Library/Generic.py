@@ -710,6 +710,15 @@ def getHoliday(settings):
 
 
 plando_colors = {
+    "\x01": [
+        "wobble",
+    ],
+    "\x02": [
+        "pop",
+    ],
+    "\x03": [
+        "spin",
+    ],
     "\x04": [
         "orange",
         "woth",

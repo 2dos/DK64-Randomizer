@@ -379,6 +379,11 @@ class Settings:
         self.kasplat_rando_setting = None
         self.puzzle_rando = None  # Deprecated
         self.puzzle_rando_difficulty = PuzzleRando.off
+        self.jetpac_platform_data = [
+            (0xC0, 0x30, 4),
+            (0x20, 0x48, 4),
+            (0x78, 0x60, 2),
+        ]
         self.shuffle_shops = None
         self.switchsanity = SwitchsanityLevel.off
         self.switchsanity_data = {}
@@ -1480,6 +1485,40 @@ class Settings:
             self.mill_levers = [0] * 5
             for slot in range(mill_lever_cap):
                 self.mill_levers[slot] = random.randint(1, 3)
+
+        # Jetpac Platforms
+        if self.puzzle_rando_difficulty in (PuzzleRando.medium, PuzzleRando.hard, PuzzleRando.chaos):
+            self.jetpac_platform_data = []
+            exclusion_zones = [
+                # Order: minx maxz miny maxy
+                (158, 178, 0, 200),  # Drop chute
+            ]
+            exclusion_y = 0x24
+            exclusion_pad_x = 4
+            for _ in range(3):
+                x = None
+                y = None
+                width = None
+                while True:
+                    x = random.randint(32, 192)
+                    y = random.randint(exclusion_y, 0xB8 - exclusion_y)
+                    width = random.choice([1, 2, 2, 3, 3, 4, 4, 5])
+                    x_right = x + 0x10 + (width * 8)
+                    is_excluded = False
+                    for zone in exclusion_zones:
+                        if x_right < zone[0] or x > zone[1]:
+                            continue
+                        if y > zone[2] and y < zone[3]:
+                            is_excluded = True
+                    if not is_excluded:
+                        break
+                self.jetpac_platform_data.append((x, y, width))
+                exclusion_zones.append([
+                    x - exclusion_pad_x,
+                    x + 0x10 + (width * 8) + exclusion_pad_x,
+                    y - exclusion_y,
+                    y + exclusion_y,
+                ])
 
         if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies, False):
             jetpac_levels = list(range(8))

@@ -394,7 +394,7 @@ extern void cFuncLoop(void);
 extern void overlay_mod_menu(void);
 extern void overlay_mod_boss(void);
 extern void overlay_mod_bonus(void);
-extern void initJetpac(void);
+extern void exitJetpac(int map, int exit);
 extern void overlay_mod_race(void);
 
 extern int getTrackerYOffset(void);

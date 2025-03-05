@@ -30,7 +30,6 @@ void overlay_changes(void) {
 		case OVERLAY_ARCADE:
 			break;
 		case OVERLAY_JETPAC:
-			initJetpac();
 			break;
 		case OVERLAY_RACE:
 			overlay_mod_race();
