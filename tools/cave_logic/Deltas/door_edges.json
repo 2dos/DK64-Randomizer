@@ -1,0 +1,4776 @@
+{
+    "door_edges": {
+        "junglejapeslobbymiddleright": {
+            "id": "junglejapeslobbymiddleright",
+            "Key": "junglejapeslobbymiddleright",
+            "Name": "Jungle Japes: Lobby - Middle Right",
+            "source": "junglejapeslobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "junglejapeslobbyfarleft": {
+            "id": "junglejapeslobbyfarleft",
+            "Key": "junglejapeslobbyfarleft",
+            "Name": "Jungle Japes: Lobby - Far Left",
+            "source": "junglejapeslobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "junglejapeslobbycloseright": {
+            "id": "junglejapeslobbycloseright",
+            "Key": "junglejapeslobbycloseright",
+            "Name": "Jungle Japes: Lobby - Close Right",
+            "source": "junglejapeslobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "junglejapeslobbyfarright": {
+            "id": "junglejapeslobbyfarright",
+            "Key": "junglejapeslobbyfarright",
+            "Name": "Jungle Japes: Lobby - Far Right",
+            "source": "junglejapeslobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "junglejapeslobbycloseleft": {
+            "id": "junglejapeslobbycloseleft",
+            "Key": "junglejapeslobbycloseleft",
+            "Name": "Jungle Japes: Lobby - Close Left",
+            "source": "junglejapeslobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "junglejapesdiddycave": {
+            "id": "junglejapesdiddycave",
+            "Key": "junglejapesdiddycave",
+            "Name": "Jungle Japes: Diddy Cave",
+            "source": "japesbeyondpeanutgate",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesnearpaintingroom": {
+            "id": "junglejapesnearpaintingroom",
+            "Key": "junglejapesnearpaintingroom",
+            "Name": "Jungle Japes: Near Painting Room",
+            "source": "japestnsalcove",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesfairycave": {
+            "id": "junglejapesfairycave",
+            "Key": "junglejapesfairycave",
+            "Name": "Jungle Japes: Fairy Cave",
+            "source": "beyondrambigate",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesnexttodiddycageright": {
+            "id": "junglejapesnexttodiddycageright",
+            "Key": "junglejapesnexttodiddycageright",
+            "Name": "Jungle Japes: Next to Diddy Cage - right",
+            "source": "junglejapesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesalcoveabovediddytunnelright": {
+            "id": "junglejapesalcoveabovediddytunnelright",
+            "Key": "junglejapesalcoveabovediddytunnelright",
+            "Name": "Jungle Japes: Alcove Above Diddy Tunnel - right",
+            "source": "japestnsalcove",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesalcoveabovediddytunnelleft": {
+            "id": "junglejapesalcoveabovediddytunnelleft",
+            "Key": "junglejapesalcoveabovediddytunnelleft",
+            "Name": "Jungle Japes: Alcove Above Diddy Tunnel - left",
+            "source": "japestnsalcove",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesnexttominecartexitright": {
+            "id": "junglejapesnexttominecartexitright",
+            "Key": "junglejapesnexttominecartexitright",
+            "Name": "Jungle Japes: Next to Minecart Exit -right",
+            "source": "junglejapesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesacrossfromminecartexit": {
+            "id": "junglejapesacrossfromminecartexit",
+            "Key": "junglejapesacrossfromminecartexit",
+            "Name": "Jungle Japes: Across From Minecart Exit",
+            "source": "junglejapesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesmainareanexttotunneltotinygate": {
+            "id": "junglejapesmainareanexttotunneltotinygate",
+            "Key": "junglejapesmainareanexttotunneltotinygate",
+            "Name": "Jungle Japes: Main Area - Next to Tunnel to Tiny Gate",
+            "source": "junglejapesstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesbeehiveareanexttobeehivefarleft": {
+            "id": "junglejapesbeehiveareanexttobeehivefarleft",
+            "Key": "junglejapesbeehiveareanexttobeehivefarleft",
+            "Name": "Jungle Japes: Beehive Area - Next to Beehive - far left",
+            "source": "japesbeyondfeathergate",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesbeehiveareanexttobeehiveleft": {
+            "id": "junglejapesbeehiveareanexttobeehiveleft",
+            "Key": "junglejapesbeehiveareanexttobeehiveleft",
+            "Name": "Jungle Japes: Beehive Area - Next to Beehive - left",
+            "source": "japesbeyondfeathergate",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesbehindrambidoorwateryroomleft": {
+            "id": "junglejapesbehindrambidoorwateryroomleft",
+            "Key": "junglejapesbehindrambidoorwateryroomleft",
+            "Name": "Jungle Japes: Behind Rambi Door - watery room - left",
+            "source": "beyondrambigate",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesbehindrambidoorwateryroomright": {
+            "id": "junglejapesbehindrambidoorwateryroomright",
+            "Key": "junglejapesbehindrambidoorwateryroomright",
+            "Name": "Jungle Japes: Behind Rambi Door - watery room - right",
+            "source": "beyondrambigate",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapestopoflankysuselessslopeleft": {
+            "id": "junglejapestopoflankysuselessslopeleft",
+            "Key": "junglejapestopoflankysuselessslopeleft",
+            "Name": "Jungle Japes: Top of Lanky's Useless Slope - left",
+            "source": "japesbeyondcoconutgate2",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "lanky"
+                            },
+                            {
+                                "Name": "orangstand"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapestopoflankysuselesssloperight": {
+            "id": "junglejapestopoflankysuselesssloperight",
+            "Key": "junglejapestopoflankysuselesssloperight",
+            "Name": "Jungle Japes: Top of Lanky's Useless Slope - right",
+            "source": "japesbeyondcoconutgate2",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "lanky"
+                            },
+                            {
+                                "Name": "orangstand"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesunderwaterbywarp2": {
+            "id": "junglejapesunderwaterbywarp2",
+            "Key": "junglejapesunderwaterbywarp2",
+            "Name": "Jungle Japes: Underwater by Warp 2",
+            "source": "junglejapesstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesunderwaterbychunkysunderground": {
+            "id": "junglejapesunderwaterbychunkysunderground",
+            "Key": "junglejapesunderwaterbychunkysunderground",
+            "Name": "Jungle Japes: Underwater by Chunky's underground",
+            "source": "junglejapesstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesnexttofunkyright": {
+            "id": "junglejapesnexttofunkyright",
+            "Key": "junglejapesnexttofunkyright",
+            "Name": "Jungle Japes: Next to Funky - right",
+            "source": "junglejapesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesnexttolankyspaintingroomleft": {
+            "id": "junglejapesnexttolankyspaintingroomleft",
+            "Key": "junglejapesnexttolankyspaintingroomleft",
+            "Name": "Jungle Japes: Next to Lanky's Painting Room - left",
+            "source": "junglejapesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "orangstand"
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "ponytailtwirl"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesnexttolankyspaintingroomright": {
+            "id": "junglejapesnexttolankyspaintingroomright",
+            "Key": "junglejapesnexttolankyspaintingroomright",
+            "Name": "Jungle Japes: Next to Lanky's Painting Room - right",
+            "source": "junglejapesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "orangstand"
+                            },
+                            {
+                                "Name": "lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "ponytailtwirl"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesoutsidediddycaveswitchleft": {
+            "id": "junglejapesoutsidediddycaveswitchleft",
+            "Key": "junglejapesoutsidediddycaveswitchleft",
+            "Name": "Jungle Japes: Outside Diddy Cave Switch - left",
+            "source": "junglejapesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesoutsidediddycaveswitchright": {
+            "id": "junglejapesoutsidediddycaveswitchright",
+            "Key": "junglejapesoutsidediddycaveswitchright",
+            "Name": "Jungle Japes: Outside Diddy Cave Switch - right",
+            "source": "junglejapesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesentrancetunnelneardiddycavebackleft": {
+            "id": "junglejapesentrancetunnelneardiddycavebackleft",
+            "Key": "junglejapesentrancetunnelneardiddycavebackleft",
+            "Name": "Jungle Japes: Entrance Tunnel - Near Diddy Cave - back left",
+            "source": "junglejapesstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesentrancetunnelneardiddycavefrontleft": {
+            "id": "junglejapesentrancetunnelneardiddycavefrontleft",
+            "Key": "junglejapesentrancetunnelneardiddycavefrontleft",
+            "Name": "Jungle Japes: Entrance Tunnel - Near Diddy Cave - front left",
+            "source": "junglejapesstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesentrancetunnelnearwarppad1and2": {
+            "id": "junglejapesentrancetunnelnearwarppad1and2",
+            "Key": "junglejapesentrancetunnelnearwarppad1and2",
+            "Name": "Jungle Japes: Entrance Tunnel - Near Warppad 1 and 2",
+            "source": "junglejapesstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesdiddytunnelnexttoholeriverside": {
+            "id": "junglejapesdiddytunnelnexttoholeriverside",
+            "Key": "junglejapesdiddytunnelnexttoholeriverside",
+            "Name": "Jungle Japes: Diddy Tunnel - next to hole - river side",
+            "source": "japesbeyondcoconutgate2",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesdiddytunnelriverside": {
+            "id": "junglejapesdiddytunnelriverside",
+            "Key": "junglejapesdiddytunnelriverside",
+            "Name": "Jungle Japes: Diddy Tunnel - river side",
+            "source": "japesbeyondcoconutgate2",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesnearwarp4andtunnelthreewaycrossing": {
+            "id": "junglejapesnearwarp4andtunnelthreewaycrossing",
+            "Key": "junglejapesnearwarp4andtunnelthreewaycrossing",
+            "Name": "Jungle Japes: Near Warp 4 and Tunnel Threeway crossing",
+            "source": "japesbeyondcoconutgate2",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapescrankytunnelcrossroad": {
+            "id": "junglejapescrankytunnelcrossroad",
+            "Key": "junglejapescrankytunnelcrossroad",
+            "Name": "Jungle Japes: Cranky Tunnel - Crossroad",
+            "source": "japesbeyondcoconutgate2",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapescrankyareafrontright": {
+            "id": "junglejapescrankyareafrontright",
+            "Key": "junglejapescrankyareafrontright",
+            "Name": "Jungle Japes: Cranky Area - front-right",
+            "source": "japesbeyondcoconutgate2",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapescrankyareafrontleft": {
+            "id": "junglejapescrankyareafrontleft",
+            "Key": "junglejapescrankyareafrontleft",
+            "Name": "Jungle Japes: Cranky Area - front left",
+            "source": "japesbeyondcoconutgate2",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapescrankyareacenterleft": {
+            "id": "junglejapescrankyareacenterleft",
+            "Key": "junglejapescrankyareacenterleft",
+            "Name": "Jungle Japes: Cranky Area - center left",
+            "source": "japesbeyondcoconutgate2",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapescrankyareacenterright": {
+            "id": "junglejapescrankyareacenterright",
+            "Key": "junglejapescrankyareacenterright",
+            "Name": "Jungle Japes: Cranky Area - center right",
+            "source": "japesbeyondcoconutgate2",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapescrankyareabackleft": {
+            "id": "junglejapescrankyareabackleft",
+            "Key": "junglejapescrankyareabackleft",
+            "Name": "Jungle Japes: Cranky Area - back left",
+            "source": "japesbeyondcoconutgate2",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapescrankyareabackright": {
+            "id": "junglejapescrankyareabackright",
+            "Key": "junglejapescrankyareabackright",
+            "Name": "Jungle Japes: Cranky Area - back right",
+            "source": "japesbeyondcoconutgate2",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesbeehiveroom2left": {
+            "id": "junglejapesbeehiveroom2left",
+            "Key": "junglejapesbeehiveroom2left",
+            "Name": "Jungle Japes: Beehive Room 2 - left",
+            "source": "tinyhive",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "JungleJapes",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "generalclips",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesbeehiveroom2right": {
+            "id": "junglejapesbeehiveroom2right",
+            "Key": "junglejapesbeehiveroom2right",
+            "Name": "Jungle Japes: Beehive Room 2 - right",
+            "source": "tinyhive",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "JungleJapes",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "generalclips",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapespaintingroomnexttotheentrance": {
+            "id": "junglejapespaintingroomnexttotheentrance",
+            "Key": "junglejapespaintingroomnexttotheentrance",
+            "Name": "Jungle Japes: Painting Room - Next to the Entrance",
+            "source": "japeslankycave",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesdiddymountainnexttoconveyorcontrols": {
+            "id": "junglejapesdiddymountainnexttoconveyorcontrols",
+            "Key": "junglejapesdiddymountainnexttoconveyorcontrols",
+            "Name": "Jungle Japes: Diddy Mountain - Next to Conveyor Controls",
+            "source": "mine",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "chimpycharge"
+                            },
+                            {
+                                "Name": "diddy"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesdiddymountainbetweenriverandgbswitch": {
+            "id": "junglejapesdiddymountainbetweenriverandgbswitch",
+            "Key": "junglejapesdiddymountainbetweenriverandgbswitch",
+            "Name": "Jungle Japes: Diddy Mountain - between River and GB switch",
+            "source": "mine",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "junglejapesdiddymountainbetweenriverandpeanutswitch": {
+            "id": "junglejapesdiddymountainbetweenriverandpeanutswitch",
+            "Key": "junglejapesdiddymountainbetweenriverandpeanutswitch",
+            "Name": "Jungle Japes: Diddy Mountain - between River and Peanut Switch",
+            "source": "mine",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "JungleJapes",
+            "Class": "Door"
+        },
+        "angryazteclobbypillarwall": {
+            "id": "angryazteclobbypillarwall",
+            "Key": "angryazteclobbypillarwall",
+            "Name": "Angry Aztec: Lobby - Pillar Wall",
+            "source": "angryazteclobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "angryazteclobbylowerright": {
+            "id": "angryazteclobbylowerright",
+            "Key": "angryazteclobbylowerright",
+            "Name": "Angry Aztec: Lobby - Lower Right",
+            "source": "angryazteclobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "angryazteclobbyleftofportal": {
+            "id": "angryazteclobbyleftofportal",
+            "Key": "angryazteclobbyleftofportal",
+            "Name": "Angry Aztec: Lobby - Left of Portal",
+            "source": "angryazteclobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "angryazteclobbyrightofportal": {
+            "id": "angryazteclobbyrightofportal",
+            "Key": "angryazteclobbyrightofportal",
+            "Name": "Angry Aztec: Lobby - Right of Portal",
+            "source": "angryazteclobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "angryazteclobbybehindfeatherdoor": {
+            "id": "angryazteclobbybehindfeatherdoor",
+            "Key": "angryazteclobbybehindfeatherdoor",
+            "Name": "Angry Aztec: Lobby - Behind Feather Door",
+            "source": "angryazteclobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "hasMoveSwitchsanity",
+                        "Params": [
+                            "IslesAztecLobbyFeather",
+                            false
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "angryaztecnearfunkys": {
+            "id": "angryaztecnearfunkys",
+            "Key": "angryaztecnearfunkys",
+            "Name": "Angry Aztec: Near Funky's",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecnearcrankys": {
+            "id": "angryaztecnearcrankys",
+            "Key": "angryaztecnearcrankys",
+            "Name": "Angry Aztec: Near Cranky's",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecnearcandys": {
+            "id": "angryaztecnearcandys",
+            "Key": "angryaztecnearcandys",
+            "Name": "Angry Aztec: Near Candy's",
+            "source": "angryaztecoasis",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecnearsnides": {
+            "id": "angryaztecnearsnides",
+            "Key": "angryaztecnearsnides",
+            "Name": "Angry Aztec: Near Snide's",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecbehind5dt": {
+            "id": "angryaztecbehind5dt",
+            "Key": "angryaztecbehind5dt",
+            "Name": "Angry Aztec: Behind 5DT",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecnexttocandyright": {
+            "id": "angryaztecnexttocandyright",
+            "Key": "angryaztecnexttocandyright",
+            "Name": "Angry Aztec: Next to Candy - right",
+            "source": "angryaztecoasis",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecunderdiddystinytempleswitch": {
+            "id": "angryaztecunderdiddystinytempleswitch",
+            "Key": "angryaztecunderdiddystinytempleswitch",
+            "Name": "Angry Aztec: Under Diddy's Tiny Temple Switch",
+            "source": "angryaztecoasis",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecunderchunkystinytempleswitch": {
+            "id": "angryaztecunderchunkystinytempleswitch",
+            "Key": "angryaztecunderchunkystinytempleswitch",
+            "Name": "Angry Aztec: Under Chunky's Tiny Temple Switch",
+            "source": "angryaztecoasis",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecundertinystinytempleswitch": {
+            "id": "angryaztecundertinystinytempleswitch",
+            "Key": "angryaztecundertinystinytempleswitch",
+            "Name": "Angry Aztec: Under Tiny's Tiny Temple Switch",
+            "source": "angryaztecoasis",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecunderlankystinytempleswitch": {
+            "id": "angryaztecunderlankystinytempleswitch",
+            "Key": "angryaztecunderlankystinytempleswitch",
+            "Name": "Angry Aztec: Under Lanky's Tiny Temple Switch",
+            "source": "angryaztecoasis",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecdiddytowerstairsleft": {
+            "id": "angryaztecdiddytowerstairsleft",
+            "Key": "angryaztecdiddytowerstairsleft",
+            "Name": "Angry Aztec: Diddy Tower Stairs - left",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecnexttotagbarrelnearsnides": {
+            "id": "angryaztecnexttotagbarrelnearsnides",
+            "Key": "angryaztecnexttotagbarrelnearsnides",
+            "Name": "Angry Aztec: Next to Tag Barrel near Snides",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecunderthevulturecage": {
+            "id": "angryaztecunderthevulturecage",
+            "Key": "angryaztecunderthevulturecage",
+            "Name": "Angry Aztec: Under the Vulture Cage",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztec5doortemples6thdoor": {
+            "id": "angryaztec5doortemples6thdoor",
+            "Key": "angryaztec5doortemples6thdoor",
+            "Name": "Angry Aztec: 5Door Temple's 6th Door",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryazteccrankytunnelnearchunkybarrelleft": {
+            "id": "angryazteccrankytunnelnearchunkybarrelleft",
+            "Key": "angryazteccrankytunnelnearchunkybarrelleft",
+            "Name": "Angry Aztec: Cranky Tunnel - Near Chunky Barrel - left",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryazteccrankytunnelnearchunkybarrelright": {
+            "id": "angryazteccrankytunnelnearchunkybarrelright",
+            "Key": "angryazteccrankytunnelnearchunkybarrelright",
+            "Name": "Angry Aztec: Cranky Tunnel - Near Chunky Barrel - right",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryazteccrankytunnelnearroadtocrankyleft": {
+            "id": "angryazteccrankytunnelnearroadtocrankyleft",
+            "Key": "angryazteccrankytunnelnearroadtocrankyleft",
+            "Name": "Angry Aztec: Cranky Tunnel - Near Road to Cranky - left",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryazteccrankytunnelnearroadtocrankyright": {
+            "id": "angryazteccrankytunnelnearroadtocrankyright",
+            "Key": "angryazteccrankytunnelnearroadtocrankyright",
+            "Name": "Angry Aztec: Cranky Tunnel - Near Road to Cranky - right",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztec5doortemplestaircasefront": {
+            "id": "angryaztec5doortemplestaircasefront",
+            "Key": "angryaztec5doortemplestaircasefront",
+            "Name": "Angry Aztec: 5Door Temple Staircase - front",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztec5doortemplestaircaseback": {
+            "id": "angryaztec5doortemplestaircaseback",
+            "Key": "angryaztec5doortemplestaircaseback",
+            "Name": "Angry Aztec: 5Door Temple Staircase - back",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecentrancetunnelnexttococonutswitch": {
+            "id": "angryaztecentrancetunnelnexttococonutswitch",
+            "Key": "angryaztecentrancetunnelnexttococonutswitch",
+            "Name": "Angry Aztec: Entrance Tunnel - next to Coconut Switch",
+            "source": "angryaztecoasis",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecentrancetunnelleft(neartheoasisend)": {
+            "id": "angryaztecentrancetunnelleft(neartheoasisend)",
+            "Key": "angryaztecentrancetunnelleft(neartheoasisend)",
+            "Name": "Angry Aztec: Entrance Tunnel - left (near the oasis end)",
+            "source": "angryaztecoasis",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecinthesealedquicksandtunnel": {
+            "id": "angryaztecinthesealedquicksandtunnel",
+            "Key": "angryaztecinthesealedquicksandtunnel",
+            "Name": "Angry Aztec: in the sealed quicksand tunnel",
+            "source": "aztecdonkeyquicksandcave",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "donkey"
+                    },
+                    {
+                        "Name": "strongKong"
+                    }
+                ]
+            },
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecneartagbarrelnearsnidesstrongkong": {
+            "id": "angryaztecneartagbarrelnearsnidesstrongkong",
+            "Key": "angryaztecneartagbarrelnearsnidesstrongkong",
+            "Name": "Angry Aztec: Near Tag Barrel near Snides - strong kong",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "donkey"
+                    },
+                    {
+                        "Name": "strongKong"
+                    }
+                ]
+            },
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecinfacematchinggameright": {
+            "id": "angryaztecinfacematchinggameright",
+            "Key": "angryaztecinfacematchinggameright",
+            "Name": "Angry Aztec: In Face Matching Game - right",
+            "source": "llamatemple",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "lanky"
+                            },
+                            {
+                                "Name": "grape"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecinfacematchinggameleft": {
+            "id": "angryaztecinfacematchinggameleft",
+            "Key": "angryaztecinfacematchinggameleft",
+            "Name": "Angry Aztec: In Face Matching Game - left",
+            "source": "llamatemple",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "lanky"
+                            },
+                            {
+                                "Name": "grape"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecnexttotinytemplefrontleft": {
+            "id": "angryaztecnexttotinytemplefrontleft",
+            "Key": "angryaztecnexttotinytemplefrontleft",
+            "Name": "Angry Aztec: Next to Tiny Temple - front left",
+            "source": "angryaztecoasis",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecnexttotinytemplebackleft": {
+            "id": "angryaztecnexttotinytemplebackleft",
+            "Key": "angryaztecnexttotinytemplebackleft",
+            "Name": "Angry Aztec: Next to Tiny Temple - back left",
+            "source": "angryaztecoasis",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecoasisnexttotunnelfarleft": {
+            "id": "angryaztecoasisnexttotunnelfarleft",
+            "Key": "angryaztecoasisnexttotunnelfarleft",
+            "Name": "Angry Aztec: Oasis - Next to Tunnel - far left",
+            "source": "angryaztecoasis",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecoasisnexttotunnelleft": {
+            "id": "angryaztecoasisnexttotunnelleft",
+            "Key": "angryaztecoasisnexttotunnelleft",
+            "Name": "Angry Aztec: Oasis - Next to Tunnel - left",
+            "source": "angryaztecoasis",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecbetweensnidesanddiddygongtower": {
+            "id": "angryaztecbetweensnidesanddiddygongtower",
+            "Key": "angryaztecbetweensnidesanddiddygongtower",
+            "Name": "Angry Aztec: Between Snides and Diddy Gong Tower",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecnexttollamatempleleft": {
+            "id": "angryaztecnexttollamatempleleft",
+            "Key": "angryaztecnexttollamatempleleft",
+            "Name": "Angry Aztec: Next to Llama Temple - left",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecllamatemplesswitchlessside": {
+            "id": "angryaztecllamatemplesswitchlessside",
+            "Key": "angryaztecllamatemplesswitchlessside",
+            "Name": "Angry Aztec: Llama Temple's switchless side",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztectinytemplemainroomleft": {
+            "id": "angryaztectinytemplemainroomleft",
+            "Key": "angryaztectinytemplemainroomleft",
+            "Name": "Angry Aztec: Tiny Temple - Main Room - left",
+            "source": "templestart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztectinytemplemainroomback": {
+            "id": "angryaztectinytemplemainroomback",
+            "Key": "angryaztectinytemplemainroomback",
+            "Name": "Angry Aztec: Tiny Temple - Main Room - back",
+            "source": "templestart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztectinytempleacrossfromslopetotinycageleft": {
+            "id": "angryaztectinytempleacrossfromslopetotinycageleft",
+            "Key": "angryaztectinytempleacrossfromslopetotinycageleft",
+            "Name": "Angry Aztec: Tiny Temple - Across from Slope to Tiny Cage - left",
+            "source": "templeunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztectinytempleacrossfromslopetotinycageright": {
+            "id": "angryaztectinytempleacrossfromslopetotinycageright",
+            "Key": "angryaztectinytempleacrossfromslopetotinycageright",
+            "Name": "Angry Aztec: Tiny Temple - Across from Slope to Tiny Cage - right",
+            "source": "templeunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztectinytemplenexttoopeningtounderwaterroom": {
+            "id": "angryaztectinytemplenexttoopeningtounderwaterroom",
+            "Key": "angryaztectinytemplenexttoopeningtounderwaterroom",
+            "Name": "Angry Aztec: Tiny Temple - Next to Opening to Underwater Room",
+            "source": "templeunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztectinytempleacrossfromopeningtounderwaterroom": {
+            "id": "angryaztectinytempleacrossfromopeningtounderwaterroom",
+            "Key": "angryaztectinytempleacrossfromopeningtounderwaterroom",
+            "Name": "Angry Aztec: Tiny Temple - Across from Opening to Underwater Room",
+            "source": "templeunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecllamatemplestairsleft": {
+            "id": "angryaztecllamatemplestairsleft",
+            "Key": "angryaztecllamatemplestairsleft",
+            "Name": "Angry Aztec: Llama Temple Stairs - left",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecllamatemplestairsright": {
+            "id": "angryaztecllamatemplestairsright",
+            "Key": "angryaztecllamatemplestairsright",
+            "Name": "Angry Aztec: Llama Temple Stairs - right",
+            "source": "angryaztecmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecllamatempleentrancestaircaseleft": {
+            "id": "angryaztecllamatempleentrancestaircaseleft",
+            "Key": "angryaztecllamatempleentrancestaircaseleft",
+            "Name": "Angry Aztec: Llama Temple - Entrance Staircase - left",
+            "source": "llamatemple",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecllamatempleentrancestaircaseright": {
+            "id": "angryaztecllamatempleentrancestaircaseright",
+            "Key": "angryaztecllamatempleentrancestaircaseright",
+            "Name": "Angry Aztec: Llama Temple - Entrance Staircase - right",
+            "source": "llamatemple",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "angryaztecllamatempleacrossfromthespitgate": {
+            "id": "angryaztecllamatempleacrossfromthespitgate",
+            "Key": "angryaztecllamatempleacrossfromthespitgate",
+            "Name": "Angry Aztec: Llama Temple - Across from the Spit Gate",
+            "source": "llamatemple",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "AztecLlamaSpit",
+                        "Events": true
+                    },
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "AngryAztec",
+            "Class": "Door"
+        },
+        "franticfactorylobbylowleft": {
+            "id": "franticfactorylobbylowleft",
+            "Key": "franticfactorylobbylowleft",
+            "Name": "Frantic Factory: Lobby - Low Left",
+            "source": "franticfactorylobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "franticfactorylobbytopleft": {
+            "id": "franticfactorylobbytopleft",
+            "Key": "franticfactorylobbytopleft",
+            "Name": "Frantic Factory: Lobby - Top Left",
+            "source": "franticfactorylobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "gorillagrab"
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanMoonkick",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "advanced_platforming",
+                                "isGlitch": true
+                            },
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "tiny"
+                                    },
+                                    {
+                                        "Name": "diddy"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "franticfactorylobbytopcenter": {
+            "id": "franticfactorylobbytopcenter",
+            "Key": "franticfactorylobbytopcenter",
+            "Name": "Frantic Factory: Lobby - Top Center",
+            "source": "franticfactorylobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "gorillagrab"
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanMoonkick",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "advanced_platforming",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "franticfactorylobbytopright": {
+            "id": "franticfactorylobbytopright",
+            "Key": "franticfactorylobbytopright",
+            "Name": "Frantic Factory: Lobby - Top Right",
+            "source": "franticfactorylobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "gorillagrab"
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanMoonkick",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "advanced_platforming",
+                                "isGlitch": true
+                            },
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "tiny"
+                                    },
+                                    {
+                                        "Name": "diddy"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "franticfactorylobbylowright": {
+            "id": "franticfactorylobbylowright",
+            "Key": "franticfactorylobbylowright",
+            "Name": "Frantic Factory: Lobby - Low Right",
+            "source": "franticfactorylobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "franticfactoryarcaderoom": {
+            "id": "franticfactoryarcaderoom",
+            "Key": "franticfactoryarcaderoom",
+            "Name": "Frantic Factory: Arcade Room",
+            "source": "beyondhatch",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryproductionroom": {
+            "id": "franticfactoryproductionroom",
+            "Key": "franticfactoryproductionroom",
+            "Name": "Frantic Factory: Production Room",
+            "source": "uppercore",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryr&d": {
+            "id": "franticfactoryr&d",
+            "Key": "franticfactoryr&d",
+            "Name": "Frantic Factory: R&D",
+            "source": "randd",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryblocktower": {
+            "id": "franticfactoryblocktower",
+            "Key": "franticfactoryblocktower",
+            "Name": "Frantic Factory: Block Tower",
+            "source": "testing",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorystorageroom": {
+            "id": "franticfactorystorageroom",
+            "Key": "franticfactorystorageroom",
+            "Name": "Frantic Factory: Storage Room",
+            "source": "beyondhatch",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorybehindchunkystoyboxbig": {
+            "id": "franticfactorybehindchunkystoyboxbig",
+            "Key": "franticfactorybehindchunkystoyboxbig",
+            "Name": "Frantic Factory: Behind Chunky's Toy Box - big",
+            "source": "randd",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "chunky"
+                            },
+                            {
+                                "Name": "primatepunch"
+                            },
+                            {
+                                "Name": "triangle"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanAccessRNDRoom",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorynexttohatchwithtallpoleleft": {
+            "id": "franticfactorynexttohatchwithtallpoleleft",
+            "Key": "franticfactorynexttohatchwithtallpoleleft",
+            "Name": "Frantic Factory: Next to Hatch with Tall Pole - left",
+            "source": "franticfactorystart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorynexttohatchwithtallpoleright": {
+            "id": "franticfactorynexttohatchwithtallpoleright",
+            "Key": "franticfactorynexttohatchwithtallpoleright",
+            "Name": "Frantic Factory: Next to Hatch with Tall Pole - right",
+            "source": "franticfactorystart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorybottomofthetallpole": {
+            "id": "franticfactorybottomofthetallpole",
+            "Key": "franticfactorybottomofthetallpole",
+            "Name": "Frantic Factory: Bottom of the Tall Pole",
+            "source": "beyondhatch",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryproductionroomundertinyconveyors": {
+            "id": "franticfactoryproductionroomundertinyconveyors",
+            "Key": "franticfactoryproductionroomundertinyconveyors",
+            "Name": "Frantic Factory: Production Room - Under Tiny Conveyors",
+            "source": "uppercore",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorykongcageroombehindtagbarrel": {
+            "id": "franticfactorykongcageroombehindtagbarrel",
+            "Key": "franticfactorykongcageroombehindtagbarrel",
+            "Name": "Frantic Factory: Kong Cage Room - Behind Tag Barrel",
+            "source": "beyondhatch",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryundercrankyslab": {
+            "id": "franticfactoryundercrankyslab",
+            "Key": "franticfactoryundercrankyslab",
+            "Name": "Frantic Factory: Under Cranky's Lab",
+            "source": "beyondhatch",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryundercandysstore": {
+            "id": "franticfactoryundercandysstore",
+            "Key": "franticfactoryundercandysstore",
+            "Name": "Frantic Factory: Under Candy's Store",
+            "source": "beyondhatch",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorynexttodkscountto16puzzle": {
+            "id": "franticfactorynexttodkscountto16puzzle",
+            "Key": "franticfactorynexttodkscountto16puzzle",
+            "Name": "Frantic Factory: Next to DK's Count to 16 Puzzle",
+            "source": "testing",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryr&droomnexttotunneltocarrace": {
+            "id": "franticfactoryr&droomnexttotunneltocarrace",
+            "Key": "franticfactoryr&droomnexttotunneltocarrace",
+            "Name": "Frantic Factory: R&D Room - Next to Tunnel to Car Race",
+            "source": "randd",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryblocktowerroomundertunneltofunkys": {
+            "id": "franticfactoryblocktowerroomundertunneltofunkys",
+            "Key": "franticfactoryblocktowerroomundertunneltofunkys",
+            "Name": "Frantic Factory: Block Tower Room - Under Tunnel to Funky's",
+            "source": "testing",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryr&droomdeadend": {
+            "id": "franticfactoryr&droomdeadend",
+            "Key": "franticfactoryr&droomdeadend",
+            "Name": "Frantic Factory: R&D Room - Dead End",
+            "source": "randd",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryr&droomblindcornernexttotunneltocarrace": {
+            "id": "franticfactoryr&droomblindcornernexttotunneltocarrace",
+            "Key": "franticfactoryr&droomblindcornernexttotunneltocarrace",
+            "Name": "Frantic Factory: R&D Room - Blind Corner Next to Tunnel to Car Race",
+            "source": "randd",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryfunkysroomacrossfrommeloncrate": {
+            "id": "franticfactoryfunkysroomacrossfrommeloncrate",
+            "Key": "franticfactoryfunkysroomacrossfrommeloncrate",
+            "Name": "Frantic Factory: Funky's Room - Across from Melon Crate",
+            "source": "testing",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryblocktowerroomairventunderarcadewindow": {
+            "id": "franticfactoryblocktowerroomairventunderarcadewindow",
+            "Key": "franticfactoryblocktowerroomairventunderarcadewindow",
+            "Name": "Frantic Factory: Block Tower Room - Air Vent Under Arcade Window",
+            "source": "testing",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryblocktowerroomunderarcadewindowleft": {
+            "id": "franticfactoryblocktowerroomunderarcadewindowleft",
+            "Key": "franticfactoryblocktowerroomunderarcadewindowleft",
+            "Name": "Frantic Factory: Block Tower Room - Under Arcade Window - left",
+            "source": "testing",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryblocktowerroombehindtagbarrel": {
+            "id": "franticfactoryblocktowerroombehindtagbarrel",
+            "Key": "franticfactoryblocktowerroombehindtagbarrel",
+            "Name": "Frantic Factory: Block Tower Room - Behind Tag Barrel",
+            "source": "testing",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryr&droomnexttodiddyspincoderoom": {
+            "id": "franticfactoryr&droomnexttodiddyspincoderoom",
+            "Key": "franticfactoryr&droomnexttodiddyspincoderoom",
+            "Name": "Frantic Factory: R&D Room - Next to Diddy's Pincode Room",
+            "source": "randd",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorytinysraceentryarea": {
+            "id": "franticfactorytinysraceentryarea",
+            "Key": "franticfactorytinysraceentryarea",
+            "Name": "Frantic Factory: Tiny's Race Entry Area",
+            "source": "factorytinyracelobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorykongcageroomnexttotagbarrel": {
+            "id": "franticfactorykongcageroomnexttotagbarrel",
+            "Key": "franticfactorykongcageroomnexttotagbarrel",
+            "Name": "Frantic Factory: Kong Cage Room - Next to Tag Barrel",
+            "source": "beyondhatch",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryproductionroominalcovenexttotinysbarrel": {
+            "id": "franticfactoryproductionroominalcovenexttotinysbarrel",
+            "Key": "franticfactoryproductionroominalcovenexttotinysbarrel",
+            "Name": "Frantic Factory: Production Room - in Alcove Next to Tiny's Barrel",
+            "source": "uppercore",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "tiny"
+                    },
+                    {
+                        "Name": "ponytailtwirl"
+                    }
+                ]
+            },
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryproductionroomnexttodiddysswitch": {
+            "id": "franticfactoryproductionroomnexttodiddysswitch",
+            "Key": "franticfactoryproductionroomnexttodiddysswitch",
+            "Name": "Frantic Factory: Production Room - Next to Diddy's Switch",
+            "source": "beyondhatch",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryarcaderoominacorner": {
+            "id": "franticfactoryarcaderoominacorner",
+            "Key": "franticfactoryarcaderoominacorner",
+            "Name": "Frantic Factory: Arcade Room - in a corner",
+            "source": "beyondhatch",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryblocktowerroomnexttotinybarrel": {
+            "id": "franticfactoryblocktowerroomnexttotinybarrel",
+            "Key": "franticfactoryblocktowerroomnexttotinybarrel",
+            "Name": "Frantic Factory: Block Tower Room - Next to Tiny Barrel",
+            "source": "testing",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryblocktowerroomatthebaseoftheblocktower": {
+            "id": "franticfactoryblocktowerroomatthebaseoftheblocktower",
+            "Key": "franticfactoryblocktowerroomatthebaseoftheblocktower",
+            "Name": "Frantic Factory: Block Tower Room - at the Base of the Block Tower",
+            "source": "testing",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryclockroomunderclock": {
+            "id": "franticfactoryclockroomunderclock",
+            "Key": "franticfactoryclockroomunderclock",
+            "Name": "Frantic Factory: Clock Room - Under Clock",
+            "source": "franticfactorystart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryclockroomfrontleft": {
+            "id": "franticfactoryclockroomfrontleft",
+            "Key": "franticfactoryclockroomfrontleft",
+            "Name": "Frantic Factory: Clock Room - front left",
+            "source": "franticfactorystart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryclockroombackleft": {
+            "id": "franticfactoryclockroombackleft",
+            "Key": "franticfactoryclockroombackleft",
+            "Name": "Frantic Factory: Clock Room - back left",
+            "source": "franticfactorystart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactoryclockroomfrontright": {
+            "id": "franticfactoryclockroomfrontright",
+            "Key": "franticfactoryclockroomfrontright",
+            "Name": "Frantic Factory: Clock Room - front right",
+            "source": "franticfactorystart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorytopofpipenearkongfreeingswitch": {
+            "id": "franticfactorytopofpipenearkongfreeingswitch",
+            "Key": "franticfactorytopofpipenearkongfreeingswitch",
+            "Name": "Frantic Factory: Top of Pipe Near Kong-freeing Switch",
+            "source": "beyondhatch",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "lanky"
+                    },
+                    {
+                        "Name": "orangstand"
+                    }
+                ]
+            },
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorypincoderoomfrontright": {
+            "id": "franticfactorypincoderoomfrontright",
+            "Key": "franticfactorypincoderoomfrontright",
+            "Name": "Frantic Factory: Pin Code Room - front-right",
+            "source": "randd",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "diddy"
+                            },
+                            {
+                                "Name": "guitar"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanAccessRNDRoom",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorylankyspianoroomright": {
+            "id": "franticfactorylankyspianoroomright",
+            "Key": "franticfactorylankyspianoroomright",
+            "Name": "Frantic Factory: Lanky's Piano Room - right",
+            "source": "randd",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "lanky"
+                            },
+                            {
+                                "Name": "trombone"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanAccessRNDRoom",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorylankyspianoroomleft": {
+            "id": "franticfactorylankyspianoroomleft",
+            "Key": "franticfactorylankyspianoroomleft",
+            "Name": "Frantic Factory: Lanky's Piano Room - left",
+            "source": "randd",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "lanky"
+                            },
+                            {
+                                "Name": "trombone"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanAccessRNDRoom",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorychunkysdarkroom": {
+            "id": "franticfactorychunkysdarkroom",
+            "Key": "franticfactorychunkysdarkroom",
+            "Name": "Frantic Factory: Chunky's Dark Room",
+            "source": "beyondhatch",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "chunky"
+                            },
+                            {
+                                "Name": "primatepunch"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "generalclips",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "franticfactorycrusherroomstart": {
+            "id": "franticfactorycrusherroomstart",
+            "Key": "franticfactorycrusherroomstart",
+            "Name": "Frantic Factory: Crusher Room - start",
+            "source": "insidecore",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FranticFactory",
+            "Class": "Door"
+        },
+        "gloomygalleonlobbyfarleft": {
+            "id": "gloomygalleonlobbyfarleft",
+            "Key": "gloomygalleonlobbyfarleft",
+            "Name": "Gloomy Galleon: Lobby - Far Left",
+            "source": "gloomygalleonlobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "gloomygalleonlobbyfarright": {
+            "id": "gloomygalleonlobbyfarright",
+            "Key": "gloomygalleonlobbyfarright",
+            "Name": "Gloomy Galleon: Lobby - Far Right",
+            "source": "gloomygalleonlobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "gloomygalleonlobbycloseright": {
+            "id": "gloomygalleonlobbycloseright",
+            "Key": "gloomygalleonlobbycloseright",
+            "Name": "Gloomy Galleon: Lobby - Close Right",
+            "source": "gloomygalleonlobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "gloomygalleonlobbyneardkportal": {
+            "id": "gloomygalleonlobbyneardkportal",
+            "Key": "gloomygalleonlobbyneardkportal",
+            "Name": "Gloomy Galleon: Lobby - Near DK Portal",
+            "source": "gloomygalleonlobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "gloomygalleonlobbycloseleft": {
+            "id": "gloomygalleonlobbycloseleft",
+            "Key": "gloomygalleonlobbycloseleft",
+            "Name": "Gloomy Galleon: Lobby - Close Left",
+            "source": "gloomygalleonlobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "gloomygalleonnearcrankys": {
+            "id": "gloomygalleonnearcrankys",
+            "Key": "gloomygalleonnearcrankys",
+            "Name": "Gloomy Galleon: Near Cranky's",
+            "source": "galleonpastvines",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleondeephole": {
+            "id": "gloomygalleondeephole",
+            "Key": "gloomygalleondeephole",
+            "Name": "Gloomy Galleon: Deep Hole",
+            "source": "lighthouseunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonbehind2ds": {
+            "id": "gloomygalleonbehind2ds",
+            "Key": "gloomygalleonbehind2ds",
+            "Name": "Gloomy Galleon: Behind 2DS",
+            "source": "shipyardunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonbehindenguardedoor": {
+            "id": "gloomygalleonbehindenguardedoor",
+            "Key": "gloomygalleonbehindenguardedoor",
+            "Name": "Gloomy Galleon: Behind Enguarde Door",
+            "source": "lighthouseunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "LighthouseEnguarde",
+                        "Events": true
+                    }
+                ]
+            },
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleoncactus": {
+            "id": "gloomygalleoncactus",
+            "Key": "gloomygalleoncactus",
+            "Name": "Gloomy Galleon: Cactus",
+            "source": "shipyardunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleoninhallwaytoshipyardtinyswitch": {
+            "id": "gloomygalleoninhallwaytoshipyardtinyswitch",
+            "Key": "gloomygalleoninhallwaytoshipyardtinyswitch",
+            "Name": "Gloomy Galleon: In hallway to Shipyard - Tiny switch",
+            "source": "gloomygalleonstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleoninhallwaytoshipyardlankyswitch": {
+            "id": "gloomygalleoninhallwaytoshipyardlankyswitch",
+            "Key": "gloomygalleoninhallwaytoshipyardlankyswitch",
+            "Name": "Gloomy Galleon: In hallway to Shipyard - Lanky switch",
+            "source": "gloomygalleonstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleoninhallwaytoprimatepunchchests": {
+            "id": "gloomygalleoninhallwaytoprimatepunchchests",
+            "Key": "gloomygalleoninhallwaytoprimatepunchchests",
+            "Name": "Gloomy Galleon: In hallway to Primate Punch Chests",
+            "source": "gloomygalleonstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonunderbaboonblastpad": {
+            "id": "gloomygalleonunderbaboonblastpad",
+            "Key": "gloomygalleonunderbaboonblastpad",
+            "Name": "Gloomy Galleon: Under Baboon Blast pad",
+            "source": "lighthouseplatform",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonunderrocketbarrelbarrel": {
+            "id": "gloomygalleonunderrocketbarrelbarrel",
+            "Key": "gloomygalleonunderrocketbarrelbarrel",
+            "Name": "Gloomy Galleon: Under RocketBarrel barrel",
+            "source": "lighthouseplatform",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonnexttocannonballgame": {
+            "id": "gloomygalleonnexttocannonballgame",
+            "Key": "gloomygalleonnexttocannonballgame",
+            "Name": "Gloomy Galleon: Next to Cannonball game",
+            "source": "galleonbeyondpineapplegate",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanGetOnCannonGamePlatform",
+                        "Params": [],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonnexttococonutswitch": {
+            "id": "gloomygalleonnexttococonutswitch",
+            "Key": "gloomygalleonnexttococonutswitch",
+            "Name": "Gloomy Galleon: Next to Coconut switch",
+            "source": "gloomygalleonstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonentrancetunnelnearentrance": {
+            "id": "gloomygalleonentrancetunnelnearentrance",
+            "Key": "gloomygalleonentrancetunnelnearentrance",
+            "Name": "Gloomy Galleon: Entrance Tunnel - near entrance",
+            "source": "gloomygalleonstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonnexttopeanutswitch": {
+            "id": "gloomygalleonnexttopeanutswitch",
+            "Key": "gloomygalleonnexttopeanutswitch",
+            "Name": "Gloomy Galleon: Next to Peanut switch",
+            "source": "gloomygalleonstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonmusiccactusbottombackleft": {
+            "id": "gloomygalleonmusiccactusbottombackleft",
+            "Key": "gloomygalleonmusiccactusbottombackleft",
+            "Name": "Gloomy Galleon: Music Cactus - bottom back left",
+            "source": "shipyardunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonmusiccactusbottomfrontleft": {
+            "id": "gloomygalleonmusiccactusbottomfrontleft",
+            "Key": "gloomygalleonmusiccactusbottomfrontleft",
+            "Name": "Gloomy Galleon: Music Cactus - bottom front left",
+            "source": "shipyardunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonmusiccactusbottombackright": {
+            "id": "gloomygalleonmusiccactusbottombackright",
+            "Key": "gloomygalleonmusiccactusbottombackright",
+            "Name": "Gloomy Galleon: Music Cactus - bottom back right",
+            "source": "shipyardunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonmusiccactusbottomfrontright": {
+            "id": "gloomygalleonmusiccactusbottomfrontright",
+            "Key": "gloomygalleonmusiccactusbottomfrontright",
+            "Name": "Gloomy Galleon: Music Cactus - bottom front right",
+            "source": "shipyardunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonontopofsealcage": {
+            "id": "gloomygalleonontopofsealcage",
+            "Key": "gloomygalleonontopofsealcage",
+            "Name": "Gloomy Galleon: On top of Seal cage",
+            "source": "lighthouseplatform",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "diddy"
+                    },
+                    {
+                        "Name": "rocketbarrelboost"
+                    }
+                ]
+            },
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleontreasurechestexterior": {
+            "id": "gloomygalleontreasurechestexterior",
+            "Key": "gloomygalleontreasurechestexterior",
+            "Name": "Gloomy Galleon: Treasure Chest Exterior",
+            "source": "treasureroom",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonnexttowarp3incrankysarea": {
+            "id": "gloomygalleonnexttowarp3incrankysarea",
+            "Key": "gloomygalleonnexttowarp3incrankysarea",
+            "Name": "Gloomy Galleon: Next to Warp 3 in Cranky's Area",
+            "source": "galleonpastvines",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleoninprimatepunchchestroomright": {
+            "id": "gloomygalleoninprimatepunchchestroomright",
+            "Key": "gloomygalleoninprimatepunchchestroomright",
+            "Name": "Gloomy Galleon: In Primate Punch Chest Room - right",
+            "source": "gloomygalleonstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonbehindchunkypunchgateincrankyarea": {
+            "id": "gloomygalleonbehindchunkypunchgateincrankyarea",
+            "Key": "gloomygalleonbehindchunkypunchgateincrankyarea",
+            "Name": "Gloomy Galleon: Behind Chunky punch gate in Cranky Area",
+            "source": "gloomygalleonstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "chunky"
+                            },
+                            {
+                                "Name": "primatepunch"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonlowwateralcoveinlighthousearea": {
+            "id": "gloomygalleonlowwateralcoveinlighthousearea",
+            "Key": "gloomygalleonlowwateralcoveinlighthousearea",
+            "Name": "Gloomy Galleon: Low water alcove in lighthouse area",
+            "source": "lighthousesurface",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonbehindboxesincrankyarea": {
+            "id": "gloomygalleonbehindboxesincrankyarea",
+            "Key": "gloomygalleonbehindboxesincrankyarea",
+            "Name": "Gloomy Galleon: Behind boxes in Cranky Area",
+            "source": "gloomygalleonstart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonmechfishgatefarleft": {
+            "id": "gloomygalleonmechfishgatefarleft",
+            "Key": "gloomygalleonmechfishgatefarleft",
+            "Name": "Gloomy Galleon: Mech Fish Gate - far left",
+            "source": "shipyardunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonmechfishgateleft": {
+            "id": "gloomygalleonmechfishgateleft",
+            "Key": "gloomygalleonmechfishgateleft",
+            "Name": "Gloomy Galleon: Mech Fish Gate - left",
+            "source": "shipyardunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonmechfishgatemiddle": {
+            "id": "gloomygalleonmechfishgatemiddle",
+            "Key": "gloomygalleonmechfishgatemiddle",
+            "Name": "Gloomy Galleon: Mech Fish Gate - middle",
+            "source": "shipyardunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonmechfishgateright": {
+            "id": "gloomygalleonmechfishgateright",
+            "Key": "gloomygalleonmechfishgateright",
+            "Name": "Gloomy Galleon: Mech Fish Gate - right",
+            "source": "shipyardunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonmechfishgatefarright": {
+            "id": "gloomygalleonmechfishgatefarright",
+            "Key": "gloomygalleonmechfishgatefarright",
+            "Name": "Gloomy Galleon: Mech Fish Gate - far right",
+            "source": "shipyardunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleoncannonballareaexit": {
+            "id": "gloomygalleoncannonballareaexit",
+            "Key": "gloomygalleoncannonballareaexit",
+            "Name": "Gloomy Galleon: Cannonball Area Exit",
+            "source": "galleonbeyondpineapplegate",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleon2dshipssecret3rddoor": {
+            "id": "gloomygalleon2dshipssecret3rddoor",
+            "Key": "gloomygalleon2dshipssecret3rddoor",
+            "Name": "Gloomy Galleon: 2Dship's secret 3rd door",
+            "source": "shipyardunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonnearmermaidspalaceright": {
+            "id": "gloomygalleonnearmermaidspalaceright",
+            "Key": "gloomygalleonnearmermaidspalaceright",
+            "Name": "Gloomy Galleon: Near Mermaid's Palace - right",
+            "source": "lighthouseunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonnearmermaidspalaceleft": {
+            "id": "gloomygalleonnearmermaidspalaceleft",
+            "Key": "gloomygalleonnearmermaidspalaceleft",
+            "Name": "Gloomy Galleon: Near Mermaid's Palace - left",
+            "source": "lighthouseunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonnearmermaidspalaceundertagbarrel": {
+            "id": "gloomygalleonnearmermaidspalaceundertagbarrel",
+            "Key": "gloomygalleonnearmermaidspalaceundertagbarrel",
+            "Name": "Gloomy Galleon: Near Mermaid's Palace - Under Tag Barrel",
+            "source": "lighthouseunderwater",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonlighthouseinterior": {
+            "id": "gloomygalleonlighthouseinterior",
+            "Key": "gloomygalleonlighthouseinterior",
+            "Name": "Gloomy Galleon: Lighthouse Interior",
+            "source": "lighthouse",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleoninmermaidspalace": {
+            "id": "gloomygalleoninmermaidspalace",
+            "Key": "gloomygalleoninmermaidspalace",
+            "Name": "Gloomy Galleon: In Mermaid's Palace",
+            "source": "mermaidroom",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleontinys5dship": {
+            "id": "gloomygalleontinys5dship",
+            "Key": "gloomygalleontinys5dship",
+            "Name": "Gloomy Galleon: Tiny's 5D ship",
+            "source": "saxophoneship",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonlankys5dship": {
+            "id": "gloomygalleonlankys5dship",
+            "Key": "gloomygalleonlankys5dship",
+            "Name": "Gloomy Galleon: Lanky's 5D ship",
+            "source": "tromboneship",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "gloomygalleonlankys2dship": {
+            "id": "gloomygalleonlankys2dship",
+            "Key": "gloomygalleonlankys2dship",
+            "Name": "Gloomy Galleon: Lanky's 2D ship",
+            "source": "lankyship",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "GloomyGalleon",
+            "Class": "Door"
+        },
+        "fungiforestlobbyonhighbox": {
+            "id": "fungiforestlobbyonhighbox",
+            "Key": "fungiforestlobbyonhighbox",
+            "Name": "Fungi Forest: Lobby - On High Box",
+            "source": "fungiforestlobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "fungiforestlobbyneargorillagonedoor": {
+            "id": "fungiforestlobbyneargorillagonedoor",
+            "Key": "fungiforestlobbyneargorillagonedoor",
+            "Name": "Fungi Forest: Lobby - Near Gorilla Gone Door",
+            "source": "fungiforestlobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "fungiforestlobbyoppositegorillagonedoor": {
+            "id": "fungiforestlobbyoppositegorillagonedoor",
+            "Key": "fungiforestlobbyoppositegorillagonedoor",
+            "Name": "Fungi Forest: Lobby - Opposite Gorilla Gone Door",
+            "source": "fungiforestlobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "fungiforestlobbynearb.locker": {
+            "id": "fungiforestlobbynearb.locker",
+            "Key": "fungiforestlobbynearb.locker",
+            "Name": "Fungi Forest: Lobby - Near B. Locker",
+            "source": "fungiforestlobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "fungiforestlobbynearentrance": {
+            "id": "fungiforestlobbynearentrance",
+            "Key": "fungiforestlobbynearentrance",
+            "Name": "Fungi Forest: Lobby - Near Entrance",
+            "source": "fungiforestlobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "fungiforestbehinddkbarn": {
+            "id": "fungiforestbehinddkbarn",
+            "Key": "fungiforestbehinddkbarn",
+            "Name": "Fungi Forest: Behind DK Barn",
+            "source": "thornvinearea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestbeanstalkarea": {
+            "id": "fungiforestbeanstalkarea",
+            "Key": "fungiforestbeanstalkarea",
+            "Name": "Fungi Forest: Beanstalk Area",
+            "source": "wormarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "Night",
+                        "Events": true
+                    }
+                ]
+            },
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestnearsnides": {
+            "id": "fungiforestnearsnides",
+            "Key": "fungiforestnearsnides",
+            "Name": "Fungi Forest: Near Snide's",
+            "source": "millarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "Day",
+                        "Events": true
+                    }
+                ]
+            },
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforesttopofgiantmushroom": {
+            "id": "fungiforesttopofgiantmushroom",
+            "Key": "fungiforesttopofgiantmushroom",
+            "Name": "Fungi Forest: Top of Giant Mushroom",
+            "source": "mushroomupperexterior",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestowlarea": {
+            "id": "fungiforestowlarea",
+            "Key": "fungiforestowlarea",
+            "Name": "Fungi Forest: Owl Area",
+            "source": "hollowtreearea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestontopofcageoutsideconveyorbelt": {
+            "id": "fungiforestontopofcageoutsideconveyorbelt",
+            "Key": "fungiforestontopofcageoutsideconveyorbelt",
+            "Name": "Fungi Forest: On top of Cage outside Conveyor Belt",
+            "source": "millarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestwatermillfrontright": {
+            "id": "fungiforestwatermillfrontright",
+            "Key": "fungiforestwatermillfrontright",
+            "Name": "Fungi Forest: Watermill - front - right",
+            "source": "millarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestwatermillrightleft": {
+            "id": "fungiforestwatermillrightleft",
+            "Key": "fungiforestwatermillrightleft",
+            "Name": "Fungi Forest: Watermill - right - left",
+            "source": "millarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestwatermillrightright": {
+            "id": "fungiforestwatermillrightright",
+            "Key": "fungiforestwatermillrightright",
+            "Name": "Fungi Forest: Watermill - right - right",
+            "source": "millarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestwatermillrooftower": {
+            "id": "fungiforestwatermillrooftower",
+            "Key": "fungiforestwatermillrooftower",
+            "Name": "Fungi Forest: Watermill Roof - tower",
+            "source": "millarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestboxesoutsideofdiddysbarn": {
+            "id": "fungiforestboxesoutsideofdiddysbarn",
+            "Key": "fungiforestboxesoutsideofdiddysbarn",
+            "Name": "Fungi Forest: Boxes outside of Diddy's Barn",
+            "source": "millarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestoutsidediddysbarn": {
+            "id": "fungiforestoutsidediddysbarn",
+            "Key": "fungiforestoutsidediddysbarn",
+            "Name": "Fungi Forest: Outside Diddy's Barn",
+            "source": "millarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestimmediatelyinsidethethornvinearearight": {
+            "id": "fungiforestimmediatelyinsidethethornvinearearight",
+            "Key": "fungiforestimmediatelyinsidethethornvinearearight",
+            "Name": "Fungi Forest: Immediately Inside the Thornvine Area - right",
+            "source": "thornvinearea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestimmediatelyinsidethethornvinearealeft": {
+            "id": "fungiforestimmediatelyinsidethethornvinearealeft",
+            "Key": "fungiforestimmediatelyinsidethethornvinearealeft",
+            "Name": "Fungi Forest: Immediately Inside the Thornvine Area - left",
+            "source": "thornvinearea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestoutsidedksbarn": {
+            "id": "fungiforestoutsidedksbarn",
+            "Key": "fungiforestoutsidedksbarn",
+            "Name": "Fungi Forest: Outside DK's Barn",
+            "source": "thornvinearea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestnexttorabbitshouse": {
+            "id": "fungiforestnexttorabbitshouse",
+            "Key": "fungiforestnexttorabbitshouse",
+            "Name": "Fungi Forest: Next to Rabbit's House",
+            "source": "hollowtreearea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestowlareanearrocketbarrelbarrelfarleft": {
+            "id": "fungiforestowlareanearrocketbarrelbarrelfarleft",
+            "Key": "fungiforestowlareanearrocketbarrelbarrelfarleft",
+            "Name": "Fungi Forest: Owl Area - Near Rocketbarrel Barrel - far left",
+            "source": "hollowtreearea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestfunkyareaneartinycoins": {
+            "id": "fungiforestfunkyareaneartinycoins",
+            "Key": "fungiforestfunkyareaneartinycoins",
+            "Name": "Fungi Forest: Funky Area - Near Tiny Coins",
+            "source": "wormarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestmushroomareanexttotagbarrelnearcrankys": {
+            "id": "fungiforestmushroomareanexttotagbarrelnearcrankys",
+            "Key": "fungiforestmushroomareanexttotagbarrelnearcrankys",
+            "Name": "Fungi Forest: Mushroom Area - Next to Tag Barrel near Cranky's",
+            "source": "giantmushroomarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestmushroomareanexttorocketbarrelbarrelleft": {
+            "id": "fungiforestmushroomareanexttorocketbarrelbarrelleft",
+            "Key": "fungiforestmushroomareanexttorocketbarrelbarrelleft",
+            "Name": "Fungi Forest: Mushroom Area - Next to Rocketbarrel Barrel - left",
+            "source": "giantmushroomarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestmushroomareanexttorocketbarrelbarrelright": {
+            "id": "fungiforestmushroomareanexttorocketbarrelbarrelright",
+            "Key": "fungiforestmushroomareanexttorocketbarrelbarrelright",
+            "Name": "Fungi Forest: Mushroom Area - Next to Rocketbarrel Barrel - right",
+            "source": "giantmushroomarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestmushroomareanexttocranky": {
+            "id": "fungiforestmushroomareanexttocranky",
+            "Key": "fungiforestmushroomareanexttocranky",
+            "Name": "Fungi Forest: Mushroom Area - Next to Cranky",
+            "source": "giantmushroomarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestclockareanexttopurpletunnelleft": {
+            "id": "fungiforestclockareanexttopurpletunnelleft",
+            "Key": "fungiforestclockareanexttopurpletunnelleft",
+            "Name": "Fungi Forest: Clock Area - Next to Purple Tunnel - left",
+            "source": "fungiforeststart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestclockareanexttopurpletunnelright": {
+            "id": "fungiforestclockareanexttopurpletunnelright",
+            "Key": "fungiforestclockareanexttopurpletunnelright",
+            "Name": "Fungi Forest: Clock Area - Next to Purple Tunnel - right",
+            "source": "fungiforeststart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestclockareanexttoclockleft": {
+            "id": "fungiforestclockareanexttoclockleft",
+            "Key": "fungiforestclockareanexttoclockleft",
+            "Name": "Fungi Forest: Clock Area - Next to Clock - left",
+            "source": "fungiforeststart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestclockareanexttoclockright": {
+            "id": "fungiforestclockareanexttoclockright",
+            "Key": "fungiforestclockareanexttoclockright",
+            "Name": "Fungi Forest: Clock Area - Next to Clock - right",
+            "source": "fungiforeststart",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestfunkyareanearbeanstalkleft": {
+            "id": "fungiforestfunkyareanearbeanstalkleft",
+            "Key": "fungiforestfunkyareanearbeanstalkleft",
+            "Name": "Fungi Forest: Funky Area - Near Beanstalk - left",
+            "source": "wormarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestfunkyareanearbeanstalkback": {
+            "id": "fungiforestfunkyareanearbeanstalkback",
+            "Key": "fungiforestfunkyareanearbeanstalkback",
+            "Name": "Fungi Forest: Funky Area - Near Beanstalk - back",
+            "source": "wormarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestinsidethemushroomallkonggunswitchright": {
+            "id": "fungiforestinsidethemushroomallkonggunswitchright",
+            "Key": "fungiforestinsidethemushroomallkonggunswitchright",
+            "Name": "Fungi Forest: Inside the Mushroom - All Kong Gun Switch - right",
+            "source": "mushroomlower",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestinsidethemushroomallkonggunswitchleft": {
+            "id": "fungiforestinsidethemushroomallkonggunswitchleft",
+            "Key": "fungiforestinsidethemushroomallkonggunswitchleft",
+            "Name": "Fungi Forest: Inside the Mushroom - All Kong Gun Switch - left",
+            "source": "mushroomlower",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestinsidethemushroomhalfwayalongthedeadend": {
+            "id": "fungiforestinsidethemushroomhalfwayalongthedeadend",
+            "Key": "fungiforestinsidethemushroomhalfwayalongthedeadend",
+            "Name": "Fungi Forest: Inside the Mushroom - halfway along the Dead End",
+            "source": "mushroomlower",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestinsidethemushroomalongthewallnearklumpandoranges": {
+            "id": "fungiforestinsidethemushroomalongthewallnearklumpandoranges",
+            "Key": "fungiforestinsidethemushroomalongthewallnearklumpandoranges",
+            "Name": "Fungi Forest: Inside the Mushroom - Along the Wall near Klump and Oranges",
+            "source": "mushroomupper",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestchunkysfacepuzzle": {
+            "id": "fungiforestchunkysfacepuzzle",
+            "Key": "fungiforestchunkysfacepuzzle",
+            "Name": "Fungi Forest: Chunky's Face Puzzle",
+            "source": "mushroomchunkyroom",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestlankys2mushroomroom": {
+            "id": "fungiforestlankys2mushroomroom",
+            "Key": "fungiforestlankys2mushroomroom",
+            "Name": "Fungi Forest: Lanky's 2-Mushroom Room",
+            "source": "mushroomlankyzingersroom",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestdkleverpuzzlearea": {
+            "id": "fungiforestdkleverpuzzlearea",
+            "Key": "fungiforestdkleverpuzzlearea",
+            "Name": "Fungi Forest: DK Lever puzzle Area",
+            "source": "grinderroom",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "donkey"
+                            },
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "FungiForest",
+                                    2
+                                ],
+                                "isFunction": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "generalclips",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestmillbacksidenearchunkycoins": {
+            "id": "fungiforestmillbacksidenearchunkycoins",
+            "Key": "fungiforestmillbacksidenearchunkycoins",
+            "Name": "Fungi Forest: Mill - back side - Near Chunky Coins",
+            "source": "millchunkytinyarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestwinchroomonthewinch": {
+            "id": "fungiforestwinchroomonthewinch",
+            "Key": "fungiforestwinchroomonthewinch",
+            "Name": "Fungi Forest: Winch Room - on the Winch",
+            "source": "winchroom",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestlankysattic": {
+            "id": "fungiforestlankysattic",
+            "Key": "fungiforestlankysattic",
+            "Name": "Fungi Forest: Lanky's Attic",
+            "source": "millattic",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "fungiforestdksbarnbetween2barrelsnearswitch": {
+            "id": "fungiforestdksbarnbetween2barrelsnearswitch",
+            "Key": "fungiforestdksbarnbetween2barrelsnearswitch",
+            "Name": "Fungi Forest: DK's Barn - Between 2 Barrels near Switch",
+            "source": "thornvinebarn",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "FungiForest",
+            "Class": "Door"
+        },
+        "crystalcaveslobbyfarleft": {
+            "id": "crystalcaveslobbyfarleft",
+            "Key": "crystalcaveslobbyfarleft",
+            "Name": "Crystal Caves: Lobby - Far Left",
+            "source": "crystalcaveslobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "crystalcaveslobbytopledge": {
+            "id": "crystalcaveslobbytopledge",
+            "Key": "crystalcaveslobbytopledge",
+            "Name": "Crystal Caves: Lobby - Top Ledge",
+            "source": "crystalcaveslobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "diddy"
+                            },
+                            {
+                                "Name": "rocketbarrelboost"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanMoonkick",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "crystalcaveslobbynearleft": {
+            "id": "crystalcaveslobbynearleft",
+            "Key": "crystalcaveslobbynearleft",
+            "Name": "Crystal Caves: Lobby - Near Left",
+            "source": "crystalcaveslobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "crystalcaveslobbyfarright": {
+            "id": "crystalcaveslobbyfarright",
+            "Key": "crystalcaveslobbyfarright",
+            "Name": "Crystal Caves: Lobby - Far Right",
+            "source": "crystalcaveslobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "crystalcaveslobbynearright": {
+            "id": "crystalcaveslobbynearright",
+            "Key": "crystalcaveslobbynearright",
+            "Name": "Crystal Caves: Lobby - Near Right",
+            "source": "crystalcaveslobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "crystalcavesonrotatingroom": {
+            "id": "crystalcavesonrotatingroom",
+            "Key": "crystalcavesonrotatingroom",
+            "Name": "Crystal Caves: On Rotating Room",
+            "source": "cabinarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "diddy"
+                    },
+                    {
+                        "Name": "rocketbarrelboost"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesnearsnides": {
+            "id": "crystalcavesnearsnides",
+            "Key": "crystalcavesnearsnides",
+            "Name": "Crystal Caves: Near Snide's",
+            "source": "cavessnidearea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesgiantboulderroom": {
+            "id": "crystalcavesgiantboulderroom",
+            "Key": "crystalcavesgiantboulderroom",
+            "Name": "Crystal Caves: Giant Boulder Room",
+            "source": "bouldercave",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesonsprintcabin": {
+            "id": "crystalcavesonsprintcabin",
+            "Key": "crystalcavesonsprintcabin",
+            "Name": "Crystal Caves: On Sprint Cabin",
+            "source": "cabinarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "diddy"
+                            },
+                            {
+                                "Name": "rocketbarrelboost"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "lanky"
+                            },
+                            {
+                                "Name": "balloon"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanMoonkick",
+                        "Params": [],
+                        "isFunction": true,
+                        "isGlitch": true
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesnear5di": {
+            "id": "crystalcavesnear5di",
+            "Key": "crystalcavesnear5di",
+            "Name": "Crystal Caves: Near 5DI",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesoutsidelankyscabin": {
+            "id": "crystalcavesoutsidelankyscabin",
+            "Key": "crystalcavesoutsidelankyscabin",
+            "Name": "Crystal Caves: Outside Lanky's Cabin",
+            "source": "cabinarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesoutsidechunkyscabin": {
+            "id": "crystalcavesoutsidechunkyscabin",
+            "Key": "crystalcavesoutsidechunkyscabin",
+            "Name": "Crystal Caves: Outside Chunky's Cabin",
+            "source": "cabinarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesoutsidediddyslowercabin": {
+            "id": "crystalcavesoutsidediddyslowercabin",
+            "Key": "crystalcavesoutsidediddyslowercabin",
+            "Name": "Crystal Caves: Outside Diddy's Lower Cabin",
+            "source": "cabinarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesoutsidediddysuppercabin": {
+            "id": "crystalcavesoutsidediddysuppercabin",
+            "Key": "crystalcavesoutsidediddysuppercabin",
+            "Name": "Crystal Caves: Outside Diddy's Upper Cabin",
+            "source": "cabinarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesunderthewaterfall(cabinarea)": {
+            "id": "crystalcavesunderthewaterfall(cabinarea)",
+            "Key": "crystalcavesunderthewaterfall(cabinarea)",
+            "Name": "Crystal Caves: Under the Waterfall (Cabin Area)",
+            "source": "cabinarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesacrossfromthe5doorcabin": {
+            "id": "crystalcavesacrossfromthe5doorcabin",
+            "Key": "crystalcavesacrossfromthe5doorcabin",
+            "Name": "Crystal Caves: Across from the 5Door Cabin",
+            "source": "cabinarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcaves5doorigloodksright": {
+            "id": "crystalcaves5doorigloodksright",
+            "Key": "crystalcaves5doorigloodksright",
+            "Name": "Crystal Caves: 5Door Igloo - DK's right",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcaves5doorigloodiddysright": {
+            "id": "crystalcaves5doorigloodiddysright",
+            "Key": "crystalcaves5doorigloodiddysright",
+            "Name": "Crystal Caves: 5Door Igloo - Diddy's right",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcaves5dooriglootinysright": {
+            "id": "crystalcaves5dooriglootinysright",
+            "Key": "crystalcaves5dooriglootinysright",
+            "Name": "Crystal Caves: 5Door Igloo - Tiny's right",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcaves5doorigloochunkysright": {
+            "id": "crystalcaves5doorigloochunkysright",
+            "Key": "crystalcaves5doorigloochunkysright",
+            "Name": "Crystal Caves: 5Door Igloo - Chunky's right",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcaves5doorigloolankysright": {
+            "id": "crystalcaves5doorigloolankysright",
+            "Key": "crystalcaves5doorigloolankysright",
+            "Name": "Crystal Caves: 5Door Igloo - Lanky's right",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcaves5doorigloodksinstrumentpad": {
+            "id": "crystalcaves5doorigloodksinstrumentpad",
+            "Key": "crystalcaves5doorigloodksinstrumentpad",
+            "Name": "Crystal Caves: 5Door Igloo - DK's instrument pad",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcaves5doorigloodiddysinstrumentpad": {
+            "id": "crystalcaves5doorigloodiddysinstrumentpad",
+            "Key": "crystalcaves5doorigloodiddysinstrumentpad",
+            "Name": "Crystal Caves: 5Door Igloo - Diddy's instrument pad",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcaves5dooriglootinysinstrumentpad": {
+            "id": "crystalcaves5dooriglootinysinstrumentpad",
+            "Key": "crystalcaves5dooriglootinysinstrumentpad",
+            "Name": "Crystal Caves: 5Door Igloo - Tiny's instrument pad",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcaves5doorigloochunkysinstrumentpad": {
+            "id": "crystalcaves5doorigloochunkysinstrumentpad",
+            "Key": "crystalcaves5doorigloochunkysinstrumentpad",
+            "Name": "Crystal Caves: 5Door Igloo - Chunky's instrument pad",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcaves5doorigloolankysinstrumentpad": {
+            "id": "crystalcaves5doorigloolankysinstrumentpad",
+            "Key": "crystalcaves5doorigloolankysinstrumentpad",
+            "Name": "Crystal Caves: 5Door Igloo - Lanky's instrument pad",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesicecastleareanearrockswitch": {
+            "id": "crystalcavesicecastleareanearrockswitch",
+            "Key": "crystalcavesicecastleareanearrockswitch",
+            "Name": "Crystal Caves: Ice Castle Area - Near Rock Switch",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesbetweenfunkyandicecastleonland": {
+            "id": "crystalcavesbetweenfunkyandicecastleonland",
+            "Key": "crystalcavesbetweenfunkyandicecastleonland",
+            "Name": "Crystal Caves: Between Funky and Ice Castle - on land",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesbetweenfunkyandicecastleunderwater": {
+            "id": "crystalcavesbetweenfunkyandicecastleunderwater",
+            "Key": "crystalcavesbetweenfunkyandicecastleunderwater",
+            "Name": "Crystal Caves: Between Funky and Ice Castle - underwater",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesinwaternearw4oppositecrankyright": {
+            "id": "crystalcavesinwaternearw4oppositecrankyright",
+            "Key": "crystalcavesinwaternearw4oppositecrankyright",
+            "Name": "Crystal Caves: In Water Near W4 Opposite Cranky - right",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesinwaternearw4oppositecrankyleft": {
+            "id": "crystalcavesinwaternearw4oppositecrankyleft",
+            "Key": "crystalcavesinwaternearw4oppositecrankyleft",
+            "Name": "Crystal Caves: In Water Near W4 Opposite Cranky - left",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesunderbridgetocranky": {
+            "id": "crystalcavesunderbridgetocranky",
+            "Key": "crystalcavesunderbridgetocranky",
+            "Name": "Crystal Caves: Under Bridge to Cranky",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesunderhandstandslope": {
+            "id": "crystalcavesunderhandstandslope",
+            "Key": "crystalcavesunderhandstandslope",
+            "Name": "Crystal Caves: Under Handstand Slope",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesminimonkeyledge": {
+            "id": "crystalcavesminimonkeyledge",
+            "Key": "crystalcavesminimonkeyledge",
+            "Name": "Crystal Caves: Mini Monkey Ledge",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesacrossfromsnide": {
+            "id": "crystalcavesacrossfromsnide",
+            "Key": "crystalcavesacrossfromsnide",
+            "Name": "Crystal Caves: Across from Snide",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesslopetocrankywithminimonkeyhole": {
+            "id": "crystalcavesslopetocrankywithminimonkeyhole",
+            "Key": "crystalcavesslopetocrankywithminimonkeyhole",
+            "Name": "Crystal Caves: Slope to Cranky with Mini Monkey Hole",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcaveslevelentranceright": {
+            "id": "crystalcaveslevelentranceright",
+            "Key": "crystalcaveslevelentranceright",
+            "Name": "Crystal Caves: Level Entrance - right",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcaveslevelentranceleft": {
+            "id": "crystalcaveslevelentranceleft",
+            "Key": "crystalcaveslevelentranceleft",
+            "Name": "Crystal Caves: Level Entrance - left",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesiglooarealeftofentrance": {
+            "id": "crystalcavesiglooarealeftofentrance",
+            "Key": "crystalcavesiglooarealeftofentrance",
+            "Name": "Crystal Caves: Igloo Area - left of entrance",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesiglooareabehindtagbarrelisland": {
+            "id": "crystalcavesiglooareabehindtagbarrelisland",
+            "Key": "crystalcavesiglooareabehindtagbarrelisland",
+            "Name": "Crystal Caves: Igloo Area - Behind Tag Barrel Island",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesiglooareabehindwarp1": {
+            "id": "crystalcavesiglooareabehindwarp1",
+            "Key": "crystalcavesiglooareabehindwarp1",
+            "Name": "Crystal Caves: Igloo Area - Behind Warp 1",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesiglooarearightofentrance": {
+            "id": "crystalcavesiglooarearightofentrance",
+            "Key": "crystalcavesiglooarearightofentrance",
+            "Name": "Crystal Caves: Igloo Area - right of entrance",
+            "source": "iglooarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesunderfunkysstore": {
+            "id": "crystalcavesunderfunkysstore",
+            "Key": "crystalcavesunderfunkysstore",
+            "Name": "Crystal Caves: Under Funky's Store",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesnexttowaterfallthatsnexttofunky": {
+            "id": "crystalcavesnexttowaterfallthatsnexttofunky",
+            "Key": "crystalcavesnexttowaterfallthatsnexttofunky",
+            "Name": "Crystal Caves: Next to Waterfall that's Next to Funky",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesinwaterunderfunkyleft": {
+            "id": "crystalcavesinwaterunderfunkyleft",
+            "Key": "crystalcavesinwaterunderfunkyleft",
+            "Name": "Crystal Caves: In Water Under Funky - left",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesinwaterunderfunkycenter": {
+            "id": "crystalcavesinwaterunderfunkycenter",
+            "Key": "crystalcavesinwaterunderfunkycenter",
+            "Name": "Crystal Caves: In Water Under Funky - center",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesinwaterunderfunkyright": {
+            "id": "crystalcavesinwaterunderfunkyright",
+            "Key": "crystalcavesinwaterunderfunkyright",
+            "Name": "Crystal Caves: In Water Under Funky - right",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesicecastleinteriorleft": {
+            "id": "crystalcavesicecastleinteriorleft",
+            "Key": "crystalcavesicecastleinteriorleft",
+            "Name": "Crystal Caves: Ice Castle Interior - left",
+            "source": "frozencastle",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesicecastleinteriorright": {
+            "id": "crystalcavesicecastleinteriorright",
+            "Key": "crystalcavesicecastleinteriorright",
+            "Name": "Crystal Caves: Ice Castle Interior - right",
+            "source": "frozencastle",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesinchunkys5doorcabinonabookshelf": {
+            "id": "crystalcavesinchunkys5doorcabinonabookshelf",
+            "Key": "crystalcavesinchunkys5doorcabinonabookshelf",
+            "Name": "Crystal Caves: In Chunky's 5Door Cabin on a Book Shelf",
+            "source": "chunkycabin",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavescabinareanearcandyright": {
+            "id": "crystalcavescabinareanearcandyright",
+            "Key": "crystalcavescabinareanearcandyright",
+            "Name": "Crystal Caves: Cabin Area - Near Candy - right",
+            "source": "cabinarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavescabinareanearcandyfarright": {
+            "id": "crystalcavescabinareanearcandyfarright",
+            "Key": "crystalcavescabinareanearcandyfarright",
+            "Name": "Crystal Caves: Cabin Area - Near Candy - far right",
+            "source": "cabinarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesoutsidetinyscabin": {
+            "id": "crystalcavesoutsidetinyscabin",
+            "Key": "crystalcavesoutsidetinyscabin",
+            "Name": "Crystal Caves: Outside Tiny's Cabin",
+            "source": "cabinarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavescabinareanexttotagbarrelon2ndfloor": {
+            "id": "crystalcavescabinareanexttotagbarrelon2ndfloor",
+            "Key": "crystalcavescabinareanexttotagbarrelon2ndfloor",
+            "Name": "Crystal Caves: Cabin Area - Next to Tag Barrel on 2nd Floor",
+            "source": "cabinarea",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "crystalcavesundercrankyslopesmall": {
+            "id": "crystalcavesundercrankyslopesmall",
+            "Key": "crystalcavesundercrankyslopesmall",
+            "Name": "Crystal Caves: Under Cranky Slope - small",
+            "source": "crystalcavesmain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CrystalCaves",
+            "Class": "Door"
+        },
+        "creepycastlelobbycentralpillar(1)": {
+            "id": "creepycastlelobbycentralpillar(1)",
+            "Key": "creepycastlelobbycentralpillar(1)",
+            "Name": "Creepy Castle: Lobby - Central Pillar (1)",
+            "source": "creepycastlelobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "creepycastlelobbycentralpillar(2)": {
+            "id": "creepycastlelobbycentralpillar(2)",
+            "Key": "creepycastlelobbycentralpillar(2)",
+            "Name": "Creepy Castle: Lobby - Central Pillar (2)",
+            "source": "creepycastlelobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "creepycastlelobbycentralpillar(3)": {
+            "id": "creepycastlelobbycentralpillar(3)",
+            "Key": "creepycastlelobbycentralpillar(3)",
+            "Name": "Creepy Castle: Lobby - Central Pillar (3)",
+            "source": "creepycastlelobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "creepycastlelobbycentralpillar(4)": {
+            "id": "creepycastlelobbycentralpillar(4)",
+            "Key": "creepycastlelobbycentralpillar(4)",
+            "Name": "Creepy Castle: Lobby - Central Pillar (4)",
+            "source": "creepycastlelobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "creepycastlelobbycentralpillar(5)": {
+            "id": "creepycastlelobbycentralpillar(5)",
+            "Key": "creepycastlelobbycentralpillar(5)",
+            "Name": "Creepy Castle: Lobby - Central Pillar (5)",
+            "source": "creepycastlelobby",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "DKIsles",
+            "Class": "Door"
+        },
+        "creepycastleneargreenhouse": {
+            "id": "creepycastleneargreenhouse",
+            "Key": "creepycastleneargreenhouse",
+            "Name": "Creepy Castle: Near Greenhouse",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlesmallplateau": {
+            "id": "creepycastlesmallplateau",
+            "Key": "creepycastlesmallplateau",
+            "Name": "Creepy Castle: Small Plateau",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlebackofcastle": {
+            "id": "creepycastlebackofcastle",
+            "Key": "creepycastlebackofcastle",
+            "Name": "Creepy Castle: Back of Castle",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlenearfunkys": {
+            "id": "creepycastlenearfunkys",
+            "Key": "creepycastlenearfunkys",
+            "Name": "Creepy Castle: Near Funky's",
+            "source": "lowercave",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlenearcandys": {
+            "id": "creepycastlenearcandys",
+            "Key": "creepycastlenearcandys",
+            "Name": "Creepy Castle: Near Candy's",
+            "source": "uppercave",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlenexttosmallpooloutsideofthebigtree": {
+            "id": "creepycastlenexttosmallpooloutsideofthebigtree",
+            "Key": "creepycastlenexttosmallpooloutsideofthebigtree",
+            "Name": "Creepy Castle: Next to Small Pool outside of the Big Tree",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastleagainstthebigtree": {
+            "id": "creepycastleagainstthebigtree",
+            "Key": "creepycastleagainstthebigtree",
+            "Name": "Creepy Castle: Against the Big Tree",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlenexttotagbarrelatthewarppadhub": {
+            "id": "creepycastlenexttotagbarrelatthewarppadhub",
+            "Key": "creepycastlenexttotagbarrelatthewarppadhub",
+            "Name": "Creepy Castle: Next to Tag Barrel at the Warp Pad Hub",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlenexttocrankys": {
+            "id": "creepycastlenexttocrankys",
+            "Key": "creepycastlenexttocrankys",
+            "Name": "Creepy Castle: Next to Cranky's",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastleoutsidelankysgreenhouse": {
+            "id": "creepycastleoutsidelankysgreenhouse",
+            "Key": "creepycastleoutsidelankysgreenhouse",
+            "Name": "Creepy Castle: Outside Lanky's Greenhouse",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastleonstairstotagbarrelatthewarppadhub": {
+            "id": "creepycastleonstairstotagbarrelatthewarppadhub",
+            "Key": "creepycastleonstairstotagbarrelatthewarppadhub",
+            "Name": "Creepy Castle: On Stairs to Tag Barrel at the Warp Pad Hub",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlenexttocastlemoatabovetinyskasplat": {
+            "id": "creepycastlenexttocastlemoatabovetinyskasplat",
+            "Key": "creepycastlenexttocastlemoatabovetinyskasplat",
+            "Name": "Creepy Castle: Next to Castle Moat - Above Tiny's Kasplat",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlesnidesbattlementleft": {
+            "id": "creepycastlesnidesbattlementleft",
+            "Key": "creepycastlesnidesbattlementleft",
+            "Name": "Creepy Castle: Snide's Battlement - left",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlesnidesbattlementcenter": {
+            "id": "creepycastlesnidesbattlementcenter",
+            "Key": "creepycastlesnidesbattlementcenter",
+            "Name": "Creepy Castle: Snide's Battlement - center",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlesnidesbattlementright": {
+            "id": "creepycastlesnidesbattlementright",
+            "Key": "creepycastlesnidesbattlementright",
+            "Name": "Creepy Castle: Snide's Battlement - right",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlenexttostairstodrawingdrawbridge": {
+            "id": "creepycastlenexttostairstodrawingdrawbridge",
+            "Key": "creepycastlenexttostairstodrawingdrawbridge",
+            "Name": "Creepy Castle: Next to Stairs to Drawing Drawbridge",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlebattlementwithrocketbarrelbarrelleft": {
+            "id": "creepycastlebattlementwithrocketbarrelbarrelleft",
+            "Key": "creepycastlebattlementwithrocketbarrelbarrelleft",
+            "Name": "Creepy Castle: Battlement with Rocketbarrel Barrel - left",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlebattlementwithrocketbarrelbarrelright": {
+            "id": "creepycastlebattlementwithrocketbarrelbarrelright",
+            "Key": "creepycastlebattlementwithrocketbarrelbarrelright",
+            "Name": "Creepy Castle: Battlement with Rocketbarrel Barrel - right",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlemoatunderwaterbydiddybarrel": {
+            "id": "creepycastlemoatunderwaterbydiddybarrel",
+            "Key": "creepycastlemoatunderwaterbydiddybarrel",
+            "Name": "Creepy Castle: Moat - Underwater by Diddy Barrel",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlemoatunderdrawingdrawbridge": {
+            "id": "creepycastlemoatunderdrawingdrawbridge",
+            "Key": "creepycastlemoatunderdrawingdrawbridge",
+            "Name": "Creepy Castle: Moat - Under Drawing Drawbridge",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlemoatnexttotunnelentranceleft": {
+            "id": "creepycastlemoatnexttotunnelentranceleft",
+            "Key": "creepycastlemoatnexttotunnelentranceleft",
+            "Name": "Creepy Castle: Moat - Next to Tunnel Entrance - left",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlemoatnexttotunnelentranceright": {
+            "id": "creepycastlemoatnexttotunnelentranceright",
+            "Key": "creepycastlemoatnexttotunnelentranceright",
+            "Name": "Creepy Castle: Moat - Next to Tunnel Entrance - right",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlemoatnexttoladderleft": {
+            "id": "creepycastlemoatnexttoladderleft",
+            "Key": "creepycastlemoatnexttoladderleft",
+            "Name": "Creepy Castle: Moat - Next to Ladder - left",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlemoatnexttoladderright": {
+            "id": "creepycastlemoatnexttoladderright",
+            "Key": "creepycastlemoatnexttoladderright",
+            "Name": "Creepy Castle: Moat - Next to Ladder - right",
+            "source": "creepycastlemain",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "swim"
+                    }
+                ]
+            },
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastleinsidethetree": {
+            "id": "creepycastleinsidethetree",
+            "Key": "creepycastleinsidethetree",
+            "Name": "Creepy Castle: Inside the Tree",
+            "source": "castletree",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlelibraryroomwithbigbooksleft": {
+            "id": "creepycastlelibraryroomwithbigbooksleft",
+            "Key": "creepycastlelibraryroomwithbigbooksleft",
+            "Name": "Creepy Castle: Library - Room with Big Books - left",
+            "source": "library",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlelibraryroomwithbigbooksback": {
+            "id": "creepycastlelibraryroomwithbigbooksback",
+            "Key": "creepycastlelibraryroomwithbigbooksback",
+            "Name": "Creepy Castle: Library - Room with big Books - back",
+            "source": "library",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlelibrarynexttoexitleft": {
+            "id": "creepycastlelibrarynexttoexitleft",
+            "Key": "creepycastlelibrarynexttoexitleft",
+            "Name": "Creepy Castle: Library - Next to Exit - left",
+            "source": "librarypastbooks",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlelibrarynexttoexitright": {
+            "id": "creepycastlelibrarynexttoexitright",
+            "Key": "creepycastlelibrarynexttoexitright",
+            "Name": "Creepy Castle: Library - Next to Exit - right",
+            "source": "librarypastbooks",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastleballroomleftcandleleft": {
+            "id": "creepycastleballroomleftcandleleft",
+            "Key": "creepycastleballroomleftcandleleft",
+            "Name": "Creepy Castle: Ballroom - Left Candle - left",
+            "source": "ballroom",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastleballroomleftcandleright": {
+            "id": "creepycastleballroomleftcandleright",
+            "Key": "creepycastleballroomleftcandleright",
+            "Name": "Creepy Castle: Ballroom - Left Candle - right",
+            "source": "ballroom",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastleballroombackcandleleft": {
+            "id": "creepycastleballroombackcandleleft",
+            "Key": "creepycastleballroombackcandleleft",
+            "Name": "Creepy Castle: Ballroom - Back Candle - left",
+            "source": "ballroom",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastleballroombackcandleright": {
+            "id": "creepycastleballroombackcandleright",
+            "Key": "creepycastleballroombackcandleright",
+            "Name": "Creepy Castle: Ballroom - Back Candle - right",
+            "source": "ballroom",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastleballroomrightcandleleft": {
+            "id": "creepycastleballroomrightcandleleft",
+            "Key": "creepycastleballroomrightcandleleft",
+            "Name": "Creepy Castle: Ballroom - Right Candle - left",
+            "source": "ballroom",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastleballroomrightcandleright": {
+            "id": "creepycastleballroomrightcandleright",
+            "Key": "creepycastleballroomrightcandleright",
+            "Name": "Creepy Castle: Ballroom - Right Candle - right",
+            "source": "ballroom",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastletrashcancheese": {
+            "id": "creepycastletrashcancheese",
+            "Key": "creepycastletrashcancheese",
+            "Name": "Creepy Castle: Trash Can - Cheese",
+            "source": "trashcan",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastleinsidechunkysshed": {
+            "id": "creepycastleinsidechunkysshed",
+            "Key": "creepycastleinsidechunkysshed",
+            "Name": "Creepy Castle: Inside Chunky's Shed",
+            "source": "shed",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlelowertunnelunderpeanutswitch": {
+            "id": "creepycastlelowertunnelunderpeanutswitch",
+            "Key": "creepycastlelowertunnelunderpeanutswitch",
+            "Name": "Creepy Castle: Lower Tunnel - Under Peanut Switch",
+            "source": "lowercave",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlelowertunnelundercoconutandpineappleswitches": {
+            "id": "creepycastlelowertunnelundercoconutandpineappleswitches",
+            "Key": "creepycastlelowertunnelundercoconutandpineappleswitches",
+            "Name": "Creepy Castle: Lower Tunnel - Under Coconut and Pineapple Switches",
+            "source": "lowercave",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        },
+        "creepycastlecryptunderlankysswitch": {
+            "id": "creepycastlecryptunderlankysswitch",
+            "Key": "creepycastlecryptunderlankysswitch",
+            "Name": "Creepy Castle: Crypt - Under Lanky's Switch",
+            "source": "mausoleum",
+            "target": "noitem",
+            "type": "Location",
+            "targetType": "Item",
+            "Requires": true,
+            "Level": "CreepyCastle",
+            "Class": "Door"
+        }
+    }
+}

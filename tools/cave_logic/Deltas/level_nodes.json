@@ -1,0 +1,183 @@
+{
+    "nodes": {
+        "junglejapes": {
+            "id": "junglejapes",
+            "Name": "Jungle Japes",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#228B22"
+        },
+        "angryaztec": {
+            "id": "angryaztec",
+            "Name": "Angry Aztec",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#8B4513"
+        },
+        "franticfactory": {
+            "id": "franticfactory",
+            "Name": "Frantic Factory",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#FF4500"
+        },
+        "gloomygalleon": {
+            "id": "gloomygalleon",
+            "Name": "Gloomy Galleon",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#000080"
+        },
+        "fungiforest": {
+            "id": "fungiforest",
+            "Name": "Fungi Forest",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#006400"
+        },
+        "crystalcaves": {
+            "id": "crystalcaves",
+            "Name": "Crystal Caves",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#00FFFF"
+        },
+        "creepycastle": {
+            "id": "creepycastle",
+            "Name": "Creepy Castle",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#800080"
+        },
+        "hideouthelm": {
+            "id": "hideouthelm",
+            "Name": "Hideout Helm",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#808080"
+        },
+        "dkisles": {
+            "id": "dkisles",
+            "Name": "DK Isles",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#FFD700"
+        },
+        "shops": {
+            "id": "shops",
+            "Name": "Shops",
+            "Class": "Region",
+            "Type": "Level",
+            "Colour": "#FF00FF"
+        },
+        "world": {
+            "id": "world",
+            "Name": "World",
+            "Class": "Region",
+            "Type": "World",
+            "Colour": "#FFFFFF"
+        }
+    },
+    "edges": {
+        "rr-junglejapes-world": {
+            "id": "rr-junglejapes-world",
+            "Name": "Jungle Japes World",
+            "source": "world",
+            "target": "junglejapes",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "Type": "World"
+        },
+        "rr-angryaztec-world": {
+            "id": "rr-angryaztec-world",
+            "Name": "Angry Aztec World",
+            "source": "world",
+            "target": "angryaztec",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "Type": "World"
+        },
+        "rr-franticfactory-world": {
+            "id": "rr-franticfactory-world",
+            "Name": "Frantic Factory World",
+            "source": "world",
+            "target": "franticfactory",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "Type": "World"
+        },
+        "rr-gloomygalleon-world": {
+            "id": "rr-gloomygalleon-world",
+            "Name": "Gloomy Galleon World",
+            "source": "world",
+            "target": "gloomygalleon",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "Type": "World"
+        },
+        "rr-fungiforest-world": {
+            "id": "rr-fungiforest-world",
+            "Name": "Fungi Forest World",
+            "source": "world",
+            "target": "fungiforest",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "Type": "World"
+        },
+        "rr-crystalcaves-world": {
+            "id": "rr-crystalcaves-world",
+            "Name": "Crystal Caves World",
+            "source": "world",
+            "target": "crystalcaves",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "Type": "World"
+        },
+        "rr-creepycastle-world": {
+            "id": "rr-creepycastle-world",
+            "Name": "Creepy Castle World",
+            "source": "world",
+            "target": "creepycastle",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "Type": "World"
+        },
+        "rr-hideouthelm-world": {
+            "id": "rr-hideouthelm-world",
+            "Name": "Hideout Helm World",
+            "source": "world",
+            "target": "hideouthelm",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "Type": "World"
+        },
+        "rr-dkisles-world": {
+            "id": "rr-dkisles-world",
+            "Name": "DK Isles World",
+            "source": "world",
+            "target": "dkisles",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "Type": "World"
+        },
+        "rr-shops-world": {
+            "id": "rr-shops-world",
+            "Name": "Shops World",
+            "source": "world",
+            "target": "shops",
+            "sourceType": "Region",
+            "targetType": "Region",
+            "Class": "Region",
+            "Type": "World"
+        }
+    }
+}

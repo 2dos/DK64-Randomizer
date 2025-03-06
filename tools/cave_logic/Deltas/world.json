@@ -1,0 +1,84 @@
+{
+    "world": {
+        "regions": {
+            "DKIsles": {
+                "Key": "DKIsles",
+                "Sort": 0,
+                "Short": "Isles",
+                "Name": "DK Isles",
+                "PrimaryColour": "#FFD700",
+                "Type": "Level"
+            },
+            "JungleJapes": {
+                "Key": "JungleJapes",
+                "Sort": 1,
+                "Short": "Japes",
+                "Name": "Jungle Japes",
+                "PrimaryColour": "#228B22",
+                "Type": "Level"
+            },
+            "AngryAztec": {
+                "Key": "AngryAztec",
+                "Sort": 2,
+                "Short": "Aztec",
+                "Name": "Angry Aztec",
+                "PrimaryColour": "#8B4513",
+                "Type": "Level"
+            },
+            "FranticFactory": {
+                "Key": "FranticFactory",
+                "Sort": 3,
+                "Short": "Factory",
+                "Name": "Frantic Factory",
+                "PrimaryColour": "#FF4500",
+                "Type": "Level"
+            },
+            "GloomyGalleon": {
+                "Key": "GloomyGalleon",
+                "Sort": 4,
+                "Short": "Galleon",
+                "Name": "Gloomy Galleon",
+                "PrimaryColour": "#000080",
+                "Type": "Level"
+            },
+            "FungiForest": {
+                "Key": "FungiForest",
+                "Sort": 5,
+                "Short": "Forest",
+                "Name": "Fungi Forest",
+                "PrimaryColour": "#006400",
+                "Type": "Level"
+            },
+            "CrystalCaves": {
+                "Key": "CrystalCaves",
+                "Sort": 6,
+                "Short": "Caves",
+                "Name": "Crystal Caves",
+                "PrimaryColour": "#00FFFF",
+                "Type": "Level"
+            },
+            "CreepyCastle": {
+                "Key": "CreepyCastle",
+                "Sort": 7,
+                "Short": "Castle",
+                "Name": "Creepy Castle",
+                "PrimaryColour": "#800080",
+                "Type": "Level"
+            },
+            "HideoutHelm": {
+                "Key": "HideoutHelm",
+                "Sort": 8,
+                "Name": "Hideout Helm",
+                "PrimaryColour": "#808080",
+                "Type": "Level"
+            },
+            "Shops": {
+                "Key": "Shops",
+                "Sort": 9,
+                "Name": "Shops",
+                "PrimaryColour": "#FF00FF",
+                "Type": "Level"
+            }
+        }
+    }
+}

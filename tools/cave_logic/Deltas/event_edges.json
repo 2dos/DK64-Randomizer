@@ -1,0 +1,5958 @@
+{
+    "edges": {
+        "li-islesw1atagged5": {
+            "id": "li-islesw1atagged5",
+            "Name": "IslesW1aTagged",
+            "source": "islesmain",
+            "target": "islesw1atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "islesw1atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-islesw1btagged5": {
+            "id": "li-islesw1btagged5",
+            "Name": "IslesW1bTagged",
+            "source": "islesmain",
+            "target": "islesw1btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "islesw1btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-islesw2atagged5": {
+            "id": "li-islesw2atagged5",
+            "Name": "IslesW2aTagged",
+            "source": "islesmain",
+            "target": "islesw2atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "islesw2atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-islesw3atagged5": {
+            "id": "li-islesw3atagged5",
+            "Name": "IslesW3aTagged",
+            "source": "islesmain",
+            "target": "islesw3atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "islesw3atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-islesw3btagged5": {
+            "id": "li-islesw3btagged5",
+            "Name": "IslesW3bTagged",
+            "source": "islesmain",
+            "target": "islesw3btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "islesw3btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-islesw4atagged5": {
+            "id": "li-islesw4atagged5",
+            "Name": "IslesW4aTagged",
+            "source": "islesmain",
+            "target": "islesw4atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "islesw4atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-islesw5atagged5": {
+            "id": "li-islesw5atagged5",
+            "Name": "IslesW5aTagged",
+            "source": "islesmain",
+            "target": "islesw5atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "islesw5atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-islesw5btagged6": {
+            "id": "li-islesw5btagged6",
+            "Name": "IslesW5bTagged",
+            "source": "outerisles",
+            "target": "islesw5btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "islesw5btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-islesdiddybarrelspawn7": {
+            "id": "li-islesdiddybarrelspawn7",
+            "Name": "IslesDiddyBarrelSpawn",
+            "source": "islesmainupper",
+            "target": "islesdiddybarrelspawn",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "chunky"
+                    },
+                    {
+                        "Name": "hasMoveSwitchsanity",
+                        "Params": [
+                            "IslesSpawnRocketbarrel",
+                            false
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "barrels"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "islesdiddybarrelspawn",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-islesw2btagged7": {
+            "id": "li-islesw2btagged7",
+            "Name": "IslesW2bTagged",
+            "source": "islesmainupper",
+            "target": "islesw2btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "islesw2btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-klumsytalkedto9": {
+            "id": "li-klumsytalkedto9",
+            "Name": "KLumsyTalkedTo",
+            "source": "prison",
+            "target": "klumsytalkedto",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "klumsytalkedto",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japeskeyturnedin9": {
+            "id": "li-japeskeyturnedin9",
+            "Name": "JapesKeyTurnedIn",
+            "source": "prison",
+            "target": "japeskeyturnedin",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "JapesKey"
+                    },
+                    {
+                        "Name": "HasFillRequirementsForLevel",
+                        "Params": [
+                            null
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japeskeyturnedin",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-azteckeyturnedin9": {
+            "id": "li-azteckeyturnedin9",
+            "Name": "AztecKeyTurnedIn",
+            "source": "prison",
+            "target": "azteckeyturnedin",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "AztecKey"
+                    },
+                    {
+                        "Name": "HasFillRequirementsForLevel",
+                        "Params": [
+                            null
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "azteckeyturnedin",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factorykeyturnedin9": {
+            "id": "li-factorykeyturnedin9",
+            "Name": "FactoryKeyTurnedIn",
+            "source": "prison",
+            "target": "factorykeyturnedin",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "FactoryKey"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factorykeyturnedin",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonkeyturnedin9": {
+            "id": "li-galleonkeyturnedin9",
+            "Name": "GalleonKeyTurnedIn",
+            "source": "prison",
+            "target": "galleonkeyturnedin",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "GalleonKey"
+                    },
+                    {
+                        "Name": "HasFillRequirementsForLevel",
+                        "Params": [
+                            null
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonkeyturnedin",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestkeyturnedin9": {
+            "id": "li-forestkeyturnedin9",
+            "Name": "ForestKeyTurnedIn",
+            "source": "prison",
+            "target": "forestkeyturnedin",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "ForestKey"
+                    },
+                    {
+                        "Name": "HasFillRequirementsForLevel",
+                        "Params": [
+                            null
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestkeyturnedin",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-caveskeyturnedin9": {
+            "id": "li-caveskeyturnedin9",
+            "Name": "CavesKeyTurnedIn",
+            "source": "prison",
+            "target": "caveskeyturnedin",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CavesKey"
+                    },
+                    {
+                        "Name": "HasFillRequirementsForLevel",
+                        "Params": [
+                            "HideoutHelm"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "caveskeyturnedin",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castlekeyturnedin9": {
+            "id": "li-castlekeyturnedin9",
+            "Name": "CastleKeyTurnedIn",
+            "source": "prison",
+            "target": "castlekeyturnedin",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CastleKey"
+                    },
+                    {
+                        "Name": "HasFillRequirementsForLevel",
+                        "Params": [
+                            "HideoutHelm"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castlekeyturnedin",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmkeyturnedin9": {
+            "id": "li-helmkeyturnedin9",
+            "Name": "HelmKeyTurnedIn",
+            "source": "prison",
+            "target": "helmkeyturnedin",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "HelmKey"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmkeyturnedin",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japeslobbyaccessed12": {
+            "id": "li-japeslobbyaccessed12",
+            "Name": "JapesLobbyAccessed",
+            "source": "junglejapeslobby",
+            "target": "japeslobbyaccessed",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japeslobbyaccessed",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-azteclobbyaccessed13": {
+            "id": "li-azteclobbyaccessed13",
+            "Name": "AztecLobbyAccessed",
+            "source": "angryazteclobby",
+            "target": "azteclobbyaccessed",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "azteclobbyaccessed",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-islesw4btagged15": {
+            "id": "li-islesw4btagged15",
+            "Name": "IslesW4bTagged",
+            "source": "kremislebeyondlift",
+            "target": "islesw4btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "islesw4btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-isleschunkybarrelspawn16": {
+            "id": "li-isleschunkybarrelspawn16",
+            "Name": "IslesChunkyBarrelSpawn",
+            "source": "kremisletoplevel",
+            "target": "isleschunkybarrelspawn",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "saxophone"
+                    },
+                    {
+                        "Name": "tiny"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "isleschunkybarrelspawn",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factorylobbyaccessed18": {
+            "id": "li-factorylobbyaccessed18",
+            "Name": "FactoryLobbyAccessed",
+            "source": "franticfactorylobby",
+            "target": "factorylobbyaccessed",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factorylobbyaccessed",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonlobbyaccessed19": {
+            "id": "li-galleonlobbyaccessed19",
+            "Name": "GalleonLobbyAccessed",
+            "source": "gloomygalleonlobby",
+            "target": "galleonlobbyaccessed",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonlobbyaccessed",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestlobbyaccessed25": {
+            "id": "li-forestlobbyaccessed25",
+            "Name": "ForestLobbyAccessed",
+            "source": "fungiforestlobby",
+            "target": "forestlobbyaccessed",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestlobbyaccessed",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-caveslobbyaccessed26": {
+            "id": "li-caveslobbyaccessed26",
+            "Name": "CavesLobbyAccessed",
+            "source": "crystalcaveslobby",
+            "target": "caveslobbyaccessed",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "caveslobbyaccessed",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castlelobbyaccessed27": {
+            "id": "li-castlelobbyaccessed27",
+            "Name": "CastleLobbyAccessed",
+            "source": "creepycastlelobby",
+            "target": "castlelobbyaccessed",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castlelobbyaccessed",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmlobbyaccessed28": {
+            "id": "li-helmlobbyaccessed28",
+            "Name": "HelmLobbyAccessed",
+            "source": "hideouthelmlobby",
+            "target": "helmlobbyaccessed",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmlobbyaccessed",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-krooldonkey29": {
+            "id": "li-krooldonkey29",
+            "Name": "KRoolDonkey",
+            "source": "krool",
+            "target": "krooldonkey",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "NOT",
+                        "rules": [
+                            {
+                                "Name": "krool_donkey"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "baboonblast"
+                                    },
+                                    {
+                                        "combinator": "NOT",
+                                        "rules": [
+                                            {
+                                                "Name": "balanced_krool_phases"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "Name": "donkey"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "krooldonkey",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-krooldiddy29": {
+            "id": "li-krooldiddy29",
+            "Name": "KRoolDiddy",
+            "source": "krool",
+            "target": "krooldiddy",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "NOT",
+                        "rules": [
+                            {
+                                "Name": "krool_diddy"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "rocketbarrelboost"
+                            },
+                            {
+                                "Name": "peanut"
+                            },
+                            {
+                                "Name": "diddy"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "krooldiddy",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-kroollanky29": {
+            "id": "li-kroollanky29",
+            "Name": "KRoolLanky",
+            "source": "krool",
+            "target": "kroollanky",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "NOT",
+                        "rules": [
+                            {
+                                "Name": "krool_lanky"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "trombone"
+                            },
+                            {
+                                "Name": "lanky"
+                            },
+                            {
+                                "Name": "barrels"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "kroollanky",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-krooltiny29": {
+            "id": "li-krooltiny29",
+            "Name": "KRoolTiny",
+            "source": "krool",
+            "target": "krooltiny",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "NOT",
+                        "rules": [
+                            {
+                                "Name": "krool_tiny"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "feather"
+                            },
+                            {
+                                "Name": "tiny"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "krooltiny",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-kroolchunky29": {
+            "id": "li-kroolchunky29",
+            "Name": "KRoolChunky",
+            "source": "krool",
+            "target": "kroolchunky",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "combinator": "NOT",
+                        "rules": [
+                            {
+                                "Name": "krool_chunky"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "combinator": "OR",
+                                "rules": [
+                                    {
+                                        "Name": "balanced_krool_phases"
+                                    },
+                                    {
+                                        "Name": "superSlam"
+                                    }
+                                ]
+                            },
+                            {
+                                "Name": "progressiveslam"
+                            },
+                            {
+                                "Name": "gorillagone"
+                            },
+                            {
+                                "Name": "hunkychunky"
+                            },
+                            {
+                                "Name": "primatepunch"
+                            },
+                            {
+                                "Name": "chunky"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "kroolchunky",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-krooldefeated29": {
+            "id": "li-krooldefeated29",
+            "Name": "KRoolDefeated",
+            "source": "krool",
+            "target": "krooldefeated",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "KRoolDonkey",
+                        "Events": true
+                    },
+                    {
+                        "Name": "KRoolDiddy",
+                        "Events": true
+                    },
+                    {
+                        "Name": "KRoolLanky",
+                        "Events": true
+                    },
+                    {
+                        "Name": "KRoolTiny",
+                        "Events": true
+                    },
+                    {
+                        "Name": "KRoolChunky",
+                        "Events": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "krooldefeated",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesentered31": {
+            "id": "li-japesentered31",
+            "Name": "JapesEntered",
+            "source": "junglejapesstart",
+            "target": "japesentered",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesentered",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesw1atagged31": {
+            "id": "li-japesw1atagged31",
+            "Name": "JapesW1aTagged",
+            "source": "junglejapesstart",
+            "target": "japesw1atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesw1atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesw1btagged31": {
+            "id": "li-japesw1btagged31",
+            "Name": "JapesW1bTagged",
+            "source": "junglejapesstart",
+            "target": "japesw1btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesw1btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesw2atagged31": {
+            "id": "li-japesw2atagged31",
+            "Name": "JapesW2aTagged",
+            "source": "junglejapesstart",
+            "target": "japesw2atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesw2atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesw3btagged31": {
+            "id": "li-japesw3btagged31",
+            "Name": "JapesW3bTagged",
+            "source": "junglejapesstart",
+            "target": "japesw3btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesw3btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesfreekongopengates32": {
+            "id": "li-japesfreekongopengates32",
+            "Name": "JapesFreeKongOpenGates",
+            "source": "junglejapesmain",
+            "target": "japesfreekongopengates",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanOpenJapesGates",
+                        "Params": [],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesfreekongopengates",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesw2btagged32": {
+            "id": "li-japesw2btagged32",
+            "Name": "JapesW2bTagged",
+            "source": "junglejapesmain",
+            "target": "japesw2btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesw2btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesw3atagged32": {
+            "id": "li-japesw3atagged32",
+            "Name": "JapesW3aTagged",
+            "source": "junglejapesmain",
+            "target": "japesw3atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesw3atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesw5btagged42": {
+            "id": "li-japesw5btagged42",
+            "Name": "JapesW5bTagged",
+            "source": "japestopofmountain",
+            "target": "japesw5btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "JapesDiddyMountain",
+                        "SpecialLocationsReached": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesw5btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesw5atagged36": {
+            "id": "li-japesw5atagged36",
+            "Name": "JapesW5aTagged",
+            "source": "japesbeyondfeathergate",
+            "target": "japesw5atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesw5atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-rambi38": {
+            "id": "li-rambi38",
+            "Name": "Rambi",
+            "source": "japesbeyondcoconutgate2",
+            "target": "rambi",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "hasMoveSwitchsanity",
+                        "Params": [
+                            "JapesRambi",
+                            false
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "phasewalk",
+                        "isGlitch": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "rambi",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesdonkeyswitch38": {
+            "id": "li-japesdonkeyswitch38",
+            "Name": "JapesDonkeySwitch",
+            "source": "japesbeyondcoconutgate2",
+            "target": "japesdonkeyswitch",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "Rambi",
+                                "Events": true
+                            },
+                            {
+                                "Name": "phasewalk",
+                                "isGlitch": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "JungleJapes",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "donkey"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesdonkeyswitch",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesdiddyswitch138": {
+            "id": "li-japesdiddyswitch138",
+            "Name": "JapesDiddySwitch1",
+            "source": "japesbeyondcoconutgate2",
+            "target": "japesdiddyswitch1",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "Rambi",
+                                "Events": true
+                            },
+                            {
+                                "Name": "phasewalk",
+                                "isGlitch": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "JungleJapes",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "diddy"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesdiddyswitch1",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japeslankyswitch38": {
+            "id": "li-japeslankyswitch38",
+            "Name": "JapesLankySwitch",
+            "source": "japesbeyondcoconutgate2",
+            "target": "japeslankyswitch",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "Rambi",
+                                "Events": true
+                            },
+                            {
+                                "Name": "phasewalk",
+                                "isGlitch": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "JungleJapes",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "lanky"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japeslankyswitch",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japestinyswitch38": {
+            "id": "li-japestinyswitch38",
+            "Name": "JapesTinySwitch",
+            "source": "japesbeyondcoconutgate2",
+            "target": "japestinyswitch",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "Rambi",
+                                "Events": true
+                            },
+                            {
+                                "Name": "phasewalk",
+                                "isGlitch": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "JungleJapes",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "tiny"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japestinyswitch",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesw4atagged38": {
+            "id": "li-japesw4atagged38",
+            "Name": "JapesW4aTagged",
+            "source": "japesbeyondcoconutgate2",
+            "target": "japesw4atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesw4atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesw4btagged38": {
+            "id": "li-japesw4btagged38",
+            "Name": "JapesW4bTagged",
+            "source": "japesbeyondcoconutgate2",
+            "target": "japesw4btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesw4btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japeschunkyswitch39": {
+            "id": "li-japeschunkyswitch39",
+            "Name": "JapesChunkySwitch",
+            "source": "beyondrambigate",
+            "target": "japeschunkyswitch",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "JungleJapes",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "chunky"
+                    },
+                    {
+                        "Name": "barrels"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japeschunkyswitch",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-japesdiddyswitch241": {
+            "id": "li-japesdiddyswitch241",
+            "Name": "JapesDiddySwitch2",
+            "source": "mine",
+            "target": "japesdiddyswitch2",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "JungleJapes",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "peanut"
+                            },
+                            {
+                                "Name": "advanced_platforming",
+                                "isGlitch": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "diddy"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "japesdiddyswitch2",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecentered49": {
+            "id": "li-aztecentered49",
+            "Name": "AztecEntered",
+            "source": "angryaztecstart",
+            "target": "aztecentered",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecentered",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecw1atagged50": {
+            "id": "li-aztecw1atagged50",
+            "Name": "AztecW1aTagged",
+            "source": "betweenvinesbyportal",
+            "target": "aztecw1atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecw1atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecguitarpad52": {
+            "id": "li-aztecguitarpad52",
+            "Name": "AztecGuitarPad",
+            "source": "angryaztecoasis",
+            "target": "aztecguitarpad",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "vines"
+                            },
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "rocketbarrelboost"
+                                    },
+                                    {
+                                        "Name": "diddy"
+                                    }
+                                ]
+                            },
+                            {
+                                "combinator": "AND",
+                                "rules": [
+                                    {
+                                        "Name": "advanced_platforming",
+                                        "isGlitch": true
+                                    },
+                                    {
+                                        "combinator": "OR",
+                                        "rules": [
+                                            {
+                                                "Name": "tiny"
+                                            },
+                                            {
+                                                "Name": "diddy"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "hasMoveSwitchsanity",
+                        "Params": [
+                            "AztecGuitar",
+                            true
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecguitarpad",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecw1btagged52": {
+            "id": "li-aztecw1btagged52",
+            "Name": "AztecW1bTagged",
+            "source": "angryaztecoasis",
+            "target": "aztecw1btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecw1btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecw2atagged52": {
+            "id": "li-aztecw2atagged52",
+            "Name": "AztecW2aTagged",
+            "source": "angryaztecoasis",
+            "target": "aztecw2atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecw2atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecw3btagged55": {
+            "id": "li-aztecw3btagged55",
+            "Name": "AztecW3bTagged",
+            "source": "angryaztecconnectortunnel",
+            "target": "aztecw3btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecw3btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-fedtotem56": {
+            "id": "li-fedtotem56",
+            "Name": "FedTotem",
+            "source": "angryaztecmain",
+            "target": "fedtotem",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "checkBarrier",
+                        "Params": [
+                            "aztec_5dtemple_switches"
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "rocketbarrelboost"
+                            },
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "AngryAztec",
+                                    1
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "peanut"
+                            },
+                            {
+                                "Name": "diddy"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "fedtotem",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecw2btagged56": {
+            "id": "li-aztecw2btagged56",
+            "Name": "AztecW2bTagged",
+            "source": "angryaztecmain",
+            "target": "aztecw2btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecw2btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecw3atagged56": {
+            "id": "li-aztecw3atagged56",
+            "Name": "AztecW3aTagged",
+            "source": "angryaztecmain",
+            "target": "aztecw3atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecw3atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecw4atagged56": {
+            "id": "li-aztecw4atagged56",
+            "Name": "AztecW4aTagged",
+            "source": "angryaztecmain",
+            "target": "aztecw4atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecw4atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecw4btagged56": {
+            "id": "li-aztecw4btagged56",
+            "Name": "AztecW4bTagged",
+            "source": "angryaztecmain",
+            "target": "aztecw4btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecw4btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecw5atagged56": {
+            "id": "li-aztecw5atagged56",
+            "Name": "AztecW5aTagged",
+            "source": "angryaztecmain",
+            "target": "aztecw5atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecw5atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecw5btagged57": {
+            "id": "li-aztecw5btagged57",
+            "Name": "AztecW5bTagged",
+            "source": "aztecdonkeyquicksandcave",
+            "target": "aztecw5btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "AztecDonkeyQuicksandCave",
+                        "SpecialLocationsReached": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecw5btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-llamafreed68": {
+            "id": "li-llamafreed68",
+            "Name": "LlamaFreed",
+            "source": "aztecbaboonblast",
+            "target": "llamafreed",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "donkey"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "llamafreed",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecdonkeyswitch64": {
+            "id": "li-aztecdonkeyswitch64",
+            "Name": "AztecDonkeySwitch",
+            "source": "llamatemple",
+            "target": "aztecdonkeyswitch",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "hasMoveSwitchsanity",
+                        "Params": [
+                            "AztecQuicksandSwitch",
+                            false,
+                            "AngryAztec",
+                            1
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecdonkeyswitch",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-aztecllamaspit64": {
+            "id": "li-aztecllamaspit64",
+            "Name": "AztecLlamaSpit",
+            "source": "llamatemple",
+            "target": "aztecllamaspit",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanLlamaSpit",
+                        "Params": [],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "aztecllamaspit",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-llamaw1atagged64": {
+            "id": "li-llamaw1atagged64",
+            "Name": "LlamaW1aTagged",
+            "source": "llamatemple",
+            "target": "llamaw1atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "llamaw1atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-llamaw1btagged64": {
+            "id": "li-llamaw1btagged64",
+            "Name": "LlamaW1bTagged",
+            "source": "llamatemple",
+            "target": "llamaw1btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "llamaw1btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-llamaw2atagged64": {
+            "id": "li-llamaw2atagged64",
+            "Name": "LlamaW2aTagged",
+            "source": "llamatemple",
+            "target": "llamaw2atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "llamaw2atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-llamaw2btagged65": {
+            "id": "li-llamaw2btagged65",
+            "Name": "LlamaW2bTagged",
+            "source": "llamatempleback",
+            "target": "llamaw2btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "llamaw2btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factoryentered70": {
+            "id": "li-factoryentered70",
+            "Name": "FactoryEntered",
+            "source": "franticfactorystart",
+            "target": "factoryentered",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factoryentered",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-hatchopened70": {
+            "id": "li-hatchopened70",
+            "Name": "HatchOpened",
+            "source": "franticfactorystart",
+            "target": "hatchopened",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "hatchopened",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factoryw1atagged70": {
+            "id": "li-factoryw1atagged70",
+            "Name": "FactoryW1aTagged",
+            "source": "franticfactorystart",
+            "target": "factoryw1atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factoryw1atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factoryw2atagged70": {
+            "id": "li-factoryw2atagged70",
+            "Name": "FactoryW2aTagged",
+            "source": "franticfactorystart",
+            "target": "factoryw2atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factoryw2atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factoryw3atagged70": {
+            "id": "li-factoryw3atagged70",
+            "Name": "FactoryW3aTagged",
+            "source": "franticfactorystart",
+            "target": "factoryw3atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factoryw3atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-dartsplayed71": {
+            "id": "li-dartsplayed71",
+            "Name": "DartsPlayed",
+            "source": "testing",
+            "target": "dartsplayed",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "FranticFactory",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "minimonkey"
+                            },
+                            {
+                                "Name": "phasewalk",
+                                "isGlitch": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "feather"
+                    },
+                    {
+                        "Name": "tiny"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "dartsplayed",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factoryw3btagged71": {
+            "id": "li-factoryw3btagged71",
+            "Name": "FactoryW3bTagged",
+            "source": "testing",
+            "target": "factoryw3btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factoryw3btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factoryw5btagged71": {
+            "id": "li-factoryw5btagged71",
+            "Name": "FactoryW5bTagged",
+            "source": "testing",
+            "target": "factoryw5btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factoryw5btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factoryw2btagged72": {
+            "id": "li-factoryw2btagged72",
+            "Name": "FactoryW2bTagged",
+            "source": "randd",
+            "target": "factoryw2btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factoryw2btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-maincoreactivated76": {
+            "id": "li-maincoreactivated76",
+            "Name": "MainCoreActivated",
+            "source": "powerhut",
+            "target": "maincoreactivated",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "gorillagrab"
+                    },
+                    {
+                        "Name": "donkey"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "maincoreactivated",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-testinggateopened77": {
+            "id": "li-testinggateopened77",
+            "Name": "TestingGateOpened",
+            "source": "beyondhatch",
+            "target": "testinggateopened",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "progressiveslam"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "testinggateopened",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factoryw1btagged77": {
+            "id": "li-factoryw1btagged77",
+            "Name": "FactoryW1bTagged",
+            "source": "beyondhatch",
+            "target": "factoryw1btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factoryw1btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factoryw4atagged77": {
+            "id": "li-factoryw4atagged77",
+            "Name": "FactoryW4aTagged",
+            "source": "beyondhatch",
+            "target": "factoryw4atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factoryw4atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factoryw5atagged77": {
+            "id": "li-factoryw5atagged77",
+            "Name": "FactoryW5aTagged",
+            "source": "beyondhatch",
+            "target": "factoryw5atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factoryw5atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-arcadeleverspawned84": {
+            "id": "li-arcadeleverspawned84",
+            "Name": "ArcadeLeverSpawned",
+            "source": "factorybaboonblast",
+            "target": "arcadeleverspawned",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "donkey"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "arcadeleverspawned",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-maincoreactivated78": {
+            "id": "li-maincoreactivated78",
+            "Name": "MainCoreActivated",
+            "source": "lowercore",
+            "target": "maincoreactivated",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "checkBarrier",
+                        "Params": [
+                            "factory_production_room"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "maincoreactivated",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-diddycoreswitch78": {
+            "id": "li-diddycoreswitch78",
+            "Name": "DiddyCoreSwitch",
+            "source": "lowercore",
+            "target": "diddycoreswitch",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "FranticFactory",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "diddy"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "diddycoreswitch",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-lankycoreswitch78": {
+            "id": "li-lankycoreswitch78",
+            "Name": "LankyCoreSwitch",
+            "source": "lowercore",
+            "target": "lankycoreswitch",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "FranticFactory",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "lanky"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "lankycoreswitch",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-tinycoreswitch78": {
+            "id": "li-tinycoreswitch78",
+            "Name": "TinyCoreSwitch",
+            "source": "lowercore",
+            "target": "tinycoreswitch",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "FranticFactory",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "tiny"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "tinycoreswitch",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-chunkycoreswitch78": {
+            "id": "li-chunkycoreswitch78",
+            "Name": "ChunkyCoreSwitch",
+            "source": "lowercore",
+            "target": "chunkycoreswitch",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "FranticFactory",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "chunky"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "chunkycoreswitch",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-factoryw4btagged80": {
+            "id": "li-factoryw4btagged80",
+            "Name": "FactoryW4bTagged",
+            "source": "middlecore",
+            "target": "factoryw4btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "factoryw4btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonentered86": {
+            "id": "li-galleonentered86",
+            "Name": "GalleonEntered",
+            "source": "gloomygalleonstart",
+            "target": "galleonentered",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonentered",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonlankyswitch86": {
+            "id": "li-galleonlankyswitch86",
+            "Name": "GalleonLankySwitch",
+            "source": "gloomygalleonstart",
+            "target": "galleonlankyswitch",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "GloomyGalleon",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "lanky"
+                    },
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "swim"
+                            },
+                            {
+                                "Name": "checkBarrier",
+                                "Params": [
+                                    "galleon_shipwreck_gates"
+                                ],
+                                "isFunction": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonlankyswitch",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleontinyswitch86": {
+            "id": "li-galleontinyswitch86",
+            "Name": "GalleonTinySwitch",
+            "source": "gloomygalleonstart",
+            "target": "galleontinyswitch",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "GloomyGalleon",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "tiny"
+                    },
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "swim"
+                            },
+                            {
+                                "Name": "checkBarrier",
+                                "Params": [
+                                    "galleon_shipwreck_gates"
+                                ],
+                                "isFunction": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleontinyswitch",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-lighthousegateopened86": {
+            "id": "li-lighthousegateopened86",
+            "Name": "LighthouseGateOpened",
+            "source": "gloomygalleonstart",
+            "target": "lighthousegateopened",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "hasMoveSwitchsanity",
+                        "Params": [
+                            "GalleonLighthouse",
+                            false
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "lighthousegateopened",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-shipyardgateopened86": {
+            "id": "li-shipyardgateopened86",
+            "Name": "ShipyardGateOpened",
+            "source": "gloomygalleonstart",
+            "target": "shipyardgateopened",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "hasMoveSwitchsanity",
+                        "Params": [
+                            "GalleonShipwreck",
+                            false
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "shipyardgateopened",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleoncannonroomopened86": {
+            "id": "li-galleoncannonroomopened86",
+            "Name": "GalleonCannonRoomOpened",
+            "source": "gloomygalleonstart",
+            "target": "galleoncannonroomopened",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "hasMoveSwitchsanity",
+                        "Params": [
+                            "GalleonCannonGame",
+                            false
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleoncannonroomopened",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonw1atagged86": {
+            "id": "li-galleonw1atagged86",
+            "Name": "GalleonW1aTagged",
+            "source": "gloomygalleonstart",
+            "target": "galleonw1atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonw1atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonw2atagged86": {
+            "id": "li-galleonw2atagged86",
+            "Name": "GalleonW2aTagged",
+            "source": "gloomygalleonstart",
+            "target": "galleonw2atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonw2atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-waterlowered86": {
+            "id": "li-waterlowered86",
+            "Name": "WaterLowered",
+            "source": "gloomygalleonstart",
+            "target": "waterlowered",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "galleon_water_internal",
+                        "Params": [
+                            "lowered",
+                            true
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "waterlowered",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-waterraised86": {
+            "id": "li-waterraised86",
+            "Name": "WaterRaised",
+            "source": "gloomygalleonstart",
+            "target": "waterraised",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "galleon_water_internal",
+                        "Params": [
+                            "raised",
+                            true
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "waterraised",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonw3atagged87": {
+            "id": "li-galleonw3atagged87",
+            "Name": "GalleonW3aTagged",
+            "source": "galleonpastvines",
+            "target": "galleonw3atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonw3atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonchunkypad89": {
+            "id": "li-galleonchunkypad89",
+            "Name": "GalleonChunkyPad",
+            "source": "lighthousesurface",
+            "target": "galleonchunkypad",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "triangle"
+                            },
+                            {
+                                "Name": "chunky"
+                            }
+                        ]
+                    },
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "swim"
+                            },
+                            {
+                                "Name": "checkBarrier",
+                                "Params": [
+                                    "galleon_shipwreck_gates"
+                                ],
+                                "isFunction": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "WaterLowered",
+                        "Events": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonchunkypad",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-activatedlighthouse89": {
+            "id": "li-activatedlighthouse89",
+            "Name": "ActivatedLighthouse",
+            "source": "lighthousesurface",
+            "target": "activatedlighthouse",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "checkBarrier",
+                        "Params": [
+                            "galleon_seasick_ship"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "activatedlighthouse",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-waterlowered89": {
+            "id": "li-waterlowered89",
+            "Name": "WaterLowered",
+            "source": "lighthousesurface",
+            "target": "waterlowered",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "galleon_water_internal",
+                        "Params": [
+                            "lowered",
+                            true
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "waterlowered",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-waterraised89": {
+            "id": "li-waterraised89",
+            "Name": "WaterRaised",
+            "source": "lighthousesurface",
+            "target": "waterraised",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "galleon_water_internal",
+                        "Params": [
+                            "raised",
+                            true
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "waterraised",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-mechafishsummoned90": {
+            "id": "li-mechafishsummoned90",
+            "Name": "MechafishSummoned",
+            "source": "lighthouseplatform",
+            "target": "mechafishsummoned",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "rocketbarrelboost"
+                    },
+                    {
+                        "Name": "guitar"
+                    },
+                    {
+                        "Name": "canTravelToMechFish",
+                        "Params": [],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "diddy"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "mechafishsummoned",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonw1btagged90": {
+            "id": "li-galleonw1btagged90",
+            "Name": "GalleonW1bTagged",
+            "source": "lighthouseplatform",
+            "target": "galleonw1btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonw1btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonw5atagged90": {
+            "id": "li-galleonw5atagged90",
+            "Name": "GalleonW5aTagged",
+            "source": "lighthouseplatform",
+            "target": "galleonw5atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonw5atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-waterlowered91": {
+            "id": "li-waterlowered91",
+            "Name": "WaterLowered",
+            "source": "lighthouseunderwater",
+            "target": "waterlowered",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "waterlowered",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-waterraised91": {
+            "id": "li-waterraised91",
+            "Name": "WaterRaised",
+            "source": "lighthouseunderwater",
+            "target": "waterraised",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "waterraised",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-lighthouseenguarde91": {
+            "id": "li-lighthouseenguarde91",
+            "Name": "LighthouseEnguarde",
+            "source": "lighthouseunderwater",
+            "target": "lighthouseenguarde",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "lanky"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "lighthouseenguarde",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonw3btagged92": {
+            "id": "li-galleonw3btagged92",
+            "Name": "GalleonW3bTagged",
+            "source": "lighthousesnidealcove",
+            "target": "galleonw3btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonw3btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-sealreleased113": {
+            "id": "li-sealreleased113",
+            "Name": "SealReleased",
+            "source": "galleonbaboonblast",
+            "target": "sealreleased",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "donkey"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "sealreleased",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-activatedlighthouse93": {
+            "id": "li-activatedlighthouse93",
+            "Name": "ActivatedLighthouse",
+            "source": "lighthouse",
+            "target": "activatedlighthouse",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "GloomyGalleon",
+                            1
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "gorillagrab"
+                    },
+                    {
+                        "Name": "donkey"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "activatedlighthouse",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-shipyardtreasureroomopened96": {
+            "id": "li-shipyardtreasureroomopened96",
+            "Name": "ShipyardTreasureRoomOpened",
+            "source": "shipyard",
+            "target": "shipyardtreasureroomopened",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "ShipyardEnguarde",
+                        "Events": true
+                    },
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "WaterRaised",
+                                "Events": true
+                            },
+                            {
+                                "Name": "advanced_platforming",
+                                "isGlitch": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "shipyardtreasureroomopened",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleondonkeypad96": {
+            "id": "li-galleondonkeypad96",
+            "Name": "GalleonDonkeyPad",
+            "source": "shipyard",
+            "target": "galleondonkeypad",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "bongos"
+                    },
+                    {
+                        "Name": "donkey"
+                    },
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "swim"
+                            },
+                            {
+                                "Name": "checkBarrier",
+                                "Params": [
+                                    "galleon_shipwreck_gates"
+                                ],
+                                "isFunction": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleondonkeypad",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleondiddypad96": {
+            "id": "li-galleondiddypad96",
+            "Name": "GalleonDiddyPad",
+            "source": "shipyard",
+            "target": "galleondiddypad",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "guitar"
+                    },
+                    {
+                        "Name": "diddy"
+                    },
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "swim"
+                            },
+                            {
+                                "Name": "checkBarrier",
+                                "Params": [
+                                    "galleon_shipwreck_gates"
+                                ],
+                                "isFunction": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "WaterLowered",
+                        "Events": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleondiddypad",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonlankypad96": {
+            "id": "li-galleonlankypad96",
+            "Name": "GalleonLankyPad",
+            "source": "shipyard",
+            "target": "galleonlankypad",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "trombone"
+                    },
+                    {
+                        "Name": "lanky"
+                    },
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "swim"
+                            },
+                            {
+                                "Name": "checkBarrier",
+                                "Params": [
+                                    "galleon_shipwreck_gates"
+                                ],
+                                "isFunction": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "WaterLowered",
+                        "Events": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonlankypad",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleontinypad96": {
+            "id": "li-galleontinypad96",
+            "Name": "GalleonTinyPad",
+            "source": "shipyard",
+            "target": "galleontinypad",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "saxophone"
+                    },
+                    {
+                        "Name": "tiny"
+                    },
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "swim"
+                            },
+                            {
+                                "Name": "checkBarrier",
+                                "Params": [
+                                    "galleon_shipwreck_gates"
+                                ],
+                                "isFunction": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleontinypad",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonw2btagged96": {
+            "id": "li-galleonw2btagged96",
+            "Name": "GalleonW2bTagged",
+            "source": "shipyard",
+            "target": "galleonw2btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonw2btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonw4btagged96": {
+            "id": "li-galleonw4btagged96",
+            "Name": "GalleonW4bTagged",
+            "source": "shipyard",
+            "target": "galleonw4btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonw4btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonw5btagged96": {
+            "id": "li-galleonw5btagged96",
+            "Name": "GalleonW5bTagged",
+            "source": "shipyard",
+            "target": "galleonw5btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonw5btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-waterlowered96": {
+            "id": "li-waterlowered96",
+            "Name": "WaterLowered",
+            "source": "shipyard",
+            "target": "waterlowered",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "galleon_water_internal",
+                        "Params": [
+                            "lowered",
+                            true
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "waterlowered",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-waterraised96": {
+            "id": "li-waterraised96",
+            "Name": "WaterRaised",
+            "source": "shipyard",
+            "target": "waterraised",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "galleon_water_internal",
+                        "Params": [
+                            "raised",
+                            true
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "waterraised",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-shipyardenguarde97": {
+            "id": "li-shipyardenguarde97",
+            "Name": "ShipyardEnguarde",
+            "source": "shipyardunderwater",
+            "target": "shipyardenguarde",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "lanky"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "shipyardenguarde",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-waterlowered99": {
+            "id": "li-waterlowered99",
+            "Name": "WaterLowered",
+            "source": "treasureroom",
+            "target": "waterlowered",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "galleon_water_internal",
+                        "Params": [
+                            "lowered",
+                            true
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "waterlowered",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-waterraised99": {
+            "id": "li-waterraised99",
+            "Name": "WaterRaised",
+            "source": "treasureroom",
+            "target": "waterraised",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "galleon_water_internal",
+                        "Params": [
+                            "raised",
+                            true
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "waterraised",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-galleonw4atagged100": {
+            "id": "li-galleonw4atagged100",
+            "Name": "GalleonW4aTagged",
+            "source": "treasureroomdiddygoldtower",
+            "target": "galleonw4atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "GalleonDiddyGoldTower",
+                        "SpecialLocationsReached": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "galleonw4atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestentered115": {
+            "id": "li-forestentered115",
+            "Name": "ForestEntered",
+            "source": "fungiforeststart",
+            "target": "forestentered",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestentered",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-night115": {
+            "id": "li-night115",
+            "Name": "Night",
+            "source": "fungiforeststart",
+            "target": "night",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "HasGun",
+                        "Params": [
+                            "any"
+                        ],
+                        "isFunction": true
+                    },
+                    null
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "night",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-day115": {
+            "id": "li-day115",
+            "Name": "Day",
+            "source": "fungiforeststart",
+            "target": "day",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "HasGun",
+                        "Params": [
+                            "any"
+                        ],
+                        "isFunction": true
+                    },
+                    null
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "day",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-wormgatesopened115": {
+            "id": "li-wormgatesopened115",
+            "Name": "WormGatesOpened",
+            "source": "fungiforeststart",
+            "target": "wormgatesopened",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "checkBarrier",
+                        "Params": [
+                            "forest_green_tunnel"
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "combinator": "AND",
+                        "rules": [
+                            {
+                                "Name": "hasMoveSwitchsanity",
+                                "Params": [
+                                    "FungiGreenFeather",
+                                    false
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "hasMoveSwitchsanity",
+                                "Params": [
+                                    "FungiGreenPineapple",
+                                    false
+                                ],
+                                "isFunction": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "wormgatesopened",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestw1atagged115": {
+            "id": "li-forestw1atagged115",
+            "Name": "ForestW1aTagged",
+            "source": "fungiforeststart",
+            "target": "forestw1atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestw1atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestw2atagged115": {
+            "id": "li-forestw2atagged115",
+            "Name": "ForestW2aTagged",
+            "source": "fungiforeststart",
+            "target": "forestw2atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestw2atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestw3atagged115": {
+            "id": "li-forestw3atagged115",
+            "Name": "ForestW3aTagged",
+            "source": "fungiforeststart",
+            "target": "forestw3atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestw3atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestw4atagged115": {
+            "id": "li-forestw4atagged115",
+            "Name": "ForestW4aTagged",
+            "source": "fungiforeststart",
+            "target": "forestw4atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestw4atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-hollowtreegateopened117": {
+            "id": "li-hollowtreegateopened117",
+            "Name": "HollowTreeGateOpened",
+            "source": "giantmushroomarea",
+            "target": "hollowtreegateopened",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "hasMoveSwitchsanity",
+                        "Params": [
+                            "FungiYellow",
+                            false
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "hollowtreegateopened",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestw3btagged117": {
+            "id": "li-forestw3btagged117",
+            "Name": "ForestW3bTagged",
+            "source": "giantmushroomarea",
+            "target": "forestw3btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestw3btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestw5btagged117": {
+            "id": "li-forestw5btagged117",
+            "Name": "ForestW5bTagged",
+            "source": "giantmushroomarea",
+            "target": "forestw5btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestw5btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-mushroomcannonsspawned118": {
+            "id": "li-mushroomcannonsspawned118",
+            "Name": "MushroomCannonsSpawned",
+            "source": "mushroomlower",
+            "target": "mushroomcannonsspawned",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "coconut"
+                    },
+                    {
+                        "Name": "peanut"
+                    },
+                    {
+                        "Name": "grape"
+                    },
+                    {
+                        "Name": "feather"
+                    },
+                    {
+                        "Name": "pineapple"
+                    },
+                    {
+                        "Name": "donkey"
+                    },
+                    {
+                        "Name": "diddy"
+                    },
+                    {
+                        "Name": "lanky"
+                    },
+                    {
+                        "Name": "tiny"
+                    },
+                    {
+                        "Name": "chunky"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "mushroomcannonsspawned",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-donkeymushroomswitch118": {
+            "id": "li-donkeymushroomswitch118",
+            "Name": "DonkeyMushroomSwitch",
+            "source": "mushroomlower",
+            "target": "donkeymushroomswitch",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CanSlamSwitch",
+                        "Params": [
+                            "FungiForest",
+                            2
+                        ],
+                        "isFunction": true
+                    },
+                    {
+                        "Name": "donkey"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "donkeymushroomswitch",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestw5atagged123": {
+            "id": "li-forestw5atagged123",
+            "Name": "ForestW5aTagged",
+            "source": "mushroomupperexterior",
+            "target": "forestw5atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestw5atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestw4btagged127": {
+            "id": "li-forestw4btagged127",
+            "Name": "ForestW4bTagged",
+            "source": "hollowtreearea",
+            "target": "forestw4btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestw4btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestw1btagged129": {
+            "id": "li-forestw1btagged129",
+            "Name": "ForestW1bTagged",
+            "source": "millarea",
+            "target": "forestw1btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestw1btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-grinderactivated130": {
+            "id": "li-grinderactivated130",
+            "Name": "GrinderActivated",
+            "source": "millchunkytinyarea",
+            "target": "grinderactivated",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "primatepunch"
+                    },
+                    {
+                        "Name": "triangle"
+                    },
+                    {
+                        "Name": "chunky"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "grinderactivated",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-millboxbroken130": {
+            "id": "li-millboxbroken130",
+            "Name": "MillBoxBroken",
+            "source": "millchunkytinyarea",
+            "target": "millboxbroken",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "primatepunch"
+                    },
+                    {
+                        "Name": "chunky"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "millboxbroken",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-conveyoractivated132": {
+            "id": "li-conveyoractivated132",
+            "Name": "ConveyorActivated",
+            "source": "grinderroom",
+            "target": "conveyoractivated",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "combinator": "OR",
+                        "rules": [
+                            {
+                                "Name": "CanSlamSwitch",
+                                "Params": [
+                                    "FungiForest",
+                                    2
+                                ],
+                                "isFunction": true
+                            },
+                            {
+                                "Name": "phasewalk",
+                                "isGlitch": true
+                            },
+                            {
+                                "Name": "generalclips",
+                                "isGlitch": true
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "gorillagrab"
+                    },
+                    {
+                        "Name": "donkey"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "conveyoractivated",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-winchraised134": {
+            "id": "li-winchraised134",
+            "Name": "WinchRaised",
+            "source": "winchroom",
+            "target": "winchraised",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "peanut"
+                    },
+                    {
+                        "Name": "chimpycharge"
+                    },
+                    {
+                        "Name": "diddy"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "winchraised",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-forestw2atagged138": {
+            "id": "li-forestw2atagged138",
+            "Name": "ForestW2aTagged",
+            "source": "wormarea",
+            "target": "forestw2atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "forestw2atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-wormgatesopened138": {
+            "id": "li-wormgatesopened138",
+            "Name": "WormGatesOpened",
+            "source": "wormarea",
+            "target": "wormgatesopened",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "checkBarrier",
+                        "Params": [
+                            "forest_green_tunnel"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "wormgatesopened",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavesentered143": {
+            "id": "li-cavesentered143",
+            "Name": "CavesEntered",
+            "source": "crystalcavesmain",
+            "target": "cavesentered",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavesentered",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavessmallboulderbutton143": {
+            "id": "li-cavessmallboulderbutton143",
+            "Name": "CavesSmallBoulderButton",
+            "source": "crystalcavesmain",
+            "target": "cavessmallboulderbutton",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "chunky"
+                    },
+                    {
+                        "Name": "barrels"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavessmallboulderbutton",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavesw1atagged143": {
+            "id": "li-cavesw1atagged143",
+            "Name": "CavesW1aTagged",
+            "source": "crystalcavesmain",
+            "target": "cavesw1atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavesw1atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavesw2atagged143": {
+            "id": "li-cavesw2atagged143",
+            "Name": "CavesW2aTagged",
+            "source": "crystalcavesmain",
+            "target": "cavesw2atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavesw2atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavesmonkeyportaccess145": {
+            "id": "li-cavesmonkeyportaccess145",
+            "Name": "CavesMonkeyportAccess",
+            "source": "cavesblueprintcave",
+            "target": "cavesmonkeyportaccess",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "tiny"
+                    },
+                    {
+                        "Name": "monkeyport"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavesmonkeyportaccess",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavesw4btagged145": {
+            "id": "li-cavesw4btagged145",
+            "Name": "CavesW4bTagged",
+            "source": "cavesblueprintcave",
+            "target": "cavesw4btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavesw4btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavesw3btagged146": {
+            "id": "li-cavesw3btagged146",
+            "Name": "CavesW3bTagged",
+            "source": "cavesbonuscave",
+            "target": "cavesw3btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CavesTinyCaveBarrel",
+                        "SpecialLocationsReached": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavesw3btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavesw5atagged147": {
+            "id": "li-cavesw5atagged147",
+            "Name": "CavesW5aTagged",
+            "source": "cavesblueprintpillar",
+            "target": "cavesw5atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavesw5atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavesw4atagged148": {
+            "id": "li-cavesw4atagged148",
+            "Name": "CavesW4aTagged",
+            "source": "cavesbananaportspire",
+            "target": "cavesw4atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavesw4atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-caveslargeboulderbutton149": {
+            "id": "li-caveslargeboulderbutton149",
+            "Name": "CavesLargeBoulderButton",
+            "source": "bouldercave",
+            "target": "caveslargeboulderbutton",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "CavesSmallBoulderButton",
+                        "Events": true
+                    },
+                    {
+                        "Name": "hunkychunky"
+                    },
+                    {
+                        "Name": "chunky"
+                    },
+                    {
+                        "Name": "barrels"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "caveslargeboulderbutton",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavesw1btagged152": {
+            "id": "li-cavesw1btagged152",
+            "Name": "CavesW1bTagged",
+            "source": "iglooarea",
+            "target": "cavesw1btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavesw1btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavesw3atagged152": {
+            "id": "li-cavesw3atagged152",
+            "Name": "CavesW3aTagged",
+            "source": "iglooarea",
+            "target": "cavesw3atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavesw3atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-giantkoshadefeated153": {
+            "id": "li-giantkoshadefeated153",
+            "Name": "GiantKoshaDefeated",
+            "source": "giantkosha",
+            "target": "giantkoshadefeated",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "OR",
+                "rules": [
+                    {
+                        "Name": "shockwave"
+                    },
+                    {
+                        "Name": "HasInstrument",
+                        "Params": [
+                            "any"
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "giantkoshadefeated",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavesw2btagged159": {
+            "id": "li-cavesw2btagged159",
+            "Name": "CavesW2bTagged",
+            "source": "cabinarea",
+            "target": "cavesw2btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavesw2btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cavesw5btagged159": {
+            "id": "li-cavesw5btagged159",
+            "Name": "CavesW5bTagged",
+            "source": "cabinarea",
+            "target": "cavesw5btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cavesw5btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castleentered171": {
+            "id": "li-castleentered171",
+            "Name": "CastleEntered",
+            "source": "creepycastlemain",
+            "target": "castleentered",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castleentered",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castlew1atagged171": {
+            "id": "li-castlew1atagged171",
+            "Name": "CastleW1aTagged",
+            "source": "creepycastlemain",
+            "target": "castlew1atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castlew1atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castlew1btagged171": {
+            "id": "li-castlew1btagged171",
+            "Name": "CastleW1bTagged",
+            "source": "creepycastlemain",
+            "target": "castlew1btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castlew1btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castlew2atagged171": {
+            "id": "li-castlew2atagged171",
+            "Name": "CastleW2aTagged",
+            "source": "creepycastlemain",
+            "target": "castlew2atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castlew2atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castlew2btagged171": {
+            "id": "li-castlew2btagged171",
+            "Name": "CastleW2bTagged",
+            "source": "creepycastlemain",
+            "target": "castlew2btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castlew2btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castlew3atagged171": {
+            "id": "li-castlew3atagged171",
+            "Name": "CastleW3aTagged",
+            "source": "creepycastlemain",
+            "target": "castlew3atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castlew3atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castlew3btagged171": {
+            "id": "li-castlew3btagged171",
+            "Name": "CastleW3bTagged",
+            "source": "creepycastlemain",
+            "target": "castlew3btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castlew3btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castlew4atagged171": {
+            "id": "li-castlew4atagged171",
+            "Name": "CastleW4aTagged",
+            "source": "creepycastlemain",
+            "target": "castlew4atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castlew4atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castlew4btagged171": {
+            "id": "li-castlew4btagged171",
+            "Name": "CastleW4bTagged",
+            "source": "creepycastlemain",
+            "target": "castlew4btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castlew4btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castlew5atagged171": {
+            "id": "li-castlew5atagged171",
+            "Name": "CastleW5aTagged",
+            "source": "creepycastlemain",
+            "target": "castlew5atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castlew5atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castlew5btagged171": {
+            "id": "li-castlew5btagged171",
+            "Name": "CastleW5bTagged",
+            "source": "creepycastlemain",
+            "target": "castlew5btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castlew5btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-castletreeopened193": {
+            "id": "li-castletreeopened193",
+            "Name": "CastleTreeOpened",
+            "source": "castlebaboonblast",
+            "target": "castletreeopened",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "donkey"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "castletreeopened",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cryptw1atagged186": {
+            "id": "li-cryptw1atagged186",
+            "Name": "CryptW1aTagged",
+            "source": "crypt",
+            "target": "cryptw1atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cryptw1atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cryptw1btagged186": {
+            "id": "li-cryptw1btagged186",
+            "Name": "CryptW1bTagged",
+            "source": "crypt",
+            "target": "cryptw1btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cryptw1btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cryptw2atagged186": {
+            "id": "li-cryptw2atagged186",
+            "Name": "CryptW2aTagged",
+            "source": "crypt",
+            "target": "cryptw2atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cryptw2atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cryptw2btagged186": {
+            "id": "li-cryptw2btagged186",
+            "Name": "CryptW2bTagged",
+            "source": "crypt",
+            "target": "cryptw2btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cryptw2btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cryptw3atagged186": {
+            "id": "li-cryptw3atagged186",
+            "Name": "CryptW3aTagged",
+            "source": "crypt",
+            "target": "cryptw3atagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cryptw3atagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-cryptw3btagged186": {
+            "id": "li-cryptw3btagged186",
+            "Name": "CryptW3bTagged",
+            "source": "crypt",
+            "target": "cryptw3btagged",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": true,
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "cryptw3btagged",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmdoorsopened194": {
+            "id": "li-helmdoorsopened194",
+            "Name": "HelmDoorsOpened",
+            "source": "hideouthelmentry",
+            "target": "helmdoorsopened",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "helm_setting",
+                        "Params": [
+                            "default",
+                            false
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmdoorsopened",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmgatespunched194": {
+            "id": "li-helmgatespunched194",
+            "Name": "HelmGatesPunched",
+            "source": "hideouthelmentry",
+            "target": "helmgatespunched",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "helm_setting",
+                        "Params": [
+                            "default",
+                            false
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmgatespunched",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmfinished194": {
+            "id": "li-helmfinished194",
+            "Name": "HelmFinished",
+            "source": "hideouthelmentry",
+            "target": "helmfinished",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "helm_setting",
+                        "Params": [
+                            "skip_all",
+                            true
+                        ],
+                        "isFunction": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmfinished",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmdoorsopened198": {
+            "id": "li-helmdoorsopened198",
+            "Name": "HelmDoorsOpened",
+            "source": "hideouthelmmain",
+            "target": "helmdoorsopened",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "gorillagrab"
+                    },
+                    {
+                        "Name": "donkey"
+                    },
+                    {
+                        "Name": "rocketbarrelboost"
+                    },
+                    {
+                        "Name": "diddy"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmdoorsopened",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmgatespunched198": {
+            "id": "li-helmgatespunched198",
+            "Name": "HelmGatesPunched",
+            "source": "hideouthelmmain",
+            "target": "helmgatespunched",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "HelmDoorsOpened",
+                        "Events": true
+                    },
+                    {
+                        "Name": "chunky"
+                    },
+                    {
+                        "Name": "primatepunch"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmgatespunched",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmdonkeydone198": {
+            "id": "li-helmdonkeydone198",
+            "Name": "HelmDonkeyDone",
+            "source": "hideouthelmmain",
+            "target": "helmdonkeydone",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "HelmDonkey1"
+                    },
+                    {
+                        "Name": "HelmDonkey2"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmdonkeydone",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmchunkydone198": {
+            "id": "li-helmchunkydone198",
+            "Name": "HelmChunkyDone",
+            "source": "hideouthelmmain",
+            "target": "helmchunkydone",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "HelmChunky1"
+                    },
+                    {
+                        "Name": "HelmChunky2"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmchunkydone",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmtinydone198": {
+            "id": "li-helmtinydone198",
+            "Name": "HelmTinyDone",
+            "source": "hideouthelmmain",
+            "target": "helmtinydone",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "HelmTiny1"
+                    },
+                    {
+                        "Name": "HelmTiny2"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmtinydone",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmlankydone198": {
+            "id": "li-helmlankydone198",
+            "Name": "HelmLankyDone",
+            "source": "hideouthelmmain",
+            "target": "helmlankydone",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "HelmLanky1"
+                    },
+                    {
+                        "Name": "HelmLanky2"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmlankydone",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmdiddydone198": {
+            "id": "li-helmdiddydone198",
+            "Name": "HelmDiddyDone",
+            "source": "hideouthelmmain",
+            "target": "helmdiddydone",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "HelmDiddy1"
+                    },
+                    {
+                        "Name": "HelmDiddy2"
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmdiddydone",
+                        "Amount": 1
+                    }
+                ]
+            }
+        },
+        "li-helmfinished198": {
+            "id": "li-helmfinished198",
+            "Name": "HelmFinished",
+            "source": "hideouthelmmain",
+            "target": "helmfinished",
+            "Type": "Location",
+            "sourceType": "Region",
+            "targetType": "Item",
+            "Types": "Event",
+            "Class": "Event",
+            "Requires": {
+                "combinator": "AND",
+                "rules": [
+                    {
+                        "Name": "HelmDonkeyDone",
+                        "Events": true
+                    },
+                    {
+                        "Name": "HelmChunkyDone",
+                        "Events": true
+                    },
+                    {
+                        "Name": "HelmTinyDone",
+                        "Events": true
+                    },
+                    {
+                        "Name": "HelmLankyDone",
+                        "Events": true
+                    },
+                    {
+                        "Name": "HelmDiddyDone",
+                        "Events": true
+                    }
+                ]
+            },
+            "Persona": "any",
+            "Rewards": {
+                "combinator": "and",
+                "rules": [
+                    {
+                        "Name": "helmfinished",
+                        "Amount": 1
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,2182 @@
+{
+    "item_nodes": {
+        "noitem": {
+            "id": "noitem",
+            "Name": "No Item",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "donkey": {
+            "id": "donkey",
+            "Name": "Donkey",
+            "Class": "Item",
+            "Type": "Kong"
+        },
+        "diddy": {
+            "id": "diddy",
+            "Name": "Diddy",
+            "Class": "Item",
+            "Type": "Kong"
+        },
+        "lanky": {
+            "id": "lanky",
+            "Name": "Lanky",
+            "Class": "Item",
+            "Type": "Kong"
+        },
+        "tiny": {
+            "id": "tiny",
+            "Name": "Tiny",
+            "Class": "Item",
+            "Type": "Kong"
+        },
+        "chunky": {
+            "id": "chunky",
+            "Name": "Chunky",
+            "Class": "Item",
+            "Type": "Kong"
+        },
+        "vines": {
+            "id": "vines",
+            "Name": "Vines",
+            "Class": "Item",
+            "Type": "TrainingBarrel"
+        },
+        "swim": {
+            "id": "swim",
+            "Name": "Diving",
+            "Class": "Item",
+            "Type": "TrainingBarrel"
+        },
+        "oranges": {
+            "id": "oranges",
+            "Name": "Oranges",
+            "Class": "Item",
+            "Type": "TrainingBarrel"
+        },
+        "barrels": {
+            "id": "barrels",
+            "Name": "Barrels",
+            "Class": "Item",
+            "Type": "TrainingBarrel"
+        },
+        "progressiveslam": {
+            "id": "progressiveslam",
+            "Name": "Progressive Slam",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "progressiveslam2": {
+            "id": "progressiveslam2",
+            "Name": "Progressive Slam ",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "progressiveslam3": {
+            "id": "progressiveslam3",
+            "Name": "Progressive Slam  ",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "progressivedonkeypotion": {
+            "id": "progressivedonkeypotion",
+            "Name": "Progressive Donkey Potion",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "baboonblast": {
+            "id": "baboonblast",
+            "Name": "Baboon Blast",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "strongkong": {
+            "id": "strongkong",
+            "Name": "Strong Kong",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "gorillagrab": {
+            "id": "gorillagrab",
+            "Name": "Gorilla Grab",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "progressivediddypotion": {
+            "id": "progressivediddypotion",
+            "Name": "Progressive Diddy Potion",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "chimpycharge": {
+            "id": "chimpycharge",
+            "Name": "Chimpy Charge",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "rocketbarrelboost": {
+            "id": "rocketbarrelboost",
+            "Name": "Rocketbarrel Boost",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "simianspring": {
+            "id": "simianspring",
+            "Name": "Simian Spring",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "progressivelankypotion": {
+            "id": "progressivelankypotion",
+            "Name": "Progressive Lanky Potion",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "orangstand": {
+            "id": "orangstand",
+            "Name": "Orangstand",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "baboonballoon": {
+            "id": "baboonballoon",
+            "Name": "Baboon Balloon",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "orangstandsprint": {
+            "id": "orangstandsprint",
+            "Name": "Orangstand Sprint",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "progressivetinypotion": {
+            "id": "progressivetinypotion",
+            "Name": "Progressive Tiny Potion",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "minimonkey": {
+            "id": "minimonkey",
+            "Name": "Mini Monkey",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "ponytailtwirl": {
+            "id": "ponytailtwirl",
+            "Name": "Pony Tail Twirl",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "monkeyport": {
+            "id": "monkeyport",
+            "Name": "Monkeyport",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "progressivechunkypotion": {
+            "id": "progressivechunkypotion",
+            "Name": "Progressive Chunky Potion",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "hunkychunky": {
+            "id": "hunkychunky",
+            "Name": "Hunky Chunky",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "primatepunch": {
+            "id": "primatepunch",
+            "Name": "Primate Punch",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "gorillagone": {
+            "id": "gorillagone",
+            "Name": "Gorilla Gone",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "coconut": {
+            "id": "coconut",
+            "Name": "Coconut",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "peanut": {
+            "id": "peanut",
+            "Name": "Peanut",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "grape": {
+            "id": "grape",
+            "Name": "Grape",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "feather": {
+            "id": "feather",
+            "Name": "Feather",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "pineapple": {
+            "id": "pineapple",
+            "Name": "Pineapple",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "homingammo": {
+            "id": "homingammo",
+            "Name": "Homing Ammo",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "snipersight": {
+            "id": "snipersight",
+            "Name": "Sniper Sight",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "progressiveammobelt": {
+            "id": "progressiveammobelt",
+            "Name": "Progressive Ammo Belt",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "progressiveammobelt2": {
+            "id": "progressiveammobelt2",
+            "Name": "Progressive Ammo Belt ",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "bongos": {
+            "id": "bongos",
+            "Name": "Bongos",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "guitar": {
+            "id": "guitar",
+            "Name": "Guitar",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "trombone": {
+            "id": "trombone",
+            "Name": "Trombone",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "saxophone": {
+            "id": "saxophone",
+            "Name": "Saxophone",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "triangle": {
+            "id": "triangle",
+            "Name": "Triangle",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "progressiveinstrumentupgrade": {
+            "id": "progressiveinstrumentupgrade",
+            "Name": "Progressive Instrument Upgrade",
+            "Class": "Item",
+            "Type": "Move"
+        },
+        "progressiveinstrumentupgrade2": {
+            "id": "progressiveinstrumentupgrade2",
+            "Name": "Progressive Instrument Upgrade ",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "progressiveinstrumentupgrade3": {
+            "id": "progressiveinstrumentupgrade3",
+            "Name": "Progressive Instrument Upgrade  ",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "camera": {
+            "id": "camera",
+            "Name": "Fairy Camera",
+            "Class": "Item",
+            "Type": "Shockwave"
+        },
+        "shockwave": {
+            "id": "shockwave",
+            "Name": "Shockwave",
+            "Class": "Item",
+            "Type": "Shockwave"
+        },
+        "cameraandshockwave": {
+            "id": "cameraandshockwave",
+            "Name": "Camera and Shockwave",
+            "Class": "Item",
+            "Type": "Shockwave"
+        },
+        "nintendocoin": {
+            "id": "nintendocoin",
+            "Name": "Nintendo Coin",
+            "Class": "Item",
+            "Type": "Coin"
+        },
+        "rarewarecoin": {
+            "id": "rarewarecoin",
+            "Name": "Rareware Coin",
+            "Class": "Item",
+            "Type": "Coin"
+        },
+        "junglejapeskey": {
+            "id": "junglejapeskey",
+            "Name": "Key 1",
+            "Class": "Item",
+            "Type": "Key"
+        },
+        "angryazteckey": {
+            "id": "angryazteckey",
+            "Name": "Key 2",
+            "Class": "Item",
+            "Type": "Key"
+        },
+        "franticfactorykey": {
+            "id": "franticfactorykey",
+            "Name": "Key 3",
+            "Class": "Item",
+            "Type": "Key"
+        },
+        "gloomygalleonkey": {
+            "id": "gloomygalleonkey",
+            "Name": "Key 4",
+            "Class": "Item",
+            "Type": "Key"
+        },
+        "fungiforestkey": {
+            "id": "fungiforestkey",
+            "Name": "Key 5",
+            "Class": "Item",
+            "Type": "Key"
+        },
+        "crystalcaveskey": {
+            "id": "crystalcaveskey",
+            "Name": "Key 6",
+            "Class": "Item",
+            "Type": "Key"
+        },
+        "creepycastlekey": {
+            "id": "creepycastlekey",
+            "Name": "Key 7",
+            "Class": "Item",
+            "Type": "Key"
+        },
+        "hideouthelmkey": {
+            "id": "hideouthelmkey",
+            "Name": "Key 8",
+            "Class": "Item",
+            "Type": "Key"
+        },
+        "helmdonkey1": {
+            "id": "helmdonkey1",
+            "Name": "Helm Donkey Barrel 1",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "helmdonkey2": {
+            "id": "helmdonkey2",
+            "Name": "Helm Donkey Barrel 2",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "helmdiddy1": {
+            "id": "helmdiddy1",
+            "Name": "Helm Diddy Barrel 1",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "helmdiddy2": {
+            "id": "helmdiddy2",
+            "Name": "Helm Diddy Barrel 2",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "helmlanky1": {
+            "id": "helmlanky1",
+            "Name": "Helm Lanky Barrel 1",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "helmlanky2": {
+            "id": "helmlanky2",
+            "Name": "Helm Lanky Barrel 2",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "helmtiny1": {
+            "id": "helmtiny1",
+            "Name": "Helm Tiny Barrel 1",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "helmtiny2": {
+            "id": "helmtiny2",
+            "Name": "Helm Tiny Barrel 2",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "helmchunky1": {
+            "id": "helmchunky1",
+            "Name": "Helm Chunky Barrel 1",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "helmchunky2": {
+            "id": "helmchunky2",
+            "Name": "Helm Chunky Barrel 2",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "goldenbanana": {
+            "id": "goldenbanana",
+            "Name": "Golden Banana",
+            "Class": "Item",
+            "Type": "Banana"
+        },
+        "bananafairy": {
+            "id": "bananafairy",
+            "Name": "Banana Fairy",
+            "Class": "Item",
+            "Type": "Fairy"
+        },
+        "bananamedal": {
+            "id": "bananamedal",
+            "Name": "Banana Medal",
+            "Class": "Item",
+            "Type": "Medal"
+        },
+        "battlecrown": {
+            "id": "battlecrown",
+            "Name": "Battle Crown",
+            "Class": "Item",
+            "Type": "Crown"
+        },
+        "bean": {
+            "id": "bean",
+            "Name": "Bean",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "pearl": {
+            "id": "pearl",
+            "Name": "Pearl",
+            "Class": "Item",
+            "Type": "Pearl"
+        },
+        "rainbowcoin": {
+            "id": "rainbowcoin",
+            "Name": "Rainbow Coin",
+            "Class": "Item",
+            "Type": "RainbowCoin"
+        },
+        "fakeitem": {
+            "id": "fakeitem",
+            "Name": "Ice Trap",
+            "Class": "Item",
+            "Type": "FakeItem"
+        },
+        "junkcrystal": {
+            "id": "junkcrystal",
+            "Name": "Junk Item (Crystal)",
+            "Class": "Item",
+            "Type": "JunkItem"
+        },
+        "junkmelon": {
+            "id": "junkmelon",
+            "Name": "Junk Item (Melon Slice)",
+            "Class": "Item",
+            "Type": "JunkItem"
+        },
+        "junkammo": {
+            "id": "junkammo",
+            "Name": "Junk Item (Ammo Crate)",
+            "Class": "Item",
+            "Type": "JunkItem"
+        },
+        "junkfilm": {
+            "id": "junkfilm",
+            "Name": "Junk Item (Film)",
+            "Class": "Item",
+            "Type": "JunkItem"
+        },
+        "junkorange": {
+            "id": "junkorange",
+            "Name": "Junk Item (Orange)",
+            "Class": "Item",
+            "Type": "JunkItem"
+        },
+        "cratemelon": {
+            "id": "cratemelon",
+            "Name": "Crate Melon",
+            "Class": "Item",
+            "Type": "CrateItem"
+        },
+        "enemyitem": {
+            "id": "enemyitem",
+            "Name": "Enemy Item",
+            "Class": "Item",
+            "Type": "Enemies"
+        },
+        "dkislesdonkeyblueprint": {
+            "id": "dkislesdonkeyblueprint",
+            "Name": "DK Isles Donkey Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "dkislesdiddyblueprint": {
+            "id": "dkislesdiddyblueprint",
+            "Name": "DK Isles Diddy Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "dkisleslankyblueprint": {
+            "id": "dkisleslankyblueprint",
+            "Name": "DK Isles Lanky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "dkislestinyblueprint": {
+            "id": "dkislestinyblueprint",
+            "Name": "DK Isles Tiny Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "dkisleschunkyblueprint": {
+            "id": "dkisleschunkyblueprint",
+            "Name": "DK Isles Chunky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "junglejapesdonkeyblueprint": {
+            "id": "junglejapesdonkeyblueprint",
+            "Name": "Jungle Japes Donkey Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "junglejapesdiddyblueprint": {
+            "id": "junglejapesdiddyblueprint",
+            "Name": "Jungle Japes Diddy Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "junglejapeslankyblueprint": {
+            "id": "junglejapeslankyblueprint",
+            "Name": "Jungle Japes Lanky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "junglejapestinyblueprint": {
+            "id": "junglejapestinyblueprint",
+            "Name": "Jungle Japes Tiny Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "junglejapeschunkyblueprint": {
+            "id": "junglejapeschunkyblueprint",
+            "Name": "Jungle Japes Chunky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "angryaztecdonkeyblueprint": {
+            "id": "angryaztecdonkeyblueprint",
+            "Name": "Angry Aztec Donkey Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "angryaztecdiddyblueprint": {
+            "id": "angryaztecdiddyblueprint",
+            "Name": "Angry Aztec Diddy Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "angryazteclankyblueprint": {
+            "id": "angryazteclankyblueprint",
+            "Name": "Angry Aztec Lanky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "angryaztectinyblueprint": {
+            "id": "angryaztectinyblueprint",
+            "Name": "Angry Aztec Tiny Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "angryaztecchunkyblueprint": {
+            "id": "angryaztecchunkyblueprint",
+            "Name": "Angry Aztec Chunky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "franticfactorydonkeyblueprint": {
+            "id": "franticfactorydonkeyblueprint",
+            "Name": "Frantic Factory Donkey Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "franticfactorydiddyblueprint": {
+            "id": "franticfactorydiddyblueprint",
+            "Name": "Frantic Factory Diddy Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "franticfactorylankyblueprint": {
+            "id": "franticfactorylankyblueprint",
+            "Name": "Frantic Factory Lanky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "franticfactorytinyblueprint": {
+            "id": "franticfactorytinyblueprint",
+            "Name": "Frantic Factory Tiny Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "franticfactorychunkyblueprint": {
+            "id": "franticfactorychunkyblueprint",
+            "Name": "Frantic Factory Chunky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "gloomygalleondonkeyblueprint": {
+            "id": "gloomygalleondonkeyblueprint",
+            "Name": "Gloomy Galleon Donkey Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "gloomygalleondiddyblueprint": {
+            "id": "gloomygalleondiddyblueprint",
+            "Name": "Gloomy Galleon Diddy Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "gloomygalleonlankyblueprint": {
+            "id": "gloomygalleonlankyblueprint",
+            "Name": "Gloomy Galleon Lanky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "gloomygalleontinyblueprint": {
+            "id": "gloomygalleontinyblueprint",
+            "Name": "Gloomy Galleon Tiny Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "gloomygalleonchunkyblueprint": {
+            "id": "gloomygalleonchunkyblueprint",
+            "Name": "Gloomy Galleon Chunky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "fungiforestdonkeyblueprint": {
+            "id": "fungiforestdonkeyblueprint",
+            "Name": "Fungi Forest Donkey Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "fungiforestdiddyblueprint": {
+            "id": "fungiforestdiddyblueprint",
+            "Name": "Fungi Forest Diddy Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "fungiforestlankyblueprint": {
+            "id": "fungiforestlankyblueprint",
+            "Name": "Fungi Forest Lanky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "fungiforesttinyblueprint": {
+            "id": "fungiforesttinyblueprint",
+            "Name": "Fungi Forest Tiny Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "fungiforestchunkyblueprint": {
+            "id": "fungiforestchunkyblueprint",
+            "Name": "Fungi Forest Chunky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "crystalcavesdonkeyblueprint": {
+            "id": "crystalcavesdonkeyblueprint",
+            "Name": "Crystal Caves Donkey Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "crystalcavesdiddyblueprint": {
+            "id": "crystalcavesdiddyblueprint",
+            "Name": "Crystal Caves Diddy Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "crystalcaveslankyblueprint": {
+            "id": "crystalcaveslankyblueprint",
+            "Name": "Crystal Caves Lanky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "crystalcavestinyblueprint": {
+            "id": "crystalcavestinyblueprint",
+            "Name": "Crystal Caves Tiny Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "crystalcaveschunkyblueprint": {
+            "id": "crystalcaveschunkyblueprint",
+            "Name": "Crystal Caves Chunky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "creepycastledonkeyblueprint": {
+            "id": "creepycastledonkeyblueprint",
+            "Name": "Creepy Castle Donkey Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "creepycastlediddyblueprint": {
+            "id": "creepycastlediddyblueprint",
+            "Name": "Creepy Castle Diddy Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "creepycastlelankyblueprint": {
+            "id": "creepycastlelankyblueprint",
+            "Name": "Creepy Castle Lanky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "creepycastletinyblueprint": {
+            "id": "creepycastletinyblueprint",
+            "Name": "Creepy Castle Tiny Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "creepycastlechunkyblueprint": {
+            "id": "creepycastlechunkyblueprint",
+            "Name": "Creepy Castle Chunky Blueprint",
+            "Class": "Item",
+            "Type": "Blueprint"
+        },
+        "japesdonkeyhint": {
+            "id": "japesdonkeyhint",
+            "Name": "Japes Donkey Hint",
+            "Class": "Item",
+            "Type": "Hint"
+        },
+        "japesdiddyhint": {
+            "id": "japesdiddyhint",
+            "Name": "Japes Diddy",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "japeslankyhint": {
+            "id": "japeslankyhint",
+            "Name": "Japes Lanky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "japestinyhint": {
+            "id": "japestinyhint",
+            "Name": "Japes Tiny",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "japeschunkyhint": {
+            "id": "japeschunkyhint",
+            "Name": "Japes Chunky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "aztecdonkeyhint": {
+            "id": "aztecdonkeyhint",
+            "Name": "Aztec Donkey Hint",
+            "Class": "Item",
+            "Type": "Hint"
+        },
+        "aztecdiddyhint": {
+            "id": "aztecdiddyhint",
+            "Name": "Aztec Diddy",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "azteclankyhint": {
+            "id": "azteclankyhint",
+            "Name": "Aztec Lanky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "aztectinyhint": {
+            "id": "aztectinyhint",
+            "Name": "Aztec Tiny",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "aztecchunkyhint": {
+            "id": "aztecchunkyhint",
+            "Name": "Aztec Chunky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "factorydonkeyhint": {
+            "id": "factorydonkeyhint",
+            "Name": "Factory Donkey Hint",
+            "Class": "Item",
+            "Type": "Hint"
+        },
+        "factorydiddyhint": {
+            "id": "factorydiddyhint",
+            "Name": "Factory Diddy",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "factorylankyhint": {
+            "id": "factorylankyhint",
+            "Name": "Factory Lanky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "factorytinyhint": {
+            "id": "factorytinyhint",
+            "Name": "Factory Tiny",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "factorychunkyhint": {
+            "id": "factorychunkyhint",
+            "Name": "Factory Chunky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "galleondonkeyhint": {
+            "id": "galleondonkeyhint",
+            "Name": "Galleon Donkey Hint",
+            "Class": "Item",
+            "Type": "Hint"
+        },
+        "galleondiddyhint": {
+            "id": "galleondiddyhint",
+            "Name": "Galleon Diddy",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "galleonlankyhint": {
+            "id": "galleonlankyhint",
+            "Name": "Galleon Lanky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "galleontinyhint": {
+            "id": "galleontinyhint",
+            "Name": "Galleon Tiny",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "galleonchunkyhint": {
+            "id": "galleonchunkyhint",
+            "Name": "Galleon Chunky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "forestdonkeyhint": {
+            "id": "forestdonkeyhint",
+            "Name": "Forest Donkey Hint",
+            "Class": "Item",
+            "Type": "Hint"
+        },
+        "forestdiddyhint": {
+            "id": "forestdiddyhint",
+            "Name": "Forest Diddy Hint",
+            "Class": "Item",
+            "Type": "Hint"
+        },
+        "forestlankyhint": {
+            "id": "forestlankyhint",
+            "Name": "Forest Lanky Hint",
+            "Class": "Item",
+            "Type": "Hint"
+        },
+        "foresttinyhint": {
+            "id": "foresttinyhint",
+            "Name": "Forest Tiny Hint",
+            "Class": "Item",
+            "Type": "Hint"
+        },
+        "forestchunkyhint": {
+            "id": "forestchunkyhint",
+            "Name": "Forest Chunky Hint",
+            "Class": "Item",
+            "Type": "Hint"
+        },
+        "cavesdonkeyhint": {
+            "id": "cavesdonkeyhint",
+            "Name": "Caves Donkey Hint",
+            "Class": "Item",
+            "Type": "Hint"
+        },
+        "cavesdiddyhint": {
+            "id": "cavesdiddyhint",
+            "Name": "Caves Diddy",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "caveslankyhint": {
+            "id": "caveslankyhint",
+            "Name": "Caves Lanky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "cavestinyhint": {
+            "id": "cavestinyhint",
+            "Name": "Caves Tiny",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "caveschunkyhint": {
+            "id": "caveschunkyhint",
+            "Name": "Caves Chunky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "castledonkeyhint": {
+            "id": "castledonkeyhint",
+            "Name": "Castle Donkey Hint",
+            "Class": "Item",
+            "Type": "Hint"
+        },
+        "castlediddyhint": {
+            "id": "castlediddyhint",
+            "Name": "Castle Diddy",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "castlelankyhint": {
+            "id": "castlelankyhint",
+            "Name": "Castle Lanky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "castletinyhint": {
+            "id": "castletinyhint",
+            "Name": "Castle Tiny",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "castlechunkyhint": {
+            "id": "castlechunkyhint",
+            "Name": "Castle Chunky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "bananahoard": {
+            "id": "bananahoard",
+            "Name": "Banana Hoard",
+            "Class": "Item",
+            "Type": "Constant"
+        },
+        "islesdiddybarrelspawn": {
+            "id": "islesdiddybarrelspawn",
+            "Name": "Isles Diddy Barrel Spawn",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "isleschunkybarrelspawn": {
+            "id": "isleschunkybarrelspawn",
+            "Name": "Isles Chunky Barrel Spawn",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "klumsytalkedto": {
+            "id": "klumsytalkedto",
+            "Name": "K Lumsy Talked To",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japeskeyturnedin": {
+            "id": "japeskeyturnedin",
+            "Name": "Japes Key Turned In",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "azteckeyturnedin": {
+            "id": "azteckeyturnedin",
+            "Name": "Aztec Key Turned In",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factorykeyturnedin": {
+            "id": "factorykeyturnedin",
+            "Name": "Factory Key Turned In",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonkeyturnedin": {
+            "id": "galleonkeyturnedin",
+            "Name": "Galleon Key Turned In",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestkeyturnedin": {
+            "id": "forestkeyturnedin",
+            "Name": "Forest Key Turned In",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "caveskeyturnedin": {
+            "id": "caveskeyturnedin",
+            "Name": "Caves Key Turned In",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castlekeyturnedin": {
+            "id": "castlekeyturnedin",
+            "Name": "Castle Key Turned In",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "helmkeyturnedin": {
+            "id": "helmkeyturnedin",
+            "Name": "Helm Key Turned In",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "rambi": {
+            "id": "rambi",
+            "Name": "Rambi",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesfreekongopengates": {
+            "id": "japesfreekongopengates",
+            "Name": "Japes Free Kong Open Gates",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesdonkeyswitch": {
+            "id": "japesdonkeyswitch",
+            "Name": "Japes Donkey Switch",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesdiddyswitch1": {
+            "id": "japesdiddyswitch1",
+            "Name": "Japes Diddy Switch 1",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japeslankyswitch": {
+            "id": "japeslankyswitch",
+            "Name": "Japes Lanky Switch",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japestinyswitch": {
+            "id": "japestinyswitch",
+            "Name": "Japes Tiny Switch",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japeschunkyswitch": {
+            "id": "japeschunkyswitch",
+            "Name": "Japes Chunky Switch",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesdiddyswitch2": {
+            "id": "japesdiddyswitch2",
+            "Name": "Japes Diddy Switch 2",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "fedtotem": {
+            "id": "fedtotem",
+            "Name": "Fed Totem",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "llamafreed": {
+            "id": "llamafreed",
+            "Name": "Llama Freed",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecguitarpad": {
+            "id": "aztecguitarpad",
+            "Name": "Aztec Guitar Pad",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecdonkeyswitch": {
+            "id": "aztecdonkeyswitch",
+            "Name": "Aztec Donkey Switch",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecllamaspit": {
+            "id": "aztecllamaspit",
+            "Name": "Aztec Llama Spit",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "hatchopened": {
+            "id": "hatchopened",
+            "Name": "Hatch Opened",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "dartsplayed": {
+            "id": "dartsplayed",
+            "Name": "Darts Played",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "maincoreactivated": {
+            "id": "maincoreactivated",
+            "Name": "Main Core Activated",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "arcadeleverspawned": {
+            "id": "arcadeleverspawned",
+            "Name": "Arcade Lever Spawned",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "testinggateopened": {
+            "id": "testinggateopened",
+            "Name": "Testing Gate Opened",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "diddycoreswitch": {
+            "id": "diddycoreswitch",
+            "Name": "Diddy Core Switch",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "lankycoreswitch": {
+            "id": "lankycoreswitch",
+            "Name": "Lanky Core Switch",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "tinycoreswitch": {
+            "id": "tinycoreswitch",
+            "Name": "Tiny Core Switch",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "chunkycoreswitch": {
+            "id": "chunkycoreswitch",
+            "Name": "Chunky Core Switch",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonlankyswitch": {
+            "id": "galleonlankyswitch",
+            "Name": "Galleon Lanky Switch",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleontinyswitch": {
+            "id": "galleontinyswitch",
+            "Name": "Galleon Tiny Switch",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "lighthousegateopened": {
+            "id": "lighthousegateopened",
+            "Name": "Lighthouse Gate Opened",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "shipyardgateopened": {
+            "id": "shipyardgateopened",
+            "Name": "Shipyard Gate Opened",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "waterraised": {
+            "id": "waterraised",
+            "Name": "Water Raised",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "waterlowered": {
+            "id": "waterlowered",
+            "Name": "Water Lowered",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "lighthouseenguarde": {
+            "id": "lighthouseenguarde",
+            "Name": "Lighthouse Enguarde",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "sealreleased": {
+            "id": "sealreleased",
+            "Name": "Seal Released",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "mechafishsummoned": {
+            "id": "mechafishsummoned",
+            "Name": "Mechafish Summoned",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleondonkeypad": {
+            "id": "galleondonkeypad",
+            "Name": "Galleon Donkey Pad",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleondiddypad": {
+            "id": "galleondiddypad",
+            "Name": "Galleon Diddy Pad",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonlankypad": {
+            "id": "galleonlankypad",
+            "Name": "Galleon Lanky Pad",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleontinypad": {
+            "id": "galleontinypad",
+            "Name": "Galleon Tiny Pad",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonchunkypad": {
+            "id": "galleonchunkypad",
+            "Name": "Galleon Chunky Pad",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "activatedlighthouse": {
+            "id": "activatedlighthouse",
+            "Name": "Activated Lighthouse",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "shipyardenguarde": {
+            "id": "shipyardenguarde",
+            "Name": "Shipyard Enguarde",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "shipyardtreasureroomopened": {
+            "id": "shipyardtreasureroomopened",
+            "Name": "Shipyard Treasure Room Opened",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "pearlscollected": {
+            "id": "pearlscollected",
+            "Name": "Pearls Collected",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleoncannonroomopened": {
+            "id": "galleoncannonroomopened",
+            "Name": "Galleon Cannon Room Opened",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "day": {
+            "id": "day",
+            "Name": "Day",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "night": {
+            "id": "night",
+            "Name": "Night",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "wormgatesopened": {
+            "id": "wormgatesopened",
+            "Name": "Worm Gates Opened",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "hollowtreegateopened": {
+            "id": "hollowtreegateopened",
+            "Name": "Hollow Tree Gate Opened",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "mushroomcannonsspawned": {
+            "id": "mushroomcannonsspawned",
+            "Name": "Mushroom Cannons Spawned",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "donkeymushroomswitch": {
+            "id": "donkeymushroomswitch",
+            "Name": "Donkey Mushroom Switch",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "grinderactivated": {
+            "id": "grinderactivated",
+            "Name": "Grinder Activated",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "millboxbroken": {
+            "id": "millboxbroken",
+            "Name": "Mill Box Broken",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "conveyoractivated": {
+            "id": "conveyoractivated",
+            "Name": "Conveyor Activated",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "winchraised": {
+            "id": "winchraised",
+            "Name": "Winch Raised",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavessmallboulderbutton": {
+            "id": "cavessmallboulderbutton",
+            "Name": "Caves Small Boulder Button",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "caveslargeboulderbutton": {
+            "id": "caveslargeboulderbutton",
+            "Name": "Caves Large Boulder Button",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "giantkoshadefeated": {
+            "id": "giantkoshadefeated",
+            "Name": "Giant Kosha Defeated",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavesmonkeyportaccess": {
+            "id": "cavesmonkeyportaccess",
+            "Name": "Caves Monkeyport Access",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castletreeopened": {
+            "id": "castletreeopened",
+            "Name": "Castle Tree Opened",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "helmdoorsopened": {
+            "id": "helmdoorsopened",
+            "Name": "Helm Doors Opened",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "helmgatespunched": {
+            "id": "helmgatespunched",
+            "Name": "Helm Gates Punched",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "helmdonkeydone": {
+            "id": "helmdonkeydone",
+            "Name": "Helm Donkey Done",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "helmchunkydone": {
+            "id": "helmchunkydone",
+            "Name": "Helm Chunky Done",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "helmtinydone": {
+            "id": "helmtinydone",
+            "Name": "Helm Tiny Done",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "helmlankydone": {
+            "id": "helmlankydone",
+            "Name": "Helm Lanky Done",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "helmdiddydone": {
+            "id": "helmdiddydone",
+            "Name": "Helm Diddy Done",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "helmfinished": {
+            "id": "helmfinished",
+            "Name": "Helm Finished",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "krooldonkey": {
+            "id": "krooldonkey",
+            "Name": "K Rool Donkey",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "krooldiddy": {
+            "id": "krooldiddy",
+            "Name": "K Rool Diddy",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "kroollanky": {
+            "id": "kroollanky",
+            "Name": "K Rool Lanky",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "krooltiny": {
+            "id": "krooltiny",
+            "Name": "K Rool Tiny",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "kroolchunky": {
+            "id": "kroolchunky",
+            "Name": "K Rool Chunky",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "krooldefeated": {
+            "id": "krooldefeated",
+            "Name": "K Rool Defeated",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesentered": {
+            "id": "japesentered",
+            "Name": "Japes Entered",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecentered": {
+            "id": "aztecentered",
+            "Name": "Aztec Entered",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factoryentered": {
+            "id": "factoryentered",
+            "Name": "Factory Entered",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonentered": {
+            "id": "galleonentered",
+            "Name": "Galleon Entered",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestentered": {
+            "id": "forestentered",
+            "Name": "Forest Entered",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavesentered": {
+            "id": "cavesentered",
+            "Name": "Caves Entered",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castleentered": {
+            "id": "castleentered",
+            "Name": "Castle Entered",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesw1atagged": {
+            "id": "japesw1atagged",
+            "Name": "Japes W1a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesw1btagged": {
+            "id": "japesw1btagged",
+            "Name": "Japes W1b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesw2atagged": {
+            "id": "japesw2atagged",
+            "Name": "Japes W2a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesw2btagged": {
+            "id": "japesw2btagged",
+            "Name": "Japes W2b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesw3atagged": {
+            "id": "japesw3atagged",
+            "Name": "Japes W3a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesw3btagged": {
+            "id": "japesw3btagged",
+            "Name": "Japes W3b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesw4atagged": {
+            "id": "japesw4atagged",
+            "Name": "Japes W4a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesw4btagged": {
+            "id": "japesw4btagged",
+            "Name": "Japes W4b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesw5atagged": {
+            "id": "japesw5atagged",
+            "Name": "Japes W5a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japesw5btagged": {
+            "id": "japesw5btagged",
+            "Name": "Japes W5b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecw1atagged": {
+            "id": "aztecw1atagged",
+            "Name": "Aztec W1a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecw1btagged": {
+            "id": "aztecw1btagged",
+            "Name": "Aztec W1b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecw2atagged": {
+            "id": "aztecw2atagged",
+            "Name": "Aztec W2a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecw2btagged": {
+            "id": "aztecw2btagged",
+            "Name": "Aztec W2b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecw3atagged": {
+            "id": "aztecw3atagged",
+            "Name": "Aztec W3a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecw3btagged": {
+            "id": "aztecw3btagged",
+            "Name": "Aztec W3b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecw4atagged": {
+            "id": "aztecw4atagged",
+            "Name": "Aztec W4a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecw4btagged": {
+            "id": "aztecw4btagged",
+            "Name": "Aztec W4b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecw5atagged": {
+            "id": "aztecw5atagged",
+            "Name": "Aztec W5a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "aztecw5btagged": {
+            "id": "aztecw5btagged",
+            "Name": "Aztec W5b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "llamaw1atagged": {
+            "id": "llamaw1atagged",
+            "Name": "Llama W1a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "llamaw1btagged": {
+            "id": "llamaw1btagged",
+            "Name": "Llama W1b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "llamaw2atagged": {
+            "id": "llamaw2atagged",
+            "Name": "Llama W2a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "llamaw2btagged": {
+            "id": "llamaw2btagged",
+            "Name": "Llama W2b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factoryw1atagged": {
+            "id": "factoryw1atagged",
+            "Name": "Factory W1a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factoryw1btagged": {
+            "id": "factoryw1btagged",
+            "Name": "Factory W1b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factoryw2atagged": {
+            "id": "factoryw2atagged",
+            "Name": "Factory W2a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factoryw2btagged": {
+            "id": "factoryw2btagged",
+            "Name": "Factory W2b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factoryw3atagged": {
+            "id": "factoryw3atagged",
+            "Name": "Factory W3a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factoryw3btagged": {
+            "id": "factoryw3btagged",
+            "Name": "Factory W3b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factoryw4atagged": {
+            "id": "factoryw4atagged",
+            "Name": "Factory W4a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factoryw4btagged": {
+            "id": "factoryw4btagged",
+            "Name": "Factory W4b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factoryw5atagged": {
+            "id": "factoryw5atagged",
+            "Name": "Factory W5a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factoryw5btagged": {
+            "id": "factoryw5btagged",
+            "Name": "Factory W5b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonw1atagged": {
+            "id": "galleonw1atagged",
+            "Name": "Galleon W1a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonw1btagged": {
+            "id": "galleonw1btagged",
+            "Name": "Galleon W1b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonw2atagged": {
+            "id": "galleonw2atagged",
+            "Name": "Galleon W2a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonw2btagged": {
+            "id": "galleonw2btagged",
+            "Name": "Galleon W2b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonw3atagged": {
+            "id": "galleonw3atagged",
+            "Name": "Galleon W3a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonw3btagged": {
+            "id": "galleonw3btagged",
+            "Name": "Galleon W3b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonw4atagged": {
+            "id": "galleonw4atagged",
+            "Name": "Galleon W4a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonw4btagged": {
+            "id": "galleonw4btagged",
+            "Name": "Galleon W4b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonw5atagged": {
+            "id": "galleonw5atagged",
+            "Name": "Galleon W5a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonw5btagged": {
+            "id": "galleonw5btagged",
+            "Name": "Galleon W5b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestw1atagged": {
+            "id": "forestw1atagged",
+            "Name": "Forest W1a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestw1btagged": {
+            "id": "forestw1btagged",
+            "Name": "Forest W1b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestw2atagged": {
+            "id": "forestw2atagged",
+            "Name": "Forest W2a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestw2btagged": {
+            "id": "forestw2btagged",
+            "Name": "Forest W2b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestw3atagged": {
+            "id": "forestw3atagged",
+            "Name": "Forest W3a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestw3btagged": {
+            "id": "forestw3btagged",
+            "Name": "Forest W3b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestw4atagged": {
+            "id": "forestw4atagged",
+            "Name": "Forest W4a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestw4btagged": {
+            "id": "forestw4btagged",
+            "Name": "Forest W4b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestw5atagged": {
+            "id": "forestw5atagged",
+            "Name": "Forest W5a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestw5btagged": {
+            "id": "forestw5btagged",
+            "Name": "Forest W5b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavesw1atagged": {
+            "id": "cavesw1atagged",
+            "Name": "Caves W1a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavesw1btagged": {
+            "id": "cavesw1btagged",
+            "Name": "Caves W1b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavesw2atagged": {
+            "id": "cavesw2atagged",
+            "Name": "Caves W2a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavesw2btagged": {
+            "id": "cavesw2btagged",
+            "Name": "Caves W2b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavesw3atagged": {
+            "id": "cavesw3atagged",
+            "Name": "Caves W3a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavesw3btagged": {
+            "id": "cavesw3btagged",
+            "Name": "Caves W3b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavesw4atagged": {
+            "id": "cavesw4atagged",
+            "Name": "Caves W4a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavesw4btagged": {
+            "id": "cavesw4btagged",
+            "Name": "Caves W4b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavesw5atagged": {
+            "id": "cavesw5atagged",
+            "Name": "Caves W5a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cavesw5btagged": {
+            "id": "cavesw5btagged",
+            "Name": "Caves W5b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castlew1atagged": {
+            "id": "castlew1atagged",
+            "Name": "Castle W1a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castlew1btagged": {
+            "id": "castlew1btagged",
+            "Name": "Castle W1b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castlew2atagged": {
+            "id": "castlew2atagged",
+            "Name": "Castle W2a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castlew2btagged": {
+            "id": "castlew2btagged",
+            "Name": "Castle W2b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castlew3atagged": {
+            "id": "castlew3atagged",
+            "Name": "Castle W3a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castlew3btagged": {
+            "id": "castlew3btagged",
+            "Name": "Castle W3b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castlew4atagged": {
+            "id": "castlew4atagged",
+            "Name": "Castle W4a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castlew4btagged": {
+            "id": "castlew4btagged",
+            "Name": "Castle W4b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castlew5atagged": {
+            "id": "castlew5atagged",
+            "Name": "Castle W5a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castlew5btagged": {
+            "id": "castlew5btagged",
+            "Name": "Castle W5b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cryptw1atagged": {
+            "id": "cryptw1atagged",
+            "Name": "Crypt W1a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cryptw1btagged": {
+            "id": "cryptw1btagged",
+            "Name": "Crypt W1b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cryptw2atagged": {
+            "id": "cryptw2atagged",
+            "Name": "Crypt W2a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cryptw2btagged": {
+            "id": "cryptw2btagged",
+            "Name": "Crypt W2b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cryptw3atagged": {
+            "id": "cryptw3atagged",
+            "Name": "Crypt W3a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "cryptw3btagged": {
+            "id": "cryptw3btagged",
+            "Name": "Crypt W3b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "islesw1atagged": {
+            "id": "islesw1atagged",
+            "Name": "Isles W1a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "islesw1btagged": {
+            "id": "islesw1btagged",
+            "Name": "Isles W1b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "islesw2atagged": {
+            "id": "islesw2atagged",
+            "Name": "Isles W2a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "islesw2btagged": {
+            "id": "islesw2btagged",
+            "Name": "Isles W2b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "islesw3atagged": {
+            "id": "islesw3atagged",
+            "Name": "Isles W3a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "islesw3btagged": {
+            "id": "islesw3btagged",
+            "Name": "Isles W3b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "islesw4atagged": {
+            "id": "islesw4atagged",
+            "Name": "Isles W4a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "islesw4btagged": {
+            "id": "islesw4btagged",
+            "Name": "Isles W4b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "islesw5atagged": {
+            "id": "islesw5atagged",
+            "Name": "Isles W5a Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "islesw5btagged": {
+            "id": "islesw5btagged",
+            "Name": "Isles W5b Tagged",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "japeslobbyaccessed": {
+            "id": "japeslobbyaccessed",
+            "Name": "Japes Lobby Accessed",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "azteclobbyaccessed": {
+            "id": "azteclobbyaccessed",
+            "Name": "Aztec Lobby Accessed",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "factorylobbyaccessed": {
+            "id": "factorylobbyaccessed",
+            "Name": "Factory Lobby Accessed",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "galleonlobbyaccessed": {
+            "id": "galleonlobbyaccessed",
+            "Name": "Galleon Lobby Accessed",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "forestlobbyaccessed": {
+            "id": "forestlobbyaccessed",
+            "Name": "Forest Lobby Accessed",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "caveslobbyaccessed": {
+            "id": "caveslobbyaccessed",
+            "Name": "Caves Lobby Accessed",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "castlelobbyaccessed": {
+            "id": "castlelobbyaccessed",
+            "Name": "Castle Lobby Accessed",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "helmlobbyaccessed": {
+            "id": "helmlobbyaccessed",
+            "Name": "Helm Lobby Accessed",
+            "Class": "Item",
+            "Type": "Event"
+        },
+        "firsttimetalkhint": {
+            "id": "firsttimetalkhint",
+            "Name": "First Time Talk",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "japesdkhint": {
+            "id": "japesdkhint",
+            "Name": "Japes DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "aztecdkhint": {
+            "id": "aztecdkhint",
+            "Name": "Aztec DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "factorydkhint": {
+            "id": "factorydkhint",
+            "Name": "Factory DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "galleondkhint": {
+            "id": "galleondkhint",
+            "Name": "Galleon DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "fungidkhint": {
+            "id": "fungidkhint",
+            "Name": "Fungi DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "fungididdyhint": {
+            "id": "fungididdyhint",
+            "Name": "Fungi Diddy",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "fungilankyhint": {
+            "id": "fungilankyhint",
+            "Name": "Fungi Lanky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "fungitinyhint": {
+            "id": "fungitinyhint",
+            "Name": "Fungi Tiny",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "fungichunkyhint": {
+            "id": "fungichunkyhint",
+            "Name": "Fungi Chunky",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "cavesdkhint": {
+            "id": "cavesdkhint",
+            "Name": "Caves DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "castledkhint": {
+            "id": "castledkhint",
+            "Name": "Castle DK",
+            "Class": "Hint",
+            "Type": "Hint"
+        },
+        "snidebomhint": {
+            "id": "snidehelmhint",
+            "Name": "Snide Helm Hint",
+            "Class": "Hint",
+            "Type": "Hint"
+        }
+    }
+}

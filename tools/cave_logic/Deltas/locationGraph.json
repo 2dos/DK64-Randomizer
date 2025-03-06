@@ -1,0 +1,214 @@
+{
+  "locationGraph": {
+    "HideoutHelmDonkeyRoom": {
+      "Name": "Hideout Helm Donkey Room"
+    },
+    "HideoutHelmDiddyRoom": {
+      "Name": "Hideout Helm Diddy Room"
+    },
+    "HideoutHelmLankyRoom": {
+      "Name": "Hideout Helm Lanky Room"
+    },
+    "HideoutHelmTinyRoom": {
+      "Name": "Hideout Helm Tiny Room"
+    },
+    "HideoutHelmChunkyRoom": {
+      "Name": "Hideout Helm Chunky Room"
+    },
+    "CrankyGeneric": {
+      "HintName": "Cranky Generic"
+    },
+    "FunkyGeneric": {
+      "HintName": "Funky Generic"
+    },
+    "CandyGeneric": {
+      "HintName": "Candy Generic"
+    },
+    "CrankyIsles": {
+      "Level": "DKIsles"
+    },
+    "FunkyJapes": {
+      "Level": "JungleJapes"
+    },
+    "CrankyJapes": {
+      "Level": "JungleJapes"
+    },
+    "FunkyAztec": {
+      "Level": "AngryAztec"
+    },
+    "CrankyAztec": {
+      "Level": "AngryAztec"
+    },
+    "CandyAztec": {
+      "Level": "AngryAztec"
+    },
+    "FunkyFactory": {
+      "Level": "FranticFactory"
+    },
+    "CrankyFactory": {
+      "Level": "FranticFactory"
+    },
+    "CandyFactory": {
+      "Level": "FranticFactory"
+    },
+    "FunkyGalleon": {
+      "Level": "GloomyGalleon"
+    },
+    "CrankyGalleon": {
+      "Level": "GloomyGalleon"
+    },
+    "CandyGalleon": {
+      "Level": "GloomyGalleon"
+    },
+    "FunkyForest": {
+      "Level": "FungiForest"
+    },
+    "CrankyForest": {
+      "Level": "FungiForest"
+    },
+    "FunkyCaves": {
+      "Level": "CrystalCaves"
+    },
+    "CrankyCaves": {
+      "Level": "CrystalCaves"
+    },
+    "CandyCaves": {
+      "Level": "CrystalCaves"
+    },
+    "FunkyCastle": {
+      "Level": "CreepyCastle"
+    },
+    "CrankyCastle": {
+      "Level": "CreepyCastle"
+    },
+    "CandyCastle": {
+      "Level": "CreepyCastle"
+    },
+    "JapesBossLobby": {
+      "HintName": "Japes Troff 'N' Scoff"
+    },
+    "JapesBoss": {
+      "HintName": "Japes Troff 'N' Scoff"
+    },
+    "AztecBossLobby": {
+      "HintName": "Aztec Troff 'N' Scoff"
+    },
+    "AztecBoss": {
+      "HintName": "Aztec Troff 'N' Scoff"
+    },
+    "FactoryBossLobby": {
+      "HintName": "Factory Troff 'N' Scoff"
+    },
+    "FactoryBoss": {
+      "HintName": "Factory Troff 'N' Scoff"
+    },
+    "GalleonBossLobby": {
+      "HintName": "Galleon Troff 'N' Scoff"
+    },
+    "GalleonBoss": {
+      "HintName": "Galleon Troff 'N' Scoff"
+    },
+    "ForestBossLobby": {
+      "HintName": "Forest Troff 'N' Scoff"
+    },
+    "ForestBoss": {
+      "HintName": "Forest Troff 'N' Scoff"
+    },
+    "CavesBossLobby": {
+      "HintName": "Caves Troff 'N' Scoff"
+    },
+    "CavesBoss": {
+      "HintName": "Caves Troff 'N' Scoff"
+    },
+    "CastleBossLobby": {
+      "HintName": "Castle Troff 'N' Scoff"
+    },
+    "CastleBoss": {
+      "HintName": "Castle Troff 'N' Scoff"
+    },
+    "JungleJapesEntryHandler": {
+      "HintName": "Jungle Japes Entry Handler"
+    },
+    "AngryAztecEntryHandler": {
+      "HintName": "Angry Aztec Entry Handler"
+    },
+    "FranticFactoryEntryHandler": {
+      "HintName": "Frantic Factory Entry Handler"
+    },
+    "GloomyGalleonEntryHandler": {
+      "HintName": "Gloomy Galleon Entry Handler"
+    },
+    "FungiForestEntryHandler": {
+      "HintName": "Fungi Forest Entry Handler"
+    },
+    "CrystalCavesEntryHandler": {
+      "HintName": "Crystal Caves Entry Handler"
+    },
+    "CreepyCastleEntryHandler": {
+      "HintName": "Creepy Castle Entry Handler"
+    },
+    "JungleJapesStart": {
+      "Neighbourhood": {
+        "JungleJapesMedals": {
+          "Key": "JungleJapesMedals",
+          "Name": "Jungle Japes Start to Jungle Japes Medals",
+          "Requires": true
+        }
+      }
+    },
+    "AngryAztecStart": {
+      "Neighbourhood": {
+        "AngryAztecMedals": {
+          "Key": "AngryAztecMedals",
+          "Name": "Angry Aztec Start to Angry Aztec Medals",
+          "Requires": true
+        }
+      }
+    },
+    "FranticFactoryStart": {
+      "Neighbourhood": {
+        "FranticFactoryMedals": {
+          "Key": "FranticFactoryMedals",
+          "Name": "Frantic Factory Start to Frantic Factory Medals",
+          "Requires": true
+        }
+      }
+    },
+    "GloomyGalleonStart": {
+      "Neighbourhood": {
+        "GloomyGalleonMedals": {
+          "Key": "GloomyGalleonMedals",
+          "Name": "Gloomy Galleon Start to Gloomy Galleon Medals",
+          "Requires": true
+        }
+      }
+    },
+    "FungiForestStart": {
+      "Neighbourhood": {
+        "FungiForestMedals": {
+          "Key": "FungiForestMedals",
+          "Name": "Fungi Forest Start to Fungi Forest Medals",
+          "Requires": true
+        }
+      }
+    },
+    "CrystalCavesMain": {
+      "Neighbourhood": {
+        "CrystalCavesMedals": {
+          "Key": "CrystalCavesMedals",
+          "Name": "Crystal Caves Main to Crystal Caves Medals",
+          "Requires": true
+        }
+      }
+    },
+    "CreepyCastleMain": {
+      "Neighbourhood": {
+        "CreepyCastleMedals": {
+          "Key": "CreepyCastleMedals",
+          "Name": "Creepy Castle Main to Creepy Castle Medals",
+          "Requires": true
+        }
+      }
+    }
+  }
+}
