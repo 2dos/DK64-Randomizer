@@ -470,7 +470,7 @@ LogicRegions = {
         Event(Events.KRoolDonkey, lambda l: not l.settings.krool_donkey or ((l.blast or not l.settings.cannons_require_blast) and l.donkey and l.climbing)),
         Event(Events.KRoolDiddy, lambda l: not l.settings.krool_diddy or (l.jetpack and l.peanut and l.diddy)),
         Event(Events.KRoolLanky, lambda l: not l.settings.krool_lanky or l.CanBeatLankyPhase()),
-        Event(Events.KRoolTiny, lambda l: not l.settings.krool_tiny or (l.mini and l.feather and l.tiny and (l.climbing or l.twirl))),
+        Event(Events.KRoolTiny, lambda l: not l.settings.krool_tiny or (l.mini and l.feather and l.tiny)),
         Event(Events.KRoolChunky, lambda l: not l.settings.krool_chunky or (l.CanSlamChunkyPhaseSwitch() and l.gorillaGone and l.hunkyChunky and l.punch and l.chunky)),
         Event(Events.KRoolDillo1, lambda l: not l.settings.krool_dillo1 or l.barrels),
         Event(Events.KRoolDog1, lambda l: not l.settings.krool_dog1 or l.barrels),
