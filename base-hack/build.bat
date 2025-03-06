@@ -16,7 +16,7 @@ IF EXIST "rom/dk64.z64" (
 	exit 1
 )
 mkdir obj
-IF NOT DEFINED python_ver (set python_ver="python3")
+IF NOT DEFINED python_ver (set python_ver="python")
 IF DEFINED test_on (echo "Building patch file" >> rom/build.log)  ELSE (set test_on="")
 echo.
 if %test_on% == --test (
