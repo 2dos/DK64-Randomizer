@@ -111,7 +111,7 @@ def build_levels():
             "sourceType": "Region",
             "targetType":  "Region",
             "Class":  "Region",
-            "type":  "World"
+            "Type":  "World"
         }
         level_edges[level_edge['id']] = level_edge
 

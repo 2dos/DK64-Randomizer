@@ -152,7 +152,7 @@ class CheckEdge:
             "Name": self.Name,
             "source": self.source,
             "target": self.target,
-            "type": self.type,
+            "Type": self.type,
             "sourceType": self.sourceType,
             "targetType": self.targetType,
             "Types": self.Types,

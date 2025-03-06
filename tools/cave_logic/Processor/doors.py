@@ -63,7 +63,7 @@ def door_to_edge(door):
         "Name": door.name,
         "source": door.logicregion.name.lower(),
         "target": target.lower(),
-        "type": edgeType,
+        "Type": edgeType,
         "targetType": edgeTargetType,
         "Requires": requires,
         "Level": portal_region.level.name,

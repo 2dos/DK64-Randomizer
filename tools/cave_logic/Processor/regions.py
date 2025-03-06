@@ -17,6 +17,8 @@ from randomizer.Logic import RegionsOriginal
 from randomizer.Enums.Regions import Regions
 from randomizer.ShuffleExits import ShufflableExits
 # from randomizer.Enums.HintRegion import HINT_REGION_PAIRING
+from randomizer.Lists.MapsAndExits import RegionMapList
+from randomizer.Enums.Maps import Maps
 
 
 def strip_name(name):
@@ -47,11 +49,26 @@ def region_to_node(id, region):
         "sourceType": "Region",
         "targetType":  "Region",
         "Class":  "Region",
-        "type":  "Level"
+        "Type":  "Level"
     }
+
     regionEdges = {
-        level_edge['id']: level_edge
+        level_edge['id']: level_edge,
     }
+
+    if id in RegionMapList:
+        map_edge_id = "rr-" + id.name.lower() + "-map"
+        map_edge = {
+            "id": map_edge_id,
+            "Name": region.name + " Map",
+            "source": id.name.lower(),
+            "target": "map-"+str(RegionMapList[id].value),
+            "sourceType": "Region",
+            "targetType":  "Region",
+            "Class":  "Region",
+            "Type":  "Map"
+        }
+        regionEdges[map_edge_id] = map_edge
 
     # for rexit in region.exits:
     #     # get the full region object
@@ -75,6 +92,11 @@ def region_to_node(id, region):
 def build_regions():
     edges = {}
     nodes = {}
+
+    for id, map in Maps.__members__.items():
+        map_node = RegionNode("map-"+str(map.value), map.name, "Region", "Map")
+        nodes[map_node.id] = map_node.to_dict()
+
     for id, region in RegionsOriginal.items():
         r = region_to_node(id, region)
         nodes[r['node']['id']] = r['node']

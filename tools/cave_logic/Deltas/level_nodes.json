@@ -87,7 +87,7 @@
             "sourceType": "Region",
             "targetType": "Region",
             "Class": "Region",
-            "type": "World"
+            "Type": "World"
         },
         "rr-angryaztec-world": {
             "id": "rr-angryaztec-world",
@@ -97,7 +97,7 @@
             "sourceType": "Region",
             "targetType": "Region",
             "Class": "Region",
-            "type": "World"
+            "Type": "World"
         },
         "rr-franticfactory-world": {
             "id": "rr-franticfactory-world",
@@ -107,7 +107,7 @@
             "sourceType": "Region",
             "targetType": "Region",
             "Class": "Region",
-            "type": "World"
+            "Type": "World"
         },
         "rr-gloomygalleon-world": {
             "id": "rr-gloomygalleon-world",
@@ -117,7 +117,7 @@
             "sourceType": "Region",
             "targetType": "Region",
             "Class": "Region",
-            "type": "World"
+            "Type": "World"
         },
         "rr-fungiforest-world": {
             "id": "rr-fungiforest-world",
@@ -127,7 +127,7 @@
             "sourceType": "Region",
             "targetType": "Region",
             "Class": "Region",
-            "type": "World"
+            "Type": "World"
         },
         "rr-crystalcaves-world": {
             "id": "rr-crystalcaves-world",
@@ -137,7 +137,7 @@
             "sourceType": "Region",
             "targetType": "Region",
             "Class": "Region",
-            "type": "World"
+            "Type": "World"
         },
         "rr-creepycastle-world": {
             "id": "rr-creepycastle-world",
@@ -147,7 +147,7 @@
             "sourceType": "Region",
             "targetType": "Region",
             "Class": "Region",
-            "type": "World"
+            "Type": "World"
         },
         "rr-hideouthelm-world": {
             "id": "rr-hideouthelm-world",
@@ -157,7 +157,7 @@
             "sourceType": "Region",
             "targetType": "Region",
             "Class": "Region",
-            "type": "World"
+            "Type": "World"
         },
         "rr-dkisles-world": {
             "id": "rr-dkisles-world",
@@ -167,7 +167,7 @@
             "sourceType": "Region",
             "targetType": "Region",
             "Class": "Region",
-            "type": "World"
+            "Type": "World"
         },
         "rr-shops-world": {
             "id": "rr-shops-world",
@@ -177,7 +177,7 @@
             "sourceType": "Region",
             "targetType": "Region",
             "Class": "Region",
-            "type": "World"
+            "Type": "World"
         }
     }
 }

@@ -24,7 +24,7 @@ def side_effect_edge(id, source, target, name, amount):
         "Name": name,
         "source": source,
         "target": target,
-        "type": "sideeffect",
+        "Type": "sideeffect",
         "sourceType": "Item",
         "targetType": "Item",
         "Types": "Multi",
