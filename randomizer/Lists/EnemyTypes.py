@@ -895,7 +895,7 @@ enemy_location_list = {
     Locations.Caves5DIChunkyEnemy_Gauntlet03: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 5, [], False, False),
     Locations.Caves5DIChunkyEnemy_Gauntlet04: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 6, [], False, False),
     # Lanky 1DC
-    Locations.Caves1DCEnemy_Near: EnemyLoc(Maps.CavesLankyCabin, Enemies.Kosha, 2, [], True),
+    Locations.Caves1DCEnemy_Near: EnemyLoc(Maps.CavesLankyCabin, Enemies.Kosha, 2, [Enemies.KlaptrapRed, Enemies.KlaptrapPurple, Enemies.Klobber], True),
     Locations.Caves1DCEnemy_Far: EnemyLoc(Maps.CavesLankyCabin, Enemies.Kosha, 1, [], True),
     # DK 5DC
     Locations.Caves5DCDKEnemy_Gauntlet0: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 1, enemies_nokill_gun + [Enemies.Bat], True, False),
