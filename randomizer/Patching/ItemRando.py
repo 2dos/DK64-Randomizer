@@ -394,6 +394,16 @@ def getHintKongFromFlag(flag: int) -> int:
     """Get the kong associated with a hint from it's flag."""
     return (flag - 0x384) % 5
 
+def setItemInWorld(ROM_COPY: LocalROM, offset: int, base_flag: int, current_flag: int):
+    """Write item to world array."""
+    delta = current_flag - base_flag
+    flag_offset = delta >> 3
+    flag_shift = delta & 7
+    ROM_COPY.seek(offset + flag_offset)
+    raw = int.from_bytes(ROM_COPY.readBytes(1), "big")
+    ROM_COPY.seek(offset + flag_offset)
+    ROM_COPY.writeMultipleBytes(raw | (1 << flag_shift), 1)
+
 
 def getActorIndex(item):
     """Get actor index from item."""
@@ -493,6 +503,20 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
         # Go through bijection
         for item in item_data:
             if item.can_have_item:
+                # Write array data for AP
+                if item.new_item == Types.Medal:
+                    if item.new_flag < (0x225 + 40):
+                        setItemInWorld(ROM_COPY, sav + 4, 0x225, item.new_flag)
+                    else:
+                        # Isles Medals
+                        setItemInWorld(ROM_COPY, sav + 9, 0x3C6, item.new_flag)
+                elif item.new_item == Types.Crown:
+                    setItemInWorld(ROM_COPY, sav + 1, 0x261, item.new_flag)
+                elif item.new_item == Types.Pearl:
+                    setItemInWorld(ROM_COPY, sav + 3, 0xBA, item.new_flag)
+                elif item.new_item == Types.Fairy:
+                    setItemInWorld(ROM_COPY, sav + 0xA, 0x24D, item.new_flag)
+                # Write placement
                 if item.is_shop:
                     # Write in placement index
                     movespaceOffset = spoiler.settings.move_location_data

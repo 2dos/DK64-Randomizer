@@ -58,7 +58,8 @@ void handleSentItem(void) {
     archipelago_items FedItem = ap_info.fed_item;
     int check_count = -1;
     int check_start_flag = -1;
-    int check_flag_index = 0;
+    int i = 0;
+    unsigned char *file_data = 0;
     switch (FedItem) {
         case TRANSFER_ITEM_GB:
             {
@@ -81,33 +82,42 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_CROWN:
             check_count = 10;
             check_start_flag = FLAG_CROWN_JAPES;
-        case TRANSFER_ITEM_BP:
-            if (check_count == -1) {
-                check_count = 40;
-                check_start_flag = FLAG_BP_JAPES_DK_HAS;
-            }
+            file_data = &Rando.crowns_in_file[0];
         case TRANSFER_ITEM_PEARL:
             if (check_count == -1) {
                 check_count = 5;
                 check_start_flag = FLAG_PEARL_0_COLLECTED;
+                file_data = &Rando.pearls_in_file;
             }
         case TRANSFER_ITEM_MEDAL:
             if (check_count == -1) {
                 check_count = 40;
+                if (Rando.isles_cb_rando) {
+                    check_count = 45;
+                }
                 check_start_flag = FLAG_MEDAL_JAPES_DK;
+                file_data = &Rando.medals_in_file[0];
             }
         case TRANSFER_ITEM_FAIRY:
-            if (check_count == -1) {
-                check_count = 20;
-                check_start_flag = FLAG_FAIRY_1;
-            }
-            check_flag_index = 0;
-            while (check_flag_index < check_count) {
-                if (!checkFlagDuplicate(check_start_flag + check_flag_index, FLAGTYPE_PERMANENT)) {
-                    setFlagDuplicate(check_start_flag + check_flag_index, 1, FLAGTYPE_PERMANENT);
-                    return;
+            {
+                if (check_count == -1) {
+                    check_count = 20;
+                    check_start_flag = FLAG_FAIRY_1;
+                    file_data = &Rando.fairies_in_file[0];
                 }
-                check_flag_index += 1;
+                for (int i = 0; i < check_count; i++) {
+                    int offset = i >> 3;
+                    int shift = i & 7;
+                    if ((file_data[offset] & (1 << shift)) == 0) {
+                        if (!checkFlagDuplicate(check_start_flag + i, FLAGTYPE_PERMANENT)) {
+                            setFlagDuplicate(check_start_flag + i, 1, FLAGTYPE_PERMANENT);
+                            return;
+                        }
+                    }
+                    if ((i == 39) && (FedItem == TRANSFER_ITEM_MEDAL)) {
+                        check_start_flag = FLAG_MEDAL_ISLES_DK - 40;
+                    }
+                }
             }
             break;
         case TRANSFER_ITEM_KEY1:
@@ -121,29 +131,19 @@ void handleSentItem(void) {
             setFlagDuplicate(normal_key_flags[FedItem - TRANSFER_ITEM_KEY1], 1, FLAGTYPE_PERMANENT);
             auto_turn_keys();
             break;
-        case TRANSFER_ITEM_NINTENDOCOIN:
-            setFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN, 1, FLAGTYPE_PERMANENT);
-            break;
-        case TRANSFER_ITEM_RAREWARECOIN:
-            setFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN, 1, FLAGTYPE_PERMANENT);
-            break;
-        case TRANSFER_ITEM_DK:
-        case TRANSFER_ITEM_DIDDY:
-        case TRANSFER_ITEM_LANKY:
-        case TRANSFER_ITEM_TINY:
-        case TRANSFER_ITEM_CHUNKY:
-            setFlagDuplicate(kong_flags[FedItem - TRANSFER_ITEM_DK], 1, FLAGTYPE_PERMANENT);
-            break;
         case TRANSFER_ITEM_RAINBOWCOIN:
             for (int i = 0; i < 5; i++) {
                 MovesBase[i].coins += 5;
             }
             break;
-        case TRANSFER_ITEM_BEAN:
-            setFlagDuplicate(FLAG_COLLECTABLE_BEAN, 1, FLAGTYPE_PERMANENT);
-            break;
         case TRANSFER_ITEM_FAKEITEM:
-            queueIceTrap(ICETRAP_BUBBLE); // For now, always make ice
+            queueIceTrap(ICETRAP_BUBBLE);
+            break;
+        case TRANSFER_ITEM_FAKEITEM_SLOW:
+            queueIceTrap(ICETRAP_SLOWED);
+            break;
+        case TRANSFER_ITEM_FAKEITEM_REVERSE:
+            queueIceTrap(ICETRAP_REVERSECONTROLS);
             break;
         case TRANSFER_ITEM_JUNKITEM:
             applyDamageMask(0, 1);
@@ -242,21 +242,6 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_CAMERASHOCKWAVECOMBO:
             setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, FLAGTYPE_PERMANENT);
             setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
-            break;
-        case TRANSFER_ITEM_DIVE:
-            setFlagDuplicate(FLAG_TBARREL_DIVE, 1, FLAGTYPE_PERMANENT);
-            break;
-        case TRANSFER_ITEM_ORANGE:
-            setFlagDuplicate(FLAG_TBARREL_ORANGE, 1, FLAGTYPE_PERMANENT);
-            break;
-        case TRANSFER_ITEM_BARREL:
-            setFlagDuplicate(FLAG_TBARREL_BARREL, 1, FLAGTYPE_PERMANENT);
-            break;
-        case TRANSFER_ITEM_VINE:
-            setFlagDuplicate(FLAG_TBARREL_VINE, 1, FLAGTYPE_PERMANENT);
-            break;
-        case TRANSFER_ITEM_CLIMBING:
-            setFlagDuplicate(FLAG_ABILITY_CLIMBING, 1, FLAGTYPE_PERMANENT);
             break;
         default:
         break;
