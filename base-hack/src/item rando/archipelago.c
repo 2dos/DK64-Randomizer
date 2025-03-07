@@ -257,9 +257,12 @@ int canReceiveItem(void) {
     return 0;
 }
 
-void handleArchipelagoFeed(void) {\
+void handleArchipelagoFeed(void) {
     if (ap_info.connection > 0) {
         ap_info.connection -= 1;
+    }
+    if (ap_info.safety_text_timer > 0) {
+        ap_info.safety_text_timer--;
     }
     if (canReceiveItem()) {
         if (ap_info.fed_item != TRANSFER_ITEM_NULL) {
@@ -271,6 +274,7 @@ void handleArchipelagoFeed(void) {\
             if (vacant_spot == -1) {
                 return;
             }
+            ap_info.safety_text_timer = 180;
             text_overlay_data[vacant_spot].string = dk_malloc(0x30);
             dk_memcpy(text_overlay_data[vacant_spot].string, &ap_info.fed_string, 0x21);
             ap_info.fed_string[0] = 0;
