@@ -7,7 +7,7 @@ import time
 import traceback
 import zipfile
 import logging
-from datetime import UTC, datetime
+from datetime import timezone, datetime
 from io import BytesIO
 import sys
 from vidua import bps
@@ -187,7 +187,7 @@ def update_total():
             time.sleep(retry_delay)
 
     # Update last_generated_time
-    last_generated_time = datetime.now(UTC)
+    last_generated_time = datetime.now(timezone.utc)
     with open("last_generated_time.cfg", "w") as f:
         f.write(str(last_generated_time))
     return current_total
