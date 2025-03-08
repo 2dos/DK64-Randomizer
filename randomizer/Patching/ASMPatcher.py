@@ -1793,6 +1793,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80680986, Overlay.Static, 0xFFFE, offset_dict)  # Prevent Factory BBBandit Bonus dropping
         writeValue(ROM_COPY, 0x806809C8, Overlay.Static, 0x1000, offset_dict)  # Prevent Fungi TTTrouble Bonus dropping
         writeValue(ROM_COPY, 0x80681962, Overlay.Static, 1, offset_dict)  # Make bonus noclip
+        writeValue(ROM_COPY, 0x8068183C, Overlay.Static, 0, offset_dict, 4)  # Remove the explosion
         writeFunction(ROM_COPY, 0x80681158, Overlay.Static, "completeBonus", offset_dict)
 
     if settings.helm_hurry:

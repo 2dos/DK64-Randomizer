@@ -1666,6 +1666,11 @@ int getItemCountReq(requirement_item item) {
 					}
 				}
 			}
+			for (int i = 0; i < 10; i++) {
+				if (checkFlag(FLAG_HELM_MINIGAMES + i, FLAGTYPE_PERMANENT)) {
+					count += 1;
+				}
+			}
 			return count;
 		default:
 			return 0;

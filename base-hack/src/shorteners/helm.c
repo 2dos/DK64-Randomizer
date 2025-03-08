@@ -107,6 +107,19 @@ void HelmInit(int init_stage) {
 	}
 }
 
+static const short HelmMinigamePermFlags[] = {
+	FLAG_HELM_MINIGAMES + 0,
+	FLAG_HELM_MINIGAMES + 5,
+	FLAG_HELM_MINIGAMES + 1,
+	FLAG_HELM_MINIGAMES + 6,
+	FLAG_HELM_MINIGAMES + 2,
+	FLAG_HELM_MINIGAMES + 7,
+	FLAG_HELM_MINIGAMES + 3,
+	FLAG_HELM_MINIGAMES + 8,
+	FLAG_HELM_MINIGAMES + 4,
+	FLAG_HELM_MINIGAMES + 9,
+};
+
 void HelmBarrelCode(void) {
 	bonus_paad* paad = CurrentActorPointer_0->paad;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
@@ -135,6 +148,7 @@ void HelmBarrelCode(void) {
 	if (CurrentActorPointer_0->control_state == 0xC) {
 		if (paad->destroy_timer < 3) {
 			setFlag(HelmMinigameFlags[(int)paad->barrel_index],1,FLAGTYPE_TEMPORARY);
+			setFlag(HelmMinigamePermFlags[(int)paad->barrel_index], 1, FLAGTYPE_PERMANENT);
 			DisplayExplosionSprite();
 			deleteActorContainer(CurrentActorPointer_0);
 		}

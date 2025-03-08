@@ -52,7 +52,7 @@ from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.Songs import song_data
 from randomizer.Lists.Switches import SwitchData
-from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem
+from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem, getCompletableBonuses
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.ShuffleBosses import (
@@ -1117,110 +1117,6 @@ class Settings:
             for x in range(8):
                 self.password[x] = random.randint(1, 6)
 
-        # Win Condition
-        wincon_items = {
-            WinConditionComplex.beat_krool: HelmDoorInfo(
-                1,
-                HelmDoorRandomInfo(1, 1, 0.06),
-                HelmDoorRandomInfo(1, 1, 0.06),
-                HelmDoorRandomInfo(1, 1, 0.03),
-            ),
-            WinConditionComplex.dk_rap_items: HelmDoorInfo(
-                1,
-                HelmDoorRandomInfo(1, 1, 0.04),
-                HelmDoorRandomInfo(1, 1, 0.04),
-                HelmDoorRandomInfo(1, 1, 0.02),
-            ),
-            WinConditionComplex.krem_kapture: HelmDoorInfo(
-                1,
-                HelmDoorRandomInfo(1, 1, 0.06),
-                HelmDoorRandomInfo(1, 1, 0.03),
-            ),
-            WinConditionComplex.get_key8: HelmDoorInfo(1),
-            WinConditionComplex.req_gb: HelmDoorInfo(
-                201,
-                HelmDoorRandomInfo(80, 150, 0.1),
-                HelmDoorRandomInfo(60, 80, 0.1),
-                HelmDoorRandomInfo(40, 60, 0.15),
-            ),
-            WinConditionComplex.req_bp: HelmDoorInfo(
-                40,
-                HelmDoorRandomInfo(25, 35, 0.09),
-                HelmDoorRandomInfo(20, 25, 0.1),
-                HelmDoorRandomInfo(5, 20, 0.1),
-            ),
-            WinConditionComplex.req_companycoins: HelmDoorInfo(
-                2,
-                HelmDoorRandomInfo(1, 2, 0.05),
-            ),
-            WinConditionComplex.req_key: HelmDoorInfo(
-                8,
-                HelmDoorRandomInfo(7, 8, 0.05),
-                HelmDoorRandomInfo(7, 8, 0.1),
-                HelmDoorRandomInfo(7, 8, 0.1),
-            ),
-            WinConditionComplex.req_medal: HelmDoorInfo(
-                40,
-                HelmDoorRandomInfo(25, 35, 0.09),
-                HelmDoorRandomInfo(20, 25, 0.1),
-                HelmDoorRandomInfo(5, 20, 0.1),
-            ),
-            WinConditionComplex.req_crown: HelmDoorInfo(
-                10,
-                HelmDoorRandomInfo(7, 9, 0.1),
-                HelmDoorRandomInfo(4, 7, 0.1),
-                HelmDoorRandomInfo(2, 4, 0.06),
-            ),
-            WinConditionComplex.req_fairy: HelmDoorInfo(
-                20,
-                HelmDoorRandomInfo(12, 18, 0.1),
-                HelmDoorRandomInfo(8, 12, 0.12),
-                HelmDoorRandomInfo(1, 8, 0.18),
-            ),
-            WinConditionComplex.req_rainbowcoin: HelmDoorInfo(
-                16,
-                HelmDoorRandomInfo(10, 16, 0.11),
-                HelmDoorRandomInfo(6, 10, 0.14),
-                HelmDoorRandomInfo(3, 6, 0.18),
-            ),
-            WinConditionComplex.req_bean: HelmDoorInfo(
-                1,
-                HelmDoorRandomInfo(1, 1, 0.05),
-                HelmDoorRandomInfo(1, 1, 0.01),
-            ),
-            WinConditionComplex.req_pearl: HelmDoorInfo(
-                5,
-                HelmDoorRandomInfo(4, 5, 0.05),
-                HelmDoorRandomInfo(3, 4, 0.1),
-                HelmDoorRandomInfo(1, 3, 0.13),
-            ),
-        }
-        random_win_con_settings = (
-            WinConditionComplex.easy_random,
-            WinConditionComplex.medium_random,
-            WinConditionComplex.hard_random,
-        )
-        self.win_condition_random = self.win_condition_item in random_win_con_settings
-        win_con_pool = {}
-        wc_diff = random_win_con_settings.index(self.win_condition_item) if self.win_condition_item in random_win_con_settings else None
-        for item in wincon_items:
-            data = wincon_items[item]
-            wc_info = data.getDifficultyInfo(wc_diff)
-            if wc_info is not None:
-                win_con_pool[item] = wc_info.chooseAmount()
-        if self.win_condition_random:
-            potential_items = list(win_con_pool.keys())
-            potential_item_weights = []
-            for x in potential_items:
-                data = wincon_items[x].getDifficultyInfo(wc_diff)
-                weight = 0 if data is None else data.selection_weight
-                potential_item_weights.append(weight)
-            selected_item = random.choices(potential_items, weights=potential_item_weights, k=1)[0]
-            self.win_condition_item = selected_item
-            self.win_condition_count = win_con_pool[selected_item]
-        if self.win_condition_item in helmdoor_items.keys():
-            self.win_condition_count = min(self.win_condition_count, wincon_items[self.win_condition_item].absolute_max)
-
         if self.dk_portal_location_rando_v2 != DKPortalRando.off:
             level_base_maps = [Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle]
             self.level_portal_destinations = [
@@ -1449,6 +1345,112 @@ class Settings:
                 orderedRooms.append(1)
         self.helm_order = orderedRooms
         self.kong_helm_order = rooms
+
+        # Win Condition
+        wincon_items = {
+            WinConditionComplex.beat_krool: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.03),
+            ),
+            WinConditionComplex.dk_rap_items: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.04),
+                HelmDoorRandomInfo(1, 1, 0.04),
+                HelmDoorRandomInfo(1, 1, 0.02),
+            ),
+            WinConditionComplex.krem_kapture: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.03),
+            ),
+            WinConditionComplex.get_key8: HelmDoorInfo(1),
+            WinConditionComplex.req_gb: HelmDoorInfo(
+                201,
+                HelmDoorRandomInfo(80, 150, 0.1),
+                HelmDoorRandomInfo(60, 80, 0.1),
+                HelmDoorRandomInfo(40, 60, 0.15),
+            ),
+            WinConditionComplex.req_bp: HelmDoorInfo(
+                40,
+                HelmDoorRandomInfo(25, 35, 0.09),
+                HelmDoorRandomInfo(20, 25, 0.1),
+                HelmDoorRandomInfo(5, 20, 0.1),
+            ),
+            WinConditionComplex.req_companycoins: HelmDoorInfo(
+                2,
+                HelmDoorRandomInfo(1, 2, 0.05),
+            ),
+            WinConditionComplex.req_key: HelmDoorInfo(
+                8,
+                HelmDoorRandomInfo(7, 8, 0.05),
+                HelmDoorRandomInfo(7, 8, 0.1),
+                HelmDoorRandomInfo(7, 8, 0.1),
+            ),
+            WinConditionComplex.req_medal: HelmDoorInfo(
+                40,
+                HelmDoorRandomInfo(25, 35, 0.09),
+                HelmDoorRandomInfo(20, 25, 0.1),
+                HelmDoorRandomInfo(5, 20, 0.1),
+            ),
+            WinConditionComplex.req_crown: HelmDoorInfo(
+                10,
+                HelmDoorRandomInfo(7, 9, 0.1),
+                HelmDoorRandomInfo(4, 7, 0.1),
+                HelmDoorRandomInfo(2, 4, 0.06),
+            ),
+            WinConditionComplex.req_fairy: HelmDoorInfo(
+                20,
+                HelmDoorRandomInfo(12, 18, 0.1),
+                HelmDoorRandomInfo(8, 12, 0.12),
+                HelmDoorRandomInfo(1, 8, 0.18),
+            ),
+            WinConditionComplex.req_rainbowcoin: HelmDoorInfo(
+                16,
+                HelmDoorRandomInfo(10, 16, 0.11),
+                HelmDoorRandomInfo(6, 10, 0.14),
+                HelmDoorRandomInfo(3, 6, 0.18),
+            ),
+            WinConditionComplex.req_bean: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.05),
+                HelmDoorRandomInfo(1, 1, 0.01),
+            ),
+            WinConditionComplex.req_pearl: HelmDoorInfo(
+                5,
+                HelmDoorRandomInfo(4, 5, 0.05),
+                HelmDoorRandomInfo(3, 4, 0.1),
+                HelmDoorRandomInfo(1, 3, 0.13),
+            ),
+            WinConditionComplex.req_bosses: HelmDoorInfo(7),
+            WinConditionComplex.req_bonuses: HelmDoorInfo(len(getCompletableBonuses(self))),
+        }
+        random_win_con_settings = (
+            WinConditionComplex.easy_random,
+            WinConditionComplex.medium_random,
+            WinConditionComplex.hard_random,
+        )
+        self.win_condition_random = self.win_condition_item in random_win_con_settings
+        win_con_pool = {}
+        wc_diff = random_win_con_settings.index(self.win_condition_item) if self.win_condition_item in random_win_con_settings else None
+        for item in wincon_items:
+            data = wincon_items[item]
+            wc_info = data.getDifficultyInfo(wc_diff)
+            if wc_info is not None:
+                win_con_pool[item] = wc_info.chooseAmount()
+        if self.win_condition_random:
+            potential_items = list(win_con_pool.keys())
+            potential_item_weights = []
+            for x in potential_items:
+                data = wincon_items[x].getDifficultyInfo(wc_diff)
+                weight = 0 if data is None else data.selection_weight
+                potential_item_weights.append(weight)
+            selected_item = random.choices(potential_items, weights=potential_item_weights, k=1)[0]
+            self.win_condition_item = selected_item
+            self.win_condition_count = win_con_pool[selected_item]
+        if self.win_condition_item in wincon_items.keys():
+            self.win_condition_count = min(self.win_condition_count, wincon_items[self.win_condition_item].absolute_max)
 
         # Initial Switch Level Placement - Will be corrected if level order rando is on during the fill process. Disable it for vanilla
         if self.level_randomization == LevelRandomization.vanilla:

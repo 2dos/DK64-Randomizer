@@ -13,9 +13,10 @@ import math
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems, Types
-from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency, ProgressiveHintItem
+from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency, ProgressiveHintItem, HelmSetting, HelmBonuses
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.DataTypes import short_to_ushort
 
@@ -684,6 +685,75 @@ def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
         value += local_value
     return value
 
+def getCompletableBonuses(settings) -> list:
+    """Get a list of bonus barrels that can be completed in a seed."""
+    locations = [
+        Locations.JapesLankyGrapeGate,
+        Locations.JapesTinyFeatherGateBarrel,
+        Locations.JapesChunkyGiantBonusBarrel,
+        Locations.JapesLankySlope,
+        Locations.AztecLankyLlamaTempleBarrel,
+        Locations.AztecLankyLlamaTempleBarrel,
+        Locations.AztecChunky5DoorTemple,
+        Locations.FactoryDiddyBlockTower,
+        Locations.FactoryDiddyChunkyRoomBarrel,
+        Locations.FactoryTinyProductionRoom,
+        Locations.FactoryLankyTestingRoomBarrel,
+        Locations.FactoryChunkybyArcade,
+        Locations.GalleonLankyGoldTower,
+        Locations.GalleonDiddyGoldTower,
+        Locations.IslesDiddySummit,
+        Locations.AztecChunkyCagedBarrel,
+        Locations.AztecDonkeyQuicksandCave,
+        Locations.GalleonChunky5DoorShip,
+        Locations.GalleonDiddy5DoorShip,
+        Locations.GalleonDonkey5DoorShip,
+        Locations.GalleonTiny2DoorShip,
+        Locations.ForestDiddyOwlRace,
+        Locations.ForestDiddyTopofMushroom,
+        Locations.ForestDonkeyBarn,
+        Locations.ForestLankyColoredMushrooms,
+        Locations.ForestTinyMushroomBarrel,
+        Locations.CavesDiddyJetpackBarrel,
+        Locations.CavesTinyCaveBarrel,
+        Locations.CastleDiddyAboveCastle,
+        Locations.CastleDiddyBallroom,
+        Locations.CavesChunky5DoorCabin,
+        Locations.CastleLankyTower,
+        Locations.CastleChunkyCrypt,
+        Locations.CastleLankyDungeon,
+        Locations.CastleTinyOverChasm,
+        Locations.CastleChunkyTree,
+        Locations.IslesChunkyHelmLobby,
+        Locations.IslesTinyAztecLobby,
+        Locations.GalleonTinySubmarine,
+        Locations.CavesDonkeyBaboonBlast,
+        Locations.ForestDonkeyBaboonBlast,
+        Locations.IslesLankyCastleLobby,
+        Locations.IslesDiddySnidesLobby,
+    ]
+    if settings.helm_setting != HelmSetting.skip_all and settings.helm_room_bonus_count != HelmBonuses.zero:
+        helm_rooms = [
+            settings.helm_donkey,
+            settings.helm_diddy,
+            settings.helm_lanky,
+            settings.helm_tiny,
+            settings.helm_chunky
+        ]
+        helm_locations = [
+            [Locations.HelmDonkey2, Locations.HelmDonkey1],
+            [Locations.HelmDiddy1, Locations.HelmDiddy2],
+            [Locations.HelmLanky1, Locations.HelmLanky2],
+            [Locations.HelmTiny2, Locations.HelmTiny1],
+            [Locations.HelmChunky1, Locations.HelmChunky2],
+        ]
+        limit = 2
+        if settings.helm_room_bonus_count == HelmBonuses.one:
+            limit = 1
+        for room_index, room in enumerate(helm_rooms):
+            if room:
+                locations.extend(helm_locations[room_index][:limit])
+    return locations
 
 class Holidays(IntEnum):
     """Holiday Enum."""
@@ -693,6 +763,9 @@ class Holidays(IntEnum):
     Halloween = auto()
     Anniv25 = auto()
 
+def sumChecks(spoiler, ownedItems, locations: list) -> int:
+    """Sum the amount of checks in a list that have been checked."""
+    return sum(spoiler.LocationList[loc].inaccessible or spoiler.LocationList[loc].item in ownedItems for loc in locations)
 
 def getHolidaySetting(settings):
     """Get the holiday setting."""

@@ -369,6 +369,8 @@ class Spoiler:
                 WinConditionComplex.req_medal: f"{wc_count} Medal{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_pearl: f"{wc_count} Pearl{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_rainbowcoin: f"{wc_count} Rainbow Coin{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_bonuses: f"{wc_count} Bonus Barrel{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_bosses: f"{wc_count} Boss{'es' if wc_count != 1 else ''}",
             }
             if self.settings.win_condition_item in win_con_name_table:
                 settings["Win Condition"] = win_con_name_table[self.settings.win_condition_item]

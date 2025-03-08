@@ -19,6 +19,22 @@ const DISABLED_HELM_DOOR_VALUES = [
   "opened",
 ];
 
+const ITEM_CAPS = {
+  "req_gb": 201,
+  "req_bp": 40,
+  "req_key": 8,
+  "req_medal": 40,
+  "req_crown": 10,
+  "req_fairy": 20,
+  "req_bean": 1,
+  "req_pearl": 5,
+  "req_rainbowcoin": 16,
+  "req_bosses": 7,
+  "req_bonuses": 53,
+  "req_cb": 3500,
+  "req_companycoins": 2,
+}
+
 // Attach the function as an event listener to the "change" event on the "logic_type" element
 document
   .getElementById("logic_type")
@@ -1518,56 +1534,13 @@ function update_prog_hint_num_access() {
 
   if (!progHintReq.value) {
     progHintReq.value = 1;
-  } else if (
-    progHintSelection.value === "req_gb" &&
-    parseInt(progHintReq.value) > 201
-  ) {
-    progHintReq.value = 201;
-  } else if (
-    progHintSelection.value === "req_bp" &&
-    parseInt(progHintReq.value) > 40
-  ) {
-    progHintReq.value = 40;
-  } else if (
-    progHintSelection.value === "req_key" &&
-    parseInt(progHintReq.value) > 8
-  ) {
-    progHintReq.value = 8;
-  } else if (
-    progHintSelection.value === "req_medal" &&
-    parseInt(progHintReq.value) > 40
-  ) {
-    progHintReq.value = 40;
-  } else if (
-    progHintSelection.value === "req_crown" &&
-    parseInt(progHintReq.value) > 10
-  ) {
-    progHintReq.value = 10;
-  } else if (
-    progHintSelection.value === "req_fairy" &&
-    parseInt(progHintReq.value) > 18
-  ) {
-    progHintReq.value = 18;
-  } else if (
-    progHintSelection.value === "req_bean" &&
-    parseInt(progHintReq.value) > 1
-  ) {
-    progHintReq.value = 1;
-  } else if (
-    progHintSelection.value === "req_pearl" &&
-    parseInt(progHintReq.value) > 5
-  ) {
-    progHintReq.value = 5;
-  } else if (
-    progHintSelection.value === "req_rainbowcoin" &&
-    parseInt(progHintReq.value) > 16
-  ) {
-    progHintReq.value = 16;
-  } else if (
-    progHintSelection.value === "req_cb" &&
-    parseInt(progHintReq.value) > 3500
-  ) {
-    progHintReq.value = 3500;
+  } else {
+    const item_type = progHintSelection.value;
+    if (Object.keys(ITEM_CAPS).includes(item_type)) {
+      if (parseInt(progHintReq.value) > ITEM_CAPS[item_type]) {
+        progHintReq.value = ITEM_CAPS[item_type];
+      }
+    }
   }
 }
 
@@ -1768,51 +1741,13 @@ function update_door_one_num_access() {
 
   if (!doorOneReq.value) {
     doorOneReq.value = 1;
-  } else if (
-    doorOneSelection.value === "vanilla" &&
-    parseInt(doorOneReq.value) > 10
-  ) {
-    doorOneReq.value = 10;
-  } else if (
-    doorOneSelection.value === "req_gb" &&
-    parseInt(doorOneReq.value) > 201
-  ) {
-    doorOneReq.value = 201;
-  } else if (
-    doorOneSelection.value === "req_bp" &&
-    parseInt(doorOneReq.value) > 40
-  ) {
-    doorOneReq.value = 40;
-  } else if (
-    doorOneSelection.value === "req_companycoins" &&
-    parseInt(doorOneReq.value) > 2
-  ) {
-    doorOneReq.value = 2;
-  } else if (
-    doorOneSelection.value === "req_key" &&
-    parseInt(doorOneReq.value) > 8
-  ) {
-    doorOneReq.value = 8;
-  } else if (
-    doorOneSelection.value === "req_fairy" &&
-    parseInt(doorOneReq.value) > 18
-  ) {
-    doorOneReq.value = 18;
-  } else if (
-    doorOneSelection.value === "req_bean" &&
-    parseInt(doorOneReq.value) > 1
-  ) {
-    doorOneReq.value = 1;
-  } else if (
-    doorOneSelection.value === "req_pearl" &&
-    parseInt(doorOneReq.value) > 5
-  ) {
-    doorOneReq.value = 5;
-  } else if (
-    doorOneSelection.value === "req_rainbowcoin" &&
-    parseInt(doorOneReq.value) > 16
-  ) {
-    doorOneReq.value = 16;
+  } else {
+    const item_type = doorOneSelection.value == "vanilla" ? "req_crown" : doorOneSelection.value;
+    if (Object.keys(ITEM_CAPS).includes(item_type)) {
+      if (parseInt(doorOneReq.value) > ITEM_CAPS[item_type]) {
+        doorOneReq.value = ITEM_CAPS[item_type];
+      }
+    }
   }
 }
 
@@ -1835,56 +1770,13 @@ function update_door_two_num_access() {
 
   if (!doorTwoReq.value) {
     doorTwoReq.value = 1;
-  } else if (
-    doorTwoSelection.value === "vanilla" &&
-    parseInt(doorTwoReq.value) > 2
-  ) {
-    doorTwoReq.value = 2;
-  } else if (
-    doorTwoSelection.value === "req_gb" &&
-    parseInt(doorTwoReq.value) > 201
-  ) {
-    doorTwoReq.value = 201;
-  } else if (
-    doorTwoSelection.value === "req_bp" &&
-    parseInt(doorTwoReq.value) > 40
-  ) {
-    doorTwoReq.value = 40;
-  } else if (
-    doorTwoSelection.value === "req_key" &&
-    parseInt(doorTwoReq.value) > 8
-  ) {
-    doorTwoReq.value = 8;
-  } else if (
-    doorTwoSelection.value === "req_medal" &&
-    parseInt(doorTwoReq.value) > 40
-  ) {
-    doorTwoReq.value = 40;
-  } else if (
-    doorTwoSelection.value === "req_crown" &&
-    parseInt(doorTwoReq.value) > 10
-  ) {
-    doorTwoReq.value = 10;
-  } else if (
-    doorTwoSelection.value === "req_fairy" &&
-    parseInt(doorTwoReq.value) > 18
-  ) {
-    doorTwoReq.value = 18;
-  } else if (
-    doorTwoSelection.value === "req_bean" &&
-    parseInt(doorTwoReq.value) > 1
-  ) {
-    doorTwoReq.value = 1;
-  } else if (
-    doorTwoSelection.value === "req_pearl" &&
-    parseInt(doorTwoReq.value) > 5
-  ) {
-    doorTwoReq.value = 5;
-  } else if (
-    doorTwoSelection.value === "req_rainbowcoin" &&
-    parseInt(doorTwoReq.value) > 16
-  ) {
-    doorTwoReq.value = 16;
+  } else {
+    const item_type = doorTwoSelection.value == "vanilla" ? "req_companycoins" : doorTwoSelection.value;
+    if (Object.keys(ITEM_CAPS).includes(item_type)) {
+      if (parseInt(doorTwoReq.value) > ITEM_CAPS[item_type]) {
+        doorTwoReq.value = ITEM_CAPS[item_type];
+      }
+    }
   }
 }
 
@@ -1917,51 +1809,13 @@ function update_win_con_num_access() {
 
   if (!winConReq.value) {
     winConReq.value = 1;
-  } else if (
-    winConSelection.value === "req_gb" &&
-    parseInt(winConReq.value) > 201
-  ) {
-    winConReq.value = 201;
-  } else if (
-    winConSelection.value === "req_bp" &&
-    parseInt(winConReq.value) > 40
-  ) {
-    winConReq.value = 40;
-  } else if (
-    winConSelection.value === "req_key" &&
-    parseInt(winConReq.value) > 8
-  ) {
-    winConReq.value = 8;
-  } else if (
-    winConSelection.value === "req_medal" &&
-    parseInt(winConReq.value) > 40
-  ) {
-    winConReq.value = 40;
-  } else if (
-    winConSelection.value === "req_crown" &&
-    parseInt(winConReq.value) > 10
-  ) {
-    winConReq.value = 10;
-  } else if (
-    winConSelection.value === "req_fairy" &&
-    parseInt(winConReq.value) > 18
-  ) {
-    winConReq.value = 18;
-  } else if (
-    winConSelection.value === "req_bean" &&
-    parseInt(winConReq.value) > 1
-  ) {
-    winConReq.value = 1;
-  } else if (
-    winConSelection.value === "req_pearl" &&
-    parseInt(winConReq.value) > 5
-  ) {
-    winConReq.value = 5;
-  } else if (
-    winConSelection.value === "req_rainbowcoin" &&
-    parseInt(winConReq.value) > 16
-  ) {
-    winConReq.value = 16;
+  } else {
+    const item_type = winConSelection.value;
+    if (Object.keys(ITEM_CAPS).includes(item_type)) {
+      if (parseInt(winConReq.value) > ITEM_CAPS[item_type]) {
+        winConReq.value = ITEM_CAPS[item_type];
+      }
+    }
   }
 }
 
@@ -1980,51 +1834,13 @@ document
       doorOneReq.value = 1;
     } else if (parseInt(doorOneReq.value) < 1) {
       doorOneReq.value = 1;
-    } else if (
-      doorOneSelection.value === "vanilla" &&
-      parseInt(doorOneReq.value) > 10
-    ) {
-      doorOneReq.value = 10;
-    } else if (
-      doorOneSelection.value === "req_gb" &&
-      parseInt(doorOneReq.value) > 201
-    ) {
-      doorOneReq.value = 201;
-    } else if (
-      doorOneSelection.value === "req_bp" &&
-      parseInt(doorOneReq.value) > 40
-    ) {
-      doorOneReq.value = 40;
-    } else if (
-      doorOneSelection.value === "req_companycoins" &&
-      parseInt(doorOneReq.value) > 2
-    ) {
-      doorOneReq.value = 2;
-    } else if (
-      doorOneSelection.value === "req_key" &&
-      parseInt(doorOneReq.value) > 8
-    ) {
-      doorOneReq.value = 8;
-    } else if (
-      doorOneSelection.value === "req_medal" &&
-      parseInt(doorOneReq.value) > 40
-    ) {
-      doorOneReq.value = 40;
-    } else if (
-      doorOneSelection.value === "req_fairy" &&
-      parseInt(doorOneReq.value) > 18
-    ) {
-      doorOneReq.value = 18;
-    } else if (
-      doorOneSelection.value === "req_bean" &&
-      parseInt(doorOneReq.value) > 1
-    ) {
-      doorOneReq.value = 1;
-    } else if (
-      doorOneSelection.value === "req_pearl" &&
-      parseInt(doorOneReq.value) > 5
-    ) {
-      doorOneReq.value = 5;
+    } else {
+      const item_type = doorOneSelection.value == "vanilla" ? "req_crown" : doorOneSelection.value;
+      if (Object.keys(ITEM_CAPS).includes(item_type)) {
+        if (parseInt(doorOneReq.value) > ITEM_CAPS[item_type]) {
+          doorOneReq.value = ITEM_CAPS[item_type];
+        }
+      }
     }
   });
 
@@ -2039,53 +1855,13 @@ document
       doorTwoReq.value = 1;
     } else if (parseInt(doorTwoReq.value) < 1) {
       doorTwoReq.value = 1;
-    }
-
-    if (
-      doorTwoSelection.value === "vanilla" &&
-      parseInt(doorTwoReq.value) > 2
-    ) {
-      doorTwoReq.value = 2;
-    } else if (
-      doorTwoSelection.value === "req_gb" &&
-      parseInt(doorTwoReq.value) > 201
-    ) {
-      doorTwoReq.value = 201;
-    } else if (
-      doorTwoSelection.value === "req_bp" &&
-      parseInt(doorTwoReq.value) > 40
-    ) {
-      doorTwoReq.value = 40;
-    } else if (
-      doorTwoSelection.value === "req_key" &&
-      parseInt(doorTwoReq.value) > 8
-    ) {
-      doorTwoReq.value = 8;
-    } else if (
-      doorTwoSelection.value === "req_medal" &&
-      parseInt(doorTwoReq.value) > 40
-    ) {
-      doorTwoReq.value = 40;
-    } else if (
-      doorTwoSelection.value === "req_crown" &&
-      parseInt(doorTwoReq.value) > 10
-    ) {
-      doorTwoReq.value = 10;
-    } else if (
-      doorTwoSelection.value === "req_fairy" &&
-      parseInt(doorTwoReq.value) > 18
-    ) {
-      doorTwoReq.value = 18;
-    } else if (
-      doorTwoSelection.value === "req_bean" &&
-      parseInt(doorTwoReq.value) > 1
-    ) {
-      doorTwoReq.value = 1;
-    } else if (
-      doorTwoSelection.value === "req_pearl" &&
-      parseInt(doorTwoReq.value) > 5
-    ) {
-      doorTwoReq.value = 5;
+    } else {
+      const item_type = doorTwoSelection.value == "vanilla" ? "req_companycoins" : doorTwoSelection.value;
+      if (Object.keys(ITEM_CAPS).includes(item_type)) {
+        if (parseInt(doorTwoReq.value) > ITEM_CAPS[item_type]) {
+          doorTwoReq.value = ITEM_CAPS[item_type];
+        }
+      }
     }
   });
 
