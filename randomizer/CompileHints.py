@@ -1057,6 +1057,9 @@ def compileHints(spoiler: Spoiler) -> bool:
                     valid_types.append(HintType.RequiredWinConditionHint)
                     # Count the number of non-trivial phases
                     hint_distribution[HintType.RequiredWinConditionHint] = len([kong for kong in spoiler.settings.krool_order if len(spoiler.krool_paths[kong]) - len(useless_locations[kong]) > 0])
+                if spoiler.settings.win_condition_item == WinConditionComplex.req_bean:
+                    valid_types.append(HintType.RequiredWinConditionHint)
+                    hint_distribution[HintType.RequiredWinConditionHint] = 1
                 # Some win conditions need help finding the camera (if you don't start with it) - variable amount of unique hints for it
                 if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
                     camera_location_id = None
@@ -3115,6 +3118,7 @@ def GenerateMultipathDict(
         path_to_camera = []
         relevant_goal_locations = []
         path_to_family = False
+        path_to_bean = False
         path_to_verses = [False] * 6
         has_path_to_verse = False
         verse_items = [
@@ -3137,6 +3141,10 @@ def GenerateMultipathDict(
                     relevant_goal_locations.append(Locations(woth_loc))
                 if endpoint_item.type == Types.Kong:
                     path_to_family = True
+                    relevant_goal_locations.append(Locations(woth_loc))
+                # Determine path to the Bean if the Bean is the win condition.
+                if endpoint_item.type == Types.Bean and spoiler.settings.win_condition_item == WinConditionComplex.req_bean:
+                    path_to_bean = True
                     relevant_goal_locations.append(Locations(woth_loc))
                 if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
                     item = spoiler.LocationList[woth_loc].item
@@ -3196,6 +3204,8 @@ def GenerateMultipathDict(
             hint_text_components.append(path_to_camera[0])
         if path_to_family:
             hint_text_components.append("\x04Free Kongs\x04")
+        if path_to_bean:
+            hint_text_components.append("\x07The Bean\x07")
         if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
             all_verses = [xi for xi, x in enumerate(path_to_verses) if x]
             if len(all_verses) == 6:
