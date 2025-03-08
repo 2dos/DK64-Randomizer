@@ -92,7 +92,7 @@ void displayMedalOverlay(int flag, int item_type) {
     float reward_y = 120.0f;
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
         if (item_type != MEDALITEM_KEY) {
-            setFlag(flag, 1, FLAGTYPE_PERMANENT);
+            setPermFlag(flag);
         }
         void* sprite = 0;
         short flut_flag = flag;

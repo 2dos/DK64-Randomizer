@@ -358,7 +358,7 @@ int checkFirstMovePurchase(void) {
 		return 1; // First move given
 	}
 	if (FirstMove_New.purchase_type == -1) {
-		setFlag(0x180, 1, FLAGTYPE_PERMANENT);
+		setPermFlag(0x180);
 		return 1; // First move is nothing
 	}
 	return 0;

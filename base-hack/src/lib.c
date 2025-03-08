@@ -1739,7 +1739,7 @@ int DetermineLevel_NewLevel(maps map) {
 	for (int i = 0; i < 8; i++) {
 		if (CurrentMap == LobbiesArray[i]) {
 			if (!checkFlag(FLAG_STORY_JAPES + i, FLAGTYPE_PERMANENT)) {
-				setFlag(FLAG_STORY_JAPES + i, 1, FLAGTYPE_PERMANENT);
+				setPermFlag(FLAG_STORY_JAPES + i);
 				if (StorySkip) {
 					return 0;
 				}

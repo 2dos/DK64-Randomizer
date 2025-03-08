@@ -340,9 +340,8 @@ void initItemRando(void) {
     
     // Item Rando
     for (int i = 0; i < 54; i++) {
-        BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default
         bonus_data[i].flag = BonusBarrelData[i].flag;
-        bonus_data[i].spawn_actor = BonusBarrelData[i].spawn_actor;
+        bonus_data[i].spawn_actor = 45;
         bonus_data[i].kong_actor = BonusBarrelData[i].kong_actor;
     }
     // Add Chunky Minecart GB

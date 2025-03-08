@@ -37,7 +37,7 @@ from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Enums.Models import Model, Sprite
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Settings import ShuffleLoadingZones
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Items import Items
 from PIL import Image
@@ -3085,6 +3085,11 @@ def patchAssembly(ROM_COPY, spoiler):
     if settings.enemy_kill_crown_timer:
         writeFunction(ROM_COPY, 0x8072AC80, Overlay.Static, "handleCrownTimer", offset_dict)
         writeFunction(ROM_COPY, 0x806AEEBC, Overlay.Static, "klumpCrownHandler", offset_dict)
+
+    if settings.crown_door_item == BarrierItems.Nothing:
+        file_init_flags.append(0x304)
+    if settings.coin_door_item == BarrierItems.Nothing:
+        file_init_flags.append(0x303)
 
     # Enable oranges in Crowns
     writeHook(ROM_COPY, 0x806E6000, Overlay.Static, "DisableGunInCrowns", offset_dict)

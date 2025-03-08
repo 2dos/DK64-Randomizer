@@ -777,7 +777,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (index == 0) {
 						return checkFlag(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						setFlag(FLAG_COLLECTABLE_BEAN, 1, FLAGTYPE_PERMANENT);
+						setPermFlag(FLAG_COLLECTABLE_BEAN);
 					}
 				}
 				break;
@@ -1266,7 +1266,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 										if ((next_slot == -1) && (current_slot > -1)) {
 											// Helm Complete
 											PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
-											setFlag(FLAG_MODIFIER_HELMBOM, 1, FLAGTYPE_PERMANENT);
+											setPermFlag(FLAG_MODIFIER_HELMBOM);
 											setFlag(0x50,1,FLAGTYPE_TEMPORARY);
 										} else if (next_slot > -1) {
 											// Move to next
