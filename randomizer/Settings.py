@@ -1801,8 +1801,8 @@ class Settings:
             if Types.Shockwave in self.shuffled_location_types and self.shockwave_status == ShockwaveStatus.shuffled_decoupled:
                 self.location_item_balance -= 1  # If camera/shockwave is decoupled and shuffled, we gain one additional item
             self.location_item_balance += 8 - len(self.krool_keys_required)  # We don't have to place starting keys so we may lose items here
-            if Types.Kong in self.shuffled_location_types:
-                self.location_item_balance -= 4  # Kong cages *can* be filled by Kongs, but nothing else. We'll treat these as lost locations in all worlds due to the rarity of this.
+            # if Types.Kong in self.shuffled_location_types:
+            #     self.location_item_balance -= 4  # Kong cages *can* be filled by Kongs, but nothing else. We'll treat these as lost locations in all worlds due to the rarity of this.
         # With some light algebra we get the maximum number of shared shops we can fill before we start running into fill problems
         self.max_shared_shops = math.floor(25 - self.location_item_balance / -4)
         if self.smaller_shops:
@@ -1987,7 +1987,7 @@ class Settings:
             shuffledLocations = [
                 location
                 for location in spoiler.LocationList
-                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Kong, Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
+                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
             ]
             shuffledLocationsShopOwner = [
                 location
@@ -2300,8 +2300,8 @@ class Settings:
                 junk_space_available += 100  # Rough estimate, not to be used as factual
             if Types.Shop in self.shuffled_location_types:
                 junk_space_available += 30  # Rough estimate, not to be used as factual
-            if Types.Kong in self.shuffled_location_types:
-                junk_space_available -= 5 - len(self.starting_kong_list)  # Not always this, Kongs in cages are so rare it may as well be
+            # if Types.Kong in self.shuffled_location_types:
+            #     junk_space_available -= 5 - len(self.starting_kong_list)  # Not always this, Kongs in cages are so rare it may as well be
             # Shopkeepers don't get placed in their vanilla locations (essentially a start with)
             if Types.Cranky in self.shuffled_location_types:
                 junk_space_available -= 1

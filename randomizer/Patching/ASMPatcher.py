@@ -1739,6 +1739,16 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8075F104, Overlay.Static, 0x5E5E0164, offset_dict, 4)
     writeValue(ROM_COPY, 0x8074B21E, Overlay.Static, 0xFF8, offset_dict)  # Allow other moves to knock down the bug
     writeLabelValue(ROM_COPY, 0x8074B244, Overlay.Static, "fixed_scarab_collision", offset_dict)  # Collision
+    # Alter data for custom item
+    CHAR_SPAWNER_DATA_SIZE = 0x18
+    for x in range(6):
+        source_addr = getROMAddress(0x8075EB80 + (0x13 * CHAR_SPAWNER_DATA_SIZE) + (x * 4), Overlay.Static, offset_dict)
+        target_addr = getROMAddress(0x8075EB80 + (0x5B * CHAR_SPAWNER_DATA_SIZE) + (x * 4), Overlay.Static, offset_dict)
+        ROM_COPY.seek(source_addr)
+        val = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        ROM_COPY.seek(target_addr)
+        ROM_COPY.writeMultipleBytes(val, 4)
+    writeValue(ROM_COPY, 0x8075EB80 + (0x5B * CHAR_SPAWNER_DATA_SIZE), Overlay.Static, 141, offset_dict)
 
     # Statistics
     writeFunction(ROM_COPY, 0x806C8ED0, Overlay.Static, "updateTagStat", offset_dict)

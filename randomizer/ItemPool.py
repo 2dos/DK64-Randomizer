@@ -116,11 +116,11 @@ def PlaceConstants(spoiler):
             spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, Items.NoItem)
 
     # Empty out some locations based on the settings
-    if settings.starting_kongs_count == 5:
-        spoiler.LocationList[Locations.DiddyKong].PlaceConstantItem(spoiler, Items.NoItem)
-        spoiler.LocationList[Locations.LankyKong].PlaceConstantItem(spoiler, Items.NoItem)
-        spoiler.LocationList[Locations.TinyKong].PlaceConstantItem(spoiler, Items.NoItem)
-        spoiler.LocationList[Locations.ChunkyKong].PlaceConstantItem(spoiler, Items.NoItem)
+    # if settings.starting_kongs_count == 5:
+    #     spoiler.LocationList[Locations.DiddyKong].PlaceConstantItem(spoiler, Items.NoItem)
+    #     spoiler.LocationList[Locations.LankyKong].PlaceConstantItem(spoiler, Items.NoItem)
+    #     spoiler.LocationList[Locations.TinyKong].PlaceConstantItem(spoiler, Items.NoItem)
+    #     spoiler.LocationList[Locations.ChunkyKong].PlaceConstantItem(spoiler, Items.NoItem)
     if settings.start_with_slam:
         spoiler.LocationList[Locations.IslesFirstMove].PlaceConstantItem(spoiler, Items.ProgressiveSlam)
         spoiler.LocationList[Locations.IslesFirstMove].inaccessible = False

@@ -126,6 +126,11 @@ extern void updateCamera(void* mtx_i);
 
 extern int callFunc(void* func);
 
+extern void cutsceneDiddyCode(void);
+extern void cutsceneLankyCode(void);
+extern void cutsceneTinyCode(void);
+extern void cutsceneChunkyCode(void);
+
 extern void cancelMusic(int song, int unk0);
 extern void removeGorillaGone(void* actor);
 extern void resetActorDL(void* actor);

@@ -82,3 +82,42 @@ void cutsceneDKCode(void) {
 	}
 	renderActor(CurrentActorPointer_0,0);
 }
+
+static const unsigned char pair_data[] = {
+	MAP_JAPES,
+	MAP_AZTECLLAMATEMPLE,
+	MAP_AZTECTINYTEMPLE,
+	MAP_FACTORY,
+};
+
+void charSpawnerItemCode(void) {
+	int check_index = 0;
+	for (int i = 0; i < 4; i++) {
+		if (pair_data[i] == CurrentMap) {
+			check_index = i;
+		}
+	}
+	int model = kong_check_data[check_index].model;
+	if (model == 0) {
+		return;
+	}
+	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+		setActorModel(CurrentActorPointer_0, model);
+	}
+	switch (model) {
+		case 4:
+			cutsceneDKCode();
+			return;
+		case 1:
+			cutsceneDiddyCode();
+			return;
+		case 6:
+			cutsceneLankyCode();
+			return;
+		case 0xC:
+			cutsceneChunkyCode();
+			return;
+	}
+	// Item code will leech off Tiny's code
+	cutsceneTinyCode();
+}

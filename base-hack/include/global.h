@@ -144,6 +144,7 @@ extern void newCounterCode(void);
 extern void wipeCounterImageCache(void);
 extern void getMoveHint(actorData* actor, int text_file, int text_index);
 extern void cutsceneDKCode(void);
+extern void charSpawnerItemCode(void);
 
 extern void fastWarp_playMusic(void* actor);
 extern void fixCutsceneModels(void);

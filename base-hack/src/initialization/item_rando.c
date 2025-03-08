@@ -38,6 +38,7 @@ static unsigned short crate_item_table[16] = {}; // Crate Rewards
 static patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
 bonus_barrel_info bonus_data[BONUS_DATA_COUNT] = {}; // Bonus Barrel Rewards
 static meloncrate_db_item crate_flags[16] = {}; // Melon crate table
+kongcheck_db_item kong_check_data[4] = {}; // Kong table
 
 int getBPItem(int index) {
     /**
@@ -394,6 +395,12 @@ void initItemRando(void) {
     unsigned short* crown_write = getFile(crown_size << 1, 0x1FF10C0);
     for (int i = 0; i < crown_size; i++) {
         crown_item_table[i] = crown_write[i];
+    }
+    // Kong Check Table
+    int kong_size = 4;
+    kongcheck_db_item* kong_write = getFile(kong_size << 2, 0x1FF1020);
+    for (int i = 0; i < kong_size; i++) {
+        kong_check_data[i] = kong_write[i];
     }
     // Key Table
     int key_size = 0x8;

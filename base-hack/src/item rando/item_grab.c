@@ -358,15 +358,7 @@ Gfx* controlKeyText(Gfx* dl) {
 
 static short kong_models[] = {4, 1, 6, 9, 0xC};
 
-void giveFairyItem(int flag, int state, flagtypes type) {
-    /**
-     * @brief Handle acquisition of the item tied to a fairy
-     * 
-     * @param flag Flag index of the fairy
-     * @param state Target state of the flag. AKA whether to set (1) or clear (0) the flag
-     * @param type Flag Type
-     */
-    int model = getFairyModel(flag);
+void giveItemFromModel(int model, int flag, int go_through_flut) {
     int model_key = model;
     if ((model_key >= 0xF6) && (model_key <= 0xFB)) {
         model_key = MODEL_GENERIC_POTION;
@@ -414,7 +406,11 @@ void giveFairyItem(int flag, int state, flagtypes type) {
         // Fake Item
         queueIceTrap(ice_trap_type);
     }
-    setFlag(flag, state, type);
+    if (go_through_flut) {
+        setPermFlag(flag);
+    } else {
+        setFlagDuplicate(flag, 1, FLAGTYPE_PERMANENT);
+    }
     if (model == 0xF5) {
         // Key - Post flag set
         int spawned = 0;
@@ -428,6 +424,22 @@ void giveFairyItem(int flag, int state, flagtypes type) {
         }
         auto_turn_keys();
     }
+}
+
+void giveItemFromKongData(kongcheck_db_item *db_item) {
+    giveItemFromModel(db_item->model, db_item->flag, 0);
+}
+
+void giveFairyItem(int flag, int state, flagtypes type) {
+    /**
+     * @brief Handle acquisition of the item tied to a fairy
+     * 
+     * @param flag Flag index of the fairy
+     * @param state Target state of the flag. AKA whether to set (1) or clear (0) the flag
+     * @param type Flag Type
+     */
+    int model = getFairyModel(flag);
+    giveItemFromModel(model, flag, 1);
 }
 
 static const unsigned char dance_skip_ban_maps[] = {

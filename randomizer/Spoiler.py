@@ -57,7 +57,7 @@ from randomizer.Settings import Settings
 from randomizer.ShuffleBosses import HardBossesEnabled
 from randomizer.ShuffleExits import ShufflableExits
 from randomizer.ShuffleKasplats import constants, shufflable
-from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected, getModelFromItem
 
 if TYPE_CHECKING:
     from randomizer.Lists.Location import Location
@@ -1080,7 +1080,7 @@ class Spoiler:
         # Write additional starting kongs to empty cages, if any
         emptyCages = [x for x in [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong] if x not in self.settings.kong_locations]
         for emptyCage in emptyCages:
-            self.WriteKongPlacement(emptyCage, Items.NoItem)
+            self.WriteKongPlacement(emptyCage, Items.NoItem, Types.NoItem, 0, 0)
 
         # Loop through locations and set necessary data
         for id, location in locations.items():
@@ -1139,7 +1139,10 @@ class Spoiler:
                                 "price": price,
                             }
                 elif location.type == Types.Kong:
-                    self.WriteKongPlacement(id, location.item)
+                    flag = ItemList[location.item].flag
+                    model = getModelFromItem(location.item, location.type, flag)
+                    if model is not None:
+                        self.WriteKongPlacement(id, location.item, location.type, model, flag)
                 elif location.type == Types.TrainingBarrel and self.settings.training_barrels != TrainingBarrels.normal:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
@@ -1191,7 +1194,7 @@ class Spoiler:
             # else:
             #     self.location_data[id] = Items.NoItem
 
-    def WriteKongPlacement(self, locationId: Locations, item: Items) -> None:
+    def WriteKongPlacement(self, locationId: Locations, item: Items, item_type: Types, model: int, flag: int) -> None:
         """Write kong placement information for the given kong cage location."""
         locationName = "Jungle Japes"
         unlockKong = self.settings.diddy_freeing_kong
@@ -1213,7 +1216,10 @@ class Spoiler:
             lockedwrite = 0x158
             puzzlewrite = 0x159
         lockedkong = {}
-        lockedkong["kong"] = KongFromItem(item)
+        lockedkong["item"] = item
+        lockedkong["type"] = item_type
+        lockedkong["model"] = model
+        lockedkong["flag"] = flag
         lockedkong["write"] = lockedwrite
         puzzlekong = {"kong": unlockKong, "write": puzzlewrite}
         kongLocation = {"locked": lockedkong, "puzzle": puzzlekong}
