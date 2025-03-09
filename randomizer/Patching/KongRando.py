@@ -3,6 +3,7 @@
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
@@ -28,8 +29,6 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
                 flag = 0
             else:
                 model = getModelFromItem(item, item_type, flag, x.shared)
-            print(x.name)
-            print(item, item_type, flag)
             if model is not None:
                 spoiler.WriteKongPlacement(x.location, item, item_type, model, flag)
 
@@ -60,46 +59,36 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
             ROM_COPY.writeMultipleBytes(item_data["flag"], 2)
             ROM_COPY.writeMultipleBytes(item_data["model"], 2)
 
-        kongrando_changes = [
-            {
-                "map_index": 7,
+        kongrando_changes = {
+            Maps.JungleJapes: {
                 "model2_changes": [
                     {"index": 0x30, "new_type": gunswitches[japesPuzzleKong]},
                     {"index": 0x31, "new_type": gunswitches[japesPuzzleKong]},
                     {"index": 0x32, "new_type": gunswitches[japesPuzzleKong]},
                 ],
-                "charspawner_changes": [{"type": Enemies.CutsceneDiddy, "new_type": Enemies.CharSpawnerItem}],
             },
-            {"map_index": 0x26, "model2_changes": llama_entrance_switch, "charspawner_changes": []},
-            {
-                "map_index": 0x14,
+            Maps.AztecLlamaTemple: {
                 "model2_changes": [
                     {"index": 0x16, "new_type": instrumentpads[llamaPuzzleKong]},
                     {"index": 0x12, "new_type": gunswitches[llamaPuzzleKong]},
                 ],
-                "charspawner_changes": [{"type": Enemies.CutsceneLanky, "new_type": Enemies.CharSpawnerItem}],
             },
-            {
-                "map_index": 0x10,
+            Maps.AztecTinyTemple: {
                 "model2_changes": [
                     {"index": 0x14, "new_type": forceSwitches[tinyTemplePuzzleKong]}
                 ],
-                "charspawner_changes": [{"type": Enemies.CutsceneTiny, "new_type": Enemies.CharSpawnerItem}],
             },
-            {
+            Maps.FranticFactory: {
                 "map_index": 0x1A,
                 "model2_changes": [{"index": 0x24, "new_type": greenslamswitches[factoryPuzzleKong]}],
-                "charspawner_changes": [{"type": Enemies.CutsceneChunky, "new_type": Enemies.CharSpawnerItem}],
-            },
-        ]
+            }
+        }
         for kong_map in spoiler.shuffled_kong_placement.keys():
-            for link_type in spoiler.shuffled_kong_placement[kong_map].keys():
-                if link_type != "locked":
-                    ROM_COPY.seek(spoiler.settings.rom_data + spoiler.shuffled_kong_placement[kong_map][link_type]["write"])
-                    ROM_COPY.writeMultipleBytes(spoiler.shuffled_kong_placement[kong_map][link_type]["kong"], 1)
+            ROM_COPY.seek(spoiler.settings.rom_data + spoiler.shuffled_kong_placement[kong_map]["puzzle"]["write"])
+            ROM_COPY.writeMultipleBytes(spoiler.shuffled_kong_placement[kong_map]["puzzle"]["kong"], 1)
 
-        for cont_map in kongrando_changes:
-            cont_map_id = int(cont_map["map_index"])
+        for cont_map_id in kongrando_changes:
+            cont_map = kongrando_changes[cont_map_id]
             # Setup
             cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
             ROM_COPY.seek(cont_map_setup_address)
@@ -142,10 +131,9 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
                 offset += 0x16 + (extra_count * 2)
                 has_id = False
                 new_type = 0
-                for char in cont_map["charspawner_changes"]:
-                    if char["type"] == enemy_id:
-                        has_id = True
-                        new_type = char["new_type"]
+                if enemy_id in (Enemies.CutsceneDiddy, Enemies.CutsceneLanky, Enemies.CutsceneTiny, Enemies.CutsceneChunky):
+                    has_id = True
+                    new_type = Enemies.CharSpawnerItem
                 if has_id:
                     ROM_COPY.seek(cont_map_spawner_address + init_offset)
                     ROM_COPY.writeMultipleBytes(new_type, 1)

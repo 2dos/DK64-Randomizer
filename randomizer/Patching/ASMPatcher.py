@@ -88,6 +88,7 @@ GREATER_CAMERA_CONTROL = True
 JP_TEXTBOX_SIZES = True
 FRAMEBUFFER_STORE_FIX = True
 BLOCK_FILE_DELETION_ON_CHECKSUM_MISMATCH = False
+HARDER_CRUSHERS = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -2529,6 +2530,9 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x807452B0, Overlay.Static, 0xD00, offset_dict, 4)
     writeValue(ROM_COPY, 0x80600DA2, Overlay.Static, 0x38, offset_dict)
     writeValue(ROM_COPY, 0x80600DA6, Overlay.Static, 0x70, offset_dict)
+
+    if HARDER_CRUSHERS:
+        writeValue(ROM_COPY, 0x8064C520, Overlay.Static, 0xA218006E, offset_dict, 4)  # Make the crushers in Factory Crusher Room always damage you
 
     # Adjust Exit File
     writeFunction(ROM_COPY, 0x805FEAE4, Overlay.Static, "loadExits", offset_dict)

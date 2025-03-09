@@ -1,5 +1,6 @@
 """Apply item rando changes."""
 
+import random
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -260,6 +261,47 @@ kong_names = {
     Kongs.any: "Any Kong",
 }
 
+def getIceTrapText() -> str:
+    """Get the text associated with ice traps."""
+    input_text = "GOLDEN BANANA"
+    while True:
+        characters = list(input_text)
+        new_characters = []
+        vowels = ["A","E","I","O","U"]
+        vowels_in_string = [x for x in characters if x in vowels]
+        unique_vowels = list(set(vowels_in_string))
+        if len(vowels_in_string) < 3 or len(unique_vowels) < 2:
+            if len(vowels_in_string) == 0:
+                # Not sure what to do for strings with no vowels
+                return input_text
+            vowel_index = 0
+            target_vowel_index = random.randint(0, len(vowels_in_string))
+            for char in characters:
+                if char in vowels:
+                    if target_vowel_index == vowel_index:
+                        new_characters.append(random.choice(vowels))
+                        vowel_index += 1
+                        continue
+                    vowel_index += 1
+                new_characters.append(char)
+            new_text = "".join(new_characters)
+        else:
+            # More vowels
+            vowel_idxs = random.sample(range(len(vowels_in_string)), 2)
+            vowel_a = vowels_in_string[vowel_idxs[0]]
+            vowel_b = vowels_in_string[vowel_idxs[1]]
+            if vowel_a == vowel_b:
+                continue
+            vowels_in_string[vowel_idxs[1]] = vowel_a
+            vowels_in_string[vowel_idxs[0]] = vowel_b
+            for char in characters:
+                if char in vowels:
+                    new_characters.append(vowels_in_string.pop(0))
+                else:
+                    new_characters.append(char)
+            new_text = "".join(new_characters)
+        if new_text != input_text:
+            return new_text
 
 def appendTextboxChange(spoiler, file_index: int, textbox_index: int, search: str, target: str):
     """Alter a specific textbox."""
