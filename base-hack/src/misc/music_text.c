@@ -98,7 +98,7 @@ Gfx* displaySongNameHandler(Gfx* dl) {
         mtx_item mtx0;
         mtx_item mtx1;
         _guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
-        _guTranslateF(&mtx1, 50.0f, 800.0f + (i * 30.0f), 0.0f);
+        _guTranslateF(&mtx1, 80.0f, 800.0f + (i * 30.0f), 0.0f);
         _guMtxCatF(&mtx0, &mtx1, &mtx0);
         _guTranslateF(&mtx1, 0.0f, 48.0f, 0.0f);
         _guMtxCatF(&mtx0, &mtx1, &mtx0);
@@ -114,4 +114,4 @@ Gfx* displaySongNameHandler(Gfx* dl) {
         gSPPopMatrix(dl++, G_MTX_MODELVIEW);
     }
     return dl;
-}
+}   
