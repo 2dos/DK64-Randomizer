@@ -34,6 +34,7 @@ from randomizer.Enums.Settings import (
     KongModels,
     SlamRequirement,
     HardBossesSelected,
+    ItemRandoListSelected,
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
@@ -717,6 +718,7 @@ def compileHints(spoiler: Spoiler) -> bool:
 
     # Some locations are particularly useless to hint
     useless_locations = {
+        Items.Bean: [],
         Items.HideoutHelmKey: [],
         Maps.KroolDonkeyPhase: [],
         Maps.KroolDiddyPhase: [],
@@ -754,6 +756,9 @@ def compileHints(spoiler: Spoiler) -> bool:
         Maps.KroolTinyPhase: [Items.Feather, Items.MiniMonkey],
         Maps.KroolChunkyPhase: chunky_phase_requirement,
     }
+    # If the Bean isn't shuffled, hinting the Bean location is pointless
+    if spoiler.settings.win_condition_item == WinConditionComplex.req_bean and ItemRandoListSelected.beanpearl not in spoiler.settings.item_rando_list_selected and Locations.ForestBean in spoiler.woth_paths.keys():
+        useless_locations[Items.Bean] = [Locations.ForestBean]
     if IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase, False):
         required_moves[Maps.KroolLankyPhase] = [Items.Barrels, Items.Grape]
     for map_id in required_moves:
@@ -3143,7 +3148,7 @@ def GenerateMultipathDict(
                     path_to_family = True
                     relevant_goal_locations.append(Locations(woth_loc))
                 # Determine path to the Bean if the Bean is the win condition.
-                if endpoint_item.type == Types.Bean and spoiler.settings.win_condition_item == WinConditionComplex.req_bean:
+                if endpoint_item.type == Types.Bean and spoiler.settings.win_condition_item == WinConditionComplex.req_bean and location not in useless_locations[Items.Bean]:
                     path_to_bean = True
                     relevant_goal_locations.append(Locations(woth_loc))
                 if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:

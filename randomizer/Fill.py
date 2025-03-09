@@ -859,6 +859,9 @@ def ParePlaythrough(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> Non
     for locationId in locationsToAddBack:
         spoiler.LocationList[locationId].PlaceDelayedItem(spoiler)
 
+# Don't prune the Bean if it's the win condition. We can make sure it isn't directly hinted later if it isn't shuffled.
+def IsBeanLocWithBeanWincon(spoiler: Spoiler, loc: Locations) -> bool:
+    return spoiler.settings.win_condition_item == WinConditionComplex.req_bean and ItemList[spoiler.LocationList[loc].item].type == Types.Bean
 
 def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union[Locations, int]]:
     """Pare playthrough to locations which are Way of the Hoard (hard required by logic)."""
@@ -870,7 +873,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
         for loc in [
             loc
             for loc in sphere.locations  # If Keys are constant, we may still want path hints for them.
-            if (not spoiler.LocationList[loc].constant or ItemList[spoiler.LocationList[loc].item].type == Types.Key)
+            if (not spoiler.LocationList[loc].constant or ItemList[spoiler.LocationList[loc].item].type == Types.Key or IsBeanLocWithBeanWincon(spoiler, loc))
             and ItemList[spoiler.LocationList[loc].item].type
             not in (
                 Types.Banana,
@@ -910,7 +913,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
             # Either way, add location back
             location.PlaceItem(spoiler, item)
     # We kept Keys around to generate paths better, but we don't need them in the spoiler log or being hinted (except for the Helm Key if it's there and also keep the Banana Hoard path)
-    WothLocations = [loc for loc in WothLocations if not spoiler.LocationList[loc].constant or loc == Locations.HelmKey or loc == Locations.BananaHoard]
+    WothLocations = [loc for loc in WothLocations if not spoiler.LocationList[loc].constant or loc == Locations.HelmKey or IsBeanLocWithBeanWincon(spoiler, loc) or loc == Locations.BananaHoard]
     if spoiler.settings.shuffle_items:
         # The non-key 8 paths are a bit misleading, so it's best not to show them
         for path_loc in [key for key in spoiler.woth_paths.keys()]:
