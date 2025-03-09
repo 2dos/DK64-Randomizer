@@ -51,7 +51,7 @@ LogicRegions = {
         TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.CanPhase() or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.CanPhase() or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
         TransitionFront(Regions.JapesCatacomb, lambda l: (l.Slam and l.chunky and l.barrels) or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False), Transitions.JapesMainToCatacomb),
-        TransitionFront(Regions.JapesBlastPadPlatform, lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing),
+        TransitionFront(Regions.JapesBlastPadPlatform, lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing and (l.isdonkey or l.isdiddy or l.ischunky)),
     ]),
 
     Regions.JapesBlastPadPlatform: Region("Japes Blast Pad Platform", HintRegion.Lowlands, Levels.JungleJapes, False, None, [], [], [

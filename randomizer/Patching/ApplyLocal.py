@@ -9,7 +9,7 @@ import zipfile
 import time
 import string
 from datetime import datetime as Datetime
-from datetime import UTC
+from datetime import timezone
 import js
 from randomizer.Enums.Models import Model, ModelNames, HeadResizeImmune
 from randomizer.Enums.Settings import RandomModels, BigHeadMode
@@ -108,7 +108,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
             js.load_old_seeds()
 
-    curr_time = Datetime.now(UTC)
+    curr_time = Datetime.now(timezone.utc)
     unix = time.mktime(curr_time.timetuple())
     random.seed(int(unix))
     split_version = version.split(".")
