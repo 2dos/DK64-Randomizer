@@ -140,7 +140,6 @@ LogicRegions = {
     ], [
         Event(Events.TestingGateOpened, lambda l: l.Slam),
         Event(Events.FactoryW1bTagged, lambda l: True),
-        Event(Events.FactoryW4aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing),
         TransitionFront(Regions.LowerCore, lambda l: True),
@@ -193,24 +192,25 @@ LogicRegions = {
         Event(Events.LankyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.lanky),
         Event(Events.TinyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.tiny),
         Event(Events.ChunkyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.chunky),
+        Event(Events.FactoryW4aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.BeyondHatch, lambda l: True),
         TransitionFront(Regions.AlcoveBeyondHatch, lambda l: Events.HatchOpened in l.Events and l.climbing),
         TransitionFront(Regions.FranticFactoryStart, lambda l: Events.HatchOpened in l.Events and l.climbing),
-        TransitionFront(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events or l.CanPhase(), Transitions.FactoryBeyondHatchToInsideCore),
+        TransitionFront(Regions.InsideCore, lambda l: Events.MainCoreActivated in l.Events or l.CanPhase(), Transitions.FactoryLowerCoreToInsideCore),
         TransitionFront(Regions.MiddleCore, lambda l: Events.MainCoreActivated in l.Events),
     ]),
 
     Regions.InsideCore: Region("Inside Core", HintRegion.ProductionRoom, Levels.FranticFactory, False, -1, [
         LocationLogic(Locations.FactoryDonkeyCrusherRoom, lambda l: (l.strongKong and l.isdonkey) or l.generalclips or l.CanPhase()),
     ], [], [
-        TransitionFront(Regions.LowerCore, lambda l: True, Transitions.FactoryInsideCoreToBeyondHatch),
+        TransitionFront(Regions.LowerCore, lambda l: True, Transitions.FactoryInsideCoreToLowerCore),
     ]),
 
     Regions.MiddleCore: Region("Middle Core", HintRegion.ProductionRoom, Levels.FranticFactory, False, None, [], [], [
         TransitionFront(Regions.LowerCore, lambda l: True),
         TransitionFront(Regions.SpinningCore, lambda l: l.climbing),
-        TransitionFront(Regions.InsideCore, lambda l: l.ledgeclip, Transitions.FactoryBeyondHatchToInsideCore, isGlitchTransition=True),
+        TransitionFront(Regions.InsideCore, lambda l: l.ledgeclip, Transitions.FactoryLowerCoreToInsideCore, isGlitchTransition=True),
     ]),
 
     Regions.SpinningCore: Region("Spinning Core", HintRegion.ProductionRoom, Levels.FranticFactory, True, None, [
