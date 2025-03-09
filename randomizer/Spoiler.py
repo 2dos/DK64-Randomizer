@@ -1198,29 +1198,24 @@ class Spoiler:
         """Write kong placement information for the given kong cage location."""
         locationName = "Jungle Japes"
         unlockKong = self.settings.diddy_freeing_kong
-        lockedwrite = 0x152
         puzzlewrite = 0x153
         if locationId == Locations.LankyKong:
             locationName = "Llama Temple"
             unlockKong = self.settings.lanky_freeing_kong
-            lockedwrite = 0x154
             puzzlewrite = 0x155
         elif locationId == Locations.TinyKong:
             locationName = "Tiny Temple"
             unlockKong = self.settings.tiny_freeing_kong
-            lockedwrite = 0x156
             puzzlewrite = 0x157
         elif locationId == Locations.ChunkyKong:
             locationName = "Frantic Factory"
             unlockKong = self.settings.chunky_freeing_kong
-            lockedwrite = 0x158
             puzzlewrite = 0x159
         lockedkong = {}
         lockedkong["item"] = item
         lockedkong["type"] = item_type
         lockedkong["model"] = model
         lockedkong["flag"] = flag
-        lockedkong["write"] = lockedwrite
         puzzlekong = {"kong": unlockKong, "write": puzzlewrite}
         kongLocation = {"locked": lockedkong, "puzzle": puzzlekong}
         self.shuffled_kong_placement[locationName] = kongLocation

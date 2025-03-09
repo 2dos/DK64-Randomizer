@@ -375,26 +375,11 @@ void initHack(int source) {
 			style128Mtx[0xF] = 100;
 			writeEndSequence();
 			
-			int kko_phase_rando = 0;
 			for (int i = 0; i < 3; i++) {
 				KKOPhaseOrder[i] = Rando.kut_out_phases[i];
-				if (Rando.kut_out_phases[i]) {
-					kko_phase_rando = 1;
-				}
 			}
-			KKOPhaseRandoOn = kko_phase_rando;
 			
 			initPauseMenu(); // Changes to enable more items
-			// Model Stuff
-			if (Rando.kong_models[KONG_DK] == KONGMODEL_CRANKY) {
-				KongModelData[KONG_DK].props_or = 0;
-			}
-			if (Rando.kong_models[KONG_TINY] == KONGMODEL_CANDY) {
-				KongModelData[KONG_TINY].props_or = 0;
-			}
-			if (Rando.kong_models[KONG_DIDDY] == KONGMODEL_FUNKY) {
-				KongModelData[KONG_DIDDY].props_or = 0;
-			}
 			fixCutsceneModels();
 			if (Rando.hard_mode.lava_water) {
 				// Dynamic Textures
@@ -417,11 +402,7 @@ void initHack(int source) {
         		writeFunction(0x806609BC, &getOscillationDelta);
 			}
 			initSwitchsanityChanges();
-
-			SFXVolume = Rando.default_sfx_volume;
-			MusicVolume = Rando.default_music_volume;
 			ScreenRatio = Rando.default_screen_ratio;
-			SoundType = Rando.default_sound_type;
 			int sound_subtype = 1;
 			if (SoundType == 0) {
 				sound_subtype = 2;

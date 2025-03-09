@@ -632,23 +632,6 @@ def patching_response(spoiler):
                 else:
                     spoiler.text_changes[41] = [data]
 
-    # Diddy R&D Codes
-    enable_code = False
-    encoded_codes = []
-    for code in spoiler.settings.diddy_rnd_doors:
-        value = 0
-        if sum(code) > 0:  # Has a non-zero element
-            enable_code = True
-        for subindex in range(4):
-            shift = 12 - (subindex << 2)
-            shifted = (code[subindex] & 3) << shift
-            value |= shifted
-        encoded_codes.append(value)
-    if enable_code:
-        ROM_COPY.seek(sav + 0x1B8)
-        for code in encoded_codes:
-            ROM_COPY.writeMultipleBytes(code, 2)
-
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
         for key in spoiler.settings.krool_keys_required:

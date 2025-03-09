@@ -273,7 +273,7 @@ def getIceTrapText() -> str:
         if len(vowels_in_string) < 3 or len(unique_vowels) < 2:
             if len(vowels_in_string) == 0:
                 # Not sure what to do for strings with no vowels
-                return input_text
+                return f"\x04{input_text}\x04"
             vowel_index = 0
             target_vowel_index = random.randint(0, len(vowels_in_string))
             for char in characters:
@@ -301,7 +301,7 @@ def getIceTrapText() -> str:
                     new_characters.append(char)
             new_text = "".join(new_characters)
         if new_text != input_text:
-            return new_text
+            return f"\x04{new_text}\x04"
 
 def appendTextboxChange(spoiler, file_index: int, textbox_index: int, search: str, target: str):
     """Alter a specific textbox."""
@@ -912,6 +912,8 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                     if reference is not None:
                         # Found reference
                         reward_text = reference[0]
+                        if new_item == Types.FakeItem:
+                            reward_text = getIceTrapText()
                         if textbox.location == Locations.GalleonDonkeySealRace:
                             # Use pirate text
                             reward_text = reference[1]

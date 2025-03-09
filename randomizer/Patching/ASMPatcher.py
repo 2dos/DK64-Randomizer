@@ -29,8 +29,10 @@ from randomizer.Enums.Settings import (
     ExcludedSongs,
     ProgressiveHintItem,
     WrinklyHints,
+    KongModels,
 )
 from randomizer.Patching.MiscSetupChanges import SpeedUpFungiRabbit
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
@@ -452,6 +454,36 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x806EA25E, Overlay.Static, -camera_change_amount, offset_dict, 2, True)
         writeValue(ROM_COPY, 0x806EA2C2, Overlay.Static, camera_change_cooldown, offset_dict)
         writeValue(ROM_COPY, 0x806EA2CA, Overlay.Static, camera_change_amount, offset_dict, 2, True)
+
+    kong_model_setting_values = [
+        settings.kong_model_dk,
+        settings.kong_model_diddy,
+        settings.kong_model_lanky,
+        settings.kong_model_tiny,
+        settings.kong_model_chunky,
+    ]
+    for kong_index, value in enumerate(kong_model_setting_values):
+        if value in (KongModels.cranky, KongModels.candy, KongModels.funky):
+            writeValue(ROM_COPY, 0x8075C410 + (kong_index * 0x10) + 0xC, Overlay.Static, 0, offset_dict, 4)
+
+    # ------------------------
+    # SOUND / DISPLAY SETTINGS
+    # ------------------------
+    # Sound Type
+    writeValue(ROM_COPY, 0x80745844, Overlay.Static, int(settings.sound_type), offset_dict, 1)
+
+    # SFX Volume
+    sfx_volume = 40
+    if settings.sfx_volume is not None and settings.sfx_volume != "":
+        sfx_volume = int(settings.sfx_volume / 2.5)
+    writeValue(ROM_COPY, 0x8074583C, Overlay.Static, sfx_volume, offset_dict, 1)
+    # Music Volume
+    music_volume = 40
+    if settings.music_volume is not None and settings.music_volume != "":
+        music_volume = int(settings.music_volume / 2.5)
+    writeValue(ROM_COPY, 0x80745840, Overlay.Static, music_volume, offset_dict, 1)
+
+
 
     if GREATER_CAMERA_CONTROL:
         NULL_FUNCTION = 0x806E1864

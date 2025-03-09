@@ -60,28 +60,21 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
             ROM_COPY.writeMultipleBytes(item_data["model"], 2)
 
         kongrando_changes = {
-            Maps.JungleJapes: {
-                "model2_changes": [
-                    {"index": 0x30, "new_type": gunswitches[japesPuzzleKong]},
-                    {"index": 0x31, "new_type": gunswitches[japesPuzzleKong]},
-                    {"index": 0x32, "new_type": gunswitches[japesPuzzleKong]},
-                ],
-            },
-            Maps.AztecLlamaTemple: {
-                "model2_changes": [
-                    {"index": 0x16, "new_type": instrumentpads[llamaPuzzleKong]},
-                    {"index": 0x12, "new_type": gunswitches[llamaPuzzleKong]},
-                ],
-            },
-            Maps.AztecTinyTemple: {
-                "model2_changes": [
-                    {"index": 0x14, "new_type": forceSwitches[tinyTemplePuzzleKong]}
-                ],
-            },
-            Maps.FranticFactory: {
-                "map_index": 0x1A,
-                "model2_changes": [{"index": 0x24, "new_type": greenslamswitches[factoryPuzzleKong]}],
-            }
+            Maps.JungleJapes: [
+                {"index": 0x30, "new_type": gunswitches[japesPuzzleKong]},
+                {"index": 0x31, "new_type": gunswitches[japesPuzzleKong]},
+                {"index": 0x32, "new_type": gunswitches[japesPuzzleKong]},
+            ],
+            Maps.AztecLlamaTemple: [
+                {"index": 0x16, "new_type": instrumentpads[llamaPuzzleKong]},
+                {"index": 0x12, "new_type": gunswitches[llamaPuzzleKong]},
+            ],
+            Maps.AztecTinyTemple: [
+                {"index": 0x14, "new_type": forceSwitches[tinyTemplePuzzleKong]},
+            ],
+            Maps.FranticFactory: [
+                {"index": 0x24, "new_type": greenslamswitches[factoryPuzzleKong]},
+            ],
         }
         for kong_map in spoiler.shuffled_kong_placement.keys():
             ROM_COPY.seek(spoiler.settings.rom_data + spoiler.shuffled_kong_placement[kong_map]["puzzle"]["write"])
@@ -97,15 +90,10 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
                 start = cont_map_setup_address + 4 + (x * 0x30)
                 ROM_COPY.seek(start + 0x2A)
                 obj_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                has_id = False
-                new_type = 0
-                for model2 in cont_map["model2_changes"]:
+                for model2 in cont_map:
                     if model2["index"] == obj_id:
-                        has_id = True
-                        new_type = model2["new_type"]
-                if has_id:
-                    ROM_COPY.seek(start + 0x28)
-                    ROM_COPY.writeMultipleBytes(new_type, 2)
+                        ROM_COPY.seek(start + 0x28)
+                        ROM_COPY.writeMultipleBytes(model2["new_type"], 2)
             # Character Spawners
             cont_map_spawner_address = getPointerLocation(TableNames.Spawners, cont_map_id)
             ROM_COPY.seek(cont_map_spawner_address)
