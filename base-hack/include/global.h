@@ -36,6 +36,8 @@ extern void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1)
 extern int isBounceObject(int object);
 extern void genericStatUpdate(bonus_stat stat);
 
+extern void resolveBonusContainer(void);
+
 extern int getEnemyItem(int id);
 extern int getEnemyFlag(int id);
 extern void setEnemyDBPopulation(int value);
@@ -142,6 +144,7 @@ extern void newCounterCode(void);
 extern void wipeCounterImageCache(void);
 extern void getMoveHint(actorData* actor, int text_file, int text_index);
 extern void cutsceneDKCode(void);
+extern void charSpawnerItemCode(void);
 
 extern void fastWarp_playMusic(void* actor);
 extern void fixCutsceneModels(void);
@@ -392,7 +395,7 @@ extern void cFuncLoop(void);
 extern void overlay_mod_menu(void);
 extern void overlay_mod_boss(void);
 extern void overlay_mod_bonus(void);
-extern void initJetpac(void);
+extern void exitJetpac(int map, int exit);
 extern void overlay_mod_race(void);
 
 extern int getTrackerYOffset(void);

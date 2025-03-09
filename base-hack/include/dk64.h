@@ -126,6 +126,11 @@ extern void updateCamera(void* mtx_i);
 
 extern int callFunc(void* func);
 
+extern void cutsceneDiddyCode(void);
+extern void cutsceneLankyCode(void);
+extern void cutsceneTinyCode(void);
+extern void cutsceneChunkyCode(void);
+
 extern void cancelMusic(int song, int unk0);
 extern void removeGorillaGone(void* actor);
 extern void resetActorDL(void* actor);
@@ -450,6 +455,8 @@ extern void getBonePosition(void* actor, int bone, float* x, float* y, float* z)
 extern void spawnFireballExplosion(float x, float y, float z, float scale, char unk0, char unk1);
 extern void setChunkLighting(float red, float green, float blue, int chunk);
 extern void unkLoadingZoneControllerFunction(short exit);
+
+extern void nextJetpacLevel(void);
 
 extern void crankyCode(void);
 extern void funkyCode(void);

@@ -773,7 +773,6 @@ void startFile(void) {
 		setAllDefaultFlags();
 		unlockMoves();
 		applyFastStart();
-		openCrownDoor();
 		giveCollectables();
 		if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {
 			setPermFlag(FLAG_MODIFIER_LLAMAFREE); // No item check

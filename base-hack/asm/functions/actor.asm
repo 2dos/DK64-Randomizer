@@ -148,3 +148,7 @@
 .definelabel disappearPeel, 0x8002E7A0
 .definelabel resetLankyKR, 0x8002EA14
 .definelabel unkSoundFunction, 0x80605314
+.definelabel cutsceneDiddyCode, 0x806C1734
+.definelabel cutsceneLankyCode, 0x806C19F4
+.definelabel cutsceneTinyCode, 0x806C1B50
+.definelabel cutsceneChunkyCode, 0x806C1CCC

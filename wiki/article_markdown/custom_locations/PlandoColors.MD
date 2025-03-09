@@ -1,4 +1,4 @@
-This article covers the color formatting for plandomizer hints, and how to use it effectively
+This article covers the color and animation formatting for plandomizer hints, and how to use it effectively
 # Reference Images
 <flex>
 <imginfo header='Light Mode' subtitle='Lighter background for the vanilla feel' img='../static/img/light_mode.png'></imginfo>
@@ -17,3 +17,10 @@ This article covers the color formatting for plandomizer hints, and how to use i
 | [rust][/rust] | [isles][/isles]<br>[training][/training] | Light Mode: #C04040<br>Dark Mode: #D25757 | <span class='p-1' style='color:#c04040; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#d25757; font-weight:bold'>DARK MODE</span> |
 | [paleblue][/paleblue] | [allkongs][/allkongs]<br>[factory][/factory]<br>[madjack][/madjack] | Light Mode: #132958<br>Dark Mode: #B5CDFF | <span class='p-1' style='color:#132958; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#b5cdff; font-weight:bold'>DARK MODE</span> |
 | [green][/green] | [jetpac][/jetpac] | Light Mode: #275E1E<br>Dark Mode: #00CE0E | <span class='p-1' style='color:#275e1e; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:#00ce0e; font-weight:bold'>DARK MODE</span> |
+# Animation Tags
+Animation tags being part of plandomizer are dev-only and cannot be utilized in 4.0.
+| Tag | Description | Example |
+|-----|-------------|---------|
+| [wobble][/wobble] | Text wobbles vertically | <img src='https://i.imgur.com/5tyHbH2.gif'/> |
+| [pop][/pop] | Text pops in | <img src='https://tcrf.net/images/8/80/DK64_TextEff02.gif'/> |
+| [spin][/spin] | Text spins 360 degrees once upon appearing on-screen | <img src='https://tcrf.net/images/0/0d/DK64_TextEff03.gif'/> |

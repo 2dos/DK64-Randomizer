@@ -23,3 +23,4 @@
 .definelabel resolveBonus, 0x80688D20
 .definelabel failBonus, 0x800265C0
 .definelabel winBonus, 0x800264E0
+.definelabel nextJetpacLevel, 0x800250A0

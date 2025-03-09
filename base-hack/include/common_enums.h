@@ -570,6 +570,12 @@ typedef enum maps {
     /* 0x0D5 */ MAP_KLUMSYENDING,
     /* 0x0D6 */ MAP_KROOLSHOE,
     /* 0x0D7 */ MAP_KROOLARENA,
+	// Here onwards are custom maps
+	/* 0x0D8 */ MAP_ARCADE25M_ONLY,
+	/* 0x0D9 */ MAP_ARCADE50M_ONLY,
+	/* 0x0DA */ MAP_ARCADE75M_ONLY,
+	/* 0x0DB */ MAP_ARCADE100M_ONLY,
+	/* 0x0DC */ MAP_JETPAC_ROCKET,
 } maps;
 
 typedef enum file_data_indexes {
@@ -948,6 +954,8 @@ typedef enum requirement_item {
 	/* 0x00D */ REQITEM_ICETRAP, // TODO: Not sure if this is a good idea given our "never require Ice Traps" logic
 	/* 0x00E */ REQITEM_GAMEPERCENTAGE,
 	/* 0x00F */ REQITEM_COLOREDBANANA,
+	/* 0x010 */ REQITEM_BOSSES,
+	/* 0x011 */ REQITEM_BONUSES,
 } requirement_item;
 
 typedef enum item_ids { 

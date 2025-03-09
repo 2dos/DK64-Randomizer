@@ -688,6 +688,7 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, 345 + CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
     actor_data = initActor(actor_data, 345 + CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, 345 + CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)
+    actor_data = initActor(actor_data, 141, "&charSpawnerItemCode", 2, 0, 1, 0x40, 197)
     actor_data["actor_collisions"][345 + CustomActors.Scarab] = {
         "collision_info": 0x8074B240,
         "unk_4": 1,

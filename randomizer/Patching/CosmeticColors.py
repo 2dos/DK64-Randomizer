@@ -728,6 +728,8 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
         WinConditionComplex.req_gb: WinConData(25, 0x155C, TextureFormat.RGBA5551, 44, 44, True, 201),
         WinConditionComplex.req_pearl: WinConData(25, 0, TextureFormat.RGBA5551, 44, 44, True, 5),
         WinConditionComplex.req_rainbowcoin: WinConData(25, 0x174B, TextureFormat.RGBA5551, 48, 42, True, 16),
+        WinConditionComplex.req_bosses: WinConData(25, 0xC9D, TextureFormat.RGBA5551, 48, 42, True, 7),
+        WinConditionComplex.req_bonuses: WinConData(14, 0x2B, TextureFormat.RGBA32, 32, 32, False, 43),
     }
     if win_con not in win_con_data:
         return

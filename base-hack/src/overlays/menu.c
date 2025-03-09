@@ -33,7 +33,7 @@ int give_all_blueprints(int flag, int level, int kong_p) {
 			if (!checkFlag(gb_flag, FLAGTYPE_PERMANENT)) {
 				given_bp = 1;
 				MovesBase[kong].gb_count[level] += 1;
-				setFlag(gb_flag, 1, FLAGTYPE_PERMANENT);
+				setPermFlag(gb_flag);
 			}
 		}
 	}

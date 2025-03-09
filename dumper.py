@@ -589,6 +589,20 @@ def dump_plando_colors(format: str):
         print("Not dumping to markdown format, cannot dump random settings.")
         return
     data = None
+    anim_data = {
+        "1": {
+            "description": "Text wobbles vertically",
+            "gif": "https://i.imgur.com/5tyHbH2.gif",
+        },
+        "2": {
+            "description": "Text pops in",
+            "gif": "https://tcrf.net/images/8/80/DK64_TextEff02.gif",
+        },
+        "3": {
+            "description": "Text spins 360 degrees once upon appearing on-screen",
+            "gif": "https://tcrf.net/images/0/0d/DK64_TextEff03.gif",
+        },
+    }
     color_data = {
         # Light, Dark
         "4": ["#a36200", "#ffa010"],
@@ -616,12 +630,12 @@ def dump_plando_colors(format: str):
                 text += no_newline.strip()
             if no_newline == "plando_colors = {":
                 in_dict = True
-        chars = list(color_data.keys())
+        chars = list(color_data.keys()) + list(anim_data.keys())
         for c in chars:
             text = text.replace(f'"\\x0{c}"', f'"{c}"')
         data = json.loads(re.sub(r",\s*([\]}])", r"\1", text))
     with open(f"{LIST_DIRECTORY}/PlandoColors.MD", "w") as fh:
-        fh.write("This article covers the color formatting for plandomizer hints, and how to use it effectively\n")
+        fh.write("This article covers the color and animation formatting for plandomizer hints, and how to use it effectively\n")
         fh.write("# Reference Images\n")
         fh.write("<flex>\n")
         fh.write("<imginfo header='Light Mode' subtitle='Lighter background for the vanilla feel' img='../static/img/light_mode.png'></imginfo>\n")
@@ -631,11 +645,24 @@ def dump_plando_colors(format: str):
         fh.write("| Primary Tag | Alternative Tags | Hex Colors | Example |\n")
         fh.write("|-------------|------------------|------------|---------|\n")
         for key in data:
+            if key not in color_data:
+                continue
             primary_tag = f"[{data[key][0]}][/{data[key][0]}]"
             alt_tags = [f"[{x}][/{x}]" for x in data[key][1:]]
             fh.write(
                 f"| {primary_tag} | {'<br>'.join(alt_tags)} | Light Mode: {color_data[key][0].upper()}<br>Dark Mode: {color_data[key][1].upper()} | <span class='p-1' style='color:{color_data[key][0]}; background-color: rgba(255, 255, 255, 0.8); font-weight:bold'>LIGHT MODE</span><br><span class='px-1' style='color:{color_data[key][1]}; font-weight:bold'>DARK MODE</span> |\n"
             )
+        fh.write("# Animation Tags\n")
+        fh.write("Animation tags being part of plandomizer are dev-only and cannot be utilized in 4.0.\n")
+        fh.write("| Tag | Description | Example |\n")
+        fh.write("|-----|-------------|---------|\n")
+        for key in data:
+            if key not in anim_data:
+                continue
+            primary_tag = f"[{data[key][0]}][/{data[key][0]}]"
+            description = anim_data[key]["description"]
+            gif = anim_data[key]["gif"]
+            fh.write(f"| {primary_tag} | {description} | <img src='{gif}'/> |\n")
 
 
 all_args = ["cb", "coin", "custom_location", "door", "fairy", "kasplat", "random_settings", "plando_colors"]
