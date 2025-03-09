@@ -3224,7 +3224,7 @@ def GenerateMultipathDict(
                         hint_text_components.append(f"{join_words(kong_names)} Verses")
                 if path_to_verses[5]:
                     hint_text_components.append(f"{verse_colors[5]}The Fridge{verse_colors[5]}")
-        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family or has_path_to_verse:
+        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family or path_to_bean or has_path_to_verse:
             multipath_dict_hints[location] = join_words(hint_text_components)
             multipath_dict_goals[location] = relevant_goal_locations
     return multipath_dict_hints, multipath_dict_goals
