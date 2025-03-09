@@ -1,5 +1,6 @@
 """Apply item rando changes."""
 
+import random
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -10,7 +11,7 @@ from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Library.DataTypes import float_to_hex, intf_to_float
 from randomizer.Lists.EnemyTypes import enemy_location_list
-from randomizer.Patching.Library.Generic import setItemReferenceName, CustomActors
+from randomizer.Patching.Library.Generic import setItemReferenceName, CustomActors, getModelFromItem
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
@@ -113,29 +114,6 @@ actor_indexes = {
         CustomActors.HintItemTiny,
         CustomActors.HintItemChunky,
     ],
-}
-model_indexes = {
-    Types.Banana: 0x69,
-    Types.Key: 0xF5,
-    Types.Crown: 0xF4,
-    Types.Fairy: 0x3D,
-    Types.Shop: [0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB],
-    Types.Shockwave: 0xFB,
-    Types.TrainingBarrel: 0xFB,
-    Types.Climbing: 0xFB,
-    Types.Kong: [4, 1, 6, 9, 0xC],
-    Types.FakeItem: [-4, -3, -2],  # -4 for bubble trap, -3 for reverse trap, -2 for slow trap
-    Types.Bean: 0x104,
-    Types.Pearl: 0x106,
-    Types.Medal: 0x108,
-    Types.NintendoCoin: 0x10A,
-    Types.RarewareCoin: 0x10C,
-    Types.JunkItem: 0x10E,
-    Types.Cranky: 0x11,
-    Types.Funky: 0x12,
-    Types.Candy: 0x13,
-    Types.Snide: 0x1F,
-    Types.Hint: [0x11B, 0x11D, 0x11F, 0x121, 0x123],
 }
 
 TRAINING_LOCATIONS = (
@@ -283,6 +261,47 @@ kong_names = {
     Kongs.any: "Any Kong",
 }
 
+def getIceTrapText() -> str:
+    """Get the text associated with ice traps."""
+    input_text = "GOLDEN BANANA"
+    while True:
+        characters = list(input_text)
+        new_characters = []
+        vowels = ["A","E","I","O","U"]
+        vowels_in_string = [x for x in characters if x in vowels]
+        unique_vowels = list(set(vowels_in_string))
+        if len(vowels_in_string) < 3 or len(unique_vowels) < 2:
+            if len(vowels_in_string) == 0:
+                # Not sure what to do for strings with no vowels
+                return input_text
+            vowel_index = 0
+            target_vowel_index = random.randint(0, len(vowels_in_string))
+            for char in characters:
+                if char in vowels:
+                    if target_vowel_index == vowel_index:
+                        new_characters.append(random.choice(vowels))
+                        vowel_index += 1
+                        continue
+                    vowel_index += 1
+                new_characters.append(char)
+            new_text = "".join(new_characters)
+        else:
+            # More vowels
+            vowel_idxs = random.sample(range(len(vowels_in_string)), 2)
+            vowel_a = vowels_in_string[vowel_idxs[0]]
+            vowel_b = vowels_in_string[vowel_idxs[1]]
+            if vowel_a == vowel_b:
+                continue
+            vowels_in_string[vowel_idxs[1]] = vowel_a
+            vowels_in_string[vowel_idxs[0]] = vowel_b
+            for char in characters:
+                if char in vowels:
+                    new_characters.append(vowels_in_string.pop(0))
+                else:
+                    new_characters.append(char)
+            new_text = "".join(new_characters)
+        if new_text != input_text:
+            return new_text
 
 def appendTextboxChange(spoiler, file_index: int, textbox_index: int, search: str, target: str):
     """Alter a specific textbox."""
@@ -827,30 +846,8 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                         bonus_table_offset += 1
                     elif item.old_item == Types.Fairy:
                         # Fairy Item
-                        if item.new_item in model_indexes:
-                            model = model_indexes[item.new_item]
-                            if item.new_item == Types.Shop:
-                                if (item.new_flag & 0x8000) == 0:
-                                    slot = 5
-                                else:
-                                    slot = (item.new_flag >> 12) & 7
-                                    if item.shared or slot > 5:
-                                        slot = 5
-                                model = model_indexes[Types.Shop][slot]
-                            elif item.new_item == Types.Kong:
-                                slot = 0
-                                if item.new_flag in kong_flags:
-                                    slot = kong_flags.index(item.new_flag)
-                                model = model_indexes[Types.Kong][slot]
-                            elif item.new_item == Types.FakeItem:
-                                trap_types = {
-                                    Items.IceTrapBubble: -4,
-                                    Items.IceTrapReverse: -3,
-                                    Items.IceTrapSlow: -2,
-                                }
-                                model = trap_types.get(item.new_subitem, -4) + 0x10000
-                            elif item.new_item == Types.Hint:
-                                model = model_indexes[Types.Hint][getHintKongFromFlag(item.new_flag)]
+                        model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
+                        if model is not None:
                             ROM_COPY.seek(0x1FF1040 + (2 * (item.old_flag - 589)))
                             ROM_COPY.writeMultipleBytes(model, 2)
             if item.new_item == Types.Hint:

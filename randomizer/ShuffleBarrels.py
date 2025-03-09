@@ -201,6 +201,13 @@ def BarrelShuffle(settings: Settings) -> None:
                 Minigames.VineBarrel,
                 Minigames.DiveBarrel,
             ],
+            MinigamesListSelected.arcade: [
+                Minigames.Arcade25,
+                Minigames.Arcade50,
+                Minigames.Arcade75,
+                Minigames.Arcade100,
+                Minigames.JetpacRocket,
+            ],
         }
         # If Stealthy Snoop is not selected, don't include the Stash Snatch variant with Kops
         if MinigamesListSelected.stealthy_snoop not in settings.minigames_list_selected:

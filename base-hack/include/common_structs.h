@@ -1098,6 +1098,11 @@ typedef struct map_bitfield {
 	unsigned char k_lumsy_ending : 1;
 	unsigned char k_rools_shoe : 1;
 	unsigned char k_rools_arena : 1;
+	unsigned char arcade_25m : 1;
+	unsigned char arcade_50m : 1;
+	unsigned char arcade_75m : 1;
+	unsigned char arcade_100m : 1;
+	unsigned char jetpac_rocket : 1;
 } map_bitfield;
 
 typedef struct movement_bitfield {

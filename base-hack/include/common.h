@@ -12,6 +12,7 @@
 #include "../include2/ultra64.h"
 #include "common_enums.h"
 #include "common_structs.h"
+#include "item_rando.h"
 #include "crowd_control.h"
 #include "dynamic_structs.h"
 #include "item_data.h"

@@ -315,6 +315,7 @@ export enum MinigamesListSelected {
     helm_minigames = 16,
     arenas = 17,
     training_minigames = 18,
+    arcade = 19,
 }
 
 export enum MiscChangesSelected {
@@ -485,6 +486,8 @@ export enum WinConditionComplex {
     medium_random = 14,
     hard_random = 15,
     dk_rap_items = 16,
+    req_bosses = 17,
+    req_bonuses = 18,
 }
 
 export enum WrinklyHints {

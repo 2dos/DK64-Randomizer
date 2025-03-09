@@ -524,6 +524,14 @@ def patching_response(spoiler):
             "index": 3,
             "item": 0xC,
         },
+        WinConditionComplex.req_bonuses: {
+            "index": 3,
+            "item": 0x11,
+        },
+        WinConditionComplex.req_bosses: {
+            "index": 3,
+            "item": 0x10,
+        },
     }
     win_con = spoiler.settings.win_condition_item
     win_con_data = win_con_table.get(win_con, None)

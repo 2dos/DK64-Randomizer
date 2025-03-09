@@ -52,7 +52,7 @@ from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.Songs import song_data
 from randomizer.Lists.Switches import SwitchData
-from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem
+from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem, getCompletableBonuses
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.ShuffleBosses import (
@@ -379,6 +379,11 @@ class Settings:
         self.kasplat_rando_setting = None
         self.puzzle_rando = None  # Deprecated
         self.puzzle_rando_difficulty = PuzzleRando.off
+        self.jetpac_platform_data = [
+            (0xC0, 0x30, 4),
+            (0x20, 0x48, 4),
+            (0x78, 0x60, 2),
+        ]
         self.shuffle_shops = None
         self.switchsanity = SwitchsanityLevel.off
         self.switchsanity_data = {}
@@ -1112,110 +1117,6 @@ class Settings:
             for x in range(8):
                 self.password[x] = random.randint(1, 6)
 
-        # Win Condition
-        wincon_items = {
-            WinConditionComplex.beat_krool: HelmDoorInfo(
-                1,
-                HelmDoorRandomInfo(1, 1, 0.06),
-                HelmDoorRandomInfo(1, 1, 0.06),
-                HelmDoorRandomInfo(1, 1, 0.03),
-            ),
-            WinConditionComplex.dk_rap_items: HelmDoorInfo(
-                1,
-                HelmDoorRandomInfo(1, 1, 0.04),
-                HelmDoorRandomInfo(1, 1, 0.04),
-                HelmDoorRandomInfo(1, 1, 0.02),
-            ),
-            WinConditionComplex.krem_kapture: HelmDoorInfo(
-                1,
-                HelmDoorRandomInfo(1, 1, 0.06),
-                HelmDoorRandomInfo(1, 1, 0.03),
-            ),
-            WinConditionComplex.get_key8: HelmDoorInfo(1),
-            WinConditionComplex.req_gb: HelmDoorInfo(
-                201,
-                HelmDoorRandomInfo(80, 150, 0.1),
-                HelmDoorRandomInfo(60, 80, 0.1),
-                HelmDoorRandomInfo(40, 60, 0.15),
-            ),
-            WinConditionComplex.req_bp: HelmDoorInfo(
-                40,
-                HelmDoorRandomInfo(25, 35, 0.09),
-                HelmDoorRandomInfo(20, 25, 0.1),
-                HelmDoorRandomInfo(5, 20, 0.1),
-            ),
-            WinConditionComplex.req_companycoins: HelmDoorInfo(
-                2,
-                HelmDoorRandomInfo(1, 2, 0.05),
-            ),
-            WinConditionComplex.req_key: HelmDoorInfo(
-                8,
-                HelmDoorRandomInfo(7, 8, 0.05),
-                HelmDoorRandomInfo(7, 8, 0.1),
-                HelmDoorRandomInfo(7, 8, 0.1),
-            ),
-            WinConditionComplex.req_medal: HelmDoorInfo(
-                40,
-                HelmDoorRandomInfo(25, 35, 0.09),
-                HelmDoorRandomInfo(20, 25, 0.1),
-                HelmDoorRandomInfo(5, 20, 0.1),
-            ),
-            WinConditionComplex.req_crown: HelmDoorInfo(
-                10,
-                HelmDoorRandomInfo(7, 9, 0.1),
-                HelmDoorRandomInfo(4, 7, 0.1),
-                HelmDoorRandomInfo(2, 4, 0.06),
-            ),
-            WinConditionComplex.req_fairy: HelmDoorInfo(
-                20,
-                HelmDoorRandomInfo(12, 18, 0.1),
-                HelmDoorRandomInfo(8, 12, 0.12),
-                HelmDoorRandomInfo(1, 8, 0.18),
-            ),
-            WinConditionComplex.req_rainbowcoin: HelmDoorInfo(
-                16,
-                HelmDoorRandomInfo(10, 16, 0.11),
-                HelmDoorRandomInfo(6, 10, 0.14),
-                HelmDoorRandomInfo(3, 6, 0.18),
-            ),
-            WinConditionComplex.req_bean: HelmDoorInfo(
-                1,
-                HelmDoorRandomInfo(1, 1, 0.05),
-                HelmDoorRandomInfo(1, 1, 0.01),
-            ),
-            WinConditionComplex.req_pearl: HelmDoorInfo(
-                5,
-                HelmDoorRandomInfo(4, 5, 0.05),
-                HelmDoorRandomInfo(3, 4, 0.1),
-                HelmDoorRandomInfo(1, 3, 0.13),
-            ),
-        }
-        random_win_con_settings = (
-            WinConditionComplex.easy_random,
-            WinConditionComplex.medium_random,
-            WinConditionComplex.hard_random,
-        )
-        self.win_condition_random = self.win_condition_item in random_win_con_settings
-        win_con_pool = {}
-        wc_diff = random_win_con_settings.index(self.win_condition_item) if self.win_condition_item in random_win_con_settings else None
-        for item in wincon_items:
-            data = wincon_items[item]
-            wc_info = data.getDifficultyInfo(wc_diff)
-            if wc_info is not None:
-                win_con_pool[item] = wc_info.chooseAmount()
-        if self.win_condition_random:
-            potential_items = list(win_con_pool.keys())
-            potential_item_weights = []
-            for x in potential_items:
-                data = wincon_items[x].getDifficultyInfo(wc_diff)
-                weight = 0 if data is None else data.selection_weight
-                potential_item_weights.append(weight)
-            selected_item = random.choices(potential_items, weights=potential_item_weights, k=1)[0]
-            self.win_condition_item = selected_item
-            self.win_condition_count = win_con_pool[selected_item]
-        if self.win_condition_item in helmdoor_items.keys():
-            self.win_condition_count = min(self.win_condition_count, wincon_items[self.win_condition_item].absolute_max)
-
         if self.dk_portal_location_rando_v2 != DKPortalRando.off:
             level_base_maps = [Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle]
             self.level_portal_destinations = [
@@ -1445,6 +1346,112 @@ class Settings:
         self.helm_order = orderedRooms
         self.kong_helm_order = rooms
 
+        # Win Condition
+        wincon_items = {
+            WinConditionComplex.beat_krool: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.03),
+            ),
+            WinConditionComplex.dk_rap_items: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.04),
+                HelmDoorRandomInfo(1, 1, 0.04),
+                HelmDoorRandomInfo(1, 1, 0.02),
+            ),
+            WinConditionComplex.krem_kapture: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.06),
+                HelmDoorRandomInfo(1, 1, 0.03),
+            ),
+            WinConditionComplex.get_key8: HelmDoorInfo(1),
+            WinConditionComplex.req_gb: HelmDoorInfo(
+                201,
+                HelmDoorRandomInfo(80, 150, 0.1),
+                HelmDoorRandomInfo(60, 80, 0.1),
+                HelmDoorRandomInfo(40, 60, 0.15),
+            ),
+            WinConditionComplex.req_bp: HelmDoorInfo(
+                40,
+                HelmDoorRandomInfo(25, 35, 0.09),
+                HelmDoorRandomInfo(20, 25, 0.1),
+                HelmDoorRandomInfo(5, 20, 0.1),
+            ),
+            WinConditionComplex.req_companycoins: HelmDoorInfo(
+                2,
+                HelmDoorRandomInfo(1, 2, 0.05),
+            ),
+            WinConditionComplex.req_key: HelmDoorInfo(
+                8,
+                HelmDoorRandomInfo(7, 8, 0.05),
+                HelmDoorRandomInfo(7, 8, 0.1),
+                HelmDoorRandomInfo(7, 8, 0.1),
+            ),
+            WinConditionComplex.req_medal: HelmDoorInfo(
+                40,
+                HelmDoorRandomInfo(25, 35, 0.09),
+                HelmDoorRandomInfo(20, 25, 0.1),
+                HelmDoorRandomInfo(5, 20, 0.1),
+            ),
+            WinConditionComplex.req_crown: HelmDoorInfo(
+                10,
+                HelmDoorRandomInfo(7, 9, 0.1),
+                HelmDoorRandomInfo(4, 7, 0.1),
+                HelmDoorRandomInfo(2, 4, 0.06),
+            ),
+            WinConditionComplex.req_fairy: HelmDoorInfo(
+                20,
+                HelmDoorRandomInfo(12, 18, 0.1),
+                HelmDoorRandomInfo(8, 12, 0.12),
+                HelmDoorRandomInfo(1, 8, 0.18),
+            ),
+            WinConditionComplex.req_rainbowcoin: HelmDoorInfo(
+                16,
+                HelmDoorRandomInfo(10, 16, 0.11),
+                HelmDoorRandomInfo(6, 10, 0.14),
+                HelmDoorRandomInfo(3, 6, 0.18),
+            ),
+            WinConditionComplex.req_bean: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.05),
+                HelmDoorRandomInfo(1, 1, 0.01),
+            ),
+            WinConditionComplex.req_pearl: HelmDoorInfo(
+                5,
+                HelmDoorRandomInfo(4, 5, 0.05),
+                HelmDoorRandomInfo(3, 4, 0.1),
+                HelmDoorRandomInfo(1, 3, 0.13),
+            ),
+            WinConditionComplex.req_bosses: HelmDoorInfo(7),
+            WinConditionComplex.req_bonuses: HelmDoorInfo(len(getCompletableBonuses(self))),
+        }
+        random_win_con_settings = (
+            WinConditionComplex.easy_random,
+            WinConditionComplex.medium_random,
+            WinConditionComplex.hard_random,
+        )
+        self.win_condition_random = self.win_condition_item in random_win_con_settings
+        win_con_pool = {}
+        wc_diff = random_win_con_settings.index(self.win_condition_item) if self.win_condition_item in random_win_con_settings else None
+        for item in wincon_items:
+            data = wincon_items[item]
+            wc_info = data.getDifficultyInfo(wc_diff)
+            if wc_info is not None:
+                win_con_pool[item] = wc_info.chooseAmount()
+        if self.win_condition_random:
+            potential_items = list(win_con_pool.keys())
+            potential_item_weights = []
+            for x in potential_items:
+                data = wincon_items[x].getDifficultyInfo(wc_diff)
+                weight = 0 if data is None else data.selection_weight
+                potential_item_weights.append(weight)
+            selected_item = random.choices(potential_items, weights=potential_item_weights, k=1)[0]
+            self.win_condition_item = selected_item
+            self.win_condition_count = win_con_pool[selected_item]
+        if self.win_condition_item in wincon_items.keys():
+            self.win_condition_count = min(self.win_condition_count, wincon_items[self.win_condition_item].absolute_max)
+
         # Initial Switch Level Placement - Will be corrected if level order rando is on during the fill process. Disable it for vanilla
         if self.level_randomization == LevelRandomization.vanilla:
             self.alter_switch_allocation = False
@@ -1480,6 +1487,40 @@ class Settings:
             self.mill_levers = [0] * 5
             for slot in range(mill_lever_cap):
                 self.mill_levers[slot] = random.randint(1, 3)
+
+        # Jetpac Platforms
+        if self.puzzle_rando_difficulty in (PuzzleRando.medium, PuzzleRando.hard, PuzzleRando.chaos):
+            self.jetpac_platform_data = []
+            exclusion_zones = [
+                # Order: minx maxz miny maxy
+                (158, 178, 0, 200),  # Drop chute
+            ]
+            exclusion_y = 0x24
+            exclusion_pad_x = 4
+            for _ in range(3):
+                x = None
+                y = None
+                width = None
+                while True:
+                    x = random.randint(32, 192)
+                    y = random.randint(exclusion_y, 0xB8 - exclusion_y)
+                    width = random.choice([1, 2, 2, 3, 3, 4, 4, 5])
+                    x_right = x + 0x10 + (width * 8)
+                    is_excluded = False
+                    for zone in exclusion_zones:
+                        if x_right < zone[0] or x > zone[1]:
+                            continue
+                        if y > zone[2] and y < zone[3]:
+                            is_excluded = True
+                    if not is_excluded:
+                        break
+                self.jetpac_platform_data.append((x, y, width))
+                exclusion_zones.append([
+                    x - exclusion_pad_x,
+                    x + 0x10 + (width * 8) + exclusion_pad_x,
+                    y - exclusion_y,
+                    y + exclusion_y,
+                ])
 
         if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies, False):
             jetpac_levels = list(range(8))
@@ -1760,8 +1801,8 @@ class Settings:
             if Types.Shockwave in self.shuffled_location_types and self.shockwave_status == ShockwaveStatus.shuffled_decoupled:
                 self.location_item_balance -= 1  # If camera/shockwave is decoupled and shuffled, we gain one additional item
             self.location_item_balance += 8 - len(self.krool_keys_required)  # We don't have to place starting keys so we may lose items here
-            if Types.Kong in self.shuffled_location_types:
-                self.location_item_balance -= 4  # Kong cages *can* be filled by Kongs, but nothing else. We'll treat these as lost locations in all worlds due to the rarity of this.
+            # if Types.Kong in self.shuffled_location_types:
+            #     self.location_item_balance -= 4  # Kong cages *can* be filled by Kongs, but nothing else. We'll treat these as lost locations in all worlds due to the rarity of this.
         # With some light algebra we get the maximum number of shared shops we can fill before we start running into fill problems
         self.max_shared_shops = math.floor(25 - self.location_item_balance / -4)
         if self.smaller_shops:
@@ -1946,7 +1987,7 @@ class Settings:
             shuffledLocations = [
                 location
                 for location in spoiler.LocationList
-                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Kong, Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
+                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
             ]
             shuffledLocationsShopOwner = [
                 location
@@ -2259,8 +2300,8 @@ class Settings:
                 junk_space_available += 100  # Rough estimate, not to be used as factual
             if Types.Shop in self.shuffled_location_types:
                 junk_space_available += 30  # Rough estimate, not to be used as factual
-            if Types.Kong in self.shuffled_location_types:
-                junk_space_available -= 5 - len(self.starting_kong_list)  # Not always this, Kongs in cages are so rare it may as well be
+            # if Types.Kong in self.shuffled_location_types:
+            #     junk_space_available -= 5 - len(self.starting_kong_list)  # Not always this, Kongs in cages are so rare it may as well be
             # Shopkeepers don't get placed in their vanilla locations (essentially a start with)
             if Types.Cranky in self.shuffled_location_types:
                 junk_space_available -= 1

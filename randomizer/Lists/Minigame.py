@@ -569,6 +569,36 @@ MinigameRequirements = {
         can_repeat=True,
         logic=lambda l: l.swim or not l.settings.bonus_barrel_rando,
     ),
+    Minigames.Arcade25: Minigame(
+        name="DK Arcade 25m",
+        group="Arcade",
+        map_id=Maps.Arcade25,
+        logic=lambda l: True,
+    ),
+    Minigames.Arcade50: Minigame(
+        name="DK Arcade 50m",
+        group="Arcade",
+        map_id=Maps.Arcade50,
+        logic=lambda l: True,
+    ),
+    Minigames.Arcade75: Minigame(
+        name="DK Arcade 75m",
+        group="Arcade",
+        map_id=Maps.Arcade75,
+        logic=lambda l: True,
+    ),
+    Minigames.Arcade100: Minigame(
+        name="DK Arcade 100m",
+        group="Arcade",
+        map_id=Maps.Arcade100,
+        logic=lambda l: True,
+    ),
+    Minigames.JetpacRocket: Minigame(
+        name="Jetpac Rocket Building",
+        group="Arcade",
+        map_id=Maps.JetpacRocket,
+        logic=lambda l: True,
+    ),
 }
 
 # If you make changes to this list, make sure to change the corresponding

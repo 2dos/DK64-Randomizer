@@ -2710,22 +2710,22 @@ def FillKongs(spoiler: Spoiler, placedTypes: List[Types], placedItems: List[Item
         PlaceItems(spoiler, FillAlgorithm.assumed, kongItems, assumedItems)
         # If we didn't put an item in a kong location, then it gets a NoItem
         # This matters specifically so the logic around items inside Kong cages (VERY important for Diddy's cage) behaves properly
-        if spoiler.LocationList[Locations.DiddyKong].item is None:
-            spoiler.LocationList[Locations.DiddyKong].PlaceItem(spoiler, Items.NoItem)
-        else:
-            spoiler.LocationList[Locations.DiddyKong].kong = spoiler.settings.diddy_freeing_kong  # If any Kong cage DOES have a kong, update the location's assigned Kong
-        if spoiler.LocationList[Locations.TinyKong].item is None:
-            spoiler.LocationList[Locations.TinyKong].PlaceItem(spoiler, Items.NoItem)
-        else:
-            spoiler.LocationList[Locations.TinyKong].kong = spoiler.settings.tiny_freeing_kong
-        if spoiler.LocationList[Locations.LankyKong].item is None:
-            spoiler.LocationList[Locations.LankyKong].PlaceItem(spoiler, Items.NoItem)
-        else:
-            spoiler.LocationList[Locations.LankyKong].kong = spoiler.settings.lanky_freeing_kong
-        if spoiler.LocationList[Locations.ChunkyKong].item is None:
-            spoiler.LocationList[Locations.ChunkyKong].PlaceItem(spoiler, Items.NoItem)
-        else:
-            spoiler.LocationList[Locations.ChunkyKong].kong = spoiler.settings.chunky_freeing_kong
+        # if spoiler.LocationList[Locations.DiddyKong].item is None:
+        #     spoiler.LocationList[Locations.DiddyKong].PlaceItem(spoiler, Items.NoItem)
+        # else:
+        spoiler.LocationList[Locations.DiddyKong].kong = spoiler.settings.diddy_freeing_kong  # If any Kong cage DOES have a kong, update the location's assigned Kong
+        # if spoiler.LocationList[Locations.TinyKong].item is None:
+        #     spoiler.LocationList[Locations.TinyKong].PlaceItem(spoiler, Items.NoItem)
+        # else:
+        spoiler.LocationList[Locations.TinyKong].kong = spoiler.settings.tiny_freeing_kong
+        # if spoiler.LocationList[Locations.LankyKong].item is None:
+        #     spoiler.LocationList[Locations.LankyKong].PlaceItem(spoiler, Items.NoItem)
+        # else:
+        spoiler.LocationList[Locations.LankyKong].kong = spoiler.settings.lanky_freeing_kong
+        # if spoiler.LocationList[Locations.ChunkyKong].item is None:
+        #     spoiler.LocationList[Locations.ChunkyKong].PlaceItem(spoiler, Items.NoItem)
+        # else:
+        spoiler.LocationList[Locations.ChunkyKong].kong = spoiler.settings.chunky_freeing_kong
         spoiler.settings.update_valid_locations(spoiler)
     # If kongs must be in Kong cages, we need to be more careful
     else:

@@ -282,6 +282,7 @@ class MinigamesListSelected(IntEnum):
     helm_minigames = 16
     arenas = 17
     training_minigames = 18
+    arcade = 19
 
 class MiscChangesSelected(IntEnum):
     auto_dance_skip = 1
@@ -436,6 +437,8 @@ class WinConditionComplex(IntEnum):
     medium_random = 14
     hard_random = 15
     dk_rap_items = 16
+    req_bosses = 17
+    req_bonuses = 18
 
 class WrinklyHints(IntEnum):
     off = 0

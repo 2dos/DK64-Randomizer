@@ -72,7 +72,7 @@ void checkTotalCache(void) {
 }
 
 void finishHelmHurry(void) {
-    setFlag(FLAG_HELM_HURRY_DISABLED, 1, FLAGTYPE_PERMANENT);
+    setPermFlag(FLAG_HELM_HURRY_DISABLED);
     recently_disabled_helm_hurry = 1;
     save(); // Save all stats
     SaveToGlobal();

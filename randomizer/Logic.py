@@ -59,7 +59,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Patching.Library.Generic import IsItemSelected, getProgHintBarrierItem
+from randomizer.Patching.Library.Generic import IsItemSelected, getProgHintBarrierItem, sumChecks, getCompletableBonuses
 from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
@@ -218,6 +218,9 @@ class LogicVarHolder:
 
         self.superSlam = False
         self.superDuperSlam = False
+
+        self.bosses_beaten = 0
+        self.bonuses_beaten = 0
 
         self.Blueprints = []
 
@@ -419,6 +422,17 @@ class LogicVarHolder:
                 )
             )
         self.allTrainingChecks = self.allTrainingChecks or has_all
+
+        self.bosses_beaten = sumChecks(self.spoiler, ownedItems, (
+            Locations.JapesKey,
+            Locations.AztecKey,
+            Locations.FactoryKey,
+            Locations.GalleonKey,
+            Locations.ForestKey,
+            Locations.CavesKey,
+            Locations.CastleKey,
+        ))
+        self.bonuses_beaten = sumChecks(self.spoiler, ownedItems, getCompletableBonuses(self.spoiler.settings))
 
         self.Slam = item_counts[Items.ProgressiveSlam] + STARTING_SLAM
         self.AmmoBelts = item_counts[Items.ProgressiveAmmoBelt]
@@ -1149,14 +1163,15 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
+        condition = self.settings.win_condition_item
         # Special Win Cons
-        if self.settings.win_condition_item == WinConditionComplex.beat_krool:
+        if condition == WinConditionComplex.beat_krool:
             return Events.KRoolDefeated in self.Events
-        elif self.settings.win_condition_item == WinConditionComplex.krem_kapture:  # Photo taking doesn't have a perfect wincon so this'll do until something better is concocted
+        elif condition == WinConditionComplex.krem_kapture:  # Photo taking doesn't have a perfect wincon so this'll do until something better is concocted
             return Events.KRoolDefeated in self.Events and self.camera
-        elif self.settings.win_condition_item == WinConditionComplex.get_key8:
+        elif condition == WinConditionComplex.get_key8:
             return self.HelmKey
-        elif self.settings.win_condition_item == WinConditionComplex.dk_rap_items:
+        elif condition == WinConditionComplex.dk_rap_items:
             dk_rap_items = [
                 self.donkey,
                 self.diddy,
@@ -1188,6 +1203,10 @@ class LogicVarHolder:
                 if not k:
                     return False
             return True
+        elif condition == WinConditionComplex.req_bonuses:
+            return self.bonuses_beaten >= self.settings.win_condition_count
+        elif condition == WinConditionComplex.req_bosses:
+            return self.bosses_beaten >= self.settings.win_condition_count
         # Get X amount of Y item win cons
         win_con_table = {
             WinConditionComplex.req_bean: BarrierItems.Bean,
@@ -1201,9 +1220,9 @@ class LogicVarHolder:
             WinConditionComplex.req_pearl: BarrierItems.Pearl,
             WinConditionComplex.req_rainbowcoin: BarrierItems.RainbowCoin,
         }
-        if self.settings.win_condition_item not in win_con_table:
+        if condition not in win_con_table:
             raise Exception(f"Invalid Win Condition {self.settings.win_condition_item.name}")
-        return self.ItemCheck(win_con_table[self.settings.win_condition_item], self.settings.win_condition_count)
+        return self.ItemCheck(win_con_table[condition], self.settings.win_condition_count)
 
     def CanGetRarewareCoin(self):
         """Check if you meet the logical requirements to obtain the Rareware Coin."""

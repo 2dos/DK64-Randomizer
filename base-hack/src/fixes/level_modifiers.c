@@ -75,7 +75,7 @@ void handleTimeOfDay(time_of_day_calls call) {
 	fungi_time time = Rando.fungi_time_of_day_setting;
 	if (time == TIME_NIGHT) {
 		if (call == TODCALL_INITFILE) {
-			setFlag(FLAG_MODIFIER_FUNGINIGHT, 1, FLAGTYPE_PERMANENT);
+			setPermFlag(FLAG_MODIFIER_FUNGINIGHT);
 		}
 	} else if (time == TIME_PROGRESSIVE) {
 		if (call == TODCALL_FUNGIACTIVE) {

@@ -565,7 +565,8 @@
     "peril_path_panic": 15,
     "helm_minigames": 16,
     "arenas": 17,
-    "training_minigames": 18
+    "training_minigames": 18,
+    "arcade": 19
   },
 
   /*
@@ -845,7 +846,9 @@
     "easy_random": 13,
     "medium_random": 14,
     "hard_random": 15,
-    "dk_rap_items": 16
+    "dk_rap_items": 16,
+    "req_bosses": 17,
+    "req_bonuses": 18
   },
 
   /*

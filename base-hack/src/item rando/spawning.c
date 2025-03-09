@@ -202,7 +202,7 @@ void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1,
     int cutscene = 1;
     if (object == 0x2F) {
         // Junk Item. Set flag as we're spawning 4 unflagged melons and we want it to update check screen
-        setFlag(flag, 1, FLAGTYPE_PERMANENT);
+        setPermFlag(flag);
     }
     if (checkFlag(flag, FLAGTYPE_PERMANENT) || (object == (CUSTOM_ACTORS_START + NEWACTOR_NULL))) {
         spawn_count = 4;

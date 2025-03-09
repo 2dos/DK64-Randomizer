@@ -235,6 +235,11 @@ static const char banned_trap_maps[] = {
     /*.k_lumsy_ending =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
     /*.k_rools_shoe =*/ ICETRAPREQ_SUPER, // Reason: Boss Map
     /*.k_rools_arena =*/ ICETRAPREQ_BANNED, // Reason: Cutscene Map
+    /*.arcade_25m =*/ ICETRAPREQ_BANNED, // Reason: Arcade
+    /*.arcade_50m =*/ ICETRAPREQ_BANNED, // Reason: Arcade
+    /*.arcade_75m =*/ ICETRAPREQ_BANNED, // Reason: Arcade
+    /*.arcade_100m =*/ ICETRAPREQ_BANNED, // Reason: Arcade
+    /*.jetpac_rocket = */ ICETRAPREQ_BANNED, // Reason: Jetpac
 };
 static const movement_bitfield banned_trap_movement = {
     .null_state = 0,
