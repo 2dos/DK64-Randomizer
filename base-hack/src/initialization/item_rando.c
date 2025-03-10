@@ -398,7 +398,7 @@ void initItemRando(void) {
     }
     // Kong Check Table
     int kong_size = 4;
-    kongcheck_db_item* kong_write = getFile(kong_size << 2, 0x1FF1020);
+    kongcheck_db_item* kong_write = getFile(kong_size * 6, 0x1FF1020);
     for (int i = 0; i < kong_size; i++) {
         kong_check_data[i] = kong_write[i];
     }

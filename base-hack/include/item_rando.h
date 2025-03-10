@@ -1,6 +1,8 @@
 typedef struct kongcheck_db_item {
     /* 0x000 */ short flag;
     /* 0x002 */ short model;
+    /* 0x004 */ unsigned char no_textures;
+    /* 0x005 */ char unk5;
 } kongcheck_db_item;
 
 typedef enum kongcheck_enum {
