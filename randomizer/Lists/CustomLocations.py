@@ -6030,7 +6030,7 @@ CustomLocations = {
             z=638,
             max_size=48,
             logic_region=Regions.HideoutHelmLobby,
-            logic=lambda l: (l.can_use_vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and l.istiny and l.twirl),
+            logic=lambda l: (l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.can_use_vines) or (l.advanced_platforming and l.istiny and l.twirl),
             group=7,
         ),
         CustomLocation(
