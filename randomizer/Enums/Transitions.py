@@ -89,8 +89,8 @@ class Transitions(IntEnum):
     FactoryRaceToRandD = auto()
     FactoryChunkyRoomToPower = auto()
     FactoryPowerToChunkyRoom = auto()
-    FactoryBeyondHatchToInsideCore = auto()
-    FactoryInsideCoreToBeyondHatch = auto()
+    FactoryLowerCoreToInsideCore = auto()
+    FactoryInsideCoreToLowerCore = auto()
     FactoryMainToBBlast = auto()
 
     # Gloomy Galleon Exits

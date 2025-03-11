@@ -9,7 +9,7 @@ import threading
 import time
 import sys
 import socket
-from datetime import UTC, datetime
+from datetime import timezone, datetime
 from os import environ, path, walk
 
 import requests
@@ -589,12 +589,12 @@ def get_total_info():
             last_generated_time = datetime.strptime(f.read().strip(), "%Y-%m-%d %H:%M:%S.%f%z")
     except ValueError:
         logging.error("Incorrect date format in last_generated_time.cfg, resetting to current time.")
-        last_generated_time = datetime.now(UTC)
+        last_generated_time = datetime.now(timezone.utc)
         with open("last_generated_time.cfg", "w") as f:
             f.write(last_generated_time.isoformat())
     except Exception:
         # If we can't read the file, just set it to the current time.
-        last_generated_time = datetime.now(UTC)
+        last_generated_time = datetime.now(timezone.utc)
         with open("last_generated_time.cfg", "w") as f:
             f.write(last_generated_time.isoformat())
     return current_total, last_generated_time
