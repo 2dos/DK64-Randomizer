@@ -1141,8 +1141,9 @@ class Spoiler:
                 elif location.type == Types.Kong:
                     flag = ItemList[location.item].flag
                     model = getModelFromItem(location.item, location.type, flag)
-                    if model is not None:
-                        self.WriteKongPlacement(id, location.item, location.type, model, flag)
+                    if model is None:
+                        model = 0
+                    self.WriteKongPlacement(id, location.item, location.type, model, flag)
                 elif location.type == Types.TrainingBarrel and self.settings.training_barrels != TrainingBarrels.normal:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]

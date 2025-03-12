@@ -23,7 +23,7 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
             item_type = x.new_item
             flag = x.new_flag
             model = 0
-            if item is None:
+            if item is None or item == Items.NoItem:
                 item = Items.NoItem
                 item_type = Types.NoItem
                 flag = 0
@@ -89,8 +89,9 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
             ],
         }
         for kong_map in spoiler.shuffled_kong_placement.keys():
-            ROM_COPY.seek(spoiler.settings.rom_data + spoiler.shuffled_kong_placement[kong_map]["puzzle"]["write"])
-            ROM_COPY.writeMultipleBytes(spoiler.shuffled_kong_placement[kong_map]["puzzle"]["kong"], 1)
+            if kong_map != "TrainingGrounds":
+                ROM_COPY.seek(spoiler.settings.rom_data + spoiler.shuffled_kong_placement[kong_map]["puzzle"]["write"])
+                ROM_COPY.writeMultipleBytes(spoiler.shuffled_kong_placement[kong_map]["puzzle"]["kong"], 1)
 
         for cont_map_id in kongrando_changes:
             cont_map = kongrando_changes[cont_map_id]

@@ -1299,6 +1299,71 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80028DB8, Overlay.Menu, 0x1040000A, offset_dict, 4)  # BEQ $v0, $r0, 0xA - Change text signal
     writeValue(ROM_COPY, 0x80028CA6, Overlay.Menu, 5, offset_dict)  # Change selecting orange to delete confirm screen
 
+    # Collision Adjustments
+    COLLISION_START = getSym("object_collisions")
+    COLLISION_COUNT = getVar("collision_limit")
+    COLLISION_SIZE = 0x18
+
+    if settings.free_trade_blueprints:
+        for i in range(COLLISION_COUNT):
+            obj_i = COLLISION_START + (i * COLLISION_SIZE)
+            addr = getROMAddress(obj_i + 2, Overlay.Custom, offset_dict)
+            ROM_COPY.seek(addr)
+            collectable_type = int.from_bytes(ROM_COPY.readBytes(1), "big")
+            if collectable_type == 12:  # Blueprint
+                writeValue(ROM_COPY, obj_i + 0xC, Overlay.Custom, 0, offset_dict)
+    collision_hi = getHi(COLLISION_START)
+    collision_lo = getLo(COLLISION_START)
+    writeValue(ROM_COPY, 0x806F48D2, Overlay.Static, collision_hi, offset_dict)
+    writeValue(ROM_COPY, 0x806F48D6, Overlay.Static, collision_lo, offset_dict)
+    writeValue(ROM_COPY, 0x806F4A8E, Overlay.Static, COLLISION_COUNT, offset_dict)
+    writeValue(ROM_COPY, 0x806F4E7E, Overlay.Static, collision_hi, offset_dict)
+    writeValue(ROM_COPY, 0x806F4E8E, Overlay.Static, collision_lo, offset_dict)
+    writeValue(ROM_COPY, 0x806F51C2, Overlay.Static, getHi(COLLISION_START + 0xC), offset_dict)
+    writeValue(ROM_COPY, 0x806F51CE, Overlay.Static, getLo(COLLISION_START + 0xC), offset_dict)
+    writeValue(ROM_COPY, 0x806F5556, Overlay.Static, getHi(COLLISION_START + 2), offset_dict)
+    writeValue(ROM_COPY, 0x806F5562, Overlay.Static, getLo(COLLISION_START + 2), offset_dict)
+    writeValue(ROM_COPY, 0x806F626E, Overlay.Static, collision_hi, offset_dict)
+    writeValue(ROM_COPY, 0x806F627A, Overlay.Static, collision_lo, offset_dict)
+    writeValue(ROM_COPY, 0x806F6AC6, Overlay.Static, collision_hi, offset_dict)
+    writeValue(ROM_COPY, 0x806F6ACE, Overlay.Static, collision_lo, offset_dict)
+    writeValue(ROM_COPY, 0x806F742A, Overlay.Static, collision_hi, offset_dict)
+    writeValue(ROM_COPY, 0x806F744A, Overlay.Static, collision_lo, offset_dict)
+    writeValue(ROM_COPY, 0x806F7996, Overlay.Static, getHi(COLLISION_START + (COLLISION_COUNT * COLLISION_SIZE)), offset_dict)
+    writeValue(ROM_COPY, 0x806F799A, Overlay.Static, getLo(COLLISION_START + (COLLISION_COUNT * COLLISION_SIZE)), offset_dict)
+    # Change new sizes
+    writeValue(ROM_COPY, 0x806F4A92, Overlay.Static, COLLISION_SIZE, offset_dict)
+    writeValue(ROM_COPY, 0x806F4EAA, Overlay.Static, COLLISION_SIZE, offset_dict)
+    writeValue(ROM_COPY, 0x806F51B4, Overlay.Static, 0x240A0000 | COLLISION_SIZE, offset_dict, 4) # addiu $t2, $zero (sizeof(collision_info))
+    writeValue(ROM_COPY, 0x806F51B8, Overlay.Static, 0x01420019, offset_dict, 4) # multu $t2, $v0
+    writeValue(ROM_COPY, 0x806F51BC, Overlay.Static, 0x00004812, offset_dict, 4) # mflo $t1
+    writeValue(ROM_COPY, 0x806F5548, Overlay.Static, 0x240A0000 | COLLISION_SIZE, offset_dict, 4) # addiu $t2, $zero (sizeof(collision_info))
+    writeValue(ROM_COPY, 0x806F554C, Overlay.Static, 0x01420019, offset_dict, 4) # multu $t2, $v0
+    writeValue(ROM_COPY, 0x806F5550, Overlay.Static, 0x00005012, offset_dict, 4) # mflo $t2
+    writeValue(ROM_COPY, 0x806F6282, Overlay.Static, COLLISION_SIZE, offset_dict)
+    writeValue(ROM_COPY, 0x806F6ABE, Overlay.Static, COLLISION_SIZE, offset_dict)
+    writeValue(ROM_COPY, 0x806F799E, Overlay.Static, COLLISION_SIZE, offset_dict)
+
+    # Drop Table
+    REPLENISHABLES = (
+        0x2F, # Watermelon
+        0x34, # Orange
+        0x33, # Ammo Crate
+        0x79, # Crystal
+    )
+    if settings.no_melons and Types.Enemies not in settings.shuffled_location_types:
+        DROP_TABLE = getSym("drops")
+        for i in range(35):  # DROP_COUNT -  TODO: Hook this up with a var
+            DROP_START = DROP_TABLE + (i * 6)
+            drop_i = getROMAddress(DROP_START, Overlay.Custom, offset_dict)
+            ROM_COPY.seek(drop_i)
+            drop_source = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            if drop_source != 0:
+                ROM_COPY.seek(drop_i + 2)
+                drop_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                if drop_type in REPLENISHABLES:
+                    writeValue(ROM_COPY, drop_i, Overlay.Custom, 3, offset_dict)
+
     # Move Decoupling
     # Strong Kong
     writeValue(ROM_COPY, 0x8067ECFC, Overlay.Static, 0x30810002, offset_dict, 4)  # ANDI $at $a0 2
@@ -3228,8 +3293,3 @@ def patchAssembly(ROM_COPY, spoiler):
     for flag in file_init_flags:
         ROM_COPY.writeMultipleBytes(flag, 2)
     ROM_COPY.writeMultipleBytes(0xFFFF, 2)
-
-    # Settings to check usage
-    # faster_checks.rabbit_race
-    # quality_of_life.caves_kosha_dead
-    # galleon_water_raised

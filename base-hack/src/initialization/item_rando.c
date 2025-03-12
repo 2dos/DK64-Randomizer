@@ -443,7 +443,5 @@ void initItemRando(void) {
         }
     }
     // Other init
-    initItemDropTable();
-    initCollectableCollision();
     initActorDefs();
 }
