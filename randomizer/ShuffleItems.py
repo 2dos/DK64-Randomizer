@@ -83,8 +83,13 @@ def ShuffleItems(spoiler):
         junk_invasion = ice_trap_count - 16
         ice_trap_flag_range.extend(list(range(0x320, 0x320 + junk_invasion)))
     junk_item_flag_range = list(range(0x320 + junk_invasion, 0x320 + 100))
+    ap_start = 0x3CC
+    ap_item_flag_range = []
     if Types.Enemies in spoiler.settings.shuffled_location_types:
         junk_item_flag_range.extend(list(range(0x3CC, 0x3CC + 427)))
+        ap_start += 427
+    if Types.ArchipelagoItem in spoiler.settings.shuffled_location_types:
+        ap_item_flag_range = list(range(ap_start, ap_start + 1000))
 
     progressive_move_flag_dict = {
         Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
@@ -93,6 +98,7 @@ def ShuffleItems(spoiler):
         Items.IceTrapBubble: ice_trap_flag_range,
     }
     junk_flag_dict = junk_item_flag_range
+    ap_flag_dict = ap_item_flag_range.copy()
     flag_dict = {}
     blueprint_flag_dict = {}
     locations_not_needing_flags = []
@@ -173,6 +179,9 @@ def ShuffleItems(spoiler):
                     locations_not_needing_flags.append(location_selection)
                 elif new_item.type == Types.JunkItem:
                     location_selection.new_flag = junk_flag_dict.pop()
+                    locations_not_needing_flags.append(location_selection)
+                elif new_item.type == Types.ArchipelagoItem:
+                    location_selection.new_flag = ap_flag_dict.pop()
                     locations_not_needing_flags.append(location_selection)
                 # Otherwise we need to put it in the list of locations needing flags
                 else:
