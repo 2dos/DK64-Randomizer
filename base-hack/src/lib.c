@@ -1279,6 +1279,7 @@ int spawnItemOverlay(PURCHASE_TYPES type, int kong, int index, int force) {
 		text_overlay_data[i].flag = index;
 		text_overlay_data[i].kong = kong;
 		text_overlay_data[i].string = (char*)0;
+		text_overlay_data[i].subtitle = (char*)0;
 		text_overlay_data[i].used = 1;
 		return i;
 	}

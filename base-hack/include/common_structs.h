@@ -1342,6 +1342,7 @@ typedef struct move_text_overlay_struct {
 	/* 0x004 */ char* string;
 	/* 0x008 */ unsigned char used;
 	/* 0x009 */ char pad_9[3]; // Used to align with a 4-byte region
+	/* 0x00C */ char* subtitle;
 } move_text_overlay_struct;
 
 typedef struct rgb {

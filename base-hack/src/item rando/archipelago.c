@@ -275,9 +275,16 @@ void handleArchipelagoFeed(void) {
                 return;
             }
             ap_info.safety_text_timer = 180;
+            // Main Title
             text_overlay_data[vacant_spot].string = dk_malloc(0x30);
             dk_memcpy(text_overlay_data[vacant_spot].string, &ap_info.fed_string, 0x21);
             ap_info.fed_string[0] = 0;
+            if (ap_info.fed_subtitle[0]) {
+                // Subtitle
+                text_overlay_data[vacant_spot].subtitle = dk_malloc(0x30);
+                dk_memcpy(text_overlay_data[vacant_spot].subtitle, &ap_info.fed_subtitle, 0x21);
+                ap_info.fed_subtitle[0] = 0;
+            }
         }
     }
 }

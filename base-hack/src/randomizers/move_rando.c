@@ -598,6 +598,7 @@ void getNextMoveText(void) {
 	int p_kong = 0;
 	int p_flag = 0;
 	char* p_string = 0;
+	char* p_subtitle = 0;
 	int has_data = 0;
 	move_text_overlay_struct *used_overlay = &text_overlay_data[paad->index];
 	if (shop_data) {
@@ -612,6 +613,7 @@ void getNextMoveText(void) {
 		p_value = used_overlay->flag;
 		p_kong = used_overlay->kong;
 		p_string = used_overlay->string;
+		p_subtitle = used_overlay->subtitle;
 		p_flag = p_value;
 	} else if (CurrentMap == MAP_FAIRYISLAND) {
 		has_data = 1;
@@ -638,6 +640,7 @@ void getNextMoveText(void) {
 			used_overlay->flag = 0;
 			used_overlay->type = 0;
 			used_overlay->string = 0;
+			used_overlay->subtitle = 0;
 			used_overlay->used = 0;
 			int overlay_count = 0;
 			for (int i = 0; i < LoadedActorCount; i++) {
@@ -780,6 +783,11 @@ void getNextMoveText(void) {
 			}
 			if (override_string) {
 				paad->upper_text = p_string;
+				if (p_subtitle) {
+					paad->lower_text = p_subtitle;
+				} else {
+					paad->lower_text = 0;
+				}
 			} else {
 				if (top_item < 0) {
 					paad->upper_text = (void*)0;
@@ -800,11 +808,11 @@ void getNextMoveText(void) {
 
 
 				}
-			}
-			if (bottom_item < 0) {
-				paad->lower_text = (void*)0;
-			} else {
-				paad->lower_text = getTextPointer(0x27,bottom_item,0);
+				if (bottom_item < 0) {
+					paad->lower_text = (void*)0;
+				} else {
+					paad->lower_text = getTextPointer(0x27,bottom_item,0);
+				}
 			}
 			priceTransplant();
 		}
