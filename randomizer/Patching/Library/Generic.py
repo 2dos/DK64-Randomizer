@@ -685,6 +685,7 @@ def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
         value += local_value
     return value
 
+
 def getCompletableBonuses(settings) -> list:
     """Get a list of bonus barrels that can be completed in a seed."""
     locations = [
@@ -733,13 +734,7 @@ def getCompletableBonuses(settings) -> list:
         Locations.IslesDiddySnidesLobby,
     ]
     if settings.helm_setting != HelmSetting.skip_all and settings.helm_room_bonus_count != HelmBonuses.zero:
-        helm_rooms = [
-            settings.helm_donkey,
-            settings.helm_diddy,
-            settings.helm_lanky,
-            settings.helm_tiny,
-            settings.helm_chunky
-        ]
+        helm_rooms = [settings.helm_donkey, settings.helm_diddy, settings.helm_lanky, settings.helm_tiny, settings.helm_chunky]
         helm_locations = [
             [Locations.HelmDonkey2, Locations.HelmDonkey1],
             [Locations.HelmDiddy1, Locations.HelmDiddy2],
@@ -755,6 +750,7 @@ def getCompletableBonuses(settings) -> list:
                 locations.extend(helm_locations[room_index][:limit])
     return locations
 
+
 class Holidays(IntEnum):
     """Holiday Enum."""
 
@@ -763,9 +759,11 @@ class Holidays(IntEnum):
     Halloween = auto()
     Anniv25 = auto()
 
+
 def sumChecks(spoiler, ownedItems, locations: list) -> int:
     """Sum the amount of checks in a list that have been checked."""
     return sum(spoiler.LocationList[loc].inaccessible or spoiler.LocationList[loc].item in ownedItems for loc in locations)
+
 
 model_indexes = {
     Types.Banana: 0x69,
@@ -790,6 +788,7 @@ model_indexes = {
     Types.Snide: 0x1F,
     Types.Hint: [0x11B, 0x11D, 0x11F, 0x121, 0x123],
 }
+
 
 def getModelFromItem(item: Items, item_type: Types, flag: int, shared: bool = False) -> int:
     """Get the model index associated with an item."""
@@ -821,6 +820,7 @@ def getModelFromItem(item: Items, item_type: Types, flag: int, shared: bool = Fa
         kong = (flag - 0x384) % 5
         return model_indexes[Types.Hint][kong]
     return model
+
 
 def getHolidaySetting(settings):
     """Get the holiday setting."""

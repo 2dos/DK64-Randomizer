@@ -6,6 +6,7 @@ from randomizer.Patching.Library.ASM import *
 
 ENABLE_HELM_GBS = True
 
+
 def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, offset_dict: dict):
     """Expand Save file."""
     expansion = static_expansion + actor_count
@@ -54,6 +55,7 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     writeValue(ROM_COPY, 0x8060BCDE, Overlay.Static, flag_block_size, offset_dict)
     # Reallocate Balloons + Patches
     writeValue(ROM_COPY, 0x80688BCE, Overlay.Static, 0x320 + static_expansion, offset_dict)  # Reallocated to just before model 2 block
+
 
 def saveUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to a save file."""
@@ -105,7 +107,7 @@ def saveUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeValue(ROM_COPY, 0x80028FA4, Overlay.Menu, 0, offset_dict, 4)  # File 3 Opacity
     writeValue(ROM_COPY, 0x80028DB8, Overlay.Menu, 0x1040000A, offset_dict, 4)  # BEQ $v0, $r0, 0xA - Change text signal
     writeValue(ROM_COPY, 0x80028CA6, Overlay.Menu, 5, offset_dict)  # Change selecting orange to delete confirm screen
-    # 
+    #
     writeHook(ROM_COPY, 0x8060DFF4, Overlay.Static, "SaveToFileFixes", offset_dict)
     writeHook(ROM_COPY, 0x80031378, Overlay.Boss, "ChunkyPhaseAddedSave", offset_dict)
     # EEPROM Patch

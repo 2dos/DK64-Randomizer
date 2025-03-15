@@ -10,6 +10,7 @@ from randomizer.Patching.ASM.Save import ENABLE_HELM_GBS
 
 FAIRY_LOAD_FIX = True
 
+
 def writeSingleOwnership(ROM_COPY, index, kong):
     """Write the ownership of a particular item to a kong."""
     start = getSym("new_flag_mapping") + (index * 8) + 6
@@ -34,6 +35,7 @@ def writeKongItemOwnership(ROM_COPY, settings):
         start = getSym("new_flag_mapping") + (41 * 8)
         writeValue(ROM_COPY, start, Overlay.Custom, Maps.FactoryBaboonBlast, {}, 1)
         writeValue(ROM_COPY, start + 2, Overlay.Custom, 0, {})
+
 
 def collisionUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to item collision."""
@@ -72,12 +74,12 @@ def collisionUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     # Change new sizes
     writeValue(ROM_COPY, 0x806F4A92, Overlay.Static, COLLISION_SIZE, offset_dict)
     writeValue(ROM_COPY, 0x806F4EAA, Overlay.Static, COLLISION_SIZE, offset_dict)
-    writeValue(ROM_COPY, 0x806F51B4, Overlay.Static, 0x240A0000 | COLLISION_SIZE, offset_dict, 4) # addiu $t2, $zero (sizeof(collision_info))
-    writeValue(ROM_COPY, 0x806F51B8, Overlay.Static, 0x01420019, offset_dict, 4) # multu $t2, $v0
-    writeValue(ROM_COPY, 0x806F51BC, Overlay.Static, 0x00004812, offset_dict, 4) # mflo $t1
-    writeValue(ROM_COPY, 0x806F5548, Overlay.Static, 0x240A0000 | COLLISION_SIZE, offset_dict, 4) # addiu $t2, $zero (sizeof(collision_info))
-    writeValue(ROM_COPY, 0x806F554C, Overlay.Static, 0x01420019, offset_dict, 4) # multu $t2, $v0
-    writeValue(ROM_COPY, 0x806F5550, Overlay.Static, 0x00005012, offset_dict, 4) # mflo $t2
+    writeValue(ROM_COPY, 0x806F51B4, Overlay.Static, 0x240A0000 | COLLISION_SIZE, offset_dict, 4)  # addiu $t2, $zero (sizeof(collision_info))
+    writeValue(ROM_COPY, 0x806F51B8, Overlay.Static, 0x01420019, offset_dict, 4)  # multu $t2, $v0
+    writeValue(ROM_COPY, 0x806F51BC, Overlay.Static, 0x00004812, offset_dict, 4)  # mflo $t1
+    writeValue(ROM_COPY, 0x806F5548, Overlay.Static, 0x240A0000 | COLLISION_SIZE, offset_dict, 4)  # addiu $t2, $zero (sizeof(collision_info))
+    writeValue(ROM_COPY, 0x806F554C, Overlay.Static, 0x01420019, offset_dict, 4)  # multu $t2, $v0
+    writeValue(ROM_COPY, 0x806F5550, Overlay.Static, 0x00005012, offset_dict, 4)  # mflo $t2
     writeValue(ROM_COPY, 0x806F6282, Overlay.Static, COLLISION_SIZE, offset_dict)
     writeValue(ROM_COPY, 0x806F6ABE, Overlay.Static, COLLISION_SIZE, offset_dict)
     writeValue(ROM_COPY, 0x806F799E, Overlay.Static, COLLISION_SIZE, offset_dict)
@@ -97,6 +99,7 @@ def collisionUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeFunction(ROM_COPY, 0x806F5134, Overlay.Static, "getCollisionSquare_New", offset_dict)  # Assigning hitbox to data table
     writeFunction(ROM_COPY, 0x806F6A0C, Overlay.Static, "checkForValidCollision", offset_dict)  # Detecting if object is inside current quadrant
     writeFunction(ROM_COPY, 0x806F6A2C, Overlay.Static, "checkForValidCollision", offset_dict)  # Detecting if object is inside current quadrant
+
 
 def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     """All changes related to item grabbing."""
@@ -175,7 +178,7 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
         ROM_COPY.writeBytes(bytes("REWARD COLLECTED\0", "ascii"))
     # Initialize fixed item scales
     writeFunction(ROM_COPY, 0x806F4918, Overlay.Static, "writeItemScale", offset_dict)  # Write scale to collision info
-    writeValue(ROM_COPY, 0x806F491C, Overlay.Static, 0x87A40066, offset_dict, 4) # LH $a0, 0x66 ($sp)
+    writeValue(ROM_COPY, 0x806F491C, Overlay.Static, 0x87A40066, offset_dict, 4)  # LH $a0, 0x66 ($sp)
 
     writeValue(ROM_COPY, 0x806F4C6E, Overlay.Static, 0x20, offset_dict)  # Change size
     writeValue(ROM_COPY, 0x806F4C82, Overlay.Static, 0x20, offset_dict)  # Change size
@@ -341,6 +344,7 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeHook(ROM_COPY, 0x80680AD4, Overlay.Static, "expandTBarrelResponse", offset_dict)  # Allow Training Barrels to disappear if already beaten
     writeValue(ROM_COPY, 0x80681C16, Overlay.Static, 0xF, offset_dict)  # Disregard most special code from a bonus
 
+
 def fairyFix(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to fixing fairy behavior."""
     # Fix issues where multiple loaded fairies will only allow 1 fairy to be referenced
@@ -388,6 +392,7 @@ def fairyFix(ROM_COPY: LocalROM, settings, offset_dict: dict):
         # I don't think we can sneak in creating the other JALs necessary to calculate distance.
         # We could make this part of "better fairy camera"? This means those calcuations don't need to be made.
 
+
 def dropTableUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to the drop table."""
     # Expand Enemy Drops Table
@@ -399,10 +404,10 @@ def dropTableUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeValue(ROM_COPY, 0x806A5CD6, Overlay.Static, getLoSym("drops"), offset_dict, 2)
     # Drop Table
     REPLENISHABLES = (
-        0x2F, # Watermelon
-        0x34, # Orange
-        0x33, # Ammo Crate
-        0x79, # Crystal
+        0x2F,  # Watermelon
+        0x34,  # Orange
+        0x33,  # Ammo Crate
+        0x79,  # Crystal
     )
     if settings.no_melons and Types.Enemies not in settings.shuffled_location_types:
         DROP_TABLE = getSym("drops")
@@ -416,6 +421,7 @@ def dropTableUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
                 drop_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 if drop_type in REPLENISHABLES:
                     writeValue(ROM_COPY, drop_i, Overlay.Custom, 3, offset_dict)
+
 
 def pauseUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to the pause menu and game HUD."""

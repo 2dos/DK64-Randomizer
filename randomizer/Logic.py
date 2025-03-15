@@ -423,15 +423,19 @@ class LogicVarHolder:
             )
         self.allTrainingChecks = self.allTrainingChecks or has_all
 
-        self.bosses_beaten = sumChecks(self.spoiler, ownedItems, (
-            Locations.JapesKey,
-            Locations.AztecKey,
-            Locations.FactoryKey,
-            Locations.GalleonKey,
-            Locations.ForestKey,
-            Locations.CavesKey,
-            Locations.CastleKey,
-        ))
+        self.bosses_beaten = sumChecks(
+            self.spoiler,
+            ownedItems,
+            (
+                Locations.JapesKey,
+                Locations.AztecKey,
+                Locations.FactoryKey,
+                Locations.GalleonKey,
+                Locations.ForestKey,
+                Locations.CavesKey,
+                Locations.CastleKey,
+            ),
+        )
         self.bonuses_beaten = sumChecks(self.spoiler, ownedItems, getCompletableBonuses(self.spoiler.settings))
 
         self.Slam = item_counts[Items.ProgressiveSlam] + STARTING_SLAM

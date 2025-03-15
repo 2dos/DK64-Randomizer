@@ -9,15 +9,21 @@ from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.Generic import getModelFromItem
 
+
 def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
     """Write kong cage changes for kong rando."""
     if Types.Kong in spoiler.settings.shuffled_location_types:
-        kong_locations = [x for x in spoiler.item_assignment if x.location in (
-            Locations.DiddyKong,
-            Locations.LankyKong,
-            Locations.TinyKong,
-            Locations.ChunkyKong,
-        )]
+        kong_locations = [
+            x
+            for x in spoiler.item_assignment
+            if x.location
+            in (
+                Locations.DiddyKong,
+                Locations.LankyKong,
+                Locations.TinyKong,
+                Locations.ChunkyKong,
+            )
+        ]
         for x in kong_locations:
             item = x.new_subitem
             item_type = x.new_item

@@ -261,13 +261,14 @@ kong_names = {
     Kongs.any: "Any Kong",
 }
 
+
 def getIceTrapText() -> str:
     """Get the text associated with ice traps."""
     input_text = "GOLDEN BANANA"
     while True:
         characters = list(input_text)
         new_characters = []
-        vowels = ["A","E","I","O","U"]
+        vowels = ["A", "E", "I", "O", "U"]
         vowels_in_string = [x for x in characters if x in vowels]
         unique_vowels = list(set(vowels_in_string))
         if len(vowels_in_string) < 3 or len(unique_vowels) < 2:
@@ -302,6 +303,7 @@ def getIceTrapText() -> str:
             new_text = "".join(new_characters)
         if new_text != input_text:
             return f"\x04{new_text}\x04"
+
 
 def appendTextboxChange(spoiler, file_index: int, textbox_index: int, search: str, target: str):
     """Alter a specific textbox."""

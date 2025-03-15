@@ -1,4 +1,5 @@
 """Write ASM data for cosmetic elements."""
+
 import random
 import js
 from randomizer.Patching.Library.ASM import *
@@ -16,6 +17,7 @@ from randomizer.Enums.Models import Model, Sprite
 from randomizer.Enums.Settings import ColorblindMode, ExcludedSongs, KongModels, RandomModels
 from randomizer.Patching.Patcher import ROM
 
+
 class ColorBlindCrosshair:
     """Store all information regarding a colorblind crosshair color data."""
 
@@ -32,6 +34,7 @@ class ColorBlindCrosshair:
         writeValue(ROM_COPY, upper_address, Overlay.Static, hi, offset_dict)
         writeValue(ROM_COPY, lower_address, Overlay.Static, lo, offset_dict)
 
+
 ENABLE_MINIGAME_SPRITE_RANDO = False
 GREATER_CAMERA_CONTROL = True
 CROSSHAIRS = {
@@ -40,6 +43,7 @@ CROSSHAIRS = {
     ColorblindMode.deut: ColorBlindCrosshair(0x318DFF, 0xFFFFFF, 0xE3A900),
     ColorblindMode.trit: ColorBlindCrosshair(0xC72020, 0xFFFFFF, 0x13C4D8),
 }
+
 
 def modelCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic options related to models."""
@@ -114,6 +118,7 @@ def modelCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     writeValue(ROM_COPY, 0x8064F04A, Overlay.Static, settings.wrinkly_rgb[1], offset_dict)
     writeValue(ROM_COPY, 0x8064F046, Overlay.Static, settings.wrinkly_rgb[2], offset_dict)
 
+
 def holidayCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic optiosn related to Holiday mode."""
     holiday = getHoliday(settings)
@@ -171,6 +176,7 @@ def holidayCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
         # Change barrel base sprite
         writeValue(ROM_COPY, 0x80721458, Overlay.Static, getBonusSkinOffset(ExtraTextures.Anniv25Barrel), offset_dict)
 
+
 def musicCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic options related to music."""
     if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.pause_music, False):
@@ -199,6 +205,7 @@ def musicCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     if settings.music_disable_reverb:
         # Disable volume changes that would counteract the dynamic reverb's volume loss
         writeValue(ROM_COPY, 0x80603DB8, Overlay.Static, 0x10000011, offset_dict, 4)  # B 80603E00
+
 
 def arcadeCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic options related to arcade."""
@@ -253,6 +260,7 @@ def arcadeCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
         for addr in dk_addresses:
             rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
             hueShiftImageFromAddress(ROM_COPY, rom_addr, 48, 41, TextureFormat.RGBA5551, dk_shift)
+
 
 def cameraCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic options related to the camera and HUD."""
@@ -313,6 +321,7 @@ def cameraCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     writeValue(ROM_COPY, 0x806FF116, Overlay.Static, crosshair_img, offset_dict)
     writeValue(ROM_COPY, 0x806B78DA, Overlay.Static, crosshair_img, offset_dict)
 
+
 def jetpacCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic options related to jetpac."""
     # Jetpac colors
@@ -331,7 +340,7 @@ def jetpacCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
             {
                 "intensity": [0x59],
                 "channels": [True, False, True],
-            }
+            },
         ]
         # Platform 0
         writeValue(ROM_COPY, 0x80028C4A, Overlay.Jetpac, JETPAC_PLATFORM_COLORS[0]["intensity"][0], offset_dict)
@@ -358,6 +367,7 @@ def jetpacCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
             j_channel_enabled = JETPAC_PLATFORM_COLORS[1]["channels"][plat_index]
             base = 0xAFA80000 if j_channel_enabled else 0xAFA00000
             writeValue(ROM_COPY, plat, Overlay.Jetpac, base | (0x10 + (4 * plat_index)), offset_dict, 4)
+
 
 def otherCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic options related to other elements."""

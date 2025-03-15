@@ -1515,12 +1515,14 @@ class Settings:
                     if not is_excluded:
                         break
                 self.jetpac_platform_data.append((x, y, width))
-                exclusion_zones.append([
-                    x - exclusion_pad_x,
-                    x + 0x10 + (width * 8) + exclusion_pad_x,
-                    y - exclusion_y,
-                    y + exclusion_y,
-                ])
+                exclusion_zones.append(
+                    [
+                        x - exclusion_pad_x,
+                        x + 0x10 + (width * 8) + exclusion_pad_x,
+                        y - exclusion_y,
+                        y + exclusion_y,
+                    ]
+                )
 
         if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies, False):
             jetpac_levels = list(range(8))
