@@ -14,6 +14,7 @@ from randomizer.Patching.Library.Image import getBonusSkinOffset, ExtraTextures,
 from randomizer.Patching.MiscSetupChanges import SpeedUpFungiRabbit
 from randomizer.Enums.Models import Model, Sprite
 from randomizer.Enums.Settings import ColorblindMode, ExcludedSongs, KongModels, RandomModels
+from randomizer.Patching.Patcher import ROM
 
 class ColorBlindCrosshair:
     """Store all information regarding a colorblind crosshair color data."""
