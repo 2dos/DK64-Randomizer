@@ -380,6 +380,10 @@ def FormatSpoiler(value):
 def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed, head_sizes):
     """Update spoiler JSON with cosmetic settings."""
     humanspoiler = spoiler
+    if humanspoiler.get("Settings") is None:
+        humanspoiler["Settings"] = {}
+    if humanspoiler.get("Cosmetics") is None:
+        humanspoiler["Cosmetics"] = {}
     humanspoiler["Settings"]["Cosmetic Seed"] = cosmetic_seed
 
     random_model_choices = [
