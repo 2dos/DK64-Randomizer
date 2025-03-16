@@ -10,10 +10,7 @@ if TYPE_CHECKING:
 
 globals().update(generate_globals(__file__))
 
-try:
-    f = getStringFile("randomizer/Enums/Types.json")
-except Exception:
-    f = getStringFile("worlds/dk64/DK64R/randomizer/Enums/Types.json")
+f = getStringFile("randomizer/Enums/Types.json")
 _data = json.loads(f)
 KeySelector = _data["KeySelector"]
 ItemRandoSelector = _data["ItemRandoSelector"]

@@ -125,14 +125,7 @@ def generate_globals(path):
         if path.startswith("/"):
             path = path[1:]
     # Open and load the JSONC file
-    try:
-        f = getStringFile(path)
-    except Exception:
-        if "worlds/dk64/DK64R/" not in path:
-            path = "worlds/dk64/DK64R/" + path
-            generate_globals(path)
-        else:
-            raise FileNotFoundError(f"Could not find the JSONC file at {path}")
+    f = getStringFile(path)
     enums_data = load_jsonc(f)
 
     new_globals = {}
