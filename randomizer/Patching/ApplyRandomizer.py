@@ -147,7 +147,10 @@ def patching_response(spoiler):
     # Write date to ROM for debugging purposes
 
     dt = Datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S")
-    temp_json = json.loads(spoiler.json)
+    try:
+        temp_json = json.loads(spoiler.json)
+    except Exception:
+        temp_json = {}
     temp_json["Settings"]["Generation Timestamp"] = dt
     spoiler.json = json.dumps(temp_json, indent=4)
     ROM_COPY = LocalROM()
