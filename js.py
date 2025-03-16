@@ -22,9 +22,13 @@ def getStringFile(filename):
     with open(filename, "r") as file:
         return file.read()
 
+pointer_addresses = None
+rom_symbols = None
+try:
+    with open("./static/patches/pointer_addresses.json", "rb") as file:
+        pointer_addresses = json.loads(file.read())
 
-with open("./static/patches/pointer_addresses.json", "rb") as file:
-    pointer_addresses = json.loads(file.read())
-
-with open("./static/patches/symbols.json", "rb") as file:
-    rom_symbols = json.loads(file.read())
+    with open("./static/patches/symbols.json", "rb") as file:
+        rom_symbols = json.loads(file.read())
+except Exception:
+    pass
