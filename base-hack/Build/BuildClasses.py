@@ -492,6 +492,13 @@ class ROMPointerFile:
         rom.seek(self.start)
         self.compressed = int.from_bytes(rom.read(2), "big") == 0x1F8B
 
+    def grabFile(self, rom: BinaryIO) -> bytes:
+        rom.seek(self.start)
+        data = rom.read(self.size)
+        if self.compressed:
+            data = zlib.decompress(data, (15 + 32))
+        return data
+
 
 BOOT_OVERLAY_RDRAM = 0x80000450
 

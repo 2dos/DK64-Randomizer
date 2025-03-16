@@ -5,8 +5,9 @@ import math
 import io
 import randomizer.ItemPool as ItemPool
 from typing import Union
-from randomizer.Patching.Library.Generic import Overlay, IsItemSelected, CustomActors, TableNames
+from randomizer.Patching.Library.Generic import Overlay, IsItemSelected, TableNames
 from randomizer.Patching.Library.Image import getImageFile, TextureFormat
+from randomizer.Patching.Library.ItemRando import CustomActors
 from randomizer.Patching.Library.ASM import *
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import (

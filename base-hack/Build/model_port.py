@@ -551,3 +551,33 @@ def loadNewModels():
     portActorToModelTwo(0x12, "", "candy", 0x90, True, 0.5)
     portActorToModelTwo(0x1E, "", "snide", 0x90, True, 0.5)
     # portModelTwoToActor(0, "rainbow_coin_om2.bin", "rainbow_coin", 0x68, True, 1.0)
+    # Fake Items
+    with open("bean_om1.bin", "rb") as fh:
+        with open("fake_bean_om1.bin", "wb") as fg:
+            fg.write(fh.read(0x414))
+            fg.write(getBonusSkinOffset(ExtraTextures.FakeBean).to_bytes(4, "big"))
+            fh.read(4) # shift read pointer by 4
+            fg.write(fh.read())
+    with open(ROMName, "rb") as rom:
+        bean_om2 = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x198).grabFile(rom)
+        key_om1 = ROMPointerFile(rom, TableNames.ActorGeometry, 0xA4).grabFile(rom)
+        key_om2 = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x13C).grabFile(rom)
+        with open("fake_bean_om2.bin", "wb") as fh:
+            fh.write(bean_om2[:0xEC])
+            fh.write(getBonusSkinOffset(ExtraTextures.FakeBean).to_bytes(4, "big"))
+            fh.write(bean_om2[0xF0:])
+        with open("fake_key_om1.bin", "wb") as fh:
+            fh.write(key_om1[:0x11FC])
+            fh.write(getBonusSkinOffset(ExtraTextures.FakeKey).to_bytes(4, "big"))
+            fh.write(key_om1[0x1200:])
+        with open("fake_key_om2.bin", "wb") as fh:
+            fh.write(key_om2[:0x12C])
+            fh.write(getBonusSkinOffset(ExtraTextures.FakeKeyPalette).to_bytes(4, "big"))
+            fh.write(key_om2[0x130:])
+    for x in range(3):
+        with open("fake_bean_om2.bin", "rb") as fh:
+            with open(f"fake_bean_{x}.bin", "wb") as fg:
+                fg.write(fh.read())
+        with open("fake_key_om2.bin", "rb") as fh:
+            with open(f"fake_key_{x}.bin", "wb") as fg:
+                fg.write(fh.read())

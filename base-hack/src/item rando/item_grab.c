@@ -85,6 +85,12 @@ static const item_info item_detection_data[] = {
     {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x11F}, // Hint Item (Lanky)
     {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x121}, // Hint Item (Tiny)
     {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x123}, // Hint Item (Chunky)
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x126}, // Fake Item (Bubble Bean)
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x126}, // Fake Item (Reverse Bean)
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x126}, // Fake Item (Slow Bean)
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x128}, // Fake Item (Bubble Key)
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x128}, // Fake Item (Reverse Key)
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x128}, // Fake Item (Slow Key)
 };
 
 void displayMedalOverlay(int flag, int item_type) {
@@ -358,6 +364,17 @@ Gfx* controlKeyText(Gfx* dl) {
 
 static short kong_models[] = {4, 1, 6, 9, 0xC};
 
+static unsigned char ice_trap_types_model[] = {
+    ICETRAP_BUBBLE, ICETRAP_REVERSECONTROLS, ICETRAP_SLOWED,
+    ICETRAP_BUBBLE, ICETRAP_REVERSECONTROLS, ICETRAP_SLOWED,
+    ICETRAP_BUBBLE, ICETRAP_REVERSECONTROLS, ICETRAP_SLOWED,
+};
+static unsigned short ice_trap_models[] = {
+    0x128, 0x128, 0x128,
+    0x126, 0x126, 0x126,
+    0x103, 0x103, 0x103,
+};
+
 void giveItemFromModel(int model, int flag, int go_through_flut) {
     int model_key = model;
     if ((model_key >= 0xF6) && (model_key <= 0xFB)) {
@@ -369,10 +386,9 @@ void giveItemFromModel(int model, int flag, int go_through_flut) {
         model_key = 0x10A;
     }
     ICE_TRAP_TYPES ice_trap_type = ICETRAP_OFF;
-    if ((model_key >= -4) && (model_key <= -2)) {
-        ice_trap_type = model_key + 5;
-        model_key = 0x103;
-        model = 0x103;
+    if ((model_key >= -10) && (model_key <= -2)) {
+        ice_trap_type = ice_trap_types_model[model_key + 10];
+        model = ice_trap_models[model_key + 10];
     }
     if (model_key > -1) {
         int i = 0;
@@ -528,7 +544,7 @@ void getItem(int object_type) {
     float pickup_volume = 1-(0.3f * *(char*)(0x80745838));
     int song = -1;
     helm_hurry_items hh_item = HHITEM_NOTHING;
-    ICE_TRAP_TYPES it_type = ICETRAP_BUBBLE;
+    ICE_TRAP_TYPES it_type = -1;
     int multiplier = 1;
     switch(object_type) {
         case 0x0A:
@@ -713,14 +729,20 @@ void getItem(int object_type) {
             forceDance();
             break;
         case 0x25D:
-        case 0x264:
-        case 0x265:
+        case 0x292:
+        case 0x295:
             // Fake Item
-            if (object_type == 0x25D) {
-                it_type = ICETRAP_BUBBLE;
-            } else if (object_type == 0x264) {
+            it_type = ICETRAP_BUBBLE;
+        case 0x264:
+        case 0x293:
+        case 0x296:
+            if (it_type == -1) {
                 it_type = ICETRAP_REVERSECONTROLS;
-            } else if (object_type == 0x265) {
+            }
+        case 0x265:
+        case 0x294:
+        case 0x297:
+            if (it_type == -1) {
                 it_type = ICETRAP_SLOWED;
             }
             forceDance();

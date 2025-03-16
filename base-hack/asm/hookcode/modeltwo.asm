@@ -72,6 +72,18 @@ ObjectRotate:
     beq $v0, $at, ObjectRotate_ApplyReverseRotate
     addiu $at, $zero, 0x265
     beq $v0, $at, ObjectRotate_ApplyReverseRotate
+    addiu $at, $zero, 0x292
+    beq $v0, $at, ObjectRotate_ApplyReverseRotate
+    addiu $at, $zero, 0x293
+    beq $v0, $at, ObjectRotate_ApplyReverseRotate
+    addiu $at, $zero, 0x294
+    beq $v0, $at, ObjectRotate_ApplyReverseRotate
+    addiu $at, $zero, 0x295
+    beq $v0, $at, ObjectRotate_ApplyReverseRotate
+    addiu $at, $zero, 0x296
+    beq $v0, $at, ObjectRotate_ApplyReverseRotate
+    addiu $at, $zero, 0x297
+    beq $v0, $at, ObjectRotate_ApplyReverseRotate
     nop
     j 0x80637150
     nop

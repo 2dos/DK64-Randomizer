@@ -427,6 +427,36 @@ file_dict = [
     File(name="Banana Medal", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x90, source_file="updated_medal.bin", do_not_delete_source=True),
     File(name="Mushroom Red (Mush Puzzle)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x1BE, source_file="updated_mush_0x1BE.bin", do_not_delete_source=True),
     File(name="Ice Maze", pointer_table_index=TableNames.ModelTwoGeometry, file_index=522, source_file="assets/Gong/ice_maze.bin", do_not_delete_source=True),
+    File(
+        name="Fake Bean Texture",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.FakeBean),
+        source_file="assets/displays/fake_bean.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="Fake Key Texture (Actor)",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.FakeKey),
+        source_file="assets/displays/fake_key_shine.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="Fake Key Texture (OM2)",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.FakeKeyPalette),
+        source_file="assets/displays/fake_key_shine_palette.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(name="Fake Bean Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x292, source_file="fake_bean_0.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Bean Model (1)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x293, source_file="fake_bean_1.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Bean Model (2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x294, source_file="fake_bean_2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Key Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x295, source_file="fake_key_0.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Key Model (1)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x296, source_file="fake_key_1.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Key Model (2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x297, source_file="fake_key_2.bin", do_not_delete_source=True, do_not_extract=True),
 ]
 
 cutscene_scripts = buildScripts()
@@ -1372,6 +1402,8 @@ shrinkModel(True, "tiny_base.bin", 0, 1 / 0.15, "shrink_tiny.bin", True)  # Tiny
 shrinkModel(False, "", 0xB, 1 / 0.15, "shrink_chunky.bin", True)  # Chunky
 shrinkModel(True, "fake_item_actor.bin", 0, 0.15, "shrink_ice_trap.bin", False),
 shrinkModel(True, "bean_om1.bin", 0, 1 / 0.15, "shrink_bean.bin", False),
+shrinkModel(True, "fake_bean_om1.bin", 0, 1 / 0.15, "shrink_fake_bean.bin", False),
+shrinkModel(True, "fake_key_om1.bin", 0, 0.1, "shrink_fake_key.bin", False),
 shrinkModel(True, "pearl_om1.bin", 0, 2, "shrink_pearl_0.bin", False),
 shrinkModel(True, "pearl_om1.bin", 0, 2 / 0.15, "shrink_pearl.bin", False),
 shrinkModel(True, "medal_om1.bin", 0, 1 / 0.15, "shrink_medal.bin", False),
@@ -1470,6 +1502,10 @@ model_changes = [
     ModelChange(0x8B, "rocketbarrel_attachment.bin"),
     ModelChange(0x7B, "cannon.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
+    ModelChange(0x125, "shrink_fake_bean.bin"),
+    ModelChange(0x126, "fake_bean_om1.bin"),
+    ModelChange(0x127, "shrink_fake_key.bin"),
+    ModelChange(0x128, "fake_key_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 

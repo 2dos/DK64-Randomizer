@@ -123,6 +123,7 @@ extern void updateModel(void* data);
 extern void bounceObjectCode(int convert_to_model_two);
 
 extern void updateCamera(void* mtx_i);
+extern void spawnKeyTwinklies(void *actor);
 
 extern int callFunc(void* func);
 
@@ -316,6 +317,7 @@ extern void bunchHandle(int player_index, int id, void* player);
 extern void displayItemOnHUD(int item, int unk0, int unk1);
 extern int getCollectableOffset(int item, int obj, int homing);
 extern void GoldenBananaCode(void);
+extern void BossKeyCode(void);
 
 extern void resetLankyKR(void);
 

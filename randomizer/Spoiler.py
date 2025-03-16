@@ -57,7 +57,8 @@ from randomizer.Settings import Settings
 from randomizer.ShuffleBosses import HardBossesEnabled
 from randomizer.ShuffleExits import ShufflableExits
 from randomizer.ShuffleKasplats import constants, shufflable
-from randomizer.Patching.Library.Generic import IsItemSelected, getModelFromItem
+from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.ItemRando import getModelFromItem
 
 if TYPE_CHECKING:
     from randomizer.Lists.Location import Location
@@ -1140,7 +1141,7 @@ class Spoiler:
                             }
                 elif location.type == Types.Kong:
                     flag = ItemList[location.item].flag
-                    model = getModelFromItem(location.item, location.type, flag)
+                    model = getModelFromItem(location.item, location.type, flag, False, True)
                     if model is None:
                         model = 0
                     self.WriteKongPlacement(id, location.item, location.type, model, flag)

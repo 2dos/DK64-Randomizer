@@ -231,6 +231,12 @@ db = [
     InGameItem(name="Hint Item (Lanky)", actor=CustomActors.HintItemLanky, is_custom=True, model_two=650, base=base_kong, bounce=True),
     InGameItem(name="Hint Item (Tiny)", actor=CustomActors.HintItemTiny, is_custom=True, model_two=651, base=base_kong, bounce=True),
     InGameItem(name="Hint Item (Chunky)", actor=CustomActors.HintItemChunky, is_custom=True, model_two=652, base=base_kong, bounce=True),
+    InGameItem(name="Fake Item (Bean Bubble)", actor=151, is_custom=False, model_two=0x292, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Bean Reverse)", actor=152, is_custom=False, model_two=0x293, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Bean Slow)", actor=153, is_custom=False, model_two=0x294, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Key Bubble)", actor=154, is_custom=False, model_two=0x295, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Key Reverse)", actor=155, is_custom=False, model_two=0x296, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Key Slow)", actor=157, is_custom=False, model_two=0x297, base=base_kong, bounce=True, scale=0.25),
 ]
 
 db2 = [
@@ -315,6 +321,12 @@ db2 = [
     ItemRandoDef(0x028A, CollectableTypes.Null, None, CustomActors.HintItemLanky, Hitbox(8, 4, 13), True),  # Hint
     ItemRandoDef(0x028B, CollectableTypes.Null, None, CustomActors.HintItemTiny, Hitbox(8, 4, 13), True),  # Hint
     ItemRandoDef(0x028C, CollectableTypes.Null, None, CustomActors.HintItemChunky, Hitbox(8, 4, 13), True),  # Hint
+    ItemRandoDef(0x0292, CollectableTypes.Null, None, 151, Hitbox(8, 4, 13), False),  # Fake Item - Bean
+    ItemRandoDef(0x0293, CollectableTypes.Null, None, 152, Hitbox(8, 4, 13), False),  # Fake Item - Bean
+    ItemRandoDef(0x0294, CollectableTypes.Null, None, 153, Hitbox(8, 4, 13), False),  # Fake Item - Bean
+    ItemRandoDef(0x0295, CollectableTypes.Null, None, 154, Hitbox(8, 4, 13), False),  # Fake Item - Key
+    ItemRandoDef(0x0296, CollectableTypes.Null, None, 155, Hitbox(8, 4, 13), False),  # Fake Item - Key
+    ItemRandoDef(0x0297, CollectableTypes.Null, None, 157, Hitbox(8, 4, 13), False),  # Fake Item - Key
 ]
 
 item_drops = [
@@ -635,6 +647,48 @@ with open("src/lib_items.c", "w") as fh:
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Hint Item
+            {
+                "actor_type": 151,
+                "model": 0x126,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item (Bean)
+            {
+                "actor_type": 152,
+                "model": 0x126,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item (Bean)
+            {
+                "actor_type": 153,
+                "model": 0x126,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item (Bean)
+            {
+                "actor_type": 154,
+                "model": 0x129,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item (Key)
+            {
+                "actor_type": 155,
+                "model": 0x129,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item (Key)
+            {
+                "actor_type": 157,
+                "model": 0x129,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item (Key)
         ]
     )
     default_values = {
@@ -685,6 +739,12 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemLanky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemTiny, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemChunky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 151, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 152, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 153, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 154, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 155, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 157, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
     actor_data = initActor(actor_data, 345 + CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, 345 + CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)

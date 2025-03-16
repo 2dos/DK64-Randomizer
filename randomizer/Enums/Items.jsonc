@@ -197,6 +197,12 @@
         "DKIslesChunkyBlueprint": 171,
 
         // Adding new items to the end of the list preserves existing item selectors
-        "ProgressiveSlam3": 172
+        "ProgressiveSlam3": 172,
+        "IceTrapBubbleBean": 173,
+        "IceTrapReverseBean": 174,
+        "IceTrapSlowBean": 175,
+        "IceTrapBubbleKey": 176,
+        "IceTrapReverseKey": 177,
+        "IceTrapSlowKey": 178
     }
 }

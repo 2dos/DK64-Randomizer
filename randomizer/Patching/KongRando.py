@@ -7,7 +7,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
-from randomizer.Patching.Library.Generic import getModelFromItem
+from randomizer.Patching.Library.ItemRando import getModelFromItem
 
 
 def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
@@ -34,7 +34,7 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
                 item_type = Types.NoItem
                 flag = 0
             else:
-                model = getModelFromItem(item, item_type, flag, x.shared)
+                model = getModelFromItem(item, item_type, flag, x.shared, True)
             if model is not None:
                 spoiler.WriteKongPlacement(x.location, item, item_type, model, flag)
 

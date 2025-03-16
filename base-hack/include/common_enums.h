@@ -1027,6 +1027,8 @@ typedef enum enum_bonus_skin {
     /* 0x015 */ SKIN_CANDY,
     /* 0x016 */ SKIN_SNIDE,
     /* 0x017 */ SKIN_HINT,
+    /* 0x018 */ SKIN_FAKE_BEAN,
+    /* 0x019 */ SKIN_FAKE_KEY,
     /* ----- */ SKIN_TERMINATOR,
 } enum_bonus_skin;
 
