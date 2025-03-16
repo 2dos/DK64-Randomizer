@@ -35,4 +35,8 @@ try:
     with open("./static/patches/symbols.json", "rb") as file:
         rom_symbols = json.loads(file.read())
 except Exception:
-    pass
+    with open(f"worlds/dk64/DK64R/static/patches/pointer_addresses.json", "rb") as file:
+        pointer_addresses = json.loads(file.read())
+
+    with open(f"worlds/dk64/DK64R/static/patches/symbols.json", "rb") as file:
+        rom_symbols = json.loads(file.read())

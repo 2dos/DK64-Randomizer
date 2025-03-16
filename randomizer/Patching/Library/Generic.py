@@ -588,13 +588,16 @@ def recalculatePointerJSON(ROM_COPY: ROM):
 
 def setItemReferenceName(spoiler, item: Items, index: int, new_name: str):
     """Set new name for a location of an item."""
-    if item == Items.CameraAndShockwave:
-        setItemReferenceName(spoiler, Items.Camera, index, new_name)
-        setItemReferenceName(spoiler, Items.Shockwave, index, new_name)
-    else:
-        for loc in spoiler.location_references:
-            if loc.item == item:
-                loc.setLocation(index, new_name)
+    try:
+        if item == Items.CameraAndShockwave:
+            setItemReferenceName(spoiler, Items.Camera, index, new_name)
+            setItemReferenceName(spoiler, Items.Shockwave, index, new_name)
+        else:
+            for loc in spoiler.location_references:
+                if loc.item == item:
+                    loc.setLocation(index, new_name)
+    except Exception:
+        pass
 
 
 def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_crown_door: bool = False) -> BarrierItems:
