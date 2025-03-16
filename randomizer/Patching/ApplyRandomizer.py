@@ -150,7 +150,7 @@ def patching_response(spoiler):
     try:
         temp_json = json.loads(spoiler.json)
     except Exception:
-        temp_json = {}
+        temp_json = {"Settings": {}}
     temp_json["Settings"]["Generation Timestamp"] = dt
     spoiler.json = json.dumps(temp_json, indent=4)
     ROM_COPY = LocalROM()
