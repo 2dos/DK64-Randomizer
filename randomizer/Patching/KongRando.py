@@ -7,28 +7,34 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
-from randomizer.Patching.Library.Generic import getModelFromItem
+from randomizer.Patching.Library.ItemRando import getModelFromItem
+
 
 def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
     """Write kong cage changes for kong rando."""
     if Types.Kong in spoiler.settings.shuffled_location_types:
-        kong_locations = [x for x in spoiler.item_assignment if x.location in (
-            Locations.DiddyKong,
-            Locations.LankyKong,
-            Locations.TinyKong,
-            Locations.ChunkyKong,
-        )]
+        kong_locations = [
+            x
+            for x in spoiler.item_assignment
+            if x.location
+            in (
+                Locations.DiddyKong,
+                Locations.LankyKong,
+                Locations.TinyKong,
+                Locations.ChunkyKong,
+            )
+        ]
         for x in kong_locations:
             item = x.new_subitem
             item_type = x.new_item
             flag = x.new_flag
             model = 0
-            if item is None:
+            if item is None or item == Items.NoItem:
                 item = Items.NoItem
                 item_type = Types.NoItem
                 flag = 0
             else:
-                model = getModelFromItem(item, item_type, flag, x.shared)
+                model = getModelFromItem(item, item_type, flag, x.shared, True)
             if model is not None:
                 spoiler.WriteKongPlacement(x.location, item, item_type, model, flag)
 
@@ -56,36 +62,42 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
         kong_settings = [japesLockedData, llamaLockedData, tinyTempleLockedData, factoryLockedData]
         ROM_COPY.seek(0x1FF1020)
         for item_data in kong_settings:
+            has_no_textures = item_data["type"] in (
+                Types.Candy,
+                Types.Climbing,
+                Types.Cranky,
+                Types.Fairy,
+                Types.Funky,
+                Types.Shockwave,
+                Types.Shop,
+                Types.TrainingBarrel,
+            )
             ROM_COPY.writeMultipleBytes(item_data["flag"], 2)
             ROM_COPY.writeMultipleBytes(item_data["model"], 2)
+            ROM_COPY.writeMultipleBytes(1 if has_no_textures else 0, 1)
+            ROM_COPY.writeMultipleBytes(0, 1)
 
         kongrando_changes = {
-            Maps.JungleJapes: {
-                "model2_changes": [
-                    {"index": 0x30, "new_type": gunswitches[japesPuzzleKong]},
-                    {"index": 0x31, "new_type": gunswitches[japesPuzzleKong]},
-                    {"index": 0x32, "new_type": gunswitches[japesPuzzleKong]},
-                ],
-            },
-            Maps.AztecLlamaTemple: {
-                "model2_changes": [
-                    {"index": 0x16, "new_type": instrumentpads[llamaPuzzleKong]},
-                    {"index": 0x12, "new_type": gunswitches[llamaPuzzleKong]},
-                ],
-            },
-            Maps.AztecTinyTemple: {
-                "model2_changes": [
-                    {"index": 0x14, "new_type": forceSwitches[tinyTemplePuzzleKong]}
-                ],
-            },
-            Maps.FranticFactory: {
-                "map_index": 0x1A,
-                "model2_changes": [{"index": 0x24, "new_type": greenslamswitches[factoryPuzzleKong]}],
-            }
+            Maps.JungleJapes: [
+                {"index": 0x30, "new_type": gunswitches[japesPuzzleKong]},
+                {"index": 0x31, "new_type": gunswitches[japesPuzzleKong]},
+                {"index": 0x32, "new_type": gunswitches[japesPuzzleKong]},
+            ],
+            Maps.AztecLlamaTemple: [
+                {"index": 0x16, "new_type": instrumentpads[llamaPuzzleKong]},
+                {"index": 0x12, "new_type": gunswitches[llamaPuzzleKong]},
+            ],
+            Maps.AztecTinyTemple: [
+                {"index": 0x14, "new_type": forceSwitches[tinyTemplePuzzleKong]},
+            ],
+            Maps.FranticFactory: [
+                {"index": 0x24, "new_type": greenslamswitches[factoryPuzzleKong]},
+            ],
         }
         for kong_map in spoiler.shuffled_kong_placement.keys():
-            ROM_COPY.seek(spoiler.settings.rom_data + spoiler.shuffled_kong_placement[kong_map]["puzzle"]["write"])
-            ROM_COPY.writeMultipleBytes(spoiler.shuffled_kong_placement[kong_map]["puzzle"]["kong"], 1)
+            if kong_map != "TrainingGrounds":
+                ROM_COPY.seek(spoiler.settings.rom_data + spoiler.shuffled_kong_placement[kong_map]["puzzle"]["write"])
+                ROM_COPY.writeMultipleBytes(spoiler.shuffled_kong_placement[kong_map]["puzzle"]["kong"], 1)
 
         for cont_map_id in kongrando_changes:
             cont_map = kongrando_changes[cont_map_id]
@@ -97,15 +109,10 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
                 start = cont_map_setup_address + 4 + (x * 0x30)
                 ROM_COPY.seek(start + 0x2A)
                 obj_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                has_id = False
-                new_type = 0
-                for model2 in cont_map["model2_changes"]:
+                for model2 in cont_map:
                     if model2["index"] == obj_id:
-                        has_id = True
-                        new_type = model2["new_type"]
-                if has_id:
-                    ROM_COPY.seek(start + 0x28)
-                    ROM_COPY.writeMultipleBytes(new_type, 2)
+                        ROM_COPY.seek(start + 0x28)
+                        ROM_COPY.writeMultipleBytes(model2["new_type"], 2)
             # Character Spawners
             cont_map_spawner_address = getPointerLocation(TableNames.Spawners, cont_map_id)
             ROM_COPY.seek(cont_map_spawner_address)

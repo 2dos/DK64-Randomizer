@@ -605,18 +605,42 @@ def FairyItems():
     itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
     return itemPool
 
+def DistributeItems(items: list, count: int, distro: list[int] = None) -> list:
+    """Distribute the items so that there is a roughly even amount of them placed in the seed."""
+    if count == 0:
+        return []
+    item_post_rebalance = items.copy()
+    if distro is not None:
+        item_post_rebalance = []
+        for index, item in enumerate(items):
+            for _ in range(distro[index]):
+                item_post_rebalance.append(item)
+    repeat_count = int(count / len(item_post_rebalance)) + 1
+    selection = []
+    for _ in range(repeat_count):
+        selection.extend(item_post_rebalance)
+    return selection[:count]
 
 def FakeItems(settings):
     """Return a list of Fake Items to be placed."""
-    itemPool = []
     total_count = getIceTrapCount(settings)
-    slow_count = int(total_count / 3)
-    reverse_count = int(total_count / 3)
-    bubble_count = total_count - (slow_count + reverse_count)
-    itemPool.extend(itertools.repeat(Items.IceTrapBubble, bubble_count))
-    itemPool.extend(itertools.repeat(Items.IceTrapReverse, reverse_count))
-    itemPool.extend(itertools.repeat(Items.IceTrapSlow, slow_count))
-    return itemPool
+    distro = None
+    if total_count > 30:
+        distro = [10, 1, 2, 1, 2, 10, 2, 1, 10]
+    elif total_count > 10:
+        distro = [5, 1, 2, 1, 2, 5, 2, 1, 5]
+    # This order of items helps ensure that with low ice trap counts, you see models other than GBs
+    return DistributeItems([
+        Items.IceTrapBubble,
+        Items.IceTrapReverseBean,
+        Items.IceTrapSlowKey,
+        Items.IceTrapBubbleBean,
+        Items.IceTrapReverseKey,
+        Items.IceTrapReverse,
+        Items.IceTrapBubbleKey,
+        Items.IceTrapSlow,
+        Items.IceTrapSlowBean,
+    ], total_count, distro)
 
 
 def CrankyItems():

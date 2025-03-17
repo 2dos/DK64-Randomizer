@@ -101,7 +101,8 @@ void charSpawnerItemCode(void) {
 	if (model == 0) {
 		return;
 	}
-	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+	int initialized = CurrentActorPointer_0->obj_props_bitfield & 0x10;
+	if (!initialized) {
 		setActorModel(CurrentActorPointer_0, model);
 	}
 	switch (model) {
@@ -120,4 +121,10 @@ void charSpawnerItemCode(void) {
 	}
 	// Item code will leech off Tiny's code
 	cutsceneTinyCode();
+	if (!initialized) {
+		if (kong_check_data[check_index].no_textures) {
+			CurrentActorPointer_0->obj_props_bitfield &= ~0x1000;
+		}
+
+	}
 }

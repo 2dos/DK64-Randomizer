@@ -876,6 +876,9 @@ class ExtraTextures(IntEnum):
     KrushaFace323 = auto()
     KrushaFace324 = auto()
     KrushaFace325 = auto()
+    FakeKey = auto()
+    FakeKeyPalette = auto()
+    FakeBean = auto()
 
 
 class MoveTypes(IntEnum):

@@ -95,6 +95,9 @@ class ExtraTextures(IntEnum):
     KrushaFace323 = auto()
     KrushaFace324 = auto()
     KrushaFace325 = auto()
+    FakeKey = auto()
+    FakeKeyPalette = auto()
+    FakeBean = auto()
 
 
 barrel_skins = (
@@ -122,6 +125,8 @@ barrel_skins = (
     "candy",
     "snide",
     "hint",
+    "fakebean",
+    "fakekey",
 )
 
 

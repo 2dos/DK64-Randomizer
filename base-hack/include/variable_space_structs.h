@@ -52,8 +52,7 @@ typedef struct varspace {
 	/* 0x0C5 */ char enemy_item_rando; // Determines whether to use standard enemy item drop table or a custom table
 	/* 0x0C6 */ HardModeSettings hard_mode; // Colloquially known as "Seed of Death"
 	/* 0x0C7 */ unsigned char default_sound_type; // 0 = Stereo, 1 = Surround, 2 = Mono
-	/* 0x0C8 */ unsigned char default_sfx_volume; // 0 - 40
-	/* 0x0C9 */ unsigned char default_music_volume; // 0 - 40
+	/* 0x0C8 */ char unk_C8[2];
 	/* 0x0CA */ unsigned char default_screen_ratio; // 0 = Normal, 1 = Widescreen
 	/* 0x0CB */ unsigned char default_camera_type; // 0 = Free, 1 = Follow
 	/* 0x0CC */ unsigned char default_camera_mode; // 0 = Inverted, 1 = Non-Inverted
@@ -116,13 +115,13 @@ typedef struct varspace {
 	/* 0x14F */ char prevent_tag_spawn; // 0 = Off. 1 = Prevents tags from spawning except in T&S
 	/* 0x150 */ char ice_traps_damage;
 	/* 0x151 */ char starting_kong; // Kong you start as upon file init
-	/* 0x152 */ char free_target_japes; // Kong you free in Japes
+	/* 0x152 */ char unk_152;
 	/* 0x153 */ char free_source_japes; // Kong who frees the kong in Japes
-	/* 0x154 */ char free_target_llama; // Kong you free in Llama Temple
+	/* 0x154 */ char unk_154;
 	/* 0x155 */ char free_source_llama; // Kong who frees the kong in Llama Temple
-	/* 0x156 */ char free_target_ttemple; // Kong you free in Tiny Temple
+	/* 0x156 */ char unk_156;
 	/* 0x157 */ char free_source_ttemple; // Kong who frees the kong in Tiny Temple
-	/* 0x158 */ char free_target_factory; // Kong you free in Factory
+	/* 0x158 */ char unk_158;
 	/* 0x159 */ char free_source_factory; // Kong who frees the kong in Factory
 	/* 0x15A */ char arcade_reward_idx; // Purely used for the arcade sprite in colorblind mode
 	/* 0x15B */ char auto_keys; // 0 = Vanilla, 1 = Keys turn in as soon as you get them

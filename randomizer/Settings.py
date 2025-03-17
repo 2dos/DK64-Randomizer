@@ -1515,12 +1515,14 @@ class Settings:
                     if not is_excluded:
                         break
                 self.jetpac_platform_data.append((x, y, width))
-                exclusion_zones.append([
-                    x - exclusion_pad_x,
-                    x + 0x10 + (width * 8) + exclusion_pad_x,
-                    y - exclusion_y,
-                    y + exclusion_y,
-                ])
+                exclusion_zones.append(
+                    [
+                        x - exclusion_pad_x,
+                        x + 0x10 + (width * 8) + exclusion_pad_x,
+                        y - exclusion_y,
+                        y + exclusion_y,
+                    ]
+                )
 
         if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies, False):
             jetpac_levels = list(range(8))
@@ -2033,7 +2035,7 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.chunky] = locations_excluding_shared_shops.copy()
             if Types.Blueprint in self.shuffled_location_types:
                 # Blueprints are banned from Key, Crown, Fairy and Rainbow Coin Locations
-                blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key, Types.Fairy, Types.RainbowCoin)]
+                blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key, Types.Fairy, Types.RainbowCoin, Types.Kong)]
                 # These locations do not have a set Kong assigned to them and can't have blueprints
                 badBPLocations = (
                     Locations.IslesDonkeyJapesRock,

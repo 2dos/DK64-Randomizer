@@ -71,15 +71,11 @@ void pre_turn_keys(void) {
 	}
 }
 
-void writeKeyFlags(int index) {
-	setPermFlag(FLAG_KEYIN_KEY1 + index);
-}
-
 void auto_turn_keys(void) {
 	if (Rando.auto_keys) {
 		for (int i = 0; i < 8; i++) {
 			if (checkFlagDuplicate(normal_key_flags[i], FLAGTYPE_PERMANENT)) {
-				writeKeyFlags(i);
+				setPermFlag(FLAG_KEYIN_KEY1 + i);
 			}
 		}
 	}

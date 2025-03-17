@@ -285,6 +285,12 @@ static const barrel_skin_tie bonus_skins[] = {
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMLANKY, .skin=SKIN_HINT},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMTINY, .skin=SKIN_HINT},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMCHUNKY, .skin=SKIN_HINT},
+    {.actor = 151, .skin=SKIN_FAKE_BEAN},
+    {.actor = 152, .skin=SKIN_FAKE_BEAN},
+    {.actor = 153, .skin=SKIN_FAKE_BEAN},
+    {.actor = 154, .skin=SKIN_FAKE_KEY},
+    {.actor = 155, .skin=SKIN_FAKE_KEY},
+    {.actor = 157, .skin=SKIN_FAKE_KEY},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {
@@ -398,7 +404,7 @@ void initItemRando(void) {
     }
     // Kong Check Table
     int kong_size = 4;
-    kongcheck_db_item* kong_write = getFile(kong_size << 2, 0x1FF1020);
+    kongcheck_db_item* kong_write = getFile(kong_size * 6, 0x1FF1020);
     for (int i = 0; i < kong_size; i++) {
         kong_check_data[i] = kong_write[i];
     }
@@ -443,7 +449,5 @@ void initItemRando(void) {
         }
     }
     // Other init
-    initItemDropTable();
-    initCollectableCollision();
     initActorDefs();
 }

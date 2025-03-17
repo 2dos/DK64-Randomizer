@@ -57,7 +57,8 @@ from randomizer.Settings import Settings
 from randomizer.ShuffleBosses import HardBossesEnabled
 from randomizer.ShuffleExits import ShufflableExits
 from randomizer.ShuffleKasplats import constants, shufflable
-from randomizer.Patching.Library.Generic import IsItemSelected, getModelFromItem
+from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.ItemRando import getModelFromItem
 
 if TYPE_CHECKING:
     from randomizer.Lists.Location import Location
@@ -1140,9 +1141,10 @@ class Spoiler:
                             }
                 elif location.type == Types.Kong:
                     flag = ItemList[location.item].flag
-                    model = getModelFromItem(location.item, location.type, flag)
-                    if model is not None:
-                        self.WriteKongPlacement(id, location.item, location.type, model, flag)
+                    model = getModelFromItem(location.item, location.type, flag, False, True)
+                    if model is None:
+                        model = 0
+                    self.WriteKongPlacement(id, location.item, location.type, model, flag)
                 elif location.type == Types.TrainingBarrel and self.settings.training_barrels != TrainingBarrels.normal:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
@@ -1198,29 +1200,24 @@ class Spoiler:
         """Write kong placement information for the given kong cage location."""
         locationName = "Jungle Japes"
         unlockKong = self.settings.diddy_freeing_kong
-        lockedwrite = 0x152
         puzzlewrite = 0x153
         if locationId == Locations.LankyKong:
             locationName = "Llama Temple"
             unlockKong = self.settings.lanky_freeing_kong
-            lockedwrite = 0x154
             puzzlewrite = 0x155
         elif locationId == Locations.TinyKong:
             locationName = "Tiny Temple"
             unlockKong = self.settings.tiny_freeing_kong
-            lockedwrite = 0x156
             puzzlewrite = 0x157
         elif locationId == Locations.ChunkyKong:
             locationName = "Frantic Factory"
             unlockKong = self.settings.chunky_freeing_kong
-            lockedwrite = 0x158
             puzzlewrite = 0x159
         lockedkong = {}
         lockedkong["item"] = item
         lockedkong["type"] = item_type
         lockedkong["model"] = model
         lockedkong["flag"] = flag
-        lockedkong["write"] = lockedwrite
         puzzlekong = {"kong": unlockKong, "write": puzzlewrite}
         kongLocation = {"locked": lockedkong, "puzzle": puzzlekong}
         self.shuffled_kong_placement[locationName] = kongLocation

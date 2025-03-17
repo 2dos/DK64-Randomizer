@@ -198,11 +198,17 @@ void snideCodeHandler(void) {
     missingShopOwnerCode(13);
 }
 
+static const unsigned char fake_key_types[] = {154, 155, 157};
+
 void FakeGBCode(void) {
     /**
      * @brief Actor code for the fake item (commonly known as "Ice Traps") actor
      */
-    GoldenBananaCode();
+    if (inU8List(CurrentActorPointer_0->actorType, &fake_key_types, 3)) {
+        BossKeyCode();
+    } else {
+        GoldenBananaCode();
+    }
     CurrentActorPointer_0->rot_y -= 0xE4; // Spin in reverse
 }
 

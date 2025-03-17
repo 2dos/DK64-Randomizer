@@ -264,17 +264,6 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.seek(sav + 0xC7)
             ROM_COPY.write(int(settings.sound_type))  # Sound Type
 
-            music_volume = 40
-            sfx_volume = 40
-            if settings.sfx_volume is not None and settings.sfx_volume != "":
-                sfx_volume = int(settings.sfx_volume / 2.5)
-            if settings.music_volume is not None and settings.music_volume != "":
-                music_volume = int(settings.music_volume / 2.5)
-            ROM_COPY.seek(sav + 0xC8)
-            ROM_COPY.write(sfx_volume)
-            ROM_COPY.seek(sav + 0xC9)
-            ROM_COPY.write(music_volume)
-
             boolean_props = [
                 BooleanProperties(settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
                 BooleanProperties(settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble

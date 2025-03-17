@@ -7,6 +7,7 @@
 .definelabel textOverlayCode, 0x8069DA54
 .definelabel spawnTransferredActor, 0x806C80E4
 .definelabel GoldenBananaCode, 0x806A734C
+.definelabel BossKeyCode, 0x806A736C
 .definelabel handleGuardDetection, 0x806AE394
 .definelabel guardShouldMove, 0x8072E54C
 .definelabel guardUnkFunction, 0x80724E48

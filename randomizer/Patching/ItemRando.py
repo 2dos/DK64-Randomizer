@@ -1,6 +1,5 @@
 """Apply item rando changes."""
 
-import random
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -11,110 +10,12 @@ from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Library.DataTypes import float_to_hex, intf_to_float
 from randomizer.Lists.EnemyTypes import enemy_location_list
-from randomizer.Patching.Library.Generic import setItemReferenceName, CustomActors, getModelFromItem
+from randomizer.Patching.Library.Generic import setItemReferenceName
+from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, CustomActors, item_db, getPropFromItem, getModelMask
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
 
-
-model_two_indexes = {
-    Types.Banana: 0x74,
-    Types.Blueprint: [0xDE, 0xE0, 0xE1, 0xDD, 0xDF],
-    Types.RarewareCoin: 0x28F,
-    Types.NintendoCoin: 0x48,
-    Types.Key: 0x13C,
-    Types.Crown: 0x18D,
-    Types.Medal: 0x90,
-    Types.Shop: [0x5B, 0x1F2, 0x59, 0x1F3, 0x1F5, 0x1F6],
-    Types.TrainingBarrel: 0x1F6,
-    Types.Climbing: 0x1F6,
-    Types.Shockwave: 0x1F6,
-    Types.NoItem: 0,  # No Item
-    Types.Kong: [0x257, 0x258, 0x259, 0x25A, 0x25B],
-    Types.Bean: 0x198,
-    Types.Pearl: 0x1B4,
-    Types.Fairy: 0x25C,
-    Types.RainbowCoin: 0xB7,
-    Types.FakeItem: [0x25D, 0x264, 0x265],
-    Types.JunkItem: [0x56, 0x8F, 0x8E, 0x25E, 0x98],  # Orange, Ammo, Crystal, Watermelon, Film
-    Types.Cranky: 0x25F,
-    Types.Funky: 0x260,
-    Types.Candy: 0x261,
-    Types.Snide: 0x262,
-    Types.Hint: [638, 649, 650, 651, 652],
-}
-
-model_two_scales = {
-    Types.Banana: 0.25,
-    Types.Blueprint: 2,
-    Types.NintendoCoin: 0.4,
-    Types.RarewareCoin: 0.4,
-    Types.Key: 0.17,
-    Types.Crown: 0.25,
-    Types.Medal: 0.22,
-    Types.Shop: 0.25,
-    Types.TrainingBarrel: 0.25,
-    Types.Climbing: 0.25,
-    Types.Shockwave: 0.25,
-    Types.NoItem: 0.25,  # No Item
-    Types.Kong: 0.25,
-    Types.Bean: 0.25,
-    Types.Pearl: 0.25,
-    Types.Fairy: 0.25,
-    Types.RainbowCoin: 0.25,
-    Types.FakeItem: 0.25,
-    Types.JunkItem: 0.25,
-    Types.Cranky: 0.25,
-    Types.Funky: 0.25,
-    Types.Candy: 0.25,
-    Types.Snide: 0.25,
-    Types.Hint: 0.25,
-}
-
-actor_indexes = {
-    Types.Banana: 45,
-    Types.Blueprint: [78, 75, 77, 79, 76],
-    Types.Key: 72,
-    Types.Crown: 86,
-    Types.NintendoCoin: CustomActors.NintendoCoin,
-    Types.RarewareCoin: CustomActors.RarewareCoin,
-    Types.Shop: [
-        CustomActors.PotionDK,
-        CustomActors.PotionDiddy,
-        CustomActors.PotionLanky,
-        CustomActors.PotionTiny,
-        CustomActors.PotionChunky,
-        CustomActors.PotionAny,
-    ],
-    Types.TrainingBarrel: CustomActors.PotionAny,
-    Types.Shockwave: CustomActors.PotionAny,
-    Types.NoItem: CustomActors.Null,
-    Types.Medal: CustomActors.Medal,
-    Types.Kong: [
-        CustomActors.KongDK,
-        CustomActors.KongDiddy,
-        CustomActors.KongLanky,
-        CustomActors.KongTiny,
-        CustomActors.KongChunky,
-    ],
-    Types.Bean: CustomActors.Bean,
-    Types.Pearl: CustomActors.Pearl,
-    Types.Fairy: CustomActors.Fairy,
-    Types.RainbowCoin: 0x8C,
-    Types.FakeItem: CustomActors.IceTrapBubble,
-    Types.JunkItem: [0x34, 0x33, 0x79, 0x2F, 0],  # Orange, Ammo, Crystal, Watermelon, Film
-    Types.Cranky: CustomActors.CrankyItem,
-    Types.Funky: CustomActors.FunkyItem,
-    Types.Candy: CustomActors.CandyItem,
-    Types.Snide: CustomActors.SnideItem,
-    Types.Hint: [
-        CustomActors.HintItemDK,
-        CustomActors.HintItemDiddy,
-        CustomActors.HintItemLanky,
-        CustomActors.HintItemTiny,
-        CustomActors.HintItemChunky,
-    ],
-}
 
 TRAINING_LOCATIONS = (
     Locations.IslesSwimTrainingBarrel,
@@ -139,6 +40,7 @@ class TextboxChange:
         textbox_index,
         text_replace,
         default_type: Types,
+        default_item: Items,
         replacement_text="|",
         force_pipe=False,
     ):
@@ -150,95 +52,71 @@ class TextboxChange:
         self.replacement_text = replacement_text
         self.force_pipe = force_pipe  # If True, don't replace with item name upon checking later. Instead, will be replaced in RDRAM dynamically
         self.default_type = default_type
+        self.default_item = default_item
 
 
 textboxes = [
-    TextboxChange(Locations.AztecTinyBeetleRace, 14, 0, "GOLDEN BANANA", Types.Banana, "\x04|\x04", True),
-    TextboxChange(Locations.CavesLankyBeetleRace, 14, 0, "GOLDEN BANANA", Types.Banana, "\x04|\x04", True),
-    TextboxChange(Locations.JapesDiddyMinecarts, 16, 2, "GOLDEN BANANA", Types.Banana),
-    TextboxChange(Locations.JapesDiddyMinecarts, 16, 3, "BANANA", Types.Banana),
-    TextboxChange(Locations.JapesDiddyMinecarts, 16, 4, "BANANA", Types.Banana),
-    TextboxChange(Locations.ForestChunkyMinecarts, 16, 5, "GOLDEN BANANA", Types.Banana),
-    TextboxChange(Locations.ForestChunkyMinecarts, 16, 7, "BANANA", Types.Banana),
-    TextboxChange(Locations.CastleDonkeyMinecarts, 16, 8, "BE A WINNER", Types.Banana, "WIN A |"),
-    TextboxChange(Locations.CastleDonkeyMinecarts, 16, 9, "BANANA", Types.Banana),
-    TextboxChange(Locations.IslesDonkeyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, "SOMETHING"),
-    TextboxChange(Locations.IslesDiddyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, "SOMETHING"),
-    TextboxChange(Locations.IslesLankyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, "SOMETHING"),
-    TextboxChange(Locations.IslesTinyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, "SOMETHING"),
-    TextboxChange(Locations.IslesChunkyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, "SOMETHING"),
-    TextboxChange(Locations.FactoryTinyCarRace, 17, 4, "GOLDEN BANANA", Types.Banana),
+    TextboxChange(Locations.AztecTinyBeetleRace, 14, 0, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana, "\x04|\x04", True),
+    TextboxChange(Locations.CavesLankyBeetleRace, 14, 0, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana, "\x04|\x04", True),
+    TextboxChange(Locations.JapesDiddyMinecarts, 16, 2, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.JapesDiddyMinecarts, 16, 3, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.JapesDiddyMinecarts, 16, 4, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.ForestChunkyMinecarts, 16, 5, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.ForestChunkyMinecarts, 16, 7, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.CastleDonkeyMinecarts, 16, 8, "BE A WINNER", Types.Banana, Items.GoldenBanana, "WIN A |"),
+    TextboxChange(Locations.CastleDonkeyMinecarts, 16, 9, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.IslesDonkeyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, Items.GoldenBanana, "SOMETHING"),
+    TextboxChange(Locations.IslesDiddyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, Items.GoldenBanana, "SOMETHING"),
+    TextboxChange(Locations.IslesLankyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, Items.GoldenBanana, "SOMETHING"),
+    TextboxChange(Locations.IslesTinyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, Items.GoldenBanana, "SOMETHING"),
+    TextboxChange(Locations.IslesChunkyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, Items.GoldenBanana, "SOMETHING"),
+    TextboxChange(Locations.FactoryTinyCarRace, 17, 4, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
     TextboxChange(
         Locations.GalleonTinyPearls,
         23,
         0,
         "PLEASE TRY AND GET THEM BACK",
         Types.Banana,
+        Items.GoldenBanana,
         "IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |",
     ),
-    TextboxChange(Locations.GalleonTinyPearls, 23, 1, "GOLDEN BANANA", Types.Banana),
+    TextboxChange(Locations.GalleonTinyPearls, 23, 1, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
     TextboxChange(
         Locations.GalleonTinyPearls,
         23,
         2,
         "ALTOGETHER.",
         Types.Banana,
+        Items.GoldenBanana,
         "ALTOGETHER. IF YOU FIND THEM ALL, YOU WILL RECEIVE A |",
     ),
-    TextboxChange(Locations.AztecDiddyVultureRace, 15, 1, "PRIZE", Types.Banana),
-    TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 1, "ALL THIS SAND", Types.Banana, "THIS |"),
-    TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 2, "BANANA", Types.Banana),
-    TextboxChange(Locations.RarewareCoin, 8, 2, "RAREWARE COIN", Types.RarewareCoin),  # Rareware Coin
-    TextboxChange(Locations.RarewareCoin, 8, 34, "RAREWARE COIN", Types.RarewareCoin),  # Rareware Coin
-    TextboxChange(Locations.ForestLankyRabbitRace, 20, 1, "TROPHY", Types.Banana, "| TROPHY"),
-    TextboxChange(Locations.ForestLankyRabbitRace, 20, 2, "TROPHY", Types.Banana, "| TROPHY"),
-    TextboxChange(Locations.ForestLankyRabbitRace, 20, 3, "TROPHY", Types.Banana, "| TROPHY"),
-    TextboxChange(Locations.ForestChunkyApple, 22, 0, "BANANA", Types.Banana),
-    TextboxChange(Locations.ForestChunkyApple, 22, 1, "BANANA", Types.Banana),
-    TextboxChange(Locations.ForestChunkyApple, 22, 4, "BANANA", Types.Banana),
-    TextboxChange(Locations.GalleonDonkeySealRace, 28, 2, "CHEST O' GOLD", Types.Banana),
-    TextboxChange(Locations.RarewareBanana, 30, 0, "REWARD ANYONE", Types.Banana, "REWARD ANYONE WITH A |"),
-    TextboxChange(Locations.CavesLankyCastle, 33, 0, "HOW ABOUT IT", Types.Banana, "HOW ABOUT A |"),
-    TextboxChange(Locations.CastleTinyCarRace, 34, 4, "BANANA", Types.Banana),
+    TextboxChange(Locations.AztecDiddyVultureRace, 15, 1, "PRIZE", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 1, "ALL THIS SAND", Types.Banana, Items.GoldenBanana, "THIS |"),
+    TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 2, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.RarewareCoin, 8, 2, "RAREWARE COIN", Types.RarewareCoin, Items.RarewareCoin),  # Rareware Coin
+    TextboxChange(Locations.RarewareCoin, 8, 34, "RAREWARE COIN", Types.RarewareCoin, Items.RarewareCoin),  # Rareware Coin
+    TextboxChange(Locations.ForestLankyRabbitRace, 20, 1, "TROPHY", Types.Banana, Items.GoldenBanana, "| TROPHY"),
+    TextboxChange(Locations.ForestLankyRabbitRace, 20, 2, "TROPHY", Types.Banana, Items.GoldenBanana, "| TROPHY"),
+    TextboxChange(Locations.ForestLankyRabbitRace, 20, 3, "TROPHY", Types.Banana, Items.GoldenBanana, "| TROPHY"),
+    TextboxChange(Locations.ForestChunkyApple, 22, 0, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.ForestChunkyApple, 22, 1, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.ForestChunkyApple, 22, 4, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.GalleonDonkeySealRace, 28, 2, "CHEST O' GOLD", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.RarewareBanana, 30, 0, "REWARD ANYONE", Types.Banana, Items.GoldenBanana, "REWARD ANYONE WITH A |"),
+    TextboxChange(Locations.CavesLankyCastle, 33, 0, "HOW ABOUT IT", Types.Banana, Items.GoldenBanana, "HOW ABOUT A |"),
+    TextboxChange(Locations.CastleTinyCarRace, 34, 4, "BANANA", Types.Banana, Items.GoldenBanana),
     TextboxChange(
         Locations.ForestDiddyOwlRace,
         21,
         0,
         "WHEN YOU CAN FLY",
         Types.Banana,
+        Items.GoldenBanana,
         "WHEN YOU CAN FLY TO HAVE A CHANCE TO RECEIVE A |",
     ),
-    TextboxChange(Locations.ForestTinySpiderBoss, 19, 32, "\x04GOLDEN BANANA\x04", Types.Banana),
-    TextboxChange(Locations.CavesChunky5DoorIgloo, 19, 34, "\x04GOLDEN BANANA\x04", Types.Banana),
+    TextboxChange(Locations.ForestTinySpiderBoss, 19, 32, "\x04GOLDEN BANANA\x04", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.CavesChunky5DoorIgloo, 19, 34, "\x04GOLDEN BANANA\x04", Types.Banana, Items.GoldenBanana),
 ]
-
-
-text_rewards = {
-    Types.Banana: ("\x04GOLDEN BANANA\x04", "\x04BANANA OF PURE GOLD\x04"),
-    Types.Blueprint: ("\x04BLUEPRINT\x04", "\x04MAP O' DEATH MACHINE\x04"),
-    Types.Key: ("\x04BOSS KEY\x04", "\x04KEY TO DAVY JONES LOCKER\x04"),
-    Types.Crown: ("\x04BATTLE CROWN\x04", "\x04CROWN TO PLACE ATOP YER HEAD\x04"),
-    Types.Fairy: ("\x04BANANA FAIRY\x04", "\x04MAGICAL FLYING PIXIE\x04"),
-    Types.Medal: ("\x04BANANA MEDAL\x04", "\x04MEDALLION\x04"),
-    Types.Shop: ("\x04POTION\x04", "\x04BOTTLE OF GROG\x04"),
-    Types.Shockwave: ("\x04POTION\x04", "\x04BOTTLE OF GROG\x04"),
-    Types.TrainingBarrel: ("\x04POTION\x04", "\x04BOTTLE OF GROG\x04"),
-    Types.Climbing: ("\x04POTION\x04", "\x04BOTTLE OF GROG\x04"),
-    Types.Kong: ("\x04KONG\x04", "\x04WEIRD MONKEY\x04"),
-    Types.Bean: ("\x04BEAN\x04", "\x04QUESTIONABLE VEGETABLE\x04"),
-    Types.Pearl: ("\x04PEARL\x04", "\x04BLACK PEARL\x04"),
-    Types.RainbowCoin: ("\x04RAINBOW COIN\x04", "\x04COLORFUL COIN HIDDEN FOR 17 YEARS\x04"),
-    Types.FakeItem: ("\x04GLODEN BANANE\x04", "\x04BANANA OF FOOLS GOLD\x04"),
-    Types.JunkItem: ("\x04JUNK ITEM\x04", "\x04HEAP OF JUNK\x04"),
-    Types.NoItem: ("\x04NOTHING\x04", "\x04DIDDLY SQUAT\x04"),
-    Types.RarewareCoin: ("\x04RAREWARE COIN\x04", "\x04DOUBLOON OF THE RAREST KIND\x04"),
-    Types.NintendoCoin: ("\x04NINTENDO COIN\x04", "\x04ANCIENT DOUBLOON\x04"),
-    Types.Snide: ("\x04SHOPKEEPER\x04", "\x04NERDY SOUL\x04"),
-    Types.Cranky: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
-    Types.Candy: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
-    Types.Funky: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
-    Types.Hint: ("\x04HINT\x04", "\x04LAYTON RIDDLE\x04"),
-}
 
 level_names = {
     Levels.JungleJapes: "Jungle Japes",
@@ -260,48 +138,6 @@ kong_names = {
     Kongs.chunky: "Chunky",
     Kongs.any: "Any Kong",
 }
-
-def getIceTrapText() -> str:
-    """Get the text associated with ice traps."""
-    input_text = "GOLDEN BANANA"
-    while True:
-        characters = list(input_text)
-        new_characters = []
-        vowels = ["A","E","I","O","U"]
-        vowels_in_string = [x for x in characters if x in vowels]
-        unique_vowels = list(set(vowels_in_string))
-        if len(vowels_in_string) < 3 or len(unique_vowels) < 2:
-            if len(vowels_in_string) == 0:
-                # Not sure what to do for strings with no vowels
-                return input_text
-            vowel_index = 0
-            target_vowel_index = random.randint(0, len(vowels_in_string))
-            for char in characters:
-                if char in vowels:
-                    if target_vowel_index == vowel_index:
-                        new_characters.append(random.choice(vowels))
-                        vowel_index += 1
-                        continue
-                    vowel_index += 1
-                new_characters.append(char)
-            new_text = "".join(new_characters)
-        else:
-            # More vowels
-            vowel_idxs = random.sample(range(len(vowels_in_string)), 2)
-            vowel_a = vowels_in_string[vowel_idxs[0]]
-            vowel_b = vowels_in_string[vowel_idxs[1]]
-            if vowel_a == vowel_b:
-                continue
-            vowels_in_string[vowel_idxs[1]] = vowel_a
-            vowels_in_string[vowel_idxs[0]] = vowel_b
-            for char in characters:
-                if char in vowels:
-                    new_characters.append(vowels_in_string.pop(0))
-                else:
-                    new_characters.append(char)
-            new_text = "".join(new_characters)
-        if new_text != input_text:
-            return new_text
 
 def appendTextboxChange(spoiler, file_index: int, textbox_index: int, search: str, target: str):
     """Alter a specific textbox."""
@@ -429,36 +265,28 @@ def getHintKongFromFlag(flag: int) -> int:
 
 def getActorIndex(item):
     """Get actor index from item."""
-    if item.new_item is None:
-        return actor_indexes[Types.NoItem]
-    elif item.new_item == Types.Blueprint:
-        return actor_indexes[Types.Blueprint][item.new_kong]
-    elif item.new_item == Types.JunkItem:
-        return actor_indexes[Types.JunkItem][subitems.index(item.new_subitem)]
-    elif item.new_item == Types.FakeItem:
-        trap_types = {
-            Items.IceTrapBubble: CustomActors.IceTrapBubble,
-            Items.IceTrapReverse: CustomActors.IceTrapReverse,
-            Items.IceTrapSlow: CustomActors.IceTrapSlow,
-        }
-        return trap_types.get(item.new_subitem, CustomActors.IceTrapBubble)
-    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing):
-        if (item.new_flag & 0x8000) == 0:
-            slot = 5
-        else:
-            slot = (item.new_flag >> 12) & 7
-            if item.shared or slot > 5:
-                slot = 5
-        return actor_indexes[Types.Shop][slot]
-    elif item.new_item == Types.Kong:
-        slot = 0
-        if item.new_flag in kong_flags:
-            slot = kong_flags.index(item.new_flag)
-        return actor_indexes[Types.Kong][slot]
-    elif item.new_item == Types.Hint:
-        return actor_indexes[Types.Hint][getHintKongFromFlag(item.new_flag)]
-    return actor_indexes[item.new_item]
+    item_type = item.new_item
+    if item_type is None:
+        item_type = Types.NoItem
+    index = item_db[item_type].index_getter(item.new_subitem, item.new_flag, item.shared)
+    return item_db[item_type].actor_index[index]
 
+model_two_items = [
+    0x74,  # GB
+    0xDE,  # BP - DK
+    0xE0,  # BP - Diddy
+    0xE1,  # BP - Lanky
+    0xDD,  # BP - Tiny
+    0xDF,  # BP - Chunky
+    0x48,  # Nintendo Coin
+    0x28F,  # Rareware Coin
+    0x13C,  # Key
+    0x18D,  # Crown
+    0x90,  # Medal
+    0x288,  # Rareware GB
+    0x198,  # Bean
+    0x1B4,  # Pearls
+]
 
 def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
     """Place randomized items into ROM."""
@@ -472,22 +300,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
         ROM_COPY.seek(sav + 0x034)
         ROM_COPY.write(1)  # Item Rando Enabled
         item_data = spoiler.item_assignment
-        model_two_items = [
-            0x74,  # GB
-            0xDE,  # BP - DK
-            0xE0,  # BP - Diddy
-            0xE1,  # BP - Lanky
-            0xDD,  # BP - Tiny
-            0xDF,  # BP - Chunky
-            0x48,  # Nintendo Coin
-            0x28F,  # Rareware Coin
-            0x13C,  # Key
-            0x18D,  # Crown
-            0x90,  # Medal
-            0x288,  # Rareware GB
-            0x198,  # Bean
-            0x1B4,  # Pearls
-        ]
+        
         map_items = {}
         bonus_table_offset = 0
         flut_items = original_flut.copy()
@@ -571,6 +384,12 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                                     Items.IceTrapBubble: MoveTypes.IceTrapBubble,
                                     Items.IceTrapReverse: MoveTypes.IceTrapReverse,
                                     Items.IceTrapSlow: MoveTypes.IceTrapSlow,
+                                    Items.IceTrapBubbleBean: MoveTypes.IceTrapBubble,
+                                    Items.IceTrapReverseBean: MoveTypes.IceTrapReverse,
+                                    Items.IceTrapSlowBean: MoveTypes.IceTrapSlow,
+                                    Items.IceTrapBubbleKey: MoveTypes.IceTrapBubble,
+                                    Items.IceTrapReverseKey: MoveTypes.IceTrapReverse,
+                                    Items.IceTrapSlowKey: MoveTypes.IceTrapSlow,
                                 }
                                 subtype = trap_types.get(item.new_subitem, MoveTypes.IceTrapBubble)
                             price_var = 0
@@ -596,8 +415,8 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                                 }
                             )
                         else:
-                            numerator = model_two_scales[item.new_item]
-                            denominator = model_two_scales[item.old_item]
+                            numerator = item_db[item.new_item].scale
+                            denominator = item_db[item.old_item].scale
                             upscale = numerator / denominator
                             map_items[map_id].append(
                                 {
@@ -846,7 +665,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                         bonus_table_offset += 1
                     elif item.old_item == Types.Fairy:
                         # Fairy Item
-                        model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
+                        model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared, False)
                         if model is not None:
                             ROM_COPY.seek(0x1FF1040 + (2 * (item.old_flag - 589)))
                             ROM_COPY.writeMultipleBytes(model, 2)
@@ -898,23 +717,16 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
         if spoiler.settings.item_reward_previews:
             for textbox in textboxes:
                 new_item = textbox.default_type
+                new_subitem = textbox.default_item
                 flag = 379  # Rareware Coin flag for RW Coin textbox
                 for item in item_data:
                     if textbox.location == item.location:
                         new_item = item.new_item
+                        new_subitem = item.new_subitem
                         flag = item.new_flag
                 replacement = textbox.replacement_text
                 if not textbox.force_pipe:
-                    reward_text = "|"
-                    reference = None
-                    if new_item in text_rewards.keys():
-                        reference = text_rewards[new_item]
-                    if reference is not None:
-                        # Found reference
-                        reward_text = reference[0]
-                        if textbox.location == Locations.GalleonDonkeySealRace:
-                            # Use pirate text
-                            reward_text = reference[1]
+                    reward_text = getItemPreviewText(new_item, textbox.location, True, getModelMask(new_subitem))
                     replacement = replacement.replace("|", reward_text)
                 data = {
                     "textbox_index": textbox.textbox_index,
@@ -968,35 +780,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                         old_item = int.from_bytes(ROM_COPY.readBytes(2), "big")
                         if old_item in model_two_items:
                             ROM_COPY.seek(start + 0x28)
-                            item_obj_index = 0
-                            if item_slot["obj"] == Types.Blueprint:
-                                item_obj_index = model_two_indexes[Types.Blueprint][item_slot["kong"]]
-                            elif item_slot["obj"] == Types.JunkItem:
-                                item_obj_index = model_two_indexes[Types.JunkItem][subitems.index(item_slot["subitem"])]
-                            elif item_slot["obj"] == Types.FakeItem:
-                                trap_types = {
-                                    Items.IceTrapBubble: 0x25D,
-                                    Items.IceTrapReverse: 0x264,
-                                    Items.IceTrapSlow: 0x265,
-                                }
-                                item_obj_index = trap_types.get(item_slot["subitem"], 0x25D)
-                            elif item_slot["obj"] == Types.Shop:
-                                if (item_slot["flag"] & 0x8000) == 0:
-                                    slot = 5
-                                else:
-                                    slot = (item_slot["flag"] >> 12) & 7
-                                    if item_slot["shared"] or slot > 5:
-                                        slot = 5
-                                item_obj_index = model_two_indexes[Types.Shop][slot]
-                            elif item_slot["obj"] == Types.Kong:
-                                slot = 0
-                                if item_slot["flag"] in kong_flags:
-                                    slot = kong_flags.index(item_slot["flag"])
-                                item_obj_index = model_two_indexes[Types.Kong][slot]
-                            elif item_slot["obj"] == Types.Hint:
-                                item_obj_index = model_two_indexes[Types.Hint][getHintKongFromFlag(item_slot["flag"])]
-                            else:
-                                item_obj_index = model_two_indexes[item_slot["obj"]]
+                            item_obj_index = getPropFromItem(item_slot["subitem"], item_slot["obj"], item_slot["flag"], item_slot["shared"])
                             ROM_COPY.writeMultipleBytes(item_obj_index, 2)
                             # Scaling fix
                             ROM_COPY.seek(start + 0xC)

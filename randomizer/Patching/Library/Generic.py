@@ -43,48 +43,6 @@ class MenuTexture:
         self.weight = weight
         self.is_color = is_color
 
-
-class CustomActors(IntEnum):
-    """Custom Actors Enum."""
-
-    NintendoCoin = 0x8000  # Starts at 0x8000
-    RarewareCoin = auto()
-    Null = auto()
-    PotionDK = auto()
-    PotionDiddy = auto()
-    PotionLanky = auto()
-    PotionTiny = auto()
-    PotionChunky = auto()
-    PotionAny = auto()
-    KongDK = auto()
-    KongDiddy = auto()
-    KongLanky = auto()
-    KongTiny = auto()
-    KongChunky = auto()
-    KongDisco = auto()
-    KongKrusha = auto()
-    Bean = auto()
-    Pearl = auto()
-    Fairy = auto()
-    IceTrapBubble = auto()
-    IceTrapReverse = auto()
-    IceTrapSlow = auto()
-    Medal = auto()
-    JetpacItemOverlay = auto()
-    CrankyItem = auto()
-    FunkyItem = auto()
-    CandyItem = auto()
-    SnideItem = auto()
-    ZingerFlamethrower = auto()
-    Scarab = auto()
-    HintItemDK = auto()
-    KopDummy = auto()
-    HintItemDiddy = auto()
-    HintItemLanky = auto()
-    HintItemTiny = auto()
-    HintItemChunky = auto()
-
-
 compatible_background_textures = {
     0x47A: MenuTexture("Gold Tower Stack", MenuTextDim.size_w32_h64),
     0x9DD: MenuTexture("Book", MenuTextDim.size_w32_h64),
@@ -685,6 +643,7 @@ def getValueFromByteArray(ba: bytearray, offset: int, size: int) -> int:
         value += local_value
     return value
 
+
 def getCompletableBonuses(settings) -> list:
     """Get a list of bonus barrels that can be completed in a seed."""
     locations = [
@@ -733,13 +692,7 @@ def getCompletableBonuses(settings) -> list:
         Locations.IslesDiddySnidesLobby,
     ]
     if settings.helm_setting != HelmSetting.skip_all and settings.helm_room_bonus_count != HelmBonuses.zero:
-        helm_rooms = [
-            settings.helm_donkey,
-            settings.helm_diddy,
-            settings.helm_lanky,
-            settings.helm_tiny,
-            settings.helm_chunky
-        ]
+        helm_rooms = [settings.helm_donkey, settings.helm_diddy, settings.helm_lanky, settings.helm_tiny, settings.helm_chunky]
         helm_locations = [
             [Locations.HelmDonkey2, Locations.HelmDonkey1],
             [Locations.HelmDiddy1, Locations.HelmDiddy2],
@@ -755,6 +708,7 @@ def getCompletableBonuses(settings) -> list:
                 locations.extend(helm_locations[room_index][:limit])
     return locations
 
+
 class Holidays(IntEnum):
     """Holiday Enum."""
 
@@ -763,64 +717,10 @@ class Holidays(IntEnum):
     Halloween = auto()
     Anniv25 = auto()
 
+
 def sumChecks(spoiler, ownedItems, locations: list) -> int:
     """Sum the amount of checks in a list that have been checked."""
     return sum(spoiler.LocationList[loc].inaccessible or spoiler.LocationList[loc].item in ownedItems for loc in locations)
-
-model_indexes = {
-    Types.Banana: 0x69,
-    Types.Key: 0xF5,
-    Types.Crown: 0xF4,
-    Types.Fairy: 0x3D,
-    Types.Shop: [0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB],
-    Types.Shockwave: 0xFB,
-    Types.TrainingBarrel: 0xFB,
-    Types.Climbing: 0xFB,
-    Types.Kong: [4, 1, 6, 9, 0xC],
-    Types.FakeItem: [-4, -3, -2],  # -4 for bubble trap, -3 for reverse trap, -2 for slow trap
-    Types.Bean: 0x104,
-    Types.Pearl: 0x106,
-    Types.Medal: 0x108,
-    Types.NintendoCoin: 0x10A,
-    Types.RarewareCoin: 0x10C,
-    Types.JunkItem: 0x10E,
-    Types.Cranky: 0x11,
-    Types.Funky: 0x12,
-    Types.Candy: 0x13,
-    Types.Snide: 0x1F,
-    Types.Hint: [0x11B, 0x11D, 0x11F, 0x121, 0x123],
-}
-
-def getModelFromItem(item: Items, item_type: Types, flag: int, shared: bool = False) -> int:
-    """Get the model index associated with an item."""
-    if item_type not in model_indexes:
-        return None
-    model = model_indexes[item_type]
-    kong_flags = (385, 6, 70, 66, 117)
-    if item_type == Types.Shop:
-        if (flag & 0x8000) == 0:
-            slot = 5
-        else:
-            slot = (flag >> 12) & 7
-            if shared or slot > 5:
-                slot = 5
-        return model_indexes[Types.Shop][slot]
-    elif item_type == Types.Kong:
-        slot = 0
-        if flag in kong_flags:
-            slot = kong_flags.index(flag)
-        return model_indexes[Types.Kong][slot]
-    elif item_type == Types.FakeItem:
-        trap_types = {
-            Items.IceTrapBubble: -4,
-            Items.IceTrapReverse: -3,
-            Items.IceTrapSlow: -2,
-        }
-        return trap_types.get(item, -4) + 0x10000
-    elif item_type == Types.Hint:
-        kong = (flag - 0x384) % 5
-        return model_indexes[Types.Hint][kong]
-    return model
 
 def getHolidaySetting(settings):
     """Get the holiday setting."""
