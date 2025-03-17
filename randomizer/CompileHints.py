@@ -34,6 +34,7 @@ from randomizer.Enums.Settings import (
     KongModels,
     SlamRequirement,
     HardBossesSelected,
+    ItemRandoListSelected,
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
@@ -717,6 +718,7 @@ def compileHints(spoiler: Spoiler) -> bool:
 
     # Some locations are particularly useless to hint
     useless_locations = {
+        Items.Bean: [],
         Items.HideoutHelmKey: [],
         Maps.KroolDonkeyPhase: [],
         Maps.KroolDiddyPhase: [],
@@ -754,6 +756,9 @@ def compileHints(spoiler: Spoiler) -> bool:
         Maps.KroolTinyPhase: [Items.Feather, Items.MiniMonkey],
         Maps.KroolChunkyPhase: chunky_phase_requirement,
     }
+    # If the Bean isn't shuffled, hinting the Bean location is pointless
+    if spoiler.settings.win_condition_item == WinConditionComplex.req_bean and ItemRandoListSelected.beanpearl not in spoiler.settings.item_rando_list_selected and Locations.ForestBean in spoiler.woth_paths.keys():
+        useless_locations[Items.Bean] = [Locations.ForestBean]
     if IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase, False):
         required_moves[Maps.KroolLankyPhase] = [Items.Barrels, Items.Grape]
     for map_id in required_moves:
@@ -1057,6 +1062,9 @@ def compileHints(spoiler: Spoiler) -> bool:
                     valid_types.append(HintType.RequiredWinConditionHint)
                     # Count the number of non-trivial phases
                     hint_distribution[HintType.RequiredWinConditionHint] = len([kong for kong in spoiler.settings.krool_order if len(spoiler.krool_paths[kong]) - len(useless_locations[kong]) > 0])
+                if spoiler.settings.win_condition_item == WinConditionComplex.req_bean:
+                    valid_types.append(HintType.RequiredWinConditionHint)
+                    hint_distribution[HintType.RequiredWinConditionHint] = 1
                 # Some win conditions need help finding the camera (if you don't start with it) - variable amount of unique hints for it
                 if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
                     camera_location_id = None
@@ -3115,6 +3123,7 @@ def GenerateMultipathDict(
         path_to_camera = []
         relevant_goal_locations = []
         path_to_family = False
+        path_to_bean = False
         path_to_verses = [False] * 6
         has_path_to_verse = False
         verse_items = [
@@ -3137,6 +3146,10 @@ def GenerateMultipathDict(
                     relevant_goal_locations.append(Locations(woth_loc))
                 if endpoint_item.type == Types.Kong:
                     path_to_family = True
+                    relevant_goal_locations.append(Locations(woth_loc))
+                # Determine path to the Bean if the Bean is the win condition.
+                if endpoint_item.type == Types.Bean and spoiler.settings.win_condition_item == WinConditionComplex.req_bean and location not in useless_locations[Items.Bean]:
+                    path_to_bean = True
                     relevant_goal_locations.append(Locations(woth_loc))
                 if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
                     item = spoiler.LocationList[woth_loc].item
@@ -3196,6 +3209,8 @@ def GenerateMultipathDict(
             hint_text_components.append(path_to_camera[0])
         if path_to_family:
             hint_text_components.append("\x04Free Kongs\x04")
+        if path_to_bean:
+            hint_text_components.append("\x07The Bean\x07")
         if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
             all_verses = [xi for xi, x in enumerate(path_to_verses) if x]
             if len(all_verses) == 6:
@@ -3214,7 +3229,7 @@ def GenerateMultipathDict(
                         hint_text_components.append(f"{join_words(kong_names)} Verses")
                 if path_to_verses[5]:
                     hint_text_components.append(f"{verse_colors[5]}The Fridge{verse_colors[5]}")
-        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family or has_path_to_verse:
+        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family or path_to_bean or has_path_to_verse:
             multipath_dict_hints[location] = join_words(hint_text_components)
             multipath_dict_goals[location] = relevant_goal_locations
     return multipath_dict_hints, multipath_dict_goals
