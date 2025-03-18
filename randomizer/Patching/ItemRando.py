@@ -783,6 +783,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                             Types.FakeItem,  # Fake Item (Reverse)
                             Types.FakeItem,  # Fake Item (Slow)
                             Types.Hint,  # Hint Item
+                            Types.ArchipelagoItem,  # Archipelago Item
                         ]
                         offset = None
                         base_addr = None
