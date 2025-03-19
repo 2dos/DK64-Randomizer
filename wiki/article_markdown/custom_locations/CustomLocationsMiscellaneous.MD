@@ -530,7 +530,7 @@
 | Creepy Castle Lobby | Castle Lobby: Right of Entrance |  |  | 
 | Creepy Castle Lobby | Castle Lobby: Left of Portal |  |  | 
 | Hideout Helm Lobby | Helm Lobby: Next to Tag Barrel |  |  | 
-| Hideout Helm Lobby | Helm Lobby: Bonus Platform |  | `(l.can_use_vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and l.istiny and l.twirl)` | 
+| Hideout Helm Lobby | Helm Lobby: Bonus Platform |  | `(l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.can_use_vines) or (l.advanced_platforming and l.istiny and l.twirl)` | 
 | Hideout Helm Lobby | Helm Lobby: Blueprint Platform |  | `((l.coconut and l.scope) or (l.twirl and l.istiny and l.advanced_platforming))` | 
 | Training Grounds | Training Grounds: Far Mountain |  | `l.climbing` | 
 | Training Grounds | Training Grounds: On the rear hill |  | `l.climbing` | 
