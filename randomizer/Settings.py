@@ -93,7 +93,8 @@ class Settings:
         if self.generate_spoilerlog is None:
             self.generate_spoilerlog = False
         self.seed = str(self.seed) + self.__hash + str(json.dumps(form_data))
-        self.set_seed()
+        if not self.archipelago:
+            self.set_seed()
         self.seed_hash = [random.randint(0, 9) for i in range(5)]
         self.krool_keys_required = []
         self.starting_key_list = []
