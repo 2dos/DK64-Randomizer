@@ -160,7 +160,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
     ],
     Regions.MillRafters: [
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.guitar or l.diddy, None, 2),
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.guitar and l.isdiddy, None, 2),
     ],
     Regions.WinchRoom: [
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),

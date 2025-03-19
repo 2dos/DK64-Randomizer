@@ -227,15 +227,15 @@ def isSongWithInLengthRange(vanilla_length: int, proposed_length: int) -> bool:
 
 def writeSongMemory(ROM_COPY: ROM, index: int, value: int):
     """Write song memory to ROM."""
+    # Specifically, write only the song's storage slot.
     offset_dict = populateOverlayOffsets(ROM_COPY)
     ram_address = 0x80745658 + (index * 2)
     rom_address = getROMAddress(ram_address, Overlay.Static, offset_dict)
     ROM_COPY.seek(rom_address)
     original_value = int.from_bytes(ROM_COPY.readBytes(2), "big")
-    original_value &= 0xFF81
+    original_value &= 0xFFF9
     write_slot = (value & 6) >> 1
-    channel = (value & 0x78) >> 3
-    original_value = original_value | ((write_slot & 3) << 1) | ((channel & 0xF) << 3)
+    original_value = original_value | ((write_slot & 3) << 1)
     writeValue(ROM_COPY, 0x80745658 + (index * 2), Overlay.Static, original_value, offset_dict)
 
 
