@@ -399,7 +399,7 @@ BananaportVanilla = {
     Warps.FactoryProdBottom: BananaportData(
         name="Frantic Factory: Production Room (Bottom)",
         map_id=Maps.FranticFactory,
-        region_id=Regions.BeyondHatch,
+        region_id=Regions.LowerCore,
         obj_id_vanilla=0x105,
         vanilla_warp=3,
         swap_index=41,
