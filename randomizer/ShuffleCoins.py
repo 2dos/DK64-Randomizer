@@ -1,7 +1,5 @@
 """Select Coin Location selection."""
 
-import random
-
 import js
 import randomizer.CollectibleLogicFiles.AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle
@@ -35,7 +33,7 @@ level_data = {
 }
 
 
-def getCoinRequirement() -> int:
+def getCoinRequirement(random) -> int:
     """Get requirement for a kong's coin amount."""
     return int(random.randint(KONG_COIN_REQUIREMENT, KONG_COIN_CAP) / 8)
 
@@ -54,11 +52,11 @@ def ShuffleCoins(spoiler):
                 level_placement = []
                 global_divisor = 7 - level_index
                 kong_specific_left = {
-                    Kongs.donkey: getCoinRequirement(),
-                    Kongs.diddy: getCoinRequirement(),
-                    Kongs.lanky: getCoinRequirement(),
-                    Kongs.tiny: getCoinRequirement(),
-                    Kongs.chunky: getCoinRequirement(),
+                    Kongs.donkey: getCoinRequirement(spoiler.settings.random),
+                    Kongs.diddy: getCoinRequirement(spoiler.settings.random),
+                    Kongs.lanky: getCoinRequirement(spoiler.settings.random),
+                    Kongs.tiny: getCoinRequirement(spoiler.settings.random),
+                    Kongs.chunky: getCoinRequirement(spoiler.settings.random),
                 }
                 coins_left = (KONG_COIN_CAP * 5) - total_coins
                 coins_lower = max(int(coins_left / (8 - level_index)) - 10, 0)
@@ -67,8 +65,8 @@ def ShuffleCoins(spoiler):
                 else:
                     coins_upper = min(int(coins_left / (8 - level_index)) + 10, int(coins_left / global_divisor))
                 groupIds = list(range(1, len(BananaCoinGroupList[level]) + 1))
-                random.shuffle(groupIds)
-                selected_coin_count = random.randint(min(coins_lower, coins_upper), max(coins_lower, coins_upper))
+                spoiler.settings.random.shuffle(groupIds)
+                selected_coin_count = spoiler.settings.random.randint(min(coins_lower, coins_upper), max(coins_lower, coins_upper))
                 placed_coins = 0
                 for groupId in groupIds:
                     group_weight = 0
@@ -78,7 +76,7 @@ def ShuffleCoins(spoiler):
                         coin_kongs = list(set(coin_kongs) & set(group.kongs.copy()))
                         group_weight = len(group.locations)
                     if len(coin_kongs) > 0 and (selected_coin_count >= placed_coins + group_weight):
-                        selected_kong = random.choice(coin_kongs)
+                        selected_kong = spoiler.settings.random.choice(coin_kongs)
                         kong_specific_left[selected_kong] -= group_weight  # Remove Coins for kong
                         # When a kong goes under/equal to 0 remaining in this level, we no longer need to consider it
                         if kong_specific_left[selected_kong] <= 0:

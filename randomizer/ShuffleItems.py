@@ -1,7 +1,5 @@
 """Shuffles items for Item Rando."""
 
-import random
-
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -211,7 +209,7 @@ def ShuffleItems(spoiler):
             else:
                 flag_dict[vanilla_item_type].append(old_flag)
     # Shuffle the list of locations needing flags so the flags are assigned randomly across seeds
-    random.shuffle(locations_needing_flags)
+    spoiler.settings.random.shuffle(locations_needing_flags)
     for location in locations_needing_flags:
         if location.new_flag is None:
             if location.new_item == Types.Blueprint:

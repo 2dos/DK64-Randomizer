@@ -1,7 +1,6 @@
 """Patches assembly instructions from the overlays rather than doing changes live."""
 
 import js
-import random
 import math
 import io
 import randomizer.ItemPool as ItemPool
@@ -330,7 +329,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         for x in range(8):
             used_arr = skybox_rgba
             if random_skybox:
-                used_arr = [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)]
+                used_arr = [settings.random.randint(0, 255), settings.random.randint(0, 255), settings.random.randint(0, 255)]
             if used_arr is not None:
                 for zi, z in enumerate(used_arr):
                     writeValue(ROM_COPY, 0x80754EF8 + (12 * x) + zi, Overlay.Static, z, offset_dict, 1)

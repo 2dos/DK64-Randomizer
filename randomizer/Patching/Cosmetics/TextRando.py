@@ -308,9 +308,9 @@ def writeCrownNames(ROM_COPY: ROM):
     writeText(ROM_COPY, 35, old_text)
 
 
-def writeBootMessages(ROM_COPY: LocalROM) -> None:
+def writeBootMessages(ROM_COPY: LocalROM, rando) -> None:
     """Write boot messages into ROM."""
-    placed_messages = random.sample(boot_phrases, 4)
+    placed_messages = rando.sample(boot_phrases, 4)
     for message_index, message in enumerate(placed_messages):
         ROM_COPY.seek(0x1FFD000 + (0x40 * message_index))
         ROM_COPY.writeBytes(message.upper().encode("ascii"))

@@ -1,7 +1,5 @@
 """Randomizes Bananaports."""
 
-import random
-
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Settings import ShufflePortLocations
@@ -26,7 +24,7 @@ def verifySelectedWarps(selected_warps):
             selected_warps.append(Maps[warp["value"]])
 
 
-def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
+def ShuffleWarps(random, bananaport_replacements, human_ports, selected_warps):
     """Shuffles warps between themselves."""
     verifySelectedWarps(selected_warps)
     map_list = getShuffleMaps()
@@ -159,8 +157,8 @@ def ShuffleWarpsCrossMap(spoiler, bananaport_replacements, human_ports, is_coupl
                     is_enabled = False
                 if is_enabled:
                     available_warps.append(warp_check.swap_index)
-            selected_index = random.choice(available_warps)
-            warp_type_index = random.randint(0, 4)
+            selected_index = spoiler.settings.random.choice(available_warps)
+            warp_type_index = spoiler.settings.random.randint(0, 4)
             # Place Warp
             warp.tied_index = selected_index
             for warp_check in BananaportVanilla.values():

@@ -1,6 +1,5 @@
 """Shuffles the locations of shops."""
 
-import random
 import randomizer.Lists.Exceptions as Ex
 
 from randomizer.Enums.Levels import Levels
@@ -119,7 +118,7 @@ def ShuffleShopLocations(spoiler):
                         unused_locations.remove(planned_region)
                         unused_vendors.remove(planned_shop)
                 if len(unused_locations) > 0:
-                    random.shuffle(unused_vendors)
+                    spoiler.settings.random.shuffle(unused_vendors)
                     for real_estate in unused_locations:
                         vendor_region = unused_vendors.pop()
                         filled_dict[real_estate] = available_dict[vendor_region]
@@ -135,7 +134,7 @@ def ShuffleShopLocations(spoiler):
                         old_region = spoiler.RegionList[region_id]
                         old_region.exits = [exit for exit in old_region.exits if exit.dest != shop.shop_exit]
                     shops_in_levels.append(shop)
-            random.shuffle(shops_in_levels)
+            spoiler.settings.random.shuffle(shops_in_levels)
         # Assign shuffle to data
         assortment_in_level = {}
         placement_index = 0

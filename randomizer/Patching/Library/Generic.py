@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING, Any, List, Union
 from functools import lru_cache
 
 import js
-import random
 import math
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Patching.Patcher import ROM, LocalROM
@@ -193,9 +192,9 @@ class HelmDoorRandomInfo:
         self.selection_weight = selection_weight
         self.selected_amount = None
 
-    def chooseAmount(self) -> int:
+    def chooseAmount(self, rando) -> int:
         """Choose amount for the helm door."""
-        raw_float = random.triangular(self.min_bound, self.max_bound)
+        raw_float = rando.triangular(self.min_bound, self.max_bound)
         self.selected_amount = round(raw_float)
         return self.selected_amount
 

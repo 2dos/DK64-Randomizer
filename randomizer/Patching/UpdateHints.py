@@ -1,7 +1,5 @@
 """Update wrinkly hints compressed file."""
 
-import random
-
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.WrinklyHints import HintLocation, hints
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, grabText, writeText
@@ -62,7 +60,7 @@ def UpdateHint(WrinklyHint: HintLocation, message: str):
     return False
 
 
-def updateRandomHint(message: str, kongs_req=[], keywords=[], levels=[]):
+def updateRandomHint(random, message: str, kongs_req=[], keywords=[], levels=[]):
     """Update a random hint with the string specifed.
 
     Args:
