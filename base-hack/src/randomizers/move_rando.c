@@ -766,7 +766,7 @@ void getNextMoveText(void) {
 										}
 									}
 								}
-								if (top_item == -1) {
+								if ((top_item == -1) && (!isFlagAPItem(p_flag))) {
 									// Default to GB
 									top_item = ITEMTEXT_BANANA;
 								}

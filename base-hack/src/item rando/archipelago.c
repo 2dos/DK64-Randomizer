@@ -27,6 +27,7 @@ void initAP(void) {
         if (Rando.enemy_item_rando) {
             ap_info.start_flag += ENEMIES_TOTAL;
         }
+        ap_info.slot = -1;
     }
 }
 
@@ -76,7 +77,7 @@ void handleSentItem(void) {
                         }
                     }
                 }
-                giveGB(min_kong, min_level);
+                MovesBase[min_kong].gb_count[min_level]++;
                 break;
             }
         case TRANSFER_ITEM_CROWN:
