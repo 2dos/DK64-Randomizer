@@ -77,8 +77,8 @@ typedef struct archipelago_data {
     /* 0x008 */ char fed_string[0x21]; // 0x20 characters followed by null terminator
     /* 0x029 */ unsigned char connection;
     /* 0x02A */ unsigned char safety_text_timer; // Timer for when it's *safe* to send another string in
-    /* 0x02B */ char fed_subtitle[0x21]; // 0x21 characters followed by null terminator
-    /* 0x04C */ short slot;
+    /* 0x02B */ char fed_subtitle[0x21]; // 0x20 characters followed by null terminator
+    /* 0x04C */ char slot_name[0x10];
 } archipelago_data;
 
 extern archipelago_data *APData;

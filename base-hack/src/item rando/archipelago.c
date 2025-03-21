@@ -27,7 +27,6 @@ void initAP(void) {
         if (Rando.enemy_item_rando) {
             ap_info.start_flag += ENEMIES_TOTAL;
         }
-        ap_info.slot = -1;
     }
 }
 
