@@ -592,6 +592,17 @@ def patching_response(spoiler):
     rom_flags |= 0x40 if spoiler.settings.generate_spoilerlog else 0
     rom_flags |= 0x20 if spoiler.settings.has_password else 0
     rom_flags |= 0x10 if spoiler.settings.archipelago else 0
+    if spoiler.settings.archipelago:
+        # Write spoiler.settings.player_name to ROM ASCII only
+        ROM_COPY.seek(0x1FF3000)
+        # Player name
+        player_name = spoiler.settings.player_name[:16]
+        # if we're shot on characters, pad with null bytes if we're short on characters
+        if len(player_name) < 16:
+            player_name += "\0" * (16 - len(player_name))
+        # Convert playername to a bytestring and write it to the ROM
+        bytestring = str(player_name).encode("ascii")
+        ROM_COPY.writeBytes(bytestring)
     ROM_COPY.seek(sav + 0xC4)
     ROM_COPY.writeMultipleBytes(rom_flags, 1)
     password = None
