@@ -257,7 +257,7 @@ def ShuffleExits(spoiler):
         UpdateLevelProgression(settings)
 
 
-def ExitShuffle(spoiler):
+def ExitShuffle(spoiler, skip_verification=False):
     """Facilitate shuffling of exits."""
     retries = 0
     while True:
@@ -265,7 +265,7 @@ def ExitShuffle(spoiler):
             # Shuffle entrances based on settings
             ShuffleExits(spoiler)
             # Verify world by assuring all locations are still reachable
-            if not Fill.VerifyWorld(spoiler):
+            if not skip_verification and not Fill.VerifyWorld(spoiler):
                 raise Ex.EntrancePlacementException
             return
         except Ex.EntrancePlacementException:
