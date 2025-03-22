@@ -85,6 +85,7 @@ extern archipelago_data *APData;
 extern void handleArchipelagoFeed(void);
 extern int isFlagAPItem(int flag);
 extern void initAP(void);
+extern void initAPName(void);
 extern void initAPCounter(void);
 extern void saveAPCounter(void);
 extern int isAPEnabled(void);

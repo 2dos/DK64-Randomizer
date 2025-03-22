@@ -437,6 +437,7 @@ void initItemRando(void) {
             }
         }
     }
+    initAPName();
     // Other init
     initItemDropTable();
     initCollectableCollision();

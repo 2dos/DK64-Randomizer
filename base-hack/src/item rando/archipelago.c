@@ -30,6 +30,15 @@ void initAP(void) {
     }
 }
 
+void initAPName(void) {
+    if (isAPEnabled()) {
+        unsigned char *temp = getFile(0x10, 0x1FF3000);
+        for (int i = 0; i < 0x10; i++) {
+            ap_info.slot_name[i] = temp[i];
+        }
+    }
+}
+
 void initAPCounter(void) {
     if (isAPEnabled()) {
         int counter = 0;
