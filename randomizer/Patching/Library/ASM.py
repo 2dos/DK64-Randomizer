@@ -84,6 +84,21 @@ def writeValue(ROM_COPY, address: int, overlay: Overlay, value: int, offset_dict
     ROM_COPY.writeMultipleBytes(passed_value, size)
 
 
+def readValue(ROM_COPY, address: int, overlay: Overlay, offset_dict: dict, size: int = 2, signed: bool = False):
+    """Read value to ROM based on overlay."""
+    if isinstance(ROM_COPY, ROM) and overlay == Overlay.Custom:
+        raise Exception("Cosmetics write to the custom code overlay.")
+    rom_start = getROMAddress(address, overlay, offset_dict)
+    if rom_start is None:
+        raise Exception(f"Couldn't ascertain a ROM start for address {hex(address)} and Overlay {overlay.name}.")
+    ROM_COPY.seek(rom_start)
+    value = ROM_COPY.readBytes(size)
+    read_value = int.from_bytes(value)
+    if read_value < 0 and signed:
+        read_value += 1 << (8 * size)
+    return read_value
+
+
 def writeFloat(ROM_COPY, address: int, overlay: Overlay, value: float, offset_dict: dict):
     """Write floating point variable to ROM."""
     if isinstance(ROM_COPY, ROM) and overlay == Overlay.Custom:

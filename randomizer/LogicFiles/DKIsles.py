@@ -317,7 +317,7 @@ LogicRegions = {
         # This fall could be a logical point of progression, but you have to survive the drop OR have the keys and crouch drop there - the Open Lobbies check effectively prevents keys from being on the path for this transition in very rare worlds
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: l.CanSurviveFallDamage() or l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)),
         # If you were to die to fall damage here, you'd be sent to the Isles spawn. This is effectively a one-off deathwarp consideration (but only if dying isn't catastrophic!)
-        TransitionFront(Regions.IslesMain, lambda l: lambda l: not l.settings.perma_death),
+        TransitionFront(Regions.IslesMain, lambda l: not l.settings.perma_death),
     ]),
 
     Regions.IslesSnideRoom: Region("Isles Snide Room", HintRegion.KremIsles, Levels.DKIsles, True, None, [
