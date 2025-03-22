@@ -1360,6 +1360,7 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[2093, 216, 1597, 312.5],
             group=4,
+            door_type=[DoorType.boss, DoorType.wrinkly],
         ),
         DoorData(
             name="In the quicksand near 5-door temple",

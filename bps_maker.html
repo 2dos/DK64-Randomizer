@@ -41,6 +41,9 @@
                     width:960px;
                     font-size: xx-large;
                 }
+                .normal_text_size {
+                    font-size: medium;
+                }
                 .center_block h1 {
                     font-size: 1.5em;
                 }
@@ -69,13 +72,13 @@
             <div class="form-floating user-select-none" id="vanilla_upload" title="Upload Vanilla ROM">
                 <input type="file" id="input-file-rom" class="form-control" accept=".z64,.n64,.v64" hidden/>
                 <input type="text" id="vanilla_rom_text" class="form-control" readonly value="No Vanilla ROM Chosen"/>
-                <label for="input-file-rom">Vanilla ROM</label>
+                <label class="normal_text_size" for="input-file-rom">Vanilla ROM</label>
             </div>
     
             <div class="form-floating user-select-none mt-4 hide" id="rando_upload" title="Upload Randomizer ROM">
                 <input type="file" id="rando_rom" class="form-control" accept=".z64" hidden/>
                 <input type="text" id="rando_rom_text" class="form-control" readonly value="No Rando ROM Chosen"/>
-                <label for="rando_rom">Rando ROM</label>
+                <label class="normal_text_size" for="rando_rom">Rando ROM</label>
             </div>
     
             <div class="hide p-2 mt-4" id="bps_download">

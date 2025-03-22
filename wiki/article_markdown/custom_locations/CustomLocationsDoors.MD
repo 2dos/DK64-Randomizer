@@ -136,7 +136,7 @@
 | Aztec Tiny Temple | Tiny Temple - Vulture room back wall | Boss, Wrinkly |  | 
 | Aztec Tiny Temple | Tiny Temple - Tiny room right wall | Boss, Wrinkly |  | 
 | Aztec Tiny Temple | Tiny Temple - Tiny room - on the K | Boss, Wrinkly |  | 
-| Angry Aztec | Behind the llama cage | Boss, Dk_Portal, Wrinkly |  | 
+| Angry Aztec | Behind the llama cage | Boss, Wrinkly |  | 
 | Angry Aztec | In the quicksand near 5-door temple | Wrinkly | `l.strongKong and l.isdonkey` | 
 | Angry Aztec | On top of llama temple | Wrinkly | `l.jetpack and l.diddy` | 
 | Aztec Tiny Race | Behind the start of beetle race | Wrinkly |  | 
