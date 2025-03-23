@@ -463,7 +463,14 @@ LogicRegions = {
         Event(Events.HelmLobbyTraversable, lambda l: ((l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone) and l.can_use_vines) or (l.CanMoonkick() and l.donkey))),
     ], [
         TransitionFront(Regions.KremIsleMouth, lambda l: True, Transitions.IslesHelmLobbyToMain),
-        TransitionFront(Regions.HideoutHelmEntry, lambda l: Events.HelmLobbyTraversable in l.Events and l.IsLevelEnterable(Levels.HideoutHelm), Transitions.IslesToHelm),
+        TransitionFront(Regions.HideoutHelmLobbyPastVines, lambda l: Events.HelmLobbyTraversable in l.Events or Events.HelmLobbyW1bTagged in l.Events),
+    ]),
+
+    Regions.HideoutHelmLobbyPastVines: Region("Hideout Helm Lobby Past Vines", HintRegion.LateLobbies, Levels.DKIsles, False, Regions.HideoutHelmLobby, [], [
+        Event(Events.HelmLobbyW1bTagged, lambda l: True),
+    ], [
+        TransitionFront(Regions.HideoutHelmLobby, lambda l: Events.HelmLobbyW1aTagged in l.Events),
+        TransitionFront(Regions.HideoutHelmEntry, lambda l: l.IsLevelEnterable(Levels.HideoutHelm), Transitions.IslesToHelm),
     ]),
 
     Regions.KRool: Region("K. Rool", HintRegion.KRool, Levels.DKIsles, True, None, [], [

@@ -43,6 +43,7 @@ RegionMapList = {
     Regions.CrystalCavesLobby: Maps.CrystalCavesLobby,
     Regions.CreepyCastleLobby: Maps.CreepyCastleLobby,
     Regions.HideoutHelmLobby: Maps.HideoutHelmLobby,
+    Regions.HideoutHelmLobbyPastVines: Maps.HideoutHelmLobby,
     # Japes
     Regions.JungleJapesEntryHandler: Maps.JungleJapes,
     Regions.JungleJapesStart: Maps.JungleJapes,

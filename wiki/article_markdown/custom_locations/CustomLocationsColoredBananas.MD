@@ -1787,7 +1787,7 @@
 | Kasplat island | 5 | `l.scope and l.coconut` | 
 | Right side | 5 |  | 
 | Left side | 5 |  | 
-| Far W1 | 5 | `l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.can_use_vines` | 
+| Far W1 | 5 |  | 
 | Around Kasplat island | Balloon |  | 
 | Left side | Balloon |  | 
 ## Banana Fairy Room

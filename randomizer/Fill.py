@@ -123,15 +123,13 @@ def KasplatShuffle(spoiler: Spoiler, LogicVariables: LogicVarHolder) -> None:
                 js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
 
 
-@lru_cache(maxsize=None)
+# @lru_cache(maxsize=None) - Cache is disabled for now, as it's causing issues with certain bits of logic in LZR
 def GetExitLevelExit(level, restart) -> Optional[Transitions]:
     """Get the exit that using the "Exit Level" button will take you to."""
     # If you have option to restart, means there is no Exit Level option
     if restart is not None:
         return None
-    # For now, restarts will not be randomized
-    # if settings.shuffle_loading_zones == ShuffleLoadingZones.all and region.restart is not None:
-    #     return ShuffleExits.ShufflableExits[region.restart].shuffledId
+    # Otherwise identify and return the exit that the "Exit Level" button will take you to
     if level == Levels.JungleJapes:
         return ShuffleExits.ShufflableExits[Transitions.JapesToIsles].shuffledId
     elif level == Levels.AngryAztec:
