@@ -243,7 +243,8 @@ CROSSHAIRS = {
 def fixLankyIncompatibility(ROM_COPY: ROM):
     """Ensure compatibility with .lanky files created during a specific time frame."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
-    writeValue(ROM_COPY, 0x80602AAC, Overlay.Static, 0x27A40018, offset_dict, 4)  # addiu $a0, $sp, 0x18I
+    if readValue(ROM_COPY, 0x80602AB0, Overlay.Static, offset_dict, 4) != 0x0C180917:
+        writeValue(ROM_COPY, 0x80602AAC, Overlay.Static, 0x27A40018, offset_dict, 4)  # addiu $a0, $sp, 0x18I
 
 
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = True):
