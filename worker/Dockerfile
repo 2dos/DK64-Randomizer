@@ -11,7 +11,7 @@ RUN apk update && apk add --no-cache xdelta3 git gcc libc-dev wget tzdata \
     && cp xdelta3.h /usr/include \
     && cp xdelta3.c /usr/include
 
-RUN pip install -r https://raw.githubusercontent.com/2dos/DK64-Randomizer/refs/heads/dev/worker/requirements.txt
+RUN pip install -r https://raw.githubusercontent.com/2dos/DK64-Randomizer/refs/heads/dev/requirements.txt
 # set the timezone to UTC
 ENV TZ=UTC
 # Copy local files
