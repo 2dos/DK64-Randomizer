@@ -55,23 +55,10 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 			} else if (inShortList(purchase_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
 				if (purchase_value == -2) { // Shockwave & Camera Combo
 					if ((!checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT)) || (!checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT))) {
-						return 6;
+						return 1;
 					}
 				} else {
 					if (!checkFlagDuplicate(purchase_value, FLAGTYPE_PERMANENT)) {
-						int is_shared = 0;
-						int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CLIMBING, FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
-						for (int i = 0; i < (sizeof(tied_flags) / 4); i++) {
-							if (purchase_value == tied_flags[i]) {
-								is_shared = 1;
-							}
-						}
-						if (getMoveProgressiveFlagType(purchase_value) > -1) {
-							is_shared = 1;
-						}
-						if (is_shared) {
-							return 6;
-						}
 						return 1;
 					}
 				}
@@ -100,14 +87,16 @@ int isSharedMove(vendors shop_index, int level) {
 	for (int i = 1; i < 5; i++) {
 		purchase_struct* src = getShopData(shop_index, i, level);
 		if (src) {
-			if (targ->move_kong != src->move_kong) {
-				return 0;
-			}
 			if (targ->purchase_type != src->purchase_type) {
 				return 0;
 			}
 			if (targ->purchase_value != src->purchase_value) {
 				return 0;
+			}
+			if (!inShortList(targ->purchase_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
+				if (targ->move_kong != src->move_kong) {
+					return 0;
+				}
 			}
 		}
 	}
