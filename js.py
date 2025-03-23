@@ -23,6 +23,7 @@ def getFile(filename):
             with open(f"worlds/dk64/{filename}", "rb") as file:
                 return file.read()
 
+
 def getStringFile(filename):
     """Fake function for loading files with Javascript."""
     try:
@@ -34,6 +35,7 @@ def getStringFile(filename):
         except Exception:
             with open(f"worlds/dk64/{filename}", "r") as file:
                 return file.read()
+
 
 pointer_addresses = None
 rom_symbols = None

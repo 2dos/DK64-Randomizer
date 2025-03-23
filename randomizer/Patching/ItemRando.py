@@ -394,6 +394,7 @@ def getHintKongFromFlag(flag: int) -> int:
     """Get the kong associated with a hint from it's flag."""
     return (flag - 0x384) % 5
 
+
 def setItemInWorld(ROM_COPY: LocalROM, offset: int, base_flag: int, current_flag: int):
     """Write item to world array."""
     delta = current_flag - base_flag

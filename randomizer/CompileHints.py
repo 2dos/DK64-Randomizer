@@ -2230,7 +2230,9 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_distribution[HintType.FoolishRegion] -= 1
                 hint_distribution[HintType.RegionItemCount] += 1
                 continue
-            hinted_region_name = spoiler.settings.random.choices(list(foolish_region_location_score.keys()), foolish_region_location_score.values())[0]  # Weighted random choice from list of foolish region names
+            hinted_region_name = spoiler.settings.random.choices(list(foolish_region_location_score.keys()), foolish_region_location_score.values())[
+                0
+            ]  # Weighted random choice from list of foolish region names
             spoiler.foolish_region_names.remove(hinted_region_name)
             del foolish_region_location_score[hinted_region_name]
             hint_location = getRandomHintLocation(random=spoiler.settings.random)

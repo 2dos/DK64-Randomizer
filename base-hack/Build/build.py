@@ -1130,13 +1130,15 @@ file_dict.extend(
 )
 
 for x in range(6):
-    file_dict.append(File(
-        name=f"AP Pearl {x}",
-        pointer_table_index=TableNames.TexturesGeometry,
-        file_index=getBonusSkinOffset(ExtraTextures.APPearl0) + x,
-        source_file=f"assets/displays/ap_pearl_{x}.png",
-        texture_format=TextureFormat.RGBA5551,
-    ))
+    file_dict.append(
+        File(
+            name=f"AP Pearl {x}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.APPearl0) + x,
+            source_file=f"assets/displays/ap_pearl_{x}.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
 
 for x in range(12):
     file_dict.append(

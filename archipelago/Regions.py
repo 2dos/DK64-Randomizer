@@ -58,38 +58,38 @@ all_locations.update({"Victory": 0x00})  # Temp for generating goal location
 lookup_id_to_name: typing.Dict[int, str] = {id: name for name, id in all_locations.items()}
 
 all_collectible_regions = {
-        **AztecCollectibles.LogicRegions,
-        **CastleCollectibles.LogicRegions,
-        **CavesCollectibles.LogicRegions,
-        **IslesCollectibles.LogicRegions,
-        **ForestCollectibles.LogicRegions,
-        **JapesCollectibles.LogicRegions,
-        **FactoryCollectibles.LogicRegions,
-        **GalleonCollectibles.LogicRegions,
-    }
+    **AztecCollectibles.LogicRegions,
+    **CastleCollectibles.LogicRegions,
+    **CavesCollectibles.LogicRegions,
+    **IslesCollectibles.LogicRegions,
+    **ForestCollectibles.LogicRegions,
+    **JapesCollectibles.LogicRegions,
+    **FactoryCollectibles.LogicRegions,
+    **GalleonCollectibles.LogicRegions,
+}
 all_logic_regions = {
-        **AngryAztec.LogicRegions,
-        **CreepyCastle.LogicRegions,
-        **CrystalCaves.LogicRegions,
-        **DKIsles.LogicRegions,
-        **FungiForest.LogicRegions,
-        **HideoutHelm.LogicRegions,
-        **JungleJapes.LogicRegions,
-        **FranticFactory.LogicRegions,
-        **GloomyGalleon.LogicRegions,
-        **Shops.LogicRegions,
+    **AngryAztec.LogicRegions,
+    **CreepyCastle.LogicRegions,
+    **CrystalCaves.LogicRegions,
+    **DKIsles.LogicRegions,
+    **FungiForest.LogicRegions,
+    **HideoutHelm.LogicRegions,
+    **JungleJapes.LogicRegions,
+    **FranticFactory.LogicRegions,
+    **GloomyGalleon.LogicRegions,
+    **Shops.LogicRegions,
 }
 
 
 def create_regions(multiworld: MultiWorld, player: int, logic_holder: LogicVarHolder):
     menu_region = Region("Menu", player, multiworld)
     multiworld.regions.append(menu_region)
-    
+
     # # Print contents of all_locations
     # print("All Locations:")
     # for location_name, location_id in all_locations.items():
     #     print(f"{location_name}: {location_id}")
-    
+
     for region_id in all_logic_regions:
         region_obj = all_logic_regions[region_id]
         # Filtering out auxiliary locations is detrimental to glitch logic, but is necessary to ensure each location placed exactly once
@@ -120,11 +120,20 @@ def create_regions(multiworld: MultiWorld, player: int, logic_holder: LogicVarHo
         multiworld.regions.append(create_region(multiworld, player, region_id.name, region_obj.level, location_logics, collectibles, events, logic_holder))
 
 
-def create_region(multiworld: MultiWorld, player: int, region_name: str, level: Levels, location_logics: typing.List[LocationLogic], collectibles: typing.List[Collectible], events: typing.List[Event], logic_holder: LogicVarHolder) -> Region:
+def create_region(
+    multiworld: MultiWorld,
+    player: int,
+    region_name: str,
+    level: Levels,
+    location_logics: typing.List[LocationLogic],
+    collectibles: typing.List[Collectible],
+    events: typing.List[Event],
+    logic_holder: LogicVarHolder,
+) -> Region:
     new_region = Region(region_name, player, multiworld)
 
     # Two special cases - GameStart doesn't need any locations, as AP will handle starting items instead
-    if location_logics and region_name != "GameStart": 
+    if location_logics and region_name != "GameStart":
         # And Isles Medals locations aren't real unless the setting is enabled.
         if region_name == "DKIslesMedals" and not IsItemSelected(logic_holder.settings.cb_rando_enabled, logic_holder.settings.cb_rando_list_selected, Levels.DKIsles):
             location_logics = []
@@ -182,7 +191,7 @@ def create_region(multiworld: MultiWorld, player: int, region_name: str, level: 
     collectible_id = 0
     for collectible in collectibles:
         collectible_id += 1
-        location_name = region_name + " Collectible " + str(collectible_id) +  ": " + collectible.kong.name + " " + collectible.type.name
+        location_name = region_name + " Collectible " + str(collectible_id) + ": " + collectible.kong.name + " " + collectible.type.name
         location = DK64Location(player, location_name, None, new_region)
         # Quickly test and see if we can reach this location with zero items
         quick_success = False
@@ -203,7 +212,7 @@ def create_region(multiworld: MultiWorld, player: int, region_name: str, level: 
         location.place_locked_item(DK64Item("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity), ItemClassification.progression, None, player))
         # print("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity))
         new_region.locations.append(location)
-    
+
     for event in events:
         # Some events don't matter due to Archipelago settings
         # Entering levels in weird spots can require a number of pre-completed events to be handled in Game Start
@@ -248,8 +257,9 @@ def create_region(multiworld: MultiWorld, player: int, region_name: str, level: 
             set_rule(location, lambda state, event=event: hasDK64REvent(state, logic_holder, event))
         location.place_locked_item(DK64Item("Event, " + event.name.name, ItemClassification.progression, None, player))
         new_region.locations.append(location)
-    
+
     return new_region
+
 
 # CURRENTLY UNUSED - for some reason some Lanky shops are inaccessible??
 def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, region_obj: DK64Region, location_logics: typing.List[LocationLogic], logic_holder: LogicVarHolder) -> Region:
@@ -299,7 +309,7 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
     #     "Test",
     #     lambda state: state.has(DK64RItem.ItemList[DK64RItems.GoldenBanana].name, world.player, 2),
     # )
-    
+
     # Shuffling level order should be going off of our ShufflableExits dictionary, but that's not properly isolated to the spoiler object yet.
     # For now, we have to pre-calculate what the destination region is for each of these transitions.
     if logic_holder.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
@@ -312,7 +322,7 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
             Transitions.IslesMainToForestLobby: None,
             Transitions.IslesMainToCavesLobby: None,
             Transitions.IslesMainToCastleLobby: None,
-            Transitions.IslesMainToHelmLobby: None
+            Transitions.IslesMainToHelmLobby: None,
         }
         exit_lobby_transitions = {
             Transitions.IslesJapesLobbyToMain: None,
@@ -322,7 +332,7 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
             Transitions.IslesForestLobbyToMain: None,
             Transitions.IslesCavesLobbyToMain: None,
             Transitions.IslesCastleLobbyToMain: None,
-            Transitions.IslesHelmLobbyToMain: None
+            Transitions.IslesHelmLobbyToMain: None,
         }
         # Identify which regions each lobby transition leads to in vanilla - this is as un-hard-coded as I can make it
         for region_id, region_obj in DKIsles.LogicRegions.items():
@@ -335,7 +345,7 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
         enter_lobby_transitions_list = list(enter_lobby_transitions.keys())
         exit_lobby_transitions_list = list(exit_lobby_transitions.keys())
         for i in range(len(logic_holder.settings.level_order)):
-            level = logic_holder.settings.level_order[i+1]
+            level = logic_holder.settings.level_order[i + 1]
             lobby_transition_mapping[enter_lobby_transitions_list[i]] = enter_lobby_transitions[enter_lobby_transitions_list[level]]
             lobby_transition_mapping[exit_lobby_transitions_list[level]] = exit_lobby_transitions[exit_lobby_transitions_list[i]]
 

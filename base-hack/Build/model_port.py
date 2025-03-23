@@ -488,14 +488,16 @@ def createMelon():
             fh.seek(0xEC)
             fh.write(getBonusSkinOffset(ExtraTextures.MelonSurface).to_bytes(4, "big"))
 
+
 def writeValueToBytes(by: bytes, value: int, offset: int, size: int) -> bytes:
     """Write a value to a byte stream."""
     copy = bytearray(by)
     written_value = value
     for x in range(size):
-        copy[offset + ((size - 1) - x)] = (written_value & 0xFF)
+        copy[offset + ((size - 1) - x)] = written_value & 0xFF
         written_value >>= 8
     return bytes(copy)
+
 
 ARCHI_OFFSET_SIZE = 40
 ARCHI_DX = ARCHI_OFFSET_SIZE * math.cos(math.pi / 6)
@@ -510,6 +512,7 @@ ARCHI_XY_OFFSETS = [
     (ARCHI_DX, ARCHI_OFFSET_SIZE + ARCHI_DY),  # Top Right (Green)
     (ARCHI_DX, ARCHI_OFFSET_SIZE - ARCHI_DY),  # Bottom Right (Purple)
 ]
+
 
 def createArchiItem():
     """Creates the Archipelago item based off the pearl copied 6 times."""
@@ -545,11 +548,7 @@ def createArchiItem():
                 for _ in range(3):
                     u.append(int.from_bytes(fh.read(2), "big"))
                 rgba = int.from_bytes(fh.read(4), "big")
-                vt_data.append({
-                    "coords": coords.copy(),
-                    "uv": u.copy(),
-                    "rgba": rgba
-                })
+                vt_data.append({"coords": coords.copy(), "uv": u.copy(), "rgba": rgba})
             footer_data = fh.read()
         with open("archi_om2.bin", "wb") as fh:
             # Initial pass
@@ -587,12 +586,13 @@ def createArchiItem():
             offset = 5 * len(dl_data)
             for x in range(11):
                 if x == 2:
-                    offset += (5 * 0x540)
+                    offset += 5 * 0x540
                 fh.seek(0x44 + (x * 4))
                 initial = int.from_bytes(fh.read(4), "big")
                 initial += offset
                 fh.seek(0x44 + (x * 4))
                 fh.write(initial.to_bytes(4, "big"))
+
 
 def loadNewModels():
     """Load new models."""

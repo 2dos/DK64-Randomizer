@@ -1,4 +1,5 @@
 """Contains the class which holds logic variables, and the master copy of regions."""
+
 from math import ceil
 from functools import lru_cache
 from collections import Counter
@@ -95,7 +96,7 @@ class LogicVarHolder:
         # One Archipelago-specific exception - assuming infinite coins shortcuts a few price-related functions that we don't care about
         # In Archipelago, shops are free cause we're not tackling coin logic yet
         self.assumeInfiniteCoins = True
-        
+
         # Archipelago really wants the number of locations to match the number of items. Keep track of how many locations we've made here
         self.location_pool_size = 0
 
@@ -204,7 +205,7 @@ class LogicVarHolder:
         self.CavesKey = False
         self.CastleKey = False
         self.HelmKey = False
-        
+
         # AP adjustment: we have to handle shopkeeper access on init if they aren't in the pool because they won't get placed in a convenient spot
         self.crankyAccess = Types.Cranky not in self.settings.shuffled_location_types
         self.funkyAccess = Types.Funky not in self.settings.shuffled_location_types
@@ -221,7 +222,7 @@ class LogicVarHolder:
         self.HelmTiny2 = False
         self.HelmChunky1 = False
         self.HelmChunky2 = False
-        
+
         self.allTrainingChecks = self.settings.fast_start_beginning_of_game
 
         self.Slam = STARTING_SLAM
@@ -418,7 +419,7 @@ class LogicVarHolder:
         self.swim = self.swim or Items.Swim in ownedItems
         self.oranges = self.oranges or Items.Oranges in ownedItems
         self.barrels = self.barrels or Items.Barrels in ownedItems
-        self.can_use_vines = self.vines # and self.climbing to restore old behavior
+        self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
         progDonkey = item_counts[Items.ProgressiveDonkeyPotion]
         self.blast = self.blast or (Items.BaboonBlast in ownedItems or progDonkey >= 1) and self.donkey
@@ -617,7 +618,7 @@ class LogicVarHolder:
         kong_needs_current: bool = True,
         level: Levels = Levels.JungleJapes,
         default_slam_level: int = 0,
-    ) -> bool:        
+    ) -> bool:
         """Determine whether the kong has the necessary moves based on the switchsanity data."""
         data = self.settings.switchsanity_data[switchsanity_setting]
         kong_data = self.IsKong(data.kong)
@@ -924,7 +925,7 @@ class LogicVarHolder:
         # )
 
     def CanFreeChunky(self):
-        """Check if kong at Chunky location can be freed.""" 
+        """Check if kong at Chunky location can be freed."""
         # In Archipelago, we can't put a Kong in the cage (yet?)
         return self.IsKong(self.settings.chunky_freeing_kong) or self.settings.free_trade_items
         # # If the cage is empty, the item is just lying on the ground
@@ -1130,7 +1131,7 @@ class LogicVarHolder:
         # level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (
         #     ShuffleLoadingZones.none,
         #     ShuffleLoadingZones.levels,
-        # )        
+        # )
         # if level_order_matters and not self.assumeFillSuccess:  # These conditions only matter on fill, not on playthrough
         #     order_of_level = 8 # Guaranteed to be 1-8 here
         #     for level_order in self.settings.level_order:
@@ -1288,7 +1289,7 @@ class LogicVarHolder:
         """Check if you meet the logical requirements to obtain the Rareware Coin."""
         have_enough_medals = self.BananaMedals >= self.settings.medal_requirement
         # Make sure you have access to enough levels to fit the locations in. This isn't super precise and doesn't need to be.
-        required_level_order = max(2, min(ceil(self.settings.medal_requirement / 4), 7)) # At least level 2 to give space for medal placements, at most level 6 to allow shenanigans
+        required_level_order = max(2, min(ceil(self.settings.medal_requirement / 4), 7))  # At least level 2 to give space for medal placements, at most level 6 to allow shenanigans
         # AP adjustment: also needs to check if you own Cranky
         return self.crankyAccess and have_enough_medals and self.HasFillRequirementsForLevel(self.settings.level_order[required_level_order])
 

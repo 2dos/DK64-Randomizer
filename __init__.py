@@ -9,15 +9,17 @@ import codecs
 from io import BytesIO
 import pkgutil
 import sys
+
 baseclasses_loaded = False
 try:
     from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification
+
     baseclasses_loaded = True
 except ImportError:
     pass
 if baseclasses_loaded:
-    sys.path.append('./worlds/dk64/')
-    sys.path.append('./worlds/dk64/archipelago/')
+    sys.path.append("./worlds/dk64/")
+    sys.path.append("./worlds/dk64/archipelago/")
     sys.path.append("./custom_worlds/dk64.apworld/dk64/")
     sys.path.append("./custom_worlds/dk64.apworld/dk64/archipelago/")
     import randomizer.ItemPool as DK64RItemPool
@@ -29,6 +31,7 @@ if baseclasses_loaded:
     from archipelago.Regions import all_locations, create_regions, connect_regions
     from archipelago.Rules import set_rules
     from worlds.AutoWorld import WebWorld, World
+
     # import Patch
     from archipelago.Logic import LogicVarHolder
     from randomizer.Spoiler import Spoiler
@@ -58,32 +61,25 @@ if baseclasses_loaded:
 
     def launch_client():
         from archipelago.DK64Client import launch
+
         launch_component(launch, name="DK64 Client")
 
-
     components.append(Component("DK64 Client", "DK64Client", func=launch_client, component_type=Type.CLIENT, icon="dk64"))
-    icon_paths['dk64'] = f"ap:{__name__}/static/img/dk.png"
+    icon_paths["dk64"] = f"ap:{__name__}/static/img/dk.png"
 
     class DK64Web(WebWorld):
         theme = "jungle"
 
-        setup_en = Tutorial(
-            "Multiworld Setup Guide",
-            "A guide to setting up the Donkey Kong 64 randomizer connected to an Archipelago Multiworld.",
-            "English",
-            "setup_en.md",
-            "setup/en",
-            ["PoryGone"]
-        )
+        setup_en = Tutorial("Multiworld Setup Guide", "A guide to setting up the Donkey Kong 64 randomizer connected to an Archipelago Multiworld.", "English", "setup_en.md", "setup/en", ["PoryGone"])
 
         tutorials = [setup_en]
-
 
     class DK64World(World):
         """
         Donkey Kong 64 is a 3D collectathon platforming game.
         Play as the whole DK Crew and rescue the Golden Banana hoard from King K. Rool.
         """
+
         game: str = "Donkey Kong 64"
         options_dataclass = DK64Options
         options: DK64Options
@@ -94,7 +90,6 @@ if baseclasses_loaded:
         location_name_to_id = all_locations
 
         web = DK64Web()
-
 
         def __init__(self, multiworld: MultiWorld, player: int):
             # Check if dk64.z64 exists, if it doesn't prompt the user to provide it
@@ -128,14 +123,14 @@ if baseclasses_loaded:
 
         @classmethod
         def stage_assert_generate(cls, multiworld: MultiWorld):
-            #rom_file = get_base_rom_path()
-            #if not os.path.exists(rom_file):
+            # rom_file = get_base_rom_path()
+            # if not os.path.exists(rom_file):
             #    raise FileNotFoundError(rom_file)
             pass
 
         def _get_slot_data(self):
             return {
-                #"death_link": self.options.death_link.value,
+                # "death_link": self.options.death_link.value,
             }
 
         def generate_early(self):
@@ -176,7 +171,7 @@ if baseclasses_loaded:
         def generate_basic(self):
             connect_regions(self, self.logic_holder)
 
-            self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("BananaHoard", ItemClassification.progression, 0xD64060, self.player)) # TEMP?
+            self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("BananaHoard", ItemClassification.progression, 0xD64060, self.player))  # TEMP?
 
         def generate_output(self, output_directory: str):
             try:
@@ -319,11 +314,11 @@ if baseclasses_loaded:
             except:
                 raise
             finally:
-                self.rom_name_available_event.set() # make sure threading continues and errors are collected
+                self.rom_name_available_event.set()  # make sure threading continues and errors are collected
 
         def update_seed_results(self, patch, spoiler, player_id):
             """Update the seed results."""
-            
+
             timestamp = time.time()
             hash = spoiler.settings.seed_hash
             spoiler_log = {}
