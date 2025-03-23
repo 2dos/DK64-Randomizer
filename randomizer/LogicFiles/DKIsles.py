@@ -460,6 +460,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesKasplatHelmLobby, lambda l: not l.settings.kasplat_rando and ((l.scope and l.coconut) or (l.twirl and l.tiny and l.advanced_platforming))),
     ], [
         Event(Events.HelmLobbyAccessed, lambda l: True),
+        Event(Events.HelmLobbyW1aTagged, lambda l: True),
         Event(Events.HelmLobbyTraversable, lambda l: ((l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone) and l.can_use_vines) or (l.CanMoonkick() and l.donkey))),
     ], [
         TransitionFront(Regions.KremIsleMouth, lambda l: True, Transitions.IslesHelmLobbyToMain),
