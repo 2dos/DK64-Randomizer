@@ -68,6 +68,9 @@ LogicRegions = {
     Regions.HideoutHelmLobby: [
 
     ],
+    Regions.HideoutHelmLobbyPastVines: [
+
+    ],
     Regions.Treehouse: [
 
     ],

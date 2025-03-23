@@ -52,8 +52,8 @@ ShufflableExits = {
     Transitions.CavesToIsles: ShufflableExit("Crystal Caves to Caves Lobby", Regions.CrystalCavesEntryHandler, TransitionBack(Regions.CrystalCavesLobby, "From Caves", "Caves Lobby from Crystal Caves", Transitions.IslesToCaves), ExitCategories.CavesExterior),
     Transitions.IslesToCastle: ShufflableExit("Castle Lobby to Creepy Castle", Regions.CreepyCastleLobby, TransitionBack(Regions.CreepyCastleEntryHandler, "From Castle Lobby", "Creepy Castle from Castle Lobby", Transitions.CastleToIsles), ExitCategories.CastleLobby),
     Transitions.CastleToIsles: ShufflableExit("Creepy Castle to Castle Lobby", Regions.CreepyCastleEntryHandler, TransitionBack(Regions.CreepyCastleLobby, "From Castle", "Castle Lobby from Creepy Castle", Transitions.IslesToCastle), ExitCategories.CastleExterior),
-    Transitions.IslesToHelm: ShufflableExit("Helm Lobby to Hideout Helm", Regions.HideoutHelmLobby, TransitionBack(Regions.HideoutHelmEntry, "From Helm Lobby", "Hideout Helm from Helm Lobby", Transitions.HelmToIsles), ExitCategories.HelmLobby),
-    Transitions.HelmToIsles: ShufflableExit("Hideout Helm to Helm Lobby", Regions.HideoutHelmEntry, TransitionBack(Regions.HideoutHelmLobby, "From Helm", "Helm Lobby from Hideout Helm", Transitions.IslesToHelm), ExitCategories.HideoutHelm),
+    Transitions.IslesToHelm: ShufflableExit("Helm Lobby to Hideout Helm", Regions.HideoutHelmLobbyPastVines, TransitionBack(Regions.HideoutHelmEntry, "From Helm Lobby", "Hideout Helm from Helm Lobby", Transitions.HelmToIsles), ExitCategories.HelmLobby),
+    Transitions.HelmToIsles: ShufflableExit("Hideout Helm to Helm Lobby", Regions.HideoutHelmEntry, TransitionBack(Regions.HideoutHelmLobbyPastVines, "From Helm", "Helm Lobby from Hideout Helm", Transitions.IslesToHelm), ExitCategories.HideoutHelm),
 
     # DK Isles Exits
     Transitions.IslesTreehouseToStart: ShufflableExit("DK's Treehouse to Training Grounds", Regions.Treehouse, TransitionBack(Regions.TrainingGrounds, "From Treehouse", "Training Grounds from DK's Treehouse", Transitions.IslesStartToTreehouse)),

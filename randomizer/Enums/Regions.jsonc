@@ -280,6 +280,8 @@
     "CrankyCastle": 256,
     "CrankyIsles": 257,
     "Snide": 258,
+
+    // Regions added after this organization
     "AlcoveBeyondHatch": 259,
     "MushroomBlastLevelExterior": 260,
     "MushroomLowerBetweenLadders": 261,
@@ -304,6 +306,7 @@
     "CryptChunkyRoom": 280,
     "CryptDonkeyRoom": 281,
     "CryptDiddyRoom": 282,
-    "ForestMillTopOfNightCage": 283
+    "ForestMillTopOfNightCage": 283,
+    "HideoutHelmLobbyPastVines": 284
   }
 }

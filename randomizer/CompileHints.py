@@ -1983,7 +1983,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             Maps.FungiForestLobby: [Regions.FungiForestLobby],
             Maps.CrystalCavesLobby: [Regions.CrystalCavesLobby],
             Maps.CreepyCastleLobby: [Regions.CreepyCastleLobby],
-            Maps.HideoutHelmLobby: [Regions.HideoutHelmLobby],
+            Maps.HideoutHelmLobby: [Regions.HideoutHelmLobby, Regions.HideoutHelmLobbyPastVines],
             Maps.ForestMillFront: [Regions.GrinderRoom],  # The Mini entrance counts
             Maps.CastleMuseum: [Regions.MuseumBehindGlass],  # Weird, but technically a connector between MP and Mini entrances
             Maps.CastleBallroom: [Regions.Ballroom],  # Also weird, as one side is all-kong and the other side is a MP pad
