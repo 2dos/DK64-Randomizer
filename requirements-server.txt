@@ -1,0 +1,5 @@
+opentelemetry-exporter-otlp-proto-http
+opentelemetry-instrumentation-flask
+opentelemetry-instrumentation-rq
+opentelemetry-instrumentation-requests
+opentelemetry-instrumentation-redis
