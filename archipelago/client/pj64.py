@@ -1,9 +1,10 @@
 """Contains the PJ64Client class for interacting with Project64."""
 
 import socket
-import psutil
 import json
+import sys
 import os
+import subprocess
 import pkgutil
 from configparser import ConfigParser
 from Utils import open_filename
@@ -91,10 +92,23 @@ class PJ64Client:
             os.popen(f'"{executable}" "{rom}"')
 
     def _is_exe_running(self, exe_name):
-        """Check if a given executable is running."""
-        for process in psutil.process_iter(["name"]):
-            if process.info["name"] and process.info["name"].lower() == exe_name.lower():
-                return True
+        """Check if a given executable is running without using psutil."""
+        exe_name = exe_name.lower()
+
+        if sys.platform == "win32":
+            try:
+                output = subprocess.check_output(["tasklist"], text=True, errors="ignore")
+                return exe_name in output.lower()
+            except subprocess.CalledProcessError:
+                return False
+
+        else:  # Unix-based (Linux/macOS)
+            try:
+                result = subprocess.run(["pgrep", "-f", exe_name], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+                return result.returncode == 0
+            except FileNotFoundError:
+                return False  # `pgrep` not available
+
         return False
 
     def _verify_pj64_config(self, config_file):

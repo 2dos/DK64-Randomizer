@@ -8,6 +8,7 @@ import zipfile
 import codecs
 from io import BytesIO
 import pkgutil
+import shutil
 import sys
 
 baseclasses_loaded = False
@@ -18,6 +19,39 @@ try:
 except ImportError:
     pass
 if baseclasses_loaded:
+
+    def copy_dependencies(zip_path):
+        dest_dir = "./lib"
+        zip_dest = os.path.join(dest_dir, "windows.zip")
+
+        # Ensure the destination directory exists
+        os.makedirs(dest_dir, exist_ok=True)
+
+        # Load the ZIP file from the package
+        zip_data = pkgutil.get_data(__name__, zip_path)
+        # Check if the zip already exists in the destination
+        if not os.path.exists(zip_dest):
+            if zip_data is None:
+                print(f"Failed to read {zip_path}")
+            else:
+                # Write the ZIP file to the destination
+                with open(zip_dest, "wb") as f:
+                    f.write(zip_data)
+                print(f"Copied {zip_path} to {zip_dest}")
+
+                # Extract the ZIP file
+                with zipfile.ZipFile(zip_dest, "r") as zip_ref:
+                    zip_ref.extractall(dest_dir)
+                print(f"Extracted {zip_dest} into {dest_dir}")
+
+    platform_type = sys.platform
+    try:
+        from PIL import Image  # Check if PIL is installed
+    except ImportError:
+        if platform_type == "win32":
+            zip_path = "vendor/windows.zip"  # Path inside the package
+            copy_dependencies(zip_path)
+
     sys.path.append("./worlds/dk64/")
     sys.path.append("./worlds/dk64/archipelago/")
     sys.path.append("./custom_worlds/dk64.apworld/dk64/")
@@ -31,8 +65,6 @@ if baseclasses_loaded:
     from archipelago.Regions import all_locations, create_regions, connect_regions
     from archipelago.Rules import set_rules
     from worlds.AutoWorld import WebWorld, World
-
-    # import Patch
     from archipelago.Logic import LogicVarHolder
     from randomizer.Spoiler import Spoiler
     from randomizer.Settings import Settings
@@ -45,7 +77,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Types import Types
     from randomizer.Enums.Locations import Locations
     from randomizer.Lists.Location import PreGivenLocations
-    from worlds.LauncherComponents import Component, components, Type, icon_paths, local_path, launch as launch_component
+    from worlds.LauncherComponents import Component, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
     from Utils import open_filename
     import shutil
@@ -61,6 +93,7 @@ if baseclasses_loaded:
 
     def launch_client():
         from archipelago.DK64Client import launch
+        from worlds.LauncherComponents import launch as launch_component
 
         launch_component(launch, name="DK64 Client")
 
