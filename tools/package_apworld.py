@@ -51,12 +51,17 @@ install_dependencies(linux_vendor, "manylinux2014_x86_64")
 
 
 # Function to zip a folder
-def zip_folder(folder_path, zip_name):
+def zip_folder(folder_path, zip_name, preserve_root=False):
     with zipfile.ZipFile(zip_name, "w", zipfile.ZIP_DEFLATED) as zipf:
+        folder_basename = os.path.basename(folder_path)  # "dk64"
         for root, _, files in os.walk(folder_path):
             for file in files:
                 file_path = os.path.join(root, file)
-                arcname = os.path.relpath(file_path, start=folder_path)
+                if preserve_root:
+                    arcname = os.path.join(folder_basename, os.path.relpath(file_path, start=folder_path))
+                    # Ensures dk64/ appears only once in zip
+                else:
+                    arcname = os.path.relpath(file_path, start=folder_path)  # No extra nesting
                 zipf.write(file_path, arcname)
 
 
@@ -69,7 +74,7 @@ zip_folder(linux_vendor, "dk64/vendor/linux.zip")
 # Delete the folder
 shutil.rmtree(linux_vendor)
 # Zip dk64 directory
-zip_folder(dk64_folder, "dk64.apworld")
+zip_folder(dk64_folder, "dk64.apworld", preserve_root=True)
 # Delete the folder
 shutil.rmtree(dk64_folder)
 

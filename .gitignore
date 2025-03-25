@@ -222,3 +222,4 @@ static/js/compile_templates.js
 static/compiled.jsonc
 vendor/
 dk64.apworld
+/dk64/
