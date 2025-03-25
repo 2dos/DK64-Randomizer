@@ -52,10 +52,10 @@ if baseclasses_loaded:
             zip_path = "vendor/windows.zip"  # Path inside the package
             copy_dependencies(zip_path)
 
-    sys.path.append("./worlds/dk64/")
-    sys.path.append("./worlds/dk64/archipelago/")
-    sys.path.append("./custom_worlds/dk64.apworld/dk64/")
-    sys.path.append("./custom_worlds/dk64.apworld/dk64/archipelago/")
+    sys.path.append("worlds/dk64/")
+    sys.path.append("worlds/dk64/archipelago/")
+    sys.path.append("custom_worlds/dk64.apworld/dk64/")
+    sys.path.append("custom_worlds/dk64.apworld/dk64/archipelago/")
     import randomizer.ItemPool as DK64RItemPool
 
     from randomizer.Enums.Items import Items as DK64RItems
