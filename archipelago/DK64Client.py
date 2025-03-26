@@ -105,12 +105,14 @@ class DK64Client:
             status = self.safe_to_send()
         next_index += 1
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.counter_offset, next_index)
-        self.send_message(item_name, from_player, "from")
-        if item_ids.get(item_id):
-            if item_ids[item_id].get("flag_id", None) != None:
-                self.setFlag(item_ids[item_id].get("flag_id"))
-            elif item_ids[item_id].get("fed_id", None) != None:
-                await self.writeFedData(item_ids[item_id].get("fed_id"))
+        item_data = item_ids.get(item_id)
+        if item_data:
+            if item_data.get("progressive", False):
+                self.send_message(item_name, from_player, "from")
+            if item_data.get("flag_id", None) != None:
+                self.setFlag(item_data.get("flag_id"))
+            elif item_data.get("fed_id", None) != None:
+                await self.writeFedData(item_data.get("fed_id"))
             else:
                 logger.warning(f"Item {item_name} has no flag or fed id")
 
@@ -505,7 +507,7 @@ class DK64Context(CommonContext):
         # yield to allow UI to start
         await asyncio.sleep(0)
         while True:
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(5)
 
             try:
                 if not self.client.stop_bizhawk_spam:
@@ -545,7 +547,8 @@ class DK64Context(CommonContext):
                     if self.client.should_reset_auth:
                         self.client.should_reset_auth = False
                         raise Exception("Resetting due to wrong archipelago server")
-            except (asyncio.TimeoutError, TimeoutError, ConnectionResetError):
+            # There is 100% better ways to handle this exception, but for now this will do to allow us to exit the loop
+            except Exception:
                 await asyncio.sleep(1.0)
 
 

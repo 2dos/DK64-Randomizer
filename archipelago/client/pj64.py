@@ -177,10 +177,10 @@ class PJ64Client:
             self._connect()
             self.socket.sendall(command.encode())
             response = self.socket.recv(4096).decode()
-            if not response:
+            if not response or len(str(response).strip()) == 0:
                 raise PJ64Exception("No data received from the server")
             return response
-        except (ConnectionRefusedError, ConnectionResetError, ConnectionAbortedError):
+        except Exception:
             raise PJ64Exception("Connection refused or reset")
 
     def _read_memory(self, address, size):
