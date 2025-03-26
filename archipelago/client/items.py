@@ -58,7 +58,7 @@ item_ids = {
     14041143: {"name": "Nintendo Coin", "fed_id": None, "flag_id": 132, "progressive": True},
     14041144: {"name": "Rareware Coin", "fed_id": None, "flag_id": 379, "progressive": True},
     14041145: {"name": "Key 1", "fed_id": 4, "flag_id": None, "progressive": True},
-    14041146: {"name": "Key 2", "fed_id": 5, "flag_id": None}, "progressive": True,
+    14041146: {"name": "Key 2", "fed_id": 5, "flag_id": None, "progressive": True},
     14041147: {"name": "Key 3", "fed_id": 6, "flag_id": None, "progressive": True},
     14041148: {"name": "Key 4", "fed_id": 7, "flag_id": None, "progressive": True},
     14041149: {"name": "Key 5", "fed_id": 8, "flag_id": None, "progressive": True},
