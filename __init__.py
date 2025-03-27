@@ -173,6 +173,11 @@ if baseclasses_loaded:
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
             settings = Settings(settings_dict, self.random)
+            # We need to set the freeing kongs here early, as they won't get filled in any other part of the AP process
+            settings.diddy_freeing_kong = self.random.randint(0, 4)
+            settings.lanky_freeing_kong = self.random.randint(0, 4)
+            settings.tiny_freeing_kong = self.random.randint(0, 4)
+            settings.chunky_freeing_kong = self.random.randint(0, 4)
             spoiler = Spoiler(settings)
             spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
             self.logic_holder = LogicVarHolder(spoiler, self)

@@ -744,8 +744,6 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(CandyItems())
     if Types.Snide in unplacedTypes:
         itemPool.extend(SnideItems())
-    if Types.Shockwave in unplacedTypes:
-        itemPool.extend(ShockwaveTypeItems(settings))
     # Never logic-affecting items
     # if Types.FakeItem in unplacedTypes:
     #     itemPool.extend(FakeItems())

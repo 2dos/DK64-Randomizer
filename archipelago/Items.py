@@ -112,9 +112,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             if item.name == kong_item.name:
                 # We don't need to precollect Kong items, as they'll patch in to the main menu properly
                 item_table.remove(item)
-                print("Removing starting kong: " + kong_item.name)
                 break
-    print(world.logic_holder.settings.starting_kong_list)
 
     # Handle starting move alterations here
     all_eligible_starting_moves = DK64RItemPoolUtility.AllKongMoves()

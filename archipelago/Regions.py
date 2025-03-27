@@ -53,7 +53,7 @@ class DK64Location(Location):
 
 
 # Complete location table
-all_locations = {location.name: (BASE_ID + index) for index, location in enumerate(DK64RLocation.LocationListOriginal)}
+all_locations = {DK64RLocation.LocationListOriginal[location].name: (BASE_ID + index) for index, location in enumerate(DK64RLocation.LocationListOriginal)}
 all_locations.update({"Victory": 0x00})  # Temp for generating goal location
 lookup_id_to_name: typing.Dict[int, str] = {id: name for name, id in all_locations.items()}
 
@@ -156,7 +156,7 @@ def create_region(
             # Because there's no shared shops, this may mean shared potions can end up in Kong shops. This is fine.
             if location_obj.type == Types.Shop and location_obj.kong == Kongs.any:
                 continue
-            loc_id = all_locations.get(location_logic.id.name, 0)
+            loc_id = all_locations.get(location_obj.name, 0)
             location = DK64Location(player, location_obj.name, loc_id, new_region)
             # If the location is not shuffled, lock in the default item on the location
             if location_logic.id != Locations.BananaHoard and location_obj.type not in logic_holder.settings.shuffled_location_types and location_obj.default is not None:
@@ -186,7 +186,7 @@ def create_region(
             if location_obj.type in (Types.Key, Types.Crown):
                 add_item_rule(location, lambda item: not (item.player == player and "Junk" in item.name))
             new_region.locations.append(location)
-            # print("Adding location: " + location_obj.name + " | " + str(location_obj.type) + " | " + str(location_obj.kong) + " | " + str(loc_id))
+            # print("Adding location: " + location.name + " | " + str(loc_id))
 
     collectible_id = 0
     for collectible in collectibles:
