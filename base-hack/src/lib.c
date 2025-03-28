@@ -1432,6 +1432,11 @@ static unsigned char galleon_underwater_maps[] = {
 
 int applyDamageMask(int player_index, int damage) {
 	int applied_multiplier = Rando.damage_multiplier;
+	int init_health = CollectableBase.Health;
+	int applied_damage = damage * applied_multiplier;
+	if ((init_health + applied_damage) < 0) {
+		sendDeath();
+	}
 	if ((damage > 0) || (damage <= -12)) {
 		// Health or death-dealing damage
 		return applyDamage(player_index, damage);
@@ -1448,7 +1453,7 @@ int applyDamageMask(int player_index, int damage) {
 			}
 		}
 	}
-	return applyDamage(player_index, damage * applied_multiplier);
+	return applyDamage(player_index, applied_damage);
 }
 
 void* replaceWaterTexture(int table, int file, int unk0, int unk1) {

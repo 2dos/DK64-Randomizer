@@ -79,6 +79,7 @@ void guardCatch(void) {
                 - Not in a cutscene (CutsceneActive == 0)
             */
             guardCatchInternal();
+            sendDeath();
         }
     }
 }

@@ -85,7 +85,7 @@ void handleSentItem(void) {
                         }
                     }
                 }
-                MovesBase[min_kong].gb_count[min_level]++;
+                giveGB(min_kong, min_level);
                 break;
             }
         case TRANSFER_ITEM_CROWN:
@@ -270,8 +270,15 @@ void handleArchipelagoFeed(void) {
     if (ap_info.connection > 0) {
         ap_info.connection -= 1;
     }
-    if (ap_info.safety_text_timer > 0) {
-        ap_info.safety_text_timer--;
+    if ((TBVoidByte & 3) || (!canReceiveItem())) {
+        // Paused
+        if (ap_info.safety_text_timer == 0) {
+            ap_info.safety_text_timer = 5; // Block text going through 
+        }
+    } else {
+        if (ap_info.safety_text_timer > 0) {
+            ap_info.safety_text_timer--;
+        }
     }
     if (canReceiveItem()) {
         if (ap_info.fed_item != TRANSFER_ITEM_NULL) {
@@ -294,6 +301,24 @@ void handleArchipelagoFeed(void) {
                 dk_memcpy(text_overlay_data[vacant_spot].subtitle, &ap_info.fed_subtitle, 0x21);
                 ap_info.fed_subtitle[0] = 0;
             }
+        }
+    }
+    ap_info.can_die = cc_allower_spawnkop();
+    if (CutsceneActive > 1) {
+        ap_info.can_die = 0;
+    }
+    if (ap_info.can_die) {
+        if (ap_info.receive_death) {
+            cc_enabler_spawnkop();
+            ap_info.receive_death = 0;
+        }
+    }
+}
+
+void sendDeath(void) {
+    if (isAPEnabled()) {
+        if (!isActorLoaded(CUSTOM_ACTORS_START + NEWACTOR_KOPDUMMY)) {
+            ap_info.send_death = 1;
         }
     }
 }

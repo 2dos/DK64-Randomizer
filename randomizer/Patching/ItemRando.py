@@ -366,6 +366,7 @@ def getTextRewardIndex(item) -> int:
             Types.NoItem,  # 14
             Types.Cranky,  # 15
             Types.JunkItem,  # 16
+            Types.ArchipelagoItem,  # 17
         )
         if item.new_item in item_text_indexes:
             return item_text_indexes.index(item.new_item)
