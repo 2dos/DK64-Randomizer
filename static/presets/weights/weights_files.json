@@ -85,6 +85,7 @@
     "dk_portal_location_rando_v2": {
       "off": 1.0
     },
+    "dos_door_rando": 0,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 1,
@@ -507,6 +508,7 @@
       "off": 0.9,
       "main_only": 0.1
     },
+    "dos_door_rando": 0.4,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.9,
@@ -949,6 +951,7 @@
       "main_only": 0.3,
       "on": 0.2
     },
+    "dos_door_rando": 0.6,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.5,
@@ -1435,6 +1438,7 @@
       "main_only": 0.3,
       "on": 0.2
     },
+    "dos_door_rando": 0.6,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.5,

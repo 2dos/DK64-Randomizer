@@ -31,6 +31,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - DK Phase requires Baboon Blast
 - Chaos B. Lockers
 - Crown Placement Rando
+- Dos Door Rando
 - Enable Plandomizer
 - Dropsanity
 - Hard B. Lockers

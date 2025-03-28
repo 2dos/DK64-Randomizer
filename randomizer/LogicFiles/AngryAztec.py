@@ -46,7 +46,7 @@ LogicRegions = {
         Event(Events.AztecW1aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.AngryAztecStart, lambda l: l.can_use_vines or (l.istiny and l.twirl) or l.CanPhase()),
-        TransitionFront(Regions.AngryAztecOasis, lambda l: l.assumeAztecEntry or l.can_use_vines or (l.istiny and l.twirl) or l.CanPhase()),
+        TransitionFront(Regions.AztecTunnelBeforeOasis, lambda l: l.assumeAztecEntry or l.can_use_vines or (l.istiny and l.twirl) or l.CanPhase()),
     ]),
 
     Regions.AztecTunnelBeforeOasis: Region("Angry Aztec Tunnel Before Oasis", HintRegion.AztecTunnels, Levels.AngryAztec, False, -1, [

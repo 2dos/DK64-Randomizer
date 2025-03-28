@@ -106,7 +106,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # In minecart room
     ],
     Regions.CryptDiddyRoom: [
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # In Diddy's room
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut and (l.charge or l.generalclips or l.CanPhase()), None, 1),  # In Diddy's room
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.charge or l.CanPhase() or l.generalclips, None, 3),  # In Diddy's room
     ],
