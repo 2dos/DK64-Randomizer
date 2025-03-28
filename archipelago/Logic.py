@@ -76,12 +76,12 @@ def IsGlitchEnabled(settings, glitch_enum):
 class LogicVarHolder:
     """Used to store variables when checking logic conditions."""
 
-    def __init__(self, spoiler, world):
+    def __init__(self, spoiler, player):
         """Initialize with given parameters."""
         settings = spoiler.settings
         self.settings = settings
         self.spoiler = spoiler
-        self.world = world
+        self.ap_player = player
         # We never need to make these assumptions in Archipelago
         # # Some restrictions are added to the item placement fill for the sake of reducing indirect errors. We can overlook these restrictions once we know the fill is valid.
         self.assumeFillSuccess = False
@@ -346,7 +346,7 @@ class LogicVarHolder:
         ownedItems = []
         cbArchItems = []
         eventArchItems = []
-        for item_name, item_count in collectionState.prog_items[self.world.player].items():
+        for item_name, item_count in collectionState.prog_items[self.ap_player].items():
             if item_name.startswith("Collectible CBs"):
                 for i in range(item_count):
                     cbArchItems.append(item_name)

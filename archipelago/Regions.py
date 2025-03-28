@@ -161,7 +161,7 @@ def create_region(
             # If the location is not shuffled, lock in the default item on the location
             if location_logic.id != Locations.BananaHoard and location_obj.type not in logic_holder.settings.shuffled_location_types and location_obj.default is not None:
                 location.address = None
-                location.place_locked_item(DK64Item(location_obj.default.name, ItemClassification.progression, None, player))
+                location.place_locked_item(DK64Item(location_obj.default.name, ItemClassification.progression_skip_balancing, None, player))
             # Otherwise, this is a location that can have items in it, and counts towards the number of locations available for items
             else:
                 logic_holder.location_pool_size += 1
@@ -209,7 +209,7 @@ def create_region(
             quantity *= 5
         elif collectible.type == Collectibles.balloon:
             quantity *= 10
-        location.place_locked_item(DK64Item("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity), ItemClassification.progression, None, player))
+        location.place_locked_item(DK64Item("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
         # print("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity))
         new_region.locations.append(location)
 
@@ -255,7 +255,7 @@ def create_region(
             set_rule(location, lambda state: True)
         else:
             set_rule(location, lambda state, event=event: hasDK64REvent(state, logic_holder, event))
-        location.place_locked_item(DK64Item("Event, " + event.name.name, ItemClassification.progression, None, player))
+        location.place_locked_item(DK64Item("Event, " + event.name.name, ItemClassification.progression_skip_balancing, None, player))
         new_region.locations.append(location)
 
     return new_region
@@ -274,7 +274,7 @@ def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, re
             loc_id = all_locations.get(location_name, 0)
             location = DK64Location(player, location_name, loc_id, new_region)
             set_rule(location, lambda state, blueprint_name=blueprint_obj.name: state.has(blueprint_name, player))
-            location.place_locked_item(DK64Item(blueprint_obj.name, ItemClassification.progression, None, player))
+            location.place_locked_item(DK64Item(blueprint_obj.name, ItemClassification.progression_skip_balancing, None, player))
             new_region.locations.append(location)
             blueprint_id += 1
     # The one special child here is Cranky Generic, home of Jetpac, the only shop location with any relevant logic
