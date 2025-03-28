@@ -624,6 +624,9 @@ def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_cro
 
 def getIceTrapCount(settings) -> int:
     """Get the amount of Ice Traps the game will attempt to place."""
+    if settings.archipelago:
+        return settings.ice_trap_count
+
     ice_trap_freqs = {
         IceTrapFrequency.rare: 4,
         IceTrapFrequency.mild: 10,

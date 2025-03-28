@@ -1,3 +1,4 @@
+import math
 import typing
 
 from BaseClasses import Item, ItemClassification
@@ -144,14 +145,37 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 item_table.remove(item)
                 break
 
-    # If there's too many locations and not enough items, add some junk
-    junk_item = DK64RItem.ItemList[DK64RItems.JunkMelon]
     # print("location comparison: " + str(world.logic_holder.location_pool_size - 1))
     # print("non-junk items: " + str(len(item_table)))
     if world.logic_holder.location_pool_size - len(item_table) - 1 < 0:
         raise Exception("Too many DK64 items to be placed in too few DK64 locations")
-    for i in range(world.logic_holder.location_pool_size - len(item_table) - 1):  # The last 1 is for the Banana Hoard
-        item_table.append(DK64Item(DK64RItems.JunkMelon.name, ItemClassification.filler, full_item_table[junk_item.name].code, world.player))
+
+    # If there's too many locations and not enough items, add some junk
+    filler_item_count: int = world.logic_holder.location_pool_size - len(item_table) - 1  # The last 1 is for the Banana Hoard
+
+    trap_weights = []
+    trap_weights += ([DK64RItems.IceTrapBubble] * world.options.bubble_trap_weight.value)
+    trap_weights += ([DK64RItems.IceTrapReverse] * world.options.reverse_trap_weight.value)
+    trap_weights += ([DK64RItems.IceTrapSlow] * world.options.slow_trap_weight.value)
+
+    trap_count = 0 if (len(trap_weights) == 0) else math.ceil(filler_item_count * (world.options.trap_fill_percentage.value / 100.0))
+    filler_item_count -= trap_count
+
+    possible_junk = [DK64RItems.JunkMelon]
+    #possible_junk = [DK64RItems.JunkCrystal, DK64RItems.JunkMelon, DK64RItems.JunkAmmo, DK64RItems.JunkFilm, DK64RItems.JunkOrange] # Someday...
+
+    for i in range(filler_item_count):
+        junk_enum = world.random.choice(possible_junk)
+        junk_item = DK64RItem.ItemList[junk_enum]
+        item_table.append(DK64Item(junk_enum.name, ItemClassification.filler, full_item_table[junk_item.name].code, world.player))
+
+    possible_traps = [DK64RItems.IceTrapBubble, DK64RItems.IceTrapReverse, DK64RItems.IceTrapSlow]
+
+    for i in range(trap_count):
+        trap_enum = world.random.choice(trap_weights)
+        trap_item = DK64RItem.ItemList[trap_enum]
+        item_table.append(DK64Item(trap_enum.name, ItemClassification.trap, full_item_table[trap_item.name].code, world.player))
+
     # print("projected available locations: " + str(world.logic_holder.location_pool_size - 1))
     # print("projected items to place: " + str(len(item_table)))
 

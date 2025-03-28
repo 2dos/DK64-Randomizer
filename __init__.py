@@ -117,7 +117,6 @@ if baseclasses_loaded:
         options_dataclass = DK64Options
         options: DK64Options
         topology_present = False
-        data_version = 0
 
         item_name_to_id = {name: data.code for name, data in full_item_table.items()}
         location_name_to_id = all_locations
@@ -168,7 +167,7 @@ if baseclasses_loaded:
 
         def generate_early(self):
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
-            self.settings_string = "fjNPxAMxDIUx0QSpbHPUlZlBLg5gPQ+oBwRDIhKlsa58Iz8fiNEpEtiFKi4bVAhMF6AAd+AAOCAAGGAAGKAAAdm84FBiMhjoStwFIKW2wLcBJIBpkzVRCjFIKUUwGTLK/BQBuAIMAN4CBwBwAYQAOIECQByAoUAOYGCwB0A4YeXIITIagOrIrwAZTiU1QwkoSjuq1ZLEjQ0gRydoVFtRl6KiLAImIoArFljkbsl4u8igch2MvacgZ5GMGQBlU4IhAALhQALhgAJhwAJiAAHrQAHiQAFigADiwAHjAAFjQADrgALT5XoElypbPZZDCOZJ6Nh8Zq7WBgM5dVhVFZoKZUWjHFKAFBWDReUAnFRaJIuIZiTxrSyDSIjXR2AB0AvCoICQoLDA0OEBESFBUWGBkaHB0eICEiIyQlJicoKSorLC0uLzAxMjM0Nay+AMAAwgDEAJ0AsgBRAA"
+            self.settings_string = "fjNPxAMxDIUx0QSpbHPUlZxBLg5gPQ+oBwRDIhKlsa58Iz8fiNEpEtiFKi4bVAhMF6AAd+AAOCAAGGAAGKAAAdm84FBiMhjoStwFIKW2wLcBJIBpkzVRCjFIKUUwGTLK/BQBuAIMAN4CBwBwAYQAOIECQByAoUAOYGCwB0A4YeXIITIagOrIrwAZTiU1QwkoSjuq1ZLEjQ0gRydoVFtRl6KiLAImIoArFljkbsl4u8igch2MvacgZ5GMGQBlU4IhAALhQALhgAJhwAJiAAHrQAHiQAFigADiwAHjAAFjQADrgALT5XoElypbPZZDCOZJ6Nh8Zq7WBgM5dVhVFZoKZUWjHFKAFBWDReUAnFRaJIuIZiTxrSyDSIjXR2AB0AvCoICQoLDA0OEBESFBUWGBkaHB0eICEiIyQlJicoKSorLC0uLzAxMjM0Nay+AMAAwgDEAJ0AsgBRAA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
@@ -218,6 +217,7 @@ if baseclasses_loaded:
                 spoiler.settings.random = self.random
                 spoiler.settings.player_name = self.multiworld.get_player_name(self.player)
                 spoiler.pregiven_items = []
+                local_trap_count = 0
                 # Read through all item assignments in this AP world and find their DK64 equivalents so we can update our world state for patching purposes
                 for ap_location in self.multiworld.get_locations(self.player):
                     # We never need to place Collectibles or Events in our world state
@@ -245,6 +245,9 @@ if baseclasses_loaded:
                         else:
                             dk64_item = DK64RItems[ap_item.name]
                             if dk64_item is not None:
+                                if dk64_item in [DK64RItems.IceTrapBubble, DK64RItems.IceTrapReverse, DK64RItems.IceTrapSlow]:
+                                    local_trap_count += 1
+
                                 dk64_location = spoiler.LocationList[dk64_location_id]
                                 # Most of these item restrictions should be handled by item rules, so this is a failsafe.
                                 # Junk items can't be placed in shops, bosses, or arenas. Fortunately this is junk, so we can just patch a NoItem there instead.
@@ -261,6 +264,8 @@ if baseclasses_loaded:
                         spoiler.LocationList[dk64_location_id].PlaceItem(spoiler, DK64RItems.NoItem)
                     else:
                         print(f"Location {ap_location.name} not found in DK64 location table.")
+
+                spoiler.settings.ice_trap_count = local_trap_count
                 ShuffleItems(spoiler)
 
                 spoiler.location_references = [
