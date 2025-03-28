@@ -79,9 +79,9 @@ typedef struct archipelago_data {
     /* 0x02A */ unsigned char safety_text_timer; // Timer for when it's *safe* to send another string in
     /* 0x02B */ char fed_subtitle[0x21]; // 0x20 characters followed by null terminator
     /* 0x04C */ char slot_name[0x10];
-    /* 0x05C */ char send_death; // If donk player dies
-    /* 0x05D */ char receive_death; // If someone else dies
-    /* 0x05E */ char can_die; // Don't receive death if this is set to 0
+    /* 0x05C */ char send_death; // If donk player dies. Set this back to 0 upon receiving that the donk player has died
+    /* 0x05D */ char receive_death; // If someone else dies, this will kill the donk player
+    /* 0x05E */ char can_die; // If death is received, the game will queue the death until this is 1. It's generally a good idea to not send a death to the donk player if this is zero 
 } archipelago_data;
 
 extern archipelago_data *APData;

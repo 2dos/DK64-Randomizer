@@ -1434,7 +1434,7 @@ int applyDamageMask(int player_index, int damage) {
 	int applied_multiplier = Rando.damage_multiplier;
 	int init_health = CollectableBase.Health;
 	int applied_damage = damage * applied_multiplier;
-	if ((init_health + applied_damage) < 0) {
+	if ((init_health + applied_damage) <= 0) {
 		sendDeath();
 	}
 	if ((damage > 0) || (damage <= -12)) {
