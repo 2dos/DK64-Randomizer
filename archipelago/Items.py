@@ -50,19 +50,19 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     # V1 LIMITATION: Currently assuming Helm is your last and most expensive level
     gb_item = DK64RItem.ItemList[DK64RItems.GoldenBanana]
     for i in range(min(161, world.logic_holder.settings.BLockerEntryCount[Levels.HideoutHelm])):
-        item_table.append(DK64Item(DK64RItems.GoldenBanana.name, ItemClassification.progression, full_item_table[gb_item.name].code, world.player))
+        item_table.append(DK64Item(DK64RItems.GoldenBanana.name, ItemClassification.progression_skip_balancing, full_item_table[gb_item.name].code, world.player))
     for i in range(161 - world.logic_holder.settings.BLockerEntryCount[Levels.HideoutHelm]):
         item_table.append(DK64Item(DK64RItems.GoldenBanana.name, ItemClassification.useful, full_item_table[gb_item.name].code, world.player))
     # Figure out how many Medals are progression
     medal_item = DK64RItem.ItemList[DK64RItems.BananaMedal]
     for i in range(world.logic_holder.settings.medal_requirement):
-        item_table.append(DK64Item(DK64RItems.BananaMedal.name, ItemClassification.progression, full_item_table[medal_item.name].code, world.player))
+        item_table.append(DK64Item(DK64RItems.BananaMedal.name, ItemClassification.progression_skip_balancing, full_item_table[medal_item.name].code, world.player))
     for i in range(40 - world.logic_holder.settings.medal_requirement):
         item_table.append(DK64Item(DK64RItems.BananaMedal.name, ItemClassification.useful, full_item_table[medal_item.name].code, world.player))
     # Figure out how many Fairies are progression
     fairy_item = DK64RItem.ItemList[DK64RItems.BananaFairy]
     for i in range(world.logic_holder.settings.rareware_gb_fairies):
-        item_table.append(DK64Item(DK64RItems.BananaFairy.name, ItemClassification.progression, full_item_table[fairy_item.name].code, world.player))
+        item_table.append(DK64Item(DK64RItems.BananaFairy.name, ItemClassification.progression_skip_balancing, full_item_table[fairy_item.name].code, world.player))
     for i in range(20 - world.logic_holder.settings.rareware_gb_fairies):
         item_table.append(DK64Item(DK64RItems.BananaFairy.name, ItemClassification.useful, full_item_table[fairy_item.name].code, world.player))
 
@@ -87,7 +87,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             classification = ItemClassification.trap
         # The playthrough tag doesn't quite 1-to-1 map to Archipelago's "progression" type - some items we don't consider "playthrough" can affect logic
         elif item.playthrough == True or item.type in (DK64RTypes.Blueprint, DK64RTypes.Pearl, DK64RTypes.Bean):
-            classification = ItemClassification.progression
+            classification = ItemClassification.progression_skip_balancing
         else:  # double check jetpac, eh?
             classification = ItemClassification.useful
         if seed_item == DK64RItems.HideoutHelmKey and world.logic_holder.settings.key_8_helm:

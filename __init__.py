@@ -179,7 +179,7 @@ if baseclasses_loaded:
             settings.chunky_freeing_kong = self.random.randint(0, 4)
             spoiler = Spoiler(settings)
             spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
-            self.logic_holder = LogicVarHolder(spoiler, self)
+            self.logic_holder = LogicVarHolder(spoiler, self.player)
 
             # Handle enemy rando
             spoiler = self.logic_holder.spoiler
@@ -358,6 +358,9 @@ if baseclasses_loaded:
                 raise
             finally:
                 self.rom_name_available_event.set()  # make sure threading continues and errors are collected
+                # for region in self.multiworld.regions:
+                #     if region.player == self.player:
+                #         region.multiworld = None
 
         def update_seed_results(self, patch, spoiler, player_id):
             """Update the seed results."""
