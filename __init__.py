@@ -76,7 +76,7 @@ if baseclasses_loaded:
     from randomizer.CompileHints import compileMicrohints
     from randomizer.Enums.Types import Types
     from randomizer.Enums.Locations import Locations
-    from randomizer.Lists.Location import PreGivenLocations
+    from randomizer.Lists import Item as DK64RItem
     from worlds.LauncherComponents import Component, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
     from Utils import open_filename
@@ -167,10 +167,28 @@ if baseclasses_loaded:
 
         def generate_early(self):
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
-            self.settings_string = "fjNPxAMxDIUx0QSpbHPUlZlBLg5gPQ+oBwRDIhKlsa58Iz8fiNEpEtiFKi4bVAhMF6AAd+AAOCAAGGAAGKAAAdm84FBiMhjoStwFIKW2wLcBJIBpkzVRCjFIKUUwGTLK/BQBuAIMAN4CBwBwAYQAOIECQByAoUAOYGCwB0A4YeXIITIagOrIrwAZTiU1QwkoSjuq1ZLEjQ0gRydoVFtRl6KiLAImIoArFljkbsl4u8igch2MvacgZ5GMGQBlU4IhAALhQALhgAJhwAJiAAHrQAHiQAFigADiwAHjAAFjQADrgALT5XoElypbPZZDCOZJ6Nh8Zq7WBgM5dVhVFZoKZUWjHFKAFBWDReUAnFRaJIuIZiTxrSyDSIjXR2AB0AvCoICQoLDA0OEBESFBUWGBkaHB0eICEiIyQlJicoKSorLC0uLzAxMjM0Nay+AMAAwgDEAJ0AsgBRAA"
+            self.settings_string = "fjNPxAMxDIUx0QSpbHPUlZlBLg5gPQ+oBwRDIhKlsa58Iz8fiNEpEtiFKi4bVAhMF6AAd+AAOCAAGGAAGKAAAdm84FBiMhjoStwFIKW2wLcBJIBpkzVRCjFIKUUwGTLK/BQBuAIMAN4CBwBwAYQAOIECQByAoUAOYGCwB0A4YeXIITIagOrIrwAZTiU1QwkoSjuq1ZLEjQxUKi2oy9FRFgETEUAViyxyN2S8XeRQOQ7GXtOQM8jGDIAyqcEQgAFwoAFwwAEw4AExAAD1oADxIACxQABxYADxgACxoAB1wAFp8r0CS5UtnsshhHMk9Gw+M1drAwGcuqwqis0FMqLRjilACgrBovKATiotEkXENPGtLINIiNdHYAHQC8KggJCgsMDQ4QERIUFRYYGRocHR4gISIjJCUmJygpKissLS4vMDEyMzQ1rL4AwADCAMQAnQCyAGkAUQA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
+            settings_dict["starting_keys_list_selected"] = []
+            for item in self.options.start_inventory:
+                if item == "Key 1":
+                    settings_dict["starting_keys_list_selected"].append(DK64RItems.JungleJapesKey)
+                elif item == "Key 2":
+                    settings_dict["starting_keys_list_selected"].append(DK64RItems.AngryAztecKey)
+                elif item == "Key 3":
+                    settings_dict["starting_keys_list_selected"].append(DK64RItems.FranticFactoryKey)
+                elif item == "Key 4":
+                    settings_dict["starting_keys_list_selected"].append(DK64RItems.GloomyGalleonKey)
+                elif item == "Key 5":
+                    settings_dict["starting_keys_list_selected"].append(DK64RItems.FungiForestKey)
+                elif item == "Key 6":
+                    settings_dict["starting_keys_list_selected"].append(DK64RItems.CrystalCavesKey)
+                elif item == "Key 7":
+                    settings_dict["starting_keys_list_selected"].append(DK64RItems.CreepyCastleKey)
+                elif item == "Key 8":
+                    settings_dict["starting_keys_list_selected"].append(DK64RItems.HideoutHelmKey)
             settings = Settings(settings_dict, self.random)
             # We need to set the freeing kongs here early, as they won't get filled in any other part of the AP process
             settings.diddy_freeing_kong = self.random.randint(0, 4)
@@ -180,6 +198,12 @@ if baseclasses_loaded:
             spoiler = Spoiler(settings)
             spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
             self.logic_holder = LogicVarHolder(spoiler, self.player)
+            
+            for item in self.options.start_inventory:
+                item_obj = DK64RItem.ItemList[self.logic_holder.item_name_to_id.get(item)]
+                if item_obj.type not in [Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing]:
+                    # Ensure that the items in the start inventory are only keys, shops, shockwaves, training barrels or climbing items
+                    raise ValueError(f"Invalid item type for starting inventory: {item}. Starting inventory can only contain keys or moves.")
 
             # Handle enemy rando
             spoiler = self.logic_holder.spoiler
@@ -208,7 +232,7 @@ if baseclasses_loaded:
         def generate_basic(self):
             connect_regions(self, self.logic_holder)
 
-            self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("BananaHoard", ItemClassification.progression, 0xD64060, self.player))  # TEMP?
+            self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("Banana Hoard", ItemClassification.progression_skip_balancing, 0xD64060, self.player))  # TEMP?
 
         def generate_output(self, output_directory: str):
             try:
@@ -216,7 +240,13 @@ if baseclasses_loaded:
                 spoiler.settings.archipelago = True
                 spoiler.settings.random = self.random
                 spoiler.settings.player_name = self.multiworld.get_player_name(self.player)
+                spoiler.first_move_item = None  # Not relevant with Fast Start always enabled
                 spoiler.pregiven_items = []
+                for item in self.multiworld.precollected_items[self.player]:
+                    dk64_item = self.logic_holder.item_name_to_id[item.name]
+                    # Only moves can be pushed to the pregiven_items list
+                    if DK64RItem.ItemList[dk64_item].type in [Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing]:
+                        spoiler.pregiven_items.append(dk64_item)
                 local_trap_count = 0
                 # Read through all item assignments in this AP world and find their DK64 equivalents so we can update our world state for patching purposes
                 for ap_location in self.multiworld.get_locations(self.player):
@@ -229,11 +259,6 @@ if baseclasses_loaded:
                         if dk64_loc.name == ap_location.name:
                             dk64_location_id = dk64_loc_id
                             break
-                        if dk64_loc_id in PreGivenLocations:
-                            if spoiler.settings.fast_start_beginning_of_game or dk64_loc_id != Locations.IslesFirstMove:
-                                spoiler.pregiven_items.append(dk64_loc.item)
-                            else:
-                                spoiler.first_move_item = dk64_loc.item
                     if dk64_location_id is not None and ap_location.item is not None:
                         ap_item = ap_location.item
                         # Any item that isn't for this player is placed as an AP item, regardless of whether or not it could be a DK64 item
@@ -243,7 +268,7 @@ if baseclasses_loaded:
                         elif "Collectible" in ap_item.name:
                             continue
                         else:
-                            dk64_item = DK64RItems[ap_item.name]
+                            dk64_item = self.logic_holder.item_name_to_id[ap_item.name]
                             if dk64_item is not None:
                                 if dk64_item in [DK64RItems.IceTrapBubble, DK64RItems.IceTrapReverse, DK64RItems.IceTrapSlow]:
                                     local_trap_count += 1

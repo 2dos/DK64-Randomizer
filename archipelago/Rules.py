@@ -9,4 +9,4 @@ def set_rules(world: MultiWorld, player: int):
 
     # DK64_TODO: Get location access rules from DK64R
 
-    world.completion_condition[player] = lambda state: state.has("BananaHoard", player)
+    world.completion_condition[player] = lambda state: state.has("Banana Hoard", player)

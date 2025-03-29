@@ -82,6 +82,11 @@ class LogicVarHolder:
         self.settings = settings
         self.spoiler = spoiler
         self.ap_player = player
+        
+        self.item_name_to_id = {}
+        for id, item in ItemList.items():
+            self.item_name_to_id[item.name] = id
+        
         # We never need to make these assumptions in Archipelago
         # # Some restrictions are added to the item placement fill for the sake of reducing indirect errors. We can overlook these restrictions once we know the fill is valid.
         self.assumeFillSuccess = False
@@ -353,7 +358,7 @@ class LogicVarHolder:
             elif item_name.startswith("Event, "):
                 eventArchItems.append(item_name)
             else:
-                corresponding_item_id = Items[item_name.replace(" ", "")]  # The only items that need space removal *should* be AP starting inventory items
+                corresponding_item_id = self.item_name_to_id[item_name]
                 for i in range(item_count):
                     ownedItems.append(corresponding_item_id)
 

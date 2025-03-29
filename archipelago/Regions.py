@@ -161,7 +161,7 @@ def create_region(
             # If the location is not shuffled, lock in the default item on the location
             if location_logic.id != Locations.BananaHoard and location_obj.type not in logic_holder.settings.shuffled_location_types and location_obj.default is not None:
                 location.address = None
-                location.place_locked_item(DK64Item(location_obj.default.name, ItemClassification.progression_skip_balancing, None, player))
+                location.place_locked_item(DK64Item(DK64RItem.ItemList[location_obj.default].name, ItemClassification.progression_skip_balancing, None, player))
             # Otherwise, this is a location that can have items in it, and counts towards the number of locations available for items
             else:
                 logic_holder.location_pool_size += 1
