@@ -44,9 +44,9 @@ from functools import wraps
 from swagger_ui import flask_api_doc
 from werkzeug.middleware.proxy_fix import ProxyFix
 from opentelemetry_instrumentation_rq import RQInstrumentor
+from ap_version import version as archipelago_version
 
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
-archipelago_version = environ.get("ARCHIPELAGO_VERSION", "1.0.0")
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
