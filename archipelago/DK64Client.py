@@ -621,7 +621,10 @@ def launch():
         ctx = DK64Context(args.connect, args.password)
         ctx.items_handling = 0b001
         ctx.server_task = asyncio.create_task(server_loop(ctx), name="server loop")
-
+        if ctx.slot_data.get("death_link"):
+            if "DeathLink" not in ctx.tags:
+                await ctx.update_death_link(True)
+                ctx.ENABLE_DEATHLINK = True
         ctx.la_task = create_task_log_exception(ctx.run_game_loop())
         if gui_enabled:
             ctx.run_gui()
