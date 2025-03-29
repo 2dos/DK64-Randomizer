@@ -89,6 +89,12 @@ class PJ64Client:
             # Request the user to provide their ROM
             rom = open_filename("Select ROM", (("N64 ROM", (".n64", ".z64", ".v64")),))
             # Run project 64
+            os.popen(f'"{executable}"')
+            # Kill project 64
+            if sys.platform == "win32":
+                os.system(f'taskkill /f /im "{os.path.basename(executable)}"')
+            else:
+                os.system(f'pkill -f "{os.path.basename(executable)}"')
             os.popen(f'"{executable}" "{rom}"')
 
     def _is_exe_running(self, exe_name):

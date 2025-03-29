@@ -36,6 +36,8 @@ class DK64Client:
     item_names = None
     memory_pointer = None
     _purchase_cache = {}
+    deathlink_debounce = True
+    pending_deathlink = False
 
     async def wait_for_pj64(self):
         clear_waiting_message = True
@@ -355,11 +357,36 @@ class DK64Client:
     def get_current_deliver_count(self):
         return self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.counter_offset)
 
-    async def main_tick(self, item_get_cb, win_cb):
+    async def main_tick(self, item_get_cb, win_cb, deathlink_cb):
         await self.readChecks(item_get_cb)
         # await self.item_tracker.readItems()
         if await self.is_victory():
             await win_cb()
+        def check_safe_death():
+            return self.readFlag(DK64MemoryMap.can_die) != 1
+        death_state = self.readFlag(DK64MemoryMap.send_death)
+        if self.deathlink_debounce and death_state == 0:
+            self.deathlink_debounce = False
+        elif not self.deathlink_debounce and death_state == 1:
+            logger.info("YOU DIED.")
+            await deathlink_cb()
+            while check_safe_death():
+                await asyncio.sleep(0.1)
+            # Set the death state back to 0
+            byte_index = DK64MemoryMap.send_death >> 3
+            offset = DK64MemoryMap.EEPROM + byte_index
+            self.n64_client.write_u8(offset, 0)
+            self.deathlink_debounce = True
+
+        if self.pending_deathlink:
+            logger.info("Got a deathlink")
+            while check_safe_death():
+                await asyncio.sleep(0.1)
+            byte_index = DK64MemoryMap.receive_death >> 3
+            offset = DK64MemoryMap.EEPROM + byte_index
+            self.n64_client.write_u8(offset, 1)
+            self.pending_deathlink = False
+            self.deathlink_debounce = True
 
         current_deliver_count = self.get_current_deliver_count()
 
@@ -487,11 +514,23 @@ class DK64Context(CommonContext):
     async def sync(self):
         sync_msg = [{"cmd": "Sync"}]
         await self.send_msgs(sync_msg)
-
+    ENABLE_DEATHLINK = False
+    async def send_deathlink(self):
+        if self.ENABLE_DEATHLINK:
+            message = [{"cmd": 'Deathlink',
+                        'time': time.time(),
+                        'cause': 'Slipped on a banana',
+                        # 'source': self.slot_info[self.slot].name,
+                        }]
+            await self.send_msgs(message)
+    async def on_deathlink(self, data: typing.Dict[str, typing.Any]) -> None:
+        if self.ENABLE_DEATHLINK:
+            self.client.pending_deathlink = True
     async def run_game_loop(self):
         async def victory():
             await self.send_victory()
-
+        async def deathlink():
+            await self.send_deathlink()
         def on_item_get(dk64_checks):
             built_checks_list = []
             for check in dk64_checks:
@@ -538,7 +577,7 @@ class DK64Context(CommonContext):
                     if status == False:
                         await asyncio.sleep(0.5)
                         continue
-                    await self.client.main_tick(on_item_get, victory)
+                    await self.client.main_tick(on_item_get, victory, deathlink)
                     await asyncio.sleep(1)
                     now = time.time()
                     if self.last_resend + 0.5 < now:
@@ -548,7 +587,8 @@ class DK64Context(CommonContext):
                         self.client.should_reset_auth = False
                         raise Exception("Resetting due to wrong archipelago server")
             # There is 100% better ways to handle this exception, but for now this will do to allow us to exit the loop
-            except Exception:
+            except Exception as e:
+                print(e)
                 await asyncio.sleep(1.0)
 
 
