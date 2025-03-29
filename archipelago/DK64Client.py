@@ -378,31 +378,25 @@ class DK64Client:
             await win_cb()
 
         def check_safe_death():
-            return self.readFlag(DK64MemoryMap.can_die) != 1
+            return self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.can_die) != 1
 
-        death_state = self.readFlag(DK64MemoryMap.send_death)
+        death_state = self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.send_death)
         if self.deathlink_debounce and death_state == 0:
             self.deathlink_debounce = False
         elif not self.deathlink_debounce and death_state == 1:
-            logger.info("YOU DIED.")
+            # logger.info("YOU DIED.")
             await deathlink_cb()
-            while check_safe_death():
-                await asyncio.sleep(0.1)
-            # Set the death state back to 0
-            byte_index = DK64MemoryMap.send_death >> 3
-            offset = DK64MemoryMap.EEPROM + byte_index
-            self.n64_client.write_u8(offset, 0)
+            self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.send_death, 0)
             self.deathlink_debounce = True
 
         if self.pending_deathlink:
             logger.info("Got a deathlink")
             while check_safe_death():
                 await asyncio.sleep(0.1)
-            byte_index = DK64MemoryMap.receive_death >> 3
-            offset = DK64MemoryMap.EEPROM + byte_index
-            self.n64_client.write_u8(offset, 1)
+            self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.receive_death, 1)
             self.pending_deathlink = False
             self.deathlink_debounce = True
+            await asyncio.sleep(5)
 
         current_deliver_count = self.get_current_deliver_count()
 
