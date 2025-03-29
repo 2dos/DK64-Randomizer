@@ -390,8 +390,9 @@ if baseclasses_loaded:
                 patch_data, _ = patching_response(spoiler)
                 spoiler.FlushAllExcessSpoilerData()
                 patch_file = self.update_seed_results(patch_data, spoiler, self.player)
-                print("output/" + f"{self.multiworld.get_out_file_name_base(self.player)}-dk64.lanky")
-                with open("output/" + f"{self.multiworld.get_out_file_name_base(self.player)}-dk64.lanky", "w") as f:
+                out_path = os.path.join(output_directory, f"{self.multiworld.get_out_file_name_base(self.player)}.lanky")
+                print(out_path)
+                with open(out_path, "w") as f:
                     f.write(patch_file)
             except:
                 raise
@@ -419,8 +420,8 @@ if baseclasses_loaded:
                 zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))
                 zip_file.writestr("generated_time", str(timestamp))
                 zip_file.writestr("version", version)
-                zip_file.writestr("seed_number", "ap-patch-player-" + str(player_id))
-                zip_file.writestr("seed_id", "ap-seed-player-" + str(player_id))
+                zip_file.writestr("seed_number", self.multiworld.get_out_file_name_base(self.player))
+                zip_file.writestr("seed_id", self.multiworld.get_out_file_name_base(self.player))
             zip_data.seek(0)
             # Convert the zip to a string of base64 data
             zip_conv = codecs.encode(zip_data.getvalue(), "base64").decode()
