@@ -435,6 +435,7 @@ if baseclasses_loaded:
                 "Goal": self.options.goal.value,
                 "ClimbingShuffle": self.options.climbing_shuffle.value,
                 "PlayerNum": self.player,
+                "death_link": self.options.death_link.value,
             }
 
         def create_item(self, name: str, force_non_progression=False) -> Item:
