@@ -51,41 +51,51 @@ class StartingMoveCount(Range):
     range_end = 50
     default = 0
 
+
 class TrapFillPercentage(Range):
     """
     Replace a percentage of junk items in the item pool with random traps
     """
+
     display_name = "Trap Fill Percentage"
     range_start = 0
     range_end = 100
     default = 0
 
+
 class BaseTrapWeight(Choice):
     """
     Base Class for Trap Weights
     """
+
     option_none = 0
     option_low = 1
     option_medium = 2
     option_high = 4
     default = 2
 
+
 class BubbleTrapWeight(BaseTrapWeight):
     """
     Likelihood of receiving a trap which freezes the player
     """
+
     display_name = "Bubble Trap Weight"
+
 
 class ReverseTrapWeight(BaseTrapWeight):
     """
     Likelihood of receiving a trap which reverses controls
     """
+
     display_name = "Reverse Trap Weight"
+
 
 class SlowTrapWeight(BaseTrapWeight):
     """
     Likelihood of receiving a trap which slows the player
     """
+
     display_name = "Slow Trap Weight"
 
 

@@ -198,7 +198,7 @@ if baseclasses_loaded:
             spoiler = Spoiler(settings)
             spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
             self.logic_holder = LogicVarHolder(spoiler, self.player)
-            
+
             for item in self.options.start_inventory:
                 item_obj = DK64RItem.ItemList[self.logic_holder.item_name_to_id.get(item)]
                 if item_obj.type not in [Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing]:

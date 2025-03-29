@@ -9,6 +9,7 @@ if __name__ == "__main__":
 import json
 import asyncio
 import colorama
+import urllib.request
 import time
 import typing
 from client.common import DK64MemoryMap, create_task_log_exception
@@ -16,7 +17,7 @@ from client.pj64 import PJ64Client
 from client.items import item_ids, item_names_to_id
 from client.check_flag_locations import location_flag_to_name, location_name_to_flag
 from client.ap_check_ids import check_id_to_name, check_names_to_id
-
+from ap_version import version as ap_version
 from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop
 from NetUtils import ClientStatus
 
@@ -40,6 +41,7 @@ class DK64Client:
     pending_deathlink = False
 
     async def wait_for_pj64(self):
+        self.check_version()
         clear_waiting_message = True
         if not self.stop_bizhawk_spam:
             logger.info("Waiting on connection to PJ64...")
@@ -67,6 +69,18 @@ class DK64Client:
             except (BlockingIOError, TimeoutError, ConnectionResetError):
                 await asyncio.sleep(1.0)
                 pass
+
+    def check_version(self):
+        try:
+            request = urllib.request.Request("https://api.dk64rando.com/api/ap_version", headers={"User-Agent": "DK64Client/1.0"})
+            with urllib.request.urlopen(request) as response:
+                data = json.load(response)
+                api_version = data.get("version")
+
+                if api_version and api_version > ap_version:
+                    logger.warning(f"Warning: New version of DK64 Rando available: {api_version} (current: {ap_version})")
+        except Exception:
+            print("Failed to check for new version of DK64")
 
     def check_safe_gameplay(self):
         current_gamemode = self.n64_client.read_u8(DK64MemoryMap.CurrentGamemode)
@@ -362,8 +376,10 @@ class DK64Client:
         # await self.item_tracker.readItems()
         if await self.is_victory():
             await win_cb()
+
         def check_safe_death():
             return self.readFlag(DK64MemoryMap.can_die) != 1
+
         death_state = self.readFlag(DK64MemoryMap.send_death)
         if self.deathlink_debounce and death_state == 0:
             self.deathlink_debounce = False
@@ -514,23 +530,32 @@ class DK64Context(CommonContext):
     async def sync(self):
         sync_msg = [{"cmd": "Sync"}]
         await self.send_msgs(sync_msg)
+
     ENABLE_DEATHLINK = False
+
     async def send_deathlink(self):
         if self.ENABLE_DEATHLINK:
-            message = [{"cmd": 'Deathlink',
-                        'time': time.time(),
-                        'cause': 'Slipped on a banana',
-                        # 'source': self.slot_info[self.slot].name,
-                        }]
+            message = [
+                {
+                    "cmd": "Deathlink",
+                    "time": time.time(),
+                    "cause": "Slipped on a banana",
+                    # 'source': self.slot_info[self.slot].name,
+                }
+            ]
             await self.send_msgs(message)
+
     async def on_deathlink(self, data: typing.Dict[str, typing.Any]) -> None:
         if self.ENABLE_DEATHLINK:
             self.client.pending_deathlink = True
+
     async def run_game_loop(self):
         async def victory():
             await self.send_victory()
+
         async def deathlink():
             await self.send_deathlink()
+
         def on_item_get(dk64_checks):
             built_checks_list = []
             for check in dk64_checks:

@@ -22,9 +22,10 @@ class DK64MemoryMap:
     NextGamemode = 0x80755318
     safety_text_timer = 0x02A
     end_credits = 0x1B0
-    send_death = 0x05C # If donk player dies. Set this back to 0 upon receiving that the donk player has died
-    receive_death = 0x05D # If someone else dies, this will kill the donk player
-    can_die = 0x05E # If death is received, the game will queue the death until this is 1. It is generally a good idea to not send a death to the donk player if this is zero 
+    send_death = 0x05C  # If donk player dies. Set this back to 0 upon receiving that the donk player has died
+    receive_death = 0x05D  # If someone else dies, this will kill the donk player
+    can_die = 0x05E  # If death is received, the game will queue the death until this is 1. It is generally a good idea to not send a death to the donk player if this is zero
+
 
 all_tasks = set()
 
