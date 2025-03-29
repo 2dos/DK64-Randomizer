@@ -394,6 +394,7 @@ class DK64Client:
             while check_safe_death():
                 await asyncio.sleep(0.1)
             self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.receive_death, 1)
+            self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.send_death, 0)
             self.pending_deathlink = False
             self.deathlink_debounce = True
             await asyncio.sleep(5)
@@ -529,17 +530,11 @@ class DK64Context(CommonContext):
 
     async def send_deathlink(self):
         if self.ENABLE_DEATHLINK:
-            message = [
-                {
-                    "cmd": "Deathlink",
-                    "time": time.time(),
-                    "cause": "Slipped on a banana",
-                    # 'source': self.slot_info[self.slot].name,
-                }
-            ]
-            await self.send_msgs(message)
+            self.last_death_link = time.time()
+            player_name = self.player_names.get(self.slot)
+            await self.send_death(player_name + " slipped on a banana")
 
-    async def on_deathlink(self, data: typing.Dict[str, typing.Any]) -> None:
+    def on_deathlink(self, data: typing.Dict[str, typing.Any]) -> None:
         if self.ENABLE_DEATHLINK:
             self.client.pending_deathlink = True
 
