@@ -81,6 +81,8 @@ if baseclasses_loaded:
     import randomizer.ShuffleExits as ShuffleExits
     from Utils import open_filename
     import shutil
+    from ap_version import version as ap_version
+    import urllib.request
     import zlib
 
     def crc32_of_file(file_path):
@@ -149,9 +151,21 @@ if baseclasses_loaded:
                 if crc not in crc_values:
                     print("Invalid DK64 ROM file, please make sure your ROM is big endian.")
                     raise FileNotFoundError("Invalid DK64 ROM file, please make sure your ROM is a vanilla DK64 file in big endian.")
-
+            self.check_version()
             self.rom_name_available_event = threading.Event()
             super().__init__(multiworld, player)
+
+        def check_version(self):
+            try:
+                request = urllib.request.Request("https://api.dk64rando.com/api/ap_version", headers={"User-Agent": "DK64Client/1.0"})
+                with urllib.request.urlopen(request) as response:
+                    data = json.load(response)
+                    api_version = data.get("version")
+
+                    if api_version and api_version > ap_version:
+                        print(f"Warning: New version of DK64 Rando available: {api_version} (current: {ap_version})")
+            except Exception:
+                print("Failed to check for new version of DK64")
 
         @classmethod
         def stage_assert_generate(cls, multiworld: MultiWorld):
