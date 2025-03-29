@@ -44,6 +44,7 @@ from functools import wraps
 from swagger_ui import flask_api_doc
 from werkzeug.middleware.proxy_fix import ProxyFix
 from opentelemetry_instrumentation_rq import RQInstrumentor
+from ap_version import version as archipelago_version
 
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
 
@@ -60,7 +61,6 @@ resource = Resource(
         "container.name": socket.gethostname(),
     }
 )
-
 app = Flask(__name__, static_folder="", template_folder="templates")
 app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)
 flask_api_doc(app, config_path="./swagger.yaml", url_prefix="/api/doc", title="API doc")
@@ -333,6 +333,12 @@ def task_status(task_id):
 def get_version():
     """Get the version of the controller."""
     return set_response(json.dumps({"version": version}), 200)
+
+
+@api.route("/ap_version", methods=["GET"])
+def get_ap_version():
+    """Get the version of Archipelago for version updates."""
+    return set_response(json.dumps({"version": archipelago_version}), 200)
 
 
 @api.route("/get_presets", methods=["GET"])
