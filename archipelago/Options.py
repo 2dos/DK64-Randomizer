@@ -101,6 +101,7 @@ class SlowTrapWeight(BaseTrapWeight):
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
+    death_link: DeathLink
     goal: Goal
     climbing_shuffle: ClimbingShuffle
     starting_kong_count: StartingKongCount
