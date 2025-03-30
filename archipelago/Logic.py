@@ -394,7 +394,7 @@ class LogicVarHolder:
             quantity = int(item_data[3])
             colored_banana_counts[level][kong] += quantity
         self.ColoredBananas = colored_banana_counts
-        
+
     def AddArchipelagoItem(self, ap_item):
         """Add an Archipelago item to the owned items list."""
         ownedItems = self.latest_owned_items.copy()  # Start with the current owned items list
