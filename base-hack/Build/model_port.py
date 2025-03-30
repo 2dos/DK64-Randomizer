@@ -515,7 +515,7 @@ ARCHI_XY_OFFSETS = [
 
 
 def createArchiItem():
-    """Creates the Archipelago item based off the pearl copied 6 times."""
+    """Create the Archipelago item based off the pearl copied 6 times."""
     with open(ROMName, "rb") as rom:
         pearl = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x1B4)
         rom.seek(pearl.start)

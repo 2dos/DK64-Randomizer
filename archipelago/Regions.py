@@ -1,3 +1,5 @@
+"""This file contains the logic for creating and connecting regions in the Donkey Kong 64 world."""
+
 import typing
 
 from BaseClasses import CollectionState, ItemClassification, MultiWorld, Region, Entrance, Location
@@ -46,9 +48,12 @@ BASE_ID = 0xD64000
 
 
 class DK64Location(Location):
+    """A class representing a location in Donkey Kong 64."""
+
     game: str = "Donkey Kong 64"
 
     def __init__(self, player: int, name: str = "", address: int = None, parent=None):
+        """Initialize a new location."""
         super().__init__(player, name, address, parent)
 
 
@@ -80,24 +85,13 @@ all_logic_regions = {
     **Shops.LogicRegions,
 }
 
-gun_for_kong = {
-    Kongs.donkey: "Coconut",
-    Kongs.diddy: "Peanut",
-    Kongs.lanky: "Grape",
-    Kongs.tiny: "Feather",
-    Kongs.chunky: "Pineapple"
-}
+gun_for_kong = {Kongs.donkey: "Coconut", Kongs.diddy: "Peanut", Kongs.lanky: "Grape", Kongs.tiny: "Feather", Kongs.chunky: "Pineapple"}
 
-name_for_kong = {
-    Kongs.donkey: "Donkey",
-    Kongs.diddy: "Diddy",
-    Kongs.lanky: "Lanky",
-    Kongs.tiny: "Tiny",
-    Kongs.chunky: "Chunky"
-}
+name_for_kong = {Kongs.donkey: "Donkey", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky"}
 
 
 def create_regions(multiworld: MultiWorld, player: int, logic_holder: LogicVarHolder):
+    """Create the regions for the given player's world."""
     menu_region = Region("Menu", player, multiworld)
     multiworld.regions.append(menu_region)
 
@@ -146,6 +140,7 @@ def create_region(
     events: typing.List[Event],
     logic_holder: LogicVarHolder,
 ) -> Region:
+    """Create a region for the given player's world."""
     new_region = Region(region_name, player, multiworld)
 
     # Two special cases - GameStart doesn't need any locations, as AP will handle starting items instead
@@ -284,6 +279,7 @@ def create_region(
 
 # CURRENTLY UNUSED - for some reason some Lanky shops are inaccessible??
 def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, region_obj: DK64Region, location_logics: typing.List[LocationLogic], logic_holder: LogicVarHolder) -> Region:
+    """Create a region for the given player's world."""
     # Shop regions have relatively straightforward logic that can be streamlined for performance purposes
     new_region = Region(region_name, player, multiworld)
     # Snide and his blueprint locations are one-to-one every time
@@ -321,6 +317,7 @@ def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, re
 
 
 def connect_regions(world: World, logic_holder: LogicVarHolder):
+    """Connect the regions in the given world."""
     connect(world, "Menu", "GameStart")
 
     # # Example Region Connection
@@ -396,6 +393,7 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
 
 
 def connect(world: World, source: str, target: str, rule: typing.Optional[typing.Callable] = None):
+    """Connect two regions in the given world."""
     source_region = world.multiworld.get_region(source, world.player)
     target_region = world.multiworld.get_region(target, world.player)
 
@@ -410,16 +408,20 @@ def connect(world: World, source: str, target: str, rule: typing.Optional[typing
 
 
 def hasDK64RTransition(state: CollectionState, logic: LogicVarHolder, exit: TransitionFront):
+    """Check if the given transition is accessible in the given state."""
     return exit.logic(logic)
 
 
 def hasDK64RLocation(state: CollectionState, logic: LogicVarHolder, location: LocationLogic):
+    """Check if the given location is accessible in the given state."""
     return location.logic(logic)
 
 
 def hasDK64RCollectible(state: CollectionState, logic: LogicVarHolder, collectible: Collectible):
+    """Check if the given collectible is accessible in the given state."""
     return collectible.logic(logic)
 
 
 def hasDK64REvent(state: CollectionState, logic: LogicVarHolder, event: Event):
+    """Check if the given event is accessible in the given state."""
     return event.logic(logic)

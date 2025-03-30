@@ -1,3 +1,5 @@
+"""Options for DK64R."""
+
 from dataclasses import dataclass
 import typing
 
@@ -13,9 +15,7 @@ from randomizer.Enums.Settings import SettingsMap as DK64RSettingsMap
 
 
 class Goal(Choice):
-    """
-    Determines the goal of the seed
-    """
+    """Determines the goal of the seed."""
 
     display_name = "Goal"
     option_krool = 0
@@ -23,17 +23,13 @@ class Goal(Choice):
 
 
 class ClimbingShuffle(Toggle):
-    """
-    Whether or not you shuffle the Climbing ability into the world(s)
-    """
+    """Whether or not you shuffle the Climbing ability into the world(s)."""
 
     display_name = "Climbing Shuffle"
 
 
 class StartingKongCount(Range):
-    """
-    Determines how many Kongs you start with
-    """
+    """Determines how many Kongs you start with."""
 
     display_name = "Starting Kong Count"
     range_start = 1
@@ -42,9 +38,7 @@ class StartingKongCount(Range):
 
 
 class StartingMoveCount(Range):
-    """
-    Determines how many additional random moves you start with. If you choose more moves than are available, you will start with all moves.
-    """
+    """Determines how many additional random moves you start with. If you choose more moves than are available, you will start with all moves."""
 
     display_name = "Starting Move Count"
     range_start = 0
@@ -53,9 +47,7 @@ class StartingMoveCount(Range):
 
 
 class TrapFillPercentage(Range):
-    """
-    Replace a percentage of junk items in the item pool with random traps
-    """
+    """Replace a percentage of junk items in the item pool with random traps."""
 
     display_name = "Trap Fill Percentage"
     range_start = 0
@@ -64,9 +56,7 @@ class TrapFillPercentage(Range):
 
 
 class BaseTrapWeight(Choice):
-    """
-    Base Class for Trap Weights
-    """
+    """Base Class for Trap Weights."""
 
     option_none = 0
     option_low = 1
@@ -76,31 +66,27 @@ class BaseTrapWeight(Choice):
 
 
 class BubbleTrapWeight(BaseTrapWeight):
-    """
-    Likelihood of receiving a trap which freezes the player
-    """
+    """Likelihood of receiving a trap which freezes the player."""
 
     display_name = "Bubble Trap Weight"
 
 
 class ReverseTrapWeight(BaseTrapWeight):
-    """
-    Likelihood of receiving a trap which reverses controls
-    """
+    """Likelihood of receiving a trap which reverses controls."""
 
     display_name = "Reverse Trap Weight"
 
 
 class SlowTrapWeight(BaseTrapWeight):
-    """
-    Likelihood of receiving a trap which slows the player
-    """
+    """Likelihood of receiving a trap which slows the player."""
 
     display_name = "Slow Trap Weight"
 
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
+    """Options for DK64R."""
+
     death_link: DeathLink
     goal: Goal
     climbing_shuffle: ClimbingShuffle

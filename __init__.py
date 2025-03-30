@@ -1,3 +1,5 @@
+"""File specifically used for the cases of archipelago generation."""
+
 import os
 import typing
 import math
@@ -21,6 +23,21 @@ except ImportError:
 if baseclasses_loaded:
 
     def copy_dependencies(zip_path):
+        """Copy a ZIP file from the package to a local directory, extracts its contents.
+
+        Ensures the destination directory exists.
+        Args:
+            zip_path (str): The relative path to the ZIP file within the package.
+        Behavior:
+            - Creates a `./lib` directory if it does not exist.
+            - Reads the ZIP file from the package using `pkgutil.get_data`.
+            - Writes the ZIP file to the `./lib` directory if it does not already exist.
+            - Extracts the contents of the ZIP file into the `./lib` directory.
+        Prints:
+            - A message if the ZIP file could not be read.
+            - A message when the ZIP file is successfully copied.
+            - A message when the ZIP file is successfully extracted.
+        """
         dest_dir = "./lib"
         zip_dest = os.path.join(dest_dir, "windows.zip")
 
@@ -95,6 +112,7 @@ if baseclasses_loaded:
         return f"{crc_value & 0xFFFFFFFF:08X}"  # Convert to 8-character hex
 
     def launch_client():
+        """Launch the DK64 client."""
         from archipelago.DK64Client import launch
         from worlds.LauncherComponents import launch as launch_component
 
@@ -104,6 +122,8 @@ if baseclasses_loaded:
     icon_paths["dk64"] = f"ap:{__name__}/static/img/dk.png"
 
     class DK64Web(WebWorld):
+        """WebWorld for DK64."""
+
         theme = "jungle"
 
         setup_en = Tutorial("Multiworld Setup Guide", "A guide to setting up the Donkey Kong 64 randomizer connected to an Archipelago Multiworld.", "English", "setup_en.md", "setup/en", ["PoryGone"])
@@ -111,8 +131,8 @@ if baseclasses_loaded:
         tutorials = [setup_en]
 
     class DK64World(World):
-        """
-        Donkey Kong 64 is a 3D collectathon platforming game.
+        """Donkey Kong 64 is a 3D collectathon platforming game.
+
         Play as the whole DK Crew and rescue the Golden Banana hoard from King K. Rool.
         """
 
@@ -127,6 +147,7 @@ if baseclasses_loaded:
         web = DK64Web()
 
         def __init__(self, multiworld: MultiWorld, player: int):
+            """Initialize the DK64 world."""
             # Check if dk64.z64 exists, if it doesn't prompt the user to provide it
             # ANd then we will copy it to the root directory
             crc_values = ["D44B4FC6", "AA0A5979", "96972D67"]
@@ -157,6 +178,7 @@ if baseclasses_loaded:
             super().__init__(multiworld, player)
 
         def check_version(self):
+            """Check for a new version of the DK64 Rando API."""
             try:
                 request = urllib.request.Request("https://api.dk64rando.com/api/ap_version", headers={"User-Agent": "DK64Client/1.0"})
                 with urllib.request.urlopen(request) as response:
@@ -170,17 +192,20 @@ if baseclasses_loaded:
 
         @classmethod
         def stage_assert_generate(cls, multiworld: MultiWorld):
+            """Assert the stage and generate the world."""
             # rom_file = get_base_rom_path()
             # if not os.path.exists(rom_file):
             #    raise FileNotFoundError(rom_file)
             pass
 
         def _get_slot_data(self):
+            """Get the slot data."""
             return {
                 # "death_link": self.options.death_link.value,
             }
 
         def generate_early(self):
+            """Generate the world."""
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
             self.settings_string = "fjNPxAMxDIUx0QSpbHPUlZlBLg5gPQ+oBwRDIhKlsa58Iz8fiNEpEtiFKi4bVAhMF6AAd+AAOCAAGGAAGKAAAdm84FBiMhjoStwFIKW2wLcBJIBpkzVRCjFIKUUwGTLK/BQBuAIMAN4CBwBwAYQAOIECQByAoUAOYGCwB0A4YeXIITIagOrIrwAZTiU1QwkoSjuq1ZLEjQxUKi2oy9FRFgETEUAViyxyN2S8XeRQOQ7GXtOQM8jGDIAyqcEQgAFwoAFwwAEw4AExAAD1oADxIACxQABxYADxgACxoAB1wAFp8r0CS5UtnsshhHMk9Gw+M1drAwGcuqwqis0FMqLRjilACgrBovKATiotEkXENPGtLINIiNdHYAHQC8KggJCgsMDQ4QERIUFRYYGRocHR4gISIjJCUmJygpKissLS4vMDEyMzQ1rL4AwADCAMQAnQCyAGkAUQA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
@@ -232,25 +257,31 @@ if baseclasses_loaded:
                 spoiler.UpdateExits()
 
         def create_regions(self) -> None:
+            """Create the regions."""
             create_regions(self.multiworld, self.player, self.logic_holder)
 
         def create_items(self) -> None:
+            """Create the items."""
             itempool: typing.List[DK64Item] = setup_items(self)
             self.multiworld.itempool += itempool
 
         def get_filler_item_name(self) -> str:
+            """Get the filler item name."""
             return DK64RItems.JunkMelon.name
 
         def set_rules(self):
+            """Set the rules."""
             set_rules(self.multiworld, self.player)
 
         def generate_basic(self):
+            """Generate the basic world."""
             LinkWarps(self.logic_holder.spoiler)
             connect_regions(self, self.logic_holder)
 
             self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("Banana Hoard", ItemClassification.progression_skip_balancing, 0xD64060, self.player))  # TEMP?
 
         def generate_output(self, output_directory: str):
+            """Generate the output."""
             try:
                 spoiler = self.logic_holder.spoiler
                 spoiler.settings.archipelago = True
@@ -402,7 +433,6 @@ if baseclasses_loaded:
 
         def update_seed_results(self, patch, spoiler, player_id):
             """Update the seed results."""
-
             timestamp = time.time()
             hash = spoiler.settings.seed_hash
             spoiler_log = {}
@@ -427,9 +457,11 @@ if baseclasses_loaded:
             return zip_conv
 
         def modify_multidata(self, multidata: dict):
+            """Modify the multidata."""
             pass
 
         def fill_slot_data(self) -> dict:
+            """Fill the slot data."""
             return {
                 "Goal": self.options.goal.value,
                 "ClimbingShuffle": self.options.climbing_shuffle.value,
@@ -441,10 +473,11 @@ if baseclasses_loaded:
                 "GalleonWater": self.logic_holder.settings.galleon_water_internal,
                 "MedalCBRequirement": self.logic_holder.settings.medal_cb_req,
                 "BLockerValues": self.logic_holder.settings.BLockerEntryCount,
-                "RemovedBarriers": self.logic_holder.settings.remove_barriers_selected
+                "RemovedBarriers": self.logic_holder.settings.remove_barriers_selected,
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
+            """Write the spoiler."""
             spoiler_handle.write("\n")
             spoiler_handle.write("Level Order: " + ", ".join([level.name for order, level in self.logic_holder.settings.level_order.items()]))
             spoiler_handle.write("\n")
@@ -465,6 +498,7 @@ if baseclasses_loaded:
             spoiler_handle.write("Removed Barriers: " + ", ".join([barrier.name for barrier in self.logic_holder.settings.remove_barriers_selected]))
 
         def create_item(self, name: str, force_non_progression=False) -> Item:
+            """Create an item."""
             data = full_item_table[name]
 
             if force_non_progression:
@@ -477,8 +511,9 @@ if baseclasses_loaded:
             created_item = DK64Item(name, classification, data.code, self.player)
 
             return created_item
-        
+
         def collect(self, state: CollectionState, item: Item) -> bool:
+            """Collect the item."""
             change = super().collect(state, item)
             if item in self.multiworld.precollected_items[self.player]:
                 self.logic_holder.AddArchipelagoItem(item)

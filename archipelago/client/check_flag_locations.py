@@ -1,3 +1,5 @@
+"""Flag locations for the check_flags command."""
+
 location_flag_to_name = {
     1: "Japes Lanky Grape Gate Barrel",
     2: "Japes Tiny Feather Gate Barrel",

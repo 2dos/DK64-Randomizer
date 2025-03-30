@@ -1,3 +1,5 @@
+"""Package DK64 Rando into an APWorld file."""
+
 import os
 import shutil
 import subprocess
@@ -36,6 +38,7 @@ os.makedirs(vendor_folder, exist_ok=True)
 
 # Function to install dependencies into a specific folder
 def install_dependencies(target_folder, platform):
+    """Install dependencies into a specific folder."""
     subprocess.run([sys.executable, "-m", "pip", "install", "-r", requirements_file, "--target", target_folder, "--platform", platform, "--only-binary=:all:"], check=True)
 
 
@@ -52,6 +55,7 @@ install_dependencies(linux_vendor, "manylinux2014_x86_64")
 
 # Function to zip a folder
 def zip_folder(folder_path, zip_name, preserve_root=False):
+    """Zip a folder."""
     with zipfile.ZipFile(zip_name, "w", zipfile.ZIP_DEFLATED) as zipf:
         folder_basename = os.path.basename(folder_path)  # "dk64"
         for root, _, files in os.walk(folder_path):

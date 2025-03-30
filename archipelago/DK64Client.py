@@ -1,3 +1,5 @@
+"""Donkey Kong 64 client for Archipelago."""
+
 import ModuleUpdate
 
 ModuleUpdate.update()
@@ -23,6 +25,8 @@ from NetUtils import ClientStatus
 
 
 class DK64Client:
+    """Client for Donkey Kong 64."""
+
     n64_client = PJ64Client()
     tracker = None
     game = None
@@ -41,6 +45,7 @@ class DK64Client:
     pending_deathlink = False
 
     async def wait_for_pj64(self):
+        """Wait for PJ64 to connect to the game."""
         self.check_version()
         clear_waiting_message = True
         if not self.stop_bizhawk_spam:
@@ -71,6 +76,7 @@ class DK64Client:
                 pass
 
     def check_version(self):
+        """Check for a new version of the DK64 Rando API."""
         try:
             request = urllib.request.Request("https://api.dk64rando.com/api/ap_version", headers={"User-Agent": "DK64Client/1.0"})
             with urllib.request.urlopen(request) as response:
@@ -83,20 +89,25 @@ class DK64Client:
             print("Failed to check for new version of DK64")
 
     def check_safe_gameplay(self):
+        """Check if the game is in a valid state for sending items."""
         current_gamemode = self.n64_client.read_u8(DK64MemoryMap.CurrentGamemode)
         next_gamemode = self.n64_client.read_u8(DK64MemoryMap.NextGamemode)
         return current_gamemode in [6, 0xD] and next_gamemode in [6, 0xD]
 
     def safe_to_send(self):
+        """Check if it's safe to send an item."""
         countdown_value = self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.safety_text_timer)
         return countdown_value == 0
 
     async def validate_client_connection(self):
+        """Validate the client connection."""
         if not self.memory_pointer:
             self.memory_pointer = self.n64_client.read_u32(DK64MemoryMap.memory_pointer)
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.connection, 0xFF)
 
     def send_message(self, item_name, player_name, event_type="from"):
+        """Send a message to the game."""
+
         def sanitize_and_trim(input_string, max_length=0x20):
             sanitized = "".join(e for e in input_string if e.isalnum() or e == " ").strip()
             return sanitized[:max_length]
@@ -107,6 +118,7 @@ class DK64Client:
         self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_subtitle, f"{event_type} {stripped_player_name}")
 
     async def recved_item_from_ap(self, item_id, item_name, from_player, next_index):
+        """Handle an item received from Archipelago."""
         # Don't allow getting an item until you've got your first check
         if not self.started_file():
             return
@@ -133,6 +145,7 @@ class DK64Client:
                 logger.warning(f"Item {item_name} has no flag or fed id")
 
     async def writeFedData(self, fed_item):
+        """Write the fed item data to the game."""
         current_fed_item = self.n64_client.read_u32(self.memory_pointer + DK64MemoryMap.arch_items)
         # If item is being processed, don't update
         while current_fed_item != 0:
@@ -143,6 +156,7 @@ class DK64Client:
         self.n64_client.write_u8(self.memory_pointer + 0x7, fed_item)
 
     def _getShopStatus(self, p_type: int, p_value: int, p_kong: int) -> bool:
+        """Get the status of a shop item."""
         if p_type == 0xFFFF:
             return False
         if p_value == 0:
@@ -171,6 +185,7 @@ class DK64Client:
             self.flag_lookup[raw_flag] = target_flag
 
     def getMoveStatus(self, move_flag: int) -> bool:
+        """Get the status of a move."""
         item_kong = (move_flag >> 12) & 7
         if item_kong > 4:
             item_kong = 0
@@ -186,6 +201,7 @@ class DK64Client:
         return ((value >> offset) & 1) != 0
 
     def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None, _bulk_read_dict={}) -> bool:
+        """Get the status of a check."""
         # shop_index: 0 = cranky, 1 = funky, 2 = candy, 3 = bfi
         # flag_index: as expected
         if check_type == "shop":
@@ -223,6 +239,7 @@ class DK64Client:
                 return _bulk_read_dict.get(flag_index) != 0
 
     def bulk_lookup(self, flag_index, _bulk_read_dict):
+        """Bulk lookup of flags."""
         if self.flag_lookup is None:
             self._build_flag_lookup()
         if self.flag_lookup.get(flag_index):
@@ -324,6 +341,7 @@ class DK64Client:
         return True
 
     async def reset_auth(self):
+        """Reset the auth by looking up a username from ROM."""
         username = self.n64_client.read_bytestring(0x1FF3000 + 0xB0000000, 16).strip()
         # Strip all trailing \x00
         username = username.replace("\x00", "")
@@ -332,6 +350,7 @@ class DK64Client:
         # await self.get_username()
 
     def started_file(self):
+        """Check if the file has been started."""
         # Checks to see if the file has been started
         if not self.seed_started:
             status = self.readFlag(0) == 1
@@ -343,6 +362,7 @@ class DK64Client:
     should_reset_auth = False
 
     def setFlag(self, index: int) -> int:
+        """Set a flag in the game."""
         byte_index = index >> 3
         shift = index & 7
         offset = DK64MemoryMap.EEPROM + byte_index
@@ -351,6 +371,7 @@ class DK64Client:
         return 1
 
     def readFlag(self, index: int) -> int:
+        """Read a flag in the game."""
         byte_index = index >> 3
         shift = index & 7
         offset = DK64MemoryMap.EEPROM + byte_index
@@ -358,6 +379,7 @@ class DK64Client:
         return (val >> shift) & 1
 
     async def wait_for_game_ready(self):
+        """Wait for the game to be ready."""
         logger.info("Waiting on game to be in valid state...")
         while not self.check_safe_gameplay():
             if self.should_reset_auth:
@@ -366,18 +388,22 @@ class DK64Client:
         logger.info("Game connection ready!")
 
     async def is_victory(self):
+        """Check if the game is in a victory state."""
         return self.readFlag(DK64MemoryMap.end_credits) == 1
 
     def get_current_deliver_count(self):
+        """Get the current deliver count."""
         return self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.counter_offset)
 
     async def main_tick(self, item_get_cb, win_cb, deathlink_cb):
+        """Game loop tick."""
         await self.readChecks(item_get_cb)
         # await self.item_tracker.readItems()
         if await self.is_victory():
             await win_cb()
 
         def check_safe_death():
+            """Check if it's safe to send a death."""
             return self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.can_die) != 1
 
         death_state = self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.send_death)
@@ -423,6 +449,8 @@ class DK64Client:
 
 
 class DK64Context(CommonContext):
+    """Context for Donkey Kong 64."""
+
     tags = {"AP"}
     game = "Donkey Kong 64"
     la_task = None
@@ -433,6 +461,7 @@ class DK64Context(CommonContext):
     won = False
 
     def __init__(self, server_address: typing.Optional[str], password: typing.Optional[str]) -> None:
+        """Initialize the DK64 context."""
         self.client = DK64Client()
         self.client.game = self.game.upper()
         self.client.remaining_checks = self.remaining_checks
@@ -441,6 +470,7 @@ class DK64Context(CommonContext):
         super().__init__(server_address, password)
 
     def run_gui(self) -> None:
+        """Run the GUI."""
         from kvui import GameManager
 
         class DK64Manager(GameManager):
@@ -458,12 +488,14 @@ class DK64Context(CommonContext):
         self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
 
     async def send_checks(self):
+        """Send the checks to the server."""
         message = [{"cmd": "LocationChecks", "locations": self.found_checks}]
         await self.send_msgs(message)
 
     had_invalid_slot_data: typing.Optional[bool] = None
 
     def event_invalid_slot(self):
+        """Handle an invalid slot event."""
         # The next time we try to connect, reset the game loop for new auth
         self.had_invalid_slot_data = True
         self.auth = None
@@ -472,6 +504,7 @@ class DK64Context(CommonContext):
         CommonContext.event_invalid_slot(self)
 
     async def send_victory(self):
+        """Send a victory message."""
         if not self.won:
             message = [{"cmd": "StatusUpdate", "status": ClientStatus.CLIENT_GOAL}]
             logger.info("victory!")
@@ -479,10 +512,12 @@ class DK64Context(CommonContext):
             self.won = True
 
     def new_checks(self, item_ids):
+        """Handle new checks."""
         self.found_checks += item_ids
         create_task_log_exception(self.send_checks())
 
     async def server_auth(self, password_requested: bool = False):
+        """Authenticate with the server."""
         if password_requested and not self.password:
             await super(DK64Context, self).server_auth(password_requested)
         if self.had_invalid_slot_data:
@@ -503,6 +538,7 @@ class DK64Context(CommonContext):
         await self.send_connect()
 
     def on_package(self, cmd: str, args: dict):
+        """Handle a package."""
         self.client.item_names = self.item_names
         if cmd == "Connected":
             self.game = self.slot_info[self.slot].game
@@ -523,29 +559,37 @@ class DK64Context(CommonContext):
                     self.client.sent_checks.append((item_name, player_name))
 
     async def sync(self):
+        """Sync the game."""
         sync_msg = [{"cmd": "Sync"}]
         await self.send_msgs(sync_msg)
 
     ENABLE_DEATHLINK = False
 
     async def send_deathlink(self):
+        """Send a deathlink."""
         if self.ENABLE_DEATHLINK:
             self.last_death_link = time.time()
             player_name = self.player_names.get(self.slot)
             await self.send_death(player_name + " slipped on a banana")
 
     def on_deathlink(self, data: typing.Dict[str, typing.Any]) -> None:
+        """Handle a deathlink."""
         if self.ENABLE_DEATHLINK:
             self.client.pending_deathlink = True
 
     async def run_game_loop(self):
+        """Run the game loop."""
+
         async def victory():
+            """Handle a victory."""
             await self.send_victory()
 
         async def deathlink():
+            """Handle a deathlink."""
             await self.send_deathlink()
 
         def on_item_get(dk64_checks):
+            """Handle an item get."""
             built_checks_list = []
             for check in dk64_checks:
                 check_name = check_id_to_name.get(check)
@@ -607,7 +651,10 @@ class DK64Context(CommonContext):
 
 
 def launch():
+    """Launch the DK64 client."""
+
     async def main():
+        """Entrypoint of codebase."""
         parser = get_base_parser(description="Donkey Kong 64 Client.")
         parser.add_argument("--url", help="Archipelago connection url")
 

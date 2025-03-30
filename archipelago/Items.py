@@ -1,3 +1,5 @@
+"""Item table for Donkey Kong 64."""
+
 import math
 import typing
 
@@ -15,6 +17,8 @@ BASE_ID = 0xD64000
 
 
 class ItemData(typing.NamedTuple):
+    """Data for an item."""
+
     code: typing.Optional[int]
     progression: bool
     quantity: int = 1
@@ -22,6 +26,8 @@ class ItemData(typing.NamedTuple):
 
 
 class DK64Item(Item):
+    """A DK64 item."""
+
     game: str = "Donkey Kong 64"
 
 
@@ -43,6 +49,7 @@ full_item_table.update(event_table)  # Temp for generating goal item
 
 
 def setup_items(world: World) -> typing.List[DK64Item]:
+    """Set up the item table for the world."""
     item_table = []
 
     # Figure out how many GB are progression - the Helm B. Locker is assumed to be the maximum value

@@ -1,3 +1,5 @@
+"""Apply BPS patches to files."""
+
 # This file was created by Sopoforic/Vidua for creating a BPS patch.
 # For portability we have put this directly in our codebase.
 
@@ -13,6 +15,8 @@ logger = logging.getLogger(__name__)
 
 
 class PatchType(Enum):
+    """An enumeration of the types of patches that can be applied."""
+
     IPS = 1
     BPS = 2
 

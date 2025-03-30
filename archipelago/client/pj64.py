@@ -25,13 +25,10 @@ class PJ64Exception(Exception):
 
 
 class PJ64Client:
-    """
-    PJ64Client is a class that provides an interface to connect to and interact with an N64 emulator.
-    """
+    """PJ64Client is a class that provides an interface to connect to and interact with an N64 emulator."""
 
     def __init__(self, address="127.0.0.1", port=1337):
-        """
-        Initializes a new instance of the class.
+        """Initialize a new instance of the class.
 
         Args:
             address (str): The IP address to connect to. Defaults to "127.0.0.1".
@@ -45,7 +42,7 @@ class PJ64Client:
         self._connect()
 
     def _check_client(self):
-        """Ensures the Project 64 executable and the required adapter script are properly set up.
+        """Ensure the Project 64 executable and the required adapter script are properly set up.
 
         Raises:
             PJ64Exception: If the Project 64 executable is not found or if the `ap_adapter.js` file is in use.
@@ -118,7 +115,8 @@ class PJ64Client:
         return False
 
     def _verify_pj64_config(self, config_file):
-        """Verifies and updates the configuration file for Project64.
+        """Verify and update the configuration file for Project64.
+
         This method ensures that the specified configuration file contains the
         required sections and settings for proper operation. If the necessary
         sections or settings are missing, they are added or updated accordingly.
@@ -127,7 +125,7 @@ class PJ64Client:
         Behavior:
             - Ensures the [Settings] section exists and sets 'Basic Mode' to "0".
             - Ensures the [Debugger] section exists and sets 'Debugger' to "1".
-            - Writes the updated configuration back to the file.
+            - Write the updated configuration back to the file.
         Note:
             If an exception occurs while writing to the file, it is silently ignored.
         """
@@ -154,8 +152,8 @@ class PJ64Client:
             pass
 
     def _connect(self):
-        """
-        Establishes a connection to the specified address and port using a socket.
+        """Establish a connection to the specified address and port using a socket.
+
         If the socket is not already created, it initializes a new socket with
         AF_INET and SOCK_STREAM parameters and sets a timeout of 0.1 seconds.
         Raises:
@@ -178,7 +176,7 @@ class PJ64Client:
             pass
 
     def _send_command(self, command):
-        """Sends a command to the emulator and retrieves the response."""
+        """Send a command to the emulator and retrieves the response."""
         try:
             self._connect()
             self.socket.sendall(command.encode())
@@ -190,51 +188,51 @@ class PJ64Client:
             raise PJ64Exception("Connection refused or reset")
 
     def _read_memory(self, address, size):
-        """Reads an unsigned integer of the given size from memory."""
+        """Read an unsigned integer of the given size from memory."""
         return int(self._send_command(f"read u{size * 8} {hex(address)} {size}"))
 
     def rominfo(self):
-        """Retrieves ROM information from the emulator."""
+        """Retrieve ROM information from the emulator."""
         return json.loads(self._send_command("romInfo"))
 
     def read_u8(self, address):
-        """Reads an 8-bit unsigned integer from memory."""
+        """Read an 8-bit unsigned integer from memory."""
         return self._read_memory(address, 1)
 
     def read_u16(self, address):
-        """Reads a 16-bit unsigned integer from memory."""
+        """Read a 16-bit unsigned integer from memory."""
         return self._read_memory(address, 2)
 
     def read_u32(self, address):
-        """Reads a 32-bit unsigned integer from memory."""
+        """Read a 32-bit unsigned integer from memory."""
         return self._read_memory(address, 4)
 
     def read_dict(self, dict):
-        """Reads a dictionary of memory addresses and returns the values."""
+        """Read a dictionary of memory addresses and returns the values."""
         return self._send_command(f"dict {json.dumps(dict, separators=(',', ':'))}")
 
     def read_bytestring(self, address, length):
-        """Reads a bytestring from memory."""
+        """Read a bytestring from memory."""
         return self._send_command(f"read bytestring {hex(address)} {length}")
 
     def _write_memory(self, command, address, data):
-        """Writes data to memory and returns the emulator response."""
+        """Write data to memory and returns the emulator response."""
         return self._send_command(f"{command} {hex(address)} {data}")
 
     def write_u8(self, address, data):
-        """Writes an 8-bit unsigned integer to memory."""
+        """Write an 8-bit unsigned integer to memory."""
         return self._write_memory("write u8", address, [data])
 
     def write_u32(self, address, data):
-        """Writes a 32-bit unsigned integer to memory."""
+        """Write a 32-bit unsigned integer to memory."""
         return self._write_memory("write u32", address, [data])
 
     def write_bytestring(self, address, data):
-        """Writes a bytestring to memory."""
+        """Write a bytestring to memory."""
         return self._write_memory("write bytestring", address, str(data).upper() + "\x00")
 
     def validate_rom(self, name, memory_location=None):
-        """Validates the ROM by comparing its name and optional memory location."""
+        """Validate the ROM by comparing its name and optional memory location."""
         rom_info = self.rominfo()
         if not rom_info:
             return False
