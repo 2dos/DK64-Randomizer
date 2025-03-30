@@ -88,6 +88,14 @@ gun_for_kong = {
     Kongs.chunky: "Pineapple"
 }
 
+name_for_kong = {
+    Kongs.donkey: "Donkey",
+    Kongs.diddy: "Diddy",
+    Kongs.lanky: "Lanky",
+    Kongs.tiny: "Tiny",
+    Kongs.chunky: "Chunky"
+}
+
 
 def create_regions(multiworld: MultiWorld, player: int, logic_holder: LogicVarHolder):
     menu_region = Region("Menu", player, multiworld)
@@ -220,7 +228,8 @@ def create_region(
             quantity *= 5
         elif collectible.type == Collectibles.balloon:
             quantity *= 10
-            add_rule(location, lambda state: state.has(gun_for_kong[collectible.kong], player))
+            add_rule(location, lambda state: state.has(gun_for_kong[collectible.kong], player))  # We need to be sure we check for gun access for this balloon
+        add_rule(location, lambda state: logic_holder.HasKong(collectible.kong))  # There's no FTA for collectibles - you *must* own the right kong to collect it
         location.place_locked_item(DK64Item("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
         # print("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity))
         new_region.locations.append(location)

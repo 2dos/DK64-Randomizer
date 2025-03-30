@@ -68,6 +68,7 @@ if baseclasses_loaded:
     from archipelago.Logic import LogicVarHolder
     from randomizer.Spoiler import Spoiler
     from randomizer.Settings import Settings
+    from randomizer.ShuffleWarps import LinkWarps
     from randomizer.Enums.Settings import ShuffleLoadingZones
     from randomizer.Patching.ApplyRandomizer import patching_response
     from version import version
@@ -244,6 +245,7 @@ if baseclasses_loaded:
             set_rules(self.multiworld, self.player)
 
         def generate_basic(self):
+            LinkWarps(self.logic_holder.spoiler)
             connect_regions(self, self.logic_holder)
 
             self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("Banana Hoard", ItemClassification.progression_skip_balancing, 0xD64060, self.player))  # TEMP?
@@ -478,6 +480,8 @@ if baseclasses_loaded:
         
         def collect(self, state: CollectionState, item: Item) -> bool:
             change = super().collect(state, item)
-            if item.classification in (ItemClassification.progression, ItemClassification.progression_skip_balancing):
+            if item in self.multiworld.precollected_items[self.player]:
+                self.logic_holder.AddArchipelagoItem(item)
+            elif item.classification in (ItemClassification.progression, ItemClassification.progression_skip_balancing):
                 self.logic_holder.UpdateFromArchipelagoItems(state)
             return change

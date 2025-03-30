@@ -246,6 +246,12 @@ class LogicVarHolder:
         self.Blueprints = []
 
         self.Events = []
+        # Galleon water needs slightly more care to account for the initial state of Galleon water
+        # dk64randomizer.com handles this with Events in Galleon, but AP needs a solution that doesn't litter event locations in the world
+        if self.settings.galleon_water_internal == GalleonWaterSetting.lowered:
+            self.AddEvent(Events.WaterLowered)
+        if self.settings.galleon_water_internal == GalleonWaterSetting.raised:
+            self.AddEvent(Events.WaterRaised)
 
         self.Hints = []
 
@@ -347,7 +353,6 @@ class LogicVarHolder:
 
     def UpdateFromArchipelagoItems(self, collectionState: CollectionState):
         """Update logic variables based on the DK64Items found by Archipelago."""
-        self.Reset()
         ownedItems = []
         cbArchItems = []
         eventArchItems = []
@@ -363,19 +368,15 @@ class LogicVarHolder:
                     ownedItems.append(corresponding_item_id)
 
         # We update Events before updating items because we need to know the status of a few events for some items
+        event_list = []
         for item_name in eventArchItems:
             # Event names are carefully named in the following format:
             # index 0: "Event" - needed to identify this as an Event item
             # index 1: the Events enum name as a string
             item_data = item_name.split(", ")
             event = Events[item_data[1]]
-            self.AddEvent(event)
-        # Galleon water needs slightly more care to account for the initial state of Galleon water
-        # dk64randomizer.com handles this with Events in Galleon, but AP needs a solution that doesn't litter event locations in the world
-        if self.settings.galleon_water_internal == GalleonWaterSetting.lowered:
-            self.AddEvent(Events.WaterLowered)
-        if self.settings.galleon_water_internal == GalleonWaterSetting.raised:
-            self.AddEvent(Events.WaterRaised)
+            event_list.append(event)
+        self.Events = event_list
 
         self.Update(ownedItems)
 
@@ -389,13 +390,65 @@ class LogicVarHolder:
             # index 3: the quantity of CBs (as a string!)
             item_data = item_name.split(", ")
             kong = Kongs[item_data[1]]
-            # In order for our medal/T&S logic to work properly, we don't actually "own" any of these cbs if we don't have the associated Kong
-            if not self.HasKong(kong):
-                continue
             level = Levels[item_data[2]]
             quantity = int(item_data[3])
             colored_banana_counts[level][kong] += quantity
         self.ColoredBananas = colored_banana_counts
+        
+    def AddArchipelagoItem(self, ap_item):
+        """Add an Archipelago item to the owned items list."""
+        ownedItems = self.latest_owned_items.copy()  # Start with the current owned items list
+        if ap_item.name.startswith("Collectible CBs"):
+            # CBs are carefully named in the following format:
+            # index 0: "Collectible CBs" - needed to identify this as a collectible item
+            # index 1: the Kong's name, matching the Kongs enum
+            # index 2: the level's name, matching the Levels enum
+            # index 3: the quantity of CBs (as a string!)
+            item_data = ap_item.name.split(", ")
+            kong = Kongs[item_data[1]]
+            level = Levels[item_data[2]]
+            quantity = int(item_data[3])
+            self.ColoredBananas[level][kong] += quantity
+        elif ap_item.name.startswith("Event, "):
+            # Event names are carefully named in the following format:
+            # index 0: "Event" - needed to identify this as an Event item
+            # index 1: the Events enum name as a string
+            item_data = ap_item.name.split(", ")
+            event = Events[item_data[1]]
+            self.AddEvent(event)
+        else:
+            corresponding_item_id = self.item_name_to_id[ap_item.name]
+            ownedItems.append(corresponding_item_id)
+
+        self.Update(ownedItems)
+
+    def RemoveArchipelagoItem(self, ap_item):
+        """Add an Archipelago item to the owned items list."""
+        ownedItems = self.latest_owned_items.copy()  # Start with the current owned items list
+        if ap_item.name.startswith("Collectible CBs"):
+            # CBs are carefully named in the following format:
+            # index 0: "Collectible CBs" - needed to identify this as a collectible item
+            # index 1: the Kong's name, matching the Kongs enum
+            # index 2: the level's name, matching the Levels enum
+            # index 3: the quantity of CBs (as a string!)
+            item_data = ap_item.name.split(", ")
+            kong = Kongs[item_data[1]]
+            level = Levels[item_data[2]]
+            quantity = int(item_data[3])
+            self.ColoredBananas[level][kong] -= quantity
+        elif ap_item.name.startswith("Event, "):
+            # Event names are carefully named in the following format:
+            # index 0: "Event" - needed to identify this as an Event item
+            # index 1: the Events enum name as a string
+            item_data = ap_item.name.split(", ")
+            event = Events[item_data[1]]
+            self.Events = [evt for evt in self.Events if evt != event]
+        else:
+            corresponding_item_id = self.item_name_to_id[ap_item.name]
+            if corresponding_item_id in ownedItems:
+                ownedItems.remove(corresponding_item_id)
+
+        self.Update(ownedItems)
 
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
