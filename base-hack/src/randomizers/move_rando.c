@@ -633,7 +633,7 @@ void getNextMoveText(void) {
 			}
 		}
 	}
-	int override_string = isAPEnabled() && p_type == 8;
+	int override_string = isAPEnabled() && p_type == PURCHASE_ARCHIPELAGO;
 	if ((has_data) || (paad->upper_text) || (paad->lower_text)) {
 		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 			used_overlay->kong = 0;
@@ -667,9 +667,26 @@ void getNextMoveText(void) {
 			_guTranslateF(&mtx1, 0.0f, 48.0f, 0.0f);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->matrix_1);
-			paad->timer = 0x82;
+			paad->fade_in = 120;
+			paad->fade_out = 30;
+			paad->fade_rate = 0x10;
+			paad->timer = 130;
 			if ((CurrentMap == MAP_CRANKY) && (!is_jetpac)) {
 				paad->timer = 300;
+			}
+			if (p_type == PURCHASE_ARCHIPELAGO) {
+				if (APData) {
+					paad->timer = APData->text_timer;
+					paad->fade_in = paad->timer - 2;
+					if (paad->timer < 70) {
+						paad->fade_out = (paad->timer - 30) / 2;
+						if (paad->fade_out < 5) {
+							paad->fade_rate = 0xFF;
+						} else {
+							paad->fade_rate = 0x100 / (paad->fade_out - 4);
+						}
+					}
+				}
 			}
 			switch(p_type) {
 				case PURCHASE_MOVES:
@@ -822,25 +839,25 @@ void getNextMoveText(void) {
 			start_hiding = 1;
 		}
 		timer = paad->timer;
-		if (timer == 0x1E) {
+		if (timer == paad->fade_out) {
 			CurrentActorPointer_0->control_state = 2;
-		} else if (timer == 0x78) {
+		} else if (timer == paad->fade_in) {
 			CurrentActorPointer_0->control_state = 1;
 		}
 		if (CurrentActorPointer_0->control_state == 1) {
-			int opacity_diff = 0xFF - paad->opacity;
-			int trunc_diff = opacity_diff;
-			if (opacity_diff > 0x10) {
-				trunc_diff = 0x10;
+			int opacity = paad->opacity;
+			opacity += paad->fade_rate;
+			if (opacity > 0xFF) {
+				opacity = 0xFF;
 			}
-			paad->opacity += trunc_diff;
+			paad->opacity = opacity;
 		} else if (CurrentActorPointer_0->control_state == 2) {
-			int opacity_0 = paad->opacity;
-			int trunc_opacity = opacity_0;
-			if (opacity_0 > 0x10) {
-				trunc_opacity = 0x10;
+			int opacity = paad->opacity;
+			opacity -= paad->fade_rate;
+			if (opacity < 0) {
+				opacity = 0;
 			}
-			paad->opacity = opacity_0 - trunc_opacity;
+			paad->opacity = opacity;
 		}
 		if (start_hiding == 0) {
 			if (CurrentActorPointer_0->control_state != 0) {

@@ -2324,7 +2324,10 @@ typedef struct move_overlay_paad {
 	/* 0x004 */ void* lower_text;
 	/* 0x008 */ unsigned char opacity;
 	/* 0x009 */ unsigned char index;
-	/* 0x00A */ char unk_0A[0x10-0xA];
+	/* 0x00A */ char unk_0A;
+	/* 0x00B */ unsigned char fade_rate; 
+	/* 0x00C */ unsigned short fade_in;
+	/* 0x00E */ unsigned short fade_out;
 	/* 0x010 */ mtx_item matrix_0;
 	/* 0x050 */ mtx_item matrix_1;
 	/* 0x090 */ int timer;

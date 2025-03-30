@@ -12,6 +12,8 @@
 #include "../../include/common.h"
 
 static archipelago_data ap_info;
+static char main_title[0x30];
+static char sub_title[0x30];
 
 int isAPEnabled(void) {
     if (Rando.rom_flags.archipelago) {
@@ -23,18 +25,10 @@ int isAPEnabled(void) {
 void initAP(void) {
     if (isAPEnabled()) {
         APData = &ap_info;
+        ap_info.text_timer = 0x82;
         ap_info.start_flag = FLAG_ENEMY_KILLED_0 + 16;
         if (Rando.enemy_item_rando) {
             ap_info.start_flag += ENEMIES_TOTAL;
-        }
-    }
-}
-
-void initAPName(void) {
-    if (isAPEnabled()) {
-        unsigned char *temp = getFile(0x10, 0x1FF3000);
-        for (int i = 0; i < 0x10; i++) {
-            ap_info.slot_name[i] = temp[i];
         }
     }
 }
@@ -266,6 +260,7 @@ int canReceiveItem(void) {
     return 0;
 }
 
+
 void handleArchipelagoFeed(void) {
     if (ap_info.connection > 0) {
         ap_info.connection -= 1;
@@ -286,18 +281,18 @@ void handleArchipelagoFeed(void) {
             ap_info.fed_item = TRANSFER_ITEM_NULL;
         }
         if (ap_info.fed_string[0] != 0) {
-            int vacant_spot = spawnItemOverlay(8, 0, 1, 1);
+            int vacant_spot = spawnItemOverlay(PURCHASE_ARCHIPELAGO, 0, 1, 1);
             if (vacant_spot == -1) {
                 return;
             }
-            ap_info.safety_text_timer = 180;
+            ap_info.safety_text_timer = ap_info.text_timer + 50;
             // Main Title
-            text_overlay_data[vacant_spot].string = dk_malloc(0x30);
+            text_overlay_data[vacant_spot].string = &main_title;
             dk_memcpy(text_overlay_data[vacant_spot].string, &ap_info.fed_string, 0x21);
             ap_info.fed_string[0] = 0;
             if (ap_info.fed_subtitle[0]) {
                 // Subtitle
-                text_overlay_data[vacant_spot].subtitle = dk_malloc(0x30);
+                text_overlay_data[vacant_spot].subtitle = &sub_title;
                 dk_memcpy(text_overlay_data[vacant_spot].subtitle, &ap_info.fed_subtitle, 0x21);
                 ap_info.fed_subtitle[0] = 0;
             }
