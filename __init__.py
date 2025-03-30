@@ -13,7 +13,7 @@ import sys
 
 baseclasses_loaded = False
 try:
-    from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification
+    from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, CollectionState
 
     baseclasses_loaded = True
 except ImportError:
@@ -75,7 +75,7 @@ if baseclasses_loaded:
     from randomizer.Fill import ShuffleItems, ItemReference, IdentifyMajorItems
     from randomizer.CompileHints import compileMicrohints
     from randomizer.Enums.Types import Types
-    from randomizer.Enums.Locations import Locations
+    from randomizer.Enums.Kongs import Kongs
     from randomizer.Lists import Item as DK64RItem
     from worlds.LauncherComponents import Component, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
@@ -388,7 +388,6 @@ if baseclasses_loaded:
                 spoiler.majorItems = IdentifyMajorItems(spoiler)
                 # TODO: look up if the AP item on Jetpac is a major item
                 patch_data, _ = patching_response(spoiler)
-                spoiler.FlushAllExcessSpoilerData()
                 patch_file = self.update_seed_results(patch_data, spoiler, self.player)
                 out_path = os.path.join(output_directory, f"{self.multiworld.get_out_file_name_base(self.player)}.lanky")
                 print(out_path)
@@ -398,9 +397,6 @@ if baseclasses_loaded:
                 raise
             finally:
                 self.rom_name_available_event.set()  # make sure threading continues and errors are collected
-                # for region in self.multiworld.regions:
-                #     if region.player == self.player:
-                #         region.multiworld = None
 
         def update_seed_results(self, patch, spoiler, player_id):
             """Update the seed results."""
@@ -437,7 +433,34 @@ if baseclasses_loaded:
                 "ClimbingShuffle": self.options.climbing_shuffle.value,
                 "PlayerNum": self.player,
                 "death_link": self.options.death_link.value,
+                "LevelOrder": self.logic_holder.settings.level_order,
+                "StartingKongs": self.logic_holder.settings.starting_kong_list,
+                "ForestTime": self.logic_holder.settings.fungi_time_internal,
+                "GalleonWater": self.logic_holder.settings.galleon_water_internal,
+                "MedalCBRequirement": self.logic_holder.settings.medal_cb_req,
+                "BLockerValues": self.logic_holder.settings.BLockerEntryCount,
+                "RemovedBarriers": self.logic_holder.settings.remove_barriers_selected
             }
+
+        def write_spoiler(self, spoiler_handle: typing.TextIO):
+            spoiler_handle.write("\n")
+            spoiler_handle.write("Level Order: " + ", ".join([level.name for order, level in self.logic_holder.settings.level_order.items()]))
+            spoiler_handle.write("\n")
+            spoiler_handle.write("Starting Kongs: " + ", ".join([kong.name for kong in self.logic_holder.settings.starting_kong_list]))
+            spoiler_handle.write("\n")
+            spoiler_handle.write("Helm Order: " + ", ".join([Kongs(room).name for room in self.logic_holder.settings.helm_order]))
+            spoiler_handle.write("\n")
+            spoiler_handle.write("K. Rool Order: " + ", ".join([phase.name for phase in self.logic_holder.settings.krool_order]))
+            spoiler_handle.write("\n")
+            spoiler_handle.write("Forest Time: " + self.logic_holder.settings.fungi_time_internal.name)
+            spoiler_handle.write("\n")
+            spoiler_handle.write("Galleon Water: " + self.logic_holder.settings.galleon_water_internal.name)
+            spoiler_handle.write("\n")
+            spoiler_handle.write("CBs for Medal: " + str(self.logic_holder.settings.medal_cb_req))
+            spoiler_handle.write("\n")
+            spoiler_handle.write("B. Locker Requirements: " + ", ".join([str(count) for count in self.logic_holder.settings.BLockerEntryCount]))
+            spoiler_handle.write("\n")
+            spoiler_handle.write("Removed Barriers: " + ", ".join([barrier.name for barrier in self.logic_holder.settings.remove_barriers_selected]))
 
         def create_item(self, name: str, force_non_progression=False) -> Item:
             data = full_item_table[name]
@@ -452,3 +475,9 @@ if baseclasses_loaded:
             created_item = DK64Item(name, classification, data.code, self.player)
 
             return created_item
+        
+        def collect(self, state: CollectionState, item: Item) -> bool:
+            change = super().collect(state, item)
+            if item.classification in (ItemClassification.progression, ItemClassification.progression_skip_balancing):
+                self.logic_holder.UpdateFromArchipelagoItems(state)
+            return change

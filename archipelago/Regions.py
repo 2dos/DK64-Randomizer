@@ -17,7 +17,7 @@ from randomizer.Lists import Location as DK64RLocation, Item as DK64RItem
 from randomizer.LogicClasses import Collectible, Event, LocationLogic, TransitionFront, Region as DK64Region
 from randomizer.Patching.Library.Generic import IsItemSelected
 from archipelago.Items import DK64Item
-from worlds.generic.Rules import add_item_rule, set_rule
+from worlds.generic.Rules import add_item_rule, add_rule, set_rule
 from archipelago.Logic import LogicVarHolder
 from randomizer.LogicFiles import (
     AngryAztec,
@@ -78,6 +78,14 @@ all_logic_regions = {
     **FranticFactory.LogicRegions,
     **GloomyGalleon.LogicRegions,
     **Shops.LogicRegions,
+}
+
+gun_for_kong = {
+    Kongs.donkey: "Coconut",
+    Kongs.diddy: "Peanut",
+    Kongs.lanky: "Grape",
+    Kongs.tiny: "Feather",
+    Kongs.chunky: "Pineapple"
 }
 
 
@@ -178,6 +186,9 @@ def create_region(
             # V1 LIMITATION: this will ignore minigame logic, so bonus barrels and Helm barrels must be autocompleted
             else:
                 set_rule(location, lambda state, location_logic=location_logic: hasDK64RLocation(state, logic_holder, location_logic))
+            # Our Fill checks for Shockwave independent of the location's logic, so we must do the same
+            if location_obj.type == Types.RainbowCoin:
+                add_rule(location, lambda state: state.has("Shockwave", player))
             # Item placement limitations! These only apply to items in your own world, as other worlds' items will be AP items, and those can be anywhere.
             # Fairy locations cannot have your own world's blueprints on them for technical reasons.
             if location_obj.type == Types.Fairy:
@@ -209,6 +220,7 @@ def create_region(
             quantity *= 5
         elif collectible.type == Collectibles.balloon:
             quantity *= 10
+            add_rule(location, lambda state: state.has(gun_for_kong[collectible.kong], player))
         location.place_locked_item(DK64Item("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
         # print("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity))
         new_region.locations.append(location)
@@ -389,20 +401,16 @@ def connect(world: World, source: str, target: str, rule: typing.Optional[typing
 
 
 def hasDK64RTransition(state: CollectionState, logic: LogicVarHolder, exit: TransitionFront):
-    logic.UpdateFromArchipelagoItems(state)
     return exit.logic(logic)
 
 
 def hasDK64RLocation(state: CollectionState, logic: LogicVarHolder, location: LocationLogic):
-    logic.UpdateFromArchipelagoItems(state)
     return location.logic(logic)
 
 
 def hasDK64RCollectible(state: CollectionState, logic: LogicVarHolder, collectible: Collectible):
-    logic.UpdateFromArchipelagoItems(state)
     return collectible.logic(logic)
 
 
 def hasDK64REvent(state: CollectionState, logic: LogicVarHolder, event: Event):
-    logic.UpdateFromArchipelagoItems(state)
     return event.logic(logic)
