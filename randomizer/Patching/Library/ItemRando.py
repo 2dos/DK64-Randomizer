@@ -57,6 +57,7 @@ class CustomActors(IntEnum):
     HintItemLanky = auto()
     HintItemTiny = auto()
     HintItemChunky = auto()
+    ArchipelagoItem = auto()
 
 class GraphicOverlay(IntEnum):
     Banana = 0
@@ -346,6 +347,14 @@ item_db = {
         preview_text = "\x04NOTHING\x04",
         seal_preview_text = "\x04DIDDLY SQUAT\x04",
     ),
+    Types.ArchipelagoItem: ItemPlacementData(
+        model_index = [0x125],
+        model_two_index=[0x291],
+        actor_index=[CustomActors.ArchipelagoItem],
+        overlay=[GraphicOverlay.Hint],
+        preview_text = "\x04ARCHIPELAGO ITEM\x04",
+        seal_preview_text = "\x04ANOTHER SCALLYWAG'S BOOTY\x04",
+    )
 }
 
 def getIceTrapText(input_text: str) -> str:

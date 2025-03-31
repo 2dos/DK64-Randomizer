@@ -2287,6 +2287,11 @@ with open(newROMName, "r+b") as fh:
         "ap_pearl_4",
         "ap_pearl_5",
         "ap32",
+        "fake_bean",
+        "fake_key_shine",
+        "fake_key_shine_palette",
+        "fakebean",
+        "fakekey",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
@@ -2359,6 +2364,7 @@ with open(newROMName, "r+b") as fh:
         "cannon_base",
         "cannon_support",
         "barrel_bottom",
+        "key_om2_palette",
     ]
     tagbarrel_removals = ["plain_shell", "shell", "cannon_support", "cannon_base", "cannon_left", "cannon_right", "barrel_base"]
     for face in barrel_faces:
