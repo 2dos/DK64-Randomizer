@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import random
 from enum import IntEnum
 from typing import TYPE_CHECKING, Any, List, Union
 
@@ -138,7 +137,7 @@ class EnemyLoc:
                 for xi, x in enumerate(ENEMY_REPLACEMENT_PRIORITY[self.default_type]):
                     self.allowed_enemies[xi + 1] = getEnemyPermitted(x, banned_enemies)
 
-    def placeNewEnemy(self, enabled_enemies: List[Any], enable_speed: bool, sound_safeguard) -> Enemies:
+    def placeNewEnemy(self, random, enabled_enemies: List[Any], enable_speed: bool, sound_safeguard) -> Enemies:
         """Place new enemy in slot."""
         if self.enable_randomization:
             permitted = []

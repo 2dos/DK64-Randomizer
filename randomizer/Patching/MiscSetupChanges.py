@@ -1,7 +1,6 @@
 """Apply misc setup changes."""
 
 import math
-import random
 
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Kongs import Kongs
@@ -28,7 +27,7 @@ from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 
 
-def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):
+def pickRandomPositionCircle(random, center_x, center_z, min_radius, max_radius):
     """Pick a random position within a torus where the center and radius boundaries are specified."""
     radius = min_radius + (math.sqrt(random.random()) * (max_radius - min_radius))
     angle = random.uniform(0, math.pi * 2)
@@ -41,13 +40,13 @@ def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):
     return [item_x, item_z]
 
 
-def pickRandomPositionsMult(center_x, center_z, min_radius, max_radius, count, min_dist):
+def pickRandomPositionsMult(random, center_x, center_z, min_radius, max_radius, count, min_dist):
     """Pick multiple points within a torus where the center and radius boundaries are defined. There is a failsafe to make sure 2 points aren't within a certain specified distance away from each other."""
     picked = []
     for item in range(count):
         good_place = False
         while not good_place:
-            selected = pickRandomPositionCircle(center_x, center_z, min_radius, max_radius)
+            selected = pickRandomPositionCircle(random, center_x, center_z, min_radius, max_radius)
             if len(picked) == 0:
                 good_place = True
             else:
@@ -63,7 +62,7 @@ def pickRandomPositionsMult(center_x, center_z, min_radius, max_radius, count, m
     return {"picked": picked.copy(), "index": 0}
 
 
-def pickChunkyCabinPadPositions():
+def pickChunkyCabinPadPositions(random):
     """Pick 3 points within a torus in Chunky's 5-door cabin where the center and radius boundaries are defined. There are failsafes to make sure 2 points are far enough apart and all points are easy enough to reach for casual game play purposes."""
     picked_pads = []
     # lamp_halfway_points are the center of the moving light circles when they are in their halfway points along their routes
@@ -73,7 +72,7 @@ def pickChunkyCabinPadPositions():
     for count in range(3):
         good_pad = False
         while not good_pad:
-            pad = pickRandomPositionCircle(center_of_room[0], center_of_room[1], 70, 180)
+            pad = pickRandomPositionCircle(random, center_of_room[0], center_of_room[1], 70, 180)
             # check if pad is in a difficult spot to clear and if so, get the pad out of the difficult spot
             for lamp in lamp_halfway_points:
                 # check if pad is in a lamp's radius when said lamp is on its halfway point
@@ -164,7 +163,7 @@ def SpeedUpFungiRabbit(ROM_COPY: LocalROM, factor: float = 1.0):
             ROM_COPY.write(int(136 * speed_buff))
 
 
-def getRandomGalleonStarLocation() -> tuple:
+def getRandomGalleonStarLocation(random) -> tuple:
     """Get location for the DK Star which opens the treasure room."""
     STAR_MAX_Y = 1657  # Star Y in vanilla game
     boxes = [
@@ -289,10 +288,10 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
         [311.555, 138.167, 666.162],
         [398.472, 138.167, 668.426],
     ]
-    diddy_5di_pads = pickRandomPositionsMult(287.94, 312.119, 0, 140, 6, 40)
-    lanky_fungi_mush = pickRandomPositionsMult(274.9, 316.505, 40, 160, 5, 40)
-    chunky_5dc_pads = pickChunkyCabinPadPositions()
-    random.shuffle(vase_puzzle_positions)
+    diddy_5di_pads = pickRandomPositionsMult(spoiler.settings.random, 287.94, 312.119, 0, 140, 6, 40)
+    lanky_fungi_mush = pickRandomPositionsMult(spoiler.settings.random, 274.9, 316.505, 40, 160, 5, 40)
+    chunky_5dc_pads = pickChunkyCabinPadPositions(spoiler.settings.random)
+    spoiler.settings.random.shuffle(vase_puzzle_positions)
     vase_puzzle_rando_progress = 0
     raise_patch = IsItemSelected(
         spoiler.settings.quality_of_life,
@@ -337,7 +336,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
             elif item_type in pickup_list and spoiler.settings.randomize_pickups:
                 if cont_map_id != Maps.OrangeBarrel:
                     ROM_COPY.seek(item_start + 0x28)
-                    ROM_COPY.writeMultipleBytes(random.choice(pickup_list), 2)
+                    ROM_COPY.writeMultipleBytes(spoiler.settings.random.choice(pickup_list), 2)
             elif is_swap:
                 if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
                     offsets.append(item_start)
@@ -351,7 +350,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
             if item_type == 0x235:
                 if (cont_map_id == Maps.GalleonBoss and random_pufftoss_stars) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off):
                     if cont_map_id == Maps.HideoutHelm:
-                        y_position = random.uniform(-131, 500)
+                        y_position = spoiler.settings.random.uniform(-131, 500)
                         star_donut_center = [1055.704, 3446.966]
                         if y_position < 0:
                             star_donut_boundaries = [230, 300.971]
@@ -362,8 +361,8 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                         star_donut_center = [1216, 1478]
                         star_donut_boundaries = [200, 460]
                         star_height_boundaries = []
-                    star_pos = pickRandomPositionCircle(star_donut_center[0], star_donut_center[1], star_donut_boundaries[0], star_donut_boundaries[1])
-                    star_a = random.uniform(0, 360)
+                    star_pos = pickRandomPositionCircle(spoiler.settings.random, star_donut_center[0], star_donut_center[1], star_donut_boundaries[0], star_donut_boundaries[1])
+                    star_a = spoiler.settings.random.uniform(0, 360)
                     if star_a == 360:
                         star_a = 0
                     star_x = star_pos[0]
@@ -375,7 +374,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                     ROM_COPY.seek(item_start + 0x1C)
                     ROM_COPY.writeMultipleBytes(int(float_to_hex(star_a), 16), 4)
                     if len(star_height_boundaries) > 0:
-                        star_y = random.uniform(star_height_boundaries[0], star_height_boundaries[1])
+                        star_y = spoiler.settings.random.uniform(star_height_boundaries[0], star_height_boundaries[1])
                         ROM_COPY.seek(item_start + 4)
                         ROM_COPY.writeMultipleBytes(int(float_to_hex(star_y), 16), 4)
             if item_type == 0x74 and cont_map_id == Maps.GalleonLighthouse and lighthouse_on:
@@ -422,7 +421,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                 ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                 chunky_5dc_pads["index"] += 1
             elif cont_map_id == Maps.GloomyGalleon and item_id == 0xC and spoiler.settings.puzzle_rando_difficulty in (PuzzleRando.hard, PuzzleRando.chaos):
-                coords = list(getRandomGalleonStarLocation())
+                coords = list(getRandomGalleonStarLocation(spoiler.settings.random))
                 ROM_COPY.seek(item_start)
                 for x in coords:
                     ROM_COPY.writeMultipleBytes(int(float_to_hex(x), 16), 4)
@@ -454,7 +453,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
 
         if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
             if len(positions) > 0 and len(offsets) > 0:
-                random.shuffle(positions)
+                spoiler.settings.random.shuffle(positions)
                 for index, offset in enumerate(offsets):
                     ROM_COPY.seek(offset)
                     for coord in range(3):
@@ -466,7 +465,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                 for subtype in number_replacement_data:
                     subtype_name = subtype
                     subtype = number_replacement_data[subtype]
-                    random.shuffle(subtype["positions"])
+                    spoiler.settings.random.shuffle(subtype["positions"])
                     for index, offset in enumerate(subtype["offsets"]):
                         ROM_COPY.seek(offset["offset"])
                         base_rot = offset["rotation"]
@@ -478,7 +477,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                         new_rot = subtype["positions"][index]["rotation"]
                         rot_diff = ((base_rot - new_rot) + 4) % 4
                         if subtype_name == "center":
-                            rot_diff = random.randint(0, 3)
+                            rot_diff = spoiler.settings.random.randint(0, 3)
                         ROM_COPY.seek(offset["offset"] + 0x1C)
                         new_rot = (2 + rot_diff) % 4
                         ROM_COPY.writeMultipleBytes(int(rotation_hexes[new_rot], 16), 4)

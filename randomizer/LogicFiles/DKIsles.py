@@ -317,7 +317,7 @@ LogicRegions = {
         # This fall could be a logical point of progression, but you have to survive the drop OR have the keys and crouch drop there - the Open Lobbies check effectively prevents keys from being on the path for this transition in very rare worlds
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: l.CanSurviveFallDamage() or l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)),
         # If you were to die to fall damage here, you'd be sent to the Isles spawn. This is effectively a one-off deathwarp consideration (but only if dying isn't catastrophic!)
-        TransitionFront(Regions.IslesMain, lambda l: lambda l: not l.settings.perma_death),
+        TransitionFront(Regions.IslesMain, lambda l: not l.settings.perma_death),
     ]),
 
     Regions.IslesSnideRoom: Region("Isles Snide Room", HintRegion.KremIsles, Levels.DKIsles, True, None, [
@@ -460,10 +460,18 @@ LogicRegions = {
         LocationLogic(Locations.IslesKasplatHelmLobby, lambda l: not l.settings.kasplat_rando and ((l.scope and l.coconut) or (l.twirl and l.tiny and l.advanced_platforming))),
     ], [
         Event(Events.HelmLobbyAccessed, lambda l: True),
+        Event(Events.HelmLobbyW1aTagged, lambda l: True),
         Event(Events.HelmLobbyTraversable, lambda l: ((l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone) and l.can_use_vines) or (l.CanMoonkick() and l.donkey))),
     ], [
         TransitionFront(Regions.KremIsleMouth, lambda l: True, Transitions.IslesHelmLobbyToMain),
-        TransitionFront(Regions.HideoutHelmEntry, lambda l: Events.HelmLobbyTraversable in l.Events and l.IsLevelEnterable(Levels.HideoutHelm), Transitions.IslesToHelm),
+        TransitionFront(Regions.HideoutHelmLobbyPastVines, lambda l: Events.HelmLobbyTraversable in l.Events or Events.HelmLobbyW1bTagged in l.Events),
+    ]),
+
+    Regions.HideoutHelmLobbyPastVines: Region("Hideout Helm Lobby Past Vines", HintRegion.LateLobbies, Levels.DKIsles, False, Regions.HideoutHelmLobby, [], [
+        Event(Events.HelmLobbyW1bTagged, lambda l: True),
+    ], [
+        TransitionFront(Regions.HideoutHelmLobby, lambda l: Events.HelmLobbyW1aTagged in l.Events),
+        TransitionFront(Regions.HideoutHelmEntry, lambda l: l.IsLevelEnterable(Levels.HideoutHelm), Transitions.IslesToHelm),
     ]),
 
     Regions.KRool: Region("K. Rool", HintRegion.KRool, Levels.DKIsles, True, None, [], [

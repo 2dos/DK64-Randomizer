@@ -1,6 +1,10 @@
 typedef struct varspace {
 	/* 0x000 */ char level_order_rando_on; // 0 = Level Order Rando off, 1 = On
-	/* 0x001 */ char unk_1[0x2C - 0x1];
+	/* 0x001 */ unsigned char crowns_in_file[2];
+	/* 0x003 */ unsigned char pearls_in_file;
+	/* 0x004 */ unsigned char medals_in_file[6];
+	/* 0x00A */ unsigned char fairies_in_file[3];
+	/* 0x00D */ char unk_0D[0x2C - 0xD];
 	/* 0x02C */ char unlock_kongs; // 0 = Kongs not automatically unlocked, 1 = On
 	/* 0x02D */ char required_helm_minigames; // 0 = Disable on instrument play, 1 = One minigame required, 2 = Vanilla
 	/* 0x02E */ char fast_start_beginning; // 0 = "Fast Start" setting not applied. 1 = On
@@ -42,7 +46,7 @@ typedef struct varspace {
 	/* 0x098 */ short progressive_bounds[10];
 	/* 0x0AC */ char unk_98[0xAE - 0xAC];
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
-	/* 0x0AF */ char archipelago; // DK64R is being run through Archipelago
+	/* 0x0AF */ char unkAF;
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 4
 	/* 0x0B4 */ char unk_B0[0xC0 - 0xB4];
 	/* 0x0C0 */ ItemRequirement win_condition_extra; // If requirement is "get x amount of y item"

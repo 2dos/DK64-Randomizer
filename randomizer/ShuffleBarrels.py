@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import random
 from typing import TYPE_CHECKING, List
 
 import randomizer.Lists.Exceptions as Ex
@@ -41,7 +40,7 @@ def PreplacePlandoMinigames(settings: Settings, barrelLocations: List[Locations]
 
 def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigamePool: List[Minigames]) -> None:
     """Shuffle minigames to different barrels."""
-    random.shuffle(barrelLocations)
+    settings.random.shuffle(barrelLocations)
     helm_minigame_available = False
     for minigame in minigamePool:
         # Check if any minigames can be placed in helm
@@ -54,7 +53,7 @@ def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigam
     # Apply randomized minigame placement
     while len(barrelLocations) > 0:
         location = barrelLocations.pop()
-        random.shuffle(minigamePool)
+        settings.random.shuffle(minigamePool)
         # Don't bother shuffling or validating barrel locations which are skipped
         if BarrelMetaData[location].map == Maps.HideoutHelm and settings.helm_barrels == MinigameBarrels.skip:
             continue

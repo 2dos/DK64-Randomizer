@@ -233,6 +233,8 @@
         
         // Misc Events
         "JapesAccessToCannon": 204,
-        "AirSpaceEntered": 205
+        "AirSpaceEntered": 205,
+        "HelmLobbyW1aTagged": 206,
+        "HelmLobbyW1bTagged": 207
     }
 }

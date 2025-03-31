@@ -192,3 +192,13 @@ disableFBMisc:
         lw $ra, 0x14 ($sp)
         jr $ra
         addiu $sp, $sp, 0x20
+
+fixNullLagBoost:
+    lw $t5, 0x4478 ($t5)
+    bnez $t5, fixNullLagBoost_end
+    nop
+    addiu $t5, $zero, 1 ; Set any null lag boost to 1
+
+    fixNullLagBoost_end:
+    j   0x806CCA98
+    lui $at, 0x4F80

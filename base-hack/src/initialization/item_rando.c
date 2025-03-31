@@ -285,6 +285,7 @@ static const barrel_skin_tie bonus_skins[] = {
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMLANKY, .skin=SKIN_HINT},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMTINY, .skin=SKIN_HINT},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMCHUNKY, .skin=SKIN_HINT},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ARCHIPELAGOITEM, .skin=SKIN_AP},
     {.actor = 151, .skin=SKIN_FAKE_BEAN},
     {.actor = 152, .skin=SKIN_FAKE_BEAN},
     {.actor = 153, .skin=SKIN_FAKE_BEAN},

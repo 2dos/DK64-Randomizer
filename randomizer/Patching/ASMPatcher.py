@@ -213,7 +213,8 @@ WARPS_TOTAL = [
 def fixLankyIncompatibility(ROM_COPY: ROM):
     """Ensure compatibility with .lanky files created during a specific time frame."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
-    writeValue(ROM_COPY, 0x80602AAC, Overlay.Static, 0x27A40018, offset_dict, 4)  # addiu $a0, $sp, 0x18I
+    if readValue(ROM_COPY, 0x80602AB0, Overlay.Static, offset_dict, 4) != 0x0C180917:
+        writeValue(ROM_COPY, 0x80602AAC, Overlay.Static, 0x27A40018, offset_dict, 4)  # addiu $a0, $sp, 0x18
 
 
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = True):
@@ -266,7 +267,7 @@ class MinigameImageLoader:
         """Convert associated image to bytes that can be written to ROM."""
         output_image = None
         if self.pull_from_repo:
-            output_image = Image.open(io.BytesIO(js.getFile(f"./base-hack/assets/arcade_jetpac/{sub_dir}/{self.file_name}.png")))
+            output_image = Image.open(io.BytesIO(js.getFile(f"base-hack/assets/arcade_jetpac/{sub_dir}/{self.file_name}.png")))
         else:
             new_im = getImageFile(ROM_COPY, self.table_index, self.file_index, self.table_index != 7, self.width, self.height, self.tex_format)
             if self.width != self.height:
@@ -356,6 +357,7 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
             MinigameImageLoader(None, 25, 0x1775, 64, 64, TextureFormat.IA8),
             MinigameImageLoader("hint"),
         ),
+        Minigame8BitImage([Items.ArchipelagoItem], MinigameImageLoader("ap"), MinigameImageLoader("ap")),
     ]
     arcade_image_data = None
     jetpac_image_data = None
@@ -615,6 +617,8 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8002EF02, Overlay.Boss, 2, offset_dict, 2)  # Lanky Phase Hit Count
         writeHook(ROM_COPY, 0x80030370, Overlay.Boss, "TinyPhaseShort", offset_dict)
         writeHook(ROM_COPY, 0x800314B4, Overlay.Boss, "ChunkyPhaseShort", offset_dict)
+
+    writeValue(ROM_COPY, 0x80031378, Overlay.Boss, 0x0C1837B2, offset_dict, 4)  # Call save
 
     # Beaver Bother fix
     writeHook(ROM_COPY, 0x806AD740, Overlay.Static, "unscareBeaver", offset_dict)
@@ -1536,6 +1540,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if HARDER_CRUSHERS:
         writeValue(ROM_COPY, 0x8064C520, Overlay.Static, 0xA218006E, offset_dict, 4)  # Make the crushers in Factory Crusher Room always damage you
+    writeHook(ROM_COPY, 0x806CCA90, Overlay.Static, "fixNullLagBoost", offset_dict)
 
     # Adjust Exit File
     writeFunction(ROM_COPY, 0x805FEAE4, Overlay.Static, "loadExits", offset_dict)

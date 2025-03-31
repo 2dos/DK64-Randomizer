@@ -7,7 +7,6 @@ import random
 import os
 from version import version
 from copy import deepcopy
-from random import randint
 
 from randomizer.Enums.Transitions import Transitions
 import randomizer.ItemPool as ItemPool
@@ -68,7 +67,7 @@ from version import version as randomizer_version
 class Settings:
     """Class used to store settings for seed generation."""
 
-    def __init__(self, form_data: dict):
+    def __init__(self, form_data: dict, random=random):
         """Init all the settings using the form data to set the flags.
 
         Args:
@@ -92,9 +91,13 @@ class Settings:
         self.seed_id = str(self.seed)
         if self.generate_spoilerlog is None:
             self.generate_spoilerlog = False
+        self.random = random
         self.seed = str(self.seed) + self.__hash + str(json.dumps(form_data))
-        self.set_seed()
-        self.seed_hash = [random.randint(0, 9) for i in range(5)]
+        if not self.archipelago:
+            self.set_seed()
+        else:
+            self.ice_trap_count = 0
+        self.seed_hash = [self.random.randint(0, 9) for i in range(5)]
         self.krool_keys_required = []
         self.starting_key_list = []
         # Settings which are not yet implemented on the web page
@@ -265,7 +268,7 @@ class Settings:
         if self.randomize_cb_required_amounts:
             randomlist = []
             for min_percentage in self.troff_min:
-                randomlist.append(random.randint(round(self.troff_max * min_percentage), self.troff_max))
+                randomlist.append(self.random.randint(round(self.troff_max * min_percentage), self.troff_max))
             cbs = randomlist
             self.troff_0 = round(min(cbs[0] * self.troff_weight_0, 500))
             self.troff_1 = round(min(cbs[1] * self.troff_weight_1, 500))
@@ -312,8 +315,8 @@ class Settings:
             }
             locked_blocker_items = []
             for slot in range(8):
-                item = random.choice([key for key in self.blocker_limits.keys() if key not in locked_blocker_items])
-                count = random.randint(1, math.ceil(self.blocker_limits[item] * self.chaos_ratio))
+                item = self.random.choice([key for key in self.blocker_limits.keys() if key not in locked_blocker_items])
+                count = self.random.randint(1, math.ceil(self.blocker_limits[item] * self.chaos_ratio))
                 self.BLockerEntryItems[slot] = item
                 self.BLockerEntryCount[slot] = count
                 # Some barriers can only show up once
@@ -326,11 +329,11 @@ class Settings:
                     if self.blocker_max < 7:
                         # Can't create a random list with purely the range. Too small of a list
                         choice_list = [int(x / 10) for x in range(10, (self.blocker_max * 10) + 9)]
-                    randomlist = random.choices(choice_list, k=7)
+                    randomlist = self.random.choices(choice_list, k=7)
                     b_lockers = randomlist
                     if self.shuffle_loading_zones == ShuffleLoadingZones.all or self.hard_level_progression:
-                        b_lockers.append(random.randint(1, self.blocker_max))
-                        random.shuffle(b_lockers)
+                        b_lockers.append(self.random.randint(1, self.blocker_max))
+                        self.random.shuffle(b_lockers)
                     else:
                         b_lockers.append(1)
                         b_lockers.sort()
@@ -402,7 +405,7 @@ class Settings:
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
-        random.seed(self.seed)
+        self.random.seed(self.seed)
 
     def generate_progression(self):
         """Set default items on progression page."""
@@ -850,6 +853,8 @@ class Settings:
         self.enable_progressive_hints = False  # Deprecated
         self.progressive_hint_text = 0  # Deprecated
         self.progressive_hint_count = 0
+        # Misc
+        self.archipelago = False
 
     def shuffle_prices(self, spoiler):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -921,7 +926,7 @@ class Settings:
                         continue
                 if slot == Switches.IslesMonkeyport:
                     # Monkeyport is restricted to things which can help get the kong up high enough
-                    self.switchsanity_data[slot].kong = random.choice([Kongs.donkey, Kongs.lanky, Kongs.tiny])
+                    self.switchsanity_data[slot].kong = self.random.choice([Kongs.donkey, Kongs.lanky, Kongs.tiny])
                 else:
                     bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
                     if self.enable_plandomizer:
@@ -929,12 +934,12 @@ class Settings:
                             if str(switch.value) in self.plandomizer_dict["plando_switchsanity"].keys():
                                 bad_kongs.append(self.plandomizer_dict["plando_switchsanity"][str(switch.value)]["kong"])
                     slot_choices_kong = [x for x in kongs if x not in bad_kongs]
-                    self.switchsanity_data[slot].kong = random.choice(slot_choices_kong)
+                    self.switchsanity_data[slot].kong = self.random.choice(slot_choices_kong)
                     if slot == Switches.IslesHelmLobbyGone:
                         if self.switchsanity_data[slot].kong == Kongs.chunky:
-                            self.switchsanity_data[slot].switch_type = random.choice([SwitchType.PadMove, SwitchType.InstrumentPad])  # Choose between gone and triangle
+                            self.switchsanity_data[slot].switch_type = self.random.choice([SwitchType.PadMove, SwitchType.InstrumentPad])  # Choose between gone and triangle
                         elif self.switchsanity_data[slot].kong in (Kongs.donkey, Kongs.diddy):
-                            self.switchsanity_data[slot].switch_type = random.choice([SwitchType.MiscActivator, SwitchType.InstrumentPad])  # Choose between grab and bongos
+                            self.switchsanity_data[slot].switch_type = self.random.choice([SwitchType.MiscActivator, SwitchType.InstrumentPad])  # Choose between grab and bongos
                         else:
                             self.switchsanity_data[slot].switch_type = SwitchType.InstrumentPad
 
@@ -982,7 +987,7 @@ class Settings:
         # Krusha Kong
         # if self.krusha_ui == KrushaUi.random:
         #     slots = [x for x in range(5) if x != Kongs.chunky or not self.disco_chunky]  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
-        #     self.krusha_kong = random.choice(slots)
+        #     self.krusha_kong = self.random.choice(slots)
         # else:
         #     self.krusha_kong = None
         #     krusha_conversion = {
@@ -998,19 +1003,19 @@ class Settings:
 
         # Fungi Time of Day
         if self.fungi_time == FungiTimeSetting.random:
-            self.fungi_time_internal = random.choice([FungiTimeSetting.day, FungiTimeSetting.night])
+            self.fungi_time_internal = self.random.choice([FungiTimeSetting.day, FungiTimeSetting.night])
         else:
             self.fungi_time_internal = self.fungi_time
 
         # Galleon Water Level
         if self.galleon_water == GalleonWaterSetting.random:
-            self.galleon_water_internal = random.choice([GalleonWaterSetting.lowered, GalleonWaterSetting.raised])
+            self.galleon_water_internal = self.random.choice([GalleonWaterSetting.lowered, GalleonWaterSetting.raised])
         else:
             self.galleon_water_internal = self.galleon_water
 
         # Chunky Phase Slam Requirement
         if self.chunky_phase_slam_req == SlamRequirement.random:
-            self.chunky_phase_slam_req_internal = random.choice([SlamRequirement.green, SlamRequirement.blue, SlamRequirement.red])
+            self.chunky_phase_slam_req_internal = self.random.choice([SlamRequirement.green, SlamRequirement.blue, SlamRequirement.red])
         else:
             self.chunky_phase_slam_req_internal = self.chunky_phase_slam_req
 
@@ -1083,9 +1088,9 @@ class Settings:
             crown_door_info = data.getDifficultyInfo(crown_diff)
             coin_door_info = data.getDifficultyInfo(coin_diff)
             if crown_door_info is not None:
-                crown_door_pool[item] = crown_door_info.chooseAmount()
+                crown_door_pool[item] = crown_door_info.chooseAmount(self.random)
             if coin_door_info is not None:
-                coin_door_pool[item] = coin_door_info.chooseAmount()
+                coin_door_pool[item] = coin_door_info.chooseAmount(self.random)
         if self.crown_door_random:
             potential_items = [x for x in list(crown_door_pool.keys()) if x != self.coin_door_item]
             potential_item_weights = []
@@ -1093,7 +1098,7 @@ class Settings:
                 data = helmdoor_items[x].getDifficultyInfo(crown_diff)
                 weight = 0 if data is None else data.selection_weight
                 potential_item_weights.append(weight)
-            selected_item = random.choices(potential_items, weights=potential_item_weights, k=1)[0]
+            selected_item = self.random.choices(potential_items, weights=potential_item_weights, k=1)[0]
             self.crown_door_item = selected_item
             self.crown_door_item_count = crown_door_pool[selected_item]
         if self.coin_door_random:
@@ -1103,7 +1108,7 @@ class Settings:
                 data = helmdoor_items[x].getDifficultyInfo(coin_diff)
                 weight = 0 if data is None else data.selection_weight
                 potential_item_weights.append(weight)
-            selected_item = random.choices(potential_items, weights=potential_item_weights, k=1)[0]
+            selected_item = self.random.choices(potential_items, weights=potential_item_weights, k=1)[0]
             self.coin_door_item = selected_item
             self.coin_door_item_count = coin_door_pool[selected_item]
         if self.crown_door_item in helmdoor_items.keys():
@@ -1115,8 +1120,7 @@ class Settings:
 
         if self.has_password:
             for x in range(8):
-                self.password[x] = random.randint(1, 6)
-
+                self.password[x] = self.random.randint(1, 6)
         if self.dk_portal_location_rando_v2 != DKPortalRando.off:
             level_base_maps = [Maps.JungleJapes, Maps.AngryAztec, Maps.FranticFactory, Maps.GloomyGalleon, Maps.FungiForest, Maps.CrystalCaves, Maps.CreepyCastle]
             self.level_portal_destinations = [
@@ -1230,14 +1234,14 @@ class Settings:
             )
         possible_phases = phases.copy()
         if self.krool_phase_order_rando:
-            random.shuffle(phases)
+            self.random.shuffle(phases)
         if self.krool_random:
-            self.krool_phase_count = randint(1, 5)
+            self.krool_phase_count = self.random.randint(1, 5)
         if isinstance(self.krool_phase_count, str) is True:
             self.krool_phase_count = 5
         if self.krool_phase_count < len(phases):
             if self.krool_phase_order_rando:
-                phases = random.sample(phases, self.krool_phase_count)
+                phases = self.random.sample(phases, self.krool_phase_count)
             else:
                 phases = phases[: self.krool_phase_count]
         # Plandomized K. Rool algorithm
@@ -1254,7 +1258,7 @@ class Settings:
             for i in range(len(phases)):
                 if phases[i] is None:
                     available_phases = [map_id for map_id in possible_phases if map_id not in planned_phases]
-                    phases[i] = random.choice(available_phases)
+                    phases[i] = self.random.choice(available_phases)
                     planned_phases.append(phases[i])
             for i in range(len(phases)):
                 phases[i] = int(phases[i])
@@ -1300,14 +1304,14 @@ class Settings:
 
         rooms = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
         if self.helm_phase_order_rando:
-            random.shuffle(rooms)
+            self.random.shuffle(rooms)
         if self.helm_random:
-            self.helm_phase_count = randint(1, 5)
+            self.helm_phase_count = self.random.randint(1, 5)
         if isinstance(self.helm_phase_count, str) is True:
             self.helm_phase_count = 5
         if self.helm_phase_count < 5:
             if self.helm_phase_order_rando:
-                rooms = random.sample(rooms, self.helm_phase_count)
+                rooms = self.random.sample(rooms, self.helm_phase_count)
             else:
                 rooms = rooms[: self.helm_phase_count]
         # Plandomized Helm room algorithm - only applies when we're already shuffling Helm Order!
@@ -1324,7 +1328,7 @@ class Settings:
             for i in range(len(rooms)):
                 if rooms[i] == Kongs.any:
                     available_rooms = [kong for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky] if kong not in planned_rooms]
-                    rooms[i] = random.choice(available_rooms)
+                    rooms[i] = self.random.choice(available_rooms)
                     planned_rooms.append(rooms[i])
         orderedRooms = []
         for kong in rooms:
@@ -1460,10 +1464,10 @@ class Settings:
             if self.level_randomization in (LevelRandomization.level_order, LevelRandomization.level_order_complex):
                 # Add an extra 3 into the calculation
                 allocation.append(3)
-                random.shuffle(allocation)
+                self.random.shuffle(allocation)
             else:
                 # If LZR, always make Helm SDSS
-                random.shuffle(allocation)
+                self.random.shuffle(allocation)
                 allocation.append(3)
             self.switch_allocation = allocation.copy()
 
@@ -1475,7 +1479,7 @@ class Settings:
                 allocation.extend([CrownEnemyDifficulty.hard] * 2)
                 # Start out with a default of 4 easy, 4 medium, then 2 hard crowns
                 # Randomize placement for LZR (Matching level order will come from a different calculation)
-                random.shuffle(allocation)
+                self.random.shuffle(allocation)
                 self.crown_difficulties = allocation.copy()
 
         # Mill Levers
@@ -1486,7 +1490,7 @@ class Settings:
             mill_lever_cap = 3 if mill_shortened else 5
             self.mill_levers = [0] * 5
             for slot in range(mill_lever_cap):
-                self.mill_levers[slot] = random.randint(1, 3)
+                self.mill_levers[slot] = self.random.randint(1, 3)
 
         # Jetpac Platforms
         if self.puzzle_rando_difficulty in (PuzzleRando.medium, PuzzleRando.hard, PuzzleRando.chaos):
@@ -1526,23 +1530,23 @@ class Settings:
 
         if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies, False):
             jetpac_levels = list(range(8))
-            random.shuffle(jetpac_levels)
+            self.random.shuffle(jetpac_levels)
             self.jetpac_enemy_order = jetpac_levels
 
         if self.puzzle_rando_difficulty != PuzzleRando.off:
             # Crypt Levers
-            self.crypt_levers = random.sample([x + 1 for x in range(6)], 3)
+            self.crypt_levers = self.random.sample([x + 1 for x in range(6)], 3)
             # Diddy R&D Doors
             self.diddy_rnd_doors = []
             start = list(range(4))
-            random.shuffle(start)
+            self.random.shuffle(start)
             for id in range(3):
                 code = [start[id]]
                 selected_all_zeros = start[id] == 0
                 for subindex in range(1, 4):
-                    perm = random.randint(0, 3)
+                    perm = self.random.randint(0, 3)
                     if subindex == 3 and selected_all_zeros:
-                        perm = random.randint(1, 3)
+                        perm = self.random.randint(1, 3)
                     if perm != 0:
                         selected_all_zeros = False
                     code.append(perm)
@@ -1565,7 +1569,7 @@ class Settings:
         self.krool_keys_required = KeyEvents.copy()
         # Determine how many keys we need - this can be random or selected
         if self.keys_random:
-            required_key_count = randint(0, 8)
+            required_key_count = self.random.randint(0, 8)
         else:
             required_key_count = self.krool_key_count
         key_8_required = self.krool_access or self.win_condition_item == WinConditionComplex.get_key8
@@ -1595,7 +1599,7 @@ class Settings:
                 removable_keys = [event for event in self.krool_keys_required if event != Events.HelmKeyTurnedIn or not key_8_required]
                 if len(removable_keys) == 0:  # Key 8 being required is stronger than a need for 0 Keys - this will trigger if Key 8 is your last key to require but Key 8 is always required
                     break
-                key_to_remove = random.choice(removable_keys)
+                key_to_remove = self.random.choice(removable_keys)
                 self.krool_keys_required.remove(key_to_remove)
         self.starting_key_list = []
         if Events.JapesKeyTurnedIn not in self.krool_keys_required:
@@ -1626,7 +1630,7 @@ class Settings:
         # Banana medals
         if self.random_medal_requirement:
             # Range roughly from 4 to 15, average around 10
-            self.medal_requirement = round(random.normalvariate(10, 1.5))
+            self.medal_requirement = round(self.random.normalvariate(10, 1.5))
         self.original_medal_requirement = self.medal_requirement
         self.logical_medal_requirement = min(40, max(self.medal_requirement + 1, math.floor(self.medal_requirement * 1.2)))
         self.original_fairy_requirement = self.rareware_gb_fairies
@@ -1635,9 +1639,9 @@ class Settings:
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando, self)
         self.boss_kongs = ShuffleBossKongs(self)
-        self.kutout_kongs = ShuffleKutoutKongs(self.boss_maps, self.boss_kongs, self.boss_kong_rando)
+        self.kutout_kongs = ShuffleKutoutKongs(self.random, self.boss_maps, self.boss_kongs, self.boss_kong_rando)
         self.kko_phase_order = ShuffleKKOPhaseOrder(self)
-        self.toe_order = ShuffleTinyPhaseToes()
+        self.toe_order = ShuffleTinyPhaseToes(self.random)
 
         # Bonus Barrel Rando
         if self.bonus_barrel_auto_complete:
@@ -1672,7 +1676,7 @@ class Settings:
         # Kong rando - this is generally forced on in most settings, but it can be disabled
         # Disabling this variable causes Kongs to not be placed during the fill, use with caution
         if self.starting_random:
-            self.starting_kongs_count = randint(1, 5)
+            self.starting_kongs_count = self.random.randint(1, 5)
         if Types.Kong in self.shuffled_location_types:
             self.kong_rando = True
         if self.starting_kongs_count == 5:
@@ -1684,27 +1688,27 @@ class Settings:
                 # If we chose to start with a random number of Kongs, we might have too many selected, remove any that aren't the starting Kong
                 while len(self.starting_kong_list) > self.starting_kongs_count:
                     eligible_kongs_to_be_removed = [kong for kong in self.starting_kong_list if kong != self.starting_kong]
-                    self.starting_kong_list.remove(random.choice(eligible_kongs_to_be_removed))
+                    self.starting_kong_list.remove(self.random.choice(eligible_kongs_to_be_removed))
                 # If we don't have enough Kongs selected by now, the plando validation means we'll always have "Random" as an option so we can fill with anything
                 # That said, prioritize putting the chosen starting Kong
                 if len(self.starting_kong_list) < self.starting_kongs_count and self.starting_kong != Kongs.any and self.starting_kong not in self.starting_kong_list:
                     self.starting_kong_list.append(self.starting_kong)
                 # Otherwise fill with randoms until we have enough
                 while len(self.starting_kong_list) < self.starting_kongs_count:
-                    self.starting_kong_list.append(random.choice([kong for kong in kongs.copy() if kong not in self.starting_kong_list]))
+                    self.starting_kong_list.append(self.random.choice([kong for kong in kongs.copy() if kong not in self.starting_kong_list]))
                 # If we don't care who is the starting Kong or if the starting Kong choice was invalid, pick a random starting Kong
                 if self.starting_kong == Kongs.any or self.starting_kong not in self.starting_kong_list:
-                    self.starting_kong = random.choice(self.starting_kong_list)
+                    self.starting_kong = self.random.choice(self.starting_kong_list)
             else:
                 # Randomly pick starting kong list and starting kong
                 if self.starting_kong == Kongs.any:
-                    self.starting_kong_list = random.sample(kongs, self.starting_kongs_count)
-                    self.starting_kong = random.choice(self.starting_kong_list)
+                    self.starting_kong_list = self.random.sample(kongs, self.starting_kongs_count)
+                    self.starting_kong = self.random.choice(self.starting_kong_list)
                 # Randomly pick starting kongs but include chosen starting kong
                 else:
                     possible_kong_list = kongs.copy()
                     possible_kong_list.remove(self.starting_kong)
-                    self.starting_kong_list = random.sample(possible_kong_list, self.starting_kongs_count - 1)
+                    self.starting_kong_list = self.random.sample(possible_kong_list, self.starting_kongs_count - 1)
                     self.starting_kong_list.append(self.starting_kong)
             # Kong freers are decided in the fill, set as any kong for now
             self.diddy_freeing_kong = Kongs.any
@@ -1723,7 +1727,7 @@ class Settings:
         else:
             possible_kong_list = kongs.copy()
             possible_kong_list.remove(0)
-            self.starting_kong_list = random.sample(possible_kong_list, self.starting_kongs_count - 1)
+            self.starting_kong_list = self.random.sample(possible_kong_list, self.starting_kongs_count - 1)
             self.starting_kong_list.append(Kongs.donkey)
             self.starting_kong = Kongs.donkey
             self.diddy_freeing_kong = Kongs.donkey
@@ -1907,7 +1911,7 @@ class Settings:
                 (Kongs.tiny, Kongs.chunky),
                 (Kongs.tiny, Kongs.chunky),
             ]
-            random.shuffle(kongPairs)  # Shuffle this list so we don't block the same locations every time
+            self.random.shuffle(kongPairs)  # Shuffle this list so we don't block the same locations every time
 
             # First we identify the locations we need to remove and make them inaccessible
             for level in ShopLocationReference:
@@ -2172,7 +2176,7 @@ class Settings:
         kongCageLocations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
         # Randomly decide which kong cages will not have kongs in them
         for i in range(0, self.starting_kongs_count - 1):
-            kongLocation = random.choice(kongCageLocations)
+            kongLocation = self.random.choice(kongCageLocations)
             kongCageLocations.remove(kongLocation)
 
         # The following cases do not apply if you could bypass the Guitar door without Diddy
@@ -2191,12 +2195,12 @@ class Settings:
         ):
             # Move a random location to a non-Aztec location
             kongCageLocations.pop()
-            kongCageLocations.append(random.choice([Locations.DiddyKong, Locations.ChunkyKong]))
+            kongCageLocations.append(self.random.choice([Locations.DiddyKong, Locations.ChunkyKong]))
         # In case Diddy is the only kong to free, he can't be in the Llama Temple since it's behind the Guitar door
         if not bypass_guitar_door and self.starting_kongs_count == 4 and Kongs.diddy not in self.starting_kong_list and Locations.LankyKong in kongCageLocations:
             # Move diddy kong from llama temple to another cage randomly chosen
             kongCageLocations.remove(Locations.LankyKong)
-            kongCageLocations.append(random.choice([Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong]))
+            kongCageLocations.append(self.random.choice([Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong]))
         return kongCageLocations
 
     def RandomizeStartingLocation(self, spoiler):
@@ -2211,7 +2215,7 @@ class Settings:
             randomizer.LogicFiles.CrystalCaves.LogicRegions,
             randomizer.LogicFiles.CreepyCastle.LogicRegions,
         ]
-        selected_region_world = random.choice(region_data)
+        selected_region_world = self.random.choice(region_data)
         valid_starting_regions = []
         banned_starting_regions = []
         if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko):
@@ -2269,7 +2273,7 @@ class Settings:
             # The only way for this to happen is if someone plandos a settings-banned region as their starting region
             if len(valid_starting_regions) == 0:
                 raise Ex.PlandoIncompatibleException("Planned starting region is invalid.")
-        self.starting_region = random.choice(valid_starting_regions)
+        self.starting_region = self.random.choice(valid_starting_regions)
         for x in range(2):
             spoiler.RegionList[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
 

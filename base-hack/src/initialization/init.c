@@ -317,6 +317,7 @@ void initHack(int source) {
 			KrushaSlot = Rando.krusha_slot;
 			RandomSwitches = Rando.random_switches;
 			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
+			initAP();
 			// HUD Re-allocation fixes
 			*(short*)(0x806FB246) = ITEMID_TERMINATOR;
 			*(short*)(0x806FABAA) = ITEMID_TERMINATOR;

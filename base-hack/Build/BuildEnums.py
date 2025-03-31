@@ -879,6 +879,12 @@ class ExtraTextures(IntEnum):
     FakeKey = auto()
     FakeKeyPalette = auto()
     FakeBean = auto()
+    APPearl0 = auto()
+    APPearl1 = auto()
+    APPearl2 = auto()
+    APPearl3 = auto()
+    APPearl4 = auto()
+    APPearl5 = auto()
 
 
 class MoveTypes(IntEnum):

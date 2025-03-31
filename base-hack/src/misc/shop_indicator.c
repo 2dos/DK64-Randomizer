@@ -55,23 +55,10 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 			} else if (inShortList(purchase_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
 				if (purchase_value == -2) { // Shockwave & Camera Combo
 					if ((!checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT)) || (!checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT))) {
-						return 6;
+						return 1;
 					}
 				} else {
 					if (!checkFlagDuplicate(purchase_value, FLAGTYPE_PERMANENT)) {
-						int is_shared = 0;
-						int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CLIMBING, FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
-						for (int i = 0; i < (sizeof(tied_flags) / 4); i++) {
-							if (purchase_value == tied_flags[i]) {
-								is_shared = 1;
-							}
-						}
-						if (getMoveProgressiveFlagType(purchase_value) > -1) {
-							is_shared = 1;
-						}
-						if (is_shared) {
-							return 6;
-						}
 						return 1;
 					}
 				}
@@ -100,14 +87,16 @@ int isSharedMove(vendors shop_index, int level) {
 	for (int i = 1; i < 5; i++) {
 		purchase_struct* src = getShopData(shop_index, i, level);
 		if (src) {
-			if (targ->move_kong != src->move_kong) {
-				return 0;
-			}
 			if (targ->purchase_type != src->purchase_type) {
 				return 0;
 			}
 			if (targ->purchase_value != src->purchase_value) {
 				return 0;
+			}
+			if (!inShortList(targ->purchase_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
+				if (targ->move_kong != src->move_kong) {
+					return 0;
+				}
 			}
 		}
 	}
@@ -148,13 +137,14 @@ typedef enum counter_items {
 	/* 0x013 */ COUNTER_RAINBOWCOIN,
 	/* 0x014 */ COUNTER_FAKEITEM,
 	/* 0x015 */ COUNTER_HINT,
-	/* 0x016 */ COUNTER_DILLO1,
-	/* 0x017 */ COUNTER_DOG1,
-	/* 0x018 */ COUNTER_MJ,
-	/* 0x019 */ COUNTER_PUFFTOSS,
-	/* 0x01A */ COUNTER_DOG2,
-	/* 0x01B */ COUNTER_DILLO2,
-	/* 0x01C */ COUNTER_KKO,
+	/* 0x016 */ COUNTER_AP,
+	/* 0x017 */ COUNTER_DILLO1,
+	/* 0x018 */ COUNTER_DOG1,
+	/* 0x019 */ COUNTER_MJ,
+	/* 0x01A */ COUNTER_PUFFTOSS,
+	/* 0x01B */ COUNTER_DOG2,
+	/* 0x01C */ COUNTER_DILLO2,
+	/* 0x01D */ COUNTER_KKO,
 } counter_items;
 
 int getCounterItem(vendors shop_index, int kong, int level) {
@@ -189,6 +179,8 @@ int getCounterItem(vendors shop_index, int kong, int level) {
 						return COUNTER_FAIRY;
 					} else if (isFlagInRange(flag, FLAG_WRINKLYVIEWED, 35)) {
 						return COUNTER_HINT;
+					} else if (isFlagAPItem(flag)) {
+						return COUNTER_AP;
 					} else if (isFlagInRange(flag, FLAG_RAINBOWCOIN_0, 16)) {
 						return COUNTER_RAINBOWCOIN;
 					} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
@@ -302,10 +294,10 @@ void updateCounterDisplay(void) {
 	if (paad->cap > 0) {
 		int kong_image = paad->kong_images[index];
 		int item_image = paad->item_images[index];
-		if ((kong_image < 0) || (kong_image > 0x15)) {
+		if ((kong_image < 0) || (kong_image >= COUNTER_DILLO1)) {
 			kong_image = 0;
 		}
-		if ((item_image < 0) || (item_image > 0x15)) {
+		if ((item_image < 0) || (item_image >= COUNTER_DILLO1)) {
 			item_image = 0;
 		}
 		if (paad->use_item_display) {

@@ -115,7 +115,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomMiddle, lambda l: True, Transitions.ForestLowerExteriorToUpperMushroom),
     ]),
 
-    Regions.MushroomBlastLevelExterior: Region("Mushroom Blast Level Exterior", HintRegion.MushroomExterior, Levels.FungiForest, False, None, [
+    Regions.MushroomBlastLevelExterior: Region("Mushroom Blast Level Exterior", HintRegion.MushroomExterior, Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestMainEnemy_NearBBlast, lambda l: True),
     ], [], [
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True),
@@ -123,12 +123,12 @@ LogicRegions = {
         TransitionFront(Regions.ForestBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.ForestMainToBBlast)
     ]),
 
-    Regions.MushroomLowerExterior: Region("Mushroom Lower Exterior", HintRegion.MushroomExterior, Levels.FungiForest, True, None, [
+    Regions.MushroomLowerExterior: Region("Mushroom Lower Exterior", HintRegion.MushroomExterior, Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestKasplatLowerMushroomExterior, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MushroomBlastLevelExterior, lambda l: l.climbing),
-        TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestLowerExteriorToLowerMushroom),
+        TransitionFront(Regions.MushroomLowerMid, lambda l: True, Transitions.ForestLowerExteriorToLowerMushroom),
     ]),
 
     Regions.ForestBaboonBlast: Region("Forest Baboon Blast", HintRegion.MushroomExterior, Levels.FungiForest, False, None, [

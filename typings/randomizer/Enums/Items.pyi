@@ -173,9 +173,10 @@ class Items(IntEnum):
     DKIslesTinyBlueprint = 170
     DKIslesChunkyBlueprint = 171
     ProgressiveSlam3 = 172
-    IceTrapBubbleBean = 173
-    IceTrapReverseBean = 174
-    IceTrapSlowBean = 175
-    IceTrapBubbleKey = 176
-    IceTrapReverseKey = 177
-    IceTrapSlowKey = 178
+    ArchipelagoItem = 173
+    IceTrapBubbleBean = 174
+    IceTrapReverseBean = 175
+    IceTrapSlowBean = 176
+    IceTrapBubbleKey = 177
+    IceTrapReverseKey = 178
+    IceTrapSlowKey = 179

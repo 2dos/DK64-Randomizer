@@ -108,6 +108,7 @@ void completeBoss(void) {
 					render->scale_y = 0.0f;
 					render->scale_z = 0.0f;
 				} else {
+					setPermFlag(FLAG_GAME_BEATEN);
 					initiateTransitionFade(MAP_ISLES, 29, GAMEMODE_ADVENTURE);
 				}
 			} else {

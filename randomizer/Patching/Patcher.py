@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import os
 from io import BytesIO
+import pkgutil
 from typing import TYPE_CHECKING, Union
 
 import js
@@ -134,9 +135,16 @@ def load_base_rom(default_file: None = None) -> None:
         global og_patched_rom
         if patchedRom is None and default_file is None:
             print("Loading base rom")
-            from vidua import bps
+            from randomizer.Patching import BPS as bps
 
-            patch = open("./static/patches/shrink-dk64.bps", "rb")
+            try:
+                patch = open("./static/patches/shrink-dk64.bps", "rb")
+            except Exception:
+                try:
+                    patch = BytesIO(js.getFile("static/patches/shrink-dk64.bps"))
+                except Exception:
+                    patch = open("./worlds/dk64/static/patches/shrink-dk64.bps", "rb")
+
             original = open("dk64.z64", "rb")
             og_patched_rom = BytesIO(bps.patch(original, patch).read())
             patchedRom = copy.deepcopy(og_patched_rom)
@@ -147,6 +155,7 @@ def load_base_rom(default_file: None = None) -> None:
         else:
             patchedRom = copy.deepcopy(og_patched_rom)
     except Exception as e:
+        print(e)
         pass
 
 

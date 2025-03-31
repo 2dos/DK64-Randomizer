@@ -43,6 +43,7 @@ const TIED_POOL_ITEMS = {
     "Enemy Drops": ["Enemies"],
     "Shop Owners": ["Cranky", "Funky", "Candy", "Snide"],
     "Ice Traps": ["FakeItem"],
+    "Archipelago Items": ["ArchipelagoItem"]
 };
 
 async function generateSpoiler(spoiler) {
