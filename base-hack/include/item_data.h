@@ -5,11 +5,11 @@
 Thanks,
 		Ballaam
 */
-extern const short acceptable_items[44];
-extern const item_conversion_info item_conversions[48];
-extern const unsigned short bounce_objects[38];
-extern const unsigned short actor_drops[49];
-extern const item_scale_info item_scales[49];
+extern const short acceptable_items[45];
+extern const item_conversion_info item_conversions[49];
+extern const unsigned short bounce_objects[39];
+extern const unsigned short actor_drops[50];
+extern const item_scale_info item_scales[50];
 typedef enum new_custom_actors {
 	/* 0x000 */ NEWACTOR_NINTENDOCOIN, 
 	/* 0x001 */ NEWACTOR_RAREWARECOIN, 
