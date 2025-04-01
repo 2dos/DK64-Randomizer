@@ -41,6 +41,7 @@ class DK64Client:
     _purchase_cache = {}
     deathlink_debounce = True
     pending_deathlink = False
+    send_mode = 1
 
     async def wait_for_pj64(self):
         """Wait for PJ64 to connect to the game."""
@@ -102,8 +103,6 @@ class DK64Client:
         self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_string, f"{stripped_item_name}")
         self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_subtitle, f"{event_type} {stripped_player_name}")
 
-    send_mode = 1
-
     def set_speed(self, speed: int):
         """Set the speed of the display text in game."""
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.text_timer, speed)
@@ -156,21 +155,6 @@ class DK64Client:
                     self.send_message(item_name, from_player, "from")
             elif self.send_mode == 2:
                 # If we have more than 5 items queued, from 130 to 50, do a percentage of the total items
-                # If we have 5 or less, do 130
-                length = len(self.recvd_checks) - index
-                if length <= 5:
-                    self.set_speed(130)
-                else:
-                    speed = round(130 - (80 / length))
-                    if speed < 50:
-                        speed = 50
-                    self.set_speed(speed)
-                if item_data.get("progression", False):
-                    self.send_message(item_name, from_player, "from")
-                elif item_data.get("extended_whitelist", False):
-                    self.send_message(item_name, from_player, "from")
-            elif self.send_mode == 1:
-                # If we have more than 5 items queued, from 130 to 50, do a percentage of the total items
                 # But only display progression items, discard the rest
                 length = len(self.recvd_checks) - index
                 if length <= 5:
@@ -186,6 +170,21 @@ class DK64Client:
                     self.set_speed(speed)
                     if item_data.get("progression", False):
                         self.send_message(item_name, from_player, "from")
+            elif self.send_mode == 1:
+                # If we have more than 5 items queued, from 130 to 50, do a percentage of the total items
+                # If we have 5 or less, do 130
+                length = len(self.recvd_checks) - index
+                if length <= 5:
+                    self.set_speed(130)
+                else:
+                    speed = round(130 - (80 / length))
+                    if speed < 50:
+                        speed = 50
+                    self.set_speed(speed)
+                if item_data.get("progression", False):
+                    self.send_message(item_name, from_player, "from")
+                elif item_data.get("extended_whitelist", False):
+                    self.send_message(item_name, from_player, "from")
             else:
                 raise Exception("Invalid message mode")
 
@@ -719,6 +718,8 @@ def launch():
             if "DeathLink" not in ctx.tags:
                 await ctx.update_death_link(True)
                 ctx.ENABLE_DEATHLINK = True
+        if ctx.slot_data.get("receive_notifications"):
+            ctx.client.send_mode = ctx.slot_data.get("receive_notifications")
         ctx.la_task = create_task_log_exception(ctx.run_game_loop())
         if gui_enabled:
             ctx.run_gui()
