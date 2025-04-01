@@ -467,13 +467,13 @@ if baseclasses_loaded:
                 "ClimbingShuffle": self.options.climbing_shuffle.value,
                 "PlayerNum": self.player,
                 "death_link": self.options.death_link.value,
-                "LevelOrder": self.logic_holder.settings.level_order,
-                "StartingKongs": self.logic_holder.settings.starting_kong_list,
-                "ForestTime": self.logic_holder.settings.fungi_time_internal,
-                "GalleonWater": self.logic_holder.settings.galleon_water_internal,
+                "LevelOrder": ", ".join([level.name for order, level in self.logic_holder.settings.level_order.items()]),
+                "StartingKongs": ", ".join([kong.name for kong in self.logic_holder.settings.starting_kong_list]),
+                "ForestTime": self.logic_holder.settings.fungi_time_internal.name,
+                "GalleonWater": self.logic_holder.settings.galleon_water_internal.name,
                 "MedalCBRequirement": self.logic_holder.settings.medal_cb_req,
                 "BLockerValues": self.logic_holder.settings.BLockerEntryCount,
-                "RemovedBarriers": self.logic_holder.settings.remove_barriers_selected,
+                "RemovedBarriers": ", ".join([barrier.name for barrier in self.logic_holder.settings.remove_barriers_selected]),
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
