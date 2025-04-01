@@ -12,7 +12,7 @@ vendor_folder = "dk64/vendor"
 requirements_file = "requirements.txt"
 
 # Files and folders to copy into dk64
-files_to_copy = ["__init__.py", "js.py", "version.py", "static/img/dk.png", "static/compiled.jsonc"]
+files_to_copy = ["__init__.py", "js.py", "version.py", "static/img/dk.png", "static/compiled.jsonc", "ap_version.py"]
 folders_to_copy = ["archipelago", "base-hack/assets", "randomizer", "static/patches"]
 
 # Ensure dk64 directory exists

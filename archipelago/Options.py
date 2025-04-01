@@ -64,6 +64,7 @@ class BaseTrapWeight(Choice):
     option_high = 4
     default = 2
 
+
 class ReceiveNotifications(Choice):
     """Determines if the player will receive notifications about item sends.
 
@@ -85,6 +86,7 @@ class ReceiveNotifications(Choice):
     option_display_extra_items = 5
     option_display_only_progression = 6
     default = 1
+
 
 class BubbleTrapWeight(BaseTrapWeight):
     """Likelihood of receiving a trap which freezes the player."""

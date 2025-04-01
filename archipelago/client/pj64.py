@@ -4,6 +4,7 @@ import socket
 import json
 import sys
 import os
+import time
 import subprocess
 import pkgutil
 from configparser import ConfigParser
@@ -85,13 +86,14 @@ class PJ64Client:
         if not self._is_exe_running(os.path.basename(executable)):
             # Request the user to provide their ROM
             rom = open_filename("Select ROM", (("N64 ROM", (".n64", ".z64", ".v64")),))
-            # Run project 64
-            os.popen(f'"{executable}"')
-            # Kill project 64
-            if sys.platform == "win32":
-                os.system(f'taskkill /f /im "{os.path.basename(executable)}"')
-            else:
-                os.system(f'pkill -f "{os.path.basename(executable)}"')
+            # # Run project 64
+            # os.popen(f'"{executable}"')
+            # time.sleep(1)
+            # # Kill project 64
+            # if sys.platform == "win32":
+            #     os.system(f'taskkill /f /im "{os.path.basename(executable)}"')
+            # else:
+            #     os.system(f'pkill -f "{os.path.basename(executable)}"')
             os.popen(f'"{executable}" "{rom}"')
 
     def _is_exe_running(self, exe_name):
