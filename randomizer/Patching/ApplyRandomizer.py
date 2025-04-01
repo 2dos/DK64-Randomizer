@@ -803,6 +803,7 @@ def patching_response(spoiler):
         os.remove(delta_tempfile)
     else:
         patch = None
+    del ROM_COPY
     return patch, password
 
 

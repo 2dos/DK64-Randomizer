@@ -411,6 +411,8 @@ if baseclasses_loaded:
                 print(out_path)
                 with open(out_path, "w") as f:
                     f.write(patch_file)
+                # Clear the path_data out of memory to flush memory usage
+                del patch_data
             except:
                 raise
             finally:
