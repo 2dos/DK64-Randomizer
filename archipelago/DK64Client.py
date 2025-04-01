@@ -11,15 +11,13 @@ if __name__ == "__main__":
 import json
 import asyncio
 import colorama
-import urllib.request
 import time
 import typing
-from client.common import DK64MemoryMap, create_task_log_exception
+from client.common import DK64MemoryMap, create_task_log_exception, check_version
 from client.pj64 import PJ64Client
 from client.items import item_ids, item_names_to_id
 from client.check_flag_locations import location_flag_to_name, location_name_to_flag
 from client.ap_check_ids import check_id_to_name, check_names_to_id
-from ap_version import version as ap_version
 from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop
 from NetUtils import ClientStatus
 
@@ -46,7 +44,7 @@ class DK64Client:
 
     async def wait_for_pj64(self):
         """Wait for PJ64 to connect to the game."""
-        self.check_version()
+        check_version()
         clear_waiting_message = True
         if not self.stop_bizhawk_spam:
             logger.info("Waiting on connection to PJ64...")
@@ -74,19 +72,6 @@ class DK64Client:
             except (BlockingIOError, TimeoutError, ConnectionResetError):
                 await asyncio.sleep(1.0)
                 pass
-
-    def check_version(self):
-        """Check for a new version of the DK64 Rando API."""
-        try:
-            request = urllib.request.Request("https://api.dk64rando.com/api/ap_version", headers={"User-Agent": "DK64Client/1.0"})
-            with urllib.request.urlopen(request) as response:
-                data = json.load(response)
-                api_version = data.get("version")
-
-                if api_version and api_version > ap_version:
-                    logger.warning(f"Warning: New version of DK64 Rando available: {api_version} (current: {ap_version})")
-        except Exception:
-            print("Failed to check for new version of DK64")
 
     def check_safe_gameplay(self):
         """Check if the game is in a valid state for sending items."""
@@ -117,7 +102,13 @@ class DK64Client:
         self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_string, f"{stripped_item_name}")
         self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_subtitle, f"{event_type} {stripped_player_name}")
 
-    async def recved_item_from_ap(self, item_id, item_name, from_player, next_index):
+    send_mode = 1
+
+    def set_speed(self, speed: int):
+        """Set the speed of the display text in game."""
+        self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.text_timer, speed)
+
+    async def recved_item_from_ap(self, item_id, item_name, from_player, index):
         """Handle an item received from Archipelago."""
         # Don't allow getting an item until you've got your first check
         if not self.started_file():
@@ -131,12 +122,73 @@ class DK64Client:
         while not status:
             await asyncio.sleep(0.1)
             status = self.safe_to_send()
-        next_index += 1
+        next_index = index + 1
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.counter_offset, next_index)
         item_data = item_ids.get(item_id)
         if item_data:
-            if item_data.get("progressive", False):
-                self.send_message(item_name, from_player, "from")
+            if self.send_mode == 6:
+                self.set_speed(130)
+                # Progression only, no speed changes
+                if item_data.get("progression", False):
+                    self.send_message(item_name, from_player, "from")
+            elif self.send_mode == 5:
+                self.set_speed(130)
+                # Extended whitelist, no speed changes
+                if item_data.get("progression", False):
+                    self.send_message(item_name, from_player, "from")
+                elif item_data.get("extended_whitelist", False):
+                    self.send_message(item_name, from_player, "from")
+            elif self.send_mode == 4:
+                # Display both default and extended whitelist items
+                # But display just the extended whitelist items at a faster speed
+                if item_data.get("progression", False):
+                    self.set_speed(130)
+                    self.send_message(item_name, from_player, "from")
+                elif item_data.get("extended_whitelist", False):
+                    self.set_speed(50)
+                    self.send_message(item_name, from_player, "from")
+            elif self.send_mode == 3:
+                # Send everything super fast on both whitelist and extended whitelist
+                self.set_speed(50)
+                if item_data.get("progression", False):
+                    self.send_message(item_name, from_player, "from")
+                elif item_data.get("extended_whitelist", False):
+                    self.send_message(item_name, from_player, "from")
+            elif self.send_mode == 2:
+                # If we have more than 5 items queued, from 130 to 50, do a percentage of the total items
+                # If we have 5 or less, do 130
+                length = len(self.recvd_checks) - index
+                if length <= 5:
+                    self.set_speed(130)
+                else:
+                    speed = round(130 - (80 / length))
+                    if speed < 50:
+                        speed = 50
+                    self.set_speed(speed)
+                if item_data.get("progression", False):
+                    self.send_message(item_name, from_player, "from")
+                elif item_data.get("extended_whitelist", False):
+                    self.send_message(item_name, from_player, "from")
+            elif self.send_mode == 1:
+                # If we have more than 5 items queued, from 130 to 50, do a percentage of the total items
+                # But only display progression items, discard the rest
+                length = len(self.recvd_checks) - index
+                if length <= 5:
+                    self.set_speed(130)
+                    if item_data.get("progression", False):
+                        self.send_message(item_name, from_player, "from")
+                    elif item_data.get("extended_whitelist", False):
+                        self.send_message(item_name, from_player, "from")
+                else:
+                    speed = round(130 - (80 / length))
+                    if speed < 50:
+                        speed = 50
+                    self.set_speed(speed)
+                    if item_data.get("progression", False):
+                        self.send_message(item_name, from_player, "from")
+            else:
+                raise Exception("Invalid message mode")
+
             if item_data.get("flag_id", None) != None:
                 self.setFlag(item_data.get("flag_id"))
             elif item_data.get("fed_id", None) != None:

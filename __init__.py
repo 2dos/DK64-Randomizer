@@ -22,7 +22,7 @@ except ImportError:
     pass
 if baseclasses_loaded:
 
-    def copy_dependencies(zip_path):
+    def copy_dependencies(zip_path, file):
         """Copy a ZIP file from the package to a local directory, extracts its contents.
 
         Ensures the destination directory exists.
@@ -39,7 +39,7 @@ if baseclasses_loaded:
             - A message when the ZIP file is successfully extracted.
         """
         dest_dir = "./lib"
-        zip_dest = os.path.join(dest_dir, "windows.zip")
+        zip_dest = os.path.join(dest_dir, file)
 
         # Ensure the destination directory exists
         os.makedirs(dest_dir, exist_ok=True)
@@ -67,7 +67,10 @@ if baseclasses_loaded:
     except ImportError:
         if platform_type == "win32":
             zip_path = "vendor/windows.zip"  # Path inside the package
-            copy_dependencies(zip_path)
+            copy_dependencies(zip_path, "windows.zip")
+        elif platform_type == "linux":
+            zip_path = "vendor/linux.zip"
+            copy_dependencies(zip_path, "linux.zip")
 
     sys.path.append("worlds/dk64/")
     sys.path.append("worlds/dk64/archipelago/")
@@ -81,6 +84,7 @@ if baseclasses_loaded:
     from archipelago.Options import DK64Options
     from archipelago.Regions import all_locations, create_regions, connect_regions
     from archipelago.Rules import set_rules
+    from archipelago.client.common import check_version
     from worlds.AutoWorld import WebWorld, World
     from archipelago.Logic import LogicVarHolder
     from randomizer.Spoiler import Spoiler
@@ -99,8 +103,6 @@ if baseclasses_loaded:
     import randomizer.ShuffleExits as ShuffleExits
     from Utils import open_filename
     import shutil
-    from ap_version import version as ap_version
-    import urllib.request
     import zlib
 
     def crc32_of_file(file_path):
@@ -148,6 +150,12 @@ if baseclasses_loaded:
 
         def __init__(self, multiworld: MultiWorld, player: int):
             """Initialize the DK64 world."""
+            self.rom_name_available_event = threading.Event()
+            super().__init__(multiworld, player)
+
+        @classmethod
+        def stage_assert_generate(cls, multiworld: MultiWorld):
+            """Assert the stage and generate the world."""
             # Check if dk64.z64 exists, if it doesn't prompt the user to provide it
             # ANd then we will copy it to the root directory
             crc_values = ["D44B4FC6", "AA0A5979", "96972D67"]
@@ -173,30 +181,7 @@ if baseclasses_loaded:
                 if crc not in crc_values:
                     print("Invalid DK64 ROM file, please make sure your ROM is big endian.")
                     raise FileNotFoundError("Invalid DK64 ROM file, please make sure your ROM is a vanilla DK64 file in big endian.")
-            self.check_version()
-            self.rom_name_available_event = threading.Event()
-            super().__init__(multiworld, player)
-
-        def check_version(self):
-            """Check for a new version of the DK64 Rando API."""
-            try:
-                request = urllib.request.Request("https://api.dk64rando.com/api/ap_version", headers={"User-Agent": "DK64Client/1.0"})
-                with urllib.request.urlopen(request) as response:
-                    data = json.load(response)
-                    api_version = data.get("version")
-
-                    if api_version and api_version > ap_version:
-                        print(f"Warning: New version of DK64 Rando available: {api_version} (current: {ap_version})")
-            except Exception:
-                print("Failed to check for new version of DK64")
-
-        @classmethod
-        def stage_assert_generate(cls, multiworld: MultiWorld):
-            """Assert the stage and generate the world."""
-            # rom_file = get_base_rom_path()
-            # if not os.path.exists(rom_file):
-            #    raise FileNotFoundError(rom_file)
-            pass
+            check_version()
 
         def _get_slot_data(self):
             """Get the slot data."""
