@@ -339,7 +339,7 @@ class DK64Client:
                 # Assuming we did find it in location_name_to_flag
                 check_status = self.getCheckStatus("location", check, _bulk_read_dict=_bulk_read_dict)
                 if check_status:
-                    logger.info(f"Found {name} via location_name_to_flag")
+                    # logger.info(f"Found {name} via location_name_to_flag")
                     self.remaining_checks.remove(id)
                     new_checks.append(id)
             # If its not there using the id lets try to get it via item_ids
@@ -353,7 +353,7 @@ class DK64Client:
                     else:
                         check_status = self.getCheckStatus("location", flag_id, _bulk_read_dict=_bulk_read_dict)
                         if check_status:
-                            logger.info(f"Found {name} via item_ids")
+                            # logger.info(f"Found {name} via item_ids")
                             self.remaining_checks.remove(id)
                             new_checks.append(id)
                 else:
@@ -381,7 +381,7 @@ class DK64Client:
 
                         check_status = self.getCheckStatus("shop", None, shop_index, level_index, kong_index)
                         if check_status:
-                            print(f"Found {name} via shop check")
+                            # print(f"Found {name} via shop check")
                             self.remaining_checks.remove(id)
                             new_checks.append(id)
                         continue
