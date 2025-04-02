@@ -476,6 +476,7 @@ class DK64Client:
         def check_safe_death():
             """Check if it's safe to send a death."""
             return self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.can_die) != 1
+
         if self.ENABLE_DEATHLINK:
             death_state = self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.send_death)
             if self.deathlink_debounce and death_state == 0:
@@ -634,7 +635,6 @@ class DK64Context(CommonContext):
         """Sync the game."""
         sync_msg = [{"cmd": "Sync"}]
         await self.send_msgs(sync_msg)
-
 
     async def send_deathlink(self):
         """Send a deathlink."""
