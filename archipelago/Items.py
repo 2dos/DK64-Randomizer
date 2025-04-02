@@ -93,7 +93,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         elif item.type in [DK64RItems.IceTrapBubble, DK64RItems.IceTrapReverse, DK64RItems.IceTrapSlow]:
             classification = ItemClassification.trap
         # The playthrough tag doesn't quite 1-to-1 map to Archipelago's "progression" type - some items we don't consider "playthrough" can affect logic
-        elif item.playthrough == True or item.type in (DK64RTypes.Blueprint, DK64RTypes.Pearl, DK64RTypes.Bean):
+        elif item.playthrough is True or item.type in (DK64RTypes.Blueprint, DK64RTypes.Pearl, DK64RTypes.Bean):
             classification = ItemClassification.progression_skip_balancing
         else:  # double check jetpac, eh?
             classification = ItemClassification.useful

@@ -415,7 +415,7 @@ if baseclasses_loaded:
                 # shutil.copy("output/" + f"{self.multiworld.get_out_file_name_base(self.player)}.lanky", out_path)
                 # Clear the path_data out of memory to flush memory usage
                 del patch_data
-            except:
+            except Exception:
                 raise
             finally:
                 self.rom_name_available_event.set()  # make sure threading continues and errors are collected

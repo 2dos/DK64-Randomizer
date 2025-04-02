@@ -180,7 +180,7 @@ def create_region(
             quick_success = False
             try:
                 quick_success = location.logic(None)
-            except:
+            except Exception:
                 pass
             # If we can, we can greatly simplify the logic at this location
             if quick_success:
@@ -211,7 +211,7 @@ def create_region(
         quick_success = False
         try:
             quick_success = collectible.logic(None)
-        except:
+        except Exception:
             pass
         # If we can, we can greatly simplify the logic at this location
         if quick_success:
@@ -264,7 +264,7 @@ def create_region(
         quick_success = False
         try:
             quick_success = event.logic(None)
-        except:
+        except Exception:
             pass
         # If we can, we can greatly simplify the logic at this location
         if quick_success:
@@ -378,7 +378,7 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
                 quick_success = False
                 try:
                     quick_success = exit.logic(None)
-                except:
+                except Exception:
                     pass
                 # If we can, we can greatly simplify the logic for this exit
                 if quick_success:

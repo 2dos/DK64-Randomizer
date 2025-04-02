@@ -208,9 +208,9 @@ class DK64Client:
             else:
                 raise Exception("Invalid message mode")
 
-            if item_data.get("flag_id", None) != None:
+            if item_data.get("flag_id", None) is not None:
                 self.setFlag(item_data.get("flag_id"))
-            elif item_data.get("fed_id", None) != None:
+            elif item_data.get("fed_id", None) is not None:
                 await self.writeFedData(item_data.get("fed_id"))
             else:
                 logger.warning(f"Item {item_name} has no flag or fed id")
@@ -600,7 +600,7 @@ class DK64Context(CommonContext):
             self.client.should_reset_auth = True
             self.had_invalid_slot_data = False
 
-        while self.client.auth == None:
+        while self.client.auth is None:
             await asyncio.sleep(0.1)
 
             # Just return if we're closing
@@ -703,7 +703,7 @@ class DK64Context(CommonContext):
                 while True:
                     await self.client.validate_client_connection()
                     status = self.client.check_safe_gameplay()
-                    if status == False:
+                    if status is False:
                         await asyncio.sleep(0.5)
                         continue
                     await self.client.main_tick(on_item_get, victory, deathlink)

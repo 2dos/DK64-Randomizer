@@ -63,7 +63,7 @@ def check_version():
     """Check for a new version of the DK64 Rando API."""
     try:
         from CommonClient import logger
-    except:
+    except Exception:
         # Create a logger if it doesn't exist
         import logging
 
