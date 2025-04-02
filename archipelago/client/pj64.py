@@ -25,6 +25,17 @@ class PJ64Exception(Exception):
     pass
 
 
+def display_error_box(title: str, text: str) -> bool | None:
+    """Display an error message box."""
+    from tkinter import Tk, messagebox
+
+    root = Tk()
+    root.withdraw()
+    ret = messagebox.showerror(title, text)
+    root.update()
+    return ret
+
+
 class PJ64Client:
     """PJ64Client is a class that provides an interface to connect to and interact with an N64 emulator."""
 
@@ -80,6 +91,7 @@ class PJ64Client:
                 with open(adapter_path, "w") as f:
                     f.write(adapter_content)
             except PermissionError:
+                display_error_box("Permission Error", "Unable to add adapter file to Project64, you may need to run AP as an administrator or close Project64.")
                 raise PJ64Exception("Unable to add adapter file to Project64, you may need to run this script as an administrator or close Project64.")
         self._verify_pj64_config(os.path.join(os.path.dirname(executable), "Config", "Project64.cfg"))
         # Check if project 64 is running
@@ -94,7 +106,8 @@ class PJ64Client:
             #     os.system(f'taskkill /f /im "{os.path.basename(executable)}"')
             # else:
             #     os.system(f'pkill -f "{os.path.basename(executable)}"')
-            os.popen(f'"{executable}" "{rom}"')
+            if rom:
+                os.popen(f'"{executable}" "{rom}"')
 
     def _is_exe_running(self, exe_name):
         """Check if a given executable is running without using psutil."""
