@@ -42,6 +42,8 @@ class DK64Client:
     deathlink_debounce = True
     pending_deathlink = False
     send_mode = 1
+    ENABLE_DEATHLINK = False
+    current_speed = 130
 
     async def wait_for_pj64(self):
         """Wait for PJ64 to connect to the game."""
@@ -126,12 +128,16 @@ class DK64Client:
         item_data = item_ids.get(item_id)
         if item_data:
             if self.send_mode == 6:
-                self.set_speed(130)
+                if self.current_speed != 130:
+                    self.set_speed(130)
+                    self.current_speed = 130
                 # Progression only, no speed changes
                 if item_data.get("progression", False):
                     self.send_message(item_name, from_player, "from")
             elif self.send_mode == 5:
-                self.set_speed(130)
+                if self.current_speed != 130:
+                    self.set_speed(130)
+                    self.current_speed = 130
                 # Extended whitelist, no speed changes
                 if item_data.get("progression", False):
                     self.send_message(item_name, from_player, "from")
@@ -141,14 +147,20 @@ class DK64Client:
                 # Display both default and extended whitelist items
                 # But display just the extended whitelist items at a faster speed
                 if item_data.get("progression", False):
-                    self.set_speed(130)
+                    if self.current_speed != 130:
+                        self.set_speed(130)
+                        self.current_speed = 130
                     self.send_message(item_name, from_player, "from")
                 elif item_data.get("extended_whitelist", False):
-                    self.set_speed(50)
+                    if self.current_speed != 50:
+                        self.set_speed(50)
+                        self.current_speed = 50
                     self.send_message(item_name, from_player, "from")
             elif self.send_mode == 3:
                 # Send everything super fast on both whitelist and extended whitelist
-                self.set_speed(50)
+                if self.current_speed != 50:
+                    self.current_speed = 50
+                    self.set_speed(50)
                 if item_data.get("progression", False):
                     self.send_message(item_name, from_player, "from")
                 elif item_data.get("extended_whitelist", False):
@@ -158,7 +170,9 @@ class DK64Client:
                 # But only display progression items, discard the rest
                 length = len(self.recvd_checks) - index
                 if length <= 5:
-                    self.set_speed(130)
+                    if self.current_speed != 130:
+                        self.current_speed = 130
+                        self.set_speed(130)
                     if item_data.get("progression", False):
                         self.send_message(item_name, from_player, "from")
                     elif item_data.get("extended_whitelist", False):
@@ -167,7 +181,9 @@ class DK64Client:
                     speed = round(130 - (80 / length))
                     if speed < 50:
                         speed = 50
-                    self.set_speed(speed)
+                    if self.current_speed != speed:
+                        self.current_speed = speed
+                        self.set_speed(speed)
                     if item_data.get("progression", False):
                         self.send_message(item_name, from_player, "from")
             elif self.send_mode == 1:
@@ -175,12 +191,16 @@ class DK64Client:
                 # If we have 5 or less, do 130
                 length = len(self.recvd_checks) - index
                 if length <= 5:
-                    self.set_speed(130)
+                    if self.current_speed != 130:
+                        self.current_speed = 130
+                        self.set_speed(130)
                 else:
                     speed = round(130 - (80 / length))
                     if speed < 50:
                         speed = 50
-                    self.set_speed(speed)
+                    if self.current_speed != speed:
+                        self.current_speed = speed
+                        self.set_speed(speed)
                 if item_data.get("progression", False):
                     self.send_message(item_name, from_player, "from")
                 elif item_data.get("extended_whitelist", False):
@@ -456,25 +476,25 @@ class DK64Client:
         def check_safe_death():
             """Check if it's safe to send a death."""
             return self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.can_die) != 1
+        if self.ENABLE_DEATHLINK:
+            death_state = self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.send_death)
+            if self.deathlink_debounce and death_state == 0:
+                self.deathlink_debounce = False
+            elif not self.deathlink_debounce and death_state == 1:
+                # logger.info("YOU DIED.")
+                await deathlink_cb()
+                self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.send_death, 0)
+                self.deathlink_debounce = True
 
-        death_state = self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.send_death)
-        if self.deathlink_debounce and death_state == 0:
-            self.deathlink_debounce = False
-        elif not self.deathlink_debounce and death_state == 1:
-            # logger.info("YOU DIED.")
-            await deathlink_cb()
-            self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.send_death, 0)
-            self.deathlink_debounce = True
-
-        if self.pending_deathlink:
-            logger.info("Got a deathlink")
-            while check_safe_death():
-                await asyncio.sleep(0.1)
-            self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.receive_death, 1)
-            self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.send_death, 0)
-            self.pending_deathlink = False
-            self.deathlink_debounce = True
-            await asyncio.sleep(5)
+            if self.pending_deathlink:
+                logger.info("Got a deathlink")
+                while check_safe_death():
+                    await asyncio.sleep(0.1)
+                self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.receive_death, 1)
+                self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.send_death, 0)
+                self.pending_deathlink = False
+                self.deathlink_debounce = True
+                await asyncio.sleep(5)
 
         current_deliver_count = self.get_current_deliver_count()
 
@@ -508,6 +528,7 @@ class DK64Context(CommonContext):
     found_checks = []
     last_resend = time.time()
     remaining_checks = list(check_id_to_name.keys())
+    ENABLE_DEATHLINK = False
 
     won = False
 
@@ -614,7 +635,6 @@ class DK64Context(CommonContext):
         sync_msg = [{"cmd": "Sync"}]
         await self.send_msgs(sync_msg)
 
-    ENABLE_DEATHLINK = False
 
     async def send_deathlink(self):
         """Send a deathlink."""
@@ -655,7 +675,7 @@ class DK64Context(CommonContext):
         # yield to allow UI to start
         await asyncio.sleep(0)
         while True:
-            await asyncio.sleep(5)
+            await asyncio.sleep(3)
 
             try:
                 if not self.client.stop_bizhawk_spam:
@@ -667,7 +687,7 @@ class DK64Context(CommonContext):
                 await self.client.wait_for_pj64()
                 await self.client.reset_auth()
                 while self.auth is None:
-                    await asyncio.sleep(5)
+                    await asyncio.sleep(3)
                 if self.auth and self.client.auth != self.auth:
                     # It would be neat to reconnect here, but connection needs this loop to be running
                     logger.info("Detected new ROM, disconnecting...")
@@ -718,6 +738,7 @@ def launch():
             if "DeathLink" not in ctx.tags:
                 await ctx.update_death_link(True)
                 ctx.ENABLE_DEATHLINK = True
+                ctx.client.ENABLE_DEATHLINK = True
         if ctx.slot_data.get("receive_notifications"):
             ctx.client.send_mode = ctx.slot_data.get("receive_notifications")
         ctx.la_task = create_task_log_exception(ctx.run_game_loop())
