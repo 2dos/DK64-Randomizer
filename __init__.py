@@ -502,11 +502,11 @@ if baseclasses_loaded:
 
             return created_item
 
-        def collect(self, state: CollectionState, item: Item) -> bool:
-            """Collect the item."""
-            change = super().collect(state, item)
-            if item in self.multiworld.precollected_items[self.player]:
-                self.logic_holder.AddArchipelagoItem(item)
-            elif item.classification in (ItemClassification.progression, ItemClassification.progression_skip_balancing):
-                self.logic_holder.UpdateFromArchipelagoItems(state)
-            return change
+        # def collect(self, state: CollectionState, item: Item) -> bool:
+        #     """Collect the item."""
+        #     change = super().collect(state, item)
+        #     if item in self.multiworld.precollected_items[self.player]:
+        #         self.logic_holder.AddArchipelagoItem(item)
+        #     elif item.classification in (ItemClassification.progression, ItemClassification.progression_skip_balancing):
+        #         self.logic_holder.UpdateFromArchipelagoItems(state)
+        #     return change

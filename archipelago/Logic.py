@@ -353,6 +353,7 @@ class LogicVarHolder:
 
     def UpdateFromArchipelagoItems(self, collectionState: CollectionState):
         """Update logic variables based on the DK64Items found by Archipelago."""
+        self.Reset()
         ownedItems = []
         cbArchItems = []
         eventArchItems = []

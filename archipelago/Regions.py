@@ -409,19 +409,23 @@ def connect(world: World, source: str, target: str, rule: typing.Optional[typing
 
 def hasDK64RTransition(state: CollectionState, logic: LogicVarHolder, exit: TransitionFront):
     """Check if the given transition is accessible in the given state."""
+    logic.UpdateFromArchipelagoItems(state)
     return exit.logic(logic)
 
 
 def hasDK64RLocation(state: CollectionState, logic: LogicVarHolder, location: LocationLogic):
     """Check if the given location is accessible in the given state."""
+    logic.UpdateFromArchipelagoItems(state)
     return location.logic(logic)
 
 
 def hasDK64RCollectible(state: CollectionState, logic: LogicVarHolder, collectible: Collectible):
     """Check if the given collectible is accessible in the given state."""
+    logic.UpdateFromArchipelagoItems(state)
     return collectible.logic(logic)
 
 
 def hasDK64REvent(state: CollectionState, logic: LogicVarHolder, event: Event):
     """Check if the given event is accessible in the given state."""
+    logic.UpdateFromArchipelagoItems(state)
     return event.logic(logic)
