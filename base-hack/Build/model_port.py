@@ -2,6 +2,7 @@
 
 import os
 import zlib
+import math
 
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames, ExtraTextures
@@ -488,6 +489,111 @@ def createMelon():
             fh.write(getBonusSkinOffset(ExtraTextures.MelonSurface).to_bytes(4, "big"))
 
 
+def writeValueToBytes(by: bytes, value: int, offset: int, size: int) -> bytes:
+    """Write a value to a byte stream."""
+    copy = bytearray(by)
+    written_value = value
+    for x in range(size):
+        copy[offset + ((size - 1) - x)] = written_value & 0xFF
+        written_value >>= 8
+    return bytes(copy)
+
+
+ARCHI_OFFSET_SIZE = 40
+ARCHI_DX = ARCHI_OFFSET_SIZE * math.cos(math.pi / 6)
+ARCHI_DY = ARCHI_OFFSET_SIZE * math.sin(math.pi / 6)
+ARCHI_SCALE = 0.6
+
+ARCHI_XY_OFFSETS = [
+    (0, 0),  # Bottom (Orange)
+    (0, 2 * ARCHI_OFFSET_SIZE),  # Top (Red)
+    (-ARCHI_DX, ARCHI_OFFSET_SIZE + ARCHI_DY),  # Top Left (Yellow)
+    (-ARCHI_DX, ARCHI_OFFSET_SIZE - ARCHI_DY),  # Bottom Left (Blue)
+    (ARCHI_DX, ARCHI_OFFSET_SIZE + ARCHI_DY),  # Top Right (Green)
+    (ARCHI_DX, ARCHI_OFFSET_SIZE - ARCHI_DY),  # Bottom Right (Purple)
+]
+
+
+def createArchiItem():
+    """Create the Archipelago item based off the pearl copied 6 times."""
+    with open(ROMName, "rb") as rom:
+        pearl = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x1B4)
+        rom.seek(pearl.start)
+        pearl_data = rom.read(pearl.size)
+        if pearl.compressed:
+            pearl_data = zlib.decompress(pearl_data, (15 + 32))
+        with open("pearl_raw.bin", "wb") as fh:
+            fh.write(pearl_data)
+        header_data = None
+        dl_head = None
+        dl_data = None
+        dl_foot = None
+        bonus_dl_data = None
+        footer_data = None
+        vt_data = []
+        with open("pearl_raw.bin", "r+b") as fh:
+            header_data = fh.read(0x78)
+            dl_head = fh.read(0x30)
+            dl_data = fh.read(0x3C0 - 0xA8)
+            dl_foot = fh.read(8)
+            bonus_dl_data = fh.read(0x18)
+            for i in range(0x54):
+                coords = []
+                u = []
+                for _ in range(3):
+                    v = int.from_bytes(fh.read(2), "big")
+                    if v > 0x7FFF:
+                        v -= 0x10000
+                    coords.append(v)
+                for _ in range(3):
+                    u.append(int.from_bytes(fh.read(2), "big"))
+                rgba = int.from_bytes(fh.read(4), "big")
+                vt_data.append({"coords": coords.copy(), "uv": u.copy(), "rgba": rgba})
+            footer_data = fh.read()
+        with open("archi_om2.bin", "wb") as fh:
+            # Initial pass
+            fh.write(header_data)
+            fh.write(dl_head)
+            for idx in range(6):
+                # Get DL
+                written_dl = bytes(dl_data)  # Make copy of bytes obj
+                # Morph it
+                written_dl = writeValueToBytes(written_dl, 0x540 * idx, 5, 3)
+                written_dl = writeValueToBytes(written_dl, getBonusSkinOffset(ExtraTextures.APPearl0) + idx, 0x44, 4)
+                written_dl = writeValueToBytes(written_dl, (0x540 * idx) + 0x200, 0x1A5, 3)
+                written_dl = writeValueToBytes(written_dl, (0x540 * idx) + 0x400, 0x2CD, 3)
+                # Write it
+                fh.write(written_dl)
+            fh.write(dl_foot)
+            fh.write(bonus_dl_data)
+            for idx in range(6):
+                for vert in vt_data:
+                    for ci, c in enumerate(vert["coords"]):
+                        v = c * ARCHI_SCALE
+                        if ci < 2:
+                            # x or y
+                            v += ARCHI_XY_OFFSETS[idx][ci]
+                        v = int(v)
+                        if v < 0:
+                            v += 0x10000
+                        fh.write(v.to_bytes(2, "big"))
+                    for u in vert["uv"]:
+                        fh.write(u.to_bytes(2, "big"))
+                    fh.write(vert["rgba"].to_bytes(4, "big"))
+            fh.write(footer_data)
+        with open("archi_om2.bin", "r+b") as fh:
+            # Correct pointers
+            offset = 5 * len(dl_data)
+            for x in range(11):
+                if x == 2:
+                    offset += 5 * 0x540
+                fh.seek(0x44 + (x * 4))
+                initial = int.from_bytes(fh.read(4), "big")
+                initial += offset
+                fh.seek(0x44 + (x * 4))
+                fh.write(initial.to_bytes(4, "big"))
+
+
 def loadNewModels():
     """Load new models."""
     with open(f"{MODEL_DIRECTORY}rainbow_coin.dl", "r+b") as fh:
@@ -544,6 +650,8 @@ def loadNewModels():
     portModelTwoToActor(0, "rareware_coin_om2.bin", "rareware_coin", 0x68, True, 1.0)
     createMelon()
     portModelTwoToActor(0, "melon_3d_om2.bin", "melon_3d", 0x68, True, 1.0)
+    createArchiItem()
+    portModelTwoToActor(0, "archi_om2.bin", "archi", 0x68, True, 1.0)
     portModelTwoToActor(694, "", "race_hoop", 0xC0, False, 1.0)
     # Shop Owners
     portActorToModelTwo(0x10, "", "cranky", 0x90, True, 0.5)

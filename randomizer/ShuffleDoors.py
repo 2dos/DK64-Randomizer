@@ -1,8 +1,5 @@
 """Shuffle Wrinkly and T&S Doors based on settings."""
 
-import random
-import math
-
 from randomizer.Enums.DoorType import DoorType
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -144,10 +141,10 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
             plando_indexes = [x for x in available_doors if door_locations[level][x].name in spoiler.settings.plandomizer_dict["plando_wrinkly_doors"].values()]
             for planned_door in plando_indexes:
                 available_doors.remove(planned_door)
-        random.shuffle(available_doors)
+        spoiler.settings.random.shuffle(available_doors)
         if shuffle_tns:
             plando_portal_indexes = []
-            number_of_portals_in_level = random.choice([3, 4, 5])
+            number_of_portals_in_level = spoiler.settings.random.choice([3, 4, 5])
             allow_multiple_portals_per_group = False
             # Make sure selected locations will be suitable to be a T&S portal
             available_portals = [door for door in available_doors if DoorType.boss in door_locations[level][door].door_type]
@@ -171,7 +168,7 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
                         selected_door_index = available_portals.pop()
                     else:
                         # On the first iteration, make sure at least 1 TnS portal is accessible without any moves
-                        selected_door_index = random.choice([door for door in available_portals if door_locations[level][door].moveless is True])
+                        selected_door_index = spoiler.settings.random.choice([door for door in available_portals if door_locations[level][door].moveless is True])
                         available_portals.remove(selected_door_index)
                     selected_portal = door_locations[level][selected_door_index]
                     if not allow_multiple_portals_per_group:
@@ -234,7 +231,7 @@ def ShuffleDoors(spoiler, vanilla_doors_placed: bool):
         if shuffle_dkportal:
             available_entries = [door for door in available_doors if DoorType.dk_portal in door_locations[level][door].door_type]
             if len(available_entries) > 0:  # Should only fail if we don't have enough door locations
-                selected_door_index = random.choice([door for door in available_entries])
+                selected_door_index = spoiler.settings.random.choice([door for door in available_entries])
                 available_entries.remove(selected_door_index)
                 selected_entry = door_locations[level][selected_door_index]
                 # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
@@ -301,12 +298,12 @@ def ShuffleVanillaDoors(spoiler):
                     continue
                 door.placed = DoorType.null
                 vanilla_door_indexes.append(door_index)
-        random.shuffle(vanilla_door_indexes)
+        spoiler.settings.random.shuffle(vanilla_door_indexes)
         # One random vanilla T&S per level is locked to being a T&S - Two non-vanilla Japes locations are eligible in Dos' Doors (hence that DoorType.null eligibility)
         locked_tns_options = [
             idx for idx in vanilla_door_indexes if door_locations[level][idx].default_placed in (DoorType.boss, DoorType.null) and DoorType.boss in door_locations[level][idx].door_type
         ]
-        locked_tns_index = random.choice(locked_tns_options)
+        locked_tns_index = spoiler.settings.random.choice(locked_tns_options)
         locked_tns = door_locations[level][locked_tns_index]
         locked_tns.assignPortal(spoiler)
         human_portal_doors[level_list[level]]["T&S #1"] = locked_tns.name
@@ -318,7 +315,7 @@ def ShuffleVanillaDoors(spoiler):
             if level == Levels.CrystalCaves:
                 # Caves must consider the kong_lst for each door - there's one T&S that only Diddy can logically access as well as one only Diddy/Lanky can logically access
                 filtered_doors = [idx for idx in vanilla_door_indexes if assignee in door_locations[level][idx].kongs]
-                selected_door_index = random.choice(filtered_doors)
+                selected_door_index = spoiler.settings.random.choice(filtered_doors)
                 vanilla_door_indexes.remove(selected_door_index)
             else:
                 # Everywhere else? Pick a door, any door

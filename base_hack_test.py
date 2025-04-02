@@ -281,7 +281,7 @@ with open("./base-hack/include/variable_space_structs.h", "r") as varspace:
                     "plando",
                     "spoiler",
                     "pass_locked",
-                    "unk3",
+                    "archipelago",
                     "unk4",
                     "unk5",
                     "unk6",
@@ -314,6 +314,9 @@ with open(ROM_FILE, "r+b") as rom:
     ROM_COPY = TestROM(rom)
     patchAssembly(ROM_COPY, spoiler)
     patchAssemblyCosmetic(ROM_COPY, settings, False)
+    rom.seek(0x1FF3000)
+    rom.write(b"BALLAAM\x00")
+
 
 if IO_LOGGING:
     with open("io.log", "w") as fh:

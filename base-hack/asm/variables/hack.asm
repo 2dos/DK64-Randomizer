@@ -37,8 +37,7 @@
 .definelabel TextItemName, 0x807FFFD2
 .definelabel RandomSwitches, 0x807FFF20
 .definelabel SwitchLevel, 0x807FFF21
-.definelabel FedItem, 0x807FFF1C
-.definelabel FedString, 0x807FFEDF
+.definelabel APData, 0x807FFF1C
 
 .definelabel KrushaSlot, 0x807FFF2E
 .definelabel KasplatSpawnBitfield, 0x807FFF2F

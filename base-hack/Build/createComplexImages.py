@@ -3,7 +3,7 @@
 import os
 
 import PIL
-from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageOps
 from BuildLib import hueShift
 
 pre = "../"
@@ -543,6 +543,7 @@ skins = {
     "candy": ("candy_head", None, "displays"),
     "snide": ("snide_head", None, "displays"),
     "hint": ("wrinkly32", None, "displays"),
+    "ap": ("ap_logo", None, "displays"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32
@@ -604,6 +605,20 @@ base_im.paste(left_im, (0, 0), left_im)
 base_im.paste(right_im, (32, 0), right_im)
 base_im = base_im.resize((32, 32))
 base_im.save(f"{disp_dir}win_con_logo.png")
+
+# AP Pearls
+ap_colors = [
+    "#FB9152",  # ORANGE
+    "#E74F65",  # RED
+    "#FFF173",  # YELLOW
+    "#5564D4",  # BLUE
+    "#52DA52",  # GREEN
+    "#DA7ACC",  # PURPLE
+]
+
+pearl_im = Image.open(f"{hash_dir}pearl.png").convert("L")
+for index, shift in enumerate(ap_colors):
+    ImageOps.colorize(pearl_im, black="black", white=shift).save(f"{disp_dir}ap_pearl_{index}.png")
 
 # # Christmas Theme
 # snow_by = []
@@ -724,6 +739,10 @@ bosses = ["dillo1", "dillo2", "dog1", "dog2", "kko", "mj", "pufftoss"]
 for boss in bosses:
     boss_im = Image.open(f"{disp_dir}head_{boss}.png").resize((32, 32))
     boss_im.save(f"{disp_dir}head32_{boss}.png")
+
+# AP Shop Icon
+ap_im = Image.open(f"{disp_dir}ap_logo.png")
+ap_im.resize((32, 32)).save(f"{disp_dir}ap32.png")
 
 # Portal
 portal_dir = getDir("assets/portals/")

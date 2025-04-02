@@ -199,6 +199,9 @@ extern int filterSong(int* song_write);
 extern void detectSongChange();
 extern int getTotalCBCount(void);
 
+extern int cc_allower_spawnkop(void);
+extern int cc_enabler_spawnkop(void);
+
 extern void swapKremlingModel(void);
 
 extern void setLocationStatus(location_list location_index);

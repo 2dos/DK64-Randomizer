@@ -10,7 +10,7 @@ import logging
 from datetime import timezone, datetime
 from io import BytesIO
 import sys
-from vidua import bps
+from randomizer.Patching import BPS as bps
 from rq import get_current_job
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler

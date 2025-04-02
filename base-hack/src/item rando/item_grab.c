@@ -85,6 +85,7 @@ static const item_info item_detection_data[] = {
     {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x11F}, // Hint Item (Lanky)
     {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x121}, // Hint Item (Tiny)
     {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x123}, // Hint Item (Chunky)
+    {.song = SONG_BLUEPRINTGET, .sprite = 0x92, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x125}, // AP Item
 };
 
 void displayMedalOverlay(int flag, int item_type) {
@@ -723,6 +724,11 @@ void getItem(int object_type) {
             // Hint item
             forceDance();
             playSound(0x2EA, 0x7FFF, 63.0f, 1.0f, 5, 0);
+            break;
+        case 0x291:
+            // Archi Item
+            forceDance();
+            playSound(69, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
     }
     if (hh_item != HHITEM_NOTHING) {

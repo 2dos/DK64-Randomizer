@@ -32,6 +32,7 @@ export enum Types {
     Snide = 31,
     IslesMedal = 32,
     ProgressiveHint = 33,
+    ArchipelagoItem = 34,
 }
 
 export enum BarrierItems {

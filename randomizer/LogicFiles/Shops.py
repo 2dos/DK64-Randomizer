@@ -9,13 +9,7 @@ from randomizer.Enums.HintRegion import HintRegion
 from randomizer.LogicClasses import LocationLogic, Region, TransitionFront
 
 LogicRegions = {
-    Regions.FunkyGeneric: Region("Funky Generic", HintRegion.Error, Levels.Shops, False, None, [], [], [
-        TransitionFront(Regions.FunkyJapes, lambda l: False),
-        TransitionFront(Regions.FunkyFactory, lambda l: False),
-        TransitionFront(Regions.FunkyForest, lambda l: False),
-        TransitionFront(Regions.FunkyCaves, lambda l: False),
-        TransitionFront(Regions.FunkyCastle, lambda l: False),
-    ]),
+    Regions.FunkyGeneric: Region("Funky Generic", HintRegion.Error, Levels.Shops, False, None, [], [], []),
 
     Regions.FunkyJapes: Region("Funky Japes", HintRegion.JapesShops, Levels.Shops, False, None, [
         LocationLogic(Locations.SharedJapesGun, lambda l: l.CanBuy(Locations.SharedJapesGun)),
@@ -94,12 +88,7 @@ LogicRegions = {
         TransitionFront(Regions.FunkyGeneric, lambda l: False),
     ]),
 
-    Regions.CandyGeneric: Region("Candy Generic", HintRegion.Error, Levels.Shops, False, None, [], [], [
-        TransitionFront(Regions.CandyAztec, lambda l: False),
-        TransitionFront(Regions.CandyGalleon, lambda l: False),
-        TransitionFront(Regions.CandyCaves, lambda l: False),
-        TransitionFront(Regions.CandyCastle, lambda l: False),
-    ]),
+    Regions.CandyGeneric: Region("Candy Generic", HintRegion.Error, Levels.Shops, False, None, [], [], []),
 
     Regions.CandyAztec: Region("Candy Aztec", HintRegion.AztecShops, Levels.Shops, False, None, [
         LocationLogic(Locations.SharedAztecInstrument, lambda l: l.CanBuy(Locations.SharedAztecInstrument)),
@@ -158,14 +147,7 @@ LogicRegions = {
 
     Regions.CrankyGeneric: Region("Cranky Generic", HintRegion.Jetpac, Levels.Shops, False, None, [
         LocationLogic(Locations.RarewareCoin, lambda l: l.CanGetRarewareCoin()),
-    ], [], [
-        TransitionFront(Regions.CrankyJapes, lambda l: False),
-        TransitionFront(Regions.CrankyAztec, lambda l: False),
-        TransitionFront(Regions.CrankyFactory, lambda l: False),
-        TransitionFront(Regions.CrankyForest, lambda l: False),
-        TransitionFront(Regions.CrankyCaves, lambda l: False),
-        TransitionFront(Regions.CrankyCastle, lambda l: False),
-    ]),
+    ], [], []),
 
     Regions.CrankyJapes: Region("Cranky Japes", HintRegion.JapesShops, Levels.Shops, False, None, [
         LocationLogic(Locations.SharedJapesPotion, lambda l: l.CanBuy(Locations.SharedJapesPotion)),
