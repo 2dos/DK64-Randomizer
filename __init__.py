@@ -65,6 +65,15 @@ if baseclasses_loaded:
     try:
         from PIL import Image  # Check if PIL is installed
     except ImportError:
+        # if the file pyxdelta.cp310-win_amd64.pyd exists, delete pyxdelta.cp310-win_amd64.pyd and PIL and pillow-10.3.0.dist-info and pyxdelta-0.2.0.dist-info
+        if os.path.exists("./lib/pyxdelta.cp310-win_amd64.pyd"):
+            os.remove("./lib/pyxdelta.cp310-win_amd64.pyd")
+            if os.path.exists("./lib/PIL"):
+                shutil.rmtree("./lib/PIL")
+            if os.path.exists("./lib/pillow-10.3.0.dist-info"):
+                shutil.rmtree("./lib/pillow-10.3.0.dist-info")
+            if os.path.exists("./lib/pyxdelta-0.2.0.dist-info"):
+                shutil.rmtree("./lib/pyxdelta-0.2.0.dist-info")
         if platform_type == "win32":
             zip_path = "vendor/windows.zip"  # Path inside the package
             copy_dependencies(zip_path, "windows.zip")
