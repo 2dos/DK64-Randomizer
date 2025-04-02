@@ -106,8 +106,7 @@ def check_version():
 
 
 def ask_yes_no_cancel(title: str, text: str) -> bool | None:
-    """
-    Wrapper for tkinter.messagebox.askyesnocancel, that creates a popup dialog box with yes, no, and cancel buttons.
+    """Wrap for tkinter.messagebox.askyesnocancel, that creates a popup dialog box with yes, no, and cancel buttons.
 
     :param title: Title to be displayed at the top of the message box.
     :param text: Text to be displayed inside the message box.
