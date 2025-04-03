@@ -73,8 +73,14 @@ def check_version():
         with urllib.request.urlopen(request) as response:
             data = json.load(response)
             api_version = data.get("version")
-
-            if api_version and api_version > ap_version:
+            api_major = api_version.split(".")[0]
+            api_minor = api_version.split(".")[1]
+            api_patch = api_version.split(".")[2]
+            # Get the current version from the ap_version.py file
+            ap_major = ap_version.split(".")[0]
+            ap_minor = ap_version.split(".")[1]
+            ap_patch = ap_version.split(".")[2]
+            if (int(api_major), int(api_minor), int(api_patch)) > (int(ap_major), int(ap_minor), int(ap_patch)):
                 logger.warning(f"Warning: New version of DK64 Rando available: {api_version} (current: {ap_version})")
                 # Check if we're installed in an apworld in custom_worlds/dk64.apworld
                 # Check if the file exists

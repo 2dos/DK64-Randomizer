@@ -81,7 +81,7 @@ item_ids = {
     14041164: {"name": "Banana Fairy", "fed_id": 20, "flag_id": None, "extended_whitelist": True},
     14041165: {"name": "Banana Medal", "fed_id": 12, "flag_id": None, "extended_whitelist": True},
     14041166: {"name": "Battle Crown", "fed_id": 2, "flag_id": None, "extended_whitelist": True},
-    14041167: {"name": "Forest Second Anthill Reward", "fed_id": None, "flag_id": 768},
+    14041167: {"name": "Bean", "fed_id": None, "flag_id": 768, "progression": True},
     14041168: {"name": "Pearl", "fed_id": 23, "flag_id": None, "progression": True},
     14041169: {"name": "Rainbow Coin", "fed_id": 21, "flag_id": None, "extended_whitelist": True},
     14041170: {"name": "Ice Trap (Bubble)", "fed_id": 24, "flag_id": None, "extended_whitelist": True},

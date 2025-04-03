@@ -185,6 +185,7 @@ class PJ64Client:
             self.connected_message = True
         except (ConnectionRefusedError, ConnectionResetError, ConnectionAbortedError):
             self.socket = None
+            self.connected_message = False
             raise PJ64Exception("Connection refused or reset")
         except OSError:
             # We're already connected, just move on
@@ -200,6 +201,8 @@ class PJ64Client:
                 raise PJ64Exception("No data received from the server")
             return response
         except Exception:
+            self.socket = None
+            self.connected_message = False
             raise PJ64Exception("Connection refused or reset")
 
     def _read_memory(self, address, size):
