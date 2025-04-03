@@ -498,6 +498,10 @@ class DK64Client:
                 await asyncio.sleep(5)
 
         current_deliver_count = self.get_current_deliver_count()
+        # If current_deliver_count is None
+        if current_deliver_count is None:
+            # Reset the current_deliver_count to 0
+            current_deliver_count = 0
 
         if len(self.recvd_checks) > current_deliver_count:
             # Get the next item in recvd_checks
@@ -599,6 +603,7 @@ class DK64Context(CommonContext):
             # allow a successful reconnect
             self.client.should_reset_auth = True
             self.had_invalid_slot_data = False
+            self.client.recvd_checks.clear()
 
         while self.client.auth is None:
             await asyncio.sleep(0.1)
@@ -617,6 +622,7 @@ class DK64Context(CommonContext):
             self.game = self.slot_info[self.slot].game
             self.slot_data = args.get("slot_data", {})
             self.client.players = self.player_names
+            self.client.recvd_checks.clear()
 
         if cmd == "ReceivedItems":
             for index, item in enumerate(args["items"], start=args["index"]):
@@ -685,21 +691,27 @@ class DK64Context(CommonContext):
                 # this isn't totally neccessary, but is extra safety against cross-ROM contamination
                 self.client.recvd_checks.clear()
                 await self.client.wait_for_pj64()
-                await self.client.validate_client_connection()
-                await self.client.reset_auth()
+
+                async def disconnect_check():
+                    if self.auth and self.client.auth != self.auth:
+                        self.auth = self.client.auth
+                        # It would be neat to reconnect here, but connection needs this loop to be running
+                        logger.info("Detected new ROM, disconnecting...")
+                        await self.disconnect()
+
                 while self.auth is None:
+                    await self.client.validate_client_connection()
+                    await self.client.reset_auth()
+                    await disconnect_check()
                     await asyncio.sleep(3)
-                if self.auth and self.client.auth != self.auth:
-                    # It would be neat to reconnect here, but connection needs this loop to be running
-                    logger.info("Detected new ROM, disconnecting...")
-                    await self.disconnect()
-                    continue
 
                 if not self.client.recvd_checks:
                     await self.sync()
 
                 await asyncio.sleep(1.0)
                 while True:
+                    await self.client.reset_auth()
+                    await disconnect_check()
                     await self.client.validate_client_connection()
                     status = self.client.check_safe_gameplay()
                     if status is False:
