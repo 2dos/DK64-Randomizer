@@ -4,6 +4,7 @@ import asyncio
 import urllib.request
 import os
 import json
+import sys
 from ap_version import version as ap_version
 
 
@@ -100,7 +101,7 @@ def check_version():
                             with open(apworld_output, "wb") as f:
                                 f.write(data)
                             print(f"APWorld file saved as {apworld_output}")
-                            exit()
+                            sys.exit(1)
                     except Exception as e:
                         logger.warning(f"Failed to download or save the new APWorld file: {e}")
                 else:

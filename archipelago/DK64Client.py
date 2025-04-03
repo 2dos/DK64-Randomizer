@@ -47,7 +47,6 @@ class DK64Client:
 
     async def wait_for_pj64(self):
         """Wait for PJ64 to connect to the game."""
-        check_version()
         clear_waiting_message = True
         if not self.stop_bizhawk_spam:
             logger.info("Waiting on connection to PJ64...")
@@ -741,6 +740,7 @@ def launch():
         parser.add_argument("--url", help="Archipelago connection url")
 
         args = parser.parse_args()
+        check_version()
 
         ctx = DK64Context(args.connect, args.password)
         ctx.items_handling = 0b001
