@@ -94,7 +94,7 @@ if baseclasses_loaded:
     from archipelago.Regions import all_locations, create_regions, connect_regions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
-    from worlds.AutoWorld import WebWorld, World
+    from worlds.AutoWorld import WebWorld, World, AutoLogicRegister
     from archipelago.Logic import LogicVarHolder
     from randomizer.Spoiler import Spoiler
     from randomizer.Settings import Settings
@@ -107,6 +107,7 @@ if baseclasses_loaded:
     from randomizer.CompileHints import compileMicrohints
     from randomizer.Enums.Types import Types
     from randomizer.Enums.Kongs import Kongs
+    from randomizer.Enums.Locations import Locations as DK64RLocations
     from randomizer.Lists import Item as DK64RItem
     from worlds.LauncherComponents import Component, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
@@ -131,6 +132,21 @@ if baseclasses_loaded:
 
     components.append(Component("DK64 Client", "DK64Client", func=launch_client, component_type=Type.CLIENT, icon="dk64"))
     icon_paths["dk64"] = f"ap:{__name__}/static/img/dk.png"
+
+    class DK64CollectionState(metaclass=AutoLogicRegister):
+        def init_mixin(self, parent: MultiWorld):
+            """Reset the logic holder in all DK64 worlds. This is called on every CollectionState init."""
+            dk64_ids = parent.get_game_players(DK64World.game) + parent.get_game_groups(DK64World.game)
+            for player in dk64_ids:
+                if hasattr(parent.worlds[player], 'logic_holder'):
+                    parent.worlds[player].logic_holder.Reset()
+
+        def copy_mixin(self, ret) -> CollectionState:
+            dk64_ids = ret.multiworld.get_game_players(DK64World.game) + ret.multiworld.get_game_groups(DK64World.game)
+            for player in dk64_ids:
+                if hasattr(ret.multiworld.worlds[player], 'logic_holder'):
+                    ret.multiworld.worlds[player].logic_holder.UpdateFromArchipelagoItems(ret)
+            return ret
 
     class DK64Web(WebWorld):
         """WebWorld for DK64."""
@@ -511,11 +527,9 @@ if baseclasses_loaded:
 
             return created_item
 
-        # def collect(self, state: CollectionState, item: Item) -> bool:
-        #     """Collect the item."""
-        #     change = super().collect(state, item)
-        #     if item in self.multiworld.precollected_items[self.player]:
-        #         self.logic_holder.AddArchipelagoItem(item)
-        #     elif item.classification in (ItemClassification.progression, ItemClassification.progression_skip_balancing):
-        #         self.logic_holder.UpdateFromArchipelagoItems(state)
-        #     return change
+        def collect(self, state: CollectionState, item: Item) -> bool:
+            """Collect the item."""
+            change = super().collect(state, item)
+            if change:
+                self.logic_holder.UpdateFromArchipelagoItems(state)
+            return change

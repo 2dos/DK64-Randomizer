@@ -117,7 +117,8 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         kong_item = DK64RItemPoolUtility.ItemFromKong(kong)
         for item in item_table:
             if item.name == kong_item.name:
-                # We don't need to precollect Kong items, as they'll patch in to the main menu properly
+                # Conveniently, this guarantees we have at least one precollected item!
+                world.multiworld.push_precollected(DK64Item(item.name, ItemClassification.progression, full_item_table[DK64RItem.ItemList[kong_item].name].code, world.player))
                 item_table.remove(item)
                 break
 
