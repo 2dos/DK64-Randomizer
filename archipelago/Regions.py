@@ -223,8 +223,8 @@ def create_region(
             quantity *= 5
         elif collectible.type == Collectibles.balloon:
             quantity *= 10
-            add_rule(location, lambda state: state.has(gun_for_kong[collectible.kong], player))  # We need to be sure we check for gun access for this balloon
-        add_rule(location, lambda state: logic_holder.HasKong(collectible.kong))  # There's no FTA for collectibles - you *must* own the right kong to collect it
+            add_rule(location, lambda state, collectible_kong=collectible.kong: state.has(gun_for_kong[collectible_kong], player))  # We need to be sure we check for gun access for this balloon
+        add_rule(location, lambda state, collectible_kong=collectible.kong: logic_holder.HasKong(collectible_kong))  # There's no FTA for collectibles - you *must* own the right kong to collect it
         location.place_locked_item(DK64Item("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
         # print("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity))
         new_region.locations.append(location)

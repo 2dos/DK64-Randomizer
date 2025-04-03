@@ -494,6 +494,8 @@ if baseclasses_loaded:
         def write_spoiler(self, spoiler_handle: typing.TextIO):
             """Write the spoiler."""
             spoiler_handle.write("\n")
+            spoiler_handle.write("Additional Settings info for player: " + self.player_name)
+            spoiler_handle.write("\n")
             spoiler_handle.write("Level Order: " + ", ".join([level.name for order, level in self.logic_holder.settings.level_order.items()]))
             spoiler_handle.write("\n")
             spoiler_handle.write("Starting Kongs: " + ", ".join([kong.name for kong in self.logic_holder.settings.starting_kong_list]))
@@ -511,6 +513,7 @@ if baseclasses_loaded:
             spoiler_handle.write("B. Locker Requirements: " + ", ".join([str(count) for count in self.logic_holder.settings.BLockerEntryCount]))
             spoiler_handle.write("\n")
             spoiler_handle.write("Removed Barriers: " + ", ".join([barrier.name for barrier in self.logic_holder.settings.remove_barriers_selected]))
+            spoiler_handle.write("\n")
 
         def create_item(self, name: str, force_non_progression=False) -> Item:
             """Create an item."""
