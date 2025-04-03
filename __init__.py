@@ -134,18 +134,21 @@ if baseclasses_loaded:
     icon_paths["dk64"] = f"ap:{__name__}/static/img/dk.png"
 
     class DK64CollectionState(metaclass=AutoLogicRegister):
+        """Logic Mixin to handle some awkward situations when the CollectionState is copied."""
+
         def init_mixin(self, parent: MultiWorld):
             """Reset the logic holder in all DK64 worlds. This is called on every CollectionState init."""
             dk64_ids = parent.get_game_players(DK64World.game) + parent.get_game_groups(DK64World.game)
             for player in dk64_ids:
-                if hasattr(parent.worlds[player], 'logic_holder'):
-                    parent.worlds[player].logic_holder.Reset()
+                if hasattr(parent.worlds[player], "logic_holder"):
+                    parent.worlds[player].logic_holder.Reset()  # If we don't reset here, we double-collect the starting inventory
 
         def copy_mixin(self, ret) -> CollectionState:
+            """Update the current logic holder in all DK64 worlds with the current CollectionState. This is called after the CollectionState init inside the copy() method, so this essentially undoes the above method."""
             dk64_ids = ret.multiworld.get_game_players(DK64World.game) + ret.multiworld.get_game_groups(DK64World.game)
             for player in dk64_ids:
-                if hasattr(ret.multiworld.worlds[player], 'logic_holder'):
-                    ret.multiworld.worlds[player].logic_holder.UpdateFromArchipelagoItems(ret)
+                if hasattr(ret.multiworld.worlds[player], "logic_holder"):
+                    ret.multiworld.worlds[player].logic_holder.UpdateFromArchipelagoItems(ret)  # If we don't update here, every copy wipes the logic holder's knowledge
             return ret
 
     class DK64Web(WebWorld):
