@@ -685,6 +685,7 @@ class DK64Context(CommonContext):
                 # this isn't totally neccessary, but is extra safety against cross-ROM contamination
                 self.client.recvd_checks.clear()
                 await self.client.wait_for_pj64()
+                await self.client.validate_client_connection()
                 await self.client.reset_auth()
                 while self.auth is None:
                     await asyncio.sleep(3)
@@ -693,8 +694,6 @@ class DK64Context(CommonContext):
                     logger.info("Detected new ROM, disconnecting...")
                     await self.disconnect()
                     continue
-
-                await self.client.validate_client_connection()
 
                 if not self.client.recvd_checks:
                     await self.sync()

@@ -167,7 +167,7 @@ if baseclasses_loaded:
             """Assert the stage and generate the world."""
             # Check if dk64.z64 exists, if it doesn't prompt the user to provide it
             # ANd then we will copy it to the root directory
-            crc_values = ["D44B4FC6", "AA0A5979", "96972D67"]
+            crc_values = ["D44B4FC6"]
             rom_file = "dk64.z64"
             if not os.path.exists(rom_file):
                 print("Please provide a DK64 ROM file.")
