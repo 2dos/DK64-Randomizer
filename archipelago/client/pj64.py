@@ -39,12 +39,12 @@ def display_error_box(title: str, text: str) -> bool | None:
 class PJ64Client:
     """PJ64Client is a class that provides an interface to connect to and interact with an N64 emulator."""
 
-    def __init__(self, address="127.0.0.1", port=1337):
+    def __init__(self, address="127.0.0.1", port=55356):
         """Initialize a new instance of the class.
 
         Args:
             address (str): The IP address to connect to. Defaults to "127.0.0.1".
-            port (int): The port number to connect to. Defaults to 1337.
+            port (int): The port number to connect to. Defaults to 55356.
         """
         self._check_client()
         self.address = address

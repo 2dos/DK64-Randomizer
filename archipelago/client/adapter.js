@@ -2,7 +2,7 @@ var server = new Server();
 
 function startServer() {
     console.log("Starting server...");
-    server.listen(1337, "127.0.0.1");
+    server.listen(55356, "127.0.0.1");
 
     server.on('connection', function(c) {
         console.log("Client connected");
