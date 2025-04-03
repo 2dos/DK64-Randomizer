@@ -185,7 +185,7 @@ function startServer() {
         });
     });
 
-    console.log("Server listening on 127.0.0.1:1337");
+    console.log("Server listening on 127.0.0.1:55356");
 }
 
 function restartServer() {
