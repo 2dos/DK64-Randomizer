@@ -338,7 +338,7 @@ def get_version():
 @api.route("/ap_version", methods=["GET"])
 def get_ap_version():
     """Get the version of Archipelago for version updates."""
-    return set_response(json.dumps({"version": "1.0.2"}), 200)
+    return set_response(json.dumps({"version": archipelago_version}), 200)
 
 
 @api.route("/get_presets", methods=["GET"])
