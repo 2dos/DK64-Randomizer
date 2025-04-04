@@ -16,9 +16,6 @@ if TYPE_CHECKING:
     from randomizer.Lists.MapsAndExits import Maps
     from randomizer.Patching.ItemRando import CustomActors
 
-patchedRom = None
-og_patched_rom = None
-
 
 class ROM:
     """Patcher for ROM files loaded via Rompatcherjs."""
@@ -128,34 +125,26 @@ class ROM:
 
 
 # Try except for when the browser is trying to load this file
-def load_base_rom(default_file: None = None) -> None:
+def load_base_rom() -> None:
     """Load the base ROM file for patching."""
     try:
-        global patchedRom
-        global og_patched_rom
-        if patchedRom is None and default_file is None:
-            print("Loading base rom")
-            from randomizer.Patching import BPS as bps
+        print("Loading base rom")
+        from randomizer.Patching import BPS as bps
 
+        try:
+            patch = open("./static/patches/shrink-dk64.bps", "rb")
+        except Exception:
             try:
-                patch = open("./static/patches/shrink-dk64.bps", "rb")
+                patch = BytesIO(js.getFile("static/patches/shrink-dk64.bps"))
             except Exception:
-                try:
-                    patch = BytesIO(js.getFile("static/patches/shrink-dk64.bps"))
-                except Exception:
-                    patch = open("./worlds/dk64/static/patches/shrink-dk64.bps", "rb")
+                patch = open("./worlds/dk64/static/patches/shrink-dk64.bps", "rb")
 
-            original = open("dk64.z64", "rb")
-            og_patched_rom = BytesIO(bps.patch(original, patch).read())
-            patchedRom = copy.deepcopy(og_patched_rom)
-        elif default_file is not None and patchedRom is None:
-            print("Using default file")
-            og_patched_rom = default_file
-            patchedRom = copy.deepcopy(og_patched_rom)
-        else:
-            patchedRom = copy.deepcopy(og_patched_rom)
+        original = open("dk64.z64", "rb")
+        og_patched_rom = BytesIO(bps.patch(original, patch).read())
+        return og_patched_rom
     except Exception as e:
         print(e)
+        raise Exception("Unable to load BPS.") from e
         pass
 
 
@@ -172,7 +161,7 @@ class LocalROM:
         Args:
             file ([type], optional): [description]. Defaults to None.
         """
-        global patchedRom
+        patchedRom = None
         if "PYTEST_CURRENT_TEST" in os.environ:
             data_size = 32 * 1024  # 32KB = 32 * 1024 bytes
             data = bytes(range(256)) * (data_size // 256)  # Repeat values from 0 to 255 to fill 32KB
@@ -182,7 +171,7 @@ class LocalROM:
             if not os.path.exists("dk64.z64"):
                 raise Exception("No ROM was loaded, please make sure you have dk64.z64 in the root directory of the project.")
             elif patchedRom is None:
-                load_base_rom()
+                patchedRom = load_base_rom()
 
         self.rom = patchedRom
 
