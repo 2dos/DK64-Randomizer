@@ -455,7 +455,8 @@ if baseclasses_loaded:
                 patch_file = self.update_seed_results(patch_data, spoiler, self.player)
                 out_path = os.path.join(output_directory, f"{self.multiworld.get_out_file_name_base(self.player)}.lanky")
                 print(out_path)
-                with open("output/" + f"{self.multiworld.get_out_file_name_base(self.player)}.lanky", "w") as f:
+                # with open("output/" + f"{self.multiworld.get_out_file_name_base(self.player)}.lanky", "w") as f:
+                with open(out_path, "w") as f:
                     f.write(patch_file)
                 # Copy the patch file to the outpath
                 # shutil.copy("output/" + f"{self.multiworld.get_out_file_name_base(self.player)}.lanky", out_path)
