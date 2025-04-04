@@ -13,6 +13,8 @@ import pkgutil
 import shutil
 import sys
 
+from worlds.dk64.ap_version import version as ap_version
+
 baseclasses_loaded = False
 try:
     from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, CollectionState
@@ -107,6 +109,7 @@ if baseclasses_loaded:
     from randomizer.CompileHints import compileMicrohints
     from randomizer.Enums.Types import Types
     from randomizer.Enums.Kongs import Kongs
+    from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Locations import Locations as DK64RLocations
     from randomizer.Lists import Item as DK64RItem
     from worlds.LauncherComponents import Component, components, Type, icon_paths
@@ -114,6 +117,21 @@ if baseclasses_loaded:
     from Utils import open_filename
     import shutil
     import zlib
+
+    boss_map_names = {
+        Maps.JapesBoss: "Army Dillo 1",
+        Maps.AztecBoss: "Dogadon 1",
+        Maps.FactoryBoss: "Mad Jack",
+        Maps.GalleonBoss: "Pufftoss",
+        Maps.FungiBoss: "Dogadon 2",
+        Maps.CavesBoss: "Army Dillo 2",
+        Maps.CastleBoss: "King Kut Out",
+        Maps.KroolDonkeyPhase: "DK Phase",
+        Maps.KroolDiddyPhase: "Diddy Phase",
+        Maps.KroolLankyPhase: "Lanky Phase",
+        Maps.KroolTinyPhase: "Tiny Phase",
+        Maps.KroolChunkyPhase: "Chunky Phase",
+    }
 
     def crc32_of_file(file_path):
         """Compute CRC32 checksum of a file."""
@@ -220,7 +238,7 @@ if baseclasses_loaded:
         def generate_early(self):
             """Generate the world."""
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
-            self.settings_string = "fjNPxAMxDIUx0QSpbHPUlZlBLg5gPQ+oBwRDIhKlsa58Iz8fiNEpEtiFKi4bVAhMF6AAd+AAOCAAGGAAGKAAAdm84FBiMhjoStwFIKW2wLcBJIBpkzVRCjFIKUUwGTLK/BQBuAIMAN4CBwBwAYQAOIECQByAoUAOYGCwB0A4YeXIITIagOrIrwAZTiU1QwkoSjuq1ZLEjQxUKi2oy9FRFgETEUAViyxyN2S8XeRQOQ7GXtOQM8jGDIAyqcEQgAFwoAFwwAEw4AExAAD1oADxIACxQABxYADxgACxoAB1wAFp8r0CS5UtnsshhHMk9Gw+M1drAwGcuqwqis0FMqLRjilACgrBovKATiotEkXENPGtLINIiNdHYAHQC8KggJCgsMDQ4QERIUFRYYGRocHR4gISIjJCUmJygpKissLS4vMDEyMzQ1rL4AwADCAMQAnQCyAGkAUQA"
+            self.settings_string = "fjNPxAMxDIUx0QSpbHPUlZlBLg5gPQ+oBwRDIhKlsa58Iz8fiNEpEtiFKi4bVAhMF6AAd+AAOCAAGGAAGKAAAdm84FBiMhjoStwFIKW2wLcBJIBpmTVRCjFIKUUwGTLK/BQBuAIMAN4CBwBwAYQAOIECQByAoUAOYGCwB0A4YeXIITIagOrIrwAZTiU1QwkoSjuq1ZLEjQxUKi2oy9FRFgETEUAViyxyN2S8XeRQOQ7GXtOQM8jGDIAyqcEQgAFwoAFwwAEw4AExAAD1oADxIACxQABxYADxgACxoAB1wAFp8r0CS5UtnsshhHMk9Gw+M1drAwGcuqwqis0FMqLRjilACgrBovKATiotEkXENPGtLINIiNdHYAHQC8KggJCgsMDQ4QERIUFRYYGRocHR4gISIjJCUmJygpKissLS4vMDEyMzQ1rL4AwADCAMQAnQCyAGkAUQA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
@@ -501,6 +519,11 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Level Order: " + ", ".join([level.name for order, level in self.logic_holder.settings.level_order.items()]))
             spoiler_handle.write("\n")
+            human_boss_order = []
+            for i in range(len(self.logic_holder.settings.boss_maps)):
+                human_boss_order.append(boss_map_names[self.logic_holder.settings.boss_maps[i]])
+            spoiler_handle.write("Boss Order: " + ", ".join(human_boss_order))
+            spoiler_handle.write("\n")
             spoiler_handle.write("Starting Kongs: " + ", ".join([kong.name for kong in self.logic_holder.settings.starting_kong_list]))
             spoiler_handle.write("\n")
             spoiler_handle.write("Helm Order: " + ", ".join([Kongs(room).name for room in self.logic_holder.settings.helm_order]))
@@ -516,6 +539,12 @@ if baseclasses_loaded:
             spoiler_handle.write("B. Locker Requirements: " + ", ".join([str(count) for count in self.logic_holder.settings.BLockerEntryCount]))
             spoiler_handle.write("\n")
             spoiler_handle.write("Removed Barriers: " + ", ".join([barrier.name for barrier in self.logic_holder.settings.remove_barriers_selected]))
+            spoiler_handle.write("\n")
+            spoiler_handle.write("Generated Time: " + time.strftime("%d-%m-%Y %H:%M:%S", time.gmtime()) + " GMT")
+            spoiler_handle.write("\n")
+            spoiler_handle.write("Randomizer Version: " + self.logic_holder.settings.version)
+            spoiler_handle.write("\n")
+            spoiler_handle.write("APWorld Version: " + ap_version)
             spoiler_handle.write("\n")
 
         def create_item(self, name: str, force_non_progression=False) -> Item:
