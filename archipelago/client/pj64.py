@@ -241,6 +241,10 @@ class PJ64Client:
         """Write an 8-bit unsigned integer to memory."""
         return self._write_memory("write u8", address, [data])
 
+    def write_u16(self, address, data):
+        """Write a 16-bit unsigned integer to memory."""
+        return self._write_memory("write u16", address, [data])
+
     def write_u32(self, address, data):
         """Write a 32-bit unsigned integer to memory."""
         return self._write_memory("write u32", address, [data])
