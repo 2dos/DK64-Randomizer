@@ -16,9 +16,6 @@ if TYPE_CHECKING:
     from randomizer.Lists.MapsAndExits import Maps
     from randomizer.Patching.ItemRando import CustomActors
 
-patchedRom = None
-og_patched_rom = None
-
 
 class ROM:
     """Patcher for ROM files loaded via Rompatcherjs."""
