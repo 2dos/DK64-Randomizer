@@ -70,6 +70,8 @@ def check_version():
 
         logger = logging.getLogger("DK64Client")
     try:
+        from tkinter import Tk, messagebox
+
         request = urllib.request.Request("https://api.dk64rando.com/api/ap_version", headers={"User-Agent": "DK64Client/1.0"})
         with urllib.request.urlopen(request) as response:
             data = json.load(response)
@@ -101,6 +103,10 @@ def check_version():
                             with open(apworld_output, "wb") as f:
                                 f.write(data)
                             print(f"APWorld file saved as {apworld_output}")
+                            root = Tk()
+                            root.withdraw()
+                            messagebox.showinfo("Update Complete", f"New version of DK64 Rando installed as {apworld_output}")
+                            root.update()
                             sys.exit(1)
                     except Exception as e:
                         logger.warning(f"Failed to download or save the new APWorld file: {e}")
