@@ -123,7 +123,6 @@ class DK64Client:
             await asyncio.sleep(0.1)
             status = self.safe_to_send()
         next_index = index + 1
-        self.n64_client.write_u16(self.memory_pointer + DK64MemoryMap.counter_offset, next_index)
         item_data = item_ids.get(item_id)
         if item_data:
             if self.send_mode == 6:
@@ -213,6 +212,7 @@ class DK64Client:
                 await self.writeFedData(item_data.get("fed_id"))
             else:
                 logger.warning(f"Item {item_name} has no flag or fed id")
+        self.n64_client.write_u16(self.memory_pointer + DK64MemoryMap.counter_offset, next_index)
 
     async def writeFedData(self, fed_item):
         """Write the fed item data to the game."""
