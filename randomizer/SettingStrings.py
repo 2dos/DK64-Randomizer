@@ -207,6 +207,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "tiny_clothes_custom_color",
         "override_cosmetics",
         "remove_water_oscillation",
+        "fps_display",
         "head_balloons",
         "colorblind_mode",
         "big_head_mode",

@@ -8,6 +8,35 @@ static short flag_purchase_types[] = {
 	PURCHASE_ICESLOW,
 };
 
+typedef enum KeySubtitleEnum {
+	KEYSUB_K1,
+	KEYSUB_K2,
+	KEYSUB_K4,
+	KEYSUB_K5,
+	KEYSUB_K67,
+	KEYSUB_K38,
+} KeySubtitleEnum;
+
+static char *key_subtitles[] = {
+	"OPENS LEVEL 2",
+	"OPENS LEVELS 3 AND 4",
+	"OPENS LEVEL 5",
+	"OPENS LEVELS 6 AND 7",
+	"HELPS OPEN LEVEL 8",
+	"HELPS OPEN K. ROOL",
+};
+
+static unsigned char key_subtitle_indexes[] = {
+	KEYSUB_K1,
+	KEYSUB_K2,
+	KEYSUB_K38,
+	KEYSUB_K4,
+	KEYSUB_K5,
+	KEYSUB_K67,
+	KEYSUB_K67,
+	KEYSUB_K38,
+};
+
 void moveTransplant(void) {
 	int size = 126 * sizeof(purchase_struct);
 	copyFromROM(0x1FEF800,&CrankyMoves_New[0][0].purchase_type,&size,0,0,0,0);
@@ -827,6 +856,9 @@ void getNextMoveText(void) {
 				}
 				if (bottom_item < 0) {
 					paad->lower_text = (void*)0;
+					if ((top_item >= ITEMTEXT_KEY1) && (top_item <= ITEMTEXT_KEY8)) {
+						paad->lower_text = key_subtitles[key_subtitle_indexes[top_item - ITEMTEXT_KEY1]];
+					}
 				} else {
 					paad->lower_text = getTextPointer(0x27,bottom_item,0);
 				}

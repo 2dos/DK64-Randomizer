@@ -36,7 +36,12 @@ typedef enum MEDAL_ITEMS {
     /* 22 */ MEDALITEM_NOTHING,
     /* 23 */ MEDALITEM_ICETRAP_REVERSE,
     /* 24 */ MEDALITEM_ICETRAP_SLOW,
-    /* 25 */ MEDALITEM_HINT,
+    /* 25 */ MEDALITEM_HINT_0, // DK
+    /* 26 */ MEDALITEM_HINT_1, // Diddy
+    /* 27 */ MEDALITEM_HINT_2, // Lanky
+    /* 28 */ MEDALITEM_HINT_3, // Tiny
+    /* 29 */ MEDALITEM_HINT_4, // Chunky
+    /* 30 */ MEDALITEM_HINT,
 } MEDAL_ITEMS;
 
 typedef struct item_info {
@@ -192,7 +197,11 @@ void displayMedalOverlay(int flag, int item_type) {
             case MEDALITEM_JUNKMELON:
                 giveMelon();
                 break;
-            case MEDALITEM_HINT:
+            case MEDALITEM_HINT_0:
+            case MEDALITEM_HINT_1:
+            case MEDALITEM_HINT_2:
+            case MEDALITEM_HINT_3:
+            case MEDALITEM_HINT_4:
                 playSFX(0x2EA);
                 break;
         }

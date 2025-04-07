@@ -270,6 +270,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 BooleanProperties(settings.pause_hint_coloring, 0x1E4),  # Pause Hint Coloring
                 BooleanProperties(settings.camera_is_follow, 0xCB),  # Free/Follow Cam
                 BooleanProperties(settings.camera_is_not_inverted, 0xCC),  # Inverted/Non-Inverted Camera
+                BooleanProperties(settings.fps_display, 0x96),  # FPS Display
             ]
 
             for prop in boolean_props:

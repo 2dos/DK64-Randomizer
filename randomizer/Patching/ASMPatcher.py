@@ -83,6 +83,9 @@ JP_TEXTBOX_SIZES = True
 FRAMEBUFFER_STORE_FIX = True
 BLOCK_FILE_DELETION_ON_CHECKSUM_MISMATCH = False
 HARDER_CRUSHERS = True
+BOULDERS_DONT_DESTROY = True
+CAN_THROW_KEGS = True
+CAN_THROW_APPLES = True
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -1541,6 +1544,20 @@ def patchAssembly(ROM_COPY, spoiler):
     if HARDER_CRUSHERS:
         writeValue(ROM_COPY, 0x8064C520, Overlay.Static, 0xA218006E, offset_dict, 4)  # Make the crushers in Factory Crusher Room always damage you
     writeHook(ROM_COPY, 0x806CCA90, Overlay.Static, "fixNullLagBoost", offset_dict)
+
+    if BOULDERS_DONT_DESTROY:
+        # Thrown boulders/vases/etc require getting thrown at a wall to destroy
+        writeValue(ROM_COPY, 0x8069C1C2, Overlay.Static, 4, offset_dict)  # Contact with wall: Destroy
+        writeValue(ROM_COPY, 0x8069C99E, Overlay.Static, 2, offset_dict)  # Contact with floor: Remain intact
+        writeValue(ROM_COPY, 0x8069C9CA, Overlay.Static, 2, offset_dict)  # Contact with water: Remain intact
+    if CAN_THROW_KEGS:
+        # Can throw keys
+        writeValue(ROM_COPY, 0x806E4C8C, Overlay.Static, 0, offset_dict, 4)  # Kegs (Grounded)
+        writeValue(ROM_COPY, 0x806E4D30, Overlay.Static, 0, offset_dict, 4)  # Kegs (Non-Grounded)
+    if CAN_THROW_APPLES:
+        # Can throw the Apple
+        writeValue(ROM_COPY, 0x806E4C94, Overlay.Static, 0, offset_dict, 4)  # Apple (Grounded)
+        writeValue(ROM_COPY, 0x806E4D38, Overlay.Static, 0, offset_dict, 4)  # Apple (Non-Grounded)
 
     # Adjust Exit File
     writeFunction(ROM_COPY, 0x805FEAE4, Overlay.Static, "loadExits", offset_dict)

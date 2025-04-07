@@ -77,6 +77,8 @@ boot_phrases = (
     "Saving 20 frames",
     "Reporting bugs. Unlike some",
     "Color-coding Krusha for convenience",
+    "Adding the dot com",
+    "Plugging the randomizer",
 )
 
 crown_heads = (

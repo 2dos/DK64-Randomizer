@@ -631,6 +631,7 @@ class Settings:
         self.better_dirt_patch_cosmetic = False
         self.crosshair_outline = False
         self.camera_is_not_inverted = False
+        self.fps_display = False
         self.sound_type = SoundType.stereo
         self.custom_music_proportion = 100
         self.smoother_camera = False
