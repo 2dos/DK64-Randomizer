@@ -214,7 +214,6 @@ class DK64Client:
                 logger.warning(f"Item {item_name} has no flag or fed id")
         self.n64_client.write_u16(self.memory_pointer + DK64MemoryMap.counter_offset, next_index)
 
-
     async def writeFedData(self, fed_item):
         """Write the fed item data to the game."""
         current_fed_item = self.n64_client.read_u32(self.memory_pointer + DK64MemoryMap.arch_items)
