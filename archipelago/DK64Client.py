@@ -73,6 +73,7 @@ class DK64Client:
                 return
             except (BlockingIOError, TimeoutError, ConnectionResetError):
                 await asyncio.sleep(1.0)
+                logger.error("Error connecting to PJ64, retrying...")
                 pass
 
     def check_safe_gameplay(self):
@@ -414,8 +415,6 @@ class DK64Client:
         # Strip all trailing \x00
         username = username.replace("\x00", "")
         self.auth = username
-        # TODO: Maybe in some random case we try to get the username manually, but thats a problem for later
-        # await self.get_username()
 
     def started_file(self):
         """Check if the file has been started."""
@@ -618,6 +617,13 @@ class DK64Context(CommonContext):
         if cmd == "Connected":
             self.game = self.slot_info[self.slot].game
             self.slot_data = args.get("slot_data", {})
+            if self.slot_data.get("death_link"):
+                if "DeathLink" not in self.tags:
+                    create_task_log_exception(self.update_death_link(True))
+                    self.ENABLE_DEATHLINK = True
+                    self.client.ENABLE_DEATHLINK = True
+            if self.slot_data.get("receive_notifications"):
+                self.client.send_mode = self.slot_data.get("receive_notifications")
             self.client.players = self.player_names
             self.client.recvd_checks.clear()
 
@@ -726,6 +732,7 @@ class DK64Context(CommonContext):
             # There is 100% better ways to handle this exception, but for now this will do to allow us to exit the loop
             except Exception as e:
                 print(e)
+                logger.error(f"Error in game loop: {e}")
                 await asyncio.sleep(1.0)
 
 
@@ -743,13 +750,6 @@ def launch():
         ctx = DK64Context(args.connect, args.password)
         ctx.items_handling = 0b001
         ctx.server_task = asyncio.create_task(server_loop(ctx), name="server loop")
-        if ctx.slot_data.get("death_link"):
-            if "DeathLink" not in ctx.tags:
-                await ctx.update_death_link(True)
-                ctx.ENABLE_DEATHLINK = True
-                ctx.client.ENABLE_DEATHLINK = True
-        if ctx.slot_data.get("receive_notifications"):
-            ctx.client.send_mode = ctx.slot_data.get("receive_notifications")
         ctx.la_task = create_task_log_exception(ctx.run_game_loop())
         if gui_enabled:
             ctx.run_gui()

@@ -64,24 +64,27 @@ if baseclasses_loaded:
                 print(f"Extracted {zip_dest} into {dest_dir}")
 
     platform_type = sys.platform
-    try:
-        from PIL import Image  # Check if PIL is installed
-    except ImportError:
-        # if the file pyxdelta.cp310-win_amd64.pyd exists, delete pyxdelta.cp310-win_amd64.pyd and PIL and pillow-10.3.0.dist-info and pyxdelta-0.2.0.dist-info
-        if os.path.exists("./lib/pyxdelta.cp310-win_amd64.pyd"):
-            os.remove("./lib/pyxdelta.cp310-win_amd64.pyd")
-            if os.path.exists("./lib/PIL"):
-                shutil.rmtree("./lib/PIL")
-            if os.path.exists("./lib/pillow-10.3.0.dist-info"):
-                shutil.rmtree("./lib/pillow-10.3.0.dist-info")
-            if os.path.exists("./lib/pyxdelta-0.2.0.dist-info"):
-                shutil.rmtree("./lib/pyxdelta-0.2.0.dist-info")
-        if platform_type == "win32":
-            zip_path = "vendor/windows.zip"  # Path inside the package
-            copy_dependencies(zip_path, "windows.zip")
-        elif platform_type == "linux":
-            zip_path = "vendor/linux.zip"
-            copy_dependencies(zip_path, "linux.zip")
+    # if the file pyxdelta.cp310-win_amd64.pyd exists, delete pyxdelta.cp310-win_amd64.pyd and PIL and pillow-10.3.0.dist-info and pyxdelta-0.2.0.dist-info
+    if os.path.exists("./lib/pyxdelta.cp310-win_amd64.pyd"):
+        os.remove("./lib/pyxdelta.cp310-win_amd64.pyd")
+        if os.path.exists("./lib/PIL"):
+            shutil.rmtree("./lib/PIL")
+        if os.path.exists("./lib/pillow-10.3.0.dist-info"):
+            shutil.rmtree("./lib/pillow-10.3.0.dist-info")
+        if os.path.exists("./lib/pyxdelta-0.2.0.dist-info"):
+            shutil.rmtree("./lib/pyxdelta-0.2.0.dist-info")
+        if os.path.exists("./lib/windows.zip"):
+            os.remove("./lib/windows.zip")
+        if os.path.exists("./lib/linux.zip"):
+            os.remove("./lib/linux.zip")
+    if platform_type == "win32":
+        zip_path = "vendor/windows.zip"  # Path inside the package
+        copy_dependencies(zip_path, "windows.zip")
+    elif platform_type == "linux":
+        zip_path = "vendor/linux.zip"
+        copy_dependencies(zip_path, "linux.zip")
+    else:
+        raise Exception(f"Unsupported platform: {platform_type}")
 
     sys.path.append("worlds/dk64/")
     sys.path.append("worlds/dk64/archipelago/")

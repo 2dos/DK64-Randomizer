@@ -4,7 +4,6 @@ import socket
 import json
 import sys
 import os
-import time
 import subprocess
 import pkgutil
 from configparser import ConfigParser
@@ -98,14 +97,12 @@ class PJ64Client:
         if not self._is_exe_running(os.path.basename(executable)):
             # Request the user to provide their ROM
             rom = open_filename("Select ROM", (("N64 ROM", (".n64", ".z64", ".v64")),))
-            # # Run project 64
-            # os.popen(f'"{executable}"')
-            # time.sleep(1)
-            # # Kill project 64
-            # if sys.platform == "win32":
-            #     os.system(f'taskkill /f /im "{os.path.basename(executable)}"')
-            # else:
-            #     os.system(f'pkill -f "{os.path.basename(executable)}"')
+            if self.is_project64_background():
+                # Kill project 64
+                if sys.platform == "win32":
+                    os.system(f'taskkill /f /im "{os.path.basename(executable)}"')
+                else:
+                    os.system(f'pkill -f "{os.path.basename(executable)}"')
             if rom:
                 os.popen(f'"{executable}" "{rom}"')
 
@@ -126,6 +123,63 @@ class PJ64Client:
                 return result.returncode == 0
             except FileNotFoundError:
                 return False  # `pgrep` not available
+
+        return False
+
+    def is_project64_background(self):
+        """Specifically deals with if Project64 is running in the background in a broken state."""
+        if sys.platform != "win32":
+            return False
+
+        import ctypes
+        import ctypes.wintypes
+        from subprocess import check_output, CalledProcessError
+
+        user32 = ctypes.windll.user32
+        kernel32 = ctypes.windll.kernel32
+        psapi = ctypes.windll.psapi
+
+        PROCESS_QUERY_INFORMATION = 0x0400
+        PROCESS_VM_READ = 0x0010
+        MAX_PATH = 260
+        GW_OWNER = 4
+
+        found_visible = False
+
+        EnumWindows = user32.EnumWindows
+        EnumWindowsProc = ctypes.WINFUNCTYPE(ctypes.wintypes.BOOL, ctypes.wintypes.HWND, ctypes.wintypes.LPARAM)
+
+        def callback(hwnd, lParam):
+            nonlocal found_visible
+            if not user32.IsWindowVisible(hwnd):
+                return True
+            if user32.GetWindow(hwnd, GW_OWNER):
+                return True
+
+            pid = ctypes.wintypes.DWORD()
+            user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
+
+            h_process = kernel32.OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, False, pid.value)
+            if not h_process:
+                return True
+
+            exe_path = (ctypes.c_wchar * MAX_PATH)()
+            psapi.GetModuleFileNameExW(h_process, None, exe_path, MAX_PATH)
+            kernel32.CloseHandle(h_process)
+
+            exe_name = os.path.basename(exe_path.value).lower()
+            if exe_name == "project64.exe":
+                found_visible = True
+            return True
+
+        EnumWindows(EnumWindowsProc(callback), 0)
+
+        try:
+            output = check_output('tasklist /FI "IMAGENAME eq Project64.exe"', shell=True, text=True)
+            if "Project64.exe" in output and not found_visible:
+                return True
+        except CalledProcessError:
+            pass
 
         return False
 
