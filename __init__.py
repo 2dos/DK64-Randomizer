@@ -92,7 +92,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Items import Items as DK64RItems
     from randomizer.SettingStrings import decrypt_settings_string_enum
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options
+    from archipelago.Options import DK64Options, Goal
     from archipelago.Regions import all_locations, create_regions, connect_regions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
@@ -111,6 +111,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Kongs import Kongs
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Locations import Locations as DK64RLocations
+    from randomizer.Enums.Settings import WinConditionComplex
     from randomizer.Lists import Item as DK64RItem
     from worlds.LauncherComponents import Component, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
@@ -260,6 +261,9 @@ if baseclasses_loaded:
                     settings_dict["starting_keys_list_selected"].append(DK64RItems.CreepyCastleKey)
                 elif item == "Key 8":
                     settings_dict["starting_keys_list_selected"].append(DK64RItems.HideoutHelmKey)
+            if self.options.goal == Goal.option_all_keys:
+                settings_dict["win_condition_item"] = WinConditionComplex.req_key
+                settings_dict["win_condition_count"] = 8
             settings = Settings(settings_dict, self.random)
             # We need to set the freeing kongs here early, as they won't get filled in any other part of the AP process
             settings.diddy_freeing_kong = self.random.randint(0, 4)
@@ -306,7 +310,7 @@ if baseclasses_loaded:
 
         def generate_basic(self):
             """Generate the basic world."""
-            LinkWarps(self.logic_holder.spoiler)
+            LinkWarps(self.logic_holder.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
             connect_regions(self, self.logic_holder)
 
             self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("Banana Hoard", ItemClassification.progression_skip_balancing, 0xD64060, self.player))  # TEMP?
@@ -326,6 +330,7 @@ if baseclasses_loaded:
                     if DK64RItem.ItemList[dk64_item].type in [Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing]:
                         spoiler.pregiven_items.append(dk64_item)
                 local_trap_count = 0
+                ap_item_is_major_item = False
                 # Read through all item assignments in this AP world and find their DK64 equivalents so we can update our world state for patching purposes
                 for ap_location in self.multiworld.get_locations(self.player):
                     # We never need to place Collectibles or Events in our world state
@@ -342,6 +347,9 @@ if baseclasses_loaded:
                         # Any item that isn't for this player is placed as an AP item, regardless of whether or not it could be a DK64 item
                         if ap_item.player != self.player:
                             spoiler.LocationList[dk64_location_id].PlaceItem(spoiler, DK64RItems.ArchipelagoItem)
+                            # If Jetpac has an progression AP item, we should hint is as if it were a major item
+                            if dk64_location_id == DK64RLocations.RarewareCoin and ap_item.advancement:
+                                ap_item_is_major_item = True
                         # Collectibles don't get placed in the LocationList
                         elif "Collectible" in ap_item.name:
                             continue
@@ -450,7 +458,8 @@ if baseclasses_loaded:
                 spoiler.UpdateLocations(spoiler.LocationList)
                 compileMicrohints(spoiler)
                 spoiler.majorItems = IdentifyMajorItems(spoiler)
-                # TODO: look up if the AP item on Jetpac is a major item
+                if ap_item_is_major_item:
+                    spoiler.majorItems.append(DK64RItems.ArchipelagoItem)
                 patch_data, _ = patching_response(spoiler)
                 patch_file = self.update_seed_results(patch_data, spoiler, self.player)
                 out_path = os.path.join(output_directory, f"{self.multiworld.get_out_file_name_base(self.player)}.lanky")

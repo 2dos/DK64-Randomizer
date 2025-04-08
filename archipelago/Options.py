@@ -19,6 +19,7 @@ class Goal(Choice):
 
     display_name = "Goal"
     option_krool = 0
+    option_all_keys = 1
     default = 0
 
 
