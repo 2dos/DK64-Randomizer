@@ -147,11 +147,7 @@ class PJ64Client:
         found_visible = False
 
         EnumWindows = user32.EnumWindows
-        EnumWindowsProc = ctypes.WINFUNCTYPE(
-            ctypes.wintypes.BOOL,
-            ctypes.wintypes.HWND,
-            ctypes.wintypes.LPARAM
-        )
+        EnumWindowsProc = ctypes.WINFUNCTYPE(ctypes.wintypes.BOOL, ctypes.wintypes.HWND, ctypes.wintypes.LPARAM)
 
         def callback(hwnd, lParam):
             nonlocal found_visible
