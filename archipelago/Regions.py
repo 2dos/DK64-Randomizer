@@ -389,6 +389,11 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
                 # print("Connecting " + region_id.name + " to " + destination_name)
             except Exception:
                 pass
+
+    # V1 LIMITATION: We have pre-activated Isles warps, so we need to make two extra connections to make sure the logic is correct
+    connect(world, "IslesMain", "IslesMainUpper", lambda state: True)  # Pre-activated W2
+    connect(world, "IslesMain", "KremIsleBeyondLift", lambda state: True)  # Pre-activated W4
+
     pass
 
 

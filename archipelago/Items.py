@@ -115,6 +115,8 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     # Handle starting Kong list here
     for kong in world.logic_holder.settings.starting_kong_list:
         kong_item = DK64RItemPoolUtility.ItemFromKong(kong)
+        if kong == world.logic_holder.settings.starting_kong:
+            world.multiworld.push_precollected(DK64Item(kong_item.name, ItemClassification.progression, full_item_table[DK64RItem.ItemList[kong_item].name].code, world.player))
         for item in item_table:
             if item.name == kong_item.name:
                 # Conveniently, this guarantees we have at least one precollected item!
