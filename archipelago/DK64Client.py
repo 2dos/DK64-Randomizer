@@ -544,6 +544,7 @@ class DK64Context(CommonContext):
         super().__init__(server_address, password)
 
     def already_running(self) -> bool:
+        """Check if the GUI is already running."""
         try:
             import ctypes
 
