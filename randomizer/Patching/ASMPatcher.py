@@ -2443,6 +2443,10 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80600DA2, Overlay.Static, 0x38, offset_dict)
     writeValue(ROM_COPY, 0x80600DA6, Overlay.Static, 0x70, offset_dict)
 
+    # Diddy Slam Crash Fix
+    writeHook(ROM_COPY, 0x80609338, Overlay.Static, "fixDiddySlamCrash", offset_dict)
+
+    # Fix Null Lag Boost
     writeHook(ROM_COPY, 0x806CCA90, Overlay.Static, "fixNullLagBoost", offset_dict)
 
     # Adjust Exit File

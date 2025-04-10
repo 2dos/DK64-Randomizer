@@ -1018,7 +1018,8 @@
 | On crystal platforms to Ice castle | 5 |  | 
 | On ice tomato switch | 5 |  | 
 | On Beetle Race switch | 5 |  | 
-| On Baboon Balloon pads | 10 |  | 
+| On Baboon Balloon pads | 5 |  | 
+| On Baboon Balloon pads | 5 | `l.isdiddy or l.istiny or (l.islanky and (l.balloon or l.advanced_platforming))` | 
 | To and around boulder by ice castle | 10 |  | 
 | Path from boulder to boulder switch (2 custom, 3 Chunky) | 5 |  | 
 | On plank to DK BP | 5 |  | 
@@ -1204,7 +1205,7 @@
 | ---- | ------ | ----- |
 | Stacks of books on shelves in Chunky's cabin | 10 |  | 
 | Books on floor and back shelf in Chunky's cabin | 10 |  | 
-| In the middle of the room (Chunky) | 20 | `l.gorillaGone` | 
+| In the middle of the room (Chunky) | 20 | `l.gorillaGone and l.Slam` | 
 ## Caves Diddy Upper Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
