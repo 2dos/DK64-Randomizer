@@ -87,7 +87,7 @@ LogicRegions = {
         TransitionFront(Regions.CrankyForest, lambda l: l.crankyAccess),
     ]),
 
-    Regions.MushroomLower: Region("Mushroom Lower", HintRegion.MushroomInterior, Levels.FungiForest, True, -1, [], [
+    Regions.MushroomLower: Region("Mushroom Lower", HintRegion.MushroomInterior, Levels.FungiForest, True, None, [], [
         Event(Events.MushroomCannonsSpawned, lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple
               and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky),
         Event(Events.DonkeyMushroomSwitch, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.donkey)
