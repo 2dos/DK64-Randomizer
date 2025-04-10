@@ -94,6 +94,7 @@ if baseclasses_loaded:
         copy_dependencies(zip_path, "linux.zip")
     else:
         raise Exception(f"Unsupported platform: {platform_type}")
+
     sys.path.append("worlds/dk64/")
     sys.path.append("worlds/dk64/archipelago/")
     sys.path.append("custom_worlds/dk64.apworld/dk64/")

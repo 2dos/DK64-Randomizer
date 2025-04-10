@@ -716,3 +716,14 @@ setHappyFace:
     sb $t6, 0x1EC ($t7)
     j 0x806C5E44
     sh $t6, 0x1B6 ($v0)
+
+fixDiddySlamCrash:
+    lh $t6, 0x3A ($sp) ; Get SFX id
+    addiu $t2, $zero, 0x37
+    bne $t6, $t2, fixDiddySlamCrashEnd
+    lui $t2, 0x3F80
+    mtc1 $t2, $f12 ; Set pitch to 1.0f, only for SFX 55
+
+    fixDiddySlamCrashEnd:
+        j 0x80609340
+        lbu $t2, 0x4F ($sp)
