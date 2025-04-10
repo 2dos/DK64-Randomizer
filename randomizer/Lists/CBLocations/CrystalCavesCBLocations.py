@@ -1662,7 +1662,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.ChunkyCabin,
         vanilla=True,
-        logic=lambda l: l.gorillaGone,
+        logic=lambda l: l.gorillaGone and l.Slam,
         locations=[
             [5, 1.0, 282.1108093261719, 5.0, 326.0027160644531],
             [5, 1.0, 310.0854797363281, 5.0, 327.1960144042969],
