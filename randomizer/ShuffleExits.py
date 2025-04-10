@@ -1,7 +1,5 @@
 """File that shuffles loading zone exits."""
 
-import random
-
 import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
@@ -99,15 +97,15 @@ def ShuffleExitsInPool(spoiler, frontpool, backpool):
     settings = spoiler.settings
     NonTagRegions = [x for x in backpool if not spoiler.RegionList[ShufflableExits[x].back.regionId].tagbarrel]
     NonTagLeaves = [x for x in NonTagRegions if len(spoiler.RegionList[ShufflableExits[x].back.regionId].exits) == 1]
-    random.shuffle(NonTagLeaves)
+    settings.random.shuffle(NonTagLeaves)
     NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
-    random.shuffle(NonTagNonLeaves)
+    settings.random.shuffle(NonTagNonLeaves)
 
     TagRegions = [x for x in backpool if x not in NonTagRegions]
     TagLeaves = [x for x in TagRegions if len(spoiler.RegionList[ShufflableExits[x].back.regionId].exits) == 1]
-    random.shuffle(TagLeaves)
+    settings.random.shuffle(TagLeaves)
     TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
-    random.shuffle(TagNonLeaves)
+    settings.random.shuffle(TagNonLeaves)
 
     backpool = NonTagLeaves
     backpool.extend(NonTagNonLeaves)
@@ -118,22 +116,22 @@ def ShuffleExitsInPool(spoiler, frontpool, backpool):
     if not settings.decoupled_loading_zones:
         NonTagRegions = [x for x in frontpool if not spoiler.RegionList[ShufflableExits[x].back.regionId].tagbarrel]
         NonTagLeaves = [x for x in NonTagRegions if len(spoiler.RegionList[ShufflableExits[x].back.regionId].exits) == 1]
-        random.shuffle(NonTagLeaves)
+        settings.random.shuffle(NonTagLeaves)
         NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
-        random.shuffle(NonTagNonLeaves)
+        settings.random.shuffle(NonTagNonLeaves)
 
         TagRegions = [x for x in frontpool if x not in NonTagRegions]
         TagLeaves = [x for x in TagRegions if len(spoiler.RegionList[ShufflableExits[x].back.regionId].exits) == 1]
-        random.shuffle(TagLeaves)
+        settings.random.shuffle(TagLeaves)
         TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
-        random.shuffle(TagNonLeaves)
+        settings.random.shuffle(TagNonLeaves)
 
         frontpool = NonTagLeaves
         frontpool.extend(NonTagNonLeaves)
         frontpool.extend(TagLeaves)
         frontpool.extend(TagNonLeaves)
     else:
-        random.shuffle(frontpool)
+        settings.random.shuffle(frontpool)
 
     # For each back exit, select a random valid front entrance to attach to it
     while len(backpool) > 0:
@@ -245,8 +243,8 @@ def ShuffleExits(spoiler):
             for x in range(8):
                 level = settings.level_order[x + 1]
                 settings.crown_difficulties[level] = allocation[x]
-            settings.crown_difficulties[8] = random.choice([CrownEnemyDifficulty.easy, CrownEnemyDifficulty.medium])
-            settings.crown_difficulties[9] = random.choice([CrownEnemyDifficulty.medium, CrownEnemyDifficulty.hard])
+            settings.crown_difficulties[8] = settings.random.choice([CrownEnemyDifficulty.easy, CrownEnemyDifficulty.medium])
+            settings.crown_difficulties[9] = settings.random.choice([CrownEnemyDifficulty.medium, CrownEnemyDifficulty.hard])
 
     elif settings.shuffle_loading_zones == ShuffleLoadingZones.all:
         frontpool = []
@@ -259,7 +257,7 @@ def ShuffleExits(spoiler):
         UpdateLevelProgression(settings)
 
 
-def ExitShuffle(spoiler):
+def ExitShuffle(spoiler, skip_verification=False):
     """Facilitate shuffling of exits."""
     retries = 0
     while True:
@@ -267,7 +265,7 @@ def ExitShuffle(spoiler):
             # Shuffle entrances based on settings
             ShuffleExits(spoiler)
             # Verify world by assuring all locations are still reachable
-            if not Fill.VerifyWorld(spoiler):
+            if not skip_verification and not Fill.VerifyWorld(spoiler):
                 raise Ex.EntrancePlacementException
             return
         except Ex.EntrancePlacementException:
@@ -318,7 +316,7 @@ def ShuffleLevelExits(settings: Settings, newLevelOrder: dict = None):
         for index, level in newLevelOrder.items():
             backpool[index - 1] = LobbyEntrancePool[level]
     else:
-        random.shuffle(frontpool)
+        settings.random.shuffle(frontpool)
 
     # Initialize reference variables
     lobby_entrance_map = {
@@ -410,7 +408,7 @@ def GenerateLevelOrderUnrestricted(settings):
                 validLevels = [x for x in unplacedLevels if x != Levels.HideoutHelm]
             else:
                 validLevels = unplacedLevels
-            newLevelOrder[i + 1] = random.choice(validLevels)
+            newLevelOrder[i + 1] = settings.random.choice(validLevels)
             unplacedLevels.remove(newLevelOrder[i + 1])
     return newLevelOrder
 
@@ -425,9 +423,9 @@ def GenerateLevelOrderForOneStartingKong(settings):
     # Decide where Aztec will go
     # Diddy can reasonably make progress if Aztec is first level
     if settings.starting_kong == Kongs.diddy:
-        aztecIndex = random.randint(1, 4)
+        aztecIndex = settings.random.randint(1, 4)
     else:
-        aztecIndex = random.randint(2, 4)
+        aztecIndex = settings.random.randint(2, 4)
     levelIndexChoices.remove(aztecIndex)
 
     # Decide where Japes will go
@@ -445,7 +443,7 @@ def GenerateLevelOrderForOneStartingKong(settings):
             japesOptions = list(levelIndexChoices.intersection({2, 3, 4, 5}))
         else:
             japesOptions = list(levelIndexChoices.intersection({1, 2, 3, 4, 5}))
-    japesIndex = random.choice(japesOptions)
+    japesIndex = settings.random.choice(japesOptions)
     levelIndexChoices.remove(japesIndex)
 
     # Decide where Factory will go
@@ -477,18 +475,18 @@ def GenerateLevelOrderForOneStartingKong(settings):
             factoryOptions = list(levelIndexChoices.intersection({1, 2, 3, 4, 5}))
         else:
             factoryOptions = list(levelIndexChoices.intersection({1, 2, 3, 4}))
-    factoryIndex = random.choice(factoryOptions)
+    factoryIndex = settings.random.choice(factoryOptions)
     levelIndexChoices.remove(factoryIndex)
 
     # Helm can't be in levels 1 or 2
     if settings.shuffle_helm_location:
         helmOptions = list(levelIndexChoices.intersection({3, 4, 5, 6, 7, 8}))
-        helmIndex = random.choice(helmOptions)
+        helmIndex = settings.random.choice(helmOptions)
         levelIndexChoices.remove(helmIndex)
 
     # Decide the remaining level order randomly
     remainingLevels = list(levelIndexChoices)
-    random.shuffle(remainingLevels)
+    settings.random.shuffle(remainingLevels)
     cavesIndex = remainingLevels.pop()
     galleonIndex = remainingLevels.pop()
     forestIndex = remainingLevels.pop()
@@ -593,7 +591,7 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
         if levelIndexOptions == []:
             return GenerateLevelOrderForMultipleStartingKongs(settings)
         # Place level in newLevelOrder and remove from list of remaining slots
-        shuffledLevelIndex = random.choice(levelIndexOptions)
+        shuffledLevelIndex = settings.random.choice(levelIndexOptions)
         levelIndicesToFill.remove(shuffledLevelIndex)
         newLevelOrder[shuffledLevelIndex] = levelToPlace
     return newLevelOrder

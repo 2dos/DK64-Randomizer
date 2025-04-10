@@ -1342,6 +1342,7 @@ typedef struct move_text_overlay_struct {
 	/* 0x004 */ char* string;
 	/* 0x008 */ unsigned char used;
 	/* 0x009 */ char pad_9[3]; // Used to align with a 4-byte region
+	/* 0x00C */ char* subtitle;
 } move_text_overlay_struct;
 
 typedef struct rgb {
@@ -1746,7 +1747,7 @@ typedef struct ROMFlags {
 	unsigned char plando : 1; // 0x80
 	unsigned char spoiler : 1; // 0x40
 	unsigned char pass_locked : 1; // 0x20
-	unsigned char unk3 : 1; // 0x10
+	unsigned char archipelago : 1; // 0x10
 	unsigned char unk4 : 1; // 0x08
 	unsigned char unk5 : 1; // 0x04
 	unsigned char unk6 : 1; // 0x02
@@ -2323,7 +2324,10 @@ typedef struct move_overlay_paad {
 	/* 0x004 */ void* lower_text;
 	/* 0x008 */ unsigned char opacity;
 	/* 0x009 */ unsigned char index;
-	/* 0x00A */ char unk_0A[0x10-0xA];
+	/* 0x00A */ char unk_0A;
+	/* 0x00B */ unsigned char fade_rate; 
+	/* 0x00C */ unsigned short fade_in;
+	/* 0x00E */ unsigned short fade_out;
 	/* 0x010 */ mtx_item matrix_0;
 	/* 0x050 */ mtx_item matrix_1;
 	/* 0x090 */ int timer;

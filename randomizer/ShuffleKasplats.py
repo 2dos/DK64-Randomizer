@@ -1,7 +1,5 @@
 """Module used to handle setting and randomizing kasplats."""
 
-import random
-
 import js
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Items import Items
@@ -108,7 +106,7 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
         kasplats = KasplatLocationList[level]
         # Fill kasplats kong by kong
         kongs = GetKongs()
-        random.shuffle(kongs)
+        spoiler.settings.random.shuffle(kongs)
         for kong in kongs:
             available_for_kong = []
             # Pick a random unselected kasplat from available ones for this kong
@@ -120,7 +118,7 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
                     for name in spoiler.settings.plandomizer_dict["plando_kasplats"].values():
                         if name in available_for_kong:
                             available_for_kong.remove(name)
-            selected_kasplat = random.choice(available_for_kong)
+            selected_kasplat = spoiler.settings.random.choice(available_for_kong)
             if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_kasplats"] != {}:
                 location_var = str(GetBlueprintLocationForKongAndLevel(level, kong).value)
                 plando_kasplat_selection = spoiler.settings.plandomizer_dict["plando_kasplats"][location_var]
@@ -160,7 +158,7 @@ def ShuffleKasplatsInVanillaLocations(spoiler, LogicVariables):
         five_vanilla_kasplats.sort(key=lambda l: len(l.kong_lst))  # Make sure kasplats with fewer possible kongs get placed first
         # We go by location in this method because it will guarantee a fill
         for kasplat in five_vanilla_kasplats:
-            chosenKong = random.choice([kong for kong in kasplat.kong_lst if kong in availableKongs])
+            chosenKong = spoiler.settings.random.choice([kong for kong in kasplat.kong_lst if kong in availableKongs])
             # Figure out what blueprint should be placed where
             item_id = GetBlueprintItemForKongAndLevel(level, chosenKong)
             rando_location_id = GetBlueprintLocationForKongAndLevel(level, chosenKong)
@@ -209,13 +207,13 @@ def ShuffleKasplats(spoiler):
     spoiler.LogicVariables.kasplat_map.update(constants)
     # Do the shuffling
     shuffle_locations = list(shufflable.keys())
-    random.shuffle(shuffle_locations)
+    spoiler.settings.random.shuffle(shuffle_locations)
     while len(shuffle_locations) > 0:
         location = shuffle_locations.pop()
         # Get this location's level and available kongs for this level
         level = FindLevel(spoiler, location)
         kongs = level_kongs[level]
-        random.shuffle(kongs)
+        spoiler.settings.random.shuffle(kongs)
         # Check each kong to see if placing it here produces a valid world
         success = False
         for kong in kongs:

@@ -1,2 +1,2 @@
--r worker/requirements.txt
--r controller/requirements.txt
+pyxdelta==0.2.0
+pillow==10.3.0

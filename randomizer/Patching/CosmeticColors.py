@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import gzip
-import random
 from typing import TYPE_CHECKING, List, Tuple
 from io import BytesIO
 
@@ -125,7 +124,7 @@ def apply_cosmetic_colors(settings: Settings, ROM_COPY: ROM):
         # Menu Background
         textures = list(compatible_background_textures.keys())
         weights = [compatible_background_textures[x].weight for x in textures]
-        selected_texture = random.choices(textures, weights=weights, k=1)[0]
+        selected_texture = settings.random.choices(textures, weights=weights, k=1)[0]
         settings.menu_texture_index = selected_texture
         settings.menu_texture_name = compatible_background_textures[selected_texture].name
         # Jetman
@@ -133,12 +132,12 @@ def apply_cosmetic_colors(settings: Settings, ROM_COPY: ROM):
         sufficiently_bright = False
         brightness_threshold = 80
         for channel in range(3):
-            jetman_color[channel] = random.randint(0, 0xFF)
+            jetman_color[channel] = settings.random.randint(0, 0xFF)
             if jetman_color[channel] >= brightness_threshold:
                 sufficiently_bright = True
         if not sufficiently_bright:
-            channel = random.randint(0, 2)
-            value = random.randint(brightness_threshold, 0xFF)
+            channel = settings.random.randint(0, 2)
+            value = settings.random.randint(brightness_threshold, 0xFF)
             jetman_color[channel] = value
         settings.jetman_color = jetman_color.copy()
 
@@ -157,7 +156,7 @@ def apply_cosmetic_colors(settings: Settings, ROM_COPY: ROM):
         channels = []
         if settings.gb_colors == CharacterColors.randomized:
             for x in range(3):
-                channels.append(random.randint(0, 255))
+                channels.append(settings.random.randint(0, 255))
         elif settings.gb_colors == CharacterColors.custom:
             for x in range(3):
                 start = (2 * x) + 1
@@ -782,4 +781,4 @@ def randomizePlants(ROM_COPY: ROM, settings: Settings):
             item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
             if item_type in flowers:
                 ROM_COPY.seek(item_start + 0x28)
-                ROM_COPY.writeMultipleBytes(random.choice(flowers), 2)
+                ROM_COPY.writeMultipleBytes(settings.random.choice(flowers), 2)

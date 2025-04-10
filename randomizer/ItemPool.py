@@ -1,7 +1,6 @@
 """Contains functions related to setting up the pool of shuffled items."""
 
 import itertools
-import random
 
 from randomizer.Enums.Events import Events
 import randomizer.Enums.Kongs as KongObject
@@ -137,10 +136,10 @@ def PlaceConstants(spoiler):
                 PlandoItems.TinyBlueprint,
                 PlandoItems.ChunkyBlueprint,
             ]:
-                item = random.choice([x for x in GetItemsFromPlandoItem(plando_item) if x not in blueprints_planned])
+                item = settings.random.choice([x for x in GetItemsFromPlandoItem(plando_item) if x not in blueprints_planned])
                 blueprints_planned.append(item)
             else:
-                item = random.choice(GetItemsFromPlandoItem(plando_item))
+                item = settings.random.choice(GetItemsFromPlandoItem(plando_item))
             spoiler.LocationList[int(location_id)].PlaceItem(spoiler, item)
             settings.plandomizer_items_placed.append(item)
         # If any bosses are plando'd, do it now ahead of placing any items randomly.
@@ -745,8 +744,6 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(CandyItems())
     if Types.Snide in unplacedTypes:
         itemPool.extend(SnideItems())
-    if Types.Shockwave in unplacedTypes:
-        itemPool.extend(ShockwaveTypeItems(settings))
     # Never logic-affecting items
     # if Types.FakeItem in unplacedTypes:
     #     itemPool.extend(FakeItems())

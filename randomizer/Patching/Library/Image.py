@@ -95,6 +95,12 @@ class ExtraTextures(IntEnum):
     KrushaFace323 = auto()
     KrushaFace324 = auto()
     KrushaFace325 = auto()
+    APPearl0 = auto()
+    APPearl1 = auto()
+    APPearl2 = auto()
+    APPearl3 = auto()
+    APPearl4 = auto()
+    APPearl5 = auto()
 
 
 barrel_skins = (
@@ -122,6 +128,7 @@ barrel_skins = (
     "candy",
     "snide",
     "hint",
+    "ap",
 )
 
 

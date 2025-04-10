@@ -284,6 +284,7 @@ static const barrel_skin_tie bonus_skins[] = {
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMLANKY, .skin=SKIN_HINT},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMTINY, .skin=SKIN_HINT},
     {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMCHUNKY, .skin=SKIN_HINT},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ARCHIPELAGOITEM, .skin=SKIN_AP},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {

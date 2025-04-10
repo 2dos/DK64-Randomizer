@@ -133,20 +133,6 @@ ChunkyPhaseShort:
         j 0x800314BC
         sll $t7, $t6, 2
 
-ChunkyPhaseAddedSave:
-    lui $a2, hi(WinCondition)
-    lbu $a2, lo(WinCondition) ($a2)
-    bnez $a2, ChunkyPhaseAddedSave_Finish
-    nop
-    jal setFlag
-    or $a2, $zero, $zero
-
-    ChunkyPhaseAddedSave_Finish:
-        jal 0x8060DEC8
-        nop
-        j 0x80031380
-        nop
-
 FixPufftossInvalidWallCollision:
     lw $s0, 0x8C ($s6)
     beqz $s0, FixPufftossInvalidWallCollision_Invalid
