@@ -1205,7 +1205,7 @@
 | ---- | ------ | ----- |
 | Stacks of books on shelves in Chunky's cabin | 10 |  | 
 | Books on floor and back shelf in Chunky's cabin | 10 |  | 
-| In the middle of the room (Chunky) | 20 | `l.gorillaGone` | 
+| In the middle of the room (Chunky) | 20 | `l.gorillaGone and l.Slam` | 
 ## Caves Diddy Upper Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |

@@ -2445,6 +2445,8 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Diddy Slam Crash Fix
     writeHook(ROM_COPY, 0x80609338, Overlay.Static, "fixDiddySlamCrash", offset_dict)
+
+    # Fix Null Lag Boost
     writeHook(ROM_COPY, 0x806CCA90, Overlay.Static, "fixNullLagBoost", offset_dict)
 
     # Adjust Exit File
