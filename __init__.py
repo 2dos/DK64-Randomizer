@@ -18,11 +18,15 @@ from worlds.dk64.ap_version import version as ap_version
 baseclasses_loaded = False
 try:
     from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, CollectionState
+    import BaseClasses
 
     baseclasses_loaded = True
 except ImportError:
     pass
 if baseclasses_loaded:
+    baseclasses_path = os.path.dirname(os.path.dirname(BaseClasses.__file__))
+    if not baseclasses_path.endswith("lib"):
+        baseclasses_path = os.path.join(baseclasses_path, "lib")
 
     def copy_dependencies(zip_path, file):
         """Copy a ZIP file from the package to a local directory, extracts its contents.
@@ -40,7 +44,12 @@ if baseclasses_loaded:
             - A message when the ZIP file is successfully copied.
             - A message when the ZIP file is successfully extracted.
         """
-        dest_dir = "./lib"
+        # Find the path of BaseClasses, we want to work in the AP directory
+        # This is a bit of a hack, but it works
+        # Get the path of BaseClasses
+        dest_dir = baseclasses_path
+        # if baseclasses_path does not end in lib, add lib to the end
+
         zip_dest = os.path.join(dest_dir, file)
 
         # Ensure the destination directory exists
@@ -65,18 +74,18 @@ if baseclasses_loaded:
 
     platform_type = sys.platform
     # if the file pyxdelta.cp310-win_amd64.pyd exists, delete pyxdelta.cp310-win_amd64.pyd and PIL and pillow-10.3.0.dist-info and pyxdelta-0.2.0.dist-info
-    if os.path.exists("./lib/pyxdelta.cp310-win_amd64.pyd"):
-        os.remove("./lib/pyxdelta.cp310-win_amd64.pyd")
-        if os.path.exists("./lib/PIL"):
-            shutil.rmtree("./lib/PIL")
-        if os.path.exists("./lib/pillow-10.3.0.dist-info"):
-            shutil.rmtree("./lib/pillow-10.3.0.dist-info")
-        if os.path.exists("./lib/pyxdelta-0.2.0.dist-info"):
-            shutil.rmtree("./lib/pyxdelta-0.2.0.dist-info")
-        if os.path.exists("./lib/windows.zip"):
-            os.remove("./lib/windows.zip")
-        if os.path.exists("./lib/linux.zip"):
-            os.remove("./lib/linux.zip")
+    if os.path.exists(f"{baseclasses_path}/pyxdelta.cp310-win_amd64.pyd"):
+        os.remove(f"{baseclasses_path}/pyxdelta.cp310-win_amd64.pyd")
+        if os.path.exists(f"{baseclasses_path}/PIL"):
+            shutil.rmtree(f"{baseclasses_path}/PIL")
+        if os.path.exists(f"{baseclasses_path}/pillow-10.3.0.dist-info"):
+            shutil.rmtree(f"{baseclasses_path}/pillow-10.3.0.dist-info")
+        if os.path.exists(f"{baseclasses_path}/pyxdelta-0.2.0.dist-info"):
+            shutil.rmtree(f"{baseclasses_path}/pyxdelta-0.2.0.dist-info")
+        if os.path.exists(f"{baseclasses_path}/windows.zip"):
+            os.remove(f"{baseclasses_path}/windows.zip")
+        if os.path.exists(f"{baseclasses_path}/linux.zip"):
+            os.remove(f"{baseclasses_path}/linux.zip")
     if platform_type == "win32":
         zip_path = "vendor/windows.zip"  # Path inside the package
         copy_dependencies(zip_path, "windows.zip")

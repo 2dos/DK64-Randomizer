@@ -11,6 +11,7 @@ if __name__ == "__main__":
 import json
 import asyncio
 import colorama
+import sys
 import time
 import typing
 from client.common import DK64MemoryMap, create_task_log_exception, check_version
@@ -542,8 +543,21 @@ class DK64Context(CommonContext):
 
         super().__init__(server_address, password)
 
+    def already_running(self) -> bool:
+        """Check if the GUI is already running."""
+        try:
+            import ctypes
+
+            mutex = ctypes.windll.kernel32.CreateMutexW(None, 1, "DK64_GUI_MUTEX")
+            return ctypes.GetLastError() == 183  # ERROR_ALREADY_EXISTS
+        except Exception:
+            return False
+
     def run_gui(self) -> None:
         """Run the GUI."""
+        if self.already_running():
+            print("GUI already running.")
+            sys.exit(1)
         from kvui import GameManager
 
         class DK64Manager(GameManager):

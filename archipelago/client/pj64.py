@@ -60,6 +60,9 @@ class PJ64Client:
         """
         options = get_settings()
         executable = options.get("project64_options", {}).get("executable")
+        # Verify the file exists, if it does not, ask the user to select it
+        if executable and not os.path.isfile(executable):
+            executable = None
         if not executable:
             executable = open_filename("Project 64 4.0 Executable", (("Project64 Executable", (".exe",)),), "Project64.exe")
             if not executable:
