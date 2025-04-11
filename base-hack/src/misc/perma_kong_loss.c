@@ -81,7 +81,7 @@ void kong_has_died(void) {
 	while (pass) {
 		int kong_locked = checkFlag(KONG_LOCKED_START + new_kong, FLAGTYPE_PERMANENT);
 		int unlock_flag = GetKongUnlockedFlag(Player->characterID,new_kong);
-		int kong_freed = checkFlagDuplicate(unlock_flag, FLAGTYPE_PERMANENT);
+		int kong_freed = getItemCount_new(REQITEM_KONG, 0, Player->characterID - 2);
 		if ((!kong_freed) || (kong_locked)) {
 			new_kong = (new_kong + 1) % 5;
 			counter += 1;
@@ -107,7 +107,7 @@ void determineStartKong_PermaLossMode(void) {
 			for (int i = 0; i < 5; i++) {
 				int kong_locked = checkFlag(KONG_LOCKED_START + i,FLAGTYPE_PERMANENT);
 				int unlock_flag = GetKongUnlockedFlag(2 + i,i);
-				int kong_freed = checkFlagDuplicate(unlock_flag, FLAGTYPE_PERMANENT);
+				int kong_freed = getItemCount_new(REQITEM_KONG, 0, i);
 				if ((kong_freed) && (!kong_locked)) {
 					Character = i;
 					return;
@@ -126,7 +126,7 @@ void transitionKong(void) {
 			while (pass) {
 				int kong_locked = checkFlag(KONG_LOCKED_START + new_kong, FLAGTYPE_PERMANENT);
 				int unlock_flag = GetKongUnlockedFlag(Player->characterID,new_kong);
-				int kong_freed = checkFlagDuplicate(unlock_flag, FLAGTYPE_PERMANENT);
+				int kong_freed = getItemCount_new(REQITEM_KONG, 0, Player->characterID - 2);
 				if ((!kong_freed) || (kong_locked)) {
 					new_kong = (new_kong + 1) % 5;
 					counter += 1;

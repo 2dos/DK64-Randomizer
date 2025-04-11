@@ -65,63 +65,19 @@ void handleSentItem(void) {
     unsigned char *file_data = 0;
     switch (FedItem) {
         case TRANSFER_ITEM_GB:
-            {
-                int min_amount = 100;
-                int min_kong = 0;
-                int min_level = 0;
-                for (int level = 0; level < 8; level++) {
-                    for (int kong = 0; kong < 5; kong++) {
-                        int count = MovesBase[kong].gb_count[level];
-                        if (count < min_amount) {
-                            min_amount = count;
-                            min_kong = kong;
-                            min_level = level;
-                        }
-                    }
-                }
-                giveGB(min_kong, min_level);
-                break;
-            }
+            giveGB();
+            break;
         case TRANSFER_ITEM_CROWN:
-            check_count = 10;
-            check_start_flag = FLAG_CROWN_JAPES;
-            file_data = &Rando.crowns_in_file[0];
+            giveItem(REQITEM_CROWN, 0, 0);
+            break;
         case TRANSFER_ITEM_PEARL:
-            if (check_count == -1) {
-                check_count = 5;
-                check_start_flag = FLAG_PEARL_0_COLLECTED;
-                file_data = &Rando.pearls_in_file;
-            }
+            giveItem(REQITEM_PEARL, 0, 0);
+            break;
         case TRANSFER_ITEM_MEDAL:
-            if (check_count == -1) {
-                check_count = 40;
-                if (Rando.isles_cb_rando) {
-                    check_count = 45;
-                }
-                check_start_flag = FLAG_MEDAL_JAPES_DK;
-                file_data = &Rando.medals_in_file[0];
-            }
+            giveItem(REQITEM_PEARL, 0, 0);
+            break;
         case TRANSFER_ITEM_FAIRY:
-            {
-                if (check_count == -1) {
-                    check_count = 20;
-                    check_start_flag = FLAG_FAIRY_1;
-                    file_data = &Rando.fairies_in_file[0];
-                }
-                for (int i = 0; i < check_count; i++) {
-                    int offset = i >> 3;
-                    int shift = i & 7;
-                    if ((file_data[offset] & (1 << shift)) == 0) {
-                        if (!checkFlagDuplicate(check_start_flag + i, FLAGTYPE_PERMANENT)) {
-                            setFlagDuplicate(check_start_flag + i, 1, FLAGTYPE_PERMANENT);
-                            return;
-                        }
-                    }
-                    if ((i == 39) && (FedItem == TRANSFER_ITEM_MEDAL)) {
-                        check_start_flag = FLAG_MEDAL_ISLES_DK - 40;
-                    }
-                }
-            }
+            giveItem(REQITEM_FAIRY, 0, 0);
             break;
         case TRANSFER_ITEM_KEY1:
         case TRANSFER_ITEM_KEY2:
@@ -131,25 +87,30 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_KEY6:
         case TRANSFER_ITEM_KEY7:
         case TRANSFER_ITEM_KEY8:
-            setFlagDuplicate(normal_key_flags[FedItem - TRANSFER_ITEM_KEY1], 1, FLAGTYPE_PERMANENT);
+            giveItem(REQITEM_KEY, FedItem - TRANSFER_ITEM_KEY1, 0);
             auto_turn_keys();
             break;
         case TRANSFER_ITEM_RAINBOWCOIN:
             for (int i = 0; i < 5; i++) {
                 MovesBase[i].coins += 5;
             }
+            giveItem(REQITEM_RAINBOWCOIN, 0, 0);
             break;
-        case TRANSFER_ITEM_FAKEITEM:
+            case TRANSFER_ITEM_FAKEITEM:
             queueIceTrap(ICETRAP_BUBBLE);
+            giveItem(REQITEM_ICETRAP, 0, 0);
             break;
-        case TRANSFER_ITEM_FAKEITEM_SLOW:
+            case TRANSFER_ITEM_FAKEITEM_SLOW:
             queueIceTrap(ICETRAP_SLOWED);
+            giveItem(REQITEM_ICETRAP, 0, 0);
             break;
-        case TRANSFER_ITEM_FAKEITEM_REVERSE:
+            case TRANSFER_ITEM_FAKEITEM_REVERSE:
             queueIceTrap(ICETRAP_REVERSECONTROLS);
+            giveItem(REQITEM_ICETRAP, 0, 0);
             break;
-        case TRANSFER_ITEM_JUNKITEM:
+            case TRANSFER_ITEM_JUNKITEM:
             applyDamageMask(0, 1);
+            giveItem(REQITEM_JUNK, 0, 0);
             break;
         case TRANSFER_ITEM_BABOONBLAST:
         case TRANSFER_ITEM_STRONGKONG:
@@ -237,14 +198,14 @@ void handleSentItem(void) {
                 break;
             }
         case TRANSFER_ITEM_CAMERA:
-            setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, FLAGTYPE_PERMANENT);
+            setFlagMove(FLAG_ABILITY_CAMERA);
             break;
         case TRANSFER_ITEM_SHOCKWAVE:
-            setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
+            setFlagMove(FLAG_ABILITY_SHOCKWAVE);
             break;
         case TRANSFER_ITEM_CAMERASHOCKWAVECOMBO:
-            setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, FLAGTYPE_PERMANENT);
-            setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
+            setFlagMove(FLAG_ABILITY_CAMERA);
+            setFlagMove(FLAG_ABILITY_SHOCKWAVE);
             break;
         default:
         break;

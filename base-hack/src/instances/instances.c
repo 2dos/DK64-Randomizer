@@ -395,7 +395,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				if (param2 == FUNGI_MINECART_GRATE) {
 					initiateLZRTransition(&Rando.fungi_minecart_enter, MAP_FUNGIMINECART, 0);
 				} else if (param2 == FUNGI_BEANCONTROLLER) {
-					return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
+					return getItemCount_new(REQITEM_BEAN, 0, 0);
 				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
 					if (!Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->timer = 70;
@@ -1218,7 +1218,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (index == 0) {
 								return CoinDoorCheck();
 							} else if (index == 1) {
-								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
+								return checkFlag(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
 							} else if (index == 2) {
 								// Disable coin door text
 								return 1;

@@ -36,6 +36,7 @@
 .importobj "obj/src_item rando_ice_trap.o"
 .importobj "obj/src_item rando_item_fixes.o"
 .importobj "obj/src_item rando_item_grab.o"
+.importobj "obj/src_item rando_item_handler.o"
 .importobj "obj/src_item rando_spawning.o"
 .importobj "obj/src_item rando_text.o"
 .importobj "obj/src_misc_bonus.o"

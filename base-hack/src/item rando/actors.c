@@ -167,7 +167,7 @@ void missingShopOwnerCode(int cutscene) {
 }
 
 void crankyCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_CRANKY, FLAGTYPE_PERMANENT)) {
+    if (checkFlag(FLAG_ITEM_CRANKY, FLAGTYPE_PERMANENT)) {
         crankyCode();
         return;
     }
@@ -175,7 +175,7 @@ void crankyCodeHandler(void) {
 }
 
 void funkyCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_FUNKY, FLAGTYPE_PERMANENT)) {
+    if (checkFlag(FLAG_ITEM_FUNKY, FLAGTYPE_PERMANENT)) {
         funkyCode();
         return;
     }
@@ -183,7 +183,7 @@ void funkyCodeHandler(void) {
 }
 
 void candyCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_CANDY, FLAGTYPE_PERMANENT)) {
+    if (checkFlag(FLAG_ITEM_CANDY, FLAGTYPE_PERMANENT)) {
         candyCode();
         return;
     }
@@ -191,7 +191,7 @@ void candyCodeHandler(void) {
 }
 
 void snideCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_SNIDE, FLAGTYPE_PERMANENT)) {
+    if (checkFlag(FLAG_ITEM_SNIDE, FLAGTYPE_PERMANENT)) {
         snideCode();
         return;
     }
@@ -216,10 +216,7 @@ void mermaidCheck(void) {
     /**
      * @brief Set the mermaid control state based on the amount of pearls you have
      */
-    int count = 0;
-    for (int i = 0; i < 5; i++) {
-        count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
-    }
+    int count = getItemCount_new(REQITEM_PEARL, 0, 0);
     if (count == 0) {
         CurrentActorPointer_0->control_state = 0x1E;
     } else if (count < Rando.mermaid_requirement) {
@@ -234,7 +231,7 @@ int fairyQueenCutsceneInit(int start, int count, flagtypes type) {
     /**
      * @brief Set BFI Queen control state based on the amount of fairies you have
      */
-    int fairies_in_possession = countFlagsDuplicate(start, count, type); 
+    int fairies_in_possession = getItemCount_new(REQITEM_FAIRY, 0, 0);
     int fairy_limit = 20;
     if (Rando.rareware_gb_fairies > 0) {
         fairy_limit = Rando.rareware_gb_fairies;

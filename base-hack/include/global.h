@@ -27,7 +27,6 @@ extern int inBossMap(maps map, int include_regular, int include_krool, int inclu
 extern int inMinigame(maps map);
 extern int getBitArrayValue(unsigned char* arr, int value);
 extern int isGamemode(gamemodes target_mode, int force_both);
-extern int has_key(int index);
 extern overlays getOverlayFromMap(maps map);
 extern void* malloc_wipe(int size);
 extern int applyDamageMask(int player_index, int damage);
@@ -87,8 +86,6 @@ extern void adjust_level_modifiers(void);
 extern void handleTimeOfDay(time_of_day_calls call);
 
 extern void initKongRando(void);
-
-extern int getMedalCount(void);
 extern int isMedalFlag(int flag);
 
 extern int convertSubIDToIndex(short obj_index);
@@ -269,12 +266,7 @@ extern void clearSkipCache(void);
 extern void updateSkipCheck(void);
 extern void renderScreenTransitionCheck(int applied_transition);
 extern void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1, int p2);
-extern int checkFlagDuplicate(short flag, flagtypes type);
-extern void setFlagDuplicate(short flag, int set, flagtypes type);
-extern void* updateFlag(flagtypes type, short* flag, void* fba, int source);
 extern void spawnEnemyDrops(actorData* actor);
-extern int countFlagsDuplicate(int start, int count, flagtypes type);
-extern void* checkMove(short* flag, void* fba, int source, int vanilla_flag);
 extern int hasMove(int flag);
 
 extern void finalizeBeatGame(void);
@@ -326,7 +318,7 @@ extern void initHints(void);
 extern void initHintFlags(void);
 
 extern void initTextChanges(void);
-extern void giveGB(int kong, int level);
+extern void giveGB();
 extern void giveRainbowCoin(void);
 extern void giveAmmo(void);
 extern void giveOrange(void);
@@ -448,6 +440,12 @@ extern int canPlayerClimb(void);
 extern purchase_struct* getShopData(vendors vendor, int kong, int level);
 extern void initQoL_Cutscenes(void);
 
+extern void giveItem(requirement_item item, int level, int kong);
+extern int getItemCount_new(requirement_item item, int level, int kong);
+extern int hasFlagMove(int flag);
+extern void setFlagMove(int flag);
+extern int getShopFlag(vendors vendor, int level, int kong);
+
 extern unsigned int cs_skip_db[2];
 extern bonus_barrel_info bonus_data[BONUS_DATA_COUNT];
 extern const short kong_flags[5];
@@ -465,7 +463,6 @@ extern const unsigned char crown_maps[10];
 extern const unsigned char regular_boss_maps[7];
 extern char* levels[10];
 extern unsigned int dark_mode_colors[10];
-extern int flut_size;
 
 extern sprite_data_struct bean_sprite;
 extern sprite_data_struct pearl_sprite;

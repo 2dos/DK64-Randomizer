@@ -16,7 +16,7 @@ static unsigned char isles_maps[] = {
 };
 
 void handle_WTI(void) {
-	if (!checkFlagDuplicate(FLAG_ESCAPE, FLAGTYPE_PERMANENT)) {
+	if (!checkFlag(FLAG_ESCAPE, FLAGTYPE_PERMANENT)) {
 		writeWTI(0);
 		return;
 	}

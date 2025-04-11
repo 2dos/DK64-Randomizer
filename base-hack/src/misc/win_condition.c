@@ -119,7 +119,7 @@ int hasBeatenDKRapWinCon(void) {
                 return 0;
             }
         } else {
-            if (!checkFlagDuplicate(signifier, FLAGTYPE_PERMANENT)) {
+            if (!hasFlagMove(signifier)) {
                 return 0;
             }
         }
@@ -131,7 +131,7 @@ void checkSeedVictory(void) {
     if (!checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
         switch(Rando.win_condition) {
             case GOAL_KEY8:
-                if (checkFlagDuplicate(FLAG_KEYHAVE_KEY8, FLAGTYPE_PERMANENT)) {
+                if (getItemCount_new(REQITEM_KEY, 7, 0)) {
                     beatGame();
                 }
                 break;

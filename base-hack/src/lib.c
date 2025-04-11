@@ -1196,7 +1196,7 @@ sprite_data_struct company_coin_sprite = {
 	},
 };
 
-void giveGB(int kong, int level) {
+void giveGB() {
 	changeCollectableCount(8, 0, 1);
 	displayItemOnHUD(8, 0, 0);
 }
@@ -1391,10 +1391,6 @@ int isGamemode(gamemodes target_mode, int force_both) {
 	return Mode == target_mode;
 }
 
-int has_key(int index) {
-	return checkFlagDuplicate(normal_key_flags[index], FLAGTYPE_PERMANENT);
-}
-
 void* malloc_wipe(int size) {
 	void* ptr = dk_malloc(size);
 	wipeMemory(ptr, size);
@@ -1488,48 +1484,12 @@ void* getFile(int size, int rom) {
 	return loc;
 }
 
-int getMedalCount(void) {
-	int regular_medals = countFlagArray(FLAG_MEDAL_JAPES_DK, 40, FLAGTYPE_PERMANENT);
-	if (Rando.isles_cb_rando) {
-		regular_medals += countFlagArray(FLAG_MEDAL_ISLES_DK, 5, FLAGTYPE_PERMANENT);
-	}
-	return regular_medals;
-}
-
 int isMedalFlag(int flag) {
 	if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
 		return 1;
 	}
 	return isFlagInRange(flag, FLAG_MEDAL_ISLES_DK, 5);
 }
-
-typedef struct flag_counting_struct {
-	/* 0x000 */ short flag_start;
-	/* 0x002 */ unsigned char item_count;
-	/* 0x003 */ unsigned char enabled;
-	/* 0x004 */ short* flag_array;
-} flag_counting_struct;
-
-static flag_counting_struct flag_counters[] = {
-	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_NONE
-	{.flag_start = 0, .item_count = 5, .enabled=2, .flag_array=(short*)&kong_flags}, // REQITEM_KONG
-	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_MOVE
-	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_GOLDENBANANA
-	{.flag_start = FLAG_BP_JAPES_DK_HAS, .item_count = 40, .enabled=1, .flag_array=(short*)0}, // REQITEM_BLUEPRINT
-	{.flag_start = FLAG_FAIRY_1, .item_count = 20, .enabled=1, .flag_array=(short*)0}, // REQITEM_FAIRY
-	{.flag_start = 0, .item_count = 8, .enabled=2, .flag_array=(short*)&normal_key_flags}, // REQITEM_KEY
-	{.flag_start = FLAG_CROWN_JAPES, .item_count = 10, .enabled=1, .flag_array=(short*)0}, // REQITEM_CROWN
-	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_COMPANYCOIN
-	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_MEDAL
-	{.flag_start = FLAG_COLLECTABLE_BEAN, .item_count = 1, .enabled=1, .flag_array=(short*)0}, // REQITEM_BEAN
-	{.flag_start = FLAG_PEARL_0_COLLECTED, .item_count = 5, .enabled=1, .flag_array=(short*)0}, // REQITEM_PEARL
-	{.flag_start = FLAG_RAINBOWCOIN_0, .item_count = 16, .enabled=1, .flag_array=(short*)0}, // REQITEM_RAINBOWCOIN
-	{.flag_start = FLAG_FAKEITEM, .item_count = 16, .enabled=1, .flag_array=(short*)0}, // REQITEM_ICETRAP
-	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_GAMEPERCENTAGE
-	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_COLOREDBANANA
-	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_BOSSES
-	{.flag_start = 0, .item_count = 0, .enabled=0, .flag_array=(short*)0}, // REQITEM_BONUSES
-};
 
 static float percentage_rewards[] = {
 	0.4f, // GBs
@@ -1580,7 +1540,7 @@ int getTotalMoveCount(void) {
 		}
 	}
 	for (int i = 0; i < 4; i++) {
-		if (checkFlagDuplicate(tbarrel_flags[i], FLAGTYPE_PERMANENT)) {
+		if (hasFlagMove(tbarrel_flags[i])) {
 			count += 1;
 		}
 		if (i > 0) {
@@ -1592,7 +1552,7 @@ int getTotalMoveCount(void) {
 			}
 		}
 		if (i < 2) {
-			if (checkFlagDuplicate(bfi_move_flags[i], FLAGTYPE_PERMANENT)) {
+			if (hasFlagMove(bfi_move_flags[i])) {
 				count += 1;
 			}
 		}
@@ -1622,44 +1582,30 @@ dynamic_flag_icetrap_junk isIceTrapFlag(int flag) {
 
 unsigned int cs_skip_db[2] = {0, 0};
 static unsigned char unused_bonus_ids[] = {2, 29, 30, 32, 34, 35, 38, 41, 42, 52};
+static unsigned char use_req_counters[] = {
+	REQITEM_COMPANYCOIN,
+	REQITEM_MEDAL,
+	REQITEM_KONG,
+	REQITEM_BLUEPRINT,
+	REQITEM_FAIRY,
+	REQITEM_CROWN,
+	REQITEM_RAINBOWCOIN,
+	REQITEM_BEAN,
+	REQITEM_PEARL,
+	REQITEM_ICETRAP,
+	REQITEM_KEY,
+};
 
 int getItemCountReq(requirement_item item) {
-	int enabled_state = flag_counters[item].enabled;
-	int item_count = flag_counters[item].item_count;
 	int count = 0;
-	if (enabled_state == 1) {
-		if (item == REQITEM_ICETRAP) {
-			int ice_trap_count = countFlagArray(flag_counters[item].flag_start, item_count, FLAGTYPE_PERMANENT);
-			if (Rando.ice_trap_flag_alloc > 16) {
-				int extra_count = Rando.ice_trap_flag_alloc - 16;
-				ice_trap_count += countFlagArray(FLAG_JUNKITEM, extra_count, FLAGTYPE_PERMANENT);
-			}
-			return ice_trap_count;
-		}
-		return countFlagArray(flag_counters[item].flag_start, item_count, FLAGTYPE_PERMANENT);
-	} else if (enabled_state == 2) {
-		for (int i = 0; i < item_count; i++) {
-			if (checkFlagDuplicate(flag_counters[item].flag_array[i], FLAGTYPE_PERMANENT)) {
-				count += 1;
-			}
-		}
-		return count;
+	if (inU8List(item, &use_req_counters, sizeof(use_req_counters))) {
+		return getItemCount_new(item, -1, -1);
 	}
 	switch(item) {
 		case REQITEM_MOVE:
 			return getTotalMoveCount();
 		case REQITEM_GOLDENBANANA:
 			return getTotalGBs();
-		case REQITEM_COMPANYCOIN:
-			if (checkFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN, FLAGTYPE_PERMANENT)) {
-				count += 1;
-			}
-			if (checkFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN, FLAGTYPE_PERMANENT)) {
-				count += 1;
-			}
-			return count;
-		case REQITEM_MEDAL:
-			return getMedalCount();
 		case REQITEM_GAMEPERCENTAGE:
 			return getGamePercentage();
 		case REQITEM_COLOREDBANANA:

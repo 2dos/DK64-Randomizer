@@ -60,8 +60,7 @@ void cFuncLoop(void) {
 		}
 		if (Rando.quality_of_life.vanilla_fixes) {
 			if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
-				int kong_target = CurrentMap - MAP_KROOLDK;
-				if (!checkFlagDuplicate(kong_flags[kong_target], FLAGTYPE_PERMANENT)) {
+				if (getItemCount_new(REQITEM_KONG, CurrentMap - MAP_KROOLDK, 0) == 0) {
 					exitBoss();
 					Character = Rando.starting_kong;
 				}
@@ -558,8 +557,8 @@ Gfx* displayListModifiers(Gfx* dl) {
 						bp_numerator = 0;
 						bp_denominator = 0;
 						for (int i = 0; i < 8; i++) {
-							int bp_has = checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,FLAGTYPE_PERMANENT);
-							int bp_turn = checkFlagDuplicate(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,FLAGTYPE_PERMANENT);
+							int bp_has = getItemCount_new(REQITEM_BLUEPRINT, i, Character);
+							int bp_turn = checkFlag(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,FLAGTYPE_PERMANENT);
 							if (!bp_turn) {
 								if (bp_has) {
 									bp_numerator += 1;

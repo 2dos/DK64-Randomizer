@@ -41,7 +41,7 @@ typedef enum MEDAL_ITEMS {
     /* 27 */ MEDALITEM_HINT_2, // Lanky
     /* 28 */ MEDALITEM_HINT_3, // Tiny
     /* 29 */ MEDALITEM_HINT_4, // Chunky
-    /* 30 */ MEDALITEM_HINT,
+    /* 30 */ MEDALITEM_AP,
 } MEDAL_ITEMS;
 
 typedef struct item_info {
@@ -107,19 +107,17 @@ void displayMedalOverlay(int flag, int item_type) {
             setPermFlag(flag);
         }
         void* sprite = 0;
-        short flut_flag = flag;
         int kong = getKong(0);
-        updateFlag(FLAGTYPE_PERMANENT, (short*)&flut_flag, (void*)0, -1);
         songs song = item_detection_data[item_type].song;
         int sprite_index = item_detection_data[item_type].sprite;
         helm_hurry_items hh_item = item_detection_data[item_type].helm_hurry_item;
         switch (item_type) {
             case MEDALITEM_GB:
-                giveGB(kong, getWorld(CurrentMap, 1));
+                giveGB();
                 break;
             case MEDALITEM_BP:
                 {
-                    int bp_index = flut_flag - FLAG_BP_JAPES_DK_HAS;
+                    int bp_index = flag - FLAG_BP_JAPES_DK_HAS;
                     int bp_kong = bp_index % 5;
                     if (bp_kong > 4) {
                         bp_kong = 0;
@@ -132,14 +130,14 @@ void displayMedalOverlay(int flag, int item_type) {
                     // Display key text
                     int key_bitfield = 0;
                     for (int i = 0; i < 8; i++) {
-                        if (checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
+                        if (getItemCount_new(REQITEM_KEY, i, 0)) {
                             key_bitfield |= (1 << i);
                         }
                     }
                     setFlag(flag, 1, FLAGTYPE_PERMANENT);
                     int spawned = 0;
                     for (int i = 0; i < 8; i++) {
-                        if ((checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) && ((key_bitfield & (1 << i)) == 0)) {
+                        if ((getItemCount_new(REQITEM_KEY, i, 0)) && ((key_bitfield & (1 << i)) == 0)) {
                             if (!spawned) {
                                 spawnItemOverlay(PURCHASE_FLAG, 0, getKeyFlag(i), 0);
                                 spawned = 1;
@@ -150,7 +148,7 @@ void displayMedalOverlay(int flag, int item_type) {
                 }
                 break;
             case MEDALITEM_SPECIALCOIN:
-                if (flut_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
+                if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
                     // Nintendo Coin
                     sprite_index = 0x8D;
                 } else {
@@ -162,7 +160,7 @@ void displayMedalOverlay(int flag, int item_type) {
                 {
                     int kong_index = -1;
                     for (int i = 0; i < 5; i++) {
-                        if (flut_flag == kong_flags[i]) {
+                        if (flag == kong_flags[i]) {
                             kong_index = i;
                         }
                     }
@@ -262,7 +260,7 @@ void keyGrabHook(int song, float vol) {
     playSong(song, vol);
     int val = 0;
     for (int i = 0; i < 8; i++) {
-        if (checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
+        if (getItemCount_new(REQITEM_KEY, i, 0)) {
             val |= (1 << i);
         }
     }
@@ -301,50 +299,13 @@ void collectKey(void) {
      * @brief Collect a key, display the text and turn in keys
      */
     for (int i = 0; i < 8; i++) {
-        if (checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
+        if (getItemCount_new(REQITEM_KEY, i, 0)) {
             if ((old_keys & (1 << i)) == 0) {
                 spawnItemOverlay(PURCHASE_FLAG, 0, getKeyFlag(i), 0);
             }
         }
     }
     auto_turn_keys();
-}
-
-int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
-    /**
-     * @brief Hook into the item grab function which is called at the point the flag is set. This is a little later
-     * than the generic item grab function
-     * 
-     * @param collectable type of collectable
-     * @param obj_type Object Model 2 Index
-     * @param is_homing Is homing ammo crate
-     * 
-     * @return Collectable Offset
-     */
-    if (Rando.item_rando) {
-        int is_acceptable_item = inShortList(obj_type, &acceptable_items, sizeof(acceptable_items) >> 1);
-        if (obj_type == 0x13C) {
-            collectKey();
-        } else {
-            if (inBossMap(CurrentMap, 1, 1, 0)) {
-                if (is_acceptable_item) {
-                    setAction(0x41, 0, 0);
-                }
-            }
-        }
-        if (obj_type != 0x18D) {
-            if (inBattleCrown(CurrentMap)) {
-                if (is_acceptable_item) {
-                    setAction(0x42, 0, 0);
-                }
-            }
-        }
-        if ((obj_type >= 0x257) && (obj_type <= 0x25B)) {
-            // Kong Items
-            refreshItemVisibility();
-        }
-    }
-    return getCollectableOffset(collectable_type, obj_type, is_homing);
 }
 
 Gfx* controlKeyText(Gfx* dl) {
@@ -417,14 +378,11 @@ void giveItemFromModel(int model, int flag, int go_through_flut) {
     int key_bitfield = 0;
     if (model == 0x69) {
         // GB
-        int world = getWorld(CurrentMap, 1);
-        if (world < 9) {
-            giveGB(Character, world);
-        }
+        giveGB();
     } else if (model == 0xF5) {
         // Key
         for (int i = 0; i < 8; i++) {
-            if (checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
+            if (getItemCount_new(REQITEM_KEY, i, 0)) {
                 key_bitfield |= (1 << i);
             }
         }
@@ -432,16 +390,12 @@ void giveItemFromModel(int model, int flag, int go_through_flut) {
         // Fake Item
         queueIceTrap(ice_trap_type);
     }
-    if (go_through_flut) {
-        setPermFlag(flag);
-    } else {
-        setFlagDuplicate(flag, 1, FLAGTYPE_PERMANENT);
-    }
+    setPermFlag(flag);
     if (model == 0xF5) {
         // Key - Post flag set
         int spawned = 0;
         for (int i = 0; i < 8; i++) {
-            if ((checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) && ((key_bitfield & (1 << i)) == 0)) {
+            if ((getItemCount_new(REQITEM_KEY, i, 0)) && ((key_bitfield & (1 << i)) == 0)) {
                 if (!spawned) {
                     spawnItemOverlay(PURCHASE_FLAG, 0, getKeyFlag(i), 0);
                     spawned = 1;
@@ -810,7 +764,7 @@ int getObjectCollectability(int id, int unk1, int model2_type) {
         // if (CurrentMap == MAP_TBARREL_ORANGE) { // Orange Barrel
         //     return 1;
         // }
-        // return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
+        // return hasFlagMove(FLAG_TBARREL_ORANGE);
     } else if (model2_type == 0x90) {
         // Medal
         if (CurrentMap == MAP_HELM) {
@@ -824,7 +778,7 @@ int getObjectCollectability(int id, int unk1, int model2_type) {
     } else if (model2_type == 0x98) {
         // Film
         return 1;
-        // return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
+        // return hasFlagMove(FLAG_ABILITY_CAMERA);
     }
     int collectable_state = _object->collectable_state;
     if (((collectable_state & 8) == 0) || (Player->new_kong == 2)) {
@@ -882,10 +836,10 @@ int isCollectable(int type) {
     //     return MovesBase[(int)Character].weapon_bitfield & 1;
     // } else if (type == 0x98) {
     //     // Film
-    //     return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
+    //     return hasFlagMove(FLAG_ABILITY_CAMERA);
     // } else if (type == 0x56) {
     //     // Oranges
-    //     return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
+    //     return hasFlagMove(FLAG_TBARREL_ORANGE);
     // }
     return 1;
 }
@@ -896,5 +850,220 @@ void handleModelTwoOpacity(short object_type, unsigned char* unk0, short* opacit
         if (*opacity > 100) {
             *opacity = 100;
         }
+    }
+}
+
+void getFlagMappingData(int index, char *level, char *kong) {
+    int id = getObjectID(index);
+    int flag = -1;
+    for (int i = 0; i < sizeof(new_flag_mapping)/sizeof(GBDictItem); i++) {
+        if (new_flag_mapping[i].map == CurrentMap) {
+            if (new_flag_mapping[i].model2_id == id) {
+                flag = new_flag_mapping[i].flag_index;
+                break;
+            }
+        }
+    }
+    if (flag == -1) {
+        // Check actor spawned flag mapping
+        for (int i = 0; i < 24; i++) {
+            if (actorSpawnedFlagMapping[i].map == CurrentMap) {
+                if (actorSpawnedFlagMapping[i].model2_id == id) {
+                    flag = actorSpawnedFlagMapping[i].flag_index;
+                    break;
+                }
+            }
+        }
+    }
+    if (flag != -1) {
+        // Check ItemIdentifier
+        for (int i = 0; i < sizeof(ItemIdentifier)/sizeof(ItemIdentifierStruct); i++) {
+            if (ItemIdentifier[i].input_flag == flag) {
+                *level = ItemIdentifier[i].level;
+                *kong = ItemIdentifier[i].kong;
+                return;
+            }
+        } 
+    }
+}
+
+void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index) {
+    // rewrite of coincbcollecthandle
+    // Added index as 4th arg
+    if ((MapProperties.in_training) && (obj_type != 0x56)) {
+        *(char*)(0x80029FA0) = *(char*)(0x80029FA0) - 1;
+        return;
+    }
+    if (CurrentMap == MAP_SNIDE) {
+        return;
+    }
+    int save_game = 0;
+    int collectable_type = -1;
+    char item_level = -1;
+    char item_kong = -1;
+    getFlagMappingData(index, &item_level, &item_kong);
+    int is_acceptable_item = inShortList(obj_type, &acceptable_items, sizeof(acceptable_items) >> 1);
+    if (obj_type != 0x13C) {
+        if (inBossMap(CurrentMap, 1, 1, 0)) {
+            if (is_acceptable_item) {
+                setAction(0x41, 0, 0);
+            }
+        }
+    }
+    if (obj_type != 0x18D) {
+        if (inBattleCrown(CurrentMap)) {
+            if (is_acceptable_item) {
+                setAction(0x42, 0, 0);
+            }
+        }
+    }
+    switch (obj_type) {
+        case 0x1C:
+        case 0x1D:
+        case 0x23:
+        case 0x24:
+        case 0x27:
+            // Coins
+            setPermFlag(0x18C);
+            changeCollectableCount(1, player, 1);
+            break;
+        case 0x48:
+            // Nintendo Coin
+            giveItem(REQITEM_COMPANYCOIN, 0, 0);
+            break;
+        case 0x56:
+            // Orange
+            setPermFlag(0x173);
+            changeCollectableCount(4, player, 1);
+            break;
+        case 0x57:
+        case 0x25E:
+            // Watermelon
+            applyDamage(player, 1);
+            break;
+        case 0x8E:
+            // Crystal
+            changeCollectableCount(5, player, 150);
+            break;
+        case 0x90:
+            giveItem(REQITEM_MEDAL, 0, 0);
+            break;
+        case 0x98:
+            // Film
+            changeCollectableCount(6, player, 1);
+            break;
+        case 0xB7:
+            // Rainbow Coin
+            for (int i = 0; i < 5; i++) {
+                MovesBase[i].coins += 5;
+            }
+            RainbowCoinFTT();
+            break;
+        case 0xDD:
+        case 0xDE:
+        case 0xDF:
+        case 0xE0:
+        case 0xE1:
+            // Blueprint
+            giveItem(REQITEM_BLUEPRINT, item_level, item_kong);
+            save_game = 1;
+            break;
+        case 0xEC:
+            // Race Coin
+            changeCollectableCount(11, player, 1);
+            break;
+        case 0x13C:
+            // Boss Key
+            giveItem(REQITEM_KEY, item_level, 0);
+            collectKey();
+            save_game = 1;
+            break;
+        case 0x91:
+        case 0x15D:
+        case 0x15E:
+        case 0x15F:
+        case 0x160:
+            // Single Ammo
+            collectable_type = is_homing ? 3 : 2;
+            playSound(0x331, 0x7FFF, 63.0f, 1.0f, 5, 0);
+        case 0x0A:
+        case 0x0D:
+        case 0x16:
+        case 0x1E:
+        case 0x1F:
+            // CB Single
+            if (collectable_type == -1) {
+                collectable_type = 0;
+            }
+            setPermFlag(0x18B);
+            changeCollectableCount(collectable_type, player, 1);
+            break;
+        case 0x18D:
+            // Crown
+            giveItem(REQITEM_CROWN, 0, 0);
+            save_game = 1;
+            break;
+        case 0x198:
+            giveItem(REQITEM_BEAN, 0, 0);
+            break;
+        case 0x1B4:
+            giveItem(REQITEM_PEARL, 0, 0);
+            break;
+        case 0x1D2:
+            // Coin Multi
+            changeCollectableCount(1, player, 1);
+            break;
+        case 0x74: // Regular GB
+        case 0x288: // Rareware GB
+            changeCollectableCount(8, player, 1);
+            save_game = 1;
+            break;
+        case 0x5B:
+        case 0x1F2:
+        case 0x59:
+        case 0x1F3:
+        case 0x1F5:
+        case 0x1F6:
+            // Potion
+            giveItem(REQITEM_MOVE, item_level, item_kong);
+            break;
+        case 0x257:
+        case 0x258:
+        case 0x259:
+        case 0x25A:
+        case 0x25B:
+            // Kong Item
+            refreshItemVisibility();
+            giveItem(REQITEM_KONG, item_level, item_kong);
+            break;
+        case 0x25C:
+            giveItem(REQITEM_FAIRY, 0, 0);
+            break;
+        case 0x25D:
+        case 0x264:
+        case 0x265:
+        case 0x292:
+        case 0x293:
+        case 0x294:
+        case 0x295:
+        case 0x296:
+        case 0x297:
+            giveItem(REQITEM_ICETRAP, 0, 0);
+            break;
+        case 0x27E:
+        case 0x289:
+        case 0x28A:
+        case 0x28B:
+        case 0x28C:
+            // Hint
+            giveItem(REQITEM_HINT, item_level, item_kong);
+            break;
+        case 0x28F:
+            // Rareware Coin
+            giveItem(REQITEM_COMPANYCOIN, 0, 1);
+            break;
+    }
+    if (save_game) {
+        save();
     }
 }

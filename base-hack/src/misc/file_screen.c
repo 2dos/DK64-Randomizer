@@ -345,9 +345,9 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_HUNKY:
 			return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_HUNKY;
 		case TRACKER_TYPE_CAMERA:
-			return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
+			return hasFlagMove(FLAG_ABILITY_CAMERA);
 		case TRACKER_TYPE_SHOCKWAVE:
-			return checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT);
+			return hasFlagMove(FLAG_ABILITY_SHOCKWAVE);
 		case TRACKER_TYPE_SLAM:
 		case TRACKER_TYPE_SLAM_HAS:
 			return MovesBase[KONG_DK].simian_slam;
@@ -356,15 +356,15 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_SNIPER:
 			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_SNIPER;
 		case TRACKER_TYPE_CLIMB:
-			return checkFlagDuplicate(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
+			return checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_DIVE:
-			return checkFlagDuplicate(FLAG_TBARREL_DIVE, FLAGTYPE_PERMANENT);
+			return hasFlagMove(FLAG_TBARREL_DIVE);
 		case TRACKER_TYPE_ORANGE:
-			return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
+			return hasFlagMove(FLAG_TBARREL_ORANGE);
 		case TRACKER_TYPE_BARREL:
-			return checkFlagDuplicate(FLAG_TBARREL_BARREL, FLAGTYPE_PERMANENT);
+			return hasFlagMove(FLAG_TBARREL_BARREL);
 		case TRACKER_TYPE_VINE:
-			return checkFlagDuplicate(FLAG_TBARREL_VINE, FLAGTYPE_PERMANENT);
+			return hasFlagMove(FLAG_TBARREL_VINE);
 		case TRACKER_TYPE_MELON_2:
 			for (int i = 0; i < 5; i++) {
 				if (MovesBase[i].instrument_bitfield != 0) {
@@ -402,7 +402,7 @@ int getEnabledState(int index) {
 			{
 				// Keys in
 				int key_index = index - TRACKER_TYPE_KEY1;
-				int key_there = has_key(key_index);
+				int key_there = getItemCount_new(REQITEM_KEY, key_index, 0);
 				if (!key_there) {
 					if (Rando.keys_preturned & (1 << key_index)) {
 						key_there = 1;
@@ -414,7 +414,7 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_FUNKY:
 		case TRACKER_TYPE_CANDY:
 		case TRACKER_TYPE_SNIDE:
-			return checkFlagDuplicate(FLAG_ITEM_CRANKY + (index - TRACKER_TYPE_CRANKY), FLAGTYPE_PERMANENT);
+			return checkFlag(FLAG_ITEM_CRANKY + (index - TRACKER_TYPE_CRANKY), FLAGTYPE_PERMANENT);
 		default:
 			break;
 	}

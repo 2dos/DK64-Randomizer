@@ -725,7 +725,7 @@ void tagAnywhereInit(int is_homing, int model2_id, int obj) {
      * @brief Initialize certain aspects of Tag Anywhere
      */
     assessFlagMapping(CurrentMap, model2_id);
-    coinCBCollectHandle(0, obj, is_homing);
+    updateItemTotalsHandler(0, obj, is_homing);
 }
 
 typedef struct sfx_cache_item {
@@ -801,7 +801,7 @@ void tagAnywhereAmmo(int player, int obj, int is_homing) {
      * This function handles these changes
      * 
      */
-    coinCBCollectHandle(player, obj, is_homing);
+    updateItemTotalsHandler(player, obj, is_homing);
     int id = 0;
     if (LatestCollectedObject) {
         id = LatestCollectedObject->id;

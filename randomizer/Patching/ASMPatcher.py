@@ -995,7 +995,6 @@ def patchAssembly(ROM_COPY, spoiler):
     if IsItemSelected(settings.cb_rando_enabled, settings.cb_rando_list_selected, Levels.JungleJapes):
         writeValue(ROM_COPY, 0x8069C2FC, Overlay.Static, 0, offset_dict, 4)  # Japes Bunch
     if IsItemSelected(settings.cb_rando_enabled, settings.cb_rando_list_selected, Levels.DKIsles):
-        writeFunction(ROM_COPY, 0x806ABF48, Overlay.Static, "getMedalCount", offset_dict)
         writeValue(ROM_COPY, 0x806AA458, Overlay.Static, 0, offset_dict, 4)  # Show CBs on Pause Menu (Main Screen)
         writeValue(ROM_COPY, 0x806AA858, Overlay.Static, 0, offset_dict, 4)  # Show CBs on Pause Menu (Level Kong Screen)
         # TODO: Work on Level Totals screen - this one is a bit more complicated

@@ -122,6 +122,8 @@ extern void CrownGet(void);
 extern void updateModel(void* data);
 extern void bounceObjectCode(int convert_to_model_two);
 
+extern int getObjectID(int index);
+
 extern void updateCamera(void* mtx_i);
 extern void spawnKeyTwinklies(void *actor);
 
@@ -320,6 +322,9 @@ extern void GoldenBananaCode(void);
 extern void BossKeyCode(void);
 
 extern void resetLankyKR(void);
+
+extern int getPickupCollisionIndex(int type);
+extern void RainbowCoinFTT(void);
 
 extern void unkSpriteRenderFunc(int unk0);
 extern void unkSpriteRenderFunc_0(void);
@@ -815,6 +820,8 @@ extern float BackflipVelArray[7];
 extern SingleExitStruct DefaultExit;
 extern FogData EnvironmentFog;
 
+extern GBDictItem actorSpawnedFlagMapping[];
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;
@@ -856,7 +863,7 @@ extern unsigned char WinCondition;
 extern unsigned char ChunkyModel;
 extern unsigned char EnemyInView;
 extern unsigned char ItemRandoOn;
-extern short ItemRando_FLUT[0x320];
+extern ItemIdentifierStruct ItemIdentifier[0x190];
 extern unsigned char KasplatSpawnBitfield;
 extern char KrushaSlot;
 extern unsigned char TextItemName;

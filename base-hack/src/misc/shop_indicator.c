@@ -6,67 +6,20 @@ static short flag_purchase_types[] = {
 	PURCHASE_ICEBUBBLE,
 	PURCHASE_ICEREVERSE,
 	PURCHASE_ICESLOW,
+	PURCHASE_ARCHIPELAGO,
+	PURCHASE_MEDAL,
+	PURCHASE_CROWN,
+	PURCHASE_RAINBOWCOIN,
+	PURCHASE_FAIRY,
+	PURCHASE_NINTENDOCOIN,
+	PURCHASE_RAREWARECOIN,
+	PURCHASE_BEAN,
+	PURCHASE_PEARL,
+	PURCHASE_HINT,
+	PURCHASE_BLUEPRINT,
+	PURCHASE_KEY,
+	PURCHASE_KONG,
 };
-
-int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
-	if (kong > 4) {
-		kong = 0;
-	}
-	if (purchase_type != -1) {
-		if (purchase_value != 0) {
-			if (purchase_type == PURCHASE_MOVES) {
-				if (MovesBase[kong].special_moves & (1 << (purchase_value - 1))) {
-					return 0;
-				} else {
-					return 1;
-				}
-			} else if (purchase_type == PURCHASE_SLAM) {
-				if (MovesBase[kong].simian_slam >= purchase_value) {
-					return 0;
-				} else {
-					return 2;
-				}
-			} else if (purchase_type == PURCHASE_GUN) {
-				if (MovesBase[kong].weapon_bitfield & (1 << (purchase_value - 1))) {
-					return 0;
-				} else {
-					if (purchase_value == 1) {
-						return 1;
-					} else {
-						return 3;
-					}
-				}
-			} else if (purchase_type == PURCHASE_AMMOBELT) {
-				if (MovesBase[kong].ammo_belt >= purchase_value) {
-					return 0;
-				} else {
-					return 4;
-				}
-			} else if (purchase_type == PURCHASE_INSTRUMENT) {
-				if (MovesBase[kong].instrument_bitfield & (1 << (purchase_value - 1))) {
-					return 0;
-				} else {
-					if (purchase_value == 1) {
-						return 1;
-					} else {
-						return 5;
-					}
-				}
-			} else if (inShortList(purchase_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
-				if (purchase_value == -2) { // Shockwave & Camera Combo
-					if ((!checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT)) || (!checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT))) {
-						return 1;
-					}
-				} else {
-					if (!checkFlagDuplicate(purchase_value, FLAGTYPE_PERMANENT)) {
-						return 1;
-					}
-				}
-			}
-		}
-	}
-	return 0;
-}
 
 #define MOVEBTF_DK 1
 #define MOVEBTF_DIDDY 2
@@ -161,55 +114,20 @@ int getCounterItem(vendors shop_index, int kong, int level) {
 			case PURCHASE_FLAG:
 				{
 					int flag = data->purchase_value;
-					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
-						return COUNTER_BP;
-					} else if (isMedalFlag(flag)) {
-						return COUNTER_MEDAL;
-					} else if (isFlagInRange(flag, FLAG_CROWN_JAPES, 10)) {
-						return COUNTER_CROWN;
-					} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
-						return COUNTER_NINCOIN;
-					} else if (flag == FLAG_COLLECTABLE_RAREWARECOIN) {
-						return COUNTER_RWCOIN;
-					} else if (flag == FLAG_COLLECTABLE_BEAN) {
-						return COUNTER_BEAN;
-					} else if (isFlagInRange(flag, FLAG_PEARL_0_COLLECTED, 5)) {
-						return COUNTER_PEARL;
-					} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
-						return COUNTER_FAIRY;
-					} else if (isFlagInRange(flag, FLAG_WRINKLYVIEWED, 35)) {
-						return COUNTER_HINT;
-					} else if (isFlagAPItem(flag)) {
-						return COUNTER_AP;
-					} else if (isFlagInRange(flag, FLAG_RAINBOWCOIN_0, 16)) {
-						return COUNTER_RAINBOWCOIN;
-					} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
-						return COUNTER_FAKEITEM;
-					} else {
-						if (isTBarrelFlag(flag)) {
-							return COUNTER_POTION;
-						}
-						if (isFairyFlag(flag)) {
-							return COUNTER_POTION;
-						}
-						if (flag == FLAG_ABILITY_CLIMBING) {
-							return COUNTER_POTION;
-						}
-						int subtype = getMoveProgressiveFlagType(flag);
-						if (subtype >= 0) {
-							return COUNTER_POTION;
-						}
-						for (int i = 0; i < 8; i++) {
-							if (flag == getKeyFlag(i)) {
-								return COUNTER_KEY;
-							}
-						}
-						for (int i = 0; i < 5; i++) {
-							if (flag == getKongFlag(i)) {
-								return COUNTER_DK_FACE + i;
-							}
-						}
+					if (isTBarrelFlag(flag)) {
+						return COUNTER_POTION;
 					}
+					if (isFairyFlag(flag)) {
+						return COUNTER_POTION;
+					}
+					if (flag == FLAG_ABILITY_CLIMBING) {
+						return COUNTER_POTION;
+					}
+					int subtype = getMoveProgressiveFlagType(flag);
+					if (subtype >= 0) {
+						return COUNTER_POTION;
+					}
+					
 				}
 				break;
 			case PURCHASE_GB:
@@ -218,6 +136,38 @@ int getCounterItem(vendors shop_index, int kong, int level) {
 			case PURCHASE_ICEREVERSE:
 			case PURCHASE_ICESLOW:
 				return COUNTER_FAKEITEM;
+			case PURCHASE_ARCHIPELAGO:
+				return COUNTER_AP;
+			case PURCHASE_MEDAL:
+				return COUNTER_MEDAL;
+			case PURCHASE_CROWN:
+				return COUNTER_CROWN;
+			case PURCHASE_RAINBOWCOIN:
+				return COUNTER_RAINBOWCOIN;
+			case PURCHASE_FAIRY:
+				return COUNTER_FAIRY;
+			case PURCHASE_NINTENDOCOIN:
+				return COUNTER_NINCOIN;
+			case PURCHASE_RAREWARECOIN:
+				return COUNTER_RWCOIN;
+			case PURCHASE_BEAN:
+				return COUNTER_BEAN;
+			case PURCHASE_PEARL:
+				return COUNTER_PEARL;
+			case PURCHASE_HINT:
+				return COUNTER_HINT;
+			case PURCHASE_BLUEPRINT:
+				return COUNTER_BP;
+			case PURCHASE_KEY:
+				return COUNTER_KEY;
+			case PURCHASE_KONG:
+				{
+					for (int i = 0; i < 5; i++) {
+						if (data->purchase_value == getKongFlag(i)) {
+							return COUNTER_DK_FACE + i;
+						}
+					}
+				}
 			break;
 		}
 	}
@@ -232,22 +182,23 @@ void getMoveCountInShop(counter_paad* paad, vendors shop_index) {
 	if (level < LEVEL_COUNT) {
 		for (int i = 0; i < 5; i++) {
 			purchase_struct* data = getShopData(shop_index, i, level);
-			if (data) {
-				possess = doesKongPossessMove(data->purchase_type, data->purchase_value, data->move_kong);
-			}
-			if ((possess == 1) && (isSharedMove(shop_index, level))) {
-				possess = 7;
-			}
-			if (possess == 1) {
-				paad->kong_images[slot] = i + 1;
-				paad->item_images[slot] = getCounterItem(shop_index, i, level);
-				slot += 1;
-				count += 1;
-			} else if (possess > 1) {
-				paad->kong_images[0] = COUNTER_SHARED_FACE;
-				paad->item_images[0] = getCounterItem(shop_index, i, level);
-				paad->cap = 1;
-				return;
+			if (data->purchase_type != PURCHASE_NOTHING) {
+				// Shop is some item
+				int shop_flag = getShopFlag(shop_index, level, i);
+				if (!checkFlag(shop_flag, FLAGTYPE_PERMANENT)) {
+					// Doesn't own move
+					if (isSharedMove(shop_index, level)) {
+						paad->kong_images[0] = COUNTER_SHARED_FACE;
+						paad->item_images[0] = getCounterItem(shop_index, i, level);
+						paad->cap = 1;
+						return;
+					} else {
+						paad->kong_images[slot] = i + 1;
+						paad->item_images[slot] = getCounterItem(shop_index, i, level);
+						slot += 1;
+						count += 1;
+					}
+				}
 			}
 		}
 	}

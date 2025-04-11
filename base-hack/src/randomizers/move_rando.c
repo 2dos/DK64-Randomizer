@@ -6,6 +6,19 @@ static short flag_purchase_types[] = {
 	PURCHASE_ICEBUBBLE,
 	PURCHASE_ICEREVERSE,
 	PURCHASE_ICESLOW,
+	PURCHASE_ARCHIPELAGO,
+	PURCHASE_MEDAL,
+	PURCHASE_CROWN,
+	PURCHASE_RAINBOWCOIN,
+	PURCHASE_FAIRY,
+	PURCHASE_NINTENDOCOIN,
+	PURCHASE_RAREWARECOIN,
+	PURCHASE_BEAN,
+	PURCHASE_PEARL,
+	PURCHASE_HINT,
+	PURCHASE_BLUEPRINT,
+	PURCHASE_KEY,
+	PURCHASE_KONG,
 };
 
 typedef enum KeySubtitleEnum {
@@ -40,44 +53,6 @@ static unsigned char key_subtitle_indexes[] = {
 void moveTransplant(void) {
 	int size = 126 * sizeof(purchase_struct);
 	copyFromROM(0x1FEF800,&CrankyMoves_New[0][0].purchase_type,&size,0,0,0,0);
-}
-
-void progressiveChange(int flag) {
-	if (!checkFlagDuplicate(flag, FLAGTYPE_PERMANENT)) {
-		int subtype = getMoveProgressiveFlagType(flag);
-		if (subtype == 0) {
-			// Slam
-			giveSlamLevel();
-		} else if (subtype == 1) {
-			// Belt
-			int belt_level = MovesBase[0].ammo_belt + 1;
-			for (int i = 0; i < 5; i++) {
-				MovesBase[i].ammo_belt = belt_level;
-			}
-		} else if (subtype == 2) {
-			// Instrument upgrade
-			int ins_level = 0;
-			for (int i = 1; i < 4; i++) {
-				if (MovesBase[0].instrument_bitfield & (1 << i)) {
-					ins_level = i;
-				}
-			}
-			if (ins_level > 0) {
-				if (CollectableBase.Melons < 3) {
-					CollectableBase.Melons = 3;
-					CollectableBase.Health = CollectableBase.Melons << 2;
-				}
-			} else {
-				if (CollectableBase.Melons < 2) {
-					CollectableBase.Melons = 2;
-					CollectableBase.Health = CollectableBase.Melons << 2;
-				}
-			}
-			for (int i = 0; i < 5; i++) {
-				MovesBase[i].instrument_bitfield |= (1 << (ins_level + 1));
-			}
-		}
-	}
 }
 
 int getMoveProgressiveFlagType(int flag) {
@@ -141,43 +116,8 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 				p_kong = 0;
 			}
 			if (p_type > -1) {
-				switch (p_type) {
-					case PURCHASE_MOVES:
-						if ((MovesBase[p_kong].special_moves & (1 << (p_value - 1))) == 0) {
-							has_purchase = 1;
-						}
-						break;
-					case PURCHASE_GUN:
-						if ((MovesBase[p_kong].weapon_bitfield & (1 << (p_value - 1))) == 0) {
-							has_purchase = 1;
-						}
-						break;
-					case PURCHASE_INSTRUMENT:
-						if ((MovesBase[p_kong].instrument_bitfield & (1 << (p_value - 1))) == 0) {
-							has_purchase = 1;
-						}
-						break;
-					case PURCHASE_SLAM:
-						if (MovesBase[p_kong].simian_slam < p_value) {
-							has_purchase = 1;
-						}
-						break;
-					case PURCHASE_AMMOBELT:
-						if (MovesBase[p_kong].ammo_belt < p_value) {
-							has_purchase = 1;
-						}
-					case PURCHASE_GB:
-					case PURCHASE_FLAG:
-					case PURCHASE_ICEBUBBLE:
-					case PURCHASE_ICEREVERSE:
-					case PURCHASE_ICESLOW:
-						if (p_value == -2) {
-							has_purchase = 1 ^ (checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT) & checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT));
-						} else {
-							has_purchase = 1 ^ checkFlagDuplicate(p_value, FLAGTYPE_PERMANENT);
-						}
-					break;
-				}
+				int shop_flag = getShopFlag(shop_owner - 0xBD, world, Character);
+				has_purchase = checkFlag(shop_flag, FLAGTYPE_PERMANENT) == 0;
 				if (has_purchase) {
 					paad->purchase_type = p_type;
 					int p_price = selected->price;
@@ -206,136 +146,111 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	paad->melons = CollectableBase.Melons;
 }
 
-purchase_classification getPurchaseClassification(int purchase_type, int flag) {
-	if ((purchase_type == PURCHASE_MOVES) || (purchase_type == PURCHASE_SLAM)) {
-		return PCLASS_MOVE;
-	} else if ((purchase_type == PURCHASE_AMMOBELT) || (purchase_type == PURCHASE_GUN)) {
-		return PCLASS_GUN;
-	} else if (purchase_type == PURCHASE_INSTRUMENT) {
-		return PCLASS_INSTRUMENT;
-	} else if (purchase_type == PURCHASE_GB) {
-		return PCLASS_GB;
-	} else if (purchase_type == PURCHASE_FLAG) {
-		int subtype = getMoveProgressiveFlagType(flag);
-		if (subtype == 0) {
-			return PCLASS_MOVE;
-		} else if (subtype == 1) {
-			return PCLASS_GUN;
-		} else if (subtype == 2) {
-			return PCLASS_INSTRUMENT;
-		}
-		if (flag == -2) {
-			return PCLASS_CAMSHOCK;
-		} else if (isTBarrelFlag(flag)) {
-			return PCLASS_MOVE;
-		} else if (flag == FLAG_ABILITY_CAMERA) {
-			return PCLASS_CAMERA;
-		} else if (flag == FLAG_ABILITY_SHOCKWAVE) {
-			return PCLASS_SHOCKWAVE;
-		} else if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
-			return PCLASS_BLUEPRINT;
-		} else if (isFlagInRange(flag, FLAG_WRINKLYVIEWED, 35)) {
-			return PCLASS_HINT;
-		} else if (isMedalFlag(flag)) {
-			return PCLASS_MEDAL;
-		} else if ((flag == FLAG_COLLECTABLE_NINTENDOCOIN) || (flag == FLAG_COLLECTABLE_RAREWARECOIN)) {
-			return PCLASS_COMPANYCOIN;
-		} else if (isFlagInRange(flag, FLAG_CROWN_JAPES, 10)) {
-			return PCLASS_CROWN;
-		} else if (flag == FLAG_COLLECTABLE_BEAN) {
-			return PCLASS_BEAN;
-		} else if (isFlagInRange(flag, FLAG_PEARL_0_COLLECTED, 5)) {
-			return PCLASS_PEARL;
-		} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
-			return PCLASS_FAIRY;
-		} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
-			return PCLASS_FAKEITEM;
-		} else {
-			for (int i = 0; i < 8; i++) {
-				if (flag == getKeyFlag(i)) {
-					return PCLASS_KEY;
+helm_hurry_items getHelmHurryFromPurchase(int purchase_type, int flag) {
+	switch (purchase_type) {
+		case PURCHASE_MOVES:
+		case PURCHASE_SLAM:
+		case PURCHASE_GUN:
+		case PURCHASE_AMMOBELT:
+		case PURCHASE_INSTRUMENT:
+			return HHITEM_MOVE;
+		case PURCHASE_GB:
+			return HHITEM_GB;
+		case PURCHASE_FLAG:
+			{
+				int subtype = getMoveProgressiveFlagType(flag);
+				if ((subtype >= 0) && (subtype <= 2)) {
+					return HHITEM_MOVE;
+				}
+				if (flag == -2) {
+					return HHITEM_MOVE;
+				} else if (isTBarrelFlag(flag)) {
+					return HHITEM_MOVE;
+				} else if (flag == FLAG_ABILITY_CAMERA) {
+					return HHITEM_MOVE;
+				} else if (flag == FLAG_ABILITY_SHOCKWAVE) {
+					return HHITEM_MOVE;
 				}
 			}
-		}
-	} else if ((purchase_type >= PURCHASE_ICEBUBBLE) && (purchase_type <= PURCHASE_ICESLOW)) {
-		return PCLASS_FAKEITEM;
+			break;
+		case PURCHASE_BLUEPRINT:
+			return HHITEM_BLUEPRINT;
+		// case PURCHASE_HINT:
+		// 	return HHITEM_NOTHING;
+		case PURCHASE_MEDAL:
+			return HHITEM_MEDAL;
+		case PURCHASE_NINTENDOCOIN:
+		case PURCHASE_RAREWARECOIN:
+			return HHITEM_COMPANYCOIN;
+		case PURCHASE_CROWN:
+			return HHITEM_CROWN;
+		case PURCHASE_BEAN:
+			return HHITEM_BEAN;
+		case PURCHASE_PEARL:
+			return HHITEM_PEARL;
+		case PURCHASE_FAIRY:
+			return HHITEM_FAIRY;
+		case PURCHASE_ICEBUBBLE:
+		case PURCHASE_ICEREVERSE:
+		case PURCHASE_ICESLOW:
+			return HHITEM_FAKEITEM;
+		case PURCHASE_KEY:
+			return HHITEM_KEY;
 	}
-	return PCLASS_NOTHING;
+	return HHITEM_NOTHING;
 }
 
-static helm_hurry_items hh_item_list[] = {
-	HHITEM_NOTHING, // PCLASS_NOTHING,
-	HHITEM_MOVE, // PCLASS_MOVE,
-	HHITEM_MOVE, // PCLASS_INSTRUMENT,
-	HHITEM_MOVE, // PCLASS_GUN,
-	HHITEM_MOVE, // PCLASS_CAMERA,
-	HHITEM_MOVE, // PCLASS_SHOCKWAVE,
-	HHITEM_MOVE, // PCLASS_CAMSHOCK,
-	HHITEM_NOTHING, // PCLASS_GB, - Handled separately
-	HHITEM_BLUEPRINT, // PCLASS_BLUEPRINT,
-	HHITEM_COMPANYCOIN, // PCLASS_COMPANYCOIN,
-	HHITEM_MEDAL, // PCLASS_MEDAL,
-	HHITEM_RAINBOWCOIN, // PCLASS_RAINBOWCOIN,
-	HHITEM_KEY, // PCLASS_KEY,
-	HHITEM_CROWN, // PCLASS_CROWN,
-	HHITEM_BEAN, // PCLASS_BEAN,
-	HHITEM_PEARL, // PCLASS_PEARL,
-	HHITEM_KONG, // PCLASS_KONG,
-	HHITEM_FAIRY, // PCLASS_FAIRY,
-	HHITEM_FAKEITEM, // PCLASS_FAKEITEM,
-};
-
 void addHelmHurryPurchaseTime(int purchase_type, int flag) {
-	purchase_classification pclass = getPurchaseClassification(purchase_type, flag);
-	helm_hurry_items hh_item = hh_item_list[(int)pclass];
+	helm_hurry_items hh_item = getHelmHurryFromPurchase(purchase_type, flag);
 	if (hh_item != HHITEM_NOTHING) {
 		addHelmTime(hh_item, 1);
 	}
 }
 
-void purchaseMove(shop_paad* paad) {
-	int item_given = -1;
-	int crystals_unlocked = crystalsUnlocked(paad->kong);
-	int p_type = paad->purchase_type;
+void giveItemFromShop(int p_type, int p_kong, int p_value, int flag) {
+	unsigned char *base;
 	switch(p_type) {
 		case PURCHASE_MOVES:
-			setMoveBitfield(paad, paad->kong);
+			MovesBase[p_kong].special_moves |= (1 << p_value);
 			break;
 		case PURCHASE_SLAM:
 		case PURCHASE_AMMOBELT:
-			setMovesForAllKongs(paad, 0);
+			for (int i = 0; i < 5; i++) {
+				base = &MovesBase[i];
+				base[p_type]++;
+			}
 			break;
 		case PURCHASE_GUN:
 		case PURCHASE_INSTRUMENT:
-			if (paad->purchase_value == 1) {
-				setMoveBitfield(paad, paad->kong);
+			if (p_value == 1) {
+				base = &MovesBase[p_kong];
+				base[p_type] |= (1 << p_value);
 			} else {
-				setMovesForAllKongs(paad, 1);
+				for (int i = 0; i < 5; i++) {
+					base = &MovesBase[i];
+					base[p_type]++;
+				}
 			}
 			break;
 		case PURCHASE_GB:
-			giveGB(Character, getWorld(CurrentMap, 1));
+			giveGB();
 		case PURCHASE_FLAG:
-			progressiveChange(paad->flag);
-			if (paad->flag == -2) {
-				setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, FLAGTYPE_PERMANENT);
-				setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
+			if (flag == -2) {
+				setFlagMove(FLAG_ABILITY_CAMERA);
+				setFlagMove(FLAG_ABILITY_SHOCKWAVE);
 				if (CollectableBase.Film < 10) {
 					CollectableBase.Film = 10;
 				}
 				if (CollectableBase.Crystals < (10*150)) {
 					CollectableBase.Crystals = 10*150;
 				}
-			} else if (isIceTrapFlag(paad->flag) == DYNFLAG_ICETRAP) {
-				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
-				queueIceTrap(ICETRAP_BUBBLE);
 			} else {
-				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
-				if (paad->flag == FLAG_ABILITY_CAMERA) {
+				setFlagMove(flag);
+				if (flag == FLAG_ABILITY_CAMERA) {
                     if (CollectableBase.Film < 10) {
 						CollectableBase.Film = 10;
 					}
-                } else if (paad->flag == FLAG_ABILITY_SHOCKWAVE) {
+                } else if (flag == FLAG_ABILITY_SHOCKWAVE) {
                     if (CollectableBase.Crystals < (10*150)) {
 						CollectableBase.Crystals = 10*150;
 					}
@@ -345,18 +260,70 @@ void purchaseMove(shop_paad* paad) {
 		case PURCHASE_ICEBUBBLE:
 		case PURCHASE_ICEREVERSE:
 		case PURCHASE_ICESLOW:
-			setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
+			giveItem(REQITEM_ICETRAP, 0, 0);
 			queueIceTrap((p_type - PURCHASE_ICEBUBBLE) + ICETRAP_BUBBLE);
+			break;
+		case PURCHASE_MEDAL:
+			giveItem(REQITEM_MEDAL, 0, 0);
+			break;
+		case PURCHASE_CROWN:
+			giveItem(REQITEM_CROWN, 0, 0);
+			break;
+		case PURCHASE_RAINBOWCOIN:
+			giveItem(REQITEM_RAINBOWCOIN, 0, 0);
+            for (int i = 0; i < 5; i++) {
+				MovesBase[i].coins += 5;
+			}
+			break;
+		case PURCHASE_FAIRY:
+			giveItem(REQITEM_FAIRY, 0, 0);
+			break;
+		case PURCHASE_NINTENDOCOIN:
+			giveItem(REQITEM_COMPANYCOIN, 0, 0);
+			break;
+		case PURCHASE_RAREWARECOIN:
+			giveItem(REQITEM_COMPANYCOIN, 0, 1);
+			break;
+		case PURCHASE_BEAN:
+			giveItem(REQITEM_BEAN, 0, 0);
+			break;
+		case PURCHASE_PEARL:
+			giveItem(REQITEM_PEARL, 0, 0);
+			break;
+		case PURCHASE_HINT:
+			giveItem(REQITEM_HINT, p_value / 5, p_value % 5);
+			break;
+		case PURCHASE_BLUEPRINT:
+			giveItem(REQITEM_BLUEPRINT, p_value / 5, p_value % 5);
+			break;
+		case PURCHASE_KEY:
+			giveItem(REQITEM_KEY, p_value, 0);
+			break;
+		case PURCHASE_KONG:
+			giveItem(REQITEM_KONG, 0, p_value);
+			break;
 		break;
 	}
 	if (p_type == PURCHASE_INSTRUMENT) {
-		int melon_cap = MelonArray[(int)paad->purchase_value];
+		int melon_cap = MelonArray[p_value];
 		if (CollectableBase.Melons < melon_cap) {
 			CollectableBase.Melons = melon_cap;
 			refillHealth(0);
 			SwapObject->unk_2e2 |= 0x11;
 		}
 	}
+}
+
+void purchaseMove(shop_paad* paad) {
+	int item_given = -1;
+	int crystals_unlocked = crystalsUnlocked(paad->kong);
+	int p_type = paad->purchase_type;
+	int bitfield_index = paad->purchase_value;
+	int p_kong = paad->kong;
+	giveItemFromShop(paad->purchase_type, paad->kong, paad->purchase_value, paad->flag);
+	int world = getWorld(CurrentMap, 0);
+	int shop_flag = getShopFlag(CurrentActorPointer_0->actorType - 0xBD, world, Character);
+	setPermFlag(shop_flag);
 	if (p_type == PURCHASE_MOVES) {
 		if ((!crystals_unlocked) && (crystalsUnlocked(paad->kong))) {
 			item_given = 5;
@@ -414,131 +381,19 @@ void setLocation(purchase_struct* purchase_data) {
 	int bitfield_index = purchase_data->purchase_value - 1;
 	int p_kong = purchase_data->move_kong;
 	if (p_type != -1) {
-		if (p_type < PURCHASE_FLAG) {
-			switch(p_type) {
-				case PURCHASE_MOVES:
-					MovesBase[p_kong].special_moves |= (1 << bitfield_index);
-					break;
-				case PURCHASE_SLAM:
-					for (int kong = 0; kong < 5; kong++) {
-						if (MovesBase[kong].simian_slam < purchase_data->purchase_value) {
-							MovesBase[kong].simian_slam = purchase_data->purchase_value;
-						}
-					}
-					break;
-				case PURCHASE_GUN:
-					if (bitfield_index > 0) {
-						for (int kong = 0; kong < 5; kong++) {
-							MovesBase[kong].weapon_bitfield |= (1 << bitfield_index);
-						}
-					} else {
-						MovesBase[p_kong].weapon_bitfield |= (1 << bitfield_index);
-					}
-					break;
-				case PURCHASE_AMMOBELT:
-					for (int kong = 0; kong < 5; kong++) {
-						if (MovesBase[kong].ammo_belt < purchase_data->purchase_value) {
-							MovesBase[kong].ammo_belt = purchase_data->purchase_value;
-						}
-					}
-					break;
-				case PURCHASE_INSTRUMENT:
-					if (bitfield_index > 0) {
-						for (int kong = 0; kong < 5; kong++) {
-							MovesBase[kong].instrument_bitfield |= (1 << bitfield_index);
-						}
-					} else {
-						MovesBase[p_kong].instrument_bitfield |= (1 << bitfield_index);
-					}
-					if (CollectableBase.Melons < 2) {
-						CollectableBase.Melons = 2;
-						CollectableBase.Health = CollectableBase.Melons << 2;
-					} else if ((CollectableBase.Melons < 3) && (bitfield_index > 1)) {
-						CollectableBase.Melons = 3;
-						CollectableBase.Health = CollectableBase.Melons << 2;
-					}
-				break;
-			}
-		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {
-			// BFI Coupled Moves
-			setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,1,FLAGTYPE_PERMANENT);
-			setFlagDuplicate(FLAG_ABILITY_CAMERA,1,FLAGTYPE_PERMANENT);
-			if (CollectableBase.Film < 10) {
-				CollectableBase.Film = 10;
-			}
-			if (CollectableBase.Crystals < (10*150)) {
-				CollectableBase.Crystals = 10*150;
-			}
-		} else if ((p_type == PURCHASE_FLAG) && (isIceTrapFlag(purchase_data->purchase_value) == DYNFLAG_ICETRAP)) {
-			setFlagDuplicate(purchase_data->purchase_value,1,FLAGTYPE_PERMANENT);
-			queueIceTrap(ICETRAP_BUBBLE);
-		} else if (p_type == PURCHASE_FLAG) {
-			// IsFlag
-			progressiveChange(purchase_data->purchase_value);
-			setFlagDuplicate(purchase_data->purchase_value,1,FLAGTYPE_PERMANENT);
-			if (purchase_data->purchase_value == FLAG_ABILITY_CAMERA) {
-				if (CollectableBase.Film < 10) {
-					CollectableBase.Film = 10;
-				}
-			} else if (purchase_data->purchase_value == FLAG_ABILITY_SHOCKWAVE) {
-				if (CollectableBase.Crystals < (10*150)) {
-					CollectableBase.Crystals = 10*150;
-				}
-			}
-		} else if (p_type == PURCHASE_GB) {
-			// IsFlag + GB Update
-			if (!checkFlagDuplicate(purchase_data->purchase_value, FLAGTYPE_PERMANENT)) {
-				setFlagDuplicate(purchase_data->purchase_value,1,FLAGTYPE_PERMANENT);
-				int world = getWorld(CurrentMap,1);
-				if (world > 7) {
-					world = 7;
-				}
-				giveGB(p_kong, world);
-			}
-		} else if ((p_type >= PURCHASE_ICEBUBBLE) && (p_type <= PURCHASE_ICESLOW)) {
-			setFlagDuplicate(purchase_data->purchase_value, 1, FLAGTYPE_PERMANENT);
-			queueIceTrap((p_type - PURCHASE_ICEBUBBLE) + ICETRAP_BUBBLE);
-		}
+		giveItemFromShop(purchase_data->purchase_type, purchase_data->move_kong, purchase_data->purchase_value, purchase_data->purchase_value);
 		addHelmHurryPurchaseTime(p_type, purchase_data->purchase_value);
 	}
 }
 
-int getLocation(purchase_struct* purchase_data) {
-	int p_type = purchase_data->purchase_type;
-	int bitfield_index = purchase_data->purchase_value - 1;
-	int p_kong = purchase_data->move_kong;
-	if (p_kong > 4) {
-		p_kong = 0;
-	}
-	if (p_type != -1) {
-		if (p_type < PURCHASE_FLAG) {
-			switch(p_type) {
-				case PURCHASE_MOVES:
-					return (MovesBase[p_kong].special_moves & (1 << bitfield_index)) != 0;
-					break;
-				case PURCHASE_SLAM:
-					return MovesBase[p_kong].simian_slam >= purchase_data->purchase_value;
-					break;
-				case PURCHASE_GUN:
-					return (MovesBase[p_kong].weapon_bitfield & (1 << bitfield_index)) != 0;
-					break;
-				case PURCHASE_AMMOBELT:
-					return MovesBase[p_kong].ammo_belt >= purchase_data->purchase_value;
-					break;
-				case PURCHASE_INSTRUMENT:
-					return (MovesBase[p_kong].instrument_bitfield & (1 << bitfield_index)) != 0;
-				break;
-			}
-		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {
-			// BFI Coupled Moves
-			return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT) & checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT);
-		} else if (inShortList(p_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
-			// IsFlag
-			return checkFlagDuplicate(purchase_data->purchase_value, FLAGTYPE_PERMANENT);
-		}
-	}
-	return 1;
-}
+static short flag_location_series[] = {
+	FLAG_TBARREL_DIVE,
+	FLAG_TBARREL_ORANGE,
+	FLAG_TBARREL_BARREL,
+	FLAG_TBARREL_VINE,
+	FLAG_ABILITY_SHOCKWAVE,
+	FLAG_ABILITY_SIMSLAM,
+};
 
 void setLocationStatus(location_list location_index) {
 	int location_int = (int)location_index;
@@ -552,21 +407,11 @@ void setLocationStatus(location_list location_index) {
 		// First Move (Normally Slam 1)
 		setLocation((purchase_struct*)&FirstMove_New);
 	}
+	setPermFlag(flag_location_series[location_index]);
 }
 
 int getLocationStatus(location_list location_index) {
-	int location_int = (int)location_index;
-	if (location_int < 4) {
-		// TBarrels
-		return getLocation(&TrainingMoves_New[location_int]);
-	} else if (location_index == LOCATION_BFI) {
-		// BFI
-		return getLocation(&BFIMove_New);
-	} else if (location_index == LOCATION_FIRSTMOVE) {
-		// First Move (Normally Slam 1)
-		return getLocation(&FirstMove_New);
-	}
-	return 0;
+	return checkFlag(flag_location_series[location_index], FLAGTYPE_PERMANENT);
 }
 
 Gfx* displayMoveText(Gfx* dl, actorData* actor) {
