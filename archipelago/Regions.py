@@ -103,7 +103,7 @@ def create_regions(multiworld: MultiWorld, player: int, logic_holder: LogicVarHo
     for region_id in all_logic_regions:
         region_obj = all_logic_regions[region_id]
         # Filtering out auxiliary locations is detrimental to glitch logic, but is necessary to ensure each location placed exactly once
-        location_logics = [loc for loc in region_obj.locations if not loc.isAuxiliaryLocation]
+        location_logics = [loc for loc in region_obj.locations if (not loc.isAuxiliaryLocation) or region_id.name == "FactoryBaboonBlast"]
         # V1 LIMITATION: Helm must be skip_start
         # Special exception time! The locations in HideoutHelmEntry cause more problems than they solve, and cannot exist in conjunction with other locations.
         if region_obj.level == Levels.HideoutHelm:
@@ -154,7 +154,7 @@ def create_region(
             if location_logic.id == Locations.FactoryDonkeyDKArcade:
                 if logic_holder.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and region_name == "FactoryArcadeTunnel":
                     continue
-                elif not logic_holder.checkFastCheck(FasterChecksSelected.factory_arcade_round_2) and region_name == "FactoryBaboonBlast":
+                elif not logic_holder.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and region_name == "FactoryBaboonBlast":
                     continue
             # Starting move locations and Kongs may be shuffled but their locations are not relevant ever due to item placement restrictions
             # V1 LIMITATION: Kong locations are always empty because we can't put the vast majority of items (including AP items) there yet
