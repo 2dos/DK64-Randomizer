@@ -294,6 +294,8 @@ extern void checkModelTwoItemCollision(item_collision* obj_collision, int player
 extern void CheckKasplatSpawnBitfield(void);
 extern void refreshPads(pad_refresh_signals signal);
 
+extern void initItemRandoPointer(void);
+
 extern int stompHandler(void* unk0, playerData* player, int unk1);
 
 extern void indicateCollectionStatus(void);
