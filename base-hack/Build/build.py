@@ -2096,9 +2096,12 @@ with open(newROMName, "r+b") as fh:
         for bp_item in (78, 75, 77, 79, 76):
             fh.write(bp_item.to_bytes(2, "big"))
     # Medals
-    fh.seek(0x1FF1080)
+    fh.seek(0x1FF1400)
     for medal_item in range(45):
-        fh.write((5).to_bytes(1, "big"))
+        fh.write((9).to_bytes(1, "big"))
+        fh.write((0).to_bytes(1, "big"))
+        fh.write((0).to_bytes(1, "big"))
+        fh.write((0).to_bytes(1, "big"))
     # Crown
     fh.seek(0x1FF10C0)
     for crown_item in range(10):
@@ -2108,9 +2111,14 @@ with open(newROMName, "r+b") as fh:
     for crown_item in range(8):
         fh.write((72).to_bytes(2, "big"))
     # Fairies
-    fh.seek(0x1FF1040)
+    fh.seek(0x1FF1600)
     for x in range(20):
         fh.write((0x3D).to_bytes(2, "big"))
+        fh.write((0).to_bytes(2, "big"))
+        fh.write((5).to_bytes(1, "big"))
+        fh.write((0).to_bytes(1, "big"))
+        fh.write((0).to_bytes(1, "big"))
+        fh.write((0).to_bytes(1, "big"))
     # Rainbow Coins
     fh.seek(0x1FF10E0)
     for x in range(16):

@@ -275,14 +275,14 @@ extern void exitTrapBubbleController(void);
 extern int getFlagIndex_Corrected(int start, int level);
 extern int getFlagIndex_MedalCorrected(int start, int level);
 extern int getBPItem(int index);
-extern int getMedalItem(int index);
-extern int getWrinklyItem(int index);
+extern medal_hint_item_data *getMedalItem(int index);
+extern medal_hint_item_data *getWrinklyItem(int index);
 extern int getCrownItem(maps map);
 extern int getKeyItem(int old_flag);
 extern int getFairyModel(int flag);
+extern medal_hint_item_data *getFairyItem(int flag);
 extern int getRainbowCoinItem(int old_flag);
 extern int getCrateItem(int old_flag);
-extern Gfx* controlKeyText(Gfx* dl);
 extern void keyGrabHook(int song, float vol);
 extern int getKeyFlag(int index);
 extern int getKongFlag(int kong_index);
@@ -421,7 +421,7 @@ extern dynamic_flag_icetrap_junk isIceTrapFlag(int flag);
 
 extern int getGamePercentage(void);
 
-extern void displayMedalOverlay(int flag, int item_type);
+extern void displayMedalOverlay(int flag, medal_hint_item_data *item_type);
 
 extern void handleCrownTimerInternal(void);
 

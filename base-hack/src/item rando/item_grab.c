@@ -10,198 +10,102 @@
  */
 #include "../../include/common.h"
 
-typedef enum MEDAL_ITEMS {
-    /*  0 */ MEDALITEM_GB,
-    /*  1 */ MEDALITEM_BP,
-    /*  2 */ MEDALITEM_KEY,
-    /*  3 */ MEDALITEM_CROWN,
-    /*  4 */ MEDALITEM_SPECIALCOIN,
-    /*  5 */ MEDALITEM_MEDAL,
-    /*  6 */ MEDALITEM_CRANKY,
-    /*  7 */ MEDALITEM_FUNKY,
-    /*  8 */ MEDALITEM_CANDY,
-    /*  9 */ MEDALITEM_TRAINING,
-    /* 10 */ MEDALITEM_BFI,
-    /* 11 */ MEDALITEM_KONG,
-    /* 12 */ MEDALITEM_BEAN,
-    /* 13 */ MEDALITEM_PEARL,
-    /* 14 */ MEDALITEM_FAIRY,
-    /* 15 */ MEDALITEM_RAINBOW,
-    /* 16 */ MEDALITEM_ICETRAP_BUBBLE,
-    /* 17 */ MEDALITEM_JUNKMELON,
-    /* 18 */ MEDALITEM_CRANKYITEM,
-    /* 19 */ MEDALITEM_FUNKYITEM,
-    /* 20 */ MEDALITEM_CANDYITEM,
-    /* 21 */ MEDALITEM_SNIDEITEM,
-    /* 22 */ MEDALITEM_NOTHING,
-    /* 23 */ MEDALITEM_ICETRAP_REVERSE,
-    /* 24 */ MEDALITEM_ICETRAP_SLOW,
-    /* 25 */ MEDALITEM_HINT_0, // DK
-    /* 26 */ MEDALITEM_HINT_1, // Diddy
-    /* 27 */ MEDALITEM_HINT_2, // Lanky
-    /* 28 */ MEDALITEM_HINT_3, // Tiny
-    /* 29 */ MEDALITEM_HINT_4, // Chunky
-    /* 30 */ MEDALITEM_AP,
-} MEDAL_ITEMS;
-
 typedef struct item_info {
     /* 0x000 */ songs song;
     /* 0x004 */ int sprite;
     /* 0x008 */ helm_hurry_items helm_hurry_item;
-    /* 0x00C */ short fairy_model;
-    /* 0x00E */ char pad_e;
-    /* 0x00F */ char pad_f;
 } item_info;
 
 static const unsigned char bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
 static const unsigned char instrument_songs[] = {SONG_BONGOS, SONG_GUITAR, SONG_TROMBONE, SONG_SAXOPHONE, SONG_TRIANGLE};
 
-#define MODEL_GENERIC_POTION 0x2001
-#define MODEL_GENERIC_KONG 0x2002
-
 static const item_info item_detection_data[] = {
-    {.song = SONG_GBGET, .sprite = 0x3B, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x69}, // GB - Handled by a separate function
-    {.song = SONG_BLUEPRINTGET, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // BP
-    {.song = SONG_GBGET, .sprite = 0x8A, .helm_hurry_item = HHITEM_KEY, .fairy_model = 0xF5}, // Key
-    {.song = SONG_BANANAMEDALGET, .sprite = 0x8B, .helm_hurry_item = HHITEM_CROWN, .fairy_model = 0xF4}, // Crown
-    {.song = SONG_COMPANYCOINGET, .sprite = -1, .helm_hurry_item = HHITEM_COMPANYCOIN, .fairy_model = 0x10A}, // Company Coin
-    {.song = SONG_BANANAMEDALGET, .sprite = 0x3C, .helm_hurry_item = HHITEM_MEDAL, .fairy_model = 0x108}, // Medal
-    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // Cranky Move
-    {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // Funky Move
-    {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // Candy Move
-    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // Training Move
-    {.song = SONG_GUNGET, .sprite = 0x3A, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // BFI Move
-    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = MODEL_GENERIC_KONG}, // Kong
-    {.song = SONG_BEANGET, .sprite = -1, .helm_hurry_item = HHITEM_BEAN, .fairy_model = 0x104}, // Bean
-    {.song = SONG_PEARLGET, .sprite = -1, .helm_hurry_item = HHITEM_PEARL, .fairy_model = 0x106}, // Pearl
-    {.song = SONG_FAIRYTICK, .sprite = 0x89, .helm_hurry_item = HHITEM_FAIRY, .fairy_model = 0x3D}, // Fairy
-    {.song = SONG_RAINBOWCOINGET, .sprite = 0xA0, .helm_hurry_item = HHITEM_RAINBOWCOIN, .fairy_model = -1}, // Rainbow Coin
-    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Bubble)
-    {.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x10E}, // Junk Item (Melon)
-    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x11}, // Cranky
-    {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x12}, // Funky
-    {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x13}, // Candy
-    {.song = SONG_BLUEPRINTGET, .sprite = 0x95, .helm_hurry_item = HHITEM_KONG, .fairy_model = 0x1F}, // Snide
-    {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Nothing
-    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Reversed Controls)
-    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x103}, // Fake Item (Slowed)
-    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x11B}, // Hint Item (DK)
-    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x11D}, // Hint Item (Diddy)
-    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x11F}, // Hint Item (Lanky)
-    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x121}, // Hint Item (Tiny)
-    {.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x123}, // Hint Item (Chunky)
-    {.song = SONG_BLUEPRINTGET, .sprite = 0x92, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x125}, // AP Item
-    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x126}, // Fake Item (Bubble Bean)
-    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x126}, // Fake Item (Reverse Bean)
-    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x126}, // Fake Item (Slow Bean)
-    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x128}, // Fake Item (Bubble Key)
-    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x128}, // Fake Item (Reverse Key)
-    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0x128}, // Fake Item (Slow Key)
+    {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_NONE
+	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_KONG
+	{.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE}, // REQITEM_MOVE
+	{.song = SONG_GBGET, .sprite = 0x3B, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_GOLDENBANANA
+	{.song = SONG_BLUEPRINTGET, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_BLUEPRINT
+	{.song = SONG_FAIRYTICK, .sprite = 0x89, .helm_hurry_item = HHITEM_FAIRY}, // REQITEM_FAIRY
+	{.song = SONG_GBGET, .sprite = 0x8A, .helm_hurry_item = HHITEM_KEY}, // REQITEM_KEY
+	{.song = SONG_BANANAMEDALGET, .sprite = 0x8B, .helm_hurry_item = HHITEM_CROWN}, // REQITEM_CROWN
+	{.song = SONG_COMPANYCOINGET, .sprite = -1, .helm_hurry_item = HHITEM_COMPANYCOIN}, // REQITEM_COMPANYCOIN
+	{.song = SONG_BANANAMEDALGET, .sprite = 0x3C, .helm_hurry_item = HHITEM_MEDAL}, // REQITEM_MEDAL
+	{.song = SONG_BEANGET, .sprite = -1, .helm_hurry_item = HHITEM_BEAN}, // REQITEM_BEAN
+	{.song = SONG_PEARLGET, .sprite = -1, .helm_hurry_item = HHITEM_PEARL}, // REQITEM_PEARL
+	{.song = SONG_RAINBOWCOINGET, .sprite = 0xA0, .helm_hurry_item = HHITEM_RAINBOWCOIN}, // REQITEM_RAINBOWCOIN
+	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_FAKEITEM}, // REQITEM_ICETRAP
+	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_GAMEPERCENTAGE
+	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_COLOREDBANANA
+	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_BOSSES
+	{.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_BONUSES
+	{.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_JUNK
+	{.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_HINT
+	{.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_KONG}, // REQITEM_SHOPKEEPER
+    {.song = SONG_BLUEPRINTGET, .sprite = 0x92, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_AP
 };
 
-void displayMedalOverlay(int flag, int item_type) {
+static const unsigned char move_sprites[] = {0x94, 0x96, 0x93, 0x38, 0x3A}; // Cranky, Funky, Candy, Camera, Shockwave
+static const unsigned char shopkeeper_sprites[] = {0x94, 0x96, 0x93, 0x95}; // Cranky, Funky, Candy, Snide
+
+void displayMedalOverlay(int flag, medal_hint_item_data *item_send) {
     float reward_x = 160.f;
     float reward_y = 120.0f;
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
-        if (item_type != MEDALITEM_KEY) {
-            setPermFlag(flag);
-        }
+        setPermFlag(flag);
+        requirement_item item_type = item_send->item_type;
+        int item_kong = item_send->kong;
+        giveItem(item_type, item_send->level, item_kong);
         void* sprite = 0;
         int kong = getKong(0);
         songs song = item_detection_data[item_type].song;
         int sprite_index = item_detection_data[item_type].sprite;
         helm_hurry_items hh_item = item_detection_data[item_type].helm_hurry_item;
-        switch (item_type) {
-            case MEDALITEM_GB:
-                giveGB();
-                break;
-            case MEDALITEM_BP:
-                {
-                    int bp_index = flag - FLAG_BP_JAPES_DK_HAS;
-                    int bp_kong = bp_index % 5;
-                    if (bp_kong > 4) {
-                        bp_kong = 0;
-                    }
-                    sprite_index = bp_sprites[bp_kong];
-                }
-                break;
-            case MEDALITEM_KEY:
-                {
-                    // Display key text
-                    int key_bitfield = 0;
-                    for (int i = 0; i < 8; i++) {
-                        if (getItemCount_new(REQITEM_KEY, i, 0)) {
-                            key_bitfield |= (1 << i);
-                        }
-                    }
-                    setFlag(flag, 1, FLAGTYPE_PERMANENT);
-                    int spawned = 0;
-                    for (int i = 0; i < 8; i++) {
-                        if ((getItemCount_new(REQITEM_KEY, i, 0)) && ((key_bitfield & (1 << i)) == 0)) {
-                            if (!spawned) {
-                                spawnItemOverlay(PURCHASE_FLAG, 0, getKeyFlag(i), 0);
-                                spawned = 1;
-                            }
-                        }
-                    }
-                    auto_turn_keys();
-                }
-                break;
-            case MEDALITEM_SPECIALCOIN:
-                if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
-                    // Nintendo Coin
-                    sprite_index = 0x8D;
-                } else {
-                    // Rareware Coin
-                    sprite_index = 0x8C;
-                }
-                break;
-            case MEDALITEM_KONG:
-                {
-                    int kong_index = -1;
-                    for (int i = 0; i < 5; i++) {
-                        if (flag == kong_flags[i]) {
-                            kong_index = i;
-                        }
-                    }
-                    if ((kong_index >= 0) && (kong_index < 5)) {
-                        song = instrument_songs[kong_index];
-                        sprite_index = 0xA9 + kong_index;
-                    }
+        if (item_send->audiovisual_index == 0) {
+            switch(item_type) {
+                case REQITEM_KONG:
+                    song = instrument_songs[item_kong];
+                    sprite_index = 0xA9 + item_kong;
                     refreshItemVisibility();
-                }
-                break;
-            case MEDALITEM_BEAN:
-                sprite = &bean_sprite;
-                break;
-            case MEDALITEM_PEARL:
-                sprite = &pearl_sprite;
-                break;
-            case MEDALITEM_RAINBOW:
-                giveRainbowCoin();
-                break;
-            case MEDALITEM_ICETRAP_BUBBLE:
-                queueIceTrap(ICETRAP_BUBBLE);
-                sprite = &fool_overlay_sprite;
-                break;
-            case MEDALITEM_ICETRAP_REVERSE:
-                queueIceTrap(ICETRAP_REVERSECONTROLS);
-                sprite = &fool_overlay_sprite;
-                break;
-            case MEDALITEM_ICETRAP_SLOW:
-                queueIceTrap(ICETRAP_SLOWED);
-                sprite = &fool_overlay_sprite;
-                break;
-            case MEDALITEM_JUNKMELON:
-                giveMelon();
-                break;
-            case MEDALITEM_HINT_0:
-            case MEDALITEM_HINT_1:
-            case MEDALITEM_HINT_2:
-            case MEDALITEM_HINT_3:
-            case MEDALITEM_HINT_4:
-                playSFX(0x2EA);
-                break;
+                    break;
+                case REQITEM_BLUEPRINT:
+                    sprite_index = bp_sprites[item_kong];
+                    break;
+                case REQITEM_KEY:
+                    auto_turn_keys();
+                    break;
+                case REQITEM_COMPANYCOIN:
+                    sprite_index = item_kong == 0 ? 0x8D : 0x8C;
+                    break;
+                case REQITEM_BEAN:
+                    sprite = &bean_sprite;
+                    break;
+                case REQITEM_PEARL:
+                    sprite = &pearl_sprite;
+                    break;
+                case REQITEM_RAINBOWCOIN:
+                    for (int i = 0; i < 5; i++) {
+                        MovesBase[i].coins += 5;
+                    }
+                    break;
+                case REQITEM_ICETRAP:
+                    if (item_kong) {
+                        queueIceTrap(item_kong);
+                    }
+                    sprite = &fool_overlay_sprite;
+                    break;
+                case REQITEM_JUNK:
+                    applyDamageMask(0, 1);
+                    break;
+                case REQITEM_HINT:
+                    playSFX(0x2EA);
+                    break;
+                case REQITEM_SHOPKEEPER:
+                    sprite_index = shopkeeper_sprites[item_kong];
+                    break;
+            }
+        } else {
+            // reqitem_move only
+            sprite_index = move_sprites[item_send->audiovisual_index - 1];
         }
         if (song != SONG_SILENCE) {
             playSFX(0xF2);
@@ -238,13 +142,13 @@ void banana_medal_acquisition(int flag) {
      * 
      * @param flag Flag index of the banana medal
      */
-    int item_type = 0;
+    medal_hint_item_data *item_send = 0;
     if (flag >= FLAG_MEDAL_ISLES_DK) {
-        item_type = getMedalItem((flag - FLAG_MEDAL_ISLES_DK) + 40);
+        item_send = getMedalItem((flag - FLAG_MEDAL_ISLES_DK) + 40);
     } else {
-        item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
+        item_send = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     }
-    displayMedalOverlay(flag, item_type);
+    displayMedalOverlay(flag, item_send);
 }
 
 static unsigned char key_timer = 0;
@@ -301,113 +205,44 @@ void collectKey(void) {
     for (int i = 0; i < 8; i++) {
         if (getItemCount_new(REQITEM_KEY, i, 0)) {
             if ((old_keys & (1 << i)) == 0) {
-                spawnItemOverlay(PURCHASE_FLAG, 0, getKeyFlag(i), 0);
+                spawnItemOverlay(PURCHASE_KEY, 0, i, 0);
             }
         }
     }
     auto_turn_keys();
 }
 
-Gfx* controlKeyText(Gfx* dl) {
-    /**
-     * @brief Handle the key text to be displayed upon picking up a boss key
-     * 
-     * @param dl Display List address
-     * 
-     * @return New display list address
-     */
-    if (key_timer > 0) {
-        int key_opacity = 255;
-        if (key_timer < 10) {
-            key_opacity = 25 * key_timer;
-        } else if (key_timer > 90) {
-            key_opacity = 25 * (100 - key_timer);
-        }
-        dl = initDisplayList(dl);
-        gDPSetCombineLERP(dl++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
-        gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, key_opacity);
-        dk_strFormat(key_text, "KEY %d", key_index + 1);
-        dl = displayText(dl,1,640,750,key_text,0x80);
-        key_timer -= 1;
+void giveItemFromSend(medal_hint_item_data *send) {
+    int item_type = send->item_type;
+    int item_kong = send->kong;
+    giveItem(item_type, send->level, item_kong);
+    helm_hurry_items hh_item = item_detection_data[item_type].helm_hurry_item;
+    switch(item_type) {
+        case REQITEM_KONG:
+            refreshItemVisibility();
+            break;
+        case REQITEM_KEY:
+            auto_turn_keys();
+            break;
+        case REQITEM_RAINBOWCOIN:
+            for (int i = 0; i < 5; i++) {
+                MovesBase[i].coins += 5;
+            }
+            break;
+        case REQITEM_ICETRAP:
+            if (item_kong) {
+                queueIceTrap(item_kong);
+            }
+            break;
+        case REQITEM_JUNK:
+            applyDamageMask(0, 1);
+            break;
     }
-    return dl;
 }
 
-static short kong_models[] = {4, 1, 6, 9, 0xC};
-
-static unsigned char ice_trap_types_model[] = {
-    ICETRAP_BUBBLE, ICETRAP_REVERSECONTROLS, ICETRAP_SLOWED,
-    ICETRAP_BUBBLE, ICETRAP_REVERSECONTROLS, ICETRAP_SLOWED,
-    ICETRAP_BUBBLE, ICETRAP_REVERSECONTROLS, ICETRAP_SLOWED,
-};
-static unsigned short ice_trap_models[] = {
-    0x128, 0x128, 0x128,
-    0x126, 0x126, 0x126,
-    0x103, 0x103, 0x103,
-};
-
-void giveItemFromModel(int model, int flag, int go_through_flut) {
-    int model_key = model;
-    if ((model_key >= 0xF6) && (model_key <= 0xFB)) {
-        model_key = MODEL_GENERIC_POTION;
-    } else if (inShortList(model_key, &kong_models[0], 5)) {
-        model_key = MODEL_GENERIC_KONG;
-    } else if (model_key == 0x10C) {
-        // Company Coin
-        model_key = 0x10A;
-    }
-    ICE_TRAP_TYPES ice_trap_type = ICETRAP_OFF;
-    if ((model_key >= -10) && (model_key <= -2)) {
-        ice_trap_type = ice_trap_types_model[model_key + 10];
-        model = ice_trap_models[model_key + 10];
-    }
-    if (model_key > -1) {
-        int i = 0;
-        int cap = sizeof(item_detection_data) / sizeof(item_info);
-        while (i < cap) {
-            if (item_detection_data[i].fairy_model == model_key) {
-                helm_hurry_items hh_item = item_detection_data[i].helm_hurry_item;
-                if (hh_item != HHITEM_NOTHING) {
-                    addHelmTime(hh_item, 1);
-                }
-                break;
-            }
-            i++;
-        }
-    }
-    int key_bitfield = 0;
-    if (model == 0x69) {
-        // GB
-        giveGB();
-    } else if (model == 0xF5) {
-        // Key
-        for (int i = 0; i < 8; i++) {
-            if (getItemCount_new(REQITEM_KEY, i, 0)) {
-                key_bitfield |= (1 << i);
-            }
-        }
-    } else if (model == 0x103) {
-        // Fake Item
-        queueIceTrap(ice_trap_type);
-    }
+void giveItemFromKongData(model_item_data *db_item, int flag) {
+    giveItemFromSend(&db_item->item);
     setPermFlag(flag);
-    if (model == 0xF5) {
-        // Key - Post flag set
-        int spawned = 0;
-        for (int i = 0; i < 8; i++) {
-            if ((getItemCount_new(REQITEM_KEY, i, 0)) && ((key_bitfield & (1 << i)) == 0)) {
-                if (!spawned) {
-                    spawnItemOverlay(PURCHASE_FLAG, 0, getKeyFlag(i), 0);
-                    spawned = 1;
-                }
-            }
-        }
-        auto_turn_keys();
-    }
-}
-
-void giveItemFromKongData(kongcheck_db_item *db_item) {
-    giveItemFromModel(db_item->model, db_item->flag, 0);
 }
 
 void giveFairyItem(int flag, int state, flagtypes type) {
@@ -418,8 +253,9 @@ void giveFairyItem(int flag, int state, flagtypes type) {
      * @param state Target state of the flag. AKA whether to set (1) or clear (0) the flag
      * @param type Flag Type
      */
-    int model = getFairyModel(flag);
-    giveItemFromModel(model, flag, 1);
+    medal_hint_item_data *item_send = getFairyItem(flag);
+    giveItemFromSend(item_send);
+    setPermFlag(flag);
 }
 
 static const unsigned char dance_skip_ban_maps[] = {
@@ -877,13 +713,23 @@ void getFlagMappingData(int index, char *level, char *kong) {
     }
     if (flag != -1) {
         // Check ItemIdentifier
-        for (int i = 0; i < sizeof(ItemIdentifier)/sizeof(ItemIdentifierStruct); i++) {
+        int limit = sizeof(ItemIdentifier)/sizeof(ItemIdentifierStruct);
+        int i = 0;
+        while (1) {
+            int input_flag = ItemIdentifier[i].input_flag;
             if (ItemIdentifier[i].input_flag == flag) {
                 *level = ItemIdentifier[i].level;
                 *kong = ItemIdentifier[i].kong;
                 return;
             }
-        } 
+            if (input_flag == -1) {
+                return;
+            }
+            i++;
+            if (i >= limit) {
+                return;
+            }
+        }
     }
 }
 
@@ -1038,6 +884,13 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
             break;
         case 0x25C:
             giveItem(REQITEM_FAIRY, 0, 0);
+            break;
+        case 0x25F: // Cranky
+        case 0x260: // Funky
+        case 0x261: // Candy
+        case 0x262: // Snide
+            // Shopkeepers
+            giveItem(REQITEM_SHOPKEEPER, 0, obj_type - 0x25F);
             break;
         case 0x25D:
         case 0x264:

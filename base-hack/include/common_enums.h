@@ -958,6 +958,8 @@ typedef enum requirement_item {
 	/* 0x011 */ REQITEM_BONUSES,
 	/* 0x012 */ REQITEM_JUNK,
 	/* 0x013 */ REQITEM_HINT,
+	/* 0x014 */ REQITEM_SHOPKEEPER,
+	/* 0x015 */ REQITEM_AP,
 } requirement_item;
 
 typedef enum item_ids { 

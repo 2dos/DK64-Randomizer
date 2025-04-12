@@ -60,22 +60,6 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
         # if llamaPuzzleKong in [1, 4]:
         #     llama_entrance_switch.append({"index": 0xD, "new_type": gunswitches[llamaPuzzleKong]})
         kong_settings = [japesLockedData, llamaLockedData, tinyTempleLockedData, factoryLockedData]
-        ROM_COPY.seek(0x1FF1020)
-        for item_data in kong_settings:
-            has_no_textures = item_data["type"] in (
-                Types.Candy,
-                Types.Climbing,
-                Types.Cranky,
-                Types.Fairy,
-                Types.Funky,
-                Types.Shockwave,
-                Types.Shop,
-                Types.TrainingBarrel,
-            )
-            ROM_COPY.writeMultipleBytes(item_data["flag"], 2)
-            ROM_COPY.writeMultipleBytes(item_data["model"], 2)
-            ROM_COPY.writeMultipleBytes(1 if has_no_textures else 0, 1)
-            ROM_COPY.writeMultipleBytes(0, 1)
 
         kongrando_changes = {
             Maps.JungleJapes: [

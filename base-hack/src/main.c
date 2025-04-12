@@ -159,9 +159,6 @@ void cFuncLoop(void) {
 	if (Rando.helm_hurry_mode) {
 		checkTotalCache();
 	}
-	// if (Rando.item_rando) {
-	// 	controlKeyText();
-	// }
 	if (CurrentMap == MAP_HELM) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
 			if (inU8List(CutsceneIndex, &instrument_cs_indexes[0], 5)) {
@@ -518,9 +515,6 @@ Gfx* displayListModifiers(Gfx* dl) {
 		} else {
 			dl = drawTextPointers(dl);
 			dl = displaySongNameHandler(dl);
-			if (Rando.item_rando) {
-				dl = controlKeyText(dl);
-			}
 			if (Rando.fps_on) {
 				float fps = HERTZ;
 				if (current_avg_lag != 0) {

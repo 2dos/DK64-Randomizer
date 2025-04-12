@@ -829,6 +829,20 @@ typedef struct charspawner_flagstruct {
 	/* 0x006 */ char unk_06[2];
 } charspawner_flagstruct;
 
+typedef struct medal_hint_item_data {
+	/* 0x000 */ unsigned char item_type;
+	/* 0x001 */ unsigned char level;
+	/* 0x002 */ unsigned char kong;
+	/* 0x003 */ unsigned char audiovisual_index;
+} medal_hint_item_data;
+
+typedef struct model_item_data {
+	/* 0x000 */ short model;
+	/* 0x002 */ char has_no_textures;
+	/* 0x003 */ char pad;
+	/* 0x004 */ medal_hint_item_data item;
+} model_item_data;
+
 typedef struct GBDictItem {
 	/* 0x000 */ unsigned char map;
 	/* 0x001 */ char unk_01;

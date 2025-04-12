@@ -79,6 +79,9 @@ void giveItem(requirement_item item, int level, int kong) {
         case REQITEM_KONG:
             current_item_data.kong_bitfield |= (1 << kong);
             break;
+        case REQITEM_GOLDENBANANA:
+            giveGB();
+            break;
         case REQITEM_BLUEPRINT:
             current_item_data.bp_bitfield[kong] |= (1 << level);
             break;
@@ -121,6 +124,9 @@ void giveItem(requirement_item item, int level, int kong) {
         case REQITEM_HINT:
             current_item_data.hint_bitfield[kong] |= (1 << level);
             break;
+        case REQITEM_SHOPKEEPER:
+            setPermFlag(FLAG_ITEM_CRANKY + kong);
+            break;
         case REQITEM_MOVE:
             // TODO: Move logic here
             if ((level >= 0) && (level < 3)) {
@@ -133,7 +139,7 @@ void giveItem(requirement_item item, int level, int kong) {
                 // Gun
                 MovesBase[kong].weapon_bitfield |= 1;
             } else if ((level == 5) || (level == 6)) {
-                // Sniper
+                // Homing/Sniper
                 for (int i = 0; i < 5; i++) {
                     MovesBase[i].weapon_bitfield |= (1 << (level - 4));
                 }
