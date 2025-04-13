@@ -987,6 +987,7 @@ int updateLevelIGT(void) {
 	 */
 	saveAPCounter();
 	saveHelmHurryTime();
+	saveItemsToFile();
 	int new_igt = getNewSaveTime();
 	if (canSaveHelmHurry()) {
 		int sum = 0;

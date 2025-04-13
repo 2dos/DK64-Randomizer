@@ -31,6 +31,7 @@ spoiler.japes_rock_actor = 45
 spoiler.aztec_vulture_actor = 45
 spoiler.arcade_item_reward = Items.NintendoCoin
 spoiler.jetpac_item_reward = Items.RarewareCoin
+spoiler.item_assignment = []
 spoiler.coin_requirements = {
     Maps.CavesLankyRace: 50,
     Maps.AztecTinyRace: 50,

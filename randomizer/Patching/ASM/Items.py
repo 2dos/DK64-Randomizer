@@ -6,7 +6,6 @@ from randomizer.Enums.Types import Types
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
 from randomizer.Patching.Library.Generic import IsItemSelected
-from randomizer.Patching.ASM.Save import ENABLE_HELM_GBS
 
 FAIRY_LOAD_FIX = True
 
@@ -477,9 +476,8 @@ def pauseUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeValue(ROM_COPY, 0x806AC002, Overlay.Static, 0x530, offset_dict)
     writeValue(ROM_COPY, 0x806AC006, Overlay.Static, 0x5B0, offset_dict)
     writeValue(ROM_COPY, 0x8075054D, Overlay.Static, 0xD7, offset_dict, 1)  # Change DK Q Mark to #FFD700
-    if ENABLE_HELM_GBS:
-        writeValue(ROM_COPY, 0x806A9C80, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
-        writeValue(ROM_COPY, 0x806A9E54, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
+    writeValue(ROM_COPY, 0x806A9C80, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
+    writeValue(ROM_COPY, 0x806A9E54, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
     # Pause Sprite Expansion / Carousel Init Functions
     writeValue(ROM_COPY, 0x806AB35A, Overlay.Static, getHiSym("file_sprites"), offset_dict)
     writeValue(ROM_COPY, 0x806AB35E, Overlay.Static, getLoSym("file_sprites"), offset_dict)

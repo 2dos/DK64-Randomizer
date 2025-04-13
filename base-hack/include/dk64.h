@@ -290,6 +290,8 @@ extern void changeCollectableCount(int item, int player_index, int change);
 extern void save(void);
 extern void* getSpawnerTiedActor(short target_trigger, short props_change);
 
+extern void wipeTurnedInArray(void);
+
 extern void bananaslip(void);
 extern void setAnimalYAccel(void);
 

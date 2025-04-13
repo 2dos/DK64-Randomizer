@@ -16,3 +16,4 @@
 .definelabel playSFXAtXYZ, 0x806086CC
 .definelabel getControllerInput, 0x80007454
 .definelabel RainbowCoinFTT, 0x806F5498
+.definelabel wipeTurnedInArray, 0x806C7B00

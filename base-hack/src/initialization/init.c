@@ -327,7 +327,7 @@ void initHack(int source) {
 			*(short*)(0x806F9986) = ITEMID_RESERVED_SCOFF;
 			*(short*)(0x806F99C6) = ITEMID_RESERVED_CANDY;
 			*(short*)(0x806F99DA) = ITEMID_RESERVED_DK;
-			RandomizerVersion = 4;
+			RandomizerVersion = 5;
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
 			}

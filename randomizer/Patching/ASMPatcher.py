@@ -486,7 +486,8 @@ def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
     source_string = settings.branch.upper()[0]
     if source_string is None:
         source_string = "U"
-    major = settings.version.split(".")[0]
+    # major = settings.version.split(".")[0]
+    major = 5
     addr = getROMAddress(VERSION_STRING_START, Overlay.Custom, offset_dict)
     string_to_write = f"DK64R {major}.0{source_string}\n"
     if len(string_to_write) >= 0x10:

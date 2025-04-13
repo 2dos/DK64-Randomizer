@@ -280,6 +280,84 @@ int getShopFlag(vendors vendor, int level, int kong) {
     return 0;
 }
 
+static unsigned char FileInfoData[] = {
+    2, // Melon Count
+    1, // File Populated
+    0x16, // IGT
+    2, // File Index
+    0x18, // Save Count
+    8, // DK BP
+    8, // Diddy BP
+    8, // Lanky BP
+    8, // Tiny BP
+    8, // Chunky BP
+    8, // DK Hints
+    8, // Diddy Hints
+    8, // Lanky Hints
+    8, // Tiny Hints
+    8, // Chunky Hints
+    8, // Keys
+    8, // Kongs
+    8, // Crown Count
+    8, // Special Items
+    8, // Medals
+    8, // Pearls
+    8, // Fairies
+    8, // Rainbow Coins
+    16, // Ice Traps
+    16, // Junk Items
+    8, // Special Moves
+};
+
+short file_info_expansion = FILE_INFO_SIZE;
+
+void GrabFileParameters_FileInfo(int index, int level, short *file_base, unsigned char *bit_size) {
+    int offset = *(short*)(0x807ECEA0) + file_info_expansion;
+    *file_base += offset;
+    *bit_size = 0;
+    for (int i = 12; i <= index; i++) {
+        *file_base += *bit_size;
+        *bit_size = FileInfoData[i - 12];
+    }
+}
+
 void initItemRandoPointer(void) {
     ItemInventory = &current_item_data;
+}
+
+void readItemsFromFile(void) {
+    wipeTurnedInArray();
+    for (int i = 0; i < 5; i++) {
+        current_item_data.bp_bitfield[i] = ReadFile(DATA_DKBP + i, 0, 0, FileIndex);
+        current_item_data.hint_bitfield[i] = ReadFile(DATA_DKHINTS + i, 0, 0, FileIndex);
+    }
+    current_item_data.key_bitfield = ReadFile(DATA_KEYS, 0, 0, FileIndex);
+    current_item_data.kong_bitfield = ReadFile(DATA_KONGS, 0, 0, FileIndex);
+    current_item_data.crowns = ReadFile(DATA_CROWNS, 0, 0, FileIndex);
+    *(unsigned char*)(&current_item_data.special_items) = ReadFile(DATA_SPECIALITEMS, 0, 0, FileIndex);
+    current_item_data.medals = ReadFile(DATA_MEDALS, 0, 0, FileIndex);
+    current_item_data.pearls = ReadFile(DATA_PEARLS, 0, 0, FileIndex);
+    current_item_data.fairies = ReadFile(DATA_FAIRIES, 0, 0, FileIndex);
+    current_item_data.rainbow_coins = ReadFile(DATA_RAINBOWCOINS, 0, 0, FileIndex);
+    current_item_data.ice_traps = ReadFile(DATA_ICETRAPS, 0, 0, FileIndex);
+    current_item_data.junk_items = ReadFile(DATA_JUNKITEMS, 0, 0, FileIndex);
+    *(unsigned char*)(&current_item_data.flag_moves) = ReadFile(DATA_SPECIALMOVES, 0, 0, FileIndex);
+}
+
+void saveItemsToFile(void) {
+    for (int i = 0; i < 5; i++) {
+        SaveToFile(DATA_DKBP + i, 0, 0, FileIndex, current_item_data.bp_bitfield[i]);
+        SaveToFile(DATA_DKHINTS + i, 0, 0, FileIndex, current_item_data.hint_bitfield[i]);
+    }
+    SaveToFile(DATA_KEYS, 0, 0, FileIndex, current_item_data.key_bitfield);
+    SaveToFile(DATA_KONGS, 0, 0, FileIndex, current_item_data.kong_bitfield);
+    SaveToFile(DATA_CROWNS, 0, 0, FileIndex, current_item_data.crowns);
+    SaveToFile(DATA_SPECIALITEMS, 0, 0, FileIndex, *(unsigned char*)(&current_item_data.special_items));
+    SaveToFile(DATA_MEDALS, 0, 0, FileIndex, current_item_data.medals);
+    SaveToFile(DATA_PEARLS, 0, 0, FileIndex, current_item_data.pearls);
+    SaveToFile(DATA_FAIRIES, 0, 0, FileIndex, current_item_data.fairies);
+    SaveToFile(DATA_RAINBOWCOINS, 0, 0, FileIndex, current_item_data.rainbow_coins);
+    SaveToFile(DATA_ICETRAPS, 0, 0, FileIndex, current_item_data.ice_traps);
+    SaveToFile(DATA_JUNKITEMS, 0, 0, FileIndex, current_item_data.junk_items);
+    SaveToFile(DATA_SPECIALMOVES, 0, 0, FileIndex, *(unsigned char*)(&current_item_data.flag_moves));
 }
