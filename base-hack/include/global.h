@@ -422,6 +422,7 @@ extern int isItemRequirementSatisfied(ItemRequirement* req);
 extern dynamic_flag_icetrap_junk isIceTrapFlag(int flag);
 
 extern int getGamePercentage(void);
+extern int isShopEmpty(vendors vendor, int level, int kong);
 
 extern void displayMedalOverlay(int flag, medal_hint_item_data *item_type);
 

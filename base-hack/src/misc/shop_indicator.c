@@ -184,8 +184,7 @@ void getMoveCountInShop(counter_paad* paad, vendors shop_index) {
 			purchase_struct* data = getShopData(shop_index, i, level);
 			if (data->purchase_type != PURCHASE_NOTHING) {
 				// Shop is some item
-				int shop_flag = getShopFlag(shop_index, level, i);
-				if (!checkFlag(shop_flag, FLAGTYPE_PERMANENT)) {
+				if (!isShopEmpty(shop_index, level, i)) {
 					// Doesn't own move
 					if (isSharedMove(shop_index, level)) {
 						paad->kong_images[0] = COUNTER_SHARED_FACE;

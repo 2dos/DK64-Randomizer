@@ -91,6 +91,18 @@ int writeProgressiveText(int flag, int* top_text, int* bottom_text) {
 	return 0;
 }
 
+int isShopEmpty(vendors vendor, int level, int kong) {
+	int flag = getShopFlag(vendor, level, kong);
+	if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
+		return 1;
+	}
+	purchase_struct *shop_data = getShopData(vendor, kong, level);
+	if (shop_data->purchase_type == PURCHASE_NOTHING) {
+		return 1;
+	}
+	return 0;
+}
+
 void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	int has_purchase = 0;
 	int latest_level_entered = 0;
@@ -116,8 +128,7 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 				p_kong = 0;
 			}
 			if (p_type > -1) {
-				int shop_flag = getShopFlag(shop_owner - 0xBD, world, Character);
-				has_purchase = checkFlag(shop_flag, FLAGTYPE_PERMANENT) == 0;
+				has_purchase = isShopEmpty(shop_owner - 0xBD, world, Character) == 0;
 				if (has_purchase) {
 					paad->purchase_type = p_type;
 					int p_price = selected->price;
@@ -333,7 +344,9 @@ void purchaseMove(shop_paad* paad) {
 	} else if ((p_type == PURCHASE_INSTRUMENT)) {
 		item_given = 7;
 	}
-	changeCollectableCount(1, 0, (0 - paad->price));
+	if (!Rando.shops_dont_cost) {
+		changeCollectableCount(1, 0, (0 - paad->price));
+	}
 	if (item_given > -1) {
 		changeCollectableCount(item_given, 0, 9999);
 	}
