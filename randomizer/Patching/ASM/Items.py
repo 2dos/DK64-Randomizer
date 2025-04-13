@@ -529,7 +529,7 @@ def pauseUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     # Check blueprint count
     writeValue(ROM_COPY, 0x806ABFCE, Overlay.Static, 4, offset_dict)  # REQITEM_BLUEPRINT
     writeValue(ROM_COPY, 0x806ABFD2, Overlay.Static, -1, offset_dict, 2, True)  # All levels
-    writeValue(ROM_COPY, 0x806ABFDA, Overlay.Static, 0x2406FFFF, offset_dict, 4)  # All Kongs
+    writeValue(ROM_COPY, 0x806ABFD8, Overlay.Static, 0x2406FFFF, offset_dict, 4)  # All Kongs
     writeFunction(ROM_COPY, 0x806ABFD4, Overlay.Static, "getItemCount_new", offset_dict)
     # 
     if IsItemSelected(settings.quality_of_life, settings.misc_changes_selected, MiscChangesSelected.fast_pause_transitions):
