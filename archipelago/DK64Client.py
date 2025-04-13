@@ -545,6 +545,7 @@ class DK64Context(CommonContext):
     won = False
 
     def reset_checks(self):
+        """Reset the checks."""
         self.remaining_checks = list(check_id_to_name.keys()).copy()
         self.client.remaining_checks = self.remaining_checks
         self.client.recvd_checks = {}
