@@ -748,6 +748,8 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
     char item_level = -1;
     char item_kong = -1;
     getFlagMappingData(index, &item_level, &item_kong);
+    *(short*)(0x807FFFFC) = item_level;
+    *(short*)(0x807FFFFE) = item_kong;
     int is_acceptable_item = inShortList(obj_type, &acceptable_items, sizeof(acceptable_items) >> 1);
     if (obj_type != 0x13C) {
         if (inBossMap(CurrentMap, 1, 1, 0)) {

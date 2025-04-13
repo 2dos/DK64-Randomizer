@@ -805,6 +805,8 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                 Types.RarewareCoin,
                 Types.Enemies,
                 Types.Crown,
+                Types.Pearl,
+                Types.Bean,
             )
             items_needing_ipd = (
                 Types.Blueprint,

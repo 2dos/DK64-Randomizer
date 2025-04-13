@@ -426,6 +426,7 @@ extern int getGamePercentage(void);
 extern void displayMedalOverlay(int flag, medal_hint_item_data *item_type);
 
 extern void saveItemsToFile(void);
+extern void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index);
 
 extern void handleCrownTimerInternal(void);
 

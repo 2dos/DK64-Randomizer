@@ -720,12 +720,12 @@ void tagAnywhere(void) {
 	}
 }
 
-void tagAnywhereInit(int is_homing, int model2_id, int obj) {
+void tagAnywhereInit(int is_homing, int model2_id, int obj, int id) {
     /**
      * @brief Initialize certain aspects of Tag Anywhere
      */
     assessFlagMapping(CurrentMap, model2_id);
-    updateItemTotalsHandler(0, obj, is_homing);
+    updateItemTotalsHandler(0, obj, is_homing, id);
 }
 
 typedef struct sfx_cache_item {
@@ -801,7 +801,7 @@ void tagAnywhereAmmo(int player, int obj, int is_homing) {
      * This function handles these changes
      * 
      */
-    updateItemTotalsHandler(player, obj, is_homing);
+    updateItemTotalsHandler(player, obj, is_homing, -1);
     int id = 0;
     if (LatestCollectedObject) {
         id = LatestCollectedObject->id;
@@ -820,7 +820,7 @@ void tagAnywhereBunch(int player, int obj, int player_index) {
      * This function handles these changes
      * 
      */
-    coinCBCollectHandle(player, obj, player_index);
+    updateItemTotalsHandler(player, obj, player_index, -1);
     int id = 0;
     if (LatestCollectedObject) {
         id = LatestCollectedObject->id;
