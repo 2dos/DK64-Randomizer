@@ -82,7 +82,7 @@ if baseclasses_loaded:
                     print(f"Extracted {zip_dest} into {dest_dir}")
         except PermissionError:
             display_error_box("Permission Error", "Unable to install Dependencies to AP, please try to install AP as an admin.")
-            raise Exception("Permission Error: Unable to install Dependencies to AP, please try to install AP as an admin.")
+            raise PermissionError("Permission Error: Unable to install Dependencies to AP, please try to install AP as an admin.")
 
     platform_type = sys.platform
     # if the file pyxdelta.cp310-win_amd64.pyd exists, delete pyxdelta.cp310-win_amd64.pyd and PIL and pillow-10.3.0.dist-info and pyxdelta-0.2.0.dist-info
