@@ -9,6 +9,9 @@ import pkgutil
 from configparser import ConfigParser
 from Utils import open_filename
 from Utils import get_settings
+import re
+import platform
+import shutil
 
 
 class PJ64Exception(Exception):
@@ -38,19 +41,98 @@ def display_error_box(title: str, text: str) -> bool | None:
 class PJ64Client:
     """PJ64Client is a class that provides an interface to connect to and interact with an N64 emulator."""
 
-    def __init__(self, address="127.0.0.1", port=55356):
-        """Initialize a new instance of the class.
-
-        Args:
-            address (str): The IP address to connect to. Defaults to "127.0.0.1".
-            port (int): The port number to connect to. Defaults to 55356.
-        """
+    def __init__(self):
+        """Initialize a new instance of the class."""
         self._check_client()
-        self.address = address
-        self.port = port
+        self.address = "127.0.0.1"
+        self.port = self.get_pj64_port()
         self.socket = None
         self.connected_message = False
         self._connect()
+
+    def get_pj64_port(self):
+        """Get the port used by Project64 for communication."""
+        # Usage
+        process_name = "Project64.exe"  # Linux processes may be like "project64" or "wine Project64.exe"
+        pids = self.get_pid_by_name(process_name)
+
+        if pids:
+            for pid in pids:
+                ports = self.get_ports_by_pid(pid)
+                if ports:
+                    for proto, ip, port, status in ports:
+                        return port
+        raise PJ64Exception("Unable to find Project64 port. Please ensure Project64 is running and try again.")
+
+    def get_pid_by_name(self, name):
+        """Get the process ID (PID) of a running process by its name."""
+        system = platform.system()
+        pids = []
+
+        if system == "Windows":
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            tasklist = subprocess.check_output(["tasklist"], text=True, errors="ignore", shell=False, startupinfo=startupinfo)
+            for line in tasklist.splitlines():
+                if name.lower() in line.lower():
+                    parts = re.split(r"\s+", line)
+                    if len(parts) >= 2 and parts[0].lower() == name.lower():
+                        pids.append(int(parts[1]))
+
+        elif system == "Linux":
+            try:
+                # Try 'pgrep' for cleaner lookup
+                output = subprocess.check_output(["pgrep", "-f", name], text=True, shell=False)
+                for line in output.splitlines():
+                    pids.append(int(line.strip()))
+            except subprocess.CalledProcessError:
+                pass  # No process found
+
+        return pids
+
+    def get_ports_by_pid(self, pid):
+        """Get the ports used by a process ID (PID)."""
+        system = platform.system()
+        ports = []
+
+        if system == "Windows":
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            netstat = subprocess.check_output(["netstat", "-ano"], text=True, shell=False, startupinfo=startupinfo)
+            for line in netstat.splitlines():
+                if f"{pid}" in line:
+                    if "TCP" in line or "UDP" in line:
+                        parts = re.split(r"\s+", line.strip())
+                        proto = parts[0]
+                        local_address = parts[1]
+                        status = parts[3] if proto == "TCP" else "N/A"
+                        ip, port = local_address.rsplit(":", 1)
+                        ports.append((proto, ip, int(port), status))
+
+        elif system == "Linux":
+            if shutil.which("ss"):
+                tool = "ss"
+                cmd = ["ss", "-tunp"]
+            else:
+                tool = "netstat"
+                cmd = ["netstat", "-tunp"]
+
+            try:
+                output = subprocess.check_output(cmd, stderr=subprocess.DEVNULL, text=True, shell=False)
+                for line in output.splitlines():
+                    if f"/{pid}" in line:
+                        parts = re.split(r"\s+", line.strip())
+                        proto = parts[0]
+                        local = parts[4] if tool == "ss" else parts[3]
+                        ip_port = re.split(r":", local)
+                        port = int(ip_port[-1])
+                        ip = ":".join(ip_port[:-1])
+                        status = parts[5] if tool == "ss" and proto == "tcp" else "N/A"
+                        ports.append((proto.upper(), ip, port, status))
+            except subprocess.CalledProcessError:
+                pass
+
+        return ports
 
     def _check_client(self):
         """Ensure the Project 64 executable and the required adapter script are properly set up.
@@ -115,7 +197,9 @@ class PJ64Client:
 
         if sys.platform == "win32":
             try:
-                output = subprocess.check_output(["tasklist"], text=True, errors="ignore")
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                output = subprocess.check_output(["tasklist"], text=True, errors="ignore", shell=False, startupinfo=startupinfo)
                 return exe_name in output.lower()
             except subprocess.CalledProcessError:
                 return False
@@ -136,7 +220,7 @@ class PJ64Client:
 
         import ctypes
         import ctypes.wintypes
-        from subprocess import check_output, CalledProcessError
+        from subprocess import CalledProcessError
 
         user32 = ctypes.windll.user32
         kernel32 = ctypes.windll.kernel32
@@ -178,7 +262,9 @@ class PJ64Client:
         EnumWindows(EnumWindowsProc(callback), 0)
 
         try:
-            output = check_output('tasklist /FI "IMAGENAME eq Project64.exe"', shell=True, text=True)
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            output = subprocess.check_output('tasklist /FI "IMAGENAME eq Project64.exe"', shell=False, text=True, startupinfo=startupinfo)
             if "Project64.exe" in output and not found_visible:
                 return True
         except CalledProcessError:

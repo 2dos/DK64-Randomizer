@@ -28,6 +28,15 @@ if baseclasses_loaded:
     if not baseclasses_path.endswith("lib"):
         baseclasses_path = os.path.join(baseclasses_path, "lib")
 
+    def display_error_box(title: str, text: str) -> bool | None:
+        """Display an error message box."""
+        from tkinter import Tk, messagebox
+
+        root = Tk()
+        root.withdraw()
+        ret = messagebox.showerror(title, text)
+        root.update()
+
     def copy_dependencies(zip_path, file):
         """Copy a ZIP file from the package to a local directory, extracts its contents.
 
@@ -51,26 +60,29 @@ if baseclasses_loaded:
         # if baseclasses_path does not end in lib, add lib to the end
 
         zip_dest = os.path.join(dest_dir, file)
+        try:
+            # Ensure the destination directory exists
+            os.makedirs(dest_dir, exist_ok=True)
 
-        # Ensure the destination directory exists
-        os.makedirs(dest_dir, exist_ok=True)
+            # Load the ZIP file from the package
+            zip_data = pkgutil.get_data(__name__, zip_path)
+            # Check if the zip already exists in the destination
+            if not os.path.exists(zip_dest):
+                if zip_data is None:
+                    print(f"Failed to read {zip_path}")
+                else:
+                    # Write the ZIP file to the destination
+                    with open(zip_dest, "wb") as f:
+                        f.write(zip_data)
+                    print(f"Copied {zip_path} to {zip_dest}")
 
-        # Load the ZIP file from the package
-        zip_data = pkgutil.get_data(__name__, zip_path)
-        # Check if the zip already exists in the destination
-        if not os.path.exists(zip_dest):
-            if zip_data is None:
-                print(f"Failed to read {zip_path}")
-            else:
-                # Write the ZIP file to the destination
-                with open(zip_dest, "wb") as f:
-                    f.write(zip_data)
-                print(f"Copied {zip_path} to {zip_dest}")
-
-                # Extract the ZIP file
-                with zipfile.ZipFile(zip_dest, "r") as zip_ref:
-                    zip_ref.extractall(dest_dir)
-                print(f"Extracted {zip_dest} into {dest_dir}")
+                    # Extract the ZIP file
+                    with zipfile.ZipFile(zip_dest, "r") as zip_ref:
+                        zip_ref.extractall(dest_dir)
+                    print(f"Extracted {zip_dest} into {dest_dir}")
+        except PermissionError:
+            display_error_box("Permission Error", "Unable to install Dependencies to AP, please try to install AP as an admin.")
+            raise PermissionError("Permission Error: Unable to install Dependencies to AP, please try to install AP as an admin.")
 
     platform_type = sys.platform
     # if the file pyxdelta.cp310-win_amd64.pyd exists, delete pyxdelta.cp310-win_amd64.pyd and PIL and pillow-10.3.0.dist-info and pyxdelta-0.2.0.dist-info

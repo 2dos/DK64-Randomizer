@@ -1,8 +1,10 @@
 var server = new Server();
+var port = Math.floor(Math.random() * (50000 - 40000 + 1)) + 40000;
 
+var ip = "127.0.0.1";
 function startServer() {
     console.log("Starting server...");
-    server.listen(55356, "127.0.0.1");
+    server.listen(port, ip);
 
     server.on('connection', function(c) {
         console.log("Client connected");
@@ -185,7 +187,7 @@ function startServer() {
         });
     });
 
-    console.log("Server listening on 127.0.0.1:55356");
+    console.log("Server listening on " + ip + ":" + port);
 }
 
 function restartServer() {
