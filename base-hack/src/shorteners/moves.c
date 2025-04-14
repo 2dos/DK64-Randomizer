@@ -1,15 +1,15 @@
 #include "../../include/common.h"
 
-int initFile_checkTraining(int type_check, int kong_check, int value_check) {
+int initFile_checkTraining(int type_check, int level_check, int kong_check) {
 	if (Rando.fast_start_beginning) {
 		for (int i = 0; i < 5; i++) {
 			purchase_struct* handler = &FirstMove_New;
 			if (i < 4) {
 				handler = &TrainingMoves_New[i];
 			}
-			if (handler->purchase_type == type_check) {
-				if ((kong_check == -1) || (handler->move_kong == kong_check)) {
-					if (handler->purchase_value == value_check) {
+			if (handler->item.item_type == type_check) {
+				if ((kong_check == -1) || (handler->item.kong == kong_check)) {
+					if (handler->item.level == level_check) {
 						return 1;
 					}
 				}
@@ -21,12 +21,12 @@ int initFile_checkTraining(int type_check, int kong_check, int value_check) {
 
 int initFile_hasGun(int kong) {
 	int guns[] = {Rando.moves_pregiven.coconut, Rando.moves_pregiven.peanut, Rando.moves_pregiven.grape, Rando.moves_pregiven.feather, Rando.moves_pregiven.pineapple};
-	return (guns[kong] != 0) || (initFile_checkTraining(PURCHASE_GUN, kong, 1));
+	return (guns[kong] != 0) || (initFile_checkTraining(REQITEM_MOVE, 4, kong));
 }
 
 int initFile_hasInstrument(int kong) {
 	int instruments[] = {Rando.moves_pregiven.bongos, Rando.moves_pregiven.guitar, Rando.moves_pregiven.trombone, Rando.moves_pregiven.sax, Rando.moves_pregiven.triangle};
-	return (instruments[kong] != 0) || (initFile_checkTraining(PURCHASE_INSTRUMENT, kong, 1));
+	return (instruments[kong] != 0) || (initFile_checkTraining(REQITEM_MOVE, 8, kong));
 }
 
 int initFile_getBeltLevel(int inc_training) {
@@ -39,7 +39,7 @@ int initFile_getBeltLevel(int inc_training) {
 	}
 	if (inc_training) {
 		for (int i = 0; i < 4; i++) {
-			if (initFile_checkTraining(PURCHASE_FLAG, -1, belt_flags[i])) {
+			if (initFile_checkTraining(REQITEM_MOVE, 7, -1)) {
 				belt_level += 1;
 			}
 		}
@@ -57,7 +57,7 @@ int initFile_getInsUpgradeLevel(int inc_training) {
 	}
 	if (inc_training) {
 		for (int i = 0; i < 6; i++) {
-			if (initFile_checkTraining(PURCHASE_FLAG, -1, instrument_flags[i])) {
+			if (initFile_checkTraining(REQITEM_MOVE, 9, -1)) {
 				instrument_upgrade_level += 1;
 			}
 		}
@@ -75,7 +75,7 @@ int initFile_getSlamLevel(int inc_training) {
 	}
 	if (inc_training) {
 		for (int i = 0; i < 6; i++) {
-			if (initFile_checkTraining(PURCHASE_FLAG, -1, slam_flags[i])) {
+			if (initFile_checkTraining(REQITEM_MOVE, 3, -1)) {
 				slam_level += 1;
 			}
 		}
@@ -96,7 +96,7 @@ int initFile_getKongPotionBitfield(int kong) {
 		if (potions[kong][i]) {
 			bitfield |= (1 << i);
 		}
-		if (initFile_checkTraining(PURCHASE_MOVES, kong, i+1)) {
+		if (initFile_checkTraining(REQITEM_MOVE, i, kong)) {
 			bitfield |= (1 << i);
 		}
 	}
@@ -117,10 +117,10 @@ void unlockMoves(void) {
 	int belt_level = initFile_getBeltLevel(0);
 	int base_gun_bitfield = 0;
 	int base_ins_bitfield = ((1 << initFile_getInsUpgradeLevel(0)) - 1) << 1;
-	if ((Rando.moves_pregiven.homing) || (initFile_checkTraining(PURCHASE_GUN, -1, 2))) {
+	if ((Rando.moves_pregiven.homing) || (initFile_checkTraining(REQITEM_MOVE, 5, -1))) {
 		base_gun_bitfield |= 2;
 	}
-	if ((Rando.moves_pregiven.sniper) || (initFile_checkTraining(PURCHASE_GUN, -1, 3))) {
+	if ((Rando.moves_pregiven.sniper) || (initFile_checkTraining(REQITEM_MOVE, 6, -1))) {
 		base_gun_bitfield |= 4;
 	}
 	for (int i = 0; i < 5; i++) {
@@ -158,26 +158,26 @@ void unlockMoves(void) {
 			setLocationStatus(LOCATION_DIVE + i);
 		}
 	}
-	if ((Rando.moves_pregiven.camera) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CAMERA) || (initFile_checkTraining(PURCHASE_FLAG, -1, -2)))) {
+	if ((Rando.moves_pregiven.camera) || (initFile_checkTraining(REQITEM_MOVE, 10, MOVE_SPECIAL_CAMERA))) {
 		setFlagMove(FLAG_ABILITY_CAMERA);
 		CollectableBase.Film = 5;
 	}
-	if ((Rando.moves_pregiven.shockwave) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_SHOCKWAVE) || (initFile_checkTraining(PURCHASE_FLAG, -1, -2)))) {
+	if ((Rando.moves_pregiven.shockwave) || (initFile_checkTraining(REQITEM_MOVE, 10, MOVE_SPECIAL_SHOCKWAVE))) {
 		setFlagMove(FLAG_ABILITY_SHOCKWAVE);
 	}
-	if ((Rando.moves_pregiven.climbing) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CLIMBING))) {
+	if ((Rando.moves_pregiven.climbing) || (initFile_checkTraining(REQITEM_MOVE, 11, -1))) {
 		setFlagMove(FLAG_ABILITY_CLIMBING);
 	}
-	if ((Rando.moves_pregiven.dive) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_DIVE))) {
+	if ((Rando.moves_pregiven.dive) || (initFile_checkTraining(REQITEM_MOVE, 10, MOVE_SPECIAL_DIVING))) {
 		setFlagMove(FLAG_TBARREL_DIVE);
 	}
-	if ((Rando.moves_pregiven.oranges) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_ORANGE))) {
+	if ((Rando.moves_pregiven.oranges) || (initFile_checkTraining(REQITEM_MOVE, 10, MOVE_SPECIAL_ORANGES))) {
 		setFlagMove(FLAG_TBARREL_ORANGE);
 	}
-	if ((Rando.moves_pregiven.barrels) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_BARREL))) {
+	if ((Rando.moves_pregiven.barrels) || (initFile_checkTraining(REQITEM_MOVE, 10, MOVE_SPECIAL_BARRELS))) {
 		setFlagMove(FLAG_TBARREL_BARREL);
 	}
-	if ((Rando.moves_pregiven.vines) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_VINE))) {
+	if ((Rando.moves_pregiven.vines) || (initFile_checkTraining(REQITEM_MOVE, 10, MOVE_SPECIAL_VINES))) {
 		setFlagMove(FLAG_TBARREL_VINE);
 	}
 }

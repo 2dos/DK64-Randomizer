@@ -205,7 +205,7 @@ void collectKey(void) {
     for (int i = 0; i < 8; i++) {
         if (getItemCount_new(REQITEM_KEY, i, 0)) {
             if ((old_keys & (1 << i)) == 0) {
-                spawnItemOverlay(PURCHASE_KEY, 0, i, 0);
+                spawnItemOverlay(REQITEM_KEY, i, 0, 0);
             }
         }
     }

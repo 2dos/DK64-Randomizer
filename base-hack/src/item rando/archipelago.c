@@ -242,7 +242,7 @@ void handleArchipelagoFeed(void) {
             ap_info.fed_item = TRANSFER_ITEM_NULL;
         }
         if (ap_info.fed_string[0] != 0) {
-            int vacant_spot = spawnItemOverlay(PURCHASE_ARCHIPELAGO, 0, 1, 1);
+            int vacant_spot = spawnItemOverlay(REQITEM_AP, 0, 1, 1);
             if (vacant_spot == -1) {
                 return;
             }

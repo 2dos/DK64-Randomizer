@@ -1280,7 +1280,7 @@ int getCustomActorIndex(new_custom_actors offset) {
 
 move_text_overlay_struct text_overlay_data[TEXT_OVERLAY_BUFFER] = {};
 
-int spawnItemOverlay(PURCHASE_TYPES type, int kong, int index, int force) {
+int spawnItemOverlay(requirement_item type, int level, int kong, int force) {
 	for (int i = 0; i < TEXT_OVERLAY_BUFFER; i++) {
 		if (text_overlay_data[i].used) {
 			continue;
@@ -1293,7 +1293,7 @@ int spawnItemOverlay(PURCHASE_TYPES type, int kong, int index, int force) {
 		move_overlay_paad * ovl_paad = LastSpawnedActor->paad;
 		ovl_paad->index = i;
 		text_overlay_data[i].type = type;
-		text_overlay_data[i].flag = index;
+		text_overlay_data[i].level = level;
 		text_overlay_data[i].kong = kong;
 		text_overlay_data[i].string = (char*)0;
 		text_overlay_data[i].subtitle = (char*)0;

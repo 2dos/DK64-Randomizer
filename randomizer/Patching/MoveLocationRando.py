@@ -213,6 +213,7 @@ def dictEqual(dict1: dict, dict2: dict) -> bool:
 
 def randomize_moves(spoiler, ROM_COPY: LocalROM):
     """Randomize Move locations based on move_data from spoiler."""
+    return
     varspaceOffset = spoiler.settings.rom_data
     movespaceOffset = spoiler.settings.move_location_data
     hint_enabled = True

@@ -131,6 +131,10 @@ void giveItem(requirement_item item, int level, int kong) {
     }
 }
 
+void giveItemFromPacket(medal_hint_item_data *packet) {
+    giveItem(packet->item_type, packet->level, packet->kong);
+}
+
 int getItemCount_new(requirement_item item, int level, int kong) {
     /*
         Get the item count, if necessary provide the level and kong

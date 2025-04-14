@@ -15,7 +15,7 @@ extern void quickInit(void);
 extern int getCenter(int style, char* str);
 extern int getActorIndex(int actor_input);
 extern int getCustomActorIndex(new_custom_actors offset);
-extern int spawnItemOverlay(PURCHASE_TYPES type, int kong, int index, int force);
+extern int spawnItemOverlay(requirement_item type, int level, int kong, int force);
 extern int giveSlamLevel(void);
 extern int isSlamFlag(int flag);
 extern int isBeltFlag(int flag);
@@ -372,7 +372,7 @@ extern int initFile_getBeltLevel(int inc_training);
 extern int initFile_getInsUpgradeLevel(int inc_training);
 extern int initFile_getSlamLevel(int inc_training);
 extern int initFile_getKongPotionBitfield(int kong);
-extern int initFile_checkTraining(int type_check, int kong_check, int value_check);
+extern int initFile_checkTraining(int type_check, int level_check, int kong_check);
 
 extern void fixHelmTimerCorrection(void);
 extern void exitBoss(void);
@@ -447,6 +447,7 @@ extern purchase_struct* getShopData(vendors vendor, int kong, int level);
 extern void initQoL_Cutscenes(void);
 
 extern void giveItem(requirement_item item, int level, int kong);
+extern void giveItemFromPacket(medal_hint_item_data *packet);
 extern int getItemCount_new(requirement_item item, int level, int kong);
 extern int hasFlagMove(int flag);
 extern void setFlagMove(int flag);

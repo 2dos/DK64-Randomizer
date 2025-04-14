@@ -6,15 +6,15 @@ void alter_price(purchase_struct* data) {
 		return;
 	}
 	int write = -1;
-	if (data->purchase_type == PURCHASE_FLAG) {
-		int subtype = getMoveProgressiveFlagType(data->purchase_value);
-		if (subtype == 0) {
+	if (data->item.item_type == REQITEM_MOVE) {
+		int subtype = data->item.level;
+		if (subtype == 3) {
 			// Slam
 			write = Rando.slam_prices[MovesBase[0].simian_slam - 1];
-		} else if (subtype == 1) {
+		} else if (subtype == 7) {
 			// Belt
 			write = Rando.ammo_belt_prices[(int)MovesBase[0].ammo_belt];
-		} else if (subtype == 2) {
+		} else if (subtype == 9) {
 			// Ins Upgrade
 			int level = 0;
 			if (MovesBase[0].instrument_bitfield & 4) {

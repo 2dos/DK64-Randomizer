@@ -175,56 +175,56 @@ int isMovePregiven(int index) {
 		case TRACKER_TYPE_TRIANGLE:
 			return initFile_hasInstrument((index - 1) / 5);
 		case TRACKER_TYPE_GRAB:
-			return Rando.moves_pregiven.grab || initFile_checkTraining(PURCHASE_MOVES, 0, 3);
+			return Rando.moves_pregiven.grab || initFile_checkTraining(REQITEM_MOVE, 2, 0);
 		case TRACKER_TYPE_BLAST:
-			return Rando.moves_pregiven.blast || initFile_checkTraining(PURCHASE_MOVES, 0, 1);
+			return Rando.moves_pregiven.blast || initFile_checkTraining(REQITEM_MOVE, 0, 0);
 		case TRACKER_TYPE_STRONG:
-			return Rando.moves_pregiven.strong_kong || initFile_checkTraining(PURCHASE_MOVES, 0, 2);
+			return Rando.moves_pregiven.strong_kong || initFile_checkTraining(REQITEM_MOVE, 1, 0);
 		case TRACKER_TYPE_CHARGE:
-			return Rando.moves_pregiven.charge || initFile_checkTraining(PURCHASE_MOVES, 1, 1);
+			return Rando.moves_pregiven.charge || initFile_checkTraining(REQITEM_MOVE, 0, 1);
 		case TRACKER_TYPE_SPRING:
-			return Rando.moves_pregiven.spring || initFile_checkTraining(PURCHASE_MOVES, 1, 3);
+			return Rando.moves_pregiven.spring || initFile_checkTraining(REQITEM_MOVE, 2, 1);
 		case TRACKER_TYPE_ROCKET:
-			return Rando.moves_pregiven.rocketbarrel || initFile_checkTraining(PURCHASE_MOVES, 1, 2);
+			return Rando.moves_pregiven.rocketbarrel || initFile_checkTraining(REQITEM_MOVE, 1, 1);
 		case TRACKER_TYPE_OSTAND:
-			return Rando.moves_pregiven.ostand || initFile_checkTraining(PURCHASE_MOVES, 2, 1);
+			return Rando.moves_pregiven.ostand || initFile_checkTraining(REQITEM_MOVE, 0, 2);
 		case TRACKER_TYPE_BALLOON:
-			return Rando.moves_pregiven.balloon || initFile_checkTraining(PURCHASE_MOVES, 2, 2);
+			return Rando.moves_pregiven.balloon || initFile_checkTraining(REQITEM_MOVE, 1, 2);
 		case TRACKER_TYPE_OSPRINT:
-			return Rando.moves_pregiven.osprint || initFile_checkTraining(PURCHASE_MOVES, 2, 3);
+			return Rando.moves_pregiven.osprint || initFile_checkTraining(REQITEM_MOVE, 2, 2);
 		case TRACKER_TYPE_PTT:
-			return Rando.moves_pregiven.twirl || initFile_checkTraining(PURCHASE_MOVES, 3, 2);
+			return Rando.moves_pregiven.twirl || initFile_checkTraining(REQITEM_MOVE, 1, 3);
 		case TRACKER_TYPE_MONKEYPORT:
-			return Rando.moves_pregiven.monkeyport || initFile_checkTraining(PURCHASE_MOVES, 3, 3);
+			return Rando.moves_pregiven.monkeyport || initFile_checkTraining(REQITEM_MOVE, 2, 3);
 		case TRACKER_TYPE_MINI:
-			return Rando.moves_pregiven.mini || initFile_checkTraining(PURCHASE_MOVES, 3, 1);
+			return Rando.moves_pregiven.mini || initFile_checkTraining(REQITEM_MOVE, 0, 3);
 		case TRACKER_TYPE_PUNCH:
-			return Rando.moves_pregiven.punch || initFile_checkTraining(PURCHASE_MOVES, 4, 2);
+			return Rando.moves_pregiven.punch || initFile_checkTraining(REQITEM_MOVE, 1, 4);
 		case TRACKER_TYPE_GONE:
-			return Rando.moves_pregiven.gone || initFile_checkTraining(PURCHASE_MOVES, 4, 3);
+			return Rando.moves_pregiven.gone || initFile_checkTraining(REQITEM_MOVE, 2, 4);
 		case TRACKER_TYPE_HUNKY:
-			return Rando.moves_pregiven.hunky || initFile_checkTraining(PURCHASE_MOVES, 4, 1);
+			return Rando.moves_pregiven.hunky || initFile_checkTraining(REQITEM_MOVE, 0, 4);
 		case TRACKER_TYPE_CAMERA:
-			return Rando.moves_pregiven.camera || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CAMERA) || initFile_checkTraining(PURCHASE_FLAG, -1, -2);
+			return Rando.moves_pregiven.camera || initFile_checkTraining(REQITEM_MOVE, 10, 4);
 		case TRACKER_TYPE_SHOCKWAVE:
-			return Rando.moves_pregiven.shockwave || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_SHOCKWAVE) || initFile_checkTraining(PURCHASE_FLAG, -1, -2);
+			return Rando.moves_pregiven.shockwave || initFile_checkTraining(REQITEM_MOVE, 10, 5);
 		case TRACKER_TYPE_SLAM:
 		case TRACKER_TYPE_SLAM_HAS:
 			return initFile_getSlamLevel(1);
 		case TRACKER_TYPE_HOMING:
-			return Rando.moves_pregiven.homing || initFile_checkTraining(PURCHASE_GUN, -1, 2);
+			return Rando.moves_pregiven.homing || initFile_checkTraining(REQITEM_MOVE, 5, -1);
 		case TRACKER_TYPE_SNIPER:
-			return Rando.moves_pregiven.sniper || initFile_checkTraining(PURCHASE_GUN, -1, 3);
+			return Rando.moves_pregiven.sniper || initFile_checkTraining(REQITEM_MOVE, 6, -1);
 		case TRACKER_TYPE_CLIMB:
-			return Rando.moves_pregiven.climbing || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CLIMBING);
+			return Rando.moves_pregiven.climbing || initFile_checkTraining(REQITEM_MOVE, 11, -1);
 		case TRACKER_TYPE_DIVE:
-			return Rando.moves_pregiven.dive || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_DIVE);
+			return Rando.moves_pregiven.dive || initFile_checkTraining(REQITEM_MOVE, 10, 0);
 		case TRACKER_TYPE_ORANGE:
-			return Rando.moves_pregiven.oranges || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_ORANGE);
+			return Rando.moves_pregiven.oranges || initFile_checkTraining(REQITEM_MOVE, 10, 1);
 		case TRACKER_TYPE_BARREL:
-			return Rando.moves_pregiven.barrels || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_BARREL);
+			return Rando.moves_pregiven.barrels || initFile_checkTraining(REQITEM_MOVE, 10, 2);
 		case TRACKER_TYPE_VINE:
-			return Rando.moves_pregiven.vines || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_VINE);
+			return Rando.moves_pregiven.vines || initFile_checkTraining(REQITEM_MOVE, 10, 3);
 		case TRACKER_TYPE_MELON_2:
 			if (initFile_getInsUpgradeLevel(1) >= 1) {
 				return 1;
@@ -433,20 +433,20 @@ void updateEnabledStates(void) {
 			int subtype = -1;
 			if (i < 4) {
 				// Training Moves
-				if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
-					subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
+				if (TrainingMoves_New[i].item.item_type == REQITEM_MOVE) {
+					subtype = TrainingMoves_New[i].item.level;
 				}
 			} else if (i == 4) {
 				// First Move
-				if (FirstMove_New.purchase_type == PURCHASE_FLAG) {
-					subtype = getMoveProgressiveFlagType(FirstMove_New.purchase_value);
+				if (FirstMove_New.item.item_type == REQITEM_MOVE) {
+					subtype = FirstMove_New.item.level;
 				}
 			}
-			if (subtype == 0) {
+			if (subtype == 3) {
 				slam_screen_level += 1;
-			} else if (subtype == 1) {
+			} else if (subtype == 7) {
 				belt_screen_level += 1;
-			} else if (subtype == 2) {
+			} else if (subtype == 9) {
 				ins_screen_level += 1;
 			}
 			

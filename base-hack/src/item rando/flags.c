@@ -10,39 +10,6 @@
  */
 #include "../../include/common.h"
 
-void moveGiveHook(int kong, PURCHASE_TYPES type, int index, int is_jetpac) {
-    /**
-     * @brief Hook into the move give function, only for non-progressive moves purchased from Cranky, Candy and Funky
-     * 
-     * @param kong Kong index
-     * @param type Move Type
-     * @param index Move Index
-     */
-    if (type == 0) {
-        int pad_moves[] = {1, 3, 2, 3, 3};
-        if (kong < 5) {
-            if (pad_moves[kong] == index) {
-                refreshPads((pad_refresh_signals)kong);
-            }
-        }
-    }
-    spawnItemOverlay(type, kong, index, is_jetpac);
-    if (type == 4) {
-        if (CollectableBase.Melons < 2) {
-            CollectableBase.Melons = 2;
-            CollectableBase.Health = CollectableBase.Melons << 2;
-        }
-    }
-}
-
-void displayKeyText(int flag) {
-    for (int i = 0; i < 8; i++) {
-        if (getKeyFlag(i) == flag) {
-            spawnItemOverlay(PURCHASE_FLAG, 0, getKeyFlag(i), 0);
-        }
-    }
-}
-
 int hasMove(int flag) {
     if (flag == 0) {
         return 1;

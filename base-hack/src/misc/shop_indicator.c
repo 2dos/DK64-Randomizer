@@ -1,26 +1,5 @@
 #include "../../include/common.h"
 
-static short flag_purchase_types[] = {
-	PURCHASE_FLAG,
-	PURCHASE_GB,
-	PURCHASE_ICEBUBBLE,
-	PURCHASE_ICEREVERSE,
-	PURCHASE_ICESLOW,
-	PURCHASE_ARCHIPELAGO,
-	PURCHASE_MEDAL,
-	PURCHASE_CROWN,
-	PURCHASE_RAINBOWCOIN,
-	PURCHASE_FAIRY,
-	PURCHASE_NINTENDOCOIN,
-	PURCHASE_RAREWARECOIN,
-	PURCHASE_BEAN,
-	PURCHASE_PEARL,
-	PURCHASE_HINT,
-	PURCHASE_BLUEPRINT,
-	PURCHASE_KEY,
-	PURCHASE_KONG,
-};
-
 #define MOVEBTF_DK 1
 #define MOVEBTF_DIDDY 2
 #define MOVEBTF_LANKY 4
@@ -40,16 +19,10 @@ int isSharedMove(vendors shop_index, int level) {
 	for (int i = 1; i < 5; i++) {
 		purchase_struct* src = getShopData(shop_index, i, level);
 		if (src) {
-			if (targ->purchase_type != src->purchase_type) {
+			int src_item = *(int*)(&src->item);
+			int targ_item = *(int*)(&targ->item);
+			if (src_item != targ_item) {
 				return 0;
-			}
-			if (targ->purchase_value != src->purchase_value) {
-				return 0;
-			}
-			if (!inShortList(targ->purchase_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
-				if (targ->move_kong != src->move_kong) {
-					return 0;
-				}
 			}
 		}
 	}
@@ -103,72 +76,40 @@ typedef enum counter_items {
 int getCounterItem(vendors shop_index, int kong, int level) {
 	purchase_struct* data = getShopData(shop_index, kong, level);
 	if (data) {
-		switch(data->purchase_type) {
-			case PURCHASE_MOVES:
-			case PURCHASE_SLAM:
-			case PURCHASE_GUN:
-			case PURCHASE_AMMOBELT:
-			case PURCHASE_INSTRUMENT:
+		switch(data->item.item_type) {
+			case REQITEM_KONG:
+				return COUNTER_DK_FACE + data->item.kong;
+			case REQITEM_MOVE:
 				return COUNTER_POTION;
-				break;
-			case PURCHASE_FLAG:
-				{
-					int flag = data->purchase_value;
-					if (isTBarrelFlag(flag)) {
-						return COUNTER_POTION;
-					}
-					if (isFairyFlag(flag)) {
-						return COUNTER_POTION;
-					}
-					if (flag == FLAG_ABILITY_CLIMBING) {
-						return COUNTER_POTION;
-					}
-					int subtype = getMoveProgressiveFlagType(flag);
-					if (subtype >= 0) {
-						return COUNTER_POTION;
-					}
-					
-				}
-				break;
-			case PURCHASE_GB:
+			case REQITEM_GOLDENBANANA:
 				return COUNTER_GB;
-			case PURCHASE_ICEBUBBLE:
-			case PURCHASE_ICEREVERSE:
-			case PURCHASE_ICESLOW:
-				return COUNTER_FAKEITEM;
-			case PURCHASE_ARCHIPELAGO:
-				return COUNTER_AP;
-			case PURCHASE_MEDAL:
-				return COUNTER_MEDAL;
-			case PURCHASE_CROWN:
-				return COUNTER_CROWN;
-			case PURCHASE_RAINBOWCOIN:
-				return COUNTER_RAINBOWCOIN;
-			case PURCHASE_FAIRY:
-				return COUNTER_FAIRY;
-			case PURCHASE_NINTENDOCOIN:
-				return COUNTER_NINCOIN;
-			case PURCHASE_RAREWARECOIN:
-				return COUNTER_RWCOIN;
-			case PURCHASE_BEAN:
-				return COUNTER_BEAN;
-			case PURCHASE_PEARL:
-				return COUNTER_PEARL;
-			case PURCHASE_HINT:
-				return COUNTER_HINT;
-			case PURCHASE_BLUEPRINT:
+			case REQITEM_BLUEPRINT:
 				return COUNTER_BP;
-			case PURCHASE_KEY:
+			case REQITEM_FAIRY:
+				return COUNTER_FAIRY;
+			case REQITEM_KEY:
 				return COUNTER_KEY;
-			case PURCHASE_KONG:
-				{
-					for (int i = 0; i < 5; i++) {
-						if (data->purchase_value == getKongFlag(i)) {
-							return COUNTER_DK_FACE + i;
-						}
-					}
-				}
-			break;
+			case REQITEM_CROWN:
+				return COUNTER_CROWN;
+			case REQITEM_COMPANYCOIN:
+				return data->item.kong ? COUNTER_RWCOIN : COUNTER_NINCOIN;
+			case REQITEM_MEDAL:
+				return COUNTER_MEDAL;
+			case REQITEM_BEAN:
+				return COUNTER_BEAN;
+			case REQITEM_PEARL:
+				return COUNTER_PEARL;
+			case REQITEM_RAINBOWCOIN:
+				return COUNTER_RAINBOWCOIN;
+			case REQITEM_ICETRAP:
+				return COUNTER_FAKEITEM;
+			// case REQITEM_COLOREDBANANA:
+			// case REQITEM_JUNK:
+			case REQITEM_HINT:
+				return COUNTER_HINT;
+			// case REQITEM_SHOPKEEPER:
+			case REQITEM_AP:
+				return COUNTER_AP;
 		}
 	}
 	return COUNTER_NO_ITEM;
@@ -182,7 +123,7 @@ void getMoveCountInShop(counter_paad* paad, vendors shop_index) {
 	if (level < LEVEL_COUNT) {
 		for (int i = 0; i < 5; i++) {
 			purchase_struct* data = getShopData(shop_index, i, level);
-			if (data->purchase_type != PURCHASE_NOTHING) {
+			if (data->item.item_type != REQITEM_NONE) {
 				// Shop is some item
 				if (!isShopEmpty(shop_index, level, i)) {
 					// Doesn't own move

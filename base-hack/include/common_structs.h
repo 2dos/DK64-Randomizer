@@ -725,10 +725,16 @@ typedef struct main_menu_moves_struct {
 	/* 0x007 */ char melons;
 } main_menu_moves_struct;
 
+typedef struct medal_hint_item_data {
+	/* 0x000 */ unsigned char item_type;
+	/* 0x001 */ unsigned char level;
+	/* 0x002 */ unsigned char kong;
+	/* 0x003 */ unsigned char audiovisual_index;
+} medal_hint_item_data;
+
 typedef struct purchase_struct {
-	/* 0x000 */ short purchase_type; // 0 = Moves, 1 = Simian Slam, 2 = Weapon Bitfield, 3 = Ammo Belt, 4 = Instrument Bitfield, -1 = No offer
-	/* 0x002 */ short purchase_value;
-	/* 0x004 */ unsigned char move_kong; // Kong that the move is normally assigned to. Eg Strong Kong = DK (0), Monkeyport = Tiny (3)
+	/* 0x000 */ medal_hint_item_data item;
+	/* 0x004 */ char pad;
 	/* 0x005 */ unsigned char price;
 } purchase_struct;
 
@@ -829,13 +835,6 @@ typedef struct charspawner_flagstruct {
 	/* 0x006 */ char unk_06[2];
 } charspawner_flagstruct;
 
-typedef struct medal_hint_item_data {
-	/* 0x000 */ unsigned char item_type;
-	/* 0x001 */ unsigned char level;
-	/* 0x002 */ unsigned char kong;
-	/* 0x003 */ unsigned char audiovisual_index;
-} medal_hint_item_data;
-
 typedef struct model_item_data {
 	/* 0x000 */ short model;
 	/* 0x002 */ char has_no_textures;
@@ -858,13 +857,13 @@ typedef struct shop_paad {
 	/* 0x004 */ unsigned char kong;
 	/* 0x005 */ unsigned char price;
 	/* 0x006 */ char unk_06[0xB-0x6];
-	/* 0x00B */ char purchase_type;
+	/* 0x00B */ char item_type;
 	/* 0x00C */ char level;
 	/* 0x00D */ unsigned char state;
 	/* 0x00E */ unsigned char unk_0E;
 	/* 0x00F */ char unk_0F;
 	/* 0x010 */ unsigned char melons;
-	/* 0x011 */ unsigned char purchase_value;
+	/* 0x011 */ unsigned char item_level;
 } shop_paad;
 
 typedef struct model2_collision_info {
@@ -1357,7 +1356,7 @@ typedef struct actor_behaviour_def {
 typedef struct move_text_overlay_struct {
 	/* 0x000 */ unsigned char type;
 	/* 0x001 */ unsigned char kong;
-	/* 0x002 */ short flag;
+	/* 0x002 */ short level;
 	/* 0x004 */ char* string;
 	/* 0x008 */ unsigned char used;
 	/* 0x009 */ char pad_9[3]; // Used to align with a 4-byte region

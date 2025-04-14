@@ -376,18 +376,20 @@ def getTextRewardIndex(item) -> int:
 def writeNullShopSlot(ROM_COPY: LocalROM, location: int):
     """Write an empty shop slot."""
     ROM_COPY.seek(location)
-    ROM_COPY.writeMultipleBytes(MoveTypes.Nothing, 2)
-    ROM_COPY.writeMultipleBytes(0, 2)
-    ROM_COPY.writeMultipleBytes(0, 1)
-    ROM_COPY.writeMultipleBytes(0, 1)
+    for _ in range(3):
+        ROM_COPY.writeMultipleBytes(0, 2)
 
 
-def writeShopData(ROM_COPY: LocalROM, location: int, item_type: MoveTypes, flag: int, kong: int, price: int):
+def writeShopData(ROM_COPY: LocalROM, location: int, ipd: ItemPatchingInfo, price: int):
     """Write shop data to slot."""
-    ROM_COPY.seek(location)
-    ROM_COPY.writeMultipleBytes(item_type, 2)
-    ROM_COPY.writeMultipleBytes(flag, 2)
-    ROM_COPY.writeMultipleBytes(kong, 1)
+    if ipd is not None:
+        ROM_COPY.seek(location)
+        ROM_COPY.writeMultipleBytes(ipd.response_type, 1)
+        ROM_COPY.writeMultipleBytes(ipd.level, 1)
+        ROM_COPY.writeMultipleBytes(ipd.kong, 1)
+        ROM_COPY.writeMultipleBytes(ipd.audiovisual_medal, 1)
+    ROM_COPY.seek(location + 4)
+    ROM_COPY.writeMultipleBytes(0, 1)  # Pad
     ROM_COPY.writeMultipleBytes(price, 1)
 
 
@@ -482,16 +484,10 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                     item_flag = ItemList[placed_item].rando_flag
                 if item_flag is not None and item_flag & 0x8000:
                     # Is move
-                    item_kong = (item_flag >> 12) & 7
-                    item_subtype = (item_flag >> 8) & 0xF
-                    if item_subtype == 7:
-                        item_subindex = 0
-                    else:
-                        item_subindex = (item_flag & 0xFF) - 1
-                    writeShopData(ROM_COPY, write_space, item_subtype, item_subindex, item_kong, 0)
+                    writeShopData(ROM_COPY, write_space, None, 0)  # What to do here?
                 else:
                     # Is Flagged Item
-                    writeShopData(ROM_COPY, write_space, MoveTypes.Flag, item_flag, 0, 0)
+                    writeShopData(ROM_COPY, write_space, None, 0)  # What to do here?
         # Go through bijection
         for item in item_data:
             if item.can_have_item:
@@ -521,42 +517,20 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                             # Is Nothing
                             # First check if there is an item here
                             ROM_COPY.seek(write_space)
-                            check = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                            if check == MoveTypes.Nothing or placement >= 120:  # No Item
+                            check = int.from_bytes(ROM_COPY.readBytes(1), "big")
+                            if check == 0 or placement >= 120:  # No Item
                                 writeNullShopSlot(ROM_COPY, write_space)
                         elif item.new_flag & 0x8000:
                             # Is Move
-                            item_kong = (item.new_flag >> 12) & 7
-                            item_subtype = (item.new_flag >> 8) & 0xF
-                            if item_subtype == 7:
-                                item_subindex = 0
-                            else:
-                                item_subindex = (item.new_flag & 0xFF) - 1
-                            writeShopData(ROM_COPY, write_space, item_subtype, item_subindex, item_kong, item.price)
+                            writeShopData(ROM_COPY, write_space, item_properties, item.price)
                         else:
                             # Is Flagged Item
-                            subtype = MoveTypes.Flag
-                            if item.new_item == Types.Banana:
-                                subtype = MoveTypes.GB
-                            elif item.new_item == Types.FakeItem:
-                                trap_types = {
-                                    Items.IceTrapBubble: MoveTypes.IceTrapBubble,
-                                    Items.IceTrapReverse: MoveTypes.IceTrapReverse,
-                                    Items.IceTrapSlow: MoveTypes.IceTrapSlow,
-                                    Items.IceTrapBubbleBean: MoveTypes.IceTrapBubble,
-                                    Items.IceTrapReverseBean: MoveTypes.IceTrapReverse,
-                                    Items.IceTrapSlowBean: MoveTypes.IceTrapSlow,
-                                    Items.IceTrapBubbleKey: MoveTypes.IceTrapBubble,
-                                    Items.IceTrapReverseKey: MoveTypes.IceTrapReverse,
-                                    Items.IceTrapSlowKey: MoveTypes.IceTrapSlow,
-                                }
-                                subtype = trap_types.get(item.new_subitem, MoveTypes.IceTrapBubble)
                             price_var = 0
                             if isinstance(item.price, list):
                                 price_var = 0
                             else:
                                 price_var = item.price
-                            writeShopData(ROM_COPY, write_space, subtype, item.new_flag, 0, price_var)
+                            writeShopData(ROM_COPY, write_space, item_properties, price_var)
                 elif not item.reward_spot:
                     for map_id in item.placement_data:
                         if map_id not in map_items:
