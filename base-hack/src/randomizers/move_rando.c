@@ -164,9 +164,16 @@ void purchaseMove(shop_paad* paad) {
 	int crystals_unlocked = crystalsUnlocked(paad->kong);
 	int p_kong = paad->kong;
 	giveItem(paad->item_type, paad->item_level, paad->kong);
+	vendors vendor = CurrentActorPointer_0->actorType - 0xBD;
 	int world = getWorld(CurrentMap, 0);
-	int shop_flag = getShopFlag(CurrentActorPointer_0->actorType - 0xBD, world, Character);
-	setPermFlag(shop_flag);
+	int shop_flag_dk = getShopFlag(vendor, world, KONG_DK);
+	if (isSharedMove(vendor, world)) {
+		for (int i = 0; i < 5; i++) {
+			setPermFlag(shop_flag_dk + i);
+		}
+	} else {
+		setPermFlag(shop_flag_dk + Character);
+	}
 	if (paad->item_type == REQITEM_MOVE) {
 		int item_level = paad->item_level;
 		if (item_level < 4) {

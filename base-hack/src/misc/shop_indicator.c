@@ -19,10 +19,12 @@ int isSharedMove(vendors shop_index, int level) {
 	for (int i = 1; i < 5; i++) {
 		purchase_struct* src = getShopData(shop_index, i, level);
 		if (src) {
-			int src_item = *(int*)(&src->item);
-			int targ_item = *(int*)(&targ->item);
-			if (src_item != targ_item) {
-				return 0;
+			unsigned char *src_arr = &src->item;
+			unsigned char *targ_arr = &targ->item;
+			for (int j = 0; j < 4; j++) {
+				if (src_arr[j] != targ_arr[j]) {
+					return 0;
+				}
 			}
 		}
 	}
@@ -115,34 +117,26 @@ int getCounterItem(vendors shop_index, int kong, int level) {
 	return COUNTER_NO_ITEM;
 }
 
-void getMoveCountInShop(counter_paad* paad, vendors shop_index) {
+int getMoveCountInShop(counter_paad* paad, vendors shop_index) {
 	int level = getWorld(CurrentMap,0);
-	int possess = 0;
 	int count = 0;
-	int slot = 0;
 	if (level < LEVEL_COUNT) {
 		for (int i = 0; i < 5; i++) {
-			purchase_struct* data = getShopData(shop_index, i, level);
-			if (data->item.item_type != REQITEM_NONE) {
+			if (!isShopEmpty(shop_index, level, i)) {
 				// Shop is some item
-				if (!isShopEmpty(shop_index, level, i)) {
-					// Doesn't own move
-					if (isSharedMove(shop_index, level)) {
-						paad->kong_images[0] = COUNTER_SHARED_FACE;
-						paad->item_images[0] = getCounterItem(shop_index, i, level);
-						paad->cap = 1;
-						return;
-					} else {
-						paad->kong_images[slot] = i + 1;
-						paad->item_images[slot] = getCounterItem(shop_index, i, level);
-						slot += 1;
-						count += 1;
-					}
+				if (isSharedMove(shop_index, level)) {
+					paad->kong_images[0] = COUNTER_SHARED_FACE;
+					paad->item_images[0] = getCounterItem(shop_index, i, level);
+					return 1;
+				} else {
+					paad->kong_images[count] = i + 1;
+					paad->item_images[count] = getCounterItem(shop_index, i, level);
+					count++;
 				}
 			}
 		}
 	}
-	paad->cap = count;
+	return count;
 }
 
 #define IMG_WIDTH 32
@@ -352,7 +346,7 @@ void newCounterCode(void) {
 				if (closest_shop == 3) { // Snide is closest
 					deleteActorContainer(CurrentActorPointer_0);
 				} else {
-					getMoveCountInShop(paad, paad->shop);
+					paad->cap = getMoveCountInShop(paad, paad->shop);
 					paad->current_slot = 0;
 					updateCounterDisplay();
 					if (paad->cap == 0) {

@@ -163,15 +163,6 @@ file_dict = [
     File(name="AP Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x291, source_file="archi_om2.bin", do_not_delete_source=True, do_not_extract=True),
     # File(name="K. Rool (Cutscenes) Model", pointer_table_index=TableNames.ActorGeometry, file_index=0x48, source_file="k_rool_cutscenes_om1.bin", do_not_delete_source=True),
     File(
-        name="Krusha Head",
-        subtype=ChangeType.FixedLocation,
-        start=0x1FF6000,
-        source_file="assets/displays/krusha_head64.png",
-        do_not_delete_source=True,
-        texture_format=TextureFormat.RGBA5551,
-        do_not_compress=True,
-    ),
-    File(
         name="Snow Texture",
         subtype=ChangeType.FixedLocation,
         start=0x1FF8000,

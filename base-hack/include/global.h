@@ -377,6 +377,8 @@ extern int initFile_checkTraining(int type_check, int level_check, int kong_chec
 extern void fixHelmTimerCorrection(void);
 extern void exitBoss(void);
 
+extern int isSharedMove(vendors shop_index, int level);
+
 extern int changeStat(bonus_stat statistic, int delta);
 extern int getStat(bonus_stat statistic);
 extern void setStat(bonus_stat statistic, int amount);
