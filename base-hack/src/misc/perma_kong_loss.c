@@ -9,8 +9,7 @@ int hasPermaLossGrace(maps map) {
 }
 
 int determineKongUnlock(int actorType, int kong_index) {
-	int unlock_flag = GetKongUnlockedFlag(actorType,kong_index);
-	int kong_freed = checkFlag(unlock_flag, FLAGTYPE_PERMANENT);
+	int kong_freed = getItemCount_new(REQITEM_KONG, 0, kong_index);
 	if (!Rando.perma_lose_kongs) {
 		return kong_freed;
 	}
@@ -80,7 +79,6 @@ void kong_has_died(void) {
 	int counter = 0;
 	while (pass) {
 		int kong_locked = checkFlag(KONG_LOCKED_START + new_kong, FLAGTYPE_PERMANENT);
-		int unlock_flag = GetKongUnlockedFlag(Player->characterID,new_kong);
 		int kong_freed = getItemCount_new(REQITEM_KONG, 0, Player->characterID - 2);
 		if ((!kong_freed) || (kong_locked)) {
 			new_kong = (new_kong + 1) % 5;
@@ -106,7 +104,6 @@ void determineStartKong_PermaLossMode(void) {
 		if (!curseRemoved()) {
 			for (int i = 0; i < 5; i++) {
 				int kong_locked = checkFlag(KONG_LOCKED_START + i,FLAGTYPE_PERMANENT);
-				int unlock_flag = GetKongUnlockedFlag(2 + i,i);
 				int kong_freed = getItemCount_new(REQITEM_KONG, 0, i);
 				if ((kong_freed) && (!kong_locked)) {
 					Character = i;
@@ -125,7 +122,6 @@ void transitionKong(void) {
 			int counter = 0;
 			while (pass) {
 				int kong_locked = checkFlag(KONG_LOCKED_START + new_kong, FLAGTYPE_PERMANENT);
-				int unlock_flag = GetKongUnlockedFlag(Player->characterID,new_kong);
 				int kong_freed = getItemCount_new(REQITEM_KONG, 0, Player->characterID - 2);
 				if ((!kong_freed) || (kong_locked)) {
 					new_kong = (new_kong + 1) % 5;

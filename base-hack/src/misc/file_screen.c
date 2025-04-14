@@ -670,24 +670,24 @@ void correctKongFaces(void) {
 	 */
 	if (Rando.unlock_kongs) {
 		for (int i = 0; i < 5; i++) {
-			int flag = checkFlag(kong_flags[i], FLAGTYPE_PERMANENT);
+			int flag = getItemCount_new(REQITEM_KONG, 0, i);
 			KongUnlockedMenuArray[i] = flag;
 			if (!flag) {
 				KongUnlockedMenuArray[i] = (Rando.unlock_kongs & (1 << i)) != 0;
 			}
 		}
-		if (!checkFlag(FLAG_KONG_DK, FLAGTYPE_PERMANENT)) {
+		if (!getItemCount_new(REQITEM_KONG, 0, KONG_DK)) {
 			if ((Rando.unlock_kongs & 1) == 0) {
 				KongUnlockedMenuArray[0] = 0;
 			}
 		}
 	} else {
 		for (int i = 0; i < 5; i++) {
-			KongUnlockedMenuArray[i] = checkFlag(kong_flags[i], FLAGTYPE_PERMANENT);
+			KongUnlockedMenuArray[i] = getItemCount_new(REQITEM_KONG, 0, i);
 		}
 		KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
 		if (Rando.starting_kong != 0) {
-			if (!checkFlag(FLAG_KONG_DK, FLAGTYPE_PERMANENT)) {
+			if (!getItemCount_new(REQITEM_KONG, 0, KONG_DK)) {
 				KongUnlockedMenuArray[0] = 0;
 			}
 		}
@@ -774,6 +774,11 @@ void startFile(void) {
 	if (file_empty) {
 		// New File
 		setAllDefaultFlags();
+		for (int i = 0; i < 5; i++) {
+			if (Rando.unlock_kongs & (1 << i)) {
+				giveItem(REQITEM_KONG, 0, i, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 0});
+			}
+		}
 		unlockMoves();
 		applyFastStart();
 		giveCollectables();

@@ -511,7 +511,7 @@ int getTAState(void) {
 }
 
 int hasAccessToKong(int kong) {
-    if (checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) {
+    if (getItemCount_new(REQITEM_KONG, 0, kong)) {
         if (Rando.perma_lose_kongs) {
             if (!checkFlag(KONG_LOCKED_START + kong, FLAGTYPE_PERMANENT)) {
                 return 1;

@@ -52,7 +52,6 @@ extern int determineShockwaveColor(actorData* shockwave);
 extern int hasChunkyPhaseSlam(void);
 extern void fixKRoolKong(void);
 
-extern void level_order_rando_funcs(void);
 extern void unlockMoves(void);
 extern void tagAnywhere(void);
 extern void applyFastStart(void);

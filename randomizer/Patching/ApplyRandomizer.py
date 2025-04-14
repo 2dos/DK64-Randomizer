@@ -228,6 +228,8 @@ def patching_response(spoiler):
         ROM_COPY.write(bin_value)
     for kong in starting_kongs:
         setItemReferenceName(spoiler, kong, 0, "Starting Kong")
+    ROM_COPY.seek(sav + 0x151)
+    ROM_COPY.writeMultipleBytes(spoiler.settings.starting_kong, 1)
 
     boolean_props = [
         BooleanProperties(spoiler.settings.fast_start_beginning_of_game, 0x2E),  # Fast Start Game

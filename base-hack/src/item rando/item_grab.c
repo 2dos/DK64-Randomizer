@@ -768,6 +768,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
             for (int i = 0; i < 5; i++) {
                 MovesBase[i].coins += 5;
             }
+            giveItem(REQITEM_RAINBOWCOIN, 0, 0, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
             RainbowCoinFTT();
             break;
         case 0xDD:

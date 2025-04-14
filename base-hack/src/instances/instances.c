@@ -487,10 +487,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (param2 == K_ROOL_SHIP) {
 					for (int i = 0; i < 8; i++) {
 						if (Rando.krool_requirements & (1 << i)) {
-							if (!checkFlag(FLAG_KEYIN_KEY1 + i, FLAGTYPE_PERMANENT)) {
+							if (!getItemCount_new(REQITEM_KEY, i, 0)) {
 								return 0;
 							}
-
 						}
 					}
 					return 1;
@@ -1354,7 +1353,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			displayImageOnObject(id, 2, 1, 0);
 			unkObjFunction0(id, 1, 1);
 			unkObjFunction1(id, 1, 10);
-			if ((!checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) && (!Rando.disable_wrinkly_kong_requirement)) {
+			if ((!getItemCount_new(REQITEM_KONG, 0, kong)) && (!Rando.disable_wrinkly_kong_requirement)) {
 				behaviour_pointer->next_state = 20;
 			} else {
 				displayImageOnObject(id, 1, 0, 0);
@@ -1397,7 +1396,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	} else if (index == -6) {
 		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
 	} else if (index == -7) {
-		return checkFlag(kong_flags[param2], FLAGTYPE_PERMANENT) || Rando.disable_wrinkly_kong_requirement;
+		return getItemCount_new(REQITEM_KONG, 0, param2) || Rando.disable_wrinkly_kong_requirement;
 	} else if (index == -8) {
 		// Fairy check
 		if (Rando.fairy_rando_on) {

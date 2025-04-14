@@ -34,7 +34,6 @@ void cFuncLoop(void) {
 	regularFrameLoop();
 	cc_effect_handler();
 	tagAnywhere();
-	level_order_rando_funcs();
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
 	overlay_changes();

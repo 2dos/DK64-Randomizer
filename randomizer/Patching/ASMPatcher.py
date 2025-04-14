@@ -1055,14 +1055,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if settings.galleon_water_internal == GalleonWaterSetting.raised:
         file_init_flags.append(0xA0)  # Galleon Water Raised
-
-    kong_flags = [0x181, 0x006, 0x046, 0x042, 0x075]
-    if settings.starting_kongs_count == 5:
-        file_init_flags.extend(kong_flags.copy())
-    else:
-        for x in spoiler.settings.starting_kong_list:
-            file_init_flags.append(kong_flags[x])
-
+        
     if settings.activate_all_bananaports == ActivateAllBananaports.isles:
         file_init_flags.extend(WARPS_ISLES.copy())
     elif settings.activate_all_bananaports == ActivateAllBananaports.all:
@@ -1233,6 +1226,12 @@ def patchAssembly(ROM_COPY, spoiler):
     if isQoLEnabled(spoiler, MiscChangesSelected.small_bananas_always_visible):
         writeValue(ROM_COPY, 0x806324D4, Overlay.Static, 0x24020001, offset_dict, 4)  # ADDIU $v0, $r0, 1. Disable kong flag check
         writeValue(ROM_COPY, 0x806A78C4, Overlay.Static, 0, offset_dict, 4)  # NOP. Disable kong flag check
+    else:
+        writeFunction(ROM_COPY, 0x806324D4, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)
+    writeFunction(ROM_COPY, 0x8064936C, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)
+    writeFunction(ROM_COPY, 0x80682F40, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)
+    writeFunction(ROM_COPY, 0x806840D8, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)
+    writeFunction(ROM_COPY, 0x806FA340, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_hints):
         writeValue(ROM_COPY, 0x8069E0F6, Overlay.Static, 1, offset_dict)
         writeValue(ROM_COPY, 0x8069E112, Overlay.Static, 1, offset_dict)
