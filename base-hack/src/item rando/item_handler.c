@@ -21,26 +21,35 @@ static const MoveSpecialBijectionStruct move_flag_bijection[] = {
     {.flag = FLAG_ABILITY_SHOCKWAVE, .move_enum = MOVE_SPECIAL_SHOCKWAVE},
 };
 
-void giveItem(requirement_item item, int level, int kong) {
+void giveItem(requirement_item item, int level, int kong, giveItemConfig config) {
     // Gives an item determined by the id. Use level & kong if necessary
+    helm_hurry_items hh_item = HHITEM_NOTHING;
+    int display_text = 0;
     switch(item) {
         case REQITEM_KONG:
             current_item_data.kong_bitfield |= (1 << kong);
+            hh_item = HHITEM_KONG;
+            display_text = 1;
             break;
         case REQITEM_GOLDENBANANA:
             giveGB();
             break;
         case REQITEM_BLUEPRINT:
             current_item_data.bp_bitfield[kong] |= (1 << level);
+            hh_item = HHITEM_BLUEPRINT;
             break;
         case REQITEM_FAIRY:
             current_item_data.fairies++;
+            hh_item = HHITEM_FAIRY;
             break;
         case REQITEM_KEY:
             current_item_data.key_bitfield |= (1 << level);
+            hh_item = HHITEM_KEY;
+            display_text = 1;
             break;
         case REQITEM_CROWN:
             current_item_data.crowns++;
+            hh_item = HHITEM_CROWN;
             break;
         case REQITEM_COMPANYCOIN:
             if (kong == 0) {
@@ -50,30 +59,40 @@ void giveItem(requirement_item item, int level, int kong) {
                 // rareware coin
                 current_item_data.special_items.rareware_coin = 1;
             }
+            hh_item = HHITEM_COMPANYCOIN;
             break;
         case REQITEM_MEDAL:
             current_item_data.medals++;
+            hh_item = HHITEM_MEDAL;
             break;
         case REQITEM_BEAN:
             current_item_data.special_items.bean = 1;
+            hh_item = HHITEM_BEAN;
+            display_text = 1;
             break;
         case REQITEM_PEARL:
             current_item_data.pearls++;
+            hh_item = HHITEM_PEARL;
             break;
         case REQITEM_RAINBOWCOIN:
             current_item_data.rainbow_coins++;
+            hh_item = HHITEM_RAINBOWCOIN;
             break;
         case REQITEM_ICETRAP:
             current_item_data.ice_traps++;
+            hh_item = HHITEM_FAKEITEM;
             break;
         case REQITEM_JUNK:
             current_item_data.junk_items++;
             break;
         case REQITEM_HINT:
             current_item_data.hint_bitfield[kong] |= (1 << level);
+            display_text = 1;
             break;
         case REQITEM_SHOPKEEPER:
             setPermFlag(FLAG_ITEM_CRANKY + kong);
+            hh_item = HHITEM_KONG;
+            display_text = 1;
             break;
         case REQITEM_MOVE:
             // TODO: Move logic here
@@ -127,12 +146,24 @@ void giveItem(requirement_item item, int level, int kong) {
             } else if (level == 11) {
                 setPermFlag(FLAG_ABILITY_CLIMBING);
             }
+            hh_item = HHITEM_MOVE;
+            display_text = 1;
             break;
+    }
+    if (config.apply_helm_hurry) {
+        if (hh_item != HHITEM_NOTHING) {
+            addHelmTime(hh_item, 1);
+        }
+    }
+    if (config.display_item_text) {
+        if (display_text) {
+            spawnItemOverlay(item, level, kong, 0);
+        }
     }
 }
 
 void giveItemFromPacket(medal_hint_item_data *packet) {
-    giveItem(packet->item_type, packet->level, packet->kong);
+    giveItem(packet->item_type, packet->level, packet->kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
 }
 
 int getItemCount_new(requirement_item item, int level, int kong) {

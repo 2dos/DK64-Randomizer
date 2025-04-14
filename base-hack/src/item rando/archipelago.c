@@ -68,16 +68,16 @@ void handleSentItem(void) {
             giveGB();
             break;
         case TRANSFER_ITEM_CROWN:
-            giveItem(REQITEM_CROWN, 0, 0);
+            giveItem(REQITEM_CROWN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_PEARL:
-            giveItem(REQITEM_PEARL, 0, 0);
+            giveItem(REQITEM_PEARL, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_MEDAL:
-            giveItem(REQITEM_PEARL, 0, 0);
+            giveItem(REQITEM_PEARL, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_FAIRY:
-            giveItem(REQITEM_FAIRY, 0, 0);
+            giveItem(REQITEM_FAIRY, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_KEY1:
         case TRANSFER_ITEM_KEY2:
@@ -87,30 +87,30 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_KEY6:
         case TRANSFER_ITEM_KEY7:
         case TRANSFER_ITEM_KEY8:
-            giveItem(REQITEM_KEY, FedItem - TRANSFER_ITEM_KEY1, 0);
+            giveItem(REQITEM_KEY, FedItem - TRANSFER_ITEM_KEY1, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             auto_turn_keys();
             break;
         case TRANSFER_ITEM_RAINBOWCOIN:
             for (int i = 0; i < 5; i++) {
                 MovesBase[i].coins += 5;
             }
-            giveItem(REQITEM_RAINBOWCOIN, 0, 0);
+            giveItem(REQITEM_RAINBOWCOIN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
-            case TRANSFER_ITEM_FAKEITEM:
+        case TRANSFER_ITEM_FAKEITEM:
             queueIceTrap(ICETRAP_BUBBLE);
-            giveItem(REQITEM_ICETRAP, 0, 0);
+            giveItem(REQITEM_ICETRAP, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
-            case TRANSFER_ITEM_FAKEITEM_SLOW:
+        case TRANSFER_ITEM_FAKEITEM_SLOW:
             queueIceTrap(ICETRAP_SLOWED);
-            giveItem(REQITEM_ICETRAP, 0, 0);
+            giveItem(REQITEM_ICETRAP, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
-            case TRANSFER_ITEM_FAKEITEM_REVERSE:
+        case TRANSFER_ITEM_FAKEITEM_REVERSE:
             queueIceTrap(ICETRAP_REVERSECONTROLS);
-            giveItem(REQITEM_ICETRAP, 0, 0);
+            giveItem(REQITEM_ICETRAP, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
             case TRANSFER_ITEM_JUNKITEM:
             applyDamageMask(0, 1);
-            giveItem(REQITEM_JUNK, 0, 0);
+            giveItem(REQITEM_JUNK, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_BABOONBLAST:
         case TRANSFER_ITEM_STRONGKONG:

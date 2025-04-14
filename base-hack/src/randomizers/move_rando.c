@@ -124,46 +124,11 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	paad->melons = CollectableBase.Melons;
 }
 
-helm_hurry_items getHelmHurryFromItem(requirement_item item) {
-	switch (item) {
-		case REQITEM_MOVE:
-			return HHITEM_MOVE;
-		case REQITEM_GOLDENBANANA:
-			return HHITEM_GB;
-		case REQITEM_BLUEPRINT:
-			return HHITEM_BLUEPRINT;
-		case REQITEM_MEDAL:
-			return HHITEM_MEDAL;
-		case REQITEM_COMPANYCOIN:
-			return HHITEM_COMPANYCOIN;
-		case REQITEM_CROWN:
-			return HHITEM_CROWN;
-		case REQITEM_BEAN:
-			return HHITEM_BEAN;
-		case REQITEM_PEARL:
-			return HHITEM_PEARL;
-		case REQITEM_FAIRY:
-			return HHITEM_FAIRY;
-		case REQITEM_ICETRAP:
-			return HHITEM_FAKEITEM;
-		case REQITEM_KEY:
-			return HHITEM_KEY;
-	}
-	return HHITEM_NOTHING;
-}
-
-void addHelmHurryPurchaseTime(requirement_item item) {
-	helm_hurry_items hh_item = getHelmHurryFromItem(item);
-	if (hh_item != HHITEM_NOTHING) {
-		addHelmTime(hh_item, 1);
-	}
-}
-
 void purchaseMove(shop_paad* paad) {
 	int item_given = -1;
 	int crystals_unlocked = crystalsUnlocked(paad->kong);
 	int p_kong = paad->kong;
-	giveItem(paad->item_type, paad->item_level, paad->kong);
+	giveItem(paad->item_type, paad->item_level, paad->kong, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
 	vendors vendor = CurrentActorPointer_0->actorType - 0xBD;
 	int world = getWorld(CurrentMap, 0);
 	int shop_flag_dk = getShopFlag(vendor, world, KONG_DK);
@@ -195,7 +160,6 @@ void purchaseMove(shop_paad* paad) {
 	if (item_given > -1) {
 		changeCollectableCount(item_given, 0, 9999);
 	}
-	addHelmHurryPurchaseTime(paad->item_type);
 	save();
 }
 
@@ -233,7 +197,6 @@ void purchaseFirstMoveHandler(shop_paad* paad) {
 void setLocation(purchase_struct* purchase_data) {
 	if (purchase_data->item.item_type) {
 		giveItemFromPacket(&purchase_data->item);
-		addHelmHurryPurchaseTime(purchase_data->item.item_type);
 	}
 }
 

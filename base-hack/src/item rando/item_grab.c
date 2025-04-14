@@ -54,12 +54,11 @@ void displayMedalOverlay(int flag, medal_hint_item_data *item_send) {
         setPermFlag(flag);
         requirement_item item_type = item_send->item_type;
         int item_kong = item_send->kong;
-        giveItem(item_type, item_send->level, item_kong);
+        giveItem(item_type, item_send->level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
         void* sprite = 0;
         int kong = getKong(0);
         songs song = item_detection_data[item_type].song;
         int sprite_index = item_detection_data[item_type].sprite;
-        helm_hurry_items hh_item = item_detection_data[item_type].helm_hurry_item;
         if (item_send->audiovisual_index == 0) {
             switch(item_type) {
                 case REQITEM_KONG:
@@ -123,9 +122,6 @@ void displayMedalOverlay(int flag, medal_hint_item_data *item_send) {
             loadSpriteFunction(0x8071EFDC);
             
             displaySpriteAtXYZ(sprite, 1.0f, reward_x, reward_y, -10.0f);
-        }
-        if (hh_item != HHITEM_NOTHING) {
-            addHelmTime(hh_item, 1);
         }
     } else {
         // No item or pre-given item
@@ -198,25 +194,10 @@ int getFlagIndex_MedalCorrected(int start, int level) {
     return FLAG_MEDAL_ISLES_DK + getKong(0);
 }
 
-void collectKey(void) {
-    /**
-     * @brief Collect a key, display the text and turn in keys
-     */
-    for (int i = 0; i < 8; i++) {
-        if (getItemCount_new(REQITEM_KEY, i, 0)) {
-            if ((old_keys & (1 << i)) == 0) {
-                spawnItemOverlay(REQITEM_KEY, i, 0, 0);
-            }
-        }
-    }
-    auto_turn_keys();
-}
-
 void giveItemFromSend(medal_hint_item_data *send) {
     int item_type = send->item_type;
     int item_kong = send->kong;
-    giveItem(item_type, send->level, item_kong);
-    helm_hurry_items hh_item = item_detection_data[item_type].helm_hurry_item;
+    giveItem(item_type, send->level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
     switch(item_type) {
         case REQITEM_KONG:
             refreshItemVisibility();
@@ -387,7 +368,6 @@ void getItem(int object_type) {
             if (Rando.item_rando) {
                 playSong(SONG_COMPANYCOINGET, pickup_volume);
             }
-            hh_item = HHITEM_COMPANYCOIN;
             forceDance();
             break;
         case 0x56:
@@ -406,8 +386,6 @@ void getItem(int object_type) {
         case 0x260:
         case 0x261:
         case 0x262:
-            // Shopkeepers
-            hh_item = HHITEM_KONG;
         case 0x59:
         case 0x5B:
         case 0x1F2:
@@ -418,9 +396,6 @@ void getItem(int object_type) {
             playSong(SONG_GUNGET, 1.0f);
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
-            }
-            if (hh_item == HHITEM_NOTHING) {
-                hh_item = HHITEM_MOVE;
             }
             break;
         case 0x74:
@@ -443,7 +418,6 @@ void getItem(int object_type) {
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
             }
-            hh_item = HHITEM_MEDAL;
             break;
         case 0x98:
             // Film
@@ -452,7 +426,6 @@ void getItem(int object_type) {
         case 0xB7:
             // Rainbow Coin
             playSong(SONG_RAINBOWCOINGET, pickup_volume);
-            hh_item = HHITEM_RAINBOWCOIN;
             forceDance();
             break;
         case 0xDD:
@@ -463,7 +436,6 @@ void getItem(int object_type) {
             // Blueprint
             playSong(SONG_BLUEPRINTGET, pickup_volume);
             forceDance();
-            hh_item = HHITEM_BLUEPRINT;
             break;
         case 0xEC:
         case 0x1D2:
@@ -472,7 +444,6 @@ void getItem(int object_type) {
             break;
         case 0x13C:
             // Key
-            keyGrabHook(SONG_GBGET, 1.0f);
             if (!canDanceSkip()) {
                 int action = 0x29; // GB Get
                 if (inBossMap(CurrentMap, 1, 1, 0)) {
@@ -480,7 +451,6 @@ void getItem(int object_type) {
                 }
                 setAction(action, 0, 0);
             }
-            hh_item = HHITEM_KEY;
             auto_turn_keys();
             break;
         case 0x18D:
@@ -490,18 +460,15 @@ void getItem(int object_type) {
                 setAction(0x42, 0, 0);
             }
             CrownGet();
-            hh_item = HHITEM_CROWN;
             break;
         case 0x198:
             // Bean
             playSong(SONG_BEANGET, 1.0f);
-            hh_item = HHITEM_BEAN;
             forceDance();
             break;
         case 0x1B4:
             // Pearl
             playSong(SONG_PEARLGET, 1.0f);
-            hh_item = HHITEM_PEARL;
             forceDance();
             break;
         case 0x1D1:
@@ -525,7 +492,6 @@ void getItem(int object_type) {
             break;
         case 0x25C:
             playSong(SONG_FAIRYTICK, 1.0f);
-            hh_item = HHITEM_FAIRY;
             forceDance();
             break;
         case 0x25D:
@@ -547,7 +513,6 @@ void getItem(int object_type) {
             }
             forceDance();
             queueIceTrap(it_type);
-            hh_item = HHITEM_FAKEITEM;
             break;
         case 0x27E:
         case 649:
@@ -748,8 +713,6 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
     char item_level = -1;
     char item_kong = -1;
     getFlagMappingData(index, &item_level, &item_kong);
-    *(short*)(0x807FFFFC) = item_level;
-    *(short*)(0x807FFFFE) = item_kong;
     int is_acceptable_item = inShortList(obj_type, &acceptable_items, sizeof(acceptable_items) >> 1);
     if (obj_type != 0x13C) {
         if (inBossMap(CurrentMap, 1, 1, 0)) {
@@ -777,7 +740,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
             break;
         case 0x48:
             // Nintendo Coin
-            giveItem(REQITEM_COMPANYCOIN, 0, 0);
+            giveItem(REQITEM_COMPANYCOIN, 0, 0, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
             break;
         case 0x56:
             // Orange
@@ -794,7 +757,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
             changeCollectableCount(5, player, 150);
             break;
         case 0x90:
-            giveItem(REQITEM_MEDAL, 0, 0);
+            giveItem(REQITEM_MEDAL, 0, 0, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
             break;
         case 0x98:
             // Film
@@ -813,7 +776,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0xE0:
         case 0xE1:
             // Blueprint
-            giveItem(REQITEM_BLUEPRINT, item_level, item_kong);
+            giveItem(REQITEM_BLUEPRINT, item_level, item_kong, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             save_game = 1;
             break;
         case 0xEC:
@@ -822,8 +785,8 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
             break;
         case 0x13C:
             // Boss Key
-            giveItem(REQITEM_KEY, item_level, 0);
-            collectKey();
+            giveItem(REQITEM_KEY, item_level, 0, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
+            auto_turn_keys();
             save_game = 1;
             break;
         case 0x91:
@@ -848,14 +811,16 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
             break;
         case 0x18D:
             // Crown
-            giveItem(REQITEM_CROWN, 0, 0);
+            giveItem(REQITEM_CROWN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             save_game = 1;
             break;
         case 0x198:
-            giveItem(REQITEM_BEAN, 0, 0);
+            // Bean
+            giveItem(REQITEM_BEAN, 0, 0, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
             break;
         case 0x1B4:
-            giveItem(REQITEM_PEARL, 0, 0);
+            // Pearls
+            giveItem(REQITEM_PEARL, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case 0x1D2:
             // Coin Multi
@@ -873,7 +838,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x1F5:
         case 0x1F6:
             // Potion
-            giveItem(REQITEM_MOVE, item_level, item_kong);
+            giveItem(REQITEM_MOVE, item_level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
             break;
         case 0x257:
         case 0x258:
@@ -882,17 +847,17 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x25B:
             // Kong Item
             refreshItemVisibility();
-            giveItem(REQITEM_KONG, item_level, item_kong);
+            giveItem(REQITEM_KONG, item_level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
             break;
         case 0x25C:
-            giveItem(REQITEM_FAIRY, 0, 0);
+            giveItem(REQITEM_FAIRY, 0, 0, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
             break;
         case 0x25F: // Cranky
         case 0x260: // Funky
         case 0x261: // Candy
         case 0x262: // Snide
             // Shopkeepers
-            giveItem(REQITEM_SHOPKEEPER, 0, obj_type - 0x25F);
+            giveItem(REQITEM_SHOPKEEPER, 0, obj_type - 0x25F, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
             break;
         case 0x25D:
         case 0x264:
@@ -903,7 +868,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x295:
         case 0x296:
         case 0x297:
-            giveItem(REQITEM_ICETRAP, 0, 0);
+            giveItem(REQITEM_ICETRAP, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case 0x27E:
         case 0x289:
@@ -911,11 +876,11 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x28B:
         case 0x28C:
             // Hint
-            giveItem(REQITEM_HINT, item_level, item_kong);
+            giveItem(REQITEM_HINT, item_level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
             break;
         case 0x28F:
             // Rareware Coin
-            giveItem(REQITEM_COMPANYCOIN, 0, 1);
+            giveItem(REQITEM_COMPANYCOIN, 0, 1, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
     }
     if (save_game) {

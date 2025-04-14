@@ -732,6 +732,11 @@ typedef struct medal_hint_item_data {
 	/* 0x003 */ unsigned char audiovisual_index;
 } medal_hint_item_data;
 
+typedef struct giveItemConfig {
+	unsigned char display_item_text : 1;
+	unsigned char apply_helm_hurry : 1;
+} giveItemConfig;
+
 typedef struct purchase_struct {
 	/* 0x000 */ medal_hint_item_data item;
 	/* 0x004 */ char pad;
