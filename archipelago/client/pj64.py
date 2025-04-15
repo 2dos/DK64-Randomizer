@@ -12,6 +12,7 @@ from Utils import get_settings
 import re
 import platform
 import shutil
+import uuid
 
 
 class PJ64Exception(Exception):
@@ -157,7 +158,7 @@ class PJ64Client:
         adapter_path = os.path.join(os.path.dirname(executable), "Scripts", "ap_adapter.js")
         # Read the existing file from the world
         try:
-            with open("worlds/dk64/archipelago/client/adapter.js", "r") as f:
+            with open("worlds/dk64/archipelago/client/adapter.js", "r", encoding="utf8") as f:
                 adapter_content = f.read()
         except Exception:
             adapter_content = pkgutil.get_data(__name__, "adapter.js").decode()
@@ -165,14 +166,14 @@ class PJ64Client:
         matching_content = False
         # Check if the contents match
         try:
-            with open(adapter_path, "r") as f:
+            with open(adapter_path, "r", encoding="utf8") as f:
                 if f.read() == adapter_content:
                     matching_content = True
         except FileNotFoundError:
             pass
         if not matching_content:
             try:
-                with open(adapter_path, "w") as f:
+                with open(adapter_path, "w", encoding="utf8") as f:
                     f.write(adapter_content)
             except PermissionError:
                 display_error_box("Permission Error", "Unable to add adapter file to Project64, you may need to run AP as an administrator or close Project64.")
@@ -304,7 +305,7 @@ class PJ64Client:
 
         # Write the updated settings back to the file
         try:
-            with open(config_file, "w") as configfile:
+            with open(config_file, "w", encoding="utf8") as configfile:
                 config.write(configfile, space_around_delimiters=False)
         except Exception:
             pass
@@ -338,11 +339,21 @@ class PJ64Client:
         """Send a command to the emulator and retrieves the response."""
         try:
             self._connect()
-            self.socket.sendall(command.encode())
+            command_id = str(uuid.uuid4())  # Generate a unique ID for the command
+            full_command = f"{command_id}:{command}\n"  # Append line terminator
+            self.socket.sendall(full_command.encode())
+
             response = self.socket.recv(8192).decode()
             if not response or len(str(response).strip()) == 0:
                 raise PJ64Exception("No data received from the server")
-            return response
+
+            # Split response by line terminator and process each line
+            for line in response.splitlines():
+                if line.startswith(command_id):
+                    return line[len(command_id) + 1:]  # Return the response after the ID
+
+            # If no matching ID is found, raise an exception
+            raise PJ64Exception("Response ID does not match the command ID")
         except Exception:
             self.socket = None
             self.connected_message = False
