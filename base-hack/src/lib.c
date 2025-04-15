@@ -31,9 +31,6 @@ const short tnsportal_flags[] = {
 	FLAG_PORTAL_CAVES,
 	FLAG_PORTAL_CASTLE,
 };
-const unsigned short slam_flags[] = {FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1, FLAG_ITEM_SLAM_2, FLAG_SHOPMOVE_SLAM_0, FLAG_SHOPMOVE_SLAM_1, FLAG_SHOPMOVE_SLAM_2};
-const unsigned short belt_flags[] = {FLAG_ITEM_BELT_0, FLAG_ITEM_BELT_1, FLAG_SHOPMOVE_BELT_0, FLAG_SHOPMOVE_BELT_1};
-const unsigned short instrument_flags[] = {FLAG_ITEM_INS_0, FLAG_ITEM_INS_1, FLAG_ITEM_INS_2, FLAG_SHOPMOVE_INS_0, FLAG_SHOPMOVE_INS_1, FLAG_SHOPMOVE_INS_2};
 const unsigned char kong_pellets[] = {48,36,42,43,38};
 const rgb colorblind_colors[15] = {
     // Protan
@@ -1040,41 +1037,8 @@ void modifyCutscenePointTime(int bank, int cutscene, int point, int new_time) {
 	}
 }
 
-void modifyCutscenePointCount(int bank, int cutscene, int point_count) {
-	cutscene_item_data* databank = CutsceneBanks[bank].cutscene_databank;
-	cutscene_item_data* data = (cutscene_item_data*)&databank[cutscene];
-	if (data) {
-		data->num_points = point_count;
-	}
-}
-
-void createCutscene(int bank, int cutscene, int point_count) {
-	if (cutscene < CutsceneBanks[bank].cutscene_count) {
-		cutscene_item_data* databank = CutsceneBanks[bank].cutscene_databank;
-		cutscene_item_data* data = (cutscene_item_data*)&databank[cutscene];
-		if (data) {
-			data->num_points = point_count;
-			data->length_array = dk_malloc(point_count * 2);
-			data->point_array = dk_malloc(point_count * 2);
-			data->unk_02 = 0;
-		}
-	}
-	// Else - Can't create cutscene
-}
-
 int getWrinklyLevelIndex(void) {
 	return getWorld(CurrentMap, 0);
-}
-
-int getKeyFlag(int index) {
-	return normal_key_flags[index];
-}
-
-int getKongFlag(int kong_index) {
-	if (kong_index < 0) {
-		return 0;
-	}
-	return kong_flags[kong_index];
 }
 
 sprite_data_struct bean_sprite = {
@@ -1212,12 +1176,6 @@ int getTotalCBCount(void) {
 	return count;
 }
 
-void giveRainbowCoin(void) {
-	for (int i = 0; i < 5; i++) {
-		MovesBase[i].coins += 5;
-	}
-}
-
 void giveAmmo(void) {
 	changeCollectableCount(2, 0, 5);
 }
@@ -1314,33 +1272,6 @@ int giveSlamLevel(void) {
 	return 3;
 }
 
-int isSlamFlag(int flag) {
-	for (int i = 0; i < 6; i++) {
-		if (flag == slam_flags[i]) {
-			return 1;
-		}
-	}
-	return 0;
-}
-
-int isBeltFlag(int flag) {
-	for (int i = 0; i < 4; i++) {
-		if (flag == belt_flags[i]) {
-			return 1;
-		}
-	}
-	return 0;
-}
-
-int isInstrumentUpgradeFlag(int flag) {
-	for (int i = 0; i < 6; i++) {
-		if (flag == instrument_flags[i]) {
-			return 1;
-		}
-	}
-	return 0;
-}
-
 int inBattleCrown(maps map) {
 	if (map == MAP_BATTLEARENA_BEAVERBRAWL) {
 		return 1;
@@ -1389,12 +1320,6 @@ int isGamemode(gamemodes target_mode, int force_both) {
 		return 1;
 	}
 	return Mode == target_mode;
-}
-
-void* malloc_wipe(int size) {
-	void* ptr = dk_malloc(size);
-	wipeMemory(ptr, size);
-	return ptr;
 }
 
 int filterSong(int* song_write) {
@@ -1484,13 +1409,6 @@ void* getFile(int size, int rom) {
 	return loc;
 }
 
-int isMedalFlag(int flag) {
-	if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
-		return 1;
-	}
-	return isFlagInRange(flag, FLAG_MEDAL_ISLES_DK, 5);
-}
-
 static float percentage_rewards[] = {
 	0.4f, // GBs
 	0.5f, // Crowns
@@ -1558,26 +1476,6 @@ int getTotalMoveCount(void) {
 		}
 	}
 	return count;
-}
-
-dynamic_flag_icetrap_junk isIceTrapFlag(int flag) {
-	if (isFlagInRange(flag, FLAG_FAKEITEM, 0x10)) {
-		// Default Allocation
-		return DYNFLAG_ICETRAP;
-	}
-	int junk_invasion = 0;
-	int junk_capacity = 100;
-	if (Rando.ice_trap_flag_alloc > 16) {
-		junk_invasion = Rando.ice_trap_flag_alloc - 16;
-		junk_capacity = 116 - Rando.ice_trap_flag_alloc;
-	}
-	if (isFlagInRange(flag, FLAG_JUNKITEM, junk_invasion)) {
-		return DYNFLAG_ICETRAP;
-	}
-	if (isFlagInRange(flag, FLAG_JUNKITEM + junk_invasion, junk_capacity)) {
-		return DYNFLAG_JUNK;
-	}
-	return DYNFLAG_NEITHER;
 }
 
 unsigned int cs_skip_db[2] = {0, 0};

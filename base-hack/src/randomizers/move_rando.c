@@ -34,42 +34,6 @@ void moveTransplant(void) {
 	copyFromROM(0x1FEF800,&CrankyMoves_New[0][0],&size,0,0,0,0);
 }
 
-int getMoveProgressiveFlagType(int flag) {
-	if (isSlamFlag(flag)) {
-		return 0;
-	} else if (isBeltFlag(flag)) {
-		return 1;
-	} else if (isInstrumentUpgradeFlag(flag)) {
-		return 2;
-	}
-	return -1;
-}
-
-int writeProgressiveText(int flag, int* top_text, int* bottom_text) {
-	int subtype = getMoveProgressiveFlagType(flag);
-	if (subtype == 0) {
-		// Slam
-		*top_text = SimianSlamNames[(int)MovesBase[0].simian_slam].name;
-		*bottom_text = SimianSlamNames[(int)MovesBase[0].simian_slam].latin;
-		return 1;
-	} else if (subtype == 1) {
-		// Belt
-		*top_text = AmmoBeltNames[(int)MovesBase[0].ammo_belt];
-		return 1;
-	} else if (subtype == 2) {
-		// Instrument upgrade
-		int level = 2;
-		if (MovesBase[0].instrument_bitfield & 8) {
-			level = 4;
-		} else if (MovesBase[0].instrument_bitfield & 4) {
-			level = 3;
-		}
-		*top_text = InstrumentUpgNames[level];
-		return 1;
-	}
-	return 0;
-}
-
 int isShopEmpty(vendors vendor, int level, int kong) {
 	int flag = getShopFlag(vendor, level, kong);
 	if (checkFlag(flag, FLAGTYPE_PERMANENT)) {

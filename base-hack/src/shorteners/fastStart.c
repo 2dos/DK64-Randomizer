@@ -6,7 +6,6 @@ void applyFastStart(void) {
 		for (int i = 0; i < 4; i++) {
 			setLocationStatus(LOCATION_DIVE + i); // Training Barrels Complete
 		}
-		setPermFlag(getKongFlag(Rando.starting_kong)); // Starting Kong Free
 		if (Rando.moves_pregiven.camera) {
 			setFlagMove(FLAG_ABILITY_CAMERA);
 		}

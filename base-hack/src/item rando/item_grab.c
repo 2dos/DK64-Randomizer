@@ -52,11 +52,10 @@ void displayMedalOverlay(int flag, medal_hint_item_data *item_send) {
     float reward_y = 120.0f;
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
         setPermFlag(flag);
+        giveItemFromPacket(item_send);
+        void* sprite = 0;
         requirement_item item_type = item_send->item_type;
         int item_kong = item_send->kong;
-        giveItem(item_type, item_send->level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
-        void* sprite = 0;
-        int kong = getKong(0);
         songs song = item_detection_data[item_type].song;
         int sprite_index = item_detection_data[item_type].sprite;
         if (item_send->audiovisual_index == 0) {
@@ -145,26 +144,6 @@ void banana_medal_acquisition(int flag) {
         item_send = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     }
     displayMedalOverlay(flag, item_send);
-}
-
-static unsigned char key_timer = 0;
-static unsigned char key_index = 0;
-static char key_text[] = "KEY 0";
-static unsigned char old_keys = 0;
-
-void keyGrabHook(int song, float vol) {
-    /**
-     * @brief Hook for grabbing a key
-     */
-
-    playSong(song, vol);
-    int val = 0;
-    for (int i = 0; i < 8; i++) {
-        if (getItemCount_new(REQITEM_KEY, i, 0)) {
-            val |= (1 << i);
-        }
-    }
-    old_keys = val;
 }
 
 int getFlagIndex_Corrected(int start, int level) {
@@ -451,7 +430,6 @@ void getItem(int object_type) {
                 }
                 setAction(action, 0, 0);
             }
-            auto_turn_keys();
             break;
         case 0x18D:
             // Crown
@@ -847,8 +825,8 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x25A:
         case 0x25B:
             // Kong Item
-            refreshItemVisibility();
             giveItem(REQITEM_KONG, item_level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
+            refreshItemVisibility();
             break;
         case 0x25C:
             giveItem(REQITEM_FAIRY, 0, 0, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
