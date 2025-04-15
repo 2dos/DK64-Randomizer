@@ -241,17 +241,28 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     # Decouple Camera from Shockwave
     FLAG_ABILITY_CAMERA = 0x2FD
     writeValue(ROM_COPY, 0x806E9812, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Usage
+    writeFunction(ROM_COPY, 0x806E9814, Overlay.Static, "hasFlagMove", offset_dict)
     writeValue(ROM_COPY, 0x806AB0F6, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Isles Fairies Display
+    writeFunction(ROM_COPY, 0x806AB0F8, Overlay.Static, "hasFlagMove", offset_dict)
     writeValue(ROM_COPY, 0x806AAFB6, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Other Fairies Display
+    writeFunction(ROM_COPY, 0x806AAFB8, Overlay.Static, "hasFlagMove", offset_dict)
     writeValue(ROM_COPY, 0x806AA762, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Film Display
+    writeFunction(ROM_COPY, 0x806AA764, Overlay.Static, "hasFlagMove", offset_dict)
     writeValue(ROM_COPY, 0x8060D986, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Film Refill
+    writeFunction(ROM_COPY, 0x8060D988, Overlay.Static, "hasFlagMove", offset_dict)
     writeValue(ROM_COPY, 0x806F6F76, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Film Refill
+    writeFunction(ROM_COPY, 0x806F6F78, Overlay.Static, "hasFlagMove", offset_dict)
     writeValue(ROM_COPY, 0x806F916A, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Film max
-    writeFunction(ROM_COPY, 0x80698368, Overlay.Static, "hasFlagMove", offset_dict)  # Vines doesn't check FLUT
-    writeFunction(ROM_COPY, 0x8072F190, Overlay.Static, "hasFlagMove", offset_dict)  # Vines doesn't check FLUT
-    writeFunction(ROM_COPY, 0x806E4250, Overlay.Static, "hasFlagMove", offset_dict)  # Barrels doesn't check FLUT
-    writeFunction(ROM_COPY, 0x806E7718, Overlay.Static, "hasFlagMove", offset_dict)  # Dive doesn't check FLUT
-    writeFunction(ROM_COPY, 0x806E2D6C, Overlay.Static, "hasFlagMove", offset_dict)  # Oranges doesn't check FLUT
+    writeFunction(ROM_COPY, 0x806F916C, Overlay.Static, "hasFlagMove", offset_dict)
+    # Shockwave
+    writeFunction(ROM_COPY, 0x806CA308, Overlay.Static, "hasFlagMove", offset_dict)
+    writeFunction(ROM_COPY, 0x806F6EBC, Overlay.Static, "hasFlagMove", offset_dict)
+    # Training
+    writeFunction(ROM_COPY, 0x80698368, Overlay.Static, "hasFlagMove", offset_dict)  # Vines
+    writeFunction(ROM_COPY, 0x8072F190, Overlay.Static, "hasFlagMove", offset_dict)  # Vines
+    writeFunction(ROM_COPY, 0x806E4250, Overlay.Static, "hasFlagMove", offset_dict)  # Barrels
+    writeFunction(ROM_COPY, 0x806E7718, Overlay.Static, "hasFlagMove", offset_dict)  # Dive
+    writeFunction(ROM_COPY, 0x806E2D6C, Overlay.Static, "hasFlagMove", offset_dict)  # Oranges
 
     item_get_addrs = [
         0x806F64C8,

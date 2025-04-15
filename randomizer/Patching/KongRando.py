@@ -45,21 +45,9 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
         forceSwitches = [0xE3, 0xE3, 0xE3, 0xE3, 0x70]
 
         japesPuzzleKong = spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]
-        japesLockedData = spoiler.shuffled_kong_placement["Jungle Japes"]["locked"]
-
         tinyTemplePuzzleKong = spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]
-        tinyTempleLockedData = spoiler.shuffled_kong_placement["Tiny Temple"]["locked"]
-
         llamaPuzzleKong = spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]
-        llamaLockedData = spoiler.shuffled_kong_placement["Llama Temple"]["locked"]
-
         factoryPuzzleKong = spoiler.shuffled_kong_placement["Frantic Factory"]["puzzle"]["kong"]
-        factoryLockedData = spoiler.shuffled_kong_placement["Frantic Factory"]["locked"]
-
-        llama_entrance_switch = []
-        # if llamaPuzzleKong in [1, 4]:
-        #     llama_entrance_switch.append({"index": 0xD, "new_type": gunswitches[llamaPuzzleKong]})
-        kong_settings = [japesLockedData, llamaLockedData, tinyTempleLockedData, factoryLockedData]
 
         kongrando_changes = {
             Maps.JungleJapes: [
