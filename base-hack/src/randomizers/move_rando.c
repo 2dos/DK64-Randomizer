@@ -46,6 +46,16 @@ int isShopEmpty(vendors vendor, int level, int kong) {
 	return 0;
 }
 
+int getPrice(purchase_struct *shop_data) {
+	if (shop_data->item.item_type == REQITEM_MOVE) {
+		switch (shop_data->item.level) {
+			case 3:
+				return Rando.slam_prices[0];
+		}
+	}
+	return shop_data->price;
+}
+
 void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	int has_purchase = 0;
 	int latest_level_entered = 0;
@@ -68,11 +78,11 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 			has_purchase = isShopEmpty(shop_owner - 0xBD, world, Character) == 0;
 			if (has_purchase) {
 				paad->item_type = item_data->item_type;
+				paad->item_level = item_data->level;
+				paad->kong = item_data->kong;
 				int p_price = selected->price;
 				textParameter = p_price;
 				paad->price = p_price;
-				paad->item_level = item_data->level;
-				paad->kong = item_data->kong;
 			}
 		}
 	}
