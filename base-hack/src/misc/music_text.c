@@ -21,7 +21,7 @@ void resetDisplayedMusic(void) {
 }
 
 
-void detectSongChange(){
+void detectSongChange(void) {
     char loadedSongCanceled = 0;
     for(int i = 11; i >= 0; i--){
         if(storedMusicTrackChannel[i] != MusicTrackChannels[i]){

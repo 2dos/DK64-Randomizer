@@ -507,9 +507,7 @@ void getItem(int object_type) {
             playSound(69, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
     }
-    if (hh_item != HHITEM_NOTHING) {
-        addHelmTime(hh_item, multiplier);
-    }
+    addHelmTime(hh_item, multiplier);
 }
 
 int getObjectCollectability(int id, int unk1, int model2_type) {

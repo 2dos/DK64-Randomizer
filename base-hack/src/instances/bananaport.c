@@ -72,33 +72,36 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 		}
 	}
 	if (behaviour->current_state == 0) {
+		int selected_is_active = checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT);
 		if ((selected_warp->appear_flag > -1) && (Rando.activate_all_bananaports != 1)) {
 			// Has an appear flag
-			if (checkFlag(selected_warp->appear_flag, FLAGTYPE_PERMANENT)) {
+			int selected_has_appeared = checkFlag(selected_warp->appear_flag, FLAGTYPE_PERMANENT);
+			if (selected_has_appeared) {
 				setPermFlag(selected_warp->active_flag);
+				selected_is_active = 1;
 			}
-			if (checkFlag(selected_warp->appear_flag, FLAGTYPE_PERMANENT)) {
-				if (!checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT)) {
+			if (selected_has_appeared) {
+				if (!selected_is_active) {
 					behaviour->unk_60 = 1;
 					behaviour->unk_62 = 70;
 					behaviour->unk_66 = 255;
 				}
 			}
-			if (checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT) == 0) {
+			if (!selected_is_active) {
 				behaviour->unk_71 = 0;
 				behaviour->unk_60 = 1;
 				behaviour->unk_62 = 0;
 				behaviour->unk_66 = 255;
 				behaviour->next_state = 50;
 			}
-			if (checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT) || checkFlag(selected_warp->appear_flag, FLAGTYPE_PERMANENT)) {
+			if (selected_is_active || selected_has_appeared) {
 				setScriptRunState(behaviour, RUNSTATE_DISTANCERUN, 300);
 				behaviour->next_state = 1;
 			}
 
 		} else {
 			// Always shown
-			if (checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT) == 0) {
+			if (!selected_is_active) {
 				behaviour->unk_60 = 1;
 				behaviour->unk_62 = 70;
 				behaviour->unk_66 = 255;

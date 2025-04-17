@@ -10,33 +10,6 @@
  */
 #include "../../include/common.h"
 
-int isTBarrelFlag(int flag) {
-	/**
-	 * @brief Is a flag a training move flag
-	 * 
-	 * @param flag Flag being queried
-	 * 
-	 * @return is training flag (bool)
-	 */
-	return inShortList(flag, &tbarrel_flags[0], 4);
-}
-
-int isFairyFlag(int flag) {
-	/**
-	 * @brief Is a flag a fairy move flag
-	 * 
-	 * @param flag Flag being queried
-	 * 
-	 * @return is a fairy move flag (bool)
-	 */
-	if (flag == FLAG_ABILITY_CAMERA) {
-		return 1;
-	} else if (flag == FLAG_ABILITY_SHOCKWAVE) {
-		return 1;
-	}
-	return flag == -2;
-}
-
 static const unsigned char no_purchase_bases[] = {
 	MRT_NOBUY_SPECIALMOVE,
 	MRT_NOBUY_SPECIALMOVE,

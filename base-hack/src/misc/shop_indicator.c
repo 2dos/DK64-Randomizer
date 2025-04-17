@@ -242,18 +242,13 @@ int getClosestShop(void) {
 		}
 	}
 	int closest_index = 0;
-	if ((dists[2] < dists[1]) && (dists[2] < dists[0]) && (dists[2] < dists[3])) {
-		paad->linked_behaviour = behavs[2];
-		closest_index = 2;
-	} else if ((dists[3] < dists[1]) && (dists[3] < dists[0]) && (dists[3] < dists[2])) {
-		paad->linked_behaviour = behavs[3];
-		closest_index = 3;
-	} else if ((dists[1] < dists[0]) && (dists[1] < dists[2]) && (dists[1] < dists[3])) {
-		paad->linked_behaviour = behavs[1];
-		closest_index = 1;
-	} else if ((dists[0] < dists[1]) && (dists[0] < dists[2]) && (dists[0] < dists[3])) {
-		paad->linked_behaviour = behavs[0];
-		closest_index = 0;
+	int closest_dist = dists[0];
+	for (int i = 1; i < 4; i++) {
+		if (dists[i] < closest_dist) {
+			closest_dist = dists[i];
+			paad->linked_behaviour = behavs[i];
+			closest_index = i;
+		}
 	}
 	if (found_counter > 0) {
 		paad->linked_behaviour = behavs[closest_index];

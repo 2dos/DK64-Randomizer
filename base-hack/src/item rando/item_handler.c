@@ -146,9 +146,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             break;
     }
     if (config.apply_helm_hurry) {
-        if (hh_item != HHITEM_NOTHING) {
-            addHelmTime(hh_item, 1);
-        }
+        addHelmTime(hh_item, 1);
     }
     if (config.display_item_text) {
         if (display_text) {

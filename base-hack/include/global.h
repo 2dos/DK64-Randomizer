@@ -347,8 +347,6 @@ extern void populateCrateItem(int id, int map, int index, int world);
 extern int isObjectTangible_detailed(int id);
 
 extern void insertROMMessages(void);
-extern int isTBarrelFlag(int flag);
-extern int isFairyFlag(int flag);
 extern int isFlagInRange(int test_flag, int start_flag, int count);
 
 extern void wipeHintCache(void);

@@ -787,6 +787,11 @@ void startFile(void) {
 		if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
 			setPermFlag(FLAG_ARCADE_LEVER);
 		}
+		for (int i = 0; i < 7; i++) {
+			if (checkFlag(normal_key_flags[i], FLAGTYPE_PERMANENT)) {
+				setPermFlag(tnsportal_flags[i]);
+			}
+		}
 		SaveToGlobal();
 		for (int i = 0; i < 4; i++) {
 			if (Rando.check_shop_flags & (0x80 >> i)) {
