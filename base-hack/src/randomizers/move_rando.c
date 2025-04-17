@@ -300,6 +300,11 @@ void purchaseMove(shop_paad* paad) {
 			} else if (isIceTrapFlag(paad->flag) == DYNFLAG_ICETRAP) {
 				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
 				queueIceTrap(ICETRAP_BUBBLE);
+			} else if (isFlagInRange(paad->flag, FLAG_RAINBOWCOIN_0, 16)) {
+				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
+				for (int i = 0; i < 5; i++) {
+					MovesBase[i].coins += 5;
+				}
 			} else {
 				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
 				if (paad->flag == FLAG_ABILITY_CAMERA) {
@@ -337,7 +342,9 @@ void purchaseMove(shop_paad* paad) {
 	} else if ((p_type == PURCHASE_INSTRUMENT)) {
 		item_given = 7;
 	}
-	changeCollectableCount(1, 0, (0 - paad->price));
+	if (!isAPEnabled()) {
+		changeCollectableCount(1, 0, (0 - paad->price));
+	}
 	if (item_given > -1) {
 		changeCollectableCount(item_given, 0, 9999);
 	}

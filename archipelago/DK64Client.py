@@ -83,7 +83,7 @@ class DK64Client:
         """Check if the game is in a valid state for sending items."""
         current_gamemode = self.n64_client.read_u8(DK64MemoryMap.CurrentGamemode)
         next_gamemode = self.n64_client.read_u8(DK64MemoryMap.NextGamemode)
-        return current_gamemode in [6, 0xD] and next_gamemode in [6, 0xD]
+        return current_gamemode in [6, 0xD] and next_gamemode in [6, 0xA, 0xD]
 
     def safe_to_send(self):
         """Check if it's safe to send an item."""
