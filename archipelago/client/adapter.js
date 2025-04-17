@@ -1,5 +1,26 @@
 var server = new Server();
-var port = Math.floor(Math.random() * (50000 - 40000 + 1)) + 40000;
+var port = 0;
+// Read pj64.installDirectory
+var install_directory = pj64.installDirectory;
+// Read install_dir/Config/Project64.cfg, it already exists
+var config_path = install_directory + "Config\\Project64.cfg";
+console.log("Config path: " + config_path);
+var file = fs.readfile(config_path.toString()).toString();
+// Find the line that starts with "AP_PORT=" and get the port number
+var lines = file.split("\n");
+for (var i = 0; i < lines.length; i++) {
+    if (lines[i].startsWith("ap_port=")) {
+        var portLine = lines[i].split("=")[1].trim();
+        port = parseInt(portLine, 10);
+        if (isNaN(port)) {
+            console.log("Invalid port number in Project64.cfg: " + portLine);
+            port = 48080; // Default to 0 if invalid
+        } else {
+            console.log("Port number found in Project64.cfg: " + port);
+        }
+        break;
+    }
+}
 
 var ip = "127.0.0.1";
 function startServer() {
@@ -37,7 +58,7 @@ function startServer() {
                             for (var i = 0; i < size; i++) {
                                 result.push(String.fromCharCode(mem.u8[address + i]));
                             }
-                            c.write(`${messageId}:${result.join("")}\n`);
+                            c.write(messageId + ":" + result.join("") + "\n");
                             return;
                         }
                         else if (type === "u8") {
@@ -53,16 +74,15 @@ function startServer() {
                                 result.push(mem.u32[address + i]);
                             }
                         } else {
-                            c.write(`${messageId}:Invalid type, use: read u8, read u16, read u32\n`);
+                            c.write(messageId + ":Invalid type, use: read u8, read u16, read u32\n");
                             return;
                         }
-
-                        c.write(`${messageId}:${result.join(",")}\n`);
+                        c.write(messageId + ":" + result.join("") + "\n");
                     } else {
-                        c.write(`${messageId}:Invalid read parameters\n`);
+                        c.write(messageId + ":Invalid read parameters\n");
                     }
                 } else {
-                    c.write(`${messageId}:Usage: read u8/u16/u32 0xADDRESS SIZE\n`);
+                    c.write(messageId + ":Usage: read u8/u16/u32 0xADDRESS SIZE\n");
                 }
             }
             else if (command.startsWith("dict")) {
@@ -72,7 +92,7 @@ function startServer() {
                     dict = JSON.parse(dict);
                 } catch (e) {
                     console.log(e)
-                    c.write(`${messageId}:Invalid JSON format for dictionary\n`);
+                    c.write(messageId + ":Invalid JSON format for dictionary\n");
                     return;
                 }
                 // eg dict {"name": {"type": "u8", "adr": 0x1234, "size": 4}}
@@ -109,11 +129,11 @@ function startServer() {
                         }
                         result[key] = values;
                     } else {
-                        c.write(`${messageId}:Invalid type, use: u8, u16, u32\n`);
+                        c.write(messageId + ":Invalid type, use: u8, u16, u32\n");
                         return;
                     }
                 }
-                c.write(`${messageId}:${JSON.stringify(result)}\n`);
+                c.write(messageId + ":" + JSON.stringify(result) + "\n");
                 return;
             }
             else if (command.startsWith("write")) {
@@ -130,19 +150,19 @@ function startServer() {
                     for (var i = 0; i < byteArray.length; i++) {
                         mem.u8[address + i] = byteArray[i];
                     }
-                    c.write(`${messageId}:Bytestring write successful\n`);
+                    c.write(messageId + ":Bytestring write successful\n");
                     return;
                 }
         
                 try {
                     value = JSON.parse(value);
                 } catch (e) {
-                    c.write(`${messageId}:Invalid JSON format for value\n`);
+                    c.write(messageId + ":Invalid JSON format for value\n");
                     return;
                 }
         
                 if (!Array.isArray(value)) {
-                    c.write(`${messageId}:Value must be an array of bytes\n`);
+                    c.write(messageId + ":Value must be an array\n");
                     return;
                 }
         
@@ -160,19 +180,18 @@ function startServer() {
                             mem.u32[address + i] = value[i / 4];
                         }
                     } else {
-                        c.write(`${messageId}:Invalid type, use: write u8, write u16, write u32, write bytestring\n`);
+                        c.write(messageId + ":Invalid type, use: write u8, write u16, write u32, write bytestring\n");
                         return;
                     }
-        
-                    c.write(`${messageId}:Write successful\n`);
+                    c.write(messageId + ":Write successful\n");
                 } else {
-                    c.write(`${messageId}:Invalid write parameters\n`);
+                    c.write(messageId + ":Invalid write parameters\n");
                 }
             }
             else if (command === "romInfo"){
-                c.write(`${messageId}:${JSON.stringify(pj64.romInfo)}\n`);
+                c.write(messageId + JSON.stringify(pj64.romInfo) + "\n");
             } else {
-                c.write(`${messageId}:Unknown command\n`);
+                c.write(messageId + ":Unknown command\n");
             }
         });
 

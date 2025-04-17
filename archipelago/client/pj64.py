@@ -9,9 +9,6 @@ import pkgutil
 from configparser import ConfigParser
 from Utils import open_filename
 from Utils import get_settings
-import re
-import platform
-import shutil
 import uuid
 
 
@@ -46,94 +43,9 @@ class PJ64Client:
         """Initialize a new instance of the class."""
         self._check_client()
         self.address = "127.0.0.1"
-        self.port = self.get_pj64_port()
         self.socket = None
         self.connected_message = False
         self._connect()
-
-    def get_pj64_port(self):
-        """Get the port used by Project64 for communication."""
-        # Usage
-        process_name = "Project64.exe"  # Linux processes may be like "project64" or "wine Project64.exe"
-        pids = self.get_pid_by_name(process_name)
-
-        if pids:
-            for pid in pids:
-                ports = self.get_ports_by_pid(pid)
-                if ports:
-                    for proto, ip, port, status in ports:
-                        return port
-        raise PJ64Exception("Unable to find Project64 port. Please ensure Project64 is running and try again.")
-
-    def get_pid_by_name(self, name):
-        """Get the process ID (PID) of a running process by its name."""
-        system = platform.system()
-        pids = []
-
-        if system == "Windows":
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            tasklist = subprocess.check_output(["tasklist"], text=True, errors="ignore", shell=False, startupinfo=startupinfo)
-            for line in tasklist.splitlines():
-                if name.lower() in line.lower():
-                    parts = re.split(r"\s+", line)
-                    if len(parts) >= 2 and parts[0].lower() == name.lower():
-                        pids.append(int(parts[1]))
-
-        elif system == "Linux":
-            try:
-                # Try 'pgrep' for cleaner lookup
-                output = subprocess.check_output(["pgrep", "-f", name], text=True, shell=False)
-                for line in output.splitlines():
-                    pids.append(int(line.strip()))
-            except subprocess.CalledProcessError:
-                pass  # No process found
-
-        return pids
-
-    def get_ports_by_pid(self, pid):
-        """Get the ports used by a process ID (PID)."""
-        system = platform.system()
-        ports = []
-
-        if system == "Windows":
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            netstat = subprocess.check_output(["netstat", "-ano"], text=True, shell=False, startupinfo=startupinfo)
-            for line in netstat.splitlines():
-                if f"{pid}" in line:
-                    if "TCP" in line or "UDP" in line:
-                        parts = re.split(r"\s+", line.strip())
-                        proto = parts[0]
-                        local_address = parts[1]
-                        status = parts[3] if proto == "TCP" else "N/A"
-                        ip, port = local_address.rsplit(":", 1)
-                        ports.append((proto, ip, int(port), status))
-
-        elif system == "Linux":
-            if shutil.which("ss"):
-                tool = "ss"
-                cmd = ["ss", "-tunp"]
-            else:
-                tool = "netstat"
-                cmd = ["netstat", "-tunp"]
-
-            try:
-                output = subprocess.check_output(cmd, stderr=subprocess.DEVNULL, text=True, shell=False)
-                for line in output.splitlines():
-                    if f"/{pid}" in line:
-                        parts = re.split(r"\s+", line.strip())
-                        proto = parts[0]
-                        local = parts[4] if tool == "ss" else parts[3]
-                        ip_port = re.split(r":", local)
-                        port = int(ip_port[-1])
-                        ip = ":".join(ip_port[:-1])
-                        status = parts[5] if tool == "ss" and proto == "tcp" else "N/A"
-                        ports.append((proto.upper(), ip, port, status))
-            except subprocess.CalledProcessError:
-                pass
-
-        return ports
 
     def _check_client(self):
         """Ensure the Project 64 executable and the required adapter script are properly set up.
@@ -158,10 +70,10 @@ class PJ64Client:
         adapter_path = os.path.join(os.path.dirname(executable), "Scripts", "ap_adapter.js")
         # Read the existing file from the world
         try:
-            with open("worlds/dk64/archipelago/client/adapter.js", "r", encoding="utf8") as f:
+            with open("worlds/dk64/archipelago/client/adapter.js", "r", encoding="utf8", newline="\n") as f:
                 adapter_content = f.read()
         except Exception:
-            adapter_content = pkgutil.get_data(__name__, "adapter.js").decode()
+            adapter_content = pkgutil.get_data(__name__, "adapter.js").decode().replace("\r\n", "\n").replace("\r", "\n")
         # Check if the file is in use
         matching_content = False
         # Check if the contents match
@@ -300,12 +212,19 @@ class PJ64Client:
         # Ensure the [Debugger] section exists and set 'Debugger'
         if "Debugger" not in config:
             config.add_section("Debugger")
-        config.set("Debugger", "Debugger", "1")
-        config.set("Debugger", "Autorun Scripts", "ap_adapter.js")
-
-        # Write the updated settings back to the file
+            config.set("Debugger", "Debugger", "1")
+            config.set("Debugger", "Autorun Scripts", "ap_adapter.js")
+        # Create a random Port
+        port = str(40000 + (uuid.uuid4().int % 10000))
+        if "ap_port" not in config["Debugger"]:
+            config.set("Debugger", "AP_Port", port)
+            self.port = int(port)
+            print("Set port to " + str(port))
+        else:
+            self.port = int(config["Debugger"]["AP_Port"])
+        # Write the updated settings back to the file with LF line endings
         try:
-            with open(config_file, "w", encoding="utf8") as configfile:
+            with open(config_file, "w", encoding="utf8", newline="\n") as configfile:
                 config.write(configfile, space_around_delimiters=False)
         except Exception:
             pass
@@ -327,9 +246,10 @@ class PJ64Client:
         try:
             self.socket.connect((self.address, self.port))
             self.connected_message = True
-        except (ConnectionRefusedError, ConnectionResetError, ConnectionAbortedError):
+        except (ConnectionRefusedError, ConnectionResetError, ConnectionAbortedError) as e:
             self.socket = None
             self.connected_message = False
+            print(e)
             raise PJ64Exception("Connection refused or reset")
         except OSError:
             # We're already connected, just move on
@@ -346,18 +266,21 @@ class PJ64Client:
             response = self.socket.recv(8192).decode()
             if not response or len(str(response).strip()) == 0:
                 raise PJ64Exception("No data received from the server")
-
             # Split response by line terminator and process each line
             for line in response.splitlines():
                 if line.startswith(command_id):
-                    return line[len(command_id) + 1:]  # Return the response after the ID
+                    data = line[len(command_id) :]
+                    if data.startswith(":"):
+                        data = data[1:]
+
+                    return data  # Return the response after the ID
 
             # If no matching ID is found, raise an exception
             raise PJ64Exception("Response ID does not match the command ID")
-        except Exception:
+        except Exception as e:
             self.socket = None
             self.connected_message = False
-            raise PJ64Exception("Connection refused or reset")
+            raise PJ64Exception(e)
 
     def _read_memory(self, address, size):
         """Read an unsigned integer of the given size from memory."""
