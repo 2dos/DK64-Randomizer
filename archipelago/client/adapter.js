@@ -189,7 +189,7 @@ function startServer() {
                 }
             }
             else if (command === "romInfo"){
-                c.write(messageId + JSON.stringify(pj64.romInfo) + "\n");
+                c.write(messageId + ":" + JSON.stringify(pj64.romInfo) + "\n");
             } else {
                 c.write(messageId + ":Unknown command\n");
             }

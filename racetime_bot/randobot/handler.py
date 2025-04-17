@@ -308,7 +308,6 @@ class RandoHandler(RaceHandler):
             # await self.send_message("Seed generated! Password: %(password)s" % {"password": self.state["result_data"]["password"]})
             # DM the password to the user
             password_emotes = ""
-            # The password is comma seperated values, so split it
             for word in self.state["result_data"]["password"].split(","):
                 # Convert the text to the Emote name seperated by a space
                 password_emotes += " " + password_map.get(word.strip(), word.strip())

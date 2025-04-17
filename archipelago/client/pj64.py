@@ -217,11 +217,11 @@ class PJ64Client:
         # Create a random Port
         port = str(40000 + (uuid.uuid4().int % 10000))
         if "ap_port" not in config["Debugger"]:
-            config.set("Debugger", "AP_Port", port)
+            config.set("Debugger", "ap_port", port)
             self.port = int(port)
             print("Set port to " + str(port))
         else:
-            self.port = int(config["Debugger"]["AP_Port"])
+            self.port = int(config["Debugger"]["ap_port"])
         # Write the updated settings back to the file with LF line endings
         try:
             with open(config_file, "w", encoding="utf8", newline="\n") as configfile:
