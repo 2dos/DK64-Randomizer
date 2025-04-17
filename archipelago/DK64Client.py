@@ -21,6 +21,7 @@ from client.check_flag_locations import location_flag_to_name, location_name_to_
 from client.ap_check_ids import check_id_to_name, check_names_to_id
 from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop
 from NetUtils import ClientStatus
+from ap_version import version as ap_version
 
 
 class DK64Client:
@@ -604,7 +605,7 @@ class DK64Context(CommonContext):
                 ("Client", "Archipelago"),
                 ("Tracker", "Tracker"),
             ]
-            base_title = "Archipelago Donkey Kong 64 Client"
+            base_title = f"Archipelago Donkey Kong 64 Client (Version {ap_version})"
 
             def build(self):
                 b = super().build()
