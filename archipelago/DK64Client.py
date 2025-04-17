@@ -417,7 +417,7 @@ class DK64Client:
                                 new_checks.append(id)
                                 if self.locations_scouted.get(id):
                                     self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
-                                    
+
         if new_checks:
             cb(new_checks)
         return True
