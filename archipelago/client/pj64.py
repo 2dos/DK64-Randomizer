@@ -195,15 +195,14 @@ class PJ64Client:
         """
 
         def clean_config_file(file_path):
-            """Remove lines that are not section headers or key=value pairs."""
+            """Read the config file and return cleaned lines."""
             cleaned_lines = []
             with open(file_path, encoding="utf8") as f:
                 for line in f:
                     stripped = line.strip()
                     if stripped == "" or stripped.startswith("[") or "=" in stripped:
                         cleaned_lines.append(line)
-            with open(file_path, "w", encoding="utf8", newline="\n") as f:
-                f.writelines(cleaned_lines)
+            return cleaned_lines
 
         def sanitize_config(config):
             """Remove invalid keys from the config object in memory."""
@@ -212,12 +211,15 @@ class PJ64Client:
                 for key in keys_to_remove:
                     config.remove_option(section, key)
 
-        # Step 1: Clean the file before loading
-        clean_config_file(config_file)
+        # Step 1: Clean the file and load cleaned data into ConfigParser
+        try:
+            cleaned_lines = clean_config_file(config_file)
+            config = ConfigParser()
+            config.read_string("".join(cleaned_lines))
+        except Exception:
+            raise PJ64Exception("Failed to read or clean the config file.")
 
-        # Step 2: Read and sanitize in memory
-        config = ConfigParser()
-        config.read(config_file, encoding="utf8")
+        # Step 2: Sanitize the config in memory
         sanitize_config(config)
 
         # Step 3: Ensure required sections/settings
