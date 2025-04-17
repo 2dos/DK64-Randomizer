@@ -296,10 +296,22 @@ class RandoHandler(RaceHandler):
             requests.post(self.dk64.discord_webhook, json=embed_data)
         logger.info("Password Selected? %s" % self.state["result_data"].get("password"))
         if self.state["result_data"].get("password"):
+            password_map = {
+                "DU": "CUp",
+                "DL": "CLeft",
+                "DR": "CRight",
+                "DD": "CDown",
+                "Z": "ZButton",
+                "S": "Start",
+            }
             logger.info("Result Send Message! Password: %(password)s" % {"password": self.state["result_data"]["password"]})
             # await self.send_message("Seed generated! Password: %(password)s" % {"password": self.state["result_data"]["password"]})
             # DM the password to the user
-            await self.send_message(f"Seed generated! Password: {self.state['result_data']['password']}", direct_to=self.data.get("opened_by", {}).get("id"))
+            password_emotes = ""
+            for word in self.state["result_data"]["password"].split(","):
+                # Convert the text to the Emote name seperated by a space
+                password_emotes += " " + password_map.get(word.strip(), word.strip())
+            await self.send_message(f"Seed generated! Password: {password_emotes}", direct_to=self.data.get("opened_by", {}).get("id"))
 
     async def send_presets(self, dev):
         """Send a list of known presets to the race room."""

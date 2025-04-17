@@ -49,12 +49,11 @@ class DK64Client:
 
     async def wait_for_pj64(self):
         """Wait for PJ64 to connect to the game."""
-        self.n64_client = PJ64Client()
         clear_waiting_message = True
         if not self.stop_bizhawk_spam:
             logger.info("Waiting on connection to PJ64...")
             self.stop_bizhawk_spam = True
-
+            self.n64_client = PJ64Client()
         while True:
             try:
                 socket_connected = False
@@ -464,7 +463,17 @@ class DK64Client:
 
     def get_current_deliver_count(self):
         """Get the current deliver count."""
-        return self.n64_client.read_u16(self.memory_pointer + DK64MemoryMap.counter_offset)
+        data = self.n64_client.read_u16(self.memory_pointer + DK64MemoryMap.counter_offset)
+        # If our data is too high, (Above 10000) we need to reset it
+        if data > 10000:
+            # Try reading again
+            data = self.n64_client.read_u16(self.memory_pointer + DK64MemoryMap.counter_offset)
+            # If its still too high, raise an exception
+            if data > 10000:
+                return None
+            else:
+                return data
+        return data
 
     async def main_tick(self, item_get_cb, win_cb, deathlink_cb):
         """Game loop tick."""
@@ -501,10 +510,11 @@ class DK64Client:
         # If current_deliver_count is None
         if current_deliver_count is None:
             return
-        # logger.info(f"Current deliver count: {current_deliver_count}")
-        # logger.info(f"Recieved checks: {len(self.recvd_checks)}")
-        # logger.info(f"Pending checks: {len(self.pending_checks)}")
+
         if current_deliver_count > 10000:
+            logger.info(f"Current deliver count: {current_deliver_count}")
+            logger.info(f"Recieved checks: {len(self.recvd_checks)}")
+            logger.info(f"Pending checks: {len(self.pending_checks)}")
             logger.info("Current deliver count is too high, PLEASE REPORT THIS TO THE DK64 TEAM")
         if current_deliver_count in self.recvd_checks:
             # Get the next item in recvd_checks
