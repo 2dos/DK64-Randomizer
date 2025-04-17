@@ -44,7 +44,6 @@ void cFuncLoop(void) {
 		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
 			shiftBrokenJapesPortal();
 		}
-		priceTransplant();
 		if (CurrentMap == MAP_AZTECBEETLE) {
 			TextItemName = Rando.aztec_beetle_reward;
 		} else if (CurrentMap == MAP_CAVESBEETLERACE) {

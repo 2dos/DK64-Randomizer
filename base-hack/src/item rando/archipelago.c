@@ -177,12 +177,7 @@ void handleSentItem(void) {
             }
         case TRANSFER_ITEM_INSTRUMENTUPGRADE:
             {
-                int ins_level = 0;
-                for (int i = 1; i < 4; i++) {
-                    if (MovesBase[0].instrument_bitfield & (1 << i)) {
-                        ins_level = i;
-                    }
-                }
+                int ins_level = getInstrumentLevel();
                 if (ins_level < 3) {
                     for (int i = 0; i < 5; i++) {
                         MovesBase[i].instrument_bitfield |= (1 << (ins_level + 1));

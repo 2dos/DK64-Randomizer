@@ -46,11 +46,30 @@ int isShopEmpty(vendors vendor, int level, int kong) {
 	return 0;
 }
 
+int getInstrumentLevel(void) {
+	int level = 0;
+	for (int i = 0; i < 3; i++) {
+		if (MovesBase[0].instrument_bitfield & (1 << (i + 1))) {
+			level = i;
+		}
+	}
+	return level;
+}
+
 int getPrice(purchase_struct *shop_data) {
 	if (shop_data->item.item_type == REQITEM_MOVE) {
 		switch (shop_data->item.level) {
 			case 3:
-				return Rando.slam_prices[0];
+				if (MovesBase[0].simian_slam > 0) {
+					return Rando.slam_prices[MovesBase[0].simian_slam - 1]; // Indexing error
+				}
+			case 7:
+				return Rando.ammo_belt_prices[MovesBase[0].ammo_belt];
+			case 9:
+				{
+					int level = getInstrumentLevel();
+					return Rando.instrument_upgrade_prices[level];
+				}
 		}
 	}
 	return shop_data->price;
@@ -382,14 +401,8 @@ void getNextMoveText(void) {
 							break;
 						case 9:
 							{
-								int lvl = 2;
-								if (MovesBase[0].instrument_bitfield & 4) {
-									lvl = 3;
-								}
-								if (MovesBase[0].instrument_bitfield & 8) {
-									lvl = 4;
-								}
-								top_item = InstrumentUpgNames[lvl];
+								int lvl = getInstrumentLevel();
+								top_item = InstrumentUpgNames[lvl + 1];
 							}
 							break;
 						case 10:
@@ -471,11 +484,10 @@ void getNextMoveText(void) {
 					paad->lower_text = getTextPointer(0x27,bottom_item,0);
 				}
 			}
-			priceTransplant();
 		}
 		int timer = paad->timer;
 		paad->timer = timer - 1;
-		if ((timer > 0) && (paad->timer == 0)) {
+		if (timer == 1) {
 			start_hiding = 1;
 		}
 		timer = paad->timer;

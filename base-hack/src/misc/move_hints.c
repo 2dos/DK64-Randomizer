@@ -118,17 +118,10 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 						base = MRT_CANBUY_BONGOS + kong;
 						break;
 					case 9:
-						{
-							int offset = 0;
-							if (MovesBase[0].instrument_bitfield & 2) {
-								offset = 1;
-							} else if (MovesBase[0].instrument_bitfield & 4) {
-								offset = 2;
-							}
-							base = MRT_CANBUY_INSTRUMENTUPGRADE + offset;
-						}
+						base = MRT_CANBUY_INSTRUMENTUPGRADE + getInstrumentLevel();
 						break;
 					case 10:
+						// kong = subindex
 						if (kong < 4) {
 							base = MRT_CANBUY_DIVE + kong;
 						} else {

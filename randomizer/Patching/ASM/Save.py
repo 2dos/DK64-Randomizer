@@ -130,6 +130,8 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     writeValue(ROM_COPY, 0x8002ED6A, Overlay.Menu, 0x18 + save_index_offset, offset_dict)  # Read from File - Rambi Hiscore Name 3
     writeValue(ROM_COPY, 0x8060D006, Overlay.Static, 0x1F + save_index_offset, offset_dict)  # Read from File - Language
     writeValue(ROM_COPY, 0x8060D026, Overlay.Static, 0x20 + save_index_offset, offset_dict)  # Read from File - Camera Type
+    # Offset clamping
+    writeValue(ROM_COPY, 0x8060C432, Overlay.Static, -(0x11 + save_index_offset), offset_dict, 2, True)
 
 
 def saveUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):

@@ -719,12 +719,8 @@ void giveCollectables(void) {
 	/**
 	 * @brief Give collectables based on file progress
 	 */
-	int max = 10; //giving instrument power even if no instrument is unlocked
-	for (int i = 1; i < 4; i++) {
-		if (MovesBase[0].instrument_bitfield & (1 << i)) {
-			max += 5;
-		}
-	}
+	int ins_level = getInstrumentLevel();
+	int max = 15 + ((ins_level - 1) * 5); //giving instrument power even if no instrument is unlocked
 	int energy = max/2;
 	if (Rando.quality_of_life.global_instrument) {
 		CollectableBase.InstrumentEnergy = energy;

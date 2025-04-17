@@ -356,7 +356,6 @@ void initHack(int source) {
 			loadExtraHooks();
 			// Place Move Data
 			moveTransplant();
-			priceTransplant();
 			
 			fixMusicRando();
 			

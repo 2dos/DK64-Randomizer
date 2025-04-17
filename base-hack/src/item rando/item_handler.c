@@ -124,21 +124,16 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
                 }
             } else if (level == 9) {
                 // Progressive instrument
-                int base = 2;
-                int base_btf = MovesBase[0].instrument_bitfield;
-                if (base_btf | 2) {
-                    base = 4;
-                    if (base_btf | 4) {
-                        base = 8;
-                    }
-                }
+                int ins_level = getInstrumentLevel();
                 for (int i = 0; i < 5; i++) {
-                    MovesBase[i].instrument_bitfield |= base;
+                    MovesBase[i].instrument_bitfield |= (1 << (ins_level + 1));
                 }
-                if (base >= 4) {
-                    if (CollectableBase.Melons < 3) {
-                        CollectableBase.Melons = 3;
-                    }
+                int cap = 2;
+                if (ins_level > 1) {
+                    cap = 3;
+                }
+                if (CollectableBase.Melons < cap) {
+                    CollectableBase.Melons = cap;
                 }
             } else if (level == 10) {
                 int base = *(unsigned char*)(&current_item_data.flag_moves);

@@ -29,6 +29,7 @@
         "xstring": "c",
         "xlocale": "c",
         "algorithm": "c",
-        "iterator": "c"
+        "iterator": "c",
+        "memory": "c"
     }
 }

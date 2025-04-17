@@ -692,16 +692,13 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
     char item_kong = -1;
     getFlagMappingData(index, &item_level, &item_kong);
     int is_acceptable_item = inShortList(obj_type, &acceptable_items, sizeof(acceptable_items) >> 1);
-    if (obj_type != 0x13C) {
+    if (is_acceptable_item) {
         if (inBossMap(CurrentMap, 1, 1, 0)) {
-            if (is_acceptable_item) {
+            if (obj_type != 0x13C) {
                 setAction(0x41, 0, 0);
             }
-        }
-    }
-    if (obj_type != 0x18D) {
-        if (inBattleCrown(CurrentMap)) {
-            if (is_acceptable_item) {
+        } else if (inBattleCrown(CurrentMap)) {
+            if (obj_type != 0x18D) {
                 setAction(0x42, 0, 0);
             }
         }

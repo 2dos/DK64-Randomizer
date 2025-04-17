@@ -60,7 +60,8 @@ extern void handleKRoolSaveProgress(void);
 extern void replace_zones(int init_flag);
 extern void displayNumberOnTns(void);
 extern void moveTransplant(void);
-extern void priceTransplant(void);
+
+extern int getInstrumentLevel(void);
 
 extern void changeCharSpawnerFlag(maps map, int spawner_id, int new_flag);
 extern void HelmBarrelCode(void);
