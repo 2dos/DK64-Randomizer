@@ -21,6 +21,7 @@ from client.check_flag_locations import location_flag_to_name, location_name_to_
 from client.ap_check_ids import check_id_to_name, check_names_to_id
 from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop
 from NetUtils import ClientStatus
+from ap_version import version as ap_version
 
 
 class DK64Client:
@@ -30,6 +31,7 @@ class DK64Client:
     tracker = None
     game = None
     auth = None
+    locations_scouted = {}
     recvd_checks = {}
     pending_checks = []
     players = None
@@ -365,6 +367,8 @@ class DK64Client:
                     # logger.info(f"Found {name} via location_name_to_flag")
                     self.remaining_checks.remove(id)
                     new_checks.append(id)
+                    if self.locations_scouted.get(id):
+                        self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
             # If its not there using the id lets try to get it via item_ids
             else:
                 # If the content is 3 parts separated by a space, we can assume it's a shop check
@@ -375,6 +379,8 @@ class DK64Client:
                         # logger.info(f"Found {name} via location_name_to_flag")
                         self.remaining_checks.remove(id)
                         new_checks.append(id)
+                        if self.locations_scouted.get(id):
+                            self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
                     continue
                 elif ("Cranky" in name or "Candy" in name or "Funky" in name) and len(content) == 3:
                     level_mapping = {"Japes": 0, "Aztec": 1, "Factory": 2, "Galleon": 3, "Forest": 4, "Caves": 5, "Castle": 6, "Isles": 7}
@@ -394,6 +400,8 @@ class DK64Client:
                         # print(f"Found {name} via shop check")
                         self.remaining_checks.remove(id)
                         new_checks.append(id)
+                        if self.locations_scouted.get(id):
+                            self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
                     continue
                 else:
                     check = item_ids.get(id)
@@ -408,6 +416,9 @@ class DK64Client:
                                 # logger.info(f"Found {name} via item_ids")
                                 self.remaining_checks.remove(id)
                                 new_checks.append(id)
+                                if self.locations_scouted.get(id):
+                                    self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
+
         if new_checks:
             cb(new_checks)
         return True
@@ -594,7 +605,7 @@ class DK64Context(CommonContext):
                 ("Client", "Archipelago"),
                 ("Tracker", "Tracker"),
             ]
-            base_title = "Archipelago Donkey Kong 64 Client"
+            base_title = f"Archipelago Donkey Kong 64 Client (Version {ap_version})"
 
             def build(self):
                 b = super().build()
@@ -669,20 +680,21 @@ class DK64Context(CommonContext):
                 self.client.send_mode = self.slot_data.get("receive_notifications")
             self.client.players = self.player_names
             self.reset_checks()
-
+            missing_locations = self.missing_locations
+            asyncio.create_task(self.send_msgs([{"cmd": "LocationScouts", "locations": list(missing_locations)}]))
         if cmd == "ReceivedItems":
             for index, item in enumerate(args["items"], start=args["index"]):
                 self.client.recvd_checks[index] = item
                 self.client.pending_checks.append(item)
-        if cmd == "PrintJSON":
-            # For each item in the list, if theres a LocationID in it, check if the player is our slot
-            if args.get("type") == "ItemSend":
-                sender = args.get("item").player == self.slot
-                player = args.get("receiving")
-                item_name = self.item_names.lookup_in_game(args.get("item").item, self.slot_info[player].game)
-                if sender and player != self.slot:
-                    player_name = self.player_names.get(player)
-                    self.client.sent_checks.append((item_name, player_name))
+        if cmd == "LocationInfo":
+            self.client.locations_scouted = {}
+            for location in args.get("locations"):
+                if location.player != self.slot:
+                    # If the location is in the list, remove it
+                    player_name = self.player_names.get(location.player)
+                    location_id = location.location
+                    item_name = self.item_names.lookup_in_game(location.item, self.slot_info[location.player].game)
+                    self.client.locations_scouted[location_id] = {"player": player_name, "item_name": item_name}
 
     async def sync(self):
         """Sync the game."""
