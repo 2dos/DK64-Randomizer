@@ -186,46 +186,72 @@ class PJ64Client:
         return False
 
     def _verify_pj64_config(self, config_file):
-        """Verify and update the configuration file for Project64.
-
-        This method ensures that the specified configuration file contains the
-        required sections and settings for proper operation. If the necessary
-        sections or settings are missing, they are added or updated accordingly.
-        Args:
-            config_file (str): The path to the configuration file to be verified and updated.
-        Behavior:
-            - Ensures the [Settings] section exists and sets 'Basic Mode' to "0".
-            - Ensures the [Debugger] section exists and sets 'Debugger' to "1".
-            - Write the updated configuration back to the file.
-        Note:
-            If an exception occurs while writing to the file, it is silently ignored.
         """
-        # Read the CFG file
-        config = ConfigParser()
-        config.read(config_file)
+        Verify and update the Project64 configuration file.
 
-        # Ensure the [Settings] section exists and update 'Basic Mode'
+        - Cleans malformed lines from the file.
+        - Ensures required sections and settings exist.
+        - Prevents junk values from being added or re-written.
+        """
+
+        def clean_config_file(file_path):
+            """Remove lines that are not section headers or key=value pairs."""
+            cleaned_lines = []
+            with open(file_path, encoding="utf8") as f:
+                for line in f:
+                    stripped = line.strip()
+                    if stripped == "" or stripped.startswith("[") or "=" in stripped:
+                        cleaned_lines.append(line)
+            with open(file_path, "w", encoding="utf8", newline="\n") as f:
+                f.writelines(cleaned_lines)
+
+        def sanitize_config(config):
+            """Remove invalid keys from the config object in memory."""
+            for section in config.sections():
+                keys_to_remove = [key for key in config[section] if not key.strip() or " " in key.strip() and "=" not in f"{key}=dummy"]
+                for key in keys_to_remove:
+                    config.remove_option(section, key)
+
+        # Step 1: Clean the file before loading
+        clean_config_file(config_file)
+
+        # Step 2: Read and sanitize in memory
+        config = ConfigParser()
+        config.read(config_file, encoding="utf8")
+        sanitize_config(config)
+
+        # Step 3: Ensure required sections/settings
         if "Settings" not in config:
             config.add_section("Settings")
         config.set("Settings", "Basic Mode", "0")
 
-        # Ensure the [Debugger] section exists and set 'Debugger'
         if "Debugger" not in config:
             config.add_section("Debugger")
+        if not config.has_option("Debugger", "Debugger"):
             config.set("Debugger", "Debugger", "1")
+        if not config.has_option("Debugger", "Autorun Scripts"):
             config.set("Debugger", "Autorun Scripts", "ap_adapter.js")
-        # Create a random Port
-        port = str(40000 + (uuid.uuid4().int % 10000))
-        if "ap_port" not in config["Debugger"]:
+
+        if not config.has_option("Debugger", "ap_port"):
+            port = str(40000 + (uuid.uuid4().int % 10000))
             config.set("Debugger", "ap_port", port)
             self.port = int(port)
             print("Set port to " + str(port))
         else:
-            self.port = int(config["Debugger"]["ap_port"])
-        # Write the updated settings back to the file with LF line endings
+            self.port = int(config.get("Debugger", "ap_port"))
+
+        # Step 4: Final sanitize before write
+        sanitize_config(config)
+        # Print the config to the console for debugging
+        print("Config file contents:")
+        for section in config.sections():
+            print(f"[{section}]")
+            for key, value in config.items(section):
+                print(f"{key} = {value}")
+        # Step 5: Write config back to file
         try:
-            with open(config_file, "w", encoding="utf8", newline="\n") as configfile:
-                config.write(configfile, space_around_delimiters=False)
+            with open(config_file, "w", encoding="utf8", newline="\n") as f:
+                config.write(f, space_around_delimiters=False)
         except Exception:
             pass
 
