@@ -26,34 +26,18 @@ void initAP(void) {
     if (isAPEnabled()) {
         APData = &ap_info;
         ap_info.text_timer = 0x82;
-        ap_info.start_flag = FLAG_ENEMY_KILLED_0 + 16;
-        if (Rando.enemy_item_rando) {
-            ap_info.start_flag += ENEMIES_TOTAL;
-        }
     }
 }
 
 void initAPCounter(void) {
     if (isAPEnabled()) {
-        int counter = 0;
-        for (int i = 0; i < 16; i++) {
-            counter <<= 1;
-            if (checkFlag((ap_info.start_flag - 16) + i, FLAGTYPE_PERMANENT)) {
-                counter += 1;
-            }
-        }
-        ap_info.counter = counter;
+        ap_info.counter = ReadFile(DATA_APCOUNTER, 0, 0, FileIndex);
     }
 }
 
 void saveAPCounter(void) {
     if (isAPEnabled()) {
-        int counter = ap_info.counter;
-        for (int i = 0; i < 16; i++) {
-            int state = counter & 1;
-            setFlag((ap_info.start_flag - 1) - i, state, FLAGTYPE_PERMANENT);
-            counter >>= 1;
-        }
+        SaveToFile(DATA_APCOUNTER, 0, 0, FileIndex, ap_info.counter);
     }
 }
 
@@ -139,59 +123,30 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_TROMBONE:
         case TRANSFER_ITEM_SAX:
         case TRANSFER_ITEM_TRIANGLE:
-            MovesBase[FedItem - TRANSFER_ITEM_BONGOS].instrument_bitfield |= 1;
-            if (CollectableBase.Melons < 2) {
-                CollectableBase.Melons = 2;
-                CollectableBase.Health = 8;
-            }
+            giveItem(REQITEM_MOVE, 8, FedItem - TRANSFER_ITEM_BONGOS, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_COCONUT:
         case TRANSFER_ITEM_PEANUT:
         case TRANSFER_ITEM_GRAPE:
         case TRANSFER_ITEM_FEATHER:
         case TRANSFER_ITEM_PINEAPPLE:
-            MovesBase[FedItem - TRANSFER_ITEM_COCONUT].weapon_bitfield |= 1;
+            giveItem(REQITEM_MOVE, 4, FedItem - TRANSFER_ITEM_COCONUT, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_SLAMUPGRADE:
             giveSlamLevel();
             break;
         case TRANSFER_ITEM_HOMING:
-            for (int i = 0; i < 5; i++) {
-                MovesBase[i].weapon_bitfield |= 2;
-            }
+            giveItem(REQITEM_MOVE, 5, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_SNIPER:
-            for (int i = 0; i < 5; i++) {
-                MovesBase[i].weapon_bitfield |= 4;
-            }
+            giveItem(REQITEM_MOVE, 6, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_BELTUPGRADE:
-            {
-                int belt_level = MovesBase[0].ammo_belt;
-                if (belt_level < 2) {
-                    for (int i = 0; i < 5; i++) {
-                        MovesBase[i].ammo_belt = belt_level + 1;
-                    }
-                }
-                break;
-            }
+            giveItem(REQITEM_MOVE, 7, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            break;
         case TRANSFER_ITEM_INSTRUMENTUPGRADE:
-            {
-                int ins_level = getInstrumentLevel();
-                if (ins_level < 3) {
-                    for (int i = 0; i < 5; i++) {
-                        MovesBase[i].instrument_bitfield |= (1 << (ins_level + 1));
-                    }
-                }
-                if (CollectableBase.Melons < 2) {
-                    CollectableBase.Melons = 2;
-                    CollectableBase.Health = 8;
-                } else if (ins_level > 0) {
-                    CollectableBase.Melons = 3;
-                    CollectableBase.Health = 12;
-                }
-                break;
-            }
+            giveItem(REQITEM_MOVE, 9, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            break;
         case TRANSFER_ITEM_CAMERA:
             setFlagMove(FLAG_ABILITY_CAMERA);
             break;
@@ -272,13 +227,6 @@ void sendDeath(void) {
             ap_info.send_death = 1;
         }
     }
-}
-
-int isFlagAPItem(int flag) {
-    if (isAPEnabled()) {
-        return isFlagInRange(flag, ap_info.start_flag, 1000 - 16);
-    }
-    return 0;
 }
 
 static char *ap_strings[] = {

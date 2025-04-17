@@ -27,18 +27,18 @@ typedef struct meloncrate_db_item {
     /* 0x003 */ unsigned char world;
 } meloncrate_db_item;
 
-static unsigned short bp_item_table[40] = {}; // Kasplat Rewards
-static medal_hint_item_data medal_item_table[45] = {}; // Medal Rewards
-static medal_hint_item_data wrinkly_item_table[35] = {}; // Wrinkly Rewards
-static unsigned short crown_item_table[10] = {}; // Crown Rewards
-static unsigned short key_item_table[8] = {}; // Boss Rewards
-static model_item_data fairy_item_table[20] = {}; // Fairy Rewards
-static unsigned short rcoin_item_table[16] = {}; // Dirt Patch Rewards
-static unsigned short crate_item_table[16] = {}; // Crate Rewards
-static patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
-bonus_barrel_info bonus_data[BONUS_DATA_COUNT] = {}; // Bonus Barrel Rewards
-static meloncrate_db_item crate_flags[16] = {}; // Melon crate table
-model_item_data kong_check_data[4] = {}; // Kong table
+static unsigned short bp_item_table[40]; // Kasplat Rewards
+static medal_hint_item_data medal_item_table[45]; // Medal Rewards
+static medal_hint_item_data wrinkly_item_table[35]; // Wrinkly Rewards
+static unsigned short crown_item_table[10]; // Crown Rewards
+static unsigned short key_item_table[8]; // Boss Rewards
+static model_item_data fairy_item_table[20]; // Fairy Rewards
+static unsigned short rcoin_item_table[16]; // Dirt Patch Rewards
+static unsigned short crate_item_table[16]; // Crate Rewards
+static patch_db_item patch_flags[16]; // Flag table for dirt patches to differentiate it from balloons
+bonus_barrel_info bonus_data[BONUS_DATA_COUNT]; // Bonus Barrel Rewards
+static meloncrate_db_item crate_flags[16]; // Melon crate table
+model_item_data kong_check_data[4]; // Kong table
 
 int getBPItem(int index) {
     /**

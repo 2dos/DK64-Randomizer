@@ -31,6 +31,7 @@ FileInfoSizes = [
     16, # Ice Traps
     16, # Junk Items
     8, # Special Moves
+    16, # AP Item Count
 ]
 
 def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, offset_dict: dict):

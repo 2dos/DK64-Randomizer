@@ -684,9 +684,7 @@ void tagAnywhere(void) {
                     if (can_tag_left){
                         change -= 1;      
                     }                  
-                }
-                else
-                {
+                } else {
                     can_tag_left = 1;
                 }                
 
@@ -694,9 +692,7 @@ void tagAnywhere(void) {
                     if (can_tag_right){                    
                         change += 1;                        
                     }
-                }
-                else
-                {
+                } else {
                     can_tag_right = 1;
                 }                
 

@@ -337,6 +337,7 @@ static unsigned char FileInfoData[] = {
     16, // Ice Traps
     16, // Junk Items
     8, // Special Moves
+    16, // AP Item Count
 };
 
 short file_info_expansion = FILE_INFO_SIZE;
