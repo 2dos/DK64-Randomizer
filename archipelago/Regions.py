@@ -149,7 +149,7 @@ def create_region(
         if region_name == "DKIslesMedals" and not IsItemSelected(logic_holder.settings.cb_rando_enabled, logic_holder.settings.cb_rando_list_selected, Levels.DKIsles):
             location_logics = []
         for location_logic in location_logics:
-            location_obj = DK64RLocation.LocationListOriginal[location_logic.id]
+            location_obj = logic_holder.spoiler.LocationList[location_logic.id]
             # DK Arcade Round 1 is dependent on a setting - don't create the inaccessible location depending on that Faster Checks toggle
             if location_logic.id == Locations.FactoryDonkeyDKArcade:
                 if logic_holder.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and region_name == "FactoryArcadeTunnel":
