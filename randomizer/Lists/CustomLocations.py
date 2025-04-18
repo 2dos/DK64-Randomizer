@@ -3672,7 +3672,7 @@ CustomLocations = {
             z=532.0,
             rot_y=1137,
             max_size=64,
-            logic_region=Regions.MushroomUpper,
+            logic_region=Regions.MushroomUpperVineFloor,
             logic=lambda l: ((l.istiny and l.twirl) or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
             group=4,
         ),

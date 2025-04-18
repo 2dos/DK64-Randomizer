@@ -150,15 +150,21 @@ LogicRegions = {
         LocationLogic(Locations.ForestGMEnemy_Path1, lambda l: True),
     ], [], [
         TransitionFront(Regions.MushroomMiddle, lambda l: True),
-        TransitionFront(Regions.MushroomUpper, lambda l: l.climbing),
+        TransitionFront(Regions.MushroomUpperVineFloor, lambda l: l.climbing),
         TransitionFront(Regions.MushroomNightDoor, lambda l: l.can_use_vines),
+    ]),
+
+    Regions.MushroomUpperVineFloor: Region("Mushroom Upper Vine Floor", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [
+        LocationLogic(Locations.ForestGMEnemy_AboveNightDoor, lambda l: True),
+    ], [], [
+        TransitionFront(Regions.MushroomUpper, lambda l: l.climbing),
+        TransitionFront(Regions.MushroomUpperMid, lambda l: True),
     ]),
 
     Regions.MushroomUpper: Region("Mushroom Upper", HintRegion.MushroomInterior, Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestDonkeyMushroomCannons, lambda l: Events.MushroomCannonsSpawned in l.Events and Events.DonkeyMushroomSwitch in l.Events),
-        LocationLogic(Locations.ForestGMEnemy_AboveNightDoor, lambda l: True),
     ], [], [
-        TransitionFront(Regions.MushroomUpperMid, lambda l: True),
+        TransitionFront(Regions.MushroomUpperVineFloor, lambda l: True),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: True, Transitions.ForestUpperMushroomToUpperExterior),
     ]),
 
