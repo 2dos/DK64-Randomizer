@@ -927,7 +927,7 @@ def set_plando_switches(evt):
 def lock_key_8_in_helm(evt):
     """If key 8 is locked in Helm, force that location to hold key 8."""
     helm_is_shuffled = js.document.getElementById("shuffle_helm_location").checked
-    is_level_order = js.document.getElementById("level_randomization").value in ["level_order", "level_order_complex"]
+    is_level_order = js.document.getElementById("level_randomization").value in ["level_order", "level_order_complex", "level_order_moderate"]
     helm_key_lock = js.document.getElementById("key_8_helm").checked
     end_of_helm = js.document.getElementById("plando_HelmKey_item")
     # If the settings require Key 8 to be at the End of Helm...

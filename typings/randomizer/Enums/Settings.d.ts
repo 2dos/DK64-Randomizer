@@ -18,6 +18,12 @@ export enum BigHeadMode {
     random = 3,
 }
 
+export enum BLockerDifficulty {
+    easy = 0,
+    normal = 1,
+    hard = 2,
+}
+
 export enum CBRando {
     off = 1,
     on = 2,
@@ -276,6 +282,7 @@ export enum LevelRandomization {
     loadingzone = 2,
     loadingzonesdecoupled = 3,
     level_order_complex = 4,
+    level_order_moderate = 5,
 }
 
 export enum LogicType {
@@ -712,6 +719,7 @@ export enum SettingsStringEnum {
     crown_enemy_difficulty = 203,
     dk_portal_location_rando_v2 = 204,
     dos_door_rando = 205,
+    blocker_difficulty = 206,
 }
 
 export enum SettingsStringDataType {
@@ -730,6 +738,7 @@ export const SettingsMap = {
     'bananaport_placement_rando': ShufflePortLocations,
     'bananaport_rando': BananaportRando,
     'big_head_mode': BigHeadMode,
+    'blocker_difficulty': BLockerDifficulty,
     'bonus_barrels': MinigameBarrels,
     'cb_rando': CBRando,
     'chunky_colors': CharacterColors,
@@ -997,6 +1006,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
     SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
+    SettingsStringEnum.blocker_difficulty: BLockerDifficulty,
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,

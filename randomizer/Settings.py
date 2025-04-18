@@ -19,7 +19,6 @@ import randomizer.LogicFiles.FranticFactory
 import randomizer.LogicFiles.FungiForest
 import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.JungleJapes
-import randomizer.LogicFiles.Shops
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
@@ -429,6 +428,7 @@ class Settings:
         self.troff_max = None
         self.blocker_text = ""
         self.troff_text = ""
+        self.blocker_difficulty = BLockerDifficulty.normal
 
     def generate_misc(self):
         """Set default items on misc page."""
@@ -528,6 +528,8 @@ class Settings:
         # shuffled_decoupled - camera and shockwave are separate upgrades and can be anywhere
         # start_with - start with camera and shockwave
         self.shockwave_status = ShockwaveStatus.vanilla
+
+        self.shops_dont_cost = False
 
         #  Music
         self.music_bgm_randomized = False
@@ -1462,7 +1464,7 @@ class Settings:
             self.alter_switch_allocation = False
         if self.alter_switch_allocation:
             allocation = [1, 1, 1, 1, 2, 2, 3]  # 4 levels with lvl 1, 2 with lvl 2, 1 with lvl 3
-            if self.level_randomization in (LevelRandomization.level_order, LevelRandomization.level_order_complex):
+            if self.level_randomization in (LevelRandomization.level_order, LevelRandomization.level_order_complex, LevelRandomization.level_order_moderate):
                 # Add an extra 3 into the calculation
                 allocation.append(3)
                 self.random.shuffle(allocation)
@@ -1662,7 +1664,7 @@ class Settings:
             self.training_barrels_minigames = MinigameBarrels.random
 
         # Loading Zone Rando
-        if self.level_randomization in (LevelRandomization.level_order, LevelRandomization.level_order_complex):
+        if self.level_randomization in (LevelRandomization.level_order, LevelRandomization.level_order_complex, LevelRandomization.level_order_moderate):
             self.shuffle_loading_zones = ShuffleLoadingZones.levels
             self.hard_level_progression = self.level_randomization == LevelRandomization.level_order_complex
         elif self.level_randomization == LevelRandomization.loadingzone:

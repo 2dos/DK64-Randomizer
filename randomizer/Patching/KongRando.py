@@ -1,5 +1,6 @@
 """Apply cosmetic elements of Kong Rando."""
 
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
@@ -44,10 +45,18 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
         instrumentpads = [0xA8, 0xA9, 0xAC, 0xAA, 0xAB]
         forceSwitches = [0xE3, 0xE3, 0xE3, 0xE3, 0x70]
 
-        japesPuzzleKong = spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]
-        tinyTemplePuzzleKong = spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]
-        llamaPuzzleKong = spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]
-        factoryPuzzleKong = spoiler.shuffled_kong_placement["Frantic Factory"]["puzzle"]["kong"]
+        japesPuzzleKong = Kongs.donkey
+        if "Jungle Japes" in spoiler.shuffled_kong_placement:
+            japesPuzzleKong = spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]
+        tinyTemplePuzzleKong = Kongs.tiny
+        if "Tiny Temple" in spoiler.shuffled_kong_placement:
+            tinyTemplePuzzleKong = spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]
+        llamaPuzzleKong = Kongs.donkey
+        if "Llama Temple" in spoiler.shuffled_kong_placement:
+            llamaPuzzleKong = spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]
+        factoryPuzzleKong = Kongs.lanky
+        if "Frantic Factory" in spoiler.shuffled_kong_placement:
+            factoryPuzzleKong = spoiler.shuffled_kong_placement["Frantic Factory"]["puzzle"]["kong"]
 
         kongrando_changes = {
             Maps.JungleJapes: [

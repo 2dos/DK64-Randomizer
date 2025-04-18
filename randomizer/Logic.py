@@ -921,6 +921,9 @@ class LogicVarHolder:
         price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
         if price is None:  # This shouldn't happen but it's probably harmless
             return  # TODO: solve this
+        if self.settings.shops_dont_cost:
+            # If shops don't cost anything, then don't deduct this cost
+            return
         # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
         if location.kong == Kongs.any:
             for kong in range(0, 5):

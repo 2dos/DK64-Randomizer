@@ -43,6 +43,19 @@
   },
 
   /*
+    BLockerDifficulty:
+    - Determines the difficulty of B. Lockers in terms of fulfillling their requirements.
+    - easy: 50%
+    - normal: 70%
+    - hard: 95%
+  */
+  "BLockerDifficulty": {
+    "easy": 0,
+    "normal": 1,
+    "hard": 2
+  },
+
+  /*
     CBRando:
     - Determines the level of CB Rando utilized.
     - off: CB Rando is disabled.
@@ -495,13 +508,15 @@
     - loadingzone: All entrances except for Helm/Helm Lobby are shuffled.
     - loadingzonesdecoupled: Going back through an entrance may not take you back to where you came from.
     - level_order_complex: Same as level_order but with complex logic.
+    - level_order_moderate: Same as complex level_order but with a linear order.
   */
   "LevelRandomization": {
     "vanilla": 0,
     "level_order": 1,
     "loadingzone": 2,
     "loadingzonesdecoupled": 3,
-    "level_order_complex": 4
+    "level_order_complex": 4,
+    "level_order_moderate": 5
   },
 
   /*
@@ -1098,7 +1113,8 @@
     "cb_rando_list_selected": 202,
     "crown_enemy_difficulty": 203,
     "dk_portal_location_rando_v2": 204,
-    "dos_door_rando": 205
+    "dos_door_rando": 205,
+    "blocker_difficulty": 206
   },
   /*
     SettingsStringDataType:
@@ -1124,6 +1140,7 @@
     "bananaport_placement_rando": { "obj": "ShufflePortLocations" },
     "bananaport_rando": { "obj": "BananaportRando" },
     "big_head_mode": { "obj": "BigHeadMode" },
+    "blocker_difficulty": { "obj": "BLockerDifficulty" },
     "bonus_barrels": { "obj": "MinigameBarrels" },
     "cb_rando": { "obj": "CBRando" },
     "chunky_colors": { "obj": "CharacterColors" },
@@ -1643,6 +1660,7 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.puzzle_rando_difficulty": { "obj": "PuzzleRando" },
+    "SettingsStringEnum.blocker_difficulty": { "obj": "BLockerDifficulty" },
     "SettingsStringEnum.has_password": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.randomize_enemy_sizes": {
       "obj": "SettingsStringDataType.bool"

@@ -140,18 +140,25 @@
                 <div class="spacer"></div>
             </div>
             <div class="flex-container">
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Only relevant in Level Order shuffle. Generally increase the values randomly rolled by B. Lockers, making them closer to the total number of available GBs."
-                            style="text-align: left">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="hard_blockers"
-                                id="hard_blockers"
-                                display_name="Hard B. Lockers"
-                                value="True"/>
-                        Hard B. Lockers
-                    </label>
+                <div class="item-select">
+                    <p class="select-title">B. Locker Difficulty</p>
+                    <select name="blocker_difficulty"
+                            id="blocker_difficulty"
+                            display_name="B. Locker Difficulty"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Determines how hard it is to reach B. Locker requirements relative to the amount of items you have.">
+                        <option id="easy" value="easy">
+                            Easy
+                        </option>
+                        <option id="normal" selected value="normal">
+                            Normal
+                        </option>
+                        <option id="haRD" value="haRD">
+                            Hard
+                        </option>
+                    </select>
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"

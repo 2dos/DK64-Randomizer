@@ -280,7 +280,7 @@ class Spoiler:
         startKongList = []
         for x in self.settings.starting_kong_list:
             startKongList.append(x.name.capitalize())
-        settings["Hard B Lockers"] = self.settings.hard_blockers
+        settings["B Locker Difficulty"] = self.settings.blocker_difficulty.name
         if self.settings.randomize_blocker_required_amounts:
             settings["Maximum B Locker"] = self.settings.blocker_text
             if self.settings.maximize_helm_blocker:

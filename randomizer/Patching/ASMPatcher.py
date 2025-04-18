@@ -1564,6 +1564,9 @@ def patchAssembly(ROM_COPY, spoiler):
         # Can throw the Apple
         writeValue(ROM_COPY, 0x806E4C94, Overlay.Static, 0, offset_dict, 4)  # Apple (Grounded)
         writeValue(ROM_COPY, 0x806E4D38, Overlay.Static, 0, offset_dict, 4)  # Apple (Non-Grounded)
+    
+    if settings.shops_dont_cost:
+        writeValue(ROM_COPY, 0x8064EA8C, Overlay.Static, 0, offset_dict, 4)  # Remove Arcade Costing Coins
 
     # Adjust Exit File
     writeFunction(ROM_COPY, 0x805FEAE4, Overlay.Static, "loadExits", offset_dict)

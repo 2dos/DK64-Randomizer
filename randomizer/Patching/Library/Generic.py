@@ -15,7 +15,16 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems, Types
-from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency, ProgressiveHintItem, HelmSetting, HelmBonuses
+from randomizer.Enums.Settings import (
+    BLockerDifficulty,
+    HardModeSelected,
+    MiscChangesSelected,
+    HelmDoorItem,
+    IceTrapFrequency,
+    ProgressiveHintItem,
+    HelmSetting,
+    HelmBonuses,
+)
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.DataTypes import short_to_ushort
 
@@ -595,6 +604,20 @@ def getIceTrapCount(settings) -> int:
     }
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
 
+blocker_min_thresholds = {
+    BLockerDifficulty.easy: 0.2,
+    BLockerDifficulty.normal: 0.4,
+    BLockerDifficulty.hard: 0.6
+}
+blocker_max_thresholds = {
+    BLockerDifficulty.easy: 0.5,
+    BLockerDifficulty.normal: 0.7,
+    BLockerDifficulty.hard: 0.95
+}
+def getBLockerThresholds(settings) -> tuple:
+    min_v = blocker_min_thresholds.get(settings.blocker_difficulty, 0.4)
+    max_v = blocker_max_thresholds.get(settings.blocker_difficulty, 0.7)
+    return (min_v, max_v)
 
 EXPONENT = 1.7
 OFFSET_DIVISOR = 15

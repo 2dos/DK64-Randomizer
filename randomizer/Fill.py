@@ -58,7 +58,7 @@ from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex
 from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Patching import ApplyRandomizer
 from randomizer.Patching.EnemyRando import randomize_enemies_0
-from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected, getBLockerThresholds
 from randomizer.Prices import GetMaxForKong
 from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
@@ -392,8 +392,9 @@ def GetAccessibleLocations(
                             unpurchasedEmptyShopLocationIds.append(location.id)
                     elif location.id == Locations.NintendoCoin:
                         # Spend Two Coins for arcade lever
-                        spoiler.LogicVariables.Coins[Kongs.donkey] -= 2
-                        spoiler.LogicVariables.SpentCoins[Kongs.donkey] += 2
+                        if not spoiler.settings.shops_dont_cost:
+                            spoiler.LogicVariables.Coins[Kongs.donkey] -= 2
+                            spoiler.LogicVariables.SpentCoins[Kongs.donkey] += 2
 
                     newLocations.add(location.id)
 
@@ -606,7 +607,10 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
         spoiler.Reset()
         reachable = GetAccessibleLocations(spoiler, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)
         # Subtract the price of the chosen location from maxCoinsNeeded
-        coinsSpent = GetMaxCoinsSpent(spoiler, locationsToPurchase)
+        if spoiler.settings.shops_dont_cost:
+            coinsSpent = [0] * 5
+        else:
+            coinsSpent = GetMaxCoinsSpent(spoiler, locationsToPurchase)
         coinsNeeded = [maxCoins[kong] - coinsSpent[kong] for kong in range(0, 5)]
         spoiler.LogicVariables.UpdateCoins()
         coinsBefore = spoiler.LogicVariables.Coins.copy()
@@ -2939,11 +2943,7 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
     ownedKongs = {}
     ownedMoves = {}
     # Cap the B. Locker amounts based on a random fraction of accessible bananas & GBs
-    BLOCKER_MIN = 0.4
-    BLOCKER_MAX = 0.7
-    if settings.hard_blockers:
-        BLOCKER_MIN = 0.6
-        BLOCKER_MAX = 0.95
+    BLOCKER_MIN, BLOCKER_MAX = getBLockerThresholds(spoiler.settings)
     blocker_variable_mapping = {
         0: settings.blocker_0,
         1: settings.blocker_1,
@@ -3195,11 +3195,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     ShuffleExits.UpdateLevelProgression(settings)
 
     # Cap the B. Locker amounts based on a random fraction of accessible GBs
-    BLOCKER_MIN = 0.4
-    BLOCKER_MAX = 0.7
-    if settings.hard_blockers:
-        BLOCKER_MIN = 0.6
-        BLOCKER_MAX = 0.95
+    BLOCKER_MIN, BLOCKER_MAX = getBLockerThresholds(settings)
     maximumMinRoll = round((settings.blocker_max / BLOCKER_MAX) * BLOCKER_MIN)
 
     levelsProgressed = []
