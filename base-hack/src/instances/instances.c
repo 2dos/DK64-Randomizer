@@ -216,7 +216,7 @@ void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk
 	int flag = FLAG_WRINKLYVIEWED + wrinkly_index;
 	if (Rando.hints_are_items) {
 		if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
-			medal_hint_item_data *item_send = getWrinklyItem(wrinkly_index);
+			item_packet *item_send = getWrinklyItem(wrinkly_index);
 			displayMedalOverlay(flag, item_send);
 		}
 	} else {

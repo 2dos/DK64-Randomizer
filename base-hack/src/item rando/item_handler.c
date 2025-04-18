@@ -155,7 +155,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
     }
 }
 
-void giveItemFromPacket(medal_hint_item_data *packet) {
+void giveItemFromPacket(item_packet *packet) {
     giveItem(packet->item_type, packet->level, packet->kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
 }
 

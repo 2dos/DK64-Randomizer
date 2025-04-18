@@ -462,7 +462,7 @@ Gfx* drawHintScreen(Gfx* dl, int level_x) {
             int opacity = 0xFF;
             int assoc_flag = hint_clear_flags[hint_local_index];
             if (assoc_flag != -1) {
-                if (hasMove(assoc_flag)) {
+                if (checkFlag(assoc_flag, FLAGTYPE_PERMANENT)) {
                     opacity = HINT_SOLVED_OPACITY;
                 }
             }
@@ -520,7 +520,7 @@ Gfx* drawItemLocationScreen(Gfx* dl, int level_x) {
             char* str = itemloc_pointers[head + 1 + j];
             short base_flag = itemloc_textnames[(int)item_subgroup].flags[i];
             short flag = base_flag + j;
-            if (!hasMove(flag)) {
+            if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
                 str = unk_string;
             }
             dl = drawHintText(dl, str, item_loc_x, y, 0xC0, 0, 0);

@@ -47,7 +47,7 @@ static const item_info item_detection_data[] = {
 static const unsigned char move_sprites[] = {0x94, 0x96, 0x93, 0x38, 0x3A}; // Cranky, Funky, Candy, Camera, Shockwave
 static const unsigned char shopkeeper_sprites[] = {0x94, 0x96, 0x93, 0x95}; // Cranky, Funky, Candy, Snide
 
-void displayMedalOverlay(int flag, medal_hint_item_data *item_send) {
+void displayMedalOverlay(int flag, item_packet *item_send) {
     float reward_x = 160.f;
     float reward_y = 120.0f;
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
@@ -137,7 +137,7 @@ void banana_medal_acquisition(int flag) {
      * 
      * @param flag Flag index of the banana medal
      */
-    medal_hint_item_data *item_send = 0;
+    item_packet *item_send = 0;
     if (flag >= FLAG_MEDAL_ISLES_DK) {
         item_send = getMedalItem((flag - FLAG_MEDAL_ISLES_DK) + 40);
     } else {
@@ -173,7 +173,7 @@ int getFlagIndex_MedalCorrected(int start, int level) {
     return FLAG_MEDAL_ISLES_DK + getKong(0);
 }
 
-void giveItemFromSend(medal_hint_item_data *send) {
+void giveItemFromSend(item_packet *send) {
     int item_type = send->item_type;
     int item_kong = send->kong;
     giveItem(item_type, send->level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
@@ -213,7 +213,7 @@ void giveFairyItem(int flag, int state, flagtypes type) {
      * @param state Target state of the flag. AKA whether to set (1) or clear (0) the flag
      * @param type Flag Type
      */
-    medal_hint_item_data *item_send = getFairyItem(flag);
+    item_packet *item_send = getFairyItem(flag);
     giveItemFromSend(item_send);
     setPermFlag(flag);
 }

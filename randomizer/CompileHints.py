@@ -3282,7 +3282,7 @@ def AssociateHintsWithFlags(spoiler):
         if hint.related_location is not None:
             for location_selection in spoiler.item_assignment:
                 if location_selection.location == hint.related_location:
-                    hint.related_flag = location_selection.new_flag
+                    hint.related_flag = location_selection.old_flag
                     break
         if hint.name != "First Time Talk":
             spoiler.tied_hint_flags[hint.name] = hint.related_flag if hint.related_flag is not None else 0xFFFF

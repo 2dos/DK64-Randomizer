@@ -725,12 +725,12 @@ typedef struct main_menu_moves_struct {
 	/* 0x007 */ char melons;
 } main_menu_moves_struct;
 
-typedef struct medal_hint_item_data {
+typedef struct item_packet {
 	/* 0x000 */ unsigned char item_type;
 	/* 0x001 */ unsigned char level;
 	/* 0x002 */ unsigned char kong;
 	/* 0x003 */ unsigned char audiovisual_index;
-} medal_hint_item_data;
+} item_packet;
 
 typedef struct giveItemConfig {
 	unsigned char display_item_text : 1;
@@ -738,7 +738,7 @@ typedef struct giveItemConfig {
 } giveItemConfig;
 
 typedef struct purchase_struct {
-	/* 0x000 */ medal_hint_item_data item;
+	/* 0x000 */ item_packet item;
 	/* 0x004 */ char pad;
 	/* 0x005 */ unsigned char price;
 } purchase_struct;
@@ -844,7 +844,7 @@ typedef struct model_item_data {
 	/* 0x000 */ short model;
 	/* 0x002 */ char has_no_textures;
 	/* 0x003 */ char pad;
-	/* 0x004 */ medal_hint_item_data item;
+	/* 0x004 */ item_packet item;
 } model_item_data;
 
 typedef struct GBDictItem {

@@ -93,7 +93,7 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	if (has_entered_level) {
 		purchase_struct* selected = getShopData(shop_owner - 0xBD, Character, world);
 		if (selected) {
-			medal_hint_item_data *item_data = &selected->item;
+			item_packet *item_data = &selected->item;
 			has_purchase = isShopEmpty(shop_owner - 0xBD, world, Character) == 0;
 			if (has_purchase) {
 				paad->item_type = item_data->item_type;

@@ -74,27 +74,11 @@ class MoveData:
 
 def ShuffleItems(spoiler):
     """Shuffle items into assortment."""
-    ice_trap_count = getIceTrapCount(spoiler.settings)
-    ice_trap_flag_range = list(range(0x2AE, 0x2BE))
-    junk_invasion = 0
-    if ice_trap_count > 16:
-        junk_invasion = ice_trap_count - 16
-        ice_trap_flag_range.extend(list(range(0x320, 0x320 + junk_invasion)))
-    junk_item_flag_range = list(range(0x320 + junk_invasion, 0x320 + 100))
-    ap_start = 0x3D6
-    ap_item_flag_range = []
-    if Types.Enemies in spoiler.settings.shuffled_location_types:
-        junk_item_flag_range.extend(list(range(0x3D6, 0x3D6 + 427)))
-        ap_start += 427
-    if Types.ArchipelagoItem in spoiler.settings.shuffled_location_types:
-        ap_item_flag_range = list(range(ap_start, ap_start + 1000))
-
     progressive_move_flag_dict = {
         Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
         Items.ProgressiveAmmoBelt: [0x292, 0x293],
         Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
     }
-    ap_flag_dict = ap_item_flag_range.copy()
     flag_dict = {}
     blueprint_flag_dict = {}
     locations_not_needing_flags = []
@@ -171,10 +155,7 @@ def ShuffleItems(spoiler):
                 elif new_item.type in (Types.NintendoCoin, Types.RarewareCoin):
                     location_selection.new_flag = new_item.flag
                     locations_not_needing_flags.append(location_selection)
-                elif new_item.type == Types.ArchipelagoItem:
-                    location_selection.new_flag = ap_flag_dict.pop()
-                    locations_not_needing_flags.append(location_selection)
-                elif new_item.type in (Types.FakeItem, Types.JunkItem):
+                elif new_item.type in (Types.FakeItem, Types.JunkItem, Types.ArchipelagoItem):
                     location_selection.new_flag = 0x7FFF
                     locations_not_needing_flags.append(location_selection)
                 # Otherwise we need to put it in the list of locations needing flags

@@ -28,8 +28,8 @@ typedef struct meloncrate_db_item {
 } meloncrate_db_item;
 
 static unsigned short bp_item_table[40]; // Kasplat Rewards
-static medal_hint_item_data medal_item_table[45]; // Medal Rewards
-static medal_hint_item_data wrinkly_item_table[35]; // Wrinkly Rewards
+static item_packet medal_item_table[45]; // Medal Rewards
+static item_packet wrinkly_item_table[35]; // Wrinkly Rewards
 static unsigned short crown_item_table[10]; // Crown Rewards
 static unsigned short key_item_table[8]; // Boss Rewards
 static model_item_data fairy_item_table[20]; // Fairy Rewards
@@ -51,7 +51,7 @@ int getBPItem(int index) {
 	return getActorIndex(bp_item_table[index]);
 }
 
-medal_hint_item_data *getMedalItem(int index) {
+item_packet *getMedalItem(int index) {
     /**
      * @brief Get Medal item from medal index
      * 
@@ -62,7 +62,7 @@ medal_hint_item_data *getMedalItem(int index) {
 	return &medal_item_table[index];
 }
 
-medal_hint_item_data *getWrinklyItem(int index) {
+item_packet *getWrinklyItem(int index) {
     /**
      * @brief Get Wrinkly Door item from medal index
      * 
@@ -116,7 +116,7 @@ int getFairyModel(int flag) {
     return fairy_item_table[flag - 589].model;
 }
 
-medal_hint_item_data *getFairyItem(int flag) {
+item_packet *getFairyItem(int flag) {
     return &fairy_item_table[flag - 589].item;
 }
 
@@ -388,13 +388,13 @@ void initItemRando(void) {
     }
     // Medal Table
     int medal_size = 45;
-    medal_hint_item_data* medal_write = getFile(medal_size << 2, 0x1FF1400);
+    item_packet* medal_write = getFile(medal_size << 2, 0x1FF1400);
     for (int i = 0; i < medal_size; i++) {
         medal_item_table[i] = medal_write[i];
     }
     // Hint Table
     int wrinkly_size = 35;
-    medal_hint_item_data* wrinkly_write = getFile(wrinkly_size << 2, 0x1FF1500);
+    item_packet* wrinkly_write = getFile(wrinkly_size << 2, 0x1FF1500);
     for (int i = 0; i < wrinkly_size; i++) {
         wrinkly_item_table[i] = wrinkly_write[i];
     }

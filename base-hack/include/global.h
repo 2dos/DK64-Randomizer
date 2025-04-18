@@ -260,7 +260,6 @@ extern void updateSkipCheck(void);
 extern void renderScreenTransitionCheck(int applied_transition);
 extern void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1, int p2);
 extern void spawnEnemyDrops(actorData* actor);
-extern int hasMove(int flag);
 
 extern void finalizeBeatGame(void);
 extern void exitTrapBubbleController(void);
@@ -268,12 +267,12 @@ extern void exitTrapBubbleController(void);
 extern int getFlagIndex_Corrected(int start, int level);
 extern int getFlagIndex_MedalCorrected(int start, int level);
 extern int getBPItem(int index);
-extern medal_hint_item_data *getMedalItem(int index);
-extern medal_hint_item_data *getWrinklyItem(int index);
+extern item_packet *getMedalItem(int index);
+extern item_packet *getWrinklyItem(int index);
 extern int getCrownItem(maps map);
 extern int getKeyItem(int old_flag);
 extern int getFairyModel(int flag);
-extern medal_hint_item_data *getFairyItem(int flag);
+extern item_packet *getFairyItem(int flag);
 extern int getRainbowCoinItem(int old_flag);
 extern int getCrateItem(int old_flag);
 extern void PotionCode(void);
@@ -411,7 +410,7 @@ extern int isItemRequirementSatisfied(ItemRequirement* req);
 extern int getGamePercentage(void);
 extern int isShopEmpty(vendors vendor, int level, int kong);
 
-extern void displayMedalOverlay(int flag, medal_hint_item_data *item_type);
+extern void displayMedalOverlay(int flag, item_packet *item_type);
 
 extern void saveItemsToFile(void);
 extern void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index);
@@ -434,7 +433,7 @@ extern purchase_struct* getShopData(vendors vendor, int kong, int level);
 extern void initQoL_Cutscenes(void);
 
 extern void giveItem(requirement_item item, int level, int kong, giveItemConfig config);
-extern void giveItemFromPacket(medal_hint_item_data *packet);
+extern void giveItemFromPacket(item_packet *packet);
 extern int getItemCount_new(requirement_item item, int level, int kong);
 extern int hasFlagMove(int flag);
 extern void setFlagMove(int flag);
