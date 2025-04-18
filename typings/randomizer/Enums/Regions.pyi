@@ -285,3 +285,4 @@ class Regions(IntEnum):
     CryptDiddyRoom = 282
     ForestMillTopOfNightCage = 283
     HideoutHelmLobbyPastVines = 284
+    MushroomUpperVineFloor = 285

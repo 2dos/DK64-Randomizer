@@ -2950,7 +2950,7 @@ door_locations = {
         DoorData(
             name="Inside the Mushroom - Along the Wall near Klump and Oranges",
             map=Maps.ForestGiantMushroom,
-            logicregion=Regions.MushroomUpper,
+            logicregion=Regions.MushroomUpperVineFloor,
             location=[847.25, 1169.0, 575.0, 264.0],
             group=5,
         ),

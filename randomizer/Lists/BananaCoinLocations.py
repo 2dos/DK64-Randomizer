@@ -5605,7 +5605,7 @@ BananaCoinGroupList = {
             map_id=Maps.ForestGiantMushroom,
             name="Under a pathway",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.MushroomUpper,
+            region=Regions.MushroomUpperVineFloor,
             locations=[
                 [1.0, 823, 1169, 394],
                 [1.0, 697, 1168, 356],

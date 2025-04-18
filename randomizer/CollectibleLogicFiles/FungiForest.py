@@ -72,9 +72,11 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # After 3rd Ladder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 4th Ladder
     ],
+    Regions.MushroomUpperVineFloor: [
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 5th Ladder, Leading to the Klump's vine floor
+    ],
     Regions.MushroomUpper: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),  # Top
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 5th Ladder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 6th Ladder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 7th Ladder
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Top
