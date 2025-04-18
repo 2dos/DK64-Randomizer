@@ -3079,6 +3079,22 @@ def UpdateSpoilerHintList(spoiler: Spoiler) -> None:
     for hint in hints:
         spoiler.hint_list[hint.name] = hint.hint
         spoiler.short_hint_list[hint.name] = hint.short_hint if hint.short_hint is not None else hint.hint
+        loc_name = None
+        item_name = None
+        if hint.related_location is not None:
+            loc_name = spoiler.LocationList[hint.related_location].name
+            for location_selection in spoiler.item_assignment:
+                if location_selection.location == hint.related_location:
+                    item_name = location_selection.new_subitem
+                    if item_name is not None:
+                        item_name = ItemList[item_name].name
+                    break
+        spoiler.tied_hint_locations[hint.name] = loc_name
+        spoiler.tied_hint_items[hint.name] = item_name
+        show_info_on_log = hint.hint_type in (HintType.ItemHinting, HintType.KongLocation, HintType.Multipath, HintType.WothLocation, HintType.RequiredKongHint)
+        if hint.related_location in TrainingBarrelLocations or hint.related_location in PreGivenLocations:
+            show_info_on_log = False
+        spoiler.show_tied_info_on_log[hint.name] = show_info_on_log
 
 
 def GetRegionIdOfLocation(spoiler: Spoiler, location_id: Locations) -> Regions:
