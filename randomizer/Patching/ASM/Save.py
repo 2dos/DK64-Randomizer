@@ -142,8 +142,6 @@ def saveUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     static_expansion = 0x100
     if settings.enemy_drop_rando:
         static_expansion += 427  # Total Enemies
-    if settings.archipelago:
-        static_expansion += 16  # Archipelago Flag size
     expandSaveFile(ROM_COPY, static_expansion, balloon_patch_count, offset_dict)
     # 1-File Fixes
     writeValue(ROM_COPY, 0x8060CF34, Overlay.Static, 0x240E0001, offset_dict, 4)  # Slot 1

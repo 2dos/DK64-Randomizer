@@ -591,6 +591,7 @@ def getIceTrapCount(settings) -> int:
         IceTrapFrequency.common: 32,
         IceTrapFrequency.frequent: 64,
         IceTrapFrequency.pain: 100,
+        IceTrapFrequency.unlimited: 1000,  # A value high enough to essentially be infinite
     }
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
 
