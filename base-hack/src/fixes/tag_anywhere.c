@@ -511,7 +511,7 @@ int getTAState(void) {
 }
 
 int hasAccessToKong(int kong) {
-    if (checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) {
+    if (getItemCount_new(REQITEM_KONG, 0, kong)) {
         if (Rando.perma_lose_kongs) {
             if (!checkFlag(KONG_LOCKED_START + kong, FLAGTYPE_PERMANENT)) {
                 return 1;
@@ -684,9 +684,7 @@ void tagAnywhere(void) {
                     if (can_tag_left){
                         change -= 1;      
                     }                  
-                }
-                else
-                {
+                } else {
                     can_tag_left = 1;
                 }                
 
@@ -694,9 +692,7 @@ void tagAnywhere(void) {
                     if (can_tag_right){                    
                         change += 1;                        
                     }
-                }
-                else
-                {
+                } else {
                     can_tag_right = 1;
                 }                
 
@@ -720,12 +716,12 @@ void tagAnywhere(void) {
 	}
 }
 
-void tagAnywhereInit(int is_homing, int model2_id, int obj) {
+void tagAnywhereInit(int is_homing, int model2_id, int obj, int id) {
     /**
      * @brief Initialize certain aspects of Tag Anywhere
      */
     assessFlagMapping(CurrentMap, model2_id);
-    coinCBCollectHandle(0, obj, is_homing);
+    updateItemTotalsHandler(0, obj, is_homing, id);
 }
 
 typedef struct sfx_cache_item {
@@ -801,7 +797,7 @@ void tagAnywhereAmmo(int player, int obj, int is_homing) {
      * This function handles these changes
      * 
      */
-    coinCBCollectHandle(player, obj, is_homing);
+    updateItemTotalsHandler(player, obj, is_homing, -1);
     int id = 0;
     if (LatestCollectedObject) {
         id = LatestCollectedObject->id;
@@ -820,7 +816,7 @@ void tagAnywhereBunch(int player, int obj, int player_index) {
      * This function handles these changes
      * 
      */
-    coinCBCollectHandle(player, obj, player_index);
+    updateItemTotalsHandler(player, obj, player_index, -1);
     int id = 0;
     if (LatestCollectedObject) {
         id = LatestCollectedObject->id;

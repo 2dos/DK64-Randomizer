@@ -398,13 +398,15 @@
     - common: 32 ice traps.
     - frequent: 64 ice traps.
     - pain: 100 ice traps.
+    - unlimited: As many ice traps as can be placed
   */
   "IceTrapFrequency": {
     "rare": 0,
     "mild": 1,
     "common": 2,
     "frequent": 3,
-    "pain": 4
+    "pain": 4,
+    "unlimited": 5
   },
 
   /*

@@ -486,7 +486,8 @@ def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
     source_string = settings.branch.upper()[0]
     if source_string is None:
         source_string = "U"
-    major = settings.version.split(".")[0]
+    # major = settings.version.split(".")[0]
+    major = 5
     addr = getROMAddress(VERSION_STRING_START, Overlay.Custom, offset_dict)
     string_to_write = f"DK64R {major}.0{source_string}\n"
     if len(string_to_write) >= 0x10:
@@ -958,6 +959,16 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x806CFC64, Overlay.Static, "handleActionSet", offset_dict)  # Ledge Grabbing
         writeFunction(ROM_COPY, 0x806E5418, Overlay.Static, "handleActionSet", offset_dict)  # Instrument Play
         writeFunction(ROM_COPY, 0x806E6064, Overlay.Static, "handleActionSet", offset_dict)  # Gun Pull
+        #
+        writeValue(ROM_COPY, 0x806F6D94, Overlay.Static, 0, offset_dict, 4)  # Prevent delayed collection
+        writeValue(ROM_COPY, 0x806F5B68, Overlay.Static, 0x1000, offset_dict)  # Standard Ammo
+        writeValue(ROM_COPY, 0x806F59A8, Overlay.Static, 0x1000, offset_dict)  # Bunch
+        writeValue(ROM_COPY, 0x806F6CA8, Overlay.Static, 0x00052C03, offset_dict, 4)  # SRA $a1, $a1, 0x10
+        writeValue(ROM_COPY, 0x806F6CAC, Overlay.Static, 0x9204001A, offset_dict, 4)  # LBU $a0, 0x1A ($s0)
+        writeValue(ROM_COPY, 0x806F6CB0, Overlay.Static, 0x86060002, offset_dict, 4)  # LH $a2, 0x2 ($s0)
+        writeValue(ROM_COPY, 0x806F6CB8, Overlay.Static, 0x86070000, offset_dict, 4)  # LH #a3, 0x0 ($s0)
+        writeValue(ROM_COPY, 0x806F53AC, Overlay.Static, 0, offset_dict, 4)  # Prevent LZ case
+        writeValue(ROM_COPY, 0x806C7088, Overlay.Static, 0x1000, offset_dict)  # Mech fish dying
 
     if settings.bonus_barrel_auto_complete:
         writeValue(ROM_COPY, 0x806818DE, Overlay.Static, 0x4248, offset_dict)  # Make Aztec Lobby GB spawn above the trapdoor)
@@ -995,7 +1006,6 @@ def patchAssembly(ROM_COPY, spoiler):
     if IsItemSelected(settings.cb_rando_enabled, settings.cb_rando_list_selected, Levels.JungleJapes):
         writeValue(ROM_COPY, 0x8069C2FC, Overlay.Static, 0, offset_dict, 4)  # Japes Bunch
     if IsItemSelected(settings.cb_rando_enabled, settings.cb_rando_list_selected, Levels.DKIsles):
-        writeFunction(ROM_COPY, 0x806ABF48, Overlay.Static, "getMedalCount", offset_dict)
         writeValue(ROM_COPY, 0x806AA458, Overlay.Static, 0, offset_dict, 4)  # Show CBs on Pause Menu (Main Screen)
         writeValue(ROM_COPY, 0x806AA858, Overlay.Static, 0, offset_dict, 4)  # Show CBs on Pause Menu (Level Kong Screen)
         # TODO: Work on Level Totals screen - this one is a bit more complicated
@@ -1045,20 +1055,19 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if settings.galleon_water_internal == GalleonWaterSetting.raised:
         file_init_flags.append(0xA0)  # Galleon Water Raised
-
-    kong_flags = [0x181, 0x006, 0x046, 0x042, 0x075]
-    if settings.starting_kongs_count == 5:
-        file_init_flags.extend(kong_flags.copy())
-    else:
-        for x in spoiler.settings.starting_kong_list:
-            file_init_flags.append(kong_flags[x])
-
+        
     if settings.activate_all_bananaports == ActivateAllBananaports.isles:
         file_init_flags.extend(WARPS_ISLES.copy())
     elif settings.activate_all_bananaports == ActivateAllBananaports.all:
         for lvl in WARPS_TOTAL:
             file_init_flags.extend(lvl.copy())
 
+    if settings.shuffle_items:
+        for item in spoiler.item_assignment:
+            if item.can_have_item and not item.is_shop:
+                if item.new_item is None or item.new_item == Types.NoItem:
+                    file_init_flags.append(item.old_flag)
+                    print(f"Adding flag {hex(item.old_flag)} to init flags due to no item")
     SCREEN_SHAKE_CAP = 7
     screen_shake_cap_patch = {
         0x8061F0C8: [
@@ -1115,15 +1124,6 @@ def patchAssembly(ROM_COPY, spoiler):
     if settings.fungi_time_internal == FungiTimeSetting.dusk:
         writeValue(ROM_COPY, 0x806C5614, Overlay.Static, 0x50000006, offset_dict, 4)
         writeValue(ROM_COPY, 0x806BE8F8, Overlay.Static, 0x50000008, offset_dict, 4)
-
-    if settings.enable_tag_anywhere:
-        writeValue(ROM_COPY, 0x806F6D94, Overlay.Static, 0, offset_dict, 4)  # Prevent delayed collection
-        writeValue(ROM_COPY, 0x806F5B68, Overlay.Static, 0x1000, offset_dict)  # Standard Ammo
-        writeValue(ROM_COPY, 0x806F59A8, Overlay.Static, 0x1000, offset_dict)  # Bunch
-        writeValue(ROM_COPY, 0x806F6CAC, Overlay.Static, 0x9204001A, offset_dict, 4)  # LBU $a0, 0x1A ($s0)
-        writeValue(ROM_COPY, 0x806F6CB0, Overlay.Static, 0x86060002, offset_dict, 4)  # LH $a2, 0x2 ($s0)
-        writeValue(ROM_COPY, 0x806F53AC, Overlay.Static, 0, offset_dict, 4)  # Prevent LZ case
-        writeValue(ROM_COPY, 0x806C7088, Overlay.Static, 0x1000, offset_dict)  # Mech fish dying
 
     if settings.puzzle_rando_difficulty != PuzzleRando.off:
         # Alter diddy R&D
@@ -1226,6 +1226,12 @@ def patchAssembly(ROM_COPY, spoiler):
     if isQoLEnabled(spoiler, MiscChangesSelected.small_bananas_always_visible):
         writeValue(ROM_COPY, 0x806324D4, Overlay.Static, 0x24020001, offset_dict, 4)  # ADDIU $v0, $r0, 1. Disable kong flag check
         writeValue(ROM_COPY, 0x806A78C4, Overlay.Static, 0, offset_dict, 4)  # NOP. Disable kong flag check
+    else:
+        writeFunction(ROM_COPY, 0x806324D4, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)
+    writeFunction(ROM_COPY, 0x8064936C, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)
+    writeFunction(ROM_COPY, 0x80682F40, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)
+    writeFunction(ROM_COPY, 0x806840D8, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)
+    writeFunction(ROM_COPY, 0x806FA340, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_hints):
         writeValue(ROM_COPY, 0x8069E0F6, Overlay.Static, 1, offset_dict)
         writeValue(ROM_COPY, 0x8069E112, Overlay.Static, 1, offset_dict)

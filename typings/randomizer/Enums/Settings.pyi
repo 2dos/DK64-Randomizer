@@ -189,6 +189,7 @@ class IceTrapFrequency(IntEnum):
     common = 2
     frequent = 3
     pain = 4
+    unlimited = 5
 
 class ItemRandoListSelected(IntEnum):
     shop = 1

@@ -317,6 +317,7 @@ void initHack(int source) {
 			KrushaSlot = Rando.krusha_slot;
 			RandomSwitches = Rando.random_switches;
 			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
+			initItemRandoPointer();
 			initAP();
 			// HUD Re-allocation fixes
 			*(short*)(0x806FB246) = ITEMID_TERMINATOR;
@@ -326,7 +327,7 @@ void initHack(int source) {
 			*(short*)(0x806F9986) = ITEMID_RESERVED_SCOFF;
 			*(short*)(0x806F99C6) = ITEMID_RESERVED_CANDY;
 			*(short*)(0x806F99DA) = ITEMID_RESERVED_DK;
-			RandomizerVersion = 4;
+			RandomizerVersion = 5;
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
 			}
@@ -355,7 +356,6 @@ void initHack(int source) {
 			loadExtraHooks();
 			// Place Move Data
 			moveTransplant();
-			priceTransplant();
 			
 			fixMusicRando();
 			

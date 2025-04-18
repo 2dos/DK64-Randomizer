@@ -74,29 +74,11 @@ class MoveData:
 
 def ShuffleItems(spoiler):
     """Shuffle items into assortment."""
-    ice_trap_count = getIceTrapCount(spoiler.settings)
-    ice_trap_flag_range = list(range(0x2AE, 0x2BE))
-    junk_invasion = 0
-    if ice_trap_count > 16:
-        junk_invasion = ice_trap_count - 16
-        ice_trap_flag_range.extend(list(range(0x320, 0x320 + junk_invasion)))
-    junk_item_flag_range = list(range(0x320 + junk_invasion, 0x320 + 100))
-    ap_start = 0x3D6
-    ap_item_flag_range = []
-    if Types.Enemies in spoiler.settings.shuffled_location_types:
-        junk_item_flag_range.extend(list(range(0x3D6, 0x3D6 + 427)))
-        ap_start += 427
-    if Types.ArchipelagoItem in spoiler.settings.shuffled_location_types:
-        ap_item_flag_range = list(range(ap_start, ap_start + 1000))
-
     progressive_move_flag_dict = {
         Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
         Items.ProgressiveAmmoBelt: [0x292, 0x293],
         Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
-        Items.IceTrapBubble: ice_trap_flag_range,
     }
-    junk_flag_dict = junk_item_flag_range
-    ap_flag_dict = ap_item_flag_range.copy()
     flag_dict = {}
     blueprint_flag_dict = {}
     locations_not_needing_flags = []
@@ -162,11 +144,9 @@ def ShuffleItems(spoiler):
                 location_selection.new_kong = new_item.kong
                 location_selection.new_subitem = item_location.item
                 # If this item has a dedicated specific flag, then set it now (Moves, Kongs, andKeys right now)
-                if new_item.rando_flag is not None or new_item.type == Types.FakeItem:
-                    if new_item.rando_flag == -1 or new_item.type == Types.FakeItem:  # This means it's a progressive move or fake item and they need special flags
+                if new_item.rando_flag is not None:
+                    if new_item.rando_flag == -1:  # This means it's a progressive move or fake item and they need special flags
                         ref_item = item_location.item
-                        if new_item.type == Types.FakeItem:
-                            ref_item = Items.IceTrapBubble
                         location_selection.new_flag = progressive_move_flag_dict[ref_item].pop()
                     else:
                         location_selection.new_flag = new_item.rando_flag
@@ -175,11 +155,8 @@ def ShuffleItems(spoiler):
                 elif new_item.type in (Types.NintendoCoin, Types.RarewareCoin):
                     location_selection.new_flag = new_item.flag
                     locations_not_needing_flags.append(location_selection)
-                elif new_item.type == Types.JunkItem:
-                    location_selection.new_flag = junk_flag_dict.pop()
-                    locations_not_needing_flags.append(location_selection)
-                elif new_item.type == Types.ArchipelagoItem:
-                    location_selection.new_flag = ap_flag_dict.pop()
+                elif new_item.type in (Types.FakeItem, Types.JunkItem, Types.ArchipelagoItem):
+                    location_selection.new_flag = 0x7FFF
                     locations_not_needing_flags.append(location_selection)
                 # Otherwise we need to put it in the list of locations needing flags
                 else:
@@ -214,7 +191,7 @@ def ShuffleItems(spoiler):
         if location.new_flag is None:
             if location.new_item == Types.Blueprint:
                 location.new_flag = blueprint_flag_dict[spoiler.LocationList[location.location].item]
-            else:
+            elif location.new_item:
                 location.new_flag = flag_dict[location.new_item].pop()
 
     # If we failed to give any location a flag, something is very wrong

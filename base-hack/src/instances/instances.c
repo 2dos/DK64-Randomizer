@@ -216,8 +216,8 @@ void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk
 	int flag = FLAG_WRINKLYVIEWED + wrinkly_index;
 	if (Rando.hints_are_items) {
 		if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
-			int item_type = getWrinklyItem(wrinkly_index);
-			displayMedalOverlay(flag, item_type);
+			item_packet *item_send = getWrinklyItem(wrinkly_index);
+			displayMedalOverlay(flag, item_send);
 		}
 	} else {
 		setPermFlag(flag);
@@ -395,7 +395,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				if (param2 == FUNGI_MINECART_GRATE) {
 					initiateLZRTransition(&Rando.fungi_minecart_enter, MAP_FUNGIMINECART, 0);
 				} else if (param2 == FUNGI_BEANCONTROLLER) {
-					return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
+					return getItemCount_new(REQITEM_BEAN, 0, 0);
 				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
 					if (!Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->timer = 70;
@@ -487,10 +487,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (param2 == K_ROOL_SHIP) {
 					for (int i = 0; i < 8; i++) {
 						if (Rando.krool_requirements & (1 << i)) {
-							if (!checkFlag(FLAG_KEYIN_KEY1 + i, FLAGTYPE_PERMANENT)) {
+							if (!getItemCount_new(REQITEM_KEY, i, 0)) {
 								return 0;
 							}
-
 						}
 					}
 					return 1;
@@ -511,17 +510,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == LLAMA_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(kong_check_data[KONGCHECK_LLAMA].flag, FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(kong_check_data[KONGCHECK_LLAMA].flag, FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == LLAMA_GUNSWITCH) {
 					if (index == 0) {
-						return checkFlag(kong_check_data[KONGCHECK_LLAMA].flag, FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(kong_check_data[KONGCHECK_LLAMA].flag, FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
-						giveItemFromKongData(&kong_check_data[KONGCHECK_LLAMA]);
+						giveItemFromKongData(&kong_check_data[KONGCHECK_LLAMA], FLAG_KONG_LANKY);
 					} else if ((index >= 3) && (index <= 6)) {
 						return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 					}
@@ -713,17 +712,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == JAPES_DIDDYBAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(kong_check_data[KONGCHECK_JAPES].flag, FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(kong_check_data[KONGCHECK_JAPES].flag, FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
-						giveItemFromKongData(&kong_check_data[KONGCHECK_JAPES]);
+						giveItemFromKongData(&kong_check_data[KONGCHECK_JAPES], FLAG_KONG_DIDDY);
 					}
 				} else if ((param2 == JAPES_GUNSWITCH0) || (param2 == JAPES_GUNSWITCH1) || (param2 == JAPES_GUNSWITCH2)) {
 					if (index == 0) {
-						return checkFlag(kong_check_data[KONGCHECK_JAPES].flag, FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(kong_check_data[KONGCHECK_JAPES].flag, FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if ((index == 2) || (index == 3)) {
 						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
 					} else if (index == 4) {
@@ -736,9 +735,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == JAPES_DIDDYFREEGB) {
 					if (index == 0) {
-						return checkFlag(kong_check_data[KONGCHECK_JAPES].flag, FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(kong_check_data[KONGCHECK_JAPES].flag, FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
 					if ((param2 == JAPES_PEANUT_MOUNTAIN) && (index == 1)) {
@@ -816,25 +815,25 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FACTORY_FREESWITCH) {
 					if (index == 0) {
-						return checkFlag(kong_check_data[KONGCHECK_FACTORY].flag, FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(kong_check_data[KONGCHECK_FACTORY].flag, FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
 						return Character == Rando.free_source_factory;
 					} else if (index == 3) {
-						giveItemFromKongData(&kong_check_data[KONGCHECK_FACTORY]);
+						giveItemFromKongData(&kong_check_data[KONGCHECK_FACTORY], FLAG_KONG_CHUNKY);
 					}
 				} else if (param2 == FACTORY_CAGE) {
 					if (index == 0) {
-						return checkFlag(kong_check_data[KONGCHECK_FACTORY].flag, FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(kong_check_data[KONGCHECK_FACTORY].flag, FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == FACTORY_FREEGB) {
 					if (index == 0) {
-						return checkFlag(kong_check_data[KONGCHECK_FACTORY].flag, FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(kong_check_data[KONGCHECK_FACTORY].flag, FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == FACTORY_PIANO) {
 					if (index < 7) {
@@ -1096,15 +1095,15 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return Character == 1;
 				} else if (param2 == TTEMPLE_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(kong_check_data[KONGCHECK_ICETEMPLE].flag, FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						giveItemFromKongData(&kong_check_data[KONGCHECK_ICETEMPLE]);
+						giveItemFromKongData(&kong_check_data[KONGCHECK_ICETEMPLE], FLAG_KONG_TINY);
 					}
 				} else if (param2 == TTEMPLE_CHARGESWITCH) {
 					if (index == 0) {
-						return checkFlag(kong_check_data[KONGCHECK_ICETEMPLE].flag, FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(kong_check_data[KONGCHECK_ICETEMPLE].flag, FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
 						return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
 					}
@@ -1218,7 +1217,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (index == 0) {
 								return CoinDoorCheck();
 							} else if (index == 1) {
-								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
+								return checkFlag(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
 							} else if (index == 2) {
 								// Disable coin door text
 								return 1;
@@ -1354,7 +1353,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			displayImageOnObject(id, 2, 1, 0);
 			unkObjFunction0(id, 1, 1);
 			unkObjFunction1(id, 1, 10);
-			if ((!checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) && (!Rando.disable_wrinkly_kong_requirement)) {
+			if ((!getItemCount_new(REQITEM_KONG, 0, kong)) && (!Rando.disable_wrinkly_kong_requirement)) {
 				behaviour_pointer->next_state = 20;
 			} else {
 				displayImageOnObject(id, 1, 0, 0);
@@ -1397,7 +1396,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	} else if (index == -6) {
 		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
 	} else if (index == -7) {
-		return checkFlag(kong_flags[param2], FLAGTYPE_PERMANENT) || Rando.disable_wrinkly_kong_requirement;
+		return getItemCount_new(REQITEM_KONG, 0, param2) || Rando.disable_wrinkly_kong_requirement;
 	} else if (index == -8) {
 		// Fairy check
 		if (Rando.fairy_rando_on) {

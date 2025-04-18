@@ -143,6 +143,9 @@ class Spoiler:
 
         self.hint_list = {}
         self.short_hint_list = {}
+        self.tied_hint_locations = {}
+        self.show_tied_info_on_log = {}
+        self.tied_hint_items = {}
         self.tied_hint_flags = {}
         self.tied_hint_regions = [HintRegion.NoRegion] * 35
         self.settings.finalize_world_settings(self)
@@ -1005,6 +1008,10 @@ class Spoiler:
                 filtered_hint = filtered_hint.replace("\x0c", "")
                 filtered_hint = filtered_hint.replace("\x0d", "")
                 human_hint_list[name] = filtered_hint
+                if name in self.tied_hint_locations:
+                    if self.tied_hint_locations[name] is not None:
+                        if self.show_tied_info_on_log[name]:
+                            human_hint_list[name] += f" | (Hinting towards: {self.tied_hint_items[name]} at {self.tied_hint_locations[name]})"
             humanspoiler["Wrinkly Hints"] = human_hint_list
             # humanspoiler["Unhinted Score"] = self.unhinted_score
             # humanspoiler["Potentially Awful Locations"] = {}

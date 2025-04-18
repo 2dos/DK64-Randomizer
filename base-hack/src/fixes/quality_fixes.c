@@ -291,7 +291,7 @@ int canPlayJetpac(void) {
 	if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN, FLAGTYPE_PERMANENT)) {
 		return 0;
 	} else {
-		return getMedalCount();
+		return getItemCount_new(REQITEM_MEDAL, -1, -1);
 	}
 }
 

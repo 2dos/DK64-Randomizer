@@ -212,6 +212,7 @@ export enum IceTrapFrequency {
     common = 2,
     frequent = 3,
     pain = 4,
+    unlimited = 5,
 }
 
 export enum ItemRandoListSelected {

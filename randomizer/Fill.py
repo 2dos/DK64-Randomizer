@@ -2294,7 +2294,7 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.JunkItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.JunkItem)
         spoiler.Reset()
-        PlaceItems(spoiler, FillAlgorithm.random, ItemPool.JunkItems(spoiler.settings), [])
+        PlaceItems(spoiler, FillAlgorithm.random, ItemPool.JunkItems(), [])
         # Don't raise exception if unplaced junk items
     if Types.CrateItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.CrateItem)

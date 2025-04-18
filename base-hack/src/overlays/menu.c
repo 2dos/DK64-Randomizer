@@ -27,8 +27,8 @@ void PatchCrankyCode(void) {
 int give_all_blueprints(int flag, int level, int kong_p) {
 	int given_bp = 0;
 	for (int kong = 0; kong < 5; kong++) {
-		int offset = (level*5) + kong;
-		if (checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + offset, FLAGTYPE_PERMANENT)) {
+		if (getItemCount_new(REQITEM_BLUEPRINT, level, kong)) {
+			int offset = (level*5) + kong;
 			int gb_flag = FLAG_BP_JAPES_DK_TURN + offset;
 			if (!checkFlag(gb_flag, FLAGTYPE_PERMANENT)) {
 				given_bp = 1;

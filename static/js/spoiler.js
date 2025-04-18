@@ -14,6 +14,17 @@ function filterId(id_string) {
     return id_string.toLowerCase().replace(/\s+/g, "_").replace(/[()&]/g, "");
 }
 
+function getHintText(hint_str) {
+    return hint_str.split(" | ")[0];
+}
+
+function getHintLocation(hint_str) {
+    if (!hint_str.includes(" | ")) {
+        return ""
+    }
+    return hint_str.split(" | ")[1];
+}
+
 function getWotHPathIndex(spoiler_dict) {
     /** Get the index of the WotH Path item in the spoiler dict, for usage in the id system. */
     let order = 1;
@@ -52,6 +63,8 @@ async function generateSpoiler(spoiler) {
     var env = nunjucks.configure('/templates', { autoescape: false });
     env.addFilter("timeconvert", timectime);
     env.addFilter("filterId", filterId);
+    env.addFilter("getHintText", getHintText);
+    env.addFilter("getHintLocation", getHintLocation);
     env.addFilter("wothpathindex", getWotHPathIndex);
 
     // Prepare spoiler data

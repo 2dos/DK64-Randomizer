@@ -12,6 +12,7 @@
 .definelabel LobbiesOpen, 0x807FFFE7 // u8
 .definelabel Rando, 0x807FF800 // 0x200
 .definelabel CCEffectData, 0x807FFFB4 // 0x4
+.definelabel ItemInventory, 0x807FFFB8 // 0x4
 .definelabel PauseSlot3TextPointer, 0x807FFFBC // ptr
 .definelabel ReplacementLobbiesArray, 0x807FFFC0 // 0x12
 .definelabel style2Mtx, 0x807FFF90
@@ -48,5 +49,5 @@
 .definelabel BFIMove_New, 0x807FF6E8
 .definelabel FirstMove_New, 0x807FF6EE
 .definelabel ExtraSaveData, 0x807ED2A8
-.definelabel ItemRando_FLUT, 0x807E2EE0 // Used to be occupied by music channel 0 // Vanilla 0x807E00C0
+.definelabel ItemIdentifier, 0x807E2EE0 // Used to be occupied by music channel 0 // Vanilla 0x807E00C0
 .definelabel MenuDarkness, 0x8075EAE4

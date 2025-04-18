@@ -34,7 +34,6 @@ void cFuncLoop(void) {
 	regularFrameLoop();
 	cc_effect_handler();
 	tagAnywhere();
-	level_order_rando_funcs();
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
 	overlay_changes();
@@ -45,7 +44,6 @@ void cFuncLoop(void) {
 		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
 			shiftBrokenJapesPortal();
 		}
-		priceTransplant();
 		if (CurrentMap == MAP_AZTECBEETLE) {
 			TextItemName = Rando.aztec_beetle_reward;
 		} else if (CurrentMap == MAP_CAVESBEETLERACE) {
@@ -60,8 +58,7 @@ void cFuncLoop(void) {
 		}
 		if (Rando.quality_of_life.vanilla_fixes) {
 			if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
-				int kong_target = CurrentMap - MAP_KROOLDK;
-				if (!checkFlagDuplicate(kong_flags[kong_target], FLAGTYPE_PERMANENT)) {
+				if (getItemCount_new(REQITEM_KONG, CurrentMap - MAP_KROOLDK, 0) == 0) {
 					exitBoss();
 					Character = Rando.starting_kong;
 				}
@@ -160,9 +157,6 @@ void cFuncLoop(void) {
 	if (Rando.helm_hurry_mode) {
 		checkTotalCache();
 	}
-	// if (Rando.item_rando) {
-	// 	controlKeyText();
-	// }
 	if (CurrentMap == MAP_HELM) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
 			if (inU8List(CutsceneIndex, &instrument_cs_indexes[0], 5)) {
@@ -519,9 +513,6 @@ Gfx* displayListModifiers(Gfx* dl) {
 		} else {
 			dl = drawTextPointers(dl);
 			dl = displaySongNameHandler(dl);
-			if (Rando.item_rando) {
-				dl = controlKeyText(dl);
-			}
 			if (Rando.fps_on) {
 				float fps = HERTZ;
 				if (current_avg_lag != 0) {
@@ -558,8 +549,8 @@ Gfx* displayListModifiers(Gfx* dl) {
 						bp_numerator = 0;
 						bp_denominator = 0;
 						for (int i = 0; i < 8; i++) {
-							int bp_has = checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,FLAGTYPE_PERMANENT);
-							int bp_turn = checkFlagDuplicate(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,FLAGTYPE_PERMANENT);
+							int bp_has = getItemCount_new(REQITEM_BLUEPRINT, i, Character);
+							int bp_turn = checkFlag(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,FLAGTYPE_PERMANENT);
 							if (!bp_turn) {
 								if (bp_has) {
 									bp_numerator += 1;

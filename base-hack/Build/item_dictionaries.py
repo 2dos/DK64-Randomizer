@@ -395,7 +395,7 @@ with open("include/item_data.h", "w") as fh:
         fh.write(f"\t/* 0x{'{:03X}'.format(e.value)} */ NEWACTOR_{e.name.upper()}, \n")
     fh.write("\t/* ----- */ NEWACTOR_TERMINATOR, \n")
     fh.write("} new_custom_actors;\n")
-    fh.write(f"#define DROP_COUNT {len(item_drops) + 1}")
+    fh.write(f"#define DROP_COUNT {len(item_drops) + 1}\n")
 
 with open("src/lib_items.c", "w") as fh:
     fh.write('#include "../include/common.h"\n\n')
@@ -802,3 +802,12 @@ with open("src/lib_items.c", "w") as fh:
     )
     for sym in data_types:
         fh.write(f"\n{data_types[sym]} {sym}[] = {{\n\t" + ",\n\t".join([getActorDefaultString(x) for x in actor_data[sym]]) + "\n};")
+    with open("include/item_data.h", "a") as fg:
+        fg.write(f"extern GBDictItem new_flag_mapping[{len(actor_data['new_flag_mapping'])}];\n")
+        # File Size Calc (Just for base hack testing purposes)
+        static_expansion = 0x100
+        balloon_expansion = 150
+        target_gb_bits = 7
+        kong_var_size = 0xA1 + ((target_gb_bits - 3) * 8) + target_gb_bits + 14
+        file_info_location = 0x320 + static_expansion + balloon_expansion + (5 * kong_var_size)
+        fg.write(f"#define FILE_INFO_SIZE {hex(file_info_location)}\n")

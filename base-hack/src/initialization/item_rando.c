@@ -27,18 +27,18 @@ typedef struct meloncrate_db_item {
     /* 0x003 */ unsigned char world;
 } meloncrate_db_item;
 
-static unsigned short bp_item_table[40] = {}; // Kasplat Rewards
-static unsigned char medal_item_table[45] = {}; // Medal Rewards
-static unsigned char wrinkly_item_table[35] = {}; // Wrinkly Rewards
-static unsigned short crown_item_table[10] = {}; // Crown Rewards
-static unsigned short key_item_table[8] = {}; // Boss Rewards
-static short fairy_item_table[20] = {}; // Fairy Rewards
-static unsigned short rcoin_item_table[16] = {}; // Dirt Patch Rewards
-static unsigned short crate_item_table[16] = {}; // Crate Rewards
-static patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
-bonus_barrel_info bonus_data[BONUS_DATA_COUNT] = {}; // Bonus Barrel Rewards
-static meloncrate_db_item crate_flags[16] = {}; // Melon crate table
-kongcheck_db_item kong_check_data[4] = {}; // Kong table
+static unsigned short bp_item_table[40]; // Kasplat Rewards
+static item_packet medal_item_table[45]; // Medal Rewards
+static item_packet wrinkly_item_table[35]; // Wrinkly Rewards
+static unsigned short crown_item_table[10]; // Crown Rewards
+static unsigned short key_item_table[8]; // Boss Rewards
+static model_item_data fairy_item_table[20]; // Fairy Rewards
+static unsigned short rcoin_item_table[16]; // Dirt Patch Rewards
+static unsigned short crate_item_table[16]; // Crate Rewards
+static patch_db_item patch_flags[16]; // Flag table for dirt patches to differentiate it from balloons
+bonus_barrel_info bonus_data[BONUS_DATA_COUNT]; // Bonus Barrel Rewards
+static meloncrate_db_item crate_flags[16]; // Melon crate table
+model_item_data kong_check_data[4]; // Kong table
 
 int getBPItem(int index) {
     /**
@@ -51,7 +51,7 @@ int getBPItem(int index) {
 	return getActorIndex(bp_item_table[index]);
 }
 
-int getMedalItem(int index) {
+item_packet *getMedalItem(int index) {
     /**
      * @brief Get Medal item from medal index
      * 
@@ -59,10 +59,10 @@ int getMedalItem(int index) {
      * 
      * @return Medal Item Index of the reward
      */
-	return medal_item_table[index];
+	return &medal_item_table[index];
 }
 
-int getWrinklyItem(int index) {
+item_packet *getWrinklyItem(int index) {
     /**
      * @brief Get Wrinkly Door item from medal index
      * 
@@ -70,7 +70,7 @@ int getWrinklyItem(int index) {
      * 
      * @return Medal Item Index of the reward
      */
-	return wrinkly_item_table[index];
+	return &wrinkly_item_table[index];
 }
 
 int getCrownItem(maps map) {
@@ -113,10 +113,11 @@ int getFairyModel(int flag) {
      * 
      * @return Model Index of the reward
      */
-	if ((flag >= 589) && (flag <= 608)) {
-		return fairy_item_table[flag - 589];
-	}
-	return 0x3D;
+    return fairy_item_table[flag - 589].model;
+}
+
+item_packet *getFairyItem(int flag) {
+    return &fairy_item_table[flag - 589].item;
 }
 
 int getRainbowCoinItem(int old_flag) {
@@ -387,13 +388,13 @@ void initItemRando(void) {
     }
     // Medal Table
     int medal_size = 45;
-    unsigned char* medal_write = getFile(medal_size, 0x1FF1080);
+    item_packet* medal_write = getFile(medal_size << 2, 0x1FF1400);
     for (int i = 0; i < medal_size; i++) {
         medal_item_table[i] = medal_write[i];
     }
     // Hint Table
     int wrinkly_size = 35;
-    unsigned char* wrinkly_write = getFile(wrinkly_size, 0x1FF0EC0);
+    item_packet* wrinkly_write = getFile(wrinkly_size << 2, 0x1FF1500);
     for (int i = 0; i < wrinkly_size; i++) {
         wrinkly_item_table[i] = wrinkly_write[i];
     }
@@ -405,7 +406,7 @@ void initItemRando(void) {
     }
     // Kong Check Table
     int kong_size = 4;
-    kongcheck_db_item* kong_write = getFile(kong_size * 6, 0x1FF1020);
+    model_item_data* kong_write = getFile(kong_size << 3, 0x1FF1020);
     for (int i = 0; i < kong_size; i++) {
         kong_check_data[i] = kong_write[i];
     }
@@ -416,9 +417,9 @@ void initItemRando(void) {
         key_item_table[i] = key_write[i];
     }
     // Fairy Table
-    int fairy_size = 40;
-    unsigned short* fairy_write = getFile(fairy_size, 0x1FF1040);
-    for (int i = 0; i < (fairy_size>>1); i++) {
+    int fairy_size = 20;
+    model_item_data* fairy_write = getFile(fairy_size << 3, 0x1FF1600);
+    for (int i = 0; i < fairy_size; i++) {
         fairy_item_table[i] = fairy_write[i];
     }
     // Rainbow Coin Table

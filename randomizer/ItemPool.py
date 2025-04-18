@@ -9,12 +9,10 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem, PlandoItems
 from randomizer.Enums.Settings import (
     ClimbingStatus,
-    HardModeSelected,
     MoveRando,
     ShockwaveStatus,
     ShuffleLoadingZones,
     TrainingBarrels,
-    CBRando,
 )
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Levels import Levels
@@ -165,7 +163,7 @@ def AllItemsUnrestricted(settings):
     allItems.extend(MelonCrateItems())
     allItems.extend(EnemyItems())
     allItems.extend(FakeItems(settings))
-    allItems.extend(JunkItems(settings))
+    allItems.extend(JunkItems())
     allItems.extend(DonkeyMoves)
     allItems.extend(DiddyMoves)
     allItems.extend(LankyMoves)
@@ -230,7 +228,7 @@ def AllItems(settings):
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems(settings))
     if Types.JunkItem in settings.shuffled_location_types:
-        allItems.extend(JunkItems(settings))
+        allItems.extend(JunkItems())
     if settings.move_rando != MoveRando.off:
         allItems.extend(DonkeyMoves)
         allItems.extend(DiddyMoves)
@@ -295,7 +293,7 @@ def AllItemsForMovePlacement(settings):
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems(settings))
     if Types.JunkItem in settings.shuffled_location_types:
-        allItems.extend(JunkItems(settings))
+        allItems.extend(JunkItems())
     return allItems
 
 
@@ -703,11 +701,9 @@ def HintItems():
     ]
 
 
-def JunkItems(settings):
+def JunkItems():
     """Return a list of Junk Items to be placed."""
-    junk_count = min(100, 116 - getIceTrapCount(settings))
-    if Types.Enemies in settings.shuffled_location_types:
-        junk_count += 427
+    junk_count = 1000
     itemPool = []
     # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkFilm, Items.JunkMelon, Items.JunkOrange)
     # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkOrange)

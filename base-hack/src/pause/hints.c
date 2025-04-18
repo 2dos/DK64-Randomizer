@@ -356,7 +356,8 @@ int showHint(int slot) {
         return gb_count >= req;
     }
     // Not progressive hints
-    return checkFlagDuplicate(FLAG_WRINKLYVIEWED + slot, FLAGTYPE_PERMANENT);
+    int level = slot / 5;
+    return getItemCount_new(REQITEM_HINT, level, slot % 5);
 }
 
 Gfx* displayBubble(Gfx* dl) {
@@ -384,36 +385,6 @@ int getTiedShopmoveFlag(int flag) {
         return FLAG_SHOPMOVE_BELT_0;
     }
     return 0;
-}
-
-void getItemSpecificity(char** str, int step, int flag) {
-    int tied_flag = getTiedShopmoveFlag(flag);
-    if (tied_flag == 0) {
-        return;
-    }
-    int base_set = checkFlagDuplicate(flag + step, FLAGTYPE_PERMANENT) || checkFlagDuplicate(tied_flag + step, FLAGTYPE_PERMANENT);
-    if (base_set) {
-        return;
-    }
-    if (flag == FLAG_ITEM_SLAM_0) {
-        int slams[] = {Rando.moves_pregiven.slam_upgrade_0, Rando.moves_pregiven.slam_upgrade_1, Rando.moves_pregiven.slam_upgrade_2};
-        if (slams[step]) {
-            return;
-        }
-    } else if (flag == FLAG_ITEM_BELT_0) {
-        int belts[] = {Rando.moves_pregiven.belt_upgrade_0, Rando.moves_pregiven.belt_upgrade_1};
-        if (belts[step]) {
-            return;
-        }
-    } else if (flag == FLAG_ITEM_INS_0) {
-        int instrument_upgrades[] = {Rando.moves_pregiven.ins_upgrade_0, Rando.moves_pregiven.ins_upgrade_1, Rando.moves_pregiven.ins_upgrade_2};
-        if (instrument_upgrades[step]) {
-            return;
-        }
-    } else {
-        return;
-    }
-    *str = unk_string;
 }
 
 void initHintFlags(void) {
@@ -491,7 +462,7 @@ Gfx* drawHintScreen(Gfx* dl, int level_x) {
             int opacity = 0xFF;
             int assoc_flag = hint_clear_flags[hint_local_index];
             if (assoc_flag != -1) {
-                if (hasMove(assoc_flag)) {
+                if (checkFlag(assoc_flag, FLAGTYPE_PERMANENT)) {
                     opacity = HINT_SOLVED_OPACITY;
                 }
             }
@@ -549,14 +520,9 @@ Gfx* drawItemLocationScreen(Gfx* dl, int level_x) {
             char* str = itemloc_pointers[head + 1 + j];
             short base_flag = itemloc_textnames[(int)item_subgroup].flags[i];
             short flag = base_flag + j;
-            if ((base_flag == FLAG_ITEM_BELT_0) || (base_flag == FLAG_ITEM_INS_0) || (base_flag == FLAG_ITEM_SLAM_0)) {
-                getItemSpecificity(&str, j, base_flag);
-            } else {
-                if (!hasMove(flag)) {
-                    str = unk_string;
-                }
+            if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
+                str = unk_string;
             }
-            
             dl = drawHintText(dl, str, item_loc_x, y, 0xC0, 0, 0);
         }
         head += 1 + size;

@@ -24,9 +24,9 @@ START:
 		LUI a1, hi(itemROM + itemdatasize)
 		ADDIU a1, a1, lo(itemROM + itemdatasize)
 		ADDIU a0, a0, lo(itemROM)
-		LUI a2, hi(ItemRando_FLUT)
+		LUI a2, hi(ItemIdentifier)
 		JAL dmaFileTransfer
-		ADDIU a2, a2, lo(ItemRando_FLUT)
+		ADDIU a2, a2, lo(ItemIdentifier)
     
 		//
 		LUI v0, 0x8001

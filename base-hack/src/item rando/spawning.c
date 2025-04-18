@@ -15,9 +15,9 @@ void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutsc
      * @brief Spawn bonus reward
      * 
      * @param object Actor Index
-     * @param x_f X Position (Float in int form)
-     * @param y_f Y Position (Float in int form)
-     * @param z_f Z Position (Float in int form)
+     * @param x X Position
+     * @param y Y Position
+     * @param z Z Position
      * @param unk0 Unknown
      * @param cutscene Spawning Condition
      * @param flag Tied flag
@@ -74,9 +74,9 @@ void spawnCrownReward(int object, float x, float y, float z, int unk0, int cutsc
      * @brief Spawn Crown Reward
      * 
      * @param object Actor Index
-     * @param x_f X Position (Float in int form)
-     * @param y_f Y Position (Float in int form)
-     * @param z_f Z Position (Float in int form)
+     * @param x X Position
+     * @param y Y Position
+     * @param z Z Position
      * @param unk0 Unknown
      * @param cutscene Spawning Condition
      * @param flag Tied flag
@@ -96,9 +96,9 @@ void spawnBossReward(int object, float x, float y, float z, int unk0, int cutsce
      * @brief Spawn boss reward
      * 
      * @param object Actor Index
-     * @param x_f X Position (Float in int form)
-     * @param y_f Y Position (Float in int form)
-     * @param z_f Z Position (Float in int form)
+     * @param x X Position
+     * @param y Y Position
+     * @param z Z Position
      * @param unk0 Unknown
      * @param cutscene Spawning Condition
      * @param flag Tied flag
@@ -135,9 +135,9 @@ void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int c
      * @brief Spawn dirt patch reward
      * 
      * @param object Actor Index
-     * @param x_f X Position (Float in int form)
-     * @param y_f Y Position (Float in int form)
-     * @param z_f Z Position (Float in int form)
+     * @param x X Position
+     * @param y Y Position
+     * @param z Z Position
      * @param unk0 Unknown
      * @param cutscene Spawning Condition
      * @param flag Tied flag
@@ -162,21 +162,6 @@ void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
      * @param actor Actor index of the spawned item
      * @param spawner Spawner Object for the spawned item
      */
-    /*
-        INFORMATION:
-            +----------------+----------------------------+--------+---------------+
-            |   Model Name   |         Base Model         | Tested |   New Model   |
-            +----------------+----------------------------+--------+---------------+
-            | Golden Banana  | 0x69                       | True   | See Left      |
-            | Boss Key       | 0xA5                       | True   | 0xF5          |
-            | Crown          | 0xAF                       | True   | 0xF4          |
-            | Fake Item      | ----                       | True   | 0x103         |
-            | Potions        | 0xEE-0xF3                  | True   | 0xF6-0xFB     |
-            | Kong Items     | 4, 1, 6, 9, 0xC, 0xE, 0xDB | True   | See Left      |
-            +----------------+----------------------------+--------+---------------+
-            Some items are excluded because when they're actors, they are sprites which can't easily be rendered with the fairy stuff. I might have a way around this,
-            but we'll have to wait and see for probably a secondary update after the first push.
-    */
     if (actor == 248) {
         // Fairy
         int model = 0x3D;
