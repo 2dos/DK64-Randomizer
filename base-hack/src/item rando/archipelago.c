@@ -298,7 +298,7 @@ void handleArchipelagoFeed(void) {
             }
         }
     }
-    ap_info.can_die = cc_allower_spawnkop();
+    ap_info.can_die = cc_allower_generic() && cc_allower_spawnkop();
     if (CutsceneActive > 1) {
         ap_info.can_die = 0;
     }
