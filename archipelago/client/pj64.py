@@ -5,6 +5,8 @@ import json
 import os
 import pkgutil
 from configparser import ConfigParser
+import sys
+import subprocess
 from Utils import open_filename
 from Utils import get_settings
 import uuid
@@ -102,6 +104,28 @@ class PJ64Client:
             rom = open_filename("Select ROM", (("N64 ROM", (".n64", ".z64", ".v64")),))
             if rom:
                 os.popen(f'"{executable}" "{rom}"')
+
+    def _is_exe_running(self, exe_name):
+        """Check if a given executable is running without using psutil."""
+        exe_name = exe_name.lower()
+
+        if sys.platform == "win32":
+            try:
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                output = subprocess.check_output(["tasklist"], text=True, errors="ignore", shell=False, startupinfo=startupinfo)
+                return exe_name in output.lower()
+            except subprocess.CalledProcessError:
+                return False
+
+        else:  # Unix-based (Linux/macOS)
+            try:
+                result = subprocess.run(["pgrep", "-f", exe_name], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+                return result.returncode == 0
+            except FileNotFoundError:
+                return False  # `pgrep` not available
+
+        return False
 
     def _verify_pj64_config(self, config_file):
         """
