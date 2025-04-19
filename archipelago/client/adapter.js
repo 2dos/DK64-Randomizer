@@ -224,7 +224,6 @@ function startServer() {
     server.on('error', function(err) {
         console.log("Server failed to start: " + err.message);
         // If its a bind error raise an alert
-        console.log(err.code)
         if (err.message.includes("(10013)")) {
             console.log("Port " + port + " is already in use. Please close the other application or change the port.");
             alert("Port " + port + " is already in use. Please close the duplicate PJ64 or change the port in your PJ64 config file.");
