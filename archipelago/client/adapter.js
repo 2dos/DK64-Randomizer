@@ -215,7 +215,7 @@ function startServer() {
     });
 
 
-    console.log("Server attempting to listening on " + ip + ":" + port);
+    console.log("Server attempting to listen on " + ip + ":" + port);
     // Check if the server is actually listening
     server.on('listening', function() {
         console.log("Server is listening on " + ip + ":" + port);
