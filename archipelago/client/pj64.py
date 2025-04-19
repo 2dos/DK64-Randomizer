@@ -2,14 +2,18 @@
 
 import socket
 import json
-import sys
 import os
-import subprocess
 import pkgutil
 from configparser import ConfigParser
+import sys
+import subprocess
 from Utils import open_filename
 from Utils import get_settings
 import uuid
+
+if __name__ == "__main__":
+    Utils.init_logging("DK64Context", exception_logger="Client")
+from CommonClient import logger
 
 
 class PJ64Exception(Exception):
@@ -53,6 +57,9 @@ class PJ64Client:
         Raises:
             PJ64Exception: If the Project 64 executable is not found or if the `ap_adapter.js` file is in use.
         """
+        logger.info("We HIGHLY recommend starting Project64 through the client to ensure the config file is set up correctly.")
+        logger.info("If you have already started Project64, please close it and start it through the client.")
+        logger.info("You may also need to run the client as an administrator to write the config file.")
         options = get_settings()
         executable = options.get("project64_options", {}).get("executable")
         # Verify the file exists, if it does not, ask the user to select it
@@ -95,12 +102,6 @@ class PJ64Client:
         if not self._is_exe_running(os.path.basename(executable)):
             # Request the user to provide their ROM
             rom = open_filename("Select ROM", (("N64 ROM", (".n64", ".z64", ".v64")),))
-            if self.is_project64_background():
-                # Kill project 64
-                if sys.platform == "win32":
-                    os.system(f'taskkill /f /im "{os.path.basename(executable)}"')
-                else:
-                    os.system(f'pkill -f "{os.path.basename(executable)}"')
             if rom:
                 os.popen(f'"{executable}" "{rom}"')
 
@@ -123,65 +124,6 @@ class PJ64Client:
                 return result.returncode == 0
             except FileNotFoundError:
                 return False  # `pgrep` not available
-
-        return False
-
-    def is_project64_background(self):
-        """Specifically deals with if Project64 is running in the background in a broken state."""
-        if sys.platform != "win32":
-            return False
-
-        import ctypes
-        import ctypes.wintypes
-        from subprocess import CalledProcessError
-
-        user32 = ctypes.windll.user32
-        kernel32 = ctypes.windll.kernel32
-        psapi = ctypes.windll.psapi
-
-        PROCESS_QUERY_INFORMATION = 0x0400
-        PROCESS_VM_READ = 0x0010
-        MAX_PATH = 260
-        GW_OWNER = 4
-
-        found_visible = False
-
-        EnumWindows = user32.EnumWindows
-        EnumWindowsProc = ctypes.WINFUNCTYPE(ctypes.wintypes.BOOL, ctypes.wintypes.HWND, ctypes.wintypes.LPARAM)
-
-        def callback(hwnd, lParam):
-            nonlocal found_visible
-            if not user32.IsWindowVisible(hwnd):
-                return True
-            if user32.GetWindow(hwnd, GW_OWNER):
-                return True
-
-            pid = ctypes.wintypes.DWORD()
-            user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
-
-            h_process = kernel32.OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, False, pid.value)
-            if not h_process:
-                return True
-
-            exe_path = (ctypes.c_wchar * MAX_PATH)()
-            psapi.GetModuleFileNameExW(h_process, None, exe_path, MAX_PATH)
-            kernel32.CloseHandle(h_process)
-
-            exe_name = os.path.basename(exe_path.value).lower()
-            if exe_name == "project64.exe":
-                found_visible = True
-            return True
-
-        EnumWindows(EnumWindowsProc(callback), 0)
-
-        try:
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            output = subprocess.check_output('tasklist /FI "IMAGENAME eq Project64.exe"', shell=False, text=True, startupinfo=startupinfo)
-            if "Project64.exe" in output and not found_visible:
-                return True
-        except CalledProcessError:
-            pass
 
         return False
 
@@ -233,10 +175,11 @@ class PJ64Client:
             config.set("Debugger", "Debugger", "1")
         if not config.has_option("Debugger", "Autorun Scripts"):
             config.set("Debugger", "Autorun Scripts", "ap_adapter.js")
-
+        first_set_port = False
         if not config.has_option("Debugger", "ap_port"):
             port = str(40000 + (uuid.uuid4().int % 10000))
             config.set("Debugger", "ap_port", port)
+            first_set_port = True
             self.port = int(port)
             print("Set port to " + str(port))
         else:
@@ -255,7 +198,8 @@ class PJ64Client:
             with open(config_file, "w", encoding="utf8", newline="\n") as f:
                 config.write(f, space_around_delimiters=False)
         except Exception:
-            pass
+            if first_set_port:
+                raise PJ64Exception("Failed to update Project64 config file. If this is the first time set up of PJ64, you need to start PJ64 through the client to write the config file.")
 
     def _connect(self):
         """Establish a connection to the specified address and port using a socket.
@@ -305,6 +249,12 @@ class PJ64Client:
 
             # If no matching ID is found, raise an exception
             raise PJ64Exception("Response ID does not match the command ID")
+        except socket.timeout:
+            self.socket = None
+            self.connected_message = False
+            raise PJ64Exception(
+                "Socket Timeout, please check that Project64 is running and the adapter is actively bound to a port.\nIf PJ64 fails to bind to a port, please update your Project64 config file with a new port."
+            )
         except Exception as e:
             self.socket = None
             self.connected_message = False

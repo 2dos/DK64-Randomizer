@@ -214,7 +214,23 @@ function startServer() {
         });
     });
 
-    console.log("Server listening on " + ip + ":" + port);
+
+    console.log("Server attempting to listen on " + ip + ":" + port);
+    // Check if the server is actually listening
+    server.on('listening', function() {
+        console.log("Server is listening on " + ip + ":" + port);
+    });
+
+    server.on('error', function(err) {
+        console.log("Server failed to start: " + err.message);
+        // If its a bind error raise an alert
+        if (err.message.includes("(10013)")) {
+            console.log("Port " + port + " is already in use. Please close the other application or change the port.");
+            alert("Port " + port + " is already in use. Please close the duplicate PJ64 or change the port in your PJ64 config file.");
+        } else {
+            console.log("Server error: " + err.message);
+        }
+    });
 }
 
 function restartServer() {
