@@ -216,6 +216,7 @@ class ItemRandoListSelected(IntEnum):
     shopowners = 17
     hint = 18
     shockwave = 19
+    boulderitem = 20
 
 class KasplatRandoSetting(IntEnum):
     off = 0

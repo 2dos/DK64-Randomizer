@@ -2388,3 +2388,10 @@ typedef struct ItemIdentifierStruct {
 	/* 0x002 */ unsigned char level;
 	/* 0x003 */ unsigned char kong;
 } ItemIdentifierStruct;
+
+typedef struct BoulderItemStruct {
+	/* 0x000 */ short item;
+	/* 0x002 */ short map;
+	/* 0x004 */ short spawner_id;
+	/* 0x006 */ short pad;
+} BoulderItemStruct;

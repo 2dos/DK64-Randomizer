@@ -885,6 +885,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
                 Types.Fairy,
                 Types.RainbowCoin,
                 Types.CrateItem,
+                Types.BoulderItem,
                 Types.Enemies,
             )
         ]:
@@ -2303,6 +2304,9 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.CrateItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.CrateItem)
         # Crates hold nothing, so leave this one empty
+    if Types.BoulderItem in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.BoulderItem)
+        # Boulders/Vases/Kegs hold nothing, so leave this one empty
     if Types.Enemies in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Enemies)
         # Enemies hold nothing, so leave this one empty

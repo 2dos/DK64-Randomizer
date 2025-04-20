@@ -97,7 +97,8 @@ void charSpawnerItemCode(void) {
 			check_index = i;
 		}
 	}
-	int model = kong_check_data[check_index].model;
+	model_item_data *kong_check = getKongCheckData(check_index);
+	int model = kong_check->model;
 	if (model == 0) {
 		return;
 	}
@@ -122,7 +123,7 @@ void charSpawnerItemCode(void) {
 	// Item code will leech off Tiny's code
 	cutsceneTinyCode();
 	if (!initialized) {
-		if (kong_check_data[check_index].has_no_textures) {
+		if (kong_check->has_no_textures) {
 			CurrentActorPointer_0->obj_props_bitfield &= ~0x1000;
 		}
 

@@ -273,6 +273,7 @@ void fairyQueenCheckSpeedup(void *actor, int unk) {
 static int stored_maps[STORED_COUNT] = {};
 static unsigned char stored_kasplat[STORED_COUNT] = {};
 static unsigned char stored_enemies[ENEMY_REWARD_CACHE_SIZE][STORED_COUNT] = {};
+static unsigned short stored_holdable;
 
 int setupHook(int map) {
     /**
@@ -297,6 +298,7 @@ int setupHook(int map) {
     for (int i = 0; i < STORED_COUNT; i++) {
         if (stored_maps[i] == PreviousMap) {
             place_new = 0;
+            stored_holdable = HoldableSpawnBitfield;
             stored_kasplat[i] = KasplatSpawnBitfield;
             for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                 stored_enemies[j][i] = enemy_rewards_spawned[j];
@@ -307,6 +309,7 @@ int setupHook(int map) {
         for (int i = 0; i < STORED_COUNT; i++) {
             if (place_new) {
                 if (stored_maps[i] == -1) {
+                    stored_holdable = HoldableSpawnBitfield;
                     stored_kasplat[i] = KasplatSpawnBitfield;
                     for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                         stored_enemies[j][i] = enemy_rewards_spawned[j];
@@ -329,6 +332,7 @@ int setupHook(int map) {
                     enemy_rewards_spawned[j] = 0;
                 }
             }
+            HoldableSpawnBitfield = stored_holdable;
             KasplatSpawnBitfield = stored_kasplat[i];
             for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                 enemy_rewards_spawned[j] = stored_enemies[j][i];
@@ -337,6 +341,7 @@ int setupHook(int map) {
     }
     if (!in_chain) {
         KasplatSpawnBitfield = 0;
+        HoldableSpawnBitfield = 0;
         for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
             enemy_rewards_spawned[j] = 0;
         }
@@ -364,6 +369,9 @@ void CheckKasplatSpawnBitfield(void) {
                     } else if (isFlagInRange(flag, FLAG_ENEMY_KILLED_0, ENEMIES_TOTAL)) {
                         // Is Enemy Drop
                         setSpawnBitfieldFromFlag(flag, 0);
+                    } else if (isFlagInRange(flag, FLAG_GRABBABLES_DESTROYED, 16)) {
+                        // Is Holdable
+                        HoldableSpawnBitfield |= (1 << (flag - FLAG_GRABBABLES_DESTROYED));
                     }
                 }
                 // Get Next Spawner

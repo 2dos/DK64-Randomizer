@@ -26,7 +26,8 @@ void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutsc
     bonus_paad* paad = CurrentActorPointer_0->paad;
     int index = paad->barrel_index;
     if ((index > 0) && (index < BONUS_DATA_COUNT)) {
-        object = bonus_data[index].spawn_actor;
+        bonus_barrel_info *bonus = getBonusData(index);
+        object = bonus->spawn_actor;
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
         spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
@@ -42,7 +43,8 @@ void spawnRewardAtActor(int object, int flag) {
      */
     int index = CurrentActorPointer_0->reward_index;
     if ((index > 0) && (index < BONUS_DATA_COUNT)) {
-        object = bonus_data[index].spawn_actor;
+        bonus_barrel_info *bonus = getBonusData(index);
+        object = bonus->spawn_actor;
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
         if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
@@ -59,10 +61,11 @@ void spawnMinecartReward(int object, int flag) {
      * @param flag Flag Index
      */
     for (int i = 0; i < BONUS_DATA_COUNT; i++) {
-        if (bonus_data[i].flag == flag) {
-            if (bonus_data[i].spawn_actor != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
-                spawnActorWithFlag(bonus_data[i].spawn_actor, Player->xPos, Player->yPos, Player->zPos, 0, 0, flag, 0);
-                // spawnObjectAtActor(bonus_data[i].spawn_actor, flag); // Causes some interesting side-effects with collision
+        bonus_barrel_info *bonus = getBonusData(i);
+        if (bonus->flag == flag) {
+            if (bonus->spawn_actor != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
+                spawnActorWithFlag(bonus->spawn_actor, Player->xPos, Player->yPos, Player->zPos, 0, 0, flag, 0);
+                // spawnObjectAtActor(bonus->spawn_actor, flag); // Causes some interesting side-effects with collision
             }
             return;
         }
@@ -205,4 +208,61 @@ void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1,
     }
     unkSpriteRenderFunc_1(1);
     displaySpriteAtXYZ(sprite_table[31], 2.5f, x, y + 15.0f, z);
+}
+
+typedef struct steel_keg_struct {
+    unsigned char map;
+    unsigned char grabbable_id;
+    unsigned char spawner_id;
+} steel_keg_struct;
+
+static steel_keg_struct SteelKegMapping[] = {
+    {.map = MAP_FUNGIMILLFRONT, .grabbable_id = GRABBABLE_MILL_FRONT_NEAR, .spawner_id = 4},
+    {.map = MAP_FUNGIMILLFRONT, .grabbable_id = GRABBABLE_MILL_FRONT_FAR, .spawner_id = 6},
+    {.map = MAP_FUNGIMILLREAR, .grabbable_id = MAP_FUNGIMILLREAR, .spawner_id = 6},
+};
+
+void* updateKegIDs(int actor, float x, float y, float z) {
+    int id = getNextUnassignedId();
+    int spawner_id = getActorSpawnerIDFromTiedActor(CurrentActorPointer_0);
+    for (int i = 0; i < 3; i++) {
+        if (CurrentMap == SteelKegMapping[i].map) {
+            if (spawner_id == SteelKegMapping[i].spawner_id) {
+                updateBoulderId(SteelKegMapping[i].grabbable_id, id);
+            }
+        }
+    }
+    return spawnActorAtXYZ(actor, x, y, z);
+}
+
+void spawnBoulderObject(actorData *actor) {
+    int index = getBoulderIndex();
+    if (index < 0) {
+        return;
+    }
+    if (HoldableSpawnBitfield & (1 << index)) {
+        return;
+    }
+    int flag = FLAG_GRABBABLES_DESTROYED + index;
+    if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
+        return;
+    }
+    int item = getBoulderItem();
+    if (!item) {
+        return;
+    }
+    if (item == (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
+        return;
+    }
+    int cutscene = 1;
+    if (isBounceObject(item)) {
+        cutscene = 2;
+    }
+    spawnActorWithFlag(item,
+        actor->xPos,
+        actor->yPos,
+        actor->zPos,
+        0, cutscene,
+        flag, 0);
+    HoldableSpawnBitfield |= (1 << index);
 }

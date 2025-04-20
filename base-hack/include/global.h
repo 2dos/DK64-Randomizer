@@ -440,7 +440,6 @@ extern void setFlagMove(int flag);
 extern int getShopFlag(vendors vendor, int level, int kong);
 
 extern unsigned int cs_skip_db[2];
-extern bonus_barrel_info bonus_data[BONUS_DATA_COUNT];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
 extern short tbarrel_flags[4];

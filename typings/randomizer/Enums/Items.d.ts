@@ -178,4 +178,5 @@ export enum Items {
     IceTrapBubbleKey = 177,
     IceTrapReverseKey = 178,
     IceTrapSlowKey = 179,
+    BoulderItem = 180,
 }

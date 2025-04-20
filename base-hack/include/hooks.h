@@ -106,3 +106,4 @@ extern void setHappyFace(void);
 extern void checkKRoolPause(void);
 extern void ArcadeMapCheck(void);
 extern void ArcadeIntroCheck(void);
+extern void spawnHoldableObject(void);

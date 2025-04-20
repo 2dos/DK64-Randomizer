@@ -35,6 +35,7 @@ class Types(IntEnum):
     IslesMedal = 32
     ProgressiveHint = 33
     ArchipelagoItem = 34
+    BoulderItem = 35
 
 class BarrierItems(IntEnum):
     Nothing = 0

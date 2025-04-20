@@ -75,7 +75,7 @@ class Location:
         elif self.type == Types.Hint:
             level_index = int(self.level)
             self.map_id_list = [MapIDCombo(0, -1, 0x384 + self.kong + (5 * level_index), self.kong)]
-        elif self.type in (Types.Banana, Types.ToughBanana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
+        elif self.type in (Types.Banana, Types.ToughBanana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.BoulderItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
             if data is None:
                 self.map_id_list = []
             else:
@@ -792,6 +792,23 @@ LocationListOriginal = {
     Locations.MelonCrate_Location10: Location(Levels.FungiForest, "Forest Crate: Behind Dark Attic", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B6)]),  # Fungi behind dark attic
     Locations.MelonCrate_Location11: Location(Levels.FungiForest, "Forest Crate: In Thornvine Barn", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.ForestThornvineBarn, -1, 0x3B7)]),  # Fungi in DK Barn
     Locations.MelonCrate_Location12: Location(Levels.CreepyCastle, "Castle Crate: Behind Mausoleum Entrance", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x3B8)]),  # Crypt behind Mausoleum entrance
+
+    Locations.HoldableBoulderIslesNearAztec: Location(Levels.DKIsles, "Isles Boulder: Near Level 2", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2AE)]),
+    Locations.HoldableBoulderIslesNearCaves: Location(Levels.DKIsles, "Isles Boulder: Near Level 6", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2AF)]),
+    Locations.HoldableBoulderAztec: Location(Levels.AngryAztec, "Aztec Boulder: Tunnel", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2B0)]),
+    Locations.HoldableBoulderCavesSmall: Location(Levels.CrystalCaves, "Caves Boulder: Small", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2B1)]),
+    Locations.HoldableBoulderCavesLarge: Location(Levels.CrystalCaves, "Caves Boulder: Large", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2B2)]),
+    Locations.HoldableBoulderMuseum: Location(Levels.CreepyCastle, "Castle Boulder: Museum", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CastleMuseum, -1, 0x2B3)]),
+    Locations.HoldableBoulderJapesLobby: Location(Levels.DKIsles, "Isles Boulder: Japes Lobby", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.JungleJapesLobby, -1, 0x2B4)]),
+    Locations.HoldableBoulderCastleLobby: Location(Levels.DKIsles, "Isles Boulder: Castle Lobby", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2B5)]),
+    Locations.HoldableBoulderCavesLobby: Location(Levels.DKIsles, "Isles Boulder: Caves Lobby", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CrystalCavesLobby, -1, 0x2B6)]),
+    Locations.HoldableKegMillFrontNear: Location(Levels.FungiForest, "Forest Keg: Mill Front Near", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.ForestMillFront, -1, 0x2B7)]),
+    Locations.HoldableKegMillFrontFar: Location(Levels.FungiForest, "Forest Keg: Mill Front Far", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.ForestMillFront, -1, 0x2B8)]),
+    Locations.HoldableKegMillRear: Location(Levels.FungiForest, "Forest Keg: Mill Back", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.ForestMillBack, -1, 0x2B9)]),
+    Locations.HoldableVaseCircle: Location(Levels.AngryAztec, "Aztec Vase: Circle", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2BA)]),
+    Locations.HoldableVaseColon: Location(Levels.AngryAztec, "Aztec Vase: Colon", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2BB)]),
+    Locations.HoldableVaseTriangle: Location(Levels.AngryAztec, "Aztec Vase: Triangle", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2BC)]),
+    Locations.HoldableVasePlus: Location(Levels.AngryAztec, "Aztec Vase: Plus", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2BD)]),
 
     Locations.JapesMainEnemy_Start: Location(Levels.JungleJapes, "Jungle Japes Enemy: Start", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, DROPSANITY_FLAG_START + 0x0)]),
     Locations.JapesMainEnemy_DiddyCavern: Location(Levels.JungleJapes, "Jungle Japes Enemy: Diddy Cavern", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, DROPSANITY_FLAG_START + 0x1)]),

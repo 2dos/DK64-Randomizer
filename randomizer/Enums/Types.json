@@ -94,6 +94,11 @@
             "name": "Hints",
             "value": "hint",
             "tooltip": "Hints and Wrinkly Doors are in the pool."
+        },
+        {
+            "name": "Holdable Objects",
+            "value": "boulderitem",
+            "tooltip": "Destroying boulders and other holdable objects spawn items."
         }
     ],
     "KeySelector": [

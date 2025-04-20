@@ -1523,7 +1523,8 @@ int getItemCountReq(requirement_item item) {
 		case REQITEM_BONUSES:
 			for (int i = 1; i < 54; i++) {
 				if (!inU8List(i, &unused_bonus_ids, sizeof(unused_bonus_ids))) {
-					if (checkFlag(bonus_data[i].flag, FLAGTYPE_PERMANENT)) {
+					bonus_barrel_info *bonus = getBonusData(i);
+					if (checkFlag(bonus->flag, FLAGTYPE_PERMANENT)) {
 						count += 1;
 					}
 				}

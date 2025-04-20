@@ -2135,6 +2135,79 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FFE080)
     for x in range(35):
         fh.write((0x0000).to_bytes(2, "big"))
+    holdable_table = [
+        {
+            "map_id": Maps.Isles,
+            "spawner_id": 12,
+        },
+        {
+            "map_id": Maps.Isles,
+            "spawner_id": 13,
+        },
+        {
+            "map_id": Maps.Aztec,
+            "spawner_id": 4,
+        },
+        {
+            "map_id": Maps.Caves,
+            "spawner_id": 0,
+        },
+        {
+            "map_id": Maps.Caves,
+            "spawner_id": 1,
+        },
+        {
+            "map_id": Maps.CastleMuseum,
+            "spawner_id": 0,
+        },
+        {
+            "map_id": Maps.JapesLobby,
+            "spawner_id": 2,
+        },
+        {
+            "map_id": Maps.CastleLobby,
+            "spawner_id": 0,
+        },
+        {
+            "map_id": Maps.CavesLobby,
+            "spawner_id": 5,
+        },
+        {
+            "map_id": Maps.FungiMillFront,
+            "spawner_id": 5,
+        },
+        {
+            "map_id": Maps.FungiMillFront,
+            "spawner_id": 7,
+        },
+        {
+            "map_id": Maps.FungiMillRear,
+            "spawner_id": 4,
+        },
+        {
+            "map_id": Maps.Aztec,
+            "spawner_id": 3,
+        },
+        {
+            "map_id": Maps.Aztec,
+            "spawner_id": 2,
+        },
+        {
+            "map_id": Maps.Aztec,
+            "spawner_id": 1,
+        },
+        {
+            "map_id": Maps.Aztec,
+            "spawner_id": 0,
+        },
+    ]
+    # Holdables
+    fh.seek(0x1FF1100)
+    for x in range(16):
+        fh.write((0).to_bytes(2, "big"))
+        fh.write(holdable_table[x]["map_id"].to_bytes(2, "big"))
+        fh.write(holdable_table[x]["spawner_id"].to_bytes(2, "big"))
+        fh.write((0).to_bytes(2, "big"))
 
     # Item Requirements
     # Helm Doors

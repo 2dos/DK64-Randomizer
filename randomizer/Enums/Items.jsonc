@@ -204,6 +204,7 @@
         "IceTrapSlowBean": 176,
         "IceTrapBubbleKey": 177,
         "IceTrapReverseKey": 178,
-        "IceTrapSlowKey": 179
+        "IceTrapSlowKey": 179,
+        "BoulderItem": 180
     }
 }

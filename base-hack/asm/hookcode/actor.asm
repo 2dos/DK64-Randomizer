@@ -716,3 +716,11 @@ setHappyFace:
     sb $t6, 0x1EC ($t7)
     j 0x806C5E44
     sh $t6, 0x1B6 ($v0)
+
+spawnHoldableObject:
+    lui $a0, hi(CurrentActorPointer_0)
+    jal spawnBoulderObject
+    lw $a0, lo(CurrentActorPointer_0) ($a0)
+    lw $t2, 0x58 ($s0)
+    j 0x8069C218
+    addiu $at, $zero, 0x3D

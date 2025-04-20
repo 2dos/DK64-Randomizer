@@ -1,17 +1,17 @@
 """Apply item rando changes."""
 
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import MicrohintsEnabled
 from randomizer.Enums.Types import Types
-from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Library.DataTypes import float_to_hex, intf_to_float
 from randomizer.Lists.EnemyTypes import enemy_location_list
 from randomizer.Patching.Library.Generic import setItemReferenceName
-from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, CustomActors, item_db, getPropFromItem, getModelMask
+from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, item_db, getPropFromItem, getModelMask
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
@@ -282,6 +282,72 @@ def appendTextboxChange(spoiler, file_index: int, textbox_index: int, search: st
 
 NUMBERS_AS_WORDS = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
+HOLDABLE_LOCATION_INFO = {
+    Locations.HoldableBoulderIslesNearAztec: {
+        "map_id": Maps.Isles,
+        "spawner_id": 12,
+    },
+    Locations.HoldableBoulderIslesNearCaves: {
+        "map_id": Maps.Isles,
+        "spawner_id": 13,
+    },
+    Locations.HoldableBoulderAztec: {
+        "map_id": Maps.AngryAztec,
+        "spawner_id": 4,
+    },
+    Locations.HoldableBoulderCavesSmall: {
+        "map_id": Maps.CrystalCaves,
+        "spawner_id": 0,
+    },
+    Locations.HoldableBoulderCavesLarge: {
+        "map_id": Maps.CrystalCaves,
+        "spawner_id": 1,
+    },
+    Locations.HoldableBoulderMuseum: {
+        "map_id": Maps.CastleMuseum,
+        "spawner_id": 0,
+    },
+    Locations.HoldableBoulderJapesLobby: {
+        "map_id": Maps.JungleJapesLobby,
+        "spawner_id": 2,
+    },
+    Locations.HoldableBoulderCastleLobby: {
+        "map_id": Maps.CreepyCastleLobby,
+        "spawner_id": 0,
+    },
+    Locations.HoldableBoulderCavesLobby: {
+        "map_id": Maps.CrystalCavesLobby,
+        "spawner_id": 5,
+    },
+    Locations.HoldableKegMillFrontNear: {
+        "map_id": Maps.ForestMillFront,
+        "spawner_id": 5,
+    },
+    Locations.HoldableKegMillFrontFar: {
+        "map_id": Maps.ForestMillFront,
+        "spawner_id": 7,
+    },
+    Locations.HoldableKegMillRear: {
+        "map_id": Maps.ForestMillBack,
+        "spawner_id": 4,
+    },
+    Locations.HoldableVaseCircle: {
+        "map_id": Maps.AngryAztec,
+        "spawner_id": 3,
+    },
+    Locations.HoldableVaseColon: {
+        "map_id": Maps.AngryAztec,
+        "spawner_id": 2,
+    },
+    Locations.HoldableVaseTriangle: {
+        "map_id": Maps.AngryAztec,
+        "spawner_id": 1,
+    },
+    Locations.HoldableVasePlus: {
+        "map_id": Maps.AngryAztec,
+        "spawner_id": 0,
+    },
+}
 
 def alterTextboxRequirements(spoiler):
     """Alters various textboxes based on the requirement count changing."""
@@ -436,6 +502,7 @@ model_two_items = [
 
 POINTER_ROM_KASPLAT = 0x1FF0E00
 POINTER_ROM_CRATE = 0x1FF0E80
+POINTER_ROM_HOLDABLES = 0x1FF1100
 POINTER_ROM_HINTDOOR = 0x1FF1500
 POINTER_ROM_BOSSES = 0x1FF1000
 POINTER_ROM_KONGCAGES = 0x1FF1020
@@ -682,6 +749,15 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                             ROM_COPY.writeMultipleBytes(actor_index, 2)
                         else:
                             print("Melon Crate Item Placement Error")
+                    elif item.old_item == Types.BoulderItem:
+                        index = item.location - Locations.HoldableBoulderIslesNearAztec
+                        if index < 16:
+                            ROM_COPY.seek(POINTER_ROM_HOLDABLES + (index * 8))
+                            ROM_COPY.writeMultipleBytes(actor_index, 2)
+                            ROM_COPY.writeMultipleBytes(HOLDABLE_LOCATION_INFO[item.location]["map_id"], 2)
+                            ROM_COPY.writeMultipleBytes(HOLDABLE_LOCATION_INFO[item.location]["spawner_id"], 2)
+                        else:
+                            print("Melon Crate Item Placement Error")
                     elif item.old_item == Types.Enemies:
                         index = item.location - Locations.JapesMainEnemy_Start
                         ROM_COPY.seek(POINTER_ROM_ENEMIES + (index * 4))
@@ -771,6 +847,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                 # Anything that's pre-placed into the world or spawns an item that's grabbed physically by the player
                 Types.Blueprint,
                 Types.CrateItem,
+                Types.BoulderItem,
                 Types.Key,
                 Types.RainbowCoin,
                 Types.Banana,

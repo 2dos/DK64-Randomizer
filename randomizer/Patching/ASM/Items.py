@@ -198,6 +198,9 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x8069C266, Overlay.Static, getActorIndex(spoiler.japes_rock_actor), offset_dict)
     # Melon Crates
     writeLabelValue(ROM_COPY, 0x80747EB0, Overlay.Static, "melonCrateItemHandler", offset_dict)
+    # Grabbable Item Rando
+    writeHook(ROM_COPY, 0x8069C210, Overlay.Static, "spawnHoldableObject", offset_dict)
+    writeFunction(ROM_COPY, 0x8067BDA0, Overlay.Static, "updateKegIDs", offset_dict)
     # Jetpac Reward Text
     addr = getROMAddress(0x8002EABC, Overlay.Jetpac, offset_dict)
     ROM_COPY.seek(addr)

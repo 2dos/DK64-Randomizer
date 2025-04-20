@@ -180,3 +180,4 @@ class Items(IntEnum):
     IceTrapBubbleKey = 177
     IceTrapReverseKey = 178
     IceTrapSlowKey = 179
+    BoulderItem = 180

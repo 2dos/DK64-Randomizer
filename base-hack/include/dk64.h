@@ -148,6 +148,9 @@ extern void loadJetpacSprites(void);
 extern void updateGBCountHUD(int player);
 extern void initHUDItem(float x, float y, float* unk0, float* unk1, float* unk2);
 
+extern void *spawnActorAtXYZ(int actor, float x, float y, float z);
+extern int getNextUnassignedId(void);
+
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
 extern void createCollision(int type, void* player, collision_types subtype, int map, int exit, int x, int y, int z);
@@ -867,6 +870,7 @@ extern unsigned char EnemyInView;
 extern unsigned char ItemRandoOn;
 extern ItemIdentifierStruct ItemIdentifier[0x190];
 extern unsigned char KasplatSpawnBitfield;
+extern unsigned short HoldableSpawnBitfield;
 extern char KrushaSlot;
 extern unsigned char TextItemName;
 extern unsigned char RandomSwitches;

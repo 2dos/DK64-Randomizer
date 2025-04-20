@@ -51,6 +51,7 @@ const TIED_POOL_ITEMS = {
     "Rainbow Coins": ["RainbowCoin"],
     "Junk Items": ["JunkItem"],
     "Melon Crates": ["CrateItem"],
+    "Holdable Objects": ["BoulderItem"],
     "Enemy Drops": ["Enemies"],
     "Shop Owners": ["Cranky", "Funky", "Candy", "Snide"],
     "Ice Traps": ["FakeItem"],

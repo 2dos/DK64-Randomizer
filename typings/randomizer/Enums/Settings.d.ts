@@ -241,6 +241,7 @@ export enum ItemRandoListSelected {
     shopowners = 17,
     hint = 18,
     shockwave = 19,
+    boulderitem = 20,
 }
 
 export enum KasplatRandoSetting {

@@ -58,5 +58,8 @@ typedef struct MoveSpecialBijectionStruct {
 } MoveSpecialBijectionStruct;
 
 extern void giveItemFromKongData(model_item_data *db_item, int flag);
-
-extern model_item_data kong_check_data[4];
+extern void updateBoulderId(int index, int id);
+extern int getBoulderItem(void);
+extern int getBoulderIndex(void);
+extern bonus_barrel_info *getBonusData(int index);
+extern model_item_data *getKongCheckData(int index);

@@ -161,6 +161,7 @@ def AllItemsUnrestricted(settings):
     allItems.extend(FairyItems())
     allItems.extend(RainbowCoinItems())
     allItems.extend(MelonCrateItems())
+    allItems.extend(BoulderItems())
     allItems.extend(EnemyItems())
     allItems.extend(FakeItems(settings))
     allItems.extend(JunkItems())
@@ -213,6 +214,8 @@ def AllItems(settings):
         allItems.extend(RainbowCoinItems())
     if Types.CrateItem in settings.shuffled_location_types:
         allItems.extend(MelonCrateItems())
+    if Types.BoulderItem in settings.shuffled_location_types:
+        allItems.extend(BoulderItems())
     if Types.Hint in settings.shuffled_location_types:
         allItems.extend(HintItems())
     if Types.Enemies in settings.shuffled_location_types:
@@ -278,6 +281,8 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(RainbowCoinItems())
     if Types.CrateItem in settings.shuffled_location_types:
         allItems.extend(MelonCrateItems())
+    if Types.BoulderItem in settings.shuffled_location_types:
+        allItems.extend(BoulderItems())
     if Types.Hint in settings.shuffled_location_types:
         allItems.extend(HintItems())
     if Types.Enemies in settings.shuffled_location_types:
@@ -590,6 +595,9 @@ def MelonCrateItems():
     """Return a list of No Items to be placed."""
     return []
 
+def BoulderItems():
+    """Return a list of boulder items to be placed."""
+    return []
 
 def EnemyItems():
     """Return a list of No Items to be placed."""
@@ -752,6 +760,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(RainbowCoinItems())
     if Types.CrateItem in unplacedTypes:
         itemPool.extend(MelonCrateItems())
+    if Types.BoulderItem in unplacedTypes:
+        itemPool.extend(BoulderItems())
     if Types.Enemies in unplacedTypes:
         itemPool.extend(EnemyItems())
     if Types.ToughBanana in unplacedTypes:

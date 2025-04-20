@@ -1155,6 +1155,7 @@ class Settings:
                     Types.FakeItem,
                     Types.JunkItem,
                     Types.CrateItem,
+                    Types.BoulderItem,
                     Types.Cranky,
                     Types.Funky,
                     Types.Candy,
@@ -2125,6 +2126,7 @@ class Settings:
                         Types.Crown,
                         Types.PreGivenMove,
                         Types.CrateItem,
+                        Types.BoulderItem,
                         Types.Enemies,
                     )
                     and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)
