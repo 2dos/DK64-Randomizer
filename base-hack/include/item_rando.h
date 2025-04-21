@@ -57,9 +57,41 @@ typedef struct MoveSpecialBijectionStruct {
     unsigned short move_enum;
 } MoveSpecialBijectionStruct;
 
+typedef struct reward_rom_struct {
+	/* 0x000 */ short flag;
+	/* 0x002 */ unsigned short actor;
+} reward_rom_struct;
+
+typedef struct patch_db_item {
+	/* 0x000 */ short id;
+	/* 0x002 */ unsigned char map;
+	/* 0x003 */ unsigned char world;
+} patch_db_item;
+
+typedef struct meloncrate_db_item {
+    /* 0x000 */ short id;
+    /* 0x002 */ unsigned char map;
+    /* 0x003 */ unsigned char world;
+} meloncrate_db_item;
+
 extern void giveItemFromKongData(model_item_data *db_item, int flag);
 extern void updateBoulderId(int index, int id);
 extern int getBoulderItem(void);
 extern int getBoulderIndex(void);
 extern bonus_barrel_info *getBonusData(int index);
 extern model_item_data *getKongCheckData(int index);
+
+#define BONUS_DATA_COUNT 99
+extern unsigned short bp_item_table[40];
+extern item_packet medal_item_table[45];
+extern item_packet wrinkly_item_table[35];
+extern unsigned short crown_item_table[10];
+extern unsigned short key_item_table[8];
+extern model_item_data fairy_item_table[20];
+extern unsigned short rcoin_item_table[16];
+extern unsigned short crate_item_table[16];
+extern patch_db_item patch_flags[16];
+extern BoulderItemStruct boulder_item_table[16];
+extern bonus_barrel_info bonus_data[BONUS_DATA_COUNT];
+extern meloncrate_db_item crate_flags[16];
+extern model_item_data kong_check_data[4];

@@ -75,43 +75,41 @@ typedef enum counter_items {
 	/* 0x01D */ COUNTER_KKO,
 } counter_items;
 
+static unsigned char tied_counter[] = {
+	COUNTER_NO_ITEM, // REQITEM_NONE
+	COUNTER_DK_FACE, // REQITEM_KONG - Handled with special case
+	COUNTER_POTION, // REQITEM_MOVE
+	COUNTER_GB, // REQITEM_GOLDENBANANA
+	COUNTER_BP, // REQITEM_BLUEPRINT
+	COUNTER_FAIRY, // REQITEM_FAIRY
+	COUNTER_KEY, // REQITEM_KEY
+	COUNTER_CROWN, // REQITEM_CROWN
+	COUNTER_NINCOIN, // REQITEM_COMPANYCOIN - Handled with special case
+	COUNTER_MEDAL, // REQITEM_MEDAL
+	REQITEM_BEAN, // REQITEM_BEAN
+	COUNTER_PEARL, // REQITEM_PEARL
+	COUNTER_RAINBOWCOIN, // REQITEM_RAINBOWCOIN
+	COUNTER_FAKEITEM, // REQITEM_ICETRAP
+	COUNTER_NO_ITEM, // REQITEM_GAMEPERCENTAGE
+	COUNTER_NO_ITEM, // REQITEM_COLOREDBANANA
+	COUNTER_NO_ITEM, // REQITEM_BOSSES
+	COUNTER_NO_ITEM, // REQITEM_BONUSES
+	COUNTER_NO_ITEM, // REQITEM_JUNK
+	COUNTER_HINT, // REQITEM_HINT
+	COUNTER_NO_ITEM, // REQITEM_SHOPKEEPER
+	COUNTER_AP, // REQITEM_AP
+};
+
 int getCounterItem(vendors shop_index, int kong, int level) {
 	purchase_struct* data = getShopData(shop_index, kong, level);
 	if (data) {
-		switch(data->item.item_type) {
-			case REQITEM_KONG:
-				return COUNTER_DK_FACE + data->item.kong;
-			case REQITEM_MOVE:
-				return COUNTER_POTION;
-			case REQITEM_GOLDENBANANA:
-				return COUNTER_GB;
-			case REQITEM_BLUEPRINT:
-				return COUNTER_BP;
-			case REQITEM_FAIRY:
-				return COUNTER_FAIRY;
-			case REQITEM_KEY:
-				return COUNTER_KEY;
-			case REQITEM_CROWN:
-				return COUNTER_CROWN;
-			case REQITEM_COMPANYCOIN:
-				return data->item.kong ? COUNTER_RWCOIN : COUNTER_NINCOIN;
-			case REQITEM_MEDAL:
-				return COUNTER_MEDAL;
-			case REQITEM_BEAN:
-				return COUNTER_BEAN;
-			case REQITEM_PEARL:
-				return COUNTER_PEARL;
-			case REQITEM_RAINBOWCOIN:
-				return COUNTER_RAINBOWCOIN;
-			case REQITEM_ICETRAP:
-				return COUNTER_FAKEITEM;
-			// case REQITEM_COLOREDBANANA:
-			// case REQITEM_JUNK:
-			case REQITEM_HINT:
-				return COUNTER_HINT;
-			// case REQITEM_SHOPKEEPER:
-			case REQITEM_AP:
-				return COUNTER_AP;
+		requirement_item item_type = data->item.item_type;
+		if (item_type == REQITEM_KONG) {
+			return COUNTER_DK_FACE + data->item.kong;
+		} else if (item_type == REQITEM_COMPANYCOIN) {
+			return data->item.kong ? COUNTER_RWCOIN : COUNTER_NINCOIN;
+		} else {
+			return tied_counter[item_type];
 		}
 	}
 	return COUNTER_NO_ITEM;

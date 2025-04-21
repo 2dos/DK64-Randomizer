@@ -10,36 +10,19 @@
  */
 #include "../../include/common.h"
 
-typedef struct reward_rom_struct {
-	/* 0x000 */ short flag;
-	/* 0x002 */ unsigned short actor;
-} reward_rom_struct;
-
-typedef struct patch_db_item {
-	/* 0x000 */ short id;
-	/* 0x002 */ unsigned char map;
-	/* 0x003 */ unsigned char world;
-} patch_db_item;
-
-typedef struct meloncrate_db_item {
-    /* 0x000 */ short id;
-    /* 0x002 */ unsigned char map;
-    /* 0x003 */ unsigned char world;
-} meloncrate_db_item;
-
-static unsigned short bp_item_table[40]; // Kasplat Rewards
-static item_packet medal_item_table[45]; // Medal Rewards
-static item_packet wrinkly_item_table[35]; // Wrinkly Rewards
-static unsigned short crown_item_table[10]; // Crown Rewards
-static unsigned short key_item_table[8]; // Boss Rewards
-static model_item_data fairy_item_table[20]; // Fairy Rewards
-static unsigned short rcoin_item_table[16]; // Dirt Patch Rewards
-static unsigned short crate_item_table[16]; // Crate Rewards
-static patch_db_item patch_flags[16]; // Flag table for dirt patches to differentiate it from balloons
-static BoulderItemStruct boulder_item_table[16]; // Holdable Object Rewards
-static bonus_barrel_info bonus_data[BONUS_DATA_COUNT]; // Bonus Barrel Rewards
-static meloncrate_db_item crate_flags[16]; // Melon crate table
-static model_item_data kong_check_data[4]; // Kong table
+unsigned short bp_item_table[40] = {}; // Kasplat Rewards
+item_packet medal_item_table[45] = {}; // Medal Rewards
+item_packet wrinkly_item_table[35] = {}; // Wrinkly Rewards
+unsigned short crown_item_table[10] = {}; // Crown Rewards
+unsigned short key_item_table[8] = {}; // Boss Rewards
+model_item_data fairy_item_table[20] = {}; // Fairy Rewards
+unsigned short rcoin_item_table[16] = {}; // Dirt Patch Rewards
+unsigned short crate_item_table[16] = {}; // Crate Rewards
+patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
+BoulderItemStruct boulder_item_table[16] = {}; // Holdable Object Rewards
+bonus_barrel_info bonus_data[BONUS_DATA_COUNT] = {}; // Bonus Barrel Rewards
+meloncrate_db_item crate_flags[16] = {}; // Melon crate table
+model_item_data kong_check_data[4] = {}; // Kong table
 
 bonus_barrel_info *getBonusData(int index) {
     return &bonus_data[index];
