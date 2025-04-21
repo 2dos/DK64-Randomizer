@@ -26,8 +26,7 @@ void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutsc
     bonus_paad* paad = CurrentActorPointer_0->paad;
     int index = paad->barrel_index;
     if ((index > 0) && (index < BONUS_DATA_COUNT)) {
-        bonus_barrel_info *bonus = getBonusData(index);
-        object = bonus->spawn_actor;
+        object = bonus_data[index].spawn_actor;
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
         spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
@@ -43,8 +42,7 @@ void spawnRewardAtActor(int object, int flag) {
      */
     int index = CurrentActorPointer_0->reward_index;
     if ((index > 0) && (index < BONUS_DATA_COUNT)) {
-        bonus_barrel_info *bonus = getBonusData(index);
-        object = bonus->spawn_actor;
+        object = bonus_data[index].spawn_actor;
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
         if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
@@ -61,11 +59,10 @@ void spawnMinecartReward(int object, int flag) {
      * @param flag Flag Index
      */
     for (int i = 0; i < BONUS_DATA_COUNT; i++) {
-        bonus_barrel_info *bonus = getBonusData(i);
-        if (bonus->flag == flag) {
-            if (bonus->spawn_actor != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
-                spawnActorWithFlag(bonus->spawn_actor, Player->xPos, Player->yPos, Player->zPos, 0, 0, flag, 0);
-                // spawnObjectAtActor(bonus->spawn_actor, flag); // Causes some interesting side-effects with collision
+        if (bonus_data[i].flag == flag) {
+            if (bonus_data[i].spawn_actor != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
+                spawnActorWithFlag(bonus_data[i].spawn_actor, Player->xPos, Player->yPos, Player->zPos, 0, 0, flag, 0);
+                // spawnObjectAtActor(bonus_data[i].spawn_actor, flag); // Causes some interesting side-effects with collision
             }
             return;
         }
@@ -170,7 +167,7 @@ void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
         int model = 0x3D;
         for (int i = 0; i < 31; i++) {
             if ((charspawnerflags[i].map == CurrentMap) && (charspawnerflags[i].spawner_id == spawner->spawn_trigger)) {
-                model = getFairyModel(charspawnerflags[i].tied_flag);
+                model = fairy_item_table[charspawnerflags[i].tied_flag - 589].model;
                 if ((model >= -4) && (model <= -2)) {
                     model = 0x103;
                 }
@@ -186,7 +183,7 @@ void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1,
     int id = ObjectModel2Pointer[convertSubIDToIndex(index)].object_id;
     int flag = getCrateFlag(id);
     int spawn_count = 1;
-    int object = getCrateItem(flag);
+    int object = getActorIndex(crate_item_table[flag - FLAG_MELONCRATE_0]);
     int cutscene = 1;
     if (object == 0x2F) {
         // Junk Item. Set flag as we're spawning 4 unflagged melons and we want it to update check screen

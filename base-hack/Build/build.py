@@ -2081,48 +2081,12 @@ with open(newROMName, "r+b") as fh:
         fh.write((0).to_bytes(1, "big"))  # Change to 0
 
     # Item Rando defaults
-    # Blueprints
-    fh.seek(0x1FF0E00)
-    for level_index in range(8):
-        for bp_item in (78, 75, 77, 79, 76):
-            fh.write(bp_item.to_bytes(2, "big"))
-    # Medals
-    fh.seek(0x1FF1400)
-    for medal_item in range(45):
-        fh.write((9).to_bytes(1, "big"))
-        fh.write((0).to_bytes(1, "big"))
-        fh.write((0).to_bytes(1, "big"))
-        fh.write((0).to_bytes(1, "big"))
-    # Crown
-    fh.seek(0x1FF10C0)
-    for crown_item in range(10):
-        fh.write((86).to_bytes(2, "big"))
-    # Key
-    fh.seek(0x1FF1000)
-    for crown_item in range(8):
-        fh.write((72).to_bytes(2, "big"))
-    # Fairies
-    fh.seek(0x1FF1600)
-    for x in range(20):
-        fh.write((0x3D).to_bytes(2, "big"))
-        fh.write((0).to_bytes(2, "big"))
-        fh.write((5).to_bytes(1, "big"))
-        fh.write((0).to_bytes(1, "big"))
-        fh.write((0).to_bytes(1, "big"))
-        fh.write((0).to_bytes(1, "big"))
-    # Rainbow Coins
-    fh.seek(0x1FF10E0)
-    for x in range(16):
-        fh.write((0x8C).to_bytes(2, "big"))
-    # Melon Crates
-    fh.seek(0x1FF0E80)
-    for x in range(16):
-        fh.write((0x2F).to_bytes(2, "big"))
     # Enemies
     fh.seek(0x1FF9000)
     for x in range(427):
         fh.write((0).to_bytes(4, "big"))
 
+    # Boot Messages
     fh.seek(0x1FFD000)
     for x in range(64):
         fh.write((0).to_bytes(4, "big"))
@@ -2131,83 +2095,11 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FFE000)
     for x in range(35):
         fh.write((0xFFFF).to_bytes(2, "big"))
+        
     # Hint Regions
     fh.seek(0x1FFE080)
     for x in range(35):
         fh.write((0x0000).to_bytes(2, "big"))
-    holdable_table = [
-        {
-            "map_id": Maps.Isles,
-            "spawner_id": 12,
-        },
-        {
-            "map_id": Maps.Isles,
-            "spawner_id": 13,
-        },
-        {
-            "map_id": Maps.Aztec,
-            "spawner_id": 4,
-        },
-        {
-            "map_id": Maps.Caves,
-            "spawner_id": 0,
-        },
-        {
-            "map_id": Maps.Caves,
-            "spawner_id": 1,
-        },
-        {
-            "map_id": Maps.CastleMuseum,
-            "spawner_id": 0,
-        },
-        {
-            "map_id": Maps.JapesLobby,
-            "spawner_id": 2,
-        },
-        {
-            "map_id": Maps.CastleLobby,
-            "spawner_id": 0,
-        },
-        {
-            "map_id": Maps.CavesLobby,
-            "spawner_id": 5,
-        },
-        {
-            "map_id": Maps.FungiMillFront,
-            "spawner_id": 5,
-        },
-        {
-            "map_id": Maps.FungiMillFront,
-            "spawner_id": 7,
-        },
-        {
-            "map_id": Maps.FungiMillRear,
-            "spawner_id": 4,
-        },
-        {
-            "map_id": Maps.Aztec,
-            "spawner_id": 3,
-        },
-        {
-            "map_id": Maps.Aztec,
-            "spawner_id": 2,
-        },
-        {
-            "map_id": Maps.Aztec,
-            "spawner_id": 1,
-        },
-        {
-            "map_id": Maps.Aztec,
-            "spawner_id": 0,
-        },
-    ]
-    # Holdables
-    fh.seek(0x1FF1100)
-    for x in range(16):
-        fh.write((0).to_bytes(2, "big"))
-        fh.write(holdable_table[x]["map_id"].to_bytes(2, "big"))
-        fh.write(holdable_table[x]["spawner_id"].to_bytes(2, "big"))
-        fh.write((0).to_bytes(2, "big"))
 
     # Item Requirements
     # Helm Doors

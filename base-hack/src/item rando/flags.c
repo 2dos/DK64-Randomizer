@@ -20,9 +20,8 @@ int getKongFromBonusFlag(int flag) {
      */
     if ((Rando.any_kong_items.major_items) == 0) {
         for (int i = 0; i < BONUS_DATA_COUNT; i++) {
-            bonus_barrel_info *bonus = getBonusData(i);
-            if (bonus->flag == flag) {
-                return bonus->kong_actor;
+            if (bonus_data[i].flag == flag) {
+                return bonus_data[i].kong_actor;
             }
         }
     }

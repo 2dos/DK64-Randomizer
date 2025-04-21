@@ -82,7 +82,7 @@ class Location:
                 self.map_id_list = data
         self.default_mapid_data = self.map_id_list
         # "Reward" locations are locations that require an actor to exist for the location's item - something not all items have
-        if self.default_mapid_data is not None and len(self.default_mapid_data) > 0 and type(self.default_mapid_data[0]) is MapIDCombo and self.default_mapid_data[0].id == -1 and self.type != Types.Kong:
+        if self.default_mapid_data is not None and len(self.default_mapid_data) > 0 and type(self.default_mapid_data[0]) is MapIDCombo and self.default_mapid_data[0].id == -1:
             self.is_reward = True
 
     def PlaceItem(self, spoiler, item):

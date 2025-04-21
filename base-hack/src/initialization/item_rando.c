@@ -10,27 +10,180 @@
  */
 #include "../../include/common.h"
 
-unsigned short bp_item_table[40] = {}; // Kasplat Rewards
-item_packet medal_item_table[45] = {}; // Medal Rewards
-item_packet wrinkly_item_table[35] = {}; // Wrinkly Rewards
-unsigned short crown_item_table[10] = {}; // Crown Rewards
-unsigned short key_item_table[8] = {}; // Boss Rewards
-model_item_data fairy_item_table[20] = {}; // Fairy Rewards
-unsigned short rcoin_item_table[16] = {}; // Dirt Patch Rewards
-unsigned short crate_item_table[16] = {}; // Crate Rewards
+unsigned short bp_item_table[40] = {
+    // Kasplat Rewards
+    78, 75, 77, 79, 76,
+    78, 75, 77, 79, 76,
+    78, 75, 77, 79, 76,
+    78, 75, 77, 79, 76,
+    78, 75, 77, 79, 76,
+    78, 75, 77, 79, 76,
+    78, 75, 77, 79, 76,
+    78, 75, 77, 79, 76,
+};
+item_packet medal_item_table[45] = {
+    // Medal Rewards
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+    {.item_type = REQITEM_MEDAL},
+};
+item_packet wrinkly_item_table[35] = {
+    // Wrinkly Rewards
+    {.item_type = REQITEM_HINT, .level = 0, .kong = KONG_DK},
+    {.item_type = REQITEM_HINT, .level = 0, .kong = KONG_DIDDY},
+    {.item_type = REQITEM_HINT, .level = 0, .kong = KONG_LANKY},
+    {.item_type = REQITEM_HINT, .level = 0, .kong = KONG_TINY},
+    {.item_type = REQITEM_HINT, .level = 0, .kong = KONG_CHUNKY},
+    {.item_type = REQITEM_HINT, .level = 1, .kong = KONG_DK},
+    {.item_type = REQITEM_HINT, .level = 1, .kong = KONG_DIDDY},
+    {.item_type = REQITEM_HINT, .level = 1, .kong = KONG_LANKY},
+    {.item_type = REQITEM_HINT, .level = 1, .kong = KONG_TINY},
+    {.item_type = REQITEM_HINT, .level = 1, .kong = KONG_CHUNKY},
+    {.item_type = REQITEM_HINT, .level = 2, .kong = KONG_DK},
+    {.item_type = REQITEM_HINT, .level = 2, .kong = KONG_DIDDY},
+    {.item_type = REQITEM_HINT, .level = 2, .kong = KONG_LANKY},
+    {.item_type = REQITEM_HINT, .level = 2, .kong = KONG_TINY},
+    {.item_type = REQITEM_HINT, .level = 2, .kong = KONG_CHUNKY},
+    {.item_type = REQITEM_HINT, .level = 3, .kong = KONG_DK},
+    {.item_type = REQITEM_HINT, .level = 3, .kong = KONG_DIDDY},
+    {.item_type = REQITEM_HINT, .level = 3, .kong = KONG_LANKY},
+    {.item_type = REQITEM_HINT, .level = 3, .kong = KONG_TINY},
+    {.item_type = REQITEM_HINT, .level = 3, .kong = KONG_CHUNKY},
+    {.item_type = REQITEM_HINT, .level = 4, .kong = KONG_DK},
+    {.item_type = REQITEM_HINT, .level = 4, .kong = KONG_DIDDY},
+    {.item_type = REQITEM_HINT, .level = 4, .kong = KONG_LANKY},
+    {.item_type = REQITEM_HINT, .level = 4, .kong = KONG_TINY},
+    {.item_type = REQITEM_HINT, .level = 4, .kong = KONG_CHUNKY},
+    {.item_type = REQITEM_HINT, .level = 5, .kong = KONG_DK},
+    {.item_type = REQITEM_HINT, .level = 5, .kong = KONG_DIDDY},
+    {.item_type = REQITEM_HINT, .level = 5, .kong = KONG_LANKY},
+    {.item_type = REQITEM_HINT, .level = 5, .kong = KONG_TINY},
+    {.item_type = REQITEM_HINT, .level = 5, .kong = KONG_CHUNKY},
+    {.item_type = REQITEM_HINT, .level = 6, .kong = KONG_DK},
+    {.item_type = REQITEM_HINT, .level = 6, .kong = KONG_DIDDY},
+    {.item_type = REQITEM_HINT, .level = 6, .kong = KONG_LANKY},
+    {.item_type = REQITEM_HINT, .level = 6, .kong = KONG_TINY},
+    {.item_type = REQITEM_HINT, .level = 6, .kong = KONG_CHUNKY},
+};
+unsigned short crown_item_table[10] = {
+    // Crown Rewards
+    86, 86, 86, 86,
+    86, 86, 86, 86,
+    86, 86,
+};
+unsigned short key_item_table[8] = {
+    // Boss Rewards
+    72, 72, 72, 72,
+    72, 72, 72, 72,
+};
+model_item_data fairy_item_table[20] = {
+    // Fairy Rewards
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+    {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
+};
+unsigned short rcoin_item_table[16] = {
+    // Dirt Patch Rewards
+    0x8C, 0x8C, 0x8C, 0x8C,
+    0x8C, 0x8C, 0x8C, 0x8C,
+    0x8C, 0x8C, 0x8C, 0x8C,
+    0x8C, 0x8C, 0x8C, 0x8C,
+};
+unsigned short crate_item_table[16] = {
+    // Crate Rewards
+    0x2F, 0x2F, 0x2F, 0x2F,
+    0x2F, 0x2F, 0x2F, 0x2F,
+    0x2F, 0x2F, 0x2F, 0x2F,
+    0x2F, 0x2F, 0x2F, 0x2F,
+};
 patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
-BoulderItemStruct boulder_item_table[16] = {}; // Holdable Object Rewards
+BoulderItemStruct boulder_item_table[16] = {
+    // Holdable Object Rewards
+    { .map = MAP_ISLES, .spawner_id = 1},
+    { .map = MAP_ISLES, .spawner_id = 1},
+    { .map = MAP_AZTEC, .spawner_id = 4},
+    { .map = MAP_CAVES, .spawner_id = 0},
+    { .map = MAP_CAVES, .spawner_id = 1},
+    { .map = MAP_CASTLEMUSEUM, .spawner_id = 0},
+    { .map = MAP_JAPESLOBBY, .spawner_id = 2},
+    { .map = MAP_CASTLELOBBY, .spawner_id = 0},
+    { .map = MAP_CAVESLOBBY, .spawner_id = 5},
+    { .map = MAP_FUNGIMILLFRONT, .spawner_id = 5},
+    { .map = MAP_FUNGIMILLFRONT, .spawner_id = 7},
+    { .map = MAP_FUNGIMILLREAR, .spawner_id = 4},
+    { .map = MAP_AZTEC, .spawner_id = 3},
+    { .map = MAP_AZTEC, .spawner_id = 2},
+    { .map = MAP_AZTEC, .spawner_id = 1},
+    { .map = MAP_AZTEC, .spawner_id = 0},
+};
 bonus_barrel_info bonus_data[BONUS_DATA_COUNT] = {}; // Bonus Barrel Rewards
 meloncrate_db_item crate_flags[16] = {}; // Melon crate table
-model_item_data kong_check_data[4] = {}; // Kong table
-
-bonus_barrel_info *getBonusData(int index) {
-    return &bonus_data[index];
-}
-
-model_item_data *getKongCheckData(int index) {
-    return &kong_check_data[index];
-}
+model_item_data kong_check_data[4] = {
+    // Kong table
+    {.model =  1, .item = {.item_type = REQITEM_KONG, .kong = KONG_DIDDY}},
+    {.model =  6, .item = {.item_type = REQITEM_KONG, .kong = KONG_LANKY}},
+    {.model =  9, .item = {.item_type = REQITEM_KONG, .kong = KONG_TINY}},
+    {.model = 12, .item = {.item_type = REQITEM_KONG, .kong = KONG_CHUNKY}},
+};
 
 int getBPItem(int index) {
     /**
@@ -41,28 +194,6 @@ int getBPItem(int index) {
      * @return Actor Index of the reward
      */
 	return getActorIndex(bp_item_table[index]);
-}
-
-item_packet *getMedalItem(int index) {
-    /**
-     * @brief Get Medal item from medal index
-     * 
-     * @param index Medal Index: (5 * level) + kong
-     * 
-     * @return Medal Item Index of the reward
-     */
-	return &medal_item_table[index];
-}
-
-item_packet *getWrinklyItem(int index) {
-    /**
-     * @brief Get Wrinkly Door item from medal index
-     * 
-     * @param index Medal Index: (5 * level) + kong
-     * 
-     * @return Medal Item Index of the reward
-     */
-	return &wrinkly_item_table[index];
 }
 
 int getCrownItem(maps map) {
@@ -97,21 +228,6 @@ int getKeyItem(int old_flag) {
 	return 0;
 }
 
-int getFairyModel(int flag) {
-    /**
-     * @brief Get Fairy Reward from the flag
-     * 
-     * @param flag Flag Index of the fairy
-     * 
-     * @return Model Index of the reward
-     */
-    return fairy_item_table[flag - 589].model;
-}
-
-item_packet *getFairyItem(int flag) {
-    return &fairy_item_table[flag - 589].item;
-}
-
 int getRainbowCoinItem(int old_flag) {
 	/**
 	 * @brief Get Dirt Patch reward from the old flag
@@ -121,17 +237,6 @@ int getRainbowCoinItem(int old_flag) {
      * @return Actor Index of the reward
 	 */
 	return getActorIndex(rcoin_item_table[old_flag - FLAG_RAINBOWCOIN_0]);
-}
-
-int getCrateItem(int old_flag) {
-	/**
-	 * @brief Get Crate reward from the old flag
-     * 
-     * @param old_flag Original flag of the crate
-	 * 
-     * @return Actor Index of the reward
-	 */
-	return getActorIndex(crate_item_table[old_flag - FLAG_MELONCRATE_0]);
 }
 
 int getPatchFlag(int id) {
@@ -340,8 +445,7 @@ int alterBonusVisuals(int index) {
 }
 
 int getDirtPatchSkin(int flag, flagtypes flag_type) {
-    int gone = checkFlag(flag, flag_type);
-    if (gone) {
+    if (checkFlag(flag, flag_type)) {
         return 1;
     }
     if (Rando.location_visuals.dirt_patches) {
@@ -355,7 +459,7 @@ int getDirtPatchSkin(int flag, flagtypes flag_type) {
             unkPaletteFunc(CurrentActorPointer_0, 0, 0);
         }
     }
-    return gone;
+    return 0;
 }
 
 void initItemRando(void) {
@@ -394,67 +498,6 @@ void initItemRando(void) {
     unsigned char* head_write = getFile(load_size, 0x1FEE800);
     for (int i = 0; i < load_size; i++) {
         HeadSize[i] = head_write[i];
-    }
-
-    // BP Table
-    int bp_size = 0x28;
-    unsigned short* bp_write = getFile(bp_size << 1, 0x1FF0E00);
-    for (int i = 0; i < bp_size; i++) {
-        bp_item_table[i] = bp_write[i];
-    }
-    // Medal Table
-    int medal_size = 45;
-    item_packet* medal_write = getFile(medal_size << 2, 0x1FF1400);
-    for (int i = 0; i < medal_size; i++) {
-        medal_item_table[i] = medal_write[i];
-    }
-    // Hint Table
-    int wrinkly_size = 35;
-    item_packet* wrinkly_write = getFile(wrinkly_size << 2, 0x1FF1500);
-    for (int i = 0; i < wrinkly_size; i++) {
-        wrinkly_item_table[i] = wrinkly_write[i];
-    }
-    // Crown Table
-    int crown_size = 0xA;
-    unsigned short* crown_write = getFile(crown_size << 1, 0x1FF10C0);
-    for (int i = 0; i < crown_size; i++) {
-        crown_item_table[i] = crown_write[i];
-    }
-    // Kong Check Table
-    int kong_size = 4;
-    model_item_data* kong_write = getFile(kong_size << 3, 0x1FF1020);
-    for (int i = 0; i < kong_size; i++) {
-        kong_check_data[i] = kong_write[i];
-    }
-    // Key Table
-    int key_size = 0x8;
-    unsigned short* key_write = getFile(key_size << 1, 0x1FF1000);
-    for (int i = 0; i < key_size; i++) {
-        key_item_table[i] = key_write[i];
-    }
-    // Fairy Table
-    int fairy_size = 20;
-    model_item_data* fairy_write = getFile(fairy_size << 3, 0x1FF1600);
-    for (int i = 0; i < fairy_size; i++) {
-        fairy_item_table[i] = fairy_write[i];
-    }
-    // Rainbow Coin Table
-    int rainbow_size = 0x10;
-    unsigned short* rainbow_write = getFile(rainbow_size << 1, 0x1FF10E0);
-    for (int i = 0; i < rainbow_size; i++) {
-        rcoin_item_table[i] = rainbow_write[i];
-    }
-    // Melon Crate Table
-    int crate_size = 0x10;
-    unsigned short* crate_write = getFile(crate_size << 1, 0x1FF0E80);
-    for (int i = 0; i < crate_size; i++) {
-        crate_item_table[i] = crate_write[i];
-    }
-    // Holdable Object Table
-    int hobject_size = 0x10;
-    BoulderItemStruct* hobject_write = getFile(hobject_size << 3, 0x1FF1100);
-    for (int i = 0; i < hobject_size; i++) {
-        boulder_item_table[i] = hobject_write[i];
     }
     // Reward Table
     for (int i = 0; i < 40; i++) {

@@ -139,9 +139,9 @@ void banana_medal_acquisition(int flag) {
      */
     item_packet *item_send = 0;
     if (flag >= FLAG_MEDAL_ISLES_DK) {
-        item_send = getMedalItem((flag - FLAG_MEDAL_ISLES_DK) + 40);
+        item_send = &medal_item_table[(flag - FLAG_MEDAL_ISLES_DK) + 40];
     } else {
-        item_send = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
+        item_send = &medal_item_table[flag - FLAG_MEDAL_JAPES_DK];
     }
     displayMedalOverlay(flag, item_send);
 }
@@ -213,7 +213,7 @@ void giveFairyItem(int flag, int state, flagtypes type) {
      * @param state Target state of the flag. AKA whether to set (1) or clear (0) the flag
      * @param type Flag Type
      */
-    item_packet *item_send = getFairyItem(flag);
+    item_packet *item_send = &fairy_item_table[flag - 589].item;
     giveItemFromSend(item_send);
     setPermFlag(flag);
 }
@@ -820,7 +820,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x25A:
         case 0x25B:
             // Kong Item
-            giveItem(REQITEM_KONG, item_level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
+            giveItem(REQITEM_KONG, 0, obj_type - 0x257, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
             refreshItemVisibility();
             break;
         case 0x25C:

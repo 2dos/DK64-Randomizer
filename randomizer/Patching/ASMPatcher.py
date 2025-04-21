@@ -495,7 +495,6 @@ def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
     ROM_COPY.seek(addr)
     ROM_COPY.writeBytes(bytes(string_to_write, "ascii"))
 
-
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
     patchVersionStack(ROM_COPY, spoiler.settings)

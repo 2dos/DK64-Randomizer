@@ -216,7 +216,7 @@ void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk
 	int flag = FLAG_WRINKLYVIEWED + wrinkly_index;
 	if (Rando.hints_are_items) {
 		if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
-			item_packet *item_send = getWrinklyItem(wrinkly_index);
+			item_packet *item_send = &wrinkly_item_table[wrinkly_index];
 			displayMedalOverlay(flag, item_send);
 		}
 	} else {
@@ -520,7 +520,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 1) {
 						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
-						giveItemFromKongData(getKongCheckData(KONGCHECK_LLAMA), FLAG_KONG_LANKY);
+						giveItemFromKongData(&kong_check_data[KONGCHECK_LLAMA], FLAG_KONG_LANKY);
 					} else if ((index >= 3) && (index <= 6)) {
 						return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 					}
@@ -716,7 +716,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 1) {
 						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
-						giveItemFromKongData(getKongCheckData(KONGCHECK_JAPES), FLAG_KONG_DIDDY);
+						giveItemFromKongData(&kong_check_data[KONGCHECK_JAPES], FLAG_KONG_DIDDY);
 					}
 				} else if ((param2 == JAPES_GUNSWITCH0) || (param2 == JAPES_GUNSWITCH1) || (param2 == JAPES_GUNSWITCH2)) {
 					if (index == 0) {
@@ -821,7 +821,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 2) {
 						return Character == Rando.free_source_factory;
 					} else if (index == 3) {
-						giveItemFromKongData(getKongCheckData(KONGCHECK_FACTORY), FLAG_KONG_CHUNKY);
+						giveItemFromKongData(&kong_check_data[KONGCHECK_FACTORY], FLAG_KONG_CHUNKY);
 					}
 				} else if (param2 == FACTORY_CAGE) {
 					if (index == 0) {
@@ -1097,7 +1097,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (index == 0) {
 						return checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						giveItemFromKongData(getKongCheckData(KONGCHECK_ICETEMPLE), FLAG_KONG_TINY);
+						giveItemFromKongData(&kong_check_data[KONGCHECK_ICETEMPLE], FLAG_KONG_TINY);
 					}
 				} else if (param2 == TTEMPLE_CHARGESWITCH) {
 					if (index == 0) {

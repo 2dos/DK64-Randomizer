@@ -78,8 +78,6 @@ extern void giveItemFromKongData(model_item_data *db_item, int flag);
 extern void updateBoulderId(int index, int id);
 extern int getBoulderItem(void);
 extern int getBoulderIndex(void);
-extern bonus_barrel_info *getBonusData(int index);
-extern model_item_data *getKongCheckData(int index);
 
 #define BONUS_DATA_COUNT 99
 extern unsigned short bp_item_table[40];
