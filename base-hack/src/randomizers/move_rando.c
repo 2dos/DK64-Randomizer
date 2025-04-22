@@ -286,28 +286,13 @@ void getNextMoveText(void) {
 		p_value = shop_data->item_level;
 		p_type = shop_data->item_type;
 		p_kong = shop_data->kong;
-	} else if (used_overlay->level != 0) {
+	} else {
 		has_data = 1;
 		p_type = used_overlay->type;
 		p_value = used_overlay->level;
 		p_kong = used_overlay->kong;
 		p_string = used_overlay->string;
 		p_subtitle = used_overlay->subtitle;
-	} else if (CurrentMap == MAP_FAIRYISLAND) {
-		has_data = 1;
-		p_type = BFIMove_New.item.item_type;
-		p_value = BFIMove_New.item.level;
-		p_kong = BFIMove_New.item.kong;
-	} else {
-		unsigned char tbarrel_maps[] = {MAP_TBARREL_DIVE,MAP_TBARREL_ORANGE,MAP_TBARREL_BARREL,MAP_TBARREL_VINE};
-		for (int i = 0; i < sizeof(tbarrel_maps); i++) {
-			if ((CurrentMap == tbarrel_maps[i]) && (!has_data)) {
-				has_data = 1;
-				p_type = TrainingMoves_New[i].item.item_type;
-				p_value = TrainingMoves_New[i].item.level;
-				p_kong = TrainingMoves_New[i].item.kong;
-			}
-		}
 	}
 	int override_string = isAPEnabled() && p_type == REQITEM_AP;
 	if ((has_data) || (paad->upper_text) || (paad->lower_text)) {
