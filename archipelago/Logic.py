@@ -937,8 +937,8 @@ class LogicVarHolder:
         # if caged_item_id == Items.NoItem:
         #     return True
         # If we can't free Diddy, then we can't access the item so we can't reach the item
-        if not self.CanFreeDiddy():
-            return False
+        # if not self.CanFreeDiddy():
+        #     return False
         # If we are the right kong, then we can always get the item
         if self.IsKong(self.settings.diddy_freeing_kong):
             return True

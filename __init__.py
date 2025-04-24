@@ -295,6 +295,8 @@ if baseclasses_loaded:
             settings.tiny_freeing_kong = self.random.randint(0, 4)
             settings.chunky_freeing_kong = self.random.randint(0, 4)
             spoiler = Spoiler(settings)
+            # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
+            spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
             spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
             self.logic_holder = LogicVarHolder(spoiler, self.player)
 
