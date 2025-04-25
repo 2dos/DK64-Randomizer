@@ -546,6 +546,9 @@ if baseclasses_loaded:
                 "MedalCBRequirement": self.logic_holder.settings.medal_cb_req,
                 "BLockerValues": self.logic_holder.settings.BLockerEntryCount,
                 "RemovedBarriers": ", ".join([barrier.name for barrier in self.logic_holder.settings.remove_barriers_selected]),
+                "FairyRequirement": self.logic_holder.settings.rareware_gb_fairies,
+                "MermaidPearls": self.logic_holder.settings.mermaid_gb_pearls,
+                "JetpacReq": self.logic_holder.settings.medal_requirement,
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
