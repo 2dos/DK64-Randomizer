@@ -4,6 +4,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.WrinklyHints import HintLocation, hints
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, grabText, writeText
 from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.ASMPatcher import writeItemReferenceFlags
 
 
 def writeWrinklyHints(ROM_COPY: LocalROM, file_start_offset, text):
@@ -108,11 +109,14 @@ def wipeHints():
 def PushItemLocations(spoiler, ROM_COPY: LocalROM):
     """Push item hints to ROM."""
     text_arr = []
+    flag_arr = []
     for loc in spoiler.location_references:
         text_arr.append([loc.item_name.upper()])
         for subloc in loc.locations:
             text_arr.append([subloc.upper()])
+        flag_arr.extend(loc.flags)
     writeWrinklyHints(ROM_COPY, getPointerLocation(TableNames.Text, 44), text_arr)
+    writeItemReferenceFlags(ROM_COPY, flag_arr)
 
 
 def replaceIngameText(spoiler, ROM_COPY: LocalROM):

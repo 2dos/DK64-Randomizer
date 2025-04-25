@@ -480,7 +480,7 @@ def GetAccessibleLocations(
                         region_list_dest.nightAccess[kong] = True
 
                 # Deathwarps currently send to the vanilla destination
-                if region.deathwarp and not settings.perma_death:
+                if region.deathwarp and not settings.perma_death and not settings.wipe_file_on_death:
                     destination = region.deathwarp.dest
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
                     if destination not in kongAccessibleRegions[kong] and region.deathwarp.logic(spoiler.LogicVariables):
@@ -3617,11 +3617,13 @@ class ItemReference:
         """Initialize with given parameters."""
         self.item = item
         self.item_name = item_name
+        self.flags = [None] if isinstance(locations, str) else [None] * len(locations)
         self.locations = [locations] if isinstance(locations, str) else locations
 
-    def setLocation(self, index: int, new_name: str):
+    def setLocation(self, index: int, new_name: str, flag: int = None):
         """Set new name for location."""
         self.locations[index] = new_name
+        self.flags[index] = flag
 
 
 def ShuffleMisc(spoiler: Spoiler) -> None:
@@ -3820,7 +3822,7 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
         if settings.no_healing:
             found_incompatibilities += "Cannot turn on 'Water is Lava' whilst disabling healing. "
     if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.angry_caves, False):
-        if settings.perma_death:
+        if settings.perma_death or settings.wipe_file_on_death:
             if settings.damage_amount == DamageAmount.quad or settings.damage_amount == DamageAmount.ohko:
                 found_incompatibilities += "Cannot turn on 'Angry Caves' with a damage modifier higher than double damage with Irondonk enabled. "
     if not settings.is_valid_item_pool():

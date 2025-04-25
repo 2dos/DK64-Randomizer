@@ -31,7 +31,7 @@ static unsigned char key_subtitle_indexes[] = {
 
 void moveTransplant(void) {
 	int size = 126 * sizeof(purchase_struct);
-	copyFromROM(0x1FEF800,&CrankyMoves_New[0][0],&size,0,0,0,0);
+	copyFromROM(0x1FEF000,&CrankyMoves_New[0][0],&size,0,0,0,0);
 }
 
 int isShopEmpty(vendors vendor, int level, int kong) {

@@ -875,7 +875,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                 ref_index = item.new_flag - 0x294
             elif item.new_subitem == Items.ProgressiveSlam:
                 ref_index = item.new_flag - 0x3BC
-            setItemReferenceName(spoiler, item.new_subitem, ref_index, spoiler.LocationList[item.location].name)
+            setItemReferenceName(spoiler, item.new_subitem, ref_index, spoiler.LocationList[item.location].name, item.old_flag)
             # Handle pre-given shops, only ran into if shop owners are in the pool
             if item.old_item in shop_owner_types:
                 if pregiven_shop_owners is None:

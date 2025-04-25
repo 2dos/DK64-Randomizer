@@ -526,3 +526,11 @@ void parseControllerInput(Controller * cont) {
     }
     cont->stickX = -cont->stickX;
 }
+
+void hitlessDeath(void) {
+    WipeFile(FileIndex, 1);
+    resetMap(); // Resets parent chain to prevent SirSmack causing memes
+    LoadGameOver();
+    SaveToFile(0xD, 0, 0, FileIndex, 0);
+    performEEPROMAction(1);
+}

@@ -202,3 +202,10 @@ def hardBosses(ROM_COPY: LocalROM, settings, offset_dict: dict):
         # Fixes a bug if someone pops a balloon whilst K Rool has slipped where the hit doesn't count
         writeFunction(ROM_COPY, 0x8002EF40, Overlay.Boss, "incHitCounter", offset_dict)
         writeValue(ROM_COPY, 0x8002EFAC, Overlay.Boss, 0, offset_dict, 4)
+
+def hitless(ROM_COPY: LocalROM, settings, offset_dict: dict):
+    """Items related to hitless."""
+    if settings.wipe_file_on_death:
+        writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "hitlessDeath", offset_dict)
+        writeFunction(ROM_COPY, 0x807128FC, Overlay.Static, "hitlessDeath", offset_dict)
+        writeFunction(ROM_COPY, 0x807128C8, Overlay.Static, "hitlessDeath", offset_dict)

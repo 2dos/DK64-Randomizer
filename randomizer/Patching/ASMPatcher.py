@@ -242,6 +242,15 @@ def isQoLEnabled(spoiler, misc_change: MiscChangesSelected):
     """Determine if a faster check setting is enabled."""
     return IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, misc_change)
 
+def writeItemReferenceFlags(ROM_COPY: LocalROM, flag_list: list):
+    """Write the list of item reference flags to ROM."""
+    ram_addr = getSym("itemloc_flags")
+    offset_dict = populateOverlayOffsets(ROM_COPY)
+    addr =  getROMAddress(ram_addr, Overlay.Custom, offset_dict)
+    for xi, x in enumerate(flag_list):
+        if x is not None:
+            ROM_COPY.seek(addr + (xi * 2))
+            ROM_COPY.writeMultipleBytes(x, 2)
 
 class MinigameImageLoader:
     """Class to store information regarding the image loader for an 8-bit minigame reward."""
@@ -605,6 +614,7 @@ def patchAssembly(ROM_COPY, spoiler):
     # Boss stuff
     writeHook(ROM_COPY, 0x80028CCC, Overlay.Boss, "KRoolLankyPhaseFix", offset_dict)
     hardBosses(ROM_COPY, settings, offset_dict)
+    hitless(ROM_COPY, settings, offset_dict)
     if settings.shorten_boss:
         writeActorHealth(ROM_COPY, 185, 3)  # Dillo Health 4 -> 3
         writeActorHealth(ROM_COPY, 236, int(3 + (62 * (2 / 3))))  # Dogadon Health 65 -> 44
@@ -736,7 +746,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8073231C, Overlay.Static, "CrashHandler", offset_dict)
     writeFunction(ROM_COPY, 0x807322DC, Overlay.Static, "getFaultedThread", offset_dict)
     # Deathwarp Handle
-    writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "WarpHandle", offset_dict)  # Check if in Helm, in which case, apply transition
+    if not settings.wipe_file_on_death:
+        writeFunction(ROM_COPY, 0x8071292C, Overlay.Static, "WarpHandle", offset_dict)  # Check if in Helm, in which case, apply transition
     writeFunction(ROM_COPY, 0x806AD750, Overlay.Static, "beaverExtraHitHandle", offset_dict)  # Remove buff until we think of something better
 
     if ENABLE_ALL_KONG_TRANSFORMS:

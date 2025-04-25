@@ -3,10 +3,13 @@
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.VendorType import VendorType
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
-from randomizer.Lists.Item import ItemList, NameFromKong
-from randomizer.Patching.Library.Generic import getIceTrapCount
+from randomizer.Lists.Item import ItemList
+from randomizer.Lists.Location import ShopLocationReference
 
 
 class LocationSelection:
@@ -110,6 +113,40 @@ def ShuffleItems(spoiler):
             # Shop locations: Cranky, Funky, Candy, Training Barrels, and BFI
             else:
                 old_flag = -1  # Irrelevant for shop locations
+                # Get flag
+                if item_location.type == Types.Shop:
+                    for level, data in ShopLocationReference.items():
+                        for vendor, loc_list in data.items():
+                            if location_enum in loc_list:
+                                kong = loc_list.index(location_enum)
+                                if kong == 5:
+                                    kong = 0  # shared
+                                handled_level = level
+                                if level == Levels.DKIsles:
+                                    handled_level = 7
+                                if vendor == VendorType.Cranky:
+                                    old_flag = 0x320 + (handled_level * 5) + kong
+                                elif vendor == VendorType.Funky:
+                                    old_flag = 0x320 + ((8 + handled_level) * 5) + kong
+                                elif vendor == VendorType.Candy:
+                                    candy_index = {
+                                        Levels.AngryAztec: 0,
+                                        Levels.FranticFactory: 1,
+                                        Levels.GloomyGalleon: 2,
+                                        Levels.CrystalCaves: 3,
+                                        Levels.CreepyCastle: 4,
+                                    }
+                                    old_flag = 0x320 + ((15 + candy_index[level]) * 5) + kong
+                elif item_location.type == Types.Shockwave:
+                    old_flag = 0x179
+                elif item_location.type == Types.TrainingBarrel:
+                    tbarrel_flags = {
+                        Locations.IslesSwimTrainingBarrel: 0x182,
+                        Locations.IslesBarrelsTrainingBarrel: 0x185,
+                        Locations.IslesOrangesTrainingBarrel: 0x184,
+                        Locations.IslesVinesTrainingBarrel: 0x183,
+                    }
+                    old_flag = tbarrel_flags[location_enum]
                 old_kong = item_location.kong
                 placement_index = item_location.placement_index
             price = 0

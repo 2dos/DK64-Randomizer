@@ -72,7 +72,7 @@ from randomizer.Patching.MiscSetupChanges import (
     updateSwitchsanity,
     remove5DSCameraPoint,
 )
-from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves, parseMoveBlock
+from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
@@ -227,7 +227,7 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0x02C)
         ROM_COPY.write(bin_value)
     for kong in starting_kongs:
-        setItemReferenceName(spoiler, kong, 0, "Starting Kong")
+        setItemReferenceName(spoiler, kong, 0, "Starting Kong", 0)
     ROM_COPY.seek(sav + 0x151)
     ROM_COPY.writeMultipleBytes(spoiler.settings.starting_kong, 1)
 
@@ -313,7 +313,7 @@ def patching_response(spoiler):
     given_moves = []
     if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
         given_moves.extend([39, 40])  # 39 = Camera, 40 = Shockwave
-        setItemReferenceName(spoiler, Items.CameraAndShockwave, 0, "Extra Training")
+        setItemReferenceName(spoiler, Items.CameraAndShockwave, 0, "Extra Training", 0)
     move_bitfields = [0] * 6
     for move in given_moves:
         offset = int(move >> 3)
@@ -591,7 +591,7 @@ def patching_response(spoiler):
     if spoiler.settings.fast_start_beginning_of_game:
         # Write a null move to this spot if fast start beginning of game is on
         ROM_COPY.seek(spoiler.settings.move_location_data + (125 * 6))
-        ROM_COPY.writeMultipleBytes(7, 2)
+        ROM_COPY.writeMultipleBytes(0, 2)
         ROM_COPY.writeMultipleBytes(0, 4)
 
     # ROM Flags
@@ -742,8 +742,7 @@ def patching_response(spoiler):
     updateSwitchsanity(spoiler, ROM_COPY)
     updateRandomSwitches(spoiler, ROM_COPY)  # Has to be after all setup changes that may alter the item type of slam switches
     PushItemLocations(spoiler, ROM_COPY)
-    parseMoveBlock(spoiler, ROM_COPY)  # Has to be after anything which messes with the move block, in this case, randomize_moves and place_randomized_items
-
+    
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         wipeHints()
         PushHints(spoiler, ROM_COPY)

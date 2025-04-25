@@ -240,7 +240,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
         {"map": Maps.FranticFactory, "item_list": [0x14D, 0x14C, 0x14B, 0x14A]},
         {"map": Maps.CastleCrypt, "item_list": [0x247, 0x248, 0x249, 0x24A]},
     ]
-    if not spoiler.settings.perma_death and spoiler.settings.damage_amount not in (
+    if not spoiler.settings.perma_death and not spoiler.settings.wipe_file_on_death and spoiler.settings.damage_amount not in (
         DamageAmount.quad,
         DamageAmount.ohko,
     ):

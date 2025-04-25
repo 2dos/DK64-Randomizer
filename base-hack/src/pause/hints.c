@@ -33,8 +33,8 @@ typedef enum itemloc_subgroups {
 
 typedef struct itemloc_data {
     /* 0x000 */ char* header;
-    /* 0x004 */ unsigned short flags[6];
-    /* 0x010 */ char lengths[6];
+    /* 0x004 */ char lengths[6];
+    /* 0x00A */ char pad[2];
 } itemloc_data;
 
 char hints_initialized = 0;
@@ -49,65 +49,126 @@ static char item_subgroup = 0;
 static char level_hint_text[0x40] = "";
 static char item_loc_text[0x40] = "";
 
+short itemloc_flags[] = {
+    // DK Moves
+    FLAG_SHOPFLAG + (LEVEL_JAPES * 5) + KONG_DK,
+    FLAG_SHOPFLAG + (LEVEL_AZTEC * 5) + KONG_DK,
+    FLAG_SHOPFLAG + (LEVEL_FACTORY * 5) + KONG_DK,
+    FLAG_SHOPFLAG + (8 * 5) + (LEVEL_JAPES * 5) + KONG_DK,
+    FLAG_SHOPFLAG + (8 * 5) + (7 * 5) + ((LEVEL_AZTEC - LEVEL_AZTEC) * 5) + KONG_DK,
+    // Diddy Moves
+    FLAG_SHOPFLAG + (LEVEL_JAPES * 5) + KONG_DIDDY,
+    FLAG_SHOPFLAG + (LEVEL_AZTEC * 5) + KONG_DIDDY,
+    FLAG_SHOPFLAG + (LEVEL_FACTORY * 5) + KONG_DIDDY,
+    FLAG_SHOPFLAG + (8 * 5) + (LEVEL_JAPES * 5) + KONG_DIDDY,
+    FLAG_SHOPFLAG + (8 * 5) + (7 * 5) + ((LEVEL_AZTEC - LEVEL_AZTEC) * 5) + KONG_DIDDY,
+    // Lanky Moves
+    FLAG_SHOPFLAG + (LEVEL_JAPES * 5) + KONG_LANKY,
+    FLAG_SHOPFLAG + (LEVEL_AZTEC * 5) + KONG_LANKY,
+    FLAG_SHOPFLAG + (LEVEL_FACTORY * 5) + KONG_LANKY,
+    FLAG_SHOPFLAG + (8 * 5) + (LEVEL_JAPES * 5) + KONG_LANKY,
+    FLAG_SHOPFLAG + (8 * 5) + (7 * 5) + ((LEVEL_AZTEC - LEVEL_AZTEC) * 5) + KONG_LANKY,
+    // Tiny Moves
+    FLAG_SHOPFLAG + (LEVEL_JAPES * 5) + KONG_TINY,
+    FLAG_SHOPFLAG + (LEVEL_AZTEC * 5) + KONG_TINY,
+    FLAG_SHOPFLAG + (LEVEL_FACTORY * 5) + KONG_TINY,
+    FLAG_SHOPFLAG + (8 * 5) + (LEVEL_JAPES * 5) + KONG_TINY,
+    FLAG_SHOPFLAG + (8 * 5) + (7 * 5) + ((LEVEL_AZTEC - LEVEL_AZTEC) * 5) + KONG_TINY,
+    // Chunky Moves
+    FLAG_SHOPFLAG + (LEVEL_JAPES * 5) + KONG_CHUNKY,
+    FLAG_SHOPFLAG + (LEVEL_AZTEC * 5) + KONG_CHUNKY,
+    FLAG_SHOPFLAG + (LEVEL_FACTORY * 5) + KONG_CHUNKY,
+    FLAG_SHOPFLAG + (8 * 5) + (LEVEL_JAPES * 5) + KONG_CHUNKY,
+    FLAG_SHOPFLAG + (8 * 5) + (7 * 5) + ((LEVEL_AZTEC - LEVEL_AZTEC) * 5) + KONG_CHUNKY,
+    // Gun Upgrades & Fairy Moves
+    FLAG_SHOPFLAG + (8 * 5) + (LEVEL_FUNGI * 5) + KONG_DK, // Homing
+    FLAG_SHOPFLAG + (8 * 5) + (LEVEL_CASTLE * 5) + KONG_DK, // Sniper
+    FLAG_SHOPFLAG + (8 * 5) + (LEVEL_FACTORY * 5) + KONG_DK, // Ammo Belt
+    FLAG_SHOPFLAG + (8 * 5) + (LEVEL_CAVES * 5) + KONG_DK, // Ammo Belt
+    FLAG_ABILITY_SHOCKWAVE, // Camera
+    FLAG_ABILITY_SHOCKWAVE, // Shockwave
+    // Basic Moves
+    FLAG_TBARREL_DIVE,
+    FLAG_TBARREL_ORANGE,
+    FLAG_TBARREL_BARREL,
+    FLAG_TBARREL_VINE,
+    FLAG_ABILITY_CLIMBING,
+    // Instrument Upgrades and Slams
+    FLAG_SHOPFLAG + (8 * 5) + (7 * 5) + ((LEVEL_GALLEON - LEVEL_AZTEC) * 5) + KONG_DK, // Instrument Upgrade
+    FLAG_SHOPFLAG + (8 * 5) + (7 * 5) + (3 * 5) + ((LEVEL_CAVES - LEVEL_CAVES) * 5) + KONG_DK, // Instrument Upgrade
+    FLAG_SHOPFLAG + (8 * 5) + (7 * 5) + (3 * 5) + ((LEVEL_CASTLE - LEVEL_CAVES) * 5) + KONG_DK, // Instrument Upgrade
+    FLAG_ABILITY_SIMSLAM, // Slam
+    FLAG_SHOPFLAG + (LEVEL_FUNGI * 5) + KONG_DK, // Slam
+    FLAG_SHOPFLAG + (LEVEL_CASTLE * 5) + KONG_DK, // Slam
+    // Kongs
+    FLAG_KONG_DK,
+    FLAG_KONG_DIDDY,
+    FLAG_KONG_LANKY,
+    FLAG_KONG_TINY,
+    FLAG_KONG_CHUNKY,
+    // Shopkeepers
+    FLAG_ITEM_CRANKY,
+    FLAG_ITEM_CANDY,
+    FLAG_ITEM_FUNKY,
+    FLAG_ITEM_SNIDE,
+    // Keys
+    FLAG_KEYHAVE_KEY1,
+    FLAG_KEYHAVE_KEY2,
+    FLAG_KEYHAVE_KEY3,
+    FLAG_KEYHAVE_KEY4,
+    FLAG_KEYHAVE_KEY5,
+    FLAG_KEYHAVE_KEY6,
+    FLAG_KEYHAVE_KEY7,
+    FLAG_KEYHAVE_KEY8,
+};
+
 static itemloc_data itemloc_textnames[] = {
     {
-        .header="DONKEY MOVES", 
-        .flags={0x8001, 0x8002, 0x8003, 0x8201, 0x8401, 0}, 
+        .header="DONKEY MOVES",
         .lengths={1, 1, 1, 1, 1, -1}
     }, // 5
     {
-        .header="DIDDY MOVES", 
-        .flags={0x9001, 0x9002, 0x9003, 0x9201, 0x9401, 0}, 
+        .header="DIDDY MOVES",
         .lengths={1, 1, 1, 1, 1, -1}
     }, // 5
     {
-        .header="LANKY MOVES", 
-        .flags={0xA001, 0xA002, 0xA003, 0xA201, 0xA401, 0}, 
+        .header="LANKY MOVES",
         .lengths={1, 1, 1, 1, 1, -1}
     }, // 5
     {
-        .header="TINY MOVES", 
-        .flags={0xB001, 0xB002, 0xB003, 0xB201, 0xB401, 0}, 
+        .header="TINY MOVES",
         .lengths={1, 1, 1, 1, 1, -1}
     }, // 5
     {
-        .header="CHUNKY MOVES", 
-        .flags={0xC001, 0xC002, 0xC003, 0xC201, 0xC401, 0}, 
+        .header="CHUNKY MOVES",
         .lengths={1, 1, 1, 1, 1, -1}
     }, // 5
     {
-        .header="GUN UPGRADES AND FAIRY MOVES", 
-        .flags={0xD202, 0xD203, FLAG_ITEM_BELT_0, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, 0}, 
+        .header="GUN UPGRADES AND FAIRY MOVES",
         .lengths={1, 1, 2, 1, 1, -1}
     }, // 6
     {
-        .header="BASIC MOVES", 
-        .flags={FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CLIMBING, 0}, 
+        .header="BASIC MOVES",
         .lengths={1, 1, 1, 1, 1, -1}
     }, // 5
     {
-        .header="INSTRUMENT UPGRADES AND SLAMS", 
-        .flags={FLAG_ITEM_INS_0, FLAG_ITEM_SLAM_0, 0, 0, 0, 0}, 
+        .header="INSTRUMENT UPGRADES AND SLAMS",
         .lengths={3, 3, -1, -1, -1, -1}
     }, // 6
     {
-        .header="KONGS", 
-        .flags={FLAG_KONG_DK, FLAG_KONG_DIDDY, FLAG_KONG_LANKY, FLAG_KONG_TINY, FLAG_KONG_CHUNKY, 0}, 
+        .header="KONGS",
         .lengths={1, 1, 1, 1, 1, -1}
     }, // 5
     {
-        .header="SHOPKEEPERS", 
-        .flags={FLAG_ITEM_CRANKY, FLAG_ITEM_CANDY, FLAG_ITEM_FUNKY, FLAG_ITEM_SNIDE, 0, 0}, 
+        .header="SHOPKEEPERS",
         .lengths={1, 1, 1, 1, -1, -1}
     }, // 4
     {
-        .header="EARLY KEYS", 
-        .flags={FLAG_KEYHAVE_KEY1, FLAG_KEYHAVE_KEY2, FLAG_KEYHAVE_KEY3, FLAG_KEYHAVE_KEY4, 0, 0}, 
+        .header="EARLY KEYS",
         .lengths={1, 1, 1, 1, -1, -1}
     }, // 5
     {
-        .header="LATE KEYS", 
-        .flags={FLAG_KEYHAVE_KEY5, FLAG_KEYHAVE_KEY6, FLAG_KEYHAVE_KEY7, FLAG_KEYHAVE_KEY8, 0, 0}, 
+        .header="LATE KEYS",
         .lengths={1, 1, 1, 1, -1, -1}
     }, // 5
 };
@@ -376,17 +437,6 @@ Gfx* displayBubble(Gfx* dl) {
     return displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, y, x_scale, y_scale, 0, 0.0f);
 }
 
-int getTiedShopmoveFlag(int flag) {
-    if (flag == FLAG_ITEM_SLAM_0) {
-        return FLAG_SHOPMOVE_SLAM_0;
-    } else if (flag == FLAG_ITEM_INS_0) {
-        return FLAG_SHOPMOVE_INS_0;
-    } else if (flag == FLAG_ITEM_BELT_0) {
-        return FLAG_SHOPMOVE_BELT_0;
-    }
-    return 0;
-}
-
 void initHintFlags(void) {
     unsigned short* hint_clear_write = getFile(GAME_HINT_COUNT << 1, 0x1FFE000);
     unsigned short* hint_reg_write = getFile(GAME_HINT_COUNT << 1, 0x1FFE080);
@@ -499,35 +549,36 @@ Gfx* drawItemLocationScreen(Gfx* dl, int level_x) {
     int item_loc_x = 200;
     mtx_counter = 0;
     int head = 0;
-    int k = 0;
-    while (k < item_subgroup) {
+    int flag_head = 0;
+    for (int k = 0; k < item_subgroup; k++) {
         for (int l = 0; l < 6; l++) {
-            head += itemloc_textnames[k].lengths[l];
+            int length = itemloc_textnames[k].lengths[l];
+            head += length;
+            if (length > -1) {
+                flag_head += length;
+            }
             head += 1;
         }
-        k++;
     }
-    int i = 0;
     int y = 140;
-    while (i < 6) {
+    for (int i = 0; i < 6; i++) {
         int size = itemloc_textnames[(int)item_subgroup].lengths[i];
         if (size == -1) {
-            break;
+            return dl;
         }
         dl = drawHintText(dl, itemloc_pointers[head], item_loc_x, y, 0xFF, 0, 0);
         for (int j = 0; j < size; j++) {
             y += 40;
             char* str = itemloc_pointers[head + 1 + j];
-            short base_flag = itemloc_textnames[(int)item_subgroup].flags[i];
-            short flag = base_flag + j;
+            short flag = itemloc_flags[flag_head + j];
             if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
                 str = unk_string;
             }
             dl = drawHintText(dl, str, item_loc_x, y, 0xC0, 0, 0);
         }
         head += 1 + size;
+        flag_head += size;
         y += 60;
-        i++;
     }
     return dl;
 }
