@@ -133,7 +133,7 @@ def load_base_rom(default_file: None = None) -> None:
         global patchedRom
         global og_patched_rom
         if patchedRom is None and default_file is None:
-            print("Loading base rom")
+            # print("Loading base rom")
             from vidua import bps
 
             patch = open("./static/patches/shrink-dk64.bps", "rb")

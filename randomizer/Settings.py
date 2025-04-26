@@ -205,7 +205,7 @@ class Settings:
         try:
             logger = logging.getLogger(__name__)
             self.settings_string = encrypt_settings_string_enum(form_data)
-            logger.warning("Using settings string: " + self.settings_string)
+            # logger.warning("Using settings string: " + self.settings_string)
         except Exception as ex:
             raise Ex.SettingsIncompatibleException("Settings string is in an invalid state. Try applying a preset and recreating your changes.")
 
