@@ -472,7 +472,7 @@ class DK64Client:
     async def is_victory(self):
         """Check if the game is in a victory state."""
         return self.readFlag(DK64MemoryMap.end_credits) == 1
-    
+
     async def get_current_map(self):
         """Get the current map."""
         return self.n64_client.read_u32(DK64MemoryMap.current_map)
@@ -734,14 +734,7 @@ class DK64Context(CommonContext):
 
         async def map_change(map_id):
             """Send a current map id on map change."""
-            await self.send_msgs([{
-                "cmd": "Set",
-                "key": f"DK64Rando_{self.team}_{self.slot}_map",
-                "default": hex(0),
-                "want_reply": False,
-                "operations": [{"operation": "replace",
-                    "value": map_id}]
-            }])
+            await self.send_msgs([{"cmd": "Set", "key": f"DK64Rando_{self.team}_{self.slot}_map", "default": hex(0), "want_reply": False, "operations": [{"operation": "replace", "value": map_id}]}])
 
         def on_item_get(dk64_checks):
             """Handle an item get."""
