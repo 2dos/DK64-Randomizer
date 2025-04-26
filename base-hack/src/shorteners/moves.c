@@ -38,10 +38,8 @@ int initFile_getBeltLevel(int inc_training) {
 		}
 	}
 	if (inc_training) {
-		for (int i = 0; i < 4; i++) {
-			if (initFile_checkTraining(REQITEM_MOVE, 7, -1)) {
-				belt_level += 1;
-			}
+		if (initFile_checkTraining(REQITEM_MOVE, 7, -1)) {
+			belt_level += 1;
 		}
 	}
 	return belt_level;
@@ -56,10 +54,8 @@ int initFile_getInsUpgradeLevel(int inc_training) {
 		}
 	}
 	if (inc_training) {
-		for (int i = 0; i < 6; i++) {
-			if (initFile_checkTraining(REQITEM_MOVE, 9, -1)) {
-				instrument_upgrade_level += 1;
-			}
+		if (initFile_checkTraining(REQITEM_MOVE, 9, -1)) {
+			instrument_upgrade_level += 1;
 		}
 	}
 	return instrument_upgrade_level;
