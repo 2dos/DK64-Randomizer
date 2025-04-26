@@ -12,8 +12,8 @@ would in the vanilla game.
 
 In addition, the level entrances from DK Isles have been swapped around. This means that you may find Creepy Castle where the entrance for Jungle Japes normally is, and so on.
 
-Due to some technical constraints brought on by the Archipelago framework, a number of changes have been made from the regular Donkey Kong 64 randomizer logic, including:
-- Tag Anywhere / freely switching Kongs is considered in logic
+Due to some current technical constraints brought on by the Archipelago framework, a number of changes have been made from the regular Donkey Kong 64 randomizer logic, including:
+- Tag Anywhere is considered in logic
 - Purchases from shopkeepers (Cranky/Funky/Candy) are free
 - B. Lockers costs are 0 Golden Bananas for all levels, except Hideout Helm which needs 60 Golden Bananas
 - Banana Medal checks are sent after collecting 40 of the same colored bananas in a world, down from 75
@@ -55,9 +55,11 @@ Currently, two goals can be selected:
 
 ## Which items can be in another player's world?
 
-All of the major items listed above can be randomized into other games. In addition, there are filler items that refill your health or consumable "ammo" for certain moves, including gun ammo, Orange Grenades, Crystal Coconuts, Banana Camera film, and instrument energy. Traps are also available in the item pool, but trap spawning can be reduced or disabled entirely in your YAML settings.
+All of the major items listed above can be randomized into other games. In addition, there are filler items that refill your health or consumable "ammo" for certain moves, including gun ammo, Orange Grenades, Crystal Coconuts, Banana Camera film, and instrument energy.
 
-Due to current technical restraints, the rewards for returning the Blast-o-Matic blueprints to Snide will always be Golden Bananas.
+Traps are also available in the item pool, but trap spawning can be reduced or disabled entirely in your YAML settings.
+
+Due to technical restraints, the rewards for returning the Blast-o-Matic blueprints to Snide will always be Golden Bananas.
 
 ## What does another world's item look like in Donkey Kong 64?
 
