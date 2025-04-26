@@ -52,7 +52,7 @@ Currently, two goals can be selected:
 - Rainbow Coin dirt patches
 - Kasplat item drops
 - DK Arcade / Jetpac rewards
-- Boss rewards
+- Boss / Battle Crown Arena rewards
 
 ## Which items can be in another player's world?
 
