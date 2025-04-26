@@ -202,6 +202,7 @@ current_total.cfg
 last_generated_time.cfg
 generated_seeds/*
 local_presets.json
+batch_spoilers/*
 base-hack/build/dir_hash.txt
 base-hack/build/skeleton/*.png
 /crowd_control/SDK/*
