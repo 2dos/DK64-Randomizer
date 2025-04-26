@@ -1,7 +1,3 @@
 # Donkey Kong 64 Randomizer Setup Guide
 
-## Required Software
-
-- [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases). Make sure to check the box for `Donkey Kong 64 Patch Setup`
-
-TBD
+Please check the [Archipelago page on the DK64 Randomizer wiki.](https://dk64randomizer.com/wiki/index.html?title=Archipelago#setup-guide).
