@@ -35,6 +35,7 @@ Currently, two goals can be selected:
 - Golden Bananas
 - Banana Fairies
 - Banana Medals
+- Battle Crowns
 - All Keys for K. Lumsy's cage, except Key 8
 - Blast-o-Matic blueprints
 - Instruments, guns and respective upgrades
