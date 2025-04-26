@@ -15,7 +15,7 @@ In addition, the level entrances from DK Isles have been swapped around. This me
 Due to some technical constraints brought on by the Archipelago framework, a number of changes have been made from the regular Donkey Kong 64 randomizer logic, including:
 - Tag Anywhere / freely switching Kongs is considered in logic
 - Purchases from shopkeepers (Cranky/Funky/Candy) are free
-- B. Lockers costs are now 0 Golden Bananas for all levels, except Hideout Helm which needs 60 Golden Bananas
+- B. Lockers costs are 0 Golden Bananas for all levels, except Hideout Helm which needs 60 Golden Bananas
 - Banana Medal checks are sent after collecting 40 of the same colored bananas in a world, down from 75
 
 These restrictions may be changed in future updates to this APWorld.
