@@ -203,6 +203,11 @@ WARPS_ISLES = [
     0x1B9,  # FLAG_WARP_ISLES_W5_FAR,
 ]
 
+WARPS_HELM_LOBBY = [
+    0x1A1,  # Near Warp
+    0x1A2,  # Far Warp
+]
+
 WARPS_TOTAL = [
     WARPS_JAPES,
     WARPS_AZTEC,
@@ -212,6 +217,7 @@ WARPS_TOTAL = [
     WARPS_CAVES,
     WARPS_CASTLE,
     WARPS_ISLES,
+    WARPS_HELM_LOBBY,
 ]
 
 
@@ -1850,6 +1856,9 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if settings.activate_all_bananaports == ActivateAllBananaports.isles:
         file_init_flags.extend(WARPS_ISLES.copy())
+    elif settings.activate_all_bananaports == ActivateAllBananaports.isles_inc_helm_lobby:
+        file_init_flags.extend(WARPS_ISLES.copy())
+        file_init_flags.extend(WARPS_HELM_LOBBY.copy())
     elif settings.activate_all_bananaports == ActivateAllBananaports.all:
         for lvl in WARPS_TOTAL:
             file_init_flags.extend(lvl.copy())

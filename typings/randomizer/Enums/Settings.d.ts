@@ -2,6 +2,7 @@ export enum ActivateAllBananaports {
     off = 0,
     all = 1,
     isles = 2,
+    isles_inc_helm_lobby = 3,
 }
 
 export enum BananaportRando {
