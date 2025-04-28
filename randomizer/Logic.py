@@ -285,7 +285,7 @@ class LogicVarHolder:
                 if warp_data.map_id in activated_warp_maps:
                     self.Events.append(warp_data.event)
         if self.settings.activate_all_bananaports in (ActivateAllBananaports.all, ActivateAllBananaports.isles_inc_helm_lobby):
-            self.Events.extend(Events.HelmLobbyW1aTagged, Events.HelmLobbyW1bTagged)
+            self.Events.extend([Events.HelmLobbyW1aTagged, Events.HelmLobbyW1bTagged])
 
         # Colored banana and coin arrays
         # Colored bananas as 9 arrays of 5 (8 levels for 5 kongs, Helm is level index 7, so skip this)
