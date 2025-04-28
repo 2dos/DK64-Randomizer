@@ -22,6 +22,7 @@ class DK64MemoryMap:
     EEPROM = 0x807ECEA8
     CurrentGamemode = 0x80755314
     NextGamemode = 0x80755318
+    current_map = 0x8076A0A8
     safety_text_timer = 0x02A
     end_credits = 0x1B0
     send_death = 0x05C  # If donk player dies. Set this back to 0 upon receiving that the donk player has died

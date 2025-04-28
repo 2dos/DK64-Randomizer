@@ -48,6 +48,7 @@ class DK64Client:
     send_mode = 1
     ENABLE_DEATHLINK = False
     current_speed = 130
+    current_map = 0
 
     async def wait_for_pj64(self):
         """Wait for PJ64 to connect to the game."""
@@ -472,6 +473,10 @@ class DK64Client:
         """Check if the game is in a victory state."""
         return self.readFlag(DK64MemoryMap.end_credits) == 1
 
+    async def get_current_map(self):
+        """Get the current map."""
+        return self.n64_client.read_u32(DK64MemoryMap.current_map)
+
     def get_current_deliver_count(self):
         """Get the current deliver count."""
         data = self.n64_client.read_u16(self.memory_pointer + DK64MemoryMap.counter_offset)
@@ -486,12 +491,15 @@ class DK64Client:
                 return data
         return data
 
-    async def main_tick(self, item_get_cb, win_cb, deathlink_cb):
+    async def main_tick(self, item_get_cb, win_cb, deathlink_cb, map_change_cb):
         """Game loop tick."""
         await self.readChecks(item_get_cb)
         # await self.item_tracker.readItems()
         if await self.is_victory():
             await win_cb()
+        if await self.get_current_map() != self.current_map:
+            self.current_map = await self.get_current_map()
+            await map_change_cb(self.current_map)
 
         def check_safe_death():
             """Check if it's safe to send a death."""
@@ -724,6 +732,10 @@ class DK64Context(CommonContext):
             """Handle a deathlink."""
             await self.send_deathlink()
 
+        async def map_change(map_id):
+            """Send a current map id on map change."""
+            await self.send_msgs([{"cmd": "Set", "key": f"DK64Rando_{self.team}_{self.slot}_map", "default": hex(0), "want_reply": False, "operations": [{"operation": "replace", "value": map_id}]}])
+
         def on_item_get(dk64_checks):
             """Handle an item get."""
             built_checks_list = []
@@ -775,7 +787,7 @@ class DK64Context(CommonContext):
                     if status is False:
                         await asyncio.sleep(0.5)
                         continue
-                    await self.client.main_tick(on_item_get, victory, deathlink)
+                    await self.client.main_tick(on_item_get, victory, deathlink, map_change)
                     await asyncio.sleep(1)
                     now = time.time()
                     if self.last_resend + 0.5 < now:
