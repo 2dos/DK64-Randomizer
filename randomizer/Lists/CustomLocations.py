@@ -377,6 +377,7 @@ CustomLocations = {
             rot_y=3305,
             max_size=64,
             logic_region=Regions.JapesUselessSlope,
+            banned_types=[LocationTypes.MelonCrate],
             group=2,
         ),
         CustomLocation(
