@@ -31,7 +31,7 @@ Currently, two goals can be selected:
 
 ## What items and locations get shuffled?
 
-The locations of the following items will be shuffled from their normal locations:
+The locations of the following items will be shuffled:
 
 - Playable Kongs
 - Golden Bananas
@@ -44,6 +44,7 @@ The locations of the following items will be shuffled from their normal location
 - Training Grounds moves
 - Moves purchased from shops
 - The Banana Fairy Camera
+- The Shockwave attack
 - The Bean in Fungi Forest
 - The Pearls in Gloomy Galleon
 - The Nintendo and Rareware coins
