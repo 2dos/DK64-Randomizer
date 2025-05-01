@@ -206,3 +206,5 @@ class Events(IntEnum):
     HelmLobbyTraversable = 203
     JapesAccessToCannon = 204
     AirSpaceEntered = 205
+    HelmLobbyW1aTagged = 206
+    HelmLobbyW1bTagged = 207

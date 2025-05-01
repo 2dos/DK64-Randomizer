@@ -2676,8 +2676,7 @@ ColoredBananaGroupList = [
         map_id=Maps.HideoutHelmLobby,
         name="Far W1",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.HideoutHelmLobby,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.can_use_vines,
+        region=Regions.HideoutHelmLobbyPastVines,
         locations=[
             [5, 1.0, 454, 216, 1013],
         ],
