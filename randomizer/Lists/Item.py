@@ -273,6 +273,7 @@ ItemList = {
     Items.CastleLankyHint: Item("Castle Lanky Hint", False, Types.Hint, Kongs.lanky, [Levels.CreepyCastle]),
     Items.CastleTinyHint: Item("Castle Tiny Hint", False, Types.Hint, Kongs.tiny, [Levels.CreepyCastle]),
     Items.CastleChunkyHint: Item("Castle Chunky Hint", False, Types.Hint, Kongs.chunky, [Levels.CreepyCastle]),
+    Items.ArchipelagoItem: Item("Archipelago Item", False, Types.ArchipelagoItem, Kongs.any),
     Items.BananaHoard: Item("Banana Hoard", True, Types.Constant, Kongs.any),
 }
 

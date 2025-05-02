@@ -13,7 +13,7 @@ jobs:
     - name: Setup python
       uses: actions/setup-python@v4.1.0
       with:
-          python-version: 3.10.9
+          python-version: 3.12.0
           architecture: x64
 
     - name: Install packages
@@ -26,6 +26,9 @@ jobs:
         npm install
         node_modules/nunjucks/bin/precompile templates/ > ./static/js/compile_templates.js
         rm -rf ./node_modules
+
+    - name: Build APworld file
+      run: python3 ./tools/package_apworld.py
 
     - name: Build minified versions
       run: python3 ./tools/prepare_live.py

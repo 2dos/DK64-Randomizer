@@ -1,7 +1,5 @@
 """Apply Boss Locations."""
 
-import random
-
 from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import CrownEnemyDifficulty, DamageAmount, WinConditionComplex
 from randomizer.Lists.EnemyTypes import EnemyMetaData, enemy_location_list
@@ -362,14 +360,14 @@ def getBalancedCrownEnemyRando(spoiler, crown_setting: CrownEnemyDifficulty, dam
     for map_id in enemy_swaps_library:
         difficulty = getCrownEnemyDifficultyFromMap(spoiler.settings, map_id)
         if difficulty == CrownEnemyDifficulty.easy:
-            enemy_swaps_library[map_id].append(random.choice(disruptive_max_1))
+            enemy_swaps_library[map_id].append(spoiler.settings.random.choice(disruptive_max_1))
             if oops_all_get_out is True:
                 enemy_swaps_library[map_id].append(Enemies.GetOut)
             else:
-                enemy_swaps_library[map_id].append(random.choice(disruptive_0))
-            enemy_swaps_library[map_id].append(random.choice(disruptive_0))
+                enemy_swaps_library[map_id].append(spoiler.settings.random.choice(disruptive_0))
+            enemy_swaps_library[map_id].append(spoiler.settings.random.choice(disruptive_0))
             if map_id == Maps.GalleonCrown or map_id == Maps.LobbyCrown or map_id == Maps.HelmCrown:
-                enemy_swaps_library[map_id].append(random.choice(disruptive_0))
+                enemy_swaps_library[map_id].append(spoiler.settings.random.choice(disruptive_0))
         elif difficulty == CrownEnemyDifficulty.medium:
             new_enemy = 0
             count_disruptive = 0
@@ -382,21 +380,21 @@ def getBalancedCrownEnemyRando(spoiler, crown_setting: CrownEnemyDifficulty, dam
                     new_enemy = Enemies.GetOut
                 elif count_disruptive == 0:
                     if count_kasplats < 2:
-                        new_enemy = random.choice(every_enemy)
+                        new_enemy = spoiler.settings.random.choice(every_enemy)
                     elif count_kasplats == 2:
-                        new_enemy = random.choice(disruptive_max_1)
+                        new_enemy = spoiler.settings.random.choice(disruptive_max_1)
                     elif count_kasplats == 3:
-                        new_enemy = random.choice(disruptive_0)
+                        new_enemy = spoiler.settings.random.choice(disruptive_0)
                 elif count_disruptive == 1:
                     if count_kasplats < 2:
-                        new_enemy = random.choice(disruptive_max_1)
+                        new_enemy = spoiler.settings.random.choice(disruptive_max_1)
                     elif count_kasplats == 2:
-                        new_enemy = random.choice(disruptive_0)
+                        new_enemy = spoiler.settings.random.choice(disruptive_0)
                 elif count_disruptive == 2:
                     if count_kasplats == 0:
-                        new_enemy = random.choice(disruptive_at_most_kasplat)
+                        new_enemy = spoiler.settings.random.choice(disruptive_at_most_kasplat)
                     elif count_kasplats == 1:
-                        new_enemy = random.choice(disruptive_0)
+                        new_enemy = spoiler.settings.random.choice(disruptive_0)
                 if count_kasplats > 3 or (count_kasplats > 2 and count_disruptive > 1) or (count_kasplats == 2 and count_disruptive == 2):
                     print("This is a mistake in the crown enemy algorithm. Report this to the devs.")
                     new_enemy = Enemies.BeaverGold
@@ -418,7 +416,7 @@ def getBalancedCrownEnemyRando(spoiler, crown_setting: CrownEnemyDifficulty, dam
                 else:
                     if get_out_spawned_this_hard_map:
                         legacy_hard_mode_copy = [possible_enemy for possible_enemy in legacy_hard_mode_copy if possible_enemy != Enemies.GetOut]
-                    enemy_to_place = random.choice(legacy_hard_mode_copy)
+                    enemy_to_place = spoiler.settings.random.choice(legacy_hard_mode_copy)
                     if enemy_to_place in ANNOYING_ENEMIES:
                         no_annoying_enemies = [e for e in legacy_hard_mode_copy if e not in ANNOYING_ENEMIES]
                         if len(no_annoying_enemies) > 0:  # Make sure we're not going to be picking from an empty list
@@ -429,7 +427,7 @@ def getBalancedCrownEnemyRando(spoiler, crown_setting: CrownEnemyDifficulty, dam
     # one last shuffle, to make sure any enemy can spawn in any spot
     for map_id in enemy_swaps_library:
         if len(enemy_swaps_library[map_id]) > 0:
-            random.shuffle(enemy_swaps_library[map_id])
+            spoiler.settings.random.shuffle(enemy_swaps_library[map_id])
     return enemy_swaps_library
 
 
@@ -467,7 +465,7 @@ def writeEnemy(spoiler, ROM_COPY: LocalROM, cont_map_spawner_address: int, new_e
         if (cont_map_id in crown_maps or cont_map_id in minigame_maps_total) and EnemyMetaData[new_enemy_id].air:
             height = 300
             if cont_map_id in crown_maps:
-                height = int(random.uniform(250, 300))
+                height = int(spoiler.settings.random.uniform(250, 300))
             ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0x6)
             ROM_COPY.writeMultipleBytes(height, 2)
         if cont_map_id in crown_maps and new_enemy_id == Enemies.GetOut:
@@ -478,7 +476,7 @@ def writeEnemy(spoiler, ROM_COPY: LocalROM, cont_map_spawner_address: int, new_e
                 damage_amts = {DamageAmount.double: 2, DamageAmount.quad: 4, DamageAmount.ohko: 12}
                 if spoiler.settings.damage_amount in damage_amts:
                     damage_mult = damage_amts[spoiler.settings.damage_amount]
-                get_out_timer = random.randint(int(crown_timer / (12 / damage_mult)) + 1, crown_timer - 1)
+                get_out_timer = spoiler.settings.random.randint(int(crown_timer / (12 / damage_mult)) + 1, crown_timer - 1)
             if get_out_timer == 0:
                 get_out_timer = 1
             ROM_COPY.writeMultipleBytes(get_out_timer, 1)
@@ -495,7 +493,7 @@ def writeEnemy(spoiler, ROM_COPY: LocalROM, cont_map_spawner_address: int, new_e
                     if spoiler.settings.randomize_enemy_sizes:
                         lower_b = int(scale * 0.3)
                         upper_b = min(255, int(1.5 * scale))
-                        chosen_scale = random.randint(lower_b, upper_b)
+                        chosen_scale = spoiler.settings.random.randint(lower_b, upper_b)
                         ROM_COPY.writeMultipleBytes(chosen_scale, 1)
                     elif spoiler.settings.normalize_enemy_sizes:
                         ROM_COPY.writeMultipleBytes(scale, 1)
@@ -520,10 +518,10 @@ def writeEnemy(spoiler, ROM_COPY: LocalROM, cont_map_spawner_address: int, new_e
                 max_speed = EnemyMetaData[new_enemy_id].max_speed
                 if min_speed > 0 and max_speed > 0:
                     ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xD)
-                    agg_speed = random.randint(min_speed, max_speed)
+                    agg_speed = spoiler.settings.random.randint(min_speed, max_speed)
                     ROM_COPY.writeMultipleBytes(agg_speed, 1)
                     ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xC)
-                    ROM_COPY.writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
+                    ROM_COPY.writeMultipleBytes(spoiler.settings.random.randint(min_speed, agg_speed), 1)
         if cont_map_id in bbbarrage_maps and ENABLE_BBBARRAGE_ENEMY_RANDO:
             # Reduce Speeds
             ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xC)
@@ -564,7 +562,7 @@ def randomize_enemies_0(spoiler):
                 data[map] = []
                 noise_management_dict[map] = 0
             sound_safeguard = noise_management_dict[map] > 2
-            new_enemy = enemy_location_list[loc].placeNewEnemy(spoiler.settings.enemies_selected, True, sound_safeguard)
+            new_enemy = enemy_location_list[loc].placeNewEnemy(spoiler.settings.random, spoiler.settings.enemies_selected, True, sound_safeguard)
             if map == Maps.ForestAnthill or not enemy_location_list[loc].respawns and EnemyMetaData[new_enemy].audio_engine_burden:
                 noise_management_dict[map] += 1
             if enemy_location_list[loc].respawns:
@@ -659,7 +657,7 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
             for enemy_class in enemy_classes:
                 arr = []
                 for x in range(spawner_count):
-                    arr.append(random.choice(enemy_placement_classes[enemy_class]))
+                    arr.append(spoiler.settings.random.choice(enemy_placement_classes[enemy_class]))
                 enemy_swaps[enemy_class] = arr
             offset += 2
             for _ in range(spawner_count):
@@ -696,13 +694,13 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                     tied_enemy_list = minigame_enemies_beavers.copy()
                 for spawner in vanilla_spawners:
                     if spawner.enemy_id in tied_enemy_list:
-                        new_enemy_id = random.choice(tied_enemy_list)
+                        new_enemy_id = spoiler.settings.random.choice(tied_enemy_list)
                         # Balance beaver bother so it's a 4:1 ratio of blue to gold beavers, guarantee 1 gold
                         if cont_map_id in minigame_maps_beavers:
                             if spawner.index == 1:
                                 new_enemy_id = Enemies.BeaverGold
                             else:
-                                selection = random.uniform(0, 1)
+                                selection = spoiler.settings.random.uniform(0, 1)
                                 new_enemy_id = Enemies.BeaverBlue
                                 if selection < 0.2:
                                     new_enemy_id = Enemies.BeaverGold
@@ -716,7 +714,7 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                 }
                 difficulty = getCrownEnemyDifficultyFromMap(spoiler.settings, cont_map_id)
                 low_limit = limits.get(difficulty, 5)
-                crown_timer = random.randint(low_limit, low_limit + 30)
+                crown_timer = spoiler.settings.random.randint(low_limit, low_limit + 30)
                 # Place Enemies
                 for spawner in vanilla_spawners:
                     if spawner.enemy_id in crown_enemies:

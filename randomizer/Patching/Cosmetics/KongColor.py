@@ -1,9 +1,6 @@
 """All code related to changing the color of kongs."""
 
 import js
-import zlib
-import gzip
-import random
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, KongModels
 from randomizer.Settings import Settings
@@ -203,7 +200,7 @@ def writeKongColors(settings: Settings, ROM_COPY: ROM):
                         if base_setting in zone_to_colors:
                             color = zone_to_colors[base_setting]
                         else:
-                            color = f"#{format(random.randint(0, 0xFFFFFF), '06x')}"
+                            color = f"#{format(settings.random.randint(0, 0xFFFFFF), '06x')}"
                             zone_to_colors[base_setting] = color
                     # if this palette color is not randomized (but might be a custom color) and isn't krusha's kong indicator:
                     elif palette.fill_type != PaletteFillType.kong:

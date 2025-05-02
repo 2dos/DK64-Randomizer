@@ -1,6 +1,5 @@
 """Randomize puzzles."""
 
-import random
 import math
 from enum import IntEnum, auto
 from randomizer.Enums.Maps import Maps
@@ -11,11 +10,11 @@ from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Enums.Settings import FasterChecksSelected, PuzzleRando
 
 
-def chooseSFX():
+def chooseSFX(rando):
     """Choose random SFX from bank of acceptable SFX."""
     banks = [[98, 138], [166, 252], [398, 411], [471, 476], [519, 535], [547, 575], [614, 631], [644, 650]]
-    bank = random.choice(banks)
-    return random.randint(bank[0], bank[1])
+    bank = rando.choice(banks)
+    return rando.randint(bank[0], bank[1])
 
 
 def shiftCastleMinecartRewardZones(ROM_COPY: LocalROM):
@@ -81,7 +80,7 @@ class RaceBound:
         self.area = area
         self.placement_radius = 80
 
-    def getPoints(self, y_level: int, placement_bubbles: list) -> list:
+    def getPoints(self, random, y_level: int, placement_bubbles: list) -> list:
         """Get list of points."""
         if self.area == CarRaceArea.null:
             arr = []
@@ -124,7 +123,7 @@ class RaceBound:
             return [(1565, 1113, 625)]
         return []
 
-    def getAngle(self) -> int:
+    def getAngle(self, random) -> int:
         """Get angle for a checkpoint."""
         if self.area == CarRaceArea.castle_car_start_finish:
             return 0
@@ -144,7 +143,7 @@ class RaceBound:
                 return new_angle
 
 
-def writeRandomCastleCarRace(ROM_COPY: LocalROM):
+def writeRandomCastleCarRace(random, ROM_COPY: LocalROM):
     """Write random castle car race pathing."""
     # Castle Car Race
     placement_bubbles = []
@@ -176,13 +175,13 @@ def writeRandomCastleCarRace(ROM_COPY: LocalROM):
             y_level = 1113
         elif bound.area == CarRaceArea.ramp_down:
             y_level = 1026
-        new_points = bound.getPoints(y_level, placement_bubbles)
+        new_points = bound.getPoints(random, y_level, placement_bubbles)
         if bound.area in (CarRaceArea.null, CarRaceArea.castle_car_start_finish):
             for i in range(bound.checkpoint_count):
                 local_bytes = []
                 for j in range(3):
                     local_bytes.extend([(new_points[i][j] & 0xFF00) >> 8, new_points[i][j] & 0xFF])
-                angle = bound.getAngle()
+                angle = bound.getAngle(random)
                 angle_rad = (angle / 2048) * math.pi
                 local_bytes.extend([(angle & 0xFF00) >> 8, angle & 0xFF])
                 s_angle = int(float_to_hex(math.sin(angle_rad)), 16)
@@ -433,7 +432,7 @@ class PuzzleRandoBound:
         elif puzzle_setting == PuzzleRando.hard:
             selected_lower = upper_mid
             selected_upper = upper
-        self.selected = random.randint(selected_lower, selected_upper)
+        self.selected = spoiler.settings.random.randint(selected_lower, selected_upper)
         return self.selected
 
 
@@ -518,25 +517,25 @@ def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
         chosen_sounds = []
         for matching_head in range(8):
             ROM_COPY.seek(sav + 0x15C + (2 * matching_head))
-            sfx = chooseSFX()
+            sfx = chooseSFX(spoiler.settings.random)
             while sfx in chosen_sounds:
-                sfx = chooseSFX()
+                sfx = chooseSFX(spoiler.settings.random)
             chosen_sounds.append(sfx)
             ROM_COPY.writeMultipleBytes(sfx, 2)
         for piano_item in range(7):
             ROM_COPY.seek(sav + 0x16C + piano_item)
-            key = random.randint(0, 5)
+            key = spoiler.settings.random.randint(0, 5)
             ROM_COPY.writeMultipleBytes(key, 1)
         spoiler.dk_face_puzzle = [None] * 9
         spoiler.chunky_face_puzzle = [None] * 9
         for face_puzzle_square in range(9):
-            value = random.randint(0, 3)
+            value = spoiler.settings.random.randint(0, 3)
             if face_puzzle_square == 8:
-                value = random.choice([0, 1, 3])  # Lanky for this square glitches out the puzzle. Nice going Loser kong
+                value = spoiler.settings.random.choice([0, 1, 3])  # Lanky for this square glitches out the puzzle. Nice going Loser kong
             spoiler.dk_face_puzzle[face_puzzle_square] = value
-            value = random.randint(0, 3)
+            value = spoiler.settings.random.randint(0, 3)
             if face_puzzle_square == 2:
-                value = random.choice([0, 1, 3])  # Lanky for this square glitches out the puzzle. Nice going Loser kong again
+                value = spoiler.settings.random.choice([0, 1, 3])  # Lanky for this square glitches out the puzzle. Nice going Loser kong again
             spoiler.chunky_face_puzzle[face_puzzle_square] = value
         # Arcade Level Order Rando
         arcade_levels = ["25m", "50m", "75m", "100m"]
@@ -546,7 +545,7 @@ def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
             "75m": 3,
             "100m": 2,
         }
-        random.shuffle(arcade_levels)
+        spoiler.settings.random.shuffle(arcade_levels)
         # Make sure 75m isn't in the first 2 levels if faster arcade is enabled because 75m is hard
         if IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.arcade):
             for x in range(2):
@@ -585,31 +584,31 @@ def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
             map_spawners = getPointerLocation(TableNames.Spawners, map_index)
             map_data = race_data[map_index]
             if map_data["start_angle"] is None:
-                initial_angle = random.randint(0, 359)
+                initial_angle = spoiler.settings.random.randint(0, 359)
             else:
                 initial_angle = map_data["start_angle"]
             previous_offset = None
             for point in range(map_data["count"]):
                 ROM_COPY.seek(map_spawners + map_data["offset"] + (point * 0xA))
                 if previous_offset is None:
-                    angle_offset = random.randint(-90, 90)
+                    angle_offset = spoiler.settings.random.randint(-90, 90)
                 else:
-                    angle_magnitude = random.randint(0, 90)
+                    angle_magnitude = spoiler.settings.random.randint(0, 90)
                     direction = -1
                     if previous_offset > 0:
                         direction = 1
-                    change_direction = random.randint(0, 3) == 0
+                    change_direction = spoiler.settings.random.randint(0, 3) == 0
                     if change_direction:
                         direction *= -1
                     angle_offset = direction * angle_magnitude
                 previous_offset = angle_offset
                 initial_angle += angle_offset
-                radius = random.randint(map_data["radius"][0], map_data["radius"][1])
+                radius = spoiler.settings.random.randint(map_data["radius"][0], map_data["radius"][1])
                 angle_rad = (initial_angle / 180) * math.pi
                 x = int(map_data["center_x"] + (radius * math.sin(angle_rad)))
-                y = random.randint(map_data["y"][0], map_data["y"][1])
+                y = spoiler.settings.random.randint(map_data["y"][0], map_data["y"][1])
                 z = int(map_data["center_z"] + (radius * math.cos(angle_rad)))
                 ROM_COPY.writeMultipleBytes(x, 2)
                 ROM_COPY.writeMultipleBytes(y, 2)
                 ROM_COPY.writeMultipleBytes(z, 2)
-        writeRandomCastleCarRace(ROM_COPY)
+        writeRandomCastleCarRace(spoiler.settings.random, ROM_COPY)

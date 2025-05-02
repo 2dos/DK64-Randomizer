@@ -1,7 +1,5 @@
 """Select CB Location selection."""
 
-import random
-
 import js
 import randomizer.CollectibleLogicFiles.AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle
@@ -167,11 +165,11 @@ def ShuffleCBs(spoiler):
                     balloon_upper = min(int(balloons_left / (levels_to_populate - level_index)) + 3, int(balloons_left / global_divisor))
                 balloon_lst = level_data[level]["balloons"].copy()
                 selected_balloon_count = min(
-                    random.randint(min(balloon_lower, balloon_upper), max(balloon_lower, balloon_upper)),
+                    spoiler.settings.random.randint(min(balloon_lower, balloon_upper), max(balloon_lower, balloon_upper)),
                     len(balloon_lst),
                 )
                 # selected_balloon_count = 22 # Test all balloon locations
-                random.shuffle(balloon_lst)  # TODO: Maybe make this more advanced?
+                spoiler.settings.random.shuffle(balloon_lst)  # TODO: Maybe make this more advanced?
                 # selects all balloons
                 placed_balloons = 0
                 for balloon in balloon_lst:
@@ -181,7 +179,7 @@ def ShuffleCBs(spoiler):
                             if kong_specific_left[kong] < 10 and kong in balloon_kongs:  # Not enough Colored Bananas to place a balloon:
                                 balloon_kongs.remove(kong)  # Remove kong from permitted list
                         if len(balloon_kongs) > 0:  # Has a kong who can be assigned to this balloon
-                            selected_kong = random.choice(balloon_kongs)
+                            selected_kong = spoiler.settings.random.choice(balloon_kongs)
                             kong_specific_left[selected_kong] -= 10  # Remove CBs for Balloon
                             level_placement.append(
                                 {
@@ -212,9 +210,9 @@ def ShuffleCBs(spoiler):
                     bunches_upper = min(int(bunches_left / (levels_to_populate - level_index)) + 15, int(bunches_left / global_divisor))
                     singles_upper = min(int(singles_left / (levels_to_populate - level_index)) + 10, int(singles_left / global_divisor))
                 groupIds = list(range(1, len(level_data[level]["cb"]) + 1))
-                random.shuffle(groupIds)
-                selected_bunch_count = random.randint(min(bunches_lower, bunches_upper), max(bunches_lower, bunches_upper))
-                selected_single_count = random.randint(min(singles_lower, singles_upper), max(singles_lower, singles_upper))
+                spoiler.settings.random.shuffle(groupIds)
+                selected_bunch_count = spoiler.settings.random.randint(min(bunches_lower, bunches_upper), max(bunches_lower, bunches_upper))
+                selected_single_count = spoiler.settings.random.randint(min(singles_lower, singles_upper), max(singles_lower, singles_upper))
                 placed_bunches = 0
                 placed_singles = 0
                 for groupId in groupIds:
@@ -235,7 +233,7 @@ def ShuffleCBs(spoiler):
                             if kong_specific_left[kong] < group_weight or (len(cb_kongs) > 1 and kong_specific_left[kong] <= 10 and (kong_specific_left[kong] - group_weight) > 0):
                                 cb_kongs.remove(kong)
                     if len(cb_kongs) > 0 and selected_single_count >= placed_singles + singles_in_group and selected_bunch_count >= placed_bunches + bunches_in_group:
-                        selected_kong = random.choice(cb_kongs)
+                        selected_kong = spoiler.settings.random.choice(cb_kongs)
                         kong_specific_left[selected_kong] -= group_weight  # Remove CBs for kong
                         # When a kong hits 0 remaining in this level, we no longer need to consider it
                         if kong_specific_left[selected_kong] == 0:

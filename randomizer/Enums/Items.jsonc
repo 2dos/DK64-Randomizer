@@ -197,6 +197,7 @@
         "DKIslesChunkyBlueprint": 171,
 
         // Adding new items to the end of the list preserves existing item selectors
-        "ProgressiveSlam3": 172
+        "ProgressiveSlam3": 172,
+        "ArchipelagoItem": 173
     }
 }

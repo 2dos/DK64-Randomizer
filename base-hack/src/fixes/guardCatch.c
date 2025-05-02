@@ -79,6 +79,7 @@ void guardCatch(void) {
                 - Not in a cutscene (CutsceneActive == 0)
             */
             guardCatchInternal();
+            sendDeath();
         }
     }
 }
@@ -135,7 +136,7 @@ void newGuardCode(void) {
     if (CurrentActorPointer_0->control_state <= 0x35) { // Not damaged/dying
         if (Player) {
             if ((Player->strong_kong_ostand_bitfield & 0x70) == 0) { // No GGone, OSprint, SKong
-                if (!isBadMovementState()) { // Bad Movement State
+                if (!isBadMovementState() && ObjectModel2Timer > 123) { // Bad Movement State or within the first 123 frames of map load
                     if (!inRabbitRace()) {
                         float dist = 40.0f;
                         float radius = 70.0f;
@@ -164,19 +165,22 @@ void newGuardCode(void) {
     }
     if ((collisionType == 4) || (collisionType == 9) || (collisionActive)) { // If being damaged
         if (!in_snoop) { // If not in SSnoop
-            // Hit by ammo/oranges
-            if ((CurrentActorPointer_0->health <= 0) || (collisionActive)) { // If being attacked and with zero/negative health
-                // Death procedure
-                CurrentActorPointer_0->health = 0;
-                playActorAnimation(CurrentActorPointer_0,0x201);
-                CurrentActorPointer_0->control_state = 0x42;
-                CurrentActorPointer_0->control_state_progress = 0;
-                CurrentActorPointer_0->noclip_byte = 1;
-            } else {
-                // Damage procedure
-                playActorAnimation(CurrentActorPointer_0,0x1FF);
-                CurrentActorPointer_0->control_state = 0x41;
-                CurrentActorPointer_0->control_state_progress = 0;
+            // Player is immune in the first 123 frames upon map load. This prevents the kop from being damaged during those 123 frames (plus 1 extra frame)
+            if(ObjectModel2Timer > 124){
+                // Hit by ammo/oranges
+                if ((CurrentActorPointer_0->health <= 0) || (collisionActive)) { // If being attacked and with zero/negative health
+                    // Death procedure
+                    CurrentActorPointer_0->health = 0;
+                    playActorAnimation(CurrentActorPointer_0,0x201);
+                    CurrentActorPointer_0->control_state = 0x42;
+                    CurrentActorPointer_0->control_state_progress = 0;
+                    CurrentActorPointer_0->noclip_byte = 1;
+                } else {
+                    // Damage procedure
+                    playActorAnimation(CurrentActorPointer_0,0x1FF);
+                    CurrentActorPointer_0->control_state = 0x41;
+                    CurrentActorPointer_0->control_state_progress = 0;
+                }
             }
         }
     }

@@ -1,6 +1,5 @@
 """Shuffle Dirt Patch Locations."""
 
-import random
 from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Lists import Exceptions
 
@@ -61,7 +60,7 @@ def fillPlandoDict(plando_dict: dict, plando_input):
             plando_dict[patch["level"]].append(patch["location"])
 
 
-def getPlandoDirtDistribution(plando_dict: dict):
+def getPlandoDirtDistribution(random, plando_dict: dict):
     """Adapt the dirt patch balance to the user's plandomizer input."""
     distribution = []
     for level in plando_dict.keys():
@@ -134,7 +133,7 @@ def ShufflePatches(spoiler, human_spoiler):
 
     # Make sure plandomized Dirt Patches are handled first
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != []:
-        distribution = getPlandoDirtDistribution(plando_dict)
+        distribution = getPlandoDirtDistribution(spoiler.settings.random, plando_dict)
         count = 0
         for level in plando_dict.keys():
             area_dirt = total_dirt_patch_list[level]
@@ -146,7 +145,7 @@ def ShufflePatches(spoiler, human_spoiler):
         del total_dirt_patch_list[Levels.DKIsles]
 
         for SingleDirtPatchLocation in range(5):
-            area_key = random.choice(list(total_dirt_patch_list.keys()))
+            area_key = spoiler.settings.random.choice(list(total_dirt_patch_list.keys()))
             area_dirt = total_dirt_patch_list[area_key]
             select_random_dirt_from_area(area_dirt, 2, area_key, spoiler, human_spoiler, plando_dict)
             del total_dirt_patch_list[area_key]
@@ -176,7 +175,7 @@ def select_random_dirt_from_area(area_dirt, amount, level, spoiler, human_spoile
     human_spoiler[level.name] = []
     for iterations in range(amount):
         allow_same_group_dirt = False
-        selected_patch = random.choice(area_dirt)  # selects a random patch from the list
+        selected_patch = spoiler.settings.random.choice(area_dirt)  # selects a random patch from the list
         selected_patch_name = selected_patch.name
         # Give plandomizer an opportunity to get the final say
         if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != []:

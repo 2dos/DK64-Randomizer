@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING, Any, List, Union
 from functools import lru_cache
 
 import js
-import random
 import math
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Patching.Patcher import ROM, LocalROM
@@ -82,6 +81,7 @@ class CustomActors(IntEnum):
     HintItemLanky = auto()
     HintItemTiny = auto()
     HintItemChunky = auto()
+    ArchipelagoItem = auto()
 
 
 compatible_background_textures = {
@@ -192,9 +192,9 @@ class HelmDoorRandomInfo:
         self.selection_weight = selection_weight
         self.selected_amount = None
 
-    def chooseAmount(self) -> int:
+    def chooseAmount(self, rando) -> int:
         """Choose amount for the helm door."""
-        raw_float = random.triangular(self.min_bound, self.max_bound)
+        raw_float = rando.triangular(self.min_bound, self.max_bound)
         self.selected_amount = round(raw_float)
         return self.selected_amount
 
@@ -551,6 +551,7 @@ def getItemNumberString(count: int, item_type: Types) -> str:
         Types.Snide: "Snide",
         Types.IslesMedal: "Medal",
         Types.ProgressiveHint: "Hint",
+        Types.ArchipelagoItem: "Archipelago Item",
     }
     name = names.get(item_type, item_type.name)
     if count != 1:
@@ -586,13 +587,16 @@ def recalculatePointerJSON(ROM_COPY: ROM):
 
 def setItemReferenceName(spoiler, item: Items, index: int, new_name: str):
     """Set new name for a location of an item."""
-    if item == Items.CameraAndShockwave:
-        setItemReferenceName(spoiler, Items.Camera, index, new_name)
-        setItemReferenceName(spoiler, Items.Shockwave, index, new_name)
-    else:
-        for loc in spoiler.location_references:
-            if loc.item == item:
-                loc.setLocation(index, new_name)
+    try:
+        if item == Items.CameraAndShockwave:
+            setItemReferenceName(spoiler, Items.Camera, index, new_name)
+            setItemReferenceName(spoiler, Items.Shockwave, index, new_name)
+        else:
+            for loc in spoiler.location_references:
+                if loc.item == item:
+                    loc.setLocation(index, new_name)
+    except Exception:
+        pass
 
 
 def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_crown_door: bool = False) -> BarrierItems:
@@ -620,6 +624,9 @@ def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_cro
 
 def getIceTrapCount(settings) -> int:
     """Get the amount of Ice Traps the game will attempt to place."""
+    if settings.archipelago:
+        return settings.ice_trap_count
+
     ice_trap_freqs = {
         IceTrapFrequency.rare: 4,
         IceTrapFrequency.mild: 10,

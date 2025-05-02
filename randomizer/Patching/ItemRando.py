@@ -41,33 +41,17 @@ model_two_indexes = {
     Types.Candy: 0x261,
     Types.Snide: 0x262,
     Types.Hint: [638, 649, 650, 651, 652],
+    Types.ArchipelagoItem: 0x291,
 }
 
 model_two_scales = {
-    Types.Banana: 0.25,
+    # Anything not here is 0.25
     Types.Blueprint: 2,
     Types.NintendoCoin: 0.4,
     Types.RarewareCoin: 0.4,
     Types.Key: 0.17,
     Types.Crown: 0.25,
     Types.Medal: 0.22,
-    Types.Shop: 0.25,
-    Types.TrainingBarrel: 0.25,
-    Types.Climbing: 0.25,
-    Types.Shockwave: 0.25,
-    Types.NoItem: 0.25,  # No Item
-    Types.Kong: 0.25,
-    Types.Bean: 0.25,
-    Types.Pearl: 0.25,
-    Types.Fairy: 0.25,
-    Types.RainbowCoin: 0.25,
-    Types.FakeItem: 0.25,
-    Types.JunkItem: 0.25,
-    Types.Cranky: 0.25,
-    Types.Funky: 0.25,
-    Types.Candy: 0.25,
-    Types.Snide: 0.25,
-    Types.Hint: 0.25,
 }
 
 actor_indexes = {
@@ -113,6 +97,7 @@ actor_indexes = {
         CustomActors.HintItemTiny,
         CustomActors.HintItemChunky,
     ],
+    Types.ArchipelagoItem: CustomActors.ArchipelagoItem,
 }
 model_indexes = {
     Types.Banana: 0x69,
@@ -136,6 +121,7 @@ model_indexes = {
     Types.Candy: 0x13,
     Types.Snide: 0x1F,
     Types.Hint: [0x11B, 0x11D, 0x11F, 0x121, 0x123],
+    Types.ArchipelagoItem: 0x125,
 }
 
 TRAINING_LOCATIONS = (
@@ -260,6 +246,7 @@ text_rewards = {
     Types.Candy: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
     Types.Funky: ("\x04SHOPKEEPER\x04", "\x04BARTERING SOUL\x04"),
     Types.Hint: ("\x04HINT\x04", "\x04LAYTON RIDDLE\x04"),
+    Types.ArchipelagoItem: ("\x04ARCHIPELAGO ITEM\x04", "\x04ANOTHER SCALLYWAG'S BOOTY\x04"),
 }
 
 level_names = {
@@ -379,6 +366,7 @@ def getTextRewardIndex(item) -> int:
             Types.NoItem,  # 14
             Types.Cranky,  # 15
             Types.JunkItem,  # 16
+            Types.ArchipelagoItem,  # 17
         )
         if item.new_item in item_text_indexes:
             return item_text_indexes.index(item.new_item)
@@ -406,6 +394,17 @@ def writeShopData(ROM_COPY: LocalROM, location: int, item_type: MoveTypes, flag:
 def getHintKongFromFlag(flag: int) -> int:
     """Get the kong associated with a hint from it's flag."""
     return (flag - 0x384) % 5
+
+
+def setItemInWorld(ROM_COPY: LocalROM, offset: int, base_flag: int, current_flag: int):
+    """Write item to world array."""
+    delta = current_flag - base_flag
+    flag_offset = delta >> 3
+    flag_shift = delta & 7
+    ROM_COPY.seek(offset + flag_offset)
+    raw = int.from_bytes(ROM_COPY.readBytes(1), "big")
+    ROM_COPY.seek(offset + flag_offset)
+    ROM_COPY.writeMultipleBytes(raw | (1 << flag_shift), 1)
 
 
 def getActorIndex(item):
@@ -506,6 +505,20 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
         # Go through bijection
         for item in item_data:
             if item.can_have_item:
+                # Write array data for AP
+                if item.new_item == Types.Medal:
+                    if item.new_flag < (0x225 + 40):
+                        setItemInWorld(ROM_COPY, sav + 4, 0x225, item.new_flag)
+                    else:
+                        # Isles Medals
+                        setItemInWorld(ROM_COPY, sav + 9, 0x3C6, item.new_flag)
+                elif item.new_item == Types.Crown:
+                    setItemInWorld(ROM_COPY, sav + 1, 0x261, item.new_flag)
+                elif item.new_item == Types.Pearl:
+                    setItemInWorld(ROM_COPY, sav + 3, 0xBA, item.new_flag)
+                elif item.new_item == Types.Fairy:
+                    setItemInWorld(ROM_COPY, sav + 0xA, 0x24D, item.new_flag)
+                # Write placement
                 if item.is_shop:
                     # Write in placement index
                     movespaceOffset = spoiler.settings.move_location_data
@@ -577,8 +590,8 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                                 }
                             )
                         else:
-                            numerator = model_two_scales[item.new_item]
-                            denominator = model_two_scales[item.old_item]
+                            numerator = model_two_scales.get(item.new_item, 0.25)
+                            denominator = model_two_scales.get(item.old_item, 0.25)
                             upscale = numerator / denominator
                             map_items[map_id].append(
                                 {
@@ -772,6 +785,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                             Types.FakeItem,  # Fake Item (Reverse)
                             Types.FakeItem,  # Fake Item (Slow)
                             Types.Hint,  # Hint Item
+                            Types.ArchipelagoItem,  # Archipelago Item
                         ]
                         offset = None
                         base_addr = None

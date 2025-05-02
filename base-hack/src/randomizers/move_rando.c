@@ -300,6 +300,11 @@ void purchaseMove(shop_paad* paad) {
 			} else if (isIceTrapFlag(paad->flag) == DYNFLAG_ICETRAP) {
 				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
 				queueIceTrap(ICETRAP_BUBBLE);
+			} else if (isFlagInRange(paad->flag, FLAG_RAINBOWCOIN_0, 16)) {
+				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
+				for (int i = 0; i < 5; i++) {
+					MovesBase[i].coins += 5;
+				}
 			} else {
 				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
 				if (paad->flag == FLAG_ABILITY_CAMERA) {
@@ -337,7 +342,9 @@ void purchaseMove(shop_paad* paad) {
 	} else if ((p_type == PURCHASE_INSTRUMENT)) {
 		item_given = 7;
 	}
-	changeCollectableCount(1, 0, (0 - paad->price));
+	if (!isAPEnabled()) {
+		changeCollectableCount(1, 0, (0 - paad->price));
+	}
 	if (item_given > -1) {
 		changeCollectableCount(item_given, 0, 9999);
 	}
@@ -598,6 +605,7 @@ void getNextMoveText(void) {
 	int p_kong = 0;
 	int p_flag = 0;
 	char* p_string = 0;
+	char* p_subtitle = 0;
 	int has_data = 0;
 	move_text_overlay_struct *used_overlay = &text_overlay_data[paad->index];
 	if (shop_data) {
@@ -612,6 +620,7 @@ void getNextMoveText(void) {
 		p_value = used_overlay->flag;
 		p_kong = used_overlay->kong;
 		p_string = used_overlay->string;
+		p_subtitle = used_overlay->subtitle;
 		p_flag = p_value;
 	} else if (CurrentMap == MAP_FAIRYISLAND) {
 		has_data = 1;
@@ -631,13 +640,14 @@ void getNextMoveText(void) {
 			}
 		}
 	}
-	int override_string = Rando.archipelago && p_type == 8;
+	int override_string = isAPEnabled() && p_type == PURCHASE_ARCHIPELAGO;
 	if ((has_data) || (paad->upper_text) || (paad->lower_text)) {
 		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 			used_overlay->kong = 0;
 			used_overlay->flag = 0;
 			used_overlay->type = 0;
 			used_overlay->string = 0;
+			used_overlay->subtitle = 0;
 			used_overlay->used = 0;
 			int overlay_count = 0;
 			for (int i = 0; i < LoadedActorCount; i++) {
@@ -664,9 +674,26 @@ void getNextMoveText(void) {
 			_guTranslateF(&mtx1, 0.0f, 48.0f, 0.0f);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->matrix_1);
-			paad->timer = 0x82;
+			paad->fade_in = 120;
+			paad->fade_out = 30;
+			paad->fade_rate = 0x10;
+			paad->timer = 130;
 			if ((CurrentMap == MAP_CRANKY) && (!is_jetpac)) {
 				paad->timer = 300;
+			}
+			if (p_type == PURCHASE_ARCHIPELAGO) {
+				if (APData) {
+					paad->timer = APData->text_timer;
+					paad->fade_in = paad->timer - 2;
+					if (paad->timer < 70) {
+						paad->fade_out = (paad->timer - 30) / 2;
+						if (paad->fade_out < 5) {
+							paad->fade_rate = 0xFF;
+						} else {
+							paad->fade_rate = 0x100 / (paad->fade_out - 4);
+						}
+					}
+				}
 			}
 			switch(p_type) {
 				case PURCHASE_MOVES:
@@ -763,7 +790,7 @@ void getNextMoveText(void) {
 										}
 									}
 								}
-								if (top_item == -1) {
+								if ((top_item == -1) && (!isFlagAPItem(p_flag))) {
 									// Default to GB
 									top_item = ITEMTEXT_BANANA;
 								}
@@ -780,6 +807,11 @@ void getNextMoveText(void) {
 			}
 			if (override_string) {
 				paad->upper_text = p_string;
+				if (p_subtitle) {
+					paad->lower_text = p_subtitle;
+				} else {
+					paad->lower_text = 0;
+				}
 			} else {
 				if (top_item < 0) {
 					paad->upper_text = (void*)0;
@@ -800,11 +832,11 @@ void getNextMoveText(void) {
 
 
 				}
-			}
-			if (bottom_item < 0) {
-				paad->lower_text = (void*)0;
-			} else {
-				paad->lower_text = getTextPointer(0x27,bottom_item,0);
+				if (bottom_item < 0) {
+					paad->lower_text = (void*)0;
+				} else {
+					paad->lower_text = getTextPointer(0x27,bottom_item,0);
+				}
 			}
 			priceTransplant();
 		}
@@ -814,25 +846,25 @@ void getNextMoveText(void) {
 			start_hiding = 1;
 		}
 		timer = paad->timer;
-		if (timer == 0x1E) {
+		if (timer == paad->fade_out) {
 			CurrentActorPointer_0->control_state = 2;
-		} else if (timer == 0x78) {
+		} else if (timer == paad->fade_in) {
 			CurrentActorPointer_0->control_state = 1;
 		}
 		if (CurrentActorPointer_0->control_state == 1) {
-			int opacity_diff = 0xFF - paad->opacity;
-			int trunc_diff = opacity_diff;
-			if (opacity_diff > 0x10) {
-				trunc_diff = 0x10;
+			int opacity = paad->opacity;
+			opacity += paad->fade_rate;
+			if (opacity > 0xFF) {
+				opacity = 0xFF;
 			}
-			paad->opacity += trunc_diff;
+			paad->opacity = opacity;
 		} else if (CurrentActorPointer_0->control_state == 2) {
-			int opacity_0 = paad->opacity;
-			int trunc_opacity = opacity_0;
-			if (opacity_0 > 0x10) {
-				trunc_opacity = 0x10;
+			int opacity = paad->opacity;
+			opacity -= paad->fade_rate;
+			if (opacity < 0) {
+				opacity = 0;
 			}
-			paad->opacity = opacity_0 - trunc_opacity;
+			paad->opacity = opacity;
 		}
 		if (start_hiding == 0) {
 			if (CurrentActorPointer_0->control_state != 0) {

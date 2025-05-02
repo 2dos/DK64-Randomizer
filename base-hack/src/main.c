@@ -338,9 +338,8 @@ void earlyFrame(void) {
 			}
 		}
 	}
-	if (Rando.archipelago) {
+	if (isAPEnabled()) {
 		handleArchipelagoFeed();
-		handleArchipelagoString();
 	}
 	if (CurrentMap == MAP_FUNGI) {
 		if ((TBVoidByte & 3) == 0) { // Not pausing
@@ -516,6 +515,7 @@ Gfx* displayListModifiers(Gfx* dl) {
 			dl = drawPixelTextContainer(dl, 110, bar_text_y + 20, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 		} else if (CurrentMap == MAP_MAINMENU) {
 			dl = displayMenuWarnings(dl);
+			dl = displayAPConnection(dl);
 			dl = displaySongNameHandler(dl);
 		} else {
 			dl = drawTextPointers(dl);

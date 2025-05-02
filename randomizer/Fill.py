@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from math import ceil
-from random import choice, randint, shuffle, uniform, sample
 from typing import TYPE_CHECKING, Any, List, Optional, Set, Tuple, Union
 from functools import lru_cache
 
@@ -81,7 +80,7 @@ from randomizer.ShuffleKasplats import (
 from randomizer.ShufflePatches import ShufflePatches
 from randomizer.ShufflePorts import ShufflePorts, ResetPorts
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
-from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
+from randomizer.ShuffleWarps import LinkWarps, ShuffleWarpsCrossMap
 
 if TYPE_CHECKING:
     from randomizer.LogicClasses import LogicVarHolder, Region
@@ -501,7 +500,7 @@ def GetAccessibleLocations(
                             eventAdded = True
     # If we're here to get accessible locations for fill purposes, we need to take a harder look at all the empty shops we didn't buy
     if searchType == SearchMode.GetReachableForFilling:
-        shuffle(unpurchasedEmptyShopLocationIds)  # This shuffle is to not bias fills towards earlier shops
+        spoiler.settings.random.shuffle(unpurchasedEmptyShopLocationIds)  # This shuffle is to not bias fills towards earlier shops
         # For each location...
         for location_id in unpurchasedEmptyShopLocationIds:
             # If we can, "buy" the empty location. This will affect our ability to buy future locations. It's not a guarantee we'll be able to buy all of these locations.
@@ -1326,7 +1325,7 @@ def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = Fals
     """Randomly place given items in any location disregarding logic."""
     settings = spoiler.settings
     if not inOrder:
-        shuffle(itemsToPlace)
+        spoiler.settings.random.shuffle(itemsToPlace)
     # Get all remaining empty locations
     empty = []
     for id, location in spoiler.LocationList.items():
@@ -1345,7 +1344,7 @@ def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = Fals
                 accessible_empty_locations = [x for x in empty_locations if not x.inaccessible]
                 noitem_locations = [x for x in spoiler.LocationList.values() if x.type != Types.Shop and x.item is Items.NoItem]
             return len(itemsToPlace) + 1
-        shuffle(itemEmpty)
+        spoiler.settings.random.shuffle(itemEmpty)
         locationId = itemEmpty.pop()
         spoiler.LocationList[locationId].PlaceItem(spoiler, item)
         empty.remove(locationId)
@@ -1371,7 +1370,7 @@ def CarefulRandomFill(spoiler: Spoiler, itemsToPlace: List[Union[Any, Items]], o
     owned.extend(itemsToPlace)
     reachable = GetAccessibleLocations(spoiler, owned, SearchMode.GetReachableForFilling)
     # Place items randomly in the accessible locations
-    shuffle(itemsToPlace)
+    spoiler.settings.random.shuffle(itemsToPlace)
     while len(itemsToPlace) > 0:
         item = itemsToPlace.pop()
         validLocations = settings.GetValidLocationsForItem(item)
@@ -1384,8 +1383,8 @@ def CarefulRandomFill(spoiler: Spoiler, itemsToPlace: List[Union[Any, Items]], o
                 accessible_empty_locations = [x for x in empty_locations if not x.inaccessible]
                 noitem_locations = [x for x in spoiler.LocationList.values() if x.type != Types.Shop and x.item is Items.NoItem]
             return len(itemsToPlace) + 1
-        shuffle(itemEmpty)
-        shuffle(itemEmpty)
+        spoiler.settings.random.shuffle(itemEmpty)
+        spoiler.settings.random.shuffle(itemEmpty)
         locationId = itemEmpty.pop()
         spoiler.LocationList[locationId].PlaceItem(spoiler, item)
         # If you hit a shop location, we have to do some stuff
@@ -1437,7 +1436,7 @@ def ForwardFill(
     if ownedItems is None:
         ownedItems = []
     if not inOrder:
-        shuffle(itemsToPlace)
+        spoiler.settings.random.shuffle(itemsToPlace)
     needToRefreshReachable = True
     # While there are items to place
     while len(itemsToPlace) > 0:
@@ -1455,7 +1454,7 @@ def ForwardFill(
                 invalid_empty_reachable = [x for x in reachable if spoiler.LocationList[x].item is None and x not in validLocations]
                 valid_empty = [x for x in spoiler.LocationList.keys() if spoiler.LocationList[x].item is None and x in validLocations]
             return len(itemsToPlace) + 1
-        shuffle(validReachable)
+        spoiler.settings.random.shuffle(validReachable)
         locationId = validReachable.pop()
         # Place the item
         spoiler.LocationList[locationId].PlaceItem(spoiler, item)
@@ -1521,7 +1520,7 @@ def AssumedFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optiona
         ownedItems = []
     # While there are items to place
     if not inOrder:
-        shuffle(itemsToPlace)
+        spoiler.settings.random.shuffle(itemsToPlace)
     while len(itemsToPlace) > 0:
         # Get a random item, check which empty locations are still accessible without owning it
         item = itemsToPlace.pop(0)
@@ -1547,7 +1546,7 @@ def AssumedFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optiona
             currentGbCount = len([x for x in owned if ItemList[x].type == Types.Banana])
             js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount) + " and kongs freed: " + str(currentKongsFreed))
             return len(itemsToPlace) + 1
-        shuffle(validReachable)
+        spoiler.settings.random.shuffle(validReachable)
         # Get a random, empty, reachable location
         for locationId in validReachable:
             # Atempt to place the item here
@@ -1669,7 +1668,7 @@ def GetUnplacedItemPrerequisites(spoiler: Spoiler, targetItemId, placedMoves, ow
     for move in placedMoves:
         if move in moveList:
             moveList.remove(move)
-    shuffle(moveList)
+    spoiler.settings.random.shuffle(moveList)
     itemWasFound = False
     # Every item in moveList could be a required item
     for i in range(0, len(moveList)):
@@ -1778,7 +1777,7 @@ def FillShuffledKeys(spoiler: Spoiler, placed_types: List[Types], placed_items: 
                 # Outside of item rando, the only eligible location is the boss in level 8. This should filter down to only one location.
                 else:
                     potential_locations = [loc for loc in spoiler.LocationList if spoiler.LocationList[loc].level == last_level and spoiler.LocationList[loc].type == Types.Key]
-                selected_location = choice(potential_locations)
+                selected_location = spoiler.settings.random.choice(potential_locations)
                 spoiler.LocationList[selected_location].PlaceItem(spoiler, Items.HideoutHelmKey)
                 keysToPlace.remove(Items.HideoutHelmKey)
         # Place the keys in order
@@ -1826,7 +1825,7 @@ def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
             unplaced_items.remove(item)
     debug_failed_to_place_items = []
     possible_items = [item for item in unplaced_items if item != Items.GoldenBanana]  # To save some time, we know GBs can't be in Helm
-    shuffle(possible_items)
+    spoiler.settings.random.shuffle(possible_items)
     # Until we have placed enough items...
     while len(placed_in_helm) < len(empty_helm_locations):
         if len(possible_items) == 0:
@@ -1876,7 +1875,7 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
             unplaced_items.remove(item)
     debug_failed_to_place_items = []
     possible_items = [item for item in unplaced_items if item < Items.JungleJapesDonkeyBlueprint or item > Items.DKIslesChunkyBlueprint]  # To save some time, we know blueprints can't be on bosses
-    shuffle(possible_items)
+    spoiler.settings.random.shuffle(possible_items)
     # Until we have placed enough items...
     while len(placed_on_bosses) < len(empty_boss_locations):
         if len(possible_items) == 0:
@@ -2000,7 +1999,7 @@ def Fill(spoiler: Spoiler) -> None:
                     and not spoiler.LocationList[loc].inaccessible
                     and loc in spoiler.settings.GetValidLocationsForItem(Items.HideoutHelmKey)
                 ]
-                selected_location = choice(potential_locations)
+                selected_location = spoiler.settings.random.choice(potential_locations)
                 spoiler.LocationList[selected_location].PlaceItem(spoiler, Items.HideoutHelmKey)
                 bigListOfItemsToPlace.remove(Items.HideoutHelmKey)
         unplaced = PlaceItems(
@@ -2356,7 +2355,7 @@ def FillTrainingMoves(spoiler: Spoiler, preplacedMoves: List[Items]):
                 movesToPlace.append(item)
         # Otherwise we take a random selection of items in this pool equal to the corresponding desired amount
         else:
-            movesToPlace.extend(sample(spoiler.settings.starting_moves_lists[i], k=spoiler.settings.starting_moves_list_counts[i]))
+            movesToPlace.extend(spoiler.settings.random.sample(spoiler.settings.starting_moves_lists[i], k=spoiler.settings.starting_moves_list_counts[i]))
 
     placedMoves = []
     if spoiler.settings.start_with_slam:
@@ -2567,29 +2566,29 @@ def PlaceKongsInKongLocations(spoiler: Spoiler, kongItems, kongLocations):
     # Instead, we place Kongs in a specific order to guarantee we'll at least have an eligible freer.
     # To be at least somewhat nice to no logic users, we also use this section here so kongs don't lock each other.
     if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all or spoiler.settings.logic_type == LogicType.nologic:
-        shuffle(kongItems)
+        spoiler.settings.random.shuffle(kongItems)
         if Locations.ChunkyKong in kongLocations:
             kongItemToBeFreed = kongItems.pop()
             spoiler.LocationList[Locations.ChunkyKong].PlaceItem(spoiler, kongItemToBeFreed)
-            spoiler.settings.chunky_freeing_kong = choice(ownedKongs)
+            spoiler.settings.chunky_freeing_kong = spoiler.settings.random.choice(ownedKongs)
             ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
         if Locations.DiddyKong in kongLocations:
             kongItemToBeFreed = kongItems.pop()
             spoiler.LocationList[Locations.DiddyKong].PlaceItem(spoiler, kongItemToBeFreed)
-            spoiler.settings.diddy_freeing_kong = choice(ownedKongs)
+            spoiler.settings.diddy_freeing_kong = spoiler.settings.random.choice(ownedKongs)
             ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
         # The Lanky location can't be your first in cases where the Lanky freeing Kong can't get into the llama temple and you need a second Kong
         if Locations.LankyKong in kongLocations:
             kongItemToBeFreed = kongItems.pop()
             spoiler.LocationList[Locations.LankyKong].PlaceItem(spoiler, kongItemToBeFreed)
-            spoiler.settings.lanky_freeing_kong = choice(ownedKongs)
+            spoiler.settings.lanky_freeing_kong = spoiler.settings.random.choice(ownedKongs)
             ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
         # Placing the Tiny location last guarantees we have one of Diddy or Chunky
         if Locations.TinyKong in kongLocations:
             kongItemToBeFreed = kongItems.pop()
             spoiler.LocationList[Locations.TinyKong].PlaceItem(spoiler, kongItemToBeFreed)
             eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
-            spoiler.settings.tiny_freeing_kong = choice(eligibleFreers)
+            spoiler.settings.tiny_freeing_kong = spoiler.settings.random.choice(eligibleFreers)
             ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
     # In level order shuffling, we need to be very particular about who we unlock and in what order so as to guarantee completion
     # Vanilla levels can be treated as if the level shuffler randomly placed all the levels in the same order
@@ -2605,22 +2604,22 @@ def PlaceKongsInKongLocations(spoiler: Spoiler, kongItems, kongLocations):
                 raise Ex.EntrancePlacementException("Levels shuffled in a way that makes Kong unlocks impossible. SEND THIS TO THE DEVS!")
             # Begin by finding the currently accessible Kong locations
             # Randomly pick an accessible location
-            progressionLocation = choice(logicallyAccessibleKongLocations)
+            progressionLocation = spoiler.settings.random.choice(logicallyAccessibleKongLocations)
             logicallyAccessibleKongLocations.remove(progressionLocation)
             # Pick a Kong to free this location from the Kongs we currently have
             if progressionLocation == Locations.DiddyKong:
-                spoiler.settings.diddy_freeing_kong = choice(ownedKongs)
+                spoiler.settings.diddy_freeing_kong = spoiler.settings.random.choice(ownedKongs)
             elif progressionLocation == Locations.LankyKong:
-                spoiler.settings.lanky_freeing_kong = choice(ownedKongs)
+                spoiler.settings.lanky_freeing_kong = spoiler.settings.random.choice(ownedKongs)
             elif progressionLocation == Locations.TinyKong:
                 eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
-                spoiler.settings.tiny_freeing_kong = choice(eligibleFreers)
+                spoiler.settings.tiny_freeing_kong = spoiler.settings.random.choice(eligibleFreers)
             elif progressionLocation == Locations.ChunkyKong:
-                spoiler.settings.chunky_freeing_kong = choice(ownedKongs)
+                spoiler.settings.chunky_freeing_kong = spoiler.settings.random.choice(ownedKongs)
             # Remove this location from any considerations
             kongLocations.remove(progressionLocation)
             # Pick a Kong to unlock from the locked Kongs
-            kongToBeFreed = choice(kongItems)
+            kongToBeFreed = spoiler.settings.random.choice(kongItems)
             # With this kong, we can progress one level further (if we care about this logic)
             if not spoiler.settings.hard_level_progression:
                 latestLogicallyAllowedLevel += 1
@@ -2642,7 +2641,7 @@ def PlaceKongsInKongLocations(spoiler: Spoiler, kongItems, kongLocations):
                     if len(progressionKongItems) == 0:
                         raise Ex.FillException("Kongs placed in a way that is impossible to unlock everyone. SEND THIS TO THE DEVS!")
                     # Pick a random Kong from the Kongs that guarantee progression
-                    kongToBeFreed = choice(progressionKongItems)
+                    kongToBeFreed = spoiler.settings.random.choice(progressionKongItems)
             # Now that we have a combination guaranteed to not break the seed or logic, lock it in
             spoiler.LocationList[progressionLocation].PlaceItem(spoiler, kongToBeFreed)
             spoiler.settings.debug_fill[spoiler.LocationList[progressionLocation].name] = kongToBeFreed
@@ -2652,13 +2651,13 @@ def PlaceKongsInKongLocations(spoiler: Spoiler, kongItems, kongLocations):
             logicallyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, latestLogicallyAllowedLevel)
     # Pick freeing kongs for any that are still "any" with no restrictions.
     if spoiler.settings.diddy_freeing_kong == Kongs.any:
-        spoiler.settings.diddy_freeing_kong = choice(GetKongs())
+        spoiler.settings.diddy_freeing_kong = spoiler.settings.random.choice(GetKongs())
     if spoiler.settings.lanky_freeing_kong == Kongs.any:
-        spoiler.settings.lanky_freeing_kong = choice(GetKongs())
+        spoiler.settings.lanky_freeing_kong = spoiler.settings.random.choice(GetKongs())
     if spoiler.settings.tiny_freeing_kong == Kongs.any:
-        spoiler.settings.tiny_freeing_kong = choice([Kongs.diddy, Kongs.chunky])
+        spoiler.settings.tiny_freeing_kong = spoiler.settings.random.choice([Kongs.diddy, Kongs.chunky])
     if spoiler.settings.chunky_freeing_kong == Kongs.any:
-        spoiler.settings.chunky_freeing_kong = choice(GetKongs())
+        spoiler.settings.chunky_freeing_kong = spoiler.settings.random.choice(GetKongs())
     # Update the locations' assigned kong with the set freeing kong list
     spoiler.LocationList[Locations.DiddyKong].kong = spoiler.settings.diddy_freeing_kong
     spoiler.LocationList[Locations.JapesDonkeyFrontofCage].kong = spoiler.settings.diddy_freeing_kong
@@ -2681,10 +2680,10 @@ def FillKongs(spoiler: Spoiler, placedTypes: List[Types], placedItems: List[Item
     # If Kongs can be placed anywhere, we don't need anything special
     if spoiler.settings.shuffle_items and Types.Kong in spoiler.settings.shuffled_location_types:
         # First, randomly pick who opens what cage - this prevents cases where a Kong locks themselves
-        spoiler.settings.diddy_freeing_kong = choice(GetKongs())
-        spoiler.settings.lanky_freeing_kong = choice(GetKongs())
-        spoiler.settings.tiny_freeing_kong = choice([Kongs.diddy, Kongs.chunky])
-        spoiler.settings.chunky_freeing_kong = choice(GetKongs())
+        spoiler.settings.diddy_freeing_kong = spoiler.settings.random.choice(GetKongs())
+        spoiler.settings.lanky_freeing_kong = spoiler.settings.random.choice(GetKongs())
+        spoiler.settings.tiny_freeing_kong = spoiler.settings.random.choice([Kongs.diddy, Kongs.chunky])
+        spoiler.settings.chunky_freeing_kong = spoiler.settings.random.choice(GetKongs())
         if spoiler.settings.enable_plandomizer:
             if spoiler.settings.plandomizer_dict["plando_kong_rescue_diddy"] != -1:
                 spoiler.settings.diddy_freeing_kong = Kongs(spoiler.settings.plandomizer_dict["plando_kong_rescue_diddy"])
@@ -2975,7 +2974,7 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
         if len(eligibleTypes) == 0:
             blocker_item_projection[0] = BarrierItems.GoldenBanana
         else:
-            blocker_item_projection[0] = choice(eligibleTypes)
+            blocker_item_projection[0] = spoiler.settings.random.choice(eligibleTypes)
     blocker_value_projection[0] = min(1, accessibleItems[blocker_item_projection[0]])  # This should limit the first B. Locker to 1 item, no matter what it is
     if not settings.chaos_blockers:
         blocker_value_projection[0] = min(blocker_variable_mapping[0], blocker_value_projection[0])
@@ -3009,8 +3008,8 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
                 if len(eligibleTypes) == 0:
                     blocker_item_projection[level] = BarrierItems.GoldenBanana
                 else:
-                    blocker_item_projection[level] = choice(eligibleTypes)
-            blocker_value_projection[level] = max(1, round(uniform(BLOCKER_MIN, BLOCKER_MAX) * accessibleItems[blocker_item_projection[level]]))
+                    blocker_item_projection[level] = spoiler.settings.random.choice(eligibleTypes)
+            blocker_value_projection[level] = max(1, round(spoiler.settings.random.uniform(BLOCKER_MIN, BLOCKER_MAX) * accessibleItems[blocker_item_projection[level]]))
             # If we're on Chaos B. Lockers, we need a random value to compare against so we don't only follow the item availability heuristic - if we did, we'd get really expensive B. Lockers
             if settings.chaos_blockers:
                 # Roll 8 random values and take the levelth one to get an approximation of what the levelth most expensive random B. Locker might be if all of them were of this item
@@ -3018,7 +3017,7 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
                 # This also prevents the item availability-based values from overtaking the maximum value
                 assorted_random_values = []
                 for i in range(8):
-                    assorted_random_values.append(randint(1, ceil(settings.blocker_limits[blocker_item_projection[level]] * settings.chaos_ratio)))
+                    assorted_random_values.append(spoiler.settings.random.randint(1, ceil(settings.blocker_limits[blocker_item_projection[level]] * settings.chaos_ratio)))
                 assorted_random_values.sort()
                 blocker_value_projection[level] = min(assorted_random_values[level], blocker_value_projection[level])
             # If we're not on Chaos B. Lockers we need to respect the UI input or the randomly generated value from earlier so the item availability calc doesn't overtake the max
@@ -3217,7 +3216,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                 if len(openUnprogressedLevels) == 0:
                     raise Ex.FillException("E1: Hard level order shuffler failed to progress through levels.")
                 # Next level chosen randomly (possible room for improvement here?) from accessible levels
-                nextLevelToBeat = choice(openUnprogressedLevels)
+                nextLevelToBeat = spoiler.settings.random.choice(openUnprogressedLevels)
                 # If the level still isn't accessible, we have to truncate the required amount
                 if settings.BLockerEntryCount[nextLevelToBeat] > maxEnterableBlocker:
                     # Each B. Locker must be greater than the previous one and at least a specified percentage of available GBs
@@ -3225,10 +3224,10 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                     lowroll = min(maximumMinRoll, round(runningGBTotal * BLOCKER_MIN))  # Max min roll vs min progression roll
                     if lowroll > highroll:  # I think this impossible? It probably takes insane rng and very specific numbers
                         lowroll = highroll
-                    settings.BLockerEntryCount[nextLevelToBeat] = randint(lowroll, highroll)
+                    settings.BLockerEntryCount[nextLevelToBeat] = spoiler.settings.random.randint(lowroll, highroll)
                 accessibleIncompleteLevels = [nextLevelToBeat]
             else:
-                nextLevelToBeat = choice(accessibleIncompleteLevels)
+                nextLevelToBeat = spoiler.settings.random.choice(accessibleIncompleteLevels)
             # If this is the last level in a world where Helm is shuffled into the order and we need to maximize the last B. Locker...
             if settings.maximize_helm_blocker and settings.shuffle_helm_location and len(levelsProgressed) == (number_of_progressable_levels - 1):
                 # Set the B. Locker value equal to the cap. If we aren't shuffling Helm, we'll sort it out at the end.
@@ -3238,7 +3237,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
             accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed]
             if len(accessibleIncompleteLevels) == 0:
                 raise Ex.FillException("E1-C: Hard level order shuffler failed to progress through levels.")
-            nextLevelToBeat = choice(accessibleIncompleteLevels)
+            nextLevelToBeat = spoiler.settings.random.choice(accessibleIncompleteLevels)
             # In CLO, we always recalculate the B. Locker items
             # Calculate the available quantity of the item for the B. Locker
             accessibleItems = spoiler.LogicVariables.ItemCounts()
@@ -3257,8 +3256,8 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                 settings.BLockerEntryItems[nextLevelToBeat] = BarrierItems.GoldenBanana
                 progression_roll = 0
             else:
-                settings.BLockerEntryItems[nextLevelToBeat] = choice(eligibleTypes)
-                progression_roll = max(1, round(uniform(BLOCKER_MIN, BLOCKER_MAX) * accessibleItems[settings.BLockerEntryItems[nextLevelToBeat]]))
+                settings.BLockerEntryItems[nextLevelToBeat] = spoiler.settings.random.choice(eligibleTypes)
+                progression_roll = max(1, round(spoiler.settings.random.uniform(BLOCKER_MIN, BLOCKER_MAX) * accessibleItems[settings.BLockerEntryItems[nextLevelToBeat]]))
             # If this is the last level in a world where Helm is shuffled into the order, set the B. Locker value equal to the cap. If we aren't shuffling Helm, we'll sort it out at the end.
             if settings.shuffle_helm_location and len(levelsProgressed) == (number_of_progressable_levels - 1):
                 # This will likely be a max roll but in some rare circumstances it may not be due to needing something out of your last progression level extremely early
@@ -3272,7 +3271,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                 # This also prevents the item availability-based values from overtaking the maximum value
                 assorted_random_values = []
                 for i in range(9):
-                    assorted_random_values.append(randint(1, ceil(settings.blocker_limits[settings.BLockerEntryItems[nextLevelToBeat]] * settings.chaos_ratio)))
+                    assorted_random_values.append(spoiler.settings.random.randint(1, ceil(settings.blocker_limits[settings.BLockerEntryItems[nextLevelToBeat]] * settings.chaos_ratio)))
                 assorted_random_values.sort()
                 settings.BLockerEntryCount[nextLevelToBeat] = min(progression_roll, assorted_random_values[len(levelsProgressed)])
         levelsProgressed.append(nextLevelToBeat)
@@ -3393,7 +3392,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                 eligibleProgressionKeyEvents.remove(Events.CastleKeyTurnedIn)
             # If we've progressed through all open levels, then we need to pick a progression key we've found to acquire and set that level's Troff n Scoff
             if len(openLevels) == len(levelsProgressed) and any(eligibleProgressionKeyEvents):
-                chosenKeyEvent = choice(eligibleProgressionKeyEvents)
+                chosenKeyEvent = spoiler.settings.random.choice(eligibleProgressionKeyEvents)
                 foundProgressionKeyEvents.remove(chosenKeyEvent)
                 # Determine what levels need to be completed
                 levelsToCompleteBoss = []
@@ -3494,7 +3493,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
         # Because we might not have sorted the B. Lockers when they're randomly generated, Helm might be a surprisingly low number if it's not maximized
         elif settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.BLockerEntryCount[7] < mostExpensiveBLocker:
             # Ensure that Helm is the most expensive B. Locker
-            settings.BLockerEntryCount[7] = randint(mostExpensiveBLocker, settings.blocker_max)
+            settings.BLockerEntryCount[7] = spoiler.settings.random.randint(mostExpensiveBLocker, settings.blocker_max)
     # Only if keys are shuffled off of bosses do we need to reshuffle the bosses
     if not isKeyItemRando:
         # Place boss locations based on kongs and moves found for each level

@@ -65,9 +65,32 @@ typedef enum archipelago_items {
     /* 0x03C */ TRANSFER_ITEM_ORANGE,
     /* 0x03D */ TRANSFER_ITEM_BARREL,
     /* 0x03E */ TRANSFER_ITEM_VINE,
+    /* 0x03F */ TRANSFER_ITEM_CLIMBING,
+    /* 0x040 */ TRANSFER_ITEM_FAKEITEM_SLOW,
+    /* 0x041 */ TRANSFER_ITEM_FAKEITEM_REVERSE,
 } archipelago_items;
 
-extern archipelago_items FedItem;
-extern char FedString[0x21]; // 0x20 characters followed by null terminator
+typedef struct archipelago_data {
+    /* 0x000 */ unsigned short counter;
+    /* 0x002 */ unsigned short start_flag;
+    /* 0x004 */ archipelago_items fed_item;
+    /* 0x008 */ char fed_string[0x21]; // 0x20 characters followed by null terminator
+    /* 0x029 */ unsigned char connection;
+    /* 0x02A */ unsigned char safety_text_timer; // Timer for when it's *safe* to send another string in
+    /* 0x02B */ char fed_subtitle[0x21]; // 0x20 characters followed by null terminator
+    /* 0x04C */ char slot_name[0x10];
+    /* 0x05C */ char send_death; // If donk player dies. Set this back to 0 upon receiving that the donk player has died
+    /* 0x05D */ char receive_death; // If someone else dies, this will kill the donk player
+    /* 0x05E */ char can_die; // If death is received, the game will queue the death until this is 1. It's generally a good idea to not send a death to the donk player if this is zero 
+    /* 0x05F */ unsigned char text_timer;
+} archipelago_data;
+
+extern archipelago_data *APData;
 extern void handleArchipelagoFeed(void);
-extern void handleArchipelagoString(void);
+extern int isFlagAPItem(int flag);
+extern void initAP(void);
+extern void initAPCounter(void);
+extern void saveAPCounter(void);
+extern int isAPEnabled(void);
+extern void sendDeath(void);
+extern Gfx *displayAPConnection(Gfx *dl);

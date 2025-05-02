@@ -43,21 +43,29 @@ def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
         japesLockedKong = spoiler.shuffled_kong_placement["Jungle Japes"]["locked"]["kong"]
         if japesLockedKong == Kongs.any:
             japesLockedKong = Kongs.diddy
+        if japesPuzzleKong == Kongs.any:
+            japesPuzzleKong = Kongs.donkey
 
         tinyTemplePuzzleKong = spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]
         tinyTempleLockedKong = spoiler.shuffled_kong_placement["Tiny Temple"]["locked"]["kong"]
         if tinyTempleLockedKong == Kongs.any:
             tinyTempleLockedKong = Kongs.tiny
+        if tinyTemplePuzzleKong == Kongs.any:
+            tinyTemplePuzzleKong = Kongs.diddy
 
         llamaPuzzleKong = spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]
         llamaLockedKong = spoiler.shuffled_kong_placement["Llama Temple"]["locked"]["kong"]
         if llamaLockedKong == Kongs.any:
             llamaLockedKong = Kongs.lanky
+        if llamaPuzzleKong == Kongs.any:
+            llamaPuzzleKong = Kongs.donkey
 
         factoryPuzzleKong = spoiler.shuffled_kong_placement["Frantic Factory"]["puzzle"]["kong"]
         factoryLockedKong = spoiler.shuffled_kong_placement["Frantic Factory"]["locked"]["kong"]
         if factoryLockedKong == Kongs.any:
             factoryLockedKong = Kongs.chunky
+        if factoryPuzzleKong == Kongs.any:
+            factoryPuzzleKong = Kongs.lanky
 
         llama_entrance_switch = []
         # if llamaPuzzleKong in [1, 4]:

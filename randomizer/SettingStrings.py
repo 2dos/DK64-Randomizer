@@ -235,6 +235,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "delayed_spoilerlog_release",
         "shockwave_status",  # Deprecated with starting move selector rework - this is now derived in the settings constructor
         "music_disable_reverb",
+        "archipelago",
     ]:
         if pop in dict_data:
             dict_data.pop(pop)

@@ -10,7 +10,9 @@ void alter_price(purchase_struct* data) {
 		int subtype = getMoveProgressiveFlagType(data->purchase_value);
 		if (subtype == 0) {
 			// Slam
-			write = Rando.slam_prices[MovesBase[0].simian_slam - 1];
+			if (MovesBase[0].simian_slam > 0) {
+				write = Rando.slam_prices[MovesBase[0].simian_slam - 1];
+			}
 		} else if (subtype == 1) {
 			// Belt
 			write = Rando.ammo_belt_prices[(int)MovesBase[0].ammo_belt];
