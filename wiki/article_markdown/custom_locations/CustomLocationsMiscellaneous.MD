@@ -17,7 +17,7 @@
 | Jungle Japes | Near the Vine Pit |  |  | 
 | Jungle Japes | Vine Pit |  |  | 
 | Jungle Japes | Lanky Alcove Hill |  |  | 
-| Jungle Japes | On the useless Lanky ramp |  |  | 
+| Jungle Japes | On the useless Lanky ramp | MelonCrate |  | 
 | Jungle Japes | Cranky-tunnel Crossing |  |  | 
 | Jungle Japes | In the Rambi Cave | CrownPad, Bananaport |  | 
 | Jungle Japes | Fairy Pool |  |  | 

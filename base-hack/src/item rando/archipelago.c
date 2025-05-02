@@ -298,7 +298,7 @@ void handleArchipelagoFeed(void) {
             }
         }
     }
-    ap_info.can_die = cc_allower_generic() && cc_allower_spawnkop();
+    ap_info.can_die = canDie();
     if (CutsceneActive > 1) {
         ap_info.can_die = 0;
     }
@@ -308,6 +308,28 @@ void handleArchipelagoFeed(void) {
             ap_info.receive_death = 0;
         }
     }
+}
+
+int canDie(void) {
+    // Check if the spawn kop CC effect can be triggered to simulate death without issues
+    if(!cc_allower_generic()){
+        // No cc effects in general would be allowed
+        return 0;
+    }
+    int level = levelIndexMapping[CurrentMap];
+    if(level == LEVEL_BONUS || level == LEVEL_SHARED){
+        // In a bonus/shared map
+        return 0;
+    }
+    if(!cc_allower_spawnkop()){
+        // This cc effect is already active
+        return 0;
+    }
+    if (TBVoidByte & 0x30 == 0) {
+        // In a tag barrel. Kops hate this one trick.
+        return 0;
+    }
+    return 1;
 }
 
 void sendDeath(void) {
