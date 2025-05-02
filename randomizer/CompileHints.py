@@ -3258,7 +3258,25 @@ def IsMultipathHintTooLong(message):
         if character in measure_message_size:
             measure_message_size = measure_message_size.replace(character, "")
     measure_message_size_nospace = measure_message_size.replace(" ", "")
-    return len(message) > 255 or len(measure_message_size) > 150 or len(measure_message_size_nospace) > 125
+    # Also account for the fact that words are kept together when splitting across lines
+    cutOff_1 = getNumberOfCutoffCharacters(measure_message_size, 50)
+    cutOff_2 = getNumberOfCutoffCharacters(measure_message_size[(50 - cutOff_1) :], 50)
+    effective_length = len(measure_message_size) + cutOff_1 + cutOff_2
+    return len(message) > 255 or effective_length > 150 or len(measure_message_size_nospace) > 125
+
+
+def getNumberOfCutoffCharacters(message, number):
+    """Determine how many characters early a line would get cut off."""
+    if number < 2 or len(message) < (number - 1):
+        return 0
+    index = number - 1
+    initial_index = index
+    while message[index] != " ":
+        index -= 1
+        if index == 0:
+            index = initial_index
+            break
+    return initial_index - index
 
 
 def AssociateHintsWithFlags(spoiler):
