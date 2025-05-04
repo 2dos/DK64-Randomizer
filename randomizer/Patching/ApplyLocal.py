@@ -267,7 +267,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             boolean_props = [
                 BooleanProperties(settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
                 BooleanProperties(settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
-                BooleanProperties(settings.pause_hint_coloring, 0x1E4),  # Pause Hint Coloring
+                BooleanProperties(not settings.pause_hint_coloring, 0x1E4, 0),  # Pause Hint Coloring (inverted for Obiyo)
                 BooleanProperties(settings.camera_is_follow, 0xCB),  # Free/Follow Cam
                 BooleanProperties(settings.camera_is_not_inverted, 0xCC),  # Inverted/Non-Inverted Camera
                 BooleanProperties(settings.fps_display, 0x96),  # FPS Display

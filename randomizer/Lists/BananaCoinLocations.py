@@ -8,10 +8,11 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import DamageAmount, RemovedBarriersSelected
+from randomizer.Enums.Settings import DamageAmount
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Collectibles import Collectibles
 
 FACTORY_LEDGE_COINS_HEIGHT = 178.5
 CAVES_WATER_HEIGHT = 20
@@ -44,6 +45,7 @@ class BananaCoinGroup:
             self.logic = lambda l: True
         else:
             self.logic = logic
+        self.placed_type = Collectibles.coin if vanilla else None
 
 
 BananaCoinGroupList = {

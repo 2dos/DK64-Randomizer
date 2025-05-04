@@ -43,10 +43,6 @@ void saveAPCounter(void) {
 
 void handleSentItem(void) {
     archipelago_items FedItem = ap_info.fed_item;
-    int check_count = -1;
-    int check_start_flag = -1;
-    int i = 0;
-    unsigned char *file_data = 0;
     switch (FedItem) {
         case TRANSFER_ITEM_GB:
             giveGB();
@@ -75,10 +71,7 @@ void handleSentItem(void) {
             auto_turn_keys();
             break;
         case TRANSFER_ITEM_RAINBOWCOIN:
-            for (int i = 0; i < 5; i++) {
-                MovesBase[i].coins += 5;
-            }
-            giveItem(REQITEM_RAINBOWCOIN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            giveItem(REQITEM_RAINBOWCOIN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .give_coins = 1});
             break;
         case TRANSFER_ITEM_FAKEITEM:
             queueIceTrap(ICETRAP_BUBBLE);
@@ -92,7 +85,7 @@ void handleSentItem(void) {
             queueIceTrap(ICETRAP_REVERSECONTROLS);
             giveItem(REQITEM_ICETRAP, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
-            case TRANSFER_ITEM_JUNKITEM:
+        case TRANSFER_ITEM_JUNKITEM:
             applyDamageMask(0, 1);
             giveItem(REQITEM_JUNK, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
@@ -157,8 +150,6 @@ void handleSentItem(void) {
             setFlagMove(FLAG_ABILITY_CAMERA);
             setFlagMove(FLAG_ABILITY_SHOCKWAVE);
             break;
-        default:
-        break;
     }
 }
 

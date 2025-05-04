@@ -40,7 +40,8 @@ typedef struct varspace {
 	/* 0x078 */ LZREntrance exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x088 */ rgb fog[3]; // Order: Aztec, Caves, Castle
 	/* 0x091 */ char disable_race_patches;
-	/* 0x092 */ char unk_91[0x95 - 0x92];
+	/* 0x092 */ char unk_91[0x94 - 0x92];
+	/* 0x094 */ char race_coins_shuffled;
 	/* 0x095 */ char shops_dont_cost;
 	/* 0x096 */ char fps_on; // 0 = FPS display off, 1 = On.
 	/* 0x097 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO

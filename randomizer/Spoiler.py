@@ -529,6 +529,7 @@ class Spoiler:
             "Ice Traps": {},
             "Junk Items": {},
             "Melon Crates": {},
+            "Holdable Objects": {},
             "Hints": {},
             "Enemy Drops": {},
             "Shop Owners": {},
@@ -818,24 +819,46 @@ class Spoiler:
                     if combo in map_name:
                         map_name = map_name.replace(combo, combo.replace(" ", ""))
                 humanspoiler["Colored Banana Locations"][f"{lvl_name} {NameFromKong(group['kong'])}"][human_cb_type_map[group["type"]].strip()].append(f"{map_name.strip()}: {group['name']}")
-        if self.settings.coin_rando:
-            humanspoiler["Coin Locations"] = {}
-            coin_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Isles"]
-            coin_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
-            for lvl in coin_levels:
-                for kng in coin_kongs:
-                    humanspoiler["Coin Locations"][f"{lvl} {kng}"] = []
-            for group in self.coin_placements:
-                lvl_name = level_dict[group["level"]]
-                idx = 1
-                if group["level"] == Levels.FungiForest:
-                    idx = 0
-                map_name = "".join(map(lambda x: x if x.islower() else " " + x, Maps(group["map"]).name)).strip()
-                join_combos = ["2 D Ship", "5 D Ship", "5 D Temple"]
-                for combo in join_combos:
-                    if combo in map_name:
-                        map_name = map_name.replace(combo, combo.replace(" ", ""))
-                humanspoiler["Coin Locations"][f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"].append(f"{map_name.strip()}: {group['name']}")
+        coin_settings = [
+            {
+                "setting": self.settings.coin_rando,
+                "spoiler_name": "Coin Locations",
+                "placements": self.coin_placements,
+                "include_kong": True,
+            },
+            {
+                "setting": self.settings.race_coin_rando,
+                "spoiler_name": "Race Coin Locations",
+                "placements": self.race_coin_placements,
+                "include_kong": False,
+            },
+        ]
+        for data in coin_settings:
+            setting_name = data["spoiler_name"]
+            if data["setting"]:
+                humanspoiler[setting_name] = {}
+                coin_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Isles"]
+                coin_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
+                for lvl in coin_levels:
+                    if data["include_kong"]:
+                        for kng in coin_kongs:
+                            humanspoiler[setting_name][f"{lvl} {kng}"] = []
+                    else:
+                        humanspoiler[setting_name][lvl] = []
+                for group in data["placements"]:
+                    lvl_name = level_dict[group["level"]]
+                    idx = 1
+                    if group["level"] == Levels.FungiForest:
+                        idx = 0
+                    map_name = "".join(map(lambda x: x if x.islower() else " " + x, Maps(group["map"]).name)).strip()
+                    join_combos = ["2 D Ship", "5 D Ship", "5 D Temple"]
+                    for combo in join_combos:
+                        if combo in map_name:
+                            map_name = map_name.replace(combo, combo.replace(" ", ""))
+                    sub_name = lvl_name.split(' ')[idx]
+                    if data["include_kong"]:
+                        sub_name = f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"
+                    humanspoiler[setting_name][sub_name].append(f"{map_name.strip()}: {group['name']}")
 
         # Playthrough data
         humanspoiler["Playthrough"] = self.playthrough

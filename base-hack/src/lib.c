@@ -1492,6 +1492,7 @@ static unsigned char use_req_counters[] = {
 	REQITEM_PEARL,
 	REQITEM_ICETRAP,
 	REQITEM_KEY,
+	REQITEM_RACECOIN,
 };
 
 int getItemCountReq(requirement_item item) {
@@ -1638,4 +1639,52 @@ void refillHealthOnInit(void) {
 void refillPlayerHealthKKO(void* actor, int cutscene, int bitfield) {
 	playCutscene(actor, cutscene, bitfield);
 	refillHealth(0);
+}
+
+static short dynflag_items[] = {
+	0x00A,
+	0x00D,
+	0x016,
+	0x01C,
+	0x01D,
+	0x01E,
+	0x01F,
+	0x023,
+	0x024,
+	0x027,
+	0x02B,
+	0x205,
+	0x206,
+	0x207,
+	0x208,
+};
+static unsigned char other_banned_race_coin_maps[] = {
+	MAP_JAPESMINECART,
+	MAP_AZTECBEETLE,
+	MAP_FACTORYCARRACE,
+	MAP_GALLEONSEALRACE,
+	MAP_FUNGIMINECART,
+	MAP_CAVESBEETLERACE,
+	MAP_CASTLECARRACE,
+	MAP_CASTLEMINECART,
+};
+
+int isRaceCoinNoRandoMap(maps map) {
+	if (levelIndexMapping[map] == LEVEL_BONUS) {
+		return 1;
+	}
+	if (inU8List(map, &other_banned_race_coin_maps, sizeof(other_banned_race_coin_maps))) {
+		return 1;
+	}
+	return 0;
+}
+
+int isDynFlag(int obj) {
+	if (inShortList(obj, &dynflag_items, 15)) {
+		return 1;
+	}
+	if (obj == 236) {
+		return isRaceCoinNoRandoMap(CurrentMap) ^ 1;
+	}
+	return 0;
 }

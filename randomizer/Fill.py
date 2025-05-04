@@ -64,7 +64,7 @@ from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleBosses import CorrectBossKongLocations, ShuffleBossesBasedOnOwnedItems
 from randomizer.ShuffleCBs import ShuffleCBs
-from randomizer.ShuffleCoins import ShuffleCoins
+from randomizer.ShuffleCoins import ShuffleCoins, shuffleRaceCoins
 from randomizer.ShuffleCrates import ShuffleMelonCrates
 from randomizer.ShuffleCrowns import ShuffleCrowns
 from randomizer.ShuffleDoors import SetProgressiveHintDoorLogic, ShuffleDoors, ShuffleVanillaDoors, UpdateDoorLevels
@@ -3689,8 +3689,13 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     if spoiler.settings.cb_rando_enabled:
         ShuffleCBs(spoiler)
     # Coin Shuffle
+    spoiler.coin_placements = []
+    spoiler.race_coin_placements = []
     if spoiler.settings.coin_rando:
         ShuffleCoins(spoiler)
+    # Race Coin Shuffle
+    if spoiler.settings.race_coin_rando:
+        shuffleRaceCoins(spoiler)
     # Random Patches
     if spoiler.settings.random_patches:
         human_patches = {}

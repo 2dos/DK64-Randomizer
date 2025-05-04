@@ -170,6 +170,10 @@ void updateKopStat(void) {
 
 void updateEnemyKillStat(void) {
     // Change character for K Rool
+    if (!isRaceCoinNoRandoMap(DestMap)) {
+        // Using dest map because it's early in the loadmap process
+        RaceCoinCount = getItemCount_new(REQITEM_RACECOIN, 0, 0);
+    }
     fixKRoolKong();
     resetDisplayedMusic(); // Just to prevent against free issues
     // Update Stat

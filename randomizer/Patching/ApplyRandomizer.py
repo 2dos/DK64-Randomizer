@@ -8,7 +8,6 @@ import time
 from tempfile import mktemp
 from randomizer.Enums.Settings import (
     BananaportRando,
-    CBRando,
     CrownEnemyDifficulty,
     DamageAmount,
     FasterChecksSelected,
@@ -258,6 +257,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.sprint_barrel_requires_sprint, 0x2F),  # Sprint Barrel requires OSprint
         BooleanProperties(spoiler.settings.fix_lanky_tiny_prod, 0x114),  # Fix Lanky Tiny Prod
         BooleanProperties(spoiler.settings.enemy_kill_crown_timer, 0x35),  # Enemy crown timer reduction
+        BooleanProperties(spoiler.settings.race_coin_rando, 0x94),  # Race Coin Location Rando
     ]
 
     for prop in boolean_props:

@@ -49,7 +49,8 @@ typedef struct CountStruct {
     /* 0x011 */ unsigned char rainbow_coins;
     /* 0x012 */ short ice_traps;
     /* 0x014 */ short junk_items;
-    /* 0x016 */ MoveSpecialStruct flag_moves;
+    /* 0x016 */ short race_coins;
+    /* 0x018 */ MoveSpecialStruct flag_moves;
 } CountStruct;
 
 typedef struct MoveSpecialBijectionStruct {

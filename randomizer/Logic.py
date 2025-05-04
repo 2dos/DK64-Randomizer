@@ -292,6 +292,7 @@ class LogicVarHolder:
         self.RegularCoins = [0] * 5
         self.RainbowCoins = 0
         self.SpentCoins = [0] * 5
+        self.RaceCoins = 0
 
         self.kong = self.startkong
 
@@ -912,6 +913,8 @@ class LogicVarHolder:
                     self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
                     collectible.added = True
                 missingGun = True
+            elif collectible.type == Collectibles.racecoin:
+                self.RaceCoins += collectible.amount
             if not missingGun:
                 collectible.added = True
 

@@ -379,6 +379,9 @@ extern void overlay_mod_race(void);
 
 extern int getTrackerYOffset(void);
 
+extern int isDynFlag(int obj);
+extern int isRaceCoinNoRandoMap(maps map);
+
 extern void hideObject(behaviour_data* behaviour_pointer);
 extern void bananaportGenericCode(behaviour_data* behaviour, int index, int id);
 extern void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id);

@@ -77,6 +77,11 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
         case REQITEM_RAINBOWCOIN:
             current_item_data.rainbow_coins++;
             hh_item = HHITEM_RAINBOWCOIN;
+            if (config.give_coins) {
+                for (int i = 0; i < 5; i++) {
+                    MovesBase[i].coins += 5;
+                }
+            }
             break;
         case REQITEM_ICETRAP:
             current_item_data.ice_traps++;
@@ -93,6 +98,10 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             setPermFlag(FLAG_ITEM_CRANKY + kong);
             hh_item = HHITEM_KONG;
             display_text = 1;
+            break;
+        case REQITEM_RACECOIN:
+            current_item_data.race_coins++;
+            RaceCoinCount = current_item_data.race_coins;
             break;
         case REQITEM_MOVE:
             // TODO: Move logic here
@@ -156,7 +165,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
 }
 
 void giveItemFromPacket(item_packet *packet) {
-    giveItem(packet->item_type, packet->level, packet->kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
+    giveItem(packet->item_type, packet->level, packet->kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1, .give_coins = 1});
 }
 
 int getItemCount_new(requirement_item item, int level, int kong) {
@@ -256,6 +265,8 @@ int getItemCount_new(requirement_item item, int level, int kong) {
             return current_item_data.ice_traps;
         case REQITEM_JUNK:
             return current_item_data.junk_items;
+        case REQITEM_RACECOIN:
+            return current_item_data.race_coins;
     }
     return 0;
 }
@@ -334,6 +345,7 @@ static unsigned char FileInfoData[] = {
     8, // Rainbow Coins
     16, // Ice Traps
     16, // Junk Items
+    16, // Race Coins
     8, // Special Moves
     16, // AP Item Count
 };
@@ -370,6 +382,7 @@ void readItemsFromFile(void) {
     current_item_data.rainbow_coins = ReadFile(DATA_RAINBOWCOINS, 0, 0, FileIndex);
     current_item_data.ice_traps = ReadFile(DATA_ICETRAPS, 0, 0, FileIndex);
     current_item_data.junk_items = ReadFile(DATA_JUNKITEMS, 0, 0, FileIndex);
+    current_item_data.race_coins = ReadFile(DATA_RACECOINS, 0, 0, FileIndex);
     *(unsigned char*)(&current_item_data.flag_moves) = ReadFile(DATA_SPECIALMOVES, 0, 0, FileIndex);
 }
 
@@ -388,5 +401,6 @@ void saveItemsToFile(void) {
     SaveToFile(DATA_RAINBOWCOINS, 0, 0, FileIndex, current_item_data.rainbow_coins);
     SaveToFile(DATA_ICETRAPS, 0, 0, FileIndex, current_item_data.ice_traps);
     SaveToFile(DATA_JUNKITEMS, 0, 0, FileIndex, current_item_data.junk_items);
+    SaveToFile(DATA_RACECOINS, 0, 0, FileIndex, current_item_data.race_coins);
     SaveToFile(DATA_SPECIALMOVES, 0, 0, FileIndex, *(unsigned char*)(&current_item_data.flag_moves));
 }

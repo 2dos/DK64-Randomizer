@@ -814,6 +814,8 @@ extern char RambiArenaComboTimer;
 extern char RambiArenaComboSize;
 extern char RambiArenaComboChain[16];
 
+extern unsigned short RaceCoinCount;
+
 extern char* AnimationPointer;
 extern unsigned short StoredOrangeCount;
 extern path_data_struct* PathData[32];

@@ -1,25 +1,5 @@
 #include "../../include/common.h"
 
-/*
-	Exiting races:
-		- Aztec Beetle Race (!)
-		- Caves Beetle Race (!)
-		- Seal Race (!)
-		- Factory Car Race (!)
-		- Castle Car Race (!)
-	Exiting Levels (!)
-	Entering Levels (!)
-	Entering Seasick (!)
-	Entering Mech Fish // Ignore - This one is weird
-	Entering Aztec Beetle Race (!)
-	Enter Fungi Minecart (!)
-	Exit K Rool (!)
-	Exit Fungi Minecart (!)
-	Exit Japes Minecart (!)
-	Exit Castle Minecart (!)
-	Enter Castle Lobby (!)
-*/
-
 void replace_zones(int init_flag) {
 	int more_lz_byte = Rando.randomize_more_loading_zones;
 	if (more_lz_byte) {

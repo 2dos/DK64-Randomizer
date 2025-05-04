@@ -1977,7 +1977,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(ROM_DATA_OFFSET)
     arr = []
     for x in range(0x200):
-        arr.append(0)
+        if x == 0x1E4:
+            arr.append(1) # Set pause coloring to on by default, for Obiyo
+        else:
+            arr.append(0)
     fh.write(bytearray(arr))
     writeVanillaMoveData(fh)
     adjustExits(fh)
