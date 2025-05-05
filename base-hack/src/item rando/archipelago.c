@@ -312,6 +312,9 @@ void handleArchipelagoFeed(void) {
 
 int canDie(void) {
     // Check if the spawn kop CC effect can be triggered to simulate death without issues
+    if(ObjectModel2Timer < 31){
+        return 0;
+    }
     if(!cc_allower_generic()){
         // No cc effects in general would be allowed
         return 0;
@@ -322,10 +325,10 @@ int canDie(void) {
         return 0;
     }
     if(!cc_allower_spawnkop()){
-        // This cc effect is already active
+        // This cc effect is already active or a transition isn't quite finished yet
         return 0;
     }
-    if (TBVoidByte & 0x30 == 0) {
+    if ((TBVoidByte & 0x30) == 0) {
         // In a tag barrel. Kops hate this one trick.
         return 0;
     }
