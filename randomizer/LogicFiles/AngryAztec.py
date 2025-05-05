@@ -167,7 +167,7 @@ LogicRegions = {
         TransitionFront(Regions.TinyTempleEntrance, lambda l: (Events.FedTotem in l.Events and l.feather and l.istiny) or l.CanPhase(), Transitions.AztecMainToTiny),
         TransitionFront(Regions.ChunkyTempleEntrance, lambda l: (Events.FedTotem in l.Events and l.pineapple and l.ischunky) or l.CanPhase() or (l.generalclips and l.ischunky and l.hunkyChunky), Transitions.AztecMainToChunky),
         TransitionFront(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Transitions.AztecMainToRace),
-        TransitionFront(Regions.LlamaTemple, lambda l: l.canOpenLlamaTemple() or l.CanPhase() or l.generalclips, Transitions.AztecMainToLlama),
+        TransitionFront(Regions.LlamaTemple, lambda l: l.canOpenLlamaTemple() or l.CanPhase() or (l.generalclips and not l.islanky), Transitions.AztecMainToLlama),
         TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey),  # , Transitions.AztecMainToBBlast),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),
         TransitionFront(Regions.FunkyAztec, lambda l: l.funkyAccess),
