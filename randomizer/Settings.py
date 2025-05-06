@@ -710,6 +710,7 @@ class Settings:
         self.cb_rando_list_selected = []
         self.cb_rando_enabled = False
         self.coin_rando = False
+        self.race_coin_rando = False
         self.crown_placement_rando = False
         self.bananaport_placement_rando = ShufflePortLocations.off
         self.useful_bananaport_placement = True

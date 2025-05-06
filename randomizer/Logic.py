@@ -83,6 +83,7 @@ class LogicVarHolder:
         # See CalculateWothPaths method for details on these assumptions
         self.assumePaidBLockers = False
         self.assumeInfiniteCoins = False
+        self.assumeInfiniteRaceCoins = False
         self.assumeAztecEntry = False
         self.assumeLevel4Entry = False
         self.assumeLevel8Entry = False  # Extra important to never assume this in LZR!
@@ -292,6 +293,7 @@ class LogicVarHolder:
         self.RegularCoins = [0] * 5
         self.RainbowCoins = 0
         self.SpentCoins = [0] * 5
+        self.RaceCoins = 0
 
         self.kong = self.startkong
 
@@ -912,6 +914,8 @@ class LogicVarHolder:
                     self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
                     collectible.added = True
                 missingGun = True
+            elif collectible.type == Collectibles.racecoin:
+                self.RaceCoins += collectible.amount
             if not missingGun:
                 collectible.added = True
 
@@ -1142,6 +1146,20 @@ class LogicVarHolder:
         if self.HardBossesSettingEnabled(HardBossesSelected.beta_lanky_phase):
             return self.lanky and self.grape and self.barrels
         return self.lanky and self.trombone and self.barrels
+    
+    def HasEnoughRaceCoins(self, map_id: Maps, default_kong: Kongs, kong_mandatory: bool) -> bool:
+        """Check if the player has enough race coins to beat the challenge."""
+        if self.settings.race_coin_rando:
+            has_enough_coins = self.RaceCoins >= self.spoiler.coin_requirements[map_id]
+            if self.assumeInfiniteRaceCoins:
+                has_enough_coins = True
+            is_kong = True
+            if not self.settings.free_trade_items or kong_mandatory:
+                is_kong = self.IsKong(default_kong)
+            return has_enough_coins and is_kong
+        if kong_mandatory:
+            return self.IsKong(default_kong)
+        return True
 
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""

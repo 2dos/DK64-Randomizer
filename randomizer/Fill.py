@@ -23,11 +23,9 @@ from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
-    CBRando,
     ClimbingStatus,
     DamageAmount,
     DKPortalRando,
-    FasterChecksSelected,
     FillAlgorithm,
     FungiTimeSetting,
     HardModeSelected,
@@ -58,13 +56,14 @@ from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex
 from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Patching import ApplyRandomizer
 from randomizer.Patching.EnemyRando import randomize_enemies_0
+from randomizer.Patching.PuzzleRando import randomizeRaceRequirements
 from randomizer.Patching.Library.Generic import IsItemSelected, getBLockerThresholds
 from randomizer.Prices import GetMaxForKong
 from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleBosses import CorrectBossKongLocations, ShuffleBossesBasedOnOwnedItems
 from randomizer.ShuffleCBs import ShuffleCBs
-from randomizer.ShuffleCoins import ShuffleCoins
+from randomizer.ShuffleCoins import ShuffleCoins, shuffleRaceCoins
 from randomizer.ShuffleCrates import ShuffleMelonCrates
 from randomizer.ShuffleCrowns import ShuffleCrowns
 from randomizer.ShuffleDoors import SetProgressiveHintDoorLogic, ShuffleDoors, ShuffleVanillaDoors, UpdateDoorLevels
@@ -1006,6 +1005,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
     old_open_lobbies_temp = spoiler.settings.open_lobbies  # It's far less likely for a key to be a prerequisite
     spoiler.LogicVariables.assumePaidBLockers = True  # This means we don't have to worry about moves required to pay B. Lockers - we already know we can clear all B. Lockers
     spoiler.LogicVariables.assumeInfiniteCoins = True  # This means we don't have to worry about moves required to get coins - we already know there is no breaking purchase order
+    spoiler.LogicVariables.assumeInfiniteRaceCoins = True  # This means we don't have to worry about moves required to get race coins
     spoiler.LogicVariables.assumeKRoolAccess = True  # This makes the K. Rool path better if we need it
     if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
         # These assumptions are only good in level order because entrances can matter more in LZR
@@ -1191,6 +1191,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
     # None of these assumptions should ever make it out of this method
     spoiler.LogicVariables.assumePaidBLockers = False
     spoiler.LogicVariables.assumeInfiniteCoins = False
+    spoiler.LogicVariables.assumeInfiniteRaceCoins = False
     spoiler.LogicVariables.assumeAztecEntry = False
     spoiler.LogicVariables.assumeLevel4Entry = False
     spoiler.LogicVariables.assumeLevel8Entry = False
@@ -3689,8 +3690,14 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     if spoiler.settings.cb_rando_enabled:
         ShuffleCBs(spoiler)
     # Coin Shuffle
+    spoiler.coin_placements = []
+    spoiler.race_coin_placements = []
     if spoiler.settings.coin_rando:
         ShuffleCoins(spoiler)
+    # Race Coin Shuffle
+    randomizeRaceRequirements(spoiler)
+    if spoiler.settings.race_coin_rando:
+        shuffleRaceCoins(spoiler)
     # Random Patches
     if spoiler.settings.random_patches:
         human_patches = {}

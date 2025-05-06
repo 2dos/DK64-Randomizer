@@ -599,6 +599,7 @@ typedef enum file_data_indexes {
     DATA_RAINBOWCOINS,
     DATA_ICETRAPS,
     DATA_JUNKITEMS,
+	DATA_RACECOINS,
     DATA_SPECIALMOVES,
 	DATA_APCOUNTER,
     DATA_JETPACHISCORE,
@@ -982,6 +983,7 @@ typedef enum requirement_item {
 	/* 0x013 */ REQITEM_HINT,
 	/* 0x014 */ REQITEM_SHOPKEEPER,
 	/* 0x015 */ REQITEM_AP,
+	/* 0x016 */ REQITEM_RACECOIN,
 } requirement_item;
 
 typedef enum item_ids { 

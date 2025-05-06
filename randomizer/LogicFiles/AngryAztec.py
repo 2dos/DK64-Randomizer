@@ -5,6 +5,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
@@ -289,7 +290,7 @@ LogicRegions = {
     ]),
 
     Regions.AztecTinyRace: Region("Aztec Tiny Race", HintRegion.OasisAndTotem, Levels.AngryAztec, False, None, [
-        LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.istiny or l.settings.free_trade_items),
+        LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.HasEnoughRaceCoins(Maps.AztecTinyRace, Kongs.tiny, not l.settings.free_trade_items) ),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda _: True, Transitions.AztecRaceToMain),
     ], Transitions.AztecMainToRace

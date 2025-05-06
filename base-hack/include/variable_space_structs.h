@@ -40,7 +40,8 @@ typedef struct varspace {
 	/* 0x078 */ LZREntrance exit_levels[8]; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x088 */ rgb fog[3]; // Order: Aztec, Caves, Castle
 	/* 0x091 */ char disable_race_patches;
-	/* 0x092 */ char unk_91[0x95 - 0x92];
+	/* 0x092 */ char unk_91[0x94 - 0x92];
+	/* 0x094 */ char race_coins_shuffled;
 	/* 0x095 */ char shops_dont_cost;
 	/* 0x096 */ char fps_on; // 0 = FPS display off, 1 = On.
 	/* 0x097 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
@@ -105,15 +106,14 @@ typedef struct varspace {
 	/* 0x139 */ char dpad_visual_enabled; // 0 = Vanilla, 1 = Visual shown
 	/* 0x13A */ char fast_warp; // 0 = Vanilla, 1 = Use Multiplayer warp
 	/* 0x13B */ char short_bosses; // 0 = Vanilla fights, 1 = Short fights
-	/* 0x13C */ unsigned char coinreq_cavesbeetle;
-	/* 0x13D */ unsigned char coinreq_aztecbeetle;
-	/* 0x13E */ unsigned char coinreq_factorycar;
-	/* 0x13F */ unsigned char coinreq_sealrace;
-	/* 0x140 */ unsigned char coinreq_castlecar;
-	/* 0x141 */ unsigned char coinreq_japescart;
-	/* 0x142 */ unsigned char coinreq_fungicart;
-	/* 0x143 */ unsigned char coinreq_castlecart;
-	/* 0x144 */ char unk_144[8];
+	/* 0x13C */ unsigned short coinreq_cavesbeetle;
+	/* 0x13E */ unsigned short coinreq_aztecbeetle;
+	/* 0x140 */ unsigned short coinreq_factorycar;
+	/* 0x142 */ unsigned short coinreq_sealrace;
+	/* 0x144 */ unsigned short coinreq_castlecar;
+	/* 0x146 */ unsigned short coinreq_japescart;
+	/* 0x148 */ unsigned short coinreq_fungicart;
+	/* 0x14A */ unsigned short coinreq_castlecart;
 	/* 0x14C */ unsigned char lobbies_open_bitfield; // hccf gfaj
 	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
 	/* 0x14E */ unsigned char ice_trap_flag_alloc;

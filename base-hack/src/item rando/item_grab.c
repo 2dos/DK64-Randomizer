@@ -80,11 +80,6 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
                 case REQITEM_PEARL:
                     sprite = &pearl_sprite;
                     break;
-                case REQITEM_RAINBOWCOIN:
-                    for (int i = 0; i < 5; i++) {
-                        MovesBase[i].coins += 5;
-                    }
-                    break;
                 case REQITEM_ICETRAP:
                     if (item_kong) {
                         queueIceTrap(item_kong);
@@ -176,18 +171,13 @@ int getFlagIndex_MedalCorrected(int start, int level) {
 void giveItemFromSend(item_packet *send) {
     int item_type = send->item_type;
     int item_kong = send->kong;
-    giveItem(item_type, send->level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
+    giveItem(item_type, send->level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1, .give_coins = 1});
     switch(item_type) {
         case REQITEM_KONG:
             refreshItemVisibility();
             break;
         case REQITEM_KEY:
             auto_turn_keys();
-            break;
-        case REQITEM_RAINBOWCOIN:
-            for (int i = 0; i < 5; i++) {
-                MovesBase[i].coins += 5;
-            }
             break;
         case REQITEM_ICETRAP:
             if (item_kong) {
@@ -738,10 +728,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
             break;
         case 0xB7:
             // Rainbow Coin
-            for (int i = 0; i < 5; i++) {
-                MovesBase[i].coins += 5;
-            }
-            giveItem(REQITEM_RAINBOWCOIN, 0, 0, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
+            giveItem(REQITEM_RAINBOWCOIN, 0, 0, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1, .give_coins = 1});
             RainbowCoinFTT();
             break;
         case 0xDD:
@@ -755,7 +742,12 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
             break;
         case 0xEC:
             // Race Coin
-            changeCollectableCount(11, player, 1);
+            if ((levelIndexMapping[CurrentMap] == LEVEL_BONUS) || (!Rando.race_coins_shuffled)) {
+                // Bonus map, or unshuffled coins
+                changeCollectableCount(11, player, 1);
+            } else {
+                giveItem(REQITEM_RACECOIN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            }
             break;
         case 0x13C:
             // Boss Key

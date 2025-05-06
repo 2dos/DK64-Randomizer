@@ -5,3 +5,4 @@ class Collectibles(IntEnum):
     bunch = 2
     balloon = 3
     coin = 4
+    racecoin = 5

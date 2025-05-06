@@ -30,6 +30,7 @@ FileInfoSizes = [
     8, # Rainbow Coins
     16, # Ice Traps
     16, # Junk Items
+    16, # Race Coins
     8, # Special Moves
     16, # AP Item Count
 ]
@@ -192,3 +193,8 @@ def saveUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
 
     writeFunction(ROM_COPY, 0x8060DD18, Overlay.Static, "readItemsFromFile", offset_dict)
     writeFunction(ROM_COPY, 0x8060C3C8, Overlay.Static, "GrabFileParameters_FileInfo", offset_dict)
+    # Save updates for dyn flags
+    writeFunction(ROM_COPY, 0x80631E3C, Overlay.Static, "isDynFlag", offset_dict)
+    writeFunction(ROM_COPY, 0x80632140, Overlay.Static, "isDynFlag", offset_dict)
+    writeFunction(ROM_COPY, 0x806F4990, Overlay.Static, "isDynFlag", offset_dict)
+    writeFunction(ROM_COPY, 0x806F49EC, Overlay.Static, "isDynFlag", offset_dict)

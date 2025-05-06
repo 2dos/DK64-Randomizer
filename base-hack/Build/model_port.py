@@ -372,6 +372,7 @@ def portModelTwoToActor(model_two_index: int, input_file: str, output_file: str,
                     raw -= 0x10000
                 raw *= scale
                 raw -= y_offset
+                raw = int(raw)
                 if raw < 0:
                     raw += 0x10000
                 if raw < 0:

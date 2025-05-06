@@ -721,6 +721,7 @@ export enum SettingsStringEnum {
     dk_portal_location_rando_v2 = 204,
     dos_door_rando = 205,
     blocker_difficulty = 206,
+    race_coin_rando = 207,
 }
 
 export enum SettingsStringDataType {
@@ -844,6 +845,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.crown_enemy_rando: CrownEnemyRando,
     SettingsStringEnum.crown_enemy_difficulty: CrownEnemyDifficulty,
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.race_coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
     SettingsStringEnum.dk_portal_location_rando: SettingsStringDataType.bool,

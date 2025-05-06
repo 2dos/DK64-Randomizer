@@ -794,6 +794,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8002845A, Overlay.Menu, 11 + 1, offset_dict)  # Set cap to 12
 
     grabUpdates(ROM_COPY, settings, offset_dict, spoiler)
+    raceCoinRandoASMChanges(ROM_COPY, settings, offset_dict, spoiler)
     if settings.fast_warps:
         writeValue(ROM_COPY, 0x806EE692, Overlay.Static, 0x54, offset_dict)
         writeFunction(ROM_COPY, 0x806DC2AC, Overlay.Static, "fastWarp", offset_dict)  # Modify Function Call
@@ -1621,24 +1622,6 @@ def patchAssembly(ROM_COPY, spoiler):
         for j in range(7):
             if REGULAR_BOSS_MAPS[i] == settings.boss_maps[j]:
                 writeValue(ROM_COPY, KEY_FLAG_ADDRESSES[i], Overlay.Boss, NORMAL_KEY_FLAGS[j], offset_dict)
-
-    # Race Coin Requirements
-    race_offset_data = {
-        Maps.CavesLankyRace: [0x800247C2],
-        Maps.AztecTinyRace: [0x800247DA],
-        Maps.FactoryTinyRace: [0x800285A2, 0x8002888E, 0x80028A0A],
-        Maps.GalleonSealRace: [0x8002A232, 0x8002A08E],
-        Maps.CastleTinyRace: [0x8002BAB6, 0x8002B6D6],
-        Maps.JapesMinecarts: [0x806C4912],
-        Maps.ForestMinecarts: [0x806C4956],
-        Maps.CastleMinecarts: [0x806C499A],
-    }
-    static_overlay_races = [Maps.JapesMinecarts, Maps.ForestMinecarts, Maps.CastleMinecarts]
-    for map_id in race_offset_data:
-        if map_id in spoiler.coin_requirements:
-            for addr in race_offset_data[map_id]:
-                overlay = Overlay.Static if map_id in static_overlay_races else Overlay.Race
-                writeValue(ROM_COPY, addr, overlay, spoiler.coin_requirements[map_id], offset_dict)
 
     # BFI
     writeFunction(ROM_COPY, 0x80028080, Overlay.Critter, "displayBFIMoveText", offset_dict)  # BFI Text Display

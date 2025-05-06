@@ -5,6 +5,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion
@@ -120,7 +121,7 @@ LogicRegions = {
     ]),
 
     Regions.CavesLankyRace: Region("Caves Lanky Race", HintRegion.MainCaves, Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesLankyBeetleRace, lambda l: l.sprint and l.islanky),
+        LocationLogic(Locations.CavesLankyBeetleRace, lambda l: l.sprint and l.HasEnoughRaceCoins(Maps.CavesLankyRace, Kongs.lanky, True)),
     ], [], [
         TransitionFront(Regions.CrystalCavesMain, lambda _: True, Transitions.CavesRaceToMain),
     ], Transitions.CavesMainToRace
