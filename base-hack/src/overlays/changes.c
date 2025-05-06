@@ -63,13 +63,11 @@ void parseCutsceneData(void) {
 		modifyCutscenePointTime(1, 0x22, 3, 1);
 	}
 	if ((Rando.faster_checks.castle_cart) && (CurrentMap == MAP_CASTLEMINECART)) {
-		if (!Rando.race_coins_shuffled) {
-			int rx = 8931;
-			int ry = 0;
-			int rz = 7590;
-			modifyCutscenePanPoint(0, 7, 0, 3100, 500, 500, rx, ry, rz, 45, 0);
-			modifyCutscenePanPoint(0, 7, 1, 3200, 500, 500, rx, ry, rz, 45, 0);
-		}
+		int rx = 8931;
+		int ry = 0;
+		int rz = 7590;
+		modifyCutscenePanPoint(0, 7, 0, 3100, 500, 500, rx, ry, rz, 45, 0);
+		modifyCutscenePanPoint(0, 7, 1, 3200, 500, 500, rx, ry, rz, 45, 0);
 	}
 	loadDKTVData(); // Has to be last
 }
