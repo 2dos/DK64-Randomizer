@@ -629,7 +629,8 @@ class Settings:
         self.camera_is_follow = False
         self.sfx_volume = 100
         self.music_volume = 100
-        self.true_widescreen = False
+        self.true_widescreen = False  # Deprecated
+        self.animorphic_widescreen = False
         self.troff_brighten = False
         self.better_dirt_patch_cosmetic = False
         self.crosshair_outline = False

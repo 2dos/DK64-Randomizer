@@ -403,7 +403,6 @@ void initHack(int source) {
         		writeFunction(0x806609BC, &getOscillationDelta);
 			}
 			initSwitchsanityChanges();
-			ScreenRatio = Rando.default_screen_ratio;
 			int sound_subtype = 1;
 			if (SoundType == 0) {
 				sound_subtype = 2;

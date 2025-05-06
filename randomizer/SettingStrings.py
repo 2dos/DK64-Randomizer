@@ -220,6 +220,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "sfx_volume",
         "music_volume",
         "true_widescreen",
+        "animorphic_widescreen",
         "camera_is_not_inverted",
         "sound_type",
         "smoother_camera",
