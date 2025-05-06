@@ -5,6 +5,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion
@@ -164,7 +165,7 @@ LogicRegions = {
     ]),
 
     Regions.CastleTinyRace: Region("Castle Tiny Race", HintRegion.CastleRooms, Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleTinyCarRace, lambda l: l.istiny or l.settings.free_trade_items),
+        LocationLogic(Locations.CastleTinyCarRace, lambda l: l.HasEnoughRaceCoins(Maps.CastleTinyRace, Kongs.tiny, not l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.MuseumBehindGlass, lambda _: True, Transitions.CastleRaceToMuseum)
     ], Transitions.CastleMuseumToCarRace
@@ -273,7 +274,7 @@ LogicRegions = {
     ]),
 
     Regions.CastleMinecarts: Region("Castle Minecarts", HintRegion.CastleUnderground, Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleDonkeyMinecarts, lambda l: l.isdonkey or l.settings.free_trade_items),
+        LocationLogic(Locations.CastleDonkeyMinecarts, lambda l: l.HasEnoughRaceCoins(Maps.CastleMinecarts, Kongs.donkey, not l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.Crypt, lambda _: True, Transitions.CastleCartsToCrypt),
     ], Transitions.CastleCryptToCarts

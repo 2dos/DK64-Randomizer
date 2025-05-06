@@ -5,6 +5,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion
@@ -205,7 +206,7 @@ LogicRegions = {
     ]),
 
     Regions.SealRace: Region("Seal Race", HintRegion.ShipyardOutskirts, Levels.GloomyGalleon, False, None, [
-        LocationLogic(Locations.GalleonDonkeySealRace, lambda l: l.isdonkey or l.settings.free_trade_items),
+        LocationLogic(Locations.GalleonDonkeySealRace, lambda l: l.HasEnoughRaceCoins(Maps.GalleonSealRace, Kongs.donkey, not l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: not l.IsLavaWater() or l.Melons >= 2, Transitions.GalleonSealToShipyard),
     ], Transitions.GalleonShipyardToSeal

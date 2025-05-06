@@ -1658,33 +1658,17 @@ static short dynflag_items[] = {
 	0x207,
 	0x208,
 };
-static unsigned char other_banned_race_coin_maps[] = {
-	MAP_JAPESMINECART,
-	MAP_AZTECBEETLE,
-	MAP_FACTORYCARRACE,
-	MAP_GALLEONSEALRACE,
-	MAP_FUNGIMINECART,
-	MAP_CAVESBEETLERACE,
-	MAP_CASTLECARRACE,
-	MAP_CASTLEMINECART,
-};
-
-int isRaceCoinNoRandoMap(maps map) {
-	if (levelIndexMapping[map] == LEVEL_BONUS) {
-		return 1;
-	}
-	if (inU8List(map, &other_banned_race_coin_maps, sizeof(other_banned_race_coin_maps))) {
-		return 1;
-	}
-	return 0;
-}
 
 int isDynFlag(int obj) {
 	if (inShortList(obj, &dynflag_items, 15)) {
 		return 1;
 	}
-	if (obj == 236) {
-		return isRaceCoinNoRandoMap(CurrentMap) ^ 1;
+	if (Rando.race_coins_shuffled) {
+		if (obj == 236) {
+			if (levelIndexMapping[CurrentMap] != LEVEL_BONUS) {
+				return 1;
+			}
+		}
 	}
 	return 0;
 }

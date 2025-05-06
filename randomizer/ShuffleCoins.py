@@ -14,6 +14,7 @@ import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Maps import Maps
 from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
 from randomizer.LogicClasses import Collectible
 
@@ -134,6 +135,16 @@ def ShuffleCoins(spoiler):
             js.postMessage("Coin Randomizer failed to fill. Tries: " + str(retries))
 
 RACE_COINS_TO_PLACE = 97 + 71 + 25 + 19 + 87 + 77 + 68 + 17
+BANNED_COIN_MAPS = [
+    Maps.JapesMinecarts,
+    Maps.AztecTinyRace,
+    Maps.FactoryTinyRace,
+    Maps.GalleonSealRace,
+    Maps.ForestMinecarts,
+    Maps.CavesLankyRace,
+    Maps.CastleTinyRace,
+    Maps.CastleMinecarts,
+]
 
 def shuffleRaceCoins(spoiler):
     """Shuffle race coins selected from location files."""
@@ -152,7 +163,7 @@ def shuffleRaceCoins(spoiler):
             for level in level_data:
                 level_placement = []
                 coin_size = coins_to_place_in_level
-                groupIds = list(set([group.group for group in BananaCoinGroupList[level] if group.placed_type is None]))
+                groupIds = list(set([group.group for group in BananaCoinGroupList[level] if group.placed_type is None and group.map not in BANNED_COIN_MAPS]))
                 spoiler.settings.random.shuffle(groupIds)
                 for groupId in groupIds:
                     group_weight = 0

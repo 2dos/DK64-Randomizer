@@ -5,6 +5,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion
@@ -259,7 +260,7 @@ LogicRegions = {
     ]),
 
     Regions.JapesMinecarts: Region("Japes Minecarts", HintRegion.CavesAndMines, Levels.JungleJapes, False, None, [
-        LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy),
+        LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.HasEnoughRaceCoins(Maps.JapesMinecarts, Kongs.diddy, True)),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda _: True),
     ], Transitions.JapesMineToCarts

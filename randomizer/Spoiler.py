@@ -25,6 +25,7 @@ from randomizer.Enums.Settings import (
     LogicType,
     HardBossesSelected,
     MinigameBarrels,
+    PuzzleRando,
     ProgressiveHintItem,
     RandomPrices,
     ShockwaveStatus,
@@ -454,6 +455,21 @@ class Spoiler:
         humanspoiler["Kongs"]["Llama Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
         humanspoiler["Kongs"]["Factory Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
         humanspoiler["Requirements"]["Miscellaneous"]["Jetpac Medal Requirement"] = self.settings.medal_requirement
+        race_maps = {
+            Maps.JapesMinecarts: "Japes Minecart",
+            Maps.AztecTinyRace: "Aztec Beetle Race",
+            Maps.FactoryTinyRace: "Factory Car Race",
+            Maps.GalleonSealRace: "Galleon Seal Race",
+            Maps.ForestMinecarts: "Forest Minecart",
+            Maps.CavesLankyRace: "Caves Beetle Race",
+            Maps.CastleTinyRace: "Castle Car Race",
+            Maps.CastleMinecarts: "Castle Minecart",
+        }
+        if self.settings.race_coin_rando or self.settings.puzzle_rando_difficulty != PuzzleRando.off:
+            humanspoiler["Requirements"]["Races"] = {}
+            for map_id in race_maps:
+                if map_id in self.coin_requirements:
+                    humanspoiler["Requirements"]["Races"][race_maps[map_id]] = self.coin_requirements[map_id]
         humanspoiler["End Game"] = {
             "Helm": {},
             "K. Rool": {},

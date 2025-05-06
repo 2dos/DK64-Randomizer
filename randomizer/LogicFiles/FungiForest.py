@@ -5,6 +5,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion
@@ -53,7 +54,7 @@ LogicRegions = {
     ]),
 
     Regions.ForestMinecarts: Region("Forest Minecarts", HintRegion.ForestCenterAndBeanstalk, Levels.FungiForest, False, None, [
-        LocationLogic(Locations.ForestChunkyMinecarts, lambda l: l.ischunky or l.settings.free_trade_items),
+        LocationLogic(Locations.ForestChunkyMinecarts, lambda l: l.HasEnoughRaceCoins(Maps.ForestMinecarts, Kongs.chunky, not l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.FungiForestStart, lambda _: True),
     ], Transitions.ForestMainToCarts

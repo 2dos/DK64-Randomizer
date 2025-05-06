@@ -99,6 +99,43 @@ def collisionUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeFunction(ROM_COPY, 0x806F6A0C, Overlay.Static, "checkForValidCollision", offset_dict)  # Detecting if object is inside current quadrant
     writeFunction(ROM_COPY, 0x806F6A2C, Overlay.Static, "checkForValidCollision", offset_dict)  # Detecting if object is inside current quadrant
 
+def raceCoinRandoASMChanges(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
+    """All changes related to race coin item rando."""
+    if settings.race_coin_rando:
+        # Prevent wiping the counts
+        writeValue(ROM_COPY, 0x80024388, Overlay.Bonus, 0, offset_dict, 4)
+        writeValue(ROM_COPY, 0x800243A0, Overlay.Minecart, 0, offset_dict, 4)
+        writeValue(ROM_COPY, 0x80025FB8, Overlay.Race, 0, offset_dict, 4)
+        writeValue(ROM_COPY, 0x8002ECC8, Overlay.Race, 0, offset_dict, 4)
+        # Squawks - Minecarts
+        writeValue(ROM_COPY, 0x806C4544, Overlay.Static, 0x116D, offset_dict)  # Change this to checking for intro spawn trigger
+        writeValue(ROM_COPY, 0x806C4428, Overlay.Static, 0xAFA40054, offset_dict, 4)  # Change not enough coins cs to be the intro cutscene
+        writeValue(ROM_COPY, 0x806C45FE, Overlay.Static, 0x5C, offset_dict)  # Check for intro spawn trigger
+        writeValue(ROM_COPY, 0x806C4806, Overlay.Static, 0x5C, offset_dict)  # Check for intro spawn trigger
+        writeValue(ROM_COPY, 0x806C48A2, Overlay.Static, 0x5C, offset_dict)  # Check for intro spawn trigger
+        writeValue(ROM_COPY, 0x806C48D4, Overlay.Static, 0, offset_dict, 4)  # Ditch the Try Again Prompt
+        # Cutscenes
+        writeValue(ROM_COPY, 0x806C492E, Overlay.Static, 3, offset_dict)  # Japes Minecart
+        writeValue(ROM_COPY, 0x806C4972, Overlay.Static, 9, offset_dict)  # Forest Minecart
+        writeValue(ROM_COPY, 0x806C49B6, Overlay.Static, 5, offset_dict)  # Castle Minecart
+
+    # Race Coin Requirements
+    race_offset_data = {
+        Maps.CavesLankyRace: [0x800247C2],
+        Maps.AztecTinyRace: [0x800247DA],
+        Maps.FactoryTinyRace: [0x800285A2, 0x8002888E, 0x80028A0A],
+        Maps.GalleonSealRace: [0x8002A232, 0x8002A08E],
+        Maps.CastleTinyRace: [0x8002BAB6, 0x8002B6D6],
+        Maps.JapesMinecarts: [0x806C4912],
+        Maps.ForestMinecarts: [0x806C4956],
+        Maps.CastleMinecarts: [0x806C499A],
+    }
+    static_overlay_races = [Maps.JapesMinecarts, Maps.ForestMinecarts, Maps.CastleMinecarts]
+    for map_id in race_offset_data:
+        if map_id in spoiler.coin_requirements:
+            for addr in race_offset_data[map_id]:
+                overlay = Overlay.Static if map_id in static_overlay_races else Overlay.Race
+                writeValue(ROM_COPY, addr, overlay, spoiler.coin_requirements[map_id], offset_dict)
 
 def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     """All changes related to item grabbing."""
@@ -384,11 +421,6 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x80681DE4, Overlay.Static, 0x5000, offset_dict)
     writeHook(ROM_COPY, 0x80680AD4, Overlay.Static, "expandTBarrelResponse", offset_dict)  # Allow Training Barrels to disappear if already beaten
     writeValue(ROM_COPY, 0x80681C16, Overlay.Static, 0xF, offset_dict)  # Disregard most special code from a bonus
-    # Race Coin Counts
-    writeValue(ROM_COPY, 0x80024388, Overlay.Bonus, 0, offset_dict, 4)
-    writeValue(ROM_COPY, 0x800243A0, Overlay.Minecart, 0, offset_dict, 4)
-    writeValue(ROM_COPY, 0x80025FB8, Overlay.Race, 0, offset_dict, 4)
-    writeValue(ROM_COPY, 0x8002ECC8, Overlay.Race, 0, offset_dict, 4)
 
 def fairyFix(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to fixing fairy behavior."""
