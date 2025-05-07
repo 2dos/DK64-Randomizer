@@ -47,6 +47,7 @@ stats = [
             "",  # Photos
             "",  # Kops
             "",  # Enemies
+            "",  # Trapped
         ],
     ),
 ]

@@ -337,7 +337,6 @@ void fixChimpyCamBug(void) {
 	SaveToFile(DATA_CAMERATYPE, 0, 0, 0, Rando.default_camera_type);
 	SaveToFile(DATA_LANGUAGE, 0, 0, 0, Rando.default_camera_type);
 	SaveToFile(DATA_SOUNDTYPE, 0, 0, 0, Rando.default_sound_type);
-	wipeFileStats();
 	SaveToGlobal();
 }
 

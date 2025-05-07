@@ -26,7 +26,7 @@ Gfx* printLevelIGT(Gfx* dl, int x, int y, float scale, char* str) {
     }
     int igt_data = 0;
     if (level_index < 9) {
-        igt_data = ReadExtraData(EGD_LEVELIGT, level_index);
+        igt_data = ReadFile(DATA_IGT_JAPES + level_index, 0, 0, FileIndex);
     }
     int igt_h = igt_data / 3600;
     int igt_m = (igt_data / 60) % 60;
@@ -140,7 +140,7 @@ void checkItemDB(void) {
     initHints();
     stored_igt = getNewSaveTime();
     if (Rando.helm_hurry_mode) {
-        if (ReadExtraData(EGD_HELMHURRYDISABLE, 0)) {
+        if (checkFlag(FLAG_HELM_HURRY_DISABLED, FLAGTYPE_PERMANENT)) {
             stored_igt = IGT;
         }
     }

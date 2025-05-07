@@ -33,6 +33,26 @@ FileInfoSizes = [
     16, # Race Coins
     8, # Special Moves
     16, # AP Item Count
+    22, # IGT Japes
+    22, # IGT Aztec
+    22, # IGT Factory
+    22, # IGT Galleon
+    22, # IGT Fungi
+    22, # IGT Caves
+    22, # IGT Castle
+    22, # IGT Helm
+    22, # IGT Isles
+    22, # IGT DK
+    22, # IGT Diddy
+    22, # IGT Lanky
+    22, # IGT Tiny
+    22, # IGT Chunky
+    22, # Hurry IGT
+    16, # Tags
+    12, # Photos
+    16, # Kills
+    12, # Kaught
+    12, # Trapped
 ]
 
 def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, offset_dict: dict):

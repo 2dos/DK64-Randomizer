@@ -348,6 +348,26 @@ static unsigned char FileInfoData[] = {
     16, // Race Coins
     8, // Special Moves
     16, // AP Item Count
+    22, // IGT Japes
+    22, // IGT Aztec
+    22, // IGT Factory
+    22, // IGT Galleon
+    22, // IGT Fungi
+    22, // IGT Caves
+    22, // IGT Castle
+    22, // IGT Helm
+    22, // IGT Isles
+    22, // IGT DK
+    22, // IGT Diddy
+    22, // IGT Lanky
+    22, // IGT Tiny
+    22, // IGT Chunky
+    22, // Hurry IGT
+    16, // Tags
+    12, // Photos
+    16, // Kills
+    12, // Kaught
+    12, // Trapped
 };
 
 short file_info_expansion = FILE_INFO_SIZE;
@@ -384,6 +404,9 @@ void readItemsFromFile(void) {
     current_item_data.junk_items = ReadFile(DATA_JUNKITEMS, 0, 0, FileIndex);
     current_item_data.race_coins = ReadFile(DATA_RACECOINS, 0, 0, FileIndex);
     *(unsigned char*)(&current_item_data.flag_moves) = ReadFile(DATA_SPECIALMOVES, 0, 0, FileIndex);
+    for (int i = 0; i < STAT_TERMINATOR; i++) {
+        GameStats[i] = ReadFile(DATA_STAT_TAG + i, 0, 0, FileIndex);
+    }
 }
 
 void saveItemsToFile(void) {
@@ -403,4 +426,7 @@ void saveItemsToFile(void) {
     SaveToFile(DATA_JUNKITEMS, 0, 0, FileIndex, current_item_data.junk_items);
     SaveToFile(DATA_RACECOINS, 0, 0, FileIndex, current_item_data.race_coins);
     SaveToFile(DATA_SPECIALMOVES, 0, 0, FileIndex, *(unsigned char*)(&current_item_data.flag_moves));
+    for (int i = 0; i < STAT_TERMINATOR; i++) {
+        SaveToFile(DATA_STAT_TAG + i, 0, 0, FileIndex, GameStats[i]);
+    }
 }

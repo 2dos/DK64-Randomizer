@@ -736,21 +736,6 @@ void giveCollectables(void) {
 	CollectableBase.Film = 5;
 }
 
-void wipeFileStats(void) {
-	for (int i = 0; i < 9; i++) {
-		ResetExtraData(EGD_LEVELIGT, i);
-	}
-	for (int i = 0; i < STAT_TERMINATOR; i++) {
-		// Reset Statistics
-		ResetExtraData(EGD_BONUSSTAT, i);
-	}
-	for (int i = 0; i < 5; i++) {
-		ResetExtraData(EGD_KONGIGT, i);
-	}
-	ResetExtraData(EGD_HELMHURRYIGT, 0);
-	setFlag(FLAG_HELM_HURRY_DISABLED, 0, FLAGTYPE_PERMANENT);
-}
-
 void setAllDefaultFlags(void) {
 	short* data = getFile(0x800, 0x1FFD800);
 	for (int i = 0; i < 0x400; i++) {
@@ -783,7 +768,7 @@ void startFile(void) {
 		}
 		pre_turn_keys();
 		Character = Rando.starting_kong;
-		wipeFileStats();
+		setFlag(FLAG_HELM_HURRY_DISABLED, 0, FLAGTYPE_PERMANENT);
 		if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
 			setPermFlag(FLAG_ARCADE_LEVER);
 		}
@@ -998,19 +983,18 @@ int updateLevelIGT(void) {
 	if (canSaveHelmHurry()) {
 		int sum = 0;
 		for (int i = 0; i < 9; i++) {
-			int value = ReadExtraData(EGD_LEVELIGT, i);
+			int value = ReadFile(DATA_IGT_JAPES + i, 0, 0, FileIndex);
 			sum += value; 
 		}
 		int diff = new_igt - sum;
 		int world = getWorld(previous_map_save, 1);
 		if (world < 9) {
-			int old = ReadExtraData(EGD_LEVELIGT, world);
-			SaveExtraData(EGD_LEVELIGT, world, old + diff);
+			int old = ReadFile(DATA_IGT_JAPES + world, 0, 0, FileIndex);
+			SaveToFile(DATA_IGT_JAPES + world, 0, 0, FileIndex, old + diff);
 		}
 	}
 	previous_map_save = CurrentMap;
 	updatePercentageKongStat();
-	SaveToGlobal();
 	return new_igt;
 }
 

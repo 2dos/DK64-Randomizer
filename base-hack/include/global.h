@@ -105,7 +105,6 @@ extern void correctDKPortal(void);
 extern int canSaveHelmHurry(void);
 extern void addHelmTime(helm_hurry_items item, int multiplier);
 extern void saveHelmHurryTime(void);
-extern void wipeFileStats(void);
 
 extern int getHelmExit(void);
 
@@ -166,7 +165,6 @@ extern void initTagAnywhere(void);
 extern void initItemDropTable(void);
 extern void initCollectableCollision(void);
 extern void initActorDefs(void);
-extern void updateKopStat(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
 extern void ninCoinCode(void);
@@ -359,13 +357,7 @@ extern void exitBoss(void);
 
 extern int isSharedMove(vendors shop_index, int level);
 
-extern int changeStat(bonus_stat statistic, int delta);
-extern int getStat(bonus_stat statistic);
-extern void setStat(bonus_stat statistic, int amount);
 extern void setKongIgt(void);
-extern int ReadExtraData(extra_global_data data_type, int sub_index);
-extern void SaveExtraData(extra_global_data data_type, int sub_index, int value);
-extern void ResetExtraData(extra_global_data data_type, int sub_index);
 extern void setKrushaAmmoColor(void);
 
 extern void handleCannonGameReticle(void);
@@ -497,3 +489,4 @@ extern const collision_tree_struct fixed_dice_collision[12];
 extern const collision_tree_struct fixed_klap_collision[8];
 extern const collision_tree_struct fixed_bug_collision[2];
 extern char version_string[0x10];
+extern unsigned short GameStats[STAT_TERMINATOR];

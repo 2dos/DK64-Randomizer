@@ -447,6 +447,7 @@ void initIceTrap(void) {
         Player->trap_bubble_timer = 240;
     }
     playSFX(0x2D4); // K Rool Laugh
+    GameStats[STAT_TRAPPED]++;
     if (Rando.ice_traps_damage) {
         customDamageCode();
     }
