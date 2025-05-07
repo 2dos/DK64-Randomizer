@@ -133,6 +133,7 @@ if baseclasses_loaded:
     from randomizer.CompileHints import compileMicrohints
     from randomizer.Enums.Types import Types
     from randomizer.Enums.Kongs import Kongs
+    from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Locations import Locations as DK64RLocations
     from randomizer.Enums.Settings import WinConditionComplex
@@ -289,6 +290,15 @@ if baseclasses_loaded:
                 settings_dict["win_condition_item"] = WinConditionComplex.req_key
                 settings_dict["win_condition_count"] = 8
             settings = Settings(settings_dict, self.random)
+            if hasattr(self.multiworld, "generation_is_fake"):
+                if hasattr(self.multiworld, "re_gen_passthrough"):
+                    re_gen_passthrough = self.multiworld.re_gen_passthrough
+                    if "Donkey Kong 64" in re_gen_passthrough:
+                        settings.level_order = re_gen_passthrough["Donkey Kong 64"]["LevelOrder"]
+                        settings.starting_kong_list = re_gen_passthrough["Donkey Kong 64"]["StartingKongs"]
+                        settings.BossBananas = re_gen_passthrough["Donkey Kong 64"]["BossBananas"]
+                        settings.boss_maps = re_gen_passthrough["Donkey Kong 64"]["BossMaps"]
+                        settings.boss_kongs = re_gen_passthrough["Donkey Kong 64"]["BossKongs"]
             # We need to set the freeing kongs here early, as they won't get filled in any other part of the AP process
             settings.diddy_freeing_kong = self.random.randint(0, 4)
             settings.lanky_freeing_kong = self.random.randint(0, 4)
@@ -314,7 +324,10 @@ if baseclasses_loaded:
                 randomize_enemies_0(spoiler)
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
             if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
-                ShuffleExits.ExitShuffle(spoiler, skip_verification=True)
+                if not hasattr(self.multiworld, "generation_is_fake"):
+                    ShuffleExits.ExitShuffle(spoiler, skip_verification=True)
+                else:
+                    ShuffleExits.ExitShuffle(spoiler, skip_verification=True, use_existing_order=True)
                 spoiler.UpdateExits()
 
         def create_regions(self) -> None:
@@ -549,6 +562,9 @@ if baseclasses_loaded:
                 "FairyRequirement": self.logic_holder.settings.rareware_gb_fairies,
                 "MermaidPearls": self.logic_holder.settings.mermaid_gb_pearls,
                 "JetpacReq": self.logic_holder.settings.medal_requirement,
+                "BossBananas": ", ".join([str(cost) for cost in self.logic_holder.settings.BossBananas]),
+                "BossMaps": ", ".join(map.name for map in self.logic_holder.settings.boss_maps),
+                "BossKongs": ", ".join(kong.name for kong in self.logic_holder.settings.boss_kongs)
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -607,3 +623,18 @@ if baseclasses_loaded:
             if change:
                 self.logic_holder.UpdateFromArchipelagoItems(state)
             return change
+
+        def interpret_slot_data(self, slot_data: dict[str, any]) -> dict[str, any]:
+            level_order = slot_data["LevelOrder"].split(", ")
+            starting_kongs = slot_data["StartingKongs"].split(", ")
+            boss_bananas = slot_data["BossBananas"].split(", ")
+            boss_maps = slot_data["BossMaps"].split(", ")
+            boss_kongs = slot_data["BossKongs"].split(", ")
+            
+            relevant_data = {}
+            relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
+            relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
+            relevant_data["BossBananas"] = [int(cost) for cost in boss_bananas]
+            relevant_data["BossMaps"] = [Maps[map] for map in boss_maps]
+            relevant_data["BossKongs"] = [Kongs[kong] for kong in boss_kongs]
+            return relevant_data

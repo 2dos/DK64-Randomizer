@@ -215,15 +215,18 @@ def AssumeExits(spoiler, frontpool, backpool, newpool):
         AddRootExit(spoiler, newExit)
 
 
-def ShuffleExits(spoiler):
+def ShuffleExits(spoiler, use_existing_order=False):
     """Shuffle exit pools depending on settings."""
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
     settings = spoiler.settings
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         new_level_order = None
+        # For fake gen
+        if use_existing_order:
+            new_level_order = spoiler.settings.level_order
         # If we are restricted on kong locations, we need to carefully place levels in order to meet the kongs-by-level requirement
-        if settings.kongs_for_progression and not (settings.shuffle_items and Types.Kong in settings.shuffled_location_types):
+        elif settings.kongs_for_progression and not (settings.shuffle_items and Types.Kong in settings.shuffled_location_types):
             new_level_order = GenerateLevelOrderWithRestrictions(settings)
         else:
             new_level_order = GenerateLevelOrderUnrestricted(settings)
@@ -257,13 +260,13 @@ def ShuffleExits(spoiler):
         UpdateLevelProgression(settings)
 
 
-def ExitShuffle(spoiler, skip_verification=False):
+def ExitShuffle(spoiler, skip_verification=False, use_existing_order=False):
     """Facilitate shuffling of exits."""
     retries = 0
     while True:
         try:
             # Shuffle entrances based on settings
-            ShuffleExits(spoiler)
+            ShuffleExits(spoiler, use_existing_order)
             # Verify world by assuring all locations are still reachable
             if not skip_verification and not Fill.VerifyWorld(spoiler):
                 raise Ex.EntrancePlacementException
