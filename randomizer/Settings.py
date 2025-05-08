@@ -630,7 +630,7 @@ class Settings:
         self.sfx_volume = 100
         self.music_volume = 100
         self.true_widescreen = False  # Deprecated
-        self.animorphic_widescreen = False
+        self.anamorphic_widescreen = False
         self.troff_brighten = False
         self.better_dirt_patch_cosmetic = False
         self.crosshair_outline = False
@@ -814,7 +814,24 @@ class Settings:
         self.remove_wrinkly_puzzles = False
         self.smaller_shops = False
         self.alter_switch_allocation = False
-        self.switch_allocation = [1, 1, 1, 1, 2, 2, 3, 3]
+        self.prog_slam_level_1 = SlamRequirement.green
+        self.prog_slam_level_2 = SlamRequirement.green
+        self.prog_slam_level_3 = SlamRequirement.green
+        self.prog_slam_level_4 = SlamRequirement.green
+        self.prog_slam_level_5 = SlamRequirement.blue
+        self.prog_slam_level_6 = SlamRequirement.blue
+        self.prog_slam_level_7 = SlamRequirement.red
+        self.prog_slam_level_8 = SlamRequirement.red
+        self.switch_allocation = [
+            self.prog_slam_level_1,
+            self.prog_slam_level_2,
+            self.prog_slam_level_3,
+            self.prog_slam_level_4,
+            self.prog_slam_level_5,
+            self.prog_slam_level_6,
+            self.prog_slam_level_7,
+            self.prog_slam_level_8,
+        ]
         self.item_reward_previews = False
         self.microhints_enabled = MicrohintsEnabled.off
         self.more_cutscene_skips = ExtraCutsceneSkips.off
@@ -1467,15 +1484,40 @@ class Settings:
         if self.level_randomization == LevelRandomization.vanilla:
             self.alter_switch_allocation = False
         if self.alter_switch_allocation:
-            allocation = [1, 1, 1, 1, 2, 2, 3]  # 4 levels with lvl 1, 2 with lvl 2, 1 with lvl 3
+            slams = [SlamRequirement.green, SlamRequirement.blue, SlamRequirement.red]
+            if self.prog_slam_level_1 == SlamRequirement.random:
+                self.prog_slam_level_1 = self.random.choice(slams)
+            if self.prog_slam_level_2 == SlamRequirement.random:
+                self.prog_slam_level_2 = self.random.choice(slams)
+            if self.prog_slam_level_3 == SlamRequirement.random:
+                self.prog_slam_level_3 = self.random.choice(slams)
+            if self.prog_slam_level_4 == SlamRequirement.random:
+                self.prog_slam_level_4 = self.random.choice(slams)
+            if self.prog_slam_level_5 == SlamRequirement.random:
+                self.prog_slam_level_5 = self.random.choice(slams)
+            if self.prog_slam_level_6 == SlamRequirement.random:
+                self.prog_slam_level_6 = self.random.choice(slams)
+            if self.prog_slam_level_7 == SlamRequirement.random:
+                self.prog_slam_level_7 = self.random.choice(slams)
+            if self.prog_slam_level_8 == SlamRequirement.random:
+                self.prog_slam_level_8 = self.random.choice(slams)
+            allocation = [
+                self.prog_slam_level_1,
+                self.prog_slam_level_2,
+                self.prog_slam_level_3,
+                self.prog_slam_level_4,
+                self.prog_slam_level_5,
+                self.prog_slam_level_6,
+                self.prog_slam_level_7,
+            ]
             if self.level_randomization in (LevelRandomization.level_order, LevelRandomization.level_order_complex, LevelRandomization.level_order_moderate):
                 # Add an extra 3 into the calculation
-                allocation.append(3)
+                allocation.append(self.prog_slam_level_8)
                 self.random.shuffle(allocation)
             else:
                 # If LZR, always make Helm SDSS
                 self.random.shuffle(allocation)
-                allocation.append(3)
+                allocation.append(self.prog_slam_level_8)
             self.switch_allocation = allocation.copy()
 
         if self.crown_enemy_difficulty != CrownEnemyDifficulty.vanilla:

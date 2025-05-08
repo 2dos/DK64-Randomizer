@@ -722,6 +722,14 @@ export enum SettingsStringEnum {
     dos_door_rando = 205,
     blocker_difficulty = 206,
     race_coin_rando = 207,
+    prog_slam_level_1 = 208,
+    prog_slam_level_2 = 209,
+    prog_slam_level_3 = 210,
+    prog_slam_level_4 = 211,
+    prog_slam_level_5 = 212,
+    prog_slam_level_6 = 213,
+    prog_slam_level_7 = 214,
+    prog_slam_level_8 = 215,
 }
 
 export enum SettingsStringDataType {
@@ -814,6 +822,14 @@ export const SettingsMap = {
     'starting_moves_list_3': Items,
     'starting_moves_list_4': Items,
     'starting_moves_list_5': Items,
+    'prog_slam_level_1': SlamRequirement,
+    'prog_slam_level_2': SlamRequirement,
+    'prog_slam_level_3': SlamRequirement,
+    'prog_slam_level_4': SlamRequirement,
+    'prog_slam_level_5': SlamRequirement,
+    'prog_slam_level_6': SlamRequirement,
+    'prog_slam_level_7': SlamRequirement,
+    'prog_slam_level_8': SlamRequirement,
 }
 
 export const SettingsStringTypeMap = {
@@ -1023,6 +1039,14 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.starting_moves_list_count_4: SettingsStringDataType.int16,
     SettingsStringEnum.starting_moves_list_5: SettingsStringDataType.list,
     SettingsStringEnum.starting_moves_list_count_5: SettingsStringDataType.int16,
+    SettingsStringEnum.prog_slam_level_1: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_2: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_3: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_4: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_5: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_6: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_7: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_8: SlamRequirement,
     SettingsStringEnum.dos_door_rando: SettingsStringDataType.bool,
 }
 

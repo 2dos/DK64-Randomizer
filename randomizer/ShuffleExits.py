@@ -229,7 +229,16 @@ def ShuffleExits(spoiler):
             new_level_order = GenerateLevelOrderUnrestricted(settings)
         ShuffleLevelExits(settings, newLevelOrder=new_level_order)
         if settings.alter_switch_allocation:
-            allocation = [1, 1, 1, 1, 2, 2, 3, 3]
+            allocation = [
+                settings.prog_slam_level_1,
+                settings.prog_slam_level_2,
+                settings.prog_slam_level_3,
+                settings.prog_slam_level_4,
+                settings.prog_slam_level_5,
+                settings.prog_slam_level_6,
+                settings.prog_slam_level_7,
+                settings.prog_slam_level_8,
+            ]
             for x in range(8):
                 level = settings.level_order[x + 1]
                 settings.switch_allocation[level] = allocation[x]

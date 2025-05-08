@@ -1116,7 +1116,15 @@
     "dk_portal_location_rando_v2": 204,
     "dos_door_rando": 205,
     "blocker_difficulty": 206,
-    "race_coin_rando": 207
+    "race_coin_rando": 207,
+    "prog_slam_level_1": 208,
+    "prog_slam_level_2": 209,
+    "prog_slam_level_3": 210,
+    "prog_slam_level_4": 211,
+    "prog_slam_level_5": 212,
+    "prog_slam_level_6": 213,
+    "prog_slam_level_7": 214,
+    "prog_slam_level_8": 215
   },
   /*
     SettingsStringDataType:
@@ -1215,7 +1223,15 @@
     "starting_moves_list_2": { "obj": "Items" },
     "starting_moves_list_3": { "obj": "Items" },
     "starting_moves_list_4": { "obj": "Items" },
-    "starting_moves_list_5": { "obj": "Items" }
+    "starting_moves_list_5": { "obj": "Items" },
+    "prog_slam_level_1": { "obj": "SlamRequirement" },
+    "prog_slam_level_2": { "obj": "SlamRequirement" },
+    "prog_slam_level_3": { "obj": "SlamRequirement" },
+    "prog_slam_level_4": { "obj": "SlamRequirement" },
+    "prog_slam_level_5": { "obj": "SlamRequirement" },
+    "prog_slam_level_6": { "obj": "SlamRequirement" },
+    "prog_slam_level_7": { "obj": "SlamRequirement" },
+    "prog_slam_level_8": { "obj": "SlamRequirement" }
   },
   // ALL SETTINGS NEED AN ENTRY HERE!
   // This maps settings to the data types that will be used to encode them in the
@@ -1689,6 +1705,14 @@
       "obj": "SettingsStringDataType.list"
     },
     "SettingsStringEnum.starting_moves_list_count_5": { "obj": "SettingsStringDataType.int16" },
+    "SettingsStringEnum.prog_slam_level_1": { "obj": "SlamRequirement" },
+    "SettingsStringEnum.prog_slam_level_2": { "obj": "SlamRequirement" },
+    "SettingsStringEnum.prog_slam_level_3": { "obj": "SlamRequirement" },
+    "SettingsStringEnum.prog_slam_level_4": { "obj": "SlamRequirement" },
+    "SettingsStringEnum.prog_slam_level_5": { "obj": "SlamRequirement" },
+    "SettingsStringEnum.prog_slam_level_6": { "obj": "SlamRequirement" },
+    "SettingsStringEnum.prog_slam_level_7": { "obj": "SlamRequirement" },
+    "SettingsStringEnum.prog_slam_level_8": { "obj": "SlamRequirement" },
     "SettingsStringEnum.dos_door_rando": { "obj": "SettingsStringDataType.bool" }
   },
   // ALL LIST SETTINGS NEED AN ENTRY HERE!

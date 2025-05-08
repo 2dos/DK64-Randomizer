@@ -493,8 +493,23 @@ function disable_remove_barriers() {
 }
 
 document
-  .getElementById("remove_barriers_enabled")
-  .addEventListener("click", disable_remove_barriers);
+.getElementById("remove_barriers_enabled")
+.addEventListener("click", disable_remove_barriers);
+
+// Disable Remove Barriers Selector when Remove Barriers is off
+function disable_slam_selector() {
+  const selector = document.getElementById("slamModalActivator");
+  const disabled = !document.getElementById("alter_switch_allocation").checked;
+
+  if (disabled) {
+    selector.setAttribute("disabled", "disabled");
+  } else {
+    selector.removeAttribute("disabled");
+  }
+}
+document
+.getElementById("alter_switch_allocation")
+.addEventListener("click", disable_slam_selector);
 
 // Disable Faster Checks Selector when Faster Checks is off
 function disable_faster_checks() {
@@ -2085,6 +2100,7 @@ function update_ui_states() {
   disable_helm_hurry(null);
   disable_points(null);
   disable_remove_barriers(null);
+  disable_slam_selector(null);
   disable_faster_checks(null);
   toggle_logic_type(null);
   toggle_key_settings(null);

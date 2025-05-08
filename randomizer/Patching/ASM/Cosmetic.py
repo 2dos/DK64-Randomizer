@@ -418,7 +418,7 @@ def otherCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     writeValue(ROM_COPY, 0x80745844, Overlay.Static, int(settings.sound_type), offset_dict, 1)
 
     # Widescreen
-    writeValue(ROM_COPY, 0x807444C0, Overlay.Static, int(settings.animorphic_widescreen), offset_dict, 1)
+    writeValue(ROM_COPY, 0x807444C0, Overlay.Static, int(settings.anamorphic_widescreen), offset_dict, 1)
 
     # SFX Volume
     sfx_volume = 40
