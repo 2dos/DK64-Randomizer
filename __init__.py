@@ -302,6 +302,12 @@ if baseclasses_loaded:
                         settings.boss_kongs = passthrough["BossKongs"]
                         settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
                         settings.helm_order = passthrough["HelmOrder"]
+                        # There's multiple sources of truth for helm order.
+                        settings.helm_donkey = 0 in settings.helm_order
+                        settings.helm_diddy = 4 in settings.helm_order
+                        settings.helm_lanky = 3 in settings.helm_order
+                        settings.helm_tiny = 2 in settings.helm_order
+                        settings.helm_chunky = 1 in settings.helm_order
             # We need to set the freeing kongs here early, as they won't get filled in any other part of the AP process
             settings.diddy_freeing_kong = self.random.randint(0, 4)
             # Lanky freeing kong actually changes logic, so UT should use the slot data rather than genning a new one.
@@ -570,7 +576,7 @@ if baseclasses_loaded:
                 "BossMaps": ", ".join(map.name for map in self.logic_holder.settings.boss_maps),
                 "BossKongs": ", ".join(kong.name for kong in self.logic_holder.settings.boss_kongs),
                 "LankyFreeingKong": self.logic_holder.settings.lanky_freeing_kong,
-                "HelmOrder": ",".join([str(room) for room in self.logic_holder.settings.helm_order])
+                "HelmOrder": ", ".join([str(room) for room in self.logic_holder.settings.helm_order])
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
