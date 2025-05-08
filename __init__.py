@@ -290,18 +290,23 @@ if baseclasses_loaded:
                 settings_dict["win_condition_item"] = WinConditionComplex.req_key
                 settings_dict["win_condition_count"] = 8
             settings = Settings(settings_dict, self.random)
+            # Set all the static slot data that UT needs to know. Most of these would have already been decided in normal generation by now, so they are just overwritten here.
             if hasattr(self.multiworld, "generation_is_fake"):
                 if hasattr(self.multiworld, "re_gen_passthrough"):
-                    re_gen_passthrough = self.multiworld.re_gen_passthrough
-                    if "Donkey Kong 64" in re_gen_passthrough:
-                        settings.level_order = re_gen_passthrough["Donkey Kong 64"]["LevelOrder"]
-                        settings.starting_kong_list = re_gen_passthrough["Donkey Kong 64"]["StartingKongs"]
-                        settings.BossBananas = re_gen_passthrough["Donkey Kong 64"]["BossBananas"]
-                        settings.boss_maps = re_gen_passthrough["Donkey Kong 64"]["BossMaps"]
-                        settings.boss_kongs = re_gen_passthrough["Donkey Kong 64"]["BossKongs"]
+                    if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
+                        passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+                        settings.level_order = passthrough["LevelOrder"]
+                        settings.starting_kong_list = passthrough["StartingKongs"]
+                        settings.BossBananas = passthrough["BossBananas"]
+                        settings.boss_maps = passthrough["BossMaps"]
+                        settings.boss_kongs = passthrough["BossKongs"]
+                        settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
+                        settings.helm_order = passthrough["HelmOrder"]
             # We need to set the freeing kongs here early, as they won't get filled in any other part of the AP process
             settings.diddy_freeing_kong = self.random.randint(0, 4)
-            settings.lanky_freeing_kong = self.random.randint(0, 4)
+            # Lanky freeing kong actually changes logic, so UT should use the slot data rather than genning a new one.
+            if not hasattr(self.multiworld, "generation_is_fake"):
+                settings.lanky_freeing_kong = self.random.randint(0, 4)
             settings.tiny_freeing_kong = self.random.randint(0, 4)
             settings.chunky_freeing_kong = self.random.randint(0, 4)
             spoiler = Spoiler(settings)
@@ -324,10 +329,9 @@ if baseclasses_loaded:
                 randomize_enemies_0(spoiler)
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
             if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
+                # UT should not reshuffle the level order, but should update the exits
                 if not hasattr(self.multiworld, "generation_is_fake"):
                     ShuffleExits.ExitShuffle(spoiler, skip_verification=True)
-                else:
-                    ShuffleExits.ExitShuffle(spoiler, skip_verification=True, use_existing_order=True)
                 spoiler.UpdateExits()
 
         def create_regions(self) -> None:
@@ -564,7 +568,9 @@ if baseclasses_loaded:
                 "JetpacReq": self.logic_holder.settings.medal_requirement,
                 "BossBananas": ", ".join([str(cost) for cost in self.logic_holder.settings.BossBananas]),
                 "BossMaps": ", ".join(map.name for map in self.logic_holder.settings.boss_maps),
-                "BossKongs": ", ".join(kong.name for kong in self.logic_holder.settings.boss_kongs)
+                "BossKongs": ", ".join(kong.name for kong in self.logic_holder.settings.boss_kongs),
+                "LankyFreeingKong": self.logic_holder.settings.lanky_freeing_kong,
+                "HelmOrder": ",".join([str(room) for room in self.logic_holder.settings.helm_order])
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -624,12 +630,15 @@ if baseclasses_loaded:
                 self.logic_holder.UpdateFromArchipelagoItems(state)
             return change
 
+        # Called by Universal Tracker to parse slot data for any logical bits that need to match the real generation.
         def interpret_slot_data(self, slot_data: dict[str, any]) -> dict[str, any]:
+            # Parse the string data
             level_order = slot_data["LevelOrder"].split(", ")
             starting_kongs = slot_data["StartingKongs"].split(", ")
             boss_bananas = slot_data["BossBananas"].split(", ")
             boss_maps = slot_data["BossMaps"].split(", ")
             boss_kongs = slot_data["BossKongs"].split(", ")
+            helm_order = slot_data["HelmOrder"].split(", ")
             
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -637,4 +646,6 @@ if baseclasses_loaded:
             relevant_data["BossBananas"] = [int(cost) for cost in boss_bananas]
             relevant_data["BossMaps"] = [Maps[map] for map in boss_maps]
             relevant_data["BossKongs"] = [Kongs[kong] for kong in boss_kongs]
+            relevant_data["LankyFreeingKong"] = slot_data["LankyFreeingKong"]
+            relevant_data["HelmOrder"] = [int(room) for room in helm_order]
             return relevant_data
