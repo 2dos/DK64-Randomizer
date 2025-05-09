@@ -143,7 +143,7 @@ typedef struct varspace {
 	/* 0x197 */ unsigned char unk_197[0x1A2 - 0x197];
 	/* 0x1A2 */ LZREntrance blast_entrances[7];
 	/* 0x1B0 */ int password;
-	/* 0x1B4 */ char unk_1B4;
+	/* 0x1B4 */ char song_speed_near_win;
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
 	/* 0x1B6 */ unsigned char unk_1B6; // 0 = Vanilla
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;

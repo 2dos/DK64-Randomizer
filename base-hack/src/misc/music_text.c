@@ -52,6 +52,33 @@ void detectSongChange(void) {
     }
 }
 
+static unsigned char last_song = SONG_SILENCE;
+
+void SpeedUpMusicInner(void) {
+    if (!last_song) {
+        return;
+    }
+    if (!Rando.song_speed_near_win) {
+        return;
+    }
+    if (Rando.win_condition != GOAL_CUSTOMITEM) {
+        // Goal is inelligible for speed up
+        return;
+    }
+    int item_count = getItemCountReq(Rando.win_condition_extra.item);
+    if (item_count == (Rando.win_condition_extra.count - 1)) {
+        int slot = getSongWriteSlot(last_song);
+        alCSPSetTempo(compactSequencePlayers[slot], 320000); // 480k (default) / 1.5
+    }
+}
+
+void SpeedUpMusic(void) {
+    if (!isGamemode(GAMEMODE_ADVENTURE, 1)) {
+        return;
+    }
+    SpeedUpMusicInner();
+}
+
 void initSongDisplay(int song) {
     if (song == 0) {
         return;
@@ -66,6 +93,8 @@ void initSongDisplay(int song) {
     if (DisplayedSongNamePointer) {
         complex_free(DisplayedSongNamePointer);
     }
+    last_song = song;
+    SpeedUpMusic();
     DisplayedSongNamePointer = getTextPointer(46, song, 0);
     displayed_text_offset = -1;
     int text_length = cstring_strlen(DisplayedSongNamePointer);

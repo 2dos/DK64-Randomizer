@@ -154,6 +154,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             display_text = 1;
             break;
     }
+    SpeedUpMusicInner();
     if (config.apply_helm_hurry) {
         addHelmTime(hh_item, 1);
     }

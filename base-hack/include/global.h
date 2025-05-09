@@ -156,6 +156,8 @@ extern int isKrushaAdjacentModel(int kong);
 extern int isGlobalCutscenePlaying(int cutscene_index);
 extern void adjustGunBone(playerData* player);
 
+extern void SpeedUpMusicInner(void);
+
 extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);
 extern int hasAccessToKong(int kong);
