@@ -65,6 +65,10 @@ void SpeedUpMusicInner(void) {
         // Goal is inelligible for speed up
         return;
     }
+    if (Rando.win_condition_extra.count < 2) {
+        // Doesn't work for 1-item win conditions
+        return;
+    }
     int item_count = getItemCountReq(Rando.win_condition_extra.item);
     if (item_count == (Rando.win_condition_extra.count - 1)) {
         int slot = getSongWriteSlot(last_song);
