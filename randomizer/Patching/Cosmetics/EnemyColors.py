@@ -344,6 +344,14 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
                     ROM_COPY.seek(getPointerLocation(table, img))
                     ROM_COPY.writeBytes(px_data)
 
+        # Pendulum Bob
+        pendulum_shift = getRandomHueShift()
+        for index in range(0x2B6, 0x2E1 + 1):
+            hueShiftImageContainer(TableNames.TexturesUncompressed, index, 32, 32, TextureFormat.RGBA5551, pendulum_shift, ROM_COPY)
+        # Gong
+        gong_shift = getRandomHueShift()
+        for index in range(0x1D4, 0x1EF + 1):
+            hueShiftImageContainer(TableNames.TexturesUncompressed, index, 32, 32, TextureFormat.RGBA5551, gong_shift, ROM_COPY)
         # Shockwave Particles
         shockwave_shift = getRandomHueShift()
         for img_index in range(0x174F, 0x1757):

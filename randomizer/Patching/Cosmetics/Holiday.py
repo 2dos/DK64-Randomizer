@@ -136,7 +136,13 @@ def applyHolidayMode(settings, ROM_COPY: ROM):
     """Change grass texture to snow."""
     HOLIDAY = getHoliday(settings)
     if HOLIDAY == Holidays.no_holiday:
-        changeBarrelColor(settings, ROM_COPY)  # Fixes some Krusha stuff
+        barrel_color = None
+        if settings.misc_cosmetics:
+            col_array = []
+            for _ in range(3):
+                col_array.append(settings.random.randint(0, 0xFF))
+            barrel_color = tuple(col_array)
+        changeBarrelColor(settings, ROM_COPY, barrel_color, None, settings.misc_cosmetics)  # Fixes some Krusha stuff
         return
     if HOLIDAY == Holidays.Christmas:
         # Set season to Christmas
