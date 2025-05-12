@@ -1,0 +1,182 @@
+{
+    "scale": 1,
+    "meshes": {
+        "4": {
+            "name": "Head Top",
+            "source_bone": 3
+        },
+        "5": {
+            "name": "Jaw",
+            "source_bone": 4,
+            "special": "jaw"
+        },
+        "3": {
+            "name": "Neck",
+            "source_bone": 2
+        },
+        "2": {
+            "name": "Neck Base",
+            "source_bone": 1,
+            "special": "neck"
+        },
+        "10": {
+            "name": "Left Thumbnail",
+            "source_bone": 9
+        },
+        "9": {
+            "name": "Left Thumb",
+            "source_bone": 8
+        },
+        "12": {
+            "name": "Left Hand Right Finger Nail",
+            "source_bone": 11
+        },
+        "11": {
+            "name": "Left Hand Right Finger",
+            "source_bone": 8
+        },
+        "14": {
+            "name": "Left Hand Left Finger Nail",
+            "source_bone": 13
+        },
+        "13": {
+            "name": "Left Hand Left Finger",
+            "source_bone": 8
+        },
+        "8": {
+            "name": "Left Palm",
+            "source_bone": 7,
+            "special": "left_wrist"
+        },
+        "7": {
+            "name": "Left Arm Far",
+            "source_bone": 6,
+            "special": "left_elbow"
+        },
+        "6": {
+            "name": "Left Arm Near",
+            "source_bone": 1,
+            "special": "left_shoulder"
+        },
+        "19": {
+            "name": "Right Thumbnail",
+            "source_bone": 18
+        },
+        "18": {
+            "name": "Right Thumb",
+            "source_bone": 17
+        },
+        "21": {
+            "name": "Right Hand Left Finger Nail",
+            "source_bone": 20
+        },
+        "20": {
+            "name": "Right Hand Left Finger",
+            "source_bone": 17
+        },
+        "23": {
+            "name": "Right Hand Right Finger Nail",
+            "source_bone": 22
+        },
+        "22": {
+            "name": "Right Hand Right Finger",
+            "source_bone": 17
+        },
+        "17": {
+            "name": "Right Palm",
+            "source_bone": 16,
+            "special": "right_wrist"
+        },
+        "16": {
+            "name": "Right Arm Far",
+            "source_bone": 15,
+            "special": "right_elbow"
+        },
+        "15": {
+            "name": "Right Arm Near",
+            "source_bone": 1,
+            "special": "right_shoulder"
+        },
+        "31": {
+            "name": "Tail Tip",
+            "source_bone": 30
+        },
+        "30": {
+            "name": "Tail Segment 1",
+            "source_bone": 29
+        },
+        "29": {
+            "name": "Tail Segment 2",
+            "source_bone": 28
+        },
+        "28": {
+            "name": "Tail Segment 3",
+            "source_bone": 27
+        },
+        "27": {
+            "name": "Tail Segment 4",
+            "source_bone": 26
+        },
+        "26": {
+            "name": "Tail Segment 5",
+            "source_bone": 25
+        },
+        "25": {
+            "name": "Tail Segment 6",
+            "source_bone": 24
+        },
+        "24": {
+            "name": "Tail Segment 7",
+            "source_bone": 1
+        },
+        "33": {
+            "name": "Left Lower Wing",
+            "source_bone": 1
+        },
+        "34": {
+            "name": "Left Upper Wing",
+            "source_bone": 1
+        },
+        "36": {
+            "name": "Right Lower Wing",
+            "source_bone": 1
+        },
+        "37": {
+            "name": "Right Upper Wing",
+            "source_bone": 1
+        },
+        "1": {
+            "name": "Body"
+        },
+        "40": {
+            "name": "Left Foot",
+            "source_bone": 39,
+            "special": "left_ankle"
+        },
+        "39": {
+            "name": "Left Lower Leg",
+            "source_bone": 38,
+            "special": "left_knee"
+        },
+        "38": {
+            "name": "Left Upper Leg",
+            "source_bone": 1,
+            "special": "left_hip"
+        },
+        "43": {
+            "name": "Right Foot",
+            "source_bone": 42,
+            "special": "right_ankle"
+        },
+        "42": {
+            "name": "Right Lower Leg",
+            "source_bone": 41,
+            "special": "right_knee"
+        },
+        "41": {
+            "name": "Right Upper Leg",
+            "source_bone": 1,
+            "special": "right_hip"
+        }
+    }
+}

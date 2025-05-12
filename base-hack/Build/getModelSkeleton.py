@@ -103,6 +103,7 @@ def getSkeleton(model_index: int, model_file: str = None):
 
 
 getSkeleton(3)
+getSkeleton(0x3B)
 getSkeleton(0x10)
 getSkeleton(0x48)
 getSkeleton(0x67)
