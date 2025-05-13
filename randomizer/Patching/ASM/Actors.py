@@ -3,6 +3,7 @@
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
 
+
 def expandActorTable(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to the expansion of the actor table."""
     # Actor Expansion

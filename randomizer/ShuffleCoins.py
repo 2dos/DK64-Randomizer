@@ -134,6 +134,7 @@ def ShuffleCoins(spoiler):
             retries += 1
             js.postMessage("Coin Randomizer failed to fill. Tries: " + str(retries))
 
+
 RACE_COINS_TO_PLACE = 97 + 71 + 25 + 19 + 87 + 77 + 68 + 17
 BANNED_COIN_MAPS = [
     Maps.JapesMinecarts,
@@ -145,6 +146,7 @@ BANNED_COIN_MAPS = [
     Maps.CastleTinyRace,
     Maps.CastleMinecarts,
 ]
+
 
 def shuffleRaceCoins(spoiler):
     """Shuffle race coins selected from location files."""
@@ -177,9 +179,7 @@ def shuffleRaceCoins(spoiler):
                             if len(group.locations) > 0:
                                 if group.region not in spoiler.CollectibleRegions:
                                     spoiler.CollectibleRegions[group.region] = []
-                                spoiler.CollectibleRegions[group.region].append(
-                                    Collectible(Collectibles.racecoin, Kongs.any, group.logic, None, len(group.locations), name=group.name)
-                                )
+                                spoiler.CollectibleRegions[group.region].append(Collectible(Collectibles.racecoin, Kongs.any, group.logic, None, len(group.locations), name=group.name))
                             level_placement.append(
                                 {
                                     "group": group.group,

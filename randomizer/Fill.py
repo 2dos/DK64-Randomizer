@@ -859,9 +859,12 @@ def ParePlaythrough(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> Non
     for locationId in locationsToAddBack:
         spoiler.LocationList[locationId].PlaceDelayedItem(spoiler)
 
+
 # Don't prune the Bean if it's the win condition. We can make sure it isn't directly hinted later if it isn't shuffled.
 def IsBeanLocWithBeanWincon(spoiler: Spoiler, loc: Locations) -> bool:
+    """Check for bean win con with a check for if it is shuffled."""
     return spoiler.settings.win_condition_item == WinConditionComplex.req_bean and ItemList[spoiler.LocationList[loc].item].type == Types.Bean
+
 
 def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union[Locations, int]]:
     """Pare playthrough to locations which are Way of the Hoard (hard required by logic)."""

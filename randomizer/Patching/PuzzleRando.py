@@ -506,6 +506,7 @@ coin_req_info = [
     ),
 ]
 
+
 def patchRaceRequirements(spoiler, ROM_COPY: LocalROM):
     """Patches the randomized requirements for the races."""
     puzzle_rando_setting = spoiler.settings.puzzle_rando_difficulty
@@ -517,12 +518,9 @@ def patchRaceRequirements(spoiler, ROM_COPY: LocalROM):
         ROM_COPY.seek(sav + coinreq.offset)
         ROM_COPY.writeMultipleBytes(spoiler.coin_requirements[coinreq.tied_map], 2)
 
-race_coin_rando_ratios = {
-    PuzzleRando.off: 0.6,
-    PuzzleRando.easy: 0.4,
-    PuzzleRando.medium: 0.6,
-    PuzzleRando.hard: 0.75
-}
+
+race_coin_rando_ratios = {PuzzleRando.off: 0.6, PuzzleRando.easy: 0.4, PuzzleRando.medium: 0.6, PuzzleRando.hard: 0.75}
+
 
 def randomizeRaceRequirements(spoiler):
     """Randomize the requirements for the races."""
@@ -561,7 +559,7 @@ def randomizeRaceRequirements(spoiler):
         else:
             selected_requirement = coinreq.selected_bound.generateRequirement(spoiler)
         spoiler.coin_requirements[coinreq.tied_map] = selected_requirement
-        
+
 
 def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
     """Shuffle elements of puzzles."""

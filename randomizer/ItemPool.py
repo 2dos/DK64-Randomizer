@@ -595,9 +595,11 @@ def MelonCrateItems():
     """Return a list of No Items to be placed."""
     return []
 
+
 def BoulderItems():
     """Return a list of boulder items to be placed."""
     return []
+
 
 def EnemyItems():
     """Return a list of No Items to be placed."""
@@ -609,6 +611,7 @@ def FairyItems():
     itemPool = []
     itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
     return itemPool
+
 
 def DistributeItems(items: list, count: int, distro: list[int] = None) -> list:
     """Distribute the items so that there is a roughly even amount of them placed in the seed."""
@@ -626,6 +629,7 @@ def DistributeItems(items: list, count: int, distro: list[int] = None) -> list:
         selection.extend(item_post_rebalance)
     return selection[:count]
 
+
 def FakeItems(settings):
     """Return a list of Fake Items to be placed."""
     total_count = getIceTrapCount(settings)
@@ -635,17 +639,21 @@ def FakeItems(settings):
     elif total_count > 10:
         distro = [5, 1, 2, 1, 2, 5, 2, 1, 5]
     # This order of items helps ensure that with low ice trap counts, you see models other than GBs
-    return DistributeItems([
-        Items.IceTrapBubble,
-        Items.IceTrapReverseBean,
-        Items.IceTrapSlowKey,
-        Items.IceTrapBubbleBean,
-        Items.IceTrapReverseKey,
-        Items.IceTrapReverse,
-        Items.IceTrapBubbleKey,
-        Items.IceTrapSlow,
-        Items.IceTrapSlowBean,
-    ], total_count, distro)
+    return DistributeItems(
+        [
+            Items.IceTrapBubble,
+            Items.IceTrapReverseBean,
+            Items.IceTrapSlowKey,
+            Items.IceTrapBubbleBean,
+            Items.IceTrapReverseKey,
+            Items.IceTrapReverse,
+            Items.IceTrapBubbleKey,
+            Items.IceTrapSlow,
+            Items.IceTrapSlowBean,
+        ],
+        total_count,
+        distro,
+    )
 
 
 def CrankyItems():

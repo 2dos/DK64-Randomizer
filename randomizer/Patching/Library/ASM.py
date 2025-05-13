@@ -225,6 +225,7 @@ def getActorIndex(input: int) -> int:
         return CUSTOM_ACTORS_START + (input & 0x7FFF)
     return input
 
+
 item_type_table_conversion = {
     # sym, item size
     Types.Blueprint: ("bp_item_table", 2),
@@ -238,6 +239,7 @@ item_type_table_conversion = {
     Types.BoulderItem: ("boulder_item_table", 8),
     Types.Kong: ("kong_check_data", 8),
 }
+
 
 def getItemTableWriteAddress(ROM_COPY, target_type: Types, index: int, offset_dict: dict) -> int:
     """Get the address of writing to a certain item table."""

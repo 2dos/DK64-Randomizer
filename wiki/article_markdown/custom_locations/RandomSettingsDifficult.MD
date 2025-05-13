@@ -131,7 +131,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Random: 100%
 - Glitches Selected: 
 	- Advanced Platforming: 100%
-- Hard B. Lockers: 60%
 - Hard Bosses: 60%
 - Hard Bosses Selected: 
 	- Fast Mad Jack: 80%

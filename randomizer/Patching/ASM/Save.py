@@ -5,55 +5,56 @@ from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
 
 FileInfoSizes = [
-    2, # Melon Count
-    1, # File Populated
-    0x16, # IGT
-    2, # File Index
-    0x18, # Save Count
-    8, # DK BP
-    8, # Diddy BP
-    8, # Lanky BP
-    8, # Tiny BP
-    8, # Chunky BP
-    8, # DK Hints
-    8, # Diddy Hints
-    8, # Lanky Hints
-    8, # Tiny Hints
-    8, # Chunky Hints
-    8, # Keys
-    8, # Kongs
-    8, # Crown Count
-    8, # Special Items
-    8, # Medals
-    8, # Pearls
-    8, # Fairies
-    8, # Rainbow Coins
-    16, # Ice Traps
-    16, # Junk Items
-    16, # Race Coins
-    8, # Special Moves
-    16, # AP Item Count
-    22, # IGT Japes
-    22, # IGT Aztec
-    22, # IGT Factory
-    22, # IGT Galleon
-    22, # IGT Fungi
-    22, # IGT Caves
-    22, # IGT Castle
-    22, # IGT Helm
-    22, # IGT Isles
-    22, # IGT DK
-    22, # IGT Diddy
-    22, # IGT Lanky
-    22, # IGT Tiny
-    22, # IGT Chunky
-    22, # Hurry IGT
-    16, # Tags
-    12, # Photos
-    16, # Kills
-    12, # Kaught
-    12, # Trapped
+    2,  # Melon Count
+    1,  # File Populated
+    0x16,  # IGT
+    2,  # File Index
+    0x18,  # Save Count
+    8,  # DK BP
+    8,  # Diddy BP
+    8,  # Lanky BP
+    8,  # Tiny BP
+    8,  # Chunky BP
+    8,  # DK Hints
+    8,  # Diddy Hints
+    8,  # Lanky Hints
+    8,  # Tiny Hints
+    8,  # Chunky Hints
+    8,  # Keys
+    8,  # Kongs
+    8,  # Crown Count
+    8,  # Special Items
+    8,  # Medals
+    8,  # Pearls
+    8,  # Fairies
+    8,  # Rainbow Coins
+    16,  # Ice Traps
+    16,  # Junk Items
+    16,  # Race Coins
+    8,  # Special Moves
+    16,  # AP Item Count
+    22,  # IGT Japes
+    22,  # IGT Aztec
+    22,  # IGT Factory
+    22,  # IGT Galleon
+    22,  # IGT Fungi
+    22,  # IGT Caves
+    22,  # IGT Castle
+    22,  # IGT Helm
+    22,  # IGT Isles
+    22,  # IGT DK
+    22,  # IGT Diddy
+    22,  # IGT Lanky
+    22,  # IGT Tiny
+    22,  # IGT Chunky
+    22,  # Hurry IGT
+    16,  # Tags
+    12,  # Photos
+    16,  # Kills
+    12,  # Kaught
+    12,  # Trapped
 ]
+
 
 def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, offset_dict: dict):
     """Expand Save file."""
@@ -82,7 +83,7 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     writeValue(ROM_COPY, 0x8060C352, Overlay.Static, file_default_size, offset_dict)
     writeValue(ROM_COPY, 0x8060BF96, Overlay.Static, file_default_size, offset_dict)
     writeValue(ROM_COPY, 0x8060BA7A, Overlay.Static, file_default_size, offset_dict)
-    
+
     writeValue(ROM_COPY, getSym("file_info_expansion"), Overlay.Custom, file_info_location, offset_dict)
     # Increase GB Storage Size
     writeValue(ROM_COPY, 0x8060BE12, Overlay.Static, targ_gb_bits, offset_dict)  # Bit Size

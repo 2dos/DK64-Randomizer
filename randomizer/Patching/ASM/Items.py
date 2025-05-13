@@ -99,6 +99,7 @@ def collisionUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeFunction(ROM_COPY, 0x806F6A0C, Overlay.Static, "checkForValidCollision", offset_dict)  # Detecting if object is inside current quadrant
     writeFunction(ROM_COPY, 0x806F6A2C, Overlay.Static, "checkForValidCollision", offset_dict)  # Detecting if object is inside current quadrant
 
+
 def raceCoinRandoASMChanges(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     """All changes related to race coin item rando."""
     if settings.race_coin_rando:
@@ -137,6 +138,7 @@ def raceCoinRandoASMChanges(ROM_COPY: LocalROM, settings, offset_dict: dict, spo
                 overlay = Overlay.Static if map_id in static_overlay_races else Overlay.Race
                 writeValue(ROM_COPY, addr, overlay, spoiler.coin_requirements[map_id], offset_dict)
 
+
 def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     """All changes related to item grabbing."""
     writeHook(ROM_COPY, 0x806A6708, Overlay.Static, "SpriteFix", offset_dict)
@@ -174,14 +176,14 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x806ABFBA, Overlay.Static, 8, offset_dict)  # REQITEM_COMPANYCOIN
     writeValue(ROM_COPY, 0x806ABFC0, Overlay.Static, 0x24060001, offset_dict, 4)  # Set arg2 to 1, this does leave arg1 undefined, but should be fine
     writeFunction(ROM_COPY, 0x806ABFBC, Overlay.Static, "getItemCount_new", offset_dict)
-    # 
+    #
     writeFunction(ROM_COPY, 0x806AC00C, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)  # File Percentage: Kongs
     # Key flag check: K Lumsy
     writeValue(ROM_COPY, 0x806BD308, Overlay.Static, 0x24040006, offset_dict, 4)  # REQITEM_KEY as first arg
     writeValue(ROM_COPY, 0x806BD2BC, Overlay.Static, 0x02202825, offset_dict, 4)  # s1 (key iterator) as 2rd arg
     writeValue(ROM_COPY, 0x806BD2C4, Overlay.Static, 0x00003025, offset_dict, 4)  # 0 as 3rd arg
     writeFunction(ROM_COPY, 0x806BD304, Overlay.Static, "getItemCount_new", offset_dict)  # Key flag check: K. Lumsy
-    # 
+    #
     writeValue(ROM_COPY, 0x806F56F8, Overlay.Static, 0, offset_dict, 4)  # Disable Flag Set for blueprints
     writeFunction(ROM_COPY, 0x806F938C, Overlay.Static, "banana_medal_acquisition", offset_dict)  # Medal Give
     writeValue(ROM_COPY, 0x806F9394, Overlay.Static, 0, offset_dict, 4)
@@ -202,7 +204,7 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x806C5F04, Overlay.Static, "giveFairyItem", offset_dict)  # Fairy Flag Set
     # Rainbow Coins
     writeFunction(ROM_COPY, 0x806A2268, Overlay.Static, "spawnDirtPatchReward", offset_dict)  # Spawn Reward
-    
+
     writeValue(ROM_COPY, 0x806C5C7C, Overlay.Static, 0, offset_dict, 4)  # Cancel out fairy draw distance reduction
     writeFunction(ROM_COPY, 0x806C63BC, Overlay.Static, "spawnRewardAtActor", offset_dict)  # Spawn Squawks Reward
     writeFunction(ROM_COPY, 0x806C4654, Overlay.Static, "spawnMinecartReward", offset_dict)  # Spawn Squawks Reward - Minecart
@@ -422,6 +424,7 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeHook(ROM_COPY, 0x80680AD4, Overlay.Static, "expandTBarrelResponse", offset_dict)  # Allow Training Barrels to disappear if already beaten
     writeValue(ROM_COPY, 0x80681C16, Overlay.Static, 0xF, offset_dict)  # Disregard most special code from a bonus
 
+
 def fairyFix(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to fixing fairy behavior."""
     # Fix issues where multiple loaded fairies will only allow 1 fairy to be referenced
@@ -581,7 +584,7 @@ def pauseUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeValue(ROM_COPY, 0x806ABFD2, Overlay.Static, -1, offset_dict, 2, True)  # All levels
     writeValue(ROM_COPY, 0x806ABFD8, Overlay.Static, 0x2406FFFF, offset_dict, 4)  # All Kongs
     writeFunction(ROM_COPY, 0x806ABFD4, Overlay.Static, "getItemCount_new", offset_dict)
-    # 
+    #
     if IsItemSelected(settings.quality_of_life, settings.misc_changes_selected, MiscChangesSelected.fast_pause_transitions):
         writeFloat(ROM_COPY, 0x8075AC00, Overlay.Static, 1.3, offset_dict)  # Pause Menu Progression Rate
         writeValue(ROM_COPY, 0x806A901C, Overlay.Static, 4, offset_dict, 4)  # NOP - Remove thud

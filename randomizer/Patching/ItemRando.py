@@ -140,6 +140,7 @@ kong_names = {
     Kongs.any: "Any Kong",
 }
 
+
 class ItemPatchingInfo:
     """Class to store information regarding how an item is patched into ROM."""
 
@@ -150,13 +151,15 @@ class ItemPatchingInfo:
         self.kong = kong
         self.audiovisual_medal = audiovisual_medal
 
-def getItemPatchingFromList(list_set: list, item: Items, type_str: str, throw_error: bool=True):
+
+def getItemPatchingFromList(list_set: list, item: Items, type_str: str, throw_error: bool = True):
     """Get the move index from a list."""
     if item not in list_set:
         if throw_error:
             raise Exception(f"{type_str} Type provided, but invalid {type_str} item provided resulting in search mismatch")
         return None
     return list_set.index(item)
+
 
 def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
     """Get the data associated with how an item is patched into ROM from various attributes."""
@@ -272,6 +275,7 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
         return ItemPatchingInfo(20, 0, shopkeeper_index)
     raise Exception("Invalid item for patching")
 
+
 def appendTextboxChange(spoiler, file_index: int, textbox_index: int, search: str, target: str):
     """Alter a specific textbox."""
     data = {"textbox_index": textbox_index, "mode": "replace", "search": search, "target": target}
@@ -349,6 +353,7 @@ HOLDABLE_LOCATION_INFO = {
         "spawner_id": 0,
     },
 }
+
 
 def alterTextboxRequirements(spoiler):
     """Alters various textboxes based on the requirement count changing."""
@@ -484,6 +489,7 @@ def getActorIndex(item):
     index = item_db[item_type].index_getter(item.new_subitem, item.new_flag, item.shared)
     return item_db[item_type].actor_index[index]
 
+
 model_two_items = [
     0x74,  # GB
     0xDE,  # BP - DK
@@ -505,6 +511,7 @@ POINTER_ROM_BONUSES = 0x1FF1200
 POINTER_ROM_ENEMIES = 0x1FF9000
 POINTER_ROM_IPDTABLE = 0x1FF2000
 
+
 def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
     """Place randomized items into ROM."""
     sav = spoiler.settings.rom_data
@@ -517,7 +524,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
         ROM_COPY.seek(sav + 0x034)
         ROM_COPY.write(1)  # Item Rando Enabled
         item_data = spoiler.item_assignment
-        
+
         map_items = {}
         bonus_table_offset = 0
         ipd_data = original_flut.copy()

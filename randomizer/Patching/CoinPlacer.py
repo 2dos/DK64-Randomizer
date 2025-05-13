@@ -20,6 +20,7 @@ MINIGAME_MAPS = [
     Maps.VineBarrel,
 ]
 
+
 def randomize_coins(spoiler, ROM_COPY: LocalROM):
     """Place Coins into ROM."""
     if spoiler.settings.coin_rando or spoiler.settings.race_coin_rando:

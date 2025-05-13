@@ -742,7 +742,7 @@ def patching_response(spoiler):
     updateSwitchsanity(spoiler, ROM_COPY)
     updateRandomSwitches(spoiler, ROM_COPY)  # Has to be after all setup changes that may alter the item type of slam switches
     PushItemLocations(spoiler, ROM_COPY)
-    
+
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         wipeHints()
         PushHints(spoiler, ROM_COPY)

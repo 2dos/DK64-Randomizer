@@ -14,10 +14,12 @@ def randomize_barrels(spoiler, ROM_COPY: LocalROM):
             container_map = int(BarrelMetaData[location].map)
             if container_map not in barrel_replacements:
                 barrel_replacements[container_map] = []
-            barrel_replacements[container_map].append({
-                "instance_id": int(BarrelMetaData[location].barrel_id),
-                "new_map": int(MinigameRequirements[minigame].map),
-            })
+            barrel_replacements[container_map].append(
+                {
+                    "instance_id": int(BarrelMetaData[location].barrel_id),
+                    "new_map": int(MinigameRequirements[minigame].map),
+                }
+            )
         for cont_map_id in barrel_replacements:
             cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
             ROM_COPY.seek(cont_map_setup_address)

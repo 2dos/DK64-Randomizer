@@ -242,15 +242,17 @@ def isQoLEnabled(spoiler, misc_change: MiscChangesSelected):
     """Determine if a faster check setting is enabled."""
     return IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, misc_change)
 
+
 def writeItemReferenceFlags(ROM_COPY: LocalROM, flag_list: list):
     """Write the list of item reference flags to ROM."""
     ram_addr = getSym("itemloc_flags")
     offset_dict = populateOverlayOffsets(ROM_COPY)
-    addr =  getROMAddress(ram_addr, Overlay.Custom, offset_dict)
+    addr = getROMAddress(ram_addr, Overlay.Custom, offset_dict)
     for xi, x in enumerate(flag_list):
         if x is not None:
             ROM_COPY.seek(addr + (xi * 2))
             ROM_COPY.writeMultipleBytes(x, 2)
+
 
 class MinigameImageLoader:
     """Class to store information regarding the image loader for an 8-bit minigame reward."""
@@ -503,6 +505,7 @@ def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
         raise Exception("Invalid stack trace string")
     ROM_COPY.seek(addr)
     ROM_COPY.writeBytes(bytes(string_to_write, "ascii"))
+
 
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
@@ -1066,7 +1069,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if settings.galleon_water_internal == GalleonWaterSetting.raised:
         file_init_flags.append(0xA0)  # Galleon Water Raised
-        
+
     if settings.activate_all_bananaports == ActivateAllBananaports.isles:
         file_init_flags.extend(WARPS_ISLES.copy())
     elif settings.activate_all_bananaports == ActivateAllBananaports.all:
@@ -1575,7 +1578,7 @@ def patchAssembly(ROM_COPY, spoiler):
         # Can throw the Apple
         writeValue(ROM_COPY, 0x806E4C94, Overlay.Static, 0, offset_dict, 4)  # Apple (Grounded)
         writeValue(ROM_COPY, 0x806E4D38, Overlay.Static, 0, offset_dict, 4)  # Apple (Non-Grounded)
-    
+
     if settings.shops_dont_cost:
         writeValue(ROM_COPY, 0x8064EA8C, Overlay.Static, 0, offset_dict, 4)  # Remove Arcade Costing Coins
 

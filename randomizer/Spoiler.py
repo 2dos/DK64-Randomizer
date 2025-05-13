@@ -871,7 +871,7 @@ class Spoiler:
                     for combo in join_combos:
                         if combo in map_name:
                             map_name = map_name.replace(combo, combo.replace(" ", ""))
-                    sub_name = lvl_name.split(' ')[idx]
+                    sub_name = lvl_name.split(" ")[idx]
                     if data["include_kong"]:
                         sub_name = f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"
                     humanspoiler[setting_name][sub_name].append(f"{map_name.strip()}: {group['name']}")

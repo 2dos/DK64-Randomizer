@@ -664,7 +664,7 @@ def loadNewModels():
         with open("fake_bean_om1.bin", "wb") as fg:
             fg.write(fh.read(0x414))
             fg.write(getBonusSkinOffset(ExtraTextures.FakeBean).to_bytes(4, "big"))
-            fh.read(4) # shift read pointer by 4
+            fh.read(4)  # shift read pointer by 4
             fg.write(fh.read())
     with open(ROMName, "rb") as rom:
         bean_om2 = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x198).grabFile(rom)

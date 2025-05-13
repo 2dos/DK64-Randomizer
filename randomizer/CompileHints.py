@@ -493,7 +493,7 @@ item_type_names = {
     Types.CrateItem: "\x06a melon crate\x06",
     Types.Enemies: "\x06an enemy\x06",
     Types.Hint: "\x06a hint door\x06",
-    Types.BoulderItem: "\x06a holdable object\x06"
+    Types.BoulderItem: "\x06a holdable object\x06",
 }
 item_type_names_cryptic = {
     Types.Blueprint: ["a minion of K. Rool", "a shockwaving foe", "a colorfully haired henchman"],
@@ -758,7 +758,11 @@ def compileHints(spoiler: Spoiler) -> bool:
         Maps.KroolChunkyPhase: chunky_phase_requirement,
     }
     # If the Bean isn't shuffled, hinting the Bean location is pointless
-    if spoiler.settings.win_condition_item == WinConditionComplex.req_bean and ItemRandoListSelected.beanpearl not in spoiler.settings.item_rando_list_selected and Locations.ForestBean in spoiler.woth_paths.keys():
+    if (
+        spoiler.settings.win_condition_item == WinConditionComplex.req_bean
+        and ItemRandoListSelected.beanpearl not in spoiler.settings.item_rando_list_selected
+        and Locations.ForestBean in spoiler.woth_paths.keys()
+    ):
         useless_locations[Items.Bean] = [Locations.ForestBean]
     if IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase, False):
         required_moves[Maps.KroolLankyPhase] = [Items.Barrels, Items.Grape]

@@ -34,7 +34,6 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Dos Door Rando
 - Enable Plandomizer
 - Dropsanity
-- Hard B. Lockers
 - Hard Bosses
 - Hard Mode
 - Hard Shooting

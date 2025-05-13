@@ -160,6 +160,7 @@ def convertItem(fh: BinaryIO, item: dict, kong: int) -> int:
         # Price
         fh.write((item.price).to_bytes(1, "big"))
 
+
 price_offset = 0x36
 space_offset = 0x1FED020
 move_offset = 0x1FEF000

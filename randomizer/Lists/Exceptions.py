@@ -72,6 +72,7 @@ class CBFillFailureException(FillException):
 class CoinFillFailureException(FillException):
     """Exception triggered when coin rando fails to correctly generate a valid set of groups."""
 
+
 class RaceCoinFillFailureException(FillException):
     """Exception triggered when race coin rando fails to correctly generate a valid set of groups."""
 

@@ -18,6 +18,7 @@ if last_part.upper() == "BUILD":
 FAKE_GB_SHIFT = 10
 FAKE_BEAN_SHIFT = -40
 
+
 def getDir(directory):
     """Convert directory into the right format based on where the script is run."""
     return f"{pre}{directory}"
@@ -816,6 +817,7 @@ fool_im.paste(l_im, (28, 0), l_im)
 fool_im.paste(ex_im, (34, 0), ex_im)
 fool_im = fool_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 fool_im.save(f"{disp_dir}fool_overlay.png")
+
 
 def alterWood(image):
     """Alter the wood color to our dark red color."""

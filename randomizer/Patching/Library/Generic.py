@@ -51,6 +51,7 @@ class MenuTexture:
         self.weight = weight
         self.is_color = is_color
 
+
 compatible_background_textures = {
     0x47A: MenuTexture("Gold Tower Stack", MenuTextDim.size_w32_h64),
     0x9DD: MenuTexture("Book", MenuTextDim.size_w32_h64),
@@ -604,20 +605,17 @@ def getIceTrapCount(settings) -> int:
     }
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
 
-blocker_min_thresholds = {
-    BLockerDifficulty.easy: 0.2,
-    BLockerDifficulty.normal: 0.4,
-    BLockerDifficulty.hard: 0.6
-}
-blocker_max_thresholds = {
-    BLockerDifficulty.easy: 0.5,
-    BLockerDifficulty.normal: 0.7,
-    BLockerDifficulty.hard: 0.95
-}
+
+blocker_min_thresholds = {BLockerDifficulty.easy: 0.2, BLockerDifficulty.normal: 0.4, BLockerDifficulty.hard: 0.6}
+blocker_max_thresholds = {BLockerDifficulty.easy: 0.5, BLockerDifficulty.normal: 0.7, BLockerDifficulty.hard: 0.95}
+
+
 def getBLockerThresholds(settings) -> tuple:
+    """Get the B. Locker thresholds based on settings."""
     min_v = blocker_min_thresholds.get(settings.blocker_difficulty, 0.4)
     max_v = blocker_max_thresholds.get(settings.blocker_difficulty, 0.7)
     return (min_v, max_v)
+
 
 EXPONENT = 1.7
 OFFSET_DIVISOR = 15
@@ -751,6 +749,7 @@ class Holidays(IntEnum):
 def sumChecks(spoiler, ownedItems, locations: list) -> int:
     """Sum the amount of checks in a list that have been checked."""
     return sum(spoiler.LocationList[loc].inaccessible or spoiler.LocationList[loc].item in ownedItems for loc in locations)
+
 
 def getHolidaySetting(settings):
     """Get the holiday setting."""

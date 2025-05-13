@@ -1978,7 +1978,7 @@ with open(newROMName, "r+b") as fh:
     arr = []
     for x in range(0x200):
         if x == 0x1E4:
-            arr.append(1) # Set pause coloring to on by default, for Obiyo
+            arr.append(1)  # Set pause coloring to on by default, for Obiyo
         else:
             arr.append(0)
     fh.write(bytearray(arr))
@@ -2098,7 +2098,7 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FFE000)
     for x in range(35):
         fh.write((0xFFFF).to_bytes(2, "big"))
-        
+
     # Hint Regions
     fh.seek(0x1FFE080)
     for x in range(35):
