@@ -1362,6 +1362,7 @@ int applyDamageMask(int player_index, int damage) {
 	int applied_damage = damage * applied_multiplier;
 	if ((init_health + applied_damage) <= 0) {
 		sendDeath();
+		GameStats[STAT_DEATHS]++;
 	}
 	if ((damage > 0) || (damage <= -12)) {
 		// Health or death-dealing damage

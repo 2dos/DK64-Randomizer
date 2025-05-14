@@ -622,6 +622,7 @@ typedef enum file_data_indexes {
 	DATA_STAT_ENEMY_KILLS,
 	DATA_STAT_KAUGHT,
 	DATA_STAT_TRAPPED,
+	DATA_STAT_DEATHS,
     DATA_JETPACHISCORE,
     DATA_ARCADEHISCORE_CHAR0,
     DATA_ARCADEHISCORE_CHAR1,
@@ -656,6 +657,7 @@ typedef enum bonus_stat {
 	/* 0x002 */ STAT_ENEMIESKILLED,
 	/* 0x003 */ STAT_KOPCAUGHT,
 	/* 0x004 */ STAT_TRAPPED,
+	/* 0x005 */ STAT_DEATHS,
     /* ----- */ STAT_TERMINATOR,
 } bonus_stat;
 

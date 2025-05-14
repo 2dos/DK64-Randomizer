@@ -211,7 +211,10 @@ def BarrelShuffle(settings: Settings) -> None:
                 Minigames.ChunkyHiddenKremling,
                 Minigames.ChunkyShooting,
             ],
-            MinigamesListSelected.arenas: [Minigames.RambiArena, Minigames.EnguardeArena],
+            MinigamesListSelected.arenas: [
+                Minigames.RambiArena,
+                Minigames.EnguardeArena,
+            ],
             MinigamesListSelected.training_minigames: [
                 Minigames.OrangeBarrel,
                 Minigames.BarrelBarrel,

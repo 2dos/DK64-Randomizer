@@ -48,6 +48,7 @@ stats = [
             "",  # Kops
             "",  # Enemies
             "",  # Trapped
+            "",  # Deaths
         ],
     ),
 ]

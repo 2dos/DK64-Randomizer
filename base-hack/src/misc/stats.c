@@ -93,6 +93,7 @@ static const dynamic_credits_item stat_credits_items[] = {
     {.header = "CAUGHT BY KOPS: ", .global_data = DATA_STAT_KAUGHT, .sub_data = 2, .has_data = 1},
     {.header = "ENEMIES KILLED: ", .global_data = DATA_STAT_ENEMY_KILLS, .sub_data = 2, .has_data = 1},
     {.header = "TIMES TRAPPED: ", .global_data = DATA_STAT_TRAPPED, .sub_data = 2, .has_data = 1},
+    {.header = "DEATHS: ", .global_data = DATA_STAT_DEATHS, .sub_data = 2, .has_data = 1},
 };
 
 static char number_text[10] = "";

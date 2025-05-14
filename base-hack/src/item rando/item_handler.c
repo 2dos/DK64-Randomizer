@@ -368,6 +368,7 @@ static unsigned char FileInfoData[] = {
     12, // Photos
     16, // Kills
     12, // Kaught
+    12, // Deaths
     12, // Trapped
 };
 
