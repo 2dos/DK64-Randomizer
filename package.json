@@ -27,12 +27,12 @@
             ]
         },
         "linux": {
-            "icon": "static/img/dk.png",
+            "icon": "base-hack/assets/DKTV/logo3.png",
             "target": "deb"
         },
         "win": {
             "target": "nsis",
-            "icon": "static/img/dk.png"
+            "icon": "base-hack/assets/DKTV/logo3.png"
         }
     },
     "dependencies": {

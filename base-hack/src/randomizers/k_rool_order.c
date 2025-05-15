@@ -101,6 +101,7 @@ void completeBoss(void) {
 		if (Rando.k_rool_order[i] == CurrentMap) {
 			if ((i == 4) || (Rando.k_rool_order[i + 1] == 0xFF)) {
 				// Ending phase
+				setPermFlag(FLAG_GAME_BEATEN);
 				if (inU8List(CurrentMap, &maps_with_extended_end_cs, sizeof(maps_with_extended_end_cs))) {
 					playCutscene(CurrentActorPointer_0, 0x1A, 1);
 					renderingParamsData* render = Player->rendering_param_pointer;
@@ -108,7 +109,6 @@ void completeBoss(void) {
 					render->scale_y = 0.0f;
 					render->scale_z = 0.0f;
 				} else {
-					setPermFlag(FLAG_GAME_BEATEN);
 					initiateTransitionFade(MAP_ISLES, 29, GAMEMODE_ADVENTURE);
 				}
 			} else {

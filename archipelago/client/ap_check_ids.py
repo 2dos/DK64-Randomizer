@@ -163,7 +163,7 @@ check_names_to_id = {
     "Isles Diddy Summit Barrel": 14041163,
     "Isles Dirt: Aztec Roof": 14041678,
     "Isles Battle Arena 2 (Fungi Lobby: Gorilla Gone Box)": 14041164,
-    "Isles Fairy (Fungi Lobby)": 14041165,
+    "Isles Fairy (Forest Lobby)": 14041165,
     "Forest Donkey Hint": 14041623,
     "Forest Diddy Hint": 14041624,
     "Forest Lanky Hint": 14041625,

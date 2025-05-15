@@ -147,8 +147,8 @@ void purchaseMove(shop_paad* paad) {
 			item_given = 7;
 		}
 	}
-	if (!Rando.shops_dont_cost) {
-		changeCollectableCount(1, 0, (0 - paad->price));
+	if ((!Rando.shops_dont_cost) || (!isAPEnabled())) {
+			changeCollectableCount(1, 0, (0 - paad->price));
 	}
 	if (item_given > -1) {
 		changeCollectableCount(item_given, 0, 9999);

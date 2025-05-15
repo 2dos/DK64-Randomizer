@@ -92,8 +92,10 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             classification = ItemClassification.filler
         elif item.type in [DK64RItems.IceTrapBubble, DK64RItems.IceTrapReverse, DK64RItems.IceTrapSlow]:
             classification = ItemClassification.trap
+        elif item.type == DK64RTypes.Key:
+            classification = ItemClassification.progression
         # The playthrough tag doesn't quite 1-to-1 map to Archipelago's "progression" type - some items we don't consider "playthrough" can affect logic
-        elif item.playthrough == True or item.type in (DK64RTypes.Blueprint, DK64RTypes.Pearl, DK64RTypes.Bean):
+        elif item.playthrough is True or item.type in (DK64RTypes.Blueprint, DK64RTypes.Pearl, DK64RTypes.Bean):
             classification = ItemClassification.progression_skip_balancing
         else:  # double check jetpac, eh?
             classification = ItemClassification.useful
@@ -115,9 +117,12 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     # Handle starting Kong list here
     for kong in world.logic_holder.settings.starting_kong_list:
         kong_item = DK64RItemPoolUtility.ItemFromKong(kong)
+        if kong == world.logic_holder.settings.starting_kong:
+            world.multiworld.push_precollected(DK64Item(kong_item.name, ItemClassification.progression, full_item_table[DK64RItem.ItemList[kong_item].name].code, world.player))
         for item in item_table:
             if item.name == kong_item.name:
-                # We don't need to precollect Kong items, as they'll patch in to the main menu properly
+                # Conveniently, this guarantees we have at least one precollected item!
+                world.multiworld.push_precollected(DK64Item(item.name, ItemClassification.progression, full_item_table[DK64RItem.ItemList[kong_item].name].code, world.player))
                 item_table.remove(item)
                 break
 

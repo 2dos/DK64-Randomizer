@@ -2,13 +2,18 @@
 
 import socket
 import json
-import sys
 import os
-import subprocess
 import pkgutil
 from configparser import ConfigParser
+import sys
+import subprocess
 from Utils import open_filename
 from Utils import get_settings
+import uuid
+
+if __name__ == "__main__":
+    Utils.init_logging("DK64Context", exception_logger="Client")
+from CommonClient import logger
 
 
 class PJ64Exception(Exception):
@@ -24,19 +29,24 @@ class PJ64Exception(Exception):
     pass
 
 
+def display_error_box(title: str, text: str) -> bool | None:
+    """Display an error message box."""
+    from tkinter import Tk, messagebox
+
+    root = Tk()
+    root.withdraw()
+    ret = messagebox.showerror(title, text)
+    root.update()
+    return ret
+
+
 class PJ64Client:
     """PJ64Client is a class that provides an interface to connect to and interact with an N64 emulator."""
 
-    def __init__(self, address="127.0.0.1", port=1337):
-        """Initialize a new instance of the class.
-
-        Args:
-            address (str): The IP address to connect to. Defaults to "127.0.0.1".
-            port (int): The port number to connect to. Defaults to 1337.
-        """
+    def __init__(self):
+        """Initialize a new instance of the class."""
         self._check_client()
-        self.address = address
-        self.port = port
+        self.address = "127.0.0.1"
         self.socket = None
         self.connected_message = False
         self._connect()
@@ -47,8 +57,14 @@ class PJ64Client:
         Raises:
             PJ64Exception: If the Project 64 executable is not found or if the `ap_adapter.js` file is in use.
         """
+        logger.info("We HIGHLY recommend starting Project64 through the client to ensure the config file is set up correctly.")
+        logger.info("If you have already started Project64, please close it and start it through the client.")
+        logger.info("You may also need to run the client as an administrator to write the config file.")
         options = get_settings()
         executable = options.get("project64_options", {}).get("executable")
+        # Verify the file exists, if it does not, ask the user to select it
+        if executable and not os.path.isfile(executable):
+            executable = None
         if not executable:
             executable = open_filename("Project 64 4.0 Executable", (("Project64 Executable", (".exe",)),), "Project64.exe")
             if not executable:
@@ -61,38 +77,33 @@ class PJ64Client:
         adapter_path = os.path.join(os.path.dirname(executable), "Scripts", "ap_adapter.js")
         # Read the existing file from the world
         try:
-            with open("worlds/dk64/archipelago/client/adapter.js", "r") as f:
+            with open("worlds/dk64/archipelago/client/adapter.js", "r", encoding="utf8", newline="\n") as f:
                 adapter_content = f.read()
         except Exception:
-            adapter_content = pkgutil.get_data(__name__, "adapter.js").decode()
+            adapter_content = pkgutil.get_data(__name__, "adapter.js").decode().replace("\r\n", "\n").replace("\r", "\n")
         # Check if the file is in use
         matching_content = False
         # Check if the contents match
         try:
-            with open(adapter_path, "r") as f:
+            with open(adapter_path, "r", encoding="utf8") as f:
                 if f.read() == adapter_content:
                     matching_content = True
         except FileNotFoundError:
             pass
         if not matching_content:
             try:
-                with open(adapter_path, "w") as f:
+                with open(adapter_path, "w", encoding="utf8") as f:
                     f.write(adapter_content)
             except PermissionError:
+                display_error_box("Permission Error", "Unable to add adapter file to Project64, you may need to run AP as an administrator or close Project64.")
                 raise PJ64Exception("Unable to add adapter file to Project64, you may need to run this script as an administrator or close Project64.")
         self._verify_pj64_config(os.path.join(os.path.dirname(executable), "Config", "Project64.cfg"))
         # Check if project 64 is running
         if not self._is_exe_running(os.path.basename(executable)):
             # Request the user to provide their ROM
             rom = open_filename("Select ROM", (("N64 ROM", (".n64", ".z64", ".v64")),))
-            # Run project 64
-            os.popen(f'"{executable}"')
-            # Kill project 64
-            if sys.platform == "win32":
-                os.system(f'taskkill /f /im "{os.path.basename(executable)}"')
-            else:
-                os.system(f'pkill -f "{os.path.basename(executable)}"')
-            os.popen(f'"{executable}" "{rom}"')
+            if rom:
+                os.popen(f'"{executable}" "{rom}"')
 
     def _is_exe_running(self, exe_name):
         """Check if a given executable is running without using psutil."""
@@ -100,7 +111,9 @@ class PJ64Client:
 
         if sys.platform == "win32":
             try:
-                output = subprocess.check_output(["tasklist"], text=True, errors="ignore")
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                output = subprocess.check_output(["tasklist"], text=True, errors="ignore", shell=False, startupinfo=startupinfo)
                 return exe_name in output.lower()
             except subprocess.CalledProcessError:
                 return False
@@ -115,41 +128,78 @@ class PJ64Client:
         return False
 
     def _verify_pj64_config(self, config_file):
-        """Verify and update the configuration file for Project64.
-
-        This method ensures that the specified configuration file contains the
-        required sections and settings for proper operation. If the necessary
-        sections or settings are missing, they are added or updated accordingly.
-        Args:
-            config_file (str): The path to the configuration file to be verified and updated.
-        Behavior:
-            - Ensures the [Settings] section exists and sets 'Basic Mode' to "0".
-            - Ensures the [Debugger] section exists and sets 'Debugger' to "1".
-            - Write the updated configuration back to the file.
-        Note:
-            If an exception occurs while writing to the file, it is silently ignored.
         """
-        # Read the CFG file
-        config = ConfigParser()
-        config.read(config_file)
+        Verify and update the Project64 configuration file.
 
-        # Ensure the [Settings] section exists and update 'Basic Mode'
+        - Cleans malformed lines from the file.
+        - Ensures required sections and settings exist.
+        - Prevents junk values from being added or re-written.
+        """
+
+        def clean_config_file(file_path):
+            """Read the config file and return cleaned lines."""
+            cleaned_lines = []
+            with open(file_path, encoding="utf8") as f:
+                for line in f:
+                    stripped = line.strip()
+                    if stripped == "" or stripped.startswith("[") or "=" in stripped:
+                        cleaned_lines.append(line)
+            return cleaned_lines
+
+        def sanitize_config(config):
+            """Remove invalid keys from the config object in memory."""
+            for section in config.sections():
+                keys_to_remove = [key for key in config[section] if not key.strip() or " " in key.strip() and "=" not in f"{key}=dummy"]
+                for key in keys_to_remove:
+                    config.remove_option(section, key)
+
+        # Step 1: Clean the file and load cleaned data into ConfigParser
+        try:
+            cleaned_lines = clean_config_file(config_file)
+            config = ConfigParser()
+            config.read_string("".join(cleaned_lines))
+        except Exception:
+            raise PJ64Exception("Failed to read or clean the config file.")
+
+        # Step 2: Sanitize the config in memory
+        sanitize_config(config)
+
+        # Step 3: Ensure required sections/settings
         if "Settings" not in config:
             config.add_section("Settings")
         config.set("Settings", "Basic Mode", "0")
 
-        # Ensure the [Debugger] section exists and set 'Debugger'
         if "Debugger" not in config:
             config.add_section("Debugger")
-        config.set("Debugger", "Debugger", "1")
-        config.set("Debugger", "Autorun Scripts", "ap_adapter.js")
+        if not config.has_option("Debugger", "Debugger"):
+            config.set("Debugger", "Debugger", "1")
+        if not config.has_option("Debugger", "Autorun Scripts"):
+            config.set("Debugger", "Autorun Scripts", "ap_adapter.js")
+        first_set_port = False
+        if not config.has_option("Debugger", "ap_port"):
+            port = str(40000 + (uuid.uuid4().int % 10000))
+            config.set("Debugger", "ap_port", port)
+            first_set_port = True
+            self.port = int(port)
+            print("Set port to " + str(port))
+        else:
+            self.port = int(config.get("Debugger", "ap_port"))
 
-        # Write the updated settings back to the file
+        # Step 4: Final sanitize before write
+        sanitize_config(config)
+        # Print the config to the console for debugging
+        print("Config file contents:")
+        for section in config.sections():
+            print(f"[{section}]")
+            for key, value in config.items(section):
+                print(f"{key} = {value}")
+        # Step 5: Write config back to file
         try:
-            with open(config_file, "w") as configfile:
-                config.write(configfile, space_around_delimiters=False)
+            with open(config_file, "w", encoding="utf8", newline="\n") as f:
+                config.write(f, space_around_delimiters=False)
         except Exception:
-            pass
+            if first_set_port:
+                raise PJ64Exception("Failed to update Project64 config file. If this is the first time set up of PJ64, you need to start PJ64 through the client to write the config file.")
 
     def _connect(self):
         """Establish a connection to the specified address and port using a socket.
@@ -168,8 +218,10 @@ class PJ64Client:
         try:
             self.socket.connect((self.address, self.port))
             self.connected_message = True
-        except (ConnectionRefusedError, ConnectionResetError, ConnectionAbortedError):
+        except (ConnectionRefusedError, ConnectionResetError, ConnectionAbortedError) as e:
             self.socket = None
+            self.connected_message = False
+            print(e)
             raise PJ64Exception("Connection refused or reset")
         except OSError:
             # We're already connected, just move on
@@ -179,13 +231,34 @@ class PJ64Client:
         """Send a command to the emulator and retrieves the response."""
         try:
             self._connect()
-            self.socket.sendall(command.encode())
-            response = self.socket.recv(4096).decode()
+            command_id = str(uuid.uuid4())  # Generate a unique ID for the command
+            full_command = f"{command_id}:{command}\n"  # Append line terminator
+            self.socket.sendall(full_command.encode())
+
+            response = self.socket.recv(8192).decode()
             if not response or len(str(response).strip()) == 0:
                 raise PJ64Exception("No data received from the server")
-            return response
-        except Exception:
-            raise PJ64Exception("Connection refused or reset")
+            # Split response by line terminator and process each line
+            for line in response.splitlines():
+                if line.startswith(command_id):
+                    data = line[len(command_id) :]
+                    if data.startswith(":"):
+                        data = data[1:]
+
+                    return data  # Return the response after the ID
+
+            # If no matching ID is found, raise an exception
+            raise PJ64Exception("Response ID does not match the command ID")
+        except socket.timeout:
+            self.socket = None
+            self.connected_message = False
+            raise PJ64Exception(
+                "Socket Timeout, please check that Project64 is running and the adapter is actively bound to a port.\nIf PJ64 fails to bind to a port, please update your Project64 config file with a new port."
+            )
+        except Exception as e:
+            self.socket = None
+            self.connected_message = False
+            raise PJ64Exception(e)
 
     def _read_memory(self, address, size):
         """Read an unsigned integer of the given size from memory."""
@@ -222,6 +295,10 @@ class PJ64Client:
     def write_u8(self, address, data):
         """Write an 8-bit unsigned integer to memory."""
         return self._write_memory("write u8", address, [data])
+
+    def write_u16(self, address, data):
+        """Write a 16-bit unsigned integer to memory."""
+        return self._write_memory("write u16", address, [data])
 
     def write_u32(self, address, data):
         """Write a 32-bit unsigned integer to memory."""

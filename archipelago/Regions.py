@@ -103,7 +103,7 @@ def create_regions(multiworld: MultiWorld, player: int, logic_holder: LogicVarHo
     for region_id in all_logic_regions:
         region_obj = all_logic_regions[region_id]
         # Filtering out auxiliary locations is detrimental to glitch logic, but is necessary to ensure each location placed exactly once
-        location_logics = [loc for loc in region_obj.locations if not loc.isAuxiliaryLocation]
+        location_logics = [loc for loc in region_obj.locations if (not loc.isAuxiliaryLocation) or region_id.name == "FactoryBaboonBlast"]
         # V1 LIMITATION: Helm must be skip_start
         # Special exception time! The locations in HideoutHelmEntry cause more problems than they solve, and cannot exist in conjunction with other locations.
         if region_obj.level == Levels.HideoutHelm:
@@ -149,12 +149,12 @@ def create_region(
         if region_name == "DKIslesMedals" and not IsItemSelected(logic_holder.settings.cb_rando_enabled, logic_holder.settings.cb_rando_list_selected, Levels.DKIsles):
             location_logics = []
         for location_logic in location_logics:
-            location_obj = DK64RLocation.LocationListOriginal[location_logic.id]
+            location_obj = logic_holder.spoiler.LocationList[location_logic.id]
             # DK Arcade Round 1 is dependent on a setting - don't create the inaccessible location depending on that Faster Checks toggle
             if location_logic.id == Locations.FactoryDonkeyDKArcade:
                 if logic_holder.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and region_name == "FactoryArcadeTunnel":
                     continue
-                elif not logic_holder.checkFastCheck(FasterChecksSelected.factory_arcade_round_2) and region_name == "FactoryBaboonBlast":
+                elif not logic_holder.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and region_name == "FactoryBaboonBlast":
                     continue
             # Starting move locations and Kongs may be shuffled but their locations are not relevant ever due to item placement restrictions
             # V1 LIMITATION: Kong locations are always empty because we can't put the vast majority of items (including AP items) there yet
@@ -180,7 +180,7 @@ def create_region(
             quick_success = False
             try:
                 quick_success = location.logic(None)
-            except:
+            except Exception:
                 pass
             # If we can, we can greatly simplify the logic at this location
             if quick_success:
@@ -211,7 +211,7 @@ def create_region(
         quick_success = False
         try:
             quick_success = collectible.logic(None)
-        except:
+        except Exception:
             pass
         # If we can, we can greatly simplify the logic at this location
         if quick_success:
@@ -223,8 +223,8 @@ def create_region(
             quantity *= 5
         elif collectible.type == Collectibles.balloon:
             quantity *= 10
-            add_rule(location, lambda state: state.has(gun_for_kong[collectible.kong], player))  # We need to be sure we check for gun access for this balloon
-        add_rule(location, lambda state: logic_holder.HasKong(collectible.kong))  # There's no FTA for collectibles - you *must* own the right kong to collect it
+            add_rule(location, lambda state, collectible_kong=collectible.kong: state.has(gun_for_kong[collectible_kong], player))  # We need to be sure we check for gun access for this balloon
+        add_rule(location, lambda state, collectible_kong=collectible.kong: logic_holder.HasKong(collectible_kong))  # There's no FTA for collectibles - you *must* own the right kong to collect it
         location.place_locked_item(DK64Item("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
         # print("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity))
         new_region.locations.append(location)
@@ -264,7 +264,7 @@ def create_region(
         quick_success = False
         try:
             quick_success = event.logic(None)
-        except:
+        except Exception:
             pass
         # If we can, we can greatly simplify the logic at this location
         if quick_success:
@@ -378,7 +378,7 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
                 quick_success = False
                 try:
                     quick_success = exit.logic(None)
-                except:
+                except Exception:
                     pass
                 # If we can, we can greatly simplify the logic for this exit
                 if quick_success:
@@ -389,6 +389,11 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
                 # print("Connecting " + region_id.name + " to " + destination_name)
             except Exception:
                 pass
+
+    # V1 LIMITATION: We have pre-activated Isles warps, so we need to make two extra connections to make sure the logic is correct
+    connect(world, "IslesMain", "IslesMainUpper", lambda state: True)  # Pre-activated W2
+    connect(world, "IslesMain", "KremIsleBeyondLift", lambda state: True)  # Pre-activated W4
+
     pass
 
 

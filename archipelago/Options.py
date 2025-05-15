@@ -19,6 +19,7 @@ class Goal(Choice):
 
     display_name = "Goal"
     option_krool = 0
+    option_all_keys = 1
     default = 0
 
 
@@ -65,6 +66,29 @@ class BaseTrapWeight(Choice):
     default = 2
 
 
+class ReceiveNotifications(Choice):
+    """Determines if the player will receive notifications about item sends.
+
+    Options:
+    - display_all_speedup (1): If we have more than 5 items queued, we will speed up the display based on the percentage.
+    - display_all_discard_extra (2): If we have more than 5 items queued, we will speed up the display based on percentage, but discard any non progression items.
+    - display_all_fast (3): Displays ALL items at the fastest speed.
+    - display_extra_fast (4): Displays Progression items at the default speed, and non progression items at a faster speed.
+    - display_extra_items (5): Displays extra items and progression items at standard speed.
+    - display_only_progression (6): Progression only, no speed changes.
+    """
+
+    display_name = "Receive Notifications Type"
+
+    option_display_all_speedup = 1
+    option_display_all_discard_extra = 2
+    option_display_all_fast = 3
+    option_display_extra_fast = 4
+    option_display_extra_items = 5
+    option_display_only_progression = 6
+    default = 1
+
+
 class BubbleTrapWeight(BaseTrapWeight):
     """Likelihood of receiving a trap which freezes the player."""
 
@@ -88,6 +112,7 @@ class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
 
     death_link: DeathLink
+    receive_notifications: ReceiveNotifications
     goal: Goal
     climbing_shuffle: ClimbingShuffle
     starting_kong_count: StartingKongCount

@@ -1563,6 +1563,10 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if HARDER_CRUSHERS:
         writeValue(ROM_COPY, 0x8064C520, Overlay.Static, 0xA218006E, offset_dict, 4)  # Make the crushers in Factory Crusher Room always damage you
+    # Diddy Slam Crash Fix
+    writeHook(ROM_COPY, 0x80609338, Overlay.Static, "fixDiddySlamCrash", offset_dict)
+
+    # Fix Null Lag Boost
     writeHook(ROM_COPY, 0x806CCA90, Overlay.Static, "fixNullLagBoost", offset_dict)
 
     if BOULDERS_DONT_DESTROY:

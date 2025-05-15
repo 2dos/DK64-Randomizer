@@ -215,7 +215,7 @@ static const char map_hint_regions[] = {
     REGION_CAVESMAIN, // crystal_caves_barrel_blast
     REGION_CASTLEEXT, // creepy_castle_barrel_blast
     REGION_FORESTGMEXT, // fungi_forest_barrel_blast
-    INCONSISTENT_HINT_REGION, // fairy_island
+    REGION_ISLESOUTER, // fairy_island
     REFERENCE_PARENT, // kong_battle_arena_2
     REFERENCE_PARENT, // rambi_arena
     REFERENCE_PARENT, // kong_battle_arena_3

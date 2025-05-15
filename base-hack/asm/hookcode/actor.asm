@@ -724,3 +724,14 @@ spawnHoldableObject:
     lw $t2, 0x58 ($s0)
     j 0x8069C218
     addiu $at, $zero, 0x3D
+
+fixDiddySlamCrash:
+    lh $t6, 0x3A ($sp) ; Get SFX id
+    addiu $t2, $zero, 0x37
+    bne $t6, $t2, fixDiddySlamCrashEnd
+    lui $t2, 0x3F80
+    mtc1 $t2, $f12 ; Set pitch to 1.0f, only for SFX 55
+
+    fixDiddySlamCrashEnd:
+        j 0x80609340
+        lbu $t2, 0x4F ($sp)
