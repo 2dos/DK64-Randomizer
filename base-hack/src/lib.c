@@ -1356,16 +1356,19 @@ static unsigned char galleon_underwater_maps[] = {
 	MAP_GALLEONTREASURECHEST,
 };
 
+void death(void) {
+	sendDeath();
+	GameStats[STAT_DEATHS]++;
+}
+
 int applyDamageMask(int player_index, int damage) {
 	int applied_multiplier = Rando.damage_multiplier;
 	int init_health = CollectableBase.Health;
-	int applied_damage = damage * applied_multiplier;
-	if ((init_health + applied_damage) <= 0) {
-		sendDeath();
-		GameStats[STAT_DEATHS]++;
-	}
 	if ((damage > 0) || (damage <= -12)) {
 		// Health or death-dealing damage
+		if (damage <= -12) {
+			death();
+		}
 		return applyDamage(player_index, damage);
 	}
 	if ((CurrentMap == MAP_CASTLEKUTOUT) && (CutsceneActive == 1) && (CutsceneIndex == 4)) {
@@ -1379,6 +1382,10 @@ int applyDamageMask(int player_index, int damage) {
 				applied_multiplier = 0;
 			}
 		}
+	}
+	int applied_damage = damage * applied_multiplier;
+	if ((init_health + applied_damage) <= 0) {
+		death();
 	}
 	return applyDamage(player_index, applied_damage);
 }
