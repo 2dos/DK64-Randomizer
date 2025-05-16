@@ -294,7 +294,9 @@ if baseclasses_loaded:
             if hasattr(self.multiworld, "generation_is_fake"):
                 if hasattr(self.multiworld, "re_gen_passthrough"):
                     if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
-                        passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+                        passthrough = self.multiworld.re_gen_passthrough[
+                            "Donkey Kong 64"
+                        ]
                         settings.level_order = passthrough["LevelOrder"]
                         settings.starting_kong_list = passthrough["StartingKongs"]
                         settings.BossBananas = passthrough["BossBananas"]
@@ -645,7 +647,7 @@ if baseclasses_loaded:
             boss_maps = slot_data["BossMaps"].split(", ")
             boss_kongs = slot_data["BossKongs"].split(", ")
             helm_order = slot_data["HelmOrder"].split(", ")
-            
+
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
