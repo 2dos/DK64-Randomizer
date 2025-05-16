@@ -3267,7 +3267,7 @@ def IsMultipathHintTooLong(message):
 
 def getNumberOfCutoffCharacters(message, number):
     """Determine how many characters early a line would get cut off."""
-    if number < 2 or len(message) < (number - 1):
+    if number < 2 or len(message) < number:
         return 0
     index = number - 1
     initial_index = index
