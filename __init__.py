@@ -294,9 +294,7 @@ if baseclasses_loaded:
             if hasattr(self.multiworld, "generation_is_fake"):
                 if hasattr(self.multiworld, "re_gen_passthrough"):
                     if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
-                        passthrough = self.multiworld.re_gen_passthrough[
-                            "Donkey Kong 64"
-                        ]
+                        passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
                         settings.level_order = passthrough["LevelOrder"]
                         settings.starting_kong_list = passthrough["StartingKongs"]
                         settings.BossBananas = passthrough["BossBananas"]
@@ -578,7 +576,7 @@ if baseclasses_loaded:
                 "BossMaps": ", ".join(map.name for map in self.logic_holder.settings.boss_maps),
                 "BossKongs": ", ".join(kong.name for kong in self.logic_holder.settings.boss_kongs),
                 "LankyFreeingKong": self.logic_holder.settings.lanky_freeing_kong,
-                "HelmOrder": ", ".join([str(room) for room in self.logic_holder.settings.helm_order])
+                "HelmOrder": ", ".join([str(room) for room in self.logic_holder.settings.helm_order]),
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
