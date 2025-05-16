@@ -636,8 +636,9 @@ if baseclasses_loaded:
                 self.logic_holder.UpdateFromArchipelagoItems(state)
             return change
 
-        # Called by Universal Tracker to parse slot data for any logical bits that need to match the real generation.
         def interpret_slot_data(self, slot_data: dict[str, any]) -> dict[str, any]:
+            """Called by Universal Tracker to parse slot data for any logical bits that need to match the real generation."""
+
             # Parse the string data
             level_order = slot_data["LevelOrder"].split(", ")
             starting_kongs = slot_data["StartingKongs"].split(", ")
