@@ -637,8 +637,7 @@ if baseclasses_loaded:
             return change
 
         def interpret_slot_data(self, slot_data: dict[str, any]) -> dict[str, any]:
-            """Called by Universal Tracker to parse slot data for any logical bits that need to match the real generation."""
-
+            """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
             # Parse the string data
             level_order = slot_data["LevelOrder"].split(", ")
             starting_kongs = slot_data["StartingKongs"].split(", ")
