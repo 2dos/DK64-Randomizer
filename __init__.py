@@ -268,6 +268,8 @@ if baseclasses_loaded:
             settings_dict = decrypt_settings_string_enum(self.settings_string)
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
+            settings_dict["open_lobbies"] = self.options.open_lobbies.value
+            settings_dict["krool_in_boss_pool"] = self.options.krool_in_boss_pool.value
             settings_dict["starting_keys_list_selected"] = []
             for item in self.options.start_inventory:
                 if item == "Key 1":
@@ -577,6 +579,8 @@ if baseclasses_loaded:
                 "BossKongs": ", ".join(kong.name for kong in self.logic_holder.settings.boss_kongs),
                 "LankyFreeingKong": self.logic_holder.settings.lanky_freeing_kong,
                 "HelmOrder": ", ".join([str(room) for room in self.logic_holder.settings.helm_order]),
+                "OpenLobbies": self.logic_holder.settings.open_lobbies,
+                "KroolInBossPool": self.logic_holder.settings.krool_in_boss_pool,
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):

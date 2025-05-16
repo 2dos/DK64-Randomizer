@@ -23,6 +23,12 @@ class Goal(Choice):
     default = 0
 
 
+class OpenLobbies(Toggle):
+    """Determines whether or not all lobbies are preopened."""
+
+    display_name = "Open Lobbies"
+
+
 class ClimbingShuffle(Toggle):
     """Whether or not you shuffle the Climbing ability into the world(s)."""
 
@@ -45,6 +51,12 @@ class StartingMoveCount(Range):
     range_start = 0
     range_end = 50
     default = 0
+
+
+class KroolInBossPool(Toggle):
+    """Whether or not K. Rool can be fightable in T&S Bosses and vice versa."""
+
+    display_name = "Krool In Boss Pool"
 
 
 class TrapFillPercentage(Range):
@@ -121,3 +133,5 @@ class DK64Options(PerGameCommonOptions):
     bubble_trap_weight: BubbleTrapWeight
     reverse_trap_weight: ReverseTrapWeight
     slow_trap_weight: SlowTrapWeight
+    open_lobbies: OpenLobbies
+    krool_in_boss_pool: KroolInBossPool
