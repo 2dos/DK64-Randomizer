@@ -165,22 +165,19 @@ void newGuardCode(void) {
     }
     if ((collisionType == 4) || (collisionType == 9) || (collisionActive)) { // If being damaged
         if (!in_snoop) { // If not in SSnoop
-            // Player is immune in the first 123 frames upon map load. This prevents the kop from being damaged during those 123 frames (plus 1 extra frame)
-            if(ObjectModel2Timer > 124){
-                // Hit by ammo/oranges
-                if ((CurrentActorPointer_0->health <= 0) || (collisionActive)) { // If being attacked and with zero/negative health
-                    // Death procedure
-                    CurrentActorPointer_0->health = 0;
-                    playActorAnimation(CurrentActorPointer_0,0x201);
-                    CurrentActorPointer_0->control_state = 0x42;
-                    CurrentActorPointer_0->control_state_progress = 0;
-                    CurrentActorPointer_0->noclip_byte = 1;
-                } else {
-                    // Damage procedure
-                    playActorAnimation(CurrentActorPointer_0,0x1FF);
-                    CurrentActorPointer_0->control_state = 0x41;
-                    CurrentActorPointer_0->control_state_progress = 0;
-                }
+            // Hit by ammo/oranges
+            if ((CurrentActorPointer_0->health <= 0) || (collisionActive)) { // If being attacked and with zero/negative health
+                // Death procedure
+                CurrentActorPointer_0->health = 0;
+                playActorAnimation(CurrentActorPointer_0,0x201);
+                CurrentActorPointer_0->control_state = 0x42;
+                CurrentActorPointer_0->control_state_progress = 0;
+                CurrentActorPointer_0->noclip_byte = 1;
+            } else {
+                // Damage procedure
+                playActorAnimation(CurrentActorPointer_0,0x1FF);
+                CurrentActorPointer_0->control_state = 0x41;
+                CurrentActorPointer_0->control_state_progress = 0;
             }
         }
     }
