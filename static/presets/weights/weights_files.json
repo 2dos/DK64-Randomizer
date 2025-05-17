@@ -391,9 +391,6 @@
       "max": 0
     },
     "starting_random": 1,
-    "switchsanity": {
-      "off": 1
-    },
     "tns_location_rando": 0,
     "troff_text": {
       "min": 100,
@@ -825,11 +822,6 @@
       "max": 0
     },
     "starting_random": 1,
-    "switchsanity": {
-      "off": 0.85,
-      "helm_access": 0.1,
-      "all": 0.05
-    },
     "tns_location_rando": 0.3,
     "troff_text": {
       "min": 150,
@@ -1311,11 +1303,6 @@
       "max": 0
     },
     "starting_random": 1,
-    "switchsanity": {
-      "off": 0.5,
-      "helm_access": 0.4,
-      "all": 0.1
-    },
     "tns_location_rando": 0.5,
     "troff_text": {
       "min": 150,
@@ -1797,11 +1784,6 @@
       "max": 0
     },
     "starting_random": 1,
-    "switchsanity": {
-      "off": 0.5,
-      "helm_access": 0.4,
-      "all": 0.1
-    },
     "tns_location_rando": 0.5,
     "troff_text": {
       "min": 150,

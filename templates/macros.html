@@ -260,3 +260,71 @@
         })
     </script>
 {% endmacro %}
+{% macro switchsanity_option(name, setting, subtype, default) %}
+    <div class="col">
+        <div class="item-select">
+            <p class="select-title">{{ name }}</p>
+            <select name="{{ setting }}"
+                    id="{{ setting }}"
+                    class="form-select"
+                    aria-label="Randomization type"
+                    display_name="name"
+                    data-toggle="tooltip"
+                    title="Switch assigned to {{ name }}.">
+                {% if subtype != "gone_to_helm" %}
+                    <option id="donkey" {% if default == "donkey" %}selected{% endif %} value="donkey">
+                        {% if subtype == "guns" %}Coconut
+                        {% elif subtype == "instruments" %}Bongos
+                        {% elif subtype == "kong" %}Donkey
+                        {% elif subtype == "mport_to_helm" %}Blast
+                        {% endif %}
+                    </option>
+                    {% if subtype != "mport_to_helm" %}
+                        <option id="diddy" {% if default == "diddy" %}selected{% endif %} value="diddy">
+                            {% if subtype == "guns" %}Peanut
+                            {% elif subtype == "instruments" %}Guitar
+                            {% elif subtype == "kong" %}Diddy
+                            {% elif subtype == "mport_to_helm" %}You should not see this
+                            {% endif %}
+                        </option>
+                    {% endif %}
+                    <option id="lanky" {% if default == "lanky" %}selected{% endif %} value="lanky">
+                        {% if subtype == "guns" %}Grape
+                        {% elif subtype == "instruments" %}Trombone
+                        {% elif subtype == "kong" %}Lanky
+                        {% elif subtype == "mport_to_helm" %}Balloon
+                        {% endif %}
+                    </option>
+                    <option id="tiny" {% if default == "tiny" %}selected{% endif %} value="tiny">
+                        {% if subtype == "guns" %}Feather
+                        {% elif subtype == "instruments" %}Saxophone
+                        {% elif subtype == "kong" %}Tiny
+                        {% elif subtype == "mport_to_helm" %}Monkeyport
+                        {% endif %}
+                    </option>
+                    {% if subtype != "mport_to_helm" %}
+                        <option id="chunky" {% if default == "chunky" %}selected{% endif %} value="chunky">
+                            {% if subtype == "guns" %}Pineapple
+                            {% elif subtype == "instruments" %}Triangle
+                            {% elif subtype == "kong" %}Chunky
+                            {% elif subtype == "mport_to_helm" %}You should not see this
+                            {% endif %}
+                        </option>
+                    {% endif %}
+                {% else %}
+                    <option id="bongos" {% if default == "bongos" %}selected{% endif %} value="bongos">Bongos</option>
+                    <option id="guitar" {% if default == "guitar" %}selected{% endif %} value="guitar">Guitar</option>
+                    <option id="trombone" {% if default == "trombone" %}selected{% endif %} value="trombone">Trombone</option>
+                    <option id="sax" {% if default == "sax" %}selected{% endif %} value="sax">Saxophone</option>
+                    <option id="triangle" {% if default == "triangle" %}selected{% endif %} value="triangle">Triangle</option>
+                    <option id="lever" {% if default == "lever" %}selected{% endif %} value="lever">Grab Lever</option>
+                    <option id="gong" {% if default == "gong" %}selected{% endif %} value="gong">Gong</option>
+                    <option id="gone_pad" {% if default == "gone_pad" %}selected{% endif %} value="gone_pad">Gorilla Gone</option>
+                {% endif %}
+                <option id="random" {% if default == "random" %}selected{% endif %} value="random">
+                    Random
+                </option>
+            </select>
+        </div>
+    </div>
+{% endmacro %}

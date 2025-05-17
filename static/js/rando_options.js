@@ -769,6 +769,63 @@ document
   .getElementById("bonus_barrel_rando")
   .addEventListener("click", disable_barrel_modal);
 
+// Disable SSanity Selector when Switchsanity is off
+function disable_switchsanity_modal() {
+  const selector = document.getElementById("switchModalActivator");
+  if (document.getElementById("switchsanity_enabled").checked) {
+    selector.removeAttribute("disabled");
+  } else {
+    selector.setAttribute("disabled", "disabled");
+  }
+}
+
+document
+  .getElementById("switchsanity_enabled")
+  .addEventListener("click", disable_switchsanity_modal);
+
+// Switchsanity Resets
+const switchsanity_defaults = {
+  "switchsanity_switch_isles_to_kroc_top": "tiny",
+  "switchsanity_switch_isles_helm_lobby": "gone_pad",
+  "switchsanity_switch_isles_aztec_lobby_back_room": "tiny",
+  "switchsanity_switch_isles_fungi_lobby_fairy": "tiny",
+  "switchsanity_switch_isles_spawn_rocketbarrel": "lanky",
+  "switchsanity_switch_japes_to_hive": "tiny",
+  "switchsanity_switch_japes_to_rambi": "donkey",
+  "switchsanity_switch_japes_to_painting_room": "diddy",
+  "switchsanity_switch_japes_to_cavern": "diddy",
+  "switchsanity_switch_aztec_to_kasplat_room": "donkey",
+  "switchsanity_switch_aztec_llama_front": "donkey",
+  "switchsanity_switch_aztec_llama_side": "lanky",
+  "switchsanity_switch_aztec_llama_back": "tiny",
+  "switchsanity_switch_aztec_sand_tunnel": "donkey",
+  "switchsanity_switch_aztec_to_connector_tunnel": "diddy",
+  "switchsanity_switch_galleon_to_lighthouse_side": "donkey",
+  "switchsanity_switch_galleon_to_shipwreck_side": "diddy",
+  "switchsanity_switch_galleon_to_cannon_game": "chunky",
+  "switchsanity_switch_fungi_yellow_tunnel": "lanky",
+  "switchsanity_switch_fungi_green_tunnel_near": "tiny",
+  "switchsanity_switch_fungi_green_tunnel_far": "chunky",
+}
+function switchsanity_reset_default() {
+  Object.keys(switchsanity_defaults).forEach(key => {
+    document.getElementById(key).value = switchsanity_defaults[key];
+  })
+}
+
+function switchsanity_reset_random() {
+  Object.keys(switchsanity_defaults).forEach(key => {
+    document.getElementById(key).value = "random";
+  })
+}
+
+document
+  .getElementById("ssanity-reset-vanilla")
+  .addEventListener("click", switchsanity_reset_default);
+document
+  .getElementById("ssanity-reset-random")
+  .addEventListener("click", switchsanity_reset_random);
+
 function disable_enemy_modal() {
   const selector = document.getElementById("enemies_modal");
   if (document.getElementById("enemy_rando").checked) {
@@ -2105,6 +2162,7 @@ function update_ui_states() {
   max_music_proportion(null);
   max_sfx(null);
   disable_barrel_modal(null);
+  disable_switchsanity_modal(null);
   item_rando_list_changed(null);
   toggle_item_rando(null);
   disable_enemy_modal(null);

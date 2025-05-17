@@ -387,7 +387,29 @@ class Settings:
             (0x78, 0x60, 2),
         ]
         self.shuffle_shops = None
-        self.switchsanity = SwitchsanityLevel.off
+        self.switchsanity = SwitchsanityLevel.off  # Deprecated
+        self.switchsanity_enabled = False
+        self.switchsanity_switch_isles_to_kroc_top = SwitchsanityKong.tiny
+        self.switchsanity_switch_isles_helm_lobby = SwitchsanityGone.gone_pad
+        self.switchsanity_switch_isles_aztec_lobby_back_room = SwitchsanityKong.tiny
+        self.switchsanity_switch_isles_fungi_lobby_fairy = SwitchsanityKong.tiny
+        self.switchsanity_switch_isles_spawn_rocketbarrel = SwitchsanityKong.lanky
+        self.switchsanity_switch_japes_to_hive = SwitchsanityKong.tiny
+        self.switchsanity_switch_japes_to_rambi = SwitchsanityKong.donkey
+        self.switchsanity_switch_japes_to_painting_room = SwitchsanityKong.diddy
+        self.switchsanity_switch_japes_to_cavern = SwitchsanityKong.diddy
+        self.switchsanity_switch_aztec_to_kasplat_room = SwitchsanityKong.donkey
+        self.switchsanity_switch_aztec_llama_front = SwitchsanityKong.donkey
+        self.switchsanity_switch_aztec_llama_side = SwitchsanityKong.lanky
+        self.switchsanity_switch_aztec_llama_back = SwitchsanityKong.tiny
+        self.switchsanity_switch_aztec_sand_tunnel = SwitchsanityKong.donkey
+        self.switchsanity_switch_aztec_to_connector_tunnel = SwitchsanityKong.diddy
+        self.switchsanity_switch_galleon_to_lighthouse_side = SwitchsanityKong.donkey
+        self.switchsanity_switch_galleon_to_shipwreck_side = SwitchsanityKong.diddy
+        self.switchsanity_switch_galleon_to_cannon_game = SwitchsanityKong.chunky
+        self.switchsanity_switch_fungi_yellow_tunnel = SwitchsanityKong.lanky
+        self.switchsanity_switch_fungi_green_tunnel_near = SwitchsanityKong.tiny
+        self.switchsanity_switch_fungi_green_tunnel_far = SwitchsanityKong.chunky
         self.switchsanity_data = {}
         self.extreme_debugging = False  # Use when you want to know VERY specifically where things fail in the fill - unnecessarily slows seed generation!
 
@@ -943,41 +965,73 @@ class Settings:
             Kongs.tiny,
         }  # This might get changed here, reset this to the default now
         self.switchsanity_data = deepcopy(SwitchData)
-        if self.switchsanity != SwitchsanityLevel.off:
-            kongs = GetKongs()
-            for slot in self.switchsanity_data:
-                if self.switchsanity == SwitchsanityLevel.helm_access:
-                    if slot not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
-                        continue
-                if slot == Switches.IslesMonkeyport:
-                    # Monkeyport is restricted to things which can help get the kong up high enough
-                    self.switchsanity_data[slot].kong = self.random.choice([Kongs.donkey, Kongs.lanky, Kongs.tiny])
-                else:
-                    bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
-                    if self.enable_plandomizer:
-                        for switch in self.switchsanity_data[slot].tied_settings:
-                            if str(switch.value) in self.plandomizer_dict["plando_switchsanity"].keys():
-                                bad_kongs.append(self.plandomizer_dict["plando_switchsanity"][str(switch.value)]["kong"])
-                    slot_choices_kong = [x for x in kongs if x not in bad_kongs]
-                    self.switchsanity_data[slot].kong = self.random.choice(slot_choices_kong)
-                    if slot == Switches.IslesHelmLobbyGone:
-                        if self.switchsanity_data[slot].kong == Kongs.chunky:
-                            self.switchsanity_data[slot].switch_type = self.random.choice([SwitchType.PadMove, SwitchType.InstrumentPad])  # Choose between gone and triangle
-                        elif self.switchsanity_data[slot].kong in (Kongs.donkey, Kongs.diddy):
-                            self.switchsanity_data[slot].switch_type = self.random.choice([SwitchType.MiscActivator, SwitchType.InstrumentPad])  # Choose between grab and bongos
-                        else:
-                            self.switchsanity_data[slot].switch_type = SwitchType.InstrumentPad
+        if self.switchsanity_enabled:
+            ssanity_setting_values = {
+                Switches.IslesMonkeyport: self.switchsanity_switch_isles_to_kroc_top,
+                Switches.IslesHelmLobbyGone: self.switchsanity_switch_isles_helm_lobby,
+                Switches.IslesAztecLobbyFeather: self.switchsanity_switch_isles_aztec_lobby_back_room,
+                Switches.IslesFungiLobbyFeather: self.switchsanity_switch_isles_fungi_lobby_fairy,
+                Switches.IslesSpawnRocketbarrel: self.switchsanity_switch_isles_spawn_rocketbarrel,
+                Switches.JapesFeather: self.switchsanity_switch_japes_to_hive,
+                Switches.JapesRambi: self.switchsanity_switch_japes_to_rambi,
+                Switches.JapesPainting: self.switchsanity_switch_japes_to_painting_room,
+                Switches.JapesDiddyCave: self.switchsanity_switch_japes_to_cavern,
+                Switches.AztecBlueprintDoor: self.switchsanity_switch_aztec_to_kasplat_room,
+                Switches.AztecLlamaCoconut: self.switchsanity_switch_aztec_llama_front,
+                Switches.AztecLlamaGrape: self.switchsanity_switch_aztec_llama_side,
+                Switches.AztecLlamaFeather: self.switchsanity_switch_aztec_llama_back,
+                Switches.AztecQuicksandSwitch: self.switchsanity_switch_aztec_sand_tunnel,
+                Switches.AztecGuitar: self.switchsanity_switch_aztec_to_connector_tunnel,
+                Switches.GalleonLighthouse: self.switchsanity_switch_galleon_to_lighthouse_side,
+                Switches.GalleonShipwreck: self.switchsanity_switch_galleon_to_shipwreck_side,
+                Switches.GalleonCannonGame: self.switchsanity_switch_galleon_to_cannon_game,
+                Switches.FungiYellow: self.switchsanity_switch_fungi_yellow_tunnel,
+                Switches.FungiGreenFeather: self.switchsanity_switch_fungi_green_tunnel_near,
+                Switches.FungiGreenPineapple: self.switchsanity_switch_fungi_green_tunnel_far,
+            }
 
-            if self.enable_plandomizer:
-                for key in self.plandomizer_dict["plando_switchsanity"].keys():
-                    if self.switchsanity == SwitchsanityLevel.helm_access:
-                        if int(key) not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
-                            raise Ex.PlandoIncompatibleException(f"Selected switch is not randomized with the current settings.")
-                    planned_data = self.plandomizer_dict["plando_switchsanity"][key]
-                    if planned_data["kong"] != -1:
-                        self.switchsanity_data[int(key)].kong = planned_data["kong"]
-                    if "switch_type" in planned_data.keys():
-                        self.switchsanity_data[int(key)].switch_type = planned_data["switch_type"]
+            kongs = GetKongs()
+            for slot in ssanity_setting_values:
+                if slot == Switches.IslesHelmLobbyGone:
+                    # Has a unique setting mapping due to the plethora of choices
+                    applied_setting = ssanity_setting_values[slot]
+                    gone_mapping = {
+                        SwitchsanityGone.bongos: (Kongs.donkey, SwitchType.InstrumentPad),
+                        SwitchsanityGone.guitar: (Kongs.diddy, SwitchType.InstrumentPad),
+                        SwitchsanityGone.trombone: (Kongs.lanky, SwitchType.InstrumentPad),
+                        SwitchsanityGone.sax: (Kongs.tiny, SwitchType.InstrumentPad),
+                        SwitchsanityGone.triangle: (Kongs.chunky, SwitchType.InstrumentPad),
+                        SwitchsanityGone.lever: (Kongs.donkey, SwitchType.MiscActivator),
+                        SwitchsanityGone.gong: (Kongs.diddy, SwitchType.MiscActivator),
+                        SwitchsanityGone.gone_pad: (Kongs.chunky, SwitchType.PadMove),
+                    }
+                    if applied_setting == SwitchsanityGone.random:
+                        applied_setting = self.random.choice(list(gone_mapping.keys()))
+                    self.switchsanity_data[slot].kong = gone_mapping[applied_setting][0]
+                    self.switchsanity_data[slot].switch_type = gone_mapping[applied_setting][1]
+                else:
+                    applied_setting = ssanity_setting_values[slot]
+                    kong_mapping = {
+                        SwitchsanityKong.donkey: Kongs.donkey,
+                        SwitchsanityKong.diddy: Kongs.diddy,
+                        SwitchsanityKong.lanky: Kongs.lanky,
+                        SwitchsanityKong.tiny: Kongs.tiny,
+                        SwitchsanityKong.chunky: Kongs.chunky,
+                    }
+                    bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
+                    options = [
+                        SwitchsanityKong.donkey,
+                        SwitchsanityKong.diddy,
+                        SwitchsanityKong.lanky,
+                        SwitchsanityKong.tiny,
+                        SwitchsanityKong.chunky,
+                    ]
+                    options = [x for x in options if kong_mapping[x] not in bad_kongs]
+                    if slot == Switches.IslesMonkeyport:
+                        options = [SwitchsanityKong.donkey, SwitchsanityKong.lanky, SwitchsanityKong.tiny]
+                    if applied_setting == SwitchsanityKong.random:
+                        applied_setting = self.random.choice(options)
+                    self.switchsanity_data[slot].kong = Kongs.donkey + (applied_setting - SwitchsanityKong.donkey)
             # If we've shuffled all loading zones, we need to account for some entrances changing hands
             if self.switchsanity == SwitchsanityLevel.all and self.shuffle_loading_zones == ShuffleLoadingZones.all:
                 ShufflableExits[Transitions.AztecMainToLlama].entryKongs = {

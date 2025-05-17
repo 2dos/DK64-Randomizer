@@ -475,6 +475,27 @@ export enum SwitchsanityLevel {
     all = 2,
 }
 
+export enum SwitchsanityGone {
+    bongos = 0,
+    guitar = 1,
+    trombone = 2,
+    sax = 3,
+    triangle = 4,
+    lever = 5,
+    gong = 6,
+    gone_pad = 7,
+    random = 8,
+}
+
+export enum SwitchsanityKong {
+    donkey = 0,
+    diddy = 1,
+    lanky = 2,
+    tiny = 3,
+    chunky = 4,
+    random = 5,
+}
+
 export enum TrainingBarrels {
     normal = 0,
     shuffled = 1,
@@ -743,6 +764,28 @@ export enum SettingsStringEnum {
     prog_slam_level_6 = 213,
     prog_slam_level_7 = 214,
     prog_slam_level_8 = 215,
+    switchsanity_enabled = 216,
+    switchsanity_switch_isles_to_kroc_top = 217,
+    switchsanity_switch_isles_helm_lobby = 218,
+    switchsanity_switch_isles_aztec_lobby_back_room = 219,
+    switchsanity_switch_isles_fungi_lobby_fairy = 220,
+    switchsanity_switch_isles_spawn_rocketbarrel = 221,
+    switchsanity_switch_japes_to_hive = 222,
+    switchsanity_switch_japes_to_rambi = 223,
+    switchsanity_switch_japes_to_painting_room = 224,
+    switchsanity_switch_japes_to_cavern = 225,
+    switchsanity_switch_aztec_to_kasplat_room = 226,
+    switchsanity_switch_aztec_llama_front = 227,
+    switchsanity_switch_aztec_llama_side = 228,
+    switchsanity_switch_aztec_llama_back = 229,
+    switchsanity_switch_aztec_sand_tunnel = 230,
+    switchsanity_switch_aztec_to_connector_tunnel = 231,
+    switchsanity_switch_galleon_to_lighthouse_side = 232,
+    switchsanity_switch_galleon_to_shipwreck_side = 233,
+    switchsanity_switch_galleon_to_cannon_game = 234,
+    switchsanity_switch_fungi_yellow_tunnel = 235,
+    switchsanity_switch_fungi_green_tunnel_near = 236,
+    switchsanity_switch_fungi_green_tunnel_far = 237,
 }
 
 export enum SettingsStringDataType {
@@ -844,6 +887,27 @@ export const SettingsMap = {
     'prog_slam_level_6': SlamRequirement,
     'prog_slam_level_7': SlamRequirement,
     'prog_slam_level_8': SlamRequirement,
+    'switchsanity_switch_isles_to_kroc_top': SwitchsanityKong,
+    'switchsanity_switch_isles_helm_lobby': SwitchsanityGone,
+    'switchsanity_switch_isles_aztec_lobby_back_room': SwitchsanityKong,
+    'switchsanity_switch_isles_fungi_lobby_fairy': SwitchsanityKong,
+    'switchsanity_switch_isles_spawn_rocketbarrel': SwitchsanityKong,
+    'switchsanity_switch_japes_to_hive': SwitchsanityKong,
+    'switchsanity_switch_japes_to_rambi': SwitchsanityKong,
+    'switchsanity_switch_japes_to_painting_room': SwitchsanityKong,
+    'switchsanity_switch_japes_to_cavern': SwitchsanityKong,
+    'switchsanity_switch_aztec_to_kasplat_room': SwitchsanityKong,
+    'switchsanity_switch_aztec_llama_front': SwitchsanityKong,
+    'switchsanity_switch_aztec_llama_side': SwitchsanityKong,
+    'switchsanity_switch_aztec_llama_back': SwitchsanityKong,
+    'switchsanity_switch_aztec_sand_tunnel': SwitchsanityKong,
+    'switchsanity_switch_aztec_to_connector_tunnel': SwitchsanityKong,
+    'switchsanity_switch_galleon_to_lighthouse_side': SwitchsanityKong,
+    'switchsanity_switch_galleon_to_shipwreck_side': SwitchsanityKong,
+    'switchsanity_switch_galleon_to_cannon_game': SwitchsanityKong,
+    'switchsanity_switch_fungi_yellow_tunnel': SwitchsanityKong,
+    'switchsanity_switch_fungi_green_tunnel_near': SwitchsanityKong,
+    'switchsanity_switch_fungi_green_tunnel_far': SwitchsanityKong,
 }
 
 export const SettingsStringTypeMap = {
@@ -1062,6 +1126,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.prog_slam_level_7: SlamRequirement,
     SettingsStringEnum.prog_slam_level_8: SlamRequirement,
     SettingsStringEnum.dos_door_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.switchsanity_enabled: SettingsStringDataType.bool,
 }
 
 export const SettingsStringListTypeMap = {

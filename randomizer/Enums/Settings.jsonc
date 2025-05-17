@@ -828,6 +828,45 @@
   },
 
   /*
+    SwitchsanityGone:
+    - Determines the switch associated with Helm Lobby gone pad
+    - bongos: Bongo Pad
+    - guitar: Guitar Pad
+    - trombone: Trombone Pad
+    - sax: Sax Pad
+    - triangle: Triangle pad
+    - lever: Lever
+    - gong: Gong
+    - gone_pad: Gorilla Gone Pad (default)
+    - random: Random switch
+  */
+  "SwitchsanityGone": {
+    "bongos": 0,
+    "guitar": 1,
+    "trombone": 2,
+    "sax": 3,
+    "triangle": 4,
+    "lever": 5,
+    "gong": 6,
+    "gone_pad": 7,
+    "random": 8
+  },
+
+  /*
+    Switchsanity Kong:
+    - Determines the kong associated with a switch
+    - donkey, diddy, lanky, tiny, chunky and random
+  */
+  "SwitchsanityKong": {
+    "donkey": 0,
+    "diddy": 1,
+    "lanky": 2,
+    "tiny": 3,
+    "chunky": 4,
+    "random": 5
+  },
+
+  /*
     TrainingBarrels:
     - Determines if and how training barrels are randomized.
     - normal: Training barrels give vanilla moves.
@@ -1140,7 +1179,29 @@
     "prog_slam_level_5": 212,
     "prog_slam_level_6": 213,
     "prog_slam_level_7": 214,
-    "prog_slam_level_8": 215
+    "prog_slam_level_8": 215,
+    "switchsanity_enabled": 216,
+    "switchsanity_switch_isles_to_kroc_top": 217,
+    "switchsanity_switch_isles_helm_lobby": 218,
+    "switchsanity_switch_isles_aztec_lobby_back_room": 219,
+    "switchsanity_switch_isles_fungi_lobby_fairy": 220,
+    "switchsanity_switch_isles_spawn_rocketbarrel": 221,
+    "switchsanity_switch_japes_to_hive": 222,
+    "switchsanity_switch_japes_to_rambi": 223,
+    "switchsanity_switch_japes_to_painting_room": 224,
+    "switchsanity_switch_japes_to_cavern": 225,
+    "switchsanity_switch_aztec_to_kasplat_room": 226,
+    "switchsanity_switch_aztec_llama_front": 227,
+    "switchsanity_switch_aztec_llama_side": 228,
+    "switchsanity_switch_aztec_llama_back": 229,
+    "switchsanity_switch_aztec_sand_tunnel": 230,
+    "switchsanity_switch_aztec_to_connector_tunnel": 231,
+    "switchsanity_switch_galleon_to_lighthouse_side": 232,
+    "switchsanity_switch_galleon_to_shipwreck_side": 233,
+    "switchsanity_switch_galleon_to_cannon_game": 234,
+    "switchsanity_switch_fungi_yellow_tunnel": 235,
+    "switchsanity_switch_fungi_green_tunnel_near": 236,
+    "switchsanity_switch_fungi_green_tunnel_far": 237
   },
   /*
     SettingsStringDataType:
@@ -1248,7 +1309,28 @@
     "prog_slam_level_5": { "obj": "SlamRequirement" },
     "prog_slam_level_6": { "obj": "SlamRequirement" },
     "prog_slam_level_7": { "obj": "SlamRequirement" },
-    "prog_slam_level_8": { "obj": "SlamRequirement" }
+    "prog_slam_level_8": { "obj": "SlamRequirement" },
+    "switchsanity_switch_isles_to_kroc_top": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_isles_helm_lobby": { "obj": "SwitchsanityGone" },
+    "switchsanity_switch_isles_aztec_lobby_back_room": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_isles_fungi_lobby_fairy": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_isles_spawn_rocketbarrel": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_japes_to_hive": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_japes_to_rambi": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_japes_to_painting_room": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_japes_to_cavern": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_aztec_to_kasplat_room": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_aztec_llama_front": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_aztec_llama_side": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_aztec_llama_back": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_aztec_sand_tunnel": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_aztec_to_connector_tunnel": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_galleon_to_lighthouse_side": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_galleon_to_shipwreck_side": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_galleon_to_cannon_game": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_fungi_yellow_tunnel": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_fungi_green_tunnel_near": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_fungi_green_tunnel_far": { "obj": "SwitchsanityKong" }
   },
   // ALL SETTINGS NEED AN ENTRY HERE!
   // This maps settings to the data types that will be used to encode them in the
@@ -1730,7 +1812,8 @@
     "SettingsStringEnum.prog_slam_level_6": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_7": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_8": { "obj": "SlamRequirement" },
-    "SettingsStringEnum.dos_door_rando": { "obj": "SettingsStringDataType.bool" }
+    "SettingsStringEnum.dos_door_rando": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.switchsanity_enabled": { "obj": "SettingsStringDataType.bool" }
   },
   // ALL LIST SETTINGS NEED AN ENTRY HERE!
   // Another map for list settings, for the underlying data type of the list.
