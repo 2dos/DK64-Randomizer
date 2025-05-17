@@ -415,7 +415,7 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
         enemy_changes[Model.BeaverBlue] = EnemyColorSwap([0xB2E5FF, 0x65CCFF, 0x00ABE8, 0x004E82, 0x008BD1, 0x001333, 0x1691CE], blue_beaver_color)  # Primary
         enemy_changes[Model.BeaverGold] = EnemyColorSwap([0xFFE5B2, 0xFFCC65, 0xE8AB00, 0x824E00, 0xD18B00, 0x331300, 0xCE9116])  # Primary
         enemy_changes[Model.Zinger] = EnemyColorSwap([0xFFFF0A, 0xFF7F00], zinger_color_int)  # Legs
-        enemy_changes[Model.RoboZinger] = EnemyColorSwap([0xFFFF00, 0xFF5500], zinger_color_int),  # Legs
+        enemy_changes[Model.RoboZinger] = EnemyColorSwap([0xFFFF00, 0xFF5500], zinger_color_int)  # Legs
         enemy_changes[Model.Kasplat] = EnemyColorSwap([0x8FD8FF, 0x182A4F, 0x0B162C, 0x7A98D3, 0x3F6CC4, 0x8FD8FF, 0x284581])
         enemy_changes[Model.Klump] = EnemyColorSwap([0xE66B78, 0x621738, 0x300F20, 0xD1426F, 0xA32859])
     if IsColorOptionSelected(settings, ColorOptions.bosses):
@@ -677,6 +677,17 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
                         px_data = gzip.compress(px_data, compresslevel=9)
                     ROM_COPY.seek(getPointerLocation(table, img))
                     ROM_COPY.writeBytes(px_data)
+        # Crowns & Keys
+        new_key_crown_color = []
+        for _ in range(3):
+            new_key_crown_color.append(settings.random.randint(0, 0xFF))
+        for img_index in (0xC6F, 0xBAB, 0x132D):
+            dim = 32
+            if img_index == 0xC6F:
+                dim = 4
+            shine_img = getImageFile(ROM_COPY, 25, img_index, True, dim, dim, TextureFormat.RGBA5551)
+            shine_img = maskImageWithColor(shine_img, tuple(new_key_crown_color))
+            writeColorImageToROM(shine_img, 25, img_index, dim, dim, False, TextureFormat.RGBA5551, ROM_COPY)
     if IsColorOptionSelected(settings, ColorOptions.barrels_and_boulders):
         boulder_shift = getRandomHueShift()
         hueShiftImageContainer(25, 0x12F4, 1, 1372, TextureFormat.RGBA5551, boulder_shift, ROM_COPY)

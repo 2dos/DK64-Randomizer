@@ -104,6 +104,7 @@ class ExtraTextures(IntEnum):
     APPearl3 = auto()
     APPearl4 = auto()
     APPearl5 = auto()
+    StaticGoldPalette = auto()
 
 
 barrel_skins = (

@@ -670,6 +670,8 @@ def loadNewModels():
         bean_om2 = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x198).grabFile(rom)
         key_om1 = ROMPointerFile(rom, TableNames.ActorGeometry, 0xA4).grabFile(rom)
         key_om2 = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x13C).grabFile(rom)
+        sun_idol_om2 = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 291).grabFile(rom)
+        hoard_om2 = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 645).grabFile(rom)
         with open("fake_bean_om2.bin", "wb") as fh:
             fh.write(bean_om2[:0xEC])
             fh.write(getBonusSkinOffset(ExtraTextures.FakeBean).to_bytes(4, "big"))
@@ -682,6 +684,14 @@ def loadNewModels():
             fh.write(key_om2[:0x12C])
             fh.write(getBonusSkinOffset(ExtraTextures.FakeKeyPalette).to_bytes(4, "big"))
             fh.write(key_om2[0x130:])
+        with open("sun_idol.bin", "wb") as fh:
+            fh.write(sun_idol_om2[:0x334])
+            fh.write(getBonusSkinOffset(ExtraTextures.StaticGoldPalette).to_bytes(4, "big"))
+            fh.write(sun_idol_om2[0x338:])
+        with open("hoard.bin", "wb") as fh:
+            fh.write(hoard_om2[:0x124])
+            fh.write(getBonusSkinOffset(ExtraTextures.StaticGoldPalette).to_bytes(4, "big"))
+            fh.write(hoard_om2[0x128:])
     for x in range(3):
         with open("fake_bean_om2.bin", "rb") as fh:
             with open(f"fake_bean_{x}.bin", "wb") as fg:
