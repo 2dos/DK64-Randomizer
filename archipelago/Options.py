@@ -176,8 +176,8 @@ class MermaidRequirement(Range):
 class KeysRequiredToBeatKrool(Range):
     """
     Determines how many keys are needed to spawn Krool's Ship.
-    Choosing a value of 0 means you start with all 8 keys
-    Choosing a value of 8 means you start with no keys
+    Choosing a value of 0 means you start with all 8 keys.
+    Choosing a value of 8 means you start with no keys.
     """
 
     display_name = "Keys Required to Beat Krool"
