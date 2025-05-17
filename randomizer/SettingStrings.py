@@ -226,6 +226,8 @@ def encrypt_settings_string_enum(dict_data: dict):
         "smoother_camera",
         "songs_excluded",
         "excluded_songs_selected",
+        "random_colors",
+        "random_colors_selected",
         "music_filtering",
         "music_filtering_selected",
         "troff_brighten",

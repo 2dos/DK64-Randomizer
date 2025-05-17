@@ -12,7 +12,7 @@ from datetime import datetime as Datetime
 from datetime import timezone
 import js
 from randomizer.Enums.Models import Model, ModelNames, HeadResizeImmune
-from randomizer.Enums.Settings import RandomModels, BigHeadMode
+from randomizer.Enums.Settings import RandomModels, BigHeadMode, ColorOptions
 from randomizer.Lists.Songs import ExcludedSongsSelector
 from randomizer.Patching.Cosmetics.TextRando import writeCrownNames
 from randomizer.Patching.Cosmetics.Holiday import applyHolidayMode
@@ -26,7 +26,7 @@ from randomizer.Patching.CosmeticColors import (
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Library.Generic import recalculatePointerJSON, camelCaseToWords, getHoliday, Holidays
+from randomizer.Patching.Library.Generic import recalculatePointerJSON, camelCaseToWords, getHoliday, Holidays, IsColorOptionSelected
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, writeText
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic, disableDynamicReverb, fixLankyIncompatibility
 
@@ -184,7 +184,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 fog_enabled = [1, 1, 1]
                 for x in range(3):
                     default_colors[x] = holiday_colors[holiday]
-            elif settings.misc_cosmetics:
+            elif IsColorOptionSelected(settings, ColorOptions.environment):
                 fog_enabled = [2, 1, 1]
             for index, enabled_setting in enumerate(fog_enabled):
                 if enabled_setting != 0:
@@ -393,7 +393,7 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed, head_sizes
         {"name": "Funky's Boot (Chunky Phase)", "setting": settings.boot_cutscene_model},
     ]
 
-    if settings.colors != {} or settings.random_models != RandomModels.off or settings.misc_cosmetics:
+    if settings.colors != {} or settings.random_models != RandomModels.off or settings.misc_cosmetics or settings.random_colors:
         humanspoiler["Cosmetics"]["Colors"] = {}
         humanspoiler["Cosmetics"]["Models"] = {}
         humanspoiler["Cosmetics"]["Sprites"] = {}
@@ -407,7 +407,7 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed, head_sizes
                 humanspoiler["Cosmetics"]["Models"][data["name"]] = camelCaseToWords(data["setting"].name)
             else:
                 humanspoiler["Cosmetics"]["Models"][data["name"]] = f"Unknown Model {hex(int(data['setting']))}"
-    if settings.misc_cosmetics:
+    if IsColorOptionSelected(settings, ColorOptions.items):
         humanspoiler["Cosmetics"]["Sprites"]["Minigame Melon"] = camelCaseToWords(settings.minigame_melon_sprite.name)
     if settings.music_bgm_randomized or settings.bgm_songs_selected:
         humanspoiler["Cosmetics"]["Background Music"] = music_data.get("music_bgm_data")

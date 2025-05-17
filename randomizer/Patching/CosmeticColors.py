@@ -31,7 +31,7 @@ from randomizer.Patching.Cosmetics.Colorblind import (
     recolorKRoolShipSwitch,
     recolorRotatingRoomTiles,
 )
-from randomizer.Patching.Library.Generic import compatible_background_textures
+from randomizer.Patching.Library.Generic import compatible_background_textures, IsColorOptionSelected
 from randomizer.Patching.Library.Image import (
     getImageFile,
     TextureFormat,
@@ -46,7 +46,7 @@ from randomizer.Patching.Library.Image import (
 )
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Settings import Settings
+from randomizer.Settings import Settings, ColorOptions
 from randomizer.Patching.Cosmetics.ModelSwaps import (
     model_mapping,
     applyCosmeticModelSwaps,
@@ -111,41 +111,39 @@ def changePatchFace(settings: Settings, ROM_COPY: ROM):
 
 def apply_cosmetic_colors(settings: Settings, ROM_COPY: ROM):
     """Apply cosmetic skins to kongs."""
-    sav = settings.rom_data
 
     applyCosmeticModelSwaps(settings, ROM_COPY)
     changePatchFace(settings, ROM_COPY)
     writeKongColors(settings, ROM_COPY)
 
     settings.jetman_color = [0xFF, 0xFF, 0xFF]
-    if settings.misc_cosmetics and settings.override_cosmetics:
-        ROM_COPY.seek(sav + 0x196)
-        ROM_COPY.write(1)
-        # Menu Background
-        textures = list(compatible_background_textures.keys())
-        weights = [compatible_background_textures[x].weight for x in textures]
-        selected_texture = settings.random.choices(textures, weights=weights, k=1)[0]
-        settings.menu_texture_index = selected_texture
-        settings.menu_texture_name = compatible_background_textures[selected_texture].name
-        # Jetman
-        jetman_color = [0xFF] * 3
-        sufficiently_bright = False
-        brightness_threshold = 80
-        for channel in range(3):
-            jetman_color[channel] = settings.random.randint(0, 0xFF)
-            if jetman_color[channel] >= brightness_threshold:
-                sufficiently_bright = True
-        if not sufficiently_bright:
-            channel = settings.random.randint(0, 2)
-            value = settings.random.randint(brightness_threshold, 0xFF)
-            jetman_color[channel] = value
-        settings.jetman_color = jetman_color.copy()
+    if settings.override_cosmetics:
+        if settings.misc_cosmetics:
+            # Menu Background
+            textures = list(compatible_background_textures.keys())
+            weights = [compatible_background_textures[x].weight for x in textures]
+            selected_texture = settings.random.choices(textures, weights=weights, k=1)[0]
+            settings.menu_texture_index = selected_texture
+            settings.menu_texture_name = compatible_background_textures[selected_texture].name
+        if IsColorOptionSelected(settings, ColorOptions.playable_characters):
+            # Jetman
+            jetman_color = [0xFF] * 3
+            sufficiently_bright = False
+            brightness_threshold = 80
+            for channel in range(3):
+                jetman_color[channel] = settings.random.randint(0, 0xFF)
+                if jetman_color[channel] >= brightness_threshold:
+                    sufficiently_bright = True
+            if not sufficiently_bright:
+                channel = settings.random.randint(0, 2)
+                value = settings.random.randint(brightness_threshold, 0xFF)
+                jetman_color[channel] = value
+            settings.jetman_color = jetman_color.copy()
 
     if js.document.getElementById("override_cosmetics").checked or True:
         writeTransition(settings, ROM_COPY)
         writeCustomPortal(settings, ROM_COPY)
         writeCustomPaintings(settings, ROM_COPY)
-        # randomizePlants(ROM_COPY, settings)  # Not sure how much I like how this feels
         settings.gb_colors = CharacterColors[js.document.getElementById("gb_colors").value]
         settings.gb_custom_color = js.document.getElementById("gb_custom_color").value
     else:
@@ -754,33 +752,3 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
     num_im = numberToImage(settings.win_condition_count, (20, 20), ROM_COPY)
     base_im.paste(num_im, (6, 6), num_im)
     writeColorImageToROM(base_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
-
-
-def randomizePlants(ROM_COPY: ROM, settings: Settings):
-    """Randomize the plants in the setup file."""
-    if not settings.misc_cosmetics:
-        return
-
-    flowers = [0x05, 0x08, 0x43]
-    for x in range(0x1F1 - 0x1DE):
-        flowers.append(0x1DE + x)
-    maps_that_contain_flowers = [
-        Maps.JungleJapes,
-        Maps.JungleJapesLobby,
-        Maps.TrainingGrounds,
-        Maps.JapesTinyHive,
-        Maps.AngryAztec,
-        Maps.Isles,
-        Maps.BananaFairyRoom,
-    ]
-    for map_id in maps_that_contain_flowers:
-        setup_file = getPointerLocation(TableNames.Setups, map_id)
-        ROM_COPY.seek(setup_file)
-        model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
-        for model2_item in range(model2_count):
-            item_start = setup_file + 4 + (model2_item * 0x30)
-            ROM_COPY.seek(item_start + 0x28)
-            item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
-            if item_type in flowers:
-                ROM_COPY.seek(item_start + 0x28)
-                ROM_COPY.writeMultipleBytes(settings.random.choice(flowers), 2)

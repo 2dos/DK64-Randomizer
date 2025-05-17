@@ -10,11 +10,12 @@ from randomizer.Patching.Library.Generic import (
     compatible_background_textures,
     MenuTextDim,
     IsItemSelected,
+    IsColorOptionSelected,
 )
 from randomizer.Patching.Library.Image import getBonusSkinOffset, ExtraTextures, getRandomHueShift, hueShiftImageFromAddress, TextureFormat
 from randomizer.Patching.MiscSetupChanges import SpeedUpFungiRabbit
 from randomizer.Enums.Models import Model, Sprite
-from randomizer.Enums.Settings import ColorblindMode, ExcludedSongs, KongModels, RandomModels
+from randomizer.Enums.Settings import ColorblindMode, ExcludedSongs, KongModels, RandomModels, ColorOptions
 from randomizer.Patching.Patcher import ROM
 
 
@@ -129,7 +130,7 @@ def holidayCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
         skybox_rgba = [0x31, 0x33, 0x38]
     elif getHolidaySetting(settings):
         skybox_rgba = [0, 0, 0]
-    elif settings.misc_cosmetics:
+    elif IsColorOptionSelected(settings, ColorOptions.environment):
         random_skybox = True
     if skybox_rgba is not None or random_skybox:
         for x in range(8):
@@ -209,12 +210,25 @@ def musicCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
 
 def arcadeCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic options related to arcade."""
-    if settings.override_cosmetics:
-        enemy_setting = RandomModels[js.document.getElementById("random_enemy_colors").value]
-    else:
-        enemy_setting = settings.random_enemy_colors
-    if enemy_setting != RandomModels.off:
-        # Jumpman and DK
+    if IsColorOptionSelected(settings, ColorOptions.enemies):
+        dk_addresses = [
+            0x8003E9F0,
+            0x800424D0,
+            0x800463F0,
+            0x800473B8,
+            0x80048380,
+            0x80049348,
+            0x80040540,
+            0x80041508,
+            0x80043498,
+            0x80044460,
+            0x80045428,
+        ]
+        dk_shift = getRandomHueShift()  # 48x48
+        for addr in dk_addresses:
+            rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
+            hueShiftImageFromAddress(ROM_COPY, rom_addr, 48, 41, TextureFormat.RGBA5551, dk_shift)
+    if IsColorOptionSelected(settings, ColorOptions.playable_characters):
         jumpman_addresses = [
             0x8003B180,
             0x8003B3C8,
@@ -236,30 +250,15 @@ def arcadeCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
             0x8003D848,
             0x8003DA90,  # 8px version
         ]
-        dk_addresses = [
-            0x8003E9F0,
-            0x800424D0,
-            0x800463F0,
-            0x800473B8,
-            0x80048380,
-            0x80049348,
-            0x80040540,
-            0x80041508,
-            0x80043498,
-            0x80044460,
-            0x80045428,
-        ]
+        
         jumpman_shift = getRandomHueShift()  # 16x16 except for 1 image
-        dk_shift = getRandomHueShift()  # 48x48
         for addr in jumpman_addresses:
             width = 16
             if addr == 0x8003DA90:
                 width = 8
             rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
             hueShiftImageFromAddress(ROM_COPY, rom_addr, width, width, TextureFormat.RGBA5551, jumpman_shift)
-        for addr in dk_addresses:
-            rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
-            hueShiftImageFromAddress(ROM_COPY, rom_addr, 48, 41, TextureFormat.RGBA5551, dk_shift)
+        
 
 
 def cameraCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):

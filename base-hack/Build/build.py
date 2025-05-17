@@ -1307,6 +1307,9 @@ colorblind_changes = [
     [0x103D, 0x103E],  # Dillo
     [0xE6C, 0xE6C],  # Diddy back star texture
     [0x135C, 0x1360],  # Hint Item
+    [0x105C, 0x1065],  # Pufftoss (1)
+    [0x1069, 0x1069],  # Pufftoss (2)
+    [0x11E5, 0x11EB],  # Pufftup
 ]
 
 file_dict.append(

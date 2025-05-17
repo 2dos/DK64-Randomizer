@@ -139,7 +139,7 @@ typedef struct varspace {
 	/* 0x186 */ char unk_186[0x190-0x186];
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
 	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
-	/* 0x196 */ char misc_cosmetic_on;
+	/* 0x196 */ char unk_196;
 	/* 0x197 */ unsigned char unk_197[0x1A2 - 0x197];
 	/* 0x1A2 */ LZREntrance blast_entrances[7];
 	/* 0x1B0 */ int password;

@@ -860,11 +860,29 @@ function disable_excluded_songs_modal(evt) {
 
 // Adding event listeners for nav-music-tab and songs_excluded
 document
-  .getElementById("nav-music-tab")
-  .addEventListener("click", disable_excluded_songs_modal);
+.getElementById("nav-music-tab")
+.addEventListener("click", disable_excluded_songs_modal);
 document
-  .getElementById("songs_excluded")
-  .addEventListener("click", disable_excluded_songs_modal);
+.getElementById("songs_excluded")
+.addEventListener("click", disable_excluded_songs_modal);
+
+// Disable Random Colors Selector when Random Colorss is off
+function disable_random_colors_modal(evt) {
+  const selector = document.getElementById("random_colors_modal");
+  if (document.getElementById("random_colors").checked) {
+    selector.removeAttribute("disabled");
+  } else {
+    selector.setAttribute("disabled", "disabled");
+  }
+}
+
+// Adding event listeners for nav-cosmetic-tab and random_colors
+document
+.getElementById("nav-cosmetics-tab")
+.addEventListener("click", disable_random_colors_modal);
+document
+.getElementById("random_colors")
+.addEventListener("click", disable_random_colors_modal);
 
 // Disable Music Filtering Selector when Music Filtering is off
 function disable_music_filtering_modal() {
@@ -2093,6 +2111,7 @@ function update_ui_states() {
   disable_hard_mode_modal(null);
   disable_hard_bosses_modal(null);
   disable_excluded_songs_modal(null);
+  disable_random_colors_modal(null);
   disable_music_filtering_modal(null);
   disable_custom_cb_locations_modal(null);
   disable_misc_changes_modal(null);

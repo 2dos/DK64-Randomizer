@@ -82,6 +82,22 @@
   },
 
   /*
+    ColorOptions
+  */
+  "ColorOptions": {
+    "enemies": 1,
+    "bosses": 2,
+    "fire": 3,
+    "friendly_npcs": 4,
+    "environment": 5,
+    "playable_characters": 6,
+    "items": 7,
+    "particles": 8,
+    "misc_objects": 9,
+    "barrels_and_boulders": 10
+  },
+
+  /*
     ColorblindMode:
     - Determines which colorblind mode setting is used.
     - off: Normal colors.
@@ -1192,6 +1208,7 @@
     "move_rando": { "obj": "MoveRando" },
     "music_filtering_selected": { "obj": "MusicFilters" },
     "rambi_colors": { "obj": "CharacterColors" },
+    "random_colors": { "obj": "ColorOptions" },
     "random_models": { "obj": "RandomModels" },
     "random_prices": { "obj": "RandomPrices" },
     "shockwave_status": { "obj": "ShockwaveStatus" },

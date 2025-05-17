@@ -36,6 +36,19 @@ export enum CharacterColors {
     custom = 3,
 }
 
+export enum ColorOptions {
+    enemies = 1,
+    bosses = 2,
+    fire = 3,
+    friendly_npcs = 4,
+    environment = 5,
+    playable_characters = 6,
+    items = 7,
+    particles = 8,
+    misc_objects = 9,
+    barrels_and_boulders = 10,
+}
+
 export enum ColorblindMode {
     off = 0,
     prot = 1,
@@ -790,6 +803,7 @@ export const SettingsMap = {
     'move_rando': MoveRando,
     'music_filtering_selected': MusicFilters,
     'rambi_colors': CharacterColors,
+    'random_colors': ColorOptions,
     'random_models': RandomModels,
     'random_prices': RandomPrices,
     'shockwave_status': ShockwaveStatus,

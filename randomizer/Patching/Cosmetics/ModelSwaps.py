@@ -5,9 +5,9 @@ import js
 from randomizer.Enums.Models import Model, Sprite
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Settings import KongModels, RandomModels
-from randomizer.Settings import Settings
+from randomizer.Settings import Settings, ColorOptions
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Library.Generic import applyCharacterSpawnerChanges, SpawnerChange
+from randomizer.Patching.Library.Generic import applyCharacterSpawnerChanges, SpawnerChange, IsColorOptionSelected
 
 turtle_models = [
     Model.Diddy,  # Diddy
@@ -490,9 +490,11 @@ def applyCosmeticModelSwaps(settings: Settings, ROM_COPY: ROM):
     swap_bitfield |= 0x20 if settings.beetle_model == Model.Rabbit else 0
     swap_bitfield |= 0x40 if settings.fungi_tomato_model == Model.IceTomato else 0
     swap_bitfield |= 0x80 if settings.caves_tomato_model == Model.Tomato else 0
-    if settings.misc_cosmetics and settings.override_cosmetics:
-        melon_sprite = random.choice(melon_random_sprites)
-        settings.wrinkly_rgb = [random.randint(0, 255) for _ in range(3)]
+    if settings.override_cosmetics:
+        if IsColorOptionSelected(settings, ColorOptions.items):
+            melon_sprite = random.choice(melon_random_sprites)
+        if IsColorOptionSelected(settings, ColorOptions.friendly_npcs):
+            settings.wrinkly_rgb = [random.randint(0, 255) for _ in range(3)]
     settings.minigame_melon_sprite = melon_sprite
     # Write Models
     ROM_COPY.seek(sav + 0x1B5)
