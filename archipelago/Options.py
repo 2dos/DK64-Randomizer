@@ -119,13 +119,88 @@ class SlowTrapWeight(BaseTrapWeight):
     display_name = "Slow Trap Weight"
 
 
+class KroolPhaseCount(Range):
+    """Pick how many phases are in the final battle against K. Rool."""
+
+    display_name = "K. Rool Phase Count"
+    range_start = 1
+    range_end = 5
+    default = 3
+
+
+class HelmPhaseCount(Range):
+    """Pick how many rooms needed to complete Helm."""
+
+    display_name = "Helm Phase Count"
+    range_start = 1
+    range_end = 5
+    default = 2
+
+
+class MedalColorBananaRequirement(Range):
+    """Determines how many CBs are needed to acquire Banana Medal."""
+
+    display_name = "Medal CB Requirements"
+    range_start = 1
+    range_end = 100
+    default = 40
+
+
+class RarewareGBRequirement(Range):
+    """Determines how many Fairies are needed to unlock the Rareware Door."""
+
+    display_name = "Rareware GB Requirment"
+    range_start = 1
+    range_end = 20
+    default = 4
+
+
+class JetpacRequirement(Range):
+    """Determines how many medals are needed to play Jetpac."""
+
+    display_name = "Jetpac Requirement"
+    range_start = 0
+    range_end = 40
+    default = 9
+
+
+class MermaidRequirement(Range):
+    """Determines how many pearls are needed to satisfy the mermaid."""
+
+    display_name = "Mermaid Requirement"
+    range_start = 0
+    range_end = 5
+    default = 1
+
+
+class KeysRequiredToBeatKrool(Range):
+    """Determines how many keys are needed to spawn Krool's Ship.
+
+    Choosing a value of 0 means you start with all 8 keys.
+    Choosing a value of 8 means you start with no keys.
+    """
+
+    display_name = "Keys Required to Beat Krool"
+    range_start = 0
+    range_end = 8
+    default = 3
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
 
     death_link: DeathLink
-    receive_notifications: ReceiveNotifications
     goal: Goal
+    krool_key_count: KeysRequiredToBeatKrool
+    krool_phase_count: KroolPhaseCount
+    helm_phase_count: HelmPhaseCount
+    krool_in_boss_pool: KroolInBossPool
+    medal_cb_req: MedalColorBananaRequirement
+    mermaid_gb_pearls: MermaidRequirement
+    medal_requirement: JetpacRequirement
+    rareware_gb_fairies: RarewareGBRequirement
+    open_lobbies: OpenLobbies
     climbing_shuffle: ClimbingShuffle
     starting_kong_count: StartingKongCount
     starting_move_count: StartingMoveCount
@@ -133,5 +208,4 @@ class DK64Options(PerGameCommonOptions):
     bubble_trap_weight: BubbleTrapWeight
     reverse_trap_weight: ReverseTrapWeight
     slow_trap_weight: SlowTrapWeight
-    open_lobbies: OpenLobbies
-    krool_in_boss_pool: KroolInBossPool
+    receive_notifications: ReceiveNotifications
