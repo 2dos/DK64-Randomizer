@@ -608,7 +608,7 @@ def updateRandomSwitches(spoiler, ROM_COPY: LocalROM):
 
 def updateSwitchsanity(spoiler, ROM_COPY: LocalROM):
     """Update setup to account for switchsanity."""
-    if spoiler.settings.switchsanity:
+    if spoiler.settings.switchsanity_enabled:
         switches = {
             SwitchType.SlamSwitch: [
                 0x94,

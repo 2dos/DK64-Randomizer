@@ -730,7 +730,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     # Your training in Gorilla Gone, Monkeyport, Climbing and Vines are always pointless hints if Key 8 is in Helm, so let's not
     if spoiler.settings.key_8_helm and Locations.HelmKey in spoiler.woth_paths.keys():
         useless_moves = [Items.Vines]
-        if not spoiler.settings.switchsanity:
+        if not spoiler.settings.switchsanity_enabled:
             useless_moves.extend([Items.Monkeyport, Items.GorillaGone])
         useless_locations[Items.HideoutHelmKey] = [
             loc for loc in spoiler.woth_paths[Locations.HelmKey] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in useless_moves
@@ -2744,7 +2744,7 @@ def resetHintList():
 def getHelmProgItems(spoiler: Spoiler) -> list:
     """Get the items needed to progress to helm."""
     base_list = [Items.Monkeyport, Items.GorillaGone]
-    if spoiler.settings.switchsanity:
+    if spoiler.settings.switchsanity_enabled:
         switch_item_data = {
             SwitchType.PadMove: [
                 Items.BaboonBlast,

@@ -280,7 +280,7 @@ def patching_response(spoiler):
     ROM_COPY.write(int(spoiler.settings.coin_door_item))
     ROM_COPY.write(spoiler.settings.coin_door_item_count)
 
-    if spoiler.settings.switchsanity:
+    if spoiler.settings.switchsanity_enabled:
         for slot in spoiler.settings.switchsanity_data:
             ROM_COPY.seek(sav + spoiler.settings.switchsanity_data[slot].rom_offset)
             pad_kong = spoiler.settings.switchsanity_data[slot].kong

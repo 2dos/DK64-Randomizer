@@ -299,7 +299,7 @@ class Spoiler:
         settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
         settings["Hard Shooting"] = self.settings.hard_shooting
         settings["Dropsanity"] = self.settings.enemy_drop_rando
-        settings["Switchsanity"] = self.settings.switchsanity.name
+        settings["Switchsanity"] = self.settings.switchsanity_enabled
         settings["Free Trade Agreement"] = self.settings.free_trade_setting.name
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
@@ -728,7 +728,7 @@ class Spoiler:
             humanspoiler["DK Portal Locations"] = self.human_entry_doors
         if self.settings.crown_placement_rando:
             humanspoiler["Battle Arena Locations"] = self.human_crowns
-        if self.settings.switchsanity:
+        if self.settings.switchsanity_enabled:
             ss_data = {}
             ss_name_data = {
                 Kongs.donkey: {
