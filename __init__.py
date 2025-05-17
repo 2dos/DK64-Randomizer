@@ -269,6 +269,13 @@ if baseclasses_loaded:
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
             settings_dict["open_lobbies"] = self.options.open_lobbies.value
             settings_dict["krool_in_boss_pool"] = self.options.krool_in_boss_pool.value
+            settings_dict["helm_phase_count"] = self.options.helm_phase_count.value
+            settings_dict["krool_phase_count"] = self.options.krool_phase_count.value
+            settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
+            settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
+            settings_dict["medal_requirement"] = self.options.medal_requirement.value
+            settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
+            settings_dict["krool_key_count"] = self.options.krool_key_count.value
             settings_dict["starting_keys_list_selected"] = []
             for item in self.options.start_inventory:
                 if item == "Key 1":
