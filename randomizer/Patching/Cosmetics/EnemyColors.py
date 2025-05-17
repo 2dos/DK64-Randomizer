@@ -522,11 +522,9 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
             dogadon_color,
         )
         enemy_changes[Model.Laser] = EnemyColorSwap([0xF30000])
-    print("test")
     if IsColorOptionSelected(settings, ColorOptions.fire):
         # Fire-based sprites
         fire_shift = getRandomHueShift()
-        print("fire", fire_shift)
         for sprite_data in FIRE_TEXTURES:
             for img_index in range(sprite_data[0], sprite_data[1] + 1):
                 dim = sprite_data[2]

@@ -1081,7 +1081,6 @@ def patchAssembly(ROM_COPY, spoiler):
             if item.can_have_item and not item.is_shop:
                 if item.new_item is None or item.new_item == Types.NoItem:
                     file_init_flags.append(item.old_flag)
-                    print(f"Adding flag {hex(item.old_flag)} to init flags due to no item")
     SCREEN_SHAKE_CAP = 7
     screen_shake_cap_patch = {
         0x8061F0C8: [
