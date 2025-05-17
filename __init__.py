@@ -12,6 +12,8 @@ from io import BytesIO
 import pkgutil
 import shutil
 import sys
+import tempfile
+
 
 from worlds.dk64.ap_version import version as ap_version
 
@@ -24,9 +26,6 @@ try:
 except ImportError:
     pass
 if baseclasses_loaded:
-    baseclasses_path = os.path.dirname(os.path.dirname(BaseClasses.__file__))
-    if not baseclasses_path.endswith("lib"):
-        baseclasses_path = os.path.join(baseclasses_path, "lib")
 
     def display_error_box(title: str, text: str) -> bool | None:
         """Display an error message box."""
@@ -38,32 +37,26 @@ if baseclasses_loaded:
         root.update()
 
     def copy_dependencies(zip_path, file):
-        """Copy a ZIP file from the package to a local directory, extracts its contents.
+        """Copy a ZIP file from the package to a temporary directory, extracts its contents.
 
-        Ensures the destination directory exists.
+        Ensures the temporary directory exists.
         Args:
             zip_path (str): The relative path to the ZIP file within the package.
         Behavior:
-            - Creates a `./lib` directory if it does not exist.
+            - Creates a temporary directory if it does not exist.
             - Reads the ZIP file from the package using `pkgutil.get_data`.
-            - Writes the ZIP file to the `./lib` directory if it does not already exist.
-            - Extracts the contents of the ZIP file into the `./lib` directory.
+            - Writes the ZIP file to the temporary directory if it does not already exist.
+            - Extracts the contents of the ZIP file into the temporary directory.
         Prints:
             - A message if the ZIP file could not be read.
             - A message when the ZIP file is successfully copied.
             - A message when the ZIP file is successfully extracted.
         """
-        # Find the path of BaseClasses, we want to work in the AP directory
-        # This is a bit of a hack, but it works
-        # Get the path of BaseClasses
-        dest_dir = baseclasses_path
-        # if baseclasses_path does not end in lib, add lib to the end
+        # Create a temporary directory
+        temp_dir = tempfile.mkdtemp()
 
-        zip_dest = os.path.join(dest_dir, file)
+        zip_dest = os.path.join(temp_dir, file)
         try:
-            # Ensure the destination directory exists
-            os.makedirs(dest_dir, exist_ok=True)
-
             # Load the ZIP file from the package
             zip_data = pkgutil.get_data(__name__, zip_path)
             # Check if the zip already exists in the destination
@@ -78,26 +71,37 @@ if baseclasses_loaded:
 
                     # Extract the ZIP file
                     with zipfile.ZipFile(zip_dest, "r") as zip_ref:
-                        zip_ref.extractall(dest_dir)
-                    print(f"Extracted {zip_dest} into {dest_dir}")
+                        zip_ref.extractall(temp_dir)
+                    print(f"Extracted {zip_dest} into {temp_dir}")
+
         except PermissionError:
             display_error_box("Permission Error", "Unable to install Dependencies to AP, please try to install AP as an admin.")
             raise PermissionError("Permission Error: Unable to install Dependencies to AP, please try to install AP as an admin.")
 
+        # Add the temporary directory to sys.path
+        if temp_dir not in sys.path:
+            sys.path.insert(0, temp_dir)
+
     platform_type = sys.platform
-    # if the file pyxdelta.cp310-win_amd64.pyd exists, delete pyxdelta.cp310-win_amd64.pyd and PIL and pillow-10.3.0.dist-info and pyxdelta-0.2.0.dist-info
-    if os.path.exists(f"{baseclasses_path}/pyxdelta.cp310-win_amd64.pyd"):
-        os.remove(f"{baseclasses_path}/pyxdelta.cp310-win_amd64.pyd")
-        if os.path.exists(f"{baseclasses_path}/PIL"):
-            shutil.rmtree(f"{baseclasses_path}/PIL")
-        if os.path.exists(f"{baseclasses_path}/pillow-10.3.0.dist-info"):
-            shutil.rmtree(f"{baseclasses_path}/pillow-10.3.0.dist-info")
-        if os.path.exists(f"{baseclasses_path}/pyxdelta-0.2.0.dist-info"):
-            shutil.rmtree(f"{baseclasses_path}/pyxdelta-0.2.0.dist-info")
-        if os.path.exists(f"{baseclasses_path}/windows.zip"):
-            os.remove(f"{baseclasses_path}/windows.zip")
-        if os.path.exists(f"{baseclasses_path}/linux.zip"):
-            os.remove(f"{baseclasses_path}/linux.zip")
+    baseclasses_path = os.path.dirname(os.path.dirname(BaseClasses.__file__))
+    if not baseclasses_path.endswith("lib"):
+        baseclasses_path = os.path.join(baseclasses_path, "lib")
+    # Remove ANY PIL folders from the baseclasses_path
+    # Or Pyxdelta or pillow folders
+    try:
+        for folder in os.listdir(baseclasses_path):
+            if folder.startswith("PIL") or folder.startswith("pyxdelta") or folder.startswith("pillow"):
+                folder_path = os.path.join(baseclasses_path, folder)
+                if os.path.isdir(folder_path):
+                    shutil.rmtree(folder_path)
+                elif os.path.isfile(folder_path):
+                    os.remove(folder_path)
+            # Also if its windows.zip or linux.zip, remove it
+            if folder.startswith("windows.zip") or folder.startswith("linux.zip"):
+                os.remove(os.path.join(baseclasses_path, folder))
+    except Exception as e:
+        pass
+
     if platform_type == "win32":
         zip_path = "vendor/windows.zip"  # Path inside the package
         copy_dependencies(zip_path, "windows.zip")
@@ -111,6 +115,7 @@ if baseclasses_loaded:
     sys.path.append("worlds/dk64/archipelago/")
     sys.path.append("custom_worlds/dk64.apworld/dk64/")
     sys.path.append("custom_worlds/dk64.apworld/dk64/archipelago/")
+
     import randomizer.ItemPool as DK64RItemPool
 
     from randomizer.Enums.Items import Items as DK64RItems

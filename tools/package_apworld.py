@@ -77,6 +77,22 @@ shutil.rmtree(windows_vendor)
 zip_folder(linux_vendor, "dk64/vendor/linux.zip")
 # Delete the folder
 shutil.rmtree(linux_vendor)
+
+# # Test move, dk64/vendor/windows to the root
+# # Move all files and folders
+# for item in os.listdir(windows_vendor):
+#     src_path = os.path.join(windows_vendor, item)
+#     dst_path = os.path.join(dk64_folder, item)
+
+#     # If destination already exists, you can choose to overwrite or skip
+#     if os.path.exists(dst_path):
+#         print(f"Skipping '{dst_path}' (already exists)")
+#         continue
+
+#     shutil.move(src_path, dst_path)
+#     print(f"Moved '{src_path}' to '{dst_path}'")
+
+
 # Zip dk64 directory
 zip_folder(dk64_folder, "dk64.apworld", preserve_root=True)
 # Delete the folder
