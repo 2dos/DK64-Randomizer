@@ -183,7 +183,24 @@ class KeysRequiredToBeatKrool(Range):
     display_name = "Keys Required to Beat Krool"
     range_start = 0
     range_end = 8
-    default = 3
+    default = 8
+
+
+class SwitchSanity(Choice):
+    """Determines if the pads leading to helm are randomized.
+
+    Options:
+    off: Switchsanity is Off
+    helm_access: Monkeyport pad and Gorilla Gone Pad are randomized
+    all: Most switches across the game are randomized.
+    """
+
+    display_name = "Switchsanity"
+
+    option_off = 0
+    option_helm_access = 1
+    option_all = 2
+    default = 0
 
 
 @dataclass
@@ -201,6 +218,7 @@ class DK64Options(PerGameCommonOptions):
     medal_requirement: JetpacRequirement
     rareware_gb_fairies: RarewareGBRequirement
     open_lobbies: OpenLobbies
+    switchsanity: SwitchSanity
     climbing_shuffle: ClimbingShuffle
     starting_kong_count: StartingKongCount
     starting_move_count: StartingMoveCount
