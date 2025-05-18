@@ -34,6 +34,7 @@ from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
 from port_krool_spawners import updateCutsceneScripts, updateSpawnerFiles, updatePathFiles
 from fixIceMaze import generateIceMaze
+from animation_modifier import modifyAnimationCode
 
 # Infrastructure for recomputing DK64 global pointer tables
 # from BuildNames import maps
@@ -54,6 +55,7 @@ updateCutsceneScripts()
 updateSpawnerFiles()
 updatePathFiles()
 BuildInstanceScripts()
+modifyAnimationCode()
 
 portal_images = []
 for x in range(2):
@@ -428,6 +430,7 @@ file_dict = [
     File(name="Banana Medal", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x90, source_file="updated_medal.bin", do_not_delete_source=True),
     File(name="Mushroom Red (Mush Puzzle)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x1BE, source_file="updated_mush_0x1BE.bin", do_not_delete_source=True),
     File(name="Ice Maze", pointer_table_index=TableNames.ModelTwoGeometry, file_index=522, source_file="assets/Gong/ice_maze.bin", do_not_delete_source=True),
+    File(name="Animation Code", pointer_table_index=TableNames.Unknown13, file_index=0, source_file="animation_code.bin", do_not_delete_source=True),
 ]
 
 cutscene_scripts = buildScripts()
