@@ -87,7 +87,7 @@ LogicRegions = {
         TransitionFront(Regions.CrankyForest, lambda l: l.crankyAccess),
     ]),
 
-    Regions.MushroomLower: Region("Mushroom Lower", HintRegion.MushroomInterior, Levels.FungiForest, True, -1, [], [
+    Regions.MushroomLower: Region("Mushroom Lower", HintRegion.MushroomInterior, Levels.FungiForest, True, None, [], [
         Event(Events.MushroomCannonsSpawned, lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple
               and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky),
         Event(Events.DonkeyMushroomSwitch, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.donkey)
@@ -150,15 +150,21 @@ LogicRegions = {
         LocationLogic(Locations.ForestGMEnemy_Path1, lambda l: True),
     ], [], [
         TransitionFront(Regions.MushroomMiddle, lambda l: True),
-        TransitionFront(Regions.MushroomUpper, lambda l: l.climbing),
+        TransitionFront(Regions.MushroomUpperVineFloor, lambda l: l.climbing),
         TransitionFront(Regions.MushroomNightDoor, lambda l: l.can_use_vines),
+    ]),
+
+    Regions.MushroomUpperVineFloor: Region("Mushroom Upper Vine Floor", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [
+        LocationLogic(Locations.ForestGMEnemy_AboveNightDoor, lambda l: True),
+    ], [], [
+        TransitionFront(Regions.MushroomUpper, lambda l: l.climbing),
+        TransitionFront(Regions.MushroomUpperMid, lambda l: True),
     ]),
 
     Regions.MushroomUpper: Region("Mushroom Upper", HintRegion.MushroomInterior, Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestDonkeyMushroomCannons, lambda l: Events.MushroomCannonsSpawned in l.Events and Events.DonkeyMushroomSwitch in l.Events),
-        LocationLogic(Locations.ForestGMEnemy_AboveNightDoor, lambda l: True),
     ], [], [
-        TransitionFront(Regions.MushroomUpperMid, lambda l: True),
+        TransitionFront(Regions.MushroomUpperVineFloor, lambda l: True),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: True, Transitions.ForestUpperMushroomToUpperExterior),
     ]),
 

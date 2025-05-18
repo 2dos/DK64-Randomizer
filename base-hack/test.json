@@ -213,7 +213,8 @@
    "rom_flags":{
       "plando":true,
       "spoiler":true,
-      "pass_locked":true
+      "pass_locked":true,
+      "archipelago":true
    },
    "password": [
       1,

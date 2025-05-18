@@ -10,11 +10,10 @@ import logging
 from datetime import timezone, datetime
 from io import BytesIO
 import sys
-from vidua import bps
+from randomizer.Patching import BPS as bps
 from rq import get_current_job
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
-from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from version import version
@@ -31,9 +30,9 @@ def generate_seed(settings_dict):
         if isinstance(settings_dict, str):
             settings_dict = json.loads(settings_dict)
         delayed_timestamp = settings_dict.get("delayed_spoilerlog_release", 0)
-        patch = open("./static/patches/shrink-dk64.bps", "rb")
-        original = open("dk64.z64", "rb")
-        patched = BytesIO(bps.patch(original, patch).read())
+        # patch = open("./static/patches/shrink-dk64.bps", "rb")
+        # original = open("dk64.z64", "rb")
+        # patched = BytesIO(bps.patch(original, patch).read())
         if not settings_dict.get("seed"):
             settings_dict["seed"] = random.randint(0, 100000000)
         try:
@@ -47,7 +46,7 @@ def generate_seed(settings_dict):
                     settings_dict["seed"] = str(settings_dict["seed"]) + "-" + str(current_retries)
         except Exception as e:
             logger.info(e)
-        load_base_rom(default_file=patched)
+        # load_base_rom(default_file=patched)
         settings_obj = Settings(cleanup_settings(settings_dict))
         spoiler = Spoiler(settings_obj)
         patch, spoiler, password = Generate_Spoiler(spoiler)

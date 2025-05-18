@@ -1187,7 +1187,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="On floor with oranges",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomUpper,
+        region=Regions.MushroomUpperVineFloor,
         locations=[
             [1, 1.0, 204, 1169, 307],
             [1, 1.0, 326, 1169, 317],
@@ -1877,7 +1877,7 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="Fifth ladder up mushroom (2 custom, 3 Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomUpper,
+        region=Regions.MushroomUpperVineFloor,
         vanilla=True,
         locations=[
             [1, 1.0, 476.5090026855469, 1183.1666259765625, 195.49839782714844],
@@ -2248,7 +2248,7 @@ BalloonList = [
         name="Oranges level",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomUpper,
+        region=Regions.MushroomUpperVineFloor,
         points=[[393, 1290, 451], [555, 1280, 415], [555, 1290, 562], [404, 1280, 621]],
     ),
     Balloon(

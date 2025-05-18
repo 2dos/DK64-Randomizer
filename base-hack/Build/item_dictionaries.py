@@ -127,6 +127,7 @@ class CustomActors(IntEnum):
     HintItemLanky = auto()
     HintItemTiny = auto()
     HintItemChunky = auto()
+    ArchipelagoItem = auto()
 
 
 POTIONS = (
@@ -231,6 +232,7 @@ db = [
     InGameItem(name="Hint Item (Lanky)", actor=CustomActors.HintItemLanky, is_custom=True, model_two=650, base=base_kong, bounce=True),
     InGameItem(name="Hint Item (Tiny)", actor=CustomActors.HintItemTiny, is_custom=True, model_two=651, base=base_kong, bounce=True),
     InGameItem(name="Hint Item (Chunky)", actor=CustomActors.HintItemChunky, is_custom=True, model_two=652, base=base_kong, bounce=True),
+    InGameItem(name="Archipelago Item", actor=CustomActors.ArchipelagoItem, is_custom=True, model_two=0x291, base=base_kong, bounce=True),
 ]
 
 db2 = [
@@ -315,6 +317,7 @@ db2 = [
     ItemRandoDef(0x028A, CollectableTypes.Null, None, CustomActors.HintItemLanky, Hitbox(8, 4, 13), True),  # Hint
     ItemRandoDef(0x028B, CollectableTypes.Null, None, CustomActors.HintItemTiny, Hitbox(8, 4, 13), True),  # Hint
     ItemRandoDef(0x028C, CollectableTypes.Null, None, CustomActors.HintItemChunky, Hitbox(8, 4, 13), True),  # Hint
+    ItemRandoDef(0x0291, CollectableTypes.Null, None, CustomActors.ArchipelagoItem, Hitbox(8, 4, 13), True),  # AP Item
 ]
 
 item_drops = [
@@ -635,6 +638,13 @@ with open("src/lib_items.c", "w") as fh:
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Hint Item
+            {
+                "actor_type": 345 + CustomActors.ArchipelagoItem,
+                "model": 0x124,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # AP Item
         ]
     )
     default_values = {
@@ -685,6 +695,7 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemLanky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemTiny, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemChunky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.ArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
     actor_data = initActor(actor_data, 345 + CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, 345 + CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)

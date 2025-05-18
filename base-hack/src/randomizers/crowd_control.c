@@ -249,6 +249,9 @@ int cc_allower_spawnkop(void) {
     if (isActorLoaded(CUSTOM_ACTORS_START + NEWACTOR_KOPDUMMY)) {
         return 0;
     }
+    if(TransitionSpeed != 0){
+        return 0;
+    }
     return 1;
 }
 

@@ -1,6 +1,5 @@
 """Shuffle Melon Crate Locations."""
 
-import random
 from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Lists import Exceptions
 
@@ -64,7 +63,7 @@ def fillPlandoDict(plando_dict: dict, plando_input):
             plando_dict[crate["level"]].append(crate["location"])
 
 
-def getPlandoCrateDistribution(plando_dict: dict):
+def getPlandoCrateDistribution(random, plando_dict: dict):
     """Adapt the melon crate balance to the user's plandomizer input."""
     distribution = []
     for level in plando_dict.keys():
@@ -134,7 +133,7 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
 
     # Make sure levels with multiple Melon Crates plandomized are handled first, before the shuffler runs out of dual levels
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != []:
-        distribution = getPlandoCrateDistribution(plando_dict)
+        distribution = getPlandoCrateDistribution(spoiler.settings.random, plando_dict)
         count = 0
         for level in plando_dict:
             area_meloncrate = total_MelonCrate_list[level]
@@ -143,7 +142,7 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
             count += 1
     else:
         for SingleMelonCrateLocation in range(4):
-            area_key = random.choice(list(total_MelonCrate_list.keys()))
+            area_key = spoiler.settings.random.choice(list(total_MelonCrate_list.keys()))
             area_meloncrate = total_MelonCrate_list[area_key]
             select_random_meloncrate_from_area(area_meloncrate, 2, area_key, spoiler, human_spoiler, plando_dict)
             del total_MelonCrate_list[area_key]
@@ -173,7 +172,7 @@ def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler, 
     human_spoiler[level.name] = []
     for iterations in range(amount):
         allow_same_group_crate = False
-        selected_crate = random.choice(area_meloncrate)  # selects a random crate from the list
+        selected_crate = spoiler.settings.random.choice(area_meloncrate)  # selects a random crate from the list
         selected_crate_name = selected_crate.name
         # Give plandomizer an opportunity to get the final say
         if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != []:

@@ -160,6 +160,7 @@ file_dict = [
     File(name="Funky Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=608, source_file="funky_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Candy Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=609, source_file="candy_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Snide Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=610, source_file="snide_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="AP Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x291, source_file="archi_om2.bin", do_not_delete_source=True, do_not_extract=True),
     # File(name="K. Rool (Cutscenes) Model", pointer_table_index=TableNames.ActorGeometry, file_index=0x48, source_file="k_rool_cutscenes_om1.bin", do_not_delete_source=True),
     File(
         name="Krusha Head",
@@ -762,6 +763,7 @@ shop_face_array = [
     "rainbow_coin",
     "fake_gb_shop",
     "wrinkly32",
+    "ap32",
     "head32_dillo1",
     "head32_dog1",
     "head32_mj",
@@ -1127,6 +1129,17 @@ file_dict.extend(
     ]
 )
 
+for x in range(6):
+    file_dict.append(
+        File(
+            name=f"AP Pearl {x}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.APPearl0) + x,
+            source_file=f"assets/displays/ap_pearl_{x}.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
+
 for x in range(12):
     file_dict.append(
         File(
@@ -1387,6 +1400,7 @@ shrinkModel(True, "hint_item_actor_diddy.bin", 0, 1 / 0.15, "shrink_qmark_diddy.
 shrinkModel(True, "hint_item_actor_lanky.bin", 0, 1 / 0.15, "shrink_qmark_lanky.bin", True)
 shrinkModel(True, "hint_item_actor_tiny.bin", 0, 1 / 0.15, "shrink_qmark_tiny.bin", True)
 shrinkModel(True, "hint_item_actor_chunky.bin", 0, 1 / 0.15, "shrink_qmark_chunky.bin", True)
+shrinkModel(True, "archi_om1.bin", 0, 1 / 0.15, "shrink_archi.bin", False)
 FINAL_RACE_HOOP = "shrink_race_hoop.bin"
 shrinkModel(True, "race_hoop_om1.bin", 0, 1 / 0.15, FINAL_RACE_HOOP, False)
 
@@ -1466,6 +1480,10 @@ model_changes = [
     # Chunky
     ModelChange(0x121, "shrink_qmark_chunky.bin"),
     ModelChange(0x122, "hint_item_actor_chunky.bin"),
+    # Archi Item
+    ModelChange(0x123, "shrink_archi.bin"),
+    ModelChange(0x124, "archi_om1.bin"),
+    # Misc
     ModelChange(0x73, "blast_barrel.bin"),
     ModelChange(0x8B, "rocketbarrel_attachment.bin"),
     ModelChange(0x7B, "cannon.bin"),
@@ -2226,6 +2244,13 @@ with open(newROMName, "r+b") as fh:
         "krusha_head_3_32",
         "krusha_head_4_32",
         "krusha_head_5_32",
+        "ap_pearl_0",
+        "ap_pearl_1",
+        "ap_pearl_2",
+        "ap_pearl_3",
+        "ap_pearl_4",
+        "ap_pearl_5",
+        "ap32",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])

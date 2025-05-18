@@ -14,7 +14,7 @@ ENV REDIRECT=$REDIRECT
 ENV TZ=UTC
 RUN apk update && apk add --no-cache tzdata git
 
-RUN pip install -r https://raw.githubusercontent.com/2dos/DK64-Randomizer/refs/heads/dev/controller/requirements.txt
+RUN pip install -r https://raw.githubusercontent.com/2dos/DK64-Randomizer/refs/heads/dev/requirements-server.txt
 # Conditionally clone the repository if BRANCH is not LOCAL
 RUN git config --global core.compression 0 && \
     git clone --depth 1 --branch $BRANCH https://github.com/2dos/DK64-Randomizer.git /app

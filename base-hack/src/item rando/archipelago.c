@@ -11,10 +11,58 @@
 
 #include "../../include/common.h"
 
+static archipelago_data ap_info;
+static char main_title[0x30];
+static char sub_title[0x30];
+
+int isAPEnabled(void) {
+    if (Rando.rom_flags.archipelago) {
+        return 1;
+    }
+    return 0;
+}
+
+void initAP(void) {
+    if (isAPEnabled()) {
+        APData = &ap_info;
+        ap_info.text_timer = 0x82;
+        ap_info.start_flag = FLAG_ENEMY_KILLED_0 + 16;
+        if (Rando.enemy_item_rando) {
+            ap_info.start_flag += ENEMIES_TOTAL;
+        }
+    }
+}
+
+void initAPCounter(void) {
+    if (isAPEnabled()) {
+        int counter = 0;
+        for (int i = 0; i < 16; i++) {
+            counter <<= 1;
+            if (checkFlag((ap_info.start_flag - 16) + i, FLAGTYPE_PERMANENT)) {
+                counter += 1;
+            }
+        }
+        ap_info.counter = counter;
+    }
+}
+
+void saveAPCounter(void) {
+    if (isAPEnabled()) {
+        int counter = ap_info.counter;
+        for (int i = 0; i < 16; i++) {
+            int state = counter & 1;
+            setFlag((ap_info.start_flag - 1) - i, state, FLAGTYPE_PERMANENT);
+            counter >>= 1;
+        }
+    }
+}
+
 void handleSentItem(void) {
+    archipelago_items FedItem = ap_info.fed_item;
     int check_count = -1;
     int check_start_flag = -1;
-    int check_flag_index = 0;
+    int i = 0;
+    unsigned char *file_data = 0;
     switch (FedItem) {
         case TRANSFER_ITEM_GB:
             {
@@ -37,33 +85,42 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_CROWN:
             check_count = 10;
             check_start_flag = FLAG_CROWN_JAPES;
-        case TRANSFER_ITEM_BP:
-            if (check_count == -1) {
-                check_count = 40;
-                check_start_flag = FLAG_BP_JAPES_DK_HAS;
-            }
+            file_data = &Rando.crowns_in_file[0];
         case TRANSFER_ITEM_PEARL:
             if (check_count == -1) {
                 check_count = 5;
                 check_start_flag = FLAG_PEARL_0_COLLECTED;
+                file_data = &Rando.pearls_in_file;
             }
         case TRANSFER_ITEM_MEDAL:
             if (check_count == -1) {
                 check_count = 40;
+                if (Rando.isles_cb_rando) {
+                    check_count = 45;
+                }
                 check_start_flag = FLAG_MEDAL_JAPES_DK;
+                file_data = &Rando.medals_in_file[0];
             }
         case TRANSFER_ITEM_FAIRY:
-            if (check_count == -1) {
-                check_count = 20;
-                check_start_flag = FLAG_FAIRY_1;
-            }
-            check_flag_index = 0;
-            while (check_flag_index < check_count) {
-                if (!checkFlagDuplicate(check_start_flag + check_flag_index, FLAGTYPE_PERMANENT)) {
-                    setFlagDuplicate(check_start_flag + check_flag_index, 1, FLAGTYPE_PERMANENT);
-                    return;
+            {
+                if (check_count == -1) {
+                    check_count = 20;
+                    check_start_flag = FLAG_FAIRY_1;
+                    file_data = &Rando.fairies_in_file[0];
                 }
-                check_flag_index += 1;
+                for (int i = 0; i < check_count; i++) {
+                    int offset = i >> 3;
+                    int shift = i & 7;
+                    if ((file_data[offset] & (1 << shift)) == 0) {
+                        if (!checkFlagDuplicate(check_start_flag + i, FLAGTYPE_PERMANENT)) {
+                            setFlagDuplicate(check_start_flag + i, 1, FLAGTYPE_PERMANENT);
+                            return;
+                        }
+                    }
+                    if ((i == 39) && (FedItem == TRANSFER_ITEM_MEDAL)) {
+                        check_start_flag = FLAG_MEDAL_ISLES_DK - 40;
+                    }
+                }
             }
             break;
         case TRANSFER_ITEM_KEY1:
@@ -77,29 +134,19 @@ void handleSentItem(void) {
             setFlagDuplicate(normal_key_flags[FedItem - TRANSFER_ITEM_KEY1], 1, FLAGTYPE_PERMANENT);
             auto_turn_keys();
             break;
-        case TRANSFER_ITEM_NINTENDOCOIN:
-            setFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN, 1, FLAGTYPE_PERMANENT);
-            break;
-        case TRANSFER_ITEM_RAREWARECOIN:
-            setFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN, 1, FLAGTYPE_PERMANENT);
-            break;
-        case TRANSFER_ITEM_DK:
-        case TRANSFER_ITEM_DIDDY:
-        case TRANSFER_ITEM_LANKY:
-        case TRANSFER_ITEM_TINY:
-        case TRANSFER_ITEM_CHUNKY:
-            setFlagDuplicate(kong_flags[FedItem - TRANSFER_ITEM_DK], 1, FLAGTYPE_PERMANENT);
-            break;
         case TRANSFER_ITEM_RAINBOWCOIN:
             for (int i = 0; i < 5; i++) {
                 MovesBase[i].coins += 5;
             }
             break;
-        case TRANSFER_ITEM_BEAN:
-            setFlagDuplicate(FLAG_COLLECTABLE_BEAN, 1, FLAGTYPE_PERMANENT);
-            break;
         case TRANSFER_ITEM_FAKEITEM:
-            queueIceTrap(ICETRAP_BUBBLE); // For now, always make ice
+            queueIceTrap(ICETRAP_BUBBLE);
+            break;
+        case TRANSFER_ITEM_FAKEITEM_SLOW:
+            queueIceTrap(ICETRAP_SLOWED);
+            break;
+        case TRANSFER_ITEM_FAKEITEM_REVERSE:
+            queueIceTrap(ICETRAP_REVERSECONTROLS);
             break;
         case TRANSFER_ITEM_JUNKITEM:
             applyDamageMask(0, 1);
@@ -199,18 +246,6 @@ void handleSentItem(void) {
             setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, FLAGTYPE_PERMANENT);
             setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
             break;
-        case TRANSFER_ITEM_DIVE:
-            setFlagDuplicate(FLAG_TBARREL_DIVE, 1, FLAGTYPE_PERMANENT);
-            break;
-        case TRANSFER_ITEM_ORANGE:
-            setFlagDuplicate(FLAG_TBARREL_ORANGE, 1, FLAGTYPE_PERMANENT);
-            break;
-        case TRANSFER_ITEM_BARREL:
-            setFlagDuplicate(FLAG_TBARREL_BARREL, 1, FLAGTYPE_PERMANENT);
-            break;
-        case TRANSFER_ITEM_VINE:
-            setFlagDuplicate(FLAG_TBARREL_VINE, 1, FLAGTYPE_PERMANENT);
-            break;
         default:
         break;
     }
@@ -225,25 +260,108 @@ int canReceiveItem(void) {
     return 0;
 }
 
+
 void handleArchipelagoFeed(void) {
+    if (ap_info.connection > 0) {
+        ap_info.connection -= 1;
+    }
+    if ((TBVoidByte & 3) || (!canReceiveItem())) {
+        // Paused
+        if (ap_info.safety_text_timer == 0) {
+            ap_info.safety_text_timer = 5; // Block text going through 
+        }
+    } else {
+        if (ap_info.safety_text_timer > 0) {
+            ap_info.safety_text_timer--;
+        }
+    }
     if (canReceiveItem()) {
-        if (FedItem != TRANSFER_ITEM_NULL) {
+        if (ap_info.fed_item != TRANSFER_ITEM_NULL) {
             handleSentItem();
-            FedItem = TRANSFER_ITEM_NULL;
+            ap_info.fed_item = TRANSFER_ITEM_NULL;
+        }
+        if (ap_info.fed_string[0] != 0) {
+            int vacant_spot = spawnItemOverlay(PURCHASE_ARCHIPELAGO, 0, 1, 1);
+            if (vacant_spot == -1) {
+                return;
+            }
+            ap_info.safety_text_timer = ap_info.text_timer + 50;
+            // Main Title
+            text_overlay_data[vacant_spot].string = &main_title;
+            dk_memcpy(text_overlay_data[vacant_spot].string, &ap_info.fed_string, 0x21);
+            ap_info.fed_string[0] = 0;
+            if (ap_info.fed_subtitle[0]) {
+                // Subtitle
+                text_overlay_data[vacant_spot].subtitle = &sub_title;
+                dk_memcpy(text_overlay_data[vacant_spot].subtitle, &ap_info.fed_subtitle, 0x21);
+                ap_info.fed_subtitle[0] = 0;
+            }
+        }
+    }
+    ap_info.can_die = canDie();
+    if (CutsceneActive > 1) {
+        ap_info.can_die = 0;
+    }
+    if (ap_info.can_die) {
+        if (ap_info.receive_death) {
+            cc_enabler_spawnkop();
+            ap_info.receive_death = 0;
         }
     }
 }
 
-void handleArchipelagoString(void) {
-    if (canReceiveItem()) {
-        if (FedString[0] != 0) {
-            int vacant_spot = spawnItemOverlay(8, 0, 1, 1);
-            if (vacant_spot == -1) {
-                return;
-            }
-            text_overlay_data[vacant_spot].string = dk_malloc(0x30);
-            dk_memcpy(text_overlay_data[vacant_spot].string, &FedString[0], 0x21);
-            FedString[0] = 0;
+int canDie(void) {
+    // Check if the spawn kop CC effect can be triggered to simulate death without issues
+    if(ObjectModel2Timer < 31){
+        return 0;
+    }
+    if(!cc_allower_generic()){
+        // No cc effects in general would be allowed
+        return 0;
+    }
+    int level = levelIndexMapping[CurrentMap];
+    if(level == LEVEL_BONUS || level == LEVEL_SHARED){
+        // In a bonus/shared map
+        return 0;
+    }
+    if(!cc_allower_spawnkop()){
+        // This cc effect is already active or a transition isn't quite finished yet
+        return 0;
+    }
+    if ((TBVoidByte & 0x30) == 0) {
+        // In a tag barrel. Kops hate this one trick.
+        return 0;
+    }
+    return 1;
+}
+
+void sendDeath(void) {
+    if (isAPEnabled()) {
+        if (!isActorLoaded(CUSTOM_ACTORS_START + NEWACTOR_KOPDUMMY)) {
+            ap_info.send_death = 1;
         }
     }
+}
+
+int isFlagAPItem(int flag) {
+    if (isAPEnabled()) {
+        return isFlagInRange(flag, ap_info.start_flag, 1000 - 16);
+    }
+    return 0;
+}
+
+static char *ap_strings[] = {
+    "APCLIENT CONNECTED",
+    "APCLIENT DISCONNECTED"
+};
+
+Gfx *displayAPConnection(Gfx *dl) {
+    if (isAPEnabled()) {
+        int index = 1;
+        if (ap_info.connection > 0) {
+            index = 0;
+        }
+        dl = drawPixelTextContainer(dl, 15, 215, ap_strings[index], 0xFF, 0xFF, 0xFF, 0xFF, 1);
+    }
+    return dl;
 }

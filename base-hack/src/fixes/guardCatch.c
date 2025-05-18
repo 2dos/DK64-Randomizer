@@ -79,6 +79,7 @@ void guardCatch(void) {
                 - Not in a cutscene (CutsceneActive == 0)
             */
             guardCatchInternal();
+            sendDeath();
         }
     }
 }
@@ -135,7 +136,7 @@ void newGuardCode(void) {
     if (CurrentActorPointer_0->control_state <= 0x35) { // Not damaged/dying
         if (Player) {
             if ((Player->strong_kong_ostand_bitfield & 0x70) == 0) { // No GGone, OSprint, SKong
-                if (!isBadMovementState()) { // Bad Movement State
+                if (!isBadMovementState() && ObjectModel2Timer > 123) { // Bad Movement State or within the first 123 frames of map load
                     if (!inRabbitRace()) {
                         float dist = 40.0f;
                         float radius = 70.0f;

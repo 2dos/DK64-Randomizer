@@ -1,6 +1,5 @@
 """Shuffle Bananaport Locations."""
 
-import random
 from randomizer.Lists.MapsAndExits import RegionMapList
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
@@ -205,7 +204,7 @@ def populate_warp_event_pairs():
             warp_event_pairs[other_warp] = warp
 
 
-def selectUsefulWarpFullShuffle(list_of_custom_locations, list_of_warps, warp: CustomLocation = None):
+def selectUsefulWarpFullShuffle(random, list_of_custom_locations, list_of_warps, warp: CustomLocation = None):
     """Find a useful warp to link to given warp."""
     region = warp.logic_region
     klumped_regions = []
@@ -297,7 +296,7 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                 pick_count = min(pick_count, len(index_lst))
                 warps = []
                 if spoiler.settings.useful_bananaport_placement and spoiler.settings.bananaport_placement_rando != ShufflePortLocations.vanilla_only:
-                    random.shuffle(index_lst)
+                    spoiler.settings.random.shuffle(index_lst)
                     # Populate the region dict with custom locations in each region
                     region_dict = {}
                     for x in index_lst:
@@ -337,9 +336,9 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                     if spoiler.settings.bananaport_placement_rando == ShufflePortLocations.vanilla_only:
                         # Useful warps don't impact vanilla shuffle (yet). It's simpler and faster to just shuffle them
                         warps = index_lst.copy()
-                        random.shuffle(warps)
+                        spoiler.settings.random.shuffle(warps)
                     else:
-                        warps = random.sample(index_lst, pick_count)
+                        warps = spoiler.settings.random.sample(index_lst, pick_count)
                 if pick_count > 0:
                     for k in BananaportVanilla:
                         event_id = BananaportVanilla[k].event
@@ -354,7 +353,7 @@ def ShufflePorts(spoiler, port_selection, human_ports):
                                         warp = level_lst[port_selection[warp_event_pairs[event_id]]]
                                     else:
                                         warp = [x for x in level_lst if x.tied_warp_event == warp_event_pairs[event_id]][0]
-                                    selected_port = selectUsefulWarpFullShuffle(level_lst, index_lst, warp)
+                                    selected_port = selectUsefulWarpFullShuffle(spoiler.settings.random, level_lst, index_lst, warp)
                                     warps = [x for x in warps if x != selected_port]
                                     index_lst = [x for x in warps if x != selected_port]
                                     port_selection[k] = selected_port

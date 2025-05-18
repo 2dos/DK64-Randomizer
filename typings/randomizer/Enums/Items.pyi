@@ -173,3 +173,4 @@ class Items(IntEnum):
     DKIslesTinyBlueprint = 170
     DKIslesChunkyBlueprint = 171
     ProgressiveSlam3 = 172
+    ArchipelagoItem = 173

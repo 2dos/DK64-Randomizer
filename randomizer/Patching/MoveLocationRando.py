@@ -498,7 +498,7 @@ def filterMoveIndex(
     if original_item_type == MoveTypes.Instruments:  # Instrument
         if index > 1:
             return slam_flag, belt_flag, ins_flag + 1, ins_flag
-    if filtered_type in (5, 6):
+    if filtered_type in (5, 6) or filtered_type > 7:
         new_index = readMoveData(ROM_COPY, move_data, section, kong, level, MoveDataRequest.flag)
         return slam_flag, belt_flag, ins_flag, new_index
     return slam_flag, belt_flag, ins_flag, index

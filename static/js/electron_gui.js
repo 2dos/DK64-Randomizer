@@ -24,7 +24,7 @@ const createWindow = () => {
     webPreferences: {
       nodeIntegration: false,
     },
-    icon: __dirname + "/static/img/dk.png",
+    icon: __dirname + "/base-hack/assets/DKTV/logo3.png",
   });
   mainWindow.loadURL(
     require("url").format({

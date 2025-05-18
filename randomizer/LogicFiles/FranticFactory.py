@@ -61,7 +61,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryMainEnemy_BlockTower2, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToBlockTower, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_ToBlockTowerTunnel, lambda l: True),
-        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: (l.CanOStandTBSNoclip() and l.spawn_snags), isAuxiliary=True),
+        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: (not l.checkFastCheck(FasterChecksSelected.factory_arcade_round_1)) and (l.CanOStandTBSNoclip() and l.spawn_snags), isAuxiliary=True),
     ], [
         Event(Events.DartsPlayed, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and (l.mini or l.CanPhase()) and l.feather and l.istiny),
         Event(Events.FactoryW3bTagged, lambda l: True),
