@@ -27,7 +27,7 @@ class AnimChange:
 
 anim_changes = [
     AnimChange(0x2C1, 0x26 + 3, 0xFF, 1),  # Increase kop volume to 255
-    AnimChange(0x2C1, 0x1C + 2, 20, 1),  # Double the chance of a kop making a noise
+    AnimChange(0x2C1, 0x1C + 2, 15, 1),  # Double the chance of a kop making a noise
 ]
 
 
