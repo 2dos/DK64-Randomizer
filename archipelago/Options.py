@@ -185,12 +185,13 @@ class KeysRequiredToBeatKrool(Range):
     range_end = 8
     default = 8
 
+
 class SwitchSanity(Choice):
     """Determines if the pads leading to helm are randomized.
-    
+
     Options:
     off: Switchsanity is Off
-    helm_switchsanity: Monkeyport pad and Gorilla Gone Pad are randomized
+    helm_access: Monkeyport pad and Gorilla Gone Pad are randomized
     all: Most switches across the game are randomized.
     """
 
@@ -200,6 +201,7 @@ class SwitchSanity(Choice):
     option_helm_access = 1
     option_all = 2
     default = 0
+
 
 @dataclass
 class DK64Options(PerGameCommonOptions):

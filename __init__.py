@@ -595,8 +595,7 @@ if baseclasses_loaded:
                 "HelmOrder": ", ".join([str(room) for room in self.logic_holder.settings.helm_order]),
                 "OpenLobbies": self.logic_holder.settings.open_lobbies,
                 "KroolInBossPool": self.logic_holder.settings.krool_in_boss_pool,
-                "SwitchSanity": {switch.name: {"kong": data.kong.name, "type": data.switch_type.name} 
-                                for switch, data in self.logic_holder.settings.switchsanity_data.items()}
+                "SwitchSanity": {switch.name: {"kong": data.kong.name, "type": data.switch_type.name} for switch, data in self.logic_holder.settings.switchsanity_data.items()},
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
