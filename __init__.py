@@ -312,7 +312,17 @@ if baseclasses_loaded:
                     if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
                         passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
                         settings.level_order = passthrough["LevelOrder"]
+                        # Switch logic lifted out of level shuffle due to static levels for UT
+                        if settings.alter_switch_allocation:
+                            allocation = [1, 1, 1, 1, 2, 2, 3, 3]
+                            for x in range(8):
+                                level = settings.level_order[x + 1]
+                                settings.switch_allocation[level] = allocation[x]
                         settings.starting_kong_list = passthrough["StartingKongs"]
+                        settings.starting_kong = settings.starting_kong_list[0]  # fake a starting kong so that we don't force a different kong
+                        settings.medal_requirement = passthrough["JetpacReq"]
+                        settings.rareware_gb_fairies = passthrough["FairyRequirement"]
+                        settings.medal_cb_req = passthrough["MedalCBRequirement"]
                         settings.BossBananas = passthrough["BossBananas"]
                         settings.boss_maps = passthrough["BossMaps"]
                         settings.boss_kongs = passthrough["BossKongs"]
@@ -648,6 +658,9 @@ if baseclasses_loaded:
                 classification = ItemClassification.filler
             elif data.progression:
                 classification = ItemClassification.progression
+            elif hasattr(self.multiworld, "generation_is_fake"):
+                # UT needs to classify things as progression or it won't track them
+                classification = ItemClassification.progression
             else:
                 classification = ItemClassification.filler
 
@@ -667,6 +680,10 @@ if baseclasses_loaded:
             # Parse the string data
             level_order = slot_data["LevelOrder"].split(", ")
             starting_kongs = slot_data["StartingKongs"].split(", ")
+            medal_cb_req = slot_data["MedalCBRequirement"]
+            fairy_req = slot_data["FairyRequirement"]
+            pearl_req = slot_data["MermaidPearls"]
+            jetpac_req = slot_data["JetpacReq"]
             boss_bananas = slot_data["BossBananas"].split(", ")
             boss_maps = slot_data["BossMaps"].split(", ")
             boss_kongs = slot_data["BossKongs"].split(", ")
@@ -675,6 +692,10 @@ if baseclasses_loaded:
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
+            relevant_data["MedalCBRequirement"] = medal_cb_req
+            relevant_data["FairyRequirement"] = fairy_req
+            relevant_data["MermaidPearls"] = pearl_req
+            relevant_data["JetpacReq"] = jetpac_req
             relevant_data["BossBananas"] = [int(cost) for cost in boss_bananas]
             relevant_data["BossMaps"] = [Maps[map] for map in boss_maps]
             relevant_data["BossKongs"] = [Kongs[kong] for kong in boss_kongs]
