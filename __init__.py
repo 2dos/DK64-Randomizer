@@ -143,7 +143,9 @@ if baseclasses_loaded:
     from randomizer.Enums.Locations import Locations as DK64RLocations
     from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel
     from randomizer.Enums.Switches import Switches
+    from randomizer.Enums.SwitchTypes import SwitchType
     from randomizer.Lists import Item as DK64RItem
+    from randomizer.Lists.Switches import SwitchInfo
     from worlds.LauncherComponents import Component, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
     from Utils import open_filename
@@ -334,6 +336,11 @@ if baseclasses_loaded:
                         settings.helm_lanky = 3 in settings.helm_order
                         settings.helm_tiny = 2 in settings.helm_order
                         settings.helm_chunky = 1 in settings.helm_order
+                        # Switchsanity
+                        for switch, data in passthrough["SwitchSanity"].items():
+                            needed_kong = Kongs[data["kong"]]
+                            switch_type = SwitchType[data["type"]]
+                            settings.switchsanity_data[Switches[switch]] = SwitchInfo(switch, needed_kong, switch_type, 0, 0, [])
             # We need to set the freeing kongs here early, as they won't get filled in any other part of the AP process
             settings.diddy_freeing_kong = self.random.randint(0, 4)
             # Lanky freeing kong actually changes logic, so UT should use the slot data rather than genning a new one.
@@ -688,6 +695,7 @@ if baseclasses_loaded:
             boss_maps = slot_data["BossMaps"].split(", ")
             boss_kongs = slot_data["BossKongs"].split(", ")
             helm_order = slot_data["HelmOrder"].split(", ")
+            switchsanity = slot_data["SwitchSanity"]
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -701,4 +709,5 @@ if baseclasses_loaded:
             relevant_data["BossKongs"] = [Kongs[kong] for kong in boss_kongs]
             relevant_data["LankyFreeingKong"] = slot_data["LankyFreeingKong"]
             relevant_data["HelmOrder"] = [int(room) for room in helm_order]
+            relevant_data["SwitchSanity"] = switchsanity
             return relevant_data
