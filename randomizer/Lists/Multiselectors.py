@@ -199,7 +199,11 @@ RandomColorItems = [
     MultiselectorItem("Friendly NPCs", -1, "Friendly NPCs will receive random colors."),
     MultiselectorItem("Fire", -1, "Fire will be a random color. This includes modifying the 'Fireball with Glasses' Enemy."),
     MultiselectorItem("Items", -1, "Items will receive random colors."),
-    MultiselectorItem("Barrels and Boulders", -1, "Barrels and Boulders will receive random colors. This does not impact the Kaboom and Klobber enemies as they fall under the enemies classification (There's a couple of other barrels which are impacted by the Kaboom and Klobber textures being randomized)."),
+    MultiselectorItem(
+        "Barrels and Boulders",
+        -1,
+        "Barrels and Boulders will receive random colors. This does not impact the Kaboom and Klobber enemies as they fall under the enemies classification (There's a couple of other barrels which are impacted by the Kaboom and Klobber textures being randomized).",
+    ),
     MultiselectorItem("Particles", -1, "Particle Effects will receive random colors."),
     MultiselectorItem("Misc Objects", -1, "Miscellaneous Objects will receive random colors."),
     MultiselectorItem("Environment", -1, "Environmental elements will receive random colors."),

@@ -878,6 +878,7 @@ def validate_custom_crate_locations(evt):
         else:
             mark_option_enabled(locElem, ValidationError.only_available_as_custom_location)
 
+
 @bind("click", "key_8_helm")
 def lock_key_8_in_helm(evt):
     """If key 8 is locked in Helm, force that location to hold key 8."""

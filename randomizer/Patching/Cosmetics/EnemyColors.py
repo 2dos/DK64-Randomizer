@@ -698,7 +698,7 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
         hueShiftImageContainer(25, 0x127E, 1, 1372, TextureFormat.RGBA5551, blast_shift, ROM_COPY)
         for x in range(4):
             hueShiftImageContainer(25, 0x127F + x, 16, 64, TextureFormat.RGBA5551, blast_shift, ROM_COPY)
-        hueShiftImageContainer(25, getBonusSkinOffset(ExtraTextures.BlastTop), 1, 1372, TextureFormat.RGBA5551, blast_shift, ROM_COPY)  
+        hueShiftImageContainer(25, getBonusSkinOffset(ExtraTextures.BlastTop), 1, 1372, TextureFormat.RGBA5551, blast_shift, ROM_COPY)
     if IsColorOptionSelected(settings, ColorOptions.misc_objects):
         # Instruments
         trombone_sax_shift = getRandomHueShift()

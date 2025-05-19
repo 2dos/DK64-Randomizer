@@ -631,6 +631,7 @@ def updateSwitchsanity(spoiler, ROM_COPY: LocalROM):
             SwitchType.InstrumentPad: [0xA8, 0xA9, 0xAC, 0xAA, 0xAB],
             SwitchType.PadMove: [0x97, 0xD4, 0x10C, 0x10B, 0x10A],
             SwitchType.MiscActivator: [0x28, 0xC3],
+            SwitchType.PushableButton: [None, 0xE3, None, None, 0x70],
         }
         switchsanity_maps = []
         # Get list of maps which contain a switch affected by switchsanity, to reduce references to pointer table
@@ -670,6 +671,10 @@ def updateSwitchsanity(spoiler, ROM_COPY: LocalROM):
                                     old_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                                     old_level = switches[SwitchType.SlamSwitch].index(old_type) % 3
                                     switch_offset = (3 * int(switch_kong)) + old_level
+                                elif switch_type == SwitchType.GunInstrumentCombo:
+                                    switch_type = SwitchType.InstrumentPad
+                                    if item_id == spoiler.settings.switchsanity_data[slot].ids[0]:
+                                        switch_type = SwitchType.GunSwitch
                     if switch_kong is not None and switch_type is not None and switch_offset is not None:
                         new_obj = switches[switch_type][switch_offset]
                         ROM_COPY.seek(item_start + 0x28)
@@ -677,7 +682,7 @@ def updateSwitchsanity(spoiler, ROM_COPY: LocalROM):
                         if switch_slot == Switches.IslesHelmLobbyGone and switch_type == SwitchType.MiscActivator:
                             if switch_kong == Kongs.diddy:
                                 ROM_COPY.seek(item_start + 0xC)
-                                ROM_COPY.writeMultipleBytes(0x3F400000, 4)
+                                ROM_COPY.writeMultipleBytes(int(float_to_hex(0.75), 16), 4)
                             # elif switch_kong == Kongs.donkey:
                             #     ROM_COPY.seek(item_start + 0x1C)
                             #     ROM_COPY.writeMultipleBytes(0, 4)

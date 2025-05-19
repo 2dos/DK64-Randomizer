@@ -398,18 +398,26 @@ class Settings:
         self.switchsanity_switch_japes_to_rambi = SwitchsanityKong.donkey
         self.switchsanity_switch_japes_to_painting_room = SwitchsanityKong.diddy
         self.switchsanity_switch_japes_to_cavern = SwitchsanityKong.diddy
+        self.switchsanity_switch_japes_free_kong = SwitchsanityKong.donkey
         self.switchsanity_switch_aztec_to_kasplat_room = SwitchsanityKong.donkey
         self.switchsanity_switch_aztec_llama_front = SwitchsanityKong.donkey
         self.switchsanity_switch_aztec_llama_side = SwitchsanityKong.lanky
         self.switchsanity_switch_aztec_llama_back = SwitchsanityKong.tiny
         self.switchsanity_switch_aztec_sand_tunnel = SwitchsanityKong.donkey
         self.switchsanity_switch_aztec_to_connector_tunnel = SwitchsanityKong.diddy
+        self.switchsanity_switch_aztec_free_lanky = SwitchsanityKong.donkey
+        self.switchsanity_switch_aztec_free_tiny = SwitchsanityKong.diddy
+        self.switchsanity_switch_factory_free_kong = SwitchsanityKong.lanky
         self.switchsanity_switch_galleon_to_lighthouse_side = SwitchsanityKong.donkey
         self.switchsanity_switch_galleon_to_shipwreck_side = SwitchsanityKong.diddy
         self.switchsanity_switch_galleon_to_cannon_game = SwitchsanityKong.chunky
         self.switchsanity_switch_fungi_yellow_tunnel = SwitchsanityKong.lanky
         self.switchsanity_switch_fungi_green_tunnel_near = SwitchsanityKong.tiny
         self.switchsanity_switch_fungi_green_tunnel_far = SwitchsanityKong.chunky
+        self.diddy_freeing_kong = Kongs.donkey
+        self.lanky_freeing_kong = Kongs.donkey
+        self.tiny_freeing_kong = Kongs.diddy
+        self.chunky_freeing_kong = Kongs.lanky
         self.switchsanity_data = {}
         self.extreme_debugging = False  # Use when you want to know VERY specifically where things fail in the fill - unnecessarily slows seed generation!
 
@@ -976,12 +984,16 @@ class Settings:
                 Switches.JapesRambi: self.switchsanity_switch_japes_to_rambi,
                 Switches.JapesPainting: self.switchsanity_switch_japes_to_painting_room,
                 Switches.JapesDiddyCave: self.switchsanity_switch_japes_to_cavern,
+                Switches.JapesFreeKong: self.switchsanity_switch_japes_free_kong,
                 Switches.AztecBlueprintDoor: self.switchsanity_switch_aztec_to_kasplat_room,
                 Switches.AztecLlamaCoconut: self.switchsanity_switch_aztec_llama_front,
                 Switches.AztecLlamaGrape: self.switchsanity_switch_aztec_llama_side,
                 Switches.AztecLlamaFeather: self.switchsanity_switch_aztec_llama_back,
                 Switches.AztecQuicksandSwitch: self.switchsanity_switch_aztec_sand_tunnel,
                 Switches.AztecGuitar: self.switchsanity_switch_aztec_to_connector_tunnel,
+                Switches.AztecLlamaPuzzle: self.switchsanity_switch_aztec_free_lanky,
+                Switches.AztecOKONGPuzzle: self.switchsanity_switch_aztec_free_tiny,
+                Switches.FactoryFreeKong: self.switchsanity_switch_factory_free_kong,
                 Switches.GalleonLighthouse: self.switchsanity_switch_galleon_to_lighthouse_side,
                 Switches.GalleonShipwreck: self.switchsanity_switch_galleon_to_shipwreck_side,
                 Switches.GalleonCannonGame: self.switchsanity_switch_galleon_to_cannon_game,
@@ -1029,6 +1041,8 @@ class Settings:
                     options = [x for x in options if kong_mapping[x] not in bad_kongs]
                     if slot == Switches.IslesMonkeyport:
                         options = [SwitchsanityKong.donkey, SwitchsanityKong.lanky, SwitchsanityKong.tiny]
+                    elif slot == Switches.AztecOKONGPuzzle:
+                        options = [SwitchsanityKong.diddy, SwitchsanityKong.chunky]
                     if applied_setting == SwitchsanityKong.random:
                         applied_setting = self.random.choice(options)
                     self.switchsanity_data[slot].kong = Kongs.donkey + (applied_setting - SwitchsanityKong.donkey)
@@ -1039,6 +1053,10 @@ class Settings:
                     self.switchsanity_data[Switches.AztecLlamaGrape].kong,
                     self.switchsanity_data[Switches.AztecLlamaFeather].kong,
                 }
+        self.diddy_freeing_kong = self.switchsanity_data[Switches.JapesFreeKong].kong
+        self.lanky_freeing_kong = self.switchsanity_data[Switches.AztecLlamaPuzzle].kong
+        self.tiny_freeing_kong = self.switchsanity_data[Switches.AztecOKONGPuzzle].kong
+        self.chunky_freeing_kong = self.switchsanity_data[Switches.FactoryFreeKong].kong
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
         if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.water_is_lava, False):
@@ -1816,10 +1834,7 @@ class Settings:
                     self.starting_kong_list = self.random.sample(possible_kong_list, self.starting_kongs_count - 1)
                     self.starting_kong_list.append(self.starting_kong)
             # Kong freers are decided in the fill, set as any kong for now
-            self.diddy_freeing_kong = Kongs.any
-            self.lanky_freeing_kong = Kongs.any
-            self.tiny_freeing_kong = Kongs.any
-            self.chunky_freeing_kong = Kongs.any
+
             if self.shuffle_items and Types.Kong in self.shuffled_location_types:
                 self.kong_locations = [
                     Locations.DiddyKong,
@@ -1835,10 +1850,6 @@ class Settings:
             self.starting_kong_list = self.random.sample(possible_kong_list, self.starting_kongs_count - 1)
             self.starting_kong_list.append(Kongs.donkey)
             self.starting_kong = Kongs.donkey
-            self.diddy_freeing_kong = Kongs.donkey
-            self.lanky_freeing_kong = Kongs.donkey
-            self.tiny_freeing_kong = Kongs.diddy
-            self.chunky_freeing_kong = Kongs.lanky
             # Set up kong locations with vanilla kongs in them, removing any kongs we start with
             self.kong_locations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
             if Kongs.diddy in self.starting_kong_list:

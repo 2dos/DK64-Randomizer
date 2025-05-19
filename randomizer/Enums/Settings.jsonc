@@ -1201,7 +1201,11 @@
     "switchsanity_switch_galleon_to_cannon_game": 234,
     "switchsanity_switch_fungi_yellow_tunnel": 235,
     "switchsanity_switch_fungi_green_tunnel_near": 236,
-    "switchsanity_switch_fungi_green_tunnel_far": 237
+    "switchsanity_switch_fungi_green_tunnel_far": 237,
+    "switchsanity_switch_japes_free_kong": 238,
+    "switchsanity_switch_aztec_free_tiny": 239,
+    "switchsanity_switch_aztec_free_lanky": 240,
+    "switchsanity_switch_factory_free_kong": 241
   },
   /*
     SettingsStringDataType:
@@ -1330,7 +1334,11 @@
     "switchsanity_switch_galleon_to_cannon_game": { "obj": "SwitchsanityKong" },
     "switchsanity_switch_fungi_yellow_tunnel": { "obj": "SwitchsanityKong" },
     "switchsanity_switch_fungi_green_tunnel_near": { "obj": "SwitchsanityKong" },
-    "switchsanity_switch_fungi_green_tunnel_far": { "obj": "SwitchsanityKong" }
+    "switchsanity_switch_fungi_green_tunnel_far": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_japes_free_kong": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_aztec_free_tiny": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_aztec_free_lanky": { "obj": "SwitchsanityKong" },
+    "switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" }
   },
   // ALL SETTINGS NEED AN ENTRY HERE!
   // This maps settings to the data types that will be used to encode them in the
@@ -1834,7 +1842,11 @@
     "SettingsStringEnum.switchsanity_switch_galleon_to_cannon_game": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.switchsanity_switch_fungi_yellow_tunnel": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.switchsanity_switch_fungi_green_tunnel_near": { "obj": "SwitchsanityKong" },
-    "SettingsStringEnum.switchsanity_switch_fungi_green_tunnel_far": { "obj": "SwitchsanityKong" }
+    "SettingsStringEnum.switchsanity_switch_fungi_green_tunnel_far": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_japes_free_kong": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_aztec_free_tiny": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_aztec_free_lanky": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" }
   },
   // ALL LIST SETTINGS NEED AN ENTRY HERE!
   // Another map for list settings, for the underlying data type of the list.

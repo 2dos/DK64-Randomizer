@@ -268,6 +268,9 @@
                                         <a id="ssanity-aztec-tab" data-bs-toggle="tab" data-bs-target="#ssanity-aztec-tab-page" type="button" role="tab" aria-controls="ssanity-aztec-tab-page" class="nav-link">Aztec</a>
                                     </li>
                                     <li class="nav-item">
+                                        <a id="ssanity-factory-tab" data-bs-toggle="tab" data-bs-target="#ssanity-factory-tab-page" type="button" role="tab" aria-controls="ssanity-factory-tab-page" class="nav-link">Factory</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a id="ssanity-galleon-tab" data-bs-toggle="tab" data-bs-target="#ssanity-galleon-tab-page" type="button" role="tab" aria-controls="ssanity-galleon-tab-page" class="nav-link">Galleon</a>
                                     </li>
                                     <li class="nav-item">
@@ -289,6 +292,7 @@
                                     <div class="tab-pane fade" id="ssanity-japes-tab-page" role="tabpanel" aria-labelledby="ssanity-japes-tab" tabindex="0">
                                         <div class="container-fluid">
                                             <div class="row row-cols-2">
+                                                {{ switchsanity_option("Free Kong", "switchsanity_switch_japes_free_kong", "guns", "donkey") }}
                                                 {{ switchsanity_option("To Hive Area", "switchsanity_switch_japes_to_hive", "guns", "tiny") }}
                                                 {{ switchsanity_option("To Starting Tunnel Cavern", "switchsanity_switch_japes_to_cavern", "guns", "diddy") }}
                                                 {{ switchsanity_option("To Painting Room", "switchsanity_switch_japes_to_painting_room", "guns", "diddy") }}
@@ -299,12 +303,21 @@
                                     <div class="tab-pane fade" id="ssanity-aztec-tab-page" role="tabpanel" aria-labelledby="ssanity-aztec-tab" tabindex="0">
                                         <div class="container-fluid">
                                             <div class="row row-cols-2">
+                                                {{ switchsanity_option("Tiny Temple Kong Freeing", "switchsanity_switch_aztec_free_tiny", "free_tiny", "diddy") }}
+                                                {{ switchsanity_option("Llama Temple Kong Freeing", "switchsanity_switch_aztec_free_lanky", "free_lanky", "donkey") }}
                                                 {{ switchsanity_option("Starting Tunnel Kasplat Room", "switchsanity_switch_aztec_to_kasplat_room", "guns", "donkey") }}
                                                 {{ switchsanity_option("Door to Connector Tunnel", "switchsanity_switch_aztec_to_connector_tunnel", "instruments", "diddy") }}
                                                 {{ switchsanity_option("Llama Temple Entry (Front)", "switchsanity_switch_aztec_llama_front", "guns", "donkey") }}
                                                 {{ switchsanity_option("Llama Temple Entry (Side)", "switchsanity_switch_aztec_llama_side", "guns", "lanky") }}
                                                 {{ switchsanity_option("Llama Temple Entry (Back)", "switchsanity_switch_aztec_llama_back", "guns", "tiny") }}
                                                 {{ switchsanity_option("Door to Sand Tunnel", "switchsanity_switch_aztec_sand_tunnel", "kong", "donkey") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="ssanity-factory-tab-page" role="tabpanel" aria-labelledby="ssanity-factory-tab" tabindex="0">
+                                        <div class="container-fluid">
+                                            <div class="row row-cols-2">
+                                                {{ switchsanity_option("Free Kong", "switchsanity_switch_factory_free_kong", "kong", "lanky") }}
                                             </div>
                                         </div>
                                     </div>

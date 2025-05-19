@@ -272,42 +272,58 @@
                     data-toggle="tooltip"
                     title="Switch assigned to {{ name }}.">
                 {% if subtype != "gone_to_helm" %}
-                    <option id="donkey" {% if default == "donkey" %}selected{% endif %} value="donkey">
-                        {% if subtype == "guns" %}Coconut
-                        {% elif subtype == "instruments" %}Bongos
-                        {% elif subtype == "kong" %}Donkey
-                        {% elif subtype == "mport_to_helm" %}Blast
-                        {% endif %}
-                    </option>
+                    {% if subtype != "free_tiny" %}
+                        <option id="donkey" {% if default == "donkey" %}selected{% endif %} value="donkey">
+                            {% if subtype == "guns" %}Coconut
+                            {% elif subtype == "instruments" %}Bongos
+                            {% elif subtype == "kong" %}Donkey
+                            {% elif subtype == "mport_to_helm" %}Blast
+                            {% elif subtype == "free_lanky" %}Bongos/Coconut
+                            {% elif subtype == "free_tiny" %}You should not see this
+                            {% endif %}
+                        </option>
+                    {% endif %}
                     {% if subtype != "mport_to_helm" %}
                         <option id="diddy" {% if default == "diddy" %}selected{% endif %} value="diddy">
                             {% if subtype == "guns" %}Peanut
                             {% elif subtype == "instruments" %}Guitar
                             {% elif subtype == "kong" %}Diddy
                             {% elif subtype == "mport_to_helm" %}You should not see this
+                            {% elif subtype == "free_lanky" %}Guitar/Peanut
+                            {% elif subtype == "free_tiny" %}Chimpy Charge
                             {% endif %}
                         </option>
                     {% endif %}
-                    <option id="lanky" {% if default == "lanky" %}selected{% endif %} value="lanky">
-                        {% if subtype == "guns" %}Grape
-                        {% elif subtype == "instruments" %}Trombone
-                        {% elif subtype == "kong" %}Lanky
-                        {% elif subtype == "mport_to_helm" %}Balloon
-                        {% endif %}
-                    </option>
-                    <option id="tiny" {% if default == "tiny" %}selected{% endif %} value="tiny">
-                        {% if subtype == "guns" %}Feather
-                        {% elif subtype == "instruments" %}Saxophone
-                        {% elif subtype == "kong" %}Tiny
-                        {% elif subtype == "mport_to_helm" %}Monkeyport
-                        {% endif %}
-                    </option>
+                    {% if subtype != "free_tiny" %}
+                        <option id="lanky" {% if default == "lanky" %}selected{% endif %} value="lanky">
+                            {% if subtype == "guns" %}Grape
+                            {% elif subtype == "instruments" %}Trombone
+                            {% elif subtype == "kong" %}Lanky
+                            {% elif subtype == "mport_to_helm" %}Balloon
+                            {% elif subtype == "free_lanky" %}Trombone/Grape
+                            {% elif subtype == "free_tiny" %}You should not see this
+                            {% endif %}
+                        </option>
+                    {% endif %}
+                    {% if subtype != "free_tiny" %}
+                        <option id="tiny" {% if default == "tiny" %}selected{% endif %} value="tiny">
+                            {% if subtype == "guns" %}Feather
+                            {% elif subtype == "instruments" %}Saxophone
+                            {% elif subtype == "kong" %}Tiny
+                            {% elif subtype == "mport_to_helm" %}Monkeyport
+                            {% elif subtype == "free_lanky" %}Saxophone/Feather
+                            {% elif subtype == "free_tiny" %}You should not see this
+                            {% endif %}
+                        </option>
+                    {% endif %}
                     {% if subtype != "mport_to_helm" %}
                         <option id="chunky" {% if default == "chunky" %}selected{% endif %} value="chunky">
                             {% if subtype == "guns" %}Pineapple
                             {% elif subtype == "instruments" %}Triangle
                             {% elif subtype == "kong" %}Chunky
                             {% elif subtype == "mport_to_helm" %}You should not see this
+                            {% elif subtype == "free_lanky" %}Triangle/Pineapple
+                            {% elif subtype == "free_tiny" %}Primate Punch
                             {% endif %}
                         </option>
                     {% endif %}

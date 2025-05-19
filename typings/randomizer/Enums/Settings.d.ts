@@ -786,6 +786,10 @@ export enum SettingsStringEnum {
     switchsanity_switch_fungi_yellow_tunnel = 235,
     switchsanity_switch_fungi_green_tunnel_near = 236,
     switchsanity_switch_fungi_green_tunnel_far = 237,
+    switchsanity_switch_japes_free_kong = 238,
+    switchsanity_switch_aztec_free_tiny = 239,
+    switchsanity_switch_aztec_free_lanky = 240,
+    switchsanity_switch_factory_free_kong = 241,
 }
 
 export enum SettingsStringDataType {
@@ -908,6 +912,10 @@ export const SettingsMap = {
     'switchsanity_switch_fungi_yellow_tunnel': SwitchsanityKong,
     'switchsanity_switch_fungi_green_tunnel_near': SwitchsanityKong,
     'switchsanity_switch_fungi_green_tunnel_far': SwitchsanityKong,
+    'switchsanity_switch_japes_free_kong': SwitchsanityKong,
+    'switchsanity_switch_aztec_free_tiny': SwitchsanityKong,
+    'switchsanity_switch_aztec_free_lanky': SwitchsanityKong,
+    'switchsanity_switch_factory_free_kong': SwitchsanityKong,
 }
 
 export const SettingsStringTypeMap = {
@@ -1148,6 +1156,10 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.switchsanity_switch_fungi_yellow_tunnel: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_fungi_green_tunnel_near: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_fungi_green_tunnel_far: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_japes_free_kong: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_free_tiny: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_free_lanky: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_free_kong: SwitchsanityKong,
 }
 
 export const SettingsStringListTypeMap = {

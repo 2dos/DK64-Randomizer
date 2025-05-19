@@ -245,8 +245,6 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Move Count: 
 	- Min: 0%
 	- Max: 0%
-- Switchsanity: 
-	- Off: 100%
 - Troff n' Scoff Max: Between 100 and 300, usually close to 200
 - Win Condition: 
 	- Easy Random: 100%

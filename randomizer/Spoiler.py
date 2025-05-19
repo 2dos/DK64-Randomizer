@@ -1120,16 +1120,6 @@ class Spoiler:
     def UpdateLocations(self, locations: Dict[Locations, Location]) -> None:
         """Update location list for what was produced by the fill."""
         self.location_data = {}
-        self.shuffled_kong_placement = {}
-        # Go ahead and set starting kong
-        startkong = {"kong": self.settings.starting_kong, "write": 0x151}
-        trainingGrounds = {"locked": startkong}
-        self.shuffled_kong_placement["TrainingGrounds"] = trainingGrounds
-        # Write additional starting kongs to empty cages, if any
-        emptyCages = [x for x in [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong] if x not in self.settings.kong_locations]
-        for emptyCage in emptyCages:
-            self.WriteKongPlacement(emptyCage, Items.NoItem, Types.NoItem, 0, 0)
-
         # Loop through locations and set necessary data
         for id, location in locations.items():
             # (There must be an item here) AND (It must not be a constant item expected to be here) AND (It must be in a location not handled by the full item rando shuffler)
@@ -1186,12 +1176,6 @@ class Spoiler:
                                 "move_kong": move_kong,
                                 "price": price,
                             }
-                elif location.type == Types.Kong:
-                    flag = ItemList[location.item].flag
-                    model = getModelFromItem(location.item, location.type, flag, False, True)
-                    if model is None:
-                        model = 0
-                    self.WriteKongPlacement(id, location.item, location.type, model, flag)
                 elif location.type == Types.TrainingBarrel and self.settings.training_barrels != TrainingBarrels.normal:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
@@ -1242,32 +1226,6 @@ class Spoiler:
             # Uncomment for more verbose spoiler with all locations
             # else:
             #     self.location_data[id] = Items.NoItem
-
-    def WriteKongPlacement(self, locationId: Locations, item: Items, item_type: Types, model: int, flag: int) -> None:
-        """Write kong placement information for the given kong cage location."""
-        locationName = "Jungle Japes"
-        unlockKong = self.settings.diddy_freeing_kong
-        puzzlewrite = 0x153
-        if locationId == Locations.LankyKong:
-            locationName = "Llama Temple"
-            unlockKong = self.settings.lanky_freeing_kong
-            puzzlewrite = 0x155
-        elif locationId == Locations.TinyKong:
-            locationName = "Tiny Temple"
-            unlockKong = self.settings.tiny_freeing_kong
-            puzzlewrite = 0x157
-        elif locationId == Locations.ChunkyKong:
-            locationName = "Frantic Factory"
-            unlockKong = self.settings.chunky_freeing_kong
-            puzzlewrite = 0x159
-        lockedkong = {}
-        lockedkong["item"] = item
-        lockedkong["type"] = item_type
-        lockedkong["model"] = model
-        lockedkong["flag"] = flag
-        puzzlekong = {"kong": unlockKong, "write": puzzlewrite}
-        kongLocation = {"locked": lockedkong, "puzzle": puzzlekong}
-        self.shuffled_kong_placement[locationName] = kongLocation
 
     def UpdatePlaythrough(self, locations: Dict[Locations, Location], playthroughLocations: List[Sphere]) -> None:
         """Write playthrough as a list of dicts of location/item pairs."""

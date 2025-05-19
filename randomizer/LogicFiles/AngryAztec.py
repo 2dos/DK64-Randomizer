@@ -290,7 +290,7 @@ LogicRegions = {
     ]),
 
     Regions.AztecTinyRace: Region("Aztec Tiny Race", HintRegion.OasisAndTotem, Levels.AngryAztec, False, None, [
-        LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.HasEnoughRaceCoins(Maps.AztecTinyRace, Kongs.tiny, not l.settings.free_trade_items) ),
+        LocationLogic(Locations.AztecTinyBeetleRace, lambda l: l.HasEnoughRaceCoins(Maps.AztecTinyRace, Kongs.tiny, not l.settings.free_trade_items)),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda _: True, Transitions.AztecRaceToMain),
     ], Transitions.AztecMainToRace

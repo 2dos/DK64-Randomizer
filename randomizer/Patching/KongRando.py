@@ -13,87 +13,8 @@ from randomizer.Patching.Library.ItemRando import getModelFromItem
 
 def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):
     """Write kong cage changes for kong rando."""
-    if Types.Kong in spoiler.settings.shuffled_location_types:
-        kong_locations = [
-            x
-            for x in spoiler.item_assignment
-            if x.location
-            in (
-                Locations.DiddyKong,
-                Locations.LankyKong,
-                Locations.TinyKong,
-                Locations.ChunkyKong,
-            )
-        ]
-        for x in kong_locations:
-            item = x.new_subitem
-            item_type = x.new_item
-            flag = x.new_flag
-            model = 0
-            if item is None or item == Items.NoItem:
-                item = Items.NoItem
-                item_type = Types.NoItem
-                flag = 0
-            else:
-                model = getModelFromItem(item, item_type, flag, x.shared, True)
-            if model is not None:
-                spoiler.WriteKongPlacement(x.location, item, item_type, model, flag)
-
     if spoiler.settings.kong_rando:
-        gunswitches = [0x129, 0x126, 0x128, 0x127, 0x125]
-        greenslamswitches = [0x94, 0x93, 0x95, 0x96, 0xB8]
-        instrumentpads = [0xA8, 0xA9, 0xAC, 0xAA, 0xAB]
-        forceSwitches = [0xE3, 0xE3, 0xE3, 0xE3, 0x70]
-
-        japesPuzzleKong = Kongs.donkey
-        if "Jungle Japes" in spoiler.shuffled_kong_placement:
-            japesPuzzleKong = spoiler.shuffled_kong_placement["Jungle Japes"]["puzzle"]["kong"]
-        tinyTemplePuzzleKong = Kongs.tiny
-        if "Tiny Temple" in spoiler.shuffled_kong_placement:
-            tinyTemplePuzzleKong = spoiler.shuffled_kong_placement["Tiny Temple"]["puzzle"]["kong"]
-        llamaPuzzleKong = Kongs.donkey
-        if "Llama Temple" in spoiler.shuffled_kong_placement:
-            llamaPuzzleKong = spoiler.shuffled_kong_placement["Llama Temple"]["puzzle"]["kong"]
-        factoryPuzzleKong = Kongs.lanky
-        if "Frantic Factory" in spoiler.shuffled_kong_placement:
-            factoryPuzzleKong = spoiler.shuffled_kong_placement["Frantic Factory"]["puzzle"]["kong"]
-
-        kongrando_changes = {
-            Maps.JungleJapes: [
-                {"index": 0x30, "new_type": gunswitches[japesPuzzleKong]},
-                {"index": 0x31, "new_type": gunswitches[japesPuzzleKong]},
-                {"index": 0x32, "new_type": gunswitches[japesPuzzleKong]},
-            ],
-            Maps.AztecLlamaTemple: [
-                {"index": 0x16, "new_type": instrumentpads[llamaPuzzleKong]},
-                {"index": 0x12, "new_type": gunswitches[llamaPuzzleKong]},
-            ],
-            Maps.AztecTinyTemple: [
-                {"index": 0x14, "new_type": forceSwitches[tinyTemplePuzzleKong]},
-            ],
-            Maps.FranticFactory: [
-                {"index": 0x24, "new_type": greenslamswitches[factoryPuzzleKong]},
-            ],
-        }
-        for kong_map in spoiler.shuffled_kong_placement.keys():
-            if kong_map != "TrainingGrounds":
-                ROM_COPY.seek(spoiler.settings.rom_data + spoiler.shuffled_kong_placement[kong_map]["puzzle"]["write"])
-                ROM_COPY.writeMultipleBytes(spoiler.shuffled_kong_placement[kong_map]["puzzle"]["kong"], 1)
-
-        for cont_map_id in kongrando_changes:
-            cont_map = kongrando_changes[cont_map_id]
-            # Setup
-            cont_map_setup_address = getPointerLocation(TableNames.Setups, cont_map_id)
-            ROM_COPY.seek(cont_map_setup_address)
-            model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
-            for x in range(model2_count):
-                start = cont_map_setup_address + 4 + (x * 0x30)
-                ROM_COPY.seek(start + 0x2A)
-                obj_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                for model2 in cont_map:
-                    if model2["index"] == obj_id:
-                        ROM_COPY.seek(start + 0x28)
-                        ROM_COPY.writeMultipleBytes(model2["new_type"], 2)
+        for cont_map_id in [Maps.JungleJapes, Maps.AztecLlamaTemple, Maps.AztecTinyTemple, Maps.FranticFactory]:
             # Character Spawners
             cont_map_spawner_address = getPointerLocation(TableNames.Spawners, cont_map_id)
             ROM_COPY.seek(cont_map_spawner_address)

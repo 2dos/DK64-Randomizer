@@ -2585,25 +2585,20 @@ def PlaceKongsInKongLocations(spoiler: Spoiler, kongItems, kongLocations):
         if Locations.ChunkyKong in kongLocations:
             kongItemToBeFreed = kongItems.pop()
             spoiler.LocationList[Locations.ChunkyKong].PlaceItem(spoiler, kongItemToBeFreed)
-            spoiler.settings.chunky_freeing_kong = spoiler.settings.random.choice(ownedKongs)
             ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
         if Locations.DiddyKong in kongLocations:
             kongItemToBeFreed = kongItems.pop()
             spoiler.LocationList[Locations.DiddyKong].PlaceItem(spoiler, kongItemToBeFreed)
-            spoiler.settings.diddy_freeing_kong = spoiler.settings.random.choice(ownedKongs)
             ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
         # The Lanky location can't be your first in cases where the Lanky freeing Kong can't get into the llama temple and you need a second Kong
         if Locations.LankyKong in kongLocations:
             kongItemToBeFreed = kongItems.pop()
             spoiler.LocationList[Locations.LankyKong].PlaceItem(spoiler, kongItemToBeFreed)
-            spoiler.settings.lanky_freeing_kong = spoiler.settings.random.choice(ownedKongs)
             ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
         # Placing the Tiny location last guarantees we have one of Diddy or Chunky
         if Locations.TinyKong in kongLocations:
             kongItemToBeFreed = kongItems.pop()
             spoiler.LocationList[Locations.TinyKong].PlaceItem(spoiler, kongItemToBeFreed)
-            eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
-            spoiler.settings.tiny_freeing_kong = spoiler.settings.random.choice(eligibleFreers)
             ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
     # In level order shuffling, we need to be very particular about who we unlock and in what order so as to guarantee completion
     # Vanilla levels can be treated as if the level shuffler randomly placed all the levels in the same order
@@ -2621,16 +2616,6 @@ def PlaceKongsInKongLocations(spoiler: Spoiler, kongItems, kongLocations):
             # Randomly pick an accessible location
             progressionLocation = spoiler.settings.random.choice(logicallyAccessibleKongLocations)
             logicallyAccessibleKongLocations.remove(progressionLocation)
-            # Pick a Kong to free this location from the Kongs we currently have
-            if progressionLocation == Locations.DiddyKong:
-                spoiler.settings.diddy_freeing_kong = spoiler.settings.random.choice(ownedKongs)
-            elif progressionLocation == Locations.LankyKong:
-                spoiler.settings.lanky_freeing_kong = spoiler.settings.random.choice(ownedKongs)
-            elif progressionLocation == Locations.TinyKong:
-                eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
-                spoiler.settings.tiny_freeing_kong = spoiler.settings.random.choice(eligibleFreers)
-            elif progressionLocation == Locations.ChunkyKong:
-                spoiler.settings.chunky_freeing_kong = spoiler.settings.random.choice(ownedKongs)
             # Remove this location from any considerations
             kongLocations.remove(progressionLocation)
             # Pick a Kong to unlock from the locked Kongs
@@ -2664,15 +2649,6 @@ def PlaceKongsInKongLocations(spoiler: Spoiler, kongItems, kongLocations):
             ownedKongs.append(ItemPool.GetKongForItem(kongToBeFreed))
             # Refresh the location list and repeat until all Kongs are free
             logicallyAccessibleKongLocations = GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, latestLogicallyAllowedLevel)
-    # Pick freeing kongs for any that are still "any" with no restrictions.
-    if spoiler.settings.diddy_freeing_kong == Kongs.any:
-        spoiler.settings.diddy_freeing_kong = spoiler.settings.random.choice(GetKongs())
-    if spoiler.settings.lanky_freeing_kong == Kongs.any:
-        spoiler.settings.lanky_freeing_kong = spoiler.settings.random.choice(GetKongs())
-    if spoiler.settings.tiny_freeing_kong == Kongs.any:
-        spoiler.settings.tiny_freeing_kong = spoiler.settings.random.choice([Kongs.diddy, Kongs.chunky])
-    if spoiler.settings.chunky_freeing_kong == Kongs.any:
-        spoiler.settings.chunky_freeing_kong = spoiler.settings.random.choice(GetKongs())
     # Update the locations' assigned kong with the set freeing kong list
     spoiler.LocationList[Locations.DiddyKong].kong = spoiler.settings.diddy_freeing_kong
     spoiler.LocationList[Locations.JapesDonkeyFrontofCage].kong = spoiler.settings.diddy_freeing_kong

@@ -15,17 +15,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems, Types
-from randomizer.Enums.Settings import (
-    BLockerDifficulty,
-    HardModeSelected,
-    MiscChangesSelected,
-    HelmDoorItem,
-    IceTrapFrequency,
-    ProgressiveHintItem,
-    HelmSetting,
-    HelmBonuses,
-    ColorOptions
-)
+from randomizer.Enums.Settings import BLockerDifficulty, HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency, ProgressiveHintItem, HelmSetting, HelmBonuses, ColorOptions
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.DataTypes import short_to_ushort
 
@@ -390,6 +380,7 @@ def IsItemSelected(
     """Determine whether a multiselector setting is enabled."""
     # Convert the list to a tuple before passing it to the cached function
     return is_item_selected_cached(bool_setting, tuple(multiselector_setting), check, result_if_empty)
+
 
 def IsColorOptionSelected(settings, color_option: ColorOptions) -> bool:
     """Determine whether an option within the random colors multiselector is enabled."""

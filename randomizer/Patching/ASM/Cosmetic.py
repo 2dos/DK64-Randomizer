@@ -250,7 +250,7 @@ def arcadeCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
             0x8003D848,
             0x8003DA90,  # 8px version
         ]
-        
+
         jumpman_shift = getRandomHueShift()  # 16x16 except for 1 image
         for addr in jumpman_addresses:
             width = 16
@@ -258,7 +258,6 @@ def arcadeCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
                 width = 8
             rom_addr = getROMAddress(addr, Overlay.Arcade, offset_dict)
             hueShiftImageFromAddress(ROM_COPY, rom_addr, width, width, TextureFormat.RGBA5551, jumpman_shift)
-        
 
 
 def cameraCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):

@@ -39,7 +39,7 @@ def PreplacePlandoMinigames(settings: Settings, barrelLocations: List[Locations]
 
 
 def isValidBarrel(location: Locations, settings: Settings) -> bool:
-    """Gets whether a minigame can be placed in this barrel location."""
+    """Get whether a minigame can be placed in this barrel location."""
     if BarrelMetaData[location].map == Maps.HideoutHelm and settings.helm_barrels == MinigameBarrels.skip:
         return False
     elif BarrelMetaData[location].map == Maps.TrainingGrounds and settings.training_barrels_minigames == MinigameBarrels.skip:
@@ -50,6 +50,7 @@ def isValidBarrel(location: Locations, settings: Settings) -> bool:
 
 
 def getRandomMinigame(location: Locations, pool: list[Minigames]) -> tuple:
+    """Produce random minigame from a pool."""
     for index, minigame in enumerate(pool):
         # If this minigame isn't valid, don't use it
         if validate_minigame(location, minigame):

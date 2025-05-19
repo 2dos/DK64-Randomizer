@@ -1312,55 +1312,6 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_location.hint_type = HintType.RequiredKongHint
             UpdateHint(hint_location, message)
             placed_requiredkonghints += 1
-    # In non-item rando, Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
-    hinted_kongs = []
-    placed_kong_hints = 0
-    while placed_kong_hints < hint_distribution[HintType.KongLocation]:
-        kong_map = spoiler.settings.random.choice(kong_placement_levels)
-        kong_index = spoiler.shuffled_kong_placement[kong_map["name"]]["locked"]["kong"]
-        free_kong = spoiler.shuffled_kong_placement[kong_map["name"]]["puzzle"]["kong"]
-        level_index = kong_map["level"]
-
-        level_restriction = None
-        # If this is the first time we're hinting this kong, attempt to put it in an earlier level (regardless of whether or not you can read it)
-        # This only matters if level order matters
-        if level_order_matters and kong_index not in hinted_kongs:
-            level_restriction = [level for level in all_levels if spoiler.settings.BLockerEntryCount[level] <= spoiler.settings.BLockerEntryCount[kong_map["level"]]]
-        # This list of free kongs is sometimes only a subset of the correct list. A more precise list could be calculated but it would be slow.
-        free_kongs = spoiler.settings.starting_kong_list.copy()
-        free_kongs.append(free_kong)
-        hint_location = getRandomHintLocation(random=spoiler.settings.random, kongs=free_kongs, levels=level_restriction)
-        # If this fails, it's extremely likely there's already a very useful hint in the very few spot(s) this could be
-        if hint_location is None:
-            if level_restriction is not None:
-                # Can't make it too easy on em - put this hint in any hint door for these kongs
-                hint_location = getRandomHintLocation(random=spoiler.settings.random, kongs=free_kongs)
-            else:
-                # In the unfathomably rare world where our freeing kong is out of hint doors, replace this hint with a joke hint
-                # When I say unfathomably, I'm talking "you start with all moves and free B. Lockers but only 4 Kongs"
-                hint_distribution[HintType.Joke] += 1  # Adding meme hints to meme seeds is just thematic at this point
-                hint_distribution[HintType.KongLocation] -= 1
-                continue
-
-        if hint_location is not None:
-            freeing_kong_name = kong_list[free_kong]
-            if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
-                if not kong_index == Kongs.any:
-                    kong_name = "\x07" + spoiler.settings.random.choice(kong_cryptic[kong_index]) + "\x07"
-                level_name = "\x08" + spoiler.settings.random.choice(level_cryptic[level_index]) + "\x08"
-            else:
-                if not kong_index == Kongs.any:
-                    kong_name = kong_list[kong_index]
-                level_name = level_colors[level_index] + level_list[level_index] + level_colors[level_index]
-            unlock_verb = "frees"
-            if kong_index == Kongs.any:
-                unlock_verb = "accesses"
-                kong_name = "an empty cage"
-            message = f"{freeing_kong_name} {unlock_verb} {kong_name} in {level_name}."
-            hinted_kongs.append(kong_index)
-            hint_location.hint_type = HintType.KongLocation
-            UpdateHint(hint_location, message)
-            placed_kong_hints += 1
 
     # B. Locker hints need to be on the player's path to be useful
     hinted_blocker_combos = []
