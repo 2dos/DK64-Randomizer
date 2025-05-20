@@ -42,7 +42,7 @@ class BananaCoinGroup:
         self.region = region
         self.vanilla = vanilla
         if logic is None:
-            self.logic = lambda l: True
+            self.logic = lambda _:True
         else:
             self.logic = logic
         self.placed_type = Collectibles.coin if vanilla else None
@@ -3917,7 +3917,7 @@ BananaCoinGroupList = {
             name="Alcoves in Block Tower Room",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.Testing,
-            logic=lambda l: True,
+            logic=lambda _:True,
             locations=[
                 [1.0, 2155.634521484375, 1129.673095703125, 1630.73291015625],
                 [1.0, 2055.782958984375, 1128.6666259765625, 1632.19921875],
@@ -4376,7 +4376,7 @@ BananaCoinGroupList = {
             name="Lighthouse Underwater corner (Stack)",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.LighthouseUnderwater,
-            logic=lambda l: True,
+            logic=lambda _:True,
             locations=[
                 [1.0, 2209, 931, 4174],
                 [1.0, 2209, 861, 4174],
@@ -6808,7 +6808,7 @@ BananaCoinGroupList = {
             name="In Baboon Blast Course",
             konglist=[Kongs.donkey],
             region=Regions.CavesBaboonBlast,
-            logic=lambda l: True,
+            logic=lambda _:True,
             locations=[
                 [0.7400002479553223, 641.4625854492188, 569.0, 2149.424560546875],
                 [1.119999885559082, 1036.116455078125, 292.0, 1675.6175537109375],
@@ -7906,7 +7906,7 @@ BananaCoinGroupList = {
             name="At a dead end",
             konglist=[Kongs.lanky],
             region=Regions.Greenhouse,
-            logic=lambda l: True,
+            logic=lambda _:True,
             locations=[
                 [1.2599997520446777, 880.094482421875, 0, 876.8353881835938],
                 [1.2599997520446777, 854.2296752929688, 0, 875.391845703125],

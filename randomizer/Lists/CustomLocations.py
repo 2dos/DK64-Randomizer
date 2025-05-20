@@ -68,7 +68,7 @@ class CustomLocation:
         self.placement_subindex = default_index
         self.tied_warp_event = tied_warp_event
         if logic is None:
-            self.logic = lambda l: True
+            self.logic = lambda _:True
         else:
             self.logic = logic
 
@@ -5661,7 +5661,7 @@ CustomLocations = {
             max_size=64,
             group=4,
             logic_region=Regions.OuterIsles,
-            logic=lambda l: True,
+            logic=lambda _:True,
         ),
         CustomLocation(
             map=Maps.Isles,

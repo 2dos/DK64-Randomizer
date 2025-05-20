@@ -156,17 +156,17 @@ LogicRegions = {
     ]),
 
     Regions.MushroomUpperVineFloor: Region("Mushroom Upper Vine Floor", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestGMEnemy_AboveNightDoor, lambda l: True),
+        LocationLogic(Locations.ForestGMEnemy_AboveNightDoor, lambda _:True),
     ], [], [
         TransitionFront(Regions.MushroomUpper, lambda l: l.climbing),
-        TransitionFront(Regions.MushroomUpperMid, lambda l: True),
+        TransitionFront(Regions.MushroomUpperMid, lambda _:True),
     ]),
 
     Regions.MushroomUpper: Region("Mushroom Upper", HintRegion.MushroomInterior, Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestDonkeyMushroomCannons, lambda l: Events.MushroomCannonsSpawned in l.Events and Events.DonkeyMushroomSwitch in l.Events),
     ], [], [
-        TransitionFront(Regions.MushroomUpperVineFloor, lambda l: True),
-        TransitionFront(Regions.MushroomUpperExterior, lambda l: True, Transitions.ForestUpperMushroomToUpperExterior),
+        TransitionFront(Regions.MushroomUpperVineFloor, lambda _:True),
+        TransitionFront(Regions.MushroomUpperExterior, lambda _:True, Transitions.ForestUpperMushroomToUpperExterior),
     ]),
 
     # This region basically just exists to facilitate the two entrances into upper mushroom

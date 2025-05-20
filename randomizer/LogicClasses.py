@@ -127,9 +127,9 @@ class Region:
                     deathwarp = self.GetDefaultDeathwarp()
                 if deathwarp is not None:
                     if isinstance(deathwarp, Regions):
-                        self.deathwarp = TransitionFront(deathwarp, lambda l: True)
+                        self.deathwarp = TransitionFront(deathwarp, lambda _: True)
                     else:
-                        self.deathwarp = TransitionFront(Regions(deathwarp), lambda l: True)
+                        self.deathwarp = TransitionFront(Regions(deathwarp), lambda _: True)
 
         self.ResetAccess()
 
@@ -252,7 +252,7 @@ class ColoredBananaGroup:
         self.locations = locations  # 5 numbers: {int amount, float scale, int x, y, z}
         self.region = region
         if logic is None:
-            self.logic = lambda l: True
+            self.logic = lambda _: True
         else:
             self.logic = logic
         self.selected = False
@@ -283,7 +283,7 @@ class Balloon:
         self.points = points  # 3 numbers: [int x, y, z]
         self.region = region
         if logic is None:
-            self.logic = lambda l: True
+            self.logic = lambda _: True
         else:
             self.logic = logic
         self.spawnPoint = self.setSpawnPoint(points)

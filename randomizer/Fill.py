@@ -405,7 +405,7 @@ def GetAccessibleLocations(
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if levelExit is not None:
                         dest = ShuffleExits.ShufflableExits[levelExit].back.regionId
-                        exits.append(TransitionFront(dest, lambda l: True))
+                        exits.append(TransitionFront(dest, lambda _:True))
                         # If we're generating the final playthrough, note down the order in which we access entrances for LZR purposes
                         # No need to check access on this transition, it's always accessible
                         if searchType == SearchMode.GeneratePlaythrough:
@@ -416,7 +416,7 @@ def GetAccessibleLocations(
                 elif settings.random_starting_region and region.level != Levels.DKIsles and region.level != Levels.Shops and region.restart is None:
                     levelLobby = GetLobbyOfRegion(region.level)
                     if levelLobby is not None and levelLobby not in kongAccessibleRegions[kong]:
-                        exits.append(TransitionFront(levelLobby, lambda l: True))
+                        exits.append(TransitionFront(levelLobby, lambda _:True))
                 for exit in exits:
                     destination = exit.dest
                     shuffle_id = exit.exitShuffleId
