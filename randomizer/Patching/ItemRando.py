@@ -970,4 +970,4 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                             old_scale = intf_to_float(int.from_bytes(ROM_COPY.readBytes(4), "big"))
                             new_scale = old_scale * item_slot["upscale"]
                             ROM_COPY.seek(start + 0xC)
-                            ROM_COPY.writeMultipleBytes(int(float_to_hex(new_scale), 16), 4)
+                            ROM_COPY.writeFloat(new_scale)

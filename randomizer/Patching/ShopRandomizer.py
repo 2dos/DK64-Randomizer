@@ -635,13 +635,13 @@ def ApplyShopRandomizer(spoiler, ROM_COPY: LocalROM):
                     elif new_angle >= 360:
                         new_angle -= 360
                     ROM_COPY.seek(setup_item + 0x1C)
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(new_angle), 16), 4)
+                    ROM_COPY.writeFloat(new_angle)
                 # Scale
                 ROM_COPY.seek(setup_item + 0xC)
                 original_scale = intf_to_float(int.from_bytes(ROM_COPY.readBytes(4), "big"))
                 new_scale = original_scale * placement["scale_factor"]
                 ROM_COPY.seek(setup_item + 0xC)
-                ROM_COPY.writeMultipleBytes(int(float_to_hex(new_scale), 16), 4)
+                ROM_COPY.writeFloat(new_scale)
                 # Get Model X and Z
                 ROM_COPY.seek(setup_item)
                 model_x = intf_to_float(int.from_bytes(ROM_COPY.readBytes(4), "big"))

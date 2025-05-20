@@ -7,6 +7,7 @@ import os
 from io import BytesIO
 import pkgutil
 from typing import TYPE_CHECKING, Union
+import struct
 
 import js
 
@@ -16,6 +17,11 @@ if TYPE_CHECKING:
     from randomizer.Lists.MapsAndExits import Maps
     from randomizer.Patching.ItemRando import CustomActors
 
+def ftoi(f: float) -> str:
+    """Convert float to int representation."""
+    if f == 0:
+        return 0
+    return struct.unpack("<I", struct.pack("<f", f))[0]
 
 class ROM:
     """Patcher for ROM files loaded via Rompatcherjs."""
@@ -79,6 +85,10 @@ class ROM:
             idx -= 1
         for x in arr:
             self.write(x)
+
+    def writeFloat(self, value: float):
+        """Write 32-bit floating point value to the current position."""
+        self.writeMultipleBytes(ftoi(value), 4)
 
     def save(self, file_name: str):
         """Save the patched file to a downloadable file.
@@ -221,6 +231,10 @@ class LocalROM:
             idx -= 1
         for x in arr:
             self.write(x)
+
+    def writeFloat(self, value: float):
+        """Write 32-bit floating point value to the current position."""
+        self.writeMultipleBytes(ftoi(value), 4)
 
     def seek(self, val: int) -> None:
         """Seek to position in current file.

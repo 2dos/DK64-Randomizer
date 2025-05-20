@@ -373,20 +373,20 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                     star_x = star_pos[0]
                     star_z = star_pos[1]
                     ROM_COPY.seek(item_start)
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(star_x), 16), 4)
+                    ROM_COPY.writeFloat(star_x)
                     ROM_COPY.seek(item_start + 8)
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(star_z), 16), 4)
+                    ROM_COPY.writeFloat(star_z)
                     ROM_COPY.seek(item_start + 0x1C)
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(star_a), 16), 4)
+                    ROM_COPY.writeFloat(star_a)
                     if len(star_height_boundaries) > 0:
                         star_y = spoiler.settings.random.uniform(star_height_boundaries[0], star_height_boundaries[1])
                         ROM_COPY.seek(item_start + 4)
-                        ROM_COPY.writeMultipleBytes(int(float_to_hex(star_y), 16), 4)
+                        ROM_COPY.writeFloat(star_y)
             if item_type == 0x74 and cont_map_id == Maps.GalleonLighthouse and lighthouse_on:
                 new_gb_coords = [407.107, 720, 501.02]
                 for coord_i, coord in enumerate(new_gb_coords):
                     ROM_COPY.seek(item_start + (coord_i * 4))
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(coord), 16), 4)
+                    ROM_COPY.writeFloat(coord)
             elif cont_map_id == Maps.FranticFactory and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off and item_type >= 0xF4 and item_type <= 0x103:
                 for subtype_item in number_gb_data:
                     for num_item in subtype_item["numbers"]:
@@ -402,38 +402,38 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                 if item_type >= 0x1BA and item_type <= 0x1BE:  # Mushrooms
                     spawner_pos = lanky_fungi_mush["picked"][lanky_fungi_mush["index"]]
                     ROM_COPY.seek(item_start)
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                    ROM_COPY.writeFloat(spawner_pos[0])
                     ROM_COPY.seek(item_start + 8)
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                    ROM_COPY.writeFloat(spawner_pos[1])
                     lanky_fungi_mush["index"] += 1
                 elif item_type == 0x205:  # Lanky Bunch
                     spawner_pos = lanky_fungi_mush["picked"][0]
                     ROM_COPY.seek(item_start)
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                    ROM_COPY.writeFloat(spawner_pos[0])
                     ROM_COPY.seek(item_start + 8)
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                    ROM_COPY.writeFloat(spawner_pos[1])
             elif cont_map_id == Maps.AngryAztec and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off and (item_type == 0x121 or (item_type >= 0x226 and item_type <= 0x228)):
                 # Is Vase Pad
                 ROM_COPY.seek(item_start)
                 for coord in range(3):
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
+                    ROM_COPY.writeFloat(vase_puzzle_positions[vase_puzzle_rando_progress][coord])
                 vase_puzzle_rando_progress += 1
             elif cont_map_id == Maps.CavesChunkyCabin and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off and item_type == 0x203:
                 spawner_pos = chunky_5dc_pads["picked"][chunky_5dc_pads["index"]]
                 ROM_COPY.seek(item_start)
-                ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                ROM_COPY.writeFloat(spawner_pos[0])
                 ROM_COPY.seek(item_start + 8)
-                ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                ROM_COPY.writeFloat(spawner_pos[1])
                 chunky_5dc_pads["index"] += 1
             elif cont_map_id == Maps.GloomyGalleon and item_id == 0xC and spoiler.settings.puzzle_rando_difficulty in (PuzzleRando.hard, PuzzleRando.chaos):
                 coords = list(getRandomGalleonStarLocation(spoiler.settings.random))
                 ROM_COPY.seek(item_start)
                 for x in coords:
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(x), 16), 4)
+                    ROM_COPY.writeFloat(x)
             # Regular if because it can be combined with regular hard bosses
             if item_type == 0x235 and cont_map_id == Maps.GalleonBoss and higher_pufftoss_stars:
                 ROM_COPY.seek(item_start + 4)
-                ROM_COPY.writeMultipleBytes(int(float_to_hex(345), 16), 4)
+                ROM_COPY.writeFloat(345)
             elif item_type == 0xCE and cont_map_id == Maps.HelmBarrelLankyMaze and spoiler.settings.sprint_barrel_requires_sprint:
                 ROM_COPY.seek(item_start + 0x28)
                 ROM_COPY.writeMultipleBytes(611, 2)  # Overwrite type of obj to custom "Sprint Switch"
@@ -551,15 +551,15 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
             if actor_type >= 100 and actor_type <= 105 and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off and cont_map_id == Maps.CavesDiddyIgloo:  # 5DI Spawner
                 spawner_pos = diddy_5di_pads["picked"][diddy_5di_pads["index"]]
                 ROM_COPY.seek(actor_start)
-                ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                ROM_COPY.writeFloat(spawner_pos[0])
                 ROM_COPY.seek(actor_start + 8)
-                ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                ROM_COPY.writeFloat(spawner_pos[1])
                 diddy_5di_pads["index"] += 1
             elif actor_type >= 64 and actor_type <= 66 and spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off and cont_map_id == Maps.AngryAztec:  # Exclude O Vase to force it to be vanilla
                 # Vase
                 ROM_COPY.seek(actor_start)
                 for coord in range(3):
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
+                    ROM_COPY.writeFloat(vase_puzzle_positions[vase_puzzle_rando_progress][coord])
                 vase_puzzle_rando_progress += 1
             elif actor_type == 0x1C and actor_id == 16 and spoiler.settings.fix_lanky_tiny_prod and cont_map_id == Maps.FranticFactory:
                 ROM_COPY.seek(actor_start + 0x14)
@@ -567,7 +567,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
             elif actor_type == 139 and raise_patch and not spoiler.settings.random_patches:
                 if cont_map_id == Maps.FungiForest and actor_id == 47:
                     ROM_COPY.seek(actor_start + 4)
-                    ROM_COPY.writeMultipleBytes(int(float_to_hex(155), 16), 4)
+                    ROM_COPY.writeFloat(155)
 
 
 def updateRandomSwitches(spoiler, ROM_COPY: LocalROM):
@@ -682,7 +682,7 @@ def updateSwitchsanity(spoiler, ROM_COPY: LocalROM):
                         if switch_slot == Switches.IslesHelmLobbyGone and switch_type == SwitchType.MiscActivator:
                             if switch_kong == Kongs.diddy:
                                 ROM_COPY.seek(item_start + 0xC)
-                                ROM_COPY.writeMultipleBytes(int(float_to_hex(0.75), 16), 4)
+                                ROM_COPY.writeFloat(0.75)
                             # elif switch_kong == Kongs.donkey:
                             #     ROM_COPY.seek(item_start + 0x1C)
                             #     ROM_COPY.writeMultipleBytes(0, 4)

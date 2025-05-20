@@ -6,6 +6,7 @@ from typing import BinaryIO
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.ASMPatcher import patchAssembly, patchAssemblyCosmetic
+from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Items import Items
@@ -82,6 +83,12 @@ class TestROM:
         if IO_LOGGING:
             io_logs.append({"action": "write", "value": value, "size": size})
         self.stream.write(value.to_bytes(size, "big"))
+    
+    def writeFloat(self, value: float):
+        """Binary IO write floating point value."""
+        if IO_LOGGING:
+            io_logs.append({"action": "write", "value": value, "size": "float"})
+        self.writeMultipleBytes(int(float_to_hex(value), 16), 4)
 
     def writeBytes(self, bytes):
         """Binary IO write."""
