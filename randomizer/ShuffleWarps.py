@@ -217,7 +217,7 @@ def LinkWarps(spoiler):
             source_region.exits.append(
                 TransitionFront(
                     destination_warp_data.region_id,
-                    lambda l: destination_warp_data.event_logic(l) and warp_data.logic_region.events.next(lambda e: e.name == warp_data.event).logic(l),
+                    lambda l: destination_warp_data.event_logic(l) and spoiler.RegionList[warp_data.region_id].events.next(lambda e: e.name == warp_data.event).logic(l),
                     isBananaportTransition=True,
                 )
             )
