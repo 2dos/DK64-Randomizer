@@ -214,4 +214,4 @@ def LinkWarps(spoiler):
         if warp_data.region_id != destination_warp_data.region_id:
             source_region = spoiler.RegionList[warp_data.region_id]
             # The source region gets a transition to the destination region conditionally based on the destination warp being tagged
-            source_region.exits.append(TransitionFront(destination_warp_data.region_id, destination_warp_data.event_logic, isBananaportTransition=True))
+            source_region.exits.append(TransitionFront(destination_warp_data.region_id, lambda l: destination_warp_data.event_logic(l) and warp_data.event.logic(l), isBananaportTransition=True))
