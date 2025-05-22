@@ -5,6 +5,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Settings import ShufflePortLocations
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Lists.Warps import BananaportVanilla, VanillaBananaportSelector
+from randomizer.LogicClasses import Event
 from randomizer.LogicClasses import TransitionFront
 
 
@@ -217,7 +218,8 @@ def LinkWarps(spoiler):
             source_region.exits.append(
                 TransitionFront(
                     destination_warp_data.region_id,
-                    lambda l: destination_warp_data.event_logic(l) and next((e for e in spoiler.RegionList[warp_data.region_id].events if e.name == warp_data.event), lambda l: True).logic(l),
+                    lambda l: destination_warp_data.event_logic(l)
+                    and next((e for e in spoiler.RegionList[warp_data.region_id].events if e.name == warp_data.event), Event(warp_data.event, lambda l: True)).logic(l),
                     isBananaportTransition=True,
                 )
             )
