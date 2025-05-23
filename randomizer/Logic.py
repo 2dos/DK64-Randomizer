@@ -271,13 +271,21 @@ class LogicVarHolder:
                 Maps.CreepyCastle,
                 Maps.CastleCrypt,
                 Maps.Isles,
+                # Maps.HideoutHelmLobby,  # Not in BananaportVanilla
             ]
         elif self.settings.activate_all_bananaports == ActivateAllBananaports.isles:
             activated_warp_maps = [Maps.Isles]
+        elif self.settings.activate_all_bananaports == ActivateAllBananaports.isles_inc_helm_lobby:
+            activated_warp_maps = [
+                Maps.Isles,
+                # Maps.HideoutHelmLobby,  # Not in BananaportVanilla
+            ]
         if any(activated_warp_maps):
             for warp_data in BananaportVanilla.values():
                 if warp_data.map_id in activated_warp_maps:
                     self.Events.append(warp_data.event)
+        if self.settings.activate_all_bananaports in (ActivateAllBananaports.all, ActivateAllBananaports.isles_inc_helm_lobby):
+            self.Events.extend([Events.HelmLobbyW1aTagged, Events.HelmLobbyW1bTagged])
 
         # Colored banana and coin arrays
         # Colored bananas as 9 arrays of 5 (8 levels for 5 kongs, Helm is level index 7, so skip this)
@@ -513,6 +521,15 @@ class LogicVarHolder:
             self.settings.quality_of_life,
             self.settings.misc_changes_selected,
             MiscChangesSelected.remove_galleon_ship_timers,
+        )
+
+    @lru_cache(maxsize=None)
+    def cabinBarrelMoved(self) -> bool:
+        """Determine whether the upper cabin rocketbarrel has been moved."""
+        return IsItemSelected(
+            self.settings.quality_of_life,
+            self.settings.misc_changes_selected,
+            MiscChangesSelected.move_spring_cabin_rocketbarrel,
         )
 
     def canOpenLlamaTemple(self):
