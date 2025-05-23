@@ -209,37 +209,21 @@ class GlitchesSelected(OptionList):
 
     Valid Keys:
     "advanced_platforming": Platforming techniques that don't require any glitches but might be too tough for some players.
-    "b_locker_skips": Any skip that allows you to bypass the B. Locker's requirements.
-    "general_clips": Any trick that doesn't fall into a general category. Includes object clips, bush push, terminal 2 clip and Crypt jump clip.
-    "ledge_clips": A trick that allows the player to fall through gaps between walls and floors.
     "moonkicks": A trick that allows Donkey to ascend by interrupting his aerial attack with a kick.
     "phase_swimming": Formerly known as STVW, a trick to go through a significant amount of walls in the game whilst underwater.
-    "phase_walking": A triple-frame perfect technique to go through a significant amount of walls in the game. This option also includes Phase Falling.
-    "skew": A trick that enables you to rotate the kong's collision and model, enabling the player to go through most walls in the game.
-    "spawn_snags": A trick that allows you to collect items earlier than intended by keeping them unloaded. Only accounts for spawn snags that have been done by humans.
     "swim_through_shores": A trick that allows you to swim into a sloped shoreline to get out of bounds.
-    "tag_barrel_storage": A trick that allows you to store a tag barrel being entered and abuse that storage. Includes telegrabs and Orangstand TBS Noclips.
     "troff_n_scoff_skips": Any skip that allows you to bypass the kong and small banana requirement in order to fight a boss.
     "moontail": A trick that allows the player to gain extra height with Diddy.
-    "phasefall": An alternative to Phase walking that allows you to use fairy camera and Chunky to go through walls.
     """
 
     display_name = "Glitched Logic"
     valid_keys = {
         "advanced_platforming",
-        "b_locker_skips",
-        "general_clips",
-        "ledge_clips",
         "moonkicks",
         "phase_swimming",
-        "phase_walking",
-        "skew",
-        "spawn_snags",
         "swim_through_shores",
-        "tag_barrel_storage",
         "troff_n_scoff_skips",
         "moontail",
-        "phasefall",
     }
 
 
