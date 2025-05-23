@@ -203,9 +203,10 @@ class SwitchSanity(Choice):
     option_all = 2
     default = 0
 
+
 class GlitchesSelected(OptionList):
     """Determines what glitches are enabled.
-    
+
     Valid Keys:
     "advanced_platforming": Platforming techniques that don't require any glitches but might be too tough for some players.
     "b_locker_skips": Any skip that allows you to bypass the B. Locker's requirements.
@@ -222,10 +223,24 @@ class GlitchesSelected(OptionList):
     "moontail": A trick that allows the player to gain extra height with Diddy.
     "phasefall": An alternative to Phase walking that allows you to use fairy camera and Chunky to go through walls.
     """
-    
-    display_name = "Glitched Logic"
-    valid_keys = {"advanced_platforming", "b_locker_skips", "general_clips", "ledge_clips", "moonkicks", "phase_swimming", "phase_walking", "skew", "spawn_snags", "swim_through_shores", "tag_barrel_storage", "troff_n_scoff_skips", "moontail", "phasefall"}
 
+    display_name = "Glitched Logic"
+    valid_keys = {
+        "advanced_platforming",
+        "b_locker_skips",
+        "general_clips",
+        "ledge_clips",
+        "moonkicks",
+        "phase_swimming",
+        "phase_walking",
+        "skew",
+        "spawn_snags",
+        "swim_through_shores",
+        "tag_barrel_storage",
+        "troff_n_scoff_skips",
+        "moontail",
+        "phasefall",
+    }
 
 
 @dataclass
