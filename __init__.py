@@ -141,7 +141,8 @@ if baseclasses_loaded:
     from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Locations import Locations as DK64RLocations
-    from randomizer.Enums.Settings import WinConditionComplex
+    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel
+    from randomizer.Enums.Switches import Switches
     from randomizer.Lists import Item as DK64RItem
     from worlds.LauncherComponents import Component, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
@@ -282,6 +283,7 @@ if baseclasses_loaded:
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["krool_key_count"] = self.options.krool_key_count.value
+            settings_dict["switchsanity"] = self.options.switchsanity.value
             settings_dict["starting_keys_list_selected"] = []
             for item in self.options.start_inventory:
                 if item == "Key 1":
@@ -593,6 +595,7 @@ if baseclasses_loaded:
                 "HelmOrder": ", ".join([str(room) for room in self.logic_holder.settings.helm_order]),
                 "OpenLobbies": self.logic_holder.settings.open_lobbies,
                 "KroolInBossPool": self.logic_holder.settings.krool_in_boss_pool,
+                "SwitchSanity": {switch.name: {"kong": data.kong.name, "type": data.switch_type.name} for switch, data in self.logic_holder.settings.switchsanity_data.items()},
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -623,6 +626,13 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Removed Barriers: " + ", ".join([barrier.name for barrier in self.logic_holder.settings.remove_barriers_selected]))
             spoiler_handle.write("\n")
+            if self.logic_holder.settings.switchsanity != SwitchsanityLevel.off:
+                spoiler_handle.write("Switchsanity Settings: \n")
+                for switch, data in self.logic_holder.settings.switchsanity_data.items():
+                    if self.logic_holder.settings.switchsanity == SwitchsanityLevel.helm_access:
+                        if switch not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
+                            continue
+                    spoiler_handle.write(f"  - {switch.name}: {data.kong.name} with {data.switch_type.name}\n")
             spoiler_handle.write("Generated Time: " + time.strftime("%d-%m-%Y %H:%M:%S", time.gmtime()) + " GMT")
             spoiler_handle.write("\n")
             spoiler_handle.write("Randomizer Version: " + self.logic_holder.settings.version)
