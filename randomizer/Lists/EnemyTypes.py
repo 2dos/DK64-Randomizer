@@ -519,6 +519,7 @@ EnemyMetaData = {
         minigame_enabled=False,
         interaction=InteractionMethods(kill_melee=False, can_bypass=False),  # Can be meleed with distraction mechanic, but we'll ignore that for now
         default_size=50,
+        max_speed=100,
     ),
     Enemies.Bug: EnemyData(
         name="Bug",

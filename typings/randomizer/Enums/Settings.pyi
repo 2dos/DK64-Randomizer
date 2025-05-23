@@ -4,6 +4,7 @@ class ActivateAllBananaports(IntEnum):
     off = 0
     all = 1
     isles = 2
+    isles_inc_helm_lobby = 3
 
 class BananaportRando(IntEnum):
     off = 0
@@ -313,6 +314,7 @@ class MiscChangesSelected(IntEnum):
     remove_enemy_cabin_timer = 27
     remove_galleon_ship_timers = 28
     japes_bridge_permanently_extended = 29
+    move_spring_cabin_rocketbarrel = 30
 
 class MoveRando(IntEnum):
     off = 0

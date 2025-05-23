@@ -12,6 +12,8 @@ from io import BytesIO
 import pkgutil
 import shutil
 import sys
+import tempfile
+
 
 from worlds.dk64.ap_version import version as ap_version
 
@@ -24,9 +26,6 @@ try:
 except ImportError:
     pass
 if baseclasses_loaded:
-    baseclasses_path = os.path.dirname(os.path.dirname(BaseClasses.__file__))
-    if not baseclasses_path.endswith("lib"):
-        baseclasses_path = os.path.join(baseclasses_path, "lib")
 
     def display_error_box(title: str, text: str) -> bool | None:
         """Display an error message box."""
@@ -38,32 +37,26 @@ if baseclasses_loaded:
         root.update()
 
     def copy_dependencies(zip_path, file):
-        """Copy a ZIP file from the package to a local directory, extracts its contents.
+        """Copy a ZIP file from the package to a temporary directory, extracts its contents.
 
-        Ensures the destination directory exists.
+        Ensures the temporary directory exists.
         Args:
             zip_path (str): The relative path to the ZIP file within the package.
         Behavior:
-            - Creates a `./lib` directory if it does not exist.
+            - Creates a temporary directory if it does not exist.
             - Reads the ZIP file from the package using `pkgutil.get_data`.
-            - Writes the ZIP file to the `./lib` directory if it does not already exist.
-            - Extracts the contents of the ZIP file into the `./lib` directory.
+            - Writes the ZIP file to the temporary directory if it does not already exist.
+            - Extracts the contents of the ZIP file into the temporary directory.
         Prints:
             - A message if the ZIP file could not be read.
             - A message when the ZIP file is successfully copied.
             - A message when the ZIP file is successfully extracted.
         """
-        # Find the path of BaseClasses, we want to work in the AP directory
-        # This is a bit of a hack, but it works
-        # Get the path of BaseClasses
-        dest_dir = baseclasses_path
-        # if baseclasses_path does not end in lib, add lib to the end
+        # Create a temporary directory
+        temp_dir = tempfile.mkdtemp()
 
-        zip_dest = os.path.join(dest_dir, file)
+        zip_dest = os.path.join(temp_dir, file)
         try:
-            # Ensure the destination directory exists
-            os.makedirs(dest_dir, exist_ok=True)
-
             # Load the ZIP file from the package
             zip_data = pkgutil.get_data(__name__, zip_path)
             # Check if the zip already exists in the destination
@@ -78,26 +71,37 @@ if baseclasses_loaded:
 
                     # Extract the ZIP file
                     with zipfile.ZipFile(zip_dest, "r") as zip_ref:
-                        zip_ref.extractall(dest_dir)
-                    print(f"Extracted {zip_dest} into {dest_dir}")
+                        zip_ref.extractall(temp_dir)
+                    print(f"Extracted {zip_dest} into {temp_dir}")
+
         except PermissionError:
             display_error_box("Permission Error", "Unable to install Dependencies to AP, please try to install AP as an admin.")
             raise PermissionError("Permission Error: Unable to install Dependencies to AP, please try to install AP as an admin.")
 
+        # Add the temporary directory to sys.path
+        if temp_dir not in sys.path:
+            sys.path.insert(0, temp_dir)
+
     platform_type = sys.platform
-    # if the file pyxdelta.cp310-win_amd64.pyd exists, delete pyxdelta.cp310-win_amd64.pyd and PIL and pillow-10.3.0.dist-info and pyxdelta-0.2.0.dist-info
-    if os.path.exists(f"{baseclasses_path}/pyxdelta.cp310-win_amd64.pyd"):
-        os.remove(f"{baseclasses_path}/pyxdelta.cp310-win_amd64.pyd")
-        if os.path.exists(f"{baseclasses_path}/PIL"):
-            shutil.rmtree(f"{baseclasses_path}/PIL")
-        if os.path.exists(f"{baseclasses_path}/pillow-10.3.0.dist-info"):
-            shutil.rmtree(f"{baseclasses_path}/pillow-10.3.0.dist-info")
-        if os.path.exists(f"{baseclasses_path}/pyxdelta-0.2.0.dist-info"):
-            shutil.rmtree(f"{baseclasses_path}/pyxdelta-0.2.0.dist-info")
-        if os.path.exists(f"{baseclasses_path}/windows.zip"):
-            os.remove(f"{baseclasses_path}/windows.zip")
-        if os.path.exists(f"{baseclasses_path}/linux.zip"):
-            os.remove(f"{baseclasses_path}/linux.zip")
+    baseclasses_path = os.path.dirname(os.path.dirname(BaseClasses.__file__))
+    if not baseclasses_path.endswith("lib"):
+        baseclasses_path = os.path.join(baseclasses_path, "lib")
+    # Remove ANY PIL folders from the baseclasses_path
+    # Or Pyxdelta or pillow folders
+    try:
+        for folder in os.listdir(baseclasses_path):
+            if folder.startswith("PIL") or folder.startswith("pyxdelta") or folder.startswith("pillow"):
+                folder_path = os.path.join(baseclasses_path, folder)
+                if os.path.isdir(folder_path):
+                    shutil.rmtree(folder_path)
+                elif os.path.isfile(folder_path):
+                    os.remove(folder_path)
+            # Also if its windows.zip or linux.zip, remove it
+            if folder.startswith("windows.zip") or folder.startswith("linux.zip"):
+                os.remove(os.path.join(baseclasses_path, folder))
+    except Exception as e:
+        pass
+
     if platform_type == "win32":
         zip_path = "vendor/windows.zip"  # Path inside the package
         copy_dependencies(zip_path, "windows.zip")
@@ -111,6 +115,7 @@ if baseclasses_loaded:
     sys.path.append("worlds/dk64/archipelago/")
     sys.path.append("custom_worlds/dk64.apworld/dk64/")
     sys.path.append("custom_worlds/dk64.apworld/dk64/archipelago/")
+
     import randomizer.ItemPool as DK64RItemPool
 
     from randomizer.Enums.Items import Items as DK64RItems
@@ -133,9 +138,11 @@ if baseclasses_loaded:
     from randomizer.CompileHints import compileMicrohints
     from randomizer.Enums.Types import Types
     from randomizer.Enums.Kongs import Kongs
+    from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Locations import Locations as DK64RLocations
-    from randomizer.Enums.Settings import WinConditionComplex
+    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel
+    from randomizer.Enums.Switches import Switches
     from randomizer.Lists import Item as DK64RItem
     from worlds.LauncherComponents import Component, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
@@ -267,6 +274,16 @@ if baseclasses_loaded:
             settings_dict = decrypt_settings_string_enum(self.settings_string)
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
+            settings_dict["open_lobbies"] = self.options.open_lobbies.value
+            settings_dict["krool_in_boss_pool"] = self.options.krool_in_boss_pool.value
+            settings_dict["helm_phase_count"] = self.options.helm_phase_count.value
+            settings_dict["krool_phase_count"] = self.options.krool_phase_count.value
+            settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
+            settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
+            settings_dict["medal_requirement"] = self.options.medal_requirement.value
+            settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
+            settings_dict["krool_key_count"] = self.options.krool_key_count.value
+            settings_dict["switchsanity"] = self.options.switchsanity.value
             settings_dict["starting_keys_list_selected"] = []
             for item in self.options.start_inventory:
                 if item == "Key 1":
@@ -289,9 +306,29 @@ if baseclasses_loaded:
                 settings_dict["win_condition_item"] = WinConditionComplex.req_key
                 settings_dict["win_condition_count"] = 8
             settings = Settings(settings_dict, self.random)
+            # Set all the static slot data that UT needs to know. Most of these would have already been decided in normal generation by now, so they are just overwritten here.
+            if hasattr(self.multiworld, "generation_is_fake"):
+                if hasattr(self.multiworld, "re_gen_passthrough"):
+                    if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
+                        passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+                        settings.level_order = passthrough["LevelOrder"]
+                        settings.starting_kong_list = passthrough["StartingKongs"]
+                        settings.BossBananas = passthrough["BossBananas"]
+                        settings.boss_maps = passthrough["BossMaps"]
+                        settings.boss_kongs = passthrough["BossKongs"]
+                        settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
+                        settings.helm_order = passthrough["HelmOrder"]
+                        # There's multiple sources of truth for helm order.
+                        settings.helm_donkey = 0 in settings.helm_order
+                        settings.helm_diddy = 4 in settings.helm_order
+                        settings.helm_lanky = 3 in settings.helm_order
+                        settings.helm_tiny = 2 in settings.helm_order
+                        settings.helm_chunky = 1 in settings.helm_order
             # We need to set the freeing kongs here early, as they won't get filled in any other part of the AP process
             settings.diddy_freeing_kong = self.random.randint(0, 4)
-            settings.lanky_freeing_kong = self.random.randint(0, 4)
+            # Lanky freeing kong actually changes logic, so UT should use the slot data rather than genning a new one.
+            if not hasattr(self.multiworld, "generation_is_fake"):
+                settings.lanky_freeing_kong = self.random.randint(0, 4)
             settings.tiny_freeing_kong = self.random.randint(0, 4)
             settings.chunky_freeing_kong = self.random.randint(0, 4)
             spoiler = Spoiler(settings)
@@ -314,7 +351,9 @@ if baseclasses_loaded:
                 randomize_enemies_0(spoiler)
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
             if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
-                ShuffleExits.ExitShuffle(spoiler, skip_verification=True)
+                # UT should not reshuffle the level order, but should update the exits
+                if not hasattr(self.multiworld, "generation_is_fake"):
+                    ShuffleExits.ExitShuffle(spoiler, skip_verification=True)
                 spoiler.UpdateExits()
 
         def create_regions(self) -> None:
@@ -549,6 +588,14 @@ if baseclasses_loaded:
                 "FairyRequirement": self.logic_holder.settings.rareware_gb_fairies,
                 "MermaidPearls": self.logic_holder.settings.mermaid_gb_pearls,
                 "JetpacReq": self.logic_holder.settings.medal_requirement,
+                "BossBananas": ", ".join([str(cost) for cost in self.logic_holder.settings.BossBananas]),
+                "BossMaps": ", ".join(map.name for map in self.logic_holder.settings.boss_maps),
+                "BossKongs": ", ".join(kong.name for kong in self.logic_holder.settings.boss_kongs),
+                "LankyFreeingKong": self.logic_holder.settings.lanky_freeing_kong,
+                "HelmOrder": ", ".join([str(room) for room in self.logic_holder.settings.helm_order]),
+                "OpenLobbies": self.logic_holder.settings.open_lobbies,
+                "KroolInBossPool": self.logic_holder.settings.krool_in_boss_pool,
+                "SwitchSanity": {switch.name: {"kong": data.kong.name, "type": data.switch_type.name} for switch, data in self.logic_holder.settings.switchsanity_data.items()},
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -579,6 +626,13 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Removed Barriers: " + ", ".join([barrier.name for barrier in self.logic_holder.settings.remove_barriers_selected]))
             spoiler_handle.write("\n")
+            if self.logic_holder.settings.switchsanity != SwitchsanityLevel.off:
+                spoiler_handle.write("Switchsanity Settings: \n")
+                for switch, data in self.logic_holder.settings.switchsanity_data.items():
+                    if self.logic_holder.settings.switchsanity == SwitchsanityLevel.helm_access:
+                        if switch not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
+                            continue
+                    spoiler_handle.write(f"  - {switch.name}: {data.kong.name} with {data.switch_type.name}\n")
             spoiler_handle.write("Generated Time: " + time.strftime("%d-%m-%Y %H:%M:%S", time.gmtime()) + " GMT")
             spoiler_handle.write("\n")
             spoiler_handle.write("Randomizer Version: " + self.logic_holder.settings.version)
@@ -607,3 +661,23 @@ if baseclasses_loaded:
             if change:
                 self.logic_holder.UpdateFromArchipelagoItems(state)
             return change
+
+        def interpret_slot_data(self, slot_data: dict[str, any]) -> dict[str, any]:
+            """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
+            # Parse the string data
+            level_order = slot_data["LevelOrder"].split(", ")
+            starting_kongs = slot_data["StartingKongs"].split(", ")
+            boss_bananas = slot_data["BossBananas"].split(", ")
+            boss_maps = slot_data["BossMaps"].split(", ")
+            boss_kongs = slot_data["BossKongs"].split(", ")
+            helm_order = slot_data["HelmOrder"].split(", ")
+
+            relevant_data = {}
+            relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
+            relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
+            relevant_data["BossBananas"] = [int(cost) for cost in boss_bananas]
+            relevant_data["BossMaps"] = [Maps[map] for map in boss_maps]
+            relevant_data["BossKongs"] = [Kongs[kong] for kong in boss_kongs]
+            relevant_data["LankyFreeingKong"] = slot_data["LankyFreeingKong"]
+            relevant_data["HelmOrder"] = [int(room) for room in helm_order]
+            return relevant_data
