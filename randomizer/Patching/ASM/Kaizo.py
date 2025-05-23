@@ -1,5 +1,6 @@
 """Write ASM data for the hard mode elements."""
 
+from enum import IntEnum, auto
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
 from randomizer.Patching.Library.Generic import IsItemSelected
@@ -7,6 +8,12 @@ from randomizer.Enums.Settings import HardModeSelected, DamageAmount, MiscChange
 
 POP_TARGETTING = True
 
+class KKOPhaseBehavior(IntEnum):
+    """KKO Phase Behavior enum."""
+    normal = 0
+    two_kko = 1
+    aha = 2
+    rapid_rotation = 3
 
 def writeActorHealth(ROM_COPY, actor_index: int, new_health: int):
     """Write actor health value."""
@@ -160,13 +167,26 @@ def lowerReplenishibles(ROM_COPY: LocalROM, settings, offset_dict: dict):
         writeValue(ROM_COPY, 0x806F90C8, Overlay.Static, 0x24040000 | (10 * 150), offset_dict, 4)  # set min coconuts to 1500 (10 crystals)
 
 
+
+def getKKOPhasePosition(settings, behavior: KKOPhaseBehavior) -> int:
+    """Get the phase index of a certain phase pattern"""
+    for index, phase in enumerate(settings.kko_phase_order):
+        if phase == behavior:
+            return index
+    return 0xFF
+
 def hardBosses(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to hard bossees."""
     if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando, False):
-        writeHook(ROM_COPY, 0x80032570, Overlay.Boss, "KKOPhaseHandler", offset_dict)
-        writeHook(ROM_COPY, 0x80031B2C, Overlay.Boss, "KKOInitPhase", offset_dict)
-        writeValue(ROM_COPY, 0x8003259A, Overlay.Boss, 4, offset_dict, 2)  # KKO Last Phase Check
-        writeValue(ROM_COPY, 0x80032566, Overlay.Boss, settings.kko_phase_order[1], offset_dict, 2)  # KKO Last Phase Check
+        writeValue(ROM_COPY, 0x800320DE, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.aha), offset_dict)
+        writeValue(ROM_COPY, 0x80032166, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.aha), offset_dict)
+        writeValue(ROM_COPY, 0x800321F6, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.aha), offset_dict)
+        writeValue(ROM_COPY, 0x80032202, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.rapid_rotation), offset_dict)
+        # 0x80032566 = enemy spawn check
+        # 0x8003259A = last phase check
+        writeValue(ROM_COPY, 0x80032816, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.rapid_rotation), offset_dict)
+        writeValue(ROM_COPY, 0x80032876, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.aha), offset_dict)
+        writeValue(ROM_COPY, 0x800329D6, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.two_kko), offset_dict)
     if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.fast_mad_jack, False):
         # MJ Fast Jumps
         for x in range(5):

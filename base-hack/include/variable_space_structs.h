@@ -1,10 +1,5 @@
 typedef struct varspace {
-	/* 0x000 */ char level_order_rando_on; // 0 = Level Order Rando off, 1 = On
-	/* 0x001 */ unsigned char crowns_in_file[2];
-	/* 0x003 */ unsigned char pearls_in_file;
-	/* 0x004 */ unsigned char medals_in_file[6];
-	/* 0x00A */ unsigned char fairies_in_file[3];
-	/* 0x00D */ char unk_0D[0x2C - 0xD];
+	/* 0x000 */ char unk_00[0x2C];
 	/* 0x02C */ char unlock_kongs; // 0 = Kongs not automatically unlocked, 1 = On
 	/* 0x02D */ char required_helm_minigames; // 0 = Disable on instrument play, 1 = One minigame required, 2 = Vanilla
 	/* 0x02E */ char fast_start_beginning; // 0 = "Fast Start" setting not applied. 1 = On
@@ -58,8 +53,7 @@ typedef struct varspace {
 	/* 0x0C5 */ char enemy_item_rando; // Determines whether to use standard enemy item drop table or a custom table
 	/* 0x0C6 */ HardModeSettings hard_mode; // Colloquially known as "Seed of Death"
 	/* 0x0C7 */ unsigned char default_sound_type; // 0 = Stereo, 1 = Surround, 2 = Mono
-	/* 0x0C8 */ char unk_C8[2];
-	/* 0x0CA */ unsigned char default_screen_ratio; // 0 = Normal, 1 = Widescreen
+	/* 0x0C8 */ char unk_C8[3];
 	/* 0x0CB */ unsigned char default_camera_type; // 0 = Free, 1 = Follow
 	/* 0x0CC */ unsigned char default_camera_mode; // 0 = Inverted, 1 = Non-Inverted
 	/* 0x0CD */ char unk_cd[8];
@@ -96,7 +90,7 @@ typedef struct varspace {
 	/* 0x128 */ char disable_drops; // 0 = Off. 1 = No Klump/Melon/Ammo Crate Drops
 	/* 0x129 */ unsigned char hash[5];
 	/* 0x12E */ char music_rando_on; // 0 = Off, 1 = Music Rando on, apply extra data shuffle
-	/* 0x12F */ char disco_chunky; // 0 = Normal, 1 = Disco. Overriden by Krusha if Krusha replaces Chunky
+	/* 0x12F */ char unk_12F;
 	/* 0x130 */ LZREntrance ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x132 */ LZREntrance museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
 	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Only kong displayed, 2 = Both item and kong
@@ -116,8 +110,7 @@ typedef struct varspace {
 	/* 0x14A */ unsigned short coinreq_castlecart;
 	/* 0x14C */ unsigned char lobbies_open_bitfield; // hccf gfaj
 	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
-	/* 0x14E */ unsigned char ice_trap_flag_alloc;
-	/* 0x14F */ char prevent_tag_spawn; // 0 = Off. 1 = Prevents tags from spawning except in T&S
+	/* 0x14E */ char unk_14E[2];
 	/* 0x150 */ char ice_traps_damage;
 	/* 0x151 */ char starting_kong; // Kong you start as upon file init
 	/* 0x152 */ char unk_152;
@@ -139,8 +132,7 @@ typedef struct varspace {
 	/* 0x186 */ char unk_186[0x190-0x186];
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
 	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
-	/* 0x196 */ char unk_196;
-	/* 0x197 */ unsigned char unk_197[0x1A2 - 0x197];
+	/* 0x196 */ unsigned char unk_196[0x1A2 - 0x196];
 	/* 0x1A2 */ LZREntrance blast_entrances[7];
 	/* 0x1B0 */ int password;
 	/* 0x1B4 */ char song_speed_near_win;
@@ -159,8 +151,7 @@ typedef struct varspace {
 	/* 0x1E2 */ BooleanModelSwaps model_swaps; // Size: 1
 	/* 0x1E3 */ unsigned char chunky_phase_krool_slam_req; // Slam level required for Chunky Phase
   	/* 0x1E4 */ unsigned char pause_hints_colored;
-	/* 0x1E5 */ char unk_1e5[0x1E7-0x1E5];
-	/* 0x1E7 */ char balloon_sound;
+	/* 0x1E5 */ char unk_1e5[0x1E8-0x1E5];
 	/* 0x1E8 */ unsigned char jetman_rgb[3];
 	/* 0x1EB */ unsigned char mermaid_requirement; // Amount of pearls to get the mermaid reward
 	/* 0x1EC */ unsigned char check_shop_flags; // Bitfield of pre-given shops: rfcs 0000. r = Cranky, f = Funky, c = Candy, s = Snide

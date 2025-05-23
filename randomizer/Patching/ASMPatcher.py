@@ -584,7 +584,6 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x8060DEF4, Overlay.Static, "SaveHelmHurryCheck", offset_dict)
     writeHook(ROM_COPY, 0x806F3E74, Overlay.Static, "AutowalkFix", offset_dict)
     writeHook(ROM_COPY, 0x80610948, Overlay.Static, "DynamicCodeFixes", offset_dict)
-    writeHook(ROM_COPY, 0x80689534, Overlay.Static, "tagPreventCode", offset_dict)
     writeHook(ROM_COPY, 0x806BD328, Overlay.Static, "KeyCompressionCode", offset_dict)
     writeHook(ROM_COPY, 0x8067B684, Overlay.Static, "CannonForceCode", offset_dict)
     writeHook(ROM_COPY, 0x806F9F88, Overlay.Static, "HUDDisplayCode", offset_dict)

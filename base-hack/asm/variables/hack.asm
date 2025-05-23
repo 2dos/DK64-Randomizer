@@ -7,7 +7,6 @@
 .definelabel RandomizerVersion, 0x807FFFF4
 .definelabel LoadedHooks, 0x807FFFEF // u8
 .definelabel HoldableSpawnBitfield, 0x807FFFEC // u16
-.definelabel preventTagSpawn, 0x807FFFEA // u8
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8
 .definelabel TextHoldOn, 0x807FFFE8 // u8
 .definelabel LobbiesOpen, 0x807FFFE7 // u8

@@ -1,29 +1,3 @@
-tagPreventCode:
-    lui $a1, hi(preventTagSpawn)
-    lbu $a1, lo(preventTagSpawn) ($a1)
-    beqz $a1, tagPreventCode_Vanilla
-    nop
-    lh $a1, 0x0 ($s1)
-    addiu $a1, $a1, 0x10
-    addiu $t8, $zero, 98
-    beq $a1, $t8, tagPreventCode_Prevent
-    nop
-    addiu $t8, $zero, 136
-    beq $a1, $t8, tagPreventCode_Prevent
-    nop
-    addiu $t8, $zero, 137
-    beq $a1, $t8, tagPreventCode_Prevent
-    nop
-
-    tagPreventCode_Vanilla:
-        lh $a1, 0x0 ($s1)
-        j 0x8068953C
-        subu $t3, $t3, $zero
-
-    tagPreventCode_Prevent:
-        j 0x8068968C
-        nop
-
 destroyAllBarrelsCode:
     lw $t6, 0x0 ($s1)
     sb v0, 0x131 ($t6)

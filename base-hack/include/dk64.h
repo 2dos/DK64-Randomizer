@@ -855,7 +855,6 @@ extern purchase_struct TrainingMoves_New[4];
 extern purchase_struct BFIMove_New;
 extern purchase_struct FirstMove_New;
 extern settingsData StoredSettings;
-extern char preventTagSpawn;
 extern char bonusAutocomplete;
 extern void* StoredCounterTextures[7];
 extern char TextHoldOn;

@@ -32,7 +32,6 @@ extern void DynamicCodeFixes(void);
 extern void permaLossTagCheck(void);
 extern void permaLossTagSet(void);
 extern void permaLossTagDisplayCheck(void);
-extern void tagPreventCode(void);
 extern void destroyAllBarrelsCode(void);
 extern void KeyCompressionCode(void);
 extern void CannonForceCode(void);

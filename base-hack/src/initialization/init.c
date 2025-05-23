@@ -306,7 +306,6 @@ void initHack(int source) {
 		if ((source == 1) || (CurrentMap == MAP_NINTENDOLOGO)) {
 			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
 			grab_lock_timer = -1;
-			preventTagSpawn = Rando.prevent_tag_spawn;
 			bonusAutocomplete = Rando.resolve_bonus;
 			TextHoldOn = Rando.quality_of_life.textbox_hold;
 			ToggleAmmoOn = Rando.quality_of_life.ammo_swap;
