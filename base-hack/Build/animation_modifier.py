@@ -1,3 +1,5 @@
+"""File responsible for modifying the animation code file."""
+
 import zlib
 from typing import BinaryIO
 from BuildClasses import ROMPointerFile

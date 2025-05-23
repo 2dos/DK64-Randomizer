@@ -254,6 +254,8 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Cannon Game Better Control: 50%
 	- Better Fairy Camera: 50%
 	- Remove Enemy Cabin Timer: 50%
+	- Remove Galleon Ship Timers: 90%
+	- Japes Bridge Permanently Extended: 50%
 - Move Randomizer: 
 	- On: 30%
 	- Cross Purchase: 70%
