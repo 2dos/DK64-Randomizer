@@ -284,6 +284,7 @@ if baseclasses_loaded:
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["krool_key_count"] = self.options.krool_key_count.value
             settings_dict["switchsanity"] = self.options.switchsanity.value
+            settings_dict["glitches_selected"] = self.options.glitches_selected.value
             settings_dict["starting_keys_list_selected"] = []
             for item in self.options.start_inventory:
                 if item == "Key 1":
@@ -305,6 +306,8 @@ if baseclasses_loaded:
             if self.options.goal == Goal.option_all_keys:
                 settings_dict["win_condition_item"] = WinConditionComplex.req_key
                 settings_dict["win_condition_count"] = 8
+            if self.options.goal == Goal.option_dk_rap:
+                settings_dict["win_condition_item"] = WinConditionComplex.dk_rap_items
             settings = Settings(settings_dict, self.random)
             # Set all the static slot data that UT needs to know. Most of these would have already been decided in normal generation by now, so they are just overwritten here.
             if hasattr(self.multiworld, "generation_is_fake"):
@@ -596,6 +599,7 @@ if baseclasses_loaded:
                 "OpenLobbies": self.logic_holder.settings.open_lobbies,
                 "KroolInBossPool": self.logic_holder.settings.krool_in_boss_pool,
                 "SwitchSanity": {switch.name: {"kong": data.kong.name, "type": data.switch_type.name} for switch, data in self.logic_holder.settings.switchsanity_data.items()},
+                "GlitchesSelected": ", ".join([glitch.name for glitch in self.logic_holder.settings.glitches_selected]),
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
