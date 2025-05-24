@@ -657,6 +657,15 @@ class LogicVarHolder:
             MiscChangesSelected.remove_galleon_ship_timers,
         )
 
+    @lru_cache(maxsize=None)
+    def cabinBarrelMoved(self) -> bool:
+        """Determine whether the upper cabin rocketbarrel has been moved."""
+        return IsItemSelected(
+            self.settings.quality_of_life,
+            self.settings.misc_changes_selected,
+            MiscChangesSelected.move_spring_cabin_rocketbarrel,
+        )
+
     def canOpenLlamaTemple(self):
         """Determine whether the switches on the Llama Temple can be shot."""
         if not (self.checkBarrier(RemovedBarriersSelected.aztec_llama_switches) or Events.LlamaFreed in self.Events):

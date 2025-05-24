@@ -20,7 +20,7 @@ from randomizer.Enums.HintRegion import HintRegion, MEDAL_REWARD_REGIONS, HINT_R
 from randomizer.Enums.Settings import (
     ClimbingStatus,
     ProgressiveHintItem,
-    HelmSetting,
+    ActivateAllBananaports,
     LogicType,
     MicrohintsEnabled,
     MoveRando,
@@ -725,9 +725,13 @@ def compileHints(spoiler: Spoiler) -> bool:
     }
     # Your training in Gorilla Gone, Monkeyport, Climbing and Vines are always pointless hints if Key 8 is in Helm, so let's not
     if spoiler.settings.key_8_helm and Locations.HelmKey in spoiler.woth_paths.keys():
-        useless_moves = [Items.Vines]
+        useless_moves = []
+        if spoiler.settings.activate_all_bananaports != ActivateAllBananaports.isles_inc_helm_lobby:
+            useless_moves.append(Items.Vines)
         if not spoiler.settings.switchsanity:
-            useless_moves.extend([Items.Monkeyport, Items.GorillaGone])
+            useless_moves.append(Items.Monkeyport)
+        if not spoiler.settings.switchsanity and spoiler.settings.activate_all_bananaports != ActivateAllBananaports.isles_inc_helm_lobby:
+            useless_moves.append(Items.GorillaGone)
         useless_locations[Items.HideoutHelmKey] = [
             loc for loc in spoiler.woth_paths[Locations.HelmKey] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in useless_moves
         ]

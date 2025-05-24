@@ -202,6 +202,11 @@ WARPS_ISLES = [
     0x1B9,  # FLAG_WARP_ISLES_W5_FAR,
 ]
 
+WARPS_HELM_LOBBY = [
+    0x1A1,  # Near Warp
+    0x1A2,  # Far Warp
+]
+
 WARPS_TOTAL = [
     WARPS_JAPES,
     WARPS_AZTEC,
@@ -211,6 +216,7 @@ WARPS_TOTAL = [
     WARPS_CAVES,
     WARPS_CASTLE,
     WARPS_ISLES,
+    WARPS_HELM_LOBBY,
 ]
 
 
@@ -1291,6 +1297,9 @@ def patchAssembly(ROM_COPY, spoiler):
     if ENABLE_HELM_GBS:
         writeValue(ROM_COPY, 0x806A9C80, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
         writeValue(ROM_COPY, 0x806A9E54, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
+    # Kop Idle Guarantee
+    writeFunction(ROM_COPY, 0x806AF7F8, Overlay.Static, "setKopIdleGuarantee", offset_dict)
+    writeFunction(ROM_COPY, 0x806AF89C, Overlay.Static, "giveKopIdleGuarantee", offset_dict)
     # Guard Animation Fix
     writeValue(ROM_COPY, 0x806AF8C6, Overlay.Static, 0x2C1, offset_dict)
     # Remove flare effect from guards
@@ -1850,6 +1859,9 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if settings.activate_all_bananaports == ActivateAllBananaports.isles:
         file_init_flags.extend(WARPS_ISLES.copy())
+    elif settings.activate_all_bananaports == ActivateAllBananaports.isles_inc_helm_lobby:
+        file_init_flags.extend(WARPS_ISLES.copy())
+        file_init_flags.extend(WARPS_HELM_LOBBY.copy())
     elif settings.activate_all_bananaports == ActivateAllBananaports.all:
         for lvl in WARPS_TOTAL:
             file_init_flags.extend(lvl.copy())
@@ -2767,6 +2779,10 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8002792C, Overlay.Critter, "getCountOfBlockerRequiredItem", offset_dict)
     writeFunction(ROM_COPY, 0x800278EC, Overlay.Critter, "displayCountOnBLockerTeeth", offset_dict)
     writeFunction(ROM_COPY, 0x800275AC, Overlay.Critter, "displayCountOnBLockerTeeth", offset_dict)
+    # Fix B Locker range default (fixes bug with helm)
+    writeValue(ROM_COPY, 0x800275B8, Overlay.Critter, 0x3C18, offset_dict)  # Loader mips function into t8 reg
+    writeFloatUpper(ROM_COPY, 0x800275BA, Overlay.Critter, 100, offset_dict)  # Set default range to 100
+    writeValue(ROM_COPY, 0x800275C4, Overlay.Critter, 0xAC38A1B0, offset_dict, 4)  # write to addr
 
     if settings.has_password:
         writeHook(ROM_COPY, 0x80028CC8, Overlay.Menu, "GoToPassword", offset_dict)  # Enables handler of whether to go to the password screen or not
