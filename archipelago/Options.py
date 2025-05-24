@@ -203,6 +203,7 @@ class SwitchSanity(Choice):
     option_all = 2
     default = 0
 
+
 class LogicType(Choice):
     """Determines what type of logic is needed to beat the seed."""
 
@@ -211,6 +212,7 @@ class LogicType(Choice):
     option_glitchless = 1
     option_glitched = 2
     default = 1
+
 
 class GlitchesSelected(OptionList):
     """Determines what glitches are enabled if logic_type is set to Glitched.
