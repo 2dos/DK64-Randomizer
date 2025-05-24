@@ -203,9 +203,17 @@ class SwitchSanity(Choice):
     option_all = 2
     default = 0
 
+class LogicType(Choice):
+    """Determines what type of logic is needed to beat the seed."""
+
+    display_name = "Logic Type"
+
+    option_glitchless = 1
+    option_glitched = 2
+    default = 1
 
 class GlitchesSelected(OptionList):
-    """Determines what glitches are enabled.
+    """Determines what glitches are enabled if logic_type is set to Glitched.
 
     Valid Keys:
     "advanced_platforming": Platforming techniques that don't require any glitches but might be too tough for some players.
@@ -246,6 +254,7 @@ class DK64Options(PerGameCommonOptions):
     climbing_shuffle: ClimbingShuffle
     starting_kong_count: StartingKongCount
     starting_move_count: StartingMoveCount
+    logic_type: LogicType
     glitches_selected: GlitchesSelected
     trap_fill_percentage: TrapFillPercentage
     bubble_trap_weight: BubbleTrapWeight
