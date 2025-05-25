@@ -68,10 +68,10 @@ class CustomLocation:
         self.placement_subindex = default_index
         self.tied_warp_event = tied_warp_event
         if logic is None:
-            self.warp_banned = False
+            self.has_access_logic = False
             self.logic = lambda l: True
         else:
-            self.warp_banned = True
+            self.has_access_logic = True
             self.logic = logic
 
     def setCustomLocation(self, value: bool) -> None:
