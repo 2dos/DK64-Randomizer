@@ -116,6 +116,9 @@ def ResetPorts():
 
 def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level: Levels) -> bool:
     """Determine whether a custom location is valid for a warp pad."""
+    if location.warp_banned:
+        # Locations that have logic to access them are banned from being warp locations
+        return False
     if location.map != map_id:
         # Has to be in the right map
         return False
