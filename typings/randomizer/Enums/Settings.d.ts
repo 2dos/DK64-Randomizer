@@ -2,6 +2,7 @@ export enum ActivateAllBananaports {
     off = 0,
     all = 1,
     isles = 2,
+    isles_inc_helm_lobby = 3,
 }
 
 export enum BananaportRando {
@@ -370,6 +371,7 @@ export enum MiscChangesSelected {
     remove_enemy_cabin_timer = 27,
     remove_galleon_ship_timers = 28,
     japes_bridge_permanently_extended = 29,
+    move_spring_cabin_rocketbarrel = 30,
 }
 
 export enum MoveRando {

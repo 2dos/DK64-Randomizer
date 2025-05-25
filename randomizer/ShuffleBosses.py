@@ -112,7 +112,7 @@ def GetKongOptionsForBoss(boss_map: Maps, alt_mj_kongs: bool):
         # Not possible right now to make any other kong beat another's phase, however, if we were to do so:
         # DK Phase - Make all kongs enter cannon barrels
         # Other phases - ????????
-        possibleKongs = [Kongs.donkey + (boss_map - Maps.KroolDonkeyPhase)]
+        possibleKongs = [Kongs(Kongs.donkey + (boss_map - Maps.KroolDonkeyPhase))]
     return possibleKongs
 
 

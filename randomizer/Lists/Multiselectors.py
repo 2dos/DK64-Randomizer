@@ -130,6 +130,7 @@ QoLItems = [
         2,
         "The spiral bridge around Japes Mountain will be permanently extended as soon as you shoot the peanut switch.",
     ),
+    MultiselectorItem("Move Spring Cabin Rocketbarrel", -1, "Moves the rocketbarrel in the Spring 5-Door Cabin to prevent being able to enter it earlier than intended."),
 ]
 RemovedBarrierItems = [
     MultiselectorItem(

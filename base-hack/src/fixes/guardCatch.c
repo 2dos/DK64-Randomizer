@@ -27,7 +27,9 @@ typedef struct guard_paad {
     /* 0x00E */ short z_something;
     /* 0x010 */ char unk_10[0x1A-0x10];
     /* 0x01A */ short unk_1A;
-    /* 0x01C */ char unk_1C[0x47-0x1C];
+    /* 0x01C */ char unk_1C[0x44-0x1C];
+    /* 0x044 */ short kop_idle_guarantee;
+    /* 0x046 */ char unk_46;
     /* 0x047 */ char played_uhoh;
 } guard_paad;
 
@@ -165,22 +167,19 @@ void newGuardCode(void) {
     }
     if ((collisionType == 4) || (collisionType == 9) || (collisionActive)) { // If being damaged
         if (!in_snoop) { // If not in SSnoop
-            // Player is immune in the first 123 frames upon map load. This prevents the kop from being damaged during those 123 frames (plus 1 extra frame)
-            if(ObjectModel2Timer > 124){
-                // Hit by ammo/oranges
-                if ((CurrentActorPointer_0->health <= 0) || (collisionActive)) { // If being attacked and with zero/negative health
-                    // Death procedure
-                    CurrentActorPointer_0->health = 0;
-                    playActorAnimation(CurrentActorPointer_0,0x201);
-                    CurrentActorPointer_0->control_state = 0x42;
-                    CurrentActorPointer_0->control_state_progress = 0;
-                    CurrentActorPointer_0->noclip_byte = 1;
-                } else {
-                    // Damage procedure
-                    playActorAnimation(CurrentActorPointer_0,0x1FF);
-                    CurrentActorPointer_0->control_state = 0x41;
-                    CurrentActorPointer_0->control_state_progress = 0;
-                }
+            // Hit by ammo/oranges
+            if ((CurrentActorPointer_0->health <= 0) || (collisionActive)) { // If being attacked and with zero/negative health
+                // Death procedure
+                CurrentActorPointer_0->health = 0;
+                playActorAnimation(CurrentActorPointer_0,0x201);
+                CurrentActorPointer_0->control_state = 0x42;
+                CurrentActorPointer_0->control_state_progress = 0;
+                CurrentActorPointer_0->noclip_byte = 1;
+            } else {
+                // Damage procedure
+                playActorAnimation(CurrentActorPointer_0,0x1FF);
+                CurrentActorPointer_0->control_state = 0x41;
+                CurrentActorPointer_0->control_state_progress = 0;
             }
         }
     }
@@ -227,4 +226,19 @@ void newGuardCode(void) {
             }
         }
     }
+}
+
+void setKopIdleGuarantee(actorData *actor, int spd) {
+    guard_paad *paad = actor->paad;
+    paad->kop_idle_guarantee = 30 * 3; // 3s
+    setActorSpeed(actor, spd);
+}
+
+int giveKopIdleGuarantee(void) {
+    guard_paad *paad = CurrentActorPointer_0->paad;
+    if (paad->kop_idle_guarantee > 0) {
+        paad->kop_idle_guarantee--;
+        return 0; // Always return false
+    }
+    return getRNGLower31();
 }

@@ -34,6 +34,7 @@ from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
 from port_krool_spawners import updateCutsceneScripts, updateSpawnerFiles, updatePathFiles
 from fixIceMaze import generateIceMaze
+from animation_modifier import modifyAnimationCode
 
 # Infrastructure for recomputing DK64 global pointer tables
 # from BuildNames import maps
@@ -54,6 +55,7 @@ updateCutsceneScripts()
 updateSpawnerFiles()
 updatePathFiles()
 BuildInstanceScripts()
+modifyAnimationCode()
 
 portal_images = []
 for x in range(2):
@@ -471,6 +473,7 @@ file_dict = [
     File(name="Fake Key Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x295, source_file="fake_key_0.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Key Model (1)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x296, source_file="fake_key_1.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Key Model (2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x297, source_file="fake_key_2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Animation Code", pointer_table_index=TableNames.Unknown13, file_index=0, source_file="animation_code.bin", do_not_delete_source=True),
 ]
 
 cutscene_scripts = buildScripts()

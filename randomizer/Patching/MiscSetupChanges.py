@@ -303,6 +303,11 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
         spoiler.settings.misc_changes_selected,
         MiscChangesSelected.raise_fungi_dirt_patch,
     )
+    move_cabin_barrel = IsItemSelected(
+        spoiler.settings.quality_of_life,
+        spoiler.settings.misc_changes_selected,
+        MiscChangesSelected.move_spring_cabin_rocketbarrel,
+    )
     random_pufftoss_stars = IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.pufftoss_star_rando, False)
     higher_pufftoss_stars = IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.pufftoss_star_raised, False)
     removed_crypt_doors = IsItemSelected(
@@ -570,6 +575,11 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                 if cont_map_id == Maps.FungiForest and actor_id == 47:
                     ROM_COPY.seek(actor_start + 4)
                     ROM_COPY.writeFloat(155)
+            elif actor_type == 49 and move_cabin_barrel and cont_map_id == Maps.CavesDiddyUpperCabin and actor_id == 0:
+                ROM_COPY.seek(actor_start)
+                ROM_COPY.writeFloat(300)
+                ROM_COPY.writeFloat(110)
+                ROM_COPY.writeFloat(380)
 
 
 def updateRandomSwitches(spoiler, ROM_COPY: LocalROM):

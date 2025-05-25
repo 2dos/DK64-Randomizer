@@ -18,9 +18,10 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion, MEDAL_REWARD_REGIONS, HINT_REGION_PAIRING
 from randomizer.Enums.Settings import (
+    BananaportRando,
     ClimbingStatus,
     ProgressiveHintItem,
-    HelmSetting,
+    ActivateAllBananaports,
     LogicType,
     MicrohintsEnabled,
     MoveRando,
@@ -729,9 +730,13 @@ def compileHints(spoiler: Spoiler) -> bool:
     }
     # Your training in Gorilla Gone, Monkeyport, Climbing and Vines are always pointless hints if Key 8 is in Helm, so let's not
     if spoiler.settings.key_8_helm and Locations.HelmKey in spoiler.woth_paths.keys():
-        useless_moves = [Items.Vines]
+        useless_moves = []
+        if spoiler.settings.activate_all_bananaports != ActivateAllBananaports.isles_inc_helm_lobby:
+            useless_moves.append(Items.Vines)
         if not spoiler.settings.switchsanity_enabled:
-            useless_moves.extend([Items.Monkeyport, Items.GorillaGone])
+            useless_moves.append(Items.Monkeyport)
+        if not spoiler.settings.switchsanity_enabled and spoiler.settings.activate_all_bananaports != ActivateAllBananaports.isles_inc_helm_lobby:
+            useless_moves.append(Items.GorillaGone)
         useless_locations[Items.HideoutHelmKey] = [
             loc for loc in spoiler.woth_paths[Locations.HelmKey] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in useless_moves
         ]
@@ -2022,9 +2027,11 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Maps.CastleBaboonBlast,
             ):
                 continue
-            # The Mechfish is its own map but is still not shuffled
-            if woth_map == Maps.GalleonMechafish:
-                continue
+            # If warps are pre-activated and cross-map, you might enter the Castle Crypt or the Llama Temple via the warps, and those transitions aren't hintable.
+            if spoiler.settings.activate_all_bananaports == ActivateAllBananaports.all and spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled):
+                # Best to not entrance hint these maps in those worlds just in case.
+                if woth_map in (Maps.CastleCrypt, Maps.AztecLlamaTemple):
+                    continue
             # Avoid hinting the same map section twice
             if woth_map in tracked_maps and (region_id in tracked_regions or region_id not in region_exceptions.keys()):
                 continue
