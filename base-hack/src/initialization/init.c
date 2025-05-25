@@ -375,10 +375,6 @@ void initHack(int source) {
 			style128Mtx[0xF] = 100;
 			writeEndSequence();
 			
-			for (int i = 0; i < 3; i++) {
-				KKOPhaseOrder[i] = Rando.kut_out_phases[i];
-			}
-			
 			initPauseMenu(); // Changes to enable more items
 			fixCutsceneModels();
 			if (Rando.hard_mode.lava_water) {

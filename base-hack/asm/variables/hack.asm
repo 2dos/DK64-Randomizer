@@ -25,7 +25,6 @@
 .definelabel ShorterBosses, 0x807FFFE5
 .definelabel ForceStandardAmmo, 0x807FFFE4
 .definelabel KKOPhaseRandoOn, 0x807FFFE0
-.definelabel KKOPhaseOrder, 0x807FFFE1
 .definelabel MultiBunchCount, 0x807FFFDE
 .definelabel QueueHelmTimer, 0x807FFFDD
 .definelabel ToggleAmmoOn, 0x807FFFDC

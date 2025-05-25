@@ -178,15 +178,16 @@ def getKKOPhasePosition(settings, behavior: KKOPhaseBehavior) -> int:
 def hardBosses(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to hard bossees."""
     if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando, False):
-        writeValue(ROM_COPY, 0x800320DE, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.aha), offset_dict)
-        writeValue(ROM_COPY, 0x80032166, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.aha), offset_dict)
-        writeValue(ROM_COPY, 0x800321F6, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.aha), offset_dict)
-        writeValue(ROM_COPY, 0x80032202, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.rapid_rotation), offset_dict)
+        writeValue(ROM_COPY, 0x800320DE, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.aha), offset_dict)
+        writeValue(ROM_COPY, 0x80032166, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.aha), offset_dict)
+        writeValue(ROM_COPY, 0x800321F6, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.aha), offset_dict)
+        writeValue(ROM_COPY, 0x80032202, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.rapid_rotation), offset_dict)
         # 0x80032566 = enemy spawn check
         # 0x8003259A = last phase check
-        writeValue(ROM_COPY, 0x80032816, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.rapid_rotation), offset_dict)
-        writeValue(ROM_COPY, 0x80032876, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.aha), offset_dict)
-        writeValue(ROM_COPY, 0x800329D6, Overlay.Boss, getKKOPhasePosition(KKOPhaseBehavior.two_kko), offset_dict)
+        writeValue(ROM_COPY, 0x80032816, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.rapid_rotation), offset_dict)
+        writeValue(ROM_COPY, 0x80032876, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.aha), offset_dict)
+        writeValue(ROM_COPY, 0x800329D6, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.two_kko), offset_dict)
+        writeValue(ROM_COPY, 0x8003305E, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.two_kko), offset_dict)
     if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.fast_mad_jack, False):
         # MJ Fast Jumps
         for x in range(5):

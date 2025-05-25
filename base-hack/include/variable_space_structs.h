@@ -90,7 +90,7 @@ typedef struct varspace {
 	/* 0x128 */ char disable_drops; // 0 = Off. 1 = No Klump/Melon/Ammo Crate Drops
 	/* 0x129 */ unsigned char hash[5];
 	/* 0x12E */ char music_rando_on; // 0 = Off, 1 = Music Rando on, apply extra data shuffle
-	/* 0x12F */ char unk_12F;
+	/* 0x12F */ char unk_12f;
 	/* 0x130 */ LZREntrance ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x132 */ LZREntrance museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
 	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Only kong displayed, 2 = Both item and kong
@@ -126,8 +126,7 @@ typedef struct varspace {
 	/* 0x15C */ short matching_game_sounds[8]; // Sound effect 0 is treated as "sound not randomized"
 	/* 0x16C */ char piano_game_order[7]; // Each item denotes a key, normally CBCDECA (2123420). A = 0, 1 = B, 2 = C, 3 = D, 4 = E, 5 = F
 	/* 0x173 */ char dartboard_order[6]; // Each item denotes a picture. 0 = Crystal, 1 = Melon, 2 = Banana, 3 = Orange, 4 = Ammo Crate, 5 = Medal, 6 = Coin, 7 = Film
-	/* 0x179 */ char unk_179[2];
-	/* 0x17B */ char kut_out_phases[3]; // 0 = Phase 1, 1 = Phase 2, 2 = Phase 3, 3 = Phase 4 (Unused)
+	/* 0x179 */ char unk_179[0x17E - 0x179];
 	/* 0x17E */ unsigned char b_locker_requirements[8];
 	/* 0x186 */ char unk_186[0x190-0x186];
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.

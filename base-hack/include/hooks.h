@@ -89,8 +89,6 @@ extern void blockTreeClimbing(void);
 extern void GoToPassword(void);
 
 extern void KRoolLankyPhaseFix(void);
-extern void KKOPhaseHandler(void);
-extern void KKOInitPhase(void);
 extern void MadJackShort(void);
 extern void PufftossShort(void);
 extern void DogadonRematchShort(void);
