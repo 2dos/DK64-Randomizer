@@ -160,7 +160,7 @@ class JetpacRequirement(Range):
     """Determines how many medals are needed to play Jetpac."""
 
     display_name = "Jetpac Requirement"
-    range_start = 0
+    range_start = 1
     range_end = 40
     default = 9
 
@@ -169,7 +169,7 @@ class MermaidRequirement(Range):
     """Determines how many pearls are needed to satisfy the mermaid."""
 
     display_name = "Mermaid Requirement"
-    range_start = 0
+    range_start = 1
     range_end = 5
     default = 1
 
