@@ -673,7 +673,9 @@ class Spoiler:
 
         if HardBossesEnabled(self.settings, HardBossesSelected.kut_out_phase_rando):
             phase_names = []
-            for phase in self.settings.kko_phase_order:
+            for index, phase in enumerate(self.settings.kko_phase_order):
+                if index > 2:
+                    continue
                 phase_names.append(f"Phase {phase+1}")
             humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Phases"] = ", ".join(phase_names)
 

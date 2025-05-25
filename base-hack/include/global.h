@@ -31,6 +31,8 @@ extern void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1)
 extern int isBounceObject(int object);
 extern void genericStatUpdate(bonus_stat stat);
 
+extern void applyPaperMode(void);
+
 extern void resolveBonusContainer(void);
 
 extern int getEnemyItem(int id);

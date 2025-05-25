@@ -22,4 +22,5 @@ typedef struct cc_effects {
     /* 0x00C */ unsigned char mini;
     /* 0x00D */ unsigned char spawn_boulder;
     /* 0x00E */ unsigned char animal_transform;
+    /* 0x00F */ unsigned char paper;
 } cc_effects;

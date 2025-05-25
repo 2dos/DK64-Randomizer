@@ -7,7 +7,6 @@
 .definelabel RandomizerVersion, 0x807FFFF4
 .definelabel LoadedHooks, 0x807FFFEF // u8
 .definelabel HoldableSpawnBitfield, 0x807FFFEC // u16
-.definelabel preventTagSpawn, 0x807FFFEA // u8
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8
 .definelabel TextHoldOn, 0x807FFFE8 // u8
 .definelabel LobbiesOpen, 0x807FFFE7 // u8
@@ -26,7 +25,6 @@
 .definelabel ShorterBosses, 0x807FFFE5
 .definelabel ForceStandardAmmo, 0x807FFFE4
 .definelabel KKOPhaseRandoOn, 0x807FFFE0
-.definelabel KKOPhaseOrder, 0x807FFFE1
 .definelabel MultiBunchCount, 0x807FFFDE
 .definelabel QueueHelmTimer, 0x807FFFDD
 .definelabel ToggleAmmoOn, 0x807FFFDC

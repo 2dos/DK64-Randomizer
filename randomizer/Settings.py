@@ -726,7 +726,7 @@ class Settings:
         self.fast_warps = False
         self.dpad_display = DPadDisplays.off
         self.auto_keys = False
-        self.kko_phase_order = [0, 0, 0]
+        self.kko_phase_order = [0] * 4
         self.toe_order = [0] * 10
         self.mill_levers = [0] * 5
         self.jetpac_enemy_order = list(range(8))

@@ -499,15 +499,17 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
             actor_start = actor_block_start + 4 + (actor_item * 0x38)
             ROM_COPY.seek(actor_start + 0x32)
             actor_type = int.from_bytes(ROM_COPY.readBytes(2), "big") + 0x10
-            if spoiler.settings.random_patches:
-                if not actor_type == 139:
-                    byte_list = []
-                    ROM_COPY.seek(actor_start + 0x34)
-                    used_actor_ids.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
-                    ROM_COPY.seek(actor_start)
-                    for x in range(int(0x38 / 4)):
-                        byte_list.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
-                    actor_bytes.append(byte_list.copy())
+            if spoiler.settings.random_patches and actor_type == 139:
+                continue
+            if spoiler.settings.disable_tag_barrels and actor_type in (98, 136, 137):
+                continue
+            byte_list = []
+            ROM_COPY.seek(actor_start + 0x34)
+            used_actor_ids.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+            ROM_COPY.seek(actor_start)
+            for x in range(int(0x38 / 4)):
+                byte_list.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
+            actor_bytes.append(byte_list.copy())
         if spoiler.settings.random_patches:
             new_actor_id = 0x20
             for dirt_item in spoiler.dirt_patch_placement:

@@ -455,6 +455,32 @@ int cc_enabler_boulder(void) {
     return spawnActorSpawnerContainer(61, Player->xPos, Player->yPos, Player->zPos, 0, 0x3F800000, 0, &unk);
 }
 
+int cc_enabler_paper(void) {
+    for (int i = 0; i < ActorCount; i++) {
+        actorData *actor = ActorArray[i];
+        if (actor) {
+            if (actor->actorType != 188) { // Not Camera
+                if (actor->render) {
+                    actor->render->scale_z = 0.015f;
+                }   
+            }
+        }
+    }
+}
+
+int cc_disabler_paper(void) {
+    for (int i = 0; i < ActorCount; i++) {
+        actorData *actor = ActorArray[i];
+        if (actor) {
+            if (actor->actorType != 188) { // Not Camera
+                if (actor->render) {
+                    actor->render->scale_z = actor->render->scale_x;
+                }   
+            }
+        }
+    }
+}
+
 static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enable_drunky, .disabler = &cc_disable_drunky, .restart_upon_map_entry = 1}, // Drunky Kong
     {.restart_upon_map_entry = 0}, // Disable Tag Anywhere
@@ -471,6 +497,7 @@ static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enabler_mini, .allower=&cc_allower_mini, .disabler=&cc_disabler_mini, .active = 1}, // Mini
     {.enabler = &cc_enabler_boulder, .allower=&cc_allower_boulder, .auto_disable=1}, // Spawn Boulder
     {.enabler = &cc_enabler_animals, .allower=&cc_allower_animals, .disabler=&cc_disabler_animals, .restart_upon_map_entry = 1}, // Animal Transform
+    {.enabler = &cc_enabler_paper, .disabler=&cc_disabler_paper, .active = 1}, // Paper
 };
 
 void cc_effect_handler(void) {

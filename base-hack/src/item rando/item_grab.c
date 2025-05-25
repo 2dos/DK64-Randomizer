@@ -248,21 +248,21 @@ int canDanceSkip(void) {
         return 1;
     }
     if (Rando.quality_of_life.dance_skip) {
-        int is_banned_map = inBattleCrown(CurrentMap);
+        if (inBattleCrown(CurrentMap)) {
+            return 0;
+        }
         if (inBossMap(CurrentMap, 1, 1, 0)) {
-            is_banned_map = 1;
+            return 0;
         }
         if (isCavesBeetleReward()) {
-            is_banned_map = 1;
+            return 0;
         }
         for (int i = 0; i < sizeof(dance_skip_ban_maps); i++) {
             if (dance_skip_ban_maps[i] == CurrentMap) {
-                is_banned_map = 1;
+                return 0;
             }
         }
-        if (!is_banned_map) {
-            return 1;
-        }
+        return 1;
     }
     return 0;
 }

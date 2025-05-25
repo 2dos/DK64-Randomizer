@@ -144,10 +144,7 @@ def ShuffleKKOPhaseOrder(settings):
     """Shuffle the phase order in King Kut Out."""
     kko_phases = [0, 1, 2, 3]
     settings.random.shuffle(kko_phases)
-    kko_phase_subset = []
-    for phase_slot in range(3):
-        kko_phase_subset.append(kko_phases[phase_slot])
-    return kko_phase_subset.copy()
+    return kko_phases.copy()
 
 
 def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
