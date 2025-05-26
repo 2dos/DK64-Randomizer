@@ -19,7 +19,7 @@ from client.pj64 import PJ64Client
 from client.items import item_ids, item_names_to_id
 from client.check_flag_locations import location_flag_to_name, location_name_to_flag
 from client.ap_check_ids import check_id_to_name, check_names_to_id
-from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop
+from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop, ClientCommandProcessor
 from NetUtils import ClientStatus
 from ap_version import version as ap_version
 
@@ -560,6 +560,41 @@ class DK64Client:
                 self.send_message(item_name, sender, "to")
                 self.sent_checks.remove(item)
 
+    def safe_clear_death_events(self):
+        """Clear any death events that may be pending."""
+        self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.receive_death, 0)
+        self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.send_death, 0)
+        self.pending_deathlink = False
+        self.deathlink_debounce = True
+
+
+class DK64CommandProcessor(ClientCommandProcessor):
+    """Command processor for Donkey Kong 64 commands."""
+
+    def __init__(self, ctx):
+        """Initialize the DK64 command processor."""
+        super().__init__(ctx)
+
+    def _cmd_reset_deathlink(self):
+        """Reset the deathlink state."""
+        if isinstance(self.ctx, DK64Context):
+            self.ctx.client.safe_clear_death_events()
+            logger.info("Deathlink state reset")
+
+    def _cmd_deathlink(self):
+        """Toggle deathlink from client. Overrides default setting."""
+        if isinstance(self.ctx, DK64Context):
+            if self.ctx.ENABLE_DEATHLINK:
+                self.ctx.ENABLE_DEATHLINK = False
+                self.ctx.client.ENABLE_DEATHLINK = False
+                create_task_log_exception(self.ctx.update_death_link(False))
+                logger.info("Deathlink disabled")
+            else:
+                self.ctx.ENABLE_DEATHLINK = True
+                self.ctx.client.ENABLE_DEATHLINK = True
+                create_task_log_exception(self.ctx.update_death_link(True))
+                logger.info("Deathlink enabled")
+
 
 class DK64Context(CommonContext):
     """Context for Donkey Kong 64."""
@@ -570,7 +605,7 @@ class DK64Context(CommonContext):
     found_checks = []
     last_resend = time.time()
     ENABLE_DEATHLINK = False
-
+    command_processor = DK64CommandProcessor
     won = False
 
     def reset_checks(self):
