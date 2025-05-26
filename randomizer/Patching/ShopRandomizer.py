@@ -3,7 +3,7 @@
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.VendorType import VendorType
-from randomizer.Patching.Library.DataTypes import float_to_hex, intf_to_float
+from randomizer.Patching.Library.DataTypes import intf_to_float
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.ShuffleShopLocations import available_shops

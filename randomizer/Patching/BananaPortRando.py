@@ -8,7 +8,6 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Levels import Levels
-from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
 

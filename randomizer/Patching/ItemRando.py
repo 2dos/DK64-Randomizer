@@ -8,7 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import MicrohintsEnabled
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Patching.Library.DataTypes import float_to_hex, intf_to_float
+from randomizer.Patching.Library.DataTypes import intf_to_float
 from randomizer.Lists.EnemyTypes import enemy_location_list
 from randomizer.Patching.Library.Generic import setItemReferenceName
 from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, item_db, getPropFromItem, getModelMask

@@ -14,7 +14,7 @@ short file_items[16] = {
     0, 0, 0, 0, // GBs, Crowns, Keys, Medals
     0, 0, 0, 0, // RW, Fairy, Nintendo, BP
     0, 0, 0, 0, // Kongs, Beans, Pearls, Rainbow
-    0, 0, 0, 0, // Hints, Crates
+    0, 0, 0, 0, // Hints, Crates, Shops
 };
 
 int file_sprites[17] = {
@@ -32,14 +32,15 @@ int file_sprites[17] = {
     0x80721378, // Rainbow Coins
     0x80721530, // Hint
     0x80720710, // Crate
-    0, 0,
+    0x80721250, // Shops
+    0,
     0, // Null Item, Leave Empty
 };
 short file_item_caps[16] = {
     201, 10, 8, 40,
     1, 20, 1, 40,
     5, 1, 5, 16,
-    35, 0, 0, 0, // Second here is Junk Items
+    35, 0, 42, 0, // Second here is Junk Items
 };
 
 void updatePauseScreenWheel(pause_paad* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
@@ -180,6 +181,7 @@ void initCarousel_onPause(void) {
     file_items[CHECK_BEAN] = getItemCount_new(REQITEM_BEAN, 0, 0);
     file_items[CHECK_KONG] = getItemCount_new(REQITEM_KONG, -1, -1);
     file_items[CHECK_CRATE] = getItemCount_new(REQITEM_JUNK, 0, 0);
+    file_items[CHECK_SHOPS] = getTotalMoveCount();
 }
 
 void initCarousel_onBoot(void) {

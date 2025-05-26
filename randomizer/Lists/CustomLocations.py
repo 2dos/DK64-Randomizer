@@ -5305,7 +5305,7 @@ CustomLocations = {
             z=637.07,
             max_size=56,
             logic_region=Regions.FungiForestLobby,
-            logic=lambda l: ((l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.donkey and l.diddy and l.lanky and l.tiny) or l.CanPhase()) and l.chunky and l.gorillaGone,
+            logic=lambda l: l.CanOpenForestLobbyGoneDoor() and l.chunky and l.gorillaGone,
             group=12,
             vanilla_crown=True,
         ),

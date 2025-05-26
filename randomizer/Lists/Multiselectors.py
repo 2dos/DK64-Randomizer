@@ -186,6 +186,7 @@ FasterCheckItems = [
     MultiselectorItem("Caves Ice Tomato Minigame", -1, "The tile flip minigame will only have a 30 second timer, instead of 60."),
     MultiselectorItem("Castle Minecart", 5, "The Minecart ride will end once you reach the turnaround point on the track."),
     MultiselectorItem("Castle Car Race", -1, "The race will be shortened to 1 lap, instead of 2."),
+    MultiselectorItem("Isles Forest Lobby Crown", -1, "The door to the gorilla gone pad will be pre-opened."),
     MultiselectorItem("Jetpac", -1, "Getting the rareware coin reward will only require 2500 points, instead of 5000."),
     MultiselectorItem(
         "Arcade",

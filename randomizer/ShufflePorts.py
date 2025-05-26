@@ -1,6 +1,5 @@
 """Shuffle Bananaport Locations."""
 
-from randomizer.Lists.MapsAndExits import RegionMapList
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves

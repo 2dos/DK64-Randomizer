@@ -1,12 +1,9 @@
 """Randomize Move Locations."""
 
-from enum import IntEnum, auto
-
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
-from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Generic import setItemReferenceName

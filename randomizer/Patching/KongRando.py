@@ -1,14 +1,9 @@
 """Apply cosmetic elements of Kong Rando."""
 
-from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Items import Items
-from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Types import Types
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
-from randomizer.Patching.Library.ItemRando import getModelFromItem
 
 
 def apply_kongrando_cosmetic(spoiler, ROM_COPY: LocalROM):

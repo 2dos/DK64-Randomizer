@@ -55,6 +55,7 @@ static char* items[] = {
     "DIRT PATCHES",
     "WRINKLY DOORS",
     "MELON CRATES",
+    "SHOPS",
 };
 static char* raw_items[] = {
     "GOLDEN BANANAS",
@@ -71,6 +72,7 @@ static char* raw_items[] = {
     "RAINBOW COINS",
     "HINTS",
     "JUNK ITEMS",
+    "MOVES",
 };
 
 static char check_level = 0;
@@ -106,6 +108,7 @@ static CheckDataStruct check_data = {
         .type[CHECK_RAINBOW] = {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
         .type[CHECK_HINTS] =   {.level = {5, 5, 5, 5, 5, 5, 5, 0, 0}},
         .type[CHECK_CRATE] =   {.level = {0, 0, 0, 0, 0, 0, 0, 0, 0}},
+        .type[CHECK_SHOPS] =   {.level = {10, 15, 15, 15, 10, 15, 15, 5, 0}},
     }
 };
 
@@ -167,6 +170,22 @@ void checkItemDB(void) {
         }
         int hint_level = k / 5;
         check_data.numerator.type[CHECK_HINTS].level[hint_level] += checkFlag(FLAG_WRINKLYVIEWED + k, FLAGTYPE_PERMANENT);
+    }
+    for (int level = 0; level < 8; level++) {
+        for (int vendor = 0; vendor < 3; vendor++) {
+            if ((level == 0) || (level == 4)) {
+                if (vendor == SHOP_CANDY) {
+                    continue;
+                }
+            } else if (level == 7) {
+                if (vendor != SHOP_CRANKY) {
+                    continue;
+                }
+            }
+            for (int kong = 0; kong < 5; kong++) {
+                check_data.numerator.type[CHECK_SHOPS].level[level] += isShopEmpty(vendor, level, kong);
+            }
+        }
     }
 }
 

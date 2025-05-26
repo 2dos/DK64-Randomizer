@@ -47,6 +47,8 @@ extern void initHelmSetup(void);
 
 extern int determineShockwaveColor(actorData* shockwave);
 
+extern int getTotalMoveCount(void);
+
 extern int hasChunkyPhaseSlam(void);
 extern void fixKRoolKong(void);
 

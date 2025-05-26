@@ -408,8 +408,7 @@ LogicRegions = {
     ]),
 
     Regions.FungiForestLobby: Region("Fungi Forest Lobby", HintRegion.EarlyLobbies, Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesBattleArena2, lambda l: not l.settings.crown_placement_rando and (((l.coconut and l.donkey) and (l.peanut and l.diddy)
-                      and (l.grape and l.lanky) and (l.feather and l.tiny) and (l.pineapple and l.chunky)) or l.CanPhase()) and l.gorillaGone and l.ischunky),
+        LocationLogic(Locations.IslesBattleArena2, lambda l: not l.settings.crown_placement_rando and (l.CanOpenForestLobbyGoneDoor() and l.gorillaGone and l.ischunky)),
         LocationLogic(Locations.IslesBananaFairyForestLobby, lambda l: l.camera and l.hasMoveSwitchsanity(Switches.IslesFungiLobbyFeather, False)),
         LocationLogic(Locations.ForestDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),  # These might look strange
         LocationLogic(Locations.ForestDiddyDoor, lambda l: not l.settings.wrinkly_location_rando),  # But they're all covered

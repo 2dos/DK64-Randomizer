@@ -1483,6 +1483,9 @@ int getTotalMoveCount(void) {
 			}
 		}
 	}
+	if (hasFlagMove(FLAG_ABILITY_CLIMBING)) {
+		count++;
+	}
 	return count;
 }
 

@@ -13,14 +13,15 @@ typedef enum check_types {
     /* 0x00B */ CHECK_RAINBOW,
     /* 0x00C */ CHECK_HINTS,
     /* 0x00D */ CHECK_CRATE,
+    /* 0x00E */ CHECK_SHOPS,
     /* ----- */ CHECK_TERMINATOR,
 } check_types;
 
 /*
     Please don't change the `ROTATION_SPLIT` line. Explanation on why is in `build/adjust_pause_rotation.py`
 */
-#define ROTATION_SPLIT 292
-#define ROTATION_SPLIT_TOTALS 292
+#define ROTATION_SPLIT 273
+#define ROTATION_SPLIT_TOTALS 273
 #define ROTATION_TOTALS_REDUCTION 0
 #define FEATHER_SPRITE_START 6133
 #define BEANSPIN_SPRITE_START 6152

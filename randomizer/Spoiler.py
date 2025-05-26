@@ -6,7 +6,6 @@ import json
 from copy import deepcopy
 from typing import TYPE_CHECKING, Dict, List, Optional, OrderedDict, Union
 
-import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -19,7 +18,6 @@ from randomizer.Enums.HintRegion import HintRegion
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
-    CBRando,
     DKPortalRando,
     GlitchesSelected,
     LogicType,
@@ -38,7 +36,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.EnemyTypes import EnemyMetaData
-from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
+from randomizer.Lists.Item import ItemFromKong, ItemList, NameFromKong
 from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations, TrainingBarrelLocations
 from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Enums.Maps import Maps
@@ -59,7 +57,6 @@ from randomizer.ShuffleBosses import HardBossesEnabled
 from randomizer.ShuffleExits import ShufflableExits
 from randomizer.ShuffleKasplats import constants, shufflable
 from randomizer.Patching.Library.Generic import IsItemSelected
-from randomizer.Patching.Library.ItemRando import getModelFromItem
 
 if TYPE_CHECKING:
     from randomizer.Lists.Location import Location
