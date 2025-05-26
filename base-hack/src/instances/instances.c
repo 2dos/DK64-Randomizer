@@ -445,11 +445,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (Rando.lobbies_open_bitfield & 4) {
 						hideObject(behaviour_pointer);
 					}
-				} else if (param2 == ISLES_FACTORYDOORCOLLISION) {
-					if ((Rando.lobbies_open_bitfield & 4) || (checkFlag(FLAG_KEYIN_KEY2, FLAGTYPE_PERMANENT) || ((CutsceneIndex == 7) && (CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)))) {
-						hideObject(behaviour_pointer);
-						behaviour_pointer->next_state = 1;
-					}
 				} else if (param2 == ISLES_GALLEONBARS) {
 					if (Rando.lobbies_open_bitfield & 8) {
 						hideObject(behaviour_pointer);

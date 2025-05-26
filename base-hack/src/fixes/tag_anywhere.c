@@ -489,6 +489,7 @@ int canTagAnywhere(void) {
             return 0;
         }
     } else if (!Rando.disable_race_patches) {
+        // Disable TA in floor is lava mini
         return 0;
     }
     if (getBitArrayValue(&banned_movement_btf, Player->control_state)) {
@@ -851,8 +852,8 @@ void handleLedgeLock(void) {
         return;
     }
     if (!Rando.disable_race_patches) {
+        // Disable ledge grabbing in dungeon as Tiny
         if ((CurrentMap == MAP_CASTLEDUNGEON) && (Character != KONG_TINY)) {
-            // Even Spike wants this trick patched
             return;
         }
     }

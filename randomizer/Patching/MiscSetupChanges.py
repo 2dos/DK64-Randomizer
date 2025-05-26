@@ -434,6 +434,9 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                 ROM_COPY.seek(item_start)
                 for x in coords:
                     ROM_COPY.writeFloat(x)
+            elif cont_map_id == Maps.Isles and item_type == 619 and not spoiler.settings.disable_racing_patches:
+                ROM_COPY.seek(item_start + 0x28)
+                ROM_COPY.writeMultipleBytes(664, 2)  # Overwrite type of obj to custom "Factory Door"
             # Regular if because it can be combined with regular hard bosses
             if item_type == 0x235 and cont_map_id == Maps.GalleonBoss and higher_pufftoss_stars:
                 ROM_COPY.seek(item_start + 4)

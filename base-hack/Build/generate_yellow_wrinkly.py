@@ -10,6 +10,7 @@ from BuildLib import ROMName, getBonusSkinOffset
 
 hint_file = "assets/Gong/hint_door.bin"
 switch_file = "assets/Gong/sprint_switch.bin"
+door_file = "assets/Gong/factory_door.bin"
 
 
 def generateYellowWrinkly():
@@ -67,3 +68,58 @@ def generateSprintSwitch():
         fh.write(getBonusSkinOffset(ExtraTextures.OSprintLogoRight).to_bytes(4, "big"))
         fh.seek(0x3BC)
         fh.write(getBonusSkinOffset(ExtraTextures.OSprintLogoLeft).to_bytes(4, "big"))
+
+FACTORY_DOOR_WALL = [
+    [
+        (60, 80, 0),
+        (-59, 80, 0),
+        (-59, -39, 0),
+    ],
+    [
+        (60, 80, 0),
+        (-59, -39, 0),
+        (60, -39, 0),
+    ]
+]
+
+def fixFactoryDoor():
+    """Fix the collision on the door to Factory lobby."""
+    with open(ROMName, "rb") as fh:
+        door_obj = ROMPointerFile(fh, TableNames.ModelTwoGeometry, 619)
+        fh.seek(door_obj.start)
+        dec = zlib.decompress(fh.read(door_obj.size), 15 + 32)
+        other_start = None
+        other_start_0 = None
+        with open(door_file, "wb") as fg:
+            fg.write(dec[:0x5A8])
+            fg.write(len(FACTORY_DOOR_WALL).to_bytes(4, "big"))
+            for tri in FACTORY_DOOR_WALL:
+                for vert in tri:
+                    for coord in vert:
+                        value = coord
+                        if value < 0:
+                            value += 0x10000
+                        fg.write(value.to_bytes(2, "big"))
+                fg.write((0xFF00).to_bytes(4, "big"))
+            other_start = fg.tell()
+            fg.write(dec[0x5AC:0x5C8])
+            fg.write((0x80).to_bytes(4, "big"))
+            for _ in range(0x1C):
+                fg.write((0xFF).to_bytes(1, "big"))
+            other_start_0 = fg.tell()
+            fg.write(dec[0x5C8:])
+        inc = None
+        with open(door_file, "r+b") as fg:
+            fg.seek(0x20)
+            fg.write((0x54).to_bytes(4, "big"))
+            for idx in range(9):
+                offset = 0x50 + (idx * 4)
+                fg.seek(offset)
+                old = int.from_bytes(fg.read(4), "big")
+                if idx == 0:
+                    inc = other_start - old
+                elif idx == 5:
+                    inc = other_start_0 - old
+                new = old + inc
+                fg.seek(offset)
+                fg.write(new.to_bytes(4, "big"))
