@@ -569,7 +569,10 @@ class DK64Client:
 
 
 class DK64CommandProcessor(ClientCommandProcessor):
+    """Command processor for Donkey Kong 64 commands."""
+
     def __init__(self, ctx):
+        """Initialize the DK64 command processor."""
         super().__init__(ctx)
 
     def _cmd_reset_deathlink(self):
