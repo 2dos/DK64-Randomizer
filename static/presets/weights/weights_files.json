@@ -985,9 +985,6 @@
     "galleon_water": {
       "random": 1
     },
-    "glitches_selected": {
-      "advanced_platforming": 1
-    },
     "hard_bosses": 0.6,
     "hard_bosses_selected": {
       "fast_mad_jack": 0.8,
@@ -1157,7 +1154,7 @@
     },
     "logic_type": {
       "glitchless": 0.8,
-      "glitch": 0.2
+      "advanced_glitchless": 0.2
     },
     "maximize_helm_blocker": 0.5,
     "medal_cb_req": {
@@ -1468,9 +1465,6 @@
     "galleon_water": {
       "random": 1
     },
-    "glitches_selected": {
-      "advanced_platforming": 1
-    },
     "hard_bosses": 0.6,
     "hard_bosses_selected": {
       "fast_mad_jack": 0.8,
@@ -1640,7 +1634,7 @@
     },
     "logic_type": {
       "glitchless": 0.8,
-      "glitch": 0.2
+      "advanced_glitchless": 0.2
     },
     "maximize_helm_blocker": 0.5,
     "medal_cb_req": {

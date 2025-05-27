@@ -302,6 +302,7 @@ export enum LevelRandomization {
 }
 
 export enum LogicType {
+    advanced_glitchless = 0,
     glitchless = 1,
     glitch = 2,
     nologic = 3,

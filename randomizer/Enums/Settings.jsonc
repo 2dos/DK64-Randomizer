@@ -546,6 +546,7 @@
     - nologic: The seed may not be beatable.
   */
   "LogicType": {
+    "advanced_glitchless": 0,
     "glitchless": 1,
     "glitch": 2,
     "nologic": 3

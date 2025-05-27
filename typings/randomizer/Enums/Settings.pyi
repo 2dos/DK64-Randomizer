@@ -270,6 +270,7 @@ class LevelRandomization(IntEnum):
     level_order_moderate = 5
 
 class LogicType(IntEnum):
+    advanced_glitchless = 0
     glitchless = 1
     glitch = 2
     nologic = 3
