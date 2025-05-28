@@ -18,7 +18,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.climbing, None, 2),  # Treetops, TB side
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.swim, None, 2),  # Underwater
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.swim, None, 5),  # In river
-        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 1), # Painting Slope
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 1),  # Painting Slope
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 5),  # In first tunnel
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),  # Around entrance to underground
 
