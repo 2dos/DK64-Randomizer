@@ -123,7 +123,7 @@ def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level
         # Locations that have logic to access them are banned from being warp locations when those warps are pre-activated
         if spoiler.settings.activate_all_bananaports == ActivateAllBananaports.all:
             return False
-        elif spoiler.settings.activate_all_bananaports != ActivateAllBananaports.none and map_id == Maps.Isles:
+        elif spoiler.settings.activate_all_bananaports != ActivateAllBananaports.off and map_id == Maps.Isles:
             return False
     BANNED_PORT_SHUFFLE_EVENTS = getBannedWarps(spoiler)
     if location.tied_warp_event is not None:
