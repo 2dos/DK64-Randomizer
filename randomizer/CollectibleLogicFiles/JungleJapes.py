@@ -18,6 +18,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.climbing, None, 2),  # Treetops, TB side
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.swim, None, 2),  # Underwater
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.swim, None, 5),  # In river
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 1),  # Painting Slope
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 5),  # In first tunnel
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),  # Around entrance to underground
 
@@ -54,7 +55,7 @@ LogicRegions = {
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.CanPhase()) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
     ],
     Regions.JapesPaintingRoomHill: [
-        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 3),  # Slope to painting room
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 2),  # Slope to painting room
     ],
     Regions.JapesTnSAlcove: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # By Troff n Scoff
