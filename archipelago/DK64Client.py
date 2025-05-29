@@ -747,6 +747,11 @@ class DK64Context(CommonContext):
                     location_id = location.location
                     item_name = self.item_names.lookup_in_game(location.item, self.slot_info[location.player].game)
                     self.client.locations_scouted[location_id] = {"player": player_name, "item_name": item_name}
+        source_name = args.get("data", {}).get("source")
+        if "RingLink" in self.ctx.tags and "RingLink" in args["tags"] and source_name != self.instance_id:
+            if not hasattr(self, "pending_ring_link"):
+                self.pending_ring_link = 0
+            self.pending_ring_link += args["data"]["amount"]
 
     async def send_ring_link(self, amount: int):
         if "RingLink" not in self.ctx.tags or self.ctx.slot == None:
@@ -769,16 +774,16 @@ class DK64Context(CommonContext):
             return
 
         # Initialize previous values for all DK64 items if not set
-        if not hasattr(self.client, "prev_base_ammo"):
-            self.client.prev_base_ammo = 0
-        if not hasattr(self.client, "prev_homing_ammo"):
-            self.client.prev_homing_ammo = 0
-        if not hasattr(self.client, "prev_oranges"):
-            self.client.prev_oranges = 0
-        if not hasattr(self.client, "prev_crystal_coconuts"):
-            self.client.prev_crystal_coconuts = 0
-        if not hasattr(self.client, "prev_film"):
-            self.client.prev_film = 0
+        if not hasattr(self, "prev_base_ammo"):
+            self.prev_base_ammo = 0
+        if not hasattr(self, "prev_homing_ammo"):
+            self.prev_homing_ammo = 0
+        if not hasattr(self, "prev_oranges"):
+            self.prev_oranges = 0
+        if not hasattr(self, "prev_crystal_coconuts"):
+            self.prev_crystal_coconuts = 0
+        if not hasattr(self, "prev_film"):
+            self.prev_film = 0
 
         # Read current values for all DK64 items (u8 reads)
         curr_base_ammo = self.client.n64_client.read_u8(DK64MemoryMap.ammo_base)
@@ -788,15 +793,15 @@ class DK64Context(CommonContext):
         curr_film = self.client.n64_client.read_u8(DK64MemoryMap.film)
 
         # Calculate differences
-        base_ammo_diff = curr_base_ammo - self.client.prev_base_ammo
-        homing_ammo_diff = curr_homing_ammo - self.client.prev_homing_ammo
-        oranges_diff = curr_oranges - self.client.prev_oranges
-        film_diff = curr_film - self.client.prev_film
+        base_ammo_diff = curr_base_ammo - self.prev_base_ammo
+        homing_ammo_diff = curr_homing_ammo - self.prev_homing_ammo
+        oranges_diff = curr_oranges - self.prev_oranges
+        film_diff = curr_film - self.prev_film
 
         # Special handling for crystal coconuts - only track 150-unit increments
         # Convert current and previous values to 150-unit increments
         curr_coconut_increments = curr_crystal_coconuts // 150
-        prev_coconut_increments = self.client.prev_crystal_coconuts // 150
+        prev_coconut_increments = self.prev_crystal_coconuts // 150
         coconuts_diff = curr_coconut_increments - prev_coconut_increments
 
         # Send ring link for any positive differences
@@ -816,11 +821,11 @@ class DK64Context(CommonContext):
             await self.send_ring_link(total_items_gained)
 
         # Update previous values
-        self.client.prev_base_ammo = curr_base_ammo
-        self.client.prev_homing_ammo = curr_homing_ammo
-        self.client.prev_oranges = curr_oranges
-        self.client.prev_crystal_coconuts = curr_crystal_coconuts
-        self.client.prev_film = curr_film
+        self.prev_base_ammo = curr_base_ammo
+        self.prev_homing_ammo = curr_homing_ammo
+        self.prev_oranges = curr_oranges
+        self.prev_crystal_coconuts = curr_crystal_coconuts
+        self.prev_film = curr_film
 
         # Handle incoming ring link items
         if not hasattr(self, "pending_ring_link"):
