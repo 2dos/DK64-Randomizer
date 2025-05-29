@@ -143,6 +143,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing),
         TransitionFront(Regions.LowerCore, lambda l: True),
+        TransitionFront(Regions.ChunkyRoomPlatform, lambda l: l.CanMoonkick() or (l.twirl and l.istiny and l.advanced_platforming) or (l.isdiddy and l.advanced_platforming)),
         TransitionFront(Regions.CrankyFactory, lambda l: l.crankyAccess),
         TransitionFront(Regions.CandyFactory, lambda l: l.candyAccess),
         TransitionFront(Regions.FactoryStoragePipe, lambda l: l.islanky and l.handstand),
