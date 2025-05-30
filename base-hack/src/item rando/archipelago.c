@@ -315,6 +315,15 @@ void handleArchipelagoFeed(void) {
     if (ap_info.tag_kong > -1) {
         if (ap_info.tag_kong < 5) {
             changeKong(ap_info.tag_kong);
+        } else if (ap_info.tag_kong == 5) {
+            int kong = 5;
+            while (kong > 4) {
+                kong = getRNGLower31() & 7;
+                if (!hasAccessToKong(kong)) {
+                    kong = 5;
+                }
+            }
+            changeKong(kong);
         }
         ap_info.tag_kong = -1;
     }
