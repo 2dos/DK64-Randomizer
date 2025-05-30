@@ -47,6 +47,7 @@ class DK64Client:
     pending_deathlink = False
     send_mode = 1
     ENABLE_DEATHLINK = False
+    ENABLE_RINGLINK = False
     current_speed = 130
     current_map = 0
 
@@ -491,7 +492,7 @@ class DK64Client:
                 return data
         return data
 
-    async def main_tick(self, item_get_cb, win_cb, deathlink_cb, map_change_cb):
+    async def main_tick(self, item_get_cb, win_cb, deathlink_cb, map_change_cb, ring_link):
         """Game loop tick."""
         await self.readChecks(item_get_cb)
         # await self.item_tracker.readItems()
@@ -524,7 +525,8 @@ class DK64Client:
                 self.pending_deathlink = False
                 self.deathlink_debounce = True
                 await asyncio.sleep(5)
-
+        if self.ENABLE_RINGLINK:
+            await ring_link()
         current_deliver_count = self.get_current_deliver_count()
         # If current_deliver_count is None
         if current_deliver_count is None:
@@ -605,6 +607,7 @@ class DK64Context(CommonContext):
     found_checks = []
     last_resend = time.time()
     ENABLE_DEATHLINK = False
+    ENABLE_RINGLINK = False
     command_processor = DK64CommandProcessor
     won = False
 
@@ -719,6 +722,12 @@ class DK64Context(CommonContext):
                     create_task_log_exception(self.update_death_link(True))
                     self.ENABLE_DEATHLINK = True
                     self.client.ENABLE_DEATHLINK = True
+            if self.slot_data.get("ring_link"):
+                if "RingLink" not in self.tags:
+                    self.tags.add("RingLink")
+                    self.ENABLE_RINGLINK = True
+                    self.client.ENABLE_RINGLINK = True
+                    asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
             if self.slot_data.get("receive_notifications"):
                 self.client.send_mode = self.slot_data.get("receive_notifications")
             self.client.players = self.player_names
@@ -738,6 +747,173 @@ class DK64Context(CommonContext):
                     location_id = location.location
                     item_name = self.item_names.lookup_in_game(location.item, self.slot_info[location.player].game)
                     self.client.locations_scouted[location_id] = {"player": player_name, "item_name": item_name}
+        if isinstance(args, dict) and isinstance(args.get("data", {}), dict):
+            source_name = args.get("data", {}).get("source", None)
+            if not hasattr(self, "instance_id"):
+                self.instance_id = time.time()
+            if "RingLink" in self.tags and source_name != self.instance_id and "RingLink" in args.get("tags", []):
+                if not hasattr(self, "pending_ring_link"):
+                    self.pending_ring_link = 0
+                self.pending_ring_link += args["data"]["amount"]
+
+    async def send_ring_link(self, amount: int):
+        """Send a ring link message."""
+        if "RingLink" not in self.tags or self.slot is None:
+            return
+        if not hasattr(self, "instance_id"):
+            self.instance_id = time.time()
+        await self.send_msgs([{"cmd": "Bounce", "tags": ["RingLink"], "data": {"time": time.time(), "source": self.instance_id, "amount": amount}}])
+
+    async def handle_ring_link(self):
+        """Handle ring link functionality for DK64 items."""
+        if not self.client.ENABLE_RINGLINK:
+            return
+        self.bypass_ring_link = False
+        # Initialize previous values for all DK64 items if not set
+        if not hasattr(self, "prev_base_ammo"):
+            self.prev_base_ammo = 0
+            self.bypass_ring_link = True
+        if not hasattr(self, "prev_homing_ammo"):
+            self.prev_homing_ammo = 0
+            self.bypass_ring_link = True
+        if not hasattr(self, "prev_oranges"):
+            self.prev_oranges = 0
+            self.bypass_ring_link = True
+        if not hasattr(self, "prev_crystal_coconuts"):
+            self.prev_crystal_coconuts = 0
+            self.bypass_ring_link = True
+        if not hasattr(self, "prev_film"):
+            self.prev_film = 0
+            self.bypass_ring_link = True
+        # Read current values for all DK64 items (u16 reads)
+        curr_base_ammo = self.client.n64_client.read_u16(DK64MemoryMap.ammo_base)
+        curr_homing_ammo = self.client.n64_client.read_u16(DK64MemoryMap.homing_ammo)
+        curr_oranges = self.client.n64_client.read_u16(DK64MemoryMap.oranges)
+        curr_crystal_coconuts = self.client.n64_client.read_u16(DK64MemoryMap.crystal_coconuts)
+        curr_film = self.client.n64_client.read_u16(DK64MemoryMap.film)
+        # Calculate differences
+        base_ammo_diff = curr_base_ammo - self.prev_base_ammo
+        homing_ammo_diff = curr_homing_ammo - self.prev_homing_ammo
+        oranges_diff = curr_oranges - self.prev_oranges
+        film_diff = curr_film - self.prev_film
+
+        # Special handling for crystal coconuts - only track 150-unit increments
+        # Convert current and previous values to 150-unit increments
+        curr_coconut_increments = curr_crystal_coconuts // 150
+        prev_coconut_increments = self.prev_crystal_coconuts // 150
+        coconuts_diff = curr_coconut_increments - prev_coconut_increments
+
+        # Send or receive ring link for any positive or negative differences
+        total_items_gained = 0
+        total_items_lost = 0
+        if base_ammo_diff > 0:
+            total_items_gained += base_ammo_diff
+        elif base_ammo_diff < 0:
+            total_items_lost += abs(base_ammo_diff)
+        if homing_ammo_diff > 0:
+            total_items_gained += homing_ammo_diff
+        elif homing_ammo_diff < 0:
+            total_items_lost += abs(homing_ammo_diff)
+        if oranges_diff > 0:
+            total_items_gained += oranges_diff
+        elif oranges_diff < 0:
+            total_items_lost += abs(oranges_diff)
+        if coconuts_diff > 0:
+            total_items_gained += coconuts_diff
+        elif coconuts_diff < 0:
+            total_items_lost += abs(coconuts_diff)
+        if film_diff > 0:
+            total_items_gained += film_diff
+        elif film_diff < 0:
+            total_items_lost += abs(film_diff)
+        if self.bypass_ring_link is True:
+            # If we bypass ring link, we don't send any items
+            total_items_gained = 0
+            total_items_lost = 0
+            self.bypass_ring_link = False
+        if total_items_gained > 0:
+            await self.send_ring_link(total_items_gained)
+        if total_items_lost > 0:
+            await self.send_ring_link(-total_items_lost)
+
+        # Update previous values
+        self.prev_base_ammo = curr_base_ammo
+        self.prev_homing_ammo = curr_homing_ammo
+        self.prev_oranges = curr_oranges
+        self.prev_crystal_coconuts = curr_crystal_coconuts
+        self.prev_film = curr_film
+
+        # Handle incoming ring link items
+        if not hasattr(self, "pending_ring_link"):
+            self.pending_ring_link = 0
+
+        if self.pending_ring_link != 0:
+            # Distribute items evenly across the 5 item types
+            # Each ring link item adds 1 to each type (except coconuts which add 150)
+            items_to_add = self.pending_ring_link
+
+            # Current Ammo Belt amount
+            # Ammo Belt is a 1-byte value: 0 = 50, 1 = 100, 2 = 200
+            curr_base_ammo_belt = self.client.n64_client.read_u8(DK64MemoryMap.ammo_belt)
+            ammo_belt_capacity = 50
+            if curr_base_ammo_belt == 1:
+                ammo_belt_capacity = 100
+            elif curr_base_ammo_belt == 2:
+                ammo_belt_capacity = 200
+            # Add items to base ammo
+            new_base_ammo = max(0, min(curr_base_ammo + items_to_add, ammo_belt_capacity))
+            self.client.n64_client.write_u16(DK64MemoryMap.ammo_base, new_base_ammo)
+
+            # If ammo belt is 2 we can carry up to 20 homing ammo, else only 10
+            homing_belt_capacity = 10
+            if curr_base_ammo_belt == 2:
+                homing_belt_capacity = 20
+            # Add items to homing ammo
+            new_homing_ammo = max(0, min(curr_homing_ammo + items_to_add, homing_belt_capacity))
+            self.client.n64_client.write_u16(DK64MemoryMap.homing_ammo, new_homing_ammo)
+
+            # Add items to oranges
+            orange_capacity = 20
+            if curr_base_ammo_belt == 1:
+                orange_capacity = 25
+            elif curr_base_ammo_belt == 2:
+                orange_capacity = 30
+            new_oranges = max(0, min(curr_oranges + items_to_add, orange_capacity))
+            self.client.n64_client.write_u16(DK64MemoryMap.oranges, new_oranges)
+
+            # Get the banana fairy total
+            # This is disabled for now, as we don't have a way to read it so we're just always going to assume 0
+            # banana_fairy_total = self.client.n64_client.read_u16(DK64MemoryMap.banana_fairy_total)
+            banana_fairy_total = 0
+            # Default is 20, each fairy adds 1
+            coconut_total = 20
+            if banana_fairy_total > 0:
+                coconut_total += banana_fairy_total
+            elif self.prev_crystal_coconuts > coconut_total:
+                # If we have more coconuts than the total, we need to reset it
+                coconut_total = self.prev_crystal_coconuts
+            # Add items to crystal coconuts (150 per item)
+            new_crystal_coconuts = max(0, min(curr_crystal_coconuts + (items_to_add * 150), coconut_total))
+            self.client.n64_client.write_u16(DK64MemoryMap.crystal_coconuts, new_crystal_coconuts)
+
+            # We do the same using the film
+            film_total = 10
+            if banana_fairy_total > 0:
+                film_total += banana_fairy_total
+            elif self.prev_film > film_total:
+                # If we have more film than the total, we need to reset it
+                film_total = self.prev_film
+            # Add items to film
+            new_film = max(0, min(curr_film + items_to_add, film_total))
+            self.client.n64_client.write_u16(DK64MemoryMap.film, new_film)
+            # Update previous values
+            self.prev_base_ammo = new_base_ammo
+            self.prev_homing_ammo = new_homing_ammo
+            self.prev_oranges = new_oranges
+            self.prev_crystal_coconuts = new_crystal_coconuts
+            self.prev_film = new_film
+
+            self.pending_ring_link = 0
 
     async def sync(self):
         """Sync the game."""
@@ -762,6 +938,10 @@ class DK64Context(CommonContext):
         async def victory():
             """Handle a victory."""
             await self.send_victory()
+
+        async def ring_link():
+            """Handle a ring link."""
+            await self.handle_ring_link()
 
         async def deathlink():
             """Handle a deathlink."""
@@ -822,7 +1002,7 @@ class DK64Context(CommonContext):
                     if status is False:
                         await asyncio.sleep(0.5)
                         continue
-                    await self.client.main_tick(on_item_get, victory, deathlink, map_change)
+                    await self.client.main_tick(on_item_get, victory, deathlink, map_change, ring_link)
                     await asyncio.sleep(1)
                     now = time.time()
                     if self.last_resend + 0.5 < now:

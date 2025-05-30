@@ -594,6 +594,7 @@ if baseclasses_loaded:
                 "ClimbingShuffle": self.options.climbing_shuffle.value,
                 "PlayerNum": self.player,
                 "death_link": self.options.death_link.value,
+                "ring_link": self.options.ring_link.value,
                 "receive_notifications": self.options.receive_notifications.value,
                 "LevelOrder": ", ".join([level.name for order, level in self.logic_holder.settings.level_order.items()]),
                 "StartingKongs": ", ".join([kong.name for kong in self.logic_holder.settings.starting_kong_list]),
