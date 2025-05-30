@@ -1,4 +1,4 @@
-{% from 'macros.html' import list_selector, toggle_input, switchsanity_option %}
+{% from 'macros.html' import list_selector, toggle_input, switchsanity_option, dropdown_multiselector %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
@@ -197,34 +197,10 @@
             </div>
         </div>
             <div class="col border panel">
-                <h2 class="title">GLOBAL</h2>
+            <h2 class="title">GLOBAL</h2>
             <div class="flex-container">
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="All normal enemies that spawn in the world are randomized.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="enemy_rando"
-                                id="enemy_rando"
-                                display_name="Shuffle Enemies"
-                                value="True"/>
-                        Shuffle Enemies
-                    </label>
-                    {{ list_selector(enemies, "enemies", "ENEMIES", "This will open a popup that will let you customize what enemies appear in the game.&#10;This defaults to All options.", 16, 1) }}
-                {# Remove end </div> as it's included in the macro for formatting #}
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                           title="Bonus Barrels are randomly chosen from the pool of available Bonus Barrels.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="bonus_barrel_rando"
-                               id="bonus_barrel_rando"
-                               display_name="Shuffle Bonus Barrels"
-                               value="True"/>
-                        Shuffle Bonus Barrels
-                    </label>
-                    {{ list_selector(minigames, "minigames_list", "MINIGAME SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.", 18, 1) }}
-                {# Remove end </div> as it's included in the macro for formatting #}
+                {{ dropdown_multiselector(enemies, "enemies", "Shuffled Enemies", "This will open a popup that will let you customize what enemies appear in the game.&#10;This defaults to All options.", 16, 1) }}
+                {{ dropdown_multiselector(minigames, "minigames_list", "Shuffled Bonus Barrels", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.", 18, 1) }}
                 {{ toggle_input("enemy_speed_rando", "Shuffle Enemy Speed", "Enemy speeds are randomized.") }}
                 {{ toggle_input("randomize_enemy_sizes", "Random Enemy Size", "The size of enemies is randomized.") }}
                 {{ toggle_input("boss_location_rando", "Shuffle Boss Location", "The boss you can get in a level is different than normal.") }}

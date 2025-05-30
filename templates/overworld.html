@@ -1,4 +1,4 @@
-{% from 'macros.html' import list_selector, properties_selector %}
+{% from 'macros.html' import list_selector, properties_selector, dropdown_multiselector %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
@@ -27,19 +27,8 @@
                             Open Lobbies
                         </label>
                     </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                            title="Various barriers to progression will be removed.">
-                            <input class="form-check-input"
-                                type="checkbox"
-                                name="remove_barriers_enabled"
-                                id="remove_barriers_enabled"
-                                display_name="Remove Barriers"
-                                value="True"/>
-                            Remove Barriers
-                        </label>
-                        {{ list_selector(remove_barriers, "remove_barriers", "REMOVE BARRIERS", "This will open a popup that will let you customize what barriers are removed.&#10;This defaults to All options.", 12, 1) }}
-                        {# Remove end </div> as it's included in the macro for formatting #}
+                    {{ dropdown_multiselector(remove_barriers, "remove_barriers", "Remove Barriers", "This will open a popup that will let you customize what barriers are removed.&#10;This defaults to All options.", 12, 1) }}
+
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                title="Simian Slam switches will be adjusted to match the level order so that tougher switches will always be in later levels.&#10;The first four levels will have green switches, the next two will have blue and the final level will have red switches.&#10;In LZR, these are assigned to random levels with no regard for level order.">
@@ -106,19 +95,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                            title="Speeds up several of the 'Slower' Checks in the game.">
-                            <input class="form-check-input"
-                                type="checkbox"
-                                name="faster_checks_enabled"
-                                id="faster_checks_enabled"
-                                display_name="Faster Checks"
-                                value="True"/>
-                            Faster Checks
-                        </label>
-                        {{ list_selector(faster_checks, "faster_checks", "FASTER CHECKS", "This will open a popup that will let you customize what checks are sped up.&#10;This defaults to All options.", 12, 1) }}
-                        {# Remove end </div> as it's included in the macro for formatting #}
+                    {{ dropdown_multiselector(faster_checks, "faster_checks", "Faster Checks", "This will open a popup that will let you customize what checks are sped up.&#10;This defaults to All options.", 12, 1) }}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                title="Donkey Kong 64 with a few twists:&#10;- Hideout Helm timer starts as soon as you load up a file.&#10;- Picking up a blueprint gives you 2 extra minutes on the clock. Each kong freed gives you 5 minutes. Every Golden Banana collected gives you 30 seconds.&#10;- As soon as the time runs out, saving is disabled on your file.&#10;Aim is to get the highest percentage you can before the clock runs out.">

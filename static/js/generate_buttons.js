@@ -328,6 +328,19 @@ else:
         }
     }
 
+    // Handle Dropdown Multiselectors
+    let ddms_elements = document.querySelectorAll(".dropdown-multiselect .dropdown-menu");
+    for (element of ddms_elements) {
+        let values = [];
+        const checkboxes = Array.from(element.querySelectorAll("input[type='checkbox']"));
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                values.push(get_enum_or_string_value(cb.value, element.getAttribute("name")));
+            }
+        })
+        form_data[element.getAttribute("name")] = values;
+    }
+
     return JSON.stringify(form_data);
 }
 
@@ -525,6 +538,33 @@ async function import_settings_string(event) {
                             }
                         }
                     });
+                } else if (selector.classList.contains("dropdown-menu")) {
+                    let MapName = SettingsMap[key];
+                    // Flip the attributes so the value is the key and the key is the value
+                    let flipped = {};
+                    for (let key in MapName) {
+                        flipped[MapName[key]] = key;
+                    }
+                    const checkboxes = selector.querySelectorAll("input[type='checkbox']");
+                    console.log(key)
+                    console.log("Uncheck")
+                    checkboxes.forEach(cb => {
+                        console.log(cb)
+                        cb.checked = false;
+                    })
+                    let selectedCount = 0;
+                    console.log("Check")
+                    settings[key].forEach(item => {
+                        // Find the selected option by the value of the option
+                        checkboxes.forEach(cb => {
+                            if (cb.value == flipped[item]) {
+                                console.log(cb)
+                                cb.checked = true;
+                                selectedCount++;
+                            }
+                        })
+                    });
+                    selector.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`
                 }
             } else {
                 const selector = document.getElementById(key);

@@ -116,9 +116,18 @@ function random_multi_select_setting(weights_obj) {
 function assign_multi_select_setting(setting_name, options_list) {
     /** Assign a list of values to a multi-select. */
     const selectElem = get_setting_element(setting_name);
-    for (let i = 0; i < selectElem.options.length; i++) {
-        const optElem = selectElem.options.item(i);
-        optElem.selected = options_list.includes(optElem.value);
+    if (selectElem.tagName == "SELECT") {
+        // Regular Multi-select
+        for (let i = 0; i < selectElem.options.length; i++) {
+            const optElem = selectElem.options.item(i);
+            optElem.selected = options_list.includes(optElem.value);
+        }
+    } else {
+        // Dropdown Multiselect
+        const checkboxes = Array.from(selectElem.querySelectorAll("input[type='checkbox']"));
+        checkboxes.forEach(cb => {
+            cb.checked = options_list.includes(cb.value);
+        })
     }
 }
 

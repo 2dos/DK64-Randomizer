@@ -480,23 +480,7 @@ document
   .getElementById("spoiler_hints")
   .addEventListener("change", disable_points);
 
-// Disable Remove Barriers Selector when Remove Barriers is off
-function disable_remove_barriers() {
-  const selector = document.getElementById("remove_barriers_modal");
-  const disabled = !document.getElementById("remove_barriers_enabled").checked;
-
-  if (disabled) {
-    selector.setAttribute("disabled", "disabled");
-  } else {
-    selector.removeAttribute("disabled");
-  }
-}
-
-document
-.getElementById("remove_barriers_enabled")
-.addEventListener("click", disable_remove_barriers);
-
-// Disable Remove Barriers Selector when Remove Barriers is off
+// Disable Prog Slam Selector when Prog Slam is off
 function disable_slam_selector() {
   const selector = document.getElementById("slamModalActivator");
   const disabled = !document.getElementById("alter_switch_allocation").checked;
@@ -510,22 +494,6 @@ function disable_slam_selector() {
 document
 .getElementById("alter_switch_allocation")
 .addEventListener("click", disable_slam_selector);
-
-// Disable Faster Checks Selector when Faster Checks is off
-function disable_faster_checks() {
-  const selector = document.getElementById("faster_checks_modal");
-  const disabled = !document.getElementById("faster_checks_enabled").checked;
-
-  if (disabled) {
-    selector.setAttribute("disabled", "disabled");
-  } else {
-    selector.removeAttribute("disabled");
-  }
-}
-
-document
-  .getElementById("faster_checks_enabled")
-  .addEventListener("click", disable_faster_checks);
 
 // Force Vanilla Door Rando on and enforce DK Portal Rando is enabled
 function toggle_dos_door_rando() {
@@ -755,20 +723,6 @@ document
   .getElementById("enable_plandomizer")
   .addEventListener("click", enable_plandomizer);
 
-// Disable Minigame Selector when Shuffle Bonus Barrels is off
-function disable_barrel_modal() {
-  const selector = document.getElementById("minigames_list_modal");
-  if (document.getElementById("bonus_barrel_rando").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
-
-document
-  .getElementById("bonus_barrel_rando")
-  .addEventListener("click", disable_barrel_modal);
-
 // Disable SSanity Selector when Switchsanity is off
 function disable_switchsanity_modal() {
   const selector = document.getElementById("switchModalActivator");
@@ -829,19 +783,6 @@ document
 document
   .getElementById("ssanity-reset-random")
   .addEventListener("click", switchsanity_reset_random);
-
-function disable_enemy_modal() {
-  const selector = document.getElementById("enemies_modal");
-  if (document.getElementById("enemy_rando").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
-
-document
-  .getElementById("enemy_rando")
-  .addEventListener("click", disable_enemy_modal);
 
 // Disable Hard Mode Selector when Hard Mode is off
 function disable_hard_mode_modal() {
@@ -2150,6 +2091,38 @@ document
       }
     });
   });
+
+// Dropdown Multiselect
+function toggleDropdown(name) {
+  const menu = document.getElementById(`${name}_selected`);
+  menu.classList.toggle('show');
+}
+
+function updateSelected(name) {
+  const checkboxes = document.querySelectorAll(`#${name}_selected input[type="checkbox"]`);
+  const countLabel = document.getElementById(`selectedCount_${name}`);
+
+  let selectedCount = 0;
+  checkboxes.forEach(cb => {
+    if (cb.checked) {
+        selectedCount++;
+    }
+  });
+  console.log(selectedCount)
+
+  countLabel.innerText = `${selectedCount} item${selectedCount !== 1 ? 's' : ''} selected`;
+}
+
+document.addEventListener('click', function(e) {
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+    if (!dropdown.contains(e.target)) {
+        const name = dropdown.id.replace('dropdown_', '');
+        document.getElementById('menu_' + name)?.classList.remove('show');
+        document.getElementById('caret_' + name)?.classList.remove('rotate');
+    }
+    });
+});
+
 // Bind custom update UI event for "apply_preset"
 function update_ui_states() {
   /** Trigger any function that would update the status of a UI element based on the current settings configuration. */
@@ -2165,11 +2138,9 @@ function update_ui_states() {
   max_music(null);
   max_music_proportion(null);
   max_sfx(null);
-  disable_barrel_modal(null);
   disable_switchsanity_modal(null);
   item_rando_list_changed(null);
   toggle_item_rando(null);
-  disable_enemy_modal(null);
   disable_hard_mode_modal(null);
   disable_hard_bosses_modal(null);
   disable_excluded_songs_modal(null);
@@ -2180,9 +2151,7 @@ function update_ui_states() {
   toggle_bananaport_selector(null);
   disable_helm_hurry(null);
   disable_points(null);
-  disable_remove_barriers(null);
   disable_slam_selector(null);
-  disable_faster_checks(null);
   toggle_logic_type(null);
   toggle_key_settings(null);
   //max_starting_moves_count(null);
@@ -2203,6 +2172,12 @@ function update_ui_states() {
   for (let s = 0; s < sliders.length; s++) {
     const event = new Event("change", { bubbles: true, cancelable: false });
     sliders[s].dispatchEvent(event);
+  }
+
+  const ddms = document.getElementsByClassName("dropdown-multiselect");
+  for (let d = 0; d < ddms.length; d++) {
+    const event = new Event("change", { bubbles: true, cancelable: false });
+    ddms[d].dispatchEvent(event);
   }
 }
 

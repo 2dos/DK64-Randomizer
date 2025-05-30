@@ -344,3 +344,27 @@
         </div>
     </div>
 {% endmacro %}
+
+{% macro dropdown_multiselector(list, name, title, tooltip, size, includeDisclaimer=0, overrideDisclaimer="") %}
+    <div class="item-select">
+        <p class="select-title">{{ title }}</p>
+        <div class="dropdown-multiselect" id="dropdown_{{ name }}">
+            <!-- Visible toggle -->
+            <div class="dropdown-toggle" onclick="toggleDropdown('{{ name }}')" title="{{ tooltip }}">
+                <span id="selectedCount_{{ name }}">Loading Multiselector...</span>
+            </div>
+    
+            <!-- Dropdown menu -->
+            <div class="dropdown-menu" name="{{ name }}_selected" id="{{ name }}_selected">
+                {% for option in list %}
+                    <label class="dropdown-item">
+                        <input type="checkbox" value="{{ option.value }}"
+                            onchange="updateSelected('{{ name }}')"
+                            >
+                        {{ option.name }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endmacro %}

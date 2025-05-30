@@ -534,6 +534,16 @@ async function savesettings() {
     }
   });
 
+  // Handle dropdown multiselectors
+  document.querySelectorAll(".dropdown-multiselect .dropdown-menu").forEach((ddms) => {
+    const checkboxes = Array.from(ddms.querySelectorAll("input[type='checkbox']"));
+    const checkedValues = checkboxes
+      .filter((cb) => cb.checked)
+      .map((cb) => cb.value);
+    
+    json[ddms.getAttribute('name')] = checkedValues;
+  });
+
   // Handle inputs with specific naming convention
   // Changed with the new selectors list
   // document
@@ -1516,11 +1526,11 @@ function load_settings(json) {
   if (json["enable_plandomizer"]) {
     delete json["enable_plandomizer"];
   }
-  all_elements = document.querySelectorAll("#form input, #form select");
+  all_elements = document.querySelectorAll("#form input, #form select, #form .dropdown-multiselect .dropdown-menu");
   const elementsCache = Object.fromEntries(
     Object.keys(json).map((key) => [
       key,
-      Array.from(all_elements).filter((el) => el.name === key),
+      Array.from(all_elements).filter((el) => el.getAttribute("name") === key),
     ])
   );
 
@@ -1557,8 +1567,8 @@ function load_settings(json) {
       }
 
       if (
-        element.name.startsWith("starting_moves_list_") &&
-        !element.name.startsWith("starting_moves_list_count")
+        element.getAttribute("name").startsWith("starting_moves_list_") &&
+        !element.getAttribute("name").startsWith("starting_moves_list_count")
       ) {
         const select = document.getElementById(key);
         json[key].forEach((value) => {
@@ -1599,6 +1609,24 @@ function load_settings(json) {
             });
             valueChanged = true;
           }
+        }
+
+        // Dropdown Multiselector
+        if (element.classList.contains("dropdown-menu")) {
+          const checkboxes = Array.from(element.querySelectorAll("input[type='checkbox']"));
+          const currentValues = checkboxes.filter(option => option.checked).map(option => option.value);
+          let selectedCount = 0;
+          if (JSON.stringify(currentValues) !== JSON.stringify(value)) {
+            checkboxes.forEach((option) => {
+              option.checked = value.includes(option.value);
+              if (value.includes(option.value)) {
+                selectedCount++;
+              }
+            });
+            valueChanged = true;
+          }
+          console.log(element.getAttribute("name"), selectedCount)
+          element.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`
         }
       } catch (e) {
         console.error(`Error setting value for ${key}:`, e);
