@@ -825,7 +825,7 @@ class DK64Context(CommonContext):
             total_items_gained += film_diff
         elif film_diff < 0:
             total_items_lost += abs(film_diff)
-        if self.bypass_ring_link == True:
+        if self.bypass_ring_link is True:
             # If we bypass ring link, we don't send any items
             total_items_gained = 0
             total_items_lost = 0
