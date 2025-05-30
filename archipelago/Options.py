@@ -237,11 +237,25 @@ class GlitchesSelected(OptionList):
     }
 
 
+class RingLink(Toggle):
+    """Determines if the Ring Link is enabled.
+
+    The easier waty to say this is Ammo link.
+    If enabled, all ammo types are shared between players.
+
+    Currently for Film and Crystal Coconuts if you gain any above the base amount from ringlink, we will not provide more.
+    But you can still gain more ammo from the world, and it will be shared.
+    """
+
+    display_name = "Ring Link"
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
 
     death_link: DeathLink
+    ring_link: RingLink
     goal: Goal
     krool_key_count: KeysRequiredToBeatKrool
     krool_phase_count: KroolPhaseCount

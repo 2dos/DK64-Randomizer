@@ -11,6 +11,7 @@ LogicRegions = {
     Regions.FranticFactoryStart: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 5),  # First tunnel
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # W2
+        Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 3),  # Path to Testing
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # W1
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: Events.HatchOpened in l.Events, None, 10),  # On pole down the hatch
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Around hatch
@@ -23,7 +24,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 3),  # Path to Funky
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # W5
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.spring or l.CanMoontail(), None, 5),  # Block Tower
-        Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 10),  # Path to testing room
+        Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 7),  # Path to testing room
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # Block tower side of Mini Monkey tunnel
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.mini or l.CanPhase(), None, 1),  # Spinning wheel
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # By Snide's HQ
