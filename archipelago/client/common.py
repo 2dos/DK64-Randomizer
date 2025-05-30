@@ -35,7 +35,9 @@ class DK64MemoryMap:
     oranges = 0x807FCC44  # Oranges
     crystal_coconuts = 0x807FCC46  # Crystal coconuts
     film = 0x807FCC48  # Film (for fairy camera)
-    ammo_belt = 0x807FC953 # (0, 1 or 2) 1 byte
+    ammo_belt = 0x807FC953  # (0, 1 or 2) 1 byte
+    banana_fairies = 0x0000000
+
 
 all_tasks = set()
 
