@@ -244,7 +244,8 @@ class RingLink(Toggle):
     If enabled, all ammo types are shared between players.
 
     Currently for Film and Crystal Coconuts if you gain any above the base amount from ringlink, we will not provide more.
-    But you can still gain more ammo from the world, and it will be shared."""
+    But you can still gain more ammo from the world, and it will be shared.
+    """
 
     display_name = "Ring Link"
 

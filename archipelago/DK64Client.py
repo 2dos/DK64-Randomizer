@@ -757,6 +757,7 @@ class DK64Context(CommonContext):
                 self.pending_ring_link += args["data"]["amount"]
 
     async def send_ring_link(self, amount: int):
+        """Send a ring link message."""
         if "RingLink" not in self.tags or self.slot is None:
             return
         if not hasattr(self, "instance_id"):
