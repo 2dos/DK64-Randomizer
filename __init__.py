@@ -728,7 +728,6 @@ if baseclasses_loaded:
             logic_type = slot_data["LogicType"]
             glitches_selected = slot_data["GlitchesSelected"].split(", ")
             starting_key_list = slot_data["StartingKeyList"].split(", ")
-            print(starting_key_list)
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
