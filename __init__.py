@@ -130,7 +130,7 @@ if baseclasses_loaded:
     from randomizer.Spoiler import Spoiler
     from randomizer.Settings import Settings
     from randomizer.ShuffleWarps import LinkWarps
-    from randomizer.Enums.Settings import ShuffleLoadingZones
+    from randomizer.Enums.Settings import LogicType, ShuffleLoadingZones
     from randomizer.Patching.ApplyRandomizer import patching_response
     from version import version
     from randomizer.Patching.EnemyRando import randomize_enemies_0
@@ -143,7 +143,9 @@ if baseclasses_loaded:
     from randomizer.Enums.Locations import Locations as DK64RLocations
     from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel, GlitchesSelected
     from randomizer.Enums.Switches import Switches
+    from randomizer.Enums.SwitchTypes import SwitchType
     from randomizer.Lists import Item as DK64RItem
+    from randomizer.Lists.Switches import SwitchInfo
     from worlds.LauncherComponents import Component, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
     from Utils import open_filename
@@ -283,6 +285,8 @@ if baseclasses_loaded:
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["krool_key_count"] = self.options.krool_key_count.value
+            if hasattr(self.multiworld, "generation_is_fake"):
+                settings_dict["krool_key_count"] = 8  # if gen is fake, don't pick random keys to start with, trust the slot data
             settings_dict["switchsanity"] = self.options.switchsanity.value
             settings_dict["logic_type"] = self.options.logic_type.value
             settings_dict["glitches_selected"] = []
@@ -329,18 +333,37 @@ if baseclasses_loaded:
                     if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
                         passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
                         settings.level_order = passthrough["LevelOrder"]
+                        # Switch logic lifted out of level shuffle due to static levels for UT
+                        if settings.alter_switch_allocation:
+                            allocation = [1, 1, 1, 1, 2, 2, 3, 3]
+                            for x in range(8):
+                                level = settings.level_order[x + 1]
+                                settings.switch_allocation[level] = allocation[x]
                         settings.starting_kong_list = passthrough["StartingKongs"]
+                        settings.starting_kong = settings.starting_kong_list[0]  # fake a starting kong so that we don't force a different kong
+                        settings.medal_requirement = passthrough["JetpacReq"]
+                        settings.rareware_gb_fairies = passthrough["FairyRequirement"]
+                        settings.medal_cb_req = passthrough["MedalCBRequirement"]
                         settings.BossBananas = passthrough["BossBananas"]
                         settings.boss_maps = passthrough["BossMaps"]
                         settings.boss_kongs = passthrough["BossKongs"]
                         settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
                         settings.helm_order = passthrough["HelmOrder"]
+                        settings.logic_type = LogicType[passthrough["LogicType"]]
+                        settings.glitches_selected = [GlitchesSelected[glitch] for glitch in passthrough["GlitchesSelected"]]
+                        settings.open_lobbies = passthrough["OpenLobbies"]
+                        settings.starting_key_list = passthrough["StartingKeyList"]
                         # There's multiple sources of truth for helm order.
                         settings.helm_donkey = 0 in settings.helm_order
                         settings.helm_diddy = 4 in settings.helm_order
                         settings.helm_lanky = 3 in settings.helm_order
                         settings.helm_tiny = 2 in settings.helm_order
                         settings.helm_chunky = 1 in settings.helm_order
+                        # Switchsanity
+                        for switch, data in passthrough["SwitchSanity"].items():
+                            needed_kong = Kongs[data["kong"]]
+                            switch_type = SwitchType[data["type"]]
+                            settings.switchsanity_data[Switches[switch]] = SwitchInfo(switch, needed_kong, switch_type, 0, 0, [])
             # We need to set the freeing kongs here early, as they won't get filled in any other part of the AP process
             settings.diddy_freeing_kong = self.random.randint(0, 4)
             # Lanky freeing kong actually changes logic, so UT should use the slot data rather than genning a new one.
@@ -617,6 +640,7 @@ if baseclasses_loaded:
                 "SwitchSanity": {switch.name: {"kong": data.kong.name, "type": data.switch_type.name} for switch, data in self.logic_holder.settings.switchsanity_data.items()},
                 "LogicType": self.logic_holder.settings.logic_type.name,
                 "GlitchesSelected": ", ".join([glitch.name for glitch in self.logic_holder.settings.glitches_selected]),
+                "StartingKeyList": ", ".join([key.name for key in self.logic_holder.settings.starting_key_list]),
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -669,6 +693,9 @@ if baseclasses_loaded:
                 classification = ItemClassification.filler
             elif data.progression:
                 classification = ItemClassification.progression
+            elif hasattr(self.multiworld, "generation_is_fake"):
+                # UT needs to classify things as progression or it won't track them
+                classification = ItemClassification.progression
             else:
                 classification = ItemClassification.filler
 
@@ -688,17 +715,35 @@ if baseclasses_loaded:
             # Parse the string data
             level_order = slot_data["LevelOrder"].split(", ")
             starting_kongs = slot_data["StartingKongs"].split(", ")
+            medal_cb_req = slot_data["MedalCBRequirement"]
+            fairy_req = slot_data["FairyRequirement"]
+            pearl_req = slot_data["MermaidPearls"]
+            jetpac_req = slot_data["JetpacReq"]
             boss_bananas = slot_data["BossBananas"].split(", ")
             boss_maps = slot_data["BossMaps"].split(", ")
             boss_kongs = slot_data["BossKongs"].split(", ")
             helm_order = slot_data["HelmOrder"].split(", ")
+            open_lobbies = slot_data["OpenLobbies"]
+            switchsanity = slot_data["SwitchSanity"]
+            logic_type = slot_data["LogicType"]
+            glitches_selected = slot_data["GlitchesSelected"].split(", ")
+            starting_key_list = slot_data["StartingKeyList"].split(", ")
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
+            relevant_data["MedalCBRequirement"] = medal_cb_req
+            relevant_data["FairyRequirement"] = fairy_req
+            relevant_data["MermaidPearls"] = pearl_req
+            relevant_data["JetpacReq"] = jetpac_req
             relevant_data["BossBananas"] = [int(cost) for cost in boss_bananas]
             relevant_data["BossMaps"] = [Maps[map] for map in boss_maps]
             relevant_data["BossKongs"] = [Kongs[kong] for kong in boss_kongs]
             relevant_data["LankyFreeingKong"] = slot_data["LankyFreeingKong"]
             relevant_data["HelmOrder"] = [int(room) for room in helm_order]
+            relevant_data["SwitchSanity"] = switchsanity
+            relevant_data["OpenLobbies"] = open_lobbies
+            relevant_data["LogicType"] = logic_type
+            relevant_data["GlitchesSelected"] = glitches_selected
+            relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list]
             return relevant_data
