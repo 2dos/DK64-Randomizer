@@ -350,7 +350,7 @@ if baseclasses_loaded:
                         settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
                         settings.helm_order = passthrough["HelmOrder"]
                         settings.logic_type = LogicType[passthrough["LogicType"]]
-                        settings.glitches_selected = [GlitchesSelected[glitch] for glitch in passthrough["GlitchesSelected"]]
+                        settings.glitches_selected = passthrough["GlitchesSelected"]
                         settings.open_lobbies = passthrough["OpenLobbies"]
                         settings.starting_key_list = passthrough["StartingKeyList"]
                         # There's multiple sources of truth for helm order.
@@ -744,6 +744,6 @@ if baseclasses_loaded:
             relevant_data["SwitchSanity"] = switchsanity
             relevant_data["OpenLobbies"] = open_lobbies
             relevant_data["LogicType"] = logic_type
-            relevant_data["GlitchesSelected"] = glitches_selected
-            relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list]
+            relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != ""]
+            relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list if key != ""]
             return relevant_data
