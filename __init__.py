@@ -744,6 +744,6 @@ if baseclasses_loaded:
             relevant_data["SwitchSanity"] = switchsanity
             relevant_data["OpenLobbies"] = open_lobbies
             relevant_data["LogicType"] = logic_type
-            relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != '']
-            relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list if key != '']
+            relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != ""]
+            relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list if key != ""]
             return relevant_data
