@@ -799,7 +799,10 @@ class DK64Context(CommonContext):
             if "TagLink" in self.tags and source_name != self.instance_id and "TagLink" in args.get("tags", []):
                 if not hasattr(self, "pending_tag_link"):
                     self.pending_tag_link = False, 0
-                kong = args.get("data", {}).get("kong", 5)  # Default to 5 if not provided
+                try:
+                    kong = args.get("data", {}).get("kong", 5)  # Default to 5 if not provided
+                except Exception:
+                    kong = 5
                 self.pending_tag_link = True, kong
 
     async def send_ring_link(self, amount: int):
@@ -997,28 +1000,37 @@ class DK64Context(CommonContext):
                     4: "Chunky",
                 }
 
-                kong_name = item_names_to_id.get(number_map.get(kong, None), None)
+                kong_name = None
+                kong_key = number_map.get(kong, None)
+                if kong_key is not None:
+                    kong_name = item_names_to_id.get(kong_key, None)
                 invalid_kong = True
                 # Read the flag_id location to see if we have the kong
                 if kong_name:
-                    kong_flag_id = kong_name.get("flag_id")
-                    has_kong = self.client.readFlag(kong_flag_id) != 0
-                    if has_kong:
-                        self.client.n64_client.write_u8(self.client.memory_pointer + DK64MemoryMap.tag_kong, kong)
-                        current_kong = kong
-                        invalid_kong = False
+                    kong_flag_id = kong_name.get("flag_id", None)
+                    if kong_flag_id is not None:
+                        has_kong = self.client.readFlag(kong_flag_id) != 0
+                        if has_kong:
+                            self.client.n64_client.write_u8(self.client.memory_pointer + DK64MemoryMap.tag_kong, kong)
+                            current_kong = kong
+                            invalid_kong = False
                 if invalid_kong:
                     # Check if we have any kong not our current kong
                     valid_kongs = [current_kong]
                     # Check each int from 0 to 4 excluding current_kong
                     for i in range(5):
                         if i != current_kong:
-                            kong_name = item_names_to_id.get(number_map.get(i, None), None)
+                            kong_key = number_map.get(i, None)
+                            if kong_key:
+                                kong_name = item_names_to_id.get(kong_key, None)
+                            else:
+                                kong_name = None
                             if kong_name:
-                                kong_flag_id = kong_name.get("flag_id")
-                                has_kong = self.client.readFlag(kong_flag_id) != 0
-                                if has_kong:
-                                    valid_kongs.append(i)
+                                kong_flag_id = kong_name.get("flag_id", None)
+                                if kong_flag_id:
+                                    has_kong = self.client.readFlag(kong_flag_id) != 0
+                                    if has_kong:
+                                        valid_kongs.append(i)
                     # If the only valid kong is the current kong, we can't tag
                     if len(valid_kongs) == 1:
                         self.pending_tag_link = False, 0
@@ -1134,7 +1146,7 @@ class DK64Context(CommonContext):
             # There is 100% better ways to handle this exception, but for now this will do to allow us to exit the loop
             except Exception as e:
                 print(e)
-                logger.error(f"Error in game loop: {e}")
+                logger.error(f"Error in game loop: {e} (line {e.__traceback__.tb_lineno})")
                 await asyncio.sleep(1.0)
 
 
