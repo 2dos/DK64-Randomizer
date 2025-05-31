@@ -464,9 +464,10 @@ async function update_music_select_options(isInitialLoad) {
       // Only remove the custom-song options by setting innerHTML directly if needed
       let customOptionsExist = dropdown.querySelector(".custom-song");
       if (customOptionsExist) {
-        dropdown
-          .querySelectorAll(".custom-song")
-          .forEach((option) => option.remove());
+        const song_el = dropdown.getElementsByClassName("custom-song");
+        for (let option of song_el) {
+          option.remove();
+        }
         // Clear the dropdown value if it was set to a custom song
         if (
           dropdown.value &&
@@ -520,7 +521,8 @@ async function savesettings() {
   const json = Object.fromEntries(formData.entries());
 
   // Handle <select> elements
-  document.querySelectorAll("select").forEach((select) => {
+  const selects = document.getElementsByTagName("select");
+  for (let select of selects) {
     if (select.classList.contains("selected")) {
       json[select.name] = Array.from(select.options)
         .filter((option) => option.selected)
@@ -532,18 +534,20 @@ async function savesettings() {
         option.id.slice(14)
       );
     }
-  });
+  }
 
   // Handle dropdown multiselectors
   console.log("Saving Settings");
-  document.querySelectorAll(".dropdown-multiselect .dropdown-menu").forEach((ddms) => {
-    const checkboxes = Array.from(ddms.querySelectorAll("input[type='checkbox']"));
+  let ddms_containers = document.getElementsByClassName("dropdown-multiselect");
+  for (let ddms_ctr of ddms_containers) {
+    const ddms = ddms_ctr.getElementsByClassName("dropdown-menu")[0];
+    const checkboxes = Array.from(ddms.getElementsByTagName("input"));
     const checkedValues = checkboxes
       .filter((cb) => cb.checked)
       .map((cb) => cb.value);
     
     json[ddms.getAttribute('name')] = checkedValues;
-  });
+  }
 
   // Handle inputs with specific naming convention
   // Changed with the new selectors list
@@ -572,19 +576,38 @@ async function savesettings() {
 //   await saveDataToIndexedDB("saved_music", JSON.stringify(musicJson));
 // }
 
-document.querySelectorAll("#form input").forEach((input) => {
-  input.addEventListener("input", savesettings);
-  input.addEventListener("change", savesettings);
-});
+const form_container = document.getElementById("form");
+const form_inputs = form_container.getElementsByTagName("input");
+const form_selects = form_container.getElementsByTagName("select");
+const form_ddms = form_container.getElementsByClassName("dropdown-multiselect");
+for (let el of form_inputs) {
+  el.addEventListener("input", scheduleSave);
+  el.addEventListener("change", scheduleSave);
+}
+for (let el of form_selects) {
+  el.addEventListener("click", scheduleSave);
+  el.addEventListener("change", scheduleSave);
+}
+for (let el of form_selects) {
+  el.addEventListener("change", scheduleSave);
+}
 
-document.querySelectorAll("#form select").forEach((select) => {
-  select.addEventListener("change", savesettings);
-  select.addEventListener("click", savesettings);
-});
+let saveTimeout;
+function scheduleSave() {
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+  }
+  saveTimeout = setTimeout(() => {
+    savesettings();
+  }, 5000); // Save settings after 5s of inactivity after a call
+}
 
-document.querySelectorAll("#form .dropdown-multiselect").forEach((select) => {
-  select.addEventListener("change", savesettings);
-});
+window.addEventListener("beforeunload", () => {
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+    savesettings();
+  }
+})
 
 function filebox() {
   var input = document.createElement("input");
@@ -1696,11 +1719,12 @@ async function initialize() {
   await toggleDelayedSpoilerLogInput();
   await check_seed_info_tab();
   // check on any button with the nav-item class is clicked
-  document.querySelectorAll(".nav-item").forEach((item) => {
+  const nav_items = document.getElementsByClassName("nav-item");
+  for (let item of nav_items) {
     item.addEventListener("click", async () => {
       await check_seed_info_tab();
     });
-  });
+  }
   await set_preset_options();
   await disable_apply_preset_button();
   await set_random_weights_options();

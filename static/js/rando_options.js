@@ -2014,40 +2014,31 @@ function pushUpdateToDropdown(name) {
 }
 
 function updateSelected(name) {
-  const checkboxes = document.querySelectorAll(`#${name}_selected input[type="checkbox"]`);
+  const container = document.getElementById(`${name}_selected`);
+  const checkboxes = container ? container.getElementsByTagName('input') : [];
   const countLabel = document.getElementById(`selectedCount_${name}`);
 
   let selectedCount = 0;
-  checkboxes.forEach(cb => {
+  for (let cb of checkboxes) {
     if (cb.checked) {
         selectedCount++;
     }
-  });
+  }
 
+  countLabel.innerText = `${selectedCount} item${selectedCount !== 1 ? 's' : ''} selected`;
+}
+
+function dropdownForceAll(name, state) {
+  const container = document.getElementById(`${name}_selected`);
+  const checkboxes = container ? container.getElementsByTagName('input') : [];
+  const countLabel = document.getElementById(`selectedCount_${name}`);
+  for (let cb of checkboxes) {
+    cb.checked = state;
+  }
+  const selectedCount = state ? checkboxes.length : 0;
   countLabel.innerText = `${selectedCount} item${selectedCount !== 1 ? 's' : ''} selected`;
   pushUpdateToDropdown(name);
 }
-
-function dropdownForceAll(container, state) {
-  const checkboxes = document.querySelectorAll(`#${container}_selected input[type="checkbox"]`);
-  const countLabel = document.getElementById(`selectedCount_${container}`);
-  checkboxes.forEach(cb => {
-    cb.checked = state;
-  });
-  const selectedCount = state ? checkboxes.length : 0;
-  countLabel.innerText = `${selectedCount} item${selectedCount !== 1 ? 's' : ''} selected`;
-  pushUpdateToDropdown(container);
-}
-
-document.addEventListener('click', function(e) {
-    document.querySelectorAll('.dropdown').forEach(dropdown => {
-    if (!dropdown.contains(e.target)) {
-        const name = dropdown.id.replace('dropdown_', '');
-        document.getElementById('menu_' + name)?.classList.remove('show');
-        document.getElementById('caret_' + name)?.classList.remove('rotate');
-    }
-    });
-});
 
 // Bind custom update UI event for "apply_preset"
 function update_ui_states() {

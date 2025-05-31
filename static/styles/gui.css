@@ -1130,7 +1130,7 @@ input[type=range][disabled]::-ms-fill-upper {
 .dropdown-multiselect {
   position: relative;
   display: inline-block;
-  width: 220px;
+  width: 100%;
   font-family: sans-serif;
 }
 .dropdown-multiselect .dropdown-toggle {

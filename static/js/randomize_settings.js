@@ -124,10 +124,10 @@ function assign_multi_select_setting(setting_name, options_list) {
         }
     } else {
         // Dropdown Multiselect
-        const checkboxes = Array.from(selectElem.querySelectorAll("input[type='checkbox']"));
-        checkboxes.forEach(cb => {
+        const checkboxes = Array.from(selectElem.getElementsByTagName("input"));
+        for (cb of checkboxes) {
             cb.checked = options_list.includes(cb.value);
-        })
+        }
     }
 }
 
