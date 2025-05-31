@@ -350,7 +350,7 @@ if baseclasses_loaded:
                         settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
                         settings.helm_order = passthrough["HelmOrder"]
                         settings.logic_type = LogicType[passthrough["LogicType"]]
-                        settings.glitches_selected = [GlitchesSelected[glitch] for glitch in passthrough["GlitchesSelected"]]
+                        settings.glitches_selected = passthrough["GlitchesSelected"]
                         settings.open_lobbies = passthrough["OpenLobbies"]
                         settings.starting_key_list = passthrough["StartingKeyList"]
                         # There's multiple sources of truth for helm order.
@@ -728,6 +728,7 @@ if baseclasses_loaded:
             logic_type = slot_data["LogicType"]
             glitches_selected = slot_data["GlitchesSelected"].split(", ")
             starting_key_list = slot_data["StartingKeyList"].split(", ")
+            print(starting_key_list)
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -744,6 +745,6 @@ if baseclasses_loaded:
             relevant_data["SwitchSanity"] = switchsanity
             relevant_data["OpenLobbies"] = open_lobbies
             relevant_data["LogicType"] = logic_type
-            relevant_data["GlitchesSelected"] = glitches_selected
-            relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list]
+            relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != '']
+            relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list if key != '']
             return relevant_data
