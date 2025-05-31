@@ -130,7 +130,7 @@ if baseclasses_loaded:
     from randomizer.Spoiler import Spoiler
     from randomizer.Settings import Settings
     from randomizer.ShuffleWarps import LinkWarps
-    from randomizer.Enums.Settings import ShuffleLoadingZones
+    from randomizer.Enums.Settings import LogicType, ShuffleLoadingZones
     from randomizer.Patching.ApplyRandomizer import patching_response
     from version import version
     from randomizer.Patching.EnemyRando import randomize_enemies_0
@@ -347,6 +347,9 @@ if baseclasses_loaded:
                         settings.boss_kongs = passthrough["BossKongs"]
                         settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
                         settings.helm_order = passthrough["HelmOrder"]
+                        settings.logic_type = LogicType[passthrough["LogicType"]]
+                        settings.glitches_selected = [GlitchesSelected[glitch] for glitch in passthrough["GlitchesSelected"]]
+                        settings.open_lobbies = passthrough["OpenLobbies"]
                         # There's multiple sources of truth for helm order.
                         settings.helm_donkey = 0 in settings.helm_order
                         settings.helm_diddy = 4 in settings.helm_order
@@ -716,7 +719,10 @@ if baseclasses_loaded:
             boss_maps = slot_data["BossMaps"].split(", ")
             boss_kongs = slot_data["BossKongs"].split(", ")
             helm_order = slot_data["HelmOrder"].split(", ")
+            open_lobbies = slot_data["OpenLobbies"]
             switchsanity = slot_data["SwitchSanity"]
+            logic_type = slot_data["LogicType"]
+            glitches_selected = slot_data["GlitchesSelected"].split(", ")
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -731,4 +737,7 @@ if baseclasses_loaded:
             relevant_data["LankyFreeingKong"] = slot_data["LankyFreeingKong"]
             relevant_data["HelmOrder"] = [int(room) for room in helm_order]
             relevant_data["SwitchSanity"] = switchsanity
+            relevant_data["OpenLobbies"] = open_lobbies
+            relevant_data["LogicType"] = logic_type
+            relevant_data["GlitchesSelected"] = glitches_selected
             return relevant_data
