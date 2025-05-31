@@ -37,6 +37,16 @@ class DK64MemoryMap:
     film = 0x807FCC48  # Film (for fairy camera)
     ammo_belt = 0x807FC953  # (0, 1 or 2) 1 byte
     banana_fairies = 0x0000000
+    tag_kong = 0x060  # Byte to set the current kong to this. Check can_tag before setting this if you want safety. Resets back to -1 upon successful tag
+    # 0 = DK
+    # 1 = Diddy
+    # 2 = Lanky
+    # 3 = Tiny
+    # 4 = Chunky
+    # 5 = Random
+
+    can_tag = 0x061
+    current_kong = 0x8074E77C
 
 
 all_tasks = set()

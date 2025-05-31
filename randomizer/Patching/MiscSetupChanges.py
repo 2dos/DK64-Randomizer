@@ -40,9 +40,10 @@ def pickRandomPositionCircle(random, center_x, center_z, min_radius, max_radius)
     return [item_x, item_z]
 
 
-def pickRandomPositionsMult(random, center_x, center_z, min_radius, max_radius, count, min_dist):
+def pickRandomPositionsMult(random, center_x: float, center_z: float, min_radius: float, max_radius: float, count: int, min_dist: float, exclusions: list = []):
     """Pick multiple points within a torus where the center and radius boundaries are defined. There is a failsafe to make sure 2 points aren't within a certain specified distance away from each other."""
     picked = []
+    check_list = exclusions.copy()
     for item in range(count):
         good_place = False
         while not good_place:
@@ -51,7 +52,7 @@ def pickRandomPositionsMult(random, center_x, center_z, min_radius, max_radius, 
                 good_place = True
             else:
                 good_place = True
-                for picked_item in picked:
+                for picked_item in check_list:
                     dx = picked_item[0] - selected[0]
                     dz = picked_item[1] - selected[1]
                     delta = math.sqrt((dx * dx) + (dz * dz))
@@ -59,6 +60,7 @@ def pickRandomPositionsMult(random, center_x, center_z, min_radius, max_radius, 
                         good_place = False
             if good_place:
                 picked.append(selected)
+                check_list.append(selected)
     return {"picked": picked.copy(), "index": 0}
 
 
@@ -289,7 +291,18 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
         [398.472, 138.167, 668.426],
     ]
     diddy_5di_pads = pickRandomPositionsMult(spoiler.settings.random, 287.94, 312.119, 0, 140, 6, 40)
-    lanky_fungi_mush = pickRandomPositionsMult(spoiler.settings.random, 274.9, 316.505, 40, 160, 5, 40)
+    lanky_fungi_mush = pickRandomPositionsMult(
+        spoiler.settings.random,
+        274.9,
+        316.505,
+        40,
+        160,
+        5,
+        40,
+        [
+            [111.8, 238.5],
+        ],
+    )
     chunky_5dc_pads = pickChunkyCabinPadPositions(spoiler.settings.random)
     spoiler.settings.random.shuffle(vase_puzzle_positions)
     vase_puzzle_rando_progress = 0
