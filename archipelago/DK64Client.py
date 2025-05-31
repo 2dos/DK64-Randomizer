@@ -12,6 +12,7 @@ import json
 import asyncio
 import colorama
 import sys
+import random
 import time
 import typing
 from client.common import DK64MemoryMap, create_task_log_exception, check_version
@@ -48,6 +49,7 @@ class DK64Client:
     send_mode = 1
     ENABLE_DEATHLINK = False
     ENABLE_RINGLINK = False
+    ENABLE_TAGLINK = False
     current_speed = 130
     current_map = 0
 
@@ -492,7 +494,7 @@ class DK64Client:
                 return data
         return data
 
-    async def main_tick(self, item_get_cb, win_cb, deathlink_cb, map_change_cb, ring_link):
+    async def main_tick(self, item_get_cb, win_cb, deathlink_cb, map_change_cb, ring_link, tag_link):
         """Game loop tick."""
         await self.readChecks(item_get_cb)
         # await self.item_tracker.readItems()
@@ -527,6 +529,8 @@ class DK64Client:
                 await asyncio.sleep(5)
         if self.ENABLE_RINGLINK:
             await ring_link()
+        if self.ENABLE_TAGLINK:
+            await tag_link()
         current_deliver_count = self.get_current_deliver_count()
         # If current_deliver_count is None
         if current_deliver_count is None:
@@ -608,6 +612,7 @@ class DK64Context(CommonContext):
     last_resend = time.time()
     ENABLE_DEATHLINK = False
     ENABLE_RINGLINK = False
+    ENABLE_TAGLINK = False
     command_processor = DK64CommandProcessor
     won = False
 
@@ -728,6 +733,12 @@ class DK64Context(CommonContext):
                     self.ENABLE_RINGLINK = True
                     self.client.ENABLE_RINGLINK = True
                     asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
+            if self.slot_data.get("tag_link"):
+                if "TagLink" not in self.tags:
+                    self.tags.add("TagLink")
+                    self.ENABLE_TAGLINK = True
+                    self.client.ENABLE_TAGLINK = True
+                    asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
             if self.slot_data.get("receive_notifications"):
                 self.client.send_mode = self.slot_data.get("receive_notifications")
             self.client.players = self.player_names
@@ -755,6 +766,11 @@ class DK64Context(CommonContext):
                 if not hasattr(self, "pending_ring_link"):
                     self.pending_ring_link = 0
                 self.pending_ring_link += args["data"]["amount"]
+            if "TagLink" in self.tags and source_name != self.instance_id and "TagLink" in args.get("tags", []):
+                if not hasattr(self, "pending_tag_link"):
+                    self.pending_tag_link = False, 0
+                kong = args.get("data", {}).get("kong", 5)  # Default to 5 if not provided
+                self.pending_tag_link = True, kong
 
     async def send_ring_link(self, amount: int):
         """Send a ring link message."""
@@ -915,6 +931,76 @@ class DK64Context(CommonContext):
 
             self.pending_ring_link = 0
 
+    async def send_tag_link(self, kong: int):
+        """Send a tag link message."""
+        if "TagLink" not in self.tags or self.slot is None:
+            return
+        if not hasattr(self, "instance_id"):
+            self.instance_id = time.time()
+        await self.send_msgs([{"cmd": "Bounce", "tags": ["TagLink"], "data": {"time": time.time(), "source": self.instance_id, "tag": False, "kong": kong}}])
+
+    async def handle_tag_link(self):
+        """Handle tag link functionality for DK64 items."""
+        if not self.client.ENABLE_TAGLINK:
+            return
+        current_kong = self.client.n64_client.read_u8(DK64MemoryMap.current_kong)
+        if not hasattr(self, "pending_tag_link"):
+            self.pending_tag_link = False, 0  # (is_pending, kong)
+        if not hasattr(self, "previous_kong"):
+            self.previous_kong = current_kong
+        # If the current kong is different from the previous kong, send a tag link
+        if current_kong != self.previous_kong:
+            await self.send_tag_link(current_kong)
+            self.previous_kong = current_kong
+
+        if self.pending_tag_link[0]:
+            # Check if its safe to cause a tag in the game
+            if self.client.n64_client.read_u8(self.client.memory_pointer + DK64MemoryMap.can_tag) == 1:
+                # If it is safe, send the tag
+                kong = self.pending_tag_link[1]
+                # Using item_names_to_id get the kong flag_id
+                number_map = {
+                    0: "Donkey",
+                    1: "Diddy",
+                    2: "Lanky",
+                    3: "Tiny",
+                    4: "Chunky",
+                }
+
+                kong_name = item_names_to_id.get(number_map.get(kong, None), None)
+                invalid_kong = True
+                # Read the flag_id location to see if we have the kong
+                if kong_name:
+                    kong_flag_id = kong_name.get("flag_id")
+                    has_kong = self.client.readFlag(kong_flag_id) != 0
+                    if has_kong:
+                        self.client.n64_client.write_u8(self.client.memory_pointer + DK64MemoryMap.tag_kong, kong)
+                        current_kong = kong
+                        invalid_kong = False
+                if invalid_kong:
+                    # Check if we have any kong not our current kong
+                    valid_kongs = [current_kong]
+                    # Check each int from 0 to 4 excluding current_kong
+                    for i in range(5):
+                        if i != current_kong:
+                            kong_name = item_names_to_id.get(number_map.get(i, None), None)
+                            if kong_name:
+                                kong_flag_id = kong_name.get("flag_id")
+                                has_kong = self.client.readFlag(kong_flag_id) != 0
+                                if has_kong:
+                                    valid_kongs.append(i)
+                    # If the only valid kong is the current kong, we can't tag
+                    if len(valid_kongs) == 1:
+                        self.pending_tag_link = False, 0
+                    # Else randomly select a kong from valid_kongs, excluding the current kong
+                    else:
+                        valid_kongs.remove(current_kong)  # Ensure we don't tag the current kong
+                        kong = random.choice(valid_kongs)
+                        self.client.n64_client.write_u8(self.client.memory_pointer + DK64MemoryMap.tag_kong, kong)
+                        current_kong = kong
+                self.previous_kong = current_kong
+                self.pending_tag_link = False, 0  # Reset pending tag link
+
     async def sync(self):
         """Sync the game."""
         sync_msg = [{"cmd": "Sync"}]
@@ -942,6 +1028,10 @@ class DK64Context(CommonContext):
         async def ring_link():
             """Handle a ring link."""
             await self.handle_ring_link()
+
+        async def tag_link():
+            """Handle a tag link."""
+            await self.handle_tag_link()
 
         async def deathlink():
             """Handle a deathlink."""
@@ -1002,7 +1092,7 @@ class DK64Context(CommonContext):
                     if status is False:
                         await asyncio.sleep(0.5)
                         continue
-                    await self.client.main_tick(on_item_get, victory, deathlink, map_change, ring_link)
+                    await self.client.main_tick(on_item_get, victory, deathlink, map_change, ring_link, tag_link)
                     await asyncio.sleep(1)
                     now = time.time()
                     if self.last_resend + 0.5 < now:
