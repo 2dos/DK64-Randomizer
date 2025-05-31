@@ -8,7 +8,7 @@ from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 def randomize_barrels(spoiler, ROM_COPY: LocalROM):
     """Randomize barrel locations."""
     barrels = [28, 107, 134]
-    if spoiler.settings.bonus_barrel_rando or spoiler.settings.minigames_list_selected:
+    if len(spoiler.settings.minigames_list_selected) > 0:
         barrel_replacements = {}
         for location, minigame in spoiler.shuffled_barrel_data.items():
             container_map = int(BarrelMetaData[location].map)

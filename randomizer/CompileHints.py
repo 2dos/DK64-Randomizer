@@ -47,7 +47,7 @@ from randomizer.Lists.PathHintTree import BuildPathHintTree
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
 from randomizer.Patching.UpdateHints import UpdateHint
-from randomizer.Patching.Library.Generic import plando_colors, IsItemSelected
+from randomizer.Patching.Library.Generic import plando_colors, IsItemSelected, IsDDMSSelected
 
 if TYPE_CHECKING:
     from randomizer.Lists.WrinklyHints import HintLocation
@@ -769,7 +769,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         and Locations.ForestBean in spoiler.woth_paths.keys()
     ):
         useless_locations[Items.Bean] = [Locations.ForestBean]
-    if IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase, False):
+    if IsDDMSSelected(spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase):
         required_moves[Maps.KroolLankyPhase] = [Items.Barrels, Items.Grape]
     for map_id in required_moves:
         if map_id in spoiler.settings.krool_order and map_id in spoiler.krool_paths.keys():

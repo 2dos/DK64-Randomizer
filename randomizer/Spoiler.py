@@ -236,9 +236,9 @@ class Spoiler:
             return type_dict[item_type]
         return "Unknown"
 
-    def dumpMultiselector(self, toggle: bool, settings_list: list, selector_list: list):
+    def dumpMultiselector(self, settings_list: list, selector_list: list):
         """Dump multiselector list to a response which can be dumped to the spoiler."""
-        if toggle and any(settings_list):
+        if any(settings_list):
             lst = []
             selector_name_dict = {}
             for x in selector_list:
@@ -247,7 +247,7 @@ class Spoiler:
                 if x.name in selector_name_dict:
                     lst.append(selector_name_dict[x.name])
             return lst
-        return toggle
+        return []
 
     def createJson(self) -> None:
         """Convert spoiler to JSON and save it."""
@@ -271,7 +271,7 @@ class Spoiler:
             settings["Glitches Enabled"] = ", ".join(
                 [x.name for x in GlitchLogicItems if GlitchesSelected[x.shorthand] in self.settings.glitches_selected or len(self.settings.glitches_selected) == 0]
             )
-        settings["Shuffle Enemies"] = self.settings.enemy_rando
+        settings["Shuffle Enemies"] = len(self.settings.enemies_selected) > 0
         settings["Move Randomization type"] = self.settings.move_rando.name
         settings["Loading Zones Shuffled"] = self.settings.shuffle_loading_zones.name
         settings["Decoupled Loading Zones"] = self.settings.decoupled_loading_zones
@@ -330,8 +330,8 @@ class Spoiler:
         settings["Ice Traps Damage Player"] = self.settings.ice_traps_damage
         settings["Mirror Mode"] = self.settings.mirror_mode
         settings["Damage Amount"] = self.settings.damage_amount.name
-        settings["Hard Mode Enabled"] = self.settings.hard_mode and len(self.settings.hard_mode_selected) > 0
-        settings["Hard Bosses Enabled"] = self.settings.hard_bosses and len(self.settings.hard_bosses_selected) > 0
+        settings["Hard Mode Enabled"] = len(self.settings.hard_mode_selected) > 0
+        settings["Hard Bosses Enabled"] = len(self.settings.hard_bosses_selected) > 0
         # settings["Krusha Slot"] = self.settings.krusha_ui.name
         settings["DK Model"] = self.settings.kong_model_dk.name
         settings["Diddy Model"] = self.settings.kong_model_diddy.name
@@ -351,9 +351,9 @@ class Spoiler:
         settings["Helm Room Bonus Count"] = int(self.settings.helm_room_bonus_count)
         settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
         settings["Kongless Hint Doors"] = self.settings.wrinkly_available
-        settings["Quality of Life"] = self.dumpMultiselector(self.settings.quality_of_life, self.settings.misc_changes_selected, QoLSelector)
-        settings["Fast GBs"] = self.dumpMultiselector(self.settings.faster_checks_enabled, self.settings.faster_checks_selected, FasterCheckSelector)
-        settings["Barriers Removed"] = self.dumpMultiselector(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, RemovedBarrierSelector)
+        settings["Quality of Life"] = self.dumpMultiselector(self.settings.misc_changes_selected, QoLSelector)
+        settings["Fast GBs"] = self.dumpMultiselector(self.settings.faster_checks_selected, FasterCheckSelector)
+        settings["Barriers Removed"] = self.dumpMultiselector(self.settings.remove_barriers_selected, RemovedBarrierSelector)
         settings["Random Win Condition"] = self.settings.win_condition_random
         if not self.settings.win_condition_random:
             wc_count = self.settings.win_condition_count
@@ -389,12 +389,12 @@ class Spoiler:
         settings["Dim Solved Hints"] = self.settings.dim_solved_hints
         settings["No Joke Hints"] = self.settings.serious_hints
         settings["Item Reward Previews"] = self.settings.item_reward_previews
-        settings["Bonus Barrel Rando"] = self.dumpMultiselector(self.settings.bonus_barrel_rando, self.settings.minigames_list_selected, MinigameSelector)
-        if self.settings.enemy_rando and any(self.settings.enemies_selected):
+        settings["Bonus Barrel Rando"] = self.dumpMultiselector(self.settings.minigames_list_selected, MinigameSelector)
+        if any(self.settings.enemies_selected):
             value_lst = [x.name for x in self.settings.enemies_selected]
             settings["Enemy Rando"] = [enemy["name"] for enemy in EnemySelector if enemy["value"] in value_lst]
         else:
-            settings["Enemy Rando"] = self.settings.enemy_rando
+            settings["Enemy Rando"] = []
         settings["Crown Enemy Rando"] = self.settings.crown_enemy_difficulty.name
         if self.settings.helm_hurry:
             settings["Game Mode"] = "Helm Hurry"
@@ -638,7 +638,7 @@ class Spoiler:
                 humanspoiler[sorted_item_name][self.getItemGroup(location.item)][location.name] = item.name
         if not self.settings.enemy_drop_rando:
             del humanspoiler[sorted_item_name]["Enemy Drops"]
-        if self.settings.enemy_rando:
+        if len(self.settings.enemies_selected) > 0:
             placement_dict = {}
             for map_id in self.enemy_rando_data:
                 map_name = Maps(map_id).name

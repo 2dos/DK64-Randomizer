@@ -50,7 +50,7 @@ from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.Songs import song_data
 from randomizer.Lists.Switches import SwitchData
-from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem, getCompletableBonuses
+from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem, getCompletableBonuses, IsDDMSSelected
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.ShuffleBosses import (
@@ -366,7 +366,7 @@ class Settings:
         self.seed = None
         self.download_patch_file = None
         self.load_patch_file = None
-        self.bonus_barrel_rando = None
+        self.bonus_barrel_rando = None  # Deprecated
         self.disable_hard_minigames = None
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
@@ -379,7 +379,7 @@ class Settings:
         self.boss_location_rando = None
         self.boss_kong_rando = None
         self.kasplat_rando_setting = None
-        self.puzzle_rando = None  # Deprecated
+        # self.puzzle_rando = None  # Deprecated
         self.puzzle_rando_difficulty = PuzzleRando.off
         self.jetpac_platform_data = [
             (0xC0, 0x30, 4),
@@ -387,7 +387,7 @@ class Settings:
             (0x78, 0x60, 2),
         ]
         self.shuffle_shops = None
-        self.switchsanity = SwitchsanityLevel.off  # Deprecated
+        # self.switchsanity = SwitchsanityLevel.off  # Deprecated
         self.switchsanity_enabled = False
         self.switchsanity_switch_isles_to_kroc_top = SwitchsanityKong.tiny
         self.switchsanity_switch_isles_helm_lobby = SwitchsanityGone.gone_pad
@@ -521,7 +521,7 @@ class Settings:
         self.hard_shooting = False
 
         # hard_mode: bool
-        self.hard_mode = None
+        # self.hard_mode = None  # Deprecated
 
         # damage multiplier: DamageAmount
         self.damage_amount = DamageAmount.default
@@ -590,7 +590,7 @@ class Settings:
         self.color_palettes = {}
         # Random Model Swaps
         self.random_models = RandomModels.off
-        self.random_enemy_colors = RandomModels.off  # Deprecated
+        # self.random_enemy_colors = RandomModels.off  # Deprecated
         self.random_colors = False
         self.random_colors_selected = []
         self.bother_klaptrap_model = Model.KlaptrapGreen
@@ -661,7 +661,7 @@ class Settings:
         self.camera_is_follow = False
         self.sfx_volume = 100
         self.music_volume = 100
-        self.true_widescreen = False  # Deprecated
+        # self.true_widescreen = False  # Deprecated
         self.anamorphic_widescreen = False
         self.troff_brighten = False
         self.better_dirt_patch_cosmetic = False
@@ -690,7 +690,7 @@ class Settings:
         self.fast_start_beginning_of_game_dummy = True  # Decoupled from the actual setting for a little bit until we improve stability
         self.helm_setting = None
         self.helm_room_bonus_count = HelmBonuses.two
-        self.quality_of_life = None
+        # self.quality_of_life = None  # Deprecated
         self.wrinkly_available = False
         self.shorten_boss = False
         self.enable_tag_anywhere = None
@@ -732,14 +732,14 @@ class Settings:
         self.jetpac_enemy_order = list(range(8))
         self.crypt_levers = [1, 4, 3]
         self.diddy_rnd_doors = [[0] * 4, [0] * 4, [0] * 4]
-        self.enemy_rando = False
-        self.crown_enemy_rando = CrownEnemyRando.off  # Deprecated
+        # self.enemy_rando = False  # Deprecated
+        # self.crown_enemy_rando = CrownEnemyRando.off  # Deprecated
         self.crown_enemy_difficulty = CrownEnemyDifficulty.vanilla
         self.crown_difficulties = [CrownEnemyDifficulty.vanilla] * 10
         self.enemy_speed_rando = False
         self.normalize_enemy_sizes = False
         self.randomize_enemy_sizes = False
-        self.cb_rando = CBRando.off  # Deprecated
+        # self.cb_rando = CBRando.off  # Deprecated
         self.cb_rando_list_selected = []
         self.cb_rando_enabled = False
         self.coin_rando = False
@@ -748,13 +748,12 @@ class Settings:
         self.bananaport_placement_rando = ShufflePortLocations.off
         self.useful_bananaport_placement = True
         self.override_cosmetics = True
-        self.random_colors = False
         self.hard_level_progression = False
         self.hard_blockers = False
         self.hard_troff_n_scoff = False
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
-        self.dk_portal_location_rando = False  # Deprecated
+        # self.dk_portal_location_rando = False  # Deprecated
         self.dk_portal_location_rando_v2 = DKPortalRando.off
         self.level_portal_destinations = [
             {
@@ -814,16 +813,16 @@ class Settings:
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
         self.hard_mode_selected = []
-        self.hard_bosses = False
+        # self.hard_bosses = False  # Deprecated
         self.hard_bosses_selected = []
         self.mirror_mode = False
-        self.faster_checks_enabled = False
-        self.remove_barriers_enabled = False
+        # self.faster_checks_enabled = False  # Deprecated
+        # self.remove_barriers_enabled = False  # Deprecated
         self.faster_checks_selected = []
         self.remove_barriers_selected = []
-        self.songs_excluded = False
+        # self.songs_excluded = False  # Deprecated
         self.excluded_songs_selected = []
-        self.music_filtering = False
+        # self.music_filtering = False  # Deprecated
         self.music_filtering_selected = []
         self.enemies_selected = []
         self.glitches_selected = []
@@ -833,7 +832,7 @@ class Settings:
         self.helm_hurry = False
         self.colorblind_mode = ColorblindMode.off
         self.big_head_mode = BigHeadMode.off
-        self.win_condition = WinCondition.beat_krool  # Deprecated
+        # self.win_condition = WinCondition.beat_krool  # Deprecated
         self.win_condition_random = False
         self.win_condition_item = WinConditionComplex.beat_krool
         self.win_condition_count = 1
@@ -905,8 +904,8 @@ class Settings:
         self.points_list_bean = 3
         # Progressive hints
         self.progressive_hint_item = ProgressiveHintItem.off
-        self.enable_progressive_hints = False  # Deprecated
-        self.progressive_hint_text = 0  # Deprecated
+        # self.enable_progressive_hints = False  # Deprecated
+        # self.progressive_hint_text = 0  # Deprecated
         self.progressive_hint_count = 0
         # Misc
         self.archipelago = False
@@ -1059,7 +1058,7 @@ class Settings:
         self.chunky_freeing_kong = self.switchsanity_data[Switches.FactoryFreeKong].kong
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
-        if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.water_is_lava, False):
+        if IsDDMSSelected(self.hard_mode_selected, HardModeSelected.water_is_lava):
             ItemList[Items.ProgressiveInstrumentUpgrade].playthrough = True
             ItemPool.ImportantSharedMoves = [
                 Items.ProgressiveSlam,
@@ -1606,7 +1605,7 @@ class Settings:
                 self.crown_difficulties = allocation.copy()
 
         # Mill Levers
-        mill_shortened = IsItemSelected(self.faster_checks_enabled, self.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor)
+        mill_shortened = IsDDMSSelected(self.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor)
         if self.puzzle_rando_difficulty == PuzzleRando.off and mill_shortened:
             self.mill_levers = [2, 3, 1, 0, 0]
         elif self.puzzle_rando_difficulty != PuzzleRando.off:
@@ -1651,7 +1650,7 @@ class Settings:
                     ]
                 )
 
-        if IsItemSelected(self.hard_mode, self.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies, False):
+        if IsDDMSSelected(self.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies):
             jetpac_levels = list(range(8))
             self.random.shuffle(jetpac_levels)
             self.jetpac_enemy_order = jetpac_levels
@@ -1769,18 +1768,16 @@ class Settings:
         # Bonus Barrel Rando
         if self.bonus_barrel_auto_complete:
             self.bonus_barrels = MinigameBarrels.skip
-        elif self.bonus_barrel_rando and not self.minigames_list_selected:
-            self.bonus_barrels = MinigameBarrels.random
-        elif self.bonus_barrel_rando and self.minigames_list_selected:
+        elif self.minigames_list_selected:
             self.bonus_barrels = MinigameBarrels.selected
         # Helm Barrel Rando
         if self.helm_setting == HelmSetting.skip_all:
             self.helm_barrels = MinigameBarrels.skip
-        elif self.bonus_barrel_rando:
+        elif len(self.minigames_list_selected) > 0:
             self.helm_barrels = MinigameBarrels.random
         if self.fast_start_beginning_of_game:
             self.training_barrels_minigames = MinigameBarrels.skip
-        elif self.bonus_barrel_rando:
+        elif len(self.minigames_list_selected) > 0:
             self.training_barrels_minigames = MinigameBarrels.random
 
         # Loading Zone Rando
@@ -1905,7 +1902,7 @@ class Settings:
         self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none
         self.free_trade_blueprints = self.free_trade_setting == FreeTradeSetting.major_collectibles
 
-        if IsItemSelected(self.quality_of_life, self.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles):
+        if IsDDMSSelected(self.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles):
             self.remove_wrinkly_puzzles = True
 
         # TODO: Rework this when minimal shops is implemented so it can take into account the starting move situation
@@ -2058,7 +2055,7 @@ class Settings:
 
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
-        if IsItemSelected(self.faster_checks_enabled, self.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1):
+        if IsDDMSSelected(self.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1):
             # On Fast GBs, this location refers to the blast course, not the arcade
             spoiler.LocationList[Locations.FactoryDonkeyDKArcade].name = "Factory Donkey Blast Course"
 
@@ -2298,7 +2295,7 @@ class Settings:
 
         # The following cases do not apply if you could bypass the Guitar door without Diddy
         bypass_guitar_door = (
-            IsItemSelected(self.remove_barriers_enabled, self.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door) or self.activate_all_bananaports == ActivateAllBananaports.all
+            IsDDMSSelected(self.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door) or self.activate_all_bananaports == ActivateAllBananaports.all
         )
         # In case both Diddy and Chunky need to be freed but only Aztec locations are available
         # This would be impossible, as one of them must free the Tiny location and Diddy is needed for the Lanky location

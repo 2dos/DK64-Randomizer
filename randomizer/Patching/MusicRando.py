@@ -15,7 +15,7 @@ from randomizer.Enums.Settings import MusicFilters
 from randomizer.Lists.Songs import song_data, song_idx_list
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
-from randomizer.Patching.Library.Generic import IsItemSelected, Overlay
+from randomizer.Patching.Library.Generic import IsItemSelected, Overlay, IsDDMSSelected
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.ASM import writeValue, populateOverlayOffsets, getROMAddress
 
@@ -417,8 +417,8 @@ def insertUploaded(
     # Add assigned custom songs back as locations.
     songs_to_be_replaced.extend(custom_song_locations)
 
-    length_filter = IsItemSelected(settings.music_filtering, settings.music_filtering_selected, MusicFilters.length)
-    location_filter = IsItemSelected(settings.music_filtering, settings.music_filtering_selected, MusicFilters.location)
+    length_filter = IsDDMSSelected(settings.music_filtering_selected, MusicFilters.length)
+    location_filter = IsDDMSSelected(settings.music_filtering_selected, MusicFilters.location)
 
     # Place Songs
     for song_enum in songs_to_be_replaced:

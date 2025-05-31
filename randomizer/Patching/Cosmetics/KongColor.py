@@ -142,7 +142,7 @@ def writeKongColors(settings: Settings, ROM_COPY: ROM):
                         js.document.getElementById(f"{kong.lower()}_{zone.lower()}_custom_color").value,
                     )
     else:
-        if settings.random_colors:
+        if len(settings.random_colors_selected) > 0:
             for kong in KONG_ZONES:
                 for zone in KONG_ZONES[kong]:
                     settings.__setattr__(f"{kong.lower()}_{zone.lower()}_colors", CharacterColors.randomized)

@@ -63,7 +63,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount, getProgHintBarrierItem, getHintRequirementBatch
+from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
 from randomizer.Patching.MiscSetupChanges import (
     randomize_setup,
     updateKrushaMoveNames,
@@ -103,7 +103,6 @@ class BooleanProperties:
 
 
 def writeMultiselector(
-    enabled: bool,
     enabled_selections: list,
     selector: list[dict],
     selection_enum,
@@ -112,18 +111,16 @@ def writeMultiselector(
     write_start: int,
 ):
     """Write multiselector choices to ROM."""
-    if enabled:
-        force = len(enabled_selections) == 0
-        write_data = [0] * data_length
-        for item in selector:
-            if item["shift"] >= 0:
-                if force or selection_enum[item["value"]] in enabled_selections:
-                    offset = int(item["shift"] >> 3)
-                    check = int(item["shift"] % 8)
-                    write_data[offset] |= 0x80 >> check
-        ROM_COPY.seek(write_start)
-        for byte_data in write_data:
-            ROM_COPY.writeMultipleBytes(byte_data, 1)
+    write_data = [0] * data_length
+    for item in selector:
+        if item["shift"] >= 0:
+            if selection_enum[item["value"]] in enabled_selections:
+                offset = int(item["shift"] >> 3)
+                check = int(item["shift"] % 8)
+                write_data[offset] |= 0x80 >> check
+    ROM_COPY.seek(write_start)
+    for byte_data in write_data:
+        ROM_COPY.writeMultipleBytes(byte_data, 1)
 
 
 def encPass(spoiler) -> int:
@@ -334,7 +331,6 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0x113)
         ROM_COPY.write(old | 0x40)
     writeMultiselector(
-        spoiler.settings.quality_of_life,
         spoiler.settings.misc_changes_selected,
         QoLSelector,
         MiscChangesSelected,
@@ -343,7 +339,6 @@ def patching_response(spoiler):
         sav + 0x0B0,
     )
     writeMultiselector(
-        spoiler.settings.remove_barriers_enabled,
         spoiler.settings.remove_barriers_selected,
         RemovedBarrierSelector,
         RemovedBarriersSelected,
@@ -352,7 +347,6 @@ def patching_response(spoiler):
         sav + 0x1DE,
     )
     writeMultiselector(
-        spoiler.settings.faster_checks_enabled,
         spoiler.settings.faster_checks_selected,
         FasterCheckSelector,
         FasterChecksSelected,
@@ -361,7 +355,6 @@ def patching_response(spoiler):
         sav + 0x1E0,
     )
     writeMultiselector(
-        spoiler.settings.hard_mode and len(spoiler.settings.hard_mode_selected) > 0,
         spoiler.settings.hard_mode_selected,
         HardSelector,
         HardModeSelected,
@@ -370,8 +363,8 @@ def patching_response(spoiler):
         sav + 0x0C6,
     )
 
-    is_dw = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world, False)
-    is_sky = IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_sky, False)
+    is_dw = IsDDMSSelected(spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world)
+    is_sky = IsDDMSSelected(spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_sky)
     if is_dw and is_sky:
         # Memory challenge
         ROM_COPY.seek(sav + 0x0C6)
@@ -458,7 +451,7 @@ def patching_response(spoiler):
     ROM_COPY.write(int(spoiler.settings.activate_all_bananaports))
 
     # Fast GBs - Change jetpac text
-    if IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.jetpac):
+    if IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.jetpac):
         cranky_index = 8
         data = {"textbox_index": 2, "mode": "replace", "search": "5000", "target": "2500"}
         if cranky_index in spoiler.text_changes:
@@ -466,7 +459,7 @@ def patching_response(spoiler):
         else:
             spoiler.text_changes[8] = [data]
 
-    if IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando, False):
+    if IsDDMSSelected(spoiler.settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando):
         # KKO Phase Order
         for phase_slot in range(3):
             ROM_COPY.seek(sav + 0x17B + phase_slot)
@@ -632,8 +625,7 @@ def patching_response(spoiler):
         # Change default wrinkly hint
         if spoiler.settings.wrinkly_hints == WrinklyHints.off:
             if (
-                IsItemSelected(
-                    spoiler.settings.faster_checks_enabled,
+                IsDDMSSelected(
                     spoiler.settings.faster_checks_selected,
                     FasterChecksSelected.forest_mill_conveyor,
                 )
@@ -668,12 +660,6 @@ def patching_response(spoiler):
     if spoiler.settings.medal_cb_req != 75:
         ROM_COPY.seek(sav + 0x112)
         ROM_COPY.write(spoiler.settings.medal_cb_req)
-
-    if len(spoiler.settings.enemies_selected) == 0 and (spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_difficulty != CrownEnemyDifficulty.vanilla):
-        lst = []
-        for enemy in EnemySelector:
-            lst.append(Enemies[enemy["value"]])
-        spoiler.settings.enemies_selected = lst
 
     if spoiler.settings.random_starting_region:
         ROM_COPY.seek(sav + 0x10C)

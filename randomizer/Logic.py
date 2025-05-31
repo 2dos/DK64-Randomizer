@@ -59,7 +59,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Patching.Library.Generic import IsItemSelected, getProgHintBarrierItem, sumChecks, getCompletableBonuses
+from randomizer.Patching.Library.Generic import IsItemSelected, getProgHintBarrierItem, sumChecks, getCompletableBonuses, IsDDMSSelected
 from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
@@ -506,39 +506,38 @@ class LogicVarHolder:
     @lru_cache(maxsize=None)
     def IsLavaWater(self) -> bool:
         """Determine whether the water is lava water or not."""
-        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.water_is_lava, False)
+        return IsDDMSSelected(self.settings.hard_mode_selected, HardModeSelected.water_is_lava)
 
     @lru_cache(maxsize=None)
     def HardBossesSettingEnabled(self, check: HardBossesSelected) -> bool:
         """Determine whether the hard bosses feature is enabled or not."""
-        return IsItemSelected(self.settings.hard_bosses, self.settings.hard_bosses_selected, check, False)
+        return IsDDMSSelected(self.settings.hard_bosses_selected, check)
 
     @lru_cache(maxsize=None)
     def IsHardFallDamage(self) -> bool:
         """Determine whether the lowered fall damage height threshold is enabled or not."""
-        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold, False)
+        return IsDDMSSelected(self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold)
 
     def canAccessHelm(self) -> bool:
         """Determine whether the player can access helm whilst the timer is active."""
-        if IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.strict_helm_timer, False):
+        if IsDDMSSelected(self.settings.hard_mode_selected, HardModeSelected.strict_helm_timer):
             return self.snideAccess and len(self.Blueprints) > (4 + (2 * self.settings.helm_phase_count))
         return self.snideAccess or self.assumeFillSuccess
 
     @lru_cache(maxsize=None)
     def checkFastCheck(self, check: FasterChecksSelected):
         """Determine whether a fast check is selected."""
-        return IsItemSelected(self.settings.faster_checks_enabled, self.settings.faster_checks_selected, check)
+        return IsDDMSSelected(self.settings.faster_checks_selected, check)
 
     @lru_cache(maxsize=None)
     def checkBarrier(self, check: RemovedBarriersSelected):
         """Determine whether a barrier has been removed by the removed barriers setting."""
-        return IsItemSelected(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, check)
+        return IsDDMSSelected(self.settings.remove_barriers_selected, check)
 
     @lru_cache(maxsize=None)
     def galleonGatesStayOpen(self) -> bool:
         """Determine whether the galleon gates stay open once the instrument is played."""
-        return IsItemSelected(
-            self.settings.quality_of_life,
+        return IsDDMSSelected(
             self.settings.misc_changes_selected,
             MiscChangesSelected.remove_galleon_ship_timers,
         )
@@ -546,8 +545,7 @@ class LogicVarHolder:
     @lru_cache(maxsize=None)
     def cabinBarrelMoved(self) -> bool:
         """Determine whether the upper cabin rocketbarrel has been moved."""
-        return IsItemSelected(
-            self.settings.quality_of_life,
+        return IsDDMSSelected(
             self.settings.misc_changes_selected,
             MiscChangesSelected.move_spring_cabin_rocketbarrel,
         )

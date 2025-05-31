@@ -57,7 +57,7 @@ from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Patching import ApplyRandomizer
 from randomizer.Patching.EnemyRando import randomize_enemies_0
 from randomizer.Patching.PuzzleRando import randomizeRaceRequirements
-from randomizer.Patching.Library.Generic import IsItemSelected, getBLockerThresholds
+from randomizer.Patching.Library.Generic import IsItemSelected, getBLockerThresholds, IsDDMSSelected
 from randomizer.Prices import GetMaxForKong
 from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
@@ -1308,7 +1308,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
         # That means two slams are unhintable and we must account for the paths to the unhinted slams
         interesting_non_woth_items.append(Items.ProgressiveSlam)
     # With lava water, 3rd melon is very often required but falls into the same pitfalls as progressive slams
-    if IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.water_is_lava, False):
+    if IsDDMSSelected(spoiler.settings.hard_mode_selected, HardModeSelected.water_is_lava):
         interesting_non_woth_items.append(Items.ProgressiveInstrumentUpgrade)
     # Note down all the items on these interesting non-WotH paths
     items_on_interesting_non_woth_paths = set()
@@ -1328,7 +1328,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
     while Items.ProgressiveSlam in spoiler.pathless_moves:
         spoiler.pathless_moves.remove(Items.ProgressiveSlam)
     # Similarly, progressive instrument upgrades are also a nightmare for pathless - BEGONE
-    if IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.water_is_lava, False):
+    if IsDDMSSelected(spoiler.settings.hard_mode_selected, HardModeSelected.water_is_lava):
         while Items.ProgressiveInstrumentUpgrade in spoiler.pathless_moves:
             spoiler.pathless_moves.remove(Items.ProgressiveInstrumentUpgrade)
 
@@ -2514,8 +2514,7 @@ def GetLogicallyAccessibleKongLocations(spoiler: Spoiler, kongLocations, ownedKo
             # Must be able to bypass Guitar door - the active bananaports condition is in case your only Llama Temple access is through the quicksand cave
             and (
                 Kongs.diddy in ownedKongs
-                or IsItemSelected(
-                    spoiler.settings.remove_barriers_enabled,
+                or IsDDMSSelected(
                     spoiler.settings.remove_barriers_selected,
                     RemovedBarriersSelected.aztec_tunnel_door,
                 )
@@ -3655,7 +3654,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     # Enemy Rando
     spoiler.enemy_rando_data = {}
     spoiler.pkmn_snap_data = []
-    if spoiler.settings.enemy_rando:
+    if len(spoiler.settings.enemies_selected) > 0:
         randomize_enemies_0(spoiler)
     # Handle bonus barrels
     if (
@@ -3804,10 +3803,10 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
             found_incompatibilities += "Cannot turn off Item Randomizer without starting with all Training Moves. "
         if settings.climbing_status != ClimbingStatus.normal:
             found_incompatibilities += "Cannot turn off Item Randomizer without starting with Climbing. "
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava, False):
+    if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.water_is_lava):
         if settings.no_healing:
             found_incompatibilities += "Cannot turn on 'Water is Lava' whilst disabling healing. "
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.angry_caves, False):
+    if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.angry_caves):
         if settings.perma_death or settings.wipe_file_on_death:
             if settings.damage_amount == DamageAmount.quad or settings.damage_amount == DamageAmount.ohko:
                 found_incompatibilities += "Cannot turn on 'Angry Caves' with a damage modifier higher than double damage with Irondonk enabled. "

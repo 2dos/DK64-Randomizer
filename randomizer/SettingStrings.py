@@ -100,12 +100,8 @@ settingsExclusionMap = {
         ]
     },
     "shuffle_items": {False: ["item_rando_list_selected"]},
-    "enemy_rando": {False: ["enemies_selected"]},
-    "bonus_barrel_rando": {False: ["minigames_list_selected", "disable_hard_minigames"]},
     "cb_rando_enabled": {False: ["cb_rando_list_selected"]},
     "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
-    "quality_of_life": {False: ["misc_changes_selected"]},
-    "hard_mode": {False: ["hard_mode_selected"]},
     "spoiler_hints": {
         SpoilerHints.off: [
             "points_list_kongs"
@@ -240,6 +236,14 @@ def encrypt_settings_string_enum(dict_data: dict):
         "shockwave_status",  # Deprecated with starting move selector rework - this is now derived in the settings constructor
         "music_disable_reverb",
         "archipelago",
+        "bonus_barrel_rando",  # Deprecated with dropdown multiselector rework
+        "hard_mode",  # Deprecated with dropdown multiselector rework
+        "hard_bosses",  # Deprecated with dropdown multiselector rework
+        "quality_of_life",  # Deprecated with dropdown multiselector rework
+        "enemy_rando",  # Deprecated with dropdown multiselector rework
+        "faster_checks_enabled",  # Deprecated with dropdown multiselector rework
+        "remove_barriers_enabled",  # Deprecated with dropdown multiselector rework
+        "",
     ]:
         if pop in dict_data:
             dict_data.pop(pop)

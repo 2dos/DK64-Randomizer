@@ -535,6 +535,7 @@ async function savesettings() {
   });
 
   // Handle dropdown multiselectors
+  console.log("Saving Settings");
   document.querySelectorAll(".dropdown-multiselect .dropdown-menu").forEach((ddms) => {
     const checkboxes = Array.from(ddms.querySelectorAll("input[type='checkbox']"));
     const checkedValues = checkboxes
@@ -579,6 +580,10 @@ document.querySelectorAll("#form input").forEach((input) => {
 document.querySelectorAll("#form select").forEach((select) => {
   select.addEventListener("change", savesettings);
   select.addEventListener("click", savesettings);
+});
+
+document.querySelectorAll("#form .dropdown-multiselect").forEach((select) => {
+  select.addEventListener("change", savesettings);
 });
 
 function filebox() {
@@ -1625,7 +1630,6 @@ function load_settings(json) {
             });
             valueChanged = true;
           }
-          console.log(element.getAttribute("name"), selectedCount)
           element.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`
         }
       } catch (e) {

@@ -8,6 +8,8 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Settings import MinigamesListSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected
 
 
 class Minigame:
@@ -482,28 +484,28 @@ MinigameRequirements = {
         group="Training Minigames",
         map_id=Maps.BarrelBarrel,
         can_repeat=True,
-        logic=lambda l: l.barrels or not l.settings.bonus_barrel_rando,
+        logic=lambda l: l.barrels or not IsDDMSSelected(l.settings.minigames_list_selected, MinigamesListSelected.training_minigames),
     ),
     Minigames.OrangeBarrel: Minigame(
         name="Orange Training",
         group="Training Minigames",
         map_id=Maps.OrangeBarrel,
         can_repeat=True,
-        logic=lambda l: l.oranges or not l.settings.bonus_barrel_rando,
+        logic=lambda l: l.oranges or not IsDDMSSelected(l.settings.minigames_list_selected, MinigamesListSelected.training_minigames),
     ),
     Minigames.VineBarrel: Minigame(
         name="Vine Training",
         group="Training Minigames",
         map_id=Maps.VineBarrel,
         can_repeat=True,
-        logic=lambda l: (l.can_use_vines and l.climbing) or not l.settings.bonus_barrel_rando,
+        logic=lambda l: (l.can_use_vines and l.climbing) or not IsDDMSSelected(l.settings.minigames_list_selected, MinigamesListSelected.training_minigames),
     ),
     Minigames.DiveBarrel: Minigame(
         name="Dive Training",
         group="Training Minigames",
         map_id=Maps.DiveBarrel,
         can_repeat=True,
-        logic=lambda l: l.swim or not l.settings.bonus_barrel_rando,
+        logic=lambda l: l.swim or not IsDDMSSelected(l.settings.minigames_list_selected, MinigamesListSelected.training_minigames),
     ),
     Minigames.Arcade25: Minigame(
         name="DK Arcade 25m",

@@ -13,7 +13,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Settings import Settings
-from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected, IsDDMSSelected
 
 # Used when level order rando is ON
 LobbyEntrancePool = [
@@ -569,8 +569,7 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
                     if lankyAccessible:
                         guitarDoorAccess = (
                             Kongs.diddy in settings.starting_kong_list
-                            or IsItemSelected(
-                                settings.remove_barriers_enabled,
+                            or IsDDMSSelected(
                                 settings.remove_barriers_selected,
                                 RemovedBarriersSelected.aztec_tunnel_door,
                             )

@@ -1164,3 +1164,17 @@ input[type=range][disabled]::-ms-fill-upper {
 .dropdown-multiselect .dropdown-item input {
   margin-right: 8px;
 }
+
+.dropdown-multiselect .control-button {
+  border-radius: 10px;
+  border-width: 0px;
+  color: white;
+  background: #222;
+  text-align: center;
+  flex: 1;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+}
+.dropdown-multiselect .control-button:hover {
+  background-color: #444;
+}

@@ -4,7 +4,7 @@ import math
 from enum import IntEnum, auto
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected, IsDDMSSelected
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Enums.Settings import FasterChecksSelected, PuzzleRando
@@ -281,8 +281,7 @@ def writeRandomCastleCarRace(random, ROM_COPY: LocalROM):
 
 def shortenCastleMinecart(spoiler, ROM_COPY: LocalROM):
     """Shorten Castle Minecart to end at the u-turn point."""
-    if not IsItemSelected(
-        spoiler.settings.faster_checks_enabled,
+    if not IsDDMSSelected(
         spoiler.settings.faster_checks_selected,
         FasterChecksSelected.castle_minecart,
     ):
@@ -463,7 +462,7 @@ class PuzzleItem:
         """Update the settings regarding bounds depending on selected settings."""
         self.selected_bound = self.normal_bound
         if self.fast_check_setting is not None and self.fast_bound is not None:
-            if IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, self.fast_check_setting):
+            if IsDDMSSelected(spoiler.settings.faster_checks_selected, self.fast_check_setting):
                 self.selected_bound = self.fast_bound
 
 
@@ -599,7 +598,7 @@ def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
         }
         spoiler.settings.random.shuffle(arcade_levels)
         # Make sure 75m isn't in the first 2 levels if faster arcade is enabled because 75m is hard
-        if IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.arcade):
+        if IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.arcade):
             for x in range(2):
                 if arcade_levels[x] == "75m":
                     temp_level = arcade_levels[2]

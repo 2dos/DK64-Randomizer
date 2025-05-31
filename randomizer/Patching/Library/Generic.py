@@ -381,13 +381,12 @@ def IsItemSelected(
     # Convert the list to a tuple before passing it to the cached function
     return is_item_selected_cached(bool_setting, tuple(multiselector_setting), check, result_if_empty)
 
+def IsDDMSSelected(multiselector_setting: List[Union["MiscChangesSelected", Any]], check: Union["HardModeSelected", "MiscChangesSelected"]):
+    """Determine whether a multiselector item that doesn't utilize the multiselector modal is selected."""
+    return is_item_selected_cached(True, tuple(multiselector_setting), check, False)
 
 def IsColorOptionSelected(settings, color_option: ColorOptions) -> bool:
     """Determine whether an option within the random colors multiselector is enabled."""
-    if not settings.random_colors:
-        return False
-    if len(settings.random_colors_selected) == 0:
-        return True
     return color_option.name in settings.random_colors_selected
 
 

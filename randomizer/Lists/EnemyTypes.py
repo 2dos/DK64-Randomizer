@@ -143,7 +143,7 @@ class EnemyLoc:
             permitted = []
             for x in range(4):
                 if len(permitted) == 0:
-                    permitted = [enemy for enemy in self.allowed_enemies[x] if (enemy in enabled_enemies or len(enabled_enemies) == 0) and EnemyMetaData[enemy].selector_enabled]
+                    permitted = [enemy for enemy in self.allowed_enemies[x] if enemy in enabled_enemies and EnemyMetaData[enemy].selector_enabled]
                     if sound_safeguard:
                         permitted = [enemy for enemy in permitted if not EnemyMetaData[enemy].audio_engine_burden]
             if len(permitted) > 0:

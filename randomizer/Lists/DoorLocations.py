@@ -19,7 +19,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Enums.Time import Time
 from randomizer.Logic import RegionsOriginal as RegionList
 from randomizer.LogicClasses import TransitionFront
-from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected, IsDDMSSelected
 from randomizer.Lists.MapsAndExits import RegionMapList
 
 LEVEL_MAIN_MAPS = (
@@ -186,7 +186,7 @@ def GetBossLobbyRegionIdForRegion(region_id, region):
 
 def isBarrierRemoved(spoiler, barrier_id: RemovedBarriersSelected):
     """Return whether the barrier has been removed."""
-    return IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, barrier_id)
+    return IsDDMSSelected(spoiler.settings.remove_barriers_selected, barrier_id)
 
 
 door_locations = {

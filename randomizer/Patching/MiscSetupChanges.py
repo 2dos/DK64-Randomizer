@@ -20,7 +20,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
-from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected, IsDDMSSelected
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
@@ -223,13 +223,11 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
         for _ in range(pickup["weight"]):
             pickup_list.append(pickup["type"])
 
-    arcade_r1_shortened = IsItemSelected(
-        spoiler.settings.faster_checks_enabled,
+    arcade_r1_shortened = IsDDMSSelected(
         spoiler.settings.faster_checks_selected,
         FasterChecksSelected.factory_arcade_round_1,
     )
-    lighthouse_on = IsItemSelected(
-        spoiler.settings.remove_barriers_enabled,
+    lighthouse_on = IsDDMSSelected(
         spoiler.settings.remove_barriers_selected,
         RemovedBarriersSelected.galleon_seasick_ship,
     )
@@ -297,20 +295,17 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
     chunky_5dc_pads = pickChunkyCabinPadPositions(spoiler.settings.random)
     spoiler.settings.random.shuffle(vase_puzzle_positions)
     vase_puzzle_rando_progress = 0
-    raise_patch = IsItemSelected(
-        spoiler.settings.quality_of_life,
+    raise_patch = IsDDMSSelected(
         spoiler.settings.misc_changes_selected,
         MiscChangesSelected.raise_fungi_dirt_patch,
     )
-    move_cabin_barrel = IsItemSelected(
-        spoiler.settings.quality_of_life,
+    move_cabin_barrel = IsDDMSSelected(
         spoiler.settings.misc_changes_selected,
         MiscChangesSelected.move_spring_cabin_rocketbarrel,
     )
-    random_pufftoss_stars = IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.pufftoss_star_rando, False)
-    higher_pufftoss_stars = IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.pufftoss_star_raised, False)
-    removed_crypt_doors = IsItemSelected(
-        spoiler.settings.remove_barriers_enabled,
+    random_pufftoss_stars = IsDDMSSelected(spoiler.settings.hard_bosses_selected, HardBossesSelected.pufftoss_star_rando)
+    higher_pufftoss_stars = IsDDMSSelected(spoiler.settings.hard_bosses_selected, HardBossesSelected.pufftoss_star_raised)
+    removed_crypt_doors = IsDDMSSelected(
         spoiler.settings.remove_barriers_selected,
         RemovedBarriersSelected.castle_crypt_doors,
     )
@@ -805,7 +800,7 @@ def updateKrushaMoveNames(spoiler):
 
 def remove5DSCameraPoint(spoiler, ROM_COPY: LocalROM):
     """Remove the camera lock triggers for Tiny 5DS entry."""
-    if not IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.vanilla_bug_fixes):
+    if not IsDDMSSelected(spoiler.settings.misc_changes_selected, MiscChangesSelected.vanilla_bug_fixes):
         return
     file_start = getPointerLocation(TableNames.Cutscenes, Maps.Galleon5DShipDKTiny)
     ROM_COPY.seek(file_start)

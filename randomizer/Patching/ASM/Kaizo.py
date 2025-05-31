@@ -1,9 +1,10 @@
 """Write ASM data for the hard mode elements."""
 
-from enum import IntEnum, auto
+from enum import IntEnum
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
-from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected, IsDDMSSelected
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Settings import HardModeSelected, DamageAmount, MiscChangesSelected, HardBossesSelected, ExtraCutsceneSkips
 
 POP_TARGETTING = True
@@ -23,7 +24,7 @@ def writeActorHealth(ROM_COPY, actor_index: int, new_health: int):
 
 def angryCaves(ROM_COPY: LocalROM, settings, offset_dict: dict, file_init_flags: list) -> list:
     """All changes related to angry caves."""
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.angry_caves, False):
+    if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.angry_caves):
         writeValue(ROM_COPY, 0x807480F4, Overlay.Static, 1, offset_dict, 4)  # Constant rockfall
         writeValue(ROM_COPY, 0x807480FC, Overlay.Static, 15, offset_dict, 4)  # Increase rockfall spawn rate (Every 20f -> 15f)
         writeValue(ROM_COPY, 0x806466D4, Overlay.Static, 0, offset_dict, 4)  # Kosha is alive no matter what
@@ -37,14 +38,14 @@ def angryCaves(ROM_COPY: LocalROM, settings, offset_dict: dict, file_init_flags:
         writeValue(ROM_COPY, 0x806A051C, Overlay.Static, 0x1000001D, offset_dict, 4)  # Disable particles, lag reasons
         writeFunction(ROM_COPY, 0x806464C4, Overlay.Static, "spawnStalactite", offset_dict)
         writeValue(ROM_COPY, 0x806A04F6, Overlay.Static, 50, offset_dict)  # Reduce volume of stalactite crash
-    elif IsItemSelected(settings.quality_of_life, settings.misc_changes_selected, MiscChangesSelected.calm_caves):
+    elif IsDDMSSelected(settings.misc_changes_selected, MiscChangesSelected.calm_caves):
         file_init_flags.append(0x12C)  # Giant Kosha Dead
     return file_init_flags
 
 
 def hardEnemies(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to hard enemies."""
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.hard_enemies, False):
+    if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.hard_enemies):
         writeValue(ROM_COPY, 0x806B12DA, Overlay.Static, 0x3A9, offset_dict)  # Kasplat Shockwave Chance
         writeValue(ROM_COPY, 0x806B12FE, Overlay.Static, 0x3B3, offset_dict)  # Kasplat Shockwave Chance
         writeActorHealth(ROM_COPY, 259, 9)  # Increase kop health
@@ -52,7 +53,7 @@ def hardEnemies(ROM_COPY: LocalROM, settings, offset_dict: dict):
 
 def weakAnkles(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to reduced fall damage threshold."""
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold, False):
+    if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold):
         writeFloatUpper(ROM_COPY, 0x806D3682, Overlay.Static, 100, offset_dict)  # Change fall too far threshold
         writeFunction(ROM_COPY, 0x806D36B4, Overlay.Static, "fallDamageWrapper", offset_dict)
         writeFunction(ROM_COPY, 0x8067F540, Overlay.Static, "transformBarrelImmunity", offset_dict)
@@ -87,7 +88,7 @@ def mirrorMode(ROM_COPY: LocalROM, settings, offset_dict: dict):
 
 def shuffleJetpacEnemies(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to shuffling Jetpac enemies."""
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies, False):
+    if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.shuffled_jetpac_enemies):
         order = settings.jetpac_enemy_order
         functions = [
             0x80029884,
@@ -105,7 +106,7 @@ def shuffleJetpacEnemies(ROM_COPY: LocalROM, settings, offset_dict: dict):
 
 def donkInTheManySettings(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to dark world/sky/fire sea."""
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava, False):
+    if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.water_is_lava):
         writeValue(ROM_COPY, 0x806677C4, Overlay.Static, 0, offset_dict, 4)  # Dynamic Surfaces
         # Static Surfaces
         writeValue(ROM_COPY, 0x80667ED2, Overlay.Static, 0x81, offset_dict)
@@ -113,8 +114,8 @@ def donkInTheManySettings(ROM_COPY: LocalROM, settings, offset_dict: dict):
         writeValue(ROM_COPY, 0x80667EEE, Overlay.Static, 0x81, offset_dict)
         writeValue(ROM_COPY, 0x80667EFA, Overlay.Static, 0x81, offset_dict)
         writeFunction(ROM_COPY, 0x8062F3F0, Overlay.Static, "replaceWaterTexture", offset_dict)  # Static water textures
-    is_dark_world = IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world, False)
-    is_sky = IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.donk_in_the_sky, False)
+    is_dark_world = IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world)
+    is_sky = IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.donk_in_the_sky)
     is_memory_challenge = is_dark_world and is_sky
     is_dark_world = is_dark_world and not is_memory_challenge
     is_sky = is_sky and not is_memory_challenge
@@ -158,7 +159,7 @@ def donkInTheManySettings(ROM_COPY: LocalROM, settings, offset_dict: dict):
 
 def lowerReplenishibles(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to lower replenishible amounts."""
-    if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.lower_max_refill_amounts, False):
+    if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.lower_max_refill_amounts):
         writeValue(ROM_COPY, 0x806F8F68, Overlay.Static, 0x24090000, offset_dict, 4)  # Standard Ammo: change from `(1 << ammo_belt) * 50` to a flat 50
         writeValue(ROM_COPY, 0x806F8FE4, Overlay.Static, 0x24190000, offset_dict, 4)  # Homing Ammo: change from `(1 << ammo_belt) * 50` to a flat 50
         writeValue(ROM_COPY, 0x806F9056, Overlay.Static, 5, offset_dict)  # Oranges: change from `(5 * ammo_belt) + 20` to `(5 * ammo_belt) + 5`
@@ -177,7 +178,7 @@ def getKKOPhasePosition(settings, behavior: KKOPhaseBehavior) -> int:
 
 def hardBosses(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to hard bossees."""
-    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando, False):
+    if IsDDMSSelected(settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando):
         writeValue(ROM_COPY, 0x800320DE, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.aha), offset_dict)
         writeValue(ROM_COPY, 0x80032166, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.aha), offset_dict)
         writeValue(ROM_COPY, 0x800321F6, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.aha), offset_dict)
@@ -188,20 +189,20 @@ def hardBosses(ROM_COPY: LocalROM, settings, offset_dict: dict):
         writeValue(ROM_COPY, 0x80032876, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.aha), offset_dict)
         writeValue(ROM_COPY, 0x800329D6, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.two_kko), offset_dict)
         writeValue(ROM_COPY, 0x8003305E, Overlay.Boss, getKKOPhasePosition(settings, KKOPhaseBehavior.two_kko), offset_dict)
-    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.fast_mad_jack, False):
+    if IsDDMSSelected(settings.hard_bosses_selected, HardBossesSelected.fast_mad_jack):
         # MJ Fast Jumps
         for x in range(5):
             speed = 2 if x == 0 else 3
             writeFloat(ROM_COPY, 0x80036C40 + (4 * x), Overlay.Boss, speed, offset_dict)  # Phase x Jump speed
         writeValue(ROM_COPY, 0x8003343A, Overlay.Boss, 0x224, offset_dict)  # Force fast jumps
 
-    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.k_rool_toes_rando, False):
+    if IsDDMSSelected(settings.hard_bosses_selected, HardBossesSelected.k_rool_toes_rando):
         # Random Toes
         for x in range(5):
             writeValue(ROM_COPY, 0x80036950 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x], offset_dict, 1)
             writeValue(ROM_COPY, 0x80036968 + (4 * x) + 2, Overlay.Boss, settings.toe_order[x + 5], offset_dict, 1)
 
-    if IsItemSelected(settings.hard_bosses, settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase, False):
+    if IsDDMSSelected(settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase):
         # Spawn a K Rool balloon into the fight to trigger K Rool
         writeFunction(ROM_COPY, 0x806A7AA8, Overlay.Static, "popExistingBalloon", offset_dict)
         writeFunction(ROM_COPY, 0x8002EB64, Overlay.Boss, "spawnKRoolLankyBalloon", offset_dict)

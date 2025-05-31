@@ -279,16 +279,15 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                     ROM_COPY.write(prop.target)
 
             # Excluded Songs
-            if settings.songs_excluded:
-                disabled_songs = settings.excluded_songs_selected.copy()
-                write_data = [0]
-                for item in ExcludedSongsSelector:
-                    if (ExcludedSongs[item["value"]] in disabled_songs and item["shift"] >= 0) or len(disabled_songs) == 0:
-                        offset = int(item["shift"] >> 3)
-                        check = int(item["shift"] % 8)
-                        write_data[offset] |= 0x80 >> check
-                ROM_COPY.seek(sav + 0x1B7)
-                ROM_COPY.writeMultipleBytes(write_data[0], 1)
+            disabled_songs = settings.excluded_songs_selected.copy()
+            write_data = [0]
+            for item in ExcludedSongsSelector:
+                if (ExcludedSongs[item["value"]] in disabled_songs and item["shift"] >= 0):
+                    offset = int(item["shift"] >> 3)
+                    check = int(item["shift"] % 8)
+                    write_data[offset] |= 0x80 >> check
+            ROM_COPY.seek(sav + 0x1B7)
+            ROM_COPY.writeMultipleBytes(write_data[0], 1)
 
             patchAssemblyCosmetic(ROM_COPY, settings)
             music_data, music_names = randomize_music(settings, ROM_COPY)
@@ -393,7 +392,7 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed, head_sizes
         {"name": "Funky's Boot (Chunky Phase)", "setting": settings.boot_cutscene_model},
     ]
 
-    if settings.colors != {} or settings.random_models != RandomModels.off or settings.misc_cosmetics or settings.random_colors:
+    if settings.colors != {} or settings.random_models != RandomModels.off or settings.misc_cosmetics or len(settings.random_colors_selected) > 0:
         humanspoiler["Cosmetics"]["Colors"] = {}
         humanspoiler["Cosmetics"]["Models"] = {}
         humanspoiler["Cosmetics"]["Sprites"] = {}

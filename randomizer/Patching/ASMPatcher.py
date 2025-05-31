@@ -5,7 +5,7 @@ import math
 import io
 import randomizer.ItemPool as ItemPool
 from typing import Union
-from randomizer.Patching.Library.Generic import Overlay, IsItemSelected, TableNames
+from randomizer.Patching.Library.Generic import Overlay, IsItemSelected, TableNames, IsDDMSSelected
 from randomizer.Patching.Library.Image import getImageFile, TextureFormat
 from randomizer.Patching.Library.ItemRando import CustomActors
 from randomizer.Patching.Library.ASM import *
@@ -30,7 +30,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Enums.Models import Model
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Enums.Settings import ShuffleLoadingZones
+from randomizer.Enums.Settings import ShuffleLoadingZones, MinigamesListSelected
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Items import Items
@@ -241,12 +241,12 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
 
 def isFasterCheckEnabled(spoiler, fast_check: FasterChecksSelected):
     """Determine if a faster check setting is enabled."""
-    return IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, fast_check)
+    return IsDDMSSelected(spoiler.settings.faster_checks_selected, fast_check)
 
 
 def isQoLEnabled(spoiler, misc_change: MiscChangesSelected):
     """Determine if a faster check setting is enabled."""
-    return IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, misc_change)
+    return IsDDMSSelected(spoiler.settings.misc_changes_selected, misc_change)
 
 
 def writeItemReferenceFlags(ROM_COPY: LocalROM, flag_list: list):
@@ -693,7 +693,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806ADBC6, Overlay.Static, 0x2F5, offset_dict)
     writeValue(ROM_COPY, 0x806ADC66, Overlay.Static, 0x2F5, offset_dict)
     writeValue(ROM_COPY, 0x806ADD3A, Overlay.Static, 0x2F5, offset_dict)
-    if settings.bonus_barrel_rando:
+    if IsDDMSSelected(settings.minigames_list_selected, MinigamesListSelected.training_minigames):
         # Disable training pre-checks
         writeValue(ROM_COPY, 0x80698386, Overlay.Static, 0, offset_dict)  # Disable ability to use vines in vine barrel unless you have vines
         writeValue(ROM_COPY, 0x806E426C, Overlay.Static, 0, offset_dict, 4)  # Disable ability to pick up objects in barrel barrel unless you have barrels
@@ -1012,7 +1012,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x80713DE0, Overlay.Static, "finishHelmHurry", offset_dict)  # Change write
         writeValue(ROM_COPY, 0x807125CC, Overlay.Static, 0, offset_dict, 4)  # Prevent Helm Timer Overwrite
         writeValue(ROM_COPY, 0x807095BE, Overlay.Static, 0x2D4, offset_dict)  # Change Zipper with K. Rool Laugh
-    elif IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.strict_helm_timer, False):
+    elif IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.strict_helm_timer):
         # We cannot have both helm hurry and strict helm timer. Make helm hurry the most dominant setting
         writeValue(ROM_COPY, 0x8071256A, Overlay.Static, 0, offset_dict)  # Set start time of helm to 0 seconds
 
@@ -1959,7 +1959,7 @@ def patchAssembly(ROM_COPY, spoiler):
         RemovedBarriersSelected.aztec_tiny_temple_ice: [0x45],
     }
     for barrier in barrier_flags:
-        if IsItemSelected(settings.remove_barriers_enabled, settings.remove_barriers_selected, barrier):
+        if IsDDMSSelected(settings.remove_barriers_selected, barrier):
             file_init_flags.extend(barrier_flags[barrier])
 
     writeFunction(ROM_COPY, 0x80682A98, Overlay.Static, "resetCannonGameState", offset_dict)

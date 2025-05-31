@@ -5,7 +5,7 @@ from randomizer.Enums.Settings import MiscChangesSelected, FasterChecksSelected,
 from randomizer.Enums.Types import Types
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
-from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected, IsDDMSSelected
 
 FAIRY_LOAD_FIX = True
 
@@ -23,7 +23,7 @@ def writeKongItemOwnership(ROM_COPY, settings):
     lanky_freer = settings.lanky_freeing_kong
     tiny_freer = settings.tiny_freeing_kong
     chunky_freer = settings.chunky_freeing_kong
-    no_arcade_r1 = IsItemSelected(settings.faster_checks_enabled, settings.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1)
+    no_arcade_r1 = IsDDMSSelected(settings.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1)
     writeSingleOwnership(ROM_COPY, 1, diddy_freer)
     writeSingleOwnership(ROM_COPY, 2, diddy_freer)
     writeSingleOwnership(ROM_COPY, 22, tiny_freer)
@@ -447,7 +447,7 @@ def fairyFix(ROM_COPY: LocalROM, settings, offset_dict: dict):
         writeValue(ROM_COPY, 0x806C5DB8, Overlay.Static, 0x00000000, offset_dict, 4)  # NOP
         writeValue(ROM_COPY, 0x806C5DCC, Overlay.Static, 0x00000000, offset_dict, 4)  # NOP
         writeValue(ROM_COPY, 0x806C5DD0, Overlay.Static, 0x85820000 | FAIRY_SCREEN_Y, offset_dict, 4)  # lh $v0, 0x01B2 ($t4) - Get screen Y in fairy storage
-        if not IsItemSelected(settings.quality_of_life, settings.misc_changes_selected, MiscChangesSelected.better_fairy_camera):
+        if not IsDDMSSelected(settings.misc_changes_selected, MiscChangesSelected.better_fairy_camera):
             writeValue(ROM_COPY, 0x806C5DE4, Overlay.Static, 0x00000000, offset_dict, 4)  # NOP
             writeValue(ROM_COPY, 0x806C5DE8, Overlay.Static, 0x858B0000 | FAIRY_SCREEN_DIST, offset_dict, 4)  # lh $t3, 0x01B4 ($t4) - Get max dist in fairy storage
         writeValue(ROM_COPY, 0x806C5E00, Overlay.Static, 0x45000016, offset_dict, 4)  # bc1f 0x16 - Free up one slot so we can store the box addr
@@ -585,7 +585,7 @@ def pauseUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeValue(ROM_COPY, 0x806ABFD8, Overlay.Static, 0x2406FFFF, offset_dict, 4)  # All Kongs
     writeFunction(ROM_COPY, 0x806ABFD4, Overlay.Static, "getItemCount_new", offset_dict)
     #
-    if IsItemSelected(settings.quality_of_life, settings.misc_changes_selected, MiscChangesSelected.fast_pause_transitions):
+    if IsDDMSSelected(settings.misc_changes_selected, MiscChangesSelected.fast_pause_transitions):
         writeFloat(ROM_COPY, 0x8075AC00, Overlay.Static, 1.3, offset_dict)  # Pause Menu Progression Rate
         writeValue(ROM_COPY, 0x806A901C, Overlay.Static, 4, offset_dict, 4)  # NOP - Remove thud
     writeFunction(ROM_COPY, 0x806A84C8, Overlay.Static, "updateFileVariables", offset_dict)  # Update file variables to transfer old locations to current

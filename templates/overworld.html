@@ -414,32 +414,8 @@
                         Hard Shooting
                     </label>
                 </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                           title="This option enables various harder gameplay features.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="hard_mode"
-                               id="hard_mode"
-                               display_name="Hard Mode"
-                               value="True"/>
-                        Hard Mode
-                    </label>
-                    {{ list_selector(hard_mode, "hard_mode", "HARD MODE", "This will open a popup that will let you customize what hard mode Options are active.", 10) }}
-                    {# Remove end </div> as it's included in the macro for formatting #}
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                           title="This option enables various harder challenges for boss fights.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="hard_bosses"
-                               id="hard_bosses"
-                               display_name="Hard Bosses"
-                               value="True"/>
-                        Hard Bosses
-                    </label>
-                    {{ list_selector(hard_bosses, "hard_bosses", "HARD BOSSES", "This will open a popup that will let you customize what bosses are made harder.", 10) }}
-                    {# Remove end </div> as it's included in the macro for formatting #}
+                {{ dropdown_multiselector(hard_mode, "hard_mode", "Hard Mode", "This will open a popup that will let you customize what hard mode Options are active.", 10) }}
+                {{ dropdown_multiselector(hard_bosses, "hard_bosses", "Hard Bosses", "This will open a popup that will let you customize what bosses are made harder.", 10) }}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
                            title="When a kong dies you can no longer use the kong excluding for boss fights, you can enter any boss arena with any kong and it will force you to the required kong, if a kong is dead all moves will be granted.&#10;WARNING: Seeds might become unbeatable.">

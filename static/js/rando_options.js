@@ -784,15 +784,6 @@ document
   .getElementById("ssanity-reset-random")
   .addEventListener("click", switchsanity_reset_random);
 
-// Disable Hard Mode Selector when Hard Mode is off
-function disable_hard_mode_modal() {
-  const selector = document.getElementById("hard_mode_modal");
-  if (document.getElementById("hard_mode").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
 document.getElementById("starting_moves_reset").addEventListener("click", function(evt) {
   // Update the starting move pools to start with no items
   for (let i = 1; i <= 5; i++) {
@@ -831,75 +822,6 @@ document.getElementById("starting_moves_start_all").addEventListener("click", fu
   }
   startingMovesFullReset();
 });
-
-document
-  .getElementById("hard_mode")
-  .addEventListener("click", disable_hard_mode_modal);
-
-// Disable Hard Bosses Selector when Hard Bosses is off
-function disable_hard_bosses_modal() {
-  const selector = document.getElementById("hard_bosses_modal");
-  if (document.getElementById("hard_bosses").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
-
-document
-  .getElementById("hard_bosses")
-  .addEventListener("click", disable_hard_bosses_modal);
-
-// Disable Excluded Song Selector when Excluded Songs is off
-function disable_excluded_songs_modal(evt) {
-  const selector = document.getElementById("excluded_songs_modal");
-  if (document.getElementById("songs_excluded").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
-
-// Adding event listeners for nav-music-tab and songs_excluded
-document
-.getElementById("nav-music-tab")
-.addEventListener("click", disable_excluded_songs_modal);
-document
-.getElementById("songs_excluded")
-.addEventListener("click", disable_excluded_songs_modal);
-
-// Disable Random Colors Selector when Random Colorss is off
-function disable_random_colors_modal(evt) {
-  const selector = document.getElementById("random_colors_modal");
-  if (document.getElementById("random_colors").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
-
-// Adding event listeners for nav-cosmetic-tab and random_colors
-document
-.getElementById("nav-cosmetics-tab")
-.addEventListener("click", disable_random_colors_modal);
-document
-.getElementById("random_colors")
-.addEventListener("click", disable_random_colors_modal);
-
-// Disable Music Filtering Selector when Music Filtering is off
-function disable_music_filtering_modal() {
-  const selector = document.getElementById("music_filtering_modal");
-  if (document.getElementById("music_filtering").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
-
-document
-  .getElementById("music_filtering")
-  .addEventListener("click", disable_music_filtering_modal);
-
 function disable_custom_cb_locations_modal() {
   const selector = document.getElementById("cb_rando_list_modal");
   if (document.getElementById("cb_rando_enabled").checked) {
@@ -912,19 +834,6 @@ function disable_custom_cb_locations_modal() {
 document
   .getElementById("cb_rando_enabled")
   .addEventListener("click", disable_custom_cb_locations_modal);
-
-function disable_misc_changes_modal() {
-  const selector = document.getElementById("misc_changes_modal");
-  if (document.getElementById("misc_changes_toggle").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
-
-document
-  .getElementById("misc_changes_toggle")
-  .addEventListener("click", disable_misc_changes_modal);
 
 // Hide the plando options for certain Helm phases if they are disabled
 function plando_hide_helm_options(evt) {
@@ -2098,6 +2007,12 @@ function toggleDropdown(name) {
   menu.classList.toggle('show');
 }
 
+function pushUpdateToDropdown(name) {
+  const ddms = document.getElementById(`dropdown_${name}`);
+  const event = new Event("change", { bubbles: true, cancelable: false });
+  ddms.dispatchEvent(event);
+}
+
 function updateSelected(name) {
   const checkboxes = document.querySelectorAll(`#${name}_selected input[type="checkbox"]`);
   const countLabel = document.getElementById(`selectedCount_${name}`);
@@ -2108,9 +2023,20 @@ function updateSelected(name) {
         selectedCount++;
     }
   });
-  console.log(selectedCount)
 
   countLabel.innerText = `${selectedCount} item${selectedCount !== 1 ? 's' : ''} selected`;
+  pushUpdateToDropdown(name);
+}
+
+function dropdownForceAll(container, state) {
+  const checkboxes = document.querySelectorAll(`#${container}_selected input[type="checkbox"]`);
+  const countLabel = document.getElementById(`selectedCount_${container}`);
+  checkboxes.forEach(cb => {
+    cb.checked = state;
+  });
+  const selectedCount = state ? checkboxes.length : 0;
+  countLabel.innerText = `${selectedCount} item${selectedCount !== 1 ? 's' : ''} selected`;
+  pushUpdateToDropdown(container);
 }
 
 document.addEventListener('click', function(e) {
@@ -2141,13 +2067,7 @@ function update_ui_states() {
   disable_switchsanity_modal(null);
   item_rando_list_changed(null);
   toggle_item_rando(null);
-  disable_hard_mode_modal(null);
-  disable_hard_bosses_modal(null);
-  disable_excluded_songs_modal(null);
-  disable_random_colors_modal(null);
-  disable_music_filtering_modal(null);
   disable_custom_cb_locations_modal(null);
-  disable_misc_changes_modal(null);
   toggle_bananaport_selector(null);
   disable_helm_hurry(null);
   disable_points(null);

@@ -10,7 +10,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
-from randomizer.Patching.Library.Generic import IsItemSelected, addNewScript, getNextFreeID
+from randomizer.Patching.Library.Generic import IsItemSelected, addNewScript, getNextFreeID, IsDDMSSelected
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM
@@ -390,8 +390,7 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                     if door.map == cont_map_id:
                         if door_type == DoorType.wrinkly and (
                             spoiler.settings.wrinkly_location_rando
-                            or IsItemSelected(
-                                spoiler.settings.quality_of_life,
+                            or IsDDMSSelected(
                                 spoiler.settings.misc_changes_selected,
                                 MiscChangesSelected.remove_wrinkly_puzzles,
                             )

@@ -11,6 +11,7 @@ from randomizer.Patching.Library.Generic import (
     MenuTextDim,
     IsItemSelected,
     IsColorOptionSelected,
+    IsDDMSSelected,
 )
 from randomizer.Patching.Library.Image import getBonusSkinOffset, ExtraTextures, getRandomHueShift, hueShiftImageFromAddress, TextureFormat
 from randomizer.Patching.MiscSetupChanges import SpeedUpFungiRabbit
@@ -180,15 +181,15 @@ def holidayCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
 
 def musicCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic options related to music."""
-    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.pause_music, False):
+    if IsDDMSSelected(settings.excluded_songs_selected, ExcludedSongs.pause_music):
         writeValue(ROM_COPY, 0x805FC890, Overlay.Static, 0, offset_dict, 4)  # Pause Theme
         writeValue(ROM_COPY, 0x805FC89C, Overlay.Static, 0, offset_dict, 4)  # Pause Start Theme
-    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.wrinkly, False):
+    if IsDDMSSelected(settings.excluded_songs_selected, ExcludedSongs.wrinkly):
         writeValue(ROM_COPY, 0x8064F180, Overlay.Static, 0, offset_dict, 4)  # Wrinkly Theme
-    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.transformation, False):
+    if IsDDMSSelected(settings.excluded_songs_selected, ExcludedSongs.transformation):
         writeValue(ROM_COPY, 0x8067E9E4, Overlay.Static, 0, offset_dict, 4)  # Transform Theme
         writeValue(ROM_COPY, 0x8067F7C0, Overlay.Static, 0, offset_dict, 4)  # Transform Theme
-    if IsItemSelected(settings.songs_excluded, settings.excluded_songs_selected, ExcludedSongs.sub_areas, False):
+    if IsDDMSSelected(settings.excluded_songs_selected, ExcludedSongs.sub_areas):
         # writeValue(ROM_COPY, 0x806025BC, Overlay.Static, 0, offset_dict, 4) # Disable `playLevelMusic` - Map Load
         writeValue(ROM_COPY, 0x8061DF74, Overlay.Static, 0, offset_dict, 4)  # Disable `playLevelMusic`
         writeValue(ROM_COPY, 0x806DB98C, Overlay.Static, 0, offset_dict, 4)  # Disable `playLevelMusic`

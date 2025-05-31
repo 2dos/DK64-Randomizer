@@ -620,7 +620,7 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
     for enemy in EnemyMetaData:
         if EnemyMetaData[enemy].crown_enabled is True:
             crown_enemies.append(enemy)
-    if spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_difficulty != CrownEnemyDifficulty.vanilla:
+    if len(spoiler.settings.enemies_selected) > 0 or spoiler.settings.crown_enemy_difficulty != CrownEnemyDifficulty.vanilla:
         boolean_damage_is_ohko = spoiler.settings.damage_amount == DamageAmount.ohko
         crown_enemies_library = getBalancedCrownEnemyRando(spoiler, spoiler.settings.crown_enemy_difficulty, boolean_damage_is_ohko)
         minigame_enemies_simple = []
@@ -670,7 +670,7 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                 extra_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
                 offset += 0x16 + (extra_count * 2)
                 vanilla_spawners.append(Spawner(enemy_id, init_offset, enemy_index))
-            if spoiler.settings.enemy_rando and cont_map_id in spoiler.enemy_rando_data:
+            if len(spoiler.settings.enemies_selected) > 0 and cont_map_id in spoiler.enemy_rando_data:
                 referenced_spawner = None
                 for enemy in spoiler.enemy_rando_data[cont_map_id]:
                     for spawner in vanilla_spawners:
@@ -679,7 +679,7 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                             break
                     if referenced_spawner is not None:
                         writeEnemy(spoiler, ROM_COPY, cont_map_spawner_address, enemy["enemy"], referenced_spawner, cont_map_id, 0)
-            if spoiler.settings.enemy_rando and cont_map_id in minigame_maps_total:
+            if len(spoiler.settings.enemies_selected) > 0 and cont_map_id in minigame_maps_total:
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:
                     tied_enemy_list = minigame_enemies_simple.copy()
