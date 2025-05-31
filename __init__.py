@@ -121,7 +121,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Items import Items as DK64RItems
     from randomizer.SettingStrings import decrypt_settings_string_enum
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options, Goal
+    from archipelago.Options import DK64Options, Goal, KeysRequiredToBeatKrool
     from archipelago.Regions import all_locations, create_regions, connect_regions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
@@ -285,6 +285,8 @@ if baseclasses_loaded:
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["krool_key_count"] = self.options.krool_key_count.value
+            if hasattr(self.multiworld, "generation_is_fake"):
+                settings_dict["krool_key_count"] = 8  # if gen is fake, don't pick random keys to start with, trust the slot data
             settings_dict["switchsanity"] = self.options.switchsanity.value
             settings_dict["logic_type"] = self.options.logic_type.value
             settings_dict["glitches_selected"] = []
@@ -350,6 +352,7 @@ if baseclasses_loaded:
                         settings.logic_type = LogicType[passthrough["LogicType"]]
                         settings.glitches_selected = [GlitchesSelected[glitch] for glitch in passthrough["GlitchesSelected"]]
                         settings.open_lobbies = passthrough["OpenLobbies"]
+                        settings.starting_key_list = passthrough["StartingKeyList"]
                         # There's multiple sources of truth for helm order.
                         settings.helm_donkey = 0 in settings.helm_order
                         settings.helm_diddy = 4 in settings.helm_order
@@ -637,6 +640,7 @@ if baseclasses_loaded:
                 "SwitchSanity": {switch.name: {"kong": data.kong.name, "type": data.switch_type.name} for switch, data in self.logic_holder.settings.switchsanity_data.items()},
                 "LogicType": self.logic_holder.settings.logic_type.name,
                 "GlitchesSelected": ", ".join([glitch.name for glitch in self.logic_holder.settings.glitches_selected]),
+                "StartingKeyList": ", ".join([key.name for key in self.logic_holder.settings.starting_key_list]),
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -723,6 +727,7 @@ if baseclasses_loaded:
             switchsanity = slot_data["SwitchSanity"]
             logic_type = slot_data["LogicType"]
             glitches_selected = slot_data["GlitchesSelected"].split(", ")
+            starting_key_list = slot_data["StartingKeyList"].split(", ")
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -740,4 +745,5 @@ if baseclasses_loaded:
             relevant_data["OpenLobbies"] = open_lobbies
             relevant_data["LogicType"] = logic_type
             relevant_data["GlitchesSelected"] = glitches_selected
+            relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list]
             return relevant_data
