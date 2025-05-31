@@ -1359,8 +1359,6 @@ function toggle_b_locker_boxes(evt) {
 }
 
 // Toggle the textboxes for Troff
-document.getElementById("randomize_cb_required_amounts").addEventListener("click", toggle_counts_boxes);
-
 function toggle_counts_boxes(evt) {
     const disabled = !document.getElementById("randomize_cb_required_amounts").checked;
     const troffText = document.getElementById("troff_text");
@@ -1385,7 +1383,7 @@ function toggle_counts_boxes(evt) {
         }
     }
 }
-
+document.getElementById("randomize_cb_required_amounts").addEventListener("click", toggle_counts_boxes);
 
 // Change level randomization
 document

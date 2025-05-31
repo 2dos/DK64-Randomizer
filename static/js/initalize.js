@@ -1554,7 +1554,15 @@ function load_settings(json) {
   if (json["enable_plandomizer"]) {
     delete json["enable_plandomizer"];
   }
-  all_elements = document.querySelectorAll("#form input, #form select, #form .dropdown-multiselect .dropdown-menu");
+  const form = document.getElementById("form");
+  const inputs = form.getElementsByTagName("input");
+  const selects = form.getElementsByTagName("select");
+  const dropdowns = form.querySelectorAll(".dropdown-multiselect .dropdown-menu");
+  const all_elements = [
+    ...inputs,
+    ...selects,
+    ...dropdowns,
+  ];
   const elementsCache = Object.fromEntries(
     Object.keys(json).map((key) => [
       key,
@@ -1641,7 +1649,7 @@ function load_settings(json) {
 
         // Dropdown Multiselector
         if (element.classList.contains("dropdown-menu")) {
-          const checkboxes = Array.from(element.querySelectorAll("input[type='checkbox']"));
+          const checkboxes = Array.from(element.getElementsByTagName("input"));
           const currentValues = checkboxes.filter(option => option.checked).map(option => option.value);
           let selectedCount = 0;
           if (JSON.stringify(currentValues) !== JSON.stringify(value)) {
