@@ -13,6 +13,8 @@ import asyncio
 import colorama
 import sys
 import random
+import traceback
+
 import time
 import typing
 from client.common import DK64MemoryMap, create_task_log_exception, check_version
@@ -968,6 +970,7 @@ class DK64Context(CommonContext):
         """Send a tag link message."""
         if "TagLink" not in self.tags or self.slot is None:
             return
+        print(f"Sending tag link for kong {kong}")
         if not hasattr(self, "instance_id"):
             self.instance_id = time.time()
         await self.send_msgs([{"cmd": "Bounce", "tags": ["TagLink"], "data": {"time": time.time(), "source": self.instance_id, "tag": False, "kong": kong}}])
@@ -999,11 +1002,12 @@ class DK64Context(CommonContext):
                     3: "Tiny",
                     4: "Chunky",
                 }
-
                 kong_name = None
                 kong_key = number_map.get(kong, None)
                 if kong_key is not None:
-                    kong_name = item_names_to_id.get(kong_key, None)
+                    kong_id = item_names_to_id.get(kong_key, None)
+                    if kong_id is not None:
+                        kong_name = item_ids.get(kong_id, None)
                 invalid_kong = True
                 # Read the flag_id location to see if we have the kong
                 if kong_name:
@@ -1022,7 +1026,9 @@ class DK64Context(CommonContext):
                         if i != current_kong:
                             kong_key = number_map.get(i, None)
                             if kong_key:
-                                kong_name = item_names_to_id.get(kong_key, None)
+                                kong_id = item_names_to_id.get(kong_key, None)
+                                if kong_id is not None:
+                                    kong_name = item_ids.get(kong_id, None)
                             else:
                                 kong_name = None
                             if kong_name:
@@ -1146,7 +1152,10 @@ class DK64Context(CommonContext):
             # There is 100% better ways to handle this exception, but for now this will do to allow us to exit the loop
             except Exception as e:
                 print(e)
-                logger.error(f"Error in game loop: {e} (line {e.__traceback__.tb_lineno})")
+                # Convert the traceback to a string and log it
+                tb_str = traceback.format_exception(etype=type(e), value=e, tb=e.__traceback__)
+                tb_str = "".join(tb_str)
+                logger.error(f"Exception in game loop: {tb_str}")
                 await asyncio.sleep(1.0)
 
 
