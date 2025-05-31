@@ -1152,10 +1152,7 @@ class DK64Context(CommonContext):
             # There is 100% better ways to handle this exception, but for now this will do to allow us to exit the loop
             except Exception as e:
                 print(e)
-                # Convert the traceback to a string and log it
-                tb_str = traceback.format_exception(etype=type(e), value=e, tb=e.__traceback__)
-                tb_str = "".join(tb_str)
-                logger.error(f"Exception in game loop: {tb_str}")
+                logger.error(f"Exception in game loop: {e}")
                 await asyncio.sleep(1.0)
 
 
