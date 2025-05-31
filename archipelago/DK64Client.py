@@ -601,6 +601,36 @@ class DK64CommandProcessor(ClientCommandProcessor):
                 create_task_log_exception(self.ctx.update_death_link(True))
                 logger.info("Deathlink enabled")
 
+    def _cmd_taglink(self):
+        """Toggle taglink from client. Overrides default setting."""
+        if isinstance(self.ctx, DK64Context):
+            if self.ctx.ENABLE_TAGLINK:
+                self.ctx.ENABLE_TAGLINK = False
+                self.ctx.client.ENABLE_TAGLINK = False
+                self.ctx.tags.discard("TagLink")
+                logger.info("Taglink disabled")
+            else:
+                self.ctx.ENABLE_TAGLINK = True
+                self.ctx.client.ENABLE_TAGLINK = True
+                logger.info("Taglink enabled")
+                self.ctx.tags.add("TagLink")
+            create_task_log_exception(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
+
+    def _cmd_ringlink(self):
+        """Toggle ringlink from client. Overrides default setting."""
+        if isinstance(self.ctx, DK64Context):
+            if self.ctx.ENABLE_RINGLINK:
+                self.ctx.ENABLE_RINGLINK = False
+                self.ctx.client.ENABLE_RINGLINK = False
+                self.ctx.tags.discard("RingLink")
+                logger.info("Ringlink disabled")
+            else:
+                self.ctx.ENABLE_RINGLINK = True
+                self.ctx.client.ENABLE_RINGLINK = True
+                logger.info("Ringlink enabled")
+                self.ctx.tags.add("RingLink")
+            create_task_log_exception(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
+
 
 class DK64Context(CommonContext):
     """Context for Donkey Kong 64."""
