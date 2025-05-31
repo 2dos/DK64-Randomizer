@@ -121,7 +121,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Items import Items as DK64RItems
     from randomizer.SettingStrings import decrypt_settings_string_enum
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options, Goal, KeysRequiredToBeatKrool
+    from archipelago.Options import DK64Options, Goal
     from archipelago.Regions import all_locations, create_regions, connect_regions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
