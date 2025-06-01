@@ -585,6 +585,9 @@ class Settings:
         self.starting_moves_list_counts = []
         self.starting_moves_lists = []
 
+        # Item Rando
+        self.filler_items_selected = []
+
         #  Color
         self.colors = {}
         self.color_palettes = {}

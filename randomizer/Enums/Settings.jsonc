@@ -446,25 +446,47 @@
   */
   "ItemRandoListSelected": {
     "shop": 1,
-    "banana": 2,
-    "toughbanana": 3,
-    "crown": 4,
-    "blueprint": 5,
-    "key": 6,
-    "medal": 7,
-    "nintendocoin": 8,
-    "kong": 9,
-    "fairy": 10,
-    "rainbowcoin": 11,
-    "beanpearl": 12,
-    "fakeitem": 13,
-    "junkitem": 14,
-    "crateitem": 15,
-    "rarewarecoin": 16,
-    "shopowners": 17,
-    "hint": 18,
-    "shockwave": 19,
-    "boulderitem": 20
+    "moves": 2,
+    "shockwave": 3,
+    "bfi_gift": 4,
+    "banana": 5,
+    "banana_checks": 6,
+    "toughbanana": 7,
+    "arenas": 8,
+    "crown": 9,
+    "blueprint": 10,
+    "kasplat": 11,
+    "key": 12,
+    "bosses": 13,
+    "endofhelm": 14,
+    "medal": 15,
+    "medal_checks": 16,
+    "medal_checks_helm": 17,
+    "nintendocoin": 18,
+    "arcade": 19,
+    "rarewarecoin": 20,
+    "jetpac": 21,
+    "kong": 22,
+    "kong_cages": 23,
+    "fairy": 24,
+    "fairy_checks": 25,
+    "rainbowcoin": 26,
+    "dirt_patches": 27,
+    "pearl": 28,
+    "clams": 29,
+    "bean": 30,
+    "anthillreward": 31,
+    "crateitem": 32,
+    "shopowners": 33,
+    "hint": 34,
+    "wrinkly": 35,
+    "boulderitem": 36,
+    "enemies": 37
+  },
+
+  "ItemRandoFiller": {
+    "junkitem": 1,
+    "icetraps": 2
   },
 
   /*
@@ -1220,7 +1242,8 @@
     "item_rando_list_7": 249,
     "item_rando_list_8": 250,
     "item_rando_list_9": 251,
-    "decouple_item_rando_modal": 252
+    "decouple_item_rando_modal": 252,
+    "filler_items_selected": 253
   },
   /*
     SettingsStringDataType:
@@ -1331,6 +1354,7 @@
     "item_rando_list_7": { "obj": "ItemRandoListSelected" },
     "item_rando_list_8": { "obj": "ItemRandoListSelected" },
     "item_rando_list_9": { "obj": "ItemRandoListSelected" },
+    "filler_items_selected": { "obj": "ItemRandoFiller" },
     "prog_slam_level_1": { "obj": "SlamRequirement" },
     "prog_slam_level_2": { "obj": "SlamRequirement" },
     "prog_slam_level_3": { "obj": "SlamRequirement" },
@@ -1450,6 +1474,9 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.enemies_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.filler_items_selected": {
       "obj": "SettingsStringDataType.list"
     },
     "SettingsStringEnum.enemy_rando": { "obj": "SettingsStringDataType.bool" },
@@ -1908,6 +1935,7 @@
   // Another map for list settings, for the underlying data type of the list.
   "SettingsStringListTypeMap": {
     "SettingsStringEnum.enemies_selected": { "obj": "Enemies" },
+    "SettingsStringEnum.filler_items_selected": { "obj": "ItemRandoFiller" },
     "SettingsStringEnum.glitches_selected": { "obj": "GlitchesSelected" },
     "SettingsStringEnum.item_rando_list_selected": {
       "obj": "ItemRandoListSelected"

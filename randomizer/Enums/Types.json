@@ -139,7 +139,7 @@
         },
         {
             "name": "Helm Medal Rewards",
-            "value": "medal_checks",
+            "value": "medal_checks_helm",
             "tooltip": "Collecting the reward for shutting down a Helm Room can reward items.",
             "check_count": 5,
             "item_count": 0,
@@ -313,6 +313,18 @@
             "check_count": 283,
             "item_count": 0,
             "is_check": true
+        }
+    ],
+    "ItemRandoFillerSelector": [
+        {
+            "name": "Junk Items",
+            "value": "junkitem",
+            "tooltip": "Health refills will be added to filler"
+        },
+        {
+            "name": "Ice Traps",
+            "value": "icetraps",
+            "tooltip": "Fake versions of items will be added which apply various negative temporary effects to the player upon picking up that item."
         }
     ],
     "KeySelector": [
