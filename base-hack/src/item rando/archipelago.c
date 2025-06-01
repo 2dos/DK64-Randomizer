@@ -30,6 +30,7 @@ void initAP(void) {
         if (Rando.enemy_item_rando) {
             ap_info.start_flag += ENEMIES_TOTAL;
         }
+        ap_info.tag_kong = -1;
     }
 }
 
@@ -298,6 +299,7 @@ void handleArchipelagoFeed(void) {
             }
         }
     }
+    // Deathlink
     ap_info.can_die = canDie();
     if (CutsceneActive > 1) {
         ap_info.can_die = 0;
@@ -308,6 +310,24 @@ void handleArchipelagoFeed(void) {
             ap_info.receive_death = 0;
         }
     }
+    // Tag Link
+    ap_info.can_tag = getTAState();
+    if (ap_info.tag_kong > -1) {
+        if (ap_info.tag_kong < 5) {
+            changeKong(ap_info.tag_kong);
+        } else if (ap_info.tag_kong == 5) {
+            int kong = 5;
+            while (kong > 4) {
+                kong = getRNGLower31() & 7;
+                if (!hasAccessToKong(kong)) {
+                    kong = 5;
+                }
+            }
+            changeKong(kong);
+        }
+        ap_info.tag_kong = -1;
+    }
+
 }
 
 int canDie(void) {

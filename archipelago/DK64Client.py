@@ -12,6 +12,9 @@ import json
 import asyncio
 import colorama
 import sys
+import random
+import traceback
+
 import time
 import typing
 from client.common import DK64MemoryMap, create_task_log_exception, check_version
@@ -19,7 +22,7 @@ from client.pj64 import PJ64Client
 from client.items import item_ids, item_names_to_id
 from client.check_flag_locations import location_flag_to_name, location_name_to_flag
 from client.ap_check_ids import check_id_to_name, check_names_to_id
-from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop
+from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop, ClientCommandProcessor
 from NetUtils import ClientStatus
 from ap_version import version as ap_version
 
@@ -47,6 +50,8 @@ class DK64Client:
     pending_deathlink = False
     send_mode = 1
     ENABLE_DEATHLINK = False
+    ENABLE_RINGLINK = False
+    ENABLE_TAGLINK = False
     current_speed = 130
     current_map = 0
 
@@ -491,7 +496,7 @@ class DK64Client:
                 return data
         return data
 
-    async def main_tick(self, item_get_cb, win_cb, deathlink_cb, map_change_cb):
+    async def main_tick(self, item_get_cb, win_cb, deathlink_cb, map_change_cb, ring_link, tag_link):
         """Game loop tick."""
         await self.readChecks(item_get_cb)
         # await self.item_tracker.readItems()
@@ -524,7 +529,10 @@ class DK64Client:
                 self.pending_deathlink = False
                 self.deathlink_debounce = True
                 await asyncio.sleep(5)
-
+        if self.ENABLE_RINGLINK:
+            await ring_link()
+        if self.ENABLE_TAGLINK:
+            await tag_link()
         current_deliver_count = self.get_current_deliver_count()
         # If current_deliver_count is None
         if current_deliver_count is None:
@@ -560,6 +568,71 @@ class DK64Client:
                 self.send_message(item_name, sender, "to")
                 self.sent_checks.remove(item)
 
+    def safe_clear_death_events(self):
+        """Clear any death events that may be pending."""
+        self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.receive_death, 0)
+        self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.send_death, 0)
+        self.pending_deathlink = False
+        self.deathlink_debounce = True
+
+
+class DK64CommandProcessor(ClientCommandProcessor):
+    """Command processor for Donkey Kong 64 commands."""
+
+    def __init__(self, ctx):
+        """Initialize the DK64 command processor."""
+        super().__init__(ctx)
+
+    def _cmd_reset_deathlink(self):
+        """Reset the deathlink state."""
+        if isinstance(self.ctx, DK64Context):
+            self.ctx.client.safe_clear_death_events()
+            logger.info("Deathlink state reset")
+
+    def _cmd_deathlink(self):
+        """Toggle deathlink from client. Overrides default setting."""
+        if isinstance(self.ctx, DK64Context):
+            if self.ctx.ENABLE_DEATHLINK:
+                self.ctx.ENABLE_DEATHLINK = False
+                self.ctx.client.ENABLE_DEATHLINK = False
+                create_task_log_exception(self.ctx.update_death_link(False))
+                logger.info("Deathlink disabled")
+            else:
+                self.ctx.ENABLE_DEATHLINK = True
+                self.ctx.client.ENABLE_DEATHLINK = True
+                create_task_log_exception(self.ctx.update_death_link(True))
+                logger.info("Deathlink enabled")
+
+    def _cmd_taglink(self):
+        """Toggle taglink from client. Overrides default setting."""
+        if isinstance(self.ctx, DK64Context):
+            if self.ctx.ENABLE_TAGLINK:
+                self.ctx.ENABLE_TAGLINK = False
+                self.ctx.client.ENABLE_TAGLINK = False
+                self.ctx.tags.discard("TagLink")
+                logger.info("Taglink disabled")
+            else:
+                self.ctx.ENABLE_TAGLINK = True
+                self.ctx.client.ENABLE_TAGLINK = True
+                logger.info("Taglink enabled")
+                self.ctx.tags.add("TagLink")
+            create_task_log_exception(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
+
+    def _cmd_ringlink(self):
+        """Toggle ringlink from client. Overrides default setting."""
+        if isinstance(self.ctx, DK64Context):
+            if self.ctx.ENABLE_RINGLINK:
+                self.ctx.ENABLE_RINGLINK = False
+                self.ctx.client.ENABLE_RINGLINK = False
+                self.ctx.tags.discard("RingLink")
+                logger.info("Ringlink disabled")
+            else:
+                self.ctx.ENABLE_RINGLINK = True
+                self.ctx.client.ENABLE_RINGLINK = True
+                logger.info("Ringlink enabled")
+                self.ctx.tags.add("RingLink")
+            create_task_log_exception(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
+
 
 class DK64Context(CommonContext):
     """Context for Donkey Kong 64."""
@@ -570,7 +643,9 @@ class DK64Context(CommonContext):
     found_checks = []
     last_resend = time.time()
     ENABLE_DEATHLINK = False
-
+    ENABLE_RINGLINK = False
+    ENABLE_TAGLINK = False
+    command_processor = DK64CommandProcessor
     won = False
 
     def reset_checks(self):
@@ -684,6 +759,18 @@ class DK64Context(CommonContext):
                     create_task_log_exception(self.update_death_link(True))
                     self.ENABLE_DEATHLINK = True
                     self.client.ENABLE_DEATHLINK = True
+            if self.slot_data.get("ring_link"):
+                if "RingLink" not in self.tags:
+                    self.tags.add("RingLink")
+                    self.ENABLE_RINGLINK = True
+                    self.client.ENABLE_RINGLINK = True
+                    asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
+            if self.slot_data.get("tag_link"):
+                if "TagLink" not in self.tags:
+                    self.tags.add("TagLink")
+                    self.ENABLE_TAGLINK = True
+                    self.client.ENABLE_TAGLINK = True
+                    asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
             if self.slot_data.get("receive_notifications"):
                 self.client.send_mode = self.slot_data.get("receive_notifications")
             self.client.players = self.player_names
@@ -703,6 +790,264 @@ class DK64Context(CommonContext):
                     location_id = location.location
                     item_name = self.item_names.lookup_in_game(location.item, self.slot_info[location.player].game)
                     self.client.locations_scouted[location_id] = {"player": player_name, "item_name": item_name}
+        if isinstance(args, dict) and isinstance(args.get("data", {}), dict):
+            source_name = args.get("data", {}).get("source", None)
+            if not hasattr(self, "instance_id"):
+                self.instance_id = time.time()
+            if "RingLink" in self.tags and source_name != self.instance_id and "RingLink" in args.get("tags", []):
+                if not hasattr(self, "pending_ring_link"):
+                    self.pending_ring_link = 0
+                self.pending_ring_link += args["data"]["amount"]
+            if "TagLink" in self.tags and source_name != self.instance_id and "TagLink" in args.get("tags", []):
+                if not hasattr(self, "pending_tag_link"):
+                    self.pending_tag_link = False, 0
+                try:
+                    kong = args.get("data", {}).get("kong", 5)  # Default to 5 if not provided
+                except Exception:
+                    kong = 5
+                self.pending_tag_link = True, kong
+
+    async def send_ring_link(self, amount: int):
+        """Send a ring link message."""
+        if "RingLink" not in self.tags or self.slot is None:
+            return
+        if not hasattr(self, "instance_id"):
+            self.instance_id = time.time()
+        await self.send_msgs([{"cmd": "Bounce", "tags": ["RingLink"], "data": {"time": time.time(), "source": self.instance_id, "amount": amount}}])
+
+    async def handle_ring_link(self):
+        """Handle ring link functionality for DK64 items."""
+        if not self.client.ENABLE_RINGLINK:
+            return
+        self.bypass_ring_link = False
+        # Initialize previous values for all DK64 items if not set
+        if not hasattr(self, "prev_base_ammo"):
+            self.prev_base_ammo = 0
+            self.bypass_ring_link = True
+        if not hasattr(self, "prev_homing_ammo"):
+            self.prev_homing_ammo = 0
+            self.bypass_ring_link = True
+        if not hasattr(self, "prev_oranges"):
+            self.prev_oranges = 0
+            self.bypass_ring_link = True
+        if not hasattr(self, "prev_crystal_coconuts"):
+            self.prev_crystal_coconuts = 0
+            self.bypass_ring_link = True
+        if not hasattr(self, "prev_film"):
+            self.prev_film = 0
+            self.bypass_ring_link = True
+        # Read current values for all DK64 items (u16 reads)
+        curr_base_ammo = self.client.n64_client.read_u16(DK64MemoryMap.ammo_base)
+        curr_homing_ammo = self.client.n64_client.read_u16(DK64MemoryMap.homing_ammo)
+        curr_oranges = self.client.n64_client.read_u16(DK64MemoryMap.oranges)
+        curr_crystal_coconuts = self.client.n64_client.read_u16(DK64MemoryMap.crystal_coconuts)
+        curr_film = self.client.n64_client.read_u16(DK64MemoryMap.film)
+        # Calculate differences
+        base_ammo_diff = curr_base_ammo - self.prev_base_ammo
+        homing_ammo_diff = curr_homing_ammo - self.prev_homing_ammo
+        oranges_diff = curr_oranges - self.prev_oranges
+        film_diff = curr_film - self.prev_film
+
+        # Special handling for crystal coconuts - only track 150-unit increments
+        # Convert current and previous values to 150-unit increments
+        curr_coconut_increments = curr_crystal_coconuts // 150
+        prev_coconut_increments = self.prev_crystal_coconuts // 150
+        coconuts_diff = curr_coconut_increments - prev_coconut_increments
+
+        # Send or receive ring link for any positive or negative differences
+        total_items_gained = 0
+        total_items_lost = 0
+        if base_ammo_diff > 0:
+            total_items_gained += base_ammo_diff
+        elif base_ammo_diff < 0:
+            total_items_lost += abs(base_ammo_diff)
+        if homing_ammo_diff > 0:
+            total_items_gained += homing_ammo_diff
+        elif homing_ammo_diff < 0:
+            total_items_lost += abs(homing_ammo_diff)
+        if oranges_diff > 0:
+            total_items_gained += oranges_diff
+        elif oranges_diff < 0:
+            total_items_lost += abs(oranges_diff)
+        if coconuts_diff > 0:
+            total_items_gained += coconuts_diff
+        elif coconuts_diff < 0:
+            total_items_lost += abs(coconuts_diff)
+        if film_diff > 0:
+            total_items_gained += film_diff
+        elif film_diff < 0:
+            total_items_lost += abs(film_diff)
+        if self.bypass_ring_link is True:
+            # If we bypass ring link, we don't send any items
+            total_items_gained = 0
+            total_items_lost = 0
+            self.bypass_ring_link = False
+        if total_items_gained > 0:
+            await self.send_ring_link(total_items_gained)
+        if total_items_lost > 0:
+            await self.send_ring_link(-total_items_lost)
+
+        # Update previous values
+        self.prev_base_ammo = curr_base_ammo
+        self.prev_homing_ammo = curr_homing_ammo
+        self.prev_oranges = curr_oranges
+        self.prev_crystal_coconuts = curr_crystal_coconuts
+        self.prev_film = curr_film
+
+        # Handle incoming ring link items
+        if not hasattr(self, "pending_ring_link"):
+            self.pending_ring_link = 0
+
+        if self.pending_ring_link != 0:
+            # Distribute items evenly across the 5 item types
+            # Each ring link item adds 1 to each type (except coconuts which add 150)
+            items_to_add = self.pending_ring_link
+
+            # Current Ammo Belt amount
+            # Ammo Belt is a 1-byte value: 0 = 50, 1 = 100, 2 = 200
+            curr_base_ammo_belt = self.client.n64_client.read_u8(DK64MemoryMap.ammo_belt)
+            ammo_belt_capacity = 50
+            if curr_base_ammo_belt == 1:
+                ammo_belt_capacity = 100
+            elif curr_base_ammo_belt == 2:
+                ammo_belt_capacity = 200
+            # Add items to base ammo
+            new_base_ammo = max(0, min(curr_base_ammo + items_to_add, ammo_belt_capacity))
+            self.client.n64_client.write_u16(DK64MemoryMap.ammo_base, new_base_ammo)
+
+            # If ammo belt is 2 we can carry up to 20 homing ammo, else only 10
+            homing_belt_capacity = 10
+            if curr_base_ammo_belt == 2:
+                homing_belt_capacity = 20
+            # Add items to homing ammo
+            new_homing_ammo = max(0, min(curr_homing_ammo + items_to_add, homing_belt_capacity))
+            self.client.n64_client.write_u16(DK64MemoryMap.homing_ammo, new_homing_ammo)
+
+            # Add items to oranges
+            orange_capacity = 20
+            if curr_base_ammo_belt == 1:
+                orange_capacity = 25
+            elif curr_base_ammo_belt == 2:
+                orange_capacity = 30
+            new_oranges = max(0, min(curr_oranges + items_to_add, orange_capacity))
+            self.client.n64_client.write_u16(DK64MemoryMap.oranges, new_oranges)
+
+            # Get the banana fairy total
+            # This is disabled for now, as we don't have a way to read it so we're just always going to assume 0
+            # banana_fairy_total = self.client.n64_client.read_u16(DK64MemoryMap.banana_fairy_total)
+            banana_fairy_total = 0
+            # Default is 20, each fairy adds 1
+            coconut_total = 20
+            if banana_fairy_total > 0:
+                coconut_total += banana_fairy_total
+            elif self.prev_crystal_coconuts > coconut_total:
+                # If we have more coconuts than the total, we need to reset it
+                coconut_total = self.prev_crystal_coconuts
+            # Add items to crystal coconuts (150 per item)
+            new_crystal_coconuts = max(0, min(curr_crystal_coconuts + (items_to_add * 150), coconut_total))
+            self.client.n64_client.write_u16(DK64MemoryMap.crystal_coconuts, new_crystal_coconuts)
+
+            # We do the same using the film
+            film_total = 10
+            if banana_fairy_total > 0:
+                film_total += banana_fairy_total
+            elif self.prev_film > film_total:
+                # If we have more film than the total, we need to reset it
+                film_total = self.prev_film
+            # Add items to film
+            new_film = max(0, min(curr_film + items_to_add, film_total))
+            self.client.n64_client.write_u16(DK64MemoryMap.film, new_film)
+            # Update previous values
+            self.prev_base_ammo = new_base_ammo
+            self.prev_homing_ammo = new_homing_ammo
+            self.prev_oranges = new_oranges
+            self.prev_crystal_coconuts = new_crystal_coconuts
+            self.prev_film = new_film
+
+            self.pending_ring_link = 0
+
+    async def send_tag_link(self, kong: int):
+        """Send a tag link message."""
+        if "TagLink" not in self.tags or self.slot is None:
+            return
+        print(f"Sending tag link for kong {kong}")
+        if not hasattr(self, "instance_id"):
+            self.instance_id = time.time()
+        await self.send_msgs([{"cmd": "Bounce", "tags": ["TagLink"], "data": {"time": time.time(), "source": self.instance_id, "tag": False, "kong": kong}}])
+
+    async def handle_tag_link(self):
+        """Handle tag link functionality for DK64 items."""
+        if not self.client.ENABLE_TAGLINK:
+            return
+        current_kong = self.client.n64_client.read_u8(DK64MemoryMap.current_kong)
+        if not hasattr(self, "pending_tag_link"):
+            self.pending_tag_link = False, 0  # (is_pending, kong)
+        if not hasattr(self, "previous_kong"):
+            self.previous_kong = current_kong
+        # If the current kong is different from the previous kong, send a tag link
+        if current_kong != self.previous_kong:
+            await self.send_tag_link(current_kong)
+            self.previous_kong = current_kong
+
+        if self.pending_tag_link[0]:
+            # Check if its safe to cause a tag in the game
+            if self.client.n64_client.read_u8(self.client.memory_pointer + DK64MemoryMap.can_tag) == 1:
+                # If it is safe, send the tag
+                kong = self.pending_tag_link[1]
+                # Using item_names_to_id get the kong flag_id
+                number_map = {
+                    0: "Donkey",
+                    1: "Diddy",
+                    2: "Lanky",
+                    3: "Tiny",
+                    4: "Chunky",
+                }
+                kong_name = None
+                kong_key = number_map.get(kong, None)
+                if kong_key is not None:
+                    kong_id = item_names_to_id.get(kong_key, None)
+                    if kong_id is not None:
+                        kong_name = item_ids.get(kong_id, None)
+                invalid_kong = True
+                # Read the flag_id location to see if we have the kong
+                if kong_name:
+                    kong_flag_id = kong_name.get("flag_id", None)
+                    if kong_flag_id is not None:
+                        has_kong = self.client.readFlag(kong_flag_id) != 0
+                        if has_kong:
+                            self.client.n64_client.write_u8(self.client.memory_pointer + DK64MemoryMap.tag_kong, kong)
+                            current_kong = kong
+                            invalid_kong = False
+                if invalid_kong:
+                    # Check if we have any kong not our current kong
+                    valid_kongs = [current_kong]
+                    # Check each int from 0 to 4 excluding current_kong
+                    for i in range(5):
+                        if i != current_kong:
+                            kong_key = number_map.get(i, None)
+                            if kong_key:
+                                kong_id = item_names_to_id.get(kong_key, None)
+                                if kong_id is not None:
+                                    kong_name = item_ids.get(kong_id, None)
+                            else:
+                                kong_name = None
+                            if kong_name:
+                                kong_flag_id = kong_name.get("flag_id", None)
+                                if kong_flag_id:
+                                    has_kong = self.client.readFlag(kong_flag_id) != 0
+                                    if has_kong:
+                                        valid_kongs.append(i)
+                    # If the only valid kong is the current kong, we can't tag
+                    if len(valid_kongs) == 1:
+                        self.pending_tag_link = False, 0
+                    # Else randomly select a kong from valid_kongs, excluding the current kong
+                    else:
+                        valid_kongs.remove(current_kong)  # Ensure we don't tag the current kong
+                        kong = random.choice(valid_kongs)
+                        self.client.n64_client.write_u8(self.client.memory_pointer + DK64MemoryMap.tag_kong, kong)
+                        current_kong = kong
+                self.previous_kong = current_kong
+                self.pending_tag_link = False, 0  # Reset pending tag link
 
     async def sync(self):
         """Sync the game."""
@@ -727,6 +1072,14 @@ class DK64Context(CommonContext):
         async def victory():
             """Handle a victory."""
             await self.send_victory()
+
+        async def ring_link():
+            """Handle a ring link."""
+            await self.handle_ring_link()
+
+        async def tag_link():
+            """Handle a tag link."""
+            await self.handle_tag_link()
 
         async def deathlink():
             """Handle a deathlink."""
@@ -787,7 +1140,7 @@ class DK64Context(CommonContext):
                     if status is False:
                         await asyncio.sleep(0.5)
                         continue
-                    await self.client.main_tick(on_item_get, victory, deathlink, map_change)
+                    await self.client.main_tick(on_item_get, victory, deathlink, map_change, ring_link, tag_link)
                     await asyncio.sleep(1)
                     now = time.time()
                     if self.last_resend + 0.5 < now:
@@ -799,7 +1152,7 @@ class DK64Context(CommonContext):
             # There is 100% better ways to handle this exception, but for now this will do to allow us to exit the loop
             except Exception as e:
                 print(e)
-                logger.error(f"Error in game loop: {e}")
+                logger.error(f"Exception in game loop: {e}")
                 await asyncio.sleep(1.0)
 
 

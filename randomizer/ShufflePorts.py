@@ -13,7 +13,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import ShufflePortLocations
+from randomizer.Enums.Settings import ActivateAllBananaports, ShufflePortLocations
 from randomizer.Lists.CustomLocations import CustomLocation, CustomLocations, LocationTypes, getBannedWarps
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.LogicClasses import Event
@@ -119,6 +119,12 @@ def isCustomLocationValid(spoiler, location: CustomLocation, map_id: Maps, level
     if location.map != map_id:
         # Has to be in the right map
         return False
+    if location.has_access_logic:
+        # Locations that have logic to access them are banned from being warp locations when those warps are pre-activated
+        if spoiler.settings.activate_all_bananaports == ActivateAllBananaports.all:
+            return False
+        elif spoiler.settings.activate_all_bananaports != ActivateAllBananaports.off and map_id == Maps.Isles:
+            return False
     BANNED_PORT_SHUFFLE_EVENTS = getBannedWarps(spoiler)
     if location.tied_warp_event is not None:
         if location.tied_warp_event in BANNED_PORT_SHUFFLE_EVENTS:
