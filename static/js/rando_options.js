@@ -2041,15 +2041,20 @@ function dropdownForceAll(name, state) {
 function hide_irrelevant_details_coupled_item_rando() {
   const value = document.getElementById("decouple_item_rando_modal").checked;
   const details = document.getElementsByClassName("hide-if-ir-decouple");
+  const antidetails = document.getElementsByClassName("show-if-ir-decouple");
   if (value) {
-    console.log("showing")
     for (let el of details) {
       el.removeAttribute("hidden");
     }
+    for (let el of antidetails) {
+      el.setAttribute("hidden","hidden");
+    }
   } else {
-    console.log("hiding")
     for (let el of details) {
       el.setAttribute("hidden","hidden");
+    }
+    for (let el of antidetails) {
+      el.removeAttribute("hidden");
     }
   }
 }
