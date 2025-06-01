@@ -799,6 +799,11 @@ export enum SettingsStringEnum {
     item_rando_list_2 = 244,
     item_rando_list_3 = 245,
     item_rando_list_4 = 246,
+    item_rando_list_5 = 247,
+    item_rando_list_6 = 248,
+    item_rando_list_7 = 249,
+    item_rando_list_8 = 250,
+    item_rando_list_9 = 251,
 }
 
 export enum SettingsStringDataType {
@@ -897,6 +902,11 @@ export const SettingsMap = {
     'item_rando_list_2': ItemRandoListSelected,
     'item_rando_list_3': ItemRandoListSelected,
     'item_rando_list_4': ItemRandoListSelected,
+    'item_rando_list_5': ItemRandoListSelected,
+    'item_rando_list_6': ItemRandoListSelected,
+    'item_rando_list_7': ItemRandoListSelected,
+    'item_rando_list_8': ItemRandoListSelected,
+    'item_rando_list_9': ItemRandoListSelected,
     'prog_slam_level_1': SlamRequirement,
     'prog_slam_level_2': SlamRequirement,
     'prog_slam_level_3': SlamRequirement,
@@ -1144,6 +1154,11 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.item_rando_list_2: SettingsStringDataType.list,
     SettingsStringEnum.item_rando_list_3: SettingsStringDataType.list,
     SettingsStringEnum.item_rando_list_4: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_5: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_6: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_7: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_8: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_9: SettingsStringDataType.list,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,
     SettingsStringEnum.prog_slam_level_3: SlamRequirement,
@@ -1206,6 +1221,11 @@ export const SettingsStringListTypeMap = {
     SettingsStringEnum.item_rando_list_2: ItemRandoListSelected,
     SettingsStringEnum.item_rando_list_3: ItemRandoListSelected,
     SettingsStringEnum.item_rando_list_4: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_5: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_6: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_7: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_8: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_9: ItemRandoListSelected,
 }
 
 export const SettingsStringIntRangeMap = {

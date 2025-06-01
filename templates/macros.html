@@ -402,23 +402,49 @@
                         </ul>
                     </div>
                     <div class="d-flex" id="{{ name }}-category-container" data-items="{{ list | tojsonarr | escape }}" data-count="{{ count }}" data-predicate="{{ name }}_list_">
+                        
                         {% for x in range(count) %}
                         <div style="flex:1; max-width: 20%;">
                             <p class="select-title" style="margin-bottom: 0px;">
-                                {% if x == 0%}
+                                {% if x == 0 %}
                                     Unshuffled
                                 {% else %}
                                     Pool {{ x }}
                                 {% endif %}
                             </p>
                             <div id="{{ name }}_check_hint_{{ x }}" style="min-height: 24px; margin-bottom: 10px;"></div>
-                            <ul id="{{ name }}_list_{{ x }}" name="{{ name }}_list_{{ x }}" class="sortablejs shared list-group bg-secondary-subtle border border-1 border-white mx-2" style="height: 400px; overflow-y: scroll">
+                            {% if x == 0 %}
+                            <div class="text-start">
+                                <h6>Items</h6>
+                            </div>
+                            {% else %}
+                            <div class="text-start" style="opacity:0">
+                                <h6>Items</h6>
+                            </div>
+                            {% endif %}
+                            <ul id="{{ name }}_list_{{ x }}" name="{{ name }}_list_{{ x }}" class="sortablejs shared list-group bg-secondary-subtle border border-1 border-white mx-2" style="height: 200px; overflow-y: scroll">
+                                {% if x == 0 %}
+                                    {% for option in list %}
+                                        {% if not option.is_check %}
+                                            <li class="list-group-item" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">{{ option.name }}</li>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                            {% if x == 0 %}
+                            <div class="text-start">
+                                <h6>Checks</h6>
+                            </div>
+                            {% else %}
+                            <div class="text-start" style="opacity:0">
+                                <h6>Checks</h6>
+                            </div>
+                            {% endif %}
+                            <ul id="{{ name }}_list_{{ x + count }}" name="{{ name }}_list_{{ x + count }}" class="sortablejs sharedchecks list-group bg-secondary-subtle border border-1 border-white mx-2" style="height: 200px; overflow-y: scroll">
                                 {% if x == 0 %}
                                     {% for option in list %}
                                         {% if option.is_check %}
                                             <li class="list-group-item ischeck" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}" tied_item="{{ option.tied }}">{{ option.name }}</li>
-                                        {% else %}
-                                            <li class="list-group-item" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">{{ option.name }}</li>
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
@@ -437,10 +463,23 @@
     </div>
     <script>
         const sort_container = document.getElementById("{{ name }}-category-container");
-        const sort_sections = sort_container.getElementsByTagName("ul");
-        for (let section of sort_sections) {
-            new Sortable(section, {
+        const sort_sections_items = sort_container.getElementsByClassName("shared");
+        const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
+        let offset = sort_sections_items.length;
+        for (let i = 0; i < offset; i++) {
+            new Sortable(sort_sections_items[i], {
                 group: 'shared',
+                animation: 150,
+                fallbackTolerance: 3,
+                sort: false,
+                onEnd: (evt) => {
+                    const event = new Event("change", { bubbles: true, cancelable: false });
+                    evt.to.dispatchEvent(event);
+                    updateCheckItemCounter(evt.to.parentElement.parentElement);
+                }
+            });
+            new Sortable(sort_sections_checks[i], {
+                group: 'sharedchecks',
                 animation: 150,
                 fallbackTolerance: 3,
                 sort: false,
@@ -460,32 +499,45 @@
 
         function updateCheckItemCounter(ctr) {
             const name = ctr.getAttribute("id").split("-category-container")[0];
+            const sort_sections_items = sort_container.getElementsByClassName("shared");
+            const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
             const sort_sections = ctr.getElementsByTagName("ul");
             let index = 0;
             let is_valid_item_spread = true;
             
             let item_shuffle_cache = {};
             let item_shuffle_tied = {}
-            for (let section of sort_sections) {
+            let offset = sort_sections_items.length;
+            for (let index = 0; index < offset; index++) {
                 let local_check_count = 0;
                 let local_item_count = 0;
                 let parsed_options = 0;
-                const options = section.getElementsByTagName("li");
-                for (let option of options) {
-                    const check_count_raw = option.getAttribute("check_count");
-                    const item_count_raw = option.getAttribute("item_count");
-                    const tied_item_raw = option.getAttribute("tied_item");
-                    item_shuffle_cache[option.getAttribute("value")] = index;
-                    if (tied_item_raw) {
-                        item_shuffle_tied[option.getAttribute("value")] = tied_item_raw;
+                for (let j = 0; j < 2; j++) {
+                    let options;
+                    if (j == 0) {
+                        options = sort_sections_items[index].getElementsByTagName("li");
+                    } else if (j == 1) {
+                        options = sort_sections_checks[index].getElementsByTagName("li");
                     }
-                    if (isNumeric(check_count_raw)) {
-                        local_check_count += parseInt(check_count_raw);
+                    for (let option of options) {
+                        const check_count_raw = option.getAttribute("check_count");
+                        const item_count_raw = option.getAttribute("items_count");
+                        if (j == 0) {
+                            console.log(item_count_raw)
+                        }
+                        const tied_item_raw = option.getAttribute("tied_item");
+                        item_shuffle_cache[option.getAttribute("value")] = index;
+                        if (tied_item_raw) {
+                            item_shuffle_tied[option.getAttribute("value")] = tied_item_raw;
+                        }
+                        if (isNumeric(check_count_raw)) {
+                            local_check_count += parseInt(check_count_raw);
+                        }
+                        if (isNumeric(item_count_raw)) {
+                            local_item_count += parseInt(item_count_raw);
+                        }
+                        parsed_options++;
                     }
-                    if (isNumeric(item_count_raw)) {
-                        local_item_count += parseInt(item_count_raw);
-                    }
-                    parsed_options++;
                 }
                 if (index > 0) {
                     let inner_text = "";
@@ -500,7 +552,6 @@
                     check_hint_el.innerHTML = inner_text;
                     check_hint_el.style.color = text_color;
                 }
-                index++;
             }
             let is_valid_item_shuffle = true;
             Object.keys(item_shuffle_tied).forEach(key => {

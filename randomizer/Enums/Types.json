@@ -129,7 +129,7 @@
             "is_check": false
         },
         {
-            "name": "Banana Medal Checks",
+            "name": "Regular Medal Rewards",
             "value": "medal_checks",
             "tooltip": "Collecting the required amount of Colored Bananas for a Banana Medal can reward items.",
             "check_count": 35,
@@ -138,7 +138,7 @@
             "tied": "medal"
         },
         {
-            "name": "Shutting down a Helm Room",
+            "name": "Helm Medal Rewards",
             "value": "medal_checks",
             "tooltip": "Collecting the reward for shutting down a Helm Room can reward items.",
             "check_count": 5,
@@ -264,22 +264,6 @@
             "item_count": 0,
             "is_check": true,
             "tied": "bean"
-        },
-        {
-            "name": "Ice Traps",
-            "value": "fakeitem",
-            "tooltip": "If you pick up a fake item it'll hurt and freeze you.",
-            "check_count": 0,
-            "item_count": 0,
-            "is_check": false
-        },
-        {
-            "name": "Junk Items",
-            "value": "junkitem",
-            "tooltip": "Pointless items will fill no-item slots.",
-            "check_count": 0,
-            "item_count": 0,
-            "is_check": false
         },
         {
             "name": "Melon Crates",

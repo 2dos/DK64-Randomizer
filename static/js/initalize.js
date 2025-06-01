@@ -1681,23 +1681,46 @@ function load_settings(json) {
           const options = Array.from(element.getElementsByTagName("li"));
           const currentValues = options.map(option => option.value);
           const grandparent = element.parentElement.parentElement;
-          const items_list = JSON.parse(grandparent.getAttribute("data-items"));
+          const items_list = JSON.parse(grandparent.getAttribute("data-items")).filter(k => !k.is_check);
+          const checks_list = JSON.parse(grandparent.getAttribute("data-items")).filter(k => k.is_check);
           const list_count = grandparent.getAttribute("data-count");
           const list_predicate = grandparent.getAttribute("data-predicate");
-          let total_settings_list = [];
-          for (let i = 0; i < list_count; i++) {
-            total_settings_list = total_settings_list.concat(json[`${list_predicate}${i}`]);
+          let valid = true;
+          if (list_predicate == "item_rando_list_") {
+              let total_settings_list_items = [];
+              let total_settings_list_checks = [];
+              for (let i = 0; i < list_count; i++) {
+                  total_settings_list_items = total_settings_list_items.concat(json[`${list_predicate}${i}`]);
+                  total_settings_list_checks = total_settings_list_checks.concat(json[`${list_predicate}${i + list_count}`]);
+              }
+              if (total_settings_list_items.length != items_list.length) {
+                  valid = false;
+              }
+              if (total_settings_list_checks.length != checks_list.length) {
+                  valid = false;
+              }
+              total_settings_list_items.forEach(value => {
+                  if (items_list.filter(k => k.value == value).length == 0) {
+                      valid = false;
+                  }
+              })
+              total_settings_list_checks.forEach(value => {
+                  if (checks_list.filter(k => k.value == value).length == 0) {
+                      valid = false;
+                  }
+              })
+          } else {
+              let total_settings_list = [];
+              for (let i = 0; i < list_count; i++) {
+                  total_settings_list = total_settings_list.concat(json[`${list_predicate}${i}`]);
+              }
+              valid = total_settings_list.length == items_list.length;
+              total_settings_list.forEach(value => {
+                  if (items_list.filter(k => k.value == value).length == 0) {
+                      valid = false;
+                  }
+              })
           }
-          let valid = total_settings_list.length == items_list.length;
-          if (!valid) {
-            console.log("Length Mismatch")
-          }
-          total_settings_list.forEach(value => {
-            if (items_list.filter(k => k.value == value).length == 0) {
-              console.log(`${value} not found in item list ${items_list}`)
-              valid = false;
-            }
-          })
           if (valid) {
             if (JSON.stringify(currentValues) !== JSON.stringify(value)) {
               // Find the selected option by the value of the option
@@ -1730,7 +1753,7 @@ function load_settings(json) {
                   option.title = opt_tooltip;
                   if (list_predicate == "item_rando_list_") {
                     option.setAttribute("check_count", opt_checks);
-                    option.setAttribute("item_count", opt_items);
+                    option.setAttribute("items_count", opt_items);
                     option.setAttribute("tied_item", opt_tied_item);
                   }
                   element.appendChild(option);
