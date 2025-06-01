@@ -642,6 +642,11 @@ async function import_settings_string(event) {
                                         opt_items = k.item_count;
                                         if (k.is_check) {
                                             option.classList.add("ischeck");
+                                        } else if (k.is_dummy) {
+                                            option.classList.add("show-if-ir-decouple");
+                                            if (settings["decouple_item_rando_modal"]) {
+                                                option.setAttribute("hidden", "hidden");
+                                            }
                                         }
                                         opt_tied_item = k.tied ? k.tied : "";
                                     }

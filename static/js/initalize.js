@@ -553,7 +553,7 @@ async function savesettings() {
   for (let element of sjs_containers) {
     const options = Array.from(element.getElementsByTagName("li"));
     json[element.getAttribute('name')] = options.map((option) => option.getAttribute("value"));
-    console.log(element.getAttribute('name'), json[element.getAttribute('name')])
+    // console.log(element.getAttribute('name'), json[element.getAttribute('name')])
   }
 
   // Handle inputs with specific naming convention
@@ -1743,6 +1743,11 @@ function load_settings(json) {
                         opt_items = k.item_count;
                         if (k.is_check) {
                           option.classList.add("ischeck");
+                        } else if (k.is_dummy) {
+                          option.classList.add("show-if-ir-decouple");
+                          if (json["decouple_item_rando_modal"] == "True") {
+                            option.setAttribute("hidden", "hidden");
+                          }
                         }
                         opt_tied_item = k.tied ? k.tied : "";
                       }
@@ -1765,7 +1770,7 @@ function load_settings(json) {
             console.log("Invalid sortable during init")
           }
           if (list_predicate == "item_rando_list_") {
-            console.log("Dispatching list predicate event")
+            // console.log("Dispatching list predicate event")
             updateCheckItemCounter(grandparent);
           }
         }

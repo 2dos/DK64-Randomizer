@@ -85,11 +85,11 @@
                     </p>
                     <div id="item_rando_check_hint_{{ x }}" style="min-height: 24px; margin-bottom: 10px;"></div>
                     {% if x == 0 %}
-                    <div class="text-start">
+                    <div class="text-start hide-if-ir-decouple">
                         <h6>Items</h6>
                     </div>
                     {% else %}
-                    <div class="text-start" style="opacity:0">
+                    <div class="text-start hide-if-ir-decouple" style="opacity:0">
                         <h6>Items</h6>
                     </div>
                     {% endif %}
@@ -97,7 +97,11 @@
                         {% if x == 0 %}
                             {% for option in itemRando %}
                                 {% if not option.is_check %}
-                                    <li class="list-group-item" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">{{ option.name }}</li>
+                                    {% if option.is_dummy %}
+                                        <li class="list-group-item show-if-ir-decouple" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">{{ option.name }}</li>
+                                    {% else %}
+                                        <li class="list-group-item" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">{{ option.name }}</li>
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
@@ -309,7 +313,7 @@
     function getTiedCheckCount(value) {
         const data_items_json = document.getElementById("item_rando-category-container").getAttribute("data-items");
         const data_items = JSON.parse(data_items_json);
-        const tied_checks = data_items.filter(k => k.is_check && k.tied == value);
+        const tied_checks = data_items.filter(k => (k.is_check && k.tied == value) || (k.is_dummy && k.value == value));
         let count = 0;
         tied_checks.forEach(k => {
             count += k.check_count;
@@ -349,20 +353,26 @@
                     const tied_item_raw = option.getAttribute("tied_item");
                     const opt_value = option.getAttribute("value");
                     item_shuffle_cache[opt_value] = index;
+                    let parsed = false;
                     if (tied_item_raw) {
                         item_shuffle_tied[opt_value] = tied_item_raw;
                     }
                     if (!decoupled) {
                         local_check_count += getTiedCheckCount(opt_value);
-                    } else {
+                        parsed = true;
+                    } else if (j == 1) {
                         if (isNumeric(check_count_raw)) {
                             local_check_count += parseInt(check_count_raw);
+                            parsed = true;
                         }
                     }
                     if (isNumeric(item_count_raw)) {
                         local_item_count += parseInt(item_count_raw);
+                        parsed = true;
                     }
-                    parsed_options++;
+                    if (parsed) {
+                        parsed_options++;
+                    }
                 }
             }
             if (index > 0) {
