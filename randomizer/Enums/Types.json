@@ -313,6 +313,33 @@
             "check_count": 283,
             "item_count": 0,
             "is_check": true
+        },
+        {
+            "name": "Enemy Drops",
+            "value": "dummyitem_enemies",
+            "tooltip": "Killing enemies that produce sparkles spawns items.",
+            "check_count": 283,
+            "item_count": 0,
+            "is_check": false,
+            "is_dummy": true
+        },
+        {
+            "name": "Holdable Objects",
+            "value": "dummyitem_boulderitem",
+            "tooltip": "Destroying boulders and other holdable objects spawn items.",
+            "check_count": 16,
+            "item_count": 0,
+            "is_check": false,
+            "is_dummy": true
+        },
+        {
+            "name": "Melon Crates",
+            "value": "dummyitem_crateitem",
+            "tooltip": "Melon Crates become possible locations for items.",
+            "check_count": 13,
+            "item_count": 0,
+            "is_check": false,
+            "is_dummy": true
         }
     ],
     "ItemRandoFillerSelector": [

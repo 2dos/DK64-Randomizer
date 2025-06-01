@@ -111,7 +111,7 @@
                         <h6>Checks</h6>
                     </div>
                     {% endif %}
-                    <ul id="item_rando_list_{{ x + count }}" name="item_rando_list_{{ x + count }}" class="sortablejs sharedchecks list-group bg-secondary-subtle border border-1 border-white mx-2 hide-if-ir-decouple" style="height: 200px; overflow-y: scroll">
+                    <ul id="item_rando_list_{{ x + 5 }}" name="item_rando_list_{{ x + 5 }}" class="sortablejs sharedchecks list-group bg-secondary-subtle border border-1 border-white mx-2 hide-if-ir-decouple" style="height: 200px; overflow-y: scroll">
                         {% if x == 0 %}
                             {% for option in itemRando %}
                                 {% if option.is_check %}

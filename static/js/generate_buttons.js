@@ -582,7 +582,7 @@ async function import_settings_string(event) {
                     const grandparent = selector.parentElement.parentElement;
                     const items_list = JSON.parse(grandparent.getAttribute("data-items")).filter(k => !k.is_check);
                     const checks_list = JSON.parse(grandparent.getAttribute("data-items")).filter(k => k.is_check);
-                    const list_count = grandparent.getAttribute("data-count");
+                    const list_count = parseInt(grandparent.getAttribute("data-count"));
                     const list_predicate = grandparent.getAttribute("data-predicate");
                     let valid = true;
                     if (list_predicate == "item_rando_list_") {
@@ -633,7 +633,7 @@ async function import_settings_string(event) {
                             let opt_checks = "";
                             let opt_items = "";
                             let opt_tied_item = "";
-                            items_list.forEach(k => {
+                            items_list.concat(checks_list).forEach(k => {
                                 if (k.value == item) {
                                     opt_name = k.name;
                                     opt_tooltip = k.tooltip;
