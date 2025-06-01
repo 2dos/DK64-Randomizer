@@ -1209,7 +1209,12 @@
     "switchsanity_switch_japes_free_kong": 238,
     "switchsanity_switch_aztec_free_tiny": 239,
     "switchsanity_switch_aztec_free_lanky": 240,
-    "switchsanity_switch_factory_free_kong": 241
+    "switchsanity_switch_factory_free_kong": 241,
+    "item_rando_list_0": 242,
+    "item_rando_list_1": 243,
+    "item_rando_list_2": 244,
+    "item_rando_list_3": 245,
+    "item_rando_list_4": 246
   },
   /*
     SettingsStringDataType:
@@ -1310,6 +1315,11 @@
     "starting_moves_list_3": { "obj": "Items" },
     "starting_moves_list_4": { "obj": "Items" },
     "starting_moves_list_5": { "obj": "Items" },
+    "item_rando_list_0": { "obj": "ItemRandoListSelected" },
+    "item_rando_list_1": { "obj": "ItemRandoListSelected" },
+    "item_rando_list_2": { "obj": "ItemRandoListSelected" },
+    "item_rando_list_3": { "obj": "ItemRandoListSelected" },
+    "item_rando_list_4": { "obj": "ItemRandoListSelected" },
     "prog_slam_level_1": { "obj": "SlamRequirement" },
     "prog_slam_level_2": { "obj": "SlamRequirement" },
     "prog_slam_level_3": { "obj": "SlamRequirement" },
@@ -1816,6 +1826,21 @@
       "obj": "SettingsStringDataType.list"
     },
     "SettingsStringEnum.starting_moves_list_count_5": { "obj": "SettingsStringDataType.int16" },
+    "SettingsStringEnum.item_rando_list_0": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.item_rando_list_1": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.item_rando_list_2": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.item_rando_list_3": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.item_rando_list_4": {
+      "obj": "SettingsStringDataType.list"
+    },
     "SettingsStringEnum.prog_slam_level_1": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_2": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_3": { "obj": "SlamRequirement" },
@@ -1885,7 +1910,12 @@
     "SettingsStringEnum.starting_moves_list_2": { "obj": "Items" },
     "SettingsStringEnum.starting_moves_list_3": { "obj": "Items" },
     "SettingsStringEnum.starting_moves_list_4": { "obj": "Items" },
-    "SettingsStringEnum.starting_moves_list_5": { "obj": "Items" }
+    "SettingsStringEnum.starting_moves_list_5": { "obj": "Items" },
+    "SettingsStringEnum.item_rando_list_0": { "obj": "ItemRandoListSelected" },
+    "SettingsStringEnum.item_rando_list_1": { "obj": "ItemRandoListSelected" },
+    "SettingsStringEnum.item_rando_list_2": { "obj": "ItemRandoListSelected" },
+    "SettingsStringEnum.item_rando_list_3": { "obj": "ItemRandoListSelected" },
+    "SettingsStringEnum.item_rando_list_4": { "obj": "ItemRandoListSelected" }
   },
   // This map specifies the minimum and maximum values for numeric settings.
   "SettingsStringIntRangeMap": {

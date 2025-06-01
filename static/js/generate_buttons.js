@@ -342,6 +342,16 @@ else:
         form_data[element.getAttribute("name")] = values;
     }
 
+    let sortable_container = document.getElementsByClassName("sortablejs");
+    for (element of sortable_container) {
+        let values = [];
+        const options = Array.from(element.getElementsByTagName("li"));
+        options.forEach(option => {
+            values.push(get_enum_or_string_value(option.value, element.getAttribute("name")));
+        })
+        form_data[element.getAttribute("name")] = values;
+    }
+
     return JSON.stringify(form_data);
 }
 
@@ -562,6 +572,71 @@ async function import_settings_string(event) {
                         })
                     });
                     selector.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`
+                } else if (selector.classList.contains("sortablejs")) {
+                    let MapName = SettingsMap[key];
+                    // Flip the attributes so the value is the key and the key is the value
+                    let flipped = {};
+                    for (let key in MapName) {
+                        flipped[MapName[key]] = key;
+                    }
+                    const grandparent = selector.parentElement.parentElement;
+                    const items_list = JSON.parse(grandparent.getAttribute("data-items"));
+                    const list_count = grandparent.getAttribute("data-count");
+                    const list_predicate = grandparent.getAttribute("data-predicate");
+                    let total_settings_list = [];
+                    for (let i = 0; i < list_count; i++) {
+                        total_settings_list = total_settings_list.concat(settings[`${list_predicate}${i}`]);
+                    }
+                    let valid = total_settings_list.length == items_list.length;
+                    total_settings_list.forEach(value => {
+                        if (items_list.filter(k => k.value == value).length == 0) {
+                            valid = false;
+                        }
+                    })
+                    if (valid) {
+                        selector.innerHTML = "";
+                        let selectedCount = 0;
+                        settings[key].forEach(item => {
+                            // Find the selected option by the value of the option
+                            const option = document.createElement("li");
+                            option.classList.add("list-group-item");
+                            option.value = item;
+                            let opt_name = "";
+                            let opt_tooltip = "";
+                            let opt_checks = "";
+                            let opt_items = "";
+                            let opt_tied_item = "";
+                            items_list.forEach(k => {
+                                if (k.value == item) {
+                                    opt_name = k.name;
+                                    opt_tooltip = k.tooltip;
+                                    if (list_predicate == "item_rando_list_") {
+                                        opt_checks = k.check_count;
+                                        opt_items = k.item_count;
+                                        if (k.is_check) {
+                                            option.classList.add("ischeck");
+                                        }
+                                        opt_tied_item = k.tied ? k.tied : "";
+                                    }
+                                }
+                            })
+                            if (opt_name != "") {
+                                option.innerText = opt_name; // Not sure what to do for this
+                                option.title = opt_tooltip;
+                                if (list_predicate == "item_rando_list_") {
+                                    option.setAttribute("check_count", opt_checks);
+                                    option.setAttribute("item_count", opt_items);
+                                    option.setAttribute("tied_item", opt_tied_item);
+                                }
+                                selector.appendChild(option);
+                            }
+                        });
+                    } else {
+                        console.log("Invalid sortable during string import")
+                    }
+                    if (list_predicate == "item_rando_list_") {
+                        updateCheckItemCounter(grandparent);
+                    }
                 }
             } else {
                 const selector = document.getElementById(key);

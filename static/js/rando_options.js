@@ -2082,12 +2082,6 @@ function update_ui_states() {
     const event = new Event("change", { bubbles: true, cancelable: false });
     sliders[s].dispatchEvent(event);
   }
-
-  const ddms = document.getElementsByClassName("dropdown-multiselect");
-  for (let d = 0; d < ddms.length; d++) {
-    const event = new Event("change", { bubbles: true, cancelable: false });
-    ddms[d].dispatchEvent(event);
-  }
 }
 
 document

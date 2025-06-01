@@ -1,10 +1,27 @@
-{% from 'macros.html' import list_selector, toggle_input, switchsanity_option, dropdown_multiselector %}
+{% from 'macros.html' import list_selector, toggle_input, switchsanity_option, dropdown_multiselector, sortable_itemrando %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
             <h2 class="title">MAJOR ITEMS</h2>
             <div class="flex-container">
                 <div class="flex-column-container"  style="margin-bottom: 10px;">
+                    <button
+                        class="btn btn-secondary btn-custom-large"
+                        type="button"
+                        href="#"
+                        id="item_rando_modal"
+                        display_name="Customize Starting Moves"
+                        data-bs-toggle="modal"
+                        data-bs-target="#item_rando_Modal"
+                        data-toggle="tooltip"
+                        title="Customize your starting moves. Start with more items, fewer items, certain items, and more.">
+                        Test Item Rando Modal
+                        <span id="shared_shop_warning" data-toggle="tooltip" title="When all moves are purchased in shops, you are extremely likely to run into fill problems if you do not start with enough shared moves! Seeds that do generate will have fill biases - consider starting with training moves.">
+                            <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 18 18" class="warning-icon" style="overflow: visible; margin-bottom: 7px;" stroke="#ffff00" fill="#ffff00">
+                                <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
+                            </svg>
+                        </span>
+                    </button>
                     <div class="form-check form-switch item-switch" style="max-height: 24px;">
                         <label data-toggle="tooltip" title="Items are shuffled amongst each other.">
                             <input class="form-check-input"
@@ -22,6 +39,7 @@
                         </span>
                         {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.", 15, 1) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
+                    {{ sortable_itemrando(itemRando, "item_rando", "ITEM RANDOMIZER", 5) }}
                     <div class="form-check form-switch item-switch" style="max-height: 24px;">
                         <label data-toggle="tooltip" title="Sparkling enemies can drop major items. Highly chaotic, adding lots of checks all over the world.">
                             <input class="form-check-input"

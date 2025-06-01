@@ -730,6 +730,10 @@
         </script>
         <script type="module">
             // Create an async function to handle the script loading process
+            function toJSONArray(input) {
+                console.log(input)
+                return JSON.stringify(input);
+            }
             async function loadScripts() {
                 try {
                     // Dynamically import init_variables.js first
@@ -741,6 +745,8 @@
                     // Nunjucks configuration after PlandoUtils.js is loaded
                     var env = nunjucks.configure('/templates', { autoescape: false, web: { useCache: true } });
         
+                    env.addFilter("tojsonarr", toJSONArray)
+
                     // Use the imported functions from PlandoUtils
                     env.addFilter("plando_custom_loc_restrict", PlandoCustomLocationFilter);
                     env.addFilter("plando_custom_loc_item_restrict", PlandoCustomLocationItemFilter);
@@ -806,7 +812,7 @@
                         { src: './static/js/utils.js', defer: true },
                         { src: './static/js/spoiler.js', defer: true },
                         { src: './static/js/generate_buttons.js', defer: true },
-                        { src: './static/js/rando_options.js', defer: true },
+                        { src: './static/js/sortable.min.js', defer: true },
                         { src: './static/js/randomize_settings.js', defer: true },
                         { src: './static/js/initalize.js', defer: true },
                         { src: './static/js/music_select.js', defer: true },

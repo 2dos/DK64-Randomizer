@@ -1178,3 +1178,33 @@ input[type=range][disabled]::-ms-fill-upper {
 .dropdown-multiselect .control-button:hover {
   background-color: #444;
 }
+
+.sortablejs .list-group-item {
+  background-color: var(--donk-dark-green);
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.25rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.sortablejs .list-group-item.ischeck {
+  background-color: #00779c;
+}
+
+.ir-hint {
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+}
+
+.ir-hint.items {
+  background-color: var(--donk-dark-green);
+}
+
+.ir-hint.checks {
+  background-color: #00779c;
+}
