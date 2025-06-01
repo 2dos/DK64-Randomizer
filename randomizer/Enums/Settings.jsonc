@@ -1219,7 +1219,8 @@
     "item_rando_list_6": 248,
     "item_rando_list_7": 249,
     "item_rando_list_8": 250,
-    "item_rando_list_9": 251
+    "item_rando_list_9": 251,
+    "decouple_item_rando_modal": 252
   },
   /*
     SettingsStringDataType:
@@ -1866,6 +1867,7 @@
     "SettingsStringEnum.item_rando_list_9": {
       "obj": "SettingsStringDataType.list"
     },
+    "SettingsStringEnum.decouple_item_rando_modal": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.prog_slam_level_1": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_2": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_3": { "obj": "SlamRequirement" },

@@ -392,17 +392,28 @@
                 <div class="modal-body">
                     <div class="text-start">
                         <p>
-                            Shuffles <span class="ir-hint items">items</span> with <span class="ir-hint checks">checks</span> into pools.
-                            Drag and drop items and checks into various pools to determine where items can be placed.
+                            Shuffles <span class="ir-hint items">items</span><span class="hide-if-ir-decouple"> with <span class="ir-hint checks">checks</span></span> into pools.
+                            Drag and drop items <span class="hide-if-ir-decouple">and checks </span>into various pools to determine where items can be placed.
                         </p>
                         <h5>Rules</h5>
                         <ul>
-                            <li id="rule-item-shuffle">If an item or check remains unshuffled, it's corresponding item/check has to also remain unshuffled.</li>
+                            <li id="rule-item-shuffle" class="hide-if-ir-decouple">If an item or check remains unshuffled, it's corresponding item/check has to also remain unshuffled.</li>
                             <li id="rule-item-count">Check count must not be lower than item count.</li>
                         </ul>
                     </div>
+                    <div class="form-check form-switch">
+                        <label data-toggle="tooltip"
+                            title="Enabling this setting decouples items from their checks, resulting in greater control over the pools.">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="decouple_item_rando_modal"
+                                id="decouple_item_rando_modal"
+                                display_name="Decouple Items from Checks"
+                                value="True"/>
+                            Decouple Items from Checks
+                        </label>
+                    </div>
                     <div class="d-flex" id="{{ name }}-category-container" data-items="{{ list | tojsonarr | escape }}" data-count="{{ count }}" data-predicate="{{ name }}_list_">
-                        
                         {% for x in range(count) %}
                         <div style="flex:1; max-width: 20%;">
                             <p class="select-title" style="margin-bottom: 0px;">
@@ -432,15 +443,15 @@
                                 {% endif %}
                             </ul>
                             {% if x == 0 %}
-                            <div class="text-start">
+                            <div class="text-start hide-if-ir-decouple">
                                 <h6>Checks</h6>
                             </div>
                             {% else %}
-                            <div class="text-start" style="opacity:0">
+                            <div class="text-start hide-if-ir-decouple" style="opacity:0">
                                 <h6>Checks</h6>
                             </div>
                             {% endif %}
-                            <ul id="{{ name }}_list_{{ x + count }}" name="{{ name }}_list_{{ x + count }}" class="sortablejs sharedchecks list-group bg-secondary-subtle border border-1 border-white mx-2" style="height: 200px; overflow-y: scroll">
+                            <ul id="{{ name }}_list_{{ x + count }}" name="{{ name }}_list_{{ x + count }}" class="sortablejs sharedchecks list-group bg-secondary-subtle border border-1 border-white mx-2 hide-if-ir-decouple" style="height: 200px; overflow-y: scroll">
                                 {% if x == 0 %}
                                     {% for option in list %}
                                         {% if option.is_check %}
@@ -497,10 +508,21 @@
                     !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
         }
 
+        function getTiedCheckCount(value) {
+            const data_items = JSON.parse(document.getElementById("{{ name }}-category-container").getAttribute("data-items"));
+            const tied_checks = data_items.filter(k => k.is_check && k.tied == value);
+            let count = 0;
+            tied_checks.forEach(k => {
+                count += k.check_count;
+            })
+            return count;
+        }
+
         function updateCheckItemCounter(ctr) {
             const name = ctr.getAttribute("id").split("-category-container")[0];
             const sort_sections_items = sort_container.getElementsByClassName("shared");
             const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
+            const decoupled = document.getElementById("decouple_item_rando_modal").checked;
             const sort_sections = ctr.getElementsByTagName("ul");
             let index = 0;
             let is_valid_item_spread = true;
@@ -519,19 +541,24 @@
                     } else if (j == 1) {
                         options = sort_sections_checks[index].getElementsByTagName("li");
                     }
+                    if (!decoupled && (j == 1)) {
+                        continue;
+                    }
                     for (let option of options) {
                         const check_count_raw = option.getAttribute("check_count");
                         const item_count_raw = option.getAttribute("items_count");
-                        if (j == 0) {
-                            console.log(item_count_raw)
-                        }
                         const tied_item_raw = option.getAttribute("tied_item");
-                        item_shuffle_cache[option.getAttribute("value")] = index;
+                        const opt_value = option.getAttribute("value");
+                        item_shuffle_cache[opt_value] = index;
                         if (tied_item_raw) {
-                            item_shuffle_tied[option.getAttribute("value")] = tied_item_raw;
+                            item_shuffle_tied[opt_value] = tied_item_raw;
                         }
-                        if (isNumeric(check_count_raw)) {
-                            local_check_count += parseInt(check_count_raw);
+                        if (!decoupled) {
+                            local_check_count += getTiedCheckCount(opt_value);
+                        } else {
+                            if (isNumeric(check_count_raw)) {
+                                local_check_count += parseInt(check_count_raw);
+                            }
                         }
                         if (isNumeric(item_count_raw)) {
                             local_item_count += parseInt(item_count_raw);
@@ -572,22 +599,35 @@
 
         function setAllToColumn(name, index) {
             const container = document.getElementById(`${name}-category-container`);
+            const sort_sections_items = sort_container.getElementsByClassName("shared");
+            const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
             const uls = container.getElementsByTagName("ul");
-            let total_html = "";
-            for (let i = 0; i < uls.length; i++) {
-                total_html += uls[i].innerHTML;
+            const offset = sort_sections_items.length;
+            let total_html_items = "";
+            let total_html_checks = "";
+            for (let i = 0; i < offset; i++) {
+                total_html_items += sort_sections_items[i].innerHTML;
+                total_html_checks += sort_sections_checks[i].innerHTML;
             }
-            for (let i = 0; i < uls.length; i++) {
+            for (let i = 0; i < offset; i++) {
                 if (i == index) {
-                    uls[index].innerHTML = total_html;
+                    sort_sections_items[index].innerHTML = total_html_items;
+                    sort_sections_checks[index].innerHTML = total_html_checks;
                 } else {
-                    uls[i].innerHTML = "";
+                    sort_sections_items[i].innerHTML = "";
+                    sort_sections_checks[i].innerHTML = "";
                 }
                 const event = new Event("change", { bubbles: true, cancelable: false });
-                uls[i].dispatchEvent(event);
+                sort_sections_items[i].dispatchEvent(event);
+                sort_sections_checks[i].dispatchEvent(event);
             }
             updateCheckItemCounter(container);
         }
+
+        document.getElementById("decouple_item_rando_modal").addEventListener("click", () => {
+            const container = document.getElementById("{{ name }}-category-container");
+            updateCheckItemCounter(container);
+        })
 
         document.getElementById("{{ name }}_reset").addEventListener("click", (e) => {setAllToColumn("{{ name }}", 0)});
         document.getElementById("{{ name }}_shuffle_all").addEventListener("click", (e) => {setAllToColumn("{{ name }}", 1)});

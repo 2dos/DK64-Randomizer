@@ -2038,6 +2038,24 @@ function dropdownForceAll(name, state) {
   pushUpdateToDropdown(name);
 }
 
+function hide_irrelevant_details_coupled_item_rando() {
+  const value = document.getElementById("decouple_item_rando_modal").checked;
+  const details = document.getElementsByClassName("hide-if-ir-decouple");
+  if (value) {
+    console.log("showing")
+    for (let el of details) {
+      el.removeAttribute("hidden");
+    }
+  } else {
+    console.log("hiding")
+    for (let el of details) {
+      el.setAttribute("hidden","hidden");
+    }
+  }
+}
+document.getElementById("decouple_item_rando_modal")
+  .addEventListener("click", hide_irrelevant_details_coupled_item_rando)
+
 // Bind custom update UI event for "apply_preset"
 function update_ui_states() {
   /** Trigger any function that would update the status of a UI element based on the current settings configuration. */
@@ -2076,6 +2094,7 @@ function update_ui_states() {
   toggle_vanilla_door_rando(null);
   toggle_dos_door_rando(null);
   validate_fast_start_status(null);
+  hide_irrelevant_details_coupled_item_rando(null);
 
   const sliders = document.getElementsByClassName("pretty-slider");
   for (let s = 0; s < sliders.length; s++) {
