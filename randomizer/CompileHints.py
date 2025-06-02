@@ -765,7 +765,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     # If the Bean isn't shuffled, hinting the Bean location is pointless
     if (
         spoiler.settings.win_condition_item == WinConditionComplex.req_bean
-        and ItemRandoListSelected.beanpearl not in spoiler.settings.item_rando_list_selected
+        and ItemRandoListSelected.bean not in spoiler.settings.item_rando_list_selected
         and Locations.ForestBean in spoiler.woth_paths.keys()
     ):
         useless_locations[Items.Bean] = [Locations.ForestBean]

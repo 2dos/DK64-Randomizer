@@ -274,6 +274,11 @@ export enum ItemRandoListSelected {
     wrinkly = 35,
     boulderitem = 36,
     enemies = 37,
+    dummyitem_enemies = 38,
+    dummyitem_boulderitem = 39,
+    dummyitem_crateitem = 40,
+    trainingmoves = 41,
+    trainingbarrels = 42,
 }
 
 export enum ItemRandoFiller {
@@ -826,7 +831,7 @@ export enum SettingsStringEnum {
     item_rando_list_7 = 249,
     item_rando_list_8 = 250,
     item_rando_list_9 = 251,
-    decouple_item_rando_modal = 252,
+    decouple_item_rando = 252,
     filler_items_selected = 253,
 }
 
@@ -1185,7 +1190,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.item_rando_list_7: SettingsStringDataType.list,
     SettingsStringEnum.item_rando_list_8: SettingsStringDataType.list,
     SettingsStringEnum.item_rando_list_9: SettingsStringDataType.list,
-    SettingsStringEnum.decouple_item_rando_modal: SettingsStringDataType.bool,
+    SettingsStringEnum.decouple_item_rando: SettingsStringDataType.bool,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,
     SettingsStringEnum.prog_slam_level_3: SlamRequirement,

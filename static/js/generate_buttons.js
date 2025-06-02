@@ -330,8 +330,8 @@ else:
 
     // Handle Dropdown Multiselectors
     let ddms_container = document.getElementsByClassName("dropdown-multiselect");
-    for (container of ddms_container) {
-        element = ddms_container.getElementsByClassName("dropdown-menu")[0];
+    for (let container of ddms_container) {
+        element = container.getElementsByClassName("dropdown-menu")[0];
         let values = [];
         const checkboxes = Array.from(element.getElementsByTagName("input"));
         checkboxes.forEach(cb => {
@@ -343,11 +343,11 @@ else:
     }
 
     let sortable_container = document.getElementsByClassName("sortablejs");
-    for (element of sortable_container) {
+    for (let element of sortable_container) {
         let values = [];
         const options = Array.from(element.getElementsByTagName("li"));
         options.forEach(option => {
-            values.push(get_enum_or_string_value(option.value, element.getAttribute("name")));
+            values.push(get_enum_or_string_value(option.getAttribute("value"), element.getAttribute("name")));
         })
         form_data[element.getAttribute("name")] = values;
     }
@@ -644,7 +644,7 @@ async function import_settings_string(event) {
                                             option.classList.add("ischeck");
                                         } else if (k.is_dummy) {
                                             option.classList.add("show-if-ir-decouple");
-                                            if (settings["decouple_item_rando_modal"]) {
+                                            if (settings["decouple_item_rando"]) {
                                                 option.setAttribute("hidden", "hidden");
                                             }
                                         }

@@ -340,6 +340,23 @@
             "item_count": 0,
             "is_check": false,
             "is_dummy": true
+        },
+        {
+            "name": "Training Moves",
+            "value": "trainingmoves",
+            "tooltip": "Training Moves are in the pool.",
+            "check_count": 0,
+            "item_count": 4,
+            "is_check": false
+        },
+        {
+            "name": "Training Barrels",
+            "value": "trainingbarrels",
+            "tooltip": "Training Barrels (The 4 moves pre-given at the start of seeds).",
+            "check_count": 4,
+            "item_count": 0,
+            "is_check": true,
+            "tied": "trainingmoves"
         }
     ],
     "ItemRandoFillerSelector": [

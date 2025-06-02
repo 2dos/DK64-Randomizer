@@ -585,9 +585,6 @@ class Settings:
         self.starting_moves_list_counts = []
         self.starting_moves_lists = []
 
-        # Item Rando
-        self.filler_items_selected = []
-
         #  Color
         self.colors = {}
         self.color_palettes = {}
@@ -816,6 +813,19 @@ class Settings:
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
         self.hard_mode_selected = []
+        # Item Rando
+        self.item_rando_list_0 = []
+        self.item_rando_list_1 = []
+        self.item_rando_list_2 = []
+        self.item_rando_list_3 = []
+        self.item_rando_list_4 = []
+        self.item_rando_list_5 = []
+        self.item_rando_list_6 = []
+        self.item_rando_list_7 = []
+        self.item_rando_list_8 = []
+        self.item_rando_list_9 = []
+        self.decouple_item_rando = False
+        self.filler_items_selected = []
         # self.hard_bosses = False  # Deprecated
         self.hard_bosses_selected = []
         self.mirror_mode = False
@@ -1231,62 +1241,141 @@ class Settings:
             ]
 
         self.shuffled_location_types = []
+        self.shuffled_check_allowances = {}
         if self.shuffle_items:
-            if not self.item_rando_list_selected:
-                self.shuffled_location_types = [
-                    Types.Shop,
-                    Types.Banana,
-                    Types.ToughBanana,
-                    Types.Crown,
-                    Types.Blueprint,
-                    Types.Key,
-                    Types.Medal,
-                    Types.NintendoCoin,
-                    Types.RarewareCoin,
-                    Types.Kong,
-                    Types.Bean,
-                    Types.Pearl,
-                    Types.Fairy,
-                    Types.RainbowCoin,
-                    Types.FakeItem,
-                    Types.JunkItem,
-                    Types.CrateItem,
-                    Types.BoulderItem,
-                    Types.Cranky,
-                    Types.Funky,
-                    Types.Candy,
-                    Types.Snide,
-                    Types.Hint,
-                    Types.Shockwave,
-                ]
-            else:
-                for item in self.item_rando_list_selected:
-                    for type in Types:
-                        if type.name.lower() == item.name:
-                            self.shuffled_location_types.append(type)
-                        if type in (Types.Bean, Types.Pearl) and item == ItemRandoListSelected.beanpearl:
-                            self.shuffled_location_types.extend([Types.Bean, Types.Pearl])
-                        elif type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide) and item == ItemRandoListSelected.shopowners:
-                            shopowner_array = [Types.Funky, Types.Candy, Types.Snide]
-                            if self.fast_start_beginning_of_game or self.shuffle_loading_zones == ShuffleLoadingZones.all:
-                                # Only append cranky with settings that would require you to spawn the training barrels early
-                                # Also allow it in LZR
-                                shopowner_array.append(Types.Cranky)
-                            # If this owner is a guaranteed starting move, it's not a shuffled item type
-                            if type in guaranteed_starting_moves:
-                                shopowner_array.remove(type)
-                            self.shuffled_location_types.extend(shopowner_array)
-            if self.enemy_drop_rando:  # Enemy location type handled separately for UI/UX reasons
-                self.shuffled_location_types.append(Types.Enemies)
+            item_ui_pairing = {
+                # value: tuple(TiedType, IsCheck)
+                ItemRandoListSelected.shop: (Types.Shop, True),
+                ItemRandoListSelected.moves: (Types.Shop, False),
+                ItemRandoListSelected.shockwave: (Types.Shockwave, False),
+                ItemRandoListSelected.bfi_gift: (Types.Shockwave, True),
+                ItemRandoListSelected.banana: (Types.Banana, False),
+                ItemRandoListSelected.banana_checks: (Types.Banana, True),
+                ItemRandoListSelected.toughbanana: (Types.Banana, True),
+                ItemRandoListSelected.arenas: (Types.Crown, True),
+                ItemRandoListSelected.crown: (Types.Crown, False),
+                ItemRandoListSelected.blueprint: (Types.Blueprint, False),
+                ItemRandoListSelected.kasplat: (Types.Blueprint, True),
+                ItemRandoListSelected.key: (Types.Key, False),
+                ItemRandoListSelected.bosses: (Types.Key, True),
+                ItemRandoListSelected.endofhelm: (Types.Key, True),
+                ItemRandoListSelected.medal: (Types.Medal, False),
+                ItemRandoListSelected.medal_checks: (Types.Medal, True),
+                ItemRandoListSelected.medal_checks_helm: (Types.Medal, True),
+                ItemRandoListSelected.nintendocoin: (Types.NintendoCoin, False),
+                ItemRandoListSelected.arcade: (Types.NintendoCoin, True),
+                ItemRandoListSelected.rarewarecoin: (Types.RarewareCoin, False),
+                ItemRandoListSelected.jetpac: (Types.RarewareCoin, True),
+                ItemRandoListSelected.kong: (Types.Kong, False),
+                ItemRandoListSelected.kong_cages: (Types.Kong, True),
+                ItemRandoListSelected.fairy: (Types.Fairy, False),
+                ItemRandoListSelected.fairy_checks: (Types.Fairy, True),
+                ItemRandoListSelected.rainbowcoin: (Types.RainbowCoin, False),
+                ItemRandoListSelected.dirt_patches: (Types.RainbowCoin, True),
+                ItemRandoListSelected.pearl: (Types.Pearl, False),
+                ItemRandoListSelected.clams: (Types.Pearl, True),
+                ItemRandoListSelected.bean: (Types.Bean, False),
+                ItemRandoListSelected.anthillreward: (Types.Bean, True),
+                ItemRandoListSelected.crateitem: (Types.CrateItem, True),
+                ItemRandoListSelected.shopowners: (Types.Cranky, False),
+                ItemRandoListSelected.hint: (Types.Hint, False),
+                ItemRandoListSelected.wrinkly: (Types.Hint, True),
+                ItemRandoListSelected.boulderitem: (Types.BoulderItem, True),
+                ItemRandoListSelected.enemies: (Types.Enemies, True),
+                ItemRandoListSelected.dummyitem_enemies: (Types.Enemies, False),
+                ItemRandoListSelected.dummyitem_boulderitem: (Types.BoulderItem, False),
+                ItemRandoListSelected.dummyitem_crateitem: (Types.CrateItem, False),
+                ItemRandoListSelected.trainingmoves: (Types.TrainingBarrel, False),
+                ItemRandoListSelected.trainingbarrels: (Types.TrainingBarrel, True),
+            }
+            for selector_value, data in item_ui_pairing.items():
+                self.shuffled_check_allowances[data[0]] = []
+
+            filler_pairing = {
+                ItemRandoFiller.junkitem: Types.JunkItem,
+                ItemRandoFiller.icetraps: Types.FakeItem,
+            }
+            item_search_removal = [
+                # Anything which doesn't have accompanying checks. Usually starts with dummy_item
+                ItemRandoListSelected.dummyitem_enemies,
+                ItemRandoListSelected.dummyitem_boulderitem,
+                ItemRandoListSelected.dummyitem_crateitem,
+            ]
+            item_search = [
+                self.item_rando_list_1.copy(),
+                self.item_rando_list_2.copy(),
+                self.item_rando_list_3.copy(),
+                self.item_rando_list_4.copy(),
+            ]
+            check_search = [
+                self.item_rando_list_6.copy(),
+                self.item_rando_list_7.copy(),
+                self.item_rando_list_8.copy(),
+                self.item_rando_list_9.copy(),
+            ]
+            if not self.decouple_item_rando:
+                # reconstruct check_search based on item_search
+                for x in range(4):
+                    check_search[x] = []  # Wipe cache
+                for selector_value, data in item_ui_pairing.items():
+                    paired_slot = None
+                    paired_type = None
+                    for index, slot in enumerate(item_search):
+                        if selector_value in paired_slot:
+                            paired_slot = index
+                            paired_type = data[0]
+                            break
+                    if paired_type is None:
+                        continue
+                    paired_selectors = []
+                    for test_value, test_data in item_ui_pairing.items():
+                        if test_data[0] == paired_type and test_data[1]:
+                            # Is check
+                            paired_selectors.append(test_value)
+                    check_search[paired_slot].extend(paired_selectors)
+            # Post-processing to clear anything that shouldn't be there
+            for x in range(4):
+                item_search[x] = [y for y in item_search[x] if y not in item_search_removal]
+            # Build mapping based on item_search and check_search
+            for pool_index in range(4):
+                for selector_value in check_search[pool_index]:
+                    selector_type = item_ui_pairing[selector_value][0]
+                    selector_types = [selector_type]
+                    if selector_type == Types.Cranky:
+                        selector_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if sk not in guaranteed_starting_moves]
+                    elif selector_type == Types.TrainingBarrel:
+                        selector_types = [Types.TrainingBarrel, Types.PreGivenMove]
+                        if self.climbing_status != ClimbingStatus.normal:
+                            selector_types.append(Types.Climbing)
+                    elif selector_type == Types.Medal and IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
+                        selector_types = [Types.Medal, Types.IslesMedal]
+                    # Add items which are in the designated pools
+                    for item_selector_value in item_search[pool_index]:
+                        item_type = item_ui_pairing[item_selector_value][0]
+                        item_types = [item_type]
+                        if item_type == Types.Cranky:
+                            item_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if sk not in guaranteed_starting_moves]
+                        elif item_type == Types.TrainingBarrel:
+                            item_types = [Types.TrainingBarrel, Types.PreGivenMove]
+                            if self.climbing_status != ClimbingStatus.normal:
+                                item_types.append(Types.Climbing)
+                        elif item_type == Types.Medal and IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
+                            item_types = [Types.Medal, Types.IslesMedal]
+                        for x in selector_types:
+                            for y in item_types:
+                                if x not in self.shuffled_check_allowances:
+                                    self.shuffled_check_allowances[x] = []
+                                self.shuffled_check_allowances[x].append(y)
+                                self.shuffled_location_types.append(y)
+                    for check, item_type in filler_pairing.items():
+                        if check in self.filler_items_selected:
+                            for x in selector_types:
+                                self.shuffled_check_allowances[x].append(item_type)
+                    for x in selector_types:
+                        self.shuffled_check_allowances[x] = list(set(self.shuffled_check_allowances[x]))
+            self.shuffled_location_types = list(set(self.shuffled_location_types))
             if Types.Shop in self.shuffled_location_types:
                 self.move_rando = MoveRando.item_shuffle
-                if self.training_barrels != TrainingBarrels.normal:
-                    self.shuffled_location_types.append(Types.TrainingBarrel)
-                if self.climbing_status != ClimbingStatus.normal:
-                    self.shuffled_location_types.append(Types.Climbing)
-                self.shuffled_location_types.append(Types.PreGivenMove)
-            if IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles) and Types.Medal in self.shuffled_location_types:
-                self.shuffled_location_types.append(Types.IslesMedal)
             if Types.Shockwave not in self.shuffled_location_types:
                 self.shockwave_status = ShockwaveStatus.vanilla
             elif Items.Camera in guaranteed_starting_moves and Items.Shockwave in guaranteed_starting_moves:
@@ -2275,6 +2364,26 @@ class Settings:
                 # Fairies are the one exception: these are allowed to be vanilla
                 # Rainbow coins cannot be on fairies
                 # The Bean/Pearls cannot be on fairies (you might be sensing a pattern here)
+            
+            # Invert allowances for restrictions
+            inverted_allowances = {}
+            for item_type in self.shuffled_check_allowances:
+                for k in self.shuffled_check_allowances[item_type]:
+                    if k not in inverted_allowances:
+                        inverted_allowances[k] = []
+                    inverted_allowances[k].append(item_type)
+            for item_type in inverted_allowances:
+                inverted_allowances[item_type] = list(set(inverted_allowances[item_type]))
+            # Apply restrictions
+            for item_type in self.valid_locations:
+                if item_type in inverted_allowances:
+                    valid_allowance_types = inverted_allowances[item_type]
+                    if item_type in [Types.Shop, Types.Blueprint]:  # kong-based
+                        for kong in self.valid_locations[item_type]:
+                            self.valid_locations[item_type][kong] = [v for v in self.valid_locations[item_type][kong] if spoiler.LocationList[v].type in valid_allowance_types]
+                    else:
+                        self.valid_locations[item_type] = [v for v in self.valid_locations[item_type] if spoiler.LocationList[v].type in valid_allowance_types]
+                    
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""
@@ -2417,6 +2526,7 @@ class Settings:
 
     def is_valid_item_pool(self):
         """Confirm that the item pool is a valid combination of items. Must be run after valid locations are calculated without any restrictions."""
+        return True  # TODO: Fix this up for new system
         junk_space_available = 0
         if self.shuffle_items:
             if Types.Enemies in self.shuffled_location_types:

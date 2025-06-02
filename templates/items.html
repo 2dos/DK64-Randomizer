@@ -20,7 +20,7 @@
             <div class="flex-container">
                 <div style="width:50%">
                     <div class="mx-auto" style="width: fit-content">
-                        {{ toggle_input("decouple_item_rando_modal", "Decouple Items from Checks", "Enabling this setting decouples items from their checks, resulting in greater control over the pools.") }}
+                        {{ toggle_input("decouple_item_rando", "Decouple Items from Checks", "Enabling this setting decouples items from their checks, resulting in greater control over the pools.") }}
                     </div>
                 </div>
                 <div style="width:50%">
@@ -325,7 +325,7 @@
         const name = ctr.getAttribute("id").split("-category-container")[0];
         const sort_sections_items = sort_container.getElementsByClassName("shared");
         const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
-        const decoupled = document.getElementById("decouple_item_rando_modal").checked;
+        const decoupled = document.getElementById("decouple_item_rando").checked;
         const sort_sections = ctr.getElementsByTagName("ul");
         let index = 0;
         let is_valid_item_spread = true;
@@ -433,7 +433,7 @@
         updateCheckItemCounter(container);
     }
 
-    document.getElementById("decouple_item_rando_modal").addEventListener("click", () => {
+    document.getElementById("decouple_item_rando").addEventListener("click", () => {
         const container = document.getElementById("item_rando-category-container");
         updateCheckItemCounter(container);
     })

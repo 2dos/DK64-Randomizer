@@ -1745,7 +1745,7 @@ function load_settings(json) {
                           option.classList.add("ischeck");
                         } else if (k.is_dummy) {
                           option.classList.add("show-if-ir-decouple");
-                          if (json["decouple_item_rando_modal"] == "True") {
+                          if (json["decouple_item_rando"] == "True") {
                             option.setAttribute("hidden", "hidden");
                           }
                         }
