@@ -265,7 +265,6 @@
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
     "krool_in_boss_pool": 0.8,
     "krool_phase_order_rando": 0.8,
@@ -691,7 +690,6 @@
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
     "krool_in_boss_pool": 0.65,
     "krool_phase_order_rando": 0.8,
@@ -1140,7 +1138,6 @@
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
     "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,
@@ -1620,7 +1617,6 @@
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
     "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,

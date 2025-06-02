@@ -295,7 +295,6 @@ class Spoiler:
         settings["Complex Level Order"] = self.settings.hard_level_progression
         settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
         settings["Hard Shooting"] = self.settings.hard_shooting
-        settings["Dropsanity"] = self.settings.enemy_drop_rando
         settings["Switchsanity"] = self.settings.switchsanity_enabled
         settings["Free Trade Agreement"] = self.settings.free_trade_setting.name
         settings["Randomize Pickups"] = self.settings.randomize_pickups

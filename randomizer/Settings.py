@@ -1374,6 +1374,7 @@ class Settings:
                     for x in selector_types:
                         self.shuffled_check_allowances[x] = list(set(self.shuffled_check_allowances[x]))
             self.shuffled_location_types = list(set(self.shuffled_location_types))
+            self.enemy_drop_rando = Types.Enemies in self.shuffled_location_types
             if Types.Shop in self.shuffled_location_types:
                 self.move_rando = MoveRando.item_shuffle
             if Types.Shockwave not in self.shuffled_location_types:

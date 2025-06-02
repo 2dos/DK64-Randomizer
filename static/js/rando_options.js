@@ -976,27 +976,6 @@ document.getElementById("randomize_settings").addEventListener("click", function
   update_ui_states(evt);
 });
 
-// Disable Boss Kong and Boss Location Rando if Vanilla levels and Kong Rando
-document.getElementById("kong_rando").addEventListener("click", function (evt) {
-  const level = document.getElementById("level_randomization");
-  const bossLocation = document.getElementById("boss_location_rando");
-  const bossKong = document.getElementById("boss_kong_rando");
-  const kongRando = document.getElementById("kong_rando");
-
-  if (
-    kongRando.checked &&
-    (level.value === "vanilla" || level.value === "level_order")
-  ) {
-    bossLocation.setAttribute("disabled", "disabled");
-    bossLocation.checked = true;
-    bossKong.setAttribute("disabled", "disabled");
-    bossKong.checked = true;
-  } else {
-    bossKong.removeAttribute("disabled");
-    bossLocation.removeAttribute("disabled");
-  }
-});
-
 // Disable color options when Randomize All is selected
 function disable_colors() {
   const disabled = document.getElementById("random_colors").checked;
@@ -1107,94 +1086,6 @@ document
   .getElementById("helm_random")
   .addEventListener("click", disable_helm_phases);
 
-// Disable some settings based on the move rando setting
-function disable_move_shuffles() {
-  const moves = document.getElementById("move_rando");
-  const prices = document.getElementById("random_prices");
-  if (moves) {
-    if (moves.value === "start_with" || moves.value === "off") {
-      if (prices) {
-        prices.setAttribute("disabled", "disabled");
-      }
-    } else {
-      if (prices) {
-        prices.removeAttribute("disabled");
-      }
-    }
-  }
-}
-
-document
-  .getElementById("move_rando")
-  .addEventListener("change", disable_move_shuffles);
-
-// Enable and disable settings based on Item Rando being on/off
-function toggle_item_rando() {
-  const elements = {
-    selector: document.getElementById("item_rando_list_modal"),
-    itemRandoPool: document.getElementById("item_rando_list_selected").options,
-    smallerShops: document.getElementById("smaller_shops"),
-    moveVanilla: document.getElementById("move_off"),
-    moveRando: document.getElementById("move_on"),
-    enemyDropRando: document.getElementById("enemy_drop_rando"),
-    nonItemRandoWarning: document.getElementById("non_item_rando_warning"),
-    sharedShopWarning: document.getElementById("shared_shop_warning"),
-    kongRando: document.getElementById("kong_rando"),
-    shuffleItems: document.getElementById("shuffle_items"),
-    moveOnCrossPurchase: document.getElementById("move_on_cross_purchase"),
-    randomPrices: document.getElementById("random_prices"),
-  };
-
-  let shopsInPool = false;
-  let kongsInPool = false;
-  let nothingSelected = true;
-
-  for (let option of elements.itemRandoPool) {
-    if (option.selected) {
-      nothingSelected = false;
-      if (option.value === "shop") shopsInPool = true;
-      if (option.value === "kong") kongsInPool = true;
-    }
-  }
-
-  if (nothingSelected) {
-    shopsInPool = kongsInPool = true;
-  }
-
-  const disabled = !elements.shuffleItems.checked;
-
-  elements.selector.toggleAttribute("disabled", disabled);
-  elements.smallerShops.toggleAttribute("disabled", disabled || !shopsInPool);
-  if (disabled || !shopsInPool) {
-    elements.smallerShops.checked = false;
-  }
-  elements.moveVanilla.toggleAttribute("disabled", shopsInPool && !disabled);
-  elements.moveRando.toggleAttribute("disabled", shopsInPool && !disabled);
-  elements.enemyDropRando.toggleAttribute("disabled", disabled);
-  if (disabled) {
-    elements.enemyDropRando.checked = false;
-  }
-  elements.nonItemRandoWarning.toggleAttribute("hidden", !disabled);
-  elements.sharedShopWarning.toggleAttribute("hidden", shopsInPool && !disabled);
-  if (!disabled) {
-    elements.kongRando.toggleAttribute("disabled", kongsInPool);
-    elements.kongRando.checked = kongsInPool;
-  } else {
-    elements.kongRando.removeAttribute("disabled");
-  }
-
-  if (!disabled && shopsInPool) {
-    if (elements.moveVanilla.selected || elements.moveRando.selected) {
-      elements.moveOnCrossPurchase.selected = true;
-    }
-    elements.randomPrices.removeAttribute("disabled");
-  }
-}
-
-
-document
-  .getElementById("shuffle_items")
-  .addEventListener("click", toggle_item_rando);
 // Enable and disable settings based on the Item Rando pool changing
 document
   .getElementById("item_rando_list_select_all")
@@ -1215,31 +1106,26 @@ function item_rando_list_changed(evt) {
   const moveVanilla = document.getElementById("move_off");
   const moveRando = document.getElementById("move_on");
   const sharedShopWarning = document.getElementById("shared_shop_warning");
-  const kongRando = document.getElementById("kong_rando");
   let shopsInPool = false;
   let kongsInPool = false;
   let shockwaveInPool = false;
   let shopownersInPool = false;
   let nothingSelected = true;
 
-  for (let option of itemRandoPool) {
-    if (option.value === "shop" && option.selected) shopsInPool = true;
-    if (option.value === "kong" && option.selected) kongsInPool = true;
-    if (option.value === "shockwave" && option.selected) shockwaveInPool = true;
-    if (option.value === "shopowners" && option.selected) shopownersInPool = true;
-    if (option.selected) nothingSelected = false;
-  }
+  // for (let option of itemRandoPool) {
+  //   if (option.value === "shop" && option.selected) shopsInPool = true;
+  //   if (option.value === "kong" && option.selected) kongsInPool = true;
+  //   if (option.value === "shockwave" && option.selected) shockwaveInPool = true;
+  //   if (option.value === "shopowners" && option.selected) shopownersInPool = true;
+  //   if (option.selected) nothingSelected = false;
+  // }
 
-  if (nothingSelected) {
+  // if (nothingSelected) {
     shopsInPool = true;
     kongsInPool = true;
     shockwaveInPool = true;
     shopownersInPool = true;
-  }
-
-  if (document.getElementById("shuffle_items").checked) {
-    itemRandoDisabled = false;
-  }
+  // }
 
   let camera_option = document.getElementById("starting_move_52");
   let shockwave_option = document.getElementById("starting_move_53");
@@ -1248,16 +1134,7 @@ function item_rando_list_changed(evt) {
   let candy_option = document.getElementById("starting_move_94");
   let snide_option = document.getElementById("starting_move_95");
 
-  if (itemRandoDisabled) {
-    camera_option.setAttribute("hidden", "hidden");
-    shockwave_option.setAttribute("hidden", "hidden");
-    cranky_option.setAttribute("hidden", "hidden");
-    funky_option.setAttribute("hidden", "hidden");
-    candy_option.setAttribute("hidden", "hidden");
-    snide_option.setAttribute("hidden", "hidden");
-  }
-
-  if (shopsInPool && !itemRandoDisabled) {
+  if (shopsInPool) {
     sharedShopWarning.setAttribute("hidden", "hidden");
     if (moveVanilla.selected || moveRando.selected) {
       document.getElementById("move_on_cross_purchase").selected = true;
@@ -1294,13 +1171,6 @@ function item_rando_list_changed(evt) {
     moveRando.removeAttribute("disabled");
     smallerShops.setAttribute("disabled", "disabled");
     smallerShops.checked = false;
-  }
-
-  if (kongsInPool && !itemRandoDisabled) {
-    kongRando.setAttribute("disabled", "disabled");
-    kongRando.checked = true;
-  } else {
-    kongRando.removeAttribute("disabled");
   }
 }
 
@@ -1396,13 +1266,11 @@ function change_level_randomization(evt) {
     const level = document.getElementById("level_randomization");
     const bossLocation = document.getElementById("boss_location_rando");
     const bossKong = document.getElementById("boss_kong_rando");
-    const kongRando = document.getElementById("kong_rando");
     const shuffleHelmLocation = document.getElementById("shuffle_helm_location");
     const helmLabel = document.getElementById("shuffle_helm_location_label");
 
     const isLevelOrder = ["level_order", "level_order_complex", "level_order_moderate"].includes(level.value);
     const disableBossShuffles = ["level_order", "level_order_complex", "level_order_moderate"].includes(level.value) || (level.value === "vanilla" && kongRando.checked);
-    const disableKongRando = ["level_order", "level_order_complex", "level_order_moderate"].includes(level.value);
     const disableShuffleHelmLocation = level.value === "vanilla";
 
   if (disableBossShuffles) {
@@ -1415,20 +1283,13 @@ function change_level_randomization(evt) {
     bossKong.removeAttribute("disabled");
   }
 
-  if (disableKongRando) {
-    kongRando.setAttribute("disabled", "disabled");
-    kongRando.checked = true;
+  if (disableShuffleHelmLocation) {
+      shuffleHelmLocation.setAttribute("disabled", "disabled");
+      shuffleHelmLocation.checked = false;
   } else {
-    kongRando.removeAttribute("disabled");
+      shuffleHelmLocation.removeAttribute("disabled");
+      helmLabel.innerText = isLevelOrder ? "Include Helm" : "Shuffle Helm Location";
   }
-
-    if (disableShuffleHelmLocation) {
-        shuffleHelmLocation.setAttribute("disabled", "disabled");
-        shuffleHelmLocation.checked = false;
-    } else {
-        shuffleHelmLocation.removeAttribute("disabled");
-        helmLabel.innerText = isLevelOrder ? "Include Helm" : "Shuffle Helm Location";
-    }
 }
 
 // Randomly generate a seed ID
@@ -1635,38 +1496,6 @@ document
       pearlReq.value = 5;
     }
   });
-
-// // Validate starting moves count input on loss of focus
-// // Function to handle validation of starting moves count
-// function max_starting_moves_count() {
-//   const moveCount = document.getElementById("starting_moves_count");
-//   const moves = document.getElementById("move_rando");
-//   const itemRando = document.getElementById("shuffle_items");
-//   let maxStartingMoves = 41;
-
-//   if (!itemRando.checked && moves.value !== "off") {
-//     maxStartingMoves = 4;
-//   }
-
-//   if (!moveCount.value) {
-//     moveCount.value = 4;
-//   } else if (parseInt(moveCount.value) < 0) {
-//     moveCount.value = 0;
-//   } else if (parseInt(moveCount.value) > maxStartingMoves) {
-//     moveCount.value = maxStartingMoves;
-//   }
-// }
-
-// Adding event listeners for shuffle_items, move_rando, and starting_moves_count
-// document
-//   .getElementById("shuffle_items")
-//   .addEventListener("click", max_starting_moves_count);
-// document
-//   .getElementById("move_rando")
-//   .addEventListener("change", max_starting_moves_count);
-// document
-//   .getElementById("starting_moves_count")
-//   .addEventListener("focusout", max_starting_moves_count);
 
 // Update Door 1 Number Access
 function update_door_one_num_access() {
@@ -2069,7 +1898,6 @@ function update_ui_states() {
   change_level_randomization(null);
   disable_colors(null);
   disable_music(null);
-  disable_move_shuffles(null);
   max_randomized_blocker(null);
   handle_chaos_ratio_text(null);
   max_randomized_troff(null);
@@ -2078,7 +1906,6 @@ function update_ui_states() {
   max_sfx(null);
   disable_switchsanity_modal(null);
   item_rando_list_changed(null);
-  toggle_item_rando(null);
   disable_custom_cb_locations_modal(null);
   toggle_bananaport_selector(null);
   disable_helm_hurry(null);
