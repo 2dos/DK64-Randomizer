@@ -825,7 +825,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                         bonus_table_offset += 1
                     elif item.old_item == Types.Fairy:
                         # Fairy Item
-                        model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared, False)
+                        model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
                         if model is not None:
                             addr = getItemTableWriteAddress(ROM_COPY, Types.Fairy, item.old_flag - 589, offset_dict)
                             ROM_COPY.seek(addr)
@@ -843,7 +843,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                             Locations.ChunkyKong: 3,
                         }
                         if item.location in kong_idx:
-                            model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared, True)
+                            model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
                             if model is not None:
                                 idx = kong_idx[item.location]
                                 has_no_textures = item.new_item in (

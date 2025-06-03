@@ -1265,7 +1265,6 @@ function change_level_randomization(evt) {
 
     const level = document.getElementById("level_randomization");
     const bossLocation = document.getElementById("boss_location_rando");
-    const bossKong = document.getElementById("boss_kong_rando");
     const shuffleHelmLocation = document.getElementById("shuffle_helm_location");
     const helmLabel = document.getElementById("shuffle_helm_location_label");
 
@@ -1276,11 +1275,8 @@ function change_level_randomization(evt) {
   if (disableBossShuffles) {
     bossLocation.setAttribute("disabled", "disabled");
     bossLocation.checked = true;
-    bossKong.setAttribute("disabled", "disabled");
-    bossKong.checked = true;
   } else {
     bossLocation.removeAttribute("disabled");
-    bossKong.removeAttribute("disabled");
   }
 
   if (disableShuffleHelmLocation) {

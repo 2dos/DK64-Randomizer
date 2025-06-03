@@ -73,7 +73,7 @@ def ShuffleBossKongs(settings, locked_levels=[]):
             boss_kongs.append(settings.boss_kongs[level])
             continue
         boss_map = settings.boss_maps[level]
-        if settings.boss_kong_rando:
+        if settings.boss_location_rando:
             kong = settings.random.choice(GetKongOptionsForBoss(boss_map, HardBossesEnabled(settings, HardBossesSelected.alternative_mad_jack_kongs)))
         else:
             kong = vanillaBossKongs[boss_map]
@@ -116,11 +116,11 @@ def GetKongOptionsForBoss(boss_map: Maps, alt_mj_kongs: bool):
     return possibleKongs
 
 
-def ShuffleKutoutKongs(random, boss_maps: array, boss_kongs: array, boss_kong_rando: bool):
+def ShuffleKutoutKongs(random, boss_maps: array, boss_kongs: array, boss_rando: bool):
     """Shuffle the Kutout kong order."""
     vanillaKutoutKongs = [Kongs.lanky, Kongs.tiny, Kongs.chunky, Kongs.donkey, Kongs.diddy]
     kutout_kongs = []
-    if boss_kong_rando:
+    if boss_rando:
         if Maps.CastleBoss in boss_maps:
             kutoutLocation = boss_maps.index(Maps.CastleBoss)
             if kutoutLocation < 0 or kutoutLocation >= len(boss_kongs):
@@ -276,7 +276,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
         spoiler.settings.boss_maps = newBossMaps
     else:
         spoiler.settings.boss_maps = getBosses(spoiler.settings)
-    if spoiler.settings.kong_rando or spoiler.settings.boss_kong_rando:
+    if spoiler.settings.kong_rando or spoiler.settings.boss_location_rando:
         # If we shuffle kongs but not locations, we must forcibly sort the array with the known valid kongs
         if not spoiler.settings.boss_location_rando:
             # This is outrageously niche, I sure hope it doesn't break
@@ -302,7 +302,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
             spoiler.settings.boss_kongs = newBossKongs
     else:
         spoiler.settings.boss_kongs = ShuffleBossKongs(spoiler.settings)
-    spoiler.settings.kutout_kongs = ShuffleKutoutKongs(spoiler.settings.random, spoiler.settings.boss_maps, spoiler.settings.boss_kongs, spoiler.settings.boss_kong_rando)
+    spoiler.settings.kutout_kongs = ShuffleKutoutKongs(spoiler.settings.random, spoiler.settings.boss_maps, spoiler.settings.boss_kongs, spoiler.settings.boss_location_rando)
 
 
 def ShuffleTinyPhaseToes(random):
@@ -413,4 +413,4 @@ def PlandoBosses(spoiler):
             spoiler.settings.boss_maps[level] = bossMap
             remainingBosses.remove(bossMap)
         spoiler.settings.boss_kongs = ShuffleBossKongs(spoiler.settings, locked_levels=filledLevels)
-        spoiler.settings.kutout_kongs = ShuffleKutoutKongs(spoiler.settings.random, spoiler.settings.boss_maps, spoiler.settings.boss_kongs, spoiler.settings.boss_kong_rando)
+        spoiler.settings.kutout_kongs = ShuffleKutoutKongs(spoiler.settings.random, spoiler.settings.boss_maps, spoiler.settings.boss_kongs, spoiler.settings.boss_location_rando)

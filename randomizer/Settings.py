@@ -377,7 +377,7 @@ class Settings:
         self.random_fairies = None
         self.random_prices = None
         self.boss_location_rando = None
-        self.boss_kong_rando = None
+        # self.boss_kong_rando = None  # Deprecated
         self.kasplat_rando_setting = None
         # self.puzzle_rando = None  # Deprecated
         self.puzzle_rando_difficulty = PuzzleRando.off
@@ -824,6 +824,18 @@ class Settings:
         self.item_rando_list_7 = []
         self.item_rando_list_8 = []
         self.item_rando_list_9 = []
+        self.item_search = [
+            [],
+            [],
+            [],
+            [],
+        ]
+        self.check_search = [
+            [],
+            [],
+            [],
+            [],
+        ]
         self.decouple_item_rando = False
         self.filler_items_selected = []
         # self.hard_bosses = False  # Deprecated
@@ -1306,13 +1318,13 @@ class Settings:
                 ItemRandoListSelected.dummyitem_boulderitem,
                 ItemRandoListSelected.dummyitem_crateitem,
             ]
-            item_search = [
+            self.item_search = [
                 self.item_rando_list_1.copy(),
                 self.item_rando_list_2.copy(),
                 self.item_rando_list_3.copy(),
                 self.item_rando_list_4.copy(),
             ]
-            check_search = [
+            self.check_search = [
                 self.item_rando_list_6.copy(),
                 self.item_rando_list_7.copy(),
                 self.item_rando_list_8.copy(),
@@ -1321,11 +1333,11 @@ class Settings:
             if not self.decouple_item_rando:
                 # reconstruct check_search based on item_search
                 for x in range(4):
-                    check_search[x] = []  # Wipe cache
+                    self.check_search[x] = []  # Wipe cache
                 for selector_value, data in item_ui_pairing.items():
                     paired_slot = None
                     paired_type = None
-                    for index, slot in enumerate(item_search):
+                    for index, slot in enumerate(self.item_search):
                         if selector_value in paired_slot:
                             paired_slot = index
                             paired_type = data[0]
@@ -1337,13 +1349,13 @@ class Settings:
                         if test_data[0] == paired_type and test_data[1]:
                             # Is check
                             paired_selectors.append(test_value)
-                    check_search[paired_slot].extend(paired_selectors)
+                    self.check_search[paired_slot].extend(paired_selectors)
             # Post-processing to clear anything that shouldn't be there
             for x in range(4):
-                item_search[x] = [y for y in item_search[x] if y not in item_search_removal]
+                self.item_search[x] = [y for y in self.item_search[x] if y not in item_search_removal]
             # Build mapping based on item_search and check_search
             for pool_index in range(4):
-                for selector_value in check_search[pool_index]:
+                for selector_value in self.check_search[pool_index]:
                     selector_type = item_ui_pairing[selector_value][0]
                     selector_types = [selector_type]
                     if selector_type == Types.Cranky:
@@ -1355,7 +1367,7 @@ class Settings:
                     elif selector_type == Types.Medal and IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
                         selector_types = [Types.Medal, Types.IslesMedal]
                     # Add items which are in the designated pools
-                    for item_selector_value in item_search[pool_index]:
+                    for item_selector_value in self.item_search[pool_index]:
                         item_type = item_ui_pairing[item_selector_value][0]
                         item_types = [item_type]
                         if item_type == Types.Cranky:
@@ -1863,7 +1875,7 @@ class Settings:
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando, self)
         self.boss_kongs = ShuffleBossKongs(self)
-        self.kutout_kongs = ShuffleKutoutKongs(self.random, self.boss_maps, self.boss_kongs, self.boss_kong_rando)
+        self.kutout_kongs = ShuffleKutoutKongs(self.random, self.boss_maps, self.boss_kongs, self.boss_location_rando)
         self.kko_phase_order = ShuffleKKOPhaseOrder(self)
         self.toe_order = ShuffleTinyPhaseToes(self.random)
 
@@ -2546,33 +2558,79 @@ class Settings:
 
     def is_valid_item_pool(self):
         """Confirm that the item pool is a valid combination of items. Must be run after valid locations are calculated without any restrictions."""
-        return True  # TODO: Fix this up for new system
-        junk_space_available = 0
-        if self.shuffle_items:
-            if Types.Enemies in self.shuffled_location_types:
-                junk_space_available += 100  # Rough estimate, not to be used as factual
-            if Types.Shop in self.shuffled_location_types:
-                junk_space_available += 30  # Rough estimate, not to be used as factual
-            # if Types.Kong in self.shuffled_location_types:
-            #     junk_space_available -= 5 - len(self.starting_kong_list)  # Not always this, Kongs in cages are so rare it may as well be
-            # Shopkeepers don't get placed in their vanilla locations (essentially a start with)
-            if Types.Cranky in self.shuffled_location_types:
-                junk_space_available -= 1
-                if len(self.valid_locations[Types.Cranky]) <= 0:
-                    return False
-            if Types.Funky in self.shuffled_location_types:
-                junk_space_available -= 1
-                if len(self.valid_locations[Types.Funky]) <= 0:
-                    return False
-            if Types.Candy in self.shuffled_location_types:
-                junk_space_available -= 1
-                if len(self.valid_locations[Types.Candy]) <= 0:
-                    return False
-            if Types.Snide in self.shuffled_location_types:
-                junk_space_available -= 1
-                if len(self.valid_locations[Types.Snide]) <= 0:
-                    return False
-            return junk_space_available >= 0
+        item_check_counts = {
+            # Item, Checks
+            ItemRandoListSelected.shop: [0, 100],
+            ItemRandoListSelected.moves: [36, 0],
+            ItemRandoListSelected.shockwave: [2, 0],
+            ItemRandoListSelected.bfi_gift: [0, 1],
+            ItemRandoListSelected.banana: [161, 0],
+            ItemRandoListSelected.banana_checks: [0, 148],
+            ItemRandoListSelected.toughbanana: [0, 13],
+            ItemRandoListSelected.arenas: [0, 10],
+            ItemRandoListSelected.crown: [10, 0],
+            ItemRandoListSelected.blueprint: [40, 0],
+            ItemRandoListSelected.kasplat: [0, 40],
+            ItemRandoListSelected.key: [8, 0],
+            ItemRandoListSelected.bosses: [0, 7],
+            ItemRandoListSelected.endofhelm: [0, 1],
+            ItemRandoListSelected.medal: [40, 0],
+            ItemRandoListSelected.medal_checks: [0, 35],
+            ItemRandoListSelected.medal_checks_helm: [0, 5],
+            ItemRandoListSelected.nintendocoin: [1, 0],
+            ItemRandoListSelected.arcade: [0, 1],
+            ItemRandoListSelected.rarewarecoin: [1, 0],
+            ItemRandoListSelected.jetpac: [0, 1],
+            ItemRandoListSelected.kong: [4, 0],
+            ItemRandoListSelected.kong_cages: [0, 4],
+            ItemRandoListSelected.fairy: [20, 0],
+            ItemRandoListSelected.fairy_checks: [0, 20],
+            ItemRandoListSelected.rainbowcoin: [16, 0],
+            ItemRandoListSelected.dirt_patches: [0, 16],
+            ItemRandoListSelected.pearl: [5, 0],
+            ItemRandoListSelected.clams: [0, 5],
+            ItemRandoListSelected.bean: [1, 0],
+            ItemRandoListSelected.anthillreward: [0, 1],
+            ItemRandoListSelected.crateitem: [0, 13],
+            ItemRandoListSelected.shopowners: [0, 0],  # Max is 4, calculated during post-processing
+            ItemRandoListSelected.hint: [35, 0],
+            ItemRandoListSelected.wrinkly: [0, 35],
+            ItemRandoListSelected.boulderitem: [0, 16],
+            ItemRandoListSelected.enemies: [0, 283],
+            ItemRandoListSelected.trainingmoves: [4, 0],
+            ItemRandoListSelected.trainingbarrels: [0, 4],
+        }
+        if self.smaller_shops:
+            item_check_counts[ItemRandoListSelected.shop] = [0, 60]
+        if IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
+            item_check_counts[ItemRandoListSelected.medal] = [45, 0]
+            item_check_counts[ItemRandoListSelected.medal_checks] = [0, 40]
+        item_check_counts[ItemRandoListSelected.kong][0] = 5 - len(self.starting_kong_list)
+        if Types.Cranky in self.shuffled_location_types:
+            item_check_counts[ItemRandoListSelected.shopowners][0] += 1
+            if len(self.valid_locations[Types.Cranky]) <= 0:
+                return False
+        if Types.Funky in self.shuffled_location_types:
+            item_check_counts[ItemRandoListSelected.shopowners][0] += 1
+            if len(self.valid_locations[Types.Funky]) <= 0:
+                return False
+        if Types.Candy in self.shuffled_location_types:
+            item_check_counts[ItemRandoListSelected.shopowners][0] += 1
+            if len(self.valid_locations[Types.Candy]) <= 0:
+                return False
+        if Types.Snide in self.shuffled_location_types:
+            item_check_counts[ItemRandoListSelected.shopowners][0] += 1
+            if len(self.valid_locations[Types.Snide]) <= 0:
+                return False
+        for x in range(4):
+            item_count = 0
+            check_count = 0
+            for item_selector in self.item_search[x]:
+                item_count += item_check_counts[item_selector][0]
+            for check_selector in self.check_search[x]:
+                check_count += item_check_counts[check_selector][1]
+            if item_count > check_count:
+                return False
         return True
 
     def __repr__(self):

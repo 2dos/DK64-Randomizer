@@ -663,7 +663,7 @@ class Spoiler:
             humanspoiler["Bosses"]["Shuffled Boss Order"] = shuffled_bosses
 
         humanspoiler["Bosses"]["King Kut Out Properties"] = {}
-        if self.settings.boss_kong_rando:
+        if self.settings.boss_location_rando:
             shuffled_boss_kongs = OrderedDict()
             for i in range(7):
                 shuffled_boss_kongs["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = Kongs(self.settings.boss_kongs[i]).name.capitalize()

@@ -98,7 +98,6 @@ class ItemPlacementData:
     def __init__(
         self,
         model_index: list[int] = None,
-        kong_model_index: list[int] = None,
         model_two_index: list[int] = None,
         actor_index: list[int] = None,
         overlay: list[GraphicOverlay] = None,
@@ -110,10 +109,6 @@ class ItemPlacementData:
         """Initialize with given parameters."""
         self.has_model = model_index is not None
         self.model_index = model_index
-        if kong_model_index is None:
-            self.kong_model_index = model_index
-        else:
-            self.kong_model_index = kong_model_index
         self.model_two_index = model_two_index
         self.actor_index = actor_index
         self.overlay = overlay
@@ -210,18 +205,7 @@ item_db = {
         seal_preview_text="\x04WEIRD MONKEY\x04",
     ),
     Types.FakeItem: ItemPlacementData(
-        model_index=[
-            0x103,
-            0x103,
-            0x103,
-            0x127,
-            0x127,
-            0x127,
-            0x128,
-            0x128,
-            0x128,
-        ],
-        kong_model_index=[0x103, 0x103, 0x103, 0x127, 0x127, 0x127, 0x128, 0x128, 0x128],
+        model_index=[0x103, 0x103, 0x103, 0x127, 0x127, 0x127, 0x128, 0x128, 0x128],
         model_two_index=[0x25D, 0x264, 0x265, 0x292, 0x293, 0x294, 0x295, 0x296, 0x297],
         actor_index=[
             CustomActors.IceTrapBubble,
@@ -426,7 +410,7 @@ def getIceTrapText(input_text: str) -> str:
             return new_text
 
 
-def getModelFromItem(item: Items, item_type: Types, flag: int, shared: bool = False, is_kong: bool = False) -> int:
+def getModelFromItem(item: Items, item_type: Types, flag: int, shared: bool = False) -> int:
     """Get the model index associated with an item."""
     if item_type not in item_db and item_type not in FILLER_MAPPING:
         return None
@@ -434,8 +418,6 @@ def getModelFromItem(item: Items, item_type: Types, flag: int, shared: bool = Fa
     if not item_db_entry.has_model:
         return None
     index = item_db_entry.index_getter(item, flag, shared)
-    if is_kong:
-        return item_db_entry.kong_model_index[index]
     return item_db_entry.model_index[index]
 
 
