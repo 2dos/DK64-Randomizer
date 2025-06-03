@@ -1294,6 +1294,11 @@ class Settings:
             filler_pairing = {
                 ItemRandoFiller.junkitem: Types.JunkItem,
                 ItemRandoFiller.icetraps: Types.FakeItem,
+                ItemRandoFiller.banana: Types.FillerBanana,
+                ItemRandoFiller.crown: Types.FillerCrown,
+                ItemRandoFiller.fairy: Types.FillerFairy,
+                ItemRandoFiller.medal: Types.FillerMedal,
+                ItemRandoFiller.pearl: Types.FillerPearl,
             }
             item_search_removal = [
                 # Anything which doesn't have accompanying checks. Usually starts with dummy_item
@@ -1366,11 +1371,15 @@ class Settings:
                                 if x not in self.shuffled_check_allowances:
                                     self.shuffled_check_allowances[x] = []
                                 self.shuffled_check_allowances[x].append(y)
+                                self.shuffled_location_types.append(x)
                                 self.shuffled_location_types.append(y)
                     for check, item_type in filler_pairing.items():
                         if check in self.filler_items_selected:
                             for x in selector_types:
                                 self.shuffled_check_allowances[x].append(item_type)
+                    for check, item_type in filler_pairing.items():
+                        if check in self.filler_items_selected:
+                            self.shuffled_location_types.append(item_type)
                     for x in selector_types:
                         self.shuffled_check_allowances[x] = list(set(self.shuffled_check_allowances[x]))
             self.shuffled_location_types = list(set(self.shuffled_location_types))
@@ -1967,6 +1976,7 @@ class Settings:
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
         if self.win_condition_item == WinConditionComplex.req_fairy or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
             ItemList[Items.BananaFairy].playthrough = True
+            ItemList[Items.FillerFairy].playthrough = True
         if self.win_condition_item == WinConditionComplex.req_rainbowcoin or self.crown_door_item == BarrierItems.RainbowCoin or self.coin_door_item == BarrierItems.RainbowCoin:
             ItemList[Items.RainbowCoin].playthrough = True
         if self.win_condition_item == WinConditionComplex.req_bp or self.crown_door_item == BarrierItems.Blueprint or self.coin_door_item == BarrierItems.Blueprint:
@@ -1975,8 +1985,10 @@ class Settings:
                     ItemList[item_index].playthrough = True
         if self.win_condition_item == WinConditionComplex.req_medal or self.crown_door_item == BarrierItems.Medal or self.coin_door_item == BarrierItems.Medal:
             ItemList[Items.BananaMedal].playthrough = True
+            ItemList[Items.FillerMedal].playthrough = True
         if self.win_condition_item == WinConditionComplex.req_crown or self.crown_door_item == BarrierItems.Crown or self.coin_door_item == BarrierItems.Crown:
             ItemList[Items.BattleCrown].playthrough = True
+            ItemList[Items.FillerCrown].playthrough = True
         if (
             self.win_condition_item == WinConditionComplex.req_bean
             or self.crown_door_item == BarrierItems.Bean
@@ -1991,6 +2003,7 @@ class Settings:
             or Types.Pearl in self.shuffled_location_types
         ):
             ItemList[Items.Pearl].playthrough = True
+            ItemList[Items.FillerPearl].playthrough = True
 
         self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none
         self.free_trade_blueprints = self.free_trade_setting == FreeTradeSetting.major_collectibles
@@ -2264,6 +2277,8 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations]
+            if Types.FillerBanana in self.shuffled_location_types:
+                self.valid_locations[Types.FillerBanana] = [location for location in shuffledNonMoveLocations]
             regular_items = (
                 Types.Crown,
                 Types.Key,
@@ -2272,6 +2287,9 @@ class Settings:
                 Types.Pearl,
                 Types.Bean,
                 Types.Fairy,
+                Types.FillerCrown,
+                Types.FillerFairy,
+                Types.FillerPearl,
             )
             for item in regular_items:
                 if item in self.shuffled_location_types:
@@ -2280,6 +2298,8 @@ class Settings:
                 self.valid_locations[Types.Hint] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
             if Types.Medal in self.shuffled_location_types:
                 self.valid_locations[Types.Medal] = fairyBannedLocations.copy()
+            if Types.FillerMedal in self.shuffled_location_types:
+                self.valid_locations[Types.FillerMedal] = fairyBannedLocations.copy()
             shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky)
             for item in shop_owner_items:
                 if item in self.shuffled_location_types:
@@ -2375,7 +2395,6 @@ class Settings:
                     inverted_allowances[k].append(item_type)
             for item_type in inverted_allowances:
                 inverted_allowances[item_type] = list(set(inverted_allowances[item_type]))
-            # Apply restrictions
             for item_type in self.valid_locations:
                 if item_type in inverted_allowances:
                     valid_allowance_types = inverted_allowances[item_type]

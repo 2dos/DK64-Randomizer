@@ -257,6 +257,11 @@ class ItemRandoListSelected(IntEnum):
 class ItemRandoFiller(IntEnum):
     junkitem = 1
     icetraps = 2
+    crown = 3
+    fairy = 4
+    medal = 5
+    pearl = 6
+    banana = 7
 
 class KasplatRandoSetting(IntEnum):
     off = 0

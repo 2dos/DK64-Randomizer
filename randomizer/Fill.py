@@ -666,25 +666,25 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
             # Check all of the newly reachable shops' items
             shopItem = spoiler.LocationList[shopLocationId].item
             # If the item is not going to exactly meet that item type's threshold, we can freely purchase it knowing it will never be progression
-            if shopItem == Items.Pearl and (currentPearlCount < (pearlThreshold - 1) or currentPearlCount >= pearlThreshold):
+            if shopItem in (Items.Pearl, Items.FillerPearl) and (currentPearlCount < (pearlThreshold - 1) or currentPearlCount >= pearlThreshold):
                 currentPearlCount += 1  # Treat the item as collected for future calculations, we might approach the threshold during this process
                 locationsToPurchase.append(shopLocationId)
                 anythingAddedToPurchaseOrder = True
-            if shopItem == Items.BananaMedal and (currentMedalCount < (medalThreshold - 1) or currentMedalCount >= medalThreshold):
+            if shopItem in (Items.BananaMedal, Items.FillerMedal) and (currentMedalCount < (medalThreshold - 1) or currentMedalCount >= medalThreshold):
                 currentMedalCount += 1
                 locationsToPurchase.append(shopLocationId)
                 anythingAddedToPurchaseOrder = True
-            if shopItem == Items.BananaFairy and (currentFairyCount < (fairyThreshold - 1) or currentFairyCount >= fairyThreshold):
+            if shopItem in (Items.BananaFairy, Items.FillerFairy) and (currentFairyCount < (fairyThreshold - 1) or currentFairyCount >= fairyThreshold):
                 currentFairyCount += 1
                 locationsToPurchase.append(shopLocationId)
                 anythingAddedToPurchaseOrder = True
             # Treat GBs and Blueprints as identical
-            if (shopItem == Items.GoldenBanana or shopItem in ItemPool.Blueprints()) and (currentGBCount < (gbThreshold - 1) or currentGBCount > gbThreshold):
+            if (shopItem in (Items.GoldenBanana, Items.FillerBanana) or shopItem in ItemPool.Blueprints()) and (currentGBCount < (gbThreshold - 1) or currentGBCount > gbThreshold):
                 currentGBCount += 1
                 locationsToPurchase.append(shopLocationId)
                 anythingAddedToPurchaseOrder = True
             # These items will never practically give progression. Helm doors are not really relevant here, as any theoretical coin lock will happen WELL before this point.
-            if shopItem in (Items.BattleCrown, Items.IceTrapBubble, Items.RarewareCoin, Items.NintendoCoin):
+            if shopItem in (Items.BattleCrown, Items.FillerCrown, Items.IceTrapBubble, Items.RarewareCoin, Items.NintendoCoin):
                 locationsToPurchase.append(shopLocationId)
                 anythingAddedToPurchaseOrder = True
         # If we added anything to the purchase order, short-circuit back to the top of the loop and keep going with a (hopefully) greatly expanded purchase list
@@ -693,7 +693,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
         # Now that we know our next item has to give us progression in some form, we can consolidate our "worst location candidates" into the worst options among each type
         # Find the most expensive location of each type (it may not exist)
         mostExpensivePearl = None
-        pearlShops = [location for location in newReachableShops if spoiler.LocationList[location].item == Items.Pearl]
+        pearlShops = [location for location in newReachableShops if spoiler.LocationList[location].item in (Items.Pearl, Items.FillerPearl)]
         if settings.random_prices == RandomPrices.vanilla and len(pearlShops) > 0:  # In vanilla prices, prices are by item so we know all these locations have the same price (0)
             mostExpensivePearl = pearlShops[0]
         else:
@@ -701,7 +701,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
                 if mostExpensivePearl is None or settings.prices[shop] > settings.prices[mostExpensivePearl]:
                     mostExpensivePearl = shop
         mostExpensiveMedal = None
-        medalShops = [location for location in newReachableShops if spoiler.LocationList[location].item == Items.BananaMedal]
+        medalShops = [location for location in newReachableShops if spoiler.LocationList[location].item in (Items.BananaMedal, Items.FillerMedal)]
         if settings.random_prices == RandomPrices.vanilla and len(medalShops) > 0:  # Same vanilla price logic applies to all of the threshold types (they all cost 0)
             mostExpensiveMedal = medalShops[0]
         else:
@@ -709,7 +709,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
                 if mostExpensiveMedal is None or settings.prices[shop] > settings.prices[mostExpensiveMedal]:
                     mostExpensiveMedal = shop
         mostExpensiveFairy = None
-        fairyShops = [location for location in newReachableShops if spoiler.LocationList[location].item == Items.BananaFairy]
+        fairyShops = [location for location in newReachableShops if spoiler.LocationList[location].item in (Items.BananaFairy, Items.FillerFairy)]
         if settings.random_prices == RandomPrices.vanilla and len(fairyShops) > 0:
             mostExpensiveFairy = fairyShops[0]
         else:
@@ -717,7 +717,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
                 if mostExpensiveFairy is None or settings.prices[shop] > settings.prices[mostExpensiveFairy]:
                     mostExpensiveFairy = shop
         mostExpensiveGB = None
-        gbShops = [location for location in newReachableShops if (spoiler.LocationList[location].item == Items.GoldenBanana or spoiler.LocationList[location].item in ItemPool.Blueprints())]
+        gbShops = [location for location in newReachableShops if (spoiler.LocationList[location].item in (Items.GoldenBanana, Items.FillerBanana) or spoiler.LocationList[location].item in ItemPool.Blueprints())]
         if settings.random_prices == RandomPrices.vanilla and len(gbShops) > 0:  # While GBs and Blueprints aren't the same item, they both always cost 0 in vanilla
             mostExpensiveGB = gbShops[0]
         else:
@@ -726,7 +726,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
                     mostExpensiveGB = shop
         # Prepare the candidates for "worst location" - exclude any of the threshold items that we know the worst of
         thresholdItems = ItemPool.Blueprints().copy()
-        thresholdItems.extend([Items.Pearl, Items.BananaMedal, Items.BananaFairy, Items.GoldenBanana])
+        thresholdItems.extend([Items.Pearl, Items.BananaMedal, Items.BananaFairy, Items.GoldenBanana, Items.FillerPearl, Items.FillerBanana, Items.FillerMedal, Items.FillerFairy])
         worstLocationCandidates = [shop for shop in newReachableShops if spoiler.LocationList[shop].item not in thresholdItems]
         # If there exists a spot of this type, then we add the worst of this type to our list of candidates
         if mostExpensivePearl is not None:
@@ -965,12 +965,16 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
         majorItems.extend(ItemPool.Blueprints())
     if checkCommonBarriers(spoiler.settings, BarrierItems.Medal, WinConditionComplex.req_medal):
         majorItems.append(Items.BananaMedal)
+        majorItems.append(Items.FillerMedal)
     if checkCommonBarriers(spoiler.settings, BarrierItems.Fairy, WinConditionComplex.req_fairy):
         majorItems.append(Items.BananaFairy)
+        majorItems.append(Items.FillerFairy)
     if checkCommonBarriers(spoiler.settings, BarrierItems.Crown, WinConditionComplex.req_crown):
         majorItems.append(Items.BattleCrown)
+        majorItems.append(Items.FillerCrown)
     if checkCommonBarriers(spoiler.settings, BarrierItems.Pearl, WinConditionComplex.req_pearl):
         majorItems.append(Items.Pearl)
+        majorItems.append(Items.FillerPearl)
     if checkCommonBarriers(spoiler.settings, BarrierItems.Bean, WinConditionComplex.req_bean):
         majorItems.append(Items.Bean)
     if checkCommonBarriers(spoiler.settings, BarrierItems.RainbowCoin, WinConditionComplex.req_rainbowcoin):
@@ -982,12 +986,15 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
         newFoolishItems = False
         if spoiler.LocationList[Locations.RarewareCoin].item in majorItems and Items.BananaMedal not in majorItems:
             majorItems.append(Items.BananaMedal)
+            majorItems.append(Items.FillerMedal)
             newFoolishItems = True
         if spoiler.LocationList[Locations.RarewareBanana].item in majorItems and Items.BananaFairy not in majorItems:
             majorItems.append(Items.BananaFairy)
+            majorItems.append(Items.FillerFairy)
             newFoolishItems = True
         if spoiler.LocationList[Locations.GalleonTinyPearls].item in majorItems and Items.Pearl not in majorItems:
             majorItems.append(Items.Pearl)
+            majorItems.append(Items.FillerPearl)
             newFoolishItems = True
         if spoiler.LocationList[Locations.ForestTinyBeanstalk].item in majorItems and Items.Bean not in majorItems:
             majorItems.append(Items.Bean)
@@ -1154,7 +1161,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
                     if location.item in (Items.NintendoCoin, Items.RarewareCoin) and BarrierItems.CompanyCoin in spoiler.settings.BLockerEntryItems:
                         continue
                     # Even less likely: Pearls are in the same boat as the company coins, but there's 5 of them so it's considerably less likely to get here
-                    if location.item == Items.Pearl and BarrierItems.Pearl in spoiler.settings.BLockerEntryItems:
+                    if location.item in (Items.Pearl, Items.FillerPearl) and BarrierItems.Pearl in spoiler.settings.BLockerEntryItems:
                         continue
                 # Keys that make it here are also always WotH
                 if location.item in ItemPool.Keys():
@@ -1302,7 +1309,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
         shuffledPotionItems.add(Items.Shockwave)
         shuffledPotionItems.add(Items.Camera)
     # Some items aren't WotH but are frequently a part of either/or scenarios. The paths to these items should also be considered by "pathless" hints.
-    interesting_non_woth_items = [Items.Bean, Items.Pearl, Items.NintendoCoin, Items.RarewareCoin]
+    interesting_non_woth_items = [Items.Bean, Items.Pearl, Items.NintendoCoin, Items.RarewareCoin, Items.FillerPearl]
     # If you start with a slam and have 0 WotH slams OR you don't start with a slam and have 0-1 WotH slams
     if (spoiler.settings.start_with_slam and Items.ProgressiveSlam not in wothItems) or (not spoiler.settings.start_with_slam and wothItems.count(Items.ProgressiveSlam) <= 1):
         # That means two slams are unhintable and we must account for the paths to the unhinted slams
@@ -2051,12 +2058,28 @@ def Fill(spoiler: Spoiler) -> None:
                 "Keys",
             )
 
-    # Then place misc progression items
+    # Then place the bean
     if Types.Bean in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Bean)
+        spoiler.Reset()
+        miscItemsToPlace = ItemPool.BeanItems().copy()
+        for item in preplaced_items:
+            if item in miscItemsToPlace:
+                miscItemsToPlace.remove(item)
+        miscUnplaced = PlaceItems(
+            spoiler,
+            spoiler.settings.algorithm,
+            miscItemsToPlace,
+            ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
+        )
+        if miscUnplaced > 0:
+            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: MI-" + str(miscUnplaced))
+        
+    # Then place the pearls
+    if Types.Pearl in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Pearl)
         spoiler.Reset()
-        miscItemsToPlace = ItemPool.MiscItemRandoItems().copy()
+        miscItemsToPlace = ItemPool.PearlItems().copy()
         for item in preplaced_items:
             if item in miscItemsToPlace:
                 miscItemsToPlace.remove(item)
@@ -2287,6 +2310,7 @@ def Fill(spoiler: Spoiler) -> None:
             ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
             "Tough GBs",
         )
+    
     # Fill in fake items
     if Types.FakeItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.FakeItem)
@@ -2299,6 +2323,19 @@ def Fill(spoiler: Spoiler) -> None:
         # Don't raise exception if unplaced fake items
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Fake Items")
+    # Fill in filler non-junk/trap items
+    filler_types = [
+        Types.FillerBanana,
+        Types.FillerCrown,
+        Types.FillerFairy,
+        Types.FillerPearl,
+        Types.FillerMedal,
+    ]
+    filler_types_in_pool = [x for x in filler_types if x in spoiler.settings.shuffled_location_types]
+    if len(filler_types_in_pool) > 0:
+        placed_types.extend(filler_types_in_pool)
+        spoiler.Reset()
+        PlaceItems(spoiler, FillAlgorithm.random, ItemPool.FillerItems(spoiler.settings), [])
     # Fill in junk items
     if Types.JunkItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.JunkItem)

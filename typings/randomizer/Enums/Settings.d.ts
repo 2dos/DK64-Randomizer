@@ -284,6 +284,11 @@ export enum ItemRandoListSelected {
 export enum ItemRandoFiller {
     junkitem = 1,
     icetraps = 2,
+    crown = 3,
+    fairy = 4,
+    medal = 5,
+    pearl = 6,
+    banana = 7,
 }
 
 export enum KasplatRandoSetting {

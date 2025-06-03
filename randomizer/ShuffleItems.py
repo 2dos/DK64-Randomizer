@@ -192,7 +192,7 @@ def ShuffleItems(spoiler):
                 elif new_item.type in (Types.NintendoCoin, Types.RarewareCoin):
                     location_selection.new_flag = new_item.flag
                     locations_not_needing_flags.append(location_selection)
-                elif new_item.type in (Types.FakeItem, Types.JunkItem, Types.ArchipelagoItem):
+                elif new_item.type in (Types.FakeItem, Types.JunkItem, Types.ArchipelagoItem, Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerMedal, Types.FillerPearl):
                     location_selection.new_flag = 0x7FFF
                     locations_not_needing_flags.append(location_selection)
                 # Otherwise we need to put it in the list of locations needing flags

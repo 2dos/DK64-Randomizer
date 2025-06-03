@@ -93,4 +93,4 @@ extern patch_db_item patch_flags[16];
 extern BoulderItemStruct boulder_item_table[16];
 extern bonus_barrel_info bonus_data[BONUS_DATA_COUNT];
 extern meloncrate_db_item crate_flags[16];
-extern model_item_data kong_check_data[4];
+extern model_item_data [4];

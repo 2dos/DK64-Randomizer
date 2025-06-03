@@ -211,15 +211,20 @@ class Spoiler:
             Types.TrainingBarrel: "Moves",
             Types.Climbing: "Moves",
             Types.Banana: "Golden Bananas",
+            Types.FillerBanana: "Golden Bananas",
             Types.Blueprint: "Blueprints",
             Types.Fairy: "Fairies",
+            Types.FillerFairy: "Fairies",
             Types.Key: "Keys",
             Types.Crown: "Crowns",
+            Types.FillerCrown: "Crowns",
             Types.Medal: "Medals",
+            Types.FillerMedal: "Medals",
             Types.NintendoCoin: "Company Coins",
             Types.RarewareCoin: "Company Coins",
-            Types.Bean: "Miscellaneous Items",
-            Types.Pearl: "Miscellaneous Items",
+            Types.Bean: "The Bean",
+            Types.Pearl: "Pearls",
+            Types.FillerPearl: "Pearls",
             Types.RainbowCoin: "Rainbow Coins",
             Types.FakeItem: "Ice Traps",
             Types.JunkItem: "Junk Items",
@@ -536,7 +541,8 @@ class Spoiler:
             "Crowns": {},
             "Company Coins": {},
             "Medals": {},
-            "Miscellaneous Items": {},
+            "Pearls": {},
+            "The Bean": {},
             "Rainbow Coins": {},
             "Ice Traps": {},
             "Junk Items": {},
@@ -893,7 +899,7 @@ class Spoiler:
             if self.LocationList[loc].item == Items.ProgressiveSlam:
                 slamCount += 1
                 extra = " " + str(slamCount)
-            if self.LocationList[loc].item == Items.Pearl:
+            if self.LocationList[loc].item in (Items.Pearl, Items.FillerPearl):
                 pearlCount += 1
                 extra = " " + str(pearlCount)
             humanspoiler["WotH Paths"][destination_item.name + extra] = path_dict
@@ -925,7 +931,7 @@ class Spoiler:
             if self.LocationList[loc].item == Items.ProgressiveSlam:
                 slamCount += 1
                 extra = " " + str(slamCount)
-            if self.LocationList[loc].item == Items.Pearl:
+            if self.LocationList[loc].item in (Items.Pearl, Items.FillerPearl):
                 pearlCount += 1
                 extra = " " + str(pearlCount)
             humanspoiler["Other Paths"][destination_item.name + extra] = path_dict
@@ -1256,20 +1262,20 @@ class Spoiler:
         if ItemList[location.item].type == Types.Banana:
             return 100
         win_con_type_table = {
-            WinConditionComplex.req_bean: Types.Bean,
-            WinConditionComplex.req_bp: Types.Blueprint,
-            WinConditionComplex.req_companycoins: Types.NintendoCoin,  # Also Types.RarewareCoin
-            WinConditionComplex.req_crown: Types.Crown,
-            WinConditionComplex.req_fairy: Types.Fairy,
-            WinConditionComplex.req_gb: Types.Banana,  # Also Types.ToughBanana
-            # WinConditionComplex.req_key: Types.Key,
-            WinConditionComplex.req_medal: Types.Medal,
-            WinConditionComplex.req_pearl: Types.Pearl,
-            WinConditionComplex.req_rainbowcoin: Types.RainbowCoin,
+            WinConditionComplex.req_bean: [Types.Bean],
+            WinConditionComplex.req_bp: [Types.Blueprint],
+            WinConditionComplex.req_companycoins: [Types.NintendoCoin],  # Also Types.RarewareCoin
+            WinConditionComplex.req_crown: [Types.Crown, Types.FillerCrown],
+            WinConditionComplex.req_fairy: [Types.Fairy, Types.FillerFairy],
+            WinConditionComplex.req_gb: [Types.Banana, Types.FillerBanana],  # Also Types.ToughBanana
+            # WinConditionComplex.req_key: [Types.Key],
+            WinConditionComplex.req_medal: [Types.Medal, Types.FillerMedal],
+            WinConditionComplex.req_pearl: [Types.Pearl, Types.FillerPearl],
+            WinConditionComplex.req_rainbowcoin: [Types.RainbowCoin],
         }
         # Win condition items are more important than GBs but less than moves
         if self.settings.win_condition_item in win_con_type_table:
-            if ItemList[location.item].type == win_con_type_table[self.settings.win_condition_item]:
+            if ItemList[location.item].type in win_con_type_table[self.settings.win_condition_item]:
                 return 10
             if self.settings.win_condition_item == WinConditionComplex.req_companycoins:
                 if ItemList[location.item].type == Types.RarewareCoin:

@@ -369,6 +369,31 @@
             "name": "Ice Traps",
             "value": "icetraps",
             "tooltip": "Fake versions of items will be added which apply various negative temporary effects to the player upon picking up that item."
+        },
+        {
+            "name": "Battle Crowns",
+            "value": "crown",
+            "tooltip": "Battle Crowns will be added to filler."
+        },
+        {
+            "name": "Fairies",
+            "value": "fairy",
+            "tooltip": "Fairies will be added to filler."
+        },
+        {
+            "name": "Banana Medals",
+            "value": "medal",
+            "tooltip": "Banana Medals will be added to filler."
+        },
+        {
+            "name": "Pearls",
+            "value": "pearl",
+            "tooltip": "Pearls will be added to filler."
+        },
+        {
+            "name": "Golden Banana",
+            "value": "banana",
+            "tooltip": "Golden Banana will be added to filler."
         }
     ],
     "KeySelector": [

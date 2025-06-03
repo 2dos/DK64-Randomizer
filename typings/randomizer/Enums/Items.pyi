@@ -181,3 +181,8 @@ class Items(IntEnum):
     IceTrapReverseKey = 178
     IceTrapSlowKey = 179
     BoulderItem = 180
+    FillerPearl = 181
+    FillerBanana = 182
+    FillerFairy = 183
+    FillerCrown = 184
+    FillerMedal = 185

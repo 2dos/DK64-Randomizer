@@ -211,17 +211,17 @@ item_db = {
     ),
     Types.FakeItem: ItemPlacementData(
         model_index=[
-            0x10000 - 4,
-            0x10000 - 3,
-            0x10000 - 2,
-            0x10000 - 7,
-            0x10000 - 6,
-            0x10000 - 5,
-            0x10000 - 10,
-            0x10000 - 9,
-            0x10000 - 8,
+            0x103,
+            0x103,
+            0x103,
+            0x127,
+            0x127,
+            0x127,
+            0x128,
+            0x128,
+            0x128,
         ],
-        kong_model_index=[0xFD, 0xFD, 0xFD, 0x126, 0x126, 0x126, 0x128, 0x128, 0x128],
+        kong_model_index=[0x103, 0x103, 0x103, 0x127, 0x127, 0x127, 0x128, 0x128, 0x128],
         model_two_index=[0x25D, 0x264, 0x265, 0x292, 0x293, 0x294, 0x295, 0x296, 0x297],
         actor_index=[
             CustomActors.IceTrapBubble,
@@ -370,6 +370,19 @@ item_db = {
     ),
 }
 
+FILLER_MAPPING = {
+    Types.FillerBanana: Types.Banana,
+    Types.FillerCrown: Types.Crown,
+    Types.FillerFairy: Types.Fairy,
+    Types.FillerMedal: Types.Medal,
+    Types.FillerPearl: Types.Pearl,
+}
+
+def getItemDBEntry(type: Types) -> ItemPlacementData:
+    """Get the item db entry for an item type."""
+    if type in FILLER_MAPPING:
+        return item_db[FILLER_MAPPING[type]]
+    return item_db[type]
 
 def getIceTrapText(input_text: str) -> str:
     """Get the text associated with ice traps."""
@@ -415,20 +428,21 @@ def getIceTrapText(input_text: str) -> str:
 
 def getModelFromItem(item: Items, item_type: Types, flag: int, shared: bool = False, is_kong: bool = False) -> int:
     """Get the model index associated with an item."""
-    if item_type not in item_db:
+    if item_type not in item_db and item_type not in FILLER_MAPPING:
         return None
-    if not item_db[item_type].has_model:
+    item_db_entry = getItemDBEntry(item_type)
+    if not item_db_entry.has_model:
         return None
-    index = item_db[item_type].index_getter(item, flag, shared)
+    index = item_db_entry.index_getter(item, flag, shared)
     if is_kong:
-        return item_db[item_type].kong_model_index[index]
-    return item_db[item_type].model_index[index]
+        return item_db_entry.kong_model_index[index]
+    return item_db_entry.model_index[index]
 
 
 def getPropFromItem(item: Items, item_type: Types, flag: int, shared: bool = False) -> int:
     """Get the prop index associated with an item."""
-    index = item_db[item_type].index_getter(item, flag, shared)
-    return item_db[item_type].model_two_index[index]
+    index = getItemDBEntry(item_type).index_getter(item, flag, shared)
+    return getItemDBEntry(item_type).model_two_index[index]
 
 
 IceTrapMasks = {
@@ -452,10 +466,11 @@ def getModelMask(item: Items) -> Types:
 def getItemPreviewText(item_type: Types, location: Locations, allow_special_text: bool = True, masked_model: Types = None) -> str:
     """Get the preview text for an item."""
     if item_type == Types.FakeItem and (location != Locations.GalleonDonkeySealRace or not allow_special_text):
-        masked_name = item_db[masked_model].preview_text
+        masked_name = getItemDBEntry(masked_model).preview_text
         return getIceTrapText(masked_name)
-    if item_type in item_db:
-        text = item_db[item_type].preview_text
+    text = ""
+    if item_type in item_db or item_type in FILLER_MAPPING:
+        text = getItemDBEntry(item_type).preview_text
         if location == Locations.GalleonDonkeySealRace and allow_special_text:
-            text = item_db[item_type].seal_preview_text
+            text = getItemDBEntry(item_type).seal_preview_text
     return text
