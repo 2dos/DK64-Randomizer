@@ -2003,6 +2003,9 @@ def compileHints(spoiler: Spoiler) -> bool:
             # Maps.CastleUpperCave: [Regions.UpperCave],
             # Maps.CastleLowerCave: [Regions.LowerCave],
         }
+        # If warps are pre-activated and cross-map, we can't treat the Castle Crypt as a connector because you are decently likely to just warp into it.
+        if spoiler.settings.activate_all_bananaports == ActivateAllBananaports.all and spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled):
+            del connector_maps[Maps.CastleCrypt]
         # First identify which maps contain WotH items - some maps are more interesting than others
         isolated_interesting_transitions = []
         # Lists to prevent duplicate entrance hints from existing
