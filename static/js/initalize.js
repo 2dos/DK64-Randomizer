@@ -1217,11 +1217,14 @@ async function preset_select_changed(event) {
   /** Trigger a change of the form via the JSON templates. */
   // Disable the generate seed button
   document.getElementById("generate_seed").disabled = true;
+  // Variable to denote that the generate seed button should not be activated by outside functions
+  document.getElementById("generate_seed").setAttribute("loading_settings", "true");
   // Run trigger_presets_event in set timeout to allow the button to disable
   setTimeout(() => {
     trigger_preset_event(event);
     setTimeout(() => {
       document.getElementById("generate_seed").disabled = false;
+      document.getElementById("generate_seed").removeAttribute("loading_settings");
     }, 2000);
   }, 0);
 }
