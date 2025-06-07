@@ -727,3 +727,17 @@ fixDiddySlamCrash:
     fixDiddySlamCrashEnd:
         j 0x80609340
         lbu $t2, 0x4F ($sp)
+
+fixBLockerRange:
+    lui $at, hi(CurrentMap)
+    sh $zero, 0x0 ($t9)
+    lw $at, lo(CurrentMap) ($at)
+    addiu $t8, $zero, 0xAA ; Helm Lobby
+    bne $at, $t8, fixBLockerRange_finish  ; Not Helm Lobby, apply zero blocker range
+    nop
+    lui $t8, 0x42C8  ; 100
+    mtc1 $t8, $f4
+
+    fixBLockerRange_finish:
+        j 0x800275C4
+        lui $at, 0x8003
