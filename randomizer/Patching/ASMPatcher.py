@@ -25,12 +25,15 @@ from randomizer.Enums.Settings import (
     ProgressiveHintItem,
     WrinklyHints,
 )
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Enums.Models import Model
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Settings import ShuffleLoadingZones, MinigamesListSelected
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Items import Items
@@ -1964,6 +1967,20 @@ def patchAssembly(ROM_COPY, spoiler):
             file_init_flags.extend(barrier_flags[barrier])
 
     writeFunction(ROM_COPY, 0x80682A98, Overlay.Static, "resetCannonGameState", offset_dict)
+
+    # Switchsanity
+    helm_lobby_ssanity_data = settings.switchsanity_data[Switches.IslesHelmLobbyGone]
+    if helm_lobby_ssanity_data.kong != Kongs.chunky or helm_lobby_ssanity_data.switch_type != SwitchType.PadMove:
+        # Something other than gone
+        writeValue(ROM_COPY, 0x80680E3A, Overlay.Static, getHiSym("bonus_shown"), offset_dict)
+        writeValue(ROM_COPY, 0x80680E3C, Overlay.Static, 0x91EF0000 | getLoSym("bonus_shown"), offset_dict, 4)  # lbu $t7, lo(bonus_shown) ($t7)
+        writeValue(ROM_COPY, 0x80680E48, Overlay.Static, 0, offset_dict, 4)  # nop
+        writeValue(ROM_COPY, 0x80680E54, Overlay.Static, 0x51E00009, offset_dict, 4)  # beql $t7, $zero, 0x9
+    mport_ssanity_data = settings.switchsanity_data[Switches.IslesMonkeyport]
+    if mport_ssanity_data.kong == Kongs.donkey and mport_ssanity_data.switch_type == SwitchType.PadMove:
+        # Blast
+        writeValue(ROM_COPY, 0x806E5A4A, Overlay.Static, getHiSym("blastWarpContainer"), offset_dict)
+        writeValue(ROM_COPY, 0x806E5A4E, Overlay.Static, getLoSym("blastWarpContainer"), offset_dict)
 
     if settings.enemy_kill_crown_timer:
         writeFunction(ROM_COPY, 0x8072AC80, Overlay.Static, "handleCrownTimer", offset_dict)

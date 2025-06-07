@@ -389,7 +389,6 @@ extern int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, 
 extern void getModelTwoItemFromActor(int actor, short* item, float* scale);
 extern void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index);
 extern void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index);
-extern void initSwitchsanityChanges(void);
 extern void setObjectOpacity(behaviour_data* behaviour_pointer, int opacity);
 extern int standingOnM2Object(int index);
 
@@ -466,6 +465,7 @@ extern char music_types[SONG_COUNT];
 extern char grab_lock_timer;
 extern char tag_locked;
 extern char enable_skip_check;
+extern char bonus_shown;
 extern int force_enable_diving_timer;
 
 extern unsigned int base_text_color;
