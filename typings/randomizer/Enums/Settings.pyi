@@ -305,6 +305,7 @@ class LogicType(IntEnum):
     glitchless = 1
     glitch = 2
     nologic = 3
+    minimal = 4
 
 class MicrohintsEnabled(IntEnum):
     off = 0

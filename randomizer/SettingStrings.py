@@ -101,7 +101,7 @@ settingsExclusionMap = {
     },
     "shuffle_items": {False: ["item_rando_list_selected"]},
     "cb_rando_enabled": {False: ["cb_rando_list_selected"]},
-    "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
+    "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"], LogicType.minimal: ["glitches_selected"]},
     "spoiler_hints": {
         SpoilerHints.off: [
             "points_list_kongs"
