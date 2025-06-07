@@ -434,4 +434,9 @@
                 trigger: 'hover'
             })
         })
+        $(document).ready(function () {
+                if(!(document.getElementById("generate_seed").hasAttribute("loading_settings"))){
+                    $("#generate_seed").removeAttr("disabled");
+                }
+            })
     </script>
