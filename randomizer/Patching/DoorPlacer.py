@@ -10,7 +10,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
-from randomizer.Patching.Library.Generic import IsItemSelected, addNewScript, getNextFreeID, IsDDMSSelected
+from randomizer.Patching.Library.Generic import addNewScript, getNextFreeID, IsDDMSSelected
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM

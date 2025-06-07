@@ -61,7 +61,7 @@ from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Patching.Library.Generic import IsItemSelected, getProgHintBarrierItem, IsDDMSSelected
+from randomizer.Patching.Library.Generic import getProgHintBarrierItem, IsDDMSSelected
 from randomizer.Prices import AnyKongCanBuy, CanBuy
 from archipelago.Items import DK64Item
 

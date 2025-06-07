@@ -47,7 +47,7 @@ from randomizer.Lists.PathHintTree import BuildPathHintTree
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
 from randomizer.Patching.UpdateHints import UpdateHint
-from randomizer.Patching.Library.Generic import plando_colors, IsItemSelected, IsDDMSSelected
+from randomizer.Patching.Library.Generic import plando_colors, IsDDMSSelected
 
 if TYPE_CHECKING:
     from randomizer.Lists.WrinklyHints import HintLocation

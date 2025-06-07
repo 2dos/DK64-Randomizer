@@ -1,7 +1,6 @@
 """Write ASM data for cosmetic elements."""
 
 import random
-import js
 from randomizer.Patching.Library.ASM import *
 from randomizer.Patching.Library.Generic import (
     getHoliday,
@@ -9,14 +8,13 @@ from randomizer.Patching.Library.Generic import (
     getHolidaySetting,
     compatible_background_textures,
     MenuTextDim,
-    IsItemSelected,
     IsColorOptionSelected,
     IsDDMSSelected,
 )
 from randomizer.Patching.Library.Image import getBonusSkinOffset, ExtraTextures, getRandomHueShift, hueShiftImageFromAddress, TextureFormat
 from randomizer.Patching.MiscSetupChanges import SpeedUpFungiRabbit
 from randomizer.Enums.Models import Model, Sprite
-from randomizer.Enums.Settings import ColorblindMode, ExcludedSongs, KongModels, RandomModels, ColorOptions
+from randomizer.Enums.Settings import ColorblindMode, ExcludedSongs, KongModels, ColorOptions
 from randomizer.Patching.Patcher import ROM
 
 

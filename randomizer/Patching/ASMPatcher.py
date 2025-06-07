@@ -1458,6 +1458,7 @@ def patchAssembly(ROM_COPY, spoiler):
         )
 
     expandActorTable(ROM_COPY, settings, offset_dict)
+    writeValue(ROM_COPY, 0x80755DCC, Overlay.Static, 93, offset_dict)
 
     # Uncontrollable Fixes
     writeFunction(ROM_COPY, 0x806F56E0, Overlay.Static, "getFlagIndex_Corrected", offset_dict)  # BP Acquisition - Correct for character

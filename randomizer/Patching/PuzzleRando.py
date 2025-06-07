@@ -4,7 +4,7 @@ import math
 from enum import IntEnum, auto
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Library.Generic import IsItemSelected, IsDDMSSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Enums.Settings import FasterChecksSelected, PuzzleRando

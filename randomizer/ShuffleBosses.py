@@ -9,7 +9,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import SlamRequirement, HardBossesSelected
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, PlandoIncompatibleException
 from randomizer.Enums.Maps import Maps
-from randomizer.Patching.Library.Generic import IsItemSelected, IsDDMSSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected
 
 BossMapList = [
     Maps.JapesBoss,

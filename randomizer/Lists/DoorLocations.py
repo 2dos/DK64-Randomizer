@@ -19,7 +19,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Enums.Time import Time
 from randomizer.Logic import RegionsOriginal as RegionList
 from randomizer.LogicClasses import TransitionFront
-from randomizer.Patching.Library.Generic import IsItemSelected, IsDDMSSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected
 from randomizer.Lists.MapsAndExits import RegionMapList
 
 LEVEL_MAIN_MAPS = (

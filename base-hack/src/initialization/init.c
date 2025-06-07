@@ -346,7 +346,6 @@ void initHack(int source) {
 			// Kong Rando
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
-			initKongRando();
 			initCosmetic();
 			initTextChanges();
 

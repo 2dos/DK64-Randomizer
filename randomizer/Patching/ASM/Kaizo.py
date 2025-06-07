@@ -3,7 +3,7 @@
 from enum import IntEnum
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
-from randomizer.Patching.Library.Generic import IsItemSelected, IsDDMSSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Settings import HardModeSelected, DamageAmount, MiscChangesSelected, HardBossesSelected, ExtraCutsceneSkips
 
