@@ -1338,7 +1338,7 @@ class Settings:
                     paired_slot = None
                     paired_type = None
                     for index, slot in enumerate(self.item_search):
-                        if selector_value in paired_slot:
+                        if selector_value in slot:
                             paired_slot = index
                             paired_type = data[0]
                             break

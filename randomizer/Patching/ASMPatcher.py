@@ -1743,11 +1743,6 @@ def patchAssembly(ROM_COPY, spoiler):
                 writeValue(ROM_COPY, address_head + 0, Overlay.Static, race_exit["race_map"], offset_dict, 4)
                 writeValue(ROM_COPY, address_head + 4, Overlay.Static, GetMapId(settings, shuffled_back.regionId), offset_dict, 4)
                 writeValue(ROM_COPY, address_head + 8, Overlay.Static, GetExitId(shuffled_back), offset_dict, 4)
-        if ENABLE_BLAST_LZR:
-            addr_hi = getHiSym("blastWarpHandler")
-            addr_lo = getLoSym("blastWarpHandler")
-            writeValue(ROM_COPY, 0x806E5A4A, Overlay.Static, addr_hi, offset_dict)
-            writeValue(ROM_COPY, 0x806E5A4E, Overlay.Static, addr_lo, offset_dict)
 
     # Boss Mapping
     for i in range(7):
@@ -1979,8 +1974,8 @@ def patchAssembly(ROM_COPY, spoiler):
     mport_ssanity_data = settings.switchsanity_data[Switches.IslesMonkeyport]
     if mport_ssanity_data.kong == Kongs.donkey and mport_ssanity_data.switch_type == SwitchType.PadMove:
         # Blast
-        writeValue(ROM_COPY, 0x806E5A4A, Overlay.Static, getHiSym("blastWarpContainer"), offset_dict)
-        writeValue(ROM_COPY, 0x806E5A4E, Overlay.Static, getLoSym("blastWarpContainer"), offset_dict)
+        writeValue(ROM_COPY, 0x806E5A4A, Overlay.Static, getHiSym("blastWarpHandler"), offset_dict)
+        writeValue(ROM_COPY, 0x806E5A4E, Overlay.Static, getLoSym("blastWarpHandler"), offset_dict)
 
     if settings.enemy_kill_crown_timer:
         writeFunction(ROM_COPY, 0x8072AC80, Overlay.Static, "handleCrownTimer", offset_dict)

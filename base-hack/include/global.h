@@ -490,3 +490,4 @@ extern const collision_tree_struct fixed_klap_collision[8];
 extern const collision_tree_struct fixed_bug_collision[2];
 extern char version_string[0x10];
 extern unsigned short GameStats[STAT_TERMINATOR];
+extern LZREntrance blast_entrances[8];

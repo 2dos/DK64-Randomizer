@@ -148,18 +148,6 @@ int getHelmLobbyGoneReqKong(void) {
 
 char bonus_shown = 0;
 
-void blastWarpContainer(maps map, int wrongCSEnabled) {
-    int exit = 0;
-    if (map == MAP_ISLES) {
-        exit = 23;
-    }
-    if (wrongCSEnabled) {
-        setIntroStoryPlaying(2);
-        setNextTransitionType(0);
-    }
-    initiateTransition_0(map, exit, 0, 0);
-}
-
 void activateGonePad(void) {
     actorSpawnerData* spawner = ActorSpawnerPointer;
     if (spawner) {

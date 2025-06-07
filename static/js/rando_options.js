@@ -557,6 +557,7 @@ document
   .addEventListener("click", function (event) {
     const tabs = [
       "nav-started-tab",
+      "nav-item-tab",
       "nav-random-tab",
       "nav-overworld-tab",
       "nav-progression-tab",
@@ -575,6 +576,7 @@ document
   .addEventListener("click", function (event) {
     const tabs = [
       "nav-started-tab",
+      "nav-item-tab",
       "nav-random-tab",
       "nav-overworld-tab",
       "nav-progression-tab",
@@ -1087,21 +1089,11 @@ document
   .addEventListener("click", disable_helm_phases);
 
 // Enable and disable settings based on the Item Rando pool changing
-document
-  .getElementById("item_rando_list_select_all")
-  .addEventListener("click", item_rando_list_changed);
-document
-  .getElementById("item_rando_list_reset")
-  .addEventListener("click", item_rando_list_changed);
-document
-  .getElementById("item_rando_list_selected")
-  .addEventListener("click", item_rando_list_changed);
-
 function item_rando_list_changed(evt) {
   let itemRandoDisabled = true;
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
+  // const itemRandoPool = document.getElementById(
+  //   "item_rando_list_selected"
+  // ).options;
   const smallerShops = document.getElementById("smaller_shops");
   const moveVanilla = document.getElementById("move_off");
   const moveRando = document.getElementById("move_on");
@@ -1136,11 +1128,11 @@ function item_rando_list_changed(evt) {
 
   if (shopsInPool) {
     sharedShopWarning.setAttribute("hidden", "hidden");
-    if (moveVanilla.selected || moveRando.selected) {
-      document.getElementById("move_on_cross_purchase").selected = true;
-    }
-    moveVanilla.setAttribute("disabled", "disabled");
-    moveRando.setAttribute("disabled", "disabled");
+    // if (moveVanilla.selected || moveRando.selected) {
+    //   document.getElementById("move_on_cross_purchase").selected = true;
+    // }
+    // moveVanilla.setAttribute("disabled", "disabled");
+    // moveRando.setAttribute("disabled", "disabled");
     smallerShops.removeAttribute("disabled");
 
     
@@ -1167,8 +1159,8 @@ function item_rando_list_changed(evt) {
 
   } else {
     sharedShopWarning.removeAttribute("hidden");
-    moveVanilla.removeAttribute("disabled");
-    moveRando.removeAttribute("disabled");
+    // moveVanilla.removeAttribute("disabled");
+    // moveRando.removeAttribute("disabled");
     smallerShops.setAttribute("disabled", "disabled");
     smallerShops.checked = false;
   }

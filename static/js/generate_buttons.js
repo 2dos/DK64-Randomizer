@@ -1,3 +1,4 @@
+var jquery = $;
 function lanky_file_changed(event) {
     /** On the event of a file being loaded.
     
@@ -75,8 +76,10 @@ async function generate_seed_from_patch(event) {
                     return;
                 }
             }
+            $("#lankyModal").modal("show");
             // Apply the patch
             await apply_patch(loaded_patch, true)
+            $("#lankyModal").modal("hide");
          }
     }
 }
