@@ -287,7 +287,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x8075F244, Overlay.Static, 0x282, offset_dict)
         writeValue(ROM_COPY, 0x806BE9B2, Overlay.Static, 0x287, offset_dict)
         writeValue(ROM_COPY, 0x806BED5E, Overlay.Static, 0x288, offset_dict)
-        SpeedUpFungiRabbit(ROM_COPY, 1.2)
+        SpeedUpFungiRabbit(ROM_COPY, 1.62)
         # Chunky 5DI
         writeValue(ROM_COPY, 0x8075F3F2, Overlay.Static, Model.Beetle + 1, offset_dict)
         writeValue(ROM_COPY, 0x806B23C6, Overlay.Static, 0x287, offset_dict)
