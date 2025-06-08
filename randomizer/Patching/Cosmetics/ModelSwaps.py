@@ -445,8 +445,8 @@ def applyCosmeticModelSwaps(settings: Settings, ROM_COPY: ROM):
             # Fungi
             rabbit_race_fungi_change = SpawnerChange(Maps.FungiForest, 2)
             rabbit_race_fungi_change.new_scale = 50
-            rabbit_race_fungi_change.new_speed_0 = 70
-            rabbit_race_fungi_change.new_speed_1 = 136
+            rabbit_race_fungi_change.new_speed_0 = 95
+            rabbit_race_fungi_change.new_speed_1 = 184
             spawner_changes.append(rabbit_race_fungi_change)
             # Caves
             rabbit_caves_change = SpawnerChange(Maps.CavesChunkyIgloo, 1)
