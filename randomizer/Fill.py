@@ -50,7 +50,7 @@ from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.CustomLocations import resetCustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import SharedMoveLocations, SharedShopLocations
+from randomizer.Lists.Location import SharedMoveLocations, SharedShopLocations, ShopLocationReference
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex
 from randomizer.LogicClasses import Sphere, TransitionFront
@@ -544,19 +544,44 @@ def GetAccessibleLocations(
 def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
     """Verify a world in the context of minimal logic."""
     # Key 5 not in Level 7 with non-LZR
+    level_7 = None
     if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:  # Non-LZR
         level_7 = Levels.CreepyCastle
         if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
             level_7 = spoiler.settings.level_order[6]
 
     # Kongs not in shops tied to them
+    kong_shop_locations = [
+        [],  # DK
+        [],  # Diddy
+        [],  # Lanky
+        [],  # Tiny
+        [],  # Chunky
+    ]
+    for level, shop_level_data in ShopLocationReference.items():
+        for vendor, shop_vendor_data in shop_level_data.items():
+            for kong_idx, kong_loc in enumerate(shop_vendor_data):
+                if kong_idx < 5:
+                    kong_shop_locations[kong_idx].append(kong_loc)
+    kong_items = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
+    for loc, data in spoiler.LocationList.items():
+        if level_7 is not None:
+            if data.level == level_7 and data.item == Items.FungiForestKey:
+                print("Placement invalid because of Key 5 being in Level 7")
+                return False
+        for kong_index, kong_locs in enumerate(kong_shop_locations):
+            if loc in kong_locs and data.item == kong_items[kong_index]:
+                print("Placement invalid due to shop in shop location")
+                return False
     # Blasts/Arcade R2 can't contain DK
     non_dk_locations = [
         Locations.JapesDonkeyBaboonBlast,
+        Locations.FactoryDonkeyDKArcade,
         Locations.NintendoCoin,
     ]
     for loc in non_dk_locations:
         if spoiler.LocationList[loc].item == Items.Donkey:
+            print("Placement invalid because DK being in a blast-locked location")
             return False
     return True
 
