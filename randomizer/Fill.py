@@ -50,7 +50,7 @@ from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.CustomLocations import resetCustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import SharedMoveLocations, SharedShopLocations
+from randomizer.Lists.Location import SharedMoveLocations, SharedShopLocations, ShopLocationReference
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex
 from randomizer.LogicClasses import Sphere, TransitionFront
@@ -239,7 +239,7 @@ def GetAccessibleLocations(
     """Search to find all reachable locations given owned items."""
     settings = spoiler.settings
     # No logic? Calls to this method that are checking things just return True
-    if settings.logic_type == LogicType.nologic and searchType in [
+    if settings.logic_type in (LogicType.nologic, LogicType.minimal) and searchType in [
         SearchMode.CheckAllReachable,
         SearchMode.CheckBeatable,
         SearchMode.CheckSpecificItemReachable,
@@ -541,12 +541,58 @@ def GetAccessibleLocations(
     elif searchType == SearchMode.GetUnreachable:
         return [x for x in spoiler.LocationList if x not in accessible and not spoiler.LocationList[x].inaccessible]
 
+def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
+    """Verify a world in the context of minimal logic."""
+    # Key 5 not in Level 7 with non-LZR
+    level_7 = None
+    if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:  # Non-LZR
+        level_7 = Levels.CreepyCastle
+        if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+            level_7 = spoiler.settings.level_order[6]
+
+    # Kongs not in shops tied to them
+    kong_shop_locations = [
+        [],  # DK
+        [],  # Diddy
+        [],  # Lanky
+        [],  # Tiny
+        [],  # Chunky
+    ]
+    for level, shop_level_data in ShopLocationReference.items():
+        for vendor, shop_vendor_data in shop_level_data.items():
+            for kong_idx, kong_loc in enumerate(shop_vendor_data):
+                if kong_idx < 5:
+                    kong_shop_locations[kong_idx].append(kong_loc)
+    kong_items = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
+    for loc, data in spoiler.LocationList.items():
+        if level_7 is not None:
+            if data.level == level_7 and data.item == Items.FungiForestKey:
+                print("Placement invalid because of Key 5 being in Level 7")
+                return False
+        for kong_index, kong_locs in enumerate(kong_shop_locations):
+            if loc in kong_locs and data.item == kong_items[kong_index]:
+                print("Placement invalid due to shop in shop location")
+                return False
+    # Blasts/Arcade R2 can't contain DK
+    non_dk_locations = [
+        Locations.JapesDonkeyBaboonBlast,
+        Locations.FactoryDonkeyDKArcade,
+        Locations.NintendoCoin,
+    ]
+    for loc in non_dk_locations:
+        if spoiler.LocationList[loc].item == Items.Donkey:
+            print("Placement invalid because DK being in a blast-locked location")
+            return False
+    return True
 
 def VerifyWorld(spoiler: Spoiler) -> bool:
     """Make sure all item locations are reachable on current world graph with no items placed and all items owned."""
     settings = spoiler.settings
     if settings.logic_type == LogicType.nologic:
         return True  # Don't need to verify world in no logic
+    if settings.logic_type == LogicType.minimal:
+        # Verify some rules
+        return VerifyMinimalLogic(spoiler)
     unreachables = GetAccessibleLocations(spoiler, ItemPool.AllItemsUnrestricted(settings), SearchMode.GetUnreachable)
     if len(spoiler.cb_placements) == 0:
         unreachables = [
@@ -587,7 +633,7 @@ def VerifyWorld(spoiler: Spoiler) -> bool:
 def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
     """Make sure the game is beatable without it being possible to run out of coins for required moves."""
     settings = spoiler.settings
-    if settings.logic_type == LogicType.nologic:
+    if settings.logic_type in (LogicType.nologic, LogicType.minimal):
         return True  # Don't verify world in no logic
     locationsToPurchase = []
     reachable = []
@@ -1745,7 +1791,7 @@ def PlaceItems(
     if ownedItems is None:
         ownedItems = []
     # Always use random fill with no logic
-    if spoiler.settings.logic_type == LogicType.nologic:
+    if spoiler.settings.logic_type in (LogicType.nologic, LogicType.minimal):
         algorithm = FillAlgorithm.random
     if algorithm == FillAlgorithm.assumed:
         return AssumedFill(spoiler, itemsToPlace, ownedItems, inOrder)
@@ -1768,10 +1814,10 @@ def FillShuffledKeys(spoiler: Spoiler, placed_types: List[Types], placed_items: 
     # - No logic (totally random)
     # - Loading Zone randomizer (key unlocks are typically of lesser importance)
     # - Complex level progression (key order is non-linear)
-    if spoiler.settings.logic_type == LogicType.nologic or spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all or spoiler.settings.hard_level_progression:
+    if spoiler.settings.logic_type in (LogicType.nologic, LogicType.minimal) or spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all or spoiler.settings.hard_level_progression:
         # Assumed fills tend to place multiple keys at once better
         keyAlgorithm = FillAlgorithm.assumed
-        if spoiler.settings.logic_type == LogicType.nologic:  # Obviously no logic gets random fills
+        if spoiler.settings.logic_type in (LogicType.nologic, LogicType.minimal):  # Obviously no logic gets random fills
             keyAlgorithm = FillAlgorithm.random
         # Place all the keys
         keysUnplaced = PlaceItems(spoiler, keyAlgorithm, keysToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
@@ -2522,7 +2568,7 @@ def GeneratePlaythrough(spoiler: Spoiler) -> None:
     # Generate and display the playthrough
     spoiler.Reset()
     PlaythroughLocations = GetAccessibleLocations(spoiler, [], SearchMode.GeneratePlaythrough)  # identify in the spheres where the win condition is met
-    if not spoiler.LogicVariables.bananaHoard and spoiler.settings.logic_type != LogicType.nologic:
+    if not spoiler.LogicVariables.bananaHoard and spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal):
         raise Ex.FillException("Woah, you hit an EXTREMELY rare error! Please post your settings string to the discord. It's probably a freak accident so you're safe to try again.")
     ParePlaythrough(spoiler, PlaythroughLocations)
     # Generate and display woth
@@ -2616,7 +2662,7 @@ def PlaceKongsInKongLocations(spoiler: Spoiler, kongItems, kongLocations):
     # In entrance randomizer, it's too complicated to quickly determine kong accessibility.
     # Instead, we place Kongs in a specific order to guarantee we'll at least have an eligible freer.
     # To be at least somewhat nice to no logic users, we also use this section here so kongs don't lock each other.
-    if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all or spoiler.settings.logic_type == LogicType.nologic:
+    if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all or spoiler.settings.logic_type in (LogicType.nologic, LogicType.minimal):
         spoiler.settings.random.shuffle(kongItems)
         if Locations.ChunkyKong in kongLocations:
             kongItemToBeFreed = kongItems.pop()
@@ -2856,7 +2902,7 @@ def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types], placedItems: L
 def FillWorld(spoiler: Spoiler) -> None:
     """Fill all locations with Kongs, moves, items, and etc."""
     # Level order rando may have to affect the progression to be fillable - no logic doesn't care about your silly progression, however
-    wipe_progression = spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all and spoiler.settings.logic_type != LogicType.nologic
+    wipe_progression = spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all and spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal)
     retries = 0
     error_log = []
     while 1:
@@ -3811,6 +3857,8 @@ def ValidateFixedHints(settings: Settings) -> None:
     """Check for some known incompatibilities with the Fixed hint system ASAP so we don't waste time genning this seed."""
     if settings.logic_type == LogicType.nologic:
         raise Ex.SettingsIncompatibleException("No Logic is not compatible with fixed hints.")
+    if settings.logic_type == LogicType.minimal:
+        raise Ex.SettingsIncompatibleException("Minimal Logic is not compatible with fixed hints.")
     if not settings.shuffle_items:
         raise Ex.SettingsIncompatibleException("Item Randomizer must be enabled with Fixed hints.")
     if settings.win_condition_item != WinConditionComplex.beat_krool:

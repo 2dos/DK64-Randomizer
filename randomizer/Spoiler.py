@@ -265,6 +265,8 @@ class Spoiler:
         # settings["algorithm"] = self.settings.algorithm # Don't need this for now, probably
         logic_types = {
             LogicType.nologic: "No Logic",
+            LogicType.minimal: "Minimal Logic",
+            LogicType.advanced_glitchless: "Advanced Glitchless Logic",
             LogicType.glitch: "Glitched Logic",
             LogicType.glitchless: "Glitchless Logic",
         }

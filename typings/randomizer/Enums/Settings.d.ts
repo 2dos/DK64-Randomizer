@@ -338,6 +338,7 @@ export enum LogicType {
     glitchless = 1,
     glitch = 2,
     nologic = 3,
+    minimal = 4,
 }
 
 export enum MicrohintsEnabled {
