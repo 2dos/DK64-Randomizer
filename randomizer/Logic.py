@@ -890,7 +890,7 @@ class LogicVarHolder:
         # Otherwise you need the right slam level (usually 1)
         else:
             return self.CanSlamSwitch(Levels.FranticFactory, 1) and self.IsKong(self.settings.chunky_freeing_kong)
-        
+
     def CanOpenForestLobbyGoneDoor(self):
         """Check if the player can open the door to the gone pad in forest lobby."""
         if self.checkFastCheck(FasterChecksSelected.isles_forest_lobby_crown):

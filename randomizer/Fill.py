@@ -405,7 +405,7 @@ def GetAccessibleLocations(
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if levelExit is not None:
                         dest = ShuffleExits.ShufflableExits[levelExit].back.regionId
-                        exits.append(TransitionFront(dest, lambda _:True))
+                        exits.append(TransitionFront(dest, lambda _: True))
                         # If we're generating the final playthrough, note down the order in which we access entrances for LZR purposes
                         # No need to check access on this transition, it's always accessible
                         if searchType == SearchMode.GeneratePlaythrough:
@@ -416,7 +416,7 @@ def GetAccessibleLocations(
                 elif settings.random_starting_region and region.level != Levels.DKIsles and region.level != Levels.Shops and region.restart is None:
                     levelLobby = GetLobbyOfRegion(region.level)
                     if levelLobby is not None and levelLobby not in kongAccessibleRegions[kong]:
-                        exits.append(TransitionFront(levelLobby, lambda _:True))
+                        exits.append(TransitionFront(levelLobby, lambda _: True))
                 for exit in exits:
                     destination = exit.dest
                     shuffle_id = exit.exitShuffleId
@@ -541,6 +541,7 @@ def GetAccessibleLocations(
     elif searchType == SearchMode.GetUnreachable:
         return [x for x in spoiler.LocationList if x not in accessible and not spoiler.LocationList[x].inaccessible]
 
+
 def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
     """Verify a world in the context of minimal logic."""
     # Key 5 not in Level 7 with non-LZR
@@ -584,6 +585,7 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
             print("Placement invalid because DK being in a blast-locked location")
             return False
     return True
+
 
 def VerifyWorld(spoiler: Spoiler) -> bool:
     """Make sure all item locations are reachable on current world graph with no items placed and all items owned."""
@@ -763,7 +765,11 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
                 if mostExpensiveFairy is None or settings.prices[shop] > settings.prices[mostExpensiveFairy]:
                     mostExpensiveFairy = shop
         mostExpensiveGB = None
-        gbShops = [location for location in newReachableShops if (spoiler.LocationList[location].item in (Items.GoldenBanana, Items.FillerBanana) or spoiler.LocationList[location].item in ItemPool.Blueprints())]
+        gbShops = [
+            location
+            for location in newReachableShops
+            if (spoiler.LocationList[location].item in (Items.GoldenBanana, Items.FillerBanana) or spoiler.LocationList[location].item in ItemPool.Blueprints())
+        ]
         if settings.random_prices == RandomPrices.vanilla and len(gbShops) > 0:  # While GBs and Blueprints aren't the same item, they both always cost 0 in vanilla
             mostExpensiveGB = gbShops[0]
         else:
@@ -2119,7 +2125,7 @@ def Fill(spoiler: Spoiler) -> None:
         )
         if miscUnplaced > 0:
             raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: MI-" + str(miscUnplaced))
-        
+
     # Then place the pearls
     if Types.Pearl in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Pearl)
@@ -2338,7 +2344,7 @@ def Fill(spoiler: Spoiler) -> None:
             ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
             "Tough GBs",
         )
-    
+
     # Fill in fake items
     if Types.FakeItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.FakeItem)

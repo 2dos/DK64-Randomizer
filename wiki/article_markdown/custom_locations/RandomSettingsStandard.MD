@@ -3,23 +3,22 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 # Always On
 - Auto Key Turn Ins
 - Enable Tag Anywhere
-- Faster Checks
+- Faster Checks Enabled
 - Fast Start - Beginning of Game
 - Fast Warps
 - Random Helm Length
 - Item Reward Previews
 - Randomize Keys Required to Beat K. Rool
-- Kong Rando
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
-- Misc Changes
+- Quality Of Life
 - Randomize Medals for Rareware Coin
 - Random B. Locker Amounts
 - Randomize CB Required Amounts
-- Remove Barriers
+- Remove Barriers Enabled
 - Shop Indicator
 - Shorten Boss Fights
-- Item Randomizer
+- Shuffle Items
 - Randomize number of starting Kongs
 - Warp to Isles menu option
 
@@ -48,8 +47,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Off: 100%
 - B. Locker Max: Between 40 and 100, usually close to 60
 - Auto Complete Bonus Barrels: 30%
-- Shuffle Bonus Barrels: 70%
-- Shuffle Boss Kong Required: 65%
+- Bonus Barrel Rando: 70%
 - Boss Location Rando: 80%
 - DK Phase requires Baboon Blast: 50%
 - Randomize CB Locations: 50%
@@ -97,8 +95,8 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Dos Door Rando: 40%
 - Enable Progressive Hints: 50%
 - Enable Shop Hints: 90%
-- Dropsanity: 25%
-- Shuffle Enemies: 95%
+- Enemy Drop Rando: 25%
+- Enemy Rando: 95%
 - Enemy Speed Rando: 50%
 - Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 
@@ -193,6 +191,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Kong Model Tiny: 
 	- Default: 100%
 - Key 8 Required: 70%
+- Shuffle Boss Kong Required: 65%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 
 	- Vanilla: 20%
@@ -207,7 +206,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Off: 30%
 	- Base: 35%
 	- All: 35%
-- Move Randomizer: 
+- Move Rando: 
 	- On: 30%
 	- Cross Purchase: 70%
 - No Heals: 50%

@@ -83,7 +83,7 @@ class TestROM:
         if IO_LOGGING:
             io_logs.append({"action": "write", "value": value, "size": size})
         self.stream.write(value.to_bytes(size, "big"))
-    
+
     def writeFloat(self, value: float):
         """Binary IO write floating point value."""
         if IO_LOGGING:

@@ -69,6 +69,7 @@ def generateSprintSwitch():
         fh.seek(0x3BC)
         fh.write(getBonusSkinOffset(ExtraTextures.OSprintLogoLeft).to_bytes(4, "big"))
 
+
 FACTORY_DOOR_WALL = [
     [
         (60, 80, 0),
@@ -79,8 +80,9 @@ FACTORY_DOOR_WALL = [
         (60, 80, 0),
         (-59, -39, 0),
         (60, -39, 0),
-    ]
+    ],
 ]
+
 
 def fixFactoryDoor():
     """Fix the collision on the door to Factory lobby."""

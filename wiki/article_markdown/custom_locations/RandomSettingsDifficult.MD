@@ -4,23 +4,22 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Auto Key Turn Ins
 - DK Phase requires Baboon Blast
 - Enable Tag Anywhere
-- Faster Checks
+- Faster Checks Enabled
 - Fast Start - Beginning of Game
 - Fast Warps
 - Random Helm Length
 - Ice Traps Damage Player
 - Item Reward Previews
 - Randomize Keys Required to Beat K. Rool
-- Kong Rando
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
-- Misc Changes
+- Quality Of Life
 - Randomize Medals for Rareware Coin
 - Random B. Locker Amounts
 - Randomize CB Required Amounts
-- Remove Barriers
+- Remove Barriers Enabled
 - Shop Indicator
-- Item Randomizer
+- Shuffle Items
 - Randomize number of starting Kongs
 - Warp to Isles menu option
 
@@ -49,8 +48,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Crossmap Decoupled: 10%
 - B. Locker Max: Between 50 and 140, usually close to 80
 - Auto Complete Bonus Barrels: 10%
-- Shuffle Bonus Barrels: 70%
-- Shuffle Boss Kong Required: 50%
+- Bonus Barrel Rando: 70%
 - Boss Location Rando: 80%
 - Randomize CB Locations: 60%
 - Cb Rando List Selected: 
@@ -98,8 +96,8 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Dos Door Rando: 60%
 - Enable Progressive Hints: 50%
 - Enable Shop Hints: 50%
-- Dropsanity: 60%
-- Shuffle Enemies: 95%
+- Enemy Drop Rando: 60%
+- Enemy Rando: 95%
 - Enemy Speed Rando: 70%
 - Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 
@@ -129,8 +127,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Progressive: 15%
 - Galleon Water: 
 	- Random: 100%
-- Glitches Selected: 
-	- Advanced Platforming: 100%
 - Hard Bosses: 60%
 - Hard Bosses Selected: 
 	- Fast Mad Jack: 80%
@@ -211,6 +207,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Kong Model Tiny: 
 	- Default: 100%
 - Key 8 Required: 70%
+- Shuffle Boss Kong Required: 50%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 
 	- Vanilla: 20%
@@ -219,7 +216,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Loadingzonesdecoupled: 10%
 - Logic: 
 	- Glitchless: 80%
-	- Glitch: 20%
+	- Advanced Glitchless: 20%
 - Maximize Helm B. Locker: 50%
 - Randomize Medal CB Requirement: Between 35 and 90, usually close to 60
 - Pearls for Mermaid GB: Between 2 and 5, usually close to 4
@@ -258,7 +255,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Remove Enemy Cabin Timer: 100%
 	- Remove Galleon Ship Timers: 100%
 	- Japes Bridge Permanently Extended: 100%
-- Move Randomizer: 
+- Move Rando: 
 	- On: 30%
 	- Cross Purchase: 70%
 - No Heals: 50%

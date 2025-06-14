@@ -74,9 +74,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         item_table.append(DK64Item(fairy_item.name, ItemClassification.useful, full_item_table[fairy_item.name].code, world.player))
 
     # V1 LIMITATION: Tough GBs must be in the pool - this can likely be worked around later
-    all_shuffled_items = DK64RItemPoolUtility.GetItemsNeedingToBeAssumed(
-        world.logic_holder.settings, [DK64RTypes.Medal, DK64RTypes.Fairy, DK64RTypes.Banana, DK64RTypes.Bean, DK64RTypes.Pearl], []
-    )
+    all_shuffled_items = DK64RItemPoolUtility.GetItemsNeedingToBeAssumed(world.logic_holder.settings, [DK64RTypes.Medal, DK64RTypes.Fairy, DK64RTypes.Banana, DK64RTypes.Bean, DK64RTypes.Pearl], [])
     # Due to some latent (harmless) bugs in the above method, it isn't precise enough for our purposes and we need to manually add a few things
     # The Bean and Pearls wreak havoc on this method due to a latent bug, so it's easiest to just add them manually
     all_shuffled_items.extend([DK64RItems.Bean, DK64RItems.Pearl, DK64RItems.Pearl, DK64RItems.Pearl, DK64RItems.Pearl, DK64RItems.Pearl])

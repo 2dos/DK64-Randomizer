@@ -557,6 +557,7 @@ def GoldenBananaItems():
     itemPool.extend(itertools.repeat(Items.GoldenBanana, 161))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
     return itemPool
 
+
 def BananaMedalItems(settings):
     """Return a list of Banana Medals to be placed."""
     itemPool = []
@@ -573,9 +574,11 @@ def BattleCrownItems():
     itemPool.extend(itertools.repeat(Items.BattleCrown, 10))
     return itemPool
 
+
 def BeanItems():
     """Return a list of the bean."""
     return [Items.Bean]
+
 
 def PearlItems():
     """Return a list of pearls."""
@@ -653,6 +656,7 @@ def FakeItems(settings):
         distro,
     )
 
+
 def FillerItems(settings):
     """Return a list of misc filler items to be placed."""
     filler_mapping = {
@@ -679,7 +683,7 @@ def FillerItems(settings):
             if x < filler_mapping_allowances[item_type]:
                 distro.append(item_type)
     return distro
-    
+
 
 def CrankyItems():
     """Return a list of Cranky shop owners to be placed."""

@@ -5,23 +5,22 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Dim Solved Hints
 - Enable Shop Hints
 - Enable Tag Anywhere
-- Faster Checks
+- Faster Checks Enabled
 - Fast Start - Beginning of Game
 - Fast Warps
 - Random Helm Length
 - Item Reward Previews
 - Randomize Keys Required to Beat K. Rool
-- Kong Rando
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
-- Misc Changes
+- Quality Of Life
 - Randomize Medals for Rareware Coin
 - Random B. Locker Amounts
 - Randomize CB Required Amounts
-- Remove Barriers
+- Remove Barriers Enabled
 - Shop Indicator
 - Shorten Boss Fights
-- Item Randomizer
+- Shuffle Items
 - Randomize number of starting Kongs
 - Warp to Isles menu option
 - Kongless Hint Doors
@@ -33,7 +32,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Crown Placement Rando
 - Dos Door Rando
 - Enable Plandomizer
-- Dropsanity
+- Enemy Drop Rando
 - Hard Bosses
 - Hard Mode
 - Hard Shooting
@@ -68,8 +67,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Off: 100%
 - B. Locker Max: Between 30 and 70, usually close to 50
 - Auto Complete Bonus Barrels: 50%
-- Shuffle Bonus Barrels: 70%
-- Shuffle Boss Kong Required: 80%
+- Bonus Barrel Rando: 70%
 - Boss Location Rando: 80%
 - Randomize CB Locations: 30%
 - Cb Rando List Selected: 
@@ -107,7 +105,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Random DK Portal Locations: 
 	- Off: 100%
 - Enable Progressive Hints: 50%
-- Shuffle Enemies: 95%
+- Enemy Rando: 95%
 - Enemy Speed Rando: 50%
 - Randomize Enemy Sizes: 90%
 - Faster Checks Selected: 
@@ -193,6 +191,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Kong Model Tiny: 
 	- Default: 100%
 - Key 8 Required: 70%
+- Shuffle Boss Kong Required: 80%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 
 	- Vanilla: 50%
@@ -205,7 +204,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Extra Hints: 
 	- Base: 25%
 	- All: 75%
-- Move Randomizer: 
+- Move Rando: 
 	- Cross Purchase: 100%
 - Open Lobbies: 90%
 - Progressive Hint 35 Requirement: Between 30 and 60, usually close to 45

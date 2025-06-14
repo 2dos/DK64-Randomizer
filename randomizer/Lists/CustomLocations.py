@@ -5663,7 +5663,7 @@ CustomLocations = {
             max_size=64,
             group=4,
             logic_region=Regions.OuterIsles,
-            logic=lambda _:True,
+            logic=lambda _: True,
         ),
         CustomLocation(
             map=Maps.Isles,

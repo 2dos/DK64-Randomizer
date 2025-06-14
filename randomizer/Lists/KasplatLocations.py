@@ -24,7 +24,7 @@ class KasplatLocation:
         self.scale = scale
         self.region_id = region
         if additional_logic is None:
-            self.additional_logic = lambda _:True
+            self.additional_logic = lambda _: True
         else:
             self.additional_logic = additional_logic
 

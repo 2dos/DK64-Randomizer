@@ -362,11 +362,13 @@ FILLER_MAPPING = {
     Types.FillerPearl: Types.Pearl,
 }
 
+
 def getItemDBEntry(type: Types) -> ItemPlacementData:
     """Get the item db entry for an item type."""
     if type in FILLER_MAPPING:
         return item_db[FILLER_MAPPING[type]]
     return item_db[type]
+
 
 def getIceTrapText(input_text: str) -> str:
     """Get the text associated with ice traps."""

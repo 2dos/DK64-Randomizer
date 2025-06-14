@@ -17,11 +17,13 @@ if TYPE_CHECKING:
     from randomizer.Lists.MapsAndExits import Maps
     from randomizer.Patching.ItemRando import CustomActors
 
+
 def ftoi(f: float) -> str:
     """Convert float to int representation."""
     if f == 0:
         return 0
     return struct.unpack("<I", struct.pack("<f", f))[0]
+
 
 class ROM:
     """Patcher for ROM files loaded via Rompatcherjs."""

@@ -2401,7 +2401,7 @@ class Settings:
                 # Fairies are the one exception: these are allowed to be vanilla
                 # Rainbow coins cannot be on fairies
                 # The Bean/Pearls cannot be on fairies (you might be sensing a pattern here)
-            
+
             # Invert allowances for restrictions
             inverted_allowances = {}
             for item_type in self.shuffled_check_allowances:
@@ -2460,7 +2460,6 @@ class Settings:
                             self.valid_locations[item_type][kong] = [v for v in self.valid_locations[item_type][kong] if valid_locations_lambda(spoiler.LocationList[v], v)]
                     else:
                         self.valid_locations[item_type] = [v for v in self.valid_locations[item_type] if valid_locations_lambda(spoiler.LocationList[v], v)]
-                    
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""
@@ -2483,9 +2482,7 @@ class Settings:
             kongCageLocations.remove(kongLocation)
 
         # The following cases do not apply if you could bypass the Guitar door without Diddy
-        bypass_guitar_door = (
-            IsDDMSSelected(self.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door) or self.activate_all_bananaports == ActivateAllBananaports.all
-        )
+        bypass_guitar_door = IsDDMSSelected(self.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door) or self.activate_all_bananaports == ActivateAllBananaports.all
         # In case both Diddy and Chunky need to be freed but only Aztec locations are available
         # This would be impossible, as one of them must free the Tiny location and Diddy is needed for the Lanky location
         if (
