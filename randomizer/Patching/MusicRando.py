@@ -15,7 +15,7 @@ from randomizer.Enums.Settings import MusicFilters
 from randomizer.Lists.Songs import song_data, song_idx_list
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
-from randomizer.Patching.Library.Generic import IsItemSelected, Overlay, IsDDMSSelected
+from randomizer.Patching.Library.Generic import Overlay, IsDDMSSelected
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.ASM import writeValue, populateOverlayOffsets, getROMAddress
 

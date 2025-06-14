@@ -212,25 +212,56 @@ class IceTrapFrequency(IntEnum):
 
 class ItemRandoListSelected(IntEnum):
     shop = 1
-    banana = 2
-    toughbanana = 3
-    crown = 4
-    blueprint = 5
-    key = 6
-    medal = 7
-    nintendocoin = 8
-    kong = 9
-    fairy = 10
-    rainbowcoin = 11
-    beanpearl = 12
-    fakeitem = 13
-    junkitem = 14
-    crateitem = 15
-    rarewarecoin = 16
-    shopowners = 17
-    hint = 18
-    shockwave = 19
-    boulderitem = 20
+    moves = 2
+    shockwave = 3
+    bfi_gift = 4
+    banana = 5
+    banana_checks = 6
+    toughbanana = 7
+    arenas = 8
+    crown = 9
+    blueprint = 10
+    kasplat = 11
+    key = 12
+    bosses = 13
+    endofhelm = 14
+    medal = 15
+    medal_checks = 16
+    medal_checks_helm = 17
+    nintendocoin = 18
+    arcade = 19
+    rarewarecoin = 20
+    jetpac = 21
+    kong = 22
+    kong_cages = 23
+    fairy = 24
+    fairy_checks = 25
+    rainbowcoin = 26
+    dirt_patches = 27
+    pearl = 28
+    clams = 29
+    bean = 30
+    anthillreward = 31
+    crateitem = 32
+    shopowners = 33
+    hint = 34
+    wrinkly = 35
+    boulderitem = 36
+    enemies = 37
+    dummyitem_enemies = 38
+    dummyitem_boulderitem = 39
+    dummyitem_crateitem = 40
+    trainingmoves = 41
+    trainingbarrels = 42
+
+class ItemRandoFiller(IntEnum):
+    junkitem = 1
+    icetraps = 2
+    crown = 3
+    fairy = 4
+    medal = 5
+    pearl = 6
+    banana = 7
 
 class KasplatRandoSetting(IntEnum):
     off = 0
@@ -274,6 +305,7 @@ class LogicType(IntEnum):
     glitchless = 1
     glitch = 2
     nologic = 3
+    minimal = 4
 
 class MicrohintsEnabled(IntEnum):
     off = 0
@@ -738,6 +770,18 @@ class SettingsStringEnum(IntEnum):
     switchsanity_switch_aztec_free_tiny = 239
     switchsanity_switch_aztec_free_lanky = 240
     switchsanity_switch_factory_free_kong = 241
+    item_rando_list_0 = 242
+    item_rando_list_1 = 243
+    item_rando_list_2 = 244
+    item_rando_list_3 = 245
+    item_rando_list_4 = 246
+    item_rando_list_5 = 247
+    item_rando_list_6 = 248
+    item_rando_list_7 = 249
+    item_rando_list_8 = 250
+    item_rando_list_9 = 251
+    decouple_item_rando = 252
+    filler_items_selected = 253
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -829,6 +873,17 @@ SettingsMap: dict = {
     'starting_moves_list_3': Items,
     'starting_moves_list_4': Items,
     'starting_moves_list_5': Items,
+    'item_rando_list_0': ItemRandoListSelected,
+    'item_rando_list_1': ItemRandoListSelected,
+    'item_rando_list_2': ItemRandoListSelected,
+    'item_rando_list_3': ItemRandoListSelected,
+    'item_rando_list_4': ItemRandoListSelected,
+    'item_rando_list_5': ItemRandoListSelected,
+    'item_rando_list_6': ItemRandoListSelected,
+    'item_rando_list_7': ItemRandoListSelected,
+    'item_rando_list_8': ItemRandoListSelected,
+    'item_rando_list_9': ItemRandoListSelected,
+    'filler_items_selected': ItemRandoFiller,
     'prog_slam_level_1': SlamRequirement,
     'prog_slam_level_2': SlamRequirement,
     'prog_slam_level_3': SlamRequirement,
@@ -902,6 +957,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,
     SettingsStringEnum.enemies_selected: SettingsStringDataType.list,
+    SettingsStringEnum.filler_items_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_rando: SettingsStringDataType.bool,
     SettingsStringEnum.enemy_speed_rando: SettingsStringDataType.bool,
     SettingsStringEnum.faster_checks_enabled: SettingsStringDataType.bool,
@@ -1071,6 +1127,17 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.starting_moves_list_count_4: SettingsStringDataType.int16,
     SettingsStringEnum.starting_moves_list_5: SettingsStringDataType.list,
     SettingsStringEnum.starting_moves_list_count_5: SettingsStringDataType.int16,
+    SettingsStringEnum.item_rando_list_0: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_1: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_2: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_3: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_4: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_5: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_6: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_7: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_8: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_9: SettingsStringDataType.list,
+    SettingsStringEnum.decouple_item_rando: SettingsStringDataType.bool,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,
     SettingsStringEnum.prog_slam_level_3: SlamRequirement,
@@ -1110,6 +1177,7 @@ SettingsStringTypeMap: dict = {
 
 SettingsStringListTypeMap: dict = {
     SettingsStringEnum.enemies_selected: Enemies,
+    SettingsStringEnum.filler_items_selected: ItemRandoFiller,
     SettingsStringEnum.glitches_selected: GlitchesSelected,
     SettingsStringEnum.item_rando_list_selected: ItemRandoListSelected,
     SettingsStringEnum.minigames_list_selected: MinigamesListSelected,
@@ -1128,6 +1196,16 @@ SettingsStringListTypeMap: dict = {
     SettingsStringEnum.starting_moves_list_3: Items,
     SettingsStringEnum.starting_moves_list_4: Items,
     SettingsStringEnum.starting_moves_list_5: Items,
+    SettingsStringEnum.item_rando_list_0: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_1: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_2: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_3: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_4: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_5: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_6: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_7: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_8: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_9: ItemRandoListSelected,
 }
 
 SettingsStringIntRangeMap: dict = {

@@ -6,8 +6,6 @@ extern void setPermFlag(short flagIndex);
 extern int convertIDToIndex(short obj_index);
 extern void* findActorWithType(int search_actor_type);
 extern int isRDRAM(void* address);
-extern void customHideHUD(void);
-extern void setWarpPosition(float x, float y, float z);
 extern void initHack(int source);
 extern void callParentMapFilter(void);
 extern void shiftBrokenJapesPortal(void);
@@ -67,7 +65,6 @@ extern void moveTransplant(void);
 
 extern int getInstrumentLevel(void);
 
-extern void changeCharSpawnerFlag(maps map, int spawner_id, int new_flag);
 extern void HelmBarrelCode(void);
 extern void WarpHandle(void);
 
@@ -85,8 +82,6 @@ extern void warpToIsles(void);
 extern void adjust_level_modifiers(void);
 extern void handleTimeOfDay(time_of_day_calls call);
 
-extern void initKongRando(void);
-
 extern int convertSubIDToIndex(short obj_index);
 extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
 extern void setCrusher(void);
@@ -94,7 +89,6 @@ extern void createCollisionObjInstance(collision_types subtype, int map, int exi
 extern int spawnCannonWrapper(void);
 extern void disableDiddyRDDoors(void);
 extern void fixkey8(void);
-extern void alterGBKong(maps map, int id, int new_kong);
 
 extern void preventBossCheese(void);
 extern void determineStartKong_PermaLossMode(void);
@@ -395,7 +389,6 @@ extern int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, 
 extern void getModelTwoItemFromActor(int actor, short* item, float* scale);
 extern void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index);
 extern void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index);
-extern void initSwitchsanityChanges(void);
 extern void setObjectOpacity(behaviour_data* behaviour_pointer, int opacity);
 extern int standingOnM2Object(int index);
 
@@ -472,6 +465,7 @@ extern char music_types[SONG_COUNT];
 extern char grab_lock_timer;
 extern char tag_locked;
 extern char enable_skip_check;
+extern char bonus_shown;
 extern int force_enable_diving_timer;
 
 extern unsigned int base_text_color;
@@ -496,3 +490,4 @@ extern const collision_tree_struct fixed_klap_collision[8];
 extern const collision_tree_struct fixed_bug_collision[2];
 extern char version_string[0x10];
 extern unsigned short GameStats[STAT_TERMINATOR];
+extern LZREntrance blast_entrances[8];

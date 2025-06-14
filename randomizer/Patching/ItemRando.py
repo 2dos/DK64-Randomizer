@@ -11,7 +11,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Library.DataTypes import intf_to_float
 from randomizer.Lists.EnemyTypes import enemy_location_list
 from randomizer.Patching.Library.Generic import setItemReferenceName
-from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, item_db, getPropFromItem, getModelMask
+from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, getPropFromItem, getModelMask, getItemDBEntry
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets
 from randomizer.Patching.Patcher import LocalROM
@@ -165,7 +165,6 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
     """Get the data associated with how an item is patched into ROM from various attributes."""
     simple_types = {
         Types.Banana: 3,
-        Types.ToughBanana: 3,
         Types.Fairy: 5,
         Types.Crown: 7,
         Types.Medal: 9,
@@ -173,6 +172,11 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
         Types.Pearl: 11,
         Types.RainbowCoin: 12,
         Types.JunkItem: 18,
+        Types.FillerBanana: 3,
+        Types.FillerFairy: 5,
+        Types.FillerCrown: 7,
+        Types.FillerMedal: 9,
+        Types.FillerPearl: 11,
     }
     if item_type in simple_types:
         return ItemPatchingInfo(simple_types[item_type])
@@ -419,6 +423,16 @@ def getTextRewardIndex(item) -> int:
         return 15
     elif item.new_item is None:
         return 14
+    elif item.new_item == Types.FillerBanana:
+        return 0
+    elif item.new_item == Types.FillerCrown:
+        return 3
+    elif item.new_item == Types.FillerFairy:
+        return 4
+    elif item.new_item == Types.FillerPearl:
+        return 11
+    elif item.new_item == Types.FillerMedal:
+        return 7
     else:
         item_text_indexes = (
             Types.Banana,  # 0
@@ -486,8 +500,8 @@ def getActorIndex(item):
     item_type = item.new_item
     if item_type is None:
         item_type = Types.NoItem
-    index = item_db[item_type].index_getter(item.new_subitem, item.new_flag, item.shared)
-    return item_db[item_type].actor_index[index]
+    index = getItemDBEntry(item_type).index_getter(item.new_subitem, item.new_flag, item.shared)
+    return getItemDBEntry(item_type).actor_index[index]
 
 
 model_two_items = [
@@ -614,8 +628,8 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                                 }
                             )
                         else:
-                            numerator = item_db[item.new_item].scale
-                            denominator = item_db[item.old_item].scale
+                            numerator = getItemDBEntry(item.new_item).scale
+                            denominator = getItemDBEntry(item.old_item).scale
                             upscale = numerator / denominator
                             map_items[map_id].append(
                                 {
@@ -669,6 +683,16 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                             arcade_reward_index = 9 + slot
                         elif item.new_item in arcade_rewards:
                             arcade_reward_index = arcade_rewards.index(item.new_item)
+                        elif item.new_item == Types.FillerBanana:
+                            arcade_reward_index = 5
+                        elif item.new_item == Types.FillerCrown:
+                            arcade_reward_index = 3
+                        elif item.new_item == Types.FillerMedal:
+                            arcade_reward_index = 7
+                        elif item.new_item == Types.FillerFairy:
+                            arcade_reward_index = 4
+                        elif item.new_item == Types.FillerPearl:
+                            arcade_reward_index = 8
                         ROM_COPY.seek(sav + 0x110)
                         ROM_COPY.write(arcade_reward_index)
                     elif item.location == Locations.RarewareCoin:
@@ -694,6 +718,16 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                             jetpac_reward_index = 9
                         elif item.new_item in jetpac_rewards:
                             jetpac_reward_index = jetpac_rewards.index(item.new_item)
+                        elif item.new_item == Types.FillerBanana:
+                            jetpac_reward_index = 5
+                        elif item.new_item == Types.FillerPearl:
+                            jetpac_reward_index = 8
+                        elif item.new_item == Types.FillerCrown:
+                            jetpac_reward_index = 3
+                        elif item.new_item == Types.FillerMedal:
+                            jetpac_reward_index = 7
+                        elif item.new_item == Types.FillerFairy:
+                            jetpac_reward_index = 4
                         ROM_COPY.seek(sav + 0x111)
                         ROM_COPY.write(jetpac_reward_index)
                     elif item.location in (Locations.ForestDonkeyBaboonBlast, Locations.CavesDonkeyBaboonBlast):
@@ -790,7 +824,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                         bonus_table_offset += 1
                     elif item.old_item == Types.Fairy:
                         # Fairy Item
-                        model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared, False)
+                        model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
                         if model is not None:
                             addr = getItemTableWriteAddress(ROM_COPY, Types.Fairy, item.old_flag - 589, offset_dict)
                             ROM_COPY.seek(addr)
@@ -808,7 +842,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                             Locations.ChunkyKong: 3,
                         }
                         if item.location in kong_idx:
-                            model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared, False)
+                            model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
                             if model is not None:
                                 idx = kong_idx[item.location]
                                 has_no_textures = item.new_item in (
@@ -849,7 +883,6 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                 Types.Key,
                 Types.RainbowCoin,
                 Types.Banana,
-                Types.ToughBanana,
                 Types.NintendoCoin,
                 Types.RarewareCoin,
                 Types.Enemies,

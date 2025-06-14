@@ -863,34 +863,8 @@ int isRDRAM(void* address) {
 	return 0;
 }
 
-void setWarpPosition(float x, float y, float z) {
-	PositionWarpInfo.xPos = x;
-	PositionWarpInfo.yPos = y;
-	PositionWarpInfo.zPos = z;
-	PositionFloatWarps[0] = x;
-	PositionFloatWarps[1] = y;
-	PositionFloatWarps[2] = z;
-	PositionWarpBitfield = PositionWarpBitfield | 1;
-}
-
-void customHideHUD(void) {
-	for (int i = 0; i < 0xE; i++) {
-		HUD->item[i].hud_state = 0;
-	}
-}
-
 void createCollisionObjInstance(collision_types subtype, int map, int exit) {
 	createCollision(0,Player,subtype,map,exit,collisionPos[0],collisionPos[1],collisionPos[2]);
-}
-
-void changeCharSpawnerFlag(maps map, int spawner_id, int new_flag) {
-	for (int i = 0; i < 0x1F; i++) {
-		if (charspawnerflags[i].map == map) {
-			if (charspawnerflags[i].spawner_id == spawner_id) {
-				charspawnerflags[i].tied_flag = new_flag;
-			}
-		}
-	}
 }
 
 void resetMapContainer(void) {
@@ -937,16 +911,6 @@ void correctDKPortal(void) {
 			if (behav) {
 				behav->current_state = portal_state;
 				//behav->next_state = portal_state;
-			}
-		}
-	}
-}
-
-void alterGBKong(maps map, int id, int new_kong) {
-	for (int i = 0; i < 113; i++) {
-		if (GBDictionary[i].map == map) {
-			if (GBDictionary[i].model2_id == id) {
-				GBDictionary[i].intended_kong_actor = new_kong + 2;
 			}
 		}
 	}
@@ -1427,8 +1391,22 @@ static float percentage_rewards[] = {
 	0.5f, // Nintendo Coins
 };
 
-float getPercentageOfItem(int index, float percentage_per_item) {
-	float i_f = FileVariables[index];
+static unsigned char reward_cap[] = {
+	201, // GBs
+	10, // Crowns
+	8, // Keys
+	40, // Medals
+	1, // RW Coin
+	20, // Fairies
+	1, // Nintendo Coin
+};
+
+float getPercentageOfItem(int index, float percentage_per_item, int cap) {
+	int count = FileVariables[index];
+	if (count > cap) {
+		count = cap;
+	}
+	float i_f = count;
 	return i_f * percentage_per_item;
 }
 
@@ -1437,12 +1415,8 @@ int getGamePercentage(void) {
 	updateFilePercentage();
 	float percentage = 0;
 	float target = 100.4f;
-	if (Rando.isles_cb_rando) {
-		percentage_rewards[4] = 0.18f;
-		target = 100.5f;
-	}
 	for (int i = 0; i < 7; i++) {
-		percentage += getPercentageOfItem(i, percentage_rewards[i]);
+		percentage += getPercentageOfItem(i, percentage_rewards[i], reward_cap[i]);
 	}
 	if (percentage == target) {
 		return 101;

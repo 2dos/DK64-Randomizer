@@ -23,7 +23,7 @@ from opentelemetry._logs import set_logger_provider
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
-from randomizer.Enums.Types import ItemRandoSelector, KeySelector
+from randomizer.Enums.Types import ItemRandoSelector, KeySelector, ItemRandoFillerSelector
 from randomizer.Lists.EnemyTypes import EnemySelector
 from randomizer.Lists.HardMode import HardBossSelector, HardSelector
 from randomizer.Lists.Item import CustomStartingMoveSelector, HHItemSelector
@@ -110,6 +110,7 @@ def get_selector_info():
         "random_colors": RandomColorSelector,
         "song_filters": SongFilteringSelector,
         "itemRando": ItemRandoSelector,
+        "item_filler": ItemRandoFillerSelector,
         "keys": KeySelector,
         "glitches": GlitchSelector,
         "helm_hurry_items": HHItemSelector,

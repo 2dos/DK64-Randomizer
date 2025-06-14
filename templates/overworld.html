@@ -1,4 +1,5 @@
-{% from 'macros.html' import list_selector, properties_selector, dropdown_multiselector %}
+{% from 'macros.html' import list_selector, properties_selector %}
+{% from 'dropdown_multiselector.html' import dropdown_multiselector %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
@@ -142,6 +143,13 @@
                                 </option>
                                 <option id="glitch" value="glitch">
                                     Glitch Logic
+                                </option>
+                                <option
+                                    id="minimal"
+                                    value="minimal"
+                                    title="
+                                        No Logic, but with some minor protections to remove a couple situations that instantly make a seed unbeatable:&#10;- Key 5 can't be in Level 7, aside from in LZR.&#10;- Kongs can't be in shops locked by themselves.&#10;- DK can't be in a blast course or Arcade Round 2.">
+                                    Minimal Logic
                                 </option>
                                 <option id="nologic" value="nologic">
                                     No Logic

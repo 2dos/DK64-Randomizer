@@ -346,7 +346,6 @@ void initHack(int source) {
 			// Kong Rando
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
-			initKongRando();
 			initCosmetic();
 			initTextChanges();
 
@@ -397,7 +396,6 @@ void initHack(int source) {
 				writeFunction(0x80660994, &getOscillationDelta);
         		writeFunction(0x806609BC, &getOscillationDelta);
 			}
-			initSwitchsanityChanges();
 			int sound_subtype = 1;
 			if (SoundType == 0) {
 				sound_subtype = 2;

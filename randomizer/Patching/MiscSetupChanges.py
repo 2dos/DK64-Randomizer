@@ -20,7 +20,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
-from randomizer.Patching.Library.Generic import IsItemSelected, IsDDMSSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Patcher import LocalROM

@@ -40,7 +40,7 @@ function getWotHPathIndex(spoiler_dict) {
 const TIED_POOL_ITEMS = {
     "Kongs": ["Kong"],
     "Moves": ["TrainingBarrel", "Shop", "PreGivenMove", "Shockwave"],
-    "Golden Bananas": ["Banana", "ToughBanana", "BlueprintBanana"],
+    "Golden Bananas": ["Banana", "BlueprintBanana"],
     "Blueprints": ["Blueprint"],
     "Fairies": ["Fairy"],
     "Keys": ["Key"],

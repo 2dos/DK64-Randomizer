@@ -14,3 +14,4 @@ f = getStringFile("randomizer/Enums/Types.json")
 _data = json.loads(f)
 KeySelector = _data["KeySelector"]
 ItemRandoSelector = _data["ItemRandoSelector"]
+ItemRandoFillerSelector = _data["ItemRandoFillerSelector"]

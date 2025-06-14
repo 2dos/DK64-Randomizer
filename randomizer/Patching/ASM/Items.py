@@ -5,7 +5,7 @@ from randomizer.Enums.Settings import MiscChangesSelected, FasterChecksSelected,
 from randomizer.Enums.Types import Types
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
-from randomizer.Patching.Library.Generic import IsItemSelected, IsDDMSSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected
 
 FAIRY_LOAD_FIX = True
 

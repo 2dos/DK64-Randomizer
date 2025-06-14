@@ -192,7 +192,7 @@ def ShuffleItems(spoiler):
                 elif new_item.type in (Types.NintendoCoin, Types.RarewareCoin):
                     location_selection.new_flag = new_item.flag
                     locations_not_needing_flags.append(location_selection)
-                elif new_item.type in (Types.FakeItem, Types.JunkItem, Types.ArchipelagoItem):
+                elif new_item.type in (Types.FakeItem, Types.JunkItem, Types.ArchipelagoItem, Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerMedal, Types.FillerPearl):
                     location_selection.new_flag = 0x7FFF
                     locations_not_needing_flags.append(location_selection)
                 # Otherwise we need to put it in the list of locations needing flags
@@ -207,9 +207,7 @@ def ShuffleItems(spoiler):
             # Add this location's flag to the lists of available flags by location
             # Initialize relevant list if it doesn't exist
             if item_location.type not in flag_dict.keys() and item_location.type != Types.Blueprint:
-                if item_location.type == Types.ToughBanana and Types.Banana not in flag_dict.keys():
-                    flag_dict[Types.Banana] = []
-                elif item_location.type == Types.IslesMedal and Types.Medal not in flag_dict.keys():
+                if item_location.type == Types.IslesMedal and Types.Medal not in flag_dict.keys():
                     flag_dict[Types.Medal] = []
                 else:
                     flag_dict[item_location.type] = []

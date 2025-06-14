@@ -25,12 +25,15 @@ from randomizer.Enums.Settings import (
     ProgressiveHintItem,
     WrinklyHints,
 )
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Enums.Models import Model
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Settings import ShuffleLoadingZones, MinigamesListSelected
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Items import Items
@@ -351,23 +354,23 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
         Minigame8BitImage([Items.Tiny], MinigameImageLoader("tiny"), MinigameImageLoader("kong")),
         Minigame8BitImage([Items.Chunky], MinigameImageLoader("chunky"), MinigameImageLoader("kong")),
         Minigame8BitImage([Items.Bean], MinigameImageLoader("bean"), MinigameImageLoader("bean")),
-        Minigame8BitImage([Items.Pearl], MinigameImageLoader("pearl"), MinigameImageLoader("pearl")),
+        Minigame8BitImage([Items.Pearl, Items.FillerPearl], MinigameImageLoader("pearl"), MinigameImageLoader("pearl")),
         Minigame8BitImage(ItemPool.DonkeyMoves, MinigameImageLoader("potion_dk"), MinigameImageLoader("potion")),
         Minigame8BitImage(ItemPool.DiddyMoves, MinigameImageLoader("potion_diddy"), MinigameImageLoader("potion")),
         Minigame8BitImage(ItemPool.LankyMoves, MinigameImageLoader("potion_lanky"), MinigameImageLoader("potion")),
         Minigame8BitImage(ItemPool.TinyMoves, MinigameImageLoader("potion_tiny"), MinigameImageLoader("potion")),
         Minigame8BitImage(ItemPool.ChunkyMoves, MinigameImageLoader("potion_chunky"), MinigameImageLoader("potion")),
         Minigame8BitImage(colorless_potions, MinigameImageLoader("potion_any"), MinigameImageLoader("potion")),
-        Minigame8BitImage([Items.BattleCrown], MinigameImageLoader(None, 25, 5893, 44, 44), MinigameImageLoader("crown")),
+        Minigame8BitImage([Items.BattleCrown, Items.FillerCrown], MinigameImageLoader(None, 25, 5893, 44, 44), MinigameImageLoader("crown")),
         Minigame8BitImage(
-            [Items.BananaFairy],
+            [Items.BananaFairy, Items.FillerFairy],
             MinigameImageLoader(None, 25, 0x16ED, 32, 32, TextureFormat.RGBA32),
             MinigameImageLoader("fairy"),
         ),
-        Minigame8BitImage([Items.GoldenBanana], MinigameImageLoader(None, 25, 5468, 44, 44), MinigameImageLoader("gb")),
+        Minigame8BitImage([Items.GoldenBanana, Items.FillerBanana], MinigameImageLoader(None, 25, 5468, 44, 44), MinigameImageLoader("gb")),
         Minigame8BitImage(ItemPool.Blueprints(), MinigameImageLoader(None, 25, 0x1593, 48, 42), MinigameImageLoader("blueprint")),
         Minigame8BitImage(ItemPool.Keys(), MinigameImageLoader(None, 25, 5877, 44, 44), MinigameImageLoader("key")),
-        Minigame8BitImage([Items.BananaMedal], MinigameImageLoader(None, 25, 0x156C, 44, 44), MinigameImageLoader("medal")),
+        Minigame8BitImage([Items.BananaMedal, Items.FillerMedal], MinigameImageLoader(None, 25, 0x156C, 44, 44), MinigameImageLoader("medal")),
         Minigame8BitImage([Items.JunkMelon], MinigameImageLoader(None, 7, 0x142, 48, 42), MinigameImageLoader("melon")),
         Minigame8BitImage([Items.NintendoCoin], None, MinigameImageLoader("nintendo")),
         Minigame8BitImage([Items.RarewareCoin], MinigameImageLoader(None, 25, 5905, 44, 44), None),
@@ -1458,6 +1461,7 @@ def patchAssembly(ROM_COPY, spoiler):
         )
 
     expandActorTable(ROM_COPY, settings, offset_dict)
+    writeValue(ROM_COPY, 0x80755DCC, Overlay.Static, 93, offset_dict)
 
     # Uncontrollable Fixes
     writeFunction(ROM_COPY, 0x806F56E0, Overlay.Static, "getFlagIndex_Corrected", offset_dict)  # BP Acquisition - Correct for character
@@ -1739,11 +1743,6 @@ def patchAssembly(ROM_COPY, spoiler):
                 writeValue(ROM_COPY, address_head + 0, Overlay.Static, race_exit["race_map"], offset_dict, 4)
                 writeValue(ROM_COPY, address_head + 4, Overlay.Static, GetMapId(settings, shuffled_back.regionId), offset_dict, 4)
                 writeValue(ROM_COPY, address_head + 8, Overlay.Static, GetExitId(shuffled_back), offset_dict, 4)
-        if ENABLE_BLAST_LZR:
-            addr_hi = getHiSym("blastWarpHandler")
-            addr_lo = getLoSym("blastWarpHandler")
-            writeValue(ROM_COPY, 0x806E5A4A, Overlay.Static, addr_hi, offset_dict)
-            writeValue(ROM_COPY, 0x806E5A4E, Overlay.Static, addr_lo, offset_dict)
 
     # Boss Mapping
     for i in range(7):
@@ -1963,6 +1962,20 @@ def patchAssembly(ROM_COPY, spoiler):
             file_init_flags.extend(barrier_flags[barrier])
 
     writeFunction(ROM_COPY, 0x80682A98, Overlay.Static, "resetCannonGameState", offset_dict)
+
+    # Switchsanity
+    helm_lobby_ssanity_data = settings.switchsanity_data[Switches.IslesHelmLobbyGone]
+    if helm_lobby_ssanity_data.kong != Kongs.chunky or helm_lobby_ssanity_data.switch_type != SwitchType.PadMove:
+        # Something other than gone
+        writeValue(ROM_COPY, 0x80680E3A, Overlay.Static, getHiSym("bonus_shown"), offset_dict)
+        writeValue(ROM_COPY, 0x80680E3C, Overlay.Static, 0x91EF0000 | getLoSym("bonus_shown"), offset_dict, 4)  # lbu $t7, lo(bonus_shown) ($t7)
+        writeValue(ROM_COPY, 0x80680E48, Overlay.Static, 0, offset_dict, 4)  # nop
+        writeValue(ROM_COPY, 0x80680E54, Overlay.Static, 0x51E00009, offset_dict, 4)  # beql $t7, $zero, 0x9
+    mport_ssanity_data = settings.switchsanity_data[Switches.IslesMonkeyport]
+    if mport_ssanity_data.kong == Kongs.donkey and mport_ssanity_data.switch_type == SwitchType.PadMove:
+        # Blast
+        writeValue(ROM_COPY, 0x806E5A4A, Overlay.Static, getHiSym("blastWarpHandler"), offset_dict)
+        writeValue(ROM_COPY, 0x806E5A4E, Overlay.Static, getLoSym("blastWarpHandler"), offset_dict)
 
     if settings.enemy_kill_crown_timer:
         writeFunction(ROM_COPY, 0x8072AC80, Overlay.Static, "handleCrownTimer", offset_dict)

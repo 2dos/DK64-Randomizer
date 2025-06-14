@@ -1,0 +1,27 @@
+{% macro dropdown_multiselector(list, name, title, tooltip, size, includeDisclaimer=0, overrideDisclaimer="") %}
+    <div class="item-select">
+        <p class="select-title">{{ title }}</p>
+        <div class="dropdown-multiselect" id="dropdown_{{ name }}">
+            <!-- Visible toggle -->
+            <div class="dropdown-toggle" onclick="toggleDropdown('{{ name }}')" title="{{ tooltip }}">
+                <span id="selectedCount_{{ name }}">Loading Multiselector...</span>
+            </div>
+    
+            <!-- Dropdown menu -->
+            <div class="dropdown-menu" name="{{ name }}_selected" id="{{ name }}_selected">
+                <div class="d-flex" style="border-bottom: 1px solid #bbb; margin-bottom: 5px; padding-bottom: 10px;">
+                    <span class="mx-2 control-button user-select-none" onclick="dropdownForceAll('{{ name }}', true)">All</span>
+                    <span class="mx-2 control-button user-select-none" onclick="dropdownForceAll('{{ name }}', false)">None</span>
+                </div>
+                {% for option in list %}
+                    <label class="dropdown-item" title="{{ option.tooltip }}">
+                        <input type="checkbox" class="avoid-settings-parse" value="{{ option.value }}"
+                            onchange="updateSelected('{{ name }}')"
+                            >
+                        {{ option.name }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endmacro %}

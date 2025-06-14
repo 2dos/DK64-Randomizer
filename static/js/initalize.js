@@ -549,6 +549,13 @@ async function savesettings() {
     json[ddms.getAttribute('name')] = checkedValues;
   }
 
+  let sjs_containers = document.getElementsByClassName("sortablejs");
+  for (let element of sjs_containers) {
+    const options = Array.from(element.getElementsByTagName("li"));
+    json[element.getAttribute('name')] = options.map((option) => option.getAttribute("value"));
+    // console.log(element.getAttribute('name'), json[element.getAttribute('name')])
+  }
+
   // Handle inputs with specific naming convention
   // Changed with the new selectors list
   // document
@@ -580,6 +587,7 @@ const form_container = document.getElementById("form");
 const form_inputs = form_container.getElementsByTagName("input");
 const form_selects = form_container.getElementsByTagName("select");
 const form_ddms = form_container.getElementsByClassName("dropdown-multiselect");
+const form_sortable = form_container.getElementsByClassName("sortablejs");
 for (let el of form_inputs) {
   el.addEventListener("input", scheduleSave);
   el.addEventListener("change", scheduleSave);
@@ -589,6 +597,9 @@ for (let el of form_selects) {
   el.addEventListener("change", scheduleSave);
 }
 for (let el of form_selects) {
+  el.addEventListener("change", scheduleSave);
+}
+for (let el of form_sortable) {
   el.addEventListener("change", scheduleSave);
 }
 
@@ -1558,10 +1569,12 @@ function load_settings(json) {
   const inputs = form.getElementsByTagName("input");
   const selects = form.getElementsByTagName("select");
   const dropdowns = form.querySelectorAll(".dropdown-multiselect .dropdown-menu");
+  const sortables = form.getElementsByClassName("sortablejs");
   const all_elements = [
     ...inputs,
     ...selects,
     ...dropdowns,
+    ...sortables,
   ];
   const elementsCache = Object.fromEntries(
     Object.keys(json).map((key) => [
@@ -1662,6 +1675,104 @@ function load_settings(json) {
             valueChanged = true;
           }
           element.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`
+        }
+
+        if (element.classList.contains("sortablejs")) {
+          const options = Array.from(element.getElementsByTagName("li"));
+          const currentValues = options.map(option => option.value);
+          const grandparent = element.parentElement.parentElement;
+          const items_list = JSON.parse(grandparent.getAttribute("data-items")).filter(k => !k.is_check);
+          const checks_list = JSON.parse(grandparent.getAttribute("data-items")).filter(k => k.is_check);
+          const list_count = parseInt(grandparent.getAttribute("data-count"));
+          const list_predicate = grandparent.getAttribute("data-predicate");
+          let valid = true;
+          if (list_predicate == "item_rando_list_") {
+              let total_settings_list_items = [];
+              let total_settings_list_checks = [];
+              for (let i = 0; i < list_count; i++) {
+                  total_settings_list_items = total_settings_list_items.concat(json[`${list_predicate}${i}`]);
+                  total_settings_list_checks = total_settings_list_checks.concat(json[`${list_predicate}${i + list_count}`]);
+              }
+              if (total_settings_list_items.length != items_list.length) {
+                  valid = false;
+              }
+              if (total_settings_list_checks.length != checks_list.length) {
+                  valid = false;
+              }
+              total_settings_list_items.forEach(value => {
+                  if (items_list.filter(k => k.value == value).length == 0) {
+                      valid = false;
+                  }
+              })
+              total_settings_list_checks.forEach(value => {
+                  if (checks_list.filter(k => k.value == value).length == 0) {
+                      valid = false;
+                  }
+              })
+          } else {
+              let total_settings_list = [];
+              for (let i = 0; i < list_count; i++) {
+                  total_settings_list = total_settings_list.concat(json[`${list_predicate}${i}`]);
+              }
+              valid = total_settings_list.length == items_list.length;
+              total_settings_list.forEach(value => {
+                  if (items_list.filter(k => k.value == value).length == 0) {
+                      valid = false;
+                  }
+              })
+          }
+          if (valid) {
+            if (JSON.stringify(currentValues) !== JSON.stringify(value)) {
+              // Find the selected option by the value of the option
+              element.innerHTML = "";
+              value.forEach(opt => {
+                const option = document.createElement("li");
+                option.classList.add("list-group-item");
+                option.setAttribute("value", opt);
+                let opt_name = "";
+                let opt_tooltip = "";
+                let opt_checks = "";
+                let opt_items = "";
+                let opt_tied_item = "";
+                items_list.concat(checks_list).forEach(k => {
+                  if (k.value == opt) {
+                      opt_name = k.name;
+                      opt_tooltip = k.tooltip;
+                      if (list_predicate == "item_rando_list_") {
+                        opt_checks = k.check_count;
+                        opt_items = k.item_count;
+                        if (k.is_check) {
+                          option.classList.add("ischeck");
+                        } else if (k.is_dummy) {
+                          option.classList.add("show-if-ir-decouple");
+                          if (json["decouple_item_rando"] == "True") {
+                            option.setAttribute("hidden", "hidden");
+                          }
+                        }
+                        opt_tied_item = k.tied ? k.tied : "";
+                      }
+                  }
+                })
+                if (opt_name != "") {
+                  option.innerText = opt_name; // Not sure what to do for this
+                  option.title = opt_tooltip;
+                  if (list_predicate == "item_rando_list_") {
+                    option.setAttribute("check_count", opt_checks);
+                    option.setAttribute("items_count", opt_items);
+                    option.setAttribute("tied_item", opt_tied_item);
+                  }
+                  element.appendChild(option);
+                }
+              })
+              valueChanged = true;
+            }
+          } else {
+            console.log("Invalid sortable during init")
+          }
+          if (list_predicate == "item_rando_list_") {
+            // console.log("Dispatching list predicate event")
+            updateCheckItemCounter(grandparent);
+          }
         }
       } catch (e) {
         console.error(`Error setting value for ${key}:`, e);

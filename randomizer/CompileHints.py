@@ -47,7 +47,7 @@ from randomizer.Lists.PathHintTree import BuildPathHintTree
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
 from randomizer.Patching.UpdateHints import UpdateHint
-from randomizer.Patching.Library.Generic import plando_colors, IsItemSelected, IsDDMSSelected
+from randomizer.Patching.Library.Generic import plando_colors, IsDDMSSelected
 
 if TYPE_CHECKING:
     from randomizer.Lists.WrinklyHints import HintLocation
@@ -696,7 +696,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     if spoiler.settings.enable_plandomizer:
         plando_hints_placed = ApplyPlandoHints(spoiler)
         hint_distribution[HintType.Plando] = plando_hints_placed
-    level_order_matters = spoiler.settings.logic_type != LogicType.nologic and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all
+    level_order_matters = spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal) and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all
     globally_hinted_location_ids = []
     # Stores the number of hints each key will get
     key_hint_dict = {
@@ -765,7 +765,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     # If the Bean isn't shuffled, hinting the Bean location is pointless
     if (
         spoiler.settings.win_condition_item == WinConditionComplex.req_bean
-        and ItemRandoListSelected.beanpearl not in spoiler.settings.item_rando_list_selected
+        and ItemRandoListSelected.bean not in spoiler.settings.item_rando_list_selected
         and Locations.ForestBean in spoiler.woth_paths.keys()
     ):
         useless_locations[Items.Bean] = [Locations.ForestBean]
@@ -1040,7 +1040,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             if starting_slam_count < 2:
                 valid_types.append(HintType.RequiredSlamHint)
             # With no logic WOTH isn't built correctly so we can't make any hints with it
-            if spoiler.settings.logic_type != LogicType.nologic:
+            if spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal):
                 # If we're in full item rando with shops in the pool, we need to replace our bad filler with good filler
                 # Get rid of the bad filler
                 if HintType.BLocker in valid_types:
@@ -1096,7 +1096,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         #     valid_types.append(HintType.DirtPatch)
 
         # There are no paths in no logic so multipath doesn't function
-        if spoiler.settings.logic_type != LogicType.nologic:
+        if spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal):
             # Dynamically calculate the number of key hints that need to be placed per key. Any WotH keys should have paths that we should hint.
             if spoiler.settings.shuffle_items and len(woth_key_ids) > 0:
                 valid_types.append(HintType.RequiredKeyHint)
@@ -2663,7 +2663,7 @@ def getDoorRestrictionsForItem(spoiler: Spoiler, item: Items):
     # Progressive hints need additional restrictions to feel good
     if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
         # If we're not in LZR, Keys that unlock levels are awful to get on the last few hints
-        if spoiler.settings.logic_type != LogicType.nologic and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
+        if spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal) and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
             # In SLO, we know what order we'll find keys in, which can put early keys even earlier
             if not spoiler.settings.hard_level_progression:
                 if item in (Items.JungleJapesKey, Items.AngryAztecKey):  # Key 1/2 hints by pack 5

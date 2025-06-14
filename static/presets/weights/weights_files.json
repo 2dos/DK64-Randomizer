@@ -25,7 +25,6 @@
     },
     "bonus_barrel_auto_complete": 0.5,
     "bonus_barrel_rando": 0.7,
-    "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cannons_require_blast": 0,
     "cb_rando_enabled": 0.3,
@@ -265,7 +264,6 @@
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
     "krool_in_boss_pool": 0.8,
     "krool_phase_order_rando": 0.8,
@@ -440,7 +438,6 @@
     },
     "bonus_barrel_auto_complete": 0.3,
     "bonus_barrel_rando": 0.7,
-    "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cannons_require_blast": 0.5,
     "cb_rando_enabled": 0.5,
@@ -691,7 +688,6 @@
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
     "krool_in_boss_pool": 0.65,
     "krool_phase_order_rando": 0.8,
@@ -875,7 +871,6 @@
     },
     "bonus_barrel_auto_complete": 0.1,
     "bonus_barrel_rando": 0.7,
-    "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cannons_require_blast": 1,
     "cb_rando_enabled": 0.6,
@@ -1140,7 +1135,6 @@
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
     "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,
@@ -1355,7 +1349,6 @@
     },
     "bonus_barrel_auto_complete": 0.1,
     "bonus_barrel_rando": 0.7,
-    "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cannons_require_blast": 1,
     "cb_rando_enabled": 0.6,
@@ -1620,7 +1613,6 @@
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
     "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,

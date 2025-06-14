@@ -59,7 +59,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Patching.Library.Generic import IsItemSelected, getProgHintBarrierItem, sumChecks, getCompletableBonuses, IsDDMSSelected
+from randomizer.Patching.Library.Generic import getProgHintBarrierItem, sumChecks, getCompletableBonuses, IsDDMSSelected
 from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
@@ -457,10 +457,10 @@ class LogicVarHolder:
         if self.InstUpgrades >= 2:
             self.Melons = 3
 
-        self.GoldenBananas = item_counts[Items.GoldenBanana]
-        self.BananaFairies = item_counts[Items.BananaFairy]
-        self.BananaMedals = item_counts[Items.BananaMedal]
-        self.BattleCrowns = item_counts[Items.BattleCrown]
+        self.GoldenBananas = item_counts[Items.GoldenBanana] + item_counts[Items.FillerBanana]
+        self.BananaFairies = item_counts[Items.BananaFairy] + item_counts[Items.FillerFairy]
+        self.BananaMedals = item_counts[Items.BananaMedal] + item_counts[Items.FillerMedal]
+        self.BattleCrowns = item_counts[Items.BattleCrown] + item_counts[Items.FillerCrown]
         self.RainbowCoins = item_counts[Items.RainbowCoin]
 
         self.camera = self.camera or Items.CameraAndShockwave in ownedItems or Items.Camera in ownedItems
@@ -476,7 +476,7 @@ class LogicVarHolder:
         self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint and x <= Items.DKIslesChunkyBlueprint]
         self.Hints = [x for x in ownedItems if x >= Items.JapesDonkeyHint and x <= Items.CastleChunkyHint]
         self.Beans = sum(1 for x in ownedItems if x == Items.Bean)
-        self.Pearls = sum(1 for x in ownedItems if x == Items.Pearl)
+        self.Pearls = sum(1 for x in ownedItems if x in [Items.Pearl, Items.FillerPearl])
 
         self.UpdateCoins()
 
