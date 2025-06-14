@@ -207,9 +207,7 @@ def ShuffleItems(spoiler):
             # Add this location's flag to the lists of available flags by location
             # Initialize relevant list if it doesn't exist
             if item_location.type not in flag_dict.keys() and item_location.type != Types.Blueprint:
-                if item_location.type == Types.ToughBanana and Types.Banana not in flag_dict.keys():
-                    flag_dict[Types.Banana] = []
-                elif item_location.type == Types.IslesMedal and Types.Medal not in flag_dict.keys():
+                if item_location.type == Types.IslesMedal and Types.Medal not in flag_dict.keys():
                     flag_dict[Types.Medal] = []
                 else:
                     flag_dict[item_location.type] = []

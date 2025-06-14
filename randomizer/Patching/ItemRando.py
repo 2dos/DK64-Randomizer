@@ -165,7 +165,6 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
     """Get the data associated with how an item is patched into ROM from various attributes."""
     simple_types = {
         Types.Banana: 3,
-        Types.ToughBanana: 3,
         Types.Fairy: 5,
         Types.Crown: 7,
         Types.Medal: 9,
@@ -884,7 +883,6 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                 Types.Key,
                 Types.RainbowCoin,
                 Types.Banana,
-                Types.ToughBanana,
                 Types.NintendoCoin,
                 Types.RarewareCoin,
                 Types.Enemies,

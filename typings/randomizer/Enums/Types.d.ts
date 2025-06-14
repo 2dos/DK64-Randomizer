@@ -39,6 +39,8 @@ export enum Types {
     FillerFairy = 38,
     FillerCrown = 39,
     FillerMedal = 40,
+    HelmMedal = 41,
+    HelmKey = 42,
 }
 
 export enum BarrierItems {

@@ -1882,7 +1882,6 @@ def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
         # Everything else can be in any Helm location they already could have been in depending on their type
         elif typ in spoiler.settings.valid_locations.keys():
             spoiler.settings.valid_locations[typ] = [loc for loc in spoiler.settings.valid_locations[typ] if spoiler.LocationList[loc].level == Levels.HideoutHelm and loc in empty_helm_locations]
-        # Anything that falls out of this else is a type that doesn't have valid locations (ToughBanana, etc.)
     # Now we get the full list of items we could place here
     unplaced_items = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
     for item in placed_items:
@@ -2311,7 +2310,6 @@ def Fill(spoiler: Spoiler) -> None:
                 # Mark this preplaced GB as accounted for
                 preplaced_gbs_accounted_for.append(item)
         # After checking all preplaced items, we can treat the accounted for GBs as no longer preplaced
-        # This way the upcoming ToughBanana GB fill will not double-account for them
         for item in preplaced_gbs_accounted_for:
             preplaced_items.remove(item)
         gbsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, gbsToBePlaced, [])
@@ -2322,22 +2320,6 @@ def Fill(spoiler: Spoiler) -> None:
             spoiler,
             ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
             "GBs",
-        )
-    if Types.ToughBanana in spoiler.settings.shuffled_location_types:
-        placed_types.append(Types.ToughBanana)
-        spoiler.Reset()
-        toughGbsToBePlaced = ItemPool.ToughGoldenBananaItems()
-        for item in preplaced_items:
-            if item in toughGbsToBePlaced:
-                toughGbsToBePlaced.remove(item)
-        gbsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, toughGbsToBePlaced, [])
-        if gbsUnplaced > 0:
-            raise Ex.ItemPlacementException("Unable to find all locations during the fill. Error code: TB-" + str(gbsUnplaced))
-    if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(
-            spoiler,
-            ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
-            "Tough GBs",
         )
     # Place Hints
     if Types.Hint in spoiler.settings.shuffled_location_types and spoiler.settings.progressive_hint_item == ProgressiveHintItem.off:

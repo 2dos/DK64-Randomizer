@@ -151,7 +151,6 @@ def AllItemsUnrestricted(settings):
     allItems = []
     allItems.extend(Blueprints())
     allItems.extend(GoldenBananaItems())
-    allItems.extend(ToughGoldenBananaItems())
     allItems.extend(NintendoCoinItems())
     allItems.extend(RarewareCoinItems())
     allItems.extend(BattleCrownItems())
@@ -195,8 +194,6 @@ def AllItems(settings):
         allItems.extend(Blueprints())
     if Types.Banana in settings.shuffled_location_types:
         allItems.extend(GoldenBananaItems())
-    if Types.ToughBanana in settings.shuffled_location_types:
-        allItems.extend(ToughGoldenBananaItems())
     if Types.NintendoCoin in settings.shuffled_location_types:
         allItems.extend(NintendoCoinItems())
     if Types.RarewareCoin in settings.shuffled_location_types:
@@ -267,8 +264,6 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(Blueprints())
     if Types.Banana in settings.shuffled_location_types:
         allItems.extend(GoldenBananaItems())
-    if Types.ToughBanana in settings.shuffled_location_types:
-        allItems.extend(ToughGoldenBananaItems())
     if Types.NintendoCoin in settings.shuffled_location_types:
         allItems.extend(NintendoCoinItems())
     if Types.RarewareCoin in settings.shuffled_location_types:
@@ -559,16 +554,8 @@ TOUGH_BANANA_COUNT = 13
 def GoldenBananaItems():
     """Return a list of GBs to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.GoldenBanana, 161 - TOUGH_BANANA_COUNT))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
+    itemPool.extend(itertools.repeat(Items.GoldenBanana, 161))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
     return itemPool
-
-
-def ToughGoldenBananaItems():
-    """Return a list of GBs to be placed."""
-    itemPool = []
-    itemPool.extend(itertools.repeat(Items.GoldenBanana, TOUGH_BANANA_COUNT))
-    return itemPool
-
 
 def BananaMedalItems(settings):
     """Return a list of Banana Medals to be placed."""
@@ -774,8 +761,6 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     unplacedTypes = [typ for typ in settings.shuffled_location_types if typ not in placed_types]
     if Types.Banana in unplacedTypes:
         itemPool.extend(GoldenBananaItems())
-    if Types.ToughBanana in unplacedTypes:
-        itemPool.extend(ToughGoldenBananaItems())
     if Types.Shop in unplacedTypes:
         itemPool.extend(AllKongMoves())
     if Types.Blueprint in unplacedTypes:
@@ -812,8 +797,6 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(BoulderItems())
     if Types.Enemies in unplacedTypes:
         itemPool.extend(EnemyItems())
-    if Types.ToughBanana in unplacedTypes:
-        itemPool.extend(ToughGoldenBananaItems())
     if Types.Cranky in unplacedTypes:
         itemPool.extend(CrankyItems())
     if Types.Funky in unplacedTypes:

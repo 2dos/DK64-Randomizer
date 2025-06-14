@@ -1269,7 +1269,7 @@ class Spoiler:
             WinConditionComplex.req_companycoins: [Types.NintendoCoin],  # Also Types.RarewareCoin
             WinConditionComplex.req_crown: [Types.Crown, Types.FillerCrown],
             WinConditionComplex.req_fairy: [Types.Fairy, Types.FillerFairy],
-            WinConditionComplex.req_gb: [Types.Banana, Types.FillerBanana],  # Also Types.ToughBanana
+            WinConditionComplex.req_gb: [Types.Banana, Types.FillerBanana],
             # WinConditionComplex.req_key: [Types.Key],
             WinConditionComplex.req_medal: [Types.Medal, Types.FillerMedal],
             WinConditionComplex.req_pearl: [Types.Pearl, Types.FillerPearl],

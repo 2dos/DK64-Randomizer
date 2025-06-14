@@ -41,6 +41,8 @@ class Types(IntEnum):
     FillerFairy = 38
     FillerCrown = 39
     FillerMedal = 40
+    HelmMedal = 41
+    HelmKey = 42
 
 class BarrierItems(IntEnum):
     Nothing = 0

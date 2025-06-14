@@ -510,7 +510,6 @@ def getItemNumberString(count: int, item_type: Types) -> str:
         Types.FillerPearl: "Pearl",
         Types.RainbowCoin: "Rainbow Coin",
         Types.FakeItem: "Ice Trap",
-        Types.ToughBanana: "Golden Banana",
         Types.JunkItem: "Junk Item",
         Types.Hint: "Hint",
         Types.PreGivenMove: "Move",
