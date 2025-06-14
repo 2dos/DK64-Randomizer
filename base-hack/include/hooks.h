@@ -107,3 +107,4 @@ extern void spawnHoldableObject(void);
 extern void fixDiddySlamCrash(void);
 
 extern void fixNullLagBoost(void);
+extern void fixBLockerRange(void);

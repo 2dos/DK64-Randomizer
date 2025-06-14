@@ -492,7 +492,10 @@ def writeEnemy(spoiler, ROM_COPY: LocalROM, cont_map_spawner_address: int, new_e
                 if cont_map_id not in MAP_DIFFICULTY_ORDER:
                     if spoiler.settings.randomize_enemy_sizes:
                         lower_b = int(scale * 0.3)
-                        upper_b = min(255, int(1.5 * scale))
+                        if cont_map_id == Maps.CavesDiddyUpperCabin:
+                            upper_b = scale
+                        else:
+                            upper_b = min(255, int(1.5 * scale))
                         chosen_scale = spoiler.settings.random.randint(lower_b, upper_b)
                         ROM_COPY.writeMultipleBytes(chosen_scale, 1)
                     elif spoiler.settings.normalize_enemy_sizes:

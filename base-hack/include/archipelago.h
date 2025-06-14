@@ -83,6 +83,8 @@ typedef struct archipelago_data {
     /* 0x05D */ char receive_death; // If someone else dies, this will kill the donk player
     /* 0x05E */ char can_die; // If death is received, the game will queue the death until this is 1. It's generally a good idea to not send a death to the donk player if this is zero 
     /* 0x05F */ unsigned char text_timer;
+    /* 0x060 */ char tag_kong; // Byte to set the current kong to this. Check can_tag before setting this if you want safety
+    /* 0x061 */ unsigned char can_tag;
 } archipelago_data;
 
 extern archipelago_data *APData;

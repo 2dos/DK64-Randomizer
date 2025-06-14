@@ -1257,6 +1257,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 if location.item == Items.ProgressiveSlam and id not in PreGivenLocations and id not in TrainingBarrelLocations:  # Ignore anything pre-given
                     if location.level not in slam_levels:
                         slam_levels.append(location.level)
+            slam_levels.sort(key=lambda level: level.value)  # Sort the slam levels by vanilla level order so as to disguise any information from the traversal
             # Assemble a hint that resembles the microhint - only hint the levels the slams are in
             slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
             slam_text = " or ".join(slam_text_entries)
@@ -1967,6 +1968,9 @@ def compileHints(spoiler: Spoiler) -> bool:
             # Maps.CastleUpperCave: [Regions.UpperCave],
             # Maps.CastleLowerCave: [Regions.LowerCave],
         }
+        # If warps are pre-activated and cross-map, we can't treat the Castle Crypt as a connector because you are decently likely to just warp into it.
+        if spoiler.settings.activate_all_bananaports == ActivateAllBananaports.all and spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled):
+            del connector_maps[Maps.CastleCrypt]
         # First identify which maps contain WotH items - some maps are more interesting than others
         isolated_interesting_transitions = []
         # Lists to prevent duplicate entrance hints from existing
@@ -2769,6 +2773,7 @@ def compileMicrohints(spoiler: Spoiler) -> None:
                             hint_text = hint_text.replace(colorless_kong_list[location.kong].upper(), "KRUSHA")
                 spoiler.microhints[item.name] = hint_text
     if len(slam_levels) > 0:
+        slam_levels.sort(key=lambda level: level.value)  # Sort the slam levels so they are in order
         slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
         slam_text = " or ".join(slam_text_entries)
         spoiler.microhints[ItemList[Items.ProgressiveSlam].name] = (

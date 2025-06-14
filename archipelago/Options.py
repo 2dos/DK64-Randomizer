@@ -237,11 +237,37 @@ class GlitchesSelected(OptionList):
     }
 
 
+class RingLink(Toggle):
+    """Determines if the Ring Link is enabled.
+
+    The easier waty to say this is Ammo link.
+    If enabled, all ammo types are shared between players.
+
+    Currently for Film and Crystal Coconuts if you gain any above the base amount from ringlink, we will not provide more.
+    But you can still gain more ammo from the world, and it will be shared.
+    """
+
+    display_name = "Ring Link"
+
+
+class TagLink(Toggle):
+    """Determines if the Tag Link is enabled.
+
+    If enabled, if you have another players kong you will tag to that kong as well.
+    If you don't have that kong, you will randomly tag to another kong.
+    If you only have one kong, nothing will happen.
+    """
+
+    display_name = "Tag Link"
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
 
     death_link: DeathLink
+    ring_link: RingLink
+    tag_link: TagLink
     goal: Goal
     krool_key_count: KeysRequiredToBeatKrool
     krool_phase_count: KroolPhaseCount
