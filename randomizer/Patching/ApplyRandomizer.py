@@ -254,6 +254,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.fix_lanky_tiny_prod, 0x114),  # Fix Lanky Tiny Prod
         BooleanProperties(spoiler.settings.enemy_kill_crown_timer, 0x35),  # Enemy crown timer reduction
         BooleanProperties(spoiler.settings.race_coin_rando, 0x94),  # Race Coin Location Rando
+        BooleanProperties(spoiler.settings.disable_racing_patches, 0x91),  # Disable Racing Patches
     ]
 
     for prop in boolean_props:

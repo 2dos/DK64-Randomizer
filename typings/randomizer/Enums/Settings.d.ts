@@ -839,6 +839,7 @@ export enum SettingsStringEnum {
     item_rando_list_9 = 251,
     decouple_item_rando = 252,
     filler_items_selected = 253,
+    disable_racing_patches = 254,
 }
 
 export enum SettingsStringDataType {
@@ -1148,6 +1149,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
+    SettingsStringEnum.disable_racing_patches: SettingsStringDataType.bool,
     SettingsStringEnum.starting_kong: Kongs,
     SettingsStringEnum.switchsanity: SwitchsanityLevel,
     SettingsStringEnum.fungi_time: FungiTimeSetting,

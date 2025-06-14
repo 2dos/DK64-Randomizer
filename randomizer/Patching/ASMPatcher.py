@@ -1094,7 +1094,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if settings.shuffle_items:
         for item in spoiler.item_assignment:
-            if item.can_have_item and not item.is_shop:
+            if item.can_have_item and not item.is_shop and item.old_item not in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
                 if item.new_item is None or item.new_item == Types.NoItem:
                     file_init_flags.append(item.old_flag)
     SCREEN_SHAKE_CAP = 7
