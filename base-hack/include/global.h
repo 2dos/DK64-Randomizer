@@ -427,6 +427,8 @@ extern int hasFlagMove(int flag);
 extern void setFlagMove(int flag);
 extern int getShopFlag(vendors vendor, int level, int kong);
 
+extern void giveKongFromFlag(int flag);
+
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];

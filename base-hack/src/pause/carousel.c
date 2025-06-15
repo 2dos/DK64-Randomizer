@@ -182,6 +182,7 @@ void initCarousel_onPause(void) {
     file_items[CHECK_KONG] = getItemCount_new(REQITEM_KONG, -1, -1);
     file_items[CHECK_CRATE] = getItemCount_new(REQITEM_JUNK, 0, 0);
     file_items[CHECK_SHOPS] = getTotalMoveCount();
+    file_items[CHECK_KEY] = getItemCount_new(REQITEM_KEY, -1, -1);
 }
 
 void initCarousel_onBoot(void) {

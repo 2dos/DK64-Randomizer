@@ -135,7 +135,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
                 // Progressive instrument
                 int ins_level = getInstrumentLevel();
                 for (int i = 0; i < 5; i++) {
-                    MovesBase[i].instrument_bitfield |= (1 << (ins_level + 1));
+                    MovesBase[i].instrument_bitfield |= (1 << (ins_level + 2));
                 }
                 int cap = 2;
                 if (ins_level > 1) {
@@ -190,7 +190,7 @@ int getItemCount_new(requirement_item item, int level, int kong) {
             }
             {
                 for (int i = 0; i < 8; i++) {
-                    int has_item = (bitfield_value >> iterator) & 1;
+                    int has_item = (bitfield_value >> i) & 1;
                     if (iterator == i) {
                         return has_item;
                     }
@@ -280,6 +280,14 @@ int getKongOwnershipFromFlag(int flag) {
         }
     }
     return 0;
+}
+
+void giveKongFromFlag(int flag) {
+    for (int i = 0; i < 5; i++) {
+        if (flag == kong_flags[i]) {
+            giveItem(REQITEM_KONG, 0, i, (giveItemConfig){.display_item_text = 0});
+        }
+    }
 }
 
 int hasFlagMove(int flag) {

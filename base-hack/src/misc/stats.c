@@ -80,20 +80,20 @@ typedef struct dynamic_credits_item {
 } dynamic_credits_item;
 
 static const dynamic_credits_item stat_credits_items[] = {
-    {.header = "GAME STATISTICS", .global_data = 0, .sub_data = 0, .has_data = 0},
-    {.header = "KONG PLAYTIME", .global_data = 0, .sub_data = 0, .has_data = 0},
-    {.header = "DK: ", .global_data = DATA_IGT_DK, .sub_data = 1, .has_data = 1},
-    {.header = "DIDDY: ", .global_data = DATA_IGT_DIDDY, .sub_data = 1, .has_data = 1},
-    {.header = "LANKY: ", .global_data = DATA_IGT_LANKY, .sub_data = 1, .has_data = 1},
-    {.header = "TINY: ", .global_data = DATA_IGT_TINY, .sub_data = 1, .has_data = 1},
-    {.header = "CHUNKY: ", .global_data = DATA_IGT_CHUNKY, .sub_data = 1, .has_data = 1},
-    {.header = "MISC STATS", .global_data = 0, .sub_data = 0, .has_data = 0},
-    {.header = "TAGS: ", .global_data = DATA_STAT_TAG, .sub_data = 2, .has_data = 1},
-    {.header = "PHOTOS TAKEN: ", .global_data = DATA_STAT_PHOTOS, .sub_data = 2, .has_data = 1},
-    {.header = "CAUGHT BY KOPS: ", .global_data = DATA_STAT_KAUGHT, .sub_data = 2, .has_data = 1},
-    {.header = "ENEMIES KILLED: ", .global_data = DATA_STAT_ENEMY_KILLS, .sub_data = 2, .has_data = 1},
-    {.header = "TIMES TRAPPED: ", .global_data = DATA_STAT_TRAPPED, .sub_data = 2, .has_data = 1},
-    {.header = "DEATHS: ", .global_data = DATA_STAT_DEATHS, .sub_data = 2, .has_data = 1},
+    {.header = "GAME STATISTICS",   .global_data = 0,                       .sub_data = 0, .has_data = 0},
+    {.header = "KONG PLAYTIME",     .global_data = 0,                       .sub_data = 0, .has_data = 0},
+    {.header = "DK: ",              .global_data = DATA_IGT_DK,             .sub_data = 1, .has_data = 1},
+    {.header = "DIDDY: ",           .global_data = DATA_IGT_DIDDY,          .sub_data = 1, .has_data = 1},
+    {.header = "LANKY: ",           .global_data = DATA_IGT_LANKY,          .sub_data = 1, .has_data = 1},
+    {.header = "TINY: ",            .global_data = DATA_IGT_TINY,           .sub_data = 1, .has_data = 1},
+    {.header = "CHUNKY: ",          .global_data = DATA_IGT_CHUNKY,         .sub_data = 1, .has_data = 1},
+    {.header = "MISC STATS",        .global_data = 0,                       .sub_data = 0, .has_data = 0},
+    {.header = "TAGS: ",            .global_data = DATA_STAT_TAG,           .sub_data = 2, .has_data = 1},
+    {.header = "PHOTOS TAKEN: ",    .global_data = DATA_STAT_PHOTOS,        .sub_data = 2, .has_data = 1},
+    {.header = "CAUGHT BY KOPS: ",  .global_data = DATA_STAT_KAUGHT,        .sub_data = 2, .has_data = 1},
+    {.header = "ENEMIES KILLED: ",  .global_data = DATA_STAT_ENEMY_KILLS,   .sub_data = 2, .has_data = 1},
+    {.header = "TIMES TRAPPED: ",   .global_data = DATA_STAT_TRAPPED,       .sub_data = 2, .has_data = 1},
+    {.header = "DEATHS: ",          .global_data = DATA_STAT_DEATHS,        .sub_data = 2, .has_data = 1},
 };
 
 static char number_text[10] = "";
@@ -105,6 +105,12 @@ char* createEndSeqCreditsFile(void) {
     char* text_data = dk_malloc(STATIC_CREDITS_ALLOCATION + DYNAMIC_CREDITS_ALLOCATION);
     int write_position = 0;
     int raw_write_location = (int)text_data;
+    // Calculate total kong IGT
+    int total_kong = 0;
+    for (int j = 0; j < 5; j++) {
+        total_kong += ReadFile(DATA_IGT_DK + j, 0, 0, FileIndex);
+    }
+    // Calculate Strings
     for (int i = 0; i < (int)(sizeof(stat_credits_items)/sizeof(dynamic_credits_item)); i++) {
         int header_length = cstring_strlen(stat_credits_items[i].header);
         dk_memcpy((void*)(raw_write_location + write_position), stat_credits_items[i].header, header_length);
@@ -118,15 +124,7 @@ char* createEndSeqCreditsFile(void) {
                 dk_strFormat(number_text, "%d", value);
             } else if (stat_credits_items[i].sub_data == 1) {
                 // Kong IGT
-                int current_kong = 0;
-                int total_kong = 0;
-                for (int j = 0; j < 5; j++) {
-                    int local_kong = ReadFile(global_data, 0, 0, FileIndex);
-                    if (j == (global_data - DATA_IGT_DK)) {
-                        current_kong = local_kong;
-                    }
-                    total_kong += local_kong;
-                }
+                int current_kong = ReadFile(global_data, 0, 0, FileIndex);
                 float value_f = 0.0f;
                 if (total_kong != 0) {
                     value_f = 100 * current_kong;

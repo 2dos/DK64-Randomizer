@@ -850,6 +850,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                                     Types.Climbing,
                                     Types.Cranky,
                                     Types.Fairy,
+                                    Types.FillerFairy,
                                     Types.Funky,
                                     Types.Shockwave,
                                     Types.Shop,

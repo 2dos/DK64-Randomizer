@@ -155,6 +155,13 @@ void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int c
     }
 }
 
+static const unsigned char pair_data[] = {
+	MAP_JAPES,
+	MAP_AZTECLLAMATEMPLE,
+	MAP_AZTECTINYTEMPLE,
+	MAP_FACTORY,
+};
+
 void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
     /**
      * @brief Change Character Spawner Information to account for Fairy Rando
@@ -168,12 +175,18 @@ void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
         for (int i = 0; i < 31; i++) {
             if ((charspawnerflags[i].map == CurrentMap) && (charspawnerflags[i].spawner_id == spawner->spawn_trigger)) {
                 model = fairy_item_table[charspawnerflags[i].tied_flag - 589].model;
-                if ((model >= -4) && (model <= -2)) {
-                    model = 0x103;
-                }
             }
         }
         spawnActor(actor, model);
+    } else if (actor == 141) {
+        // Cutscene Kong
+        int check_index = 0;
+        for (int i = 0; i < 4; i++) {
+            if (pair_data[i] == CurrentMap) {
+                check_index = i;
+            }
+        }
+        spawnActor(actor, kong_check_data[check_index].model);
     } else {
         spawnActor(actor, CharSpawnerActorData[spawner->alt_enemy_value].model);
     }

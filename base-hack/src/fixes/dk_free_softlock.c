@@ -102,9 +102,6 @@ void charSpawnerItemCode(void) {
 		return;
 	}
 	int initialized = CurrentActorPointer_0->obj_props_bitfield & 0x10;
-	if (!initialized) {
-		setActorModel(CurrentActorPointer_0, model);
-	}
 	switch (model) {
 		case 4:
 			cutsceneDKCode();

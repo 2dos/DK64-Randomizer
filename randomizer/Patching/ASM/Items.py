@@ -250,6 +250,8 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     # Initialize fixed item scales
     writeFunction(ROM_COPY, 0x806F4918, Overlay.Static, "writeItemScale", offset_dict)  # Write scale to collision info
     writeValue(ROM_COPY, 0x806F491C, Overlay.Static, 0x87A40066, offset_dict, 4)  # LH $a0, 0x66 ($sp)
+    # Kong
+    writeFunction(ROM_COPY, 0x80683638, Overlay.Static, "giveKongFromFlag", offset_dict)
 
     writeValue(ROM_COPY, 0x806F4C6E, Overlay.Static, 0x20, offset_dict)  # Change size
     writeValue(ROM_COPY, 0x806F4C82, Overlay.Static, 0x20, offset_dict)  # Change size
