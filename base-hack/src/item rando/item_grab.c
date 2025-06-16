@@ -74,6 +74,9 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
                 case REQITEM_COMPANYCOIN:
                     sprite_index = item_kong == 0 ? 0x8D : 0x8C;
                     break;
+                case REQITEM_MOVE:
+                    sprite = &potion_sprite;
+                    break;
                 case REQITEM_BEAN:
                     sprite = &bean_sprite;
                     break;

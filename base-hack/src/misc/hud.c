@@ -410,6 +410,8 @@ void* getHUDSprite_Complex(item_ids item) {
         return &bean_sprite;
     } else if (item == ITEMID_CHAOSBLOCKER_PEARL) {
         return &pearl_sprite;
+    } else if (item == ITEMID_CHAOSBLOCKER_MOVE) {
+        return &potion_sprite;
     } else if (item == ITEMID_CHAOSBLOCKER_COMPANYCOIN) {
         return &company_coin_sprite;
     } else if ((item == ITEMID_STANDARDAMMO) || (item == ITEMID_HOMINGAMMO)) {

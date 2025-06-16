@@ -105,6 +105,15 @@ class ExtraTextures(IntEnum):
     APPearl4 = auto()
     APPearl5 = auto()
     StaticGoldPalette = auto()
+    PotionSpin0 = auto()
+    PotionSpin1 = auto()
+    PotionSpin2 = auto()
+    PotionSpin3 = auto()
+    PotionSpin4 = auto()
+    PotionSpin5 = auto()
+    PotionSpin6 = auto()
+    PotionSpin7 = auto()
+    PotionSpin8 = auto()
 
 
 barrel_skins = (

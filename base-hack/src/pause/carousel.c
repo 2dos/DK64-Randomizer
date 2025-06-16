@@ -32,7 +32,7 @@ int file_sprites[17] = {
     0x80721378, // Rainbow Coins
     0x80721530, // Hint
     0x80720710, // Crate
-    0x80721250, // Shops
+    (int)&potion_sprite, // Shops
     0,
     0, // Null Item, Leave Empty
 };

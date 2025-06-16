@@ -1199,6 +1199,16 @@ for x in range(12):
         )
     )
 
+for x in range(9):
+    file_dict.append(
+        File(
+            name=f"Potion Spin Frame {x + 1}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.PotionSpin0 + x),
+            source_file=f"assets/vial_spin/f{x}_0.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
 
 for x in range(5):
     file_dict.append(

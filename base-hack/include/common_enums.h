@@ -53,6 +53,11 @@ typedef enum codecs {
     RGBA32,
 } codecs;
 
+typedef enum image_tables {
+	TABLE_7,
+	TABLE_25,
+} image_tables;
+
 typedef enum collision_types {
 	/* 0x000 */ COLLISION_BBLAST,
 	/* 0x001 */ COLLISION_UNKNOWN_1,
