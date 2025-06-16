@@ -27,6 +27,7 @@
 #include "music.h"
 #include "macros.h"
 #include "pause.h"
+#include "balloon.h"
 #include "hint_regions.h"
 #include "../src/pause/pause.h"
 

@@ -1429,6 +1429,15 @@ for bi, b in enumerate(barrel_skins):
             texture_format=TextureFormat.RGBA5551,
         )
     )
+    file_dict.append(
+        File(
+            name=f"Balloon Item Skin ({b.capitalize()})",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=6026 + (3 * len(barrel_skins)) + bi,
+            source_file=f"assets/displays/balloon_reward_{b}.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
 
 shrinkModel(False, "", 0xAE, 0.15, "shrink_crown.bin", False)  # Battle Crown
 shrinkModel(False, "", 0xA4, 0.1, "shrink_key.bin", False)  # Boss Key
@@ -2301,7 +2310,7 @@ with open(newROMName, "r+b") as fh:
         "fakekey",
     ]
     for b in barrel_skins:
-        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
+        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"balloon_reward_{b}"])
     for disp in displays:
         for ext in [".png", ".rgba32", ".rgba5551"]:
             other_remove.append(f"displays/{disp}{ext}")

@@ -462,6 +462,23 @@ int getDirtPatchSkin(int flag, flagtypes flag_type) {
     return 0;
 }
 
+void displayBalloonItem(void* sprite, float scale, void *actor, int bone, int info_type) {
+    int alpha = *(unsigned char *)(0x807FDB0F); // Use alpha to determine what functions to run
+    displaySpriteAttachedToActor(sprite, scale, actor, bone, info_type);
+    unkSpriteRenderFunc(0x18);
+    unkSpriteRenderFunc_1(1);
+    if (alpha == 0xFF) {
+        // Is current kong
+        loadSpriteFunction(0x8071EB70);
+        unkSpriteRenderFunc_3(0x226);
+    } else {
+        changeActorColor(0xFF, 0xFF, 0xFF, alpha);
+    }
+    unkSpriteRenderFunc_2(4);
+    unkSpriteRenderFunc_4(3);
+    displaySpriteAttachedToActor(&balloon_bean_sprite, scale, actor, bone, info_type);
+}
+
 void initItemRando(void) {
     /**
      * @brief Initialize Item Rando functionality

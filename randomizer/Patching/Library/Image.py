@@ -149,7 +149,7 @@ barrel_skins = (
 
 def getBonusSkinOffset(offset: int):
     """Get texture index after the barrel skins."""
-    return 6026 + (3 * len(barrel_skins)) + offset
+    return 6026 + (4 * len(barrel_skins)) + offset
 
 
 def getImageFromAddress(ROM_COPY: Union[LocalROM, ROM], rom_address: int, width: int, height: int, compressed: bool, file_size: int, format: TextureFormat):
