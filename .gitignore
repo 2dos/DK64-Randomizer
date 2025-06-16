@@ -223,3 +223,13 @@ static/compiled.jsonc
 vendor/
 dk64.apworld
 /dk64/
+base-hack/assets/vial_spin/f0.png
+base-hack/assets/vial_spin/f1.png
+base-hack/assets/vial_spin/f2.png
+base-hack/assets/vial_spin/f3.png
+base-hack/assets/vial_spin/f4.png
+base-hack/assets/vial_spin/f5.png
+base-hack/assets/vial_spin/f6.png
+base-hack/assets/vial_spin/f7.png
+base-hack/assets/vial_spin/f8.png
+base-hack/assets/vial_spin/*.py
