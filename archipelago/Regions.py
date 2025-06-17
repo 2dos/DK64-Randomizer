@@ -238,6 +238,7 @@ def create_region(
             Events.Night,
             Events.Day,
             Events.AztecIceMelted,
+            Events.MainCoreActivated,
             Events.TestingGateOpened,
             Events.LighthouseGateOpened,
             Events.ShipyardGateOpened,

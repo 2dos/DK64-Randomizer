@@ -141,7 +141,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Locations import Locations as DK64RLocations
-    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel, GlitchesSelected
+    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel, GlitchesSelected, HardModeSelected, RemovedBarriersSelected
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
     from randomizer.Lists import Item as DK64RItem
@@ -284,11 +284,63 @@ if baseclasses_loaded:
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
+            settings_dict["mirror_mode"] = self.options.mirror_mode.value
+            settings_dict["hard_shooting"] = self.options.hard_shooting.value
+            settings_dict["hard_mode"] = self.options.hard_mode.value
+            settings_dict["hard_mode_selected"] = []
+            for hard in self.options.hard_mode_selected:
+                if hard == "hard_enemies":
+                    settings_dict["hard_mode_selected"].append(HardModeSelected.hard_enemies)
+                elif hard == "shuffled_jetpac_enemies":
+                    settings_dict["hard_mode_selected"].append(HardModeSelected.shuffled_jetpac_enemies)
+                elif hard == "strict_helm_timer":
+                    settings_dict["hard_mode_selected"].append(HardModeSelected.strict_helm_timer)
+                elif hard == "donk_in_the_dark_world":
+                    settings_dict["hard_mode_selected"].append(HardModeSelected.donk_in_the_dark_world)
+                elif hard == "donk_in_the_sky":
+                    settings_dict["hard_mode_selected"].append(HardModeSelected.donk_in_the_sky)
             settings_dict["krool_key_count"] = self.options.krool_key_count.value
             if hasattr(self.multiworld, "generation_is_fake"):
                 settings_dict["krool_key_count"] = 8  # if gen is fake, don't pick random keys to start with, trust the slot data
             settings_dict["switchsanity"] = self.options.switchsanity.value
             settings_dict["logic_type"] = self.options.logic_type.value
+            settings_dict["remove_barriers_enabled"] = bool(self.options.remove_barriers_selected)
+            settings_dict["remove_barriers_selected"] = []
+            for barrier in self.options.remove_barriers_selected:
+                if barrier == "japes_coconut_gates":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.japes_coconut_gates)
+                elif barrier == "japes_shellhive_gate":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.japes_shellhive_gate)
+                elif barrier == "aztec_tunnel_door":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.aztec_tunnel_door)
+                elif barrier == "aztec_5dtemple_switches":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.aztec_5dtemple_switches)
+                elif barrier == "aztec_llama_switches":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.aztec_llama_switches)
+                elif barrier == "aztec_tiny_temple_ice":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.aztec_tiny_temple_ice)
+                elif barrier == "factory_testing_gate":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.factory_testing_gate)
+                elif barrier == "factory_production_room":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.factory_production_room)
+                elif barrier == "galleon_lighthouse_gate":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.galleon_lighthouse_gate)
+                elif barrier == "galleon_shipyard_area_gate":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.galleon_shipyard_area_gate)
+                elif barrier == "castle_crypt_doors":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.castle_crypt_doors)
+                elif barrier == "galleon_seasick_ship":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.galleon_seasick_ship)
+                elif barrier == "forest_green_tunnel":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.forest_green_tunnel)
+                elif barrier == "forest_yellow_tunnel":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.forest_yellow_tunnel)
+                elif barrier == "caves_igloo_pads":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.caves_igloo_pads)
+                elif barrier == "caves_ice_walls":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.caves_ice_walls)
+                elif barrier == "galleon_treasure_room":
+                    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.galleon_treasure_room)
             settings_dict["glitches_selected"] = []
             for glitch in self.options.glitches_selected:
                 if glitch == "advanced_platforming":
@@ -344,6 +396,7 @@ if baseclasses_loaded:
                         settings.medal_requirement = passthrough["JetpacReq"]
                         settings.rareware_gb_fairies = passthrough["FairyRequirement"]
                         settings.medal_cb_req = passthrough["MedalCBRequirement"]
+                        settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
                         settings.BossBananas = passthrough["BossBananas"]
                         settings.boss_maps = passthrough["BossMaps"]
                         settings.boss_kongs = passthrough["BossKongs"]
