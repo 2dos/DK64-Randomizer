@@ -84,7 +84,6 @@ LogicRegions = {
         LocationLogic(Locations.AztecTempleEnemy_MainRoom1, lambda l: True),
         LocationLogic(Locations.AztecTempleEnemy_MainRoom2, lambda l: True),
     ], [
-        Event(Events.AztecIceMelted, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice)),
     ], [
         TransitionFront(Regions.AngryAztecOasis, lambda l: True, Transitions.AztecTempleToStart),
         TransitionFront(Regions.TempleGuitarPad, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut and l.isdiddy),

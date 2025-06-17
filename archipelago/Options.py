@@ -286,9 +286,10 @@ class HardModeEnabled(Toggle):
 
     display_name = "Hard Mode Enabled"
 
+
 class HardModeSelected(OptionList):
     """If Hard Mode is enabled, determines which Hard Mode settings are included.
-    
+
     Valid Keys:
     "hard_enemies": Enemies Fight Back a little harder.
     "shuffled_jetpac_enemies": Jetpac enemies are shuffled within Jetpac.
@@ -306,6 +307,7 @@ class HardModeSelected(OptionList):
         "donk_in_the_dark_world",
         "donk_in_the_sky",
     }
+
 
 class RemoveBarriers(OptionList):
     """Determines which barriers are removed.
@@ -338,7 +340,7 @@ class RemoveBarriers(OptionList):
         "aztec_tunnel_door",
         "aztec_5dtemple_switches",
         "aztec_llama_switches",
-        "aztec_tiny_temple_ice"
+        "aztec_tiny_temple_ice",
         "factory_testing_gate",
         "factory_production_room",
         "galleon_lighthouse_gate",
@@ -351,6 +353,8 @@ class RemoveBarriers(OptionList):
         "caves_ice_walls",
         "castle_crypt_doors",
     }
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
