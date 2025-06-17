@@ -292,27 +292,28 @@ class Settings:
         self.BLockerEntryItems = [BarrierItems.GoldenBanana] * 8
         self.BLockerEntryCount = [0] * 8
 
+        self.blocker_limits = {
+            # Will give customization to this eventually, just need to get a proof of concept working
+            # BarrierItems.Nothing: 0,
+            # BarrierItems.Kong: 5,
+            # BarrierItems.Move: 41,
+            BarrierItems.GoldenBanana: 200,
+            BarrierItems.Blueprint: 40,
+            BarrierItems.Fairy: 20,
+            # BarrierItems.Key: 8,
+            BarrierItems.Crown: 10,
+            BarrierItems.CompanyCoin: 2,
+            BarrierItems.Medal: 40,
+            BarrierItems.Bean: 1,
+            BarrierItems.Pearl: 5,
+            BarrierItems.RainbowCoin: 16,
+            # BarrierItems.IceTrap: 10,
+            # BarrierItems.Percentage: 20,
+            # BarrierItems.ColoredBanana: 1000,
+        }
+
         if self.chaos_blockers:
             self.chaos_ratio = self.chaos_ratio / 100.0
-            self.blocker_limits = {
-                # Will give customization to this eventually, just need to get a proof of concept working
-                # BarrierItems.Nothing: 0,
-                # BarrierItems.Kong: 5,
-                # BarrierItems.Move: 41,
-                BarrierItems.GoldenBanana: 200,
-                BarrierItems.Blueprint: 40,
-                BarrierItems.Fairy: 20,
-                # BarrierItems.Key: 8,
-                BarrierItems.Crown: 10,
-                BarrierItems.CompanyCoin: 2,
-                BarrierItems.Medal: 40,
-                BarrierItems.Bean: 1,
-                BarrierItems.Pearl: 5,
-                BarrierItems.RainbowCoin: 16,
-                # BarrierItems.IceTrap: 10,
-                # BarrierItems.Percentage: 20,
-                # BarrierItems.ColoredBanana: 1000,
-            }
             locked_blocker_items = []
             for slot in range(8):
                 item = self.random.choice([key for key in self.blocker_limits.keys() if key not in locked_blocker_items])

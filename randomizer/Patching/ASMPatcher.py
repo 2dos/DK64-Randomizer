@@ -287,7 +287,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x8075F244, Overlay.Static, 0x282, offset_dict)
         writeValue(ROM_COPY, 0x806BE9B2, Overlay.Static, 0x287, offset_dict)
         writeValue(ROM_COPY, 0x806BED5E, Overlay.Static, 0x288, offset_dict)
-        SpeedUpFungiRabbit(ROM_COPY, 1.2)
+        SpeedUpFungiRabbit(ROM_COPY, 1.62)
         # Chunky 5DI
         writeValue(ROM_COPY, 0x8075F3F2, Overlay.Static, Model.Beetle + 1, offset_dict)
         writeValue(ROM_COPY, 0x806B23C6, Overlay.Static, 0x287, offset_dict)
@@ -2779,10 +2779,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8002792C, Overlay.Critter, "getCountOfBlockerRequiredItem", offset_dict)
     writeFunction(ROM_COPY, 0x800278EC, Overlay.Critter, "displayCountOnBLockerTeeth", offset_dict)
     writeFunction(ROM_COPY, 0x800275AC, Overlay.Critter, "displayCountOnBLockerTeeth", offset_dict)
-    # Fix B Locker range default (fixes bug with helm)
-    writeValue(ROM_COPY, 0x800275B8, Overlay.Critter, 0x3C18, offset_dict)  # Loader mips function into t8 reg
-    writeFloatUpper(ROM_COPY, 0x800275BA, Overlay.Critter, 100, offset_dict)  # Set default range to 100
-    writeValue(ROM_COPY, 0x800275C4, Overlay.Critter, 0xAC38A1B0, offset_dict, 4)  # write to addr
+    writeHook(ROM_COPY, 0x800275BC, Overlay.Critter, "fixBLockerRange", offset_dict)
 
     if settings.has_password:
         writeHook(ROM_COPY, 0x80028CC8, Overlay.Menu, "GoToPassword", offset_dict)  # Enables handler of whether to go to the password screen or not
