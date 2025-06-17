@@ -344,6 +344,7 @@ if baseclasses_loaded:
                         settings.medal_requirement = passthrough["JetpacReq"]
                         settings.rareware_gb_fairies = passthrough["FairyRequirement"]
                         settings.medal_cb_req = passthrough["MedalCBRequirement"]
+                        settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
                         settings.BossBananas = passthrough["BossBananas"]
                         settings.boss_maps = passthrough["BossMaps"]
                         settings.boss_kongs = passthrough["BossKongs"]
