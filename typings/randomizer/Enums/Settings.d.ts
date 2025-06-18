@@ -25,6 +25,20 @@ export enum BLockerDifficulty {
     hard = 2,
 }
 
+export enum BLockerSetting {
+    pre_selected = 0,
+    easy_random = 1,
+    normal_random = 2,
+    hard_random = 3,
+    chaos = 4,
+}
+
+export enum TroffSetting {
+    pre_selected = 0,
+    normal_random = 1,
+    hard_random = 2,
+}
+
 export enum CBRando {
     off = 1,
     on = 2,
@@ -840,6 +854,8 @@ export enum SettingsStringEnum {
     decouple_item_rando = 252,
     filler_items_selected = 253,
     disable_racing_patches = 254,
+    blocker_selection_behavior = 255,
+    tns_selection_behavior = 256,
 }
 
 export enum SettingsStringDataType {
@@ -915,6 +931,8 @@ export const SettingsMap = {
     'warp_level_list_selected': Maps,
     'win_condition': WinCondition,
     'win_condition_item': WinConditionComplex,
+    'blocker_selection_behavior': BLockerSetting,
+    'tns_selection_behavior': TroffSetting,
     'wrinkly_hints': WrinklyHints,
     'spoiler_hints': SpoilerHints,
     'starting_kong': Kongs,
@@ -1124,6 +1142,8 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.warp_level_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.warp_to_isles: SettingsStringDataType.bool,
     SettingsStringEnum.win_condition_item: WinConditionComplex,
+    SettingsStringEnum.blocker_selection_behavior: BLockerSetting,
+    SettingsStringEnum.tns_selection_behavior: TroffSetting,
     SettingsStringEnum.win_condition_count: SettingsStringDataType.var_int,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,

@@ -23,6 +23,18 @@ class BLockerDifficulty(IntEnum):
     normal = 1
     hard = 2
 
+class BLockerSetting(IntEnum):
+    pre_selected = 0
+    easy_random = 1
+    normal_random = 2
+    hard_random = 3
+    chaos = 4
+
+class TroffSetting(IntEnum):
+    pre_selected = 0
+    normal_random = 1
+    hard_random = 2
+
 class CBRando(IntEnum):
     off = 1
     on = 2
@@ -783,6 +795,8 @@ class SettingsStringEnum(IntEnum):
     decouple_item_rando = 252
     filler_items_selected = 253
     disable_racing_patches = 254
+    blocker_selection_behavior = 255
+    tns_selection_behavior = 256
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -856,6 +870,8 @@ SettingsMap: dict = {
     'warp_level_list_selected': Maps,
     'win_condition': WinCondition,
     'win_condition_item': WinConditionComplex,
+    'blocker_selection_behavior': BLockerSetting,
+    'tns_selection_behavior': TroffSetting,
     'wrinkly_hints': WrinklyHints,
     'spoiler_hints': SpoilerHints,
     'starting_kong': Kongs,
@@ -1065,6 +1081,8 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.warp_level_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.warp_to_isles: SettingsStringDataType.bool,
     SettingsStringEnum.win_condition_item: WinConditionComplex,
+    SettingsStringEnum.blocker_selection_behavior: BLockerSetting,
+    SettingsStringEnum.tns_selection_behavior: TroffSetting,
     SettingsStringEnum.win_condition_count: SettingsStringDataType.var_int,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,

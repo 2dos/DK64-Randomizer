@@ -390,6 +390,8 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let paintings = painting_files.map((x) => x.file);
       let painting_names = painting_files.map((x) => x.name);
 
+      let has_music = bgm_names.length > 0 || event_names.length > 0 || majoritem_names.length > 0 || minoritem_names.length > 0;
+
       cosmetics = {
         bgm: bgm,
         majoritems: majoritems,
@@ -415,7 +417,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         events: event_ext,
       };
 
-      update_music_select_options(isInitialLoad);
+      update_music_select_options(isInitialLoad, has_music);
     });
   };
 
@@ -432,7 +434,7 @@ function get_custom_song_display_name(songName) {
   return `Custom Song: ${trimmedName}`;
 }
 
-async function update_music_select_options(isInitialLoad) {
+async function update_music_select_options(isInitialLoad, has_custom_music) {
   customSongDict = {
     BGM: cosmetic_names.bgm,
     MajorItem: cosmetic_names.majoritems,
@@ -445,6 +447,26 @@ async function update_music_select_options(isInitialLoad) {
     minoritems: [],
     events: [],
   };
+  // Fix the music rando selections
+  const els_no_music = document.getElementsByClassName("ui-music-no-cosmetic");
+  const els_has_music = document.getElementsByClassName("ui-music-has-cosmetic");
+  document.getElementById("music_is_custom").checked = has_custom_music;
+  if (has_custom_music) {
+    for (const el_0 of els_no_music) {
+      el_0.setAttribute("hidden", "hidden");
+    }
+    for (const el_1 of els_has_music) {
+      el_1.removeAttribute("hidden");
+    }
+  } else {
+    for (const el_0 of els_no_music) {
+      el_0.removeAttribute("hidden");
+    }
+    for (const el_1 of els_has_music) {
+      el_1.setAttribute("hidden", "hidden");
+    }
+  }
+
   for (const [category, songs] of Object.entries(customSongDict)) {
     // Map each song's truncated name to its full string path.
     for (const song of songs) {
@@ -1473,14 +1495,14 @@ function set_preset_options() {
   // Disable the apply_preset button
   document.getElementById("apply_preset").disabled = true;
   // Toggle elements and update the page according to the preset
-  toggle_counts_boxes(null);
-  toggle_b_locker_boxes(null);
   toggle_logic_type(null);
   toggle_bananaport_selector(null);
   update_door_one_num_access(null);
   update_door_two_num_access(null);
   update_win_con_num_access(null);
   update_prog_hint_num_access(null);
+  update_blocker_num_access(null);
+  update_troff_number_access(null);
 
   // // Load the data
   // load_data();

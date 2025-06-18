@@ -19,6 +19,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion, MEDAL_REWARD_REGIONS, HINT_REGION_PAIRING
 from randomizer.Enums.Settings import (
     BananaportRando,
+    BLockerSetting,
     ClimbingStatus,
     ProgressiveHintItem,
     ActivateAllBananaports,
@@ -35,6 +36,7 @@ from randomizer.Enums.Settings import (
     SlamRequirement,
     HardBossesSelected,
     ItemRandoListSelected,
+    TroffSetting,
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
@@ -862,10 +864,10 @@ def compileHints(spoiler: Spoiler) -> bool:
         hint_distribution[HintType.ItemHinting] = max(0, hint_distribution[HintType.ItemHinting])
         # These filler hint types should never get added if you have enough moves placed in the world.
         # These would only be relevant if you picked this hint system and also started with a ton of moves which might error anyway. (Why would you ever do this?)
-        if spoiler.settings.randomize_blocker_required_amounts and spoiler.settings.blocker_max > 1:
+        if spoiler.settings.blocker_selection_behavior not in (BLockerSetting.pre_selected, BLockerSetting.chaos) and spoiler.settings.blocker_max > 1:
             valid_types.append(HintType.BLocker)
         if (
-            spoiler.settings.randomize_cb_required_amounts
+            spoiler.settings.tns_selection_behavior != TroffSetting.pre_selected
             and len(spoiler.settings.krool_keys_required) > 0
             and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]
             and spoiler.settings.troff_max > 0
@@ -985,10 +987,10 @@ def compileHints(spoiler: Spoiler) -> bool:
         valid_types = []
         if not spoiler.settings.serious_hints:
             valid_types.append(HintType.Joke)
-        if spoiler.settings.randomize_blocker_required_amounts and spoiler.settings.blocker_max > 1:
+        if spoiler.settings.blocker_selection_behavior not in (BLockerSetting.pre_selected, BLockerSetting.chaos) and spoiler.settings.blocker_max > 1:
             valid_types.append(HintType.BLocker)
         if (
-            spoiler.settings.randomize_cb_required_amounts
+            spoiler.settings.tns_selection_behavior != TroffSetting.pre_selected
             and len(spoiler.settings.krool_keys_required) > 0
             and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]
             and spoiler.settings.troff_max > 0
@@ -1005,7 +1007,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all:
             # In entrance rando, we care more about T&S than B. Locker
             temp = hint_distribution[HintType.BLocker]
-            if spoiler.settings.randomize_blocker_required_amounts and not spoiler.settings.maximize_helm_blocker:
+            if spoiler.settings.blocker_selection_behavior not in (BLockerSetting.pre_selected, BLockerSetting.chaos) and not spoiler.settings.maximize_helm_blocker:
                 hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
             hint_distribution[HintType.TroffNScoff] = temp
             # V2 Entrance hints are only valid in full item rando where we have a proper WotH throughout the world

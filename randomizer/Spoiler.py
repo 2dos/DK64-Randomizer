@@ -18,6 +18,7 @@ from randomizer.Enums.HintRegion import HintRegion
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
+    BLockerSetting,
     DKPortalRando,
     GlitchesSelected,
     LogicType,
@@ -31,6 +32,7 @@ from randomizer.Enums.Settings import (
     ShufflePortLocations,
     SpoilerHints,
     TrainingBarrels,
+    TroffSetting,
     WinConditionComplex,
 )
 from randomizer.Enums.Transitions import Transitions
@@ -286,19 +288,20 @@ class Spoiler:
         startKongList = []
         for x in self.settings.starting_kong_list:
             startKongList.append(x.name.capitalize())
-        settings["B Locker Difficulty"] = self.settings.blocker_difficulty.name
-        if self.settings.randomize_blocker_required_amounts:
+        # settings["B Locker Difficulty"] = self.settings.blocker_difficulty.name
+        if self.settings.blocker_selection_behavior not in (BLockerSetting.pre_selected, BLockerSetting.chaos):
             settings["Maximum B Locker"] = self.settings.blocker_text
             if self.settings.maximize_helm_blocker:
                 settings["Maximum B Locker ensured"] = self.settings.maximize_helm_blocker
-        settings["Hard Troff N Scoff"] = self.settings.hard_troff_n_scoff
-        if self.settings.randomize_cb_required_amounts:
+        settings["Hard Troff N Scoff"] = self.settings.tns_selection_behavior == TroffSetting.hard_random
+        if self.settings.tns_selection_behavior != TroffSetting.pre_selected:
             settings["Maximum Troff N Scoff"] = self.settings.troff_text
         settings["Open Lobbies"] = self.settings.open_lobbies
         settings["Auto Complete Bonus Barrels"] = self.settings.bonus_barrel_auto_complete
         settings["Auto Key Turn ins"] = self.settings.auto_keys
-        settings["Chaos B.Lockers"] = self.settings.chaos_blockers
-        settings["Chaos Ratio"] = self.settings.chaos_ratio
+        settings["Chaos B.Lockers"] = self.settings.blocker_selection_behavior == BLockerSetting.chaos
+        if self.settings.blocker_selection_behavior == BLockerSetting.chaos:
+            settings["Chaos Ratio"] = self.settings.blocker_text
         settings["Complex Level Order"] = self.settings.hard_level_progression
         settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
         settings["Hard Shooting"] = self.settings.hard_shooting

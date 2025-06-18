@@ -1100,14 +1100,20 @@ input[type=range][disabled]::-ms-fill-upper {
   border-bottom-right-radius: 0;
 }
 
-.select-number-container input {
+.select-number-container input[type=text],
+.select-number-container input[type=number] {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   min-width: 0px !important;
   width: fit-content;
 }
 
-.select-number-container.hide-input input {
+.select-number-container.hide-input input[type=text],
+.select-number-container.hide-input input[type=number] {
+  display: none !important;
+}
+
+.select-number-container:not(.hide-input) div {
   display: none !important;
 }
 
