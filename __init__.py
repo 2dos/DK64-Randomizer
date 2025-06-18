@@ -694,6 +694,7 @@ if baseclasses_loaded:
                 "LogicType": self.logic_holder.settings.logic_type.name,
                 "GlitchesSelected": ", ".join([glitch.name for glitch in self.logic_holder.settings.glitches_selected]),
                 "StartingKeyList": ", ".join([key.name for key in self.logic_holder.settings.starting_key_list]),
+                "HardShooting": self.options.hard_shooting.value,
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):

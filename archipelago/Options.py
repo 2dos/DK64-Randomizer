@@ -322,7 +322,7 @@ class RemoveBarriers(OptionList):
     "factory_testing_gate"
     "factory_production_room"
     "galleon_lighthouse_gate"
-    "galleon_shipyard_gate"
+    "galleon_shipyard_area_gate"
     "galleon_seasick_ship"
     "galleon_treasure_room"
     "forest_green_tunnel"
@@ -344,7 +344,7 @@ class RemoveBarriers(OptionList):
         "factory_testing_gate",
         "factory_production_room",
         "galleon_lighthouse_gate",
-        "galleon_shipyard_gate",
+        "galleon_shipyard_area_gate",
         "galleon_seasick_ship",
         "galleon_treasure_room",
         "forest_green_tunnel",
