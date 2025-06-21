@@ -1110,7 +1110,7 @@ class Settings:
             "cbs": {
                 RandomRequirement.easy_random: (1, 30),
                 RandomRequirement.medium_random: (31, 50),
-                RandomRequirement.hard_random: (51, 90),
+                RandomRequirement.hard_random: (51, 100),
             }
         }
         if self.pearl_mermaid_behavior != RandomRequirement.pre_selected:

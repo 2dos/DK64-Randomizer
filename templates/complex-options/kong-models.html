@@ -1,0 +1,77 @@
+<div class="form-check form-switch item-switch">
+    <label data-toggle="tooltip"
+            title="Customize the models tied to kongs.">
+        Kong Models
+    </label>
+    <input class="customize"
+        type="button"
+        href="#"
+        id="kongModalActivator"
+        data-bs-toggle="modal"
+        data-bs-target="#kongModelModal"
+        data-toggle="modal"
+        title="Customize what models each slam gets"/>
+</div>
+<div class="modal fade" id="kongModelModal" tabindex="-1" aria-labelledby="kongModelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title title" id="kongModelModalLabel">KONG MODELS</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="flex-container">
+                        {% set kong_lst = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"] %}
+                        {% for kong in kong_lst %}
+                            <div class="item-select">   
+                                <p class="select-title">{{ kong }}</p>
+                                <select name="kong_model_{{ kong | lower }}"
+                                        id="kong_model_{{ kong | lower }}"
+                                        display_name="Kong Model - {{ kong }}"
+                                        class="form-select"
+                                        aria-label="{{ kong }}">
+                                    <option selected value="default">
+                                        Default
+                                    </option>
+                                    <option value="krusha">
+                                        Krusha
+                                    </option>
+                                    {#
+                                        {% if kong == "DK" %}
+                                            <option value="cranky">
+                                                Cranky
+                                            </option>
+                                        {% elif kong == "Tiny" %}
+                                            <option value="candy">
+                                                Candy
+                                            </option>
+                                        {% elif kong == "Diddy" %}
+                                            <option value="funky">
+                                                Funky
+                                            </option>
+                                        {% endif %}
+                                        
+                                        {% if kong != "Chunky" %}
+                                            {% if kong != "Lanky" %}
+                                                <option value="krool_fight">
+                                                    K. Rool (Fight Gear)
+                                                </option>
+                                                <option value="krool_cutscene">
+                                                    K. Rool (Cutscene Gear)
+                                                </option>
+                                            {% endif %}
+                                        {% endif %}
+                                    #}
+                                </select>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

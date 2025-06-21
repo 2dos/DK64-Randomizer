@@ -193,25 +193,6 @@
                 <!-- Medal CB Requirement -->
                 {{ item_req_selector("cb_medal_behavior", "medal_cb_req", "Colored Bananas for a Medal", 1, 100, "Determines how Medal requirements are determined.") }}
             </div>
-            <hr />
-            <h2 class="title">BONUS BARRELS</h2>
-            <div class="flex-container">
-                {{ dropdown_multiselector(minigames, "minigames_list", "Shuffled Bonus Barrels", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.", 18, 1) }}
-                <div class="spacer"></div>
-                {{ toggle_input("disable_hard_minigames", "Disable Hard Minigames", "Disables harder minigames.") }}
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                           title="Bonus Barrels outside of Helm auto complete.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="bonus_barrel_auto_complete"
-                               id="bonus_barrel_auto_complete"
-                               display_name="Auto Complete Bonus Barrels"
-                               value="True"/>
-                        Auto Complete Bonus Barrels
-                    </label>
-                </div>
-            </div>
         </div>
         <div class="col border panel">
             <h2 class="title">OVERWORLD REQUIREMENTS</h2>
@@ -344,6 +325,33 @@
                         </option>
                         <option id="all" value="all">
                             All
+                        </option>
+                    </select>
+                </div>
+                {{ dropdown_multiselector(faster_checks, "faster_checks", "Faster Checks", "This will open a popup that will let you customize what checks are sped up.&#10;This defaults to All options.", 12, 1) }}
+                <div class="item-select">
+                    <p class="select-title">Random Puzzle Solutions</p>
+                    <select name="puzzle_rando_difficulty"
+                            id="puzzle_rando_difficulty"
+                            display_name="Random Puzzle Solutions"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Shuffles the solutions to various puzzles in the game.">
+                        <option value="off">
+                            Off
+                        </option>
+                        <option value="easy">
+                            Easy
+                        </option>
+                        <option selected value="medium">
+                            Medium
+                        </option>
+                        <option value="hard">
+                            Hard
+                        </option>
+                        <option value="chaos" title="Values picked can be any range between easy, medium and hard">
+                            Chaos
                         </option>
                     </select>
                 </div>

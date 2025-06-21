@@ -14,42 +14,27 @@
 
 Categories:
 - Items
-    - Item rando selector (This is big in size, so takes up a lot of real estate)
-    - filler items
-    - ice traps
-    - Starting move set
+    / Item rando selector (This is big in size, so takes up a lot of real estate)
+    / filler items
+    / ice traps
+    / Starting move set
 - Overworld
-    - World Navigation:
-        - Entrance Rando & "Include Helm"
-        - Cross Map Warps
-        - Kong Models
-    - Location Randomizers:
-        - General Location Rando Suite
-        - Randomize Pickups
-        - Random Starting Location
-        - Shop Location Rando
-    - Enemy Stuff:
-        - Crown Enemies
-        - Enemy rando
-        - Enemy Speed rando
-        - Enemy size rando
-    - Random Puzzle Solutions
-    - QoL:
-        - QoL Multiselector
-        - Shorten bosses
-        - Tag Anywhere
-        - T&S Numbers
-        - Shop Indicator
-        - Warp to Isles option
-        - Item Reward Previews
-        - Fast Warps
-        - Auto Key Turn Ins
-        - Enemy Crown Timer Reduction
-        - Cutscene Skips
-        - Disable Racing Patches
-    - Difficulty Panel
+    / World Navigation:
+        / Entrance Rando & "Include Helm"
+        / Cross Map Warps
+        / Kong Models
+    / Location Randomizers:
+        / General Location Rando Suite
+        / Randomize Pickups
+        / Random Starting Location
+        / Shop Location Rando
+    / Enemy Stuff:
+        / Crown Enemies
+        / Enemy rando
+        / Enemy Speed rando
+        / Enemy size rando
+    / Difficulty Panel
 - Requirements
-    - Logic
     / B. Locker / T&S Requirements w/ modal for plando'd thresholds
         / In, no modal yet: Working out the logistics of this
     / Medals for RW Coin
@@ -64,32 +49,41 @@ Categories:
     / Switchsanity
     / Open Lobbies
     / Random Shop Prices
-    - Bonus Barrel Stuff:
-        - Shuffle Bonuses
-        - Autocomplete bonuses
-        - Disable Hard minigames
     / Smaller Shops
     / Activate BPorts
 - Progression
     - Endgame:
-        - Starting Keys
-        - Starting Kongs
-        - Win Condition
+        / Starting Keys
+        / Starting Kongs
+        / Win Condition
         - Helm:
-            - Helm Start location
-            - Helm Room Count
-            - Shuffle Helm Rooms
-            - Helm Length
-            - Helm Key Lock
-            - Key 8 required
-            - Helm Door requirements
+            / Helm Start location
+            / Helm Room Count
+            / Shuffle Helm Rooms
+            / Helm Length
+            / Helm Key Lock
+            / Key 8 required
+            / Helm Door requirements
         - K Rool (Hidden if win con is not K Rool/Random)
-            - Shuffle K Rool phases
-            - K Rool Phases as bosses
-            - K Rool Phase Length
-            - DK Phase requires blast
-            - Chunky Phase slam requirement
-            - Vanilla K Rool requirement
+            / Shuffle K Rool phases
+            / K Rool Phase Length
+            / DK Phase requires blast
+            / Chunky Phase slam requirement
+            / Vanilla K Rool requirement
+- Quality of Life
+    - QoL:
+        - QoL Multiselector
+        - Shorten bosses
+        - Tag Anywhere
+        - T&S Numbers
+        - Shop Indicator
+        - Warp to Isles option
+        - Item Reward Previews
+        - Fast Warps
+        - Auto Key Turn Ins
+        - Enemy Crown Timer Reduction
+        - Cutscene Skips
+        - Disable Racing Patches
     - Hints:
         - Hint Type
         - Prog Hints
@@ -99,6 +93,13 @@ Categories:
         - Microhints
         - Shop Hints
         - Kongless Hint Doors
-    - Helm Hurry
-    - Faster Checks
-    
+Unaccounted for (so far):
+- Logic
+- Bonus Barrel Stuff:
+    - Shuffle Bonuses
+    - Autocomplete bonuses
+    - Disable Hard minigames
+- Random Puzzle Solutions
+- Helm Hurry
+- Faster Checks
+- K Rool Phases as bosses

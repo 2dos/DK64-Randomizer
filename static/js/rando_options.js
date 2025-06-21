@@ -562,6 +562,7 @@ document
       "nav-overworld-tab",
       "nav-progression-tab",
       "nav-qol-tab",
+      "nav-hint-tab",
     ];
     tabs.forEach((tab) =>
       document.getElementById(tab).setAttribute("disabled", "disabled")
@@ -1469,16 +1470,29 @@ function update_win_con_num_access() {
     "krem_kapture",
     "dk_rap_items",
   ];
+  const KROOL_WIN_CONS = [
+    "easy_random",
+    "medium_random",
+    "hard_random",
+    "beat_krool",
+  ]
 
   const winConSelection = document.getElementById("win_condition_item");
   const winConContainer = document.getElementById("win_condition_container");
   const winConReq = document.getElementById("win_condition_count");
   const disabled = DISABLED_WIN_VALUES.includes(winConSelection.value);
+  const kroolSection = document.getElementById("krool_section");
+  const isKRool = KROOL_WIN_CONS.includes(winConSelection.value);
 
   if (disabled) {
     winConContainer.classList.add("hide-input");
   } else {
     winConContainer.classList.remove("hide-input");
+  }
+  if (isKRool) {
+    kroolSection.removeAttribute("hidden");
+  } else {
+    kroolSection.setAttribute("hidden", "hidden");
   }
 
   if (!winConReq.value) {
