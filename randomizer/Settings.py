@@ -706,6 +706,10 @@ class Settings:
         self.medal_cb_req = 75
         self.rareware_gb_fairies = 20
         self.mermaid_gb_pearls = 5
+        self.medal_jetpac_behavior = RandomRequirement.pre_selected
+        self.pearl_mermaid_behavior = RandomRequirement.pre_selected
+        self.fairy_queen_behavior = RandomRequirement.pre_selected
+        self.cb_medal_behavior = RandomRequirement.pre_selected
         self.bananaport_rando = BananaportRando.off
         self.activate_all_bananaports = ActivateAllBananaports.off
         self.shop_indicator = False
@@ -1085,6 +1089,46 @@ class Settings:
         self.lanky_freeing_kong = self.switchsanity_data[Switches.AztecLlamaPuzzle].kong
         self.tiny_freeing_kong = self.switchsanity_data[Switches.AztecOKONGPuzzle].kong
         self.chunky_freeing_kong = self.switchsanity_data[Switches.FactoryFreeKong].kong
+
+        # Determine item requirements if random
+        req_data = {
+            "pearls": {
+                RandomRequirement.easy_random: (1, 2),
+                RandomRequirement.medium_random: (2, 3),
+                RandomRequirement.hard_random: (3, 5),
+            },
+            "medals": {
+                RandomRequirement.easy_random: (1, 10),
+                RandomRequirement.medium_random: (11, 20),
+                RandomRequirement.hard_random: (21, 40),
+            },
+            "fairies": {
+                RandomRequirement.easy_random: (1, 6),
+                RandomRequirement.medium_random: (7, 13),
+                RandomRequirement.hard_random: (14, 20),
+            },
+            "cbs": {
+                RandomRequirement.easy_random: (1, 30),
+                RandomRequirement.medium_random: (31, 50),
+                RandomRequirement.hard_random: (51, 90),
+            }
+        }
+        if self.pearl_mermaid_behavior != RandomRequirement.pre_selected:
+            min_bound = req_data["pearls"][self.pearl_mermaid_behavior][0]
+            max_bound = req_data["pearls"][self.pearl_mermaid_behavior][1]
+            self.mermaid_gb_pearls = self.random.randint(min_bound, max_bound)
+        if self.medal_jetpac_behavior != RandomRequirement.pre_selected:
+            min_bound = req_data["medals"][self.medal_jetpac_behavior][0]
+            max_bound = req_data["medals"][self.medal_jetpac_behavior][1]
+            self.medal_requirement = self.random.randint(min_bound, max_bound)
+        if self.fairy_queen_behavior != RandomRequirement.pre_selected:
+            min_bound = req_data["fairies"][self.fairy_queen_behavior][0]
+            max_bound = req_data["fairies"][self.fairy_queen_behavior][1]
+            self.rareware_gb_fairies = self.random.randint(min_bound, max_bound)
+        if self.cb_medal_behavior != RandomRequirement.pre_selected:
+            min_bound = req_data["cbs"][self.cb_medal_behavior][0]
+            max_bound = req_data["cbs"][self.cb_medal_behavior][1]
+            self.medal_cb_req = self.random.randint(min_bound, max_bound)
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
         if IsDDMSSelected(self.hard_mode_selected, HardModeSelected.water_is_lava):

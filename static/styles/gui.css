@@ -236,73 +236,55 @@ footer {
   outline: none;
 }
 
-.nav-tabs .nav-link .tab-full-name {
-  padding-left: 0;
+#rando_tabs .nav-link .tab-full-name {
+  min-width: fit-content;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
-.nav-tabs .nav-link {
+#rando_tabs .nav-link {
   background-color: rgba(0, 0, 0, 0);
-  border-color: var(--bs-body-color);
   color: var(--bs-body-color);
+  transition: 0.5s ease-in-out;
+  border: 2px solid transparent;
 }
 
+#rando_tabs .nav-link.yellow:hover {
+  border-color: #ffd700;
+}
+#rando_tabs .nav-link.red:hover {
+  border-color: #ff0000;
+}
+#rando_tabs .nav-link.blue:hover {
+  border-color: #1699ff;
+}
+#rando_tabs .nav-link.purple:hover {
+  border-color: #b045ff;
+}
+#rando_tabs .nav-link.green:hover {
+  border-color: #41ff25;
+}
 
-.nav-tabs .nav-link.active {
+#rando_tabs .nav-link.active {
   background: linear-gradient(to bottom, rgba(0, 0, 0, 1), var(--bs-body-bg));
-  border-color: var(--bs-body-color);
   color: var(--bs-body-color);
-  border-bottom: none;
 }
 
-html[data-bs-theme="light"] .nav-tabs .nav-link.active {
+html[data-bs-theme="light"] #rando_tabs .nav-link.active {
   background: linear-gradient(to bottom, rgba(255, 255, 255, 1), var(--bs-body-bg));
-}
-.nav-tabs .nav-link:not(.active) {
-  border-bottom: 1px solid var(--bs-body-color);
 }
 
 #nav-tab .nav-link {
   transition: all 0.3s;
 }
 
-#nav-tab .nav-link .tab-full-name {
-  transition: all 0.3s;
-}
-
-#nav-tab .nav-link:not(.active) .tab-full-name {
-  padding-left: 0.5rem;
-}
-
-#nav-tab .nav-link:not(.active):hover .tab-full-name {
-  max-width: 900px; /* Large amount of width to account for all tab lengths. 100% doesn't properly work */
-  padding-left: 0.5rem;
-}
-
-.nav-tabs .nav-link.active .tab-full-name {
-  display: block;
-  padding-left: 0.5rem;
-}
-
 #nav-gen-type button.nav-link:hover {
   background-color: #0c0c0c;
-}
-
-#nav-tab button.nav-link:hover .tab-full-name {
-  display: block;
 }
 
 #nav-gen-type button.nav-link.active {
   border-bottom: 4px solid midnightblue;
   border-radius: 3px;
-}
-
-@media (max-width: 1400px) {
-  #nav-tab .nav-link:not(.active) .tab-full-name {
-    white-space: nowrap;
-    overflow-x: hidden;
-    max-width: 0px;
-    padding-left: 0;
-  }
 }
 
 /*

@@ -50,27 +50,26 @@ Categories:
     - Difficulty Panel
 - Requirements
     - Logic
-    - B. Locker / T&S Requirements w/ modal for plando'd thresholds
-        - In, no modal yet: Working out the logistics of this
+    / B. Locker / T&S Requirements w/ modal for plando'd thresholds
+        / In, no modal yet: Working out the logistics of this
     / Medals for RW Coin
     / CBs for Medals
     / Fairies for RW GB
     / Pearls for Mermaid GB
     / Remove Barriers
-    - FTA
+    / FTA
     / Fungi Time of Day
     / Galleon Water level
-    - Progressive Switch Strength
-    - Switchsanity
-    - Open Lobbies
-    - Random Shop Prices
-    - Kongless Hint Doors
+    / Progressive Switch Strength
+    / Switchsanity
+    / Open Lobbies
+    / Random Shop Prices
     - Bonus Barrel Stuff:
         - Shuffle Bonuses
         - Autocomplete bonuses
         - Disable Hard minigames
-    - Smaller Shops
-    - Activate BPorts
+    / Smaller Shops
+    / Activate BPorts
 - Progression
     - Endgame:
         - Starting Keys
@@ -99,6 +98,7 @@ Categories:
         - Spoiler Hints & "Include WoTH/Level Order"
         - Microhints
         - Shop Hints
+        - Kongless Hint Doors
     - Helm Hurry
     - Faster Checks
     

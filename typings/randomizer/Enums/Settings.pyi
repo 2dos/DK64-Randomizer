@@ -422,6 +422,12 @@ class RandomPrices(IntEnum):
     high = 4
     extreme = 5
 
+class RandomRequirement(IntEnum):
+    pre_selected = 0
+    easy_random = 1
+    medium_random = 2
+    hard_random = 3
+
 class RemovedBarriersSelected(IntEnum):
     japes_coconut_gates = 1
     japes_shellhive_gate = 2
@@ -797,6 +803,10 @@ class SettingsStringEnum(IntEnum):
     disable_racing_patches = 254
     blocker_selection_behavior = 255
     tns_selection_behavior = 256
+    medal_jetpac_behavior = 257
+    pearl_mermaid_behavior = 258
+    fairy_queen_behavior = 259
+    cb_medal_behavior = 260
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -872,6 +882,10 @@ SettingsMap: dict = {
     'win_condition_item': WinConditionComplex,
     'blocker_selection_behavior': BLockerSetting,
     'tns_selection_behavior': TroffSetting,
+    'medal_jetpac_behavior': RandomRequirement,
+    'pearl_mermaid_behavior': RandomRequirement,
+    'fairy_queen_behavior': RandomRequirement,
+    'cb_medal_behavior': RandomRequirement,
     'wrinkly_hints': WrinklyHints,
     'spoiler_hints': SpoilerHints,
     'starting_kong': Kongs,
@@ -1083,6 +1097,10 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.win_condition_item: WinConditionComplex,
     SettingsStringEnum.blocker_selection_behavior: BLockerSetting,
     SettingsStringEnum.tns_selection_behavior: TroffSetting,
+    SettingsStringEnum.medal_jetpac_behavior: RandomRequirement,
+    SettingsStringEnum.pearl_mermaid_behavior: RandomRequirement,
+    SettingsStringEnum.fairy_queen_behavior: RandomRequirement,
+    SettingsStringEnum.cb_medal_behavior: RandomRequirement,
     SettingsStringEnum.win_condition_count: SettingsStringDataType.var_int,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,

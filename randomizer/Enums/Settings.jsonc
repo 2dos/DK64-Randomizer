@@ -786,6 +786,18 @@
     "extreme": 5
   },
 
+
+  /*
+    RandomRequirement:
+    - Used for a few settings where you get to designate the item requirement for a check.
+  */
+  "RandomRequirement": {
+    "pre_selected": 0,
+    "easy_random": 1,
+    "medium_random": 2,
+    "hard_random": 3
+  },
+
   /*
     RemovedBarriersSelected:
     - Various barriers that can be removed.
@@ -1287,7 +1299,11 @@
     "filler_items_selected": 253,
     "disable_racing_patches": 254,
     "blocker_selection_behavior": 255,
-    "tns_selection_behavior": 256
+    "tns_selection_behavior": 256,
+    "medal_jetpac_behavior": 257,
+    "pearl_mermaid_behavior": 258,
+    "fairy_queen_behavior": 259,
+    "cb_medal_behavior": 260
   },
   /*
     SettingsStringDataType:
@@ -1372,6 +1388,10 @@
     "win_condition_item": { "obj": "WinConditionComplex" },
     "blocker_selection_behavior": { "obj": "BLockerSetting" },
     "tns_selection_behavior": { "obj": "TroffSetting" },
+    "medal_jetpac_behavior": { "obj": "RandomRequirement" },
+    "pearl_mermaid_behavior": { "obj": "RandomRequirement" },
+    "fairy_queen_behavior": { "obj": "RandomRequirement" },
+    "cb_medal_behavior": { "obj": "RandomRequirement" },
     "wrinkly_hints": { "obj": "WrinklyHints" },
     "spoiler_hints": { "obj": "SpoilerHints" },
     "starting_kong": { "obj": "Kongs" },
@@ -1759,6 +1779,10 @@
     "SettingsStringEnum.win_condition_item": { "obj": "WinConditionComplex" },
     "SettingsStringEnum.blocker_selection_behavior": { "obj": "BLockerSetting" },
     "SettingsStringEnum.tns_selection_behavior": { "obj": "TroffSetting" },
+    "SettingsStringEnum.medal_jetpac_behavior": { "obj": "RandomRequirement" },
+    "SettingsStringEnum.pearl_mermaid_behavior": { "obj": "RandomRequirement" },
+    "SettingsStringEnum.fairy_queen_behavior": { "obj": "RandomRequirement" },
+    "SettingsStringEnum.cb_medal_behavior": { "obj": "RandomRequirement" },
     "SettingsStringEnum.win_condition_count": {
       "obj": "SettingsStringDataType.var_int"
     },

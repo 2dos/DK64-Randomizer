@@ -680,17 +680,6 @@ document
   .getElementById("select_keys")
   .addEventListener("click", toggle_key_settings);
 
-// Toggle the textbox for Banana Medals
-function toggle_medals_box() {
-  const disabled = document.getElementById("random_medal_requirement").checked;
-  const medal = document.getElementById("medal_requirement");
-
-  if (disabled) {
-    medal.setAttribute("disabled", "disabled");
-  } else {
-    medal.removeAttribute("disabled");
-  }
-}
 enabled_plando = false;
 // Enable and disable the Plandomizer tab
 async function enable_plandomizer() {
@@ -1616,6 +1605,48 @@ document
   .getElementById("tns_selection_behavior")
   .addEventListener("change", update_troff_number_access);
 
+function item_req_update(behavior, container, count, min, max) {
+  const selection = document.getElementById(behavior);
+  const containerEl = document.getElementById(container);
+  const req = document.getElementById(count);
+  const disabled = selection.value != "pre_selected";
+
+  if (disabled) {
+    containerEl.classList.add("hide-input");
+  } else {
+    containerEl.classList.remove("hide-input");
+  }
+
+  if (!req.value) {
+    req.value = min;
+  } else {
+    const selection_type = selection.value;
+    if (selection_type == "pre_selected") {
+      // Random
+      if (req.value > max) {
+        req.value = max;
+      }
+    }
+  }
+}
+
+document.getElementById("medal_jetpac_behavior")
+  .addEventListener("change", () => {
+    item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
+  });
+document.getElementById("pearl_mermaid_behavior")
+  .addEventListener("change", () => {
+    item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
+  });
+document.getElementById("fairy_queen_behavior")
+  .addEventListener("change", () => {
+    item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
+  });
+document.getElementById("cb_medal_behavior")
+  .addEventListener("change", () => {
+    item_req_update("cb_medal_behavior", "cb_medal_behavior_container", "medal_cb_req", 1, 100);
+  });
+
 $(document).on('mousedown', 'select option.starting_moves_option', function (e) {
     this.selected = !this.selected;
     e.preventDefault();
@@ -1897,11 +1928,14 @@ function update_ui_states() {
   update_prog_hint_num_access(null);
   update_blocker_num_access(null);
   update_troff_number_access(null);
+  item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
+  item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
+  item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
+  item_req_update("cb_medal_behavior", "cb_medal_behavior_container", "medal_cb_req", 1, 100);
   disable_tag_spawn(null);
   disable_krool_phases(null);
   disable_helm_phases(null);
   enable_plandomizer(null);
-  toggle_medals_box(null);
   toggle_vanilla_door_rando(null);
   toggle_dos_door_rando(null);
   validate_fast_start_status(null);

@@ -5,97 +5,7 @@
         <div class="col border panel">
             <h2 class="title">GLOBAL SETTINGS</h2>
             <div class="flex-container">
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                           title="Bonus Barrels outside of Helm auto complete.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="bonus_barrel_auto_complete"
-                               id="bonus_barrel_auto_complete"
-                               display_name="Auto Complete Bonus Barrels"
-                               value="True"/>
-                        Auto Complete Bonus Barrels
-                    </label>
-                </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="All lobbies will be open as if the key to K. Lumsy was already turned in.&#10;This does not affect K. Rool's ship.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="open_lobbies"
-                                   display_name="Open Lobbies"
-                                   value="True"/>
-                            Open Lobbies
-                        </label>
-                    </div>
-                    
-
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Simian Slam switches will be adjusted to match the level order so that tougher switches will always be in later levels.&#10;The first four levels will have green switches, the next two will have blue and the final level will have red switches.&#10;In LZR, these are assigned to random levels with no regard for level order.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   id="alter_switch_allocation"
-                                   name="alter_switch_allocation"
-                                   display_name="Progressive Switch Strength"
-                                   value="True"/>
-                            Progressive Switch Strength
-                        </label>
-                        <input class="customize"
-                            type="button"
-                            href="#"
-                            id="slamModalActivator"
-                            data-bs-toggle="modal"
-                            data-bs-target="#slamModal"
-                            data-toggle="modal"
-                            title="Customize what levels get what slams"/>
-                    </div>
-                    <div class="modal fade" id="slamModal" tabindex="-1" aria-labelledby="slamModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title title" id="slamModalLabel">Progressive Slam Requirements</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container-fluid">
-                                        <div class="row row-cols-2">
-                                            {% for i in range(0, 8) %}
-                                                <div class="col">
-                                                    <div class="item-select">
-                                                        <p class="select-title">Level {{ i + 1 }} Slam</p>
-                                                        <select name="prog_slam_level_{{ i + 1 }}"
-                                                                id="prog_slam_level_{{ i + 1 }}"
-                                                                class="form-select"
-                                                                aria-label="Randomization type"
-                                                                display_name="Level {{ i + 1 }} Slam"
-                                                                data-toggle="tooltip"
-                                                                title="Slam level tied to level {{ i + 1 }}.">
-                                                            <option id="green" {% if i < 4 %}selected{% endif %} value="green">
-                                                                Green
-                                                            </option>
-                                                            <option id="blue" {% if i > 3 and i < 6 %}selected{% endif %} value="blue">
-                                                                Blue
-                                                            </option>
-                                                            <option id="red" {% if i > 5 %}selected{% endif %} value="red">
-                                                                Red
-                                                            </option>
-                                                            <option id="random" value="random">
-                                                                Random
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                
                     {{ dropdown_multiselector(faster_checks, "faster_checks", "Faster Checks", "This will open a popup that will let you customize what checks are sped up.&#10;This defaults to All options.", 12, 1) }}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
@@ -109,19 +19,6 @@
                             Helm Hurry Mode
                         </label>
                         {{ properties_selector(helm_hurry_items, "helmhurry_list", "HELM HURRY SELECTOR", "This will open a popup that will let you customize what how much time each item will give you.") }}
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                            title="Item rando with shops only. Reduces the number of items offered in shops to a maximum of 3."
-                            style="text-align: left">
-                            <input class="form-check-input"
-                                type="checkbox"
-                                name="smaller_shops"
-                                id="smaller_shops"
-                                display_name="Smaller Shops"
-                                value="True"/>
-                            Smaller Shops
-                        </label>
-                    </div>
                     <div class="spacer"></div>
                     </div>
                     <div class="flex-container">
@@ -241,50 +138,6 @@
                                         placeholder="1"/>
                             </div>
                         </div>
-                        <div class="item-select">
-                            <p class="select-title">Free Trade Agreement</p>
-                            <select name="free_trade_setting"
-                                    id="free_trade_setting"
-                                    class="form-select"
-                                    aria-label="Randomization type"
-                                    display_name="Free Trade Agreement"
-                                    data-toggle="tooltip"
-                                    title="Allow Kongs to pick up items assigned to other kongs.&#10;-None: Kongs must pick up items assigned to them.&#10;-Major Collectibles except Blueprints: Keys, Crowns, and GBs can be picked up by any Kong.&#10;-Major Collectibles: Same as above plus Blueprints.">
-                                <option id="none" selected value="none">
-                                    None
-                                </option>
-                                <option id="not_blueprints" value="not_blueprints">
-                                    Major Collectibles except Blueprints
-                                </option>
-                                <option id="major_collectibles" value="major_collectibles">
-                                    Major Collectibles
-                                </option>
-                            </select>
-                        </div>
-                        <div class="item-select">
-                            <p class="select-title">Activate Bananaports</p>
-                            <select name="activate_all_bananaports"
-                                    id="activate_all_bananaports"
-                                    class="form-select"
-                                    aria-label="Activate Bananaports"
-                                    display_name="Activate Bananaports"
-                                    data-toggle="tooltip"
-                                    title="Determines which (if any) bananaports are activated by default.&#10;-Off: Bananaports are off by default.&#10;-Isles Only: Only the Bananaports in Isles are on by default.&#10;-All: All Bananaports are on by default.">
-                                <option selected id="off" value="off">
-                                    Off
-                                </option>
-                                <option id="isles" value="isles">
-                                    Isles Only
-                                </option>
-                                <option id="isles_inc_helm_lobby" value="isles_inc_helm_lobby">
-                                    Isles & Helm Lobby Only
-                                </option>
-                                <option id="all" value="all">
-                                    All
-                                </option>
-                            </select>
-                        </div>
-                        
                     </div>
                     <h2 class="title">KONG MODELS</h2>
                     <div class="flex-container">
