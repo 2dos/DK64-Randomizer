@@ -47,6 +47,7 @@ from randomizer.Enums.Settings import (
 )
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.CustomLocations import resetCustomLocations
 from randomizer.Enums.Maps import Maps
@@ -2741,21 +2742,12 @@ def FillKongs(spoiler: Spoiler, placedTypes: List[Types], placedItems: List[Item
     kongItems = [item for item in ItemPool.Kongs(spoiler.settings) if item not in startingKongItems and item not in placedItems]
     # If Kongs can be placed anywhere, we don't need anything special
     if spoiler.settings.shuffle_items and Types.Kong in spoiler.settings.shuffled_location_types:
-        # First, randomly pick who opens what cage - this prevents cases where a Kong locks themselves
-        spoiler.settings.diddy_freeing_kong = spoiler.settings.random.choice(GetKongs())
-        spoiler.settings.lanky_freeing_kong = spoiler.settings.random.choice(GetKongs())
-        spoiler.settings.tiny_freeing_kong = spoiler.settings.random.choice([Kongs.diddy, Kongs.chunky])
-        spoiler.settings.chunky_freeing_kong = spoiler.settings.random.choice(GetKongs())
-        if spoiler.settings.enable_plandomizer:
-            if spoiler.settings.plandomizer_dict["plando_kong_rescue_diddy"] != -1:
-                spoiler.settings.diddy_freeing_kong = Kongs(spoiler.settings.plandomizer_dict["plando_kong_rescue_diddy"])
-            if spoiler.settings.plandomizer_dict["plando_kong_rescue_lanky"] != -1:
-                spoiler.settings.lanky_freeing_kong = Kongs(spoiler.settings.plandomizer_dict["plando_kong_rescue_lanky"])
-            if spoiler.settings.plandomizer_dict["plando_kong_rescue_tiny"] != -1:
-                spoiler.settings.tiny_freeing_kong = Kongs(spoiler.settings.plandomizer_dict["plando_kong_rescue_tiny"])
-            if spoiler.settings.plandomizer_dict["plando_kong_rescue_chunky"] != -1:
-                spoiler.settings.chunky_freeing_kong = Kongs(spoiler.settings.plandomizer_dict["plando_kong_rescue_chunky"])
         # Update the locations' assigned kong with the set freeing kong list
+        if spoiler.settings.switchsanity_enabled:
+            spoiler.settings.diddy_freeing_kong = spoiler.settings.switchsanity_data[Switches.JapesFreeKong].kong
+            spoiler.settings.lanky_freeing_kong = spoiler.settings.switchsanity_data[Switches.AztecLlamaPuzzle].kong
+            spoiler.settings.tiny_freeing_kong = spoiler.settings.switchsanity_data[Switches.AztecOKONGPuzzle].kong
+            spoiler.settings.chunky_freeing_kong = spoiler.settings.switchsanity_data[Switches.FactoryFreeKong].kong
         spoiler.LocationList[Locations.JapesDonkeyFrontofCage].kong = spoiler.settings.diddy_freeing_kong
         spoiler.LocationList[Locations.JapesDonkeyFreeDiddy].kong = spoiler.settings.diddy_freeing_kong
         spoiler.LocationList[Locations.AztecDonkeyFreeLanky].kong = spoiler.settings.lanky_freeing_kong
