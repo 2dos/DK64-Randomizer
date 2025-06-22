@@ -102,6 +102,12 @@
       "problemMatcher": []
     },
     {
+      "label": "Build Bootstrap",
+      "type": "shell",
+      "command": "sass --style=compressed ${workspaceFolder}/static/styles/bootstrap/bootstrap.scss ${workspaceFolder}/static/styles/styles.css",
+      "problemMatcher": []
+    },
+    {
       "label": "Generate PyI Stubs",
       "type": "shell",
       "command": "${command:python.interpreterPath} ./generate_stubs.py ${workspaceFolder}",

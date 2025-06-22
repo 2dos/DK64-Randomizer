@@ -18,6 +18,7 @@
             href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link href="static/styles/styles.css" rel="stylesheet" />
         <link href="./static/styles/gui.css" rel="stylesheet" type="text/css" />
+        <link href="./static/styles/sidebar.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
@@ -122,10 +123,10 @@
             class="center_image"
             style="cursor: pointer; margin-top: 70px"
             onClick="render_page('./index')"/>
-        <div style="width: 80%; min-width: 400px; max-width: 1500px"
+        <nav id="nav-tab-list"></nav>
+        <div style="width: 90%; min-width: 400px"
             class="center">
-            <div id="nav-tab-list" style="max-width: 1500px"></div>
-            <div class="card" style="max-width: 1500px; border-top-left-radius: 0px">
+            <div class="card flex-grow-1" style="border-top-left-radius: 0px">
                 <form id="form" action="/" method="POST">
                     <!--Create navbar-->
                     <div class="container" id="visual_indicator">

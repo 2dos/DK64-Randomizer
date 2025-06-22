@@ -15,7 +15,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems, Types
-from randomizer.Enums.Settings import BLockerDifficulty, HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency, ProgressiveHintItem, HelmSetting, HelmBonuses, ColorOptions
+from randomizer.Enums.Settings import BLockerDifficulty, BLockerSetting, HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency, ProgressiveHintItem, HelmSetting, HelmBonuses, ColorOptions
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.DataTypes import short_to_ushort
 
@@ -611,14 +611,22 @@ def getIceTrapCount(settings) -> int:
     return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
 
 
-blocker_min_thresholds = {BLockerDifficulty.easy: 0.2, BLockerDifficulty.normal: 0.4, BLockerDifficulty.hard: 0.6}
-blocker_max_thresholds = {BLockerDifficulty.easy: 0.5, BLockerDifficulty.normal: 0.7, BLockerDifficulty.hard: 0.95}
+blocker_min_thresholds = {
+    BLockerSetting.easy_random: 0.2,
+    BLockerSetting.normal_random: 0.4,
+    BLockerSetting.hard_random: 0.6,
+}
+blocker_max_thresholds = {
+    BLockerSetting.easy_random: 0.5,
+    BLockerSetting.normal_random: 0.7,
+    BLockerSetting.hard_random: 0.95,
+}
 
 
 def getBLockerThresholds(settings) -> tuple:
     """Get the B. Locker thresholds based on settings."""
-    min_v = blocker_min_thresholds.get(settings.blocker_difficulty, 0.4)
-    max_v = blocker_max_thresholds.get(settings.blocker_difficulty, 0.7)
+    min_v = blocker_min_thresholds.get(settings.blocker_selection_behavior, 0.4)
+    max_v = blocker_max_thresholds.get(settings.blocker_selection_behavior, 0.7)
     return (min_v, max_v)
 
 

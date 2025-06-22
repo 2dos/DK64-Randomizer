@@ -482,7 +482,7 @@ def randomize_music(settings: Settings, ROM_COPY: ROM):
     music_data = {"music_bgm_data": {}, "music_majoritem_data": {}, "music_minoritem_data": {}, "music_event_data": {}}
     music_names = [None] * 175
     if js.document.getElementById("override_cosmetics").checked or True:
-        if js.document.getElementById("random_music").checked:
+        if js.document.getElementById("random_music").checked or js.document.getElementById("music_is_custom").checked:
             settings.music_bgm_randomized = True
             settings.music_majoritems_randomized = True
             settings.music_minoritems_randomized = True
@@ -493,7 +493,7 @@ def randomize_music(settings: Settings, ROM_COPY: ROM):
             settings.music_minoritems_randomized = js.document.getElementById("music_minoritems_randomized").checked
             settings.music_events_randomized = js.document.getElementById("music_events_randomized").checked
     else:
-        if settings.random_music:
+        if settings.random_music or settings.music_is_custom:
             settings.music_bgm_randomized = True
             settings.music_majoritems_randomized = True
             settings.music_minoritems_randomized = True

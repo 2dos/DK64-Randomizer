@@ -558,7 +558,7 @@ document
     const tabs = [
       "nav-started-tab",
       "nav-item-tab",
-      "nav-random-tab",
+      "nav-requirements-tab",
       "nav-overworld-tab",
       "nav-progression-tab",
       "nav-qol-tab",
@@ -577,7 +577,7 @@ document
     const tabs = [
       "nav-started-tab",
       "nav-item-tab",
-      "nav-random-tab",
+      "nav-requirements-tab",
       "nav-overworld-tab",
       "nav-progression-tab",
       "nav-qol-tab",
@@ -680,17 +680,6 @@ document
   .getElementById("select_keys")
   .addEventListener("click", toggle_key_settings);
 
-// Toggle the textbox for Banana Medals
-function toggle_medals_box() {
-  const disabled = document.getElementById("random_medal_requirement").checked;
-  const medal = document.getElementById("medal_requirement");
-
-  if (disabled) {
-    medal.setAttribute("disabled", "disabled");
-  } else {
-    medal.removeAttribute("disabled");
-  }
-}
 enabled_plando = false;
 // Enable and disable the Plandomizer tab
 async function enable_plandomizer() {
@@ -713,10 +702,10 @@ async function enable_plandomizer() {
         console.log("Error running ui/__init__.py:", error);
       }
     }
-    plandoTab.style.display = "";
+    plandoTab.removeAttribute("hidden");
     $("#plando-modal").modal("hide");
   } else {
-    plandoTab.style.display = "none";
+    plandoTab.setAttribute("hidden", "hidden");
     $("#plando-modal").modal("hide");
   }
 }
@@ -1189,64 +1178,6 @@ function validate_fast_start_status(evt) {
   }
 }
 
-// Toggle the textboxes for BLockers
-document.getElementById("randomize_blocker_required_amounts").addEventListener("click", toggle_b_locker_boxes);
-
-function toggle_b_locker_boxes(evt) {
-    const disabled = !document.getElementById("randomize_blocker_required_amounts").checked;
-    const blockerText = document.getElementById("blocker_text");
-    const maximizeHelmBlocker = document.getElementById("maximize_helm_blocker");
-
-    if (disabled) {
-        blockerText.disabled = true;
-        maximizeHelmBlocker.disabled = true;
-
-        for (let i = 0; i < 10; i++) {
-            var blocker = document.getElementById(`blocker_${i}`);
-            if (blocker){ 
-                blocker.removeAttribute("disabled");
-            }
-        }
-    } else {
-        blockerText.removeAttribute("disabled");
-        maximizeHelmBlocker.removeAttribute("disabled");
-
-        for (let i = 0; i < 10; i++) {
-            var blocker = document.getElementById(`blocker_${i}`);
-            if (blocker){ 
-                blocker.disabled = true;
-            }
-        }
-    }
-}
-
-// Toggle the textboxes for Troff
-function toggle_counts_boxes(evt) {
-    const disabled = !document.getElementById("randomize_cb_required_amounts").checked;
-    const troffText = document.getElementById("troff_text");
-
-    if (disabled) {
-        troffText.disabled = true;
-
-        for (let i = 0; i < 10; i++) {
-            var troff = document.getElementById(`troff_${i}`);
-            if (troff) {
-                troff.removeAttribute("disabled");
-            }
-        }
-    } else {
-        troffText.removeAttribute("disabled");
-
-        for (let i = 0; i < 10; i++) {
-            var troff = document.getElementById(`troff_${i}`);
-            if (troff) {
-                troff.disabled = true;
-            }
-        }
-    }
-}
-document.getElementById("randomize_cb_required_amounts").addEventListener("click", toggle_counts_boxes);
-
 // Change level randomization
 document
   .getElementById("level_randomization")
@@ -1338,22 +1269,6 @@ function update_prog_hint_num_access() {
 document
   .getElementById("progressive_hint_item")
   .addEventListener("change", update_prog_hint_num_access);
-
-// Validate chaos ratio input on loss of focus
-function handle_chaos_ratio_text() {
-  const chaosRatioText = document.getElementById("chaos_ratio");
-  if (!chaosRatioText.value) {
-    chaosRatioText.value = 25;
-  } else if (parseInt(chaosRatioText.value) < 1) {
-    chaosRatioText.value = 1;
-  } else if (parseInt(chaosRatioText.value) > 100) {
-    chaosRatioText.value = 100;
-  }
-}
-
-document
-  .getElementById("chaos_ratio")
-  .addEventListener("focusout", handle_chaos_ratio_text);
 
 // Validate blocker input on loss of focus
 function max_randomized_blocker() {
@@ -1554,16 +1469,29 @@ function update_win_con_num_access() {
     "krem_kapture",
     "dk_rap_items",
   ];
+  const KROOL_WIN_CONS = [
+    "easy_random",
+    "medium_random",
+    "hard_random",
+    "beat_krool",
+  ]
 
   const winConSelection = document.getElementById("win_condition_item");
   const winConContainer = document.getElementById("win_condition_container");
   const winConReq = document.getElementById("win_condition_count");
   const disabled = DISABLED_WIN_VALUES.includes(winConSelection.value);
+  const kroolSection = document.getElementById("krool_section");
+  const isKRool = KROOL_WIN_CONS.includes(winConSelection.value);
 
   if (disabled) {
     winConContainer.classList.add("hide-input");
   } else {
     winConContainer.classList.remove("hide-input");
+  }
+  if (isKRool) {
+    kroolSection.removeAttribute("hidden");
+  } else {
+    kroolSection.setAttribute("hidden", "hidden");
   }
 
   if (!winConReq.value) {
@@ -1622,6 +1550,114 @@ document
         }
       }
     }
+  });
+
+// Update B Locker Number Access
+function update_blocker_num_access() {
+  const blockerSelection = document.getElementById("blocker_selection_behavior");
+  const blockerContainer = document.getElementById("b_locker_number_container");
+  const blockerReq = document.getElementById("blocker_text");
+  const disabled = blockerSelection.value == "pre_selected";
+
+  if (disabled) {
+    blockerContainer.classList.add("hide-input");
+  } else {
+    blockerContainer.classList.remove("hide-input");
+  }
+
+  if (!blockerReq.value) {
+    blockerReq.value = 1;
+  } else {
+    const selection_type = blockerSelection.value;
+    if (selection_type != "pre_selected") {
+      if (selection_type == "chaos") {
+        if (blockerReq.value > 100) {
+          blockerReq.value = 100;
+        }
+      } else {
+        // Random
+        if (blockerReq.value > 201) {
+          blockerReq.value = 201;
+        }
+      }
+    }
+  }
+}
+
+document
+  .getElementById("blocker_selection_behavior")
+  .addEventListener("change", update_blocker_num_access);
+
+// Update T&S Number Access
+function update_troff_number_access() {
+  const troffSelection = document.getElementById("tns_selection_behavior");
+  const troffContainer = document.getElementById("troff_number_container");
+  const troffReq = document.getElementById("troff_text");
+  const disabled = troffSelection.value == "pre_selected";
+
+  if (disabled) {
+    troffContainer.classList.add("hide-input");
+  } else {
+    troffContainer.classList.remove("hide-input");
+  }
+
+  if (!troffReq.value) {
+    troffReq.value = 1;
+  } else {
+    const selection_type = troffSelection.value;
+    if (selection_type != "pre_selected") {
+      // Random
+      if (troffReq.value > 500) {
+        troffReq.value = 500;
+      }
+    }
+  }
+}
+
+document
+  .getElementById("tns_selection_behavior")
+  .addEventListener("change", update_troff_number_access);
+
+function item_req_update(behavior, container, count, min, max) {
+  const selection = document.getElementById(behavior);
+  const containerEl = document.getElementById(container);
+  const req = document.getElementById(count);
+  const disabled = selection.value != "pre_selected";
+
+  if (disabled) {
+    containerEl.classList.add("hide-input");
+  } else {
+    containerEl.classList.remove("hide-input");
+  }
+
+  if (!req.value) {
+    req.value = min;
+  } else {
+    const selection_type = selection.value;
+    if (selection_type == "pre_selected") {
+      // Random
+      if (req.value > max) {
+        req.value = max;
+      }
+    }
+  }
+}
+
+document.getElementById("medal_jetpac_behavior")
+  .addEventListener("change", () => {
+    item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
+  });
+document.getElementById("pearl_mermaid_behavior")
+  .addEventListener("change", () => {
+    item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
+  });
+document.getElementById("fairy_queen_behavior")
+  .addEventListener("change", () => {
+    item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
+  });
+document.getElementById("cb_medal_behavior")
+  .addEventListener("change", () => {
+    item_req_update("cb_medal_behavior", "cb_medal_behavior_container", "medal_cb_req", 1, 100);
   });
 
 $(document).on('mousedown', 'select option.starting_moves_option', function (e) {
@@ -1881,13 +1917,10 @@ document.getElementById("decouple_item_rando")
 // Bind custom update UI event for "apply_preset"
 function update_ui_states() {
   /** Trigger any function that would update the status of a UI element based on the current settings configuration. */
-  toggle_counts_boxes(null);
-  toggle_b_locker_boxes(null);
   change_level_randomization(null);
   disable_colors(null);
   disable_music(null);
   max_randomized_blocker(null);
-  handle_chaos_ratio_text(null);
   max_randomized_troff(null);
   max_music(null);
   max_music_proportion(null);
@@ -1906,11 +1939,16 @@ function update_ui_states() {
   update_door_two_num_access(null);
   update_win_con_num_access(null);
   update_prog_hint_num_access(null);
+  update_blocker_num_access(null);
+  update_troff_number_access(null);
+  item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
+  item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
+  item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
+  item_req_update("cb_medal_behavior", "cb_medal_behavior_container", "medal_cb_req", 1, 100);
   disable_tag_spawn(null);
   disable_krool_phases(null);
   disable_helm_phases(null);
   enable_plandomizer(null);
-  toggle_medals_box(null);
   toggle_vanilla_door_rando(null);
   toggle_dos_door_rando(null);
   validate_fast_start_status(null);

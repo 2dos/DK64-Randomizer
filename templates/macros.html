@@ -346,3 +346,93 @@
         </div>
     </div>
 {% endmacro %}
+{% macro item_req_selector(behavior_name, item_name, selector_name, min, max, tooltip) %}
+    <div class="item-select">
+        <p class="select-title">{{ selector_name }}</p>
+        <div class="d-flex select-number-container" id="{{ behavior_name }}_container">
+            <select name="{{ behavior_name }}"
+                    id="{{ behavior_name }}"
+                    display_name="{{ selector_name }}"
+                    class="form-select center-div"
+                    aria-label="Randomization type"
+                    data-toggle="tooltip"
+                    title="{{ tooltip }}">
+                <option id="pre_selected" value="pre_selected">
+                    Pre-Selected
+                </option>
+                <option id="easy_random" value="easy_random">
+                    Easy Random
+                </option>
+                <option id="normal_random" selected value="normal_random">
+                    Normal Random
+                </option>
+                <option id="hard_random" value="hard_random">
+                    Hard Random
+                </option>
+            </select>
+            <input min="{{ min }}"
+                max="{{ max }}"
+                name="{{ item_name }}"
+                id="{{ item_name }}"
+                display_name="Troff 'n' Scoff Count"
+                class="form-control center-div"
+                type="number"
+                data-toggle="tooltip"
+                title="Amount of the item specified to complete the check."
+                default="{{ min }}"
+                placeholder="{{ min }}"/>
+        </div>
+    </div>
+{% endmacro %}
+{% macro lock_tab() %}
+    <li>
+        <a
+            class="py-2"
+            id="lock-nav-panel"
+        >
+            <i class="fa fa-lock-open fa-2x" id="lock-nav-panel-unlock" hidden></i>
+            <i class="fa fa-lock" id="lock-nav-panel-lock"></i>
+            <span class="nav-text">
+                <div class="position-absolute top-50 start-0 translate-middle-y">Lock Panel</div>
+            </span>
+        </a>
+    </li>
+    <script>
+        document.getElementById("lock-nav-panel").addEventListener("click", (e) => {
+            const tab_list = document.getElementById("nav-tab-list");
+            const panel = document.getElementById("lock-nav-panel");
+            tab_list.classList.toggle("expanded");
+            const expanded = tab_list.classList.contains("expanded");
+            panel.getElementsByTagName("div")[0].innerText = expanded ? "Unlock Panel" : "Lock Panel";
+            const lock_icon = document.getElementById("lock-nav-panel-lock");
+            const unlock_icon = document.getElementById("lock-nav-panel-unlock");
+            if (expanded) {
+                lock_icon.setAttribute("hidden", "hidden");
+                unlock_icon.removeAttribute("hidden");
+            } else {
+                unlock_icon.setAttribute("hidden", "hidden");
+                lock_icon.removeAttribute("hidden");
+            }
+        })
+    </script>
+{% endmacro %}
+{% macro gen_tab(internal_name, tab_icon, tab_name, first, hidden) %}
+    <li role="presentation">
+        <a
+            class="{% if first %}active{% endif %} py-2"
+            id="nav-{{ internal_name }}-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-{{ internal_name }}"
+            type="button"
+            role="tab"
+            aria-controls="nav-{{ internal_name }}"
+            aria-selected="{{ 'true' if first else 'false' }}"
+            {% if hidden %}hidden{% endif %}
+        >
+            <i class="fa {{ tab_icon }}"></i>
+            <span class="nav-text">
+                <div class="position-absolute top-50 start-0 translate-middle-y">{{ tab_name }}</div>
+            </span>
+        </a>
+    </li>
+{% endmacro %}

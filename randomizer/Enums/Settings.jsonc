@@ -57,6 +57,36 @@
   },
 
   /*
+    BLockerSetting:
+    - Determines how the game handles the difficulty of B. Lockers and how their values are determined
+    - pre_selected: Player chooses specific values for each B. Locker
+    - easy_random: Random values are chosen between 0 and a cap, with an easier progression curve
+    - normal_random: Same as easy_random, but with a normal progression curve
+    - hard_random: Same as easy_random, but with a hard progression curve
+    - chaos: Utilize the Chaos B. Locker Setting
+  */
+  "BLockerSetting": {
+    "pre_selected": 0,
+    "easy_random": 1,
+    "normal_random": 2,
+    "hard_random": 3,
+    "chaos": 4
+  },
+
+  /*
+    TroffSetting:
+    - Determines how the game handles the difficulty of Boss Requirements and how their values are determined
+    - pre_selected: Player chooses specific values for each Boss Req
+    - normal_random: Random values are chosen between 0 and a cap, with a normal progression curve
+    - hard_random: Same as normal_random, but with a hard progression curve
+  */
+  "TroffSetting": {
+    "pre_selected": 0,
+    "normal_random": 1,
+    "hard_random": 2
+  },
+
+  /*
     CBRando:
     - Determines the level of CB Rando utilized.
     - off: CB Rando is disabled.
@@ -756,6 +786,18 @@
     "extreme": 5
   },
 
+
+  /*
+    RandomRequirement:
+    - Used for a few settings where you get to designate the item requirement for a check.
+  */
+  "RandomRequirement": {
+    "pre_selected": 0,
+    "easy_random": 1,
+    "medium_random": 2,
+    "hard_random": 3
+  },
+
   /*
     RemovedBarriersSelected:
     - Various barriers that can be removed.
@@ -1255,7 +1297,13 @@
     "item_rando_list_9": 251,
     "decouple_item_rando": 252,
     "filler_items_selected": 253,
-    "disable_racing_patches": 254
+    "disable_racing_patches": 254,
+    "blocker_selection_behavior": 255,
+    "tns_selection_behavior": 256,
+    "medal_jetpac_behavior": 257,
+    "pearl_mermaid_behavior": 258,
+    "fairy_queen_behavior": 259,
+    "cb_medal_behavior": 260
   },
   /*
     SettingsStringDataType:
@@ -1338,6 +1386,12 @@
     "warp_level_list_selected": { "obj": "Maps" },
     "win_condition": { "obj": "WinCondition" },
     "win_condition_item": { "obj": "WinConditionComplex" },
+    "blocker_selection_behavior": { "obj": "BLockerSetting" },
+    "tns_selection_behavior": { "obj": "TroffSetting" },
+    "medal_jetpac_behavior": { "obj": "RandomRequirement" },
+    "pearl_mermaid_behavior": { "obj": "RandomRequirement" },
+    "fairy_queen_behavior": { "obj": "RandomRequirement" },
+    "cb_medal_behavior": { "obj": "RandomRequirement" },
     "wrinkly_hints": { "obj": "WrinklyHints" },
     "spoiler_hints": { "obj": "SpoilerHints" },
     "starting_kong": { "obj": "Kongs" },
@@ -1723,6 +1777,12 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.win_condition_item": { "obj": "WinConditionComplex" },
+    "SettingsStringEnum.blocker_selection_behavior": { "obj": "BLockerSetting" },
+    "SettingsStringEnum.tns_selection_behavior": { "obj": "TroffSetting" },
+    "SettingsStringEnum.medal_jetpac_behavior": { "obj": "RandomRequirement" },
+    "SettingsStringEnum.pearl_mermaid_behavior": { "obj": "RandomRequirement" },
+    "SettingsStringEnum.fairy_queen_behavior": { "obj": "RandomRequirement" },
+    "SettingsStringEnum.cb_medal_behavior": { "obj": "RandomRequirement" },
     "SettingsStringEnum.win_condition_count": {
       "obj": "SettingsStringDataType.var_int"
     },

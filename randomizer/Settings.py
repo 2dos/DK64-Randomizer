@@ -100,7 +100,7 @@ class Settings:
         self.krool_keys_required = []
         self.starting_key_list = []
         # Settings which are not yet implemented on the web page
-
+        
         # B Locker and T&S max values
         # Shorter: 20 GB
         # Short: 35 GB
@@ -116,7 +116,7 @@ class Settings:
         else:
             self.troff_max = 270
         self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.60]  # Weights for the minimum value of troff
-        if self.hard_troff_n_scoff:
+        if self.tns_selection_behavior == TroffSetting.normal_random:
             self.troff_min = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8]  # Add 20% to the minimum for hard T&S
         # In hard level progression we go through levels in a random order, so we set every level's troff min weight to the largest weight
         if self.level_randomization == LevelRandomization.level_order_complex:
@@ -264,7 +264,7 @@ class Settings:
             self.troff_weight_6 = 1
             self.troff_weight_7 = 1
 
-        if self.randomize_cb_required_amounts:
+        if self.tns_selection_behavior != TroffSetting.pre_selected:
             randomlist = []
             for min_percentage in self.troff_min:
                 randomlist.append(self.random.randint(round(self.troff_max * min_percentage), self.troff_max))
@@ -311,19 +311,19 @@ class Settings:
             # BarrierItems.ColoredBanana: 1000,
         }
 
-        if self.chaos_blockers:
-            self.chaos_ratio = self.chaos_ratio / 100.0
+        if self.blocker_selection_behavior == BLockerSetting.chaos:
+            self.blocker_text = self.blocker_text / 100.0
             locked_blocker_items = []
             for slot in range(8):
                 item = self.random.choice([key for key in self.blocker_limits.keys() if key not in locked_blocker_items])
-                count = self.random.randint(1, math.ceil(self.blocker_limits[item] * self.chaos_ratio))
+                count = self.random.randint(1, math.ceil(self.blocker_limits[item] * self.blocker_text))
                 self.BLockerEntryItems[slot] = item
                 self.BLockerEntryCount[slot] = count
                 # Some barriers can only show up once
                 if item in (BarrierItems.Bean, BarrierItems.Pearl, BarrierItems.CompanyCoin):
                     locked_blocker_items.append(item)
         else:
-            if self.randomize_blocker_required_amounts:
+            if self.blocker_selection_behavior != BLockerSetting.pre_selected:
                 if self.blocker_max > 0:
                     choice_list = range(1, self.blocker_max)
                     if self.blocker_max < 7:
@@ -459,7 +459,7 @@ class Settings:
         self.troff_max = None
         self.blocker_text = ""
         self.troff_text = ""
-        self.blocker_difficulty = BLockerDifficulty.normal
+        self.blocker_difficulty = BLockerDifficulty.normal  # Deprecated
 
     def generate_misc(self):
         """Set default items on misc page."""
@@ -516,7 +516,7 @@ class Settings:
         self.sprint_barrel_requires_sprint = True
         self.fix_lanky_tiny_prod = True
 
-        self.chaos_blockers = False
+        self.chaos_blockers = False  # Deprecated
 
         # hard_shooting: bool
         self.hard_shooting = False
@@ -569,6 +569,7 @@ class Settings:
         self.music_minoritems_randomized = False
         self.music_events_randomized = False
         self.random_music = False
+        self.music_is_custom = False
         self.music_vanilla_locations = False
         self.music_disable_reverb = False
         self.music_selection_dict = {
@@ -705,11 +706,15 @@ class Settings:
         self.medal_cb_req = 75
         self.rareware_gb_fairies = 20
         self.mermaid_gb_pearls = 5
+        self.medal_jetpac_behavior = RandomRequirement.pre_selected
+        self.pearl_mermaid_behavior = RandomRequirement.pre_selected
+        self.fairy_queen_behavior = RandomRequirement.pre_selected
+        self.cb_medal_behavior = RandomRequirement.pre_selected
         self.bananaport_rando = BananaportRando.off
         self.activate_all_bananaports = ActivateAllBananaports.off
         self.shop_indicator = False
-        self.randomize_cb_required_amounts = False
-        self.randomize_blocker_required_amounts = False
+        self.randomize_cb_required_amounts = False  # Deprecated
+        self.randomize_blocker_required_amounts = False  # Deprecated
         self.maximize_helm_blocker = False
         self.perma_death = False
         self.disable_tag_barrels = False
@@ -751,7 +756,9 @@ class Settings:
         self.override_cosmetics = True
         self.hard_level_progression = False
         self.hard_blockers = False
-        self.hard_troff_n_scoff = False
+        self.hard_troff_n_scoff = False  # Deprecated
+        self.blocker_selection_behavior = BLockerSetting.normal_random
+        self.tns_selection_behavior = TroffSetting.normal_random
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
         # self.dk_portal_location_rando = False  # Deprecated
@@ -1083,6 +1090,46 @@ class Settings:
         self.tiny_freeing_kong = self.switchsanity_data[Switches.AztecOKONGPuzzle].kong
         self.chunky_freeing_kong = self.switchsanity_data[Switches.FactoryFreeKong].kong
 
+        # Determine item requirements if random
+        req_data = {
+            "pearls": {
+                RandomRequirement.easy_random: (1, 2),
+                RandomRequirement.medium_random: (2, 3),
+                RandomRequirement.hard_random: (3, 5),
+            },
+            "medals": {
+                RandomRequirement.easy_random: (1, 10),
+                RandomRequirement.medium_random: (11, 20),
+                RandomRequirement.hard_random: (21, 40),
+            },
+            "fairies": {
+                RandomRequirement.easy_random: (1, 6),
+                RandomRequirement.medium_random: (7, 13),
+                RandomRequirement.hard_random: (14, 20),
+            },
+            "cbs": {
+                RandomRequirement.easy_random: (1, 30),
+                RandomRequirement.medium_random: (31, 50),
+                RandomRequirement.hard_random: (51, 100),
+            }
+        }
+        if self.pearl_mermaid_behavior != RandomRequirement.pre_selected:
+            min_bound = req_data["pearls"][self.pearl_mermaid_behavior][0]
+            max_bound = req_data["pearls"][self.pearl_mermaid_behavior][1]
+            self.mermaid_gb_pearls = self.random.randint(min_bound, max_bound)
+        if self.medal_jetpac_behavior != RandomRequirement.pre_selected:
+            min_bound = req_data["medals"][self.medal_jetpac_behavior][0]
+            max_bound = req_data["medals"][self.medal_jetpac_behavior][1]
+            self.medal_requirement = self.random.randint(min_bound, max_bound)
+        if self.fairy_queen_behavior != RandomRequirement.pre_selected:
+            min_bound = req_data["fairies"][self.fairy_queen_behavior][0]
+            max_bound = req_data["fairies"][self.fairy_queen_behavior][1]
+            self.rareware_gb_fairies = self.random.randint(min_bound, max_bound)
+        if self.cb_medal_behavior != RandomRequirement.pre_selected:
+            min_bound = req_data["cbs"][self.cb_medal_behavior][0]
+            max_bound = req_data["cbs"][self.cb_medal_behavior][1]
+            self.medal_cb_req = self.random.randint(min_bound, max_bound)
+
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
         if IsDDMSSelected(self.hard_mode_selected, HardModeSelected.water_is_lava):
             ItemList[Items.ProgressiveInstrumentUpgrade].playthrough = True
@@ -1196,7 +1243,7 @@ class Settings:
         self.coin_door_random = self.coin_door_item in random_helm_door_settings
         crown_door_pool = {}
         coin_door_pool = {}
-        if self.chaos_blockers:
+        if self.blocker_selection_behavior == BLockerSetting.chaos:
             helmdoor_items[HelmDoorItem.req_gb].hard = HelmDoorRandomInfo(60, 100, 0.05)
             helmdoor_items[HelmDoorItem.req_gb].medium = HelmDoorRandomInfo(30, 60, 0.1)
             helmdoor_items[HelmDoorItem.req_gb].easy = HelmDoorRandomInfo(10, 30, 0.125)

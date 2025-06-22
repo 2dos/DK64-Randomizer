@@ -23,6 +23,7 @@ from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
+    BLockerSetting,
     ClimbingStatus,
     DamageAmount,
     DKPortalRando,
@@ -1206,7 +1207,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             # If it's not on any other path, it's not WotH
             if not inAnotherPath:
                 # In Chaos B. Lockers, you may need certain items purely to pass B. Locker
-                if spoiler.settings.chaos_blockers:
+                if spoiler.settings.blocker_selection_behavior == BLockerSetting.chaos:
                     # Most likely: The Bean is always required to pass the Bean Locker - if it gets here, that means you need it and it should be WotH
                     if location.item == Items.Bean and BarrierItems.Bean in spoiler.settings.BLockerEntryItems:
                         continue
@@ -3009,7 +3010,7 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
     # Find all items that could be our first B. Locker's requirement
     accessibleItems = spoiler.LogicVariables.ItemCounts()
     # In Chaos B. Lockers, we should try our best to avoid a 0
-    if settings.chaos_blockers and accessibleItems[blocker_item_projection[0]] == 0:
+    if settings.blocker_selection_behavior == BLockerSetting.chaos and accessibleItems[blocker_item_projection[0]] == 0:
         # Determine which items have been found and could be eligible for this door
         eligibleTypes = [item for item in settings.blocker_limits.keys() if accessibleItems[item] > 0]
         # There can be only one Bean Locker, P. Locker, and C.C. Locker so they are not eligible if it already exists
@@ -3025,7 +3026,7 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
         else:
             blocker_item_projection[0] = spoiler.settings.random.choice(eligibleTypes)
     blocker_value_projection[0] = min(1, accessibleItems[blocker_item_projection[0]])  # This should limit the first B. Locker to 1 item, no matter what it is
-    if not settings.chaos_blockers:
+    if settings.blocker_selection_behavior != BLockerSetting.chaos:
         blocker_value_projection[0] = min(blocker_variable_mapping[0], blocker_value_projection[0])
     # For each level, calculate the available moves and number of bananas
     for level in range(1, 9):
@@ -3043,7 +3044,7 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
         # Calculate the next level's B. Locker value based on what's available (if there is a next level)
         if level < 8:
             # In Chaos B. Lockers, we should try our best to avoid a 0
-            if settings.chaos_blockers and accessibleItems[blocker_item_projection[level]] == 0:
+            if settings.blocker_selection_behavior == BLockerSetting.chaos and accessibleItems[blocker_item_projection[level]] == 0:
                 # Determine which items have been found and could be eligible for this door
                 eligibleTypes = [item for item in settings.blocker_limits.keys() if accessibleItems[item] > 0]
                 # There can be only one Bean Locker, P. Locker, and C.C. Locker so they are not eligible if it already exists
@@ -3060,13 +3061,13 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
                     blocker_item_projection[level] = spoiler.settings.random.choice(eligibleTypes)
             blocker_value_projection[level] = max(1, round(spoiler.settings.random.uniform(BLOCKER_MIN, BLOCKER_MAX) * accessibleItems[blocker_item_projection[level]]))
             # If we're on Chaos B. Lockers, we need a random value to compare against so we don't only follow the item availability heuristic - if we did, we'd get really expensive B. Lockers
-            if settings.chaos_blockers:
+            if settings.blocker_selection_behavior == BLockerSetting.chaos:
                 # Roll 8 random values and take the levelth one to get an approximation of what the levelth most expensive random B. Locker might be if all of them were of this item
                 # This is functionally equivalent to what non-chaos B. Lockers does with GBs during settings initialization (blocker_0, blocker_1, etc.)
                 # This also prevents the item availability-based values from overtaking the maximum value
                 assorted_random_values = []
                 for i in range(8):
-                    assorted_random_values.append(spoiler.settings.random.randint(1, ceil(settings.blocker_limits[blocker_item_projection[level]] * settings.chaos_ratio)))
+                    assorted_random_values.append(spoiler.settings.random.randint(1, ceil(settings.blocker_limits[blocker_item_projection[level]] * settings.blocker_text)))
                 assorted_random_values.sort()
                 blocker_value_projection[level] = min(assorted_random_values[level], blocker_value_projection[level])
             # If we're not on Chaos B. Lockers we need to respect the UI input or the randomly generated value from earlier so the item availability calc doesn't overtake the max
@@ -3083,14 +3084,14 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
         ownedMoves[thisLevel] = accessibleMoves
     settings.BLockerEntryCount = blocker_value_projection
     # Without Chaos B. Lockers, the last B. Locker is unchanged from what was generated earlier
-    if not settings.chaos_blockers:
+    if settings.blocker_selection_behavior != BLockerSetting.chaos:
         settings.BLockerEntryCount[7] = settings.blocker_7
     # With Chaos B. Lockers, we give the last level a the maximum value for that item proportional to the chaos ratio input
     else:
-        settings.BLockerEntryCount[7] = ceil(settings.chaos_ratio * settings.blocker_limits[blocker_item_projection[7]])
+        settings.BLockerEntryCount[7] = ceil(settings.blocker_text * settings.blocker_limits[blocker_item_projection[7]])
         settings.BLockerEntryItems = blocker_item_projection
     # Prevent scenario where B. Lockers randomize to not-always-increasing values
-    if settings.randomize_blocker_required_amounts:
+    if settings.blocker_selection_behavior != BLockerSetting.pre_selected:
         for i in range(1, 7):
             for j in range(i + 1, 7):
                 # If any later level j is cheaper than this level i, swap the B. Lockers
@@ -3214,13 +3215,13 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
         settings.troff_6,
         settings.troff_7,
     ]
-    if settings.randomize_blocker_required_amounts or settings.chaos_blockers:  # If amounts are random, they need to be maxed out to properly generate random values
+    if settings.blocker_selection_behavior != BLockerSetting.pre_selected:  # If amounts are random, they need to be maxed out to properly generate random values
         settings.BLockerEntryCount = [1000, 1000, 1000, 1000, 1000, 1000, 1000, settings.blocker_7]
         # If Helm is shuffled with the rest of the levels, this algorithm should settle its value
         if settings.shuffle_helm_location:
             settings.BLockerEntryCount[7] = 1000
         # Chaos B. Lockers will be determined as we arrive at them - blank all of them out except for Helm for now
-        if settings.chaos_blockers:
+        if settings.blocker_selection_behavior == BLockerSetting.chaos:
             settings.BLockerEntryItems[0] = BarrierItems.GoldenBanana
             settings.BLockerEntryItems[1] = BarrierItems.GoldenBanana
             settings.BLockerEntryItems[2] = BarrierItems.GoldenBanana
@@ -3232,7 +3233,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                 settings.BLockerEntryItems[7] = BarrierItems.GoldenBanana
             else:
                 # If guaranteed to be 8, Helm will be a max roll of a random item
-                settings.BLockerEntryCount[7] = ceil(settings.blocker_limits[settings.BLockerEntryItems[7]] * settings.chaos_ratio)
+                settings.BLockerEntryCount[7] = ceil(settings.blocker_limits[settings.BLockerEntryItems[7]] * settings.blocker_text)
         # Add a buffer to the Helm B. Locker value if it's your last B. Locker. This should make it less likely you need every item available to enter Helm.
         # This protection does not apply if your last B. Locker could be a huge number. You'll have to face the music then.
         settings.BLockerEntryCount[7] = min(
@@ -3263,7 +3264,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     # Until we've completed every level...
     while len(levelsProgressed) < number_of_progressable_levels:
         openLevels = GetAccessibleOpenLevels(spoiler)
-        if not settings.chaos_blockers:
+        if settings.blocker_selection_behavior != BLockerSetting.chaos:
             # Pick a random accessible B. Locker
             maxEnterableBlocker = round(runningGBTotal * BLOCKER_MAX)
             accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed and settings.BLockerEntryCount[level] <= maxEnterableBlocker]
@@ -3319,7 +3320,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
             if settings.shuffle_helm_location and len(levelsProgressed) == (number_of_progressable_levels - 1):
                 # This will likely be a max roll but in some rare circumstances it may not be due to needing something out of your last progression level extremely early
                 settings.BLockerEntryCount[nextLevelToBeat] = min(
-                    ceil(settings.blocker_limits[settings.BLockerEntryItems[nextLevelToBeat]] * settings.chaos_ratio), round(BLOCKER_MAX * accessibleItems[settings.BLockerEntryItems[nextLevelToBeat]])
+                    ceil(settings.blocker_limits[settings.BLockerEntryItems[nextLevelToBeat]] * settings.blocker_text), round(BLOCKER_MAX * accessibleItems[settings.BLockerEntryItems[nextLevelToBeat]])
                 )
             # Otherwise, generate a random value
             else:
@@ -3328,7 +3329,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
                 # This also prevents the item availability-based values from overtaking the maximum value
                 assorted_random_values = []
                 for i in range(9):
-                    assorted_random_values.append(spoiler.settings.random.randint(1, ceil(settings.blocker_limits[settings.BLockerEntryItems[nextLevelToBeat]] * settings.chaos_ratio)))
+                    assorted_random_values.append(spoiler.settings.random.randint(1, ceil(settings.blocker_limits[settings.BLockerEntryItems[nextLevelToBeat]] * settings.blocker_text)))
                 assorted_random_values.sort()
                 settings.BLockerEntryCount[nextLevelToBeat] = min(progression_roll, assorted_random_values[len(levelsProgressed)])
         levelsProgressed.append(nextLevelToBeat)
@@ -3546,10 +3547,10 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
         mostExpensiveBLocker = max(settings.BLockerEntryCount[0:7])
         settings.BLockerEntryCount[7] = settings.blocker_7  # Reset the buffer that we applied earlier (Chaos B. Lockers is about to ignore this and that's good)
         # Chaos B. Lockers needs to also update the Helm B. Locker - max roll whatever the item there is
-        if settings.chaos_blockers:
-            settings.BLockerEntryCount[7] = ceil(settings.blocker_limits[settings.BLockerEntryItems[7]] * settings.chaos_ratio)
+        if settings.blocker_selection_behavior == BLockerSetting.chaos:
+            settings.BLockerEntryCount[7] = ceil(settings.blocker_limits[settings.BLockerEntryItems[7]] * settings.blocker_text)
         # Because we might not have sorted the B. Lockers when they're randomly generated, Helm might be a surprisingly low number if it's not maximized
-        elif settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.BLockerEntryCount[7] < mostExpensiveBLocker:
+        elif settings.blocker_selection_behavior not in (BLockerSetting.pre_selected, BLockerSetting.chaos) and not settings.maximize_helm_blocker and settings.BLockerEntryCount[7] < mostExpensiveBLocker:
             # Ensure that Helm is the most expensive B. Locker
             # This may raise the Helm B. Locker and in some ***rare*** scenarios violate the B. Locker buffer, but it'll be a relatively small violation.
             settings.BLockerEntryCount[7] = spoiler.settings.random.randint(mostExpensiveBLocker, settings.blocker_max)
