@@ -562,7 +562,6 @@ document
       "nav-overworld-tab",
       "nav-progression-tab",
       "nav-qol-tab",
-      "nav-hint-tab",
     ];
     tabs.forEach((tab) =>
       document.getElementById(tab).setAttribute("disabled", "disabled")
@@ -703,10 +702,10 @@ async function enable_plandomizer() {
         console.log("Error running ui/__init__.py:", error);
       }
     }
-    plandoTab.style.display = "";
+    plandoTab.removeAttribute("hidden");
     $("#plando-modal").modal("hide");
   } else {
-    plandoTab.style.display = "none";
+    plandoTab.setAttribute("hidden", "hidden");
     $("#plando-modal").modal("hide");
   }
 }

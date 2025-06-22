@@ -384,3 +384,55 @@
         </div>
     </div>
 {% endmacro %}
+{% macro lock_tab() %}
+    <li>
+        <a
+            class="py-2"
+            id="lock-nav-panel"
+        >
+            <i class="fa fa-lock-open fa-2x" id="lock-nav-panel-unlock" hidden></i>
+            <i class="fa fa-lock" id="lock-nav-panel-lock"></i>
+            <span class="nav-text">
+                <div class="position-absolute top-50 start-0 translate-middle-y">Lock Panel</div>
+            </span>
+        </a>
+    </li>
+    <script>
+        document.getElementById("lock-nav-panel").addEventListener("click", (e) => {
+            const tab_list = document.getElementById("nav-tab-list");
+            const panel = document.getElementById("lock-nav-panel");
+            tab_list.classList.toggle("expanded");
+            const expanded = tab_list.classList.contains("expanded");
+            panel.getElementsByTagName("div")[0].innerText = expanded ? "Unlock Panel" : "Lock Panel";
+            const lock_icon = document.getElementById("lock-nav-panel-lock");
+            const unlock_icon = document.getElementById("lock-nav-panel-unlock");
+            if (expanded) {
+                lock_icon.setAttribute("hidden", "hidden");
+                unlock_icon.removeAttribute("hidden");
+            } else {
+                unlock_icon.setAttribute("hidden", "hidden");
+                lock_icon.removeAttribute("hidden");
+            }
+        })
+    </script>
+{% endmacro %}
+{% macro gen_tab(internal_name, tab_icon, tab_name, first, hidden) %}
+    <li role="presentation">
+        <a
+            class="{% if first %}active{% endif %} py-2"
+            id="nav-{{ internal_name }}-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-{{ internal_name }}"
+            type="button"
+            role="tab"
+            aria-controls="nav-{{ internal_name }}"
+            aria-selected="{{ 'true' if first else 'false' }}"
+            {% if hidden %}hidden{% endif %}
+        >
+            <i class="fa {{ tab_icon }}"></i>
+            <span class="nav-text">
+                <div class="position-absolute top-50 start-0 translate-middle-y">{{ tab_name }}</div>
+            </span>
+        </a>
+    </li>
+{% endmacro %}

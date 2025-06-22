@@ -18,6 +18,7 @@
             href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link href="static/styles/styles.css" rel="stylesheet" />
         <link href="./static/styles/gui.css" rel="stylesheet" type="text/css" />
+        <link href="./static/styles/sidebar.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
@@ -122,355 +123,352 @@
             class="center_image"
             style="cursor: pointer; margin-top: 70px"
             onClick="render_page('./index')"/>
+        <nav id="nav-tab-list"></nav>
         <div style="width: 90%; min-width: 400px"
             class="center">
-            <div class="d-flex">
-                <div id="nav-tab-list"></div>
-                <div class="card flex-grow-1" style="border-top-left-radius: 0px">
-                    <form id="form" action="/" method="POST">
-                        <!--Create navbar-->
-                        <div class="container" id="visual_indicator">
-                        <img style="
-                            width: 10%;
-                            height: 10%;
-                            margin: 10%;
-                            top: 50%;
-                            left: 40%;
-                            " src="./static/img/loading-icon-black.svg" />
+            <div class="card flex-grow-1" style="border-top-left-radius: 0px">
+                <form id="form" action="/" method="POST">
+                    <!--Create navbar-->
+                    <div class="container" id="visual_indicator">
+                    <img style="
+                        width: 10%;
+                        height: 10%;
+                        margin: 10%;
+                        top: 50%;
+                        left: 40%;
+                        " src="./static/img/loading-icon-black.svg" />
 
-                
-                        </div>
-                        <div class="container" id="tab-data" hidden></div>
+            
+                    </div>
+                    <div class="container" id="tab-data" hidden></div>
 
 
-                        <hr />
-                        <!-- Toasts -->
-                        <div id="toasts">
-                            <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
-                        </div>
-                        <div class="container" id="nav-gen-type-container">
-                            <nav style="display: inline-block; float: none; vertical-align: top;">
-                                <div class="nav nav-tabs" id="nav-gen-type" role="tablist">
-                                    <button class="nav-link active"
-                                            id="nav-seed-gen-tab"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#nav-seed-gen"
-                                            type="button"
-                                            role="tab"
-                                            aria-controls="nav-seed-gen"
-                                            aria-selected="true">
-                                        Generate New Seed
-                                    </button>
-                                    <button class="nav-link"
-                                            id="nav-patch-tab"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#nav-patch-data"
-                                            type="button"
-                                            role="tab"
-                                            aria-controls="nav-patch-data"
-                                            aria-selected="false">
-                                        Generate from Patch File
-                                    </button>
-                                    <button class="nav-link"
-                                            id="nav-pastgen-tab"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#nav-pastgen-data"
-                                            type="button"
-                                            role="tab"
-                                            aria-controls="nav-pastgen-data"
-                                            aria-selected="false"
-                                            style="display:none">
-                                        Generate from Past Seed
-                                    </button>
-                                </div>
-                            </nav>
-                            <!--Populate tabs-->
-                            <div class="tab-content" id="common_footer">
-                                <!--Normal Generation-->
-                                <div class="tab-pane fade show active"
-                                    id="nav-seed-gen"
-                                    role="tabpanel"
-                                    aria-labelledby="nav-seed-gen-tab">
-                                    <div style="width: 80%;" class="center">
-                                        <div class="form-group" style="margin-bottom: 10px; text-align: center;">
-                                            <div class="row" style="margin-top: 10px">
-                                                <!--Randomize Seed-->
-                                                <div class="flex-container" style="justify-content: center;">
-                                                    <div class="form-group item-select">
-                                                        <label for="seed" class="select-title">
-                                                            Seed ID
-                                                        </label>
-                                                        <input name="seed" id="seed" placeholder="Auto fills when empty"/>
-                                                    </div>
-                                                    <div class="form-group item-select" style="min-width:300px;">
-                                                        <label for="settings_string" class="select-title">
-                                                            Settings String
-                                                        </label>
-                                                        <span class="row settings-string-container">
-                                                            <input name="settings_string"
-                                                                id="settings_string"
-                                                                placeholder="Click Export or Copy Settings to fill"/>
-                                                            <img name="settings_string_copy"
-                                                                id="settings_string_copy"
-                                                                class="copy-icon"
-                                                                data-toggle="tooltip"
-                                                                title="Click to copy the settings string to your clipboard."
-                                                                src="./static/img/copy-to-clipboard.svg">
-                                                        </span>
-                                                    </div>
-                                                    <div>
-                                                        <input id="import_settings"
-                                                            class="btn btn-secondary settings_button"
-                                                            type="button"
-                                                            value="Import"/>
-                                                        <input id="export_settings"
-                                                            class="btn btn-secondary settings_button"
-                                                            type="button"
-                                                            value="Export"/>
-                                                    </div>
+                    <hr />
+                    <!-- Toasts -->
+                    <div id="toasts">
+                        <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+                    </div>
+                    <div class="container" id="nav-gen-type-container">
+                        <nav style="display: inline-block; float: none; vertical-align: top;">
+                            <div class="nav nav-tabs" id="nav-gen-type" role="tablist">
+                                <button class="nav-link active"
+                                        id="nav-seed-gen-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#nav-seed-gen"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="nav-seed-gen"
+                                        aria-selected="true">
+                                    Generate New Seed
+                                </button>
+                                <button class="nav-link"
+                                        id="nav-patch-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#nav-patch-data"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="nav-patch-data"
+                                        aria-selected="false">
+                                    Generate from Patch File
+                                </button>
+                                <button class="nav-link"
+                                        id="nav-pastgen-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#nav-pastgen-data"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="nav-pastgen-data"
+                                        aria-selected="false"
+                                        style="display:none">
+                                    Generate from Past Seed
+                                </button>
+                            </div>
+                        </nav>
+                        <!--Populate tabs-->
+                        <div class="tab-content" id="common_footer">
+                            <!--Normal Generation-->
+                            <div class="tab-pane fade show active"
+                                id="nav-seed-gen"
+                                role="tabpanel"
+                                aria-labelledby="nav-seed-gen-tab">
+                                <div style="width: 80%;" class="center">
+                                    <div class="form-group" style="margin-bottom: 10px; text-align: center;">
+                                        <div class="row" style="margin-top: 10px">
+                                            <!--Randomize Seed-->
+                                            <div class="flex-container" style="justify-content: center;">
+                                                <div class="form-group item-select">
+                                                    <label for="seed" class="select-title">
+                                                        Seed ID
+                                                    </label>
+                                                    <input name="seed" id="seed" placeholder="Auto fills when empty"/>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="flex-container" style="justify-content: center;">
-                                                    <div class="form-check form-switch item-switch" style="text-align: center">
-                                                        <label data-toggle="tooltip"
-                                                            title="Used for Races to download generated ROM as patch file.">
-                                                            <input class="form-check-input"
-                                                                type="checkbox"
-                                                                id="download_patch_file"
-                                                                name="download_patch_file"
-                                                                value="True"/>
-                                                            Generate as Patch File
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-switch item-switch" style="text-align: center">
-                                                        <label data-toggle="tooltip"
-                                                            title="This option enables spoiler log files to be created on randomizer generation.">
-                                                            <input class="form-check-input"
-                                                                type="checkbox"
-                                                                id="generate_spoilerlog"
-                                                                name="generate_spoilerlog"
-                                                                value="True"
-                                                                checked
-                                                                onchange="toggleDelayedSpoilerLogInput()"/>
-                                                            Generate Spoiler Log
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-switch item-switch" style="text-align: center; display: none">
-                                                        <label data-toggle="tooltip"
-                                                            title="Locks entry into the file with a password. Used solely for races.">
-                                                            <input class="form-check-input"
-                                                                type="checkbox"
-                                                                id="has_password"
-                                                                name="has_password"
-                                                                value="True"/>
-                                                            Password lock
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-switch item-switch" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                                        <div>
-                                                            <label data-toggle="tooltip"
-                                                                title="Enables the homebrew header to be written to the ROM. This makes the ROM viable on some platforms but can break other platforms. Click the link on the icon for more information.">
-                                                                <input class="form-check-input"
-                                                                    type="checkbox"
-                                                                    name="homebrew_header"
-                                                                    id="homebrew_header"
-                                                                    value="True"/>
-                                                                Advanced ROM Header
-                                                            </label>
-                                                            <a href="./wiki/Advanced-Homebrew-ROM-Header.html"
-                                                                title="Click me for more information"
-                                                                target="_blank">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" class="warning-icon" stroke="#ffff00" fill="#ffff00">
-                                                                    <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
-                                                                </svg>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div id="delayed_spoilerlog_container" hidden class="form-check form-switch item-switch" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                                        <div>
-                                                            <label data-toggle="tooltip"
-                                                                title="If set to 0, the spoiler log is not released. If set to a number higher than 0, the spoiler log will be available for download after that many hours.">
-                                                                <input type="number"
-                                                                    id="delayed_spoilerlog_release"
-                                                                    name="delayed_spoilerlog_release"
-                                                                    value="0"
-                                                                    min="0"
-                                                                    step="1"
-                                                                    max="168"
-                                                                    style="margin-right: 5px; max-width: 8ch;"/>
-                                                                Delayed Spoiler Log Release
-                                                            </label>
-                                                        </div>
-                                                    </div>
+                                                <div class="form-group item-select" style="min-width:300px;">
+                                                    <label for="settings_string" class="select-title">
+                                                        Settings String
+                                                    </label>
+                                                    <span class="row settings-string-container">
+                                                        <input name="settings_string"
+                                                            id="settings_string"
+                                                            placeholder="Click Export or Copy Settings to fill"/>
+                                                        <img name="settings_string_copy"
+                                                            id="settings_string_copy"
+                                                            class="copy-icon"
+                                                            data-toggle="tooltip"
+                                                            title="Click to copy the settings string to your clipboard."
+                                                            src="./static/img/copy-to-clipboard.svg">
+                                                    </span>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <label for="input-file-rom_1" class="select-title">
-                                                    ROM File
-                                                </label>
-                                                <div class="input-group mb-3 file-select"
-                                                    style="width: 50%; margin: 0 auto">
-                                                    <div class="input-group-text choose-file"
-                                                        style="background-color: #6c757d">
-                                                        <input class="btn btn-secondary file-button"
-                                                            type="button"
-                                                            value="Choose File"
-                                                            onClick="filebox()"
-                                                            id="choose_rom">
-                                                    </div>
-                                                    <input class="form-control"
-                                                        id="rom"
-                                                        type="text"
-                                                        readonly
-                                                        onClick="filebox()"
-                                                        placeholder="No File Chosen"/>
-                                                </div>
-                                            </div>
-                                            <br id="formbreak" />
-                                            <div class="settings-errors"
-                                                id="settings_errors"
-                                                style="display: none;">
-                                            </div>
-                                            <div style="background:#ff5722; padding:8px;" id="spoiler_warning_2">
-                                                <div class="row" id="spoiler_warning_3">
-                                                    <h2 class="title" >FREQUENTLY FAILING?</h2>
-                                                    <b style="padding-bottom: 16px;">If you are consistently failing seed generation on any given combination of settings (3+ attempts), do not continue uselessly trying to generate a seed! You've likely found a bug on the dev site that needs to be reported! Consult the <a href="https://discord.dk64randomizer.com" target="_blank" style="text-decoration: underline;">DK64 Rando Discord</a> for assistance!</b>
-                                                </div>
-                                                <input id="generate_seed"
-                                                class="btn btn-secondary"
-                                                style="width: 60%; height: 50px; text-align: center"
-                                                type="button"
-                                                value="Generate Seed"
-                                                disabled = ""/>
-                                                <input id="trigger_download_event" hidden/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--Patch File-->
-                                <div class="tab-pane fade"
-                                    id="nav-patch-data"
-                                    role="tabpanel"
-                                    aria-labelledby="nav-patch-tab">
-                                    <div style="width: 80%;" class="center">
-                                        <div class="form-group" style="margin-bottom: 25px; text-align: center;">
-                                            <label for="patchfileloader" class="select-title">
-                                                Patch File
-                                            </label>
-                                            <input id="patchfileloader"
-                                                class="form-control"
-                                                type="file"
-                                                accept=".lanky"
-                                                style="margin-right: 5px; width: 50%; height: 100%; margin: 0 auto"/>
-                                            <div class="row">
-                                                <label for="input-file-rom_1" class="select-title">
-                                                    ROM File
-                                                </label>
-                                                <div class="input-group mb-3 file-select"
-                                                    style="width: 50%; margin: 0 auto">
-                                                    <div class="input-group-text choose-file"
-                                                        style="background-color: #6c757d">
-                                                        <input class="btn btn-secondary file-button"
-                                                            type="button"
-                                                            value="Choose File"
-                                                            onClick="filebox()"
-                                                            id="choose_rom_2">
-                                                    </div>
-                                                    <input class="form-control"
-                                                        id="rom_2"
-                                                        type="text"
-                                                        readonly
-                                                        onClick="filebox()"
-                                                        placeholder="No File Chosen"/>
+                                                <div>
+                                                    <input id="import_settings"
+                                                        class="btn btn-secondary settings_button"
+                                                        type="button"
+                                                        value="Import"/>
+                                                    <input id="export_settings"
+                                                        class="btn btn-secondary settings_button"
+                                                        type="button"
+                                                        value="Export"/>
                                                 </div>
                                             </div>
                                         </div>
-                                        <br id="formbreak" />
-                                        <input id="generate_lanky_seed"
-                                            class="btn btn-secondary"
-                                            style="width: 60%; height: 50px; text-align: center"
-                                            type="button"
-                                            value="Generate Seed from Patch"/>
-                                        <div class="modal fade" id="lankyModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="lankyModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-body">
-                                                        <h2>Patching lanky File...</h2>
-                                                        <p>This may take some time. Please be patient.</p>
-                                                        <div id="close-modal-lanky" style="display:none">
-                                                            <button class="btn btn-secondary" id="close-modal-lanky-btn">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--Past Generation-->
-                                <div class="tab-pane fade"
-                                    id="nav-pastgen-data"
-                                    role="tabpanel"
-                                    aria-labelledby="nav-pastgen-tab">
-                                    <div style="width: 80%;" class="center">
-                                        <div class="form-group" style="margin-bottom: 25px; text-align: center;">
-                                            <div class="row">
-                                                <label for="pastgenlist" class="select-title">
-                                                    Selected seed:
-                                                </label>
-                                                <select id="pastgenlist" class="form-select" style="width:50%;margin:0 auto;">
-                                                </select>
-                                            </div>
-                                            <div class="row">
-                                                <label for="input-file-rom_1" class="select-title">
-                                                    ROM File
-                                                </label>
-                                                <div class="input-group mb-3 file-select"
-                                                    style="width: 50%; margin: 0 auto">
-                                                    <div class="input-group-text choose-file"
-                                                        style="background-color: #6c757d">
-                                                        <input class="btn btn-secondary file-button"
-                                                            type="button"
-                                                            value="Choose File"
-                                                            onClick="filebox()"
-                                                            id="choose_rom_3">
-                                                    </div>
-                                                    <input class="form-control"
-                                                        id="rom_3"
-                                                        type="text"
-                                                        readonly
-                                                        onClick="filebox()"
-                                                        placeholder="No File Chosen"/>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-check form-switch item-switch" style="text-align: center; padding: 0;">
+                                        <div class="row">
+                                            <div class="flex-container" style="justify-content: center;">
+                                                <div class="form-check form-switch item-switch" style="text-align: center">
                                                     <label data-toggle="tooltip"
-                                                            title="Share your past seeds by generating it as a shareable patch file.">
+                                                        title="Used for Races to download generated ROM as patch file.">
                                                         <input class="form-check-input"
-                                                                type="checkbox"
-                                                                id="load_patch_file"
-                                                                name="load_patch_file"
-                                                                value="True"/>
+                                                            type="checkbox"
+                                                            id="download_patch_file"
+                                                            name="download_patch_file"
+                                                            value="True"/>
                                                         Generate as Patch File
                                                     </label>
                                                 </div>
+                                                <div class="form-check form-switch item-switch" style="text-align: center">
+                                                    <label data-toggle="tooltip"
+                                                        title="This option enables spoiler log files to be created on randomizer generation.">
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="generate_spoilerlog"
+                                                            name="generate_spoilerlog"
+                                                            value="True"
+                                                            checked
+                                                            onchange="toggleDelayedSpoilerLogInput()"/>
+                                                        Generate Spoiler Log
+                                                    </label>
+                                                </div>
+                                                <div class="form-check form-switch item-switch" style="text-align: center; display: none">
+                                                    <label data-toggle="tooltip"
+                                                        title="Locks entry into the file with a password. Used solely for races.">
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="has_password"
+                                                            name="has_password"
+                                                            value="True"/>
+                                                        Password lock
+                                                    </label>
+                                                </div>
+                                                <div class="form-check form-switch item-switch" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                                    <div>
+                                                        <label data-toggle="tooltip"
+                                                            title="Enables the homebrew header to be written to the ROM. This makes the ROM viable on some platforms but can break other platforms. Click the link on the icon for more information.">
+                                                            <input class="form-check-input"
+                                                                type="checkbox"
+                                                                name="homebrew_header"
+                                                                id="homebrew_header"
+                                                                value="True"/>
+                                                            Advanced ROM Header
+                                                        </label>
+                                                        <a href="./wiki/Advanced-Homebrew-ROM-Header.html"
+                                                            title="Click me for more information"
+                                                            target="_blank">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" class="warning-icon" stroke="#ffff00" fill="#ffff00">
+                                                                <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div id="delayed_spoilerlog_container" hidden class="form-check form-switch item-switch" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                                    <div>
+                                                        <label data-toggle="tooltip"
+                                                            title="If set to 0, the spoiler log is not released. If set to a number higher than 0, the spoiler log will be available for download after that many hours.">
+                                                            <input type="number"
+                                                                id="delayed_spoilerlog_release"
+                                                                name="delayed_spoilerlog_release"
+                                                                value="0"
+                                                                min="0"
+                                                                step="1"
+                                                                max="168"
+                                                                style="margin-right: 5px; max-width: 8ch;"/>
+                                                            Delayed Spoiler Log Release
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label for="input-file-rom_1" class="select-title">
+                                                ROM File
+                                            </label>
+                                            <div class="input-group mb-3 file-select"
+                                                style="width: 50%; margin: 0 auto">
+                                                <div class="input-group-text choose-file"
+                                                    style="background-color: #6c757d">
+                                                    <input class="btn btn-secondary file-button"
+                                                        type="button"
+                                                        value="Choose File"
+                                                        onClick="filebox()"
+                                                        id="choose_rom">
+                                                </div>
+                                                <input class="form-control"
+                                                    id="rom"
+                                                    type="text"
+                                                    readonly
+                                                    onClick="filebox()"
+                                                    placeholder="No File Chosen"/>
                                             </div>
                                         </div>
                                         <br id="formbreak" />
-                                        <input id="generate_pastgen_seed"
+                                        <div class="settings-errors"
+                                            id="settings_errors"
+                                            style="display: none;">
+                                        </div>
+                                        <div style="background:#ff5722; padding:8px;" id="spoiler_warning_2">
+                                            <div class="row" id="spoiler_warning_3">
+                                                <h2 class="title" >FREQUENTLY FAILING?</h2>
+                                                <b style="padding-bottom: 16px;">If you are consistently failing seed generation on any given combination of settings (3+ attempts), do not continue uselessly trying to generate a seed! You've likely found a bug on the dev site that needs to be reported! Consult the <a href="https://discord.dk64randomizer.com" target="_blank" style="text-decoration: underline;">DK64 Rando Discord</a> for assistance!</b>
+                                            </div>
+                                            <input id="generate_seed"
                                             class="btn btn-secondary"
                                             style="width: 60%; height: 50px; text-align: center"
                                             type="button"
-                                            value="Generate Seed from History"/>
+                                            value="Generate Seed"
+                                            disabled = ""/>
+                                            <input id="trigger_download_event" hidden/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <!--Patch File-->
+                            <div class="tab-pane fade"
+                                id="nav-patch-data"
+                                role="tabpanel"
+                                aria-labelledby="nav-patch-tab">
+                                <div style="width: 80%;" class="center">
+                                    <div class="form-group" style="margin-bottom: 25px; text-align: center;">
+                                        <label for="patchfileloader" class="select-title">
+                                            Patch File
+                                        </label>
+                                        <input id="patchfileloader"
+                                            class="form-control"
+                                            type="file"
+                                            accept=".lanky"
+                                            style="margin-right: 5px; width: 50%; height: 100%; margin: 0 auto"/>
+                                        <div class="row">
+                                            <label for="input-file-rom_1" class="select-title">
+                                                ROM File
+                                            </label>
+                                            <div class="input-group mb-3 file-select"
+                                                style="width: 50%; margin: 0 auto">
+                                                <div class="input-group-text choose-file"
+                                                    style="background-color: #6c757d">
+                                                    <input class="btn btn-secondary file-button"
+                                                        type="button"
+                                                        value="Choose File"
+                                                        onClick="filebox()"
+                                                        id="choose_rom_2">
+                                                </div>
+                                                <input class="form-control"
+                                                    id="rom_2"
+                                                    type="text"
+                                                    readonly
+                                                    onClick="filebox()"
+                                                    placeholder="No File Chosen"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br id="formbreak" />
+                                    <input id="generate_lanky_seed"
+                                        class="btn btn-secondary"
+                                        style="width: 60%; height: 50px; text-align: center"
+                                        type="button"
+                                        value="Generate Seed from Patch"/>
+                                    <div class="modal fade" id="lankyModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="lankyModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <h2>Patching lanky File...</h2>
+                                                    <p>This may take some time. Please be patient.</p>
+                                                    <div id="close-modal-lanky" style="display:none">
+                                                        <button class="btn btn-secondary" id="close-modal-lanky-btn">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Past Generation-->
+                            <div class="tab-pane fade"
+                                id="nav-pastgen-data"
+                                role="tabpanel"
+                                aria-labelledby="nav-pastgen-tab">
+                                <div style="width: 80%;" class="center">
+                                    <div class="form-group" style="margin-bottom: 25px; text-align: center;">
+                                        <div class="row">
+                                            <label for="pastgenlist" class="select-title">
+                                                Selected seed:
+                                            </label>
+                                            <select id="pastgenlist" class="form-select" style="width:50%;margin:0 auto;">
+                                            </select>
+                                        </div>
+                                        <div class="row">
+                                            <label for="input-file-rom_1" class="select-title">
+                                                ROM File
+                                            </label>
+                                            <div class="input-group mb-3 file-select"
+                                                style="width: 50%; margin: 0 auto">
+                                                <div class="input-group-text choose-file"
+                                                    style="background-color: #6c757d">
+                                                    <input class="btn btn-secondary file-button"
+                                                        type="button"
+                                                        value="Choose File"
+                                                        onClick="filebox()"
+                                                        id="choose_rom_3">
+                                                </div>
+                                                <input class="form-control"
+                                                    id="rom_3"
+                                                    type="text"
+                                                    readonly
+                                                    onClick="filebox()"
+                                                    placeholder="No File Chosen"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-check form-switch item-switch" style="text-align: center; padding: 0;">
+                                                <label data-toggle="tooltip"
+                                                        title="Share your past seeds by generating it as a shareable patch file.">
+                                                    <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="load_patch_file"
+                                                            name="load_patch_file"
+                                                            value="True"/>
+                                                    Generate as Patch File
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br id="formbreak" />
+                                    <input id="generate_pastgen_seed"
+                                        class="btn btn-secondary"
+                                        style="width: 60%; height: 50px; text-align: center"
+                                        type="button"
+                                        value="Generate Seed from History"/>
+                                </div>
+                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
-            
         </div>
     </body>
     <footer id="footer">
