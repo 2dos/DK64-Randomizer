@@ -1,3 +1,0 @@
-[submodule "static/styles/bootstrap"]
-	path = static/styles/bootstrap
-	url = https://github.com/crissdev/bootstrap-scss.git
