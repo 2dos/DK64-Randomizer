@@ -493,6 +493,7 @@ class ROMPointerFile:
         self.compressed = int.from_bytes(rom.read(2), "big") == 0x1F8B
 
     def grabFile(self, rom: BinaryIO) -> bytes:
+        """Grab file bytes from ROM."""
         rom.seek(self.start)
         data = rom.read(self.size)
         if self.compressed:

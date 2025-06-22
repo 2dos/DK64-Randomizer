@@ -14,9 +14,9 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
 - Quality Of Life
-- Randomize Medals for Rareware Coin
-- Random B. Locker Amounts
-- Randomize CB Required Amounts
+- Random Medal Requirement
+- Randomize Blocker Required Amounts
+- Randomize Cb Required Amounts
 - Remove Barriers Enabled
 - Shop Indicator
 - Shuffle Items
@@ -26,7 +26,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 # Always Off
 - Dim Solved Hints
 - Enable Plandomizer
-- Vanilla K. Rool Requirement
+- Vanilla K. Rool Key Requirement
 - Irondonk
 - Guaranteed Starting Keys
 - No Joke Hints
@@ -36,7 +36,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Off: 60%
 	- All: 20%
 	- Isles: 20%
-- Progressive Switch Strength: 80%
+- Alter Switch Allocation: 80%
 - Random Bananaport Locations: 
 	- Off: 20%
 	- Vanilla Only: 20%
@@ -46,7 +46,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Off: 80%
 	- Crossmap Coupled: 10%
 	- Crossmap Decoupled: 10%
-- B. Locker Max: Between 50 and 140, usually close to 80
+- B. Locker Count: Between 50 and 140, usually close to 80
 - Auto Complete Bonus Barrels: 10%
 - Bonus Barrel Rando: 70%
 - Boss Location Rando: 80%
@@ -60,7 +60,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Crystalcaves: 90%
 	- Creepycastle: 90%
 	- Dkisles: 50%
-- Chaos B. Lockers: 60%
+- Chaos Blockers: 60%
 - Chaos Ratio: Between 25 and 70, usually close to 40
 - Chunky Phase Slam Requirement: 
 	- Blue: 70%
@@ -145,7 +145,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Donk In The Dark World: 0%
 	- Donk In The Sky: 0%
 - Hard Shooting: 50%
-- Hard Troff n' Scoff: 50%
+- Hard Troff N Scoff: 50%
 - Helm Hurry Mode: 5%
 - Shuffle Helm Rooms: 80%
 - Helm Room Bonus Count: 
@@ -217,9 +217,9 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Logic: 
 	- Glitchless: 80%
 	- Advanced Glitchless: 20%
-- Maximize Helm B. Locker: 50%
-- Randomize Medal CB Requirement: Between 35 and 90, usually close to 60
-- Pearls for Mermaid GB: Between 2 and 5, usually close to 4
+- Maximize Helm Blocker: 50%
+- Medal Cb Req: Between 35 and 90, usually close to 60
+- Mermaid Gb Pearls: Between 2 and 5, usually close to 4
 - Extra Hints: 
 	- Off: 30%
 	- Base: 35%
@@ -277,7 +277,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Extreme: 10%
 - Random Starting Location: 60%
 - Randomize Pickups: 60%
-- Fairies for Rareware GB: Between 1 and 20, usually close to 20
+- Rareware Gb Fairies: Between 1 and 20, usually close to 20
 - Remove Barriers Selected: 
 	- Japes Coconut Gates: 75%
 	- Japes Shellhive Gate: 75%
@@ -296,7 +296,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Caves Ice Walls: 70%
 - Shorten Boss Fights: 80%
 - Shuffle Helm Location / Include Helm: 70%
-- Shuffle Shop Locations: 70%
+- Shuffle Shops: 70%
 - Smaller Shops: 50%
 - Starting Kong: 
 	- Any: 100%
@@ -305,7 +305,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Min: 0%
 	- Max: 0%
 - Tns Location Rando: 50%
-- Troff n' Scoff Max: Between 150 and 450, usually close to 300
+- Troff 'n' Scoff Count: Between 150 and 450, usually close to 300
 - Vanilla Door Rando: 60%
 - Win Condition: 
 	- Hard Random: 100%

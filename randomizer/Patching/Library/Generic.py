@@ -15,7 +15,18 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems, Types
-from randomizer.Enums.Settings import BLockerDifficulty, BLockerSetting, HardModeSelected, MiscChangesSelected, HelmDoorItem, IceTrapFrequency, ProgressiveHintItem, HelmSetting, HelmBonuses, ColorOptions
+from randomizer.Enums.Settings import (
+    BLockerDifficulty,
+    BLockerSetting,
+    HardModeSelected,
+    MiscChangesSelected,
+    HelmDoorItem,
+    IceTrapFrequency,
+    ProgressiveHintItem,
+    HelmSetting,
+    HelmBonuses,
+    ColorOptions,
+)
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.DataTypes import short_to_ushort
 

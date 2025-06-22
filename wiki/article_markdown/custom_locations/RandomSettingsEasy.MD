@@ -14,9 +14,9 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
 - Quality Of Life
-- Randomize Medals for Rareware Coin
-- Random B. Locker Amounts
-- Randomize CB Required Amounts
+- Random Medal Requirement
+- Randomize Blocker Required Amounts
+- Randomize Cb Required Amounts
 - Remove Barriers Enabled
 - Shop Indicator
 - Shorten Boss Fights
@@ -26,9 +26,9 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Kongless Hint Doors
 
 # Always Off
-- Progressive Switch Strength
+- Alter Switch Allocation
 - DK Phase requires Baboon Blast
-- Chaos B. Lockers
+- Chaos Blockers
 - Crown Placement Rando
 - Dos Door Rando
 - Enable Plandomizer
@@ -36,9 +36,9 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Hard Bosses
 - Hard Mode
 - Hard Shooting
-- Hard Troff n' Scoff
+- Hard Troff N Scoff
 - Helm Hurry Mode
-- Vanilla K. Rool Requirement
+- Vanilla K. Rool Key Requirement
 - Mirror Mode
 - No Heals
 - No Melon Slice Drops
@@ -65,7 +65,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- On: 2%
 - Cross-Map Bananaports: 
 	- Off: 100%
-- B. Locker Max: Between 30 and 70, usually close to 50
+- B. Locker Count: Between 30 and 70, usually close to 50
 - Auto Complete Bonus Barrels: 50%
 - Bonus Barrel Rando: 70%
 - Boss Location Rando: 80%
@@ -198,9 +198,9 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Level Order: 50%
 - Logic: 
 	- Glitchless: 100%
-- Maximize Helm B. Locker: 15%
-- Randomize Medal CB Requirement: Between 15 and 60, usually close to 30
-- Pearls for Mermaid GB: Between 1 and 3, usually close to 2
+- Maximize Helm Blocker: 15%
+- Medal Cb Req: Between 15 and 60, usually close to 30
+- Mermaid Gb Pearls: Between 1 and 3, usually close to 2
 - Extra Hints: 
 	- Base: 25%
 	- All: 75%
@@ -218,7 +218,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Low: 30%
 	- Medium: 30%
 - Randomize Pickups: 60%
-- Fairies for Rareware GB: Between 1 and 10, usually close to 5
+- Rareware Gb Fairies: Between 1 and 10, usually close to 5
 - Remove Barriers Selected: 
 	- Japes Coconut Gates: 75%
 	- Japes Shellhive Gate: 75%
@@ -236,7 +236,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Caves Igloo Pads: 100%
 	- Caves Ice Walls: 100%
 - No Joke Hints: 70%
-- Shuffle Shop Locations: 50%
+- Shuffle Shops: 50%
 - Smaller Shops: 50%
 - Starting Kong: 
 	- Any: 100%
@@ -244,7 +244,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Move Count: 
 	- Min: 0%
 	- Max: 0%
-- Troff n' Scoff Max: Between 100 and 300, usually close to 200
+- Troff 'n' Scoff Count: Between 100 and 300, usually close to 200
 - Win Condition: 
 	- Easy Random: 100%
 - Wrinkly Hints: 

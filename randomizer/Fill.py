@@ -3320,7 +3320,8 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
             if settings.shuffle_helm_location and len(levelsProgressed) == (number_of_progressable_levels - 1):
                 # This will likely be a max roll but in some rare circumstances it may not be due to needing something out of your last progression level extremely early
                 settings.BLockerEntryCount[nextLevelToBeat] = min(
-                    ceil(settings.blocker_limits[settings.BLockerEntryItems[nextLevelToBeat]] * settings.blocker_text), round(BLOCKER_MAX * accessibleItems[settings.BLockerEntryItems[nextLevelToBeat]])
+                    ceil(settings.blocker_limits[settings.BLockerEntryItems[nextLevelToBeat]] * settings.blocker_text),
+                    round(BLOCKER_MAX * accessibleItems[settings.BLockerEntryItems[nextLevelToBeat]]),
                 )
             # Otherwise, generate a random value
             else:
@@ -3550,7 +3551,11 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
         if settings.blocker_selection_behavior == BLockerSetting.chaos:
             settings.BLockerEntryCount[7] = ceil(settings.blocker_limits[settings.BLockerEntryItems[7]] * settings.blocker_text)
         # Because we might not have sorted the B. Lockers when they're randomly generated, Helm might be a surprisingly low number if it's not maximized
-        elif settings.blocker_selection_behavior not in (BLockerSetting.pre_selected, BLockerSetting.chaos) and not settings.maximize_helm_blocker and settings.BLockerEntryCount[7] < mostExpensiveBLocker:
+        elif (
+            settings.blocker_selection_behavior not in (BLockerSetting.pre_selected, BLockerSetting.chaos)
+            and not settings.maximize_helm_blocker
+            and settings.BLockerEntryCount[7] < mostExpensiveBLocker
+        ):
             # Ensure that Helm is the most expensive B. Locker
             # This may raise the Helm B. Locker and in some ***rare*** scenarios violate the B. Locker buffer, but it'll be a relatively small violation.
             settings.BLockerEntryCount[7] = spoiler.settings.random.randint(mostExpensiveBLocker, settings.blocker_max)

@@ -498,7 +498,7 @@
 | Isles | Left Kroc Isle Arm (2) |  | `self.logic = lambda _: True` | 
 | Isles | Right Kroc Isle Arm |  | `self.logic = lambda _: True` | 
 | Isles | Fairy Isle |  | `self.logic = lambda _: True` | 
-| Isles | Behind BFI |  | `logic=lambda _:True` | 
+| Isles | Behind BFI |  | `logic=lambda _: True` | 
 | Isles | Small Island |  | `self.logic = lambda _: True` | 
 | Isles | Vanilla Ring Warp 1 |  | `self.logic = lambda _: True` | 
 | Isles | Vanilla K. Lumsy Warp 1 |  | `self.logic = lambda _: True` | 

@@ -100,7 +100,6 @@ class Settings:
         self.krool_keys_required = []
         self.starting_key_list = []
         # Settings which are not yet implemented on the web page
-        
         # B Locker and T&S max values
         # Shorter: 20 GB
         # Short: 35 GB
@@ -1111,7 +1110,7 @@ class Settings:
                 RandomRequirement.easy_random: (1, 30),
                 RandomRequirement.medium_random: (31, 50),
                 RandomRequirement.hard_random: (51, 100),
-            }
+            },
         }
         if self.pearl_mermaid_behavior != RandomRequirement.pre_selected:
             min_bound = req_data["pearls"][self.pearl_mermaid_behavior][0]
