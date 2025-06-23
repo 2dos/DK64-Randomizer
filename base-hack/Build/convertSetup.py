@@ -210,6 +210,9 @@ def getObjectModifications(target_map: Maps) -> list:
         ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.TrainingGrounds, 4, new_bonus_id=95),  # Dive Barrel
         ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.TrainingGrounds, 3, new_bonus_id=97),  # Orange Barrel
         ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.TrainingGrounds, 5, new_bonus_id=98),  # Barrel Barrel
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x91, x=2326.88),  # Japes Film 1
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x92, x=2319.835),  # Japes Film 2
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x93, x=2330.393),  # Japes Film 3
     ]
 
     for switch_index in range(16):

@@ -1347,6 +1347,8 @@ colorblind_changes = [
     [0x105C, 0x1065],  # Pufftoss (1)
     [0x1069, 0x1069],  # Pufftoss (2)
     [0x11E5, 0x11EB],  # Pufftup
+    [0x13D6, 0x13ED],  # Sparkles
+    [0x1484, 0x1484],  # Star Flare
 ]
 
 file_dict.append(

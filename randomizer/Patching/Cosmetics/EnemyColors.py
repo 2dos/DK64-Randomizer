@@ -633,6 +633,17 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
         fairy_particles_shift = getRandomHueShift()
         for x in range(0xB):
             hueShiftImageContainer(25, 0x138D + x, 32, 32, TextureFormat.RGBA32, fairy_particles_shift, ROM_COPY)
+        # Sparkle Particles
+        for index in range(3):
+            sparkle_shift = getRandomHueShift()
+            start_index = 0x13D6 + (8 * index)
+            end_index = start_index + 8
+            for img_index in range(start_index, end_index):
+                hueShiftImageContainer(TableNames.TexturesGeometry, img_index, 16, 16, TextureFormat.RGBA32, sparkle_shift, ROM_COPY)
+        sparkle_shift = getRandomHueShift()
+        for index in range(0x3CA, 0x3D1 + 1):
+            hueShiftImageContainer(TableNames.TexturesUncompressed, index, 32, 32, TextureFormat.RGBA32, sparkle_shift, ROM_COPY)
+        hueShiftImageContainer(TableNames.TexturesGeometry, 0x1484, 32, 32, TextureFormat.RGBA32, getRandomHueShift(), ROM_COPY)
     if IsColorOptionSelected(settings, ColorOptions.items):
         # Headphones Sprite
         headphones_shift = getRandomHueShift()

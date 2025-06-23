@@ -18,8 +18,8 @@
 }
 
 #nav-tab-list {
-    background:#212121;
-    border-right:1px solid #e5e5e5;
+    background:rgb(33, 37, 41);
+    border-right:1px solid rgba(255, 255, 255, 0.15);
     position:fixed;
     top:0;
     bottom:0;
@@ -40,7 +40,7 @@
 #nav-tab-list li {
     position:relative;
     display:block;
-    width:248px;
+    width:249px;
 }
 
 #nav-tab-list li>a {
