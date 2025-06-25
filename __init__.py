@@ -460,7 +460,7 @@ if baseclasses_loaded:
 
         def get_filler_item_name(self) -> str:
             """Get the filler item name."""
-            return DK64RItems.JunkMelon.name
+            return DK64RItem.ItemList[DK64RItems.JunkMelon].name
 
         def set_rules(self):
             """Set the rules."""
