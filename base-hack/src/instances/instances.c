@@ -225,6 +225,14 @@ void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk
 	spawnWrinkly(behaviour, index, kong, unk0);
 }
 
+void loadWrinklyTextWrapper(actorData* actor, int file, int index) {
+	if (Rando.hints_are_items) {
+		index = wrinkly_item_table[index - 1].item_type;
+		file = 47;
+	}
+	getTextPointer_0(actor, file, index);
+}
+
 #define MILL_CRUSHER_PROGRESS 1
 
 void setCrusher(void) {

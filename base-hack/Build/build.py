@@ -1713,6 +1713,7 @@ text_files = (
     TextChange("Item Locations", 0x2800, "item_locations.bin"),
     TextChange("Wrinkly Short", 0x2800, "short_wrinkly.bin"),
     TextChange("Music Names", 0x2800, "music_names.bin"),
+    TextChange("Wrinkly Items", 0, "wrinkly_items.bin"),
 )
 
 for index, text in enumerate(text_files):

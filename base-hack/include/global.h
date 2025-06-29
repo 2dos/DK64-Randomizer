@@ -403,6 +403,8 @@ extern void displayMedalOverlay(int flag, item_packet *item_type);
 extern void saveItemsToFile(void);
 extern void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index);
 
+extern void loadWrinklyTextWrapper(actorData* actor, int file, int index);
+
 extern void handleCrownTimerInternal(void);
 
 extern void initSongDisplay(int song);

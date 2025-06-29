@@ -547,7 +547,7 @@ int cc_enabler_water(void) {
     for (int i = 0; i < sizeof(water_height_info) / sizeof(water_height_struct); i++) {
         if (water_height_info[i].map == CurrentMap) {
             int count = *(unsigned char*)(0x807F93C5); // New variable written with some nice ASM
-            int rand = getRNGLower31() & 0x7FF;
+            int rand = getRNGLower31() & 0xFFFF;
             int delta = water_height_info[i].max_height - water_height_info[i].min_height;
             // Note: I believe Wii U will hate this, but CC isn't ran on Wii U so I don't think this will be an issue
             int offset = rand % delta;
@@ -555,7 +555,6 @@ int cc_enabler_water(void) {
             for (int i = 0; i < count; i++) {
                 setWaterHeight(i, new_height, 10.0f);
             }
-            TestVariable = water_height_info[i].min_height + offset;
             return 1;
         }
     }
