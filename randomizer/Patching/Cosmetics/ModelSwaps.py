@@ -437,7 +437,7 @@ def applyCosmeticModelSwaps(settings: Settings, ROM_COPY: ROM):
     if model_setting == RandomModels.random:
         bother_model_index = getRandomKlaptrapModel()
     elif model_setting == RandomModels.extreme:
-        bother_model_index = random.choice(bother_models)
+        bother_model_index = getRandomKlaptrapModel()
         racer_beetle = random.choice([Model.Beetle, Model.Rabbit])
         racer_rabbit = random.choice([Model.Beetle, Model.Rabbit])
         if racer_rabbit == Model.Beetle:

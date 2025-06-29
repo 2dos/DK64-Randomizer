@@ -335,14 +335,20 @@ void earlyFrame(void) {
 		handleArchipelagoFeed();
 	}
 	if (CurrentMap == MAP_FUNGI) {
-		if ((TBVoidByte & 3) == 0) { // Not pausing
-			if (CutsceneActive == 0) { // No cutscene playing
-				if (Player) {
-					int chunk = Player->chunk;
-					if ((chunk < 12) || (chunk > 17)) { // Not in owl tree area, deemed a safe zone because of races
-						handleTimeOfDay(TODCALL_FUNGIACTIVE);
+		if (Rando.fungi_time_of_day_setting == TIME_PROGRESSIVE) {
+			if ((TBVoidByte & 3) == 0) { // Not pausing
+				if (CutsceneActive == 0) { // No cutscene playing
+					if (Player) {
+						int chunk = Player->chunk;
+						if ((chunk < 12) || (chunk > 17)) { // Not in owl tree area, deemed a safe zone because of races
+							handleTimeOfDay(TODCALL_FUNGIACTIVE);
+						}
 					}
 				}
+			}
+		} else if (Rando.fungi_time_of_day_setting == TIME_DUSK) {
+			if (ObjectModel2Timer == 2) {
+				handleTimeOfDay(TODCALL_FUNGIACTIVE);
 			}
 		}
 	}

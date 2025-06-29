@@ -1153,7 +1153,17 @@ def patchAssembly(ROM_COPY, spoiler):
     if settings.fungi_time_internal == FungiTimeSetting.dusk:
         writeValue(ROM_COPY, 0x806C5614, Overlay.Static, 0x50000006, offset_dict, 4)
         writeValue(ROM_COPY, 0x806BE8F8, Overlay.Static, 0x50000008, offset_dict, 4)
-
+        # Coloring
+        if not IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world):
+            writeFloat(ROM_COPY, 0x80748280, Overlay.Static, 0.6, offset_dict)
+            writeFloat(ROM_COPY, 0x80748284, Overlay.Static, 0.6, offset_dict)
+            writeFloat(ROM_COPY, 0x80748288, Overlay.Static, 0.3, offset_dict)
+            writeFloat(ROM_COPY, 0x8074828C, Overlay.Static, 0.6, offset_dict)
+            writeFloat(ROM_COPY, 0x80748290, Overlay.Static, 0.6, offset_dict)
+            writeFloat(ROM_COPY, 0x80748294, Overlay.Static, 0.3, offset_dict)
+    elif not IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world):
+        writeFloat(ROM_COPY, 0x80748288, Overlay.Static, 0.3, offset_dict)
+        
     if settings.puzzle_rando_difficulty != PuzzleRando.off:
         # Alter diddy R&D
         diddy_rnd_code_writes = [
@@ -1620,6 +1630,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806EB618, Overlay.Static, 0x3C018076, offset_dict, 4)  # LUI $at, 0x8076
     writeValue(ROM_COPY, 0x806EB61C, Overlay.Static, 0xC426EB4C, offset_dict, 4)  # LWC1 $f6, 0xEB4C ($at)
     writeFunction(ROM_COPY, 0x806CA7D4, Overlay.Static, "fakeGetOut", offset_dict)
+    writeHook(ROM_COPY, 0X8065F228, Overlay.Static, "storeWaterSurfaceCount", offset_dict)
 
     # Golden Banana Requirements
     order = 0

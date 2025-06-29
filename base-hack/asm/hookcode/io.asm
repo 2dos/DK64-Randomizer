@@ -180,3 +180,9 @@ fixNullLagBoost:
     fixNullLagBoost_end:
     j   0x806CCA98
     lui $at, 0x4F80
+
+storeWaterSurfaceCount:
+    lbu $v0, 0x3 ($t7)
+    sb $v0, 0x93C5 ($at)
+    j 0x8065F230
+    sb $zero, 0x93C4 ($at)
