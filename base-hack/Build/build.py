@@ -28,7 +28,7 @@ from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
 from end_seq_writer import createSquishFile, createTextFile
-from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch, fixFactoryDoor
+from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch, fixFactoryDoor, modifyOtherWrinklyDoors
 from helm_doors import getHelmDoorModel
 from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
@@ -64,6 +64,7 @@ for x in range(2):
 createTextFile("assets/credits")
 createSquishFile("assets/credits")
 generateYellowWrinkly()
+modifyOtherWrinklyDoors()
 generateSprintSwitch()
 fixFactoryDoor()
 generateIceMaze()
@@ -103,6 +104,42 @@ file_dict = [
         pointer_table_index=TableNames.ModelTwoGeometry,
         file_index=240,
         source_file="assets/Gong/hint_door.bin",
+        do_not_delete_source=True,
+        target_compressed_size=0x1420,
+        target_uncompressed_size=0x1420,
+    ),
+    File(
+        name="Diddy Wrinkly Door",
+        pointer_table_index=TableNames.ModelTwoGeometry,
+        file_index=0xF2,
+        source_file="assets/Gong/hint_door_diddy.bin",
+        do_not_delete_source=True,
+        target_compressed_size=0x1420,
+        target_uncompressed_size=0x1420,
+    ),
+    File(
+        name="Lanky Wrinkly Door",
+        pointer_table_index=TableNames.ModelTwoGeometry,
+        file_index=0xEF,
+        source_file="assets/Gong/hint_door_lanky.bin",
+        do_not_delete_source=True,
+        target_compressed_size=0x1420,
+        target_uncompressed_size=0x1420,
+    ),
+    File(
+        name="Tiny Wrinkly Door",
+        pointer_table_index=TableNames.ModelTwoGeometry,
+        file_index=0x67,
+        source_file="assets/Gong/hint_door_tiny.bin",
+        do_not_delete_source=True,
+        target_compressed_size=0x1420,
+        target_uncompressed_size=0x1420,
+    ),
+    File(
+        name="Chunky Wrinkly Door",
+        pointer_table_index=TableNames.ModelTwoGeometry,
+        file_index=0xF1,
+        source_file="assets/Gong/hint_door_chunky.bin",
         do_not_delete_source=True,
         target_compressed_size=0x1420,
         target_uncompressed_size=0x1420,
@@ -879,17 +916,6 @@ for song in song_replacements:
         item.do_not_extract = True
     file_dict.append(item)
     changed_song_indexes.append(song["index"])
-
-for door in (0xF2, 0xEF, 0x67, 0xF1):
-    file_dict.append(
-        File(
-            name=f"Wrinkly Door {hex(door)}",
-            pointer_table_index=TableNames.ModelTwoGeometry,
-            file_index=door,
-            source_file=f"door{door}.bin",
-            target_size=0x1420,
-        )
-    )
 
 switches = [
     [0x94, 0x16C, 0x167],

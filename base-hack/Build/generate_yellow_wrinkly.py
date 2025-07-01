@@ -5,13 +5,22 @@ import shutil
 import zlib
 
 from BuildClasses import ROMPointerFile
-from BuildEnums import TableNames, ExtraTextures
+from BuildEnums import TableNames, ExtraTextures, Kong
 from BuildLib import ROMName, getBonusSkinOffset
 
 hint_file = "assets/Gong/hint_door.bin"
 switch_file = "assets/Gong/sprint_switch.bin"
 door_file = "assets/Gong/factory_door.bin"
 
+image_offsets = {
+    Kong.DK: 0xF0,
+    Kong.Diddy: 0xF2,
+    Kong.Lanky: 0xEF,
+    Kong.Tiny: 0x67,
+    Kong.Chunky: 0xF1,
+}
+NULL_IMAGE_0 = 0x249
+NULL_IMAGE_1 = 0x24F
 
 def generateYellowWrinkly():
     """Pull geo file from ROM and modify."""
@@ -40,7 +49,36 @@ def generateYellowWrinkly():
         wrinkly_door.write(left.to_bytes(2, "big"))
         wrinkly_door.seek(0x13AE)
         wrinkly_door.write(right.to_bytes(2, "big"))
+        base_offset = 0x1324
+        wrinkly_door.seek(base_offset)
+        wrinkly_door.write((3).to_bytes(4, "big"))
+        wrinkly_door.seek(base_offset + 8)
+        wrinkly_door.write(NULL_IMAGE_0.to_bytes(4, "big"))
+        wrinkly_door.seek(base_offset + 0x84)
+        wrinkly_door.write((3).to_bytes(4, "big"))
+        wrinkly_door.seek(base_offset + 0x84 + 8)
+        wrinkly_door.write(NULL_IMAGE_1.to_bytes(4, "big"))
 
+def modifyOtherWrinklyDoors():
+    """Modify the other wrinkly doors to include a null image"""
+    for kong in (Kong.Diddy, Kong.Lanky, Kong.Tiny, Kong.Chunky):
+        file_name = f"assets/Gong/hint_door_{kong.name.lower()}.bin"
+        with open(ROMName, "rb") as fh:
+            wrinkly_f = ROMPointerFile(fh, TableNames.ModelTwoGeometry, image_offsets[kong])
+            fh.seek(wrinkly_f.start)
+            dec = zlib.decompress(fh.read(wrinkly_f.size), 15 + 32)
+            with open(file_name, "wb") as fg:
+                fg.write(dec)
+        with open(file_name, "r+b") as wrinkly_door:
+            base_offset = 0x1324
+            wrinkly_door.seek(base_offset)
+            wrinkly_door.write((3).to_bytes(4, "big"))
+            wrinkly_door.seek(base_offset + 8)
+            wrinkly_door.write(NULL_IMAGE_0.to_bytes(4, "big"))
+            wrinkly_door.seek(base_offset + 0x84)
+            wrinkly_door.write((3).to_bytes(4, "big"))
+            wrinkly_door.seek(base_offset + 0x84 + 8)
+            wrinkly_door.write(NULL_IMAGE_1.to_bytes(4, "big"))
 
 def generateSprintSwitch():
     """Pull geo file from ROM and modify."""

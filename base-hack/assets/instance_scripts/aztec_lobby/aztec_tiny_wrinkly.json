@@ -46,6 +46,17 @@
         },
         {
             "conditions": [
+                {"function": 1, "inverted": false, "parameters": [0, 0, 0]},
+                {"function": 6, "inverted": false, "parameters": [7, 65529, 3]},
+                {"function": 6, "inverted": false, "parameters": [7, 65517, 3]}
+            ],
+            "executions": [
+                {"function": 40, "parameters": [1, 2, 0]},
+                {"function": 40, "parameters": [2, 2, 0]}
+            ]
+        },
+        {
+            "conditions": [
                 {"function": 1, "inverted": false, "parameters": [1, 0, 0]},
                 {"function": 19, "inverted": false, "parameters": [40, 0, 0]},
                 {"function": 6, "inverted": false, "parameters": [18, 0, 0]}

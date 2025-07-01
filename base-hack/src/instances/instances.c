@@ -222,6 +222,10 @@ void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk
 	} else {
 		setPermFlag(flag);
 	}
+	// Display hint tick
+	displayImageOnObject(index, 1, 2, 0);
+	displayImageOnObject(index, 2, 2, 0);
+	//
 	spawnWrinkly(behaviour, index, kong, unk0);
 }
 
@@ -1359,8 +1363,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			if ((!getItemCount_new(REQITEM_KONG, 0, kong)) && (!Rando.disable_wrinkly_kong_requirement)) {
 				behaviour_pointer->next_state = 20;
 			} else {
-				displayImageOnObject(id, 1, 0, 0);
-				displayImageOnObject(id, 2, 0, 0);
+				int world = getWorld(CurrentMap, 0);
+				int image = 0;
+				if (checkFlag(FLAG_WRINKLYVIEWED + (5 * world) + kong, FLAGTYPE_PERMANENT)) {
+					image = 2;
+				}
+				displayImageOnObject(id, 1, image, 0);
+				displayImageOnObject(id, 2, image, 0);
 				behaviour_pointer->next_state = 1;
 			}
 		} else if (behaviour_pointer->current_state == 1) {
@@ -1459,6 +1468,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		}
 	} else if (index == -18) {
 		return (Player->strong_kong_ostand_bitfield & 0x20) || (!Rando.sprint_barrel_requires_sprint);
+	} else if (index == -19) {
+		int world = getWorld(CurrentMap, 0);
+		return checkFlag(FLAG_WRINKLYVIEWED + (5 * world) + param2, FLAGTYPE_PERMANENT);
 	}
 	return 0;
 }
