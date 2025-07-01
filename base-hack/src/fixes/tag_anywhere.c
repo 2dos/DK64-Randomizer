@@ -860,6 +860,13 @@ void handleLedgeLock(void) {
     handleLedgeGrabbing();
 }
 
+void handlePushLock(int action, void* actor, int player_index) {
+    if ((grab_lock_timer >= 0) && (grab_lock_timer < 2)) {
+        return;
+    }
+    setAction(action, actor, player_index);
+}
+
 void handleActionSet(int action, void* actor, int player_index) {
     tag_locked = 1;
     setAction(action, actor, player_index);

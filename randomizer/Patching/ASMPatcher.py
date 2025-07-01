@@ -970,6 +970,12 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8074452C, Overlay.Static, 1, offset_dict, 1)  # Story Skip starts with on
 
     writeHook(ROM_COPY, 0x8072F3DC, Overlay.Static, "blockTreeClimbing", offset_dict)
+
+    # Pushable Crate speeds (just to make it make a bit more sense) - introduce character diversity
+    push_speeds = [100, 60, 40, 40, 130]
+    for index, value in enumerate(push_speeds):
+        writeFloat(ROM_COPY, 0x807534E4 + (4 * index), Overlay.Static, value, offset_dict)
+
     if settings.enable_tag_anywhere:
         # Reduce TA Cooldown
         writeFunction(ROM_COPY, 0x806F5BE8, Overlay.Static, "tagAnywhereAmmo", offset_dict)
@@ -978,6 +984,7 @@ def patchAssembly(ROM_COPY, spoiler):
         # Fix Origin Warp with TA
         writeFunction(ROM_COPY, 0x8072F1E8, Overlay.Static, "handleGrabbingLock", offset_dict)
         writeFunction(ROM_COPY, 0x806CAB68, Overlay.Static, "handleLedgeLock", offset_dict)
+        writeFunction(ROM_COPY, 0x80678F18, Overlay.Static, "handlePushLock", offset_dict)
         writeFunction(ROM_COPY, 0x8072F458, Overlay.Static, "handleActionSet", offset_dict)  # Actor grabbables
         writeFunction(ROM_COPY, 0x8072F46C, Overlay.Static, "handleActionSet", offset_dict)  # Model 2 grabbables
         writeFunction(ROM_COPY, 0x806CFC64, Overlay.Static, "handleActionSet", offset_dict)  # Ledge Grabbing
