@@ -285,7 +285,10 @@ if baseclasses_loaded:
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["mirror_mode"] = self.options.mirror_mode.value
-            settings_dict["hard_shooting"] = self.options.hard_shooting.value
+            if hasattr(self.multiworld, "generation_is_fake") and hasattr(self.multiworld, "re_gen_passthrough") and "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
+                settings_dict["hard_shooting"] = self.multiworld.re_gen_passthrough["Donkey Kong 64"]["HardShooting"]
+            else:
+                settings_dict["hard_shooting"] = self.options.hard_shooting.value
             settings_dict["hard_mode"] = self.options.hard_mode.value
             settings_dict["hard_mode_selected"] = []
             for hard in self.options.hard_mode_selected:
@@ -460,7 +463,7 @@ if baseclasses_loaded:
 
         def get_filler_item_name(self) -> str:
             """Get the filler item name."""
-            return DK64RItems.JunkMelon.name
+            return DK64RItem.ItemList[DK64RItems.JunkMelon].name
 
         def set_rules(self):
             """Set the rules."""
@@ -782,6 +785,7 @@ if baseclasses_loaded:
             logic_type = slot_data["LogicType"]
             glitches_selected = slot_data["GlitchesSelected"].split(", ")
             starting_key_list = slot_data["StartingKeyList"].split(", ")
+            hard_shooting = slot_data.get("HardShooting", False)
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -800,4 +804,5 @@ if baseclasses_loaded:
             relevant_data["LogicType"] = logic_type
             relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != ""]
             relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list if key != ""]
+            relevant_data["HardShooting"] = hard_shooting
             return relevant_data
