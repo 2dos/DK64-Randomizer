@@ -126,7 +126,7 @@ if baseclasses_loaded:
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
     from worlds.AutoWorld import WebWorld, World, AutoLogicRegister
-    from archipelago.Logic import LogicVarHolder
+    from archipelago.Logic import LogicVarHolder, logic_item_name_to_id
     from randomizer.Spoiler import Spoiler
     from randomizer.Settings import Settings
     from randomizer.ShuffleWarps import LinkWarps
@@ -191,16 +191,20 @@ if baseclasses_loaded:
         def init_mixin(self, parent: MultiWorld):
             """Reset the logic holder in all DK64 worlds. This is called on every CollectionState init."""
             dk64_ids = parent.get_game_players(DK64World.game) + parent.get_game_groups(DK64World.game)
+            self.dk64_logic_holder = {}
             for player in dk64_ids:
-                if hasattr(parent.worlds[player], "logic_holder"):
-                    parent.worlds[player].logic_holder.Reset()  # If we don't reset here, we double-collect the starting inventory
+                if hasattr(parent.worlds[player], "spoiler"):
+                    self.dk64_logic_holder[player] = LogicVarHolder(parent.worlds[player].spoiler, player)  # If we don't reset here, we double-collect the starting inventory
 
         def copy_mixin(self, ret) -> CollectionState:
             """Update the current logic holder in all DK64 worlds with the current CollectionState. This is called after the CollectionState init inside the copy() method, so this essentially undoes the above method."""
             dk64_ids = ret.multiworld.get_game_players(DK64World.game) + ret.multiworld.get_game_groups(DK64World.game)
             for player in dk64_ids:
-                if hasattr(ret.multiworld.worlds[player], "logic_holder"):
-                    ret.multiworld.worlds[player].logic_holder.UpdateFromArchipelagoItems(ret)  # If we don't update here, every copy wipes the logic holder's knowledge
+                if player in ret.dk64_logic_holder.keys():
+                    ret.dk64_logic_holder[player].UpdateFromArchipelagoItems(ret)  # If we don't update here, every copy wipes the logic holder's knowledge
+                else:
+                    if hasattr(ret.multiworld.worlds[player], "spoiler"):
+                        print("Hey")
             return ret
 
     class DK64Web(WebWorld):
@@ -382,6 +386,8 @@ if baseclasses_loaded:
             if self.options.goal == Goal.option_dk_rap:
                 settings_dict["win_condition_item"] = WinConditionComplex.dk_rap_items
             settings = Settings(settings_dict, self.random)
+            # Archipelago really wants the number of locations to match the number of items. Keep track of how many locations we've made here
+            settings.location_pool_size = 0
             # Set all the static slot data that UT needs to know. Most of these would have already been decided in normal generation by now, so they are just overwritten here.
             if hasattr(self.multiworld, "generation_is_fake"):
                 if hasattr(self.multiworld, "re_gen_passthrough"):
@@ -427,34 +433,32 @@ if baseclasses_loaded:
                 settings.lanky_freeing_kong = self.random.randint(0, 4)
             settings.tiny_freeing_kong = self.random.randint(0, 4)
             settings.chunky_freeing_kong = self.random.randint(0, 4)
-            spoiler = Spoiler(settings)
+            self.spoiler = Spoiler(settings)
             # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
-            spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
-            spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
-            self.logic_holder = LogicVarHolder(spoiler, self.player)
+            self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
+            self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
 
             for item in self.options.start_inventory:
-                item_obj = DK64RItem.ItemList[self.logic_holder.item_name_to_id.get(item)]
+                item_obj = DK64RItem.ItemList[logic_item_name_to_id.get(item)]
                 if item_obj.type not in [Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing]:
                     # Ensure that the items in the start inventory are only keys, shops, shockwaves, training barrels or climbing items
                     raise ValueError(f"Invalid item type for starting inventory: {item}. Starting inventory can only contain keys or moves.")
 
             # Handle enemy rando
-            spoiler = self.logic_holder.spoiler
-            spoiler.enemy_rando_data = {}
-            spoiler.pkmn_snap_data = []
-            if spoiler.settings.enemy_rando:
-                randomize_enemies_0(spoiler)
+            self.spoiler.enemy_rando_data = {}
+            self.spoiler.pkmn_snap_data = []
+            if self.spoiler.settings.enemy_rando:
+                randomize_enemies_0(self.spoiler)
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
-            if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
+            if self.spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
                 # UT should not reshuffle the level order, but should update the exits
                 if not hasattr(self.multiworld, "generation_is_fake"):
-                    ShuffleExits.ExitShuffle(spoiler, skip_verification=True)
-                spoiler.UpdateExits()
+                    ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
+                self.spoiler.UpdateExits()
 
         def create_regions(self) -> None:
             """Create the regions."""
-            create_regions(self.multiworld, self.player, self.logic_holder)
+            create_regions(self.multiworld, self.player, self.spoiler)
 
         def create_items(self) -> None:
             """Create the items."""
@@ -471,22 +475,22 @@ if baseclasses_loaded:
 
         def generate_basic(self):
             """Generate the basic world."""
-            LinkWarps(self.logic_holder.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
-            connect_regions(self, self.logic_holder)
+            LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
+            connect_regions(self, self.spoiler.settings)
 
             self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("Banana Hoard", ItemClassification.progression_skip_balancing, 0xD64060, self.player))  # TEMP?
 
         def generate_output(self, output_directory: str):
             """Generate the output."""
             try:
-                spoiler = self.logic_holder.spoiler
+                spoiler = self.spoiler
                 spoiler.settings.archipelago = True
                 spoiler.settings.random = self.random
                 spoiler.settings.player_name = self.multiworld.get_player_name(self.player)
                 spoiler.first_move_item = None  # Not relevant with Fast Start always enabled
                 spoiler.pregiven_items = []
                 for item in self.multiworld.precollected_items[self.player]:
-                    dk64_item = self.logic_holder.item_name_to_id[item.name]
+                    dk64_item = logic_item_name_to_id[item.name]
                     # Only moves can be pushed to the pregiven_items list
                     if DK64RItem.ItemList[dk64_item].type in [Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing]:
                         spoiler.pregiven_items.append(dk64_item)
@@ -515,7 +519,7 @@ if baseclasses_loaded:
                         elif "Collectible" in ap_item.name:
                             continue
                         else:
-                            dk64_item = self.logic_holder.item_name_to_id[ap_item.name]
+                            dk64_item = logic_item_name_to_id[ap_item.name]
                             if dk64_item is not None:
                                 if dk64_item in [DK64RItems.IceTrapBubble, DK64RItems.IceTrapReverse, DK64RItems.IceTrapSlow]:
                                     local_trap_count += 1
@@ -676,27 +680,27 @@ if baseclasses_loaded:
                 "ring_link": self.options.ring_link.value,
                 "tag_link": self.options.tag_link.value,
                 "receive_notifications": self.options.receive_notifications.value,
-                "LevelOrder": ", ".join([level.name for order, level in self.logic_holder.settings.level_order.items()]),
-                "StartingKongs": ", ".join([kong.name for kong in self.logic_holder.settings.starting_kong_list]),
-                "ForestTime": self.logic_holder.settings.fungi_time_internal.name,
-                "GalleonWater": self.logic_holder.settings.galleon_water_internal.name,
-                "MedalCBRequirement": self.logic_holder.settings.medal_cb_req,
-                "BLockerValues": self.logic_holder.settings.BLockerEntryCount,
-                "RemovedBarriers": ", ".join([barrier.name for barrier in self.logic_holder.settings.remove_barriers_selected]),
-                "FairyRequirement": self.logic_holder.settings.rareware_gb_fairies,
-                "MermaidPearls": self.logic_holder.settings.mermaid_gb_pearls,
-                "JetpacReq": self.logic_holder.settings.medal_requirement,
-                "BossBananas": ", ".join([str(cost) for cost in self.logic_holder.settings.BossBananas]),
-                "BossMaps": ", ".join(map.name for map in self.logic_holder.settings.boss_maps),
-                "BossKongs": ", ".join(kong.name for kong in self.logic_holder.settings.boss_kongs),
-                "LankyFreeingKong": self.logic_holder.settings.lanky_freeing_kong,
-                "HelmOrder": ", ".join([str(room) for room in self.logic_holder.settings.helm_order]),
-                "OpenLobbies": self.logic_holder.settings.open_lobbies,
-                "KroolInBossPool": self.logic_holder.settings.krool_in_boss_pool,
-                "SwitchSanity": {switch.name: {"kong": data.kong.name, "type": data.switch_type.name} for switch, data in self.logic_holder.settings.switchsanity_data.items()},
-                "LogicType": self.logic_holder.settings.logic_type.name,
-                "GlitchesSelected": ", ".join([glitch.name for glitch in self.logic_holder.settings.glitches_selected]),
-                "StartingKeyList": ", ".join([key.name for key in self.logic_holder.settings.starting_key_list]),
+                "LevelOrder": ", ".join([level.name for order, level in self.spoiler.settings.level_order.items()]),
+                "StartingKongs": ", ".join([kong.name for kong in self.spoiler.settings.starting_kong_list]),
+                "ForestTime": self.spoiler.settings.fungi_time_internal.name,
+                "GalleonWater": self.spoiler.settings.galleon_water_internal.name,
+                "MedalCBRequirement": self.spoiler.settings.medal_cb_req,
+                "BLockerValues": self.spoiler.settings.BLockerEntryCount,
+                "RemovedBarriers": ", ".join([barrier.name for barrier in self.spoiler.settings.remove_barriers_selected]),
+                "FairyRequirement": self.spoiler.settings.rareware_gb_fairies,
+                "MermaidPearls": self.spoiler.settings.mermaid_gb_pearls,
+                "JetpacReq": self.spoiler.settings.medal_requirement,
+                "BossBananas": ", ".join([str(cost) for cost in self.spoiler.settings.BossBananas]),
+                "BossMaps": ", ".join(map.name for map in self.spoiler.settings.boss_maps),
+                "BossKongs": ", ".join(kong.name for kong in self.spoiler.settings.boss_kongs),
+                "LankyFreeingKong": self.spoiler.settings.lanky_freeing_kong,
+                "HelmOrder": ", ".join([str(room) for room in self.spoiler.settings.helm_order]),
+                "OpenLobbies": self.spoiler.settings.open_lobbies,
+                "KroolInBossPool": self.spoiler.settings.krool_in_boss_pool,
+                "SwitchSanity": {switch.name: {"kong": data.kong.name, "type": data.switch_type.name} for switch, data in self.spoiler.settings.switchsanity_data.items()},
+                "LogicType": self.spoiler.settings.logic_type.name,
+                "GlitchesSelected": ", ".join([glitch.name for glitch in self.spoiler.settings.glitches_selected]),
+                "StartingKeyList": ", ".join([key.name for key in self.spoiler.settings.starting_key_list]),
                 "HardShooting": self.options.hard_shooting.value,
             }
 
@@ -705,39 +709,39 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Additional Settings info for player: " + self.player_name)
             spoiler_handle.write("\n")
-            spoiler_handle.write("Level Order: " + ", ".join([level.name for order, level in self.logic_holder.settings.level_order.items()]))
+            spoiler_handle.write("Level Order: " + ", ".join([level.name for order, level in self.spoiler.settings.level_order.items()]))
             spoiler_handle.write("\n")
             human_boss_order = []
-            for i in range(len(self.logic_holder.settings.boss_maps)):
-                human_boss_order.append(boss_map_names[self.logic_holder.settings.boss_maps[i]])
+            for i in range(len(self.spoiler.settings.boss_maps)):
+                human_boss_order.append(boss_map_names[self.spoiler.settings.boss_maps[i]])
             spoiler_handle.write("Boss Order: " + ", ".join(human_boss_order))
             spoiler_handle.write("\n")
-            spoiler_handle.write("Starting Kongs: " + ", ".join([kong.name for kong in self.logic_holder.settings.starting_kong_list]))
+            spoiler_handle.write("Starting Kongs: " + ", ".join([kong.name for kong in self.spoiler.settings.starting_kong_list]))
             spoiler_handle.write("\n")
-            spoiler_handle.write("Helm Order: " + ", ".join([Kongs(room).name for room in self.logic_holder.settings.helm_order]))
+            spoiler_handle.write("Helm Order: " + ", ".join([Kongs(room).name for room in self.spoiler.settings.helm_order]))
             spoiler_handle.write("\n")
-            spoiler_handle.write("K. Rool Order: " + ", ".join([phase.name for phase in self.logic_holder.settings.krool_order]))
+            spoiler_handle.write("K. Rool Order: " + ", ".join([phase.name for phase in self.spoiler.settings.krool_order]))
             spoiler_handle.write("\n")
-            spoiler_handle.write("Forest Time: " + self.logic_holder.settings.fungi_time_internal.name)
+            spoiler_handle.write("Forest Time: " + self.spoiler.settings.fungi_time_internal.name)
             spoiler_handle.write("\n")
-            spoiler_handle.write("Galleon Water: " + self.logic_holder.settings.galleon_water_internal.name)
+            spoiler_handle.write("Galleon Water: " + self.spoiler.settings.galleon_water_internal.name)
             spoiler_handle.write("\n")
-            spoiler_handle.write("CBs for Medal: " + str(self.logic_holder.settings.medal_cb_req))
+            spoiler_handle.write("CBs for Medal: " + str(self.spoiler.settings.medal_cb_req))
             spoiler_handle.write("\n")
-            spoiler_handle.write("B. Locker Requirements: " + ", ".join([str(count) for count in self.logic_holder.settings.BLockerEntryCount]))
+            spoiler_handle.write("B. Locker Requirements: " + ", ".join([str(count) for count in self.spoiler.settings.BLockerEntryCount]))
             spoiler_handle.write("\n")
-            spoiler_handle.write("Removed Barriers: " + ", ".join([barrier.name for barrier in self.logic_holder.settings.remove_barriers_selected]))
+            spoiler_handle.write("Removed Barriers: " + ", ".join([barrier.name for barrier in self.spoiler.settings.remove_barriers_selected]))
             spoiler_handle.write("\n")
-            if self.logic_holder.settings.switchsanity != SwitchsanityLevel.off:
+            if self.spoiler.settings.switchsanity != SwitchsanityLevel.off:
                 spoiler_handle.write("Switchsanity Settings: \n")
-                for switch, data in self.logic_holder.settings.switchsanity_data.items():
-                    if self.logic_holder.settings.switchsanity == SwitchsanityLevel.helm_access:
+                for switch, data in self.spoiler.settings.switchsanity_data.items():
+                    if self.spoiler.settings.switchsanity == SwitchsanityLevel.helm_access:
                         if switch not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
                             continue
                     spoiler_handle.write(f"  - {switch.name}: {data.kong.name} with {data.switch_type.name}\n")
             spoiler_handle.write("Generated Time: " + time.strftime("%d-%m-%Y %H:%M:%S", time.gmtime()) + " GMT")
             spoiler_handle.write("\n")
-            spoiler_handle.write("Randomizer Version: " + self.logic_holder.settings.version)
+            spoiler_handle.write("Randomizer Version: " + self.spoiler.settings.version)
             spoiler_handle.write("\n")
             spoiler_handle.write("APWorld Version: " + ap_version)
             spoiler_handle.write("\n")
@@ -764,7 +768,11 @@ if baseclasses_loaded:
             """Collect the item."""
             change = super().collect(state, item)
             if change:
-                self.logic_holder.UpdateFromArchipelagoItems(state)
+                if self.player in state.dk64_logic_holder.keys():
+                    state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
+                elif hasattr(self, "spoiler"):
+                    state.dk64_logic_holder[self.player] = LogicVarHolder(self.spoiler, self.player)  # If the CollectionState dodged the creation of a logic_holder object, fix it here
+                    state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
             return change
 
         def interpret_slot_data(self, slot_data: dict[str, any]) -> dict[str, any]:
