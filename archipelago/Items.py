@@ -56,26 +56,26 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     # V1 LIMITATION: Assuming GBs are needed for B. Lockers - no Chaos B. Lockers as of yet
     # V1 LIMITATION: Currently assuming Helm is your last and most expensive level
     gb_item = DK64RItem.ItemList[DK64RItems.GoldenBanana]
-    for i in range(min(161, world.logic_holder.settings.BLockerEntryCount[Levels.HideoutHelm])):
+    for i in range(min(161, world.spoiler.settings.BLockerEntryCount[Levels.HideoutHelm])):
         item_table.append(DK64Item(gb_item.name, ItemClassification.progression_skip_balancing, full_item_table[gb_item.name].code, world.player))
-    for i in range(161 - world.logic_holder.settings.BLockerEntryCount[Levels.HideoutHelm]):
+    for i in range(161 - world.spoiler.settings.BLockerEntryCount[Levels.HideoutHelm]):
         item_table.append(DK64Item(gb_item.name, ItemClassification.useful, full_item_table[gb_item.name].code, world.player))
     # Figure out how many Medals are progression
     medal_item = DK64RItem.ItemList[DK64RItems.BananaMedal]
-    for i in range(world.logic_holder.settings.medal_requirement):
+    for i in range(world.spoiler.settings.medal_requirement):
         item_table.append(DK64Item(medal_item.name, ItemClassification.progression_skip_balancing, full_item_table[medal_item.name].code, world.player))
-    for i in range(40 - world.logic_holder.settings.medal_requirement):
+    for i in range(40 - world.spoiler.settings.medal_requirement):
         item_table.append(DK64Item(medal_item.name, ItemClassification.useful, full_item_table[medal_item.name].code, world.player))
     # Figure out how many Fairies are progression
     fairy_item = DK64RItem.ItemList[DK64RItems.BananaFairy]
-    for i in range(world.logic_holder.settings.rareware_gb_fairies):
+    for i in range(world.spoiler.settings.rareware_gb_fairies):
         item_table.append(DK64Item(fairy_item.name, ItemClassification.progression_skip_balancing, full_item_table[fairy_item.name].code, world.player))
-    for i in range(20 - world.logic_holder.settings.rareware_gb_fairies):
+    for i in range(20 - world.spoiler.settings.rareware_gb_fairies):
         item_table.append(DK64Item(fairy_item.name, ItemClassification.useful, full_item_table[fairy_item.name].code, world.player))
 
     # V1 LIMITATION: Tough GBs must be in the pool - this can likely be worked around later
     all_shuffled_items = DK64RItemPoolUtility.GetItemsNeedingToBeAssumed(
-        world.logic_holder.settings, [DK64RTypes.Medal, DK64RTypes.Fairy, DK64RTypes.Banana, DK64RTypes.ToughBanana, DK64RTypes.Bean, DK64RTypes.Pearl], []
+        world.spoiler.settings, [DK64RTypes.Medal, DK64RTypes.Fairy, DK64RTypes.Banana, DK64RTypes.ToughBanana, DK64RTypes.Bean, DK64RTypes.Pearl], []
     )
     # Due to some latent (harmless) bugs in the above method, it isn't precise enough for our purposes and we need to manually add a few things
     # The Bean and Pearls wreak havoc on this method due to a latent bug, so it's easiest to just add them manually
@@ -99,9 +99,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             classification = ItemClassification.progression_skip_balancing
         else:  # double check jetpac, eh?
             classification = ItemClassification.useful
-        if seed_item == DK64RItems.HideoutHelmKey and world.logic_holder.settings.key_8_helm:
+        if seed_item == DK64RItems.HideoutHelmKey and world.spoiler.settings.key_8_helm:
             world.multiworld.get_location("The End of Helm", world.player).place_locked_item(DK64Item("Key 8", ItemClassification.progression, full_item_table[item.name].code, world.player))
-            world.logic_holder.location_pool_size -= 1
+            world.spoiler.settings.location_pool_size -= 1
             continue
         item_table.append(DK64Item(item.name, classification, full_item_table[item.name].code, world.player))
         # print("Adding item: " + seed_item.name + " | " + str(classification))
@@ -115,9 +115,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     break
 
     # Handle starting Kong list here
-    for kong in world.logic_holder.settings.starting_kong_list:
+    for kong in world.spoiler.settings.starting_kong_list:
         kong_item = DK64RItemPoolUtility.ItemFromKong(kong)
-        if kong == world.logic_holder.settings.starting_kong:
+        if kong == world.spoiler.settings.starting_kong:
             world.multiworld.push_precollected(DK64Item(kong_item.name, ItemClassification.progression, full_item_table[DK64RItem.ItemList[kong_item].name].code, world.player))
         for item in item_table:
             if item.name == kong_item.name:
@@ -156,13 +156,13 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 item_table.remove(item)
                 break
 
-    # print("location comparison: " + str(world.logic_holder.location_pool_size - 1))
+    # print("location comparison: " + str(world.spoiler.settings.location_pool_size - 1))
     # print("non-junk items: " + str(len(item_table)))
-    if world.logic_holder.location_pool_size - len(item_table) - 1 < 0:
+    if world.spoiler.settings.location_pool_size - len(item_table) - 1 < 0:
         raise Exception("Too many DK64 items to be placed in too few DK64 locations")
 
     # If there's too many locations and not enough items, add some junk
-    filler_item_count: int = world.logic_holder.location_pool_size - len(item_table) - 1  # The last 1 is for the Banana Hoard
+    filler_item_count: int = world.spoiler.settings.location_pool_size - len(item_table) - 1  # The last 1 is for the Banana Hoard
 
     trap_weights = []
     trap_weights += [DK64RItems.IceTrapBubble] * world.options.bubble_trap_weight.value
@@ -187,7 +187,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         trap_item = DK64RItem.ItemList[trap_enum]
         item_table.append(DK64Item(trap_item.name, ItemClassification.trap, full_item_table[trap_item.name].code, world.player))
 
-    # print("projected available locations: " + str(world.logic_holder.location_pool_size - 1))
+    # print("projected available locations: " + str(world.spoiler.settings.location_pool_size - 1))
     # print("projected items to place: " + str(len(item_table)))
 
     # Example of accessing Option result
