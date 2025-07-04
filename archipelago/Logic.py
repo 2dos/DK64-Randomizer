@@ -238,6 +238,8 @@ class LogicVarHolder:
         self.BananaFairies = 0
         self.BananaMedals = 0
         self.BattleCrowns = 0
+        self.Beans = 0
+        self.Pearls = 0
 
         self.superSlam = False
         self.superDuperSlam = False
