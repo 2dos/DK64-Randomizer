@@ -157,6 +157,7 @@ int cc_enable_getout(void) {
 
 void fakeGetOut(void) {
     mushroomBounce();
+    handleIceTrapButtons();
     if (!CCEffectData) {
         return;
     }
@@ -594,6 +595,7 @@ static const cc_effect_data cc_funcs[] = {
 
 void cc_effect_handler(void) {
     CCEffectData = &effect_data;
+    CCButtons = &cc_enabled_buttons;
     int head = (int)&effect_data;
     for (int i = 0; i < sizeof(cc_effects); i++) {
         unsigned char* eff_data = (unsigned char*)head + i;
@@ -603,7 +605,7 @@ void cc_effect_handler(void) {
             case CC_LOCKED:
                 if (cc_allower_generic()) {
                     if (cc_funcs[i].allower) {
-                        if (!callFunc(cc_funcs[i].allower)) {
+                        if (!callFunc(cc_funcs[i].allower, 0)) {
                             *eff_data = CC_LOCKED;
                             break;
                         }
@@ -621,9 +623,9 @@ void cc_effect_handler(void) {
                 if (cc_funcs[i].active) {
                     if (cc_allower_generic()) {
                         if (cc_funcs[i].allower) {
-                            if (callFunc(cc_funcs[i].allower)) {
+                            if (callFunc(cc_funcs[i].allower, 0)) {
                                 if (cc_funcs[i].enabler) {
-                                    callFunc(cc_funcs[i].enabler);
+                                    callFunc(cc_funcs[i].enabler, 0);
                                 }
                             }
                         }
@@ -642,7 +644,7 @@ void cc_effect_handler(void) {
                     break;
                 }
                 if (cc_funcs[i].enabler) {
-                    if (callFunc(cc_funcs[i].enabler)) {
+                    if (callFunc(cc_funcs[i].enabler, 0)) {
                         *eff_data = CC_ENABLED;
                     }
                     break;
@@ -651,13 +653,13 @@ void cc_effect_handler(void) {
                 break;
             case CC_DISABLING:
                 if (cc_funcs[i].disabler) {
-                    if (!callFunc(cc_funcs[i].disabler)) {
+                    if (!callFunc(cc_funcs[i].disabler, 0)) {
                         return;
                     }
                 }
                 if (cc_allower_generic()) {
                     if (cc_funcs[i].allower) {
-                        if (!callFunc(cc_funcs[i].allower)) {
+                        if (!callFunc(cc_funcs[i].allower, 0)) {
                             *eff_data = CC_LOCKED;
                             break;
                         }

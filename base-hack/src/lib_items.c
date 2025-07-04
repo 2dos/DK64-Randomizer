@@ -8,7 +8,7 @@ Thanks,
 		Ballaam
 */
 
-const short acceptable_items[] = {0x74,0xde,0xe0,0xe1,0xdd,0xdf,0x48,0x28f,0x13c,0x18d,0x90,0x5b,0x1f2,0x59,0x1f3,0x1f5,0x1f6,0x257,0x258,0x259,0x25a,0x25b,0x198,0x1b4,0x25c,0xb7,0x25d,0x264,0x265,0x25f,0x260,0x261,0x262,0x27e,0x289,0x28a,0x28b,0x28c,0x291,0x292,0x293,0x294,0x295,0x296,0x297};
+const short acceptable_items[] = {0x74,0xde,0xe0,0xe1,0xdd,0xdf,0x48,0x28f,0x13c,0x18d,0x90,0x5b,0x1f2,0x59,0x1f3,0x1f5,0x1f6,0x257,0x258,0x259,0x25a,0x25b,0x198,0x1b4,0x25c,0xb7,0x25d,0x264,0x265,0x25f,0x260,0x261,0x262,0x27e,0x289,0x28a,0x28b,0x28c,0x291,0x292,0x293,0x294,0x295,0x296,0x297,0x298,0x299,0x29a,0x29b,0x29c,0x29d,0x29e,0x29f,0x2a0,0x2a1,0x2a4,0x2a5};
 const item_conversion_info item_conversions[] = {
 	{.actor=45, .model_two=116, .scale=0.25f},
 	{.actor=78, .model_two=222, .scale=2.00f},
@@ -58,10 +58,22 @@ const item_conversion_info item_conversions[] = {
 	{.actor=153, .model_two=660, .scale=0.25f},
 	{.actor=154, .model_two=661, .scale=0.25f},
 	{.actor=155, .model_two=662, .scale=0.25f},
-	{.actor=157, .model_two=663, .scale=0.25f}
+	{.actor=157, .model_two=663, .scale=0.25f},
+	{.actor=37, .model_two=664, .scale=0.25f},
+	{.actor=38, .model_two=665, .scale=0.25f},
+	{.actor=39, .model_two=666, .scale=0.25f},
+	{.actor=40, .model_two=667, .scale=0.25f},
+	{.actor=41, .model_two=668, .scale=0.25f},
+	{.actor=42, .model_two=669, .scale=0.25f},
+	{.actor=43, .model_two=670, .scale=0.25f},
+	{.actor=44, .model_two=671, .scale=0.25f},
+	{.actor=45, .model_two=672, .scale=0.25f},
+	{.actor=46, .model_two=673, .scale=0.25f},
+	{.actor=47, .model_two=676, .scale=0.25f},
+	{.actor=48, .model_two=677, .scale=0.25f}
 };
-const unsigned short bounce_objects[] = {45,345,346,72,86,367,348,349,350,351,352,353,354,355,356,357,358,361,362,363,364,365,366,369,370,371,372,375,377,378,379,380,381,151,152,153,154,155,157};
-const unsigned short actor_drops[] = {45,78,75,77,79,76,345,346,72,86,367,348,349,350,351,352,353,347,354,355,356,357,358,361,362,363,140,364,365,366,52,47,121,51,369,370,371,372,375,377,378,379,380,381,151,152,153,154,155,157};
+const unsigned short bounce_objects[] = {45,345,346,72,86,367,348,349,350,351,352,353,354,355,356,357,358,361,362,363,364,365,366,369,370,371,372,375,377,378,379,380,381,151,152,153,154,155,157,37,38,39,40,41,42,43,44,45,46,47,48};
+const unsigned short actor_drops[] = {45,78,75,77,79,76,345,346,72,86,367,348,349,350,351,352,353,347,354,355,356,357,358,361,362,363,140,364,365,366,52,47,121,51,369,370,371,372,375,377,378,379,380,381,151,152,153,154,155,157,37,38,39,40,41,42,43,44,45,46,47,48};
 const item_scale_info item_scales[] = {
 	{.type=116, .scale=0.25f},
 	{.type=222, .scale=2.00f},
@@ -112,7 +124,19 @@ const item_scale_info item_scales[] = {
 	{.type=660, .scale=0.25f},
 	{.type=661, .scale=0.25f},
 	{.type=662, .scale=0.25f},
-	{.type=663, .scale=0.25f}
+	{.type=663, .scale=0.25f},
+	{.type=664, .scale=0.25f},
+	{.type=665, .scale=0.25f},
+	{.type=666, .scale=0.25f},
+	{.type=667, .scale=0.25f},
+	{.type=668, .scale=0.25f},
+	{.type=669, .scale=0.25f},
+	{.type=670, .scale=0.25f},
+	{.type=671, .scale=0.25f},
+	{.type=672, .scale=0.25f},
+	{.type=673, .scale=0.25f},
+	{.type=676, .scale=0.25f},
+	{.type=677, .scale=0.25f}
 };
 collision_info object_collisions[] = {
 	{.type=13, .collectable_type=0, .unk4=0.08f, .unk8=0.95f, .intended_actor=2, .actor_equivalent=0, .hitbox_y_center=0, .hitbox_radius=0, .hitbox_height=0},
@@ -192,7 +216,19 @@ collision_info object_collisions[] = {
 	{.type=660, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=153, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
 	{.type=661, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=154, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
 	{.type=662, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=155, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
-	{.type=663, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=157, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13}
+	{.type=663, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=157, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=664, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=37 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=665, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=38 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=666, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=39 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=667, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=40 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=668, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=41 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=669, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=42 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=670, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=43 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=671, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=44 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=672, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=45 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=673, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=46 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=676, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=47 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=677, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=48 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13}
 };
 drop_item drops[] = {
 	{.source_object=178, .dropped_object=47, .drop_music=47, .drop_count=1},
@@ -396,7 +432,19 @@ actor_behaviour_def actor_defs[] = {
 	{.actor_type = 153, .model = 294, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 154, .model = 297, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 155, .model = 297, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
-	{.actor_type = 157, .model = 297, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}}
+	{.actor_type = 157, .model = 297, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 382, .model = 253, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 383, .model = 253, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 384, .model = 253, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 385, .model = 253, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 386, .model = 294, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 387, .model = 294, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 388, .model = 294, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 389, .model = 294, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 390, .model = 297, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 391, .model = 297, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 392, .model = 297, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 393, .model = 297, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}}
 };
 unsigned char actor_master_types[] = {
 	1,
@@ -768,6 +816,18 @@ unsigned char actor_master_types[] = {
 	2,
 	2,
 	3,
+	2,
+	2,
+	2,
+	2,
+	2,
+	2,
+	2,
+	2,
+	2,
+	2,
+	2,
+	2,
 	2,
 	2,
 	2,
@@ -1164,6 +1224,18 @@ short actor_interactions[] = {
 	8,
 	8,
 	8,
+	8,
+	8,
+	8,
+	8,
+	8,
+	8,
+	8,
+	8,
+	8,
+	8,
+	8,
+	8,
 	8
 };
 health_damage_struct actor_health_damage[] = {
@@ -1542,6 +1614,18 @@ health_damage_struct actor_health_damage[] = {
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 1, .damage_applied = 0},
 	{.init_health = 1, .damage_applied = 0},
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
@@ -1932,6 +2016,18 @@ collision_data_struct actor_collisions[] = {
 	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0}
 };
 void* actor_functions[] = {
@@ -2316,7 +2412,19 @@ void* actor_functions[] = {
 	&GoldenBananaCode,
 	&GoldenBananaCode,
 	&GoldenBananaCode,
-	&GoldenBananaCode
+	&GoldenBananaCode,
+	&FakeGBCode,
+	&FakeGBCode,
+	&FakeGBCode,
+	&FakeGBCode,
+	&FakeGBCode,
+	&FakeGBCode,
+	&FakeGBCode,
+	&FakeGBCode,
+	&FakeGBCode,
+	&FakeGBCode,
+	&FakeGBCode,
+	&FakeGBCode
 };
 short* actor_extra_data_sizes[] = {
 	2155141956,
@@ -2694,6 +2802,18 @@ short* actor_extra_data_sizes[] = {
 	2155142172,
 	2155142752,
 	2155142752,
+	2155142172,
+	2155142172,
+	2155142172,
+	2155142172,
+	2155142172,
+	2155142172,
+	2155142172,
+	2155142172,
+	2155142172,
+	2155142172,
+	2155142172,
+	2155142172,
 	2155142172,
 	2155142172,
 	2155142172,

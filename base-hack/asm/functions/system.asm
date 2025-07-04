@@ -81,3 +81,4 @@
 .definelabel handleGamemodes, 0x80712BD4
 .definelabel handleRaisedGalleonWater, 0x806C9658
 .definelabel performEEPROMAction, 0x8060B8F8
+.definelabel getControllerContainer, 0x8060AC34

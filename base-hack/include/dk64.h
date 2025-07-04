@@ -126,8 +126,9 @@ extern int getObjectID(int index);
 
 extern void updateCamera(void* mtx_i);
 extern void spawnKeyTwinklies(void *actor);
+extern void getControllerContainer(void *cont);
 
-extern int callFunc(void* func);
+extern int callFunc(void* func, int arg);
 
 extern void cutsceneDiddyCode(void);
 extern void cutsceneLankyCode(void);
@@ -844,6 +845,7 @@ extern char LobbiesOpen;
 extern char* PauseSlot3TextPointer;
 extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;
+extern unsigned short *CCButtons;
 extern cc_effects* CCEffectData;
 extern short style128Mtx[0x10];
 extern short style6Mtx[0x10];

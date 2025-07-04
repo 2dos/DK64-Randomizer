@@ -106,11 +106,10 @@ callFunc:
 	addi $sp, $sp, -8
 	sw $ra, 0x4 ($sp)
 	jalr $a0
-	nop
+	or $a0, $a1, $zero
 	lw $ra, 0x4 ($sp)
 	jr $ra
 	addiu $sp, $sp, 8
-
 	
 .align 0x10
 END:

@@ -692,7 +692,7 @@ def loadNewModels():
             fh.write(hoard_om2[:0x124])
             fh.write(getBonusSkinOffset(ExtraTextures.StaticGoldPalette).to_bytes(4, "big"))
             fh.write(hoard_om2[0x128:])
-    for x in range(3):
+    for x in range(7):
         with open("fake_bean_om2.bin", "rb") as fh:
             with open(f"fake_bean_{x}.bin", "wb") as fg:
                 fg.write(fh.read())

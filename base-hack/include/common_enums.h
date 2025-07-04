@@ -1120,6 +1120,10 @@ typedef enum ICE_TRAP_TYPES {
     /* 0x002 */ ICETRAP_REVERSECONTROLS,
     /* 0x003 */ ICETRAP_SLOWED,
     /* 0x004 */ ICETRAP_SUPERBUBBLE, // Ignores a lot of map bans (For CC Only!!!!!!)
+	/* 0x005 */ ICETRAP_DISABLEA,
+	/* 0x006 */ ICETRAP_DISABLEB,
+	/* 0x007 */ ICETRAP_DISABLEZ,
+	/* 0x008 */ ICETRAP_DISABLECU,
 } ICE_TRAP_TYPES;
 
 typedef enum COLLISION_BTF {

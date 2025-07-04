@@ -30,6 +30,9 @@
         "xlocale": "c",
         "algorithm": "c",
         "iterator": "c",
-        "memory": "c"
+        "memory": "c",
+        "compare": "c",
+        "xmemory": "c",
+        "xtr1common": "c"
     }
 }

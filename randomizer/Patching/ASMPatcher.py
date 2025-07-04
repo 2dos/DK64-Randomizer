@@ -971,6 +971,16 @@ def patchAssembly(ROM_COPY, spoiler):
 
     writeHook(ROM_COPY, 0x8072F3DC, Overlay.Static, "blockTreeClimbing", offset_dict)
 
+    writeFunction(ROM_COPY, 0x80618148, Overlay.Static, "getProjectileCount_modified", offset_dict)
+    writeFunction(ROM_COPY, 0x80682890, Overlay.Static, "getProjectileCount_modified", offset_dict)
+    writeFunction(ROM_COPY, 0x806829D4, Overlay.Static, "getProjectileCount_modified", offset_dict)
+    writeFunction(ROM_COPY, 0x806E2344, Overlay.Static, "getProjectileCount_modified", offset_dict)
+    writeFunction(ROM_COPY, 0x806E2D3C, Overlay.Static, "getProjectileCount_modified", offset_dict)
+    # Button Ban Controls
+    writeFunction(ROM_COPY, 0x8071294c, Overlay.Static, "applyButtonBansInternals", offset_dict)
+    writeValue(ROM_COPY, 0x80712982, Overlay.Static, getHiSym("enabled_buttons"), offset_dict)
+    writeValue(ROM_COPY, 0x80712986, Overlay.Static, getLoSym("enabled_buttons"), offset_dict)
+
     # Pushable Crate speeds (just to make it make a bit more sense) - introduce character diversity
     push_speeds = [100, 60, 40, 40, 130]
     for index, value in enumerate(push_speeds):

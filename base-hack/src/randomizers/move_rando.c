@@ -121,7 +121,7 @@ void purchaseMove(shop_paad* paad) {
 	int item_given = -1;
 	int crystals_unlocked = crystalsUnlocked(paad->kong);
 	int p_kong = paad->kong;
-	giveItem(paad->item_type, paad->item_level, paad->kong, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+	giveItem(paad->item_type, paad->item_level, paad->kong, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .apply_ice_trap = 1});
 	vendors vendor = CurrentActorPointer_0->actorType - 0xBD;
 	int world = getWorld(CurrentMap, 0);
 	int shop_flag_dk = getShopFlag(vendor, world, KONG_DK);

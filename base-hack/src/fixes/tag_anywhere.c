@@ -513,18 +513,18 @@ int getTAState(void) {
 
 int hasAccessToKong(int kong) {
     if (getItemCount_new(REQITEM_KONG, 0, kong)) {
-        if (Rando.perma_lose_kongs) {
-            if (!checkFlag(KONG_LOCKED_START + kong, FLAGTYPE_PERMANENT)) {
-                return 1;
-            }
-            if (curseRemoved()) {
-                return 1;
-            }
-            if (hasPermaLossGrace(CurrentMap)) {
-                return 1;
-            }
+        if (!Rando.perma_lose_kongs) {
+            return 1;   
         }
-        return 1;
+        if (!checkFlag(KONG_LOCKED_START + kong, FLAGTYPE_PERMANENT)) {
+            return 1;
+        }
+        if (curseRemoved()) {
+            return 1;
+        }
+        if (hasPermaLossGrace(CurrentMap)) {
+            return 1;
+        }
     }
     return 0;
 }

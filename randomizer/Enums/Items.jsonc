@@ -210,6 +210,18 @@
         "FillerBanana": 182,
         "FillerFairy": 183,
         "FillerCrown": 184,
-        "FillerMedal": 185
+        "FillerMedal": 185,
+        "IceTrapDisableA": 186,
+        "IceTrapDisableABean": 187,
+        "IceTrapDisableAKey": 188,
+        "IceTrapDisableB": 189,
+        "IceTrapDisableBBean": 190,
+        "IceTrapDisableBKey": 191,
+        "IceTrapDisableZ": 192,
+        "IceTrapDisableZBean": 193,
+        "IceTrapDisableZKey": 194,
+        "IceTrapDisableCU": 195,
+        "IceTrapDisableCUBean": 196,
+        "IceTrapDisableCUKey": 197
     }
 }

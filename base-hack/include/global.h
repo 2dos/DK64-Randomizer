@@ -404,6 +404,8 @@ extern void saveItemsToFile(void);
 extern void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index);
 
 extern void loadWrinklyTextWrapper(actorData* actor, int file, int index);
+extern int getProjectileCount_modified(void *player, unsigned short int_bitfield, void* code);
+extern void applyButtonBansInternals(void *cont);
 
 extern void handleCrownTimerInternal(void);
 
@@ -430,6 +432,9 @@ extern void setFlagMove(int flag);
 extern int getShopFlag(vendors vendor, int level, int kong);
 
 extern void giveKongFromFlag(int flag);
+
+extern void resetIceTrapButtons(void);
+extern void handleIceTrapButtons(void);
 
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
@@ -496,3 +501,6 @@ extern const collision_tree_struct fixed_bug_collision[2];
 extern char version_string[0x10];
 extern unsigned short GameStats[STAT_TERMINATOR];
 extern LZREntrance blast_entrances[8];
+extern unsigned short enabled_buttons;
+extern unsigned short cc_enabled_buttons;
+extern unsigned short trap_enabled_buttons;

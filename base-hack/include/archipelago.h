@@ -68,6 +68,10 @@ typedef enum archipelago_items {
     /* 0x03F */ TRANSFER_ITEM_CLIMBING,
     /* 0x040 */ TRANSFER_ITEM_FAKEITEM_SLOW,
     /* 0x041 */ TRANSFER_ITEM_FAKEITEM_REVERSE,
+    /* 0x041 */ TRANSFER_ITEM_FAKEITEM_DISABLEA,
+    /* 0x041 */ TRANSFER_ITEM_FAKEITEM_DISABLEB,
+    /* 0x041 */ TRANSFER_ITEM_FAKEITEM_DISABLEZ,
+    /* 0x041 */ TRANSFER_ITEM_FAKEITEM_DISABLECU,
 } archipelago_items;
 
 typedef struct archipelago_data {

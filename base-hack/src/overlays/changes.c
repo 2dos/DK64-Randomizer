@@ -54,6 +54,7 @@ void parseCutsceneData(void) {
 	resetDisplayedMusic();
 	wipeCounterImageCache();
 	initHelmSetup();
+	resetIceTrapButtons();
 	initQoL_Cutscenes();
 	if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 		updateSkippableCutscenes();

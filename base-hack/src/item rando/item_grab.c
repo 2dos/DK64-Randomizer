@@ -84,9 +84,6 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
                     sprite = &pearl_sprite;
                     break;
                 case REQITEM_ICETRAP:
-                    if (item_kong) {
-                        queueIceTrap(item_kong);
-                    }
                     sprite = &fool_overlay_sprite;
                     break;
                 case REQITEM_JUNK:
@@ -174,18 +171,13 @@ int getFlagIndex_MedalCorrected(int start, int level) {
 void giveItemFromSend(item_packet *send) {
     int item_type = send->item_type;
     int item_kong = send->kong;
-    giveItem(item_type, send->level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1, .give_coins = 1});
+    giveItem(item_type, send->level, item_kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1, .give_coins = 1, .apply_ice_trap = 1});
     switch(item_type) {
         case REQITEM_KONG:
             refreshItemVisibility();
             break;
         case REQITEM_KEY:
             auto_turn_keys();
-            break;
-        case REQITEM_ICETRAP:
-            if (item_kong) {
-                queueIceTrap(item_kong);
-            }
             break;
         case REQITEM_JUNK:
             applyDamageMask(0, 1);
@@ -481,6 +473,30 @@ void getItem(int object_type) {
         case 0x297:
             if (it_type == -1) {
                 it_type = ICETRAP_SLOWED;
+            }
+        case 0x298:
+        case 0x29C:
+        case 0x2A0:
+            if (it_type == -1) {
+                it_type = ICETRAP_DISABLEA;
+            }
+        case 0x299:
+        case 0x29D:
+        case 0x2A1:
+            if (it_type == -1) {
+                it_type = ICETRAP_DISABLEB;
+            }
+        case 0x29A:
+        case 0x29E:
+        case 0x2A4:
+            if (it_type == -1) {
+                it_type = ICETRAP_DISABLEZ;
+            }
+        case 0x29B:
+        case 0x29F:
+        case 0x2A5:
+            if (it_type == -1) {
+                it_type = ICETRAP_DISABLECU;
             }
             forceDance();
             queueIceTrap(it_type);
@@ -837,6 +853,18 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x295:
         case 0x296:
         case 0x297:
+        case 0x298:
+        case 0x299:
+        case 0x29A:
+        case 0x29B:
+        case 0x29C:
+        case 0x29D:
+        case 0x29E:
+        case 0x29F:
+        case 0x2A0:
+        case 0x2A1:
+        case 0x2A4:
+        case 0x2A5:
             giveItem(REQITEM_ICETRAP, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case 0x27E:

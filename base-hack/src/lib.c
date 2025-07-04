@@ -1680,3 +1680,42 @@ int isDynFlag(int obj) {
 	}
 	return 0;
 }
+
+int getProjectileCount_modified(void *player, unsigned short int_bitfield, void* code) {
+	int count = 0;
+	int longest_life = ActorTimer - 50; // Has to be at least 50f old
+	void *actor_oldest = 0;
+	for (int i = 0; i < LoadedActorCount; i++) {
+		actorData *actor = LoadedActorArray[i].actor;
+		if (player == actor->parent) {
+			if (actor->interaction_bitfield == int_bitfield) {
+				if ((!code) || callFunc(code, actor)) {
+					count += 1;
+					int *paad = actor->paad;
+					if (paad) {
+						if (*paad < longest_life) {
+							longest_life = *paad;
+							actor_oldest = actor;
+						}
+					}
+				}
+			}
+		}
+	}
+	if (count == 4) {
+		if (actor_oldest) {
+			deleteActorContainer(actor_oldest);
+			return 3;
+		}
+	}
+	return count;
+}
+
+unsigned short enabled_buttons = 0xFFFF;
+unsigned short cc_enabled_buttons = 0xFFFF;
+unsigned short trap_enabled_buttons = 0xFFFF;
+
+void applyButtonBansInternals(void *cont) {
+	getControllerContainer(cont);
+	enabled_buttons = ButtonsEnabledBitfield & cc_enabled_buttons & trap_enabled_buttons;
+}

@@ -426,25 +426,60 @@ void trapPlayer_New(void) {
 static const float bone_slow_scales[] = {0.4f, 0.38f, 0.3f};
 static const char bone_slow_bones[] = {1, 5, 6};
 
+typedef struct button_ice_struct {
+    /* 0x000 */ unsigned char ice_trap_type;
+    /* 0x001 */ unsigned char ice_trap_timer;
+    /* 0x002 */ unsigned short button_btf;
+    /* 0x004 */ void *button_sprite;
+} button_ice_struct;
+
+static button_ice_struct button_ice_data[] = {
+    {.ice_trap_type = ICETRAP_DISABLEA, .button_btf = CONT_A, .button_sprite = (void*)0x80720CF0},
+    {.ice_trap_type = ICETRAP_DISABLEB, .button_btf = CONT_B, .button_sprite = (void*)0x80720D14},
+    {.ice_trap_type = ICETRAP_DISABLEZ, .button_btf = CONT_G, .button_sprite = (void*)0x80720D38},
+    {.ice_trap_type = ICETRAP_DISABLECU, .button_btf = CONT_E, .button_sprite = (void*)0x80720D80},
+};
+
 void initIceTrap(void) {
     /**
      * @brief Initialize an ice trap
      */
-    if ((ice_trap_queued == ICETRAP_BUBBLE) || (ice_trap_queued == ICETRAP_SUPERBUBBLE)) {
-        trapPlayer_New();
-        Player->trap_bubble_timer = 200;
-    } else if (ice_trap_queued == ICETRAP_REVERSECONTROLS) {
-        Player->strong_kong_ostand_bitfield |= 0x80;
-        Player->trap_bubble_timer = 240;
-    } else if (ice_trap_queued == ICETRAP_SLOWED) {
-        for (int i = 0; i < 3; i++) {
-            unkSpriteRenderFunc(0xF0);
-            unkSpriteRenderFunc_1(1);
-            loadSpriteFunction(0x8071F758);
-            attachSpriteToBone((void*)0x80720E2C, bone_slow_scales[i], Player, bone_slow_bones[i], 2);
-        }
-        Player->strong_kong_ostand_bitfield |= 0x08000000;
-        Player->trap_bubble_timer = 240;
+    switch (ice_trap_queued) {
+        case ICETRAP_BUBBLE:
+        case ICETRAP_SUPERBUBBLE:
+            trapPlayer_New();
+            Player->trap_bubble_timer = 200;
+            break;
+        case ICETRAP_REVERSECONTROLS:
+            Player->strong_kong_ostand_bitfield |= 0x80;
+            Player->trap_bubble_timer = 240;
+            break;
+        case ICETRAP_SLOWED:
+            for (int i = 0; i < 3; i++) {
+                unkSpriteRenderFunc(240);
+                unkSpriteRenderFunc_1(1);
+                loadSpriteFunction(0x8071F758);
+                attachSpriteToBone((void*)0x80720E2C, bone_slow_scales[i], Player, bone_slow_bones[i], 2);
+            }
+            Player->strong_kong_ostand_bitfield |= 0x08000000;
+            Player->trap_bubble_timer = 240;
+            break;
+        case ICETRAP_DISABLEA:
+        case ICETRAP_DISABLEB:
+        case ICETRAP_DISABLEZ:
+        case ICETRAP_DISABLECU:
+            {
+                button_ice_struct *data = &button_ice_data[ice_trap_queued - ICETRAP_DISABLEA];
+                data->ice_trap_timer = 240;
+                trap_enabled_buttons &= ~data->button_btf;
+                for (int i = 0; i < 3; i++) {
+                    unkSpriteRenderFunc(240 / 8);
+                    unkSpriteRenderFunc_1(1);
+                    loadSpriteFunction(0x8071F758);
+                    attachSpriteToBone(data->button_sprite, bone_slow_scales[i], Player, bone_slow_bones[i], 2);
+                }
+            }
+            break;
     }
     playSFX(0x2D4); // K Rool Laugh
     GameStats[STAT_TRAPPED]++;
@@ -452,6 +487,25 @@ void initIceTrap(void) {
         customDamageCode();
     }
     ice_trap_queued = ICETRAP_OFF;
+}
+
+void resetIceTrapButtons(void) {
+    for (int i = 0; i < sizeof(button_ice_data)/sizeof(button_ice_struct); i++) {
+        button_ice_data[i].ice_trap_timer;
+    }
+    trap_enabled_buttons = 0xFFFF;
+}
+
+void handleIceTrapButtons(void) {
+    for (int i = 0; i < sizeof(button_ice_data)/sizeof(button_ice_struct); i++) {
+        button_ice_struct *data = &button_ice_data[i];
+        if (data->ice_trap_timer > 0) {
+            data->ice_trap_timer--;
+            if (data->ice_trap_timer == 0) {
+                trap_enabled_buttons |= data->button_btf;
+            }
+        }
+    }
 }
 
 void queueIceTrap(ICE_TRAP_TYPES trap_type) {

@@ -86,6 +86,9 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
         case REQITEM_ICETRAP:
             current_item_data.ice_traps++;
             hh_item = HHITEM_FAKEITEM;
+            if (config.apply_ice_trap && kong) {
+                queueIceTrap(kong);
+            }
             break;
         case REQITEM_JUNK:
             current_item_data.junk_items++;
@@ -166,7 +169,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
 }
 
 void giveItemFromPacket(item_packet *packet) {
-    giveItem(packet->item_type, packet->level, packet->kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1, .give_coins = 1});
+    giveItem(packet->item_type, packet->level, packet->kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1, .give_coins = 1, .apply_ice_trap = 1});
 }
 
 int getItemCount_new(requirement_item item, int level, int kong) {

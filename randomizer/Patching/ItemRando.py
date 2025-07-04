@@ -197,6 +197,18 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
         idx_lst = [Items.IceTrapSlow, Items.IceTrapSlowBean, Items.IceTrapSlowKey]
         if item in idx_lst:
             return ItemPatchingInfo(13, 0, 3)
+        idx_lst = [Items.IceTrapDisableA, Items.IceTrapDisableABean, Items.IceTrapDisableAKey]
+        if item in idx_lst:
+            return ItemPatchingInfo(13, 0, 5)
+        idx_lst = [Items.IceTrapDisableB, Items.IceTrapDisableBBean, Items.IceTrapDisableBKey]
+        if item in idx_lst:
+            return ItemPatchingInfo(13, 0, 6)
+        idx_lst = [Items.IceTrapDisableZ, Items.IceTrapDisableZBean, Items.IceTrapDisableZKey]
+        if item in idx_lst:
+            return ItemPatchingInfo(13, 0, 7)
+        idx_lst = [Items.IceTrapDisableCU, Items.IceTrapDisableCUBean, Items.IceTrapDisableCUKey]
+        if item in idx_lst:
+            return ItemPatchingInfo(13, 0, 8)
         raise Exception("Ice Trap Type provided, but invalid Ice Trap item provided resulting in search mismatch")
     elif item_type == Types.Blueprint:
         bp_index = getItemPatchingFromList(ItemPool.Blueprints(), item, "BP")

@@ -42,6 +42,10 @@ void saveAPCounter(void) {
     }
 }
 
+void sendTrap(ICE_TRAP_TYPES trap_type) {
+    giveItem(REQITEM_ICETRAP, 0, trap_type, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .apply_ice_trap = 1});
+}
+
 void handleSentItem(void) {
     archipelago_items FedItem = ap_info.fed_item;
     switch (FedItem) {
@@ -75,16 +79,19 @@ void handleSentItem(void) {
             giveItem(REQITEM_RAINBOWCOIN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .give_coins = 1});
             break;
         case TRANSFER_ITEM_FAKEITEM:
-            queueIceTrap(ICETRAP_BUBBLE);
-            giveItem(REQITEM_ICETRAP, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            sendTrap(ICETRAP_BUBBLE);
             break;
         case TRANSFER_ITEM_FAKEITEM_SLOW:
-            queueIceTrap(ICETRAP_SLOWED);
-            giveItem(REQITEM_ICETRAP, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            sendTrap(ICETRAP_SLOWED);
             break;
         case TRANSFER_ITEM_FAKEITEM_REVERSE:
-            queueIceTrap(ICETRAP_REVERSECONTROLS);
-            giveItem(REQITEM_ICETRAP, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            sendTrap(ICETRAP_REVERSECONTROLS);
+            break;
+        case TRANSFER_ITEM_FAKEITEM_DISABLEA:
+        case TRANSFER_ITEM_FAKEITEM_DISABLEB:
+        case TRANSFER_ITEM_FAKEITEM_DISABLEZ:
+        case TRANSFER_ITEM_FAKEITEM_DISABLECU:
+            sendTrap((FedItem - TRANSFER_ITEM_FAKEITEM_DISABLEA) + ICETRAP_DISABLEA);
             break;
         case TRANSFER_ITEM_JUNKITEM:
             applyDamageMask(0, 1);
