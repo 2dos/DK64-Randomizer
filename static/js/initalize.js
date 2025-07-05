@@ -1867,7 +1867,7 @@ async function initialize() {
   await toggleDelayedSpoilerLogInput();
   await check_seed_info_tab();
   // check on any button with the nav-item class is clicked
-  const nav_items = document.getElementsByClassName("nav-item");
+  const nav_items = document.getElementById("rando_tabs").getElementsByTagName("a");
   for (let item of nav_items) {
     item.addEventListener("click", async () => {
       await check_seed_info_tab();

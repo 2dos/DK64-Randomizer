@@ -56,6 +56,11 @@ void parseCutsceneData(void) {
 	initHelmSetup();
 	resetIceTrapButtons();
 	initQoL_Cutscenes();
+	if (CurrentMap == MAP_CASTLEBALLROOM) {
+		*(unsigned char*)(0x80748DAC) = 1;
+	} else if (Rando.quality_of_life.reduce_lag) {
+		*(unsigned char*)(0x80748DAC) = 0; // Disable reflections
+	}
 	if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 		updateSkippableCutscenes();
 	}
