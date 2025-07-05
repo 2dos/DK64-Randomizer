@@ -99,13 +99,52 @@ def RandomizePrices(spoiler, weight):
     prices = {}
     parameters = GetPriceWeights(weight)
     shopLocations = [location_id for location_id, location in spoiler.LocationList.items() if location.type == Types.Shop]
+    # Generate a list of random prices
+    selectionCount = len(shopLocations)
+    for item in ProgressiveMoves.keys():
+        selectionCount += ProgressiveMoves[item]
+    valid_prices = [GenerateRandomPrice(spoiler.settings.random, weight, parameters[0], parameters[1], parameters[2]) for _ in range(selectionCount)]
+    spoiler.settings.random.shuffle(valid_prices)
+    prog_move_items = list(ProgressiveMoves.keys())
+    # Generate list for assigning prices
+    price_assignment = []
     for location in shopLocations:
-        prices[location] = GenerateRandomPrice(spoiler.settings.random, weight, parameters[0], parameters[1], parameters[2])
-    # Progressive items get their own price pool
+        price_assignment.append({
+            "is_shop": True,
+            "index": location,
+        })
     for item in ProgressiveMoves.keys():
         prices[item] = []
         for i in range(ProgressiveMoves[item]):
-            prices[item].append(GenerateRandomPrice(spoiler.settings.random, weight, parameters[0], parameters[1], parameters[2]))
+            price_assignment.append({
+                "is_shop": False,
+                "index": item,
+            })
+    # Shuffle shop locations & prog moves around so that progression isn't consistent with certain moves/locations
+    if spoiler.settings.shops_dont_cost:
+        spoiler.settings.random.shuffle(price_assignment)
+    # Assign Prices
+    total_cost = [0] * 5
+    for index, item in enumerate(price_assignment):
+        selected_item = item["index"]
+        written_price = valid_prices[index]
+        if spoiler.settings.shops_dont_cost:
+            kong_index = Kongs.any
+            if item["is_shop"]:
+                kong_index = spoiler.LocationList[selected_item].kong
+            if kong_index == Kongs.any:
+                current_avg_cost = 0
+                for cost_index, cost in enumerate(total_cost):
+                    current_avg_cost = int(current_avg_cost + (cost / 5))
+                    total_cost[cost_index] += written_price
+                written_price += current_avg_cost
+            else:
+                total_cost[kong_index] += written_price
+                written_price = total_cost[kong_index]
+        if item["is_shop"]:
+            prices[selected_item] = written_price
+        else:
+            prices[selected_item].append(written_price)
     return prices
 
 

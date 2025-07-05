@@ -255,6 +255,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.enemy_kill_crown_timer, 0x35),  # Enemy crown timer reduction
         BooleanProperties(spoiler.settings.race_coin_rando, 0x94),  # Race Coin Location Rando
         BooleanProperties(spoiler.settings.disable_racing_patches, 0x91),  # Disable Racing Patches
+        BooleanProperties(spoiler.settings.shops_dont_cost, 0x95),  # Shops don't cost
     ]
 
     for prop in boolean_props:

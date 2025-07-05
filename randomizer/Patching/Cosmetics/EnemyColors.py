@@ -743,6 +743,13 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
             hueShiftImageContainer(25, 0x133A + x, 1, 1372, TextureFormat.RGBA5551, getRandomHueShift(), ROM_COPY)
         # Trap Bubble
         hueShiftImageContainer(25, 0x134C, 32, 32, TextureFormat.RGBA5551, getRandomHueShift(), ROM_COPY)
+        # Slam Switch Borders
+        green_switch_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0xBAD, 64, 16, TextureFormat.RGBA5551, green_switch_shift, ROM_COPY)
+        hueShiftImageContainer(25, 0xBAE, 64, 16, TextureFormat.RGBA5551, green_switch_shift, ROM_COPY)
+        blue_switch_shift = getRandomHueShift()
+        hueShiftImageContainer(25, 0xD01, 64, 16, TextureFormat.RGBA5551, blue_switch_shift, ROM_COPY)
+        hueShiftImageContainer(25, 0xD02, 64, 16, TextureFormat.RGBA5551, blue_switch_shift, ROM_COPY)
 
     for enemy in enemy_changes:
         file_data = bytearray(getRawFile(ROM_COPY, 5, enemy, True))

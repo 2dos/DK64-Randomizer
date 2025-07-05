@@ -652,7 +652,12 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
     medalThreshold = settings.medal_requirement
     fairyThreshold = settings.rareware_gb_fairies
     pearlThreshold = settings.mermaid_gb_pearls
+    already_run_through_a_permutation = False
     while 1:
+        if spoiler.settings.shops_dont_cost:
+            if already_run_through_a_permutation:
+                return True
+            already_run_through_a_permutation = True
         spoiler.Reset()
         reachable = GetAccessibleLocations(spoiler, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)
         # Subtract the price of the chosen location from maxCoinsNeeded
