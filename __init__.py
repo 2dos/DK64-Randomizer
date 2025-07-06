@@ -111,10 +111,12 @@ if baseclasses_loaded:
     else:
         raise Exception(f"Unsupported platform: {platform_type}")
 
-    sys.path.append("worlds/dk64/")
-    sys.path.append("worlds/dk64/archipelago/")
-    sys.path.append("custom_worlds/dk64.apworld/dk64/")
-    sys.path.append("custom_worlds/dk64.apworld/dk64/archipelago/")
+    cwd = os.path.dirname(__file__)
+    sys.path.append(cwd)
+    sys.path.append(cwd + "/" + "worlds/dk64/")
+    sys.path.append(cwd + "/" + "worlds/dk64/archipelago/")
+    sys.path.append(cwd + "/" + "custom_worlds/dk64.apworld/dk64/")
+    sys.path.append(cwd + "/" + "custom_worlds/dk64.apworld/dk64/archipelago/")
 
     import randomizer.ItemPool as DK64RItemPool
 
