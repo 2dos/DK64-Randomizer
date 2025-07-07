@@ -219,7 +219,6 @@ class PJ64Client:
         If the socket is not already created, it initializes a new socket with
         AF_INET and SOCK_STREAM parameters and sets a timeout of 0.1 seconds.
         Raises:
-            PJ64Exception: If the connection is refused, reset, or aborted.
             OSError: If the socket is already connected.
         """
         if self.connected_message:
@@ -234,7 +233,6 @@ class PJ64Client:
             self.socket = None
             self.connected_message = False
             print(e)
-            #raise PJ64Exception("Connection refused or reset")
         except OSError:
             # We're already connected, just move on
             pass
