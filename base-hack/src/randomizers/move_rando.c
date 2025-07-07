@@ -437,6 +437,9 @@ void getNextMoveText(void) {
 				case REQITEM_KONG:
 					top_item = ITEMTEXT_KONG_DK + p_kong;
 					break;
+				case REQITEM_RAINBOWCOIN:
+					top_item = ITEMTEXT_RAINBOWCOIN;
+					break;
 			}
 			if (override_string) {
 				paad->upper_text = p_string;

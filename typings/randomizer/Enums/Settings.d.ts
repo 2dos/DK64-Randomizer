@@ -246,6 +246,7 @@ export enum HardModeSelected {
     donk_in_the_dark_world = 9,
     donk_in_the_sky = 10,
     angry_caves = 11,
+    hard_balloons = 12,
 }
 
 export enum IceTrapFrequency {

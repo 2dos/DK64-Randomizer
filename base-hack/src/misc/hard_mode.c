@@ -534,3 +534,7 @@ void hitlessDeath(void) {
     SaveToFile(0xD, 0, 0, FileIndex, 0);
     performEEPROMAction(1);
 }
+
+void setHardPathSpeed(int index, int speed) {
+    unkObjFunction6(index, speed << 2);
+}
