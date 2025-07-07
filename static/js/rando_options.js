@@ -3,12 +3,18 @@ function toggle_logic_type(event) {
 
   // Get the glitch customization modal element
   let glitchCustomization = document.getElementById("glitches_modal");
+  let glitchList = document.getElementById("glitches_multiselector");
 
   // Check the value of the logic_type element and enable or disable the glitches modal
-  if (document.getElementById("logic_type").value === "glitch") {
+  if (["advanced_glitchless", "glitch"].includes(document.getElementById("logic_type").value)) {
     glitchCustomization.removeAttribute("disabled");
   } else {
     glitchCustomization.setAttribute("disabled", "disabled");
+  }
+  if (document.getElementById("logic_type").value === "glitch") {
+    glitchList.removeAttribute("hidden");
+  } else {
+    glitchList.setAttribute("hidden", "hidden");
   }
 }
 

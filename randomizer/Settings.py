@@ -518,7 +518,7 @@ class Settings:
         self.chaos_blockers = False  # Deprecated
 
         # hard_shooting: bool
-        self.hard_shooting = False
+        self.hard_shooting = False  # Deprecated
 
         # hard_mode: bool
         # self.hard_mode = None  # Deprecated

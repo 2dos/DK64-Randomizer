@@ -1,0 +1,73 @@
+{% from 'dropdown_multiselector.html' import dropdown_multiselector %}
+<div class="item-select">
+    <p class="select-title">Logic</p>
+    <div class="customize-select">
+        <select name="logic_type"
+                id="logic_type"
+                display_name="Logic"
+                class="form-select"
+                aria-label="Logic"
+                data-toggle="tooltip"
+                title="Modifies the considerations logic makes when generating your seed:&#10;- Glitchless Logic: Seed is beatable without performing any glitches or complex movement tech.&#10;- Glitch Logic: Seed is beatable, but requires usage of glitches or movement tech to complete. To modify which glitches will be considered, use the cog icon to the right.&#10;- No logic: The seed does not verify that the seed is beatable at all, nor makes any logical considerations during the creation of the seed. This has a high potential to generate unbeatable seeds.">
+            <option id="glitchless" selected value="glitchless">
+                Glitchless Logic
+            </option>
+            <option id="advanced_glitchless" selected value="advanced_glitchless">
+                Advanced Glitchless Logic
+            </option>
+            <option id="glitch" value="glitch">
+                Glitch Logic
+            </option>
+            <option
+                id="minimal"
+                value="minimal"
+                title="
+                    No Logic, but with some minor protections to remove a couple situations that instantly make a seed unbeatable:&#10;- Key 5 can't be in Level 7, aside from in LZR.&#10;- Kongs can't be in shops locked by themselves.&#10;- DK can't be in a blast course or Arcade Round 2.">
+                Minimal Logic
+            </option>
+            <option id="nologic" value="nologic">
+                No Logic
+            </option>
+        </select>
+        <div style="padding: 5px;">
+            <input class="customize"
+                type="button"
+                href="#"
+                id="glitches_modal"
+                data-bs-toggle="modal"
+                data-bs-target="#glitches_Modal"
+                data-toggle="tooltip"
+                title="This will open a popup that will let you customize what tricks are considered by logic with glitch logic.&#10;This defaults to All options."/>
+        </div>
+    </div>
+</div>
+<div class="modal fade"
+     id="glitches_Modal"
+     tabindex="-1"
+     aria-labelledby="glitches_ModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title title" id="glitches_ModalLabel">TRICKS & GLITCHES</h3>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex">
+                    <div style="width: 50%" class="mx-auto">
+                        {{ dropdown_multiselector(tricks, "tricks", "Tricks", "This will open a popup that will let you customize what tricks are enabled.", 2) }}
+                    </div>
+                    <div style="width: 50%" class="mx-auto" id="glitches_multiselector">
+                        {{ dropdown_multiselector(glitches, "glitches", "Glitches", "This will open a popup that will let you customize what glitches are enabled.", 2) }}
+                    </div>                   
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

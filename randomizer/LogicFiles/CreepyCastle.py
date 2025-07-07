@@ -120,7 +120,7 @@ LogicRegions = {
     ]),
 
     Regions.CastleTreePastPunch: Region("Castle Tree Past Punch", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleChunkyTree, lambda l: (((l.scope or l.settings.hard_shooting) and l.pineapple and l.ischunky) or l.CanPhase()) and (l.ischunky or l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.CastleChunkyTree, lambda l: (((l.scope or l.hard_shooting) and l.pineapple and l.ischunky) or l.CanPhase()) and (l.ischunky or l.settings.free_trade_items), MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.CastleTree, lambda _: True),
     ]),
@@ -172,7 +172,7 @@ LogicRegions = {
     ),
 
     Regions.Tower: Region("Tower", HintRegion.CastleRooms, Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleLankyTower, lambda l: (l.scope or (l.settings.hard_shooting and l.homing)) and l.balloon and l.grape and l.islanky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.CastleLankyTower, lambda l: (l.scope or (l.hard_shooting and l.homing)) and l.balloon and l.grape and l.islanky, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda _: True, Transitions.CastleTowerToMain),
     ]),
@@ -187,7 +187,7 @@ LogicRegions = {
     ]),
 
     Regions.TrashCan: Region("Trash Can", HintRegion.CastleSurroundings, Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleTinyTrashCan, lambda l: (l.istiny and (l.saxophone or (l.feather and (l.homing or l.settings.hard_shooting)))) or (l.settings.free_trade_items and (l.HasInstrument(Kongs.any) or (l.HasGun(Kongs.any) and (l.homing or l.settings.hard_shooting))))),
+        LocationLogic(Locations.CastleTinyTrashCan, lambda l: (l.istiny and (l.saxophone or (l.feather and (l.homing or l.hard_shooting)))) or (l.settings.free_trade_items and (l.HasInstrument(Kongs.any) or (l.HasGun(Kongs.any) and (l.homing or l.hard_shooting))))),
     ], [], [
         TransitionFront(Regions.CreepyCastleMain, lambda _: True, Transitions.CastleTrashToMain),
     ]),

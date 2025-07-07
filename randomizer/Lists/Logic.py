@@ -52,3 +52,12 @@ GlitchLogicItems = [
 for item in GlitchLogicItems:
     if item.name != "No Group":
         GlitchSelector.append({"name": item.name, "value": item.shorthand, "tooltip": item.tooltip})
+
+TrickSelector = []
+TrickItems = [
+    GlitchLogicItem("Advanced Platforming", "Advanced platforming techniques that aren't considered beginner friendly will be considered as part of logic."),
+    GlitchLogicItem("Hard Shooting", "Doing gun shooting tasks without items that make the task easy will be considered in logic."),
+]
+for item in TrickItems:
+    if item.name != "No Group":
+        TrickSelector.append({"name": item.name, "value": item.shorthand, "tooltip": item.tooltip})

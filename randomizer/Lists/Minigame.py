@@ -464,7 +464,7 @@ MinigameRequirements = {
         map_id=Maps.HelmBarrelChunkyShooting,
         can_repeat=True,
         is_hard=True,
-        logic=lambda l: (l.scope or l.homing or l.settings.hard_shooting)
+        logic=lambda l: (l.scope or l.homing or l.hard_shooting)
         and ((l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.islanky and l.grape) or (l.istiny and l.feather) or (l.ischunky and l.pineapple)),
     ),
     Minigames.RambiArena: Minigame(

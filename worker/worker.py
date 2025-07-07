@@ -27,7 +27,7 @@ from randomizer.Enums.Types import ItemRandoSelector, KeySelector, ItemRandoFill
 from randomizer.Lists.EnemyTypes import EnemySelector
 from randomizer.Lists.HardMode import HardBossSelector, HardSelector
 from randomizer.Lists.Item import CustomStartingMoveSelector, HHItemSelector
-from randomizer.Lists.Logic import GlitchSelector
+from randomizer.Lists.Logic import GlitchSelector, TrickSelector
 from randomizer.Lists.Minigame import MinigameSelector
 from randomizer.Lists.Multiselectors import FasterCheckSelector, QoLSelector, RemovedBarrierSelector, CBRandoSelector, RandomColorSelector
 from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableCustomLocations, PlannableItems, PlannableKroolPhases, PlannableMinigames, PlannableSpawns, PlannableSwitches
@@ -113,6 +113,7 @@ def get_selector_info():
         "item_filler": ItemRandoFillerSelector,
         "keys": KeySelector,
         "glitches": GlitchSelector,
+        "tricks": TrickSelector,
         "helm_hurry_items": HHItemSelector,
         "vanilla_warps": VanillaBananaportSelector,
         "plando_custom_locations": PlannableCustomLocations,

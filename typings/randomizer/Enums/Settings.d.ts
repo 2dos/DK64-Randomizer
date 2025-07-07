@@ -187,6 +187,11 @@ export enum GlitchesSelected {
     phasefall = 15,
 }
 
+export enum TricksSelected {
+    advanced_platforming = 1,
+    hard_shooting = 2,
+}
+
 export enum HelmDoorItem {
     vanilla = 0,
     opened = 1,
@@ -867,6 +872,7 @@ export enum SettingsStringEnum {
     pearl_mermaid_behavior = 258,
     fairy_queen_behavior = 259,
     cb_medal_behavior = 260,
+    tricks_selected = 261,
 }
 
 export enum SettingsStringDataType {
@@ -907,6 +913,7 @@ export const SettingsMap = {
     'galleon_water': GalleonWaterSetting,
     'gb_colors': CharacterColors,
     'glitches_selected': GlitchesSelected,
+    'tricks_selected': TricksSelected,
     'hard_bosses_selected': HardBossesSelected,
     'hard_mode_selected': HardModeSelected,
     'helm_barrels': MinigameBarrels,
@@ -1060,6 +1067,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.free_trade_setting: FreeTradeSetting,
     SettingsStringEnum.generate_spoilerlog: SettingsStringDataType.bool,
     SettingsStringEnum.glitches_selected: SettingsStringDataType.list,
+    SettingsStringEnum.tricks_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_mode: SettingsStringDataType.bool,
     SettingsStringEnum.hard_mode_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_blockers: SettingsStringDataType.bool,
@@ -1279,6 +1287,7 @@ export const SettingsStringListTypeMap = {
     SettingsStringEnum.enemies_selected: Enemies,
     SettingsStringEnum.filler_items_selected: ItemRandoFiller,
     SettingsStringEnum.glitches_selected: GlitchesSelected,
+    SettingsStringEnum.tricks_selected: TricksSelected,
     SettingsStringEnum.item_rando_list_selected: ItemRandoListSelected,
     SettingsStringEnum.minigames_list_selected: MinigamesListSelected,
     SettingsStringEnum.cb_rando_list_selected: Levels,

@@ -165,6 +165,10 @@ class GlitchesSelected(IntEnum):
     moontail = 14
     phasefall = 15
 
+class TricksSelected(IntEnum):
+    advanced_platforming = 1
+    hard_shooting = 2
+
 class HelmDoorItem(IntEnum):
     vanilla = 0
     opened = 1
@@ -807,6 +811,7 @@ class SettingsStringEnum(IntEnum):
     pearl_mermaid_behavior = 258
     fairy_queen_behavior = 259
     cb_medal_behavior = 260
+    tricks_selected = 261
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -845,6 +850,7 @@ SettingsMap: dict = {
     'galleon_water': GalleonWaterSetting,
     'gb_colors': CharacterColors,
     'glitches_selected': GlitchesSelected,
+    'tricks_selected': TricksSelected,
     'hard_bosses_selected': HardBossesSelected,
     'hard_mode_selected': HardModeSelected,
     'helm_barrels': MinigameBarrels,
@@ -998,6 +1004,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.free_trade_setting: FreeTradeSetting,
     SettingsStringEnum.generate_spoilerlog: SettingsStringDataType.bool,
     SettingsStringEnum.glitches_selected: SettingsStringDataType.list,
+    SettingsStringEnum.tricks_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_mode: SettingsStringDataType.bool,
     SettingsStringEnum.hard_mode_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_blockers: SettingsStringDataType.bool,
@@ -1217,6 +1224,7 @@ SettingsStringListTypeMap: dict = {
     SettingsStringEnum.enemies_selected: Enemies,
     SettingsStringEnum.filler_items_selected: ItemRandoFiller,
     SettingsStringEnum.glitches_selected: GlitchesSelected,
+    SettingsStringEnum.tricks_selected: TricksSelected,
     SettingsStringEnum.item_rando_list_selected: ItemRandoListSelected,
     SettingsStringEnum.minigames_list_selected: MinigamesListSelected,
     SettingsStringEnum.cb_rando_list_selected: Levels,

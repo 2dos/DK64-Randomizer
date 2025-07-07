@@ -50,6 +50,7 @@ from randomizer.Enums.Settings import (
     ShockwaveStatus,
     ShuffleLoadingZones,
     TrainingBarrels,
+    TricksSelected,
     HelmSetting,
     KongModels,
     SlamRequirement,
@@ -68,9 +69,13 @@ from archipelago.Items import DK64Item
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
 
 
-def IsGlitchEnabled(settings, glitch_enum):
+def IsGlitchEnabled(settings, glitch_enum: GlitchesSelected):
     """Check if glitch is enabled in the settings."""
-    return len(settings.glitches_selected) == 0 or glitch_enum in settings.glitches_selected
+    return glitch_enum in settings.glitches_selected
+
+def IsTrickEnabled(settings, trick_enum: TricksSelected):
+    """Check if trick is enabled in the settings."""
+    return trick_enum in settings.tricks_selected
 
 
 class LogicVarHolder:
@@ -106,6 +111,10 @@ class LogicVarHolder:
         self.location_pool_size = 0
 
         self.startkong = self.settings.starting_kong
+        # AGL
+        enable_agl = self.settings.logic_type in (LogicType.advanced_glitchless, LogicType.glitch)
+        self.advanced_platforming = enable_agl and IsTrickEnabled(settings, TricksSelected.advanced_platforming)
+        self.hard_shooting = enable_agl and IsTrickEnabled(settings, TricksSelected.hard_shooting)
         # Glitch Logic
         enable_glitch_logic = self.settings.logic_type == LogicType.glitch
         self.phasewalk = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.phase_walking)
@@ -117,7 +126,6 @@ class LogicVarHolder:
         self.dk_blocker_skip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.b_locker_skips)
         self.troff_skip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.troff_n_scoff_skips)
         self.spawn_snags = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.spawn_snags)
-        self.advanced_platforming = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.advanced_platforming)
         self.tbs = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.tag_barrel_storage) and not self.settings.disable_tag_barrels
         self.swim_through_shores = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.swim_through_shores)
         self.boulder_clip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.boulder_clips) and False  # Temporarily disabled
