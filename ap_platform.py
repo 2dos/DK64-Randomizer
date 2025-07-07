@@ -3,6 +3,7 @@
 import sys
 from enum import Enum, auto
 
+
 class Platform(Enum):
     """Platform is a class that facilitates supported platform determination."""
 
