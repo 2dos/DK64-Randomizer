@@ -15,7 +15,7 @@ import shutil
 if __name__ == "__main__":
     Utils.init_logging("DK64Context", exception_logger="Client")
 from CommonClient import logger
-from worlds.dk64.ap_platform import Platform
+from worlds.dk64.archipelago.Platform import Platform
 
 
 class PJ64Exception(Exception):
