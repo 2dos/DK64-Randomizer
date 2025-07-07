@@ -13,8 +13,13 @@ import pkgutil
 import shutil
 import sys
 import tempfile
+from pathlib import Path
 
+parent_dir = Path(__file__).resolve().parent
+sys.path.append(str(parent_dir))
+sys.path.append(str(parent_dir / "archipelago"))
 
+from worlds.dk64.platform import Platform
 from worlds.dk64.ap_version import version as ap_version
 
 baseclasses_loaded = False
@@ -41,7 +46,7 @@ if baseclasses_loaded:
 
         Ensures the temporary directory exists.
         Args:
-            zip_path (str): The relative path to the ZIP file within the package.
+            zip_path (Path): The relative path to the ZIP file within the package.
         Behavior:
             - Creates a temporary directory if it does not exist.
             - Reads the ZIP file from the package using `pkgutil.get_data`.
@@ -53,12 +58,12 @@ if baseclasses_loaded:
             - A message when the ZIP file is successfully extracted.
         """
         # Create a temporary directory
-        temp_dir = tempfile.mkdtemp()
+        temp_dir = Path(tempfile.mkdtemp())
 
-        zip_dest = os.path.join(temp_dir, file)
+        zip_dest = temp_dir / file
         try:
             # Load the ZIP file from the package
-            zip_data = pkgutil.get_data(__name__, zip_path)
+            zip_data = pkgutil.get_data(__name__, str(zip_path))
             # Check if the zip already exists in the destination
             if not os.path.exists(zip_dest):
                 if zip_data is None:
@@ -79,10 +84,10 @@ if baseclasses_loaded:
             raise PermissionError("Permission Error: Unable to install Dependencies to AP, please try to install AP as an admin.")
 
         # Add the temporary directory to sys.path
-        if temp_dir not in sys.path:
-            sys.path.insert(0, temp_dir)
+        temp_dir.mkdir(parents=True, exist_ok=True)
+        sys.path.append(str(temp_dir))
 
-    platform_type = sys.platform
+    platform_type = Platform.get_type()
     baseclasses_path = os.path.dirname(os.path.dirname(BaseClasses.__file__))
     if not baseclasses_path.endswith("lib"):
         baseclasses_path = os.path.join(baseclasses_path, "lib")
@@ -102,19 +107,16 @@ if baseclasses_loaded:
     except Exception as e:
         pass
 
-    if platform_type == "win32":
-        zip_path = "vendor/windows.zip"  # Path inside the package
-        copy_dependencies(zip_path, "windows.zip")
-    elif platform_type == "linux":
-        zip_path = "vendor/linux.zip"
-        copy_dependencies(zip_path, "linux.zip")
+    vendor_dir = Path("vendor")
+
+    if platform_type is Platform.WINDOWS:
+        zip_path = vendor_dir / "windows.zip"  # Path inside the package
+        copy_dependencies(str(zip_path), "windows.zip")
+    elif platform_type is Platform.LINUX:
+        zip_path = vendor_dir / "linux.zip"
+        copy_dependencies(str(zip_path), "linux.zip")
     else:
         raise Exception(f"Unsupported platform: {platform_type}")
-
-    sys.path.append("worlds/dk64/")
-    sys.path.append("worlds/dk64/archipelago/")
-    sys.path.append("custom_worlds/dk64.apworld/dk64/")
-    sys.path.append("custom_worlds/dk64.apworld/dk64/archipelago/")
 
     import randomizer.ItemPool as DK64RItemPool
 
