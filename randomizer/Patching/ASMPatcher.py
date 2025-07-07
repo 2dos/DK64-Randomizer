@@ -1637,7 +1637,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x805FF278, Overlay.Static, 0x87A9, offset_dict)  # Change LHU to LH
     writeValue(ROM_COPY, 0x805FF2D0, Overlay.Static, 0x87A9, offset_dict)  # Change LHU to LH
 
-    if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.hard_balloons):
+    if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.fast_balloons):
         writeFunction(ROM_COPY, 0x806A7774, Overlay.Static, "setHardPathSpeed", offset_dict)
 
     # Boot setup checker optimization
