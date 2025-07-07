@@ -19,7 +19,7 @@ parent_dir = Path(__file__).resolve().parent
 sys.path.append(str(parent_dir))
 sys.path.append(str(parent_dir / "archipelago"))
 
-from worlds.dk64.platform import Platform
+from worlds.dk64.ap_platform import Platform
 from worlds.dk64.ap_version import version as ap_version
 
 baseclasses_loaded = False
