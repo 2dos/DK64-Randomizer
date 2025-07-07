@@ -7,6 +7,13 @@ class Platform(Enum):
     LINUX = auto()
 
     def get_type():
+        """Wrapper around sys.platform that uses enums instead of strings
+
+        Behavior:
+            - Returns platform type if platform is supported
+        Raises:
+            - Exception if platform is not supported
+        """
         platform_type = sys.platform
         platform_dict = {
             "win32": Platform.WINDOWS,
