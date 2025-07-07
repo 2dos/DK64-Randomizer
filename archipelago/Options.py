@@ -261,6 +261,100 @@ class TagLink(Toggle):
     display_name = "Tag Link"
 
 
+class MirrorMode(Toggle):
+    """Determines whether the game will be horizontally Mirrored."""
+
+    display_name = "Mirror Mode"
+
+
+class HardShooting(Toggle):
+    """Enabling this setting means logic may expect you to do some difficult shooting challenges without help.
+
+    Lanky's attic in Fungi Forest removes Homing requirement.
+    Donkey's 5 door cabin in Crystal Caves removes Homing requirement.
+    Tiny's trash can in Creepy Castle removes homing ammo. (This can be bypassed with Saxophone)
+    Chunky's tree banana in Creepy Castle removes sniper scope. (This requirement can be skipped by shooting from below the switch.
+    Chunky's shooting barrel in Hideout Helm removes either sniper scope or homing ammo.
+    Lanky's tower in Castle Requires either Homing ammo or Sniper Scope instead of just Sniper
+    """
+
+    display_name = "Hard Shooting"
+
+
+class HardModeEnabled(Toggle):
+    """Determines whether Hard Mode is enabled. Use the yaml option below this to determine which settings you want enabled."""
+
+    display_name = "Hard Mode Enabled"
+
+
+class HardModeSelected(OptionList):
+    """If Hard Mode is enabled, determines which Hard Mode settings are included.
+
+    Valid Keys:
+    "hard_enemies": Enemies Fight Back a little harder.
+    "shuffled_jetpac_enemies": Jetpac enemies are shuffled within Jetpac.
+    "strict_helm_timer": Helm Timer starts at 0:00 requiring blueprints to turn in
+    "donk_in_the_dark_world: All maps are pitch black, with only a light to help you path your way to the end of the game. Mixing this with 'Donk in the Sky' will convert the challenge into 'Memory Challenge' instead.
+    "donk_in_the_sky": Collision Geometry is disabled. Mixing this with 'Donk in the Dark World' will convert the challenge into 'Memory Challenge' instead.
+    """
+
+    display_name = "Hard Mode Options"
+
+    valid_keys = {
+        "hard_enemies",
+        "shuffled_jetpac_enemies",
+        "strict_helm_timer",
+        "donk_in_the_dark_world",
+        "donk_in_the_sky",
+    }
+
+
+class RemoveBarriers(OptionList):
+    """Determines which barriers are removed.
+
+    Valid Keys:
+    "japes_coconut_gates"
+    "japes_shellhive_gates"
+    "aztec_tunnel_door"
+    "aztec_5dtemple_switches"
+    "aztec_llama_switches"
+    "aztec_tiny_temple_ice"
+    "factory_testing_gate"
+    "factory_production_room"
+    "galleon_lighthouse_gate"
+    "galleon_shipyard_area_gate"
+    "galleon_seasick_ship"
+    "galleon_treasure_room"
+    "forest_green_tunnel"
+    "forest_yellow_tunnel"
+    "caves_igloo_pads"
+    "caves_ice_walls"
+    "castle_crypt_doors"
+    """
+
+    display_name = "Removed Barriers"
+
+    valid_keys = {
+        "japes_coconut_gates",
+        "japes_shellhive_gates",
+        "aztec_tunnel_door",
+        "aztec_5dtemple_switches",
+        "aztec_llama_switches",
+        "aztec_tiny_temple_ice",
+        "factory_testing_gate",
+        "factory_production_room",
+        "galleon_lighthouse_gate",
+        "galleon_shipyard_area_gate",
+        "galleon_seasick_ship",
+        "galleon_treasure_room",
+        "forest_green_tunnel",
+        "forest_yellow_tunnel",
+        "caves_igloo_pads",
+        "caves_ice_walls",
+        "castle_crypt_doors",
+    }
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -273,6 +367,7 @@ class DK64Options(PerGameCommonOptions):
     krool_phase_count: KroolPhaseCount
     helm_phase_count: HelmPhaseCount
     krool_in_boss_pool: KroolInBossPool
+    remove_barriers_selected: RemoveBarriers
     medal_cb_req: MedalColorBananaRequirement
     mermaid_gb_pearls: MermaidRequirement
     medal_requirement: JetpacRequirement
@@ -284,6 +379,10 @@ class DK64Options(PerGameCommonOptions):
     starting_move_count: StartingMoveCount
     logic_type: LogicType
     glitches_selected: GlitchesSelected
+    hard_shooting: HardShooting
+    hard_mode: HardModeEnabled
+    hard_mode_selected: HardModeSelected
+    mirror_mode: MirrorMode
     trap_fill_percentage: TrapFillPercentage
     bubble_trap_weight: BubbleTrapWeight
     reverse_trap_weight: ReverseTrapWeight

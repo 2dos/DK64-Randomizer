@@ -189,7 +189,6 @@ LogicRegions = {
         LocationLogic(Locations.FactoryMainEnemy_TunnelToProd0, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToProd1, lambda _: True),
     ], [
-        Event(Events.MainCoreActivated, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_production_room)),
         Event(Events.DiddyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.diddy),
         Event(Events.LankyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.lanky),
         Event(Events.TinyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.tiny),

@@ -78,7 +78,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.FungiForestStart, lambda _: True),
         TransitionFront(Regions.MushroomLower, lambda _: True, Transitions.ForestMainToLowerMushroom),
-        TransitionFront(Regions.MushroomLowerExterior, lambda l: (l.jetpack and l.isdiddy) or (l.advanced_platforming and l.twirl and l.istiny)),
+        TransitionFront(Regions.MushroomLowerExterior, lambda l: (l.jetpack and l.isdiddy) or (l.advanced_platforming and l.twirl and l.istiny) or (l.climbing and (l.isdonkey or l.ischunky) and l.advanced_platforming)),
         TransitionFront(Regions.MushroomBlastLevelExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.MushroomUpperMidExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: l.jetpack and l.isdiddy),
@@ -290,6 +290,7 @@ LogicRegions = {
         TransitionFront(Regions.GrinderRoom, lambda _: True, Transitions.ForestMainToGrinder, time=Time.Day),
         TransitionFront(Regions.MillRafters, lambda l: (l.spring or l.CanMoontail()) and l.isdiddy, Transitions.ForestMainToRafters, time=Time.Night),
         TransitionFront(Regions.ThornvineArea, lambda _: True, time=Time.Night),
+        TransitionFront(Regions.ThornvineArea, lambda l: l.CanPhaseswim()),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess, time=Time.Day),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando, time=Time.Day),
         TransitionFront(Regions.ThornvineBarn, lambda l: l.CanPhaseswim(), Transitions.ForestMainToBarn, isGlitchTransition=True),
