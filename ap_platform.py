@@ -1,13 +1,16 @@
+"""Defines enum for checking platform in project."""
+
 import sys
 from enum import Enum, auto
 
-
 class Platform(Enum):
+    """Platform is a class that facilitates supported platform determination."""
+
     WINDOWS = auto()
     LINUX = auto()
 
     def get_type():
-        """Wrapper around sys.platform that uses enums instead of strings
+        """Is wrapper around sys.platform that uses enums instead of strings.
 
         Behavior:
             - Returns platform type if platform is supported
