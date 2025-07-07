@@ -39,8 +39,8 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_NearWellTag, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_GreenTunnel, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False))),
     ], [
-        Event(Events.Night, lambda l: l.HasGun(Kongs.any) or l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
-        Event(Events.Day, lambda l: l.HasGun(Kongs.any) or l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
+        Event(Events.Night, lambda l: l.HasGun(Kongs.any) or l.adv_orange_usage or l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
+        Event(Events.Day, lambda l: l.HasGun(Kongs.any) or l.adv_orange_usage or l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
         Event(Events.WormGatesOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) and l.hasMoveSwitchsanity(Switches.FungiGreenPineapple, False))),
         Event(Events.ForestW1aTagged, lambda _: True),
         Event(Events.ForestW2aTagged, lambda _: True),

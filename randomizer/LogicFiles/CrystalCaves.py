@@ -234,7 +234,7 @@ LogicRegions = {
 
     # Lanky's and Diddy's cabins take you to the beginning of the level, others respawn there
     Regions.DonkeyCabin: Region("Donkey Cabin", HintRegion.Cabins, Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesDonkey5DoorCabin, lambda l: (l.homing or l.hard_shooting) and (l.HasGun(Kongs.donkey) or (l.settings.free_trade_items and l.HasGun(Kongs.any)))),
+        LocationLogic(Locations.CavesDonkey5DoorCabin, lambda l: (l.homing or l.hard_shooting) and (l.HasGun(Kongs.donkey) or l.adv_orange_usage or (l.settings.free_trade_items and l.HasGun(Kongs.any)))),
     ], [], [
         TransitionFront(Regions.CabinArea, lambda _: True, Transitions.CavesDonkeyToCabin),
     ]),

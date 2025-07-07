@@ -168,6 +168,8 @@ class GlitchesSelected(IntEnum):
 class TricksSelected(IntEnum):
     advanced_platforming = 1
     hard_shooting = 2
+    advanced_grenading = 3
+    slope_resets = 4
 
 class HelmDoorItem(IntEnum):
     vanilla = 0

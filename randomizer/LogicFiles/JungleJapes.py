@@ -109,10 +109,10 @@ LogicRegions = {
         Event(Events.JapesW3aTagged, lambda _: True),
     ], [
         TransitionFront(Regions.JungleJapesStart, lambda _: True),
-        TransitionFront(Regions.JapesCannonPlatform, lambda l: l.handstand and l.advanced_platforming),
+        TransitionFront(Regions.JapesCannonPlatform, lambda l: (l.handstand and l.lanky and l.advanced_platforming) or (l.tiny and l.slope_resets)),
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.CanPhase() or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
-        TransitionFront(Regions.JapesPaintingRoomHill, lambda l: (l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick() or l.CanSkew(True) or l.CanSkew(False)),
-        TransitionFront(Regions.JapesLankyCave, lambda l: ((l.hasMoveSwitchsanity(Switches.JapesPainting, False) or l.CanSkew(True) or l.CanSkew(False)) and ((l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick())) or (l.CanMoonkick() and (l.CanPhase() or l.CanSkew(True) or l.CanSkew(False))) or ((l.CanPhase() or l.generalclips or l.CanSkew(True) or l.CanSkew(False)) and (l.isdiddy or l.istiny)), Transitions.JapesMainToLankyCave, isGlitchTransition=True),
+        TransitionFront(Regions.JapesPaintingRoomHill, lambda l: (l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick() or l.CanSkew(True) or l.CanSkew(False) or l.slope_resets),
+        TransitionFront(Regions.JapesLankyCave, lambda l: ((l.hasMoveSwitchsanity(Switches.JapesPainting, False) or l.CanSkew(True) or l.CanSkew(False)) and ((l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick() or l.slope_resets)) or (l.CanMoonkick() and (l.CanPhase() or l.CanSkew(True) or l.CanSkew(False))) or ((l.CanPhase() or l.generalclips or l.CanSkew(True) or l.CanSkew(False)) and (l.isdiddy or l.istiny)), Transitions.JapesMainToLankyCave, isGlitchTransition=True),
         TransitionFront(Regions.BeyondRambiGate, lambda l: l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.CanPhase() or l.generalclips),
         TransitionFront(Regions.JapesTnSAlcove, lambda l: (l.can_use_vines or l.CanMoonkick()) and l.climbing),
     ]),
@@ -193,7 +193,7 @@ LogicRegions = {
     ]),
 
     Regions.JapesBeyondCoconutGate2: Region("Japes Beyond Coconut Gate 2", HintRegion.StormyTunnel, Levels.JungleJapes, True, None, [
-        LocationLogic(Locations.JapesLankySlope, lambda l: l.handstand and l.islanky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.JapesLankySlope, lambda l: (l.handstand and l.islanky) or l.slope_resets, MinigameType.BonusBarrel),
         LocationLogic(Locations.JapesKasplatNearPaintingRoom, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.JapesKasplatNearLab, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.JapesMainEnemy_Storm0, lambda _: True),
@@ -211,7 +211,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.JungleJapesStart, lambda _: True),
         TransitionFront(Regions.JungleJapesMain, lambda _: True),
-        TransitionFront(Regions.JapesUselessSlope, lambda l: (l.handstand and l.islanky) or l.CanPhase()),
+        TransitionFront(Regions.JapesUselessSlope, lambda l: (l.handstand and l.islanky) or l.CanPhase() or l.slope_resets),
         TransitionFront(Regions.BeyondRambiGate, lambda l: Events.Rambi in l.Events or l.CanPhase() or l.CanSkew(True) or l.CanSkew(False)),
         TransitionFront(Regions.CrankyJapes, lambda l: l.crankyAccess),
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.CanMoonkick()),
@@ -233,7 +233,7 @@ LogicRegions = {
 
     # Lanky Cave deathwarp: Requires you to be lanky and have simian slam so you can slam the pegs and summon zingers to kill you
     Regions.JapesLankyCave: Region("Japes Lanky Cave", HintRegion.CavesAndMines, Levels.JungleJapes, False, None, [
-        LocationLogic(Locations.JapesLankyFairyCave, lambda l: (((l.grape or l.trombone) and l.Slam) or l.generalclips) and l.islanky),
+        LocationLogic(Locations.JapesLankyFairyCave, lambda l: (((l.grape or l.trombone or l.adv_orange_usage) and l.Slam) or l.generalclips) and l.islanky),
         LocationLogic(Locations.JapesBananaFairyLankyCave, lambda l: (((l.grape or l.trombone) and l.Slam) or l.generalclips) and l.islanky and l.camera),
     ], [], [
         TransitionFront(Regions.JapesPaintingRoomHill, lambda _: True, Transitions.JapesLankyCaveToMain),

@@ -86,7 +86,7 @@ LogicRegions = {
     ]),
 
     Regions.RandD: Region("R&D", HintRegion.ResearchAndDevelopment, Levels.FranticFactory, True, None, [
-        LocationLogic(Locations.FactoryLankyRandD, lambda l: (((l.trombone or l.CanAccessRNDRoom()) and l.CanSlamSwitch(Levels.FranticFactory, 1)) or (l.handstand and l.tbs and l.spawn_snags)) and l.islanky),
+        LocationLogic(Locations.FactoryLankyRandD, lambda l: (((l.trombone or l.CanAccessRNDRoom()) and l.CanSlamSwitch(Levels.FranticFactory, 1)) or (l.CanOStandTBSNoclip() and l.spawn_snags)) and l.islanky),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToRace0, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToRace1, lambda _: True),
     ], [
@@ -147,7 +147,7 @@ LogicRegions = {
         TransitionFront(Regions.ChunkyRoomPlatform, lambda l: l.CanMoonkick() or (l.twirl and l.istiny and l.advanced_platforming) or (l.isdiddy and l.advanced_platforming)),
         TransitionFront(Regions.CrankyFactory, lambda l: l.crankyAccess),
         TransitionFront(Regions.CandyFactory, lambda l: l.candyAccess),
-        TransitionFront(Regions.FactoryStoragePipe, lambda l: l.islanky and l.handstand),
+        TransitionFront(Regions.FactoryStoragePipe, lambda l: (l.islanky and l.handstand) or l.slope_resets),
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
         TransitionFront(Regions.FactoryBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.FactoryMainToBBlast)
     ]),
@@ -226,7 +226,7 @@ LogicRegions = {
 
     Regions.UpperCore: Region("Upper Core", HintRegion.ProductionRoom, Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryDiddyProductionRoom, lambda l: Events.DiddyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and l.spring and l.diddy),
-        LocationLogic(Locations.FactoryLankyProductionRoom, lambda l: Events.LankyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and l.handstand and l.lanky),
+        LocationLogic(Locations.FactoryLankyProductionRoom, lambda l: Events.LankyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and (l.handstand and l.lanky) or (l.tiny and l.settings.free_trade_items and l.slope_resets)),
         LocationLogic(Locations.FactoryTinyProductionRoom, lambda l: Events.TinyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and l.twirl and l.istiny, MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryKasplatProductionTop, lambda l: not l.settings.kasplat_rando)
     ], [], [

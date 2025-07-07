@@ -78,7 +78,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: Events.Rambi in l.Events or l.CanPhase(), None, 1),  # In breakable hut
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 1),  # To Lanky BP room
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 2),  # Base of slippery slopes
-        Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.handstand, None, 2),  # To bonus barrel on slippery slope
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.handstand or l.slope_resets, None, 2),  # To bonus barrel on slippery slope
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.climbing, None, 1),  # On treetop in Cranky area
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: Events.Rambi in l.Events or l.CanPhase(), None, 1),  # In breakable hut
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),  # In Lanky BP room

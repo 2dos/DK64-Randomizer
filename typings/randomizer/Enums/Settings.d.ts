@@ -190,6 +190,8 @@ export enum GlitchesSelected {
 export enum TricksSelected {
     advanced_platforming = 1,
     hard_shooting = 2,
+    advanced_grenading = 3,
+    slope_resets = 4,
 }
 
 export enum HelmDoorItem {

@@ -100,6 +100,8 @@ class LogicVarHolder:
         enable_agl = self.settings.logic_type in (LogicType.advanced_glitchless, LogicType.glitch)
         self.advanced_platforming = enable_agl and IsTrickEnabled(settings, TricksSelected.advanced_platforming)
         self.hard_shooting = enable_agl and IsTrickEnabled(settings, TricksSelected.hard_shooting)
+        self.advanced_grenading = enable_agl and IsTrickEnabled(settings, TricksSelected.advanced_grenading)
+        self.slope_resets = enable_agl and IsTrickEnabled(settings, TricksSelected.slope_resets)
         # Glitch Logic
         enable_glitch_logic = self.settings.logic_type == LogicType.glitch
         self.phasewalk = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.phase_walking)
@@ -360,6 +362,7 @@ class LogicVarHolder:
         self.vines = self.vines or Items.Vines in ownedItems
         self.swim = self.swim or Items.Swim in ownedItems
         self.oranges = self.oranges or Items.Oranges in ownedItems
+        self.adv_orange_usage = self.oranges and self.advanced_grenading
         self.barrels = self.barrels or Items.Barrels in ownedItems
         self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 

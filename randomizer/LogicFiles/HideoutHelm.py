@@ -43,7 +43,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmMainEnemy_Start1, lambda _: True),
     ], [], [
         TransitionFront(Regions.HideoutHelmLobbyPastVines, lambda l: Events.HelmFinished in l.Events, Transitions.HelmToIsles),
-        TransitionFront(Regions.HideoutHelmSwitchRoom, lambda l: (l.handstand and l.islanky) or l.advanced_platforming),
+        TransitionFront(Regions.HideoutHelmSwitchRoom, lambda l: (l.handstand and l.islanky) or l.slope_resets),
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.settings.helm_setting == HelmSetting.skip_all or Events.HelmFinished in l.Events),  # W1
     ]),
 
