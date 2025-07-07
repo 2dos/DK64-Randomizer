@@ -10,10 +10,12 @@ import subprocess
 from Utils import open_filename
 from Utils import get_settings
 import uuid
+import shutil
 
 if __name__ == "__main__":
     Utils.init_logging("DK64Context", exception_logger="Client")
 from CommonClient import logger
+from worlds.dk64.platform import Platform
 
 
 class PJ64Exception(Exception):
@@ -42,6 +44,7 @@ def display_error_box(title: str, text: str) -> bool | None:
 
 class PJ64Client:
     """PJ64Client is a class that provides an interface to connect to and interact with an N64 emulator."""
+    platform_type = Platform.get_type()
 
     def __init__(self):
         """Initialize a new instance of the class."""
@@ -98,18 +101,27 @@ class PJ64Client:
                 display_error_box("Permission Error", "Unable to add adapter file to Project64, you may need to run AP as an administrator or close Project64.")
                 raise PJ64Exception("Unable to add adapter file to Project64, you may need to run this script as an administrator or close Project64.")
         self._verify_pj64_config(os.path.join(os.path.dirname(executable), "Config", "Project64.cfg"))
+
         # Check if project 64 is running
         if not self._is_exe_running(os.path.basename(executable)):
             # Request the user to provide their ROM
             rom = open_filename("Select ROM", (("N64 ROM", (".n64", ".z64", ".v64")),))
+            logger.info(f"wine {executable} {rom}")
             if rom:
-                os.popen(f'"{executable}" "{rom}"')
+                if self.platform_type is Platform.WINDOWS:
+                    os.popen(f'"{executable}" "{rom}"')
+                elif self.platform_type is Platform.LINUX:
+                    # Assume wine with default prefix
+                    if shutil.which("wine") is not None:
+                        os.popen(f'wine "{executable}" "{rom}"')
+                    else:
+                        raise PJ64Exception("Could not find wine executable")
 
     def _is_exe_running(self, exe_name):
         """Check if a given executable is running without using psutil."""
         exe_name = exe_name.lower()
 
-        if sys.platform == "win32":
+        if self.platform_type is Platform.WINDOWS:
             try:
                 startupinfo = subprocess.STARTUPINFO()
                 startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
@@ -118,7 +130,7 @@ class PJ64Client:
             except subprocess.CalledProcessError:
                 return False
 
-        else:  # Unix-based (Linux/macOS)
+        elif self.platform_type is Platform.LINUX:
             try:
                 result = subprocess.run(["pgrep", "-f", exe_name], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
                 return result.returncode == 0
@@ -222,7 +234,7 @@ class PJ64Client:
             self.socket = None
             self.connected_message = False
             print(e)
-            raise PJ64Exception("Connection refused or reset")
+            #raise PJ64Exception("Connection refused or reset")
         except OSError:
             # We're already connected, just move on
             pass
