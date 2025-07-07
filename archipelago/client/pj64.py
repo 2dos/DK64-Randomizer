@@ -44,6 +44,7 @@ def display_error_box(title: str, text: str) -> bool | None:
 
 class PJ64Client:
     """PJ64Client is a class that provides an interface to connect to and interact with an N64 emulator."""
+
     platform_type = Platform.get_type()
 
     def __init__(self):
