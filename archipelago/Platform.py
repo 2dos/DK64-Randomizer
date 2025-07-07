@@ -1,0 +1,30 @@
+"""Defines enum for checking platform in project."""
+
+import sys
+from enum import Enum, auto
+
+
+class Platform(Enum):
+    """Platform is a class that facilitates supported platform determination."""
+
+    WINDOWS = auto()
+    LINUX = auto()
+
+    def get_type():
+        """Is wrapper around sys.platform that uses enums instead of strings.
+
+        Behavior:
+            - Returns platform type if platform is supported
+        Raises:
+            - Exception if platform is not supported
+        """
+        platform_type = sys.platform
+        platform_dict = {
+            "win32": Platform.WINDOWS,
+            "linux": Platform.LINUX,
+        }
+
+        if platform_type not in platform_dict:
+            raise Exception(f"Unsupported platform: {platform_type}")
+        else:
+            return platform_dict[platform_type]
