@@ -3,20 +3,20 @@ import collections
 import itertools
 
 # Data for region traversal and banana requirements
-from randomizer.CollectibleLogicFiles.AngryAztec     import LogicRegions as AztecBananas
-from randomizer.CollectibleLogicFiles.CreepyCastle   import LogicRegions as CastleBananas
-from randomizer.CollectibleLogicFiles.CrystalCaves   import LogicRegions as CavesBananas
+from randomizer.CollectibleLogicFiles.AngryAztec import LogicRegions as AztecBananas
+from randomizer.CollectibleLogicFiles.CreepyCastle import LogicRegions as CastleBananas
+from randomizer.CollectibleLogicFiles.CrystalCaves import LogicRegions as CavesBananas
 from randomizer.CollectibleLogicFiles.FranticFactory import LogicRegions as FactoryBananas
-from randomizer.CollectibleLogicFiles.FungiForest    import LogicRegions as ForestBananas
-from randomizer.CollectibleLogicFiles.GloomyGalleon  import LogicRegions as GalleonBananas
-from randomizer.CollectibleLogicFiles.JungleJapes    import LogicRegions as JapesBananas
-from randomizer.LogicFiles.AngryAztec     import LogicRegions as AztecLogic
-from randomizer.LogicFiles.CreepyCastle   import LogicRegions as CastleLogic
-from randomizer.LogicFiles.CrystalCaves   import LogicRegions as CavesLogic
+from randomizer.CollectibleLogicFiles.FungiForest import LogicRegions as ForestBananas
+from randomizer.CollectibleLogicFiles.GloomyGalleon import LogicRegions as GalleonBananas
+from randomizer.CollectibleLogicFiles.JungleJapes import LogicRegions as JapesBananas
+from randomizer.LogicFiles.AngryAztec import LogicRegions as AztecLogic
+from randomizer.LogicFiles.CreepyCastle import LogicRegions as CastleLogic
+from randomizer.LogicFiles.CrystalCaves import LogicRegions as CavesLogic
 from randomizer.LogicFiles.FranticFactory import LogicRegions as FactoryLogic
-from randomizer.LogicFiles.FungiForest    import LogicRegions as ForestLogic
-from randomizer.LogicFiles.GloomyGalleon  import LogicRegions as GalleonLogic
-from randomizer.LogicFiles.JungleJapes    import LogicRegions as JapesLogic
+from randomizer.LogicFiles.FungiForest import LogicRegions as ForestLogic
+from randomizer.LogicFiles.GloomyGalleon import LogicRegions as GalleonLogic
+from randomizer.LogicFiles.JungleJapes import LogicRegions as JapesLogic
 
 # Enums galore
 from randomizer.Enums.Collectibles import Collectibles
@@ -27,12 +27,14 @@ from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Time import Time
 
+
 class MockSettings:
     tns_location_rando = False
     free_trade_items = False
     galleon_water_internal = None
     fungi_time_internal = None
     shuffle_shops = False
+
 
 class MockEvents:
     def __init__(self, requirements):
@@ -41,27 +43,27 @@ class MockEvents:
     def __contains__(self, event):
         return event in self.reqs
 
+
 TINY_TEMPLE_REGIONS = {Regions.TempleStart, Regions.TempleGuitarPad, Regions.TempleUnderwater, Regions.TempleVultureRoom, Regions.TempleKONGRoom}
 CASTLE_CRYPT_REGIONS = {Regions.Crypt, Regions.CryptDonkeyRoom, Regions.CryptDiddyRoom, Regions.CryptChunkyRoom, Regions.CastleMinecarts}
 GUN_MAP = {Kongs.donkey: 'coconut', Kongs.lanky: 'grape', Kongs.diddy: 'peanut', Kongs.tiny: 'feather', Kongs.chunky: 'pineapple'}
 
+
 class Logic:
     ALWAYS_IN_LOGIC = [
         # These represent 'you are kong X', which assumes that you have a tag barrel accessible.
-        'isdonkey', 'islanky', 'isdiddy', 'istiny', 'ischunky',
-
+        *['isdonkey', 'islanky', 'isdiddy', 'istiny', 'ischunky'],
         # These represent 'is kong X unlocked'
-        'donkey', 'lanky', 'diddy', 'tiny', 'chunky',
-
+        *['donkey', 'lanky', 'diddy', 'tiny', 'chunky'],
         # These are region-based assumptions (should be quite rare)
         Events.HatchOpened,
-        # 'assumeAztecEntry', # I could use this but I'm using a different starting region instead.
+        # 'assumeAztecEntry',  # I could use this but I'm using a different starting region instead.
     ]
 
     def __init__(self, requirements):
         self.reqs = set([*self.ALWAYS_IN_LOGIC, *requirements])
         self.settings = MockSettings()
-        self.events = MockEvents(self.reqs) # Just a small wrapper since the code uses 'if Events.Foo in l.Events'
+        self.events = MockEvents(self.reqs)  # Just a small wrapper since the code uses 'if Events.Foo in l.Events'
 
     def get(self, key):
         return self.__getattr__(key)
@@ -89,17 +91,17 @@ class Logic:
             return Events.Day in self.Events
         elif time == Time.Night:
             return Events.Night in self.Events
-        elif time == Time.Both:
-            return True
+        # elif time == Time.Both:
+        return True
 
-    def hasMoveSwitchsanity(self, switchsanity_setting, kong_needs_current = True, level = None, default_slam_level = 0):
+    def hasMoveSwitchsanity(self, switchsanity_setting, kong_needs_current=True, level=None, default_slam_level=0):
         if self.get(switchsanity_setting):
             return True
         actual_move = {
             # These first two switches are removed because they are special_requirements
             Switches.FungiGreenFeather: None,
             Switches.FungiGreenPineapple: None,
-
+            # These switches are all just mapped to their default (non-switchsanity) behavior
             Switches.FungiYellow: 'grape',
             Switches.GalleonCannonGame: 'pineapple',
             Switches.GalleonLighthouse: 'coconut',
@@ -118,7 +120,7 @@ class Logic:
         return self.get(barrier)
 
     def HasGun(self, kong):
-        return False # Handled separately by Moves.Night / Moves.Day
+        return False  # Handled separately by Moves.Night / Moves.Day
 
     def CanSlamSwitch(self, level, default_requirement_level):
         return self.levelSlam
@@ -130,22 +132,23 @@ class Logic:
         return self.swim
 
     def IsBossReachable(self, level):
-        return True # Not strictly necessary (there aren't CBs inside boss rooms) but allows for assumed tagging inside boss rooms.
+        return True  # Not strictly necessary (there aren't CBs inside boss rooms) but allows for assumed tagging inside boss rooms.
 
     def HasInstrument(self, kong):
-        return False # This seems to be fine but I'm not sure why.
+        return False  # This seems to be fine but I'm not sure why.
 
     def galleonGatesStayOpen(self):
-        return True # I'm pretty sure this QoL is always enabled in rando
+        return True  # I'm pretty sure this QoL is always enabled in rando
 
     def CanOpenJapesGates(self):
-        return True # QoL from rando
+        return True  # QoL from rando
 
     def CanLlamaSpit(self):
-        return lambda: self.saxophone # I don't think this matters but I think tiny canonically frees lanky.
-    
+        return lambda: self.saxophone  # I don't think this matters but I think tiny canonically frees lanky.
+
+
 class SetOfSets:
-    """ Wrapper class to handle composite requirements
+    """Wrapper class to handle composite requirements
     In practice, it can be possible to collect CBs using multiple options (an "either/or").
     To represent this comfortably, we use a "set of sets", where each inner set represents
     a unique way of accomplishing a task, and the overall set represents all ways of doing the task.
@@ -181,19 +184,20 @@ class SetOfSets:
         i = 0
         while i < len(self.requirements):
             if requirement.issuperset(self.requirements[i]):
-                return False # We're trying to add something that's already here, in a simpler form.
+                return False  # We're trying to add something that's already here, in a simpler form.
             if requirement.issubset(self.requirements[i]):
-                self.requirements.pop(i) # In rare cases we might find a simpler way to do something later, and need to clean up.
+                self.requirements.pop(i)  # In rare cases we might find a simpler way to do something later, and need to clean up.
                 # Keep going here in case there are other supersets still in the list
             else:
                 i += 1
-        self.requirements.append(set(requirement)) # Copy to avoid sharing set objects between every requirement
+        self.requirements.append(set(requirement))  # Copy to avoid sharing set objects between every requirement
         return True
 
     def replace_event(self, event, event_requirements):
-        # Small helper function to deal with transitive requirements,
-        # i.e. a required event which also has its own SetOfSets requirements.
-        # This breaks some encapsulation rules, but is tremendously helpful and simple.
+        """Small helper function to deal with transitive requirements,
+        i.e. a required event which also has its own SetOfSets requirements.
+        This breaks some encapsulation rules, but is tremendously helpful and simple.
+        """
         did_any_replacements = False
         i = 0
         while i < len(self.requirements):
@@ -210,11 +214,12 @@ class SetOfSets:
 
         return did_any_replacements
 
+
 class MockRegion:
     def __init__(self, region_id):
-        self.events = collections.defaultdict(SetOfSets) # Will be populated later
-        self.cbs = collections.defaultdict(SetOfSets) # Will be populated later
-        self.exits = collections.defaultdict(SetOfSets) # Will be populated later
+        self.events = collections.defaultdict(SetOfSets)  # Will be populated later
+        self.cbs = collections.defaultdict(SetOfSets)  # Will be populated later
+        self.exits = collections.defaultdict(SetOfSets)  # Will be populated later
 
         self.name = region_id
 
@@ -229,14 +234,16 @@ class MockRegion:
         output += '}'
         return output
 
+
 def possible_requirements(requirements):
     # In theory this would go up to len(requirements) + 1 ... maybe I need to restore that now that iteration is cheap?
     for i in range(5):
         for combination in itertools.combinations(requirements, i):
             yield set(combination)
 
+
 def walk_region_graph(regions, starting_region):
-    """ Small helper function to traverse all regions along transitions, without doubling up.
+    """Small helper function to traverse all regions along transitions, without doubling up.
     This generally improves the performance of some of our 'while true' floodfill algorithms,
     since requirements can be naturally flooded through the system.
     """
@@ -250,6 +257,7 @@ def walk_region_graph(regions, starting_region):
         for other_region in regions[next_region].exits:
             if other_region not in visited_regions:
                 adjacent_regions.add(other_region)
+
 
 def flatten_graph(region_logic, region_bananas, requirements):
     """Stage 1 of computation: Convert the raw data formats
@@ -272,10 +280,10 @@ def flatten_graph(region_logic, region_bananas, requirements):
     for region_id, region in region_logic.items():
         for event in region.events:
             if Events.JapesW1aTagged <= event.name <= Events.IslesW5bTagged:
-                continue # Warps do not contribute to new regions becoming accessible, so we ignore them for perf benefits
+                continue  # Warps do not contribute to new regions becoming accessible, so we ignore them for perf benefits
             elif event.name in requirements:
                 regions[region_id].events[event.name] = SetOfSets()
-                continue # Events which are explicitly listed as requirements shouldn't be satisfiable
+                continue  # Events which are explicitly listed as requirements shouldn't be satisfiable
             else:
                 events.append((region_id, event))
 
@@ -284,7 +292,7 @@ def flatten_graph(region_logic, region_bananas, requirements):
     requirements = {*requirements, *event_names}
 
     print('Computing event requirements')
-    for requirement in possible_requirements({*requirements, *event_names}): # Events may be requirements for other events
+    for requirement in possible_requirements({*requirements, *event_names}):  # Events may be requirements for other events
         l = Logic(requirement)
         for region_id, event in events:
             if event.logic(l):
@@ -295,9 +303,10 @@ def flatten_graph(region_logic, region_bananas, requirements):
     # Sanity check to make sure all events were processed
     raw_events = {event.name for region in region_logic.values() for event in region.events}
     handled_events = {event for region in regions.values() for event in region.events}
-    for event in (raw_events - handled_events):
+    unhandled_events = raw_events - handled_events
+    for event in unhandled_events:
         if Events.JapesW1aTagged <= event <= Events.IslesW5bTagged:
-            continue # Warps do not contribute to new regions becoming accessible, so we ignore them for perf benefits
+            continue  # Warps do not contribute to new regions becoming accessible, so we ignore them for perf benefits
         raise ValueError(f'Unable to determine requirements for event {event.name}')
 
     print('Computing collectible requirements')
@@ -315,9 +324,9 @@ def flatten_graph(region_logic, region_bananas, requirements):
     for region_id, region in region_logic.items():
         for transition in region.exits:
             if transition.dest not in region_logic:
-                continue # Ignore transitions which leave the region (e.g. to the lobby)
+                continue  # Ignore transitions which leave the region (e.g. to the lobby)
             if transition.logic(no_requirements) and no_requirements.TimeAccess(transition.dest, transition.time):
-                regions[region_id].exits[transition.dest].add(set()) # Small perf improvement: filter out transitions which are free
+                regions[region_id].exits[transition.dest].add(set())  # Small perf improvement: filter out transitions which are free
             else:
                 transitions.append((region_id, transition))
 
@@ -348,6 +357,7 @@ def flatten_graph(region_logic, region_bananas, requirements):
 
     return regions
 
+
 def traverse_graph(regions, entry_region):
     """Stage 2: Flood-fill region requirements
     It is not sufficient to know what the requirements are for each region-to-region transition,
@@ -361,7 +371,7 @@ def traverse_graph(regions, entry_region):
     """
     # Now that we have the requirements in a reasonable format, we can compute the path(s) to each collectible.
     region_requirements = collections.defaultdict(SetOfSets)
-    region_requirements[entry_region].add(set()) # The entry region is always accessible with zero requirements
+    region_requirements[entry_region].add(set())  # The entry region is always accessible with zero requirements
 
     event_requirements = collections.defaultdict(SetOfSets)
 
@@ -395,8 +405,7 @@ def traverse_graph(regions, entry_region):
     # Now that we have the requirements, we need to "flatten" any event requirements, i.e. events which are not requirements themselves.
     # This will also incorporate access to the region where the event is into the requirements.
     print('Expanding events')
-    events = set(event_requirements.keys())
-    for i in range(10): # Limited to 10 layers of event-which-requires-event
+    for i in range(10):  # Limited to 10 layers of event-which-requires-event
         expanded_any_events = False
         for event in event_requirements:
             for other_event in event_requirements:
@@ -406,7 +415,7 @@ def traverse_graph(regions, entry_region):
             break
     else:
         raise ValueError('Unable to resolve all event-inside-event dependencies within 10 loops -- possible infinite event requirements')
-    
+
     for region in region_requirements:
         for event in event_requirements:
             if region_requirements[region].replace_event(event, event_requirements[event]):
@@ -414,6 +423,7 @@ def traverse_graph(regions, entry_region):
                 pass
 
     return region_requirements, event_requirements
+
 
 def compute_cb_requirements(regions, region_requirements, event_requirements):
     """Stage 3: Compute the requirements to reach each CB/Bunch/Balloon
@@ -455,8 +465,9 @@ def compute_cb_requirements(regions, region_requirements, event_requirements):
 
     return all_cb_requirements
 
+
 def to_javascript(cb_requirements, special_requirements):
-    """ Stage 4: Generate the output for Ballaam
+    """Stage 4: Generate the output for Ballaam
     And finally, we need to emit this data in some format that Javascript can understand.
     Thankfully, that's not too bad -- there's just a bit of renaming and other small fixups.
     We've already grouped CBs by their requirements in the previous step, but this stage is also
@@ -469,14 +480,14 @@ def to_javascript(cb_requirements, special_requirements):
     # The javascript code uses slightly different names for kongs and moves.
     kong_map = {Kongs.donkey: 'DK', Kongs.diddy: 'Diddy', Kongs.lanky: 'Lanky', Kongs.tiny: 'Tiny', Kongs.chunky: 'Chunky'}
     move_map = {
-        'can_use_vines': 'Vines', 'swim': 'Diving', 'oranges': 'Oranges', 'barrels': 'Barrels', 'climbing': 'ClimbingCheck',
-        'Slam': 'Slam', 'levelSlam': 'LevelSlam',
-
-        'coconut': 'Coconut', 'bongos': 'Bongos', 'grab': 'Grab', 'strongKong': 'Strong', 'blast': 'Blast',
-        'peanut': 'Peanut', 'guitar': 'Guitar', 'charge': 'Charge', 'jetpack': 'Rocket', 'spring': 'Spring',
-        'grape': 'Grape', 'trombone': 'Trombone', 'handstand': 'Orangstand', 'sprint': 'Sprint', 'balloon': 'Balloon',
-        'feather': 'Feather', 'saxophone': 'Sax', 'twirl': 'Twirl', 'mini': 'Mini', 'monkeyport': 'Monkeyport',
-        'pineapple': 'Pineapple', 'triangle': 'Triangle', 'punch': 'Punch', 'hunkyChunky': 'Hunky', 'gorillaGone': 'Gone',
+        **{'can_use_vines': 'Vines', 'swim': 'Diving', 'oranges': 'Oranges', 'barrels': 'Barrels', 'climbing': 'ClimbingCheck'},
+        **{'Slam': 'Slam', 'levelSlam': 'LevelSlam'},
+        # Kong-specific
+        **{'coconut': 'Coconut', 'bongos': 'Bongos', 'grab': 'Grab', 'strongKong': 'Strong', 'blast': 'Blast'},
+        **{'peanut': 'Peanut', 'guitar': 'Guitar', 'charge': 'Charge', 'jetpack': 'Rocket', 'spring': 'Spring'},
+        **{'grape': 'Grape', 'trombone': 'Trombone', 'handstand': 'Orangstand', 'sprint': 'Sprint', 'balloon': 'Balloon'},
+        **{'feather': 'Feather', 'saxophone': 'Sax', 'twirl': 'Twirl', 'mini': 'Mini', 'monkeyport': 'Monkeyport'},
+        **{'pineapple': 'Pineapple', 'triangle': 'Triangle', 'punch': 'Punch', 'hunkyChunky': 'Hunky', 'gorillaGone': 'Gone'},
     }
     move_map.update(special_requirements)
     move_map_keys = list(move_map.keys())
@@ -490,7 +501,7 @@ def to_javascript(cb_requirements, special_requirements):
         for requirements in cb_requirements[kong]:
             locations = collections.defaultdict(list)
             count = 0
-            for (cb, region) in cb_requirements[kong][requirements]:
+            for cb, region in cb_requirements[kong][requirements]:
                 if cb.type == Collectibles.banana:
                     count += 1 * cb.amount
                     locations[region.name].append(f'{cb.amount} banana{"s"[:cb.amount^1]}')
@@ -517,18 +528,19 @@ def to_javascript(cb_requirements, special_requirements):
                 converted_requirement = [move_map_keys.index(r) for r in requirement]
                 converted_requirement.sort()
                 converted.append(converted_requirement)
-            converted.sort(key = lambda row: (len(row), *row))
+            converted.sort(key=lambda row: (len(row), *row))
             entries.append((converted, count, locations))
 
         # One final sanity check: There should be 100 CBs per kong.
-        assert kong_total == 100, f'Missing {100-kong_total} CBs for {kong}' 
+        assert kong_total == 100, f'Missing {100-kong_total} CBs for {kong}'
 
         def sort_key(entry):
             overall_sort_key = []
             for converted_requirement in entry[0]:
                 overall_sort_key += converted_requirement
             return (len(overall_sort_key), *overall_sort_key)
-        entries.sort(key = sort_key)
+
+        entries.sort(key=sort_key)
 
         for converted_requirements, count, locations in entries:
             output += f'            new Requirement({count}, '
@@ -558,99 +570,106 @@ def to_javascript(cb_requirements, special_requirements):
         output += '        ],\n'
     return output
 
-LEVELS = [{
-    'name': 'Japes',
-    'logic': JapesLogic,
-    'bananas': JapesBananas,
-    'entry_region': Regions.JungleJapesEntryHandler,
-    'special_requirements': {
-        Events.JapesFreeKongOpenGates: 'JapesCoconut',
-        'japes_shellhive_gate': 'JapesShellhive',
+
+LEVELS = [
+    {
+        'name': 'Japes',
+        'logic': JapesLogic,
+        'bananas': JapesBananas,
+        'entry_region': Regions.JungleJapesEntryHandler,
+        'special_requirements': {
+            Events.JapesFreeKongOpenGates: 'JapesCoconut',
+            'japes_shellhive_gate': 'JapesShellhive',
+        },
     },
-}, {
-    'name': 'Aztec',
-    'logic': AztecLogic,
-    'bananas': AztecBananas,
-    # I have moved the Angry Aztec entry region to avoid having all CBs locked by Twirl/Vines.
-    'entry_region': Regions.AngryAztecOasis,
-    'special_requirements': {
-        Events.AztecGuitarPad: 'AztecTunnelDoor',
-        Events.LlamaFreed: 'AztecLlama',
-        Events.AztecIceMelted: 'TinyTempleIce',
-        Events.FedTotem: 'Aztec5DT',
+    {
+        'name': 'Aztec',
+        'logic': AztecLogic,
+        'bananas': AztecBananas,
+        # I have moved the Angry Aztec entry region to avoid having all CBs locked by Twirl/Vines.
+        'entry_region': Regions.AngryAztecOasis,
+        'special_requirements': {
+            Events.AztecGuitarPad: 'AztecTunnelDoor',
+            Events.LlamaFreed: 'AztecLlama',
+            Events.AztecIceMelted: 'TinyTempleIce',
+            Events.FedTotem: 'Aztec5DT',
+        },
     },
-}, {
-    'name': 'Factory',
-    'logic': FactoryLogic,
-    'bananas': FactoryBananas,
-    'entry_region': Regions.FranticFactoryEntryHandler,
-    'special_requirements': {
-        Events.TestingGateOpened: 'FactoryTesting',
-        Events.MainCoreActivated: 'FactoryProduction',
+    {
+        'name': 'Factory',
+        'logic': FactoryLogic,
+        'bananas': FactoryBananas,
+        'entry_region': Regions.FranticFactoryEntryHandler,
+        'special_requirements': {
+            Events.TestingGateOpened: 'FactoryTesting',
+            Events.MainCoreActivated: 'FactoryProduction',
+        },
     },
-}, {
-    'name': 'Galleon',
-    'logic': GalleonLogic,
-    'bananas': GalleonBananas,
-    'entry_region': Regions.GloomyGalleonEntryHandler,
-    'special_requirements': {
-        Events.WaterRaised: 'RaisedWater',
-        Events.WaterLowered: 'LoweredWater',
-        Events.LighthouseGateOpened: 'GalleonLighthouse',
-        Events.ShipyardGateOpened: 'GalleonPeanut',
-        Events.ActivatedLighthouse: 'GalleonShipSpawned',
-        Events.ShipyardTreasureRoomOpened: 'GalleonTreasure',
-        Events.ShipyardEnguarde: 'Enguarde',
-        Events.LighthouseEnguarde: 'Enguarde',
+    {
+        'name': 'Galleon',
+        'logic': GalleonLogic,
+        'bananas': GalleonBananas,
+        'entry_region': Regions.GloomyGalleonEntryHandler,
+        'special_requirements': {
+            Events.WaterRaised: 'RaisedWater',
+            Events.WaterLowered: 'LoweredWater',
+            Events.LighthouseGateOpened: 'GalleonLighthouse',
+            Events.ShipyardGateOpened: 'GalleonPeanut',
+            Events.ActivatedLighthouse: 'GalleonShipSpawned',
+            Events.ShipyardTreasureRoomOpened: 'GalleonTreasure',
+            Events.ShipyardEnguarde: 'Enguarde',
+            Events.LighthouseEnguarde: 'Enguarde',
+        },
     },
-}, {
-    'name': 'Fungi',
-    'logic': ForestLogic,
-    'bananas': ForestBananas,
-    'entry_region': Regions.FungiForestEntryHandler,
-    'special_requirements': {
-        Events.Night: 'Night',
-        Events.Day: 'Day',
-        Events.HollowTreeGateOpened: 'ForestYellowTunnel',
-        Switches.FungiGreenFeather: 'ForestGreenTunnelFeather',
-        Switches.FungiGreenPineapple: 'FungiGreenPineapple',
-        Events.MushroomCannonsSpawned: 'CheckOfLegends',
+    {
+        'name': 'Fungi',
+        'logic': ForestLogic,
+        'bananas': ForestBananas,
+        'entry_region': Regions.FungiForestEntryHandler,
+        'special_requirements': {
+            Events.Night: 'Night',
+            Events.Day: 'Day',
+            Events.HollowTreeGateOpened: 'ForestYellowTunnel',
+            Switches.FungiGreenFeather: 'ForestGreenTunnelFeather',
+            Switches.FungiGreenPineapple: 'FungiGreenPineapple',
+            Events.MushroomCannonsSpawned: 'CheckOfLegends',
+        },
     },
-}, {
-    'name': 'Caves',
-    'logic': CavesLogic,
-    'bananas': CavesBananas,
-    'entry_region': Regions.CrystalCavesEntryHandler,
-    'special_requirements': {
-        RemovedBarriersSelected.caves_ice_walls: 'CavesIceWalls',
-        RemovedBarriersSelected.caves_igloo_pads: 'CavesIglooPads',
+    {
+        'name': 'Caves',
+        'logic': CavesLogic,
+        'bananas': CavesBananas,
+        'entry_region': Regions.CrystalCavesEntryHandler,
+        'special_requirements': {
+            RemovedBarriersSelected.caves_ice_walls: 'CavesIceWalls',
+            RemovedBarriersSelected.caves_igloo_pads: 'CavesIglooPads',
+        },
     },
-}, {
-    'name': 'Castle',
-    'logic': CastleLogic,
-    'bananas': CastleBananas,
-    'entry_region': Regions.CreepyCastleEntryHandler,
-    'special_requirements': {
-        RemovedBarriersSelected.castle_crypt_doors: 'CastleCryptDoors',
+    {
+        'name': 'Castle',
+        'logic': CastleLogic,
+        'bananas': CastleBananas,
+        'entry_region': Regions.CreepyCastleEntryHandler,
+        'special_requirements': {
+            RemovedBarriersSelected.castle_crypt_doors: 'CastleCryptDoors',
+        },
     },
-}]
+]
 
 if __name__ == '__main__':
     output = 'const requirement_data = {\n'
     for level in LEVELS:
         requirements = [
             # Moves for all kongs
-            'can_use_vines', 'swim', 'oranges', 'barrels', 'climbing',
-            'camera', 'shockwave', 'scope', 'homing', 'Slam', 'levelSlam',
-
+            *['can_use_vines', 'swim', 'oranges', 'barrels', 'climbing'],
+            *['camera', 'shockwave', 'scope', 'homing', 'Slam', 'levelSlam'],
             # Moves for single kongs
-            'coconut', 'bongos', 'grab', 'strongKong', 'blast',
-            'peanut', 'guitar', 'charge', 'jetpack', 'spring',
-            'grape', 'trombone', 'handstand', 'sprint', 'balloon',
-            'feather', 'saxophone', 'twirl', 'mini', 'monkeyport',
-            'pineapple', 'triangle', 'punch', 'hunkyChunky', 'gorillaGone',
-
-            *level['special_requirements'].keys()
+            *['coconut', 'bongos', 'grab', 'strongKong', 'blast'],
+            *['peanut', 'guitar', 'charge', 'jetpack', 'spring'],
+            *['grape', 'trombone', 'handstand', 'sprint', 'balloon'],
+            *['feather', 'saxophone', 'twirl', 'mini', 'monkeyport'],
+            *['pineapple', 'triangle', 'punch', 'hunkyChunky', 'gorillaGone'],
+            *level['special_requirements'].keys(),
         ]
 
         print('Evaluating level', level['name'])
