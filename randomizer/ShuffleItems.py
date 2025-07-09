@@ -208,6 +208,22 @@ def ShuffleItems(spoiler):
                 blueprint_flag_dict[item_location.default] = item_location.default_mapid_data[0].flag
             else:
                 flag_dict[vanilla_item_type].append(old_flag)
+    
+    # Debug information: Print flag dictionary counts and items needing flags counts
+    print("=== FLAG DICTIONARY COUNTS ===")
+    flag_counts = {item_type: len(flags) for item_type, flags in flag_dict.items()}
+    print(f"Flag dict: {flag_counts}")
+    
+    print("=== ITEMS NEEDING FLAGS COUNTS ===")
+    items_needing_counts = {}
+    for location in locations_needing_flags:
+        item_type = location.new_item
+        if item_type in items_needing_counts:
+            items_needing_counts[item_type] += 1
+        else:
+            items_needing_counts[item_type] = 1
+    print(f"Items needing flags: {items_needing_counts}")
+    
     # Shuffle the list of locations needing flags so the flags are assigned randomly across seeds
     spoiler.settings.random.shuffle(locations_needing_flags)
     for location in locations_needing_flags:
@@ -215,6 +231,11 @@ def ShuffleItems(spoiler):
             if location.new_item == Types.Blueprint:
                 location.new_flag = blueprint_flag_dict[spoiler.LocationList[location.location].item]
             else:
+                # Check if there are available flags for this item type
+                if location.new_item not in flag_dict or len(flag_dict[location.new_item]) == 0:
+                    # Debug information to help identify the issue
+                    available_types = [item_type for item_type in flag_dict.keys() if len(flag_dict[item_type]) > 0]
+                    raise Ex.FillException(f"ERROR: No available flags for item type {location.new_item} at location {location.name}. Available flag types: {available_types}")
                 location.new_flag = flag_dict[location.new_item].pop()
 
     # If we failed to give any location a flag, something is very wrong

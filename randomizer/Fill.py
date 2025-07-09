@@ -3586,6 +3586,8 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     spoiler.InitKasplatMap()
     # Handle misc randomizations
     ShuffleMisc(spoiler)
+    if spoiler.settings.archipelago:
+        return
     # Handle Loading Zones - this will handle LO and LZR appropriately
     if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
         ShuffleExits.ExitShuffle(spoiler)
@@ -3646,7 +3648,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         ShuffleVanillaDoors(spoiler)
         if spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
             ShuffleDoors(spoiler, True)
-    elif spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off:
+    elif spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles or spoiler.settings.dk_portal_location_rando_v2 != DKPortalRando.off or (spoiler.settings.progressive_hint_item != ProgressiveHintItem.off and Types.Hint in spoiler.settings.shuffled_location_types):
         ShuffleDoors(spoiler, False)
     if Types.Hint in spoiler.settings.shuffled_location_types:
         UpdateDoorLevels(spoiler)

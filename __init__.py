@@ -15,6 +15,7 @@ import sys
 import tempfile
 
 
+from BaseClasses import Location
 from worlds.dk64.ap_version import version as ap_version
 
 baseclasses_loaded = False
@@ -134,14 +135,14 @@ if baseclasses_loaded:
     from randomizer.Patching.ApplyRandomizer import patching_response
     from version import version
     from randomizer.Patching.EnemyRando import randomize_enemies_0
-    from randomizer.Fill import ShuffleItems, ItemReference, IdentifyMajorItems
-    from randomizer.CompileHints import compileMicrohints
+    from randomizer.Fill import ShuffleItems, Generate_Spoiler, IdentifyMajorItems
+    from randomizer.CompileHints import compileMicrohints, CompileArchipelagoHints
     from randomizer.Enums.Types import Types
     from randomizer.Enums.Kongs import Kongs
     from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Locations import Locations as DK64RLocations
-    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel, GlitchesSelected, HardModeSelected, RemovedBarriersSelected
+    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel, GlitchesSelected, MicrohintsEnabled, HardModeSelected, RemovedBarriersSelected, ItemRandoListSelected
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
     from randomizer.Lists import Item as DK64RItem
@@ -235,6 +236,7 @@ if baseclasses_loaded:
         def __init__(self, multiworld: MultiWorld, player: int):
             """Initialize the DK64 world."""
             self.rom_name_available_event = threading.Event()
+            self.hint_data_available = threading.Event()
             super().__init__(multiworld, player)
 
         @classmethod
@@ -276,7 +278,7 @@ if baseclasses_loaded:
         def generate_early(self):
             """Generate the world."""
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
-            self.settings_string = "fjNPxAMxDIUx0QSpbHPUlZlBLg5gPQ+oBwRDIhKlsa58Iz8fiNEpEtiFKi4bVAhMF6AAd+AAOCAAGGAAGKAAAdm84FBiMhjoStwFIKW2wLcBJIBpmTVRCjFIKUUwGTLK/BQBuAIMAN4CBwBwAYQAOIECQByAoUAOYGCwB0A4YeXIITIagOrIrwAZTiU1QwkoSjuq1ZLEjQxUKi2oy9FRFgETEUAViyxyN2S8XeRQOQ7GXtOQM8jGDIAyqcEQgAFwoAFwwAEw4AExAAD1oADxIACxQABxYADxgACxoAB1wAFp8r0CS5UtnsshhHMk9Gw+M1drAwGcuqwqis0FMqLRjilACgrBovKATiotEkXENPGtLINIiNdHYAHQC8KggJCgsMDQ4QERIUFRYYGRocHR4gISIjJCUmJygpKissLS4vMDEyMzQ1rL4AwADCAMQAnQCyAGkAUQA"
+            self.settings_string = "fjNPxAMxDIUx0QSpbHPUlZlBLg5gPQ+oBwRDIhKlsa58Iz8fiNEpEtiFKi4bVAhMF6AAd+AAOCAAGGAAGKAAAdm84FBiMhjoStwFIKW2wLcBJIBpmTVRCjFIKUUwGTLK/BQBuAIMAN4CBwBwAYQAOIECQByAoUAOYGCwB0A4YeXIITIagOrIrwAZTiU1QwkoSjuq1ZLEjQxUKi2oy9FRFgETEUAViyxyN2S8XeRQOQ7GXtOQM8nGDIAyqcEQgAFwoAFwwAEw4AExAAD1oADxIACxQABxYADxgACxoAB1wAFp8r0CS5UtnsshhHMk9Gw+M1drAwGcuqwqis0FMqLRjilACgrBovKATiotEkXENPGtLINIiNdHYAHQC8KggJCgsMDQ4QERIUFRYYGRocHR4gISIjJCUmJygpKissLS4vMDEyMzQ1rL4AwADCAMQAnQCyAGkAUQA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
@@ -285,7 +287,37 @@ if baseclasses_loaded:
             settings_dict["helm_phase_count"] = self.options.helm_phase_count.value
             settings_dict["krool_phase_count"] = self.options.krool_phase_count.value
             settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
+            settings_dict["randomize_blocker_required_amounts"] = self.options.randomize_blocker_required_amounts.value
+            settings_dict["blocker_text"] = self.options.blocker_text.value
+            settings_dict["chaos_blockers"] = self.options.chaos_blockers.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
+            settings_dict["item_rando_list_selected"] = []
+            
+            always_enabled_categories = [
+                ItemRandoListSelected.shop,
+                ItemRandoListSelected.banana,
+                ItemRandoListSelected.toughbanana,
+                ItemRandoListSelected.crown,
+                ItemRandoListSelected.blueprint,
+                ItemRandoListSelected.key,
+                ItemRandoListSelected.medal,
+                ItemRandoListSelected.nintendocoin,
+                ItemRandoListSelected.kong,
+                ItemRandoListSelected.fairy,
+                ItemRandoListSelected.rainbowcoin,
+                ItemRandoListSelected.beanpearl,
+                ItemRandoListSelected.junkitem,
+                ItemRandoListSelected.crateitem,
+                ItemRandoListSelected.rarewarecoin,
+                ItemRandoListSelected.shockwave,
+            ]
+            settings_dict["item_rando_list_selected"].extend(always_enabled_categories)
+            
+            if self.options.hint_item_randomization.value:
+                settings_dict["item_rando_list_selected"].append(ItemRandoListSelected.hint)
+            if self.options.shopkeepers_in_pool.value:
+                settings_dict["item_rando_list_selected"].append(ItemRandoListSelected.shopowners)
+            
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["mirror_mode"] = self.options.mirror_mode.value
@@ -444,17 +476,22 @@ if baseclasses_loaded:
                     # Ensure that the items in the start inventory are only keys, shops, shockwaves, training barrels or climbing items
                     raise ValueError(f"Invalid item type for starting inventory: {item}. Starting inventory can only contain keys or moves.")
 
-            # Handle enemy rando
-            self.spoiler.enemy_rando_data = {}
-            self.spoiler.pkmn_snap_data = []
-            if self.spoiler.settings.enemy_rando:
-                randomize_enemies_0(self.spoiler)
+            Generate_Spoiler(self.spoiler)
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
             if self.spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
                 # UT should not reshuffle the level order, but should update the exits
                 if not hasattr(self.multiworld, "generation_is_fake"):
                     ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
                 self.spoiler.UpdateExits()
+            
+            # Handle hint preparation by initiating some variables
+            self.major_item_locations = []
+            self.woth_item_locations = []
+            self.deep_location_items = []
+            self.foreignMicroHints = {}
+
+            # Handle locations that start empty due to being junk
+            self.junked_locations = []
 
         def create_regions(self) -> None:
             """Create the regions."""
@@ -544,84 +581,69 @@ if baseclasses_loaded:
                 spoiler.settings.ice_trap_count = local_trap_count
                 ShuffleItems(spoiler)
 
-                spoiler.location_references = [
-                    # DK Moves
-                    ItemReference(DK64RItems.BaboonBlast, "Baboon Blast", "DK Japes Cranky"),
-                    ItemReference(DK64RItems.StrongKong, "Strong Kong", "DK Aztec Cranky"),
-                    ItemReference(DK64RItems.GorillaGrab, "Gorilla Grab", "DK Factory Cranky"),
-                    ItemReference(DK64RItems.Coconut, "Coconut Gun", "DK Japes Funky"),
-                    ItemReference(DK64RItems.Bongos, "Bongo Blast", "DK Aztec Candy"),
-                    # Diddy Moves
-                    ItemReference(DK64RItems.ChimpyCharge, "Chimpy Charge", "Diddy Japes Cranky"),
-                    ItemReference(DK64RItems.RocketbarrelBoost, "Rocketbarrel Boost", "Diddy Aztec Cranky"),
-                    ItemReference(DK64RItems.SimianSpring, "Simian Spring", "Diddy Factory Cranky"),
-                    ItemReference(DK64RItems.Peanut, "Peanut Popguns", "Diddy Japes Funky"),
-                    ItemReference(DK64RItems.Guitar, "Guitar Gazump", "Diddy Aztec Candy"),
-                    # Lanky Moves
-                    ItemReference(DK64RItems.Orangstand, "Orangstand", "Lanky Japes Cranky"),
-                    ItemReference(DK64RItems.BaboonBalloon, "Baboon Balloon", "Lanky Factory Cranky"),
-                    ItemReference(DK64RItems.OrangstandSprint, "Orangstand Sprint", "Lanky Caves Cranky"),
-                    ItemReference(DK64RItems.Grape, "Grape Shooter", "Lanky Japes Funky"),
-                    ItemReference(DK64RItems.Trombone, "Trombone Tremor", "Lanky Aztec Candy"),
-                    # Tiny Moves
-                    ItemReference(DK64RItems.MiniMonkey, "Mini Monkey", "Tiny Japes Cranky"),
-                    ItemReference(DK64RItems.PonyTailTwirl, "Pony Tail Twirl", "Tiny Factory Cranky"),
-                    ItemReference(DK64RItems.Monkeyport, "Monkeyport", "Tiny Caves Cranky"),
-                    ItemReference(DK64RItems.Feather, "Feather Bow", "Tiny Japes Funky"),
-                    ItemReference(DK64RItems.Saxophone, "Saxophone Slam", "Tiny Aztec Candy"),
-                    # Chunky Moves
-                    ItemReference(DK64RItems.HunkyChunky, "Hunky Chunky", "Chunky Japes Cranky"),
-                    ItemReference(DK64RItems.PrimatePunch, "Primate Punch", "Chunky Factory Cranky"),
-                    ItemReference(DK64RItems.GorillaGone, "Gorilla Gone", "Chunky Caves Cranky"),
-                    ItemReference(DK64RItems.Pineapple, "Pineapple Launcher", "Chunky Japes Funky"),
-                    ItemReference(DK64RItems.Triangle, "Triangle Trample", "Chunky Aztec Candy"),
-                    # Gun Upgrades
-                    ItemReference(DK64RItems.HomingAmmo, "Homing Ammo", "Shared Forest Funky"),
-                    ItemReference(DK64RItems.SniperSight, "Sniper Scope", "Shared Castle Funky"),
-                    ItemReference(DK64RItems.ProgressiveAmmoBelt, "Progressive Ammo Belt", ["Shared Factory Funky", "Shared Caves Funky"]),
-                    ItemReference(DK64RItems.Camera, "Fairy Camera", "Banana Fairy Gift"),
-                    ItemReference(DK64RItems.Shockwave, "Shockwave", "Banana Fairy Gift"),
-                    # Basic Moves
-                    ItemReference(DK64RItems.Swim, "Diving", "Dive Barrel"),
-                    ItemReference(DK64RItems.Oranges, "Orange Throwing", "Orange Barrel"),
-                    ItemReference(DK64RItems.Barrels, "Barrel Throwing", "Barrel Barrel"),
-                    ItemReference(DK64RItems.Vines, "Vine Swinging", "Vine Barrel"),
-                    ItemReference(DK64RItems.Climbing, "Climbing", "Starting Move"),
-                    # Instrument Upgrades & Slams
-                    ItemReference(
-                        DK64RItems.ProgressiveInstrumentUpgrade,
-                        "Progressive Instrument Upgrade",
-                        ["Shared Galleon Candy", "Shared Caves Candy", "Shared Castle Candy"],
-                    ),
-                    ItemReference(
-                        DK64RItems.ProgressiveSlam,
-                        "Progressive Slam",
-                        ["Shared Isles Cranky", "Shared Forest Cranky", "Shared Castle Cranky"],
-                    ),
-                    # Kongs
-                    ItemReference(DK64RItems.Donkey, "Donkey Kong", "Starting Kong"),
-                    ItemReference(DK64RItems.Diddy, "Diddy Kong", "Japes Diddy Cage"),
-                    ItemReference(DK64RItems.Lanky, "Lanky Kong", "Llama Lanky Cage"),
-                    ItemReference(DK64RItems.Tiny, "Tiny Kong", "Aztec Tiny Cage"),
-                    ItemReference(DK64RItems.Chunky, "Chunky Kong", "Factory Chunky Cage"),
-                    # Shopkeepers
-                    ItemReference(DK64RItems.Cranky, "Cranky Kong", "Starting Item"),
-                    ItemReference(DK64RItems.Candy, "Candy Kong", "Starting Item"),
-                    ItemReference(DK64RItems.Funky, "Funky Kong", "Starting Item"),
-                    ItemReference(DK64RItems.Snide, "Snide", "Starting Item"),
-                    # Early Keys
-                    ItemReference(DK64RItems.JungleJapesKey, "Key 1", "Starting Key"),
-                    ItemReference(DK64RItems.AngryAztecKey, "Key 2", "Starting Key"),
-                    ItemReference(DK64RItems.FranticFactoryKey, "Key 3", "Starting Key"),
-                    ItemReference(DK64RItems.GloomyGalleonKey, "Key 4", "Starting Key"),
-                    # Late Keys
-                    ItemReference(DK64RItems.FungiForestKey, "Key 5", "Starting Key"),
-                    ItemReference(DK64RItems.CrystalCavesKey, "Key 6", "Starting Key"),
-                    ItemReference(DK64RItems.CreepyCastleKey, "Key 7", "Starting Key"),
-                    ItemReference(DK64RItems.HideoutHelmKey, "Key 8", "Starting Key"),
-                ]
                 spoiler.UpdateLocations(spoiler.LocationList)
                 compileMicrohints(spoiler)
+                # Could add a hints on/off setting?
+                microhints_enabled = True
+                hints_enabled = True
+                if hints_enabled or microhints_enabled:
+                    self.hint_data_available.wait()
+
+                if hints_enabled:
+                    # Finalize hints
+
+                    # Settings
+                    woth_count = 10
+                    major_count = 7
+                    deep_count = 8
+
+                    # Creating the hints 
+                    # pre-creating is... a choice that I made. I don't like the idea of CompileHints knowing what a multiworld is
+                    # I should create an AP Hints.py file
+                    woth_hints = self.parseDirectItemHints(self.woth_item_locations)
+                    major_hints = self.parseDirectItemHints(self.major_item_locations)
+                    deep_hints = self.parseDeepHints(self.deep_location_items)
+                    woth_hints = self.spoiler.settings.random.sample(woth_hints, min(woth_count, len(woth_hints)))
+                    if len(woth_hints) < woth_count:
+                        major_count += (woth_count - len(woth_hints))
+                        deep_count += (woth_count - len(woth_hints))
+                    woth_hints = woth_hints + woth_hints
+                    major_hints = self.spoiler.settings.random.sample(major_hints, min(major_count, len(major_hints)))
+                    if len(major_hints) < major_count:
+                        deep_count += (major_count - len(major_hints))
+                    if len(deep_hints) < deep_count:
+                        print(f"Deep count too high: {deep_count} for {len(deep_hints)}. {woth_count}, {major_count}")
+                    deep_hints = self.spoiler.settings.random.sample(deep_hints, deep_count)
+                    CompileArchipelagoHints(self.spoiler, woth_hints, major_hints, deep_hints)
+
+                if microhints_enabled:
+                    # Finalize microhints
+                    shopkeepers = [DK64RItems.Candy, DK64RItems.Cranky, DK64RItems.Funky, DK64RItems.Snide]
+                    helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
+                    instruments = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
+                    hinted_slams = []
+                    if DK64RItems.ProgressiveSlam in self.foreignMicroHints.keys() and DK64RItems.ProgressiveSlam in self.spoiler.microhints:
+                        # Break down the slam hint to retrieve raw data
+                        text1 = "Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in "
+                        hinted_slams = self.spoiler.microhints[DK64RItems.ProgressiveSlam].replace(text1, "")
+                        hinted_slams.replace(" for the elusive slam.", "")
+                        hinted_slams.split(" or ")
+                    for hintedItem in self.foreignMicroHints.keys():
+                        text = ""
+                        if hintedItem in instruments or hintedItem in helm_prog_items:
+                            text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
+                        elif hintedItem == DK64RItems.ProgressiveSlam:
+                            for slam in self.foreignMicroHints[DK64RItems.ProgressiveSlam]:
+                                hinted_slams.append(f"\x07{slam[0]}: {slam[1]}\x07")
+                            slam_text = " or ".join(hinted_slams)
+                            text = f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
+                        elif hintedItem in shopkeepers:
+                            text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0]} {self.foreignMicroHints[hintedItem][1]}\x07.".upper()
+                        for letter in text:
+                            if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c":
+                                text.replace(letter, " ")
+                        self.spoiler.microhints[DK64RItem.ItemList[hintedItem].name] = text
+
                 spoiler.majorItems = IdentifyMajorItems(spoiler)
                 if ap_item_is_major_item:
                     spoiler.majorItems.append(DK64RItems.ArchipelagoItem)
@@ -640,6 +662,114 @@ if baseclasses_loaded:
                 raise
             finally:
                 self.rom_name_available_event.set()  # make sure threading continues and errors are collected
+
+        @classmethod
+        def stage_generate_output(cls, multiworld: MultiWorld, output_directory: str):
+            # Microhint stuff
+            microHintItemNames = {
+                "Progressive Slam": DK64RItems.ProgressiveSlam,
+                "Bongos": DK64RItems.Bongos,
+                "Guitar": DK64RItems.Guitar,
+                "Trombone": DK64RItems.Trombone,
+                "Saxophone": DK64RItems.Saxophone,
+                "Triangle": DK64RItems.Triangle,
+                "Baboon Blast": DK64RItems.BaboonBlast,
+                "Baboon Balloon": DK64RItems.BaboonBalloon,
+                "Monkeyport": DK64RItems.Monkeyport,
+                "Gorilla Grab": DK64RItems.GorillaGrab,
+                "Chimpy Charge": DK64RItems.ChimpyCharge,
+                "Gorilla Gone": DK64RItems.GorillaGone,
+                "Candy": DK64RItems.Candy,
+                "Cranky": DK64RItems.Cranky,
+                "Funky": DK64RItems.Funky,
+                "Snide": DK64RItems.Snide,
+            }
+            shopkeepers = [DK64RItems.Candy, DK64RItems.Cranky, DK64RItems.Funky, DK64RItems.Snide]
+            helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
+            instruments = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
+            microhint_categories = {
+                MicrohintsEnabled.off: shopkeepers.copy(),
+                MicrohintsEnabled.base: helm_prog_items.copy() + [DK64RItems.ProgressiveSlam] + shopkeepers.copy(),
+                MicrohintsEnabled.all: helm_prog_items.copy() + instruments.copy() + shopkeepers.copy() + [DK64RItems.ProgressiveSlam],
+            }
+
+            # Hint stuff
+            try:
+                # Get players that have hints enabled.
+                players = {autoworld.player for autoworld in multiworld.get_game_worlds("Donkey Kong 64")}
+                # Locations that could get a "deep locations" hint:
+                deep_location_names = [
+                    "Returning the Banana Fairies",
+                    "Japes Diddy Minecart",
+                    "Aztec Diddy Vulture Race",
+                    "Aztec Tiny Beetle Race",
+                    "Factory Donkey DK Arcade Round 1",
+                    "Galleon Donkey Seal Race",
+                    "Forest Chunky Minecart",
+                    "Forest Donkey Baboon Blast",
+                    "Forest Diddy Owl Race",
+                    "Forest Lanky Rabbit Race",
+                    "Caves Donkey Baboon Blast",
+                    "Caves Lanky Beetle Race",
+                    "Castle Donkey Minecart",
+                    "Forest Donkey Mushroom Cannons",
+                    "Isles Battle Arena 2 (Fungi Lobby: Gorilla Gone Box)",
+                    "Isles Diddy Summit Barrel",
+                    "Helm Battle Arena (Top of Blast-o-Matic)",
+                    "Helm Donkey Medal",
+                    "Helm Chunky Medal",
+                    "Helm Tiny Medal",
+                    "Helm Lanky Medal",
+                    "Helm Diddy Medal",
+                    "Helm Fairy (Key 8 Room (1))",
+                    "Helm Fairy (Key 8 Room (2))",
+                    "Galleon Diddy Mechfish",
+                    "Jetpac",
+                    "Forest Chunky Keg Crushing",
+                    "Aztec Tiny Llama Temple Lava Pedestals",
+                    "Galleon Chunky Cannon Game",
+                    "Galleon Tiny Medal",
+                    "Factory Chunky Toy Monster",
+                    "Castle Tiny Car Race",
+                    "Forest Fairy (Dark Rafters)",
+                    "Galleon Donkey Free the Seal",
+                    "Caves Dirt: Giant Kosha",
+                    "Castle Lanky Tower",
+                    "Castle Donkey Tree Sniping",
+                    "Castle Chunky Tree Sniping Barrel",
+                ]
+                
+                # Look through every location in the multiworld and find all the DK64 items that are progression
+                # Also gather any information on microhinted items
+                # Also also gather information about which locations have junk items or no items
+                for loc in multiworld.get_locations():
+                    player = loc.item.player
+                    autoworld = multiworld.worlds[player]
+                    locworld = multiworld.worlds[loc.player]
+                    if players:
+                        if loc.player in players and loc.name in deep_location_names:
+                            locworld.deep_location_items.append(loc)
+                        if player in players and autoworld.isMajorItem(loc.item) and loc.name:
+                            autoworld.major_item_locations.append(loc)
+                            # Skip item at location and see if game is still beatable
+                            state = CollectionState(multiworld)
+                            state.locations_checked.add(loc)
+                            if not multiworld.can_beat_game(state):
+                                autoworld.woth_item_locations.append(loc)
+                    if loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]:
+                        if player != loc.player:
+                            if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
+                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name])
+                            else:    
+                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name]      
+                    if locworld.location_starts_empty(loc):
+                        locworld.junked_locations.append(loc.name)
+            
+            except Exception as e:
+                raise e
+            finally:
+                for autoworld in multiworld.get_game_worlds("Donkey Kong 64"):
+                    autoworld.hint_data_available.set()
 
         def update_seed_results(self, patch, spoiler, player_id):
             """Update the seed results."""
@@ -685,7 +815,7 @@ if baseclasses_loaded:
                 "ForestTime": self.spoiler.settings.fungi_time_internal.name,
                 "GalleonWater": self.spoiler.settings.galleon_water_internal.name,
                 "MedalCBRequirement": self.spoiler.settings.medal_cb_req,
-                "BLockerValues": self.spoiler.settings.BLockerEntryCount,
+                "BLockerValues": ", ".join([f"{['Japes', 'Aztec', 'Factory', 'Galleon', 'Forest', 'Caves', 'Castle', 'Helm'][i]}: {count} {barrier_type.name}" for i, (barrier_type, count) in enumerate(zip(self.spoiler.settings.BLockerEntryItems, self.spoiler.settings.BLockerEntryCount))]),
                 "RemovedBarriers": ", ".join([barrier.name for barrier in self.spoiler.settings.remove_barriers_selected]),
                 "FairyRequirement": self.spoiler.settings.rareware_gb_fairies,
                 "MermaidPearls": self.spoiler.settings.mermaid_gb_pearls,
@@ -702,6 +832,7 @@ if baseclasses_loaded:
                 "GlitchesSelected": ", ".join([glitch.name for glitch in self.spoiler.settings.glitches_selected]),
                 "StartingKeyList": ", ".join([key.name for key in self.spoiler.settings.starting_key_list]),
                 "HardShooting": self.options.hard_shooting.value,
+                "Junk": self.junked_locations,
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -728,7 +859,12 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("CBs for Medal: " + str(self.spoiler.settings.medal_cb_req))
             spoiler_handle.write("\n")
-            spoiler_handle.write("B. Locker Requirements: " + ", ".join([str(count) for count in self.spoiler.settings.BLockerEntryCount]))
+            # Include both barrier type and count for B. Lockers
+            blocker_requirements = []
+            for i, (barrier_type, count) in enumerate(zip(self.spoiler.settings.BLockerEntryItems, self.spoiler.settings.BLockerEntryCount)):
+                level_names = ["Japes", "Aztec", "Factory", "Galleon", "Forest", "Caves", "Castle", "Helm"]
+                blocker_requirements.append(f"{level_names[i]}: {count} {barrier_type.name}")
+            spoiler_handle.write("B. Locker Requirements: " + ", ".join(blocker_requirements))
             spoiler_handle.write("\n")
             spoiler_handle.write("Removed Barriers: " + ", ".join([barrier.name for barrier in self.spoiler.settings.remove_barriers_selected]))
             spoiler_handle.write("\n")
@@ -764,6 +900,90 @@ if baseclasses_loaded:
 
             return created_item
 
+        def isMajorItem(self, item: DK64Item):
+            """Determine whether a DK64Item is a Major Item."""
+            # Events, colored bananas
+            if "," in item.name:
+                return False
+            # Not progression
+            if item.classification != ItemClassification.progression and item.classification != ItemClassification.progression_skip_balancing:
+                return False
+            # Golden bananas and blueprints
+            if item.name == "Golden Banana" or "Blueprint" in item.name:
+                return False
+            # Hints, medals, Company coins, Banana fairies
+            if "Hint" in item.name or item.name == "Banana Medal" or "Coin" in item.name or item.name == "Banana Fairy":
+                return False
+            # Helm barrels
+            if "Helm" in item.name and "Barrel" in item.name:
+                return False
+            # Misc items
+            if item.name == "Pearl" or item.name == "The Bean" or "Hoard" in item.name:
+                return False
+            return True
+
+        def location_starts_empty(self, location: Location):
+            """Check if a location starts empty based on item type and location type."""
+            loc_obj = None
+            item_obj = None
+            # Events, collectables
+            if ", " in location.item.name:
+                return False
+            if location.item.name == "BananaHoard":
+                return False
+            for loc in self.spoiler.LocationList.keys():
+                if self.spoiler.LocationList[loc].name == location.name:
+                    loc_obj = self.spoiler.LocationList[loc]
+            for item in DK64RItem.ItemList.keys():
+                if DK64RItem.ItemList[item].name == location.item.name:
+                    item_obj = DK64RItem.ItemList[item]
+            # Completely empty location. Can this happen? No? Anyway...
+            if location.item is None:
+                return True
+            # NoItem
+            if location.item.name == "No Item":
+                return True
+            # Junk item
+            if item_obj is None:
+                print(location.item.name)
+                a = 1/0
+            if item_obj.type == Types.JunkItem:
+                # In a location that can't have junk
+                if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies) or (loc_obj.type != Types.Key or loc_obj.level == Levels.HideoutHelm):
+                    return True
+            return False
+
+        def parseDirectItemHints(self, locations_to_hint: list) -> list:
+            """Write direct item hints for the given list of locations."""
+            hints = []
+            text = ""
+            for location in locations_to_hint:
+                if location.player != self.player:
+                    text = f"Looking for {location.item.name}? Ask {self.multiworld.get_player_name(location.player)} to try looking in {location.name[:80]}.".upper()
+                else:
+                    text = f"Looking for {location.item.name}? Try looking in {location.name}.".upper()
+                for letter in text:
+                    if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c":
+                        text.replace(letter, " ")
+                hints.append(text)
+            return hints
+        
+        def parseDeepHints(self, locations_to_hint: list) -> list:
+            """Write deep item hints for the given list of locations."""
+            hints = []
+            text = ""
+            for location in locations_to_hint:
+                if location.player != self.player:
+                    text = f"{location.name} has {self.multiworld.get_player_name(location.item.player)}'s {location.item.name[:40]}.".upper()
+                else:
+                    text = f"{location.name} has your {location.item.name}".upper()
+                for letter in text:
+                    if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c":
+                        text.replace(letter, " ")
+                hints.append(text)
+            return hints
+
+
         def collect(self, state: CollectionState, item: Item) -> bool:
             """Collect the item."""
             change = super().collect(state, item)
@@ -794,6 +1014,7 @@ if baseclasses_loaded:
             glitches_selected = slot_data["GlitchesSelected"].split(", ")
             starting_key_list = slot_data["StartingKeyList"].split(", ")
             hard_shooting = slot_data.get("HardShooting", False)
+            junk = slot_data["Junk"].split(", ")
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -813,4 +1034,5 @@ if baseclasses_loaded:
             relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != ""]
             relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list if key != ""]
             relevant_data["HardShooting"] = hard_shooting
+            relevant_data["Junk"] = junk
             return relevant_data
