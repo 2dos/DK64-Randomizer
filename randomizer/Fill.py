@@ -3580,8 +3580,9 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     CheckForIncompatibleSettings(spoiler.settings)
     if spoiler.settings.wrinkly_hints == WrinklyHints.fixed_racing:
         ValidateFixedHints(spoiler.settings)
+    if not spoiler.settings.archipelago:
     # Reset LocationList for a new fill
-    spoiler.ResetLocationList()
+        spoiler.ResetLocationList()
     # Initiate kasplat map with default
     spoiler.InitKasplatMap()
     # Handle misc randomizations
