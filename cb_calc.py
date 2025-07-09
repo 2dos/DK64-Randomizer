@@ -1,3 +1,4 @@
+"""A script to automatically calculate the requirements for various CBs."""
 # Python built-ins
 import collections
 import itertools
@@ -29,6 +30,8 @@ from randomizer.Enums.Time import Time
 
 
 class MockSettings:
+    """Mock of the Settings object."""
+
     tns_location_rando = False
     free_trade_items = False
     galleon_water_internal = None
@@ -37,10 +40,14 @@ class MockSettings:
 
 
 class MockEvents:
+    """Mock of the Events object."""
+
     def __init__(self, requirements):
+        """Initialize the events class with a set of requirements."""
         self.reqs = requirements
 
     def __contains__(self, event):
+        """Check if a given event is in the events (requirements)."""
         return event in self.reqs
 
 
@@ -67,6 +74,8 @@ SWITCHSANITY_MOVES = {
 
 
 class Logic:
+    """Mock of the randomizer/Logic.py file."""
+
     ALWAYS_IN_LOGIC = [
         # These represent 'you are kong X', which assumes that you have a tag barrel accessible.
         *["isdonkey", "islanky", "isdiddy", "istiny", "ischunky"],
@@ -78,17 +87,21 @@ class Logic:
     ]
 
     def __init__(self, requirements):
+        """Initialize the logic class with custom requirements."""
         self.reqs = set([*self.ALWAYS_IN_LOGIC, *requirements])
         self.settings = MockSettings()
         self.Events = MockEvents(self.reqs)  # Just a small wrapper since the code uses 'if Events.Foo in l.Events'
 
     def get(self, key):
-        return self.__getattr__(key)
+        """Check if a given key is in the requirements."""
+        return key in self.reqs
 
     def __getattr__(self, key):
+        """Check if a given key is in the requirements."""
         return key in self.reqs
 
     def TimeAccess(self, region, time):
+        """Check if a given time is in the requirements."""
         if time == Time.Day:
             return Events.Day in self.Events
         elif time == Time.Night:
@@ -97,84 +110,99 @@ class Logic:
         return True
 
     def hasMoveSwitchsanity(self, switchsanity_setting, kong_needs_current=True, level=None, default_slam_level=0):
+        """Check if a given switch is in the requirements."""
         if switchsanity_setting in self.reqs:
             return True
         actual_move = SWITCHSANITY_MOVES[switchsanity_setting]
         return actual_move in self.reqs
 
     def checkBarrier(self, barrier):
+        """Check if a given barrier is in the requirements."""
         return barrier in self.reqs
 
     def HasGun(self, kong):
-        return False  # Handled separately by Moves.Night / Moves.Day
+        """Is handled separately by Moves.Night / Moves.Day."""
+        return False
 
     def CanSlamSwitch(self, level, default_requirement_level):
+        """Check if a level slam is in the requirements."""
         return "levelSlam" in self.reqs
 
     def canOpenLlamaTemple(self):
+        """Check if a access to the llama temple is in the requirements."""
         return Events.LlamaFreed in self.Events and (self.coconut or self.grape or self.feather)
 
     def canTravelToMechFish(self):
+        """Check if diving is in the requirements."""
         return self.swim
 
     def IsBossReachable(self, level):
-        return True  # Not strictly necessary (there aren't CBs inside boss rooms) but allows for assumed tagging inside boss rooms.
+        """Not strictly necessary (there aren't CBs inside boss rooms) but allows for assumed tagging inside boss rooms."""
+        return True
 
     def HasInstrument(self, kong):
-        return False  # This seems to be fine but I'm not sure why.
+        """Not strictly necessary but I'm not sure why."""
+        return False
 
     def galleonGatesStayOpen(self):
-        return True  # I'm pretty sure this QoL is always enabled in rando
+        """I'm pretty sure this QoL is always enabled in rando."""
+        return True
 
     def CanOpenJapesGates(self):
-        return True  # QoL from rando
+        """Quality of life improvement from rando."""
+        return True
 
     def CanLlamaSpit(self):
-        return lambda: self.saxophone  # I don't think this matters but I think tiny canonically frees lanky.
+        """I don't think this matters but I think tiny canonically frees lanky."""
+        return lambda: self.saxophone
 
-    # Hardmode requirements are all assumed false
     def IsLavaWater(self):
+        """Hardmode requirements are all assumed false."""
         return False
 
-    # Hardmode requirements are all assumed false
     def IsHardFallDamage(self):
+        """Hardmode requirements are all assumed false."""
         return False
 
-    # Glitches are all assumed false
     def CanPhase(self):
+        """Assume all glitches are not possible."""
         return False
 
-    # Glitches are all assumed false
     def CanMoonkick(self):
+        """Assume all glitches are not possible."""
         return False
 
-    # Glitches are all assumed false
     def CanOStandTBSNoclip(self):
+        """Assume all glitches are not possible."""
         return False
 
-    # Glitches are all assumed false
     def CanMoontail(self):
+        """Assume all glitches are not possible."""
         return False
 
-    # Glitches are all assumed false
     def CanAccessRNDRoom(self):
-        return False  # Determine whether the player can enter an R&D Room with glitches.
+        """Assume all glitches are not possible.
 
-    # Glitches are all assumed false
+        Determines whether the player can enter an R&D Room with glitches.
+        """
+        return False
+
     def CanPhaseswim(self):
+        """Assume all glitches are not possible."""
         return False
 
-    # Glitches are all assumed false
     def CanSTS(self):
+        """Assume all glitches are not possible."""
         return False
 
-    # Glitches are all assumed false
     def CanSkew(self, swim, is_japes=True, kong_req=Kongs.any):
+        """Assume all glitches are not possible."""
         return False
 
 
 class SetOfSets:
-    """Wrapper class to handle composite requirements
+    """Wrapper class to handle composite requirements.
+
     In practice, it can be possible to collect CBs using multiple options (an "either/or").
     To represent this comfortably, we use a "set of sets", where each inner set represents
     a unique way of accomplishing a task, and the overall set represents all ways of doing the task.
@@ -182,23 +210,31 @@ class SetOfSets:
     """
 
     def __init__(self, requirements=None):
+        """Initialize the SetOfSets with requirements."""
         self.requirements = [requirements] if requirements is not None else []
 
     def __iter__(self):
+        """Iterate the requirements in the SetOfSets."""
         return self.requirements.__iter__()
 
     def __repr__(self):
+        """Reproduce the SetOfSets."""
         return str(self.requirements)
 
     def __len__(self):
+        """Get the length of the SetOfSets."""
         return len(self.requirements)
 
     def __hash__(self):
-        # In order for the type to be hashable (i.e. used as a key in a dictionary) we need a hash function.
-        # But the dictionaries are small (and hashing is hard) so we're just telling python to fall back to __eq__.
+        """Hash the SetOfSets.
+        
+        In order for the type to be hashable (i.e. used as a key in a dictionary) we need a hash function.
+        But the dictionaries are small (and hashing is hard) so we're just telling python to fall back to __eq__.
+        """
         return 0
 
     def __eq__(self, other):
+        """Compare this SetOfSets with another."""
         if len(self) != len(other):
             return False
         for requirement in self.requirements:
@@ -207,6 +243,7 @@ class SetOfSets:
         return True
 
     def add(self, requirement):
+        """Add a requirement to this SetOfSets, if it's distinctive."""
         i = 0
         while i < len(self.requirements):
             if requirement.issuperset(self.requirements[i]):
@@ -220,7 +257,9 @@ class SetOfSets:
         return True
 
     def replace_event(self, event, event_requirements):
-        """Small helper function to deal with transitive requirements,
+        """Replace an event with its requirements.
+        
+        This helps deal with transitive requirements,
         i.e. a required event which also has its own SetOfSets requirements.
         This breaks some encapsulation rules, but is tremendously helpful and simple.
         """
@@ -242,7 +281,10 @@ class SetOfSets:
 
 
 class MockRegion:
+    """A mock of randomizer.LogicClasses.Region."""
+
     def __init__(self, region_id):
+        """Initialize the MockRegion with a region ID."""
         self.events = collections.defaultdict(SetOfSets)  # Will be populated later
         self.cbs = collections.defaultdict(SetOfSets)  # Will be populated later
         self.exits = collections.defaultdict(SetOfSets)  # Will be populated later
@@ -250,6 +292,7 @@ class MockRegion:
         self.name = region_id
 
     def __str__(self):
+        """Print the MockRegion for debugging purposes."""
         output = "{\n"
         output += f'  "name": "{self.name.__repr__()}"' + ",\n"
         if len(self.exits) > 0:
@@ -262,14 +305,15 @@ class MockRegion:
 
 
 def possible_requirements(requirements):
-    # In theory this would go up to len(requirements) + 1 ... maybe I need to restore that now that iteration is cheap?
+    """Iterate all possible combinations of requirements, in order. Max 5."""
     for i in range(5):
         for combination in itertools.combinations(requirements, i):
             yield set(combination)
 
 
 def walk_region_graph(regions, starting_region):
-    """Small helper function to traverse all regions along transitions, without doubling up.
+    """Traverse all regions in a graph along transitions, without doubling up.
+
     This generally improves the performance of some of our 'while true' floodfill algorithms,
     since requirements can be naturally flooded through the system.
     """
@@ -286,7 +330,8 @@ def walk_region_graph(regions, starting_region):
 
 
 def flatten_graph(region_logic, region_bananas, requirements):
-    """Stage 1 of computation: Convert the raw data formats
+    """Stage 1 of computation: Convert the raw data formats.
+
     The code in the repo is not tuned for brute force, i.e. logic requirements are listed as lambdas.
     While it is possible to use ast and other smarts to reverse those into their SetOfSets requirement,
     I found it easier (and not overly time consuming) to just brute force all possible combinations,
@@ -295,7 +340,6 @@ def flatten_graph(region_logic, region_bananas, requirements):
     Regardless of methodology, this is a very helpful function, since it allows all further code
     to basically ignore the complexities of DK64, and just treat this like a graph traversal problem.
     """
-
     # Initialize all regions first, since we're caching data on them as we iterate
     regions = {}
     for region_id in region_logic:
@@ -400,7 +444,8 @@ def flatten_graph(region_logic, region_bananas, requirements):
 
 
 def traverse_graph(regions, entry_region):
-    """Stage 2: Flood-fill region requirements
+    """Stage 2: Flood-fill region requirements.
+
     It is not sufficient to know what the requirements are for each region-to-region transition,
     we actually need to know how to get to each region from the entry point in each world.
 
@@ -467,7 +512,8 @@ def traverse_graph(regions, entry_region):
 
 
 def compute_cb_requirements(regions, region_requirements, event_requirements):
-    """Stage 3: Compute the requirements to reach each CB/Bunch/Balloon
+    """Stage 3: Compute the requirements to reach each CB/Bunch/Balloon.
+
     We already parsed out the relevant collectible objects during our flatten_graph prepass.
     Now, it's time to actually make the magic happen, and use our knowledge of region and
     event requirements to figure out how to get all the colored bananas.
@@ -479,7 +525,6 @@ def compute_cb_requirements(regions, region_requirements, event_requirements):
 
     We also need to do a quick fix-up for event requirements, but there's a handy utility for that.
     """
-
     print("Computing CB requirements")
     all_cb_requirements = collections.defaultdict(lambda: collections.defaultdict(list))
     for region in region_requirements:
@@ -508,7 +553,8 @@ def compute_cb_requirements(regions, region_requirements, event_requirements):
 
 
 def to_javascript(cb_requirements, special_requirements):
-    """Stage 4: Generate the output for Ballaam
+    """Stage 4: Generate the output for Ballaam.
+
     And finally, we need to emit this data in some format that Javascript can understand.
     Thankfully, that's not too bad -- there's just a bit of renaming and other small fixups.
     We've already grouped CBs by their requirements in the previous step, but this stage is also
@@ -517,7 +563,6 @@ def to_javascript(cb_requirements, special_requirements):
     For debugability, I'm also including a comment which describes which CBs are available
     for each set of requirements. It's not perfect but it should be good enough for reading.
     """
-
     # The javascript code uses slightly different names for kongs and moves.
     kong_map = {Kongs.donkey: "DK", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky"}
     move_map = {
