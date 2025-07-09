@@ -460,6 +460,8 @@ if baseclasses_loaded:
                             needed_kong = Kongs[data["kong"]]
                             switch_type = SwitchType[data["type"]]
                             settings.switchsanity_data[Switches[switch]] = SwitchInfo(switch, needed_kong, switch_type, 0, 0, [])
+                        for loc in passthrough["JunkedLocations"]:
+                            del self.location_name_to_id[loc]
             # We need to set the freeing kongs here early, as they won't get filled in any other part of the AP process
             settings.diddy_freeing_kong = self.random.randint(0, 4)
             # Lanky freeing kong actually changes logic, so UT should use the slot data rather than genning a new one.
@@ -1043,7 +1045,7 @@ if baseclasses_loaded:
             relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != ""]
             relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list if key != ""]
             relevant_data["HardShooting"] = hard_shooting
-            relevant_data["Junk"] = junk
+            relevant_data["JunkedLocations"] = junk
             relevant_data["BLockerEntryItems"] = [BarrierItems[item] for item in blocker_item_type]
             relevant_data["BLockerEntryCount"] = blocker_item_quantity
             return relevant_data
