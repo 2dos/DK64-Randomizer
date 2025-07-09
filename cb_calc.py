@@ -47,6 +47,23 @@ class MockEvents:
 TINY_TEMPLE_REGIONS = {Regions.TempleStart, Regions.TempleGuitarPad, Regions.TempleUnderwater, Regions.TempleVultureRoom, Regions.TempleKONGRoom}
 CASTLE_CRYPT_REGIONS = {Regions.Crypt, Regions.CryptDonkeyRoom, Regions.CryptDiddyRoom, Regions.CryptChunkyRoom, Regions.CastleMinecarts}
 GUN_MAP = {Kongs.donkey: 'coconut', Kongs.lanky: 'grape', Kongs.diddy: 'peanut', Kongs.tiny: 'feather', Kongs.chunky: 'pineapple'}
+SWITCHSANITY_MOVES = {
+    # These first two switches are removed because they are special_requirements
+    Switches.FungiGreenFeather: None,
+    Switches.FungiGreenPineapple: None,
+    # These switches are all just mapped to their default (non-switchsanity) behavior
+    Switches.FungiYellow: 'grape',
+    Switches.GalleonCannonGame: 'pineapple',
+    Switches.GalleonLighthouse: 'coconut',
+    Switches.GalleonShipwreck: 'peanut',
+    Switches.JapesDiddyCave: 'peanut',
+    Switches.JapesFeather: 'japes_shellhive_gate',
+    Switches.JapesPainting: 'peanut',
+    Switches.JapesRambi: 'coconut',
+    Switches.AztecQuicksandSwitch: 'levelSlam',
+    Switches.AztecGuitar: 'guitar',
+    Switches.AztecBlueprintDoor: 'coconut',
+}
 
 
 class Logic:
@@ -63,27 +80,12 @@ class Logic:
     def __init__(self, requirements):
         self.reqs = set([*self.ALWAYS_IN_LOGIC, *requirements])
         self.settings = MockSettings()
-        self.events = MockEvents(self.reqs)  # Just a small wrapper since the code uses 'if Events.Foo in l.Events'
+        self.Events = MockEvents(self.reqs)  # Just a small wrapper since the code uses 'if Events.Foo in l.Events'
 
     def get(self, key):
         return self.__getattr__(key)
 
     def __getattr__(self, key):
-        # Glitches are all assumed false
-        if key in ['CanPhase', 'CanMoonkick', 'CanOStandTBSNoclip', 'CanMoontail', 'CanAccessRNDRoom', 'CanPhaseswim', 'CanSTS']:
-            return lambda: False
-        if key == 'CanSkew':
-            return lambda swim, is_japes=True, kong_req=Kongs.any: False
-
-        # Hardmode requirements are also assumed false
-        if key in ['IsLavaWater', 'IsHardFallDamage']:
-            return lambda: False
-
-        if key == 'Events':
-            return self.events
-        if key == 'settings':
-            return self.settings
-
         return key in self.reqs
 
     def TimeAccess(self, region, time):
@@ -95,38 +97,22 @@ class Logic:
         return True
 
     def hasMoveSwitchsanity(self, switchsanity_setting, kong_needs_current=True, level=None, default_slam_level=0):
-        if self.get(switchsanity_setting):
+        if switchsanity_setting in self.reqs:
             return True
-        actual_move = {
-            # These first two switches are removed because they are special_requirements
-            Switches.FungiGreenFeather: None,
-            Switches.FungiGreenPineapple: None,
-            # These switches are all just mapped to their default (non-switchsanity) behavior
-            Switches.FungiYellow: 'grape',
-            Switches.GalleonCannonGame: 'pineapple',
-            Switches.GalleonLighthouse: 'coconut',
-            Switches.GalleonShipwreck: 'peanut',
-            Switches.JapesDiddyCave: 'peanut',
-            Switches.JapesFeather: 'japes_shellhive_gate',
-            Switches.JapesPainting: 'peanut',
-            Switches.JapesRambi: 'coconut',
-            Switches.AztecQuicksandSwitch: 'levelSlam',
-            Switches.AztecGuitar: 'guitar',
-            Switches.AztecBlueprintDoor: 'coconut',
-        }[switchsanity_setting]
-        return self.get(actual_move)
+        actual_move = SWITCHSANITY_MOVES[switchsanity_setting]
+        return actual_move in self.reqs
 
     def checkBarrier(self, barrier):
-        return self.get(barrier)
+        return barrier in self.reqs
 
     def HasGun(self, kong):
         return False  # Handled separately by Moves.Night / Moves.Day
 
     def CanSlamSwitch(self, level, default_requirement_level):
-        return self.levelSlam
+        return 'levelSlam' in self.reqs
 
     def canOpenLlamaTemple(self):
-        return Events.LlamaFreed in self.events and (self.coconut or self.grape or self.feather)
+        return Events.LlamaFreed in self.Events and (self.coconut or self.grape or self.feather)
 
     def canTravelToMechFish(self):
         return self.swim
@@ -145,6 +131,46 @@ class Logic:
 
     def CanLlamaSpit(self):
         return lambda: self.saxophone  # I don't think this matters but I think tiny canonically frees lanky.
+
+    # Hardmode requirements are all assumed false
+    def IsLavaWater(self):
+        return False
+
+    # Hardmode requirements are all assumed false
+    def IsHardFallDamage(self):
+        return False
+
+    # Glitches are all assumed false
+    def CanPhase(self):
+        return False
+
+    # Glitches are all assumed false
+    def CanMoonkick(self):
+        return False
+
+    # Glitches are all assumed false
+    def CanOStandTBSNoclip(self):
+        return False
+
+    # Glitches are all assumed false
+    def CanMoontail(self):
+        return False
+
+    # Glitches are all assumed false
+    def CanAccessRNDRoom(self):
+        return False  # Determine whether the player can enter an R&D Room with glitches.
+
+    # Glitches are all assumed false
+    def CanPhaseswim(self):
+        return False
+
+    # Glitches are all assumed false
+    def CanSTS(self):
+        return False
+
+    # Glitches are all assumed false
+    def CanSkew(self, swim, is_japes=True, kong_req=Kongs.any):
+        return False
 
 
 class SetOfSets:
@@ -275,8 +301,12 @@ def flatten_graph(region_logic, region_bananas, requirements):
     for region_id in region_logic:
         regions[region_id] = MockRegion(region_id)
 
+    # Used during pre-passes to reduce the number of objects to process.
+    no_requirements = Logic(set())
+
     print('Finding all events')
     events = []
+    event_names = set()
     for region_id, region in region_logic.items():
         for event in region.events:
             if Events.JapesW1aTagged <= event.name <= Events.IslesW5bTagged:
@@ -284,11 +314,14 @@ def flatten_graph(region_logic, region_bananas, requirements):
             elif event.name in requirements:
                 regions[region_id].events[event.name] = SetOfSets()
                 continue  # Events which are explicitly listed as requirements shouldn't be satisfiable
+            elif event.logic(no_requirements):
+                regions[region_id].events[event.name].add(set())
+                event_names.add(event.name)
             else:
                 events.append((region_id, event))
+                event_names.add(event.name)
 
     # For the purposes of further graph flattening, allow events as requirements, but don't modify the original list.
-    event_names = (event.name for _, event in events)
     requirements = {*requirements, *event_names}
 
     print('Computing event requirements')
@@ -309,18 +342,26 @@ def flatten_graph(region_logic, region_bananas, requirements):
             continue  # Warps do not contribute to new regions becoming accessible, so we ignore them for perf benefits
         raise ValueError(f'Unable to determine requirements for event {event.name}')
 
+    print('Finding all collectibles')
+    collectibles = []
+    for region in region_bananas:
+        for collectible in region_bananas[region]:
+            if collectible.type not in [Collectibles.banana, Collectibles.bunch, Collectibles.balloon]:
+                continue
+            elif collectible.logic(no_requirements):
+                regions[region].cbs[collectible].add(set())
+            else:
+                collectibles.append((region, collectible))
+
     print('Computing collectible requirements')
     for requirement in possible_requirements(requirements):
         l = Logic(requirement)
-        for region, collectibles in region_bananas.items():
-            for collectible in collectibles:
-                if collectible.type in [Collectibles.banana, Collectibles.bunch, Collectibles.balloon]:
-                    if collectible.logic(l):
-                        regions[region].cbs[collectible].add(requirement)
+        for region, collectible in collectibles:
+            if collectible.logic(l):
+                regions[region].cbs[collectible].add(requirement)
 
     print('Finding all region transitions')
     transitions = []
-    no_requirements = Logic(set())
     for region_id, region in region_logic.items():
         for transition in region.exits:
             if transition.dest not in region_logic:
