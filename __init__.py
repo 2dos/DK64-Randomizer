@@ -288,8 +288,8 @@ if baseclasses_loaded:
             settings_dict["krool_phase_count"] = self.options.krool_phase_count.value
             settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
             settings_dict["randomize_blocker_required_amounts"] = self.options.randomize_blocker_required_amounts.value
-            settings_dict["blocker_text"] = self.options.blocker_text.value
-            settings_dict["chaos_blockers"] = self.options.chaos_blockers.value
+            settings_dict["blocker_text"] = self.options.blocker_max.value
+            settings_dict["chaos_blockers"] = self.options.secret_setting_lol.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
             settings_dict["item_rando_list_selected"] = []
 
@@ -613,8 +613,10 @@ if baseclasses_loaded:
                     major_hints = self.spoiler.settings.random.sample(major_hints, min(major_count, len(major_hints)))
                     if len(major_hints) < major_count:
                         deep_count += major_count - len(major_hints)
+                    # Handle error that's theoretically impossible. Joy
                     if len(deep_hints) < deep_count:
-                        print(f"Deep count too high: {deep_count} for {len(deep_hints)}. {woth_count}, {major_count}")
+                        # Okay, I swear 1 test gen threw an error about this, but it seems to be gone now... so if you're reading this, PLEASE REPORT THIS ERROR!
+                        raise Exception(f"Deep count too high: {deep_count} for {len(deep_hints)}. {woth_count}, {major_count}.")
                     deep_hints = self.spoiler.settings.random.sample(deep_hints, deep_count)
                     CompileArchipelagoHints(self.spoiler, woth_hints, major_hints, deep_hints)
 
@@ -642,7 +644,7 @@ if baseclasses_loaded:
                         elif hintedItem in shopkeepers:
                             text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0]} {self.foreignMicroHints[hintedItem][1]}\x07.".upper()
                         for letter in text:
-                            if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c":
+                            if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
                                 text.replace(letter, " ")
                         self.spoiler.microhints[DK64RItem.ItemList[hintedItem].name] = text
 
@@ -667,6 +669,7 @@ if baseclasses_loaded:
 
         @classmethod
         def stage_generate_output(cls, multiworld: MultiWorld, output_directory: str):
+            """Prepare hint data."""
             # Microhint stuff
             microHintItemNames = {
                 "Progressive Slam": DK64RItems.ProgressiveSlam,
@@ -742,8 +745,6 @@ if baseclasses_loaded:
                 ]
 
                 # Look through every location in the multiworld and find all the DK64 items that are progression
-                # Also gather any information on microhinted items
-                # Also also gather information about which locations have junk items or no items
                 for loc in multiworld.get_locations():
                     player = loc.item.player
                     autoworld = multiworld.worlds[player]
@@ -758,12 +759,14 @@ if baseclasses_loaded:
                             state.locations_checked.add(loc)
                             if not multiworld.can_beat_game(state):
                                 autoworld.woth_item_locations.append(loc)
+                # Also gather any information on microhinted items
                     if loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
-                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name])
-                            else:
-                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name]
+                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
+                            else:    
+                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name[:80]]
+                # Also also gather information about which locations have junk items or no items      
                     if locworld.location_starts_empty(loc):
                         locworld.junked_locations.append(loc.name)
 
@@ -966,11 +969,11 @@ if baseclasses_loaded:
             text = ""
             for location in locations_to_hint:
                 if location.player != self.player:
-                    text = f"Looking for {location.item.name}? Ask {self.multiworld.get_player_name(location.player)} to try looking in {location.name[:80]}.".upper()
+                    text = f"Looking for \x07{location.item.name[:40]}\x07? Ask {self.multiworld.get_player_name(location.player)} to try looking in \x0d{location.name[:80]}\x0d.".upper()
                 else:
-                    text = f"Looking for {location.item.name}? Try looking in {location.name}.".upper()
+                    text = f"Looking for \x07{location.item.name[:40]}\x07? Try looking in \x0d{location.name}\x0d.".upper()
                 for letter in text:
-                    if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c":
+                    if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
                         text.replace(letter, " ")
                 hints.append(text)
             return hints
@@ -981,11 +984,11 @@ if baseclasses_loaded:
             text = ""
             for location in locations_to_hint:
                 if location.player != self.player:
-                    text = f"{location.name} has {self.multiworld.get_player_name(location.item.player)}'s {location.item.name[:40]}.".upper()
+                    text = f"\x0d{location.name}\x0d has {self.multiworld.get_player_name(location.item.player)}'s \x07{location.item.name[:40]}\x07.".upper()
                 else:
-                    text = f"{location.name} has your {location.item.name}".upper()
+                    text = f"\x0d{location.name}\x0d has your \x07{location.item.name}\x07".upper()
                 for letter in text:
-                    if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c":
+                    if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
                         text.replace(letter, " ")
                 hints.append(text)
             return hints

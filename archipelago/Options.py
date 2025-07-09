@@ -378,9 +378,10 @@ class MaximumBLocker(Range):
 
 
 class ChaosBLockers(Toggle):
-    """B. Lockers will require items other than golden bananas to clear. This will override any B. Locker options set above!"""
+    """Determines whether the "Secret" will be enabled."""
 
     display_name = "Chaos B. Lockers"
+    default = True
 
 
 @dataclass
@@ -401,8 +402,8 @@ class DK64Options(PerGameCommonOptions):
     medal_requirement: JetpacRequirement
     rareware_gb_fairies: RarewareGBRequirement
     randomize_blocker_required_amounts: RandomizeBlockers
-    blocker_text: MaximumBLocker
-    chaos_blockers: ChaosBLockers
+    blocker_max: MaximumBLocker
+    secret_setting_lol: ChaosBLockers
     open_lobbies: OpenLobbies
     switchsanity: SwitchSanity
     climbing_shuffle: ClimbingShuffle
