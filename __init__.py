@@ -137,7 +137,7 @@ if baseclasses_loaded:
     from randomizer.Patching.EnemyRando import randomize_enemies_0
     from randomizer.Fill import ShuffleItems, Generate_Spoiler, IdentifyMajorItems
     from randomizer.CompileHints import compileMicrohints, CompileArchipelagoHints
-    from randomizer.Enums.Types import Types
+    from randomizer.Enums.Types import Types, BarrierItems
     from randomizer.Enums.Kongs import Kongs
     from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
@@ -292,7 +292,7 @@ if baseclasses_loaded:
             settings_dict["chaos_blockers"] = self.options.secret_setting_lol.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
             settings_dict["item_rando_list_selected"] = []
-            
+
             always_enabled_categories = [
                 ItemRandoListSelected.shop,
                 ItemRandoListSelected.banana,
@@ -312,9 +312,10 @@ if baseclasses_loaded:
                 ItemRandoListSelected.shockwave,
             ]
             settings_dict["item_rando_list_selected"].extend(always_enabled_categories)
-            
+
             if self.options.hint_item_randomization.value:
                 settings_dict["item_rando_list_selected"].append(ItemRandoListSelected.hint)
+
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["mirror_mode"] = self.options.mirror_mode.value
@@ -433,6 +434,8 @@ if baseclasses_loaded:
                         settings.starting_kong = settings.starting_kong_list[0]  # fake a starting kong so that we don't force a different kong
                         settings.medal_requirement = passthrough["JetpacReq"]
                         settings.rareware_gb_fairies = passthrough["FairyRequirement"]
+                        settings.BLockerEntryItems = passthrough["BLockerEntryItems"]
+                        settings.BLockerEntryCount = passthrough["BLockerEntryCount"]
                         settings.medal_cb_req = passthrough["MedalCBRequirement"]
                         settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
                         settings.BossBananas = passthrough["BossBananas"]
@@ -455,6 +458,8 @@ if baseclasses_loaded:
                             needed_kong = Kongs[data["kong"]]
                             switch_type = SwitchType[data["type"]]
                             settings.switchsanity_data[Switches[switch]] = SwitchInfo(switch, needed_kong, switch_type, 0, 0, [])
+                        for loc in passthrough["JunkedLocations"]:
+                            del self.location_name_to_id[loc]
             # We need to set the freeing kongs here early, as they won't get filled in any other part of the AP process
             settings.diddy_freeing_kong = self.random.randint(0, 4)
             # Lanky freeing kong actually changes logic, so UT should use the slot data rather than genning a new one.
@@ -480,7 +485,7 @@ if baseclasses_loaded:
                 if not hasattr(self.multiworld, "generation_is_fake"):
                     ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
                 self.spoiler.UpdateExits()
-            
+
             # Handle hint preparation by initiating some variables
             self.major_item_locations = []
             self.woth_item_locations = []
@@ -594,7 +599,7 @@ if baseclasses_loaded:
                     major_count = 7
                     deep_count = 8
 
-                    # Creating the hints 
+                    # Creating the hints
                     # pre-creating is... a choice that I made. I don't like the idea of CompileHints knowing what a multiworld is
                     # I should create an AP Hints.py file
                     woth_hints = self.parseDirectItemHints(self.woth_item_locations)
@@ -602,12 +607,12 @@ if baseclasses_loaded:
                     deep_hints = self.parseDeepHints(self.deep_location_items)
                     woth_hints = self.spoiler.settings.random.sample(woth_hints, min(woth_count, len(woth_hints)))
                     if len(woth_hints) < woth_count:
-                        major_count += (woth_count - len(woth_hints))
-                        deep_count += (woth_count - len(woth_hints))
+                        major_count += woth_count - len(woth_hints)
+                        deep_count += woth_count - len(woth_hints)
                     woth_hints = woth_hints + woth_hints
                     major_hints = self.spoiler.settings.random.sample(major_hints, min(major_count, len(major_hints)))
                     if len(major_hints) < major_count:
-                        deep_count += (major_count - len(major_hints))
+                        deep_count += major_count - len(major_hints)
                     # Handle error that's theoretically impossible. Joy
                     if len(deep_hints) < deep_count:
                         # Okay, I swear 1 test gen threw an error about this, but it seems to be gone now... so if you're reading this, PLEASE REPORT THIS ERROR!
@@ -738,7 +743,7 @@ if baseclasses_loaded:
                     "Castle Donkey Tree Sniping",
                     "Castle Chunky Tree Sniping Barrel",
                 ]
-                
+
                 # Look through every location in the multiworld and find all the DK64 items that are progression
                 for loc in multiworld.get_locations():
                     player = loc.item.player
@@ -764,7 +769,7 @@ if baseclasses_loaded:
                 # Also also gather information about which locations have junk items or no items      
                     if locworld.location_starts_empty(loc):
                         locworld.junked_locations.append(loc.name)
-            
+
             except Exception as e:
                 raise e
             finally:
@@ -815,7 +820,12 @@ if baseclasses_loaded:
                 "ForestTime": self.spoiler.settings.fungi_time_internal.name,
                 "GalleonWater": self.spoiler.settings.galleon_water_internal.name,
                 "MedalCBRequirement": self.spoiler.settings.medal_cb_req,
-                "BLockerValues": ", ".join([f"{['Japes', 'Aztec', 'Factory', 'Galleon', 'Forest', 'Caves', 'Castle', 'Helm'][i]}: {count} {barrier_type.name}" for i, (barrier_type, count) in enumerate(zip(self.spoiler.settings.BLockerEntryItems, self.spoiler.settings.BLockerEntryCount))]),
+                "BLockerValues": ", ".join(
+                    [
+                        f"{['Japes', 'Aztec', 'Factory', 'Galleon', 'Forest', 'Caves', 'Castle', 'Helm'][i]}: {count} {barrier_type.name}"
+                        for i, (barrier_type, count) in enumerate(zip(self.spoiler.settings.BLockerEntryItems, self.spoiler.settings.BLockerEntryCount))
+                    ]
+                ),
                 "RemovedBarriers": ", ".join([barrier.name for barrier in self.spoiler.settings.remove_barriers_selected]),
                 "FairyRequirement": self.spoiler.settings.rareware_gb_fairies,
                 "MermaidPearls": self.spoiler.settings.mermaid_gb_pearls,
@@ -946,10 +956,10 @@ if baseclasses_loaded:
             # Junk item
             if item_obj is None:
                 print(location.item.name)
-                a = 1/0
+                a = 1 / 0
             if item_obj.type == Types.JunkItem:
                 # In a location that can't have junk
-                if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies) or (loc_obj.type != Types.Key or loc_obj.level == Levels.HideoutHelm):
+                if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies) or (loc_obj.type == Types.Key and loc_obj.level == Levels.HideoutHelm):
                     return True
             return False
 
@@ -967,7 +977,7 @@ if baseclasses_loaded:
                         text.replace(letter, " ")
                 hints.append(text)
             return hints
-        
+
         def parseDeepHints(self, locations_to_hint: list) -> list:
             """Write deep item hints for the given list of locations."""
             hints = []
@@ -982,7 +992,6 @@ if baseclasses_loaded:
                         text.replace(letter, " ")
                 hints.append(text)
             return hints
-
 
         def collect(self, state: CollectionState, item: Item) -> bool:
             """Collect the item."""
@@ -1014,7 +1023,10 @@ if baseclasses_loaded:
             glitches_selected = slot_data["GlitchesSelected"].split(", ")
             starting_key_list = slot_data["StartingKeyList"].split(", ")
             hard_shooting = slot_data.get("HardShooting", False)
-            junk = slot_data["Junk"].split(", ")
+            junk = slot_data["Junk"]
+            blocker_data = list(map(lambda original_string: original_string[original_string.find(":") + 2 :], slot_data["BLockerValues"].split(", ")))
+            blocker_item_type = list(map(lambda data: data.split(" ")[1], blocker_data))
+            blocker_item_quantity = list(map(lambda data: int(data.split(" ")[0]), blocker_data))
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -1034,5 +1046,7 @@ if baseclasses_loaded:
             relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != ""]
             relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list if key != ""]
             relevant_data["HardShooting"] = hard_shooting
-            relevant_data["Junk"] = junk
+            relevant_data["JunkedLocations"] = junk
+            relevant_data["BLockerEntryItems"] = [BarrierItems[item] for item in blocker_item_type]
+            relevant_data["BLockerEntryCount"] = blocker_item_quantity
             return relevant_data

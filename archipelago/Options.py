@@ -367,6 +367,7 @@ class RandomizeBlockers(Toggle):
 
     display_name = "Randomizer B. Lockers"
 
+
 class MaximumBLocker(Range):
     """Determines the Maximum Value for B. Lockers if Randomize B.Lockers are enabled"""
 
@@ -375,11 +376,13 @@ class MaximumBLocker(Range):
     range_end = 201
     default = 64
 
+
 class ChaosBLockers(Toggle):
     """Determines whether the "Secret" will be enabled."""
 
     display_name = "Chaos B. Lockers"
     default = True
+
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
