@@ -52,11 +52,10 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     """Set up the item table for the world."""
     item_table = []
 
-    
     def get_progression_counts_for_barrier_types():
         """Calculate how many items of each barrier type should be marked as progression."""
         barrier_progression_counts = {}
-        
+
         # Track the maximum requirement for each barrier type across all B. Lockers
         for level in range(8):
             barrier_type = world.spoiler.settings.BLockerEntryItems[level]
@@ -65,12 +64,12 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 barrier_progression_counts[barrier_type] = requirement
             else:
                 barrier_progression_counts[barrier_type] = max(barrier_progression_counts[barrier_type], requirement)
-        
+
         return barrier_progression_counts
 
     # Get progression requirements for barrier types used in B. Lockers
     barrier_progression_counts = get_progression_counts_for_barrier_types()
-    
+
     # Define all barrier item types and their max quantities and only add them if they're used
     all_barrier_types = {
         BarrierItems.GoldenBanana: (DK64RItems.GoldenBanana, 161, DK64RTypes.Banana),
@@ -79,20 +78,20 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         BarrierItems.Crown: (DK64RItems.BattleCrown, 10, DK64RTypes.Crown),
         BarrierItems.RainbowCoin: (DK64RItems.RainbowCoin, 16, DK64RTypes.RainbowCoin),
     }
-    
+
     # Types that donk'll handle directly and exclude from GetItemsNeedingToBeAssumed
     types_handled_directly = []
-    
+
     # Always handle Golden Bananas, Medals, Fairies, Bean, and Pearl for core progression
     always_handle = [BarrierItems.GoldenBanana, BarrierItems.Medal, BarrierItems.Fairy, BarrierItems.Bean, BarrierItems.Pearl]
-    
+
     # Determine which barrier types to handle directly
     barrier_types_to_handle = set(always_handle)  # Always include the core types
     # Only add barrier types that are actually used for B. Lockers
     for barrier_type in barrier_progression_counts.keys():
         if barrier_type not in always_handle:  # Don't add duplicates
             barrier_types_to_handle.add(barrier_type)
-    
+
     # Handle each barrier type that we need to process
     for barrier_type in barrier_types_to_handle:
         # Handle Company Coins specially first (not in all_barrier_types)
@@ -103,14 +102,14 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             item_table.append(DK64Item(rareware_item.name, ItemClassification.progression_skip_balancing, full_item_table[rareware_item.name].code, world.player))
             types_handled_directly.extend([DK64RTypes.NintendoCoin, DK64RTypes.RarewareCoin])
             continue
-            
+
         if barrier_type in all_barrier_types:
             item_id, max_quantity, dk64_type = all_barrier_types[barrier_type]
             item_obj = DK64RItem.ItemList[item_id]
-            
+
             # Determine how many should be progression
             progression_count = barrier_progression_counts.get(barrier_type, 0)
-                
+
             # For medals and fairies, also consider non-B. Locker progression requirements
             if barrier_type == BarrierItems.Medal:
                 medal_requirement = world.spoiler.settings.medal_requirement if world.spoiler.settings.medal_requirement > 0 else 0
@@ -118,24 +117,23 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             elif barrier_type == BarrierItems.Fairy:
                 fairy_requirement = world.spoiler.settings.rareware_gb_fairies if world.spoiler.settings.rareware_gb_fairies > 0 else 0
                 progression_count = max(progression_count, fairy_requirement)
-            
-            
+
             # Cap at maximum available
             progression_count = min(progression_count, max_quantity)
-            
+
             # Add progression items
             for i in range(progression_count):
                 item_table.append(DK64Item(item_obj.name, ItemClassification.progression_skip_balancing, full_item_table[item_obj.name].code, world.player))
-            
+
             # Add remaining items as useful
             for i in range(max_quantity - progression_count):
                 item_table.append(DK64Item(item_obj.name, ItemClassification.useful, full_item_table[item_obj.name].code, world.player))
-            
+
             # Track that we've handled this type
             if dk64_type not in types_handled_directly:
                 types_handled_directly.append(dk64_type)
-            
-            # Special case: If we handle either Bean or Pearl as barrier items, 
+
+            # Special case: If we handle either Bean or Pearl as barrier items,
             # we need to exclude Bean type from GetItemsNeedingToBeAssumed since
             # MiscItemRandoItems() includes both bean and pearls together
             if barrier_type in (BarrierItems.Bean, BarrierItems.Pearl):
@@ -144,7 +142,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 # Also ensure Pearl type is tracked to prevent double addition
                 if DK64RTypes.Pearl not in types_handled_directly:
                     types_handled_directly.append(DK64RTypes.Pearl)
-    
+
     # Handle Company Coins specially if used for B. Lockers
     # if BarrierItems.CompanyCoin in barrier_progression_counts:
     #     nintendo_item = DK64RItem.ItemList[DK64RItems.NintendoCoin]
@@ -155,11 +153,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
 
     # Always include ToughBanana in types handled directly
     types_handled_directly.append(DK64RTypes.ToughBanana)
-    
+
     # Get remaining items from the assumption method, excluding types we handled directly
-    all_shuffled_items = DK64RItemPoolUtility.GetItemsNeedingToBeAssumed(
-        world.spoiler.settings, types_handled_directly, []
-    )
+    all_shuffled_items = DK64RItemPoolUtility.GetItemsNeedingToBeAssumed(world.spoiler.settings, types_handled_directly, [])
     # Due to some latent (harmless) bugs in the above method, it isn't precise enough for our purposes and we need to manually add a few things
     # The Bean and Pearls are handled correctly by GetItemsNeedingToBeAssumed via MiscItemRandoItems(), so no manual addition needed
     # Junk moves are never assumed because they're just not needed for anything

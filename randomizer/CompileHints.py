@@ -3496,6 +3496,7 @@ def ScoreCompleteHintSet(spoiler, hint_distribution, multipath_dict_goals):
                 node_location = spoiler.LocationList[node.node_location_id]
                 spoiler.poor_scoring_locations[node_location.name + " (" + ItemList[node_location.item].name + ")"] = node_score
 
+
 def CompileArchipelagoHints(spoiler: Spoiler, woth_hints: list, major_hints: list, deep_hints: list):
     """Insert Archipelago hints."""
     # All input lists are in the form of [loc.name, multiworld.get_player_name(loc.player), loc.item.name, multiworld.get_player_name(loc.item.player), isForeign]
