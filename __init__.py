@@ -315,8 +315,6 @@ if baseclasses_loaded:
 
             if self.options.hint_item_randomization.value:
                 settings_dict["item_rando_list_selected"].append(ItemRandoListSelected.hint)
-            # if self.options.shopkeepers_in_pool.value:
-            #     settings_dict["item_rando_list_selected"].append(ItemRandoListSelected.shopowners)
 
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
@@ -958,7 +956,7 @@ if baseclasses_loaded:
                 a = 1 / 0
             if item_obj.type == Types.JunkItem:
                 # In a location that can't have junk
-                if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies) or (loc_obj.type != Types.Key or loc_obj.level == Levels.HideoutHelm):
+                if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies) or (loc_obj.type == Types.Key and loc_obj.level == Levels.HideoutHelm):
                     return True
             return False
 
