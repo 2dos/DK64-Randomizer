@@ -90,3 +90,32 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
+
+  cbcalc:
+    name: Compute CB requirements for the CB calculator
+    if: github.event_name == 'pull_request' # Only run this on PR; we don't want the scripts pushing changes directly to the main branch(es)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup python
+      uses: actions/setup-python@v4.1.0
+      with:
+          python-version: 3.11.7
+          architecture: x64
+
+    - name: Run CB calculator
+      run: python cb_calc.py
+
+    - name: Check for changes
+      run: |
+        CHANGED_FILES=0
+        git diff --quiet --exit-code || CHANGED_FILES=$?
+        echo "Detected changed files: $CHANGED_FILES"
+        if [ $CHANGED_FILES -eq 0 ]; then exit 0; fi # If no unstaged files, exit the script
+        git config --global user.email "cb_calc@noreply.github.com"
+        git config --global user.name "CB calculator"
+        git commit -am "Updated CB calculator requirements on $(date)"
+        git push
