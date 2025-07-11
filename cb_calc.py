@@ -71,24 +71,34 @@ SWITCHSANITY_MOVES = {
     Switches.AztecGuitar: "guitar",
     Switches.AztecBlueprintDoor: "coconut",
 }
+BASE_REQUIREMENTS = [
+    # Moves for all kongs
+    *["can_use_vines", "swim", "oranges", "barrels", "climbing"],
+    *["camera", "shockwave", "scope", "homing", "Slam", "levelSlam"],
+    # Moves for single kongs
+    *["coconut", "bongos", "grab", "strongKong", "blast"],
+    *["peanut", "guitar", "charge", "jetpack", "spring"],
+    *["grape", "trombone", "handstand", "sprint", "balloon"],
+    *["feather", "saxophone", "twirl", "mini", "monkeyport"],
+    *["pineapple", "triangle", "punch", "hunkyChunky", "gorillaGone"],
+]
+ALWAYS_IN_LOGIC = [
+    # These represent 'you are kong X', which assumes that you have a tag barrel accessible.
+    *["isdonkey", "islanky", "isdiddy", "istiny", "ischunky"],
+    # These represent 'is kong X unlocked'
+    *["donkey", "lanky", "diddy", "tiny", "chunky"],
+    # These are region-based assumptions (should be quite rare)
+    Events.HatchOpened,
+    # 'assumeAztecEntry',  # I could use this but I'm using a different starting region instead.
+]
 
 
 class Logic:
     """Mock of the randomizer/Logic.py file."""
 
-    ALWAYS_IN_LOGIC = [
-        # These represent 'you are kong X', which assumes that you have a tag barrel accessible.
-        *["isdonkey", "islanky", "isdiddy", "istiny", "ischunky"],
-        # These represent 'is kong X unlocked'
-        *["donkey", "lanky", "diddy", "tiny", "chunky"],
-        # These are region-based assumptions (should be quite rare)
-        Events.HatchOpened,
-        # 'assumeAztecEntry',  # I could use this but I'm using a different starting region instead.
-    ]
-
     def __init__(self, requirements):
         """Initialize the logic class with custom requirements."""
-        self.reqs = set([*self.ALWAYS_IN_LOGIC, *requirements])
+        self.reqs = set([*ALWAYS_IN_LOGIC, *requirements])
         self.settings = MockSettings()
         self.Events = MockEvents(self.reqs)  # Just a small wrapper since the code uses 'if Events.Foo in l.Events'
 
@@ -533,13 +543,41 @@ def compute_cb_requirements(regions, region_requirements, event_requirements):
             requirements_crossproduct = SetOfSets()
             for cb_requirement in cb_requirements:
                 for region_requirement in region_requirements[region]:
+                    requirement = region_requirement | cb_requirement
                     # Slight hack -- this logic does not check region.tagbarrel when evaluating region requirements.
                     # The tiny temple famously does not have a tag barrel, and so you cannot (logically) change kongs inside of it.
                     # The main way this assumption manifests is assuming access to the tiny temple with another kong's gun.
                     if region in TINY_TEMPLE_REGIONS and GUN_MAP[cb.kong] not in region_requirement:
                         continue
-                    # This is also true in the castle crypt, but it's handled elsewhere by the castle_crypt_doors replacement.
-                    requirements_crossproduct.add(region_requirement | cb_requirement)
+                    # The castle crypt rooms are also bereft of a tag barrel, but since this script is already reporting on
+                    # castle_crypt_doors directly, it's implicitly handled by separating out those requirements during flatten_graph.
+                    pass
+                    # The third tag anywhere "gotcha" is access to the 10 diddy CBs inside the Caves Blueprint Cave.
+                    # You can only access this cave as mini, but it has warp 4 in it so you can come back as diddy.
+                    # However, warp 4 logically requires jetpack to reach it, so we adjust the requirements here.
+                    if cb.kong == Kongs.diddy and region == Regions.CavesBlueprintCave:
+                        requirement |= {'jetpack'}
+                    # On the other hand, there is a bunch of lanky CBs on top of the sprint cabin (on the trombone pad).
+                    # Logically you are supposed to use balloon to reach them, but you can also get up there with jetpack.
+                    # If there isn't a boss portal up there (uncommon with Dos's doors), the bunch is not in logic.
+                    if cb.kong == Kongs.lanky and region == Regions.CavesSprintCabinRoof and region_requirement == {'jetpack'}:
+                        continue
+                    # Additional hack #1: We require "night" and "day" separately from guns, but they are overlapping.
+                    # If the requirement contains night or day access *and* one of the 5 guns, remove night/day.
+                    if requirement.intersection({"coconut", "peanut", "grape", "feather", "pineapple"}):
+                        requirement.discard(Events.Night)
+                        requirement.discard(Events.Day)
+                    # Additional hack #2: We require "levelSlam" (i.e. switch color) separately from just "slam" (i.e. pounding a box).
+                    # If the requirement contains both, just report levelSlam (the more restrictive requirement)
+                    if requirement.intersection({"levelSlam"}):
+                        requirement.discard("Slam")
+                    # Additional hack #3: We list Enguarde as a requirement for the DK CBs in Galleon (idk why).
+                    # For everyone's sanity, we *shouldn't* list Enguarde as a requirement for any Lanky CBs.
+                    if cb.kong == Kongs.lanky:
+                        requirement.discard(Events.ShipyardEnguarde)
+                        requirement.discard(Events.LighthouseEnguarde)
+                    # Finally, once we're done processing all the hacks, add the requirements.
+                    requirements_crossproduct.add(requirement)
             # If the cb requires a non-requirement event, substitute in the event's requirements
             for event in event_requirements:
                 requirements_crossproduct.replace_event(event, event_requirements[event])
@@ -605,12 +643,6 @@ def to_javascript(cb_requirements, special_requirements):
             # 3. CBs with fewer requirements come first, ties broken by moves in the move map
             converted = []
             for requirement in requirements:
-                # Hack: we require "night" and "day" separately from guns, but they are overlapping.
-                # If the requirement contains night or day access *and* one of the 5 guns, remove night/day.
-                if requirement.intersection({"coconut", "peanut", "grape", "feather", "pineapple"}):
-                    requirement.discard(Events.Night)
-                    requirement.discard(Events.Day)
-
                 converted_requirement = [move_map_keys.index(r) for r in requirement]
                 converted_requirement.sort()
                 converted.append(converted_requirement)
@@ -745,18 +777,7 @@ LEVELS = [
 if __name__ == "__main__":
     output = "const requirement_data = {\n"
     for level in LEVELS:
-        requirements = [
-            # Moves for all kongs
-            *["can_use_vines", "swim", "oranges", "barrels", "climbing"],
-            *["camera", "shockwave", "scope", "homing", "Slam", "levelSlam"],
-            # Moves for single kongs
-            *["coconut", "bongos", "grab", "strongKong", "blast"],
-            *["peanut", "guitar", "charge", "jetpack", "spring"],
-            *["grape", "trombone", "handstand", "sprint", "balloon"],
-            *["feather", "saxophone", "twirl", "mini", "monkeyport"],
-            *["pineapple", "triangle", "punch", "hunkyChunky", "gorillaGone"],
-            *level["special_requirements"].keys(),
-        ]
+        requirements = [*BASE_REQUIREMENTS, *level["special_requirements"].keys()]
 
         print("Evaluating level", level["name"])
 

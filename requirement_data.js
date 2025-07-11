@@ -2,7 +2,7 @@ const requirement_data = {
     "Japes": {
         "DK": [
             new Requirement(10, [[Moves.Moveless]]), // 1 bunch in JungleJapesStart; 1 bunch in JungleJapesMain
-            new Requirement(21, [[Moves.ClimbingCheck]]), // 1 bunch in JapesHill; 6 bananas, 1 bunch in JapesHillTop; 1 bunch in JapesCannonPlatform
+            new Requirement(21, [[Moves.ClimbingCheck]]), // 1 bunch in JapesHill; 1 bunch in JapesCannonPlatform; 6 bananas, 1 bunch in JapesHillTop
             new Requirement(10, [[Moves.Coconut]]), // 1 balloon in JungleJapesStart
             new Requirement(9, [[Moves.JapesCoconut]]), // 9 bananas in JapesBeyondCoconutGate2
             new Requirement(10, [[Moves.Vines, Moves.ClimbingCheck]]), // 5 bananas in JungleJapesStart; 1 bunch in JapesTnSAlcove
@@ -232,12 +232,11 @@ const requirement_data = {
         "Lanky": [
             new Requirement(5, [[Moves.Moveless]]), // 5 bananas in GloomyGalleonStart
             new Requirement(5, [[Moves.GalleonPeanut]]), // 1 bunch in Shipyard
-            new Requirement(5, [[Moves.Diving, Moves.GalleonLighthouse]]), // 5 bananas in LighthouseUnderwater
+            new Requirement(25, [[Moves.Diving, Moves.GalleonLighthouse]]), // 5 bananas, 4 bunches in LighthouseUnderwater
             new Requirement(5, [[Moves.Diving, Moves.GalleonPeanut]]), // 1 bunch in ShipyardUnderwater
             new Requirement(20, [[Moves.Grape, Moves.Punch]]), // 2 balloons in GloomyGalleonStart
             new Requirement(10, [[Moves.Grape, Moves.GalleonPeanut]]), // 1 balloon in Shipyard
             new Requirement(10, [[Moves.Diving, Moves.LevelSlam, Moves.GalleonPeanut]]), // 5 bananas, 1 bunch in LankyShip
-            new Requirement(20, [[Moves.Diving, Moves.GalleonLighthouse, Moves.Enguarde]]), // 4 bunches in LighthouseUnderwater
             new Requirement(15, [[Moves.Diving, Moves.Trombone, Moves.LoweredWater, Moves.GalleonPeanut]]), // 3 bunches in TromboneShip
             new Requirement(1, [[Moves.Diving, Moves.RaisedWater, Moves.GalleonPeanut, Moves.GalleonTreasure]]), // 1 banana in TreasureRoom
             new Requirement(4, [[Moves.Diving, Moves.Balloon, Moves.RaisedWater, Moves.GalleonPeanut, Moves.GalleonTreasure]]), // 4 bananas in TreasureRoom
@@ -280,7 +279,7 @@ const requirement_data = {
                 [Moves.Rocket],
                 [Moves.CheckOfLegends],
             ]),
-            new Requirement(5, [[Moves.Slam, Moves.LevelSlam, Moves.Strong, Moves.Night]]), // 1 bunch in ThornvineBarn
+            new Requirement(5, [[Moves.LevelSlam, Moves.Strong, Moves.Night]]), // 1 bunch in ThornvineBarn
             new Requirement(10, [ // 2 bunches in ForestBaboonBlast
                 [Moves.ClimbingCheck, Moves.Blast],
                 [Moves.Blast, Moves.Rocket],
@@ -405,21 +404,17 @@ const requirement_data = {
             new Requirement(5, [[Moves.Guitar]]), // 5 bananas in DiddyLowerCabin
             new Requirement(30, [[Moves.Rocket]]), // 1 bunch, 1 bunch in CrystalCavesMain; 4 bunches in IglooArea
             new Requirement(5, [[Moves.Guitar, Moves.Rocket]]), // 1 bunch in DiddyLowerCabin
-            new Requirement(10, [[Moves.Twirl, Moves.Mini]]), // 1 bunch, 5 bananas in CavesBlueprintCave
             new Requirement(10, [[Moves.Peanut, Moves.Guitar, Moves.CavesIglooPads]]), // 1 balloon in DiddyIgloo
             new Requirement(15, [[Moves.Guitar, Moves.Rocket, Moves.Spring]]), // 3 bunches in DiddyUpperCabin
+            new Requirement(10, [[Moves.Rocket, Moves.Twirl, Moves.Mini]]), // 1 bunch, 5 bananas in CavesBlueprintCave
         ],
         "Lanky": [
             new Requirement(15, [[Moves.Moveless]]), // 5 bananas in CrystalCavesMain; 10 bananas in CabinArea
             new Requirement(20, [[Moves.Rocket]]), // 4 bunches in CavesBlueprintPillar
             new Requirement(10, [[Moves.Grape]]), // 1 balloon in CabinArea
-            new Requirement(15, [[Moves.Balloon]]), // 3 bunches in CrystalCavesMain
+            new Requirement(20, [[Moves.Balloon]]), // 3 bunches in CrystalCavesMain; 1 bunch in CavesSprintCabinRoof
             new Requirement(10, [[Moves.LevelSlam, Moves.Grape]]), // 1 balloon in FrozenCastle
             new Requirement(5, [[Moves.LevelSlam, Moves.Balloon]]), // 1 bunch in CrystalCavesMain
-            new Requirement(5, [ // 1 bunch in CavesSprintCabinRoof
-                [Moves.Rocket],
-                [Moves.Balloon],
-            ]),
             new Requirement(5, [[Moves.Trombone, Moves.Balloon]]), // 1 bunch in LankyCabin
             new Requirement(1, [[Moves.Trombone, Moves.CavesIglooPads]]), // 1 banana in LankyIgloo
             new Requirement(10, [[Moves.Grape, Moves.Trombone, Moves.CavesIglooPads]]), // 1 balloon in LankyIgloo
