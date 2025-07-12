@@ -13,6 +13,7 @@ import generate_disco_models
 import generate_watch_file
 import merge_models
 import model_fix
+import disco_donkey
 from pull_guns_and_instruments import pullHandModels
 from model_port import loadNewModels
 
@@ -1597,6 +1598,7 @@ model_changes = [
     ModelChange(0x126, "fake_bean_om1.bin"),
     ModelChange(0x127, "shrink_fake_key.bin"),
     ModelChange(0x128, "fake_key_om1.bin"),
+    ModelChange(0x129, "disco_donkey.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 
