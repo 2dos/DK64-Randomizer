@@ -114,6 +114,8 @@ class ExtraTextures(IntEnum):
     PotionSpin6 = auto()
     PotionSpin7 = auto()
     PotionSpin8 = auto()
+    DiscoDonkShirt = auto()
+    DiscoDonkGlove = auto()
 
 
 barrel_skins = (

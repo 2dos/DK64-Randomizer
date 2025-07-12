@@ -112,6 +112,9 @@ images = [
     ImageData("cannon_base", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12B8, 44, 44, False, False),
     ImageData("barrel_bottom", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xF14, 1, 1372, False, False),
     ImageData("key_om2_palette", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xC6F, 4, 4, False, False),
+    ImageData("disco_shirt", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xEC1, 32, 32, False, False),
+    ImageData("disco_glove", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xEC2, 32, 32, False, False),
+    ImageData("disco_skin", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xE64, 32, 32, False, False),
 ]
 
 shop_owners = {

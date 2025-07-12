@@ -1,6 +1,6 @@
 from BuildClasses import ROMPointerFile
-from BuildEnums import TableNames
-from BuildLib import ROMName
+from BuildEnums import TableNames, ExtraTextures
+from BuildLib import ROMName, getBonusSkinOffset
 
 # DK
 # 0xe64 - Skin
@@ -55,8 +55,8 @@ from BuildLib import ROMName
 # Disco Chunk: 8EC3E8
 
 DARKER_SKIN = 0xEB4
-PURPLE_SUIT = 0xEC1
-PINK_HANDS = 0xEC2
+PURPLE_SUIT = getBonusSkinOffset(ExtraTextures.DiscoDonkShirt)
+PINK_HANDS = getBonusSkinOffset(ExtraTextures.DiscoDonkGlove)
 
 with open(ROMName, "rb") as rom:
     donkey_model = ROMPointerFile(rom, TableNames.ActorGeometry, 3).grabFile(rom)

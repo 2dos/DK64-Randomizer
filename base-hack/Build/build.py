@@ -526,6 +526,22 @@ file_dict = [
     File(name="Fake Key Model (5)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A4, source_file="fake_key_5.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Key Model (6)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A5, source_file="fake_key_6.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Animation Code", pointer_table_index=TableNames.Unknown13, file_index=0, source_file="animation_code.bin", do_not_delete_source=True),
+    File(
+        name="Disco Shirt",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.DiscoDonkShirt),
+        source_file="assets/hash/disco_shirt.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="Disco Gloves",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.DiscoDonkGlove),
+        source_file="assets/hash/disco_glove.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
 ]
 
 cutscene_scripts = buildScripts()
@@ -2344,6 +2360,7 @@ with open(newROMName, "r+b") as fh:
         "fake_key_shine_palette",
         "fakebean",
         "fakekey",
+        "disco_shirt_gap",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
@@ -2417,6 +2434,9 @@ with open(newROMName, "r+b") as fh:
         "cannon_support",
         "barrel_bottom",
         "key_om2_palette",
+        "disco_glove",
+        "disco_shirt",
+        "disco_skin",
     ]
     tagbarrel_removals = ["plain_shell", "shell", "cannon_support", "cannon_base", "cannon_left", "cannon_right", "barrel_base"]
     for face in barrel_faces:

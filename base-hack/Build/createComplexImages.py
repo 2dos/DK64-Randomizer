@@ -840,6 +840,13 @@ alterWood(support_im).save(f"{tag_dir}cannon_support.png")
 alterWood(base_im).save(f"{tag_dir}cannon_base.png")
 alterWood(barrel_base_im).save(f"{tag_dir}barrel_base.png")
 
+# Disco Donk Center
+shirt_im = Image.open(f"{hash_dir}disco_shirt.png")
+skin_im = Image.open(f"{hash_dir}disco_skin.png")
+X_WIDTH = 12
+skin_im = skin_im.crop((X_WIDTH, 0, 32 - X_WIDTH, 32))
+shirt_im.paste(skin_im, (X_WIDTH, 0), skin_im)
+shirt_im.save(f"{disp_dir}disco_shirt_gap.png")
 
 rmve = [
     "01234.png",
