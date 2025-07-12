@@ -877,7 +877,6 @@ extern ItemIdentifierStruct ItemIdentifier[0x190];
 extern unsigned char KasplatSpawnBitfield;
 extern unsigned short HoldableSpawnBitfield;
 extern char KrushaSlot;
-extern unsigned char TextItemName;
 extern unsigned char RandomSwitches;
 extern unsigned char SwitchLevel[7];
 extern int ExtraSaveData[0x100];

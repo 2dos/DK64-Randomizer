@@ -72,7 +72,7 @@ LogicRegions = {
 
     Regions.JapesHillTop: Region("Jungle Japes Hilltop", HintRegion.Hillside, Levels.JungleJapes, True, None, [
         LocationLogic(Locations.DiddyKong, lambda l: l.CanFreeDiddy()),
-        LocationLogic(Locations.JapesDonkeyFrontofCage, lambda l: l.HasKong(l.settings.diddy_freeing_kong) or l.settings.free_trade_items),
+        LocationLogic(Locations.JapesDonkeyFrontofCage, lambda _: True),
         LocationLogic(Locations.JapesDonkeyFreeDiddy, lambda l: Events.JapesFreeKongOpenGates in l.Events),
         LocationLogic(Locations.MelonCrate_Location00, lambda _: True),
         LocationLogic(Locations.JapesMainEnemy_Mountain, lambda _: True),

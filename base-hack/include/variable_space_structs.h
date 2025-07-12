@@ -43,7 +43,7 @@ typedef struct varspace {
 	/* 0x098 */ short progressive_bounds[10];
 	/* 0x0AC */ char unk_98[0xAE - 0xAC];
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
-	/* 0x0AF */ char unkAF;
+	/* 0x0AF */ char instrument_upgrades_give_melons;
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 4
 	/* 0x0B4 */ char unk_B0[0xC0 - 0xB4];
 	/* 0x0C0 */ ItemRequirement win_condition_extra; // If requirement is "get x amount of y item"

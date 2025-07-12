@@ -140,6 +140,7 @@ class CustomActors(IntEnum):
     IceTrapDisableBKey = auto()
     IceTrapDisableZKey = auto()
     IceTrapDisableCUKey = auto()
+    MelonUpgrade = auto()
 
 
 POTIONS = (
@@ -167,18 +168,6 @@ TRAPS = (
     CustomActors.IceTrapBubble,
     CustomActors.IceTrapReverse,
     CustomActors.IceTrapSlow,
-    CustomActors.IceTrapDisableAGB,
-    CustomActors.IceTrapDisableBGB,
-    CustomActors.IceTrapDisableZGB,
-    CustomActors.IceTrapDisableCUGB,
-    CustomActors.IceTrapDisableABean,
-    CustomActors.IceTrapDisableBBean,
-    CustomActors.IceTrapDisableZBean,
-    CustomActors.IceTrapDisableCUBean,
-    CustomActors.IceTrapDisableAKey,
-    CustomActors.IceTrapDisableBKey,
-    CustomActors.IceTrapDisableZKey,
-    CustomActors.IceTrapDisableCUKey,
 )
 
 
@@ -244,7 +233,7 @@ db = [
     InGameItem(name="Fake Item (Reverse)", actor=CustomActors.IceTrapReverse, is_custom=True, model_two=0x264, bounce=True, scale=0.25),
     InGameItem(name="Fake Item (Slow)", actor=CustomActors.IceTrapSlow, is_custom=True, model_two=0x265, bounce=True, scale=0.25),
     InGameItem(name="Junk Item (Orange)", actor=0x34, model_two=0x56, will_dance=False, force_dance=False, scale=1),
-    InGameItem(name="Junk Item (Melon)", actor=0x2F, model_two=0x25E, will_dance=False, force_dance=False, scale=0.25),
+    InGameItem(name="Junk Item (Melon)", actor=0x2F, model_two=0x2A6, will_dance=False, force_dance=False, scale=0.25),
     InGameItem(name="Junk Item (Crystal)", actor=0x79, model_two=0x8E, will_dance=False, force_dance=False, scale=1),
     InGameItem(name="Junk Item (Ammo)", actor=0x33, model_two=0x8F, will_dance=False, force_dance=False, scale=1),
     InGameItem(name="Cranky Item", actor=CustomActors.CrankyItem, is_custom=True, model_two=0x25F, base=base_kong, bounce=True),
@@ -275,6 +264,7 @@ db = [
     InGameItem(name="Fake Item (Key Dis B)", actor=CustomActors.IceTrapDisableBKey, is_custom=False, model_two=0x2A1, base=base_kong, bounce=True, scale=0.25),
     InGameItem(name="Fake Item (Key Dis Z)", actor=CustomActors.IceTrapDisableZKey, is_custom=False, model_two=0x2A4, base=base_kong, bounce=True, scale=0.25),
     InGameItem(name="Fake Item (Key Dis CU)", actor=CustomActors.IceTrapDisableCUKey, is_custom=False, model_two=0x2A5, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Melon Upgrade", actor=CustomActors.MelonUpgrade, is_custom=False, model_two=0x25E, base=base_kong, bounce=True, scale=0.25),
 ]
 
 db2 = [
@@ -335,7 +325,7 @@ db2 = [
     ItemRandoDef(0x0011, CollectableTypes.AmmoBox),  # Homing Ammo Crate
     ItemRandoDef(0x008E, CollectableTypes.Crystal, None, 0x79),  # Crystal
     ItemRandoDef(0x0057, CollectableTypes.Null, None, 0x2F),  # Watermelon
-    ItemRandoDef(0x025E, CollectableTypes.Null, None, 0, Hitbox(8, 4, 13)),  # Watermelon - Duplicate
+    ItemRandoDef(0x02A6, CollectableTypes.Null, None, 0, Hitbox(8, 4, 13)),  # Watermelon - Duplicate
     ItemRandoDef(0x0098, CollectableTypes.Film),  # Film
     ItemRandoDef(0x0090, CollectableTypes.Medal, None, CustomActors.Medal, Hitbox(8, 4, 13), True),  # Medal
     ItemRandoDef(0x00EC, CollectableTypes.RaceCoin, None, 0x36),  # Race Coin
@@ -378,6 +368,7 @@ db2 = [
     ItemRandoDef(0x02A1, CollectableTypes.Null, None, CustomActors.IceTrapDisableBKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
     ItemRandoDef(0x02A4, CollectableTypes.Null, None, CustomActors.IceTrapDisableZKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
     ItemRandoDef(0x02A5, CollectableTypes.Null, None, CustomActors.IceTrapDisableCUKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
+    ItemRandoDef(0x025E, CollectableTypes.Null, None, CustomActors.MelonUpgrade, Hitbox(8, 4, 13), True),  # Melon Upgrade
 ]
 
 item_drops = [
@@ -443,7 +434,7 @@ with open("include/item_data.h", "w") as fh:
         fh.write(f"\t/* 0x{'{:03X}'.format(e.value)} */ NEWACTOR_{e.name.upper()}, \n")
     fh.write("\t/* ----- */ NEWACTOR_TERMINATOR, \n")
     fh.write("} new_custom_actors;\n")
-    fh.write(f"#define DROP_COUNT {len(item_drops) + 1}\n")
+    fh.write(f"#define DROP_COUNT {len(item_drops) + 1}")
 
 with open("src/lib_items.c", "w") as fh:
     fh.write('#include "../include/common.h"\n\n')
@@ -706,6 +697,13 @@ with open("src/lib_items.c", "w") as fh:
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # AP Item
             {
+                "actor_type": 345 + CustomActors.MelonUpgrade,
+                "model": 0x10E,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # AP Item
+            {
                 "actor_type": 151,
                 "model": 0x126,
                 "code": 0x80689F80,
@@ -882,6 +880,7 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemTiny, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemChunky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.ArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.MelonUpgrade, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 151, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 152, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 153, "&FakeGBCode", 2, 0, 1, 8, 45)
@@ -891,7 +890,6 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, 345 + CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
     actor_data = initActor(actor_data, 345 + CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, 345 + CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)
-    actor_data = initActor(actor_data, 141, "&charSpawnerItemCode", 2, 0, 1, 0x40, 197)
     actor_data["actor_collisions"][345 + CustomActors.Scarab] = {
         "collision_info": 0x8074B240,
         "unk_4": 1,
@@ -934,12 +932,3 @@ with open("src/lib_items.c", "w") as fh:
     )
     for sym in data_types:
         fh.write(f"\n{data_types[sym]} {sym}[] = {{\n\t" + ",\n\t".join([getActorDefaultString(x) for x in actor_data[sym]]) + "\n};")
-    with open("include/item_data.h", "a") as fg:
-        fg.write(f"extern GBDictItem new_flag_mapping[{len(actor_data['new_flag_mapping'])}];\n")
-        # File Size Calc (Just for base hack testing purposes)
-        static_expansion = 0x100
-        balloon_expansion = 150
-        target_gb_bits = 7
-        kong_var_size = 0xA1 + ((target_gb_bits - 3) * 8) + target_gb_bits + 14
-        file_info_location = 0x320 + static_expansion + balloon_expansion + (5 * kong_var_size)
-        fg.write(f"#define FILE_INFO_SIZE {hex(file_info_location)}\n")

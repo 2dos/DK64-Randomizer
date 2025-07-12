@@ -607,6 +607,8 @@ class Spoiler:
                         price = f"{self.settings.prices[Items.ProgressiveAmmoBelt][0]}->{self.settings.prices[Items.ProgressiveAmmoBelt][1]}"
                     elif location.item == Items.ProgressiveInstrumentUpgrade:
                         price = f"{self.settings.prices[Items.ProgressiveInstrumentUpgrade][0]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][1]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][2]}"
+                    elif location.item == Items.MelonUpgrade and not self.settings.instrument_upgrades_give_melons:
+                        price = f"{self.settings.prices[Items.MelonUpgrade][0]}->{self.settings.prices[Items.MelonUpgrade][1]}"
                 # Vanilla prices are by item, not by location
                 elif self.settings.random_prices == RandomPrices.vanilla:
                     price = str(self.settings.prices[location.item])

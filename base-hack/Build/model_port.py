@@ -135,8 +135,10 @@ def portalModel_Actor(vtx_file, dl_file, model_name, base):
                     vtx_data = vtx.read()
                     vtx_len = len(vtx_data)
                     fg.write(vtx_data)
+                dl_len = 0
                 with open(dl_file, "rb") as dl:
                     dl_data = dl.read()
+                    dl_len = len(dl_data)
                     fg.write(dl_data)
                 dl_end = fg.tell()
                 fg.seek(4)
@@ -144,7 +146,7 @@ def portalModel_Actor(vtx_file, dl_file, model_name, base):
                 fg.write(dl_end_ptr.to_bytes(4, "big"))
                 diff = dl_end_ptr - init_dl_end_ptr
                 fh.seek(8)
-                for _ in range(3):
+                for i in range(3):
                     old = int.from_bytes(fh.read(4), "big")
                     fg.write((old + diff).to_bytes(4, "big"))
                 fg.seek(dl_end)
@@ -370,9 +372,7 @@ def portModelTwoToActor(model_two_index: int, input_file: str, output_file: str,
                 raw = int.from_bytes(fh.read(2), "big")
                 if raw > 0x7FFF:
                     raw -= 0x10000
-                raw *= scale
                 raw -= y_offset
-                raw = int(raw)
                 if raw < 0:
                     raw += 0x10000
                 if raw < 0:
@@ -699,3 +699,62 @@ def loadNewModels():
         with open("fake_key_om2.bin", "rb") as fh:
             with open(f"fake_key_{x}.bin", "wb") as fg:
                 fg.write(fh.read())
+    # Create melon slice
+    with open(ROMName, "rb") as rom:
+        slice_data = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x1B4).grabFile(rom)
+        with open("slice.bin", "wb") as fh:
+            fh.write(slice_data)
+        with open("slice.bin", "r+b") as fh:
+            # fh.seek(0x22)
+            # fh.write((0x5E).to_bytes(2, "big"))
+            # fh.write((0x2D).to_bytes(2, "big"))
+            # fh.write((0x8C).to_bytes(2, "big"))
+            fh.seek(0xEC)
+            fh.write(getBonusSkinOffset(ExtraTextures.MelonSliceSkin).to_bytes(4, "big"))
+            fh.seek(0xA1)
+            fh.write((0xF9).to_bytes(1, "big"))
+            # fh.seek(0xA5)
+            # fh.write((0).to_bytes(1, "big"))
+            # fh.seek(0xD8)
+            # fh.write((0xFC127E03).to_bytes(4, "big"))
+            # fh.write((0xFFFFF9F8).to_bytes(4, "big"))
+            count = 0x92 - 0x3E
+            for x in range(count):
+                fh.seek(0x3E0 + (x * 0x10))
+                # Get coords
+                v = []
+                for _ in range(3):
+                    val = int.from_bytes(fh.read(2), "big")
+                    if val > 0x7FFF:
+                        val -= 0x10000
+                    v.append(val)
+                # Get circular angle
+                cx, cy = 0, 40
+                dx = v[0] - cx
+                dy = v[1] - cy
+                angle = math.atan2(dy, dx)
+                angle_deg = (math.degrees(angle)) % 360
+                in_bottom_sector = False
+                tolerance = 40
+                if angle_deg >= (270 - tolerance):
+                    if angle_deg <= (270 + tolerance):
+                        in_bottom_sector = True
+                x_offset = abs(v[0])
+                # Calculate offsets
+                tolerance_rad = (tolerance / 360) * (math.pi * 2)
+                max_x_offset = 40 * math.sin(tolerance_rad)
+                max_y_offset = 40 * math.cos(tolerance_rad)
+                reference_x_no_abs = (v[0] / 40) * max_x_offset
+                reference_x = (x_offset / 40) * max_x_offset
+                # Transform coords
+                if not in_bottom_sector:
+                    v[0] = int(reference_x_no_abs)
+                    v[1] = int(40 - ((max_y_offset / max_x_offset) * reference_x))
+                # Write coords back
+                fh.seek(0x3E0 + (x * 0x10))
+                for val in v:
+                    temp_val = val
+                    if temp_val < 0:
+                        temp_val += 0x10000
+                    fh.write(temp_val.to_bytes(2, "big"))
+    portModelTwoToActor(0, "slice.bin", "slice", 0xC0, False, 1.0)

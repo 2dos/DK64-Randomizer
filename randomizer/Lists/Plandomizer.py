@@ -328,6 +328,7 @@ doNotAutoAddItemSet = {
     Items.ProgressiveAmmoBelt2,
     Items.ProgressiveInstrumentUpgrade2,
     Items.ProgressiveInstrumentUpgrade3,
+    Items.MelonUpgrade1,
 }
 
 PlannableItems = []  # Used to select rewards for locations.
@@ -424,6 +425,7 @@ PlannableItemLimits = {
     PlandoItems.LankyBlueprint: 8,
     PlandoItems.TinyBlueprint: 8,
     PlandoItems.ChunkyBlueprint: 8,
+    PlandoItems.MelonUpgrade: 2,
 }
 
 #############

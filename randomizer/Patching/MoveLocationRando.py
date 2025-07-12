@@ -1,9 +1,12 @@
 """Randomize Move Locations."""
 
+from enum import IntEnum, auto
+
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
+from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Generic import setItemReferenceName
@@ -157,74 +160,38 @@ def writeMoveDataToROM(ROM_COPY: LocalROM, arr: list, enable_hints: bool, spoile
     """Write move data to ROM."""
     for xi, x in enumerate(arr):
         if x["move_type"] == "flag":
-            ROM_COPY.writeMultipleBytes(2, 1)
-            if x["flag"] == "climbing":
-                ROM_COPY.writeMultipleBytes(11, 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-            else:
-                flag_dict = {
-                    "dive": 0,
-                    "orange": 1,
-                    "barrel": 2,
-                    "vine": 3,
-                    "camera": 4,
-                    "shockwave": 5,
-                    "camera_shockwave": 4,
-                }
-                ROM_COPY.writeMultipleBytes(10, 1)
-                ROM_COPY.writeMultipleBytes(flag_dict.get(x["flag"], 0), 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
+            flag_dict = {
+                "dive": 0x182,
+                "orange": 0x184,
+                "barrel": 0x185,
+                "vine": 0x183,
+                "camera": 0x2FD,
+                "shockwave": 0x179,
+                "climbing": 0x297,
+                "camera_shockwave": 0xFFFE,
+            }
+            flag_index = 0xFFFF
+            if x["flag"] in flag_dict:
+                flag_index = flag_dict[x["flag"]]
+            ROM_COPY.writeMultipleBytes(MoveTypes.Flag, 2)
+            ROM_COPY.writeMultipleBytes(flag_index, 2)
+            ROM_COPY.writeMultipleBytes(0, 1)
             ROM_COPY.writeMultipleBytes(x["price"], 1)
         elif x["move_type"] is None:
-            for _ in range(6):
-                ROM_COPY.writeMultipleBytes(0, 1)
+            ROM_COPY.writeMultipleBytes(MoveTypes.Nothing, 2)
+            ROM_COPY.writeMultipleBytes(0, 2)
+            ROM_COPY.writeMultipleBytes(0, 1)
+            ROM_COPY.writeMultipleBytes(0, 1)
         else:
+            move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
             price_var = 0
             if isinstance(x["price"], list):
                 price_var = 0
             else:
                 price_var = x["price"]
-            ROM_COPY.writeMultipleBytes(2, 1)
-            if x["move_type"] == "special":
-                ROM_COPY.writeMultipleBytes(x["move_lvl"], 1)
-                ROM_COPY.writeMultipleBytes(x["move_kong"], 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-            elif x["move_type"] == "slam":
-                ROM_COPY.writeMultipleBytes(3, 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-            elif x["move_type"] == "gun":
-                if x["move_lvl"] == 0:
-                    ROM_COPY.writeMultipleBytes(4, 1)
-                    ROM_COPY.writeMultipleBytes(x["move_kong"], 1)
-                    ROM_COPY.writeMultipleBytes(0, 1)
-                    ROM_COPY.writeMultipleBytes(0, 1)
-                else:
-                    ROM_COPY.writeMultipleBytes(x["move_lvl"] + 4, 1)
-                    ROM_COPY.writeMultipleBytes(0, 1)
-                    ROM_COPY.writeMultipleBytes(0, 1)
-                    ROM_COPY.writeMultipleBytes(0, 1)
-            elif x["move_type"] == "ammo_belt":
-                ROM_COPY.writeMultipleBytes(7, 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-                ROM_COPY.writeMultipleBytes(0, 1)
-            elif x["move_type"] == "instrument":
-                if x["move_lvl"] == 0:
-                    ROM_COPY.writeMultipleBytes(8, 1)
-                    ROM_COPY.writeMultipleBytes(x["move_kong"], 1)
-                    ROM_COPY.writeMultipleBytes(0, 1)
-                    ROM_COPY.writeMultipleBytes(0, 1)
-                else:
-                    ROM_COPY.writeMultipleBytes(9, 1)
-                    ROM_COPY.writeMultipleBytes(0, 1)
-                    ROM_COPY.writeMultipleBytes(0, 1)
-                    ROM_COPY.writeMultipleBytes(0, 1)
+            ROM_COPY.writeMultipleBytes(move_types.index(x["move_type"]), 2)
+            ROM_COPY.writeMultipleBytes(x["move_lvl"], 2)
+            ROM_COPY.writeMultipleBytes(x["move_kong"], 1)
             ROM_COPY.writeMultipleBytes(price_var, 1)
         if enable_hints:
             if level_override is not None:
@@ -246,6 +213,7 @@ def dictEqual(dict1: dict, dict2: dict) -> bool:
 
 def randomize_moves(spoiler, ROM_COPY: LocalROM):
     """Randomize Move locations based on move_data from spoiler."""
+    varspaceOffset = spoiler.settings.rom_data
     movespaceOffset = spoiler.settings.move_location_data
     hint_enabled = True
     if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.valid_locations:
@@ -325,6 +293,8 @@ def getNextSlot(spoiler, ROM_COPY: LocalROM, item: Items) -> int:
         slots = [0x20, 0x21, 0x22]
     elif item == Items.ProgressiveSlam:
         slots = [0xF, 0x10, 0x11]
+    elif item == Items.MelonUpgrade:
+        slots = [0x2A, 0x2B]
     if len(slots) == 0:
         return None
     for slot in slots:
@@ -382,8 +352,10 @@ def place_pregiven_moves(spoiler, ROM_COPY: LocalROM):
         Items.Camera,
         Items.Shockwave,
         Items.Climbing,
+        Items.MelonUpgrade,
+        Items.MelonUpgrade,
     ]
-    progressives = (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam)
+    progressives = (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam, Items.MelonUpgrade)
     name_str = "Extra Training"
     for item in spoiler.pregiven_items:
         # print(item)
@@ -412,10 +384,10 @@ def place_pregiven_moves(spoiler, ROM_COPY: LocalROM):
                 ROM_COPY.seek(spoiler.settings.rom_data + 0xD5 + offset)
                 ROM_COPY.writeMultipleBytes(val, 1)
         if item == Items.ProgressiveAmmoBelt:
-            setItemReferenceName(spoiler, item, new_slot - 0x1C, name_str, 0)
+            setItemReferenceName(spoiler, item, new_slot - 0x1C, name_str)
         elif item == Items.ProgressiveInstrumentUpgrade:
-            setItemReferenceName(spoiler, item, new_slot - 0x20, name_str, 0)
+            setItemReferenceName(spoiler, item, new_slot - 0x20, name_str)
         elif item == Items.ProgressiveSlam:
             setItemReferenceName(spoiler, item, new_slot - 0xF, name_str, 0)
-        else:
+        elif item != Items.MelonUpgrade:  # TODO: Remove this
             setItemReferenceName(spoiler, item, 0, name_str, 0)

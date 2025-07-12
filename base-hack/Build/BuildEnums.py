@@ -876,9 +876,6 @@ class ExtraTextures(IntEnum):
     KrushaFace323 = auto()
     KrushaFace324 = auto()
     KrushaFace325 = auto()
-    FakeKey = auto()
-    FakeKeyPalette = auto()
-    FakeBean = auto()
     APPearl0 = auto()
     APPearl1 = auto()
     APPearl2 = auto()
@@ -895,6 +892,7 @@ class ExtraTextures(IntEnum):
     PotionSpin6 = auto()
     PotionSpin7 = auto()
     PotionSpin8 = auto()
+    MelonSliceSkin = auto()
 
 
 class MoveTypes(IntEnum):

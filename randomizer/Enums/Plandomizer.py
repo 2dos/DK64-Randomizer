@@ -147,6 +147,7 @@ class PlandoItems(IntEnum):
     CastleLankyHint = auto()
     CastleTinyHint = auto()
     CastleChunkyHint = auto()
+    MelonUpgrade = auto()
 
 
 ItemToPlandoItemMap = {
@@ -302,6 +303,7 @@ ItemToPlandoItemMap = {
     Items.CastleLankyHint: PlandoItems.CastleLankyHint,
     Items.CastleTinyHint: PlandoItems.CastleTinyHint,
     Items.CastleChunkyHint: PlandoItems.CastleChunkyHint,
+    Items.MelonUpgrade: PlandoItems.MelonUpgrade,
 }
 
 PlandoItemToItemMap = {
@@ -405,6 +407,7 @@ PlandoItemToItemMap = {
     PlandoItems.CastleLankyHint: Items.CastleLankyHint,
     PlandoItems.CastleTinyHint: Items.CastleTinyHint,
     PlandoItems.CastleChunkyHint: Items.CastleChunkyHint,
+    PlandoItems.MelonUpgrade: Items.MelonUpgrade,
 }
 
 PlandoItemToItemListMap = {

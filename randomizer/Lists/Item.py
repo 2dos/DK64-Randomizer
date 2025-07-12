@@ -112,6 +112,8 @@ ItemList = {
     Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "orange", 388]),
     Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "barrel", 389]),
     Items.Climbing: Item("Climbing", True, Types.Climbing, Kongs.any, [MoveTypes.Flag, "climbing", 0x297]),
+    Items.MelonUpgrade: Item("Melon Upgrade", False, Types.MelonUpgrade, Kongs.any, [MoveTypes.Moves, 7, -1]),
+    Items.MelonUpgrade1: Item("Melon Upgrade ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, Kongs.any, [MoveTypes.Slam, 2, -1]),
     Items.ProgressiveSlam2: Item("Progressive Slam ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.ProgressiveSlam3: Item("Progressive Slam  ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
@@ -370,6 +372,8 @@ StartingMoveOptions = [
     Items.Snide,
     Items.Camera,
     Items.Shockwave,
+    Items.MelonUpgrade,
+    Items.MelonUpgrade1,
 ]
 
 for item in StartingMoveOptions:

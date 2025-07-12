@@ -513,7 +513,11 @@ def Upgrades(settings):
     upgrades.append(Items.HomingAmmo)
     upgrades.append(Items.SniperSight)
     upgrades.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
-    upgrades.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
+    if settings.instrument_upgrades_give_melons:
+        upgrades.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
+    else:
+        upgrades.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 2))
+        upgrades.extend(itertools.repeat(Items.MelonUpgrade, 2))
     if settings.shockwave_status != ShockwaveStatus.start_with:
         if settings.shockwave_status == ShockwaveStatus.vanilla or settings.shockwave_status == ShockwaveStatus.shuffled:
             upgrades.append(Items.CameraAndShockwave)
@@ -891,5 +895,7 @@ JunkSharedMoves = [
     Items.ProgressiveInstrumentUpgrade,
     Items.ProgressiveInstrumentUpgrade,
     Items.ProgressiveInstrumentUpgrade,
+    Items.MelonUpgrade,
+    Items.MelonUpgrade,
 ]
-ProgressiveSharedMovesSet = {Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam}
+ProgressiveSharedMovesSet = {Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam, Items.MelonUpgrade}

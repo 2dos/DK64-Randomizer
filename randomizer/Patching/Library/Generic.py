@@ -514,6 +514,7 @@ def getItemNumberString(count: int, item_type: Types) -> str:
         Types.Coin: "Company Coin",
         Types.TrainingBarrel: "Move",
         Types.Climbing: "Move",
+        Types.MelonUpgrade: "Move",
         Types.Kong: "Kong",
         Types.Medal: "Medal",
         Types.FillerMedal: "Medal",

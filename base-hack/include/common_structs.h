@@ -1587,6 +1587,8 @@ typedef struct moves_pregiven_bitfield {
 	unsigned char camera : 1; // 7 0x01
 	unsigned char shockwave : 1; // 0 0x80
 	unsigned char climbing : 1; // 1 0x40
+	unsigned char melon_upgrade_0 : 1; // 2 0x20
+	unsigned char melon_upgrade_1 : 1; // 3 0x10
 } moves_pregiven_bitfield;
 
 typedef struct weather_struct {

@@ -10,26 +10,13 @@
  */
 #include "../../include/common.h"
 
-static char* text_rewards[] = {
-    "GOLDEN BANANA", // 0
-    "BLUEPRINT", // 1
-    "BOSS KEY", // 2
-    "BATTLE CROWN", // 3
-    "BANANA FAIRY", // 4
-    "RAREWARE COIN", // 5
-    "NINTENDO COIN", // 6
-    "BANANA MEDAL", // 7
-    "POTION", // 8
-    "KONG", // 9
-    "BEAN", // 10
-    "PEARL", // 11
-    "RAINBOW COIN", // 12
-    "GLODEN BANANE", // 13
-    "NOTHING", // 14
-    "SHOPKEEPER", // 15
-    "JUNK ITEM", // 16
-    "ARCHIPELAGO ITEM", // 17
+char aztec_beetle[32] = "GOLDEN BANANA";
+char caves_beetle[32] = "GOLDEN BANANA";
+static char *text_rewards[] = {
+    &aztec_beetle,
+    &caves_beetle,
 };
+
 
 void handleDynamicItemText(char* location, char* format, int character) {
     /**
@@ -41,10 +28,11 @@ void handleDynamicItemText(char* location, char* format, int character) {
      */
     if (character == 0x7C) {
         // Dynamic Text
-        if ((TextItemName == 14) || (TextItemName > 17)) {
-            TextItemName = 0;
+        int index = 1;
+        if (CurrentMap == MAP_AZTECBEETLE){
+            index = 0;
         }
-        dk_strFormat(location, "%s", text_rewards[(int)TextItemName]);
+        dk_strFormat(location, "%s", text_rewards[index]);
     } else {
         dk_strFormat(location, format, character);
     }

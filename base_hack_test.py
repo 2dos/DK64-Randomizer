@@ -6,7 +6,6 @@ from typing import BinaryIO
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.ASMPatcher import patchAssembly, patchAssemblyCosmetic
-from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Items import Items
@@ -19,7 +18,7 @@ IO_LOGGING = False
 if not APPLY_VARIABLES:
     sys.exit()
 
-settings_string = "fn5s3egAHfgANggAFhgABigAAglwXq2Xzm8xn4/Eey9oNt7j3V3DefCeA747z4DiHOeMci5XzDxXQOk9U612PtiRLaVFx2qBAC6B0TpHTOotVaz120UuWwLcBJIB5lTVRCjFIKUUwGTLK9X4KAtwBBgJvAQOBuADCARxAgSCuQFCgZzAwWDugHDAi5BCZDTJ1S1eADOcpzyaeYTUJR3VasliRoaQI6PkKi2pS9FRFkATMUQGWORuyXi7yKByHY/6XtOwM8zGDIAyqcEQgAFwoAFwwAEw4AExAAD1oADxIACxQABxYADxgACxoAB1wAFp8r0CS1s9s8shhHMldthYGAzl1WA4qisplRaMcUlYNKAVFoki4hmJPGtLINIrpeEQQEhQWHCAiJCgqLDAyNDg6PEBCREZISkxOUFJYWlxeYGtZfAwYGlZkaL+ABri6vYQGVGJniADsAfoDB0jxgEO64gy1iEF6+fwDZ4+GE0c7upXsrMzimzq2L4U4oCARDIZCVLY1z4RnOBIYjIdK2PnRAIhkKY6EqWxsHPfwCyAFEeCIZCmOhKlsa58IynStr4zrfO+8gD3APMUMCcUDFJKPSWYahimnope+BUFE5AQcZ0hN8s1VluCOSWr0APkBX9QD6APYA+wA"
+settings_string = "Px+VnV6AAa/AAZggAAwwAAYoAAP9A0yAoCBgIDgYIBASCgoGBYODAiAJ1lhuAJvARwAZxAhyApzAx0A65BBMwEJxShMDTCaCBNZAK0C0S0i0y1E1U1m122W2gbbbjbqdwbzcJcBb4d5eAcQc5cYcicrcweKdAdJdUdadjdsNFMxNQki4gDrVEogQUQUYUgUoUwIIuCzAI2WQyEsLYC3ASMximkCOj4izU0vRYxeqdCohYBCYhQBJEjtVVWTLDkyTvEUBxDK8gVjQMeSxgZAAKpniG6CEIABaFAAtDAAShwAJRAADq0AB0SAAqKAANFgAOjAAFRoABq4ACyeiWVTYKwXRbHszxZBgjhgGcyR6GwfDNLAHy7J8DhTFQtDHFYGgrEMQhrC4LSeEk/iWIMkS6LwiCAkKCw4QERIUFRYYGRocHR4gISIjJCUmJygpLC0uLzA1rF8DBgaVmRovsADXF1eYQGVGJmxAA7AD9AUnAkMRkOlbHp0QCIZCmOhKlsbBzw6R4wCHdcQZaxCC9fP4Bs8fDCaOd3Ur2VmZxTZ1bF8KcKAmEQyFMdCVLY1z4RlM/gCyAIKCMqCYAKI8EQyFMdCVLY1z4RlOlbXxnW+d88gB7gDzFDAhST0lmGoZp6KXnFAyonwLSyIrnRoCDjOkJvlmqs1NwAvQAfIA9QB9AD2AH2AA"
 setting_data = decrypt_settings_string_enum(settings_string)
 settings = Settings(setting_data)
 spoiler = Spoiler(settings)
@@ -32,7 +31,6 @@ spoiler.japes_rock_actor = 45
 spoiler.aztec_vulture_actor = 45
 spoiler.arcade_item_reward = Items.NintendoCoin
 spoiler.jetpac_item_reward = Items.RarewareCoin
-spoiler.item_assignment = []
 spoiler.coin_requirements = {
     Maps.CavesLankyRace: 50,
     Maps.AztecTinyRace: 50,
@@ -83,12 +81,6 @@ class TestROM:
         if IO_LOGGING:
             io_logs.append({"action": "write", "value": value, "size": size})
         self.stream.write(value.to_bytes(size, "big"))
-
-    def writeFloat(self, value: float):
-        """Binary IO write floating point value."""
-        if IO_LOGGING:
-            io_logs.append({"action": "write", "value": value, "size": "float"})
-        self.writeMultipleBytes(int(float_to_hex(value), 16), 4)
 
     def writeBytes(self, bytes):
         """Binary IO write."""

@@ -222,6 +222,8 @@
         "IceTrapDisableZKey": 194,
         "IceTrapDisableCU": 195,
         "IceTrapDisableCUBean": 196,
-        "IceTrapDisableCUKey": 197
+        "IceTrapDisableCUKey": 197,
+        "MelonUpgrade": 198,
+        "MelonUpgrade1": 199
     }
 }

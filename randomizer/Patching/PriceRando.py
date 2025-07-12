@@ -13,14 +13,17 @@ def randomize_prices(spoiler, ROM_COPY: LocalROM):
             Items.ProgressiveAmmoBelt: 2,
             Items.ProgressiveInstrumentUpgrade: 3,
             Items.ProgressiveSlam: 2,
+            Items.MelonUpgrade: 2,
         }
+        if spoiler.settings.instrument_upgrades_give_melons:
+            progressive_items[Items.ProgressiveInstrumentUpgrade] = 2
         for item in progressive_items:
             if item not in spoiler.settings.prices:
                 spoiler.settings.prices[item] = []
             length = progressive_items[item]
             if len(spoiler.settings.prices[item]) < length:
                 diff = length - len(spoiler.settings.prices[item])
-                for d in range(diff):
+                for _ in range(diff):
                     spoiler.settings.prices[item].append(0)
         ROM_COPY.seek(varspaceOffset + 0x45)
         ROM_COPY.write(spoiler.settings.prices[Items.ProgressiveSlam][0])

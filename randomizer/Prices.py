@@ -55,9 +55,10 @@ VanillaPrices = {
     Items.ProgressiveSlam: [0, 5, 7],
     Items.ProgressiveAmmoBelt: [3, 5],
     Items.ProgressiveInstrumentUpgrade: [5, 7, 9],
+    Items.MelonUpgrade: [0, 0],
 }
 
-ProgressiveMoves = {Items.ProgressiveSlam: 3, Items.ProgressiveAmmoBelt: 2, Items.ProgressiveInstrumentUpgrade: 3}
+ProgressiveMoves = {Items.ProgressiveSlam: 3, Items.ProgressiveAmmoBelt: 2, Items.ProgressiveInstrumentUpgrade: 3, Items.MelonUpgrade: 2}
 
 
 def CompleteVanillaPrices():
@@ -169,6 +170,7 @@ def GetMaxForKong(spoiler, kong):
     found_slams = 0
     found_instrument_upgrades = 0
     found_ammo_belts = 0
+    found_melon_upgrades = 0
     total_price = 0
     # Look for moves placed in shared move locations that have prices
     paidSharedMoveLocations = SharedMoveLocations - TrainingBarrelLocations - {Locations.CameraAndShockwave}
@@ -181,6 +183,9 @@ def GetMaxForKong(spoiler, kong):
             elif item_id == Items.ProgressiveInstrumentUpgrade:
                 total_price += settings.prices[item_id][found_instrument_upgrades]
                 found_instrument_upgrades += 1
+            elif item_id == Items.MelonUpgrade:
+                total_price += settings.prices[item_id][found_melon_upgrades]
+                found_melon_upgrades += 1
             elif item_id == Items.ProgressiveAmmoBelt:
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
@@ -213,6 +218,9 @@ def GetMaxForKong(spoiler, kong):
             elif item_id == Items.ProgressiveInstrumentUpgrade:
                 total_price += settings.prices[item_id][found_instrument_upgrades]
                 found_instrument_upgrades += 1
+            elif item_id == Items.MelonUpgrade:
+                total_price += settings.prices[item_id][found_melon_upgrades]
+                found_melon_upgrades += 1
             elif item_id == Items.ProgressiveAmmoBelt:
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
@@ -280,7 +288,7 @@ meaning we just must consider the maximum price for every location.
 """
 
 
-def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, instUpgrades):
+def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, instUpgrades, melonUpgrades):
     """Get the price at this location."""
     item = location.item
     # Progressive items have their prices managed separately
@@ -302,6 +310,12 @@ def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, in
         else:
             # If already have max instrument upgrade, there's no move to buy (this shouldn't happen?)
             return 0
+    elif item == Items.MelonUpgrade:
+        if melonUpgrades in [0, 1]:
+            return settings.prices[item][melonUpgrades]
+        else:
+            # If already have max melon upgrade, there's no move to buy (this shouldn't happen?)
+            return 0
     # Vanilla prices are by item, not by location
     elif settings.random_prices == RandomPrices.vanilla:
         # Treat the location as free if it's empty
@@ -318,7 +332,7 @@ def KongCanBuy(spoiler, location_id, logic, kong, buy_empty=False):
     # If nothing is sold here, return true
     if not buy_empty and (location.item is None or location.item == Items.NoItem):
         return True
-    price = GetPriceAtLocation(logic.settings, location_id, location, logic.Slam, logic.AmmoBelts, logic.InstUpgrades)
+    price = GetPriceAtLocation(logic.settings, location_id, location, logic.Slam, logic.AmmoBelts, logic.InstUpgrades, logic.Melons - 1)
 
     # Simple price check - combination of purchases will be considered outside this method
     if price is not None:

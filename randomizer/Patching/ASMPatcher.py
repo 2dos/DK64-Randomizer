@@ -513,7 +513,7 @@ def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
     if len(string_to_write) >= 0x10:
         raise Exception("Invalid stack trace string")
     ROM_COPY.seek(addr)
-    ROM_COPY.writeBytes(bytes(string_to_write, "ascii"))
+    ROM_COPY.writeBytes(bytes(f"{string_to_write}\0", "ascii"))
 
 
 def patchAssembly(ROM_COPY, spoiler):
