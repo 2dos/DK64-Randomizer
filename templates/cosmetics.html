@@ -111,6 +111,7 @@
                     {{ toggle_input("misc_cosmetics", "Random Miscellaneous Cosmetics", "Randomizes miscellaneous cosmetic elements, including:&#10;- Peril Path Panic/Searchlight Seek Klaptraps&#10;- Skybox colors") }}
                     {{ toggle_input("dark_mode_textboxes", "Dark Mode UI", "Text bubbles will be darkened, with the font brightened. The DPad Graphic will be darkened.") }}
                     {{ toggle_input("pause_hint_coloring", "Color Hints in Pause Menu", "Various important segments in hints on the pause menu will be colored to assist with parsing.", True) }}
+                    {{ toggle_input("disco_donkey", "Disco DK", "Gives DK a disco outfit in the style of DitzyFlama's DK Rap Remixes. Will only work if his model is set to regular DK.") }}
                     {{ toggle_input("disco_chunky", "Disco Chunky", "Gives Chunky his disco outfit. Will only work if his model is set to regular chunky.") }}
                     {{ toggle_input("smoother_camera", "Smoother Camera", "Controlling the camera with the C Buttons behaves closer to how Banjo-Tooie operates.") }}
                     <div class="spacer"></div>
@@ -188,10 +189,10 @@
                         title="Randomizes all Kong and Transformation Colors.">
                     <input class="dice_checkbox"
                             type="checkbox"
-                            name="random_colors"
-                            id="random_colors"
+                            name="random_kong_colors"
+                            id="random_kong_colors"
                             value="True"/>
-                    <label for="random_colors"></label>
+                    <label for="random_kong_colors"></label>
                 </label>
             </h2>
             <div class="flex-container">

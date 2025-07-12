@@ -975,7 +975,7 @@ document.getElementById("randomize_settings").addEventListener("click", function
 
 // Disable color options when Randomize All is selected
 function disable_colors() {
-  const disabled = document.getElementById("random_colors").checked;
+  const disabled = document.getElementById("random_kong_colors").checked;
   const KONG_ZONES = {
     DK: ["Fur", "Tie"],
     Diddy: ["Clothes"],
@@ -1008,7 +1008,7 @@ function disable_colors() {
 }
 
 document
-  .getElementById("random_colors")
+  .getElementById("random_kong_colors")
   .addEventListener("click", disable_colors);
 
 // Disable 'Disable Tag Spawn' option when 'Tag Anywhere' is off

@@ -350,6 +350,7 @@ model_mapping = {
     KongModels.cranky: 10,
     KongModels.candy: 11,
     KongModels.funky: 12,
+    KongModels.disco_donkey: 13,
 }
 
 model_texture_sections = {

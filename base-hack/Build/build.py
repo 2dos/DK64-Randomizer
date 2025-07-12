@@ -1615,6 +1615,7 @@ model_changes = [
     ModelChange(0x127, "shrink_fake_key.bin"),
     ModelChange(0x128, "fake_key_om1.bin"),
     ModelChange(0x129, "disco_donkey.bin"),
+    ModelChange(0x12A, FINAL_RACE_HOOP),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 

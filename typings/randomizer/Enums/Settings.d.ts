@@ -246,7 +246,7 @@ export enum HardModeSelected {
     donk_in_the_dark_world = 9,
     donk_in_the_sky = 10,
     angry_caves = 11,
-    hard_balloons = 12,
+    fast_balloons = 12,
 }
 
 export enum IceTrapFrequency {
@@ -344,6 +344,7 @@ export enum KongModels {
     cranky = 5,
     candy = 6,
     funky = 7,
+    disco_donkey = 8,
 }
 
 export enum LevelRandomization {

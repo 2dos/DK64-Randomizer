@@ -310,6 +310,7 @@ class KongModels(IntEnum):
     cranky = 5
     candy = 6
     funky = 7
+    disco_donkey = 8
 
 class LevelRandomization(IntEnum):
     vanilla = 0

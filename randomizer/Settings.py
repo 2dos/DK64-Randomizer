@@ -592,7 +592,7 @@ class Settings:
         # Random Model Swaps
         self.random_models = RandomModels.off
         # self.random_enemy_colors = RandomModels.off  # Deprecated
-        self.random_colors = False
+        self.random_kong_colors = False
         self.random_colors_selected = []
         self.bother_klaptrap_model = Model.KlaptrapGreen
         self.beetle_model = Model.Beetle
@@ -642,6 +642,7 @@ class Settings:
         self.gb_colors = CharacterColors.vanilla
         self.gb_custom_color = "#000000"
 
+        self.disco_donkey = False
         self.disco_chunky = False
         self.dark_mode_textboxes = False
         self.pause_hint_coloring = True

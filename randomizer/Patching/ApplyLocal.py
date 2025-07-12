@@ -132,6 +132,28 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         if from_patch_gen:
             recalculatePointerJSON(ROM_COPY)
         js.document.getElementById("patch_version_warning").hidden = True
+        # Disco DK
+        ROM_COPY.seek(settings.rom_data + 0x1B8 + 0)
+        dk_model_setting = int.from_bytes(ROM_COPY.readBytes(1), "big")  # 0 is default
+        if settings.disco_donkey and dk_model_setting == 0 and settings.override_cosmetics:
+            settings.kong_model_dk = KongModels.disco_donkey
+            ROM_COPY.seek(settings.rom_data + 0x1B8 + 0)
+            ROM_COPY.writeMultipleBytes(13, 1)
+            dest_start = getPointerLocation(TableNames.ActorGeometry, 3)
+            source_start = getPointerLocation(TableNames.ActorGeometry, 0x129)
+            source_end = getPointerLocation(TableNames.ActorGeometry, 0x129 + 1)
+            source_size = source_end - source_start
+            ROM_COPY.seek(source_start)
+            file_bytes = ROM_COPY.readBytes(source_size)
+            ROM_COPY.seek(dest_start)
+            ROM_COPY.writeBytes(file_bytes)
+            # Write uncompressed size
+            unc_table = getPointerLocation(TableNames.UncompressedFileSizes, TableNames.ActorGeometry)
+            ROM_COPY.seek(unc_table + (0x129 * 4))
+            unc_size = int.from_bytes(ROM_COPY.readBytes(4), "big")
+            ROM_COPY.seek(unc_table + (3 * 4))
+            ROM_COPY.writeMultipleBytes(unc_size, 4)
+        # Disco Chunky
         ROM_COPY.seek(settings.rom_data + 0x1B8 + 4)
         chunky_model_setting = int.from_bytes(ROM_COPY.readBytes(1), "big")  # 0 is default
         if settings.disco_chunky and chunky_model_setting == 0 and settings.override_cosmetics:
