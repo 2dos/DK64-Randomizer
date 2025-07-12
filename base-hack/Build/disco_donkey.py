@@ -51,6 +51,9 @@ from BuildLib import ROMName
 # 0xebd
 # 0xebe
 
+# DK: 8D862E
+# Disco Chunk: 8EC3E8
+
 DARKER_SKIN = 0xEB4
 PURPLE_SUIT = 0xEC1
 PINK_HANDS = 0xEC2
