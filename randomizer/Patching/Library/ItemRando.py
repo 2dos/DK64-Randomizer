@@ -83,6 +83,7 @@ class CustomActors(IntEnum):
     IceTrapDisableBKey = auto()
     IceTrapDisableZKey = auto()
     IceTrapDisableCUKey = auto()
+    MelonUpgrade = auto()
 
 
 class GraphicOverlay(IntEnum):
@@ -329,12 +330,20 @@ item_db = {
         scale=0.4,
     ),
     Types.JunkItem: ItemPlacementData(
-        model_index=[0x10E],
-        model_two_index=[0x25E],
+        model_index=[0x12B],
+        model_two_index=[0x2A6],
         actor_index=[0x2F],
         overlay=[GraphicOverlay.JunkMelon],
         preview_text="\x04JUNK ITEM\x04",
         seal_preview_text="\x04HEAP OF JUNK\x04",
+    ),
+    Types.MelonUpgrade: ItemPlacementData(
+        model_index=[0x10E],
+        model_two_index=[0x25E],
+        actor_index=[CustomActors.MelonUpgrade],
+        overlay=[GraphicOverlay.JunkMelon],
+        preview_text="\x04MELON UPGRADE\x04",
+        seal_preview_text="\x04SCURVY SHIELD\x04",
     ),
     Types.Cranky: ItemPlacementData(
         model_index=[0x11],

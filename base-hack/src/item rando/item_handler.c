@@ -131,8 +131,10 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             } else if (level == 8) {
                 // Instrument
                 MovesBase[kong].instrument_bitfield |= 1;
-                if (CollectableBase.Melons < 2) {
-                    CollectableBase.Melons = 2;
+                if (Rando.instrument_upgrades_give_melons) {
+                    if (CollectableBase.Melons < 2) {
+                        CollectableBase.Melons = 2;
+                    }
                 }
             } else if (level == 9) {
                 // Progressive instrument
@@ -140,18 +142,24 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
                 for (int i = 0; i < 5; i++) {
                     MovesBase[i].instrument_bitfield |= (1 << (ins_level + 2));
                 }
-                int cap = 2;
-                if (ins_level > 1) {
-                    cap = 3;
-                }
-                if (CollectableBase.Melons < cap) {
-                    CollectableBase.Melons = cap;
+                if (Rando.instrument_upgrades_give_melons) {
+                    int cap = 2;
+                    if (ins_level > 1) {
+                        cap = 3;
+                    }
+                    if (CollectableBase.Melons < cap) {
+                        CollectableBase.Melons = cap;
+                    }
                 }
             } else if (level == 10) {
                 int base = *(unsigned char*)(&current_item_data.flag_moves);
                 *(unsigned char*)(&current_item_data.flag_moves) = base | (0x80 >> kong);
             } else if (level == 11) {
                 setPermFlag(FLAG_ABILITY_CLIMBING);
+            } else if (level == 12) {
+                if (CollectableBase.Melons < 3) {
+                    CollectableBase.Melons++;
+                }
             }
             hh_item = HHITEM_MOVE;
             display_text = 1;

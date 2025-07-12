@@ -19,16 +19,16 @@ def writeSingleOwnership(ROM_COPY, index, kong):
 def writeKongItemOwnership(ROM_COPY, settings):
     """Write the item ownership for kong rando."""
     starting_kong = settings.starting_kong
-    diddy_freer = settings.diddy_freeing_kong
-    lanky_freer = settings.lanky_freeing_kong
-    tiny_freer = settings.tiny_freeing_kong
-    chunky_freer = settings.chunky_freeing_kong
+    # diddy_freer = settings.diddy_freeing_kong
+    # lanky_freer = settings.lanky_freeing_kong
+    # tiny_freer = settings.tiny_freeing_kong
+    # chunky_freer = settings.chunky_freeing_kong
     no_arcade_r1 = IsDDMSSelected(settings.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1)
-    writeSingleOwnership(ROM_COPY, 1, diddy_freer)
-    writeSingleOwnership(ROM_COPY, 2, diddy_freer)
-    writeSingleOwnership(ROM_COPY, 22, tiny_freer)
-    writeSingleOwnership(ROM_COPY, 27, lanky_freer)
-    writeSingleOwnership(ROM_COPY, 39, chunky_freer)
+    # writeSingleOwnership(ROM_COPY, 1, diddy_freer)
+    # writeSingleOwnership(ROM_COPY, 2, diddy_freer)
+    # writeSingleOwnership(ROM_COPY, 22, tiny_freer)
+    # writeSingleOwnership(ROM_COPY, 27, lanky_freer)
+    # writeSingleOwnership(ROM_COPY, 39, chunky_freer)
     writeSingleOwnership(ROM_COPY, 97, starting_kong)
     if no_arcade_r1:
         start = getSym("new_flag_mapping") + (41 * 8)
