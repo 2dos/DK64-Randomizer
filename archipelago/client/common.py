@@ -29,6 +29,24 @@ class DK64MemoryMap:
     receive_death = 0x05D  # If someone else dies, this will kill the donk player
     can_die = 0x05E  # If death is received, the game will queue the death until this is 1. It is generally a good idea to not send a death to the donk player if this is zero
     text_timer = 0x05F  # can be any value between 50 and 255, Under 50 gets weird, Defaults to 130 at boot, which is the standard speed
+    # Ammo addresses (all 2 byte values)
+    ammo_base = 0x807FCC40  # Base ammo address
+    homing_ammo = 0x807FCC42  # Homing ammo
+    oranges = 0x807FCC44  # Oranges
+    crystal_coconuts = 0x807FCC46  # Crystal coconuts
+    film = 0x807FCC48  # Film (for fairy camera)
+    ammo_belt = 0x807FC953  # (0, 1 or 2) 1 byte
+    banana_fairies = 0x0000000
+    tag_kong = 0x060  # Byte to set the current kong to this. Check can_tag before setting this if you want safety. Resets back to -1 upon successful tag
+    # 0 = DK
+    # 1 = Diddy
+    # 2 = Lanky
+    # 3 = Tiny
+    # 4 = Chunky
+    # 5 = Random
+
+    can_tag = 0x061
+    current_kong = 0x8074E77C
 
 
 all_tasks = set()

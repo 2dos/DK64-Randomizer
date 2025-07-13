@@ -519,6 +519,7 @@ EnemyMetaData = {
         minigame_enabled=False,
         interaction=InteractionMethods(kill_melee=False, can_bypass=False),  # Can be meleed with distraction mechanic, but we'll ignore that for now
         default_size=50,
+        max_speed=100,
     ),
     Enemies.Bug: EnemyData(
         name="Bug",
@@ -732,7 +733,7 @@ enemy_location_list = {
     Locations.FactoryMainEnemy_TunnelToHatch: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 59, [Enemies.Guard], True),
     Locations.FactoryMainEnemy_TunnelToProd0: EnemyLoc(Maps.FranticFactory, Enemies.Kremling, 63, [Enemies.Guard], True),
     Locations.FactoryMainEnemy_TunnelToProd1: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 73, [Enemies.Guard], True),
-    Locations.FactoryMainEnemy_TunnelToBlockTower: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 84, [], True),
+    Locations.FactoryMainEnemy_TunnelToBlockTower: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 84, [Enemies.Guard], True),
     Locations.FactoryMainEnemy_TunnelToRace0: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 87, [Enemies.Guard], True),
     Locations.FactoryMainEnemy_TunnelToRace1: EnemyLoc(Maps.FranticFactory, Enemies.ZingerRobo, 88, [Enemies.Guard], True),
     Locations.FactoryMainEnemy_LowWarp4: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 66, [], True),

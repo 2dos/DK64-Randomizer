@@ -77,14 +77,13 @@ LogicRegions = {
     ]),
 
     Regions.TempleStart: Region("Temple Start", HintRegion.TinyTemple, Levels.AngryAztec, False, -1, [
-        LocationLogic(Locations.AztecChunkyKlaptrapRoom, lambda l: (l.triangle or l.CanPhaseswim() or l.CanPhase()) and l.ischunky),
+        LocationLogic(Locations.AztecChunkyKlaptrapRoom, lambda l: (l.triangle or (l.CanPhaseswim() and Events.AztecIceMelted in l.Events) or l.CanPhase()) and l.ischunky),
         LocationLogic(Locations.AztecTempleEnemy_GuardRotating0, lambda l: True),
         LocationLogic(Locations.AztecTempleEnemy_GuardRotating1, lambda l: True),
         LocationLogic(Locations.AztecTempleEnemy_MainRoom0, lambda l: True),
         LocationLogic(Locations.AztecTempleEnemy_MainRoom1, lambda l: True),
         LocationLogic(Locations.AztecTempleEnemy_MainRoom2, lambda l: True),
     ], [
-        Event(Events.AztecIceMelted, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice)),
     ], [
         TransitionFront(Regions.AngryAztecOasis, lambda l: True, Transitions.AztecTempleToStart),
         TransitionFront(Regions.TempleGuitarPad, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut and l.isdiddy),
