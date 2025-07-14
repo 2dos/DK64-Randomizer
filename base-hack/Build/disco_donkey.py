@@ -1,58 +1,8 @@
+"""Create the disco donkey model."""
+
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames, ExtraTextures
 from BuildLib import ROMName, getBonusSkinOffset
-
-# DK
-# 0xe64 - Skin
-# 0xe91 - Mouth
-# 0xe6a - Ear?
-# 0xe6b - Pink?
-# 0xd000000 - All Fur (Dyn Tex)
-# 0xc000000
-# 0xe92 - ?
-# 0xe8d - DK Logo
-# 0xe000000
-# 0xe65 - Fur?
-# 0xe84 - Not genned
-# 0xe83 - Not Genned
-# 0x130 - Green Leaf?
-
-# Chunky
-# 0xe64
-# 0xe91
-# 0xeb4 - Dark Skin
-# 0xe6b
-# 0xc000000
-# 0xe66
-# 0xeb5
-# 0xe84
-# 0xe83
-# 0x130
-# 0xe000000
-# 0xd000000
-# 0xead
-# 0xeb8
-# 0xebd
-# 0xebe
-
-# Disco Chunky
-# 0xe64
-# 0xe91
-# 0xeb4
-# 0xe6b
-# 0xc000000
-# 0xec2 - Hands
-# 0xec1 - Main Suit
-# 0xe84
-# 0xe83
-# 0x130
-# 0xead
-# 0xec0 - Belt
-# 0xebd
-# 0xebe
-
-# DK: 8D862E
-# Disco Chunk: 8EC3E8
 
 DARKER_SKIN = 0xEB4
 PURPLE_SUIT = getBonusSkinOffset(ExtraTextures.DiscoDonkShirt)
