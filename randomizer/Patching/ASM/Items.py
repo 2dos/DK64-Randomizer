@@ -333,7 +333,6 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x806A206C, Overlay.Static, "getDirtPatchSkin", offset_dict)  # Get Dirt Flag Check
     writeFunction(ROM_COPY, 0x80681854, Overlay.Static, "getBonusFlag", offset_dict)  # Get Bonus Flag Check
     writeFunction(ROM_COPY, 0x806C63A8, Overlay.Static, "getBonusFlag", offset_dict)  # Get Bonus Flag Check
-    writeFunction(ROM_COPY, 0x806F78B8, Overlay.Static, "getKongFromBonusFlag", offset_dict)  # Reward Table Kong Check
     # Move Decoupling
     # Strong Kong
     writeValue(ROM_COPY, 0x8067ECFC, Overlay.Static, 0x30810002, offset_dict, 4)  # ANDI $at $a0 2

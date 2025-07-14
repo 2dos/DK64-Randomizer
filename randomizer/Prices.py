@@ -109,17 +109,21 @@ def RandomizePrices(spoiler, weight):
     # Generate list for assigning prices
     price_assignment = []
     for location in shopLocations:
-        price_assignment.append({
-            "is_shop": True,
-            "index": location,
-        })
+        price_assignment.append(
+            {
+                "is_shop": True,
+                "index": location,
+            }
+        )
     for item in ProgressiveMoves.keys():
         prices[item] = []
         for i in range(ProgressiveMoves[item]):
-            price_assignment.append({
-                "is_shop": False,
-                "index": item,
-            })
+            price_assignment.append(
+                {
+                    "is_shop": False,
+                    "index": item,
+                }
+            )
     # Shuffle shop locations & prog moves around so that progression isn't consistent with certain moves/locations
     if spoiler.settings.shops_dont_cost:
         spoiler.settings.random.shuffle(price_assignment)

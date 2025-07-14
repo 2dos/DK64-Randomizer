@@ -18,7 +18,7 @@
 | From Diddy BP to river side (7 custom, 3 Diddy) | 3 | `self.logic = lambda _: True` | 
 | From Diddy BP to river side (7 custom, 3 Diddy) | 7 | `self.logic = lambda _: True` | 
 | Bunch in Minecart exit | 5 | `self.logic = lambda _: True` | 
-| Up the slope to painting room | 10 | `(l.handstand and l.islanky) or (l.twirl and l.istiny)` | 
+| Up the slope to painting room | 10 | `(l.handstand and l.islanky) or (l.twirl and l.istiny) or l.slope_resets` | 
 | Leading up to and on BBlast pad | 5 | `l.can_use_vines or l.CanMoonkick()` | 
 | Leading up to and on BBlast pad | 5 | `self.logic = lambda _: True` | 
 | Up the vine to Funky's and lining the edge of Funky's area | 15 | `self.logic = lambda _: True` | 
@@ -40,7 +40,7 @@
 | Outside ring around Cranky area | 20 | `self.logic = lambda _: True` | 
 | Inside ring around Cranky's Lab | 10 | `self.logic = lambda _: True` | 
 | Lanky's blueprint room (8 custom, 7 Lanky) | 11 | `self.logic = lambda _: True` | 
-| Lanky's blueprint room (8 custom, 7 Lanky) | 2 | `l.handstand` | 
+| Lanky's blueprint room (8 custom, 7 Lanky) | 2 | `l.handstand or l.slope_resets` | 
 | Lanky's blueprint room (8 custom, 7 Lanky) | 2 | `self.logic = lambda _: True` | 
 | 4 corners of Lanky BP room | 20 | `self.logic = lambda _: True` | 
 | Slope to Painting room (2 custom, 3 Lanky) | 4 | `self.logic = lambda _: True` | 

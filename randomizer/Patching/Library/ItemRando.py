@@ -120,6 +120,81 @@ class GraphicOverlay(IntEnum):
     IceTrapDisableCU = auto()
 
 
+class BuyText(IntEnum):
+    """Enum of items in the order of buy text."""
+
+    blast = 0
+    strong = auto()
+    grab = auto()
+    charge = auto()
+    rocket = auto()
+    spring = auto()
+    ostand = auto()
+    balloon = auto()
+    sprint = auto()
+    mini = auto()
+    ptt = auto()
+    port = auto()
+    hunky = auto()
+    punch = auto()
+    gone = auto()
+    slam = auto()
+    coconut = auto()
+    peanut = auto()
+    grape = auto()
+    feather = auto()
+    pineapple = auto()
+    homing = auto()
+    sniper = auto()
+    ammo_belt = auto()
+    bongos = auto()
+    guitar = auto()
+    trombone = auto()
+    sax = auto()
+    triangle = auto()
+    instrument_upgrade = auto()
+    dive = auto()
+    orange = auto()
+    barrel = auto()
+    vine = auto()
+    climb = auto()
+    camera = auto()
+    shockwave = auto()
+    camera_and_shockwave = auto()
+    golden_banana = auto()
+    crown = auto()
+    medal = auto()
+    key = auto()
+    blueprint = auto()
+    nin_coin = auto()
+    rw_coin = auto()
+    bean = auto()
+    pearl = auto()
+    kong = auto()
+    fairy = auto()
+    ice_trap = auto()
+    hint = auto()
+    terminator = auto()  # Used for nobuytext calculations
+
+
+class NoBuyText(IntEnum):
+    """Enum of items in the order of can't buy text."""
+
+    special_move = 0
+    slam = auto()
+    gun = auto()
+    gun_upgrade = auto()
+    ammo_belt = auto()
+    instrument = auto()
+    training_move = auto()
+    fairy_move = auto()
+    misc_item = auto()
+    golden_banana = auto()
+    blueprint = auto()
+    medal = auto()
+    kong = auto()
+
+
 class ItemPlacementData:
     """Class to store information pertaining to writing Item Rando data."""
 
@@ -532,3 +607,199 @@ def getItemPreviewText(item_type: Types, location: Locations, allow_special_text
         if location == Locations.GalleonDonkeySealRace and allow_special_text:
             text = getItemDBEntry(item_type).seal_preview_text
     return text
+
+
+item_shop_text_mapping = {
+    # Kongs
+    Items.Donkey: (BuyText.kong, NoBuyText.kong),
+    Items.Diddy: (BuyText.kong, NoBuyText.kong),
+    Items.Lanky: (BuyText.kong, NoBuyText.kong),
+    Items.Tiny: (BuyText.kong, NoBuyText.kong),
+    Items.Chunky: (BuyText.kong, NoBuyText.kong),
+    Items.Cranky: (BuyText.kong, NoBuyText.kong),
+    Items.Funky: (BuyText.kong, NoBuyText.kong),
+    Items.Candy: (BuyText.kong, NoBuyText.kong),
+    Items.Snide: (BuyText.kong, NoBuyText.kong),
+    # Training
+    Items.Vines: (BuyText.vine, NoBuyText.training_move),
+    Items.Swim: (BuyText.dive, NoBuyText.training_move),
+    Items.Oranges: (BuyText.orange, NoBuyText.training_move),
+    Items.Barrels: (BuyText.barrel, NoBuyText.training_move),
+    Items.Climbing: (BuyText.climb, NoBuyText.training_move),
+    # Slams
+    Items.ProgressiveSlam: (BuyText.slam, NoBuyText.slam),
+    Items.ProgressiveSlam2: (BuyText.slam, NoBuyText.slam),
+    Items.ProgressiveSlam3: (BuyText.slam, NoBuyText.slam),
+    # Special Moves
+    Items.BaboonBlast: (BuyText.blast, NoBuyText.special_move),
+    Items.StrongKong: (BuyText.strong, NoBuyText.special_move),
+    Items.GorillaGrab: (BuyText.grab, NoBuyText.special_move),
+    Items.ChimpyCharge: (BuyText.charge, NoBuyText.special_move),
+    Items.RocketbarrelBoost: (BuyText.rocket, NoBuyText.special_move),
+    Items.SimianSpring: (BuyText.spring, NoBuyText.special_move),
+    Items.Orangstand: (BuyText.ostand, NoBuyText.special_move),
+    Items.BaboonBalloon: (BuyText.balloon, NoBuyText.special_move),
+    Items.OrangstandSprint: (BuyText.sprint, NoBuyText.special_move),
+    Items.MiniMonkey: (BuyText.mini, NoBuyText.special_move),
+    Items.PonyTailTwirl: (BuyText.ptt, NoBuyText.special_move),
+    Items.Monkeyport: (BuyText.port, NoBuyText.special_move),
+    Items.HunkyChunky: (BuyText.hunky, NoBuyText.special_move),
+    Items.PrimatePunch: (BuyText.punch, NoBuyText.special_move),
+    Items.GorillaGone: (BuyText.gone, NoBuyText.special_move),
+    # Guns
+    Items.Coconut: (BuyText.coconut, NoBuyText.gun),
+    Items.Peanut: (BuyText.peanut, NoBuyText.gun),
+    Items.Grape: (BuyText.grape, NoBuyText.gun),
+    Items.Feather: (BuyText.feather, NoBuyText.gun),
+    Items.Pineapple: (BuyText.pineapple, NoBuyText.gun),
+    # Gun Upgrades
+    Items.HomingAmmo: (BuyText.homing, NoBuyText.gun_upgrade),
+    Items.SniperSight: (BuyText.sniper, NoBuyText.gun_upgrade),
+    Items.ProgressiveAmmoBelt: (BuyText.ammo_belt, NoBuyText.ammo_belt),
+    Items.ProgressiveAmmoBelt2: (BuyText.ammo_belt, NoBuyText.ammo_belt),
+    # Instruments
+    Items.Bongos: (BuyText.bongos, NoBuyText.instrument),
+    Items.Guitar: (BuyText.guitar, NoBuyText.instrument),
+    Items.Trombone: (BuyText.trombone, NoBuyText.instrument),
+    Items.Saxophone: (BuyText.sax, NoBuyText.instrument),
+    Items.Triangle: (BuyText.triangle, NoBuyText.instrument),
+    # Instrument Upgrades
+    Items.ProgressiveInstrumentUpgrade: (BuyText.instrument_upgrade, NoBuyText.instrument),
+    Items.ProgressiveInstrumentUpgrade2: (BuyText.instrument_upgrade, NoBuyText.instrument),
+    Items.ProgressiveInstrumentUpgrade3: (BuyText.instrument_upgrade, NoBuyText.instrument),
+    # Fairy Moves
+    Items.Camera: (BuyText.camera, NoBuyText.fairy_move),
+    Items.Shockwave: (BuyText.shockwave, NoBuyText.fairy_move),
+    Items.CameraAndShockwave: (BuyText.camera_and_shockwave, NoBuyText.fairy_move),
+    # Company Coins
+    Items.NintendoCoin: (BuyText.nin_coin, NoBuyText.misc_item),
+    Items.RarewareCoin: (BuyText.rw_coin, NoBuyText.misc_item),
+    # Boss Keys
+    Items.JungleJapesKey: (BuyText.key, NoBuyText.misc_item),
+    Items.AngryAztecKey: (BuyText.key, NoBuyText.misc_item),
+    Items.FranticFactoryKey: (BuyText.key, NoBuyText.misc_item),
+    Items.GloomyGalleonKey: (BuyText.key, NoBuyText.misc_item),
+    Items.FungiForestKey: (BuyText.key, NoBuyText.misc_item),
+    Items.CrystalCavesKey: (BuyText.key, NoBuyText.misc_item),
+    Items.CreepyCastleKey: (BuyText.key, NoBuyText.misc_item),
+    Items.HideoutHelmKey: (BuyText.key, NoBuyText.misc_item),
+    # Misc Items
+    Items.GoldenBanana: (BuyText.golden_banana, NoBuyText.golden_banana),
+    Items.BananaFairy: (BuyText.fairy, NoBuyText.misc_item),
+    Items.BananaMedal: (BuyText.medal, NoBuyText.medal),
+    Items.BattleCrown: (BuyText.crown, NoBuyText.misc_item),
+    Items.Bean: (BuyText.bean, NoBuyText.misc_item),
+    Items.Pearl: (BuyText.pearl, NoBuyText.misc_item),
+    Items.FillerPearl: (BuyText.pearl, NoBuyText.misc_item),
+    Items.FillerBanana: (BuyText.golden_banana, NoBuyText.golden_banana),
+    Items.FillerFairy: (BuyText.fairy, NoBuyText.misc_item),
+    Items.FillerCrown: (BuyText.crown, NoBuyText.misc_item),
+    Items.FillerMedal: (BuyText.medal, NoBuyText.medal),
+    # Ice Traps
+    Items.IceTrapBubble: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapReverse: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapSlow: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapBubbleBean: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapReverseBean: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapSlowBean: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapBubbleKey: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapReverseKey: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapSlowKey: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableA: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableABean: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableAKey: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableB: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableBBean: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableBKey: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableZ: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableZBean: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableZKey: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableCU: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableCUBean: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableCUKey: (BuyText.ice_trap, NoBuyText.misc_item),
+    # Items not yet considered
+    # Items.RainbowCoin: (BuyText.blueprint, NoBuyText.misc_item),
+    # Items.JunkCrystal: (BuyText.blueprint, NoBuyText.misc_item),
+    # Items.JunkMelon: (BuyText.blueprint, NoBuyText.misc_item),
+    # Items.JunkAmmo: (BuyText.blueprint, NoBuyText.misc_item),
+    # Items.JunkFilm: (BuyText.blueprint, NoBuyText.misc_item),
+    # Items.JunkOrange: (BuyText.blueprint, NoBuyText.misc_item),
+    # Items.ArchipelagoItem: (BuyText.blueprint, NoBuyText.misc_item),
+    # Hints
+    Items.JapesDonkeyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.JapesDiddyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.JapesLankyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.JapesTinyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.JapesChunkyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.AztecDonkeyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.AztecDiddyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.AztecLankyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.AztecTinyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.AztecChunkyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.FactoryDonkeyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.FactoryDiddyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.FactoryLankyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.FactoryTinyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.FactoryChunkyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.GalleonDonkeyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.GalleonDiddyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.GalleonLankyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.GalleonTinyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.GalleonChunkyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.ForestDonkeyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.ForestDiddyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.ForestLankyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.ForestTinyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.ForestChunkyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.CavesDonkeyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.CavesDiddyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.CavesLankyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.CavesTinyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.CavesChunkyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.CastleDonkeyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.CastleDiddyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.CastleLankyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.CastleTinyHint: (BuyText.hint, NoBuyText.misc_item),
+    Items.CastleChunkyHint: (BuyText.hint, NoBuyText.misc_item),
+    # Blueprint
+    Items.JungleJapesDonkeyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.JungleJapesDiddyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.JungleJapesLankyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.JungleJapesTinyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.JungleJapesChunkyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.AngryAztecDonkeyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.AngryAztecDiddyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.AngryAztecLankyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.AngryAztecTinyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.AngryAztecChunkyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.FranticFactoryDonkeyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.FranticFactoryDiddyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.FranticFactoryLankyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.FranticFactoryTinyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.FranticFactoryChunkyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.GloomyGalleonDonkeyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.GloomyGalleonDiddyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.GloomyGalleonLankyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.GloomyGalleonTinyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.GloomyGalleonChunkyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.FungiForestDonkeyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.FungiForestDiddyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.FungiForestLankyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.FungiForestTinyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.FungiForestChunkyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.CrystalCavesDonkeyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.CrystalCavesDiddyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.CrystalCavesLankyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.CrystalCavesTinyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.CrystalCavesChunkyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.CreepyCastleDonkeyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.CreepyCastleDiddyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.CreepyCastleLankyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.CreepyCastleTinyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.CreepyCastleChunkyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.DKIslesDonkeyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.DKIslesDiddyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.DKIslesLankyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.DKIslesTinyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+    Items.DKIslesChunkyBlueprint: (BuyText.blueprint, NoBuyText.blueprint),
+}

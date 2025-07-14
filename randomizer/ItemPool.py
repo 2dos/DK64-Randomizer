@@ -655,6 +655,7 @@ trap_weighting = {
     Items.IceTrapDisableCUKey: (2, 2),
 }
 
+
 def FakeItems(settings):
     """Return a list of Fake Items to be placed."""
     total_count = getIceTrapCount(settings)

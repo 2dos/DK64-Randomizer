@@ -238,6 +238,7 @@ item_type_table_conversion = {
     Types.CrateItem: ("crate_item_table", 2),
     Types.BoulderItem: ("boulder_item_table", 8),
     Types.Kong: ("kong_check_data", 8),
+    Types.Shop: ("purchase_hint_text_items", 2),  # Shop Hints
 }
 
 

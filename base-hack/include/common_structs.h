@@ -2397,3 +2397,8 @@ typedef struct BoulderItemStruct {
 	/* 0x004 */ short spawner_id;
 	/* 0x006 */ short pad;
 } BoulderItemStruct;
+
+typedef struct purchase_text_hint_struct {
+	/* 0x000 */ unsigned char enough_coins;
+	/* 0x001 */ unsigned char not_enough_coins;
+} purchase_text_hint_struct;

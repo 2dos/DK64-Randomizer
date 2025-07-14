@@ -196,7 +196,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Entrance Randomizer: 
 	- Vanilla: 50%
 	- Level Order: 50%
-- Logic: 
+- Logic Type: 
 	- Glitchless: 100%
 - Maximize Helm Blocker: 15%
 - Medal Cb Req: Between 15 and 60, usually close to 30

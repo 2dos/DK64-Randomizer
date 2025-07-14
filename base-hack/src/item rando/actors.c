@@ -29,62 +29,11 @@ void spriteCode(int sprite_index, float scale) {
     }
 }
 
-void ninCoinCode(void) {
-    /**
-     * @brief Nintendo Coin Actor Code
-     */
-    GoldenBananaCode();
-}
-
-void rwCoinCode(void) {
-    /**
-     * @brief Rareware Coin Actor Code
-     */
-    GoldenBananaCode();
-}
-
-void medalCode(void) {
-    /**
-     * @brief Medal Actor Code
-     */
-    GoldenBananaCode();
-}
-
-void beanCode(void) {
-    /**
-     * @brief Bean Actor Code
-     */
-    GoldenBananaCode();
-}
-
-void pearlCode(void) {
-    /**
-     * @brief Pearl Actor Code
-     */
-    GoldenBananaCode();
-}
-
 void NothingCode(void) {
     /**
      * @brief Null Item Actor Code
      */
     deleteActorContainer(CurrentActorPointer_0);
-}
-
-void scaleBounceDrop(float scale) {
-    /**
-     * @brief Change the visual scale of a bounce drop
-     * 
-     * @param scale New Scale of the object
-     */
-    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        renderingParamsData* render = CurrentActorPointer_0->render;
-        if (render) {
-            render->scale_x = scale;
-            render->scale_y = scale;
-            render->scale_z = scale;
-        }
-    }
 }
 
 void KongDropCode(void) {
@@ -198,17 +147,18 @@ void snideCodeHandler(void) {
     missingShopOwnerCode(13);
 }
 
-static const unsigned char fake_key_types[] = {154, 155, 157};
-
+void FakeKeyCode(void) {
+    /**
+     * @brief Actor code for the fake item (commonly known as "Ice Traps") actor
+     */
+    BossKeyCode();
+    CurrentActorPointer_0->rot_y -= 0xE4; // Spin in reverse
+}
 void FakeGBCode(void) {
     /**
      * @brief Actor code for the fake item (commonly known as "Ice Traps") actor
      */
-    if (inU8List(CurrentActorPointer_0->actorType, &fake_key_types, 3)) {
-        BossKeyCode();
-    } else {
-        GoldenBananaCode();
-    }
+    GoldenBananaCode();
     CurrentActorPointer_0->rot_y -= 0xE4; // Spin in reverse
 }
 

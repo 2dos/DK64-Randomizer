@@ -197,7 +197,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Vanilla: 20%
 	- Level Order: 65%
 	- Loadingzone: 15%
-- Logic: 
+- Logic Type: 
 	- Glitchless: 100%
 - Maximize Helm Blocker: 15%
 - Medal Cb Req: Between 15 and 90, usually close to 40

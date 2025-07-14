@@ -22,6 +22,7 @@ image_offsets = {
 NULL_IMAGE_0 = 0x249
 NULL_IMAGE_1 = 0x24F
 
+
 def generateYellowWrinkly():
     """Pull geo file from ROM and modify."""
     with open(ROMName, "rb") as fh:
@@ -59,8 +60,9 @@ def generateYellowWrinkly():
         wrinkly_door.seek(base_offset + 0x84 + 8)
         wrinkly_door.write(NULL_IMAGE_1.to_bytes(4, "big"))
 
+
 def modifyOtherWrinklyDoors():
-    """Modify the other wrinkly doors to include a null image"""
+    """Modify the other wrinkly doors to include a null image."""
     for kong in (Kong.Diddy, Kong.Lanky, Kong.Tiny, Kong.Chunky):
         file_name = f"assets/Gong/hint_door_{kong.name.lower()}.bin"
         with open(ROMName, "rb") as fh:
@@ -79,6 +81,7 @@ def modifyOtherWrinklyDoors():
             wrinkly_door.write((3).to_bytes(4, "big"))
             wrinkly_door.seek(base_offset + 0x84 + 8)
             wrinkly_door.write(NULL_IMAGE_1.to_bytes(4, "big"))
+
 
 def generateSprintSwitch():
     """Pull geo file from ROM and modify."""

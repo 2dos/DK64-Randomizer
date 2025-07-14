@@ -977,7 +977,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806E2344, Overlay.Static, "getProjectileCount_modified", offset_dict)
     writeFunction(ROM_COPY, 0x806E2D3C, Overlay.Static, "getProjectileCount_modified", offset_dict)
     # Button Ban Controls
-    writeFunction(ROM_COPY, 0x8071294c, Overlay.Static, "applyButtonBansInternals", offset_dict)
+    writeFunction(ROM_COPY, 0x8071294C, Overlay.Static, "applyButtonBansInternals", offset_dict)
     writeValue(ROM_COPY, 0x80712982, Overlay.Static, getHiSym("enabled_buttons"), offset_dict)
     writeValue(ROM_COPY, 0x80712986, Overlay.Static, getLoSym("enabled_buttons"), offset_dict)
 
@@ -1134,6 +1134,12 @@ def patchAssembly(ROM_COPY, spoiler):
 
     file_init_flags = angryCaves(ROM_COPY, settings, offset_dict, file_init_flags)
 
+    # Bonus barrel kong check
+    writeValue(ROM_COPY, 0x8073199E, Overlay.Static, getVar("BONUS_DATA_COUNT"), offset_dict)  # Set bonus count
+    writeValue(ROM_COPY, 0x807319CA, Overlay.Static, 6, offset_dict)  # Set size of item
+    writeValue(ROM_COPY, 0x80731996, Overlay.Static, getHiSym("bonus_data"), offset_dict)
+    writeValue(ROM_COPY, 0x807319A2, Overlay.Static, getLoSym("bonus_data"), offset_dict)
+
     if settings.free_trade_setting != FreeTradeSetting.none:
         # Non-BP Items
         writeValue(ROM_COPY, 0x807319C0, Overlay.Static, 0x00001025, offset_dict, 4)  # OR $v0, $r0, $r0 - Make all reward spots think no kong
@@ -1180,7 +1186,7 @@ def patchAssembly(ROM_COPY, spoiler):
             writeFloat(ROM_COPY, 0x80748294, Overlay.Static, 0.3, offset_dict)
     elif not IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world):
         writeFloat(ROM_COPY, 0x80748288, Overlay.Static, 0.3, offset_dict)
-        
+
     if settings.puzzle_rando_difficulty != PuzzleRando.off:
         # Alter diddy R&D
         diddy_rnd_code_writes = [
@@ -1650,7 +1656,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806EB618, Overlay.Static, 0x3C018076, offset_dict, 4)  # LUI $at, 0x8076
     writeValue(ROM_COPY, 0x806EB61C, Overlay.Static, 0xC426EB4C, offset_dict, 4)  # LWC1 $f6, 0xEB4C ($at)
     writeFunction(ROM_COPY, 0x806CA7D4, Overlay.Static, "fakeGetOut", offset_dict)
-    writeHook(ROM_COPY, 0X8065F228, Overlay.Static, "storeWaterSurfaceCount", offset_dict)
+    writeHook(ROM_COPY, 0x8065F228, Overlay.Static, "storeWaterSurfaceCount", offset_dict)
 
     # Golden Banana Requirements
     order = 0

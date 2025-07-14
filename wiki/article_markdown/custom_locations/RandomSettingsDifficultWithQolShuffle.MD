@@ -211,7 +211,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Level Order: 40%
 	- Loadingzone: 30%
 	- Loadingzonesdecoupled: 10%
-- Logic: 
+- Logic Type: 
 	- Glitchless: 80%
 	- Advanced Glitchless: 20%
 - Maximize Helm Blocker: 50%

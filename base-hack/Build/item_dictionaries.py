@@ -860,10 +860,10 @@ with open("src/lib_items.c", "w") as fh:
     actor_data["actor_functions"][324] = "&getNextMoveText"
     actor_data["actor_functions"][320] = "&getNextMoveText"
     actor_data["actor_functions"][107] = "&HelmBarrelCode"
-    actor_data = initActor(actor_data, 345 + CustomActors.NintendoCoin, "&ninCoinCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.RarewareCoin, "&rwCoinCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.NintendoCoin, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.RarewareCoin, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.Null, "&NothingCode", 4, 0, 1, 8, 0)
-    actor_data = initActor(actor_data, 345 + CustomActors.Medal, "&medalCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.Medal, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     for potion in POTIONS:
         actor_data = initActor(actor_data, 345 + potion, "&PotionCode", 2, 0, 1, 8, 45)
     for kong in KONGS:
@@ -873,8 +873,8 @@ with open("src/lib_items.c", "w") as fh:
     for trap in TRAPS:
         actor_data = initActor(actor_data, 345 + trap, "&FakeGBCode", 2, 0, 1, 8, 45)
 
-    actor_data = initActor(actor_data, 345 + CustomActors.Bean, "&beanCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.Pearl, "&pearlCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.Bean, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.Pearl, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.Fairy, "&fairyDuplicateCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemDK, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemDiddy, "&GoldenBananaCode", 2, 0, 1, 8, 45)
@@ -885,9 +885,9 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, 151, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 152, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 153, "&FakeGBCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 154, "&FakeGBCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 155, "&FakeGBCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 157, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 154, "&FakeKeyCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 155, "&FakeKeyCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 157, "&FakeKeyCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
     actor_data = initActor(actor_data, 345 + CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, 345 + CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)

@@ -11,7 +11,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Library.DataTypes import intf_to_float
 from randomizer.Lists.EnemyTypes import enemy_location_list
 from randomizer.Patching.Library.Generic import setItemReferenceName
-from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, getPropFromItem, getModelMask, getItemDBEntry
+from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, getPropFromItem, getModelMask, getItemDBEntry, item_shop_text_mapping, BuyText
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets
 from randomizer.Patching.Patcher import LocalROM
@@ -299,6 +299,17 @@ def appendTextboxChange(spoiler, file_index: int, textbox_index: int, search: st
         spoiler.text_changes[file_index].append(data)
     else:
         spoiler.text_changes[file_index] = [data]
+
+
+def writeBuyText(item: Items, address: int, ROM_COPY: LocalROM):
+    """Write the buy text to the world based on the item."""
+    ROM_COPY.seek(address)
+    if item is None or item == Items.NoItem:
+        ROM_COPY.writeMultipleBytes(0, 2)
+        return
+    data = item_shop_text_mapping.get(item, (0, 0))
+    ROM_COPY.write(data[0])
+    ROM_COPY.write(data[1] + BuyText.terminator)
 
 
 NUMBERS_AS_WORDS = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE"]
@@ -623,6 +634,9 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                             else:
                                 price_var = item.price
                             writeShopData(ROM_COPY, write_space, item_properties, price_var)
+                        if spoiler.settings.enable_shop_hints and placement < 120:
+                            addr = getItemTableWriteAddress(ROM_COPY, Types.Shop, placement, offset_dict)
+                            writeBuyText(item.new_subitem, addr, ROM_COPY)
                 elif not item.reward_spot:
                     for map_id in item.placement_data:
                         if map_id not in map_items:

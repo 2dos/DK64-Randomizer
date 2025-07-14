@@ -76,6 +76,7 @@ def IsGlitchEnabled(settings, glitch_enum: GlitchesSelected):
     """Check if glitch is enabled in the settings."""
     return glitch_enum in settings.glitches_selected
 
+
 def IsTrickEnabled(settings, trick_enum: TricksSelected):
     """Check if trick is enabled in the settings."""
     return trick_enum in settings.tricks_selected
