@@ -35,7 +35,6 @@
 .definelabel ChunkyModel, 0x807FFFD5
 .definelabel EnemyInView, 0x807FFFD4
 .definelabel ItemRandoOn, 0x807FFFD3
-.definelabel TextItemName, 0x807FFFD2
 .definelabel RandomSwitches, 0x807FFF20
 .definelabel SwitchLevel, 0x807FFF21
 .definelabel APData, 0x807FFF1C

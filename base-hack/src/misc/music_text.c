@@ -20,7 +20,6 @@ void resetDisplayedMusic(void) {
     DisplayedSongNamePointer = 0; // Uses a static address for autotrackers
 }
 
-
 void detectSongChange(void) {
     char loadedSongCanceled = 0;
     for(int i = 11; i >= 0; i--){
@@ -55,7 +54,7 @@ void detectSongChange(void) {
 static unsigned char last_song = SONG_SILENCE;
 
 void SpeedUpMusicInner(void) {
-    if (!last_song) {
+    if (last_song == SONG_SILENCE) {
         return;
     }
     if (!Rando.song_speed_near_win) {
@@ -84,7 +83,7 @@ void SpeedUpMusic(void) {
 }
 
 void initSongDisplay(int song) {
-    if (song == 0) {
+    if (song == SONG_SILENCE) {
         return;
     }
     if (music_types[song] != SONGTYPE_BGM) {

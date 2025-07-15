@@ -658,6 +658,7 @@ class Settings:
         self.krusha_kong = None
         self.misc_cosmetics = False
         self.remove_water_oscillation = False
+        self.song_speed_near_win = False
         self.head_balloons = False
         self.homebrew_header = False
         self.camera_is_follow = False

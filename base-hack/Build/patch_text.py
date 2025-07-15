@@ -848,6 +848,10 @@ location_references = [
     ItemReference("Key 6", "Caves Boss Defeated"),
     ItemReference("Key 7", "Castle Boss Defeated"),
     ItemReference("Key 8", "The End of Helm"),
+    # Special Items
+    ItemReference("The Bean", "Forst Anthill Second Reward"),
+    ItemReference("Nintendo Coin", "Factory Arcade Round 2"),
+    ItemReference("Rareware Coin", "Jetpac"),
 ]
 
 with open("src/randomizers/move_text.c", "w") as fh:

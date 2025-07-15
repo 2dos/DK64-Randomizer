@@ -207,6 +207,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "remove_water_oscillation",
         "fps_display",
         "head_balloons",
+        "song_speed_near_win",
         "colorblind_mode",
         "big_head_mode",
         "search",

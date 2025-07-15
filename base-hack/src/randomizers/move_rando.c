@@ -517,7 +517,7 @@ void displayBFIMoveText(void) {
 		// Camera
 		displayItemOnHUD(6,0,0);
 	}
-	if (BFIMove_New.item.item_type) {
+	if (BFIMove_New.item.item_type != REQITEM_NONE) {
 		spawnActor(0x144,0);
 	}
 }

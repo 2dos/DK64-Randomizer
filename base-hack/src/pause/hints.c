@@ -28,6 +28,7 @@ typedef enum itemloc_subgroups {
     ITEMLOC_SHOPKEEPERS,
     ITEMLOC_EARLYKEYS,
     ITEMLOC_LATEKEYS,
+    ITEMLOC_SPECIALITEMS,
     ITEMLOC_TERMINATOR,
 } itemloc_subgroups;
 
@@ -120,6 +121,10 @@ short itemloc_flags[] = {
     FLAG_KEYHAVE_KEY6,
     FLAG_KEYHAVE_KEY7,
     FLAG_KEYHAVE_KEY8,
+    // Special Items
+    FLAG_COLLECTABLE_BEAN,
+    FLAG_COLLECTABLE_NINTENDOCOIN,
+    FLAG_COLLECTABLE_RAREWARECOIN,
 };
 
 static itemloc_data itemloc_textnames[] = {
@@ -166,11 +171,15 @@ static itemloc_data itemloc_textnames[] = {
     {
         .header="EARLY KEYS",
         .lengths={1, 1, 1, 1, -1, -1}
-    }, // 5
+    }, // 4
     {
         .header="LATE KEYS",
         .lengths={1, 1, 1, 1, -1, -1}
-    }, // 5
+    }, // 4
+    {
+        .header="SPECIAL ITEMS",
+        .lengths={1, 1, 1, -1, -1, -1}
+    }, // 3
 };
 
 static unsigned char progressive_ding_timer = 0;

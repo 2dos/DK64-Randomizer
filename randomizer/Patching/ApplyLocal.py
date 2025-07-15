@@ -293,6 +293,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 BooleanProperties(settings.camera_is_follow, 0xCB),  # Free/Follow Cam
                 BooleanProperties(settings.camera_is_not_inverted, 0xCC),  # Inverted/Non-Inverted Camera
                 BooleanProperties(settings.fps_display, 0x96),  # FPS Display
+                BooleanProperties(settings.song_speed_near_win, 0x1B4),  # Song Win Con Speedup
             ]
 
             for prop in boolean_props:

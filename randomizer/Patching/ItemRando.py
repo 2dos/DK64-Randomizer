@@ -13,7 +13,7 @@ from randomizer.Lists.EnemyTypes import enemy_location_list
 from randomizer.Patching.Library.Generic import setItemReferenceName
 from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, getPropFromItem, getModelMask, getItemDBEntry, item_shop_text_mapping, BuyText
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
-from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets
+from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
 import randomizer.ItemPool as ItemPool
@@ -24,6 +24,7 @@ TRAINING_LOCATIONS = (
     Locations.IslesOrangesTrainingBarrel,
     Locations.IslesBarrelsTrainingBarrel,
 )
+THEMATIC_TEXT = True
 
 kong_flags = (385, 6, 70, 66, 117)
 
@@ -433,55 +434,6 @@ def pushItemMicrohints(spoiler):
                 else:
                     spoiler.text_changes[19] = [data]
 
-
-def getTextRewardIndex(item) -> int:
-    """Get reward index for text item."""
-    if item.new_item == Types.RarewareCoin:
-        return 5
-    elif item.new_item == Types.NintendoCoin:
-        return 6
-    elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing):
-        return 8
-    elif item.new_item in (Types.Snide, Types.Cranky, Types.Candy, Types.Funky):
-        return 15
-    elif item.new_item is None:
-        return 14
-    elif item.new_item == Types.FillerBanana:
-        return 0
-    elif item.new_item == Types.FillerCrown:
-        return 3
-    elif item.new_item == Types.FillerFairy:
-        return 4
-    elif item.new_item == Types.FillerPearl:
-        return 11
-    elif item.new_item == Types.FillerMedal:
-        return 7
-    else:
-        item_text_indexes = (
-            Types.Banana,  # 0
-            Types.Blueprint,  # 1
-            Types.Key,  # 2
-            Types.Crown,  # 3
-            Types.Fairy,  # 4
-            Types.RarewareCoin,  # 5
-            Types.NintendoCoin,  # 6
-            Types.Medal,  # 7
-            Types.Shop,  # 8
-            Types.Kong,  # 9
-            Types.Bean,  # 10
-            Types.Pearl,  # 11
-            Types.RainbowCoin,  # 12
-            Types.FakeItem,  # 13
-            Types.NoItem,  # 14
-            Types.Cranky,  # 15
-            Types.JunkItem,  # 16
-            Types.ArchipelagoItem,  # 17
-        )
-        if item.new_item in item_text_indexes:
-            return item_text_indexes.index(item.new_item)
-        return 14
-
-
 def writeNullShopSlot(ROM_COPY: LocalROM, location: int):
     """Write an empty shop slot."""
     ROM_COPY.seek(location)
@@ -763,13 +715,6 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                         ROM_COPY.writeMultipleBytes(item.old_flag, 2)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
                         bonus_table_offset += 1
-                    elif item.location in (Locations.AztecTinyBeetleRace, Locations.CavesLankyBeetleRace):
-                        text_index = getTextRewardIndex(item)
-                        if item.location == Locations.AztecTinyBeetleRace:
-                            ROM_COPY.seek(sav + 0x50)
-                        else:
-                            ROM_COPY.seek(sav + 0x51)
-                        ROM_COPY.write(text_index)
                 else:
                     if item.old_item != Types.Medal:
                         actor_index = getActorIndex(item)
@@ -977,7 +922,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                         flag = item.new_flag
                 replacement = textbox.replacement_text
                 if not textbox.force_pipe:
-                    reward_text = getItemPreviewText(new_item, textbox.location, True, getModelMask(new_subitem))
+                    reward_text = getItemPreviewText(new_item, textbox.location, THEMATIC_TEXT, getModelMask(new_subitem))
                     replacement = replacement.replace("|", reward_text)
                 data = {
                     "textbox_index": textbox.textbox_index,
@@ -989,6 +934,18 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                     spoiler.text_changes[textbox.file_index].append(data)
                 else:
                     spoiler.text_changes[textbox.file_index] = [data]
+            beetle_data = {
+                Locations.AztecTinyBeetleRace: "aztec_beetle",
+                Locations.CavesLankyBeetleRace: "caves_beetle",
+            }
+            beetle_locations = list(beetle_data.keys())
+            for item in item_data:
+                if item.location in beetle_locations:
+                    VERSION_STRING_START = getSym(beetle_data[item.location])
+                    addr = getROMAddress(VERSION_STRING_START, Overlay.Custom, offset_dict)
+                    item_text = getItemPreviewText(item.new_item, item.location, THEMATIC_TEXT, getModelMask(new_subitem))
+                    ROM_COPY.seek(addr)
+                    ROM_COPY.writeBytes(bytes(f"{item_text}\0", "ascii"))
             minor_item = "\x05FOR A FOOLISH GAME\x05"
             major_item = "\x04FOR SOMETHING YOU MIGHT NEED ON YOUR QUEST\x04"
             if 8 not in spoiler.text_changes:

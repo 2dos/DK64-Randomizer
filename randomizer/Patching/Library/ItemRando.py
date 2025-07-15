@@ -598,14 +598,18 @@ def getModelMask(item: Items) -> Types:
 
 def getItemPreviewText(item_type: Types, location: Locations, allow_special_text: bool = True, masked_model: Types = None) -> str:
     """Get the preview text for an item."""
-    if item_type == Types.FakeItem and (location != Locations.GalleonDonkeySealRace or not allow_special_text):
-        masked_name = getItemDBEntry(masked_model).preview_text
-        return getIceTrapText(masked_name)
-    text = ""
-    if item_type in item_db or item_type in FILLER_MAPPING:
-        text = getItemDBEntry(item_type).preview_text
-        if location == Locations.GalleonDonkeySealRace and allow_special_text:
-            text = getItemDBEntry(item_type).seal_preview_text
+    use_special_text = location == Locations.GalleonDonkeySealRace and allow_special_text
+    reference_item = item_type
+    if item_type == Types.FakeItem:
+        reference_item = masked_model
+    if reference_item not in item_db and reference_item not in FILLER_MAPPING:
+        return ""
+    item_data = getItemDBEntry(reference_item)
+    text = item_data.preview_text
+    if use_special_text:
+        text = item_data.seal_preview_text
+    if item_type == Types.FakeItem:
+        return getIceTrapText(text)
     return text
 
 

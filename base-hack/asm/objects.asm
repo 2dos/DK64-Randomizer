@@ -78,7 +78,6 @@
 .importobj "obj/src_randomizers_move_rando.o"
 .importobj "obj/src_randomizers_move_text.o"
 .importobj "obj/src_shorteners_bonus.o"
-.importobj "obj/src_shorteners_fastStart.o"
 .importobj "obj/src_shorteners_helm.o"
 .importobj "obj/src_shorteners_moves.o"
 .importobj "obj/src_shorteners_pre_turns.o"

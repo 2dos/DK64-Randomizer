@@ -3852,6 +3852,10 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         ItemReference(Items.CrystalCavesKey, "Key 6", "Starting Key"),
         ItemReference(Items.CreepyCastleKey, "Key 7", "Starting Key"),
         ItemReference(Items.HideoutHelmKey, "Key 8", "Starting Key"),
+        # Special Items
+        ItemReference(Items.Bean, "The Bean", "Forst Anthill Second Reward"),
+        ItemReference(Items.NintendoCoin, "Nintendo Coin", "Factory Arcade Round 2"),
+        ItemReference(Items.RarewareCoin, "Rareware Coin", "Jetpac"),
     ]
     # Item Rando
     spoiler.human_item_assignment = {}

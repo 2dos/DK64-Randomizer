@@ -52,7 +52,6 @@ extern void fixKRoolKong(void);
 
 extern void unlockMoves(void);
 extern void tagAnywhere(void);
-extern void applyFastStart(void);
 extern void openCrownDoor(void);
 extern void openCoinDoor(void);
 extern void qualityOfLife_fixes(void);
@@ -500,3 +499,5 @@ extern unsigned short enabled_buttons;
 extern unsigned short cc_enabled_buttons;
 extern unsigned short trap_enabled_buttons;
 extern purchase_text_hint_struct purchase_hint_text_items[120];
+extern char aztec_beetle[0x20];
+extern char caves_beetle[0x20];

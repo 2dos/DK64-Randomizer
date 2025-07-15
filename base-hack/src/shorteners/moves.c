@@ -150,6 +150,7 @@ void unlockMoves(void) {
 		}
 	}
 	if (Rando.fast_start_beginning) {
+		setLocationStatus(LOCATION_FIRSTMOVE);
 		for (int i = 0; i < 4; i++) {
 			setLocationStatus(LOCATION_DIVE + i);
 		}

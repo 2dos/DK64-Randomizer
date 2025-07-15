@@ -44,11 +44,6 @@ void cFuncLoop(void) {
 		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
 			shiftBrokenJapesPortal();
 		}
-		if (CurrentMap == MAP_AZTECBEETLE) {
-			TextItemName = Rando.aztec_beetle_reward;
-		} else if (CurrentMap == MAP_CAVESBEETLERACE) {
-			TextItemName = Rando.caves_beetle_reward;
-		}
 		if (isKrushaAdjacentModel(3)) {
 			if (CurrentMap == MAP_KROOLSHOE) {
 				setActorDamage(43, 1);
