@@ -180,7 +180,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             classification = ItemClassification.progression_skip_balancing
         # Ensure certain item types that affect logic are marked as progression
         elif item.type in (DK64RTypes.Kong, DK64RTypes.Shop, DK64RTypes.TrainingBarrel, DK64RTypes.Shockwave, DK64RTypes.Climbing):
-            classification = ItemClassification.progression_skip_balancing
+            classification = ItemClassification.progression
         else:  # double check jetpac, eh?
             classification = ItemClassification.useful
         if seed_item == DK64RItems.HideoutHelmKey and world.spoiler.settings.key_8_helm:
