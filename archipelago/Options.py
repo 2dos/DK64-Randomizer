@@ -356,10 +356,10 @@ class RemoveBarriers(OptionList):
 
 
 class HintItemRandomization(Toggle):
-    """Determines whether hint items are randomized."""
+    """???????"""
 
     display_name = "Randomize Hint"
-    default = False
+    default = True
 
 
 class RandomizeBlockers(Toggle):
@@ -377,11 +377,68 @@ class MaximumBLocker(Range):
     default = 64
 
 
-class ChaosBLockers(Toggle):
-    """Determines whether the "Secret" will be enabled."""
+# class ChaosBLockers(Toggle):
+#     """Determines whether the "Secret" will be enabled."""
 
-    display_name = "Chaos B. Lockers"
-    default = True
+#     display_name = "Chaos B. Lockers"
+#     default = True
+
+class Level1Blocker(Range):
+    """Determines the value of Level 1's B. Locker if Randomize B. Lockers are turned off."""
+
+    range_start = 0
+    range_end = 201
+    default = 1
+
+class Level2Blocker(Range):
+    """Determines the value of Level 2's B. Locker if Randomize B. Lockers are turned off."""
+
+    range_start = 0
+    range_end = 201
+    default = 5
+
+class Level3Blocker(Range):
+    """Determines the value of Level 3's B. Locker if Randomize B. Lockers are turned off."""
+
+    range_start = 0
+    range_end = 201
+    default = 15
+
+class Level4Blocker(Range):
+    """Determines the value of Level 4's B. Locker if Randomize B. Lockers are turned off."""
+
+    range_start = 0
+    range_end = 201
+    default = 30
+
+class Level5Blocker(Range):
+    """Determines the value of Level 5's B. Locker if Randomize B. Lockers are turned off."""
+
+    range_start = 0
+    range_end = 201
+    default = 50
+
+class Level6Blocker(Range):
+    """Determines the value of Level 6's B. Locker if Randomize B. Lockers are turned off."""
+
+    range_start = 0
+    range_end = 201
+    default = 65
+
+class Level7Blocker(Range):
+    """Determines the value of Level 7's B. Locker if Randomize B. Lockers are turned off."""
+
+    range_start = 0
+    range_end = 201
+    default = 80
+
+class Level8Blocker(Range):
+    """Determines the value of Level 8's B. Locker if Randomize B. Lockers are turned off."""
+
+    range_start = 0
+    range_end = 201
+    default = 100
+
 
 
 @dataclass
@@ -403,7 +460,15 @@ class DK64Options(PerGameCommonOptions):
     rareware_gb_fairies: RarewareGBRequirement
     randomize_blocker_required_amounts: RandomizeBlockers
     blocker_max: MaximumBLocker
-    secret_setting_lol: ChaosBLockers
+    level1_blocker: Level1Blocker
+    level2_blocker: Level2Blocker
+    level3_blocker: Level3Blocker
+    level4_blocker: Level4Blocker
+    level5_blocker: Level5Blocker
+    level6_blocker: Level6Blocker
+    level7_blocker: Level7Blocker
+    level8_blocker: Level8Blocker
+    # secret_setting_lol: ChaosBLockers
     open_lobbies: OpenLobbies
     switchsanity: SwitchSanity
     climbing_shuffle: ClimbingShuffle
@@ -415,7 +480,7 @@ class DK64Options(PerGameCommonOptions):
     hard_mode: HardModeEnabled
     hard_mode_selected: HardModeSelected
     mirror_mode: MirrorMode
-    hint_item_randomization: HintItemRandomization
+    secret_setting_lol: HintItemRandomization
     trap_fill_percentage: TrapFillPercentage
     bubble_trap_weight: BubbleTrapWeight
     reverse_trap_weight: ReverseTrapWeight

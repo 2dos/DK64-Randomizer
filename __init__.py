@@ -289,8 +289,21 @@ if baseclasses_loaded:
             settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
             settings_dict["randomize_blocker_required_amounts"] = self.options.randomize_blocker_required_amounts.value
             settings_dict["blocker_text"] = self.options.blocker_max.value
-            settings_dict["chaos_blockers"] = self.options.secret_setting_lol.value
+            # settings_dict["chaos_blockers"] = self.options.secret_setting_lol.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
+            blocker_options = [
+                self.options.level1_blocker,
+                self.options.level2_blocker,
+                self.options.level3_blocker,
+                self.options.level4_blocker,
+                self.options.level5_blocker,
+                self.options.level6_blocker,
+                self.options.level7_blocker,
+                self.options.level8_blocker
+            ]
+
+            for i, blocker in enumerate(blocker_options):
+                settings_dict[f"blocker_{i}"] = blocker.value
             settings_dict["item_rando_list_selected"] = []
 
             always_enabled_categories = [
@@ -313,7 +326,7 @@ if baseclasses_loaded:
             ]
             settings_dict["item_rando_list_selected"].extend(always_enabled_categories)
 
-            if self.options.hint_item_randomization.value:
+            if self.options.secret_setting_lol.value:
                 settings_dict["item_rando_list_selected"].append(ItemRandoListSelected.hint)
 
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
@@ -492,9 +505,6 @@ if baseclasses_loaded:
             self.deep_location_items = []
             self.foreignMicroHints = {}
 
-            # Handle locations that start empty due to being junk
-            self.junked_locations = []
-
         def create_regions(self) -> None:
             """Create the regions."""
             create_regions(self.multiworld, self.player, self.spoiler)
@@ -535,6 +545,7 @@ if baseclasses_loaded:
                         spoiler.pregiven_items.append(dk64_item)
                 local_trap_count = 0
                 ap_item_is_major_item = False
+                self.junked_locations = []
                 # Read through all item assignments in this AP world and find their DK64 equivalents so we can update our world state for patching purposes
                 for ap_location in self.multiworld.get_locations(self.player):
                     # We never need to place Collectibles or Events in our world state
@@ -567,11 +578,15 @@ if baseclasses_loaded:
                                 # Most of these item restrictions should be handled by item rules, so this is a failsafe.
                                 # Junk items can't be placed in shops, bosses, or arenas. Fortunately this is junk, so we can just patch a NoItem there instead.
                                 # Shops are allowed to get Junk items placed by AP in order to artificially slightly reduce the number of checks in shops.
-                                if dk64_item in [DK64RItems.JunkMelon] and dk64_location.type in [Types.Shop, Types.Key, Types.Crown]:
+                                if DK64RItem.ItemList[dk64_item].type == Types.JunkItem and (dk64_location.type in [Types.Shop, Types.Key, Types.Crown]):
                                     dk64_item = DK64RItems.NoItem
+                                    self.junked_locations.append(ap_location.name)
                                 # Blueprints can't be on fairies for technical reasons. Instead we'll patch it in as an AP item and have AP handle it.
                                 if dk64_item in DK64RItemPool.Blueprints() and dk64_location.type == Types.Fairy:
                                     dk64_item = DK64RItems.ArchipelagoItem
+                                # Track explicit "No Item" placements
+                                elif ap_item.name == "No Item":
+                                    self.junked_locations.append(ap_location.name)
                                 spoiler.LocationList[dk64_location_id].PlaceItem(spoiler, dk64_item)
                             else:
                                 print(f"Item {ap_item.name} not found in DK64 item table.")
@@ -610,13 +625,16 @@ if baseclasses_loaded:
                         major_count += woth_count - len(woth_hints)
                         deep_count += woth_count - len(woth_hints)
                     woth_hints = woth_hints + woth_hints
+                    major_hints = [hint for hint in major_hints if hint not in woth_hints]
                     major_hints = self.spoiler.settings.random.sample(major_hints, min(major_count, len(major_hints)))
                     if len(major_hints) < major_count:
                         deep_count += major_count - len(major_hints)
                     # Handle error that's theoretically impossible. Joy
                     if len(deep_hints) < deep_count:
-                        # Okay, I swear 1 test gen threw an error about this, but it seems to be gone now... so if you're reading this, PLEASE REPORT THIS ERROR!
-                        raise Exception(f"Deep count too high: {deep_count} for {len(deep_hints)}. {woth_count}, {major_count}.")
+                        print("No hints. stage_generate_output might be crashing")
+                        # Prevent this part of the code from crashing, so we get the actual stack trace from the other thread
+                        for i in range(50):
+                            deep_hints.append("no hint, sorry...")
                     deep_hints = self.spoiler.settings.random.sample(deep_hints, deep_count)
                     CompileArchipelagoHints(self.spoiler, woth_hints, major_hints, deep_hints)
 
@@ -644,8 +662,8 @@ if baseclasses_loaded:
                         elif hintedItem in shopkeepers:
                             text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0]} {self.foreignMicroHints[hintedItem][1]}\x07.".upper()
                         for letter in text:
-                            if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
-                                text.replace(letter, " ")
+                            if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+                                text = text.replace(letter, " ")
                         self.spoiler.microhints[DK64RItem.ItemList[hintedItem].name] = text
 
                 spoiler.majorItems = IdentifyMajorItems(spoiler)
@@ -759,16 +777,13 @@ if baseclasses_loaded:
                             state.locations_checked.add(loc)
                             if not multiworld.can_beat_game(state):
                                 autoworld.woth_item_locations.append(loc)
-                # Also gather any information on microhinted items
-                    if loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]:
+                    # Also gather any information on microhinted items
+                    if player in players and loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
                             else:    
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name[:80]]
-                # Also also gather information about which locations have junk items or no items      
-                    if locworld.location_starts_empty(loc):
-                        locworld.junked_locations.append(loc.name)
 
             except Exception as e:
                 raise e
@@ -956,7 +971,10 @@ if baseclasses_loaded:
             # Junk item
             if item_obj is None:
                 print(location.item.name)
-                a = 1 / 0
+                # TODO, figure out crash
+                print(f"{item.name}, PLEASE REPORT THIS PRINT!!!!! It's the error, and I don't want to make it crash if I don't have to!")
+                # raise Exception(f"{item.name} not found in ItemList. (Yes I made it crash again, no it shouldn't run on non-donk games)")
+                return True
             if item_obj.type == Types.JunkItem:
                 # In a location that can't have junk
                 if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies) or (loc_obj.type == Types.Key or loc_obj.level == Levels.HideoutHelm):
@@ -973,8 +991,8 @@ if baseclasses_loaded:
                 else:
                     text = f"Looking for \x07{location.item.name[:40]}\x07? Try looking in \x0d{location.name}\x0d.".upper()
                 for letter in text:
-                    if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
-                        text.replace(letter, " ")
+                    if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+                        text = text.replace(letter, " ")
                 hints.append(text)
             return hints
 
@@ -983,13 +1001,13 @@ if baseclasses_loaded:
             hints = []
             text = ""
             for location in locations_to_hint:
-                if location.player != self.player:
+                if location.item.player != self.player:
                     text = f"\x0d{location.name}\x0d has {self.multiworld.get_player_name(location.item.player)}'s \x07{location.item.name[:40]}\x07.".upper()
                 else:
                     text = f"\x0d{location.name}\x0d has your \x07{location.item.name}\x07".upper()
                 for letter in text:
-                    if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
-                        text.replace(letter, " ")
+                    if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+                        text = text.replace(letter, " ")
                 hints.append(text)
             return hints
 
