@@ -117,7 +117,7 @@
       "isBackground": false
     },
     {
-      "label": "Compute CB requirements for the CB calculator",
+      "label": "Update CB requirements",
       "type": "shell",
       "command": "${command:python.interpreterPath} ./cb_calc.py",
       "problemMatcher": []

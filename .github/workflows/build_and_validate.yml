@@ -113,9 +113,7 @@ jobs:
       run: |
         CHANGED_FILES=0
         git diff --quiet --exit-code || CHANGED_FILES=$?
-        echo "Detected changed files: $CHANGED_FILES"
         if [ $CHANGED_FILES -eq 0 ]; then exit 0; fi # If no unstaged files, exit the script
-        git config --global user.email "cb_calc@noreply.github.com"
-        git config --global user.name "CB calculator"
-        git commit -am "Updated CB calculator requirements on $(date)"
-        git push
+        echo "Detected changed files, please run 'Update CB requirements' task"
+        git diff # Print changes so the user can see them
+        exit 1

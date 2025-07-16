@@ -665,8 +665,8 @@ def to_javascript(cb_requirements, special_requirements):
             output += f"            new Requirement({count}, "
 
             location_string = []
-            for region, cbs in locations.items():
-                location_string.append(", ".join(cbs) + f" in {region}")
+            for region in sorted(locations.keys()):
+                location_string.append(", ".join(sorted(locations[region])) + f" in {region}")
 
             moves = []
             for converted_requirement in converted_requirements:
