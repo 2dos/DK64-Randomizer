@@ -1,4 +1,5 @@
 """A script to automatically calculate the requirements for various CBs."""
+
 # Python built-ins
 import collections
 import itertools
@@ -237,7 +238,7 @@ class SetOfSets:
 
     def __hash__(self):
         """Hash the SetOfSets.
-        
+
         In order for the type to be hashable (i.e. used as a key in a dictionary) we need a hash function.
         But the dictionaries are small (and hashing is hard) so we're just telling python to fall back to __eq__.
         """
@@ -268,7 +269,7 @@ class SetOfSets:
 
     def replace_event(self, event, event_requirements):
         """Replace an event with its requirements.
-        
+
         This helps deal with transitive requirements,
         i.e. a required event which also has its own SetOfSets requirements.
         This breaks some encapsulation rules, but is tremendously helpful and simple.
@@ -551,16 +552,16 @@ def compute_cb_requirements(regions, region_requirements, event_requirements):
                         continue
                     # The castle crypt rooms are also bereft of a tag barrel, but since this script is already reporting on
                     # castle_crypt_doors directly, it's implicitly handled by separating out those requirements during flatten_graph.
-                    pass
+                    #
                     # The third tag anywhere "gotcha" is access to the 10 diddy CBs inside the Caves Blueprint Cave.
                     # You can only access this cave as mini, but it has warp 4 in it so you can come back as diddy.
                     # However, warp 4 logically requires jetpack to reach it, so we adjust the requirements here.
                     if cb.kong == Kongs.diddy and region == Regions.CavesBlueprintCave:
-                        requirement |= {'jetpack'}
+                        requirement |= {"jetpack"}
                     # On the other hand, there is a bunch of lanky CBs on top of the sprint cabin (on the trombone pad).
                     # Logically you are supposed to use balloon to reach them, but you can also get up there with jetpack.
                     # If there isn't a boss portal up there (uncommon with Dos's doors), the bunch is not in logic.
-                    if cb.kong == Kongs.lanky and region == Regions.CavesSprintCabinRoof and region_requirement == {'jetpack'}:
+                    if cb.kong == Kongs.lanky and region == Regions.CavesSprintCabinRoof and region_requirement == {"jetpack"}:
                         continue
                     # Additional hack #1: We require "night" and "day" separately from guns, but they are overlapping.
                     # If the requirement contains night or day access *and* one of the 5 guns, remove night/day.

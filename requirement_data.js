@@ -2,12 +2,12 @@ const requirement_data = {
     "Japes": {
         "DK": [
             new Requirement(10, [[Moves.Moveless]]), // 1 bunch in JungleJapesStart; 1 bunch in JungleJapesMain
-            new Requirement(21, [[Moves.ClimbingCheck]]), // 1 bunch in JapesHill; 1 bunch in JapesCannonPlatform; 6 bananas, 1 bunch in JapesHillTop
+            new Requirement(21, [[Moves.ClimbingCheck]]), // 1 bunch in JapesHill; 6 bananas, 1 bunch in JapesHillTop; 1 bunch in JapesCannonPlatform
             new Requirement(10, [[Moves.Coconut]]), // 1 balloon in JungleJapesStart
             new Requirement(9, [[Moves.JapesCoconut]]), // 9 bananas in JapesBeyondCoconutGate2
             new Requirement(10, [[Moves.Vines, Moves.ClimbingCheck]]), // 5 bananas in JungleJapesStart; 1 bunch in JapesTnSAlcove
             new Requirement(10, [[Moves.ClimbingCheck, Moves.Coconut]]), // 1 balloon in JapesHillTop
-            new Requirement(20, [[Moves.Coconut, Moves.JapesCoconut]]), // 1 bunch, 1 bunch, 1 balloon in JapesBeyondCoconutGate2
+            new Requirement(20, [[Moves.Coconut, Moves.JapesCoconut]]), // 1 bunch, 1 balloon, 1 bunch in JapesBeyondCoconutGate2
             new Requirement(10, [[Moves.Vines, Moves.ClimbingCheck, Moves.Blast]]), // 2 bunches in JapesBaboonBlast
         ],
         "Diddy": [

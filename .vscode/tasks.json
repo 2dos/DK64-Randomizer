@@ -115,6 +115,12 @@
         "panel": "shared"
       },
       "isBackground": false
+    },
+    {
+      "label": "Compute CB requirements for the CB calculator",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./cb_calc.py",
+      "problemMatcher": []
     }
   ]
 }
