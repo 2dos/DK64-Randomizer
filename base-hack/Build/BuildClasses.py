@@ -247,7 +247,7 @@ pointer_tables = [
     ),
     TableInfo(
         index=TableNames.Unknown6,
-        dont_overwrite_uncompressed_sizes=True,
+        force_rewrite=True,
     ),
     TableInfo(
         name="Textures (Uncompressed)",

@@ -400,6 +400,7 @@ extern void updateItemTotalsHandler(int player, int obj_type, int is_homing, int
 extern void loadWrinklyTextWrapper(actorData* actor, int file, int index);
 extern int getProjectileCount_modified(void *player, unsigned short int_bitfield, void* code);
 extern void applyButtonBansInternals(void *cont);
+extern void *getTextData(data_indexes table_index, int file_index, int unk0, int unk1);
 
 extern void handleCrownTimerInternal(void);
 

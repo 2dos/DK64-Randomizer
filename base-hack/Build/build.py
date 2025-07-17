@@ -1775,6 +1775,11 @@ text_files = (
     TextChange("Wrinkly Items", 0, "wrinkly_items.bin"),
 )
 
+comptext_files = (
+    TextChange("Item Previews (Normal)", 0x2000, "comptext_item_preview_normal.bin"),
+    TextChange("Item Previews (Flavored)", 0x2000, "comptext_item_preview_flavor.bin"),
+)
+
 for index, text in enumerate(text_files):
     data = File(
         name=f"{text.name} Text",
@@ -1792,6 +1797,21 @@ for index, text in enumerate(text_files):
     if text.change_expansion > 0:
         data.setTargetSize(text.change_expansion)
         data.do_not_recompress = True
+    file_dict.append(data)
+for index, text in enumerate(comptext_files):
+    data = File(
+        name=f"{text.name} Text",
+        pointer_table_index=TableNames.Unknown6,
+        file_index=index,
+        source_file=f"comptext{index}.bin" if text.file == "" else text.file,
+    )
+    if text.change:
+        data.do_not_delete_source = True
+        data.do_not_extract = True
+    else:
+        data.setTargetSize(0x2000)
+    if text.change_expansion > 0:
+        data.setTargetSize(text.change_expansion)
     file_dict.append(data)
 
 addMechFishLZ()
@@ -1927,6 +1947,12 @@ for x in file_dict:
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
     clampCompressedTextures(fh, 6200)
+    new_ptr_6_unc_size = len(comptext_files)
+    print(f" - Expanding pointer table {TableNames.Unknown6} from 0 bytes to {4 * new_ptr_6_unc_size} bytes")
+    data = []
+    for _ in range(new_ptr_6_unc_size):
+        data.extend([0, 0, 0, 0])
+    replaceROMFile(fh, TableNames.UncompressedFileSizes, TableNames.Unknown6, bytes(data), 4 * new_ptr_6_unc_size)
     for x in file_dict:
         if x.bps_file is not None:
             with open(x.source_file, "rb") as fg:

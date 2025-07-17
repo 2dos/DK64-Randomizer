@@ -208,6 +208,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "fps_display",
         "head_balloons",
         "song_speed_near_win",
+        "disable_flavor_text",
         "colorblind_mode",
         "big_head_mode",
         "search",

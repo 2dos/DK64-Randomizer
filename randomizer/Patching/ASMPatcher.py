@@ -42,6 +42,7 @@ from randomizer.Patching.ASM.Cosmetic import *
 from randomizer.Patching.ASM.Items import *
 from randomizer.Patching.ASM.Kaizo import *
 from randomizer.Patching.ASM.Save import saveUpdates
+from randomizer.Patching.ASM.TextFiles import writeNewTextFiles
 from PIL import Image
 
 KEY_FLAG_ADDRESSES = [
@@ -704,6 +705,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806E2D8A, Overlay.Static, 0, offset_dict)  # Disable ability to throw oranges in orange barrel unless you have oranges
 
     saveUpdates(ROM_COPY, settings, offset_dict)
+    writeNewTextFiles(ROM_COPY, offset_dict)
     collisionUpdates(ROM_COPY, settings, offset_dict)
 
     # Disable Sniper Scope Overlay
@@ -1533,8 +1535,13 @@ def patchAssembly(ROM_COPY, spoiler):
         TableNames.Triggers,
         TableNames.RaceCheckpoints,
     ]
+    overlays_being_compressed = [
+        TableNames.Unknown6,
+    ]
     for ovl in overlays_being_decompressed:
         writeValue(ROM_COPY, 0x80748E18 + ovl, Overlay.Static, 0, offset_dict, 1)
+    for ovl in overlays_being_compressed:
+        writeValue(ROM_COPY, 0x80748E18 + ovl, Overlay.Static, 1, offset_dict, 1)
 
     if settings.more_cutscene_skips == ExtraCutsceneSkips.off:
         # Wipe all CS Data

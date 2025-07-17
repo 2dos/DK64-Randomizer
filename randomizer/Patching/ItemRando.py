@@ -12,7 +12,7 @@ from randomizer.Patching.Library.DataTypes import intf_to_float
 from randomizer.Lists.EnemyTypes import enemy_location_list
 from randomizer.Patching.Library.Generic import setItemReferenceName
 from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, getPropFromItem, getModelMask, getItemDBEntry, item_shop_text_mapping, BuyText
-from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
+from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, CompTextFiles, ItemPreview
 from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
@@ -60,64 +60,64 @@ class TextboxChange:
 textboxes = [
     TextboxChange(Locations.AztecTinyBeetleRace, 14, 0, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana, "\x04|\x04", True),
     TextboxChange(Locations.CavesLankyBeetleRace, 14, 0, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana, "\x04|\x04", True),
-    TextboxChange(Locations.JapesDiddyMinecarts, 16, 2, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
-    TextboxChange(Locations.JapesDiddyMinecarts, 16, 3, "BANANA", Types.Banana, Items.GoldenBanana),
-    TextboxChange(Locations.JapesDiddyMinecarts, 16, 4, "BANANA", Types.Banana, Items.GoldenBanana),
-    TextboxChange(Locations.ForestChunkyMinecarts, 16, 5, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
-    TextboxChange(Locations.ForestChunkyMinecarts, 16, 7, "BANANA", Types.Banana, Items.GoldenBanana),
-    TextboxChange(Locations.CastleDonkeyMinecarts, 16, 8, "BE A WINNER", Types.Banana, Items.GoldenBanana, "WIN A |"),
-    TextboxChange(Locations.CastleDonkeyMinecarts, 16, 9, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.JapesDiddyMinecarts, CompTextFiles.PreviewsFlavor, ItemPreview.JapesMinecartIntro, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.JapesDiddyMinecarts, CompTextFiles.PreviewsFlavor, ItemPreview.JapesMinecartReward, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.JapesDiddyMinecarts, CompTextFiles.PreviewsFlavor, ItemPreview.JapesMinecartFail, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.ForestChunkyMinecarts, CompTextFiles.PreviewsFlavor, ItemPreview.FungiMinecartIntro, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.ForestChunkyMinecarts, CompTextFiles.PreviewsFlavor, ItemPreview.FungiMinecartFail, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.CastleDonkeyMinecarts, CompTextFiles.PreviewsFlavor, ItemPreview.CastleMinecartIntro, "BE A WINNER", Types.Banana, Items.GoldenBanana, "WIN A |"),
+    TextboxChange(Locations.CastleDonkeyMinecarts, CompTextFiles.PreviewsFlavor, ItemPreview.CastleMinecartReward, "BANANA", Types.Banana, Items.GoldenBanana),
     TextboxChange(Locations.IslesDonkeyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, Items.GoldenBanana, "SOMETHING"),
     TextboxChange(Locations.IslesDiddyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, Items.GoldenBanana, "SOMETHING"),
     TextboxChange(Locations.IslesLankyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, Items.GoldenBanana, "SOMETHING"),
     TextboxChange(Locations.IslesTinyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, Items.GoldenBanana, "SOMETHING"),
     TextboxChange(Locations.IslesChunkyInstrumentPad, 16, 18, "ANOTHER BANANA", Types.Banana, Items.GoldenBanana, "SOMETHING"),
-    TextboxChange(Locations.FactoryTinyCarRace, 17, 4, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.FactoryTinyCarRace, CompTextFiles.PreviewsFlavor, ItemPreview.FactoryCarRace, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
     TextboxChange(
         Locations.GalleonTinyPearls,
-        23,
-        0,
+        CompTextFiles.PreviewsFlavor,
+        ItemPreview.MermaidIntro,
         "PLEASE TRY AND GET THEM BACK",
         Types.Banana,
         Items.GoldenBanana,
         "IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |",
     ),
-    TextboxChange(Locations.GalleonTinyPearls, 23, 1, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.GalleonTinyPearls, CompTextFiles.PreviewsFlavor, ItemPreview.MermaidReward, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
     TextboxChange(
         Locations.GalleonTinyPearls,
-        23,
-        2,
+        CompTextFiles.PreviewsFlavor,
+        ItemPreview.MermaidMissing,
         "ALTOGETHER.",
         Types.Banana,
         Items.GoldenBanana,
         "ALTOGETHER. IF YOU FIND THEM ALL, YOU WILL RECEIVE A |",
     ),
-    TextboxChange(Locations.AztecDiddyVultureRace, 15, 1, "PRIZE", Types.Banana, Items.GoldenBanana),
-    TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 1, "ALL THIS SAND", Types.Banana, Items.GoldenBanana, "THIS |"),
-    TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 2, "BANANA", Types.Banana, Items.GoldenBanana),
-    TextboxChange(Locations.RarewareCoin, 8, 2, "RAREWARE COIN", Types.RarewareCoin, Items.RarewareCoin),  # Rareware Coin
-    TextboxChange(Locations.RarewareCoin, 8, 34, "RAREWARE COIN", Types.RarewareCoin, Items.RarewareCoin),  # Rareware Coin
-    TextboxChange(Locations.ForestLankyRabbitRace, 20, 1, "TROPHY", Types.Banana, Items.GoldenBanana, "| TROPHY"),
-    TextboxChange(Locations.ForestLankyRabbitRace, 20, 2, "TROPHY", Types.Banana, Items.GoldenBanana, "| TROPHY"),
-    TextboxChange(Locations.ForestLankyRabbitRace, 20, 3, "TROPHY", Types.Banana, Items.GoldenBanana, "| TROPHY"),
-    TextboxChange(Locations.ForestChunkyApple, 22, 0, "BANANA", Types.Banana, Items.GoldenBanana),
-    TextboxChange(Locations.ForestChunkyApple, 22, 1, "BANANA", Types.Banana, Items.GoldenBanana),
-    TextboxChange(Locations.ForestChunkyApple, 22, 4, "BANANA", Types.Banana, Items.GoldenBanana),
-    TextboxChange(Locations.GalleonDonkeySealRace, 28, 2, "CHEST O' GOLD", Types.Banana, Items.GoldenBanana),
-    TextboxChange(Locations.RarewareBanana, 30, 0, "REWARD ANYONE", Types.Banana, Items.GoldenBanana, "REWARD ANYONE WITH A |"),
-    TextboxChange(Locations.CavesLankyCastle, 33, 0, "HOW ABOUT IT", Types.Banana, Items.GoldenBanana, "HOW ABOUT A |"),
-    TextboxChange(Locations.CastleTinyCarRace, 34, 4, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.AztecDiddyVultureRace, CompTextFiles.PreviewsFlavor, ItemPreview.VulturePreview, "PRIZE", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.AztecDonkeyFreeLlama, CompTextFiles.PreviewsFlavor, ItemPreview.LlamaTalk, "ALL THIS SAND", Types.Banana, Items.GoldenBanana, "THIS |"),
+    TextboxChange(Locations.AztecDonkeyFreeLlama, CompTextFiles.PreviewsFlavor, ItemPreview.LlamaRescue, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.RarewareCoin, CompTextFiles.PreviewsFlavor, ItemPreview.JetpacIntro, "RAREWARE COIN", Types.RarewareCoin, Items.RarewareCoin),  # Rareware Coin
+    TextboxChange(Locations.RarewareCoin, CompTextFiles.PreviewsFlavor, ItemPreview.JetpacReward, "RAREWARE COIN", Types.RarewareCoin, Items.RarewareCoin),  # Rareware Coin
+    TextboxChange(Locations.ForestLankyRabbitRace, CompTextFiles.PreviewsFlavor, ItemPreview.RabbitFinalRaceIntro, "TROPHY", Types.Banana, Items.GoldenBanana, "| TROPHY"),
+    TextboxChange(Locations.ForestLankyRabbitRace, CompTextFiles.PreviewsFlavor, ItemPreview.RabbitFirstRaceReward, "TROPHY", Types.Banana, Items.GoldenBanana, "| TROPHY"),
+    TextboxChange(Locations.ForestLankyRabbitRace, CompTextFiles.PreviewsFlavor, ItemPreview.RabbitFinalRaceReward, "TROPHY", Types.Banana, Items.GoldenBanana, "| TROPHY"),
+    TextboxChange(Locations.ForestChunkyApple, CompTextFiles.PreviewsFlavor, ItemPreview.AppleIntro, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.ForestChunkyApple, CompTextFiles.PreviewsFlavor, ItemPreview.ApplePickUp, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.ForestChunkyApple, CompTextFiles.PreviewsFlavor, ItemPreview.AppleReward, "BANANA", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.GalleonDonkeySealRace, CompTextFiles.PreviewsFlavor, ItemPreview.Seal, "CHEST O' GOLD", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.RarewareBanana, CompTextFiles.PreviewsFlavor, ItemPreview.RarewareGB, "REWARD ANYONE", Types.Banana, Items.GoldenBanana, "REWARD ANYONE WITH A |"),
+    TextboxChange(Locations.CavesLankyCastle, CompTextFiles.PreviewsFlavor, ItemPreview.IceTomato, "HOW ABOUT IT", Types.Banana, Items.GoldenBanana, "HOW ABOUT A |"),
+    TextboxChange(Locations.CastleTinyCarRace, CompTextFiles.PreviewsFlavor, ItemPreview.CastleCarRace, "BANANA", Types.Banana, Items.GoldenBanana),
     TextboxChange(
         Locations.ForestDiddyOwlRace,
-        21,
-        0,
+        CompTextFiles.PreviewsFlavor,
+        ItemPreview.OwlRace,
         "WHEN YOU CAN FLY",
         Types.Banana,
         Items.GoldenBanana,
         "WHEN YOU CAN FLY TO HAVE A CHANCE TO RECEIVE A |",
     ),
-    TextboxChange(Locations.ForestTinySpiderBoss, 19, 32, "\x04GOLDEN BANANA\x04", Types.Banana, Items.GoldenBanana),
-    TextboxChange(Locations.CavesChunky5DoorIgloo, 19, 34, "\x04GOLDEN BANANA\x04", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.ForestTinySpiderBoss, CompTextFiles.PreviewsFlavor, ItemPreview.SpiderIntro, "\x04GOLDEN BANANA\x04", Types.Banana, Items.GoldenBanana),
+    TextboxChange(Locations.CavesChunky5DoorIgloo, CompTextFiles.PreviewsFlavor, ItemPreview.ChunkyIgloo, "\x04GOLDEN BANANA\x04", Types.Banana, Items.GoldenBanana),
 ]
 
 level_names = {
@@ -386,7 +386,7 @@ HOLDABLE_LOCATION_INFO = {
 def alterTextboxRequirements(spoiler):
     """Alters various textboxes based on the requirement count changing."""
     pearl_req = spoiler.settings.mermaid_gb_pearls
-    appendTextboxChange(spoiler, 23, 2, "FIVE MISSING PEARLS", f"{NUMBERS_AS_WORDS[pearl_req]} MISSING PEARL{'S' if pearl_req != 1 else ''}")
+    appendTextboxChange(spoiler, CompTextFiles.PreviewsFlavor, ItemPreview.MermaidMissing, "FIVE MISSING PEARLS", f"{NUMBERS_AS_WORDS[pearl_req]} MISSING PEARL{'S' if pearl_req != 1 else ''}")
     all_text = ""
     if pearl_req == 5:
         all_text = "ALL "
@@ -395,10 +395,10 @@ def alterTextboxRequirements(spoiler):
         if x.location == Locations.GalleonTinyPearls and x.textbox_index == 0:
             x.text_replace = plea_including_pearl_count
             x.replacement_text = f"IF YOU HELP ME FIND {all_text}{NUMBERS_AS_WORDS[pearl_req]} OF THEM, I WILL REWARD YOU WITH A |"
-    appendTextboxChange(spoiler, 23, 0, "PLEASE TRY AND GET THEM BACK", plea_including_pearl_count)
+    appendTextboxChange(spoiler, CompTextFiles.PreviewsFlavor, ItemPreview.MermaidIntro, "PLEASE TRY AND GET THEM BACK", plea_including_pearl_count)
     fairy_req = spoiler.settings.rareware_gb_fairies
     if fairy_req != 20:
-        appendTextboxChange(spoiler, 30, 0, "FIND THEM ALL", f"FIND {fairy_req} OF THEM")
+        appendTextboxChange(spoiler, CompTextFiles.PreviewsFlavor, ItemPreview.RarewareGB, "FIND THEM ALL", f"FIND {fairy_req} OF THEM")
         appendTextboxChange(spoiler, 40, 0, "RESCUED ALL THE BANANA FAIRIES", "RESCUED THE BANANA FAIRIES")
     appendTextboxChange(spoiler, 40, 4, "MUST GET FAIRIES", f"MUST GET {fairy_req} FAIRIES")
 
@@ -408,18 +408,18 @@ def pushItemMicrohints(spoiler):
     helm_prog_items = getHelmProgItems(spoiler)
     hinted_items = [
         # Key = Item, Value = (Textbox index in text file 19, (all_accepted_settings))
-        (helm_prog_items[0], 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-        (helm_prog_items[1], 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-        (Items.Bongos, 27, [MicrohintsEnabled.all]),
-        (Items.Triangle, 28, [MicrohintsEnabled.all]),
-        (Items.Saxophone, 29, [MicrohintsEnabled.all]),
-        (Items.Trombone, 30, [MicrohintsEnabled.all]),
-        (Items.Guitar, 31, [MicrohintsEnabled.all]),
-        (Items.ProgressiveSlam, 33, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-        (Items.Cranky, 35, [MicrohintsEnabled.off, MicrohintsEnabled.base, MicrohintsEnabled.all]),
-        (Items.Funky, 36, [MicrohintsEnabled.off, MicrohintsEnabled.base, MicrohintsEnabled.all]),
-        (Items.Candy, 37, [MicrohintsEnabled.off, MicrohintsEnabled.base, MicrohintsEnabled.all]),
-        (Items.Snide, 38, [MicrohintsEnabled.off, MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (helm_prog_items[0], ItemPreview.PortMicro, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (helm_prog_items[1], ItemPreview.GoneMicro, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (Items.Bongos, ItemPreview.BongosMicro, [MicrohintsEnabled.all]),
+        (Items.Triangle, ItemPreview.TriangleMicro, [MicrohintsEnabled.all]),
+        (Items.Saxophone, ItemPreview.SaxMicro, [MicrohintsEnabled.all]),
+        (Items.Trombone, ItemPreview.TromboneMicro, [MicrohintsEnabled.all]),
+        (Items.Guitar, ItemPreview.GuitarMicro, [MicrohintsEnabled.all]),
+        (Items.ProgressiveSlam, ItemPreview.SlamMicro, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (Items.Cranky, ItemPreview.CrankyMicro, [MicrohintsEnabled.off, MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (Items.Funky, ItemPreview.FunkyMicro, [MicrohintsEnabled.off, MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (Items.Candy, ItemPreview.CandyMicro, [MicrohintsEnabled.off, MicrohintsEnabled.base, MicrohintsEnabled.all]),
+        (Items.Snide, ItemPreview.SnideMicro, [MicrohintsEnabled.off, MicrohintsEnabled.base, MicrohintsEnabled.all]),
     ]
     for item_hint, item_data in enumerate(hinted_items):
         if spoiler.settings.microhints_enabled in list(item_data[2]):
@@ -429,10 +429,10 @@ def pushItemMicrohints(spoiler):
                     "mode": "replace_whole",
                     "target": spoiler.microhints[ItemList[item_data[0]].name],
                 }
-                if 19 in spoiler.text_changes:
-                    spoiler.text_changes[19].append(data)
+                if CompTextFiles.PreviewsFlavor in spoiler.text_changes:
+                    spoiler.text_changes[CompTextFiles.PreviewsFlavor].append(data)
                 else:
-                    spoiler.text_changes[19] = [data]
+                    spoiler.text_changes[CompTextFiles.PreviewsFlavor] = [data]
 
 def writeNullShopSlot(ROM_COPY: LocalROM, location: int):
     """Write an empty shop slot."""
@@ -922,18 +922,32 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                         flag = item.new_flag
                 replacement = textbox.replacement_text
                 if not textbox.force_pipe:
-                    reward_text = getItemPreviewText(new_item, textbox.location, THEMATIC_TEXT, getModelMask(new_subitem))
+                    reward_text = getItemPreviewText(new_item, textbox.location, True, getModelMask(new_subitem))
                     replacement = replacement.replace("|", reward_text)
-                data = {
-                    "textbox_index": textbox.textbox_index,
-                    "mode": "replace",
-                    "search": textbox.text_replace,
-                    "target": replacement,
+                file_data = {
+                    textbox.file_index: {
+                        "textbox_index": textbox.textbox_index,
+                        "mode": "replace",
+                        "search": textbox.text_replace,
+                        "target": replacement,
+                    }
                 }
-                if textbox.file_index in spoiler.text_changes:
-                    spoiler.text_changes[textbox.file_index].append(data)
-                else:
-                    spoiler.text_changes[textbox.file_index] = [data]
+                if textbox.file_index == CompTextFiles.PreviewsFlavor:
+                    replacement = textbox.replacement_text
+                    if not textbox.force_pipe:
+                        reward_text = getItemPreviewText(new_item, textbox.location, False, getModelMask(new_subitem))
+                        replacement = replacement.replace("|", reward_text)
+                    file_data[CompTextFiles.PreviewsNormal] = {
+                        "textbox_index": textbox.textbox_index,
+                        "mode": "replace",
+                        "search": textbox.text_replace,
+                        "target": replacement,
+                    }
+                for file in file_data:
+                    if file in spoiler.text_changes:
+                        spoiler.text_changes[file].append(file_data[file])
+                    else:
+                        spoiler.text_changes[file] = [file_data[file]]
             beetle_data = {
                 Locations.AztecTinyBeetleRace: "aztec_beetle",
                 Locations.CavesLankyBeetleRace: "caves_beetle",

@@ -911,3 +911,55 @@ class MoveTypes(IntEnum):
     gb = auto()
     gun_upgrade = auto()
     instrument_upgrade = auto()
+
+class ItemPreview(IntEnum):
+    """Item Preview Enum."""
+
+    JapesMinecartIntro = 0
+    JapesMinecartReward = auto()
+    JapesMinecartFail = auto()
+    FungiMinecartIntro = auto()
+    FungiMinecartFail = auto()
+    CastleMinecartIntro = auto()
+    CastleMinecartReward = auto()
+    FactoryCarRace = auto()
+    MermaidIntro = auto()
+    MermaidReward = auto()
+    MermaidMissing = auto()
+    VultureFreedom = auto()
+    VulturePreview = auto()
+    LlamaTalk = auto()
+    LlamaRescue = auto()
+    JetpacIntro = auto()
+    JetpacReward = auto()
+    RabbitFinalRaceIntro = auto()
+    RabbitFirstRaceReward = auto()
+    RabbitFinalRaceReward = auto()
+    AppleIntro = auto()
+    ApplePickUp = auto()
+    AppleReward = auto()
+    Seal = auto()
+    RarewareGB = auto()
+    IceTomato = auto()
+    CastleCarRace = auto()
+    OwlRace = auto()
+    GoneMicro = auto()
+    PortMicro = auto()
+    BongosMicro = auto()
+    TriangleMicro = auto()
+    SaxMicro = auto()
+    TromboneMicro = auto()
+    GuitarMicro = auto()
+    SpiderIntro = auto()
+    SlamMicro = auto()
+    ChunkyIgloo = auto()
+    CrankyMicro = auto()
+    FunkyMicro = auto()
+    CandyMicro = auto()
+    SnideMicro = auto()
+
+class CompTextFiles(IntEnum):
+    """Compressed Text Files Enum."""
+
+    PreviewsNormal = 0x40
+    PreviewsFlavor = auto()

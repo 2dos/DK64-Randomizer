@@ -28,6 +28,7 @@
 #include "macros.h"
 #include "pause.h"
 #include "hint_regions.h"
+#include "previews.h"
 #include "../src/pause/pause.h"
 
 #endif

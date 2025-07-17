@@ -33,6 +33,7 @@
         "memory": "c",
         "compare": "c",
         "xmemory": "c",
-        "xtr1common": "c"
+        "xtr1common": "c",
+        "pause.h": "c"
     }
 }

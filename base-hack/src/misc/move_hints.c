@@ -325,6 +325,18 @@ void getMoveHint(actorData* actor, int text_file, int text_index) {
 	 * @param text_file Text file that is being used
 	 * @param text_index Text index that's being used
 	 */
+	if (text_file == 8) {
+		int new_text = -1;
+		if (text_index == 2) {
+			new_text = ITEM_PREVIEW_JETPACINTRO;
+		} else if (text_index == 34) {
+			new_text = ITEM_PREVIEW_JETPACREWARD;
+		}
+		if (new_text > -1) {
+			getTextPointer_0(actor, COMP_TEXT_PREVIEWSFLAVOR, new_text);
+			return;
+		}
+	}
 	int shop = actor->actorType - 189; // 0 = Cranky, 1 = Funky, 2 = Candy
 	if ((shop >= 0) && (shop <= 2)) {
 		shop_paad* shop_data = (shop_paad*)actor->paad2;

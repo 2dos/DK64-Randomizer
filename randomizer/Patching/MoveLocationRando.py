@@ -7,6 +7,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Generic import setItemReferenceName
+from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
 from randomizer.CompileHints import getHelmProgItems
 
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
@@ -125,14 +126,14 @@ def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: in
             helm_prog_items = getHelmProgItems(spoiler)
             hinted_items = [
                 # Key = Item, Value = Textbox index in text file 19
-                MoveMicrohints(helm_prog_items[0], 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-                MoveMicrohints(helm_prog_items[1], 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
-                MoveMicrohints(Items.Bongos, 27, [MicrohintsEnabled.all]),
-                MoveMicrohints(Items.Triangle, 28, [MicrohintsEnabled.all]),
-                MoveMicrohints(Items.Saxophone, 29, [MicrohintsEnabled.all]),
-                MoveMicrohints(Items.Trombone, 30, [MicrohintsEnabled.all]),
-                MoveMicrohints(Items.Guitar, 31, [MicrohintsEnabled.all]),
-                MoveMicrohints(Items.ProgressiveSlam, 33, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+                MoveMicrohints(helm_prog_items[0], ItemPreview.PortMicro, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+                MoveMicrohints(helm_prog_items[1], ItemPreview.GoneMicro, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+                MoveMicrohints(Items.Bongos, ItemPreview.BongosMicro, [MicrohintsEnabled.all]),
+                MoveMicrohints(Items.Triangle, ItemPreview.TriangleMicro, [MicrohintsEnabled.all]),
+                MoveMicrohints(Items.Saxophone, ItemPreview.SaxMicro, [MicrohintsEnabled.all]),
+                MoveMicrohints(Items.Trombone, ItemPreview.TromboneMicro, [MicrohintsEnabled.all]),
+                MoveMicrohints(Items.Guitar, ItemPreview.GuitarMicro, [MicrohintsEnabled.all]),
+                MoveMicrohints(Items.ProgressiveSlam, ItemPreview.SlamMicro, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
             ]
             for item_data in hinted_items:
                 move_data = item_data.move
@@ -147,10 +148,10 @@ def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: in
                     "mode": "replace_whole",
                     "target": spoiler.microhints[ItemList[move.item].name],
                 }
-                if 19 in spoiler.text_changes:
-                    spoiler.text_changes[19].append(data)
+                if CompTextFiles.PreviewsFlavor in spoiler.text_changes:
+                    spoiler.text_changes[CompTextFiles.PreviewsFlavor].append(data)
                 else:
-                    spoiler.text_changes[19] = [data]
+                    spoiler.text_changes[CompTextFiles.PreviewsFlavor] = [data]
 
 
 def writeMoveDataToROM(ROM_COPY: LocalROM, arr: list, enable_hints: bool, spoiler, kong_slot: int, kongs: list, level_override=None):
