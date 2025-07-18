@@ -456,10 +456,11 @@ def patching_response(spoiler):
     # Fast GBs - Change jetpac text
     if IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.jetpac):
         data = {"textbox_index": ItemPreview.JetpacIntro, "mode": "replace", "search": "5000", "target": "2500"}
-        if CompTextFiles.PreviewsFlavor in spoiler.text_changes:
-            spoiler.text_changes[CompTextFiles.PreviewsFlavor].append(data)
-        else:
-            spoiler.text_changes[CompTextFiles.PreviewsFlavor] = [data]
+        for file in [CompTextFiles.PreviewsFlavor, CompTextFiles.PreviewsNormal]:
+            if file in spoiler.text_changes:
+                spoiler.text_changes[file].append(data)
+            else:
+                spoiler.text_changes[file] = [data]
 
     if IsDDMSSelected(spoiler.settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando):
         # KKO Phase Order

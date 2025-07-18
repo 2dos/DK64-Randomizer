@@ -386,7 +386,8 @@ HOLDABLE_LOCATION_INFO = {
 def alterTextboxRequirements(spoiler):
     """Alters various textboxes based on the requirement count changing."""
     pearl_req = spoiler.settings.mermaid_gb_pearls
-    appendTextboxChange(spoiler, CompTextFiles.PreviewsFlavor, ItemPreview.MermaidMissing, "FIVE MISSING PEARLS", f"{NUMBERS_AS_WORDS[pearl_req]} MISSING PEARL{'S' if pearl_req != 1 else ''}")
+    for file in [CompTextFiles.PreviewsFlavor, CompTextFiles.PreviewsNormal]:
+        appendTextboxChange(spoiler, file, ItemPreview.MermaidMissing, "FIVE MISSING PEARLS", f"{NUMBERS_AS_WORDS[pearl_req]} MISSING PEARL{'S' if pearl_req != 1 else ''}")
     all_text = ""
     if pearl_req == 5:
         all_text = "ALL "
@@ -395,10 +396,12 @@ def alterTextboxRequirements(spoiler):
         if x.location == Locations.GalleonTinyPearls and x.textbox_index == 0:
             x.text_replace = plea_including_pearl_count
             x.replacement_text = f"IF YOU HELP ME FIND {all_text}{NUMBERS_AS_WORDS[pearl_req]} OF THEM, I WILL REWARD YOU WITH A |"
-    appendTextboxChange(spoiler, CompTextFiles.PreviewsFlavor, ItemPreview.MermaidIntro, "PLEASE TRY AND GET THEM BACK", plea_including_pearl_count)
+    for file in [CompTextFiles.PreviewsFlavor, CompTextFiles.PreviewsNormal]:
+        appendTextboxChange(spoiler, file, ItemPreview.MermaidIntro, "PLEASE TRY AND GET THEM BACK", plea_including_pearl_count)
     fairy_req = spoiler.settings.rareware_gb_fairies
     if fairy_req != 20:
-        appendTextboxChange(spoiler, CompTextFiles.PreviewsFlavor, ItemPreview.RarewareGB, "FIND THEM ALL", f"FIND {fairy_req} OF THEM")
+        for file in [CompTextFiles.PreviewsFlavor, CompTextFiles.PreviewsNormal]:
+            appendTextboxChange(spoiler, file, ItemPreview.RarewareGB, "FIND THEM ALL", f"FIND {fairy_req} OF THEM")
         appendTextboxChange(spoiler, 40, 0, "RESCUED ALL THE BANANA FAIRIES", "RESCUED THE BANANA FAIRIES")
     appendTextboxChange(spoiler, 40, 4, "MUST GET FAIRIES", f"MUST GET {fairy_req} FAIRIES")
 
@@ -429,10 +432,11 @@ def pushItemMicrohints(spoiler):
                     "mode": "replace_whole",
                     "target": spoiler.microhints[ItemList[item_data[0]].name],
                 }
-                if CompTextFiles.PreviewsFlavor in spoiler.text_changes:
-                    spoiler.text_changes[CompTextFiles.PreviewsFlavor].append(data)
-                else:
-                    spoiler.text_changes[CompTextFiles.PreviewsFlavor] = [data]
+                for file in [CompTextFiles.PreviewsFlavor, CompTextFiles.PreviewsNormal]:
+                    if file in spoiler.text_changes:
+                        spoiler.text_changes[file].append(data)
+                    else:
+                        spoiler.text_changes[file] = [data]
 
 def writeNullShopSlot(ROM_COPY: LocalROM, location: int):
     """Write an empty shop slot."""

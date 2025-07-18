@@ -148,10 +148,11 @@ def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: in
                     "mode": "replace_whole",
                     "target": spoiler.microhints[ItemList[move.item].name],
                 }
-                if CompTextFiles.PreviewsFlavor in spoiler.text_changes:
-                    spoiler.text_changes[CompTextFiles.PreviewsFlavor].append(data)
-                else:
-                    spoiler.text_changes[CompTextFiles.PreviewsFlavor] = [data]
+                for file in [CompTextFiles.PreviewsFlavor, CompTextFiles.PreviewsNormal]:
+                    if file in spoiler.text_changes:
+                        spoiler.text_changes[file].append(data)
+                    else:
+                        spoiler.text_changes[file] = [data]
 
 
 def writeMoveDataToROM(ROM_COPY: LocalROM, arr: list, enable_hints: bool, spoiler, kong_slot: int, kongs: list, level_override=None):
