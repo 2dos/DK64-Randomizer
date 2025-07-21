@@ -678,9 +678,9 @@ class DK64Context(CommonContext):
 
     def run_gui(self) -> None:
         """Run the GUI."""
-        # if self.already_running():
-        #     print("GUI already running.")
-        #     sys.exit(1)
+        if self.already_running():
+            print("GUI already running.")
+            sys.exit(1)
         from kvui import GameManager
 
         class DK64Manager(GameManager):
