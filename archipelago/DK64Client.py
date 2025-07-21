@@ -60,8 +60,8 @@ class DK64Client:
         clear_waiting_message = True
         if not self.stop_bizhawk_spam:
             logger.info("Waiting on connection to PJ64...")
-            self.stop_bizhawk_spam = True
             self.n64_client = PJ64Client()
+            self.stop_bizhawk_spam = True
         while True:
             try:
                 socket_connected = False
@@ -678,9 +678,9 @@ class DK64Context(CommonContext):
 
     def run_gui(self) -> None:
         """Run the GUI."""
-        if self.already_running():
-            print("GUI already running.")
-            sys.exit(1)
+        # if self.already_running():
+        #     print("GUI already running.")
+        #     sys.exit(1)
         from kvui import GameManager
 
         class DK64Manager(GameManager):
