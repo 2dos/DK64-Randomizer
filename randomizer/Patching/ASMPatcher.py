@@ -920,6 +920,8 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if Types.Hint in spoiler.settings.shuffled_location_types:
         writeFunction(ROM_COPY, 0x8069E188, Overlay.Static, "loadWrinklyTextWrapper", offset_dict)
+    writeFunction(ROM_COPY, 0x806FC7B8, Overlay.Static, "getCharWidthMask", offset_dict)
+    writeFunction(ROM_COPY, 0x806FBE44, Overlay.Static, "getCharWidthMask", offset_dict)
 
     # Alter data for zinger flamethrower enemy
     writeValue(ROM_COPY, 0x8075F210, Overlay.Static, 345 + (CustomActors.ZingerFlamethrower - 0x8000), offset_dict)

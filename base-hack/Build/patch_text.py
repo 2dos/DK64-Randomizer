@@ -6,6 +6,7 @@ from BuildEnums import Icons, MoveTypes
 from BuildClasses import hint_region_list, MoveName
 from text_decoder import grabText
 from text_encoder import writeText
+from fasttext import fastTextConv
 from typing import BinaryIO
 
 move_hints = [
@@ -1354,3 +1355,6 @@ for data in item_preview_new_text:
     item_preview_text.append(data)
 writeText("comptext_item_preview_normal.bin", item_preview_text)
 writeText("comptext_item_preview_flavor.bin", item_preview_text)
+wrinkly_text = grabText(41)
+writeText("comptext_wrinkly.bin", wrinkly_text)
+fastTextConv(wrinkly_text[1:], "comptext_wrinkly_short.bin")

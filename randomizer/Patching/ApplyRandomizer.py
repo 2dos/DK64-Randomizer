@@ -634,12 +634,12 @@ def patching_response(spoiler):
                 )
                 or spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off
             ):
-                wrinkly_index = 41
                 data = {"textbox_index": 21, "mode": "replace", "search": "21132", "target": mill_text}
-                if wrinkly_index in spoiler.text_changes:
-                    spoiler.text_changes[41].append(data)
-                else:
-                    spoiler.text_changes[41] = [data]
+                for file in [CompTextFiles.Wrinkly, CompTextFiles.WrinklyShort]:
+                    if file in spoiler.text_changes:
+                        spoiler.text_changes[file].append(data)
+                    else:
+                        spoiler.text_changes[file] = [data]
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:

@@ -225,8 +225,25 @@ void resetProgressive(void) {
 
 void initHints(void) {
     if (!hints_initialized) {
-        for (int i = 0; i < 35; i++) {
-            hint_pointers[i] = (int)getTextPointer(45, 1+i, 0); // 41 if you want to read from the regular wrinkly hint file
+        int hint_index = 0;
+        int line_index = 0;
+        char *hint_text = getMapData(TABLE_UNK06, COMP_TEXT_WRINKLYSHORT - 0x40, 1, 1);
+        hint_pointers[0].lines[0] = hint_text;
+        while (hint_index < 35) {
+            int val = *hint_text++;
+            if (val == 0) {
+                hint_index++;
+                line_index = 0;
+                if (hint_index < 35) {
+                    hint_pointers[hint_index].lines[0] = hint_text;
+                }
+            } else if (val == 0xF) {
+                hint_text[-1] = 0;
+                line_index++;
+                if (line_index < 3) {
+                    hint_pointers[hint_index].lines[line_index] = hint_text;
+                }
+            }
         }
         for (int i = 0; i < LOCATION_ITEM_COUNT; i++) {
             itemloc_pointers[i] = getTextPointer(44, i, 0);
@@ -238,7 +255,9 @@ void initHints(void) {
 
 void wipeHintCache(void) {
     for (int i = 0; i < 35; i++) {
-        hint_pointers[i] = 0;
+        for (int j = 0; j < 3; j++) {
+            hint_pointers[i].lines[j] = 0;
+        }
     }
     for (int i = 0; i < LOCATION_ITEM_COUNT; i++) {
         itemloc_pointers[i] = (char*)0;
@@ -286,109 +305,31 @@ Gfx* drawHintText(Gfx* dl, char* str, int x, int y, int opacity, int center, int
 
 #define SPLIT_STRING_LINE_LIMIT 50
   
-Gfx* drawSplitString(Gfx* dl, char* str, int x, int y, int y_sep, int opacity) {
+Gfx* drawSplitString(Gfx* dl, FastTextStruct * data, int x, int y, int y_sep, int opacity) {
     int curr_y = y;
-    int string_length = cstring_strlen(str);
-    int trigger_ellipsis = 0;
-    if ((unsigned int)(string_length) > STRING_MAX_SIZE) {
-        string_length = STRING_MAX_SIZE;
-    }
-    int string_copy_ref = (int)string_copy;
-    wipeMemory(string_copy, STRING_MAX_SIZE);
-    dk_memcpy(string_copy, str, string_length);
-    string_copy[STRING_MAX_SIZE - 2] = 0;
-    string_copy[STRING_MAX_SIZE - 1] = 0;
-    int header = 0;
-    int letter_count = 0;
-    int last_safe = 0;
-    int line_count = 0;
     int color_index = 0;
-    int force_split = 0;
-    while (1) {
-        char referenced_character = *(char*)(string_copy_ref + header);
-        int is_control = 0;
-        if (referenced_character == 0) {
-            // Terminator
-            return drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1, 1);
-        } else if (referenced_character == 0x20) {
-            // Space
-            last_safe = header;
-            int seg_addition = 1;
+    for (int i = 0; i < 3; i++) {
+        if (data->lines[i]) {
+            char *txt = data->lines[i];
+            int index = 0;
             while (1) {
-                char ref_seg_character = *(char*)(string_copy_ref + header + seg_addition);
-                if ((ref_seg_character == 0) || (ref_seg_character == 0x20)) {
+                int character = *txt++;
+                if (character == 0) {
                     break;
-                } else {
-                    seg_addition++;
-                }
-            }
-            if ((header + seg_addition) > SPLIT_STRING_LINE_LIMIT) {
-                force_split = 1;
-            }
-        } else if ((referenced_character > 0) && (referenced_character <= 0x10)) {
-            // Control byte character
-            if ((referenced_character >= 4) && (referenced_character <= 0xD)) {
-                int temp_color = referenced_character - 3;
-                if (temp_color == color_index) {
-                    color_index = 0;
-                } else {
-                    color_index = temp_color;
-                }
-            }
-            is_control = 1;
-            int end = (int)(string_copy) + (STRING_MAX_SIZE - 1);
-            int size = end - (string_copy_ref + header + 1);
-            dk_memcpy((void*)(string_copy_ref + header), (void*)(string_copy_ref + header + 1), size);
-        } else {
-            // Actual letter or punctuation
-            letter_count += 1;
-            if(letter_count >= ELLIPSIS_CUTOFF){
-                *(char*)(referenced_character) = 0;
-                if(header > 2){
-                    // It should be impossible to hit 125 characters without being more than 2 characters into the third line
-                    // Insert ellipsis 
-                    *(char*)(string_copy_ref + header - 1) = 0x2E;
-                    *(char*)(string_copy_ref + header - 2) = 0x2E;
-                    *(char*)(string_copy_ref + header - 3) = 0x2E;
-                }
-                // It's also now a terminator, so:
-                return drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1, 1);
-            }
-        }
-        setCharacterColor(header, color_index, opacity);
-        if (!is_control) {
-            if ((header > SPLIT_STRING_LINE_LIMIT) || (force_split)) {
-                *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
-                if(line_count == 2 && header > SPLIT_STRING_LINE_LIMIT){
-                    // When reaching the 51st character of the 3rd line, add ellipsis depending on last safe position
-                    if((last_safe + 3) < SPLIT_STRING_LINE_LIMIT){
-                        // Insert ellipsis 
-                        *(char*)(string_copy_ref + last_safe) = 0x2E;
-                        *(char*)(string_copy_ref + last_safe + 1) = 0x2E;
-                        *(char*)(string_copy_ref + last_safe + 2) = 0x2E;
-                        *(char*)(string_copy_ref + last_safe + 3) = 0;
+                } else if ((character >= 4) && (character <= 0xD)) {
+                    int temp_color = character - 3;
+                    if (temp_color == color_index) {
+                        color_index = 0;
                     } else {
-                        // Insert ellipsis 
-                        *(char*)(string_copy_ref + header - 1) = 0x2E;
-                        *(char*)(string_copy_ref + header - 2) = 0x2E;
-                        *(char*)(string_copy_ref + header - 3) = 0x2E;
+                        color_index = temp_color;
                     }
-                    
                 }
-                dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y, opacity, 1, 1);
-                line_count += 1;
-                if (line_count == 3) {
-                    return dl;
-                }
-                curr_y += y_sep;
-                string_copy_ref += (last_safe + 1);
-                header = 0;
-                last_safe = 0;
-                force_split = 0;
-            } else {
-                header += 1;
+                setCharacterColor(index, color_index, opacity);
+                index++;
             }
+            dl = drawHintText(dl, data->lines[i], x, curr_y, opacity, 1, 1);
         }
+        curr_y += y_sep;
     }
     return dl;
 }
@@ -525,20 +466,20 @@ Gfx* drawHintScreen(Gfx* dl, int level_x) {
                     opacity = HINT_SOLVED_OPACITY;
                 }
             }
-            dl = drawSplitString(dl, (char*)hint_pointers[hint_local_index], level_x, hint_offset + (120 * i), 40, opacity);
+            dl = drawSplitString(dl, &hint_pointers[hint_local_index], level_x, hint_offset + (120 * i), 40, opacity);
         } else {
             if (Rando.progressive_hint_gb_cap == 0) {
                 regions tied_region = getHintItemRegion(hint_local_index);
                 if (tied_region == REGION_NULLREGION) {
-                    unknown_hints[i] = "???";
+                    unknown_hints[i].lines[0] = "???";
                 } else {
-                    dk_strFormat(unknown_hints[i], "??? - %s", hint_region_names[tied_region]);
+                    dk_strFormat(unknown_hints[i].lines[0], "??? - %s", hint_region_names[tied_region]);
                 }
             } else {
                 int requirement = getHintRequirement(hint_local_index);
-                dk_strFormat(unknown_hints[i], "??? - %d %s", requirement, getItemName(Rando.prog_hint_item, requirement));
+                dk_strFormat(unknown_hints[i].lines[0], "??? - %d %s", requirement, getItemName(Rando.prog_hint_item, requirement));
             }
-            dl = drawSplitString(dl, unknown_hints[i], level_x, hint_offset + (120 * i), 40, 0xFF);
+            dl = drawSplitString(dl, &unknown_hints[i], level_x, hint_offset + (120 * i), 40, 0xFF);
         }
         
     }

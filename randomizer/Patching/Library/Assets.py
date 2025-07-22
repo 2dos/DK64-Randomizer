@@ -96,6 +96,8 @@ class CompTextFiles(IntEnum):
 
     PreviewsNormal = 0x40
     PreviewsFlavor = auto()
+    Wrinkly = auto()
+    WrinklyShort = auto()
 
 
 class TableData:

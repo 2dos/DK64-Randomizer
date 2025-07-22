@@ -54,4 +54,6 @@ typedef enum item_previews {
 typedef enum comp_text_files {
 	/* 0x40 */ COMP_TEXT_PREVIEWSNORMAL = 0x40,
 	/* 0x41 */ COMP_TEXT_PREVIEWSFLAVOR,
+	/* 0x42 */ COMP_TEXT_WRINKLY,
+	/* 0x43 */ COMP_TEXT_WRINKLYSHORT,
 } comp_text_files;

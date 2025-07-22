@@ -44,3 +44,5 @@ def writeNewTextFiles(ROM_COPY: LocalROM, offset_dict: dict):
     writeValue(ROM_COPY, 0x806BED96, Overlay.Static, ItemPreview.RabbitFinalRaceReward, offset_dict)
     writeValue(ROM_COPY, 0x806BEA66, Overlay.Static, CompTextFiles.PreviewsFlavor, offset_dict)
     writeValue(ROM_COPY, 0x806BEA6E, Overlay.Static, ItemPreview.RabbitFinalRaceIntro, offset_dict)
+    # Wrinkly
+    writeValue(ROM_COPY, 0x8069E186, Overlay.Static, CompTextFiles.Wrinkly, offset_dict)

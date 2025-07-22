@@ -1776,8 +1776,10 @@ text_files = (
 )
 
 comptext_files = (
-    TextChange("Item Previews (Normal)", 0x2000, "comptext_item_preview_normal.bin"),
-    TextChange("Item Previews (Flavored)", 0x2000, "comptext_item_preview_flavor.bin"),
+    TextChange("Item Previews (Normal)", 0x1200, "comptext_item_preview_normal.bin"),
+    TextChange("Item Previews (Flavored)", 0x1200, "comptext_item_preview_flavor.bin"),
+    TextChange("Wrinnkly", 0x1200, "comptext_wrinkly.bin"),
+    TextChange("Wrinnkly (Short)", 0x1200, "comptext_wrinkly_short.bin"),
 )
 
 for index, text in enumerate(text_files):
