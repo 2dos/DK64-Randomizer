@@ -6,7 +6,7 @@ import zlib
 from typing import BinaryIO
 
 from BuildClasses import File
-from BuildEnums import TableNames
+from BuildEnums import *
 from BuildLib import ROMName, main_pointer_table_offset
 
 instance_dir = "./assets/cutscene_scripts"
@@ -279,6 +279,8 @@ def buildFile(data: bytes, modifications: list, map_index: int, map_name: str) -
             elif item.command == 13:
                 fg.write(item.subcommand.to_bytes(4, "big"))
                 for param in item.params:
+                    if isinstance(param, str):
+                        print("Unconverted dynamic arg:", param)
                     fg.write(param.to_bytes(2, "big"))
                 zero_size = 8 - (2 * len(item.params))
                 fg.write((0).to_bytes(zero_size, "big"))
@@ -323,6 +325,50 @@ def buildFile(data: bytes, modifications: list, map_index: int, map_name: str) -
         target_size=entry_size,
     )
 
+enum_obj = {
+    "ChangeType": ChangeType,
+    "TextureFormat": TextureFormat,
+    "CompressionMethods": CompressionMethods,
+    "TableNames": TableNames,
+    "Maps": Maps,
+    "Icons": Icons,
+    "CreditsDirection": CreditsDirection,
+    "CreditsType": CreditsType,
+    "Enemies": Enemies,
+    "Kong": Kong,
+    "Song": Song,
+    "Overlay": Overlay,
+    "Vendors": Vendors,
+    "ExtraTextures": ExtraTextures,
+    "MoveTypes": MoveTypes,
+    "ItemPreview": ItemPreview,
+    "CompTextFiles": CompTextFiles,
+}
+
+def preProcessModData(data: dict) -> dict:
+    """Pre-processes cutscene file data to account for enums."""
+    points = data["point_data"]
+    for point_index, point in enumerate(points):
+        if "detailed_command" in point:
+            params = point["detailed_command"]["params"]
+            for arg_index, arg in enumerate(params):
+                if not isinstance(arg, str):
+                    continue
+                if arg[:6] != "enums.":
+                    continue
+                # Enum processing
+                segments = arg.split(".")
+                if len(segments) != 3:
+                    continue
+                enum_name = segments[1]
+                if enum_name not in enum_obj:
+                    continue
+                enum_class = enum_obj[enum_name]
+                enum_index_name = segments[2]
+                data["point_data"][point_index]["detailed_command"]["params"][arg_index] = int(enum_class[enum_index_name])
+                print("Converted to", int(enum_class[enum_index_name]))
+    return data
+    
 
 def buildScripts() -> list:
     """Run through cutscenes folder and compile cutscenes to send back to file_dict."""
@@ -364,6 +410,8 @@ def buildScripts() -> list:
                         mod_files = [x for x in files if ".json" in x]
                         for x in mod_files:
                             with open(f"{f}/{x}", "r") as fk:
-                                mods.append(json.loads(fk.read()))
+                                mod_data = json.loads(fk.read())
+                                mod_data = preProcessModData(mod_data)
+                                mods.append(mod_data)
                         appended_items.append(buildFile(data, mods.copy(), map_index, f.split("\\")[-1].split("/")[-1]))
     return appended_items

@@ -28,3 +28,25 @@ void handleDynamicItemText(char* location, char* format, int character) {
         dk_strFormat(location, format, character);
     }
 }
+
+void *getTextData(data_indexes table_index, int file_index, int unk0, int unk1) {
+    if (file_index & 0x40) {
+        table_index = TABLE_UNK06;
+        if ((Rando.disable_flavor_text) && (file_index == COMP_TEXT_PREVIEWSFLAVOR)) {
+            file_index = 0;
+        } else {
+            file_index &= 0x3F;
+        }
+    }
+    return getMapData(table_index, file_index, unk0, unk1);
+}
+
+int getCharWidthMask(int style, unsigned char *character) {
+    if (*character < 0x10) {
+        if (style == 6) {
+            *character = 132;
+            return 0;
+        }
+    }
+    return getCharacterWidth(style, character);
+}

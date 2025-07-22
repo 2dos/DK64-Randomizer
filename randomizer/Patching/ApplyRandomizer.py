@@ -64,6 +64,7 @@ from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRe
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
+from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
 from randomizer.Patching.MiscSetupChanges import (
     randomize_setup,
     updateKrushaMoveNames,
@@ -454,12 +455,12 @@ def patching_response(spoiler):
 
     # Fast GBs - Change jetpac text
     if IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.jetpac):
-        cranky_index = 8
-        data = {"textbox_index": 2, "mode": "replace", "search": "5000", "target": "2500"}
-        if cranky_index in spoiler.text_changes:
-            spoiler.text_changes[8].append(data)
-        else:
-            spoiler.text_changes[8] = [data]
+        data = {"textbox_index": ItemPreview.JetpacIntro, "mode": "replace", "search": "5000", "target": "2500"}
+        for file in [CompTextFiles.PreviewsFlavor, CompTextFiles.PreviewsNormal]:
+            if file in spoiler.text_changes:
+                spoiler.text_changes[file].append(data)
+            else:
+                spoiler.text_changes[file] = [data]
 
     if IsDDMSSelected(spoiler.settings.hard_bosses_selected, HardBossesSelected.kut_out_phase_rando):
         # KKO Phase Order
@@ -633,12 +634,12 @@ def patching_response(spoiler):
                 )
                 or spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off
             ):
-                wrinkly_index = 41
                 data = {"textbox_index": 21, "mode": "replace", "search": "21132", "target": mill_text}
-                if wrinkly_index in spoiler.text_changes:
-                    spoiler.text_changes[41].append(data)
-                else:
-                    spoiler.text_changes[41] = [data]
+                for file in [CompTextFiles.Wrinkly, CompTextFiles.WrinklyShort]:
+                    if file in spoiler.text_changes:
+                        spoiler.text_changes[file].append(data)
+                    else:
+                        spoiler.text_changes[file] = [data]
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:

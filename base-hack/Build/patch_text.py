@@ -6,6 +6,7 @@ from BuildEnums import Icons, MoveTypes
 from BuildClasses import hint_region_list, MoveName
 from text_decoder import grabText
 from text_encoder import writeText
+from fasttext import fastTextConv
 from typing import BinaryIO
 
 move_hints = [
@@ -897,6 +898,7 @@ for ref in location_references:
 
 writeText("move_names.bin", move_names_arr)
 writeText("item_locations.bin", location_items_arr)
+fastTextConv(location_items_arr, "comptext_item_locations.bin", False)
 
 move_explanations = [
     {
@@ -1296,3 +1298,64 @@ def writeNoExpPakMessages(fh: BinaryIO):
     ]
     for m in noexp_msg:
         m.writeMessage(fh)
+
+item_preview_file = [
+    (16, 2),  # Japes Minecart - Intro
+    (16, 3),  # Japes Minecart - Reward
+    (16, 4),  # Japes Minecart - Not enough coins
+    (16, 5),  # Fungi Minecart - Intro
+    (16, 7),  # Fungi Minecart - Not enough coins
+    (16, 8),  # Castle Minecart - Intro
+    (16, 9),  # Castle Minecart - Reward
+    (17, 4),  # Factory Car Race
+    (23, 0),  # Mermaid - Intro
+    (23, 1),  # Mermaid - Reward
+    (23, 2),  # Mermaid - Missing some items
+    (15, 0),  # Diddy Vulture - Freedom
+    (15, 1),  # Diddy Vulture - Reward
+    (10, 1),  # Llama - Talking to him
+    (10, 2),  # Llama - Rescue
+    (8, 2),  # Jetpac - Intro
+    (8, 34),  # Jetpac - Reward
+    (20, 1),  # Rabbit - Race 2 Intro
+    (20, 2),  # Rabbit - Race 1 Reward
+    (20, 3),  # Rabbit - Race 2 Reward
+    (22, 0),  # Apple - Intro
+    (22, 1),  # Apple - Pick up
+    (22, 4),  # Apple - Reward
+    (28, 2),  # Seal - Race Preview
+    (30, 0),  # RW GB
+    (33, 0),  # Ice Tomato
+    (34, 4),  # Castle Tiny Car Race
+    (21, 0),  # Owl Race
+]
+item_preview_new_text = [
+    [{"text": ["YOU CAN FIND \x04GORILLA GONE\x04 IN \x05CAVES CRANKY\x05."]}],  # Helm Lobby Micro
+    [{"text": ["YOU CAN FIND \x04MONKEYPORT\x04 IN \x05CAVES CRANKY\x05."]}],  # MPort Micro
+    [{"text": ["YOU CAN FIND \x04BONGO BLAST\x04 IN \x05AZTEC CANDY\x05."]}],  # Bongos Micro
+    [{"text": ["YOU CAN FIND \x04TRIANGLE TRAMPLE\x04 IN \x05AZTEC CANDY\x05."]}],  # Triangle Micro
+    [{"text": ["YOU CAN FIND \x04SAXOPHONE SLAM\x04 IN \x05AZTEC CANDY\x05."]}],  # Sax Micro
+    [{"text": ["YOU CAN FIND \x04TROMBONE TREMOR\x04 IN \x05AZTEC CANDY\x05."]}],  # Trombone Micro
+    [{"text": ["YOU CAN FIND \x04GUITAR GAZUMP\x04 IN \x05AZTEC CANDY\x05."]}],  # Gazump Micro
+    [{"text": ["MYUM, MYUM. I WILL NEVER GIVE UP MY \x04GOLDEN BANANA\x04 TO THIS INTRUDER."]}],  # Spider Micro
+    [{"text": ["LADIES AND GENTLEMEN! IT APPEARS THAT ONE FIGHTER HAS COME UNEQUIPPED TO PROPERLY HANDLE THIS REPTILIAN BEAST. PERHAPS THEY SHOULD HAVE LOOKED IN \x07FUNGI FOREST\x07 OR \x09CREEPY CASTLE\x09 FOR THE ELUSIVE SLAM."]}],  # Slams Micro
+    [{"text": ["A \x04GOLDEN BANANA\x04 FOR YOU IF YOU SAVE ME FROM THESE FIREBALLS. HEE HEE."]}],  # Chunky 5DI Micro
+    [{"text": ["DEAR STREAMER, IT APPEARS YOU HAVE WANDERED INTO A PLACE WHERE THERE IS PLACEHOLDER TEXT. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK"]}],  # Cranky Micro
+    [{"text": ["DEAR STREAMER, IT APPEARS YOU HAVE WANDERED INTO A PLACE WHERE THERE IS PLACEHOLDER TEXT. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK"]}],  # Funky Micro
+    [{"text": ["DEAR STREAMER, IT APPEARS YOU HAVE WANDERED INTO A PLACE WHERE THERE IS PLACEHOLDER TEXT. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK"]}],  # Candy Micro
+    [{"text": ["DEAR STREAMER, IT APPEARS YOU HAVE WANDERED INTO A PLACE WHERE THERE IS PLACEHOLDER TEXT. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK"]}],  # Snide Micro
+]
+
+# If you're updating this, also update the ItemPreview enum in BuildEnums.py
+item_preview_text = []
+for data in item_preview_file:
+    file = data[0]
+    index = data[1]
+    item_preview_text.append(grabText(file)[index])
+for data in item_preview_new_text:
+    item_preview_text.append(data)
+writeText("comptext_item_preview_normal.bin", item_preview_text)
+writeText("comptext_item_preview_flavor.bin", item_preview_text)
+wrinkly_text = grabText(41)
+writeText("comptext_wrinkly.bin", wrinkly_text)
+fastTextConv(wrinkly_text[1:], "comptext_wrinkly_short.bin")

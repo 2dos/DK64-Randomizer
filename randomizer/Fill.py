@@ -3680,11 +3680,12 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
 class ItemReference:
     """Class to store information regarding an item's location."""
 
-    def __init__(self, item: Items, item_name: str, locations):
+    def __init__(self, item: Items, item_name: str, locations, is_default: bool = False):
         """Initialize with given parameters."""
         self.item = item
         self.item_name = item_name
-        self.flags = [None] if isinstance(locations, str) else [None] * len(locations)
+        val = 0 if is_default else None
+        self.flags = [val] if isinstance(locations, str) else [val] * len(locations)
         self.locations = [locations] if isinstance(locations, str) else locations
 
     def setLocation(self, index: int, new_name: str, flag: int = None):
@@ -3843,15 +3844,15 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         ItemReference(Items.Funky, "Funky Kong", "Starting Item"),
         ItemReference(Items.Snide, "Snide", "Starting Item"),
         # Early Keys
-        ItemReference(Items.JungleJapesKey, "Key 1", "Starting Key"),
-        ItemReference(Items.AngryAztecKey, "Key 2", "Starting Key"),
-        ItemReference(Items.FranticFactoryKey, "Key 3", "Starting Key"),
-        ItemReference(Items.GloomyGalleonKey, "Key 4", "Starting Key"),
+        ItemReference(Items.JungleJapesKey, "Key 1", "Starting Key", True),
+        ItemReference(Items.AngryAztecKey, "Key 2", "Starting Key", True),
+        ItemReference(Items.FranticFactoryKey, "Key 3", "Starting Key", True),
+        ItemReference(Items.GloomyGalleonKey, "Key 4", "Starting Key", True),
         # Late Keys
-        ItemReference(Items.FungiForestKey, "Key 5", "Starting Key"),
-        ItemReference(Items.CrystalCavesKey, "Key 6", "Starting Key"),
-        ItemReference(Items.CreepyCastleKey, "Key 7", "Starting Key"),
-        ItemReference(Items.HideoutHelmKey, "Key 8", "Starting Key"),
+        ItemReference(Items.FungiForestKey, "Key 5", "Starting Key", True),
+        ItemReference(Items.CrystalCavesKey, "Key 6", "Starting Key", True),
+        ItemReference(Items.CreepyCastleKey, "Key 7", "Starting Key", True),
+        ItemReference(Items.HideoutHelmKey, "Key 8", "Starting Key", True),
         # Special Items
         ItemReference(Items.Bean, "The Bean", "Forst Anthill Second Reward"),
         ItemReference(Items.NintendoCoin, "Nintendo Coin", "Factory Arcade Round 2"),

@@ -400,6 +400,7 @@ extern void updateItemTotalsHandler(int player, int obj_type, int is_homing, int
 extern void loadWrinklyTextWrapper(actorData* actor, int file, int index);
 extern int getProjectileCount_modified(void *player, unsigned short int_bitfield, void* code);
 extern void applyButtonBansInternals(void *cont);
+extern void *getTextData(data_indexes table_index, int file_index, int unk0, int unk1);
 
 extern void handleCrownTimerInternal(void);
 
@@ -429,6 +430,7 @@ extern void giveKongFromFlag(int flag);
 
 extern void resetIceTrapButtons(void);
 extern void handleIceTrapButtons(void);
+extern int getCharWidthMask(int style, unsigned char *character);
 
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
@@ -463,7 +465,7 @@ extern collision_info object_collisions[COLLISION_LIMIT];
 extern unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE];
 
 extern mtx_item static_mtx[22];
-extern int hint_pointers[35];
+extern FastTextStruct hint_pointers[35];
 extern char* itemloc_pointers[LOCATION_ITEM_COUNT];
 extern char music_types[SONG_COUNT];
 extern char grab_lock_timer;

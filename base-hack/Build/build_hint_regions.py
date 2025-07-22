@@ -25,8 +25,8 @@ with open(H_FILE, "w") as fh:
         hx = "0x" + hx[-3:]
         fh.write(f"\t/* {hx} */ REGION_{region.enum_name.upper()}, // {region.region_name}\n")
     fh.write("} regions;\n")
-    fh.write(f"extern char* hint_region_names[{len(hint_region_list)}];")
-    fh.write(f"extern char* unknown_hints[5];")
+    fh.write(f"extern char* hint_region_names[{len(hint_region_list)}];\n")
+    fh.write(f"extern FastTextStruct unknown_hints[5];\n")
 
 with open(C_FILE, "w") as fh:
     warning = [
@@ -51,7 +51,7 @@ with open(C_FILE, "w") as fh:
         if len(region.region_name) > len(max_length_text):
             max_length_text = region.region_name
     fh.write("};\n\n")
-    fh.write("char* unknown_hints[] = {\n")
+    fh.write("FastTextStruct unknown_hints[] = {\n")
     for _ in range(5):
-        fh.write(f'\t"??? - {max_length_text.upper()}",\n')
+        fh.write(f'\t{{ .lines = {{ "??? - {max_length_text.upper()}", 0, 0 }} }},\n')
     fh.write("};\n")

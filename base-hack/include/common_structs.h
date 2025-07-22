@@ -2402,3 +2402,7 @@ typedef struct purchase_text_hint_struct {
 	/* 0x000 */ unsigned char enough_coins;
 	/* 0x001 */ unsigned char not_enough_coins;
 } purchase_text_hint_struct;
+
+typedef struct FastTextStruct {
+	char *lines[3];
+} FastTextStruct;
