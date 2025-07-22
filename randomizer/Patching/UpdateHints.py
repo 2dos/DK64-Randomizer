@@ -86,7 +86,7 @@ def getActiveEffectStr(active_effects: list[str], ending: bool) -> str:
     return "".join(effects_copy)
 
 
-def splitText(text: str) -> str:
+def splitText(text: str, truncate_split: bool) -> str:
     """Split a text entry into lines."""
     lines = []
     line_index = 0
@@ -130,7 +130,7 @@ def splitText(text: str) -> str:
             if char_width:
                 displayed_characters += 1
             width = CHAR_KERNING + char_width
-        if displayed_characters > HINT_CHARACTER_LIMIT and len(text) > 1:
+        if displayed_characters > HINT_CHARACTER_LIMIT and len(text) > 1 and truncate_split:
             line_text += most_recent_word
             line_text = line_text.strip(' ')
             if len(line_text) < 3:
@@ -151,7 +151,7 @@ def splitText(text: str) -> str:
             word_length = 0
             most_recent_word = ""
         text = text[1:]
-        if line_length > MAX_LINE_LENGTH:
+        if line_length > MAX_LINE_LENGTH and truncate_split:
             line_index += 1
             line_length = 0
             if line_index == MAX_LINES:
@@ -165,7 +165,7 @@ def splitText(text: str) -> str:
     base_text = "\x0f".join(lines)
     return f"{base_text}\x00"
 
-def writeFastHints(ROM_COPY: LocalROM, table_index: int, file_index: int, input_text: list, compressed: bool):
+def writeFastHints(ROM_COPY: LocalROM, table_index: int, file_index: int, input_text: list, compressed: bool, truncate_split: bool = True):
     """Write a fast lookup version of text to ROM."""
     bad_chars = ["\x00, \x0f"]
     entries = []
@@ -174,7 +174,7 @@ def writeFastHints(ROM_COPY: LocalROM, table_index: int, file_index: int, input_
         for line in textbox:
             filtered_line = ''.join(c for c in line if c not in bad_chars)
             text += f"{filtered_line} "
-        entries.append(splitText(text))
+        entries.append(splitText(text, truncate_split))
     raw_text = "".join(entries)
     data = raw_text.encode("ascii")
     unc_size = len(data)
@@ -291,7 +291,7 @@ def PushItemLocations(spoiler, ROM_COPY: LocalROM):
         for subloc in loc.locations:
             text_arr.append([subloc.upper()])
         flag_arr.extend(loc.flags)
-    writeWrinklyHints(ROM_COPY, TableNames.Text, 44, text_arr, False)
+    writeFastHints(ROM_COPY, TableNames.Unknown6, CompTextFiles.ItemLocations & 0x3F, text_arr, True, False)
     writeItemReferenceFlags(ROM_COPY, flag_arr)
 
 

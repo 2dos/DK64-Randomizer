@@ -77,13 +77,13 @@ def getActiveEffectStr(active_effects: list[str], ending: bool) -> str:
     return "".join(effects_copy)
 
 
-def splitText(text: str) -> str:
+def splitText(text: str, truncate_split: bool) -> str:
     """Split a text entry into lines."""
     lines = []
     line_index = 0
     line_length = 0
     line_text = ""
-    text = text.strip()  # Filter out any trailing whitespaces
+    text = text.strip(' ')  # Filter out any trailing whitespaces
     most_recent_word = ""
     word_length = 0
     displayed_characters = 0
@@ -95,7 +95,7 @@ def splitText(text: str) -> str:
         if len(text) == 0:
             if len(most_recent_word) > 0:
                 line_text += most_recent_word
-                line_text = line_text.strip()
+                line_text = line_text.strip(' ')
                 line_text += getActiveEffectStr(active_effects, True)
                 lines.append(line_text) 
             break
@@ -121,13 +121,13 @@ def splitText(text: str) -> str:
             if char_width:
                 displayed_characters += 1
             width = CHAR_KERNING + char_width
-        if displayed_characters > HINT_CHARACTER_LIMIT and len(text) > 1:
+        if displayed_characters > HINT_CHARACTER_LIMIT and len(text) > 1 and truncate_split:
             line_text += most_recent_word
-            line_text = line_text.strip()
+            line_text = line_text.strip(' ')
             if len(line_text) < 3:
                 line_text = "..."
             else:
-                line_text = line_text[:3].strip() + "..."
+                line_text = line_text[:3].strip(' ') + "..."
             line_text += getActiveEffectStr(active_effects, True)
             lines.append(line_text)
             break
@@ -142,12 +142,12 @@ def splitText(text: str) -> str:
             word_length = 0
             most_recent_word = ""
         text = text[1:]
-        if line_length > MAX_LINE_LENGTH:
+        if line_length > MAX_LINE_LENGTH and truncate_split:
             line_index += 1
             line_length = 0
             if line_index == MAX_LINES:
-                line_text = line_text.strip() + "..."
-            line_text = line_text.strip()
+                line_text = line_text.strip(' ') + "..."
+            line_text = line_text.strip(' ')
             line_text += getActiveEffectStr(active_effects, True)
             lines.append(line_text)
             if DEBUG:
@@ -156,7 +156,7 @@ def splitText(text: str) -> str:
     base_text = "\x0f".join(lines)
     return f"{base_text}\x00"
 
-def fastTextConv(input_data: list, file_name: str):
+def fastTextConv(input_data: list, file_name: str, truncate_split: bool = True):
     """Conversion function."""
     bad_chars = ["\x00, \x0f"]
     entries = []
@@ -167,6 +167,6 @@ def fastTextConv(input_data: list, file_name: str):
                 for line in obj["text"]:
                     filtered_line = ''.join(c for c in line if c not in bad_chars)
                     text += f"{filtered_line} "
-        entries.append(splitText(text))
+        entries.append(splitText(text, truncate_split))
     with open(file_name, "w") as fh:
         fh.write("".join(entries))

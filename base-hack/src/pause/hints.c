@@ -225,6 +225,7 @@ void resetProgressive(void) {
 
 void initHints(void) {
     if (!hints_initialized) {
+        // Wrinkly Hints (Pause Menu)
         int hint_index = 0;
         int line_index = 0;
         char *hint_text = getMapData(TABLE_UNK06, COMP_TEXT_WRINKLYSHORT - 0x40, 1, 1);
@@ -245,8 +246,18 @@ void initHints(void) {
                 }
             }
         }
-        for (int i = 0; i < LOCATION_ITEM_COUNT; i++) {
-            itemloc_pointers[i] = getTextPointer(44, i, 0);
+        // Item Locations
+        int item_loc_index = 0;
+        char *itemloc_text = getMapData(TABLE_UNK06, COMP_TEXT_ITEMLOCATIONS - 0x40, 1, 1);
+        itemloc_pointers[0] = itemloc_text;
+        while (item_loc_index < LOCATION_ITEM_COUNT) {
+            int val = *itemloc_text++;
+            if (val == 0) {
+                item_loc_index++;
+                if (item_loc_index < LOCATION_ITEM_COUNT) {
+                    itemloc_pointers[item_loc_index] = itemloc_text;
+                }
+            }
         }
         hints_initialized = 1;
     }

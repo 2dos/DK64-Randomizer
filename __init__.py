@@ -610,15 +610,15 @@ if baseclasses_loaded:
                     ItemReference(DK64RItems.Funky, "Funky Kong", "Starting Item"),
                     ItemReference(DK64RItems.Snide, "Snide", "Starting Item"),
                     # Early Keys
-                    ItemReference(DK64RItems.JungleJapesKey, "Key 1", "Starting Key"),
-                    ItemReference(DK64RItems.AngryAztecKey, "Key 2", "Starting Key"),
-                    ItemReference(DK64RItems.FranticFactoryKey, "Key 3", "Starting Key"),
-                    ItemReference(DK64RItems.GloomyGalleonKey, "Key 4", "Starting Key"),
+                    ItemReference(DK64RItems.JungleJapesKey, "Key 1", "Starting Key", True),
+                    ItemReference(DK64RItems.AngryAztecKey, "Key 2", "Starting Key", True),
+                    ItemReference(DK64RItems.FranticFactoryKey, "Key 3", "Starting Key", True),
+                    ItemReference(DK64RItems.GloomyGalleonKey, "Key 4", "Starting Key", True),
                     # Late Keys
-                    ItemReference(DK64RItems.FungiForestKey, "Key 5", "Starting Key"),
-                    ItemReference(DK64RItems.CrystalCavesKey, "Key 6", "Starting Key"),
-                    ItemReference(DK64RItems.CreepyCastleKey, "Key 7", "Starting Key"),
-                    ItemReference(DK64RItems.HideoutHelmKey, "Key 8", "Starting Key"),
+                    ItemReference(DK64RItems.FungiForestKey, "Key 5", "Starting Key", True),
+                    ItemReference(DK64RItems.CrystalCavesKey, "Key 6", "Starting Key", True),
+                    ItemReference(DK64RItems.CreepyCastleKey, "Key 7", "Starting Key", True),
+                    ItemReference(DK64RItems.HideoutHelmKey, "Key 8", "Starting Key", True),
                 ]
                 spoiler.UpdateLocations(spoiler.LocationList)
                 compileMicrohints(spoiler)

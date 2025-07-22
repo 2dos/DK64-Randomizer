@@ -965,3 +965,4 @@ class CompTextFiles(IntEnum):
     PreviewsFlavor = auto()
     Wrinkly = auto()
     WrinklyShort = auto()
+    ItemLocations = auto()

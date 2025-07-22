@@ -56,4 +56,5 @@ typedef enum comp_text_files {
 	/* 0x41 */ COMP_TEXT_PREVIEWSFLAVOR,
 	/* 0x42 */ COMP_TEXT_WRINKLY,
 	/* 0x43 */ COMP_TEXT_WRINKLYSHORT,
+	/* 0x44 */ COMP_TEXT_ITEMLOCATIONS,
 } comp_text_files;

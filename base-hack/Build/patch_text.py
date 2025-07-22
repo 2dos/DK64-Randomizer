@@ -898,6 +898,7 @@ for ref in location_references:
 
 writeText("move_names.bin", move_names_arr)
 writeText("item_locations.bin", location_items_arr)
+fastTextConv(location_items_arr, "comptext_item_locations.bin", False)
 
 move_explanations = [
     {
