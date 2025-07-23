@@ -8,8 +8,8 @@ class Requirement {
 
     can_acquire(move_list) {
         let acquire = false;
-        foreach (var group in this.requirements) {
-            foreach (var move in group) {
+        for (var group in this.requirements) {
+            for (var move in group) {
                 if (move_list.includes(move)) return true;
             }
         }
