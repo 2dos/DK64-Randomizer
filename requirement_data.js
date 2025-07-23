@@ -336,8 +336,8 @@ const requirement_data = {
             new Requirement(8, [[Moves.ForestYellowTunnel]]), // 8 bananas in HollowTreeArea
             new Requirement(4, [[Moves.ForestGreenTunnelFeather]]), // 4 bananas in FungiForestStart
             new Requirement(5, [[Moves.Punch, Moves.Day]]), // 1 bunch in MillChunkyTinyArea
-            new Requirement(1, [[Moves.ForestGreenTunnelFeather, Moves.FungiGreenPineapple]]), // 1 banana in WormArea
-            new Requirement(15, [[Moves.ClimbingCheck, Moves.ForestGreenTunnelFeather, Moves.FungiGreenPineapple]]), // 3 bunches in WormArea
+            new Requirement(1, [[Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]), // 1 banana in WormArea
+            new Requirement(15, [[Moves.ClimbingCheck, Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]), // 3 bunches in WormArea
             new Requirement(5, [[Moves.Sax, Moves.Mini, Moves.ForestYellowTunnel]]), // 1 bunch in HollowTreeArea
             new Requirement(10, [ // 2 bunches in MillChunkyTinyArea
                 [Moves.Mini, Moves.Day],
@@ -356,7 +356,7 @@ const requirement_data = {
         "Chunky": [
             new Requirement(10, [[Moves.Moveless]]), // 1 bunch, 1 bunch in FungiForestStart
             new Requirement(5, [[Moves.Punch, Moves.Day]]), // 1 bunch in MillChunkyTinyArea
-            new Requirement(14, [[Moves.ForestGreenTunnelFeather, Moves.FungiGreenPineapple]]), // 1 bunch, 9 bananas in WormArea
+            new Requirement(14, [[Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]), // 1 bunch, 9 bananas in WormArea
             new Requirement(41, [ // 1 bunch, 3 bananas in MushroomLowerBetweenLadders; 1 bunch, 3 bananas in MushroomLowerMid; 1 bunch, 3 bananas, 3 bananas in MushroomUpper; 1 bunch, 3 bananas, 3 bananas in MushroomUpperMid; 3 bananas in MushroomUpperVineFloor
                 [Moves.ClimbingCheck],
                 [Moves.Rocket],

@@ -750,7 +750,7 @@ LEVELS = [
             Events.Day: "Day",
             Events.HollowTreeGateOpened: "ForestYellowTunnel",
             Switches.FungiGreenFeather: "ForestGreenTunnelFeather",
-            Switches.FungiGreenPineapple: "FungiGreenPineapple",
+            Switches.FungiGreenPineapple: "ForestGreenTunnelPineapple",
             Events.MushroomCannonsSpawned: "CheckOfLegends",
         },
     },
