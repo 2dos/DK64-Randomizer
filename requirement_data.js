@@ -89,9 +89,8 @@ class Requirement {
     }
 
     can_acquire(move_list) {
-        let acquire = false;
-        for (var group in this.requirements) {
-            for (var move in group) {
+        for (var group of this.requirements) {
+            for (var move of group) {
                 if (move_list.includes(move)) return true;
             }
         }
