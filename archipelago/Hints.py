@@ -1,3 +1,5 @@
+"""Hints for DK64R Archipelago."""
+
 # from worlds.dk64 import DK64World
 from worlds.dk64.randomizer.CompileHints import UpdateSpoilerHintList, getRandomHintLocation, replaceKongNameWithKrusha
 from worlds.dk64.randomizer.Enums.Maps import Maps
@@ -32,6 +34,7 @@ boss_colors = {
     Maps.KroolTinyPhase: "\x07",
     Maps.KroolChunkyPhase: "\x08",
 }
+
 
 def CompileArchipelagoHints(world, hint_data: list):
     """Insert Archipelago hints."""
@@ -110,10 +113,24 @@ def CompileArchipelagoHints(world, hint_data: list):
             hints_remaining -= 1
 
     for hint in hints:
-        print(hint.replace("\x04", "").replace("\x05", "").replace("\x06", "").replace("\x07", "").replace("\x08", "").replace("\x09", "").replace("\x0a", "").replace("\x0b", "").replace("\x0c", "").replace("\x0d", "").replace("\x0e", "").replace("\x0f", ""))
+        print(
+            hint.replace("\x04", "")
+            .replace("\x05", "")
+            .replace("\x06", "")
+            .replace("\x07", "")
+            .replace("\x08", "")
+            .replace("\x09", "")
+            .replace("\x0a", "")
+            .replace("\x0b", "")
+            .replace("\x0c", "")
+            .replace("\x0d", "")
+            .replace("\x0e", "")
+            .replace("\x0f", "")
+        )
         hint_location = getRandomHintLocation(random=world.spoiler.settings.random)
         UpdateHint(hint_location, hint)
     UpdateSpoilerHintList(world.spoiler)
+
 
 def parseKeyHint(world, location):
     """Write a key hint for the given location."""
@@ -127,6 +144,7 @@ def parseKeyHint(world, location):
             text = text.replace(letter, " ")
     return text
 
+
 def parseKongHint(world, location):
     """Write a kong hint for the given location."""
     text = ""
@@ -138,6 +156,7 @@ def parseKongHint(world, location):
         if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
             text = text.replace(letter, " ")
     return text
+
 
 def parseWothHint(world, location):
     """Write a woth item hint for the given location."""
@@ -151,6 +170,7 @@ def parseWothHint(world, location):
             text = text.replace(letter, " ")
     return text
 
+
 def parseMajorItemHint(world, location):
     """Write a major item hint for the given location."""
     text = ""
@@ -163,6 +183,7 @@ def parseMajorItemHint(world, location):
             text = text.replace(letter, " ")
     return text
 
+
 def parseDeepHint(world, location):
     """Write a deep item hint for the given location."""
     text = ""
@@ -174,6 +195,7 @@ def parseDeepHint(world, location):
         if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
             text = text.replace(letter, " ")
     return text
+
 
 def parseKRoolHint(world):
     """Write the K. Rool order hint for the given location."""

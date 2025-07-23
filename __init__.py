@@ -748,9 +748,9 @@ if baseclasses_loaded:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
-                            else:    
+                            else:
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name[:80]]
-                    # Also also gather information about which locations have junk items or no items      
+                    # Also also gather information about which locations have junk items or no items
                     if loc.player in players and loc.player == loc.item.player and locworld.location_starts_empty(loc):
                         locworld.junked_locations.append(loc.name)
 
@@ -950,7 +950,7 @@ if baseclasses_loaded:
                 if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies) or (loc_obj.type == Types.Key or loc_obj.level == Levels.HideoutHelm):
                     return True
             return False
-        
+
         def updateBossKongs(self, spoiler):
             """Prevent a bug with microhints hinting boss locations as if they were Any Kong locations."""
             locations = {

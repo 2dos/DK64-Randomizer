@@ -179,7 +179,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         elif item.playthrough is True or item.type == DK64RTypes.Blueprint:
             classification = ItemClassification.progression_skip_balancing
         # Ensure certain item types that affect logic are marked as progression
-        elif item.type in (DK64RTypes.Kong, DK64RTypes.Shop, DK64RTypes.TrainingBarrel, DK64RTypes.Shockwave, DK64RTypes.Climbing) and item.name not in [DK64RItem.ItemList[x].name for x in DK64RItemPoolUtility.JunkSharedMoves]:
+        elif item.type in (DK64RTypes.Kong, DK64RTypes.Shop, DK64RTypes.TrainingBarrel, DK64RTypes.Shockwave, DK64RTypes.Climbing) and item.name not in [
+            DK64RItem.ItemList[x].name for x in DK64RItemPoolUtility.JunkSharedMoves
+        ]:
             classification = ItemClassification.progression
         else:  # double check jetpac, eh?
             classification = ItemClassification.useful
