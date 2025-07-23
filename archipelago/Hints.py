@@ -113,20 +113,6 @@ def CompileArchipelagoHints(world, hint_data: list):
             hints_remaining -= 1
 
     for hint in hints:
-        print(
-            hint.replace("\x04", "")
-            .replace("\x05", "")
-            .replace("\x06", "")
-            .replace("\x07", "")
-            .replace("\x08", "")
-            .replace("\x09", "")
-            .replace("\x0a", "")
-            .replace("\x0b", "")
-            .replace("\x0c", "")
-            .replace("\x0d", "")
-            .replace("\x0e", "")
-            .replace("\x0f", "")
-        )
         hint_location = getRandomHintLocation(random=world.spoiler.settings.random)
         UpdateHint(hint_location, hint)
     UpdateSpoilerHintList(world.spoiler)
