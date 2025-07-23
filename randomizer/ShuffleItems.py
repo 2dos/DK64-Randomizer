@@ -208,6 +208,8 @@ def ShuffleItems(spoiler):
                 blueprint_flag_dict[item_location.default] = item_location.default_mapid_data[0].flag
             else:
                 flag_dict[vanilla_item_type].append(old_flag)
+    
+    
     # Shuffle the list of locations needing flags so the flags are assigned randomly across seeds
     spoiler.settings.random.shuffle(locations_needing_flags)
     for location in locations_needing_flags:
