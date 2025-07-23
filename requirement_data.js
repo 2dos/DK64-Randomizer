@@ -1,3 +1,28 @@
+class Requirement {
+    constructor(amount, requirements) {
+        this.amount = amount;
+        this.requirements = requirements;
+        this.amount_copy = amount;
+        this.requirements_copy = requirements.slice();
+    }
+
+    can_acquire(move_list) {
+        let acquire = false;
+        foreach (var group in this.requirements) {
+            foreach (var move in group) {
+                if (move_list.includes(move)) return true;
+            }
+        }
+
+        return false;
+    }
+
+    reset() {
+        this.requirements = this.requirements_copy.slice();
+        this.amount = this.amount_copy;
+    }
+}
+
 const requirement_data = {
     "Japes": {
         "DK": [
