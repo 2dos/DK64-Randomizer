@@ -179,7 +179,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         elif item.playthrough is True or item.type == DK64RTypes.Blueprint:
             classification = ItemClassification.progression_skip_balancing
         # Ensure certain item types that affect logic are marked as progression
-        elif item.type in (DK64RTypes.Kong, DK64RTypes.Shop, DK64RTypes.TrainingBarrel, DK64RTypes.Shockwave, DK64RTypes.Climbing):
+        elif item.type in (DK64RTypes.Kong, DK64RTypes.Shop, DK64RTypes.TrainingBarrel, DK64RTypes.Shockwave, DK64RTypes.Climbing) and item.name not in [
+            DK64RItem.ItemList[x].name for x in DK64RItemPoolUtility.JunkSharedMoves
+        ]:
             classification = ItemClassification.progression
         else:  # double check jetpac, eh?
             classification = ItemClassification.useful
@@ -201,7 +203,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     # Handle starting Kong list here
     for kong in world.spoiler.settings.starting_kong_list:
         kong_item = DK64RItemPoolUtility.ItemFromKong(kong)
-        if kong == world.spoiler.settings.starting_kong:
+        if kong == world.spoiler.settings.starting_kong or not world.spoiler.settings.kong_rando:
             world.multiworld.push_precollected(DK64Item(kong_item.name, ItemClassification.progression, full_item_table[DK64RItem.ItemList[kong_item].name].code, world.player))
         for item in item_table[:]:
             if item.name == kong_item.name:

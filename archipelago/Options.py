@@ -356,7 +356,7 @@ class RemoveBarriers(OptionList):
 
 
 class HintItemRandomization(Toggle):
-    """???????"""
+    """???????."""
 
     display_name = "Randomize Hint"
     default = True
@@ -369,7 +369,7 @@ class RandomizeBlockers(Toggle):
 
 
 class MaximumBLocker(Range):
-    """Determines the Maximum Value for B. Lockers if Randomize B.Lockers are enabled"""
+    """Determines the Maximum Value for B. Lockers if Randomize B.Lockers are enabled."""
 
     display_name = "Randomizer B. Lockers"
     range_start = 0
