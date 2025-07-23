@@ -72,7 +72,7 @@ class Moves {
     // Climbing
     static ClimbingCheck = new Moves("Climbing", true, [Moves.Climbing], true);
 
-    constructor (name, requires_moves=true, barrier_moves=[], is_barrier=false) {
+    constructor(name, requires_moves=true, barrier_moves=[], is_barrier=false) {
         this.name = name;
         this.requires_moves = requires_moves
         this.barrier_moves = barrier_moves
@@ -89,13 +89,19 @@ class Requirement {
     }
 
     can_acquire(move_list) {
-        for (var group of this.requirements) {
-            for (var move of group) {
-                if (move_list.includes(move)) return true;
+        let acquire = false;
+        this.requirements.forEach(group => {
+            let local_acquire = true;
+            group.forEach(move => {
+                if (!move_list.includes(move)) {
+                    local_acquire = false;
+                }
+            })
+            if (local_acquire) {
+                acquire = true;
             }
-        }
-
-        return false;
+        })
+        return acquire;
     }
 
     reset() {
