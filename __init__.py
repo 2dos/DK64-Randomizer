@@ -292,6 +292,19 @@ if baseclasses_loaded:
             settings_dict["blocker_text"] = self.options.blocker_max.value
             # settings_dict["chaos_blockers"] = self.options.secret_setting_lol.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
+            blocker_options = [
+                self.options.level1_blocker,
+                self.options.level2_blocker,
+                self.options.level3_blocker,
+                self.options.level4_blocker,
+                self.options.level5_blocker,
+                self.options.level6_blocker,
+                self.options.level7_blocker,
+                self.options.level8_blocker
+            ]
+
+            for i, blocker in enumerate(blocker_options):
+                settings_dict[f"blocker_{i}"] = blocker.value
             settings_dict["item_rando_list_selected"] = []
 
             always_enabled_categories = [
@@ -540,6 +553,7 @@ if baseclasses_loaded:
                         spoiler.pregiven_items.append(dk64_item)
                 local_trap_count = 0
                 ap_item_is_major_item = False
+                self.junked_locations = []
                 # Read through all item assignments in this AP world and find their DK64 equivalents so we can update our world state for patching purposes
                 for ap_location in self.multiworld.get_locations(self.player):
                     # We never need to place Collectibles or Events in our world state
@@ -572,11 +586,15 @@ if baseclasses_loaded:
                                 # Most of these item restrictions should be handled by item rules, so this is a failsafe.
                                 # Junk items can't be placed in shops, bosses, or arenas. Fortunately this is junk, so we can just patch a NoItem there instead.
                                 # Shops are allowed to get Junk items placed by AP in order to artificially slightly reduce the number of checks in shops.
-                                if dk64_item in [DK64RItems.JunkMelon] and dk64_location.type in [Types.Shop, Types.Key, Types.Crown]:
+                                if DK64RItem.ItemList[dk64_item].type == Types.JunkItem and (dk64_location.type in [Types.Shop, Types.Key, Types.Crown]):
                                     dk64_item = DK64RItems.NoItem
+                                    self.junked_locations.append(ap_location.name)
                                 # Blueprints can't be on fairies for technical reasons. Instead we'll patch it in as an AP item and have AP handle it.
                                 if dk64_item in DK64RItemPool.Blueprints() and dk64_location.type == Types.Fairy:
                                     dk64_item = DK64RItems.ArchipelagoItem
+                                # Track explicit "No Item" placements
+                                elif ap_item.name == "No Item":
+                                    self.junked_locations.append(ap_location.name)
                                 spoiler.LocationList[dk64_location_id].PlaceItem(spoiler, dk64_item)
                             else:
                                 print(f"Item {ap_item.name} not found in DK64 item table.")
@@ -748,11 +766,8 @@ if baseclasses_loaded:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
-                            else:
+                            else:    
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name[:80]]
-                    # Also also gather information about which locations have junk items or no items
-                    if loc.player in players and loc.player == loc.item.player and locworld.location_starts_empty(loc):
-                        locworld.junked_locations.append(loc.name)
 
             except Exception as e:
                 raise e
