@@ -300,7 +300,7 @@ if baseclasses_loaded:
                 self.options.level5_blocker,
                 self.options.level6_blocker,
                 self.options.level7_blocker,
-                self.options.level8_blocker
+                self.options.level8_blocker,
             ]
 
             for i, blocker in enumerate(blocker_options):
@@ -749,9 +749,9 @@ if baseclasses_loaded:
                     locworld = multiworld.worlds[loc.player]
                     if players:
                         if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky"):
-                            locworld.hint_data["kong"].append(loc)
+                            autoworld.hint_data["kong"].append(loc)
                         if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5"):
-                            locworld.hint_data["key"].append(loc)
+                            autoworld.hint_data["key"].append(loc)
                         if loc.player in players and loc.name in deep_location_names:
                             locworld.hint_data["deep"].append(loc)
                         if player in players and autoworld.isMajorItem(loc.item) and (not autoworld.spoiler.settings.key_8_helm or loc.name != "The End of Helm"):
@@ -766,7 +766,7 @@ if baseclasses_loaded:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
-                            else:    
+                            else:
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name[:80]]
 
             except Exception as e:
