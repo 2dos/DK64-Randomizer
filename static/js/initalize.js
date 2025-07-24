@@ -327,6 +327,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let transition_promises = [];
       let portal_promises = [];
       let painting_promises = [];
+      let arcade_promises = [];
 
       for (var filename of Object.keys(new_zip.files)) {
         if (validFilename(filename, "bgm/")) {
@@ -343,6 +344,8 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
           portal_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/paintings/", ".png")) {
           painting_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/arcade_sprites/", ".png")) {
+          arcade_promises.push(createMusicLoadPromise(new_zip, filename));
         }
       }
 
@@ -357,6 +360,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let transition_files = await Promise.all(transition_promises);
       let portal_files = await Promise.all(portal_promises);
       let painting_files = await Promise.all(painting_promises);
+      let arcade_files = await Promise.all(arcade_promises);
 
       // BGM
       let bgm = bgm_files.map((x) => x.file);
@@ -389,6 +393,10 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       // Paintings
       let paintings = painting_files.map((x) => x.file);
       let painting_names = painting_files.map((x) => x.name);
+      
+      // Arcade Sprites
+      let arcade_sprites = arcade_files.map((x) => x.file);
+      let arcade_sprite_names = arcade_files.map((x) => x.name);
 
       let has_music = bgm_names.length > 0 || event_names.length > 0 || majoritem_names.length > 0 || minoritem_names.length > 0;
 
@@ -400,6 +408,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         transitions: transitions,
         tns_portals: tns_portals,
         paintings: paintings,
+        arcade_sprites: arcade_sprites,
       };
       cosmetic_names = {
         bgm: bgm_names,
@@ -409,6 +418,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         transitions: transition_names,
         tns_portals: tns_portal_names,
         paintings: painting_names,
+        arcade_sprites: arcade_sprite_names,
       };
       cosmetic_extensions = {
         bgm: bgm_ext,
