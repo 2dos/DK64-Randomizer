@@ -383,12 +383,14 @@ class MaximumBLocker(Range):
 #     display_name = "Chaos B. Lockers"
 #     default = True
 
+
 class Level1Blocker(Range):
     """Determines the value of Level 1's B. Locker if Randomize B. Lockers are turned off."""
 
     range_start = 0
     range_end = 201
     default = 1
+
 
 class Level2Blocker(Range):
     """Determines the value of Level 2's B. Locker if Randomize B. Lockers are turned off."""
@@ -397,12 +399,14 @@ class Level2Blocker(Range):
     range_end = 201
     default = 5
 
+
 class Level3Blocker(Range):
     """Determines the value of Level 3's B. Locker if Randomize B. Lockers are turned off."""
 
     range_start = 0
     range_end = 201
     default = 15
+
 
 class Level4Blocker(Range):
     """Determines the value of Level 4's B. Locker if Randomize B. Lockers are turned off."""
@@ -411,12 +415,14 @@ class Level4Blocker(Range):
     range_end = 201
     default = 30
 
+
 class Level5Blocker(Range):
     """Determines the value of Level 5's B. Locker if Randomize B. Lockers are turned off."""
 
     range_start = 0
     range_end = 201
     default = 50
+
 
 class Level6Blocker(Range):
     """Determines the value of Level 6's B. Locker if Randomize B. Lockers are turned off."""
@@ -425,6 +431,7 @@ class Level6Blocker(Range):
     range_end = 201
     default = 65
 
+
 class Level7Blocker(Range):
     """Determines the value of Level 7's B. Locker if Randomize B. Lockers are turned off."""
 
@@ -432,13 +439,13 @@ class Level7Blocker(Range):
     range_end = 201
     default = 80
 
+
 class Level8Blocker(Range):
     """Determines the value of Level 8's B. Locker if Randomize B. Lockers are turned off."""
 
     range_start = 0
     range_end = 201
     default = 100
-
 
 
 @dataclass

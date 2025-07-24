@@ -1,10 +1,10 @@
 """Hints for DK64R Archipelago."""
 
 # from worlds.dk64 import DK64World
-from worlds.dk64.randomizer.CompileHints import UpdateSpoilerHintList, getRandomHintLocation, replaceKongNameWithKrusha
-from worlds.dk64.randomizer.Enums.Maps import Maps
-from worlds.dk64.randomizer.Lists.WrinklyHints import ClearHintMessages
-from worlds.dk64.randomizer.Patching.UpdateHints import UpdateHint
+from randomizer.CompileHints import UpdateSpoilerHintList, getRandomHintLocation, replaceKongNameWithKrusha
+from randomizer.Enums.Maps import Maps
+from randomizer.Lists.WrinklyHints import ClearHintMessages
+from randomizer.Patching.UpdateHints import UpdateHint
 
 boss_names = {
     Maps.JapesBoss: "Army Dillo 1",
