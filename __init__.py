@@ -137,7 +137,7 @@ if baseclasses_loaded:
     from randomizer.Patching.EnemyRando import randomize_enemies_0
     from randomizer.Fill import ShuffleItems, Generate_Spoiler, IdentifyMajorItems
     from randomizer.CompileHints import compileMicrohints
-    from worlds.dk64.archipelago.Hints import CompileArchipelagoHints
+    from archipelago.Hints import CompileArchipelagoHints
     from randomizer.Enums.Types import Types, BarrierItems
     from randomizer.Enums.Kongs import Kongs
     from randomizer.Enums.Levels import Levels
@@ -290,7 +290,6 @@ if baseclasses_loaded:
             settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
             settings_dict["randomize_blocker_required_amounts"] = self.options.randomize_blocker_required_amounts.value
             settings_dict["blocker_text"] = self.options.blocker_max.value
-            # settings_dict["chaos_blockers"] = self.options.secret_setting_lol.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
             blocker_options = [
                 self.options.level1_blocker,
@@ -327,7 +326,7 @@ if baseclasses_loaded:
             ]
             settings_dict["item_rando_list_selected"].extend(always_enabled_categories)
 
-            if self.options.secret_setting_lol.value:
+            if self.options.hints_in_item_pool.value:
                 settings_dict["item_rando_list_selected"].append(ItemRandoListSelected.hint)
 
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
@@ -748,13 +747,21 @@ if baseclasses_loaded:
                     autoworld = multiworld.worlds[player]
                     locworld = multiworld.worlds[loc.player]
                     if players:
+<<<<<<< Updated upstream
                         if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky"):
                             autoworld.hint_data["kong"].append(loc)
                         if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5"):
                             autoworld.hint_data["key"].append(loc)
                         if loc.player in players and loc.name in deep_location_names:
+=======
+                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky") and hasattr(locworld, 'hint_data'):
+                            locworld.hint_data["kong"].append(loc)
+                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5") and hasattr(locworld, 'hint_data'):
+                            locworld.hint_data["key"].append(loc)
+                        if loc.player in players and loc.name in deep_location_names and hasattr(locworld, 'hint_data'):
+>>>>>>> Stashed changes
                             locworld.hint_data["deep"].append(loc)
-                        if player in players and autoworld.isMajorItem(loc.item) and (not autoworld.spoiler.settings.key_8_helm or loc.name != "The End of Helm"):
+                        if player in players and hasattr(autoworld, 'isMajorItem') and hasattr(autoworld, 'hint_data') and autoworld.isMajorItem(loc.item) and (not autoworld.spoiler.settings.key_8_helm or loc.name != "The End of Helm"):
                             autoworld.hint_data["major"].append(loc)
                             # Skip item at location and see if game is still beatable
                             state = CollectionState(multiworld)
@@ -762,7 +769,7 @@ if baseclasses_loaded:
                             if not multiworld.can_beat_game(state):
                                 autoworld.hint_data["woth"].append(loc)
                     # Also gather any information on microhinted items
-                    if player in players and loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]:
+                    if player in players and hasattr(autoworld, 'spoiler') and hasattr(autoworld, 'foreignMicroHints') and loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
@@ -842,7 +849,7 @@ if baseclasses_loaded:
                 "StartingKeyList": ", ".join([key.name for key in self.spoiler.settings.starting_key_list]),
                 "HardShooting": self.options.hard_shooting.value,
                 "Junk": self.junked_locations,
-                "HintsInPool": self.options.secret_setting_lol.value,
+                "HintsInPool": self.options.hints_in_item_pool.value,
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):

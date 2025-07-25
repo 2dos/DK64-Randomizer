@@ -356,10 +356,9 @@ class RemoveBarriers(OptionList):
 
 
 class HintItemRandomization(Toggle):
-    """???????."""
+    """Determines if Hints are added into the Item Pool."""
 
     display_name = "Randomize Hint"
-    default = True
 
 
 class RandomizeBlockers(Toggle):
@@ -475,7 +474,6 @@ class DK64Options(PerGameCommonOptions):
     level6_blocker: Level6Blocker
     level7_blocker: Level7Blocker
     level8_blocker: Level8Blocker
-    # secret_setting_lol: ChaosBLockers
     open_lobbies: OpenLobbies
     switchsanity: SwitchSanity
     climbing_shuffle: ClimbingShuffle
@@ -487,7 +485,7 @@ class DK64Options(PerGameCommonOptions):
     hard_mode: HardModeEnabled
     hard_mode_selected: HardModeSelected
     mirror_mode: MirrorMode
-    secret_setting_lol: HintItemRandomization
+    hints_in_item_pool: HintItemRandomization
     trap_fill_percentage: TrapFillPercentage
     bubble_trap_weight: BubbleTrapWeight
     reverse_trap_weight: ReverseTrapWeight
