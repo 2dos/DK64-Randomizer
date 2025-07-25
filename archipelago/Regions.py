@@ -174,6 +174,12 @@ def create_region(
             if location_obj.type == Types.Shop and location_obj.kong == Kongs.any:
                 continue
             loc_id = all_locations.get(location_obj.name, 0)
+            # Universal Tracker: don't add this location if it has no item
+            if hasattr(multiworld, "generation_is_fake"):
+                if hasattr(multiworld, "re_gen_passthrough"):
+                    if "Donkey Kong 64" in multiworld.re_gen_passthrough:
+                        if location_obj.name in multiworld.re_gen_passthrough["Donkey Kong 64"]["JunkedLocations"]:
+                            continue
             location = DK64Location(player, location_obj.name, loc_id, new_region)
             # If the location is not shuffled, lock in the default item on the location
             if location_logic.id != Locations.BananaHoard and location_obj.type not in logic_holder.settings.shuffled_location_types and location_obj.default is not None:
