@@ -747,19 +747,11 @@ if baseclasses_loaded:
                     autoworld = multiworld.worlds[player]
                     locworld = multiworld.worlds[loc.player]
                     if players:
-<<<<<<< Updated upstream
                         if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky"):
-                            autoworld.hint_data["kong"].append(loc)
-                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5"):
-                            autoworld.hint_data["key"].append(loc)
-                        if loc.player in players and loc.name in deep_location_names:
-=======
-                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky") and hasattr(locworld, 'hint_data'):
                             locworld.hint_data["kong"].append(loc)
-                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5") and hasattr(locworld, 'hint_data'):
+                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5"):
                             locworld.hint_data["key"].append(loc)
-                        if loc.player in players and loc.name in deep_location_names and hasattr(locworld, 'hint_data'):
->>>>>>> Stashed changes
+                        if loc.player in players and loc.name in deep_location_names:
                             locworld.hint_data["deep"].append(loc)
                         if player in players and hasattr(autoworld, 'isMajorItem') and hasattr(autoworld, 'hint_data') and autoworld.isMajorItem(loc.item) and (not autoworld.spoiler.settings.key_8_helm or loc.name != "The End of Helm"):
                             autoworld.hint_data["major"].append(loc)
