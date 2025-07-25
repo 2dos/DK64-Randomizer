@@ -51,7 +51,7 @@ class PJ64Client:
         self.connected_message = False
         try:
             self._connect()
-        except:  # Don't abort creating the client if we can't connect immediately. We can always retry connection.
+        except PJ64Exception:  # Don't abort creating the client if we can't connect immediately. We can always retry connection.
             pass
 
     def _check_client(self):
