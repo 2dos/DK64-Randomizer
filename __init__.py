@@ -747,19 +747,13 @@ if baseclasses_loaded:
                     autoworld = multiworld.worlds[player]
                     locworld = multiworld.worlds[loc.player]
                     if players:
-                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky") and hasattr(locworld, "hint_data"):
+                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky"):
                             autoworld.hint_data["kong"].append(loc)
-                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5") and hasattr(locworld, "hint_data"):
+                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5"):
                             autoworld.hint_data["key"].append(loc)
-                        if loc.player in players and loc.name in deep_location_names and hasattr(locworld, "hint_data"):
+                        if loc.player in players and loc.name in deep_location_names:
                             locworld.hint_data["deep"].append(loc)
-                        if (
-                            player in players
-                            and hasattr(autoworld, "isMajorItem")
-                            and hasattr(autoworld, "hint_data")
-                            and autoworld.isMajorItem(loc.item)
-                            and (not autoworld.spoiler.settings.key_8_helm or loc.name != "The End of Helm")
-                        ):
+                        if player in players and autoworld.isMajorItem(loc.item) and (not autoworld.spoiler.settings.key_8_helm or loc.name != "The End of Helm"):
                             autoworld.hint_data["major"].append(loc)
                             # Skip item at location and see if game is still beatable
                             state = CollectionState(multiworld)
@@ -767,14 +761,7 @@ if baseclasses_loaded:
                             if not multiworld.can_beat_game(state):
                                 autoworld.hint_data["woth"].append(loc)
                     # Also gather any information on microhinted items
-                    if player in players and hasattr(autoworld, 'spoiler') and hasattr(autoworld, 'foreignMicroHints') and loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]:
-                    if (
-                        player in players
-                        and hasattr(autoworld, "spoiler")
-                        and hasattr(autoworld, "foreignMicroHints")
-                        and loc.item.name in microHintItemNames
-                        and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]
-                    ):
+                    if player in players and loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
