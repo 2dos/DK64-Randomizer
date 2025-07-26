@@ -202,6 +202,14 @@ file_dict = [
     File(name="Candy Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=609, source_file="candy_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Snide Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=610, source_file="snide_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="AP Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x291, source_file="archi_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Rambi (OM2) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A6, source_file="rambi_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Enguarde (OM2) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A8, source_file="enguarde_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Dillo (OM2) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A9, source_file="dillo_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Dogadon (OM2) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2AA, source_file="dogadon_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Mad Jack (OM2) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2AF, source_file="jack_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Pufftoss (OM2) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2B0, source_file="pufftoss_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Kut Out (OM2) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2B1, source_file="kko_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="K Rool (OM2) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2B2, source_file="krool_om2.bin", do_not_delete_source=True, do_not_extract=True),
     # File(name="K. Rool (Cutscenes) Model", pointer_table_index=TableNames.ActorGeometry, file_index=0x48, source_file="k_rool_cutscenes_om1.bin", do_not_delete_source=True),
     File(
         name="Snow Texture",
@@ -1503,6 +1511,8 @@ shrinkModel(False, "", 0, 1 / 0.15, "shrink_diddy.bin", True)  # Diddy
 shrinkModel(True, "lanky_base.bin", 0, 1 / 0.15, "shrink_lanky.bin", True)  # Lanky
 shrinkModel(True, "tiny_base.bin", 0, 1 / 0.15, "shrink_tiny.bin", True)  # Tiny
 shrinkModel(False, "", 0xB, 1 / 0.15, "shrink_chunky.bin", True)  # Chunky
+shrinkModel(False, "", 0x13, 1 / 0.15, "shrink_rambi.bin", True)  # Rambi
+shrinkModel(False, "", 0x17, 1 / 0.15, "shrink_enguarde.bin", True)  # Enguarde
 shrinkModel(True, "fake_item_actor.bin", 0, 0.15, "shrink_ice_trap.bin", False),
 shrinkModel(True, "bean_om1.bin", 0, 1 / 0.15, "shrink_bean.bin", False),
 shrinkModel(True, "fake_bean_om1.bin", 0, 1 / 0.15, "shrink_fake_bean.bin", False),
@@ -1525,6 +1535,19 @@ shrinkModel(True, "hint_item_actor_chunky.bin", 0, 1 / 0.15, "shrink_qmark_chunk
 shrinkModel(True, "archi_om1.bin", 0, 1 / 0.15, "shrink_archi.bin", False)
 FINAL_RACE_HOOP = "shrink_race_hoop.bin"
 shrinkModel(True, "race_hoop_om1.bin", 0, 1 / 0.15, FINAL_RACE_HOOP, False)
+boss_shrinking = [1, 1, 1, 1, 1, 1]
+shrinkModel(False, "", 0x37, boss_shrinking[0], "shrink_dillo.bin", True)
+shrinkModel(False, "", 0x3B, boss_shrinking[1], "shrink_dogadon.bin", True)
+shrinkModel(False, "", 0x24, boss_shrinking[2], "shrink_jack.bin", True)
+shrinkModel(False, "", 0x3A, boss_shrinking[3], "shrink_puff.bin", True)
+shrinkModel(False, "", 0xDC, boss_shrinking[4], "shrink_kko.bin", True)
+shrinkModel(False, "", 0x48, boss_shrinking[5], "shrink_krool.bin", True)
+shrinkModel(False, "", 0x37, boss_shrinking[0] * 0.15, "fairy_dillo.bin", True)
+shrinkModel(False, "", 0x3B, boss_shrinking[1] * 0.15, "fairy_dogadon.bin", True)
+shrinkModel(False, "", 0x24, boss_shrinking[2] * 0.15, "fairy_jack.bin", True)
+shrinkModel(False, "", 0x3A, boss_shrinking[3] * 0.15, "fairy_puff.bin", True)
+shrinkModel(False, "", 0xDC, boss_shrinking[4] * 0.15, "fairy_kko.bin", True)
+shrinkModel(False, "", 0x48, boss_shrinking[5] * 0.15, "fairy_krool.bin", True)
 
 # Change collision point
 RACE_HOOP_Y_OFFSET = 0
@@ -1615,7 +1638,20 @@ model_changes = [
     ModelChange(0x127, "shrink_fake_key.bin"),
     ModelChange(0x128, "fake_key_om1.bin"),
     ModelChange(0x129, "disco_donkey.bin"),
-    ModelChange(0x12A, FINAL_RACE_HOOP),
+    ModelChange(0x12A, "shrink_rambi.bin"),
+    ModelChange(0x12B, "shrink_enguarde.bin"),
+    ModelChange(0x12C, "shrink_dillo.bin"),
+    ModelChange(0x12D, "shrink_dogadon.bin"),
+    ModelChange(0x12E, "shrink_jack.bin"),
+    ModelChange(0x12F, "shrink_puff.bin"),
+    ModelChange(0x130, "shrink_kko.bin"),
+    ModelChange(0x131, "shrink_krool.bin"),
+    ModelChange(0x132, "fairy_dillo.bin"),
+    ModelChange(0x133, "fairy_dogadon.bin"),
+    ModelChange(0x134, "fairy_jack.bin"),
+    ModelChange(0x135, "fairy_puff.bin"),
+    ModelChange(0x136, "fairy_kko.bin"),
+    ModelChange(0x137, "fairy_krool.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 

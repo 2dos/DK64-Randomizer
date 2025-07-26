@@ -533,6 +533,8 @@ def getItemNumberString(count: int, item_type: Types) -> str:
         Types.Funky: "Funky",
         Types.Candy: "Candy",
         Types.Snide: "Snide",
+        Types.BuddySoul: "Animal Buddy Soul",
+        Types.BossSoul: "Boss Soul",
         Types.IslesMedal: "Medal",
         Types.ProgressiveHint: "Hint",
         Types.ArchipelagoItem: "Archipelago Item",

@@ -32,6 +32,7 @@ FileInfoSizes = [
     16,  # Junk Items
     16,  # Race Coins
     8,  # Special Moves
+    8,  # Souls
     16,  # AP Item Count
     22,  # IGT Japes
     22,  # IGT Aztec

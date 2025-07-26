@@ -271,6 +271,14 @@ typedef enum item_purchase_text {
 	/* 0x05C */ ITEMTEXT_SNIDEITEM,
 	/* 0x05D */ ITEMTEXT_HINTITEM,
 	/* 0x05E */ ITEMTEXT_CLIMBING,
+	/* 0x05F */ ITEMTEXT_RAMBI,
+	/* 0x060 */ ITEMTEXT_ENGUARDE,
+	/* 0x061 */ ITEMTEXT_DILLO,
+	/* 0x062 */ ITEMTEXT_DOGADON,
+	/* 0x063 */ ITEMTEXT_MADJACK,
+	/* 0x064 */ ITEMTEXT_PUFFTOSS,
+	/* 0x065 */ ITEMTEXT_KKO,
+	/* 0x066 */ ITEMTEXT_KROOL,
 } item_purchase_text;
 
 typedef enum pausescreenlist {
@@ -583,6 +591,7 @@ typedef enum file_data_indexes {
     DATA_JUNKITEMS,
 	DATA_RACECOINS,
     DATA_SPECIALMOVES,
+	DATA_SOULS,
 	DATA_APCOUNTER,
 	DATA_IGT_JAPES,
 	DATA_IGT_AZTEC,
@@ -985,6 +994,7 @@ typedef enum requirement_item {
 	/* 0x014 */ REQITEM_SHOPKEEPER,
 	/* 0x015 */ REQITEM_AP,
 	/* 0x016 */ REQITEM_RACECOIN,
+	/* 0x017 */ REQITEM_SOUL,
 } requirement_item;
 
 typedef enum item_ids { 
@@ -1059,6 +1069,14 @@ typedef enum enum_bonus_skin {
     /* 0x018 */ SKIN_AP,
     /* 0x019 */ SKIN_FAKE_BEAN,
     /* 0x01A */ SKIN_FAKE_KEY,
+	/* 0x01B */ SKIN_RAMBI,
+	/* 0x01C */ SKIN_ENGUARDE,
+	/* 0x01D */ SKIN_DILLO,
+	/* 0x01E */ SKIN_DOGADON,
+	/* 0x01F */ SKIN_JACK,
+	/* 0x020 */ SKIN_PUFFTOSS,
+	/* 0x021 */ SKIN_KKO,
+	/* 0x022 */ SKIN_KROOL,
     /* ----- */ SKIN_TERMINATOR,
 } enum_bonus_skin;
 

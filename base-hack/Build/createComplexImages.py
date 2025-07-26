@@ -524,6 +524,24 @@ rain_im_2.save(f"{hash_dir}rainbow_2.png")  # Rainbow Side
 
 Image.open(f"{hash_dir}fairy.png").resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}fairy44.png")  # Fairy
 
+enguarde_images = [Image.open(f"{hash_dir}enguarde_{x}.png") for x in range(7)]
+order = [
+    (0, 2),
+    (1, 2),
+    (2, 2),
+    (1, 1),
+    (2, 1),
+    (1, 0),
+    (2, 0),
+]
+enguarde_big_img = Image.new(mode="RGBA", size=(96, 96))
+for x in range(7):
+    xc = order[x][0] * 32
+    yc = order[x][1] * 32
+    enguarde_big_img.paste(enguarde_images[x], (xc, yc), enguarde_images[x])
+enguarde_big_img = enguarde_big_img.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+enguarde_big_img.save(f"{disp_dir}enguarde.png")
+
 # Barrel Skins
 barrel_skin = Image.open(f"{hash_dir}bonus_skin.png")
 barrel_top = barrel_skin.crop((14, 0, 15, 32))
@@ -533,6 +551,8 @@ for x in range(16):
     if x < 8:
         barrel_skin.paste(barrel_bottom, (x, 32), barrel_bottom)
 barrel_skin_0 = barrel_skin.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+
+
 
 skins = {
     "gb": ("gb", None, "displays"),
@@ -562,6 +582,14 @@ skins = {
     "ap": ("ap_logo", None, "displays"),
     "fakebean": ("fakebean", None, "displays"),
     "fakekey": ("fakekey", None, "displays"),
+    "rambi": ("rambi", None, "displays"),
+    "enguarde": ("enguarde", None, "displays"),
+    "dillo": ("head_dillo", None, "displays"),
+    "dogadon": ("head_dog", None, "displays"),
+    "jack": ("head_mj", None, "displays"),
+    "pufftoss": ("head_pufftoss", None, "displays"),
+    "kko": ("head_kko", None, "displays"),
+    "krool": ("k_rool_head_left", "k_rool_head_right", "hash"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32

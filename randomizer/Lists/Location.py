@@ -75,7 +75,7 @@ class Location:
         elif self.type == Types.Hint:
             level_index = int(self.level)
             self.map_id_list = [MapIDCombo(0, -1, 0x384 + self.kong + (5 * level_index), self.kong)]
-        elif self.type in (Types.Banana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.BoulderItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
+        elif self.type in (Types.Banana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.BoulderItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide, Types.BossSoul, Types.BuddySoul):
             if data is None:
                 self.map_id_list = []
             else:
@@ -196,6 +196,15 @@ LocationListOriginal = {
     Locations.ShopOwner_Location01: Location(Levels.DKIsles, "Pre-Given Shop (1)", Items.Funky, Types.Funky, Kongs.any, [MapIDCombo(0, -1, 0x3C3, Kongs.any)]),
     Locations.ShopOwner_Location02: Location(Levels.DKIsles, "Pre-Given Shop (2)", Items.Candy, Types.Candy, Kongs.any, [MapIDCombo(0, -1, 0x3C4, Kongs.any)]),
     Locations.ShopOwner_Location03: Location(Levels.DKIsles, "Pre-Given Shop (3)", Items.Snide, Types.Snide, Kongs.any, [MapIDCombo(0, -1, 0x3C5, Kongs.any)]),
+    # Buddy & Boss Souls (Dummy Locations)
+    Locations.RambiSoul: Location(Levels.DKIsles, "Pre-Given Buddy Soul (0)", Items.RambiSoul, Types.BuddySoul, Kongs.any, [MapIDCombo(0, -1, -1, Kongs.any)]),
+    Locations.EnguardeSoul: Location(Levels.DKIsles, "Pre-Given Buddy Soul (1)", Items.EnguardeSoul, Types.BuddySoul, Kongs.any, [MapIDCombo(0, -1, -1, Kongs.any)]),
+    Locations.DilloSoul: Location(Levels.DKIsles, "Pre-Given Boss Soul (0)", Items.DilloSoul, Types.BossSoul, Kongs.any, [MapIDCombo(0, -1, -1, Kongs.any)]),
+    Locations.DogadonSoul: Location(Levels.DKIsles, "Pre-Given Boss Soul (1)", Items.DogadonSoul, Types.BossSoul, Kongs.any, [MapIDCombo(0, -1, -1, Kongs.any)]),
+    Locations.MadJackSoul: Location(Levels.DKIsles, "Pre-Given Boss Soul (2)", Items.MadJackSoul, Types.BossSoul, Kongs.any, [MapIDCombo(0, -1, -1, Kongs.any)]),
+    Locations.PufftossSoul: Location(Levels.DKIsles, "Pre-Given Boss Soul (3)", Items.PufftossSoul, Types.BossSoul, Kongs.any, [MapIDCombo(0, -1, -1, Kongs.any)]),
+    Locations.KutOutSoul: Location(Levels.DKIsles, "Pre-Given Boss Soul (4)", Items.KutOutSoul, Types.BossSoul, Kongs.any, [MapIDCombo(0, -1, -1, Kongs.any)]),
+    Locations.KRoolSoul: Location(Levels.DKIsles, "Pre-Given Boss Soul (5)", Items.KRoolSoul, Types.BossSoul, Kongs.any, [MapIDCombo(0, -1, -1, Kongs.any)]),
     # DK Isles locations
     Locations.IslesDonkeyMedal: Location(Levels.DKIsles, "Isles Donkey Medal", Items.BananaMedal, Types.IslesMedal, Kongs.donkey),
     Locations.IslesDiddyMedal: Location(Levels.DKIsles, "Isles Diddy Medal", Items.BananaMedal, Types.IslesMedal, Kongs.diddy),

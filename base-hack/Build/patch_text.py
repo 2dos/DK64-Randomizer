@@ -621,6 +621,14 @@ move_names = [
     MoveName("Snide", MoveTypes.flag),  # 92
     MoveName("Hint", MoveTypes.flag),  # 93
     MoveName("Climbing", MoveTypes.flag),  # 94
+    MoveName("Rambi", MoveTypes.flag),  # 95
+    MoveName("Enguarde", MoveTypes.flag),  # 96
+    MoveName("Army Dillo", MoveTypes.flag),  # 97
+    MoveName("Dogadon", MoveTypes.flag),  # 98
+    MoveName("Mad Jack", MoveTypes.flag),  # 99
+    MoveName("Pufftoss", MoveTypes.flag),  # 100
+    MoveName("King Kut Out", MoveTypes.flag),  # 101
+    MoveName("King K. Rool", MoveTypes.flag),  # 102
 ]
 
 move_names_arr = []
@@ -1046,6 +1054,7 @@ wrinkly_item_text = [
     "Ooooo... Here is a shopkeeper for you, ~. Trade wisely, and do not let those sneaky prices fool you!",  # REQITEM_SHOPKEEPER,
     "Ooooo... This item feels... out of place, ~. Are you sure it belongs in our jungle?",  # REQITEM_AP,
     YOU_SHOULD_NOT_SEE_THIS,  # REQITEM_RACECOIN,
+    "Ooooo... Hmm, what is this? It looks like me, but different. Well, ~. use this new soul wisely",  # REQITEM_SOUL,
 ]
 
 vanilla_track_names = [

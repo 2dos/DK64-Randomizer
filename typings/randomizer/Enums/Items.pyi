@@ -198,3 +198,11 @@ class Items(IntEnum):
     IceTrapDisableCU = 195
     IceTrapDisableCUBean = 196
     IceTrapDisableCUKey = 197
+    RambiSoul = 198
+    EnguardeSoul = 199
+    DilloSoul = 200
+    DogadonSoul = 201
+    MadJackSoul = 202
+    PufftossSoul = 203
+    KutOutSoul = 204
+    KRoolSoul = 205

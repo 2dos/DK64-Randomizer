@@ -1098,3 +1098,11 @@ class Locations(IntEnum):
     HoldableVaseColon = 1095
     HoldableVaseTriangle = 1096
     HoldableVasePlus = 1097
+    RambiSoul = 1098
+    EnguardeSoul = 1099
+    DilloSoul = 1100
+    DogadonSoul = 1101
+    MadJackSoul = 1102
+    PufftossSoul = 1103
+    KutOutSoul = 1104
+    KRoolSoul = 1105

@@ -156,6 +156,10 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             hh_item = HHITEM_MOVE;
             display_text = 1;
             break;
+        case REQITEM_SOUL:
+            *(unsigned char*)(&current_item_data.souls) = *(unsigned char*)(&current_item_data.souls) | (0x80 >> kong);
+            display_text = 1;
+            break;
     }
     SpeedUpMusicInner();
     if (config.apply_helm_hurry) {
@@ -359,6 +363,7 @@ static unsigned char FileInfoData[] = {
     16, // Junk Items
     16, // Race Coins
     8, // Special Moves
+    8, // Souls
     16, // AP Item Count
     22, // IGT Japes
     22, // IGT Aztec
@@ -416,6 +421,7 @@ void readItemsFromFile(void) {
     current_item_data.ice_traps = ReadFile(DATA_ICETRAPS, 0, 0, FileIndex);
     current_item_data.junk_items = ReadFile(DATA_JUNKITEMS, 0, 0, FileIndex);
     current_item_data.race_coins = ReadFile(DATA_RACECOINS, 0, 0, FileIndex);
+    *(unsigned char*)(&current_item_data.souls) = ReadFile(DATA_SOULS, 0, 0, FileIndex);
     *(unsigned char*)(&current_item_data.flag_moves) = ReadFile(DATA_SPECIALMOVES, 0, 0, FileIndex);
     for (int i = 0; i < STAT_TERMINATOR; i++) {
         GameStats[i] = ReadFile(DATA_STAT_TAG + i, 0, 0, FileIndex);
@@ -438,6 +444,7 @@ void saveItemsToFile(void) {
     SaveToFile(DATA_ICETRAPS, 0, 0, FileIndex, current_item_data.ice_traps);
     SaveToFile(DATA_JUNKITEMS, 0, 0, FileIndex, current_item_data.junk_items);
     SaveToFile(DATA_RACECOINS, 0, 0, FileIndex, current_item_data.race_coins);
+    SaveToFile(DATA_SOULS, 0, 0, FileIndex, *(unsigned char*)(&current_item_data.souls));
     SaveToFile(DATA_SPECIALMOVES, 0, 0, FileIndex, *(unsigned char*)(&current_item_data.flag_moves));
     for (int i = 0; i < STAT_TERMINATOR; i++) {
         SaveToFile(DATA_STAT_TAG + i, 0, 0, FileIndex, GameStats[i]);

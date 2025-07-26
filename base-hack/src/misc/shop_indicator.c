@@ -98,6 +98,7 @@ static unsigned char tied_counter[] = {
 	COUNTER_HINT, // REQITEM_HINT
 	COUNTER_NO_ITEM, // REQITEM_SHOPKEEPER
 	COUNTER_AP, // REQITEM_AP
+	COUNTER_NO_ITEM, // REQITEM_SOUL
 };
 
 int getCounterItem(vendors shop_index, int kong, int level) {

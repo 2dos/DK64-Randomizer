@@ -309,7 +309,7 @@ def GetAccessibleLocations(
                         sphere.locations = [locationId]
                         break
                     # The starting shop owner locations are not eligible for the playthrough
-                    if location.type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
+                    if location.type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.BossSoul, Types.BuddySoul):
                         sphere.locations.append(locationId)
                 # If we're looking for one item and we find it, we're done
                 elif searchType == SearchMode.CheckSpecificItemReachable and location.item == targetItemId:
@@ -1008,6 +1008,10 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
         majorItems.extend(ItemPool.CandyItems())
     if Types.Snide in spoiler.settings.shuffled_location_types:
         majorItems.extend(ItemPool.SnideItems())
+    if Types.BuddySoul in spoiler.settings.shuffled_location_types:
+        majorItems.extend(ItemPool.BuddySoulItems())
+    if Types.BossSoul in spoiler.settings.shuffled_location_types:
+        majorItems.extend(ItemPool.BossSoulItems())
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         majorItems.extend(ItemPool.TrainingBarrelAbilities())
     if spoiler.settings.climbing_status != ClimbingStatus.normal:
@@ -2056,6 +2060,12 @@ def Fill(spoiler: Spoiler) -> None:
         if Types.Snide in spoiler.settings.shuffled_location_types:
             placed_types.append(Types.Snide)
             bigListOfItemsToPlace.extend(ItemPool.SnideItems())
+        if Types.BuddySoul in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.BuddySoul)
+            bigListOfItemsToPlace.extend(ItemPool.BuddySoulItems())
+        if Types.BossSoul in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.BossSoul)
+            bigListOfItemsToPlace.extend(ItemPool.BossSoulItems())
         for item in preplaced_items:
             if item in bigListOfItemsToPlace:
                 bigListOfItemsToPlace.remove(item)
@@ -2478,7 +2488,7 @@ def FillTrainingMoves(spoiler: Spoiler, preplacedMoves: List[Items]):
         # We can expect that all locations in this region are starting move locations, Training Barrels, or starting shopkeeper locations
         for locationLogic in spoiler.RegionList[Regions.GameStart].locations:
             location = spoiler.LocationList[locationLogic.id]
-            if location.item is None and location.type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):  # Don't put moves in shopkeeper locations!
+            if location.item is None and location.type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.BossSoul, Types.BuddySoul):  # Don't put moves in shopkeeper locations!
                 placedMove = movesToPlace.pop()
                 location.inaccessible = False
                 location.PlaceItem(spoiler, placedMove)
@@ -2821,12 +2831,14 @@ def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types], placedItems: L
     # Place Training Moves
     placedMoves.extend(FillTrainingMoves(spoiler, placedItems))
 
-    # Fill in Shop Owners
+    # Fill in Shop Owners & Souls
     shop_owner_items = {
         Types.Cranky: ItemPool.CrankyItems(),
         Types.Funky: ItemPool.FunkyItems(),
         Types.Candy: ItemPool.CandyItems(),
         Types.Snide: ItemPool.SnideItems(),
+        Types.BuddySoul: ItemPool.BuddySoulItems(),
+        Types.BossSoul: ItemPool.BossSoulItems(),
     }
     for item_type in shop_owner_items:
         if item_type in spoiler.settings.shuffled_location_types:

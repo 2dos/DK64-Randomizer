@@ -146,6 +146,14 @@ barrel_skins = (
     "ap",
     "fakebean",
     "fakekey",
+    "rambi",
+    "enguarde",
+    "dillo",
+    "dogadon",
+    "jack",
+    "pufftoss",
+    "kko",
+    "krool",
 )
 
 

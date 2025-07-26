@@ -155,7 +155,7 @@ def portalModel_Actor(vtx_file, dl_file, model_name, base):
         os.remove(temp_file)
 
 
-def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, base_file_index: int, vtx_bottom_is_zero: bool, scale: float):
+def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, base_file_index: int, vtx_bottom_is_zero: bool, scale: float, y_offset: int = 0):
     """Port Actor to Model Two."""
     if input_file == "":
         # Use Actor Index
@@ -252,6 +252,8 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
                     val += bone_offsets[bone_local_index][c]
                     if vtx_bottom_is_zero and c == 1:
                         val -= bottom
+                    if c == 1:
+                        val += y_offset
                     val *= scale
                     if val < 0:
                         val += 65536
@@ -624,6 +626,16 @@ def loadNewModels():
     portalModel_M2(f"{MODEL_DIRECTORY}coin.vtx", f"{MODEL_DIRECTORY}rainbow_coin.dl", f"{MODEL_DIRECTORY}coin_overlay.dl", "rainbow_coin", 0x90)
     # Fairy
     portActorToModelTwo(0x3C, "", "fairy", 0x90, True, 0.5)
+    # Buddy & Boss Souls
+    boss_shrinking = [0.25, 0.25, 0.25, 0.25, 0.25, 0.5]
+    portActorToModelTwo(0x13, "", "rambi", 0x90, True, 0.5, -40)
+    portActorToModelTwo(0x17, "", "enguarde", 0x90, True, 0.5)
+    portActorToModelTwo(0x37, "", "dillo", 0x90, True, boss_shrinking[0] * 0.5)
+    portActorToModelTwo(0x3B, "", "dogadon", 0x90, True, boss_shrinking[1] * 0.5)
+    portActorToModelTwo(0x24, "", "jack", 0x90, True, boss_shrinking[2] * 0.5)
+    portActorToModelTwo(0x3A, "", "pufftoss", 0x90, True, boss_shrinking[3] * 0.5)
+    portActorToModelTwo(0xDC, "", "kko", 0x90, True, boss_shrinking[4] * 0.5, -120)
+    portActorToModelTwo(0x48, "", "krool", 0x90, True, boss_shrinking[5] * 0.5)
     # Melon
     # portalModel_M2(f"{MODEL_DIRECTORY}melon.vtx", f"{MODEL_DIRECTORY}melon.dl", 0, "melon", 0x90)
     createSpriteModelTwo(getBonusSkinOffset(ExtraTextures.MelonSurface), 0.6, "melon")

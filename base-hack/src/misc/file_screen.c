@@ -767,6 +767,7 @@ void startFile(void) {
 		}
 		pre_turn_keys();
 		Character = Rando.starting_kong;
+		*(unsigned char*)(&ItemInventory->souls) = *(unsigned char*)(&ItemInventory->souls) | Rando.soul_flags; 
 		setFlag(FLAG_HELM_HURRY_DISABLED, 0, FLAGTYPE_PERMANENT);
 		if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
 			setPermFlag(FLAG_ARCADE_LEVER);

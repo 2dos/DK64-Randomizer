@@ -237,6 +237,8 @@ class Spoiler:
             Types.Funky: "Shop Owners",
             Types.Candy: "Shop Owners",
             Types.Snide: "Shop Owners",
+            Types.BossSoul: "Boss Souls",
+            Types.BuddySoul: "Animal Buddy Souls",
             Types.Hint: "Hints",
         }
         if item_type in type_dict:
@@ -555,6 +557,8 @@ class Spoiler:
             "Hints": {},
             "Enemy Drops": {},
             "Shop Owners": {},
+            "Boss Souls": {},
+            "Animal Buddy Souls": {},
             "Empty": {},
             "Unknown": {},
         }
@@ -587,6 +591,8 @@ class Spoiler:
                 Types.Candy,
                 Types.Funky,
                 Types.Snide,
+                Types.BuddySoul,
+                Types.BossSoul,
             ) and location.item in (None, Items.NoItem):
                 continue
             # Separate Kong locations
@@ -624,6 +630,8 @@ class Spoiler:
                     Types.Funky,
                     Types.Candy,
                     Types.Snide,
+                    Types.BuddySoul,
+                    Types.BossSoul,
                 ):
                     level = "DK Isles"
                 elif "Japes" in location.name:

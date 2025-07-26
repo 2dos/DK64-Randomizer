@@ -290,6 +290,10 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
         shopkeeper_lst = [Items.Cranky, Items.Funky, Items.Candy, Items.Snide]
         shopkeeper_index = getItemPatchingFromList(shopkeeper_lst, item, "Shopkeeper")
         return ItemPatchingInfo(20, 0, shopkeeper_index)
+    elif item_type in (Types.BossSoul, Types.BuddySoul):
+        soul_lst = [Items.RambiSoul, Items.EnguardeSoul, Items.DilloSoul, Items.DogadonSoul, Items.MadJackSoul, Items.PufftossSoul, Items.KutOutSoul, Items.KRoolSoul]
+        soul_index = getItemPatchingFromList(soul_lst, item, "Soul")
+        return ItemPatchingInfo(23, 0, soul_index)
     raise Exception("Invalid item for patching")
 
 
@@ -524,6 +528,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
         offset_dict = populateOverlayOffsets(ROM_COPY)
         pushItemMicrohints(spoiler)
         pregiven_shop_owners = None
+        pregiven_souls = None
         # Place first move, if fast start is off
         if not FAST_START:
             placed_item = spoiler.first_move_item
@@ -829,6 +834,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                                     Types.Funky,
                                     Types.Shockwave,
                                     Types.Shop,
+                                    Types.BossSoul,
                                     Types.TrainingBarrel,
                                 )
                                 addr = getItemTableWriteAddress(ROM_COPY, Types.Kong, idx, offset_dict)
@@ -897,6 +903,13 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                     pregiven_shop_owners.append(item.new_item)
                 elif item.new_item != Items.NoItem and item.new_item is not None:
                     raise Exception(f"Invalid item {item.new_subitem.name} placed in shopkeeper slot. This shouldn't happen.")
+            if item.old_item in (Types.BossSoul, Types.BuddySoul):
+                if pregiven_souls is None:
+                    pregiven_souls = []
+                if item.new_item in (Types.BossSoul, Types.BuddySoul):
+                    pregiven_souls.append(item.new_subitem)
+                elif item.new_item != Items.NoItem and item.new_item is not None:
+                    raise Exception(f"Invalid item {item.new_subitem.name} placed in buddy/boss slot. This shouldn't happen.")
         # Patch pre-given shops
         if pregiven_shop_owners is not None:  # Shop owners in pool
             data = 0
@@ -912,6 +925,28 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
             for x in pregiven_shop_owners:
                 data |= or_data[x]
             ROM_COPY.seek(sav + 0x1EC)
+            ROM_COPY.writeMultipleBytes(data, 1)
+        if pregiven_souls is not None:  # Souls in pool
+            data = 0
+            or_data = {
+                Items.RambiSoul: 0x80,
+                Items.EnguardeSoul: 0x40,
+                Items.DilloSoul: 0x20,
+                Items.DogadonSoul: 0x10,
+                Items.MadJackSoul: 0x08,
+                Items.PufftossSoul: 0x04,
+                Items.KutOutSoul: 0x02,
+                Items.KRoolSoul: 0x01,
+            }
+            for x in or_data:
+                selected_type = Types.BossSoul
+                if x in (Items.RambiSoul, Items.EnguardeSoul):
+                    selected_type = Types.BuddySoul
+                if selected_type not in spoiler.settings.shuffled_location_types:
+                    data |= or_data[x]
+            for x in pregiven_souls:
+                data |= or_data[x]
+            ROM_COPY.seek(sav + 0x1E7)
             ROM_COPY.writeMultipleBytes(data, 1)
         # Text stuff
         if spoiler.settings.item_reward_previews:

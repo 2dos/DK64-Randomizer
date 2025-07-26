@@ -282,6 +282,22 @@
             "is_check": false
         },
         {
+            "name": "Animal Buddy Souls",
+            "value": "buddysouls",
+            "tooltip": "Animal Buddy Soul Items are added into the pool.",
+            "check_count": 0,
+            "item_count": 2,
+            "is_check": false
+        },
+        {
+            "name": "Boss Souls",
+            "value": "bosssouls",
+            "tooltip": "Boss Soul Items are added into the pool.",
+            "check_count": 0,
+            "item_count": 6,
+            "is_check": false
+        },
+        {
             "name": "Hints",
             "value": "hint",
             "tooltip": "Hints are in the pool.",

@@ -43,6 +43,8 @@ class Types(IntEnum):
     FillerMedal = 40
     HelmMedal = 41
     HelmKey = 42
+    BuddySoul = 43
+    BossSoul = 44
 
 class BarrierItems(IntEnum):
     Nothing = 0

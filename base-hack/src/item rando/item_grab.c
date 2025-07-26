@@ -42,6 +42,7 @@ static const item_info item_detection_data[] = {
 	{.song = SONG_SILENCE, .sprite = 0xAF, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_HINT
 	{.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_KONG}, // REQITEM_SHOPKEEPER
     {.song = SONG_BLUEPRINTGET, .sprite = 0x92, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_AP
+    {.song = SONG_SILENCE, .sprite = 0x2B, .helm_hurry_item = HHITEM_NOTHING}, // REQITEM_SOUL (Placeholder)
 };
 
 static const unsigned char move_sprites[] = {0x94, 0x96, 0x93, 0x38, 0x3A}; // Cranky, Funky, Candy, Camera, Shockwave
@@ -358,6 +359,24 @@ void getItem(int object_type) {
         case 0x1F6:
             // Potion
             playSong(SONG_GUNGET, 1.0f);
+            if (!canDanceSkip()) {
+                setAction(0x29, 0, 0);
+            }
+            break;
+        case 0x2A6:
+        case 0x2A8:
+            // Buddy Souls
+            if (!canDanceSkip()) {
+                setAction(0x29, 0, 0);
+            }
+            break;
+        case 0x2A9:
+        case 0x2AA:
+        case 0x2AF:
+        case 0x2B0:
+        case 0x2B1:
+        case 0x2B2:
+            // Boss Souls
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
             }
@@ -844,6 +863,26 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
             // Shopkeepers
             giveItem(REQITEM_SHOPKEEPER, 0, obj_type - 0x25F, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
             break;
+        case 0x2A6:
+        case 0x2A8:
+        case 0x2A9:
+        case 0x2AA:
+        case 0x2AF:
+        case 0x2B0:
+        case 0x2B1:
+        case 0x2B2:
+            {
+                int soul_index = obj_type - 0x2A6;
+                if (soul_index > 0) {
+                    soul_index--;
+                }
+                if (soul_index > 3) {
+                    soul_index -= 4;
+                }
+                giveItem(REQITEM_SOUL, 0, soul_index, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1});
+                break;
+
+            }
         case 0x25D:
         case 0x264:
         case 0x265:

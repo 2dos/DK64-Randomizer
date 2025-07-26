@@ -36,6 +36,17 @@ typedef struct MoveSpecialStruct {
     unsigned char unk7 : 1;
 } MoveSpecialStruct;
 
+typedef struct SoulStruct {
+    unsigned char rambi : 1;
+    unsigned char enguarde : 1;
+    unsigned char dillo : 1;
+    unsigned char dogadon : 1;
+    unsigned char mad_jack : 1;
+    unsigned char pufftoss : 1;
+    unsigned char kut_out : 1;
+    unsigned char k_rool : 1;
+} SoulStruct;
+
 typedef struct CountStruct {
     /* 0x000 */ unsigned char bp_bitfield[5];
     /* 0x005 */ unsigned char hint_bitfield[5];
@@ -51,6 +62,7 @@ typedef struct CountStruct {
     /* 0x014 */ short junk_items;
     /* 0x016 */ short race_coins;
     /* 0x018 */ MoveSpecialStruct flag_moves;
+    /* 0x019 */ SoulStruct souls;
 } CountStruct;
 
 typedef struct MoveSpecialBijectionStruct {

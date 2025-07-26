@@ -227,6 +227,15 @@ class LogicVarHolder:
         self.candyAccess = Types.Candy not in self.settings.shuffled_location_types
         self.snideAccess = Types.Snide not in self.settings.shuffled_location_types
 
+        self.rambi = Types.BuddySoul not in self.settings.shuffled_location_types
+        self.enguarde = Types.BuddySoul not in self.settings.shuffled_location_types
+        self.dillo = Types.BossSoul not in self.settings.shuffled_location_types
+        self.dogadon = Types.BossSoul not in self.settings.shuffled_location_types
+        self.madJack = Types.BossSoul not in self.settings.shuffled_location_types
+        self.pufftoss = Types.BossSoul not in self.settings.shuffled_location_types
+        self.kutOut = Types.BossSoul not in self.settings.shuffled_location_types
+        self.kRool = Types.BossSoul not in self.settings.shuffled_location_types
+
         self.HelmDonkey1 = False
         self.HelmDonkey2 = False
         self.HelmDiddy1 = False

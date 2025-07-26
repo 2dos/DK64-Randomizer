@@ -77,6 +77,14 @@ static const short shop_owner_anims[] = {
     624, // Funky Idle
     626, // Candy Idle
     628, // Snide Idle
+    0x1DF, // Rambi Idle
+    0x316, // Enguarde Idle
+    0x267, // Dillo Idle
+    0x2D5, // Dogadon Idle
+    0x229, // Jack Idle
+    0x217, // Pufftoss Idle
+    0, // KKO Idle
+    0x3E2, // K Rool Idle
 };
 
 void shopOwnerItemCode(void) {
@@ -88,6 +96,10 @@ void shopOwnerItemCode(void) {
         CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF; // Make color blends work
         int current_type = CurrentActorPointer_0->actorType - CUSTOM_ACTORS_START;
         int owner = current_type - NEWACTOR_CRANKYITEM;
+        if (owner > 3) {
+            // Is soul
+            owner = (current_type - NEWACTOR_RAMBISOUL) + 4;
+        }
         playActorAnimation(CurrentActorPointer_0, shop_owner_anims[owner]);
     }
 }

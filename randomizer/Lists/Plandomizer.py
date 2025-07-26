@@ -222,7 +222,7 @@ for locationEnum, locationObj in LocationList.items():
     if locationObj.type in [Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing]:
         continue
     # Do not include the shopkeepers.
-    if locationObj.type in [Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
+    if locationObj.type in [Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.BossSoul, Types.BuddySoul]:
         continue
     # Do not include progressive hints.
     if locationObj.type == Types.ProgressiveHint:

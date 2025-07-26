@@ -83,6 +83,14 @@ class CustomActors(IntEnum):
     IceTrapDisableBKey = auto()
     IceTrapDisableZKey = auto()
     IceTrapDisableCUKey = auto()
+    RambiSoul = auto()
+    EnguardeSoul = auto()
+    DilloSoul = auto()
+    DogadonSoul = auto()
+    MadJackSoul = auto()
+    PufftossSoul = auto()
+    KutOutSoul = auto()
+    KRoolSoul = auto()
 
 
 class GraphicOverlay(IntEnum):
@@ -488,6 +496,34 @@ item_db = {
         overlay=[GraphicOverlay.Hint],
         preview_text="\x04ARCHIPELAGO ITEM\x04",
         seal_preview_text="\x04ANOTHER SCALLYWAG'S BOOTY\x04",
+    ),
+    Types.BossSoul: ItemPlacementData(
+        model_index=[0x133, 0x134, 0x135, 0x136, 0x137, 0x138],
+        model_two_index=[0x2A9, 0x2AA, 0x2AF, 0x2B0, 0x2B1, 0x2B2],
+        actor_index=[
+            CustomActors.DilloSoul,
+            CustomActors.DogadonSoul,
+            CustomActors.MadJackSoul,
+            CustomActors.PufftossSoul,
+            CustomActors.KutOutSoul,
+            CustomActors.KRoolSoul,
+        ],
+        overlay=[GraphicOverlay.Kong],
+        index_getter=lambda item, flag, shared: (Items.DilloSoul, Items.DogadonSoul, Items.MadJackSoul, Items.PufftossSoul, Items.KutOutSoul, Items.KRoolSoul).index(item),
+        preview_text="\x04BOSS SOUL\x04",
+        seal_preview_text="\x04SCURVY-RIDDEN BRUTE\x04",
+    ),
+    Types.BuddySoul: ItemPlacementData(
+        model_index=[0x14, 0x18],
+        model_two_index=[0x2A6, 0x2A8],
+        actor_index=[
+            CustomActors.RambiSoul,
+            CustomActors.EnguardeSoul,
+        ],
+        overlay=[GraphicOverlay.Kong],
+        index_getter=lambda item, flag, shared: (Items.RambiSoul, Items.EnguardeSoul).index(item),
+        preview_text="\x04ANIMAL BUDDY SOUL\x04",
+        seal_preview_text="\x04FURRY RASCAL\x04",
     ),
 }
 

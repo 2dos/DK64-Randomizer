@@ -528,7 +528,9 @@
     "dummyitem_boulderitem": 39,
     "dummyitem_crateitem": 40,
     "trainingmoves": 41,
-    "trainingbarrels": 42
+    "trainingbarrels": 42,
+    "bosssouls": 43,
+    "buddysouls": 44
   },
 
   "ItemRandoFiller": {

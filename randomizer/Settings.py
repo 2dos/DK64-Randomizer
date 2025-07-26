@@ -1340,6 +1340,8 @@ class Settings:
                 ItemRandoListSelected.anthillreward: (Types.Bean, Types.Bean, True),
                 ItemRandoListSelected.crateitem: (Types.CrateItem, Types.CrateItem, True),
                 ItemRandoListSelected.shopowners: (Types.Cranky, Types.Cranky, False),
+                ItemRandoListSelected.buddysouls: (Types.BuddySoul, Types.BuddySoul, False),
+                ItemRandoListSelected.bosssouls: (Types.BossSoul, Types.BossSoul, False),
                 ItemRandoListSelected.hint: (Types.Hint, Types.Hint, False),
                 ItemRandoListSelected.wrinkly: (Types.Hint, Types.Hint, True),
                 ItemRandoListSelected.boulderitem: (Types.BoulderItem, Types.BoulderItem, True),
@@ -2223,6 +2225,16 @@ class Settings:
             spoiler.LocationList[Locations.ShopOwner_Location02].inaccessible = True
         if Types.Snide in self.shuffled_location_types:
             spoiler.LocationList[Locations.ShopOwner_Location03].inaccessible = True
+        if Types.BuddySoul in self.shuffled_location_types:
+            spoiler.LocationList[Locations.RambiSoul].inaccessible = True
+            spoiler.LocationList[Locations.EnguardeSoul].inaccessible = True
+        if Types.BossSoul in self.shuffled_location_types:
+            spoiler.LocationList[Locations.DilloSoul].inaccessible = True
+            spoiler.LocationList[Locations.DogadonSoul].inaccessible = True
+            spoiler.LocationList[Locations.MadJackSoul].inaccessible = True
+            spoiler.LocationList[Locations.PufftossSoul].inaccessible = True
+            spoiler.LocationList[Locations.KutOutSoul].inaccessible = True
+            spoiler.LocationList[Locations.KRoolSoul].inaccessible = True
 
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
@@ -2277,7 +2289,7 @@ class Settings:
             shuffledLocations = [
                 location
                 for location in spoiler.LocationList
-                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide)
+                if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type not in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide, Types.BossSoul, Types.BuddySoul)
             ]
             shuffledLocationsShopOwner = [
                 location
@@ -2365,7 +2377,7 @@ class Settings:
                 self.valid_locations[Types.Medal] = fairyBannedLocations.copy()
             if Types.FillerMedal in self.shuffled_location_types:
                 self.valid_locations[Types.FillerMedal] = fairyBannedLocations.copy()
-            shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky)
+            shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky, Types.BuddySoul, Types.BossSoul)  # TODO: Figure out the kinks with getting buddy & boss souls elsewhere
             for item in shop_owner_items:
                 if item in self.shuffled_location_types:
                     self.valid_locations[item] = shuffledLocationsShopOwner.copy()
@@ -2690,6 +2702,8 @@ class Settings:
             ItemRandoListSelected.enemies: [0, 283],
             ItemRandoListSelected.trainingmoves: [4, 0],
             ItemRandoListSelected.trainingbarrels: [0, 4],
+            ItemRandoListSelected.bosssouls: [0, 0],
+            ItemRandoListSelected.buddysouls: [0, 0],
         }
         if self.smaller_shops:
             item_check_counts[ItemRandoListSelected.shop] = [0, 60]
@@ -2712,6 +2726,14 @@ class Settings:
         if Types.Snide in self.shuffled_location_types:
             item_check_counts[ItemRandoListSelected.shopowners][0] += 1
             if len(self.valid_locations[Types.Snide]) <= 0:
+                return False
+        if Types.BossSoul in self.shuffled_location_types:
+            item_check_counts[ItemRandoListSelected.bosssouls][0] = 6
+            if len(self.valid_locations[Types.BossSoul]) <= 0:
+                return False
+        if Types.BuddySoul in self.shuffled_location_types:
+            item_check_counts[ItemRandoListSelected.buddysouls][0] = 2
+            if len(self.valid_locations[Types.BuddySoul]) <= 0:
                 return False
         for x in range(4):
             item_count = 0

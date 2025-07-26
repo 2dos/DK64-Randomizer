@@ -140,6 +140,14 @@ class CustomActors(IntEnum):
     IceTrapDisableBKey = auto()
     IceTrapDisableZKey = auto()
     IceTrapDisableCUKey = auto()
+    RambiSoul = auto()
+    EnguardeSoul = auto()
+    DilloSoul = auto()
+    DogadonSoul = auto()
+    MadJackSoul = auto()
+    PufftossSoul = auto()
+    KutOutSoul = auto()
+    KRoolSoul = auto()
 
 
 POTIONS = (
@@ -157,11 +165,19 @@ KONGS = (
     CustomActors.KongTiny,
     CustomActors.KongChunky,
 )
-SHOPKEEPERS = (
+SOULS = (
     CustomActors.CrankyItem,
     CustomActors.FunkyItem,
     CustomActors.CandyItem,
     CustomActors.SnideItem,
+    CustomActors.RambiSoul,
+    CustomActors.EnguardeSoul,
+    CustomActors.DilloSoul,
+    CustomActors.DogadonSoul,
+    CustomActors.MadJackSoul,
+    CustomActors.PufftossSoul,
+    CustomActors.KutOutSoul,
+    CustomActors.KRoolSoul,
 )
 TRAPS = (
     CustomActors.IceTrapBubble,
@@ -275,6 +291,14 @@ db = [
     InGameItem(name="Fake Item (Key Dis B)", actor=CustomActors.IceTrapDisableBKey, is_custom=False, model_two=0x2A1, base=base_kong, bounce=True, scale=0.25),
     InGameItem(name="Fake Item (Key Dis Z)", actor=CustomActors.IceTrapDisableZKey, is_custom=False, model_two=0x2A4, base=base_kong, bounce=True, scale=0.25),
     InGameItem(name="Fake Item (Key Dis CU)", actor=CustomActors.IceTrapDisableCUKey, is_custom=False, model_two=0x2A5, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Rambi Soul", actor=CustomActors.RambiSoul, is_custom=True, model_two=0x2A6, base=base_kong, bounce=True),
+    InGameItem(name="Enguarde Soul", actor=CustomActors.EnguardeSoul, is_custom=True, model_two=0x2A8, base=base_kong, bounce=True),
+    InGameItem(name="Dillo Soul", actor=CustomActors.DilloSoul, is_custom=True, model_two=0x2A9, base=base_kong, bounce=True),
+    InGameItem(name="Dogadon Soul", actor=CustomActors.DogadonSoul, is_custom=True, model_two=0x2AA, base=base_kong, bounce=True),
+    InGameItem(name="Mad Jack Soul", actor=CustomActors.MadJackSoul, is_custom=True, model_two=0x2AF, base=base_kong, bounce=True),
+    InGameItem(name="Pufftoss Soul", actor=CustomActors.PufftossSoul, is_custom=True, model_two=0x2B0, base=base_kong, bounce=True),
+    InGameItem(name="Kut Out Soul", actor=CustomActors.KutOutSoul, is_custom=True, model_two=0x2B1, base=base_kong, bounce=True),
+    InGameItem(name="K Rool Soul", actor=CustomActors.KRoolSoul, is_custom=True, model_two=0x2B2, base=base_kong, bounce=True),
 ]
 
 db2 = [
@@ -378,6 +402,14 @@ db2 = [
     ItemRandoDef(0x02A1, CollectableTypes.Null, None, CustomActors.IceTrapDisableBKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
     ItemRandoDef(0x02A4, CollectableTypes.Null, None, CustomActors.IceTrapDisableZKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
     ItemRandoDef(0x02A5, CollectableTypes.Null, None, CustomActors.IceTrapDisableCUKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
+    ItemRandoDef(0x02A6, CollectableTypes.Null, None, CustomActors.RambiSoul, Hitbox(8, 4, 13), True),  # Rambi
+    ItemRandoDef(0x02A8, CollectableTypes.Null, None, CustomActors.EnguardeSoul, Hitbox(8, 4, 13), True),  # Enguarde
+    ItemRandoDef(0x02A9, CollectableTypes.Null, None, CustomActors.DilloSoul, Hitbox(8, 4, 13), True),  # Dillo
+    ItemRandoDef(0x02AA, CollectableTypes.Null, None, CustomActors.DogadonSoul, Hitbox(8, 4, 13), True),  # Dogadon
+    ItemRandoDef(0x02AF, CollectableTypes.Null, None, CustomActors.MadJackSoul, Hitbox(8, 4, 13), True),  # Mad Jack
+    ItemRandoDef(0x02B0, CollectableTypes.Null, None, CustomActors.PufftossSoul, Hitbox(8, 4, 13), True),  # Pufftoss
+    ItemRandoDef(0x02B1, CollectableTypes.Null, None, CustomActors.KutOutSoul, Hitbox(8, 4, 13), True),  # Kut Out
+    ItemRandoDef(0x02B2, CollectableTypes.Null, None, CustomActors.KRoolSoul, Hitbox(8, 4, 13), True),  # K Rool
 ]
 
 item_drops = [
@@ -831,6 +863,62 @@ with open("src/lib_items.c", "w") as fh:
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.RambiSoul,
+                "model": 0x12B,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Rambi Soul
+            {
+                "actor_type": 345 + CustomActors.EnguardeSoul,
+                "model": 0x12C,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Enguarde Soul
+            {
+                "actor_type": 345 + CustomActors.DilloSoul,
+                "model": 0x12D,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Dillo Soul
+            {
+                "actor_type": 345 + CustomActors.DogadonSoul,
+                "model": 0x12E,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Dogadon Soul
+            {
+                "actor_type": 345 + CustomActors.MadJackSoul,
+                "model": 0x12F,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Mad Jack Soul
+            {
+                "actor_type": 345 + CustomActors.PufftossSoul,
+                "model": 0x130,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Pufftoss Soul
+            {
+                "actor_type": 345 + CustomActors.KutOutSoul,
+                "model": 0x131,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Kut Out Soul
+            {
+                "actor_type": 345 + CustomActors.KRoolSoul,
+                "model": 0x132,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # K Rool Soul
         ]
     )
     default_values = {
@@ -868,7 +956,7 @@ with open("src/lib_items.c", "w") as fh:
         actor_data = initActor(actor_data, 345 + potion, "&PotionCode", 2, 0, 1, 8, 45)
     for kong in KONGS:
         actor_data = initActor(actor_data, 345 + kong, "&KongDropCode", 2, 0, 1, 8, 45)
-    for shopkeeper in SHOPKEEPERS:
+    for shopkeeper in SOULS:
         actor_data = initActor(actor_data, 345 + shopkeeper, "&shopOwnerItemCode", 2, 0, 1, 8, 45)
     for trap in TRAPS:
         actor_data = initActor(actor_data, 345 + trap, "&FakeGBCode", 2, 0, 1, 8, 45)

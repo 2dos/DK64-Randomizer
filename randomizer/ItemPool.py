@@ -228,6 +228,10 @@ def AllItems(settings):
         allItems.extend(CandyItems())
     if Types.Snide in settings.shuffled_location_types:
         allItems.extend(SnideItems())
+    if Types.BuddySoul in settings.shuffled_location_types:
+        allItems.extend(BuddySoulItems())
+    if Types.BossSoul in settings.shuffled_location_types:
+        allItems.extend(BossSoulItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems(settings))
     if Types.JunkItem in settings.shuffled_location_types:
@@ -298,6 +302,10 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(CandyItems())
     if Types.Snide in settings.shuffled_location_types:
         allItems.extend(SnideItems())
+    if Types.BuddySoul in settings.shuffled_location_types:
+        allItems.extend(BuddySoulItems())
+    if Types.BossSoul in settings.shuffled_location_types:
+        allItems.extend(BossSoulItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems(settings))
     if Types.JunkItem in settings.shuffled_location_types:
@@ -547,6 +555,13 @@ def RarewareCoinItems():
     """Return Rareware Coin."""
     return [Items.RarewareCoin]
 
+def BuddySoulItems():
+    """Return Buddy Soul Items."""
+    return [Items.RambiSoul, Items.EnguardeSoul]
+
+def BossSoulItems():
+    """Return Boss Soul Items."""
+    return [Items.DilloSoul, Items.DogadonSoul, Items.MadJackSoul, Items.PufftossSoul, Items.KutOutSoul, Items.KRoolSoul]
 
 TOUGH_BANANA_COUNT = 13
 
@@ -847,6 +862,10 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(CandyItems())
     if Types.Snide in unplacedTypes:
         itemPool.extend(SnideItems())
+    if Types.BuddySoul in unplacedTypes:
+        itemPool.extend(BuddySoulItems())
+    if Types.BossSoul in unplacedTypes:
+        itemPool.extend(BossSoulItems())
     # Never logic-affecting items
     # if Types.FakeItem in unplacedTypes:
     #     itemPool.extend(FakeItems())

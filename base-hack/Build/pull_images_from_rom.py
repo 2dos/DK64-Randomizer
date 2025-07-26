@@ -127,6 +127,9 @@ for owner in shop_owners:
     for x in range(4):
         images.append(ImageData(f"{owner}_face_{x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, shop_owners[owner] + x, 32, 32, False, False))
 
+for x in range(7):
+    images.append(ImageData(f"Enguarde_{x}", TextureFormat.RGBA32, TableNames.TexturesGeometry, 0xAA8 + x, 32, 32, False, False))
+
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]
 tex_idx = 0x273
 for kong in kong_tex:

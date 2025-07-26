@@ -301,6 +301,8 @@ export enum ItemRandoListSelected {
     dummyitem_crateitem = 40,
     trainingmoves = 41,
     trainingbarrels = 42,
+    bosssouls = 43,
+    buddysouls = 44,
 }
 
 export enum ItemRandoFiller {
