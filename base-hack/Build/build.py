@@ -145,6 +145,7 @@ file_dict = [
         target_uncompressed_size=0x1420,
     ),
     File(name="WXY_Slash", pointer_table_index=TableNames.TexturesHUD, file_index=12, source_file="assets/displays/wxys.png", texture_format=TextureFormat.RGBA5551),
+    File(name="White Special Chars", pointer_table_index=TableNames.TexturesHUD, file_index=4, source_file="assets/displays/white_special_chars.png", texture_format=TextureFormat.IA8),
     File(
         name="DK Tie Palette",
         pointer_table_index=TableNames.TexturesGeometry,
@@ -2390,6 +2391,7 @@ with open(newROMName, "r+b") as fh:
         "fakebean",
         "fakekey",
         "disco_shirt_gap",
+        "white_special_chars",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])

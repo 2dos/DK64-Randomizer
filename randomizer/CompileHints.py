@@ -3359,7 +3359,7 @@ def getHelmOrderHint(spoiler):
     else:
         early_entries = kong_helm_order[:-1]
         early_entry_text = ", ".join(early_entries)
-        kong_order_text = f"{early_entry_text} AND {kong_helm_order[-1]}"
+        kong_order_text = f"{early_entry_text} & {kong_helm_order[-1]}"
     text_entries = [
         {
             # This isn't a game text

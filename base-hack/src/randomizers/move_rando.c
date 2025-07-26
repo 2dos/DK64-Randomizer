@@ -11,9 +11,9 @@ typedef enum KeySubtitleEnum {
 
 static char *key_subtitles[] = {
 	"OPENS LEVEL 2",
-	"OPENS LEVELS 3 AND 4",
+	"OPENS LEVELS 3 & 4",
 	"OPENS LEVEL 5",
-	"OPENS LEVELS 6 AND 7",
+	"OPENS LEVELS 6 & 7",
 	"HELPS OPEN LEVEL 8",
 	"HELPS OPEN K. ROOL",
 };

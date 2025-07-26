@@ -55,6 +55,7 @@ images = [
     ImageData("specialchars", TextureFormat.RGBA5551, TableNames.TexturesHUD, 30, 64, 32, False, False),
     ImageData("red_qmark_0", TextureFormat.RGBA5551, TableNames.TexturesUncompressed, 508, 32, 64, False, False),
     ImageData("red_qmark_1", TextureFormat.RGBA5551, TableNames.TexturesUncompressed, 509, 32, 64, False, False),
+    ImageData("white_special_chars", TextureFormat.IA8, TableNames.TexturesHUD, 4, 176, 16, False, False),
     ImageData("dk_tie_palette", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 3686, 32, 32, False, False),
     ImageData("tiny_palette", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 3689, 32, 32, False, False),
     ImageData("homing_crate_0", TextureFormat.RGBA5551, TableNames.TexturesUncompressed, 185, 32, 64, False, True),

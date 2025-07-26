@@ -320,7 +320,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             if settings.music_disable_reverb:
                 disableDynamicReverb(ROM_COPY)
             music_text = []
-            accepted_characters = [*string.ascii_uppercase] + [" ", "\n", "(", ")", "%", ",", ".", "!", ">", ":", ";", "'", "-"] + [*string.digits]
+            accepted_characters = [*string.ascii_uppercase] + [" ", "\n", "(", ")", "%", ",", ".", "!", ">", ":", "'", "-", "&"] + [*string.digits]
             for name in music_names:
                 output_name = name
                 if name is None:

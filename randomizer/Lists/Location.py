@@ -325,7 +325,7 @@ LocationListOriginal = {
     Locations.FactoryDiddyRandD: Location(Levels.FranticFactory, "Factory Diddy Charge Enemies", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.FranticFactory, 0x60, 126, Kongs.diddy)]),
     Locations.FactoryLankyRandD: Location(Levels.FranticFactory, "Factory Lanky Piano Game", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.FranticFactory, 0x3E, 125, Kongs.lanky)]),
     Locations.FactoryChunkyRandD: Location(Levels.FranticFactory, "Factory Chunky Toy Monster", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.FranticFactory, 0x7C, 127, Kongs.chunky)]),
-    Locations.FactoryKasplatRandD: Location(Levels.FranticFactory, "Factory Kasplat: Research and Development", Items.FranticFactoryLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.FranticFactory]),
+    Locations.FactoryKasplatRandD: Location(Levels.FranticFactory, "Factory Kasplat: R&D", Items.FranticFactoryLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.FranticFactory]),
     Locations.FactoryBattleArena: Location(Levels.FranticFactory, "Factory Battle Arena (Under R and D Grate)", Items.BattleCrown, Types.Crown, Kongs.any, [MapIDCombo(Maps.FactoryCrown, -1, 611)]),
     Locations.FactoryTinyCarRace: Location(Levels.FranticFactory, "Factory Tiny Car Race", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.FactoryTinyRace, 0x62, 139, Kongs.tiny)]),
     Locations.FactoryDiddyChunkyRoomBarrel: Location(Levels.FranticFactory, "Factory Diddy Storage Room Barrel", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(0, -1, 134, Kongs.diddy)]),

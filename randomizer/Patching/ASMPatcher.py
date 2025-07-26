@@ -2050,6 +2050,11 @@ def patchAssembly(ROM_COPY, spoiler):
     # Remove troll flame in 75m
     writeValue(ROM_COPY, 0x80028FE4, Overlay.Arcade, 0xAC800018, offset_dict, 4)  # sw $zero, 0x18 ($ao). Sets obj type to 0
 
+    # Replace ; with &
+    writeValue(ROM_COPY, 0x80754AC2, Overlay.Static, 38, offset_dict, 1)  # Replace the character checking
+    writeValue(ROM_COPY, 0x807548D8, Overlay.Static, 122, offset_dict)  # Character start
+    writeValue(ROM_COPY, 0X807548DA, Overlay.Static, 13, offset_dict, 1)  # Character width
+
     # Patch Enemy Collision
     writeLabelValue(ROM_COPY, 0x8074B53C, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # Purple Klaptrap
     writeLabelValue(ROM_COPY, 0x8074B4EC, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # Red Klaptrap

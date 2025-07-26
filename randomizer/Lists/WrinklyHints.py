@@ -46,7 +46,7 @@ hints = [
         "First Time Talk",
         Kongs.any,
         WrinklyLocation.ftt,
-        "WELCOME TO THE DONKEY KONG 64 RANDOMIZER. MADE BY 2DOS, BALLAAM, KILLKLLI, SHADOWSHINE, CFOX, BISMUTH AND ZNERNICUS",
+        "WELCOME TO THE DONKEY KONG 64 RANDOMIZER. MADE BY 2DOS, BALLAAM, KILLKLLI, SHADOWSHINE, CFOX, BISMUTH & ZNERNICUS",
         Levels.DKIsles,
     ),
     HintLocation("Japes DK", Kongs.donkey, WrinklyLocation.japes, "", Levels.JungleJapes),

@@ -527,7 +527,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Factory Kasplat: Research and Development",
+            name="Factory Kasplat: R&D",
             map_id=Maps.FranticFactory,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[4148, 1336, 1016],

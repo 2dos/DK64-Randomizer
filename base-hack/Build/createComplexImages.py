@@ -624,6 +624,18 @@ base_im.paste(right_im, (32, 0), right_im)
 base_im = base_im.resize((32, 32))
 base_im.save(f"{disp_dir}win_con_logo.png")
 
+font_im = Image.open(f"{hash_dir}white_special_chars.png")
+amp_im = Image.open(f"{disp_dir}white_ampersand.png")
+amp_px = amp_im.load()
+px = font_im.load()
+for y in range(font_im.height):
+    for x in range(122, 141):  # inclusive of 140
+        if x - 122 < amp_im.width:
+            px[x, y] = amp_px[x - 122, y]
+        else:
+            px[x, y] = (0, 0, 0, 0)  # fully transparent
+font_im.save(f"{disp_dir}white_special_chars.png")
+
 # AP Pearls
 ap_colors = [
     "#FB9152",  # ORANGE
@@ -896,6 +908,7 @@ rmve = [
     "funky_face_2.png",
     "funky_face_3.png",
     "snide_face.png",
+    "white_special_chars.png"
 ]
 for kong in kongs:
     for x in range(2):

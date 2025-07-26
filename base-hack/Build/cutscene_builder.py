@@ -317,7 +317,7 @@ def buildFile(data: bytes, modifications: list, map_index: int, map_name: str) -
         entry_size = fg.tell()
     return File(
         name=f"Cutscenes ({map_name})",
-        pointer_table_index=TableNames.Cutscenes,
+        pointer_table_index=BuildEnums.TableNames.Cutscenes,
         file_index=map_index,
         source_file=map_file_name,
         do_not_delete_source=True,
