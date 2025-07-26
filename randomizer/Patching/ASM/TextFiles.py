@@ -7,7 +7,6 @@ from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
 
 def writeNewTextFiles(ROM_COPY: LocalROM, offset_dict: dict):
     """Write the new file indexes and text indexes for the new save files."""
-
     writeFunction(ROM_COPY, 0x8070DE08, Overlay.Static, "getTextData", offset_dict)  # Text file arg translation
     # Seal Preview
     writeValue(ROM_COPY, 0x806C265A, Overlay.Static, CompTextFiles.PreviewsFlavor, offset_dict)
