@@ -185,7 +185,7 @@ def getObjectModifications(target_map: Maps) -> list:
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x68, scale=0.15),  # Stump GB
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x13E, scale=0.2),  # Nintendo Coin
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Cranky, 0x2, scale=0.2),  # Rareware Coin
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x24, x=1455.853, y=6.5, z=522.716, ry=0),  # Free Chunky Switch
+        # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x24, x=1455.853, y=6.5, z=522.716, ry=0),  # Free Chunky Switch
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Caves, 0x57, x=176.505, z=1089.408),  # Caves 5DI W3
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Caves, 0xCF, x=176.505, z=1089.408),  # Caves 5DI W3 Bunch
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0xC9, y=400),  # Japes chunky bunch on top of Cranky

@@ -1079,7 +1079,10 @@ class Settings:
                         options = [SwitchsanityKong.diddy, SwitchsanityKong.chunky]
                     if applied_setting == SwitchsanityKong.random:
                         applied_setting = self.random.choice(options)
-                    self.switchsanity_data[slot].kong = Kongs.donkey + (applied_setting - SwitchsanityKong.donkey)
+                    if slot == Switches.FactoryFreeKong:
+                        self.switchsanity_data[slot].kong = Kongs.lanky
+                    else:
+                        self.switchsanity_data[slot].kong = Kongs.donkey + (applied_setting - SwitchsanityKong.donkey)
             # If we've shuffled all loading zones, we need to account for some entrances changing hands
             if self.shuffle_loading_zones == ShuffleLoadingZones.all:
                 ShufflableExits[Transitions.AztecMainToLlama].entryKongs = {

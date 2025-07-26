@@ -2053,7 +2053,7 @@ def patchAssembly(ROM_COPY, spoiler):
     # Replace ; with &
     writeValue(ROM_COPY, 0x80754AC2, Overlay.Static, 38, offset_dict, 1)  # Replace the character checking
     writeValue(ROM_COPY, 0x807548D8, Overlay.Static, 122, offset_dict)  # Character start
-    writeValue(ROM_COPY, 0x807548DA, Overlay.Static, 13, offset_dict, 1)  # Character width
+    writeValue(ROM_COPY, 0x807548DA, Overlay.Static, 11, offset_dict, 1)  # Character width
 
     # Patch Enemy Collision
     writeLabelValue(ROM_COPY, 0x8074B53C, Overlay.Static, "fixed_shockwave_collision", offset_dict)  # Purple Klaptrap
