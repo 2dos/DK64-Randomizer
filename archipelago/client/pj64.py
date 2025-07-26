@@ -49,7 +49,10 @@ class PJ64Client:
         self.address = "127.0.0.1"
         self.socket = None
         self.connected_message = False
-        self._connect()
+        try:
+            self._connect()
+        except PJ64Exception:  # Don't abort creating the client if we can't connect immediately. We can always retry connection.
+            pass
 
     def _check_client(self):
         """Ensure the Project 64 executable and the required adapter script are properly set up.
