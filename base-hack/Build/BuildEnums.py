@@ -912,6 +912,7 @@ class MoveTypes(IntEnum):
     gun_upgrade = auto()
     instrument_upgrade = auto()
 
+
 class ItemPreview(IntEnum):
     """Item Preview Enum."""
 
@@ -957,6 +958,7 @@ class ItemPreview(IntEnum):
     FunkyMicro = auto()
     CandyMicro = auto()
     SnideMicro = auto()
+
 
 class CompTextFiles(IntEnum):
     """Compressed Text Files Enum."""

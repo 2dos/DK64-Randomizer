@@ -322,7 +322,10 @@ def imageToCI(ROM_COPY: ROM, im_f, ci_index: int, tex_index: int, pal_index: int
     ROM_COPY.seek(pal_start)
     ROM_COPY.write(pal_bin_file)
 
-def writeColorImageToAddress(im_f, address: int, width: int, height: int, transparent_border: bool, format: TextureFormat, ROM_COPY: Union[LocalROM, ROM], compressed: bool, max_file_size: int = None) -> None:
+
+def writeColorImageToAddress(
+    im_f, address: int, width: int, height: int, transparent_border: bool, format: TextureFormat, ROM_COPY: Union[LocalROM, ROM], compressed: bool, max_file_size: int = None
+) -> None:
     """Write texture to ROM at a static address."""
     ROM_COPY.seek(address)
     pix = im_f.load()
@@ -377,6 +380,7 @@ def writeColorImageToAddress(im_f, address: int, width: int, height: int, transp
         if len(data) > max_file_size:
             print(f"File too big error: {hex(address)}")
     ROM_COPY.writeBytes(data)
+
 
 def writeColorImageToROM(im_f, table_index: TableNames, file_index: int, width: int, height: int, transparent_border: bool, format: TextureFormat, ROM_COPY: Union[LocalROM, ROM]) -> None:
     """Write texture to ROM."""

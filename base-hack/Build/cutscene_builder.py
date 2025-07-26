@@ -325,6 +325,7 @@ def buildFile(data: bytes, modifications: list, map_index: int, map_name: str) -
         target_size=entry_size,
     )
 
+
 enum_obj = {
     "ChangeType": ChangeType,
     "TextureFormat": TextureFormat,
@@ -344,6 +345,7 @@ enum_obj = {
     "ItemPreview": ItemPreview,
     "CompTextFiles": CompTextFiles,
 }
+
 
 def preProcessModData(data: dict) -> dict:
     """Pre-processes cutscene file data to account for enums."""
@@ -368,7 +370,7 @@ def preProcessModData(data: dict) -> dict:
                 data["point_data"][point_index]["detailed_command"]["params"][arg_index] = int(enum_class[enum_index_name])
                 print("Converted to", int(enum_class[enum_index_name]))
     return data
-    
+
 
 def buildScripts() -> list:
     """Run through cutscenes folder and compile cutscenes to send back to file_dict."""

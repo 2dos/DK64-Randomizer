@@ -1,4 +1,5 @@
 """Dump the item preview enum to a h file."""
+
 from BuildEnums import ItemPreview, CompTextFiles
 from typing import BinaryIO
 
@@ -9,6 +10,7 @@ warning_text_data = [
     "\tBallaam",
 ]
 warning_text = "/*\n\t" + "\n\t".join(warning_text_data) + "\n*/\n"
+
 
 def dumpEnum(file: BinaryIO, enum_name: str, predicate: str, enum_class):
     """Write an enum to a h file."""
@@ -21,6 +23,7 @@ def dumpEnum(file: BinaryIO, enum_name: str, predicate: str, enum_class):
         file.write(f"\t/* {hex(member.value)} */ {predicate.upper()}_{name.upper()}{end_text},\n")
         counter += 1
     file.write(f"}} {enum_name};\n")
+
 
 with open("include/previews.h", "w") as fh:
     fh.write(warning_text)

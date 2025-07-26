@@ -395,7 +395,11 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                                 MiscChangesSelected.remove_wrinkly_puzzles,
                             )
                         ):
-                            if (spoiler.settings.progressive_hint_item == ProgressiveHintItem.off) or Types.Hint in spoiler.settings.shuffled_location_types or (IsDDMSSelected(spoiler.settings.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles) and not spoiler.settings.wrinkly_location_rando):
+                            if (
+                                (spoiler.settings.progressive_hint_item == ProgressiveHintItem.off)
+                                or Types.Hint in spoiler.settings.shuffled_location_types
+                                or (IsDDMSSelected(spoiler.settings.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles) and not spoiler.settings.wrinkly_location_rando)
+                            ):
                                 kong = data[2]
                                 item_data = []
                                 for coord_index in range(3):

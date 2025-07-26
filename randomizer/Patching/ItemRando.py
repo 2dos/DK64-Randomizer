@@ -438,6 +438,7 @@ def pushItemMicrohints(spoiler):
                     else:
                         spoiler.text_changes[file] = [data]
 
+
 def writeNullShopSlot(ROM_COPY: LocalROM, location: int):
     """Write an empty shop slot."""
     ROM_COPY.seek(location)

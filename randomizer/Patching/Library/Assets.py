@@ -45,6 +45,7 @@ class TableNames(IntEnum):
     Unknown30 = auto()
     Unknown31 = auto()
 
+
 class ItemPreview(IntEnum):
     """Item Preview Enum."""
 
@@ -90,6 +91,7 @@ class ItemPreview(IntEnum):
     FunkyMicro = auto()
     CandyMicro = auto()
     SnideMicro = auto()
+
 
 class CompTextFiles(IntEnum):
     """Compressed Text Files Enum."""
@@ -515,7 +517,7 @@ def grabText(ROM_COPY: Union[ROM, LocalROM], file_index: int) -> List[List[Dict[
         if added < data_start:
             info = b""
         else:
-            info = file[data_start : added]
+            info = file[data_start:added]
         text_data.append(
             {
                 "arr": info,
@@ -615,4 +617,3 @@ def writeText(ROM_COPY: Union[ROM, LocalROM], file_index: int, text: List[Union[
         ROM_COPY.writeMultipleBytes(uncompressed_size, 4)
     print("Attempting to write", hex(len(data)), "bytes to pointer", int(table_index), "file", int(file_index))
     writeRawFile(table_index, file_index, table_index == TableNames.Unknown6, bytearray(data), ROM_COPY)
-

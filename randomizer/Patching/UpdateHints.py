@@ -14,54 +14,54 @@ DEBUG = False
 HINT_CHARACTER_LIMIT = 125
 TERMINATING_EFFECTS = False
 CHAR_WIDTH = {
-    'A': 10,
-    'B': 9,
-    'C': 9,
-    'D': 9,
-    'E': 8,
-    'F': 8,
-    'G': 11,
-    'H': 9,
-    'I': 4,
-    'J': 9,
-    'K': 9,
-    'L': 8,
-    'M': 11,
-    'N': 9,
-    'O': 10,
-    'P': 8,
-    'Q': 11,
-    'R': 9,
-    'S': 10,
-    'T': 9,
-    'U': 9,
-    'V': 9,
-    'W': 12,
-    'X': 8,
-    'Y': 9,
-    'Z': 8,
-    '.': 5,
-    ',': 5,
-    '!': 4,
-    '?': 7,
-    ':': 5,
-    ';': 5,
+    "A": 10,
+    "B": 9,
+    "C": 9,
+    "D": 9,
+    "E": 8,
+    "F": 8,
+    "G": 11,
+    "H": 9,
+    "I": 4,
+    "J": 9,
+    "K": 9,
+    "L": 8,
+    "M": 11,
+    "N": 9,
+    "O": 10,
+    "P": 8,
+    "Q": 11,
+    "R": 9,
+    "S": 10,
+    "T": 9,
+    "U": 9,
+    "V": 9,
+    "W": 12,
+    "X": 8,
+    "Y": 9,
+    "Z": 8,
+    ".": 5,
+    ",": 5,
+    "!": 4,
+    "?": 7,
+    ":": 5,
+    ";": 5,
     "'": 5,
-    '-': 9,
-    'x': 7,
-    '1': 6,
-    '2': 9,
-    '3': 9,
-    '4': 10,
-    '5': 10,
-    '6': 9,
-    '7': 9,
-    '8': 10,
-    '9': 10,
-    '0': 10,
-    '(': 5,
-    ')': 5,
-    '%': 12,
+    "-": 9,
+    "x": 7,
+    "1": 6,
+    "2": 9,
+    "3": 9,
+    "4": 10,
+    "5": 10,
+    "6": 9,
+    "7": 9,
+    "8": 10,
+    "9": 10,
+    "0": 10,
+    "(": 5,
+    ")": 5,
+    "%": 12,
 }
 CONTROL_CHARACTERS = [
     "\x04",
@@ -75,6 +75,7 @@ CONTROL_CHARACTERS = [
     "\x0c",
     "\x0d",
 ]
+
 
 def getActiveEffectStr(active_effects: list[str], ending: bool) -> str:
     """Get the start or end of a string to properly account for the active effect list."""
@@ -92,7 +93,7 @@ def splitText(text: str, truncate_split: bool) -> str:
     line_index = 0
     line_length = 0
     line_text = ""
-    text = text.strip(' ')  # Filter out any trailing whitespaces
+    text = text.strip(" ")  # Filter out any trailing whitespaces
     most_recent_word = ""
     word_length = 0
     displayed_characters = 0
@@ -104,9 +105,9 @@ def splitText(text: str, truncate_split: bool) -> str:
         if len(text) == 0:
             if len(most_recent_word) > 0:
                 line_text += most_recent_word
-                line_text = line_text.strip(' ')
+                line_text = line_text.strip(" ")
                 line_text += getActiveEffectStr(active_effects, True)
-                lines.append(line_text) 
+                lines.append(line_text)
             break
         elif line_length == 0:
             # Start of a string
@@ -132,11 +133,11 @@ def splitText(text: str, truncate_split: bool) -> str:
             width = CHAR_KERNING + char_width
         if displayed_characters > HINT_CHARACTER_LIMIT and len(text) > 1 and truncate_split:
             line_text += most_recent_word
-            line_text = line_text.strip(' ')
+            line_text = line_text.strip(" ")
             if len(line_text) < 3:
                 line_text = "..."
             else:
-                line_text = line_text[:3].strip(' ') + "..."
+                line_text = line_text[:3].strip(" ") + "..."
             line_text += getActiveEffectStr(active_effects, True)
             lines.append(line_text)
             break
@@ -155,8 +156,8 @@ def splitText(text: str, truncate_split: bool) -> str:
             line_index += 1
             line_length = 0
             if line_index == MAX_LINES:
-                line_text = line_text.strip(' ') + "..."
-            line_text = line_text.strip(' ')
+                line_text = line_text.strip(" ") + "..."
+            line_text = line_text.strip(" ")
             line_text += getActiveEffectStr(active_effects, True)
             lines.append(line_text)
             if DEBUG:
@@ -165,6 +166,7 @@ def splitText(text: str, truncate_split: bool) -> str:
     base_text = "\x0f".join(lines)
     return f"{base_text}\x00"
 
+
 def writeFastHints(ROM_COPY: LocalROM, table_index: int, file_index: int, input_text: list, compressed: bool, truncate_split: bool = True):
     """Write a fast lookup version of text to ROM."""
     bad_chars = ["\x00, \x0f"]
@@ -172,14 +174,14 @@ def writeFastHints(ROM_COPY: LocalROM, table_index: int, file_index: int, input_
     for textbox in input_text:
         text = ""
         for line in textbox:
-            filtered_line = ''.join(c for c in line if c not in bad_chars)
+            filtered_line = "".join(c for c in line if c not in bad_chars)
             text += f"{filtered_line} "
         entries.append(splitText(text, truncate_split))
     raw_text = "".join(entries)
     data = raw_text.encode("ascii")
     unc_size = len(data)
     if compressed:
-        unc_table  = getPointerLocation(TableNames.UncompressedFileSizes, table_index)
+        unc_table = getPointerLocation(TableNames.UncompressedFileSizes, table_index)
         ROM_COPY.seek(unc_table + (file_index * 4))
         ROM_COPY.writeMultipleBytes(unc_size, 4)
     writeRawFile(table_index, file_index, compressed, bytearray(data), ROM_COPY)
@@ -193,32 +195,37 @@ def writeWrinklyHints(ROM_COPY: LocalROM, table_index: int, file_index: int, tex
         data.extend([1, 1, len(textbox)])
         for string in textbox:
             str_len = len(string)
-            data.extend([
-                (position >> 24) & 0xFF,
-                (position >> 16) & 0xFF,
-                (position >> 8) & 0xFF,
-                position & 0xFF,
-                (str_len >> 8) & 0xFF,
-                str_len & 0xFF,
-                0,
-                0,
-            ])
+            data.extend(
+                [
+                    (position >> 24) & 0xFF,
+                    (position >> 16) & 0xFF,
+                    (position >> 8) & 0xFF,
+                    position & 0xFF,
+                    (str_len >> 8) & 0xFF,
+                    str_len & 0xFF,
+                    0,
+                    0,
+                ]
+            )
             position += str_len
         data.extend([0, 0, 0, 0])
-    data.extend([
-        (position >> 8) & 0xFF,
-        position & 0xFF,
-    ])
+    data.extend(
+        [
+            (position >> 8) & 0xFF,
+            position & 0xFF,
+        ]
+    )
     for textbox in text:
         for string in textbox:
             for x in range(len(string)):
                 data.append(int.from_bytes(string[x].encode("ascii"), "big"))
     unc_size = len(data)
     if compressed:
-        unc_table  = getPointerLocation(TableNames.UncompressedFileSizes, table_index)
+        unc_table = getPointerLocation(TableNames.UncompressedFileSizes, table_index)
         ROM_COPY.seek(unc_table + (file_index * 4))
         ROM_COPY.writeMultipleBytes(unc_size, 4)
     writeRawFile(table_index, file_index, compressed, bytearray(data), ROM_COPY)
+
 
 def UpdateHint(WrinklyHint: HintLocation, message: str):
     """Update the wrinkly hint with the new string.

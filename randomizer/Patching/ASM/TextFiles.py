@@ -4,6 +4,7 @@ from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
 from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
 
+
 def writeNewTextFiles(ROM_COPY: LocalROM, offset_dict: dict):
     """Write the new file indexes and text indexes for the new save files."""
 
