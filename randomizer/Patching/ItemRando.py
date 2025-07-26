@@ -13,7 +13,7 @@ from randomizer.Lists.EnemyTypes import enemy_location_list
 from randomizer.Patching.Library.Generic import setItemReferenceName
 from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, getPropFromItem, getModelMask, getItemDBEntry, item_shop_text_mapping, BuyText
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, CompTextFiles, ItemPreview
-from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay
+from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay, writeValue
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
 import randomizer.ItemPool as ItemPool
@@ -603,6 +603,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                                 {
                                     "id": item.placement_data[map_id],
                                     "obj": Types.NoItem,
+                                    "loc": item.location,
                                     "kong": 0,
                                     "flag": 0,
                                     "upscale": 1,
@@ -618,6 +619,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                                 {
                                     "id": item.placement_data[map_id],
                                     "obj": item.new_item,
+                                    "loc": item.location,
                                     "kong": item.new_kong,
                                     "flag": item.new_flag,
                                     "upscale": upscale,
@@ -1001,6 +1003,8 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                             ROM_COPY.seek(start + 0x28)
                             item_obj_index = getPropFromItem(item_slot["subitem"], item_slot["obj"], item_slot["flag"], item_slot["shared"])
                             ROM_COPY.writeMultipleBytes(item_obj_index, 2)
+                            if item_slot["loc"] == Locations.IslesChunkyPoundtheX:
+                                writeValue(ROM_COPY, 0x80747D4A, Overlay.Static, item_obj_index, offset_dict)
                             # Scaling fix
                             ROM_COPY.seek(start + 0xC)
                             old_scale = intf_to_float(int.from_bytes(ROM_COPY.readBytes(4), "big"))
