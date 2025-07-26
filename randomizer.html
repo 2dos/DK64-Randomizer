@@ -757,7 +757,7 @@
                     // Nunjucks configuration after PlandoUtils.js is loaded
                     var env = nunjucks.configure('/templates', { autoescape: false, web: { useCache: true } });
         
-                    env.addFilter("tojsonarr", toJSONArray)
+                    env.addFilter("tojsonarr", toJSONArray);
 
                     // Use the imported functions from PlandoUtils
                     env.addFilter("plando_custom_loc_restrict", PlandoCustomLocationFilter);

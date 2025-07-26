@@ -334,14 +334,14 @@ else:
     // Handle Dropdown Multiselectors
     let ddms_container = document.getElementsByClassName("dropdown-multiselect");
     for (let container of ddms_container) {
-        element = container.getElementsByClassName("dropdown-menu")[0];
+        let element = container.getElementsByClassName("dropdown-menu")[0];
         let values = [];
         const checkboxes = Array.from(element.getElementsByTagName("input"));
         checkboxes.forEach(cb => {
             if (cb.checked) {
                 values.push(get_enum_or_string_value(cb.value, element.getAttribute("name")));
             }
-        })
+        });
         form_data[element.getAttribute("name")] = values;
     }
 

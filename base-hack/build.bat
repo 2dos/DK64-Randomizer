@@ -34,6 +34,7 @@ call :runscript "Building Item Database", "build\item_dictionaries.py"
 call :runscript "Adjusting Pause Menu Variables", "build\adjust_pause_rotation.py"
 call :runscript "Building Hint Regions", "build\build_hint_regions.py"
 call :runscript "Building Dynamic Bitfields", "build\build_dynamic_bitfields.py"
+call :runscript "Remembering the 21st Night of September", "build\disco_donkey.py"
 if %use_compiled% == 1 (
 	call :runscript "Compile Cranky's Lab", "build\pyinstaller_handler.py"
 )

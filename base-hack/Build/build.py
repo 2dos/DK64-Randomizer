@@ -13,7 +13,6 @@ import generate_disco_models
 import generate_watch_file
 import merge_models
 import model_fix
-import disco_donkey
 from pull_guns_and_instruments import pullHandModels
 from model_port import loadNewModels
 

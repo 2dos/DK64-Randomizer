@@ -6,7 +6,7 @@ import zlib
 from typing import BinaryIO
 
 from BuildClasses import File
-from BuildEnums import *
+import BuildEnums
 from BuildLib import ROMName, main_pointer_table_offset
 
 instance_dir = "./assets/cutscene_scripts"
@@ -327,23 +327,23 @@ def buildFile(data: bytes, modifications: list, map_index: int, map_name: str) -
 
 
 enum_obj = {
-    "ChangeType": ChangeType,
-    "TextureFormat": TextureFormat,
-    "CompressionMethods": CompressionMethods,
-    "TableNames": TableNames,
-    "Maps": Maps,
-    "Icons": Icons,
-    "CreditsDirection": CreditsDirection,
-    "CreditsType": CreditsType,
-    "Enemies": Enemies,
-    "Kong": Kong,
-    "Song": Song,
-    "Overlay": Overlay,
-    "Vendors": Vendors,
-    "ExtraTextures": ExtraTextures,
-    "MoveTypes": MoveTypes,
-    "ItemPreview": ItemPreview,
-    "CompTextFiles": CompTextFiles,
+    "ChangeType": BuildEnums.ChangeType,
+    "TextureFormat": BuildEnums.TextureFormat,
+    "CompressionMethods": BuildEnums.CompressionMethods,
+    "TableNames": BuildEnums.TableNames,
+    "Maps": BuildEnums.Maps,
+    "Icons": BuildEnums.Icons,
+    "CreditsDirection": BuildEnums.CreditsDirection,
+    "CreditsType": BuildEnums.CreditsType,
+    "Enemies": BuildEnums.Enemies,
+    "Kong": BuildEnums.Kong,
+    "Song": BuildEnums.Song,
+    "Overlay": BuildEnums.Overlay,
+    "Vendors": BuildEnums.Vendors,
+    "ExtraTextures": BuildEnums.ExtraTextures,
+    "MoveTypes": BuildEnums.MoveTypes,
+    "ItemPreview": BuildEnums.ItemPreview,
+    "CompTextFiles": BuildEnums.CompTextFiles,
 }
 
 
