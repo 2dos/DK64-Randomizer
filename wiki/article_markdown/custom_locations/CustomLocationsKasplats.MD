@@ -54,7 +54,7 @@
 | Frantic Factory | Factory Kasplat: Lowest Production Platform | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Upper Production Pipe | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Base of Production | `self.additional_logic = lambda _: True` | 
-| Frantic Factory | Factory Kasplat: Research and Development | `self.additional_logic = lambda _: True` | 
+| Frantic Factory | Factory Kasplat: R&D | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Pole to Arcade | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Block Tower | `self.additional_logic = lambda _: True` | 
 | Frantic Factory | Factory Kasplat: Near Snide's | `self.additional_logic = lambda _: True` | 

@@ -1600,7 +1600,7 @@ CustomLocations = {
     Levels.FranticFactory: [
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Under R and D Grate (1)",
+            name="Under R&D Grate (1)",
             x=4119,
             y=1313,
             z=1165.81,
@@ -1975,7 +1975,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Diddy R and D",
+            name="Diddy R&D",
             x=4450,
             y=1336,
             z=735,
@@ -2000,7 +2000,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Chunky R and D",
+            name="Chunky R&D",
             x=4574,
             y=1336,
             z=1350,
@@ -2052,7 +2052,7 @@ CustomLocations = {
             group=3,
         ),
         CustomLocation(
-            name="R and D lever room - by Tiny's barrel",
+            name="R&D lever room - by Tiny's barrel",
             map=Maps.FranticFactory,
             x=3693.0,
             y=1263.0,
@@ -2064,7 +2064,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Under R and D Grate (2)",
+            name="Under R&D Grate (2)",
             x=4054,
             y=1313,
             z=776,

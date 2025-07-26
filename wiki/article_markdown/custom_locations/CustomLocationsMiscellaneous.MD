@@ -131,7 +131,7 @@
 # Frantic Factory
 | Map | Name | Banned Types | Logic |
 | --- | ---- | ------------ | ----- |
-| Frantic Factory | Under R and D Grate (1) | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.CanAccessRNDRoom()` | 
+| Frantic Factory | Under R&D Grate (1) | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | Dark Room |  | `((l.punch and l.chunky) or l.CanPhase())` | 
 | Frantic Factory | Foyer Carpet |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Middle of Entrance Room |  | `self.logic = lambda _: True` | 
@@ -164,14 +164,14 @@
 | Frantic Factory | Near Funky |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Piano Room | CrownPad, Bananaport | `(l.trombone and l.lanky) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | In Lanky's Piano Room | CrownPad, Bananaport | `((l.trombone and l.islanky) or l.CanAccessRNDRoom())` | 
-| Frantic Factory | Diddy R and D | CrownPad, Bananaport | `(l.guitar and l.diddy) or l.CanAccessRNDRoom()` | 
+| Frantic Factory | Diddy R&D | CrownPad, Bananaport | `(l.guitar and l.diddy) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | In Diddy's Pincode enemies room | CrownPad, Bananaport | `((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
-| Frantic Factory | Chunky R and D | CrownPad, Bananaport | `(l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom()` | 
+| Frantic Factory | Chunky R&D | CrownPad, Bananaport | `(l.triangle and l.climbing and l.chunky and l.punch) or l.CanAccessRNDRoom()` | 
 | Frantic Factory | In front of Chunky's toy boss room | CrownPad, Bananaport | `((l.punch and l.climbing and l.ischunky) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Near Car Race |  | `(l.mini and l.istiny) or l.phasewalk` | 
 | Frantic Factory | Tiny race entry area |  | `((l.mini and l.istiny) or l.CanPhase())` | 
-| Frantic Factory | R and D lever room - by Tiny's barrel |  | `self.logic = lambda _: True` | 
-| Frantic Factory | Under R and D Grate (2) | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.CanPhase() or l.generalclips` | 
+| Frantic Factory | R&D lever room - by Tiny's barrel |  | `self.logic = lambda _: True` | 
+| Frantic Factory | Under R&D Grate (2) | MelonCrate, Bananaport | `(l.grab and l.donkey) or l.CanPhase() or l.generalclips` | 
 | Frantic Factory | Vanilla Close Warp 2 |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Vanilla Close Warp 3 |  | `self.logic = lambda _: True` | 
 | Frantic Factory | Vanilla Far Warp 2 |  | `self.logic = lambda _: True` | 

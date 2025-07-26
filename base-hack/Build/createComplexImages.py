@@ -908,7 +908,7 @@ rmve = [
     "funky_face_2.png",
     "funky_face_3.png",
     "snide_face.png",
-    "white_special_chars.png"
+    "white_special_chars.png",
 ]
 for kong in kongs:
     for x in range(2):

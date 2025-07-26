@@ -300,7 +300,7 @@ check_names_to_id = {
     "Factory Diddy Charge Enemies": 14041257,
     "Factory Chunky Toy Monster": 14041259,
     "Factory Kasplat: Research and Development": 14041260,
-    "Factory Battle Arena (Under R and D Grate)": 14041261,
+    "Factory Battle Arena (Under R&D Grate)": 14041261,
     "Factory Lanky Piano Game": 14041258,
     "Factory Tiny Car Race": 14041262,
     "Factory Diddy Storage Room Barrel": 14041263,

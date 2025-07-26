@@ -51,10 +51,10 @@
 | Frantic Factory | Arcade Room | `l.camera` | 
 | Frantic Factory | Upper Block Tower | `l.camera and ((l.spring or l.CanMoontail()) and l.isdiddy)` | 
 | Frantic Factory | Near Dartboard Boxes | `l.camera` | 
-| Frantic Factory | Research and Development Pole | `l.camera` | 
+| Frantic Factory | R&D Pole | `l.camera` | 
 | Frantic Factory | Car Race Entryway | `l.camera` | 
 | Frantic Factory | Toy Monster Room | `l.camera and ((l.triangle and l.punch and l.ischunky and l.climbing) or l.CanAccessRNDRoom())` | 
-| Frantic Factory | Diddy Research and Development Room | `l.camera and ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
+| Frantic Factory | Diddy R&D Room | `l.camera and ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom())` | 
 | Frantic Factory | Chute to Storage Room | `l.camera` | 
 | Frantic Factory | Dark Room | `l.camera and ((l.punch and l.chunky) or l.CanPhase())` | 
 | Factory Crusher | Crusher Room | `l.camera` | 

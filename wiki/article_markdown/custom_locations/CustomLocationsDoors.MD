@@ -151,7 +151,7 @@
 | Frantic Factory Lobby | Factory Lobby - Low Right | Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Arcade Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Production Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Frantic Factory | R and D | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Frantic Factory | R&D | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Block Tower | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Storage Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Behind Chunky's Toy Box - big | Wrinkly | `(l.ischunky and l.punch and l.triangle and l.climbing) or l.CanAccessRNDRoom()` | 
@@ -163,15 +163,15 @@
 | Frantic Factory | Under Cranky's Lab | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Under Candy's Store | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Next to DK's Count to 16 Puzzle | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Frantic Factory | R and D Room - Next to Tunnel to Car Race | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Frantic Factory | R&D Room - Next to Tunnel to Car Race | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Block Tower Room - Under Tunnel to Funky's | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Frantic Factory | R and D Room - Dead End | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Frantic Factory | R and D Room - Blind Corner Next to Tunnel to Car Race | Wrinkly | `self.logic = lambda _: True` | 
+| Frantic Factory | R&D Room - Dead End | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Frantic Factory | R&D Room - Blind Corner Next to Tunnel to Car Race | Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Funky's Room - Across from Melon Crate | Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Block Tower Room - Air Vent Under Arcade Window | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Block Tower Room - Under Arcade Window - left | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Block Tower Room - Behind Tag Barrel | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Frantic Factory | R and D Room - Next to Diddy's Pincode Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
+| Frantic Factory | R&D Room - Next to Diddy's Pincode Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Tiny's Race Entry Area | Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Kong Cage Room - Next to Tag Barrel | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Production Room - in Alcove Next to Tiny's Barrel | Wrinkly | `l.istiny and l.twirl` | 

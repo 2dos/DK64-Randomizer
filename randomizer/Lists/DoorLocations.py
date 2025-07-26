@@ -1470,14 +1470,14 @@ door_locations = {
             placed=DoorType.boss,
         ),  # TnS Portal in Production Room
         DoorData(
-            name="R and D",
+            name="R&D",
             map=Maps.FranticFactory,
             logicregion=Regions.RandD,
             location=[3827.127, 1264.0, 847.458, 222.0],
             group=4,
             moveless=False,
             placed=DoorType.boss,
-        ),  # TnS Portal in R and D
+        ),  # TnS Portal in R&D
         DoorData(
             name="Block Tower",
             map=Maps.FranticFactory,
@@ -1565,7 +1565,7 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
-            name="R and D Room - Next to Tunnel to Car Race",
+            name="R&D Room - Next to Tunnel to Car Race",
             map=Maps.FranticFactory,
             logicregion=Regions.RandD,
             location=[4006.7, 1264.0, 1454.0, 253.7],
@@ -1581,7 +1581,7 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
-            name="R and D Room - Dead End",
+            name="R&D Room - Dead End",
             map=Maps.FranticFactory,
             logicregion=Regions.RandD,
             location=[3824.0, 1264.0, 528.8, 340.5],
@@ -1589,7 +1589,7 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
-            name="R and D Room - Blind Corner Next to Tunnel to Car Race",
+            name="R&D Room - Blind Corner Next to Tunnel to Car Race",
             map=Maps.FranticFactory,
             logicregion=Regions.RandD,
             location=[3790.0, 1264.0, 1476.0, 52.5],
@@ -1631,7 +1631,7 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
-            name="R and D Room - Next to Diddy's Pincode Room",
+            name="R&D Room - Next to Diddy's Pincode Room",
             map=Maps.FranticFactory,
             logicregion=Regions.RandDUpper,
             location=[4046.0, 1336.0, 608.0, 340.0],

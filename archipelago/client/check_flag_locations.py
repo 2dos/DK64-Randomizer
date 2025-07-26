@@ -327,7 +327,7 @@ location_flag_to_name = {
     608: "Caves Fairy (Diddy Candles Cabin)",
     609: "Japes Battle Arena (Near Funky)",
     610: "Aztec Battle Arena (Tiny Temple: Vulture Room)",
-    611: "Factory Battle Arena (Under R and D Grate)",
+    611: "Factory Battle Arena (Under R&D Grate)",
     612: "Galleon Battle Arena (Under Cranky)",
     613: "Forest Battle Arena (Giant Mushroom High Ladder Platform)",
     614: "Isles Battle Arena 2 (Fungi Lobby: Gorilla Gone Box)",
