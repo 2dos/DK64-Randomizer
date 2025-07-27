@@ -142,6 +142,7 @@ class PJ64Client:
         def clean_config_file(file_path):
             """Read the config file and return cleaned lines."""
             cleaned_lines = []
+
             def read_and_clean_lines(file_path, encoding):
                 with open(file_path, encoding=encoding) as f:
                     for line in f:
