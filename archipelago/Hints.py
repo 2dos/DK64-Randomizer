@@ -137,7 +137,7 @@ def parseKongHint(world, location):
     if location.player != world.player:
         text = f"\x07{location.item.name[:40]}\x07 is to be found by \x05{world.multiworld.get_player_name(location.player)}\x05 in \x0d{location.name[:80]}\x0d.".upper()
     else:
-        text = f"\x07{location.item.name[:40]}\x07  \x0d{location.name}\x0d.".upper()
+        text = f"\x07{location.item.name[:40]}\x07 is held by your local villain in \x0d{location.name}\x0d.".upper()
     for letter in text:
         if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
             text = text.replace(letter, " ")
