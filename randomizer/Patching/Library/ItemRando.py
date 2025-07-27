@@ -119,6 +119,7 @@ class GraphicOverlay(IntEnum):
     IceTrapDisableZ = auto()
     IceTrapDisableCU = auto()
 
+
 class ArcadeRewards(IntEnum):
     """Enum of Arcade Rewards."""
 
@@ -158,6 +159,7 @@ class ArcadeRewards(IntEnum):
     BPChunky = auto()
     APItem = auto()
 
+
 class JetpacRewards(IntEnum):
     """Enum of Jetpac Rewards."""
 
@@ -182,6 +184,7 @@ class JetpacRewards(IntEnum):
     Snide = auto()
     Hint = auto()
     APItem = auto()
+
 
 class BuyText(IntEnum):
     """Enum of items in the order of buy text."""
