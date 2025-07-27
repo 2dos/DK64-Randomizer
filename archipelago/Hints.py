@@ -122,7 +122,7 @@ def parseKeyHint(world, location):
     """Write a key hint for the given location."""
     text = ""
     if location.player != world.player:
-        text = f"\x07{location.item.name[:40]}\x07 is hidden, for {world.multiworld.get_player_name(location.player)} to find in \x0d{location.name[:80]}\x0d.".upper()
+        text = f"\x07{location.item.name[:40]}\x07 is hidden away for \x05{world.multiworld.get_player_name(location.player)}\x05 to find in \x0d{location.name[:80]}\x0d.".upper()
     else:
         text = f"\x07{location.item.name[:40]}\x07 is hidden away in \x0d{location.name}\x0d.".upper()
     for letter in text:
@@ -135,7 +135,7 @@ def parseKongHint(world, location):
     """Write a kong hint for the given location."""
     text = ""
     if location.player != world.player:
-        text = f"\x07{location.item.name[:40]}\x07 is to be found by {world.multiworld.get_player_name(location.player)} in \x0d{location.name[:80]}\x0d.".upper()
+        text = f"\x07{location.item.name[:40]}\x07 is to be found by \x05{world.multiworld.get_player_name(location.player)}\x05 in \x0d{location.name[:80]}\x0d.".upper()
     else:
         text = f"\x07{location.item.name[:40]}\x07 is held by your local villain in \x0d{location.name}\x0d.".upper()
     for letter in text:
@@ -148,7 +148,7 @@ def parseWothHint(world, location):
     """Write a woth item hint for the given location."""
     text = ""
     if location.player != world.player:
-        text = f"{world.multiworld.get_player_name(location.player)} \x0d{location.name[:80]}\x0d is on the \x04Way of the Hoard\x04.".upper()
+        text = f"\x05{world.multiworld.get_player_name(location.player)}\x05 \x0d{location.name[:80]}\x0d is on the \x04Way of the Hoard\x04.".upper()
     else:
         text = f"Your \x0d{location.name}\x0d is on the \x04Way of the Hoard\x04.".upper()
     for letter in text:
@@ -161,7 +161,7 @@ def parseMajorItemHint(world, location):
     """Write a major item hint for the given location."""
     text = ""
     if location.player != world.player:
-        text = f"Looking for \x07{location.item.name[:40]}\x07? Ask {world.multiworld.get_player_name(location.player)} to try looking in \x0d{location.name[:80]}\x0d.".upper()
+        text = f"Looking for \x07{location.item.name[:40]}\x07? Ask \x05{world.multiworld.get_player_name(location.player)}\x05 to try looking in \x0d{location.name[:80]}\x0d.".upper()
     else:
         text = f"Looking for \x07{location.item.name[:40]}\x07? Try looking in \x0d{location.name}\x0d.".upper()
     for letter in text:
@@ -174,7 +174,7 @@ def parseDeepHint(world, location):
     """Write a deep item hint for the given location."""
     text = ""
     if location.item.player != world.player:
-        text = f"\x0d{location.name}\x0d has {world.multiworld.get_player_name(location.item.player)}'s \x07{location.item.name[:40]}\x07.".upper()
+        text = f"\x0d{location.name}\x0d has \x05{world.multiworld.get_player_name(location.item.player)}'s\x05 \x07{location.item.name[:40]}\x07.".upper()
     else:
         text = f"\x0d{location.name}\x0d has your \x07{location.item.name}\x07".upper()
     for letter in text:
