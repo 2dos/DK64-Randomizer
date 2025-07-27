@@ -122,7 +122,7 @@ def parseKeyHint(world, location):
     """Write a key hint for the given location."""
     text = ""
     if location.player != world.player:
-        text = f"\x07{location.item.name[:40]}\x07 is hidden for \x05{world.multiworld.get_player_name(location.player)}\x05 to find in \x0d{location.name[:80]}\x0d.".upper()
+        text = f"\x07{location.item.name[:40]}\x07 is hidden away for \x05{world.multiworld.get_player_name(location.player)}\x05 to find in \x0d{location.name[:80]}\x0d.".upper()
     else:
         text = f"\x07{location.item.name[:40]}\x07 is hidden away in \x0d{location.name}\x0d.".upper()
     for letter in text:
