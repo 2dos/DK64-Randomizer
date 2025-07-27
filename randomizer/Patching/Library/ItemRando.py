@@ -161,7 +161,7 @@ class ArcadeRewards(IntEnum):
 class JetpacRewards(IntEnum):
     """Enum of Jetpac Rewards."""
 
-    RarewareCoin = auto()  # Or NoItem
+    RarewareCoin = 0  # Or NoItem
     Bean = auto()
     Blueprint = auto()
     Crown = auto()
