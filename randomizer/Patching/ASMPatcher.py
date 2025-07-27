@@ -275,6 +275,7 @@ class MinigameImageLoader:
         width: int = 0,
         height: int = 0,
         tex_format: TextureFormat = TextureFormat.RGBA5551,
+        other_images: list[int] = None,
     ):
         """Initialize with given parameters."""
         self.pull_from_repo = file_name is not None
@@ -286,6 +287,7 @@ class MinigameImageLoader:
             self.width = width
             self.height = height
             self.tex_format = tex_format
+            self.other_images = other_images
 
     def getImageBytes(self, ROM_COPY: Union[LocalROM, ROM], sub_dir: str, targ_width: int, targ_height: int, output_format: TextureFormat, flip: bool = True) -> bytes:
         """Convert associated image to bytes that can be written to ROM."""
@@ -294,10 +296,32 @@ class MinigameImageLoader:
             output_image = Image.open(io.BytesIO(js.getFile(f"base-hack/assets/arcade_jetpac/{sub_dir}/{self.file_name}.png")))
         else:
             new_im = getImageFile(ROM_COPY, self.table_index, self.file_index, self.table_index != 7, self.width, self.height, self.tex_format)
-            if self.width != self.height:
-                dim = max(self.width, self.height)
-                dx = int((dim - self.width) / 2)
-                dy = int((dim - self.height) / 2)
+            width = self.width
+            height = self.height
+            if self.other_images is not None:
+                if len(self.other_images) == 1:
+                    width *= 2
+                elif len(self.other_images) == 3:
+                    width *= 2
+                    height *= 2
+                else:
+                    raise Exception("Invalid other images length. Unable to correctly patch")
+                base_im = Image.new(mode="RGBA", size=(width, height))
+                base_im.paste(new_im, (0, 0), new_im)
+                for img_index, other_image in enumerate(self.other_images):
+                    new_im = getImageFile(ROM_COPY, self.table_index, other_image, self.table_index != 7, self.width, self.height, self.tex_format)
+                    x_offset = self.width
+                    y_offset = 0
+                    if img_index == 1:
+                        x_offset = 0
+                    if img_index > 0:
+                        y_offset = self.height
+                    base_im.paste(new_im, (x_offset, y_offset), new_im)
+                new_im = base_im
+            if width != height:
+                dim = max(width, height)
+                dx = int((dim - width) / 2)
+                dy = int((dim - height) / 2)
                 temp_im = Image.new(mode="RGBA", size=(dim, dim))
                 temp_im.paste(new_im, (dx, dy), new_im)
                 new_im = temp_im
@@ -382,6 +406,26 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
             MinigameImageLoader("hint"),
         ),
         Minigame8BitImage([Items.ArchipelagoItem], MinigameImageLoader("ap"), MinigameImageLoader("ap")),
+        Minigame8BitImage(
+            [Items.Cranky],
+            MinigameImageLoader(None, 25, 0x1387, 32, 32, TextureFormat.RGBA5551, [0x1388, 0x1389, 0x138A]),
+            MinigameImageLoader("kong"),
+        ),
+        Minigame8BitImage(
+            [Items.Funky],
+            MinigameImageLoader(None, 25, 0x172F, 32, 32, TextureFormat.RGBA5551, [0x1730, 0x1731, 0x1732]),
+            MinigameImageLoader("kong"),
+        ),
+        Minigame8BitImage(
+            [Items.Candy],
+            MinigameImageLoader(None, 25, 0x172A, 32, 32, TextureFormat.RGBA5551, [0x172B, 0x172C, 0x172D]),
+            MinigameImageLoader("kong"),
+        ),
+        Minigame8BitImage(
+            [Items.Snide],
+            MinigameImageLoader(None, 25, 0x172E, 64, 32, TextureFormat.RGBA5551),
+            MinigameImageLoader("kong"),
+        ),
     ]
     arcade_image_data = None
     jetpac_image_data = None

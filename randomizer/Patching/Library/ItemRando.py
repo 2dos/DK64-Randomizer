@@ -119,6 +119,69 @@ class GraphicOverlay(IntEnum):
     IceTrapDisableZ = auto()
     IceTrapDisableCU = auto()
 
+class ArcadeRewards(IntEnum):
+    """Enum of Arcade Rewards."""
+
+    NintendoCoin = 0  # Or No Item
+    Bean = auto()
+    Blueprint = auto()
+    Crown = auto()
+    Fairy = auto()
+    Banana = auto()
+    Key = auto()
+    Medal = auto()
+    Pearl = auto()
+    PotionDK = auto()
+    PotionDiddy = auto()
+    PotionLanky = auto()
+    PotionTiny = auto()
+    PotionChunky = auto()
+    PotionAny = auto()
+    Donkey = auto()
+    Diddy = auto()
+    Lanky = auto()
+    Tiny = auto()
+    Chunky = auto()
+    RainbowCoin = auto()
+    RarewareCoin = auto()
+    JunkItem = auto()
+    IceTrap = auto()
+    Cranky = auto()
+    Funky = auto()
+    Candy = auto()
+    Snide = auto()
+    Hint = auto()
+    BPDK = auto()
+    BPDiddy = auto()
+    BPLanky = auto()
+    BPTiny = auto()
+    BPChunky = auto()
+    APItem = auto()
+
+class JetpacRewards(IntEnum):
+    """Enum of Jetpac Rewards."""
+
+    RarewareCoin = auto()  # Or NoItem
+    Bean = auto()
+    Blueprint = auto()
+    Crown = auto()
+    Fairy = auto()
+    Banana = auto()
+    Key = auto()
+    Medal = auto()
+    Pearl = auto()
+    Potion = auto()
+    Kong = auto()
+    RainbowCoin = auto()
+    NintendoCoin = auto()
+    JunkItem = auto()
+    IceTrap = auto()
+    Cranky = auto()
+    Funky = auto()
+    Candy = auto()
+    Snide = auto()
+    Hint = auto()
+    APItem = auto()
 
 class BuyText(IntEnum):
     """Enum of items in the order of buy text."""
@@ -203,6 +266,8 @@ class ItemPlacementData:
         model_index: list[int] = None,
         model_two_index: list[int] = None,
         actor_index: list[int] = None,
+        arcade_reward_index: list[int] = None,
+        jetpac_reward_index: list[int] = None,
         overlay: list[GraphicOverlay] = None,
         index_getter=None,
         preview_text: str = "",
@@ -213,6 +278,8 @@ class ItemPlacementData:
         self.has_model = model_index is not None
         self.model_index = model_index
         self.model_two_index = model_two_index
+        self.arcade_reward_index = arcade_reward_index
+        self.jetpac_reward_index = jetpac_reward_index
         self.actor_index = actor_index
         self.overlay = overlay
         if index_getter is None:
@@ -229,17 +296,29 @@ item_db = {
         model_index=[0x69],
         model_two_index=[0x74],
         actor_index=[45],
+        arcade_reward_index=[ArcadeRewards.Banana],
+        jetpac_reward_index=[JetpacRewards.Banana],
         overlay=[GraphicOverlay.Banana],
         preview_text="\x04GOLDEN BANANA\x04",
         seal_preview_text="\x04BANANA OF PURE GOLD\x04",
     ),
     Types.Key: ItemPlacementData(
-        model_index=[0xF5], model_two_index=[0x13C], actor_index=[72], overlay=[GraphicOverlay.Key], preview_text="\x04BOSS KEY\x04", seal_preview_text="\x04KEY TO DAVY JONES LOCKER\x04", scale=0.17
+        model_index=[0xF5],
+        model_two_index=[0x13C],
+        actor_index=[72],
+        arcade_reward_index=[ArcadeRewards.Key],
+        jetpac_reward_index=[JetpacRewards.Key],
+        overlay=[GraphicOverlay.Key],
+        preview_text="\x04BOSS KEY\x04",
+        seal_preview_text="\x04KEY TO DAVY JONES LOCKER\x04",
+        scale=0.17,
     ),
     Types.Crown: ItemPlacementData(
         model_index=[0xF4],
         model_two_index=[0x18D],
         actor_index=[86],
+        arcade_reward_index=[ArcadeRewards.Crown],
+        jetpac_reward_index=[JetpacRewards.Crown],
         overlay=[GraphicOverlay.Crown],
         preview_text="\x04BATTLE CROWN\x04",
         seal_preview_text="\x04CROWN TO PLACE ATOP YER HEAD\x04",
@@ -248,6 +327,8 @@ item_db = {
         model_index=[0x3D],
         model_two_index=[0x25C],
         actor_index=[CustomActors.Fairy],
+        arcade_reward_index=[ArcadeRewards.Fairy],
+        jetpac_reward_index=[JetpacRewards.Fairy],
         overlay=[GraphicOverlay.Fairy],
         preview_text="\x04BANANA FAIRY\x04",
         seal_preview_text="\x04MAGICAL FLYING PIXIE\x04",
@@ -255,6 +336,14 @@ item_db = {
     Types.Shop: ItemPlacementData(
         model_index=[0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB],
         model_two_index=[0x5B, 0x1F2, 0x59, 0x1F3, 0x1F5, 0x1F6],
+        arcade_reward_index=[
+            ArcadeRewards.PotionDK,
+            ArcadeRewards.PotionDiddy,
+            ArcadeRewards.PotionLanky,
+            ArcadeRewards.PotionTiny,
+            ArcadeRewards.PotionChunky,
+            ArcadeRewards.PotionAny,
+        ],
         actor_index=[
             CustomActors.PotionDK,
             CustomActors.PotionDiddy,
@@ -263,6 +352,7 @@ item_db = {
             CustomActors.PotionChunky,
             CustomActors.PotionAny,
         ],
+        jetpac_reward_index=[JetpacRewards.Potion] * 6,
         overlay=[GraphicOverlay.CrankyPotion] * 6,  # Handled elsewhere
         index_getter=lambda item, flag, shared: (flag >> 12) & 7 if flag & 0x8000 and not shared and ((flag >> 12) & 7) < 5 else 5,
         preview_text="\x04POTION\x04",
@@ -272,6 +362,8 @@ item_db = {
         model_index=[0xFB],
         model_two_index=[0x1F6],
         actor_index=[CustomActors.PotionAny],
+        arcade_reward_index=[ArcadeRewards.PotionAny],
+        jetpac_reward_index=[JetpacRewards.Potion],
         overlay=[GraphicOverlay.Shockwave],
         preview_text="\x04POTION\x04",
         seal_preview_text="\x04BOTTLE OF GROG\x04",
@@ -280,6 +372,8 @@ item_db = {
         model_index=[0xFB],
         model_two_index=[0x1F6],
         actor_index=[CustomActors.PotionAny],
+        arcade_reward_index=[ArcadeRewards.PotionAny],
+        jetpac_reward_index=[JetpacRewards.Potion],
         overlay=[GraphicOverlay.TrainingBarrel],
         preview_text="\x04POTION\x04",
         seal_preview_text="\x04BOTTLE OF GROG\x04",
@@ -288,6 +382,8 @@ item_db = {
         model_index=[0xFB],
         model_two_index=[0x1F6],
         actor_index=[CustomActors.PotionAny],
+        arcade_reward_index=[ArcadeRewards.PotionAny],
+        jetpac_reward_index=[JetpacRewards.Potion],
         overlay=[GraphicOverlay.TrainingBarrel],
         preview_text="\x04POTION\x04",
         seal_preview_text="\x04BOTTLE OF GROG\x04",
@@ -302,6 +398,14 @@ item_db = {
             CustomActors.KongTiny,
             CustomActors.KongChunky,
         ],
+        arcade_reward_index=[
+            ArcadeRewards.Donkey,
+            ArcadeRewards.Diddy,
+            ArcadeRewards.Lanky,
+            ArcadeRewards.Tiny,
+            ArcadeRewards.Chunky,
+        ],
+        jetpac_reward_index=[JetpacRewards.Kong] * 5,
         overlay=[GraphicOverlay.Kong],
         index_getter=lambda item, flag, shared: (385, 6, 70, 66, 117).index(flag),
         preview_text="\x04KONG\x04",
@@ -333,6 +437,8 @@ item_db = {
             CustomActors.IceTrapDisableZKey,
             CustomActors.IceTrapDisableCUKey,
         ],
+        arcade_reward_index=[ArcadeRewards.IceTrap] * (3 * 7),
+        jetpac_reward_index=[JetpacRewards.IceTrap] * (3 * 7),
         overlay=[
             GraphicOverlay.IceTrapBubble,
             GraphicOverlay.IceTrapReverse,
@@ -364,6 +470,8 @@ item_db = {
         model_index=[0x104],
         model_two_index=[0x198],
         actor_index=[CustomActors.Bean],
+        arcade_reward_index=[ArcadeRewards.Bean],
+        jetpac_reward_index=[JetpacRewards.Bean],
         overlay=[GraphicOverlay.Bean],
         preview_text="\x04BEAN\x04",
         seal_preview_text="\x04QUESTIONABLE VEGETABLE\x04",
@@ -372,6 +480,8 @@ item_db = {
         model_index=[0x106],
         model_two_index=[0x1B4],
         actor_index=[CustomActors.Pearl],
+        arcade_reward_index=[ArcadeRewards.Pearl],
+        jetpac_reward_index=[JetpacRewards.Pearl],
         overlay=[GraphicOverlay.Pearl],
         preview_text="\x04PEARL\x04",
         seal_preview_text="\x04BLACK PEARL\x04",
@@ -380,6 +490,8 @@ item_db = {
         model_index=[0x108],
         model_two_index=[0x90],
         actor_index=[CustomActors.Medal],
+        arcade_reward_index=[ArcadeRewards.Medal],
+        jetpac_reward_index=[JetpacRewards.Medal],
         overlay=[GraphicOverlay.Medal],
         preview_text="\x04BANANA MEDAL\x04",
         seal_preview_text="\x04MEDALLION\x04",
@@ -389,6 +501,8 @@ item_db = {
         model_index=[0x10A],
         model_two_index=[0x48],
         actor_index=[CustomActors.NintendoCoin],
+        arcade_reward_index=[ArcadeRewards.NintendoCoin],
+        jetpac_reward_index=[JetpacRewards.NintendoCoin],
         overlay=[GraphicOverlay.CompanyCoin],
         preview_text="\x04NINTENDO COIN\x04",
         seal_preview_text="\x04ANCIENT DOUBLOON\x04",
@@ -398,6 +512,8 @@ item_db = {
         model_index=[0x10C],
         model_two_index=[0x28F],
         actor_index=[CustomActors.RarewareCoin],
+        arcade_reward_index=[ArcadeRewards.RarewareCoin],
+        jetpac_reward_index=[JetpacRewards.RarewareCoin],
         overlay=[GraphicOverlay.CompanyCoin],
         preview_text="\x04RAREWARE COIN\x04",
         seal_preview_text="\x04DOUBLOON OF THE RAREST KIND\x04",
@@ -407,6 +523,8 @@ item_db = {
         model_index=[0x10E],
         model_two_index=[0x25E],
         actor_index=[0x2F],
+        arcade_reward_index=[ArcadeRewards.JunkItem],
+        jetpac_reward_index=[JetpacRewards.JunkItem],
         overlay=[GraphicOverlay.JunkMelon],
         preview_text="\x04JUNK ITEM\x04",
         seal_preview_text="\x04HEAP OF JUNK\x04",
@@ -415,6 +533,8 @@ item_db = {
         model_index=[0x11],
         model_two_index=[0x25F],
         actor_index=[CustomActors.CrankyItem],
+        arcade_reward_index=[ArcadeRewards.Cranky],
+        jetpac_reward_index=[JetpacRewards.Cranky],
         overlay=[GraphicOverlay.CrankyItem],
         preview_text="\x04SHOPKEEPER\x04",
         seal_preview_text="\x04BARTERING SOUL\x04",
@@ -423,6 +543,8 @@ item_db = {
         model_index=[0x12],
         model_two_index=[0x260],
         actor_index=[CustomActors.FunkyItem],
+        arcade_reward_index=[ArcadeRewards.Funky],
+        jetpac_reward_index=[JetpacRewards.Funky],
         overlay=[GraphicOverlay.FunkyItem],
         preview_text="\x04SHOPKEEPER\x04",
         seal_preview_text="\x04BARTERING SOUL\x04",
@@ -431,6 +553,8 @@ item_db = {
         model_index=[0x13],
         model_two_index=[0x261],
         actor_index=[CustomActors.CandyItem],
+        arcade_reward_index=[ArcadeRewards.Candy],
+        jetpac_reward_index=[JetpacRewards.Candy],
         overlay=[GraphicOverlay.CandyItem],
         preview_text="\x04SHOPKEEPER\x04",
         seal_preview_text="\x04BARTERING SOUL\x04",
@@ -439,6 +563,8 @@ item_db = {
         model_index=[0x1F],
         model_two_index=[0x262],
         actor_index=[CustomActors.SnideItem],
+        arcade_reward_index=[ArcadeRewards.Snide],
+        jetpac_reward_index=[JetpacRewards.Snide],
         overlay=[GraphicOverlay.SnideItem],
         preview_text="\x04SHOPKEEPER\x04",
         seal_preview_text="\x04NERDY SOUL\x04",
@@ -453,6 +579,8 @@ item_db = {
             CustomActors.HintItemTiny,
             CustomActors.HintItemChunky,
         ],
+        arcade_reward_index=[ArcadeRewards.Hint] * 5,
+        jetpac_reward_index=[JetpacRewards.Hint] * 5,
         overlay=[GraphicOverlay.Hint],
         index_getter=lambda item, flag, shared: (flag - 0x384) % 5,
         preview_text="\x04HINT\x04",
@@ -462,6 +590,14 @@ item_db = {
         model_two_index=[0xDE, 0xE0, 0xE1, 0xDD, 0xDF],
         actor_index=[78, 75, 77, 79, 76],
         overlay=[GraphicOverlay.Blueprint],
+        arcade_reward_index=[
+            ArcadeRewards.BPDK,
+            ArcadeRewards.BPDiddy,
+            ArcadeRewards.BPLanky,
+            ArcadeRewards.BPTiny,
+            ArcadeRewards.BPChunky,
+        ],
+        jetpac_reward_index=[JetpacRewards.Blueprint] * 5,
         index_getter=lambda item, flag, shared: (flag - 0x1D5) % 5,
         preview_text="\x04BLUEPRINT\x04",
         seal_preview_text="\x04MAP O' DEATH MACHINE\x04",
@@ -470,6 +606,8 @@ item_db = {
     Types.RainbowCoin: ItemPlacementData(
         model_two_index=[0xB7],
         actor_index=[0x8C],
+        arcade_reward_index=[ArcadeRewards.RainbowCoin],
+        jetpac_reward_index=[JetpacRewards.RainbowCoin],
         overlay=[GraphicOverlay.RainbowCoin],
         preview_text="\x04RAINBOW COIN\x04",
         seal_preview_text="\x04COLORFUL COIN HIDDEN FOR 17 YEARS\x04",
@@ -477,6 +615,8 @@ item_db = {
     Types.NoItem: ItemPlacementData(
         model_two_index=[0],
         actor_index=[CustomActors.Null],
+        arcade_reward_index=[ArcadeRewards.NintendoCoin],
+        jetpac_reward_index=[JetpacRewards.RarewareCoin],
         overlay=[GraphicOverlay.NoItem],
         preview_text="\x04NOTHING\x04",
         seal_preview_text="\x04DIDDLY SQUAT\x04",
@@ -485,6 +625,8 @@ item_db = {
         model_index=[0x125],
         model_two_index=[0x291],
         actor_index=[CustomActors.ArchipelagoItem],
+        arcade_reward_index=[ArcadeRewards.APItem],
+        jetpac_reward_index=[JetpacRewards.APItem],
         overlay=[GraphicOverlay.Hint],
         preview_text="\x04ARCHIPELAGO ITEM\x04",
         seal_preview_text="\x04ANOTHER SCALLYWAG'S BOOTY\x04",

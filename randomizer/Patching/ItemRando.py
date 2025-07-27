@@ -629,90 +629,16 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                             )
                     if item.location == Locations.NintendoCoin:
                         spoiler.arcade_item_reward = item.new_subitem
-                        arcade_rewards = (
-                            Types.NoItem,  # Or Nintendo Coin
-                            Types.Bean,
-                            Types.Blueprint,
-                            Types.Crown,
-                            Types.Fairy,
-                            Types.Banana,
-                            Types.Key,
-                            Types.Medal,
-                            Types.Pearl,
-                            Types.Shop,  # Handled in special case
-                            Types.Shop,  # Handled in special case
-                            Types.Shop,  # Handled in special case
-                            Types.Shop,  # Handled in special case
-                            Types.Shop,  # Handled in special case
-                            Types.Shop,  # Handled in special case
-                            Types.Kong,  # Handled in special case
-                            Types.Kong,  # Handled in special case
-                            Types.Kong,  # Handled in special case
-                            Types.Kong,  # Handled in special case
-                            Types.Kong,  # Handled in special case
-                            Types.RainbowCoin,
-                            Types.RarewareCoin,  # Flag check handled separately
-                            Types.JunkItem,
-                        )
-                        arcade_reward_index = 0
-                        if item.new_item == Types.Kong:
-                            if item.new_flag in kong_flags:
-                                arcade_reward_index = kong_flags.index(item.new_flag) + 15
-                        elif item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing):
-                            if (item.new_flag & 0x8000) == 0:
-                                slot = 5
-                            else:
-                                slot = (item.new_flag >> 12) & 7
-                                if item.shared or slot > 5:
-                                    slot = 5
-                            arcade_reward_index = 9 + slot
-                        elif item.new_item in arcade_rewards:
-                            arcade_reward_index = arcade_rewards.index(item.new_item)
-                        elif item.new_item == Types.FillerBanana:
-                            arcade_reward_index = 5
-                        elif item.new_item == Types.FillerCrown:
-                            arcade_reward_index = 3
-                        elif item.new_item == Types.FillerMedal:
-                            arcade_reward_index = 7
-                        elif item.new_item == Types.FillerFairy:
-                            arcade_reward_index = 4
-                        elif item.new_item == Types.FillerPearl:
-                            arcade_reward_index = 8
+                        db_item = getItemDBEntry(item.new_item)
+                        db_index = db_item.index_getter(item.new_subitem, item.new_flag, item.shared)
+                        arcade_reward_index = db_item.arcade_reward_index[db_index]
                         ROM_COPY.seek(sav + 0x110)
                         ROM_COPY.write(arcade_reward_index)
                     elif item.location == Locations.RarewareCoin:
                         spoiler.jetpac_item_reward = item.new_subitem
-                        jetpac_rewards = (
-                            Types.NoItem,  # Or RW Coin
-                            Types.Bean,
-                            Types.Blueprint,
-                            Types.Crown,
-                            Types.Fairy,
-                            Types.Banana,
-                            Types.Key,
-                            Types.Medal,
-                            Types.Pearl,
-                            Types.Shop,  # Shockwave/Training/Climbing handled separately
-                            Types.Kong,
-                            Types.RainbowCoin,
-                            Types.NintendoCoin,  # Flag check handled separately
-                            Types.JunkItem,
-                        )
-                        jetpac_reward_index = 0
-                        if item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.Climbing):
-                            jetpac_reward_index = 9
-                        elif item.new_item in jetpac_rewards:
-                            jetpac_reward_index = jetpac_rewards.index(item.new_item)
-                        elif item.new_item == Types.FillerBanana:
-                            jetpac_reward_index = 5
-                        elif item.new_item == Types.FillerPearl:
-                            jetpac_reward_index = 8
-                        elif item.new_item == Types.FillerCrown:
-                            jetpac_reward_index = 3
-                        elif item.new_item == Types.FillerMedal:
-                            jetpac_reward_index = 7
-                        elif item.new_item == Types.FillerFairy:
-                            jetpac_reward_index = 4
+                        db_item = getItemDBEntry(item.new_item)
+                        db_index = db_item.index_getter(item.new_subitem, item.new_flag, item.shared)
+                        jetpac_reward_index = db_item.jetpac_reward_index[db_index]
                         ROM_COPY.seek(sav + 0x111)
                         ROM_COPY.write(jetpac_reward_index)
                     elif item.location in (Locations.ForestDonkeyBaboonBlast, Locations.CavesDonkeyBaboonBlast):
@@ -996,18 +922,20 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                 ROM_COPY.seek(start + 0x2A)
                 item_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 for item_slot in map_items[map_id]:
-                    if item_slot["id"] == item_id:
-                        ROM_COPY.seek(start + 0x28)
-                        old_item = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                        if old_item in model_two_items:
-                            ROM_COPY.seek(start + 0x28)
-                            item_obj_index = getPropFromItem(item_slot["subitem"], item_slot["obj"], item_slot["flag"], item_slot["shared"])
-                            ROM_COPY.writeMultipleBytes(item_obj_index, 2)
-                            if item_slot["loc"] == Locations.IslesChunkyPoundtheX:
-                                writeValue(ROM_COPY, 0x80747D4A, Overlay.Static, item_obj_index, offset_dict)
-                            # Scaling fix
-                            ROM_COPY.seek(start + 0xC)
-                            old_scale = intf_to_float(int.from_bytes(ROM_COPY.readBytes(4), "big"))
-                            new_scale = old_scale * item_slot["upscale"]
-                            ROM_COPY.seek(start + 0xC)
-                            ROM_COPY.writeFloat(new_scale)
+                    if item_slot["id"] != item_id:
+                        continue
+                    ROM_COPY.seek(start + 0x28)
+                    old_item = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                    if old_item not in model_two_items:
+                        continue
+                    ROM_COPY.seek(start + 0x28)
+                    item_obj_index = getPropFromItem(item_slot["subitem"], item_slot["obj"], item_slot["flag"], item_slot["shared"])
+                    ROM_COPY.writeMultipleBytes(item_obj_index, 2)
+                    if item_slot["loc"] == Locations.IslesChunkyPoundtheX:
+                        writeValue(ROM_COPY, 0x80747D4A, Overlay.Static, item_obj_index, offset_dict)
+                    # Scaling fix
+                    ROM_COPY.seek(start + 0xC)
+                    old_scale = intf_to_float(int.from_bytes(ROM_COPY.readBytes(4), "big"))
+                    new_scale = old_scale * item_slot["upscale"]
+                    ROM_COPY.seek(start + 0xC)
+                    ROM_COPY.writeFloat(new_scale)

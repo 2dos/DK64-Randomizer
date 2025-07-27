@@ -212,7 +212,8 @@
 static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
-	int wrinkly_index = kong + (5 * getWorld(CurrentMap, 0));
+	int world = getWorld(CurrentMap, 0);
+	int wrinkly_index = kong + (5 * world);
 	int flag = FLAG_WRINKLYVIEWED + wrinkly_index;
 	if (Rando.hints_are_items) {
 		if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
@@ -221,6 +222,7 @@ void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk
 		}
 	} else {
 		setPermFlag(flag);
+		giveItem(REQITEM_HINT, world, kong, (giveItemConfig){.apply_helm_hurry = 1});
 	}
 	// Display hint tick
 	displayImageOnObject(index, 1, 2, 0);

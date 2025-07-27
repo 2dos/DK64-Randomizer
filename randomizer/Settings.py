@@ -2292,8 +2292,6 @@ class Settings:
                     Types.PreGivenMove,
                     Types.TrainingBarrel,
                     Types.Climbing,
-                    Types.NintendoCoin,
-                    Types.RarewareCoin,
                 )
             ]
             shuffledNonMoveLocations = [location for location in shuffledLocations if spoiler.LocationList[location].type != Types.PreGivenMove]
@@ -2401,8 +2399,6 @@ class Settings:
                     Locations.CavesTinyCaveBarrel,
                     Locations.CastleDonkeyTree,
                     Locations.CastleLankyGreenhouse,
-                    Locations.HelmBananaFairy1,
-                    Locations.HelmBananaFairy2,
                 )
                 self.valid_locations[Types.FakeItem] = [x for x in shuffledNonMoveLocations if not self.isBadIceTrapLocation(spoiler.LocationList[x]) and x not in bad_fake_locations]
             if Types.JunkItem in self.shuffled_location_types:
