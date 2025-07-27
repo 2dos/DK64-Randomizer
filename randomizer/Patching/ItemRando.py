@@ -178,6 +178,7 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
         Types.FillerCrown: 7,
         Types.FillerMedal: 9,
         Types.FillerPearl: 11,
+        Types.ArchipelagoItem: 0x15,
     }
     if item_type in simple_types:
         return ItemPatchingInfo(simple_types[item_type])

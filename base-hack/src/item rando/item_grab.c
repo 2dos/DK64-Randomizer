@@ -474,7 +474,7 @@ void getItem(int object_type) {
             if (it_type == -1) {
                 it_type = ICETRAP_SLOWED;
             }
-        case 0x298:
+        case 0x2A6:
         case 0x29C:
         case 0x2A0:
             if (it_type == -1) {
@@ -853,7 +853,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x295:
         case 0x296:
         case 0x297:
-        case 0x298:
+        case 0x2A6:
         case 0x299:
         case 0x29A:
         case 0x29B:

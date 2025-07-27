@@ -263,7 +263,7 @@ db = [
     InGameItem(name="Fake Item (Key Bubble)", actor=154, is_custom=False, model_two=0x295, base=base_kong, bounce=True, scale=0.25),
     InGameItem(name="Fake Item (Key Reverse)", actor=155, is_custom=False, model_two=0x296, base=base_kong, bounce=True, scale=0.25),
     InGameItem(name="Fake Item (Key Slow)", actor=157, is_custom=False, model_two=0x297, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (GB Dis A)", actor=CustomActors.IceTrapDisableAGB, is_custom=False, model_two=0x298, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (GB Dis A)", actor=CustomActors.IceTrapDisableAGB, is_custom=False, model_two=0x2A6, base=base_kong, bounce=True, scale=0.25),
     InGameItem(name="Fake Item (GB Dis B)", actor=CustomActors.IceTrapDisableBGB, is_custom=False, model_two=0x299, base=base_kong, bounce=True, scale=0.25),
     InGameItem(name="Fake Item (GB Dis Z)", actor=CustomActors.IceTrapDisableZGB, is_custom=False, model_two=0x29A, base=base_kong, bounce=True, scale=0.25),
     InGameItem(name="Fake Item (GB Dis CU)", actor=CustomActors.IceTrapDisableCUGB, is_custom=False, model_two=0x29B, base=base_kong, bounce=True, scale=0.25),

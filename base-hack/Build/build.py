@@ -311,7 +311,7 @@ file_dict = [
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item_0.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=612, source_file="fake_item_1.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=613, source_file="fake_item_2.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x298, source_file="fake_item_3.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A6, source_file="fake_item_3.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x299, source_file="fake_item_4.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29A, source_file="fake_item_5.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29B, source_file="fake_item_6.bin", do_not_delete_source=True, do_not_extract=True),
