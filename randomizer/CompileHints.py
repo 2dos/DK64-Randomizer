@@ -3495,3 +3495,15 @@ def ScoreCompleteHintSet(spoiler, hint_distribution, multipath_dict_goals):
             if node_score > 0.25:
                 node_location = spoiler.LocationList[node.node_location_id]
                 spoiler.poor_scoring_locations[node_location.name + " (" + ItemList[node_location.item].name + ")"] = node_score
+
+
+def CompileArchipelagoHints(spoiler: Spoiler, woth_hints: list, major_hints: list, deep_hints: list):
+    """Insert Archipelago hints."""
+    # All input lists are in the form of [loc.name, multiworld.get_player_name(loc.player), loc.item.name, multiworld.get_player_name(loc.item.player), isForeign]
+    replaceKongNameWithKrusha(spoiler)
+    ClearHintMessages()
+    hints = woth_hints + major_hints + deep_hints
+    for hint in hints:
+        hint_location = getRandomHintLocation(random=spoiler.settings.random)
+        UpdateHint(hint_location, hint)
+    UpdateSpoilerHintList(spoiler)
