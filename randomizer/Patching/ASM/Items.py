@@ -224,6 +224,7 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     # Get blueprint status for gb giving
     writeValue(ROM_COPY, 0x8002483A, Overlay.Menu, 4, offset_dict)
     writeFunction(ROM_COPY, 0x80024840, Overlay.Menu, "getItemCount_new", offset_dict)
+    writeValue(ROM_COPY, 0x80024854, Overlay.Menu, 0x00801025, offset_dict, 4)  # OR $v0, $a0, $zero
     # Pause Stuff
     writeFunction(ROM_COPY, 0x806A9D50, Overlay.Static, "handleOutOfCounters", offset_dict)  # Print out of counter, depending on item rando state
     writeFunction(ROM_COPY, 0x806A9EFC, Overlay.Static, "handleOutOfCounters", offset_dict)  # Print out of counter, depending on item rando state

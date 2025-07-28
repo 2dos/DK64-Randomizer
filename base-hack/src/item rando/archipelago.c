@@ -59,7 +59,7 @@ void handleSentItem(void) {
             giveItem(REQITEM_PEARL, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_MEDAL:
-            giveItem(REQITEM_PEARL, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            giveItem(REQITEM_MEDAL, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_FAIRY:
             giveItem(REQITEM_FAIRY, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});

@@ -21,6 +21,22 @@ static const MoveSpecialBijectionStruct move_flag_bijection[] = {
     {.flag = FLAG_ABILITY_SHOCKWAVE, .move_enum = MOVE_SPECIAL_SHOCKWAVE},
 };
 
+typedef struct pad_refresh_calls {
+    unsigned char level;
+    unsigned char kong;
+    unsigned char signal;
+    unsigned char pad;
+} pad_refresh_calls;
+
+static const pad_refresh_calls call_checks_pad_refresh[] = {
+    {.level = 0,    .kong = KONG_DK,                .signal = ITEMREFRESH_BLAST},
+    {.level = 2,    .kong = KONG_DIDDY,             .signal = ITEMREFRESH_SPRING},
+    {.level = 1,    .kong = KONG_LANKY,             .signal = ITEMREFRESH_BALLOON},
+    {.level = 2,    .kong = KONG_TINY,              .signal = ITEMREFRESH_MONKEYPORT},
+    {.level = 2,    .kong = KONG_CHUNKY,            .signal = ITEMREFRESH_GONE},
+	{.level = 10,   .kong = MOVE_SPECIAL_VINES,     .signal = ITEMREFRESH_VINE},
+};
+
 void giveItem(requirement_item item, int level, int kong, giveItemConfig config) {
     // Gives an item determined by the id. Use level & kong if necessary
     helm_hurry_items hh_item = HHITEM_NOTHING;
@@ -155,6 +171,13 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             }
             hh_item = HHITEM_MOVE;
             display_text = 1;
+            for (int i = 0; i < 6; i++) {
+                if (level == call_checks_pad_refresh[i].level) {
+                    if (kong == call_checks_pad_refresh[i].kong) {
+                        refreshPads(call_checks_pad_refresh[i].signal);
+                    }
+                }
+            }
             break;
     }
     SpeedUpMusicInner();

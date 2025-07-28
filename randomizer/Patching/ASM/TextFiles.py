@@ -15,7 +15,7 @@ def writeNewTextFiles(ROM_COPY: LocalROM, offset_dict: dict):
     writeValue(ROM_COPY, 0x806C275A, Overlay.Static, ItemPreview.Seal, offset_dict)
     # Owl Race
     writeValue(ROM_COPY, 0x806C56E6, Overlay.Static, CompTextFiles.PreviewsFlavor, offset_dict)
-    writeValue(ROM_COPY, 0x806C2668, Overlay.Static, 0x24060000 | ItemPreview.OwlRace, offset_dict, 4)
+    writeValue(ROM_COPY, 0x806C5768, Overlay.Static, 0x24060000 | ItemPreview.OwlRace, offset_dict, 4)
     # Vulture
     writeValue(ROM_COPY, 0x806C4F12, Overlay.Static, CompTextFiles.PreviewsFlavor, offset_dict)
     writeValue(ROM_COPY, 0x806C559C, Overlay.Static, 0x24050000 | ItemPreview.VultureFreedom, offset_dict, 4)

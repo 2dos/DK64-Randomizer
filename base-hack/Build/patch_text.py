@@ -1301,34 +1301,34 @@ def writeNoExpPakMessages(fh: BinaryIO):
 
 
 item_preview_file = [
-    (16, 2),  # Japes Minecart - Intro
-    (16, 3),  # Japes Minecart - Reward
-    (16, 4),  # Japes Minecart - Not enough coins
-    (16, 5),  # Fungi Minecart - Intro
-    (16, 7),  # Fungi Minecart - Not enough coins
-    (16, 8),  # Castle Minecart - Intro
-    (16, 9),  # Castle Minecart - Reward
-    (17, 4),  # Factory Car Race
-    (23, 0),  # Mermaid - Intro
-    (23, 1),  # Mermaid - Reward
-    (23, 2),  # Mermaid - Missing some items
-    (15, 0),  # Diddy Vulture - Freedom
-    (15, 1),  # Diddy Vulture - Reward
-    (10, 1),  # Llama - Talking to him
-    (10, 2),  # Llama - Rescue
-    (8, 2),  # Jetpac - Intro
-    (8, 34),  # Jetpac - Reward
-    (20, 1),  # Rabbit - Race 2 Intro
-    (20, 2),  # Rabbit - Race 1 Reward
-    (20, 3),  # Rabbit - Race 2 Reward
-    (22, 0),  # Apple - Intro
-    (22, 1),  # Apple - Pick up
-    (22, 4),  # Apple - Reward
-    (28, 2),  # Seal - Race Preview
-    (30, 0),  # RW GB
-    (33, 0),  # Ice Tomato
-    (34, 4),  # Castle Tiny Car Race
-    (21, 0),  # Owl Race
+    (16, 2),  # JapesMinecartIntro
+    (16, 3),  # JapesMinecartReward
+    (16, 4),  # JapesMinecartFail
+    (16, 5),  # FungiMinecartIntro
+    (16, 7),  # FungiMinecartFail
+    (16, 8),  # CastleMinecartIntro
+    (16, 9),  # CastleMinecartReward
+    (17, 4),  # FactoryCarRace
+    (23, 0),  # MermaidIntro
+    (23, 1),  # MermaidReward
+    (23, 2),  # MermaidMissing
+    (15, 0),  # VultureFreedom
+    (15, 1),  # VulturePreview
+    (10, 1),  # LlamaTalk
+    (10, 2),  # LlamaRescue
+    (8, 2),  # JetpacIntro
+    (8, 34),  # JetpacReward
+    (20, 1),  # RabbitFinalRaceIntro
+    (20, 2),  # RabbitFirstRaceReward
+    (20, 3),  # RabbitFinalRaceReward
+    (22, 0),  # AppleIntro
+    (22, 1),  # ApplePickUp
+    (22, 4),  # AppleReward
+    (28, 2),  # Seal
+    (30, 0),  # RarewareGB
+    (33, 0),  # IceTomato
+    (34, 4),  # CastleCarRace
+    (21, 0),  # OwlRace
 ]
 item_preview_new_text = [
     [{"text": ["YOU CAN FIND \x04GORILLA GONE\x04 IN \x05CAVES CRANKY\x05."]}],  # Helm Lobby Micro
