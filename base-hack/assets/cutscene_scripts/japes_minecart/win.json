@@ -1,5 +1,6 @@
 {
     "index": 2,
+    "ignore": true,
     "point_data": [
         {
             "unk0": 0,

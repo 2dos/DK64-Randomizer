@@ -148,7 +148,7 @@ def getPointDataFromModication(point: dict) -> PanPoint:
     return PanPoint(coords.copy(), rot.copy(), int(point["zoom"]), int(point["roll"]))
 
 
-def buildFile(data: bytes, modifications: list, map_index: int, map_name: str) -> dict:
+def buildFile(data: bytes, modifications: list, map_index: int, map_name: str) -> File:
     """Build cutscene file based on the original file and JSON modifications provided."""
     map_file_name = f"cutscenes_{map_index}.bin"
     with open(map_file_name, "wb") as fg:
@@ -371,6 +371,119 @@ def preProcessModData(data: dict) -> dict:
                 print("Converted to", int(enum_class[enum_index_name]))
     return data
 
+def convertValue(value) -> int:
+    """Convert a value into its integer form."""
+    if not isinstance(value, str):
+        return value
+    if value[:6] != "enums.":
+        print("Invalid Start", value)
+        return value
+    # Enum processing
+    segments = value.split(".")
+    if len(segments) != 3:
+        print("Invalid segment count", value, len(segments))
+        return value
+    enum_name = segments[1]
+    if enum_name not in enum_obj:
+        print("Not a valid member of the enum_obj", value)
+        return value
+    enum_class = enum_obj[enum_name]
+    enum_index_name = segments[2]
+    print("Converted", value, "to", int(enum_class[enum_index_name]))
+    return int(enum_class[enum_index_name])
+
+def buildItemChanges(script_table: int, fh: BinaryIO) -> list[File]:
+    """Run through cs item modifications."""
+    item_mod_data = []
+    changed_files = []
+    with open("assets/cutscene_scripts/cs_items_modifications.json", "r") as fk:
+        item_mod_data = json.loads(fk.read())["data"]
+    for map_data in item_mod_data:
+        map_index = map_data["map"]
+        print("Parsing changes for map", hex(map_index))
+        valid_items = [x["item"] for x in map_data["changes"]]
+        segment_pairing = {}
+        for change in map_data["changes"]:
+            segment_pairing[change["item"]] = [convertValue(x) for x in change["params"]]
+        # Pull Map Data
+        fh.seek(script_table + (map_index * 4))
+        cutscene_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+        cutscene_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+        cutscene_size = cutscene_end - cutscene_start
+        fh.seek(cutscene_start)
+        indicator = int.from_bytes(fh.read(2), "big")
+        fh.seek(cutscene_start)
+        data = fh.read(cutscene_size)
+        if indicator == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        map_file_name = f"cutscenes_{map_index}.bin"
+        entry_size = None
+        with open(map_file_name, "wb") as fg:
+            fg.write(data)
+            entry_size = fg.tell()
+        if entry_size is None:
+            raise Exception("Invalid entry size.")
+        changed_files.append(File(
+            name=f"Cutscenes ({map_index})",
+            pointer_table_index=BuildEnums.TableNames.Cutscenes,
+            file_index=map_index,
+            source_file=map_file_name,
+            do_not_delete_source=True,
+            do_not_recompress=True,
+            target_size=entry_size,
+        ))
+        # Grab the actual file and find each modification item
+        header_end = 0x30
+        with open(map_file_name, "r+b") as fg:
+            for _ in range(0x18):
+                count = int.from_bytes(fg.read(2), "big")
+                header_end += count * 0x12
+            fg.seek(header_end)
+            count = int.from_bytes(fg.read(2), "big")
+            header_end += (count * 0x1C) + 2
+            # Cutscenes
+            fg.seek(header_end)
+            cutscene_count = int.from_bytes(fg.read(2), "big")
+            for _ in range(cutscene_count):
+                point_count = int.from_bytes(fg.read(2), "big")
+                point_sequence = []
+                point_duration = []
+                for _ in range(point_count):
+                    point_sequence.append(int.from_bytes(fg.read(2), "big"))
+                    point_duration.append(int.from_bytes(fg.read(2), "big"))
+            item_count = int.from_bytes(fg.read(2), "big")
+            count_copy = item_count
+            segment_index = 0
+            read_location = fg.tell()
+            while count_copy != 0:
+                fg.seek(read_location)
+                unk0 = int.from_bytes(fg.read(1), "big")
+                command = int.from_bytes(fg.read(1), "big")
+                item_data = Item(unk0, command, segment_index)
+                segment_index += 1
+                count_copy -= 1
+                if command == 1:
+                    read_location = item_data.pushHead(fg, 6, read_location)
+                elif command == 2:
+                    read_location = item_data.pushHead(fg, 8, read_location)
+                elif command in (3, 13):
+                    if command == 13 and item_data.segment in valid_items:
+                        # command needs modifications
+                        fg.seek(read_location + 8)
+                        for index in range(4):
+                            value_to_write = segment_pairing[item_data.segment][index]
+                            fg.write(value_to_write.to_bytes(2, "big"))
+                    read_location = item_data.pushHead(fg, 12, read_location)
+                elif command in (4, 5):
+                    read_location = item_data.pushPoint(fg, read_location)
+                elif command in (10, 15, 16):
+                    read_location = item_data.pushHead(fg, 14, read_location)
+                elif command == 12:
+                    read_location = item_data.pushSong(fg, read_location)
+                else:
+                    read_location = item_data.pushHead(fg, 0, read_location)
+                    count_copy += 1  # Not important cutscene
+    return changed_files
 
 def buildScripts() -> list:
     """Run through cutscenes folder and compile cutscenes to send back to file_dict."""
@@ -380,6 +493,7 @@ def buildScripts() -> list:
         fh.seek(main_pointer_table_offset + (8 * 4))
         script_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         map_data = []
+        appended_items = buildItemChanges(script_table, fh)
 
         if script_table != 0:
             folders = [x[0] for x in os.walk(instance_dir)]
@@ -398,22 +512,38 @@ def buildScripts() -> list:
                     script_list = []
                     if map_index > -1:
                         # .Map index found
-                        fh.seek(script_table + (map_index * 4))
-                        cutscene_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-                        cutscene_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-                        cutscene_size = cutscene_end - cutscene_start
-                        fh.seek(cutscene_start)
-                        indicator = int.from_bytes(fh.read(2), "big")
-                        fh.seek(cutscene_start)
-                        data = fh.read(cutscene_size)
-                        if indicator == 0x1F8B:
-                            data = zlib.decompress(data, (15 + 32))
+                        found_file = False
+                        for csi in appended_items:
+                            if csi.file_index == map_index:
+                                found_file = True
+                        if found_file:
+                            print("Using found file for", hex(map_index))
+                            with open(f"cutscenes_{map_index}.bin", "rb") as temp:
+                                data = temp.read()
+                        else:
+                            print("Using ROM for", hex(map_index))
+                            fh.seek(script_table + (map_index * 4))
+                            cutscene_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+                            cutscene_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+                            cutscene_size = cutscene_end - cutscene_start
+                            fh.seek(cutscene_start)
+                            indicator = int.from_bytes(fh.read(2), "big")
+                            fh.seek(cutscene_start)
+                            data = fh.read(cutscene_size)
+                            if indicator == 0x1F8B:
+                                data = zlib.decompress(data, (15 + 32))
                         mods = []
                         mod_files = [x for x in files if ".json" in x]
                         for x in mod_files:
                             with open(f"{f}/{x}", "r") as fk:
                                 mod_data = json.loads(fk.read())
                                 mod_data = preProcessModData(mod_data)
+                                if mod_data.get("ignore", False):
+                                    continue
                                 mods.append(mod_data)
+                        if len(mods) == 0:
+                            continue
+                        if found_file:
+                            appended_items = [x for x in appended_items if x.file_index != map_index]
                         appended_items.append(buildFile(data, mods.copy(), map_index, f.split("\\")[-1].split("/")[-1]))
     return appended_items
