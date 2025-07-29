@@ -615,5 +615,5 @@ def writeText(ROM_COPY: Union[ROM, LocalROM], file_index: int, text: List[Union[
         unc_data = getPointerLocation(TableNames.UncompressedFileSizes, TableNames.Unknown6)
         ROM_COPY.seek(unc_data + (file_index * 4))
         ROM_COPY.writeMultipleBytes(uncompressed_size, 4)
-    print("Attempting to write", hex(len(data)), "bytes to pointer", int(table_index), "file", int(file_index))
+    # print("Attempting to write", hex(len(data)), "bytes to pointer", int(table_index), "file", int(file_index))
     writeRawFile(table_index, file_index, table_index == TableNames.Unknown6, bytearray(data), ROM_COPY)

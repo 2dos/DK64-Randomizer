@@ -1291,6 +1291,20 @@ class LogicVarHolder:
         if self.HardBossesSettingEnabled(HardBossesSelected.beta_lanky_phase):
             return self.lanky and self.grape and self.barrels
         return self.lanky and self.trombone and self.barrels
+        
+    def HasEnoughRaceCoins(self, map_id: Maps, default_kong: Kongs, kong_mandatory: bool) -> bool:
+        """Check if the player has enough race coins to beat the challenge."""
+        if self.settings.race_coin_rando:
+            has_enough_coins = self.RaceCoins >= self.spoiler.coin_requirements[map_id]
+            if self.assumeInfiniteRaceCoins:
+                has_enough_coins = True
+            is_kong = True
+            if not self.settings.free_trade_items or kong_mandatory:
+                is_kong = self.IsKong(default_kong)
+            return has_enough_coins and is_kong
+        if kong_mandatory:
+            return self.IsKong(default_kong)
+        return True
 
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
