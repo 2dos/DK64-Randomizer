@@ -844,6 +844,7 @@ if baseclasses_loaded:
                 "HardShooting": self.options.hard_shooting.value,
                 "Junk": self.junked_locations,
                 "HintsInPool": self.options.hints_in_item_pool.value,
+                "Version": ap_version,
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
