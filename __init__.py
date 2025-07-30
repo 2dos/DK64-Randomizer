@@ -143,7 +143,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Locations import Locations as DK64RLocations
-    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel, GlitchesSelected, MicrohintsEnabled, HardModeSelected, RemovedBarriersSelected, ItemRandoListSelected
+    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel, GlitchesSelected, MicrohintsEnabled, HardModeSelected, RemovedBarriersSelected, ItemRandoListSelected, ItemRandoFiller
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
     from randomizer.Lists import Item as DK64RItem
@@ -232,6 +232,9 @@ if baseclasses_loaded:
         item_name_to_id = {name: data.code for name, data in full_item_table.items()}
         location_name_to_id = all_locations
 
+        # with open("donklocations.txt", "w") as f:
+        #     print(location_name_to_id, file=f)
+
         web = DK64Web()
 
         def __init__(self, multiworld: MultiWorld, player: int):
@@ -279,7 +282,7 @@ if baseclasses_loaded:
         def generate_early(self):
             """Generate the world."""
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
-            self.settings_string = "fjNPxAMxDIUx0QSpbHPUlZlBLg5gPQ+oBwRDIhKlsa58Iz8fiNEpEtiFKi4bVAhMF6AAd+AAOCAAGGAAGKAAAdm84FBiMhjoStwFIKW2wLcBJIBpmTVRCjFIKUUwGTLK/BQBuAIMAN4CBwBwAYQAOIECQByAoUAOYGCwB0A4YeXIITIagOrIrwAZTiU1QwkoSjuq1ZLEjQxUKi2oy9FRFgETEUAViyxyN2S8XeRQOQ7GXtOQM8nGDIAyqcEQgAFwoAFwwAEw4AExAAD1oADxIACxQABxYADxgACxoAB1wAFp8r0CS5UtnsshhHMk9Gw+M1drAwGcuqwqis0FMqLRjilACgrBovKATiotEkXENPGtLINIiNdHYAHQC8KggJCgsMDQ4QERIUFRYYGRocHR4gISIjJCUmJygpKissLS4vMDEyMzQ1rL4AwADCAMQAnQCyAGkAUQA"
+            self.settings_string = "PxZlegAGvwAGYIABMMAAGKAAD/QNQAKAgYCA4GCAQEgoKBgWDgwIgCdWQbgCbwEcAGcQIcgKcwMdAOuQQTMBCcTAhQmBhhJBAmqAFaBaJaRaZaiaqaza7bLbQNttxt1O4N5uEuAt8O8vAOIOcuMOROVuYOgOkuqOtOxu2JmJqEkXCAZaolQCCiBRgpAUoKYCCLgswCNlkP0/B0MhLK2AtwEjQYppAjo+IUizUUvRYhbF6pwKiFkAJiFEAkSO1VVZMsOTJO8RQHEMryBWNAx5LGBkAZKmeIboIQgAFoUAC0MABKHAAlEAAOrQAHRIACooAA0WAA6MAAVGgAGrgALJ8Jb8FU2BoKwXRbHszxZBgjhgGcyR6GwfDNLAuxTFQtDHFYGgrEMawuJ4ST+JYgyRLovCIICQoLDhAREhQVFhgZGhwdHiAhIiMkJSYnKCksLS4vMDWsXwMGBpWZGi+wANcXV5hAZUYmbEADsAP0ATgUGIyGOhK3J0QCIZCmOhKlsbBzw6R4wCHdcQZaxCC9fP4Bs8fDCaOd3Ur2VmZxTZ1bF8KcKAeEQyGQlS2Nc+ET+ALIAgoAUR4IhkKY6EqWxrnwjKdK2vjOt8755AkMU073FgRBhyCzTkEU1V2W3X4I5JanmIBBivOU0NMLKElJGHvgAegA+QB6gD6AHsAPsA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
@@ -318,16 +321,17 @@ if baseclasses_loaded:
                 ItemRandoListSelected.kong,
                 ItemRandoListSelected.fairy,
                 ItemRandoListSelected.rainbowcoin,
-                ItemRandoListSelected.beanpearl,
-                ItemRandoListSelected.junkitem,
+                ItemRandoListSelected.bean,
+                ItemRandoListSelected.pearl,
                 ItemRandoListSelected.crateitem,
                 ItemRandoListSelected.rarewarecoin,
                 ItemRandoListSelected.shockwave,
             ]
-            settings_dict["item_rando_list_selected"].extend(always_enabled_categories)
+            settings_dict["item_rando_list_1"].extend(always_enabled_categories)
+            settings_dict["filler_items_selected"].append(ItemRandoFiller.junkitem)
 
             if self.options.hints_in_item_pool.value:
-                settings_dict["item_rando_list_selected"].append(ItemRandoListSelected.hint)
+                settings_dict["item_rando_list_1"].append(ItemRandoListSelected.hint)
 
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
@@ -844,6 +848,7 @@ if baseclasses_loaded:
                 "HardShooting": self.options.hard_shooting.value,
                 "Junk": self.junked_locations,
                 "HintsInPool": self.options.hints_in_item_pool.value,
+                "Version": ap_version,
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
