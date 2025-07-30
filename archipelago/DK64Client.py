@@ -262,23 +262,48 @@ class DK64Client:
         
         if field == "bp_bitfield":
             # Blueprint bitfield: 5 bytes starting at offset 0x000
-            byte_index = count_data.get("byte", 0)
-            bit_index = count_data.get("bit", 0)
+            if "kong" in count_data and "level" in count_data:
+                kong = count_data.get("kong", 0)
+                level = count_data.get("level", 0)
+                byte_index = kong
+                bit_index = level
+            else:
+                byte_index = count_data.get("byte", 0)
+                bit_index = count_data.get("bit", 0)
+            
             if byte_index < 5:
                 address = count_struct_address + 0x000 + byte_index
                 current_value = self.n64_client.read_u8(address)
                 new_value = current_value | (1 << bit_index)
+                logger.info(f"Writing blueprint: address=0x{address:08X}, old=0x{current_value:02X}, new=0x{new_value:02X}")
                 self.n64_client.write_u8(address, new_value)
                 
         elif field == "hint_bitfield":
             # Hint bitfield: 5 bytes starting at offset 0x005
-            byte_index = count_data.get("byte", 0)
-            bit_index = count_data.get("bit", 0)
-            if byte_index < 5:
+            # Convert kong/level to byte/bit if needed
+            if "kong" in count_data and "level" in count_data:
+                kong = count_data.get("kong", 0)
+                level = count_data.get("level", 0)
+                # Validate ranges: 7 levels (0-6), 5 kongs (0-4) = 35 total hints
+                if level < 0 or level > 6 or kong < 0 or kong > 4:
+                    logger.warning(f"Invalid hint kong/level: kong={kong}, level={level}")
+                    return
+                # Each level has 5 hints for each kong (0-4), so bit_position = level * 5 + kong
+                bit_position = level * 5 + kong
+                byte_index = bit_position // 8
+                bit_index = bit_position % 8
+            else:
+                byte_index = count_data.get("byte", 0)
+                bit_index = count_data.get("bit", 0)
+            
+            # Ensure we don't exceed the 5-byte hint bitfield (35 bits total)
+            if byte_index < 5 and (byte_index < 4 or (byte_index == 4 and bit_index < 3)):
                 address = count_struct_address + 0x005 + byte_index
                 current_value = self.n64_client.read_u8(address)
                 new_value = current_value | (1 << bit_index)
                 self.n64_client.write_u8(address, new_value)
+            else:
+                logger.warning(f"Invalid hint bitfield position: byte={byte_index}, bit={bit_index}")
                 
         elif field == "key_bitfield":
             # Key bitfield: 1 byte at offset 0x00A
@@ -367,28 +392,28 @@ class DK64Client:
             bit_name = count_data.get("bit")
             address = count_struct_address + 0x018
             current_value = self.n64_client.read_u8(address)
+            new_value = current_value  # Initialize with current value
             
+            # The C code uses 0x80 >> move_enum for bit positions
             if bit_name == "diving":
-                new_value = current_value | 0x01  # bit 0
+                new_value = current_value | 0x80  # bit 7 (0x80 >> 0)
             elif bit_name == "oranges":
-                new_value = current_value | 0x02  # bit 1
+                new_value = current_value | 0x40  # bit 6 (0x80 >> 1)
             elif bit_name == "barrels":
-                new_value = current_value | 0x04  # bit 2
+                new_value = current_value | 0x20  # bit 5 (0x80 >> 2)
             elif bit_name == "vines":
-                new_value = current_value | 0x08  # bit 3
+                new_value = current_value | 0x10  # bit 4 (0x80 >> 3)
             elif bit_name == "camera":
-                new_value = current_value | 0x10  # bit 4
+                new_value = current_value | 0x08  # bit 3 (0x80 >> 4)
             elif bit_name == "shockwave":
-                new_value = current_value | 0x20  # bit 5
+                new_value = current_value | 0x04  # bit 2 (0x80 >> 5)
             else:
                 logger.warning(f"Unknown flag_moves bit: {bit_name}")
                 return
-                
             self.n64_client.write_u8(address, new_value)
             
         elif count_data.get("item") is not None:
             # These are requirement_item enum values that map to archipelago_items
-            # For compatibility, convert to fed_id system
             fed_id = count_data.get("item")
             await self.writeFedData(fed_id)
             
