@@ -54,6 +54,7 @@ class DK64Client:
     ENABLE_TAGLINK = False
     current_speed = 130
     current_map = 0
+    completed_checks = []
 
     async def wait_for_pj64(self):
         """Wait for PJ64 to connect to the game."""
@@ -480,17 +481,29 @@ class DK64Client:
                 purchase_type, purchase_value, purchase_kong = self._purchase_cache[cache_key]
             else:
                 # Calculate header and read values
-                if shop_index == 3:
-                    header = 0x807FF6E8
-                else:
-                    header = 0x807FF400 + (shop_index * 0xF0) + (kong_index * 0x30) + (level_index * 6)
-                purchase_type = self.n64_client.read_u16(header + 0)
-                purchase_value = self.n64_client.read_u16(header + 2)
-                purchase_kong = self.n64_client.read_u8(header + 4)
-                # Cache the values
-                self._purchase_cache[cache_key] = (purchase_type, purchase_value, purchase_kong)
+                # if shop_index == 3:
+                #     header = 0x807FF6E8
+                # else:
+                #     header = 0x807FF400 + (shop_index * 0xF0) + (kong_index * 0x30) + (level_index * 6)
+                # purchase_type = self.n64_client.read_u16(header + 0)
+                # purchase_value = self.n64_client.read_u16(header + 2)
+                # purchase_kong = self.n64_client.read_u8(header + 4)
+                # # Cache the values
+                # self._purchase_cache[cache_key] = (purchase_type, purchase_value, purchase_kong)
+                match shop_index:
+                    case 0:  # Cranky
+                        return self.readFlag(0x320 + (level_index * 5) + kong_index)
+                    case 1:  # Funky
+                        return self.readFlag(0x320 + ((level_index + 8) * 5) + kong_index)
+                    case 2:  # Candy
+                        if level_index >= 1 and level_index <= 3:
+                            candy_offset = level_index - 1
+                            return self.readFlag(0x320 + ((candy_offset + 15) * 5) + kong_index)
+                        else:
+                            candy_offset = level_index - 5
+                            return self.readFlag(0x320 + ((candy_offset + 18) * 5) + kong_index)
 
-            return self._getShopStatus(purchase_type, purchase_value, purchase_kong)
+           # return self._getShopStatus(purchase_type, purchase_value, purchase_kong)
         else:
             self._build_flag_lookup()
             # Check if the flag exists in the lookup table
@@ -547,6 +560,16 @@ class DK64Client:
             shift = int(key) & 7
             flag_status = (int(val[0]) >> shift) & 1
             _bulk_read_dict[int(key)] = flag_status
+        for id in self.completed_checks[:]:
+            name = check_id_to_name.get(id)
+            # Try to get the check via location_name_to_flag
+            check = location_name_to_flag.get(name)
+            if check:
+                # Assuming we did find it in location_name_to_flag
+                check_status = self.getCheckStatus("location", check, _bulk_read_dict=_bulk_read_dict)
+                if not check_status:
+                    logger.info("Found completed check that is no longer valid, uh oh! {name} {check}")
+                    self.completed_checks.remove(id)
         for id in self.remaining_checks[:]:
             name = check_id_to_name.get(id)
             # Try to get the check via location_name_to_flag
@@ -555,9 +578,10 @@ class DK64Client:
                 # Assuming we did find it in location_name_to_flag
                 check_status = self.getCheckStatus("location", check, _bulk_read_dict=_bulk_read_dict)
                 if check_status:
-                    # logger.info(f"Found {name} via location_name_to_flag")
+                    logger.info(f"Found {name} via location_name_to_flag {check}")
                     self.remaining_checks.remove(id)
                     new_checks.append(id)
+                    self.completed_checks.append(id)
                     if self.locations_scouted.get(id):
                         self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
             # If its not there using the id lets try to get it via item_ids
@@ -567,9 +591,10 @@ class DK64Client:
                 if name == "The Banana Fairy's Gift":
                     check_status = self.getCheckStatus("shop", None, 3, None, None)
                     if check_status:
-                        # logger.info(f"Found {name} via location_name_to_flag")
+                        logger.info(f"Found {name} via BFI special clause {id}")
                         self.remaining_checks.remove(id)
                         new_checks.append(id)
+                        self.completed_checks.append(id)
                         if self.locations_scouted.get(id):
                             self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
                     continue
@@ -588,9 +613,10 @@ class DK64Client:
 
                     check_status = self.getCheckStatus("shop", None, shop_index, level_index, kong_index)
                     if check_status:
-                        # print(f"Found {name} via shop check")
+                        print(f"Found {name} via shop check {id}")
                         self.remaining_checks.remove(id)
                         new_checks.append(id)
+                        self.completed_checks.append(id)
                         if self.locations_scouted.get(id):
                             self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
                     continue
@@ -604,9 +630,10 @@ class DK64Client:
                         else:
                             check_status = self.getCheckStatus("location", flag_id, _bulk_read_dict=_bulk_read_dict)
                             if check_status:
-                                # logger.info(f"Found {name} via item_ids")
+                                logger.info(f"Found {name} via item_ids {id}")
                                 self.remaining_checks.remove(id)
                                 new_checks.append(id)
+                                self.completed_checks.append(id)
                                 if self.locations_scouted.get(id):
                                     self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
 
