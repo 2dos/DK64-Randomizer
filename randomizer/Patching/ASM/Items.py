@@ -216,13 +216,13 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x80028014, Overlay.Critter, "fairyQueenCheckSpeedup", offset_dict)  # BFI, Cutscene Prep
     # Flag Stuff
     # Get blueprint count
-    writeValue(ROM_COPY, 0x80024CE6, Overlay.Menu, 4, offset_dict)  # Blueprint
-    writeValue(ROM_COPY, 0x80024CEA, Overlay.Menu, -1, offset_dict, 2, True)  # Check all levels
-    writeValue(ROM_COPY, 0x80024CEC, Overlay.Menu, 0x2406, offset_dict)  # Change to LI
-    writeValue(ROM_COPY, 0x80024CEE, Overlay.Menu, -1, offset_dict, 2, True)  # Check all kongs
-    writeFunction(ROM_COPY, 0x80024CF0, Overlay.Menu, "getItemCount_new", offset_dict)  # Flag change to FLUT
+    writeValue(ROM_COPY, 0x80024D06, Overlay.Menu, 4, offset_dict)  # Blueprint
+    writeValue(ROM_COPY, 0x80024D08, Overlay.Menu, 0x2405FFFF, offset_dict, 4)  # All levels
+    writeValue(ROM_COPY, 0x80024D10, Overlay.Menu, 0x00E03025, offset_dict, 4)  # OR $a2, $a3, $zero
+    writeFunction(ROM_COPY, 0x80024D0C, Overlay.Menu, "getItemCount_new", offset_dict)  # Flag change to FLUT
     # Get blueprint status for gb giving
     writeValue(ROM_COPY, 0x8002483A, Overlay.Menu, 4, offset_dict)
+    writeValue(ROM_COPY, 0x800248D2, Overlay.Menu, 4, offset_dict)
     writeFunction(ROM_COPY, 0x80024840, Overlay.Menu, "getItemCount_new", offset_dict)
     writeValue(ROM_COPY, 0x80024854, Overlay.Menu, 0x00801025, offset_dict, 4)  # OR $v0, $a0, $zero
     # Pause Stuff
