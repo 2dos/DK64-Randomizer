@@ -5,7 +5,7 @@ from randomizer.Enums.Settings import MiscChangesSelected, FasterChecksSelected,
 from randomizer.Enums.Types import Types
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
-from randomizer.Patching.Library.Generic import IsDDMSSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected, ReqItems
 
 FAIRY_LOAD_FIX = True
 
@@ -144,42 +144,42 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeHook(ROM_COPY, 0x806A6708, Overlay.Static, "SpriteFix", offset_dict)
     writeFunction(ROM_COPY, 0x806A78A8, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)  # Balloon: Kong Check
     # Pause: BP Get
-    writeValue(ROM_COPY, 0x806AAB38, Overlay.Static, 0x24040000 | 4, offset_dict, 4)  # REQITEM_BLUEPRINT
+    writeValue(ROM_COPY, 0x806AAB38, Overlay.Static, 0x24040000 | ReqItems.Blueprint, offset_dict, 4)
     writeValue(ROM_COPY, 0x806AAB40, Overlay.Static, 0x8FA5007C, offset_dict, 4)  # level as rotation
     writeValue(ROM_COPY, 0x806AAB30, Overlay.Static, 0x3C068075, offset_dict, 4)  # LUI $a2, hi(Character)
     writeValue(ROM_COPY, 0x806AAB34, Overlay.Static, 0x90C6E77C, offset_dict, 4)  # LBU $a2, lo(Character) ($a2)
     writeFunction(ROM_COPY, 0x806AAB3C, Overlay.Static, "getItemCount_new", offset_dict)
     # File Percentage: Keys
-    writeValue(ROM_COPY, 0x806ABEFC, Overlay.Static, 0x24040000 | 6, offset_dict, 4)  # REQITEM_KEY
+    writeValue(ROM_COPY, 0x806ABEFC, Overlay.Static, 0x24040000 | ReqItems.Key, offset_dict, 4)
     writeValue(ROM_COPY, 0x806ABF04, Overlay.Static, 0x2405FFFF, offset_dict, 4)  # Set arg1 to -1
     writeValue(ROM_COPY, 0x806ABF18, Overlay.Static, 0, offset_dict, 4)
     writeValue(ROM_COPY, 0x806ABF1C, Overlay.Static, 0, offset_dict, 4)
     writeFunction(ROM_COPY, 0x806ABF00, Overlay.Static, "getItemCount_new", offset_dict)
     writeValue(ROM_COPY, 0x806ABF24, Overlay.Static, 0xA422C82C, offset_dict, 4)  # Store output to addr
     # File Percentage: Fairies
-    writeValue(ROM_COPY, 0x806ABF2A, Overlay.Static, 5, offset_dict)  # REQITEM_FAIRY
+    writeValue(ROM_COPY, 0x806ABF2A, Overlay.Static, ReqItems.Fairy, offset_dict)
     writeFunction(ROM_COPY, 0x806ABF30, Overlay.Static, "getItemCount_new", offset_dict)
     # File Percentage: Medals
-    writeValue(ROM_COPY, 0x806ABF42, Overlay.Static, 9, offset_dict)  # REQITEM_MEDAL
+    writeValue(ROM_COPY, 0x806ABF42, Overlay.Static, ReqItems.Medal, offset_dict)
     writeFunction(ROM_COPY, 0x806ABF48, Overlay.Static, "getItemCount_new", offset_dict)
     # File Percentage: Crowns
-    writeValue(ROM_COPY, 0x806ABF6C, Overlay.Static, 0x24040000 | 7, offset_dict, 4)  # REQITEM_CROWN
+    writeValue(ROM_COPY, 0x806ABF6C, Overlay.Static, 0x24040000 | ReqItems.Crown, offset_dict, 4)
     writeValue(ROM_COPY, 0x806ABF94, Overlay.Static, 0, offset_dict, 4)
     writeValue(ROM_COPY, 0x806ABF98, Overlay.Static, 0, offset_dict, 4)
     writeFunction(ROM_COPY, 0x806ABF78, Overlay.Static, "getItemCount_new", offset_dict)
     writeValue(ROM_COPY, 0x806ABFA0, Overlay.Static, 0xA422C82A, offset_dict, 4)  # Store output to addr
     # File Percentage: NCoin
-    writeValue(ROM_COPY, 0x806ABFA6, Overlay.Static, 8, offset_dict)  # REQITEM_COMPANYCOIN
+    writeValue(ROM_COPY, 0x806ABFA6, Overlay.Static, ReqItems.CompanyCoin, offset_dict)
     writeValue(ROM_COPY, 0x806ABFAC, Overlay.Static, 0x00003025, offset_dict, 4)  # Set arg2 to 0, this does leave arg1 undefined, but should be fine
     writeFunction(ROM_COPY, 0x806ABFA8, Overlay.Static, "getItemCount_new", offset_dict)
     # File Percentage: RCoin
-    writeValue(ROM_COPY, 0x806ABFBA, Overlay.Static, 8, offset_dict)  # REQITEM_COMPANYCOIN
+    writeValue(ROM_COPY, 0x806ABFBA, Overlay.Static, ReqItems.CompanyCoin, offset_dict)
     writeValue(ROM_COPY, 0x806ABFC0, Overlay.Static, 0x24060001, offset_dict, 4)  # Set arg2 to 1, this does leave arg1 undefined, but should be fine
     writeFunction(ROM_COPY, 0x806ABFBC, Overlay.Static, "getItemCount_new", offset_dict)
     #
     writeFunction(ROM_COPY, 0x806AC00C, Overlay.Static, "getKongOwnershipFromFlag", offset_dict)  # File Percentage: Kongs
     # Key flag check: K Lumsy
-    writeValue(ROM_COPY, 0x806BD308, Overlay.Static, 0x24040006, offset_dict, 4)  # REQITEM_KEY as first arg
+    writeValue(ROM_COPY, 0x806BD308, Overlay.Static, 0x24040000 | ReqItems.Key, offset_dict, 4)
     writeValue(ROM_COPY, 0x806BD2BC, Overlay.Static, 0x02202825, offset_dict, 4)  # s1 (key iterator) as 2rd arg
     writeValue(ROM_COPY, 0x806BD2C4, Overlay.Static, 0x00003025, offset_dict, 4)  # 0 as 3rd arg
     writeFunction(ROM_COPY, 0x806BD304, Overlay.Static, "getItemCount_new", offset_dict)  # Key flag check: K. Lumsy
@@ -216,13 +216,13 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x80028014, Overlay.Critter, "fairyQueenCheckSpeedup", offset_dict)  # BFI, Cutscene Prep
     # Flag Stuff
     # Get blueprint count
-    writeValue(ROM_COPY, 0x80024D06, Overlay.Menu, 4, offset_dict)  # Blueprint
+    writeValue(ROM_COPY, 0x80024D06, Overlay.Menu, ReqItems.Blueprint, offset_dict)
     writeValue(ROM_COPY, 0x80024D08, Overlay.Menu, 0x2405FFFF, offset_dict, 4)  # All levels
     writeValue(ROM_COPY, 0x80024D10, Overlay.Menu, 0x00E03025, offset_dict, 4)  # OR $a2, $a3, $zero
     writeFunction(ROM_COPY, 0x80024D0C, Overlay.Menu, "getItemCount_new", offset_dict)  # Flag change to FLUT
     # Get blueprint status for gb giving
-    writeValue(ROM_COPY, 0x8002483A, Overlay.Menu, 4, offset_dict)
-    writeValue(ROM_COPY, 0x800248D2, Overlay.Menu, 4, offset_dict)
+    writeValue(ROM_COPY, 0x8002483A, Overlay.Menu, ReqItems.Blueprint, offset_dict)
+    writeValue(ROM_COPY, 0x800248D2, Overlay.Menu, ReqItems.Blueprint, offset_dict)
     writeFunction(ROM_COPY, 0x80024840, Overlay.Menu, "getItemCount_new", offset_dict)
     writeValue(ROM_COPY, 0x80024854, Overlay.Menu, 0x00801025, offset_dict, 4)  # OR $v0, $a0, $zero
     # Pause Stuff
@@ -246,7 +246,7 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     ROM_COPY.seek(addr)
     ROM_COPY.writeBytes(bytes("REWARD COLLECTED\0", "ascii"))
     # Fairy count check
-    writeValue(ROM_COPY, 0x806F8EBE, Overlay.Static, 5, offset_dict)  # REQITEM_FAIRY
+    writeValue(ROM_COPY, 0x806F8EBE, Overlay.Static, ReqItems.Fairy, offset_dict)
     writeFunction(ROM_COPY, 0x806F8EC4, Overlay.Static, "getItemCount_new", offset_dict)
     # Initialize fixed item scales
     writeFunction(ROM_COPY, 0x806F4918, Overlay.Static, "writeItemScale", offset_dict)  # Write scale to collision info
@@ -582,7 +582,7 @@ def pauseUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeValue(ROM_COPY, 0x806AB2E8, Overlay.Static, 0, offset_dict, 4)
     writeValue(ROM_COPY, 0x806AB360, Overlay.Static, 0, offset_dict, 4)
     # Check blueprint count
-    writeValue(ROM_COPY, 0x806ABFCE, Overlay.Static, 4, offset_dict)  # REQITEM_BLUEPRINT
+    writeValue(ROM_COPY, 0x806ABFCE, Overlay.Static, ReqItems.Blueprint, offset_dict)
     writeValue(ROM_COPY, 0x806ABFD2, Overlay.Static, -1, offset_dict, 2, True)  # All levels
     writeValue(ROM_COPY, 0x806ABFD8, Overlay.Static, 0x2406FFFF, offset_dict, 4)  # All Kongs
     writeFunction(ROM_COPY, 0x806ABFD4, Overlay.Static, "getItemCount_new", offset_dict)

@@ -41,6 +41,33 @@ class MenuTextDim(IntEnum):
     size_w32_h64 = auto()
     size_w64_h32 = auto()
 
+class ReqItems(IntEnum):
+    """Definition of all requirement items."""
+
+    Null = 0
+    Kong = auto()
+    Move = auto()
+    GoldenBanana = auto()
+    Blueprint = auto()
+    Fairy = auto()
+    Key = auto()
+    Crown = auto()
+    CompanyCoin = auto()
+    Medal = auto()
+    Bean = auto()
+    Pearl = auto()
+    RainbowCoin = auto()
+    IceTrap = auto()
+    GamePercentage = auto()
+    ColoredBanana = auto()
+    Bosses = auto()
+    Bonuses = auto()
+    JunkItem = auto()
+    Hint = auto()
+    Shopkeeper = auto()
+    ArchipelagoItem = auto()
+    RaceCoin = auto()
+
 
 class MenuTexture:
     """Class to store information regarding a texture compatible with the main menu background."""
