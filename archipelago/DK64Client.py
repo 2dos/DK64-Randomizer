@@ -54,7 +54,6 @@ class DK64Client:
     ENABLE_TAGLINK = False
     current_speed = 130
     current_map = 0
-    completed_checks = []
 
     async def wait_for_pj64(self):
         """Wait for PJ64 to connect to the game."""
@@ -543,7 +542,6 @@ class DK64Client:
                 if check_status:
                     self.remaining_checks.remove(id)
                     new_checks.append(id)
-                    self.completed_checks.append(id)
                     if self.locations_scouted.get(id):
                         self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
             # If its not there using the id lets try to get it via item_ids
@@ -567,7 +565,6 @@ class DK64Client:
                     if check_status:
                         self.remaining_checks.remove(id)
                         new_checks.append(id)
-                        self.completed_checks.append(id)
                         if self.locations_scouted.get(id):
                             self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
                     continue
