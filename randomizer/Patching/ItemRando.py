@@ -636,55 +636,6 @@ def getDefaultIPD(shuffled_types: list[Types]) -> list:
         if test_type not in shuffled_types:
             output_ipd.extend(no_shuffler_ipd[test_type])
     return output_ipd
-    
-
-
-IPD_RAW = {
-    Types.Blueprint: [
-        [469, Levels.JungleJapes, Kongs.donkey],
-        [470, Levels.JungleJapes, Kongs.diddy],
-        [471, Levels.JungleJapes, Kongs.lanky],
-        [472, Levels.JungleJapes, Kongs.tiny],
-        [473, Levels.JungleJapes, Kongs.chunky],
-        [474, Levels.AngryAztec, Kongs.donkey],
-        [475, Levels.AngryAztec, Kongs.diddy],
-        [476, Levels.AngryAztec, Kongs.lanky],
-        [477, Levels.AngryAztec, Kongs.tiny],
-        [478, Levels.AngryAztec, Kongs.chunky],
-        [479, Levels.FranticFactory, Kongs.donkey],
-        [480, Levels.FranticFactory, Kongs.diddy],
-        [481, Levels.FranticFactory, Kongs.lanky],
-        [482, Levels.FranticFactory, Kongs.tiny],
-        [483, Levels.FranticFactory, Kongs.chunky],
-        [484, Levels.GloomyGalleon, Kongs.donkey],
-        [485, Levels.GloomyGalleon, Kongs.diddy],
-        [486, Levels.GloomyGalleon, Kongs.lanky],
-        [487, Levels.GloomyGalleon, Kongs.tiny],
-        [488, Levels.GloomyGalleon, Kongs.chunky],
-        [489, Levels.FungiForest, Kongs.donkey],
-        [490, Levels.FungiForest, Kongs.diddy],
-        [491, Levels.FungiForest, Kongs.lanky],
-        [492, Levels.FungiForest, Kongs.tiny],
-        [493, Levels.FungiForest, Kongs.chunky],
-        [494, Levels.CrystalCaves, Kongs.donkey],
-        [495, Levels.CrystalCaves, Kongs.diddy],
-        [496, Levels.CrystalCaves, Kongs.lanky],
-        [497, Levels.CrystalCaves, Kongs.tiny],
-        [498, Levels.CrystalCaves, Kongs.chunky],
-        [499, Levels.CreepyCastle, Kongs.donkey],
-        [500, Levels.CreepyCastle, Kongs.diddy],
-        [501, Levels.CreepyCastle, Kongs.lanky],
-        [502, Levels.CreepyCastle, Kongs.tiny],
-        [503, Levels.CreepyCastle, Kongs.chunky],
-        [504, Levels.DKIsles - 1, Kongs.donkey],
-        [505, Levels.DKIsles - 1, Kongs.diddy],
-        [506, Levels.DKIsles - 1, Kongs.lanky],
-        [507, Levels.DKIsles - 1, Kongs.tiny],
-        [508, Levels.DKIsles - 1, Kongs.chunky],
-    ],
-
-}
-
 
 def place_randomized_items(spoiler, ROM_COPY: LocalROM):
     """Place randomized items into ROM."""
