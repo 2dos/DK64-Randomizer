@@ -122,7 +122,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Items import Items as DK64RItems
     from randomizer.SettingStrings import decrypt_settings_string_enum
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options, Goal
+    from archipelago.Options import DK64Options, Goal, SwitchSanity
     from archipelago.Regions import all_locations, create_regions, connect_regions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
@@ -143,7 +143,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Locations import Locations as DK64RLocations
-    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel, GlitchesSelected, MicrohintsEnabled, HardModeSelected, RemovedBarriersSelected, ItemRandoListSelected, ItemRandoFiller
+    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel, GlitchesSelected, MicrohintsEnabled, HardModeSelected, RemovedBarriersSelected, ItemRandoListSelected, ItemRandoFiller, SwitchsanityKong, SwitchsanityGone
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
     from randomizer.Lists import Item as DK64RItem
@@ -282,7 +282,7 @@ if baseclasses_loaded:
         def generate_early(self):
             """Generate the world."""
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
-            self.settings_string = "PxZlegAGvwAGYIABMMAAGKAAD/QNQAKAgYCA4GCAQEgoKBgWDgwIgCdWQbgCbwEcAGcQIcgKcwMdAOuQQTMBCcTAhQmBhhJBAmqAFaBaJaRaZaiaqaza7bLbQNttxt1O4N5uEuAt8O8vAOIOcuMOROVuYOgOkuqOtOxu2JmJqEkXCAZaolQCCiBRgpAUoKYCCLgswCNlkP0/B0MhLK2AtwEjQYppAjo+IUizUUvRYhbF6pwKiFkAJiFEAkSO1VVZMsOTJO8RQHEMryBWNAx5LGBkAZKmeIboIQgAFoUAC0MABKHAAlEAAOrQAHRIACooAA0WAA6MAAVGgAGrgALJ8Jb8FU2BoKwXRbHszxZBgjhgGcyR6GwfDNLAuxTFQtDHFYGgrEMawuJ4ST+JYgyRLovCIICQoLDhAREhQVFhgZGhwdHiAhIiMkJSYnKCksLS4vMDWsXwMGBpWZGi+wANcXV5hAZUYmbEADsAP0ATgUGIyGOhK3J0QCIZCmOhKlsbBzw6R4wCHdcQZaxCC9fP4Bs8fDCaOd3Ur2VmZxTZ1bF8KcKAeEQyGQlS2Nc+ET+ALIAgoAUR4IhkKY6EqWxrnwjKdK2vjOt8755AkMU073FgRBhyCzTkEU1V2W3X4I5JanmIBBivOU0NMLKElJGHvgAegA+QB6gD6AHsAPsA"
+            self.settings_string = "PxZlegAAvwAAYIAAMMAAGKAAD/QNQAKAgYCA4GCAQEgoKBgWDgwIgCdWQbgCbwEcAGcQIcgKcwMdAOuQQTMBCcTAhQmBhhJBAmqAFaBaJaRaZaiaqaza7bLbQNttxt1O4N5uEuAt8O8vAOIOcuMOROVuYOgOkuqOtOxu2JmJqEkXCAZaolQCCiBRgpAUoKYCCLgswCNlkP0/B0MhLK2AtwEjQYppAjo+IUizUUvRYhbF6pwKiFkAJiFEAkSO1VVZMsOTJO8RQHEMryBWNAx5LGBkAZKmeIboIQgAFoUAC0MABKHAAlEAAOrQAHRIACooAA0WAA6MAAVGgAGrgALJ8Jb8FU2BoKwXRbHszxZBgjhgGcyR6GwfDNLAuxTFQtDHFYGgrEMawuJ4ST+JYgyRLovC4ICQoLDA0OEBESFBUWGBkaHB0eICEiIyQlJicoKSorLC0uLzAxMjM0NVxdXl+sXwAwABhADEADsAP0ATgAnQAOgBQAD+ALIAgoAUR4IhkKY6EqWxrnwjKdK2vjOt8755AkMU073FgRBhyCzTkEU1V2W3X4I5JanmIBBivOU0NMLKElJGHvgAegA+QB6gD6AHsAPsA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
@@ -332,6 +332,10 @@ if baseclasses_loaded:
 
             if self.options.hints_in_item_pool.value:
                 settings_dict["item_rando_list_1"].append(ItemRandoListSelected.hint)
+            if self.options.boulders_in_pool.value:
+                settings_dict["item_rando_list_1"].append(ItemRandoListSelected.boulderitem)
+            if self.options.dropsanity:
+                settings_dict["item_rando_list_1"].append(ItemRandoListSelected.enemies)
 
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
@@ -356,7 +360,38 @@ if baseclasses_loaded:
             settings_dict["krool_key_count"] = self.options.krool_key_count.value
             if hasattr(self.multiworld, "generation_is_fake"):
                 settings_dict["krool_key_count"] = 8  # if gen is fake, don't pick random keys to start with, trust the slot data
-            settings_dict["switchsanity"] = self.options.switchsanity.value
+            settings_dict["switchsanity_enabled"] = self.options.switchsanity.value != SwitchSanity.option_off
+            if self.options.switchsanity.value == SwitchSanity.option_all:
+                settings_dict["switchsanity_switch_isles_to_kroc_top"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_isles_helm_lobby"] = SwitchsanityGone.random
+                settings_dict["switchsanity_switch_isles_aztec_lobby_back_room"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_isles_fungi_lobby_fairy"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_isles_spawn_rocketbarrel"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_japes_to_hive"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_japes_to_rambi"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_japes_to_painting_room"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_japes_to_cavern"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_japes_free_kong"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_aztec_to_kasplat_room"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_aztec_llama_front"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_aztec_llama_side"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_aztec_llama_back"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_aztec_sand_tunnel"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_aztec_to_connector_tunnel"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_aztec_free_lanky"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_aztec_free_tiny"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_factory_free_kong"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_galleon_to_lighthouse_side"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_galleon_to_shipwreck_side"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_galleon_to_cannon_game"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_fungi_yellow_tunnel"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_fungi_green_tunnel_near"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_fungi_green_tunnel_far"] = SwitchsanityKong.random
+            elif self.options.switchsanity.value == SwitchSanity.option_helm_access:
+                settings_dict["switchsanity_switch_isles_to_kroc_top"] = SwitchsanityKong.random
+                settings_dict["switchsanity_switch_isles_helm_lobby"] = SwitchsanityGone.random
+            elif self.option.switchsanity.value == SwitchSanity.option_off:
+                settings_dict["switchsanity_enabled"] = False
             settings_dict["logic_type"] = self.options.logic_type.value
             settings_dict["remove_barriers_enabled"] = bool(self.options.remove_barriers_selected)
             settings_dict["remove_barriers_selected"] = []
@@ -841,7 +876,13 @@ if baseclasses_loaded:
                 "HelmOrder": ", ".join([str(room) for room in self.spoiler.settings.helm_order]),
                 "OpenLobbies": self.spoiler.settings.open_lobbies,
                 "KroolInBossPool": self.spoiler.settings.krool_in_boss_pool,
-                "SwitchSanity": {switch.name: {"kong": data.kong.name, "type": data.switch_type.name} for switch, data in self.spoiler.settings.switchsanity_data.items()},
+                "SwitchSanity": {
+                    switch.name: {
+                        "kong": data.kong.name if hasattr(data.kong, 'name') else Kongs(data.kong).name, 
+                        "type": data.switch_type.name if hasattr(data.switch_type, 'name') else SwitchType(data.switch_type).name
+                    } 
+                    for switch, data in self.spoiler.settings.switchsanity_data.items()
+                } if hasattr(self.spoiler.settings, 'switchsanity_data') and self.spoiler.settings.switchsanity_data else {},
                 "LogicType": self.spoiler.settings.logic_type.name,
                 "GlitchesSelected": ", ".join([glitch.name for glitch in self.spoiler.settings.glitches_selected]),
                 "StartingKeyList": ", ".join([key.name for key in self.spoiler.settings.starting_key_list]),
@@ -884,13 +925,17 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Removed Barriers: " + ", ".join([barrier.name for barrier in self.spoiler.settings.remove_barriers_selected]))
             spoiler_handle.write("\n")
-            if self.spoiler.settings.switchsanity != SwitchsanityLevel.off:
+            if hasattr(self.spoiler.settings, 'switchsanity_enabled') and self.spoiler.settings.switchsanity_enabled and hasattr(self.spoiler.settings, 'switchsanity_data') and self.spoiler.settings.switchsanity_data:
                 spoiler_handle.write("Switchsanity Settings: \n")
                 for switch, data in self.spoiler.settings.switchsanity_data.items():
-                    if self.spoiler.settings.switchsanity == SwitchsanityLevel.helm_access:
+                    # Check if this is helm_access mode by checking if only specific switches should be shown
+                    is_helm_access_mode = hasattr(self.spoiler.settings, 'switchsanity_switch_isles_helm_lobby') 
+                    if is_helm_access_mode:
                         if switch not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
                             continue
-                    spoiler_handle.write(f"  - {switch.name}: {data.kong.name} with {data.switch_type.name}\n")
+                    kong_name = data.kong.name if hasattr(data.kong, 'name') else Kongs(data.kong).name
+                    switch_type_name = data.switch_type.name if hasattr(data.switch_type, 'name') else SwitchType(data.switch_type).name
+                    spoiler_handle.write(f"  - {switch.name}: {kong_name} with {switch_type_name}\n")
             spoiler_handle.write("Generated Time: " + time.strftime("%d-%m-%Y %H:%M:%S", time.gmtime()) + " GMT")
             spoiler_handle.write("\n")
             spoiler_handle.write("Randomizer Version: " + self.spoiler.settings.version)

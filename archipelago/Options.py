@@ -446,6 +446,15 @@ class Level8Blocker(Range):
     range_end = 201
     default = 100
 
+class BouldersInPool(Toggle):
+    """Determines if throwing boulders/barrels spawn a check."""
+
+    display_name = "Boulders in Pool"
+
+class Dropsanity(Toggle):
+    """Determined if Enemy Drops are added into the pool."""
+
+    display_name = "Dropsanity"
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
@@ -486,6 +495,8 @@ class DK64Options(PerGameCommonOptions):
     hard_mode_selected: HardModeSelected
     mirror_mode: MirrorMode
     hints_in_item_pool: HintItemRandomization
+    boulders_in_pool: BouldersInPool
+    dropsanity: Dropsanity
     trap_fill_percentage: TrapFillPercentage
     bubble_trap_weight: BubbleTrapWeight
     reverse_trap_weight: ReverseTrapWeight
