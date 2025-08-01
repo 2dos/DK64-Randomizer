@@ -40,7 +40,6 @@ class DK64Client:
     players = None
     stop_bizhawk_spam = False
     remaining_checks = []
-    flag_lookup = None
     seed_started = False
     sent_checks = []
     item_names = None
@@ -275,7 +274,6 @@ class DK64Client:
                 address = count_struct_address + 0x000 + byte_index
                 current_value = self.n64_client.read_u8(address)
                 new_value = current_value | (1 << bit_index)
-                logger.info(f"Writing blueprint: address=0x{address:08X}, old=0x{current_value:02X}, new=0x{new_value:02X}")
                 self.n64_client.write_u8(address, new_value)
                 
         elif field == "hint_bitfield":
@@ -284,20 +282,19 @@ class DK64Client:
             if "kong" in count_data and "level" in count_data:
                 kong = count_data.get("kong", 0)
                 level = count_data.get("level", 0)
-                # Validate ranges: 7 levels (0-6), 5 kongs (0-4) = 35 total hints
+                # Validate ranges: 7 levels (0-6), 5 kongs (0-4)
                 if level < 0 or level > 6 or kong < 0 or kong > 4:
                     logger.warning(f"Invalid hint kong/level: kong={kong}, level={level}")
                     return
-                # Each level has 5 hints for each kong (0-4), so bit_position = level * 5 + kong
-                bit_position = level * 5 + kong
-                byte_index = bit_position // 8
-                bit_index = bit_position % 8
+                # Direct mapping: kong is byte index, level is bit index
+                byte_index = kong
+                bit_index = level
             else:
                 byte_index = count_data.get("byte", 0)
                 bit_index = count_data.get("bit", 0)
             
-            # Ensure we don't exceed the 5-byte hint bitfield (35 bits total)
-            if byte_index < 5 and (byte_index < 4 or (byte_index == 4 and bit_index < 3)):
+            # Ensure we don't exceed the 5-byte hint bitfield and 7 bits per kong
+            if byte_index < 5 and bit_index < 7:
                 address = count_struct_address + 0x005 + byte_index
                 current_value = self.n64_client.read_u8(address)
                 new_value = current_value | (1 << bit_index)
@@ -371,9 +368,23 @@ class DK64Client:
             
         elif field == "ice_traps":
             # Ice traps: 2 byte counter at offset 0x012
+            # Also need to trigger the actual ice trap effect via fed system
             address = count_struct_address + 0x012
             current_value = self.n64_client.read_u16(address)
             self.n64_client.write_u16(address, current_value + 1)
+            
+            # Now trigger the actual ice trap effect based on the ice trap type
+            # We need to determine which type of ice trap this is and send it via fed system
+            ice_trap_type = count_data.get("ice_trap_type", "bubble")  # default to bubble
+            if ice_trap_type == "bubble":
+                await self.writeFedData(0x018)  # TRANSFER_ITEM_FAKEITEM
+            elif ice_trap_type == "reverse":
+                await self.writeFedData(0x041)  # TRANSFER_ITEM_FAKEITEM_REVERSE
+            elif ice_trap_type == "slow":
+                await self.writeFedData(0x040)  # TRANSFER_ITEM_FAKEITEM_SLOW
+            else:
+                # Default to bubble if unknown type
+                await self.writeFedData(0x018)
             
         elif field == "junk_items":
             # Junk items: 2 byte counter at offset 0x014
@@ -440,18 +451,7 @@ class DK64Client:
         else:
             return self.readFlag(p_value) != 0
 
-    def _build_flag_lookup(self):
-        """Cache flag mappings to avoid repeated reads."""
-        # Verify if the lookup table is already built, and that we've checked some locations
-        if self.flag_lookup is not None:
-            return
-        self.flag_lookup = {}
-        for flut_index in range(0x400):
-            raw_flag = self.n64_client.read_u16(0x807E2EE0 + (4 * flut_index))
-            if raw_flag == 0xFFFF:
-                break
-            target_flag = self.n64_client.read_u16(0x807E2EE0 + (4 * flut_index) + 2)
-            self.flag_lookup[raw_flag] = target_flag
+
 
     def getMoveStatus(self, move_flag: int) -> bool:
         """Get the status of a move."""
@@ -469,7 +469,7 @@ class DK64Client:
             offset = item_index - 1
         return ((value >> offset) & 1) != 0
 
-    def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None, _bulk_read_dict={}) -> bool:
+    def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None) -> bool:
         """Get the status of a check."""
         # shop_index: 0 = cranky, 1 = funky, 2 = candy, 3 = bfi
         # flag_index: as expected
@@ -491,54 +491,18 @@ class DK64Client:
         else:
             return self.readFlag(flag_index)
 
-    def bulk_lookup(self, flag_index, _bulk_read_dict):
-        """Bulk lookup of flags."""
-        self._build_flag_lookup()
-        if self.flag_lookup.get(flag_index):
-            target_flag = self.flag_lookup[flag_index]
-            byte_index = target_flag >> 3
-            offset = DK64MemoryMap.EEPROM + byte_index
-            _bulk_read_dict[target_flag] = offset
-        else:
-            byte_index = flag_index >> 3
-            offset = DK64MemoryMap.EEPROM + byte_index
-            _bulk_read_dict[flag_index] = offset
+
 
     async def readChecks(self, cb):
         """Run checks in parallel using asyncio."""
         new_checks = []
-        _bulk_read_dict = {}
-        for id in self.remaining_checks:
-            name = check_id_to_name.get(id)
-            # Try to get the check via location_name_to_flag
-            check = location_name_to_flag.get(name)
-            if check:
-                self.bulk_lookup(check, _bulk_read_dict)
-            # If its not there using the id lets try to get it via item_ids
-            else:
-                check = item_ids.get(id)
-                if check:
-                    flag_id = check.get("flag_id")
-                    if not flag_id:
-                        # logger.error(f"Item {name} has no flag_id")
-                        continue
-                    else:
-                        self.bulk_lookup(flag_id, _bulk_read_dict)
-        dict_data = self.n64_client.read_dict(_bulk_read_dict)
-        # Json loads the dict_data
-        dict_data = json.loads(dict_data)
-        # For each item in the dict, the key is the index the value is the val for byte_shift. Keep the key the same but set the value to the result of byte_shift
-        for key, val in dict_data.items():
-            shift = int(key) & 7
-            flag_status = (int(val[0]) >> shift) & 1
-            _bulk_read_dict[int(key)] = flag_status
         for id in self.remaining_checks[:]:
             name = check_id_to_name.get(id)
             # Try to get the check via location_name_to_flag
             check = location_name_to_flag.get(name)
             if check:
                 # Assuming we did find it in location_name_to_flag
-                check_status = self.getCheckStatus("location", check, _bulk_read_dict=_bulk_read_dict)
+                check_status = self.getCheckStatus("location", check)
                 if check_status:
                     self.remaining_checks.remove(id)
                     new_checks.append(id)
@@ -576,7 +540,7 @@ class DK64Client:
                             # logger.error(f"Item {name} has no flag_id")
                             continue
                         else:
-                            check_status = self.getCheckStatus("location", flag_id, _bulk_read_dict=_bulk_read_dict)
+                            check_status = self.getCheckStatus("location", flag_id)
                             if check_status:
                                 self.remaining_checks.remove(id)
                                 new_checks.append(id)
