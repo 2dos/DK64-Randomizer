@@ -119,7 +119,25 @@ class SlowTrapWeight(BaseTrapWeight):
 
     display_name = "Slow Trap Weight"
 
+class DisableAWeight(BaseTrapWeight):
+    """Likelyhood of receiving a trap which disables your A button."""
 
+    display_name = "Disable A Trap"
+
+class DisableBWeight(BaseTrapWeight):
+    """Likelyhood of receiving a trap which disables your B button."""
+
+    display_name = "Disable B Trap"
+
+class DisableZWeight(BaseTrapWeight):
+    """Likelyhood of receiving a trap which disables your Z button."""
+
+    display_name = "Disable Z Trap"
+
+class DisableCWeight(BaseTrapWeight):
+    """Likelyhood of receiving a trap which disables your C buttons."""
+
+    display_name = "Disable C Trap"
 class KroolPhaseCount(Range):
     """Pick how many phases are in the final battle against K. Rool."""
 
@@ -365,6 +383,7 @@ class RandomizeBlockers(Toggle):
     """Determines if B. Locker values are randomized."""
 
     display_name = "Randomizer B. Lockers"
+    default = True
 
 
 class MaximumBLocker(Range):
@@ -376,11 +395,10 @@ class MaximumBLocker(Range):
     default = 64
 
 
-# class ChaosBLockers(Toggle):
-#     """Determines whether the "Secret" will be enabled."""
+class ChaosBLockers(Toggle):
+    """If Ranodmize Blockers enabled, determines if B. Lockers can be cleared by non-Golden Banana collectibles."""
 
-#     display_name = "Chaos B. Lockers"
-#     default = True
+    display_name = "Chaos B. Lockers"
 
 
 class Level1Blocker(Range):
@@ -388,7 +406,7 @@ class Level1Blocker(Range):
 
     range_start = 0
     range_end = 201
-    default = 1
+    default = 0
 
 
 class Level2Blocker(Range):
@@ -396,7 +414,7 @@ class Level2Blocker(Range):
 
     range_start = 0
     range_end = 201
-    default = 5
+    default = 0
 
 
 class Level3Blocker(Range):
@@ -404,7 +422,7 @@ class Level3Blocker(Range):
 
     range_start = 0
     range_end = 201
-    default = 15
+    default = 0
 
 
 class Level4Blocker(Range):
@@ -412,7 +430,7 @@ class Level4Blocker(Range):
 
     range_start = 0
     range_end = 201
-    default = 30
+    default = 0
 
 
 class Level5Blocker(Range):
@@ -420,7 +438,7 @@ class Level5Blocker(Range):
 
     range_start = 0
     range_end = 201
-    default = 50
+    default = 0
 
 
 class Level6Blocker(Range):
@@ -428,7 +446,7 @@ class Level6Blocker(Range):
 
     range_start = 0
     range_end = 201
-    default = 65
+    default = 0
 
 
 class Level7Blocker(Range):
@@ -436,7 +454,7 @@ class Level7Blocker(Range):
 
     range_start = 0
     range_end = 201
-    default = 80
+    default = 0
 
 
 class Level8Blocker(Range):
@@ -444,7 +462,7 @@ class Level8Blocker(Range):
 
     range_start = 0
     range_end = 201
-    default = 100
+    default = 64
 
 class BouldersInPool(Toggle):
     """Determines if throwing boulders/barrels spawn a check."""
@@ -475,6 +493,7 @@ class DK64Options(PerGameCommonOptions):
     rareware_gb_fairies: RarewareGBRequirement
     randomize_blocker_required_amounts: RandomizeBlockers
     blocker_max: MaximumBLocker
+    chaos_locker: ChaosBLockers
     level1_blocker: Level1Blocker
     level2_blocker: Level2Blocker
     level3_blocker: Level3Blocker
@@ -501,4 +520,8 @@ class DK64Options(PerGameCommonOptions):
     bubble_trap_weight: BubbleTrapWeight
     reverse_trap_weight: ReverseTrapWeight
     slow_trap_weight: SlowTrapWeight
+    disable_a_trap: DisableAWeight
+    disable_b_trap: DisableBWeight
+    disable_c_trap: DisableCWeight
+    disable_z_trap: DisableZWeight
     receive_notifications: ReceiveNotifications

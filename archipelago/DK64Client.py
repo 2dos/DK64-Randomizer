@@ -382,6 +382,14 @@ class DK64Client:
                 await self.writeFedData(0x041)  # TRANSFER_ITEM_FAKEITEM_REVERSE
             elif ice_trap_type == "slow":
                 await self.writeFedData(0x040)  # TRANSFER_ITEM_FAKEITEM_SLOW
+            elif ice_trap_type == "disable_a":
+                await self.writeFedData(0x042)  # TRANSFER_ITEM_FAKEITEM_DISABLEA
+            elif ice_trap_type == "disable_b":
+                await self.writeFedData(0x043)  # TRANSFER_ITEM_FAKEITEM_DISABLEB
+            elif ice_trap_type == "disable_z":
+                await self.writeFedData(0x044)  # TRANSFER_ITEM_FAKEITEM_DISABLEZ
+            elif ice_trap_type == "disable_c_up":
+                await self.writeFedData(0x045)  # TRANSFER_ITEM_FAKEITEM_DISABLECU
             else:
                 # Default to bubble if unknown type
                 await self.writeFedData(0x018)
