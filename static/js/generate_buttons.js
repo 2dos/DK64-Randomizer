@@ -566,13 +566,13 @@ async function import_settings_string(event) {
                     let selectedCount = 0;
                     settings[key].forEach(item => {
                         // Find the selected option by the value of the option
-                        checkboxes.forEach(cb => {
+                        for (let cb of checkboxes) {
                             if (cb.value == flipped[item]) {
                                 console.log(cb)
                                 cb.checked = true;
                                 selectedCount++;
                             }
-                        })
+                        }
                     });
                     selector.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`
                 } else if (selector.classList.contains("sortablejs")) {
