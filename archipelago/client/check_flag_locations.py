@@ -154,6 +154,7 @@ location_flag_to_name = {
     350: "Castle Diddy Above Castle",
     351: "Castle Tiny Trash Can",
     353: "Castle Diddy Dungeon",
+    377: "The Banana Fairy's Gift",
     379: "Jetpac",
     380: "The End of Helm",
     381: "Isles Japes Lobby Entrance Item",
