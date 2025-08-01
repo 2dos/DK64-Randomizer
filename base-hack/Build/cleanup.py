@@ -4,7 +4,7 @@ import os
 
 from BuildLib import finalROM, heap_size
 
-# [os.remove(f) for f in os.listdir(".") if os.path.isfile(f) and os.path.exists(f) and ".bin" in f]
+[os.remove(f) for f in os.listdir(".") if os.path.isfile(f) and os.path.exists(f) and ".bin" in f]
 instance_dir = "./assets/instance_scripts/"
 for f in os.listdir(instance_dir):
     joined = os.path.join(instance_dir, f)

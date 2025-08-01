@@ -649,6 +649,8 @@ def getItemDBEntry(type: Types) -> ItemPlacementData:
     """Get the item db entry for an item type."""
     if type in FILLER_MAPPING:
         return item_db[FILLER_MAPPING[type]]
+    if type is None:
+        return item_db[Types.NoItem]
     return item_db[type]
 
 
