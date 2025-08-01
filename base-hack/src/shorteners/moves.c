@@ -1,6 +1,7 @@
 #include "../../include/common.h"
 
 int initFile_checkTraining(int type_check, int level_check, int kong_check) {
+	int count = 0;
 	if (Rando.fast_start_beginning) {
 		for (int i = 0; i < 5; i++) {
 			purchase_struct* handler = &FirstMove_New;
@@ -10,13 +11,17 @@ int initFile_checkTraining(int type_check, int level_check, int kong_check) {
 			if (handler->item.item_type == type_check) {
 				if ((kong_check == -1) || (handler->item.kong == kong_check)) {
 					if (handler->item.level == level_check) {
-						return 1;
+						if (kong_check == -1) {
+							count += 1;
+						} else {
+							return 1;
+						}
 					}
 				}
 			}
 		}
 	}
-	return 0;
+	return count;
 }
 
 int initFile_hasGun(int kong) {
@@ -38,9 +43,7 @@ int initFile_getBeltLevel(int inc_training) {
 		}
 	}
 	if (inc_training) {
-		if (initFile_checkTraining(REQITEM_MOVE, 7, -1)) {
-			belt_level += 1;
-		}
+		belt_level += initFile_checkTraining(REQITEM_MOVE, 7, -1);
 	}
 	return belt_level;
 }
@@ -54,9 +57,7 @@ int initFile_getInsUpgradeLevel(int inc_training) {
 		}
 	}
 	if (inc_training) {
-		if (initFile_checkTraining(REQITEM_MOVE, 9, -1)) {
-			instrument_upgrade_level += 1;
-		}
+		instrument_upgrade_level += initFile_checkTraining(REQITEM_MOVE, 9, -1);
 	}
 	return instrument_upgrade_level;
 }
@@ -70,11 +71,7 @@ int initFile_getSlamLevel(int inc_training) {
 		}
 	}
 	if (inc_training) {
-		for (int i = 0; i < 6; i++) {
-			if (initFile_checkTraining(REQITEM_MOVE, 3, -1)) {
-				slam_level += 1;
-			}
-		}
+		slam_level += initFile_checkTraining(REQITEM_MOVE, 3, -1);
 	}
 	return slam_level;
 }
