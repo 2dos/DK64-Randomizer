@@ -17,9 +17,8 @@ def writeNewTextFiles(ROM_COPY: LocalROM, offset_dict: dict):
     writeValue(ROM_COPY, 0x806C56E6, Overlay.Static, CompTextFiles.PreviewsFlavor, offset_dict)
     writeValue(ROM_COPY, 0x806C5768, Overlay.Static, 0x24060000 | ItemPreview.OwlRace, offset_dict, 4)
     # Vulture
-    writeValue(ROM_COPY, 0x806C4F12, Overlay.Static, CompTextFiles.PreviewsFlavor, offset_dict)
-    writeValue(ROM_COPY, 0x806C559C, Overlay.Static, 0x24050000 | ItemPreview.VultureFreedom, offset_dict, 4)
-    writeValue(ROM_COPY, 0x806C55AE, Overlay.Static, ItemPreview.VulturePreview, offset_dict)
+    writeValue(ROM_COPY, 0x806C50F2, Overlay.Static, CompTextFiles.PreviewsFlavor, offset_dict)
+    writeValue(ROM_COPY, 0x806C50F4, Overlay.Static, 0x24060000 | ItemPreview.VultureFreedom, offset_dict, 4)
     # Mermaid
     writeValue(ROM_COPY, 0x806C3E96, Overlay.Static, CompTextFiles.PreviewsFlavor, offset_dict)
     writeValue(ROM_COPY, 0x806C3E9E, Overlay.Static, ItemPreview.MermaidReward, offset_dict)

@@ -11,6 +11,15 @@
                         "enums.ItemPreview.LlamaRescue",
                         0
                     ]
+                },
+                {
+                    "item": 70,
+                    "params": [
+                        7,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.VulturePreview",
+                        0
+                    ]
                 }
             ]
         },
