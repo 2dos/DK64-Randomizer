@@ -580,7 +580,6 @@ class DK64Client:
                             if check_status:
                                 self.remaining_checks.remove(id)
                                 new_checks.append(id)
-                                self.completed_checks.append(id)
                                 if self.locations_scouted.get(id):
                                     self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
 
