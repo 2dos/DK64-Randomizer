@@ -6,6 +6,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import MicrohintsEnabled
+from randomizer.Enums.VendorType import VendorType
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Library.DataTypes import intf_to_float
@@ -506,8 +507,186 @@ POINTER_ROM_BONUSES = 0x1FF1200
 POINTER_ROM_ENEMIES = 0x1FF9000
 POINTER_ROM_IPDTABLE = 0x1FF2000
 
+items_needing_ipd = (
+    Types.Blueprint,
+    Types.Hint,
+    Types.Key,
+    Types.Shockwave,
+    Types.Shop,
+    Types.Climbing,
+    Types.TrainingBarrel,
+)
 
-def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
+def getShopFlag(level: int, kong: Kongs, vendor: VendorType) -> int:
+    """Calculate the shop flag based on the level, kong and vendor"""
+    kong_index = int(kong) if kong != Kongs.any else 0
+    if vendor == VendorType.Cranky:
+        return 0x320 + (level * 5) + kong_index
+    elif (vendor == VendorType.Funky) and (level < 7):
+        return 0x320 + ((level + 8) * 5) + kong_index
+    elif vendor == VendorType.Candy:
+        if level in (Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon):
+            candy_offset = level - Levels.AngryAztec
+            return 0x320 + ((candy_offset + 15) * 5) + kong_index
+        elif level in (Levels.CrystalCaves, Levels.CreepyCastle):
+            candy_offset = level - Levels.CrystalCaves
+            return 0x320 + ((candy_offset + 18) * 5) + kong_index
+    return 0
+
+def getDefaultIPD(shuffled_types: list[Types]) -> list:
+    """Calculate the default IPD based on the settings you have enabled."""
+    no_shuffler_ipd = {}
+    for item in items_needing_ipd:
+        no_shuffler_ipd[item] = []
+    for x in range(40):
+        no_shuffler_ipd[Types.Blueprint].append([
+            469 + x,
+            int(x / 5),
+            x % 5,
+        ])
+    for x in range(35):
+        no_shuffler_ipd[Types.Hint].append([
+            0x384 + x,
+            int(x / 5),
+            x % 5,
+        ])
+    no_shuffler_ipd[Types.Key] = [
+        [26, 0, 0],
+        [74, 1, 0],
+        [138, 2, 0],
+        [168, 3, 0],
+        [236, 4, 0],
+        [292, 5, 0],
+        [317, 6, 0],
+        [360, 7, 0],
+    ]
+    no_shuffler_ipd[Types.Shockwave] = [
+        [0x179, 10, 5]
+    ]
+    no_shuffler_ipd[Types.TrainingBarrel] = [
+        [386, 10, 0],
+        [387, 10, 3],
+        [388, 10, 1],
+        [389, 10, 2],
+    ]
+    cranky_0 = [
+        0,
+        1,
+        2,
+        2,
+        3,
+        None,
+        3,
+        None,
+    ]
+    cranky_1 = [
+        0,
+        0,
+        1,
+        1,
+        3,
+        2,
+        3,
+        None,
+    ]
+    funky = [
+        4,
+        4,
+        7,
+        None,
+        5,
+        7,
+        6,
+        None,
+    ]
+    candy = [
+        8,
+        8,
+        8,
+        9,
+        None,
+        9,
+        9,
+        None,
+    ]
+    shared_data = (3, 5, 6, 7, 9)
+    for kong_id in (Kongs.donkey, Kongs.diddy):
+        for level_index, data in enumerate(cranky_0):
+            if data in shared_data and kong_id != Kongs.donkey:
+                continue
+            if data is not None:
+                no_shuffler_ipd[Types.Shop].append([getShopFlag(level_index, kong_id, VendorType.Cranky), data, kong_id])
+    for kong_id in (Kongs.lanky, Kongs.tiny, Kongs.chunky):
+        for level_index, data in enumerate(cranky_1):
+            if data is not None and data not in shared_data:
+                no_shuffler_ipd[Types.Shop].append([getShopFlag(level_index, kong_id, VendorType.Cranky), data, kong_id])
+    for kong_id in (Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky):
+        for level_index, data in enumerate(funky):
+            if data in shared_data and kong_id != Kongs.donkey:
+                continue
+            if data is not None:
+                no_shuffler_ipd[Types.Shop].append([getShopFlag(level_index, kong_id, VendorType.Funky), data, kong_id])
+        for level_index, data in enumerate(candy):
+            if data in shared_data and kong_id != Kongs.donkey:
+                continue
+            if data is not None:
+                no_shuffler_ipd[Types.Shop].append([getShopFlag(level_index, kong_id, VendorType.Candy), data, kong_id])
+    output_ipd = []
+    for test_type in no_shuffler_ipd:
+        if test_type not in shuffled_types:
+            output_ipd.extend(no_shuffler_ipd[test_type])
+    return output_ipd
+    
+
+
+IPD_RAW = {
+    Types.Blueprint: [
+        [469, Levels.JungleJapes, Kongs.donkey],
+        [470, Levels.JungleJapes, Kongs.diddy],
+        [471, Levels.JungleJapes, Kongs.lanky],
+        [472, Levels.JungleJapes, Kongs.tiny],
+        [473, Levels.JungleJapes, Kongs.chunky],
+        [474, Levels.AngryAztec, Kongs.donkey],
+        [475, Levels.AngryAztec, Kongs.diddy],
+        [476, Levels.AngryAztec, Kongs.lanky],
+        [477, Levels.AngryAztec, Kongs.tiny],
+        [478, Levels.AngryAztec, Kongs.chunky],
+        [479, Levels.FranticFactory, Kongs.donkey],
+        [480, Levels.FranticFactory, Kongs.diddy],
+        [481, Levels.FranticFactory, Kongs.lanky],
+        [482, Levels.FranticFactory, Kongs.tiny],
+        [483, Levels.FranticFactory, Kongs.chunky],
+        [484, Levels.GloomyGalleon, Kongs.donkey],
+        [485, Levels.GloomyGalleon, Kongs.diddy],
+        [486, Levels.GloomyGalleon, Kongs.lanky],
+        [487, Levels.GloomyGalleon, Kongs.tiny],
+        [488, Levels.GloomyGalleon, Kongs.chunky],
+        [489, Levels.FungiForest, Kongs.donkey],
+        [490, Levels.FungiForest, Kongs.diddy],
+        [491, Levels.FungiForest, Kongs.lanky],
+        [492, Levels.FungiForest, Kongs.tiny],
+        [493, Levels.FungiForest, Kongs.chunky],
+        [494, Levels.CrystalCaves, Kongs.donkey],
+        [495, Levels.CrystalCaves, Kongs.diddy],
+        [496, Levels.CrystalCaves, Kongs.lanky],
+        [497, Levels.CrystalCaves, Kongs.tiny],
+        [498, Levels.CrystalCaves, Kongs.chunky],
+        [499, Levels.CreepyCastle, Kongs.donkey],
+        [500, Levels.CreepyCastle, Kongs.diddy],
+        [501, Levels.CreepyCastle, Kongs.lanky],
+        [502, Levels.CreepyCastle, Kongs.tiny],
+        [503, Levels.CreepyCastle, Kongs.chunky],
+        [504, Levels.DKIsles - 1, Kongs.donkey],
+        [505, Levels.DKIsles - 1, Kongs.diddy],
+        [506, Levels.DKIsles - 1, Kongs.lanky],
+        [507, Levels.DKIsles - 1, Kongs.tiny],
+        [508, Levels.DKIsles - 1, Kongs.chunky],
+    ],
+
+}
+
+
+def place_randomized_items(spoiler, ROM_COPY: LocalROM):
     """Place randomized items into ROM."""
     sav = spoiler.settings.rom_data
     ROM_COPY.seek(sav + 0x1EC)
@@ -522,7 +701,7 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
 
         map_items = {}
         bonus_table_offset = 0
-        ipd_data = original_flut.copy()
+        ipd_data = getDefaultIPD(spoiler.settings.shuffled_location_types)
         offset_dict = populateOverlayOffsets(ROM_COPY)
         pushItemMicrohints(spoiler)
         pregiven_shop_owners = None
@@ -795,16 +974,6 @@ def place_randomized_items(spoiler, original_flut: list, ROM_COPY: LocalROM):
                 Types.Crown,
                 Types.Pearl,
                 Types.Bean,
-            )
-            items_needing_ipd = (
-                Types.Blueprint,
-                Types.Hint,
-                Types.Key,
-                Types.ProgressiveHint,
-                Types.Shockwave,
-                Types.Shop,
-                Types.Climbing,
-                Types.TrainingBarrel,
             )
             if item.old_item in placed_items or item.location in helm_medals:
                 if item.new_item in items_needing_ipd:

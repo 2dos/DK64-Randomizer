@@ -159,7 +159,6 @@ def patching_response(spoiler):
     sav = spoiler.settings.rom_data
 
     # Shuffle Levels
-    flut_items = []
     if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         ROM_COPY.seek(sav + 0)
         ROM_COPY.write(1)
@@ -189,25 +188,6 @@ def patching_response(spoiler):
         for level in vanilla_lobby_entrance_order:
             level_order.append(vanilla_lobby_exit_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
         placeLevelOrder(spoiler, level_order, ROM_COPY)
-
-        vanilla_key_order = [0x1A, 0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x17C]
-        if Types.Key not in spoiler.settings.shuffled_location_types:
-            # Append to FLUT
-            for index, vanilla_key in enumerate(vanilla_key_order):
-                level_index_in_slot = level_order[index]
-                flut_items.append(
-                    [
-                        vanilla_key_order[level_index_in_slot],
-                        vanilla_key,
-                    ]
-                )
-            # Re-write FLUT
-            written_flut = flut_items.copy()  # Making a FLUT copy so that the flut sent to item rando isn't getting a double terminator
-            written_flut.append([0xFFFF, 0xFFFF])
-            ROM_COPY.seek(0x1FF2000)
-            for flut in sorted(written_flut, key=lambda x: x[0]):
-                for flag in flut:
-                    ROM_COPY.writeMultipleBytes(flag, 2)
 
     # Unlock All Kongs
     kong_items = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
@@ -702,7 +682,7 @@ def patching_response(spoiler):
     alterTextboxRequirements(spoiler)
     spoiler.arcade_item_reward = Items.NintendoCoin
     spoiler.jetpac_item_reward = Items.RarewareCoin
-    place_randomized_items(spoiler, flut_items.copy(), ROM_COPY)  # Has to be after kong rando cosmetic and moves
+    place_randomized_items(spoiler, ROM_COPY)  # Has to be after kong rando cosmetic and moves
     # Arcade detection for colorblind mode
     arcade_item_index = 0
     potion_pools = [
