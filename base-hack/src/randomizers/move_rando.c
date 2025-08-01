@@ -755,6 +755,9 @@ void getNextMoveText(void) {
 							} else if (p_flag == FLAG_COLLECTABLE_RAREWARECOIN) {
 								// Rareware Coin
 								top_item = ITEMTEXT_RAREWARE;
+							} else if (isFlagInRange(p_flag, FLAG_RAINBOWCOIN_0, 16)) {
+								// Rainbow Coin
+								top_item = ITEMTEXT_RAINBOWCOIN;
 							} else if (isFlagInRange(p_flag, FLAG_CROWN_JAPES, 10)) {
 								// Crown
 								top_item = ITEMTEXT_CROWN;
