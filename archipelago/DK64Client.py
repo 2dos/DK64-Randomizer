@@ -473,38 +473,23 @@ class DK64Client:
         """Get the status of a check."""
         # shop_index: 0 = cranky, 1 = funky, 2 = candy, 3 = bfi
         # flag_index: as expected
-        if check_type == "shop":
-            cache_key = (shop_index, kong_index, level_index)
-            if cache_key in self._purchase_cache:
-                # Retrieve cached values
-                purchase_type, purchase_value, purchase_kong = self._purchase_cache[cache_key]
-            else:
-                # Calculate header and read values
-                if shop_index == 3:
-                    header = 0x807FF6E8
-                else:
-                    header = 0x807FF400 + (shop_index * 0xF0) + (kong_index * 0x30) + (level_index * 6)
-                purchase_type = self.n64_client.read_u16(header + 0)
-                purchase_value = self.n64_client.read_u16(header + 2)
-                purchase_kong = self.n64_client.read_u8(header + 4)
-                # Cache the values
-                self._purchase_cache[cache_key] = (purchase_type, purchase_value, purchase_kong)
-
-            return self._getShopStatus(purchase_type, purchase_value, purchase_kong)
+        if check_type == "shop":        
+            res = 0
+            match shop_index:
+                case 0:  # Cranky
+                    res = self.readFlag(0x320 + (level_index * 5) + kong_index)
+                case 1:  # Funky
+                    res = self.readFlag(0x320 + ((level_index + 8) * 5) + kong_index)
+                case 2:  # Candy
+                    if level_index >= 1 and level_index <= 3:
+                        candy_offset = level_index - 1
+                        res = self.readFlag(0x320 + ((candy_offset + 15) * 5) + kong_index)
+                    else:
+                        candy_offset = level_index - 5
+                        res = self.readFlag(0x320 + ((candy_offset + 18) * 5) + kong_index)
+            return res
         else:
-            self._build_flag_lookup()
-            # Check if the flag exists in the lookup table
-            if self.flag_lookup.get(flag_index):
-                target_flag = self.flag_lookup[flag_index]
-                if target_flag & 0x8000:
-                    return self.getMoveStatus(target_flag)
-                elif target_flag == 0xFFFE:
-                    has_camera = self.readFlag(0x2FD) != 0
-                    has_shockwave = self.readFlag(0x179) != 0
-                    return has_camera and has_shockwave
-                return _bulk_read_dict.get(target_flag) != 0
-            else:
-                return _bulk_read_dict.get(flag_index) != 0
+            return self.readFlag(flag_index)
 
     def bulk_lookup(self, flag_index, _bulk_read_dict):
         """Bulk lookup of flags."""
@@ -555,7 +540,6 @@ class DK64Client:
                 # Assuming we did find it in location_name_to_flag
                 check_status = self.getCheckStatus("location", check, _bulk_read_dict=_bulk_read_dict)
                 if check_status:
-                    # logger.info(f"Found {name} via location_name_to_flag")
                     self.remaining_checks.remove(id)
                     new_checks.append(id)
                     if self.locations_scouted.get(id):
@@ -564,16 +548,7 @@ class DK64Client:
             else:
                 # If the content is 3 parts separated by a space, we can assume it's a shop check
                 content = name.split(" ")
-                if name == "The Banana Fairy's Gift":
-                    check_status = self.getCheckStatus("shop", None, 3, None, None)
-                    if check_status:
-                        # logger.info(f"Found {name} via location_name_to_flag")
-                        self.remaining_checks.remove(id)
-                        new_checks.append(id)
-                        if self.locations_scouted.get(id):
-                            self.sent_checks.append((self.locations_scouted.get(id).get("item_name"), self.locations_scouted.get(id).get("player")))
-                    continue
-                elif ("Cranky" in name or "Candy" in name or "Funky" in name) and len(content) == 3:
+                if ("Cranky" in name or "Candy" in name or "Funky" in name) and len(content) == 3:
                     level_mapping = {"Japes": 0, "Aztec": 1, "Factory": 2, "Galleon": 3, "Forest": 4, "Caves": 5, "Castle": 6, "Isles": 7}
                     shop_mapping = {"Cranky": 0, "Funky": 1, "Candy": 2}
                     kong_mapping = {"Donkey": 0, "Diddy": 1, "Lanky": 2, "Tiny": 3, "Chunky": 4}
@@ -588,7 +563,6 @@ class DK64Client:
 
                     check_status = self.getCheckStatus("shop", None, shop_index, level_index, kong_index)
                     if check_status:
-                        # print(f"Found {name} via shop check")
                         self.remaining_checks.remove(id)
                         new_checks.append(id)
                         if self.locations_scouted.get(id):
@@ -604,7 +578,6 @@ class DK64Client:
                         else:
                             check_status = self.getCheckStatus("location", flag_id, _bulk_read_dict=_bulk_read_dict)
                             if check_status:
-                                # logger.info(f"Found {name} via item_ids")
                                 self.remaining_checks.remove(id)
                                 new_checks.append(id)
                                 if self.locations_scouted.get(id):
