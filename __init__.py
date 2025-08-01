@@ -143,7 +143,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Locations import Locations as DK64RLocations
-    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel, GlitchesSelected, MicrohintsEnabled, HardModeSelected, RemovedBarriersSelected, ItemRandoListSelected, ItemRandoFiller, SwitchsanityKong, SwitchsanityGone
+    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel, GlitchesSelected, MicrohintsEnabled, HardModeSelected, RemovedBarriersSelected, ItemRandoListSelected, ItemRandoFiller, SwitchsanityKong, SwitchsanityGone, BLockerSetting
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
     from randomizer.Lists import Item as DK64RItem
@@ -293,6 +293,8 @@ if baseclasses_loaded:
             settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
             settings_dict["randomize_blocker_required_amounts"] = self.options.randomize_blocker_required_amounts.value
             settings_dict["blocker_text"] = self.options.blocker_max.value
+            if self.options.chaos_locker.value:
+                settings_dict["blocker_selection_behavior"] = BLockerSetting.chaos
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
             blocker_options = [
                 self.options.level1_blocker,
@@ -390,7 +392,7 @@ if baseclasses_loaded:
             elif self.options.switchsanity.value == SwitchSanity.option_helm_access:
                 settings_dict["switchsanity_switch_isles_to_kroc_top"] = SwitchsanityKong.random
                 settings_dict["switchsanity_switch_isles_helm_lobby"] = SwitchsanityGone.random
-            elif self.option.switchsanity.value == SwitchSanity.option_off:
+            elif self.options.switchsanity.value == SwitchSanity.option_off:
                 settings_dict["switchsanity_enabled"] = False
             settings_dict["logic_type"] = self.options.logic_type.value
             settings_dict["remove_barriers_enabled"] = bool(self.options.remove_barriers_selected)
