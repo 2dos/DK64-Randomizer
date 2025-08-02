@@ -765,6 +765,12 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         arcade_reward_index = db_item.arcade_reward_index[db_index]
                         ROM_COPY.seek(sav + 0x110)
                         ROM_COPY.write(arcade_reward_index)
+                        addr = getItemTableWriteAddress(ROM_COPY, Types.NintendoCoin, 0, offset_dict)
+                        ROM_COPY.seek(addr)
+                        ROM_COPY.write(item_properties.response_type)
+                        ROM_COPY.write(item_properties.level)
+                        ROM_COPY.write(item_properties.kong)
+                        ROM_COPY.write(item_properties.audiovisual_medal)
                     elif item.location == Locations.RarewareCoin:
                         spoiler.jetpac_item_reward = item.new_subitem
                         db_item = getItemDBEntry(item.new_item)
@@ -772,6 +778,12 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         jetpac_reward_index = db_item.jetpac_reward_index[db_index]
                         ROM_COPY.seek(sav + 0x111)
                         ROM_COPY.write(jetpac_reward_index)
+                        addr = getItemTableWriteAddress(ROM_COPY, Types.RarewareCoin, 1, offset_dict)
+                        ROM_COPY.seek(addr)
+                        ROM_COPY.write(item_properties.response_type)
+                        ROM_COPY.write(item_properties.level)
+                        ROM_COPY.write(item_properties.kong)
+                        ROM_COPY.write(item_properties.audiovisual_medal)
                     elif item.location in (Locations.ForestDonkeyBaboonBlast, Locations.CavesDonkeyBaboonBlast):
                         # Autocomplete bonus barrel fix
                         actor_index = getActorIndex(item)

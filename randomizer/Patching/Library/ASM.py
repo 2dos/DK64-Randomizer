@@ -239,6 +239,8 @@ item_type_table_conversion = {
     Types.BoulderItem: ("boulder_item_table", 8),
     Types.Kong: ("kong_check_data", 8),
     Types.Shop: ("purchase_hint_text_items", 2),  # Shop Hints
+    Types.NintendoCoin: ("company_coin_table", 4),
+    Types.RarewareCoin: ("company_coin_table", 4),
 }
 
 

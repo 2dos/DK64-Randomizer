@@ -184,6 +184,10 @@ model_item_data kong_check_data[4] = {
     {.model =  9, .item = {.item_type = REQITEM_KONG, .kong = KONG_TINY}},
     {.model = 12, .item = {.item_type = REQITEM_KONG, .kong = KONG_CHUNKY}},
 };
+item_packet company_coin_table[2] = {
+    {.item_type = REQITEM_COMPANYCOIN, .kong = 0}, // Nintendo Coin
+    {.item_type = REQITEM_COMPANYCOIN, .kong = 1}, // Rareware Coin
+};
 
 int getBPItem(int index) {
     /**
