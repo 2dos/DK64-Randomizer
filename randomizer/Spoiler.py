@@ -452,13 +452,12 @@ class Spoiler:
         for level_index, amount in enumerate(self.settings.BossBananas):
             cb_counts[level_list[level_index]] = amount
         humanspoiler["Requirements"]["Troff N Scoff Bananas"] = cb_counts
+        humanspoiler["Requirements"]["Kong Puzzles"] = {}
         humanspoiler["Requirements"]["Miscellaneous"] = {}
-        humanspoiler["Kongs"] = {}
-        humanspoiler["Kongs"]["Starting Kong List"] = startKongList
-        humanspoiler["Kongs"]["Japes Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
-        humanspoiler["Kongs"]["Tiny Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
-        humanspoiler["Kongs"]["Llama Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
-        humanspoiler["Kongs"]["Factory Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
+        humanspoiler["Requirements"]["Kong Puzzles"]["Japes Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
+        humanspoiler["Requirements"]["Kong Puzzles"]["Tiny Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
+        humanspoiler["Requirements"]["Kong Puzzles"]["Llama Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
+        humanspoiler["Requirements"]["Kong Puzzles"]["Factory Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
         humanspoiler["Requirements"]["Miscellaneous"]["Jetpac Medal Requirement"] = self.settings.medal_requirement
         race_maps = {
             Maps.JapesMinecarts: "Japes Minecart",
@@ -558,6 +557,15 @@ class Spoiler:
             "Empty": {},
             "Unknown": {},
         }
+        starting_kong = startKongList[0]
+        additional_starting_kongs = []
+        if len(startKongList) > 1:
+            additional_starting_kongs = startKongList[1:]
+        humanspoiler[sorted_item_name]["Kongs"]["Starting Kong"] = starting_kong
+        humanspoiler["Items"]["DK Isles"]["Starting Kong"] = starting_kong
+        for index, kong in enumerate(additional_starting_kongs):
+            humanspoiler[sorted_item_name]["Kongs"][f"Additional Starting Kong {index + 1}"] = kong
+            humanspoiler["Items"]["DK Isles"][f"Additional Starting Kong {index + 1}"] = kong
 
         self.pregiven_items = []
         self.first_move_item = None

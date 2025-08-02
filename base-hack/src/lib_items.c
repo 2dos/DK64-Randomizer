@@ -59,21 +59,21 @@ const item_conversion_info item_conversions[] = {
 	{.actor=154, .model_two=661, .scale=0.25f},
 	{.actor=155, .model_two=662, .scale=0.25f},
 	{.actor=157, .model_two=663, .scale=0.25f},
-	{.actor=37, .model_two=678, .scale=0.25f},
-	{.actor=38, .model_two=665, .scale=0.25f},
-	{.actor=39, .model_two=666, .scale=0.25f},
-	{.actor=40, .model_two=667, .scale=0.25f},
-	{.actor=41, .model_two=668, .scale=0.25f},
-	{.actor=42, .model_two=669, .scale=0.25f},
-	{.actor=43, .model_two=670, .scale=0.25f},
-	{.actor=44, .model_two=671, .scale=0.25f},
-	{.actor=45, .model_two=672, .scale=0.25f},
-	{.actor=46, .model_two=673, .scale=0.25f},
-	{.actor=47, .model_two=676, .scale=0.25f},
-	{.actor=48, .model_two=677, .scale=0.25f}
+	{.actor=382, .model_two=678, .scale=0.25f},
+	{.actor=383, .model_two=665, .scale=0.25f},
+	{.actor=384, .model_two=666, .scale=0.25f},
+	{.actor=385, .model_two=667, .scale=0.25f},
+	{.actor=386, .model_two=668, .scale=0.25f},
+	{.actor=387, .model_two=669, .scale=0.25f},
+	{.actor=388, .model_two=670, .scale=0.25f},
+	{.actor=389, .model_two=671, .scale=0.25f},
+	{.actor=390, .model_two=672, .scale=0.25f},
+	{.actor=391, .model_two=673, .scale=0.25f},
+	{.actor=392, .model_two=676, .scale=0.25f},
+	{.actor=393, .model_two=677, .scale=0.25f}
 };
-const unsigned short bounce_objects[] = {45,345,346,72,86,367,348,349,350,351,352,353,354,355,356,357,358,361,362,363,364,365,366,369,370,371,372,375,377,378,379,380,381,151,152,153,154,155,157,37,38,39,40,41,42,43,44,45,46,47,48};
-const unsigned short actor_drops[] = {45,78,75,77,79,76,345,346,72,86,367,348,349,350,351,352,353,347,354,355,356,357,358,361,362,363,140,364,365,366,52,47,121,51,369,370,371,372,375,377,378,379,380,381,151,152,153,154,155,157,37,38,39,40,41,42,43,44,45,46,47,48};
+const unsigned short bounce_objects[] = {45,345,346,72,86,367,348,349,350,351,352,353,354,355,356,357,358,361,362,363,364,365,366,369,370,371,372,375,377,378,379,380,381,151,152,153,154,155,157,382,383,384,385,386,387,388,389,390,391,392,393};
+const unsigned short actor_drops[] = {45,78,75,77,79,76,345,346,72,86,367,348,349,350,351,352,353,347,354,355,356,357,358,361,362,363,140,364,365,366,52,47,121,51,369,370,371,372,375,377,378,379,380,381,151,152,153,154,155,157,382,383,384,385,386,387,388,389,390,391,392,393};
 const item_scale_info item_scales[] = {
 	{.type=116, .scale=0.25f},
 	{.type=222, .scale=2.00f},
