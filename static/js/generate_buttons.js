@@ -568,7 +568,6 @@ async function import_settings_string(event) {
                         // Find the selected option by the value of the option
                         for (let cb of checkboxes) {
                             if (cb.value == flipped[item]) {
-                                console.log(cb)
                                 cb.checked = true;
                                 selectedCount++;
                             }
@@ -602,12 +601,12 @@ async function import_settings_string(event) {
                             valid = false;
                         }
                         total_settings_list_items.forEach(value => {
-                            if (items_list.filter(k => k.value == value).length == 0) {
+                            if (items_list.filter(k => k.num_val == value).length == 0) {
                                 valid = false;
                             }
                         })
                         total_settings_list_checks.forEach(value => {
-                            if (checks_list.filter(k => k.value == value).length == 0) {
+                            if (checks_list.filter(k => k.num_val == value).length == 0) {
                                 valid = false;
                             }
                         })
@@ -618,7 +617,7 @@ async function import_settings_string(event) {
                         }
                         valid = total_settings_list.length == items_list.length;
                         total_settings_list.forEach(value => {
-                            if (items_list.filter(k => k.value == value).length == 0) {
+                            if (items_list.filter(k => k.num_val == value).length == 0) {
                                 valid = false;
                             }
                         })
@@ -630,14 +629,14 @@ async function import_settings_string(event) {
                             // Find the selected option by the value of the option
                             const option = document.createElement("li");
                             option.classList.add("list-group-item");
-                            option.value = item;
                             let opt_name = "";
                             let opt_tooltip = "";
                             let opt_checks = "";
                             let opt_items = "";
                             let opt_tied_item = "";
                             items_list.concat(checks_list).forEach(k => {
-                                if (k.value == item) {
+                                if (k.num_val == item) {
+                                    option.setAttribute("value", k.value);
                                     opt_name = k.name;
                                     opt_tooltip = k.tooltip;
                                     if (list_predicate == "item_rando_list_") {
