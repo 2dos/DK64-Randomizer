@@ -147,6 +147,7 @@ if baseclasses_loaded:
         WinConditionComplex,
         SwitchsanityLevel,
         GlitchesSelected,
+        TricksSelected,
         MicrohintsEnabled,
         HardModeSelected,
         RemovedBarriersSelected,
@@ -447,10 +448,17 @@ if baseclasses_loaded:
                 elif barrier == "galleon_treasure_room":
                     settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.galleon_treasure_room)
             settings_dict["glitches_selected"] = []
+            for trick in self.options.tricks_selected:
+                if trick == "advanced_platforming":
+                    settings_dict["tricks_selected"].append(TricksSelected.advanced_platforming)
+                elif trick == "hard_shooting":
+                    settings_dict["tricks_selected"].append(TricksSelected.hard_shooting)
+                elif trick == "advanced_grenading":
+                    settings_dict["tricks_selected"].append(TricksSelected.advanced_grenading)
+                elif trick == "slope_resets":
+                    settings_dict["tricks_selected"].append(TricksSelected.slope_resets)
             for glitch in self.options.glitches_selected:
-                if glitch == "advanced_platforming":
-                    settings_dict["glitches_selected"].append(GlitchesSelected.advanced_platforming)
-                elif glitch == "moonkicks":
+                if glitch == "moonkicks":
                     settings_dict["glitches_selected"].append(GlitchesSelected.moonkicks)
                 elif glitch == "phase_swimming":
                     settings_dict["glitches_selected"].append(GlitchesSelected.phase_swimming)
@@ -512,6 +520,7 @@ if baseclasses_loaded:
                         settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
                         settings.helm_order = passthrough["HelmOrder"]
                         settings.logic_type = LogicType[passthrough["LogicType"]]
+                        settings.tricks_selected = passthrough["TricksSelected"]
                         settings.glitches_selected = passthrough["GlitchesSelected"]
                         settings.open_lobbies = passthrough["OpenLobbies"]
                         settings.starting_key_list = passthrough["StartingKeyList"]
