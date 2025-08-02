@@ -182,6 +182,9 @@
 #define TREE_DOOR_DK 0x1
 #define TREE_DOOR_CHUNKY 0x9
 
+#define ITEM_NINTENDO_COIN 0x13E
+#define ITEM_RAREWARE_COIN 0x2
+
 #define TNS_NUMBER 0x15
 #define TNS_ITEMINDICATOR 0xF
 
@@ -423,6 +426,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,113,2);
 					}
+				}
+				break;
+			case MAP_CRANKY:
+				if (param2 == ITEM_RAREWARE_COIN) {
+					giveItemFromPacket(&company_coin_table[1]);
 				}
 				break;
 			case MAP_KROOLCHUNKY:
@@ -925,6 +933,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return !Rando.tag_anywhere;
 				} else if (((param2 >= FACTORY_BLOCKELEVATOR_0) && (param2 <= FACTORY_BLOCKELEVATOR_4)) || (param2 == FACTORY_BLOCKELEVATOR_5) || (param2 == FACTORY_BLOCKELEVATOR_6)) {
 					behaviour_pointer->timer = (RNG & 63) + 15;
+				} else if (param2 == ITEM_NINTENDO_COIN) {
+					giveItemFromPacket(&company_coin_table[0]);
 				}
 				break;
 			case MAP_FUNGIMILLFRONT:
