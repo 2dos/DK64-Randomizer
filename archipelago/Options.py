@@ -57,7 +57,7 @@ class StartingMoveCount(Range):
 class KroolInBossPool(Toggle):
     """Whether or not K. Rool can be fightable in T&S Bosses and vice versa."""
 
-    display_name = "Krool In Boss Pool"
+    display_name = "K. Rool In Boss Pool"
 
 
 class TrapFillPercentage(Range):
@@ -121,25 +121,25 @@ class SlowTrapWeight(BaseTrapWeight):
 
 
 class DisableAWeight(BaseTrapWeight):
-    """Likelyhood of receiving a trap which disables your A button."""
+    """Likelihood of receiving a trap which disables your A button."""
 
     display_name = "Disable A Trap"
 
 
 class DisableBWeight(BaseTrapWeight):
-    """Likelyhood of receiving a trap which disables your B button."""
+    """Likelihood of receiving a trap which disables your B button."""
 
     display_name = "Disable B Trap"
 
 
 class DisableZWeight(BaseTrapWeight):
-    """Likelyhood of receiving a trap which disables your Z button."""
+    """Likelihood of receiving a trap which disables your Z button."""
 
     display_name = "Disable Z Trap"
 
 
 class DisableCWeight(BaseTrapWeight):
-    """Likelyhood of receiving a trap which disables your C buttons."""
+    """Likelihood of receiving a trap which disables your C buttons."""
 
     display_name = "Disable C Trap"
 
@@ -229,20 +229,44 @@ class SwitchSanity(Choice):
 
 
 class LogicType(Choice):
-    """Determines what type of logic is needed to beat the seed."""
+    """Determines what type of logic is needed to beat the seed.
+    
+    Options:
+    glitchless: Logic is designed to be completed without glitches, mostly as intended by the developers.
+    advanced_glitchless: Logic is designed to be completed without glitches, but allows for advanced platforming techniques. Add tricks you want to put in logic in tricks_selected.
+    glitched: Logic is designed to be completed with glitches. Add tricks you want to put in logic in tricks_selected, AND add glitches you want to put in logic in glitches_selected.
+    """
 
     display_name = "Logic Type"
 
     option_glitchless = 1
-    option_glitched = 2
+    option_advanced_glitchless = 2
+    option_glitched = 3
     default = 1
 
 
+class TricksSelected(OptionList):
+    """Determines what tricks are enabled if logic_type is set to Advanced Glitchless or Glitched.
+    
+    Valid Keys:
+    "advanced_platforming": Platforming techniques that don't require any glitches but might be too tough for some players.
+    "hard_shooting": Certain shooting checks that are harder will not require shooting aids, such as Homing Ammo and Sniper Scope.
+    "advanced_grenading": Certain checks can be done with oranges (DK 5 Door Cabin, Japes Painting Room). In addition, change Fungi time of day with oranges.
+    "slope_resets": Use kong ground attacks to climb steep slopes.
+    """
+
+    display_name = "Tricks Selected"
+    valid_keys = {
+        "advanced_platforming",
+        "hard_shooting",
+        "advanced_grenading",
+        "slope_resets"
+        }
+    
 class GlitchesSelected(OptionList):
     """Determines what glitches are enabled if logic_type is set to Glitched.
 
     Valid Keys:
-    "advanced_platforming": Platforming techniques that don't require any glitches but might be too tough for some players.
     "moonkicks": A trick that allows Donkey to ascend by interrupting his aerial attack with a kick.
     "phase_swimming": Formerly known as STVW, a trick to go through a significant amount of walls in the game whilst underwater.
     "swim_through_shores": A trick that allows you to swim into a sloped shoreline to get out of bounds.
@@ -250,9 +274,8 @@ class GlitchesSelected(OptionList):
     "moontail": A trick that allows the player to gain extra height with Diddy.
     """
 
-    display_name = "Glitched Logic"
+    display_name = "Glitches Selected"
     valid_keys = {
-        "advanced_platforming",
         "moonkicks",
         "phase_swimming",
         "swim_through_shores",
@@ -260,11 +283,10 @@ class GlitchesSelected(OptionList):
         "moontail",
     }
 
-
 class RingLink(Toggle):
     """Determines if the Ring Link is enabled.
 
-    The easier waty to say this is Ammo link.
+    The easier way to say this is Ammo link.
     If enabled, all ammo types are shared between players.
 
     Currently for Film and Crystal Coconuts if you gain any above the base amount from ringlink, we will not provide more.
@@ -289,21 +311,6 @@ class MirrorMode(Toggle):
     """Determines whether the game will be horizontally Mirrored."""
 
     display_name = "Mirror Mode"
-
-
-class HardShooting(Toggle):
-    """Enabling this setting means logic may expect you to do some difficult shooting challenges without help.
-
-    Lanky's attic in Fungi Forest removes Homing requirement.
-    Donkey's 5 door cabin in Crystal Caves removes Homing requirement.
-    Tiny's trash can in Creepy Castle removes homing ammo. (This can be bypassed with Saxophone)
-    Chunky's tree banana in Creepy Castle removes sniper scope. (This requirement can be skipped by shooting from below the switch.
-    Chunky's shooting barrel in Hideout Helm removes either sniper scope or homing ammo.
-    Lanky's tower in Castle Requires either Homing ammo or Sniper Scope instead of just Sniper
-    """
-
-    display_name = "Hard Shooting"
-
 
 class HardModeEnabled(Toggle):
     """Determines whether Hard Mode is enabled. Use the yaml option below this to determine which settings you want enabled."""
@@ -402,7 +409,7 @@ class MaximumBLocker(Range):
 
 
 class ChaosBLockers(Toggle):
-    """If Ranodmize Blockers enabled, determines if B. Lockers can be cleared by non-Golden Banana collectibles."""
+    """If Randomize B. Lockers is also enabled, determines if B. Lockers may require non-Golden Banana collectibles."""
 
     display_name = "Chaos B. Lockers"
 
@@ -478,7 +485,7 @@ class BouldersInPool(Toggle):
 
 
 class Dropsanity(Toggle):
-    """Determined if Enemy Drops are added into the pool."""
+    """Determines if Enemy Drops are added into the pool."""
 
     display_name = "Dropsanity"
 
@@ -516,7 +523,7 @@ class DK64Options(PerGameCommonOptions):
     rareware_gb_fairies: RarewareGBRequirement
     randomize_blocker_required_amounts: RandomizeBlockers
     blocker_max: MaximumBLocker
-    chaos_locker: ChaosBLockers
+    enable_chaos_blockers: ChaosBLockers
     chaos_ratio: ChaosRatio
     level1_blocker: Level1Blocker
     level2_blocker: Level2Blocker
@@ -532,8 +539,8 @@ class DK64Options(PerGameCommonOptions):
     starting_kong_count: StartingKongCount
     starting_move_count: StartingMoveCount
     logic_type: LogicType
+    tricks_selected: TricksSelected
     glitches_selected: GlitchesSelected
-    hard_shooting: HardShooting
     hard_mode: HardModeEnabled
     hard_mode_selected: HardModeSelected
     mirror_mode: MirrorMode

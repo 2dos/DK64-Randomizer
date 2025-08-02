@@ -147,6 +147,7 @@ if baseclasses_loaded:
         WinConditionComplex,
         SwitchsanityLevel,
         GlitchesSelected,
+        TricksSelected,
         MicrohintsEnabled,
         HardModeSelected,
         RemovedBarriersSelected,
@@ -303,7 +304,7 @@ if baseclasses_loaded:
             settings_dict["helm_phase_count"] = self.options.helm_phase_count.value
             settings_dict["krool_phase_count"] = self.options.krool_phase_count.value
             settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
-            if self.options.chaos_locker.value:
+            if self.options.enable_chaos_blockers.value:
                 settings_dict["blocker_text"] = self.options.chaos_ratio.value
                 settings_dict["blocker_selection_behavior"] = BLockerSetting.chaos
             else:
@@ -356,10 +357,6 @@ if baseclasses_loaded:
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["mirror_mode"] = self.options.mirror_mode.value
-            if hasattr(self.multiworld, "generation_is_fake") and hasattr(self.multiworld, "re_gen_passthrough") and "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
-                settings_dict["hard_shooting"] = self.multiworld.re_gen_passthrough["Donkey Kong 64"]["HardShooting"]
-            else:
-                settings_dict["hard_shooting"] = self.options.hard_shooting.value
             settings_dict["hard_mode"] = self.options.hard_mode.value
             settings_dict["hard_mode_selected"] = []
             for hard in self.options.hard_mode_selected:
@@ -447,10 +444,17 @@ if baseclasses_loaded:
                 elif barrier == "galleon_treasure_room":
                     settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.galleon_treasure_room)
             settings_dict["glitches_selected"] = []
+            for trick in self.options.tricks_selected:
+                if trick == "advanced_platforming":
+                    settings_dict["tricks_selected"].append(TricksSelected.advanced_platforming)
+                elif trick == "hard_shooting":
+                    settings_dict["tricks_selected"].append(TricksSelected.hard_shooting)
+                elif trick == "advanced_grenading":
+                    settings_dict["tricks_selected"].append(TricksSelected.advanced_grenading)
+                elif trick == "slope_resets":
+                    settings_dict["tricks_selected"].append(TricksSelected.slope_resets)
             for glitch in self.options.glitches_selected:
-                if glitch == "advanced_platforming":
-                    settings_dict["glitches_selected"].append(GlitchesSelected.advanced_platforming)
-                elif glitch == "moonkicks":
+                if glitch == "moonkicks":
                     settings_dict["glitches_selected"].append(GlitchesSelected.moonkicks)
                 elif glitch == "phase_swimming":
                     settings_dict["glitches_selected"].append(GlitchesSelected.phase_swimming)
@@ -512,6 +516,7 @@ if baseclasses_loaded:
                         settings.lanky_freeing_kong = passthrough["LankyFreeingKong"]
                         settings.helm_order = passthrough["HelmOrder"]
                         settings.logic_type = LogicType[passthrough["LogicType"]]
+                        settings.tricks_selected = passthrough["TricksSelected"]
                         settings.glitches_selected = passthrough["GlitchesSelected"]
                         settings.open_lobbies = passthrough["OpenLobbies"]
                         settings.starting_key_list = passthrough["StartingKeyList"]
@@ -897,11 +902,13 @@ if baseclasses_loaded:
                     else {}
                 ),
                 "LogicType": self.spoiler.settings.logic_type.name,
+                "TricksSelected": ", ".join([trick.name for trick in self.spoiler.settings.tricks_selected]),
                 "GlitchesSelected": ", ".join([glitch.name for glitch in self.spoiler.settings.glitches_selected]),
                 "StartingKeyList": ", ".join([key.name for key in self.spoiler.settings.starting_key_list]),
-                "HardShooting": self.options.hard_shooting.value,
                 "Junk": self.junked_locations,
                 "HintsInPool": self.options.hints_in_item_pool.value,
+                "BouldersInPool": self.options.boulders_in_pool.value,
+                "Dropsanity": self.options.dropsanity.value,
                 "Version": ap_version,
             }
 
@@ -1055,10 +1062,27 @@ if baseclasses_loaded:
                     state.dk64_logic_holder[self.player] = LogicVarHolder(self.spoiler, self.player)  # If the CollectionState dodged the creation of a logic_holder object, fix it here
                     state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
             return change
+        
+        def version_check(self, version: str, req_version: str) -> bool:
+            """Check if the current version is greater than or equal to the one required for this slot data."""
+
+            req_major = req_version.split(".")[0]
+            req_minor = req_version.split(".")[1]
+            req_patch = req_version.split(".")[2]
+
+            version_major = version.split(".")[0]
+            version_minor = version.split(".")[1]
+            version_patch = version.split(".")[2]
+
+            return (int(version_major), int(version_minor), int(version_patch)) >= (int(req_major), int(req_minor), int(req_patch))
 
         def interpret_slot_data(self, slot_data: dict[str, any]) -> dict[str, any]:
             """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
             # Parse the string data
+            version = slot_data["Version"]
+            if version != ap_version:
+                print(f"Version mismatch: {version} != {ap_version}. You may experience unexpected behavior.")
+
             level_order = slot_data["LevelOrder"].split(", ")
             starting_kongs = slot_data["StartingKongs"].split(", ")
             medal_cb_req = slot_data["MedalCBRequirement"]
@@ -1074,11 +1098,17 @@ if baseclasses_loaded:
             logic_type = slot_data["LogicType"]
             glitches_selected = slot_data["GlitchesSelected"].split(", ")
             starting_key_list = slot_data["StartingKeyList"].split(", ")
-            hard_shooting = slot_data.get("HardShooting", False)
             junk = slot_data["Junk"]
             blocker_data = list(map(lambda original_string: original_string[original_string.find(":") + 2 :], slot_data["BLockerValues"].split(", ")))
             blocker_item_type = list(map(lambda data: data.split(" ")[1], blocker_data))
             blocker_item_quantity = list(map(lambda data: int(data.split(" ")[0]), blocker_data))
+
+            if self.version_check(version, "1.1.0"):
+                tricks_selected = slot_data.get("TricksSelected", []).split(", ")
+                boulders_in_pool = slot_data.get("BouldersInPool", False)
+                dropsanity = slot_data.get("Dropsanity", False)
+            else:
+                raise ValueError(f"This world is generated with an old version of DK64 Randomizer. Please downgrade to the correct version: {version}.")
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -1095,11 +1125,13 @@ if baseclasses_loaded:
             relevant_data["SwitchSanity"] = switchsanity
             relevant_data["OpenLobbies"] = open_lobbies
             relevant_data["LogicType"] = logic_type
+            relevant_data["TricksSelected"] = [TricksSelected[trick] for trick in tricks_selected if trick != ""]
             relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != ""]
             relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list if key != ""]
-            relevant_data["HardShooting"] = hard_shooting
             relevant_data["JunkedLocations"] = junk
             relevant_data["BLockerEntryItems"] = [BarrierItems[item] for item in blocker_item_type]
             relevant_data["BLockerEntryCount"] = blocker_item_quantity
             relevant_data["HintsInPool"] = slot_data["HintsInPool"]
+            relevant_data["BouldersInPool"] = boulders_in_pool
+            relevant_data["Dropsanity"] = dropsanity
             return relevant_data
