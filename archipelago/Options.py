@@ -119,25 +119,31 @@ class SlowTrapWeight(BaseTrapWeight):
 
     display_name = "Slow Trap Weight"
 
+
 class DisableAWeight(BaseTrapWeight):
     """Likelyhood of receiving a trap which disables your A button."""
 
     display_name = "Disable A Trap"
+
 
 class DisableBWeight(BaseTrapWeight):
     """Likelyhood of receiving a trap which disables your B button."""
 
     display_name = "Disable B Trap"
 
+
 class DisableZWeight(BaseTrapWeight):
     """Likelyhood of receiving a trap which disables your Z button."""
 
     display_name = "Disable Z Trap"
 
+
 class DisableCWeight(BaseTrapWeight):
     """Likelyhood of receiving a trap which disables your C buttons."""
 
     display_name = "Disable C Trap"
+
+
 class KroolPhaseCount(Range):
     """Pick how many phases are in the final battle against K. Rool."""
 
@@ -464,15 +470,18 @@ class Level8Blocker(Range):
     range_end = 201
     default = 64
 
+
 class BouldersInPool(Toggle):
     """Determines if throwing boulders/barrels spawn a check."""
 
     display_name = "Boulders in Pool"
 
+
 class Dropsanity(Toggle):
     """Determined if Enemy Drops are added into the pool."""
 
     display_name = "Dropsanity"
+
 
 @dataclass
 class DK64Options(PerGameCommonOptions):

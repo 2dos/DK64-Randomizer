@@ -239,26 +239,26 @@ class DK64Client:
 
     async def writeCountData(self, count_data):
         """Write count data directly to the CountStruct system."""
-        
+
         if isinstance(count_data, list):
             # Handle multiple count items (like Camera and Shockwave combo)
             for item in count_data:
                 await self.writeCountData(item)
             return
-            
+
         if not isinstance(count_data, dict):
             logger.warning(f"Invalid count_data format: {count_data}")
             return
-            
+
         # Get the CountStruct address from the pointer
         count_struct_address = self.n64_client.read_u32(DK64MemoryMap.count_struct_pointer)
         if count_struct_address == 0:
             logger.warning("CountStruct pointer is null, cannot write count data")
             return
-            
+
         # Write directly to CountStruct based on the field type
         field = count_data.get("field")
-        
+
         if field == "bp_bitfield":
             # Blueprint bitfield: 5 bytes starting at offset 0x000
             if "kong" in count_data and "level" in count_data:
@@ -269,13 +269,13 @@ class DK64Client:
             else:
                 byte_index = count_data.get("byte", 0)
                 bit_index = count_data.get("bit", 0)
-            
+
             if byte_index < 5:
                 address = count_struct_address + 0x000 + byte_index
                 current_value = self.n64_client.read_u8(address)
                 new_value = current_value | (1 << bit_index)
                 self.n64_client.write_u8(address, new_value)
-                
+
         elif field == "hint_bitfield":
             # Hint bitfield: 5 bytes starting at offset 0x005
             # Convert kong/level to byte/bit if needed
@@ -292,7 +292,7 @@ class DK64Client:
             else:
                 byte_index = count_data.get("byte", 0)
                 bit_index = count_data.get("bit", 0)
-            
+
             # Ensure we don't exceed the 5-byte hint bitfield and 7 bits per kong
             if byte_index < 5 and bit_index < 7:
                 address = count_struct_address + 0x005 + byte_index
@@ -301,7 +301,7 @@ class DK64Client:
                 self.n64_client.write_u8(address, new_value)
             else:
                 logger.warning(f"Invalid hint bitfield position: byte={byte_index}, bit={bit_index}")
-                
+
         elif field == "key_bitfield":
             # Key bitfield: 1 byte at offset 0x00A
             bit_index = count_data.get("bit", 0)
@@ -309,7 +309,7 @@ class DK64Client:
             current_value = self.n64_client.read_u8(address)
             new_value = current_value | (1 << bit_index)
             self.n64_client.write_u8(address, new_value)
-            
+
         elif field == "kong_bitfield":
             # Kong bitfield: 1 byte at offset 0x00B
             bit_index = count_data.get("bit", 0)
@@ -317,19 +317,19 @@ class DK64Client:
             current_value = self.n64_client.read_u8(address)
             new_value = current_value | (1 << bit_index)
             self.n64_client.write_u8(address, new_value)
-            
+
         elif field == "crowns":
             # Crowns: 1 byte counter at offset 0x00C
             address = count_struct_address + 0x00C
             current_value = self.n64_client.read_u8(address)
             self.n64_client.write_u8(address, current_value + 1)
-            
+
         elif field == "special_items":
             # Special items: 1 byte bitfield at offset 0x00D
             bit_name = count_data.get("bit")
             address = count_struct_address + 0x00D
             current_value = self.n64_client.read_u8(address)
-            
+
             if bit_name == "nintendo_coin":
                 new_value = current_value | 0x80  # bit 7
             elif bit_name == "rareware_coin":
@@ -339,40 +339,40 @@ class DK64Client:
             else:
                 logger.warning(f"Unknown special_items bit: {bit_name}")
                 return
-                
+
             self.n64_client.write_u8(address, new_value)
-            
+
         elif field == "medals":
             # Medals: 1 byte counter at offset 0x00E
             address = count_struct_address + 0x00E
             current_value = self.n64_client.read_u8(address)
             self.n64_client.write_u8(address, current_value + 1)
-            
+
         elif field == "pearls":
             # Pearls: 1 byte counter at offset 0x00F
             address = count_struct_address + 0x00F
             current_value = self.n64_client.read_u8(address)
             self.n64_client.write_u8(address, current_value + 1)
-            
+
         elif field == "fairies":
             # Fairies: 1 byte counter at offset 0x010
             address = count_struct_address + 0x010
             current_value = self.n64_client.read_u8(address)
             self.n64_client.write_u8(address, current_value + 1)
-            
+
         elif field == "rainbow_coins":
             # Rainbow coins: 1 byte counter at offset 0x011
             address = count_struct_address + 0x011
             current_value = self.n64_client.read_u8(address)
             self.n64_client.write_u8(address, current_value + 1)
-            
+
         elif field == "ice_traps":
             # Ice traps: 2 byte counter at offset 0x012
             # Also need to trigger the actual ice trap effect via fed system
             address = count_struct_address + 0x012
             current_value = self.n64_client.read_u16(address)
             self.n64_client.write_u16(address, current_value + 1)
-            
+
             # Now trigger the actual ice trap effect based on the ice trap type
             # We need to determine which type of ice trap this is and send it via fed system
             ice_trap_type = count_data.get("ice_trap_type", "bubble")  # default to bubble
@@ -393,26 +393,26 @@ class DK64Client:
             else:
                 # Default to bubble if unknown type
                 await self.writeFedData(0x018)
-            
+
         elif field == "junk_items":
             # Junk items: 2 byte counter at offset 0x014
             address = count_struct_address + 0x014
             current_value = self.n64_client.read_u16(address)
             self.n64_client.write_u16(address, current_value + 1)
-            
+
         elif field == "race_coins":
             # Race coins: 2 byte counter at offset 0x016
             address = count_struct_address + 0x016
             current_value = self.n64_client.read_u16(address)
             self.n64_client.write_u16(address, current_value + 1)
-            
+
         elif field == "flag_moves":
             # Flag moves: bitfield at offset 0x018
             bit_name = count_data.get("bit")
             address = count_struct_address + 0x018
             current_value = self.n64_client.read_u8(address)
             new_value = current_value  # Initialize with current value
-            
+
             # The C code uses 0x80 >> move_enum for bit positions
             if bit_name == "diving":
                 new_value = current_value | 0x80  # bit 7 (0x80 >> 0)
@@ -430,12 +430,12 @@ class DK64Client:
                 logger.warning(f"Unknown flag_moves bit: {bit_name}")
                 return
             self.n64_client.write_u8(address, new_value)
-            
+
         elif count_data.get("item") is not None:
             # These are requirement_item enum values that map to archipelago_items
             fed_id = count_data.get("item")
             await self.writeFedData(fed_id)
-            
+
         else:
             logger.warning(f"Unknown count_data field: {count_data}")
             return
@@ -459,8 +459,6 @@ class DK64Client:
         else:
             return self.readFlag(p_value) != 0
 
-
-
     def getMoveStatus(self, move_flag: int) -> bool:
         """Get the status of a move."""
         item_kong = (move_flag >> 12) & 7
@@ -481,7 +479,7 @@ class DK64Client:
         """Get the status of a check."""
         # shop_index: 0 = cranky, 1 = funky, 2 = candy, 3 = bfi
         # flag_index: as expected
-        if check_type == "shop":        
+        if check_type == "shop":
             res = 0
             match shop_index:
                 case 0:  # Cranky
@@ -498,8 +496,6 @@ class DK64Client:
             return res
         else:
             return self.readFlag(flag_index)
-
-
 
     async def readChecks(self, cb):
         """Run checks in parallel using asyncio."""

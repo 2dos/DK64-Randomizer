@@ -602,6 +602,15 @@ class LogicVarHolder:
             return kong_data and instrument_abilities[data.kong]
         elif data.switch_type == SwitchType.SlamSwitch:
             return kong_data and self.CanSlamSwitch(level, default_slam_level)
+        elif data.switch_type == SwitchType.GunInstrumentCombo:
+            gun_abilities = [self.coconut, self.peanut, self.grape, self.feather, self.pineapple]
+            instrument_abilities = [self.bongos, self.guitar, self.trombone, self.saxophone, self.triangle]
+            return kong_data and gun_abilities[data.kong] and instrument_abilities[data.kong]
+        elif data.switch_type == SwitchType.PushableButton:
+            if data.kong == Kongs.diddy:
+                return kong_data and self.charge
+            if data.kong == Kongs.chunky:
+                return kong_data and self.punch
         return False
 
     def CanPhaseswim(self):
@@ -844,7 +853,7 @@ class LogicVarHolder:
 
     def CanFreeDiddy(self):
         """Check if the cage locking Diddy's vanilla location can be opened."""
-        return self.spoiler.LocationList[Locations.DiddyKong].item == Items.NoItem or self.HasGun(self.settings.diddy_freeing_kong)
+        return self.spoiler.LocationList[Locations.DiddyKong].item == Items.NoItem or self.hasMoveSwitchsanity(Switches.JapesFreeKong)
 
     def CanOpenJapesGates(self):
         """Check if we can pick up the item inside Diddy's cage, thus opening the gates in Japes."""
@@ -876,10 +885,8 @@ class LogicVarHolder:
         """Check if kong at Tiny location can be freed, requires either chimpy charge or primate punch."""
         if self.spoiler.LocationList[Locations.TinyKong].item == Items.NoItem:
             return self.IsKong(self.settings.tiny_freeing_kong) or self.settings.free_trade_items
-        elif self.settings.tiny_freeing_kong == Kongs.diddy:
-            return self.charge and self.isdiddy
-        elif self.settings.tiny_freeing_kong == Kongs.chunky:
-            return self.punch and self.ischunky
+        elif self.settings.tiny_freeing_kong == Kongs.diddy or self.settings.tiny_freeing_kong == Kongs.chunky:
+            return self.hasMoveSwitchsanity(Switches.AztecOKONGPuzzle)
         # Used only as placeholder during fill when kong puzzles are not yet assigned
         elif self.settings.tiny_freeing_kong == Kongs.any:
             return True
@@ -890,9 +897,10 @@ class LogicVarHolder:
 
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
-        return (self.HasGun(self.settings.lanky_freeing_kong) or self.spoiler.LocationList[Locations.LankyKong].item == Items.NoItem) and (
-            (self.swim and self.HasInstrument(self.settings.lanky_freeing_kong)) or self.CanPhase() or self.CanPhaseswim()
-        )
+        if self.spoiler.LocationList[Locations.LankyKong].item == Items.NoItem:
+            return self.CanLlamaSpit(self) and self.swim and (self.IsKong(self.settings.lanky_freeing_kong) or self.settings.free_trade_items)
+        else:
+            return (self.swim and self.hasMoveSwitchsanity(Switches.AztecLlamaPuzzle)) or self.CanPhase() or self.CanPhaseswim()
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
@@ -901,7 +909,7 @@ class LogicVarHolder:
             return self.IsKong(self.settings.chunky_freeing_kong) or self.settings.free_trade_items
         # Otherwise you need the right slam level (usually 1)
         else:
-            return self.CanSlamSwitch(Levels.FranticFactory, 1) and self.IsKong(self.settings.chunky_freeing_kong) and (self.slope_resets or self.handstand)
+            return self.hasMoveSwitchsanity(Switches.FactoryFreeKong) and (self.slope_resets or self.handstand)
 
     def CanOpenForestLobbyGoneDoor(self):
         """Check if the player can open the door to the gone pad in forest lobby."""
