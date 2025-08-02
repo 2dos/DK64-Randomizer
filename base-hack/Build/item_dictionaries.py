@@ -366,7 +366,7 @@ db2 = [
     ItemRandoDef(0x0295, CollectableTypes.Null, None, 154, Hitbox(8, 4, 13), False),  # Fake Item - Key
     ItemRandoDef(0x0296, CollectableTypes.Null, None, 155, Hitbox(8, 4, 13), False),  # Fake Item - Key
     ItemRandoDef(0x0297, CollectableTypes.Null, None, 157, Hitbox(8, 4, 13), False),  # Fake Item - Key
-    ItemRandoDef(0x0298, CollectableTypes.Null, None, CustomActors.IceTrapDisableAGB, Hitbox(8, 4, 13), True),  # Fake Item - GB
+    ItemRandoDef(0x02A6, CollectableTypes.Null, None, CustomActors.IceTrapDisableAGB, Hitbox(8, 4, 13), True),  # Fake Item - GB
     ItemRandoDef(0x0299, CollectableTypes.Null, None, CustomActors.IceTrapDisableBGB, Hitbox(8, 4, 13), True),  # Fake Item - GB
     ItemRandoDef(0x029A, CollectableTypes.Null, None, CustomActors.IceTrapDisableZGB, Hitbox(8, 4, 13), True),  # Fake Item - GB
     ItemRandoDef(0x029B, CollectableTypes.Null, None, CustomActors.IceTrapDisableCUGB, Hitbox(8, 4, 13), True),  # Fake Item - GB

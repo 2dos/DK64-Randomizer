@@ -56,6 +56,10 @@
         "map": 207
     },
     {
+        "name": "./assets/instance_scripts\\cranky",
+        "map": 5
+    },
+    {
         "name": "./assets/instance_scripts\\crown_0",
         "map": 53
     },
