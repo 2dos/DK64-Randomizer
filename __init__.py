@@ -907,7 +907,7 @@ if baseclasses_loaded:
                 "StartingKeyList": ", ".join([key.name for key in self.spoiler.settings.starting_key_list]),
                 "Junk": self.junked_locations,
                 "HintsInPool": self.options.hints_in_item_pool.value,
-                "BouldersInPool": self.options.boulders_in_item_pool.value,
+                "BouldersInPool": self.options.boulders_in_pool.value,
                 "Dropsanity": self.options.dropsanity.value,
                 "Version": ap_version,
             }
