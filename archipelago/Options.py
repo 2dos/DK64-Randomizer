@@ -474,6 +474,18 @@ class Dropsanity(Toggle):
 
     display_name = "Dropsanity"
 
+class ChaosRatio(Range):
+    """If Chaos Blockers are enabled, determine the max percentage of collectibles than can roll onto a BLocker.
+    Example: 
+    There are 16 Rainbow Coins in the game. With a chaos ratio of 50%, a max BLocker can have a max of 8 rainbow coins.
+    Excludes Bean and Company Coins.
+    """
+
+    display_name = "Chaos Ratio"
+
+    range_start = 1
+    range_end = 100
+    default = 32
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -494,6 +506,7 @@ class DK64Options(PerGameCommonOptions):
     randomize_blocker_required_amounts: RandomizeBlockers
     blocker_max: MaximumBLocker
     chaos_locker: ChaosBLockers
+    chaos_ratio: ChaosRatio
     level1_blocker: Level1Blocker
     level2_blocker: Level2Blocker
     level3_blocker: Level3Blocker

@@ -282,7 +282,7 @@ if baseclasses_loaded:
         def generate_early(self):
             """Generate the world."""
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
-            self.settings_string = "PxZlegAAvwAAYIAAMMAAGKAAD/QNQAKAgYCA4GCAQEgoKBgWDgwIgCdWQbgCbwEcAGcQIcgKcwMdAOuQQTMBCcTAhQmBhhJBAmqAFaBaJaRaZaiaqaza7bLbQNttxt1O4N5uEuAt8O8vAOIOcuMOROVuYOgOkuqOtOxu2JmJqEkXCAZaolQCCiBRgpAUoKYCCLgswCNlkP0/B0MhLK2AtwEjQYppAjo+IUizUUvRYhbF6pwKiFkAJiFEAkSO1VVZMsOTJO8RQHEMryBWNAx5LGBkAZKmeIboIQgAFoUAC0MABKHAAlEAAOrQAHRIACooAA0WAA6MAAVGgAGrgALJ8Jb8FU2BoKwXRbHszxZBgjhgGcyR6GwfDNLAuxTFQtDHFYGgrEMawuJ4ST+JYgyRLovC4ICQoLDA0OEBESFBUWGBkaHB0eICEiIyQlJicoKSorLC0uLzAxMjM0NVxdXl+sXwAwABhADEADsAP0ATgAnQAOgBQAD+ALIAgoAUR4IhkKY6EqWxrnwjKdK2vjOt8755AkMU073FgRBhyCzTkEU1V2W3X4I5JanmIBBivOU0NMLKElJGHvgAegA+QB6gD6AHsAPsA"
+            self.settings_string = "PxZlegAAvwAAYIAAMMAAGKAAD/QNQAKAgYCA4GCAQEgoKBgWDgwIgCdWQbgCbwEcAGcQIcgKcwMdAOuQQTMBCcTAhQmBhhJBAmqAFaBaJaRaZaiaqaza7bLbQNttxt1O4N5uEuAt8O8vAOIOcuMOROVuYOgOkuqOtOxu2JmJqEkXCAZaolQCCiBRgpAUoKYCCLgswCNlkP0/B0MhLK2AtwEjQYppAjo+IUizUUvRYhbF6pwKiFkAJiFEAkSO1VVZMsOTJO8RQHEMryBWNAx5LGBkAZKmeIboIQgAFoUAC0MABKHAAlEAAOrQAHRIACooAA0WAA6MAAVGgAGrgALJ8Jb8FU2BoKwXRbHszxZBgjhgGcyR6GwfDNLAuxTFQtDHFYGgrEMawuJ4ST+JYgyRLovC4ICQoLDA0OEBESFBUWGBkaHB0eICEiIyQlJicoKSorLC0uLzAxMjM0NVxdXl+sXwAwABhADEADsAP0ATgAnQ8IhkKY6EqWxrnh0jxgEO64gy1iEF6+fwDZ4+GE0c7upXsrMzimzq2L4U4UAA/gCyAIKAFEeCIZCmOhKlsa58IynStr4zrfO+eQJDFNO9xYEQYcgs05BFNVdlt1+COSWp5iAQYrzlNDTCyhJSRh74AHoAPkAeoA+gB7AD7AA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
@@ -291,10 +291,12 @@ if baseclasses_loaded:
             settings_dict["helm_phase_count"] = self.options.helm_phase_count.value
             settings_dict["krool_phase_count"] = self.options.krool_phase_count.value
             settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
-            settings_dict["randomize_blocker_required_amounts"] = self.options.randomize_blocker_required_amounts.value
-            settings_dict["blocker_text"] = self.options.blocker_max.value
             if self.options.chaos_locker.value:
+                settings_dict["blocker_text"] = self.options.chaos_ratio.value
                 settings_dict["blocker_selection_behavior"] = BLockerSetting.chaos
+            else:
+                settings_dict["blocker_text"] = self.options.blocker_max.value
+            settings_dict["randomize_blocker_required_amounts"] = self.options.randomize_blocker_required_amounts.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
             blocker_options = [
                 self.options.level1_blocker,
