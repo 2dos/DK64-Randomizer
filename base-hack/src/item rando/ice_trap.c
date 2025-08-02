@@ -509,11 +509,14 @@ void handleIceTrapButtons(void) {
     }
 }
 
-void queueIceTrap(ICE_TRAP_TYPES trap_type) {
+void queueIceTrap(ICE_TRAP_TYPES trap_type, int send_trap) {
     /**
      * @brief Call the ice trap queue-ing system
      */
     ice_trap_queued = trap_type;
+    if (send_trap) {
+        sendTrapLink();
+    }
 }
 
 int isBannedTrapMap(maps map, ICE_TRAP_TYPES type) {

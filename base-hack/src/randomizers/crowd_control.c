@@ -68,7 +68,7 @@ int cc_allower_generic(void) {
 }
 
 int cc_enabler_icetrap(void) {
-    queueIceTrap(ICETRAP_SUPERBUBBLE);
+    queueIceTrap(ICETRAP_SUPERBUBBLE, 1);
     return 1;
 }
 

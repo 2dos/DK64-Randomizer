@@ -499,7 +499,7 @@ void getItem(int object_type) {
                 it_type = ICETRAP_DISABLECU;
             }
             forceDance();
-            queueIceTrap(it_type);
+            queueIceTrap(it_type, 1);
             break;
         case 0x27E:
         case 649:
