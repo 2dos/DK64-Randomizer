@@ -1106,7 +1106,7 @@ if baseclasses_loaded:
             if self.version_check(version, "1.1.0"):
                 tricks_selected = slot_data.get("TricksSelected", []).split(", ")
                 boulders_in_pool = slot_data.get("BouldersInPool", False)
-                hints_in_pool = slot_data.get("Dropsanity", False)
+                dropsanity = slot_data.get("Dropsanity", False)
             else:
                 raise ValueError(f"This world is generated with an old version of DK64 Randomizer. Please downgrade to the correct version: {version}.")
 
