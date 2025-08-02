@@ -57,7 +57,7 @@ class StartingMoveCount(Range):
 class KroolInBossPool(Toggle):
     """Whether or not K. Rool can be fightable in T&S Bosses and vice versa."""
 
-    display_name = "Krool In Boss Pool"
+    display_name = "K. Rool In Boss Pool"
 
 
 class TrapFillPercentage(Range):
@@ -121,25 +121,25 @@ class SlowTrapWeight(BaseTrapWeight):
 
 
 class DisableAWeight(BaseTrapWeight):
-    """Likelyhood of receiving a trap which disables your A button."""
+    """Likelihood of receiving a trap which disables your A button."""
 
     display_name = "Disable A Trap"
 
 
 class DisableBWeight(BaseTrapWeight):
-    """Likelyhood of receiving a trap which disables your B button."""
+    """Likelihood of receiving a trap which disables your B button."""
 
     display_name = "Disable B Trap"
 
 
 class DisableZWeight(BaseTrapWeight):
-    """Likelyhood of receiving a trap which disables your Z button."""
+    """Likelihood of receiving a trap which disables your Z button."""
 
     display_name = "Disable Z Trap"
 
 
 class DisableCWeight(BaseTrapWeight):
-    """Likelyhood of receiving a trap which disables your C buttons."""
+    """Likelihood of receiving a trap which disables your C buttons."""
 
     display_name = "Disable C Trap"
 
@@ -409,7 +409,7 @@ class MaximumBLocker(Range):
 
 
 class ChaosBLockers(Toggle):
-    """If Ranodmize Blockers enabled, determines if B. Lockers can be cleared by non-Golden Banana collectibles."""
+    """If Randomize B. Lockers is also enabled, determines if B. Lockers may require non-Golden Banana collectibles."""
 
     display_name = "Chaos B. Lockers"
 
