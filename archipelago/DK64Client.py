@@ -430,12 +430,12 @@ class DK64Client:
                 logger.warning(f"Unknown flag_moves bit: {bit_name}")
                 return
             self.n64_client.write_u8(address, new_value)
-            
+
         elif count_data.get("item") is not None and count_data.get("level") is not None:
             # These are fed items with level/tier information (like progression slams, etc.)
             item_id = count_data.get("item")
             level = count_data.get("level")
-            
+
             # Map requirement item IDs to transfer item IDs based on the type
             # REQITEM_MOVE (2) with level 3 should be TRANSFER_ITEM_SLAMUPGRADE (0x033 = 51)
             if item_id == 2:  # REQITEM_MOVE
@@ -443,9 +443,9 @@ class DK64Client:
                 fed_id = 0x033  # TRANSFER_ITEM_SLAMUPGRADE
             else:
                 fed_id = item_id
-                
+
             await self.writeFedData(fed_id)
-            
+
         elif count_data.get("item") is not None and count_data.get("level") is None:
             # These are requirement_item enum values that map to archipelago_items
             fed_id = count_data.get("item")
@@ -610,16 +610,16 @@ class DK64Client:
         """Check if a kong is available using the CountStruct system."""
         if kong_index < 0 or kong_index > 4:
             return False
-        
+
         # Get the CountStruct address from the pointer
         count_struct_address = self.n64_client.read_u32(DK64MemoryMap.count_struct_pointer)
         if count_struct_address == 0:
             return False
-            
+
         # Kong bitfield: 1 byte at offset 0x00B
         address = count_struct_address + 0x00B
         current_value = self.n64_client.read_u8(address)
-        
+
         # Check if the bit for this kong is set
         return (current_value & (1 << kong_index)) != 0
 
@@ -1153,13 +1153,13 @@ class DK64Context(CommonContext):
                 # If it is safe, send the tag
                 kong = self.pending_tag_link[1]
                 invalid_kong = True
-                
+
                 # Check if we have the requested kong using CountStruct system
                 if self.client.hasKong(kong):
                     self.client.n64_client.write_u8(self.client.memory_pointer + DK64MemoryMap.tag_kong, kong)
                     current_kong = kong
                     invalid_kong = False
-                    
+
                 if invalid_kong:
                     # Check if we have any kong not our current kong
                     valid_kongs = [current_kong]
@@ -1167,7 +1167,7 @@ class DK64Context(CommonContext):
                     for i in range(5):
                         if i != current_kong and self.client.hasKong(i):
                             valid_kongs.append(i)
-                    
+
                     # If the only valid kong is the current kong, we can't tag
                     if len(valid_kongs) == 1:
                         self.pending_tag_link = False, 0
