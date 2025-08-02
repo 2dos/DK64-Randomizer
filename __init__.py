@@ -1074,7 +1074,7 @@ if baseclasses_loaded:
             version_minor = version.split(".")[1]
             version_patch = version.split(".")[2]
 
-            return (int(version_major), int(version_minor), int(version_patch)) > (int(req_major), int(req_minor), int(req_patch))
+            return (int(version_major), int(version_minor), int(version_patch)) >= (int(req_major), int(req_minor), int(req_patch))
 
         def interpret_slot_data(self, slot_data: dict[str, any]) -> dict[str, any]:
             """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
