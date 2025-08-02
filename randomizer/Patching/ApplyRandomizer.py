@@ -259,6 +259,12 @@ def patching_response(spoiler):
     ROM_COPY.write(int(spoiler.settings.coin_door_item))
     ROM_COPY.write(spoiler.settings.coin_door_item_count)
 
+    kong_free_switches = [
+        Switches.JapesFreeKong,
+        Switches.AztecLlamaPuzzle,
+        Switches.AztecOKONGPuzzle,
+        Switches.FactoryFreeKong,
+    ]
     if spoiler.settings.switchsanity_enabled:
         for slot in spoiler.settings.switchsanity_data:
             ROM_COPY.seek(sav + spoiler.settings.switchsanity_data[slot].rom_offset)
@@ -277,6 +283,8 @@ def patching_response(spoiler):
                         ROM_COPY.writeMultipleBytes(7, 1)
                 elif pad_type != SwitchType.PadMove:
                     ROM_COPY.writeMultipleBytes(int(pad_kong) + 1, 1)
+            elif slot in kong_free_switches:
+                ROM_COPY.writeMultipleBytes(int(pad_kong), 1)
             else:
                 ROM_COPY.writeMultipleBytes(int(pad_kong) + 1, 1)
 
