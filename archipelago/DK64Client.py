@@ -431,7 +431,22 @@ class DK64Client:
                 return
             self.n64_client.write_u8(address, new_value)
             
-        elif count_data.get("item") is not None:
+        elif count_data.get("item") is not None and count_data.get("level") is not None:
+            # These are fed items with level/tier information (like progression slams, etc.)
+            item_id = count_data.get("item")
+            level = count_data.get("level")
+            
+            # Map requirement item IDs to transfer item IDs based on the type
+            # REQITEM_MOVE (2) with level 3 should be TRANSFER_ITEM_SLAMUPGRADE (0x033 = 51)
+            if item_id == 2:  # REQITEM_MOVE
+                # For slam upgrades, use TRANSFER_ITEM_SLAMUPGRADE
+                fed_id = 0x033  # TRANSFER_ITEM_SLAMUPGRADE
+            else:
+                fed_id = item_id
+                
+            await self.writeFedData(fed_id)
+            
+        elif count_data.get("item") is not None and count_data.get("level") is None:
             # These are requirement_item enum values that map to archipelago_items
             fed_id = count_data.get("item")
             await self.writeFedData(fed_id)
@@ -594,6 +609,23 @@ class DK64Client:
         offset = DK64MemoryMap.EEPROM + byte_index
         val = self.n64_client.read_u8(offset)
         return (val >> shift) & 1
+
+    def hasKong(self, kong_index: int) -> bool:
+        """Check if a kong is available using the CountStruct system."""
+        if kong_index < 0 or kong_index > 4:
+            return False
+        
+        # Get the CountStruct address from the pointer
+        count_struct_address = self.n64_client.read_u32(DK64MemoryMap.count_struct_pointer)
+        if count_struct_address == 0:
+            return False
+            
+        # Kong bitfield: 1 byte at offset 0x00B
+        address = count_struct_address + 0x00B
+        current_value = self.n64_client.read_u8(address)
+        
+        # Check if the bit for this kong is set
+        return (current_value & (1 << kong_index)) != 0
 
     async def wait_for_game_ready(self):
         """Wait for the game to be ready."""
@@ -1124,49 +1156,22 @@ class DK64Context(CommonContext):
             if self.client.n64_client.read_u8(self.client.memory_pointer + DK64MemoryMap.can_tag) == 1:
                 # If it is safe, send the tag
                 kong = self.pending_tag_link[1]
-                # Using item_names_to_id get the kong flag_id
-                number_map = {
-                    0: "Donkey",
-                    1: "Diddy",
-                    2: "Lanky",
-                    3: "Tiny",
-                    4: "Chunky",
-                }
-                kong_name = None
-                kong_key = number_map.get(kong, None)
-                if kong_key is not None:
-                    kong_id = item_names_to_id.get(kong_key, None)
-                    if kong_id is not None:
-                        kong_name = item_ids.get(kong_id, None)
                 invalid_kong = True
-                # Read the flag_id location to see if we have the kong
-                if kong_name:
-                    kong_flag_id = kong_name.get("flag_id", None)
-                    if kong_flag_id is not None:
-                        has_kong = self.client.readFlag(kong_flag_id) != 0
-                        if has_kong:
-                            self.client.n64_client.write_u8(self.client.memory_pointer + DK64MemoryMap.tag_kong, kong)
-                            current_kong = kong
-                            invalid_kong = False
+                
+                # Check if we have the requested kong using CountStruct system
+                if self.client.hasKong(kong):
+                    self.client.n64_client.write_u8(self.client.memory_pointer + DK64MemoryMap.tag_kong, kong)
+                    current_kong = kong
+                    invalid_kong = False
+                    
                 if invalid_kong:
                     # Check if we have any kong not our current kong
                     valid_kongs = [current_kong]
                     # Check each int from 0 to 4 excluding current_kong
                     for i in range(5):
-                        if i != current_kong:
-                            kong_key = number_map.get(i, None)
-                            if kong_key:
-                                kong_id = item_names_to_id.get(kong_key, None)
-                                if kong_id is not None:
-                                    kong_name = item_ids.get(kong_id, None)
-                            else:
-                                kong_name = None
-                            if kong_name:
-                                kong_flag_id = kong_name.get("flag_id", None)
-                                if kong_flag_id:
-                                    has_kong = self.client.readFlag(kong_flag_id) != 0
-                                    if has_kong:
-                                        valid_kongs.append(i)
+                        if i != current_kong and self.client.hasKong(i):
+                            valid_kongs.append(i)
+                    
                     # If the only valid kong is the current kong, we can't tag
                     if len(valid_kongs) == 1:
                         self.pending_tag_link = False, 0
