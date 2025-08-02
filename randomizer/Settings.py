@@ -1799,7 +1799,7 @@ class Settings:
                 width = None
                 while True:
                     x = random.randint(32, 192)
-                    y = random.randint(exclusion_y, 0xB8 - exclusion_y)
+                    y = random.randint(exclusion_y, 170 - exclusion_y)
                     width = random.choice([1, 2, 2, 3, 3, 4, 4, 5])
                     x_right = x + 0x10 + (width * 8)
                     is_excluded = False
