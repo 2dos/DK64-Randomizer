@@ -143,7 +143,19 @@ if baseclasses_loaded:
     from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
     from randomizer.Enums.Locations import Locations as DK64RLocations
-    from randomizer.Enums.Settings import WinConditionComplex, SwitchsanityLevel, GlitchesSelected, MicrohintsEnabled, HardModeSelected, RemovedBarriersSelected, ItemRandoListSelected, ItemRandoFiller, SwitchsanityKong, SwitchsanityGone, BLockerSetting
+    from randomizer.Enums.Settings import (
+        WinConditionComplex,
+        SwitchsanityLevel,
+        GlitchesSelected,
+        MicrohintsEnabled,
+        HardModeSelected,
+        RemovedBarriersSelected,
+        ItemRandoListSelected,
+        ItemRandoFiller,
+        SwitchsanityKong,
+        SwitchsanityGone,
+        BLockerSetting,
+    )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
     from randomizer.Lists import Item as DK64RItem
@@ -516,13 +528,6 @@ if baseclasses_loaded:
                             settings.switchsanity_data[Switches[switch]] = SwitchInfo(switch, needed_kong, switch_type, 0, 0, [])
                         for loc in passthrough["JunkedLocations"]:
                             del self.location_name_to_id[loc]
-            # We need to set the freeing kongs here early, as they won't get filled in any other part of the AP process
-            settings.diddy_freeing_kong = self.random.randint(0, 4)
-            # Lanky freeing kong actually changes logic, so UT should use the slot data rather than genning a new one.
-            if not hasattr(self.multiworld, "generation_is_fake"):
-                settings.lanky_freeing_kong = self.random.randint(0, 4)
-            settings.tiny_freeing_kong = self.random.randint(0, 4)
-            settings.chunky_freeing_kong = self.random.randint(0, 4)
             self.spoiler = Spoiler(settings)
             # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
             self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
@@ -880,13 +885,17 @@ if baseclasses_loaded:
                 "HelmOrder": ", ".join([str(room) for room in self.spoiler.settings.helm_order]),
                 "OpenLobbies": self.spoiler.settings.open_lobbies,
                 "KroolInBossPool": self.spoiler.settings.krool_in_boss_pool,
-                "SwitchSanity": {
-                    switch.name: {
-                        "kong": data.kong.name if hasattr(data.kong, 'name') else Kongs(data.kong).name, 
-                        "type": data.switch_type.name if hasattr(data.switch_type, 'name') else SwitchType(data.switch_type).name
-                    } 
-                    for switch, data in self.spoiler.settings.switchsanity_data.items()
-                } if hasattr(self.spoiler.settings, 'switchsanity_data') and self.spoiler.settings.switchsanity_data else {},
+                "SwitchSanity": (
+                    {
+                        switch.name: {
+                            "kong": data.kong.name if hasattr(data.kong, "name") else Kongs(data.kong).name,
+                            "type": data.switch_type.name if hasattr(data.switch_type, "name") else SwitchType(data.switch_type).name,
+                        }
+                        for switch, data in self.spoiler.settings.switchsanity_data.items()
+                    }
+                    if hasattr(self.spoiler.settings, "switchsanity_data") and self.spoiler.settings.switchsanity_data
+                    else {}
+                ),
                 "LogicType": self.spoiler.settings.logic_type.name,
                 "GlitchesSelected": ", ".join([glitch.name for glitch in self.spoiler.settings.glitches_selected]),
                 "StartingKeyList": ", ".join([key.name for key in self.spoiler.settings.starting_key_list]),
@@ -929,16 +938,16 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Removed Barriers: " + ", ".join([barrier.name for barrier in self.spoiler.settings.remove_barriers_selected]))
             spoiler_handle.write("\n")
-            if hasattr(self.spoiler.settings, 'switchsanity_enabled') and self.spoiler.settings.switchsanity_enabled and hasattr(self.spoiler.settings, 'switchsanity_data') and self.spoiler.settings.switchsanity_data:
+            if (
+                hasattr(self.spoiler.settings, "switchsanity_enabled")
+                and self.spoiler.settings.switchsanity_enabled
+                and hasattr(self.spoiler.settings, "switchsanity_data")
+                and self.spoiler.settings.switchsanity_data
+            ):
                 spoiler_handle.write("Switchsanity Settings: \n")
                 for switch, data in self.spoiler.settings.switchsanity_data.items():
-                    # Check if this is helm_access mode by checking if only specific switches should be shown
-                    is_helm_access_mode = hasattr(self.spoiler.settings, 'switchsanity_switch_isles_helm_lobby') 
-                    if is_helm_access_mode:
-                        if switch not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
-                            continue
-                    kong_name = data.kong.name if hasattr(data.kong, 'name') else Kongs(data.kong).name
-                    switch_type_name = data.switch_type.name if hasattr(data.switch_type, 'name') else SwitchType(data.switch_type).name
+                    kong_name = data.kong.name if hasattr(data.kong, "name") else Kongs(data.kong).name
+                    switch_type_name = data.switch_type.name if hasattr(data.switch_type, "name") else SwitchType(data.switch_type).name
                     spoiler_handle.write(f"  - {switch.name}: {kong_name} with {switch_type_name}\n")
             spoiler_handle.write("Generated Time: " + time.strftime("%d-%m-%Y %H:%M:%S", time.gmtime()) + " GMT")
             spoiler_handle.write("\n")

@@ -168,7 +168,15 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         item = DK64RItem.ItemList[seed_item]
         if item.type in [DK64RItems.JunkCrystal, DK64RItems.JunkMelon, DK64RItems.JunkAmmo, DK64RItems.JunkFilm, DK64RItems.JunkOrange, DK64RItems.CrateMelon]:
             classification = ItemClassification.filler
-        elif item.type in [DK64RItems.IceTrapBubble, DK64RItems.IceTrapReverse, DK64RItems.IceTrapSlow, DK64RItems.IceTrapDisableA, DK64RItems.IceTrapDisableB, DK64RItems.IceTrapDisableCU, DK64RItems.IceTrapDisableZ]:
+        elif item.type in [
+            DK64RItems.IceTrapBubble,
+            DK64RItems.IceTrapReverse,
+            DK64RItems.IceTrapSlow,
+            DK64RItems.IceTrapDisableA,
+            DK64RItems.IceTrapDisableB,
+            DK64RItems.IceTrapDisableCU,
+            DK64RItems.IceTrapDisableZ,
+        ]:
             classification = ItemClassification.trap
         elif item.type == DK64RTypes.Key:
             classification = ItemClassification.progression
@@ -278,7 +286,15 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         junk_item = DK64RItem.ItemList[junk_enum]
         item_table.append(DK64Item(junk_item.name, ItemClassification.filler, full_item_table[junk_item.name].code, world.player))
 
-    possible_traps = [DK64RItems.IceTrapBubble, DK64RItems.IceTrapReverse, DK64RItems.IceTrapSlow, DK64RItems.IceTrapDisableA, DK64RItems.IceTrapDisableB, DK64RItems.IceTrapDisableCU, DK64RItems.IceTrapDisableZ]
+    possible_traps = [
+        DK64RItems.IceTrapBubble,
+        DK64RItems.IceTrapReverse,
+        DK64RItems.IceTrapSlow,
+        DK64RItems.IceTrapDisableA,
+        DK64RItems.IceTrapDisableB,
+        DK64RItems.IceTrapDisableCU,
+        DK64RItems.IceTrapDisableZ,
+    ]
 
     for i in range(trap_count):
         trap_enum = world.random.choice(trap_weights)

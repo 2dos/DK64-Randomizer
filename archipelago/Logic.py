@@ -1291,7 +1291,7 @@ class LogicVarHolder:
         if self.HardBossesSettingEnabled(HardBossesSelected.beta_lanky_phase):
             return self.lanky and self.grape and self.barrels
         return self.lanky and self.trombone and self.barrels
-        
+
     def HasEnoughRaceCoins(self, map_id: Maps, default_kong: Kongs, kong_mandatory: bool) -> bool:
         """Check if the player has enough race coins to beat the challenge."""
         if self.settings.race_coin_rando:
