@@ -2464,6 +2464,9 @@ class Settings:
                     Locations.CavesTinyCaveBarrel,
                     Locations.CastleDonkeyTree,
                     Locations.CastleLankyGreenhouse,
+                    # Messes with the ice trap audio
+                    Locations.HelmBananaFairy1,
+                    Locations.HelmBananaFairy2,
                 )
                 self.valid_locations[Types.FakeItem] = [x for x in shuffledNonMoveLocations if not self.isBadIceTrapLocation(spoiler.LocationList[x]) and x not in bad_fake_locations]
             if Types.JunkItem in self.shuffled_location_types:

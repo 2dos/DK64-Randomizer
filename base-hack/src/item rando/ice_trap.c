@@ -532,6 +532,38 @@ int isBannedTrapMap(maps map, ICE_TRAP_TYPES type) {
     return 1;
 }
 
+static short ice_trap_models[] = {0x103, 0x127, 0x128};
+
+void setFairyMusicSpeed(int slot, int is_trap) {
+    int tempo = 480000;
+    if (is_trap) {
+        tempo = 800000; // 480k (default) / 0.6
+    }
+    alCSPSetTempo(compactSequencePlayers[slot], tempo);
+}
+
+int isTrapModel(void) {
+    return inShortList(CurrentActorPointer_0->actor_model, &ice_trap_models, sizeof(ice_trap_models) >> 1);
+}
+
+void cancelIceTrapSong(int song, int unk0) {
+    cancelMusic(song, unk0);
+    if (isTrapModel()) {
+        int slot = getSongWriteSlot(song);
+        setFairyMusicSpeed(slot, 0);
+    }
+}
+
+void playIceTrapSong(int song, float volume) {
+    playSong(song, volume);
+    int slot = getSongWriteSlot(song);
+    if (isTrapModel()) {
+        setFairyMusicSpeed(slot, 1);
+    } else  {
+        setFairyMusicSpeed(slot, 0);
+    }
+}
+
 void callIceTrap(void) {
     if (ice_trap_queued) {
         if (Player) {

@@ -425,6 +425,9 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x80681DE4, Overlay.Static, 0x5000, offset_dict)
     writeHook(ROM_COPY, 0x80680AD4, Overlay.Static, "expandTBarrelResponse", offset_dict)  # Allow Training Barrels to disappear if already beaten
     writeValue(ROM_COPY, 0x80681C16, Overlay.Static, 0xF, offset_dict)  # Disregard most special code from a bonus
+    # Ice Trap Music
+    writeFunction(ROM_COPY, 0x806C5F44, Overlay.Static, "playIceTrapSong", offset_dict)
+    writeFunction(ROM_COPY, 0x806C5F54, Overlay.Static, "cancelIceTrapSong", offset_dict)
 
 
 def fairyFix(ROM_COPY: LocalROM, settings, offset_dict: dict):
