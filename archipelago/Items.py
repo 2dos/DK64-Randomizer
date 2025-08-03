@@ -40,8 +40,28 @@ event_table = {
     "Victory": ItemData(0xD64000, True),  # Temp
 }
 
+
+def use_original_name_or_trap_name(item: DK64RItem) -> str:
+    if item.type == DK64RTypes.FakeItem:
+        # Rename traps to be easier for trap link
+        parts = item.name.split("(")
+
+        main_part = parts[0]
+        trap_word = main_part.strip().split(" ")[-1]
+
+        subtype = parts[1].split(")")[0]
+        if "-" in subtype:
+            if "GB" not in subtype.split("-")[1].strip():
+                return item.name  # Don't mess with these. We'll deal with them if we decide to add fake Beans/Keys to AP.
+            subtype = subtype.split("-")[0].strip()
+
+        return f"{subtype} {trap_word}"
+    else:
+        return item.name
+
+
 # Complete item table
-full_item_table = {item.name: ItemData(int(BASE_ID + index), item.playthrough) for index, item in DK64RItem.ItemList.items()}
+full_item_table = {use_original_name_or_trap_name(item): ItemData(int(BASE_ID + index), item.playthrough) for index, item in DK64RItem.ItemList.items()}
 
 lookup_id_to_name: typing.Dict[int, str] = {data.code: item_name for item_name, data in full_item_table.items()}
 
@@ -197,7 +217,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             world.multiworld.get_location("The End of Helm", world.player).place_locked_item(DK64Item("Key 8", ItemClassification.progression, full_item_table[item.name].code, world.player))
             world.spoiler.settings.location_pool_size -= 1
             continue
-        item_table.append(DK64Item(item.name, classification, full_item_table[item.name].code, world.player))
+        item_table.append(DK64Item(use_original_name_or_trap_name(item), classification, full_item_table[item.name].code, world.player))
         # print("Adding item: " + seed_item.name + " | " + str(classification))
 
     # Extract starting moves from the item table - these items will be placed in your starting inventory directly
@@ -299,7 +319,8 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     for i in range(trap_count):
         trap_enum = world.random.choice(trap_weights)
         trap_item = DK64RItem.ItemList[trap_enum]
-        item_table.append(DK64Item(trap_item.name, ItemClassification.trap, full_item_table[trap_item.name].code, world.player))
+        trap_name = use_original_name_or_trap_name(trap_item)
+        item_table.append(DK64Item(trap_name, ItemClassification.trap, full_item_table[trap_name].code, world.player))
 
     # print("projected available locations: " + str(world.spoiler.settings.location_pool_size - 1))
     # print("projected items to place: " + str(len(item_table)))

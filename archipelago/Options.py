@@ -230,7 +230,7 @@ class SwitchSanity(Choice):
 
 class LogicType(Choice):
     """Determines what type of logic is needed to beat the seed.
-    
+
     Options:
     glitchless: Logic is designed to be completed without glitches, mostly as intended by the developers.
     advanced_glitchless: Logic is designed to be completed without glitches, but allows for advanced platforming techniques. Add tricks you want to put in logic in tricks_selected.
@@ -247,7 +247,7 @@ class LogicType(Choice):
 
 class TricksSelected(OptionList):
     """Determines what tricks are enabled if logic_type is set to Advanced Glitchless or Glitched.
-    
+
     Valid Keys:
     "advanced_platforming": Platforming techniques that don't require any glitches but might be too tough for some players.
     "hard_shooting": Certain shooting checks that are harder will not require shooting aids, such as Homing Ammo and Sniper Scope.
@@ -256,13 +256,9 @@ class TricksSelected(OptionList):
     """
 
     display_name = "Tricks Selected"
-    valid_keys = {
-        "advanced_platforming",
-        "hard_shooting",
-        "advanced_grenading",
-        "slope_resets"
-        }
-    
+    valid_keys = {"advanced_platforming", "hard_shooting", "advanced_grenading", "slope_resets"}
+
+
 class GlitchesSelected(OptionList):
     """Determines what glitches are enabled if logic_type is set to Glitched.
 
@@ -282,6 +278,7 @@ class GlitchesSelected(OptionList):
         "troff_n_scoff_skips",
         "moontail",
     }
+
 
 class RingLink(Toggle):
     """Determines if the Ring Link is enabled.
@@ -311,6 +308,7 @@ class MirrorMode(Toggle):
     """Determines whether the game will be horizontally Mirrored."""
 
     display_name = "Mirror Mode"
+
 
 class HardModeEnabled(Toggle):
     """Determines whether Hard Mode is enabled. Use the yaml option below this to determine which settings you want enabled."""

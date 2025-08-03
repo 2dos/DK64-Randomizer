@@ -631,7 +631,15 @@ if baseclasses_loaded:
                         else:
                             dk64_item = logic_item_name_to_id[ap_item.name]
                             if dk64_item is not None:
-                                if dk64_item in [DK64RItems.IceTrapBubble, DK64RItems.IceTrapReverse, DK64RItems.IceTrapSlow]:
+                                if dk64_item in [
+                                    DK64RItems.IceTrapBubble,
+                                    DK64RItems.IceTrapReverse,
+                                    DK64RItems.IceTrapSlow,
+                                    DK64RItems.IceTrapDisableA,
+                                    DK64RItems.IceTrapDisableB,
+                                    DK64RItems.IceTrapDisableCU,
+                                    DK64RItems.IceTrapDisableZ,
+                                ]:
                                     local_trap_count += 1
 
                                 dk64_location = spoiler.LocationList[dk64_location_id]
@@ -1062,7 +1070,7 @@ if baseclasses_loaded:
                     state.dk64_logic_holder[self.player] = LogicVarHolder(self.spoiler, self.player)  # If the CollectionState dodged the creation of a logic_holder object, fix it here
                     state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
             return change
-        
+
         def version_check(self, version: str, req_version: str) -> bool:
             """Check if the current version is greater than or equal to the one required for this slot data."""
 

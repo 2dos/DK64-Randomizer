@@ -64,12 +64,12 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Patching.Library.Generic import getProgHintBarrierItem, IsDDMSSelected
 from randomizer.Prices import AnyKongCanBuy, CanBuy
-from archipelago.Items import DK64Item
+from archipelago.Items import DK64Item, use_original_name_or_trap_name
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
 logic_item_name_to_id = {}
 for id, item in ItemList.items():
-    logic_item_name_to_id[item.name] = id
+    logic_item_name_to_id[use_original_name_or_trap_name(item)] = id
 
 
 def IsGlitchEnabled(settings, glitch_enum: GlitchesSelected):
