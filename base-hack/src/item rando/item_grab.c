@@ -98,7 +98,7 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
             }
         } else {
             // reqitem_move only
-            sprite_index = move_sprites[item_send->audiovisual_index - 1];
+            sprite_index = &potion_sprite;
         }
         if (song != SONG_SILENCE) {
             playSFX(0xF2);
