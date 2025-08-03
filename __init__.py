@@ -245,6 +245,17 @@ if baseclasses_loaded:
         item_name_to_id = {name: data.code for name, data in full_item_table.items()}
         location_name_to_id = all_locations
 
+        def blueprint_item_group() -> str:
+            res = set()
+            for name, _ in full_item_table.items():
+                if "Blueprint" in name:
+                    res.add(name)
+            return res
+
+        item_name_groups = {
+            "Blueprints": blueprint_item_group(),
+        }
+
         # with open("donklocations.txt", "w") as f:
         #     print(location_name_to_id, file=f)
 
