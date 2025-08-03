@@ -1292,6 +1292,71 @@ class Settings:
         self.coin_door_item = DoorItemToBarrierItem(self.coin_door_item, True)
         self.crown_door_item = DoorItemToBarrierItem(self.crown_door_item, False, True)
 
+        # Determine ice trap order
+        trap_limit = 0
+        if self.archipelago:
+            trap_limit = self.ice_trap_count
+
+        ice_trap_freqs = {
+            IceTrapFrequency.rare: 4,
+            IceTrapFrequency.mild: 10,
+            IceTrapFrequency.common: 32,
+            IceTrapFrequency.frequent: 64,
+            IceTrapFrequency.pain: 100,
+            IceTrapFrequency.unlimited: 1000,  # A value high enough to essentially be infinite
+        }
+        trap_limit = ice_trap_freqs.get(self.ice_trap_frequency, 16)
+        effects = {
+            "bubble": 3,
+            "reverse": 3,
+            "slow": 3,
+            "disa": 1,
+            "disb": 1,
+            "discu": 1,
+            "disz": 1,
+        }
+        models_chance = {
+            "gb": 10,
+            "key": 2,
+            "bean": 1
+        }
+        trap_data = {
+            "gb": {
+                "bubble": Items.IceTrapBubble,
+                "reverse": Items.IceTrapReverse,
+                "slow": Items.IceTrapSlow,
+                "disa": Items.IceTrapDisableA,
+                "disb": Items.IceTrapDisableB,
+                "disz": Items.IceTrapDisableZ,
+                "discu": Items.IceTrapDisableCU,
+            },
+            "bean": {
+                "bubble": Items.IceTrapBubbleBean,
+                "reverse": Items.IceTrapReverseBean,
+                "slow": Items.IceTrapSlowBean,
+                "disa": Items.IceTrapDisableABean,
+                "disb": Items.IceTrapDisableBBean,
+                "disz": Items.IceTrapDisableZBean,
+                "discu": Items.IceTrapDisableCUBean,
+            },
+            "key": {
+                "bubble": Items.IceTrapBubbleKey,
+                "reverse": Items.IceTrapReverseKey,
+                "slow": Items.IceTrapSlowKey,
+                "disa": Items.IceTrapDisableAKey,
+                "disb": Items.IceTrapDisableBKey,
+                "disz": Items.IceTrapDisableZKey,
+                "discu": Items.IceTrapDisableCUKey,
+            },
+        }
+        self.trap_assortment = []
+        for _ in range(trap_limit):
+            chosen_effect = self.random.choices(list(effects.keys()), list(effects.values()), k=1)[0]
+            chosen_model = self.random.choices(list(models_chance.keys()), list(models_chance.values()), k=1)[0]
+            chosen_item = trap_data[chosen_model][chosen_effect]
+            self.trap_assortment.append(chosen_item)
+        
+
         if self.has_password:
             for x in range(8):
                 self.password[x] = self.random.randint(1, 6)
@@ -2399,6 +2464,9 @@ class Settings:
                     Locations.CavesTinyCaveBarrel,
                     Locations.CastleDonkeyTree,
                     Locations.CastleLankyGreenhouse,
+                    # Messes with the ice trap audio
+                    Locations.HelmBananaFairy1,
+                    Locations.HelmBananaFairy2,
                 )
                 self.valid_locations[Types.FakeItem] = [x for x in shuffledNonMoveLocations if not self.isBadIceTrapLocation(spoiler.LocationList[x]) and x not in bad_fake_locations]
             if Types.JunkItem in self.shuffled_location_types:

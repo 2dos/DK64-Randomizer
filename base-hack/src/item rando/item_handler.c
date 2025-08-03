@@ -103,7 +103,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             current_item_data.ice_traps++;
             hh_item = HHITEM_FAKEITEM;
             if (config.apply_ice_trap && kong) {
-                queueIceTrap(kong);
+                queueIceTrap(kong, 1);
             }
             break;
         case REQITEM_JUNK:

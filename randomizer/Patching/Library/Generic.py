@@ -633,22 +633,6 @@ def DoorItemToBarrierItem(item: HelmDoorItem, is_coin_door: bool = False, is_cro
     return converter.get(item, BarrierItems.Nothing)
 
 
-def getIceTrapCount(settings) -> int:
-    """Get the amount of Ice Traps the game will attempt to place."""
-    if settings.archipelago:
-        return settings.ice_trap_count
-
-    ice_trap_freqs = {
-        IceTrapFrequency.rare: 4,
-        IceTrapFrequency.mild: 10,
-        IceTrapFrequency.common: 32,
-        IceTrapFrequency.frequent: 64,
-        IceTrapFrequency.pain: 100,
-        IceTrapFrequency.unlimited: 1000,  # A value high enough to essentially be infinite
-    }
-    return ice_trap_freqs.get(settings.ice_trap_frequency, 16)
-
-
 blocker_min_thresholds = {
     BLockerSetting.easy_random: 0.2,
     BLockerSetting.normal_random: 0.4,

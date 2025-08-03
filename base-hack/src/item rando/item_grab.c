@@ -98,7 +98,7 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
             }
         } else {
             // reqitem_move only
-            sprite_index = move_sprites[item_send->audiovisual_index - 1];
+            sprite_index = &potion_sprite;
         }
         if (song != SONG_SILENCE) {
             playSFX(0xF2);
@@ -499,7 +499,7 @@ void getItem(int object_type) {
                 it_type = ICETRAP_DISABLECU;
             }
             forceDance();
-            queueIceTrap(it_type);
+            queueIceTrap(it_type, 1);
             break;
         case 0x27E:
         case 649:

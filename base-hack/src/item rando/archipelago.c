@@ -161,6 +161,12 @@ void handleSentItem(void) {
     }
 }
 
+void sendTrapLink(void) {
+    if (isAPEnabled()) {
+        ap_info.is_trapped = 1;
+    }
+}
+
 int canReceiveItem(void) {
     if (isGamemode(GAMEMODE_ADVENTURE, 1) || isGamemode(GAMEMODE_SNIDEGAMES, 1)) {
         if (LZFadeoutProgress == 0) {
@@ -236,7 +242,11 @@ void handleArchipelagoFeed(void) {
         }
         ap_info.tag_kong = -1;
     }
-
+    // Trap link
+    if (ap_info.sent_trap) {
+        queueIceTrap(ap_info.sent_trap, 0);
+        ap_info.sent_trap = 0;
+    }
 }
 
 int canDie(void) {

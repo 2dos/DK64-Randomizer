@@ -89,6 +89,8 @@ typedef struct archipelago_data {
     /* 0x05F */ unsigned char text_timer;
     /* 0x060 */ char tag_kong; // Byte to set the current kong to this. Check can_tag before setting this if you want safety
     /* 0x061 */ unsigned char can_tag;
+    /* 0x062 */ unsigned char is_trapped;
+    /* 0x063 */ unsigned char sent_trap;
 } archipelago_data;
 
 extern archipelago_data *APData;
@@ -98,4 +100,5 @@ extern void initAPCounter(void);
 extern void saveAPCounter(void);
 extern int isAPEnabled(void);
 extern void sendDeath(void);
+extern void sendTrapLink(void);
 extern Gfx *displayAPConnection(Gfx *dl);

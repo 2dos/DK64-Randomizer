@@ -19,7 +19,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.Patching.Library.Generic import getIceTrapCount, IsItemSelected
+from randomizer.Patching.Library.Generic import IsItemSelected
 from randomizer.ShuffleBosses import PlandoBosses
 
 
@@ -631,68 +631,10 @@ def DistributeItems(items: list, count: int, distro: list[int] = None) -> list:
     return selection[:count]
 
 
-trap_weighting = {
-    Items.IceTrapBubble: (10, 5),
-    Items.IceTrapReverse: (10, 5),
-    Items.IceTrapSlow: (10, 5),
-    Items.IceTrapDisableA: (10, 5),
-    Items.IceTrapDisableB: (10, 5),
-    Items.IceTrapDisableZ: (10, 5),
-    Items.IceTrapDisableCU: (10, 5),
-    Items.IceTrapBubbleBean: (1, 1),
-    Items.IceTrapReverseBean: (1, 1),
-    Items.IceTrapSlowBean: (1, 1),
-    Items.IceTrapDisableABean: (1, 1),
-    Items.IceTrapDisableBBean: (1, 1),
-    Items.IceTrapDisableZBean: (1, 1),
-    Items.IceTrapDisableCUBean: (1, 1),
-    Items.IceTrapBubbleKey: (2, 2),
-    Items.IceTrapReverseKey: (2, 2),
-    Items.IceTrapSlowKey: (2, 2),
-    Items.IceTrapDisableAKey: (2, 2),
-    Items.IceTrapDisableBKey: (2, 2),
-    Items.IceTrapDisableZKey: (2, 2),
-    Items.IceTrapDisableCUKey: (2, 2),
-}
-
-
 def FakeItems(settings):
     """Return a list of Fake Items to be placed."""
-    total_count = getIceTrapCount(settings)
-    item_spread = [
-        Items.IceTrapBubble,
-        Items.IceTrapReverseBean,
-        Items.IceTrapSlowKey,
-        Items.IceTrapBubbleBean,
-        Items.IceTrapReverseKey,
-        Items.IceTrapReverse,
-        Items.IceTrapBubbleKey,
-        Items.IceTrapSlow,
-        Items.IceTrapSlowBean,
-        Items.IceTrapDisableA,
-        Items.IceTrapDisableBBean,
-        Items.IceTrapDisableZKey,
-        Items.IceTrapDisableCU,
-        Items.IceTrapDisableABean,
-        Items.IceTrapDisableBKey,
-        Items.IceTrapDisableZ,
-        Items.IceTrapDisableCUBean,
-        Items.IceTrapDisableAKey,
-        Items.IceTrapDisableB,
-        Items.IceTrapDisableZBean,
-        Items.IceTrapDisableCUKey,
-    ]
-    distro = None
-    if total_count > 30:
-        distro = []
-        for k in item_spread:
-            distro.append(trap_weighting[k][0])
-    elif total_count > 10:
-        distro = []
-        for k in item_spread:
-            distro.append(trap_weighting[k][1])
     # This order of items helps ensure that with low ice trap counts, you see models other than GBs
-    return DistributeItems(item_spread, total_count, distro)
+    return settings.trap_assortment
 
 
 def FillerItems(settings):

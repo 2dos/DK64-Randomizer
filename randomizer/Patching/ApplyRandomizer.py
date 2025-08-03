@@ -63,7 +63,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getIceTrapCount, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
+from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
 from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
 from randomizer.Patching.MiscSetupChanges import (
     randomize_setup,
@@ -601,11 +601,6 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0x1B0)
         byte_data, password = encPass(spoiler)
         ROM_COPY.writeMultipleBytes(byte_data, 4)
-
-    # Ice Trap Count
-    ROM_COPY.seek(sav + 0x14E)
-    ice_trap_count = max(16, getIceTrapCount(spoiler.settings))
-    ROM_COPY.writeMultipleBytes(ice_trap_count, 1)
 
     # Mill Levers
     if spoiler.settings.mill_levers[0] > 0:
