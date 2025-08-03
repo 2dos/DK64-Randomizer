@@ -1034,30 +1034,29 @@ def patchAssembly(ROM_COPY, spoiler):
     for index, value in enumerate(push_speeds):
         writeFloat(ROM_COPY, 0x807534E4 + (4 * index), Overlay.Static, value, offset_dict)
 
-    if settings.enable_tag_anywhere:
-        # Reduce TA Cooldown
-        writeFunction(ROM_COPY, 0x806F5BE8, Overlay.Static, "tagAnywhereAmmo", offset_dict)
-        writeFunction(ROM_COPY, 0x806F5A08, Overlay.Static, "tagAnywhereBunch", offset_dict)
-        writeFunction(ROM_COPY, 0x806F6CB4, Overlay.Static, "tagAnywhereInit", offset_dict)
-        # Fix Origin Warp with TA
-        writeFunction(ROM_COPY, 0x8072F1E8, Overlay.Static, "handleGrabbingLock", offset_dict)
-        writeFunction(ROM_COPY, 0x806CAB68, Overlay.Static, "handleLedgeLock", offset_dict)
-        writeFunction(ROM_COPY, 0x80678F18, Overlay.Static, "handlePushLock", offset_dict)
-        writeFunction(ROM_COPY, 0x8072F458, Overlay.Static, "handleActionSet", offset_dict)  # Actor grabbables
-        writeFunction(ROM_COPY, 0x8072F46C, Overlay.Static, "handleActionSet", offset_dict)  # Model 2 grabbables
-        writeFunction(ROM_COPY, 0x806CFC64, Overlay.Static, "handleActionSet", offset_dict)  # Ledge Grabbing
-        writeFunction(ROM_COPY, 0x806E5418, Overlay.Static, "handleActionSet", offset_dict)  # Instrument Play
-        writeFunction(ROM_COPY, 0x806E6064, Overlay.Static, "handleActionSet", offset_dict)  # Gun Pull
-        #
-        writeValue(ROM_COPY, 0x806F6D94, Overlay.Static, 0, offset_dict, 4)  # Prevent delayed collection
-        writeValue(ROM_COPY, 0x806F5B68, Overlay.Static, 0x1000, offset_dict)  # Standard Ammo
-        writeValue(ROM_COPY, 0x806F59A8, Overlay.Static, 0x1000, offset_dict)  # Bunch
-        writeValue(ROM_COPY, 0x806F6CA8, Overlay.Static, 0x00052C03, offset_dict, 4)  # SRA $a1, $a1, 0x10
-        writeValue(ROM_COPY, 0x806F6CAC, Overlay.Static, 0x9204001A, offset_dict, 4)  # LBU $a0, 0x1A ($s0)
-        writeValue(ROM_COPY, 0x806F6CB0, Overlay.Static, 0x86060002, offset_dict, 4)  # LH $a2, 0x2 ($s0)
-        writeValue(ROM_COPY, 0x806F6CB8, Overlay.Static, 0x86070000, offset_dict, 4)  # LH #a3, 0x0 ($s0)
-        writeValue(ROM_COPY, 0x806F53AC, Overlay.Static, 0, offset_dict, 4)  # Prevent LZ case
-        writeValue(ROM_COPY, 0x806C7088, Overlay.Static, 0x1000, offset_dict)  # Mech fish dying
+    # Reduce TA Cooldown
+    writeFunction(ROM_COPY, 0x806F5BE8, Overlay.Static, "tagAnywhereAmmo", offset_dict)
+    writeFunction(ROM_COPY, 0x806F5A08, Overlay.Static, "tagAnywhereBunch", offset_dict)
+    writeFunction(ROM_COPY, 0x806F6CB4, Overlay.Static, "tagAnywhereInit", offset_dict)
+    # Fix Origin Warp with TA
+    writeFunction(ROM_COPY, 0x8072F1E8, Overlay.Static, "handleGrabbingLock", offset_dict)
+    writeFunction(ROM_COPY, 0x806CAB68, Overlay.Static, "handleLedgeLock", offset_dict)
+    writeFunction(ROM_COPY, 0x80678F18, Overlay.Static, "handlePushLock", offset_dict)
+    writeFunction(ROM_COPY, 0x8072F458, Overlay.Static, "handleActionSet", offset_dict)  # Actor grabbables
+    writeFunction(ROM_COPY, 0x8072F46C, Overlay.Static, "handleActionSet", offset_dict)  # Model 2 grabbables
+    writeFunction(ROM_COPY, 0x806CFC64, Overlay.Static, "handleActionSet", offset_dict)  # Ledge Grabbing
+    writeFunction(ROM_COPY, 0x806E5418, Overlay.Static, "handleActionSet", offset_dict)  # Instrument Play
+    writeFunction(ROM_COPY, 0x806E6064, Overlay.Static, "handleActionSet", offset_dict)  # Gun Pull
+    #
+    writeValue(ROM_COPY, 0x806F6D94, Overlay.Static, 0, offset_dict, 4)  # Prevent delayed collection
+    writeValue(ROM_COPY, 0x806F5B68, Overlay.Static, 0x1000, offset_dict)  # Standard Ammo
+    writeValue(ROM_COPY, 0x806F59A8, Overlay.Static, 0x1000, offset_dict)  # Bunch
+    writeValue(ROM_COPY, 0x806F6CA8, Overlay.Static, 0x00052C03, offset_dict, 4)  # SRA $a1, $a1, 0x10
+    writeValue(ROM_COPY, 0x806F6CAC, Overlay.Static, 0x9204001A, offset_dict, 4)  # LBU $a0, 0x1A ($s0)
+    writeValue(ROM_COPY, 0x806F6CB0, Overlay.Static, 0x86060002, offset_dict, 4)  # LH $a2, 0x2 ($s0)
+    writeValue(ROM_COPY, 0x806F6CB8, Overlay.Static, 0x86070000, offset_dict, 4)  # LH #a3, 0x0 ($s0)
+    writeValue(ROM_COPY, 0x806F53AC, Overlay.Static, 0, offset_dict, 4)  # Prevent LZ case
+    writeValue(ROM_COPY, 0x806C7088, Overlay.Static, 0x1000, offset_dict)  # Mech fish dying
 
     if settings.bonus_barrel_auto_complete:
         writeValue(ROM_COPY, 0x806818DE, Overlay.Static, 0x4248, offset_dict)  # Make Aztec Lobby GB spawn above the trapdoor)
