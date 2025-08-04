@@ -40,6 +40,11 @@ LogicRegions = {
         LocationLogic(Locations.JapesMainEnemy_Tunnel1, lambda _: True),
         LocationLogic(Locations.JapesMainEnemy_KilledInDemo, lambda _: True),
         LocationLogic(Locations.JapesMainEnemy_NearUnderground, lambda _: True),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_Start, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_Tunnel0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_Tunnel1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_KilledInDemo, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_NearUnderground, lambda l: l.camera),
     ], [
         Event(Events.JapesW1aTagged, lambda _: True),
         Event(Events.JapesW1bTagged, lambda _: True),
@@ -76,6 +81,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesDonkeyFreeDiddy, lambda l: Events.JapesFreeKongOpenGates in l.Events),
         LocationLogic(Locations.MelonCrate_Location00, lambda _: True),
         LocationLogic(Locations.JapesMainEnemy_Mountain, lambda _: True),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_Mountain, lambda l: l.camera),
         LocationLogic(Locations.JapesChunkyCagedBanana, lambda l: ((Events.JapesChunkySwitch in l.Events or l.CanPhase() or ((not l.settings.shuffle_shops) and (l.CanSkew(True) or l.CanSkew(False)))) and l.chunky) or ((l.CanPhase() or ((not l.settings.shuffle_shops) and (l.CanSkew(True) or l.CanSkew(False)))) and l.settings.free_trade_items)),
     ], [
         Event(Events.JapesFreeKongOpenGates, lambda l: l.CanOpenJapesGates()),
@@ -105,6 +111,9 @@ LogicRegions = {
         LocationLogic(Locations.JapesMainEnemy_NearPainting0, lambda _: True),
         LocationLogic(Locations.JapesMainEnemy_NearPainting1, lambda _: True),
         LocationLogic(Locations.JapesMainEnemy_NearPainting2, lambda _: True),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_NearPainting0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_NearPainting1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_NearPainting2, lambda l: l.camera),
     ], [
         Event(Events.JapesW3aTagged, lambda _: True),
     ], [
@@ -148,6 +157,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesLankyGrapeGate, lambda l: (l.grape and l.islanky) or ((l.CanPhase() or l.generalclips or l.CanSkew(True) or l.CanSkew(False)) and (l.islanky or l.settings.free_trade_items)), MinigameType.BonusBarrel),
         LocationLogic(Locations.JapesTinyFeatherGateBarrel, lambda l: (l.feather and l.istiny) or ((l.CanPhase() or l.CanSkew(True) or l.CanSkew(False)) and (l.istiny or l.settings.free_trade_items)), MinigameType.BonusBarrel),
         LocationLogic(Locations.JapesMainEnemy_DiddyCavern, lambda _: True),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_DiddyCavern, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.JungleJapesStart, lambda _: True),
         TransitionFront(Regions.JapesBossLobby, lambda l: not l.settings.tns_location_rando),
@@ -157,6 +167,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesKasplatLeftTunnelNear, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.JapesKasplatLeftTunnelFar, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.JapesMainEnemy_FeatherTunnel, lambda _: True),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_FeatherTunnel, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.JungleJapesStart, lambda _: True),
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_shellhive_gate) or l.hasMoveSwitchsanity(Switches.JapesFeather, False) or l.CanPhase() or l.CanSkew(True) or l.CanSkew(False)),
@@ -170,6 +181,11 @@ LogicRegions = {
         LocationLogic(Locations.JapesMainEnemy_Hive2, lambda _: True),
         LocationLogic(Locations.JapesMainEnemy_Hive3, lambda _: True),
         LocationLogic(Locations.JapesMainEnemy_Hive4, lambda _: True),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_Hive0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_Hive1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_Hive2, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_Hive3, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_Hive4, lambda l: l.camera),
     ], [
         Event(Events.JapesW5aTagged, lambda _: True),
     ], [
@@ -188,6 +204,14 @@ LogicRegions = {
         LocationLogic(Locations.JapesShellhiveEnemy_ThirdRoom2, lambda l: (l.istiny and ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.CanPhase() or l.generalclips))),
         LocationLogic(Locations.JapesShellhiveEnemy_ThirdRoom3, lambda l: (l.istiny and ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.CanPhase() or l.generalclips))),
         LocationLogic(Locations.JapesShellhiveEnemy_MainRoom, lambda _: True),
+        LocationLogic(Locations.KremKap_JapesShellhiveEnemy_FirstRoom, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesShellhiveEnemy_SecondRoom0, lambda l: l.camera and (l.istiny and ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.CanPhase() or l.generalclips))),
+        LocationLogic(Locations.KremKap_JapesShellhiveEnemy_SecondRoom1, lambda l: l.camera and (l.istiny and ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.CanPhase() or l.generalclips))),
+        LocationLogic(Locations.KremKap_JapesShellhiveEnemy_ThirdRoom0, lambda l: l.camera and (l.istiny and ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.CanPhase() or l.generalclips))),
+        LocationLogic(Locations.KremKap_JapesShellhiveEnemy_ThirdRoom1, lambda l: l.camera and (l.istiny and ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.CanPhase() or l.generalclips))),
+        LocationLogic(Locations.KremKap_JapesShellhiveEnemy_ThirdRoom2, lambda l: l.camera and (l.istiny and ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.CanPhase() or l.generalclips))),
+        LocationLogic(Locations.KremKap_JapesShellhiveEnemy_ThirdRoom3, lambda l: l.camera and (l.istiny and ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.CanPhase() or l.generalclips))),
+        LocationLogic(Locations.KremKap_JapesShellhiveEnemy_MainRoom, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.isdiddy or l.istiny or l.islanky or l.CanPhase(), Transitions.JapesTinyHiveToMain),  # It is technically possible to leave with DK and Chunky, just tricky
     ]),
@@ -200,6 +224,10 @@ LogicRegions = {
         LocationLogic(Locations.JapesMainEnemy_Storm1, lambda _: True),
         LocationLogic(Locations.JapesMainEnemy_Storm2, lambda _: True),
         LocationLogic(Locations.JapesMainEnemy_MiddleTunnel, lambda _: True),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_Storm0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_Storm1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_Storm2, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMainEnemy_MiddleTunnel, lambda l: l.camera),
     ], [
         Event(Events.Rambi, lambda l: l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.CanPhase()),
         Event(Events.JapesDonkeySwitch, lambda l: (Events.Rambi in l.Events or l.CanPhase()) and l.CanSlamSwitch(Levels.JungleJapes, 1) and l.donkey),
@@ -250,6 +278,16 @@ LogicRegions = {
         LocationLogic(Locations.JapesMountainEnemy_HiLo, lambda l: (l.charge and l.isdiddy) or l.CanPhase()),
         LocationLogic(Locations.JapesMountainEnemy_Conveyor0, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.CanPhase()),
         LocationLogic(Locations.JapesMountainEnemy_Conveyor1, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.CanPhase()),
+        LocationLogic(Locations.KremKap_JapesMountainEnemy_Start0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMountainEnemy_Start1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMountainEnemy_Start2, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMountainEnemy_Start3, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMountainEnemy_Start4, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMountainEnemy_NearGateSwitch0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMountainEnemy_NearGateSwitch1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesMountainEnemy_HiLo, lambda l: l.camera and ((l.charge and l.isdiddy) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_JapesMountainEnemy_Conveyor0, lambda l: l.camera and ((l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_JapesMountainEnemy_Conveyor1, lambda l: l.camera and ((l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.CanPhase())),
     ], [
         # You're supposed to get to the switch by shooting a peanut switch,
         # but can just jump without too much trouble.

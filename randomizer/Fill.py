@@ -3752,6 +3752,44 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     # Enemy Rando
     spoiler.enemy_rando_data = {}
     spoiler.pkmn_snap_data = []
+    spoiler.valid_photo_items = [
+        Items.PhotoBat,
+        Items.PhotoBeaverBlue,
+        # Items.PhotoBeaverGold,
+        Items.PhotoBook,
+        # Items.PhotoBug,
+        # Items.PhotoFireball,
+        Items.PhotoGimpfish,
+        Items.PhotoGhost,
+        Items.PhotoKaboom,
+        Items.PhotoKasplatDK,
+        Items.PhotoKasplatDiddy,
+        Items.PhotoKasplatLanky,
+        Items.PhotoKasplatTiny,
+        Items.PhotoKasplatChunky,
+        Items.PhotoKlaptrapGreen,
+        Items.PhotoKlaptrapPurple,
+        # Items.PhotoKlaptrapRed,
+        Items.PhotoKlobber,
+        Items.PhotoKlump,
+        # Items.PhotoKop,
+        Items.PhotoKosha,
+        Items.PhotoKremling,
+        Items.PhotoKrossbones,
+        Items.PhotoMrDice0,
+        Items.PhotoMrDice1,
+        Items.PhotoMushroomMan,
+        Items.PhotoPufftup,
+        Items.PhotoRoboKremling,
+        Items.PhotoZingerRobo,
+        # Items.PhotoRuler,
+        Items.PhotoSirDomino,
+        # Items.PhotoSpider,
+        Items.PhotoShuri,
+        Items.PhotoTomato,
+        Items.PhotoZingerLime,
+        Items.PhotoZingerCharger,
+    ]
     if len(spoiler.settings.enemies_selected) > 0:
         randomize_enemies_0(spoiler)
     # Handle bonus barrels

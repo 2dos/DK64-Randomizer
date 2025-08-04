@@ -2754,7 +2754,7 @@ class Settings:
             ItemRandoListSelected.hint: [35, 0],
             ItemRandoListSelected.wrinkly: [0, 35],
             ItemRandoListSelected.boulderitem: [0, 16],
-            ItemRandoListSelected.enemies: [0, 283],
+            ItemRandoListSelected.enemies: [0, 289],
             ItemRandoListSelected.trainingmoves: [4, 0],
             ItemRandoListSelected.trainingbarrels: [0, 4],
         }

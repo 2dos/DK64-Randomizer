@@ -313,6 +313,7 @@ class LogicVarHolder:
         self.RainbowCoins = 0
         self.SpentCoins = [0] * 5
         self.RaceCoins = 0
+        self.Photos = {}
 
         self.kong = self.startkong
 
@@ -489,6 +490,48 @@ class LogicVarHolder:
         self.Hints = [x for x in ownedItems if x >= Items.JapesDonkeyHint and x <= Items.CastleChunkyHint]
         self.Beans = sum(1 for x in ownedItems if x == Items.Bean)
         self.Pearls = sum(1 for x in ownedItems if x in [Items.Pearl, Items.FillerPearl])
+
+        photo_subjects = [
+            Items.PhotoBeaverBlue,
+            Items.PhotoBook,
+            Items.PhotoZingerCharger,
+            Items.PhotoKlobber,
+            Items.PhotoKlump,
+            Items.PhotoKaboom,
+            Items.PhotoKlaptrapGreen,
+            Items.PhotoZingerLime,
+            Items.PhotoKlaptrapPurple,
+            Items.PhotoKlaptrapRed,
+            Items.PhotoBeaverGold,
+            Items.PhotoFireball,
+            Items.PhotoMushroomMan,
+            Items.PhotoRuler,
+            Items.PhotoRoboKremling,
+            Items.PhotoKremling,
+            Items.PhotoKasplatDK,
+            Items.PhotoKasplatDiddy,
+            Items.PhotoKasplatLanky,
+            Items.PhotoKasplatTiny,
+            Items.PhotoKasplatChunky,
+            Items.PhotoZingerRobo,
+            Items.PhotoKrossbones,
+            Items.PhotoShuri,
+            Items.PhotoGimpfish,
+            Items.PhotoMrDice0,
+            Items.PhotoSirDomino,
+            Items.PhotoMrDice1,
+            Items.PhotoBat,
+            Items.PhotoGhost,
+            Items.PhotoPufftup,
+            Items.PhotoKosha,
+            Items.PhotoSpider,
+            Items.PhotoFireball,
+            Items.PhotoBug,
+            Items.PhotoKop,
+            Items.PhotoTomato,
+        ]
+        for subject in photo_subjects:
+            self.Photos[subject] = sum(1 for x in ownedItems if x == subject)
 
         self.UpdateCoins()
 
@@ -1236,8 +1279,14 @@ class LogicVarHolder:
         # Special Win Cons
         if condition == WinConditionComplex.beat_krool:
             return Events.KRoolDefeated in self.Events
-        elif condition == WinConditionComplex.krem_kapture:  # Photo taking doesn't have a perfect wincon so this'll do until something better is concocted
-            return Events.KRoolDefeated in self.Events and self.camera
+        elif condition == WinConditionComplex.krem_kapture:
+            for subject in self.spoiler.valid_photo_items:
+                if subject in (Items.PhotoKasplatDK, Items.PhotoKasplatDiddy, Items.PhotoKasplatLanky, Items.PhotoKasplatTiny, Items.PhotoKasplatChunky,):
+                    continue
+                if self.Photos.get(subject, 0) == 0:
+                    # print(f"Could not reach {subject.name}")
+                    return False
+            return self.camera
         elif condition == WinConditionComplex.get_key8:
             return self.HelmKey
         elif condition == WinConditionComplex.dk_rap_items:

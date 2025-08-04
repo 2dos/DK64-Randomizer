@@ -41,6 +41,8 @@ LogicRegions = {
     Regions.HideoutHelmStart: Region("Hideout Helm Start", HintRegion.Helm, Levels.HideoutHelm, True, None, [
         LocationLogic(Locations.HelmMainEnemy_Start0, lambda _: True),
         LocationLogic(Locations.HelmMainEnemy_Start1, lambda _: True),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_Start0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_Start1, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.HideoutHelmLobbyPastVines, lambda l: Events.HelmFinished in l.Events, Transitions.HelmToIsles),
         TransitionFront(Regions.HideoutHelmSwitchRoom, lambda l: (l.handstand and l.islanky) or l.slope_resets),
@@ -51,6 +53,9 @@ LogicRegions = {
         LocationLogic(Locations.HelmMainEnemy_Hill, lambda _: True),
         LocationLogic(Locations.HelmMainEnemy_SwitchRoom0, lambda _: True),
         LocationLogic(Locations.HelmMainEnemy_SwitchRoom1, lambda _: True),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_Hill, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_SwitchRoom0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_SwitchRoom1, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.HideoutHelmStart, lambda _: True),
         TransitionFront(Regions.HideoutHelmMiniRoom, lambda l: l.pineapple and l.chunky and l.can_use_vines),
@@ -62,6 +67,10 @@ LogicRegions = {
         LocationLogic(Locations.HelmMainEnemy_MiniRoom1, lambda _: True),
         LocationLogic(Locations.HelmMainEnemy_MiniRoom2, lambda _: True),
         LocationLogic(Locations.HelmMainEnemy_MiniRoom3, lambda _: True),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_MiniRoom0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_MiniRoom1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_MiniRoom2, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_MiniRoom3, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: l.istiny and l.mini),
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: (l.generalclips and l.ischunky) or l.CanPhase() or l.CanOStandTBSNoclip()),
@@ -94,6 +103,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmDonkey2, lambda _: True, MinigameType.HelmBarrelFirst),
         LocationLogic(Locations.HelmDonkeyMedal, lambda l: Events.HelmDonkeyDone in l.Events and l.isdonkey),
         LocationLogic(Locations.HelmMainEnemy_DKRoom, lambda _: True),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_DKRoom, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda _: True),
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.CanPhase() or (l.isdonkey and l.generalclips)),
@@ -105,6 +115,8 @@ LogicRegions = {
         LocationLogic(Locations.HelmChunkyMedal, lambda l: Events.HelmChunkyDone in l.Events and l.ischunky),
         LocationLogic(Locations.HelmMainEnemy_ChunkyRoom0, lambda _: True),
         LocationLogic(Locations.HelmMainEnemy_ChunkyRoom1, lambda _: True),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_ChunkyRoom0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_ChunkyRoom1, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda _: True),
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.CanPhase()),
@@ -115,6 +127,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmTiny2, lambda _: True, MinigameType.HelmBarrelFirst),
         LocationLogic(Locations.HelmTinyMedal, lambda l: Events.HelmTinyDone in l.Events and l.istiny),
         LocationLogic(Locations.HelmMainEnemy_TinyRoom, lambda _: True),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_TinyRoom, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda _: True),
         TransitionFront(Regions.HideoutHelmOOBChunky, lambda l: l.CanPhase()),
@@ -126,6 +139,8 @@ LogicRegions = {
         LocationLogic(Locations.HelmLankyMedal, lambda l: Events.HelmLankyDone in l.Events and l.islanky),
         LocationLogic(Locations.HelmMainEnemy_LankyRoom0, lambda _: True),
         LocationLogic(Locations.HelmMainEnemy_LankyRoom1, lambda _: True),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_LankyRoom0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_LankyRoom1, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda _: True),
         TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.CanPhase()),
@@ -137,6 +152,8 @@ LogicRegions = {
         LocationLogic(Locations.HelmDiddyMedal, lambda l: Events.HelmDiddyDone in l.Events and l.isdiddy),
         LocationLogic(Locations.HelmMainEnemy_DiddyRoom0, lambda _: True),
         LocationLogic(Locations.HelmMainEnemy_DiddyRoom1, lambda _: True),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_DiddyRoom0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_DiddyRoom1, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda _: True),
         TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.CanPhase()),
@@ -145,6 +162,8 @@ LogicRegions = {
     Regions.HideoutHelmAfterBoM: Region("Hideout Helm Navigation Room", HintRegion.Helm, Levels.HideoutHelm, False, -1, [
         LocationLogic(Locations.HelmMainEnemy_NavRight, lambda l: Events.HelmFinished in l.Events),
         LocationLogic(Locations.HelmMainEnemy_NavLeft, lambda l: Events.HelmFinished in l.Events),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_NavRight, lambda l: l.camera and Events.HelmFinished in l.Events),
+        LocationLogic(Locations.KremKap_HelmMainEnemy_NavLeft, lambda l: l.camera and Events.HelmFinished in l.Events),
     ], [], [
         TransitionFront(Regions.HideoutHelmStart, lambda _: True),  # W1 is always pre-activated
         TransitionFront(Regions.HideoutHelmMain, lambda l: Events.HelmFinished in l.Events),

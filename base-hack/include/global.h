@@ -277,6 +277,7 @@ extern int stompHandler(void* unk0, playerData* player, int unk1);
 extern void indicateCollectionStatus(void);
 extern void fireballEnemyDeath(float x, float y, float z, float scale, char unk0, char unk1);
 extern void rulerEnemyDeath(void);
+extern void tomatoDeath(void);
 extern int canSpawnEnemyReward(void);
 extern void wipeEnemySpawnBitfield(void);
 extern void setSpawnBitfield(int id, int state);

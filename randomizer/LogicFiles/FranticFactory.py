@@ -37,6 +37,9 @@ LogicRegions = {
         LocationLogic(Locations.FactoryMainEnemy_LobbyLeft, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_LobbyRight, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToHatch, lambda _: True),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_LobbyLeft, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_LobbyRight, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_TunnelToHatch, lambda l: l.camera),
     ], [
         Event(Events.HatchOpened, lambda _: True),  # Always starts open in the randomizer
         Event(Events.FactoryW1aTagged, lambda _: True),
@@ -62,6 +65,11 @@ LogicRegions = {
         LocationLogic(Locations.FactoryMainEnemy_BlockTower2, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToBlockTower, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_ToBlockTowerTunnel, lambda _: True),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_BlockTower0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_BlockTower1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_BlockTower2, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_TunnelToBlockTower, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_ToBlockTowerTunnel, lambda l: l.camera),
         LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: (not l.checkFastCheck(FasterChecksSelected.factory_arcade_round_1)) and (l.CanOStandTBSNoclip() and l.spawn_snags), isAuxiliary=True),
     ], [
         Event(Events.DartsPlayed, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and (l.mini or l.CanPhase()) and l.feather and l.istiny),
@@ -89,6 +97,8 @@ LogicRegions = {
         LocationLogic(Locations.FactoryLankyRandD, lambda l: (((l.trombone or l.CanAccessRNDRoom()) and l.CanSlamSwitch(Levels.FranticFactory, 1)) or (l.CanOStandTBSNoclip() and l.spawn_snags)) and l.islanky),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToRace0, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToRace1, lambda _: True),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_TunnelToRace0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_TunnelToRace1, lambda l: l.camera),
     ], [
         Event(Events.FactoryW2bTagged, lambda _: True),
     ], [
@@ -138,6 +148,11 @@ LogicRegions = {
         LocationLogic(Locations.FactoryMainEnemy_DarkRoom0, lambda l: (l.punch and l.chunky) or l.CanPhase()),
         LocationLogic(Locations.FactoryMainEnemy_DarkRoom1, lambda l: (l.punch and l.chunky) or l.CanPhase()),
         LocationLogic(Locations.FactoryMainEnemy_StorageRoom, lambda _: True),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_CandyCranky0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_CandyCranky1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_DarkRoom0, lambda l: l.camera and ((l.punch and l.chunky) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_DarkRoom1, lambda l: l.camera and ((l.punch and l.chunky) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_StorageRoom, lambda l: l.camera),
     ], [
         Event(Events.TestingGateOpened, lambda l: l.Slam),
         Event(Events.FactoryW1bTagged, lambda _: True),
@@ -188,6 +203,10 @@ LogicRegions = {
         LocationLogic(Locations.FactoryMainEnemy_DiddySwitch, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToProd0, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToProd1, lambda _: True),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_LowWarp4, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_DiddySwitch, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_TunnelToProd0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_FactoryMainEnemy_TunnelToProd1, lambda l: l.camera),
     ], [
         Event(Events.DiddyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.diddy),
         Event(Events.LankyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.lanky),

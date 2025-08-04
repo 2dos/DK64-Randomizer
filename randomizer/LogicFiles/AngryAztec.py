@@ -47,6 +47,11 @@ LogicRegions = {
         LocationLogic(Locations.AztecMainEnemy_StartingTunnel0, lambda _: True),
         LocationLogic(Locations.AztecMainEnemy_StartingTunnel1, lambda _: True),
         LocationLogic(Locations.AztecMainEnemy_StartingTunnel2, lambda _: True),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_VaseRoom0, lambda l: l.camera and ((l.pineapple and l.ischunky) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_VaseRoom1, lambda l: l.camera and ((l.pineapple and l.ischunky) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_StartingTunnel0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_StartingTunnel1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_StartingTunnel2, lambda l: l.camera),
     ], [
         Event(Events.AztecW1aTagged, lambda _: True),
     ], [
@@ -57,6 +62,7 @@ LogicRegions = {
     Regions.AztecTunnelBeforeOasis: Region("Angry Aztec Tunnel Before Oasis", HintRegion.AztecTunnels, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: not l.settings.kasplat_rando and (l.CanPhase() or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))))),
         LocationLogic(Locations.AztecMainEnemy_StartingTunnel3, lambda _: True),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_StartingTunnel3, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.can_use_vines or (l.istiny and l.twirl) or l.CanPhase()),
         TransitionFront(Regions.AngryAztecOasis, lambda _: True),
@@ -68,6 +74,8 @@ LogicRegions = {
         LocationLogic(Locations.RainbowCoin_Location06, lambda _: True),
         LocationLogic(Locations.AztecMainEnemy_NearCandy, lambda _: True),
         LocationLogic(Locations.AztecMainEnemy_OasisDoor, lambda _: True),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_NearCandy, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_OasisDoor, lambda l: l.camera),
     ], [
         Event(Events.AztecGuitarPad, lambda l: ((l.can_use_vines and l.climbing) or (l.jetpack and l.isdiddy and l.climbing) or (l.advanced_platforming and (l.istiny or l.isdiddy))) and l.hasMoveSwitchsanity(Switches.AztecGuitar, True)),
         Event(Events.AztecW1bTagged, lambda _: True),
@@ -88,6 +96,11 @@ LogicRegions = {
         LocationLogic(Locations.AztecTempleEnemy_MainRoom0, lambda _: True),
         LocationLogic(Locations.AztecTempleEnemy_MainRoom1, lambda _: True),
         LocationLogic(Locations.AztecTempleEnemy_MainRoom2, lambda _: True),
+        LocationLogic(Locations.KremKap_AztecTempleEnemy_GuardRotating0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecTempleEnemy_GuardRotating1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecTempleEnemy_MainRoom0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecTempleEnemy_MainRoom1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecTempleEnemy_MainRoom2, lambda l: l.camera),
     ], [
     ], [
         TransitionFront(Regions.AngryAztecOasis, lambda _: True, Transitions.AztecTempleToStart),
@@ -103,6 +116,7 @@ LogicRegions = {
 
     Regions.TempleUnderwater: Region("Temple Underwater", HintRegion.TinyTemple, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecTinyKlaptrapRoom, lambda l: ((l.mini and l.istiny) or l.CanPhase() or l.generalclips or l.CanPhaseswim())),
+        LocationLogic(Locations.KremKap_AztecTempleEnemy_Underwater, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.TempleStart, lambda l: Events.AztecIceMelted in l.Events),
         TransitionFront(Regions.TempleVultureRoom, lambda _: True),
@@ -124,6 +138,11 @@ LogicRegions = {
         LocationLogic(Locations.AztecTempleEnemy_KongRoom2, lambda _: True),
         LocationLogic(Locations.AztecTempleEnemy_KongRoom3, lambda _: True),
         LocationLogic(Locations.AztecTempleEnemy_KongRoom4, lambda _: True),
+        LocationLogic(Locations.KremKap_AztecTempleEnemy_KongRoom0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecTempleEnemy_KongRoom1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecTempleEnemy_KongRoom2, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecTempleEnemy_KongRoom3, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecTempleEnemy_KongRoom4, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.TempleUnderwater, lambda l: l.swim),
     ]),
@@ -137,6 +156,12 @@ LogicRegions = {
         LocationLogic(Locations.AztecMainEnemy_TunnelCage2, lambda _: True),
         LocationLogic(Locations.AztecMainEnemy_TunnelCage3, lambda _: True),
         LocationLogic(Locations.AztecMainEnemy_TunnelPad1, lambda _: True),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_TunnelPad0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_TunnelCage0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_TunnelCage1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_TunnelCage2, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_TunnelCage3, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_TunnelPad1, lambda l: l.camera),
         LocationLogic(Locations.HoldableBoulderAztec, lambda l: l.barrels and l.hunkyChunky and l.ischunky),
     ], [
         Event(Events.AztecW3bTagged, lambda _: True),
@@ -157,6 +182,12 @@ LogicRegions = {
         LocationLogic(Locations.AztecMainEnemy_Outside5DT, lambda _: True),
         LocationLogic(Locations.AztecMainEnemy_OutsideSnide, lambda _: True),
         LocationLogic(Locations.AztecMainEnemy_NearSnoopTunnel, lambda _: True),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_OutsideLlama, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_OutsideTower, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_AroundTotem, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_Outside5DT, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_OutsideSnide, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecMainEnemy_NearSnoopTunnel, lambda l: l.camera),
     ], [
         Event(Events.FedTotem, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_5dtemple_switches) or (l.jetpack and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut and l.diddy)),
         Event(Events.AztecW2bTagged, lambda _: True),
@@ -203,6 +234,12 @@ LogicRegions = {
         LocationLogic(Locations.AztecDK5DTEnemy_EndPath0, lambda l: (l.coconut and l.isdonkey) or l.CanPhase()),
         LocationLogic(Locations.AztecDK5DTEnemy_EndPath1, lambda l: (l.coconut and l.isdonkey) or l.CanPhase()),
         LocationLogic(Locations.AztecDK5DTEnemy_StartPath, lambda l: (l.coconut and l.isdonkey) or l.CanPhase()),
+        LocationLogic(Locations.KremKap_AztecDK5DTEnemy_EndTrap0, lambda l: l.camera and ((l.coconut and l.isdonkey) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecDK5DTEnemy_EndTrap1, lambda l: l.camera and ((l.coconut and l.isdonkey) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecDK5DTEnemy_EndTrap2, lambda l: l.camera and ((l.coconut and l.isdonkey) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecDK5DTEnemy_EndPath0, lambda l: l.camera and ((l.coconut and l.isdonkey) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecDK5DTEnemy_EndPath1, lambda l: l.camera and ((l.coconut and l.isdonkey) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecDK5DTEnemy_StartPath, lambda l: l.camera and ((l.coconut and l.isdonkey) or l.CanPhase())),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda _: True, Transitions.AztecDonkeyToMain),
         TransitionFront(Regions.DonkeyTempleDeadEndRight, lambda l: (l.coconut and l.isdonkey) or l.CanPhase()),
@@ -212,6 +249,9 @@ LogicRegions = {
         LocationLogic(Locations.AztecDK5DTEnemy_StartTrap0, lambda _: True),
         LocationLogic(Locations.AztecDK5DTEnemy_StartTrap1, lambda _: True),
         LocationLogic(Locations.AztecDK5DTEnemy_StartTrap2, lambda _: True),
+        LocationLogic(Locations.KremKap_AztecDK5DTEnemy_StartTrap0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecDK5DTEnemy_StartTrap1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecDK5DTEnemy_StartTrap2, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.DonkeyTemple, lambda _: True),
     ]),
@@ -222,6 +262,10 @@ LogicRegions = {
         LocationLogic(Locations.AztecDiddy5DTEnemy_StartLeft1, lambda l: (l.peanut and l.isdiddy) or l.CanPhase()),
         LocationLogic(Locations.AztecDiddy5DTEnemy_Reward, lambda l: (l.peanut and l.isdiddy) or l.CanPhase()),
         LocationLogic(Locations.AztecDiddy5DTEnemy_SecondSwitch, lambda l: (l.peanut and l.isdiddy) or l.CanPhase()),
+        LocationLogic(Locations.KremKap_AztecDiddy5DTEnemy_StartLeft0, lambda l: l.camera and ((l.peanut and l.isdiddy) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecDiddy5DTEnemy_StartLeft1, lambda l: l.camera and ((l.peanut and l.isdiddy) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecDiddy5DTEnemy_Reward, lambda l: l.camera and ((l.peanut and l.isdiddy) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecDiddy5DTEnemy_SecondSwitch, lambda l: l.camera and ((l.peanut and l.isdiddy) or l.CanPhase())),
     ], [], [
         TransitionFront(Regions.AngryAztecMain, lambda _: True, Transitions.AztecDiddyToMain),
         TransitionFront(Regions.DiddyTempleDeadEndRight, lambda l: (l.peanut and l.isdiddy) or l.CanPhase()),
@@ -231,6 +275,9 @@ LogicRegions = {
         LocationLogic(Locations.AztecDiddy5DTEnemy_EndTrap0, lambda _: True),
         LocationLogic(Locations.AztecDiddy5DTEnemy_EndTrap1, lambda _: True),
         LocationLogic(Locations.AztecDiddy5DTEnemy_EndTrap2, lambda _: True),
+        LocationLogic(Locations.KremKap_AztecDiddy5DTEnemy_EndTrap0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecDiddy5DTEnemy_EndTrap1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecDiddy5DTEnemy_EndTrap2, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.DiddyTemple, lambda _: True),
     ]),
@@ -246,6 +293,9 @@ LogicRegions = {
         LocationLogic(Locations.AztecLanky5DTEnemy_JoiningPaths, lambda _: True),
         LocationLogic(Locations.AztecLanky5DTEnemy_EndTrap, lambda l: (l.grape and l.islanky) or l.CanPhase()),
         LocationLogic(Locations.AztecLanky5DTEnemy_Reward, lambda l: (l.grape and l.islanky) or l.CanPhase()),
+        LocationLogic(Locations.KremKap_AztecLanky5DTEnemy_JoiningPaths, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecLanky5DTEnemy_EndTrap, lambda l: l.camera and ((l.grape and l.islanky) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecLanky5DTEnemy_Reward, lambda l: l.camera and ((l.grape and l.islanky) or l.CanPhase())),
     ], [], [
         TransitionFront(Regions.LankyTempleEntrance, lambda _: True),
     ]),
@@ -266,6 +316,14 @@ LogicRegions = {
         LocationLogic(Locations.AztecTiny5DTEnemy_Reward1, lambda l: (l.feather and l.istiny) or l.CanPhase()),
         LocationLogic(Locations.AztecTiny5DTEnemy_DeadEnd0, lambda l: (l.feather and l.istiny) or l.CanPhase()),
         LocationLogic(Locations.AztecTiny5DTEnemy_DeadEnd1, lambda l: (l.feather and l.istiny) or l.CanPhase()),
+        LocationLogic(Locations.KremKap_AztecTiny5DTEnemy_StartRightFront, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecTiny5DTEnemy_StartLeftBack, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecTiny5DTEnemy_StartRightBack, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecTiny5DTEnemy_StartLeftFront, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecTiny5DTEnemy_Reward0, lambda l: l.camera and ((l.feather and l.istiny) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecTiny5DTEnemy_Reward1, lambda l: l.camera and ((l.feather and l.istiny) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecTiny5DTEnemy_DeadEnd0, lambda l: l.camera and ((l.feather and l.istiny) or l.CanPhase())),
+        LocationLogic(Locations.KremKap_AztecTiny5DTEnemy_DeadEnd1, lambda l: l.camera and ((l.feather and l.istiny) or l.CanPhase())),
     ], [], [
         TransitionFront(Regions.TinyTempleEntrance, lambda _: True),
     ]),
@@ -284,6 +342,11 @@ LogicRegions = {
         LocationLogic(Locations.AztecChunky5DTEnemy_SecondRight, lambda _: True),
         LocationLogic(Locations.AztecChunky5DTEnemy_SecondLeft, lambda _: True),
         LocationLogic(Locations.AztecChunky5DTEnemy_Reward, lambda l: (l.pineapple and l.ischunky) or l.CanPhase()),
+        LocationLogic(Locations.KremKap_AztecChunky5DTEnemy_StartRight, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecChunky5DTEnemy_StartLeft, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecChunky5DTEnemy_SecondRight, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecChunky5DTEnemy_SecondLeft, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecChunky5DTEnemy_Reward, lambda l: l.camera and ((l.pineapple and l.ischunky) or l.CanPhase())),
     ], [], [
         TransitionFront(Regions.ChunkyTempleEntrance, lambda _: True),
     ]),
@@ -307,6 +370,12 @@ LogicRegions = {
         LocationLogic(Locations.AztecLlamaEnemy_Left, lambda _: True),
         LocationLogic(Locations.AztecLlamaEnemy_MelonCrate, lambda _: True),
         LocationLogic(Locations.AztecLlamaEnemy_SlamSwitch, lambda _: True),
+        LocationLogic(Locations.KremKap_AztecLlamaEnemy_KongFreeInstrument, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecLlamaEnemy_DinoInstrument, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecLlamaEnemy_Right, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecLlamaEnemy_Left, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecLlamaEnemy_MelonCrate, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecLlamaEnemy_SlamSwitch, lambda l: l.camera),
     ], [
         Event(Events.AztecDonkeySwitch, lambda l: l.hasMoveSwitchsanity(Switches.AztecQuicksandSwitch, False, Levels.AngryAztec, 1)),
         Event(Events.AztecLlamaSpit, lambda l: l.CanLlamaSpit()),
@@ -321,6 +390,10 @@ LogicRegions = {
 
     Regions.LlamaTempleMatching: Region("Llama Temple Matching", HintRegion.LlamaTemple, Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecLankyMatchingGame, lambda l: l.grape and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.lanky),
+        LocationLogic(Locations.AztecLlamaEnemy_Matching0, lambda _: True),
+        LocationLogic(Locations.AztecLlamaEnemy_Matching1, lambda _: True),
+        LocationLogic(Locations.KremKap_AztecLlamaEnemy_Matching0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecLlamaEnemy_Matching1, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.LlamaTemple, lambda _: True),
     ]),

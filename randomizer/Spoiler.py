@@ -554,6 +554,7 @@ class Spoiler:
             "Hints": {},
             "Enemy Drops": {},
             "Shop Owners": {},
+            "Photos": {},
             "Empty": {},
             "Unknown": {},
         }
@@ -575,6 +576,8 @@ class Spoiler:
                 continue
             # No hints if hint doors are not in the pool
             if location.type == Types.Hint and Types.Hint not in self.settings.shuffled_location_types:
+                continue
+            if location.type == Types.EnemyPhoto:
                 continue
             if location.type == Types.ProgressiveHint:
                 continue
@@ -655,6 +658,12 @@ class Spoiler:
                 humanspoiler[sorted_item_name][self.getItemGroup(location.item)][location.name] = item.name
         if not self.settings.enemy_drop_rando:
             del humanspoiler[sorted_item_name]["Enemy Drops"]
+        keys_to_delete = []
+        for key in humanspoiler[sorted_item_name]:
+            if len(humanspoiler[sorted_item_name][key]) == 0:
+                keys_to_delete.append(key)
+        for key in keys_to_delete:
+            del humanspoiler[sorted_item_name][key]
         if len(self.settings.enemies_selected) > 0:
             placement_dict = {}
             for map_id in self.enemy_rando_data:

@@ -153,6 +153,11 @@ LogicRegions = {
         LocationLogic(Locations.IslesMainEnemy_JapesEntrance, lambda _: True),
         LocationLogic(Locations.IslesMainEnemy_FungiCannon1, lambda _: True),
         LocationLogic(Locations.IslesMainEnemy_PineappleCage1, lambda _: True),
+        LocationLogic(Locations.KremKap_IslesMainEnemy_PineappleCage0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_IslesMainEnemy_FungiCannon0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_IslesMainEnemy_JapesEntrance, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_IslesMainEnemy_FungiCannon1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_IslesMainEnemy_PineappleCage1, lambda l: l.camera),
     ], [
         Event(Events.IslesW1aTagged, lambda _: True),
         Event(Events.IslesW1bTagged, lambda _: True),
@@ -194,6 +199,7 @@ LogicRegions = {
     Regions.IslesMainUpper: Region("Isles Main Upper", HintRegion.MainIsles, Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesChunkyInstrumentPad, lambda l: l.triangle and l.chunky and l.barrels),
         LocationLogic(Locations.IslesMainEnemy_NearAztec, lambda _: True),
+        LocationLogic(Locations.KremKap_IslesMainEnemy_NearAztec, lambda l: l.camera),
         LocationLogic(Locations.HoldableBoulderIslesNearAztec, lambda l: l.barrels and l.ischunky),
         LocationLogic(Locations.HoldableBoulderIslesNearCaves, lambda l: l.barrels and l.ischunky),
     ], [
@@ -254,6 +260,8 @@ LogicRegions = {
         LocationLogic(Locations.JapesChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.JapesLobbyEnemy_Enemy0, lambda _: True),
         LocationLogic(Locations.JapesLobbyEnemy_Enemy1, lambda _: True),
+        LocationLogic(Locations.KremKap_JapesLobbyEnemy_Enemy0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_JapesLobbyEnemy_Enemy1, lambda l: l.camera),
         LocationLogic(Locations.HoldableBoulderJapesLobby, lambda l: l.barrels and l.ischunky),
     ], [
         Event(Events.JapesLobbyAccessed, lambda _: True),
@@ -279,6 +287,7 @@ LogicRegions = {
     Regions.KremIsle: Region("Krem Isle Base", HintRegion.KremIsles, Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesLankyCagedBanana, lambda l: ((l.grape or l.CanPhaseswim() or l.CanPhase()) and l.lanky) or (l.CanPhase() and l.settings.free_trade_items)),
         LocationLogic(Locations.IslesMainEnemy_MonkeyportPad, lambda _: True),
+        LocationLogic(Locations.KremKap_IslesMainEnemy_MonkeyportPad, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda _: True),
         TransitionFront(Regions.Prison, lambda _: True, Transitions.IslesMainToPrison),
@@ -294,6 +303,9 @@ LogicRegions = {
         LocationLogic(Locations.IslesMainEnemy_UpperFactoryPath, lambda _: True),
         LocationLogic(Locations.IslesMainEnemy_LowerFactoryPath0, lambda _: True),
         LocationLogic(Locations.IslesMainEnemy_LowerFactoryPath1, lambda _: True),
+        LocationLogic(Locations.KremKap_IslesMainEnemy_UpperFactoryPath, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_IslesMainEnemy_LowerFactoryPath0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_IslesMainEnemy_LowerFactoryPath1, lambda l: l.camera),
     ], [
         Event(Events.IslesW4bTagged, lambda _: True),
     ], [
@@ -342,6 +354,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryTinyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)))),
         LocationLogic(Locations.FactoryChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.FactoryLobbyEnemy_Enemy0, lambda _: True),
+        LocationLogic(Locations.KremKap_FactoryLobbyEnemy_Enemy0, lambda l: l.camera),
     ], [
         Event(Events.FactoryLobbyAccessed, lambda _: True),
     ], [
@@ -452,6 +465,9 @@ LogicRegions = {
         LocationLogic(Locations.CastleLobbyEnemy_Left, lambda _: True),
         LocationLogic(Locations.CastleLobbyEnemy_FarRight, lambda _: True),
         LocationLogic(Locations.CastleLobbyEnemy_NearRight, lambda _: True),
+        LocationLogic(Locations.KremKap_CastleLobbyEnemy_Left, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_CastleLobbyEnemy_FarRight, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_CastleLobbyEnemy_NearRight, lambda l: l.camera),
         LocationLogic(Locations.HoldableBoulderCastleLobby, lambda l: l.barrels and l.ischunky),
     ], [
         Event(Events.CastleLobbyAccessed, lambda _: True),

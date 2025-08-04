@@ -62,6 +62,6 @@ typedef enum new_custom_actors {
 	/* 0x030 */ NEWACTOR_ICETRAPDISABLECUKEY, 
 	/* ----- */ NEWACTOR_TERMINATOR, 
 } new_custom_actors;
-#define DROP_COUNT 35
+#define DROP_COUNT 36
 extern GBDictItem new_flag_mapping[120];
 #define FILE_INFO_SIZE 0x8e4

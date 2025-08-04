@@ -4,6 +4,7 @@ from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import CrownEnemyDifficulty, DamageAmount, WinConditionComplex
 from randomizer.Lists.EnemyTypes import EnemyMetaData, enemy_location_list
 from randomizer.Enums.Enemies import Enemies
+from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
@@ -550,6 +551,45 @@ def writeEnemy(spoiler, ROM_COPY: LocalROM, cont_map_spawner_address: int, new_e
         ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0x14)
         ROM_COPY.writeMultipleBytes(0, 1)  # Disable respawning
 
+krem_kap_mapping = {
+    Enemies.BeaverBlue: Items.PhotoBeaverBlue,
+    Enemies.Book: Items.PhotoBook,
+    Enemies.ZingerCharger: Items.PhotoZingerCharger,
+    Enemies.Klobber: Items.PhotoKlobber,
+    Enemies.Klump: Items.PhotoKlump,
+    Enemies.Kaboom: Items.PhotoKaboom,
+    Enemies.KlaptrapGreen: Items.PhotoKlaptrapGreen,
+    Enemies.ZingerLime: Items.PhotoZingerLime,
+    Enemies.KlaptrapPurple: Items.PhotoKlaptrapPurple,
+    Enemies.KlaptrapRed: Items.PhotoKlaptrapRed,
+    Enemies.BeaverGold: Items.PhotoBeaverGold,
+    Enemies.Fireball: Items.PhotoFireball,
+    Enemies.MushroomMan: Items.PhotoMushroomMan,
+    Enemies.Ruler: Items.PhotoRuler,
+    Enemies.RoboKremling: Items.PhotoRoboKremling,
+    Enemies.Kremling: Items.PhotoKremling,
+    Enemies.KasplatDK: Items.PhotoKasplatDK,
+    Enemies.KasplatDiddy: Items.PhotoKasplatDiddy,
+    Enemies.KasplatLanky: Items.PhotoKasplatLanky,
+    Enemies.KasplatTiny: Items.PhotoKasplatTiny,
+    Enemies.KasplatChunky: Items.PhotoKasplatChunky,
+    Enemies.ZingerRobo: Items.PhotoZingerRobo,
+    Enemies.Krossbones: Items.PhotoKrossbones,
+    Enemies.Shuri: Items.PhotoShuri,
+    Enemies.Gimpfish: Items.PhotoGimpfish,
+    Enemies.MrDice0: Items.PhotoMrDice0,
+    Enemies.SirDomino: Items.PhotoSirDomino,
+    Enemies.MrDice1: Items.PhotoMrDice1,
+    Enemies.Bat: Items.PhotoBat,
+    Enemies.Ghost: Items.PhotoGhost,
+    Enemies.Pufftup: Items.PhotoPufftup,
+    Enemies.Kosha: Items.PhotoKosha,
+    Enemies.SpiderSmall: Items.PhotoSpider,
+    Enemies.FireballGlasses: Items.PhotoFireball,
+    Enemies.Bug: Items.PhotoBug,
+    Enemies.Guard: Items.PhotoKop,
+}
+
 
 def randomize_enemies_0(spoiler):
     """Determine randomized enemies."""
@@ -557,6 +597,16 @@ def randomize_enemies_0(spoiler):
     noise_management_dict = {}  # Prevent known game freezes
     pkmn = []
     resetPkmnSnap()
+    spoiler.valid_photo_items = [
+        Items.PhotoBook,  # Not randomized (yet), but permanently existing no matter what
+        Items.PhotoTomato,  # Not randomized (yet), but permanently existing no matter what
+        # Kasplats are always present outside enemy rando
+        Items.PhotoKasplatDK,
+        Items.PhotoKasplatDiddy,
+        Items.PhotoKasplatLanky,
+        Items.PhotoKasplatTiny,
+        Items.PhotoKasplatChunky,
+    ]
     for loc in enemy_location_list:
         if enemy_location_list[loc].enable_randomization:
             sound_safeguard = False
@@ -566,10 +616,20 @@ def randomize_enemies_0(spoiler):
                 noise_management_dict[map] = 0
             sound_safeguard = noise_management_dict[map] > 2
             new_enemy = enemy_location_list[loc].placeNewEnemy(spoiler.settings.random, spoiler.settings.enemies_selected, True, sound_safeguard)
+            krem_kap_location = (loc - Locations.JapesMainEnemy_Start) + Locations.KremKap_JapesMainEnemy_Start
+            if krem_kap_location in spoiler.LocationList:
+                item = krem_kap_mapping[new_enemy]
+                spoiler.LocationList[krem_kap_location].default = item  # I hate hate hate this
+                spoiler.LocationList[krem_kap_location].item = item
+                if item not in spoiler.valid_photo_items:
+                    spoiler.valid_photo_items.append(item)
+                setPkmnSnapEnemy(new_enemy)
+                if not enemy_location_list[loc].respawns:
+                    print(f"ALERT: INCORRECT ENEMY {loc.name}")
+            elif enemy_location_list[loc].respawns:
+                print(f"ALERT: MISSING ENEMY {loc.name}")
             if map == Maps.ForestAnthill or not enemy_location_list[loc].respawns and EnemyMetaData[new_enemy].audio_engine_burden:
                 noise_management_dict[map] += 1
-            if enemy_location_list[loc].respawns:
-                setPkmnSnapEnemy(new_enemy)
             data[map].append(
                 {
                     "enemy": new_enemy,

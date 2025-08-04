@@ -39,6 +39,11 @@ LogicRegions = {
         LocationLogic(Locations.CavesMainEnemy_NearFunky, lambda _: True),
         LocationLogic(Locations.CavesMainEnemy_NearBonusRoom, lambda _: True),
         LocationLogic(Locations.CavesMainEnemy_NearSnide, lambda _: True),
+        LocationLogic(Locations.KremKap_CavesMainEnemy_Start, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_CavesMainEnemy_NearIceCastle, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_CavesMainEnemy_NearFunky, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_CavesMainEnemy_NearBonusRoom, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_CavesMainEnemy_NearSnide, lambda l: l.camera),
         LocationLogic(Locations.HoldableBoulderCavesSmall, lambda l: l.barrels and l.chunky),
     ], [
         Event(Events.CavesSmallBoulderButton, lambda l: l.ischunky and l.barrels),
@@ -163,6 +168,8 @@ LogicRegions = {
         LocationLogic(Locations.CavesDonkey5DoorIgloo, lambda l: (l.strongKong and l.isdonkey) or l.CanMoonkick()),
         LocationLogic(Locations.Caves5DIDKEnemy_Right, lambda _: True),
         LocationLogic(Locations.Caves5DIDKEnemy_Left, lambda _: True),
+        LocationLogic(Locations.KremKap_Caves5DIDKEnemy_Right, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_Caves5DIDKEnemy_Left, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.IglooArea, lambda _: True, Transitions.CavesDonkeyToIgloo),
     ]),
@@ -183,6 +190,7 @@ LogicRegions = {
         LocationLogic(Locations.CavesTiny5DoorIgloo, lambda l: l.Slam and l.istiny),
         LocationLogic(Locations.CavesBananaFairyIgloo, lambda l: l.Slam and l.istiny and l.camera),
         LocationLogic(Locations.Caves5DITinyEnemy_BigEnemy, lambda _: True),
+        LocationLogic(Locations.KremKap_Caves5DITinyEnemy_BigEnemy, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.IglooArea, lambda _: True, Transitions.CavesTinyToIgloo),
     ]),
@@ -198,6 +206,9 @@ LogicRegions = {
         LocationLogic(Locations.CavesMainEnemy_Outside5DC, lambda _: True),
         LocationLogic(Locations.CavesMainEnemy_1DCWaterfall, lambda _: True),
         LocationLogic(Locations.CavesMainEnemy_1DCHeadphones, lambda _: True),
+        LocationLogic(Locations.KremKap_CavesMainEnemy_Outside5DC, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_CavesMainEnemy_1DCWaterfall, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_CavesMainEnemy_1DCHeadphones, lambda l: l.camera),
     ], [
         Event(Events.CavesW2bTagged, lambda _: True),
         Event(Events.CavesW5bTagged, lambda _: True),
@@ -249,8 +260,6 @@ LogicRegions = {
     Regions.DiddyUpperCabin: Region("Diddy Upper Cabin", HintRegion.Cabins, Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesDiddy5DoorCabinUpper, lambda l: (l.guitar or l.oranges) and (l.spring or (l.CanMoontail() and not l.cabinBarrelMoved())) and l.jetpack and l.isdiddy),
         LocationLogic(Locations.CavesBananaFairyCabin, lambda l: l.camera and (l.guitar or l.oranges) and (l.spring or (l.CanMoontail() and not l.cabinBarrelMoved())) and l.jetpack and l.isdiddy),
-        # LocationLogic(Locations.Caves5DCDiddyUpperEnemy_Enemy0, lambda _: True),
-        # LocationLogic(Locations.Caves5DCDiddyUpperEnemy_Enemy1, lambda _: True),
     ], [], [
         TransitionFront(Regions.CabinArea, lambda _: True, Transitions.CavesDiddyUpperToCabin),
     ]),
@@ -258,6 +267,7 @@ LogicRegions = {
     Regions.LankyCabin: Region("Lanky Cabin", HintRegion.Cabins, Levels.CrystalCaves, False, -1, [
         LocationLogic(Locations.CavesLanky1DoorCabin, lambda l: l.sprint and l.balloon and l.islanky),
         LocationLogic(Locations.Caves1DCEnemy_Near, lambda _: True),
+        LocationLogic(Locations.KremKap_Caves1DCEnemy_Near, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.CabinArea, lambda _: True, Transitions.CavesLankyToCabin),
     ]),

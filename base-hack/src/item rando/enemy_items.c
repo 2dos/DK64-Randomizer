@@ -157,3 +157,12 @@ void rulerEnemyDeath(void) {
     }
     renderActor(CurrentActorPointer_0, 1);
 }
+
+void tomatoDeath(void) {
+    if (CurrentActorPointer_0->control_state == 0x39) {
+        if (CurrentActorPointer_0->control_state_progress == 2) {
+            spawnEnemyDrops(CurrentActorPointer_0);
+        }
+    }
+    renderActor(CurrentActorPointer_0, 0);
+}

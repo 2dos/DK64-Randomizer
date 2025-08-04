@@ -38,6 +38,10 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_NearDKPortal, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_NearWellTag, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_GreenTunnel, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False))),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearAppleDropoff, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearDKPortal, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearWellTag, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_GreenTunnel, lambda l: l.camera and (l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False)))),
     ], [
         Event(Events.Night, lambda l: l.HasGun(Kongs.any) or l.adv_orange_usage or l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
         Event(Events.Day, lambda l: l.HasGun(Kongs.any) or l.adv_orange_usage or l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
@@ -71,6 +75,14 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_NearCranky, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_NearPinkTunnelGM, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_GMRearTag, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_YellowTunnel0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearLowWarp5, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearPinkTunnelBounceTag, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearGMRocketbarrel, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_BetweenYellowTunnelAndRB, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearCranky, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearPinkTunnelGM, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_GMRearTag, lambda l: l.camera),
     ], [
         Event(Events.HollowTreeGateOpened, lambda l: l.hasMoveSwitchsanity(Switches.FungiYellow, False)),
         Event(Events.ForestW3bTagged, lambda _: True),
@@ -118,6 +130,7 @@ LogicRegions = {
 
     Regions.MushroomBlastLevelExterior: Region("Mushroom Blast Level Exterior", HintRegion.MushroomExterior, Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestMainEnemy_NearBBlast, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearBBlast, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.MushroomLowerExterior, lambda _: True),
         TransitionFront(Regions.MushroomUpperMidExterior, lambda l: l.climbing),
@@ -149,6 +162,8 @@ LogicRegions = {
     Regions.MushroomUpperMid: Region("Mushroom Upper Middle", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestGMEnemy_Path0, lambda _: True),
         LocationLogic(Locations.ForestGMEnemy_Path1, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestGMEnemy_Path0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestGMEnemy_Path1, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.MushroomMiddle, lambda _: True),
         TransitionFront(Regions.MushroomUpperVineFloor, lambda l: l.climbing),
@@ -157,6 +172,7 @@ LogicRegions = {
 
     Regions.MushroomUpperVineFloor: Region("Mushroom Upper Vine Floor", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestGMEnemy_AboveNightDoor, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestGMEnemy_AboveNightDoor, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.MushroomUpper, lambda l: l.climbing),
         TransitionFront(Regions.MushroomUpperMid, lambda _: True),
@@ -189,6 +205,10 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_NearCrown, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_NearHighWarp5, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_TopOfMushroom, lambda l: (l.jetpack and l.isdiddy) or (l.handstand and l.islanky)),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearFacePuzzle, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearCrown, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearHighWarp5, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_TopOfMushroom, lambda l: l.camera and ((l.jetpack and l.isdiddy) or (l.handstand and l.islanky))),
     ], [
         Event(Events.ForestW5aTagged, lambda _: True),
     ], [
@@ -204,6 +224,7 @@ LogicRegions = {
     Regions.MushroomChunkyRoom: Region("Mushroom Chunky Room", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestChunkyFacePuzzle, lambda l: l.pineapple and l.CanSlamSwitch(Levels.FungiForest, 2) and l.ischunky),
         LocationLogic(Locations.ForestFacePuzzleEnemy_Enemy, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestFacePuzzleEnemy_Enemy, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.MushroomUpperExterior, lambda _: True, Transitions.ForestChunkyToExterior),
     ]),
@@ -212,6 +233,8 @@ LogicRegions = {
         LocationLogic(Locations.ForestLankyZingers, lambda l: l.islanky or l.settings.free_trade_items),
         LocationLogic(Locations.ForestLeapEnemy_Enemy0, lambda _: True),
         LocationLogic(Locations.ForestLeapEnemy_Enemy1, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestLeapEnemy_Enemy0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestLeapEnemy_Enemy1, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.MushroomUpperExterior, lambda _: True, Transitions.ForestZingersToExterior),
     ]),
@@ -236,6 +259,15 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_TreeMelonCrate0, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_TreeMelonCrate1, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_TreeMelonCrate2, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_YellowTunnel1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_YellowTunnel2, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_YellowTunnel3, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_HollowTree0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_HollowTree1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_HollowTreeEntrance, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_TreeMelonCrate0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_TreeMelonCrate1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_TreeMelonCrate2, lambda l: l.camera),
     ], [
         Event(Events.ForestW4bTagged, lambda _: True),
     ], [
@@ -251,6 +283,10 @@ LogicRegions = {
         LocationLogic(Locations.ForestAnthillEnemy_Gauntlet1, lambda _: True),
         LocationLogic(Locations.ForestAnthillEnemy_Gauntlet2, lambda _: True),
         LocationLogic(Locations.ForestAnthillEnemy_Gauntlet3, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestAnthillEnemy_Gauntlet0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestAnthillEnemy_Gauntlet1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestAnthillEnemy_Gauntlet2, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestAnthillEnemy_Gauntlet3, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.HollowTreeArea, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.saxophone or (l.settings.free_trade_items and l.HasInstrument(Kongs.any))), Transitions.ForestAnthillToTree),
     ]),
@@ -281,6 +317,11 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_NearDarkAttic, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_NearWellExit, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_NearBlueTunnel, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearSnide, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearIsoCoin, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearDarkAttic, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearWellExit, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearBlueTunnel, lambda l: l.camera),
     ], [
         Event(Events.ForestW1bTagged, lambda _: True),
     ], [
@@ -301,6 +342,7 @@ LogicRegions = {
 
     Regions.MillChunkyTinyArea: Region("Mill Back Room", HintRegion.Mills, Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestMillRearEnemy_Enemy, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestMillRearEnemy_Enemy, lambda l: l.camera),
         LocationLogic(Locations.HoldableKegMillRear, lambda l: l.barrels and l.ischunky),
     ], [
         Event(Events.GrinderActivated, lambda l: l.punch and l.triangle and l.ischunky),
@@ -321,6 +363,7 @@ LogicRegions = {
     Regions.GrinderRoom: Region("Grinder Room", HintRegion.Mills, Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestChunkyKegs, lambda l: Events.GrinderActivated in l.Events and Events.ConveyorActivated in l.Events and l.chunky and l.barrels),
         LocationLogic(Locations.ForestMillFrontEnemy_Enemy, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestMillFrontEnemy_Enemy, lambda l: l.camera),
         LocationLogic(Locations.HoldableKegMillFrontFar, lambda l: l.barrels and l.ischunky),
         LocationLogic(Locations.HoldableKegMillFrontNear, lambda l: l.barrels and l.ischunky),
     ], [
@@ -339,6 +382,7 @@ LogicRegions = {
 
     Regions.WinchRoom: Region("Winch Room", HintRegion.Mills, Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestWinchEnemy_Enemy, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestWinchEnemy_Enemy, lambda l: l.camera),
     ], [
         Event(Events.WinchRaised, lambda l: l.peanut and l.charge and l.isdiddy),
     ], [
@@ -358,6 +402,10 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_Thornvine1, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_Thornvine2, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_ThornvineEntrance, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_Thornvine0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_Thornvine1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_Thornvine2, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_ThornvineEntrance, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.MillArea, lambda _: True, time=Time.Night),
         TransitionFront(Regions.ThornvineBarn, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.isdonkey and l.strongKong) or l.CanPhase(), Transitions.ForestMainToBarn),
@@ -368,6 +416,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and l.climbing and (l.can_use_vines or l.advanced_platforming or l.settings.bonus_barrels == MinigameBarrels.skip), MinigameType.BonusBarrel),  # Krusha can make it by jumping onto the beam first.
         LocationLogic(Locations.MelonCrate_Location11, lambda _: True),
         LocationLogic(Locations.ForestThornBarnEnemy_Enemy, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestThornBarnEnemy_Enemy, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.ThornvineArea, lambda _: True, Transitions.ForestBarnToMain),
         TransitionFront(Regions.ThornvineBarnAboveLadder, lambda l: l.climbing),
@@ -385,6 +434,16 @@ LogicRegions = {
         LocationLogic(Locations.RainbowCoin_Location08, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_NearBeanstalk0, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_NearBeanstalk1, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearBeanstalk0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_NearBeanstalk1, lambda l: l.camera),
+        LocationLogic(Locations.ForestMainEnemy_AppleGauntlet0, lambda _: True),
+        LocationLogic(Locations.ForestMainEnemy_AppleGauntlet1, lambda _: True),
+        LocationLogic(Locations.ForestMainEnemy_AppleGauntlet2, lambda _: True),
+        LocationLogic(Locations.ForestMainEnemy_AppleGauntlet3, lambda _: True),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_AppleGauntlet0, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_AppleGauntlet1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_AppleGauntlet2, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_ForestMainEnemy_AppleGauntlet3, lambda l: l.camera),
     ], [
         Event(Events.ForestW2aTagged, lambda _: True),
     ], [
