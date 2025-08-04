@@ -625,6 +625,7 @@ enemy_location_list = {
     # Main
     Locations.AztecMainEnemy_VaseRoom0: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 2, [], True),
     Locations.AztecMainEnemy_VaseRoom1: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 4, [], True),
+    Locations.AztecMainEnemy_VaseRoom2: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 1, [], True),
     Locations.AztecMainEnemy_TunnelPad0: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 10, [], True),
     Locations.AztecMainEnemy_TunnelCage0: EnemyLoc(Maps.AngryAztec, Enemies.KlaptrapGreen, 13, [], True),
     Locations.AztecMainEnemy_TunnelCage1: EnemyLoc(Maps.AngryAztec, Enemies.KlaptrapGreen, 14, [], True),

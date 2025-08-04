@@ -2217,7 +2217,7 @@ with open(newROMName, "r+b") as fh:
     # Item Rando defaults
     # Enemies
     fh.seek(0x1FF9000)
-    for x in range(427):
+    for x in range(428):
         fh.write((0).to_bytes(4, "big"))
 
     # Boot Messages
