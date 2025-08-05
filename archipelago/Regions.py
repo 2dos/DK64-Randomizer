@@ -5,6 +5,8 @@ import typing
 from BaseClasses import CollectionState, ItemClassification, MultiWorld, Region, Entrance, Location
 from worlds.AutoWorld import World
 
+from randomizer import Spoiler
+from randomizer import Settings
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
@@ -90,10 +92,13 @@ gun_for_kong = {Kongs.donkey: "Coconut", Kongs.diddy: "Peanut", Kongs.lanky: "Gr
 name_for_kong = {Kongs.donkey: "Donkey", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky"}
 
 
-def create_regions(multiworld: MultiWorld, player: int, logic_holder: LogicVarHolder):
+def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler):
     """Create the regions for the given player's world."""
     menu_region = Region("Menu", player, multiworld)
     multiworld.regions.append(menu_region)
+
+    # okay okay OKAY you get a logicVarHolder object for JUST THIS ONCE. Codes these days...
+    logic_holder = LogicVarHolder(spoiler, player)
 
     # # Print contents of all_locations
     # print("All Locations:")
@@ -110,22 +115,23 @@ def create_regions(multiworld: MultiWorld, player: int, logic_holder: LogicVarHo
             # Carefully extract the duplicate Helm locations based on what Helm rooms are required per the settings.
             # If the room is required, the HideoutHelmEntry region cannot have the locations (because you'll have to reach the room to complete the barrels)
             # If the room is not required, the HideoutHelmKongRoom cannot have the locations (because they'll get completed by the Helm Entry Redirect)
-            if (region_id == Regions.HideoutHelmEntry and logic_holder.settings.helm_donkey) or (region_id == Regions.HideoutHelmDonkeyRoom and not logic_holder.settings.helm_donkey):
+            if (region_id == Regions.HideoutHelmEntry and spoiler.settings.helm_donkey) or (region_id == Regions.HideoutHelmDonkeyRoom and not spoiler.settings.helm_donkey):
                 location_logics = [loc for loc in location_logics if loc.id not in (Locations.HelmDonkey1, Locations.HelmDonkey2)]
-            if (region_id == Regions.HideoutHelmEntry and logic_holder.settings.helm_diddy) or (region_id == Regions.HideoutHelmDiddyRoom and not logic_holder.settings.helm_diddy):
+            if (region_id == Regions.HideoutHelmEntry and spoiler.settings.helm_diddy) or (region_id == Regions.HideoutHelmDiddyRoom and not spoiler.settings.helm_diddy):
                 location_logics = [loc for loc in location_logics if loc.id not in (Locations.HelmDiddy1, Locations.HelmDiddy2)]
-            if (region_id == Regions.HideoutHelmEntry and logic_holder.settings.helm_lanky) or (region_id == Regions.HideoutHelmLankyRoom and not logic_holder.settings.helm_lanky):
+            if (region_id == Regions.HideoutHelmEntry and spoiler.settings.helm_lanky) or (region_id == Regions.HideoutHelmLankyRoom and not spoiler.settings.helm_lanky):
                 location_logics = [loc for loc in location_logics if loc.id not in (Locations.HelmLanky1, Locations.HelmLanky2)]
-            if (region_id == Regions.HideoutHelmEntry and logic_holder.settings.helm_tiny) or (region_id == Regions.HideoutHelmTinyRoom and not logic_holder.settings.helm_tiny):
+            if (region_id == Regions.HideoutHelmEntry and spoiler.settings.helm_tiny) or (region_id == Regions.HideoutHelmTinyRoom and not spoiler.settings.helm_tiny):
                 location_logics = [loc for loc in location_logics if loc.id not in (Locations.HelmTiny1, Locations.HelmTiny2)]
-            if (region_id == Regions.HideoutHelmEntry and logic_holder.settings.helm_chunky) or (region_id == Regions.HideoutHelmChunkyRoom and not logic_holder.settings.helm_chunky):
+            if (region_id == Regions.HideoutHelmEntry and spoiler.settings.helm_chunky) or (region_id == Regions.HideoutHelmChunkyRoom and not spoiler.settings.helm_chunky):
                 location_logics = [loc for loc in location_logics if loc.id not in (Locations.HelmChunky1, Locations.HelmChunky2)]
         collectibles = []
         if region_id in all_collectible_regions.keys():
             collectibles = [col for col in all_collectible_regions[region_id] if col.type in (Collectibles.bunch, Collectibles.banana, Collectibles.balloon)]
         events = [event for event in region_obj.events]
+
         # if region_obj.level == Levels.Shops:
-        #     multiworld.regions.append(create_shop_region(multiworld, player, region_id.name, region_obj, location_logics, logic_holder))
+        #     multiworld.regions.append(create_shop_region(multiworld, player, region_id.name, region_obj, location_logics, spoiler.settings))
         # else:
         multiworld.regions.append(create_region(multiworld, player, region_id.name, region_obj.level, location_logics, collectibles, events, logic_holder))
 
@@ -168,6 +174,12 @@ def create_region(
             if location_obj.type == Types.Shop and location_obj.kong == Kongs.any:
                 continue
             loc_id = all_locations.get(location_obj.name, 0)
+            # Universal Tracker: don't add this location if it has no item
+            if hasattr(multiworld, "generation_is_fake"):
+                if hasattr(multiworld, "re_gen_passthrough"):
+                    if "Donkey Kong 64" in multiworld.re_gen_passthrough:
+                        if location_obj.name in multiworld.re_gen_passthrough["Donkey Kong 64"]["JunkedLocations"]:
+                            continue
             location = DK64Location(player, location_obj.name, loc_id, new_region)
             # If the location is not shuffled, lock in the default item on the location
             if location_logic.id != Locations.BananaHoard and location_obj.type not in logic_holder.settings.shuffled_location_types and location_obj.default is not None:
@@ -175,7 +187,7 @@ def create_region(
                 location.place_locked_item(DK64Item(DK64RItem.ItemList[location_obj.default].name, ItemClassification.progression_skip_balancing, None, player))
             # Otherwise, this is a location that can have items in it, and counts towards the number of locations available for items
             else:
-                logic_holder.location_pool_size += 1
+                logic_holder.settings.location_pool_size += 1
             # Quickly test and see if we can reach this location with zero items
             quick_success = False
             try:
@@ -188,7 +200,7 @@ def create_region(
             # Otherwise we have to work our way through the logic proper
             # V1 LIMITATION: this will ignore minigame logic, so bonus barrels and Helm barrels must be autocompleted
             else:
-                set_rule(location, lambda state, location_logic=location_logic: hasDK64RLocation(state, logic_holder, location_logic))
+                set_rule(location, lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic))
             # Our Fill checks for Shockwave independent of the location's logic, so we must do the same
             if location_obj.type == Types.RainbowCoin:
                 add_rule(location, lambda state: state.has("Shockwave", player))
@@ -217,14 +229,16 @@ def create_region(
         if quick_success:
             set_rule(location, lambda state: True)
         else:
-            set_rule(location, lambda state, collectible=collectible: hasDK64RCollectible(state, logic_holder, collectible))
+            set_rule(location, lambda state, player=player, collectible=collectible: hasDK64RCollectible(state, player, collectible))
         quantity = collectible.amount
         if collectible.type == Collectibles.bunch:
             quantity *= 5
         elif collectible.type == Collectibles.balloon:
             quantity *= 10
             add_rule(location, lambda state, collectible_kong=collectible.kong: state.has(gun_for_kong[collectible_kong], player))  # We need to be sure we check for gun access for this balloon
-        add_rule(location, lambda state, collectible_kong=collectible.kong: logic_holder.HasKong(collectible_kong))  # There's no FTA for collectibles - you *must* own the right kong to collect it
+        add_rule(
+            location, lambda state, collectible_kong=collectible.kong: state.has(name_for_kong[collectible_kong], player)
+        )  # There's no FTA for collectibles - you *must* own the right kong to collect it
         location.place_locked_item(DK64Item("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
         # print("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity))
         new_region.locations.append(location)
@@ -238,6 +252,7 @@ def create_region(
             Events.Night,
             Events.Day,
             Events.AztecIceMelted,
+            Events.MainCoreActivated,
             Events.TestingGateOpened,
             Events.LighthouseGateOpened,
             Events.ShipyardGateOpened,
@@ -270,7 +285,7 @@ def create_region(
         if quick_success:
             set_rule(location, lambda state: True)
         else:
-            set_rule(location, lambda state, event=event: hasDK64REvent(state, logic_holder, event))
+            set_rule(location, lambda state, player=player, event=event: hasDK64REvent(state, player, event))
         location.place_locked_item(DK64Item("Event, " + event.name.name, ItemClassification.progression_skip_balancing, None, player))
         new_region.locations.append(location)
 
@@ -278,7 +293,7 @@ def create_region(
 
 
 # CURRENTLY UNUSED - for some reason some Lanky shops are inaccessible??
-def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, region_obj: DK64Region, location_logics: typing.List[LocationLogic], logic_holder: LogicVarHolder) -> Region:
+def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, region_obj: DK64Region, location_logics: typing.List[LocationLogic], settings: Settings) -> Region:
     """Create a region for the given player's world."""
     # Shop regions have relatively straightforward logic that can be streamlined for performance purposes
     new_region = Region(region_name, player, multiworld)
@@ -297,9 +312,9 @@ def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, re
     # The one special child here is Cranky Generic, home of Jetpac, the only shop location with any relevant logic
     elif region_name == "Cranky Generic":
         location = DK64Location(player, "Jetpac", all_locations.get("Jetpac", 0), new_region)
-        set_rule(location, lambda state, location_logic=location_logics[0]: hasDK64RLocation(state, logic_holder, location_logic))
+        set_rule(location, lambda state, player=player, location_logic=location_logics[0]: hasDK64RLocation(state, player, location_logic))
         new_region.locations.append(location)
-        logic_holder.location_pool_size += 1
+        settings.location_pool_size += 1
     # All other shops are free because we are *not* touching shop logic with a 20000000000 ft pole (yet)
     else:
         for location_logic in location_logics:
@@ -311,12 +326,12 @@ def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, re
             required_kong_name = location_obj.kong.name.title()
             set_rule(location, lambda state, required_kong_name=required_kong_name: state.has(required_kong_name, player))
             new_region.locations.append(location)
-            logic_holder.location_pool_size += 1
+            settings.location_pool_size += 1
 
     return new_region
 
 
-def connect_regions(world: World, logic_holder: LogicVarHolder):
+def connect_regions(world: World, settings: Settings):
     """Connect the regions in the given world."""
     connect(world, "Menu", "GameStart")
 
@@ -330,7 +345,7 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
 
     # Shuffling level order should be going off of our ShufflableExits dictionary, but that's not properly isolated to the spoiler object yet.
     # For now, we have to pre-calculate what the destination region is for each of these transitions.
-    if logic_holder.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+    if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         lobby_transition_mapping = {}
         enter_lobby_transitions = {
             Transitions.IslesMainToJapesLobby: None,
@@ -362,8 +377,8 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
         # Now we can map the transitions to the shuffled level order
         enter_lobby_transitions_list = list(enter_lobby_transitions.keys())
         exit_lobby_transitions_list = list(exit_lobby_transitions.keys())
-        for i in range(len(logic_holder.settings.level_order)):
-            level = logic_holder.settings.level_order[i + 1]
+        for i in range(len(settings.level_order)):
+            level = settings.level_order[i + 1]
             lobby_transition_mapping[enter_lobby_transitions_list[i]] = enter_lobby_transitions[enter_lobby_transitions_list[level]]
             lobby_transition_mapping[exit_lobby_transitions_list[level]] = exit_lobby_transitions[exit_lobby_transitions_list[i]]
 
@@ -371,7 +386,7 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
         for exit in region_obj.exits:
             destination_name = exit.dest.name
             # If this is a Isles <-> Lobby transition and we're shuffling levels, respect the dictionary built earlier
-            if logic_holder.settings.shuffle_loading_zones == ShuffleLoadingZones.levels and exit.exitShuffleId in lobby_transition_mapping.keys():
+            if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and exit.exitShuffleId in lobby_transition_mapping.keys():
                 destination_name = lobby_transition_mapping[exit.exitShuffleId]
             try:
                 # Quickly test and see if we can pass this exit with zero items
@@ -384,7 +399,7 @@ def connect_regions(world: World, logic_holder: LogicVarHolder):
                 if quick_success:
                     converted_logic = lambda state: True
                 else:
-                    converted_logic = lambda state, exit=exit: hasDK64RTransition(state, logic_holder, exit)
+                    converted_logic = lambda state, player=world.player, exit=exit: hasDK64RTransition(state, player, exit)
                 connect(world, region_id.name, destination_name, converted_logic)
                 # print("Connecting " + region_id.name + " to " + destination_name)
             except Exception:
@@ -412,21 +427,21 @@ def connect(world: World, source: str, target: str, rule: typing.Optional[typing
     connection.connect(target_region)
 
 
-def hasDK64RTransition(state: CollectionState, logic: LogicVarHolder, exit: TransitionFront):
+def hasDK64RTransition(state: CollectionState, player: int, exit: TransitionFront):
     """Check if the given transition is accessible in the given state."""
-    return exit.logic(logic)
+    return exit.logic(state.dk64_logic_holder[player])
 
 
-def hasDK64RLocation(state: CollectionState, logic: LogicVarHolder, location: LocationLogic):
+def hasDK64RLocation(state: CollectionState, player: int, location: LocationLogic):
     """Check if the given location is accessible in the given state."""
-    return location.logic(logic)
+    return location.logic(state.dk64_logic_holder[player])
 
 
-def hasDK64RCollectible(state: CollectionState, logic: LogicVarHolder, collectible: Collectible):
+def hasDK64RCollectible(state: CollectionState, player: int, collectible: Collectible):
     """Check if the given collectible is accessible in the given state."""
-    return collectible.logic(logic)
+    return collectible.logic(state.dk64_logic_holder[player])
 
 
-def hasDK64REvent(state: CollectionState, logic: LogicVarHolder, event: Event):
+def hasDK64REvent(state: CollectionState, player: int, event: Event):
     """Check if the given event is accessible in the given state."""
-    return event.logic(logic)
+    return event.logic(state.dk64_logic_holder[player])

@@ -81,6 +81,7 @@ LogicRegions = {
         Event(Events.Day, lambda l: l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
         Event(Events.AztecIceMelted, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice)),
         Event(Events.TestingGateOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_testing_gate)),
+        Event(Events.MainCoreActivated, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_production_room)),
         Event(Events.LighthouseGateOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate)),
         Event(Events.ShipyardGateOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate)),
         Event(Events.ActivatedLighthouse, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_seasick_ship)),

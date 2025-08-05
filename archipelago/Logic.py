@@ -66,6 +66,9 @@ from randomizer.Prices import AnyKongCanBuy, CanBuy
 from archipelago.Items import DK64Item
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
+logic_item_name_to_id = {}
+for id, item in ItemList.items():
+    logic_item_name_to_id[item.name] = id
 
 
 def IsGlitchEnabled(settings, glitch_enum):
@@ -82,10 +85,6 @@ class LogicVarHolder:
         self.settings = settings
         self.spoiler = spoiler
         self.ap_player = player
-
-        self.item_name_to_id = {}
-        for id, item in ItemList.items():
-            self.item_name_to_id[item.name] = id
 
         # We never need to make these assumptions in Archipelago
         # # Some restrictions are added to the item placement fill for the sake of reducing indirect errors. We can overlook these restrictions once we know the fill is valid.
@@ -239,6 +238,8 @@ class LogicVarHolder:
         self.BananaFairies = 0
         self.BananaMedals = 0
         self.BattleCrowns = 0
+        self.Beans = 0
+        self.Pearls = 0
 
         self.superSlam = False
         self.superDuperSlam = False
@@ -364,7 +365,7 @@ class LogicVarHolder:
             elif item_name.startswith("Event, "):
                 eventArchItems.append(item_name)
             else:
-                corresponding_item_id = self.item_name_to_id[item_name]
+                corresponding_item_id = logic_item_name_to_id[item_name]
                 for i in range(item_count):
                     ownedItems.append(corresponding_item_id)
 
@@ -418,7 +419,7 @@ class LogicVarHolder:
             event = Events[item_data[1]]
             self.AddEvent(event)
         else:
-            corresponding_item_id = self.item_name_to_id[ap_item.name]
+            corresponding_item_id = logic_item_name_to_id[ap_item.name]
             ownedItems.append(corresponding_item_id)
 
         self.Update(ownedItems)
@@ -445,7 +446,7 @@ class LogicVarHolder:
             event = Events[item_data[1]]
             self.Events = [evt for evt in self.Events if evt != event]
         else:
-            corresponding_item_id = self.item_name_to_id[ap_item.name]
+            corresponding_item_id = logic_item_name_to_id[ap_item.name]
             if corresponding_item_id in ownedItems:
                 ownedItems.remove(corresponding_item_id)
 

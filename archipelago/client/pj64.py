@@ -49,7 +49,10 @@ class PJ64Client:
         self.address = "127.0.0.1"
         self.socket = None
         self.connected_message = False
-        self._connect()
+        try:
+            self._connect()
+        except PJ64Exception:  # Don't abort creating the client if we can't connect immediately. We can always retry connection.
+            pass
 
     def _check_client(self):
         """Ensure the Project 64 executable and the required adapter script are properly set up.
@@ -139,11 +142,19 @@ class PJ64Client:
         def clean_config_file(file_path):
             """Read the config file and return cleaned lines."""
             cleaned_lines = []
-            with open(file_path, encoding="utf8") as f:
-                for line in f:
-                    stripped = line.strip()
-                    if stripped == "" or stripped.startswith("[") or "=" in stripped:
-                        cleaned_lines.append(line)
+
+            def read_and_clean_lines(file_path, encoding):
+                with open(file_path, encoding=encoding) as f:
+                    for line in f:
+                        stripped = line.strip()
+                        if stripped == "" or stripped.startswith("[") or "=" in stripped:
+                            cleaned_lines.append(line)
+
+            try:
+                read_and_clean_lines(file_path, "utf8")
+            except UnicodeDecodeError:
+                # Try one fallback encoding, just in case
+                read_and_clean_lines(file_path, "latin1")
             return cleaned_lines
 
         def sanitize_config(config):
