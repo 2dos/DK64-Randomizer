@@ -96,12 +96,12 @@ def check_version():
         release_branch = "master"  # Default to master
         options = get_settings()
         # Use a 'dk64' section for DK64-specific settings
-        dk64_options = options.get("dk64", {})
+        dk64_options = options.get("dk64_options", {})
         release_branch = dk64_options.get("release_branch", "master")
         # Save back the release_branch if not present
         if "release_branch" not in dk64_options:
             dk64_options["release_branch"] = release_branch
-            options["dk64"] = dk64_options
+            options["dk64_options"] = dk64_options
             options.save()
         
         # Determine repository and API endpoint based on release_branch
@@ -149,7 +149,7 @@ def check_version():
                             latest_dev_tag = dev_data.get("tag_name")
                             if latest_dev_tag and latest_dev_tag.startswith("v"):
                                 latest_dev_version = latest_dev_tag[1:]
-                                logger.info(f"Latest dev version available: {latest_dev_version}")
+                                logger.info(f"Latest version available: {latest_dev_version}")
                     except Exception as e:
                         logger.warning(f"Could not check latest dev version: {e}")
                 else:
