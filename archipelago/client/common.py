@@ -91,7 +91,7 @@ def check_version():
         logger = logging.getLogger("DK64Client")
     try:
         from tkinter import Tk, messagebox
-        
+
         # Read host config to determine release branch
         release_branch = "master"  # Default to master
         options = get_settings()
@@ -103,7 +103,7 @@ def check_version():
             dk64_options["release_branch"] = release_branch
             options["dk64_options"] = dk64_options
             options.save()
-        
+
         # Determine repository and API endpoint based on release_branch
         if release_branch == "dev" or release_branch == "develop":
             repo = "2dos/DK64-Randomizer-dev"
@@ -131,7 +131,7 @@ def check_version():
                 ap_major = ap_version.split(".")[0]
                 ap_minor = ap_version.split(".")[1]
                 ap_patch = ap_version.split(".")[2]
-                
+
                 # Check if we should update based on release_branch setting
                 should_update = False
                 if release_branch.startswith("v"):
@@ -142,8 +142,7 @@ def check_version():
                         logger.warning(f"Specific version requested: {requested_version} (current: {ap_version})")
                     # Get the latest dev version for informational purposes
                     try:
-                        dev_request = urllib.request.Request("https://api.github.com/repos/2dos/DK64-Randomizer-dev/releases/latest", 
-                                                           headers={"User-Agent": "DK64Client/1.0"})
+                        dev_request = urllib.request.Request("https://api.github.com/repos/2dos/DK64-Randomizer-dev/releases/latest", headers={"User-Agent": "DK64Client/1.0"})
                         with urllib.request.urlopen(dev_request) as dev_response:
                             dev_data = json.load(dev_response)
                             latest_dev_tag = dev_data.get("tag_name")
@@ -157,7 +156,7 @@ def check_version():
                     should_update = (int(api_major), int(api_minor), int(api_patch)) > (int(ap_major), int(ap_minor), int(ap_patch))
                     if should_update:
                         logger.warning(f"Warning: New version of DK64 Rando available: {api_version} (current: {ap_version})")
-                
+
                 if should_update:
                     # Check if we're installed in an apworld in custom_worlds/dk64.apworld
                     # Check if the file exists
@@ -166,7 +165,7 @@ def check_version():
                     should_install = ask_yes_no_cancel("Update Available", "A new version of DK64 Rando is available. Would you like to install it?")
                     if not should_install:
                         return
-                    
+
                     # Find the dk64.apworld asset in the release
                     assets = data.get("assets", [])
                     apworld_asset = None
@@ -174,16 +173,16 @@ def check_version():
                         if asset.get("name") == "dk64.apworld":
                             apworld_asset = asset
                             break
-                    
+
                     if not apworld_asset:
                         logger.warning("No dk64.apworld asset found in the latest release")
                         return
-                    
+
                     download_url = apworld_asset.get("browser_download_url")
                     if not download_url:
                         logger.warning("No download URL found for dk64.apworld asset")
                         return
-                    
+
                     try:
                         with urllib.request.urlopen(download_url) as response:
                             data = response.read()
