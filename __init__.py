@@ -759,7 +759,7 @@ if baseclasses_loaded:
                 ]
 
                 # Look through every location in the multiworld and find all the DK64 items that are progression
-                for loc in multiworld.get_locations():
+                for loc in [location for location in multiworld.get_locations() if not location.is_event]:
                     player = loc.item.player
                     autoworld = multiworld.worlds[player]
                     locworld = multiworld.worlds[loc.player]
