@@ -53,6 +53,9 @@ jobs:
         node_modules/nunjucks/bin/precompile templates/ > ./static/js/compile_templates.js
         rm -rf ./node_modules
 
+    - name: Build APworld file
+      run: python3 ./tools/package_apworld.py
+
     - name: Build minified versions
       run: python3 ./tools/prepare_live.py
     
