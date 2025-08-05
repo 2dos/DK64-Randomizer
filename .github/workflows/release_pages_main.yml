@@ -8,26 +8,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      with:
-        fetch-depth: 2
 
-    - name: Check if ap_version.py changed in current or previous PR
+    - name: Check if ap_version.py version is newer than latest release
       id: check_version
       run: |
-        # Get the last two PR merge commits on this branch
-        PR_COMMITS=$(git log --merges --pretty=format:"%H" -n 2)
+        # Get the version from ap_version.py in the current branch
+        AP_VERSION=$(python3 -c "exec(open('ap_version.py').read()); print(version)")
+        echo "Current ap_version.py version: $AP_VERSION"
+
+        # Get the latest release tag from DK64-Randomizer-Release
+        LATEST_TAG=$(curl -s https://api.github.com/repos/2dos/DK64-Randomizer-Release/releases/latest | jq -r .tag_name)
+        echo "Latest release tag: $LATEST_TAG"
+
+        # Remove leading 'v' if present
+        LATEST_VERSION=${LATEST_TAG#v}
+
+        # Compare versions
         VERSION_CHANGED=false
-        for COMMIT in $PR_COMMITS; do
-          if git diff --name-only $COMMIT^ $COMMIT | grep -q "ap_version.py"; then
+        if [ "$AP_VERSION" != "$LATEST_VERSION" ]; then
           VERSION_CHANGED=true
-          break
-          fi
-        done
+        fi
+
         echo "version_changed=$VERSION_CHANGED" >> $GITHUB_OUTPUT
         if [ "$VERSION_CHANGED" = "true" ]; then
-          echo "AP version file changed in current or previous PR"
+          echo "ap_version.py version ($AP_VERSION) is different from latest release ($LATEST_VERSION)"
         else
-          echo "AP version file not changed in current or previous PR"
+          echo "ap_version.py version ($AP_VERSION) matches latest release ($LATEST_VERSION)"
         fi
 
     - name: Setup python
