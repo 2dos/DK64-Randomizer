@@ -140,6 +140,18 @@ def check_version():
                     should_update = api_version != ap_version
                     if should_update:
                         logger.warning(f"Specific version requested: {requested_version} (current: {ap_version})")
+                    # Get the latest dev version for informational purposes
+                    try:
+                        dev_request = urllib.request.Request("https://api.github.com/repos/2dos/DK64-Randomizer-dev/releases/latest", 
+                                                           headers={"User-Agent": "DK64Client/1.0"})
+                        with urllib.request.urlopen(dev_request) as dev_response:
+                            dev_data = json.load(dev_response)
+                            latest_dev_tag = dev_data.get("tag_name")
+                            if latest_dev_tag and latest_dev_tag.startswith("v"):
+                                latest_dev_version = latest_dev_tag[1:]
+                                logger.info(f"Latest dev version available: {latest_dev_version}")
+                    except Exception as e:
+                        logger.warning(f"Could not check latest dev version: {e}")
                 else:
                     # Latest version check - update if newer version available
                     should_update = (int(api_major), int(api_minor), int(api_patch)) > (int(ap_major), int(ap_minor), int(ap_patch))
