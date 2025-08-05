@@ -215,6 +215,7 @@ if baseclasses_loaded:
 
         class ReleaseVersion(str):
             """Choose the release version of the DK64 randomizer to use.
+
             By setting it to master (Default) you will always pull the latest stable version.
             By setting it to dev you will pull the latest development version.
             If you want a specific version, you can set it to a AP version number eg: v1.0.45
