@@ -65,7 +65,7 @@ jobs:
         fi
 
     - name: Get version from ap_version.py
-      if: steps.check_version.outputs.version_changed == 'true'
+      if: steps.check_version.outputs.version_changed != 'true'
       id: get_version
       run: |
         VERSION=$(python3 -c "exec(open('ap_version.py').read()); print(version)")
@@ -73,7 +73,7 @@ jobs:
         echo "Version: $VERSION"
 
     - name: Create Release in Target Repo
-      if: steps.check_version.outputs.version_changed == 'true'
+      if: steps.check_version.outputs.version_changed != 'true'
       uses: ncipollo/release-action@v1
       with:
         token: ${{ secrets.ACCESS_TOKEN }}
