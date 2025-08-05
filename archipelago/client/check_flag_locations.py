@@ -466,6 +466,8 @@ location_flag_to_name = {
     DROPSANITY_FLAG_START + 0x63: "Aztec Chunky 5DTemple Enemy: Reward",
     DROPSANITY_FLAG_START + 0x64: "Aztec Llama Temple Enemy: Kong Free Instrument",
     DROPSANITY_FLAG_START + 0x65: "Aztec Llama Temple Enemy: Dino Instrument",
+    DROPSANITY_FLAG_START + 0x66: "Aztec Llama Temple Enemy: Matching0",
+    DROPSANITY_FLAG_START + 0x67: "Aztec Llama Temple Enemy: Matching1",
     DROPSANITY_FLAG_START + 0x68: "Aztec Llama Temple Enemy: Right",
     DROPSANITY_FLAG_START + 0x69: "Aztec Llama Temple Enemy: Left",
     DROPSANITY_FLAG_START + 0x6a: "Aztec Llama Temple Enemy: Melon Crate",
