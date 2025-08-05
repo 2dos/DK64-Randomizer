@@ -482,7 +482,7 @@ Gfx* drawHintScreen(Gfx* dl, int level_x) {
             if (Rando.progressive_hint_gb_cap == 0) {
                 regions tied_region = getHintItemRegion(hint_local_index);
                 if (tied_region == REGION_NULLREGION) {
-                    unknown_hints[i].lines[0] = "???";
+                    dk_strFormat(unknown_hints[i].lines[0], "???");
                 } else {
                     dk_strFormat(unknown_hints[i].lines[0], "??? - %s", hint_region_names[tied_region]);
                 }

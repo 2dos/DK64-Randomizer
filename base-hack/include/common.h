@@ -7,7 +7,7 @@
 #define ENABLE_SAVE_LOCK_REMOVAL 0 // Crashes on Wii U
 
 #define SONG_COUNT 176
-#define ENEMIES_TOTAL 427
+#define ENEMIES_TOTAL 428
 #define ENEMY_REWARD_CACHE_SIZE 16
 #include "../include2/ultra64.h"
 #include "common_enums.h"
