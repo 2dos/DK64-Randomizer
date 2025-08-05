@@ -105,7 +105,7 @@ def check_version():
             options.save()
         
         # Determine repository and API endpoint based on release_branch
-        if release_branch == "dev":
+        if release_branch == "dev" or release_branch == "develop":
             repo = "2dos/DK64-Randomizer-dev"
             api_endpoint = f"https://api.github.com/repos/{repo}/releases/latest"
         elif release_branch.startswith("v"):
@@ -192,7 +192,8 @@ def check_version():
                     logger.warning("-" * 50)
                     logger.warning("New version of DK64 Rando available, but no APWorld file found. Please update manually.")
                     logger.warning("-" * 50)
-    except Exception:
+    except Exception as e:
+        print(e)
         print("Failed to check for new version of DK64")
 
 
