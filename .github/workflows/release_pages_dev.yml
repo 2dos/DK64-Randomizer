@@ -12,15 +12,23 @@ jobs:
       with:
         fetch-depth: 2
 
-    - name: Check if ap_version.py changed
+    - name: Check if ap_version.py changed in current or previous PR
       id: check_version
       run: |
-        if git diff --name-only HEAD~ HEAD | grep -q "ap_version.py"; then
-          echo "version_changed=true" >> $GITHUB_OUTPUT
-          echo "AP version file changed"
+        # Get the last two PR merge commits on this branch
+        PR_COMMITS=$(git log --merges --pretty=format:"%H" -n 2)
+        VERSION_CHANGED=false
+        for COMMIT in $PR_COMMITS; do
+          if git diff --name-only $COMMIT^ $COMMIT | grep -q "ap_version.py"; then
+          VERSION_CHANGED=true
+          break
+          fi
+        done
+        echo "version_changed=$VERSION_CHANGED" >> $GITHUB_OUTPUT
+        if [ "$VERSION_CHANGED" = "true" ]; then
+          echo "AP version file changed in current or previous PR"
         else
-          echo "version_changed=false" >> $GITHUB_OUTPUT
-          echo "AP version file not changed"
+          echo "AP version file not changed in current or previous PR"
         fi
 
     - name: Setup python
