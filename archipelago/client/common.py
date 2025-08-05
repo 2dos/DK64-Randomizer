@@ -161,48 +161,50 @@ def check_version():
                     # Check if we're installed in an apworld in custom_worlds/dk64.apworld
                     # Check if the file exists
                     apworld_output = "./custom_worlds/dk64.apworld"
-                if os.path.exists(apworld_output):
-                    should_install = ask_yes_no_cancel("Update Available", "A new version of DK64 Rando is available. Would you like to install it?")
-                    if not should_install:
-                        return
+                    if os.path.exists(apworld_output):
+                        should_install = ask_yes_no_cancel("Update Available", "A new version of DK64 Rando is available. Would you like to install it?")
+                        if not should_install:
+                            return
 
-                    # Find the dk64.apworld asset in the release
-                    assets = data.get("assets", [])
-                    apworld_asset = None
-                    for asset in assets:
-                        if asset.get("name") == "dk64.apworld":
-                            apworld_asset = asset
-                            break
+                        # Find the dk64.apworld asset in the release
+                        assets = data.get("assets", [])
+                        apworld_asset = None
+                        for asset in assets:
+                            if asset.get("name") == "dk64.apworld":
+                                apworld_asset = asset
+                                break
 
-                    if not apworld_asset:
-                        logger.warning("No dk64.apworld asset found in the latest release")
-                        return
+                        if not apworld_asset:
+                            logger.warning("No dk64.apworld asset found in the latest release")
+                            return
 
-                    download_url = apworld_asset.get("browser_download_url")
-                    if not download_url:
-                        logger.warning("No download URL found for dk64.apworld asset")
-                        return
+                        download_url = apworld_asset.get("browser_download_url")
+                        if not download_url:
+                            logger.warning("No download URL found for dk64.apworld asset")
+                            return
 
-                    try:
-                        with urllib.request.urlopen(download_url) as response:
-                            data = response.read()
-                            # Delete the original AP World in the folder
-                            os.remove(apworld_output)
-                            # Save as .apworld
-                            with open(apworld_output, "wb") as f:
-                                f.write(data)
-                            print(f"APWorld file saved as {apworld_output}")
-                            root = Tk()
-                            root.withdraw()
-                            messagebox.showinfo("Update Complete", f"New version of DK64 Rando installed as {apworld_output}")
-                            root.update()
-                            sys.exit(1)
-                    except Exception as e:
-                        logger.warning(f"Failed to download or save the new APWorld file: {e}")
+                        try:
+                            with urllib.request.urlopen(download_url) as response:
+                                data = response.read()
+                                # Delete the original AP World in the folder
+                                os.remove(apworld_output)
+                                # Save as .apworld
+                                with open(apworld_output, "wb") as f:
+                                    f.write(data)
+                                print(f"APWorld file saved as {apworld_output}")
+                                root = Tk()
+                                root.withdraw()
+                                messagebox.showinfo("Update Complete", f"New version of DK64 Rando installed as {apworld_output}")
+                                root.update()
+                                sys.exit(1)
+                        except Exception as e:
+                            logger.warning(f"Failed to download or save the new APWorld file: {e}")
+                    else:
+                        logger.warning("-" * 50)
+                        logger.warning("New version of DK64 Rando available, but no APWorld file found. Please update manually.")
+                        logger.warning("-" * 50)
                 else:
-                    logger.warning("-" * 50)
-                    logger.warning("New version of DK64 Rando available, but no APWorld file found. Please update manually.")
-                    logger.warning("-" * 50)
+                    logger.info("You are running the latest version of DK64 Rando.")
     except Exception as e:
         print(e)
         print("Failed to check for new version of DK64")
