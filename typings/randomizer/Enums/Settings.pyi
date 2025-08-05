@@ -119,7 +119,6 @@ class FasterChecksSelected(IntEnum):
     castle_car_race = 13
     jetpac = 14
     arcade = 15
-    isles_forest_lobby_crown = 16
 
 class FillAlgorithm(IntEnum):
     forward = 1

@@ -134,7 +134,6 @@ export enum FasterChecksSelected {
     castle_car_race = 13,
     jetpac = 14,
     arcade = 15,
-    isles_forest_lobby_crown = 16,
 }
 
 export enum FillAlgorithm {

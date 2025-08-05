@@ -1059,8 +1059,8 @@ class LogicVarHolder:
 
     def CanOpenForestLobbyGoneDoor(self):
         """Check if the player can open the door to the gone pad in forest lobby."""
-        if self.checkFastCheck(FasterChecksSelected.isles_forest_lobby_crown):
-            return True
+        # if self.checkFastCheck(FasterChecksSelected.isles_forest_lobby_crown):
+        #     return True
         if self.CanPhase():
             return True
         return (self.donkey and self.coconut) and (self.diddy and self.peanut) and (self.lanky and self.grape) and (self.tiny and self.feather) and (self.chunky and self.pineapple)

@@ -1141,8 +1141,8 @@ def patchAssembly(ROM_COPY, spoiler):
     if isFasterCheckEnabled(spoiler, FasterChecksSelected.galleon_seal_race):
         writeValue(ROM_COPY, 0x8002D0E2, Overlay.Race, 1, offset_dict)  # Seal Race 1 Lap
 
-    if isFasterCheckEnabled(spoiler, FasterChecksSelected.isles_forest_lobby_crown):
-        file_init_flags.append(0x195)
+    # if isFasterCheckEnabled(spoiler, FasterChecksSelected.isles_forest_lobby_crown):
+    #     file_init_flags.append(0x195)
 
     if settings.galleon_water_internal == GalleonWaterSetting.raised:
         file_init_flags.append(0xA0)  # Galleon Water Raised
