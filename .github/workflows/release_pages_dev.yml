@@ -68,7 +68,7 @@ jobs:
       if: steps.check_version.outputs.version_changed != 'true'
       id: get_version
       run: |
-        VERSION=$(python3 -c "exec(open('ap_version.py').read()); print(version)")
+        VERSION=$(python3 -c "exec(open('./deploy-directory/ap_version.py').read()); print(version)")
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Version: $VERSION"
 
