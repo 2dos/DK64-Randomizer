@@ -1134,7 +1134,7 @@ class DK64Context(CommonContext):
                     await self.client.reset_auth()
                     await disconnect_check()
                     await self.client.validate_client_connection()
-                    if await self.is_victory():
+                    if await self.client.is_victory():
                         await victory()
                     status = self.client.check_safe_gameplay()
                     if status is False:
