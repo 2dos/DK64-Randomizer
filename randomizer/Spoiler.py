@@ -108,6 +108,7 @@ class Spoiler:
         self.RegionList = deepcopy(RegionsOriginal)
         self.CollectibleRegions = deepcopy(CollectibleRegionsOriginal)
         self.LocationList = deepcopy(LocationListOriginal)
+        self.item_assignment = []
 
         self.move_data = []
         # 0: Cranky, 1: Funky, 2: Candy
