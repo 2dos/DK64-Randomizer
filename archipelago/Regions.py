@@ -60,7 +60,11 @@ class DK64Location(Location):
 
 
 # Complete location table
-all_locations = {DK64RLocation.LocationListOriginal[location].name: (BASE_ID + index) for index, location in enumerate(DK64RLocation.LocationListOriginal)}
+all_locations = {
+    DK64RLocation.LocationListOriginal[location].name: (BASE_ID + index)
+    for index, location in enumerate(DK64RLocation.LocationListOriginal)
+    if DK64RLocation.LocationListOriginal[location].type != Types.EnemyPhoto
+}
 all_locations.update({"Victory": 0x00})  # Temp for generating goal location
 lookup_id_to_name: typing.Dict[int, str] = {id: name for name, id in all_locations.items()}
 

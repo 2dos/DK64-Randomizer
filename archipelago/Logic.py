@@ -1380,7 +1380,13 @@ class LogicVarHolder:
             return Events.KRoolDefeated in self.Events
         elif self.settings.win_condition_item == WinConditionComplex.krem_kapture:
             for subject in self.spoiler.valid_photo_items:
-                if subject in (Items.PhotoKasplatDK, Items.PhotoKasplatDiddy, Items.PhotoKasplatLanky, Items.PhotoKasplatTiny, Items.PhotoKasplatChunky,):
+                if subject in (
+                    Items.PhotoKasplatDK,
+                    Items.PhotoKasplatDiddy,
+                    Items.PhotoKasplatLanky,
+                    Items.PhotoKasplatTiny,
+                    Items.PhotoKasplatChunky,
+                ):
                     continue
                 if self.Photos.get(subject, 0) == 0:
                     return False
