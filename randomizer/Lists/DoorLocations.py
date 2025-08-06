@@ -2739,14 +2739,14 @@ door_locations = {
             location=[3469.0, 272.0, 4504.0, 122.5],
             group=4,
         ),
-        DoorData(
-            name="Outside Diddy's Barn",
-            map=Maps.FungiForest,
-            logicregion=Regions.MillArea,
-            location=[3434.0, 271.0, 4316.0, 123.25],
-            rx=-4,
-            group=4,
-        ),
+        # DoorData(  # Prime location for enemies knocking you right into the door, so a bad entrance. Not taking the 10% chance that a wrinkly door could be a bad idea here
+        #     name="Outside Diddy's Barn",
+        #     map=Maps.FungiForest,
+        #     logicregion=Regions.MillArea,
+        #     location=[3434.0, 271.0, 4316.0, 123.25],
+        #     rx=-4,
+        #     group=4,
+        # ),
         DoorData(
             name="Immediately Inside the Thornvine Area - right",
             map=Maps.FungiForest,

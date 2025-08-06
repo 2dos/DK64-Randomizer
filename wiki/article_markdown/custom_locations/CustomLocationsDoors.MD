@@ -275,7 +275,6 @@
 | Fungi Forest | Watermill - right - right | Boss, Dk_Portal, Wrinkly |  | 
 | Fungi Forest | Watermill Roof - tower | Boss, Dk_Portal, Wrinkly |  | 
 | Fungi Forest | Boxes outside of Diddy's Barn | Boss, Dk_Portal, Wrinkly |  | 
-| Fungi Forest | Outside Diddy's Barn | Boss, Dk_Portal, Wrinkly |  | 
 | Fungi Forest | Immediately Inside the Thornvine Area - right | Boss, Wrinkly |  | 
 | Fungi Forest | Immediately Inside the Thornvine Area - left | Boss, Wrinkly |  | 
 | Fungi Forest | Outside DK's Barn | Boss, Wrinkly |  | 
