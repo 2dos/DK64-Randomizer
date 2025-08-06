@@ -1,7 +1,6 @@
 """Patches assembly instructions from the overlays rather than doing changes live."""
 
 import js
-import random
 import math
 import io
 import randomizer.ItemPool as ItemPool
@@ -250,7 +249,7 @@ def fixLankyIncompatibility(ROM_COPY: ROM):
     """Ensure compatibility with .lanky files created during a specific time frame."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
     if readValue(ROM_COPY, 0x80602AB0, Overlay.Static, offset_dict, 4) != 0x0C180917:
-        writeValue(ROM_COPY, 0x80602AAC, Overlay.Static, 0x27A40018, offset_dict, 4)  # addiu $a0, $sp, 0x18I
+        writeValue(ROM_COPY, 0x80602AAC, Overlay.Static, 0x27A40018, offset_dict, 4)  # addiu $a0, $sp, 0x18
 
 
 def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = True):
@@ -288,7 +287,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         writeValue(ROM_COPY, 0x8075F244, Overlay.Static, 0x282, offset_dict)
         writeValue(ROM_COPY, 0x806BE9B2, Overlay.Static, 0x287, offset_dict)
         writeValue(ROM_COPY, 0x806BED5E, Overlay.Static, 0x288, offset_dict)
-        SpeedUpFungiRabbit(ROM_COPY, 1.2)
+        SpeedUpFungiRabbit(ROM_COPY, 1.62)
         # Chunky 5DI
         writeValue(ROM_COPY, 0x8075F3F2, Overlay.Static, Model.Beetle + 1, offset_dict)
         writeValue(ROM_COPY, 0x806B23C6, Overlay.Static, 0x287, offset_dict)
@@ -337,7 +336,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings, has_dom: bool = Tru
         for x in range(8):
             used_arr = skybox_rgba
             if random_skybox:
-                used_arr = [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)]
+                used_arr = [settings.random.randint(0, 255), settings.random.randint(0, 255), settings.random.randint(0, 255)]
             if used_arr is not None:
                 for zi, z in enumerate(used_arr):
                     writeValue(ROM_COPY, 0x80754EF8 + (12 * x) + zi, Overlay.Static, z, offset_dict, 1)
@@ -639,7 +638,7 @@ class MinigameImageLoader:
         """Convert associated image to bytes that can be written to ROM."""
         output_image = None
         if self.pull_from_repo:
-            output_image = Image.open(io.BytesIO(js.getFile(f"./base-hack/assets/arcade_jetpac/{sub_dir}/{self.file_name}.png")))
+            output_image = Image.open(io.BytesIO(js.getFile(f"base-hack/assets/arcade_jetpac/{sub_dir}/{self.file_name}.png")))
         else:
             new_im = getImageFile(ROM_COPY, self.table_index, self.file_index, self.table_index != 7, self.width, self.height, self.tex_format)
             if self.width != self.height:
@@ -729,6 +728,7 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
             MinigameImageLoader(None, 25, 0x1775, 64, 64, TextureFormat.IA8),
             MinigameImageLoader("hint"),
         ),
+        Minigame8BitImage([Items.ArchipelagoItem], MinigameImageLoader("ap"), MinigameImageLoader("ap")),
     ]
     arcade_image_data = None
     jetpac_image_data = None
@@ -1106,7 +1106,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8002EF02, Overlay.Boss, 2, offset_dict, 2)  # Lanky Phase Hit Count
         writeHook(ROM_COPY, 0x80030370, Overlay.Boss, "TinyPhaseShort", offset_dict)
         writeHook(ROM_COPY, 0x800314B4, Overlay.Boss, "ChunkyPhaseShort", offset_dict)
-    writeHook(ROM_COPY, 0x80031378, Overlay.Boss, "ChunkyPhaseAddedSave", offset_dict)
+    writeValue(ROM_COPY, 0x80031378, Overlay.Boss, 0x0C1837B2, offset_dict, 4)  # Call save
 
     # Change pause menu background design
     writeValue(ROM_COPY, 0x806A84F4, Overlay.Static, 0, offset_dict, 4)  # Enable framebuffer clear on pause menu
@@ -1189,8 +1189,8 @@ def patchAssembly(ROM_COPY, spoiler):
     static_expansion = 0x100
     if settings.enemy_drop_rando:
         static_expansion += 427  # Total Enemies
-    if False:  # TODO: Check Archipelago
-        static_expansion += 400  # Archipelago Flag size
+    if settings.archipelago:
+        static_expansion += 1000  # Archipelago Flag size
     expandSaveFile(ROM_COPY, static_expansion, balloon_patch_count, offset_dict)
     # 1-File Fixes
     writeValue(ROM_COPY, 0x8060CF34, Overlay.Static, 0x240E0001, offset_dict, 4)  # Slot 1
@@ -1297,6 +1297,9 @@ def patchAssembly(ROM_COPY, spoiler):
     if ENABLE_HELM_GBS:
         writeValue(ROM_COPY, 0x806A9C80, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
         writeValue(ROM_COPY, 0x806A9E54, Overlay.Static, 0, offset_dict, 4)  # Level check NOP
+    # Kop Idle Guarantee
+    writeFunction(ROM_COPY, 0x806AF7F8, Overlay.Static, "setKopIdleGuarantee", offset_dict)
+    writeFunction(ROM_COPY, 0x806AF89C, Overlay.Static, "giveKopIdleGuarantee", offset_dict)
     # Guard Animation Fix
     writeValue(ROM_COPY, 0x806AF8C6, Overlay.Static, 0x2C1, offset_dict)
     # Remove flare effect from guards
@@ -2452,6 +2455,10 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80600DA2, Overlay.Static, 0x38, offset_dict)
     writeValue(ROM_COPY, 0x80600DA6, Overlay.Static, 0x70, offset_dict)
 
+    # Diddy Slam Crash Fix
+    writeHook(ROM_COPY, 0x80609338, Overlay.Static, "fixDiddySlamCrash", offset_dict)
+
+    # Fix Null Lag Boost
     writeHook(ROM_COPY, 0x806CCA90, Overlay.Static, "fixNullLagBoost", offset_dict)
 
     # Adjust Exit File
@@ -2772,6 +2779,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8002792C, Overlay.Critter, "getCountOfBlockerRequiredItem", offset_dict)
     writeFunction(ROM_COPY, 0x800278EC, Overlay.Critter, "displayCountOnBLockerTeeth", offset_dict)
     writeFunction(ROM_COPY, 0x800275AC, Overlay.Critter, "displayCountOnBLockerTeeth", offset_dict)
+    writeHook(ROM_COPY, 0x800275BC, Overlay.Critter, "fixBLockerRange", offset_dict)
 
     if settings.has_password:
         writeHook(ROM_COPY, 0x80028CC8, Overlay.Menu, "GoToPassword", offset_dict)  # Enables handler of whether to go to the password screen or not

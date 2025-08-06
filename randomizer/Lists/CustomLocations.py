@@ -68,8 +68,10 @@ class CustomLocation:
         self.placement_subindex = default_index
         self.tied_warp_event = tied_warp_event
         if logic is None:
+            self.has_access_logic = False
             self.logic = lambda l: True
         else:
+            self.has_access_logic = True
             self.logic = logic
 
     def setCustomLocation(self, value: bool) -> None:
@@ -377,6 +379,7 @@ CustomLocations = {
             rot_y=3305,
             max_size=64,
             logic_region=Regions.JapesUselessSlope,
+            banned_types=[LocationTypes.MelonCrate],
             group=2,
         ),
         CustomLocation(
@@ -3672,7 +3675,7 @@ CustomLocations = {
             z=532.0,
             rot_y=1137,
             max_size=64,
-            logic_region=Regions.MushroomUpper,
+            logic_region=Regions.MushroomUpperVineFloor,
             logic=lambda l: ((l.istiny and l.twirl) or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
             group=4,
         ),

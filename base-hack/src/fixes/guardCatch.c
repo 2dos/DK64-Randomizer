@@ -27,7 +27,9 @@ typedef struct guard_paad {
     /* 0x00E */ short z_something;
     /* 0x010 */ char unk_10[0x1A-0x10];
     /* 0x01A */ short unk_1A;
-    /* 0x01C */ char unk_1C[0x47-0x1C];
+    /* 0x01C */ char unk_1C[0x44-0x1C];
+    /* 0x044 */ short kop_idle_guarantee;
+    /* 0x046 */ char unk_46;
     /* 0x047 */ char played_uhoh;
 } guard_paad;
 
@@ -79,6 +81,7 @@ void guardCatch(void) {
                 - Not in a cutscene (CutsceneActive == 0)
             */
             guardCatchInternal();
+            sendDeath();
         }
     }
 }
@@ -135,7 +138,7 @@ void newGuardCode(void) {
     if (CurrentActorPointer_0->control_state <= 0x35) { // Not damaged/dying
         if (Player) {
             if ((Player->strong_kong_ostand_bitfield & 0x70) == 0) { // No GGone, OSprint, SKong
-                if (!isBadMovementState()) { // Bad Movement State
+                if (!isBadMovementState() && ObjectModel2Timer > 123) { // Bad Movement State or within the first 123 frames of map load
                     if (!inRabbitRace()) {
                         float dist = 40.0f;
                         float radius = 70.0f;
@@ -223,4 +226,19 @@ void newGuardCode(void) {
             }
         }
     }
+}
+
+void setKopIdleGuarantee(actorData *actor, int spd) {
+    guard_paad *paad = actor->paad;
+    paad->kop_idle_guarantee = 30 * 3; // 3s
+    setActorSpeed(actor, spd);
+}
+
+int giveKopIdleGuarantee(void) {
+    guard_paad *paad = CurrentActorPointer_0->paad;
+    if (paad->kop_idle_guarantee > 0) {
+        paad->kop_idle_guarantee--;
+        return 0; // Always return false
+    }
+    return getRNGLower31();
 }

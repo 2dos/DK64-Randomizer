@@ -388,15 +388,12 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                     door = door_locations[level][data[0]]
                     door_type = data[1]
                     if door.map == cont_map_id:
-                        if door_type == DoorType.wrinkly and (
-                            spoiler.settings.wrinkly_location_rando
-                            or IsItemSelected(
-                                spoiler.settings.quality_of_life,
-                                spoiler.settings.misc_changes_selected,
-                                MiscChangesSelected.remove_wrinkly_puzzles,
-                            )
-                        ):
-                            if (spoiler.settings.progressive_hint_item == ProgressiveHintItem.off) or Types.Hint in spoiler.settings.shuffled_location_types:
+                        if door_type == DoorType.wrinkly and (spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles):
+                            if (
+                                (spoiler.settings.progressive_hint_item == ProgressiveHintItem.off)
+                                or Types.Hint in spoiler.settings.shuffled_location_types
+                                or (spoiler.settings.remove_wrinkly_puzzles and not spoiler.settings.wrinkly_location_rando)
+                            ):
                                 kong = data[2]
                                 item_data = []
                                 for coord_index in range(3):

@@ -1215,7 +1215,9 @@
       "fast_pause_transitions": 1,
       "cannon_game_better_control": 1,
       "better_fairy_camera": 1,
-      "remove_enemy_cabin_timer": 1
+      "remove_enemy_cabin_timer": 1,
+      "remove_galleon_ship_timers": 1,
+      "japes_bridge_permanently_extended": 1
     },
     "move_rando": {
       "on": 0.3,
@@ -1702,7 +1704,9 @@
       "fast_pause_transitions": 0.9,
       "cannon_game_better_control": 0.5,
       "better_fairy_camera": 0.5,
-      "remove_enemy_cabin_timer": 0.5
+      "remove_enemy_cabin_timer": 0.5,
+      "remove_galleon_ship_timers": 0.9,
+      "japes_bridge_permanently_extended": 0.5
     },
     "move_rando": {
       "on": 0.3,

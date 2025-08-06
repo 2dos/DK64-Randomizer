@@ -1,7 +1,5 @@
 """Functions and data for setting and calculating prices."""
 
-import random
-
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
@@ -102,22 +100,22 @@ def RandomizePrices(spoiler, weight):
     parameters = GetPriceWeights(weight)
     shopLocations = [location_id for location_id, location in spoiler.LocationList.items() if location.type == Types.Shop]
     for location in shopLocations:
-        prices[location] = GenerateRandomPrice(weight, parameters[0], parameters[1], parameters[2])
+        prices[location] = GenerateRandomPrice(spoiler.settings.random, weight, parameters[0], parameters[1], parameters[2])
     # Progressive items get their own price pool
     for item in ProgressiveMoves.keys():
         prices[item] = []
         for i in range(ProgressiveMoves[item]):
-            prices[item].append(GenerateRandomPrice(weight, parameters[0], parameters[1], parameters[2]))
+            prices[item].append(GenerateRandomPrice(spoiler.settings.random, weight, parameters[0], parameters[1], parameters[2]))
     return prices
 
 
-def GenerateRandomPrice(weight, avg, stddev, upperLimit):
+def GenerateRandomPrice(rando, weight, avg, stddev, upperLimit):
     """Generate a random price to assign."""
     lowerLimit = 1
     if weight == RandomPrices.free:
         newPrice = 0
     else:
-        newPrice = round(random.normalvariate(avg, stddev))
+        newPrice = round(rando.normalvariate(avg, stddev))
         if newPrice < lowerLimit:
             newPrice = lowerLimit
         elif newPrice > upperLimit:

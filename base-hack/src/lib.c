@@ -1291,6 +1291,7 @@ int spawnItemOverlay(PURCHASE_TYPES type, int kong, int index, int force) {
 		text_overlay_data[i].flag = index;
 		text_overlay_data[i].kong = kong;
 		text_overlay_data[i].string = (char*)0;
+		text_overlay_data[i].subtitle = (char*)0;
 		text_overlay_data[i].used = 1;
 		return i;
 	}
@@ -1431,10 +1432,7 @@ static unsigned char galleon_underwater_maps[] = {
 
 int applyDamageMask(int player_index, int damage) {
 	int applied_multiplier = Rando.damage_multiplier;
-	if ((damage > 0) || (damage <= -12)) {
-		// Health or death-dealing damage
-		return applyDamage(player_index, damage);
-	}
+	int init_health = CollectableBase.Health;
 	if ((CurrentMap == MAP_CASTLEKUTOUT) && (CutsceneActive == 1) && (CutsceneIndex == 4)) {
 		// King Kut out death cutscene, force to 0
 		applied_multiplier = 0;
@@ -1447,7 +1445,15 @@ int applyDamageMask(int player_index, int damage) {
 			}
 		}
 	}
-	return applyDamage(player_index, damage * applied_multiplier);
+	int applied_damage = damage * applied_multiplier;
+	if ((init_health + applied_damage) <= 0) {
+		sendDeath();
+	}
+	if ((damage > 0) || (damage <= -12)) {
+		// Health or death-dealing damage
+		return applyDamage(player_index, damage);
+	}
+	return applyDamage(player_index, applied_damage);
 }
 
 void* replaceWaterTexture(int table, int file, int unk0, int unk1) {

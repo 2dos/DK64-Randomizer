@@ -266,7 +266,7 @@ MinigameRequirements = {
         difficulty_lvl=4,
         logic=lambda l: True,
     ),
-    # Stash Snatch - SSnatch Hybrid determined too difficulty for Helm
+    # Stash Snatch - SSnoop Hybrid determined too difficulty for Helm
     Minigames.StashSnatchEasy: Minigame(
         name="Stash Snatch (60 seconds, 6 coins)",
         group="Stash Snatch",
@@ -281,7 +281,7 @@ MinigameRequirements = {
         logic=lambda l: True,
     ),
     Minigames.StashSnatchHard: Minigame(
-        name="Stash Snatch (120 seconds, 4 coins, Stash Snatch Hybrid)",
+        name="Stash Snatch (120 seconds, 4 coins, Stealthy Snoop Hybrid)",
         group="Stash Snatch",
         map_id=Maps.StashSnatchHard,
         helm_enabled=False,

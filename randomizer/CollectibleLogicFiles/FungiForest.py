@@ -7,7 +7,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Switches import Switches
-from randomizer.Enums.Settings import FasterChecksSelected
+from randomizer.Enums.Settings import FasterChecksSelected, RemovedBarriersSelected
 from randomizer.Enums.Time import Time
 from randomizer.LogicClasses import Collectible
 
@@ -19,7 +19,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # Warp 4
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Warp 1
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # Warp 3
-        Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.CanPhase() or l.CanPhaseswim(), None, 4),  # Behind feather gate only
+        Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.CanPhase() or l.CanPhaseswim(), None, 4),  # Behind feather gate only
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Minecart Entry
 
@@ -72,9 +72,11 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # After 3rd Ladder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 4th Ladder
     ],
+    Regions.MushroomUpperVineFloor: [
+        Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 5th Ladder, Leading to the Klump's vine floor
+    ],
     Regions.MushroomUpper: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),  # Top
-        Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 5th Ladder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 6th Ladder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # 7th Ladder
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Top

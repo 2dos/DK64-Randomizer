@@ -1,7 +1,6 @@
 """Code associated with custom textures that can be applied through the cosmetic pack."""
 
 import js
-import random
 import math
 from io import BytesIO
 
@@ -23,7 +22,7 @@ def writeTransition(settings: Settings, ROM_COPY: ROM) -> None:
     settings.custom_transition = None
     if len(file_data) == 0:
         return
-    selected_transition = random.choice(file_data)
+    selected_transition = settings.random.choice(file_data)
     im_f = Image.open(BytesIO(bytes(selected_transition[0])))
     w, h = im_f.size
     if w != 64 or h != 64:
@@ -76,7 +75,7 @@ def writeCustomPortal(settings: Settings, ROM_COPY: ROM) -> None:
     settings.custom_troff_portal = None
     if len(file_data) == 0:
         return
-    selected_portal = random.choice(file_data)
+    selected_portal = settings.random.choice(file_data)
     settings.custom_troff_portal = selected_portal[1].split("/")[-1]  # File Name
     im_f = Image.open(BytesIO(bytes(selected_portal[0])))
     im_f = getImageChunk(im_f, 63, 63)
@@ -159,7 +158,7 @@ def writeCustomPaintings(settings: Settings, ROM_COPY: ROM) -> None:
         mult = math.ceil(PAINTING_COUNT / len(list_pool)) - 1
         for _ in range(mult):
             list_pool.extend(file_data.copy())
-    random.shuffle(list_pool)
+    settings.random.shuffle(list_pool)
     for painting in PAINTING_INFO:
         painting.name = None
         selected_painting = list_pool.pop(0)

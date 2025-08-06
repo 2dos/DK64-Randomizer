@@ -61,7 +61,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryMainEnemy_BlockTower2, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToBlockTower, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_ToBlockTowerTunnel, lambda l: True),
-        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: (l.CanOStandTBSNoclip() and l.spawn_snags), isAuxiliary=True),
+        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: (not l.checkFastCheck(FasterChecksSelected.factory_arcade_round_1)) and (l.CanOStandTBSNoclip() and l.spawn_snags), isAuxiliary=True),
     ], [
         Event(Events.DartsPlayed, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and (l.mini or l.CanPhase()) and l.feather and l.istiny),
         Event(Events.FactoryW3bTagged, lambda l: True),
@@ -143,6 +143,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing),
         TransitionFront(Regions.LowerCore, lambda l: True),
+        TransitionFront(Regions.ChunkyRoomPlatform, lambda l: l.CanMoonkick() or (l.twirl and l.istiny and l.advanced_platforming) or (l.isdiddy and l.advanced_platforming)),
         TransitionFront(Regions.CrankyFactory, lambda l: l.crankyAccess),
         TransitionFront(Regions.CandyFactory, lambda l: l.candyAccess),
         TransitionFront(Regions.FactoryStoragePipe, lambda l: l.islanky and l.handstand),
@@ -187,7 +188,6 @@ LogicRegions = {
         LocationLogic(Locations.FactoryMainEnemy_TunnelToProd0, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToProd1, lambda l: True),
     ], [
-        Event(Events.MainCoreActivated, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_production_room)),
         Event(Events.DiddyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.diddy),
         Event(Events.LankyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.lanky),
         Event(Events.TinyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.tiny),

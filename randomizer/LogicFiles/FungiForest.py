@@ -77,7 +77,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.FungiForestStart, lambda l: True),
         TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestMainToLowerMushroom),
-        TransitionFront(Regions.MushroomLowerExterior, lambda l: (l.jetpack and l.isdiddy) or (l.advanced_platforming and l.twirl and l.istiny)),
+        TransitionFront(Regions.MushroomLowerExterior, lambda l: (l.jetpack and l.isdiddy) or (l.advanced_platforming and l.twirl and l.istiny) or (l.climbing and (l.isdonkey or l.ischunky) and l.advanced_platforming)),
         TransitionFront(Regions.MushroomBlastLevelExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.MushroomUpperMidExterior, lambda l: l.jetpack and l.isdiddy),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: l.jetpack and l.isdiddy),
@@ -87,7 +87,7 @@ LogicRegions = {
         TransitionFront(Regions.CrankyForest, lambda l: l.crankyAccess),
     ]),
 
-    Regions.MushroomLower: Region("Mushroom Lower", HintRegion.MushroomInterior, Levels.FungiForest, True, -1, [], [
+    Regions.MushroomLower: Region("Mushroom Lower", HintRegion.MushroomInterior, Levels.FungiForest, True, None, [], [
         Event(Events.MushroomCannonsSpawned, lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple
               and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky),
         Event(Events.DonkeyMushroomSwitch, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.donkey)
@@ -150,15 +150,21 @@ LogicRegions = {
         LocationLogic(Locations.ForestGMEnemy_Path1, lambda l: True),
     ], [], [
         TransitionFront(Regions.MushroomMiddle, lambda l: True),
-        TransitionFront(Regions.MushroomUpper, lambda l: l.climbing),
+        TransitionFront(Regions.MushroomUpperVineFloor, lambda l: l.climbing),
         TransitionFront(Regions.MushroomNightDoor, lambda l: l.can_use_vines),
+    ]),
+
+    Regions.MushroomUpperVineFloor: Region("Mushroom Upper Vine Floor", HintRegion.MushroomInterior, Levels.FungiForest, False, -1, [
+        LocationLogic(Locations.ForestGMEnemy_AboveNightDoor, lambda l: True),
+    ], [], [
+        TransitionFront(Regions.MushroomUpper, lambda l: l.climbing),
+        TransitionFront(Regions.MushroomUpperMid, lambda l: True),
     ]),
 
     Regions.MushroomUpper: Region("Mushroom Upper", HintRegion.MushroomInterior, Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestDonkeyMushroomCannons, lambda l: Events.MushroomCannonsSpawned in l.Events and Events.DonkeyMushroomSwitch in l.Events),
-        LocationLogic(Locations.ForestGMEnemy_AboveNightDoor, lambda l: True),
     ], [], [
-        TransitionFront(Regions.MushroomUpperMid, lambda l: True),
+        TransitionFront(Regions.MushroomUpperVineFloor, lambda l: True),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: True, Transitions.ForestUpperMushroomToUpperExterior),
     ]),
 
@@ -283,6 +289,7 @@ LogicRegions = {
         TransitionFront(Regions.GrinderRoom, lambda l: True, Transitions.ForestMainToGrinder, time=Time.Day),
         TransitionFront(Regions.MillRafters, lambda l: (l.spring or l.CanMoontail()) and l.isdiddy, Transitions.ForestMainToRafters, time=Time.Night),
         TransitionFront(Regions.ThornvineArea, lambda l: True, time=Time.Night),
+        TransitionFront(Regions.ThornvineArea, lambda l: l.CanPhaseswim()),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess, time=Time.Day),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando, time=Time.Day),
         TransitionFront(Regions.ThornvineBarn, lambda l: l.CanPhaseswim(), Transitions.ForestMainToBarn, isGlitchTransition=True),

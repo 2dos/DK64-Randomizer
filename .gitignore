@@ -221,3 +221,6 @@ redis_data/*
 randomizer/encryption.py
 static/js/compile_templates.js
 static/compiled.jsonc
+vendor/
+*.apworld
+/dk64/

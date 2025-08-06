@@ -8,7 +8,7 @@ Thanks,
 		Ballaam
 */
 
-const short acceptable_items[] = {0x74,0xde,0xe0,0xe1,0xdd,0xdf,0x48,0x28f,0x13c,0x18d,0x90,0x5b,0x1f2,0x59,0x1f3,0x1f5,0x1f6,0x257,0x258,0x259,0x25a,0x25b,0x198,0x1b4,0x25c,0xb7,0x25d,0x264,0x265,0x25f,0x260,0x261,0x262,0x27e,0x289,0x28a,0x28b,0x28c};
+const short acceptable_items[] = {0x74,0xde,0xe0,0xe1,0xdd,0xdf,0x48,0x28f,0x13c,0x18d,0x90,0x5b,0x1f2,0x59,0x1f3,0x1f5,0x1f6,0x257,0x258,0x259,0x25a,0x25b,0x198,0x1b4,0x25c,0xb7,0x25d,0x264,0x265,0x25f,0x260,0x261,0x262,0x27e,0x289,0x28a,0x28b,0x28c,0x291};
 const item_conversion_info item_conversions[] = {
 	{.actor=45, .model_two=116, .scale=0.25f},
 	{.actor=78, .model_two=222, .scale=2.00f},
@@ -51,10 +51,11 @@ const item_conversion_info item_conversions[] = {
 	{.actor=377, .model_two=649, .scale=0.25f},
 	{.actor=378, .model_two=650, .scale=0.25f},
 	{.actor=379, .model_two=651, .scale=0.25f},
-	{.actor=380, .model_two=652, .scale=0.25f}
+	{.actor=380, .model_two=652, .scale=0.25f},
+	{.actor=381, .model_two=657, .scale=0.25f}
 };
-const unsigned short bounce_objects[] = {45,345,346,72,86,367,348,349,350,351,352,353,354,355,356,357,358,361,362,363,364,365,366,369,370,371,372,375,377,378,379,380};
-const unsigned short actor_drops[] = {45,78,75,77,79,76,345,346,72,86,367,348,349,350,351,352,353,347,354,355,356,357,358,361,362,363,140,364,365,366,52,47,121,51,369,370,371,372,375,377,378,379,380};
+const unsigned short bounce_objects[] = {45,345,346,72,86,367,348,349,350,351,352,353,354,355,356,357,358,361,362,363,364,365,366,369,370,371,372,375,377,378,379,380,381};
+const unsigned short actor_drops[] = {45,78,75,77,79,76,345,346,72,86,367,348,349,350,351,352,353,347,354,355,356,357,358,361,362,363,140,364,365,366,52,47,121,51,369,370,371,372,375,377,378,379,380,381};
 const item_scale_info item_scales[] = {
 	{.type=116, .scale=0.25f},
 	{.type=222, .scale=2.00f},
@@ -98,7 +99,8 @@ const item_scale_info item_scales[] = {
 	{.type=649, .scale=0.25f},
 	{.type=650, .scale=0.25f},
 	{.type=651, .scale=0.25f},
-	{.type=652, .scale=0.25f}
+	{.type=652, .scale=0.25f},
+	{.type=657, .scale=0.25f}
 };
 collision_info object_collisions[] = {
 	{.type=13, .collectable_type=0, .unk4=0.08f, .unk8=0.95f, .intended_actor=2, .actor_equivalent=0, .hitbox_y_center=0, .hitbox_radius=0, .hitbox_height=0},
@@ -171,7 +173,8 @@ collision_info object_collisions[] = {
 	{.type=649, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=32 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
 	{.type=650, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=33 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
 	{.type=651, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=34 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
-	{.type=652, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=35 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13}
+	{.type=652, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=35 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=657, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=36 + CUSTOM_ACTORS_START, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13}
 };
 drop_item drops[] = {
 	{.source_object=178, .dropped_object=47, .drop_music=47, .drop_count=1},
@@ -368,7 +371,8 @@ actor_behaviour_def actor_defs[] = {
 	{.actor_type = 377, .model = 284, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 378, .model = 286, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 379, .model = 288, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
-	{.actor_type = 380, .model = 290, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}}
+	{.actor_type = 380, .model = 290, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 381, .model = 292, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}}
 };
 unsigned char actor_master_types[] = {
 	1,
@@ -740,6 +744,7 @@ unsigned char actor_master_types[] = {
 	2,
 	2,
 	3,
+	2,
 	2,
 	2,
 	2,
@@ -1134,6 +1139,7 @@ short actor_interactions[] = {
 	8,
 	8,
 	8,
+	8,
 	8
 };
 health_damage_struct actor_health_damage[] = {
@@ -1512,6 +1518,7 @@ health_damage_struct actor_health_damage[] = {
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 1, .damage_applied = 0},
 	{.init_health = 1, .damage_applied = 0},
+	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
@@ -1900,6 +1907,7 @@ collision_data_struct actor_collisions[] = {
 	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0}
 };
 void* actor_functions[] = {
@@ -2283,6 +2291,7 @@ void* actor_functions[] = {
 	&GoldenBananaCode,
 	&GoldenBananaCode,
 	&GoldenBananaCode,
+	&GoldenBananaCode,
 	&GoldenBananaCode
 };
 short* actor_extra_data_sizes[] = {
@@ -2661,6 +2670,7 @@ short* actor_extra_data_sizes[] = {
 	2155142172,
 	2155142752,
 	2155142752,
+	2155142172,
 	2155142172,
 	2155142172,
 	2155142172,

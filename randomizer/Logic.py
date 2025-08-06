@@ -523,6 +523,15 @@ class LogicVarHolder:
             MiscChangesSelected.remove_galleon_ship_timers,
         )
 
+    @lru_cache(maxsize=None)
+    def cabinBarrelMoved(self) -> bool:
+        """Determine whether the upper cabin rocketbarrel has been moved."""
+        return IsItemSelected(
+            self.settings.quality_of_life,
+            self.settings.misc_changes_selected,
+            MiscChangesSelected.move_spring_cabin_rocketbarrel,
+        )
+
     def canOpenLlamaTemple(self):
         """Determine whether the switches on the Llama Temple can be shot."""
         if not (self.checkBarrier(RemovedBarriersSelected.aztec_llama_switches) or Events.LlamaFreed in self.Events):
@@ -951,7 +960,8 @@ class LogicVarHolder:
         # The only weird exception: vanilla Fungi Lobby hint doors only check for Chunky, not the current Kong, and all besides Chunky's needs grab
         if not self.settings.wrinkly_location_rando and not self.settings.remove_wrinkly_puzzles and region_id == RegionEnum.FungiForestLobby:
             return self.chunky and (location.kong == Kongs.chunky or (self.donkey and self.grab))
-        return self.HasKong(location.kong)
+        # Last step: either have the kong or have Kongless Hint Doors enabled
+        return self.HasKong(location.kong) or self.settings.wrinkly_available
 
     def CanBuy(self, location, buy_empty=False):
         """Check if there are enough coins to purchase this location."""

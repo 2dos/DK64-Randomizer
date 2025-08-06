@@ -145,9 +145,11 @@ def patching_response(spoiler):
     spoiler.settings.set_seed()
 
     # Write date to ROM for debugging purposes
-
+    try:
+        temp_json = json.loads(spoiler.json)
+    except Exception:
+        temp_json = {"Settings": {}}
     dt = Datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
-    temp_json = json.loads(spoiler.json)
     temp_json["Settings"]["Generation Timestamp"] = dt
     spoiler.json = json.dumps(temp_json, indent=4)
     ROM_COPY = LocalROM()
@@ -588,6 +590,18 @@ def patching_response(spoiler):
     rom_flags |= 0x80 if spoiler.settings.enable_plandomizer else 0
     rom_flags |= 0x40 if spoiler.settings.generate_spoilerlog else 0
     rom_flags |= 0x20 if spoiler.settings.has_password else 0
+    rom_flags |= 0x10 if spoiler.settings.archipelago else 0
+    if spoiler.settings.archipelago:
+        # Write spoiler.settings.player_name to ROM ASCII only
+        ROM_COPY.seek(0x1FF3000)
+        # Player name
+        player_name = spoiler.settings.player_name[:16]
+        # if we're shot on characters, pad with null bytes if we're short on characters
+        if len(player_name) < 16:
+            player_name += "\0" * (16 - len(player_name))
+        # Convert playername to a bytestring and write it to the ROM
+        bytestring = str(player_name).encode("ascii")
+        ROM_COPY.writeBytes(bytestring)
     ROM_COPY.seek(sav + 0xC4)
     ROM_COPY.writeMultipleBytes(rom_flags, 1)
     password = None
@@ -746,7 +760,7 @@ def patching_response(spoiler):
     if Types.Hint in spoiler.settings.shuffled_location_types and spoiler.settings.progressive_hint_item == ProgressiveHintItem.off:
         PushHintTiedRegions(spoiler, ROM_COPY)
 
-    writeBootMessages(ROM_COPY)
+    writeBootMessages(ROM_COPY, spoiler.settings.random)
     enableTriggerText(spoiler, ROM_COPY)
     shortenCastleMinecart(spoiler, ROM_COPY)
     alterStoryCutsceneWarps(spoiler, ROM_COPY)
@@ -789,6 +803,7 @@ def patching_response(spoiler):
         os.remove(delta_tempfile)
     else:
         patch = None
+    del ROM_COPY
     return patch, password
 
 

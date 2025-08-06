@@ -77,14 +77,13 @@ LogicRegions = {
     ]),
 
     Regions.TempleStart: Region("Temple Start", HintRegion.TinyTemple, Levels.AngryAztec, False, -1, [
-        LocationLogic(Locations.AztecChunkyKlaptrapRoom, lambda l: (l.triangle or l.CanPhaseswim() or l.CanPhase()) and l.ischunky),
+        LocationLogic(Locations.AztecChunkyKlaptrapRoom, lambda l: (l.triangle or (l.CanPhaseswim() and Events.AztecIceMelted in l.Events) or l.CanPhase()) and l.ischunky),
         LocationLogic(Locations.AztecTempleEnemy_GuardRotating0, lambda l: True),
         LocationLogic(Locations.AztecTempleEnemy_GuardRotating1, lambda l: True),
         LocationLogic(Locations.AztecTempleEnemy_MainRoom0, lambda l: True),
         LocationLogic(Locations.AztecTempleEnemy_MainRoom1, lambda l: True),
         LocationLogic(Locations.AztecTempleEnemy_MainRoom2, lambda l: True),
     ], [
-        Event(Events.AztecIceMelted, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice)),
     ], [
         TransitionFront(Regions.AngryAztecOasis, lambda l: True, Transitions.AztecTempleToStart),
         TransitionFront(Regions.TempleGuitarPad, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut and l.isdiddy),
@@ -167,7 +166,7 @@ LogicRegions = {
         TransitionFront(Regions.TinyTempleEntrance, lambda l: (Events.FedTotem in l.Events and l.feather and l.istiny) or l.CanPhase(), Transitions.AztecMainToTiny),
         TransitionFront(Regions.ChunkyTempleEntrance, lambda l: (Events.FedTotem in l.Events and l.pineapple and l.ischunky) or l.CanPhase() or (l.generalclips and l.ischunky and l.hunkyChunky), Transitions.AztecMainToChunky),
         TransitionFront(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Transitions.AztecMainToRace),
-        TransitionFront(Regions.LlamaTemple, lambda l: l.canOpenLlamaTemple() or l.CanPhase() or l.generalclips, Transitions.AztecMainToLlama),
+        TransitionFront(Regions.LlamaTemple, lambda l: l.canOpenLlamaTemple() or l.CanPhase() or (l.generalclips and not l.islanky), Transitions.AztecMainToLlama),
         TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey),  # , Transitions.AztecMainToBBlast),
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),
         TransitionFront(Regions.FunkyAztec, lambda l: l.funkyAccess),

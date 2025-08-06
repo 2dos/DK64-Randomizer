@@ -716,3 +716,28 @@ setHappyFace:
     sb $t6, 0x1EC ($t7)
     j 0x806C5E44
     sh $t6, 0x1B6 ($v0)
+
+fixDiddySlamCrash:
+    lh $t6, 0x3A ($sp) ; Get SFX id
+    addiu $t2, $zero, 0x37
+    bne $t6, $t2, fixDiddySlamCrashEnd
+    lui $t2, 0x3F80
+    mtc1 $t2, $f12 ; Set pitch to 1.0f, only for SFX 55
+
+    fixDiddySlamCrashEnd:
+        j 0x80609340
+        lbu $t2, 0x4F ($sp)
+
+fixBLockerRange:
+    lui $at, hi(CurrentMap)
+    sh $zero, 0x0 ($t9)
+    lw $at, lo(CurrentMap) ($at)
+    addiu $t8, $zero, 0xAA ; Helm Lobby
+    bne $at, $t8, fixBLockerRange_finish  ; Not Helm Lobby, apply zero blocker range
+    nop
+    lui $t8, 0x42C8  ; 100
+    mtc1 $t8, $f4
+
+    fixBLockerRange_finish:
+        j 0x800275C4
+        lui $at, 0x8003

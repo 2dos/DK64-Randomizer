@@ -2950,7 +2950,7 @@ door_locations = {
         DoorData(
             name="Inside the Mushroom - Along the Wall near Klump and Oranges",
             map=Maps.ForestGiantMushroom,
-            logicregion=Regions.MushroomUpper,
+            logicregion=Regions.MushroomUpperVineFloor,
             location=[847.25, 1169.0, 575.0, 264.0],
             group=5,
         ),
@@ -4355,7 +4355,7 @@ door_locations = {
             name="Chunky crypt - between left coffins",
             map=Maps.CastleCrypt,
             logicregion=Regions.CryptChunkyRoom,
-            location=[1387, 160, 2851, 270],
+            location=[1386, 160, 2851, 270],
             group=24,
             moveless=False,
             kong_lst=[Kongs.chunky],

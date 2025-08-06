@@ -1,7 +1,5 @@
 """Shuffle Crown picks, excluding helm."""
 
-import random
-
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists import Exceptions
@@ -47,7 +45,7 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         pick_count = 1
         if level == Levels.DKIsles:
             pick_count = 2
-        crowns = random.sample(index_lst, pick_count)
+        crowns = spoiler.settings.random.sample(index_lst, pick_count)
         # Give plandomizer an opportunity to have the final say
         if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_battle_arenas"] != {}:
             for i in range(pick_count):

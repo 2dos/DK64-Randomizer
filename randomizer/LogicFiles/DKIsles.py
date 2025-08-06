@@ -81,6 +81,7 @@ LogicRegions = {
         Event(Events.Day, lambda l: l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
         Event(Events.AztecIceMelted, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice)),
         Event(Events.TestingGateOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_testing_gate)),
+        Event(Events.MainCoreActivated, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_production_room)),
         Event(Events.LighthouseGateOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate)),
         Event(Events.ShipyardGateOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate)),
         Event(Events.ActivatedLighthouse, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_seasick_ship)),
@@ -201,7 +202,7 @@ LogicRegions = {
         TransitionFront(Regions.IslesHill, lambda l: True),
         TransitionFront(Regions.AztecLobbyRoof, lambda l: l.CanMoonkick()),
         TransitionFront(Regions.AngryAztecLobby, lambda l: l.settings.open_lobbies or Events.JapesKeyTurnedIn in l.Events or l.CanPhase(), Transitions.IslesMainToAztecLobby),
-        TransitionFront(Regions.IslesEar, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and ((l.istiny and l.twirl) or (l.isdonkey or l.ischunky or ((l.isdiddy or l.islanky) and l.advanced_platforming) and not l.isKrushaAdjacent(l.kong)) or l.CanMoonkick())),
+        TransitionFront(Regions.IslesEar, lambda l: l.CanMoonkick() or ((l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and ((l.istiny and l.twirl) or (l.isdonkey or l.ischunky or ((l.isdiddy or l.islanky) and l.advanced_platforming and not l.isKrushaAdjacent(l.kong)))))),
     ]),
 
     Regions.IslesEar: Region("Isles Ear", HintRegion.MainIsles, Levels.DKIsles, False, None, [], [], [

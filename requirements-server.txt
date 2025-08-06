@@ -1,0 +1,16 @@
+opentelemetry-exporter-otlp-proto-http
+opentelemetry-instrumentation-flask
+opentelemetry-instrumentation-rq
+opentelemetry-instrumentation-requests
+opentelemetry-instrumentation-redis
+redis
+rq
+apscheduler==3.10.4
+flask-cors==4.0.2
+requests
+cryptography==43.0.1
+pyopenssl==24.2.1
+swagger-ui-py
+flask-session
+flask==3.0.0
+waitress==3.0.1
