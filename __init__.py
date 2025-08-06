@@ -570,7 +570,7 @@ if baseclasses_loaded:
                         passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
                         if passthrough["EnemyData"]:
                             for location, data in passthrough["EnemyData"].items():
-                                enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], [], 0)
+                                enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], 0, [], False)
 
                 self.spoiler.UpdateExits()
 
