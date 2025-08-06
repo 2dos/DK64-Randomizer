@@ -645,7 +645,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
     spoiler.japes_rock_actor = 45
     spoiler.aztec_vulture_actor = 45
     FAST_START = spoiler.settings.fast_start_beginning_of_game
-    if any(spoiler.settings.shuffled_location_types):
+    if spoiler.settings.shuffle_items:
         ROM_COPY.seek(sav + 0x034)
         ROM_COPY.write(1)  # Item Rando Enabled
         item_data = spoiler.item_assignment
