@@ -564,13 +564,13 @@ if baseclasses_loaded:
                 # UT should not reshuffle the level order, but should update the exits
                 if not hasattr(self.multiworld, "generation_is_fake"):
                     ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
-                    # Repopulate the enemy table if gen is fake
-                    if hasattr(self.multiworld, "re_gen_passthrough"):
-                        if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
-                            passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
-                            if passthrough["EnemyData"]:
-                                for location, data in passthrough["EnemyData"].items():
-                                    enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], [], 0)
+                # Repopulate the enemy table if gen is fake
+                if hasattr(self.multiworld, "re_gen_passthrough"):
+                    if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
+                        passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+                        if passthrough["EnemyData"]:
+                            for location, data in passthrough["EnemyData"].items():
+                                enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], [], 0)
 
                 self.spoiler.UpdateExits()
 
