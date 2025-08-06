@@ -1156,7 +1156,7 @@ def patchAssembly(ROM_COPY, spoiler):
         for lvl in WARPS_TOTAL:
             file_init_flags.extend(lvl.copy())
 
-    if settings.shuffle_items:
+    if any(spoiler.settings.shuffled_location_types):
         for item in spoiler.item_assignment:
             if item.can_have_item and not item.is_shop and item.old_item not in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
                 if item.new_item is None or item.new_item == Types.NoItem:
