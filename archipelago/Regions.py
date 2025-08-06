@@ -14,7 +14,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting, FungiTimeSetting, FasterChecksSelected, ShuffleLoadingZones
+from randomizer.Enums.Settings import HelmSetting, FungiTimeSetting, FasterChecksSelected, ShuffleLoadingZones, WinConditionComplex
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists import Location as DK64RLocation, Item as DK64RItem
@@ -176,6 +176,9 @@ def create_region(
             # V1 LIMITATION: Shared shops cannot exist because we need the space in shops to guarantee enough locations for every item
             # Because there's no shared shops, this may mean shared potions can end up in Kong shops. This is fine.
             if location_obj.type == Types.Shop and location_obj.kong == Kongs.any:
+                continue
+            # Skip enemy photos if the win condition is not Krem Kapture.
+            if location_obj.type == Types.EnemyPhoto and logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
                 continue
             loc_id = all_locations.get(location_obj.name, 0)
             # Universal Tracker: don't add this location if it has no item

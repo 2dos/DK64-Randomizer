@@ -139,6 +139,7 @@ if baseclasses_loaded:
     from randomizer.CompileHints import compileMicrohints
     from archipelago.Hints import CompileArchipelagoHints
     from randomizer.Enums.Types import Types, BarrierItems
+    from randomizer.Enums.Enemies import Enemies
     from randomizer.Enums.Kongs import Kongs
     from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
@@ -159,8 +160,10 @@ if baseclasses_loaded:
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
+    from randomizer.Enums.EnemySubtypes import EnemySubtype
     from randomizer.Lists import Item as DK64RItem
     from randomizer.Lists.Switches import SwitchInfo
+    from randomizer.Lists.EnemyTypes import EnemyLoc, EnemyMetaData, enemy_location_list
     from worlds.LauncherComponents import Component, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
     from Utils import open_filename
@@ -561,6 +564,14 @@ if baseclasses_loaded:
                 # UT should not reshuffle the level order, but should update the exits
                 if not hasattr(self.multiworld, "generation_is_fake"):
                     ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
+                    # Repopulate the enemy table if gen is fake
+                    if hasattr(self.multiworld, "re_gen_passthrough"):
+                        if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
+                            passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+                            if passthrough["EnemyData"]:
+                                for location, data in passthrough["EnemyData"].items():
+                                    enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]],Enemies[data["enemy"]],[],0) 
+                                    
                 self.spoiler.UpdateExits()
 
             # Handle hint preparation by initiating some variables
@@ -929,6 +940,18 @@ if baseclasses_loaded:
                 "BouldersInPool": self.options.boulders_in_pool.value,
                 "Dropsanity": self.options.dropsanity.value,
                 "Version": ap_version,
+                "EnemyData": (
+                    {
+                        location_id.name: {
+                            "map": enemy_loc.map.name,
+                            "enemy": enemy_loc.enemy.name
+                        }
+                        for location_id, enemy_loc in enemy_location_list.items()
+                        if EnemyMetaData[enemy_loc.enemy].e_type == EnemySubtype.GroundBeefy
+                    }
+                    if self.options.dropsanity.value
+                    else {}
+                )
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -1126,6 +1149,7 @@ if baseclasses_loaded:
                 tricks_selected = slot_data.get("TricksSelected", []).split(", ")
                 boulders_in_pool = slot_data.get("BouldersInPool", False)
                 dropsanity = slot_data.get("Dropsanity", False)
+                enemy_data = slot_data.get("EnemyData", {})
             else:
                 raise ValueError(f"This world is generated with an old version of DK64 Randomizer. Please downgrade to the correct version: {version}.")
 
@@ -1153,4 +1177,5 @@ if baseclasses_loaded:
             relevant_data["HintsInPool"] = slot_data["HintsInPool"]
             relevant_data["BouldersInPool"] = boulders_in_pool
             relevant_data["Dropsanity"] = dropsanity
+            relevant_data["EnemyData"] = enemy_data
             return relevant_data
