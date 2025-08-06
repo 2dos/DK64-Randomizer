@@ -309,7 +309,7 @@ if baseclasses_loaded:
         def generate_early(self):
             """Generate the world."""
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
-            self.settings_string = "PxZlegAAvwAAYIAAMMAAGKAAD/QNPAKAgYCA4GCAQEgoKBgWDgwIgCdQCbgAbwAcAAcQAcgAcwAdAAuQATMBCcTAhQmBhhNBAmqAFaBaJaRaZaiaqaza7bNbUNutyt2u6t6uGuCt+u+vCuKueuOuSuWuauiumuquuuyu2pmJqEkXCAZaolQCCiBRgpAUoKYCCLgswCNllPwdDISytgLcBI0EKakl6LELYvVOBUQsAhMQoAkiR2qqrJlhyZJ3iKA5XkCsaBjyWMDIABVM8Q3QQhAALQoAFoYACUOABKIAAdWgAOiQAFRQABosAB0YAAqNAANXAAWT4S34KpsDQVgui2PZniyDBHDAM5kj0Ng+GaWAPl2KYqFoY4rA0FYhjEIo1hcTwkhCfxLEGSJdF4XBASFBYYGhwgIiQoKiwwMjQ4OjxAQkRGSEpMTlBSVFZYWlxeYGJkZmhquLq8v1i+AGAAMIAYgAdgA0gD9ASnABOh4kaKzxNXm94dI8YBDuuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOFATCIZCmOhKlsa58IymfwBZAEFBGVCiPBEMhTHQlS2Nc+EZTpW18Z1vnfPIEminhe4A8xAkMI8pZhIVp5Ryikx8CwIhZpxCCKaq7Lbr4w8EcktT0AHyAPUAfQA9gB9gA"
+            self.settings_string = "PxZlegAAvwAAYIAAMMAAGKAAD/QNPAKAgYCA4GCAQEgoKBgWDgwIgCdUsbgAbwAcAAcQAcgAcwAdAAuQATMBCcTAhQmBhhNBAmqAFaBaJaRaZaiaqaza7bNbUNutyt2u6t6uGuCt+u+vCuKueuOuSuWuauiumuquuuyu2pmJqEkXCAZaolQCCiBRgpAUoKYCCLgswCNllPwdDISytgLcBI0EKakl6LELYvVOBUQsAhMQoAkiR2qqrJlhyZJ3iKA5XkCsaBjyWMDIABVM8Q3QQhAALQoAFoYACUOABKIAAdWgAOiQAFRQABosAB0YAAqNAANXAAWT4S34KpsDQVgui2PZniyDBHDAM5kj0Ng+GaWAPl2KYqFoY4rA0FYhjEIo1hcTwkhCfxLEGSJdF4XBASFBYYGhwgIiQoKiwwMjQ4OjxAQkRGSEpMTlBSVFZYWlxeYGJkZmhquLq8v1i+AGAAMIAYgAdgA0gD9ASnABOh4kaKzxNXm94dI8YBDuuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOFATCIZCmOhKlsa58IymfwBZAEFBGVCiPBEMhTHQlS2Nc+EZTpW18Z1vnfPIEminhe4A8xAkMI8pZhIVp5Ryikx8CwIhZpxCCKaq7Lbr4w8EcktT0AHyAPUAfQA9gB9gA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
@@ -564,13 +564,13 @@ if baseclasses_loaded:
                 # UT should not reshuffle the level order, but should update the exits
                 if not hasattr(self.multiworld, "generation_is_fake"):
                     ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
-                    # Repopulate the enemy table if gen is fake
-                    if hasattr(self.multiworld, "re_gen_passthrough"):
-                        if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
-                            passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
-                            if passthrough["EnemyData"]:
-                                for location, data in passthrough["EnemyData"].items():
-                                    enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], [], 0)
+                # Repopulate the enemy table if gen is fake
+                if hasattr(self.multiworld, "re_gen_passthrough"):
+                    if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
+                        passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+                        if passthrough["EnemyData"]:
+                            for location, data in passthrough["EnemyData"].items():
+                                enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], 0, [], False)
 
                 self.spoiler.UpdateExits()
 
