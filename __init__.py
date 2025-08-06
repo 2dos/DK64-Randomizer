@@ -570,8 +570,8 @@ if baseclasses_loaded:
                             passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
                             if passthrough["EnemyData"]:
                                 for location, data in passthrough["EnemyData"].items():
-                                    enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]],Enemies[data["enemy"]],[],0) 
-                                    
+                                    enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], [], 0)
+
                 self.spoiler.UpdateExits()
 
             # Handle hint preparation by initiating some variables
@@ -942,16 +942,13 @@ if baseclasses_loaded:
                 "Version": ap_version,
                 "EnemyData": (
                     {
-                        location_id.name: {
-                            "map": enemy_loc.map.name,
-                            "enemy": enemy_loc.enemy.name
-                        }
+                        location_id.name: {"map": enemy_loc.map.name, "enemy": enemy_loc.enemy.name}
                         for location_id, enemy_loc in enemy_location_list.items()
                         if EnemyMetaData[enemy_loc.enemy].e_type == EnemySubtype.GroundBeefy
                     }
                     if self.options.dropsanity.value
                     else {}
-                )
+                ),
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
