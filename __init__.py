@@ -764,9 +764,9 @@ if baseclasses_loaded:
                     autoworld = multiworld.worlds[player]
                     locworld = multiworld.worlds[loc.player]
                     if players:
-                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky"):
+                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky") and player in players:
                             autoworld.hint_data["kong"].append(loc)
-                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5"):
+                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5") and player in players:
                             autoworld.hint_data["key"].append(loc)
                         if loc.player in players and loc.name in deep_location_names:
                             locworld.hint_data["deep"].append(loc)
