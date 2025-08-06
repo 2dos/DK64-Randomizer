@@ -930,6 +930,7 @@ if baseclasses_loaded:
         def isMajorItem(self, item: DK64Item):
             """Determine whether a DK64Item is a Major Item."""
             # Events, colored bananas
+            # Test
             if "," in item.name:
                 return False
             # Not progression
