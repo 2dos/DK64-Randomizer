@@ -223,6 +223,8 @@
                         Smaller Shops
                     </label>
                 </div>
+                {{ toggle_input("shops_dont_cost", "Tooie-Style Shops", "Shops will not deduct coins from the player, but will require a certain amount of coins to purchase the move, akin to Banjo-Tooie.") }}
+                <div class="spacer"></div>
             </div>
             <div class="flex-container">
                 {{ dropdown_multiselector(remove_barriers, "remove_barriers", "Remove Barriers", "This will open a popup that will let you customize what barriers are removed.&#10;This defaults to All options.", 12, 1) }}

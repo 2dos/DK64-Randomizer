@@ -876,6 +876,7 @@ export enum SettingsStringEnum {
     fairy_queen_behavior = 259,
     cb_medal_behavior = 260,
     tricks_selected = 261,
+    shops_dont_cost = 262,
 }
 
 export enum SettingsStringDataType {
@@ -1249,6 +1250,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.item_rando_list_8: SettingsStringDataType.list,
     SettingsStringEnum.item_rando_list_9: SettingsStringDataType.list,
     SettingsStringEnum.decouple_item_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.shops_dont_cost: SettingsStringDataType.bool,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,
     SettingsStringEnum.prog_slam_level_3: SlamRequirement,
