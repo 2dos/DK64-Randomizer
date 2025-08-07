@@ -458,6 +458,7 @@ if baseclasses_loaded:
                 elif barrier == "galleon_treasure_room":
                     settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.galleon_treasure_room)
             settings_dict["glitches_selected"] = []
+            settings_dict["tricks_selected"] = []
             for trick in self.options.tricks_selected:
                 if trick == "advanced_platforming":
                     settings_dict["tricks_selected"].append(TricksSelected.advanced_platforming)

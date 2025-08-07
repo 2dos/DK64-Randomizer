@@ -239,10 +239,10 @@ class LogicType(Choice):
 
     display_name = "Logic Type"
 
-    option_glitchless = 1
-    option_advanced_glitchless = 2
-    option_glitched = 3
-    default = 1
+    option_glitchless = 0
+    option_advanced_glitchless = 1
+    option_glitched = 2
+    default = 0
 
 
 class TricksSelected(OptionList):
