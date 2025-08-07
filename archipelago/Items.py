@@ -251,6 +251,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     # Handle starting move alterations here
     all_eligible_starting_moves = DK64RItemPoolUtility.AllKongMoves()
     all_eligible_starting_moves.extend(DK64RItemPoolUtility.TrainingBarrelAbilities())
+    all_eligible_starting_moves.extend(DK64RItemPoolUtility.JunkSharedMoves)
+    all_eligible_starting_moves.append(DK64RItems.Camera)
+    all_eligible_starting_moves.append(DK64RItems.Shockwave)
     # Either include Climbing as an eligible starting move or place it in the starting inventory
     if world.options.climbing_shuffle:
         all_eligible_starting_moves.extend(DK64RItemPoolUtility.ClimbingAbilities())
