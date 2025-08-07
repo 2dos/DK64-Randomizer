@@ -759,14 +759,14 @@ if baseclasses_loaded:
                 ]
 
                 # Look through every location in the multiworld and find all the DK64 items that are progression
-                for loc in multiworld.get_locations():
+                for loc in [location for location in multiworld.get_locations() if not location.is_event]:
                     player = loc.item.player
                     autoworld = multiworld.worlds[player]
                     locworld = multiworld.worlds[loc.player]
                     if players:
-                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky"):
+                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky") and player in players:
                             autoworld.hint_data["kong"].append(loc)
-                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5"):
+                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5") and player in players:
                             autoworld.hint_data["key"].append(loc)
                         if loc.player in players and loc.name in deep_location_names:
                             locworld.hint_data["deep"].append(loc)
