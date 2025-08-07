@@ -157,6 +157,7 @@ if baseclasses_loaded:
         SwitchsanityKong,
         SwitchsanityGone,
         BLockerSetting,
+        RandomPrices,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
@@ -316,6 +317,7 @@ if baseclasses_loaded:
             settings_dict["open_lobbies"] = self.options.open_lobbies.value
             settings_dict["krool_in_boss_pool"] = self.options.krool_in_boss_pool.value
             settings_dict["helm_phase_count"] = self.options.helm_phase_count.value
+            settings_dict["shops_dont_cost"] = self.options.tooie_style_shops.value
             settings_dict["krool_phase_count"] = self.options.krool_phase_count.value
             settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
             if self.options.enable_chaos_blockers.value:
@@ -367,6 +369,9 @@ if baseclasses_loaded:
                 settings_dict["item_rando_list_1"].append(ItemRandoListSelected.boulderitem)
             if self.options.dropsanity:
                 settings_dict["item_rando_list_1"].append(ItemRandoListSelected.enemies)
+            if self.options.shopowners_in_pool.value:
+                settings_dict["item_rando_list_1"].append(ItemRandoListSelected.shopowners)
+                settings_dict["random_prices"] = RandomPrices.medium
 
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
@@ -723,7 +728,7 @@ if baseclasses_loaded:
                             slam_text = " or ".join(hinted_slams)
                             text = f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
                         elif hintedItem in shopkeepers:
-                            text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0]} {self.foreignMicroHints[hintedItem][1]}\x07.".upper()
+                            text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0]}'s\x07 \x0D{self.foreignMicroHints[hintedItem][1]}\x0D.".upper()
                         for letter in text:
                             if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
                                 text = text.replace(letter, " ")
@@ -833,19 +838,23 @@ if baseclasses_loaded:
                     autoworld = multiworld.worlds[player]
                     locworld = multiworld.worlds[loc.player]
                     if players:
-                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky"):
-                            autoworld.hint_data["kong"].append(loc)
-                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5"):
-                            autoworld.hint_data["key"].append(loc)
-                        if loc.player in players and loc.name in deep_location_names:
-                            locworld.hint_data["deep"].append(loc)
-                        if player in players and autoworld.isMajorItem(loc.item) and (not autoworld.spoiler.settings.key_8_helm or loc.name != "The End of Helm"):
-                            autoworld.hint_data["major"].append(loc)
-                            # Skip item at location and see if game is still beatable
-                            state = CollectionState(multiworld)
-                            state.locations_checked.add(loc)
-                            if not multiworld.can_beat_game(state):
-                                autoworld.hint_data["woth"].append(loc)
+                        # Skip shopowner items from appearing on hint doors
+                        if player in players and not (loc.item.name in ("Cranky", "Candy", "Funky", "Snide")):
+                            if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky"):
+                                autoworld.hint_data["kong"].append(loc)
+                            if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5"):
+                                autoworld.hint_data["key"].append(loc)
+                            if player in players and autoworld.isMajorItem(loc.item) and (not autoworld.spoiler.settings.key_8_helm or loc.name != "The End of Helm"):
+                                autoworld.hint_data["major"].append(loc)
+                                # Skip item at location and see if game is still beatable
+                                state = CollectionState(multiworld)
+                                state.locations_checked.add(loc)
+                                if not multiworld.can_beat_game(state):
+                                    autoworld.hint_data["woth"].append(loc)
+                    
+                    if loc.player in players and loc.name in deep_location_names:
+                        locworld.hint_data["deep"].append(loc)
+                        
                     # Also gather any information on microhinted items
                     if player in players and loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]:
                         if player != loc.player:

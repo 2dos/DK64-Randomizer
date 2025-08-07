@@ -74,8 +74,8 @@ def CompileArchipelagoHints(world, hint_data: list):
         hints_remaining -= 1
 
     # Woth hints
-    woth_count = min(min(len(woth_locations), woth_count), hints_remaining)
     woth_locations = [x for x in woth_locations if x not in already_hinted]
+    woth_count = min(min(len(woth_locations), woth_count), hints_remaining)
     woth_locations = world.spoiler.settings.random.sample(woth_locations, woth_count)
     for woth_loc in woth_locations:
         already_hinted.append(woth_loc)
@@ -85,8 +85,8 @@ def CompileArchipelagoHints(world, hint_data: list):
         hints_remaining -= 1
 
     # Major item hints
-    major_count = min(min(len(major_locations), major_count), hints_remaining)
     major_locations = [x for x in major_locations if x not in already_hinted]
+    major_count = min(min(len(major_locations), major_count), hints_remaining)
     major_locations = world.spoiler.settings.random.sample(major_locations, major_count)
     for major_loc in major_locations:
         hints.append(parseMajorItemHint(world, major_loc))
@@ -148,7 +148,7 @@ def parseWothHint(world, location):
     """Write a woth item hint for the given location."""
     text = ""
     if location.player != world.player:
-        text = f"\x05{world.multiworld.get_player_name(location.player)}'s\x05 \x0d{location.name[:80]}\x0d is on the \x04Way of the Hoard\x04.".upper()
+        text = f"\x05{world.multiworld.get_player_name(location.player)}\x05 \x0d{location.name[:80]}\x0d is on the \x04Way of the Hoard\x04.".upper()
     else:
         text = f"Your \x0d{location.name}\x0d is on the \x04Way of the Hoard\x04.".upper()
     for letter in text:

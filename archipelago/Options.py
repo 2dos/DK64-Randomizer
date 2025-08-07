@@ -242,7 +242,7 @@ class LogicType(Choice):
     option_glitchless = 1
     option_advanced_glitchless = 0
     option_glitched = 2
-    default = 0
+    default = 1
 
 
 class TricksSelected(OptionList):
@@ -501,7 +501,15 @@ class ChaosRatio(Range):
     range_end = 100
     default = 32
 
+class TooieShops(Toggle):
+    """Shops will not deduct coins from the player, but will require a certain amount of coins to purchase the move, akin to Banjo-Tooie."""
 
+    display_name = "Cumulative Shop Prices"
+
+class ShopKeepers(Toggle):
+    """Determines if Cranky, Funky, Candy, and Snide are added into the item pool. Shops will be inaccessible unless you collect its shop keeper."""
+
+    display_name = "Shop Keepers in Pool"
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -536,6 +544,7 @@ class DK64Options(PerGameCommonOptions):
     climbing_shuffle: ClimbingShuffle
     starting_kong_count: StartingKongCount
     starting_move_count: StartingMoveCount
+    shopowners_in_pool: ShopKeepers
     logic_type: LogicType
     tricks_selected: TricksSelected
     glitches_selected: GlitchesSelected
@@ -545,6 +554,7 @@ class DK64Options(PerGameCommonOptions):
     hints_in_item_pool: HintItemRandomization
     boulders_in_pool: BouldersInPool
     dropsanity: Dropsanity
+    tooie_style_shops: TooieShops
     trap_fill_percentage: TrapFillPercentage
     bubble_trap_weight: BubbleTrapWeight
     reverse_trap_weight: ReverseTrapWeight
