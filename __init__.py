@@ -959,6 +959,7 @@ if baseclasses_loaded:
                     if self.options.dropsanity.value
                     else {}
                 ),
+                "Shopkeepers": self.options.shopowners_in_pool.value,
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
