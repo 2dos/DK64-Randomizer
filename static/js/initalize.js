@@ -1713,7 +1713,7 @@ function load_settings(json) {
             });
             valueChanged = true;
           }
-          element.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`
+          element.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`;
         }
 
         if (element.classList.contains("sortablejs")) {
@@ -1802,11 +1802,11 @@ function load_settings(json) {
                   }
                   element.appendChild(option);
                 }
-              })
+              });
               valueChanged = true;
             }
           } else {
-            console.log("Invalid sortable during init")
+            console.log("Invalid sortable during init");
           }
           if (list_predicate == "item_rando_list_") {
             // console.log("Dispatching list predicate event")
