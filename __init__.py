@@ -606,15 +606,16 @@ if baseclasses_loaded:
                 # UT should not reshuffle the level order, but should update the exits
                 if not hasattr(self.multiworld, "generation_is_fake"):
                     ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
-                # Repopulate the enemy table if gen is fake
+                self.spoiler.UpdateExits()
+            
+            # Repopulate the enemy table if gen is fake
+            if hasattr(self.multiworld, "generation_is_fake"):
                 if hasattr(self.multiworld, "re_gen_passthrough"):
                     if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
                         passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
                         if passthrough["EnemyData"]:
                             for location, data in passthrough["EnemyData"].items():
                                 enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], 0, [], False)
-
-                self.spoiler.UpdateExits()
 
             # Handle hint preparation by initiating some variables
             self.hint_data = {
@@ -873,27 +874,55 @@ if baseclasses_loaded:
                     player = loc.item.player
                     autoworld = multiworld.worlds[player]
                     locworld = multiworld.worlds[loc.player]
-                    if players:
-                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky") and player in players:
-                            autoworld.hint_data["kong"].append(loc)
-                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5") and player in players:
-                            autoworld.hint_data["key"].append(loc)
-                        if loc.player in players and loc.name in deep_location_names:
-                            locworld.hint_data["deep"].append(loc)
-                        if player in players and autoworld.isMajorItem(loc.item) and (not autoworld.spoiler.settings.key_8_helm or loc.name != "The End of Helm"):
-                            autoworld.hint_data["major"].append(loc)
-                            # Skip item at location and see if game is still beatable
-                            state = CollectionState(multiworld)
-                            state.locations_checked.add(loc)
-                            if not multiworld.can_beat_game(state):
-                                autoworld.hint_data["woth"].append(loc)
-                    # Also gather any information on microhinted items
-                    if player in players and loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]:
+
+                    # Seems unlikely that we would get here but just in case
+                    if not players:
+                        continue
+
+                    is_donk_item = player in players
+                    is_donk_location = loc.player in players
+
+                    # Skip locations that aren't related to DK64 or are clearly unimportant to us
+                    if not (is_donk_location and loc.name in deep_location_names) and not (is_donk_item and autoworld.isMajorItem(loc.item)):
+                        continue
+
+                    is_microhintable = is_donk_item and loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]
+
+                    # Gather information on microhints
+                    if is_microhintable:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
                             else:
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name[:80]]
+
+                    # From here, no need to hint shopkeepers, since their microhints are basically free
+                    if is_donk_item and loc.item.name in ("Candy", "Cranky", "Funky", "Snide"):
+                        continue
+
+                    # Prioritize hinting Kongs
+                    if is_donk_item and loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky"):
+                        autoworld.hint_data["kong"].append(loc)
+                        continue
+
+                    # Prioritize hinting Keys
+                    if is_donk_item and loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5"):
+                        autoworld.hint_data["key"].append(loc)
+                        continue
+
+                    # Hint locations that are nasty to reach
+                    if is_donk_location and loc.name in deep_location_names:
+                        locworld.hint_data["deep"].append(loc)
+                        continue
+
+                    # For the rest of the locations, do WOTH hints.
+                    if is_donk_item and autoworld.isMajorItem(loc.item) and (not autoworld.spoiler.settings.key_8_helm or loc.name != "The End of Helm"):
+                        autoworld.hint_data["major"].append(loc)
+                        # Skip item at location and see if game is still beatable
+                        state = CollectionState(multiworld)
+                        state.locations_checked.add(loc)
+                        if not multiworld.can_beat_game(state):
+                            autoworld.hint_data["woth"].append(loc)
 
             except Exception as e:
                 raise e
@@ -1073,14 +1102,14 @@ if baseclasses_loaded:
             # Golden bananas and blueprints
             if item.name == "Golden Banana" or "Blueprint" in item.name:
                 return False
-            # Hints, medals, Company coins, Banana fairies
-            if "Hint" in item.name or item.name == "Banana Medal" or "Coin" in item.name or item.name == "Banana Fairy":
+            # Hints, medals, Company coins, Banana fairies, Crowns
+            if "Hint" in item.name or item.name == "Banana Medal" or "Coin" in item.name or item.name == "Banana Fairy" or item.name == "Battle Crown":
                 return False
             # Helm barrels
             if "Helm" in item.name and "Barrel" in item.name:
                 return False
             # Misc items
-            if item.name == "Pearl" or item.name == "The Bean" or "Hoard" in item.name:
+            if item.name == "Pearl" or "Hoard" in item.name:
                 return False
             return True
 
