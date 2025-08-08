@@ -12,7 +12,7 @@ from randomizer.Enums.Settings import FasterChecksSelected, PuzzleRando
 
 def chooseSFX(rando):
     """Choose random SFX from bank of acceptable SFX."""
-    banks = [[98, 138], [166, 252], [398, 411], [471, 476], [519, 535], [547, 575], [614, 631], [644, 650]]
+    banks = [[98, 138], [166, 247], [249, 252], [398, 411], [471, 476], [519, 535], [547, 575], [614, 631], [644, 650]]
     bank = rando.choice(banks)
     return rando.randint(bank[0], bank[1])
 
