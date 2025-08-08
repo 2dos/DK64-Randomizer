@@ -119,8 +119,8 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         if barrier_type == BarrierItems.CompanyCoin:
             nintendo_item = DK64RItem.ItemList[DK64RItems.NintendoCoin]
             rareware_item = DK64RItem.ItemList[DK64RItems.RarewareCoin]
-            item_table.append(DK64Item(nintendo_item.name, ItemClassification.progression_skip_balancing, full_item_table[nintendo_item.name].code, world.player))
-            item_table.append(DK64Item(rareware_item.name, ItemClassification.progression_skip_balancing, full_item_table[rareware_item.name].code, world.player))
+            item_table.append(DK64Item(nintendo_item.name, ItemClassification.progression, full_item_table[nintendo_item.name].code, world.player))
+            item_table.append(DK64Item(rareware_item.name, ItemClassification.progression, full_item_table[rareware_item.name].code, world.player))
             types_handled_directly.extend([DK64RTypes.NintendoCoin, DK64RTypes.RarewareCoin])
             continue
 
@@ -144,7 +144,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
 
             # Add progression items
             for i in range(progression_count):
-                item_table.append(DK64Item(item_obj.name, ItemClassification.progression_skip_balancing, full_item_table[item_obj.name].code, world.player))
+                item_table.append(DK64Item(item_obj.name, ItemClassification.progression, full_item_table[item_obj.name].code, world.player))
 
             # Add remaining items as useful
             for i in range(max_quantity - progression_count):
@@ -203,7 +203,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             classification = ItemClassification.progression
         # Only mark Bean/Pearl as progression if they weren't handled directly as barrier items
         elif item.type in (DK64RTypes.Pearl, DK64RTypes.Bean) and DK64RTypes.Bean not in types_handled_directly:
-            classification = ItemClassification.progression_skip_balancing
+            classification = ItemClassification.progression
         # The playthrough tag doesn't quite 1-to-1 map to Archipelago's "progression" type - some items we don't consider "playthrough" can affect logic
         elif item.playthrough is True or item.type == DK64RTypes.Blueprint:
             classification = ItemClassification.progression_skip_balancing

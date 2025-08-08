@@ -327,6 +327,7 @@ if baseclasses_loaded:
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
             self.settings_string = "PxZlegAAvwAAYIAAMMAAGKAAD/QNPAKAgYCA4GCAQEgoKBgWDgwIgCdUsbgAbwAcAAcQAcgAcwAdAAuQATMBCcTAhQmBhhNBAmqAFaBaJaRaZaiaqaza7bNbUNutyt2u6t6uGuCt+u+vCuKueuOuSuWuauiumuquuuyu2pmJqEkXCAZaolQCCiBRgpAUoKYCCLgswCNllPwdDISytgLcBI0EKakl6LELYvVOBUQsAhMQoAkiR2qqrJlhyZJ3iKA5XkCsaBjyWMDIABVM8Q3QQhAALQoAFoYACUOABKIAAdWgAOiQAFRQABosAB0YAAqNAANXAAWT4S34KpsDQVgui2PZniyDBHDAM5kj0Ng+GaWAPl2KYqFoY4rA0FYhjEIo1hcTwkhCfxLEGSJdF4XBASFBYYGhwgIiQoKiwwMjQ4OjxAQkRGSEpMTlBSVFZYWlxeYGJkZmhquLq8v1i+AGAAMIAYgAdgA0gD9ASnABOh4kaKzxNXm94dI8YBDuuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOFATCIZCmOhKlsa58IymfwBZAEFBGVCiPBEMhTHQlS2Nc+EZTpW18Z1vnfPIEminhe4A8xAkMI8pZhIVp5Ryikx8CwIhZpxCCKaq7Lbr4w8EcktT0AHyAPUAfQA9gB9gA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
+            settings_dict["krool_access"] = True
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
             settings_dict["open_lobbies"] = self.options.open_lobbies.value
@@ -433,6 +434,30 @@ if baseclasses_loaded:
             elif self.options.switchsanity.value == SwitchSanity.option_helm_access:
                 settings_dict["switchsanity_switch_isles_to_kroc_top"] = SwitchsanityKong.random
                 settings_dict["switchsanity_switch_isles_helm_lobby"] = SwitchsanityGone.random
+                settings_dict["switchsanity_switch_isles_aztec_lobby_back_room"] = SwitchsanityKong.tiny
+                settings_dict["switchsanity_switch_isles_fungi_lobby_fairy"] = SwitchsanityKong.tiny
+                settings_dict["switchsanity_switch_isles_spawn_rocketbarrel"] = SwitchsanityKong.lanky
+                settings_dict["switchsanity_switch_japes_to_hive"] = SwitchsanityKong.tiny
+                settings_dict["switchsanity_switch_japes_to_rambi"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_japes_to_painting_room"] = SwitchsanityKong.diddy
+                settings_dict["switchsanity_switch_japes_to_cavern"] = SwitchsanityKong.diddy
+                settings_dict["switchsanity_switch_japes_free_kong"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_aztec_to_kasplat_room"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_aztec_llama_front"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_aztec_llama_side"] = SwitchsanityKong.lanky
+                settings_dict["switchsanity_switch_aztec_llama_back"] = SwitchsanityKong.tiny
+                settings_dict["switchsanity_switch_aztec_sand_tunnel"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_aztec_to_connector_tunnel"] = SwitchsanityKong.diddy
+                settings_dict["switchsanity_switch_aztec_free_lanky"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_aztec_free_tiny"] = SwitchsanityKong.diddy
+                settings_dict["switchsanity_switch_factory_free_kong"] = SwitchsanityKong.lanky
+                settings_dict["switchsanity_switch_galleon_to_lighthouse_side"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_galleon_to_shipwreck_side"] = SwitchsanityKong.diddy
+                settings_dict["switchsanity_switch_galleon_to_cannon_game"] = SwitchsanityKong.chunky
+                settings_dict["switchsanity_switch_fungi_yellow_tunnel"] = SwitchsanityKong.lanky
+                settings_dict["switchsanity_switch_fungi_green_tunnel_near"] = SwitchsanityKong.tiny
+                settings_dict["switchsanity_switch_fungi_green_tunnel_far"] = SwitchsanityKong.chunky
+
             elif self.options.switchsanity.value == SwitchSanity.option_off:
                 settings_dict["switchsanity_enabled"] = False
             settings_dict["logic_type"] = self.options.logic_type.value
@@ -513,6 +538,8 @@ if baseclasses_loaded:
                     settings_dict["starting_keys_list_selected"].append(DK64RItems.CreepyCastleKey)
                 elif item == "Key 8":
                     settings_dict["starting_keys_list_selected"].append(DK64RItems.HideoutHelmKey)
+                if settings_dict["starting_keys_list_selected"]:
+                    settings_dict["select_keys"] = True
             if self.options.goal == Goal.option_all_keys:
                 settings_dict["win_condition_item"] = WinConditionComplex.req_key
                 settings_dict["win_condition_count"] = 8
@@ -581,15 +608,16 @@ if baseclasses_loaded:
                 # UT should not reshuffle the level order, but should update the exits
                 if not hasattr(self.multiworld, "generation_is_fake"):
                     ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
-                # Repopulate the enemy table if gen is fake
+                self.spoiler.UpdateExits()
+            
+            # Repopulate the enemy table if gen is fake
+            if hasattr(self.multiworld, "generation_is_fake"):
                 if hasattr(self.multiworld, "re_gen_passthrough"):
                     if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
                         passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
                         if passthrough["EnemyData"]:
                             for location, data in passthrough["EnemyData"].items():
                                 enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], 0, [], False)
-
-                self.spoiler.UpdateExits()
 
             # Handle hint preparation by initiating some variables
             self.hint_data = {
@@ -848,27 +876,55 @@ if baseclasses_loaded:
                     player = loc.item.player
                     autoworld = multiworld.worlds[player]
                     locworld = multiworld.worlds[loc.player]
-                    if players:
-                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky") and player in players:
-                            autoworld.hint_data["kong"].append(loc)
-                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5") and player in players:
-                            autoworld.hint_data["key"].append(loc)
-                        if loc.player in players and loc.name in deep_location_names:
-                            locworld.hint_data["deep"].append(loc)
-                        if player in players and autoworld.isMajorItem(loc.item) and (not autoworld.spoiler.settings.key_8_helm or loc.name != "The End of Helm"):
-                            autoworld.hint_data["major"].append(loc)
-                            # Skip item at location and see if game is still beatable
-                            state = CollectionState(multiworld)
-                            state.locations_checked.add(loc)
-                            if not multiworld.can_beat_game(state):
-                                autoworld.hint_data["woth"].append(loc)
-                    # Also gather any information on microhinted items
-                    if player in players and loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]:
+
+                    # Seems unlikely that we would get here but just in case
+                    if not players:
+                        continue
+
+                    is_donk_item = player in players
+                    is_donk_location = loc.player in players
+
+                    # Skip locations that aren't related to DK64 or are clearly unimportant to us
+                    if not (is_donk_location and loc.name in deep_location_names) and not (is_donk_item and autoworld.isMajorItem(loc.item)):
+                        continue
+
+                    is_microhintable = is_donk_item and loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]
+
+                    # Gather information on microhints
+                    if is_microhintable:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
                             else:
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name[:80]]
+
+                    # From here, no need to hint shopkeepers, since their microhints are basically free
+                    if is_donk_item and loc.item.name in ("Candy", "Cranky", "Funky", "Snide"):
+                        continue
+
+                    # Prioritize hinting Kongs
+                    if is_donk_item and loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky"):
+                        autoworld.hint_data["kong"].append(loc)
+                        continue
+
+                    # Prioritize hinting Keys
+                    if is_donk_item and loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5"):
+                        autoworld.hint_data["key"].append(loc)
+                        continue
+
+                    # Hint locations that are nasty to reach
+                    if is_donk_location and loc.name in deep_location_names:
+                        locworld.hint_data["deep"].append(loc)
+                        continue
+
+                    # For the rest of the locations, do WOTH hints.
+                    if is_donk_item and autoworld.isMajorItem(loc.item) and (not autoworld.spoiler.settings.key_8_helm or loc.name != "The End of Helm"):
+                        autoworld.hint_data["major"].append(loc)
+                        # Skip item at location and see if game is still beatable
+                        state = CollectionState(multiworld)
+                        state.locations_checked.add(loc)
+                        if not multiworld.can_beat_game(state):
+                            autoworld.hint_data["woth"].append(loc)
 
             except Exception as e:
                 raise e
@@ -1048,14 +1104,14 @@ if baseclasses_loaded:
             # Golden bananas and blueprints
             if item.name == "Golden Banana" or "Blueprint" in item.name:
                 return False
-            # Hints, medals, Company coins, Banana fairies
-            if "Hint" in item.name or item.name == "Banana Medal" or "Coin" in item.name or item.name == "Banana Fairy":
+            # Hints, medals, Company coins, Banana fairies, Crowns
+            if "Hint" in item.name or item.name == "Banana Medal" or "Coin" in item.name or item.name == "Banana Fairy" or item.name == "Battle Crown":
                 return False
             # Helm barrels
             if "Helm" in item.name and "Barrel" in item.name:
                 return False
             # Misc items
-            if item.name == "Pearl" or item.name == "The Bean" or "Hoard" in item.name:
+            if item.name == "Pearl" or "Hoard" in item.name:
                 return False
             return True
 
