@@ -22,6 +22,7 @@ baseclasses_loaded = False
 try:
     from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, CollectionState
     import BaseClasses
+    import settings
 
     baseclasses_loaded = True
 except ImportError:
@@ -225,6 +226,19 @@ if baseclasses_loaded:
                         print("Hey")
             return ret
 
+    class DK64Settings(settings.Group):
+        """Settings for the DK64 randomizer."""
+
+        class ReleaseVersion(str):
+            """Choose the release version of the DK64 randomizer to use.
+
+            By setting it to master (Default) you will always pull the latest stable version.
+            By setting it to dev you will pull the latest development version.
+            If you want a specific version, you can set it to a AP version number eg: v1.0.45
+            """
+
+        release_branch: ReleaseVersion = ReleaseVersion("master")
+
     class DK64Web(WebWorld):
         """WebWorld for DK64."""
 
@@ -244,6 +258,7 @@ if baseclasses_loaded:
         options_dataclass = DK64Options
         options: DK64Options
         topology_present = False
+        settings: typing.ClassVar[DK64Settings]
 
         item_name_to_id = {name: data.code for name, data in full_item_table.items()}
         location_name_to_id = all_locations
@@ -833,9 +848,9 @@ if baseclasses_loaded:
                     autoworld = multiworld.worlds[player]
                     locworld = multiworld.worlds[loc.player]
                     if players:
-                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky"):
+                        if loc.item.name in ("Donkey", "Diddy", "Lanky", "Tiny", "Chunky") and player in players:
                             autoworld.hint_data["kong"].append(loc)
-                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5"):
+                        if loc.item.name in ("Key 1", "Key 2", "Key 4", "Key 5") and player in players:
                             autoworld.hint_data["key"].append(loc)
                         if loc.player in players and loc.name in deep_location_names:
                             locworld.hint_data["deep"].append(loc)
