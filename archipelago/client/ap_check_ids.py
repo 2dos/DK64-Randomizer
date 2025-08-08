@@ -566,7 +566,7 @@ check_names_to_id = {
     "Japes Tiny Hive Enemy: Main Room": 14041757,
     "Angry Aztec Enemy: Vase Room (0)": 14041758,
     "Angry Aztec Enemy: Vase Room (1)": 14041759,
-    "Angry Aztec Enemy: Vase Room (2)": 14041761,
+    "Angry Aztec Enemy: Vase Room (2)": 14041760,
     "Angry Aztec Enemy: Tunnel Pad (0)": 14041761,
     "Angry Aztec Enemy: Tunnel Cage (0)": 14041762,
     "Angry Aztec Enemy: Tunnel Cage (1)": 14041763,

@@ -554,7 +554,6 @@ class DK64Options(PerGameCommonOptions):
     hints_in_item_pool: HintItemRandomization
     boulders_in_pool: BouldersInPool
     dropsanity: Dropsanity
-    tooie_style_shops: TooieShops
     trap_fill_percentage: TrapFillPercentage
     bubble_trap_weight: BubbleTrapWeight
     reverse_trap_weight: ReverseTrapWeight

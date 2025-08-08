@@ -317,7 +317,6 @@ if baseclasses_loaded:
             settings_dict["open_lobbies"] = self.options.open_lobbies.value
             settings_dict["krool_in_boss_pool"] = self.options.krool_in_boss_pool.value
             settings_dict["helm_phase_count"] = self.options.helm_phase_count.value
-            settings_dict["shops_dont_cost"] = self.options.tooie_style_shops.value
             settings_dict["krool_phase_count"] = self.options.krool_phase_count.value
             settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
             if self.options.enable_chaos_blockers.value:
@@ -371,7 +370,6 @@ if baseclasses_loaded:
                 settings_dict["item_rando_list_1"].append(ItemRandoListSelected.enemies)
             if self.options.shopowners_in_pool.value:
                 settings_dict["item_rando_list_1"].append(ItemRandoListSelected.shopowners)
-                settings_dict["random_prices"] = RandomPrices.medium
 
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
