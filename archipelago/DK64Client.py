@@ -433,7 +433,6 @@ class DK64Client:
         elif count_data.get("item") is not None and count_data.get("level") is not None:
             # These are fed items with level/tier information (like progression slams, etc.)
             item_id = count_data.get("item")
-            level = count_data.get("level")
 
             # Map requirement item IDs to transfer item IDs based on the type
             # REQITEM_MOVE (2) with level 3 should be TRANSFER_ITEM_SLAMUPGRADE (0x033 = 51)

@@ -305,22 +305,12 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     possible_junk = [DK64RItems.JunkMelon]
     # possible_junk = [DK64RItems.JunkCrystal, DK64RItems.JunkMelon, DK64RItems.JunkAmmo, DK64RItems.JunkFilm, DK64RItems.JunkOrange] # Someday...
 
-    for i in range(filler_item_count):
+    for _ in range(filler_item_count):
         junk_enum = world.random.choice(possible_junk)
         junk_item = DK64RItem.ItemList[junk_enum]
         item_table.append(DK64Item(junk_item.name, ItemClassification.filler, full_item_table[junk_item.name].code, world.player))
 
-    possible_traps = [
-        DK64RItems.IceTrapBubble,
-        DK64RItems.IceTrapReverse,
-        DK64RItems.IceTrapSlow,
-        DK64RItems.IceTrapDisableA,
-        DK64RItems.IceTrapDisableB,
-        DK64RItems.IceTrapDisableCU,
-        DK64RItems.IceTrapDisableZ,
-    ]
-
-    for i in range(trap_count):
+    for _ in range(trap_count):
         trap_enum = world.random.choice(trap_weights)
         trap_item = DK64RItem.ItemList[trap_enum]
         trap_name = use_original_name_or_trap_name(trap_item)

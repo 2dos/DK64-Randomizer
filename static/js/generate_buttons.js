@@ -604,12 +604,12 @@ async function import_settings_string(event) {
                             if (items_list.filter(k => k.num_val == value).length == 0) {
                                 valid = false;
                             }
-                        })
+                        });
                         total_settings_list_checks.forEach(value => {
                             if (checks_list.filter(k => k.num_val == value).length == 0) {
                                 valid = false;
                             }
-                        })
+                        });
                     } else {
                         let total_settings_list = [];
                         for (let i = 0; i < list_count; i++) {
@@ -620,7 +620,7 @@ async function import_settings_string(event) {
                             if (items_list.filter(k => k.num_val == value).length == 0) {
                                 valid = false;
                             }
-                        })
+                        });
                     }
                     if (valid) {
                         selector.innerHTML = "";
