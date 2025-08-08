@@ -58,47 +58,42 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
         int item_kong = item_send->kong;
         songs song = item_detection_data[item_type].song;
         int sprite_index = item_detection_data[item_type].sprite;
-        if (item_send->audiovisual_index == 0) {
-            switch(item_type) {
-                case REQITEM_KONG:
-                    song = instrument_songs[item_kong];
-                    sprite_index = 0xA9 + item_kong;
-                    refreshItemVisibility();
-                    break;
-                case REQITEM_BLUEPRINT:
-                    sprite_index = bp_sprites[item_kong];
-                    break;
-                case REQITEM_KEY:
-                    auto_turn_keys();
-                    break;
-                case REQITEM_COMPANYCOIN:
-                    sprite_index = item_kong == 0 ? 0x8D : 0x8C;
-                    break;
-                case REQITEM_MOVE:
-                    sprite = &potion_sprite;
-                    break;
-                case REQITEM_BEAN:
-                    sprite = &bean_sprite;
-                    break;
-                case REQITEM_PEARL:
-                    sprite = &pearl_sprite;
-                    break;
-                case REQITEM_ICETRAP:
-                    sprite = &fool_overlay_sprite;
-                    break;
-                case REQITEM_JUNK:
-                    applyDamageMask(0, 1);
-                    break;
-                case REQITEM_HINT:
-                    playSFX(0x2EA);
-                    break;
-                case REQITEM_SHOPKEEPER:
-                    sprite_index = shopkeeper_sprites[item_kong];
-                    break;
-            }
-        } else {
-            // reqitem_move only
-            sprite_index = &potion_sprite;
+        switch(item_type) {
+            case REQITEM_KONG:
+                song = instrument_songs[item_kong];
+                sprite_index = 0xA9 + item_kong;
+                refreshItemVisibility();
+                break;
+            case REQITEM_BLUEPRINT:
+                sprite_index = bp_sprites[item_kong];
+                break;
+            case REQITEM_KEY:
+                auto_turn_keys();
+                break;
+            case REQITEM_COMPANYCOIN:
+                sprite_index = item_kong == 0 ? 0x8D : 0x8C;
+                break;
+            case REQITEM_MOVE:
+                sprite = &potion_sprite;
+                break;
+            case REQITEM_BEAN:
+                sprite = &bean_sprite;
+                break;
+            case REQITEM_PEARL:
+                sprite = &pearl_sprite;
+                break;
+            case REQITEM_ICETRAP:
+                sprite = &fool_overlay_sprite;
+                break;
+            case REQITEM_JUNK:
+                applyDamageMask(0, 1);
+                break;
+            case REQITEM_HINT:
+                playSFX(0x2EA);
+                break;
+            case REQITEM_SHOPKEEPER:
+                sprite_index = shopkeeper_sprites[item_kong];
+                break;
         }
         if (song != SONG_SILENCE) {
             playSFX(0xF2);
