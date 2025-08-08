@@ -2,7 +2,7 @@
 
 from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import CrownEnemyDifficulty, DamageAmount, WinConditionComplex
-from randomizer.Lists.EnemyTypes import EnemyMetaData, enemy_location_list
+from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
