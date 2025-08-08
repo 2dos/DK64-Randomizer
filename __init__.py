@@ -327,6 +327,7 @@ if baseclasses_loaded:
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
             self.settings_string = "PxZlegAAvwAAYIAAMMAAGKAAD/QNPAKAgYCA4GCAQEgoKBgWDgwIgCdUsbgAbwAcAAcQAcgAcwAdAAuQATMBCcTAhQmBhhNBAmqAFaBaJaRaZaiaqaza7bNbUNutyt2u6t6uGuCt+u+vCuKueuOuSuWuauiumuquuuyu2pmJqEkXCAZaolQCCiBRgpAUoKYCCLgswCNllPwdDISytgLcBI0EKakl6LELYvVOBUQsAhMQoAkiR2qqrJlhyZJ3iKA5XkCsaBjyWMDIABVM8Q3QQhAALQoAFoYACUOABKIAAdWgAOiQAFRQABosAB0YAAqNAANXAAWT4S34KpsDQVgui2PZniyDBHDAM5kj0Ng+GaWAPl2KYqFoY4rA0FYhjEIo1hcTwkhCfxLEGSJdF4XBASFBYYGhwgIiQoKiwwMjQ4OjxAQkRGSEpMTlBSVFZYWlxeYGJkZmhquLq8v1i+AGAAMIAYgAdgA0gD9ASnABOh4kaKzxNXm94dI8YBDuuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOFATCIZCmOhKlsa58IymfwBZAEFBGVCiPBEMhTHQlS2Nc+EZTpW18Z1vnfPIEminhe4A8xAkMI8pZhIVp5Ryikx8CwIhZpxCCKaq7Lbr4w8EcktT0AHyAPUAfQA9gB9gA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
+            settings_dict["krool_access"] = True
             settings_dict["archipelago"] = True
             settings_dict["starting_kongs_count"] = self.options.starting_kong_count.value
             settings_dict["open_lobbies"] = self.options.open_lobbies.value
@@ -433,6 +434,30 @@ if baseclasses_loaded:
             elif self.options.switchsanity.value == SwitchSanity.option_helm_access:
                 settings_dict["switchsanity_switch_isles_to_kroc_top"] = SwitchsanityKong.random
                 settings_dict["switchsanity_switch_isles_helm_lobby"] = SwitchsanityGone.random
+                settings_dict["switchsanity_switch_isles_aztec_lobby_back_room"] = SwitchsanityKong.tiny
+                settings_dict["switchsanity_switch_isles_fungi_lobby_fairy"] = SwitchsanityKong.tiny
+                settings_dict["switchsanity_switch_isles_spawn_rocketbarrel"] = SwitchsanityKong.lanky
+                settings_dict["switchsanity_switch_japes_to_hive"] = SwitchsanityKong.tiny
+                settings_dict["switchsanity_switch_japes_to_rambi"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_japes_to_painting_room"] = SwitchsanityKong.diddy
+                settings_dict["switchsanity_switch_japes_to_cavern"] = SwitchsanityKong.diddy
+                settings_dict["switchsanity_switch_japes_free_kong"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_aztec_to_kasplat_room"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_aztec_llama_front"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_aztec_llama_side"] = SwitchsanityKong.lanky
+                settings_dict["switchsanity_switch_aztec_llama_back"] = SwitchsanityKong.tiny
+                settings_dict["switchsanity_switch_aztec_sand_tunnel"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_aztec_to_connector_tunnel"] = SwitchsanityKong.diddy
+                settings_dict["switchsanity_switch_aztec_free_lanky"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_aztec_free_tiny"] = SwitchsanityKong.diddy
+                settings_dict["switchsanity_switch_factory_free_kong"] = SwitchsanityKong.lanky
+                settings_dict["switchsanity_switch_galleon_to_lighthouse_side"] = SwitchsanityKong.donkey
+                settings_dict["switchsanity_switch_galleon_to_shipwreck_side"] = SwitchsanityKong.diddy
+                settings_dict["switchsanity_switch_galleon_to_cannon_game"] = SwitchsanityKong.chunky
+                settings_dict["switchsanity_switch_fungi_yellow_tunnel"] = SwitchsanityKong.lanky
+                settings_dict["switchsanity_switch_fungi_green_tunnel_near"] = SwitchsanityKong.tiny
+                settings_dict["switchsanity_switch_fungi_green_tunnel_far"] = SwitchsanityKong.chunky
+
             elif self.options.switchsanity.value == SwitchSanity.option_off:
                 settings_dict["switchsanity_enabled"] = False
             settings_dict["logic_type"] = self.options.logic_type.value

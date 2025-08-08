@@ -360,11 +360,8 @@ class DK64Client:
             self.n64_client.write_u8(address, current_value + 1)
 
         elif field == "rainbow_coins":
-            # Rainbow coins: 1 byte counter at offset 0x011
-            address = count_struct_address + 0x011
-            current_value = self.n64_client.read_u8(address)
-            self.n64_client.write_u8(address, current_value + 1)
-
+            await self.writeFedData(0x015)  # TRANSFER_ITEM_RAINBOWCOIN
+            
         elif field == "ice_traps":
             # Ice traps: 2 byte counter at offset 0x012
             # Also need to trigger the actual ice trap effect via fed system
