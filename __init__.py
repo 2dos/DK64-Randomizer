@@ -538,6 +538,8 @@ if baseclasses_loaded:
                     settings_dict["starting_keys_list_selected"].append(DK64RItems.CreepyCastleKey)
                 elif item == "Key 8":
                     settings_dict["starting_keys_list_selected"].append(DK64RItems.HideoutHelmKey)
+                if settings_dict["starting_keys_list_selected"]:
+                    settings_dict["select_keys"] = True
             if self.options.goal == Goal.option_all_keys:
                 settings_dict["win_condition_item"] = WinConditionComplex.req_key
                 settings_dict["win_condition_count"] = 8
