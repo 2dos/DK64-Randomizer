@@ -3,6 +3,7 @@ var jquery = $;
 const listeners = [];
 const progression_presets = [];
 const random_settings_presets = [];
+let random_settings_settings = {};
 
 // Determine the correct URL for fetching presets based on the hostname
 let base_url;
@@ -34,13 +35,14 @@ $.ajax({
   },
 });
 $.ajax({
-  url: "static/presets/weights/weights_files.json",
+  url: "static/presets/weights/weight_files_raw.json",
   dataType: "json",
   async: false,
   success: function (data) {
-    data.forEach((file) => {
+    data.presets.forEach((file) => {
       random_settings_presets.push(file);
     });
+    random_settings_settings = data.settings;
   },
 });
 
