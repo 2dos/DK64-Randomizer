@@ -10,7 +10,6 @@ from randomizer.Enums.VendorType import VendorType
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Library.DataTypes import intf_to_float
-from randomizer.Lists.EnemyTypes import enemy_location_list
 from randomizer.Patching.Library.Generic import setItemReferenceName
 from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, getPropFromItem, getModelMask, getItemDBEntry, item_shop_text_mapping, BuyText
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, CompTextFiles, ItemPreview
@@ -845,8 +844,8 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     elif item.old_item == Types.Enemies:
                         index = item.location - Locations.JapesMainEnemy_Start
                         ROM_COPY.seek(POINTER_ROM_ENEMIES + (index * 4))
-                        ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].map, 1)
-                        ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].id, 1)
+                        ROM_COPY.writeMultipleBytes(spoiler.enemy_location_list[item.location].map, 1)
+                        ROM_COPY.writeMultipleBytes(spoiler.enemy_location_list[item.location].id, 1)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
                     elif item.old_item in (Types.Medal, Types.Hint):
                         offset = None
