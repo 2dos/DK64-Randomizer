@@ -1315,11 +1315,7 @@ class Settings:
             "discu": 1,
             "disz": 1,
         }
-        models_chance = {
-            "gb": 10,
-            "key": 2,
-            "bean": 1
-        }
+        models_chance = {"gb": 10, "key": 2, "bean": 1}
         trap_data = {
             "gb": {
                 "bubble": Items.IceTrapBubble,
@@ -1355,7 +1351,6 @@ class Settings:
             chosen_model = self.random.choices(list(models_chance.keys()), list(models_chance.values()), k=1)[0]
             chosen_item = trap_data[chosen_model][chosen_effect]
             self.trap_assortment.append(chosen_item)
-        
 
         if self.has_password:
             for x in range(8):

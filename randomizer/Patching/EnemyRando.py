@@ -551,6 +551,7 @@ def writeEnemy(spoiler, ROM_COPY: LocalROM, cont_map_spawner_address: int, new_e
         ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0x14)
         ROM_COPY.writeMultipleBytes(0, 1)  # Disable respawning
 
+
 krem_kap_mapping = {
     Enemies.BeaverBlue: Items.PhotoBeaverBlue,
     Enemies.Book: Items.PhotoBook,

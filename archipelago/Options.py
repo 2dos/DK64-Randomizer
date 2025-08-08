@@ -490,6 +490,7 @@ class Dropsanity(Toggle):
 
 class ChaosRatio(Range):
     """If Chaos Blockers are enabled, determine the max percentage of collectibles than can roll onto a BLocker.
+
     Example:
     There are 16 Rainbow Coins in the game. With a chaos ratio of 50%, a max BLocker can have a max of 8 rainbow coins.
     Excludes Bean and Company Coins.

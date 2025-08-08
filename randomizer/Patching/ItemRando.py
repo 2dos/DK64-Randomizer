@@ -517,8 +517,9 @@ items_needing_ipd = (
     Types.TrainingBarrel,
 )
 
+
 def getShopFlag(level: int, kong: Kongs, vendor: VendorType) -> int:
-    """Calculate the shop flag based on the level, kong and vendor"""
+    """Calculate the shop flag based on the level, kong and vendor."""
     kong_index = int(kong) if kong != Kongs.any else 0
     if vendor == VendorType.Cranky:
         return 0x320 + (level * 5) + kong_index
@@ -533,23 +534,28 @@ def getShopFlag(level: int, kong: Kongs, vendor: VendorType) -> int:
             return 0x320 + ((candy_offset + 18) * 5) + kong_index
     return 0
 
+
 def getDefaultIPD(shuffled_types: list[Types]) -> list:
     """Calculate the default IPD based on the settings you have enabled."""
     no_shuffler_ipd = {}
     for item in items_needing_ipd:
         no_shuffler_ipd[item] = []
     for x in range(40):
-        no_shuffler_ipd[Types.Blueprint].append([
-            469 + x,
-            int(x / 5),
-            x % 5,
-        ])
+        no_shuffler_ipd[Types.Blueprint].append(
+            [
+                469 + x,
+                int(x / 5),
+                x % 5,
+            ]
+        )
     for x in range(35):
-        no_shuffler_ipd[Types.Hint].append([
-            0x384 + x,
-            int(x / 5),
-            x % 5,
-        ])
+        no_shuffler_ipd[Types.Hint].append(
+            [
+                0x384 + x,
+                int(x / 5),
+                x % 5,
+            ]
+        )
     no_shuffler_ipd[Types.Key] = [
         [26, 0, 0],
         [74, 1, 0],
@@ -560,9 +566,7 @@ def getDefaultIPD(shuffled_types: list[Types]) -> list:
         [317, 6, 0],
         [360, 7, 0],
     ]
-    no_shuffler_ipd[Types.Shockwave] = [
-        [0x179, 10, 5]
-    ]
+    no_shuffler_ipd[Types.Shockwave] = [[0x179, 10, 5]]
     no_shuffler_ipd[Types.TrainingBarrel] = [
         [386, 10, 0],
         [387, 10, 3],
@@ -636,6 +640,7 @@ def getDefaultIPD(shuffled_types: list[Types]) -> list:
         if test_type not in shuffled_types:
             output_ipd.extend(no_shuffler_ipd[test_type])
     return output_ipd
+
 
 def place_randomized_items(spoiler, ROM_COPY: LocalROM):
     """Place randomized items into ROM."""

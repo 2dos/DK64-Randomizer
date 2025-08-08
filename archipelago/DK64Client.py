@@ -239,7 +239,6 @@ class DK64Client:
 
     async def writeCountData(self, count_data):
         """Write count data directly to the CountStruct system."""
-
         if isinstance(count_data, list):
             # Handle multiple count items (like Camera and Shockwave combo)
             for item in count_data:

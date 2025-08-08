@@ -275,7 +275,6 @@
 | Fungi Forest | Watermill - right - right | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Watermill Roof - tower | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Boxes outside of Diddy's Barn | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
-| Fungi Forest | Outside Diddy's Barn | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Immediately Inside the Thornvine Area - right | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Immediately Inside the Thornvine Area - left | Boss, Wrinkly | `self.logic = lambda _: True` | 
 | Fungi Forest | Outside DK's Barn | Boss, Wrinkly | `self.logic = lambda _: True` | 

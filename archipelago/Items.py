@@ -42,6 +42,7 @@ event_table = {
 
 
 def use_original_name_or_trap_name(item: DK64RItem) -> str:
+    """Determine whether to use the original donk name or a renamed ice trap name."""
     if item.type == DK64RTypes.FakeItem:
         # Rename traps to be easier for trap link
         parts = item.name.split("(")

@@ -264,6 +264,7 @@ if baseclasses_loaded:
         location_name_to_id = all_locations
 
         def blueprint_item_group() -> str:
+            """Item group for blueprints."""
             res = set()
             for name, _ in full_item_table.items():
                 if "Blueprint" in name:
@@ -1120,7 +1121,6 @@ if baseclasses_loaded:
 
         def version_check(self, version: str, req_version: str) -> bool:
             """Check if the current version is greater than or equal to the one required for this slot data."""
-
             req_major = req_version.split(".")[0]
             req_minor = req_version.split(".")[1]
             req_patch = req_version.split(".")[2]
