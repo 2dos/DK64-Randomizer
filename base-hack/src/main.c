@@ -10,7 +10,7 @@ static char lag_counter = 0;
 static float current_avg_lag = 0;
 static char has_loaded = 0;
 static char new_picture = 0;
-int hint_pointers[35] = {};
+FastTextStruct hint_pointers[35] = {};
 char* itemloc_pointers[LOCATION_ITEM_COUNT] = {};
 char grab_lock_timer = -1;
 char tag_locked = 0;
@@ -34,7 +34,6 @@ void cFuncLoop(void) {
 	regularFrameLoop();
 	cc_effect_handler();
 	tagAnywhere();
-	level_order_rando_funcs();
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
 	overlay_changes();
@@ -45,13 +44,6 @@ void cFuncLoop(void) {
 		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
 			shiftBrokenJapesPortal();
 		}
-		openCoinDoor();
-		priceTransplant();
-		if (CurrentMap == MAP_AZTECBEETLE) {
-			TextItemName = Rando.aztec_beetle_reward;
-		} else if (CurrentMap == MAP_CAVESBEETLERACE) {
-			TextItemName = Rando.caves_beetle_reward;
-		}
 		if (isKrushaAdjacentModel(3)) {
 			if (CurrentMap == MAP_KROOLSHOE) {
 				setActorDamage(43, 1);
@@ -61,8 +53,7 @@ void cFuncLoop(void) {
 		}
 		if (Rando.quality_of_life.vanilla_fixes) {
 			if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
-				int kong_target = CurrentMap - MAP_KROOLDK;
-				if (!checkFlagDuplicate(kong_flags[kong_target], FLAGTYPE_PERMANENT)) {
+				if (getItemCount_new(REQITEM_KONG, 0, CurrentMap - MAP_KROOLDK) == 0) {
 					exitBoss();
 					Character = Rando.starting_kong;
 				}
@@ -161,9 +152,6 @@ void cFuncLoop(void) {
 	if (Rando.helm_hurry_mode) {
 		checkTotalCache();
 	}
-	// if (Rando.item_rando) {
-	// 	controlKeyText();
-	// }
 	if (CurrentMap == MAP_HELM) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
 			if (inU8List(CutsceneIndex, &instrument_cs_indexes[0], 5)) {
@@ -342,14 +330,20 @@ void earlyFrame(void) {
 		handleArchipelagoFeed();
 	}
 	if (CurrentMap == MAP_FUNGI) {
-		if ((TBVoidByte & 3) == 0) { // Not pausing
-			if (CutsceneActive == 0) { // No cutscene playing
-				if (Player) {
-					int chunk = Player->chunk;
-					if ((chunk < 12) || (chunk > 17)) { // Not in owl tree area, deemed a safe zone because of races
-						handleTimeOfDay(TODCALL_FUNGIACTIVE);
+		if (Rando.fungi_time_of_day_setting == TIME_PROGRESSIVE) {
+			if ((TBVoidByte & 3) == 0) { // Not pausing
+				if (CutsceneActive == 0) { // No cutscene playing
+					if (Player) {
+						int chunk = Player->chunk;
+						if ((chunk < 12) || (chunk > 17)) { // Not in owl tree area, deemed a safe zone because of races
+							handleTimeOfDay(TODCALL_FUNGIACTIVE);
+						}
 					}
 				}
+			}
+		} else if (Rando.fungi_time_of_day_setting == TIME_DUSK) {
+			if (ObjectModel2Timer == 2) {
+				handleTimeOfDay(TODCALL_FUNGIACTIVE);
 			}
 		}
 	}
@@ -520,9 +514,6 @@ Gfx* displayListModifiers(Gfx* dl) {
 		} else {
 			dl = drawTextPointers(dl);
 			dl = displaySongNameHandler(dl);
-			if (Rando.item_rando) {
-				dl = controlKeyText(dl);
-			}
 			if (Rando.fps_on) {
 				float fps = HERTZ;
 				if (current_avg_lag != 0) {
@@ -559,8 +550,8 @@ Gfx* displayListModifiers(Gfx* dl) {
 						bp_numerator = 0;
 						bp_denominator = 0;
 						for (int i = 0; i < 8; i++) {
-							int bp_has = checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,FLAGTYPE_PERMANENT);
-							int bp_turn = checkFlagDuplicate(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,FLAGTYPE_PERMANENT);
+							int bp_has = getItemCount_new(REQITEM_BLUEPRINT, i, Character);
+							int bp_turn = checkFlag(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,FLAGTYPE_PERMANENT);
 							if (!bp_turn) {
 								if (bp_has) {
 									bp_numerator += 1;

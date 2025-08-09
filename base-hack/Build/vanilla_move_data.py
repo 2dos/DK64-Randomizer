@@ -103,27 +103,62 @@ def convertItem(fh: BinaryIO, item: dict, kong: int) -> int:
     flag_types = [MoveIndexes.flag, MoveIndexes.gb]
     shared_types = [MoveIndexes.slam, MoveIndexes.ammo_belt]  # Instrument covered by diff
     # Item Type
-    fh.write(int(item.type).to_bytes(2, "big"))
-    # Flag/Item Level
-    index = item.index
-    if item.type in flag_types:
-        if index < 0:
-            index += 65536
+    if item.type == MoveIndexes.nothing:
+        for _ in range(6):
+            fh.write((0).to_bytes(1, "big"))
     else:
-        if index > 0:
-            index -= 1
-    fh.write((index).to_bytes(2, "big"))
-    # Move Kong
-    move_kong = kong
-    if item.type in shared_types:
-        move_kong = 0
-    elif item.type == MoveIndexes.instrument:
-        if item.index > 1:
-            move_kong = 0
-    fh.write((move_kong).to_bytes(1, "big"))
-    # Price
-    fh.write((item.price).to_bytes(1, "big"))
-    return
+        fh.write((2).to_bytes(1, "big"))  # REQITEM_MOVE
+        if item.type == MoveIndexes.special:
+            fh.write((item.index - 1).to_bytes(1, "big"))
+            fh.write(kong.to_bytes(1, "big"))
+            fh.write((0).to_bytes(1, "big"))
+            fh.write((0).to_bytes(1, "big"))
+        elif item.type == MoveIndexes.slam:
+            fh.write((3).to_bytes(1, "big"))
+            fh.write((0).to_bytes(1, "big"))
+            fh.write((0).to_bytes(1, "big"))
+            fh.write((0).to_bytes(1, "big"))
+        elif item.type == MoveIndexes.gun:
+            if item.index == 1:
+                fh.write((4).to_bytes(1, "big"))
+                fh.write(kong.to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+            else:
+                fh.write((item.index + 3).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+        elif item.type == MoveIndexes.ammo_belt:
+            fh.write((7).to_bytes(1, "big"))
+            fh.write((0).to_bytes(1, "big"))
+            fh.write((0).to_bytes(1, "big"))
+            fh.write((0).to_bytes(1, "big"))
+        elif item.type == MoveIndexes.instrument:
+            if item.index == 1:
+                fh.write((8).to_bytes(1, "big"))
+                fh.write(kong.to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+            else:
+                fh.write((9).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+        elif item.type == MoveIndexes.flag:
+            flag_lst = [0x182, 0x184, 0x185, 0x183, 0x2FD, 0x179]
+            parsed_index = item.index
+            if parsed_index == -2:
+                parsed_index = 0x2FD
+            if parsed_index in flag_lst:
+                fh.write((10).to_bytes(1, "big"))
+                fh.write(flag_lst.index(parsed_index).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+            else:
+                raise Exception("Invalid Flag Move")
+        # Price
+        fh.write((item.price).to_bytes(1, "big"))
 
 
 price_offset = 0x36

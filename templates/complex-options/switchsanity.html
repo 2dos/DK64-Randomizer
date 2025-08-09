@@ -1,0 +1,111 @@
+{% from 'macros.html' import switchsanity_option %}
+<div class="form-check form-switch item-switch">
+    <label data-toggle="tooltip"
+            title="Simian Slam switches will be adjusted to match the level order so that tougher switches will always be in later levels.&#10;The first four levels will have green switches, the next two will have blue and the final level will have red switches.&#10;In LZR, these are assigned to random levels with no regard for level order.">
+        <input class="form-check-input"
+                type="checkbox"
+                id="switchsanity_enabled"
+                name="switchsanity_enabled"
+                display_name="Switchsanity"
+                value="True"/>
+        Switchsanity
+    </label>
+    <input class="customize"
+        type="button"
+        href="#"
+        id="switchModalActivator"
+        data-bs-toggle="modal"
+        data-bs-target="#switchModal"
+        data-toggle="modal"
+        title="Customize the switch requirements for each switch in the game."/>
+</div>
+<div class="modal fade" id="switchModal" tabindex="-1" aria-labelledby="switchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title title" id="switchModalLabel">Switchsanity Requirements</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a id="ssanity-isles-tab" data-bs-toggle="tab" data-bs-target="#ssanity-isles-tab-page" type="button" role="tab" aria-controls="ssanity-isles-tab-page" class="nav-link active" aria-current="page">Isles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="ssanity-japes-tab" data-bs-toggle="tab" data-bs-target="#ssanity-japes-tab-page" type="button" role="tab" aria-controls="ssanity-japes-tab-page" class="nav-link">Japes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="ssanity-aztec-tab" data-bs-toggle="tab" data-bs-target="#ssanity-aztec-tab-page" type="button" role="tab" aria-controls="ssanity-aztec-tab-page" class="nav-link">Aztec</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="ssanity-galleon-tab" data-bs-toggle="tab" data-bs-target="#ssanity-galleon-tab-page" type="button" role="tab" aria-controls="ssanity-galleon-tab-page" class="nav-link">Galleon</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="ssanity-fungi-tab" data-bs-toggle="tab" data-bs-target="#ssanity-fungi-tab-page" type="button" role="tab" aria-controls="ssanity-fungi-tab-page" class="nav-link">Forest</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="ssanity-isles-tab-page" role="tabpanel" aria-labelledby="ssanity-isles-tab" tabindex="0">
+                        <div class="container-fluid">
+                            <div class="row row-cols-2">
+                                {{ switchsanity_option("To top of Kroc Isle", "switchsanity_switch_isles_to_kroc_top", "mport_to_helm", "tiny") }}
+                                {{ switchsanity_option("In Helm Lobby", "switchsanity_switch_isles_helm_lobby", "gone_to_helm", "chunky") }}
+                                {{ switchsanity_option("Aztec Lobby Back Room", "switchsanity_switch_isles_aztec_lobby_back_room", "guns", "tiny") }}
+                                {{ switchsanity_option("Forest Lobby Fairy Door", "switchsanity_switch_isles_fungi_lobby_fairy", "guns", "tiny") }}
+                                {{ switchsanity_option("Spawn Cabin Isles Rocketbarrel", "switchsanity_switch_isles_spawn_rocketbarrel", "instruments", "lanky") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="ssanity-japes-tab-page" role="tabpanel" aria-labelledby="ssanity-japes-tab" tabindex="0">
+                        <div class="container-fluid">
+                            <div class="row row-cols-2">
+                                {{ switchsanity_option("Free Kong", "switchsanity_switch_japes_free_kong", "guns", "donkey") }}
+                                {{ switchsanity_option("To Hive Area", "switchsanity_switch_japes_to_hive", "guns", "tiny") }}
+                                {{ switchsanity_option("To Starting Tunnel Cavern", "switchsanity_switch_japes_to_cavern", "guns", "diddy") }}
+                                {{ switchsanity_option("To Painting Room", "switchsanity_switch_japes_to_painting_room", "guns", "diddy") }}
+                                {{ switchsanity_option("To Rambi", "switchsanity_switch_japes_to_rambi", "guns", "donkey") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="ssanity-aztec-tab-page" role="tabpanel" aria-labelledby="ssanity-aztec-tab" tabindex="0">
+                        <div class="container-fluid">
+                            <div class="row row-cols-2">
+                                {{ switchsanity_option("Tiny Temple Kong Freeing", "switchsanity_switch_aztec_free_tiny", "free_tiny", "diddy") }}
+                                {{ switchsanity_option("Llama Temple Kong Freeing", "switchsanity_switch_aztec_free_lanky", "free_lanky", "donkey") }}
+                                {{ switchsanity_option("Starting Tunnel Kasplat Room", "switchsanity_switch_aztec_to_kasplat_room", "guns", "donkey") }}
+                                {{ switchsanity_option("Door to Connector Tunnel", "switchsanity_switch_aztec_to_connector_tunnel", "instruments", "diddy") }}
+                                {{ switchsanity_option("Llama Temple Entry (Front)", "switchsanity_switch_aztec_llama_front", "guns", "donkey") }}
+                                {{ switchsanity_option("Llama Temple Entry (Side)", "switchsanity_switch_aztec_llama_side", "guns", "lanky") }}
+                                {{ switchsanity_option("Llama Temple Entry (Back)", "switchsanity_switch_aztec_llama_back", "guns", "tiny") }}
+                                {{ switchsanity_option("Door to Sand Tunnel", "switchsanity_switch_aztec_sand_tunnel", "kong", "donkey") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="ssanity-galleon-tab-page" role="tabpanel" aria-labelledby="ssanity-galleon-tab" tabindex="0">
+                        <div class="container-fluid">
+                            <div class="row row-cols-2">
+                                {{ switchsanity_option("Lighthouse Switches", "switchsanity_switch_galleon_to_lighthouse_side", "guns", "donkey") }}
+                                {{ switchsanity_option("Shipwreck Switches", "switchsanity_switch_galleon_to_shipwreck_side", "guns", "diddy") }}
+                                {{ switchsanity_option("Cannon Game Switches", "switchsanity_switch_galleon_to_cannon_game", "guns", "chunky") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="ssanity-fungi-tab-page" role="tabpanel" aria-labelledby="ssanity-fungi-tab" tabindex="0">
+                        <div class="container-fluid">
+                            <div class="row row-cols-2">
+                                {{ switchsanity_option("Yellow Tunnel", "switchsanity_switch_fungi_yellow_tunnel", "guns", "lanky") }}
+                                {{ switchsanity_option("Green Tunnel (Clock-side pair)", "switchsanity_switch_fungi_green_tunnel_near", "guns", "tiny") }}
+                                {{ switchsanity_option("Green Tunnel (Worm-side pair)", "switchsanity_switch_fungi_green_tunnel_far", "guns", "chunky") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>                            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="ssanity-reset-vanilla">Reset to Vanilla</button>
+                <button type="button" class="btn btn-secondary" id="ssanity-reset-random">Set to Random</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

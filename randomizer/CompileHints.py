@@ -19,6 +19,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion, MEDAL_REWARD_REGIONS, HINT_REGION_PAIRING
 from randomizer.Enums.Settings import (
     BananaportRando,
+    BLockerSetting,
     ClimbingStatus,
     ProgressiveHintItem,
     ActivateAllBananaports,
@@ -34,6 +35,8 @@ from randomizer.Enums.Settings import (
     KongModels,
     SlamRequirement,
     HardBossesSelected,
+    ItemRandoListSelected,
+    TroffSetting,
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
@@ -46,7 +49,7 @@ from randomizer.Lists.PathHintTree import BuildPathHintTree
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
 from randomizer.Patching.UpdateHints import UpdateHint
-from randomizer.Patching.Library.Generic import plando_colors, IsItemSelected
+from randomizer.Patching.Library.Generic import plando_colors, IsDDMSSelected
 
 if TYPE_CHECKING:
     from randomizer.Lists.WrinklyHints import HintLocation
@@ -493,6 +496,7 @@ item_type_names = {
     Types.CrateItem: "\x06a melon crate\x06",
     Types.Enemies: "\x06an enemy\x06",
     Types.Hint: "\x06a hint door\x06",
+    Types.BoulderItem: "\x06a holdable object\x06",
 }
 item_type_names_cryptic = {
     Types.Blueprint: ["a minion of K. Rool", "a shockwaving foe", "a colorfully haired henchman"],
@@ -502,6 +506,7 @@ item_type_names_cryptic = {
     Types.CrateItem: ["a bouncing box", "a breakable cube", "a crate of goodies"],
     Types.Enemies: ["a minor discouragement", "an obstacle along the way", "something found in mad maze maul"],
     Types.Hint: ["a source of a riddle", "the old granny house", "a door to the granny"],
+    Types.BoulderItem: ["an object of relative ease", "something as solid as a rock"],
 }
 
 moves_data = [
@@ -693,7 +698,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     if spoiler.settings.enable_plandomizer:
         plando_hints_placed = ApplyPlandoHints(spoiler)
         hint_distribution[HintType.Plando] = plando_hints_placed
-    level_order_matters = spoiler.settings.logic_type != LogicType.nologic and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all
+    level_order_matters = spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal) and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all
     globally_hinted_location_ids = []
     # Stores the number of hints each key will get
     key_hint_dict = {
@@ -717,6 +722,7 @@ def compileHints(spoiler: Spoiler) -> bool:
 
     # Some locations are particularly useless to hint
     useless_locations = {
+        Items.Bean: [],
         Items.HideoutHelmKey: [],
         Maps.KroolDonkeyPhase: [],
         Maps.KroolDiddyPhase: [],
@@ -729,9 +735,9 @@ def compileHints(spoiler: Spoiler) -> bool:
         useless_moves = []
         if spoiler.settings.activate_all_bananaports != ActivateAllBananaports.isles_inc_helm_lobby:
             useless_moves.append(Items.Vines)
-        if not spoiler.settings.switchsanity:
+        if not spoiler.settings.switchsanity_enabled:
             useless_moves.append(Items.Monkeyport)
-        if not spoiler.settings.switchsanity and spoiler.settings.activate_all_bananaports != ActivateAllBananaports.isles_inc_helm_lobby:
+        if not spoiler.settings.switchsanity_enabled and spoiler.settings.activate_all_bananaports != ActivateAllBananaports.isles_inc_helm_lobby:
             useless_moves.append(Items.GorillaGone)
         useless_locations[Items.HideoutHelmKey] = [
             loc for loc in spoiler.woth_paths[Locations.HelmKey] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in useless_moves
@@ -758,7 +764,14 @@ def compileHints(spoiler: Spoiler) -> bool:
         Maps.KroolTinyPhase: [Items.Feather, Items.MiniMonkey],
         Maps.KroolChunkyPhase: chunky_phase_requirement,
     }
-    if IsItemSelected(spoiler.settings.hard_bosses, spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase, False):
+    # If the Bean isn't shuffled, hinting the Bean location is pointless
+    if (
+        spoiler.settings.win_condition_item == WinConditionComplex.req_bean
+        and ItemRandoListSelected.bean not in spoiler.settings.item_rando_list_selected
+        and Locations.ForestBean in spoiler.woth_paths.keys()
+    ):
+        useless_locations[Items.Bean] = [Locations.ForestBean]
+    if IsDDMSSelected(spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase):
         required_moves[Maps.KroolLankyPhase] = [Items.Barrels, Items.Grape]
     for map_id in required_moves:
         if map_id in spoiler.settings.krool_order and map_id in spoiler.krool_paths.keys():
@@ -851,10 +864,10 @@ def compileHints(spoiler: Spoiler) -> bool:
         hint_distribution[HintType.ItemHinting] = max(0, hint_distribution[HintType.ItemHinting])
         # These filler hint types should never get added if you have enough moves placed in the world.
         # These would only be relevant if you picked this hint system and also started with a ton of moves which might error anyway. (Why would you ever do this?)
-        if spoiler.settings.randomize_blocker_required_amounts and spoiler.settings.blocker_max > 1:
+        if spoiler.settings.blocker_selection_behavior not in (BLockerSetting.pre_selected, BLockerSetting.chaos) and spoiler.settings.blocker_max > 1:
             valid_types.append(HintType.BLocker)
         if (
-            spoiler.settings.randomize_cb_required_amounts
+            spoiler.settings.tns_selection_behavior != TroffSetting.pre_selected
             and len(spoiler.settings.krool_keys_required) > 0
             and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]
             and spoiler.settings.troff_max > 0
@@ -974,10 +987,10 @@ def compileHints(spoiler: Spoiler) -> bool:
         valid_types = []
         if not spoiler.settings.serious_hints:
             valid_types.append(HintType.Joke)
-        if spoiler.settings.randomize_blocker_required_amounts and spoiler.settings.blocker_max > 1:
+        if spoiler.settings.blocker_selection_behavior not in (BLockerSetting.pre_selected, BLockerSetting.chaos) and spoiler.settings.blocker_max > 1:
             valid_types.append(HintType.BLocker)
         if (
-            spoiler.settings.randomize_cb_required_amounts
+            spoiler.settings.tns_selection_behavior != TroffSetting.pre_selected
             and len(spoiler.settings.krool_keys_required) > 0
             and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]
             and spoiler.settings.troff_max > 0
@@ -994,7 +1007,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all:
             # In entrance rando, we care more about T&S than B. Locker
             temp = hint_distribution[HintType.BLocker]
-            if spoiler.settings.randomize_blocker_required_amounts and not spoiler.settings.maximize_helm_blocker:
+            if spoiler.settings.blocker_selection_behavior not in (BLockerSetting.pre_selected, BLockerSetting.chaos) and not spoiler.settings.maximize_helm_blocker:
                 hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
             hint_distribution[HintType.TroffNScoff] = temp
             # V2 Entrance hints are only valid in full item rando where we have a proper WotH throughout the world
@@ -1029,7 +1042,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             if starting_slam_count < 2:
                 valid_types.append(HintType.RequiredSlamHint)
             # With no logic WOTH isn't built correctly so we can't make any hints with it
-            if spoiler.settings.logic_type != LogicType.nologic:
+            if spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal):
                 # If we're in full item rando with shops in the pool, we need to replace our bad filler with good filler
                 # Get rid of the bad filler
                 if HintType.BLocker in valid_types:
@@ -1061,6 +1074,9 @@ def compileHints(spoiler: Spoiler) -> bool:
                     valid_types.append(HintType.RequiredWinConditionHint)
                     # Count the number of non-trivial phases
                     hint_distribution[HintType.RequiredWinConditionHint] = len([kong for kong in spoiler.settings.krool_order if len(spoiler.krool_paths[kong]) - len(useless_locations[kong]) > 0])
+                if spoiler.settings.win_condition_item == WinConditionComplex.req_bean:
+                    valid_types.append(HintType.RequiredWinConditionHint)
+                    hint_distribution[HintType.RequiredWinConditionHint] = 1
                 # Some win conditions need help finding the camera (if you don't start with it) - variable amount of unique hints for it
                 if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
                     camera_location_id = None
@@ -1082,7 +1098,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         #     valid_types.append(HintType.DirtPatch)
 
         # There are no paths in no logic so multipath doesn't function
-        if spoiler.settings.logic_type != LogicType.nologic:
+        if spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal):
             # Dynamically calculate the number of key hints that need to be placed per key. Any WotH keys should have paths that we should hint.
             if spoiler.settings.shuffle_items and len(woth_key_ids) > 0:
                 valid_types.append(HintType.RequiredKeyHint)
@@ -1304,55 +1320,6 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_location.hint_type = HintType.RequiredKongHint
             UpdateHint(hint_location, message)
             placed_requiredkonghints += 1
-    # In non-item rando, Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
-    hinted_kongs = []
-    placed_kong_hints = 0
-    while placed_kong_hints < hint_distribution[HintType.KongLocation]:
-        kong_map = spoiler.settings.random.choice(kong_placement_levels)
-        kong_index = spoiler.shuffled_kong_placement[kong_map["name"]]["locked"]["kong"]
-        free_kong = spoiler.shuffled_kong_placement[kong_map["name"]]["puzzle"]["kong"]
-        level_index = kong_map["level"]
-
-        level_restriction = None
-        # If this is the first time we're hinting this kong, attempt to put it in an earlier level (regardless of whether or not you can read it)
-        # This only matters if level order matters
-        if level_order_matters and kong_index not in hinted_kongs:
-            level_restriction = [level for level in all_levels if spoiler.settings.BLockerEntryCount[level] <= spoiler.settings.BLockerEntryCount[kong_map["level"]]]
-        # This list of free kongs is sometimes only a subset of the correct list. A more precise list could be calculated but it would be slow.
-        free_kongs = spoiler.settings.starting_kong_list.copy()
-        free_kongs.append(free_kong)
-        hint_location = getRandomHintLocation(random=spoiler.settings.random, kongs=free_kongs, levels=level_restriction)
-        # If this fails, it's extremely likely there's already a very useful hint in the very few spot(s) this could be
-        if hint_location is None:
-            if level_restriction is not None:
-                # Can't make it too easy on em - put this hint in any hint door for these kongs
-                hint_location = getRandomHintLocation(random=spoiler.settings.random, kongs=free_kongs)
-            else:
-                # In the unfathomably rare world where our freeing kong is out of hint doors, replace this hint with a joke hint
-                # When I say unfathomably, I'm talking "you start with all moves and free B. Lockers but only 4 Kongs"
-                hint_distribution[HintType.Joke] += 1  # Adding meme hints to meme seeds is just thematic at this point
-                hint_distribution[HintType.KongLocation] -= 1
-                continue
-
-        if hint_location is not None:
-            freeing_kong_name = kong_list[free_kong]
-            if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
-                if not kong_index == Kongs.any:
-                    kong_name = "\x07" + spoiler.settings.random.choice(kong_cryptic[kong_index]) + "\x07"
-                level_name = "\x08" + spoiler.settings.random.choice(level_cryptic[level_index]) + "\x08"
-            else:
-                if not kong_index == Kongs.any:
-                    kong_name = kong_list[kong_index]
-                level_name = level_colors[level_index] + level_list[level_index] + level_colors[level_index]
-            unlock_verb = "frees"
-            if kong_index == Kongs.any:
-                unlock_verb = "accesses"
-                kong_name = "an empty cage"
-            message = f"{freeing_kong_name} {unlock_verb} {kong_name} in {level_name}."
-            hinted_kongs.append(kong_index)
-            hint_location.hint_type = HintType.KongLocation
-            UpdateHint(hint_location, message)
-            placed_kong_hints += 1
 
     # B. Locker hints need to be on the player's path to be useful
     hinted_blocker_combos = []
@@ -2702,7 +2669,7 @@ def getDoorRestrictionsForItem(spoiler: Spoiler, item: Items):
     # Progressive hints need additional restrictions to feel good
     if spoiler.settings.progressive_hint_item != ProgressiveHintItem.off:
         # If we're not in LZR, Keys that unlock levels are awful to get on the last few hints
-        if spoiler.settings.logic_type != LogicType.nologic and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
+        if spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal) and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
             # In SLO, we know what order we'll find keys in, which can put early keys even earlier
             if not spoiler.settings.hard_level_progression:
                 if item in (Items.JungleJapesKey, Items.AngryAztecKey):  # Key 1/2 hints by pack 5
@@ -2741,7 +2708,7 @@ def resetHintList():
 def getHelmProgItems(spoiler: Spoiler) -> list:
     """Get the items needed to progress to helm."""
     base_list = [Items.Monkeyport, Items.GorillaGone]
-    if spoiler.settings.switchsanity:
+    if spoiler.settings.switchsanity_enabled:
         switch_item_data = {
             SwitchType.PadMove: [
                 Items.BaboonBlast,
@@ -3083,6 +3050,22 @@ def UpdateSpoilerHintList(spoiler: Spoiler) -> None:
     for hint in hints:
         spoiler.hint_list[hint.name] = hint.hint
         spoiler.short_hint_list[hint.name] = hint.short_hint if hint.short_hint is not None else hint.hint
+        loc_name = None
+        item_name = None
+        if hint.related_location is not None:
+            loc_name = spoiler.LocationList[hint.related_location].name
+            for location_selection in spoiler.item_assignment:
+                if location_selection.location == hint.related_location:
+                    item_name = location_selection.new_subitem
+                    if item_name is not None:
+                        item_name = ItemList[item_name].name
+                    break
+        spoiler.tied_hint_locations[hint.name] = loc_name
+        spoiler.tied_hint_items[hint.name] = item_name
+        show_info_on_log = hint.hint_type in (HintType.ItemHinting, HintType.KongLocation, HintType.Multipath, HintType.WothLocation, HintType.RequiredKongHint)
+        if hint.related_location in TrainingBarrelLocations or hint.related_location in PreGivenLocations:
+            show_info_on_log = False
+        spoiler.show_tied_info_on_log[hint.name] = show_info_on_log
 
 
 def GetRegionIdOfLocation(spoiler: Spoiler, location_id: Locations) -> Regions:
@@ -3128,6 +3111,7 @@ def GenerateMultipathDict(
         path_to_camera = []
         relevant_goal_locations = []
         path_to_family = False
+        path_to_bean = False
         path_to_verses = [False] * 6
         has_path_to_verse = False
         verse_items = [
@@ -3150,6 +3134,10 @@ def GenerateMultipathDict(
                     relevant_goal_locations.append(Locations(woth_loc))
                 if endpoint_item.type == Types.Kong:
                     path_to_family = True
+                    relevant_goal_locations.append(Locations(woth_loc))
+                # Determine path to the Bean if the Bean is the win condition.
+                if endpoint_item.type == Types.Bean and spoiler.settings.win_condition_item == WinConditionComplex.req_bean and location not in useless_locations[Items.Bean]:
+                    path_to_bean = True
                     relevant_goal_locations.append(Locations(woth_loc))
                 if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
                     item = spoiler.LocationList[woth_loc].item
@@ -3209,6 +3197,8 @@ def GenerateMultipathDict(
             hint_text_components.append(path_to_camera[0])
         if path_to_family:
             hint_text_components.append("\x04Free Kongs\x04")
+        if path_to_bean:
+            hint_text_components.append("\x07The Bean\x07")
         if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
             all_verses = [xi for xi, x in enumerate(path_to_verses) if x]
             if len(all_verses) == 6:
@@ -3227,7 +3217,7 @@ def GenerateMultipathDict(
                         hint_text_components.append(f"{join_words(kong_names)} Verses")
                 if path_to_verses[5]:
                     hint_text_components.append(f"{verse_colors[5]}The Fridge{verse_colors[5]}")
-        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family or has_path_to_verse:
+        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family or path_to_bean or has_path_to_verse:
             multipath_dict_hints[location] = join_words(hint_text_components)
             multipath_dict_goals[location] = relevant_goal_locations
     return multipath_dict_hints, multipath_dict_goals
@@ -3297,7 +3287,7 @@ def AssociateHintsWithFlags(spoiler):
         if hint.related_location is not None:
             for location_selection in spoiler.item_assignment:
                 if location_selection.location == hint.related_location:
-                    hint.related_flag = location_selection.new_flag
+                    hint.related_flag = location_selection.old_flag
                     break
         if hint.name != "First Time Talk":
             spoiler.tied_hint_flags[hint.name] = hint.related_flag if hint.related_flag is not None else 0xFFFF
@@ -3369,7 +3359,7 @@ def getHelmOrderHint(spoiler):
     else:
         early_entries = kong_helm_order[:-1]
         early_entry_text = ", ".join(early_entries)
-        kong_order_text = f"{early_entry_text} AND {kong_helm_order[-1]}"
+        kong_order_text = f"{early_entry_text} & {kong_helm_order[-1]}"
     text_entries = [
         {
             # This isn't a game text

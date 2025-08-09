@@ -15,9 +15,9 @@ void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutsc
      * @brief Spawn bonus reward
      * 
      * @param object Actor Index
-     * @param x_f X Position (Float in int form)
-     * @param y_f Y Position (Float in int form)
-     * @param z_f Z Position (Float in int form)
+     * @param x X Position
+     * @param y Y Position
+     * @param z Z Position
      * @param unk0 Unknown
      * @param cutscene Spawning Condition
      * @param flag Tied flag
@@ -74,9 +74,9 @@ void spawnCrownReward(int object, float x, float y, float z, int unk0, int cutsc
      * @brief Spawn Crown Reward
      * 
      * @param object Actor Index
-     * @param x_f X Position (Float in int form)
-     * @param y_f Y Position (Float in int form)
-     * @param z_f Z Position (Float in int form)
+     * @param x X Position
+     * @param y Y Position
+     * @param z Z Position
      * @param unk0 Unknown
      * @param cutscene Spawning Condition
      * @param flag Tied flag
@@ -96,9 +96,9 @@ void spawnBossReward(int object, float x, float y, float z, int unk0, int cutsce
      * @brief Spawn boss reward
      * 
      * @param object Actor Index
-     * @param x_f X Position (Float in int form)
-     * @param y_f Y Position (Float in int form)
-     * @param z_f Z Position (Float in int form)
+     * @param x X Position
+     * @param y Y Position
+     * @param z Z Position
      * @param unk0 Unknown
      * @param cutscene Spawning Condition
      * @param flag Tied flag
@@ -135,9 +135,9 @@ void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int c
      * @brief Spawn dirt patch reward
      * 
      * @param object Actor Index
-     * @param x_f X Position (Float in int form)
-     * @param y_f Y Position (Float in int form)
-     * @param z_f Z Position (Float in int form)
+     * @param x X Position
+     * @param y Y Position
+     * @param z Z Position
      * @param unk0 Unknown
      * @param cutscene Spawning Condition
      * @param flag Tied flag
@@ -155,6 +155,13 @@ void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int c
     }
 }
 
+static const unsigned char pair_data[] = {
+	MAP_JAPES,
+	MAP_AZTECLLAMATEMPLE,
+	MAP_AZTECTINYTEMPLE,
+	MAP_FACTORY,
+};
+
 void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
     /**
      * @brief Change Character Spawner Information to account for Fairy Rando
@@ -162,33 +169,24 @@ void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
      * @param actor Actor index of the spawned item
      * @param spawner Spawner Object for the spawned item
      */
-    /*
-        INFORMATION:
-            +----------------+----------------------------+--------+---------------+
-            |   Model Name   |         Base Model         | Tested |   New Model   |
-            +----------------+----------------------------+--------+---------------+
-            | Golden Banana  | 0x69                       | True   | See Left      |
-            | Boss Key       | 0xA5                       | True   | 0xF5          |
-            | Crown          | 0xAF                       | True   | 0xF4          |
-            | Fake Item      | ----                       | True   | 0x103         |
-            | Potions        | 0xEE-0xF3                  | True   | 0xF6-0xFB     |
-            | Kong Items     | 4, 1, 6, 9, 0xC, 0xE, 0xDB | True   | See Left      |
-            +----------------+----------------------------+--------+---------------+
-            Some items are excluded because when they're actors, they are sprites which can't easily be rendered with the fairy stuff. I might have a way around this,
-            but we'll have to wait and see for probably a secondary update after the first push.
-    */
     if (actor == 248) {
         // Fairy
         int model = 0x3D;
         for (int i = 0; i < 31; i++) {
             if ((charspawnerflags[i].map == CurrentMap) && (charspawnerflags[i].spawner_id == spawner->spawn_trigger)) {
-                model = getFairyModel(charspawnerflags[i].tied_flag);
-                if ((model >= -4) && (model <= -2)) {
-                    model = 0x103;
-                }
+                model = fairy_item_table[charspawnerflags[i].tied_flag - 589].model;
             }
         }
         spawnActor(actor, model);
+    } else if (actor == 141) {
+        // Cutscene Kong
+        int check_index = 0;
+        for (int i = 0; i < 4; i++) {
+            if (pair_data[i] == CurrentMap) {
+                check_index = i;
+            }
+        }
+        spawnActor(actor, kong_check_data[check_index].model);
     } else {
         spawnActor(actor, CharSpawnerActorData[spawner->alt_enemy_value].model);
     }
@@ -198,11 +196,11 @@ void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1,
     int id = ObjectModel2Pointer[convertSubIDToIndex(index)].object_id;
     int flag = getCrateFlag(id);
     int spawn_count = 1;
-    int object = getCrateItem(flag);
+    int object = getActorIndex(crate_item_table[flag - FLAG_MELONCRATE_0]);
     int cutscene = 1;
     if (object == 0x2F) {
         // Junk Item. Set flag as we're spawning 4 unflagged melons and we want it to update check screen
-        setFlag(flag, 1, FLAGTYPE_PERMANENT);
+        setPermFlag(flag);
     }
     if (checkFlag(flag, FLAGTYPE_PERMANENT) || (object == (CUSTOM_ACTORS_START + NEWACTOR_NULL))) {
         spawn_count = 4;
@@ -220,4 +218,61 @@ void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1,
     }
     unkSpriteRenderFunc_1(1);
     displaySpriteAtXYZ(sprite_table[31], 2.5f, x, y + 15.0f, z);
+}
+
+typedef struct steel_keg_struct {
+    unsigned char map;
+    unsigned char grabbable_id;
+    unsigned char spawner_id;
+} steel_keg_struct;
+
+static steel_keg_struct SteelKegMapping[] = {
+    {.map = MAP_FUNGIMILLFRONT, .grabbable_id = GRABBABLE_MILL_FRONT_NEAR, .spawner_id = 4},
+    {.map = MAP_FUNGIMILLFRONT, .grabbable_id = GRABBABLE_MILL_FRONT_FAR, .spawner_id = 6},
+    {.map = MAP_FUNGIMILLREAR, .grabbable_id = MAP_FUNGIMILLREAR, .spawner_id = 6},
+};
+
+void* updateKegIDs(int actor, float x, float y, float z) {
+    int id = getNextUnassignedId();
+    int spawner_id = getActorSpawnerIDFromTiedActor(CurrentActorPointer_0);
+    for (int i = 0; i < 3; i++) {
+        if (CurrentMap == SteelKegMapping[i].map) {
+            if (spawner_id == SteelKegMapping[i].spawner_id) {
+                updateBoulderId(SteelKegMapping[i].grabbable_id, id);
+            }
+        }
+    }
+    return spawnActorAtXYZ(actor, x, y, z);
+}
+
+void spawnBoulderObject(actorData *actor) {
+    int index = getBoulderIndex();
+    if (index < 0) {
+        return;
+    }
+    if (HoldableSpawnBitfield & (1 << index)) {
+        return;
+    }
+    int flag = FLAG_GRABBABLES_DESTROYED + index;
+    if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
+        return;
+    }
+    int item = getBoulderItem();
+    if (!item) {
+        return;
+    }
+    if (item == (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
+        return;
+    }
+    int cutscene = 1;
+    if (isBounceObject(item)) {
+        cutscene = 2;
+    }
+    spawnActorWithFlag(item,
+        actor->xPos,
+        actor->yPos,
+        actor->zPos,
+        0, cutscene,
+        flag, 0);
+    HoldableSpawnBitfield |= (1 << index);
 }

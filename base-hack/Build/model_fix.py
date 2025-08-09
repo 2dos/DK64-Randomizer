@@ -393,7 +393,7 @@ with open(ROMName, "rb") as rom:
         data = fh.read()
     if os.path.exists("temp.bin"):
         os.remove("temp.bin")
-    for x in range(3):
+    for x in range(7):
         with open(f"fake_item_{x}.bin", "wb") as fh:
             fh.write(data)
     # Fake Item - Actor

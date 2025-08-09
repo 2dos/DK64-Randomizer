@@ -30,7 +30,6 @@ void overlay_changes(void) {
 		case OVERLAY_ARCADE:
 			break;
 		case OVERLAY_JETPAC:
-			initJetpac();
 			break;
 		case OVERLAY_RACE:
 			overlay_mod_race();
@@ -55,7 +54,13 @@ void parseCutsceneData(void) {
 	resetDisplayedMusic();
 	wipeCounterImageCache();
 	initHelmSetup();
+	resetIceTrapButtons();
 	initQoL_Cutscenes();
+	if (CurrentMap == MAP_CASTLEBALLROOM) {
+		*(unsigned char*)(0x80748DAC) = 1;
+	} else if (Rando.quality_of_life.reduce_lag) {
+		*(unsigned char*)(0x80748DAC) = 0; // Disable reflections
+	}
 	if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 		updateSkippableCutscenes();
 	}

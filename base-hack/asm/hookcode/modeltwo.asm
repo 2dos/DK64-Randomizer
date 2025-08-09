@@ -1,80 +1,40 @@
+normal_rotate: dh 0x288, 0x90, 0x18D, 0x13C, 0xDE, 0xE0, 0xE1, 0xDD, 0xDF, 0x48, 0x28F, 0x5B, 0x1F2, 0x1F3, 0x1F5, 0x1F6, 0x59, 0x257, 0x258, 0x259, 0x25A, 0x25B, 0x25C, 0xB7, 0x25F, 0x260, 0x261, 0x262, 0x27E, 0x289, 0x28A, 0x28B, 0x28C, 0x291
+backwards_rotate: dh 0x25D, 0x264, 0x265, 0x292, 0x293, 0x294, 0x295, 0x296, 0x297, 0x2A6, 0x299, 0x29A, 0x29B, 0x29C, 0x29D, 0x29E, 0x29F, 0x2A0, 0x2A1, 0x2A4, 0x2A5
+
+.align 4
 ObjectRotate:
     beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x288
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x90
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x18D
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x13C
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0xDE
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0xE0
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0xE1
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0xDD
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0xDF
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x48
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x28F
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x5B
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x1F2
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x1F3
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x1F5
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x1F6
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x59
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x257
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x258
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x259
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x25A
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x25B
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x25C
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0xB7
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x25F
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x260
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x261
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x262
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x27E
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x289
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x28A
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x28B
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x28C
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x291
-    beq $v0, $at, ObjectRotate_ApplyRotate
-    addiu $at, $zero, 0x25D
-    beq $v0, $at, ObjectRotate_ApplyReverseRotate
-    addiu $at, $zero, 0x264
-    beq $v0, $at, ObjectRotate_ApplyReverseRotate
-    addiu $at, $zero, 0x265
-    beq $v0, $at, ObjectRotate_ApplyReverseRotate
     nop
+    ; Define Loop 1
+    or $a0, $zero, $zero
+    lui $a1, hi(normal_rotate)
+    addiu $a1, $a1, lo(normal_rotate)
+    addiu $a2, $zero, 34
+    
+    ; Loop 1
+    ObjectRotate_Loop1:
+    lh $at, 0x0 ($a1)
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $a0, $a0, 1
+    bne $a0, $a2, ObjectRotate_Loop1
+    addiu $a1, $a1, 2
+
+    ; Define Loop 2
+    ObjectRotate_Define2:
+    or $a0, $zero, $zero
+    lui $a1, hi(backwards_rotate)
+    addiu $a1, $a1, lo(backwards_rotate)
+    addiu $a2, $zero, 21
+
+    ; Loop 2
+    ObjectRotate_Loop2:
+    lh $at, 0x0 ($a1)
+    beq $v0, $at, ObjectRotate_ApplyReverseRotate
+    addiu $a0, $a0, 1
+    bne $a0, $a2, ObjectRotate_Loop2
+    addiu $a1, $a1, 2
+
+    ; End Loop
     j 0x80637150
     nop
 

@@ -236,73 +236,78 @@ footer {
   outline: none;
 }
 
-.nav-tabs .nav-link .tab-full-name {
-  padding-left: 0;
+#rando_tabs .nav-link .tab-full-name {
+  min-width: fit-content;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
-.nav-tabs .nav-link {
+#rando_tabs .nav-link {
   background-color: rgba(0, 0, 0, 0);
-  border-color: var(--bs-body-color);
   color: var(--bs-body-color);
+  transition: 0.5s ease-in-out;
+  border: 2px solid transparent;
+  font-size: 1.8vh;
+  padding-left: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-right: var(--bs-nav-link-padding-x);
 }
 
-
-.nav-tabs .nav-link.active {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 1), var(--bs-body-bg));
-  border-color: var(--bs-body-color);
-  color: var(--bs-body-color);
-  border-bottom: none;
+#rando_tabs .nav-link svg, #rando_tabs .nav-link img, #rando_tabs .nav-link span {
+  padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
 }
 
-html[data-bs-theme="light"] .nav-tabs .nav-link.active {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 1), var(--bs-body-bg));
+#rando_tabs .nav-link svg, #rando_tabs .nav-link img {
+  background-color: rgba(15, 15, 15, 1);
+  border-top-left-radius: var(--bs-border-radius);
+  border-bottom-left-radius: var(--bs-border-radius);
 }
-.nav-tabs .nav-link:not(.active) {
-  border-bottom: 1px solid var(--bs-body-color);
+
+/* Active */
+#rando_tabs .nav-link:nth-child(5n+1).active {
+  border-color: rgba(255, 215, 0, 0.5);
+}
+#rando_tabs .nav-link:nth-child(5n+2).active {
+  border-color: rgba(255, 0, 0, 0.5);
+}
+#rando_tabs .nav-link:nth-child(5n+3).active {
+  border-color: rgba(22, 153, 255, 0.5);
+}
+#rando_tabs .nav-link:nth-child(5n+4).active {
+  border-color: rgba(176, 69, 255, 0.5);
+}
+#rando_tabs .nav-link:nth-child(5n+5).active {
+  border-color: rgba(65, 255, 37, 0.5);
+}
+/* Hover */
+#rando_tabs .nav-link:nth-child(5n+1):hover {
+  border-color: #ffd700;
+}
+#rando_tabs .nav-link:nth-child(5n+2):hover {
+  border-color: #ff0000;
+}
+#rando_tabs .nav-link:nth-child(5n+3):hover {
+  border-color: #1699ff;
+}
+#rando_tabs .nav-link:nth-child(5n+4):hover {
+  border-color: #b045ff;
+}
+#rando_tabs .nav-link:nth-child(5n+5):hover {
+  border-color: #41ff25;
 }
 
 #nav-tab .nav-link {
   transition: all 0.3s;
 }
 
-#nav-tab .nav-link .tab-full-name {
-  transition: all 0.3s;
-}
-
-#nav-tab .nav-link:not(.active) .tab-full-name {
-  padding-left: 0.5rem;
-}
-
-#nav-tab .nav-link:not(.active):hover .tab-full-name {
-  max-width: 900px; /* Large amount of width to account for all tab lengths. 100% doesn't properly work */
-  padding-left: 0.5rem;
-}
-
-.nav-tabs .nav-link.active .tab-full-name {
-  display: block;
-  padding-left: 0.5rem;
-}
-
 #nav-gen-type button.nav-link:hover {
   background-color: #0c0c0c;
-}
-
-#nav-tab button.nav-link:hover .tab-full-name {
-  display: block;
 }
 
 #nav-gen-type button.nav-link.active {
   border-bottom: 4px solid midnightblue;
   border-radius: 3px;
-}
-
-@media (max-width: 1400px) {
-  #nav-tab .nav-link:not(.active) .tab-full-name {
-    white-space: nowrap;
-    overflow-x: hidden;
-    max-width: 0px;
-    padding-left: 0;
-  }
 }
 
 /*
@@ -1100,14 +1105,20 @@ input[type=range][disabled]::-ms-fill-upper {
   border-bottom-right-radius: 0;
 }
 
-.select-number-container input {
+.select-number-container input[type=text],
+.select-number-container input[type=number] {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   min-width: 0px !important;
   width: fit-content;
 }
 
-.select-number-container.hide-input input {
+.select-number-container.hide-input input[type=text],
+.select-number-container.hide-input input[type=number] {
+  display: none !important;
+}
+
+.select-number-container:not(.hide-input) div {
   display: none !important;
 }
 
@@ -1125,4 +1136,86 @@ input[type=range][disabled]::-ms-fill-upper {
   width: 15%;
   display: inline-block;
   margin-top: 0;
+}
+
+.dropdown-multiselect {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  font-family: sans-serif;
+}
+.dropdown-multiselect .dropdown-toggle {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: var(--donk-green);
+  border-radius: var(--bs-border-radius);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dropdown-multiselect .dropdown-menu {
+  display: none;
+  position: absolute;
+  width: 100%;
+  background-color: var(--donk-green);
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+.dropdown-multiselect .dropdown-menu.show {
+  display: block;
+}
+.dropdown-multiselect .dropdown-item {
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+}
+.dropdown-multiselect .dropdown-item input {
+  margin-right: 8px;
+}
+
+.dropdown-multiselect .control-button {
+  border-radius: 10px;
+  border-width: 0px;
+  color: white;
+  background: #222;
+  text-align: center;
+  flex: 1;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+}
+.dropdown-multiselect .control-button:hover {
+  background-color: #444;
+}
+
+.sortablejs .list-group-item {
+  background-color: var(--donk-dark-green);
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.25rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.sortablejs .list-group-item.ischeck {
+  background-color: #00779c;
+}
+
+.ir-hint {
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+}
+
+.ir-hint.items {
+  background-color: var(--donk-dark-green);
+}
+
+.ir-hint.checks {
+  background-color: #00779c;
 }

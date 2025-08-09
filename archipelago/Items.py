@@ -40,8 +40,29 @@ event_table = {
     "Victory": ItemData(0xD64000, True),  # Temp
 }
 
+
+def use_original_name_or_trap_name(item: DK64RItem) -> str:
+    """Determine whether to use the original donk name or a renamed ice trap name."""
+    if item.type == DK64RTypes.FakeItem:
+        # Rename traps to be easier for trap link
+        parts = item.name.split("(")
+
+        main_part = parts[0]
+        trap_word = main_part.strip().split(" ")[-1]
+
+        subtype = parts[1].split(")")[0]
+        if "-" in subtype:
+            if "GB" not in subtype.split("-")[1].strip():
+                return item.name  # Don't mess with these. We'll deal with them if we decide to add fake Beans/Keys to AP.
+            subtype = subtype.split("-")[0].strip()
+
+        return f"{subtype} {trap_word}"
+    else:
+        return item.name
+
+
 # Complete item table
-full_item_table = {item.name: ItemData(int(BASE_ID + index), item.playthrough) for index, item in DK64RItem.ItemList.items()}
+full_item_table = {use_original_name_or_trap_name(item): ItemData(int(BASE_ID + index), item.playthrough) for index, item in DK64RItem.ItemList.items()}
 
 lookup_id_to_name: typing.Dict[int, str] = {data.code: item_name for item_name, data in full_item_table.items()}
 
@@ -98,8 +119,8 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         if barrier_type == BarrierItems.CompanyCoin:
             nintendo_item = DK64RItem.ItemList[DK64RItems.NintendoCoin]
             rareware_item = DK64RItem.ItemList[DK64RItems.RarewareCoin]
-            item_table.append(DK64Item(nintendo_item.name, ItemClassification.progression_skip_balancing, full_item_table[nintendo_item.name].code, world.player))
-            item_table.append(DK64Item(rareware_item.name, ItemClassification.progression_skip_balancing, full_item_table[rareware_item.name].code, world.player))
+            item_table.append(DK64Item(nintendo_item.name, ItemClassification.progression, full_item_table[nintendo_item.name].code, world.player))
+            item_table.append(DK64Item(rareware_item.name, ItemClassification.progression, full_item_table[rareware_item.name].code, world.player))
             types_handled_directly.extend([DK64RTypes.NintendoCoin, DK64RTypes.RarewareCoin])
             continue
 
@@ -123,7 +144,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
 
             # Add progression items
             for i in range(progression_count):
-                item_table.append(DK64Item(item_obj.name, ItemClassification.progression_skip_balancing, full_item_table[item_obj.name].code, world.player))
+                item_table.append(DK64Item(item_obj.name, ItemClassification.progression, full_item_table[item_obj.name].code, world.player))
 
             # Add remaining items as useful
             for i in range(max_quantity - progression_count):
@@ -168,13 +189,21 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         item = DK64RItem.ItemList[seed_item]
         if item.type in [DK64RItems.JunkCrystal, DK64RItems.JunkMelon, DK64RItems.JunkAmmo, DK64RItems.JunkFilm, DK64RItems.JunkOrange, DK64RItems.CrateMelon]:
             classification = ItemClassification.filler
-        elif item.type in [DK64RItems.IceTrapBubble, DK64RItems.IceTrapReverse, DK64RItems.IceTrapSlow]:
+        elif item.type in [
+            DK64RItems.IceTrapBubble,
+            DK64RItems.IceTrapReverse,
+            DK64RItems.IceTrapSlow,
+            DK64RItems.IceTrapDisableA,
+            DK64RItems.IceTrapDisableB,
+            DK64RItems.IceTrapDisableCU,
+            DK64RItems.IceTrapDisableZ,
+        ]:
             classification = ItemClassification.trap
         elif item.type == DK64RTypes.Key:
             classification = ItemClassification.progression
         # Only mark Bean/Pearl as progression if they weren't handled directly as barrier items
         elif item.type in (DK64RTypes.Pearl, DK64RTypes.Bean) and DK64RTypes.Bean not in types_handled_directly:
-            classification = ItemClassification.progression_skip_balancing
+            classification = ItemClassification.progression
         # The playthrough tag doesn't quite 1-to-1 map to Archipelago's "progression" type - some items we don't consider "playthrough" can affect logic
         elif item.playthrough is True or item.type == DK64RTypes.Blueprint:
             classification = ItemClassification.progression_skip_balancing
@@ -189,7 +218,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             world.multiworld.get_location("The End of Helm", world.player).place_locked_item(DK64Item("Key 8", ItemClassification.progression, full_item_table[item.name].code, world.player))
             world.spoiler.settings.location_pool_size -= 1
             continue
-        item_table.append(DK64Item(item.name, classification, full_item_table[item.name].code, world.player))
+        item_table.append(DK64Item(use_original_name_or_trap_name(item), classification, full_item_table[item.name].code, world.player))
         # print("Adding item: " + seed_item.name + " | " + str(classification))
 
     # Extract starting moves from the item table - these items will be placed in your starting inventory directly
@@ -223,6 +252,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     # Handle starting move alterations here
     all_eligible_starting_moves = DK64RItemPoolUtility.AllKongMoves()
     all_eligible_starting_moves.extend(DK64RItemPoolUtility.TrainingBarrelAbilities())
+    all_eligible_starting_moves.extend(DK64RItemPoolUtility.JunkSharedMoves)
+    all_eligible_starting_moves.append(DK64RItems.Camera)
+    all_eligible_starting_moves.append(DK64RItems.Shockwave)
     # Either include Climbing as an eligible starting move or place it in the starting inventory
     if world.options.climbing_shuffle:
         all_eligible_starting_moves.extend(DK64RItemPoolUtility.ClimbingAbilities())
@@ -262,6 +294,10 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     trap_weights += [DK64RItems.IceTrapBubble] * world.options.bubble_trap_weight.value
     trap_weights += [DK64RItems.IceTrapReverse] * world.options.reverse_trap_weight.value
     trap_weights += [DK64RItems.IceTrapSlow] * world.options.slow_trap_weight.value
+    trap_weights += [DK64RItems.IceTrapDisableA] * world.options.disable_a_trap.value
+    trap_weights += [DK64RItems.IceTrapDisableB] * world.options.disable_b_trap.value
+    trap_weights += [DK64RItems.IceTrapDisableZ] * world.options.disable_z_trap.value
+    trap_weights += [DK64RItems.IceTrapDisableCU] * world.options.disable_c_trap.value
 
     trap_count = 0 if (len(trap_weights) == 0) else math.ceil(filler_item_count * (world.options.trap_fill_percentage.value / 100.0))
     filler_item_count -= trap_count
@@ -269,17 +305,16 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     possible_junk = [DK64RItems.JunkMelon]
     # possible_junk = [DK64RItems.JunkCrystal, DK64RItems.JunkMelon, DK64RItems.JunkAmmo, DK64RItems.JunkFilm, DK64RItems.JunkOrange] # Someday...
 
-    for i in range(filler_item_count):
+    for _ in range(filler_item_count):
         junk_enum = world.random.choice(possible_junk)
         junk_item = DK64RItem.ItemList[junk_enum]
         item_table.append(DK64Item(junk_item.name, ItemClassification.filler, full_item_table[junk_item.name].code, world.player))
 
-    possible_traps = [DK64RItems.IceTrapBubble, DK64RItems.IceTrapReverse, DK64RItems.IceTrapSlow]
-
-    for i in range(trap_count):
+    for _ in range(trap_count):
         trap_enum = world.random.choice(trap_weights)
         trap_item = DK64RItem.ItemList[trap_enum]
-        item_table.append(DK64Item(trap_item.name, ItemClassification.trap, full_item_table[trap_item.name].code, world.player))
+        trap_name = use_original_name_or_trap_name(trap_item)
+        item_table.append(DK64Item(trap_name, ItemClassification.trap, full_item_table[trap_name].code, world.player))
 
     # print("projected available locations: " + str(world.spoiler.settings.location_pool_size - 1))
     # print("projected items to place: " + str(len(item_table)))

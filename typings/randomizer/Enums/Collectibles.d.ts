@@ -3,4 +3,5 @@ export enum Collectibles {
     bunch = 2,
     balloon = 3,
     coin = 4,
+    racecoin = 5,
 }

@@ -67,61 +67,46 @@ static const short poke_snap_actors[] = {
     CUSTOM_ACTORS_START + NEWACTOR_SCARAB, // Scarab
 };
 
-typedef struct dk_rap_wincon_data {
-    /* 0x000 */ unsigned char move_type; // special, slam, gun, belt, instrument, flag
-    /* 0x001 */ unsigned char kong; // if necessary
-    /* 0x002 */ unsigned short signifier; // flag index, "bitwise or" if not flag
-} dk_rap_wincon_data;
+typedef struct move_kong_pairs {
+    unsigned char move_type;
+    unsigned char kong;
+    unsigned char level;
+} move_kong_pairs;
 
-static const dk_rap_wincon_data dk_rap_conditions[] = {
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_KONG_DK}, // DK, "So they're finally here"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_KONG_DIDDY}, // Diddy, "So they're finally here"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_KONG_LANKY}, // Lanky, "So they're finally here"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_KONG_TINY}, // Tiny, "So they're finally here"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_KONG_CHUNKY}, // Chunky, "So they're finally here"
-    {.move_type = PURCHASE_GUN, .kong=KONG_DK, .signifier=1}, // Coconut Gun, "His Coconut Gun can fire in spurts"
-    {.move_type = PURCHASE_MOVES, .kong=KONG_DK, .signifier=MOVECHECK_STRONG}, // Strong Kong, "He's bigger, faster and stronger too"
-    // {.move_type = PURCHASE_FLAG, .signifier=FLAG_ABILITY_SHOCKWAVE}, // Shockwave, implied through video
-    {.move_type = PURCHASE_MOVES, .kong=KONG_TINY, .signifier=MOVECHECK_MINI}, // Mini Monkey, "She can shrink in style to suit her mood"
-    {.move_type = PURCHASE_MOVES, .kong=KONG_TINY, .signifier=MOVECHECK_TWIRL}, // Twirl, "She can float through the air"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_ABILITY_CLIMBING}, // Climbing, "And climb up trees"
-    {.move_type = PURCHASE_MOVES, .kong=KONG_LANKY, .signifier=MOVECHECK_OSTAND}, // Orangstand, "He can handstand, when he needs to"
-    {.move_type = PURCHASE_MOVES, .kong=KONG_LANKY, .signifier=MOVECHECK_BALLOON}, // Balloon, "Inflate himself, just like a balloon"
-    {.move_type = PURCHASE_INSTRUMENT, .kong=KONG_LANKY, .signifier=1}, // Trombone, "This crazy kong just digs this tune"
-    // {.move_type = PURCHASE_MOVES, .kong=KONG_DIDDY, .signifier=MOVECHECK_SPRING}, // Spring, implied through video
-    {.move_type = PURCHASE_MOVES, .kong=KONG_DIDDY, .signifier=MOVECHECK_ROCKETBARREL}, // Rocket, "He can fly real high with his jetpac on"
-    {.move_type = PURCHASE_GUN, .kong=KONG_DIDDY, .signifier=1}, // Popguns, "With his pistols out, he's one tough kong"
-    {.move_type = PURCHASE_INSTRUMENT, .kong=KONG_DIDDY, .signifier=1}, // Guitar, "He'll make you smile when he plays his tune"
-    // {.move_type = PURCHASE_MOVES, .kong=KONG_CHUNKY, .signifier=MOVECHECK_HUNKY}, // Hunky, Implied through video
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_TBARREL_BARREL}, // Barrels, "Can pick up a boulder with relative ease"
-    // {.move_type = PURCHASE_SLAM, .signifier=3}, // SDSS, Implied through video
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_ITEM_CRANKY}, // Cranky, "C'mon Cranky, take it to the fridge"
-    {.move_type = PURCHASE_GUN, .kong=KONG_CHUNKY, .signifier=1}, // Pineapple, "Walnuts, Peanuts, Pineapple Smells"
-    {.move_type = PURCHASE_GUN, .kong=KONG_LANKY, .signifier=1}, // Grape, "Grapes, Melons, Oranges and Coconut Shells"
-    {.move_type = PURCHASE_FLAG, .signifier=FLAG_TBARREL_ORANGE}, // Oranges, "Grapes, Melons, Oranges and Coconut Shells"
+static const unsigned char required_guns[] = {KONG_DK, KONG_DIDDY, KONG_LANKY, KONG_CHUNKY};
+static const move_kong_pairs moves_for_rap[] = {
+    {.move_type = 0, .kong = KONG_DK, .level=1},  // Strong Kong
+    {.move_type = 2, .kong = KONG_DK, .level=0},  // Coconut
+    {.move_type = 0, .kong = KONG_DIDDY, .level=1},  // Rocket
+    {.move_type = 2, .kong = KONG_DIDDY, .level=0},  // Peanut
+    {.move_type = 4, .kong = KONG_DIDDY, .level=0},  // Guitar
+    {.move_type = 0, .kong = KONG_LANKY, .level=0},  // Orangstand
+    {.move_type = 0, .kong = KONG_LANKY, .level=1},  // Balloon
+    {.move_type = 2, .kong = KONG_LANKY, .level=0},  // Grape
+    {.move_type = 4, .kong = KONG_LANKY, .level=0},  // Trombone
+    {.move_type = 0, .kong = KONG_TINY, .level=0},  // Mini Monkey
+    {.move_type = 0, .kong = KONG_TINY, .level=1},  // Twirl
+    {.move_type = 2, .kong = KONG_CHUNKY, .level=0},  // Pineapple
 };
+static const short rap_flags[] = {FLAG_TBARREL_BARREL, FLAG_TBARREL_ORANGE, FLAG_ABILITY_CLIMBING, FLAG_ITEM_CRANKY};
 
 int hasBeatenDKRapWinCon(void) {
-    for (int i = 0; i < sizeof(dk_rap_conditions) / sizeof(dk_rap_wincon_data); i++) {
-        PURCHASE_TYPES move_type = dk_rap_conditions[i].move_type;
-        int signifier = dk_rap_conditions[i].signifier;
-        if ((move_type == PURCHASE_MOVES) || (move_type == PURCHASE_GUN) || (move_type == PURCHASE_INSTRUMENT)) {
-            kongs kong = dk_rap_conditions[i].kong;
-            int head = (int)&MovesBase[kong];
-            unsigned char val = *(unsigned char*)(head + move_type);
-            if (!(val & signifier)) {
-                return 0;
-            }
-        } else if ((move_type == PURCHASE_SLAM) || (move_type == PURCHASE_AMMOBELT)) {
-            int head = (int)&MovesBase[0];
-            unsigned char val = *(unsigned char*)(head + move_type);
-            if (val < signifier) {
-                return 0;
-            }
-        } else {
-            if (!checkFlagDuplicate(signifier, FLAGTYPE_PERMANENT)) {
-                return 0;
-            }
+    if (getItemCount_new(REQITEM_KONG, -1, -1) != 5) {
+        // Missing at least 1 kong
+        return 0;
+    }
+    for (int i = 0; i < 12; i++) {
+        int kong = moves_for_rap[i].kong;
+        int head = (int)&MovesBase[kong];
+        unsigned char val = *(unsigned char*)(head + moves_for_rap[i].move_type);
+        int move_lvl = moves_for_rap[i].level;
+        if ((val & (1 << move_lvl)) == 0) {
+            return 0;
+        }
+    }
+    for (int i = 0; i < 4; i++) {
+        if (!hasFlagMove(rap_flags[i])) {
+            return 0;
         }
     }
     return 1;
@@ -131,7 +116,7 @@ void checkSeedVictory(void) {
     if (!checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
         switch(Rando.win_condition) {
             case GOAL_KEY8:
-                if (checkFlagDuplicate(FLAG_KEYHAVE_KEY8, FLAGTYPE_PERMANENT)) {
+                if (getItemCount_new(REQITEM_KEY, 7, 0)) {
                     beatGame();
                 }
                 break;

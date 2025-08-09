@@ -876,12 +876,27 @@ class ExtraTextures(IntEnum):
     KrushaFace323 = auto()
     KrushaFace324 = auto()
     KrushaFace325 = auto()
+    FakeKey = auto()
+    FakeKeyPalette = auto()
+    FakeBean = auto()
     APPearl0 = auto()
     APPearl1 = auto()
     APPearl2 = auto()
     APPearl3 = auto()
     APPearl4 = auto()
     APPearl5 = auto()
+    StaticGoldPalette = auto()
+    PotionSpin0 = auto()
+    PotionSpin1 = auto()
+    PotionSpin2 = auto()
+    PotionSpin3 = auto()
+    PotionSpin4 = auto()
+    PotionSpin5 = auto()
+    PotionSpin6 = auto()
+    PotionSpin7 = auto()
+    PotionSpin8 = auto()
+    DiscoDonkShirt = auto()
+    DiscoDonkGlove = auto()
 
 
 class MoveTypes(IntEnum):
@@ -896,3 +911,60 @@ class MoveTypes(IntEnum):
     gb = auto()
     gun_upgrade = auto()
     instrument_upgrade = auto()
+
+
+class ItemPreview(IntEnum):
+    """Item Preview Enum."""
+
+    JapesMinecartIntro = 0
+    JapesMinecartReward = auto()
+    JapesMinecartFail = auto()
+    FungiMinecartIntro = auto()
+    FungiMinecartFail = auto()
+    CastleMinecartIntro = auto()
+    CastleMinecartReward = auto()
+    FactoryCarRace = auto()
+    MermaidIntro = auto()
+    MermaidReward = auto()
+    MermaidMissing = auto()
+    VultureFreedom = auto()
+    VulturePreview = auto()
+    LlamaTalk = auto()
+    LlamaRescue = auto()
+    JetpacIntro = auto()
+    JetpacReward = auto()
+    RabbitFinalRaceIntro = auto()
+    RabbitFirstRaceReward = auto()
+    RabbitFinalRaceReward = auto()
+    AppleIntro = auto()
+    ApplePickUp = auto()
+    AppleReward = auto()
+    Seal = auto()
+    RarewareGB = auto()
+    IceTomato = auto()
+    CastleCarRace = auto()
+    OwlRace = auto()
+    GoneMicro = auto()
+    PortMicro = auto()
+    BongosMicro = auto()
+    TriangleMicro = auto()
+    SaxMicro = auto()
+    TromboneMicro = auto()
+    GuitarMicro = auto()
+    SpiderIntro = auto()
+    SlamMicro = auto()
+    ChunkyIgloo = auto()
+    CrankyMicro = auto()
+    FunkyMicro = auto()
+    CandyMicro = auto()
+    SnideMicro = auto()
+
+
+class CompTextFiles(IntEnum):
+    """Compressed Text Files Enum."""
+
+    PreviewsNormal = 0x40
+    PreviewsFlavor = auto()
+    Wrinkly = auto()
+    WrinklyShort = auto()
+    ItemLocations = auto()

@@ -69,7 +69,7 @@ class CustomLocation:
         self.tied_warp_event = tied_warp_event
         if logic is None:
             self.has_access_logic = False
-            self.logic = lambda l: True
+            self.logic = lambda _: True
         else:
             self.has_access_logic = True
             self.logic = logic
@@ -1600,7 +1600,7 @@ CustomLocations = {
     Levels.FranticFactory: [
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Under R and D Grate (1)",
+            name="Under R&D Grate (1)",
             x=4119,
             y=1313,
             z=1165.81,
@@ -1975,7 +1975,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Diddy R and D",
+            name="Diddy R&D",
             x=4450,
             y=1336,
             z=735,
@@ -2000,7 +2000,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Chunky R and D",
+            name="Chunky R&D",
             x=4574,
             y=1336,
             z=1350,
@@ -2052,7 +2052,7 @@ CustomLocations = {
             group=3,
         ),
         CustomLocation(
-            name="R and D lever room - by Tiny's barrel",
+            name="R&D lever room - by Tiny's barrel",
             map=Maps.FranticFactory,
             x=3693.0,
             y=1263.0,
@@ -2064,7 +2064,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Under R and D Grate (2)",
+            name="Under R&D Grate (2)",
             x=4054,
             y=1313,
             z=776,
@@ -5305,7 +5305,7 @@ CustomLocations = {
             z=637.07,
             max_size=56,
             logic_region=Regions.FungiForestLobby,
-            logic=lambda l: ((l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.donkey and l.diddy and l.lanky and l.tiny) or l.CanPhase()) and l.chunky and l.gorillaGone,
+            logic=lambda l: l.CanOpenForestLobbyGoneDoor() and l.chunky and l.gorillaGone,
             group=12,
             vanilla_crown=True,
         ),
@@ -5663,7 +5663,7 @@ CustomLocations = {
             max_size=64,
             group=4,
             logic_region=Regions.OuterIsles,
-            logic=lambda l: True,
+            logic=lambda _: True,
         ),
         CustomLocation(
             map=Maps.Isles,

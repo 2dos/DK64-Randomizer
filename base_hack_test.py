@@ -6,6 +6,7 @@ from typing import BinaryIO
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.ASMPatcher import patchAssembly, patchAssemblyCosmetic
+from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Items import Items
@@ -18,7 +19,7 @@ IO_LOGGING = False
 if not APPLY_VARIABLES:
     sys.exit()
 
-settings_string = "fjNPw8MxDKY6IJUtjnqSszmCCXBHofUA4IhkQlS2Nc+EZ+PxGiUiWxClFcdqgQmC9AAO/AAbBAADDAADFAACbzgSGIyGOhbgKQWiltsC3ASSAaZM1UQoxSClFMBkyyvV+CgLcAQYCbwEDgbgAwgEcQIEgrkBQoGcwMFg7oBwwIuQQmQ1AdWRXgAynEpq1hJQlHdVqyWJGZitIEcnaFalL0VEWARMRQBWLLHI3ZLxd5FA5DsZe09AzycYcgDKpwRCAAXCgAXDAATDgATEAAPWgAPEgALFAAHFgAPGAALGgAHXAAWnyvQJLlS2eyyejYfAwjmSu1gYDOXVYDiqKymVFoxxSgBQVg0oBOKi0SRcQyKnjWlkGkRGujsADoBeEIQEhQWHVhGWCAiJEhaKCosSlwwMjRMXjg6PE5gQEJEUFN8DGpoGBpWZYAGVGZjhAGIAToBZACiAA"
+settings_string = "Px+VnF6AAa/AAZggAAwwAAYoAAP9A0yAoCBgIDgYIBASCgoGBYODAiAJ1lhuAJvARwAZxAhyApzAx0A65BBMwEJxShMDTCaCBNZAK0C0S0i0y1E1U1m122W2gbbbjbqdwbzcJcBb4d5eAcQc5cYcicrcweKdAdJdUdadjdsNFMxNQki4gDrVEqAQUQKMFIClBTAQRcE9TZPlm2YhGyyn4ZCWFsBbgJGYxTSBHR8QpFmpJeixi9U6FRCwCEzCiASJHaqqsmWHJkneIoDiGV5ArGgY8ljAyAAVTPEN0EIQAC0KABaGAAlDgASiAAHVoADokABUUAAaLAAdGAAKjQADVwAFk9EsqmwVgui2PZniyDBHDAM5klgD5dgcKYqFoY4rA0FYhjWFwWk8JJ/EsQZIl0XhcEBIUFhgaHCAiJCgqLDAyNDg6PEBCREZISkxOUFJUVlhaXF5gYmRmaGq4ury/WL4AYAAwgBiAB2AH6CFXJwRCKIyFMdCVwY1z1J0QCIZCmOhKlsbBzw6R4wCHdcQZaxCC9fP4Bs8fDCaOd3Ur2VmZxTZ1bF8KcKAmEQyFMdCVLY1z4RlM/gCyAIKACYAKI8EQyFMdCVLY1z4RlOlbXxnW+d88gB7gDzFAgxSSjD0lFmGnHoYpp6KXwLAiDDkFmnIIpqrstuvwRyS1PQAfIA9QB9AD2AH2AA"
 setting_data = decrypt_settings_string_enum(settings_string)
 settings = Settings(setting_data)
 spoiler = Spoiler(settings)
@@ -31,6 +32,7 @@ spoiler.japes_rock_actor = 45
 spoiler.aztec_vulture_actor = 45
 spoiler.arcade_item_reward = Items.NintendoCoin
 spoiler.jetpac_item_reward = Items.RarewareCoin
+spoiler.item_assignment = []
 spoiler.coin_requirements = {
     Maps.CavesLankyRace: 50,
     Maps.AztecTinyRace: 50,
@@ -81,6 +83,12 @@ class TestROM:
         if IO_LOGGING:
             io_logs.append({"action": "write", "value": value, "size": size})
         self.stream.write(value.to_bytes(size, "big"))
+
+    def writeFloat(self, value: float):
+        """Binary IO write floating point value."""
+        if IO_LOGGING:
+            io_logs.append({"action": "write", "value": value, "size": "float"})
+        self.writeMultipleBytes(int(float_to_hex(value), 16), 4)
 
     def writeBytes(self, bytes):
         """Binary IO write."""

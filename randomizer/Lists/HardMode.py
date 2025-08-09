@@ -23,6 +23,7 @@ HardItems = [
     HardModeItem("Lower Max Refill Amounts", -1, "Refills will have lower caps."),
     HardModeItem("Strict Helm Timer", -1, "Helm Timer starts a base time of 0 minutes instead of 10."),
     HardModeItem("Angry Caves", -1, "Rockfall in Caves is constant, and more deadly than ever."),
+    HardModeItem("Fast Balloons", -1, "Balloons are 4x faster than normal."),
     HardModeItem(
         "Donk in the Dark World",
         -1,

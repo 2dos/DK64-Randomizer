@@ -19,7 +19,7 @@ LogicRegions = {
         LocationLogic(Locations.FeatherGun, lambda l: l.istiny and l.CanBuy(Locations.FeatherGun)),
         LocationLogic(Locations.PineappleGun, lambda l: l.ischunky and l.CanBuy(Locations.PineappleGun)),
     ], [], [
-        TransitionFront(Regions.FunkyGeneric, lambda l: False),
+        TransitionFront(Regions.FunkyGeneric, lambda _: False),
     ]),
 
     Regions.FunkyAztec: Region("Funky Aztec", HintRegion.AztecShops, Levels.Shops, False, None, [
@@ -30,7 +30,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyAztecGun, lambda l: l.istiny and l.CanBuy(Locations.TinyAztecGun)),
         LocationLogic(Locations.ChunkyAztecGun, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyAztecGun)),
     ], [], [
-        TransitionFront(Regions.FunkyGeneric, lambda l: False),
+        TransitionFront(Regions.FunkyGeneric, lambda _: False),
     ]),
 
     Regions.FunkyFactory: Region("Funky Factory", HintRegion.FactoryShops, Levels.Shops, False, None, [
@@ -41,7 +41,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyFactoryGun, lambda l: l.istiny and l.CanBuy(Locations.TinyFactoryGun)),
         LocationLogic(Locations.ChunkyFactoryGun, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyFactoryGun)),
     ], [], [
-        TransitionFront(Regions.FunkyGeneric, lambda l: False),
+        TransitionFront(Regions.FunkyGeneric, lambda _: False),
     ]),
 
     Regions.FunkyGalleon: Region("Funky Galleon", HintRegion.GalleonShops, Levels.Shops, False, None, [
@@ -52,7 +52,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyGalleonGun, lambda l: l.istiny and l.CanBuy(Locations.TinyGalleonGun)),
         LocationLogic(Locations.ChunkyGalleonGun, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyGalleonGun)),
     ], [], [
-        TransitionFront(Regions.FunkyGeneric, lambda l: False),
+        TransitionFront(Regions.FunkyGeneric, lambda _: False),
     ]),
 
     Regions.FunkyForest: Region("Funky Forest", HintRegion.ForestShops, Levels.Shops, False, None, [
@@ -63,7 +63,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyForestGun, lambda l: l.istiny and l.CanBuy(Locations.TinyForestGun)),
         LocationLogic(Locations.ChunkyForestGun, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyForestGun)),
     ], [], [
-        TransitionFront(Regions.FunkyGeneric, lambda l: False),
+        TransitionFront(Regions.FunkyGeneric, lambda _: False),
     ]),
 
     Regions.FunkyCaves: Region("Funky Caves", HintRegion.CavesShops, Levels.Shops, False, None, [
@@ -74,7 +74,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyCavesGun, lambda l: l.istiny and l.CanBuy(Locations.TinyCavesGun)),
         LocationLogic(Locations.ChunkyCavesGun, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyCavesGun)),
     ], [], [
-        TransitionFront(Regions.FunkyGeneric, lambda l: False),
+        TransitionFront(Regions.FunkyGeneric, lambda _: False),
     ]),
 
     Regions.FunkyCastle: Region("Funky Castle", HintRegion.CastleShops, Levels.Shops, False, None, [
@@ -85,7 +85,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyCastleGun, lambda l: l.istiny and l.CanBuy(Locations.TinyCastleGun)),
         LocationLogic(Locations.ChunkyCastleGun, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyCastleGun)),
     ], [], [
-        TransitionFront(Regions.FunkyGeneric, lambda l: False),
+        TransitionFront(Regions.FunkyGeneric, lambda _: False),
     ]),
 
     Regions.CandyGeneric: Region("Candy Generic", HintRegion.Error, Levels.Shops, False, None, [], [], []),
@@ -98,7 +98,7 @@ LogicRegions = {
         LocationLogic(Locations.Saxophone, lambda l: l.istiny and l.CanBuy(Locations.Saxophone)),
         LocationLogic(Locations.Triangle, lambda l: l.ischunky and l.CanBuy(Locations.Triangle)),
     ], [], [
-        TransitionFront(Regions.CandyGeneric, lambda l: False),
+        TransitionFront(Regions.CandyGeneric, lambda _: False),
     ]),
 
     Regions.CandyFactory: Region("Candy Factory", HintRegion.FactoryShops, Levels.Shops, False, None, [
@@ -109,7 +109,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyFactoryInstrument, lambda l: l.istiny and l.CanBuy(Locations.TinyFactoryInstrument)),
         LocationLogic(Locations.ChunkyFactoryInstrument, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyFactoryInstrument)),
     ], [], [
-        TransitionFront(Regions.CandyGeneric, lambda l: False),
+        TransitionFront(Regions.CandyGeneric, lambda _: False),
     ]),
 
     Regions.CandyGalleon: Region("Candy Galleon", HintRegion.GalleonShops, Levels.Shops, False, None, [
@@ -120,7 +120,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyGalleonInstrument, lambda l: l.istiny and l.CanBuy(Locations.TinyGalleonInstrument)),
         LocationLogic(Locations.ChunkyGalleonInstrument, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyGalleonInstrument)),
     ], [], [
-        TransitionFront(Regions.CandyGeneric, lambda l: False),
+        TransitionFront(Regions.CandyGeneric, lambda _: False),
     ]),
 
     Regions.CandyCaves: Region("Candy Caves", HintRegion.CavesShops, Levels.Shops, False, None, [
@@ -131,7 +131,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyCavesInstrument, lambda l: l.istiny and l.CanBuy(Locations.TinyCavesInstrument)),
         LocationLogic(Locations.ChunkyCavesInstrument, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyCavesInstrument)),
     ], [], [
-        TransitionFront(Regions.CandyGeneric, lambda l: False),
+        TransitionFront(Regions.CandyGeneric, lambda _: False),
     ]),
 
     Regions.CandyCastle: Region("Candy Castle", HintRegion.CastleShops, Levels.Shops, False, None, [
@@ -142,7 +142,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyCastleInstrument, lambda l: l.istiny and l.CanBuy(Locations.TinyCastleInstrument)),
         LocationLogic(Locations.ChunkyCastleInstrument, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyCastleInstrument)),
     ], [], [
-        TransitionFront(Regions.CandyGeneric, lambda l: False),
+        TransitionFront(Regions.CandyGeneric, lambda _: False),
     ]),
 
     Regions.CrankyGeneric: Region("Cranky Generic", HintRegion.Jetpac, Levels.Shops, False, None, [
@@ -157,7 +157,7 @@ LogicRegions = {
         LocationLogic(Locations.MiniMonkey, lambda l: l.istiny and l.CanBuy(Locations.MiniMonkey)),
         LocationLogic(Locations.HunkyChunky, lambda l: l.ischunky and l.CanBuy(Locations.HunkyChunky)),
     ], [], [
-        TransitionFront(Regions.CrankyGeneric, lambda l: True),
+        TransitionFront(Regions.CrankyGeneric, lambda _: True),
     ]),
 
     Regions.CrankyAztec: Region("Cranky Aztec", HintRegion.AztecShops, Levels.Shops, False, None, [
@@ -168,7 +168,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyAztecPotion, lambda l: l.istiny and l.CanBuy(Locations.TinyAztecPotion)),
         LocationLogic(Locations.ChunkyAztecPotion, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyAztecPotion)),
     ], [], [
-        TransitionFront(Regions.CrankyGeneric, lambda l: True),
+        TransitionFront(Regions.CrankyGeneric, lambda _: True),
     ]),
 
     Regions.CrankyFactory: Region("Cranky Factory", HintRegion.FactoryShops, Levels.Shops, False, None, [
@@ -179,7 +179,7 @@ LogicRegions = {
         LocationLogic(Locations.PonyTailTwirl, lambda l: l.istiny and l.CanBuy(Locations.PonyTailTwirl)),
         LocationLogic(Locations.PrimatePunch, lambda l: l.ischunky and l.CanBuy(Locations.PrimatePunch)),
     ], [], [
-        TransitionFront(Regions.CrankyGeneric, lambda l: True),
+        TransitionFront(Regions.CrankyGeneric, lambda _: True),
     ]),
 
     Regions.CrankyGalleon: Region("Cranky Galleon", HintRegion.GalleonShops, Levels.Shops, False, None, [
@@ -190,7 +190,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyGalleonPotion, lambda l: l.istiny and l.CanBuy(Locations.TinyGalleonPotion)),
         LocationLogic(Locations.ChunkyGalleonPotion, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyGalleonPotion)),
     ], [], [
-        TransitionFront(Regions.CrankyGeneric, lambda l: True),
+        TransitionFront(Regions.CrankyGeneric, lambda _: True),
     ]),
 
     Regions.CrankyForest: Region("Cranky Forest", HintRegion.ForestShops, Levels.Shops, False, None, [
@@ -201,7 +201,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyForestPotion, lambda l: l.istiny and l.CanBuy(Locations.TinyForestPotion)),
         LocationLogic(Locations.ChunkyForestPotion, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyForestPotion)),
     ], [], [
-        TransitionFront(Regions.CrankyGeneric, lambda l: True),
+        TransitionFront(Regions.CrankyGeneric, lambda _: True),
     ]),
 
     Regions.CrankyCaves: Region("Cranky Caves", HintRegion.CavesShops, Levels.Shops, False, None, [
@@ -212,7 +212,7 @@ LogicRegions = {
         LocationLogic(Locations.DonkeyCavesPotion, lambda l: l.isdonkey and l.CanBuy(Locations.DonkeyCavesPotion)),
         LocationLogic(Locations.DiddyCavesPotion, lambda l: l.isdiddy and l.CanBuy(Locations.DiddyCavesPotion)),
     ], [], [
-        TransitionFront(Regions.CrankyGeneric, lambda l: True),
+        TransitionFront(Regions.CrankyGeneric, lambda _: True),
     ]),
 
     Regions.CrankyCastle: Region("Cranky Castle", HintRegion.CastleShops, Levels.Shops, False, None, [
@@ -223,7 +223,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyCastlePotion, lambda l: l.istiny and l.CanBuy(Locations.TinyCastlePotion)),
         LocationLogic(Locations.ChunkyCastlePotion, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyCastlePotion)),
     ], [], [
-        TransitionFront(Regions.CrankyGeneric, lambda l: True),
+        TransitionFront(Regions.CrankyGeneric, lambda _: True),
     ]),
 
     Regions.CrankyIsles: Region("Cranky Isles", HintRegion.IslesShops, Levels.Shops, False, None, [
@@ -234,7 +234,7 @@ LogicRegions = {
         LocationLogic(Locations.TinyIslesPotion, lambda l: l.istiny and l.CanBuy(Locations.TinyIslesPotion)),
         LocationLogic(Locations.ChunkyIslesPotion, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyIslesPotion)),
     ], [], [
-        TransitionFront(Regions.CrankyGeneric, lambda l: True),
+        TransitionFront(Regions.CrankyGeneric, lambda _: True),
     ]),
 
     Regions.Snide: Region("Snide", HintRegion.Error, Levels.Shops, False, None, [

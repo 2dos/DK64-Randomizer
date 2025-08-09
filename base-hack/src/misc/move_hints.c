@@ -10,32 +10,160 @@
  */
 #include "../../include/common.h"
 
-int isTBarrelFlag(int flag) {
-	/**
-	 * @brief Is a flag a training move flag
-	 * 
-	 * @param flag Flag being queried
-	 * 
-	 * @return is training flag (bool)
-	 */
-	return inShortList(flag, &tbarrel_flags[0], 4);
-}
+static const unsigned char no_purchase_bases[] = {
+	MRT_NOBUY_SPECIALMOVE,
+	MRT_NOBUY_SPECIALMOVE,
+	MRT_NOBUY_SPECIALMOVE,
+	MRT_NOBUY_SLAM,
+	MRT_NOBUY_GUN,
+	MRT_NOBUY_GUNUPGRADE,
+	MRT_NOBUY_GUNUPGRADE,
+	MRT_NOBUY_AMMOBELT,
+	MRT_NOBUY_INSTRUMENT,
+	MRT_NOBUY_INSTRUMENT,
+};
 
-int isFairyFlag(int flag) {
-	/**
-	 * @brief Is a flag a fairy move flag
-	 * 
-	 * @param flag Flag being queried
-	 * 
-	 * @return is a fairy move flag (bool)
-	 */
-	if (flag == FLAG_ABILITY_CAMERA) {
-		return 1;
-	} else if (flag == FLAG_ABILITY_SHOCKWAVE) {
-		return 1;
-	}
-	return flag == -2;
-}
+purchase_text_hint_struct purchase_hint_text_items[120] = {
+	// Cranky
+		// DK
+		{.enough_coins = MRT_CANBUY_BBLAST, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // DK
+		{.enough_coins = MRT_CANBUY_SKONG, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // DK
+		{.enough_coins = MRT_CANBUY_GGRAB, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // DK
+		{.enough_coins = MRT_CANBUY_GGRAB, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // DK
+		{.enough_coins = MRT_CANBUY_SLAM, .not_enough_coins = MRT_NOBUY_SLAM}, // DK
+		{.enough_coins = 0, .not_enough_coins = 0}, // DK
+		{.enough_coins = MRT_CANBUY_SLAM, .not_enough_coins = MRT_NOBUY_SLAM}, // DK
+		{.enough_coins = 0, .not_enough_coins = 0}, // DK
+		// Diddy
+		{.enough_coins = MRT_CANBUY_CCHARGE, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Diddy
+		{.enough_coins = MRT_CANBUY_RBARREL, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Diddy
+		{.enough_coins = MRT_CANBUY_SSPRING, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Diddy
+		{.enough_coins = MRT_CANBUY_SSPRING, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Diddy
+		{.enough_coins = MRT_CANBUY_SLAM, .not_enough_coins = MRT_NOBUY_SLAM}, // Diddy
+		{.enough_coins = 0, .not_enough_coins = 0}, // Diddy
+		{.enough_coins = MRT_CANBUY_SLAM, .not_enough_coins = MRT_NOBUY_SLAM}, // Diddy
+		{.enough_coins = 0, .not_enough_coins = 0}, // Diddy
+		// Lanky
+		{.enough_coins = MRT_CANBUY_OSTAND, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Lanky
+		{.enough_coins = MRT_CANBUY_OSTAND, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Lanky
+		{.enough_coins = MRT_CANBUY_BBALLOON, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Lanky
+		{.enough_coins = MRT_CANBUY_BBALLOON, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Lanky
+		{.enough_coins = MRT_CANBUY_SLAM, .not_enough_coins = MRT_NOBUY_SLAM}, // Lanky
+		{.enough_coins = MRT_CANBUY_OSPRINT, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Lanky
+		{.enough_coins = MRT_CANBUY_SLAM, .not_enough_coins = MRT_NOBUY_SLAM}, // Lanky
+		{.enough_coins = 0, .not_enough_coins = 0}, // Lanky
+		// Tiny
+		{.enough_coins = MRT_CANBUY_MMONKEY, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Tiny
+		{.enough_coins = MRT_CANBUY_MMONKEY, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Tiny
+		{.enough_coins = MRT_CANBUY_PTT, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Tiny
+		{.enough_coins = MRT_CANBUY_PTT, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Tiny
+		{.enough_coins = MRT_CANBUY_SLAM, .not_enough_coins = MRT_NOBUY_SLAM}, // Tiny
+		{.enough_coins = MRT_CANBUY_MPORT, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Tiny
+		{.enough_coins = MRT_CANBUY_SLAM, .not_enough_coins = MRT_NOBUY_SLAM}, // Tiny
+		{.enough_coins = 0, .not_enough_coins = 0}, // Tiny
+		// Japes
+		{.enough_coins = MRT_CANBUY_HCHUNKY, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Chunky
+		{.enough_coins = MRT_CANBUY_HCHUNKY, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Chunky
+		{.enough_coins = MRT_CANBUY_PPUNCH, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Chunky
+		{.enough_coins = MRT_CANBUY_PPUNCH, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Chunky
+		{.enough_coins = MRT_CANBUY_SLAM, .not_enough_coins = MRT_NOBUY_SLAM}, // Chunky
+		{.enough_coins = MRT_CANBUY_GGONE, .not_enough_coins = MRT_NOBUY_SPECIALMOVE}, // Chunky
+		{.enough_coins = MRT_CANBUY_SLAM, .not_enough_coins = MRT_NOBUY_SLAM}, // Chunky
+		{.enough_coins = 0, .not_enough_coins = 0}, // Chunky
+	// Funky
+		// DK
+		{.enough_coins = MRT_CANBUY_COCONUT, .not_enough_coins = MRT_NOBUY_GUN}, // DK
+		{.enough_coins = MRT_CANBUY_COCONUT, .not_enough_coins = MRT_NOBUY_GUN}, // DK
+		{.enough_coins = MRT_CANBUY_AMMOBELT, .not_enough_coins = MRT_NOBUY_AMMOBELT}, // DK
+		{.enough_coins = 0, .not_enough_coins = 0}, // DK
+		{.enough_coins = MRT_CANBUY_HOMING, .not_enough_coins = MRT_NOBUY_GUNUPGRADE}, // DK
+		{.enough_coins = MRT_CANBUY_AMMOBELT, .not_enough_coins = MRT_NOBUY_AMMOBELT}, // DK
+		{.enough_coins = MRT_CANBUY_SNIPER, .not_enough_coins = MRT_NOBUY_GUNUPGRADE}, // DK
+		{.enough_coins = 0, .not_enough_coins = 0}, // DK
+		// Diddy
+		{.enough_coins = MRT_CANBUY_PEANUT, .not_enough_coins = MRT_NOBUY_GUN}, // Diddy
+		{.enough_coins = MRT_CANBUY_PEANUT, .not_enough_coins = MRT_NOBUY_GUN}, // Diddy
+		{.enough_coins = MRT_CANBUY_AMMOBELT, .not_enough_coins = MRT_NOBUY_AMMOBELT}, // Diddy
+		{.enough_coins = 0, .not_enough_coins = 0}, // Diddy
+		{.enough_coins = MRT_CANBUY_HOMING, .not_enough_coins = MRT_NOBUY_GUNUPGRADE}, // Diddy
+		{.enough_coins = MRT_CANBUY_AMMOBELT, .not_enough_coins = MRT_NOBUY_AMMOBELT}, // Diddy
+		{.enough_coins = MRT_CANBUY_SNIPER, .not_enough_coins = MRT_NOBUY_GUNUPGRADE}, // Diddy
+		{.enough_coins = 0, .not_enough_coins = 0}, // Diddy
+		// Lanky
+		{.enough_coins = MRT_CANBUY_GRAPE, .not_enough_coins = MRT_NOBUY_GUN}, // Lanky
+		{.enough_coins = MRT_CANBUY_GRAPE, .not_enough_coins = MRT_NOBUY_GUN}, // Lanky
+		{.enough_coins = MRT_CANBUY_AMMOBELT, .not_enough_coins = MRT_NOBUY_AMMOBELT}, // Lanky
+		{.enough_coins = 0, .not_enough_coins = 0}, // Lanky
+		{.enough_coins = MRT_CANBUY_HOMING, .not_enough_coins = MRT_NOBUY_GUNUPGRADE}, // Lanky
+		{.enough_coins = MRT_CANBUY_AMMOBELT, .not_enough_coins = MRT_NOBUY_AMMOBELT}, // Lanky
+		{.enough_coins = MRT_CANBUY_SNIPER, .not_enough_coins = MRT_NOBUY_GUNUPGRADE}, // Lanky
+		{.enough_coins = 0, .not_enough_coins = 0}, // Lanky
+		// Tiny
+		{.enough_coins = MRT_CANBUY_FEATHER, .not_enough_coins = MRT_NOBUY_GUN}, // Tiny
+		{.enough_coins = MRT_CANBUY_FEATHER, .not_enough_coins = MRT_NOBUY_GUN}, // Tiny
+		{.enough_coins = MRT_CANBUY_AMMOBELT, .not_enough_coins = MRT_NOBUY_AMMOBELT}, // Tiny
+		{.enough_coins = 0, .not_enough_coins = 0}, // Tiny
+		{.enough_coins = MRT_CANBUY_HOMING, .not_enough_coins = MRT_NOBUY_GUNUPGRADE}, // Tiny
+		{.enough_coins = MRT_CANBUY_AMMOBELT, .not_enough_coins = MRT_NOBUY_AMMOBELT}, // Tiny
+		{.enough_coins = MRT_CANBUY_SNIPER, .not_enough_coins = MRT_NOBUY_GUNUPGRADE}, // Tiny
+		{.enough_coins = 0, .not_enough_coins = 0}, // Tiny
+		// Chunky
+		{.enough_coins = MRT_CANBUY_PINEAPPLE, .not_enough_coins = MRT_NOBUY_GUN}, // Chunky
+		{.enough_coins = MRT_CANBUY_PINEAPPLE, .not_enough_coins = MRT_NOBUY_GUN}, // Chunky
+		{.enough_coins = MRT_CANBUY_AMMOBELT, .not_enough_coins = MRT_NOBUY_AMMOBELT}, // Chunky
+		{.enough_coins = 0, .not_enough_coins = 0}, // Chunky
+		{.enough_coins = MRT_CANBUY_HOMING, .not_enough_coins = MRT_NOBUY_GUNUPGRADE}, // Chunky
+		{.enough_coins = MRT_CANBUY_AMMOBELT, .not_enough_coins = MRT_NOBUY_AMMOBELT}, // Chunky
+		{.enough_coins = MRT_CANBUY_SNIPER, .not_enough_coins = MRT_NOBUY_GUNUPGRADE}, // Chunky
+		{.enough_coins = 0, .not_enough_coins = 0}, // Chunky
+	// Candy
+		// DK
+		{.enough_coins = MRT_CANBUY_BONGOS, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // DK
+		{.enough_coins = MRT_CANBUY_BONGOS, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // DK
+		{.enough_coins = MRT_CANBUY_BONGOS, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // DK
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // DK
+		{.enough_coins = 0, .not_enough_coins = 0}, // DK
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // DK
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // DK
+		{.enough_coins = 0, .not_enough_coins = 0}, // DK
+		// Diddy
+		{.enough_coins = MRT_CANBUY_GUITAR, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Diddy
+		{.enough_coins = MRT_CANBUY_GUITAR, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Diddy
+		{.enough_coins = MRT_CANBUY_GUITAR, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Diddy
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Diddy
+		{.enough_coins = 0, .not_enough_coins = 0}, // Diddy
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Diddy
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Diddy
+		{.enough_coins = 0, .not_enough_coins = 0}, // Diddy
+		// Lanky
+		{.enough_coins = MRT_CANBUY_TROMBONE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Lanky
+		{.enough_coins = MRT_CANBUY_TROMBONE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Lanky
+		{.enough_coins = MRT_CANBUY_TROMBONE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Lanky
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Lanky
+		{.enough_coins = 0, .not_enough_coins = 0}, // Lanky
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Lanky
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Lanky
+		{.enough_coins = 0, .not_enough_coins = 0}, // Lanky
+		// Tiny
+		{.enough_coins = MRT_CANBUY_SAX, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Tiny
+		{.enough_coins = MRT_CANBUY_SAX, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Tiny
+		{.enough_coins = MRT_CANBUY_SAX, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Tiny
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Tiny
+		{.enough_coins = 0, .not_enough_coins = 0}, // Tiny
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Tiny
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Tiny
+		{.enough_coins = 0, .not_enough_coins = 0}, // Tiny
+		// Chunky
+		{.enough_coins = MRT_CANBUY_TRIANGLE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Chunky
+		{.enough_coins = MRT_CANBUY_TRIANGLE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Chunky
+		{.enough_coins = MRT_CANBUY_TRIANGLE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Chunky
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Chunky
+		{.enough_coins = 0, .not_enough_coins = 0}, // Chunky
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Chunky
+		{.enough_coins = MRT_CANBUY_INSTRUMENTUPGRADE, .not_enough_coins = MRT_NOBUY_INSTRUMENT}, // Chunky
+		{.enough_coins = 0, .not_enough_coins = 0}, // Chunky
+};
+
 
 int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 	/**
@@ -46,133 +174,128 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 	 * 
 	 * @return text index
 	 */
-	int purchase_type = shop_data->purchase_type;
-	int purchase_value = shop_data->purchase_value;
 	int base = 0;
-	int kong = shop_data->kong;
+	int level = getWorld(CurrentMap, 1);
+	purchase_text_hint_struct *data = &purchase_hint_text_items[(shop_owner * 40) + (Character * 8) + level];
 	if (shop_data->price > MovesBase[(int)Character].coins) {
-		if (purchase_type < 5) {
-			moverando_hinttext bases[] = {
-				MRT_NOBUY_SPECIALMOVE,
-				MRT_NOBUY_SLAM,
-				MRT_NOBUY_GUN,
-				MRT_NOBUY_AMMOBELT,
-				MRT_NOBUY_INSTRUMENT,
-			};
-			if (purchase_type == PURCHASE_GUN) {
-				base = MRT_NOBUY_GUNUPGRADE; // Homing or Sniper
-				if (purchase_value == 1) { // Base Gun
-					base = MRT_NOBUY_GUN;
-				}
-			} else {
-				base = bases[purchase_type];
-			}
-		} else {
-			int subtype = getMoveProgressiveFlagType(shop_data->flag);
-			if (isTBarrelFlag(shop_data->flag)) {
-				base = MRT_NOBUY_TRAINING;
-			} else if (isFairyFlag(shop_data->flag)) {
-				base = MRT_NOBUY_FAIRYMOVE;
-			} else if (purchase_type == PURCHASE_GB) {
-				base = MRT_NOBUY_BANANA;
-			} else if (isFlagInRange(shop_data->flag, FLAG_BP_JAPES_DK_HAS, 40)) {
-				base = MRT_NOBUY_BLUEPRINT;
-			} else if (isMedalFlag(shop_data->flag)) {
-				base = MRT_NOBUY_MEDAL;
-			} else if (subtype == 0) {
-				base = MRT_NOBUY_SLAM;
-			} else if (subtype == 1) {
-				base = MRT_NOBUY_AMMOBELT;
-			} else if (subtype == 2) {
-				base = MRT_NOBUY_INSTRUMENT;
-			} else {
-				for (int i = 0; i < 5; i++) {
-					if (shop_data->flag == kong_flags[i]) {
-						base = MRT_NOBUY_KONG;
-					}
-				}
-				if (base == 0) {
-					// Generic Item Hint
-					base = MRT_NOBUY_ITEM;
-				}
-			}
-		}
+		base = data->not_enough_coins;
 	} else {
-		if (purchase_type == PURCHASE_MOVES) { // Special Potion Moves
-			base = MRT_CANBUY_BBLAST + (kong * 3) + (purchase_value - 1);
-		} else if (purchase_type == PURCHASE_SLAM) { // Slams
-			base = MRT_CANBUY_SLAM;
-		} else if ((purchase_type == PURCHASE_GUN) && (purchase_value == 1)) { // Base Guns
-			base = MRT_CANBUY_COCONUT + kong;
-		} else if ((purchase_type == PURCHASE_GUN) && (purchase_value != 1)) { // Homing/Sniper
-			base = MRT_CANBUY_HOMING + (purchase_value - 2);
-		} else if (purchase_type == PURCHASE_AMMOBELT) { // Ammo Belt
-			base = MRT_CANBUY_AMMOBELT;
-		} else if ((purchase_type == PURCHASE_INSTRUMENT) && (purchase_value == 1)) { // Base Instruments
-			base = MRT_CANBUY_BONGOS + kong;
-		} else if ((purchase_type == PURCHASE_INSTRUMENT) && (purchase_value != 1)) { // Instrument Upgrades
-			base = MRT_CANBUY_INSTRUMENTUPGRADE;
-		} else if (purchase_type == PURCHASE_FLAG) {
-			int move_flags[] = {FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CLIMBING, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, -2};
-			base = 0;
-			int subtype = getMoveProgressiveFlagType(shop_data->flag);
-			if (subtype == 0) {
-				base = MRT_CANBUY_SLAM;
-			} else if (subtype == 1) {
-				base = MRT_CANBUY_AMMOBELT;
-			} else if (subtype == 2) {
-				base = MRT_CANBUY_INSTRUMENTUPGRADE;
-			} else {
-				for (int i = 0; i < sizeof(move_flags)/4; i++) {
-					if (shop_data->flag == move_flags[i]) {
-						base = MRT_CANBUY_DIVE + i;
-					}
-				}
-				if (base == 0) {
-					int flag = shop_data->flag;
-					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
-						base = MRT_CANBUY_BLUEPRINT;
-					} else if (isFlagInRange(flag, FLAG_WRINKLYVIEWED, 35)) {
-						base = MRT_CANBUY_HINT;
-					} else if (isMedalFlag(flag)) {
-						base = MRT_CANBUY_MEDAL;
-					} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
-						base = MRT_CANBUY_NINTENDO;
-					} else if (flag == FLAG_COLLECTABLE_RAREWARECOIN) {
-						base = MRT_CANBUY_RAREWARE;
-					} else if (isFlagInRange(flag, FLAG_CROWN_JAPES, 10)) {
-						base = MRT_CANBUY_CROWN;
-					} else if (flag == FLAG_COLLECTABLE_BEAN) {
-						base = MRT_CANBUY_BEAN;
-					} else if (isFlagInRange(flag, FLAG_PEARL_0_COLLECTED, 5)) {
-						base = MRT_CANBUY_PEARL;
-					} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
-						base = MRT_CANBUY_FAIRY;
-					} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
-						base = MRT_CANBUY_FAKEITEM;
-					} else {
-						// Kongs
-						for (int i = 0; i < 5; i++) {
-							if (flag == kong_flags[i]) {
-								base = MRT_CANBUY_KONG;
-							}
-						}
-						// Key
-						for (int i = 0; i < 8; i++) {
-							if (flag == getKeyFlag(i)) {
-								base = MRT_CANBUY_KEY;
-							}
-						}
-					}
-				}
-			}
-		} else if (purchase_type == PURCHASE_GB) {
-			base = MRT_CANBUY_BANANA;
-		} else if ((purchase_type >= PURCHASE_ICEBUBBLE) && (purchase_type <= PURCHASE_ICESLOW)) {
-			base = MRT_CANBUY_FAKEITEM;
-		}
+		base = data->enough_coins;
 	}
 	return (base * 3) + shop_owner;
+	// int purchase_type = shop_data->item_type;
+	// int purchase_value = shop_data->item_level;
+	// int base = 0;
+	// int kong = shop_data->kong;
+	// if (shop_data->price > MovesBase[(int)Character].coins) {
+	// 	// Not enough money
+	// 	base = MRT_NOBUY_ITEM;
+	// 	switch (purchase_type) {
+	// 		case REQITEM_MOVE:
+	// 			if (purchase_value < 10) {
+	// 				base = no_purchase_bases[purchase_value];
+	// 			} else if (purchase_value == 10) {
+	// 				if (kong < 4) {
+	// 					base = MRT_NOBUY_TRAINING;
+	// 				} else {
+	// 					base = MRT_NOBUY_FAIRYMOVE;
+	// 				}
+	// 			}
+	// 			break;
+	// 		case REQITEM_GOLDENBANANA:
+	// 			base = MRT_NOBUY_BANANA;
+	// 			break;
+	// 		case REQITEM_BLUEPRINT:
+	// 			base = MRT_NOBUY_BLUEPRINT;
+	// 			break;
+	// 		case REQITEM_MEDAL:
+	// 			base = MRT_NOBUY_MEDAL;
+	// 			break;
+	// 		case REQITEM_KONG:
+	// 			base = MRT_NOBUY_KONG;
+	// 			break;
+	// 	}
+	// } else {
+	// 	// Enough money
+	// 	switch (purchase_type) {
+	// 		case REQITEM_MOVE:
+	// 			switch (purchase_value) {
+	// 				case 0:
+	// 				case 1:
+	// 				case 2:
+	// 					base = MRT_CANBUY_BBLAST + (kong * 3) + purchase_value;
+	// 					break;
+	// 				case 3:
+	// 					base = MRT_CANBUY_SLAM;
+	// 					break;
+	// 				case 4:
+	// 					base = MRT_CANBUY_COCONUT + kong;
+	// 					break;
+	// 				case 5:
+	// 				case 6:
+	// 					base = MRT_CANBUY_HOMING + (purchase_value - 5);
+	// 					break;
+	// 				case 7:
+	// 					base = MRT_CANBUY_AMMOBELT;
+	// 					break;
+	// 				case 8:
+	// 					base = MRT_CANBUY_BONGOS + kong;
+	// 					break;
+	// 				case 9:
+	// 					base = MRT_CANBUY_INSTRUMENTUPGRADE + getInstrumentLevel();
+	// 					break;
+	// 				case 10:
+	// 					// kong = subindex
+	// 					if (kong < 4) {
+	// 						base = MRT_CANBUY_DIVE + kong;
+	// 					} else {
+	// 						base = MRT_CANBUY_CAMERA + (kong - 4);
+	// 					}
+	// 					break;
+	// 				case 11:
+	// 					base = MRT_CANBUY_CLIMB;
+	// 					break;
+	// 			}
+	// 			break;
+	// 		case REQITEM_GOLDENBANANA:
+	// 			base = MRT_CANBUY_BANANA;
+	// 			break;
+	// 		case REQITEM_ICETRAP:
+	// 			base = MRT_CANBUY_FAKEITEM;
+	// 			break;
+	// 		case REQITEM_KONG:
+	// 			base = MRT_CANBUY_KONG;
+	// 			break;
+	// 		case REQITEM_KEY:
+	// 			base = MRT_CANBUY_KEY;
+	// 			break;
+	// 		case REQITEM_BLUEPRINT:
+	// 			base = MRT_CANBUY_BLUEPRINT;
+	// 			break;
+	// 		case REQITEM_HINT:
+	// 			base = MRT_CANBUY_HINT;
+	// 			break;
+	// 		case REQITEM_MEDAL:
+	// 			base = MRT_CANBUY_MEDAL;
+	// 			break;
+	// 		case REQITEM_COMPANYCOIN:
+	// 			base = MRT_CANBUY_NINTENDO + kong;
+	// 			break;
+	// 		case REQITEM_CROWN:
+	// 			base = MRT_CANBUY_CROWN;
+	// 			break;
+	// 		case REQITEM_BEAN:
+	// 			base = MRT_CANBUY_BEAN;
+	// 			break;
+	// 		case REQITEM_PEARL:
+	// 			base = MRT_CANBUY_PEARL;
+	// 			break;
+	// 		case REQITEM_FAIRY:
+	// 			base = MRT_CANBUY_FAIRY;
+	// 			break;
+	// 	}
+	// }
+	// return (base * 3) + shop_owner;
 }
 
 int isGoodTextbox(int text_file, int text_index) {
@@ -202,6 +325,18 @@ void getMoveHint(actorData* actor, int text_file, int text_index) {
 	 * @param text_file Text file that is being used
 	 * @param text_index Text index that's being used
 	 */
+	if (text_file == 8) {
+		int new_text = -1;
+		if (text_index == 2) {
+			new_text = ITEM_PREVIEW_JETPACINTRO;
+		} else if (text_index == 34) {
+			new_text = ITEM_PREVIEW_JETPACREWARD;
+		}
+		if (new_text > -1) {
+			getTextPointer_0(actor, COMP_TEXT_PREVIEWSFLAVOR, new_text);
+			return;
+		}
+	}
 	int shop = actor->actorType - 189; // 0 = Cranky, 1 = Funky, 2 = Candy
 	if ((shop >= 0) && (shop <= 2)) {
 		shop_paad* shop_data = (shop_paad*)actor->paad2;

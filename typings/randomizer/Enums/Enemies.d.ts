@@ -80,6 +80,7 @@ export enum Enemies {
     SirDomino = 88,
     MrDice1 = 89,
     Rabbit1 = 90,
+    CharSpawnerItem = 91,
     FireballGlasses = 92,
     KLumsy = 93,
     SpiderBoss = 94,

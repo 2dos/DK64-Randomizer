@@ -29,8 +29,8 @@
             "detailed_command": {
                 "sub_command": 30,
                 "params": [
-                    19,
-                    26,
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.PortMicro",
                     0,
                     0
                 ]

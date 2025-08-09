@@ -28,7 +28,7 @@ from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
 from end_seq_writer import createSquishFile, createTextFile
-from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch
+from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch, fixFactoryDoor, modifyOtherWrinklyDoors
 from helm_doors import getHelmDoorModel
 from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
@@ -64,7 +64,9 @@ for x in range(2):
 createTextFile("assets/credits")
 createSquishFile("assets/credits")
 generateYellowWrinkly()
+modifyOtherWrinklyDoors()
 generateSprintSwitch()
+fixFactoryDoor()
 generateIceMaze()
 
 getHelmDoorModel(6022, 6023, "crown_door.bin")
@@ -106,7 +108,44 @@ file_dict = [
         target_compressed_size=0x1420,
         target_uncompressed_size=0x1420,
     ),
+    File(
+        name="Diddy Wrinkly Door",
+        pointer_table_index=TableNames.ModelTwoGeometry,
+        file_index=0xF2,
+        source_file="assets/Gong/hint_door_diddy.bin",
+        do_not_delete_source=True,
+        target_compressed_size=0x1420,
+        target_uncompressed_size=0x1420,
+    ),
+    File(
+        name="Lanky Wrinkly Door",
+        pointer_table_index=TableNames.ModelTwoGeometry,
+        file_index=0xEF,
+        source_file="assets/Gong/hint_door_lanky.bin",
+        do_not_delete_source=True,
+        target_compressed_size=0x1420,
+        target_uncompressed_size=0x1420,
+    ),
+    File(
+        name="Tiny Wrinkly Door",
+        pointer_table_index=TableNames.ModelTwoGeometry,
+        file_index=0x67,
+        source_file="assets/Gong/hint_door_tiny.bin",
+        do_not_delete_source=True,
+        target_compressed_size=0x1420,
+        target_uncompressed_size=0x1420,
+    ),
+    File(
+        name="Chunky Wrinkly Door",
+        pointer_table_index=TableNames.ModelTwoGeometry,
+        file_index=0xF1,
+        source_file="assets/Gong/hint_door_chunky.bin",
+        do_not_delete_source=True,
+        target_compressed_size=0x1420,
+        target_uncompressed_size=0x1420,
+    ),
     File(name="WXY_Slash", pointer_table_index=TableNames.TexturesHUD, file_index=12, source_file="assets/displays/wxys.png", texture_format=TextureFormat.RGBA5551),
+    File(name="White Special Chars", pointer_table_index=TableNames.TexturesHUD, file_index=4, source_file="assets/displays/white_special_chars.png", texture_format=TextureFormat.IA8),
     File(
         name="DK Tie Palette",
         pointer_table_index=TableNames.TexturesGeometry,
@@ -164,15 +203,6 @@ file_dict = [
     File(name="Snide Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=610, source_file="snide_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="AP Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x291, source_file="archi_om2.bin", do_not_delete_source=True, do_not_extract=True),
     # File(name="K. Rool (Cutscenes) Model", pointer_table_index=TableNames.ActorGeometry, file_index=0x48, source_file="k_rool_cutscenes_om1.bin", do_not_delete_source=True),
-    File(
-        name="Krusha Head",
-        subtype=ChangeType.FixedLocation,
-        start=0x1FF6000,
-        source_file="assets/displays/krusha_head64.png",
-        do_not_delete_source=True,
-        texture_format=TextureFormat.RGBA5551,
-        do_not_compress=True,
-    ),
     File(
         name="Snow Texture",
         subtype=ChangeType.FixedLocation,
@@ -281,8 +311,13 @@ file_dict = [
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item_0.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=612, source_file="fake_item_1.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=613, source_file="fake_item_2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A6, source_file="fake_item_3.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x299, source_file="fake_item_4.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29A, source_file="fake_item_5.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29B, source_file="fake_item_6.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_3d_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Sprint Switch", pointer_table_index=TableNames.ModelTwoGeometry, file_index=611, source_file="assets/Gong/sprint_switch.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Factory Door", pointer_table_index=TableNames.ModelTwoGeometry, file_index=664, source_file="assets/Gong/factory_door.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="21132 Sign", pointer_table_index=TableNames.TexturesGeometry, file_index=0x7CA, source_file="21132_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 1", pointer_table_index=TableNames.TexturesGeometry, file_index=0x999, source_file="cryptlev1_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 2", pointer_table_index=TableNames.TexturesGeometry, file_index=0x99A, source_file="cryptlev2_tex.bin", target_size=2 * 64 * 32),
@@ -430,7 +465,83 @@ file_dict = [
     File(name="Banana Medal", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x90, source_file="updated_medal.bin", do_not_delete_source=True),
     File(name="Mushroom Red (Mush Puzzle)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x1BE, source_file="updated_mush_0x1BE.bin", do_not_delete_source=True),
     File(name="Ice Maze", pointer_table_index=TableNames.ModelTwoGeometry, file_index=522, source_file="assets/Gong/ice_maze.bin", do_not_delete_source=True),
+    File(
+        name="Fake Bean Texture",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.FakeBean),
+        source_file="assets/displays/fake_bean.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="Fake Key Texture (Actor)",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.FakeKey),
+        source_file="assets/displays/fake_key_shine.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="Fake Key Texture (OM2)",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.FakeKeyPalette),
+        source_file="assets/displays/fake_key_shine_palette.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="Static Gold Shine Texture (OM2)",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.StaticGoldPalette),
+        source_file="assets/hash/key_om2_palette.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="Sun Idol",
+        pointer_table_index=TableNames.ModelTwoGeometry,
+        file_index=291,
+        source_file="sun_idol.bin",
+        do_not_delete_source=True,
+    ),
+    File(
+        name="Banana Hoard",
+        pointer_table_index=TableNames.ModelTwoGeometry,
+        file_index=645,
+        source_file="hoard.bin",
+        do_not_delete_source=True,
+    ),
+    File(name="Fake Bean Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x292, source_file="fake_bean_0.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Bean Model (1)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x293, source_file="fake_bean_1.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Bean Model (2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x294, source_file="fake_bean_2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Bean Model (3)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29C, source_file="fake_bean_3.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Bean Model (4)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29D, source_file="fake_bean_4.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Bean Model (5)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29E, source_file="fake_bean_5.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Bean Model (6)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29F, source_file="fake_bean_6.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Key Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x295, source_file="fake_key_0.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Key Model (1)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x296, source_file="fake_key_1.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Key Model (2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x297, source_file="fake_key_2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Key Model (3)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A0, source_file="fake_key_3.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Key Model (4)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A1, source_file="fake_key_4.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Key Model (5)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A4, source_file="fake_key_5.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Key Model (6)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A5, source_file="fake_key_6.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Animation Code", pointer_table_index=TableNames.Unknown13, file_index=0, source_file="animation_code.bin", do_not_delete_source=True),
+    File(
+        name="Disco Shirt",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.DiscoDonkShirt),
+        source_file="assets/hash/disco_shirt.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(
+        name="Disco Gloves",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.DiscoDonkGlove),
+        source_file="assets/hash/disco_glove.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
 ]
 
 cutscene_scripts = buildScripts()
@@ -835,17 +946,6 @@ for song in song_replacements:
     file_dict.append(item)
     changed_song_indexes.append(song["index"])
 
-for door in (0xF2, 0xEF, 0x67, 0xF1):
-    file_dict.append(
-        File(
-            name=f"Wrinkly Door {hex(door)}",
-            pointer_table_index=TableNames.ModelTwoGeometry,
-            file_index=door,
-            source_file=f"door{door}.bin",
-            target_size=0x1420,
-        )
-    )
-
 switches = [
     [0x94, 0x16C, 0x167],
     [0x93, 0x16B, 0x166],
@@ -1154,6 +1254,16 @@ for x in range(12):
         )
     )
 
+for x in range(9):
+    file_dict.append(
+        File(
+            name=f"Potion Spin Frame {x + 1}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(ExtraTextures.PotionSpin0 + x),
+            source_file=f"assets/vial_spin/f{x}_0.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
 
 for x in range(5):
     file_dict.append(
@@ -1289,6 +1399,13 @@ colorblind_changes = [
     [0x103D, 0x103E],  # Dillo
     [0xE6C, 0xE6C],  # Diddy back star texture
     [0x135C, 0x1360],  # Hint Item
+    [0x105C, 0x1065],  # Pufftoss (1)
+    [0x1069, 0x1069],  # Pufftoss (2)
+    [0x11E5, 0x11EB],  # Pufftup
+    [0x13D6, 0x13ED],  # Sparkles
+    [0x1484, 0x1484],  # Star Flare
+    [0xBAD, 0xBAE],  # Green Slam Switches
+    [0xD01, 0xD02],  # Blue Slam Switches
 ]
 
 file_dict.append(
@@ -1388,6 +1505,8 @@ shrinkModel(True, "tiny_base.bin", 0, 1 / 0.15, "shrink_tiny.bin", True)  # Tiny
 shrinkModel(False, "", 0xB, 1 / 0.15, "shrink_chunky.bin", True)  # Chunky
 shrinkModel(True, "fake_item_actor.bin", 0, 0.15, "shrink_ice_trap.bin", False),
 shrinkModel(True, "bean_om1.bin", 0, 1 / 0.15, "shrink_bean.bin", False),
+shrinkModel(True, "fake_bean_om1.bin", 0, 1 / 0.15, "shrink_fake_bean.bin", False),
+shrinkModel(True, "fake_key_om1.bin", 0, 0.1, "shrink_fake_key.bin", False),
 shrinkModel(True, "pearl_om1.bin", 0, 2, "shrink_pearl_0.bin", False),
 shrinkModel(True, "pearl_om1.bin", 0, 2 / 0.15, "shrink_pearl.bin", False),
 shrinkModel(True, "medal_om1.bin", 0, 1 / 0.15, "shrink_medal.bin", False),
@@ -1491,6 +1610,12 @@ model_changes = [
     ModelChange(0x8B, "rocketbarrel_attachment.bin"),
     ModelChange(0x7B, "cannon.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
+    ModelChange(0x125, "shrink_fake_bean.bin"),
+    ModelChange(0x126, "fake_bean_om1.bin"),
+    ModelChange(0x127, "shrink_fake_key.bin"),
+    ModelChange(0x128, "fake_key_om1.bin"),
+    ModelChange(0x129, "disco_donkey.bin"),
+    ModelChange(0x12A, FINAL_RACE_HOOP),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 
@@ -1647,6 +1772,15 @@ text_files = (
     TextChange("Item Locations", 0x2800, "item_locations.bin"),
     TextChange("Wrinkly Short", 0x2800, "short_wrinkly.bin"),
     TextChange("Music Names", 0x2800, "music_names.bin"),
+    TextChange("Wrinkly Items", 0, "wrinkly_items.bin"),
+)
+
+comptext_files = (
+    TextChange("Item Previews (Normal)", 0x1200, "comptext_item_preview_normal.bin"),
+    TextChange("Item Previews (Flavored)", 0x1200, "comptext_item_preview_flavor.bin"),
+    TextChange("Wrinkly", 0x1200, "comptext_wrinkly.bin"),
+    TextChange("Wrinkly (Short)", 0x1200, "comptext_wrinkly_short.bin"),
+    TextChange("Item Locations", 0x1200, "comptext_item_locations.bin"),
 )
 
 for index, text in enumerate(text_files):
@@ -1666,6 +1800,21 @@ for index, text in enumerate(text_files):
     if text.change_expansion > 0:
         data.setTargetSize(text.change_expansion)
         data.do_not_recompress = True
+    file_dict.append(data)
+for index, text in enumerate(comptext_files):
+    data = File(
+        name=f"{text.name} Text",
+        pointer_table_index=TableNames.Unknown6,
+        file_index=index,
+        source_file=f"comptext{index}.bin" if text.file == "" else text.file,
+    )
+    if text.change:
+        data.do_not_delete_source = True
+        data.do_not_extract = True
+    else:
+        data.setTargetSize(0x2000)
+    if text.change_expansion > 0:
+        data.setTargetSize(text.change_expansion)
     file_dict.append(data)
 
 addMechFishLZ()
@@ -1801,6 +1950,12 @@ for x in file_dict:
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
     clampCompressedTextures(fh, 6200)
+    new_ptr_6_unc_size = len(comptext_files)
+    print(f" - Expanding pointer table {TableNames.Unknown6} from 0 bytes to {4 * new_ptr_6_unc_size} bytes")
+    data = []
+    for _ in range(new_ptr_6_unc_size):
+        data.extend([0, 0, 0, 0])
+    replaceROMFile(fh, TableNames.UncompressedFileSizes, TableNames.Unknown6, bytes(data), 4 * new_ptr_6_unc_size)
     for x in file_dict:
         if x.bps_file is not None:
             with open(x.source_file, "rb") as fg:
@@ -1953,7 +2108,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(ROM_DATA_OFFSET)
     arr = []
     for x in range(0x200):
-        arr.append(0)
+        if x == 0x1E4:
+            arr.append(1)  # Set pause coloring to on by default, for Obiyo
+        else:
+            arr.append(0)
     fh.write(bytearray(arr))
     writeVanillaMoveData(fh)
     adjustExits(fh)
@@ -2057,40 +2215,12 @@ with open(newROMName, "r+b") as fh:
         fh.write((0).to_bytes(1, "big"))  # Change to 0
 
     # Item Rando defaults
-    # Blueprints
-    fh.seek(0x1FF0E00)
-    for level_index in range(8):
-        for bp_item in (78, 75, 77, 79, 76):
-            fh.write(bp_item.to_bytes(2, "big"))
-    # Medals
-    fh.seek(0x1FF1080)
-    for medal_item in range(45):
-        fh.write((5).to_bytes(1, "big"))
-    # Crown
-    fh.seek(0x1FF10C0)
-    for crown_item in range(10):
-        fh.write((86).to_bytes(2, "big"))
-    # Key
-    fh.seek(0x1FF1000)
-    for crown_item in range(8):
-        fh.write((72).to_bytes(2, "big"))
-    # Fairies
-    fh.seek(0x1FF1040)
-    for x in range(20):
-        fh.write((0x3D).to_bytes(2, "big"))
-    # Rainbow Coins
-    fh.seek(0x1FF10E0)
-    for x in range(16):
-        fh.write((0x8C).to_bytes(2, "big"))
-    # Melon Crates
-    fh.seek(0x1FF0E80)
-    for x in range(16):
-        fh.write((0x2F).to_bytes(2, "big"))
     # Enemies
     fh.seek(0x1FF9000)
-    for x in range(427):
+    for x in range(428):
         fh.write((0).to_bytes(4, "big"))
 
+    # Boot Messages
     fh.seek(0x1FFD000)
     for x in range(64):
         fh.write((0).to_bytes(4, "big"))
@@ -2099,6 +2229,7 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FFE000)
     for x in range(35):
         fh.write((0xFFFF).to_bytes(2, "big"))
+
     # Hint Regions
     fh.seek(0x1FFE080)
     for x in range(35):
@@ -2254,6 +2385,13 @@ with open(newROMName, "r+b") as fh:
         "ap_pearl_4",
         "ap_pearl_5",
         "ap32",
+        "fake_bean",
+        "fake_key_shine",
+        "fake_key_shine_palette",
+        "fakebean",
+        "fakekey",
+        "disco_shirt_gap",
+        "white_special_chars",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
@@ -2326,6 +2464,10 @@ with open(newROMName, "r+b") as fh:
         "cannon_base",
         "cannon_support",
         "barrel_bottom",
+        "key_om2_palette",
+        "disco_glove",
+        "disco_shirt",
+        "disco_skin",
     ]
     tagbarrel_removals = ["plain_shell", "shell", "cannon_support", "cannon_base", "cannon_left", "cannon_right", "barrel_base"]
     for face in barrel_faces:

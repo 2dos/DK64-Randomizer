@@ -127,7 +127,7 @@ HINT_REGION_PAIRING = {
     # Factory
     HintRegion.FactoryStart: "Frantic Factory Start",
     HintRegion.Testing: "Testing Area",
-    HintRegion.ResearchAndDevelopment: "Research and Development Area",
+    HintRegion.ResearchAndDevelopment: "R&D Area",
     HintRegion.Storage: "Storage and Arcade Area",
     HintRegion.ProductionRoom: "Production Room",
     # Galleon

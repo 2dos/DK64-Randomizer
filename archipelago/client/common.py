@@ -48,6 +48,7 @@ class DK64MemoryMap:
 
     can_tag = 0x061
     current_kong = 0x8074E77C
+    count_struct_pointer = 0x807FFFB8  # Pointer to CountStruct containing item counts
 
 
 all_tasks = set()

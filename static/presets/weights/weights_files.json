@@ -25,7 +25,6 @@
     },
     "bonus_barrel_auto_complete": 0.5,
     "bonus_barrel_rando": 0.7,
-    "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cannons_require_blast": 0,
     "cb_rando_enabled": 0.3,
@@ -129,7 +128,6 @@
       "random": 1
     },
     "glitches_selected": {},
-    "hard_blockers": 0,
     "hard_bosses": 0,
     "hard_bosses_selected": {},
     "hard_mode": 0,
@@ -266,7 +264,6 @@
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
     "krool_in_boss_pool": 0.8,
     "krool_phase_order_rando": 0.8,
@@ -392,9 +389,6 @@
       "max": 0
     },
     "starting_random": 1,
-    "switchsanity": {
-      "off": 1
-    },
     "tns_location_rando": 0,
     "troff_text": {
       "min": 100,
@@ -444,7 +438,6 @@
     },
     "bonus_barrel_auto_complete": 0.3,
     "bonus_barrel_rando": 0.7,
-    "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cannons_require_blast": 0.5,
     "cb_rando_enabled": 0.5,
@@ -553,7 +546,6 @@
       "random": 1
     },
     "glitches_selected": {},
-    "hard_blockers": 0.2,
     "hard_bosses": 0,
     "hard_bosses_selected": {},
     "hard_mode": 0,
@@ -696,7 +688,6 @@
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
     "krool_in_boss_pool": 0.65,
     "krool_phase_order_rando": 0.8,
@@ -827,11 +818,6 @@
       "max": 0
     },
     "starting_random": 1,
-    "switchsanity": {
-      "off": 0.85,
-      "helm_access": 0.1,
-      "all": 0.05
-    },
     "tns_location_rando": 0.3,
     "troff_text": {
       "min": 150,
@@ -885,7 +871,6 @@
     },
     "bonus_barrel_auto_complete": 0.1,
     "bonus_barrel_rando": 0.7,
-    "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cannons_require_blast": 1,
     "cb_rando_enabled": 0.6,
@@ -995,10 +980,6 @@
     "galleon_water": {
       "random": 1
     },
-    "glitches_selected": {
-      "advanced_platforming": 1
-    },
-    "hard_blockers": 0.6,
     "hard_bosses": 0.6,
     "hard_bosses_selected": {
       "fast_mad_jack": 0.8,
@@ -1154,7 +1135,6 @@
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
     "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,
@@ -1168,7 +1148,7 @@
     },
     "logic_type": {
       "glitchless": 0.8,
-      "glitch": 0.2
+      "advanced_glitchless": 0.2
     },
     "maximize_helm_blocker": 0.5,
     "medal_cb_req": {
@@ -1316,11 +1296,6 @@
       "max": 0
     },
     "starting_random": 1,
-    "switchsanity": {
-      "off": 0.5,
-      "helm_access": 0.4,
-      "all": 0.1
-    },
     "tns_location_rando": 0.5,
     "troff_text": {
       "min": 150,
@@ -1374,7 +1349,6 @@
     },
     "bonus_barrel_auto_complete": 0.1,
     "bonus_barrel_rando": 0.7,
-    "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cannons_require_blast": 1,
     "cb_rando_enabled": 0.6,
@@ -1484,10 +1458,6 @@
     "galleon_water": {
       "random": 1
     },
-    "glitches_selected": {
-      "advanced_platforming": 1
-    },
-    "hard_blockers": 0.6,
     "hard_bosses": 0.6,
     "hard_bosses_selected": {
       "fast_mad_jack": 0.8,
@@ -1643,7 +1613,6 @@
     "kong_model_tiny": {
       "default": 1
     },
-    "kong_rando": 1,
     "krool_access": 0.7,
     "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,
@@ -1657,7 +1626,7 @@
     },
     "logic_type": {
       "glitchless": 0.8,
-      "glitch": 0.2
+      "advanced_glitchless": 0.2
     },
     "maximize_helm_blocker": 0.5,
     "medal_cb_req": {
@@ -1805,11 +1774,6 @@
       "max": 0
     },
     "starting_random": 1,
-    "switchsanity": {
-      "off": 0.5,
-      "helm_access": 0.4,
-      "all": 0.1
-    },
     "tns_location_rando": 0.5,
     "troff_text": {
       "min": 150,

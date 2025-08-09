@@ -24,7 +24,7 @@ class KasplatLocation:
         self.scale = scale
         self.region_id = region
         if additional_logic is None:
-            self.additional_logic = lambda l: True
+            self.additional_logic = lambda _: True
         else:
             self.additional_logic = additional_logic
 
@@ -527,7 +527,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Factory Kasplat: Research and Development",
+            name="Factory Kasplat: R&D",
             map_id=Maps.FranticFactory,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[4148, 1336, 1016],

@@ -135,10 +135,8 @@ def portalModel_Actor(vtx_file, dl_file, model_name, base):
                     vtx_data = vtx.read()
                     vtx_len = len(vtx_data)
                     fg.write(vtx_data)
-                dl_len = 0
                 with open(dl_file, "rb") as dl:
                     dl_data = dl.read()
-                    dl_len = len(dl_data)
                     fg.write(dl_data)
                 dl_end = fg.tell()
                 fg.seek(4)
@@ -146,7 +144,7 @@ def portalModel_Actor(vtx_file, dl_file, model_name, base):
                 fg.write(dl_end_ptr.to_bytes(4, "big"))
                 diff = dl_end_ptr - init_dl_end_ptr
                 fh.seek(8)
-                for i in range(3):
+                for _ in range(3):
                     old = int.from_bytes(fh.read(4), "big")
                     fg.write((old + diff).to_bytes(4, "big"))
                 fg.seek(dl_end)
@@ -372,7 +370,9 @@ def portModelTwoToActor(model_two_index: int, input_file: str, output_file: str,
                 raw = int.from_bytes(fh.read(2), "big")
                 if raw > 0x7FFF:
                     raw -= 0x10000
+                raw *= scale
                 raw -= y_offset
+                raw = int(raw)
                 if raw < 0:
                     raw += 0x10000
                 if raw < 0:
@@ -659,3 +659,43 @@ def loadNewModels():
     portActorToModelTwo(0x12, "", "candy", 0x90, True, 0.5)
     portActorToModelTwo(0x1E, "", "snide", 0x90, True, 0.5)
     # portModelTwoToActor(0, "rainbow_coin_om2.bin", "rainbow_coin", 0x68, True, 1.0)
+    # Fake Items
+    with open("bean_om1.bin", "rb") as fh:
+        with open("fake_bean_om1.bin", "wb") as fg:
+            fg.write(fh.read(0x414))
+            fg.write(getBonusSkinOffset(ExtraTextures.FakeBean).to_bytes(4, "big"))
+            fh.read(4)  # shift read pointer by 4
+            fg.write(fh.read())
+    with open(ROMName, "rb") as rom:
+        bean_om2 = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x198).grabFile(rom)
+        key_om1 = ROMPointerFile(rom, TableNames.ActorGeometry, 0xA4).grabFile(rom)
+        key_om2 = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 0x13C).grabFile(rom)
+        sun_idol_om2 = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 291).grabFile(rom)
+        hoard_om2 = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 645).grabFile(rom)
+        with open("fake_bean_om2.bin", "wb") as fh:
+            fh.write(bean_om2[:0xEC])
+            fh.write(getBonusSkinOffset(ExtraTextures.FakeBean).to_bytes(4, "big"))
+            fh.write(bean_om2[0xF0:])
+        with open("fake_key_om1.bin", "wb") as fh:
+            fh.write(key_om1[:0x11FC])
+            fh.write(getBonusSkinOffset(ExtraTextures.FakeKey).to_bytes(4, "big"))
+            fh.write(key_om1[0x1200:])
+        with open("fake_key_om2.bin", "wb") as fh:
+            fh.write(key_om2[:0x12C])
+            fh.write(getBonusSkinOffset(ExtraTextures.FakeKeyPalette).to_bytes(4, "big"))
+            fh.write(key_om2[0x130:])
+        with open("sun_idol.bin", "wb") as fh:
+            fh.write(sun_idol_om2[:0x334])
+            fh.write(getBonusSkinOffset(ExtraTextures.StaticGoldPalette).to_bytes(4, "big"))
+            fh.write(sun_idol_om2[0x338:])
+        with open("hoard.bin", "wb") as fh:
+            fh.write(hoard_om2[:0x124])
+            fh.write(getBonusSkinOffset(ExtraTextures.StaticGoldPalette).to_bytes(4, "big"))
+            fh.write(hoard_om2[0x128:])
+    for x in range(7):
+        with open("fake_bean_om2.bin", "rb") as fh:
+            with open(f"fake_bean_{x}.bin", "wb") as fg:
+                fg.write(fh.read())
+        with open("fake_key_om2.bin", "rb") as fh:
+            with open(f"fake_key_{x}.bin", "wb") as fg:
+                fg.write(fh.read())

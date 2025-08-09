@@ -6,6 +6,7 @@ from BuildEnums import Icons, MoveTypes
 from BuildClasses import hint_region_list, MoveName
 from text_decoder import grabText
 from text_encoder import writeText
+from fasttext import fastTextConv
 from typing import BinaryIO
 
 move_hints = [
@@ -848,6 +849,10 @@ location_references = [
     ItemReference("Key 6", "Caves Boss Defeated"),
     ItemReference("Key 7", "Castle Boss Defeated"),
     ItemReference("Key 8", "The End of Helm"),
+    # Special Items
+    ItemReference("The Bean", "Forst Anthill Second Reward"),
+    ItemReference("Nintendo Coin", "Factory Arcade Round 2"),
+    ItemReference("Rareware Coin", "Jetpac"),
 ]
 
 with open("src/randomizers/move_text.c", "w") as fh:
@@ -893,6 +898,7 @@ for ref in location_references:
 
 writeText("move_names.bin", move_names_arr)
 writeText("item_locations.bin", location_items_arr)
+fastTextConv(location_items_arr, "comptext_item_locations.bin", False)
 
 move_explanations = [
     {
@@ -1014,6 +1020,33 @@ for region in hint_region_list:
     hint_region_text.append([{"text": [region.region_name.upper()]}])
 writeText("hint_region_text.bin", hint_region_text)
 writeText("short_wrinkly.bin", grabText(41))
+
+YOU_SHOULD_NOT_SEE_THIS = "Ooooo... What is this? You were not meant to get this item, ~! If you see this, tell the devs as something has gone awry!"
+wrinkly_item_text = [
+    "Ooooo... Even in the afterlife, I give nothing. Just spectral advice and empty bananas.",  # REQITEM_NONE,
+    "Ooooo... I may be a ghost, but I still give a Kongs worth of wisdom. Just don't expect any bananas.",  # REQITEM_KONG,
+    "Ooooo... I thought I gave you that move long ago, silly me. Try using it before asking for more!",  # REQITEM_MOVE,
+    "Ooooo... A golden banana, you say? I guess could give you one...",  # REQITEM_GOLDENBANANA,
+    "Ooooo... A blueprint? I guess I can give you this one, not that I can read it with these glasses.",  # REQITEM_BLUEPRINT,
+    "Ooooo... A fairy, you ask? I can give you one, but the others are too busy hiding and giggling at your confusion.",  # REQITEM_FAIRY,
+    "Ooooo... You have earned it, brave ~. Take this boss key and shake the very lair of K. Rool himself!",  # REQITEM_KEY,
+    "Ooooo... A shiny crown for a shiny ~. Do not go letting it go to your head now!",  # REQITEM_CROWN,
+    "Ooooo... A special coin with the face of the great creator. Hold it tight, ~, for it carries the spirit of the game itself!",  # REQITEM_COMPANYCOIN,
+    "Ooooo... A banana medal, shiny and sweet. Wear it proud, ~, for you have earned a peel of honor!",  # REQITEM_MEDAL,
+    "Ooooo... A humble bean, but packed with power. Use it wisely, ~, and watch your strength grow!",  # REQITEM_BEAN,
+    "Ooooo... A gleaming pearl, rare as a ghostly breeze. Cherish it well, ~!",  # REQITEM_PEARL,
+    "Ooooo... A rainbow coin, rare as the one that took 17 years to find. Hold it tight, ~.",  # REQITEM_RAINBOWCOIN,
+    "Ooooo... This strange icy trinket looks... important? Use it carefully, ~. I can't say if it will help or freeze your chances!",  # REQITEM_ICETRAP,
+    YOU_SHOULD_NOT_SEE_THIS,  # REQITEM_GAMEPERCENTAGE,
+    YOU_SHOULD_NOT_SEE_THIS,  # REQITEM_COLOREDBANANA,
+    YOU_SHOULD_NOT_SEE_THIS,  # REQITEM_BOSSES,
+    YOU_SHOULD_NOT_SEE_THIS,  # REQITEM_BONUSES,
+    "Ooooo... Hmm, what is this? Just a pile of jungle junk. Do not let it weigh you down, ~!",  # REQITEM_JUNK,
+    "Ooooo... Listen close, ~! When in doubt, stomp the ground. Sometimes secrets hide beneath your feet!",  # REQITEM_HINT,
+    "Ooooo... Here is a shopkeeper for you, ~. Trade wisely, and do not let those sneaky prices fool you!",  # REQITEM_SHOPKEEPER,
+    "Ooooo... This item feels... out of place, ~. Are you sure it belongs in our jungle?",  # REQITEM_AP,
+    YOU_SHOULD_NOT_SEE_THIS,  # REQITEM_RACECOIN,
+]
 
 vanilla_track_names = [
     "Silence",
@@ -1198,6 +1231,11 @@ for name in vanilla_track_names:
     music_text.append([{"text": [f"DONKEY KONG 64\n{name.upper()}"]}])
 writeText("music_names.bin", music_text)
 
+wrinkly_items = []
+for item in wrinkly_item_text:
+    wrinkly_items.append([{"text": [item.upper()]}])
+writeText("wrinkly_items.bin", wrinkly_items)
+
 
 misc_char_table = {
     "6": "h",
@@ -1260,3 +1298,71 @@ def writeNoExpPakMessages(fh: BinaryIO):
     ]
     for m in noexp_msg:
         m.writeMessage(fh)
+
+
+item_preview_file = [
+    (16, 2),  # JapesMinecartIntro
+    (16, 3),  # JapesMinecartReward
+    (16, 4),  # JapesMinecartFail
+    (16, 5),  # FungiMinecartIntro
+    (16, 7),  # FungiMinecartFail
+    (16, 8),  # CastleMinecartIntro
+    (16, 9),  # CastleMinecartReward
+    (17, 4),  # FactoryCarRace
+    (23, 0),  # MermaidIntro
+    (23, 1),  # MermaidReward
+    (23, 2),  # MermaidMissing
+    (15, 0),  # VultureFreedom
+    (15, 1),  # VulturePreview
+    (10, 1),  # LlamaTalk
+    (10, 2),  # LlamaRescue
+    (8, 2),  # JetpacIntro
+    (8, 34),  # JetpacReward
+    (20, 1),  # RabbitFinalRaceIntro
+    (20, 2),  # RabbitFirstRaceReward
+    (20, 3),  # RabbitFinalRaceReward
+    (22, 0),  # AppleIntro
+    (22, 1),  # ApplePickUp
+    (22, 4),  # AppleReward
+    (28, 2),  # Seal
+    (30, 0),  # RarewareGB
+    (33, 0),  # IceTomato
+    (34, 4),  # CastleCarRace
+    (21, 0),  # OwlRace
+]
+item_preview_new_text = [
+    [{"text": ["YOU CAN FIND \x04GORILLA GONE\x04 IN \x05CAVES CRANKY\x05."]}],  # Helm Lobby Micro
+    [{"text": ["YOU CAN FIND \x04MONKEYPORT\x04 IN \x05CAVES CRANKY\x05."]}],  # MPort Micro
+    [{"text": ["YOU CAN FIND \x04BONGO BLAST\x04 IN \x05AZTEC CANDY\x05."]}],  # Bongos Micro
+    [{"text": ["YOU CAN FIND \x04TRIANGLE TRAMPLE\x04 IN \x05AZTEC CANDY\x05."]}],  # Triangle Micro
+    [{"text": ["YOU CAN FIND \x04SAXOPHONE SLAM\x04 IN \x05AZTEC CANDY\x05."]}],  # Sax Micro
+    [{"text": ["YOU CAN FIND \x04TROMBONE TREMOR\x04 IN \x05AZTEC CANDY\x05."]}],  # Trombone Micro
+    [{"text": ["YOU CAN FIND \x04GUITAR GAZUMP\x04 IN \x05AZTEC CANDY\x05."]}],  # Gazump Micro
+    [{"text": ["MYUM, MYUM. I WILL NEVER GIVE UP MY \x04GOLDEN BANANA\x04 TO THIS INTRUDER."]}],  # Spider Micro
+    [
+        {
+            "text": [
+                "LADIES AND GENTLEMEN! IT APPEARS THAT ONE FIGHTER HAS COME UNEQUIPPED TO PROPERLY HANDLE THIS REPTILIAN BEAST. PERHAPS THEY SHOULD HAVE LOOKED IN \x07FUNGI FOREST\x07 OR \x09CREEPY CASTLE\x09 FOR THE ELUSIVE SLAM."
+            ]
+        }
+    ],  # Slams Micro
+    [{"text": ["A \x04GOLDEN BANANA\x04 FOR YOU IF YOU SAVE ME FROM THESE FIREBALLS. HEE HEE."]}],  # Chunky 5DI Micro
+    [{"text": ["DEAR STREAMER, IT APPEARS YOU HAVE WANDERED INTO A PLACE WHERE THERE IS PLACEHOLDER TEXT. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK"]}],  # Cranky Micro
+    [{"text": ["DEAR STREAMER, IT APPEARS YOU HAVE WANDERED INTO A PLACE WHERE THERE IS PLACEHOLDER TEXT. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK"]}],  # Funky Micro
+    [{"text": ["DEAR STREAMER, IT APPEARS YOU HAVE WANDERED INTO A PLACE WHERE THERE IS PLACEHOLDER TEXT. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK"]}],  # Candy Micro
+    [{"text": ["DEAR STREAMER, IT APPEARS YOU HAVE WANDERED INTO A PLACE WHERE THERE IS PLACEHOLDER TEXT. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK"]}],  # Snide Micro
+]
+
+# If you're updating this, also update the ItemPreview enum in BuildEnums.py
+item_preview_text = []
+for data in item_preview_file:
+    file = data[0]
+    index = data[1]
+    item_preview_text.append(grabText(file)[index])
+for data in item_preview_new_text:
+    item_preview_text.append(data)
+writeText("comptext_item_preview_normal.bin", item_preview_text)
+writeText("comptext_item_preview_flavor.bin", item_preview_text)
+wrinkly_text = grabText(41)
+writeText("comptext_wrinkly.bin", wrinkly_text)
+fastTextConv(wrinkly_text[1:], "comptext_wrinkly_short.bin")

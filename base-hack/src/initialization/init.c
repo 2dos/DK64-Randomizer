@@ -306,7 +306,6 @@ void initHack(int source) {
 		if ((source == 1) || (CurrentMap == MAP_NINTENDOLOGO)) {
 			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
 			grab_lock_timer = -1;
-			preventTagSpawn = Rando.prevent_tag_spawn;
 			bonusAutocomplete = Rando.resolve_bonus;
 			TextHoldOn = Rando.quality_of_life.textbox_hold;
 			ToggleAmmoOn = Rando.quality_of_life.ammo_swap;
@@ -317,6 +316,7 @@ void initHack(int source) {
 			KrushaSlot = Rando.krusha_slot;
 			RandomSwitches = Rando.random_switches;
 			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
+			initItemRandoPointer();
 			initAP();
 			// HUD Re-allocation fixes
 			*(short*)(0x806FB246) = ITEMID_TERMINATOR;
@@ -326,7 +326,7 @@ void initHack(int source) {
 			*(short*)(0x806F9986) = ITEMID_RESERVED_SCOFF;
 			*(short*)(0x806F99C6) = ITEMID_RESERVED_CANDY;
 			*(short*)(0x806F99DA) = ITEMID_RESERVED_DK;
-			RandomizerVersion = 4;
+			RandomizerVersion = 5;
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
 			}
@@ -344,7 +344,6 @@ void initHack(int source) {
 				}
 			}
 			// Kong Rando
-			initKongRando();
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
 			initCosmetic();
@@ -355,7 +354,6 @@ void initHack(int source) {
 			loadExtraHooks();
 			// Place Move Data
 			moveTransplant();
-			priceTransplant();
 			
 			fixMusicRando();
 			
@@ -376,26 +374,7 @@ void initHack(int source) {
 			style128Mtx[0xF] = 100;
 			writeEndSequence();
 			
-			int kko_phase_rando = 0;
-			for (int i = 0; i < 3; i++) {
-				KKOPhaseOrder[i] = Rando.kut_out_phases[i];
-				if (Rando.kut_out_phases[i]) {
-					kko_phase_rando = 1;
-				}
-			}
-			KKOPhaseRandoOn = kko_phase_rando;
-			
 			initPauseMenu(); // Changes to enable more items
-			// Model Stuff
-			if (Rando.kong_models[KONG_DK] == KONGMODEL_CRANKY) {
-				KongModelData[KONG_DK].props_or = 0;
-			}
-			if (Rando.kong_models[KONG_TINY] == KONGMODEL_CANDY) {
-				KongModelData[KONG_TINY].props_or = 0;
-			}
-			if (Rando.kong_models[KONG_DIDDY] == KONGMODEL_FUNKY) {
-				KongModelData[KONG_DIDDY].props_or = 0;
-			}
 			fixCutsceneModels();
 			if (Rando.hard_mode.lava_water) {
 				// Dynamic Textures
@@ -417,12 +396,6 @@ void initHack(int source) {
 				writeFunction(0x80660994, &getOscillationDelta);
         		writeFunction(0x806609BC, &getOscillationDelta);
 			}
-			initSwitchsanityChanges();
-
-			SFXVolume = Rando.default_sfx_volume;
-			MusicVolume = Rando.default_music_volume;
-			ScreenRatio = Rando.default_screen_ratio;
-			SoundType = Rando.default_sound_type;
 			int sound_subtype = 1;
 			if (SoundType == 0) {
 				sound_subtype = 2;

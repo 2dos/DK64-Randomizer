@@ -21,3 +21,7 @@
 .definelabel getTotalGBs, 0x806FB418
 .definelabel updateGBCountHUD, 0x806F8278
 .definelabel initHUDItem, 0x806F8004
+.definelabel getPickupCollisionIndex, 0x806F4E74
+.definelabel getObjectID, 0x8063D990
+.definelabel spawnActorAtXYZ, 0x80689114
+.definelabel getNextUnassignedId, 0x80688E08

@@ -182,6 +182,9 @@
 #define TREE_DOOR_DK 0x1
 #define TREE_DOOR_CHUNKY 0x9
 
+#define ITEM_NINTENDO_COIN 0x13E
+#define ITEM_RAREWARE_COIN 0x2
+
 #define TNS_NUMBER 0x15
 #define TNS_ITEMINDICATOR 0xF
 
@@ -205,20 +208,38 @@
 
 #define K_ROOL_CHUNKY_PHASE_SLAM 0xA
 
+#define FACTORY_CRUSHER_2 0x2
+#define FACTORY_CRUSHER_3 0x3
+#define FACTORY_CRUSHER_4 0x4
+
 static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
-	int wrinkly_index = kong + (5 * getWorld(CurrentMap, 0));
+	int world = getWorld(CurrentMap, 0);
+	int wrinkly_index = kong + (5 * world);
 	int flag = FLAG_WRINKLYVIEWED + wrinkly_index;
 	if (Rando.hints_are_items) {
 		if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
-			int item_type = getWrinklyItem(wrinkly_index);
-			displayMedalOverlay(flag, item_type);
+			item_packet *item_send = &wrinkly_item_table[wrinkly_index];
+			displayMedalOverlay(flag, item_send);
 		}
 	} else {
 		setPermFlag(flag);
+		giveItem(REQITEM_HINT, world, kong, (giveItemConfig){.apply_helm_hurry = 1});
 	}
+	// Display hint tick
+	displayImageOnObject(index, 1, 2, 0);
+	displayImageOnObject(index, 2, 2, 0);
+	//
 	spawnWrinkly(behaviour, index, kong, unk0);
+}
+
+void loadWrinklyTextWrapper(actorData* actor, int file, int index) {
+	if (Rando.hints_are_items) {
+		index = wrinkly_item_table[index - 1].item_type;
+		file = 47;
+	}
+	getTextPointer_0(actor, file, index);
 }
 
 #define MILL_CRUSHER_PROGRESS 1
@@ -391,7 +412,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				if (param2 == FUNGI_MINECART_GRATE) {
 					initiateLZRTransition(&Rando.fungi_minecart_enter, MAP_FUNGIMINECART, 0);
 				} else if (param2 == FUNGI_BEANCONTROLLER) {
-					return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
+					return getItemCount_new(REQITEM_BEAN, 0, 0);
 				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
 					if (!Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->timer = 70;
@@ -405,6 +426,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,113,2);
 					}
+				}
+				break;
+			case MAP_CRANKY:
+				if (param2 == ITEM_RAREWARE_COIN) {
+					giveItemFromPacket(&company_coin_table[1]);
 				}
 				break;
 			case MAP_KROOLCHUNKY:
@@ -440,11 +466,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (param2 == ISLES_FACTORYDOOR) {
 					if (Rando.lobbies_open_bitfield & 4) {
 						hideObject(behaviour_pointer);
-					}
-				} else if (param2 == ISLES_FACTORYDOORCOLLISION) {
-					if ((Rando.lobbies_open_bitfield & 4) || (checkFlag(FLAG_KEYIN_KEY2, FLAGTYPE_PERMANENT) || ((CutsceneIndex == 7) && (CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)))) {
-						hideObject(behaviour_pointer);
-						behaviour_pointer->next_state = 1;
 					}
 				} else if (param2 == ISLES_GALLEONBARS) {
 					if (Rando.lobbies_open_bitfield & 8) {
@@ -483,10 +504,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (param2 == K_ROOL_SHIP) {
 					for (int i = 0; i < 8; i++) {
 						if (Rando.krool_requirements & (1 << i)) {
-							if (!checkFlag(FLAG_KEYIN_KEY1 + i, FLAGTYPE_PERMANENT)) {
+							if (!getItemCount_new(REQITEM_KEY, i, 0)) {
 								return 0;
 							}
-
 						}
 					}
 					return 1;
@@ -507,17 +527,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == LLAMA_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_llama), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_llama), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == LLAMA_GUNSWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_llama), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_llama), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_LANKY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
-						setPermFlag(getKongFlag(Rando.free_target_llama));
+						giveItemFromKongData(&kong_check_data[KONGCHECK_LLAMA], FLAG_KONG_LANKY);
 					} else if ((index >= 3) && (index <= 6)) {
 						return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 					}
@@ -709,17 +729,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == JAPES_DIDDYBAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
-						setPermFlag(getKongFlag(Rando.free_target_japes));
+						giveItemFromKongData(&kong_check_data[KONGCHECK_JAPES], FLAG_KONG_DIDDY);
 					}
 				} else if ((param2 == JAPES_GUNSWITCH0) || (param2 == JAPES_GUNSWITCH1) || (param2 == JAPES_GUNSWITCH2)) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if ((index == 2) || (index == 3)) {
 						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
 					} else if (index == 4) {
@@ -732,9 +752,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == JAPES_DIDDYFREEGB) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
 					if ((param2 == JAPES_PEANUT_MOUNTAIN) && (index == 1)) {
@@ -777,7 +797,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (index == 0) {
 						return checkFlag(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						setFlag(FLAG_COLLECTABLE_BEAN, 1, FLAGTYPE_PERMANENT);
+						setPermFlag(FLAG_COLLECTABLE_BEAN);
 					}
 				}
 				break;
@@ -812,25 +832,25 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FACTORY_FREESWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
 						return Character == Rando.free_source_factory;
 					} else if (index == 3) {
-						setPermFlag(getKongFlag(Rando.free_target_factory));
+						giveItemFromKongData(&kong_check_data[KONGCHECK_FACTORY], FLAG_KONG_CHUNKY);
 					}
 				} else if (param2 == FACTORY_CAGE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == FACTORY_FREEGB) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_CHUNKY, FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == FACTORY_PIANO) {
 					if (index < 7) {
@@ -913,6 +933,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return !Rando.tag_anywhere;
 				} else if (((param2 >= FACTORY_BLOCKELEVATOR_0) && (param2 <= FACTORY_BLOCKELEVATOR_4)) || (param2 == FACTORY_BLOCKELEVATOR_5) || (param2 == FACTORY_BLOCKELEVATOR_6)) {
 					behaviour_pointer->timer = (RNG & 63) + 15;
+				} else if (param2 == ITEM_NINTENDO_COIN) {
+					giveItemFromPacket(&company_coin_table[0]);
 				}
 				break;
 			case MAP_FUNGIMILLFRONT:
@@ -1092,15 +1114,15 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return Character == 1;
 				} else if (param2 == TTEMPLE_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_ttemple), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						setPermFlag(getKongFlag(Rando.free_target_ttemple));
+						giveItemFromKongData(&kong_check_data[KONGCHECK_ICETEMPLE], FLAG_KONG_TINY);
 					}
 				} else if (param2 == TTEMPLE_CHARGESWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_ttemple), FLAGTYPE_PERMANENT);
+						return checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_ttemple), FLAGTYPE_PERMANENT);
+						return !checkFlag(FLAG_KONG_TINY, FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
 						return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
 					}
@@ -1214,7 +1236,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (index == 0) {
 								return CoinDoorCheck();
 							} else if (index == 1) {
-								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
+								return checkFlag(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || (Rando.coin_door_requirement.item == REQITEM_NONE);
 							} else if (index == 2) {
 								// Disable coin door text
 								return 1;
@@ -1266,7 +1288,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 										if ((next_slot == -1) && (current_slot > -1)) {
 											// Helm Complete
 											PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
-											setFlag(FLAG_MODIFIER_HELMBOM, 1, FLAGTYPE_PERMANENT);
+											setPermFlag(FLAG_MODIFIER_HELMBOM);
 											setFlag(0x50,1,FLAGTYPE_TEMPORARY);
 										} else if (next_slot > -1) {
 											// Move to next
@@ -1350,11 +1372,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			displayImageOnObject(id, 2, 1, 0);
 			unkObjFunction0(id, 1, 1);
 			unkObjFunction1(id, 1, 10);
-			if ((!checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) && (!Rando.disable_wrinkly_kong_requirement)) {
+			if ((!getItemCount_new(REQITEM_KONG, 0, kong)) && (!Rando.disable_wrinkly_kong_requirement)) {
 				behaviour_pointer->next_state = 20;
 			} else {
-				displayImageOnObject(id, 1, 0, 0);
-				displayImageOnObject(id, 2, 0, 0);
+				int world = getWorld(CurrentMap, 0);
+				int image = 0;
+				if (checkFlag(FLAG_WRINKLYVIEWED + (5 * world) + kong, FLAGTYPE_PERMANENT)) {
+					image = 2;
+				}
+				displayImageOnObject(id, 1, image, 0);
+				displayImageOnObject(id, 2, image, 0);
 				behaviour_pointer->next_state = 1;
 			}
 		} else if (behaviour_pointer->current_state == 1) {
@@ -1393,7 +1420,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	} else if (index == -6) {
 		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
 	} else if (index == -7) {
-		return checkFlag(kong_flags[param2], FLAGTYPE_PERMANENT) || Rando.disable_wrinkly_kong_requirement;
+		return getItemCount_new(REQITEM_KONG, 0, param2) || Rando.disable_wrinkly_kong_requirement;
 	} else if (index == -8) {
 		// Fairy check
 		if (Rando.fairy_rando_on) {
@@ -1453,6 +1480,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		}
 	} else if (index == -18) {
 		return (Player->strong_kong_ostand_bitfield & 0x20) || (!Rando.sprint_barrel_requires_sprint);
+	} else if (index == -19) {
+		int world = getWorld(CurrentMap, 0);
+		return checkFlag(FLAG_WRINKLYVIEWED + (5 * world) + param2, FLAGTYPE_PERMANENT);
 	}
 	return 0;
 }

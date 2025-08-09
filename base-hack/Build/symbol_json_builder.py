@@ -38,24 +38,25 @@ with open(f"{PATH_PRE}rom/dev-symbols.sym", "r") as fh:
             # Disable out-of-range stuff (upper bound)
             continue
         data["symbols"][line_split[1]] = addr_int
-with open(f"{PATH_PRE}include/vars.h", "r") as fh:
-    text = fh.read()
-    lines = text.split(DELIMITER)
-    start = "#define"
-    for x in lines:
-        if x[: len(start)] == start:
-            segs = x.split(" ")
-            value = segs[2]
-            if value[-1:] == "f":
-                value = float(value[:-1])
-            elif len(value) > 2 and value[1] == "x":
-                value = int(value, 16)
-            elif len([y for y in value if y not in NUM_CHARS]) == 0:
-                value = int(value)
-            else:
-                # Can't be parsed
-                continue
-            data["vars"][segs[1].lower()] = value
+for fname in ("vars", "item_rando"):
+    with open(f"{PATH_PRE}include/{fname}.h", "r") as fh:
+        text = fh.read()
+        lines = text.split(DELIMITER)
+        start = "#define"
+        for x in lines:
+            if x[: len(start)] == start:
+                segs = x.split(" ")
+                value = segs[2]
+                if value[-1:] == "f":
+                    value = float(value[:-1])
+                elif len(value) > 2 and value[1] == "x":
+                    value = int(value, 16)
+                elif len([y for y in value if y not in NUM_CHARS]) == 0:
+                    value = int(value)
+                else:
+                    # Can't be parsed
+                    continue
+                data["vars"][segs[1].lower()] = value
 for f in ["exported_enums", "item_data"]:
     with open(f"{PATH_PRE}include/{f}.h", "r") as fh:
         enum_count = 0

@@ -11,11 +11,11 @@ from zipfile import ZipFile
 from randomizer.Enums.Songs import Songs
 from randomizer.Enums.SongType import SongType
 from randomizer.Enums.SongGroups import SongGroup
-from randomizer.Enums.Settings import MusicFilters, WinConditionComplex
+from randomizer.Enums.Settings import MusicFilters
 from randomizer.Lists.Songs import song_data, song_idx_list
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
-from randomizer.Patching.Library.Generic import IsItemSelected, Overlay
+from randomizer.Patching.Library.Generic import Overlay, IsDDMSSelected
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Patching.Library.ASM import writeValue, populateOverlayOffsets, getROMAddress
 
@@ -417,8 +417,8 @@ def insertUploaded(
     # Add assigned custom songs back as locations.
     songs_to_be_replaced.extend(custom_song_locations)
 
-    length_filter = IsItemSelected(settings.music_filtering, settings.music_filtering_selected, MusicFilters.length)
-    location_filter = IsItemSelected(settings.music_filtering, settings.music_filtering_selected, MusicFilters.location)
+    length_filter = IsDDMSSelected(settings.music_filtering_selected, MusicFilters.length)
+    location_filter = IsDDMSSelected(settings.music_filtering_selected, MusicFilters.location)
 
     # Place Songs
     for song_enum in songs_to_be_replaced:
@@ -482,7 +482,7 @@ def randomize_music(settings: Settings, ROM_COPY: ROM):
     music_data = {"music_bgm_data": {}, "music_majoritem_data": {}, "music_minoritem_data": {}, "music_event_data": {}}
     music_names = [None] * 175
     if js.document.getElementById("override_cosmetics").checked or True:
-        if js.document.getElementById("random_music").checked:
+        if js.document.getElementById("random_music").checked or js.document.getElementById("music_is_custom").checked:
             settings.music_bgm_randomized = True
             settings.music_majoritems_randomized = True
             settings.music_minoritems_randomized = True
@@ -493,7 +493,7 @@ def randomize_music(settings: Settings, ROM_COPY: ROM):
             settings.music_minoritems_randomized = js.document.getElementById("music_minoritems_randomized").checked
             settings.music_events_randomized = js.document.getElementById("music_events_randomized").checked
     else:
-        if settings.random_music:
+        if settings.random_music or settings.music_is_custom:
             settings.music_bgm_randomized = True
             settings.music_majoritems_randomized = True
             settings.music_minoritems_randomized = True
@@ -567,8 +567,6 @@ def randomize_music(settings: Settings, ROM_COPY: ROM):
     for song in song_data.values():
         song.Reset()
         writeSongVolume(ROM_COPY, song.mem_idx, song.type)
-    if settings.win_condition_item == WinConditionComplex.dk_rap_items:
-        song_data[Songs.DKRap].type = SongType.Protected  # Protect the rap, used for end seq
     # Check if we have anything beyond default set for BGM
     if settings.music_bgm_randomized or categoriesHaveAssignedSongs(settings, [SongType.BGM]):
         # If the user selected standard rando

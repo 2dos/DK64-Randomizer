@@ -43,7 +43,7 @@ void adjust_level_modifiers(void) {
 			if (checkFlag(FLAG_MODIFIER_GALLEONWATER,FLAGTYPE_PERMANENT)) {
 				// Adjust water height in all chunks if water is raised
 				for (int i = 0; i < 20; i++) {
-					setWaterHeight(i,55.0f,1000.0f);
+					setWaterHeight(i, 55.0f, 1000.0f);
 				}
 			}
 		} else if (CurrentMap == MAP_AZTEC) {
@@ -75,7 +75,13 @@ void handleTimeOfDay(time_of_day_calls call) {
 	fungi_time time = Rando.fungi_time_of_day_setting;
 	if (time == TIME_NIGHT) {
 		if (call == TODCALL_INITFILE) {
-			setFlag(FLAG_MODIFIER_FUNGINIGHT, 1, FLAGTYPE_PERMANENT);
+			setPermFlag(FLAG_MODIFIER_FUNGINIGHT);
+		}
+	} else if (time == TIME_DUSK) {
+		if (call == TODCALL_FUNGIACTIVE) {
+			for (int i = 0; i < chunk_count; i++) {
+				setChunkLighting(0.6f, 0.6f, 0.3f, i);
+			}
 		}
 	} else if (time == TIME_PROGRESSIVE) {
 		if (call == TODCALL_FUNGIACTIVE) {

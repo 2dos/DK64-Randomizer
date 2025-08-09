@@ -156,7 +156,7 @@ void newGuardCode(void) {
                             handleGuardDetection(dist, radius);
                             if (old_control_state != 0) {
                                 if (CurrentActorPointer_0->control_state == 0) {
-                                    updateKopStat();
+                                    GameStats[STAT_KOPCAUGHT]++;
                                 }
                             }
                         }

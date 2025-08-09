@@ -37,6 +37,12 @@ int wonArena(void) {
 
 static short barrel_types[3] = {0x1C, 0x86, 0x6B};
 
+void resolveBonusContainer(void) {
+    int b = 0;
+    int index = getSpawnerIndexOfResolvedBonus(&barrel_types, 3, &b);
+    resolveBonus(b, index, 7, 2.0f);
+}
+
 void warpOutOfArenas(void) {
     if (isGamemode(GAMEMODE_DKBONUS, 0)) {
         initiateTransition(MAP_MAINMENU, 0); // Warp back to main menu
@@ -47,9 +53,7 @@ void warpOutOfArenas(void) {
         return;
     }
     if (!isGamemode(GAMEMODE_SNIDEGAMES, 0)) {
-        int b = 0;
-        int index = getSpawnerIndexOfResolvedBonus(&barrel_types, 3, &b);
-        resolveBonus(b, index, 7, 2.0f);
+        resolveBonusContainer();
     }
     ExitFromBonus();
 }

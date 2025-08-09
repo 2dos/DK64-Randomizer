@@ -187,7 +187,7 @@ ColoredBananaGroupList = [
         name="Up the slope to painting room",
         konglist=[Kongs.lanky, Kongs.tiny],
         region=Regions.JungleJapesMain,
-        logic=lambda l: (l.handstand and l.islanky) or (l.twirl and l.istiny),
+        logic=lambda l: (l.handstand and l.islanky) or (l.twirl and l.istiny) or l.slope_resets,
         locations=[[5, 1.0, 545, 375, 1943], [5, 1.0, 553, 375, 1806]],
     ),
     ColoredBananaGroup(
@@ -540,7 +540,7 @@ ColoredBananaGroupList = [
         name="Lanky's blueprint room (8 custom, 7 Lanky)",
         konglist=[Kongs.lanky],
         region=Regions.JapesBeyondCoconutGate2,
-        logic=lambda l: l.handstand,
+        logic=lambda l: l.handstand or l.slope_resets,
         locations=[
             [1, 1.0, 1902.0511474609375, 291.0079650878906, 2582.19384765625],
             [1, 1.0, 1883.33154296875, 330.1593933105469, 2536.048583984375],

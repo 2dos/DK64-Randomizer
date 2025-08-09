@@ -73,3 +73,8 @@ class Minigames(IntEnum):
     OrangeBarrel = 70
     BarrelBarrel = 71
     VineBarrel = 72
+    Arcade25 = 73
+    Arcade50 = 74
+    Arcade75 = 75
+    Arcade100 = 76
+    JetpacRocket = 77

@@ -115,8 +115,8 @@
     $(function() {
         $('[data-toggle="tooltip"]').tooltip({
             trigger: 'hover'
-        })
-    })
+        });
+    });
     
     $('#presets').on('change', function() {
         var selected = $("#presets option:selected").text();
@@ -126,5 +126,5 @@
         else if (selected == "Vanilla Game But Better") $("#output").html("- Vanilla Game But Better: No randomization, only the quality of life settings enabled.")
         else if (selected == "Hitlist") $("#output").html("- Hitlist: Complete the 8 of the worst checks in the game. You will <strong>NEED</strong> this <a href='https://github.com/Brian0255/Track-O-Matic/releases/latest' style='text-decoration:underline'>tracker</a> and read the specialized <a href='https://docs.google.com/document/d/1V2jj3bT18fTIuEbuqYDDC8pePBFSpVd_U__p2AvcNlc/edit' style='text-decoration:underline'>ruleset</a>.")
         else $("#output").html(`- ${selected}: ${selected_desc}`)
-    })
+    });
 </script>

@@ -242,6 +242,11 @@ static const char map_hint_regions[] = {
     NO_HINT_REGION, // k_lumsy_ending
     REGION_ISLESKROOL, // k_rools_shoe
     REGION_ISLESKROOL, // k_rools_arena
+    REFERENCE_PARENT, // arcade_25m
+    REFERENCE_PARENT, // arcade_50m
+    REFERENCE_PARENT, // arcade_75m
+    REFERENCE_PARENT, // arcade_100m
+    REFERENCE_PARENT, // jetpac_rocket
 };
 
 int setHintRegion(void) {

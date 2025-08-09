@@ -3,6 +3,7 @@ var jquery = $;
 const listeners = [];
 const progression_presets = [];
 const random_settings_presets = [];
+let random_settings_settings = {};
 
 // Determine the correct URL for fetching presets based on the hostname
 let base_url;
@@ -34,13 +35,14 @@ $.ajax({
   },
 });
 $.ajax({
-  url: "static/presets/weights/weights_files.json",
+  url: "static/presets/weights/weight_files_raw.json",
   dataType: "json",
   async: false,
   success: function (data) {
-    data.forEach((file) => {
+    data.presets.forEach((file) => {
       random_settings_presets.push(file);
     });
+    random_settings_settings = data.settings;
   },
 });
 
@@ -327,6 +329,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let transition_promises = [];
       let portal_promises = [];
       let painting_promises = [];
+      let arcade_promises = [];
 
       for (var filename of Object.keys(new_zip.files)) {
         if (validFilename(filename, "bgm/")) {
@@ -343,6 +346,8 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
           portal_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/paintings/", ".png")) {
           painting_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/arcade_sprites/", ".png")) {
+          arcade_promises.push(createMusicLoadPromise(new_zip, filename));
         }
       }
 
@@ -357,6 +362,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let transition_files = await Promise.all(transition_promises);
       let portal_files = await Promise.all(portal_promises);
       let painting_files = await Promise.all(painting_promises);
+      let arcade_files = await Promise.all(arcade_promises);
 
       // BGM
       let bgm = bgm_files.map((x) => x.file);
@@ -389,6 +395,12 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       // Paintings
       let paintings = painting_files.map((x) => x.file);
       let painting_names = painting_files.map((x) => x.name);
+      
+      // Arcade Sprites
+      let arcade_sprites = arcade_files.map((x) => x.file);
+      let arcade_sprite_names = arcade_files.map((x) => x.name);
+
+      let has_music = bgm_names.length > 0 || event_names.length > 0 || majoritem_names.length > 0 || minoritem_names.length > 0;
 
       cosmetics = {
         bgm: bgm,
@@ -398,6 +410,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         transitions: transitions,
         tns_portals: tns_portals,
         paintings: paintings,
+        arcade_sprites: arcade_sprites,
       };
       cosmetic_names = {
         bgm: bgm_names,
@@ -407,6 +420,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         transitions: transition_names,
         tns_portals: tns_portal_names,
         paintings: painting_names,
+        arcade_sprites: arcade_sprite_names,
       };
       cosmetic_extensions = {
         bgm: bgm_ext,
@@ -415,7 +429,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         events: event_ext,
       };
 
-      update_music_select_options(isInitialLoad);
+      update_music_select_options(isInitialLoad, has_music);
     });
   };
 
@@ -432,7 +446,7 @@ function get_custom_song_display_name(songName) {
   return `Custom Song: ${trimmedName}`;
 }
 
-async function update_music_select_options(isInitialLoad) {
+async function update_music_select_options(isInitialLoad, has_custom_music) {
   customSongDict = {
     BGM: cosmetic_names.bgm,
     MajorItem: cosmetic_names.majoritems,
@@ -445,6 +459,26 @@ async function update_music_select_options(isInitialLoad) {
     minoritems: [],
     events: [],
   };
+  // Fix the music rando selections
+  const els_no_music = document.getElementsByClassName("ui-music-no-cosmetic");
+  const els_has_music = document.getElementsByClassName("ui-music-has-cosmetic");
+  document.getElementById("music_is_custom").checked = has_custom_music;
+  if (has_custom_music) {
+    for (const el_0 of els_no_music) {
+      el_0.setAttribute("hidden", "hidden");
+    }
+    for (const el_1 of els_has_music) {
+      el_1.removeAttribute("hidden");
+    }
+  } else {
+    for (const el_0 of els_no_music) {
+      el_0.removeAttribute("hidden");
+    }
+    for (const el_1 of els_has_music) {
+      el_1.setAttribute("hidden", "hidden");
+    }
+  }
+
   for (const [category, songs] of Object.entries(customSongDict)) {
     // Map each song's truncated name to its full string path.
     for (const song of songs) {
@@ -464,9 +498,10 @@ async function update_music_select_options(isInitialLoad) {
       // Only remove the custom-song options by setting innerHTML directly if needed
       let customOptionsExist = dropdown.querySelector(".custom-song");
       if (customOptionsExist) {
-        dropdown
-          .querySelectorAll(".custom-song")
-          .forEach((option) => option.remove());
+        const song_el = dropdown.getElementsByClassName("custom-song");
+        for (let option of song_el) {
+          option.remove();
+        }
         // Clear the dropdown value if it was set to a custom song
         if (
           dropdown.value &&
@@ -520,7 +555,8 @@ async function savesettings() {
   const json = Object.fromEntries(formData.entries());
 
   // Handle <select> elements
-  document.querySelectorAll("select").forEach((select) => {
+  const selects = document.getElementsByTagName("select");
+  for (let select of selects) {
     if (select.classList.contains("selected")) {
       json[select.name] = Array.from(select.options)
         .filter((option) => option.selected)
@@ -532,7 +568,27 @@ async function savesettings() {
         option.id.slice(14)
       );
     }
-  });
+  }
+
+  // Handle dropdown multiselectors
+  console.log("Saving Settings");
+  let ddms_containers = document.getElementsByClassName("dropdown-multiselect");
+  for (let ddms_ctr of ddms_containers) {
+    const ddms = ddms_ctr.getElementsByClassName("dropdown-menu")[0];
+    const checkboxes = Array.from(ddms.getElementsByTagName("input"));
+    const checkedValues = checkboxes
+      .filter((cb) => cb.checked)
+      .map((cb) => cb.value);
+    
+    json[ddms.getAttribute('name')] = checkedValues;
+  }
+
+  let sjs_containers = document.getElementsByClassName("sortablejs");
+  for (let element of sjs_containers) {
+    const options = Array.from(element.getElementsByTagName("li"));
+    json[element.getAttribute('name')] = options.map((option) => option.getAttribute("value"));
+    // console.log(element.getAttribute('name'), json[element.getAttribute('name')])
+  }
 
   // Handle inputs with specific naming convention
   // Changed with the new selectors list
@@ -561,15 +617,42 @@ async function savesettings() {
 //   await saveDataToIndexedDB("saved_music", JSON.stringify(musicJson));
 // }
 
-document.querySelectorAll("#form input").forEach((input) => {
-  input.addEventListener("input", savesettings);
-  input.addEventListener("change", savesettings);
-});
+const form_container = document.getElementById("form");
+const form_inputs = form_container.getElementsByTagName("input");
+const form_selects = form_container.getElementsByTagName("select");
+const form_ddms = form_container.getElementsByClassName("dropdown-multiselect");
+const form_sortable = form_container.getElementsByClassName("sortablejs");
+for (let el of form_inputs) {
+  el.addEventListener("input", scheduleSave);
+  el.addEventListener("change", scheduleSave);
+}
+for (let el of form_selects) {
+  el.addEventListener("click", scheduleSave);
+  el.addEventListener("change", scheduleSave);
+}
+for (let el of form_selects) {
+  el.addEventListener("change", scheduleSave);
+}
+for (let el of form_sortable) {
+  el.addEventListener("change", scheduleSave);
+}
 
-document.querySelectorAll("#form select").forEach((select) => {
-  select.addEventListener("change", savesettings);
-  select.addEventListener("click", savesettings);
-});
+let saveTimeout;
+function scheduleSave() {
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+  }
+  saveTimeout = setTimeout(() => {
+    savesettings();
+  }, 5000); // Save settings after 5s of inactivity after a call
+}
+
+window.addEventListener("beforeunload", () => {
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+    savesettings();
+  }
+})
 
 function filebox() {
   var input = document.createElement("input");
@@ -1424,14 +1507,18 @@ function set_preset_options() {
   // Disable the apply_preset button
   document.getElementById("apply_preset").disabled = true;
   // Toggle elements and update the page according to the preset
-  toggle_counts_boxes(null);
-  toggle_b_locker_boxes(null);
   toggle_logic_type(null);
   toggle_bananaport_selector(null);
   update_door_one_num_access(null);
   update_door_two_num_access(null);
   update_win_con_num_access(null);
   update_prog_hint_num_access(null);
+  update_blocker_num_access(null);
+  update_troff_number_access(null);
+  item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
+  item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
+  item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
+  item_req_update("cb_medal_behavior", "cb_medal_behavior_container", "medal_cb_req", 1, 100);
 
   // // Load the data
   // load_data();
@@ -1519,11 +1606,21 @@ function load_settings(json) {
   if (json["enable_plandomizer"]) {
     delete json["enable_plandomizer"];
   }
-  all_elements = document.querySelectorAll("#form input, #form select");
+  const form = document.getElementById("form");
+  const inputs = form.getElementsByTagName("input");
+  const selects = form.getElementsByTagName("select");
+  const dropdowns = form.querySelectorAll(".dropdown-multiselect .dropdown-menu");
+  const sortables = form.getElementsByClassName("sortablejs");
+  const all_elements = [
+    ...inputs,
+    ...selects,
+    ...dropdowns,
+    ...sortables,
+  ];
   const elementsCache = Object.fromEntries(
     Object.keys(json).map((key) => [
       key,
-      Array.from(all_elements).filter((el) => el.name === key),
+      Array.from(all_elements).filter((el) => el.getAttribute("name") === key),
     ])
   );
 
@@ -1560,8 +1657,8 @@ function load_settings(json) {
       }
 
       if (
-        element.name.startsWith("starting_moves_list_") &&
-        !element.name.startsWith("starting_moves_list_count")
+        element.getAttribute("name").startsWith("starting_moves_list_") &&
+        !element.getAttribute("name").startsWith("starting_moves_list_count")
       ) {
         const select = document.getElementById(key);
         json[key].forEach((value) => {
@@ -1601,6 +1698,121 @@ function load_settings(json) {
               option.selected = value.includes(option.value);
             });
             valueChanged = true;
+          }
+        }
+
+        // Dropdown Multiselector
+        if (element.classList.contains("dropdown-menu")) {
+          const checkboxes = Array.from(element.getElementsByTagName("input"));
+          const currentValues = checkboxes.filter(option => option.checked).map(option => option.value);
+          let selectedCount = 0;
+          if (JSON.stringify(currentValues) !== JSON.stringify(value)) {
+            checkboxes.forEach((option) => {
+              option.checked = value.includes(option.value);
+              if (value.includes(option.value)) {
+                selectedCount++;
+              }
+            });
+            valueChanged = true;
+          }
+          element.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`;
+        }
+
+        if (element.classList.contains("sortablejs")) {
+          const options = Array.from(element.getElementsByTagName("li"));
+          const currentValues = options.map(option => option.value);
+          const grandparent = element.parentElement.parentElement;
+          const items_list = JSON.parse(grandparent.getAttribute("data-items")).filter(k => !k.is_check);
+          const checks_list = JSON.parse(grandparent.getAttribute("data-items")).filter(k => k.is_check);
+          const list_count = parseInt(grandparent.getAttribute("data-count"));
+          const list_predicate = grandparent.getAttribute("data-predicate");
+          let valid = true;
+          if (list_predicate == "item_rando_list_") {
+              let total_settings_list_items = [];
+              let total_settings_list_checks = [];
+              for (let i = 0; i < list_count; i++) {
+                  total_settings_list_items = total_settings_list_items.concat(json[`${list_predicate}${i}`]);
+                  total_settings_list_checks = total_settings_list_checks.concat(json[`${list_predicate}${i + list_count}`]);
+              }
+              if (total_settings_list_items.length != items_list.length) {
+                  valid = false;
+              }
+              if (total_settings_list_checks.length != checks_list.length) {
+                  valid = false;
+              }
+              total_settings_list_items.forEach(value => {
+                  if (items_list.filter(k => k.value == value).length == 0) {
+                      valid = false;
+                  }
+              });
+              total_settings_list_checks.forEach(value => {
+                  if (checks_list.filter(k => k.value == value).length == 0) {
+                      valid = false;
+                  }
+              });
+          } else {
+              let total_settings_list = [];
+              for (let i = 0; i < list_count; i++) {
+                  total_settings_list = total_settings_list.concat(json[`${list_predicate}${i}`]);
+              }
+              valid = total_settings_list.length == items_list.length;
+              total_settings_list.forEach(value => {
+                  if (items_list.filter(k => k.value == value).length == 0) {
+                      valid = false;
+                  }
+              });
+          }
+          if (valid) {
+            if (JSON.stringify(currentValues) !== JSON.stringify(value)) {
+              // Find the selected option by the value of the option
+              element.innerHTML = "";
+              value.forEach(opt => {
+                const option = document.createElement("li");
+                option.classList.add("list-group-item");
+                option.setAttribute("value", opt);
+                let opt_name = "";
+                let opt_tooltip = "";
+                let opt_checks = "";
+                let opt_items = "";
+                let opt_tied_item = "";
+                items_list.concat(checks_list).forEach(k => {
+                  if (k.value == opt) {
+                      opt_name = k.name;
+                      opt_tooltip = k.tooltip;
+                      if (list_predicate == "item_rando_list_") {
+                        opt_checks = k.check_count;
+                        opt_items = k.item_count;
+                        if (k.is_check) {
+                          option.classList.add("ischeck");
+                        } else if (k.is_dummy) {
+                          option.classList.add("show-if-ir-decouple");
+                          if (json["decouple_item_rando"] == "True") {
+                            option.setAttribute("hidden", "hidden");
+                          }
+                        }
+                        opt_tied_item = k.tied ? k.tied : "";
+                      }
+                  }
+                })
+                if (opt_name != "") {
+                  option.innerText = opt_name; // Not sure what to do for this
+                  option.title = opt_tooltip;
+                  if (list_predicate == "item_rando_list_") {
+                    option.setAttribute("check_count", opt_checks);
+                    option.setAttribute("items_count", opt_items);
+                    option.setAttribute("tied_item", opt_tied_item);
+                  }
+                  element.appendChild(option);
+                }
+              });
+              valueChanged = true;
+            }
+          } else {
+            console.log("Invalid sortable during init");
+          }
+          if (list_predicate == "item_rando_list_") {
+            // console.log("Dispatching list predicate event")
+            updateCheckItemCounter(grandparent);
           }
         }
       } catch (e) {
@@ -1667,11 +1879,12 @@ async function initialize() {
   await toggleDelayedSpoilerLogInput();
   await check_seed_info_tab();
   // check on any button with the nav-item class is clicked
-  document.querySelectorAll(".nav-item").forEach((item) => {
+  const nav_items = document.getElementById("rando_tabs").getElementsByTagName("a");
+  for (let item of nav_items) {
     item.addEventListener("click", async () => {
       await check_seed_info_tab();
     });
-  });
+  }
   await set_preset_options();
   await disable_apply_preset_button();
   await set_random_weights_options();

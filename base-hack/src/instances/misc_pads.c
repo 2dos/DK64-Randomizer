@@ -146,19 +146,7 @@ int getHelmLobbyGoneReqKong(void) {
     return sub_type + 1;
 }
 
-static char bonus_shown = 0;
-
-void blastWarpContainer(maps map, int wrongCSEnabled) {
-    int exit = 0;
-    if (map == MAP_ISLES) {
-        exit = 23;
-    }
-    if (wrongCSEnabled) {
-        setIntroStoryPlaying(2);
-        setNextTransitionType(0);
-    }
-    initiateTransition_0(map, exit, 0, 0);
-}
+char bonus_shown = 0;
 
 void activateGonePad(void) {
     actorSpawnerData* spawner = ActorSpawnerPointer;
@@ -488,18 +476,5 @@ void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
             behaviour_pointer->timer = 15;
             behaviour_pointer->next_state = 2;
         }
-    }
-}
-
-void initSwitchsanityChanges(void) {
-    if (Rando.switchsanity.isles.gone != 0) {
-        *(short*)(0x80680E3A) = getHi(&bonus_shown);
-        *(int*)(0x80680E3C) = 0x91EF0000 | getLo(&bonus_shown); // lbu $t7, lo(bonus_shown) ($t7)
-        *(int*)(0x80680E48) = 0; // nop
-        *(int*)(0x80680E54) = 0x51E00009; // beql $t7, $zero, 0x9
-    }
-    if (Rando.switchsanity.isles.monkeyport == 1) {
-        *(short*)(0x806E5A4A) = getHi(&blastWarpContainer);
-        *(short*)(0x806E5A4E) = getLo(&blastWarpContainer);
     }
 }

@@ -1,0 +1,155 @@
+{
+    "index": 0,
+    "ignore": true,
+    "point_data": [
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                24,
+                45
+            ],
+            "detailed_command": {
+                "sub_command": 57,
+                "params": [
+                    1,
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.FactoryCarRace",
+                    1
+                ]
+            },
+            "duration": 120
+        },
+        {
+            "unk0": 0,
+            "command": 4,
+            "head": [
+                23,
+                131
+            ],
+            "point_start": {
+                "x": 5,
+                "y": 0,
+                "z": 2016,
+                "rot": {
+                    "x": 19752,
+                    "y": 34815,
+                    "z": 1181
+                },
+                "zoom": 0,
+                "roll": 175
+            },
+            "point_end": {
+                "x": 5844,
+                "y": 0,
+                "z": 2016,
+                "rot": {
+                    "x": 0,
+                    "y": 11019,
+                    "z": 255
+                },
+                "zoom": 4,
+                "roll": 237
+            },
+            "points": [
+                {
+                    "x": 343,
+                    "y": 30,
+                    "z": 2378,
+                    "rot": {
+                        "x": 501,
+                        "y": 62680,
+                        "z": 11951
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 362,
+                    "y": 59,
+                    "z": 2249,
+                    "rot": {
+                        "x": 64047,
+                        "y": 62709,
+                        "z": 11642
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 345,
+                    "y": 59,
+                    "z": 2234,
+                    "rot": {
+                        "x": 4906,
+                        "y": 62709,
+                        "z": 10652
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 344,
+                    "y": 45,
+                    "z": 2278,
+                    "rot": {
+                        "x": 4045,
+                        "y": 62684,
+                        "z": 11105
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 381,
+                    "y": 45,
+                    "z": 2259,
+                    "rot": {
+                        "x": 64577,
+                        "y": 62684,
+                        "z": 11735
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 190
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                133,
+                255
+            ],
+            "detailed_command": {
+                "sub_command": 29,
+                "params": [
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                24,
+                65
+            ],
+            "detailed_command": {
+                "sub_command": 14,
+                "params": [
+                    1,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 30
+        }
+    ]
+}

@@ -11,8 +11,6 @@
 
 #include "../../include/common.h"
 
-static char jetpacRewardText[] = "REWARD COLLECTED";
-
 void loadJetpacSprites_handler(void) {
 	loadJetpacSprites();
 	*(unsigned char*)(0x8002F060) = Rando.jetman_rgb[0];
@@ -20,12 +18,19 @@ void loadJetpacSprites_handler(void) {
 	*(unsigned char*)(0x8002F062) = Rando.jetman_rgb[2];
 }
 
-void initJetpac(void) {
-	/**
-	 * @brief Initialize Jetpac Changes.
-	 */
-	if (Rando.item_rando) {
-		*(short*)(0x80024D8E) = getHi(&jetpacRewardText);
-		*(short*)(0x80024D96) = getLo(&jetpacRewardText);
+void exitJetpac(int map, int exit) {
+	if (CurrentMap == MAP_JETPAC_ROCKET) {
+		ExitFromBonus();
+		return;
 	}
+	initiatetransition(map, exit);
+}
+
+void completeJetpac(void) {
+	if (CurrentMap == MAP_JETPAC_ROCKET) {
+		resolveBonusContainer();
+		ExitFromBonus();
+		return;
+	}
+	nextJetpacLevel();
 }

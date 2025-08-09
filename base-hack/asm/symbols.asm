@@ -277,3 +277,4 @@
 .definelabel StoredOrangeCount, 0x80029FA4
 
 .definelabel EnvironmentFog, 0x807F7360
+.definelabel RaceCoinCount, 0x80750AC4

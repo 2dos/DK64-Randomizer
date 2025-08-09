@@ -10,7 +10,6 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.HintRegion import HintRegion, HINT_REGION_PAIRING, MEDAL_REWARD_REGIONS, SHOP_REGIONS
-from randomizer.Lists.EnemyTypes import enemy_location_list
 
 if TYPE_CHECKING:
     from randomizer.Enums.Collectibles import Collectibles
@@ -36,7 +35,7 @@ class LocationLogic:
         self.logic = logic  # Lambda function for accessibility
         if id >= Locations.JapesMainEnemy_Start and id <= Locations.IslesMainEnemy_LowerFactoryPath1:
             # Handle enemy logic
-            self.logic = lambda l: logic(l) and enemy_location_list[id].canDropItem(l)
+            self.logic = lambda l: logic(l) and l.spoiler.enemy_location_list[id].canDropItem(l)
         self.bonusBarrel = bonusBarrel  # Uses MinigameType enum
         self.isAuxiliaryLocation = (
             isAuxiliary  # For when the Location needs to be in a region but not count as in the region (used for locations that need to be accessible in different regions depending on settings)
@@ -127,9 +126,9 @@ class Region:
                     deathwarp = self.GetDefaultDeathwarp()
                 if deathwarp is not None:
                     if isinstance(deathwarp, Regions):
-                        self.deathwarp = TransitionFront(deathwarp, lambda l: True)
+                        self.deathwarp = TransitionFront(deathwarp, lambda _: True)
                     else:
-                        self.deathwarp = TransitionFront(Regions(deathwarp), lambda l: True)
+                        self.deathwarp = TransitionFront(Regions(deathwarp), lambda _: True)
 
         self.ResetAccess()
 
@@ -252,7 +251,7 @@ class ColoredBananaGroup:
         self.locations = locations  # 5 numbers: {int amount, float scale, int x, y, z}
         self.region = region
         if logic is None:
-            self.logic = lambda l: True
+            self.logic = lambda _: True
         else:
             self.logic = logic
         self.selected = False
@@ -283,7 +282,7 @@ class Balloon:
         self.points = points  # 3 numbers: [int x, y, z]
         self.region = region
         if logic is None:
-            self.logic = lambda l: True
+            self.logic = lambda _: True
         else:
             self.logic = logic
         self.spawnPoint = self.setSpawnPoint(points)

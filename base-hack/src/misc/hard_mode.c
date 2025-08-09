@@ -243,6 +243,11 @@ static const map_bitfield is_dark_world_mc = {
     .k_lumsy_ending = 1,
     .k_rools_shoe = 0,
     .k_rools_arena = 0,
+    .arcade_25m = 0,
+    .arcade_50m = 0,
+    .arcade_75m = 0,
+    .arcade_100m = 0,
+    .jetpac_rocket = 0,
 };
 
 typedef enum challenge_type {
@@ -254,7 +259,12 @@ typedef enum challenge_type {
 static unsigned char banned_challenge_maps[] = {
     MAP_TESTMAP,
     MAP_DKARCADE,
+    MAP_ARCADE25M_ONLY,
+    MAP_ARCADE50M_ONLY,
+    MAP_ARCADE75M_ONLY,
+    MAP_ARCADE100M_ONLY,
     MAP_JETPAC,
+    MAP_JETPAC_ROCKET,
     MAP_SNOOP_NORMALNOLOGO,
     MAP_NINTENDOLOGO,
     MAP_FUNGIDIDDYBARN,
@@ -515,4 +525,16 @@ void parseControllerInput(Controller * cont) {
         }
     }
     cont->stickX = -cont->stickX;
+}
+
+void hitlessDeath(void) {
+    WipeFile(FileIndex, 1);
+    resetMap(); // Resets parent chain to prevent SirSmack causing memes
+    LoadGameOver();
+    SaveToFile(0xD, 0, 0, FileIndex, 0);
+    performEEPROMAction(1);
+}
+
+void setHardPathSpeed(int index, int speed) {
+    unkObjFunction6(index, speed << 2);
 }

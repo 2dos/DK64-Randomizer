@@ -61,6 +61,7 @@ static const unsigned char model_swap_base_index[] = {
 	0x10, // /* 0x00A */ KONGMODEL_CRANKY,
 	0x12, // /* 0x00B */ KONGMODEL_CANDY,
 	0x11, // /* 0x00C */ KONGMODEL_FUNKY,
+    0x03, // /* 0x00D */ KONGMODEL_DISCODONKEY,
 };
 
 int getCutsceneModelTableIndex(int vanilla_index) {

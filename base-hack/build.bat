@@ -25,6 +25,7 @@ if %test_on% == --test (
 	echo 1 > Build/BuildingBPS.txt
 )
 call :runscript "Pulling actor data from ROM", "build\getDefaultData.py"
+call :runscript "Building Item Previews File", "build\dump_previews.py"
 call :runscript "Define Heap", "build\heap.py"
 call :runscript "Installing Packages", "build\install_packages.py"
 call :runscript "Pulling Images from ROM", "build\pull_images_from_rom.py"
@@ -33,6 +34,7 @@ call :runscript "Building Item Database", "build\item_dictionaries.py"
 call :runscript "Adjusting Pause Menu Variables", "build\adjust_pause_rotation.py"
 call :runscript "Building Hint Regions", "build\build_hint_regions.py"
 call :runscript "Building Dynamic Bitfields", "build\build_dynamic_bitfields.py"
+call :runscript "Remembering the 21st Night of September", "build\disco_donkey.py"
 if %use_compiled% == 1 (
 	call :runscript "Compile Cranky's Lab", "build\pyinstaller_handler.py"
 )

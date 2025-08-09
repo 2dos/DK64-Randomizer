@@ -73,10 +73,10 @@ char* hint_region_names[] = {
 	"THIS SHOULD NOT BE HINTED",
 };
 
-char* unknown_hints[] = {
-	"??? - RESEARCH AND DEVELOPMENT AREA",
-	"??? - RESEARCH AND DEVELOPMENT AREA",
-	"??? - RESEARCH AND DEVELOPMENT AREA",
-	"??? - RESEARCH AND DEVELOPMENT AREA",
-	"??? - RESEARCH AND DEVELOPMENT AREA",
+FastTextStruct unknown_hints[] = {
+	{ .lines = { "??? - RESEARCH AND DEVELOPMENT AREA", 0, 0 } },
+	{ .lines = { "??? - RESEARCH AND DEVELOPMENT AREA", 0, 0 } },
+	{ .lines = { "??? - RESEARCH AND DEVELOPMENT AREA", 0, 0 } },
+	{ .lines = { "??? - RESEARCH AND DEVELOPMENT AREA", 0, 0 } },
+	{ .lines = { "??? - RESEARCH AND DEVELOPMENT AREA", 0, 0 } },
 };

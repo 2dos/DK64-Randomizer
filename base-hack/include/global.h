@@ -6,8 +6,6 @@ extern void setPermFlag(short flagIndex);
 extern int convertIDToIndex(short obj_index);
 extern void* findActorWithType(int search_actor_type);
 extern int isRDRAM(void* address);
-extern void customHideHUD(void);
-extern void setWarpPosition(float x, float y, float z);
 extern void initHack(int source);
 extern void callParentMapFilter(void);
 extern void shiftBrokenJapesPortal(void);
@@ -15,11 +13,8 @@ extern void quickInit(void);
 extern int getCenter(int style, char* str);
 extern int getActorIndex(int actor_input);
 extern int getCustomActorIndex(new_custom_actors offset);
-extern int spawnItemOverlay(PURCHASE_TYPES type, int kong, int index, int force);
+extern int spawnItemOverlay(requirement_item type, int level, int kong, int force);
 extern int giveSlamLevel(void);
-extern int isSlamFlag(int flag);
-extern int isBeltFlag(int flag);
-extern int isInstrumentUpgradeFlag(int flag);
 extern int inBattleCrown(maps map);
 extern int inTraining(maps map);
 extern int inShop(maps map, int include_snide);
@@ -27,14 +22,16 @@ extern int inBossMap(maps map, int include_regular, int include_krool, int inclu
 extern int inMinigame(maps map);
 extern int getBitArrayValue(unsigned char* arr, int value);
 extern int isGamemode(gamemodes target_mode, int force_both);
-extern int has_key(int index);
 extern overlays getOverlayFromMap(maps map);
-extern void* malloc_wipe(int size);
 extern int applyDamageMask(int player_index, int damage);
 extern void* replaceWaterTexture(int table, int file, int unk0, int unk1);
 extern void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1);
 extern int isBounceObject(int object);
 extern void genericStatUpdate(bonus_stat stat);
+
+extern void applyPaperMode(void);
+
+extern void resolveBonusContainer(void);
 
 extern int getEnemyItem(int id);
 extern int getEnemyFlag(int id);
@@ -48,13 +45,13 @@ extern void initHelmSetup(void);
 
 extern int determineShockwaveColor(actorData* shockwave);
 
+extern int getTotalMoveCount(void);
+
 extern int hasChunkyPhaseSlam(void);
 extern void fixKRoolKong(void);
 
-extern void level_order_rando_funcs(void);
 extern void unlockMoves(void);
 extern void tagAnywhere(void);
-extern void applyFastStart(void);
 extern void openCrownDoor(void);
 extern void openCoinDoor(void);
 extern void qualityOfLife_fixes(void);
@@ -64,9 +61,9 @@ extern void handleKRoolSaveProgress(void);
 extern void replace_zones(int init_flag);
 extern void displayNumberOnTns(void);
 extern void moveTransplant(void);
-extern void priceTransplant(void);
 
-extern void changeCharSpawnerFlag(maps map, int spawner_id, int new_flag);
+extern int getInstrumentLevel(void);
+
 extern void HelmBarrelCode(void);
 extern void WarpHandle(void);
 
@@ -84,11 +81,6 @@ extern void warpToIsles(void);
 extern void adjust_level_modifiers(void);
 extern void handleTimeOfDay(time_of_day_calls call);
 
-extern void initKongRando(void);
-
-extern int getMedalCount(void);
-extern int isMedalFlag(int flag);
-
 extern int convertSubIDToIndex(short obj_index);
 extern int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2);
 extern void setCrusher(void);
@@ -96,7 +88,6 @@ extern void createCollisionObjInstance(collision_types subtype, int map, int exi
 extern int spawnCannonWrapper(void);
 extern void disableDiddyRDDoors(void);
 extern void fixkey8(void);
-extern void alterGBKong(maps map, int id, int new_kong);
 
 extern void preventBossCheese(void);
 extern void determineStartKong_PermaLossMode(void);
@@ -111,7 +102,6 @@ extern void correctDKPortal(void);
 extern int canSaveHelmHurry(void);
 extern void addHelmTime(helm_hurry_items item, int multiplier);
 extern void saveHelmHurryTime(void);
-extern void wipeFileStats(void);
 
 extern int getHelmExit(void);
 
@@ -142,6 +132,7 @@ extern void newCounterCode(void);
 extern void wipeCounterImageCache(void);
 extern void getMoveHint(actorData* actor, int text_file, int text_index);
 extern void cutsceneDKCode(void);
+extern void charSpawnerItemCode(void);
 
 extern void fastWarp_playMusic(void* actor);
 extern void fixCutsceneModels(void);
@@ -162,6 +153,8 @@ extern int isKrushaAdjacentModel(int kong);
 extern int isGlobalCutscenePlaying(int cutscene_index);
 extern void adjustGunBone(playerData* player);
 
+extern void SpeedUpMusicInner(void);
+
 extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);
 extern int hasAccessToKong(int kong);
@@ -171,18 +164,13 @@ extern void initTagAnywhere(void);
 extern void initItemDropTable(void);
 extern void initCollectableCollision(void);
 extern void initActorDefs(void);
-extern void updateKopStat(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
-extern void ninCoinCode(void);
-extern void rwCoinCode(void);
-extern void medalCode(void);
-extern void beanCode(void);
-extern void pearlCode(void);
 extern void NothingCode(void);
 extern void fairyDuplicateCode(void);
 extern void shopOwnerItemCode(void);
 extern void FakeGBCode(void);
+extern void FakeKeyCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec);
@@ -223,8 +211,6 @@ extern void modifyCutscenePoint(int bank, int cutscene, int point, int new_item)
 extern void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int new_param3);
 extern void modifyCutscenePanPoint(int bank, int item, int point_index, int x, int y, int z, int rot0, int rot1, int rot2, int zoom, int roll);
 extern void modifyCutscenePointTime(int bank, int cutscene, int point, int new_time);
-extern void modifyCutscenePointCount(int bank, int cutscene, int point_count);
-extern void createCutscene(int bank, int cutscene, int point_count);
 extern void HelmInit(int init_stage);
 extern void handleSFXCache(void);
 extern void preventMedalHUD(int item, int unk0, int unk1);
@@ -266,13 +252,7 @@ extern void clearSkipCache(void);
 extern void updateSkipCheck(void);
 extern void renderScreenTransitionCheck(int applied_transition);
 extern void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1, int p2);
-extern int checkFlagDuplicate(short flag, flagtypes type);
-extern void setFlagDuplicate(short flag, int set, flagtypes type);
-extern void* updateFlag(flagtypes type, short* flag, void* fba, int source);
 extern void spawnEnemyDrops(actorData* actor);
-extern int countFlagsDuplicate(int start, int count, flagtypes type);
-extern void* checkMove(short* flag, void* fba, int source, int vanilla_flag);
-extern int hasMove(int flag);
 
 extern void finalizeBeatGame(void);
 extern void exitTrapBubbleController(void);
@@ -280,30 +260,24 @@ extern void exitTrapBubbleController(void);
 extern int getFlagIndex_Corrected(int start, int level);
 extern int getFlagIndex_MedalCorrected(int start, int level);
 extern int getBPItem(int index);
-extern int getMedalItem(int index);
-extern int getWrinklyItem(int index);
 extern int getCrownItem(maps map);
 extern int getKeyItem(int old_flag);
-extern int getFairyModel(int flag);
 extern int getRainbowCoinItem(int old_flag);
-extern int getCrateItem(int old_flag);
-extern Gfx* controlKeyText(Gfx* dl);
-extern void keyGrabHook(int song, float vol);
-extern int getKeyFlag(int index);
-extern int getKongFlag(int kong_index);
 extern void PotionCode(void);
 extern void KongDropCode(void);
-extern int getMoveProgressiveFlagType(int flag);
 extern void getItem(int object_type);
 extern void checkModelTwoItemCollision(item_collision* obj_collision, int player_index, player_collision_info* player_collision);
 extern void CheckKasplatSpawnBitfield(void);
 extern void refreshPads(pad_refresh_signals signal);
+
+extern void initItemRandoPointer(void);
 
 extern int stompHandler(void* unk0, playerData* player, int unk1);
 
 extern void indicateCollectionStatus(void);
 extern void fireballEnemyDeath(float x, float y, float z, float scale, char unk0, char unk1);
 extern void rulerEnemyDeath(void);
+extern void tomatoDeath(void);
 extern int canSpawnEnemyReward(void);
 extern void wipeEnemySpawnBitfield(void);
 extern void setSpawnBitfield(int id, int state);
@@ -323,8 +297,7 @@ extern void initHints(void);
 extern void initHintFlags(void);
 
 extern void initTextChanges(void);
-extern void giveGB(int kong, int level);
-extern void giveRainbowCoin(void);
+extern void giveGB();
 extern void giveAmmo(void);
 extern void giveOrange(void);
 extern void giveMelon(void);
@@ -346,7 +319,7 @@ extern Gfx* displayNoGeoChunk(Gfx* dl, int chunk_index, int shift);
 
 extern void initIceTrap(void);
 extern int isBannedTrapMap(maps map, ICE_TRAP_TYPES type);
-extern void queueIceTrap(ICE_TRAP_TYPES trap_type);
+extern void queueIceTrap(ICE_TRAP_TYPES trap_type, int send_trap);
 extern void callIceTrap(void);
 extern int getPatchWorld(int index);
 extern int getCrateWorld(int index);
@@ -359,11 +332,8 @@ extern void initQoL(void);
 extern void initCosmetic(void);
 extern void populatePatchItem(int id, int map, int index, int world);
 extern void populateCrateItem(int id, int map, int index, int world);
-extern int isObjectTangible_detailed(int id);
 
 extern void insertROMMessages(void);
-extern int isTBarrelFlag(int flag);
-extern int isFairyFlag(int flag);
 extern int isFlagInRange(int test_flag, int start_flag, int count);
 
 extern void wipeHintCache(void);
@@ -375,18 +345,14 @@ extern int initFile_getBeltLevel(int inc_training);
 extern int initFile_getInsUpgradeLevel(int inc_training);
 extern int initFile_getSlamLevel(int inc_training);
 extern int initFile_getKongPotionBitfield(int kong);
-extern int initFile_checkTraining(int type_check, int kong_check, int value_check);
+extern int initFile_checkTraining(int type_check, int level_check, int kong_check);
 
 extern void fixHelmTimerCorrection(void);
 extern void exitBoss(void);
 
-extern int changeStat(bonus_stat statistic, int delta);
-extern int getStat(bonus_stat statistic);
-extern void setStat(bonus_stat statistic, int amount);
+extern int isSharedMove(vendors shop_index, int level);
+
 extern void setKongIgt(void);
-extern int ReadExtraData(extra_global_data data_type, int sub_index);
-extern void SaveExtraData(extra_global_data data_type, int sub_index, int value);
-extern void ResetExtraData(extra_global_data data_type, int sub_index);
 extern void setKrushaAmmoColor(void);
 
 extern void handleCannonGameReticle(void);
@@ -395,10 +361,12 @@ extern void cFuncLoop(void);
 extern void overlay_mod_menu(void);
 extern void overlay_mod_boss(void);
 extern void overlay_mod_bonus(void);
-extern void initJetpac(void);
+extern void exitJetpac(int map, int exit);
 extern void overlay_mod_race(void);
 
 extern int getTrackerYOffset(void);
+
+extern int isDynFlag(int obj);
 
 extern void hideObject(behaviour_data* behaviour_pointer);
 extern void bananaportGenericCode(behaviour_data* behaviour, int index, int id);
@@ -416,17 +384,24 @@ extern int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, 
 extern void getModelTwoItemFromActor(int actor, short* item, float* scale);
 extern void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index);
 extern void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index);
-extern void initSwitchsanityChanges(void);
 extern void setObjectOpacity(behaviour_data* behaviour_pointer, int opacity);
 extern int standingOnM2Object(int index);
 
 extern int getItemCountReq(requirement_item item);
 extern int isItemRequirementSatisfied(ItemRequirement* req);
-extern dynamic_flag_icetrap_junk isIceTrapFlag(int flag);
 
 extern int getGamePercentage(void);
+extern int isShopEmpty(vendors vendor, int level, int kong);
 
-extern void displayMedalOverlay(int flag, int item_type);
+extern void displayMedalOverlay(int flag, item_packet *item_type);
+
+extern void saveItemsToFile(void);
+extern void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index);
+
+extern void loadWrinklyTextWrapper(actorData* actor, int file, int index);
+extern int getProjectileCount_modified(void *player, unsigned short int_bitfield, void* code);
+extern void applyButtonBansInternals(void *cont);
+extern void *getTextData(data_indexes table_index, int file_index, int unk0, int unk1);
 
 extern void handleCrownTimerInternal(void);
 
@@ -445,16 +420,25 @@ extern int canPlayerClimb(void);
 extern purchase_struct* getShopData(vendors vendor, int kong, int level);
 extern void initQoL_Cutscenes(void);
 
+extern void giveItem(requirement_item item, int level, int kong, giveItemConfig config);
+extern void giveItemFromPacket(item_packet *packet);
+extern int getItemCount_new(requirement_item item, int level, int kong);
+extern int hasFlagMove(int flag);
+extern void setFlagMove(int flag);
+extern int getShopFlag(vendors vendor, int level, int kong);
+
+extern void giveKongFromFlag(int flag);
+
+extern void resetIceTrapButtons(void);
+extern void handleIceTrapButtons(void);
+extern int getCharWidthMask(int style, unsigned char *character);
+
 extern unsigned int cs_skip_db[2];
-extern bonus_barrel_info bonus_data[BONUS_DATA_COUNT];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
 extern short tbarrel_flags[4];
 extern short bfi_move_flags[2];
 extern const short tnsportal_flags[7];
-extern const unsigned short slam_flags[6];
-extern const unsigned short belt_flags[4];
-extern const unsigned short instrument_flags[6];
 extern const unsigned char kong_pellets[5];
 extern const rgb colorblind_colors[15];
 extern const check_struct item_db[297];
@@ -462,7 +446,6 @@ extern const unsigned char crown_maps[10];
 extern const unsigned char regular_boss_maps[7];
 extern char* levels[10];
 extern unsigned int dark_mode_colors[10];
-extern int flut_size;
 
 extern sprite_data_struct bean_sprite;
 extern sprite_data_struct pearl_sprite;
@@ -470,6 +453,7 @@ extern sprite_data_struct krool_sprite;
 extern sprite_data_struct feather_gun_sprite;
 extern sprite_data_struct fool_overlay_sprite;
 extern sprite_data_struct company_coin_sprite;
+extern sprite_data_struct potion_sprite;
 
 extern actor_behaviour_def actor_defs[DEFS_LIMIT];
 extern void* actor_functions[ACTOR_LIMIT];
@@ -482,12 +466,13 @@ extern collision_info object_collisions[COLLISION_LIMIT];
 extern unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE];
 
 extern mtx_item static_mtx[22];
-extern int hint_pointers[35];
+extern FastTextStruct hint_pointers[35];
 extern char* itemloc_pointers[LOCATION_ITEM_COUNT];
 extern char music_types[SONG_COUNT];
 extern char grab_lock_timer;
 extern char tag_locked;
 extern char enable_skip_check;
+extern char bonus_shown;
 extern int force_enable_diving_timer;
 
 extern unsigned int base_text_color;
@@ -503,6 +488,7 @@ extern drop_item drops[DROP_COUNT];
 extern int file_sprites[17];
 extern short file_items[16];
 extern short file_item_caps[16];
+extern short file_info_expansion;
 extern ICE_TRAP_TYPES ice_trap_queued;
 extern const collision_tree_struct fixed_shockwave_collision[3];
 extern const collision_tree_struct fixed_scarab_collision[4];
@@ -510,3 +496,11 @@ extern const collision_tree_struct fixed_dice_collision[12];
 extern const collision_tree_struct fixed_klap_collision[8];
 extern const collision_tree_struct fixed_bug_collision[2];
 extern char version_string[0x10];
+extern unsigned short GameStats[STAT_TERMINATOR];
+extern LZREntrance blast_entrances[8];
+extern unsigned short enabled_buttons;
+extern unsigned short cc_enabled_buttons;
+extern unsigned short trap_enabled_buttons;
+extern purchase_text_hint_struct purchase_hint_text_items[120];
+extern char aztec_beetle[0x20];
+extern char caves_beetle[0x20];

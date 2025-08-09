@@ -6,41 +6,6 @@ KRoolLankyPhaseFix:
     j 0x80028CD4
     lh $a1, 0x59A0 ($a1)
 
-KKOPhaseHandler:
-    lui $v0, hi(KKOPhaseOrder)
-    addiu $v0, $v0, lo(KKOPhaseOrder)
-    lb $a0, 0x0 ($v0)
-    bne $t7, $a0, KKOPhaseHandler_Slot2
-    nop
-    b KKOPhaseHandler_Finish
-    lb $t8, 0x1 ($v0)
-
-    KKOPhaseHandler_Slot2:
-        lb $a0, 0x1 ($v0)
-        bne $t7, $a0, KKOPhaseHandler_Slot3
-        nop
-        b KKOPhaseHandler_Finish
-        lb $t8, 0x2 ($v0)
-
-    KKOPhaseHandler_Slot3:
-        lb $a0, 0x2 ($v0)
-        bne $t7, $a0, KKOPhaseHandler_Finish
-        nop
-        b KKOPhaseHandler_Finish
-        addiu $t8, $zero, 4
-
-    KKOPhaseHandler_Finish:
-        sb $t8, 0x12 ($s0)
-        j 0x80032578
-        lb $v0, 0x12 ($s0)
-
-KKOInitPhase:
-    lui $at, hi(KKOPhaseOrder)
-    lb $at, lo(KKOPhaseOrder) ($at)
-    sb $at, 0x12 ($s0)
-    j 0x80031B34
-    lui $at, 0x8003
-
 MadJackShort:
     addiu $t1, $zero, 1 ; Phase 2
     beq $t1, $t8, MadJackShort_Skip

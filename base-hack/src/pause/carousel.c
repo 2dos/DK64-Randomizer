@@ -14,7 +14,7 @@ short file_items[16] = {
     0, 0, 0, 0, // GBs, Crowns, Keys, Medals
     0, 0, 0, 0, // RW, Fairy, Nintendo, BP
     0, 0, 0, 0, // Kongs, Beans, Pearls, Rainbow
-    0, 0, 0, 0, // Hints, Crates
+    0, 0, 0, 0, // Hints, Crates, Shops
 };
 
 int file_sprites[17] = {
@@ -32,14 +32,15 @@ int file_sprites[17] = {
     0x80721378, // Rainbow Coins
     0x80721530, // Hint
     0x80720710, // Crate
-    0, 0,
+    (int)&potion_sprite, // Shops
+    0,
     0, // Null Item, Leave Empty
 };
 short file_item_caps[16] = {
     201, 10, 8, 40,
     1, 20, 1, 40,
     5, 1, 5, 16,
-    35, 0, 0, 0, // Second here is Junk Items
+    35, 0, 42, 0, // Second here is Junk Items
 };
 
 void updatePauseScreenWheel(pause_paad* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
@@ -170,44 +171,18 @@ void handleSpriteCode(int control_type) {
     }
 }
 
-typedef struct CarouselBoundStruct {
-    /* 0x000 */ unsigned char check_type;
-    /* 0x001 */ unsigned char flag_count;
-    /* 0x002 */ short starting_flag;
-} CarouselBoundStruct;
-
-static CarouselBoundStruct carousel_bounds[] = {
-    {.check_type = CHECK_CRATE, .flag_count = ENEMIES_TOTAL, .starting_flag = FLAG_ENEMY_KILLED_0}, // Make sure this is always first
-    {.check_type = CHECK_PEARLS, .flag_count = 5, .starting_flag = FLAG_PEARL_0_COLLECTED},
-    {.check_type = CHECK_RAINBOW, .flag_count = 16, .starting_flag = FLAG_RAINBOWCOIN_0},
-    {.check_type = CHECK_HINTS, .flag_count = 35, .starting_flag = FLAG_WRINKLYVIEWED},
-    {.check_type = CHECK_BEAN, .flag_count = 1, .starting_flag = FLAG_COLLECTABLE_BEAN},
-};
-
 void initCarousel_onPause(void) {
     for (int i = 0; i < 8; i++) {
         file_items[i] = FileVariables[i];
     }
-    if (!Rando.enemy_item_rando) {
-        carousel_bounds[0].flag_count = 0;
-    }
-    file_items[CHECK_KONG] = 0;
-    for (int i = 0; i < 5; i++) {
-        int check_type = carousel_bounds[i].check_type;
-        int start_flag = carousel_bounds[i].starting_flag;
-        int count = carousel_bounds[i].flag_count;
-        file_items[check_type] = 0;
-        for (int j = 0; j < count; j++) {
-            file_items[check_type] += checkFlagDuplicate(start_flag + j, FLAGTYPE_PERMANENT);
-        }
-        file_items[CHECK_KONG] += checkFlagDuplicate(kong_flags[i], FLAGTYPE_PERMANENT);
-    }
-    for (int i = 0; i < 100; i++) {
-        // Junk Item Check
-        if (isIceTrapFlag(FLAG_JUNKITEM + i) == DYNFLAG_JUNK) {
-            file_items[CHECK_CRATE] += checkFlagDuplicate(FLAG_JUNKITEM + i, FLAGTYPE_PERMANENT);
-        }
-    }
+    file_items[CHECK_PEARLS] = getItemCount_new(REQITEM_PEARL, 0, 0);
+    file_items[CHECK_RAINBOW] = getItemCount_new(REQITEM_RAINBOWCOIN, 0, 0);
+    file_items[CHECK_HINTS] = getItemCount_new(REQITEM_HINT, -1, -1);
+    file_items[CHECK_BEAN] = getItemCount_new(REQITEM_BEAN, 0, 0);
+    file_items[CHECK_KONG] = getItemCount_new(REQITEM_KONG, -1, -1);
+    file_items[CHECK_CRATE] = getItemCount_new(REQITEM_JUNK, 0, 0);
+    file_items[CHECK_SHOPS] = getTotalMoveCount();
+    file_items[CHECK_KEY] = getItemCount_new(REQITEM_KEY, -1, -1);
 }
 
 void initCarousel_onBoot(void) {

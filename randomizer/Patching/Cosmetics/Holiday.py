@@ -3,7 +3,7 @@
 import gzip
 from PIL import Image, ImageEnhance
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Library.Generic import Holidays, getHoliday
+from randomizer.Patching.Library.Generic import Holidays, getHoliday, IsColorOptionSelected
 from randomizer.Patching.Library.Image import (
     getImageFile,
     getBonusSkinOffset,
@@ -15,7 +15,7 @@ from randomizer.Patching.Library.Image import (
     hueShiftImageContainer,
 )
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
-from randomizer.Settings import CharacterColors, KongModels
+from randomizer.Settings import CharacterColors, KongModels, ColorOptions
 
 
 def changeBarrelColor(settings, ROM_COPY: ROM, barrel_color: tuple = None, metal_color: tuple = None, brighten_barrel: bool = False):
@@ -136,7 +136,14 @@ def applyHolidayMode(settings, ROM_COPY: ROM):
     """Change grass texture to snow."""
     HOLIDAY = getHoliday(settings)
     if HOLIDAY == Holidays.no_holiday:
-        changeBarrelColor(settings, ROM_COPY)  # Fixes some Krusha stuff
+        barrel_color = None
+        change_barrel_color = IsColorOptionSelected(settings, ColorOptions.barrels_and_boulders)
+        if change_barrel_color:
+            col_array = []
+            for _ in range(3):
+                col_array.append(settings.random.randint(0, 0xFF))
+            barrel_color = tuple(col_array)
+        changeBarrelColor(settings, ROM_COPY, barrel_color, None, change_barrel_color)  # Fixes some Krusha stuff
         return
     if HOLIDAY == Holidays.Christmas:
         # Set season to Christmas

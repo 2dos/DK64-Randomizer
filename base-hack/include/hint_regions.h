@@ -70,4 +70,5 @@ typedef enum regions {
 	/* 0x03B */ REGION_OTHERTNS, // Troff n Scoff
 	/* 0x03C */ REGION_ERROR, // This should not be hinted
 } regions;
-extern char* hint_region_names[61];extern char* unknown_hints[5];
+extern char* hint_region_names[61];
+extern FastTextStruct unknown_hints[5];

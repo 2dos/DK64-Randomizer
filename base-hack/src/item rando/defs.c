@@ -69,54 +69,6 @@ const collision_tree_struct fixed_bug_collision[2] = {
     {.actor_interaction=-1, .target_interaction=-1, .collision_type=0x1, .unk9=0x5},
 };
 
-void initCollectableCollision(void) {
-    /**
-     * @brief Initialize all collectable collisions
-     */
-    if (Rando.any_kong_items.blueprints) {
-        for (int i = 0; i < COLLISION_LIMIT; i++) {
-            if (object_collisions[i].collectable_type == COLLECTABLE_BP) {
-                // Blueprints
-                object_collisions[i].intended_actor = 0;
-            }
-        }
-    }
-
-    // Write new table to ROM
-    int hi = getHi(&object_collisions[0].type);
-    int lo = getLo(&object_collisions[0].type);
-    *(unsigned short*)(0x806F48D2) = hi;
-    *(unsigned short*)(0x806F48D6) = lo;
-    *(unsigned short*)(0x806F4A8E) = COLLISION_LIMIT;
-    *(unsigned short*)(0x806F4E7E) = hi;
-    *(unsigned short*)(0x806F4E8E) = lo;
-    *(unsigned short*)(0x806F51C2) = getHi(&object_collisions[0].intended_actor);
-    *(unsigned short*)(0x806F51CE) = getLo(&object_collisions[0].intended_actor);
-    *(unsigned short*)(0x806F5556) = getHi(&object_collisions[0].collectable_type);
-    *(unsigned short*)(0x806F5562) = getLo(&object_collisions[0].collectable_type);
-    *(unsigned short*)(0x806F626E) = hi;
-    *(unsigned short*)(0x806F627A) = lo;
-    *(unsigned short*)(0x806F6AC6) = hi;
-    *(unsigned short*)(0x806F6ACE) = lo;
-    *(unsigned short*)(0x806F742A) = hi;
-    *(unsigned short*)(0x806F744A) = lo;
-    *(unsigned short*)(0x806F7996) = getHi(&object_collisions[COLLISION_LIMIT].type);
-    *(unsigned short*)(0x806F799A) = getLo(&object_collisions[COLLISION_LIMIT].type);
-    // Change new sizes
-    *(unsigned short*)(0x806F4A92) = sizeof(collision_info);
-    *(unsigned short*)(0x806F4EAA) = sizeof(collision_info);
-    *(int*)(0x806F51B4) = 0x240A0000 | sizeof(collision_info); // addiu $t2, $zero (sizeof(collision_info))
-    *(int*)(0x806F51B8) = 0x01420019; // multu $t2, $v0
-    *(int*)(0x806F51BC) = 0x00004812; // mflo $t1
-    *(int*)(0x806F5548) = 0x240A0000 | sizeof(collision_info); // addiu $t2, $zero (sizeof(collision_info))
-    *(int*)(0x806F554C) = 0x01420019; // multu $t2, $v0
-    *(int*)(0x806F5550) = 0x00005012; // mflo $t2
-    *(unsigned short*)(0x806F6282) = sizeof(collision_info);
-    *(unsigned short*)(0x806F6ABE) = sizeof(collision_info);
-    *(unsigned short*)(0x806F799E) = sizeof(collision_info);
-
-}
-
 #define MODEL_CHAIN 0x80
 
 void initActorDefs(void) {

@@ -148,7 +148,7 @@ def parseWothHint(world, location):
     """Write a woth item hint for the given location."""
     text = ""
     if location.player != world.player:
-        text = f"\x05{world.multiworld.get_player_name(location.player)}\x05 \x0d{location.name[:80]}\x0d is on the \x04Way of the Hoard\x04.".upper()
+        text = f"\x05{world.multiworld.get_player_name(location.player)}'s\x05 \x0d{location.name[:80]}\x0d is on the \x04Way of the Hoard\x04.".upper()
     else:
         text = f"Your \x0d{location.name}\x0d is on the \x04Way of the Hoard\x04.".upper()
     for letter in text:

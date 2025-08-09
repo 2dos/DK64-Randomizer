@@ -11,3 +11,4 @@
 .definelabel MiscHitboxPointer, 0x807FD72C
 .definelabel unkSoundIndex, 0x807F6938
 .definelabel unkSoundArray, 0x807F6918
+.definelabel actorSpawnedFlagMapping, 0x807FDCD0

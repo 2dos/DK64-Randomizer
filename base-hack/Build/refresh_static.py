@@ -18,4 +18,6 @@ def downloadStatic(file: str):
 downloadStatic("static/patches/shrink-dk64.bps")
 downloadStatic("static/patches/pointer_addresses.json")
 downloadStatic("static/patches/symbols.json")
+downloadStatic("base-hack/assets/models/melon.dl")
+downloadStatic("base-hack/assets/models/rainbow_coin.dl")
 print("Complete")

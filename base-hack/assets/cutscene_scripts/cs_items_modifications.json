@@ -1,0 +1,161 @@
+{
+    "data": [
+        {
+            "map": 38,
+            "changes": [
+                {
+                    "item": 67,
+                    "params": [
+                        11,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.LlamaRescue",
+                        0
+                    ]
+                },
+                {
+                    "item": 70,
+                    "params": [
+                        7,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.VulturePreview",
+                        0
+                    ]
+                }
+            ]
+        },
+        {
+            "map": 185,
+            "changes": [
+                {
+                    "item": 3,
+                    "params": [
+                        1,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.CastleCarRace",
+                        0
+                    ]
+                }
+            ]
+        },
+        {
+            "map": 106,
+            "changes": [
+                {
+                    "item": 5,
+                    "params": [
+                        4,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.CastleMinecartIntro",
+                        0
+                    ]
+                },
+                {
+                    "item": 9,
+                    "params": [
+                        5,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.CastleMinecartReward",
+                        0
+                    ]
+                }
+            ]
+        },
+        {
+            "map": 98,
+            "changes": [
+                {
+                    "item": 1,
+                    "params": [
+                        1,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.IceTomato",
+                        0
+                    ]
+                }
+            ]
+        },
+        {
+            "map": 27,
+            "changes": [
+                {
+                    "item": 2,
+                    "params": [
+                        1,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.FactoryCarRace",
+                        1
+                    ]
+                }
+            ]
+        },
+        {
+            "map": 189,
+            "changes": [
+                {
+                    "item": 2,
+                    "params": [
+                        1,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.RarewareGB",
+                        0
+                    ]
+                }
+            ]
+        },
+        {
+            "map": 55,
+            "changes": [
+                {
+                    "item": 17,
+                    "params": [
+                        16,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.FungiMinecartIntro",
+                        0
+                    ]
+                },
+                {
+                    "item": 18,
+                    "params": [
+                        14,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.FungiMinecartFail",
+                        0
+                    ]
+                }
+            ]
+        },
+        {
+            "map": 6,
+            "changes": [
+                {
+                    "item": 1,
+                    "params": [
+                        15,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.JapesMinecartIntro",
+                        0
+                    ]
+                },
+                {
+                    "item": 4,
+                    "params": [
+                        16,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.JapesMinecartFail",
+                        0
+                    ]
+                },
+                {
+                    "item": 5,
+                    "params": [
+                        16,
+                        "enums.CompTextFiles.PreviewsFlavor",
+                        "enums.ItemPreview.JapesMinecartReward",
+                        0
+                    ]
+                }
+            ]
+        }
+    ]
+}

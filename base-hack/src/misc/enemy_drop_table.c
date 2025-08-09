@@ -10,46 +10,6 @@
  */
 #include "../../include/common.h"
 
-static unsigned char replenlishable_drops[] = {
-    0x2F, // Watermelon
-    0x34, // Orange
-    0x33, // Ammo Crate
-    0x79, // Crystal
-};
-
-int isReplenishableDrop(int drop_object) {
-    /**
-     * @brief Is item that is dropped a replenishable item.
-     * In other words, once a player has picked up the item, will it cause problems
-     * if they pick it up again from the same instance of an enemy?
-     * 
-     * @param drop_object Actor index of dropped item
-     * 
-     * @return Is replenishable
-     */
-    for (int i = 0; i < sizeof(replenlishable_drops); i++) {
-        if (drop_object == replenlishable_drops[i]) {
-            return 1;
-        }   
-    }
-    return 0;
-}
-
-void buildItemDrops(void) {
-    /**
-     * @brief Build the item drops table to handle randomizer information
-     */
-    if ((Rando.disable_drops) && (!Rando.enemy_item_rando)) {
-        for (int i = 0; i < DROP_COUNT; i++) {
-            if (drops[i].source_object != 0) {
-                if (isReplenishableDrop(drops[i].dropped_object)) {
-                    drops[i].source_object = 3;
-                }
-            }
-        }
-    }
-}
-
 static drop_item default_drop = {
     .dropped_object = 0x2F,
     .drop_count = 1,
@@ -142,11 +102,4 @@ void spawnEnemyDrops(actorData* actor) {
         int drop_rotation = i * drop_rotation_divisor;
         spawnActorWithFlag(drop_type, actor->xPos, actor->yPos, actor->zPos, drop_rotation, drop_arg, flag, 0);
     }
-}
-
-void initItemDropTable(void) {
-    /**
-     * @brief Initialize the item drop data at ROM Boot
-     */
-    buildItemDrops();
 }

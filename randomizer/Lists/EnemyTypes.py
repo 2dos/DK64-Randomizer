@@ -31,6 +31,7 @@ class InteractionMethods:
         kill_shockwave=True,  # Killing can be done with a shockwave attack
         kill_instrument=True,  # Killing can be done with an instrument play
         kill_punch=False,  # Killing can be done by primate punching the enemy (when melee attacks don't work)
+        kill_hunky=False,  # Killing can be done by squishing them with hunky
         can_kill=True,  # Master control of all kill variables
         can_bypass=True,  # Enemy can be bypassed without any additional tricks
     ) -> None:
@@ -41,6 +42,7 @@ class InteractionMethods:
         self.kill_shockwave = kill_shockwave and can_kill
         self.kill_instrument = kill_instrument and can_kill
         self.kill_punch = kill_punch and can_kill
+        self.kill_hunky = kill_hunky and can_kill
         self.can_bypass = can_bypass
 
 
@@ -143,7 +145,7 @@ class EnemyLoc:
             permitted = []
             for x in range(4):
                 if len(permitted) == 0:
-                    permitted = [enemy for enemy in self.allowed_enemies[x] if (enemy in enabled_enemies or len(enabled_enemies) == 0) and EnemyMetaData[enemy].selector_enabled]
+                    permitted = [enemy for enemy in self.allowed_enemies[x] if enemy in enabled_enemies and EnemyMetaData[enemy].selector_enabled]
                     if sound_safeguard:
                         permitted = [enemy for enemy in permitted if not EnemyMetaData[enemy].audio_engine_burden]
             if len(permitted) > 0:
@@ -168,13 +170,15 @@ class EnemyLoc:
                     return True
                 if interaction.kill_instrument and logic_variable.HasInstrument(Kongs.any):
                     return True
-                if interaction.kill_punch and logic_variable.punch:
+                if interaction.kill_punch and logic_variable.punch and logic_variable.ischunky:
+                    return True
+                if interaction.kill_hunky and logic_variable.hunkyChunky and logic_variable.ischunky:
                     return True
         return False
 
     def canDropItem(self, logic_variable):
         """Determine if the enemy can drop an item."""
-        return self.canKill(logic_variable) and self.enemy not in [Enemies.Book, Enemies.EvilTomato]
+        return self.canKill(logic_variable) and self.enemy not in [Enemies.Book]  # Checking evil tomato
 
     def canBypass(self) -> bool:
         """Determine if the enemy can be bypassed."""
@@ -471,7 +475,7 @@ EnemyMetaData = {
         crown_enabled=False,
         minigame_enabled=False,
         selector_enabled=False,
-        interaction=InteractionMethods(can_kill=False),  # Can be killed with Hunky
+        interaction=InteractionMethods(kill_hunky=True, kill_melee=False, kill_orange=False, kill_gun=False, kill_shockwave=False, kill_instrument=False),  # Can be killed with Hunky
         placeable=False,
         default_size=140,
     ),
@@ -621,6 +625,7 @@ enemy_location_list = {
     # Main
     Locations.AztecMainEnemy_VaseRoom0: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 2, [], True),
     Locations.AztecMainEnemy_VaseRoom1: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 4, [], True),
+    Locations.AztecMainEnemy_VaseRoom2: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 1, [], True),
     Locations.AztecMainEnemy_TunnelPad0: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 10, [], True),
     Locations.AztecMainEnemy_TunnelCage0: EnemyLoc(Maps.AngryAztec, Enemies.KlaptrapGreen, 13, [], True),
     Locations.AztecMainEnemy_TunnelCage1: EnemyLoc(Maps.AngryAztec, Enemies.KlaptrapGreen, 14, [], True),
@@ -640,8 +645,8 @@ enemy_location_list = {
     Locations.AztecMainEnemy_Outside5DT: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 41, [], True),
     Locations.AztecMainEnemy_NearSnoopTunnel: EnemyLoc(Maps.AngryAztec, Enemies.Kremling, 42, [], True),
     # Lobby
-    Locations.AztecLobbyEnemy_Pad0: EnemyLoc(Maps.AngryAztecLobby, Enemies.ZingerCharger, 2, [], True),
-    Locations.AztecLobbyEnemy_Pad1: EnemyLoc(Maps.AngryAztecLobby, Enemies.ZingerCharger, 3, [], True),
+    Locations.AztecLobbyEnemy_Pad0: EnemyLoc(Maps.AngryAztecLobby, Enemies.ZingerCharger, 2, [], True, False),
+    Locations.AztecLobbyEnemy_Pad1: EnemyLoc(Maps.AngryAztecLobby, Enemies.ZingerCharger, 3, [], True, False),
     # DK 5DT
     Locations.AztecDK5DTEnemy_StartTrap0: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.Kaboom, 5, [], True),
     Locations.AztecDK5DTEnemy_StartTrap1: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.Kaboom, 6, [], True),
@@ -876,7 +881,7 @@ enemy_location_list = {
     Locations.CavesMainEnemy_NearSnide: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 27, [], True),
     Locations.CavesMainEnemy_NearBonusRoom: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 28, [], True),
     Locations.CavesMainEnemy_1DCHeadphones: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 29, enemies_shockwave_immune + [Enemies.Guard], True),
-    Locations.CavesMainEnemy_GiantKosha: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 31, [], True),
+    Locations.CavesMainEnemy_GiantKosha: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 31, [], True, False),
     # DK 5DI
     Locations.Caves5DIDKEnemy_Right: EnemyLoc(Maps.CavesDonkeyIgloo, Enemies.Kosha, 1, [], True),
     Locations.Caves5DIDKEnemy_Left: EnemyLoc(Maps.CavesDonkeyIgloo, Enemies.Kosha, 3, [], True),
@@ -896,7 +901,7 @@ enemy_location_list = {
     Locations.Caves5DIChunkyEnemy_Gauntlet04: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 6, [], False, False),
     # Lanky 1DC
     Locations.Caves1DCEnemy_Near: EnemyLoc(Maps.CavesLankyCabin, Enemies.Kosha, 2, [Enemies.KlaptrapRed, Enemies.KlaptrapPurple, Enemies.Klobber], True),
-    Locations.Caves1DCEnemy_Far: EnemyLoc(Maps.CavesLankyCabin, Enemies.Kosha, 1, [], True),
+    Locations.Caves1DCEnemy_Far: EnemyLoc(Maps.CavesLankyCabin, Enemies.Kosha, 1, [], True, False),
     # DK 5DC
     Locations.Caves5DCDKEnemy_Gauntlet0: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 1, enemies_nokill_gun + [Enemies.Bat], True, False),
     Locations.Caves5DCDKEnemy_Gauntlet1: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 2, enemies_nokill_gun + [Enemies.Bat], True, False),
@@ -914,8 +919,8 @@ enemy_location_list = {
     Locations.Caves5DCDiddyLowEnemy_Center2: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 7, enemy_5dc_ban, True, False),
     Locations.Caves5DCDiddyLowEnemy_Center3: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 8, enemy_5dc_ban, True, False),
     # Diddy Candle 5DC
-    Locations.Caves5DCDiddyUpperEnemy_Enemy0: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 1, [], True),
-    Locations.Caves5DCDiddyUpperEnemy_Enemy1: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 2, [], True),
+    Locations.Caves5DCDiddyUpperEnemy_Enemy0: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 1, [], True, False),
+    Locations.Caves5DCDiddyUpperEnemy_Enemy1: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 2, [], True, False),
     # Tiny 5DC
     Locations.Caves5DCTinyEnemy_Gauntlet0: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 1, [Enemies.Kosha, Enemies.Guard] + enemies_noisy, True, False),
     Locations.Caves5DCTinyEnemy_Gauntlet1: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 2, [Enemies.Kosha, Enemies.Guard], True, False),
