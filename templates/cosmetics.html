@@ -311,13 +311,13 @@
                     if (object.hasOwnProperty(attribute)) {
                         $(cls).attr('style', 'background-color:' + object[attribute] + ';')
                     }
-                })
-            })
+                });
+            });
             if (object.hasOwnProperty("gb_custom_color")) {
                 $(".gbColorPicker").attr("style", "background-color" + object["gb_custom_color"] + ";")
             }
         }
-    })
+    });
     $(function() {
         var pattern = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
         var current = 0;
@@ -338,5 +338,5 @@
         };
         // Listen for keydown events
         document.addEventListener('keydown', keyHandler, false);
-    })
+    });
 </script>

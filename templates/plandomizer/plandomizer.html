@@ -129,11 +129,11 @@
     $(function() {
         $('[data-toggle="tooltip"]').tooltip({
             trigger: 'hover'
-        })
-    })
+        });
+    });
     $("#plando_string_copy").on('click', function (event) {
         var input = $("#plando_string");
         input.select();
         navigator.clipboard.writeText(input.val());
-    })
+    });
 </script>

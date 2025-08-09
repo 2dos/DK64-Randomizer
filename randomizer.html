@@ -598,7 +598,7 @@
                         $("#total_generated_seeds").html("<strong>Total Generated Seeds:</strong> " + data.total_seeds);
                         $("#last_seed_generated").html("<strong>Last Seed Generated:</strong> " + time_since_generated);
                     }
-                })
+                });
             }
             setInterval(function () {
                 query_stats();
@@ -672,7 +672,7 @@
         </script>
         <script>
             function render_page(page) {
-                xmlhttp = new XMLHttpRequest();
+                var xmlhttp = new XMLHttpRequest();
                 xmlhttp.open("GET", page + ".html", false);
                 xmlhttp.send();
                 var data = xmlhttp.responseText;
@@ -687,8 +687,8 @@
             $(function() {
                 $('[data-toggle="tooltip"]').tooltip({
                     trigger: 'hover'
-                })
-            })
+                });
+            });
 
             $(document).ready(function () {
                 $("#generate_seed").on('click', function (event) {
@@ -696,19 +696,19 @@
                     var el = $(this);
                     el.prop('disabled', true);
                     setTimeout(function(){el.prop('disabled', false);}, 2000);
-                })
+                });
 
                 $("#settings_string").on('click', function (event) {
                     var input = $("#settings_string");
                     input.select();
-                })
+                });
 
                 $("#settings_string_copy").on('click', function (event) {
                     var input = $("#settings_string");
                     input.select();
                     navigator.clipboard.writeText(input.val());
-                })
-            })
+                });
+            });
         </script>
         <script>
             // TOAST GENERATOR

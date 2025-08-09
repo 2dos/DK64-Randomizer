@@ -199,7 +199,7 @@
             $('#{{ name }}_{{ item.value }}').prop('value', $('#{{ name }}_{{ item.value }}').attr('default_val'))
             $('#{{ name }}_{{ item.value }}').trigger('change')
         {% endfor %}
-    })
+    });
 </script>
 {% endmacro %}
 {% macro toggle_input(id, name, tooltip="", default_checked=False, altered_name="") %}
@@ -258,8 +258,8 @@
                 const targ_delta = targ_max - targ_min;
                 const value_delta = targ_value - targ_min;
                 e.target.style.setProperty("--p", `${parseInt(100 * (value_delta / targ_delta))}%`)
-            })
-        })
+            });
+        });
     </script>
 {% endmacro %}
 {% macro switchsanity_option(name, setting, subtype, default) %}
@@ -413,7 +413,7 @@
                 unlock_icon.setAttribute("hidden", "hidden");
                 lock_icon.removeAttribute("hidden");
             }
-        })
+        });
     </script>
 {% endmacro %}
 {% macro gen_tab(internal_name, tab_icon, tab_name, first, hidden) %}

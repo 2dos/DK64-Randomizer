@@ -317,7 +317,7 @@
         let count = 0;
         tied_checks.forEach(k => {
             count += k.check_count;
-        })
+        });
         return count;
     }
 
@@ -400,7 +400,7 @@
                     is_valid_item_shuffle = false;
                 }
             }
-        })
+        });
         document.getElementById("rule-item-count").style.color = is_valid_item_spread ? "white" : "red";
         document.getElementById("rule-item-shuffle").style.color = is_valid_item_shuffle ? "white" : "red";
     }
@@ -436,7 +436,7 @@
     document.getElementById("decouple_item_rando").addEventListener("click", () => {
         const container = document.getElementById("item_rando-category-container");
         updateCheckItemCounter(container);
-    })
+    });
 
     document.getElementById("item_rando_reset").addEventListener("click", (e) => {setAllToColumn("item_rando", 0)});
     document.getElementById("item_rando_shuffle_all").addEventListener("click", (e) => {setAllToColumn("item_rando", 1)});
@@ -445,6 +445,6 @@
     $(function() {
         $('[data-toggle="tooltip"]').tooltip({
             trigger: 'hover'
-        })
+        });
     });
 </script>
