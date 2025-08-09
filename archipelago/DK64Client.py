@@ -508,7 +508,6 @@ class DK64Client:
             check = location_name_to_flag.get(name)
             if check:
                 byte_index = check >> 3
-                shift = check & 7
                 offset = DK64MemoryMap.EEPROM + byte_index
                 _bulk_read_dict[check] = offset
         dict_data = self.n64_client.read_dict(_bulk_read_dict)
