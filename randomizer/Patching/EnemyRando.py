@@ -2,7 +2,7 @@
 
 from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import CrownEnemyDifficulty, DamageAmount, WinConditionComplex
-from randomizer.Lists.EnemyTypes import EnemyMetaData, enemy_location_list
+from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
@@ -608,15 +608,15 @@ def randomize_enemies_0(spoiler):
         Items.PhotoKasplatTiny,
         Items.PhotoKasplatChunky,
     ]
-    for loc in enemy_location_list:
-        if enemy_location_list[loc].enable_randomization:
+    for loc in spoiler.enemy_location_list:
+        if spoiler.enemy_location_list[loc].enable_randomization:
             sound_safeguard = False
-            map = enemy_location_list[loc].map
+            map = spoiler.enemy_location_list[loc].map
             if map not in data:
                 data[map] = []
                 noise_management_dict[map] = 0
             sound_safeguard = noise_management_dict[map] > 2
-            new_enemy = enemy_location_list[loc].placeNewEnemy(spoiler.settings.random, spoiler.settings.enemies_selected, True, sound_safeguard)
+            new_enemy = spoiler.enemy_location_list[loc].placeNewEnemy(spoiler.settings.random, spoiler.settings.enemies_selected, True, sound_safeguard)
             krem_kap_location = (loc - Locations.JapesMainEnemy_Start) + Locations.KremKap_JapesMainEnemy_Start
             if krem_kap_location in spoiler.LocationList:
                 item = krem_kap_mapping[new_enemy]
@@ -625,17 +625,17 @@ def randomize_enemies_0(spoiler):
                 if item not in spoiler.valid_photo_items:
                     spoiler.valid_photo_items.append(item)
                 setPkmnSnapEnemy(new_enemy)
-                if not enemy_location_list[loc].respawns:
+                if not spoiler.enemy_location_list[loc].respawns:
                     print(f"ALERT: INCORRECT ENEMY {loc.name}")
-            elif enemy_location_list[loc].respawns:
+            elif spoiler.enemy_location_list[loc].respawns:
                 print(f"ALERT: MISSING ENEMY {loc.name}")
-            if map == Maps.ForestAnthill or not enemy_location_list[loc].respawns and EnemyMetaData[new_enemy].audio_engine_burden:
+            if map == Maps.ForestAnthill or not spoiler.enemy_location_list[loc].respawns and EnemyMetaData[new_enemy].audio_engine_burden:
                 noise_management_dict[map] += 1
             data[map].append(
                 {
                     "enemy": new_enemy,
-                    "speeds": [enemy_location_list[loc].idle_speed, enemy_location_list[loc].aggro_speed],
-                    "id": enemy_location_list[loc].id,
+                    "speeds": [spoiler.enemy_location_list[loc].idle_speed, spoiler.enemy_location_list[loc].aggro_speed],
+                    "id": spoiler.enemy_location_list[loc].id,
                     "location": Locations(loc).name,
                 }
             )

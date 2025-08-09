@@ -51,7 +51,7 @@ from randomizer.Lists.Minigame import (
     MinigameSelector,
 )
 from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector
-from randomizer.Lists.EnemyTypes import EnemySelector
+from randomizer.Lists.EnemyTypes import EnemySelector, enemy_location_list
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
@@ -108,6 +108,7 @@ class Spoiler:
         self.RegionList = deepcopy(RegionsOriginal)
         self.CollectibleRegions = deepcopy(CollectibleRegionsOriginal)
         self.LocationList = deepcopy(LocationListOriginal)
+        self.enemy_location_list = deepcopy(enemy_location_list)
         self.item_assignment = []
 
         self.move_data = []

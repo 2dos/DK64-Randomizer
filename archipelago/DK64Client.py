@@ -53,6 +53,7 @@ class DK64Client:
     ENABLE_TAGLINK = False
     current_speed = 130
     current_map = 0
+    read_half = 0
 
     async def wait_for_pj64(self):
         """Wait for PJ64 to connect to the game."""
@@ -485,38 +486,45 @@ class DK64Client:
             offset = item_index - 1
         return ((value >> offset) & 1) != 0
 
-    def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None) -> bool:
-        """Get the status of a check."""
-        # shop_index: 0 = cranky, 1 = funky, 2 = candy, 3 = bfi
-        # flag_index: as expected
-        if check_type == "shop":
-            res = 0
-            match shop_index:
-                case 0:  # Cranky
-                    res = self.readFlag(0x320 + (level_index * 5) + kong_index)
-                case 1:  # Funky
-                    res = self.readFlag(0x320 + ((level_index + 8) * 5) + kong_index)
-                case 2:  # Candy
-                    if level_index >= 1 and level_index <= 3:
-                        candy_offset = level_index - 1
-                        res = self.readFlag(0x320 + ((candy_offset + 15) * 5) + kong_index)
-                    else:
-                        candy_offset = level_index - 5
-                        res = self.readFlag(0x320 + ((candy_offset + 18) * 5) + kong_index)
-            return res
+    def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None, _bulk_read_dict=None) -> bool:
+        if _bulk_read_dict is not None and flag_index in _bulk_read_dict.keys():
+            return _bulk_read_dict.get(flag_index)
         else:
             return self.readFlag(flag_index)
 
     async def readChecks(self, cb):
         """Run checks in parallel using asyncio."""
         new_checks = []
-        for id in self.remaining_checks[:]:
+        _bulk_read_dict = {}
+        if (self.read_half == 0):
+            checks_to_read = self.remaining_checks[:len(self.remaining_checks) // 2]
+            self.read_half = 1
+        else:
+            checks_to_read = self.remaining_checks[len(self.remaining_checks) // 2:]
+            self.read_half = 0
+        for id in checks_to_read:
+            name = check_id_to_name.get(id)
+            check = location_name_to_flag.get(name)
+            if check:
+                byte_index = check >> 3
+                shift = check & 7
+                offset = DK64MemoryMap.EEPROM + byte_index
+                _bulk_read_dict[check] = offset
+        dict_data = self.n64_client.read_dict(_bulk_read_dict)
+        # Json loads the dict_data
+        dict_data = json.loads(dict_data)
+        for key, value in dict_data.items():
+            shift = int(key) & 7
+            flag_status = (int(value[0]) >> shift) & 1
+            _bulk_read_dict[int(key)] = flag_status
+
+        for id in checks_to_read:
             name = check_id_to_name.get(id)
             # Try to get the check via location_name_to_flag
             check = location_name_to_flag.get(name)
             if check:
                 # Assuming we did find it in location_name_to_flag
-                check_status = self.getCheckStatus("location", check)
+                check_status = self.getCheckStatus("location", check, _bulk_read_dict=_bulk_read_dict)
                 if check_status:
                     self.remaining_checks.remove(id)
                     new_checks.append(id)
@@ -1267,7 +1275,7 @@ class DK64Context(CommonContext):
                         await asyncio.sleep(0.5)
                         continue
                     await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link)
-                    await asyncio.sleep(1)
+                    await asyncio.sleep(0.5)
                     now = time.time()
                     if self.last_resend + 0.5 < now:
                         self.last_resend = now

@@ -165,7 +165,7 @@ if baseclasses_loaded:
     from randomizer.Enums.EnemySubtypes import EnemySubtype
     from randomizer.Lists import Item as DK64RItem
     from randomizer.Lists.Switches import SwitchInfo
-    from randomizer.Lists.EnemyTypes import EnemyLoc, EnemyMetaData, enemy_location_list
+    from randomizer.Lists.EnemyTypes import EnemyLoc, EnemyMetaData
     from worlds.LauncherComponents import Component, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
     from Utils import open_filename
@@ -650,7 +650,7 @@ if baseclasses_loaded:
                         passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
                         if passthrough["EnemyData"]:
                             for location, data in passthrough["EnemyData"].items():
-                                enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], 0, [], False)
+                                self.spoiler.enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], 0, [], False)
 
             # Handle hint preparation by initiating some variables
             self.hint_data = {
@@ -1049,7 +1049,7 @@ if baseclasses_loaded:
                 "EnemyData": (
                     {
                         location_id.name: {"map": enemy_loc.map.name, "enemy": enemy_loc.enemy.name}
-                        for location_id, enemy_loc in enemy_location_list.items()
+                        for location_id, enemy_loc in self.spoiler.enemy_location_list.items()
                         if EnemyMetaData[enemy_loc.enemy].e_type == EnemySubtype.GroundBeefy
                     }
                     if self.options.dropsanity.value
