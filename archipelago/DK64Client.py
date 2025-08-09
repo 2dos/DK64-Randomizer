@@ -239,7 +239,6 @@ class DK64Client:
 
     async def writeCountData(self, count_data):
         """Write count data directly to the CountStruct system."""
-
         if isinstance(count_data, list):
             # Handle multiple count items (like Camera and Shockwave combo)
             for item in count_data:
@@ -361,11 +360,8 @@ class DK64Client:
             self.n64_client.write_u8(address, current_value + 1)
 
         elif field == "rainbow_coins":
-            # Rainbow coins: 1 byte counter at offset 0x011
-            address = count_struct_address + 0x011
-            current_value = self.n64_client.read_u8(address)
-            self.n64_client.write_u8(address, current_value + 1)
-
+            await self.writeFedData(0x015)  # TRANSFER_ITEM_RAINBOWCOIN
+            
         elif field == "ice_traps":
             # Ice traps: 2 byte counter at offset 0x012
             # Also need to trigger the actual ice trap effect via fed system
@@ -434,7 +430,6 @@ class DK64Client:
         elif count_data.get("item") is not None and count_data.get("level") is not None:
             # These are fed items with level/tier information (like progression slams, etc.)
             item_id = count_data.get("item")
-            level = count_data.get("level")
 
             # Map requirement item IDs to transfer item IDs based on the type
             # REQITEM_MOVE (2) with level 3 should be TRANSFER_ITEM_SLAMUPGRADE (0x033 = 51)
@@ -654,12 +649,10 @@ class DK64Client:
                 return data
         return data
 
-    async def main_tick(self, item_get_cb, win_cb, deathlink_cb, map_change_cb, ring_link, tag_link):
+    async def main_tick(self, item_get_cb, deathlink_cb, map_change_cb, ring_link, tag_link):
         """Game loop tick."""
         await self.readChecks(item_get_cb)
         # await self.item_tracker.readItems()
-        if await self.is_victory():
-            await win_cb()
         if await self.get_current_map() != self.current_map:
             self.current_map = await self.get_current_map()
             await map_change_cb(self.current_map)
@@ -1267,11 +1260,13 @@ class DK64Context(CommonContext):
                     await self.client.reset_auth()
                     await disconnect_check()
                     await self.client.validate_client_connection()
+                    if await self.client.is_victory():
+                        await victory()
                     status = self.client.check_safe_gameplay()
                     if status is False:
                         await asyncio.sleep(0.5)
                         continue
-                    await self.client.main_tick(on_item_get, victory, deathlink, map_change, ring_link, tag_link)
+                    await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link)
                     await asyncio.sleep(1)
                     now = time.time()
                     if self.last_resend + 0.5 < now:

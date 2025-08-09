@@ -9,10 +9,37 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Check if ap_version.py version is newer than latest release
+      id: check_version
+      run: |
+        # Get the version from ap_version.py in the current branch
+        AP_VERSION=$(python3 -c "exec(open('ap_version.py').read()); print(version)")
+        echo "Current ap_version.py version: $AP_VERSION"
+
+        # Get the latest release tag from DK64-Randomizer-Release
+        LATEST_TAG=$(curl -s https://api.github.com/repos/2dos/DK64-Randomizer-Release/releases/latest | jq -r .tag_name)
+        echo "Latest release tag: $LATEST_TAG"
+
+        # Remove leading 'v' if present
+        LATEST_VERSION=${LATEST_TAG#v}
+
+        # Compare versions
+        VERSION_CHANGED=false
+        if [ "$AP_VERSION" != "$LATEST_VERSION" ]; then
+          VERSION_CHANGED=true
+        fi
+
+        echo "version_changed=$VERSION_CHANGED" >> $GITHUB_OUTPUT
+        if [ "$VERSION_CHANGED" = "true" ]; then
+          echo "ap_version.py version ($AP_VERSION) is different from latest release ($LATEST_VERSION)"
+        else
+          echo "ap_version.py version ($AP_VERSION) matches latest release ($LATEST_VERSION)"
+        fi
+
     - name: Setup python
       uses: actions/setup-python@v4.1.0
       with:
-          python-version: 3.10.9
+          python-version: 3.12.0
           architecture: x64
 
     - name: Install packages
@@ -25,6 +52,9 @@ jobs:
         npm install
         node_modules/nunjucks/bin/precompile templates/ > ./static/js/compile_templates.js
         rm -rf ./node_modules
+
+    - name: Build APworld file
+      run: python3 ./tools/package_apworld.py
 
     - name: Build minified versions
       run: python3 ./tools/prepare_live.py
@@ -49,3 +79,26 @@ jobs:
         DEST_FOLDER: ./
         DEST_PREDEPLOY_CLEANUP: rm -rf ./*
 
+    - name: Get version from ap_version.py
+      if: steps.check_version.outputs.version_changed == 'true'
+      id: get_version
+      run: |
+        VERSION=$(python3 -c "exec(open('./deploy-directory/ap_version.py').read()); print(version)")
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Version: $VERSION"
+
+    - name: Create Release in Target Repo
+      if: steps.check_version.outputs.version_changed == 'true'
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.ACCESS_TOKEN }}
+        owner: 2dos
+        repo: DK64-Randomizer-Release
+        tag: v${{ steps.get_version.outputs.version }}
+        name: DK64 Randomizer APWorld v${{ steps.get_version.outputs.version }}
+        body: |
+          DK64 Randomizer APWorld file for Archipelago version ${{ steps.get_version.outputs.version }}
+          
+          This release contains the dk64.apworld file that can be used with the Archipelago multiworld randomizer.
+        artifacts: ./deploy-directory/dk64.apworld
+        makeLatest: true

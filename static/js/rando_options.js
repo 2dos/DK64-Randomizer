@@ -1198,7 +1198,7 @@ function change_level_randomization(evt) {
     const helmLabel = document.getElementById("shuffle_helm_location_label");
 
     const isLevelOrder = ["level_order", "level_order_complex", "level_order_moderate"].includes(level.value);
-    const disableBossShuffles = ["level_order", "level_order_complex", "level_order_moderate"].includes(level.value) || (level.value === "vanilla" && kongRando.checked);
+    const disableBossShuffles = ["level_order", "level_order_complex", "level_order_moderate"].includes(level.value) || (level.value === "vanilla");
     const disableShuffleHelmLocation = level.value === "vanilla";
 
   if (disableBossShuffles) {

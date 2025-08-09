@@ -956,8 +956,6 @@ class LogicVarHolder:
 
     def CanOpenForestLobbyGoneDoor(self):
         """Check if the player can open the door to the gone pad in forest lobby."""
-        # if self.checkFastCheck(FasterChecksSelected.isles_forest_lobby_crown):
-        #     return True
         if self.CanPhase():
             return True
         return (self.donkey and self.coconut) and (self.diddy and self.peanut) and (self.lanky and self.grape) and (self.tiny and self.feather) and (self.chunky and self.pineapple)
@@ -1281,7 +1279,13 @@ class LogicVarHolder:
             return Events.KRoolDefeated in self.Events
         elif condition == WinConditionComplex.krem_kapture:
             for subject in self.spoiler.valid_photo_items:
-                if subject in (Items.PhotoKasplatDK, Items.PhotoKasplatDiddy, Items.PhotoKasplatLanky, Items.PhotoKasplatTiny, Items.PhotoKasplatChunky,):
+                if subject in (
+                    Items.PhotoKasplatDK,
+                    Items.PhotoKasplatDiddy,
+                    Items.PhotoKasplatLanky,
+                    Items.PhotoKasplatTiny,
+                    Items.PhotoKasplatChunky,
+                ):
                     continue
                 if self.Photos.get(subject, 0) == 0:
                     # print(f"Could not reach {subject.name}")

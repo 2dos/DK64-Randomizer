@@ -3,6 +3,7 @@ var jquery = $;
 const listeners = [];
 const progression_presets = [];
 const random_settings_presets = [];
+let random_settings_settings = {};
 
 // Determine the correct URL for fetching presets based on the hostname
 let base_url;
@@ -34,13 +35,14 @@ $.ajax({
   },
 });
 $.ajax({
-  url: "static/presets/weights/weights_files.json",
+  url: "static/presets/weights/weight_files_raw.json",
   dataType: "json",
   async: false,
   success: function (data) {
-    data.forEach((file) => {
+    data.presets.forEach((file) => {
       random_settings_presets.push(file);
     });
+    random_settings_settings = data.settings;
   },
 });
 
@@ -1713,7 +1715,7 @@ function load_settings(json) {
             });
             valueChanged = true;
           }
-          element.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`
+          element.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`;
         }
 
         if (element.classList.contains("sortablejs")) {
@@ -1742,12 +1744,12 @@ function load_settings(json) {
                   if (items_list.filter(k => k.value == value).length == 0) {
                       valid = false;
                   }
-              })
+              });
               total_settings_list_checks.forEach(value => {
                   if (checks_list.filter(k => k.value == value).length == 0) {
                       valid = false;
                   }
-              })
+              });
           } else {
               let total_settings_list = [];
               for (let i = 0; i < list_count; i++) {
@@ -1758,7 +1760,7 @@ function load_settings(json) {
                   if (items_list.filter(k => k.value == value).length == 0) {
                       valid = false;
                   }
-              })
+              });
           }
           if (valid) {
             if (JSON.stringify(currentValues) !== JSON.stringify(value)) {
@@ -1802,11 +1804,11 @@ function load_settings(json) {
                   }
                   element.appendChild(option);
                 }
-              })
+              });
               valueChanged = true;
             }
           } else {
-            console.log("Invalid sortable during init")
+            console.log("Invalid sortable during init");
           }
           if (list_predicate == "item_rando_list_") {
             // console.log("Dispatching list predicate event")

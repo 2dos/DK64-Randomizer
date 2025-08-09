@@ -41,6 +41,7 @@ class MenuTextDim(IntEnum):
     size_w32_h64 = auto()
     size_w64_h32 = auto()
 
+
 class ReqItems(IntEnum):
     """Definition of all requirement items."""
 

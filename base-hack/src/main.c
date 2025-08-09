@@ -53,7 +53,7 @@ void cFuncLoop(void) {
 		}
 		if (Rando.quality_of_life.vanilla_fixes) {
 			if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
-				if (getItemCount_new(REQITEM_KONG, CurrentMap - MAP_KROOLDK, 0) == 0) {
+				if (getItemCount_new(REQITEM_KONG, 0, CurrentMap - MAP_KROOLDK) == 0) {
 					exitBoss();
 					Character = Rando.starting_kong;
 				}

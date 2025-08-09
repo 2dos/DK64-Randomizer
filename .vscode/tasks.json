@@ -18,7 +18,7 @@
     {
       "label": "Validate Styles",
       "type": "shell",
-      "command": "${command:python.interpreterPath} -m pycodestyle --ignore E501,W605,W503,E203,E741 ${workspaceFolder}",
+      "command": "${command:python.interpreterPath} -m pycodestyle --ignore E501,W605,W503,E203,E741,E731,E402 ${workspaceFolder}",
       "problemMatcher": []
     },
     {
@@ -65,7 +65,8 @@
         "Validate Docstrings",
         "Validate C",
         "Update Custom Location Lists",
-        "Generate PyI Stubs"
+        "Generate PyI Stubs",
+        "Update CB requirements",
       ],
       "problemMatcher": []
     },
@@ -121,6 +122,12 @@
         "panel": "shared"
       },
       "isBackground": false
+    },
+    {
+      "label": "Update CB requirements",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./cb_calc.py",
+      "problemMatcher": []
     }
   ]
 }

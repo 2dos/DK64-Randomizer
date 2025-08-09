@@ -371,6 +371,7 @@ def preProcessModData(data: dict) -> dict:
                 print("Converted to", int(enum_class[enum_index_name]))
     return data
 
+
 def convertValue(value) -> int:
     """Convert a value into its integer form."""
     if not isinstance(value, str):
@@ -391,6 +392,7 @@ def convertValue(value) -> int:
     enum_index_name = segments[2]
     print("Converted", value, "to", int(enum_class[enum_index_name]))
     return int(enum_class[enum_index_name])
+
 
 def buildItemChanges(script_table: int, fh: BinaryIO) -> list[File]:
     """Run through cs item modifications."""
@@ -423,15 +425,17 @@ def buildItemChanges(script_table: int, fh: BinaryIO) -> list[File]:
             entry_size = fg.tell()
         if entry_size is None:
             raise Exception("Invalid entry size.")
-        changed_files.append(File(
-            name=f"Cutscenes ({map_index})",
-            pointer_table_index=BuildEnums.TableNames.Cutscenes,
-            file_index=map_index,
-            source_file=map_file_name,
-            do_not_delete_source=True,
-            do_not_recompress=True,
-            target_size=entry_size,
-        ))
+        changed_files.append(
+            File(
+                name=f"Cutscenes ({map_index})",
+                pointer_table_index=BuildEnums.TableNames.Cutscenes,
+                file_index=map_index,
+                source_file=map_file_name,
+                do_not_delete_source=True,
+                do_not_recompress=True,
+                target_size=entry_size,
+            )
+        )
         # Grab the actual file and find each modification item
         header_end = 0x30
         with open(map_file_name, "r+b") as fg:
@@ -484,6 +488,7 @@ def buildItemChanges(script_table: int, fh: BinaryIO) -> list[File]:
                     read_location = item_data.pushHead(fg, 0, read_location)
                     count_copy += 1  # Not important cutscene
     return changed_files
+
 
 def buildScripts() -> list:
     """Run through cutscenes folder and compile cutscenes to send back to file_dict."""

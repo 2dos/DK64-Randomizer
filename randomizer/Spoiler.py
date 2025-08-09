@@ -763,7 +763,7 @@ class Spoiler:
                     SwitchType.InstrumentPad: "Bongos Pad",
                     SwitchType.PadMove: "Baboon Blast Pad",
                     SwitchType.MiscActivator: "Gorilla Grab Lever",
-                    SwitchType.GunInstrumentCombo: "Coconut Switch and Bongos Pad"
+                    SwitchType.GunInstrumentCombo: "Coconut Switch and Bongos Pad",
                 },
                 Kongs.diddy: {
                     SwitchType.SlamSwitch: "Diddy Slam Switch",
@@ -772,21 +772,21 @@ class Spoiler:
                     SwitchType.PadMove: "Simian Spring Pad",
                     SwitchType.MiscActivator: "Gong",
                     SwitchType.PushableButton: "Charge Button",
-                    SwitchType.GunInstrumentCombo: "Peanut Switch and Guitar Pad"
+                    SwitchType.GunInstrumentCombo: "Peanut Switch and Guitar Pad",
                 },
                 Kongs.lanky: {
                     SwitchType.SlamSwitch: "Lanky Slam Switch",
                     SwitchType.GunSwitch: "Grape Switch",
                     SwitchType.InstrumentPad: "Trombone Pad",
                     SwitchType.PadMove: "Baboon Balloon Pad",
-                    SwitchType.GunInstrumentCombo: "Grape Switch and Trombone Pad"
+                    SwitchType.GunInstrumentCombo: "Grape Switch and Trombone Pad",
                 },
                 Kongs.tiny: {
                     SwitchType.SlamSwitch: "Tiny Slam Switch",
                     SwitchType.GunSwitch: "Feather Switch",
                     SwitchType.InstrumentPad: "Saxophone Pad",
                     SwitchType.PadMove: "Monkeyport Pad",
-                    SwitchType.GunInstrumentCombo: "Feather Switch and Saxophone Pad"
+                    SwitchType.GunInstrumentCombo: "Feather Switch and Saxophone Pad",
                 },
                 Kongs.chunky: {
                     SwitchType.SlamSwitch: "Chunky Slam Switch",
@@ -794,7 +794,7 @@ class Spoiler:
                     SwitchType.InstrumentPad: "Triangle Pad",
                     SwitchType.PadMove: "Gorilla Gone Pad",
                     SwitchType.PushableButton: "Punch Button",
-                    SwitchType.GunInstrumentCombo: "Pineapple Switch and Triangle Pad"
+                    SwitchType.GunInstrumentCombo: "Pineapple Switch and Triangle Pad",
                 },
             }
             for slot in self.settings.switchsanity_data.values():

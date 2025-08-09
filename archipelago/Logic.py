@@ -64,7 +64,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Patching.Library.Generic import getProgHintBarrierItem, IsDDMSSelected
 from randomizer.Prices import AnyKongCanBuy, CanBuy
-from archipelago.Items import DK64Item, use_original_name_or_trap_name
+from archipelago.Items import use_original_name_or_trap_name
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
 logic_item_name_to_id = {}
@@ -1059,8 +1059,6 @@ class LogicVarHolder:
 
     def CanOpenForestLobbyGoneDoor(self):
         """Check if the player can open the door to the gone pad in forest lobby."""
-        # if self.checkFastCheck(FasterChecksSelected.isles_forest_lobby_crown):
-        #     return True
         if self.CanPhase():
             return True
         return (self.donkey and self.coconut) and (self.diddy and self.peanut) and (self.lanky and self.grape) and (self.tiny and self.feather) and (self.chunky and self.pineapple)
