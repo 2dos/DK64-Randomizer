@@ -487,25 +487,7 @@ class DK64Client:
         return ((value >> offset) & 1) != 0
 
     def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None, _bulk_read_dict=None) -> bool:
-        """Get the status of a check."""
-        # shop_index: 0 = cranky, 1 = funky, 2 = candy, 3 = bfi
-        # flag_index: as expected
-        if check_type == "shop":
-            res = 0
-            match shop_index:
-                case 0:  # Cranky
-                    res = self.readFlag(0x320 + (level_index * 5) + kong_index)
-                case 1:  # Funky
-                    res = self.readFlag(0x320 + ((level_index + 8) * 5) + kong_index)
-                case 2:  # Candy
-                    if level_index >= 1 and level_index <= 3:
-                        candy_offset = level_index - 1
-                        res = self.readFlag(0x320 + ((candy_offset + 15) * 5) + kong_index)
-                    else:
-                        candy_offset = level_index - 5
-                        res = self.readFlag(0x320 + ((candy_offset + 18) * 5) + kong_index)
-            return res
-        elif _bulk_read_dict is not None and flag_index in _bulk_read_dict.keys():
+        if _bulk_read_dict is not None and flag_index in _bulk_read_dict.keys():
             return _bulk_read_dict.get(flag_index)
         else:
             return self.readFlag(flag_index)
