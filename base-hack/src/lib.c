@@ -1570,8 +1570,12 @@ purchase_struct* getShopData(vendors vendor, int kong, int level) {
 }
 
 void exitBoss(void) {
+	maps reference_map = CurrentMap;
+	if (reference_map == MAP_KROOLSHOE) {
+		reference_map = MAP_KROOLTINY;
+	}
 	for (int i = 0; i < 5; i++) {
-		if (Rando.k_rool_order[i] == CurrentMap) {
+		if (Rando.k_rool_order[i] == reference_map) {
 			initiateTransition(MAP_ISLES, 0xC);
 			return;
 		}

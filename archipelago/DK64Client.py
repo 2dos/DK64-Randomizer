@@ -487,6 +487,7 @@ class DK64Client:
         return ((value >> offset) & 1) != 0
 
     def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None, _bulk_read_dict=None) -> bool:
+        """Get the status of a check."""
         if _bulk_read_dict is not None and flag_index in _bulk_read_dict.keys():
             return _bulk_read_dict.get(flag_index)
         else:
@@ -496,11 +497,11 @@ class DK64Client:
         """Run checks in parallel using asyncio."""
         new_checks = []
         _bulk_read_dict = {}
-        if (self.read_half == 0):
-            checks_to_read = self.remaining_checks[:len(self.remaining_checks) // 2]
+        if self.read_half == 0:
+            checks_to_read = self.remaining_checks[: len(self.remaining_checks) // 2]
             self.read_half = 1
         else:
-            checks_to_read = self.remaining_checks[len(self.remaining_checks) // 2:]
+            checks_to_read = self.remaining_checks[len(self.remaining_checks) // 2 :]
             self.read_half = 0
         for id in checks_to_read:
             name = check_id_to_name.get(id)

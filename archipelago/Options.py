@@ -503,7 +503,6 @@ class ChaosRatio(Range):
     default = 32
 
 
-
 class ShopKeepers(Toggle):
     """Determines if Cranky, Funky, Candy, and Snide are added into the item pool. Shops will be inaccessible unless you collect its shop keeper."""
 
