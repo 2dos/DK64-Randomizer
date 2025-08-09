@@ -131,7 +131,7 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler):
                 location_logics = [loc for loc in location_logics if loc.id not in (Locations.HelmChunky1, Locations.HelmChunky2)]
         collectibles = []
         if region_id in all_collectible_regions.keys():
-            collectibles = [col for col in all_collectible_regions[region_id] if col.type in (Collectibles.bunch, Collectibles.banana, Collectibles.balloon, Collectibles.coin)]
+            collectibles = [col for col in all_collectible_regions[region_id] if col.type in (Collectibles.bunch, Collectibles.banana, Collectibles.balloon)]
         events = [event for event in region_obj.events]
 
         # if region_obj.level == Levels.Shops:
