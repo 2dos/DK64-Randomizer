@@ -14,7 +14,7 @@ require("http")
         file.serve(request, response);
       })
       .resume();
-  });
+  })
   .listen(9990);
 
 const createWindow = () => {

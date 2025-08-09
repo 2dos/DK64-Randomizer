@@ -223,7 +223,6 @@
                     var all_seeds = seed_store.getAll();
                     all_seeds.onsuccess = function () {
                         try {
-                        var arrayLength = all_seeds.result.length;
                         var sorted_array = all_seeds.result;
                         sorted_array.sort(function (a, b) {
                             return new Date(b.date) - new Date(a.date);

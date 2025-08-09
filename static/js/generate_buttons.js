@@ -41,7 +41,7 @@ async function generate_previous_seed(event) {
             romElement.classList.add("is-invalid");
         }
     } else {
-        await apply_patch(get_previous_seed_data(), true)
+        await apply_patch(get_previous_seed_data(), true);
     }
 }
 
@@ -78,7 +78,7 @@ async function generate_seed_from_patch(event) {
             }
             $("#lankyModal").modal("show");
             // Apply the patch
-            await apply_patch(loaded_patch, true)
+            await apply_patch(loaded_patch, true);
             $("#lankyModal").modal("hide");
          }
     }
@@ -351,7 +351,7 @@ else:
         const options = Array.from(element.getElementsByTagName("li"));
         options.forEach(option => {
             values.push(get_enum_or_string_value(option.getAttribute("value"), element.getAttribute("name")));
-        })
+        });
         form_data[element.getAttribute("name")] = values;
     }
 
