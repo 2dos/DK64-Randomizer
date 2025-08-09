@@ -361,7 +361,7 @@ class DK64Client:
 
         elif field == "rainbow_coins":
             await self.writeFedData(0x015)  # TRANSFER_ITEM_RAINBOWCOIN
-            
+
         elif field == "ice_traps":
             # Ice traps: 2 byte counter at offset 0x012
             # Also need to trigger the actual ice trap effect via fed system

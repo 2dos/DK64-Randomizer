@@ -502,15 +502,19 @@ class ChaosRatio(Range):
     range_end = 100
     default = 32
 
+
 class TooieShops(Toggle):
     """Shops will not deduct coins from the player, but will require a certain amount of coins to purchase the move, akin to Banjo-Tooie."""
 
     display_name = "Cumulative Shop Prices"
 
+
 class ShopKeepers(Toggle):
     """Determines if Cranky, Funky, Candy, and Snide are added into the item pool. Shops will be inaccessible unless you collect its shop keeper."""
 
     display_name = "Shop Keepers in Pool"
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
