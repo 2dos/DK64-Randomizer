@@ -1508,13 +1508,13 @@ function set_preset_options() {
   document.getElementById("apply_preset").disabled = true;
   // Toggle elements and update the page according to the preset
   toggle_logic_type(null);
-  toggle_bananaport_selector(null);
-  update_door_one_num_access(null);
-  update_door_two_num_access(null);
-  update_win_con_num_access(null);
-  update_prog_hint_num_access(null);
-  update_blocker_num_access(null);
-  update_troff_number_access(null);
+  toggle_bananaport_selector();
+  update_door_one_num_access();
+  update_door_two_num_access();
+  update_win_con_num_access();
+  update_prog_hint_num_access();
+  update_blocker_num_access();
+  update_troff_number_access();
   item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
   item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
   item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);

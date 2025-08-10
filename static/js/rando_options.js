@@ -942,8 +942,8 @@ document.getElementById("krool_in_boss_pool").addEventListener("click", plando_d
 document
   .getElementById("nav-plando-tab")
   .addEventListener("click", function (evt) {
-    disable_krool_phases(evt);
-    disable_helm_phases(evt);
+    disable_krool_phases();
+    disable_helm_phases();
     plando_toggle_custom_locations_tab(evt);
     plando_toggle_custom_arena_locations(evt);
     plando_toggle_custom_patch_locations(evt);
@@ -1924,41 +1924,41 @@ document.getElementById("decouple_item_rando")
 function update_ui_states() {
   /** Trigger any function that would update the status of a UI element based on the current settings configuration. */
   change_level_randomization(null);
-  disable_colors(null);
-  disable_music(null);
-  max_randomized_blocker(null);
-  max_randomized_troff(null);
-  max_music(null);
-  max_music_proportion(null);
-  max_sfx(null);
-  disable_switchsanity_modal(null);
+  disable_colors();
+  disable_music();
+  max_randomized_blocker();
+  max_randomized_troff();
+  max_music();
+  max_music_proportion();
+  max_sfx();
+  disable_switchsanity_modal();
   item_rando_list_changed(null);
-  disable_custom_cb_locations_modal(null);
-  toggle_bananaport_selector(null);
+  disable_custom_cb_locations_modal();
+  toggle_bananaport_selector();
   disable_helm_hurry(null);
   disable_points(null);
   disable_slam_selector(null);
   toggle_logic_type(null);
   toggle_key_settings(null);
   //max_starting_moves_count(null);
-  update_door_one_num_access(null);
-  update_door_two_num_access(null);
-  update_win_con_num_access(null);
-  update_prog_hint_num_access(null);
-  update_blocker_num_access(null);
-  update_troff_number_access(null);
+  update_door_one_num_access();
+  update_door_two_num_access();
+  update_win_con_num_access();
+  update_prog_hint_num_access();
+  update_blocker_num_access();
+  update_troff_number_access();
   item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
   item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
   item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
   item_req_update("cb_medal_behavior", "cb_medal_behavior_container", "medal_cb_req", 1, 100);
-  disable_tag_spawn(null);
-  disable_krool_phases(null);
-  disable_helm_phases(null);
-  enable_plandomizer(null);
-  toggle_vanilla_door_rando(null);
-  toggle_dos_door_rando(null);
+  disable_tag_spawn();
+  disable_krool_phases();
+  disable_helm_phases();
+  enable_plandomizer();
+  toggle_vanilla_door_rando();
+  toggle_dos_door_rando();
   validate_fast_start_status(null);
-  hide_irrelevant_details_coupled_item_rando(null);
+  hide_irrelevant_details_coupled_item_rando();
 
   const sliders = document.getElementsByClassName("pretty-slider");
   for (let s = 0; s < sliders.length; s++) {
