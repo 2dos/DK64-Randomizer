@@ -776,8 +776,7 @@ KasplatLocationList = {
             zmin=481,
             zmax=498,
             region=Regions.TreasureRoom,
-            additional_logic=lambda l: (Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.monkey_maneuvers))
-            and l.balloon,
+            additional_logic=lambda l: (Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.monkey_maneuvers)) and l.balloon,
         ),
         KasplatLocation(
             name="Galleon Kasplat: Sickbay",

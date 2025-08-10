@@ -228,7 +228,7 @@
         };
 
         function buildBPS() {
-            webWorkerCreate=new Worker("./static/js/rompatcher/worker_create.js");
+            var webWorkerCreate=new Worker("./static/js/rompatcher/worker_create.js");
             webWorkerCreate.postMessage(
                 {
                     sourceFileU8Array:romFile._u8array,

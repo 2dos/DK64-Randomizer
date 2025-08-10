@@ -162,14 +162,14 @@ function save_text_as_file(text, file) {
 }
 
 window.onerror = function (error) {
-  banned_errors_text = [
+  const banned_errors_text = [
     '"undefined" is not valid JSON', // Loading up the site without any cookies
     "Unexpected non-whitespace character after JSON at position", // Loading up the site when your cookies reflect a prior version
     "Unexpected non-whitespace character after JSON data at line", // Same as above
     "Unexpected token ; in JSON", // Token Error
     "Uncaught Error: Invalid Rom", // Token Error
   ];
-  is_banned = false;
+  let is_banned = false;
   banned_errors_text.forEach((item) => {
     if (error.toString().toLowerCase().indexOf(item.toLowerCase()) > -1) {
       is_banned = true;
@@ -246,8 +246,8 @@ function createMusicLoadPromise(jszip, filename) {
 
 function sortLoadedMusic(musicList) {
   musicList.sort((a, b) => {
-    aName = a.name.toUpperCase();
-    bName = b.name.toUpperCase();
+    const aName = a.name.toUpperCase();
+    const bName = b.name.toUpperCase();
     if (aName < bName) {
       return -1;
     } else if (aName > bName) {
@@ -447,13 +447,13 @@ function get_custom_song_display_name(songName) {
 }
 
 async function update_music_select_options(isInitialLoad, has_custom_music) {
-  customSongDict = {
+  let customSongDict = {
     BGM: cosmetic_names.bgm,
     MajorItem: cosmetic_names.majoritems,
     MinorItem: cosmetic_names.minoritems,
     Event: cosmetic_names.events,
   };
-  cosmetic_truncated_names = {
+  let cosmetic_truncated_names = {
     bgm: [],
     majoritems: [],
     minoritems: [],
@@ -652,7 +652,7 @@ window.addEventListener("beforeunload", () => {
     clearTimeout(saveTimeout);
     savesettings();
   }
-})
+});
 
 function filebox() {
   var input = document.createElement("input");
@@ -908,15 +908,15 @@ let previous_queue_position = null;
 
 function pushToHistory(message, emphasize = false) {
   let prog_hist = document.getElementById("progress-history");
-  old_history = prog_hist.innerHTML;
-  dt = new Date();
-  emph_start = "";
-  emph_end = "";
+  const old_history = prog_hist.innerHTML;
+  var dt = new Date();
+  let emph_start = "";
+  let emph_end = "";
   if (emphasize) {
     emph_start = "<span style='font-size:21px'>";
     emph_end = "</span>";
   }
-  new_history = `${old_history}${emph_start}[${to2Digit(
+  const new_history = `${old_history}${emph_start}[${to2Digit(
     dt.getHours()
   )}:${to2Digit(dt.getMinutes())}:${to2Digit(
     dt.getSeconds()
