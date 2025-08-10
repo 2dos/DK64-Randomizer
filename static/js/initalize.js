@@ -937,10 +937,10 @@ function postToastMessage(message, is_warning, progress_ratio) {
       .replace(/'/g, "&#039;")
   );
   // Handle Progress Bar
-  perc = Math.floor(100 * progress_ratio);
+  let perc = Math.floor(100 * progress_ratio);
   if (is_warning) {
     document.getElementById("progress-fairy").style.display = "none";
-    img_data = document.getElementById("progress-dead").src;
+    const img_data = document.getElementById("progress-dead").src;
     document.getElementById("progress-dead").style.display = "";
     document.getElementById("progress-dead").src = "";
     document.getElementById("progress-dead").src = img_data;
@@ -983,7 +983,7 @@ function query_seed_status(url, task_id) {
     success: function (data, textStatus, xhr) {
       if (data["status"] == "queued") {
         console.log("seed gen waiting in queue");
-        position = data["position"];
+        const position = data["position"];
         postToastMessage("Seed is in Position: " + position, false, 0.4);
         sent_generating_status = false;
         setTimeout(function () {
@@ -1007,7 +1007,7 @@ function query_seed_status(url, task_id) {
         sent_generating_status = false;
         window.apply_patch(data["result"]["patch"], true);
       } else if (data["status"] == "failed") {
-        resp = data["responseJSON"];
+        const resp = data["responseJSON"];
         if (resp && resp["error"]) {
           postToastMessage(resp["error"], true, 1);
         } else {
@@ -1017,7 +1017,7 @@ function query_seed_status(url, task_id) {
       }
     },
     error: function (data, textStatus, xhr) {
-      resp = data["responseJSON"];
+      const resp = data["responseJSON"];
       if (resp && resp["error"]) {
         postToastMessage(resp["error"], true, 1);
       } else {
@@ -1036,8 +1036,8 @@ function submit_seed_generation(url, json, branch) {
     }),
     contentType: "application/json",
     success: function (data, textStatus, xhr) {
-      task_id = data["task_id"];
-      priority = data["priority"];
+      const task_id = data["task_id"];
+      const priority = data["priority"];
       postToastMessage(
         "Seed has been queued in the " + priority + " Priority Queue",
         false,
@@ -1105,15 +1105,15 @@ function loadDataFromIndexedDB(key) {
   return new Promise((resolve, reject) => {
     try {
       var settingsdb = settingsdatabase.result;
-      transaction = settingsdb.transaction("saved_settings", "readonly");
-      objectStore = transaction.objectStore("saved_settings");
-      request = objectStore.get(key);
+      let transaction = settingsdb.transaction("saved_settings", "readonly");
+      let objectStore = transaction.objectStore("saved_settings");
+      var request = objectStore.get(key);
       request.onerror = function (event) {
         reject("Transaction error: " + event.target.errorCode);
       };
 
       request.onsuccess = function (event) {
-        value = event.target.result;
+        var value = event.target.result;
         resolve(value);
       };
     } catch {
@@ -1447,7 +1447,7 @@ function trigger_preset_event(event) {
       if (updateQueue.length > 0) {
         requestAnimationFrame(processQueue);
       } else {
-        update_ui_states(null);
+        update_ui_states();
       }
     }
 

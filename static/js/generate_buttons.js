@@ -436,8 +436,8 @@ js.plando_errors = plando_errors
         apply_conversion();
 
         // Start the progress bar
-        get_hash_images("browser", "loading-fairy")
-        get_hash_images("browser", "loading-dead")
+        get_hash_images("browser", "loading-fairy");
+        get_hash_images("browser", "loading-dead");
         // Append the gif_fairy to the bottom of the DOM, we just want to validate its working
         // If there isin't already an src set them
         //document.getElementById("progress-fairy").src = gif_fairy;
@@ -454,7 +454,6 @@ js.plando_errors = plando_errors
 
         let branch, url;
         if (window.location.hostname === "dev.dk64randomizer.com" || window.location.hostname === "dk64randomizer.com") {
-            branch = "dev";
             if (!window.location.hostname.toLowerCase().includes("dev")) {
                 branch = "stable";
                 url = "https://api.dk64rando.com/api";
@@ -624,7 +623,6 @@ async function import_settings_string(event) {
                     }
                     if (valid) {
                         selector.innerHTML = "";
-                        let selectedCount = 0;
                         settings[key].forEach(item => {
                             // Find the selected option by the value of the option
                             const option = document.createElement("li");
@@ -666,7 +664,7 @@ async function import_settings_string(event) {
                             }
                         });
                     } else {
-                        console.log("Invalid sortable during string import")
+                        console.log("Invalid sortable during string import");
                     }
                     if (list_predicate == "item_rando_list_") {
                         updateCheckItemCounter(grandparent);
@@ -704,7 +702,7 @@ async function import_settings_string(event) {
         }
     }
 
-    update_ui_states(null);
+    update_ui_states();
     generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.");
 }
 

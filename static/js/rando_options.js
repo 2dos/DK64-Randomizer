@@ -970,7 +970,7 @@ document.getElementById("randomize_settings").addEventListener("click", function
   randomize_settings();
 
   // Run additional functions to ensure there are no conflicts.
-  update_ui_states(evt);
+  update_ui_states();
 });
 
 // Disable color options when Randomize All is selected
