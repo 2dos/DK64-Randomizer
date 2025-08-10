@@ -88,7 +88,7 @@ LogicRegions = {
         Event(Events.JapesW2bTagged, lambda _: True),
     ], [
         TransitionFront(Regions.Snide, lambda l: l.snideAccess),
-        TransitionFront(Regions.JapesTnSAlcove, lambda l: l.advanced_platforming and not l.IsHardFallDamage()),  # Falling from the top is now advanced platforming but you can't have hard fall damage on for it
+        TransitionFront(Regions.JapesTnSAlcove, lambda l: l.monkey_maneuvers and not l.IsHardFallDamage()),  # Falling from the top is now Monkey Maneuvers but you can't have hard fall damage on for it
         TransitionFront(Regions.Mine, lambda l: l.peanut and l.isdiddy, Transitions.JapesMainToMine),
         TransitionFront(Regions.JapesTopOfMountain, lambda l: (l.peanut and l.isdiddy) or l.CanMoonkick()),
         TransitionFront(Regions.JapesHill, lambda _: True),
@@ -118,7 +118,7 @@ LogicRegions = {
         Event(Events.JapesW3aTagged, lambda _: True),
     ], [
         TransitionFront(Regions.JungleJapesStart, lambda _: True),
-        TransitionFront(Regions.JapesCannonPlatform, lambda l: (l.handstand and l.lanky and l.advanced_platforming) or (l.tiny and l.slope_resets)),
+        TransitionFront(Regions.JapesCannonPlatform, lambda l: (l.handstand and l.lanky and l.monkey_maneuvers) or (l.tiny and l.slope_resets)),
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.CanPhase() or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
         TransitionFront(Regions.JapesPaintingRoomHill, lambda l: (l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick() or l.CanSkew(True) or l.CanSkew(False) or l.slope_resets),
         TransitionFront(Regions.JapesLankyCave, lambda l: ((l.hasMoveSwitchsanity(Switches.JapesPainting, False) or l.CanSkew(True) or l.CanSkew(False)) and ((l.handstand and l.islanky) or (l.twirl and l.istiny and l.climbing) or l.CanMoonkick() or l.slope_resets)) or (l.CanMoonkick() and (l.CanPhase() or l.CanSkew(True) or l.CanSkew(False))) or ((l.CanPhase() or l.generalclips or l.CanSkew(True) or l.CanSkew(False)) and (l.isdiddy or l.istiny)), Transitions.JapesMainToLankyCave, isGlitchTransition=True),
@@ -291,10 +291,10 @@ LogicRegions = {
     ], [
         # You're supposed to get to the switch by shooting a peanut switch,
         # but can just jump without too much trouble.
-        Event(Events.JapesDiddySwitch2, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.peanut or l.advanced_platforming) and l.isdiddy),
+        Event(Events.JapesDiddySwitch2, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.peanut or l.monkey_maneuvers) and l.isdiddy),
     ], [
         TransitionFront(Regions.JapesHillTop, lambda _: True, Transitions.JapesMineToMain),
-        TransitionFront(Regions.JapesMinecarts, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()) and ((l.charge and l.isdiddy) or l.CanPhase() or (l.advanced_platforming and l.isdiddy))),
+        TransitionFront(Regions.JapesMinecarts, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()) and ((l.charge and l.isdiddy) or l.CanPhase() or (l.monkey_maneuvers and l.isdiddy))),
     ]),
 
     Regions.JapesMinecarts: Region("Japes Minecarts", HintRegion.CavesAndMines, Levels.JungleJapes, False, None, [
@@ -306,8 +306,8 @@ LogicRegions = {
 
     # Catacomb deaths lead back to itself
     Regions.JapesCatacomb: Region("Japes Catacomb", HintRegion.CavesAndMines, Levels.JungleJapes, False, None, [
-        LocationLogic(Locations.JapesChunkyUnderground, lambda l: (l.can_use_vines and l.pineapple and l.ischunky) or (((l.twirl and l.istiny) or (l.can_use_vines and (l.isdiddy or l.istiny)) or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))) and l.advanced_platforming and l.settings.free_trade_items) or l.CanPhase()),
-        LocationLogic(Locations.JapesKasplatUnderground, lambda l: not l.settings.kasplat_rando and ((l.can_use_vines and l.pineapple and l.ischunky) or (l.can_use_vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.CanPhase())),
+        LocationLogic(Locations.JapesChunkyUnderground, lambda l: (l.can_use_vines and l.pineapple and l.ischunky) or (((l.twirl and l.istiny) or (l.can_use_vines and (l.isdiddy or l.istiny)) or (l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))) and l.monkey_maneuvers and l.settings.free_trade_items) or l.CanPhase()),
+        LocationLogic(Locations.JapesKasplatUnderground, lambda l: not l.settings.kasplat_rando and ((l.can_use_vines and l.pineapple and l.ischunky) or (l.can_use_vines and (l.isdiddy or l.istiny) and l.monkey_maneuvers and l.settings.free_trade_items) or l.CanPhase())),
     ], [], [
         TransitionFront(Regions.JungleJapesStart, lambda _: True, Transitions.JapesCatacombToMain),
     ]),

@@ -121,10 +121,10 @@ LogicRegions = {
     ],
     Regions.Mausoleum: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.sprint or l.generalclips or l.CanPhase()), None, 1),
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny))), None, 1),  # In Green Goo Gap
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl or (l.monkey_maneuvers and (not l.isKrushaAdjacent(Kongs.tiny))), None, 1),  # In Green Goo Gap
 
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape and l.sprint) or l.generalclips or l.CanPhase() and ((l.trombone and l.can_use_vines) or l.advanced_platforming), None, 3),
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny))) or l.CanPhase(), None, 2),
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape and l.sprint) or l.generalclips or l.CanPhase() and ((l.trombone and l.can_use_vines) or l.monkey_maneuvers), None, 3),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or (l.monkey_maneuvers and (not l.isKrushaAdjacent(Kongs.tiny))) or l.CanPhase(), None, 2),
     ],
     Regions.UpperCave: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda _: True, None, 30),

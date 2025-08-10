@@ -145,9 +145,9 @@
 | Map | Name | Door types acceptable in location | Logic |
 | --- | ---- | --------------------------------- | ----- |
 | Frantic Factory Lobby | Factory Lobby - Low Left | Wrinkly | `self.logic = lambda _: True` | 
-| Frantic Factory Lobby | Factory Lobby - Top Left | Wrinkly | `(l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy))` | 
-| Frantic Factory Lobby | Factory Lobby - Top Center | Wrinkly | `(l.grab and l.donkey) or l.CanMoonkick() or l.advanced_platforming` | 
-| Frantic Factory Lobby | Factory Lobby - Top Right | Wrinkly | `(l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy))` | 
+| Frantic Factory Lobby | Factory Lobby - Top Left | Wrinkly | `(l.grab and l.donkey) or l.CanMoonkick() or (l.monkey_maneuvers and (l.istiny or l.isdiddy))` | 
+| Frantic Factory Lobby | Factory Lobby - Top Center | Wrinkly | `(l.grab and l.donkey) or l.CanMoonkick() or l.monkey_maneuvers` | 
+| Frantic Factory Lobby | Factory Lobby - Top Right | Wrinkly | `(l.grab and l.donkey) or l.CanMoonkick() or (l.monkey_maneuvers and (l.istiny or l.isdiddy))` | 
 | Frantic Factory Lobby | Factory Lobby - Low Right | Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Arcade Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 
 | Frantic Factory | Production Room | Boss, Dk_Portal, Wrinkly | `self.logic = lambda _: True` | 

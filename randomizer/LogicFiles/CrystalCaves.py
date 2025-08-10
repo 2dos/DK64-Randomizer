@@ -32,7 +32,7 @@ LogicRegions = {
     ], restart=-1),
 
     Regions.CrystalCavesMain: Region("Crystal Caves Main", HintRegion.MainCaves, Levels.CrystalCaves, True, None, [
-        LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: ((l.jetpack and l.isdiddy) or ((not l.settings.shuffle_shops) and l.advanced_platforming and ((l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))) or (l.istiny and l.twirl)) and l.settings.free_trade_items)), MinigameType.BonusBarrel),
+        LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: ((l.jetpack and l.isdiddy) or ((not l.settings.shuffle_shops) and l.monkey_maneuvers and ((l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))) or (l.istiny and l.twirl)) and l.settings.free_trade_items)), MinigameType.BonusBarrel),
         LocationLogic(Locations.CavesKasplatNearLab, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.CavesMainEnemy_Start, lambda _: True),
         LocationLogic(Locations.CavesMainEnemy_NearIceCastle, lambda _: True),
@@ -53,10 +53,10 @@ LogicRegions = {
         TransitionFront(Regions.CavesGGRoom, lambda l: (l.punch and l.chunky) or l.CanPhase() or l.CanPhaseswim() or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
         TransitionFront(Regions.CavesBlueprintCave, lambda l: (l.mini and l.twirl and l.istiny) or l.CanPhase() or l.CanSkew(True)),
         TransitionFront(Regions.CavesBonusCave, lambda l: (l.mini and l.istiny) or l.CanPhase() or l.CanSkew(True)),
-        TransitionFront(Regions.CavesBlueprintPillar, lambda l: (l.jetpack and l.diddy) or (l.advanced_platforming and ((l.balloon and l.lanky) or ((not l.settings.shuffle_shops) and l.twirl and l.tiny)))),
-        TransitionFront(Regions.CavesBananaportSpire, lambda l: (l.jetpack and l.diddy) or l.advanced_platforming),
+        TransitionFront(Regions.CavesBlueprintPillar, lambda l: (l.jetpack and l.diddy) or (l.monkey_maneuvers and ((l.balloon and l.lanky) or ((not l.settings.shuffle_shops) and l.twirl and l.tiny)))),
+        TransitionFront(Regions.CavesBananaportSpire, lambda l: (l.jetpack and l.diddy) or l.monkey_maneuvers),
         TransitionFront(Regions.BoulderCave, lambda l: (l.punch and l.chunky) or l.CanSkew(True) or l.checkBarrier(RemovedBarriersSelected.caves_ice_walls)),
-        TransitionFront(Regions.CavesLankyRace, lambda l: (l.CanSlamSwitch(Levels.CrystalCaves, 2) and (l.balloon or l.advanced_platforming) and l.islanky) or l.CanPhase() or l.CanSkew(True), Transitions.CavesMainToRace),
+        TransitionFront(Regions.CavesLankyRace, lambda l: (l.CanSlamSwitch(Levels.CrystalCaves, 2) and (l.balloon or l.monkey_maneuvers) and l.islanky) or l.CanPhase() or l.CanSkew(True), Transitions.CavesMainToRace),
         TransitionFront(Regions.FrozenCastle, lambda l: (l.CanSlamSwitch(Levels.CrystalCaves, 2) and l.islanky) or l.CanSkew(True), Transitions.CavesMainToCastle),
         TransitionFront(Regions.IglooArea, lambda _: True),
         TransitionFront(Regions.CabinArea, lambda _: True),
@@ -180,8 +180,8 @@ LogicRegions = {
         TransitionFront(Regions.IglooArea, lambda _: True, Transitions.CavesDiddyToIgloo),
     ]),
 
-    Regions.LankyIgloo: Region("Lanky Igloo", HintRegion.Igloo, Levels.CrystalCaves, False, TransitionFront(Regions.CrystalCavesEntryHandler, lambda l: ((l.balloon or l.advanced_platforming) and l.islanky) or (l.settings.free_trade_items and l.advanced_platforming and (l.isdiddy or l.istiny))), [
-        LocationLogic(Locations.CavesLanky5DoorIgloo, lambda l: ((l.balloon or l.advanced_platforming) and l.islanky) or (l.settings.free_trade_items and l.advanced_platforming and (l.isdiddy or l.istiny))),
+    Regions.LankyIgloo: Region("Lanky Igloo", HintRegion.Igloo, Levels.CrystalCaves, False, TransitionFront(Regions.CrystalCavesEntryHandler, lambda l: ((l.balloon or l.monkey_maneuvers) and l.islanky) or (l.settings.free_trade_items and l.monkey_maneuvers and (l.isdiddy or l.istiny))), [
+        LocationLogic(Locations.CavesLanky5DoorIgloo, lambda l: ((l.balloon or l.monkey_maneuvers) and l.islanky) or (l.settings.free_trade_items and l.monkey_maneuvers and (l.isdiddy or l.istiny))),
     ], [], [
         TransitionFront(Regions.IglooArea, lambda _: True, Transitions.CavesLankyToIgloo),
     ]),
@@ -214,7 +214,7 @@ LogicRegions = {
         Event(Events.CavesW5bTagged, lambda _: True),
     ], [
         TransitionFront(Regions.CrystalCavesMain, lambda _: True),
-        TransitionFront(Regions.CavesRotatingCabinRoof, lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or (l.islanky and not l.isKrushaAdjacent(Kongs.lanky))) and l.advanced_platforming) or l.CanPhase()),
+        TransitionFront(Regions.CavesRotatingCabinRoof, lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or (l.islanky and not l.isKrushaAdjacent(Kongs.lanky))) and l.monkey_maneuvers) or l.CanPhase()),
         TransitionFront(Regions.RotatingCabin, lambda l: (l.bongos and l.isdonkey) or l.CanPhase() or l.CanSkew(True), Transitions.CavesCabinToRotating),
         TransitionFront(Regions.DonkeyCabin, lambda l: (l.bongos and l.isdonkey) or l.CanPhase() or l.CanSkew(True) or l.generalclips, Transitions.CavesCabinToDonkey),
         TransitionFront(Regions.DiddyLowerCabin, lambda l: (l.guitar and l.isdiddy) or l.CanPhase() or l.CanSkew(True), Transitions.CavesCabinToDiddyLower),
@@ -252,7 +252,7 @@ LogicRegions = {
 
     Regions.DiddyLowerCabin: Region("Diddy Lower Cabin", HintRegion.Cabins, Levels.CrystalCaves, False, None, [
         # You're supposed to use the jetpack to get up the platforms, but you can just backflip onto them
-        LocationLogic(Locations.CavesDiddy5DoorCabinLower, lambda l: l.isdiddy and l.oranges and (l.jetpack or l.advanced_platforming)),
+        LocationLogic(Locations.CavesDiddy5DoorCabinLower, lambda l: l.isdiddy and l.oranges and (l.jetpack or l.monkey_maneuvers)),
     ], [], [
         TransitionFront(Regions.CabinArea, lambda _: True, Transitions.CavesDiddyLowerToCabin),
     ]),

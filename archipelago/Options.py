@@ -233,7 +233,7 @@ class LogicType(Choice):
 
     Options:
     glitchless: Logic is designed to be completed without glitches, mostly as intended by the developers.
-    advanced_glitchless: Logic is designed to be completed without glitches, but allows for advanced platforming techniques. Add tricks you want to put in logic in tricks_selected.
+    advanced_glitchless: Logic is designed to be completed without glitches, but allows for advanced techniques. Add tricks you want to put in logic in tricks_selected.
     glitched: Logic is designed to be completed with glitches. Add tricks you want to put in logic in tricks_selected, AND add glitches you want to put in logic in glitches_selected.
     """
 
@@ -249,14 +249,14 @@ class TricksSelected(OptionList):
     """Determines what tricks are enabled if logic_type is set to Advanced Glitchless or Glitched.
 
     Valid Keys:
-    "advanced_platforming": Platforming techniques that don't require any glitches but might be too tough for some players.
+    "monkey_maneuvers": Platforming techniques that don't require any glitches but might be too tough for some players.
     "hard_shooting": Certain shooting checks that are harder will not require shooting aids, such as Homing Ammo and Sniper Scope.
     "advanced_grenading": Certain checks can be done with oranges (DK 5 Door Cabin, Japes Painting Room). In addition, change Fungi time of day with oranges.
     "slope_resets": Use kong ground attacks to climb steep slopes.
     """
 
     display_name = "Tricks Selected"
-    valid_keys = {"advanced_platforming", "hard_shooting", "advanced_grenading", "slope_resets"}
+    valid_keys = {"monkey_maneuvers", "hard_shooting", "advanced_grenading", "slope_resets"}
 
 
 class GlitchesSelected(OptionList):

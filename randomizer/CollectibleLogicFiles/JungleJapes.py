@@ -11,7 +11,7 @@ from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
     Regions.JungleJapesStart: [
-        Collectible(Collectibles.banana, Kongs.donkey, lambda l: l.climbing and (l.can_use_vines or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.donkey)))), None, 5),  # Starting area
+        Collectible(Collectibles.banana, Kongs.donkey, lambda l: l.climbing and (l.can_use_vines or (l.monkey_maneuvers and (not l.isKrushaAdjacent(Kongs.donkey)))), None, 5),  # Starting area
         Collectible(Collectibles.bunch, Kongs.donkey, lambda _: True, None, 1),  # W3
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Above underground
         Collectible(Collectibles.banana, Kongs.diddy, lambda _: True, None, 5),  # Starting area
@@ -118,10 +118,10 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.diddy, lambda _: True, None, 5),  # In stream
         Collectible(Collectibles.bunch, Kongs.diddy, lambda _: True, None, 1),  # On mound by peanut switch
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()), None, 1),  # On box by conveyors
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()) and (l.charge or l.advanced_platforming), None, 1),  # In minecart
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()) and (l.charge or l.monkey_maneuvers), None, 1),  # In minecart
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase()) and l.peanut, None, 1),  # In conveyor room
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.peanut or l.advanced_platforming, None, 1),  # On bridge to switch
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.peanut or l.monkey_maneuvers, None, 1),  # On bridge to switch
         Collectible(Collectibles.coin, Kongs.diddy, lambda _: True, None, 1),  # On coal pile
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.charge or l.CanPhase(), None, 1),  # Next to conveyor control
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.CanPhase(), None, 1),  # Under conveyors

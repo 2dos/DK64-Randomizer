@@ -524,7 +524,7 @@ if baseclasses_loaded:
             # Tricks mapping
             # Now separated out of Glitch Logic
             tricks_mapping = {
-                "advanced_platforming": TricksSelected.advanced_platforming,
+                "monkey_maneuvers": TricksSelected.monkey_maneuvers,
                 "hard_shooting": TricksSelected.hard_shooting,
                 "advanced_grenading": TricksSelected.advanced_grenading,
                 "slope_resets": TricksSelected.slope_resets,

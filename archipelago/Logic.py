@@ -113,7 +113,7 @@ class LogicVarHolder:
         self.startkong = self.settings.starting_kong
         # AGL
         enable_agl = self.settings.logic_type in (LogicType.advanced_glitchless, LogicType.glitch)
-        self.advanced_platforming = enable_agl and IsTrickEnabled(settings, TricksSelected.advanced_platforming)
+        self.monkey_maneuvers = enable_agl and IsTrickEnabled(settings, TricksSelected.monkey_maneuvers)
         self.hard_shooting = enable_agl and IsTrickEnabled(settings, TricksSelected.hard_shooting)
         self.advanced_grenading = enable_agl and IsTrickEnabled(settings, TricksSelected.advanced_grenading)
         self.slope_resets = enable_agl and IsTrickEnabled(settings, TricksSelected.slope_resets)
@@ -784,7 +784,7 @@ class LogicVarHolder:
 
     def CanGetOnCannonGamePlatform(self):
         """Determine whether the player can get on the platform in Cannon Game Room in Gloomy Galleon."""
-        return Events.WaterRaised in self.Events or (self.advanced_platforming and (self.ischunky or (self.islanky and self.settings.kong_model_lanky == KongModels.default)))
+        return Events.WaterRaised in self.Events or (self.monkey_maneuvers and (self.ischunky or (self.islanky and self.settings.kong_model_lanky == KongModels.default)))
 
     def CanSkew(self, swim, is_japes=True, kong_req=Kongs.any):
         """Determine whether the player can skew."""

@@ -66,7 +66,7 @@
 | Above Melon Crate behind mountain | 5 | `self.logic = lambda _: True` | 
 | Above melon crate behind boulder | 5 | `self.logic = lambda _: True` | 
 | Inside Free Diddy cage | 5 | `Events.JapesFreeKongOpenGates in l.Events` | 
-| Between starting vines (Donkey) | 5 | `l.climbing and (l.can_use_vines or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
+| Between starting vines (Donkey) | 5 | `l.climbing and (l.can_use_vines or (l.monkey_maneuvers and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
 | On top of slippery slope in BP cave (Lanky) | 5 | `self.logic = lambda _: True` | 
 | W3 bunches (Donkey) | 10 | `self.logic = lambda _: True` | 
 | Starting area (Diddy) | 5 | `self.logic = lambda _: True` | 
@@ -145,7 +145,7 @@
 ## Japes Mountain
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| Bunch on Diddy's switch | 5 | `l.peanut or l.advanced_platforming` | 
+| Bunch on Diddy's switch | 5 | `l.peanut or l.monkey_maneuvers` | 
 | Singles on path to switch | 5 | `self.logic = lambda _: True` | 
 | Big upside down minecart | 5 | `self.logic = lambda _: True` | 
 | 2 bunches on big barrel (with ammo) | 10 | `self.logic = lambda _: True` | 
@@ -339,7 +339,7 @@
 | Llama Temple Water Corners | 20 | `Events.AztecLlamaSpit in l.Events and l.swim` | 
 | To lava room (Tiny) | 3 | `self.logic = lambda _: True` | 
 | To lava room (Tiny) | 2 | `self.logic = lambda _: True` | 
-| On Tiny switches in lava room (Tiny) | 10 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming)) and l.istiny` | 
+| On Tiny switches in lava room (Tiny) | 10 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.monkey_maneuvers)) and l.istiny` | 
 | On vines in Matching game room (Lanky) | 5 | `l.can_use_vines` | 
 | Matching game room right side | Balloon | `self.logic = lambda _: True` | 
 | Above Llama | Balloon | `self.logic = lambda _: True` | 
@@ -585,8 +585,8 @@
 | Tunnel to gold tower room (4 custom, 6 Diddy) | 10 | `self.logic = lambda _: True` | 
 | Seafloor around Lanky gold tower | 10 | `self.logic = lambda _: True` | 
 | 4 corners of gold tower room | 20 | `self.logic = lambda _: True` | 
-| On Lanky Gold Tower (5 custom, 5 Lanky) | 9 | `l.balloon and ((Events.WaterRaised in l.Events) or (Events.ShipyardEnguarde in l.Events and l.advanced_platforming))` | 
-| On Lanky Gold Tower (5 custom, 5 Lanky) | 1 | `l.balloon and ((Events.WaterRaised in l.Events) or (Events.ShipyardEnguarde in l.Events and l.advanced_platforming))` | 
+| On Lanky Gold Tower (5 custom, 5 Lanky) | 9 | `l.balloon and ((Events.WaterRaised in l.Events) or (Events.ShipyardEnguarde in l.Events and l.monkey_maneuvers))` | 
+| On Lanky Gold Tower (5 custom, 5 Lanky) | 1 | `l.balloon and ((Events.WaterRaised in l.Events) or (Events.ShipyardEnguarde in l.Events and l.monkey_maneuvers))` | 
 | On Diddy gold tower | 15 | `self.logic = lambda _: True` | 
 | W4 | 5 | `self.logic = lambda _: True` | 
 | W4 | 5 | `self.logic = lambda _: True` | 
@@ -650,7 +650,7 @@
 | W3 (Tiny) | 5 | `self.logic = lambda _: True` | 
 | W3 (Tiny) | 5 | `self.logic = lambda _: True` | 
 | In front of Tiny's treasure chest (Tiny) | 5 | `self.logic = lambda _: True` | 
-| In cannon game room over planks (Tiny) | 15 | `(Events.WaterRaised in l.Events or (l.advanced_platforming and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky)))` | 
+| In cannon game room over planks (Tiny) | 15 | `(Events.WaterRaised in l.Events or (l.monkey_maneuvers and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky)))` | 
 | On seafloor around lighthouse (Chunky) | 10 | `self.logic = lambda _: True` | 
 | W2 (Chunky) | 5 | `Events.WaterRaised in l.Events` | 
 | W2 (Chunky) | 5 | `self.logic = lambda _: True` | 
@@ -672,7 +672,7 @@
 | Around lighthouse (Donkey) | Balloon | `self.logic = lambda _: True` | 
 | In chests room (Donkey) | Balloon | `self.logic = lambda _: True` | 
 | In gold tower room (Diddy) | Balloon | `self.logic = lambda _: True` | 
-| By cannon in cannon game room (Chunky) | Balloon | `(Events.WaterRaised in l.Events or (l.advanced_platforming and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky)))` | 
+| By cannon in cannon game room (Chunky) | Balloon | `(Events.WaterRaised in l.Events or (l.monkey_maneuvers and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky)))` | 
 | Above 2DS (Chunky) | Balloon | `self.logic = lambda _: True` | 
 | Above 5DS (Lanky) | Balloon | `self.logic = lambda _: True` | 
 | In front of Snide (Tiny) | Balloon | `Events.WaterRaised in l.Events` | 
@@ -1019,7 +1019,7 @@
 | On ice tomato switch | 5 | `self.logic = lambda _: True` | 
 | On Beetle Race switch | 5 | `self.logic = lambda _: True` | 
 | On Baboon Balloon pads | 5 | `self.logic = lambda _: True` | 
-| On Baboon Balloon pads | 5 | `l.isdiddy or l.istiny or (l.islanky and (l.balloon or l.advanced_platforming))` | 
+| On Baboon Balloon pads | 5 | `l.isdiddy or l.istiny or (l.islanky and (l.balloon or l.monkey_maneuvers))` | 
 | To and around boulder by ice castle | 10 | `self.logic = lambda _: True` | 
 | Path from boulder to boulder switch (2 custom, 3 Chunky) | 5 | `self.logic = lambda _: True` | 
 | On plank to DK BP | 5 | `self.logic = lambda _: True` | 
@@ -1094,7 +1094,7 @@
 | On 5DC bongos pad (Donkey) | 5 | `self.logic = lambda _: True` | 
 | On pillar by 5DI tag (Diddy) | 5 | `l.jetpack and l.isdiddy` | 
 | Above baboon blast pad by Cranky (Lanky) | 15 | `(l.jetpack and l.isdiddy) or (l.balloon and l.islanky)` | 
-| Inside tower to beetle race (Lanky) | 5 | `(l.balloon or l.advanced_platforming) and l.CanSlamSwitch(Levels.CrystalCaves, 2)` | 
+| Inside tower to beetle race (Lanky) | 5 | `(l.balloon or l.monkey_maneuvers) and l.CanSlamSwitch(Levels.CrystalCaves, 2)` | 
 | On trombone pad on Lanky cabin (Lanky) | 5 | `self.logic = lambda _: True` | 
 | First path to warps (Lanky) | 5 | `self.logic = lambda _: True` | 
 | Path from Funky to rocketbarrel (Diddy) | 5 | `self.logic = lambda _: True` | 
@@ -1184,7 +1184,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On crystal tower | 10 | `self.logic = lambda _: True` | 
-| Up the crystal tower (Lanky) | 5 | `l.balloon or l.advanced_platforming` | 
+| Up the crystal tower (Lanky) | 5 | `l.balloon or l.monkey_maneuvers` | 
 | Around crystal tower (lower) | Balloon | `self.logic = lambda _: True` | 
 | In Lanky 5DI (Lanky) | Balloon | `self.logic = lambda _: True` | 
 ## Caves Tiny Igloo
@@ -1227,7 +1227,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Around room (Diddy) | 5 | `self.logic = lambda _: True` | 
-| On center pillar (Diddy) | 5 | `l.jetpack or l.advanced_platforming` | 
+| On center pillar (Diddy) | 5 | `l.jetpack or l.monkey_maneuvers` | 
 | Around room above platforms | Balloon | `self.logic = lambda _: True` | 
 ## Caves Tiny Cabin
 | Name | Amount | Logic |
@@ -1423,9 +1423,9 @@
 | On torches on Tiny's path | 10 | `self.logic = lambda _: True` | 
 | Path to Lanky's side | 20 | `self.logic = lambda _: True` | 
 | On trombone pad | 5 | `l.grape and l.sprint` | 
-| In green goo gap (Tiny) | 5 | `l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
+| In green goo gap (Tiny) | 5 | `l.twirl or (l.monkey_maneuvers and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | In and out of green goo pit | Balloon | `self.logic = lambda _: True` | 
-| Above green goo room | Balloon | `l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
+| Above green goo room | Balloon | `l.twirl or (l.monkey_maneuvers and (not l.isKrushaAdjacent(Kongs.tiny)))` | 
 | In Lanky's green goo room (Lanky) | Balloon | `l.sprint or l.generalclips or l.CanPhase()` | 
 ## Castle Upper Cave
 | Name | Amount | Logic |
@@ -1686,15 +1686,15 @@
 | On the box | 5 | `self.logic = lambda _: True` | 
 | Donkey door | 5 | `self.logic = lambda _: True` | 
 | Chunky door | 5 | `self.logic = lambda _: True` | 
-| Diddy door | 5 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
-| Tiny door | 5 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
-| Lanky door | 5 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
+| Diddy door | 5 | `((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
+| Tiny door | 5 | `((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
+| Lanky door | 5 | `((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
 | On the lever | 5 | `self.logic = lambda _: True` | 
-| Bongo pad | 5 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
-| Bridge | 10 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
+| Bongo pad | 5 | `((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
+| Bridge | 10 | `((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
 | In the box | 5 | `l.punch and l.chunky` | 
-| Post after bridge | 5 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
-| Stairs | 5 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
+| Post after bridge | 5 | `((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
+| Stairs | 5 | `((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
 | Towards doors | 10 | `self.logic = lambda _: True` | 
 | Tag barrel | 5 | `self.logic = lambda _: True` | 
 | Vents | Balloon | `self.logic = lambda _: True` | 

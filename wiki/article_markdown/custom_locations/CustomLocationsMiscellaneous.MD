@@ -218,7 +218,7 @@
 | Gloomy Galleon | In the Shipwreck with Replenishables | CrownPad, DirtPatch, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
 | Gloomy Galleon | Behind Musical Cactus | CrownPad, DirtPatch, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
 | Gloomy Galleon | On Top of Mechfish Grate | DirtPatch, CrownPad, Bananaport | `Events.ShipyardEnguarde in l.Events` | 
-| Gloomy Galleon | On Gold Tower | Bananaport | `((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) or l.CanMoonkick()` | 
+| Gloomy Galleon | On Gold Tower | Bananaport | `((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.monkey_maneuvers)) or l.CanMoonkick()` | 
 | Gloomy Galleon | Galleon Treasure Room UnderWater | CrownPad, DirtPatch, Bananaport | `Events.ShipyardTreasureRoomOpened in l.Events` | 
 | Gloomy Galleon | Vanilla Floating Warp 5 |  | `self.logic = lambda _: True` | 
 | Gloomy Galleon | Vanilla Lighthouse Warp 1 |  | `self.logic = lambda _: True` | 
@@ -342,7 +342,7 @@
 | Crystal Caves | Near Ice Castle Tag (2) |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Near Ice Castle Tag (3) |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Next to Ice Castle |  | `self.logic = lambda _: True` | 
-| Crystal Caves | On Ice Castle |  | `(l.balloon and l.islanky) or (l.jetpack and l.isdiddy) or l.advanced_platforming` | 
+| Crystal Caves | On Ice Castle |  | `(l.balloon and l.islanky) or (l.jetpack and l.isdiddy) or l.monkey_maneuvers` | 
 | Crystal Caves | Near Small Boulder |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Near Primate Punch wall near snide |  | `self.logic = lambda _: True` | 
 | Crystal Caves | Near Snide's HQ |  | `self.logic = lambda _: True` | 
@@ -378,7 +378,7 @@
 | Crystal Caves | Vanilla Cabin Warp 5 |  | `self.logic = lambda _: True` | 
 | Caves Diddy Igloo | Diddy 5DI: Center | CrownPad | `self.logic = lambda _: True` | 
 | Caves Donkey Igloo | DK 5DI: Behind Maze |  | `self.logic = lambda _: True` | 
-| Caves Lanky Igloo | Lanky 5DI: High Platform |  | `((l.balloon or l.advanced_platforming) and l.islanky) or (l.advanced_platforming and (l.isdiddy or l.istiny))` | 
+| Caves Lanky Igloo | Lanky 5DI: High Platform |  | `((l.balloon or l.monkey_maneuvers) and l.islanky) or (l.monkey_maneuvers and (l.isdiddy or l.istiny))` | 
 | Caves Tiny Igloo | Tiny 5DI: Opposite Entrance |  | `self.logic = lambda _: True` | 
 | Caves Lanky Cabin | Lanky 1DC: Carpet |  | `self.logic = lambda _: True` | 
 | Caves Chunky Cabin | Chunky 5DC: Back Left Corner | CrownPad | `self.logic = lambda _: True` | 
@@ -471,7 +471,7 @@
 | Isles | Front of Fungi Building |  | `self.logic = lambda _: True` | 
 | Isles | On Aztec Building |  | `self.logic = lambda _: True` | 
 | Isles | Under Caves Lobby Entrance |  | `self.logic = lambda _: True` | 
-| Creepy Castle Lobby | Castle Lobby: Center |  | `((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny))))` | 
+| Creepy Castle Lobby | Castle Lobby: Center |  | `((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.monkey_maneuvers and l.istiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny))))` | 
 | Training Grounds | Banana Hoard |  | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
 | Training Grounds | Training Grounds Rear Tunnel |  | `self.logic = lambda _: True` | 
 | KLumsy | Back of Prison |  | `self.logic = lambda _: True` | 
@@ -516,8 +516,8 @@
 | Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (1) |  | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
 | Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (2) |  | `l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.CanPhase()` | 
 | Frantic Factory Lobby | Factory Lobby: Near Lever |  | `self.logic = lambda _: True` | 
-| Frantic Factory Lobby | Factory Lobby: High Platform |  | `((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
-| Frantic Factory Lobby | Factory Lobby: Above Portal |  | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
+| Frantic Factory Lobby | Factory Lobby: High Platform |  | `((l.grab and l.isdonkey) or l.CanMoonkick() or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
+| Frantic Factory Lobby | Factory Lobby: Above Portal |  | `((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
 | Gloomy Galleon Lobby | Galleon Lobby: Right of Portal |  | `self.logic = lambda _: True` | 
 | Gloomy Galleon Lobby | Galleon Lobby: Left of Portal |  | `self.logic = lambda _: True` | 
 | Gloomy Galleon Lobby | Galleon Lobby: Behind Mini Monkey Gate | CrownPad | `((l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.istiny and l.chunky and l.swim) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3)` | 
@@ -530,12 +530,12 @@
 | Creepy Castle Lobby | Castle Lobby: Right of Entrance |  | `self.logic = lambda _: True` | 
 | Creepy Castle Lobby | Castle Lobby: Left of Portal |  | `self.logic = lambda _: True` | 
 | Hideout Helm Lobby | Helm Lobby: Next to Tag Barrel |  | `self.logic = lambda _: True` | 
-| Hideout Helm Lobby | Helm Lobby: Bonus Platform |  | `(l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.can_use_vines) or (l.advanced_platforming and l.istiny and l.twirl)` | 
-| Hideout Helm Lobby | Helm Lobby: Blueprint Platform |  | `((l.coconut and l.scope) or (l.twirl and l.istiny and l.advanced_platforming))` | 
+| Hideout Helm Lobby | Helm Lobby: Bonus Platform |  | `(l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.can_use_vines) or (l.monkey_maneuvers and l.istiny and l.twirl)` | 
+| Hideout Helm Lobby | Helm Lobby: Blueprint Platform |  | `((l.coconut and l.scope) or (l.twirl and l.istiny and l.monkey_maneuvers))` | 
 | Training Grounds | Training Grounds: Far Mountain |  | `l.climbing` | 
 | Training Grounds | Training Grounds: On the rear hill |  | `l.climbing` | 
-| Training Grounds | Training Grounds: On the entrance hill |  | `l.climbing and ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
-| Training Grounds | Training Grounds: Near Mountain |  | `l.climbing and ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
+| Training Grounds | Training Grounds: On the entrance hill |  | `l.climbing and ((l.twirl and l.istiny) or (l.monkey_maneuvers and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
+| Training Grounds | Training Grounds: Near Mountain |  | `l.climbing and ((l.twirl and l.istiny) or (l.monkey_maneuvers and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey))))` | 
 | Training Grounds | Training Grounds: Rear Cave |  | `self.logic = lambda _: True` | 
 | Training Grounds | Training Grounds: Banana Hoard |  | `(l.can_use_vines or l.CanMoonkick()) and l.climbing` | 
 | Training Grounds | Training Grounds: Under Water | CrownPad, DirtPatch | `l.HasGun(Kongs.any) and ((l.istiny and l.isKrushaAdjacent(Kongs.tiny)) or (not l.istiny)) and l.swim and l.scope` | 

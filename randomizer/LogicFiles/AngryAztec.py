@@ -79,7 +79,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_AztecMainEnemy_NearCandy, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecMainEnemy_OasisDoor, lambda l: l.camera),
     ], [
-        Event(Events.AztecGuitarPad, lambda l: ((l.can_use_vines and l.climbing) or (l.jetpack and l.isdiddy and l.climbing) or (l.advanced_platforming and (l.istiny or l.isdiddy))) and l.hasMoveSwitchsanity(Switches.AztecGuitar, True)),
+        Event(Events.AztecGuitarPad, lambda l: ((l.can_use_vines and l.climbing) or (l.jetpack and l.isdiddy and l.climbing) or (l.monkey_maneuvers and (l.istiny or l.isdiddy))) and l.hasMoveSwitchsanity(Switches.AztecGuitar, True)),
         Event(Events.AztecW1bTagged, lambda _: True),
         Event(Events.AztecW2aTagged, lambda _: True),
     ], [
@@ -363,7 +363,7 @@ LogicRegions = {
     Regions.LlamaTemple: Region("Llama Temple", HintRegion.LlamaTemple, Levels.AngryAztec, True, -1, [
         LocationLogic(Locations.LankyKong, lambda l: l.CanFreeLanky()),
         LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.CanFreeLanky()),
-        LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and ((l.handstand and l.islanky) or (l.settings.free_trade_items and ((l.istiny and ((l.twirl and l.advanced_platforming) or l.slope_resets)) or l.CanMoonkick()))), MinigameType.BonusBarrel),
+        LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and ((l.handstand and l.islanky) or (l.settings.free_trade_items and ((l.istiny and ((l.twirl and l.monkey_maneuvers) or l.slope_resets)) or l.CanMoonkick()))), MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecBananaFairyLlamaTemple, lambda l: l.camera),
         LocationLogic(Locations.MelonCrate_Location02, lambda _: True),
         LocationLogic(Locations.AztecLlamaEnemy_KongFreeInstrument, lambda _: True),

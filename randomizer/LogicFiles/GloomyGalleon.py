@@ -92,8 +92,8 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.GloomyGalleonStart, lambda l: Events.LighthouseGateOpened in l.Events),
         TransitionFront(Regions.LighthouseUnderwater, lambda l: l.swim and (not l.IsLavaWater() or l.Melons >= 3)),
-        TransitionFront(Regions.LighthousePlatform, lambda l: Events.WaterRaised in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))),
-        TransitionFront(Regions.LighthouseSnideAlcove, lambda l: Events.WaterRaised in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))),
+        TransitionFront(Regions.LighthousePlatform, lambda l: Events.WaterRaised in l.Events or (l.monkey_maneuvers and (l.islanky or l.ischunky))),
+        TransitionFront(Regions.LighthouseSnideAlcove, lambda l: Events.WaterRaised in l.Events or (l.monkey_maneuvers and (l.islanky or l.ischunky))),
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: l.CanPhaseswim()),
     ]),
 
@@ -178,7 +178,7 @@ LogicRegions = {
         LocationLogic(Locations.GalleonKasplatNearSub, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.MelonCrate_Location05, lambda _: True),
     ], [
-        Event(Events.ShipyardTreasureRoomOpened, lambda l: (Events.ShipyardEnguarde in l.Events and (Events.WaterRaised in l.Events or l.advanced_platforming)) or l.checkBarrier(RemovedBarriersSelected.galleon_treasure_room)),
+        Event(Events.ShipyardTreasureRoomOpened, lambda l: (Events.ShipyardEnguarde in l.Events and (Events.WaterRaised in l.Events or l.monkey_maneuvers)) or l.checkBarrier(RemovedBarriersSelected.galleon_treasure_room)),
         Event(Events.GalleonDonkeyPad, lambda l: l.bongos and l.isdonkey and (l.swim or l.galleonGatesStayOpen())),
         Event(Events.GalleonDiddyPad, lambda l: l.guitar and l.isdiddy and (l.swim or l.galleonGatesStayOpen()) and Events.WaterLowered in l.Events),
         Event(Events.GalleonLankyPad, lambda l: l.trombone and l.islanky and (l.swim or l.galleonGatesStayOpen()) and Events.WaterLowered in l.Events),
@@ -225,7 +225,7 @@ LogicRegions = {
     ),
 
     Regions.TreasureRoom: Region("Treasure Room", HintRegion.TreasureRoom, Levels.GloomyGalleon, True, None, [
-        LocationLogic(Locations.GalleonLankyGoldTower, lambda l: ((Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) and l.balloon and l.islanky) or (l.CanMoonkick() and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.GalleonLankyGoldTower, lambda l: ((Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.monkey_maneuvers)) and l.balloon and l.islanky) or (l.CanMoonkick() and l.settings.free_trade_items), MinigameType.BonusBarrel),
     ], [
         Event(Events.WaterLowered, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.lowered),
         Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
@@ -233,7 +233,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.ShipyardUnderwater, lambda l: (Events.ShipyardTreasureRoomOpened in l.Events or l.CanPhaseswim()) and l.swim),
         TransitionFront(Regions.TinyChest, lambda l: (l.mini and l.istiny and l.swim) or l.CanPhaseswim(), Transitions.GalleonTreasureToChest),
-        TransitionFront(Regions.TreasureRoomDiddyGoldTower, lambda l: (Events.WaterRaised in l.Events and l.spring and l.diddy) or l.CanMoonkick() or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming and l.balloon and l.islanky)),
+        TransitionFront(Regions.TreasureRoomDiddyGoldTower, lambda l: (Events.WaterRaised in l.Events and l.spring and l.diddy) or l.CanMoonkick() or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.monkey_maneuvers and l.balloon and l.islanky)),
     ]),
 
     Regions.TreasureRoomDiddyGoldTower: Region("Treasure Room Diddy Gold Tower", HintRegion.TreasureRoom, Levels.GloomyGalleon, False, None, [  # Deathwarp is possible without the kasplat, but you can only take fall damage once

@@ -24,7 +24,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda _: True, None, 1),  # Minecart Entry
         Collectible(Collectibles.coin, Kongs.donkey, lambda _: True, None, 3),  # Behind clock
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.can_use_vines and l.climbing, None, 3),  # On roof of Chunky Minecart entrance
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or l.advanced_platforming, None, 3),  # On pink tunnel entrance
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or l.monkey_maneuvers, None, 3),  # On pink tunnel entrance
         Collectible(Collectibles.coin, Kongs.chunky, lambda _: True, None, 3),  # Near Chunky Minecart entrance
     ],
     Regions.ForestMinecarts: [
@@ -137,7 +137,7 @@ LogicRegions = {
     Regions.MillArea: [
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 1),  # Mill roof
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Behind Barn
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut and (l.TimeAccess(Regions.MillArea, Time.Day) or l.advanced_platforming), None, 1),  # Snide
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut and (l.TimeAccess(Regions.MillArea, Time.Day) or l.monkey_maneuvers), None, 1),  # Snide
         Collectible(Collectibles.banana, Kongs.diddy, lambda _: True, None, 3),  # Near Rafter Barn
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.spring or l.CanMoontail(), None, 1),  # Near Rafter Barn
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.swim, None, 17),  # Underwater

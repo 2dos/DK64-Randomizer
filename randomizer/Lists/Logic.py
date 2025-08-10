@@ -56,7 +56,7 @@ for item in GlitchLogicItems:
 TrickSelector = []
 TrickItems = [
     GlitchLogicItem("Advanced Grenading", "Advanced techniques using oranges."),
-    GlitchLogicItem("Advanced Platforming", "Advanced platforming techniques that aren't considered beginner friendly will be considered as part of logic."),
+    GlitchLogicItem("Monkey Maneuvers", "Advanced platforming techniques that aren't considered beginner friendly will be considered as part of logic."),
     GlitchLogicItem("Hard Shooting", "Doing gun shooting tasks without items that make the task easy will be considered in logic."),
     GlitchLogicItem("Slope Resets", "Can use the Kong's techniques to climb a slippery slope without Orangstand."),
 ]

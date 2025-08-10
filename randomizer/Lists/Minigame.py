@@ -292,7 +292,7 @@ MinigameRequirements = {
         name="Speedy Swing Sortie (45 seconds, 14 coins, need twirl)",
         group="Speedy Swing Sortie",
         map_id=Maps.SpeedySwingSortieNormal,
-        logic=lambda l: (l.can_use_vines and (l.twirl and l.istiny)) or (l.advanced_platforming and l.isdonkey and l.climbing and not l.isKrushaAdjacent(Kongs.donkey)),
+        logic=lambda l: (l.can_use_vines and (l.twirl and l.istiny)) or (l.monkey_maneuvers and l.isdonkey and l.climbing and not l.isKrushaAdjacent(Kongs.donkey)),
         kong_list=[Kongs.tiny],
     ),
     Minigames.SpeedySwingSortieHard: Minigame(

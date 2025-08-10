@@ -169,7 +169,7 @@ export enum ClimbingStatus {
 }
 
 export enum GlitchesSelected {
-    advanced_platforming = 1,
+    monkey_maneuvers = 1,
     b_locker_skips = 2,
     boulder_clips = 3,
     general_clips = 4,
@@ -187,7 +187,7 @@ export enum GlitchesSelected {
 }
 
 export enum TricksSelected {
-    advanced_platforming = 1,
+    monkey_maneuvers = 1,
     hard_shooting = 2,
     advanced_grenading = 3,
     slope_resets = 4,

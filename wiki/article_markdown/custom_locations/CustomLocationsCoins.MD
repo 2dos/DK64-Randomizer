@@ -68,8 +68,8 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | In tag barrel corner | 3 | `self.logic = lambda _: True` | 
-| On top level in corner | 3 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
-| On top level at the end | 3 | `((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny)))` | 
+| On top level in corner | 3 | `((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
+| On top level at the end | 3 | `((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)))` | 
 ## Gloomy Galleon Lobby
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -205,7 +205,7 @@
 | On coal pile in second room | 1 | `self.logic = lambda _: True` | 
 | Behind a barrel near the HI-LO Machine | 1 | `(l.charge and l.isdiddy) or l.CanPhase()` | 
 | Under the Conveyors | 1 | `(l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.CanPhase()` | 
-| On the bridge | 1 | `l.peanut or l.advanced_platforming` | 
+| On the bridge | 1 | `l.peanut or l.monkey_maneuvers` | 
 | On a coal stack | 1 | `self.logic = lambda _: True` | 
 ## Japes Tiny Hive
 | Name | Amount | Logic |
@@ -310,8 +310,8 @@
 | Left Bannister | 5 | `self.logic = lambda _: True` | 
 | Right Bannister | 5 | `self.logic = lambda _: True` | 
 | Matching Game Room | 3 | `self.logic = lambda _: True` | 
-| Around the right lava room platform | 4 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming)) and l.istiny` | 
-| Around the left lava room platform | 4 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming)) and l.istiny` | 
+| Around the right lava room platform | 4 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.monkey_maneuvers)) and l.istiny` | 
+| Around the left lava room platform | 4 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.monkey_maneuvers)) and l.istiny` | 
 | Around Instrument Pad | 5 | `self.logic = lambda _: True` | 
 | Near Tag Barrel | 3 | `self.logic = lambda _: True` | 
 | Matching Game Room Vines | 2 | `l.can_use_vines` | 
@@ -368,7 +368,7 @@
 | Near dartboard entry | 5 | `self.logic = lambda _: True` | 
 | In Dartboard Mini Tunnel | 2 | `(l.istiny and l.mini) or l.CanPhase()` | 
 | In Dartboard Room | 4 | `(l.istiny and l.mini) or l.CanPhase()` | 
-| On the archway to R&D | 3 | `(l.balloon or l.advanced_platforming) and l.islanky` | 
+| On the archway to R&D | 3 | `(l.balloon or l.monkey_maneuvers) and l.islanky` | 
 | On the number game board | 4 | `self.logic = lambda _: True` | 
 | Behind some elevator blocks (2) | 3 | `self.logic = lambda _: True` | 
 | Around a light in R&D | 3 | `self.logic = lambda _: True` | 
@@ -581,7 +581,7 @@
 | Behind Giant Mushroom | 3 | `self.logic = lambda _: True` | 
 | Under Hollow Tree | 3 | `self.logic = lambda _: True` | 
 | On Well | 3 | `((l.can_use_vines or l.CanMoonkick()) and l.climbing) or (l.jetpack and l.isdiddy)` | 
-| On Archway to Giant Mushroom Area | 3 | `(l.twirl and l.istiny) or l.advanced_platforming` | 
+| On Archway to Giant Mushroom Area | 3 | `(l.twirl and l.istiny) or l.monkey_maneuvers` | 
 | Inside Hollow Tree night fence | 4 | `l.jetpack and l.isdiddy and l.TimeAccess(Regions.HollowTreeArea, Time.Night)` | 
 | Near Beanstalk Mini Monkey Barrel | 3 | `self.logic = lambda _: True` | 
 | On Mushroom near Mill Well Exit | 3 | `l.climbing` | 
@@ -648,8 +648,8 @@
 | Behind the first ice wall | 2 | `self.logic = lambda _: True` | 
 | Around the lower thick pillar near Ice Castle | 5 | `self.logic = lambda _: True` | 
 | Around Ice Castle Tag | 6 | `self.logic = lambda _: True` | 
-| Ice Castle Battlements (1) | 4 | `l.isdiddy or (l.islanky and (l.balloon or l.advanced_platforming)) or l.istiny` | 
-| Ice Castle Battlements (2) | 4 | `l.isdiddy or (l.islanky and (l.balloon or l.advanced_platforming)) or l.istiny` | 
+| Ice Castle Battlements (1) | 4 | `l.isdiddy or (l.islanky and (l.balloon or l.monkey_maneuvers)) or l.istiny` | 
+| Ice Castle Battlements (2) | 4 | `l.isdiddy or (l.islanky and (l.balloon or l.monkey_maneuvers)) or l.istiny` | 
 | On stumps near Ice Castle | 3 | `self.logic = lambda _: True` | 
 | Near the small boulder | 4 | `self.logic = lambda _: True` | 
 | Under the bridge near the small boulder | 2 | `l.jetpack and l.isdiddy` | 
@@ -678,7 +678,7 @@
 | Giant Boulder Cavern | 3 | `self.logic = lambda _: True` | 
 | Giant Kosha Room | 3 | `self.logic = lambda _: True` | 
 | In Snide's Cavern | 3 | `self.logic = lambda _: True` | 
-| On Ice Castle | 4 | `((l.balloon or l.advanced_platforming) and l.islanky) or l.isdiddy or l.istiny` | 
+| On Ice Castle | 4 | `((l.balloon or l.monkey_maneuvers) and l.islanky) or l.isdiddy or l.istiny` | 
 | Near Cabin Waterfall | 3 | `self.logic = lambda _: True` | 
 | Behind Igloo Tag Barrel | 3 | `self.logic = lambda _: True` | 
 | On Slope to Cranky | 3 | `self.logic = lambda _: True` | 
@@ -738,8 +738,8 @@
 ## Caves Diddy Lower Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| On the corners of the center platform in Diddy Lower Cabin | 4 | `l.jetpack or l.advanced_platforming` | 
-| In Corner Platforms | 4 | `l.jetpack or l.advanced_platforming` | 
+| On the corners of the center platform in Diddy Lower Cabin | 4 | `l.jetpack or l.monkey_maneuvers` | 
+| In Corner Platforms | 4 | `l.jetpack or l.monkey_maneuvers` | 
 ## Caves Diddy Upper Cabin
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
@@ -836,8 +836,8 @@
 | ---- | ------ | ----- |
 | On Goo Hands | 6 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.istiny and l.twirl` | 
 | Between Mausoleum Vines | 6 | `((l.grape and l.sprint) or l.generalclips or l.CanPhase()) and l.islanky and l.trombone and l.can_use_vines` | 
-| Around Tiny Slam Pad | 2 | `(l.twirl or (l.advanced_platforming and (not l.isKrushaAdjacent(Kongs.tiny))) or l.CanPhase()) and l.istiny` | 
-| Around Lanky Reward | 3 | `((l.grape and l.sprint) or l.generalclips or l.CanPhase()) and ((l.trombone and l.can_use_vines) or l.advanced_platforming) and l.islanky` | 
+| Around Tiny Slam Pad | 2 | `(l.twirl or (l.monkey_maneuvers and (not l.isKrushaAdjacent(Kongs.tiny))) or l.CanPhase()) and l.istiny` | 
+| Around Lanky Reward | 3 | `((l.grape and l.sprint) or l.generalclips or l.CanPhase()) and ((l.trombone and l.can_use_vines) or l.monkey_maneuvers) and l.islanky` | 
 ## Castle Upper Cave
 | Name | Amount | Logic |
 | ---- | ------ | ----- |

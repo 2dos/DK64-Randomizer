@@ -29,7 +29,7 @@ LogicRegions = {
     ],
     Regions.GalleonBeyondPineappleGate: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: (Events.WaterRaised in l.Events), None, 3),
-        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple and (Events.WaterRaised in l.Events or (l.advanced_platforming and l.ischunky)), None, 1),
+        Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple and (Events.WaterRaised in l.Events or (l.monkey_maneuvers and l.ischunky)), None, 1),
 
         Collectible(Collectibles.coin, Kongs.tiny, lambda _: True, None, 3),
         Collectible(Collectibles.coin, Kongs.chunky, lambda _: True, None, 3),
@@ -43,7 +43,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 2),  # Top lighthouse
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack, None, 3),  # On seal cage
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (Events.WaterRaised in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))), None, 3),  # Around W1
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (Events.WaterRaised in l.Events or (l.monkey_maneuvers and (l.ischunky or l.islanky))), None, 3),  # Around W1
     ],
     Regions.LighthouseUnderwater: [
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 5),  # Near Enguarde

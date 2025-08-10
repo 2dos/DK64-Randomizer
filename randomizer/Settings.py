@@ -1769,7 +1769,7 @@ class Settings:
             data = wincon_items[item]
             wc_info = data.getDifficultyInfo(wc_diff)
             if wc_info is not None:
-                win_con_pool[item] = wc_info.chooseAmount()
+                win_con_pool[item] = wc_info.chooseAmount(self.random)
         if self.win_condition_random:
             potential_items = list(win_con_pool.keys())
             potential_item_weights = []

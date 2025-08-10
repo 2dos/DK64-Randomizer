@@ -15,11 +15,11 @@ LogicRegions = {
 
         Collectible(Collectibles.banana, Kongs.diddy, lambda _: True, None, 5),  # Near Funky
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 1),  # Near Bonus
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack or l.advanced_platforming, None, 1),  # Warp 4 pillar
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack or l.monkey_maneuvers, None, 1),  # Warp 4 pillar
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Near Warp 4 pillar
 
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 5),  # Level Start
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.balloon or l.advanced_platforming) and l.CanSlamSwitch(Levels.CrystalCaves, 2), None, 1),  # Beetle Race entry
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.balloon or l.monkey_maneuvers) and l.CanSlamSwitch(Levels.CrystalCaves, 2), None, 1),  # Beetle Race entry
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.balloon, None, 3),  # Near Cranky
 
         Collectible(Collectibles.banana, Kongs.tiny, lambda _: True, None, 10),  # River To Igloo
@@ -118,7 +118,7 @@ LogicRegions = {
     ],
     Regions.LankyIgloo: [
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 1),  # First single
-        Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.balloon or l.advanced_platforming, None, 4),  # Upper singles
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.balloon or l.monkey_maneuvers, None, 4),  # Upper singles
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),
     ],
     Regions.TinyIgloo: [
@@ -151,10 +151,10 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda _: True, None, 2),
     ],
     Regions.DiddyLowerCabin: [
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack or l.advanced_platforming, None, 1),
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack or l.monkey_maneuvers, None, 1),
         Collectible(Collectibles.banana, Kongs.diddy, lambda _: True, None, 5),
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack or l.advanced_platforming, None, 4),
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack or l.monkey_maneuvers, None, 4),
     ],
     Regions.DiddyUpperCabin: [
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()), None, 3),

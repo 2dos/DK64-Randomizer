@@ -331,7 +331,7 @@ LogicRegions = {
     ),
 
     Regions.Mausoleum: Region("Mausoleum", HintRegion.CastleUnderground, Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleLankyMausoleum, lambda l: (((l.grape and l.sprint) or l.generalclips or l.CanPhase()) and ((l.trombone and l.can_use_vines) or (l.advanced_platforming and l.sprint)) and l.islanky) or (l.settings.free_trade_items and l.CanPhase())),
+        LocationLogic(Locations.CastleLankyMausoleum, lambda l: (((l.grape and l.sprint) or l.generalclips or l.CanPhase()) and ((l.trombone and l.can_use_vines) or (l.monkey_maneuvers and l.sprint)) and l.islanky) or (l.settings.free_trade_items and l.CanPhase())),
         LocationLogic(Locations.CastleTinyMausoleum, lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.twirl and l.istiny),
         LocationLogic(Locations.CastleMausoleumEnemy_TinyPath, lambda _: True),
         LocationLogic(Locations.CastleMausoleumEnemy_LankyPath0, lambda _: True),

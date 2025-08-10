@@ -148,7 +148,7 @@ class ClimbingStatus(IntEnum):
     shuffled = 1
 
 class GlitchesSelected(IntEnum):
-    advanced_platforming = 1
+    monkey_maneuvers = 1
     b_locker_skips = 2
     boulder_clips = 3
     general_clips = 4
@@ -165,7 +165,7 @@ class GlitchesSelected(IntEnum):
     phasefall = 15
 
 class TricksSelected(IntEnum):
-    advanced_platforming = 1
+    monkey_maneuvers = 1
     hard_shooting = 2
     advanced_grenading = 3
     slope_resets = 4

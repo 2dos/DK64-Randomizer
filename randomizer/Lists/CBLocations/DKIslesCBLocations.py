@@ -1785,7 +1785,7 @@ ColoredBananaGroupList = [
         name="Diddy door",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryLobby,
-        logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))),
+        logic=lambda l: ((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
         locations=[
             [5, 1.0, 658, 138, 638],
         ],
@@ -1796,7 +1796,7 @@ ColoredBananaGroupList = [
         name="Tiny door",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryLobby,
-        logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))),
+        logic=lambda l: ((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
         locations=[
             [5, 1.0, 273, 138, 638],
         ],
@@ -1807,7 +1807,7 @@ ColoredBananaGroupList = [
         name="Lanky door",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryLobby,
-        logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))),
+        logic=lambda l: ((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
         locations=[
             [5, 1.0, 466, 90, 638],
         ],
@@ -1828,7 +1828,7 @@ ColoredBananaGroupList = [
         name="Bongo pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryLobby,
-        logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))),
+        logic=lambda l: ((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
         locations=[
             [5, 1.0, 311, 147, 566],
         ],
@@ -1839,7 +1839,7 @@ ColoredBananaGroupList = [
         name="Bridge",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryLobby,
-        logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))),
+        logic=lambda l: ((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
         locations=[
             [5, 1.0, 671, 138, 511],
             [5, 1.0, 671, 138, 463],
@@ -1862,7 +1862,7 @@ ColoredBananaGroupList = [
         name="Post after bridge",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryLobby,
-        logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))),
+        logic=lambda l: ((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
         locations=[
             [1, 1.0, 706, 133, 326],
             [1, 1.0, 642, 133, 326],
@@ -1877,7 +1877,7 @@ ColoredBananaGroupList = [
         name="Stairs",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FranticFactoryLobby,
-        logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))),
+        logic=lambda l: ((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
         locations=[
             [1, 1.0, 578, 125, 616],
             [1, 1.0, 539, 105, 616],

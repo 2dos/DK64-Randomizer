@@ -283,12 +283,17 @@ function randomize_settings() {
         "req_pearl": 5,
         "req_cb": 3500,
     }
-    const cap = prog_move_items[randSettings["progressive_hint_item"]]
-    randSettings["progressive_hint_count"] = parseInt((randSettings["progressive_hint_count"] / 201) * cap);
+    const cap = prog_move_items[randSettings["progressive_hint_item"].value]
+    randSettings["progressive_hint_count"].value = parseInt((randSettings["progressive_hint_count"].value / 201) * cap);
     // Parse Chaos B. Lockers
-    if (randSettings["blocker_selection_behavior"] == "chaos") {
+    if (randSettings["blocker_selection_behavior"].value == "chaos") {
         // Is going to be a chaos B. Locker
-        randSettings["blocker_text"] = parseInt((randSettings["blocker_text"] / 201) * 100);
+        randSettings["blocker_text"].value = parseInt((randSettings["blocker_text"].value / 201) * 100);
+    }
+    console.log(randSettings)
+    if (randSettings["no_healing"].value) {
+        // Disable water is lava if no healing is selected
+        randSettings["hard_mode_selected"].value = randSettings["hard_mode_selected"].value.filter(k => k != 'water_is_lava');
     }
 
     // Reset all starting moves, placing them all into a single list.

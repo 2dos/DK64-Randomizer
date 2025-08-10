@@ -27,7 +27,7 @@
 | --- | ---- | ----- |
 | Angry Aztec | Aztec Kasplat: DK Quicksand Tunnel | `self.additional_logic = lambda _: True` | 
 | Angry Aztec | Aztec Kasplat: On the Oasis | `self.additional_logic = lambda _: True` | 
-| Angry Aztec | Aztec Kasplat: On Llama Cage | `((l.can_use_vines or (l.jetpack and l.isdiddy)) and l.climbing) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick()` | 
+| Angry Aztec | Aztec Kasplat: On Llama Cage | `((l.can_use_vines or (l.jetpack and l.isdiddy)) and l.climbing) or (l.monkey_maneuvers and (l.istiny or l.isdiddy)) or l.CanMoonkick()` | 
 | Angry Aztec | Aztec Kasplat: Near giant boulder | `self.additional_logic = lambda _: True` | 
 | Angry Aztec | Aztec Kasplat: Behind DK Stone Door | `l.CanPhase() or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)))` | 
 | Aztec Llama Temple | Aztec Kasplat: Llama Temple Lava | `self.additional_logic = lambda _: True` | 
@@ -78,7 +78,7 @@
 | Gloomy Galleon | Galleon Kasplat: Next to Cranky's | `self.additional_logic = lambda _: True` | 
 | Galleon Lighthouse | Galleon Kasplat: Atop Whomp's Lighthouse | `self.additional_logic = lambda _: True` | 
 | Galleon Mechafish | Galleon Kasplat: In the Mechfish | `self.additional_logic = lambda _: True` | 
-| Gloomy Galleon | Galleon Kasplat: Lanky Gold Tower | `(Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming))` | 
+| Gloomy Galleon | Galleon Kasplat: Lanky Gold Tower | `(Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.monkey_maneuvers))` | 
 | Galleon Sick Bay | Galleon Kasplat: Sickbay | `self.additional_logic = lambda _: True` | 
 | Gloomy Galleon | Galleon Kasplat: Middle Deck of Shipwreck | `self.additional_logic = lambda _: True` | 
 | Gloomy Galleon | Galleon Kasplat: Starting Area | `self.additional_logic = lambda _: True` | 
@@ -161,8 +161,8 @@
 | Map | Name | Logic |
 | --- | ---- | ----- |
 | Isles | Isles Kasplat: Beaver Beach | `self.additional_logic = lambda _: True` | 
-| Frantic Factory Lobby | Isles Kasplat: Factory Lobby above Portal | `(l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy))` | 
-| Hideout Helm Lobby | Isles Kasplat: Helm Lobby | `(l.scope and l.coconut) or (l.twirl and l.tiny and l.advanced_platforming)` | 
+| Frantic Factory Lobby | Isles Kasplat: Factory Lobby above Portal | `(l.grab and l.donkey) or l.CanMoonkick() or (l.monkey_maneuvers and (l.istiny or l.isdiddy))` | 
+| Hideout Helm Lobby | Isles Kasplat: Helm Lobby | `(l.scope and l.coconut) or (l.twirl and l.tiny and l.monkey_maneuvers)` | 
 | Creepy Castle Lobby | Isles Kasplat: Castle Lobby | `(l.coconut and l.donkey) or l.CanPhase()` | 
 | Crystal Caves Lobby | Isles Kasplat: Caves Lobby Punch | `(l.punch and l.chunky) or l.CanPhase() or l.ledgeclip` | 
 | Frantic Factory Lobby | Isles Kasplat: Factory Lobby Box | `l.punch and l.chunky` | 

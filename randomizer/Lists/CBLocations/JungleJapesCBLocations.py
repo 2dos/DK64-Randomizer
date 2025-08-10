@@ -626,7 +626,7 @@ ColoredBananaGroupList = [
         name="Bunch on Diddy's switch",
         konglist=[Kongs.diddy],
         region=Regions.Mine,
-        logic=lambda l: l.peanut or l.advanced_platforming,
+        logic=lambda l: l.peanut or l.monkey_maneuvers,
         locations=[[5, 1.0, 485, 144, 122]],
     ),
     ColoredBananaGroup(
@@ -1151,7 +1151,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesStart,
         vanilla=True,
-        logic=lambda l: l.climbing and (l.can_use_vines or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
+        logic=lambda l: l.climbing and (l.can_use_vines or (l.monkey_maneuvers and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
         locations=[
             [1, 1.0, 955.9228515625, 502.0, 701.2963256835938],
             [1, 1.0, 998.90185546875, 499.64178466796875, 587.4546508789062],

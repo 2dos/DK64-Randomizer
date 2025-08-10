@@ -91,7 +91,7 @@ KasplatLocationList = {
             coords=[427, 20, 456],
             region=Regions.JapesCatacomb,
             additional_logic=lambda l: (l.can_use_vines and l.pineapple and l.ischunky)
-            or (l.can_use_vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items)
+            or (l.can_use_vines and (l.isdiddy or l.istiny) and l.monkey_maneuvers and l.settings.free_trade_items)
             or l.CanPhase(),
             vanilla=True,
         ),
@@ -270,7 +270,7 @@ KasplatLocationList = {
             zmin=1525,
             zmax=1590,
             region=Regions.AngryAztecOasis,
-            additional_logic=lambda l: ((l.can_use_vines or (l.jetpack and l.isdiddy)) and l.climbing) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick(),
+            additional_logic=lambda l: ((l.can_use_vines or (l.jetpack and l.isdiddy)) and l.climbing) or (l.monkey_maneuvers and (l.istiny or l.isdiddy)) or l.CanMoonkick(),
         ),
         KasplatLocation(
             name="Aztec Kasplat: Near giant boulder",
@@ -776,7 +776,7 @@ KasplatLocationList = {
             zmin=481,
             zmax=498,
             region=Regions.TreasureRoom,
-            additional_logic=lambda l: (Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming))
+            additional_logic=lambda l: (Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.monkey_maneuvers))
             and l.balloon,
         ),
         KasplatLocation(
@@ -1500,7 +1500,7 @@ KasplatLocationList = {
             zmin=330,
             zmax=430,
             region=Regions.FranticFactoryLobby,
-            additional_logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)),
+            additional_logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.monkey_maneuvers and (l.istiny or l.isdiddy)),
         ),
         KasplatLocation(
             name="Isles Kasplat: Helm Lobby",
@@ -1508,7 +1508,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[335, 191, 637],
             region=Regions.HideoutHelmLobby,
-            additional_logic=lambda l: (l.scope and l.coconut) or (l.twirl and l.tiny and l.advanced_platforming),
+            additional_logic=lambda l: (l.scope and l.coconut) or (l.twirl and l.tiny and l.monkey_maneuvers),
             vanilla=True,
         ),
         KasplatLocation(

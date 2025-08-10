@@ -458,7 +458,7 @@ ColoredBananaGroupList = [
         name="On Lanky Gold Tower (5 custom, 5 Lanky)",
         konglist=[Kongs.lanky],
         region=Regions.TreasureRoom,
-        logic=lambda l: l.balloon and ((Events.WaterRaised in l.Events) or (Events.ShipyardEnguarde in l.Events and l.advanced_platforming)),
+        logic=lambda l: l.balloon and ((Events.WaterRaised in l.Events) or (Events.ShipyardEnguarde in l.Events and l.monkey_maneuvers)),
         locations=[
             [1, 1.0, 1620, 2000, 566],
             [1, 1.0, 1642, 1980, 529],
@@ -477,7 +477,7 @@ ColoredBananaGroupList = [
         name="On Lanky Gold Tower (5 custom, 5 Lanky)",
         konglist=[Kongs.lanky],
         region=Regions.TreasureRoom,
-        logic=lambda l: l.balloon and ((Events.WaterRaised in l.Events) or (Events.ShipyardEnguarde in l.Events and l.advanced_platforming)),
+        logic=lambda l: l.balloon and ((Events.WaterRaised in l.Events) or (Events.ShipyardEnguarde in l.Events and l.monkey_maneuvers)),
         locations=[[1, 1.0, 1756.18212890625, 1620.0, 635.8522338867188]],
     ),
     ColoredBananaGroup(
@@ -1506,7 +1506,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
         vanilla=True,
-        logic=lambda l: (Events.WaterRaised in l.Events or (l.advanced_platforming and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky))),
+        logic=lambda l: (Events.WaterRaised in l.Events or (l.monkey_maneuvers and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky))),
         locations=[
             [5, 1.0, 1312.0430908203125, 1615.0, 2905.87890625],
             [5, 1.0, 1314.042724609375, 1648.0, 2806.0751953125],
@@ -1974,7 +1974,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
         vanilla=True,
-        logic=lambda l: (Events.WaterRaised in l.Events or (l.advanced_platforming and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky))),
+        logic=lambda l: (Events.WaterRaised in l.Events or (l.monkey_maneuvers and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky))),
         points=[[1421, 1597, 3255], [1257, 1624, 3198]],
     ),
     Balloon(

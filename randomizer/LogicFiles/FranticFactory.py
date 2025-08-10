@@ -54,7 +54,7 @@ LogicRegions = {
     Regions.Testing: Region("Testing", HintRegion.Testing, Levels.FranticFactory, True, -1, [
         LocationLogic(Locations.FactoryDonkeyNumberGame, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.isdonkey),
         LocationLogic(Locations.FactoryDiddyBlockTower, lambda l: ((l.spring or l.CanMoontail()) and l.isdiddy), MinigameType.BonusBarrel),
-        LocationLogic(Locations.FactoryLankyTestingRoomBarrel, lambda l: (l.balloon or l.advanced_platforming) and l.islanky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.FactoryLankyTestingRoomBarrel, lambda l: (l.balloon or l.monkey_maneuvers) and l.islanky, MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryTinyDartboard, lambda l: Events.DartsPlayed in l.Events and l.tiny),
         LocationLogic(Locations.FactoryKasplatBlocks, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.FactoryBananaFairybyCounting, lambda l: l.camera),
@@ -103,7 +103,7 @@ LogicRegions = {
         Event(Events.FactoryW2bTagged, lambda _: True),
     ], [
         TransitionFront(Regions.Testing, lambda _: True),
-        TransitionFront(Regions.RandDUpper, lambda l: (l.climbing or l.isdiddy or l.istiny) or l.advanced_platforming),
+        TransitionFront(Regions.RandDUpper, lambda l: (l.climbing or l.isdiddy or l.istiny) or l.monkey_maneuvers),
         TransitionFront(Regions.FactoryTinyRaceLobby, lambda l: (l.mini and l.istiny) or l.CanPhase() or l.CanOStandTBSNoclip()),
         TransitionFront(Regions.FactoryTinyRace, lambda l: l.CanPhase() or l.CanOStandTBSNoclip(), Transitions.FactoryRandDToRace, isGlitchTransition=True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
@@ -159,7 +159,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing),
         TransitionFront(Regions.LowerCore, lambda _: True),
-        TransitionFront(Regions.ChunkyRoomPlatform, lambda l: l.CanMoonkick() or (l.twirl and l.istiny and l.advanced_platforming) or (l.isdiddy and l.advanced_platforming)),
+        TransitionFront(Regions.ChunkyRoomPlatform, lambda l: l.CanMoonkick() or (l.twirl and l.istiny and l.monkey_maneuvers) or (l.isdiddy and l.monkey_maneuvers)),
         TransitionFront(Regions.CrankyFactory, lambda l: l.crankyAccess),
         TransitionFront(Regions.CandyFactory, lambda l: l.candyAccess),
         TransitionFront(Regions.FactoryStoragePipe, lambda l: (l.islanky and l.handstand) or l.slope_resets),
