@@ -125,7 +125,7 @@ function assign_multi_select_setting(setting_name, options_list) {
     } else {
         // Dropdown Multiselect
         const checkboxes = Array.from(selectElem.getElementsByTagName("input"));
-        for (cb of checkboxes) {
+        for (let cb of checkboxes) {
             cb.checked = options_list.includes(cb.value);
         }
     }
@@ -148,7 +148,6 @@ function setSortableToColumn(group_name, shuffled, unshuffled) {
     const container = document.getElementById(`${group_name}-category-container`);
     const sort_sections_items = sort_container.getElementsByClassName("shared");
     const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
-    const uls = container.getElementsByTagName("ul");
     const offset = sort_sections_items.length;
     let total_shuffled_html = "";
     let total_unshuffled_html = "";

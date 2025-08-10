@@ -326,12 +326,10 @@
         const sort_sections_items = sort_container.getElementsByClassName("shared");
         const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
         const decoupled = document.getElementById("decouple_item_rando").checked;
-        const sort_sections = ctr.getElementsByTagName("ul");
-        let index = 0;
         let is_valid_item_spread = true;
         
         let item_shuffle_cache = {};
-        let item_shuffle_tied = {}
+        let item_shuffle_tied = {};
         let offset = sort_sections_items.length;
         for (let index = 0; index < offset; index++) {
             let local_check_count = 0;
@@ -410,7 +408,6 @@
         const container = document.getElementById(`${name}-category-container`);
         const sort_sections_items = sort_container.getElementsByClassName("shared");
         const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
-        const uls = container.getElementsByTagName("ul");
         const offset = sort_sections_items.length;
         let total_html_items = "";
         let total_html_checks = "";

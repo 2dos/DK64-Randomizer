@@ -900,7 +900,7 @@ function plando_disable_isles_medals(evt) {
       const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
       kongIsleElem.setAttribute("disabled", "disabled");
       kongIsleElem.value = "";
-      tooltip = "To assign a reward here, Isles CBs must be shuffled.";
+      const tooltip = "To assign a reward here, Isles CBs must be shuffled.";
       kongIsleElem.parentElement.setAttribute("data-bs-original-title", tooltip);
     }
   } else {
