@@ -100,5 +100,5 @@ extern void initAPCounter(void);
 extern void saveAPCounter(void);
 extern int isAPEnabled(void);
 extern void sendDeath(void);
-extern void sendTrapLink(void);
+extern void sendTrapLink(ICE_TRAP_TYPES trap_type);
 extern Gfx *displayAPConnection(Gfx *dl);

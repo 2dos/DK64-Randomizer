@@ -515,7 +515,7 @@ void queueIceTrap(ICE_TRAP_TYPES trap_type, int send_trap) {
      */
     ice_trap_queued = trap_type;
     if (send_trap) {
-        sendTrapLink();
+        sendTrapLink(trap_type);
     }
 }
 

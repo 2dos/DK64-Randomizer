@@ -161,9 +161,9 @@ void handleSentItem(void) {
     }
 }
 
-void sendTrapLink(void) {
+void sendTrapLink(ICE_TRAP_TYPES trap_type) {
     if (isAPEnabled()) {
-        ap_info.is_trapped = 1;
+        ap_info.is_trapped = trap_type;
     }
 }
 
