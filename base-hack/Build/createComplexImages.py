@@ -778,6 +778,7 @@ ap_im.resize((32, 32)).save(f"{disp_dir}ap32.png")
 portal_dir = getDir("assets/portals/")
 tb_dir = getDir("assets/tagbarrel/")
 logo_im = Image.open(f"{portal_dir}logo_condensed.png")
+krool_im = Image.open(f"{portal_dir}krool.png")
 logo_w, logo_h = logo_im.size
 logo_dim = max(logo_w, logo_h)
 target_size = 55
@@ -786,11 +787,17 @@ y_offset = int((logo_dim - logo_h) / 2)
 logo_im_base = Image.new(mode="RGBA", size=(logo_dim, logo_dim))
 logo_im_base.paste(logo_im, (x_offset, y_offset), logo_im)
 logo_im_base = logo_im_base.resize((target_size, target_size))
+krool_im = krool_im.resize((target_size, target_size))
 placement_offset = int((63 - target_size) / 2)
 for x in range(2):
     portal_im = Image.open(f"{portal_dir}Blank_portal_{x + 1}.png")
+    portal_im_green = hueShift(portal_im.copy(), 270)
+    # DK Portal
     portal_im.paste(logo_im_base, (placement_offset, placement_offset), logo_im_base)
     portal_im.save(f"{portal_dir}custom_portal_{x + 1}.png")
+    # K Rool Portal
+    portal_im_green.paste(krool_im, (placement_offset, placement_offset), krool_im)
+    portal_im_green.save(f"{portal_dir}krool_portal_{x + 1}.png")
     if x == 0:
         portal_im = portal_im.resize((44, 44))
         portal_im.save(f"{tb_dir}bottom_custom.png")

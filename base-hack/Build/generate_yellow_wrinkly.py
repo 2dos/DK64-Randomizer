@@ -11,6 +11,7 @@ from BuildLib import ROMName, getBonusSkinOffset
 hint_file = "assets/Gong/hint_door.bin"
 switch_file = "assets/Gong/sprint_switch.bin"
 door_file = "assets/Gong/factory_door.bin"
+portal_file = "assets/Gong/krool_portal.bin"
 
 image_offsets = {
     Kong.DK: 0xF0,
@@ -110,6 +111,39 @@ def generateSprintSwitch():
         fh.seek(0x3BC)
         fh.write(getBonusSkinOffset(ExtraTextures.OSprintLogoLeft).to_bytes(4, "big"))
 
+NEW_TEXTURE_START = 993
+
+def generateKRoolPortal():
+    """Pull the geo file of a T&S Portal and convert it to a K Rool portal."""
+    with open(ROMName, "rb") as fh:
+        portal_obj = ROMPointerFile(fh, TableNames.ModelTwoGeometry, 0x2AC)
+        fh.seek(portal_obj.start)
+        dec = zlib.decompress(fh.read(portal_obj.size), 15 + 32)
+        with open(portal_file, "wb") as fg:
+            fg.write(dec)
+    with open(portal_file, "r+b") as fg:
+        for x in range(4):
+            fg.seek(0x2340 + (0x84 * x))
+            fg.write((NEW_TEXTURE_START + 3 - x).to_bytes(4, "big"))
+            fg.seek(0x2350 + (0x84 * x))
+            fg.write((NEW_TEXTURE_START + 4 + x).to_bytes(4, "big"))
+        for x in range(0xC0 - 0xA7):
+            fg.seek(0xA7C + (x * 0x10))
+            original = int.from_bytes(fg.read(1), "big")
+            color = [original, original, original]
+            if original in (0x58, 0x69):
+                color = [0x52, 0xAB, 0x24]  # Lum 0.31
+            elif original == 0x32:
+                color = [0x3E, 0x82, 0x1A]  # Lum 0.17
+            elif original == 0x8A:
+                color = [0x6E, 0xE4, 0x30]  # Lum 0.59
+            else:
+                continue
+            fg.seek(0xA7C + (x * 0x10))
+            for c in color:
+                fg.write(c.to_bytes(1, "big"))
+
+    
 
 FACTORY_DOOR_WALL = [
     [

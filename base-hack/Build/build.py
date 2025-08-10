@@ -28,7 +28,7 @@ from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
 from end_seq_writer import createSquishFile, createTextFile
-from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch, fixFactoryDoor, modifyOtherWrinklyDoors
+from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch, fixFactoryDoor, modifyOtherWrinklyDoors, generateKRoolPortal
 from helm_doors import getHelmDoorModel
 from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
@@ -40,7 +40,7 @@ from animation_modifier import modifyAnimationCode
 # from BuildNames import maps
 from populateSongData import writeVanillaSongData
 from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM, writeUncompressedOverlays
-from recompute_pointer_table import clampCompressedTextures, dumpPointerTableDetails, getFileInfo, parsePointerTables, replaceROMFile, writeModifiedPointerTablesToROM
+from recompute_pointer_table import clampCompressedTextures, dumpPointerTableDetails, dumpPointerTableDetailsLegacy, getFileInfo, parsePointerTables, replaceROMFile, writeModifiedPointerTablesToROM
 from vanilla_move_data import writeVanillaMoveData
 from writeWarpData import generateDefaultPadPairing
 from enemy_fixes import fixFactoryDiddyPincodeEnemies
@@ -58,13 +58,16 @@ BuildInstanceScripts()
 modifyAnimationCode()
 
 portal_images = []
+krool_portal_images = []
 for x in range(2):
     portal_images.append(convertPortalImage(f"assets/portals/custom_portal_{x + 1}.png"))
+    krool_portal_images.append(convertPortalImage(f"assets/portals/krool_portal_{x + 1}.png"))
 
 createTextFile("assets/credits")
 createSquishFile("assets/credits")
 generateYellowWrinkly()
 modifyOtherWrinklyDoors()
+generateKRoolPortal()
 generateSprintSwitch()
 fixFactoryDoor()
 generateIceMaze()
@@ -525,6 +528,7 @@ file_dict = [
     File(name="Fake Key Model (4)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A1, source_file="fake_key_4.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Key Model (5)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A4, source_file="fake_key_5.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Key Model (6)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A5, source_file="fake_key_6.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="K Rool Portal", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A8, source_file="assets/Gong/krool_portal.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Animation Code", pointer_table_index=TableNames.Unknown13, file_index=0, source_file="animation_code.bin", do_not_delete_source=True),
     File(
         name="Disco Shirt",
@@ -1653,12 +1657,17 @@ portal_image_order = [["SE", "NE", "SW", "NW"], ["NW", "SW", "NE", "SE"]]
 for x in range(2):
     order = portal_image_order[x]
     image_series = portal_images[x]
+    krool_image_series = krool_portal_images[x]
     for y in range(4):
         segment = order[y]
         found_image = ""
+        found_image_krool = ""
         for image in image_series:
             if segment in image:
                 found_image = image
+        for image in krool_image_series:
+            if segment in image:
+                found_image_krool = image
         if found_image != "":
             file_dict.append(
                 File(
@@ -1668,6 +1677,18 @@ for x in range(2):
                     source_file=found_image,
                     texture_format=TextureFormat.RGBA5551,
                     do_not_compress=True,
+                )
+            )
+        if found_image_krool != "":
+            file_dict.append(
+                File(
+                    name=f"K Rool Portal Image {x+1} - {segment}",
+                    pointer_table_index=TableNames.TexturesUncompressed,
+                    file_index=993 + (4 * x) + y,
+                    source_file=found_image_krool,
+                    texture_format=TextureFormat.RGBA5551,
+                    do_not_compress=True,
+                    do_not_extract=True,
                 )
             )
 
@@ -2083,6 +2104,7 @@ with open(newROMName, "r+b") as fh:
 
     print("[6 / 7] - Dumping details of all pointer tables to rom/build.log")
     dumpPointerTableDetails("rom/build.log", fh, False)
+    dumpPointerTableDetailsLegacy("rom/tables.log", fh)
 
     # Change Helm Geometry (Can't use main CL Build System because of forced duplication)
     geo_file = ROMPointerFile(fh, TableNames.MapGeometry, 0x11)
@@ -2120,6 +2142,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(ROM_DATA_OFFSET + 0x11C)
     fh.write((0xFF).to_bytes(1, "big"))
     for x in portal_images:
+        for y in x:
+            if os.path.exists(y):
+                os.remove(y)
+    for x in krool_portal_images:
         for y in x:
             if os.path.exists(y):
                 os.remove(y)
@@ -2536,6 +2562,8 @@ with open(newROMName, "r+b") as fh:
         "tagbarrel/bottom_custom.png",
         "portals/custom_portal_1.png",
         "portals/custom_portal_2.png",
+        "portals/krool_portal_1.png",
+        "portals/krool_portal_2.png",
     ]
     for im in portal_im_removal:
         if os.path.exists(f"assets/{im}"):
