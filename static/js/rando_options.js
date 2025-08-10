@@ -1192,21 +1192,13 @@ document
 function change_level_randomization(evt) {
   validate_fast_start_status(evt);
 
-    const level = document.getElementById("level_randomization");
-    const bossLocation = document.getElementById("boss_location_rando");
-    const shuffleHelmLocation = document.getElementById("shuffle_helm_location");
-    const helmLabel = document.getElementById("shuffle_helm_location_label");
+  const level = document.getElementById("level_randomization");
+  const bossLocation = document.getElementById("boss_location_rando");
+  const shuffleHelmLocation = document.getElementById("shuffle_helm_location");
+  const helmLabel = document.getElementById("shuffle_helm_location_label");
 
-    const isLevelOrder = ["level_order", "level_order_complex", "level_order_moderate"].includes(level.value);
-    const disableBossShuffles = ["level_order", "level_order_complex", "level_order_moderate"].includes(level.value) || (level.value === "vanilla");
-    const disableShuffleHelmLocation = level.value === "vanilla";
-
-  if (disableBossShuffles) {
-    bossLocation.setAttribute("disabled", "disabled");
-    bossLocation.checked = true;
-  } else {
-    bossLocation.removeAttribute("disabled");
-  }
+  const isLevelOrder = ["level_order", "level_order_complex", "level_order_moderate"].includes(level.value);
+  const disableShuffleHelmLocation = level.value === "vanilla";
 
   if (disableShuffleHelmLocation) {
       shuffleHelmLocation.setAttribute("disabled", "disabled");
