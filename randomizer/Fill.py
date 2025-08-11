@@ -60,7 +60,7 @@ from randomizer.Patching import ApplyRandomizer
 from randomizer.Patching.EnemyRando import randomize_enemies_0
 from randomizer.Patching.PuzzleRando import randomizeRaceRequirements
 from randomizer.Patching.Library.Generic import IsItemSelected, getBLockerThresholds, IsDDMSSelected
-from randomizer.Prices import GetMaxForKong
+from randomizer.Prices import GetMaxForKong, determineFinalPriceAssortment
 from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleBosses import CorrectBossKongLocations, ShuffleBossesBasedOnOwnedItems
@@ -2905,6 +2905,7 @@ def FillWorld(spoiler: Spoiler) -> None:
             spoiler.settings.rareware_gb_fairies = spoiler.settings.logical_fairy_requirement
             # Fill locations
             Fill(spoiler)
+            determineFinalPriceAssortment(spoiler)
             if wipe_progression:
                 # Update progression requirements based on what is now accessible after all shuffles are done
                 if spoiler.settings.hard_level_progression:

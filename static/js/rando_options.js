@@ -1193,7 +1193,6 @@ function change_level_randomization(evt) {
   validate_fast_start_status(evt);
 
   const level = document.getElementById("level_randomization");
-  const bossLocation = document.getElementById("boss_location_rando");
   const shuffleHelmLocation = document.getElementById("shuffle_helm_location");
   const helmLabel = document.getElementById("shuffle_helm_location_label");
 

@@ -3306,6 +3306,7 @@
             "ignore": true
         },
         "shops_dont_cost": {
+            "ignore": true,
             "setting_type": "bool",
             "options": {
                 "easy": 50,
