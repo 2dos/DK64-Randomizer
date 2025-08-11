@@ -123,6 +123,7 @@ class Settings:
 
         CompleteVanillaPrices()
         self.prices = VanillaPrices.copy()
+        self.original_prices = self.prices.copy()
         self.level_order = {
             1: Levels.JungleJapes,
             2: Levels.AngryAztec,
@@ -950,6 +951,7 @@ class Settings:
         # Price Rando
         if self.random_prices != RandomPrices.vanilla:
             self.prices = RandomizePrices(spoiler, self.random_prices)
+            self.original_prices = self.prices.copy()
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
@@ -1851,7 +1853,7 @@ class Settings:
                 # Order: minx maxz miny maxy
                 (158, 178, 0, 200),  # Drop chute
             ]
-            exclusion_y = 0x24
+            exclusion_y = 0x40
             exclusion_pad_x = 4
             for _ in range(3):
                 x = None

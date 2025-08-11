@@ -202,9 +202,9 @@
     });
 </script>
 {% endmacro %}
-{% macro toggle_input(id, name, tooltip="", default_checked=False, altered_name="") %}
+{% macro toggle_input(id, name, tooltip="", default_checked=False, altered_name="", hidden="") %}
 <div class="form-check form-switch item-switch" data-toggle="tooltip"
-            title="{{ tooltip }}">
+            title="{{ tooltip }}" {{ hidden }}>
     {% if default_checked %}
         <input
             class="form-check-input"

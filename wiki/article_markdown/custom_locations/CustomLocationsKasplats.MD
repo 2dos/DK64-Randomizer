@@ -78,7 +78,7 @@
 | Gloomy Galleon | Galleon Kasplat: Next to Cranky's | `self.additional_logic = lambda _: True` | 
 | Galleon Lighthouse | Galleon Kasplat: Atop Whomp's Lighthouse | `self.additional_logic = lambda _: True` | 
 | Galleon Mechafish | Galleon Kasplat: In the Mechfish | `self.additional_logic = lambda _: True` | 
-| Gloomy Galleon | Galleon Kasplat: Lanky Gold Tower | `(Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.monkey_maneuvers))` | 
+| Gloomy Galleon | Galleon Kasplat: Lanky Gold Tower | `(Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.monkey_maneuvers)) and l.balloon` | 
 | Galleon Sick Bay | Galleon Kasplat: Sickbay | `self.additional_logic = lambda _: True` | 
 | Gloomy Galleon | Galleon Kasplat: Middle Deck of Shipwreck | `self.additional_logic = lambda _: True` | 
 | Gloomy Galleon | Galleon Kasplat: Starting Area | `self.additional_logic = lambda _: True` | 

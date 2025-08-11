@@ -218,6 +218,9 @@ def create_region(
             # Bosses and Crowns cannot have Junk due to technical reasons
             if location_obj.type in (Types.Key, Types.Crown):
                 add_item_rule(location, lambda item: not (item.player == player and "Junk" in item.name))
+            # Shops cannot have shopkeepers for the time being due to funny haha display bug
+            if location_obj.type == Types.Shop:
+                add_item_rule(location, lambda item: not (item.player == player and item.name in ["Cranky", "Funky", "Candy", "Snide"]))
             new_region.locations.append(location)
             # print("Adding location: " + location.name + " | " + str(loc_id))
 
