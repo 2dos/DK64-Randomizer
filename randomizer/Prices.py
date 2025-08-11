@@ -185,6 +185,7 @@ def GetMaxForKong(spoiler, kong):
                 total_price += settings.prices[location]
     return total_price
 
+
 """
 So for coin logic, we want to make sure the player can't spend coins incorrectly and lock themselves out.
 This means every buyable item has to account for, potentially, buying every other possible item first.
@@ -294,6 +295,7 @@ def CanBuy(spoiler, location, logic, buy_empty=False):
     elif location in ChunkyMoveLocations:
         return KongCanBuy(spoiler, location, logic, Kongs.chunky, buy_empty)
 
+
 ITEMS_TO_IGNORE = [
     Items.NoItem,
     Items.ProgressiveAmmoBelt,
@@ -306,6 +308,7 @@ ITEMS_TO_IGNORE = [
     Items.ProgressiveSlam3,
 ]
 
+
 def determineFinalPriceAssortment(spoiler):
     """Determine the price of all items in the seed if shops don't cost."""
     if not spoiler.settings.shops_dont_cost:
@@ -317,24 +320,14 @@ def determineFinalPriceAssortment(spoiler):
         if isinstance(value, list):
             # Is progressive move
             for price in value:
-                price_assignment.append({
-                    "is_prog": True,
-                    "cost": price,
-                    "item": key,
-                    "kong": Kongs.any
-                })
+                price_assignment.append({"is_prog": True, "cost": price, "item": key, "kong": Kongs.any})
         else:
             # Is shop
             location: Location = spoiler.LocationList[key]
             if location.item is None or location.item in ITEMS_TO_IGNORE:
                 new_prices[key] = 0
                 continue
-            price_assignment.append({
-                "is_prog": False,
-                "cost": value,
-                "item": key,
-                "kong": location.kong
-            })
+            price_assignment.append({"is_prog": False, "cost": value, "item": key, "kong": location.kong})
     spoiler.settings.random.shuffle(price_assignment)
     total_cost = [0] * 5
     for assignment in price_assignment:
