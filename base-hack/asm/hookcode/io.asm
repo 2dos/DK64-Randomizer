@@ -97,28 +97,6 @@ getLobbyExit:
     j 0x80600070
     nop
 
-checkFlag_ItemRando:
-    jal getFlagBlockAddress
-    sh $a2, 0x22 ($sp)
-    lw $a0, 0x24 ($sp)
-    addiu $a1, $sp, 0x22
-    or $a2, v0, $zero
-    jal updateFlag
-    addiu $a3, $zero, 0
-    j 0x80731170
-    nop
-
-setFlag_ItemRando:
-    jal getFlagBlockAddress
-    sh $a3, 0x32 ($sp)
-    lw $a0, 0x38 ($sp)
-    addiu $a1, $sp, 0x32
-    or $a2, v0, $zero
-    jal updateFlag
-    addiu $a3, $zero, 1
-    j 0x80731300
-    nop
-
 adjustExitRead:
     bgez $a0, adjustExitRead_checkCount
     nop
@@ -202,3 +180,9 @@ fixNullLagBoost:
     fixNullLagBoost_end:
     j   0x806CCA98
     lui $at, 0x4F80
+
+storeWaterSurfaceCount:
+    lbu $v0, 0x3 ($t7)
+    sb $v0, 0x93C5 ($at)
+    j 0x8065F230
+    sb $zero, 0x93C4 ($at)

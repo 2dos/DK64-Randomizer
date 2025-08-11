@@ -128,6 +128,18 @@ class CustomActors(IntEnum):
     HintItemTiny = auto()
     HintItemChunky = auto()
     ArchipelagoItem = auto()
+    IceTrapDisableAGB = auto()
+    IceTrapDisableBGB = auto()
+    IceTrapDisableZGB = auto()
+    IceTrapDisableCUGB = auto()
+    IceTrapDisableABean = auto()
+    IceTrapDisableBBean = auto()
+    IceTrapDisableZBean = auto()
+    IceTrapDisableCUBean = auto()
+    IceTrapDisableAKey = auto()
+    IceTrapDisableBKey = auto()
+    IceTrapDisableZKey = auto()
+    IceTrapDisableCUKey = auto()
 
 
 POTIONS = (
@@ -155,6 +167,18 @@ TRAPS = (
     CustomActors.IceTrapBubble,
     CustomActors.IceTrapReverse,
     CustomActors.IceTrapSlow,
+    CustomActors.IceTrapDisableAGB,
+    CustomActors.IceTrapDisableBGB,
+    CustomActors.IceTrapDisableZGB,
+    CustomActors.IceTrapDisableCUGB,
+    CustomActors.IceTrapDisableABean,
+    CustomActors.IceTrapDisableBBean,
+    CustomActors.IceTrapDisableZBean,
+    CustomActors.IceTrapDisableCUBean,
+    CustomActors.IceTrapDisableAKey,
+    CustomActors.IceTrapDisableBKey,
+    CustomActors.IceTrapDisableZKey,
+    CustomActors.IceTrapDisableCUKey,
 )
 
 
@@ -233,6 +257,24 @@ db = [
     InGameItem(name="Hint Item (Tiny)", actor=CustomActors.HintItemTiny, is_custom=True, model_two=651, base=base_kong, bounce=True),
     InGameItem(name="Hint Item (Chunky)", actor=CustomActors.HintItemChunky, is_custom=True, model_two=652, base=base_kong, bounce=True),
     InGameItem(name="Archipelago Item", actor=CustomActors.ArchipelagoItem, is_custom=True, model_two=0x291, base=base_kong, bounce=True),
+    InGameItem(name="Fake Item (Bean Bubble)", actor=151, is_custom=False, model_two=0x292, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Bean Reverse)", actor=152, is_custom=False, model_two=0x293, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Bean Slow)", actor=153, is_custom=False, model_two=0x294, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Key Bubble)", actor=154, is_custom=False, model_two=0x295, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Key Reverse)", actor=155, is_custom=False, model_two=0x296, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Key Slow)", actor=157, is_custom=False, model_two=0x297, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (GB Dis A)", actor=CustomActors.IceTrapDisableAGB, is_custom=True, model_two=0x2A6, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (GB Dis B)", actor=CustomActors.IceTrapDisableBGB, is_custom=True, model_two=0x299, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (GB Dis Z)", actor=CustomActors.IceTrapDisableZGB, is_custom=True, model_two=0x29A, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (GB Dis CU)", actor=CustomActors.IceTrapDisableCUGB, is_custom=True, model_two=0x29B, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Bean Dis A)", actor=CustomActors.IceTrapDisableABean, is_custom=True, model_two=0x29C, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Bean Dis B)", actor=CustomActors.IceTrapDisableBBean, is_custom=True, model_two=0x29D, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Bean Dis Z)", actor=CustomActors.IceTrapDisableZBean, is_custom=True, model_two=0x29E, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Bean Dis CU)", actor=CustomActors.IceTrapDisableCUBean, is_custom=True, model_two=0x29F, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Key Dis A)", actor=CustomActors.IceTrapDisableAKey, is_custom=True, model_two=0x2A0, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Key Dis B)", actor=CustomActors.IceTrapDisableBKey, is_custom=True, model_two=0x2A1, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Key Dis Z)", actor=CustomActors.IceTrapDisableZKey, is_custom=True, model_two=0x2A4, base=base_kong, bounce=True, scale=0.25),
+    InGameItem(name="Fake Item (Key Dis CU)", actor=CustomActors.IceTrapDisableCUKey, is_custom=True, model_two=0x2A5, base=base_kong, bounce=True, scale=0.25),
 ]
 
 db2 = [
@@ -318,6 +360,24 @@ db2 = [
     ItemRandoDef(0x028B, CollectableTypes.Null, None, CustomActors.HintItemTiny, Hitbox(8, 4, 13), True),  # Hint
     ItemRandoDef(0x028C, CollectableTypes.Null, None, CustomActors.HintItemChunky, Hitbox(8, 4, 13), True),  # Hint
     ItemRandoDef(0x0291, CollectableTypes.Null, None, CustomActors.ArchipelagoItem, Hitbox(8, 4, 13), True),  # AP Item
+    ItemRandoDef(0x0292, CollectableTypes.Null, None, 151, Hitbox(8, 4, 13), False),  # Fake Item - Bean
+    ItemRandoDef(0x0293, CollectableTypes.Null, None, 152, Hitbox(8, 4, 13), False),  # Fake Item - Bean
+    ItemRandoDef(0x0294, CollectableTypes.Null, None, 153, Hitbox(8, 4, 13), False),  # Fake Item - Bean
+    ItemRandoDef(0x0295, CollectableTypes.Null, None, 154, Hitbox(8, 4, 13), False),  # Fake Item - Key
+    ItemRandoDef(0x0296, CollectableTypes.Null, None, 155, Hitbox(8, 4, 13), False),  # Fake Item - Key
+    ItemRandoDef(0x0297, CollectableTypes.Null, None, 157, Hitbox(8, 4, 13), False),  # Fake Item - Key
+    ItemRandoDef(0x02A6, CollectableTypes.Null, None, CustomActors.IceTrapDisableAGB, Hitbox(8, 4, 13), True),  # Fake Item - GB
+    ItemRandoDef(0x0299, CollectableTypes.Null, None, CustomActors.IceTrapDisableBGB, Hitbox(8, 4, 13), True),  # Fake Item - GB
+    ItemRandoDef(0x029A, CollectableTypes.Null, None, CustomActors.IceTrapDisableZGB, Hitbox(8, 4, 13), True),  # Fake Item - GB
+    ItemRandoDef(0x029B, CollectableTypes.Null, None, CustomActors.IceTrapDisableCUGB, Hitbox(8, 4, 13), True),  # Fake Item - GB
+    ItemRandoDef(0x029C, CollectableTypes.Null, None, CustomActors.IceTrapDisableABean, Hitbox(8, 4, 13), True),  # Fake Item - Bean
+    ItemRandoDef(0x029D, CollectableTypes.Null, None, CustomActors.IceTrapDisableBBean, Hitbox(8, 4, 13), True),  # Fake Item - Bean
+    ItemRandoDef(0x029E, CollectableTypes.Null, None, CustomActors.IceTrapDisableZBean, Hitbox(8, 4, 13), True),  # Fake Item - Bean
+    ItemRandoDef(0x029F, CollectableTypes.Null, None, CustomActors.IceTrapDisableCUBean, Hitbox(8, 4, 13), True),  # Fake Item - Bean
+    ItemRandoDef(0x02A0, CollectableTypes.Null, None, CustomActors.IceTrapDisableAKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
+    ItemRandoDef(0x02A1, CollectableTypes.Null, None, CustomActors.IceTrapDisableBKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
+    ItemRandoDef(0x02A4, CollectableTypes.Null, None, CustomActors.IceTrapDisableZKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
+    ItemRandoDef(0x02A5, CollectableTypes.Null, None, CustomActors.IceTrapDisableCUKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
 ]
 
 item_drops = [
@@ -355,6 +415,7 @@ item_drops = [
     EnemyDropDef(340, 0x2F, Song.MelonSliceDrop, 1),  # Bug
     EnemyDropDef(345 + CustomActors.ZingerFlamethrower, 0x2F, Song.MelonSliceDrop, 2),  # Flamethrowing Zinger
     EnemyDropDef(345 + CustomActors.Scarab, 0x2F, Song.MelonSliceDrop, 1),  # Kiosk Bug Replica
+    EnemyDropDef(288, 0x34, Song.Silence, 1),
 ]
 
 dance_acceptable_items = [x for x in db if x.force_dance]
@@ -383,7 +444,7 @@ with open("include/item_data.h", "w") as fh:
         fh.write(f"\t/* 0x{'{:03X}'.format(e.value)} */ NEWACTOR_{e.name.upper()}, \n")
     fh.write("\t/* ----- */ NEWACTOR_TERMINATOR, \n")
     fh.write("} new_custom_actors;\n")
-    fh.write(f"#define DROP_COUNT {len(item_drops) + 1}")
+    fh.write(f"#define DROP_COUNT {len(item_drops) + 1}\n")
 
 with open("src/lib_items.c", "w") as fh:
     fh.write('#include "../include/common.h"\n\n')
@@ -645,6 +706,132 @@ with open("src/lib_items.c", "w") as fh:
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # AP Item
+            {
+                "actor_type": 151,
+                "model": 0x126,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item (Bean)
+            {
+                "actor_type": 152,
+                "model": 0x126,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item (Bean)
+            {
+                "actor_type": 153,
+                "model": 0x126,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item (Bean)
+            {
+                "actor_type": 154,
+                "model": 0x129,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item (Key)
+            {
+                "actor_type": 155,
+                "model": 0x129,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item (Key)
+            {
+                "actor_type": 157,
+                "model": 0x129,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item (Key)
+            {
+                "actor_type": 345 + CustomActors.IceTrapDisableAGB,
+                "model": 0xFD,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapDisableBGB,
+                "model": 0xFD,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapDisableZGB,
+                "model": 0xFD,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapDisableCUGB,
+                "model": 0xFD,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapDisableABean,
+                "model": 0x126,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapDisableBBean,
+                "model": 0x126,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapDisableZBean,
+                "model": 0x126,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapDisableCUBean,
+                "model": 0x126,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapDisableAKey,
+                "model": 0x129,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapDisableBKey,
+                "model": 0x129,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapDisableZKey,
+                "model": 0x129,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": 345 + CustomActors.IceTrapDisableCUKey,
+                "model": 0x129,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
         ]
     )
     default_values = {
@@ -674,10 +861,10 @@ with open("src/lib_items.c", "w") as fh:
     actor_data["actor_functions"][324] = "&getNextMoveText"
     actor_data["actor_functions"][320] = "&getNextMoveText"
     actor_data["actor_functions"][107] = "&HelmBarrelCode"
-    actor_data = initActor(actor_data, 345 + CustomActors.NintendoCoin, "&ninCoinCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.RarewareCoin, "&rwCoinCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.NintendoCoin, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.RarewareCoin, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.Null, "&NothingCode", 4, 0, 1, 8, 0)
-    actor_data = initActor(actor_data, 345 + CustomActors.Medal, "&medalCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.Medal, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     for potion in POTIONS:
         actor_data = initActor(actor_data, 345 + potion, "&PotionCode", 2, 0, 1, 8, 45)
     for kong in KONGS:
@@ -687,8 +874,8 @@ with open("src/lib_items.c", "w") as fh:
     for trap in TRAPS:
         actor_data = initActor(actor_data, 345 + trap, "&FakeGBCode", 2, 0, 1, 8, 45)
 
-    actor_data = initActor(actor_data, 345 + CustomActors.Bean, "&beanCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.Pearl, "&pearlCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.Bean, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 345 + CustomActors.Pearl, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.Fairy, "&fairyDuplicateCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemDK, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemDiddy, "&GoldenBananaCode", 2, 0, 1, 8, 45)
@@ -696,9 +883,16 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemTiny, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.HintItemChunky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.ArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 151, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 152, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 153, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 154, "&FakeKeyCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 155, "&FakeKeyCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, 157, "&FakeKeyCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 345 + CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
     actor_data = initActor(actor_data, 345 + CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, 345 + CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)
+    actor_data = initActor(actor_data, 141, "&charSpawnerItemCode", 2, 0, 1, 0x40, 197)
     actor_data["actor_collisions"][345 + CustomActors.Scarab] = {
         "collision_info": 0x8074B240,
         "unk_4": 1,
@@ -741,3 +935,12 @@ with open("src/lib_items.c", "w") as fh:
     )
     for sym in data_types:
         fh.write(f"\n{data_types[sym]} {sym}[] = {{\n\t" + ",\n\t".join([getActorDefaultString(x) for x in actor_data[sym]]) + "\n};")
+    with open("include/item_data.h", "a") as fg:
+        fg.write(f"extern GBDictItem new_flag_mapping[{len(actor_data['new_flag_mapping'])}];\n")
+        # File Size Calc (Just for base hack testing purposes)
+        static_expansion = 0x100
+        balloon_expansion = 150
+        target_gb_bits = 7
+        kong_var_size = 0xA1 + ((target_gb_bits - 3) * 8) + target_gb_bits + 14
+        file_info_location = 0x320 + static_expansion + balloon_expansion + (5 * kong_var_size)
+        fg.write(f"#define FILE_INFO_SIZE {hex(file_info_location)}\n")

@@ -55,6 +55,7 @@ images = [
     ImageData("specialchars", TextureFormat.RGBA5551, TableNames.TexturesHUD, 30, 64, 32, False, False),
     ImageData("red_qmark_0", TextureFormat.RGBA5551, TableNames.TexturesUncompressed, 508, 32, 64, False, False),
     ImageData("red_qmark_1", TextureFormat.RGBA5551, TableNames.TexturesUncompressed, 509, 32, 64, False, False),
+    ImageData("white_special_chars", TextureFormat.IA8, TableNames.TexturesHUD, 4, 176, 16, False, False),
     ImageData("dk_tie_palette", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 3686, 32, 32, False, False),
     ImageData("tiny_palette", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 3689, 32, 32, False, False),
     ImageData("homing_crate_0", TextureFormat.RGBA5551, TableNames.TexturesUncompressed, 185, 32, 64, False, True),
@@ -111,6 +112,10 @@ images = [
     ImageData("cannon_support", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12B5, 48, 32, False, False),
     ImageData("cannon_base", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12B8, 44, 44, False, False),
     ImageData("barrel_bottom", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xF14, 1, 1372, False, False),
+    ImageData("key_om2_palette", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xC6F, 4, 4, False, False),
+    ImageData("disco_shirt", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xEC1, 32, 32, False, False),
+    ImageData("disco_glove", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xEC2, 32, 32, False, False),
+    ImageData("disco_skin", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xE64, 32, 32, False, False),
 ]
 
 shop_owners = {

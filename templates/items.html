@@ -1,0 +1,447 @@
+{% from 'macros.html' import toggle_input %}
+{% from 'dropdown_multiselector.html' import dropdown_multiselector %}
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col border panel">
+            <h2 class="title">ITEM RANDOMIZER</h2>
+            <div class="flex-container">
+                <div class="text-start">
+                    <p>
+                        Shuffles <span class="ir-hint items">items</span><span class="hide-if-ir-decouple"> with <span class="ir-hint checks">checks</span></span> into pools.
+                        Drag and drop items <span class="hide-if-ir-decouple">and checks </span>into various pools to determine where items can be placed.
+                    </p>
+                    <h5>Rules</h5>
+                    <ul>
+                        <li id="rule-item-shuffle" class="hide-if-ir-decouple">If an item or check remains unshuffled, it's corresponding item/check has to also remain unshuffled.</li>
+                        <li id="rule-item-count">Check count must not be lower than item count.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex-container">
+                <div style="width:50%">
+                    <div class="mx-auto" style="width: fit-content">
+                        {{ toggle_input("decouple_item_rando", "Decouple Items from Checks", "Enabling this setting decouples items from their checks, resulting in greater control over the pools.") }}
+                    </div>
+                </div>
+                <div style="width:50%">
+                    <div class="mx-auto" style="width: fit-content">
+                        <div class="item-select">
+                            <button
+                                class="btn btn-secondary btn-custom-large"
+                                type="button"
+                                href="#"
+                                id="starting_moves_modal"
+                                display_name="Customize Starting Moves"
+                                data-bs-toggle="modal"
+                                data-bs-target="#starting_moves_Modal"
+                                data-toggle="tooltip"
+                                title="Customize your starting moves. Start with more items, fewer items, certain items, and more.">
+                                Customize Starting Moves
+                                <span id="shared_shop_warning" data-toggle="tooltip" title="When all moves are purchased in shops, you are extremely likely to run into fill problems if you do not start with enough shared moves! Seeds that do generate will have fill biases - consider starting with training moves.">
+                                    <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 18 18" class="warning-icon" style="overflow: visible; margin-bottom: 7px;" stroke="#ffff00" fill="#ffff00">
+                                        <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:50%">
+                    <div class="mx-auto" style="width: fit-content">
+                        {{ dropdown_multiselector(item_filler, "filler_items", "Filler Items", "Defines what item types can be placed into the world after all mandatory items have been placed.", "0") }}
+                    </div>
+                </div>
+                <div style="width:50%">
+                    <div class="mx-auto" style="width: fit-content">
+                        <div class="item-select">
+                            <p class="select-title">Ice Trap Frequency</p>
+                            <select name="ice_trap_frequency"
+                                    id="ice_trap_frequency"
+                                    display_name="Ice Trap Frequency"
+                                    class="form-select"
+                                    aria-label="Ice Trap Frequency"
+                                    data-toggle="tooltip"
+                                    title="Frequency of ice traps attempted to be placed into the world.&#10;-Rare: 4 ice traps.&#10;-Mild: 10 ice traps.&#10;-Common: 32 ice traps.&#10;-Frequent: 64 ice traps.&#10;-Pain: 100 ice traps.">
+                                <option id="rare" value="rare">Rare</option>
+                                <option id="mild" selected value="mild">Mild</option>
+                                <option id="common" value="common">Common</option>
+                                <option id="frequent" value="frequent">Frequent</option>
+                                <option id="pain" value="pain">Pain</option>
+                                <option id="unlimited" value="unlimited">Unlimited</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex" id="item_rando-category-container" data-items="{{ itemRando | tojsonarr | escape }}" data-count="5" data-predicate="item_rando_list_">
+                {% for x in range(5) %}
+                <div style="flex:1; max-width: 20%;">
+                    <p class="select-title" style="margin-bottom: 0px;">
+                        {% if x == 0 %}
+                            Unshuffled
+                        {% else %}
+                            Pool {{ x }}
+                        {% endif %}
+                    </p>
+                    <div id="item_rando_check_hint_{{ x }}" style="min-height: 24px; margin-bottom: 10px;"></div>
+                    {% if x == 0 %}
+                    <div class="text-start hide-if-ir-decouple">
+                        <h6>Items</h6>
+                    </div>
+                    {% else %}
+                    <div class="text-start hide-if-ir-decouple" style="opacity:0">
+                        <h6>Items</h6>
+                    </div>
+                    {% endif %}
+                    <ul id="item_rando_list_{{ x }}" name="item_rando_list_{{ x }}" class="sortablejs shared list-group bg-secondary-subtle border border-1 border-white mx-2" style="height: 200px; overflow-y: scroll">
+                        {% if x == 0 %}
+                            {% for option in itemRando %}
+                                {% if not option.is_check %}
+                                    {% if option.is_dummy %}
+                                        <li class="list-group-item show-if-ir-decouple" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">{{ option.name }}</li>
+                                    {% else %}
+                                        <li class="list-group-item" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">{{ option.name }}</li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                    {% if x == 0 %}
+                    <div class="text-start mt-3 hide-if-ir-decouple">
+                        <h6>Checks</h6>
+                    </div>
+                    {% else %}
+                    <div class="text-start mt-3 hide-if-ir-decouple" style="opacity:0">
+                        <h6>Checks</h6>
+                    </div>
+                    {% endif %}
+                    <ul id="item_rando_list_{{ x + 5 }}" name="item_rando_list_{{ x + 5 }}" class="sortablejs sharedchecks list-group bg-secondary-subtle border border-1 border-white mx-2 hide-if-ir-decouple" style="height: 200px; overflow-y: scroll">
+                        {% if x == 0 %}
+                            {% for option in itemRando %}
+                                {% if option.is_check %}
+                                    <li class="list-group-item ischeck" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}" tied_item="{{ option.tied }}">{{ option.name }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="flex-container mt-4">
+                <button type="button" class="btn btn-secondary mx-3" style="flex: 1" id="item_rando_reset">Unshuffle All</button>
+                <button type="button" class="btn btn-secondary mx-3" style="flex: 1" id="item_rando_shuffle_all">Shuffle All</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade"
+     id="starting_moves_Modal"
+     tabindex="-1"
+     aria-labelledby="starting_moves_ModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 1250px;">
+        <div class="modal-content modal-content-tall">
+            <div class="modal-header">
+                <h3 class="modal-title title" id="starting_moves_ModalLabel">CUSTOMIZE STARTING MOVES</h3>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <b>Place your items into a number of item pools, then choose how many of each pool's items you want given to you at the start of the seed.</b>
+                <br/>
+                <b>To move items, select them from any list and click the item pool you want them to be in.</b>
+                <br/>
+                <em>Use the presets at the bottom as quick actions.</em>
+                <div class="flex-container" style="justify-content: space-around; margin-top: 15px;">
+                    <div id="starting_moves_list_column_1" class="flex-column-container">
+                        <b id="starting_moves_list_all_1" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_1" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_1" style="font-style: italic; color: red;">Start with None</b>
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_1">Pool 1</button>
+                        <select id="starting_moves_list_1" name="starting_moves_list_1" class="starting_moves_list multi-select" multiple>
+                            {% for item in custom_starting_moves %}
+                                <option id="starting_move_{{item.value}}" class="starting_moves_option">{{item.name}}</option>
+                            {% endfor %}
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_1"
+                                id="starting_moves_list_count_1"
+                                class="form-control center-div move_count_button"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                    <div id="starting_moves_list_column_2" class="flex-column-container">
+                        <b id="starting_moves_list_all_2" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_2" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_2" style="font-style: italic; color: red;">Start with None</b>
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_2">Pool 2</button>
+                        <select id="starting_moves_list_2" name="starting_moves_list_2" class="starting_moves_list multi-select" multiple>
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_2"
+                                id="starting_moves_list_count_2"
+                                class="form-control center-div move_count_button"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                    <div id="starting_moves_list_column_3" class="flex-column-container">
+                        <b id="starting_moves_list_all_3" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_3" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_3" style="font-style: italic; color: red;">Start with None</b>
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_3">Pool 3</button>
+                        <select id="starting_moves_list_3" name="starting_moves_list_3" class="starting_moves_list multi-select" multiple>
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_3"
+                                id="starting_moves_list_count_3"
+                                class="form-control center-div move_count_button"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                    <div id="starting_moves_list_column_4" class="flex-column-container">
+                        <b id="starting_moves_list_all_4" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_4" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_4" style="font-style: italic; color: red;">Start with None</b>
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_4">Pool 4</button>
+                        <select id="starting_moves_list_4" name="starting_moves_list_4" class="starting_moves_list multi-select" multiple>
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_4"
+                                id="starting_moves_list_count_4"
+                                class="form-control center-div move_count_button"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                    <div id="starting_moves_list_column_5" class="flex-column-container">
+                        <b id="starting_moves_list_all_5" style="font-style: italic; color: green;">Start with All</b>
+                        <b id="starting_moves_list_some_5" style="font-style: italic; color: orange;">Start with Some</b>
+                        <b id="starting_moves_list_none_5" style="font-style: italic; color: red;">Start with None</b>
+                        <button type="button" class="btn btn-secondary" id="starting_moves_list_mover_5">Pool 5</button>
+                        <select id="starting_moves_list_5" name="starting_moves_list_5" class="starting_moves_list multi-select" multiple>
+                        </select>
+                        # Given:
+                        <input min="0"
+                                max="47"
+                                display_name="Move Count"
+                                name="starting_moves_list_count_5"
+                                id="starting_moves_list_count_5"
+                                class="form-control center-div move_count_button"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given from this item pool."
+                                default="0"
+                                placeholder="0"
+                                />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="starting_moves_reset">No Item Start</button>
+                <button type="button" class="btn btn-secondary" id="starting_moves_start_vanilla">Vanilla Start</button>
+                <button type="button" class="btn btn-secondary" id="starting_moves_start_all">Start With All</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const sort_container = document.getElementById("item_rando-category-container");
+    const sort_sections_items = sort_container.getElementsByClassName("shared");
+    const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
+    let offset = sort_sections_items.length;
+    for (let i = 0; i < offset; i++) {
+        new Sortable(sort_sections_items[i], {
+            group: 'shared',
+            animation: 150,
+            fallbackTolerance: 3,
+            sort: false,
+            onEnd: (evt) => {
+                const event = new Event("change", { bubbles: true, cancelable: false });
+                evt.to.dispatchEvent(event);
+                updateCheckItemCounter(evt.to.parentElement.parentElement);
+            }
+        });
+        new Sortable(sort_sections_checks[i], {
+            group: 'sharedchecks',
+            animation: 150,
+            fallbackTolerance: 3,
+            sort: false,
+            onEnd: (evt) => {
+                const event = new Event("change", { bubbles: true, cancelable: false });
+                evt.to.dispatchEvent(event);
+                updateCheckItemCounter(evt.to.parentElement.parentElement);
+            }
+        });
+    }
+
+    function isNumeric(str) {
+        if (typeof str != "string") return false // we only process strings!  
+        return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+                !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+    }
+
+    function getTiedCheckCount(value) {
+        const data_items_json = document.getElementById("item_rando-category-container").getAttribute("data-items");
+        const data_items = JSON.parse(data_items_json);
+        const tied_checks = data_items.filter(k => (k.is_check && k.tied == value) || (k.is_dummy && k.value == value));
+        let count = 0;
+        tied_checks.forEach(k => {
+            count += k.check_count;
+        });
+        return count;
+    }
+
+    function updateCheckItemCounter(ctr) {
+        const name = ctr.getAttribute("id").split("-category-container")[0];
+        const sort_sections_items = sort_container.getElementsByClassName("shared");
+        const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
+        const decoupled = document.getElementById("decouple_item_rando").checked;
+        let is_valid_item_spread = true;
+        
+        let item_shuffle_cache = {};
+        let item_shuffle_tied = {};
+        let offset = sort_sections_items.length;
+        for (let index = 0; index < offset; index++) {
+            let local_check_count = 0;
+            let local_item_count = 0;
+            let parsed_options = 0;
+            for (let j = 0; j < 2; j++) {
+                let options;
+                if (j == 0) {
+                    options = sort_sections_items[index].getElementsByTagName("li");
+                } else if (j == 1) {
+                    options = sort_sections_checks[index].getElementsByTagName("li");
+                }
+                if (!decoupled && (j == 1)) {
+                    continue;
+                }
+                for (let option of options) {
+                    const check_count_raw = option.getAttribute("check_count");
+                    const item_count_raw = option.getAttribute("items_count");
+                    const tied_item_raw = option.getAttribute("tied_item");
+                    const opt_value = option.getAttribute("value");
+                    item_shuffle_cache[opt_value] = index;
+                    let parsed = false;
+                    if (tied_item_raw) {
+                        item_shuffle_tied[opt_value] = tied_item_raw;
+                    }
+                    if (!decoupled) {
+                        local_check_count += getTiedCheckCount(opt_value);
+                        parsed = true;
+                    } else if (j == 1) {
+                        if (isNumeric(check_count_raw)) {
+                            local_check_count += parseInt(check_count_raw);
+                            parsed = true;
+                        }
+                    }
+                    if (isNumeric(item_count_raw)) {
+                        local_item_count += parseInt(item_count_raw);
+                        parsed = true;
+                    }
+                    if (parsed) {
+                        parsed_options++;
+                    }
+                }
+            }
+            if (index > 0) {
+                let inner_text = "";
+                if (parsed_options > 0) {
+                    inner_text = `Checks: ${local_check_count} | Items: ${local_item_count}`;
+                }
+                if (local_item_count > local_check_count) {
+                    is_valid_item_spread = false;
+                }
+                const text_color = local_item_count > local_check_count ? "red" : "green";
+                const check_hint_el = document.getElementById(`${name}_check_hint_${index}`);
+                check_hint_el.innerHTML = inner_text;
+                check_hint_el.style.color = text_color;
+            }
+        }
+        let is_valid_item_shuffle = true;
+        Object.keys(item_shuffle_tied).forEach(key => {
+            const val = item_shuffle_tied[key];
+            const key_slot = item_shuffle_cache[key];
+            const val_slot = item_shuffle_cache[val];
+            if (key_slot != val_slot) {
+                if ((key_slot == 0) || (val_slot == 0)) {
+                    // Key or val is in slot 0, but not both
+                    is_valid_item_shuffle = false;
+                }
+            }
+        });
+        document.getElementById("rule-item-count").style.color = is_valid_item_spread ? "white" : "red";
+        document.getElementById("rule-item-shuffle").style.color = is_valid_item_shuffle ? "white" : "red";
+    }
+
+
+    function setAllToColumn(name, index) {
+        const container = document.getElementById(`${name}-category-container`);
+        const sort_sections_items = sort_container.getElementsByClassName("shared");
+        const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
+        const offset = sort_sections_items.length;
+        let total_html_items = "";
+        let total_html_checks = "";
+        for (let i = 0; i < offset; i++) {
+            total_html_items += sort_sections_items[i].innerHTML;
+            total_html_checks += sort_sections_checks[i].innerHTML;
+        }
+        for (let i = 0; i < offset; i++) {
+            if (i == index) {
+                sort_sections_items[index].innerHTML = total_html_items;
+                sort_sections_checks[index].innerHTML = total_html_checks;
+            } else {
+                sort_sections_items[i].innerHTML = "";
+                sort_sections_checks[i].innerHTML = "";
+            }
+            const event = new Event("change", { bubbles: true, cancelable: false });
+            sort_sections_items[i].dispatchEvent(event);
+            sort_sections_checks[i].dispatchEvent(event);
+        }
+        updateCheckItemCounter(container);
+    }
+
+    document.getElementById("decouple_item_rando").addEventListener("click", () => {
+        const container = document.getElementById("item_rando-category-container");
+        updateCheckItemCounter(container);
+    });
+
+    document.getElementById("item_rando_reset").addEventListener("click", (e) => {setAllToColumn("item_rando", 0)});
+    document.getElementById("item_rando_shuffle_all").addEventListener("click", (e) => {setAllToColumn("item_rando", 1)});
+</script>
+<script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        });
+    });
+</script>

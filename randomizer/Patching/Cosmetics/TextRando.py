@@ -77,6 +77,8 @@ boot_phrases = (
     "Saving 20 frames",
     "Reporting bugs. Unlike some",
     "Color-coding Krusha for convenience",
+    "Adding the dot com",
+    "Plugging the randomizer",
 )
 
 crown_heads = (
@@ -314,3 +316,4 @@ def writeBootMessages(ROM_COPY: LocalROM, rando) -> None:
     for message_index, message in enumerate(placed_messages):
         ROM_COPY.seek(0x1FFD000 + (0x40 * message_index))
         ROM_COPY.writeBytes(message.upper().encode("ascii"))
+        ROM_COPY.write(0)

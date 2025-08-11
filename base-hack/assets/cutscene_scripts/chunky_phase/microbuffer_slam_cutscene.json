@@ -102,8 +102,8 @@
                 "sub_command": 24,
                 "params": [
                     3,
-                    19,
-                    33,
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.SlamMicro",
                     0
                 ]
             },

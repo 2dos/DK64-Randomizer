@@ -194,5 +194,10 @@ export enum Maps {
     Candy = 25,
     Funky = 1,
     Snide = 15,
+    Arcade25 = 216,
+    Arcade50 = 217,
+    Arcade75 = 218,
+    Arcade100 = 219,
+    JetpacRocket = 220,
     DKRap = 76,
 }

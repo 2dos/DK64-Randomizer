@@ -1,0 +1,105 @@
+- Helm Start & Helm Room Count shouldn't be in QoL
+- Hints being in "QoL" feels wrong
+- Unify the level requirements section
+    - Stick the "plando B. Lockers/T&S" in a modal
+    - Put requirements for RW Coin/Medals/RW GB/Mermaid GB into a general "requirements" section
+- "Game Length" should really be endgame
+- Starting kongs shouldn't be in endgame, doesn't match
+- Difficulty doesnt' fit in well with "overworld"
+- Put K Rool phase shuffle & Helm room shuffle in endgame
+- Put shuffle shop locations with the rest of the location randomizers
+- Put autocomplete with shuffle bonuses/disable hard minigames
+- Put K Rool phases as bosses with endgame?
+- Move switchsanity to requirements?
+
+Categories:
+- Items
+    / Item rando selector (This is big in size, so takes up a lot of real estate)
+    / filler items
+    / ice traps
+    / Starting move set
+- Overworld
+    / World Navigation:
+        / Entrance Rando & "Include Helm"
+        / Cross Map Warps
+        / Kong Models
+    / Location Randomizers:
+        / General Location Rando Suite
+        / Randomize Pickups
+        / Random Starting Location
+        / Shop Location Rando
+    / Enemy Stuff:
+        / Crown Enemies
+        / Enemy rando
+        / Enemy Speed rando
+        / Enemy size rando
+    / Difficulty Panel
+- Requirements
+    / B. Locker / T&S Requirements w/ modal for plando'd thresholds
+        / In, no modal yet: Working out the logistics of this
+    / Medals for RW Coin
+    / CBs for Medals
+    / Fairies for RW GB
+    / Pearls for Mermaid GB
+    / Remove Barriers
+    / FTA
+    / Fungi Time of Day
+    / Galleon Water level
+    / Progressive Switch Strength
+    / Switchsanity
+    / Open Lobbies
+    / Random Shop Prices
+    / Smaller Shops
+    / Activate BPorts
+- Progression
+    - Endgame:
+        / Starting Keys
+        / Starting Kongs
+        / Win Condition
+        - Helm:
+            / Helm Start location
+            / Helm Room Count
+            / Shuffle Helm Rooms
+            / Helm Length
+            / Helm Key Lock
+            / Key 8 required
+            / Helm Door requirements
+        - K Rool (Hidden if win con is not K Rool/Random)
+            / Shuffle K Rool phases
+            / K Rool Phase Length
+            / DK Phase requires blast
+            / Chunky Phase slam requirement
+            / Vanilla K Rool requirement
+- Quality of Life
+    - QoL:
+        - QoL Multiselector
+        - Shorten bosses
+        - Tag Anywhere
+        - T&S Numbers
+        - Shop Indicator
+        - Warp to Isles option
+        - Item Reward Previews
+        - Fast Warps
+        - Auto Key Turn Ins
+        - Enemy Crown Timer Reduction
+        - Cutscene Skips
+        - Disable Racing Patches
+    - Hints:
+        - Hint Type
+        - Prog Hints
+        - Dim Solved Hints
+        - No Joke Hints
+        - Spoiler Hints & "Include WoTH/Level Order"
+        - Microhints
+        - Shop Hints
+        - Kongless Hint Doors
+Unaccounted for (so far):
+- Logic
+- Bonus Barrel Stuff:
+    - Shuffle Bonuses
+    - Autocomplete bonuses
+    - Disable Hard minigames
+- Random Puzzle Solutions
+- Helm Hurry
+- Faster Checks
+- K Rool Phases as bosses

@@ -122,9 +122,18 @@ extern void CrownGet(void);
 extern void updateModel(void* data);
 extern void bounceObjectCode(int convert_to_model_two);
 
-extern void updateCamera(void* mtx_i);
+extern int getObjectID(int index);
 
-extern int callFunc(void* func);
+extern void updateCamera(void* mtx_i);
+extern void spawnKeyTwinklies(void *actor);
+extern void getControllerContainer(void *cont);
+
+extern int callFunc(void* func, int arg);
+
+extern void cutsceneDiddyCode(void);
+extern void cutsceneLankyCode(void);
+extern void cutsceneTinyCode(void);
+extern void cutsceneChunkyCode(void);
 
 extern void cancelMusic(int song, int unk0);
 extern void removeGorillaGone(void* actor);
@@ -139,6 +148,9 @@ extern void handleMusicTransition(void);
 extern void loadJetpacSprites(void);
 extern void updateGBCountHUD(int player);
 extern void initHUDItem(float x, float y, float* unk0, float* unk1, float* unk2);
+
+extern void *spawnActorAtXYZ(int actor, float x, float y, float z);
+extern int getNextUnassignedId(void);
 
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
@@ -282,6 +294,9 @@ extern void changeCollectableCount(int item, int player_index, int change);
 extern void save(void);
 extern void* getSpawnerTiedActor(short target_trigger, short props_change);
 
+extern void wipeTurnedInArray(void);
+extern void performEEPROMAction(int action);
+
 extern void bananaslip(void);
 extern void setAnimalYAccel(void);
 
@@ -311,8 +326,12 @@ extern void bunchHandle(int player_index, int id, void* player);
 extern void displayItemOnHUD(int item, int unk0, int unk1);
 extern int getCollectableOffset(int item, int obj, int homing);
 extern void GoldenBananaCode(void);
+extern void BossKeyCode(void);
 
 extern void resetLankyKR(void);
+
+extern int getPickupCollisionIndex(int type);
+extern void RainbowCoinFTT(void);
 
 extern void unkSpriteRenderFunc(int unk0);
 extern void unkSpriteRenderFunc_0(void);
@@ -442,6 +461,8 @@ extern int getTotalGBs(void);
 extern void displayPauseSpriteNumber(void* handler, int x, int y, int unk0, int unk1, int count, int unk2, int unk3);
 extern void headphonesCode(int unused, int enable); // Note: Only has parameters for *if* we're passing in an enabled state for the headphones fix qol change
 
+extern void alCSPSetTempo(void *player, int speed);
+
 extern int getSpawnerIndexOfResolvedBonus(void* unk0, int unk1, int* map_storage);
 extern void resolveBonus(short unk0, int unk1, int unk2, float unk3);
 extern void failBonus(int unk0, int unk1);
@@ -450,6 +471,8 @@ extern void getBonePosition(void* actor, int bone, float* x, float* y, float* z)
 extern void spawnFireballExplosion(float x, float y, float z, float scale, char unk0, char unk1);
 extern void setChunkLighting(float red, float green, float blue, int chunk);
 extern void unkLoadingZoneControllerFunction(short exit);
+
+extern void nextJetpacLevel(void);
 
 extern void crankyCode(void);
 extern void funkyCode(void);
@@ -680,7 +703,7 @@ extern float FileScreenDLOffset;
 extern short CBTurnedInArray[8];
 extern short songData[SONG_COUNT];
 extern short trackStateArray[12];
-extern char songInWriteSlot[4];
+extern unsigned char SongInWriteSlot[4];
 extern short songVolumes[SONG_COUNT];
 extern int* compactSequencePlayers[4];
 extern unsigned int DKTVData[5];
@@ -794,6 +817,8 @@ extern char RambiArenaComboTimer;
 extern char RambiArenaComboSize;
 extern char RambiArenaComboChain[16];
 
+extern unsigned short RaceCoinCount;
+
 extern char* AnimationPointer;
 extern unsigned short StoredOrangeCount;
 extern path_data_struct* PathData[32];
@@ -805,6 +830,8 @@ extern float BackflipVelArray[7];
 
 extern SingleExitStruct DefaultExit;
 extern FogData EnvironmentFog;
+
+extern GBDictItem actorSpawnedFlagMapping[];
 
 //hack data
 extern int TestVariable;
@@ -818,6 +845,7 @@ extern char LobbiesOpen;
 extern char* PauseSlot3TextPointer;
 extern char ExpandPauseMenu;
 extern unsigned short InitialPauseHeight;
+extern unsigned short *CCButtons;
 extern cc_effects* CCEffectData;
 extern short style128Mtx[0x10];
 extern short style6Mtx[0x10];
@@ -829,7 +857,6 @@ extern purchase_struct TrainingMoves_New[4];
 extern purchase_struct BFIMove_New;
 extern purchase_struct FirstMove_New;
 extern settingsData StoredSettings;
-extern char preventTagSpawn;
 extern char bonusAutocomplete;
 extern void* StoredCounterTextures[7];
 extern char TextHoldOn;
@@ -837,7 +864,6 @@ extern unsigned char PauseText;
 extern unsigned char ShorterBosses;
 extern char ForceStandardAmmo;
 extern char KKOPhaseRandoOn;
-extern char KKOPhaseOrder[3];
 extern unsigned short MultiBunchCount;
 extern char QueueHelmTimer;
 extern char ToggleAmmoOn;
@@ -847,12 +873,13 @@ extern unsigned char WinCondition;
 extern unsigned char ChunkyModel;
 extern unsigned char EnemyInView;
 extern unsigned char ItemRandoOn;
-extern short ItemRando_FLUT[0x320];
+extern ItemIdentifierStruct ItemIdentifier[0x190];
 extern unsigned char KasplatSpawnBitfield;
+extern unsigned short HoldableSpawnBitfield;
 extern char KrushaSlot;
-extern unsigned char TextItemName;
 extern unsigned char RandomSwitches;
 extern unsigned char SwitchLevel[7];
 extern int ExtraSaveData[0x100];
 extern char* DisplayedSongNamePointer;
 extern unsigned char RandomizerVersion;
+extern CountStruct *ItemInventory;

@@ -171,7 +171,7 @@ async function shared_url_ui(data) {
       document.getElementById("hashdiv").innerHTML =
         "No ROM Cached, No Hash Images Loaded.";
     }
-    document.getElementById("nav-settings-tab").style.display = "";
+    document.getElementById("nav-settings-tab").removeAttribute("hidden");
     document.getElementById("spoiler_log_block").style.display = "";
     document.getElementById("generated_seed_id").innerHTML = seed_id;
 

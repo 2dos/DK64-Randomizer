@@ -4,7 +4,7 @@ import math
 from enum import IntEnum, auto
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
-from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 from randomizer.Enums.Settings import FasterChecksSelected, PuzzleRando
@@ -281,11 +281,12 @@ def writeRandomCastleCarRace(random, ROM_COPY: LocalROM):
 
 def shortenCastleMinecart(spoiler, ROM_COPY: LocalROM):
     """Shorten Castle Minecart to end at the u-turn point."""
-    if not IsItemSelected(
-        spoiler.settings.faster_checks_enabled,
+    if not IsDDMSSelected(
         spoiler.settings.faster_checks_selected,
         FasterChecksSelected.castle_minecart,
     ):
+        return
+    if spoiler.settings.race_coin_rando:
         return
     shiftCastleMinecartRewardZones(ROM_COPY)
     new_squawks_coords = (3232, 482, 693)
@@ -461,59 +462,109 @@ class PuzzleItem:
         """Update the settings regarding bounds depending on selected settings."""
         self.selected_bound = self.normal_bound
         if self.fast_check_setting is not None and self.fast_bound is not None:
-            if IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, self.fast_check_setting):
+            if IsDDMSSelected(spoiler.settings.faster_checks_selected, self.fast_check_setting):
                 self.selected_bound = self.fast_bound
 
 
-def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
-    """Shuffle elements of puzzles. Currently limited to coin challenge requirements but will be extended in future."""
+coin_req_info = [
+    PuzzleItem("Caves Beetle Race", Maps.CavesLankyRace, 0x13C, PuzzleRandoBound(10, 60)),
+    PuzzleItem("Aztec Beetle Race", Maps.AztecTinyRace, 0x13E, PuzzleRandoBound(20, 60)),
+    PuzzleItem(
+        "Factory Car Race",
+        Maps.FactoryTinyRace,
+        0x140,
+        PuzzleRandoBound(5, 18),
+        PuzzleRandoBound(3, 12),
+        FasterChecksSelected.factory_car_race,
+    ),
+    PuzzleItem(
+        "Galleon Seal Race",
+        Maps.GalleonSealRace,
+        0x142,
+        PuzzleRandoBound(5, 12),
+        PuzzleRandoBound(5, 10),
+        FasterChecksSelected.galleon_seal_race,
+    ),
+    PuzzleItem(
+        "Castle Car Race",
+        Maps.CastleTinyRace,
+        0x144,
+        PuzzleRandoBound(5, 15),
+        PuzzleRandoBound(5, 12),
+        FasterChecksSelected.castle_car_race,
+    ),
+    PuzzleItem("Japes Minecart", Maps.JapesMinecarts, 0x146, PuzzleRandoBound(40, 70)),
+    PuzzleItem("Forest Minecart", Maps.ForestMinecarts, 0x148, PuzzleRandoBound(25, 60)),
+    PuzzleItem(
+        "Castle Minecart",
+        Maps.CastleMinecarts,
+        0x14A,
+        PuzzleRandoBound(10, 45),
+        PuzzleRandoBound(5, 30),
+        FasterChecksSelected.castle_minecart,
+    ),
+]
+
+
+def patchRaceRequirements(spoiler, ROM_COPY: LocalROM):
+    """Patches the randomized requirements for the races."""
+    puzzle_rando_setting = spoiler.settings.puzzle_rando_difficulty
+    race_coin_rando_on = spoiler.settings.race_coin_rando
+    if puzzle_rando_setting == PuzzleRando.off and not race_coin_rando_on:
+        return
     sav = spoiler.settings.rom_data
+    for coinreq in coin_req_info:
+        ROM_COPY.seek(sav + coinreq.offset)
+        ROM_COPY.writeMultipleBytes(spoiler.coin_requirements[coinreq.tied_map], 2)
+
+
+race_coin_rando_ratios = {PuzzleRando.off: 0.6, PuzzleRando.easy: 0.4, PuzzleRando.medium: 0.6, PuzzleRando.hard: 0.75}
+
+
+def randomizeRaceRequirements(spoiler):
+    """Randomize the requirements for the races."""
+    puzzle_rando_setting = spoiler.settings.puzzle_rando_difficulty
+    race_coin_rando_on = spoiler.settings.race_coin_rando
     spoiler.coin_requirements = {}
-    if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
-        coin_req_info = [
-            PuzzleItem("Caves Beetle Race", Maps.CavesLankyRace, 0x13C, PuzzleRandoBound(10, 60)),
-            PuzzleItem("Aztec Beetle Race", Maps.AztecTinyRace, 0x13D, PuzzleRandoBound(20, 60)),
-            PuzzleItem(
-                "Factory Car Race",
-                Maps.FactoryTinyRace,
-                0x13E,
-                PuzzleRandoBound(5, 18),
-                PuzzleRandoBound(3, 12),
-                FasterChecksSelected.factory_car_race,
-            ),
-            PuzzleItem(
-                "Galleon Seal Race",
-                Maps.GalleonSealRace,
-                0x13F,
-                PuzzleRandoBound(5, 12),
-                PuzzleRandoBound(5, 10),
-                FasterChecksSelected.galleon_seal_race,
-            ),
-            PuzzleItem(
-                "Castle Car Race",
-                Maps.CastleTinyRace,
-                0x140,
-                PuzzleRandoBound(5, 15),
-                PuzzleRandoBound(5, 12),
-                FasterChecksSelected.castle_car_race,
-            ),
-            PuzzleItem("Japes Minecart", Maps.JapesMinecarts, 0x141, PuzzleRandoBound(40, 70)),
-            PuzzleItem("Forest Minecart", Maps.ForestMinecarts, 0x142, PuzzleRandoBound(25, 60)),
-            PuzzleItem(
-                "Castle Minecart",
-                Maps.CastleMinecarts,
-                0x143,
-                PuzzleRandoBound(10, 45),
-                PuzzleRandoBound(5, 30),
-                FasterChecksSelected.castle_minecart,
-            ),
-        ]
-        for coinreq in coin_req_info:
-            coinreq.updateBoundSetting(spoiler)
-            ROM_COPY.seek(sav + coinreq.offset)
+    if puzzle_rando_setting == PuzzleRando.off and not race_coin_rando_on:
+        return
+    max_requirement_ratio = 0.6
+    if puzzle_rando_setting == PuzzleRando.chaos:
+        max_requirement_ratio = spoiler.settings.random.uniform(0.4, 0.8)
+    else:
+        max_requirement_ratio = race_coin_rando_ratios.get(puzzle_rando_setting, 0.6)
+
+    max_coins = int((97 + 71 + 25 + 19 + 87 + 77 + 68 + 17) * max_requirement_ratio)
+    delineations = len(coin_req_info)
+    requirements = []
+    for index in range(delineations):
+        min_bound = int(max_coins * ((index / delineations)))
+        max_bound = int(max_coins * (((index + 1) / delineations)))
+        if min_bound > max_coins:
+            min_bound = max_coins
+        elif min_bound < 1:
+            min_bound = 1
+        if max_bound > max_coins:
+            max_bound = max_coins
+        # Random range, with bias towards the higher values so that it's more likely to push the requirements higher than lower
+        selected_requirement = int(spoiler.settings.random.triangular(min_bound, max_bound, int(0.75 * ((max_bound + min_bound) / 2))))
+        requirements.append(selected_requirement)
+    spoiler.settings.random.shuffle(requirements)  # Shuffle so it's not always Caves beetle getting a low req
+    for index, coinreq in enumerate(coin_req_info):
+        coinreq.updateBoundSetting(spoiler)
+        selected_requirement = None
+        if race_coin_rando_on:
+            selected_requirement = requirements[index]
+        else:
             selected_requirement = coinreq.selected_bound.generateRequirement(spoiler)
-            spoiler.coin_requirements[coinreq.tied_map] = selected_requirement
-            ROM_COPY.writeMultipleBytes(selected_requirement, 1)
+        spoiler.coin_requirements[coinreq.tied_map] = selected_requirement
+
+
+def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
+    """Shuffle elements of puzzles."""
+    patchRaceRequirements(spoiler, ROM_COPY)
+    sav = spoiler.settings.rom_data
+    if spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off:
         chosen_sounds = []
         for matching_head in range(8):
             ROM_COPY.seek(sav + 0x15C + (2 * matching_head))
@@ -547,7 +598,7 @@ def randomize_puzzles(spoiler, ROM_COPY: LocalROM):
         }
         spoiler.settings.random.shuffle(arcade_levels)
         # Make sure 75m isn't in the first 2 levels if faster arcade is enabled because 75m is hard
-        if IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.arcade):
+        if IsDDMSSelected(spoiler.settings.faster_checks_selected, FasterChecksSelected.arcade):
             for x in range(2):
                 if arcade_levels[x] == "75m":
                     temp_level = arcade_levels[2]

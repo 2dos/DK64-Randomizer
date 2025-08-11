@@ -247,7 +247,7 @@ pointer_tables = [
     ),
     TableInfo(
         index=TableNames.Unknown6,
-        dont_overwrite_uncompressed_sizes=True,
+        force_rewrite=True,
     ),
     TableInfo(
         name="Textures (Uncompressed)",
@@ -491,6 +491,14 @@ class ROMPointerFile:
         self.size = self.end - self.start
         rom.seek(self.start)
         self.compressed = int.from_bytes(rom.read(2), "big") == 0x1F8B
+
+    def grabFile(self, rom: BinaryIO) -> bytes:
+        """Grab file bytes from ROM."""
+        rom.seek(self.start)
+        data = rom.read(self.size)
+        if self.compressed:
+            data = zlib.decompress(data, (15 + 32))
+        return data
 
 
 BOOT_OVERLAY_RDRAM = 0x80000450

@@ -7,11 +7,12 @@
 #define ENABLE_SAVE_LOCK_REMOVAL 0 // Crashes on Wii U
 
 #define SONG_COUNT 176
-#define ENEMIES_TOTAL 427
+#define ENEMIES_TOTAL 428
 #define ENEMY_REWARD_CACHE_SIZE 16
 #include "../include2/ultra64.h"
 #include "common_enums.h"
 #include "common_structs.h"
+#include "item_rando.h"
 #include "crowd_control.h"
 #include "dynamic_structs.h"
 #include "item_data.h"
@@ -27,6 +28,7 @@
 #include "macros.h"
 #include "pause.h"
 #include "hint_regions.h"
+#include "previews.h"
 #include "../src/pause/pause.h"
 
 #endif

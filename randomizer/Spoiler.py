@@ -6,7 +6,6 @@ import json
 from copy import deepcopy
 from typing import TYPE_CHECKING, Dict, List, Optional, OrderedDict, Union
 
-import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -19,12 +18,13 @@ from randomizer.Enums.HintRegion import HintRegion
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
-    CBRando,
+    BLockerSetting,
     DKPortalRando,
     GlitchesSelected,
     LogicType,
     HardBossesSelected,
     MinigameBarrels,
+    PuzzleRando,
     ProgressiveHintItem,
     RandomPrices,
     ShockwaveStatus,
@@ -32,12 +32,13 @@ from randomizer.Enums.Settings import (
     ShufflePortLocations,
     SpoilerHints,
     TrainingBarrels,
+    TroffSetting,
     WinConditionComplex,
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.EnemyTypes import EnemyMetaData
-from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
+from randomizer.Lists.Item import ItemFromKong, ItemList, NameFromKong
 from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations, TrainingBarrelLocations
 from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Enums.Maps import Maps
@@ -50,7 +51,7 @@ from randomizer.Lists.Minigame import (
     MinigameSelector,
 )
 from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector
-from randomizer.Lists.EnemyTypes import EnemySelector
+from randomizer.Lists.EnemyTypes import EnemySelector, enemy_location_list
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
@@ -107,6 +108,8 @@ class Spoiler:
         self.RegionList = deepcopy(RegionsOriginal)
         self.CollectibleRegions = deepcopy(CollectibleRegionsOriginal)
         self.LocationList = deepcopy(LocationListOriginal)
+        self.enemy_location_list = deepcopy(enemy_location_list)
+        self.item_assignment = []
 
         self.move_data = []
         # 0: Cranky, 1: Funky, 2: Candy
@@ -142,6 +145,9 @@ class Spoiler:
 
         self.hint_list = {}
         self.short_hint_list = {}
+        self.tied_hint_locations = {}
+        self.show_tied_info_on_log = {}
+        self.tied_hint_items = {}
         self.tied_hint_flags = {}
         self.tied_hint_regions = [HintRegion.NoRegion] * 35
         self.settings.finalize_world_settings(self)
@@ -209,19 +215,25 @@ class Spoiler:
             Types.TrainingBarrel: "Moves",
             Types.Climbing: "Moves",
             Types.Banana: "Golden Bananas",
+            Types.FillerBanana: "Golden Bananas",
             Types.Blueprint: "Blueprints",
             Types.Fairy: "Fairies",
+            Types.FillerFairy: "Fairies",
             Types.Key: "Keys",
             Types.Crown: "Crowns",
+            Types.FillerCrown: "Crowns",
             Types.Medal: "Medals",
+            Types.FillerMedal: "Medals",
             Types.NintendoCoin: "Company Coins",
             Types.RarewareCoin: "Company Coins",
-            Types.Bean: "Miscellaneous Items",
-            Types.Pearl: "Miscellaneous Items",
+            Types.Bean: "The Bean",
+            Types.Pearl: "Pearls",
+            Types.FillerPearl: "Pearls",
             Types.RainbowCoin: "Rainbow Coins",
             Types.FakeItem: "Ice Traps",
             Types.JunkItem: "Junk Items",
             Types.CrateItem: "Melon Crates",
+            Types.BoulderItem: "Holdable Objects",
             Types.Enemies: "Enemy Drops",
             Types.Cranky: "Shop Owners",
             Types.Funky: "Shop Owners",
@@ -233,9 +245,9 @@ class Spoiler:
             return type_dict[item_type]
         return "Unknown"
 
-    def dumpMultiselector(self, toggle: bool, settings_list: list, selector_list: list):
+    def dumpMultiselector(self, settings_list: list, selector_list: list):
         """Dump multiselector list to a response which can be dumped to the spoiler."""
-        if toggle and any(settings_list):
+        if any(settings_list):
             lst = []
             selector_name_dict = {}
             for x in selector_list:
@@ -244,7 +256,7 @@ class Spoiler:
                 if x.name in selector_name_dict:
                     lst.append(selector_name_dict[x.name])
             return lst
-        return toggle
+        return []
 
     def createJson(self) -> None:
         """Convert spoiler to JSON and save it."""
@@ -257,6 +269,8 @@ class Spoiler:
         # settings["algorithm"] = self.settings.algorithm # Don't need this for now, probably
         logic_types = {
             LogicType.nologic: "No Logic",
+            LogicType.minimal: "Minimal Logic",
+            LogicType.advanced_glitchless: "Advanced Glitchless Logic",
             LogicType.glitch: "Glitched Logic",
             LogicType.glitchless: "Glitchless Logic",
         }
@@ -268,7 +282,7 @@ class Spoiler:
             settings["Glitches Enabled"] = ", ".join(
                 [x.name for x in GlitchLogicItems if GlitchesSelected[x.shorthand] in self.settings.glitches_selected or len(self.settings.glitches_selected) == 0]
             )
-        settings["Shuffle Enemies"] = self.settings.enemy_rando
+        settings["Shuffle Enemies"] = len(self.settings.enemies_selected) > 0
         settings["Move Randomization type"] = self.settings.move_rando.name
         settings["Loading Zones Shuffled"] = self.settings.shuffle_loading_zones.name
         settings["Decoupled Loading Zones"] = self.settings.decoupled_loading_zones
@@ -276,24 +290,23 @@ class Spoiler:
         startKongList = []
         for x in self.settings.starting_kong_list:
             startKongList.append(x.name.capitalize())
-        settings["Hard B Lockers"] = self.settings.hard_blockers
-        if self.settings.randomize_blocker_required_amounts:
+        # settings["B Locker Difficulty"] = self.settings.blocker_difficulty.name
+        if self.settings.blocker_selection_behavior not in (BLockerSetting.pre_selected, BLockerSetting.chaos):
             settings["Maximum B Locker"] = self.settings.blocker_text
             if self.settings.maximize_helm_blocker:
                 settings["Maximum B Locker ensured"] = self.settings.maximize_helm_blocker
-        settings["Hard Troff N Scoff"] = self.settings.hard_troff_n_scoff
-        if self.settings.randomize_cb_required_amounts:
+        settings["Hard Troff N Scoff"] = self.settings.tns_selection_behavior == TroffSetting.hard_random
+        if self.settings.tns_selection_behavior != TroffSetting.pre_selected:
             settings["Maximum Troff N Scoff"] = self.settings.troff_text
         settings["Open Lobbies"] = self.settings.open_lobbies
         settings["Auto Complete Bonus Barrels"] = self.settings.bonus_barrel_auto_complete
         settings["Auto Key Turn ins"] = self.settings.auto_keys
-        settings["Chaos B.Lockers"] = self.settings.chaos_blockers
-        settings["Chaos Ratio"] = self.settings.chaos_ratio
+        settings["Chaos B.Lockers"] = self.settings.blocker_selection_behavior == BLockerSetting.chaos
+        if self.settings.blocker_selection_behavior == BLockerSetting.chaos:
+            settings["Chaos Ratio"] = self.settings.blocker_text
         settings["Complex Level Order"] = self.settings.hard_level_progression
         settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
-        settings["Hard Shooting"] = self.settings.hard_shooting
-        settings["Dropsanity"] = self.settings.enemy_drop_rando
-        settings["Switchsanity"] = self.settings.switchsanity.name
+        settings["Switchsanity"] = self.settings.switchsanity_enabled
         settings["Free Trade Agreement"] = self.settings.free_trade_setting.name
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
@@ -327,8 +340,8 @@ class Spoiler:
         settings["Ice Traps Damage Player"] = self.settings.ice_traps_damage
         settings["Mirror Mode"] = self.settings.mirror_mode
         settings["Damage Amount"] = self.settings.damage_amount.name
-        settings["Hard Mode Enabled"] = self.settings.hard_mode and len(self.settings.hard_mode_selected) > 0
-        settings["Hard Bosses Enabled"] = self.settings.hard_bosses and len(self.settings.hard_bosses_selected) > 0
+        settings["Hard Mode Enabled"] = len(self.settings.hard_mode_selected) > 0
+        settings["Hard Bosses Enabled"] = len(self.settings.hard_bosses_selected) > 0
         # settings["Krusha Slot"] = self.settings.krusha_ui.name
         settings["DK Model"] = self.settings.kong_model_dk.name
         settings["Diddy Model"] = self.settings.kong_model_diddy.name
@@ -348,9 +361,9 @@ class Spoiler:
         settings["Helm Room Bonus Count"] = int(self.settings.helm_room_bonus_count)
         settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
         settings["Kongless Hint Doors"] = self.settings.wrinkly_available
-        settings["Quality of Life"] = self.dumpMultiselector(self.settings.quality_of_life, self.settings.misc_changes_selected, QoLSelector)
-        settings["Fast GBs"] = self.dumpMultiselector(self.settings.faster_checks_enabled, self.settings.faster_checks_selected, FasterCheckSelector)
-        settings["Barriers Removed"] = self.dumpMultiselector(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, RemovedBarrierSelector)
+        settings["Quality of Life"] = self.dumpMultiselector(self.settings.misc_changes_selected, QoLSelector)
+        settings["Fast GBs"] = self.dumpMultiselector(self.settings.faster_checks_selected, FasterCheckSelector)
+        settings["Barriers Removed"] = self.dumpMultiselector(self.settings.remove_barriers_selected, RemovedBarrierSelector)
         settings["Random Win Condition"] = self.settings.win_condition_random
         if not self.settings.win_condition_random:
             wc_count = self.settings.win_condition_count
@@ -369,6 +382,8 @@ class Spoiler:
                 WinConditionComplex.req_medal: f"{wc_count} Medal{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_pearl: f"{wc_count} Pearl{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_rainbowcoin: f"{wc_count} Rainbow Coin{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_bonuses: f"{wc_count} Bonus Barrel{'s' if wc_count != 1 else ''}",
+                WinConditionComplex.req_bosses: f"{wc_count} Boss{'es' if wc_count != 1 else ''}",
             }
             if self.settings.win_condition_item in win_con_name_table:
                 settings["Win Condition"] = win_con_name_table[self.settings.win_condition_item]
@@ -384,12 +399,12 @@ class Spoiler:
         settings["Dim Solved Hints"] = self.settings.dim_solved_hints
         settings["No Joke Hints"] = self.settings.serious_hints
         settings["Item Reward Previews"] = self.settings.item_reward_previews
-        settings["Bonus Barrel Rando"] = self.dumpMultiselector(self.settings.bonus_barrel_rando, self.settings.minigames_list_selected, MinigameSelector)
-        if self.settings.enemy_rando and any(self.settings.enemies_selected):
+        settings["Bonus Barrel Rando"] = self.dumpMultiselector(self.settings.minigames_list_selected, MinigameSelector)
+        if any(self.settings.enemies_selected):
             value_lst = [x.name for x in self.settings.enemies_selected]
             settings["Enemy Rando"] = [enemy["name"] for enemy in EnemySelector if enemy["value"] in value_lst]
         else:
-            settings["Enemy Rando"] = self.settings.enemy_rando
+            settings["Enemy Rando"] = []
         settings["Crown Enemy Rando"] = self.settings.crown_enemy_difficulty.name
         if self.settings.helm_hurry:
             settings["Game Mode"] = "Helm Hurry"
@@ -439,14 +454,28 @@ class Spoiler:
         for level_index, amount in enumerate(self.settings.BossBananas):
             cb_counts[level_list[level_index]] = amount
         humanspoiler["Requirements"]["Troff N Scoff Bananas"] = cb_counts
+        humanspoiler["Requirements"]["Kong Puzzles"] = {}
         humanspoiler["Requirements"]["Miscellaneous"] = {}
-        humanspoiler["Kongs"] = {}
-        humanspoiler["Kongs"]["Starting Kong List"] = startKongList
-        humanspoiler["Kongs"]["Japes Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
-        humanspoiler["Kongs"]["Tiny Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
-        humanspoiler["Kongs"]["Llama Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
-        humanspoiler["Kongs"]["Factory Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
+        humanspoiler["Requirements"]["Kong Puzzles"]["Japes Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.diddy_freeing_kong)].name
+        humanspoiler["Requirements"]["Kong Puzzles"]["Tiny Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.tiny_freeing_kong)].name
+        humanspoiler["Requirements"]["Kong Puzzles"]["Llama Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
+        humanspoiler["Requirements"]["Kong Puzzles"]["Factory Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
         humanspoiler["Requirements"]["Miscellaneous"]["Jetpac Medal Requirement"] = self.settings.medal_requirement
+        race_maps = {
+            Maps.JapesMinecarts: "Japes Minecart",
+            Maps.AztecTinyRace: "Aztec Beetle Race",
+            Maps.FactoryTinyRace: "Factory Car Race",
+            Maps.GalleonSealRace: "Galleon Seal Race",
+            Maps.ForestMinecarts: "Forest Minecart",
+            Maps.CavesLankyRace: "Caves Beetle Race",
+            Maps.CastleTinyRace: "Castle Car Race",
+            Maps.CastleMinecarts: "Castle Minecart",
+        }
+        if self.settings.race_coin_rando or self.settings.puzzle_rando_difficulty != PuzzleRando.off:
+            humanspoiler["Requirements"]["Races"] = {}
+            for map_id in race_maps:
+                if map_id in self.coin_requirements:
+                    humanspoiler["Requirements"]["Races"][race_maps[map_id]] = self.coin_requirements[map_id]
         humanspoiler["End Game"] = {
             "Helm": {},
             "K. Rool": {},
@@ -517,17 +546,29 @@ class Spoiler:
             "Crowns": {},
             "Company Coins": {},
             "Medals": {},
-            "Miscellaneous Items": {},
+            "Pearls": {},
+            "The Bean": {},
             "Rainbow Coins": {},
             "Ice Traps": {},
             "Junk Items": {},
             "Melon Crates": {},
+            "Holdable Objects": {},
             "Hints": {},
             "Enemy Drops": {},
             "Shop Owners": {},
+            "Photos": {},
             "Empty": {},
             "Unknown": {},
         }
+        starting_kong = startKongList[0]
+        additional_starting_kongs = []
+        if len(startKongList) > 1:
+            additional_starting_kongs = startKongList[1:]
+        humanspoiler[sorted_item_name]["Kongs"]["Starting Kong"] = starting_kong
+        humanspoiler["Items"]["DK Isles"]["Starting Kong"] = starting_kong
+        for index, kong in enumerate(additional_starting_kongs):
+            humanspoiler[sorted_item_name]["Kongs"][f"Additional Starting Kong {index + 1}"] = kong
+            humanspoiler["Items"]["DK Isles"][f"Additional Starting Kong {index + 1}"] = kong
 
         self.pregiven_items = []
         self.first_move_item = None
@@ -537,6 +578,8 @@ class Spoiler:
                 continue
             # No hints if hint doors are not in the pool
             if location.type == Types.Hint and Types.Hint not in self.settings.shuffled_location_types:
+                continue
+            if location.type == Types.EnemyPhoto:
                 continue
             if location.type == Types.ProgressiveHint:
                 continue
@@ -617,7 +660,13 @@ class Spoiler:
                 humanspoiler[sorted_item_name][self.getItemGroup(location.item)][location.name] = item.name
         if not self.settings.enemy_drop_rando:
             del humanspoiler[sorted_item_name]["Enemy Drops"]
-        if self.settings.enemy_rando:
+        keys_to_delete = []
+        for key in humanspoiler[sorted_item_name]:
+            if len(humanspoiler[sorted_item_name][key]) == 0:
+                keys_to_delete.append(key)
+        for key in keys_to_delete:
+            del humanspoiler[sorted_item_name][key]
+        if len(self.settings.enemies_selected) > 0:
             placement_dict = {}
             for map_id in self.enemy_rando_data:
                 map_name = Maps(map_id).name
@@ -637,7 +686,7 @@ class Spoiler:
             humanspoiler["Bosses"]["Shuffled Boss Order"] = shuffled_bosses
 
         humanspoiler["Bosses"]["King Kut Out Properties"] = {}
-        if self.settings.boss_kong_rando:
+        if self.settings.boss_location_rando:
             shuffled_boss_kongs = OrderedDict()
             for i in range(7):
                 shuffled_boss_kongs["".join(map(lambda x: x if x.islower() else " " + x, Levels(i).name)).strip()] = Kongs(self.settings.boss_kongs[i]).name.capitalize()
@@ -649,7 +698,9 @@ class Spoiler:
 
         if HardBossesEnabled(self.settings, HardBossesSelected.kut_out_phase_rando):
             phase_names = []
-            for phase in self.settings.kko_phase_order:
+            for index, phase in enumerate(self.settings.kko_phase_order):
+                if index > 2:
+                    continue
                 phase_names.append(f"Phase {phase+1}")
             humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Phases"] = ", ".join(phase_names)
 
@@ -704,7 +755,7 @@ class Spoiler:
             humanspoiler["DK Portal Locations"] = self.human_entry_doors
         if self.settings.crown_placement_rando:
             humanspoiler["Battle Arena Locations"] = self.human_crowns
-        if self.settings.switchsanity:
+        if self.settings.switchsanity_enabled:
             ss_data = {}
             ss_name_data = {
                 Kongs.donkey: {
@@ -713,6 +764,7 @@ class Spoiler:
                     SwitchType.InstrumentPad: "Bongos Pad",
                     SwitchType.PadMove: "Baboon Blast Pad",
                     SwitchType.MiscActivator: "Gorilla Grab Lever",
+                    SwitchType.GunInstrumentCombo: "Coconut Switch and Bongos Pad",
                 },
                 Kongs.diddy: {
                     SwitchType.SlamSwitch: "Diddy Slam Switch",
@@ -720,24 +772,30 @@ class Spoiler:
                     SwitchType.InstrumentPad: "Guitar Pad",
                     SwitchType.PadMove: "Simian Spring Pad",
                     SwitchType.MiscActivator: "Gong",
+                    SwitchType.PushableButton: "Charge Button",
+                    SwitchType.GunInstrumentCombo: "Peanut Switch and Guitar Pad",
                 },
                 Kongs.lanky: {
                     SwitchType.SlamSwitch: "Lanky Slam Switch",
                     SwitchType.GunSwitch: "Grape Switch",
                     SwitchType.InstrumentPad: "Trombone Pad",
                     SwitchType.PadMove: "Baboon Balloon Pad",
+                    SwitchType.GunInstrumentCombo: "Grape Switch and Trombone Pad",
                 },
                 Kongs.tiny: {
                     SwitchType.SlamSwitch: "Tiny Slam Switch",
                     SwitchType.GunSwitch: "Feather Switch",
                     SwitchType.InstrumentPad: "Saxophone Pad",
                     SwitchType.PadMove: "Monkeyport Pad",
+                    SwitchType.GunInstrumentCombo: "Feather Switch and Saxophone Pad",
                 },
                 Kongs.chunky: {
                     SwitchType.SlamSwitch: "Chunky Slam Switch",
                     SwitchType.GunSwitch: "Pineapple Switch",
                     SwitchType.InstrumentPad: "Triangle Pad",
                     SwitchType.PadMove: "Gorilla Gone Pad",
+                    SwitchType.PushableButton: "Punch Button",
+                    SwitchType.GunInstrumentCombo: "Pineapple Switch and Triangle Pad",
                 },
             }
             for slot in self.settings.switchsanity_data.values():
@@ -811,24 +869,46 @@ class Spoiler:
                     if combo in map_name:
                         map_name = map_name.replace(combo, combo.replace(" ", ""))
                 humanspoiler["Colored Banana Locations"][f"{lvl_name} {NameFromKong(group['kong'])}"][human_cb_type_map[group["type"]].strip()].append(f"{map_name.strip()}: {group['name']}")
-        if self.settings.coin_rando:
-            humanspoiler["Coin Locations"] = {}
-            coin_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Isles"]
-            coin_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
-            for lvl in coin_levels:
-                for kng in coin_kongs:
-                    humanspoiler["Coin Locations"][f"{lvl} {kng}"] = []
-            for group in self.coin_placements:
-                lvl_name = level_dict[group["level"]]
-                idx = 1
-                if group["level"] == Levels.FungiForest:
-                    idx = 0
-                map_name = "".join(map(lambda x: x if x.islower() else " " + x, Maps(group["map"]).name)).strip()
-                join_combos = ["2 D Ship", "5 D Ship", "5 D Temple"]
-                for combo in join_combos:
-                    if combo in map_name:
-                        map_name = map_name.replace(combo, combo.replace(" ", ""))
-                humanspoiler["Coin Locations"][f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"].append(f"{map_name.strip()}: {group['name']}")
+        coin_settings = [
+            {
+                "setting": self.settings.coin_rando,
+                "spoiler_name": "Coin Locations",
+                "placements": self.coin_placements,
+                "include_kong": True,
+            },
+            {
+                "setting": self.settings.race_coin_rando,
+                "spoiler_name": "Race Coin Locations",
+                "placements": self.race_coin_placements,
+                "include_kong": False,
+            },
+        ]
+        for data in coin_settings:
+            setting_name = data["spoiler_name"]
+            if data["setting"]:
+                humanspoiler[setting_name] = {}
+                coin_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Isles"]
+                coin_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
+                for lvl in coin_levels:
+                    if data["include_kong"]:
+                        for kng in coin_kongs:
+                            humanspoiler[setting_name][f"{lvl} {kng}"] = []
+                    else:
+                        humanspoiler[setting_name][lvl] = []
+                for group in data["placements"]:
+                    lvl_name = level_dict[group["level"]]
+                    idx = 1
+                    if group["level"] == Levels.FungiForest:
+                        idx = 0
+                    map_name = "".join(map(lambda x: x if x.islower() else " " + x, Maps(group["map"]).name)).strip()
+                    join_combos = ["2 D Ship", "5 D Ship", "5 D Temple"]
+                    for combo in join_combos:
+                        if combo in map_name:
+                            map_name = map_name.replace(combo, combo.replace(" ", ""))
+                    sub_name = lvl_name.split(" ")[idx]
+                    if data["include_kong"]:
+                        sub_name = f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"
+                    humanspoiler[setting_name][sub_name].append(f"{map_name.strip()}: {group['name']}")
 
         # Playthrough data
         humanspoiler["Playthrough"] = self.playthrough
@@ -849,7 +929,7 @@ class Spoiler:
             if self.LocationList[loc].item == Items.ProgressiveSlam:
                 slamCount += 1
                 extra = " " + str(slamCount)
-            if self.LocationList[loc].item == Items.Pearl:
+            if self.LocationList[loc].item in (Items.Pearl, Items.FillerPearl):
                 pearlCount += 1
                 extra = " " + str(pearlCount)
             humanspoiler["WotH Paths"][destination_item.name + extra] = path_dict
@@ -881,7 +961,7 @@ class Spoiler:
             if self.LocationList[loc].item == Items.ProgressiveSlam:
                 slamCount += 1
                 extra = " " + str(slamCount)
-            if self.LocationList[loc].item == Items.Pearl:
+            if self.LocationList[loc].item in (Items.Pearl, Items.FillerPearl):
                 pearlCount += 1
                 extra = " " + str(pearlCount)
             humanspoiler["Other Paths"][destination_item.name + extra] = path_dict
@@ -1002,6 +1082,10 @@ class Spoiler:
                 filtered_hint = filtered_hint.replace("\x0c", "")
                 filtered_hint = filtered_hint.replace("\x0d", "")
                 human_hint_list[name] = filtered_hint
+                if name in self.tied_hint_locations:
+                    if self.tied_hint_locations[name] is not None:
+                        if self.show_tied_info_on_log[name]:
+                            human_hint_list[name] += f" | (Hinting towards: {self.tied_hint_items[name]} at {self.tied_hint_locations[name]})"
             humanspoiler["Wrinkly Hints"] = human_hint_list
             # humanspoiler["Unhinted Score"] = self.unhinted_score
             # humanspoiler["Potentially Awful Locations"] = {}
@@ -1070,16 +1154,6 @@ class Spoiler:
     def UpdateLocations(self, locations: Dict[Locations, Location]) -> None:
         """Update location list for what was produced by the fill."""
         self.location_data = {}
-        self.shuffled_kong_placement = {}
-        # Go ahead and set starting kong
-        startkong = {"kong": self.settings.starting_kong, "write": 0x151}
-        trainingGrounds = {"locked": startkong}
-        self.shuffled_kong_placement["TrainingGrounds"] = trainingGrounds
-        # Write additional starting kongs to empty cages, if any
-        emptyCages = [x for x in [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong] if x not in self.settings.kong_locations]
-        for emptyCage in emptyCages:
-            self.WriteKongPlacement(emptyCage, Items.NoItem)
-
         # Loop through locations and set necessary data
         for id, location in locations.items():
             # (There must be an item here) AND (It must not be a constant item expected to be here) AND (It must be in a location not handled by the full item rando shuffler)
@@ -1136,8 +1210,6 @@ class Spoiler:
                                 "move_kong": move_kong,
                                 "price": price,
                             }
-                elif location.type == Types.Kong:
-                    self.WriteKongPlacement(id, location.item)
                 elif location.type == Types.TrainingBarrel and self.settings.training_barrels != TrainingBarrels.normal:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
@@ -1189,34 +1261,6 @@ class Spoiler:
             # else:
             #     self.location_data[id] = Items.NoItem
 
-    def WriteKongPlacement(self, locationId: Locations, item: Items) -> None:
-        """Write kong placement information for the given kong cage location."""
-        locationName = "Jungle Japes"
-        unlockKong = self.settings.diddy_freeing_kong
-        lockedwrite = 0x152
-        puzzlewrite = 0x153
-        if locationId == Locations.LankyKong:
-            locationName = "Llama Temple"
-            unlockKong = self.settings.lanky_freeing_kong
-            lockedwrite = 0x154
-            puzzlewrite = 0x155
-        elif locationId == Locations.TinyKong:
-            locationName = "Tiny Temple"
-            unlockKong = self.settings.tiny_freeing_kong
-            lockedwrite = 0x156
-            puzzlewrite = 0x157
-        elif locationId == Locations.ChunkyKong:
-            locationName = "Frantic Factory"
-            unlockKong = self.settings.chunky_freeing_kong
-            lockedwrite = 0x158
-            puzzlewrite = 0x159
-        lockedkong = {}
-        lockedkong["kong"] = KongFromItem(item)
-        lockedkong["write"] = lockedwrite
-        puzzlekong = {"kong": unlockKong, "write": puzzlewrite}
-        kongLocation = {"locked": lockedkong, "puzzle": puzzlekong}
-        self.shuffled_kong_placement[locationName] = kongLocation
-
     def UpdatePlaythrough(self, locations: Dict[Locations, Location], playthroughLocations: List[Sphere]) -> None:
         """Write playthrough as a list of dicts of location/item pairs."""
         self.playthrough = {}
@@ -1248,20 +1292,20 @@ class Spoiler:
         if ItemList[location.item].type == Types.Banana:
             return 100
         win_con_type_table = {
-            WinConditionComplex.req_bean: Types.Bean,
-            WinConditionComplex.req_bp: Types.Blueprint,
-            WinConditionComplex.req_companycoins: Types.NintendoCoin,  # Also Types.RarewareCoin
-            WinConditionComplex.req_crown: Types.Crown,
-            WinConditionComplex.req_fairy: Types.Fairy,
-            WinConditionComplex.req_gb: Types.Banana,  # Also Types.ToughBanana
-            # WinConditionComplex.req_key: Types.Key,
-            WinConditionComplex.req_medal: Types.Medal,
-            WinConditionComplex.req_pearl: Types.Pearl,
-            WinConditionComplex.req_rainbowcoin: Types.RainbowCoin,
+            WinConditionComplex.req_bean: [Types.Bean],
+            WinConditionComplex.req_bp: [Types.Blueprint],
+            WinConditionComplex.req_companycoins: [Types.NintendoCoin],  # Also Types.RarewareCoin
+            WinConditionComplex.req_crown: [Types.Crown, Types.FillerCrown],
+            WinConditionComplex.req_fairy: [Types.Fairy, Types.FillerFairy],
+            WinConditionComplex.req_gb: [Types.Banana, Types.FillerBanana],
+            # WinConditionComplex.req_key: [Types.Key],
+            WinConditionComplex.req_medal: [Types.Medal, Types.FillerMedal],
+            WinConditionComplex.req_pearl: [Types.Pearl, Types.FillerPearl],
+            WinConditionComplex.req_rainbowcoin: [Types.RainbowCoin],
         }
         # Win condition items are more important than GBs but less than moves
         if self.settings.win_condition_item in win_con_type_table:
-            if ItemList[location.item].type == win_con_type_table[self.settings.win_condition_item]:
+            if ItemList[location.item].type in win_con_type_table[self.settings.win_condition_item]:
                 return 10
             if self.settings.win_condition_item == WinConditionComplex.req_companycoins:
                 if ItemList[location.item].type == Types.RarewareCoin:

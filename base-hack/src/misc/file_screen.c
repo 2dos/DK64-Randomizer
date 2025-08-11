@@ -175,56 +175,56 @@ int isMovePregiven(int index) {
 		case TRACKER_TYPE_TRIANGLE:
 			return initFile_hasInstrument((index - 1) / 5);
 		case TRACKER_TYPE_GRAB:
-			return Rando.moves_pregiven.grab || initFile_checkTraining(PURCHASE_MOVES, 0, 3);
+			return Rando.moves_pregiven.grab || initFile_checkTraining(REQITEM_MOVE, 2, 0);
 		case TRACKER_TYPE_BLAST:
-			return Rando.moves_pregiven.blast || initFile_checkTraining(PURCHASE_MOVES, 0, 1);
+			return Rando.moves_pregiven.blast || initFile_checkTraining(REQITEM_MOVE, 0, 0);
 		case TRACKER_TYPE_STRONG:
-			return Rando.moves_pregiven.strong_kong || initFile_checkTraining(PURCHASE_MOVES, 0, 2);
+			return Rando.moves_pregiven.strong_kong || initFile_checkTraining(REQITEM_MOVE, 1, 0);
 		case TRACKER_TYPE_CHARGE:
-			return Rando.moves_pregiven.charge || initFile_checkTraining(PURCHASE_MOVES, 1, 1);
+			return Rando.moves_pregiven.charge || initFile_checkTraining(REQITEM_MOVE, 0, 1);
 		case TRACKER_TYPE_SPRING:
-			return Rando.moves_pregiven.spring || initFile_checkTraining(PURCHASE_MOVES, 1, 3);
+			return Rando.moves_pregiven.spring || initFile_checkTraining(REQITEM_MOVE, 2, 1);
 		case TRACKER_TYPE_ROCKET:
-			return Rando.moves_pregiven.rocketbarrel || initFile_checkTraining(PURCHASE_MOVES, 1, 2);
+			return Rando.moves_pregiven.rocketbarrel || initFile_checkTraining(REQITEM_MOVE, 1, 1);
 		case TRACKER_TYPE_OSTAND:
-			return Rando.moves_pregiven.ostand || initFile_checkTraining(PURCHASE_MOVES, 2, 1);
+			return Rando.moves_pregiven.ostand || initFile_checkTraining(REQITEM_MOVE, 0, 2);
 		case TRACKER_TYPE_BALLOON:
-			return Rando.moves_pregiven.balloon || initFile_checkTraining(PURCHASE_MOVES, 2, 2);
+			return Rando.moves_pregiven.balloon || initFile_checkTraining(REQITEM_MOVE, 1, 2);
 		case TRACKER_TYPE_OSPRINT:
-			return Rando.moves_pregiven.osprint || initFile_checkTraining(PURCHASE_MOVES, 2, 3);
+			return Rando.moves_pregiven.osprint || initFile_checkTraining(REQITEM_MOVE, 2, 2);
 		case TRACKER_TYPE_PTT:
-			return Rando.moves_pregiven.twirl || initFile_checkTraining(PURCHASE_MOVES, 3, 2);
+			return Rando.moves_pregiven.twirl || initFile_checkTraining(REQITEM_MOVE, 1, 3);
 		case TRACKER_TYPE_MONKEYPORT:
-			return Rando.moves_pregiven.monkeyport || initFile_checkTraining(PURCHASE_MOVES, 3, 3);
+			return Rando.moves_pregiven.monkeyport || initFile_checkTraining(REQITEM_MOVE, 2, 3);
 		case TRACKER_TYPE_MINI:
-			return Rando.moves_pregiven.mini || initFile_checkTraining(PURCHASE_MOVES, 3, 1);
+			return Rando.moves_pregiven.mini || initFile_checkTraining(REQITEM_MOVE, 0, 3);
 		case TRACKER_TYPE_PUNCH:
-			return Rando.moves_pregiven.punch || initFile_checkTraining(PURCHASE_MOVES, 4, 2);
+			return Rando.moves_pregiven.punch || initFile_checkTraining(REQITEM_MOVE, 1, 4);
 		case TRACKER_TYPE_GONE:
-			return Rando.moves_pregiven.gone || initFile_checkTraining(PURCHASE_MOVES, 4, 3);
+			return Rando.moves_pregiven.gone || initFile_checkTraining(REQITEM_MOVE, 2, 4);
 		case TRACKER_TYPE_HUNKY:
-			return Rando.moves_pregiven.hunky || initFile_checkTraining(PURCHASE_MOVES, 4, 1);
+			return Rando.moves_pregiven.hunky || initFile_checkTraining(REQITEM_MOVE, 0, 4);
 		case TRACKER_TYPE_CAMERA:
-			return Rando.moves_pregiven.camera || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CAMERA) || initFile_checkTraining(PURCHASE_FLAG, -1, -2);
+			return Rando.moves_pregiven.camera || initFile_checkTraining(REQITEM_MOVE, 10, 4);
 		case TRACKER_TYPE_SHOCKWAVE:
-			return Rando.moves_pregiven.shockwave || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_SHOCKWAVE) || initFile_checkTraining(PURCHASE_FLAG, -1, -2);
+			return Rando.moves_pregiven.shockwave || initFile_checkTraining(REQITEM_MOVE, 10, 5);
 		case TRACKER_TYPE_SLAM:
 		case TRACKER_TYPE_SLAM_HAS:
 			return initFile_getSlamLevel(1);
 		case TRACKER_TYPE_HOMING:
-			return Rando.moves_pregiven.homing || initFile_checkTraining(PURCHASE_GUN, -1, 2);
+			return Rando.moves_pregiven.homing || initFile_checkTraining(REQITEM_MOVE, 5, -1);
 		case TRACKER_TYPE_SNIPER:
-			return Rando.moves_pregiven.sniper || initFile_checkTraining(PURCHASE_GUN, -1, 3);
+			return Rando.moves_pregiven.sniper || initFile_checkTraining(REQITEM_MOVE, 6, -1);
 		case TRACKER_TYPE_CLIMB:
-			return Rando.moves_pregiven.climbing || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CLIMBING);
+			return Rando.moves_pregiven.climbing || initFile_checkTraining(REQITEM_MOVE, 11, -1);
 		case TRACKER_TYPE_DIVE:
-			return Rando.moves_pregiven.dive || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_DIVE);
+			return Rando.moves_pregiven.dive || initFile_checkTraining(REQITEM_MOVE, 10, 0);
 		case TRACKER_TYPE_ORANGE:
-			return Rando.moves_pregiven.oranges || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_ORANGE);
+			return Rando.moves_pregiven.oranges || initFile_checkTraining(REQITEM_MOVE, 10, 1);
 		case TRACKER_TYPE_BARREL:
-			return Rando.moves_pregiven.barrels || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_BARREL);
+			return Rando.moves_pregiven.barrels || initFile_checkTraining(REQITEM_MOVE, 10, 2);
 		case TRACKER_TYPE_VINE:
-			return Rando.moves_pregiven.vines || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_VINE);
+			return Rando.moves_pregiven.vines || initFile_checkTraining(REQITEM_MOVE, 10, 3);
 		case TRACKER_TYPE_MELON_2:
 			if (initFile_getInsUpgradeLevel(1) >= 1) {
 				return 1;
@@ -345,9 +345,9 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_HUNKY:
 			return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_HUNKY;
 		case TRACKER_TYPE_CAMERA:
-			return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
+			return hasFlagMove(FLAG_ABILITY_CAMERA);
 		case TRACKER_TYPE_SHOCKWAVE:
-			return checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT);
+			return hasFlagMove(FLAG_ABILITY_SHOCKWAVE);
 		case TRACKER_TYPE_SLAM:
 		case TRACKER_TYPE_SLAM_HAS:
 			return MovesBase[KONG_DK].simian_slam;
@@ -356,15 +356,15 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_SNIPER:
 			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_SNIPER;
 		case TRACKER_TYPE_CLIMB:
-			return checkFlagDuplicate(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
+			return checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_DIVE:
-			return checkFlagDuplicate(FLAG_TBARREL_DIVE, FLAGTYPE_PERMANENT);
+			return hasFlagMove(FLAG_TBARREL_DIVE);
 		case TRACKER_TYPE_ORANGE:
-			return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
+			return hasFlagMove(FLAG_TBARREL_ORANGE);
 		case TRACKER_TYPE_BARREL:
-			return checkFlagDuplicate(FLAG_TBARREL_BARREL, FLAGTYPE_PERMANENT);
+			return hasFlagMove(FLAG_TBARREL_BARREL);
 		case TRACKER_TYPE_VINE:
-			return checkFlagDuplicate(FLAG_TBARREL_VINE, FLAGTYPE_PERMANENT);
+			return hasFlagMove(FLAG_TBARREL_VINE);
 		case TRACKER_TYPE_MELON_2:
 			for (int i = 0; i < 5; i++) {
 				if (MovesBase[i].instrument_bitfield != 0) {
@@ -402,7 +402,7 @@ int getEnabledState(int index) {
 			{
 				// Keys in
 				int key_index = index - TRACKER_TYPE_KEY1;
-				int key_there = has_key(key_index);
+				int key_there = getItemCount_new(REQITEM_KEY, key_index, 0);
 				if (!key_there) {
 					if (Rando.keys_preturned & (1 << key_index)) {
 						key_there = 1;
@@ -414,7 +414,7 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_FUNKY:
 		case TRACKER_TYPE_CANDY:
 		case TRACKER_TYPE_SNIDE:
-			return checkFlagDuplicate(FLAG_ITEM_CRANKY + (index - TRACKER_TYPE_CRANKY), FLAGTYPE_PERMANENT);
+			return checkFlag(FLAG_ITEM_CRANKY + (index - TRACKER_TYPE_CRANKY), FLAGTYPE_PERMANENT);
 		default:
 			break;
 	}
@@ -433,20 +433,20 @@ void updateEnabledStates(void) {
 			int subtype = -1;
 			if (i < 4) {
 				// Training Moves
-				if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
-					subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
+				if (TrainingMoves_New[i].item.item_type == REQITEM_MOVE) {
+					subtype = TrainingMoves_New[i].item.level;
 				}
 			} else if (i == 4) {
 				// First Move
-				if (FirstMove_New.purchase_type == PURCHASE_FLAG) {
-					subtype = getMoveProgressiveFlagType(FirstMove_New.purchase_value);
+				if (FirstMove_New.item.item_type == REQITEM_MOVE) {
+					subtype = FirstMove_New.item.level;
 				}
 			}
-			if (subtype == 0) {
+			if (subtype == 3) {
 				slam_screen_level += 1;
-			} else if (subtype == 1) {
+			} else if (subtype == 7) {
 				belt_screen_level += 1;
-			} else if (subtype == 2) {
+			} else if (subtype == 9) {
 				ins_screen_level += 1;
 			}
 			
@@ -670,24 +670,24 @@ void correctKongFaces(void) {
 	 */
 	if (Rando.unlock_kongs) {
 		for (int i = 0; i < 5; i++) {
-			int flag = checkFlag(kong_flags[i], FLAGTYPE_PERMANENT);
+			int flag = getItemCount_new(REQITEM_KONG, 0, i);
 			KongUnlockedMenuArray[i] = flag;
 			if (!flag) {
 				KongUnlockedMenuArray[i] = (Rando.unlock_kongs & (1 << i)) != 0;
 			}
 		}
-		if (!checkFlag(FLAG_KONG_DK, FLAGTYPE_PERMANENT)) {
+		if (!getItemCount_new(REQITEM_KONG, 0, KONG_DK)) {
 			if ((Rando.unlock_kongs & 1) == 0) {
 				KongUnlockedMenuArray[0] = 0;
 			}
 		}
 	} else {
 		for (int i = 0; i < 5; i++) {
-			KongUnlockedMenuArray[i] = checkFlag(kong_flags[i], FLAGTYPE_PERMANENT);
+			KongUnlockedMenuArray[i] = getItemCount_new(REQITEM_KONG, 0, i);
 		}
 		KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
 		if (Rando.starting_kong != 0) {
-			if (!checkFlag(FLAG_KONG_DK, FLAGTYPE_PERMANENT)) {
+			if (!getItemCount_new(REQITEM_KONG, 0, KONG_DK)) {
 				KongUnlockedMenuArray[0] = 0;
 			}
 		}
@@ -719,12 +719,8 @@ void giveCollectables(void) {
 	/**
 	 * @brief Give collectables based on file progress
 	 */
-	int max = 10; //giving instrument power even if no instrument is unlocked
-	for (int i = 1; i < 4; i++) {
-		if (MovesBase[0].instrument_bitfield & (1 << i)) {
-			max += 5;
-		}
-	}
+	int ins_level = getInstrumentLevel();
+	int max = 15 + ((ins_level - 1) * 5); //giving instrument power even if no instrument is unlocked
 	int energy = max/2;
 	if (Rando.quality_of_life.global_instrument) {
 		CollectableBase.InstrumentEnergy = energy;
@@ -738,21 +734,6 @@ void giveCollectables(void) {
 	CollectableBase.Oranges = 10;
 	CollectableBase.Crystals = 1500;
 	CollectableBase.Film = 5;
-}
-
-void wipeFileStats(void) {
-	for (int i = 0; i < 9; i++) {
-		ResetExtraData(EGD_LEVELIGT, i);
-	}
-	for (int i = 0; i < STAT_TERMINATOR; i++) {
-		// Reset Statistics
-		ResetExtraData(EGD_BONUSSTAT, i);
-	}
-	for (int i = 0; i < 5; i++) {
-		ResetExtraData(EGD_KONGIGT, i);
-	}
-	ResetExtraData(EGD_HELMHURRYIGT, 0);
-	setFlag(FLAG_HELM_HURRY_DISABLED, 0, FLAGTYPE_PERMANENT);
 }
 
 void setAllDefaultFlags(void) {
@@ -774,18 +755,26 @@ void startFile(void) {
 	if (file_empty) {
 		// New File
 		setAllDefaultFlags();
+		for (int i = 0; i < 5; i++) {
+			if (Rando.unlock_kongs & (1 << i)) {
+				giveItem(REQITEM_KONG, 0, i, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 0});
+			}
+		}
 		unlockMoves();
-		applyFastStart();
-		openCrownDoor();
 		giveCollectables();
 		if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {
 			setPermFlag(FLAG_MODIFIER_LLAMAFREE); // No item check
 		}
 		pre_turn_keys();
 		Character = Rando.starting_kong;
-		wipeFileStats();
+		setFlag(FLAG_HELM_HURRY_DISABLED, 0, FLAGTYPE_PERMANENT);
 		if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
 			setPermFlag(FLAG_ARCADE_LEVER);
+		}
+		for (int i = 0; i < 7; i++) {
+			if (checkFlag(normal_key_flags[i], FLAGTYPE_PERMANENT)) {
+				setPermFlag(tnsportal_flags[i]);
+			}
 		}
 		SaveToGlobal();
 		for (int i = 0; i < 4; i++) {
@@ -988,23 +977,23 @@ int updateLevelIGT(void) {
 	 */
 	saveAPCounter();
 	saveHelmHurryTime();
+	saveItemsToFile();
 	int new_igt = getNewSaveTime();
 	if (canSaveHelmHurry()) {
 		int sum = 0;
 		for (int i = 0; i < 9; i++) {
-			int value = ReadExtraData(EGD_LEVELIGT, i);
+			int value = ReadFile(DATA_IGT_JAPES + i, 0, 0, FileIndex);
 			sum += value; 
 		}
 		int diff = new_igt - sum;
 		int world = getWorld(previous_map_save, 1);
 		if (world < 9) {
-			int old = ReadExtraData(EGD_LEVELIGT, world);
-			SaveExtraData(EGD_LEVELIGT, world, old + diff);
+			int old = ReadFile(DATA_IGT_JAPES + world, 0, 0, FileIndex);
+			SaveToFile(DATA_IGT_JAPES + world, 0, 0, FileIndex, old + diff);
 		}
 	}
 	previous_map_save = CurrentMap;
 	updatePercentageKongStat();
-	SaveToGlobal();
 	return new_igt;
 }
 

@@ -1,4 +1,5 @@
 <!--Populate tabs-->
+<script src="./static/js/sortable.min.js"></script>
 <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active"
          id="nav-started"
@@ -7,10 +8,16 @@
         {% include 'getting_started.html' %}
     </div>
     <div class="tab-pane fade"
-         id="nav-random"
+         id="nav-item"
          role="tabpanel"
-         aria-labelledby="nav-random-tab">
-        {% include 'rando_options.html' %}
+         aria-labelledby="nav-item-tab">
+        {% include 'items.html' %}
+    </div>
+    <div class="tab-pane fade"
+         id="nav-requirements"
+         role="tabpanel"
+         aria-labelledby="nav-requirements-tab">
+        {% include 'requirements.html' %}
     </div>
     <div class="tab-pane fade"
          id="nav-overworld"

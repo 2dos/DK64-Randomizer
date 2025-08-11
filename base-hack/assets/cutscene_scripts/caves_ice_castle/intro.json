@@ -1,0 +1,103 @@
+{
+    "index": 0,
+    "ignore": true,
+    "point_data": [
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                76,
+                255
+            ],
+            "detailed_command": {
+                "sub_command": 24,
+                "params": [
+                    1,
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.IceTomato",
+                    0
+                ]
+            },
+            "duration": 30
+        },
+        {
+            "unk0": 0,
+            "command": 10,
+            "read": [
+                1,
+                18,
+                1,
+                18,
+                0,
+                105,
+                0,
+                105,
+                0,
+                19,
+                0,
+                19,
+                45,
+                45
+            ],
+            "head": [
+                51,
+                61
+            ],
+            "duration": 50
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                18,
+                255
+            ],
+            "detailed_command": {
+                "sub_command": 29,
+                "params": [
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 50
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 14,
+                "params": [
+                    1,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                18,
+                255
+            ],
+            "detailed_command": {
+                "sub_command": 29,
+                "params": [
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 10
+        }
+    ]
+}

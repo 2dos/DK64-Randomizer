@@ -120,7 +120,7 @@ static const hud_element_definition elements[] = {
     {
         // Race Coin
         .x = 0x122, .y=0x26, .unk0 = 16.5f, .unk1=-19.0f,
-        .cheat=0, .counter=(short*)0x80750AC4, .run_allocation=1,
+        .cheat=0, .counter=&RaceCoinCount, .run_allocation=1,
         .sprite_index={73, 73, 73, 73, 73},
     },
     {
@@ -410,6 +410,8 @@ void* getHUDSprite_Complex(item_ids item) {
         return &bean_sprite;
     } else if (item == ITEMID_CHAOSBLOCKER_PEARL) {
         return &pearl_sprite;
+    } else if (item == ITEMID_CHAOSBLOCKER_MOVE) {
+        return &potion_sprite;
     } else if (item == ITEMID_CHAOSBLOCKER_COMPANYCOIN) {
         return &company_coin_sprite;
     } else if ((item == ITEMID_STANDARDAMMO) || (item == ITEMID_HOMINGAMMO)) {

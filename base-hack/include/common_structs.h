@@ -725,10 +725,23 @@ typedef struct main_menu_moves_struct {
 	/* 0x007 */ char melons;
 } main_menu_moves_struct;
 
+typedef struct item_packet {
+	/* 0x000 */ unsigned char item_type;
+	/* 0x001 */ unsigned char level;
+	/* 0x002 */ unsigned char kong;
+	/* 0x003 */ unsigned char audiovisual_index;
+} item_packet;
+
+typedef struct giveItemConfig {
+	unsigned char display_item_text : 1;
+	unsigned char apply_helm_hurry : 1;
+	unsigned char give_coins : 1;
+	unsigned char apply_ice_trap : 1;
+} giveItemConfig;
+
 typedef struct purchase_struct {
-	/* 0x000 */ short purchase_type; // 0 = Moves, 1 = Simian Slam, 2 = Weapon Bitfield, 3 = Ammo Belt, 4 = Instrument Bitfield, -1 = No offer
-	/* 0x002 */ short purchase_value;
-	/* 0x004 */ unsigned char move_kong; // Kong that the move is normally assigned to. Eg Strong Kong = DK (0), Monkeyport = Tiny (3)
+	/* 0x000 */ item_packet item;
+	/* 0x004 */ char pad;
 	/* 0x005 */ unsigned char price;
 } purchase_struct;
 
@@ -829,6 +842,13 @@ typedef struct charspawner_flagstruct {
 	/* 0x006 */ char unk_06[2];
 } charspawner_flagstruct;
 
+typedef struct model_item_data {
+	/* 0x000 */ short model;
+	/* 0x002 */ char has_no_textures;
+	/* 0x003 */ char pad;
+	/* 0x004 */ item_packet item;
+} model_item_data;
+
 typedef struct GBDictItem {
 	/* 0x000 */ unsigned char map;
 	/* 0x001 */ char unk_01;
@@ -844,13 +864,13 @@ typedef struct shop_paad {
 	/* 0x004 */ unsigned char kong;
 	/* 0x005 */ unsigned char price;
 	/* 0x006 */ char unk_06[0xB-0x6];
-	/* 0x00B */ char purchase_type;
+	/* 0x00B */ char item_type;
 	/* 0x00C */ char level;
 	/* 0x00D */ unsigned char state;
 	/* 0x00E */ unsigned char unk_0E;
 	/* 0x00F */ char unk_0F;
 	/* 0x010 */ unsigned char melons;
-	/* 0x011 */ unsigned char purchase_value;
+	/* 0x011 */ unsigned char item_level;
 } shop_paad;
 
 typedef struct model2_collision_info {
@@ -1098,6 +1118,11 @@ typedef struct map_bitfield {
 	unsigned char k_lumsy_ending : 1;
 	unsigned char k_rools_shoe : 1;
 	unsigned char k_rools_arena : 1;
+	unsigned char arcade_25m : 1;
+	unsigned char arcade_50m : 1;
+	unsigned char arcade_75m : 1;
+	unsigned char arcade_100m : 1;
+	unsigned char jetpac_rocket : 1;
 } map_bitfield;
 
 typedef struct movement_bitfield {
@@ -1338,7 +1363,7 @@ typedef struct actor_behaviour_def {
 typedef struct move_text_overlay_struct {
 	/* 0x000 */ unsigned char type;
 	/* 0x001 */ unsigned char kong;
-	/* 0x002 */ short flag;
+	/* 0x002 */ short level;
 	/* 0x004 */ char* string;
 	/* 0x008 */ unsigned char used;
 	/* 0x009 */ char pad_9[3]; // Used to align with a 4-byte region
@@ -2359,3 +2384,25 @@ typedef struct FogData {
 	/* 0x006 */ short entry_range;
 	/* 0x008 */ short cap_range;
 } FogData;
+
+typedef struct ItemIdentifierStruct {
+	/* 0x000 */ short input_flag;
+	/* 0x002 */ unsigned char level;
+	/* 0x003 */ unsigned char kong;
+} ItemIdentifierStruct;
+
+typedef struct BoulderItemStruct {
+	/* 0x000 */ short item;
+	/* 0x002 */ short map;
+	/* 0x004 */ short spawner_id;
+	/* 0x006 */ short pad;
+} BoulderItemStruct;
+
+typedef struct purchase_text_hint_struct {
+	/* 0x000 */ unsigned char enough_coins;
+	/* 0x001 */ unsigned char not_enough_coins;
+} purchase_text_hint_struct;
+
+typedef struct FastTextStruct {
+	char *lines[3];
+} FastTextStruct;

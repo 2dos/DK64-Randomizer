@@ -14,7 +14,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting, FungiTimeSetting, FasterChecksSelected, ShuffleLoadingZones
+from randomizer.Enums.Settings import HelmSetting, FungiTimeSetting, FasterChecksSelected, ShuffleLoadingZones, WinConditionComplex
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists import Location as DK64RLocation, Item as DK64RItem
@@ -60,7 +60,11 @@ class DK64Location(Location):
 
 
 # Complete location table
-all_locations = {DK64RLocation.LocationListOriginal[location].name: (BASE_ID + index) for index, location in enumerate(DK64RLocation.LocationListOriginal)}
+all_locations = {
+    DK64RLocation.LocationListOriginal[location].name: (BASE_ID + index)
+    for index, location in enumerate(DK64RLocation.LocationListOriginal)
+    if DK64RLocation.LocationListOriginal[location].type != Types.EnemyPhoto
+}
 all_locations.update({"Victory": 0x00})  # Temp for generating goal location
 lookup_id_to_name: typing.Dict[int, str] = {id: name for name, id in all_locations.items()}
 
@@ -173,6 +177,9 @@ def create_region(
             # Because there's no shared shops, this may mean shared potions can end up in Kong shops. This is fine.
             if location_obj.type == Types.Shop and location_obj.kong == Kongs.any:
                 continue
+            # Skip enemy photos if the win condition is not Krem Kapture.
+            if location_obj.type == Types.EnemyPhoto and logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
+                continue
             loc_id = all_locations.get(location_obj.name, 0)
             # Universal Tracker: don't add this location if it has no item
             if hasattr(multiworld, "generation_is_fake"):
@@ -211,6 +218,9 @@ def create_region(
             # Bosses and Crowns cannot have Junk due to technical reasons
             if location_obj.type in (Types.Key, Types.Crown):
                 add_item_rule(location, lambda item: not (item.player == player and "Junk" in item.name))
+            # Shops cannot have shopkeepers for the time being due to funny haha display bug
+            if location_obj.type == Types.Shop:
+                add_item_rule(location, lambda item: not (item.player == player and item.name in ["Cranky", "Funky", "Candy", "Snide"]))
             new_region.locations.append(location)
             # print("Adding location: " + location.name + " | " + str(loc_id))
 

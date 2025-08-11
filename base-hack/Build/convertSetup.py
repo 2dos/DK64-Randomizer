@@ -185,13 +185,10 @@ def getObjectModifications(target_map: Maps) -> list:
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x68, scale=0.15),  # Stump GB
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x13E, scale=0.2),  # Nintendo Coin
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Cranky, 0x2, scale=0.2),  # Rareware Coin
-        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x24, x=1455.853, y=6.5, z=522.716, ry=0),  # Free Chunky Switch
+        # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x24, x=1455.853, y=6.5, z=522.716, ry=0),  # Free Chunky Switch
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Caves, 0x57, x=176.505, z=1089.408),  # Caves 5DI W3
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Caves, 0xCF, x=176.505, z=1089.408),  # Caves 5DI W3 Bunch
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0xC9, y=400),  # Japes chunky bunch on top of Cranky
-        ObjectChange(
-            ObjectTypes.modeltwo, ObjectChangeType.add, Maps.Isles, 0x6, new_id=0x100, obj_type=132, x=2457.471, y=1280, z=3458.604, rx=0, ry=166, rz=0, scale=1.18
-        ),  # Factory Lobby Barricade
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x2C, y=715),  # Factory Diddy Prod GB
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x7, y=475),  # Factory Last Prod Elevator
         # ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Factory, 0x1CD, y=178.5), # Factory Spring Coins
@@ -213,6 +210,9 @@ def getObjectModifications(target_map: Maps) -> list:
         ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.TrainingGrounds, 4, new_bonus_id=95),  # Dive Barrel
         ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.TrainingGrounds, 3, new_bonus_id=97),  # Orange Barrel
         ObjectChange(ObjectTypes.actor, ObjectChangeType.edit, Maps.TrainingGrounds, 5, new_bonus_id=98),  # Barrel Barrel
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x91, x=2326.88),  # Japes Film 1
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x92, x=2319.835),  # Japes Film 2
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x93, x=2330.393),  # Japes Film 3
     ]
 
     for switch_index in range(16):

@@ -68,6 +68,10 @@ typedef enum archipelago_items {
     /* 0x03F */ TRANSFER_ITEM_CLIMBING,
     /* 0x040 */ TRANSFER_ITEM_FAKEITEM_SLOW,
     /* 0x041 */ TRANSFER_ITEM_FAKEITEM_REVERSE,
+    /* 0x042 */ TRANSFER_ITEM_FAKEITEM_DISABLEA,
+    /* 0x043 */ TRANSFER_ITEM_FAKEITEM_DISABLEB,
+    /* 0x044 */ TRANSFER_ITEM_FAKEITEM_DISABLEZ,
+    /* 0x045 */ TRANSFER_ITEM_FAKEITEM_DISABLECU,
 } archipelago_items;
 
 typedef struct archipelago_data {
@@ -85,14 +89,16 @@ typedef struct archipelago_data {
     /* 0x05F */ unsigned char text_timer;
     /* 0x060 */ char tag_kong; // Byte to set the current kong to this. Check can_tag before setting this if you want safety
     /* 0x061 */ unsigned char can_tag;
+    /* 0x062 */ unsigned char is_trapped;
+    /* 0x063 */ unsigned char sent_trap;
 } archipelago_data;
 
 extern archipelago_data *APData;
 extern void handleArchipelagoFeed(void);
-extern int isFlagAPItem(int flag);
 extern void initAP(void);
 extern void initAPCounter(void);
 extern void saveAPCounter(void);
 extern int isAPEnabled(void);
 extern void sendDeath(void);
+extern void sendTrapLink(ICE_TRAP_TYPES trap_type);
 extern Gfx *displayAPConnection(Gfx *dl);

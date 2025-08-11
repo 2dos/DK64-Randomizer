@@ -2,7 +2,7 @@
 
 typedef struct coinHUDStruct {
 	/* 0x000 */ maps map_id;
-	/* 0x004 */ unsigned char *addr;
+	/* 0x004 */ unsigned short *addr;
 } coinHUDStruct;
 
 static coinHUDStruct CoinHUDElements[] = {

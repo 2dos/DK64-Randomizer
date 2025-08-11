@@ -5,11 +5,11 @@
 Thanks,
 		Ballaam
 */
-extern const short acceptable_items[39];
-extern const item_conversion_info item_conversions[43];
-extern const unsigned short bounce_objects[33];
-extern const unsigned short actor_drops[44];
-extern const item_scale_info item_scales[44];
+extern const short acceptable_items[57];
+extern const item_conversion_info item_conversions[61];
+extern const unsigned short bounce_objects[51];
+extern const unsigned short actor_drops[62];
+extern const item_scale_info item_scales[62];
 typedef enum new_custom_actors {
 	/* 0x000 */ NEWACTOR_NINTENDOCOIN, 
 	/* 0x001 */ NEWACTOR_RAREWARECOIN, 
@@ -48,6 +48,20 @@ typedef enum new_custom_actors {
 	/* 0x022 */ NEWACTOR_HINTITEMTINY, 
 	/* 0x023 */ NEWACTOR_HINTITEMCHUNKY, 
 	/* 0x024 */ NEWACTOR_ARCHIPELAGOITEM, 
+	/* 0x025 */ NEWACTOR_ICETRAPDISABLEAGB, 
+	/* 0x026 */ NEWACTOR_ICETRAPDISABLEBGB, 
+	/* 0x027 */ NEWACTOR_ICETRAPDISABLEZGB, 
+	/* 0x028 */ NEWACTOR_ICETRAPDISABLECUGB, 
+	/* 0x029 */ NEWACTOR_ICETRAPDISABLEABEAN, 
+	/* 0x02A */ NEWACTOR_ICETRAPDISABLEBBEAN, 
+	/* 0x02B */ NEWACTOR_ICETRAPDISABLEZBEAN, 
+	/* 0x02C */ NEWACTOR_ICETRAPDISABLECUBEAN, 
+	/* 0x02D */ NEWACTOR_ICETRAPDISABLEAKEY, 
+	/* 0x02E */ NEWACTOR_ICETRAPDISABLEBKEY, 
+	/* 0x02F */ NEWACTOR_ICETRAPDISABLEZKEY, 
+	/* 0x030 */ NEWACTOR_ICETRAPDISABLECUKEY, 
 	/* ----- */ NEWACTOR_TERMINATOR, 
 } new_custom_actors;
-#define DROP_COUNT 35
+#define DROP_COUNT 36
+extern GBDictItem new_flag_mapping[120];
+#define FILE_INFO_SIZE 0x8e4

@@ -1,0 +1,3319 @@
+{
+    "presets": [
+        {
+            "name": "Easy",
+            "description": "The generated settings will be of lesser difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will often be lower than their defaults. Many of the more difficult settings will never be set."
+        },
+        {
+            "name": "Standard",
+            "description": "The generated settings will be of average difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will be roughly around their defaults. Some of the most difficult settings will never be set."
+        },
+        {
+            "name": "Difficult",
+            "description": "The generated settings will be of greater difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will often be higher than their defaults. All settings have a chance to be set."
+        },
+        {
+            "name": "Difficult with QoL Shuffle",
+            "description": "The generated settings will be of greater difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will often be higher than their defaults. Quality of life options may be disabled. All settings have a chance to be set."
+        }
+    ],
+    "settings": {
+        "activate_all_bananaports": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "off": 20.0,
+                    "all": 60.0,
+                    "isles": 20.0
+                },
+                "standard": {
+                    "off": 40.0,
+                    "all": 40.0,
+                    "isles": 20.0
+                },
+                "difficult": {
+                    "off": 60.0,
+                    "all": 20.0,
+                    "isles": 20.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "off": 60.0,
+                    "all": 20.0,
+                    "isles": 20.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "alter_switch_allocation": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 50,
+                "difficult": 80
+            },
+            "qol_uses_hard": true
+        },
+        "auto_keys": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 100,
+                "difficult_with_qol_shuffle": 50
+            },
+            "qol_uses_hard": false
+        },
+        "bananaport_rando": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "off": 100
+                },
+                "standard": {
+                    "off": 100
+                },
+                "difficult": {
+                    "off": 80.0,
+                    "crossmap_coupled": 10.0,
+                    "crossmap_decoupled": 10.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "off": 80.0,
+                    "crossmap_coupled": 10.0,
+                    "crossmap_decoupled": 10.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "blocker_text": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 30,
+                    "max": 70,
+                    "mean": 50
+                },
+                "standard": {
+                    "min": 40,
+                    "max": 100,
+                    "mean": 60
+                },
+                "difficult": {
+                    "min": 50,
+                    "max": 140,
+                    "mean": 80
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "bonus_barrel_auto_complete": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 50,
+                "standard": 30,
+                "difficult": 10
+            },
+            "qol_uses_hard": true
+        },
+        "boss_location_rando": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 80,
+                "standard": 80,
+                "difficult": 80
+            },
+            "qol_uses_hard": true
+        },
+        "coin_door_item": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "vanilla": 20.0,
+                    "opened": 60.0,
+                    "easy_random": 20.0
+                },
+                "standard": {
+                    "vanilla": 20.0,
+                    "opened": 20.0,
+                    "medium_random": 40.0,
+                    "easy_random": 20.0
+                },
+                "difficult": {
+                    "vanilla": 30.0,
+                    "hard_random": 30.0,
+                    "medium_random": 20.0,
+                    "easy_random": 20.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "vanilla": 30.0,
+                    "hard_random": 30.0,
+                    "medium_random": 20.0,
+                    "easy_random": 20.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "coin_door_item_count": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 1,
+                    "max": 6,
+                    "mean": 4
+                },
+                "standard": {
+                    "min": 1,
+                    "max": 10,
+                    "mean": 4
+                },
+                "difficult": {
+                    "min": 1,
+                    "max": 10,
+                    "mean": 7
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "crown_door_item": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "vanilla": 20.0,
+                    "opened": 60.0,
+                    "easy_random": 20.0
+                },
+                "standard": {
+                    "vanilla": 20.0,
+                    "opened": 20.0,
+                    "medium_random": 40.0,
+                    "easy_random": 20.0
+                },
+                "difficult": {
+                    "vanilla": 30.0,
+                    "hard_random": 30.0,
+                    "medium_random": 20.0,
+                    "easy_random": 20.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "vanilla": 30.0,
+                    "hard_random": 30.0,
+                    "medium_random": 20.0,
+                    "easy_random": 20.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "crown_door_item_count": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 1,
+                    "max": 2,
+                    "mean": 1
+                },
+                "standard": {
+                    "min": 1,
+                    "max": 2,
+                    "mean": 1
+                },
+                "difficult": {
+                    "min": 1,
+                    "max": 2,
+                    "mean": 2
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "crown_placement_rando": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 30,
+                "difficult": 70
+            },
+            "qol_uses_hard": true
+        },
+        "damage_amount": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "default": 50.0,
+                    "double": 50.0
+                },
+                "standard": {
+                    "default": 50.0,
+                    "double": 35.0,
+                    "quad": 15.0
+                },
+                "difficult": {
+                    "default": 40.0,
+                    "double": 30.0,
+                    "quad": 20.0,
+                    "ohko": 10.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "default": 40.0,
+                    "double": 30.0,
+                    "quad": 20.0,
+                    "ohko": 10.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "disable_tag_barrels": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 50,
+                "standard": 50,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        },
+        "enable_shop_hints": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 90,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        },
+        "enable_tag_anywhere": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 100,
+                "difficult_with_qol_shuffle": 90
+            },
+            "qol_uses_hard": false
+        },
+        "enemies_selected": {
+            "setting_type": "choice_multiple",
+            "options": {
+                "easy": {
+                    "BeaverBlue": 90,
+                    "ZingerCharger": 90,
+                    "Klobber": 90,
+                    "Klump": 90,
+                    "Kaboom": 90,
+                    "KlaptrapGreen": 90,
+                    "ZingerLime": 90,
+                    "KlaptrapPurple": 90,
+                    "KlaptrapRed": 90,
+                    "BeaverGold": 90,
+                    "MushroomMan": 90,
+                    "Ruler": 90,
+                    "RoboKremling": 90,
+                    "Kremling": 90,
+                    "KasplatDK": 90,
+                    "KasplatDiddy": 90,
+                    "KasplatLanky": 90,
+                    "KasplatTiny": 90,
+                    "KasplatChunky": 90,
+                    "ZingerRobo": 90,
+                    "Krossbones": 90,
+                    "Shuri": 90,
+                    "Gimpfish": 90,
+                    "MrDice0": 90,
+                    "SirDomino": 90,
+                    "MrDice1": 90,
+                    "FireballGlasses": 90,
+                    "SpiderSmall": 90,
+                    "Bat": 90,
+                    "Ghost": 90,
+                    "Pufftup": 90,
+                    "Kosha": 90,
+                    "GetOut": 90,
+                    "Guard": 90,
+                    "Bug": 90
+                },
+                "standard": {
+                    "BeaverBlue": 90,
+                    "ZingerCharger": 90,
+                    "Klobber": 90,
+                    "Klump": 90,
+                    "Kaboom": 90,
+                    "KlaptrapGreen": 90,
+                    "ZingerLime": 90,
+                    "KlaptrapPurple": 90,
+                    "KlaptrapRed": 90,
+                    "BeaverGold": 90,
+                    "MushroomMan": 90,
+                    "Ruler": 90,
+                    "RoboKremling": 90,
+                    "Kremling": 90,
+                    "KasplatDK": 90,
+                    "KasplatDiddy": 90,
+                    "KasplatLanky": 90,
+                    "KasplatTiny": 90,
+                    "KasplatChunky": 90,
+                    "ZingerRobo": 90,
+                    "Krossbones": 90,
+                    "Shuri": 90,
+                    "Gimpfish": 90,
+                    "MrDice0": 90,
+                    "SirDomino": 90,
+                    "MrDice1": 90,
+                    "FireballGlasses": 90,
+                    "SpiderSmall": 90,
+                    "Bat": 90,
+                    "Ghost": 90,
+                    "Pufftup": 90,
+                    "Kosha": 90,
+                    "GetOut": 90,
+                    "Guard": 90,
+                    "Bug": 90
+                },
+                "difficult": {
+                    "BeaverBlue": 90,
+                    "ZingerCharger": 90,
+                    "Klobber": 90,
+                    "Klump": 90,
+                    "Kaboom": 90,
+                    "KlaptrapGreen": 90,
+                    "ZingerLime": 90,
+                    "KlaptrapPurple": 90,
+                    "KlaptrapRed": 90,
+                    "BeaverGold": 90,
+                    "MushroomMan": 90,
+                    "Ruler": 90,
+                    "RoboKremling": 90,
+                    "Kremling": 90,
+                    "KasplatDK": 90,
+                    "KasplatDiddy": 90,
+                    "KasplatLanky": 90,
+                    "KasplatTiny": 90,
+                    "KasplatChunky": 90,
+                    "ZingerRobo": 90,
+                    "Krossbones": 90,
+                    "Shuri": 90,
+                    "Gimpfish": 90,
+                    "MrDice0": 90,
+                    "SirDomino": 90,
+                    "MrDice1": 90,
+                    "FireballGlasses": 90,
+                    "SpiderSmall": 90,
+                    "Bat": 90,
+                    "Ghost": 90,
+                    "Pufftup": 90,
+                    "Kosha": 90,
+                    "GetOut": 90,
+                    "Guard": 90,
+                    "Bug": 90
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "enemy_speed_rando": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 50,
+                "standard": 50,
+                "difficult": 70
+            },
+            "qol_uses_hard": true
+        },
+        "fast_start_beginning_of_game_dummy": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 100
+            },
+            "qol_uses_hard": true
+        },
+        "fast_warps": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 100,
+                "difficult_with_qol_shuffle": 80
+            },
+            "qol_uses_hard": false
+        },
+        "fps_display": {
+            "ignore": true
+        },
+        "free_trade_setting": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "not_blueprints": 30.0,
+                    "major_collectibles": 70.0
+                },
+                "standard": {
+                    "none": 10.0,
+                    "not_blueprints": 30.0,
+                    "major_collectibles": 60.0
+                },
+                "difficult": {
+                    "none": 20.0,
+                    "not_blueprints": 30.0,
+                    "major_collectibles": 50.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "none": 20.0,
+                    "not_blueprints": 30.0,
+                    "major_collectibles": 50.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "generate_spoilerlog": {
+            "ignore": true
+        },
+        "glitches_selected": {
+            "ignore": true
+        },
+        "helm_hurry": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 0,
+                "difficult": 5
+            },
+            "qol_uses_hard": true
+        },
+        "helm_phase_count": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 1,
+                    "max": 3,
+                    "mean": 2
+                },
+                "standard": {
+                    "min": 1,
+                    "max": 4,
+                    "mean": 3
+                },
+                "difficult": {
+                    "min": 1,
+                    "max": 5,
+                    "mean": 3
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helm_phase_order_rando": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 80,
+                "standard": 80,
+                "difficult": 80
+            },
+            "qol_uses_hard": true
+        },
+        "helm_random": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 100
+            },
+            "qol_uses_hard": true
+        },
+        "helm_setting": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "skip_start": 70.0,
+                    "skip_all": 30.0
+                },
+                "standard": {
+                    "default": 20.0,
+                    "skip_start": 60.0,
+                    "skip_all": 20.0
+                },
+                "difficult": {
+                    "default": 30.0,
+                    "skip_start": 70.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "default": 30.0,
+                    "skip_start": 70.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_banana_medal": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 30,
+                    "max": 120,
+                    "mean": 60
+                },
+                "standard": {
+                    "min": 30,
+                    "max": 120,
+                    "mean": 60
+                },
+                "difficult": {
+                    "min": 30,
+                    "max": 120,
+                    "mean": 60
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_battle_crown": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 30,
+                    "max": 150,
+                    "mean": 90
+                },
+                "standard": {
+                    "min": 30,
+                    "max": 150,
+                    "mean": 90
+                },
+                "difficult": {
+                    "min": 30,
+                    "max": 150,
+                    "mean": 90
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_bean": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 30,
+                    "max": 180,
+                    "mean": 120
+                },
+                "standard": {
+                    "min": 30,
+                    "max": 180,
+                    "mean": 120
+                },
+                "difficult": {
+                    "min": 30,
+                    "max": 180,
+                    "mean": 120
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_blueprint": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 30,
+                    "max": 120,
+                    "mean": 45
+                },
+                "standard": {
+                    "min": 30,
+                    "max": 120,
+                    "mean": 45
+                },
+                "difficult": {
+                    "min": 30,
+                    "max": 120,
+                    "mean": 45
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_boss_key": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 90,
+                    "max": 300,
+                    "mean": 150
+                },
+                "standard": {
+                    "min": 90,
+                    "max": 300,
+                    "mean": 150
+                },
+                "difficult": {
+                    "min": 90,
+                    "max": 300,
+                    "mean": 150
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_colored_bananas": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 1,
+                    "max": 5,
+                    "mean": 3
+                },
+                "standard": {
+                    "min": 1,
+                    "max": 5,
+                    "mean": 3
+                },
+                "difficult": {
+                    "min": 1,
+                    "max": 5,
+                    "mean": 3
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_company_coins": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 120,
+                    "max": 600,
+                    "mean": 300
+                },
+                "standard": {
+                    "min": 120,
+                    "max": 600,
+                    "mean": 300
+                },
+                "difficult": {
+                    "min": 120,
+                    "max": 600,
+                    "mean": 300
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_fairies": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 30,
+                    "max": 120,
+                    "mean": 50
+                },
+                "standard": {
+                    "min": 30,
+                    "max": 120,
+                    "mean": 50
+                },
+                "difficult": {
+                    "min": 30,
+                    "max": 120,
+                    "mean": 50
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_golden_banana": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 10,
+                    "max": 60,
+                    "mean": 20
+                },
+                "standard": {
+                    "min": 10,
+                    "max": 60,
+                    "mean": 20
+                },
+                "difficult": {
+                    "min": 10,
+                    "max": 60,
+                    "mean": 20
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_ice_traps": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": -60,
+                    "max": -15,
+                    "mean": -40
+                },
+                "standard": {
+                    "min": -60,
+                    "max": -15,
+                    "mean": -40
+                },
+                "difficult": {
+                    "min": -60,
+                    "max": -15,
+                    "mean": -40
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_kongs": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 120,
+                    "max": 600,
+                    "mean": 240
+                },
+                "standard": {
+                    "min": 120,
+                    "max": 600,
+                    "mean": 240
+                },
+                "difficult": {
+                    "min": 120,
+                    "max": 600,
+                    "mean": 240
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_move": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 15,
+                    "max": 90,
+                    "mean": 30
+                },
+                "standard": {
+                    "min": 15,
+                    "max": 90,
+                    "mean": 30
+                },
+                "difficult": {
+                    "min": 15,
+                    "max": 90,
+                    "mean": 30
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_pearl": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 30,
+                    "max": 120,
+                    "mean": 50
+                },
+                "standard": {
+                    "min": 30,
+                    "max": 120,
+                    "mean": 50
+                },
+                "difficult": {
+                    "min": 30,
+                    "max": 120,
+                    "mean": 50
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_rainbow_coin": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 5,
+                    "max": 30,
+                    "mean": 15
+                },
+                "standard": {
+                    "min": 5,
+                    "max": 30,
+                    "mean": 15
+                },
+                "difficult": {
+                    "min": 5,
+                    "max": 30,
+                    "mean": 15
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helmhurry_list_starting_time": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 900,
+                    "max": 1800,
+                    "mean": 1200
+                },
+                "standard": {
+                    "min": 900,
+                    "max": 1800,
+                    "mean": 1200
+                },
+                "difficult": {
+                    "min": 900,
+                    "max": 1800,
+                    "mean": 1200
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "item_reward_previews": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 100,
+                "difficult_with_qol_shuffle": 75
+            },
+            "qol_uses_hard": false
+        },
+        "kasplat_rando_setting": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "off": 30.0,
+                    "vanilla_locations": 70.0
+                },
+                "standard": {
+                    "off": 15.0,
+                    "vanilla_locations": 55.00000000000001,
+                    "location_shuffle": 30.0
+                },
+                "difficult": {
+                    "off": 15.0,
+                    "vanilla_locations": 55.00000000000001,
+                    "location_shuffle": 30.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "off": 15.0,
+                    "vanilla_locations": 55.00000000000001,
+                    "location_shuffle": 30.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "key_8_helm": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 50,
+                "standard": 50,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        },
+        "keys_random": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 100
+            },
+            "qol_uses_hard": true
+        },
+        "krool_access": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 70,
+                "standard": 70,
+                "difficult": 70
+            },
+            "qol_uses_hard": true
+        },
+        "krool_key_count": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 1,
+                    "max": 5,
+                    "mean": 3
+                },
+                "standard": {
+                    "min": 3,
+                    "max": 7,
+                    "mean": 5
+                },
+                "difficult": {
+                    "min": 4,
+                    "max": 8,
+                    "mean": 6
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "krool_phase_count": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 1,
+                    "max": 3,
+                    "mean": 2
+                },
+                "standard": {
+                    "min": 1,
+                    "max": 4,
+                    "mean": 3
+                },
+                "difficult": {
+                    "min": 1,
+                    "max": 5,
+                    "mean": 3
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "krool_phase_order_rando": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 80,
+                "standard": 80,
+                "difficult": 80
+            },
+            "qol_uses_hard": true
+        },
+        "krool_random": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 100
+            },
+            "qol_uses_hard": true
+        },
+        "level_randomization": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "vanilla": 50.0,
+                    "level_order": 50.0
+                },
+                "standard": {
+                    "vanilla": 20.0,
+                    "level_order": 65.0,
+                    "loadingzone": 15.0
+                },
+                "difficult": {
+                    "vanilla": 20.0,
+                    "level_order": 40.0,
+                    "loadingzone": 30.0,
+                    "loadingzonesdecoupled": 10.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "vanilla": 20.0,
+                    "level_order": 40.0,
+                    "loadingzone": 30.0,
+                    "loadingzonesdecoupled": 10.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "logic_type": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "glitchless": 100
+                },
+                "standard": {
+                    "glitchless": 100
+                },
+                "difficult": {
+                    "glitchless": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "maximize_helm_blocker": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 15,
+                "standard": 15,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        },
+        "medal_cb_req": {
+            "ignore": true
+        },
+        "medal_requirement": {
+            "ignore": true
+        },
+        "microhints_enabled": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "base": 25.0,
+                    "all": 75.0
+                },
+                "standard": {
+                    "off": 30.0,
+                    "base": 35.0,
+                    "all": 35.0
+                },
+                "difficult": {
+                    "off": 30.0,
+                    "base": 35.0,
+                    "all": 35.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "off": 30.0,
+                    "base": 35.0,
+                    "all": 35.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "minigames_list_selected": {
+            "setting_type": "choice_multiple",
+            "options": {
+                "easy": {
+                    "batty_barrel_bandit": 90,
+                    "big_bug_bash": 90,
+                    "busy_barrel_barrage": 90,
+                    "mad_maze_maul": 90,
+                    "minecart_mayhem": 90,
+                    "beaver_bother": 90,
+                    "teetering_turtle_trouble": 90,
+                    "stealthy_snoop": 90,
+                    "stash_snatch": 90,
+                    "splish_splash_salvage": 90,
+                    "speedy_swing_sortie": 90,
+                    "krazy_kong_klamour": 90,
+                    "searchlight_seek": 90,
+                    "kremling_kosh": 90,
+                    "peril_path_panic": 90,
+                    "helm_minigames": 90,
+                    "arenas": 90,
+                    "training_minigames": 90,
+                    "arcade": 90
+                },
+                "standard": {
+                    "batty_barrel_bandit": 90,
+                    "big_bug_bash": 90,
+                    "busy_barrel_barrage": 90,
+                    "mad_maze_maul": 90,
+                    "minecart_mayhem": 90,
+                    "beaver_bother": 90,
+                    "teetering_turtle_trouble": 90,
+                    "stealthy_snoop": 90,
+                    "stash_snatch": 90,
+                    "splish_splash_salvage": 90,
+                    "speedy_swing_sortie": 90,
+                    "krazy_kong_klamour": 90,
+                    "searchlight_seek": 90,
+                    "kremling_kosh": 90,
+                    "peril_path_panic": 90,
+                    "helm_minigames": 90,
+                    "arenas": 90,
+                    "training_minigames": 90,
+                    "arcade": 90
+                },
+                "difficult": {
+                    "batty_barrel_bandit": 90,
+                    "big_bug_bash": 90,
+                    "busy_barrel_barrage": 90,
+                    "mad_maze_maul": 90,
+                    "minecart_mayhem": 90,
+                    "beaver_bother": 90,
+                    "teetering_turtle_trouble": 90,
+                    "stealthy_snoop": 90,
+                    "stash_snatch": 90,
+                    "splish_splash_salvage": 90,
+                    "speedy_swing_sortie": 90,
+                    "krazy_kong_klamour": 90,
+                    "searchlight_seek": 90,
+                    "kremling_kosh": 90,
+                    "peril_path_panic": 90,
+                    "helm_minigames": 90,
+                    "arenas": 90,
+                    "training_minigames": 90,
+                    "arcade": 90
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "misc_changes_selected": {
+            "setting_type": "choice_multiple",
+            "options": {
+                "easy": {
+                    "auto_dance_skip": 100,
+                    "fast_boot": 100,
+                    "calm_caves": 100,
+                    "animal_buddies_grab_items": 100,
+                    "reduced_lag": 100,
+                    "remove_extraneous_cutscenes": 100,
+                    "hint_textbox_hold": 100,
+                    "remove_wrinkly_puzzles": 100,
+                    "fast_picture_taking": 100,
+                    "hud_hotkey": 100,
+                    "ammo_swap": 100,
+                    "homing_balloons": 100,
+                    "fast_transform_animation": 100,
+                    "troff_n_scoff_audio_indicator": 100,
+                    "lowered_aztec_lobby_bonus": 100,
+                    "quicker_galleon_star": 100,
+                    "vanilla_bug_fixes": 100,
+                    "save_k_rool_progress": 100,
+                    "small_bananas_always_visible": 100,
+                    "fast_hints": 100,
+                    "brighten_mad_maze_maul_enemies": 100,
+                    "raise_fungi_dirt_patch": 100,
+                    "global_instrument": 100,
+                    "fast_pause_transitions": 100,
+                    "cannon_game_better_control": 100,
+                    "better_fairy_camera": 100,
+                    "remove_enemy_cabin_timer": 100,
+                    "remove_galleon_ship_timers": 100,
+                    "japes_bridge_permanently_extended": 100,
+                    "move_spring_cabin_rocketbarrel": 100
+                },
+                "standard": {
+                    "auto_dance_skip": 100,
+                    "fast_boot": 100,
+                    "calm_caves": 100,
+                    "animal_buddies_grab_items": 100,
+                    "reduced_lag": 100,
+                    "remove_extraneous_cutscenes": 100,
+                    "hint_textbox_hold": 100,
+                    "remove_wrinkly_puzzles": 100,
+                    "fast_picture_taking": 100,
+                    "hud_hotkey": 100,
+                    "ammo_swap": 100,
+                    "homing_balloons": 100,
+                    "fast_transform_animation": 100,
+                    "troff_n_scoff_audio_indicator": 100,
+                    "lowered_aztec_lobby_bonus": 100,
+                    "quicker_galleon_star": 100,
+                    "vanilla_bug_fixes": 100,
+                    "save_k_rool_progress": 100,
+                    "small_bananas_always_visible": 100,
+                    "fast_hints": 100,
+                    "brighten_mad_maze_maul_enemies": 100,
+                    "raise_fungi_dirt_patch": 100,
+                    "global_instrument": 100,
+                    "fast_pause_transitions": 100,
+                    "cannon_game_better_control": 100,
+                    "better_fairy_camera": 100,
+                    "remove_enemy_cabin_timer": 100,
+                    "remove_galleon_ship_timers": 100,
+                    "japes_bridge_permanently_extended": 100,
+                    "move_spring_cabin_rocketbarrel": 100
+                },
+                "difficult": {
+                    "auto_dance_skip": 100,
+                    "fast_boot": 100,
+                    "calm_caves": 100,
+                    "animal_buddies_grab_items": 100,
+                    "reduced_lag": 100,
+                    "remove_extraneous_cutscenes": 100,
+                    "hint_textbox_hold": 100,
+                    "remove_wrinkly_puzzles": 100,
+                    "fast_picture_taking": 100,
+                    "hud_hotkey": 100,
+                    "ammo_swap": 100,
+                    "homing_balloons": 100,
+                    "fast_transform_animation": 100,
+                    "troff_n_scoff_audio_indicator": 100,
+                    "lowered_aztec_lobby_bonus": 100,
+                    "quicker_galleon_star": 100,
+                    "vanilla_bug_fixes": 100,
+                    "save_k_rool_progress": 100,
+                    "small_bananas_always_visible": 100,
+                    "fast_hints": 100,
+                    "brighten_mad_maze_maul_enemies": 100,
+                    "raise_fungi_dirt_patch": 100,
+                    "global_instrument": 100,
+                    "fast_pause_transitions": 100,
+                    "cannon_game_better_control": 100,
+                    "better_fairy_camera": 100,
+                    "remove_enemy_cabin_timer": 100,
+                    "remove_galleon_ship_timers": 100,
+                    "japes_bridge_permanently_extended": 100,
+                    "move_spring_cabin_rocketbarrel": 100
+                },
+                "difficult_with_qol_shuffle": {
+                    "auto_dance_skip": 80.0,
+                    "fast_boot": 75.0,
+                    "calm_caves": 50.0,
+                    "animal_buddies_grab_items": 80.0,
+                    "reduced_lag": 100,
+                    "remove_extraneous_cutscenes": 90.0,
+                    "hint_textbox_hold": 90.0,
+                    "remove_wrinkly_puzzles": 50.0,
+                    "fast_picture_taking": 90.0,
+                    "hud_hotkey": 100,
+                    "ammo_swap": 100,
+                    "homing_balloons": 50.0,
+                    "fast_transform_animation": 80.0,
+                    "troff_n_scoff_audio_indicator": 50.0,
+                    "lowered_aztec_lobby_bonus": 50.0,
+                    "quicker_galleon_star": 80.0,
+                    "vanilla_bug_fixes": 100,
+                    "save_k_rool_progress": 90.0,
+                    "small_bananas_always_visible": 60.0,
+                    "fast_hints": 90.0,
+                    "brighten_mad_maze_maul_enemies": 50.0,
+                    "raise_fungi_dirt_patch": 75.0,
+                    "global_instrument": 100,
+                    "fast_pause_transitions": 90.0,
+                    "cannon_game_better_control": 50.0,
+                    "better_fairy_camera": 50.0,
+                    "remove_enemy_cabin_timer": 50.0,
+                    "remove_galleon_ship_timers": 90.0,
+                    "japes_bridge_permanently_extended": 50.0
+                }
+            },
+            "qol_uses_hard": false
+        },
+        "no_healing": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 50,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        },
+        "no_melons": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 20,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        },
+        "open_lobbies": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 90,
+                "standard": 60,
+                "difficult": 60
+            },
+            "qol_uses_hard": true
+        },
+        "perma_death": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 0,
+                "difficult": 0
+            },
+            "qol_uses_hard": true
+        },
+        "portal_numbers": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 100,
+                "difficult_with_qol_shuffle": 50
+            },
+            "qol_uses_hard": false
+        },
+        "random_fairies": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 20,
+                "difficult": 60
+            },
+            "qol_uses_hard": true
+        },
+        "random_patches": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 20,
+                "difficult": 60
+            },
+            "qol_uses_hard": true
+        },
+        "random_prices": {
+            "setting_type": "choice_multiple",
+            "options": {
+                "easy": {
+                    "vanilla": 20.0,
+                    "free": 20.0,
+                    "low": 30.0,
+                    "medium": 30.0
+                },
+                "standard": {
+                    "vanilla": 10.0,
+                    "free": 10.0,
+                    "low": 20.0,
+                    "medium": 35.0,
+                    "high": 25.0
+                },
+                "difficult": {
+                    "vanilla": 10.0,
+                    "low": 20.0,
+                    "medium": 40.0,
+                    "high": 20.0,
+                    "extreme": 10.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "vanilla": 10.0,
+                    "low": 20.0,
+                    "medium": 40.0,
+                    "high": 20.0,
+                    "extreme": 10.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "random_starting_region": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 30,
+                "difficult": 60
+            },
+            "qol_uses_hard": true
+        },
+        "randomize_pickups": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 60,
+                "standard": 60,
+                "difficult": 60
+            },
+            "qol_uses_hard": true
+        },
+        "rareware_gb_fairies": {
+            "ignore": true
+        },
+        "select_keys": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 0,
+                "difficult": 0
+            },
+            "qol_uses_hard": true
+        },
+        "shop_indicator": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 100,
+                "difficult_with_qol_shuffle": 50
+            },
+            "qol_uses_hard": false
+        },
+        "shorten_boss": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 80
+            },
+            "qol_uses_hard": true
+        },
+        "shuffle_shops": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 50,
+                "standard": 50,
+                "difficult": 70
+            },
+            "qol_uses_hard": true
+        },
+        "smaller_shops": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 50,
+                "standard": 50,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        },
+        "starting_keys_list_selected": {
+            "setting_type": "choice_multiple",
+            "options": {
+                "easy": {},
+                "standard": {},
+                "difficult": {},
+                "difficult_with_qol_shuffle": {}
+            },
+            "qol_uses_hard": true
+        },
+        "starting_kongs_count": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 2,
+                    "max": 5,
+                    "mean": 4
+                },
+                "standard": {
+                    "min": 1,
+                    "max": 5,
+                    "mean": 3
+                },
+                "difficult": {
+                    "min": 1,
+                    "max": 5,
+                    "mean": 2
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "starting_random": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 100
+            },
+            "qol_uses_hard": true
+        },
+        "tns_location_rando": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 30,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        },
+        "troff_text": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 100,
+                    "max": 300,
+                    "mean": 200
+                },
+                "standard": {
+                    "min": 150,
+                    "max": 400,
+                    "mean": 300
+                },
+                "difficult": {
+                    "min": 150,
+                    "max": 450,
+                    "mean": 300
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "warp_level_list_selected": {
+            "setting_type": "choice_multiple",
+            "options": {
+                "easy": {},
+                "standard": {},
+                "difficult": {},
+                "difficult_with_qol_shuffle": {}
+            },
+            "qol_uses_hard": true
+        },
+        "warp_to_isles": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 100,
+                "difficult": 100,
+                "difficult_with_qol_shuffle": 90
+            },
+            "qol_uses_hard": false
+        },
+        "wrinkly_available": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 90,
+                "difficult": 75
+            },
+            "qol_uses_hard": true
+        },
+        "wrinkly_hints": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "standard": 100
+                },
+                "standard": {
+                    "standard": 50.0,
+                    "cryptic": 20.0,
+                    "item_hinting": 30.0
+                },
+                "difficult": {
+                    "standard": 40.0,
+                    "cryptic": 30.0,
+                    "item_hinting": 30.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "off": 10.0,
+                    "standard": 40.0,
+                    "cryptic": 20.0,
+                    "item_hinting": 30.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "wrinkly_location_rando": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 30,
+                "difficult": 60
+            },
+            "qol_uses_hard": true
+        },
+        "coin_rando": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 50,
+                "standard": 50,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        },
+        "vanilla_door_rando": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 40,
+                "difficult": 60
+            },
+            "qol_uses_hard": true
+        },
+        "enable_plandomizer": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 0,
+                "difficult": 0
+            },
+            "qol_uses_hard": true
+        },
+        "hard_mode_selected": {
+            "setting_type": "choice_multiple",
+            "options": {
+                "easy": {},
+                "standard": {},
+                "difficult": {
+                    "hard_enemies": 60.0,
+                    "water_is_lava": 25.0,
+                    "reduced_fall_damage_threshold": 50.0,
+                    "shuffled_jetpac_enemies": 20.0,
+                    "lower_max_refill_amounts": 50.0,
+                    "strict_helm_timer": 20.0,
+                    "angry_caves": 5.0,
+                    "donk_in_the_dark_world": 0,
+                    "donk_in_the_sky": 0
+                },
+                "difficult_with_qol_shuffle": {
+                    "hard_enemies": 60.0,
+                    "water_is_lava": 25.0,
+                    "reduced_fall_damage_threshold": 50.0,
+                    "shuffled_jetpac_enemies": 20.0,
+                    "lower_max_refill_amounts": 50.0,
+                    "strict_helm_timer": 20.0,
+                    "angry_caves": 5.0,
+                    "donk_in_the_dark_world": 0,
+                    "donk_in_the_sky": 0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "more_cutscene_skips": {
+            "ignore": true
+        },
+        "spoiler_hints": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "off": 100,
+                    "vial_colors": 0,
+                    "points": 0
+                },
+                "standard": {
+                    "off": 100,
+                    "vial_colors": 0,
+                    "points": 0
+                },
+                "difficult": {
+                    "off": 100,
+                    "vial_colors": 0,
+                    "points": 0
+                },
+                "difficult_with_qol_shuffle": {
+                    "off": 100,
+                    "vial_colors": 0,
+                    "points": 0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "spoiler_include_woth_count": {
+            "ignore": true
+        },
+        "points_list_kongs": {
+            "ignore": true
+        },
+        "points_list_keys": {
+            "ignore": true
+        },
+        "points_list_guns": {
+            "ignore": true
+        },
+        "points_list_instruments": {
+            "ignore": true
+        },
+        "points_list_training_moves": {
+            "ignore": true
+        },
+        "points_list_important_shared": {
+            "ignore": true
+        },
+        "points_list_pad_moves": {
+            "ignore": true
+        },
+        "points_list_barrel_moves": {
+            "ignore": true
+        },
+        "points_list_active_moves": {
+            "ignore": true
+        },
+        "points_list_bean": {
+            "ignore": true
+        },
+        "random_crates": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 30,
+                "difficult": 60
+            },
+            "qol_uses_hard": true
+        },
+        "spoiler_include_level_order": {
+            "ignore": true
+        },
+        "dim_solved_hints": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 50,
+                "difficult": 0
+            },
+            "qol_uses_hard": true
+        },
+        "starting_kong": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "any": 100
+                },
+                "standard": {
+                    "any": 100
+                },
+                "difficult": {
+                    "any": 100
+                },
+                "difficult_with_qol_shuffle": {
+                    "any": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "fungi_time": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "day": 20.0,
+                    "night": 20.0,
+                    "random": 30.0,
+                    "dusk": 15.0,
+                    "progressive": 15.0
+                },
+                "standard": {
+                    "day": 20.0,
+                    "night": 20.0,
+                    "random": 30.0,
+                    "dusk": 15.0,
+                    "progressive": 15.0
+                },
+                "difficult": {
+                    "day": 20.0,
+                    "night": 20.0,
+                    "random": 30.0,
+                    "dusk": 15.0,
+                    "progressive": 15.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "day": 20.0,
+                    "night": 20.0,
+                    "random": 30.0,
+                    "dusk": 15.0,
+                    "progressive": 15.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "galleon_water": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                },
+                "difficult_with_qol_shuffle": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "remove_barriers_selected": {
+            "setting_type": "choice_multiple",
+            "options": {
+                "easy": {
+                    "japes_coconut_gates": 75.0,
+                    "japes_shellhive_gate": 75.0,
+                    "aztec_tunnel_door": 75.0,
+                    "aztec_5dtemple_switches": 100,
+                    "aztec_llama_switches": 75.0,
+                    "factory_production_room": 100,
+                    "factory_testing_gate": 75.0,
+                    "galleon_lighthouse_gate": 75.0,
+                    "galleon_shipyard_area_gate": 75.0,
+                    "castle_crypt_doors": 75.0,
+                    "galleon_seasick_ship": 100,
+                    "forest_green_tunnel": 75.0,
+                    "forest_yellow_tunnel": 75.0,
+                    "caves_igloo_pads": 100,
+                    "caves_ice_walls": 100
+                },
+                "standard": {
+                    "japes_coconut_gates": 75.0,
+                    "japes_shellhive_gate": 75.0,
+                    "aztec_tunnel_door": 75.0,
+                    "aztec_5dtemple_switches": 80.0,
+                    "aztec_llama_switches": 75.0,
+                    "factory_production_room": 80.0,
+                    "factory_testing_gate": 75.0,
+                    "galleon_lighthouse_gate": 75.0,
+                    "galleon_shipyard_area_gate": 75.0,
+                    "castle_crypt_doors": 75.0,
+                    "galleon_seasick_ship": 80.0,
+                    "forest_green_tunnel": 75.0,
+                    "forest_yellow_tunnel": 75.0,
+                    "caves_igloo_pads": 80.0,
+                    "caves_ice_walls": 70.0
+                },
+                "difficult": {
+                    "japes_coconut_gates": 75.0,
+                    "japes_shellhive_gate": 75.0,
+                    "aztec_tunnel_door": 75.0,
+                    "aztec_5dtemple_switches": 80.0,
+                    "aztec_llama_switches": 75.0,
+                    "factory_production_room": 80.0,
+                    "factory_testing_gate": 75.0,
+                    "galleon_lighthouse_gate": 75.0,
+                    "galleon_shipyard_area_gate": 75.0,
+                    "castle_crypt_doors": 75.0,
+                    "galleon_seasick_ship": 80.0,
+                    "forest_green_tunnel": 75.0,
+                    "forest_yellow_tunnel": 75.0,
+                    "caves_igloo_pads": 80.0,
+                    "caves_ice_walls": 70.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "japes_coconut_gates": 75.0,
+                    "japes_shellhive_gate": 75.0,
+                    "aztec_tunnel_door": 75.0,
+                    "aztec_5dtemple_switches": 80.0,
+                    "aztec_llama_switches": 75.0,
+                    "factory_production_room": 80.0,
+                    "factory_testing_gate": 75.0,
+                    "galleon_lighthouse_gate": 75.0,
+                    "galleon_shipyard_area_gate": 75.0,
+                    "castle_crypt_doors": 75.0,
+                    "galleon_seasick_ship": 80.0,
+                    "forest_green_tunnel": 75.0,
+                    "forest_yellow_tunnel": 75.0,
+                    "caves_igloo_pads": 80.0,
+                    "caves_ice_walls": 70.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "faster_checks_selected": {
+            "setting_type": "choice_multiple",
+            "options": {
+                "easy": {
+                    "factory_toy_monster_fight": 100,
+                    "factory_piano_game": 100,
+                    "factory_diddy_rnd": 100,
+                    "factory_arcade_round_1": 100,
+                    "factory_car_race": 100,
+                    "galleon_seal_race": 100,
+                    "galleon_mech_fish": 100,
+                    "forest_mill_conveyor": 100,
+                    "forest_owl_race": 100,
+                    "forest_rabbit_race": 100,
+                    "caves_ice_tomato_minigame": 100,
+                    "castle_minecart": 100,
+                    "castle_car_race": 100,
+                    "jetpac": 100
+                },
+                "standard": {
+                    "factory_toy_monster_fight": 70.0,
+                    "factory_piano_game": 70.0,
+                    "factory_diddy_rnd": 70.0,
+                    "factory_arcade_round_1": 70.0,
+                    "factory_car_race": 70.0,
+                    "galleon_seal_race": 70.0,
+                    "galleon_mech_fish": 70.0,
+                    "forest_mill_conveyor": 70.0,
+                    "forest_owl_race": 70.0,
+                    "forest_rabbit_race": 70.0,
+                    "caves_ice_tomato_minigame": 70.0,
+                    "castle_minecart": 70.0,
+                    "castle_car_race": 70.0,
+                    "jetpac": 70.0
+                },
+                "difficult": {
+                    "factory_toy_monster_fight": 70.0,
+                    "factory_piano_game": 70.0,
+                    "factory_diddy_rnd": 70.0,
+                    "factory_arcade_round_1": 70.0,
+                    "factory_car_race": 70.0,
+                    "galleon_seal_race": 70.0,
+                    "galleon_mech_fish": 70.0,
+                    "forest_mill_conveyor": 70.0,
+                    "forest_owl_race": 70.0,
+                    "forest_rabbit_race": 70.0,
+                    "caves_ice_tomato_minigame": 70.0,
+                    "castle_minecart": 70.0,
+                    "castle_car_race": 70.0,
+                    "jetpac": 70.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "factory_toy_monster_fight": 70.0,
+                    "factory_piano_game": 70.0,
+                    "factory_diddy_rnd": 70.0,
+                    "factory_arcade_round_1": 70.0,
+                    "factory_car_race": 70.0,
+                    "galleon_seal_race": 70.0,
+                    "galleon_mech_fish": 70.0,
+                    "forest_mill_conveyor": 70.0,
+                    "forest_owl_race": 70.0,
+                    "forest_rabbit_race": 70.0,
+                    "caves_ice_tomato_minigame": 70.0,
+                    "castle_minecart": 70.0,
+                    "castle_car_race": 70.0,
+                    "jetpac": 70.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "k_rool_vanilla_requirement": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 0,
+                "difficult": 0
+            },
+            "qol_uses_hard": true
+        },
+        "disable_hard_minigames": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 60,
+                "difficult": 30
+            },
+            "qol_uses_hard": true
+        },
+        "mermaid_gb_pearls": {
+            "ignore": true
+        },
+        "kong_model_dk": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "default": 100
+                },
+                "standard": {
+                    "default": 100
+                },
+                "difficult": {
+                    "default": 100
+                },
+                "difficult_with_qol_shuffle": {
+                    "default": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "kong_model_diddy": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "default": 100
+                },
+                "standard": {
+                    "default": 100
+                },
+                "difficult": {
+                    "default": 100
+                },
+                "difficult_with_qol_shuffle": {
+                    "default": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "kong_model_lanky": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "default": 100
+                },
+                "standard": {
+                    "default": 100
+                },
+                "difficult": {
+                    "default": 100
+                },
+                "difficult_with_qol_shuffle": {
+                    "default": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "kong_model_tiny": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "default": 100
+                },
+                "standard": {
+                    "default": 100
+                },
+                "difficult": {
+                    "default": 100
+                },
+                "difficult_with_qol_shuffle": {
+                    "default": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "kong_model_chunky": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "default": 100
+                },
+                "standard": {
+                    "default": 100
+                },
+                "difficult": {
+                    "default": 100
+                },
+                "difficult_with_qol_shuffle": {
+                    "default": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "helm_room_bonus_count": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "zero": 10.0,
+                    "one": 30.0,
+                    "two": 60.0
+                },
+                "standard": {
+                    "one": 30.0,
+                    "two": 70.0
+                },
+                "difficult": {
+                    "two": 100
+                },
+                "difficult_with_qol_shuffle": {
+                    "two": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "serious_hints": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 70,
+                "standard": 30,
+                "difficult": 0
+            },
+            "qol_uses_hard": true
+        },
+        "cannons_require_blast": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 50,
+                "difficult": 100
+            },
+            "qol_uses_hard": true
+        },
+        "chunky_phase_slam_req": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "green": 30.0,
+                    "blue": 70.0
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "blue": 70.0,
+                    "red": 30.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "blue": 70.0,
+                    "red": 30.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "shuffle_helm_location": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 50,
+                "difficult": 70
+            },
+            "qol_uses_hard": true
+        },
+        "points_list_fairy_moves": {
+            "ignore": true
+        },
+        "points_list_shopkeepers": {
+            "ignore": true
+        },
+        "krool_in_boss_pool": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 80,
+                "standard": 65,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        },
+        "enemy_kill_crown_timer": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 100,
+                "standard": 95,
+                "difficult": 90
+            },
+            "qol_uses_hard": true
+        },
+        "hard_bosses_selected": {
+            "setting_type": "choice_multiple",
+            "options": {
+                "easy": {},
+                "standard": {},
+                "difficult": {
+                    "fast_mad_jack": 80.0,
+                    "pufftoss_star_rando": 80.0,
+                    "pufftoss_star_raised": 50.0,
+                    "kut_out_phase_rando": 60.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "fast_mad_jack": 80.0,
+                    "pufftoss_star_rando": 80.0,
+                    "pufftoss_star_raised": 50.0,
+                    "kut_out_phase_rando": 60.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "ice_trap_frequency": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "rare": 70.0,
+                    "mild": 20.0,
+                    "common": 10.0
+                },
+                "standard": {
+                    "rare": 50.0,
+                    "mild": 30.0,
+                    "common": 15.0,
+                    "frequent": 5.0
+                },
+                "difficult": {
+                    "mild": 45.0,
+                    "common": 40.0,
+                    "frequent": 10.0,
+                    "pain": 5.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "mild": 45.0,
+                    "common": 40.0,
+                    "frequent": 10.0,
+                    "pain": 5.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "ice_traps_damage": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 20,
+                "standard": 50,
+                "difficult": 100
+            },
+            "qol_uses_hard": true
+        },
+        "puzzle_rando_difficulty": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "off": 20.0,
+                    "easy": 70.0,
+                    "medium": 10.0
+                },
+                "standard": {
+                    "off": 10.0,
+                    "easy": 20.0,
+                    "medium": 60.0,
+                    "hard": 10.0
+                },
+                "difficult": {
+                    "easy": 20.0,
+                    "medium": 30.0,
+                    "hard": 50.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "easy": 20.0,
+                    "medium": 30.0,
+                    "hard": 50.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "win_condition_item": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "easy_random": 100
+                },
+                "standard": {
+                    "medium_random": 100
+                },
+                "difficult": {
+                    "hard_random": 100
+                },
+                "difficult_with_qol_shuffle": {
+                    "hard_random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "win_condition_count": {
+            "ignore": true
+        },
+        "bananaport_placement_rando": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "off": 70.0,
+                    "vanilla_only": 20.0,
+                    "half_vanilla": 8.0,
+                    "on": 2.0
+                },
+                "standard": {
+                    "off": 50.0,
+                    "vanilla_only": 30.0,
+                    "half_vanilla": 15.0,
+                    "on": 5.0
+                },
+                "difficult": {
+                    "off": 20.0,
+                    "vanilla_only": 20.0,
+                    "half_vanilla": 40.0,
+                    "on": 20.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "off": 20.0,
+                    "vanilla_only": 20.0,
+                    "half_vanilla": 40.0,
+                    "on": 20.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "randomize_enemy_sizes": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 90,
+                "standard": 90,
+                "difficult": 90
+            },
+            "qol_uses_hard": true
+        },
+        "starting_moves_list_count_1": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 4,
+                    "max": 10,
+                    "mean": 4
+                },
+                "standard": {
+                    "min": 2,
+                    "max": 10,
+                    "mean": 4
+                },
+                "difficult": {
+                    "min": 0,
+                    "max": 10,
+                    "mean": 3
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "starting_moves_list_count_2": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 0,
+                    "max": 0
+                },
+                "standard": {
+                    "min": 0,
+                    "max": 0
+                },
+                "difficult": {
+                    "min": 0,
+                    "max": 0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "starting_moves_list_count_3": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 0,
+                    "max": 0
+                },
+                "standard": {
+                    "min": 0,
+                    "max": 0
+                },
+                "difficult": {
+                    "min": 0,
+                    "max": 0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "starting_moves_list_count_4": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 0,
+                    "max": 0
+                },
+                "standard": {
+                    "min": 0,
+                    "max": 0
+                },
+                "difficult": {
+                    "min": 0,
+                    "max": 0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "starting_moves_list_count_5": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 0,
+                    "max": 0
+                },
+                "standard": {
+                    "min": 0,
+                    "max": 0
+                },
+                "difficult": {
+                    "min": 0,
+                    "max": 0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "progressive_hint_item": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "off": 50,
+                    "req_gb": 30,
+                    "req_bp": 5,
+                    "req_key": 5,
+                    "req_medal": 5,
+                    "req_crown": 5,
+                    "req_fairy": 5,
+                    "req_rainbowcoin": 5,
+                    "req_pearl": 5,
+                    "req_cb": 5
+                },
+                "standard": {
+                    "off": 50,
+                    "req_gb": 30,
+                    "req_bp": 5,
+                    "req_key": 5,
+                    "req_medal": 5,
+                    "req_crown": 5,
+                    "req_fairy": 5,
+                    "req_rainbowcoin": 5,
+                    "req_pearl": 5,
+                    "req_cb": 5
+                },
+                "difficult": {
+                    "off": 50,
+                    "req_gb": 30,
+                    "req_bp": 5,
+                    "req_key": 5,
+                    "req_medal": 5,
+                    "req_crown": 5,
+                    "req_fairy": 5,
+                    "req_rainbowcoin": 5,
+                    "req_pearl": 5,
+                    "req_cb": 5
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "mirror_mode": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 0,
+                "difficult": 5
+            },
+            "qol_uses_hard": true
+        },
+        "progressive_hint_count": {
+            "setting_type": "range",
+            "options": {
+                "easy": {
+                    "min": 30,
+                    "max": 60,
+                    "mean": 45
+                },
+                "standard": {
+                    "min": 30,
+                    "max": 100,
+                    "mean": 60
+                },
+                "difficult": {
+                    "min": 30,
+                    "max": 100,
+                    "mean": 70
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "cb_rando_enabled": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 30,
+                "standard": 50,
+                "difficult": 60
+            },
+            "qol_uses_hard": true
+        },
+        "cb_rando_list_selected": {
+            "setting_type": "choice_multiple",
+            "options": {
+                "easy": {
+                    "JungleJapes": 50.0,
+                    "AngryAztec": 50.0,
+                    "FranticFactory": 50.0,
+                    "GloomyGalleon": 50.0,
+                    "FungiForest": 50.0,
+                    "CrystalCaves": 50.0,
+                    "CreepyCastle": 50.0,
+                    "DKIsles": 0
+                },
+                "standard": {
+                    "JungleJapes": 70.0,
+                    "AngryAztec": 70.0,
+                    "FranticFactory": 70.0,
+                    "GloomyGalleon": 70.0,
+                    "FungiForest": 70.0,
+                    "CrystalCaves": 70.0,
+                    "CreepyCastle": 70.0,
+                    "DKIsles": 20.0
+                },
+                "difficult": {
+                    "JungleJapes": 90.0,
+                    "AngryAztec": 90.0,
+                    "FranticFactory": 90.0,
+                    "GloomyGalleon": 90.0,
+                    "FungiForest": 90.0,
+                    "CrystalCaves": 90.0,
+                    "CreepyCastle": 90.0,
+                    "DKIsles": 50.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "JungleJapes": 90.0,
+                    "AngryAztec": 90.0,
+                    "FranticFactory": 90.0,
+                    "GloomyGalleon": 90.0,
+                    "FungiForest": 90.0,
+                    "CrystalCaves": 90.0,
+                    "CreepyCastle": 90.0,
+                    "DKIsles": 50.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "crown_enemy_difficulty": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "vanilla": 20.0,
+                    "easy": 50.0,
+                    "medium": 30.0
+                },
+                "standard": {
+                    "vanilla": 10.0,
+                    "easy": 30.0,
+                    "medium": 40.0,
+                    "hard": 20.0
+                },
+                "difficult": {
+                    "vanilla": 20.0,
+                    "medium": 50.0,
+                    "hard": 30.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "vanilla": 20.0,
+                    "medium": 50.0,
+                    "hard": 30.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "dk_portal_location_rando_v2": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "off": 100.0
+                },
+                "standard": {
+                    "off": 90.0,
+                    "main_only": 10.0
+                },
+                "difficult": {
+                    "off": 50.0,
+                    "main_only": 30.0,
+                    "on": 20.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "off": 50.0,
+                    "main_only": 30.0,
+                    "on": 20.0
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "dos_door_rando": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 40,
+                "difficult": 60
+            },
+            "qol_uses_hard": true
+        },
+        "race_coin_rando": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 10,
+                "standard": 20,
+                "difficult": 30
+            },
+            "qol_uses_hard": true
+        },
+        "prog_slam_level_1": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "green": 100
+                },
+                "standard": {
+                    "green": 90,
+                    "blue": 10
+                },
+                "difficult": {
+                    "green": 80,
+                    "blue": 15,
+                    "red": 5
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "prog_slam_level_2": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "green": 90,
+                    "blue": 10
+                },
+                "standard": {
+                    "green": 80,
+                    "blue": 15,
+                    "red": 5
+                },
+                "difficult": {
+                    "green": 70,
+                    "blue": 20,
+                    "red": 10
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "prog_slam_level_3": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "green": 80,
+                    "blue": 15,
+                    "red": 5
+                },
+                "standard": {
+                    "green": 70,
+                    "blue": 20,
+                    "red": 10
+                },
+                "difficult": {
+                    "green": 60,
+                    "blue": 25,
+                    "red": 15
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "prog_slam_level_4": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "green": 70,
+                    "blue": 20,
+                    "red": 10
+                },
+                "standard": {
+                    "green": 60,
+                    "blue": 25,
+                    "red": 15
+                },
+                "difficult": {
+                    "green": 40,
+                    "blue": 30,
+                    "red": 30
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "prog_slam_level_5": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "prog_slam_level_6": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "prog_slam_level_7": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "prog_slam_level_8": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_enabled": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 50,
+                "standard": 80,
+                "difficult": 100
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_isles_to_kroc_top": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_isles_helm_lobby": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_isles_aztec_lobby_back_room": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_isles_fungi_lobby_fairy": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_isles_spawn_rocketbarrel": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_japes_to_hive": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_japes_to_rambi": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_japes_to_painting_room": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_japes_to_cavern": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_aztec_to_kasplat_room": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_aztec_llama_front": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_aztec_llama_side": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_aztec_llama_back": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_aztec_sand_tunnel": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_aztec_to_connector_tunnel": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_galleon_to_lighthouse_side": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_galleon_to_shipwreck_side": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_galleon_to_cannon_game": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_fungi_yellow_tunnel": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_fungi_green_tunnel_near": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_fungi_green_tunnel_far": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_japes_free_kong": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_aztec_free_tiny": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_aztec_free_lanky": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "random": 100
+                },
+                "standard": {
+                    "random": 100
+                },
+                "difficult": {
+                    "random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "switchsanity_switch_factory_free_kong": {
+            "ignore": true
+        },
+        "item_rando_list": {
+            "setting_type": "item_rando",
+            "options": {
+                "easy": {
+                    "moves": 100,
+                    "shockwave": 95,
+                    "banana": 95,
+                    "crown": 70,
+                    "blueprint": 70,
+                    "key": 85,
+                    "medal": 70,
+                    "nintendocoin": 70,
+                    "rarewarecoin": 70,
+                    "kong": 100,
+                    "fairy": 70,
+                    "rainbowcoin": 70,
+                    "bean": 70,
+                    "pearl": 70,
+                    "fakeitem": 50,
+                    "junkitem": 50,
+                    "shopowners": 30,
+                    "hint": 10,
+                    "trainingmoves": 70,
+                    "dummyitem_enemies": 20,
+                    "dummyitem_boulderitem": 40,
+                    "dummyitem_crateitem": 60
+                },
+                "standard": {
+                    "moves": 100,
+                    "shockwave": 95,
+                    "banana": 95,
+                    "crown": 70,
+                    "blueprint": 70,
+                    "key": 85,
+                    "medal": 70,
+                    "nintendocoin": 70,
+                    "rarewarecoin": 70,
+                    "kong": 100,
+                    "fairy": 70,
+                    "rainbowcoin": 70,
+                    "bean": 70,
+                    "pearl": 70,
+                    "fakeitem": 50,
+                    "junkitem": 50,
+                    "shopowners": 30,
+                    "hint": 10,
+                    "trainingmoves": 70,
+                    "dummyitem_enemies": 20,
+                    "dummyitem_boulderitem": 40,
+                    "dummyitem_crateitem": 60
+                },
+                "difficult": {
+                    "moves": 100,
+                    "shockwave": 95,
+                    "banana": 95,
+                    "crown": 70,
+                    "blueprint": 70,
+                    "key": 85,
+                    "medal": 70,
+                    "nintendocoin": 70,
+                    "rarewarecoin": 70,
+                    "kong": 100,
+                    "fairy": 70,
+                    "rainbowcoin": 70,
+                    "bean": 70,
+                    "pearl": 70,
+                    "fakeitem": 50,
+                    "junkitem": 50,
+                    "shopowners": 30,
+                    "hint": 10,
+                    "trainingmoves": 70,
+                    "dummyitem_enemies": 20,
+                    "dummyitem_boulderitem": 40,
+                    "dummyitem_crateitem": 60
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "item_rando_list_0": {
+            "ignore": true
+        },
+        "item_rando_list_1": {
+            "ignore": true
+        },
+        "item_rando_list_2": {
+            "ignore": true
+        },
+        "item_rando_list_3": {
+            "ignore": true
+        },
+        "item_rando_list_4": {
+            "ignore": true
+        },
+        "item_rando_list_5": {
+            "ignore": true
+        },
+        "item_rando_list_6": {
+            "ignore": true
+        },
+        "item_rando_list_7": {
+            "ignore": true
+        },
+        "item_rando_list_8": {
+            "ignore": true
+        },
+        "item_rando_list_9": {
+            "ignore": true
+        },
+        "decouple_item_rando": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 0,
+                "difficult": 0
+            },
+            "qol_uses_hard": true
+        },
+        "filler_items_selected": {
+            "setting_type": "choice_multiple",
+            "options": {
+                "easy": {
+                    "junkitem": 40,
+                    "icetrap": 20,
+                    "crown": 20,
+                    "fairy": 30,
+                    "medal": 60,
+                    "banana": 90
+                },
+                "standard": {
+                    "junkitem": 50,
+                    "icetrap": 60,
+                    "crown": 50,
+                    "fairy": 60,
+                    "medal": 80,
+                    "banana": 60
+                },
+                "difficult": {
+                    "junkitem": 0,
+                    "icetrap": 90,
+                    "crown": 20,
+                    "fairy": 30,
+                    "medal": 40,
+                    "banana": 30
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "disable_racing_patches": {
+            "ignore": true
+        },
+        "blocker_selection_behavior": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "easy_random": 90,
+                    "chaos": 10
+                },
+                "standard": {
+                    "normal_random": 80,
+                    "chaos": 20
+                },
+                "difficult": {
+                    "hard_random": 70,
+                    "chaos": 30
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "tns_selection_behavior": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "easy_random": 100
+                },
+                "standard": {
+                    "normal_random": 100
+                },
+                "difficult": {
+                    "hard_random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "medal_jetpac_behavior": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "easy_random": 100
+                },
+                "standard": {
+                    "normal_random": 100
+                },
+                "difficult": {
+                    "hard_random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "pearl_mermaid_behavior": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "easy_random": 100
+                },
+                "standard": {
+                    "normal_random": 100
+                },
+                "difficult": {
+                    "hard_random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "fairy_queen_behavior": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "easy_random": 100
+                },
+                "standard": {
+                    "normal_random": 100
+                },
+                "difficult": {
+                    "hard_random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "cb_medal_behavior": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "easy_random": 100
+                },
+                "standard": {
+                    "normal_random": 100
+                },
+                "difficult": {
+                    "hard_random": 100
+                }
+            },
+            "qol_uses_hard": true
+        },
+        "tricks_selected": {
+            "ignore": true
+        },
+        "shops_dont_cost": {
+            "ignore": true,
+            "setting_type": "bool",
+            "options": {
+                "easy": 50,
+                "standard": 50,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        }
+    }
+}

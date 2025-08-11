@@ -128,8 +128,8 @@
                 "sub_command": 24,
                 "params": [
                     1,
-                    19,
-                    34
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.ChunkyIgloo"
                 ]
             },
             "head": [

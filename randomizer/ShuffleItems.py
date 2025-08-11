@@ -3,10 +3,13 @@
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.VendorType import VendorType
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
-from randomizer.Lists.Item import ItemList, NameFromKong
-from randomizer.Patching.Library.Generic import getIceTrapCount
+from randomizer.Lists.Item import ItemList
+from randomizer.Lists.Location import ShopLocationReference
 
 
 class LocationSelection:
@@ -74,29 +77,11 @@ class MoveData:
 
 def ShuffleItems(spoiler):
     """Shuffle items into assortment."""
-    ice_trap_count = getIceTrapCount(spoiler.settings)
-    ice_trap_flag_range = list(range(0x2AE, 0x2BE))
-    junk_invasion = 0
-    if ice_trap_count > 16:
-        junk_invasion = ice_trap_count - 16
-        ice_trap_flag_range.extend(list(range(0x320, 0x320 + junk_invasion)))
-    junk_item_flag_range = list(range(0x320 + junk_invasion, 0x320 + 100))
-    ap_start = 0x3CC
-    ap_item_flag_range = []
-    if Types.Enemies in spoiler.settings.shuffled_location_types:
-        junk_item_flag_range.extend(list(range(0x3CC, 0x3CC + 427)))
-        ap_start += 427
-    if Types.ArchipelagoItem in spoiler.settings.shuffled_location_types:
-        ap_item_flag_range = list(range(ap_start, ap_start + 1000))
-
     progressive_move_flag_dict = {
         Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
         Items.ProgressiveAmmoBelt: [0x292, 0x293],
         Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
-        Items.IceTrapBubble: ice_trap_flag_range,
     }
-    junk_flag_dict = junk_item_flag_range
-    ap_flag_dict = ap_item_flag_range.copy()
     flag_dict = {}
     blueprint_flag_dict = {}
     locations_not_needing_flags = []
@@ -128,6 +113,40 @@ def ShuffleItems(spoiler):
             # Shop locations: Cranky, Funky, Candy, Training Barrels, and BFI
             else:
                 old_flag = -1  # Irrelevant for shop locations
+                # Get flag
+                if item_location.type == Types.Shop:
+                    for level, data in ShopLocationReference.items():
+                        for vendor, loc_list in data.items():
+                            if location_enum in loc_list:
+                                kong = loc_list.index(location_enum)
+                                if kong == 5:
+                                    kong = 0  # shared
+                                handled_level = level
+                                if level == Levels.DKIsles:
+                                    handled_level = 7
+                                if vendor == VendorType.Cranky:
+                                    old_flag = 0x320 + (handled_level * 5) + kong
+                                elif vendor == VendorType.Funky:
+                                    old_flag = 0x320 + ((8 + handled_level) * 5) + kong
+                                elif vendor == VendorType.Candy:
+                                    candy_index = {
+                                        Levels.AngryAztec: 0,
+                                        Levels.FranticFactory: 1,
+                                        Levels.GloomyGalleon: 2,
+                                        Levels.CrystalCaves: 3,
+                                        Levels.CreepyCastle: 4,
+                                    }
+                                    old_flag = 0x320 + ((15 + candy_index[level]) * 5) + kong
+                elif item_location.type == Types.Shockwave:
+                    old_flag = 0x179
+                elif item_location.type == Types.TrainingBarrel:
+                    tbarrel_flags = {
+                        Locations.IslesSwimTrainingBarrel: 0x182,
+                        Locations.IslesBarrelsTrainingBarrel: 0x185,
+                        Locations.IslesOrangesTrainingBarrel: 0x184,
+                        Locations.IslesVinesTrainingBarrel: 0x183,
+                    }
+                    old_flag = tbarrel_flags[location_enum]
                 old_kong = item_location.kong
                 placement_index = item_location.placement_index
             price = 0
@@ -162,11 +181,9 @@ def ShuffleItems(spoiler):
                 location_selection.new_kong = new_item.kong
                 location_selection.new_subitem = item_location.item
                 # If this item has a dedicated specific flag, then set it now (Moves, Kongs, andKeys right now)
-                if new_item.rando_flag is not None or new_item.type == Types.FakeItem:
-                    if new_item.rando_flag == -1 or new_item.type == Types.FakeItem:  # This means it's a progressive move or fake item and they need special flags
+                if new_item.rando_flag is not None:
+                    if new_item.rando_flag == -1:  # This means it's a progressive move or fake item and they need special flags
                         ref_item = item_location.item
-                        if new_item.type == Types.FakeItem:
-                            ref_item = Items.IceTrapBubble
                         location_selection.new_flag = progressive_move_flag_dict[ref_item].pop()
                     else:
                         location_selection.new_flag = new_item.rando_flag
@@ -175,11 +192,8 @@ def ShuffleItems(spoiler):
                 elif new_item.type in (Types.NintendoCoin, Types.RarewareCoin):
                     location_selection.new_flag = new_item.flag
                     locations_not_needing_flags.append(location_selection)
-                elif new_item.type == Types.JunkItem:
-                    location_selection.new_flag = junk_flag_dict.pop()
-                    locations_not_needing_flags.append(location_selection)
-                elif new_item.type == Types.ArchipelagoItem:
-                    location_selection.new_flag = ap_flag_dict.pop()
+                elif new_item.type in (Types.FakeItem, Types.JunkItem, Types.ArchipelagoItem, Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerMedal, Types.FillerPearl):
+                    location_selection.new_flag = 0x7FFF
                     locations_not_needing_flags.append(location_selection)
                 # Otherwise we need to put it in the list of locations needing flags
                 else:
@@ -193,9 +207,7 @@ def ShuffleItems(spoiler):
             # Add this location's flag to the lists of available flags by location
             # Initialize relevant list if it doesn't exist
             if item_location.type not in flag_dict.keys() and item_location.type != Types.Blueprint:
-                if item_location.type == Types.ToughBanana and Types.Banana not in flag_dict.keys():
-                    flag_dict[Types.Banana] = []
-                elif item_location.type == Types.IslesMedal and Types.Medal not in flag_dict.keys():
+                if item_location.type == Types.IslesMedal and Types.Medal not in flag_dict.keys():
                     flag_dict[Types.Medal] = []
                 else:
                     flag_dict[item_location.type] = []
@@ -214,7 +226,7 @@ def ShuffleItems(spoiler):
         if location.new_flag is None:
             if location.new_item == Types.Blueprint:
                 location.new_flag = blueprint_flag_dict[spoiler.LocationList[location.location].item]
-            else:
+            elif location.new_item:
                 location.new_flag = flag_dict[location.new_item].pop()
 
     # If we failed to give any location a flag, something is very wrong

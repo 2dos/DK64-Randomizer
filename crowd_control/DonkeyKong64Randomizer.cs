@@ -36,6 +36,10 @@ public class DonkeyKong64Randomizer : N64EffectPack
         MINI_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0xC);
         BOULDER_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0xD);
         ANIMALTRANSFORM_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0xE);
+        PAPER_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0xF);
+        TIME_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x10);
+        WATER_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x11);
+        CRATE_STATE = AddressChain.Begin(Connector).Move(ADDR_STATE_POINTER).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x12);
     }
 
     private AddressChain DRUNK_STATE;
@@ -53,6 +57,10 @@ public class DonkeyKong64Randomizer : N64EffectPack
     private AddressChain MINI_STATE;
     private AddressChain BOULDER_STATE;
     private AddressChain ANIMALTRANSFORM_STATE;
+    private AddressChain PAPER_STATE;
+    private AddressChain TIME_STATE;
+    private AddressChain WATER_STATE;
+    private AddressChain CRATE_STATE;
 
     private const uint ADDR_STATE_POINTER = 0x807FFFB4;
     private const uint ADDR_MAP_TIMER = 0x8076A064;
@@ -107,6 +115,9 @@ public class DonkeyKong64Randomizer : N64EffectPack
         new("Ice Floor","ice_floor") { Price = 0, Duration = 20, Description = "Donkey goes weeeeeeee.", Category="Player" },
         new("Mini Monkey","force_mini") { Price = 0, Duration = 20, Description = "Shrink the player's size to suit their mood.", Category="Player" },
         new("Transform into an Animal","animal_transform") { Price = 0, Duration = 15, Description = "Transforms the player into an animal. If they're in water, they'll be transformed to Enguarde, otherwise they'll be transformed to Rambi.", Category="Player" },
+        // Environment
+        new("Change the Time","fungi_time_toggle") { Price = 0, Description = "Changes the time in Fungi Forest (Only compatible in the main map).", Category="Environment" },
+        new("Change the Water","water_shift") { Price = 0, Description = "Changes the water level in various maps (Only compatible in certain maps).", Category="Environment" },
         // Inventory
         new("Give Coins","give_coins") { Price = 0, Description = "Gives each kong 2 coins.", Category="Inventory" },
         new("Remove Coins","remove_coins") { Price = 0, Description = "Takes 2 coins from each kong.", Category="Inventory" },
@@ -118,10 +129,20 @@ public class DonkeyKong64Randomizer : N64EffectPack
         new("Refill Health","refill_health") { Price = 0, Description = "Refills the player's health to max.", Category="Health" },
         new("One Hit KO","damage_ohko") { Price = 0, Duration = 20, Description = "The player will be killed for any damage taken.", Category="Health" },
         new("Double Damage","damage_double") { Price = 0, Duration = 30, Description = "The player will take double damage.", Category="Health" },
+        // Buttons
+        new("Disable A","disable_button_a") { Price = 0, Duration = 5, Description = "Disables the A Button until map load.", Category="Button" },
+        new("Disable B","disable_button_b") { Price = 0, Duration = 5, Description = "Disables the B Button until map load.", Category="Button" },
+        new("Disable C-Up","disable_button_cu") { Price = 0, Duration = 5, Description = "Disables the C-Up Button until map load.", Category="Button" },
+        new("Disable C-Down","disable_button_cd") { Price = 0, Duration = 5, Description = "Disables the C-Down Button until map load.", Category="Button" },
+        new("Disable C-Left","disable_button_cl") { Price = 0, Duration = 5, Description = "Disables the C-Left Button until map load.", Category="Button" },
+        new("Disable C-Right","disable_button_cr") { Price = 0, Duration = 5, Description = "Disables the C-Right Button until map load.", Category="Button" },
+        new("Disable Z","disable_button_z") { Price = 0, Duration = 5, Description = "Disables the Z Button until map load.", Category="Button" },
+
         // Misc
         new("Get Kaught","spawn_kop") { Price = 0, Description = "Spawn the greatest kop on the service to catch the player in their tracks.", Category="Misc" },
         new("Get Out","get_out") { Price = 0, Description = "Gives the player 10 seconds to get into another map, otherwise they die.", Category="Misc" },
         new("Spawn a Boulder","spawn_boulder") { Price = 0, Description = "Spawns a boulder: Useful for breaking the logic of your favorite monkey game.", Category="Misc" },
+        new("Spawn a Crate","spawn_crate") { Price = 0, Description = "Spawns a pushable crate: Useful for breaking the logic of your favorite monkey game without a mandated move.", Category="Misc" },
         new("Flip Screen","flip_screen") { Price = 0, Duration = 10, Description = "Flips the screen vertically.", Category="Misc" },
         new("Warp to the DK Rap","play_the_rap") { Price = 0, Duration = 188, Description = "Warps the player to the DK Rap, and warps them back after the rap is finished or the effect is cancelled (whichever comes first). Effect is capped at 188 seconds.", Category="Misc" },
     };
@@ -145,7 +166,7 @@ public class DonkeyKong64Randomizer : N64EffectPack
         if (!Connector.Read8(ADDR_CUTSCENE_ACTIVE, out byte cutscene_state)) return GameState.Unknown;
         if (!Connector.ReadFloat(ADDR_TRANSITION_SPEED, out float transition_speed)) return GameState.Unknown;
         if (!Connector.ReadFloat(ADDR_STATE_POINTER, out float state_pointer)) return GameState.Unknown;
-        if (rando_version != 4)
+        if (rando_version < 4)
         {
             // Not randomizer or a currently supported version
             return GameState.Unknown;
@@ -223,6 +244,12 @@ public class DonkeyKong64Randomizer : N64EffectPack
         }
     }
 
+    private bool IsValidVersion(uint requirement)
+    {
+        if (!Connector.Read8(ADDR_RANDO_CANARY, out byte rando_version)) return false;
+        return requirement <= rando_version;
+    }
+
     private bool Write16(uint address, ushort value)
     {
         byte upper = (byte)(value >> 8);
@@ -290,11 +317,33 @@ public class DonkeyKong64Randomizer : N64EffectPack
         return result;
     }
 
+    private bool disableButton(uint button_value, bool enable)
+    {
+        bool result = true;
+        AddressChain addr_chain = AddressChain.Begin(Connector).Move(0x807FFFB0).Follow(4, Endianness.BigEndian, PointerType.Absolute).Move(0x0);
+        uint addr = (uint)addr_chain.Address;
+        result &= Connector.Read8(addr + 0, out byte upper);
+        result &= Connector.Read8(addr + 1, out byte lower);
+        uint value = (uint)((upper << 8) + lower);
+        if (enable)
+        {
+            value |= button_value;
+        }
+        else
+        {
+            value &= ~button_value;
+        }
+        result &= Connector.Write8(addr + 0, (byte)(value >> 8));
+        result &= Connector.Write8(addr + 1, (byte)(value & 0xFF));
+        return result;
+    }
+
     private bool isDefaultGravity()
     {
         bool result = true;
         result &= Connector.Read16(0x80750300, out ushort gravity_checker);
-        if (gravity_checker != 0xC1A0) {
+        if (gravity_checker != 0xC1A0)
+        {
             return false;
         }
         return result;
@@ -600,6 +649,46 @@ public class DonkeyKong64Randomizer : N64EffectPack
                         return result;
                     });
                 return;
+            case "fungi_time_toggle":
+                TryEffect(request,
+                    () =>
+                    {
+                        bool result = true;
+                        result &= Connector.IsEqual8(TIME_STATE, (byte)CC_STATE.CC_READY);
+                        result &= IsValidVersion(5);
+                        return result;
+                    },
+                    () =>
+                    {
+                        bool result = TIME_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} changed the time, Mr Wolf.");
+
+                        }
+                        return result;
+                    });
+                return;
+            case "water_shift":
+                TryEffect(request,
+                    () =>
+                    {
+                        bool result = true;
+                        result &= Connector.IsEqual8(WATER_STATE, (byte)CC_STATE.CC_READY);
+                        result &= IsValidVersion(5);
+                        return result;
+                    },
+                    () =>
+                    {
+                        bool result = WATER_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} messed with the water.");
+
+                        }
+                        return result;
+                    });
+                return;
             case "tag_kong":
                 StartTimed(request,
                     () => Connector.IsEqual8(TAG_STATE, (byte)CC_STATE.CC_READY),
@@ -632,6 +721,25 @@ public class DonkeyKong64Randomizer : N64EffectPack
                     () =>
                     {
                         bool result = BOULDER_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} spawned a boulder for you.");
+                        }
+                        return result;
+                    });
+                return;
+            case "spawn_crate":
+                TryEffect(request,
+                    () =>
+                    {
+                        bool result = true;
+                        result &= Connector.IsEqual8(CRATE_STATE, (byte)CC_STATE.CC_READY);
+                        result &= IsValidVersion(5);
+                        return result;
+                    },
+                    () =>
+                    {
+                        bool result = CRATE_STATE.TrySetByte((byte)CC_STATE.CC_ENABLING);
                         if (result)
                         {
                             Connector.SendMessage($"{request.DisplayViewer} spawned a boulder for you.");
@@ -869,6 +977,97 @@ public class DonkeyKong64Randomizer : N64EffectPack
                         return result;
                     });
                 return;
+            case "disable_button_a":
+                StartTimed(request,
+                    () => IsValidVersion(5),
+                    () =>
+                    {
+                        bool result = disableButton(0x8000, false);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} disabled the A Button.");
+                        }
+                        return result;
+                    });
+                return;
+            case "disable_button_b":
+                StartTimed(request,
+                    () => IsValidVersion(5),
+                    () =>
+                    {
+                        bool result = disableButton(0x4000, false);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} disabled the B Button.");
+                        }
+                        return result;
+                    });
+                return;
+            case "disable_button_z":
+                StartTimed(request,
+                    () => IsValidVersion(5),
+                    () =>
+                    {
+                        bool result = disableButton(0x2000, false);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} disabled the Z Button.");
+                        }
+                        return result;
+                    });
+                return;
+            case "disable_button_cu":
+                StartTimed(request,
+                    () => IsValidVersion(5),
+                    () =>
+                    {
+                        bool result = disableButton(0x0008, false);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} disabled the C-Up Button.");
+                        }
+                        return result;
+                    });
+                return;
+            case "disable_button_cd":
+                StartTimed(request,
+                    () => IsValidVersion(5),
+                    () =>
+                    {
+                        bool result = disableButton(0x0004, false);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} disabled the C-Down Button.");
+                        }
+                        return result;
+                    });
+                return;
+            case "disable_button_cl":
+                StartTimed(request,
+                    () => IsValidVersion(5),
+                    () =>
+                    {
+                        bool result = disableButton(0x0002, false);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} disabled the C-Left Button.");
+                        }
+                        return result;
+                    });
+                return;
+            case "disable_button_cr":
+                StartTimed(request,
+                    () => IsValidVersion(5),
+                    () =>
+                    {
+                        bool result = disableButton(0x0001, false);
+                        if (result)
+                        {
+                            Connector.SendMessage($"{request.DisplayViewer} disabled the C-Right Button.");
+                        }
+                        return result;
+                    });
+                return;
             case "refill_health":
                 TryEffect(request,
                     () => true,
@@ -1053,6 +1252,20 @@ public class DonkeyKong64Randomizer : N64EffectPack
                     return ANIMALTRANSFORM_STATE.TrySetByte((byte)CC_STATE.CC_DISABLING);
                 }
                 return true;
+            case "disable_button_a":
+                return disableButton(0x8000, true);
+            case "disable_button_b":
+                return disableButton(0x4000, true);
+            case "disable_button_z":
+                return disableButton(0x2000, true);
+            case "disable_button_cu":
+                return disableButton(0x0008, true);
+            case "disable_button_cd":
+                return disableButton(0x0004, true);
+            case "disable_button_cl":
+                return disableButton(0x0002, true);
+            case "disable_button_cr":
+                return disableButton(0x0001, true);
             default:
                 return base.StopEffect(request);
         }

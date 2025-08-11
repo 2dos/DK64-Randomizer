@@ -100,12 +100,8 @@ settingsExclusionMap = {
         ]
     },
     "shuffle_items": {False: ["item_rando_list_selected"]},
-    "enemy_rando": {False: ["enemies_selected"]},
-    "bonus_barrel_rando": {False: ["minigames_list_selected", "disable_hard_minigames"]},
     "cb_rando_enabled": {False: ["cb_rando_list_selected"]},
-    "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
-    "quality_of_life": {False: ["misc_changes_selected"]},
-    "hard_mode": {False: ["hard_mode_selected"]},
+    "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"], LogicType.minimal: ["glitches_selected"]},
     "spoiler_hints": {
         SpoilerHints.off: [
             "points_list_kongs"
@@ -183,6 +179,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "random_models",
         "random_enemy_colors",
         "misc_cosmetics",
+        "disco_donkey",
         "disco_chunky",
         "dark_mode_textboxes",
         "pause_hint_coloring",
@@ -194,8 +191,9 @@ def encrypt_settings_string_enum(dict_data: dict):
         "rambi_skin_custom_color",
         "gb_colors",
         "gb_custom_color",
-        "random_colors",
+        "random_kong_colors",
         "random_music",
+        "music_is_custom",
         "music_bgm_randomized",
         "music_events_randomized",
         "music_majoritems_randomized",
@@ -207,7 +205,10 @@ def encrypt_settings_string_enum(dict_data: dict):
         "tiny_clothes_custom_color",
         "override_cosmetics",
         "remove_water_oscillation",
+        "fps_display",
         "head_balloons",
+        "song_speed_near_win",
+        "disable_flavor_text",
         "colorblind_mode",
         "big_head_mode",
         "search",
@@ -219,11 +220,14 @@ def encrypt_settings_string_enum(dict_data: dict):
         "sfx_volume",
         "music_volume",
         "true_widescreen",
+        "anamorphic_widescreen",
         "camera_is_not_inverted",
         "sound_type",
         "smoother_camera",
         "songs_excluded",
         "excluded_songs_selected",
+        "random_colors",
+        "random_colors_selected",
         "music_filtering",
         "music_filtering_selected",
         "troff_brighten",
@@ -236,6 +240,14 @@ def encrypt_settings_string_enum(dict_data: dict):
         "shockwave_status",  # Deprecated with starting move selector rework - this is now derived in the settings constructor
         "music_disable_reverb",
         "archipelago",
+        "bonus_barrel_rando",  # Deprecated with dropdown multiselector rework
+        "hard_mode",  # Deprecated with dropdown multiselector rework
+        "hard_bosses",  # Deprecated with dropdown multiselector rework
+        "quality_of_life",  # Deprecated with dropdown multiselector rework
+        "enemy_rando",  # Deprecated with dropdown multiselector rework
+        "faster_checks_enabled",  # Deprecated with dropdown multiselector rework
+        "remove_barriers_enabled",  # Deprecated with dropdown multiselector rework
+        "",
     ]:
         if pop in dict_data:
             dict_data.pop(pop)

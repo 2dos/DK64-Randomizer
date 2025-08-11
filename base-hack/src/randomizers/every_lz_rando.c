@@ -1,25 +1,5 @@
 #include "../../include/common.h"
 
-/*
-	Exiting races:
-		- Aztec Beetle Race (!)
-		- Caves Beetle Race (!)
-		- Seal Race (!)
-		- Factory Car Race (!)
-		- Castle Car Race (!)
-	Exiting Levels (!)
-	Entering Levels (!)
-	Entering Seasick (!)
-	Entering Mech Fish // Ignore - This one is weird
-	Entering Aztec Beetle Race (!)
-	Enter Fungi Minecart (!)
-	Exit K Rool (!)
-	Exit Fungi Minecart (!)
-	Exit Japes Minecart (!)
-	Exit Castle Minecart (!)
-	Enter Castle Lobby (!)
-*/
-
 void replace_zones(int init_flag) {
 	int more_lz_byte = Rando.randomize_more_loading_zones;
 	if (more_lz_byte) {
@@ -65,15 +45,37 @@ static const unsigned char vanilla_blast_maps[] = {
 	MAP_CASTLEBBLAST,
 };
 
-void blastWarpHandler(maps map, int wrong_cs_enabled) {
+LZREntrance blast_entrances[] = {
+	{.map = MAP_JAPESBBLAST, .exit = 0},
+	{.map = MAP_AZTECBBLAST, .exit = 0},
+	{.map = MAP_FACTORYBBLAST, .exit = 0},
+	{.map = MAP_GALLEONBBLAST, .exit = 0},
+	{.map = MAP_FUNGIBBLAST, .exit = 0},
+	{.map = MAP_CAVESBBLAST, .exit = 0},
+	{.map = MAP_CASTLEBBLAST, .exit = 0},
+	{.map = MAP_ISLES, .exit = 23},  // Isles Blast warp
+};
+
+LZREntrance *blastWarpGetter(maps map) {
+	if (map == MAP_ISLES) {
+		return &blast_entrances[7];
+	}
 	for (int i = 0; i < 7; i++) {
 		if (map == vanilla_blast_maps[i]) {
-			if (wrong_cs_enabled) {
-				setIntroStoryPlaying(2);
-				setNextTransitionType(0);
-			}
-			initiateTransition_0(Rando.blast_entrances[i].map, Rando.blast_entrances[i].exit, 0, 0);
-			return;
+			return &blast_entrances[i];
 		}
 	}
+	return 0;
+}
+
+void blastWarpHandler(maps map, int wrong_cs_enabled) {
+	LZREntrance *temp = blastWarpGetter(map);
+	if (!temp) {
+		return;
+	}
+	if (wrong_cs_enabled) {
+		setIntroStoryPlaying(2);
+		setNextTransitionType(0);
+	}
+	initiateTransition_0(temp->map, temp->exit, 0, 0);
 }

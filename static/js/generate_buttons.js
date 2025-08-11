@@ -1,3 +1,4 @@
+var jquery = $;
 function lanky_file_changed(event) {
     /** On the event of a file being loaded.
     
@@ -40,7 +41,7 @@ async function generate_previous_seed(event) {
             romElement.classList.add("is-invalid");
         }
     } else {
-        await apply_patch(get_previous_seed_data(), true)
+        await apply_patch(get_previous_seed_data(), true);
     }
 }
 
@@ -75,8 +76,10 @@ async function generate_seed_from_patch(event) {
                     return;
                 }
             }
+            $("#lankyModal").modal("show");
             // Apply the patch
-            await apply_patch(loaded_patch, true)
+            await apply_patch(loaded_patch, true);
+            $("#lankyModal").modal("hide");
          }
     }
 }
@@ -328,6 +331,30 @@ else:
         }
     }
 
+    // Handle Dropdown Multiselectors
+    let ddms_container = document.getElementsByClassName("dropdown-multiselect");
+    for (let container of ddms_container) {
+        let element = container.getElementsByClassName("dropdown-menu")[0];
+        let values = [];
+        const checkboxes = Array.from(element.getElementsByTagName("input"));
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                values.push(get_enum_or_string_value(cb.value, element.getAttribute("name")));
+            }
+        });
+        form_data[element.getAttribute("name")] = values;
+    }
+
+    let sortable_container = document.getElementsByClassName("sortablejs");
+    for (let element of sortable_container) {
+        let values = [];
+        const options = Array.from(element.getElementsByTagName("li"));
+        options.forEach(option => {
+            values.push(get_enum_or_string_value(option.getAttribute("value"), element.getAttribute("name")));
+        });
+        form_data[element.getAttribute("name")] = values;
+    }
+
     return JSON.stringify(form_data);
 }
 
@@ -409,8 +436,8 @@ js.plando_errors = plando_errors
         apply_conversion();
 
         // Start the progress bar
-        get_hash_images("browser", "loading-fairy")
-        get_hash_images("browser", "loading-dead")
+        get_hash_images("browser", "loading-fairy");
+        get_hash_images("browser", "loading-dead");
         // Append the gif_fairy to the bottom of the DOM, we just want to validate its working
         // If there isin't already an src set them
         //document.getElementById("progress-fairy").src = gif_fairy;
@@ -427,7 +454,6 @@ js.plando_errors = plando_errors
 
         let branch, url;
         if (window.location.hostname === "dev.dk64randomizer.com" || window.location.hostname === "dk64randomizer.com") {
-            branch = "dev";
             if (!window.location.hostname.toLowerCase().includes("dev")) {
                 branch = "stable";
                 url = "https://api.dk64rando.com/api";
@@ -525,6 +551,124 @@ async function import_settings_string(event) {
                             }
                         }
                     });
+                } else if (selector.classList.contains("dropdown-menu")) {
+                    let MapName = SettingsMap[key];
+                    // Flip the attributes so the value is the key and the key is the value
+                    let flipped = {};
+                    for (let key in MapName) {
+                        flipped[MapName[key]] = key;
+                    }
+                    const checkboxes = selector.getElementsByTagName("input");
+                    for (let cb of checkboxes) {
+                        cb.checked = false;
+                    }
+                    let selectedCount = 0;
+                    settings[key].forEach(item => {
+                        // Find the selected option by the value of the option
+                        for (let cb of checkboxes) {
+                            if (cb.value == flipped[item]) {
+                                cb.checked = true;
+                                selectedCount++;
+                            }
+                        }
+                    });
+                    selector.parentNode.querySelector(".dropdown-toggle>span").innerText = `${selectedCount} item${selectedCount == 1 ? '' : 's'} selected`
+                } else if (selector.classList.contains("sortablejs")) {
+                    let MapName = SettingsMap[key];
+                    // Flip the attributes so the value is the key and the key is the value
+                    let flipped = {};
+                    for (let key in MapName) {
+                        flipped[MapName[key]] = key;
+                    }
+                    const grandparent = selector.parentElement.parentElement;
+                    const items_list = JSON.parse(grandparent.getAttribute("data-items")).filter(k => !k.is_check);
+                    const checks_list = JSON.parse(grandparent.getAttribute("data-items")).filter(k => k.is_check);
+                    const list_count = parseInt(grandparent.getAttribute("data-count"));
+                    const list_predicate = grandparent.getAttribute("data-predicate");
+                    let valid = true;
+                    if (list_predicate == "item_rando_list_") {
+                        let total_settings_list_items = [];
+                        let total_settings_list_checks = [];
+                        for (let i = 0; i < list_count; i++) {
+                            total_settings_list_items = total_settings_list_items.concat(settings[`${list_predicate}${i}`]);
+                            total_settings_list_checks = total_settings_list_checks.concat(settings[`${list_predicate}${i + list_count}`]);
+                        }
+                        if (total_settings_list_items.length != items_list.length) {
+                            valid = false;
+                        }
+                        if (total_settings_list_checks.length != checks_list.length) {
+                            valid = false;
+                        }
+                        total_settings_list_items.forEach(value => {
+                            if (items_list.filter(k => k.num_val == value).length == 0) {
+                                valid = false;
+                            }
+                        });
+                        total_settings_list_checks.forEach(value => {
+                            if (checks_list.filter(k => k.num_val == value).length == 0) {
+                                valid = false;
+                            }
+                        });
+                    } else {
+                        let total_settings_list = [];
+                        for (let i = 0; i < list_count; i++) {
+                            total_settings_list = total_settings_list.concat(settings[`${list_predicate}${i}`]);
+                        }
+                        valid = total_settings_list.length == items_list.length;
+                        total_settings_list.forEach(value => {
+                            if (items_list.filter(k => k.num_val == value).length == 0) {
+                                valid = false;
+                            }
+                        });
+                    }
+                    if (valid) {
+                        selector.innerHTML = "";
+                        settings[key].forEach(item => {
+                            // Find the selected option by the value of the option
+                            const option = document.createElement("li");
+                            option.classList.add("list-group-item");
+                            let opt_name = "";
+                            let opt_tooltip = "";
+                            let opt_checks = "";
+                            let opt_items = "";
+                            let opt_tied_item = "";
+                            items_list.concat(checks_list).forEach(k => {
+                                if (k.num_val == item) {
+                                    option.setAttribute("value", k.value);
+                                    opt_name = k.name;
+                                    opt_tooltip = k.tooltip;
+                                    if (list_predicate == "item_rando_list_") {
+                                        opt_checks = k.check_count;
+                                        opt_items = k.item_count;
+                                        if (k.is_check) {
+                                            option.classList.add("ischeck");
+                                        } else if (k.is_dummy) {
+                                            option.classList.add("show-if-ir-decouple");
+                                            if (settings["decouple_item_rando"]) {
+                                                option.setAttribute("hidden", "hidden");
+                                            }
+                                        }
+                                        opt_tied_item = k.tied ? k.tied : "";
+                                    }
+                                }
+                            })
+                            if (opt_name != "") {
+                                option.innerText = opt_name; // Not sure what to do for this
+                                option.title = opt_tooltip;
+                                if (list_predicate == "item_rando_list_") {
+                                    option.setAttribute("check_count", opt_checks);
+                                    option.setAttribute("items_count", opt_items);
+                                    option.setAttribute("tied_item", opt_tied_item);
+                                }
+                                selector.appendChild(option);
+                            }
+                        });
+                    } else {
+                        console.log("Invalid sortable during string import");
+                    }
+                    if (list_predicate == "item_rando_list_") {
+                        updateCheckItemCounter(grandparent);
+                    }
                 }
             } else {
                 const selector = document.getElementById(key);
@@ -558,7 +702,7 @@ async function import_settings_string(event) {
         }
     }
 
-    update_ui_states(null);
+    update_ui_states();
     generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.");
 }
 

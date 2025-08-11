@@ -29,6 +29,11 @@
         "xstring": "c",
         "xlocale": "c",
         "algorithm": "c",
-        "iterator": "c"
+        "iterator": "c",
+        "memory": "c",
+        "compare": "c",
+        "xmemory": "c",
+        "xtr1common": "c",
+        "pause.h": "c"
     }
 }

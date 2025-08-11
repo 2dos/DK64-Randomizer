@@ -13,7 +13,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Settings import Settings
-from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected
 
 # Used when level order rando is ON
 LobbyEntrancePool = [
@@ -211,7 +211,7 @@ def AssumeExits(spoiler, frontpool, backpool, newpool):
         exit.shuffledId = None
         exit.toBeShuffled = True
         # 2) Attach to root of world (DK Isles)
-        newExit = TransitionFront(exit.back.regionId, lambda l: True, exitId, True)
+        newExit = TransitionFront(exit.back.regionId, lambda _: True, exitId, True)
         AddRootExit(spoiler, newExit)
 
 
@@ -229,7 +229,16 @@ def ShuffleExits(spoiler):
             new_level_order = GenerateLevelOrderUnrestricted(settings)
         ShuffleLevelExits(settings, newLevelOrder=new_level_order)
         if settings.alter_switch_allocation:
-            allocation = [1, 1, 1, 1, 2, 2, 3, 3]
+            allocation = [
+                settings.prog_slam_level_1,
+                settings.prog_slam_level_2,
+                settings.prog_slam_level_3,
+                settings.prog_slam_level_4,
+                settings.prog_slam_level_5,
+                settings.prog_slam_level_6,
+                settings.prog_slam_level_7,
+                settings.prog_slam_level_8,
+            ]
             for x in range(8):
                 level = settings.level_order[x + 1]
                 settings.switch_allocation[level] = allocation[x]
@@ -560,8 +569,7 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
                     if lankyAccessible:
                         guitarDoorAccess = (
                             Kongs.diddy in settings.starting_kong_list
-                            or IsItemSelected(
-                                settings.remove_barriers_enabled,
+                            or IsDDMSSelected(
                                 settings.remove_barriers_selected,
                                 RemovedBarriersSelected.aztec_tunnel_door,
                             )

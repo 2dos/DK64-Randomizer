@@ -346,5 +346,5 @@ def freezeKey():
 
 
 applyMelonMask(60)
-convertColors()
+# convertColors()
 # freezeKey()

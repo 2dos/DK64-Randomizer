@@ -7,6 +7,7 @@
 .definelabel textOverlayCode, 0x8069DA54
 .definelabel spawnTransferredActor, 0x806C80E4
 .definelabel GoldenBananaCode, 0x806A734C
+.definelabel BossKeyCode, 0x806A736C
 .definelabel handleGuardDetection, 0x806AE394
 .definelabel guardShouldMove, 0x8072E54C
 .definelabel guardUnkFunction, 0x80724E48
@@ -148,3 +149,7 @@
 .definelabel disappearPeel, 0x8002E7A0
 .definelabel resetLankyKR, 0x8002EA14
 .definelabel unkSoundFunction, 0x80605314
+.definelabel cutsceneDiddyCode, 0x806C1734
+.definelabel cutsceneLankyCode, 0x806C19F4
+.definelabel cutsceneTinyCode, 0x806C1B50
+.definelabel cutsceneChunkyCode, 0x806C1CCC

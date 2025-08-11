@@ -111,7 +111,7 @@ def BuildInstanceScripts():
                                     block_count = int.from_bytes(tp.read(2), "big")
                                     behav_9C = int.from_bytes(tp.read(2), "big")
                                     read_location += 6
-                                    for block_index in range(block_count):
+                                    for _ in range(block_count):
                                         tp.seek(read_location)
                                         cond_count = int.from_bytes(tp.read(2), "big")
                                         read_location += 2 + (cond_count * 8)
@@ -266,6 +266,6 @@ def BuildInstanceScripts():
                                 to_add = 16 - offset
                                 new_raw.write((0).to_bytes(to_add, "big"))
                 with open("./instance_scripts_data.json", "w") as fg:
-                    json.dump(map_data, fg)
+                    json.dump(map_data, fg, indent=4)
         else:
             print("Couldn't find instance script table")

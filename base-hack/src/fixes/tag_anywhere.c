@@ -233,6 +233,11 @@ static const map_bitfield banned_map_btf = {
     .k_lumsy_ending = 1, // Reason: Cutscene Map
     .k_rools_shoe = 1, // Reason: Boss Map
     .k_rools_arena = 1, // Reason: Cutscene Map
+    .arcade_25m = 1, // Reason: Minigame.
+    .arcade_50m = 1, // Reason: Minigame.
+    .arcade_75m = 1, // Reason: Minigame.
+    .arcade_100m = 1, // Reason: Minigame.
+    .jetpac_rocket = 1, // Reason: Minigame.
 };
 
 static const movement_bitfield banned_movement_btf = {
@@ -484,6 +489,7 @@ int canTagAnywhere(void) {
             return 0;
         }
     } else if (!Rando.disable_race_patches) {
+        // Disable TA in floor is lava mini
         return 0;
     }
     if (getBitArrayValue(&banned_movement_btf, Player->control_state)) {
@@ -506,19 +512,19 @@ int getTAState(void) {
 }
 
 int hasAccessToKong(int kong) {
-    if (checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) {
-        if (Rando.perma_lose_kongs) {
-            if (!checkFlag(KONG_LOCKED_START + kong, FLAGTYPE_PERMANENT)) {
-                return 1;
-            }
-            if (curseRemoved()) {
-                return 1;
-            }
-            if (hasPermaLossGrace(CurrentMap)) {
-                return 1;
-            }
+    if (getItemCount_new(REQITEM_KONG, 0, kong)) {
+        if (!Rando.perma_lose_kongs) {
+            return 1;   
         }
-        return 1;
+        if (!checkFlag(KONG_LOCKED_START + kong, FLAGTYPE_PERMANENT)) {
+            return 1;
+        }
+        if (curseRemoved()) {
+            return 1;
+        }
+        if (hasPermaLossGrace(CurrentMap)) {
+            return 1;
+        }
     }
     return 0;
 }
@@ -679,9 +685,7 @@ void tagAnywhere(void) {
                     if (can_tag_left){
                         change -= 1;      
                     }                  
-                }
-                else
-                {
+                } else {
                     can_tag_left = 1;
                 }                
 
@@ -689,9 +693,7 @@ void tagAnywhere(void) {
                     if (can_tag_right){                    
                         change += 1;                        
                     }
-                }
-                else
-                {
+                } else {
                     can_tag_right = 1;
                 }                
 
@@ -715,12 +717,12 @@ void tagAnywhere(void) {
 	}
 }
 
-void tagAnywhereInit(int is_homing, int model2_id, int obj) {
+void tagAnywhereInit(int is_homing, int model2_id, int obj, int id) {
     /**
      * @brief Initialize certain aspects of Tag Anywhere
      */
     assessFlagMapping(CurrentMap, model2_id);
-    coinCBCollectHandle(0, obj, is_homing);
+    updateItemTotalsHandler(0, obj, is_homing, id);
 }
 
 typedef struct sfx_cache_item {
@@ -796,7 +798,7 @@ void tagAnywhereAmmo(int player, int obj, int is_homing) {
      * This function handles these changes
      * 
      */
-    coinCBCollectHandle(player, obj, is_homing);
+    updateItemTotalsHandler(player, obj, is_homing, -1);
     int id = 0;
     if (LatestCollectedObject) {
         id = LatestCollectedObject->id;
@@ -815,7 +817,7 @@ void tagAnywhereBunch(int player, int obj, int player_index) {
      * This function handles these changes
      * 
      */
-    coinCBCollectHandle(player, obj, player_index);
+    updateItemTotalsHandler(player, obj, player_index, -1);
     int id = 0;
     if (LatestCollectedObject) {
         id = LatestCollectedObject->id;
@@ -850,12 +852,19 @@ void handleLedgeLock(void) {
         return;
     }
     if (!Rando.disable_race_patches) {
+        // Disable ledge grabbing in dungeon as Tiny
         if ((CurrentMap == MAP_CASTLEDUNGEON) && (Character != KONG_TINY)) {
-            // Even Spike wants this trick patched
             return;
         }
     }
     handleLedgeGrabbing();
+}
+
+void handlePushLock(int action, void* actor, int player_index) {
+    if ((grab_lock_timer >= 0) && (grab_lock_timer < 2)) {
+        return;
+    }
+    setAction(action, actor, player_index);
 }
 
 void handleActionSet(int action, void* actor, int player_index) {

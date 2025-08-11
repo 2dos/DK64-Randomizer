@@ -1,3 +1,5 @@
+{% from 'dropdown_multiselector.html' import dropdown_multiselector %}
+
 {% macro list_selector(list, name, title, tooltip, size, includeDisclaimer=0, overrideDisclaimer="") %}
     <!-- Icon triggers modal -->
     <input class="customize"
@@ -197,12 +199,12 @@
             $('#{{ name }}_{{ item.value }}').prop('value', $('#{{ name }}_{{ item.value }}').attr('default_val'))
             $('#{{ name }}_{{ item.value }}').trigger('change')
         {% endfor %}
-    })
+    });
 </script>
 {% endmacro %}
-{% macro toggle_input(id, name, tooltip="", default_checked=False, altered_name="") %}
+{% macro toggle_input(id, name, tooltip="", default_checked=False, altered_name="", hidden="") %}
 <div class="form-check form-switch item-switch" data-toggle="tooltip"
-            title="{{ tooltip }}">
+            title="{{ tooltip }}" {{ hidden }}>
     {% if default_checked %}
         <input
             class="form-check-input"
@@ -256,7 +258,181 @@
                 const targ_delta = targ_max - targ_min;
                 const value_delta = targ_value - targ_min;
                 e.target.style.setProperty("--p", `${parseInt(100 * (value_delta / targ_delta))}%`)
-            })
-        })
+            });
+        });
     </script>
+{% endmacro %}
+{% macro switchsanity_option(name, setting, subtype, default) %}
+    <div class="col">
+        <div class="item-select">
+            <p class="select-title">{{ name }}</p>
+            <select name="{{ setting }}"
+                    id="{{ setting }}"
+                    class="form-select"
+                    aria-label="Randomization type"
+                    display_name="name"
+                    data-toggle="tooltip"
+                    title="Switch assigned to {{ name }}.">
+                {% if subtype != "gone_to_helm" %}
+                    {% if subtype != "free_tiny" %}
+                        <option id="donkey" {% if default == "donkey" %}selected{% endif %} value="donkey">
+                            {% if subtype == "guns" %}Coconut
+                            {% elif subtype == "instruments" %}Bongos
+                            {% elif subtype == "kong" %}Donkey
+                            {% elif subtype == "mport_to_helm" %}Blast
+                            {% elif subtype == "free_lanky" %}Bongos/Coconut
+                            {% elif subtype == "free_tiny" %}You should not see this
+                            {% endif %}
+                        </option>
+                    {% endif %}
+                    {% if subtype != "mport_to_helm" %}
+                        <option id="diddy" {% if default == "diddy" %}selected{% endif %} value="diddy">
+                            {% if subtype == "guns" %}Peanut
+                            {% elif subtype == "instruments" %}Guitar
+                            {% elif subtype == "kong" %}Diddy
+                            {% elif subtype == "mport_to_helm" %}You should not see this
+                            {% elif subtype == "free_lanky" %}Guitar/Peanut
+                            {% elif subtype == "free_tiny" %}Chimpy Charge
+                            {% endif %}
+                        </option>
+                    {% endif %}
+                    {% if subtype != "free_tiny" %}
+                        <option id="lanky" {% if default == "lanky" %}selected{% endif %} value="lanky">
+                            {% if subtype == "guns" %}Grape
+                            {% elif subtype == "instruments" %}Trombone
+                            {% elif subtype == "kong" %}Lanky
+                            {% elif subtype == "mport_to_helm" %}Balloon
+                            {% elif subtype == "free_lanky" %}Trombone/Grape
+                            {% elif subtype == "free_tiny" %}You should not see this
+                            {% endif %}
+                        </option>
+                    {% endif %}
+                    {% if subtype != "free_tiny" %}
+                        <option id="tiny" {% if default == "tiny" %}selected{% endif %} value="tiny">
+                            {% if subtype == "guns" %}Feather
+                            {% elif subtype == "instruments" %}Saxophone
+                            {% elif subtype == "kong" %}Tiny
+                            {% elif subtype == "mport_to_helm" %}Monkeyport
+                            {% elif subtype == "free_lanky" %}Saxophone/Feather
+                            {% elif subtype == "free_tiny" %}You should not see this
+                            {% endif %}
+                        </option>
+                    {% endif %}
+                    {% if subtype != "mport_to_helm" %}
+                        <option id="chunky" {% if default == "chunky" %}selected{% endif %} value="chunky">
+                            {% if subtype == "guns" %}Pineapple
+                            {% elif subtype == "instruments" %}Triangle
+                            {% elif subtype == "kong" %}Chunky
+                            {% elif subtype == "mport_to_helm" %}You should not see this
+                            {% elif subtype == "free_lanky" %}Triangle/Pineapple
+                            {% elif subtype == "free_tiny" %}Primate Punch
+                            {% endif %}
+                        </option>
+                    {% endif %}
+                {% else %}
+                    <option id="bongos" {% if default == "bongos" %}selected{% endif %} value="bongos">Bongos</option>
+                    <option id="guitar" {% if default == "guitar" %}selected{% endif %} value="guitar">Guitar</option>
+                    <option id="trombone" {% if default == "trombone" %}selected{% endif %} value="trombone">Trombone</option>
+                    <option id="sax" {% if default == "sax" %}selected{% endif %} value="sax">Saxophone</option>
+                    <option id="triangle" {% if default == "triangle" %}selected{% endif %} value="triangle">Triangle</option>
+                    <option id="lever" {% if default == "lever" %}selected{% endif %} value="lever">Grab Lever</option>
+                    <option id="gong" {% if default == "gong" %}selected{% endif %} value="gong">Gong</option>
+                    <option id="gone_pad" {% if default == "gone_pad" %}selected{% endif %} value="gone_pad">Gorilla Gone</option>
+                {% endif %}
+                <option id="random" {% if default == "random" %}selected{% endif %} value="random">
+                    Random
+                </option>
+            </select>
+        </div>
+    </div>
+{% endmacro %}
+{% macro item_req_selector(behavior_name, item_name, selector_name, min, max, tooltip) %}
+    <div class="item-select">
+        <p class="select-title">{{ selector_name }}</p>
+        <div class="d-flex select-number-container" id="{{ behavior_name }}_container">
+            <select name="{{ behavior_name }}"
+                    id="{{ behavior_name }}"
+                    display_name="{{ selector_name }}"
+                    class="form-select center-div"
+                    aria-label="Randomization type"
+                    data-toggle="tooltip"
+                    title="{{ tooltip }}">
+                <option id="pre_selected" value="pre_selected">
+                    Pre-Selected
+                </option>
+                <option id="easy_random" value="easy_random">
+                    Easy Random
+                </option>
+                <option id="normal_random" selected value="normal_random">
+                    Normal Random
+                </option>
+                <option id="hard_random" value="hard_random">
+                    Hard Random
+                </option>
+            </select>
+            <input min="{{ min }}"
+                max="{{ max }}"
+                name="{{ item_name }}"
+                id="{{ item_name }}"
+                display_name="Troff 'n' Scoff Count"
+                class="form-control center-div"
+                type="number"
+                data-toggle="tooltip"
+                title="Amount of the item specified to complete the check."
+                default="{{ min }}"
+                placeholder="{{ min }}"/>
+        </div>
+    </div>
+{% endmacro %}
+{% macro lock_tab() %}
+    <li>
+        <a
+            class="py-2"
+            id="lock-nav-panel"
+        >
+            <i class="fa fa-lock-open fa-2x" id="lock-nav-panel-unlock" hidden></i>
+            <i class="fa fa-lock" id="lock-nav-panel-lock"></i>
+            <span class="nav-text">
+                <div class="position-absolute top-50 start-0 translate-middle-y">Lock Panel</div>
+            </span>
+        </a>
+    </li>
+    <script>
+        document.getElementById("lock-nav-panel").addEventListener("click", (e) => {
+            const tab_list = document.getElementById("nav-tab-list");
+            const panel = document.getElementById("lock-nav-panel");
+            tab_list.classList.toggle("expanded");
+            const expanded = tab_list.classList.contains("expanded");
+            panel.getElementsByTagName("div")[0].innerText = expanded ? "Unlock Panel" : "Lock Panel";
+            const lock_icon = document.getElementById("lock-nav-panel-lock");
+            const unlock_icon = document.getElementById("lock-nav-panel-unlock");
+            if (expanded) {
+                lock_icon.setAttribute("hidden", "hidden");
+                unlock_icon.removeAttribute("hidden");
+            } else {
+                unlock_icon.setAttribute("hidden", "hidden");
+                lock_icon.removeAttribute("hidden");
+            }
+        });
+    </script>
+{% endmacro %}
+{% macro gen_tab(internal_name, tab_icon, tab_name, first, hidden) %}
+    <li role="presentation">
+        <a
+            class="{% if first %}active{% endif %} py-2"
+            id="nav-{{ internal_name }}-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-{{ internal_name }}"
+            type="button"
+            role="tab"
+            aria-controls="nav-{{ internal_name }}"
+            aria-selected="{{ 'true' if first else 'false' }}"
+            {% if hidden %}hidden{% endif %}
+        >
+            <i class="fa {{ tab_icon }}"></i>
+            <span class="nav-text">
+                <div class="position-absolute top-50 start-0 translate-middle-y">{{ tab_name }}</div>
+            </span>
+        </a>
+    </li>
 {% endmacro %}

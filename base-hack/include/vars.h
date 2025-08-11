@@ -34,8 +34,8 @@
 
 #define GB_DICTIONARY_COUNT 120
 #define ACTOR_VANILLA_LIMIT 345
-#define COLLISION_LIMIT 72
-#define DEFS_LIMIT 159
+#define COLLISION_LIMIT 90
+#define DEFS_LIMIT 177
 #define ACTOR_LIMIT (345 + NEWACTOR_TERMINATOR)
 #define CUSTOM_ACTORS_START 345
 
@@ -75,8 +75,8 @@
 #define FLAG_SHOPMOVE_INS_1 0x29C
 #define FLAG_SHOPMOVE_INS_2 0x29D
 #define FLAG_RAINBOWCOIN_0 0x29E // 0x29E -> 0x2AD (inc.) (16 flags)
-#define FLAG_FAKEITEM 0x2AE // 0x2AE -> 0x2BD (inc.) (16 flags)
-#define FLAG_JUNKITEM 0x320 // 0x320 -> 0x383 (inc.) (100 flags)
+#define FLAG_GRABBABLES_DESTROYED 0x2AE // 0x2AE -> 0x2BD (inc.) (16 flags)
+#define FLAG_SHOPFLAG 0x320 // 0x320 -> 0x383 (inc.) (100 flags)
 #define FLAG_WRINKLYVIEWED 0x384 // 0x384 -> 0x3A6 (inc.) (35 flags)
 #define FLAG_KROOL_ENTERED 0x3A7 // 0x3A7 = DK, 0x3A8 = Diddy, 0x3A9 = Lanky, 0x3AA = Tiny, 0x3AB = Chunky
 #define FLAG_MELONCRATE_0 0x3AC // 0x3AC -> 0x3BB (inc.) (16 flags)
@@ -92,7 +92,8 @@
 #define FLAG_ITEM_SNIDE 0x3C5
 #define FLAG_MEDAL_ISLES_DK 0x3C6 // 0x3C6, 0x3C7, 0x3C8, 0x3C9, 0x3CA
 #define FLAG_HELM_HURRY_DISABLED 0x3CB
-#define FLAG_ENEMY_KILLED_0 0x3CC // 0x3CC -> 0x575 (inc.) (426 flags)
+#define FLAG_HELM_MINIGAMES 0x3CC // 0x3CC -> 0x3D5 (inc.)
+#define FLAG_ENEMY_KILLED_0 0x3D6 // 0x3D6 -> 0x57F (inc.) (428 flags)
 
 #define MODEL_COUNT 0xED
 
@@ -137,5 +138,4 @@
 #define CROWD_VOLUME 10000
 
 #define PATH_CAP 64
-#define BONUS_DATA_COUNT 99
 #define TEXT_OVERLAY_BUFFER 4

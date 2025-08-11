@@ -29,62 +29,11 @@ void spriteCode(int sprite_index, float scale) {
     }
 }
 
-void ninCoinCode(void) {
-    /**
-     * @brief Nintendo Coin Actor Code
-     */
-    GoldenBananaCode();
-}
-
-void rwCoinCode(void) {
-    /**
-     * @brief Rareware Coin Actor Code
-     */
-    GoldenBananaCode();
-}
-
-void medalCode(void) {
-    /**
-     * @brief Medal Actor Code
-     */
-    GoldenBananaCode();
-}
-
-void beanCode(void) {
-    /**
-     * @brief Bean Actor Code
-     */
-    GoldenBananaCode();
-}
-
-void pearlCode(void) {
-    /**
-     * @brief Pearl Actor Code
-     */
-    GoldenBananaCode();
-}
-
 void NothingCode(void) {
     /**
      * @brief Null Item Actor Code
      */
     deleteActorContainer(CurrentActorPointer_0);
-}
-
-void scaleBounceDrop(float scale) {
-    /**
-     * @brief Change the visual scale of a bounce drop
-     * 
-     * @param scale New Scale of the object
-     */
-    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        renderingParamsData* render = CurrentActorPointer_0->render;
-        if (render) {
-            render->scale_x = scale;
-            render->scale_y = scale;
-            render->scale_z = scale;
-        }
-    }
 }
 
 void KongDropCode(void) {
@@ -167,7 +116,7 @@ void missingShopOwnerCode(int cutscene) {
 }
 
 void crankyCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_CRANKY, FLAGTYPE_PERMANENT)) {
+    if (checkFlag(FLAG_ITEM_CRANKY, FLAGTYPE_PERMANENT)) {
         crankyCode();
         return;
     }
@@ -175,7 +124,7 @@ void crankyCodeHandler(void) {
 }
 
 void funkyCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_FUNKY, FLAGTYPE_PERMANENT)) {
+    if (checkFlag(FLAG_ITEM_FUNKY, FLAGTYPE_PERMANENT)) {
         funkyCode();
         return;
     }
@@ -183,7 +132,7 @@ void funkyCodeHandler(void) {
 }
 
 void candyCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_CANDY, FLAGTYPE_PERMANENT)) {
+    if (checkFlag(FLAG_ITEM_CANDY, FLAGTYPE_PERMANENT)) {
         candyCode();
         return;
     }
@@ -191,13 +140,20 @@ void candyCodeHandler(void) {
 }
 
 void snideCodeHandler(void) {
-    if (checkFlagDuplicate(FLAG_ITEM_SNIDE, FLAGTYPE_PERMANENT)) {
+    if (checkFlag(FLAG_ITEM_SNIDE, FLAGTYPE_PERMANENT)) {
         snideCode();
         return;
     }
     missingShopOwnerCode(13);
 }
 
+void FakeKeyCode(void) {
+    /**
+     * @brief Actor code for the fake item (commonly known as "Ice Traps") actor
+     */
+    BossKeyCode();
+    CurrentActorPointer_0->rot_y -= 0xE4; // Spin in reverse
+}
 void FakeGBCode(void) {
     /**
      * @brief Actor code for the fake item (commonly known as "Ice Traps") actor
@@ -210,10 +166,7 @@ void mermaidCheck(void) {
     /**
      * @brief Set the mermaid control state based on the amount of pearls you have
      */
-    int count = 0;
-    for (int i = 0; i < 5; i++) {
-        count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
-    }
+    int count = getItemCount_new(REQITEM_PEARL, 0, 0);
     if (count == 0) {
         CurrentActorPointer_0->control_state = 0x1E;
     } else if (count < Rando.mermaid_requirement) {
@@ -228,7 +181,7 @@ int fairyQueenCutsceneInit(int start, int count, flagtypes type) {
     /**
      * @brief Set BFI Queen control state based on the amount of fairies you have
      */
-    int fairies_in_possession = countFlagsDuplicate(start, count, type); 
+    int fairies_in_possession = getItemCount_new(REQITEM_FAIRY, 0, 0);
     int fairy_limit = 20;
     if (Rando.rareware_gb_fairies > 0) {
         fairy_limit = Rando.rareware_gb_fairies;
@@ -270,6 +223,7 @@ void fairyQueenCheckSpeedup(void *actor, int unk) {
 static int stored_maps[STORED_COUNT] = {};
 static unsigned char stored_kasplat[STORED_COUNT] = {};
 static unsigned char stored_enemies[ENEMY_REWARD_CACHE_SIZE][STORED_COUNT] = {};
+static unsigned short stored_holdable;
 
 int setupHook(int map) {
     /**
@@ -294,6 +248,7 @@ int setupHook(int map) {
     for (int i = 0; i < STORED_COUNT; i++) {
         if (stored_maps[i] == PreviousMap) {
             place_new = 0;
+            stored_holdable = HoldableSpawnBitfield;
             stored_kasplat[i] = KasplatSpawnBitfield;
             for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                 stored_enemies[j][i] = enemy_rewards_spawned[j];
@@ -304,6 +259,7 @@ int setupHook(int map) {
         for (int i = 0; i < STORED_COUNT; i++) {
             if (place_new) {
                 if (stored_maps[i] == -1) {
+                    stored_holdable = HoldableSpawnBitfield;
                     stored_kasplat[i] = KasplatSpawnBitfield;
                     for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                         stored_enemies[j][i] = enemy_rewards_spawned[j];
@@ -326,6 +282,7 @@ int setupHook(int map) {
                     enemy_rewards_spawned[j] = 0;
                 }
             }
+            HoldableSpawnBitfield = stored_holdable;
             KasplatSpawnBitfield = stored_kasplat[i];
             for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                 enemy_rewards_spawned[j] = stored_enemies[j][i];
@@ -334,6 +291,7 @@ int setupHook(int map) {
     }
     if (!in_chain) {
         KasplatSpawnBitfield = 0;
+        HoldableSpawnBitfield = 0;
         for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
             enemy_rewards_spawned[j] = 0;
         }
@@ -361,6 +319,9 @@ void CheckKasplatSpawnBitfield(void) {
                     } else if (isFlagInRange(flag, FLAG_ENEMY_KILLED_0, ENEMIES_TOTAL)) {
                         // Is Enemy Drop
                         setSpawnBitfieldFromFlag(flag, 0);
+                    } else if (isFlagInRange(flag, FLAG_GRABBABLES_DESTROYED, 16)) {
+                        // Is Holdable
+                        HoldableSpawnBitfield |= (1 << (flag - FLAG_GRABBABLES_DESTROYED));
                     }
                 }
                 // Get Next Spawner

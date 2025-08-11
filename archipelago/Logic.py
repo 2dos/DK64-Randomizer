@@ -50,6 +50,7 @@ from randomizer.Enums.Settings import (
     ShockwaveStatus,
     ShuffleLoadingZones,
     TrainingBarrels,
+    TricksSelected,
     HelmSetting,
     KongModels,
     SlamRequirement,
@@ -61,19 +62,24 @@ from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Patching.Library.Generic import IsItemSelected, getProgHintBarrierItem
+from randomizer.Patching.Library.Generic import getProgHintBarrierItem, IsDDMSSelected
 from randomizer.Prices import AnyKongCanBuy, CanBuy
-from archipelago.Items import DK64Item
+from archipelago.Items import use_original_name_or_trap_name
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
 logic_item_name_to_id = {}
 for id, item in ItemList.items():
-    logic_item_name_to_id[item.name] = id
+    logic_item_name_to_id[use_original_name_or_trap_name(item)] = id
 
 
-def IsGlitchEnabled(settings, glitch_enum):
+def IsGlitchEnabled(settings, glitch_enum: GlitchesSelected):
     """Check if glitch is enabled in the settings."""
-    return len(settings.glitches_selected) == 0 or glitch_enum in settings.glitches_selected
+    return glitch_enum in settings.glitches_selected
+
+
+def IsTrickEnabled(settings, trick_enum: TricksSelected):
+    """Check if trick is enabled in the settings."""
+    return trick_enum in settings.tricks_selected
 
 
 class LogicVarHolder:
@@ -105,6 +111,12 @@ class LogicVarHolder:
         self.location_pool_size = 0
 
         self.startkong = self.settings.starting_kong
+        # AGL
+        enable_agl = self.settings.logic_type in (LogicType.advanced_glitchless, LogicType.glitch)
+        self.monkey_maneuvers = enable_agl and IsTrickEnabled(settings, TricksSelected.monkey_maneuvers)
+        self.hard_shooting = enable_agl and IsTrickEnabled(settings, TricksSelected.hard_shooting)
+        self.advanced_grenading = enable_agl and IsTrickEnabled(settings, TricksSelected.advanced_grenading)
+        self.slope_resets = enable_agl and IsTrickEnabled(settings, TricksSelected.slope_resets)
         # Glitch Logic
         enable_glitch_logic = self.settings.logic_type == LogicType.glitch
         self.phasewalk = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.phase_walking)
@@ -116,7 +128,6 @@ class LogicVarHolder:
         self.dk_blocker_skip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.b_locker_skips)
         self.troff_skip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.troff_n_scoff_skips)
         self.spawn_snags = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.spawn_snags)
-        self.advanced_platforming = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.advanced_platforming)
         self.tbs = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.tag_barrel_storage) and not self.settings.disable_tag_barrels
         self.swim_through_shores = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.swim_through_shores)
         self.boulder_clip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.boulder_clips) and False  # Temporarily disabled
@@ -245,6 +256,7 @@ class LogicVarHolder:
         self.superDuperSlam = False
 
         self.Blueprints = []
+        self.Photos = {}
 
         self.Events = []
         # Galleon water needs slightly more care to account for the initial state of Galleon water
@@ -321,6 +333,7 @@ class LogicVarHolder:
         self.RegularCoins = [0] * 5
         self.RainbowCoins = 0
         self.SpentCoins = [0] * 5
+        self.RaceCoins = 0
 
         self.kong = self.startkong
 
@@ -478,6 +491,7 @@ class LogicVarHolder:
         self.vines = self.vines or Items.Vines in ownedItems
         self.swim = self.swim or Items.Swim in ownedItems
         self.oranges = self.oranges or Items.Oranges in ownedItems
+        self.adv_orange_usage = self.oranges and self.advanced_grenading
         self.barrels = self.barrels or Items.Barrels in ownedItems
         self.can_use_vines = self.vines  # and self.climbing to restore old behavior
 
@@ -568,10 +582,10 @@ class LogicVarHolder:
         if self.InstUpgrades >= 2:
             self.Melons = 3
 
-        self.GoldenBananas = item_counts[Items.GoldenBanana]
-        self.BananaFairies = item_counts[Items.BananaFairy]
-        self.BananaMedals = item_counts[Items.BananaMedal]
-        self.BattleCrowns = item_counts[Items.BattleCrown]
+        self.GoldenBananas = item_counts[Items.GoldenBanana] + item_counts[Items.FillerBanana]
+        self.BananaFairies = item_counts[Items.BananaFairy] + item_counts[Items.FillerFairy]
+        self.BananaMedals = item_counts[Items.BananaMedal] + item_counts[Items.FillerMedal]
+        self.BattleCrowns = item_counts[Items.BattleCrown] + item_counts[Items.FillerCrown]
         self.RainbowCoins = item_counts[Items.RainbowCoin]
 
         self.camera = self.camera or Items.CameraAndShockwave in ownedItems or Items.Camera in ownedItems
@@ -587,7 +601,48 @@ class LogicVarHolder:
         self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint and x <= Items.DKIslesChunkyBlueprint]
         self.Hints = [x for x in ownedItems if x >= Items.JapesDonkeyHint and x <= Items.CastleChunkyHint]
         self.Beans = sum(1 for x in ownedItems if x == Items.Bean)
-        self.Pearls = sum(1 for x in ownedItems if x == Items.Pearl)
+        self.Pearls = sum(1 for x in ownedItems if x in [Items.Pearl, Items.FillerPearl])
+
+        photo_subjects = [
+            Items.PhotoBeaverBlue,
+            Items.PhotoBook,
+            Items.PhotoZingerCharger,
+            Items.PhotoKlobber,
+            Items.PhotoKlump,
+            Items.PhotoKaboom,
+            Items.PhotoKlaptrapGreen,
+            Items.PhotoZingerLime,
+            Items.PhotoKlaptrapPurple,
+            Items.PhotoKlaptrapRed,
+            Items.PhotoBeaverGold,
+            Items.PhotoFireball,
+            Items.PhotoMushroomMan,
+            Items.PhotoRuler,
+            Items.PhotoRoboKremling,
+            Items.PhotoKremling,
+            Items.PhotoKasplatDK,
+            Items.PhotoKasplatDiddy,
+            Items.PhotoKasplatLanky,
+            Items.PhotoKasplatTiny,
+            Items.PhotoKasplatChunky,
+            Items.PhotoZingerRobo,
+            Items.PhotoKrossbones,
+            Items.PhotoShuri,
+            Items.PhotoGimpfish,
+            Items.PhotoMrDice0,
+            Items.PhotoSirDomino,
+            Items.PhotoMrDice1,
+            Items.PhotoBat,
+            Items.PhotoGhost,
+            Items.PhotoPufftup,
+            Items.PhotoKosha,
+            Items.PhotoSpider,
+            Items.PhotoBug,
+            Items.PhotoKop,
+            Items.PhotoTomato,
+        ]
+        for subject in photo_subjects:
+            self.Photos[subject] = sum(1 for x in ownedItems if x == subject)
 
         self.UpdateCoins()
 
@@ -618,28 +673,28 @@ class LogicVarHolder:
     @lru_cache(maxsize=None)
     def IsLavaWater(self) -> bool:
         """Determine whether the water is lava water or not."""
-        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.water_is_lava, False)
+        return IsDDMSSelected(self.settings.hard_mode_selected, HardModeSelected.water_is_lava)
 
     @lru_cache(maxsize=None)
     def HardBossesSettingEnabled(self, check: HardBossesSelected) -> bool:
         """Determine whether the hard bosses feature is enabled or not."""
-        return IsItemSelected(self.settings.hard_bosses, self.settings.hard_bosses_selected, check, False)
+        return IsDDMSSelected(self.settings.hard_bosses_selected, check)
 
     @lru_cache(maxsize=None)
     def IsHardFallDamage(self) -> bool:
         """Determine whether the lowered fall damage height threshold is enabled or not."""
-        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold, False)
+        return IsDDMSSelected(self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold)
 
     def canAccessHelm(self) -> bool:
         """Determine whether the player can access helm whilst the timer is active."""
-        if IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.strict_helm_timer, False):
+        if IsDDMSSelected(self.settings.hard_mode_selected, HardModeSelected.strict_helm_timer):
             return self.snideAccess and len(self.Blueprints) > (4 + (2 * self.settings.helm_phase_count))
         return self.snideAccess or self.assumeFillSuccess
 
     @lru_cache(maxsize=None)
     def checkFastCheck(self, check: FasterChecksSelected):
         """Determine whether a fast check is selected."""
-        return IsItemSelected(self.settings.faster_checks_enabled, self.settings.faster_checks_selected, check)
+        return IsDDMSSelected(self.settings.faster_checks_selected, check)
 
     @lru_cache(maxsize=None)
     def checkBarrier(self, check: RemovedBarriersSelected):
@@ -647,13 +702,12 @@ class LogicVarHolder:
         # # This AP-specific exception covers the case where we enter the Worm Area from the wrong side
         if check == RemovedBarriersSelected.forest_green_tunnel and Events.WormGatesOpened in self.Events:
             return True
-        return IsItemSelected(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, check)
+        return IsDDMSSelected(self.settings.remove_barriers_selected, check)
 
     @lru_cache(maxsize=None)
     def galleonGatesStayOpen(self) -> bool:
         """Determine whether the galleon gates stay open once the instrument is played."""
-        return IsItemSelected(
-            self.settings.quality_of_life,
+        return IsDDMSSelected(
             self.settings.misc_changes_selected,
             MiscChangesSelected.remove_galleon_ship_timers,
         )
@@ -661,8 +715,7 @@ class LogicVarHolder:
     @lru_cache(maxsize=None)
     def cabinBarrelMoved(self) -> bool:
         """Determine whether the upper cabin rocketbarrel has been moved."""
-        return IsItemSelected(
-            self.settings.quality_of_life,
+        return IsDDMSSelected(
             self.settings.misc_changes_selected,
             MiscChangesSelected.move_spring_cabin_rocketbarrel,
         )
@@ -731,7 +784,7 @@ class LogicVarHolder:
 
     def CanGetOnCannonGamePlatform(self):
         """Determine whether the player can get on the platform in Cannon Game Room in Gloomy Galleon."""
-        return Events.WaterRaised in self.Events or (self.advanced_platforming and (self.ischunky or (self.islanky and self.settings.kong_model_lanky == KongModels.default)))
+        return Events.WaterRaised in self.Events or (self.monkey_maneuvers and (self.ischunky or (self.islanky and self.settings.kong_model_lanky == KongModels.default)))
 
     def CanSkew(self, swim, is_japes=True, kong_req=Kongs.any):
         """Determine whether the player can skew."""
@@ -1004,6 +1057,12 @@ class LogicVarHolder:
         # else:
         #     return self.CanSlamSwitch(Levels.FranticFactory, 1) and self.IsKong(self.settings.chunky_freeing_kong)
 
+    def CanOpenForestLobbyGoneDoor(self):
+        """Check if the player can open the door to the gone pad in forest lobby."""
+        if self.CanPhase():
+            return True
+        return (self.donkey and self.coconut) and (self.diddy and self.peanut) and (self.lanky and self.grape) and (self.tiny and self.feather) and (self.chunky and self.pineapple)
+
     def AddCollectible(self, collectible, level):
         """Add a collectible."""
         if collectible.enabled:
@@ -1024,6 +1083,8 @@ class LogicVarHolder:
                     self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
                     collectible.added = True
                 missingGun = True
+            elif collectible.type == Collectibles.racecoin:
+                self.RaceCoins += collectible.amount
             if not missingGun:
                 collectible.added = True
 
@@ -1271,6 +1332,20 @@ class LogicVarHolder:
             return self.lanky and self.grape and self.barrels
         return self.lanky and self.trombone and self.barrels
 
+    def HasEnoughRaceCoins(self, map_id: Maps, default_kong: Kongs, kong_mandatory: bool) -> bool:
+        """Check if the player has enough race coins to beat the challenge."""
+        if self.settings.race_coin_rando:
+            has_enough_coins = self.RaceCoins >= self.spoiler.coin_requirements[map_id]
+            if self.assumeInfiniteRaceCoins:
+                has_enough_coins = True
+            is_kong = True
+            if not self.settings.free_trade_items or kong_mandatory:
+                is_kong = self.IsKong(default_kong)
+            return has_enough_coins and is_kong
+        if kong_mandatory:
+            return self.IsKong(default_kong)
+        return True
+
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
         # We must meet the fill's kong and move requirements to enter this level
@@ -1301,8 +1376,19 @@ class LogicVarHolder:
         # Special Win Cons
         if self.settings.win_condition_item == WinConditionComplex.beat_krool:
             return Events.KRoolDefeated in self.Events
-        elif self.settings.win_condition_item == WinConditionComplex.krem_kapture:  # Photo taking doesn't have a perfect wincon so this'll do until something better is concocted
-            return Events.KRoolDefeated in self.Events and self.camera
+        elif self.settings.win_condition_item == WinConditionComplex.krem_kapture:
+            for subject in self.spoiler.valid_photo_items:
+                if subject in (
+                    Items.PhotoKasplatDK,
+                    Items.PhotoKasplatDiddy,
+                    Items.PhotoKasplatLanky,
+                    Items.PhotoKasplatTiny,
+                    Items.PhotoKasplatChunky,
+                ):
+                    continue
+                if self.Photos.get(subject, 0) == 0:
+                    return False
+            return self.camera
         elif self.settings.win_condition_item == WinConditionComplex.get_key8:
             return self.HelmKey
         elif self.settings.win_condition_item == WinConditionComplex.dk_rap_items:

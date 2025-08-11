@@ -1,10 +1,11 @@
 {% from 'macros.html' import list_selector, toggle_input %}
+{% from 'dropdown_multiselector.html' import dropdown_multiselector %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
             <h2 class="title">MUSIC RANDO
                 <label data-toggle="tooltip" 
-                        title="Randomizes all Music Selections.">
+                        title="Randomizes all Music Selections." class="ui-music-no-cosmetic">
                     <input class="dice_checkbox"
                             type="checkbox"
                             name="random_music"
@@ -14,8 +15,19 @@
                     <label for="random_music"></label>
                 </label>
             </h2>
+            <input
+                type="checkbox"
+                name="music_is_custom"
+                id="music_is_custom"
+                value="True"
+                hidden />
+            <div class="ui-music-has-cosmetic" hidden>
+                <div class="alert alert-success" role="alert">
+                    Custom Music detected in cosmetic pack - Custom Music Enabled.
+                </div>
+            </div>
             <div class="flex-container">
-                <div class="form-check form-switch item-switch">
+                <div class="form-check form-switch item-switch ui-music-no-cosmetic">
                     <label data-toggle="tooltip"
                             title="Randomizes Background Music.">
                         <input class="form-check-input"
@@ -27,7 +39,7 @@
                         Random Background Music
                     </label>
                 </div>
-                <div class="form-check form-switch item-switch">
+                <div class="form-check form-switch item-switch ui-music-no-cosmetic">
                     <label data-toggle="tooltip"
                             title="Randomizes Major Item Themes.">
                         <input class="form-check-input"
@@ -39,7 +51,7 @@
                         Random Major Item Themes
                     </label>
                 </div>
-                <div class="form-check form-switch item-switch">
+                <div class="form-check form-switch item-switch ui-music-no-cosmetic">
                     <label data-toggle="tooltip"
                             title="Randomizes Minor Item Themes.">
                         <input class="form-check-input"
@@ -51,7 +63,7 @@
                         Random Minor Item Themes
                     </label>
                 </div>
-                <div class="form-check form-switch item-switch">
+                <div class="form-check form-switch item-switch ui-music-no-cosmetic">
                     <label data-toggle="tooltip"
                             title="Randomizes Event Themes.">
                         <input class="form-check-input"
@@ -77,42 +89,18 @@
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                           title="This option disables various songs.">
+                    title="If true, songs will not have additional reverb while underwater or in tunnels.">
                         <input class="form-check-input"
-                               type="checkbox"
-                               name="songs_excluded"
-                               id="songs_excluded"
-                               display_name="Disabled Songs"
-                               value="True"/>
-                        Disabled Songs
-                    </label>
-                    {{ list_selector(excluded_songs, "excluded_songs", "Disabled Songs", "This will open a popup that will let you customize what songs are disabled.", 4) }}
-                    {# Remove end </div> as it's included in the macro for formatting #}
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="If true, songs will not have additional reverb while underwater or in tunnels.">
-                        <input class="form-check-input"
-                            type="checkbox"
-                            name="music_disable_reverb"
-                            id="music_disable_reverb"
-                            display_name="Disable Dynamic Reverb"
-                            value="True"/>
+                        type="checkbox"
+                        name="music_disable_reverb"
+                        id="music_disable_reverb"
+                        display_name="Disable Dynamic Reverb"
+                        value="True"/>
                         Disable Dynamic Reverb
                     </label>
                 </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                           title="This option enables music filtering options for .candy files.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="music_filtering"
-                               id="music_filtering"
-                               display_name="Music Filtering"
-                               value="True" checked/>
-                        Music Filtering
-                    </label>
-                    {{ list_selector(song_filters, "music_filtering", "Music Filtering", "This will open a popup that will let you customize how the game applies additional filters.", 2, 1, "These filters only work for .candy files.") }}
-                    {# Remove end </div> as it's included in the macro for formatting #}
+                {{ dropdown_multiselector(excluded_songs, "excluded_songs", "Disabled Songs", "This will open a popup that will let you customize what songs are disabled.", 4) }}
+                {{ dropdown_multiselector(song_filters, "music_filtering", "Music Filtering", "This will open a popup that will let you customize how the game applies additional filters.", 2, 1, "These filters only work for .candy files.") }}
             </div>
         </div>
         <div class="col border panel">
@@ -247,5 +235,5 @@
         };
         // Listen for keydown events
         document.addEventListener('keydown', keyHandler, false);
-    })
+    });
 </script>

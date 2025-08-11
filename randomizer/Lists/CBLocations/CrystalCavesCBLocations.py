@@ -200,7 +200,7 @@ ColoredBananaGroupList = [
         name="On Baboon Balloon pads",
         konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny],
         region=Regions.CrystalCavesMain,
-        logic=lambda l: l.isdiddy or l.istiny or (l.islanky and (l.balloon or l.advanced_platforming)),
+        logic=lambda l: l.isdiddy or l.istiny or (l.islanky and (l.balloon or l.monkey_maneuvers)),
         locations=[[5, 1.0, 2179, 355, 943]],
     ),
     ColoredBananaGroup(
@@ -1374,7 +1374,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.lanky],
         region=Regions.CrystalCavesMain,
         vanilla=True,
-        logic=lambda l: (l.balloon or l.advanced_platforming) and l.CanSlamSwitch(Levels.CrystalCaves, 2),
+        logic=lambda l: (l.balloon or l.monkey_maneuvers) and l.CanSlamSwitch(Levels.CrystalCaves, 2),
         locations=[[5, 1.0199991464614868, 2205.302978515625, 399.8333435058594, 971.8466796875]],
     ),
     ColoredBananaGroup(
@@ -1628,7 +1628,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.lanky],
         region=Regions.LankyIgloo,
         vanilla=True,
-        logic=lambda l: l.balloon or l.advanced_platforming,
+        logic=lambda l: l.balloon or l.monkey_maneuvers,
         locations=[
             [1, 1.0, 315.4643859863281, 17.666667938232422, 314.6233825683594],
             [1, 1.0, 265.5227966308594, 150.5, 351.783447265625],
@@ -1701,7 +1701,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.DiddyLowerCabin,
         vanilla=True,
-        logic=lambda l: l.jetpack or l.advanced_platforming,
+        logic=lambda l: l.jetpack or l.monkey_maneuvers,
         locations=[[5, 1.0, 300.0310363769531, 101.0, 291.0983581542969]],
     ),
     ColoredBananaGroup(

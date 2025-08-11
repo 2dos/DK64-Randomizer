@@ -15,6 +15,10 @@ if last_part.upper() == "BUILD":
     pre = "../"
 
 
+FAKE_GB_SHIFT = 10
+FAKE_BEAN_SHIFT = -40
+
+
 def getDir(directory):
     """Convert directory into the right format based on where the script is run."""
     return f"{pre}{directory}"
@@ -436,6 +440,8 @@ bean_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}bean.png")
 bean_small_im = Image.new(mode="RGBA", size=(32, 32))
 bean_small_im.paste(bean_im.resize((32, 16)), (0, 8), bean_im.resize((32, 16)))
 bean_small_im.save(f"{disp_dir}bean32.png")
+bean_fake_im = bean_small_im
+hueShift(bean_fake_im.transpose(Image.Transpose.FLIP_LEFT_RIGHT), FAKE_BEAN_SHIFT).save(f"{disp_dir}fakebean.png")
 bean_small_im.resize((44, 44)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}bean44.png")
 
 # Wrinkly
@@ -481,12 +487,22 @@ Image.open(f"{hash_dir}melon_slice.png").resize(dim).save(f"{arcade_dir}melon.pn
 
 # Fake GB Sprite
 gb_im = Image.open(f"{hash_dir}gb.png")
-gb_im = hueShift(gb_im, 10)
+gb_im = hueShift(gb_im, FAKE_GB_SHIFT)
 gb_im.save(f"{disp_dir}fake_gb.png")
 gb_im.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}fake_gb_flipped.png")
 gb_im = Image.open(f"{disp_dir}gb.png")
-gb_im = hueShift(gb_im, 10)
+gb_im = hueShift(gb_im, FAKE_GB_SHIFT)
 gb_im.transpose(Image.Transpose.FLIP_LEFT_RIGHT).save(f"{disp_dir}fake_gb_shop.png")
+
+# Fake other items
+fake_bean_im = Image.open(f"{hash_dir}bean.png")
+hueShift(fake_bean_im, FAKE_BEAN_SHIFT).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}fake_bean.png")
+fake_key_im = Image.open(f"{hash_dir}medal_rim.png")
+hueShift(fake_key_im, FAKE_GB_SHIFT).save(f"{disp_dir}fake_key_shine.png")
+fake_key_im = Image.open(f"{hash_dir}key_om2_palette.png")
+hueShift(fake_key_im, FAKE_GB_SHIFT).save(f"{disp_dir}fake_key_shine_palette.png")
+fake_key_im = Image.open(f"{hash_dir}key.png")
+hueShift(fake_key_im.transpose(Image.Transpose.FLIP_LEFT_RIGHT), FAKE_GB_SHIFT).save(f"{disp_dir}fakekey.png")
 
 # Melon
 melon_im = Image.open(f"{hash_dir}melon_resized.png")
@@ -544,6 +560,8 @@ skins = {
     "snide": ("snide_head", None, "displays"),
     "hint": ("wrinkly32", None, "displays"),
     "ap": ("ap_logo", None, "displays"),
+    "fakebean": ("fakebean", None, "displays"),
+    "fakekey": ("fakekey", None, "displays"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32
@@ -605,6 +623,18 @@ base_im.paste(left_im, (0, 0), left_im)
 base_im.paste(right_im, (32, 0), right_im)
 base_im = base_im.resize((32, 32))
 base_im.save(f"{disp_dir}win_con_logo.png")
+
+font_im = Image.open(f"{hash_dir}white_special_chars.png")
+amp_im = Image.open(f"{disp_dir}white_ampersand.png")
+amp_px = amp_im.load()
+px = font_im.load()
+for y in range(font_im.height):
+    for x in range(122, 141):  # inclusive of 140
+        if x - 122 < amp_im.width:
+            px[x, y] = amp_px[x - 122, y]
+        else:
+            px[x, y] = (0, 0, 0, 0)  # fully transparent
+font_im.save(f"{disp_dir}white_special_chars.png")
 
 # AP Pearls
 ap_colors = [
@@ -675,7 +705,7 @@ num2_base.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}num_2.png"
 Image.open(f"{hash_dir}fairy.png").save(f"{disp_dir}fairy.png")
 
 gb_shine = Image.open(f"{hash_dir}gb_shine.png")
-gb_shine = hueShift(gb_shine, 10)
+gb_shine = hueShift(gb_shine, FAKE_GB_SHIFT)
 gb_shine.save(f"{disp_dir}gb_shine.png")
 
 # Text Bubble
@@ -822,6 +852,13 @@ alterWood(support_im).save(f"{tag_dir}cannon_support.png")
 alterWood(base_im).save(f"{tag_dir}cannon_base.png")
 alterWood(barrel_base_im).save(f"{tag_dir}barrel_base.png")
 
+# Disco Donk Center
+shirt_im = Image.open(f"{hash_dir}disco_shirt.png")
+skin_im = Image.open(f"{hash_dir}disco_skin.png")
+X_WIDTH = 12
+skin_im = skin_im.crop((X_WIDTH, 0, 32 - X_WIDTH, 32))
+shirt_im.paste(skin_im, (X_WIDTH, 0), skin_im)
+shirt_im.save(f"{disp_dir}disco_shirt_gap.png")
 
 rmve = [
     "01234.png",
@@ -871,6 +908,7 @@ rmve = [
     "funky_face_2.png",
     "funky_face_3.png",
     "snide_face.png",
+    "white_special_chars.png",
 ]
 for kong in kongs:
     for x in range(2):

@@ -1,0 +1,100 @@
+{
+    "index": 5,
+    "point_data": [
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                255,
+                193
+            ],
+            "detailed_command": {
+                "sub_command": 24,
+                "params": [
+                    4,
+                    "enums.CompTextFiles.PreviewsFlavor",
+                    "enums.ItemPreview.CastleMinecartReward",
+                    0
+                ]
+            },
+            "duration": 30
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                254,
+                129
+            ],
+            "detailed_command": {
+                "sub_command": 29,
+                "params": [
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 299
+        },
+        {
+            "unk0": 0,
+            "command": 4,
+            "head": [
+                255,
+                197
+            ],
+            "point_start": {
+                "x": 2,
+                "y": 24589,
+                "z": -24307,
+                "rot": {
+                    "x": 65479,
+                    "y": 65477,
+                    "z": 65477
+                },
+                "zoom": 255,
+                "roll": 195
+            },
+            "point_end": {
+                "x": -63,
+                "y": 18435,
+                "z": 10245,
+                "rot": {
+                    "x": 132,
+                    "y": 2180,
+                    "z": 14343
+                },
+                "zoom": 128,
+                "roll": 201
+            },
+            "points": [
+                {
+                    "x": 608,
+                    "y": 749,
+                    "z": 4192,
+                    "rot": {
+                        "x": 63335,
+                        "y": 60996,
+                        "z": 61721
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 725,
+                    "y": 715,
+                    "z": 4110,
+                    "rot": {
+                        "x": 57967,
+                        "y": 168,
+                        "z": 9669
+                    },
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 300
+        }
+    ]
+}

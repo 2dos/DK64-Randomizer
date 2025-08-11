@@ -27,13 +27,13 @@ void PatchCrankyCode(void) {
 int give_all_blueprints(int flag, int level, int kong_p) {
 	int given_bp = 0;
 	for (int kong = 0; kong < 5; kong++) {
-		int offset = (level*5) + kong;
-		if (checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + offset, FLAGTYPE_PERMANENT)) {
+		if (getItemCount_new(REQITEM_BLUEPRINT, level, kong)) {
+			int offset = (level*5) + kong;
 			int gb_flag = FLAG_BP_JAPES_DK_TURN + offset;
 			if (!checkFlag(gb_flag, FLAGTYPE_PERMANENT)) {
 				given_bp = 1;
 				MovesBase[kong].gb_count[level] += 1;
-				setFlag(gb_flag, 1, FLAGTYPE_PERMANENT);
+				setPermFlag(gb_flag);
 			}
 		}
 	}
@@ -55,14 +55,14 @@ void overlay_mod_menu(void) {
 	}
 
 	// Snide
-	if (Rando.item_rando) {		
-		if (Rando.quality_of_life.blueprint_compression) {
-			writeFunction(0x80024840, &give_all_blueprints); // Change initial check
-			*(int*)(0x80024850) = 0xAFA90040; // SW $t1, 0x40 ($sp)
-			*(int*)(0x80024854) = 0; // NOP
-			*(short*)(0x8002485C) = 0x1000; // Force Branch
-		}
-	}
+	// if (Rando.item_rando) {		
+	// 	if (Rando.quality_of_life.blueprint_compression) {
+	// 		// writeFunction(0x80024840, &give_all_blueprints); // Change initial check
+	// 		// *(int*)(0x80024850) = 0xAFA90040; // SW $t1, 0x40 ($sp)
+	// 		// *(int*)(0x80024854) = 0; // NOP
+	// 		// *(short*)(0x8002485C) = 0x1000; // Force Branch
+	// 	}
+	// }
 	if (Rando.colorblind_mode != COLORBLIND_OFF) {
 		int colorblind_offset = 5 * (Rando.colorblind_mode - 1);
 		for (int i = 0; i < 16; i++) {

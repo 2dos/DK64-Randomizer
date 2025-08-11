@@ -7,6 +7,7 @@ from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import (
+    Location,
     ChunkyMoveLocations,
     DiddyMoveLocations,
     DonkeyMoveLocations,
@@ -104,7 +105,7 @@ def RandomizePrices(spoiler, weight):
     # Progressive items get their own price pool
     for item in ProgressiveMoves.keys():
         prices[item] = []
-        for i in range(ProgressiveMoves[item]):
+        for _ in range(ProgressiveMoves[item]):
             prices[item].append(GenerateRandomPrice(spoiler.settings.random, weight, parameters[0], parameters[1], parameters[2]))
     return prices
 
@@ -184,36 +185,6 @@ def GetMaxForKong(spoiler, kong):
                 total_price += settings.prices[location]
     return total_price
 
-
-SlamProgressiveSequence = [Locations.SuperSimianSlam, Locations.SuperDuperSimianSlam]
-FunkySequence = [
-    [Locations.CoconutGun, Locations.PeanutGun, Locations.GrapeGun, Locations.FeatherGun, Locations.PineappleGun],
-    Locations.AmmoBelt1,
-    Locations.HomingAmmo,
-    Locations.AmmoBelt2,
-    Locations.SniperSight,
-]
-CandySequence = [
-    [Locations.Bongos, Locations.Guitar, Locations.Trombone, Locations.Saxophone, Locations.Triangle],
-    Locations.MusicUpgrade1,
-    Locations.ThirdMelon,
-    Locations.MusicUpgrade2,
-]
-DonkeySequence = [Locations.BaboonBlast, Locations.StrongKong, Locations.GorillaGrab]
-DiddySequence = [Locations.ChimpyCharge, Locations.RocketbarrelBoost, Locations.SimianSpring]
-LankySequence = [Locations.Orangstand, Locations.BaboonBalloon, Locations.OrangstandSprint]
-TinySequence = [Locations.MiniMonkey, Locations.PonyTailTwirl, Locations.Monkeyport]
-ChunkySequence = [Locations.HunkyChunky, Locations.PrimatePunch, Locations.GorillaGone]
-Sequences = [
-    SlamProgressiveSequence,
-    FunkySequence,
-    CandySequence,
-    DonkeySequence,
-    DiddySequence,
-    LankySequence,
-    TinySequence,
-    ChunkySequence,
-]
 
 """
 So for coin logic, we want to make sure the player can't spend coins incorrectly and lock themselves out.
@@ -323,3 +294,59 @@ def CanBuy(spoiler, location, logic, buy_empty=False):
         return KongCanBuy(spoiler, location, logic, Kongs.tiny, buy_empty)
     elif location in ChunkyMoveLocations:
         return KongCanBuy(spoiler, location, logic, Kongs.chunky, buy_empty)
+
+
+ITEMS_TO_IGNORE = [
+    Items.NoItem,
+    Items.ProgressiveAmmoBelt,
+    Items.ProgressiveAmmoBelt2,
+    Items.ProgressiveInstrumentUpgrade,
+    Items.ProgressiveInstrumentUpgrade2,
+    Items.ProgressiveInstrumentUpgrade3,
+    Items.ProgressiveSlam,
+    Items.ProgressiveSlam2,
+    Items.ProgressiveSlam3,
+]
+
+
+def determineFinalPriceAssortment(spoiler):
+    """Determine the price of all items in the seed if shops don't cost."""
+    if not spoiler.settings.shops_dont_cost:
+        return
+    spoiler.settings.prices = spoiler.settings.original_prices.copy()  # This ensures we don't start double stacking in case of fill failure
+    price_assignment = []
+    new_prices = {}
+    for key, value in spoiler.settings.prices.items():
+        if isinstance(value, list):
+            # Is progressive move
+            for price in value:
+                price_assignment.append({"is_prog": True, "cost": price, "item": key, "kong": Kongs.any})
+        else:
+            # Is shop
+            location: Location = spoiler.LocationList[key]
+            if location.item is None or location.item in ITEMS_TO_IGNORE:
+                new_prices[key] = 0
+                continue
+            price_assignment.append({"is_prog": False, "cost": value, "item": key, "kong": location.kong})
+    spoiler.settings.random.shuffle(price_assignment)
+    total_cost = [0] * 5
+    for assignment in price_assignment:
+        kong = assignment["kong"]
+        written_price = assignment["cost"]
+        if kong == Kongs.any:
+            current_kong_total = 0
+            for kong_index in range(5):
+                current_kong_total += total_cost[kong_index]
+                total_cost[kong_index] += written_price
+            written_price = int(current_kong_total / 5)
+        else:
+            total_cost[kong] += written_price
+            written_price = total_cost[kong]
+        key = assignment["item"]
+        if assignment["is_prog"]:
+            if key not in new_prices:
+                new_prices[key] = []
+            new_prices[key].append(written_price)
+        else:
+            new_prices[key] = written_price
+    spoiler.settings.prices = new_prices

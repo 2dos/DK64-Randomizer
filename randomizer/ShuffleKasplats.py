@@ -1,6 +1,5 @@
 """Module used to handle setting and randomizing kasplats."""
 
-import js
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs

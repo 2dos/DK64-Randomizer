@@ -4,6 +4,7 @@ import js
 from randomizer.Patching.Library.Generic import Overlay
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Patcher import ROM
+from randomizer.Enums.Types import Types
 
 HANDLED_OVERLAYS = (
     Overlay.Static,
@@ -223,3 +224,30 @@ def getActorIndex(input: int) -> int:
     if input & 0x8000:
         return CUSTOM_ACTORS_START + (input & 0x7FFF)
     return input
+
+
+item_type_table_conversion = {
+    # sym, item size
+    Types.Blueprint: ("bp_item_table", 2),
+    Types.Medal: ("medal_item_table", 4),
+    Types.Hint: ("wrinkly_item_table", 4),
+    Types.Crown: ("crown_item_table", 2),
+    Types.Key: ("key_item_table", 2),
+    Types.Fairy: ("fairy_item_table", 8),
+    Types.RainbowCoin: ("rcoin_item_table", 2),
+    Types.CrateItem: ("crate_item_table", 2),
+    Types.BoulderItem: ("boulder_item_table", 8),
+    Types.Kong: ("kong_check_data", 8),
+    Types.Shop: ("purchase_hint_text_items", 2),  # Shop Hints
+    Types.NintendoCoin: ("company_coin_table", 4),
+    Types.RarewareCoin: ("company_coin_table", 4),
+}
+
+
+def getItemTableWriteAddress(ROM_COPY, target_type: Types, index: int, offset_dict: dict) -> int:
+    """Get the address of writing to a certain item table."""
+    if target_type not in item_type_table_conversion:
+        raise Exception("Invalid type for type conversion.")
+    ram_start = getSym(item_type_table_conversion[target_type][0])
+    ram_offset = index * item_type_table_conversion[target_type][1]
+    return getROMAddress(ram_start + ram_offset, Overlay.Custom, offset_dict)

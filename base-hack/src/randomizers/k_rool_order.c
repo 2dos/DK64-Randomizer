@@ -145,7 +145,7 @@ void handleKRoolSaveProgress(void) {
 		// Save Progress
 		for (int i = 0; i < 5; i++) {
 			if (Rando.k_rool_order[i] == CurrentMap) {
-				setFlag(FLAG_KROOL_ENTERED + i, 1, FLAGTYPE_PERMANENT);
+				setPermFlag(FLAG_KROOL_ENTERED + i);
 			}
 		}
 		if (CurrentMap == MAP_ISLES) {

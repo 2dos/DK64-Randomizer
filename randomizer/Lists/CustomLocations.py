@@ -69,7 +69,7 @@ class CustomLocation:
         self.tied_warp_event = tied_warp_event
         if logic is None:
             self.has_access_logic = False
-            self.logic = lambda l: True
+            self.logic = lambda _: True
         else:
             self.has_access_logic = True
             self.logic = logic
@@ -104,7 +104,7 @@ def getBannedWarps(spoiler) -> list[Events]:
         Events.GalleonW4aTagged,
     ]
     WARP_SHUFFLE_SETTING = spoiler.settings.bananaport_placement_rando
-    PLATFORMING_SETTING = spoiler.LogicVariables.advanced_platforming
+    PLATFORMING_SETTING = spoiler.LogicVariables.monkey_maneuvers
     if WARP_SHUFFLE_SETTING in [ShufflePortLocations.on, ShufflePortLocations.half_vanilla]:
         # Access to the Lanky Kasplat and potential coins or coloured bananas
         lst.append(Events.LlamaW2bTagged)
@@ -1600,7 +1600,7 @@ CustomLocations = {
     Levels.FranticFactory: [
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Under R and D Grate (1)",
+            name="Under R&D Grate (1)",
             x=4119,
             y=1313,
             z=1165.81,
@@ -1975,7 +1975,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Diddy R and D",
+            name="Diddy R&D",
             x=4450,
             y=1336,
             z=735,
@@ -2000,7 +2000,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Chunky R and D",
+            name="Chunky R&D",
             x=4574,
             y=1336,
             z=1350,
@@ -2052,7 +2052,7 @@ CustomLocations = {
             group=3,
         ),
         CustomLocation(
-            name="R and D lever room - by Tiny's barrel",
+            name="R&D lever room - by Tiny's barrel",
             map=Maps.FranticFactory,
             x=3693.0,
             y=1263.0,
@@ -2064,7 +2064,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.FranticFactory,
-            name="Under R and D Grate (2)",
+            name="Under R&D Grate (2)",
             x=4054,
             y=1313,
             z=776,
@@ -2605,7 +2605,7 @@ CustomLocations = {
             z=487,
             max_size=40,
             logic_region=Regions.TreasureRoom,
-            logic=lambda l: ((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) or l.CanMoonkick(),
+            logic=lambda l: ((l.balloon and l.islanky) and Events.WaterRaised in l.Events or (Events.ShipyardTreasureRoomOpened in l.Events and l.monkey_maneuvers)) or l.CanMoonkick(),
             group=5,
             banned_types=[LocationTypes.Bananaport],  # Hard to detect that it's bad to link to Diddy's tower, in which case it bricks seed gen
         ),
@@ -3949,7 +3949,7 @@ CustomLocations = {
             z=1002,
             max_size=32,
             logic_region=Regions.CrystalCavesMain,
-            logic=lambda l: (l.balloon and l.islanky) or (l.jetpack and l.isdiddy) or l.advanced_platforming,
+            logic=lambda l: (l.balloon and l.islanky) or (l.jetpack and l.isdiddy) or l.monkey_maneuvers,
             group=2,
         ),
         CustomLocation(
@@ -4380,7 +4380,7 @@ CustomLocations = {
             z=245,
             max_size=40,
             logic_region=Regions.LankyIgloo,
-            logic=lambda l: ((l.balloon or l.advanced_platforming) and l.islanky) or (l.advanced_platforming and (l.isdiddy or l.istiny)),
+            logic=lambda l: ((l.balloon or l.monkey_maneuvers) and l.islanky) or (l.monkey_maneuvers and (l.isdiddy or l.istiny)),
             group=3,
         ),
         CustomLocation(
@@ -5305,7 +5305,7 @@ CustomLocations = {
             z=637.07,
             max_size=56,
             logic_region=Regions.FungiForestLobby,
-            logic=lambda l: ((l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.donkey and l.diddy and l.lanky and l.tiny) or l.CanPhase()) and l.chunky and l.gorillaGone,
+            logic=lambda l: l.CanOpenForestLobbyGoneDoor() and l.chunky and l.gorillaGone,
             group=12,
             vanilla_crown=True,
         ),
@@ -5355,7 +5355,7 @@ CustomLocations = {
             max_size=64,
             vanilla_patch=True,
             logic_region=Regions.CreepyCastleLobby,
-            logic=lambda l: ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny)))),
+            logic=lambda l: ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.monkey_maneuvers and l.istiny and l.twirl and (not l.isKrushaAdjacent(Kongs.tiny)))),
             group=14,
         ),
         CustomLocation(
@@ -5663,7 +5663,7 @@ CustomLocations = {
             max_size=64,
             group=4,
             logic_region=Regions.OuterIsles,
-            logic=lambda l: True,
+            logic=lambda _: True,
         ),
         CustomLocation(
             map=Maps.Isles,
@@ -5879,7 +5879,7 @@ CustomLocations = {
             rot_y=2048,
             max_size=64,
             logic_region=Regions.FranticFactoryLobby,
-            logic=lambda l: ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny))),
+            logic=lambda l: ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
             group=10,
         ),
         CustomLocation(
@@ -5890,7 +5890,7 @@ CustomLocations = {
             z=367,
             max_size=64,
             logic_region=Regions.FranticFactoryLobby,
-            logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))),
+            logic=lambda l: ((l.grab and l.donkey) or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
             group=10,
         ),
         CustomLocation(
@@ -6033,7 +6033,7 @@ CustomLocations = {
             z=638,
             max_size=48,
             logic_region=Regions.HideoutHelmLobby,
-            logic=lambda l: (l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.can_use_vines) or (l.advanced_platforming and l.istiny and l.twirl),
+            logic=lambda l: (l.hasMoveSwitchsanity(Switches.IslesHelmLobbyGone, False) and l.can_use_vines) or (l.monkey_maneuvers and l.istiny and l.twirl),
             group=7,
         ),
         CustomLocation(
@@ -6045,7 +6045,7 @@ CustomLocations = {
             rot_y=0,
             max_size=64,
             logic_region=Regions.HideoutHelmLobby,
-            logic=lambda l: ((l.coconut and l.scope) or (l.twirl and l.istiny and l.advanced_platforming)),
+            logic=lambda l: ((l.coconut and l.scope) or (l.twirl and l.istiny and l.monkey_maneuvers)),
             group=7,
         ),
         CustomLocation(
@@ -6080,7 +6080,7 @@ CustomLocations = {
             rot_y=3026,
             max_size=64,
             logic_region=Regions.TrainingGrounds,
-            logic=lambda l: l.climbing and ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
+            logic=lambda l: l.climbing and ((l.twirl and l.istiny) or (l.monkey_maneuvers and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
             group=1,
         ),
         CustomLocation(
@@ -6091,7 +6091,7 @@ CustomLocations = {
             z=734,
             max_size=72,
             logic_region=Regions.TrainingGrounds,
-            logic=lambda l: l.climbing and ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
+            logic=lambda l: l.climbing and ((l.twirl and l.istiny) or (l.monkey_maneuvers and l.isdonkey and (not l.isKrushaAdjacent(Kongs.donkey)))),
             group=1,
         ),
         CustomLocation(

@@ -19,6 +19,26 @@ export enum BigHeadMode {
     random = 3,
 }
 
+export enum BLockerDifficulty {
+    easy = 0,
+    normal = 1,
+    hard = 2,
+}
+
+export enum BLockerSetting {
+    pre_selected = 0,
+    easy_random = 1,
+    normal_random = 2,
+    hard_random = 3,
+    chaos = 4,
+}
+
+export enum TroffSetting {
+    pre_selected = 0,
+    normal_random = 1,
+    hard_random = 2,
+}
+
 export enum CBRando {
     off = 1,
     on = 2,
@@ -29,6 +49,19 @@ export enum CharacterColors {
     vanilla = 1,
     randomized = 2,
     custom = 3,
+}
+
+export enum ColorOptions {
+    enemies = 1,
+    bosses = 2,
+    fire = 3,
+    friendly_npcs = 4,
+    environment = 5,
+    playable_characters = 6,
+    items = 7,
+    particles = 8,
+    misc_objects = 9,
+    barrels_and_boulders = 10,
 }
 
 export enum ColorblindMode {
@@ -136,7 +169,7 @@ export enum ClimbingStatus {
 }
 
 export enum GlitchesSelected {
-    advanced_platforming = 1,
+    monkey_maneuvers = 1,
     b_locker_skips = 2,
     boulder_clips = 3,
     general_clips = 4,
@@ -151,6 +184,13 @@ export enum GlitchesSelected {
     troff_n_scoff_skips = 13,
     moontail = 14,
     phasefall = 15,
+}
+
+export enum TricksSelected {
+    monkey_maneuvers = 1,
+    hard_shooting = 2,
+    advanced_grenading = 3,
+    slope_resets = 4,
 }
 
 export enum HelmDoorItem {
@@ -205,6 +245,7 @@ export enum HardModeSelected {
     donk_in_the_dark_world = 9,
     donk_in_the_sky = 10,
     angry_caves = 11,
+    fast_balloons = 12,
 }
 
 export enum IceTrapFrequency {
@@ -213,28 +254,62 @@ export enum IceTrapFrequency {
     common = 2,
     frequent = 3,
     pain = 4,
+    unlimited = 5,
 }
 
 export enum ItemRandoListSelected {
     shop = 1,
-    banana = 2,
-    toughbanana = 3,
-    crown = 4,
-    blueprint = 5,
-    key = 6,
-    medal = 7,
-    nintendocoin = 8,
-    kong = 9,
-    fairy = 10,
-    rainbowcoin = 11,
-    beanpearl = 12,
-    fakeitem = 13,
-    junkitem = 14,
-    crateitem = 15,
-    rarewarecoin = 16,
-    shopowners = 17,
-    hint = 18,
-    shockwave = 19,
+    moves = 2,
+    shockwave = 3,
+    bfi_gift = 4,
+    banana = 5,
+    banana_checks = 6,
+    toughbanana = 7,
+    arenas = 8,
+    crown = 9,
+    blueprint = 10,
+    kasplat = 11,
+    key = 12,
+    bosses = 13,
+    endofhelm = 14,
+    medal = 15,
+    medal_checks = 16,
+    medal_checks_helm = 17,
+    nintendocoin = 18,
+    arcade = 19,
+    rarewarecoin = 20,
+    jetpac = 21,
+    kong = 22,
+    kong_cages = 23,
+    fairy = 24,
+    fairy_checks = 25,
+    rainbowcoin = 26,
+    dirt_patches = 27,
+    pearl = 28,
+    clams = 29,
+    bean = 30,
+    anthillreward = 31,
+    crateitem = 32,
+    shopowners = 33,
+    hint = 34,
+    wrinkly = 35,
+    boulderitem = 36,
+    enemies = 37,
+    dummyitem_enemies = 38,
+    dummyitem_boulderitem = 39,
+    dummyitem_crateitem = 40,
+    trainingmoves = 41,
+    trainingbarrels = 42,
+}
+
+export enum ItemRandoFiller {
+    junkitem = 1,
+    icetraps = 2,
+    crown = 3,
+    fairy = 4,
+    medal = 5,
+    pearl = 6,
+    banana = 7,
 }
 
 export enum KasplatRandoSetting {
@@ -268,6 +343,7 @@ export enum KongModels {
     cranky = 5,
     candy = 6,
     funky = 7,
+    disco_donkey = 8,
 }
 
 export enum LevelRandomization {
@@ -276,12 +352,15 @@ export enum LevelRandomization {
     loadingzone = 2,
     loadingzonesdecoupled = 3,
     level_order_complex = 4,
+    level_order_moderate = 5,
 }
 
 export enum LogicType {
+    advanced_glitchless = 0,
     glitchless = 1,
     glitch = 2,
     nologic = 3,
+    minimal = 4,
 }
 
 export enum MicrohintsEnabled {
@@ -316,6 +395,7 @@ export enum MinigamesListSelected {
     helm_minigames = 16,
     arenas = 17,
     training_minigames = 18,
+    arcade = 19,
 }
 
 export enum MiscChangesSelected {
@@ -395,6 +475,13 @@ export enum RandomPrices {
     extreme = 5,
 }
 
+export enum RandomRequirement {
+    pre_selected = 0,
+    easy_random = 1,
+    medium_random = 2,
+    hard_random = 3,
+}
+
 export enum RemovedBarriersSelected {
     japes_coconut_gates = 1,
     japes_shellhive_gate = 2,
@@ -454,6 +541,27 @@ export enum SwitchsanityLevel {
     all = 2,
 }
 
+export enum SwitchsanityGone {
+    bongos = 0,
+    guitar = 1,
+    trombone = 2,
+    sax = 3,
+    triangle = 4,
+    lever = 5,
+    gong = 6,
+    gone_pad = 7,
+    random = 8,
+}
+
+export enum SwitchsanityKong {
+    donkey = 0,
+    diddy = 1,
+    lanky = 2,
+    tiny = 3,
+    chunky = 4,
+    random = 5,
+}
+
 export enum TrainingBarrels {
     normal = 0,
     shuffled = 1,
@@ -487,6 +595,8 @@ export enum WinConditionComplex {
     medium_random = 14,
     hard_random = 15,
     dk_rap_items = 16,
+    req_bosses = 17,
+    req_bonuses = 18,
 }
 
 export enum WrinklyHints {
@@ -710,6 +820,63 @@ export enum SettingsStringEnum {
     crown_enemy_difficulty = 203,
     dk_portal_location_rando_v2 = 204,
     dos_door_rando = 205,
+    blocker_difficulty = 206,
+    race_coin_rando = 207,
+    prog_slam_level_1 = 208,
+    prog_slam_level_2 = 209,
+    prog_slam_level_3 = 210,
+    prog_slam_level_4 = 211,
+    prog_slam_level_5 = 212,
+    prog_slam_level_6 = 213,
+    prog_slam_level_7 = 214,
+    prog_slam_level_8 = 215,
+    switchsanity_enabled = 216,
+    switchsanity_switch_isles_to_kroc_top = 217,
+    switchsanity_switch_isles_helm_lobby = 218,
+    switchsanity_switch_isles_aztec_lobby_back_room = 219,
+    switchsanity_switch_isles_fungi_lobby_fairy = 220,
+    switchsanity_switch_isles_spawn_rocketbarrel = 221,
+    switchsanity_switch_japes_to_hive = 222,
+    switchsanity_switch_japes_to_rambi = 223,
+    switchsanity_switch_japes_to_painting_room = 224,
+    switchsanity_switch_japes_to_cavern = 225,
+    switchsanity_switch_aztec_to_kasplat_room = 226,
+    switchsanity_switch_aztec_llama_front = 227,
+    switchsanity_switch_aztec_llama_side = 228,
+    switchsanity_switch_aztec_llama_back = 229,
+    switchsanity_switch_aztec_sand_tunnel = 230,
+    switchsanity_switch_aztec_to_connector_tunnel = 231,
+    switchsanity_switch_galleon_to_lighthouse_side = 232,
+    switchsanity_switch_galleon_to_shipwreck_side = 233,
+    switchsanity_switch_galleon_to_cannon_game = 234,
+    switchsanity_switch_fungi_yellow_tunnel = 235,
+    switchsanity_switch_fungi_green_tunnel_near = 236,
+    switchsanity_switch_fungi_green_tunnel_far = 237,
+    switchsanity_switch_japes_free_kong = 238,
+    switchsanity_switch_aztec_free_tiny = 239,
+    switchsanity_switch_aztec_free_lanky = 240,
+    switchsanity_switch_factory_free_kong = 241,
+    item_rando_list_0 = 242,
+    item_rando_list_1 = 243,
+    item_rando_list_2 = 244,
+    item_rando_list_3 = 245,
+    item_rando_list_4 = 246,
+    item_rando_list_5 = 247,
+    item_rando_list_6 = 248,
+    item_rando_list_7 = 249,
+    item_rando_list_8 = 250,
+    item_rando_list_9 = 251,
+    decouple_item_rando = 252,
+    filler_items_selected = 253,
+    disable_racing_patches = 254,
+    blocker_selection_behavior = 255,
+    tns_selection_behavior = 256,
+    medal_jetpac_behavior = 257,
+    pearl_mermaid_behavior = 258,
+    fairy_queen_behavior = 259,
+    cb_medal_behavior = 260,
+    tricks_selected = 261,
+    shops_dont_cost = 262,
 }
 
 export enum SettingsStringDataType {
@@ -728,6 +895,7 @@ export const SettingsMap = {
     'bananaport_placement_rando': ShufflePortLocations,
     'bananaport_rando': BananaportRando,
     'big_head_mode': BigHeadMode,
+    'blocker_difficulty': BLockerDifficulty,
     'bonus_barrels': MinigameBarrels,
     'cb_rando': CBRando,
     'chunky_colors': CharacterColors,
@@ -749,6 +917,7 @@ export const SettingsMap = {
     'galleon_water': GalleonWaterSetting,
     'gb_colors': CharacterColors,
     'glitches_selected': GlitchesSelected,
+    'tricks_selected': TricksSelected,
     'hard_bosses_selected': HardBossesSelected,
     'hard_mode_selected': HardModeSelected,
     'helm_barrels': MinigameBarrels,
@@ -769,6 +938,7 @@ export const SettingsMap = {
     'move_rando': MoveRando,
     'music_filtering_selected': MusicFilters,
     'rambi_colors': CharacterColors,
+    'random_colors': ColorOptions,
     'random_models': RandomModels,
     'random_prices': RandomPrices,
     'shockwave_status': ShockwaveStatus,
@@ -783,6 +953,12 @@ export const SettingsMap = {
     'warp_level_list_selected': Maps,
     'win_condition': WinCondition,
     'win_condition_item': WinConditionComplex,
+    'blocker_selection_behavior': BLockerSetting,
+    'tns_selection_behavior': TroffSetting,
+    'medal_jetpac_behavior': RandomRequirement,
+    'pearl_mermaid_behavior': RandomRequirement,
+    'fairy_queen_behavior': RandomRequirement,
+    'cb_medal_behavior': RandomRequirement,
     'wrinkly_hints': WrinklyHints,
     'spoiler_hints': SpoilerHints,
     'starting_kong': Kongs,
@@ -801,6 +977,50 @@ export const SettingsMap = {
     'starting_moves_list_3': Items,
     'starting_moves_list_4': Items,
     'starting_moves_list_5': Items,
+    'item_rando_list_0': ItemRandoListSelected,
+    'item_rando_list_1': ItemRandoListSelected,
+    'item_rando_list_2': ItemRandoListSelected,
+    'item_rando_list_3': ItemRandoListSelected,
+    'item_rando_list_4': ItemRandoListSelected,
+    'item_rando_list_5': ItemRandoListSelected,
+    'item_rando_list_6': ItemRandoListSelected,
+    'item_rando_list_7': ItemRandoListSelected,
+    'item_rando_list_8': ItemRandoListSelected,
+    'item_rando_list_9': ItemRandoListSelected,
+    'filler_items_selected': ItemRandoFiller,
+    'prog_slam_level_1': SlamRequirement,
+    'prog_slam_level_2': SlamRequirement,
+    'prog_slam_level_3': SlamRequirement,
+    'prog_slam_level_4': SlamRequirement,
+    'prog_slam_level_5': SlamRequirement,
+    'prog_slam_level_6': SlamRequirement,
+    'prog_slam_level_7': SlamRequirement,
+    'prog_slam_level_8': SlamRequirement,
+    'switchsanity_switch_isles_to_kroc_top': SwitchsanityKong,
+    'switchsanity_switch_isles_helm_lobby': SwitchsanityGone,
+    'switchsanity_switch_isles_aztec_lobby_back_room': SwitchsanityKong,
+    'switchsanity_switch_isles_fungi_lobby_fairy': SwitchsanityKong,
+    'switchsanity_switch_isles_spawn_rocketbarrel': SwitchsanityKong,
+    'switchsanity_switch_japes_to_hive': SwitchsanityKong,
+    'switchsanity_switch_japes_to_rambi': SwitchsanityKong,
+    'switchsanity_switch_japes_to_painting_room': SwitchsanityKong,
+    'switchsanity_switch_japes_to_cavern': SwitchsanityKong,
+    'switchsanity_switch_aztec_to_kasplat_room': SwitchsanityKong,
+    'switchsanity_switch_aztec_llama_front': SwitchsanityKong,
+    'switchsanity_switch_aztec_llama_side': SwitchsanityKong,
+    'switchsanity_switch_aztec_llama_back': SwitchsanityKong,
+    'switchsanity_switch_aztec_sand_tunnel': SwitchsanityKong,
+    'switchsanity_switch_aztec_to_connector_tunnel': SwitchsanityKong,
+    'switchsanity_switch_galleon_to_lighthouse_side': SwitchsanityKong,
+    'switchsanity_switch_galleon_to_shipwreck_side': SwitchsanityKong,
+    'switchsanity_switch_galleon_to_cannon_game': SwitchsanityKong,
+    'switchsanity_switch_fungi_yellow_tunnel': SwitchsanityKong,
+    'switchsanity_switch_fungi_green_tunnel_near': SwitchsanityKong,
+    'switchsanity_switch_fungi_green_tunnel_far': SwitchsanityKong,
+    'switchsanity_switch_japes_free_kong': SwitchsanityKong,
+    'switchsanity_switch_aztec_free_tiny': SwitchsanityKong,
+    'switchsanity_switch_aztec_free_lanky': SwitchsanityKong,
+    'switchsanity_switch_factory_free_kong': SwitchsanityKong,
 }
 
 export const SettingsStringTypeMap = {
@@ -832,6 +1052,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.crown_enemy_rando: CrownEnemyRando,
     SettingsStringEnum.crown_enemy_difficulty: CrownEnemyDifficulty,
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.race_coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
     SettingsStringEnum.dk_portal_location_rando: SettingsStringDataType.bool,
@@ -840,6 +1061,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,
     SettingsStringEnum.enemies_selected: SettingsStringDataType.list,
+    SettingsStringEnum.filler_items_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_rando: SettingsStringDataType.bool,
     SettingsStringEnum.enemy_speed_rando: SettingsStringDataType.bool,
     SettingsStringEnum.faster_checks_enabled: SettingsStringDataType.bool,
@@ -849,6 +1071,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.free_trade_setting: FreeTradeSetting,
     SettingsStringEnum.generate_spoilerlog: SettingsStringDataType.bool,
     SettingsStringEnum.glitches_selected: SettingsStringDataType.list,
+    SettingsStringEnum.tricks_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_mode: SettingsStringDataType.bool,
     SettingsStringEnum.hard_mode_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_blockers: SettingsStringDataType.bool,
@@ -946,6 +1169,12 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.warp_level_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.warp_to_isles: SettingsStringDataType.bool,
     SettingsStringEnum.win_condition_item: WinConditionComplex,
+    SettingsStringEnum.blocker_selection_behavior: BLockerSetting,
+    SettingsStringEnum.tns_selection_behavior: TroffSetting,
+    SettingsStringEnum.medal_jetpac_behavior: RandomRequirement,
+    SettingsStringEnum.pearl_mermaid_behavior: RandomRequirement,
+    SettingsStringEnum.fairy_queen_behavior: RandomRequirement,
+    SettingsStringEnum.cb_medal_behavior: RandomRequirement,
     SettingsStringEnum.win_condition_count: SettingsStringDataType.var_int,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,
@@ -971,6 +1200,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
+    SettingsStringEnum.disable_racing_patches: SettingsStringDataType.bool,
     SettingsStringEnum.starting_kong: Kongs,
     SettingsStringEnum.switchsanity: SwitchsanityLevel,
     SettingsStringEnum.fungi_time: FungiTimeSetting,
@@ -995,6 +1225,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
     SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
+    SettingsStringEnum.blocker_difficulty: BLockerDifficulty,
     SettingsStringEnum.has_password: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_enemy_sizes: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_item: ProgressiveHintItem,
@@ -1008,12 +1239,60 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.starting_moves_list_count_4: SettingsStringDataType.int16,
     SettingsStringEnum.starting_moves_list_5: SettingsStringDataType.list,
     SettingsStringEnum.starting_moves_list_count_5: SettingsStringDataType.int16,
+    SettingsStringEnum.item_rando_list_0: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_1: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_2: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_3: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_4: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_5: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_6: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_7: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_8: SettingsStringDataType.list,
+    SettingsStringEnum.item_rando_list_9: SettingsStringDataType.list,
+    SettingsStringEnum.decouple_item_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.shops_dont_cost: SettingsStringDataType.bool,
+    SettingsStringEnum.prog_slam_level_1: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_2: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_3: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_4: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_5: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_6: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_7: SlamRequirement,
+    SettingsStringEnum.prog_slam_level_8: SlamRequirement,
     SettingsStringEnum.dos_door_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.switchsanity_enabled: SettingsStringDataType.bool,
+    SettingsStringEnum.switchsanity_switch_isles_to_kroc_top: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_isles_helm_lobby: SwitchsanityGone,
+    SettingsStringEnum.switchsanity_switch_isles_aztec_lobby_back_room: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_isles_fungi_lobby_fairy: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_isles_spawn_rocketbarrel: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_japes_to_hive: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_japes_to_rambi: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_japes_to_painting_room: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_japes_to_cavern: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_to_kasplat_room: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_llama_front: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_llama_side: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_llama_back: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_sand_tunnel: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_to_connector_tunnel: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_galleon_to_lighthouse_side: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_galleon_to_shipwreck_side: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_galleon_to_cannon_game: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_fungi_yellow_tunnel: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_fungi_green_tunnel_near: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_fungi_green_tunnel_far: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_japes_free_kong: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_free_tiny: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_aztec_free_lanky: SwitchsanityKong,
+    SettingsStringEnum.switchsanity_switch_factory_free_kong: SwitchsanityKong,
 }
 
 export const SettingsStringListTypeMap = {
     SettingsStringEnum.enemies_selected: Enemies,
+    SettingsStringEnum.filler_items_selected: ItemRandoFiller,
     SettingsStringEnum.glitches_selected: GlitchesSelected,
+    SettingsStringEnum.tricks_selected: TricksSelected,
     SettingsStringEnum.item_rando_list_selected: ItemRandoListSelected,
     SettingsStringEnum.minigames_list_selected: MinigamesListSelected,
     SettingsStringEnum.cb_rando_list_selected: Levels,
@@ -1031,6 +1310,16 @@ export const SettingsStringListTypeMap = {
     SettingsStringEnum.starting_moves_list_3: Items,
     SettingsStringEnum.starting_moves_list_4: Items,
     SettingsStringEnum.starting_moves_list_5: Items,
+    SettingsStringEnum.item_rando_list_0: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_1: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_2: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_3: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_4: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_5: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_6: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_7: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_8: ItemRandoListSelected,
+    SettingsStringEnum.item_rando_list_9: ItemRandoListSelected,
 }
 
 export const SettingsStringIntRangeMap = {

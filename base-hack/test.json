@@ -19,7 +19,6 @@
    "pppanic_fairy_model":73,
    "cutscene_skip_setting":1,
    "show_music_name":1,
-   "balloon_sound":1,
    "quality_of_life":{
       "reduce_lag":true,
       "remove_cutscenes":true,
@@ -161,7 +160,7 @@
    "disable_drops":0,
    "shop_indicator_on":2,
    "warp_to_isles_enabled":1,
-   "lobbies_open_bitfield":255,
+   "lobbies_open_bitfield":0,
    "perma_lose_kongs":0,
    "jetpac_medal_requirement":1,
    "free_target_llama":255,
@@ -228,11 +227,6 @@
    ],
    "test_zone":[
       48,
-      0
-   ],
-   "kut_out_phases":[
-      3,
-      2,
       0
    ],
    "dpad_visual_enabled":2,

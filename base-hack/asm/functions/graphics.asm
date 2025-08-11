@@ -39,3 +39,4 @@
 .definelabel recolorVertBlockText, 0x80704298
 .definelabel updateCamera, 0x805FCA94
 .definelabel guPerspectiveF, 0x80006050
+.definelabel spawnKeyTwinklies, 0x80686CF8

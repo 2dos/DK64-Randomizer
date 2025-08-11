@@ -220,8 +220,8 @@ def shouldWritePointerTable(index: int):
     #     return False
 
     # No need to recompute pointer tables with no entries in them
-    if pointer_tables[index].num_entries == 0:
-        return False
+    # if pointer_tables[index].num_entries == 0:
+    #     return False
 
     if pointer_tables[index].force_rewrite:
         return True
@@ -323,6 +323,7 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
 
                 # Update the uncompressed filesize
                 if y.hasChanged():
+                    print(f"Attempting to write uncompressed size to {x.index}->{y.index}")
                     writeUncompressedSize(fh, x.index, y.index, file_info.uncompressed_size)
             else:
                 adjusted_pointer = next_pointer

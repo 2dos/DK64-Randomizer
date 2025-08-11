@@ -18,6 +18,7 @@
             href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link href="static/styles/styles.css" rel="stylesheet" />
         <link href="./static/styles/gui.css" rel="stylesheet" type="text/css" />
+        <link href="./static/styles/sidebar.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
@@ -122,10 +123,10 @@
             class="center_image"
             style="cursor: pointer; margin-top: 70px"
             onClick="render_page('./index')"/>
-        <div style="width: 80%; min-width: 400px; max-width: 1500px"
+        <nav id="nav-tab-list"></nav>
+        <div style="width: 90%; min-width: 400px"
             class="center">
-            <div id="nav-tab-list" style="max-width: 1500px"></div>
-            <div class="card" style="max-width: 1500px; border-top-left-radius: 0px">
+            <div class="card flex-grow-1" style="border-top-left-radius: 0px">
                 <form id="form" action="/" method="POST">
                     <!--Create navbar-->
                     <div class="container" id="visual_indicator">
@@ -391,6 +392,19 @@
                                         style="width: 60%; height: 50px; text-align: center"
                                         type="button"
                                         value="Generate Seed from Patch"/>
+                                    <div class="modal fade" id="lankyModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="lankyModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <h2>Patching lanky File...</h2>
+                                                    <p>This may take some time. Please be patient.</p>
+                                                    <div id="close-modal-lanky" style="display:none">
+                                                        <button class="btn btn-secondary" id="close-modal-lanky-btn">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <!--Past Generation-->
@@ -584,7 +598,7 @@
                         $("#total_generated_seeds").html("<strong>Total Generated Seeds:</strong> " + data.total_seeds);
                         $("#last_seed_generated").html("<strong>Last Seed Generated:</strong> " + time_since_generated);
                     }
-                })
+                });
             }
             setInterval(function () {
                 query_stats();
@@ -658,7 +672,7 @@
         </script>
         <script>
             function render_page(page) {
-                xmlhttp = new XMLHttpRequest();
+                var xmlhttp = new XMLHttpRequest();
                 xmlhttp.open("GET", page + ".html", false);
                 xmlhttp.send();
                 var data = xmlhttp.responseText;
@@ -673,8 +687,8 @@
             $(function() {
                 $('[data-toggle="tooltip"]').tooltip({
                     trigger: 'hover'
-                })
-            })
+                });
+            });
 
             $(document).ready(function () {
                 $("#generate_seed").on('click', function (event) {
@@ -682,19 +696,19 @@
                     var el = $(this);
                     el.prop('disabled', true);
                     setTimeout(function(){el.prop('disabled', false);}, 2000);
-                })
+                });
 
                 $("#settings_string").on('click', function (event) {
                     var input = $("#settings_string");
                     input.select();
-                })
+                });
 
                 $("#settings_string_copy").on('click', function (event) {
                     var input = $("#settings_string");
                     input.select();
                     navigator.clipboard.writeText(input.val());
-                })
-            })
+                });
+            });
         </script>
         <script>
             // TOAST GENERATOR
@@ -728,6 +742,9 @@
         </script>
         <script type="module">
             // Create an async function to handle the script loading process
+            function toJSONArray(input) {
+                return JSON.stringify(input);
+            }
             async function loadScripts() {
                 try {
                     // Dynamically import init_variables.js first
@@ -739,6 +756,8 @@
                     // Nunjucks configuration after PlandoUtils.js is loaded
                     var env = nunjucks.configure('/templates', { autoescape: false, web: { useCache: true } });
         
+                    env.addFilter("tojsonarr", toJSONArray);
+
                     // Use the imported functions from PlandoUtils
                     env.addFilter("plando_custom_loc_restrict", PlandoCustomLocationFilter);
                     env.addFilter("plando_custom_loc_item_restrict", PlandoCustomLocationItemFilter);
@@ -792,7 +811,7 @@
                         error: function (jqXHR, textStatus, errorThrown) {
                             // Insert error to root of dom
                             console.error("AJAX request failed:", errorThrown);
-                        }})
+                        }});
                 } catch (error) {
                     console.error("Failed to load required modules:", error);
                 }
@@ -804,8 +823,9 @@
                         { src: './static/js/utils.js', defer: true },
                         { src: './static/js/spoiler.js', defer: true },
                         { src: './static/js/generate_buttons.js', defer: true },
-                        { src: './static/js/rando_options.js', defer: true },
+                        { src: './static/js/sortable.min.js', defer: true },
                         { src: './static/js/randomize_settings.js', defer: true },
+                        { src: './static/js/rando_options.js', defer: true },
                         { src: './static/js/initalize.js', defer: true },
                         { src: './static/js/music_select.js', defer: true },
                         { src: "./static/js/hash.js", defer: true },

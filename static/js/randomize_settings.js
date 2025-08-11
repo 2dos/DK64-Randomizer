@@ -4,7 +4,7 @@
 
 function random_bool_setting(weight) {
     /** Generate a random value for a boolean setting. */
-    return Math.random() <= weight;
+    return (Math.random() * 100) <= weight;
 }
 
 function get_random_normal_value(mean, sdev) {
@@ -116,9 +116,18 @@ function random_multi_select_setting(weights_obj) {
 function assign_multi_select_setting(setting_name, options_list) {
     /** Assign a list of values to a multi-select. */
     const selectElem = get_setting_element(setting_name);
-    for (let i = 0; i < selectElem.options.length; i++) {
-        const optElem = selectElem.options.item(i);
-        optElem.selected = options_list.includes(optElem.value);
+    if (selectElem.tagName == "SELECT") {
+        // Regular Multi-select
+        for (let i = 0; i < selectElem.options.length; i++) {
+            const optElem = selectElem.options.item(i);
+            optElem.selected = options_list.includes(optElem.value);
+        }
+    } else {
+        // Dropdown Multiselect
+        const checkboxes = Array.from(selectElem.getElementsByTagName("input"));
+        for (let cb of checkboxes) {
+            cb.checked = options_list.includes(cb.value);
+        }
     }
 }
 
@@ -135,127 +144,175 @@ function get_setting_element(id_or_name) {
     return undefined;
 }
 
-function is_bool_setting(setting_id) {
-    const elem = get_setting_element(setting_id);
-    if (!elem) {
-        return false;
+function setSortableToColumn(group_name, shuffled, unshuffled) {
+    const container = document.getElementById(`${group_name}-category-container`);
+    const sort_sections_items = sort_container.getElementsByClassName("shared");
+    const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
+    const offset = sort_sections_items.length;
+    let total_shuffled_html = "";
+    let total_unshuffled_html = "";
+    for (let i = 0; i < offset; i++) {
+        const contents = sort_sections_items[i].getElementsByTagName("li");
+        for (let c = 0; c < contents.length; c++) {
+            const obj_val = contents[c].getAttribute("value");
+            if (shuffled.includes(obj_val)) {
+                total_shuffled_html += contents[c].outerHTML;
+            } else {
+                total_unshuffled_html += contents[c].outerHTML;
+            }
+        }
     }
-    return elem.tagName === "INPUT" && elem.type === "checkbox";
-}
-
-function is_numeric_setting(setting_id) {
-    const elem = get_setting_element(setting_id);
-    if (!elem) {
-        return false;
+    for (let i = 0; i < offset; i++) {
+        if (i == 0) {
+            sort_sections_items[0].innerHTML = total_unshuffled_html;
+        } else if (i == 1) {
+            sort_sections_items[1].innerHTML = total_shuffled_html;
+        } else {
+            sort_sections_items[i].innerHTML = "";
+        }
+        sort_sections_checks[i].innerHTML = "";
+        const event = new Event("change", { bubbles: true, cancelable: false });
+        sort_sections_items[i].dispatchEvent(event);
+        sort_sections_checks[i].dispatchEvent(event);
     }
-    return elem.tagName === "INPUT" && elem.type === "number";
-}
-
-function is_single_select_setting(setting_id) {
-    const elem = get_setting_element(setting_id);
-    if (!elem) {
-        return false;
-    }
-    return elem.tagName === "SELECT" && !elem.multiple;
-}
-
-function is_multi_select_setting(setting_id) {
-    const elem = get_setting_element(setting_id);
-    if (!elem) {
-        return false;
-    }
-    return elem.tagName === "SELECT" && elem.multiple;
+    updateCheckItemCounter(container);
 }
 
 function randomize_settings() {
     /** Randomize all non-cosmetic settings. */
     const weightsElem = get_setting_element("random-weights");
-    let weightData = undefined;
+    let weightName = undefined;
     for (const val of random_settings_presets) {
-        if (val["name"] === weightsElem.value) {
-            weightData = val;
+        if (val.name === weightsElem.value) {
+            weightName = val.name;
         }
     }
 
     // If we somehow have no selection, just return.
-    if (!weightData) {
+    if (!weightName) {
         return;
     }
 
     const randSettings = {};
-    const ignoredFields = [
-        "name",
-        "description",
-    ];
 
     // Start by generating random values and placing them in the object.
-    for (const [settingName, weights] of Object.entries(weightData)) {
-        if (ignoredFields.includes(settingName)) {
+    for (const [settingName, data] of Object.entries(random_settings_settings)) {
+        console.log(`Reading weight file for ${settingName}`)
+        if (data.ignored) {
             continue;
         }
+        let parsed_weight_name = weightName;
+        const no_qol = 'Difficult with QoL Shuffle';
+        const no_qol_internal = no_qol.toLowerCase().replaceAll(" ", "_");
+        if (weightName == no_qol && data.qol_uses_hard && !Object.keys(data.options).includes(no_qol_internal)) {
+            parsed_weight_name = 'Difficult'
+        }
+        parsed_weight_name = parsed_weight_name.toLowerCase().replaceAll(" ", "_");
 
-        if (is_bool_setting(settingName)) {
+        if (data.setting_type == "bool") {
             // Generate a random number and see if it's below the provided
             // weight.
-            let randomValue = random_bool_setting(weights);
-            randSettings[settingName] = randomValue;
-        } else if (is_numeric_setting(settingName)) {
+            let randomValue = random_bool_setting(data.options[parsed_weight_name]);
+            randSettings[settingName] = {
+                value: randomValue,
+                type: "bool"
+            };
+        } else if (data.setting_type == "range") {
             // Generate a random number from a distribution based on the
             // provided values.
-            let randomValue = random_numeric_setting(weights);
-            randSettings[settingName] = randomValue;
-        } else if (is_single_select_setting(settingName)) {
+            let randomValue = random_numeric_setting(data.options[parsed_weight_name]);
+            randSettings[settingName] = {
+                value: randomValue,
+                type: "range"
+            };
+        } else if (data.setting_type == "choice_single") {
             // Generate a random number and see which bucket the number falls
             // into. That bucket's value is chosen.
-            let randomValue = random_single_select_setting(weights);
-            randSettings[settingName] = randomValue;
-        } else if (is_multi_select_setting(settingName)) {
+            let randomValue = random_single_select_setting(data.options[parsed_weight_name]);
+            randSettings[settingName] = {
+                value: randomValue,
+                type: "choice_single"
+            };
+        } else if (data.setting_type == "choice_multiple") {
             // Generate a random number for every possible value and add that
             // value to the list if the number is's above the provided weight.
-            let randomList = random_multi_select_setting(weights);
-            randSettings[settingName] = randomList;
+            let randomList = random_multi_select_setting(data.options[parsed_weight_name]);
+            randSettings[settingName] = {
+                value: randomList,
+                type: "choice_multiple"
+            };
+        } else if (data.setting_type == "item_rando") {
+            // Special case
+            let unshuffled = [];
+            let shuffled = [];
+            Object.keys(data.options[parsed_weight_name]).forEach(item => {
+                let isShuffled = random_bool_setting(data.options[parsed_weight_name][item]);
+                if (isShuffled) {
+                    shuffled.push(item);
+                } else {
+                    unshuffled.push(item);
+                }
+            });
+            randSettings["item_rando_list_0"] = {
+                value: unshuffled.slice(),
+                type: "item_rando",
+            };
+            randSettings["item_rando_list_1"] = {
+                value: shuffled.slice(),
+                type: "item_rando",
+            };
+            for (let i = 0; i < 8; i++) {
+                randSettings[`item_rando_list_${i + 2}`] = {
+                    value: [],
+                    type: "item_rando",
+                };
+            }
         }
     }
-
-    // If logic isn't glitched logic, remove selected glitches.
-    if (randSettings["logic_type"] !== "glitch") {
-        randSettings["glitches_selected"] = [];
+    // Progressive Moves count should be based on the item
+    const prog_move_items = {
+        "off": 0,
+        "req_gb": 201,
+        "req_bp": 40,
+        "req_key": 8,
+        "req_medal": 40,
+        "req_crown": 10,
+        "req_fairy": 20,
+        "req_rainbowcoin": 16,
+        "req_pearl": 5,
+        "req_cb": 3500,
     }
-    // Only enable individual hard mode settings if hard mode is enabled.
-    if (!randSettings["hard_mode"]) {
-        randSettings["hard_mode_selected"] = [];
+    const cap = prog_move_items[randSettings["progressive_hint_item"].value]
+    randSettings["progressive_hint_count"].value = parseInt((randSettings["progressive_hint_count"].value / 201) * cap);
+    // Parse Chaos B. Lockers
+    if (randSettings["blocker_selection_behavior"].value == "chaos") {
+        // Is going to be a chaos B. Locker
+        randSettings["blocker_text"].value = parseInt((randSettings["blocker_text"].value / 201) * 100);
     }
-    // Remove all selected minigames if they aren't being randomized.
-    if (!randSettings["bonus_barrel_rando"]) {
-        randSettings["minigames_list_selected"] = [];
-    }
-    // Remove all selected levels if the CBs in them aren't being randomized.
-    if (!randSettings["cb_rando_enabled"]) {
-        randSettings["cb_rando_list_selected"] = [];
-    }
-    // Remove all selected enemies if they aren't being randomized.
-    if (!randSettings["enemy_rando"]) {
-        randSettings["enemies_selected"] = [];
-    }
-    // Ignore the warp level list if bananaports are not shuffled.
-    if (randSettings["bananaport_placement_rando"] === "off") {
-        randSettings["warp_level_list_selected"] = [];
+    console.log(randSettings)
+    if (randSettings["no_healing"].value) {
+        // Disable water is lava if no healing is selected
+        randSettings["hard_mode_selected"].value = randSettings["hard_mode_selected"].value.filter(k => k != 'water_is_lava');
     }
 
     // Reset all starting moves, placing them all into a single list.
     startingMovesFullReset();
 
     // Now we assign the random values to the HTML settings.
-    for (const [settingName, settingVal] of Object.entries(randSettings)) {
-        if (is_bool_setting(settingName)) {
+    for (const [settingName, setting_data] of Object.entries(randSettings)) {
+        console.log(`Writing to UI for ${settingName}`)
+        const settingVal = setting_data.value;
+        const settingType = setting_data.type;
+        if (settingType == "bool") {
             const settingElem = get_setting_element(settingName);
             settingElem.checked = settingVal;
-        } else if (is_multi_select_setting(settingName)) {
+        } else if (settingType == "choice_multiple") {
             assign_multi_select_setting(settingName, settingVal);
-        } else {
+        } else if (settingType != "item_rando") {
             // Both numeric and single-select settings work here.
             const settingElem = get_setting_element(settingName);
             settingElem.value = settingVal;
         }
     }
+    setSortableToColumn("item_rando", randSettings["item_rando_list_1"].value, randSettings["item_rando_list_0"].value)
 }

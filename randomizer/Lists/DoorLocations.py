@@ -19,7 +19,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Enums.Time import Time
 from randomizer.Logic import RegionsOriginal as RegionList
 from randomizer.LogicClasses import TransitionFront
-from randomizer.Patching.Library.Generic import IsItemSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected
 from randomizer.Lists.MapsAndExits import RegionMapList
 
 LEVEL_MAIN_MAPS = (
@@ -98,7 +98,7 @@ class DoorData:
         self.group = group  # groups door locations to ensure troff n scoff portals don't generate right next to each other
         self.moveless = moveless  # moveless means that a door location can be accessed without any moves (except vines for in Aztec)
         if logic is None:
-            self.logic = lambda l: True
+            self.logic = lambda _: True
         else:
             self.logic = logic
         self.placed = placed
@@ -153,7 +153,7 @@ class DoorData:
         """Assign DK Portal to slot."""
         self.placed = DoorType.dk_portal
         placement_region = LEVEL_ENTRY_HANDLER_REGIONS[level]
-        spoiler.RegionList[placement_region].exits[1] = TransitionFront(self.logicregion, lambda l: True)
+        spoiler.RegionList[placement_region].exits[1] = TransitionFront(self.logicregion, lambda _: True)
         tied_map = RegionMapList[self.logicregion]
         if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
             spoiler.settings.level_portal_destinations[level] = {
@@ -186,7 +186,7 @@ def GetBossLobbyRegionIdForRegion(region_id, region):
 
 def isBarrierRemoved(spoiler, barrier_id: RemovedBarriersSelected):
     """Return whether the barrier has been removed."""
-    return IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, barrier_id)
+    return IsDDMSSelected(spoiler.settings.remove_barriers_selected, barrier_id)
 
 
 door_locations = {
@@ -1413,7 +1413,7 @@ door_locations = {
             location=[660.685, 133.5, 660.774, 182.0],
             group=1,
             moveless=False,
-            logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)),
+            logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.monkey_maneuvers and (l.istiny or l.isdiddy)),
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.diddy,
@@ -1425,7 +1425,7 @@ door_locations = {
             location=[468.047, 85.833, 662.907, 180.0],
             group=1,
             moveless=False,
-            logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or l.advanced_platforming,
+            logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or l.monkey_maneuvers,
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.lanky,
@@ -1437,7 +1437,7 @@ door_locations = {
             location=[275.533, 133.5, 661.908, 180.0],
             group=1,
             moveless=False,
-            logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)),
+            logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.monkey_maneuvers and (l.istiny or l.isdiddy)),
             placed=DoorType.wrinkly,
             door_type=[DoorType.wrinkly],
             default_kong=Kongs.tiny,
@@ -1470,14 +1470,14 @@ door_locations = {
             placed=DoorType.boss,
         ),  # TnS Portal in Production Room
         DoorData(
-            name="R and D",
+            name="R&D",
             map=Maps.FranticFactory,
             logicregion=Regions.RandD,
             location=[3827.127, 1264.0, 847.458, 222.0],
             group=4,
             moveless=False,
             placed=DoorType.boss,
-        ),  # TnS Portal in R and D
+        ),  # TnS Portal in R&D
         DoorData(
             name="Block Tower",
             map=Maps.FranticFactory,
@@ -1565,7 +1565,7 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
-            name="R and D Room - Next to Tunnel to Car Race",
+            name="R&D Room - Next to Tunnel to Car Race",
             map=Maps.FranticFactory,
             logicregion=Regions.RandD,
             location=[4006.7, 1264.0, 1454.0, 253.7],
@@ -1581,7 +1581,7 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
-            name="R and D Room - Dead End",
+            name="R&D Room - Dead End",
             map=Maps.FranticFactory,
             logicregion=Regions.RandD,
             location=[3824.0, 1264.0, 528.8, 340.5],
@@ -1589,7 +1589,7 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
-            name="R and D Room - Blind Corner Next to Tunnel to Car Race",
+            name="R&D Room - Blind Corner Next to Tunnel to Car Race",
             map=Maps.FranticFactory,
             logicregion=Regions.RandD,
             location=[3790.0, 1264.0, 1476.0, 52.5],
@@ -1631,7 +1631,7 @@ door_locations = {
             moveless=False,
         ),
         DoorData(
-            name="R and D Room - Next to Diddy's Pincode Room",
+            name="R&D Room - Next to Diddy's Pincode Room",
             map=Maps.FranticFactory,
             logicregion=Regions.RandDUpper,
             location=[4046.0, 1336.0, 608.0, 340.0],
@@ -3476,7 +3476,7 @@ door_locations = {
         #     kong_lst=[Kongs.diddy, Kongs.lanky],
         #     group=6,
         #     moveless=False,
-        #     logic=lambda l: l.isdiddy or (l.islanky and l.balloon) or l.advanced_platforming,
+        #     logic=lambda l: l.isdiddy or (l.islanky and l.balloon) or l.monkey_maneuvers,
         #     door_type=[DoorType.boss],
         # ),
         # DoorData(
@@ -3488,7 +3488,7 @@ door_locations = {
         #     kong_lst=[Kongs.diddy, Kongs.lanky],
         #     group=6,
         #     moveless=False,
-        #     logic=lambda l: l.isdiddy or (l.islanky and l.balloon) or l.advanced_platforming,
+        #     logic=lambda l: l.isdiddy or (l.islanky and l.balloon) or l.monkey_maneuvers,
         #     door_type=[DoorType.boss],
         # ),
         DoorData(

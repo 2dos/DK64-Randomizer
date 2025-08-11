@@ -11,7 +11,6 @@
 #include "../../include/common.h"
 
 static unsigned short gb_total = 0;
-static unsigned char kong_bitfield = 0;
 static unsigned char recently_disabled_helm_hurry = 0;
 
 int canSaveHelmHurry(void) {
@@ -54,25 +53,15 @@ void checkTotalCache(void) {
      * @brief Compare variable values to their previously stored values to check for differences
      */
     int current_gb_total = getTotalGBs();
-    int current_kong_bitfield = 0;
-    for (int kong = 0; kong < 5; kong++) {
-        if (checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) {
-            current_kong_bitfield |= (1 << kong);
-        }
-    }
     int gb_diff = current_gb_total - gb_total;
     if (gb_diff > 0) {
         addHelmTime(HHITEM_GB, gb_diff);
     }
-    if (kong_bitfield != current_kong_bitfield) {
-        addHelmTime(HHITEM_KONG, 1);
-    }
     gb_total = current_gb_total;
-    kong_bitfield = current_kong_bitfield;
 }
 
 void finishHelmHurry(void) {
-    setFlag(FLAG_HELM_HURRY_DISABLED, 1, FLAGTYPE_PERMANENT);
+    setPermFlag(FLAG_HELM_HURRY_DISABLED);
     recently_disabled_helm_hurry = 1;
     save(); // Save all stats
     SaveToGlobal();
@@ -85,7 +74,7 @@ int initHelmHurry(void) {
      */
     if (getNewSaveTime() > 5) {
         // Old file loaded
-        HelmStartTime = ReadExtraData(EGD_HELMHURRYIGT, 0) & 0x7FFFFFFF;
+        HelmStartTime = ReadFile(DATA_HURRY_IGT, 0, 0, FileIndex) & 0x7FFFFFFF;
         return 0;
     }
     if (Rando.helm_hurry_start == 0) {
@@ -104,6 +93,6 @@ void saveHelmHurryTime(void) {
         } else if (save_value < 0) {
             save_value = 0;
         }
-        SaveExtraData(EGD_HELMHURRYIGT, 0, save_value);
+        SaveToFile(DATA_HURRY_IGT, 0, 0, FileIndex, save_value);
     }
 }

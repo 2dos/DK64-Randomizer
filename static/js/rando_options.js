@@ -3,12 +3,18 @@ function toggle_logic_type(event) {
 
   // Get the glitch customization modal element
   let glitchCustomization = document.getElementById("glitches_modal");
+  let glitchList = document.getElementById("glitches_multiselector");
 
   // Check the value of the logic_type element and enable or disable the glitches modal
-  if (document.getElementById("logic_type").value === "glitch") {
+  if (["advanced_glitchless", "glitch"].includes(document.getElementById("logic_type").value)) {
     glitchCustomization.removeAttribute("disabled");
   } else {
     glitchCustomization.setAttribute("disabled", "disabled");
+  }
+  if (document.getElementById("logic_type").value === "glitch") {
+    glitchList.removeAttribute("hidden");
+  } else {
+    glitchList.setAttribute("hidden", "hidden");
   }
 }
 
@@ -18,6 +24,22 @@ const DISABLED_HELM_DOOR_VALUES = [
   "hard_random",
   "opened",
 ];
+
+const ITEM_CAPS = {
+  "req_gb": 201,
+  "req_bp": 40,
+  "req_key": 8,
+  "req_medal": 40,
+  "req_crown": 10,
+  "req_fairy": 20,
+  "req_bean": 1,
+  "req_pearl": 5,
+  "req_rainbowcoin": 16,
+  "req_bosses": 7,
+  "req_bonuses": 53,
+  "req_cb": 3500,
+  "req_companycoins": 2,
+}
 
 // Attach the function as an event listener to the "change" event on the "logic_type" element
 document
@@ -464,10 +486,10 @@ document
   .getElementById("spoiler_hints")
   .addEventListener("change", disable_points);
 
-// Disable Remove Barriers Selector when Remove Barriers is off
-function disable_remove_barriers() {
-  const selector = document.getElementById("remove_barriers_modal");
-  const disabled = !document.getElementById("remove_barriers_enabled").checked;
+// Disable Prog Slam Selector when Prog Slam is off
+function disable_slam_selector() {
+  const selector = document.getElementById("slamModalActivator");
+  const disabled = !document.getElementById("alter_switch_allocation").checked;
 
   if (disabled) {
     selector.setAttribute("disabled", "disabled");
@@ -475,26 +497,9 @@ function disable_remove_barriers() {
     selector.removeAttribute("disabled");
   }
 }
-
 document
-  .getElementById("remove_barriers_enabled")
-  .addEventListener("click", disable_remove_barriers);
-
-// Disable Faster Checks Selector when Faster Checks is off
-function disable_faster_checks() {
-  const selector = document.getElementById("faster_checks_modal");
-  const disabled = !document.getElementById("faster_checks_enabled").checked;
-
-  if (disabled) {
-    selector.setAttribute("disabled", "disabled");
-  } else {
-    selector.removeAttribute("disabled");
-  }
-}
-
-document
-  .getElementById("faster_checks_enabled")
-  .addEventListener("click", disable_faster_checks);
+.getElementById("alter_switch_allocation")
+.addEventListener("click", disable_slam_selector);
 
 // Force Vanilla Door Rando on and enforce DK Portal Rando is enabled
 function toggle_dos_door_rando() {
@@ -558,7 +563,8 @@ document
   .addEventListener("click", function (event) {
     const tabs = [
       "nav-started-tab",
-      "nav-random-tab",
+      "nav-item-tab",
+      "nav-requirements-tab",
       "nav-overworld-tab",
       "nav-progression-tab",
       "nav-qol-tab",
@@ -576,7 +582,8 @@ document
   .addEventListener("click", function (event) {
     const tabs = [
       "nav-started-tab",
-      "nav-random-tab",
+      "nav-item-tab",
+      "nav-requirements-tab",
       "nav-overworld-tab",
       "nav-progression-tab",
       "nav-qol-tab",
@@ -679,17 +686,6 @@ document
   .getElementById("select_keys")
   .addEventListener("click", toggle_key_settings);
 
-// Toggle the textbox for Banana Medals
-function toggle_medals_box() {
-  const disabled = document.getElementById("random_medal_requirement").checked;
-  const medal = document.getElementById("medal_requirement");
-
-  if (disabled) {
-    medal.setAttribute("disabled", "disabled");
-  } else {
-    medal.removeAttribute("disabled");
-  }
-}
 enabled_plando = false;
 // Enable and disable the Plandomizer tab
 async function enable_plandomizer() {
@@ -712,10 +708,10 @@ async function enable_plandomizer() {
         console.log("Error running ui/__init__.py:", error);
       }
     }
-    plandoTab.style.display = "";
+    plandoTab.removeAttribute("hidden");
     $("#plando-modal").modal("hide");
   } else {
-    plandoTab.style.display = "none";
+    plandoTab.setAttribute("hidden", "hidden");
     $("#plando-modal").modal("hide");
   }
 }
@@ -724,10 +720,10 @@ document
   .getElementById("enable_plandomizer")
   .addEventListener("click", enable_plandomizer);
 
-// Disable Minigame Selector when Shuffle Bonus Barrels is off
-function disable_barrel_modal() {
-  const selector = document.getElementById("minigames_list_modal");
-  if (document.getElementById("bonus_barrel_rando").checked) {
+// Disable SSanity Selector when Switchsanity is off
+function disable_switchsanity_modal() {
+  const selector = document.getElementById("switchModalActivator");
+  if (document.getElementById("switchsanity_enabled").checked) {
     selector.removeAttribute("disabled");
   } else {
     selector.setAttribute("disabled", "disabled");
@@ -735,31 +731,56 @@ function disable_barrel_modal() {
 }
 
 document
-  .getElementById("bonus_barrel_rando")
-  .addEventListener("click", disable_barrel_modal);
+  .getElementById("switchsanity_enabled")
+  .addEventListener("click", disable_switchsanity_modal);
 
-function disable_enemy_modal() {
-  const selector = document.getElementById("enemies_modal");
-  if (document.getElementById("enemy_rando").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
+// Switchsanity Resets
+const switchsanity_defaults = {
+  "switchsanity_switch_isles_to_kroc_top": "tiny",
+  "switchsanity_switch_isles_helm_lobby": "gone_pad",
+  "switchsanity_switch_isles_aztec_lobby_back_room": "tiny",
+  "switchsanity_switch_isles_fungi_lobby_fairy": "tiny",
+  "switchsanity_switch_isles_spawn_rocketbarrel": "lanky",
+  "switchsanity_switch_japes_to_hive": "tiny",
+  "switchsanity_switch_japes_to_rambi": "donkey",
+  "switchsanity_switch_japes_to_painting_room": "diddy",
+  "switchsanity_switch_japes_to_cavern": "diddy",
+  "switchsanity_switch_aztec_to_kasplat_room": "donkey",
+  "switchsanity_switch_aztec_llama_front": "donkey",
+  "switchsanity_switch_aztec_llama_side": "lanky",
+  "switchsanity_switch_aztec_llama_back": "tiny",
+  "switchsanity_switch_aztec_sand_tunnel": "donkey",
+  "switchsanity_switch_aztec_to_connector_tunnel": "diddy",
+  "switchsanity_switch_galleon_to_lighthouse_side": "donkey",
+  "switchsanity_switch_galleon_to_shipwreck_side": "diddy",
+  "switchsanity_switch_galleon_to_cannon_game": "chunky",
+  "switchsanity_switch_fungi_yellow_tunnel": "lanky",
+  "switchsanity_switch_fungi_green_tunnel_near": "tiny",
+  "switchsanity_switch_fungi_green_tunnel_far": "chunky",
+  "switchsanity_switch_japes_free_kong": "donkey",
+  "switchsanity_switch_aztec_free_tiny": "diddy",
+  "switchsanity_switch_aztec_free_lanky": "donkey",
+  "switchsanity_switch_factory_free_kong": "lanky",
+}
+function switchsanity_reset_default() {
+  Object.keys(switchsanity_defaults).forEach(key => {
+    document.getElementById(key).value = switchsanity_defaults[key];
+  })
+}
+
+function switchsanity_reset_random() {
+  Object.keys(switchsanity_defaults).forEach(key => {
+    document.getElementById(key).value = "random";
+  })
 }
 
 document
-  .getElementById("enemy_rando")
-  .addEventListener("click", disable_enemy_modal);
+  .getElementById("ssanity-reset-vanilla")
+  .addEventListener("click", switchsanity_reset_default);
+document
+  .getElementById("ssanity-reset-random")
+  .addEventListener("click", switchsanity_reset_random);
 
-// Disable Hard Mode Selector when Hard Mode is off
-function disable_hard_mode_modal() {
-  const selector = document.getElementById("hard_mode_modal");
-  if (document.getElementById("hard_mode").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
 document.getElementById("starting_moves_reset").addEventListener("click", function(evt) {
   // Update the starting move pools to start with no items
   for (let i = 1; i <= 5; i++) {
@@ -798,57 +819,6 @@ document.getElementById("starting_moves_start_all").addEventListener("click", fu
   }
   startingMovesFullReset();
 });
-
-document
-  .getElementById("hard_mode")
-  .addEventListener("click", disable_hard_mode_modal);
-
-// Disable Hard Bosses Selector when Hard Bosses is off
-function disable_hard_bosses_modal() {
-  const selector = document.getElementById("hard_bosses_modal");
-  if (document.getElementById("hard_bosses").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
-
-document
-  .getElementById("hard_bosses")
-  .addEventListener("click", disable_hard_bosses_modal);
-
-// Disable Excluded Song Selector when Excluded Songs is off
-function disable_excluded_songs_modal(evt) {
-  const selector = document.getElementById("excluded_songs_modal");
-  if (document.getElementById("songs_excluded").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
-
-// Adding event listeners for nav-music-tab and songs_excluded
-document
-  .getElementById("nav-music-tab")
-  .addEventListener("click", disable_excluded_songs_modal);
-document
-  .getElementById("songs_excluded")
-  .addEventListener("click", disable_excluded_songs_modal);
-
-// Disable Music Filtering Selector when Music Filtering is off
-function disable_music_filtering_modal() {
-  const selector = document.getElementById("music_filtering_modal");
-  if (document.getElementById("music_filtering").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
-
-document
-  .getElementById("music_filtering")
-  .addEventListener("click", disable_music_filtering_modal);
-
 function disable_custom_cb_locations_modal() {
   const selector = document.getElementById("cb_rando_list_modal");
   if (document.getElementById("cb_rando_enabled").checked) {
@@ -861,19 +831,6 @@ function disable_custom_cb_locations_modal() {
 document
   .getElementById("cb_rando_enabled")
   .addEventListener("click", disable_custom_cb_locations_modal);
-
-function disable_misc_changes_modal() {
-  const selector = document.getElementById("misc_changes_modal");
-  if (document.getElementById("misc_changes_toggle").checked) {
-    selector.removeAttribute("disabled");
-  } else {
-    selector.setAttribute("disabled", "disabled");
-  }
-}
-
-document
-  .getElementById("misc_changes_toggle")
-  .addEventListener("click", disable_misc_changes_modal);
 
 // Hide the plando options for certain Helm phases if they are disabled
 function plando_hide_helm_options(evt) {
@@ -943,7 +900,7 @@ function plando_disable_isles_medals(evt) {
       const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
       kongIsleElem.setAttribute("disabled", "disabled");
       kongIsleElem.value = "";
-      tooltip = "To assign a reward here, Isles CBs must be shuffled.";
+      const tooltip = "To assign a reward here, Isles CBs must be shuffled.";
       kongIsleElem.parentElement.setAttribute("data-bs-original-title", tooltip);
     }
   } else {
@@ -985,8 +942,8 @@ document.getElementById("krool_in_boss_pool").addEventListener("click", plando_d
 document
   .getElementById("nav-plando-tab")
   .addEventListener("click", function (evt) {
-    disable_krool_phases(evt);
-    disable_helm_phases(evt);
+    disable_krool_phases();
+    disable_helm_phases();
     plando_toggle_custom_locations_tab(evt);
     plando_toggle_custom_arena_locations(evt);
     plando_toggle_custom_patch_locations(evt);
@@ -1013,33 +970,12 @@ document.getElementById("randomize_settings").addEventListener("click", function
   randomize_settings();
 
   // Run additional functions to ensure there are no conflicts.
-  update_ui_states(evt);
-});
-
-// Disable Boss Kong and Boss Location Rando if Vanilla levels and Kong Rando
-document.getElementById("kong_rando").addEventListener("click", function (evt) {
-  const level = document.getElementById("level_randomization");
-  const bossLocation = document.getElementById("boss_location_rando");
-  const bossKong = document.getElementById("boss_kong_rando");
-  const kongRando = document.getElementById("kong_rando");
-
-  if (
-    kongRando.checked &&
-    (level.value === "vanilla" || level.value === "level_order")
-  ) {
-    bossLocation.setAttribute("disabled", "disabled");
-    bossLocation.checked = true;
-    bossKong.setAttribute("disabled", "disabled");
-    bossKong.checked = true;
-  } else {
-    bossKong.removeAttribute("disabled");
-    bossLocation.removeAttribute("disabled");
-  }
+  update_ui_states();
 });
 
 // Disable color options when Randomize All is selected
 function disable_colors() {
-  const disabled = document.getElementById("random_colors").checked;
+  const disabled = document.getElementById("random_kong_colors").checked;
   const KONG_ZONES = {
     DK: ["Fur", "Tie"],
     Diddy: ["Clothes"],
@@ -1072,7 +1008,7 @@ function disable_colors() {
 }
 
 document
-  .getElementById("random_colors")
+  .getElementById("random_kong_colors")
   .addEventListener("click", disable_colors);
 
 // Disable 'Disable Tag Spawn' option when 'Tag Anywhere' is off
@@ -1147,139 +1083,36 @@ document
   .getElementById("helm_random")
   .addEventListener("click", disable_helm_phases);
 
-// Disable some settings based on the move rando setting
-function disable_move_shuffles() {
-  const moves = document.getElementById("move_rando");
-  const prices = document.getElementById("random_prices");
-  if (moves) {
-    if (moves.value === "start_with" || moves.value === "off") {
-      if (prices) {
-        prices.setAttribute("disabled", "disabled");
-      }
-    } else {
-      if (prices) {
-        prices.removeAttribute("disabled");
-      }
-    }
-  }
-}
-
-document
-  .getElementById("move_rando")
-  .addEventListener("change", disable_move_shuffles);
-
-// Enable and disable settings based on Item Rando being on/off
-function toggle_item_rando() {
-  const elements = {
-    selector: document.getElementById("item_rando_list_modal"),
-    itemRandoPool: document.getElementById("item_rando_list_selected").options,
-    smallerShops: document.getElementById("smaller_shops"),
-    moveVanilla: document.getElementById("move_off"),
-    moveRando: document.getElementById("move_on"),
-    enemyDropRando: document.getElementById("enemy_drop_rando"),
-    nonItemRandoWarning: document.getElementById("non_item_rando_warning"),
-    sharedShopWarning: document.getElementById("shared_shop_warning"),
-    kongRando: document.getElementById("kong_rando"),
-    shuffleItems: document.getElementById("shuffle_items"),
-    moveOnCrossPurchase: document.getElementById("move_on_cross_purchase"),
-    randomPrices: document.getElementById("random_prices"),
-  };
-
-  let shopsInPool = false;
-  let kongsInPool = false;
-  let nothingSelected = true;
-
-  for (let option of elements.itemRandoPool) {
-    if (option.selected) {
-      nothingSelected = false;
-      if (option.value === "shop") shopsInPool = true;
-      if (option.value === "kong") kongsInPool = true;
-    }
-  }
-
-  if (nothingSelected) {
-    shopsInPool = kongsInPool = true;
-  }
-
-  const disabled = !elements.shuffleItems.checked;
-
-  elements.selector.toggleAttribute("disabled", disabled);
-  elements.smallerShops.toggleAttribute("disabled", disabled || !shopsInPool);
-  if (disabled || !shopsInPool) {
-    elements.smallerShops.checked = false;
-  }
-  elements.moveVanilla.toggleAttribute("disabled", shopsInPool && !disabled);
-  elements.moveRando.toggleAttribute("disabled", shopsInPool && !disabled);
-  elements.enemyDropRando.toggleAttribute("disabled", disabled);
-  if (disabled) {
-    elements.enemyDropRando.checked = false;
-  }
-  elements.nonItemRandoWarning.toggleAttribute("hidden", !disabled);
-  elements.sharedShopWarning.toggleAttribute("hidden", shopsInPool && !disabled);
-  if (!disabled) {
-    elements.kongRando.toggleAttribute("disabled", kongsInPool);
-    elements.kongRando.checked = kongsInPool;
-  } else {
-    elements.kongRando.removeAttribute("disabled");
-  }
-
-  if (!disabled && shopsInPool) {
-    if (elements.moveVanilla.selected || elements.moveRando.selected) {
-      elements.moveOnCrossPurchase.selected = true;
-    }
-    elements.randomPrices.removeAttribute("disabled");
-  }
-}
-
-
-document
-  .getElementById("shuffle_items")
-  .addEventListener("click", toggle_item_rando);
 // Enable and disable settings based on the Item Rando pool changing
-document
-  .getElementById("item_rando_list_select_all")
-  .addEventListener("click", item_rando_list_changed);
-document
-  .getElementById("item_rando_list_reset")
-  .addEventListener("click", item_rando_list_changed);
-document
-  .getElementById("item_rando_list_selected")
-  .addEventListener("click", item_rando_list_changed);
-
 function item_rando_list_changed(evt) {
   let itemRandoDisabled = true;
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
+  // const itemRandoPool = document.getElementById(
+  //   "item_rando_list_selected"
+  // ).options;
   const smallerShops = document.getElementById("smaller_shops");
   const moveVanilla = document.getElementById("move_off");
   const moveRando = document.getElementById("move_on");
   const sharedShopWarning = document.getElementById("shared_shop_warning");
-  const kongRando = document.getElementById("kong_rando");
   let shopsInPool = false;
   let kongsInPool = false;
   let shockwaveInPool = false;
   let shopownersInPool = false;
   let nothingSelected = true;
 
-  for (let option of itemRandoPool) {
-    if (option.value === "shop" && option.selected) shopsInPool = true;
-    if (option.value === "kong" && option.selected) kongsInPool = true;
-    if (option.value === "shockwave" && option.selected) shockwaveInPool = true;
-    if (option.value === "shopowners" && option.selected) shopownersInPool = true;
-    if (option.selected) nothingSelected = false;
-  }
+  // for (let option of itemRandoPool) {
+  //   if (option.value === "shop" && option.selected) shopsInPool = true;
+  //   if (option.value === "kong" && option.selected) kongsInPool = true;
+  //   if (option.value === "shockwave" && option.selected) shockwaveInPool = true;
+  //   if (option.value === "shopowners" && option.selected) shopownersInPool = true;
+  //   if (option.selected) nothingSelected = false;
+  // }
 
-  if (nothingSelected) {
+  // if (nothingSelected) {
     shopsInPool = true;
     kongsInPool = true;
     shockwaveInPool = true;
     shopownersInPool = true;
-  }
-
-  if (document.getElementById("shuffle_items").checked) {
-    itemRandoDisabled = false;
-  }
+  // }
 
   let camera_option = document.getElementById("starting_move_52");
   let shockwave_option = document.getElementById("starting_move_53");
@@ -1288,22 +1121,13 @@ function item_rando_list_changed(evt) {
   let candy_option = document.getElementById("starting_move_94");
   let snide_option = document.getElementById("starting_move_95");
 
-  if (itemRandoDisabled) {
-    camera_option.setAttribute("hidden", "hidden");
-    shockwave_option.setAttribute("hidden", "hidden");
-    cranky_option.setAttribute("hidden", "hidden");
-    funky_option.setAttribute("hidden", "hidden");
-    candy_option.setAttribute("hidden", "hidden");
-    snide_option.setAttribute("hidden", "hidden");
-  }
-
-  if (shopsInPool && !itemRandoDisabled) {
+  if (shopsInPool) {
     sharedShopWarning.setAttribute("hidden", "hidden");
-    if (moveVanilla.selected || moveRando.selected) {
-      document.getElementById("move_on_cross_purchase").selected = true;
-    }
-    moveVanilla.setAttribute("disabled", "disabled");
-    moveRando.setAttribute("disabled", "disabled");
+    // if (moveVanilla.selected || moveRando.selected) {
+    //   document.getElementById("move_on_cross_purchase").selected = true;
+    // }
+    // moveVanilla.setAttribute("disabled", "disabled");
+    // moveRando.setAttribute("disabled", "disabled");
     smallerShops.removeAttribute("disabled");
 
     
@@ -1330,17 +1154,10 @@ function item_rando_list_changed(evt) {
 
   } else {
     sharedShopWarning.removeAttribute("hidden");
-    moveVanilla.removeAttribute("disabled");
-    moveRando.removeAttribute("disabled");
+    // moveVanilla.removeAttribute("disabled");
+    // moveRando.removeAttribute("disabled");
     smallerShops.setAttribute("disabled", "disabled");
     smallerShops.checked = false;
-  }
-
-  if (kongsInPool && !itemRandoDisabled) {
-    kongRando.setAttribute("disabled", "disabled");
-    kongRando.checked = true;
-  } else {
-    kongRando.removeAttribute("disabled");
   }
 }
 
@@ -1367,66 +1184,6 @@ function validate_fast_start_status(evt) {
   }
 }
 
-// Toggle the textboxes for BLockers
-document.getElementById("randomize_blocker_required_amounts").addEventListener("click", toggle_b_locker_boxes);
-
-function toggle_b_locker_boxes(evt) {
-    const disabled = !document.getElementById("randomize_blocker_required_amounts").checked;
-    const blockerText = document.getElementById("blocker_text");
-    const maximizeHelmBlocker = document.getElementById("maximize_helm_blocker");
-
-    if (disabled) {
-        blockerText.disabled = true;
-        maximizeHelmBlocker.disabled = true;
-
-        for (let i = 0; i < 10; i++) {
-            var blocker = document.getElementById(`blocker_${i}`);
-            if (blocker){ 
-                blocker.removeAttribute("disabled");
-            }
-        }
-    } else {
-        blockerText.removeAttribute("disabled");
-        maximizeHelmBlocker.removeAttribute("disabled");
-
-        for (let i = 0; i < 10; i++) {
-            var blocker = document.getElementById(`blocker_${i}`);
-            if (blocker){ 
-                blocker.disabled = true;
-            }
-        }
-    }
-}
-
-// Toggle the textboxes for Troff
-document.getElementById("randomize_cb_required_amounts").addEventListener("click", toggle_counts_boxes);
-
-function toggle_counts_boxes(evt) {
-    const disabled = !document.getElementById("randomize_cb_required_amounts").checked;
-    const troffText = document.getElementById("troff_text");
-
-    if (disabled) {
-        troffText.disabled = true;
-
-        for (let i = 0; i < 10; i++) {
-            var troff = document.getElementById(`troff_${i}`);
-            if (troff) {
-                troff.removeAttribute("disabled");
-            }
-        }
-    } else {
-        troffText.removeAttribute("disabled");
-
-        for (let i = 0; i < 10; i++) {
-            var troff = document.getElementById(`troff_${i}`);
-            if (troff) {
-                troff.disabled = true;
-            }
-        }
-    }
-}
-
-
 // Change level randomization
 document
   .getElementById("level_randomization")
@@ -1435,42 +1192,20 @@ document
 function change_level_randomization(evt) {
   validate_fast_start_status(evt);
 
-    const level = document.getElementById("level_randomization");
-    const bossLocation = document.getElementById("boss_location_rando");
-    const bossKong = document.getElementById("boss_kong_rando");
-    const kongRando = document.getElementById("kong_rando");
-    const shuffleHelmLocation = document.getElementById("shuffle_helm_location");
-    const helmLabel = document.getElementById("shuffle_helm_location_label");
+  const level = document.getElementById("level_randomization");
+  const shuffleHelmLocation = document.getElementById("shuffle_helm_location");
+  const helmLabel = document.getElementById("shuffle_helm_location_label");
 
-    const isLevelOrder = ["level_order", "level_order_complex"].includes(level.value);
-    const disableBossShuffles = ["level_order", "level_order_complex"].includes(level.value) || (level.value === "vanilla" && kongRando.checked);
-    const disableKongRando = ["level_order", "level_order_complex"].includes(level.value);
-    const disableShuffleHelmLocation = level.value === "vanilla";
+  const isLevelOrder = ["level_order", "level_order_complex", "level_order_moderate"].includes(level.value);
+  const disableShuffleHelmLocation = level.value === "vanilla";
 
-  if (disableBossShuffles) {
-    bossLocation.setAttribute("disabled", "disabled");
-    bossLocation.checked = true;
-    bossKong.setAttribute("disabled", "disabled");
-    bossKong.checked = true;
+  if (disableShuffleHelmLocation) {
+      shuffleHelmLocation.setAttribute("disabled", "disabled");
+      shuffleHelmLocation.checked = false;
   } else {
-    bossLocation.removeAttribute("disabled");
-    bossKong.removeAttribute("disabled");
+      shuffleHelmLocation.removeAttribute("disabled");
+      helmLabel.innerText = isLevelOrder ? "Include Helm" : "Shuffle Helm Location";
   }
-
-  if (disableKongRando) {
-    kongRando.setAttribute("disabled", "disabled");
-    kongRando.checked = true;
-  } else {
-    kongRando.removeAttribute("disabled");
-  }
-
-    if (disableShuffleHelmLocation) {
-        shuffleHelmLocation.setAttribute("disabled", "disabled");
-        shuffleHelmLocation.checked = false;
-    } else {
-        shuffleHelmLocation.removeAttribute("disabled");
-        helmLabel.innerText = isLevelOrder ? "Include Helm" : "Shuffle Helm Location";
-    }
 }
 
 // Randomly generate a seed ID
@@ -1518,78 +1253,19 @@ function update_prog_hint_num_access() {
 
   if (!progHintReq.value) {
     progHintReq.value = 1;
-  } else if (
-    progHintSelection.value === "req_gb" &&
-    parseInt(progHintReq.value) > 201
-  ) {
-    progHintReq.value = 201;
-  } else if (
-    progHintSelection.value === "req_bp" &&
-    parseInt(progHintReq.value) > 40
-  ) {
-    progHintReq.value = 40;
-  } else if (
-    progHintSelection.value === "req_key" &&
-    parseInt(progHintReq.value) > 8
-  ) {
-    progHintReq.value = 8;
-  } else if (
-    progHintSelection.value === "req_medal" &&
-    parseInt(progHintReq.value) > 40
-  ) {
-    progHintReq.value = 40;
-  } else if (
-    progHintSelection.value === "req_crown" &&
-    parseInt(progHintReq.value) > 10
-  ) {
-    progHintReq.value = 10;
-  } else if (
-    progHintSelection.value === "req_fairy" &&
-    parseInt(progHintReq.value) > 18
-  ) {
-    progHintReq.value = 18;
-  } else if (
-    progHintSelection.value === "req_bean" &&
-    parseInt(progHintReq.value) > 1
-  ) {
-    progHintReq.value = 1;
-  } else if (
-    progHintSelection.value === "req_pearl" &&
-    parseInt(progHintReq.value) > 5
-  ) {
-    progHintReq.value = 5;
-  } else if (
-    progHintSelection.value === "req_rainbowcoin" &&
-    parseInt(progHintReq.value) > 16
-  ) {
-    progHintReq.value = 16;
-  } else if (
-    progHintSelection.value === "req_cb" &&
-    parseInt(progHintReq.value) > 3500
-  ) {
-    progHintReq.value = 3500;
+  } else {
+    const item_type = progHintSelection.value;
+    if (Object.keys(ITEM_CAPS).includes(item_type)) {
+      if (parseInt(progHintReq.value) > ITEM_CAPS[item_type]) {
+        progHintReq.value = ITEM_CAPS[item_type];
+      }
+    }
   }
 }
 
 document
   .getElementById("progressive_hint_item")
   .addEventListener("change", update_prog_hint_num_access);
-
-// Validate chaos ratio input on loss of focus
-function handle_chaos_ratio_text() {
-  const chaosRatioText = document.getElementById("chaos_ratio");
-  if (!chaosRatioText.value) {
-    chaosRatioText.value = 25;
-  } else if (parseInt(chaosRatioText.value) < 1) {
-    chaosRatioText.value = 1;
-  } else if (parseInt(chaosRatioText.value) > 100) {
-    chaosRatioText.value = 100;
-  }
-}
-
-document
-  .getElementById("chaos_ratio")
-  .addEventListener("focusout", handle_chaos_ratio_text);
 
 // Validate blocker input on loss of focus
 function max_randomized_blocker() {
@@ -1721,38 +1397,6 @@ document
     }
   });
 
-// // Validate starting moves count input on loss of focus
-// // Function to handle validation of starting moves count
-// function max_starting_moves_count() {
-//   const moveCount = document.getElementById("starting_moves_count");
-//   const moves = document.getElementById("move_rando");
-//   const itemRando = document.getElementById("shuffle_items");
-//   let maxStartingMoves = 41;
-
-//   if (!itemRando.checked && moves.value !== "off") {
-//     maxStartingMoves = 4;
-//   }
-
-//   if (!moveCount.value) {
-//     moveCount.value = 4;
-//   } else if (parseInt(moveCount.value) < 0) {
-//     moveCount.value = 0;
-//   } else if (parseInt(moveCount.value) > maxStartingMoves) {
-//     moveCount.value = maxStartingMoves;
-//   }
-// }
-
-// Adding event listeners for shuffle_items, move_rando, and starting_moves_count
-// document
-//   .getElementById("shuffle_items")
-//   .addEventListener("click", max_starting_moves_count);
-// document
-//   .getElementById("move_rando")
-//   .addEventListener("change", max_starting_moves_count);
-// document
-//   .getElementById("starting_moves_count")
-//   .addEventListener("focusout", max_starting_moves_count);
-
 // Update Door 1 Number Access
 function update_door_one_num_access() {
   const doorOneSelection = document.getElementById("crown_door_item");
@@ -1768,51 +1412,13 @@ function update_door_one_num_access() {
 
   if (!doorOneReq.value) {
     doorOneReq.value = 1;
-  } else if (
-    doorOneSelection.value === "vanilla" &&
-    parseInt(doorOneReq.value) > 10
-  ) {
-    doorOneReq.value = 10;
-  } else if (
-    doorOneSelection.value === "req_gb" &&
-    parseInt(doorOneReq.value) > 201
-  ) {
-    doorOneReq.value = 201;
-  } else if (
-    doorOneSelection.value === "req_bp" &&
-    parseInt(doorOneReq.value) > 40
-  ) {
-    doorOneReq.value = 40;
-  } else if (
-    doorOneSelection.value === "req_companycoins" &&
-    parseInt(doorOneReq.value) > 2
-  ) {
-    doorOneReq.value = 2;
-  } else if (
-    doorOneSelection.value === "req_key" &&
-    parseInt(doorOneReq.value) > 8
-  ) {
-    doorOneReq.value = 8;
-  } else if (
-    doorOneSelection.value === "req_fairy" &&
-    parseInt(doorOneReq.value) > 18
-  ) {
-    doorOneReq.value = 18;
-  } else if (
-    doorOneSelection.value === "req_bean" &&
-    parseInt(doorOneReq.value) > 1
-  ) {
-    doorOneReq.value = 1;
-  } else if (
-    doorOneSelection.value === "req_pearl" &&
-    parseInt(doorOneReq.value) > 5
-  ) {
-    doorOneReq.value = 5;
-  } else if (
-    doorOneSelection.value === "req_rainbowcoin" &&
-    parseInt(doorOneReq.value) > 16
-  ) {
-    doorOneReq.value = 16;
+  } else {
+    const item_type = doorOneSelection.value == "vanilla" ? "req_crown" : doorOneSelection.value;
+    if (Object.keys(ITEM_CAPS).includes(item_type)) {
+      if (parseInt(doorOneReq.value) > ITEM_CAPS[item_type]) {
+        doorOneReq.value = ITEM_CAPS[item_type];
+      }
+    }
   }
 }
 
@@ -1835,56 +1441,13 @@ function update_door_two_num_access() {
 
   if (!doorTwoReq.value) {
     doorTwoReq.value = 1;
-  } else if (
-    doorTwoSelection.value === "vanilla" &&
-    parseInt(doorTwoReq.value) > 2
-  ) {
-    doorTwoReq.value = 2;
-  } else if (
-    doorTwoSelection.value === "req_gb" &&
-    parseInt(doorTwoReq.value) > 201
-  ) {
-    doorTwoReq.value = 201;
-  } else if (
-    doorTwoSelection.value === "req_bp" &&
-    parseInt(doorTwoReq.value) > 40
-  ) {
-    doorTwoReq.value = 40;
-  } else if (
-    doorTwoSelection.value === "req_key" &&
-    parseInt(doorTwoReq.value) > 8
-  ) {
-    doorTwoReq.value = 8;
-  } else if (
-    doorTwoSelection.value === "req_medal" &&
-    parseInt(doorTwoReq.value) > 40
-  ) {
-    doorTwoReq.value = 40;
-  } else if (
-    doorTwoSelection.value === "req_crown" &&
-    parseInt(doorTwoReq.value) > 10
-  ) {
-    doorTwoReq.value = 10;
-  } else if (
-    doorTwoSelection.value === "req_fairy" &&
-    parseInt(doorTwoReq.value) > 18
-  ) {
-    doorTwoReq.value = 18;
-  } else if (
-    doorTwoSelection.value === "req_bean" &&
-    parseInt(doorTwoReq.value) > 1
-  ) {
-    doorTwoReq.value = 1;
-  } else if (
-    doorTwoSelection.value === "req_pearl" &&
-    parseInt(doorTwoReq.value) > 5
-  ) {
-    doorTwoReq.value = 5;
-  } else if (
-    doorTwoSelection.value === "req_rainbowcoin" &&
-    parseInt(doorTwoReq.value) > 16
-  ) {
-    doorTwoReq.value = 16;
+  } else {
+    const item_type = doorTwoSelection.value == "vanilla" ? "req_companycoins" : doorTwoSelection.value;
+    if (Object.keys(ITEM_CAPS).includes(item_type)) {
+      if (parseInt(doorTwoReq.value) > ITEM_CAPS[item_type]) {
+        doorTwoReq.value = ITEM_CAPS[item_type];
+      }
+    }
   }
 }
 
@@ -1903,65 +1466,40 @@ function update_win_con_num_access() {
     "krem_kapture",
     "dk_rap_items",
   ];
+  const KROOL_WIN_CONS = [
+    "easy_random",
+    "medium_random",
+    "hard_random",
+    "beat_krool",
+  ]
 
   const winConSelection = document.getElementById("win_condition_item");
   const winConContainer = document.getElementById("win_condition_container");
   const winConReq = document.getElementById("win_condition_count");
   const disabled = DISABLED_WIN_VALUES.includes(winConSelection.value);
+  const kroolSection = document.getElementById("krool_section");
+  const isKRool = KROOL_WIN_CONS.includes(winConSelection.value);
 
   if (disabled) {
     winConContainer.classList.add("hide-input");
   } else {
     winConContainer.classList.remove("hide-input");
   }
+  if (isKRool) {
+    kroolSection.removeAttribute("hidden");
+  } else {
+    kroolSection.setAttribute("hidden", "hidden");
+  }
 
   if (!winConReq.value) {
     winConReq.value = 1;
-  } else if (
-    winConSelection.value === "req_gb" &&
-    parseInt(winConReq.value) > 201
-  ) {
-    winConReq.value = 201;
-  } else if (
-    winConSelection.value === "req_bp" &&
-    parseInt(winConReq.value) > 40
-  ) {
-    winConReq.value = 40;
-  } else if (
-    winConSelection.value === "req_key" &&
-    parseInt(winConReq.value) > 8
-  ) {
-    winConReq.value = 8;
-  } else if (
-    winConSelection.value === "req_medal" &&
-    parseInt(winConReq.value) > 40
-  ) {
-    winConReq.value = 40;
-  } else if (
-    winConSelection.value === "req_crown" &&
-    parseInt(winConReq.value) > 10
-  ) {
-    winConReq.value = 10;
-  } else if (
-    winConSelection.value === "req_fairy" &&
-    parseInt(winConReq.value) > 18
-  ) {
-    winConReq.value = 18;
-  } else if (
-    winConSelection.value === "req_bean" &&
-    parseInt(winConReq.value) > 1
-  ) {
-    winConReq.value = 1;
-  } else if (
-    winConSelection.value === "req_pearl" &&
-    parseInt(winConReq.value) > 5
-  ) {
-    winConReq.value = 5;
-  } else if (
-    winConSelection.value === "req_rainbowcoin" &&
-    parseInt(winConReq.value) > 16
-  ) {
-    winConReq.value = 16;
+  } else {
+    const item_type = winConSelection.value;
+    if (Object.keys(ITEM_CAPS).includes(item_type)) {
+      if (parseInt(winConReq.value) > ITEM_CAPS[item_type]) {
+        winConReq.value = ITEM_CAPS[item_type];
+      }
+    }
   }
 }
 
@@ -1980,51 +1518,13 @@ document
       doorOneReq.value = 1;
     } else if (parseInt(doorOneReq.value) < 1) {
       doorOneReq.value = 1;
-    } else if (
-      doorOneSelection.value === "vanilla" &&
-      parseInt(doorOneReq.value) > 10
-    ) {
-      doorOneReq.value = 10;
-    } else if (
-      doorOneSelection.value === "req_gb" &&
-      parseInt(doorOneReq.value) > 201
-    ) {
-      doorOneReq.value = 201;
-    } else if (
-      doorOneSelection.value === "req_bp" &&
-      parseInt(doorOneReq.value) > 40
-    ) {
-      doorOneReq.value = 40;
-    } else if (
-      doorOneSelection.value === "req_companycoins" &&
-      parseInt(doorOneReq.value) > 2
-    ) {
-      doorOneReq.value = 2;
-    } else if (
-      doorOneSelection.value === "req_key" &&
-      parseInt(doorOneReq.value) > 8
-    ) {
-      doorOneReq.value = 8;
-    } else if (
-      doorOneSelection.value === "req_medal" &&
-      parseInt(doorOneReq.value) > 40
-    ) {
-      doorOneReq.value = 40;
-    } else if (
-      doorOneSelection.value === "req_fairy" &&
-      parseInt(doorOneReq.value) > 18
-    ) {
-      doorOneReq.value = 18;
-    } else if (
-      doorOneSelection.value === "req_bean" &&
-      parseInt(doorOneReq.value) > 1
-    ) {
-      doorOneReq.value = 1;
-    } else if (
-      doorOneSelection.value === "req_pearl" &&
-      parseInt(doorOneReq.value) > 5
-    ) {
-      doorOneReq.value = 5;
+    } else {
+      const item_type = doorOneSelection.value == "vanilla" ? "req_crown" : doorOneSelection.value;
+      if (Object.keys(ITEM_CAPS).includes(item_type)) {
+        if (parseInt(doorOneReq.value) > ITEM_CAPS[item_type]) {
+          doorOneReq.value = ITEM_CAPS[item_type];
+        }
+      }
     }
   });
 
@@ -2039,54 +1539,122 @@ document
       doorTwoReq.value = 1;
     } else if (parseInt(doorTwoReq.value) < 1) {
       doorTwoReq.value = 1;
+    } else {
+      const item_type = doorTwoSelection.value == "vanilla" ? "req_companycoins" : doorTwoSelection.value;
+      if (Object.keys(ITEM_CAPS).includes(item_type)) {
+        if (parseInt(doorTwoReq.value) > ITEM_CAPS[item_type]) {
+          doorTwoReq.value = ITEM_CAPS[item_type];
+        }
+      }
     }
+  });
 
-    if (
-      doorTwoSelection.value === "vanilla" &&
-      parseInt(doorTwoReq.value) > 2
-    ) {
-      doorTwoReq.value = 2;
-    } else if (
-      doorTwoSelection.value === "req_gb" &&
-      parseInt(doorTwoReq.value) > 201
-    ) {
-      doorTwoReq.value = 201;
-    } else if (
-      doorTwoSelection.value === "req_bp" &&
-      parseInt(doorTwoReq.value) > 40
-    ) {
-      doorTwoReq.value = 40;
-    } else if (
-      doorTwoSelection.value === "req_key" &&
-      parseInt(doorTwoReq.value) > 8
-    ) {
-      doorTwoReq.value = 8;
-    } else if (
-      doorTwoSelection.value === "req_medal" &&
-      parseInt(doorTwoReq.value) > 40
-    ) {
-      doorTwoReq.value = 40;
-    } else if (
-      doorTwoSelection.value === "req_crown" &&
-      parseInt(doorTwoReq.value) > 10
-    ) {
-      doorTwoReq.value = 10;
-    } else if (
-      doorTwoSelection.value === "req_fairy" &&
-      parseInt(doorTwoReq.value) > 18
-    ) {
-      doorTwoReq.value = 18;
-    } else if (
-      doorTwoSelection.value === "req_bean" &&
-      parseInt(doorTwoReq.value) > 1
-    ) {
-      doorTwoReq.value = 1;
-    } else if (
-      doorTwoSelection.value === "req_pearl" &&
-      parseInt(doorTwoReq.value) > 5
-    ) {
-      doorTwoReq.value = 5;
+// Update B Locker Number Access
+function update_blocker_num_access() {
+  const blockerSelection = document.getElementById("blocker_selection_behavior");
+  const blockerContainer = document.getElementById("b_locker_number_container");
+  const blockerReq = document.getElementById("blocker_text");
+  const disabled = blockerSelection.value == "pre_selected";
+
+  if (disabled) {
+    blockerContainer.classList.add("hide-input");
+  } else {
+    blockerContainer.classList.remove("hide-input");
+  }
+
+  if (!blockerReq.value) {
+    blockerReq.value = 1;
+  } else {
+    const selection_type = blockerSelection.value;
+    if (selection_type != "pre_selected") {
+      if (selection_type == "chaos") {
+        if (blockerReq.value > 100) {
+          blockerReq.value = 100;
+        }
+      } else {
+        // Random
+        if (blockerReq.value > 201) {
+          blockerReq.value = 201;
+        }
+      }
     }
+  }
+}
+
+document
+  .getElementById("blocker_selection_behavior")
+  .addEventListener("change", update_blocker_num_access);
+
+// Update T&S Number Access
+function update_troff_number_access() {
+  const troffSelection = document.getElementById("tns_selection_behavior");
+  const troffContainer = document.getElementById("troff_number_container");
+  const troffReq = document.getElementById("troff_text");
+  const disabled = troffSelection.value == "pre_selected";
+
+  if (disabled) {
+    troffContainer.classList.add("hide-input");
+  } else {
+    troffContainer.classList.remove("hide-input");
+  }
+
+  if (!troffReq.value) {
+    troffReq.value = 1;
+  } else {
+    const selection_type = troffSelection.value;
+    if (selection_type != "pre_selected") {
+      // Random
+      if (troffReq.value > 500) {
+        troffReq.value = 500;
+      }
+    }
+  }
+}
+
+document
+  .getElementById("tns_selection_behavior")
+  .addEventListener("change", update_troff_number_access);
+
+function item_req_update(behavior, container, count, min, max) {
+  const selection = document.getElementById(behavior);
+  const containerEl = document.getElementById(container);
+  const req = document.getElementById(count);
+  const disabled = selection.value != "pre_selected";
+
+  if (disabled) {
+    containerEl.classList.add("hide-input");
+  } else {
+    containerEl.classList.remove("hide-input");
+  }
+
+  if (!req.value) {
+    req.value = min;
+  } else {
+    const selection_type = selection.value;
+    if (selection_type == "pre_selected") {
+      // Random
+      if (req.value > max) {
+        req.value = max;
+      }
+    }
+  }
+}
+
+document.getElementById("medal_jetpac_behavior")
+  .addEventListener("change", () => {
+    item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
+  });
+document.getElementById("pearl_mermaid_behavior")
+  .addEventListener("change", () => {
+    item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
+  });
+document.getElementById("fairy_queen_behavior")
+  .addEventListener("change", () => {
+    item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
+  });
+document.getElementById("cb_medal_behavior")
+  .addEventListener("change", () => {
+    item_req_update("cb_medal_behavior", "cb_medal_behavior_container", "medal_cb_req", 1, 100);
   });
 
 $(document).on('mousedown', 'select option.starting_moves_option', function (e) {
@@ -2280,51 +1848,108 @@ document
       }
     });
   });
+
+// Dropdown Multiselect
+function toggleDropdown(name) {
+  const menu = document.getElementById(`${name}_selected`);
+  menu.classList.toggle('show');
+}
+
+function pushUpdateToDropdown(name) {
+  const ddms = document.getElementById(`dropdown_${name}`);
+  const event = new Event("change", { bubbles: true, cancelable: false });
+  ddms.dispatchEvent(event);
+}
+
+function updateSelected(name) {
+  const container = document.getElementById(`${name}_selected`);
+  const checkboxes = container ? container.getElementsByTagName('input') : [];
+  const countLabel = document.getElementById(`selectedCount_${name}`);
+
+  let selectedCount = 0;
+  for (let cb of checkboxes) {
+    if (cb.checked) {
+        selectedCount++;
+    }
+  }
+
+  countLabel.innerText = `${selectedCount} item${selectedCount !== 1 ? 's' : ''} selected`;
+}
+
+function dropdownForceAll(name, state) {
+  const container = document.getElementById(`${name}_selected`);
+  const checkboxes = container ? container.getElementsByTagName('input') : [];
+  const countLabel = document.getElementById(`selectedCount_${name}`);
+  for (let cb of checkboxes) {
+    cb.checked = state;
+  }
+  const selectedCount = state ? checkboxes.length : 0;
+  countLabel.innerText = `${selectedCount} item${selectedCount !== 1 ? 's' : ''} selected`;
+  pushUpdateToDropdown(name);
+}
+
+function hide_irrelevant_details_coupled_item_rando() {
+  const value = document.getElementById("decouple_item_rando").checked;
+  const details = document.getElementsByClassName("hide-if-ir-decouple");
+  const antidetails = document.getElementsByClassName("show-if-ir-decouple");
+  if (value) {
+    for (let el of details) {
+      el.removeAttribute("hidden");
+    }
+    for (let el of antidetails) {
+      el.setAttribute("hidden","hidden");
+    }
+  } else {
+    for (let el of details) {
+      el.setAttribute("hidden","hidden");
+    }
+    for (let el of antidetails) {
+      el.removeAttribute("hidden");
+    }
+  }
+}
+document.getElementById("decouple_item_rando")
+  .addEventListener("click", hide_irrelevant_details_coupled_item_rando)
+
 // Bind custom update UI event for "apply_preset"
 function update_ui_states() {
   /** Trigger any function that would update the status of a UI element based on the current settings configuration. */
-  toggle_counts_boxes(null);
-  toggle_b_locker_boxes(null);
   change_level_randomization(null);
-  disable_colors(null);
-  disable_music(null);
-  disable_move_shuffles(null);
-  max_randomized_blocker(null);
-  handle_chaos_ratio_text(null);
-  max_randomized_troff(null);
-  max_music(null);
-  max_music_proportion(null);
-  max_sfx(null);
-  disable_barrel_modal(null);
+  disable_colors();
+  disable_music();
+  max_randomized_blocker();
+  max_randomized_troff();
+  max_music();
+  max_music_proportion();
+  max_sfx();
+  disable_switchsanity_modal();
   item_rando_list_changed(null);
-  toggle_item_rando(null);
-  disable_enemy_modal(null);
-  disable_hard_mode_modal(null);
-  disable_hard_bosses_modal(null);
-  disable_excluded_songs_modal(null);
-  disable_music_filtering_modal(null);
-  disable_custom_cb_locations_modal(null);
-  disable_misc_changes_modal(null);
-  toggle_bananaport_selector(null);
+  disable_custom_cb_locations_modal();
+  toggle_bananaport_selector();
   disable_helm_hurry(null);
   disable_points(null);
-  disable_remove_barriers(null);
-  disable_faster_checks(null);
+  disable_slam_selector(null);
   toggle_logic_type(null);
   toggle_key_settings(null);
   //max_starting_moves_count(null);
-  update_door_one_num_access(null);
-  update_door_two_num_access(null);
-  update_win_con_num_access(null);
-  update_prog_hint_num_access(null);
-  disable_tag_spawn(null);
-  disable_krool_phases(null);
-  disable_helm_phases(null);
-  enable_plandomizer(null);
-  toggle_medals_box(null);
-  toggle_vanilla_door_rando(null);
-  toggle_dos_door_rando(null);
+  update_door_one_num_access();
+  update_door_two_num_access();
+  update_win_con_num_access();
+  update_prog_hint_num_access();
+  update_blocker_num_access();
+  update_troff_number_access();
+  item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
+  item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
+  item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
+  item_req_update("cb_medal_behavior", "cb_medal_behavior_container", "medal_cb_req", 1, 100);
+  disable_tag_spawn();
+  disable_krool_phases();
+  disable_helm_phases();
+  enable_plandomizer();
+  toggle_vanilla_door_rando();
+  toggle_dos_door_rando();
   validate_fast_start_status(null);
+  hide_irrelevant_details_coupled_item_rando();
 
   const sliders = document.getElementsByClassName("pretty-slider");
   for (let s = 0; s < sliders.length; s++) {

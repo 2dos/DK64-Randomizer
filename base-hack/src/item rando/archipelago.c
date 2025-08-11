@@ -26,103 +26,43 @@ void initAP(void) {
     if (isAPEnabled()) {
         APData = &ap_info;
         ap_info.text_timer = 0x82;
-        ap_info.start_flag = FLAG_ENEMY_KILLED_0 + 16;
-        if (Rando.enemy_item_rando) {
-            ap_info.start_flag += ENEMIES_TOTAL;
-        }
         ap_info.tag_kong = -1;
     }
 }
 
 void initAPCounter(void) {
     if (isAPEnabled()) {
-        int counter = 0;
-        for (int i = 0; i < 16; i++) {
-            counter <<= 1;
-            if (checkFlag((ap_info.start_flag - 16) + i, FLAGTYPE_PERMANENT)) {
-                counter += 1;
-            }
-        }
-        ap_info.counter = counter;
+        ap_info.counter = ReadFile(DATA_APCOUNTER, 0, 0, FileIndex);
     }
 }
 
 void saveAPCounter(void) {
     if (isAPEnabled()) {
-        int counter = ap_info.counter;
-        for (int i = 0; i < 16; i++) {
-            int state = counter & 1;
-            setFlag((ap_info.start_flag - 1) - i, state, FLAGTYPE_PERMANENT);
-            counter >>= 1;
-        }
+        SaveToFile(DATA_APCOUNTER, 0, 0, FileIndex, ap_info.counter);
     }
+}
+
+void sendTrap(ICE_TRAP_TYPES trap_type) {
+    giveItem(REQITEM_ICETRAP, 0, trap_type, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .apply_ice_trap = 1});
 }
 
 void handleSentItem(void) {
     archipelago_items FedItem = ap_info.fed_item;
-    int check_count = -1;
-    int check_start_flag = -1;
-    int i = 0;
-    unsigned char *file_data = 0;
     switch (FedItem) {
         case TRANSFER_ITEM_GB:
-            {
-                int min_amount = 100;
-                int min_kong = 0;
-                int min_level = 0;
-                for (int level = 0; level < 8; level++) {
-                    for (int kong = 0; kong < 5; kong++) {
-                        int count = MovesBase[kong].gb_count[level];
-                        if (count < min_amount) {
-                            min_amount = count;
-                            min_kong = kong;
-                            min_level = level;
-                        }
-                    }
-                }
-                giveGB(min_kong, min_level);
-                break;
-            }
+            giveGB();
+            break;
         case TRANSFER_ITEM_CROWN:
-            check_count = 10;
-            check_start_flag = FLAG_CROWN_JAPES;
-            file_data = &Rando.crowns_in_file[0];
+            giveItem(REQITEM_CROWN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            break;
         case TRANSFER_ITEM_PEARL:
-            if (check_count == -1) {
-                check_count = 5;
-                check_start_flag = FLAG_PEARL_0_COLLECTED;
-                file_data = &Rando.pearls_in_file;
-            }
+            giveItem(REQITEM_PEARL, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            break;
         case TRANSFER_ITEM_MEDAL:
-            if (check_count == -1) {
-                check_count = 40;
-                if (Rando.isles_cb_rando) {
-                    check_count = 45;
-                }
-                check_start_flag = FLAG_MEDAL_JAPES_DK;
-                file_data = &Rando.medals_in_file[0];
-            }
+            giveItem(REQITEM_MEDAL, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            break;
         case TRANSFER_ITEM_FAIRY:
-            {
-                if (check_count == -1) {
-                    check_count = 20;
-                    check_start_flag = FLAG_FAIRY_1;
-                    file_data = &Rando.fairies_in_file[0];
-                }
-                for (int i = 0; i < check_count; i++) {
-                    int offset = i >> 3;
-                    int shift = i & 7;
-                    if ((file_data[offset] & (1 << shift)) == 0) {
-                        if (!checkFlagDuplicate(check_start_flag + i, FLAGTYPE_PERMANENT)) {
-                            setFlagDuplicate(check_start_flag + i, 1, FLAGTYPE_PERMANENT);
-                            return;
-                        }
-                    }
-                    if ((i == 39) && (FedItem == TRANSFER_ITEM_MEDAL)) {
-                        check_start_flag = FLAG_MEDAL_ISLES_DK - 40;
-                    }
-                }
-            }
+            giveItem(REQITEM_FAIRY, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_KEY1:
         case TRANSFER_ITEM_KEY2:
@@ -132,25 +72,30 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_KEY6:
         case TRANSFER_ITEM_KEY7:
         case TRANSFER_ITEM_KEY8:
-            setFlagDuplicate(normal_key_flags[FedItem - TRANSFER_ITEM_KEY1], 1, FLAGTYPE_PERMANENT);
+            giveItem(REQITEM_KEY, FedItem - TRANSFER_ITEM_KEY1, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             auto_turn_keys();
             break;
         case TRANSFER_ITEM_RAINBOWCOIN:
-            for (int i = 0; i < 5; i++) {
-                MovesBase[i].coins += 5;
-            }
+            giveItem(REQITEM_RAINBOWCOIN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .give_coins = 1});
             break;
         case TRANSFER_ITEM_FAKEITEM:
-            queueIceTrap(ICETRAP_BUBBLE);
+            sendTrap(ICETRAP_BUBBLE);
             break;
         case TRANSFER_ITEM_FAKEITEM_SLOW:
-            queueIceTrap(ICETRAP_SLOWED);
+            sendTrap(ICETRAP_SLOWED);
             break;
         case TRANSFER_ITEM_FAKEITEM_REVERSE:
-            queueIceTrap(ICETRAP_REVERSECONTROLS);
+            sendTrap(ICETRAP_REVERSECONTROLS);
+            break;
+        case TRANSFER_ITEM_FAKEITEM_DISABLEA:
+        case TRANSFER_ITEM_FAKEITEM_DISABLEB:
+        case TRANSFER_ITEM_FAKEITEM_DISABLEZ:
+        case TRANSFER_ITEM_FAKEITEM_DISABLECU:
+            sendTrap((FedItem - TRANSFER_ITEM_FAKEITEM_DISABLEA) + ICETRAP_DISABLEA);
             break;
         case TRANSFER_ITEM_JUNKITEM:
             applyDamageMask(0, 1);
+            giveItem(REQITEM_JUNK, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_BABOONBLAST:
         case TRANSFER_ITEM_STRONGKONG:
@@ -179,76 +124,46 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_TROMBONE:
         case TRANSFER_ITEM_SAX:
         case TRANSFER_ITEM_TRIANGLE:
-            MovesBase[FedItem - TRANSFER_ITEM_BONGOS].instrument_bitfield |= 1;
-            if (CollectableBase.Melons < 2) {
-                CollectableBase.Melons = 2;
-                CollectableBase.Health = 8;
-            }
+            giveItem(REQITEM_MOVE, 8, FedItem - TRANSFER_ITEM_BONGOS, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_COCONUT:
         case TRANSFER_ITEM_PEANUT:
         case TRANSFER_ITEM_GRAPE:
         case TRANSFER_ITEM_FEATHER:
         case TRANSFER_ITEM_PINEAPPLE:
-            MovesBase[FedItem - TRANSFER_ITEM_COCONUT].weapon_bitfield |= 1;
+            giveItem(REQITEM_MOVE, 4, FedItem - TRANSFER_ITEM_COCONUT, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_SLAMUPGRADE:
             giveSlamLevel();
             break;
         case TRANSFER_ITEM_HOMING:
-            for (int i = 0; i < 5; i++) {
-                MovesBase[i].weapon_bitfield |= 2;
-            }
+            giveItem(REQITEM_MOVE, 5, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_SNIPER:
-            for (int i = 0; i < 5; i++) {
-                MovesBase[i].weapon_bitfield |= 4;
-            }
+            giveItem(REQITEM_MOVE, 6, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_BELTUPGRADE:
-            {
-                int belt_level = MovesBase[0].ammo_belt;
-                if (belt_level < 2) {
-                    for (int i = 0; i < 5; i++) {
-                        MovesBase[i].ammo_belt = belt_level + 1;
-                    }
-                }
-                break;
-            }
+            giveItem(REQITEM_MOVE, 7, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            break;
         case TRANSFER_ITEM_INSTRUMENTUPGRADE:
-            {
-                int ins_level = 0;
-                for (int i = 1; i < 4; i++) {
-                    if (MovesBase[0].instrument_bitfield & (1 << i)) {
-                        ins_level = i;
-                    }
-                }
-                if (ins_level < 3) {
-                    for (int i = 0; i < 5; i++) {
-                        MovesBase[i].instrument_bitfield |= (1 << (ins_level + 1));
-                    }
-                }
-                if (CollectableBase.Melons < 2) {
-                    CollectableBase.Melons = 2;
-                    CollectableBase.Health = 8;
-                } else if (ins_level > 0) {
-                    CollectableBase.Melons = 3;
-                    CollectableBase.Health = 12;
-                }
-                break;
-            }
+            giveItem(REQITEM_MOVE, 9, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            break;
         case TRANSFER_ITEM_CAMERA:
-            setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, FLAGTYPE_PERMANENT);
+            setFlagMove(FLAG_ABILITY_CAMERA);
             break;
         case TRANSFER_ITEM_SHOCKWAVE:
-            setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
+            setFlagMove(FLAG_ABILITY_SHOCKWAVE);
             break;
         case TRANSFER_ITEM_CAMERASHOCKWAVECOMBO:
-            setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, FLAGTYPE_PERMANENT);
-            setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
+            setFlagMove(FLAG_ABILITY_CAMERA);
+            setFlagMove(FLAG_ABILITY_SHOCKWAVE);
             break;
-        default:
-        break;
+    }
+}
+
+void sendTrapLink(ICE_TRAP_TYPES trap_type) {
+    if (isAPEnabled()) {
+        ap_info.is_trapped = trap_type;
     }
 }
 
@@ -282,7 +197,7 @@ void handleArchipelagoFeed(void) {
             ap_info.fed_item = TRANSFER_ITEM_NULL;
         }
         if (ap_info.fed_string[0] != 0) {
-            int vacant_spot = spawnItemOverlay(PURCHASE_ARCHIPELAGO, 0, 1, 1);
+            int vacant_spot = spawnItemOverlay(REQITEM_AP, 0, 1, 1);
             if (vacant_spot == -1) {
                 return;
             }
@@ -327,7 +242,11 @@ void handleArchipelagoFeed(void) {
         }
         ap_info.tag_kong = -1;
     }
-
+    // Trap link
+    if (ap_info.sent_trap) {
+        queueIceTrap(ap_info.sent_trap, 0);
+        ap_info.sent_trap = 0;
+    }
 }
 
 int canDie(void) {
@@ -361,13 +280,6 @@ void sendDeath(void) {
             ap_info.send_death = 1;
         }
     }
-}
-
-int isFlagAPItem(int flag) {
-    if (isAPEnabled()) {
-        return isFlagInRange(flag, ap_info.start_flag, 1000 - 16);
-    }
-    return 0;
 }
 
 static char *ap_strings[] = {

@@ -20,8 +20,7 @@ void resetDisplayedMusic(void) {
     DisplayedSongNamePointer = 0; // Uses a static address for autotrackers
 }
 
-
-void detectSongChange(){
+void detectSongChange(void) {
     char loadedSongCanceled = 0;
     for(int i = 11; i >= 0; i--){
         if(storedMusicTrackChannel[i] != MusicTrackChannels[i]){
@@ -52,8 +51,39 @@ void detectSongChange(){
     }
 }
 
+static unsigned char last_song = SONG_SILENCE;
+
+void SpeedUpMusicInner(void) {
+    if (last_song == SONG_SILENCE) {
+        return;
+    }
+    if (!Rando.song_speed_near_win) {
+        return;
+    }
+    if (Rando.win_condition != GOAL_CUSTOMITEM) {
+        // Goal is inelligible for speed up
+        return;
+    }
+    if (Rando.win_condition_extra.count < 2) {
+        // Doesn't work for 1-item win conditions
+        return;
+    }
+    int item_count = getItemCountReq(Rando.win_condition_extra.item);
+    if (item_count == (Rando.win_condition_extra.count - 1)) {
+        int slot = getSongWriteSlot(last_song);
+        alCSPSetTempo(compactSequencePlayers[slot], 320000); // 480k (default) / 1.5
+    }
+}
+
+void SpeedUpMusic(void) {
+    if (!isGamemode(GAMEMODE_ADVENTURE, 1)) {
+        return;
+    }
+    SpeedUpMusicInner();
+}
+
 void initSongDisplay(int song) {
-    if (song == 0) {
+    if (song == SONG_SILENCE) {
         return;
     }
     if (music_types[song] != SONGTYPE_BGM) {
@@ -66,6 +96,8 @@ void initSongDisplay(int song) {
     if (DisplayedSongNamePointer) {
         complex_free(DisplayedSongNamePointer);
     }
+    last_song = song;
+    SpeedUpMusic();
     DisplayedSongNamePointer = getTextPointer(46, song, 0);
     displayed_text_offset = -1;
     int text_length = cstring_strlen(DisplayedSongNamePointer);

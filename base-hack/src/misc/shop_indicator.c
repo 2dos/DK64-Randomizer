@@ -1,73 +1,5 @@
 #include "../../include/common.h"
 
-static short flag_purchase_types[] = {
-	PURCHASE_FLAG,
-	PURCHASE_GB,
-	PURCHASE_ICEBUBBLE,
-	PURCHASE_ICEREVERSE,
-	PURCHASE_ICESLOW,
-};
-
-int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
-	if (kong > 4) {
-		kong = 0;
-	}
-	if (purchase_type != -1) {
-		if (purchase_value != 0) {
-			if (purchase_type == PURCHASE_MOVES) {
-				if (MovesBase[kong].special_moves & (1 << (purchase_value - 1))) {
-					return 0;
-				} else {
-					return 1;
-				}
-			} else if (purchase_type == PURCHASE_SLAM) {
-				if (MovesBase[kong].simian_slam >= purchase_value) {
-					return 0;
-				} else {
-					return 2;
-				}
-			} else if (purchase_type == PURCHASE_GUN) {
-				if (MovesBase[kong].weapon_bitfield & (1 << (purchase_value - 1))) {
-					return 0;
-				} else {
-					if (purchase_value == 1) {
-						return 1;
-					} else {
-						return 3;
-					}
-				}
-			} else if (purchase_type == PURCHASE_AMMOBELT) {
-				if (MovesBase[kong].ammo_belt >= purchase_value) {
-					return 0;
-				} else {
-					return 4;
-				}
-			} else if (purchase_type == PURCHASE_INSTRUMENT) {
-				if (MovesBase[kong].instrument_bitfield & (1 << (purchase_value - 1))) {
-					return 0;
-				} else {
-					if (purchase_value == 1) {
-						return 1;
-					} else {
-						return 5;
-					}
-				}
-			} else if (inShortList(purchase_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
-				if (purchase_value == -2) { // Shockwave & Camera Combo
-					if ((!checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT)) || (!checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT))) {
-						return 1;
-					}
-				} else {
-					if (!checkFlagDuplicate(purchase_value, FLAGTYPE_PERMANENT)) {
-						return 1;
-					}
-				}
-			}
-		}
-	}
-	return 0;
-}
-
 #define MOVEBTF_DK 1
 #define MOVEBTF_DIDDY 2
 #define MOVEBTF_LANKY 4
@@ -87,14 +19,10 @@ int isSharedMove(vendors shop_index, int level) {
 	for (int i = 1; i < 5; i++) {
 		purchase_struct* src = getShopData(shop_index, i, level);
 		if (src) {
-			if (targ->purchase_type != src->purchase_type) {
-				return 0;
-			}
-			if (targ->purchase_value != src->purchase_value) {
-				return 0;
-			}
-			if (!inShortList(targ->purchase_type, &flag_purchase_types[0], sizeof(flag_purchase_types) >> 1)) {
-				if (targ->move_kong != src->move_kong) {
+			unsigned char *src_arr = &src->item;
+			unsigned char *targ_arr = &targ->item;
+			for (int j = 0; j < 4; j++) {
+				if (src_arr[j] != targ_arr[j]) {
 					return 0;
 				}
 			}
@@ -147,111 +75,66 @@ typedef enum counter_items {
 	/* 0x01D */ COUNTER_KKO,
 } counter_items;
 
+static unsigned char tied_counter[] = {
+	COUNTER_NO_ITEM, // REQITEM_NONE
+	COUNTER_DK_FACE, // REQITEM_KONG - Handled with special case
+	COUNTER_POTION, // REQITEM_MOVE
+	COUNTER_GB, // REQITEM_GOLDENBANANA
+	COUNTER_BP, // REQITEM_BLUEPRINT
+	COUNTER_FAIRY, // REQITEM_FAIRY
+	COUNTER_KEY, // REQITEM_KEY
+	COUNTER_CROWN, // REQITEM_CROWN
+	COUNTER_NINCOIN, // REQITEM_COMPANYCOIN - Handled with special case
+	COUNTER_MEDAL, // REQITEM_MEDAL
+	REQITEM_BEAN, // REQITEM_BEAN
+	COUNTER_PEARL, // REQITEM_PEARL
+	COUNTER_RAINBOWCOIN, // REQITEM_RAINBOWCOIN
+	COUNTER_FAKEITEM, // REQITEM_ICETRAP
+	COUNTER_NO_ITEM, // REQITEM_GAMEPERCENTAGE
+	COUNTER_NO_ITEM, // REQITEM_COLOREDBANANA
+	COUNTER_NO_ITEM, // REQITEM_BOSSES
+	COUNTER_NO_ITEM, // REQITEM_BONUSES
+	COUNTER_NO_ITEM, // REQITEM_JUNK
+	COUNTER_HINT, // REQITEM_HINT
+	COUNTER_NO_ITEM, // REQITEM_SHOPKEEPER
+	COUNTER_AP, // REQITEM_AP
+};
+
 int getCounterItem(vendors shop_index, int kong, int level) {
 	purchase_struct* data = getShopData(shop_index, kong, level);
 	if (data) {
-		switch(data->purchase_type) {
-			case PURCHASE_MOVES:
-			case PURCHASE_SLAM:
-			case PURCHASE_GUN:
-			case PURCHASE_AMMOBELT:
-			case PURCHASE_INSTRUMENT:
-				return COUNTER_POTION;
-				break;
-			case PURCHASE_FLAG:
-				{
-					int flag = data->purchase_value;
-					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
-						return COUNTER_BP;
-					} else if (isMedalFlag(flag)) {
-						return COUNTER_MEDAL;
-					} else if (isFlagInRange(flag, FLAG_CROWN_JAPES, 10)) {
-						return COUNTER_CROWN;
-					} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
-						return COUNTER_NINCOIN;
-					} else if (flag == FLAG_COLLECTABLE_RAREWARECOIN) {
-						return COUNTER_RWCOIN;
-					} else if (flag == FLAG_COLLECTABLE_BEAN) {
-						return COUNTER_BEAN;
-					} else if (isFlagInRange(flag, FLAG_PEARL_0_COLLECTED, 5)) {
-						return COUNTER_PEARL;
-					} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
-						return COUNTER_FAIRY;
-					} else if (isFlagInRange(flag, FLAG_WRINKLYVIEWED, 35)) {
-						return COUNTER_HINT;
-					} else if (isFlagAPItem(flag)) {
-						return COUNTER_AP;
-					} else if (isFlagInRange(flag, FLAG_RAINBOWCOIN_0, 16)) {
-						return COUNTER_RAINBOWCOIN;
-					} else if (isIceTrapFlag(flag) == DYNFLAG_ICETRAP) {
-						return COUNTER_FAKEITEM;
-					} else {
-						if (isTBarrelFlag(flag)) {
-							return COUNTER_POTION;
-						}
-						if (isFairyFlag(flag)) {
-							return COUNTER_POTION;
-						}
-						if (flag == FLAG_ABILITY_CLIMBING) {
-							return COUNTER_POTION;
-						}
-						int subtype = getMoveProgressiveFlagType(flag);
-						if (subtype >= 0) {
-							return COUNTER_POTION;
-						}
-						for (int i = 0; i < 8; i++) {
-							if (flag == getKeyFlag(i)) {
-								return COUNTER_KEY;
-							}
-						}
-						for (int i = 0; i < 5; i++) {
-							if (flag == getKongFlag(i)) {
-								return COUNTER_DK_FACE + i;
-							}
-						}
-					}
-				}
-				break;
-			case PURCHASE_GB:
-				return COUNTER_GB;
-			case PURCHASE_ICEBUBBLE:
-			case PURCHASE_ICEREVERSE:
-			case PURCHASE_ICESLOW:
-				return COUNTER_FAKEITEM;
-			break;
+		requirement_item item_type = data->item.item_type;
+		if (item_type == REQITEM_KONG) {
+			return COUNTER_DK_FACE + data->item.kong;
+		} else if (item_type == REQITEM_COMPANYCOIN) {
+			return data->item.kong ? COUNTER_RWCOIN : COUNTER_NINCOIN;
+		} else {
+			return tied_counter[item_type];
 		}
 	}
 	return COUNTER_NO_ITEM;
 }
 
-void getMoveCountInShop(counter_paad* paad, vendors shop_index) {
+int getMoveCountInShop(counter_paad* paad, vendors shop_index) {
 	int level = getWorld(CurrentMap,0);
-	int possess = 0;
 	int count = 0;
-	int slot = 0;
 	if (level < LEVEL_COUNT) {
 		for (int i = 0; i < 5; i++) {
-			purchase_struct* data = getShopData(shop_index, i, level);
-			if (data) {
-				possess = doesKongPossessMove(data->purchase_type, data->purchase_value, data->move_kong);
-			}
-			if ((possess == 1) && (isSharedMove(shop_index, level))) {
-				possess = 7;
-			}
-			if (possess == 1) {
-				paad->kong_images[slot] = i + 1;
-				paad->item_images[slot] = getCounterItem(shop_index, i, level);
-				slot += 1;
-				count += 1;
-			} else if (possess > 1) {
-				paad->kong_images[0] = COUNTER_SHARED_FACE;
-				paad->item_images[0] = getCounterItem(shop_index, i, level);
-				paad->cap = 1;
-				return;
+			if (!isShopEmpty(shop_index, level, i)) {
+				// Shop is some item
+				if (isSharedMove(shop_index, level)) {
+					paad->kong_images[0] = COUNTER_SHARED_FACE;
+					paad->item_images[0] = getCounterItem(shop_index, i, level);
+					return 1;
+				} else {
+					paad->kong_images[count] = i + 1;
+					paad->item_images[count] = getCounterItem(shop_index, i, level);
+					count++;
+				}
 			}
 		}
 	}
-	paad->cap = count;
+	return count;
 }
 
 #define IMG_WIDTH 32
@@ -357,18 +240,13 @@ int getClosestShop(void) {
 		}
 	}
 	int closest_index = 0;
-	if ((dists[2] < dists[1]) && (dists[2] < dists[0]) && (dists[2] < dists[3])) {
-		paad->linked_behaviour = behavs[2];
-		closest_index = 2;
-	} else if ((dists[3] < dists[1]) && (dists[3] < dists[0]) && (dists[3] < dists[2])) {
-		paad->linked_behaviour = behavs[3];
-		closest_index = 3;
-	} else if ((dists[1] < dists[0]) && (dists[1] < dists[2]) && (dists[1] < dists[3])) {
-		paad->linked_behaviour = behavs[1];
-		closest_index = 1;
-	} else if ((dists[0] < dists[1]) && (dists[0] < dists[2]) && (dists[0] < dists[3])) {
-		paad->linked_behaviour = behavs[0];
-		closest_index = 0;
+	int closest_dist = dists[0];
+	for (int i = 1; i < 4; i++) {
+		if (dists[i] < closest_dist) {
+			closest_dist = dists[i];
+			paad->linked_behaviour = behavs[i];
+			closest_index = i;
+		}
 	}
 	if (found_counter > 0) {
 		paad->linked_behaviour = behavs[closest_index];
@@ -461,7 +339,7 @@ void newCounterCode(void) {
 				if (closest_shop == 3) { // Snide is closest
 					deleteActorContainer(CurrentActorPointer_0);
 				} else {
-					getMoveCountInShop(paad, paad->shop);
+					paad->cap = getMoveCountInShop(paad, paad->shop);
 					paad->current_slot = 0;
 					updateCounterDisplay();
 					if (paad->cap == 0) {

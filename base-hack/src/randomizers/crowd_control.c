@@ -68,7 +68,7 @@ int cc_allower_generic(void) {
 }
 
 int cc_enabler_icetrap(void) {
-    queueIceTrap(ICETRAP_SUPERBUBBLE);
+    queueIceTrap(ICETRAP_SUPERBUBBLE, 1);
     return 1;
 }
 
@@ -157,6 +157,7 @@ int cc_enable_getout(void) {
 
 void fakeGetOut(void) {
     mushroomBounce();
+    handleIceTrapButtons();
     if (!CCEffectData) {
         return;
     }
@@ -231,7 +232,7 @@ int cc_enabler_rockfall(void) {
 void dummyGuardCode(void) {
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         guardCatchInternal(); // Catch the player
-        updateKopStat();
+        GameStats[STAT_KOPCAUGHT]++;
         playActorAnimation(CurrentActorPointer_0, 0x2C0);
     }
     // Render Light
@@ -455,6 +456,121 @@ int cc_enabler_boulder(void) {
     return spawnActorSpawnerContainer(61, Player->xPos, Player->yPos, Player->zPos, 0, 0x3F800000, 0, &unk);
 }
 
+int cc_allower_crate(void) {
+    return cc_allower_boulder() && (Player->grounded_bitfield & 1);
+}
+
+int cc_enabler_crate(void) {
+    actor_init_data unk;
+    return spawnActorSpawnerContainer(21, Player->xPos, Player->yPos, Player->zPos, 0, 0x3F800000, 0, &unk);
+}
+
+int cc_enabler_paper(void) {
+    for (int i = 0; i < ActorCount; i++) {
+        actorData *actor = ActorArray[i];
+        if (actor) {
+            if (actor->actorType != 188) { // Not Camera
+                if (actor->render) {
+                    actor->render->scale_z = 0.015f;
+                }   
+            }
+        }
+    }
+}
+
+int cc_disabler_paper(void) {
+    for (int i = 0; i < ActorCount; i++) {
+        actorData *actor = ActorArray[i];
+        if (actor) {
+            if (actor->actorType != 188) { // Not Camera
+                if (actor->render) {
+                    actor->render->scale_z = actor->render->scale_x;
+                }   
+            }
+        }
+    }
+}
+
+int cc_enabler_time(void) {
+    int was_night = checkFlag(FLAG_MODIFIER_FUNGINIGHT, FLAGTYPE_PERMANENT);
+    setFlag(FLAG_MODIFIER_FUNGINIGHT, 1 ^ was_night, FLAGTYPE_PERMANENT);
+    if (Player) {
+        if (was_night) {
+            Player->strong_kong_ostand_bitfield &= ~FUNGI_NIGHT_CHECK;
+        } else {
+            Player->strong_kong_ostand_bitfield |= FUNGI_NIGHT_CHECK;
+        }
+    }
+    float brightness = 1.0f;
+    float blueness = 1.0f;
+    if (!was_night) {
+        brightness = 0.3f;
+        blueness = 0.6f;
+    }
+    for (int i = 0; i < chunk_count; i++) {
+        setChunkLighting(brightness, brightness, blueness, i);
+    }
+    return 1;	
+}
+
+int cc_allower_time(void) {
+    if (CurrentMap != MAP_FUNGI) {
+        return 0;
+    }
+    fungi_time time = Rando.fungi_time_of_day_setting;
+    if ((time == TIME_PROGRESSIVE) || (time == TIME_DUSK)) {
+        return 0;
+    }
+    return 1;
+}
+
+typedef struct water_height_struct {
+    /* 0x000 */ short map;
+    /* 0x002 */ short default_height;
+    /* 0x004 */ short min_height;
+    /* 0x006 */ short max_height;
+} water_height_struct;
+
+static water_height_struct water_height_info[] = {
+    {.map = MAP_JAPES, .default_height = 245, .min_height = 150, .max_height = 285},
+    {.map = MAP_AZTECLLAMATEMPLE, .default_height = 325, .min_height = 190, .max_height = 370},
+    {.map = MAP_GALLEON, .default_height = 1525, .min_height = 90, .max_height = 1615},
+    {.map = MAP_GALLEONPUFFTOSS, .default_height = 296, .min_height = 90, .max_height = 350},
+    {.map = MAP_GALLEONSEALRACE, .default_height = 45, .min_height = 0, .max_height = 80},
+    {.map = MAP_FUNGI, .default_height = 140, .min_height = 90, .max_height = 175},
+    {.map = MAP_CAVES, .default_height = 15, .min_height = -10, .max_height = 55},
+    {.map = MAP_CASTLE, .default_height = 515, .min_height = 410, .max_height = 675},
+    {.map = MAP_CASTLEKUTOUT, .default_height = 275, .min_height = -5, .max_height = 305},
+    {.map = MAP_GALLEONLOBBY, .default_height = 75, .min_height = -50, .max_height = 250},
+};
+
+int cc_enabler_water(void) {
+    for (int i = 0; i < sizeof(water_height_info) / sizeof(water_height_struct); i++) {
+        if (water_height_info[i].map == CurrentMap) {
+            int count = *(unsigned char*)(0x807F93C5); // New variable written with some nice ASM
+            int rand = getRNGLower31() & 0xFFFF;
+            int delta = water_height_info[i].max_height - water_height_info[i].min_height;
+            // Note: I believe Wii U will hate this, but CC isn't ran on Wii U so I don't think this will be an issue
+            int offset = rand % delta;
+            int new_height = (water_height_info[i].min_height - water_height_info[i].default_height) + offset;
+            for (int i = 0; i < count; i++) {
+                setWaterHeight(i, new_height, 10.0f);
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int cc_allower_water(void) {
+    for (int i = 0; i < sizeof(water_height_info) / sizeof(water_height_struct); i++) {
+        if (water_height_info[i].map == CurrentMap) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enable_drunky, .disabler = &cc_disable_drunky, .restart_upon_map_entry = 1}, // Drunky Kong
     {.restart_upon_map_entry = 0}, // Disable Tag Anywhere
@@ -471,10 +587,15 @@ static const cc_effect_data cc_funcs[] = {
     {.enabler = &cc_enabler_mini, .allower=&cc_allower_mini, .disabler=&cc_disabler_mini, .active = 1}, // Mini
     {.enabler = &cc_enabler_boulder, .allower=&cc_allower_boulder, .auto_disable=1}, // Spawn Boulder
     {.enabler = &cc_enabler_animals, .allower=&cc_allower_animals, .disabler=&cc_disabler_animals, .restart_upon_map_entry = 1}, // Animal Transform
+    {.enabler = &cc_enabler_paper, .disabler=&cc_disabler_paper, .active = 1}, // Paper
+    {.enabler = &cc_enabler_time, .allower=&cc_allower_time, .auto_disable=1}, // Toggle Time of Day
+    {.enabler = &cc_enabler_water, .allower=&cc_allower_water, .auto_disable=1}, // Randomize Water Level
+    {.enabler = &cc_enabler_crate, .allower=&cc_allower_crate, .auto_disable=1}, // Spawn Pushable Crate
 };
 
 void cc_effect_handler(void) {
     CCEffectData = &effect_data;
+    CCButtons = &cc_enabled_buttons;
     int head = (int)&effect_data;
     for (int i = 0; i < sizeof(cc_effects); i++) {
         unsigned char* eff_data = (unsigned char*)head + i;
@@ -484,7 +605,7 @@ void cc_effect_handler(void) {
             case CC_LOCKED:
                 if (cc_allower_generic()) {
                     if (cc_funcs[i].allower) {
-                        if (!callFunc(cc_funcs[i].allower)) {
+                        if (!callFunc(cc_funcs[i].allower, 0)) {
                             *eff_data = CC_LOCKED;
                             break;
                         }
@@ -502,9 +623,9 @@ void cc_effect_handler(void) {
                 if (cc_funcs[i].active) {
                     if (cc_allower_generic()) {
                         if (cc_funcs[i].allower) {
-                            if (callFunc(cc_funcs[i].allower)) {
+                            if (callFunc(cc_funcs[i].allower, 0)) {
                                 if (cc_funcs[i].enabler) {
-                                    callFunc(cc_funcs[i].enabler);
+                                    callFunc(cc_funcs[i].enabler, 0);
                                 }
                             }
                         }
@@ -523,7 +644,7 @@ void cc_effect_handler(void) {
                     break;
                 }
                 if (cc_funcs[i].enabler) {
-                    if (callFunc(cc_funcs[i].enabler)) {
+                    if (callFunc(cc_funcs[i].enabler, 0)) {
                         *eff_data = CC_ENABLED;
                     }
                     break;
@@ -532,13 +653,13 @@ void cc_effect_handler(void) {
                 break;
             case CC_DISABLING:
                 if (cc_funcs[i].disabler) {
-                    if (!callFunc(cc_funcs[i].disabler)) {
+                    if (!callFunc(cc_funcs[i].disabler, 0)) {
                         return;
                     }
                 }
                 if (cc_allower_generic()) {
                     if (cc_funcs[i].allower) {
-                        if (!callFunc(cc_funcs[i].allower)) {
+                        if (!callFunc(cc_funcs[i].allower, 0)) {
                             *eff_data = CC_LOCKED;
                             break;
                         }
