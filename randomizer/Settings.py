@@ -1853,7 +1853,7 @@ class Settings:
                 # Order: minx maxz miny maxy
                 (158, 178, 0, 200),  # Drop chute
             ]
-            exclusion_y = 0x24
+            exclusion_y = 0x40
             exclusion_pad_x = 4
             for _ in range(3):
                 x = None
