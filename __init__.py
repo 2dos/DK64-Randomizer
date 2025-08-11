@@ -624,6 +624,11 @@ if baseclasses_loaded:
                             settings.switchsanity_data[Switches[switch]] = SwitchInfo(switch, needed_kong, switch_type, 0, 0, [])
                         for loc in passthrough["JunkedLocations"]:
                             del self.location_name_to_id[loc]
+                        if passthrough["Shopkeepers"]:
+                            settings.shuffled_location_types.append(Types.Cranky)
+                            settings.shuffled_location_types.append(Types.Funky)
+                            settings.shuffled_location_types.append(Types.Candy)
+                            settings.shuffled_location_types.append(Types.Snide)
             self.spoiler = Spoiler(settings)
             # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
             self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
@@ -1253,6 +1258,7 @@ if baseclasses_loaded:
                 boulders_in_pool = slot_data.get("BouldersInPool", False)
                 dropsanity = slot_data.get("Dropsanity", False)
                 enemy_data = slot_data.get("EnemyData", {})
+                shopkeepers = slot_data.get("Shopkeepers", False)
             else:
                 raise ValueError(f"This world is generated with an old version of DK64 Randomizer. Please downgrade to the correct version: {version}.")
 
@@ -1281,4 +1287,5 @@ if baseclasses_loaded:
             relevant_data["BouldersInPool"] = boulders_in_pool
             relevant_data["Dropsanity"] = dropsanity
             relevant_data["EnemyData"] = enemy_data
+            relevant_data["Shopkeepers"] = shopkeepers
             return relevant_data
