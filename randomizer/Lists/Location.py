@@ -44,6 +44,7 @@ class Location:
         self.inaccessible = False
         self.smallerShopsInaccessible = False
         self.tooExpensiveInaccessible = False
+        self.is_shop = False
         if self.type == Types.Shop:
             self.movetype = data[0]
             self.index = data[1]
@@ -58,6 +59,7 @@ class Location:
                 for kong_index in range(5):
                     lst.append((self.vendor * 40) + (kong_index * 8) + lvl_index)
             self.placement_index = lst
+            self.is_shop = True
         elif self.type in (Types.TrainingBarrel, Types.Shockwave):
             self.placement_index = [data[0]]
         elif self.type == Types.Blueprint:

@@ -123,6 +123,7 @@ class Settings:
 
         CompleteVanillaPrices()
         self.prices = VanillaPrices.copy()
+        self.original_prices = self.prices.copy()
         self.level_order = {
             1: Levels.JungleJapes,
             2: Levels.AngryAztec,
@@ -950,10 +951,10 @@ class Settings:
         # Price Rando
         if self.random_prices != RandomPrices.vanilla:
             self.prices = RandomizePrices(spoiler, self.random_prices)
+            self.original_prices = self.prices.copy()
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
-        self.shops_dont_cost = False  # Temp until we fix the setting
         self.fast_start_beginning_of_game = True  # Double make sure this is set
         # Correct the invalid items in the starting move lists and identify the total number of starting moves
         guaranteed_starting_moves = []
