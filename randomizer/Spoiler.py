@@ -110,6 +110,7 @@ class Spoiler:
         self.LocationList = deepcopy(LocationListOriginal)
         self.enemy_location_list = deepcopy(enemy_location_list)
         self.item_assignment = []
+        self.coin_requirements = {}
 
         self.move_data = []
         # 0: Cranky, 1: Funky, 2: Candy

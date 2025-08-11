@@ -476,17 +476,9 @@ function uuidv4() {
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
       (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
     );
-  }
+}
 
-async function import_settings_string(event) {
-    // Click event for importing settings from a string.
-
-    if (event != null) {
-        event.preventDefault();
-    }
-    
-    document.getElementById("settings_string").value = document.getElementById("settings_string").value.trim();
-    const settingsString = document.getElementById("settings_string").value;
+async function import_settings_string_internal(settingsString) {
     const settings = decrypt_settings_string_enum(settingsString);
     // Remove enable_plandomizer from the settings object
     if (settings.hasOwnProperty("enable_plandomizer")) {
@@ -703,6 +695,18 @@ async function import_settings_string(event) {
     }
 
     update_ui_states();
+}
+
+async function import_settings_string(event) {
+    // Click event for importing settings from a string.
+
+    if (event != null) {
+        event.preventDefault();
+    }
+    
+    document.getElementById("settings_string").value = document.getElementById("settings_string").value.trim();
+    const settingsString = document.getElementById("settings_string").value;
+    import_settings_string_internal(settingsString);
     generateToast("Imported settings string.<br />All non-cosmetic settings have been overwritten.");
 }
 
