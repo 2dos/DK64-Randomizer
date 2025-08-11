@@ -350,7 +350,6 @@ def determineFinalPriceAssortment(spoiler):
             total_cost[kong] += written_price
             written_price = total_cost[kong]
         key = assignment["item"]
-        print(written_price, total_cost)
         if assignment["is_prog"]:
             if key not in new_prices:
                 new_prices[key] = []
