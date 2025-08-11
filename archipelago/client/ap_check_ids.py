@@ -131,7 +131,7 @@ check_names_to_id = {
     "Isles Diddy Peanut Cage": 14041162,
     "Isles Diddy Summit Barrel": 14041163,
     "Isles Battle Arena 2 (Fungi Lobby: Gorilla Gone Box)": 14041164,
-    "Isles Fairy (Fungi Lobby)": 14041165,
+    "Isles Fairy (Forest Lobby)": 14041165,
     "Isles Donkey Caves Lava": 14041166,
     "Isles Diddy Guitar Pad": 14041167,
     "Isles Kasplat: Caves Lobby Punch": 14041168,
