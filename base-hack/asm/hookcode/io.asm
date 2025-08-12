@@ -214,6 +214,6 @@ dynflagcheck_2:
 dynflagcheck_3:
     or $a1, $s4, $zero
     jal isDynFlag
-    lhu $a0, 0x0028 ($s1)
+    lhu $a0, 0x0028 ($s0)
     j 0x80631E44
     nop

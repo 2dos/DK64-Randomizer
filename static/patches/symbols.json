@@ -1732,7 +1732,7 @@
         "arcadefalling": 68,
         "arcadegrunt": 83,
         "static_expansion_size": 256,
-        "gb_dictionary_count": 120,
+        "gb_dictionary_count": 121,
         "actor_vanilla_limit": 345,
         "collision_limit": 90,
         "defs_limit": 177,
