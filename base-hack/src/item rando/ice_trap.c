@@ -559,8 +559,6 @@ void playIceTrapSong(int song, float volume) {
     int slot = getSongWriteSlot(song);
     if (isTrapModel()) {
         setFairyMusicSpeed(slot, 1);
-    } else  {
-        setFairyMusicSpeed(slot, 0);
     }
 }
 

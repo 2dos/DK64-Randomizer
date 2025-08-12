@@ -63,5 +63,5 @@ typedef enum new_custom_actors {
 	/* ----- */ NEWACTOR_TERMINATOR, 
 } new_custom_actors;
 #define DROP_COUNT 36
-extern GBDictItem new_flag_mapping[120];
+extern GBDictItem new_flag_mapping[121];
 #define FILE_INFO_SIZE 0x8e4
