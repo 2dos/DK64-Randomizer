@@ -1671,13 +1671,13 @@ static short dynflag_items[] = {
 	0x208,
 };
 
-int isDynFlag(int obj) {
+int isDynFlag(int obj, maps map) {
 	if (inShortList(obj, &dynflag_items, 15)) {
 		return 1;
 	}
 	if (Rando.race_coins_shuffled) {
 		if (obj == 236) {
-			if (levelIndexMapping[CurrentMap] != LEVEL_BONUS) {
+			if (levelIndexMapping[map] != LEVEL_BONUS) {
 				return 1;
 			}
 		}

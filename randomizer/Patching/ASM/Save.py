@@ -216,7 +216,7 @@ def saveUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeFunction(ROM_COPY, 0x8060DD18, Overlay.Static, "readItemsFromFile", offset_dict)
     writeFunction(ROM_COPY, 0x8060C3C8, Overlay.Static, "GrabFileParameters_FileInfo", offset_dict)
     # Save updates for dyn flags
-    writeFunction(ROM_COPY, 0x80631E3C, Overlay.Static, "isDynFlag", offset_dict)
-    writeFunction(ROM_COPY, 0x80632140, Overlay.Static, "isDynFlag", offset_dict)
-    writeFunction(ROM_COPY, 0x806F4990, Overlay.Static, "isDynFlag", offset_dict)
-    writeFunction(ROM_COPY, 0x806F49EC, Overlay.Static, "isDynFlag", offset_dict)
+    writeHook(ROM_COPY, 0x80631E3C, Overlay.Static, "dynflagcheck_3", offset_dict)
+    writeHook(ROM_COPY, 0x80632140, Overlay.Static, "dynflagcheck_2", offset_dict)
+    writeHook(ROM_COPY, 0x806F4990, Overlay.Static, "dynflagcheck_1", offset_dict)
+    writeHook(ROM_COPY, 0x806F49EC, Overlay.Static, "dynflagcheck_0", offset_dict)

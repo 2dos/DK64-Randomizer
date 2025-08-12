@@ -186,3 +186,34 @@ storeWaterSurfaceCount:
     sb $v0, 0x93C5 ($at)
     j 0x8065F230
     sb $zero, 0x93C4 ($at)
+
+dynflagcheck_0:
+    lui $a1, hi(CurrentMap)
+    lw $a1, lo(CurrentMap) ($a1)
+    jal isDynFlag
+    lhu $a0, 0xFFF8 ($s0)
+    j 0x806F49F4
+    nop
+
+dynflagcheck_1:
+    lui $a1, hi(CurrentMap)
+    lw $a1, lo(CurrentMap) ($a1)
+    jal isDynFlag
+    lhu $a0, 0x0000 ($s7)
+    j 0x806F4998
+    nop
+
+dynflagcheck_2:
+    lui $a1, hi(CurrentMap)
+    lw $a1, lo(CurrentMap) ($a1)
+    jal isDynFlag
+    lhu $a0, 0x0028 ($s1)
+    j 0x80632148
+    nop
+
+dynflagcheck_3:
+    or $a1, $s4, $zero
+    jal isDynFlag
+    lhu $a0, 0x0028 ($s0)
+    j 0x80631E44
+    nop

@@ -760,7 +760,6 @@ const switchsanity_defaults = {
   "switchsanity_switch_japes_free_kong": "donkey",
   "switchsanity_switch_aztec_free_tiny": "diddy",
   "switchsanity_switch_aztec_free_lanky": "donkey",
-  "switchsanity_switch_factory_free_kong": "lanky",
 }
 function switchsanity_reset_default() {
   Object.keys(switchsanity_defaults).forEach(key => {
