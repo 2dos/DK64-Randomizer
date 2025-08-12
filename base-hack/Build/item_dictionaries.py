@@ -936,7 +936,7 @@ with open("src/lib_items.c", "w") as fh:
                 "model2_id": 0x3B,
                 "flag_index": 0xA5,
                 "intended_kong_actor": 0,
-            }
+            },
         ]
     )
     for sym in data_types:
