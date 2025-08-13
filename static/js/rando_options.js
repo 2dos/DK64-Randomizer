@@ -1561,6 +1561,12 @@ function update_blocker_num_access() {
     blockerContainer.classList.remove("hide-input");
   }
 
+  if (blockerSelection.value == "chaos") {
+    blockerReq.title = "The percentage of an item's maximum amount that your B. Lockers can roll up to. For example, a Chaos Ratio of 25 would have a maximum GB B. Locker of 50 (25% of 200)."
+  } else {
+    blockerReq.title = "The maximum number of Golden Bananas required to open a B. Locker."
+  }
+
   if (!blockerReq.value) {
     blockerReq.value = 1;
   } else {

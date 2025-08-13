@@ -2944,5 +2944,6 @@ GBDictItem new_flag_mapping[] = {
 	{.map = 44, .model2_id = 4, .flag_index = 190, .intended_kong_actor = 0},
 	{.map = 52, .model2_id = 5, .flag_index = 768, .intended_kong_actor = 0},
 	{.map = 17, .model2_id = 90, .flag_index = 380, .intended_kong_actor = 0},
-	{.map = 39, .model2_id = 59, .flag_index = 165, .intended_kong_actor = 0}
+	{.map = 39, .model2_id = 59, .flag_index = 165, .intended_kong_actor = 0},
+	{.map = 185, .model2_id = 1, .flag_index = 325, .intended_kong_actor = 0}
 };

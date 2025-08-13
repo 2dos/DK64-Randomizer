@@ -1317,7 +1317,8 @@
     "fairy_queen_behavior": 259,
     "cb_medal_behavior": 260,
     "tricks_selected": 261,
-    "shops_dont_cost": 262
+    "shops_dont_cost": 262,
+    "less_fragile_boulders": 263
   },
   /*
     SettingsStringDataType:
@@ -1989,6 +1990,7 @@
     },
     "SettingsStringEnum.decouple_item_rando": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.shops_dont_cost": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.less_fragile_boulders": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.prog_slam_level_1": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_2": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_3": { "obj": "SlamRequirement" },

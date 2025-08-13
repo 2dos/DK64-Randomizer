@@ -109,7 +109,7 @@
                 </div>
                 <div class="flex-container">
                     {{ toggle_input("misc_cosmetics", "Random Miscellaneous Cosmetics", "Randomizes miscellaneous cosmetic elements, including:&#10;- Peril Path Panic/Searchlight Seek Klaptraps&#10;- Skybox colors") }}
-                    {{ toggle_input("dark_mode_textboxes", "Dark Mode UI", "Text bubbles will be darkened, with the font brightened. The DPad Graphic will be darkened.") }}
+                    {{ toggle_input("dark_mode_textboxes", "Dark Mode UI", "Text bubbles will be darkened, with the font brightened. The D-Pad Display will also be darkened.") }}
                     {{ toggle_input("pause_hint_coloring", "Color Hints in Pause Menu", "Various important segments in hints on the pause menu will be colored to assist with parsing.", True) }}
                     {{ toggle_input("disco_donkey", "Disco DK", "Gives DK a disco outfit in the style of DitzyFlama's DK Rap Remixes. Will only work if his model is set to regular DK.") }}
                     {{ toggle_input("disco_chunky", "Disco Chunky", "Gives Chunky his disco outfit. Will only work if his model is set to regular chunky.") }}
@@ -152,8 +152,8 @@
                 <div class="flex-container">
                     {{ toggle_input("remove_water_oscillation", "Remove Water Oscillation", "Remove water oscillation effects and the seasick ship rocking effect. For those who feel motion sick from these effects.") }}
                     {{ toggle_input("head_balloons", "Kong Head on Balloons", "Adds kong faces to balloons, making them easier to distinguish in various lighting conditions.", True) }}
-                    {{ toggle_input("troff_brighten", "Brighten Boss Door Opening", "Brightens the door-opening sequence in Troff 'n' Scoff to make the reward easier to see.". True) }}
-                    {{ toggle_input("better_dirt_patch_cosmetic", "Higher contrast dirt patches", "Dirt Patches have the letters 'D' and 'K' colored yellow and red to make them more visible.". True) }}
+                    {{ toggle_input("troff_brighten", "Brighten Boss Door Opening", "Increased the lighting in Troff 'n' Scoff rooms to better see the item previewed in the opened Boss door.". True) }}
+                    {{ toggle_input("better_dirt_patch_cosmetic", "Higher contrast dirt patches", "Added red and yellow DK letters to dirt patches to better see them against the environment.". True) }}
                     {{ toggle_input("crosshair_outline", "Outlined Crosshair", "The crosshair used in various situations, like shooting your gun, will have a black outline.") }}
                     {{ toggle_input("fps_display", "FPS Display", "Displays an FPS counter tracked by the game itself.") }}
                     <div class="spacer"></div>
@@ -167,7 +167,8 @@
                                 id="colorblind_mode"
                                 display_name="Colorblind Mode"
                                 class="form-select"
-                                aria-label="Colorblind Mode">
+                                aria-label="Colorblind Mode"
+                                title="Adjusts the colors of Kong-Specific items to be more visible with players with colorblindness.">
                             <option selected value="off">
                                 Off
                             </option>
@@ -243,7 +244,8 @@
                         <select name="sound_type"
                                 id="sound_type"
                                 class="form-select"
-                                aria-label="Colorblind Mode">
+                                aria-label="Sound Type"
+                                title="Sets the in-game sound type.">
                             <option selected value="stereo">
                                 Stereo (Default)
                             </option>

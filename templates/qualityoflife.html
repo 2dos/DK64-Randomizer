@@ -1,4 +1,4 @@
-{% from 'macros.html' import list_selector, properties_selector %}
+{% from 'macros.html' import list_selector, properties_selector, toggle_input %}
 {% from 'dropdown_multiselector.html' import dropdown_multiselector %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
@@ -6,6 +6,26 @@
             <h2 class="title">GAMEPLAY</h2>
             <div class="flex-container">
                 {{ dropdown_multiselector(misc_changes, "misc_changes", "Misc Changes", "This will open a popup that will let you customize what Quality of Life Options are active.&#10;This defaults to All options.", 18, 1) }}
+                <div class="item-select">
+                    <p class="select-title">Cutscene Skips</p>
+                    <select name="more_cutscene_skips"
+                            id="more_cutscene_skips"
+                            display_name="Cutscene Skips"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="More cutscenes will be skipped. Selecting 'Press Start to Skip' will skip those cutscenes by pressing Start. Selecting Automatic will skip those cutscenes automatically.">
+                        <option value="off">
+                            Off
+                        </option>
+                        <option value="press">
+                            Press Start to Skip
+                        </option>
+                        <option value="auto" selected>
+                            Automatic
+                        </option>
+                    </select>
+                </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
                             title="This option shortens all of the longer boss fights in the game.&#10;">
@@ -20,19 +40,19 @@
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                            title="This option will allow you to switch kongs almost anywhere using DPad left or DPad right.&#10;You will still need to unlock the kong you want if Unlock All Kongs isn't enabled.&#10;You cannot switch kongs in rooms or areas that would otherwise break the puzzle.">
+                            title="This option will allow you to switch kongs almost anywhere using DPad left or DPad right.&#10;You will still need to unlock the kong in order to tag to them.&#10;You cannot switch kongs in rooms or areas that would otherwise break the puzzle.">
                         <input class="form-check-input"
                                 type="checkbox"
                                 name="enable_tag_anywhere"
                                 id="enable_tag_anywhere"
                                 display_name="Enable Tag Anywhere"
                                 value="True"/>
-                        Enable Tag Anywhere
+                        Tag Anywhere
                     </label>
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                            title="Will display the face of each Kong that has a move to purchase there or 'SOLD OUT' if all moves are purchased.">
+                            title="Will display the face of each Kong that has an item to purchase there or 'SOLD OUT' if all items are purchased.">
                         <input class="form-check-input"
                                 type="checkbox"
                                 name="shop_indicator"
@@ -66,7 +86,7 @@
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                            title="Automatically turns in keys once you collect them.">
+                            title="Automatically turns in keys once you collect them, removing the need to watch the K. Lumsy cutscenes to unlock levels.">
                         <input class="form-check-input"
                                 type="checkbox"
                                 name="auto_keys"
@@ -88,7 +108,7 @@
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                            title="Numbers are displayed on the outside portal of a troff n scoff zone of the amount of bananas still required.">
+                            title="Numbers are displayed on the outside portal of a Troff 'n' Scoff with the amount of bananas still required.">
                         <input class="form-check-input"
                                 type="checkbox"
                                 name="portal_numbers"
@@ -112,7 +132,7 @@
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                            title="Killing enemies in battle crowns will reduce the time remaining on a crown.">
+                            title="Killing enemies in battle crown arenas will reduce the time remaining on a crown.">
                         <input class="form-check-input"
                                 type="checkbox"
                                 name="enemy_kill_crown_timer"
@@ -132,26 +152,8 @@
                         Disable Racing Patches
                     </label>
                 </div>
-                <div class="item-select">
-                    <p class="select-title">Cutscene Skips</p>
-                    <select name="more_cutscene_skips"
-                            id="more_cutscene_skips"
-                            display_name="Cutscene Skips"
-                            class="form-select"
-                            aria-label="Randomization type"
-                            data-toggle="tooltip"
-                            title="More cutscenes will be skipped. Selecting 'Press Start to Skip' will skip those cutscenes by pressing Start. Selecting Automatic will skip those cutscenes automatically.">
-                        <option value="off">
-                            Off
-                        </option>
-                        <option value="press">
-                            Press Start to Skip
-                        </option>
-                        <option value="auto" selected>
-                            Automatic
-                        </option>
-                    </select>
-                </div>
+                {{ toggle_input("less_fragile_boulders", "Less Fragile Boulders", "Boulders, Kegs, Vases and the Apple will not destroy upon making contact with the ground", True) }}
+                <div class="spacer"></div>
             </div>
         </div>
         <div class="col border panel">
@@ -169,7 +171,7 @@
                             class="form-select"
                             aria-label="Randomization type"
                             data-toggle="tooltip"
-                            title="Wrinkly hints are replaced with useful hints.&#10;Standard - The recommended default hint experience, flexible across all settings.&#10;Cryptic - Same as default, with phrasing tweaks to be less direct.&#10;Item Hinting - A simpler hint system hinting as many items as possible, prioritizing Kongs, Keys, and required moves.&#10;Advanced Item Hinting - Same as above, but hints are less direct about what they lead you to.&#10;Off - Wrinkly doors have vanilla text.">
+                            title="Wrinkly hints are replaced with useful hints.&#10;Standard - The recommended default path-based hint experience, flexible across all settings..&#10;Cryptic - Same as default, with phrasing tweaks to be less direct.&#10;Item Hinting - A simpler hint system hinting as many items as possible, prioritizing Kongs, Keys, and required moves.&#10;Advanced Item Hinting - Same as above, but hints are less direct about what they lead you to.&#10;Off - Wrinkly doors have vanilla text.">
                         <option selected value="standard">
                             Standard
                         </option>
@@ -251,7 +253,7 @@
             <div class="flex-container">
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                            title="Hints are dimmed on the pause menu when a hint has been solved.">
+                            title="Hints are dimmed on the pause menu when a hint has been solved. Scouring and foolish hints will not dim.">
                         <input class="form-check-input"
                                 type="checkbox"
                                 name="dim_solved_hints"
@@ -305,7 +307,7 @@
                             class="form-select"
                             aria-label="Randomization type"
                             data-toggle="tooltip"
-                            title="Adds hints to the spoiler log that reveals specific information about the seed.&#10;Vials - Kongs, Keys, and vials will be revealed for each level.&#10;Points - Each level has a number of points assigned to it based on the items the level contains. The point values for each item can be customized with the gear [TBD].">
+                            title="Adds hints to the spoiler log that reveals specific information about the seed.&#10;Vials - Kongs, Keys, and vials will be revealed for each level. Shopkeeps appear as Kongs, and The Bean appears as a clear vial.&#10;Points - Each level has a number of points assigned to it based on the items the level contains. The point values for each item can be customized with the gear.">
                         <option value="vial_colors">
                             Vials
                         </option>
@@ -353,12 +355,12 @@
                             class="form-select"
                             aria-label="Randomization type"
                             data-toggle="tooltip"
-                            title="Extra hints are placed in late-game to provide extra information if you are stuck on where an item is.&#10;- Monkeyport will be hinted upon touching the lower Monkeyport pad in Isles with enough GBs to enter all of the first 7 levels.&#10;- Gorilla Gone will be hinted upon touching the pad inside Helm Lobby.&#10;- Instruments will be hinted upon touching their pad in Helm.&#10;'Some' will have Monkeyport and Gorilla Gone hints, while 'All' also includes Instrument hints.">
+                            title="Extra hints are placed in late-game to provide extra information if you are stuck on where an item is.&#10;- Monkeyport will be hinted upon touching the lower Monkeyport pad in Isles with the B. Locker requirements to enter all of the first 7 levels.&#10;- Gorilla Gone will be hinted upon touching the pad inside Helm Lobby with the B. Locker requirement to enter Helm.&#10;- Instruments will be hinted upon touching their pad in Helm.">
                         <option value="all"
-                                title="Includes hints in Hideout Helm for the 5 instruments">
+                                title="Will hint all above items.">
                             All
                         </option>
-                        <option selected value="base">
+                        <option selected value="base" title="Will hint Monkeyport and Gorilla Gone, but not the Instruments.">
                             Some
                         </option>
                         <option value="off">

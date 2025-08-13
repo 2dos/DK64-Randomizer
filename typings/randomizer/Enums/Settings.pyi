@@ -816,6 +816,7 @@ class SettingsStringEnum(IntEnum):
     cb_medal_behavior = 260
     tricks_selected = 261
     shops_dont_cost = 262
+    less_fragile_boulders = 263
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1188,6 +1189,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.item_rando_list_9: SettingsStringDataType.list,
     SettingsStringEnum.decouple_item_rando: SettingsStringDataType.bool,
     SettingsStringEnum.shops_dont_cost: SettingsStringDataType.bool,
+    SettingsStringEnum.less_fragile_boulders: SettingsStringDataType.bool,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,
     SettingsStringEnum.prog_slam_level_3: SlamRequirement,

@@ -56,10 +56,10 @@
                         <option id="off" selected value="off">
                             Off
                         </option>
-                        <option id="crossmap_coupled" value="crossmap_coupled">
+                        <option id="crossmap_coupled" value="crossmap_coupled" title="Taking a Bananaport may take you to a different level.">
                             Coupled
                         </option>
-                        <option id="crossmap_decoupled" value="crossmap_decoupled">
+                        <option id="crossmap_decoupled" value="crossmap_decoupled" title="Taking a Bananaport may take you to a different level. Going back through a Bananaport will take you somewhere else.">
                             Decoupled
                         </option>
                     </select>
@@ -83,7 +83,7 @@
             <div class="flex-container">
                 {{ toggle_input("random_patches", "Random Dirt Patch Locations", "Dirt Patches for Rainbow Coins are in random locations.", False, "Dirt Patches") }}
                 {{ toggle_input("coin_rando", "Random Banana Coin Locations", "Shuffle the locations of coins within each Level.", False, "Banana Coins") }}
-                {{ toggle_input("race_coin_rando", "Random Race Coin Locations", "Shuffle the locations of race coins to be placed inside levels instead of courses.", False, "Race Coins") }}
+                {{ toggle_input("race_coin_rando", "Random Race Coin Locations", "Shuffle the locations of race coins to be placed inside levels instead of courses. You will have to pick up enough race coins in the levels in order to beat a race. Any minecart section will be auto-completed upon entering the course with enough coins. Other races will still require winning the race. Obtaining a race reward does not consume coins.", False, "Race Coins") }}
                 {{ toggle_input("random_fairies", "Random Banana Fairy Locations", "Fairy checks are in random locations.", False, "Banana Fairies") }}
                 {{ toggle_input("crown_placement_rando", "Random Battle Crown Pad Locations", "Crown Locations are randomized. There's 1 in each level, except Isles which has two.", False, "Battle Crowns") }}
                 {{ toggle_input("random_crates", "Random Melon Crate Locations", "Melon Crate Locations are randomized.", False, "Melon Crates") }}
@@ -155,9 +155,9 @@
                 </div>
             </div>
             <div class="flex-container" style="margin-top: 20px;">
-                {{ toggle_input("wrinkly_location_rando", "Random Wrinkly Door Locations", "Wrinkly Door Locations are randomized.", False, "Wrinkly Doors") }}
+                {{ toggle_input("wrinkly_location_rando", "Random Wrinkly Door Locations", "Wrinkly Door Locations are randomized within levels and their respective lobbies.", False, "Wrinkly Doors") }}
                 {{ toggle_input("tns_location_rando", "Random Troff 'n' Scoff Portal Locations", "T&S Portal Locations are randomized.", False, "Troff 'n' Scoff Portals") }}
-                {{ toggle_input("vanilla_door_rando", "Vanilla Door Shuffle", "Wrinkly Doors and T&S Portals are shuffled among the vanilla locations.") }}
+                {{ toggle_input("vanilla_door_rando", "Vanilla Door Shuffle", "Wrinkly Doors and T&S Portals are only shuffled among the vanilla locations for one another. T&S Portals cannot appear in level lobbies.") }}
                 {{ toggle_input("dos_door_rando", "Dos' Doors", "Vanilla Door Shuffle with some restrictions:&#10;- One T&S per level&#10;- One hint door in each lobby&#10;- DK Portal Rando enabled") }}
                 <div class="item-select">
                     <p class="select-title">DK Portals</p>
@@ -171,10 +171,10 @@
                         <option id="off" selected value="off">
                             Vanilla
                         </option>
-                        <option id="main_only" value="main_only" title="Will only place portals in the main level maps of the 7 levels">
+                        <option id="main_only" value="main_only" title="Will only place portals in the main level maps of the 7 levels, and not any sub-areas">
                             Main Maps only
                         </option>
-                        <option id="on" value="on">
+                        <option id="on" value="on" title="Can place portals in any level or sub-area">
                             On
                         </option>
                     </select>
@@ -210,7 +210,7 @@
                             class="form-select"
                             aria-label="Crown Enemy Randomizer"
                             data-toggle="tooltip"
-                            title="Battle Crown Enemies are Randomized.&#10;-Vanilla: No crown enemy randomization will take place.&#10;-Easy: Crown enemies are randomized with a bias towards the easier enemies.&#10;-Medium: Crown enemies are randomized with a bias towards the medium-difficulty enemies.&#10;-Hard: Crown enemies are randomized with a bias towards the hardest enemies.">
+                            title="Battle Crown Enemies are Randomized.&#10;-Vanilla: No crown enemy randomization will take place.&#10;-Easy: Crown enemies are randomized with a bias towards the easier enemies.&#10;-Medium: Crown enemies are randomized with a bias towards the medium-difficulty enemies.&#10;-Hard: Crown enemies are randomized with a bias towards the hardest enemies.&#10;-Progresive: The difficulty of crowns will scale up as you progress through the game.">
                         <option selected id="vanilla" value="vanilla">
                             Vanilla
                         </option>
@@ -223,18 +223,18 @@
                         <option id="hard" value="hard">
                             Hard
                         </option>
-                        <option id="progressive" value="progressive" title="The difficulty of crowns will scale up as you progress through the game.">
+                        <option id="progressive" value="progressive">
                             Progressive Difficulty
                         </option>
                     </select>
                 </div>
-                {{ toggle_input("enemy_speed_rando", "Shuffle Enemy Speed", "Enemy speeds are randomized.") }}
+                {{ toggle_input("enemy_speed_rando", "Random Enemy Speed", "Enemy speeds are randomized.") }}
                 {{ toggle_input("randomize_enemy_sizes", "Random Enemy Size", "The size of enemies is randomized.") }}
             </div>
             <hr />
             <h2 class="title">BONUS BARRELS</h2>
             <div class="flex-container">
-                {{ dropdown_multiselector(minigames, "minigames_list", "Shuffled Bonus Barrels", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.", 18, 1) }}
+                {{ dropdown_multiselector(minigames, "minigames_list", "Shuffled Bonus Barrels", "This will open a dropdown that will let you customize what Bonus Games are in the pool.", 18, 1) }}
                 <div class="spacer"></div>
                 {{ toggle_input("disable_hard_minigames", "Disable Hard Minigames", "Disables harder minigames.") }}
                 <div class="form-check form-switch item-switch">
@@ -337,8 +337,8 @@
                 <div class="spacer"></div>
             </div>
             <div class="flex-container">
-                {{ dropdown_multiselector(hard_mode, "hard_mode", "Hard Mode", "This will open a popup that will let you customize what hard mode Options are active.", 10) }}
-                {{ dropdown_multiselector(hard_bosses, "hard_bosses", "Hard Bosses", "This will open a popup that will let you customize what bosses are made harder.", 10) }}
+                {{ dropdown_multiselector(hard_mode, "hard_mode", "Hard Mode", "This will open a dropdown that will let you customize what hard mode Options are active.", 10) }}
+                {{ dropdown_multiselector(hard_bosses, "hard_bosses", "Hard Bosses", "This will open a dropdown that will let you customize what bosses are made harder.", 10) }}
                 <div class="item-select">
                     <p class="select-title">Damage</p>
                     <select name="damage_amount"

@@ -3305,6 +3305,9 @@
         "tricks_selected": {
             "ignore": true
         },
+        "less_fragile_boulders": {
+            "ignore": true
+        },
         "shops_dont_cost": {
             "ignore": true,
             "setting_type": "bool",
