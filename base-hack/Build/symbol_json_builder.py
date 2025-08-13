@@ -38,7 +38,7 @@ with open(f"{PATH_PRE}rom/dev-symbols.sym", "r") as fh:
             # Disable out-of-range stuff (upper bound)
             continue
         data["symbols"][line_split[1]] = addr_int
-for fname in ("vars", "item_rando"):
+for fname in ("vars", "item_rando", "item_data"):
     with open(f"{PATH_PRE}include/{fname}.h", "r") as fh:
         text = fh.read()
         lines = text.split(DELIMITER)

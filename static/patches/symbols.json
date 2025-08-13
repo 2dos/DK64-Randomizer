@@ -1827,7 +1827,10 @@
         "crowd_volume": 10000,
         "path_cap": 64,
         "text_overlay_buffer": 4,
-        "bonus_data_count": 99
+        "bonus_data_count": 99,
+        "drop_count": 36,
+        "file_info_size": 2276,
+        "gb_dictionary_count": 122
     },
     "enums": {
         "newactor_nintendocoin": 0,
