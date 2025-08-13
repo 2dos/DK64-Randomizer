@@ -381,35 +381,35 @@ if baseclasses_loaded:
             return res
 
         def dk_name() -> str:
-            """Add Kong to end of Kongs"""
+            """Add Kong to end of Kongs."""
             res = set()
             if "Donkey" in full_item_table:
                 res.add("Donkey")
             return res
 
         def diddy_name() -> str:
-            """Add Kong to end of Kongs"""
+            """Add Kong to end of Kongs."""
             res = set()
             if "Diddy" in full_item_table:
                 res.add("Diddy")
             return res
 
         def lanky_name() -> str:
-            """Add Kong to end of Kongs"""
+            """Add Kong to end of Kongs."""
             res = set()
             if "Lanky" in full_item_table:
                 res.add("Lanky")
             return res
 
         def tiny_name() -> str:
-            """Add Kong to end of Kongs"""
+            """Add Kong to end of Kongs."""
             res = set()
             if "Tiny" in full_item_table:
                 res.add("Tiny")
             return res
 
         def chunky_name() -> str:
-            """Add Kong to end of Kongs"""
+            """Add Kong to end of Kongs."""
             res = set()
             if "Chunky" in full_item_table:
                 res.add("Chunky")
