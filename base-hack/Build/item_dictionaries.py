@@ -937,6 +937,12 @@ with open("src/lib_items.c", "w") as fh:
                 "flag_index": 0xA5,
                 "intended_kong_actor": 0,
             },
+            {
+                "map": Maps.CastleCarRace,
+                "model2_id": 0x1,
+                "flag_index": 0x145,
+                "intended_kong_actor": 0,
+            },
         ]
     )
     for sym in data_types:
@@ -950,3 +956,4 @@ with open("src/lib_items.c", "w") as fh:
         kong_var_size = 0xA1 + ((target_gb_bits - 3) * 8) + target_gb_bits + 14
         file_info_location = 0x320 + static_expansion + balloon_expansion + (5 * kong_var_size)
         fg.write(f"#define FILE_INFO_SIZE {hex(file_info_location)}\n")
+        fg.write(f"#define GB_DICTIONARY_COUNT {len(actor_data['new_flag_mapping'])}\n")

@@ -16,7 +16,7 @@
                                 aria-label="Randomization type"
                                 data-toggle="tooltip"
                                 title="Determines how B. Locker requirements are determined.">
-                            <option id="pre_selected" value="pre_selected">
+                            <option id="pre_selected" value="pre_selected" title="Manually-defined Golden Banana requirements for each individual B. Locker.">
                                 Pre-Selected
                             </option>
                             <option id="easy_random" value="easy_random">
@@ -28,7 +28,7 @@
                             <option id="hard_random" value="hard_random">
                                 Hard Random
                             </option>
-                            <option id="chaos" value="chaos">
+                            <option id="chaos" value="chaos" title="B. Lockers will require items other than Golden Bananas to clear.">
                                 Chaos B. Lockers
                             </option>
                         </select>
@@ -104,7 +104,7 @@
                                 aria-label="Randomization type"
                                 data-toggle="tooltip"
                                 title="Determines how Troff 'n' Scoff requirements are determined.">
-                            <option id="pre_selected" value="pre_selected">
+                            <option id="pre_selected" value="pre_selected" title="Manually-defined Colored Banana requirements for each individual Troff 'n' Scoff">
                                 Pre-Selected
                             </option>
                             <option id="normal_random" selected value="normal_random">
@@ -122,7 +122,7 @@
                             class="form-control center-div"
                             type="number"
                             data-toggle="tooltip"
-                            title="Amount of the item specified to beat the game."
+                            title="The maximum number of Colored Bananas required to open a Troff 'n' Scoff."
                             default="1"
                             placeholder="1"/>
                         <div style="padding: 10px 5px">
@@ -178,7 +178,7 @@
                 </div>
             </div>
             <div class="flex-container">
-                {{ toggle_input("maximize_helm_blocker", "Maximize Helm B. Locker", "Check box to ensure Helm is 'Max Value'.") }}
+                {{ toggle_input("maximize_helm_blocker", "Maximize Helm B. Locker", "Ensures that Level 8's B. Locker will always be at the maximum value.") }}
                 <div class="spacer"></div>
             </div>
             <hr />
@@ -212,7 +212,7 @@
                 {% include 'complex-options/switchsanity.html' %}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                        title="Item rando with shops only. Reduces the number of items offered in shops to a maximum of 3."
+                        title="Reduces the number of items offered in shops to a maximum of 3."
                         style="text-align: left">
                         <input class="form-check-input"
                             type="checkbox"
@@ -223,11 +223,11 @@
                         Smaller Shops
                     </label>
                 </div>
-                {{ toggle_input("shops_dont_cost", "Tooie-Style Shops", "Shops will not deduct coins from the player, but will require a certain amount of coins to purchase the move, akin to Banjo-Tooie.") }}
+                {{ toggle_input("shops_dont_cost", "Tooie-Style Shops", "Shops will not deduct coins from the player, but will require a certain amount of coins to purchase the item, akin to Banjo-Tooie's Jamjars silos.") }}
                 <div class="spacer"></div>
             </div>
             <div class="flex-container">
-                {{ dropdown_multiselector(remove_barriers, "remove_barriers", "Remove Barriers", "This will open a popup that will let you customize what barriers are removed.&#10;This defaults to All options.", 12, 1) }}
+                {{ dropdown_multiselector(remove_barriers, "remove_barriers", "Remove Barriers", "This will open a dropdown that will let you customize what barriers are removed.", 12, 1) }}
                 <div class="item-select">
                     <p class="select-title">Fungi Time</p>
                     <select name="fungi_time"
@@ -241,7 +241,7 @@
                         <option id="night" value="night">Nighttime Start</option>
                         <option id="random" value="random">Random Start</option>
                         <option id="dusk" value="dusk" title="All time-specific gates are removed.">Dusk</option>
-                        <option id="progressive" value="progressive" title="Time of day progressively changes.">Progressive</option>
+                        <option id="progressive" value="progressive" title="Time of day progressively changes, with a full day-night cycle taking 5 minutes.">Progressive</option>
                     </select>
                 </div>
                 <div class="item-select">
@@ -266,7 +266,7 @@
                             aria-label="Randomization type"
                             display_name="Free Trade Agreement"
                             data-toggle="tooltip"
-                            title="Allow Kongs to pick up items assigned to other kongs.&#10;-None: Kongs must pick up items assigned to them.&#10;-Major Collectibles except Blueprints: Keys, Crowns, and GBs can be picked up by any Kong.&#10;-Major Collectibles: Same as above plus Blueprints.">
+                            title="Allow Kongs to pick up items assigned to other kongs.&#10;-None: Kongs must pick up items assigned to them.&#10;-Major Collectibles except Blueprints: All major items excluding blueprints can be picked up by any Kong.&#10;-Major Collectibles: All major items can be picked up by any kong.">
                         <option id="none" selected value="none">
                             None
                         </option>
@@ -330,7 +330,7 @@
                         </option>
                     </select>
                 </div>
-                {{ dropdown_multiselector(faster_checks, "faster_checks", "Faster Checks", "This will open a popup that will let you customize what checks are sped up.&#10;This defaults to All options.", 12, 1) }}
+                {{ dropdown_multiselector(faster_checks, "faster_checks", "Faster Checks", "This will open a dropdown that will let you customize what checks are sped up.", 12, 1) }}
                 <div class="item-select">
                     <p class="select-title">Random Puzzle Solutions</p>
                     <select name="puzzle_rando_difficulty"

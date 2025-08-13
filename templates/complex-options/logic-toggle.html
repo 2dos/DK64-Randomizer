@@ -8,24 +8,23 @@
                 class="form-select"
                 aria-label="Logic"
                 data-toggle="tooltip"
-                title="Modifies the considerations logic makes when generating your seed:&#10;- Glitchless Logic: Seed is beatable without performing any glitches or complex movement tech.&#10;- Glitch Logic: Seed is beatable, but requires usage of glitches or movement tech to complete. To modify which glitches will be considered, use the cog icon to the right.&#10;- No logic: The seed does not verify that the seed is beatable at all, nor makes any logical considerations during the creation of the seed. This has a high potential to generate unbeatable seeds.">
-            <option id="glitchless" selected value="glitchless">
+                title="Modifies the considerations logic makes when generating your seed">
+            <option id="glitchless" selected value="glitchless" title="Seed is beatable without performing any glitches or complex movement tech.">
                 Glitchless Logic
             </option>
-            <option id="advanced_glitchless" selected value="advanced_glitchless">
+            <option id="advanced_glitchless" value="advanced_glitchless" title="Seed is beatable, but requires usage of advanced techniques to complete. To modify which techniques will be considered, use the cog icon to the right.">
                 Advanced Glitchless Logic
             </option>
-            <option id="glitch" value="glitch">
+            <option id="glitch" value="glitch" title="Seed is beatable, but requires usage of glitches or movement techniques to complete. To modify which glitches and techniques will be considered, use the cog icon to the right.">
                 Glitch Logic
             </option>
             <option
                 id="minimal"
                 value="minimal"
-                title="
-                    No Logic, but with some minor protections to remove a couple situations that instantly make a seed unbeatable:&#10;- Key 5 can't be in Level 7, aside from in LZR.&#10;- Kongs can't be in shops locked by themselves.&#10;- DK can't be in a blast course or Arcade Round 2.">
+                title="Seed will only check for a few restrictions, but otherwise follows the same considerations as No Logic:&#10;- Key 5 can't be in Level 7 (excluding Loading Zone Entrance Randomizers)&#10;- Kongs can't be in their own shop purchases.&#10;- Baboon Blast cannot be inside a Baboon Blast course or DK Arcade">
                 Minimal Logic
             </option>
-            <option id="nologic" value="nologic">
+            <option id="nologic" value="nologic" title="The seed does not verify that the seed is beatable at all, nor makes any logical considerations during the creation of the seed. This has a high potential to generate unbeatable seeds.">
                 No Logic
             </option>
         </select>
