@@ -557,7 +557,6 @@ def randomizeRaceRequirements(spoiler):
             selected_requirement = requirements[index]
         else:
             selected_requirement = coinreq.selected_bound.generateRequirement(spoiler)
-        print('SET REQUIREMENT FOR', coinreq.tied_map)
         spoiler.coin_requirements[coinreq.tied_map] = selected_requirement
 
 
