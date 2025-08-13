@@ -1667,7 +1667,7 @@ def patchAssembly(ROM_COPY, spoiler):
     # Fix Null Lag Boost
     writeHook(ROM_COPY, 0x806CCA90, Overlay.Static, "fixNullLagBoost", offset_dict)
 
-    if BOULDERS_DONT_DESTROY:
+    if settings.less_fragile_boulders:
         # Thrown boulders/vases/etc require getting thrown at a wall to destroy
         writeValue(ROM_COPY, 0x8069C1C2, Overlay.Static, 4, offset_dict)  # Contact with wall: Destroy
         writeValue(ROM_COPY, 0x8069C99E, Overlay.Static, 2, offset_dict)  # Contact with floor: Remain intact

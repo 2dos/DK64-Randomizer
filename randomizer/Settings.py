@@ -562,6 +562,7 @@ class Settings:
         self.shockwave_status = ShockwaveStatus.vanilla
 
         self.shops_dont_cost = False
+        self.less_fragile_boulders = False
 
         #  Music
         self.music_bgm_randomized = False
