@@ -272,8 +272,266 @@ if baseclasses_loaded:
                     res.add(name)
             return res
 
+        def gun_item_group() -> str:
+            """Item group for guns."""
+            res = set()
+            gun_items = ["Coconut", "Peanut", "Grape", "Feather", "Pineapple"]
+            for item in gun_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def inst_item_group() -> str:
+            """Item group for instruments."""
+            res = set()
+            inst_items = ["Bongos", "Guitar", "Trombone", "Saxophone", "Triangle"]
+            for item in inst_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def shared_item_group() -> str:
+            """Item group for Training Moves."""
+            res = set()
+            training_items = ["Vines", "Diving", "Oranges", "Barrels", "Climbing", "progression Slam", "Fairy Camera", "Shockwave"]
+            for item in training_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def barrels_item_group() -> str:
+            """Item group for Barrels."""
+            res = set()
+            barrels_items = ["Strong Kong", "Rocketbarrel Boost", "Orangstand Sprint", "Mini Monkey", "Hunky Chunky"]
+            for item in barrels_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def active_item_group() -> str:
+            """Item group for Active Moves."""
+            res = set()
+            active_items = ["Gorilla Grab", "Chimpy Charge", "Pony Tail Twirl", "Orangstand", "Primate Punch"]
+            for item in active_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def pad_item_group() -> str:
+            """Item group for Pads."""
+            res = set()
+            pad_items = ["Baboon Blast", "Simian Spring", "Baboon Balloon", "Monkeyport", "Gorilla Gone"]
+            for item in pad_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def dk_item_group() -> str:
+            """Item group for DK Moves."""
+            res = set()
+            dk_items = ["Coconut", "Bongos", "Gorilla Grab", "Strong Kong", "Baboon Blast"]
+            for item in dk_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def diddy_item_group() -> str:
+            """Item group for Diddy Moves."""
+            res = set()
+            diddy_items = ["Peanut", "Guitar", "Chimpy Charge", "Rocketbarrel Boost", "Simian Spring"]
+            for item in diddy_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def lanky_item_group() -> str:
+            """Item group for Lanky Moves."""
+            res = set()
+            lanky_items = ["Grape", "Trombone", "Orangstand", "Orangstand Spring", "Baboon Balloon"]
+            for item in lanky_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def tiny_item_group() -> str:
+            """Item group for Tiny Moves."""
+            res = set()
+            tiny_items = ["Feather", "Saxophone", "Pony Tail Twirl", "Mini Monkey", "Monkeyport"]
+            for item in tiny_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def chunky_item_group() -> str:
+            """Item group for Chunky Moves."""
+            res = set()
+            chunky_items = ["Pineapple", "Triangle", "Primate Punch", "Saxophone", "Triangle"]
+            for item in chunky_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def kong_item_group() -> str:
+            """Item group for Kongs."""
+            res = set()
+            kong_items = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
+            for item in kong_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def dk_name() -> str:
+            """Add Kong to end of Kongs."""
+            res = set()
+            if "Donkey" in full_item_table:
+                res.add("Donkey")
+            return res
+
+        def diddy_name() -> str:
+            """Add Kong to end of Kongs."""
+            res = set()
+            if "Diddy" in full_item_table:
+                res.add("Diddy")
+            return res
+
+        def lanky_name() -> str:
+            """Add Kong to end of Kongs."""
+            res = set()
+            if "Lanky" in full_item_table:
+                res.add("Lanky")
+            return res
+
+        def tiny_name() -> str:
+            """Add Kong to end of Kongs."""
+            res = set()
+            if "Tiny" in full_item_table:
+                res.add("Tiny")
+            return res
+
+        def chunky_name() -> str:
+            """Add Kong to end of Kongs."""
+            res = set()
+            if "Chunky" in full_item_table:
+                res.add("Chunky")
+            return res
+
+        def isles_locations() -> str:
+            """Location group for Isles locations."""
+            res = set()
+            for location_name in all_locations.keys():
+                if location_name.startswith("Isles"):
+                    res.add(location_name)
+            # Add specific Banana Fairy related locations
+            if "The Banana Fairy's Gift" in all_locations:
+                res.add("The Banana Fairy's Gift")
+            if "Returning the Banana Fairies" in all_locations:
+                res.add("Returning the Banana Fairies")
+            return res
+
+        def japes_locations() -> str:
+            """Location group for Japes locations."""
+            res = set()
+            for location_name in all_locations.keys():
+                if location_name.startswith("Japes"):
+                    res.add(location_name)
+            return res
+
+        def aztec_locations() -> str:
+            """Location group for Aztec locations."""
+            res = set()
+            for location_name in all_locations.keys():
+                if location_name.startswith("Aztec"):
+                    res.add(location_name)
+            return res
+
+        def factory_locations() -> str:
+            """Location group for Factory locations."""
+            res = set()
+            for location_name in all_locations.keys():
+                if location_name.startswith("Factory"):
+                    res.add(location_name)
+            return res
+
+        def galleon_locations() -> str:
+            """Location group for Galleon locations."""
+            res = set()
+            for location_name in all_locations.keys():
+                if location_name.startswith("Galleon"):
+                    res.add(location_name)
+            return res
+
+        def forest_locations() -> str:
+            """Location group for Forest locations."""
+            res = set()
+            for location_name in all_locations.keys():
+                if location_name.startswith("Forest"):
+                    res.add(location_name)
+            return res
+
+        def caves_locations() -> str:
+            """Location group for Caves locations."""
+            res = set()
+            for location_name in all_locations.keys():
+                if location_name.startswith("Caves"):
+                    res.add(location_name)
+            return res
+
+        def castle_locations() -> str:
+            """Location group for Castle locations."""
+            res = set()
+            for location_name in all_locations.keys():
+                if location_name.startswith("Castle"):
+                    res.add(location_name)
+            return res
+
+        def helm_locations() -> str:
+            """Location group for Helm locations."""
+            res = set()
+            for location_name in all_locations.keys():
+                if location_name.startswith("Helm"):
+                    res.add(location_name)
+            return res
+
+        def medal_locations() -> str:
+            """Location group for Medal locations."""
+            res = set()
+            for location_name in all_locations.keys():
+                if "Medal" in location_name:
+                    res.add(location_name)
+            return res
+
         item_name_groups = {
             "Blueprints": blueprint_item_group(),
+            "Guns": gun_item_group(),
+            "Intrument": inst_item_group(),
+            "Shared Moves": shared_item_group(),
+            "Transformation Barrel": barrels_item_group(),
+            "Active Move": active_item_group(),
+            "Pad Move": pad_item_group(),
+            "DK Move": dk_item_group(),
+            "Diddy Move": diddy_item_group(),
+            "Lanky Move": lanky_item_group(),
+            "Tiny Move": tiny_item_group(),
+            "Chunky Move": chunky_item_group(),
+            "Donkey Kong": dk_name(),
+            "Diddy Kong": diddy_name(),
+            "Lanky Kong": lanky_name(),
+            "Tiny Kong": tiny_name(),
+            "Chunky Kong": chunky_name(),
+            "Kong": kong_item_group(),
+        }
+
+        location_name_groups = {
+            "DK Isles": isles_locations(),
+            "Jungle Japes": japes_locations(),
+            "Angry Aztec": aztec_locations(),
+            "Frantic Factory": factory_locations(),
+            "Gloomy Galleon": galleon_locations(),
+            "Fungi Forest": forest_locations(),
+            "Crystal Caves": caves_locations(),
+            "Creepy Castle": castle_locations(),
+            "Hideout Helm": helm_locations(),
+            "Banana Medals": medal_locations(),
         }
 
         # with open("donklocations.txt", "w") as f:
