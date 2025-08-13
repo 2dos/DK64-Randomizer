@@ -271,7 +271,7 @@ if baseclasses_loaded:
                 if "Blueprint" in name:
                     res.add(name)
             return res
-        
+
         def gun_item_group() -> str:
             """Item group for guns."""
             res = set()
@@ -280,7 +280,7 @@ if baseclasses_loaded:
                 if item in full_item_table:
                     res.add(item)
             return res
-        
+
         def inst_item_group() -> str:
             """Item group for instruments."""
             res = set()
@@ -289,7 +289,7 @@ if baseclasses_loaded:
                 if item in full_item_table:
                     res.add(item)
             return res
-        
+
         def shared_item_group() -> str:
             """Item group for Training Moves."""
             res = set()
@@ -298,7 +298,7 @@ if baseclasses_loaded:
                 if item in full_item_table:
                     res.add(item)
             return res
-        
+
         def barrels_item_group() -> str:
             """Item group for Barrels."""
             res = set()
@@ -307,7 +307,7 @@ if baseclasses_loaded:
                 if item in full_item_table:
                     res.add(item)
             return res
-        
+
         def active_item_group() -> str:
             """Item group for Active Moves."""
             res = set()
@@ -316,7 +316,7 @@ if baseclasses_loaded:
                 if item in full_item_table:
                     res.add(item)
             return res
-        
+
         def pad_item_group() -> str:
             """Item group for Pads."""
             res = set()
@@ -325,7 +325,7 @@ if baseclasses_loaded:
                 if item in full_item_table:
                     res.add(item)
             return res
-        
+
         def dk_item_group() -> str:
             """Item group for DK Moves."""
             res = set()
@@ -334,7 +334,7 @@ if baseclasses_loaded:
                 if item in full_item_table:
                     res.add(item)
             return res
-        
+
         def diddy_item_group() -> str:
             """Item group for Diddy Moves."""
             res = set()
@@ -343,7 +343,7 @@ if baseclasses_loaded:
                 if item in full_item_table:
                     res.add(item)
             return res
-        
+
         def lanky_item_group() -> str:
             """Item group for Lanky Moves."""
             res = set()
@@ -352,7 +352,7 @@ if baseclasses_loaded:
                 if item in full_item_table:
                     res.add(item)
             return res
-        
+
         def tiny_item_group() -> str:
             """Item group for Tiny Moves."""
             res = set()
@@ -361,12 +361,21 @@ if baseclasses_loaded:
                 if item in full_item_table:
                     res.add(item)
             return res
-        
+
         def chunky_item_group() -> str:
             """Item group for Chunky Moves."""
             res = set()
             chunky_items = ["Pineapple", "Triangle", "Primate Punch", "Saxophone", "Triangle"]
             for item in chunky_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
+        def kong_item_group() -> str:
+            """Item group for Kongs."""
+            res = set()
+            kong_items = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
+            for item in kong_items:
                 if item in full_item_table:
                     res.add(item)
             return res
@@ -405,7 +414,7 @@ if baseclasses_loaded:
             if "Chunky" in full_item_table:
                 res.add("Chunky")
             return res
-        
+
         def isles_locations() -> str:
             """Location group for Isles locations."""
             res = set()
@@ -418,7 +427,7 @@ if baseclasses_loaded:
             if "Returning the Banana Fairies" in all_locations:
                 res.add("Returning the Banana Fairies")
             return res
-        
+
         def japes_locations() -> str:
             """Location group for Japes locations."""
             res = set()
@@ -426,7 +435,7 @@ if baseclasses_loaded:
                 if location_name.startswith("Japes"):
                     res.add(location_name)
             return res
-        
+
         def aztec_locations() -> str:
             """Location group for Aztec locations."""
             res = set()
@@ -434,7 +443,7 @@ if baseclasses_loaded:
                 if location_name.startswith("Aztec"):
                     res.add(location_name)
             return res
-        
+
         def factory_locations() -> str:
             """Location group for Factory locations."""
             res = set()
@@ -442,7 +451,7 @@ if baseclasses_loaded:
                 if location_name.startswith("Factory"):
                     res.add(location_name)
             return res
-        
+
         def galleon_locations() -> str:
             """Location group for Galleon locations."""
             res = set()
@@ -450,7 +459,7 @@ if baseclasses_loaded:
                 if location_name.startswith("Galleon"):
                     res.add(location_name)
             return res
-        
+
         def forest_locations() -> str:
             """Location group for Forest locations."""
             res = set()
@@ -458,7 +467,7 @@ if baseclasses_loaded:
                 if location_name.startswith("Forest"):
                     res.add(location_name)
             return res
-        
+
         def caves_locations() -> str:
             """Location group for Caves locations."""
             res = set()
@@ -474,7 +483,7 @@ if baseclasses_loaded:
                 if location_name.startswith("Castle"):
                     res.add(location_name)
             return res
-        
+
         def helm_locations() -> str:
             """Location group for Helm locations."""
             res = set()
@@ -482,7 +491,7 @@ if baseclasses_loaded:
                 if location_name.startswith("Helm"):
                     res.add(location_name)
             return res
-        
+
         def medal_locations() -> str:
             """Location group for Medal locations."""
             res = set()
@@ -509,6 +518,7 @@ if baseclasses_loaded:
             "Lanky Kong": lanky_name(),
             "Tiny Kong": tiny_name(),
             "Chunky Kong": chunky_name(),
+            "Kong": kong_item_group(),
         }
 
         location_name_groups = {
