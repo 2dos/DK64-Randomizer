@@ -1398,6 +1398,7 @@ function set_preset_options() {
   update_win_con_num_access();
   update_prog_hint_num_access();
   update_blocker_num_access();
+  update_ice_trap_count();
   update_troff_number_access();
   item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
   item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);

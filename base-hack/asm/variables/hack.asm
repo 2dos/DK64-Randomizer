@@ -31,7 +31,6 @@
 .definelabel ToggleAmmoOn, 0x807FFFDC
 .definelabel WarpData, 0x807FFFD8
 .definelabel InvertedControls, 0x807FFFD7
-.definelabel WinCondition, 0x807FFFD6
 .definelabel ChunkyModel, 0x807FFFD5
 .definelabel EnemyInView, 0x807FFFD4
 .definelabel ItemRandoOn, 0x807FFFD3

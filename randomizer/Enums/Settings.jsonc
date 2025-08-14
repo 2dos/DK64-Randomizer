@@ -1318,7 +1318,8 @@
     "cb_medal_behavior": 260,
     "tricks_selected": 261,
     "shops_dont_cost": 262,
-    "less_fragile_boulders": 263
+    "less_fragile_boulders": 263,
+    "ice_trap_count": 264
   },
   /*
     SettingsStringDataType:
@@ -1654,6 +1655,9 @@
     },
     "SettingsStringEnum.helmhurry_list_starting_time": {
       "obj": "SettingsStringDataType.u16"
+    },
+    "SettingsStringEnum.ice_trap_count": {
+      "obj": "SettingsStringDataType.int16"
     },
     "SettingsStringEnum.item_rando_list_selected": {
       "obj": "SettingsStringDataType.list"

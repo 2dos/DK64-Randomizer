@@ -1548,6 +1548,19 @@ document
     }
   });
 
+function update_ice_trap_count() {
+  const trapCountEl = document.getElementById("ice_trap_count");
+  if (!trapCountEl.value) {
+    trapCountEl.value = 0;
+  } else if (trapCountEl.value < 0) {
+    trapCountEl.value = 0;
+  } else if (trapCountEl.value > 999) {
+    trapCountEl.value = 999;
+  }
+}
+
+document.getElementById("ice_trap_count").addEventListener("change", update_ice_trap_count);
+
 // Update B Locker Number Access
 function update_blocker_num_access() {
   const blockerSelection = document.getElementById("blocker_selection_behavior");
@@ -1942,6 +1955,7 @@ function update_ui_states() {
   update_win_con_num_access();
   update_prog_hint_num_access();
   update_blocker_num_access();
+  update_ice_trap_count();
   update_troff_number_access();
   item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
   item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);

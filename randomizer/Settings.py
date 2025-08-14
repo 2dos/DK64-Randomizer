@@ -1296,19 +1296,6 @@ class Settings:
         self.crown_door_item = DoorItemToBarrierItem(self.crown_door_item, False, True)
 
         # Determine ice trap order
-        trap_limit = 0
-        if self.archipelago:
-            trap_limit = self.ice_trap_count
-
-        ice_trap_freqs = {
-            IceTrapFrequency.rare: 4,
-            IceTrapFrequency.mild: 10,
-            IceTrapFrequency.common: 32,
-            IceTrapFrequency.frequent: 64,
-            IceTrapFrequency.pain: 100,
-            IceTrapFrequency.unlimited: 1000,  # A value high enough to essentially be infinite
-        }
-        trap_limit = ice_trap_freqs.get(self.ice_trap_frequency, 16)
         effects = {
             "bubble": 3,
             "reverse": 3,
@@ -1349,6 +1336,9 @@ class Settings:
             },
         }
         self.trap_assortment = []
+        trap_limit = self.ice_trap_count
+        if self.archipelago:
+            trap_limit = 0
         for _ in range(trap_limit):
             chosen_effect = self.random.choices(list(effects.keys()), list(effects.values()), k=1)[0]
             chosen_model = self.random.choices(list(models_chance.keys()), list(models_chance.values()), k=1)[0]

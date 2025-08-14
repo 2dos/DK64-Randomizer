@@ -229,36 +229,6 @@
             <div class="flex-container">
                 {{ dropdown_multiselector(remove_barriers, "remove_barriers", "Remove Barriers", "This will open a dropdown that will let you customize what barriers are removed.", 12, 1) }}
                 <div class="item-select">
-                    <p class="select-title">Fungi Time</p>
-                    <select name="fungi_time"
-                            id="fungi_time"
-                            class="form-select center-div"
-                            aria-label="Fungi Time"
-                            display_name="Fungi Time"
-                            data-toggle="tooltip"
-                            title="Alter the time of day in Fungi.">
-                        <option selected id="day" value="day">Daytime Start</option>
-                        <option id="night" value="night">Nighttime Start</option>
-                        <option id="random" value="random">Random Start</option>
-                        <option id="dusk" value="dusk" title="All time-specific gates are removed.">Dusk</option>
-                        <option id="progressive" value="progressive" title="Time of day progressively changes, with a full day-night cycle taking 5 minutes.">Progressive</option>
-                    </select>
-                </div>
-                <div class="item-select">
-                    <p class="select-title">Galleon Water</p>
-                    <select name="galleon_water"
-                            id="galleon_water"
-                            display_name="Galleon Water"
-                            class="form-select center-div"
-                            aria-label="Galleon Water"
-                            data-toggle="tooltip"
-                            title="Alter the water level in Galleon.">
-                        <option selected id="lowered" value="lowered">Lowered</option>
-                        <option id="raised" value="raised">Raised</option>
-                        <option id="random" value="random">Random</option>
-                    </select>
-                </div>
-                <div class="item-select">
                     <p class="select-title">Free Trade Agreement</p>
                     <select name="free_trade_setting"
                             id="free_trade_setting"
@@ -276,6 +246,36 @@
                         <option id="major_collectibles" value="major_collectibles">
                             Major Collectibles
                         </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Galleon Water</p>
+                    <select name="galleon_water"
+                            id="galleon_water"
+                            display_name="Galleon Water"
+                            class="form-select center-div"
+                            aria-label="Galleon Water"
+                            data-toggle="tooltip"
+                            title="Alter the water level in Galleon.">
+                        <option selected id="lowered" value="lowered">Lowered</option>
+                        <option id="raised" value="raised">Raised</option>
+                        <option id="random" value="random">Random</option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Fungi Time</p>
+                    <select name="fungi_time"
+                            id="fungi_time"
+                            class="form-select center-div"
+                            aria-label="Fungi Time"
+                            display_name="Fungi Time"
+                            data-toggle="tooltip"
+                            title="Alter the time of day in Fungi.">
+                        <option selected id="day" value="day">Daytime Start</option>
+                        <option id="night" value="night">Nighttime Start</option>
+                        <option id="random" value="random">Random Start</option>
+                        <option id="dusk" value="dusk" title="All time-specific gates are removed.">Dusk</option>
+                        <option id="progressive" value="progressive" title="Time of day progressively changes, with a full day-night cycle taking 5 minutes.">Progressive</option>
                     </select>
                 </div>
                 <div class="item-select">

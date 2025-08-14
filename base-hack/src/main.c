@@ -147,6 +147,7 @@ void cFuncLoop(void) {
 		}
 	}
 	handleSFXCache();
+	SpeedUpMusic();
 	detectSongChange();
 	handleDPadFunctionality();
 	if (Rando.helm_hurry_mode) {
