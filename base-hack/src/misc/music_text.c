@@ -63,7 +63,7 @@ void SpeedUpMusic(void) {
     int win_con_count = Rando.win_condition_extra.count;
     if (win_con == GOAL_KROOL) {
         win_con_item = REQITEM_KEY;
-        win_con_count = 8;
+        win_con_count = 9; // Triggers upon picking up key 8
     } else if (win_con != GOAL_CUSTOMITEM) {
         // Goal is inelligible for speed up
         return;
