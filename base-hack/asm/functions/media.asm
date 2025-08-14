@@ -1,5 +1,6 @@
 .definelabel playSong, 0x80602A94
 .definelabel playLevelMusic, 0x80602498
+.definelabel restartSong, 0x8060A6A0
 .definelabel playCutscene, 0x8061CC40
 .definelabel playSound, 0x80609140
 .definelabel PlayCutsceneFromModelTwoScript, 0x80641DA0
@@ -18,3 +19,4 @@
 .definelabel RainbowCoinFTT, 0x806F5498
 .definelabel wipeTurnedInArray, 0x806C7B00
 .definelabel alCSPSetTempo, 0x80738320
+.definelabel getSongTempo, 0x807383B0

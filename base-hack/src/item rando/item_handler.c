@@ -180,7 +180,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             }
             break;
     }
-    SpeedUpMusicInner();
+    checkSeedVictory();
     if (config.apply_helm_hurry) {
         addHelmTime(hh_item, 1);
     }

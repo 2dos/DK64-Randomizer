@@ -77,10 +77,10 @@ textboxes = [
         Locations.GalleonTinyPearls,
         CompTextFiles.PreviewsFlavor,
         ItemPreview.MermaidIntro,
-        "PLEASE TRY AND GET THEM BACK",
+        "OF THEM BACK.",
         Types.Banana,
         Items.GoldenBanana,
-        "IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |",
+        "OF THEM BACK. IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |",
     ),
     TextboxChange(Locations.GalleonTinyPearls, CompTextFiles.PreviewsFlavor, ItemPreview.MermaidReward, "GOLDEN BANANA", Types.Banana, Items.GoldenBanana),
     TextboxChange(

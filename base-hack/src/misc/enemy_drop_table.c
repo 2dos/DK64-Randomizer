@@ -78,18 +78,20 @@ void spawnEnemyDrops(actorData* actor) {
         if (TiedCharacterSpawner) {
             int spawner_id = TiedCharacterSpawner->spawn_trigger;
             flag = getEnemyFlag(spawner_id);
-            if ((canSpawnEnemyReward()) && (Rando.item_rando)) {
-                int proposition = getEnemyItem(spawner_id);
-                if ((proposition != -1) && (proposition != (CUSTOM_ACTORS_START + NEWACTOR_NULL))) {
-                    drop_type = proposition;
-                    drop_count = 1;
+            if (canSpawnEnemyReward()) {
+                if (Rando.item_rando) {
+                    int proposition = getEnemyItem(spawner_id);
+                    if ((proposition != -1) && (proposition != (CUSTOM_ACTORS_START + NEWACTOR_NULL))) {
+                        drop_type = proposition;
+                        drop_count = 1;
+                    }
+                    if (isBounceObject(drop_type)) {
+                        drop_arg = 2;
+                    }
+                    setSpawnBitfield(spawner_id, 1);
                 }
-                if (isBounceObject(drop_type)) {
-                    drop_arg = 2;
-                }
-                setSpawnBitfield(spawner_id, 1);
-            }
-            if (!canSpawnEnemyReward()) {
+            } else {
+                flag = -1;
                 if ((drop_type == 0x2F) && (Rando.disable_drops)) {
                     return;
                 }
