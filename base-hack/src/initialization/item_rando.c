@@ -197,7 +197,7 @@ int getBPItem(int index) {
      * 
      * @return Actor Index of the reward
      */
-	return getActorIndex(bp_item_table[index]);
+	return bp_item_table[index];
 }
 
 int getCrownItem(maps map) {
@@ -210,7 +210,7 @@ int getCrownItem(maps map) {
      */
 	for (int i = 0; i < 10; i++) {
 		if (map == crown_maps[i]) {
-			return getActorIndex(crown_item_table[i]);
+			return crown_item_table[i];
 		}
 	}
 	return 0;
@@ -226,7 +226,7 @@ int getKeyItem(int old_flag) {
      */
 	for (int i = 0; i < 8; i++) {
 		if (old_flag == normal_key_flags[i]) {
-			return getActorIndex(key_item_table[i]);
+			return key_item_table[i];
 		}
 	}
 	return 0;
@@ -240,7 +240,7 @@ int getRainbowCoinItem(int old_flag) {
 	 * 
      * @return Actor Index of the reward
 	 */
-	return getActorIndex(rcoin_item_table[old_flag - FLAG_RAINBOWCOIN_0]);
+	return rcoin_item_table[old_flag - FLAG_RAINBOWCOIN_0];
 }
 
 int getPatchFlag(int id) {
@@ -364,7 +364,7 @@ int getBoulderItem(void) {
     if (index < 0) {
         return 0;
     }
-    return getActorIndex(boulder_item_table[index].item);
+    return boulder_item_table[index].item;
 }
 
 typedef struct barrel_skin_tie {
@@ -378,58 +378,58 @@ static const barrel_skin_tie bonus_skins[] = {
     {.actor = 77, .skin=SKIN_BLUEPRINT},
     {.actor = 79, .skin=SKIN_BLUEPRINT},
     {.actor = 76, .skin=SKIN_BLUEPRINT},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_NINTENDOCOIN, .skin=SKIN_NINTENDO_COIN},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_RAREWARECOIN, .skin=SKIN_RAREWARE_COIN},
+    {.actor = NEWACTOR_NINTENDOCOIN, .skin=SKIN_NINTENDO_COIN},
+    {.actor = NEWACTOR_RAREWARECOIN, .skin=SKIN_RAREWARE_COIN},
     {.actor = 72, .skin=SKIN_KEY},
     {.actor = 86, .skin=SKIN_CROWN},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_MEDAL, .skin=SKIN_MEDAL},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONDK, .skin=SKIN_POTION},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONDIDDY, .skin=SKIN_POTION},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONLANKY, .skin=SKIN_POTION},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONTINY, .skin=SKIN_POTION},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONCHUNKY, .skin=SKIN_POTION},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONANY, .skin=SKIN_POTION},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGDK, .skin=SKIN_KONG_DK},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGDIDDY, .skin=SKIN_KONG_DIDDY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGLANKY, .skin=SKIN_KONG_LANKY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGTINY, .skin=SKIN_KONG_TINY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGCHUNKY, .skin=SKIN_KONG_CHUNKY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_BEAN, .skin=SKIN_BEAN},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_PEARL, .skin=SKIN_PEARL},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_FAIRY, .skin=SKIN_FAIRY},
+    {.actor = NEWACTOR_MEDAL, .skin=SKIN_MEDAL},
+    {.actor = NEWACTOR_POTIONDK, .skin=SKIN_POTION},
+    {.actor = NEWACTOR_POTIONDIDDY, .skin=SKIN_POTION},
+    {.actor = NEWACTOR_POTIONLANKY, .skin=SKIN_POTION},
+    {.actor = NEWACTOR_POTIONTINY, .skin=SKIN_POTION},
+    {.actor = NEWACTOR_POTIONCHUNKY, .skin=SKIN_POTION},
+    {.actor = NEWACTOR_POTIONANY, .skin=SKIN_POTION},
+    {.actor = NEWACTOR_KONGDK, .skin=SKIN_KONG_DK},
+    {.actor = NEWACTOR_KONGDIDDY, .skin=SKIN_KONG_DIDDY},
+    {.actor = NEWACTOR_KONGLANKY, .skin=SKIN_KONG_LANKY},
+    {.actor = NEWACTOR_KONGTINY, .skin=SKIN_KONG_TINY},
+    {.actor = NEWACTOR_KONGCHUNKY, .skin=SKIN_KONG_CHUNKY},
+    {.actor = NEWACTOR_BEAN, .skin=SKIN_BEAN},
+    {.actor = NEWACTOR_PEARL, .skin=SKIN_PEARL},
+    {.actor = NEWACTOR_FAIRY, .skin=SKIN_FAIRY},
     {.actor = 140, .skin=SKIN_RAINBOW_COIN},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPBUBBLE, .skin=SKIN_FAKE_ITEM},
+    {.actor = NEWACTOR_ICETRAPBUBBLE, .skin=SKIN_FAKE_ITEM},
     {.actor = 0x2F, .skin=SKIN_JUNK_ITEM},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_CRANKYITEM, .skin=SKIN_CRANKY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_FUNKYITEM, .skin=SKIN_FUNKY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_CANDYITEM, .skin=SKIN_CANDY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_SNIDEITEM, .skin=SKIN_SNIDE},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPREVERSE, .skin=SKIN_FAKE_ITEM},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPSLOW, .skin=SKIN_FAKE_ITEM},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMDK, .skin=SKIN_HINT},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMDIDDY, .skin=SKIN_HINT},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMLANKY, .skin=SKIN_HINT},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMTINY, .skin=SKIN_HINT},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_HINTITEMCHUNKY, .skin=SKIN_HINT},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ARCHIPELAGOITEM, .skin=SKIN_AP},
+    {.actor = NEWACTOR_CRANKYITEM, .skin=SKIN_CRANKY},
+    {.actor = NEWACTOR_FUNKYITEM, .skin=SKIN_FUNKY},
+    {.actor = NEWACTOR_CANDYITEM, .skin=SKIN_CANDY},
+    {.actor = NEWACTOR_SNIDEITEM, .skin=SKIN_SNIDE},
+    {.actor = NEWACTOR_ICETRAPREVERSE, .skin=SKIN_FAKE_ITEM},
+    {.actor = NEWACTOR_ICETRAPSLOW, .skin=SKIN_FAKE_ITEM},
+    {.actor = NEWACTOR_HINTITEMDK, .skin=SKIN_HINT},
+    {.actor = NEWACTOR_HINTITEMDIDDY, .skin=SKIN_HINT},
+    {.actor = NEWACTOR_HINTITEMLANKY, .skin=SKIN_HINT},
+    {.actor = NEWACTOR_HINTITEMTINY, .skin=SKIN_HINT},
+    {.actor = NEWACTOR_HINTITEMCHUNKY, .skin=SKIN_HINT},
+    {.actor = NEWACTOR_ARCHIPELAGOITEM, .skin=SKIN_AP},
     {.actor = 151, .skin=SKIN_FAKE_BEAN},
     {.actor = 152, .skin=SKIN_FAKE_BEAN},
     {.actor = 153, .skin=SKIN_FAKE_BEAN},
     {.actor = 154, .skin=SKIN_FAKE_KEY},
     {.actor = 155, .skin=SKIN_FAKE_KEY},
     {.actor = 157, .skin=SKIN_FAKE_KEY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPDISABLEABEAN, .skin=SKIN_FAKE_BEAN},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPDISABLEBBEAN, .skin=SKIN_FAKE_BEAN},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPDISABLEZBEAN, .skin=SKIN_FAKE_BEAN},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPDISABLECUBEAN, .skin=SKIN_FAKE_BEAN},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPDISABLEAKEY, .skin=SKIN_FAKE_KEY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPDISABLEBKEY, .skin=SKIN_FAKE_KEY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPDISABLEZKEY, .skin=SKIN_FAKE_KEY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPDISABLECUKEY, .skin=SKIN_FAKE_KEY},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPDISABLEAGB, .skin=SKIN_FAKE_ITEM},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPDISABLEBGB, .skin=SKIN_FAKE_ITEM},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPDISABLEZGB, .skin=SKIN_FAKE_ITEM},
-    {.actor = CUSTOM_ACTORS_START + NEWACTOR_ICETRAPDISABLECUGB, .skin=SKIN_FAKE_ITEM},
+    {.actor = NEWACTOR_ICETRAPDISABLEABEAN, .skin=SKIN_FAKE_BEAN},
+    {.actor = NEWACTOR_ICETRAPDISABLEBBEAN, .skin=SKIN_FAKE_BEAN},
+    {.actor = NEWACTOR_ICETRAPDISABLEZBEAN, .skin=SKIN_FAKE_BEAN},
+    {.actor = NEWACTOR_ICETRAPDISABLECUBEAN, .skin=SKIN_FAKE_BEAN},
+    {.actor = NEWACTOR_ICETRAPDISABLEAKEY, .skin=SKIN_FAKE_KEY},
+    {.actor = NEWACTOR_ICETRAPDISABLEBKEY, .skin=SKIN_FAKE_KEY},
+    {.actor = NEWACTOR_ICETRAPDISABLEZKEY, .skin=SKIN_FAKE_KEY},
+    {.actor = NEWACTOR_ICETRAPDISABLECUKEY, .skin=SKIN_FAKE_KEY},
+    {.actor = NEWACTOR_ICETRAPDISABLEAGB, .skin=SKIN_FAKE_ITEM},
+    {.actor = NEWACTOR_ICETRAPDISABLEBGB, .skin=SKIN_FAKE_ITEM},
+    {.actor = NEWACTOR_ICETRAPDISABLEZGB, .skin=SKIN_FAKE_ITEM},
+    {.actor = NEWACTOR_ICETRAPDISABLECUGB, .skin=SKIN_FAKE_ITEM},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {
@@ -500,7 +500,7 @@ void initItemRando(void) {
             tbarrel_flag = FLAG_TBARREL_DIVE + i;
         }
         bonus_data[95 + i].flag = tbarrel_flag;
-        bonus_data[95 + i].spawn_actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONANY;
+        bonus_data[95 + i].spawn_actor = NEWACTOR_POTIONANY;
         bonus_data[95 + i].kong_actor = 0;
     }
     
@@ -526,7 +526,7 @@ void initItemRando(void) {
         if (reward_write[i].flag > -1) {
             for (int j = 0; j < BONUS_DATA_COUNT; j++) {
                 if (bonus_data[j].flag == reward_write[i].flag) {
-                    bonus_data[j].spawn_actor = getActorIndex(reward_write[i].actor);
+                    bonus_data[j].spawn_actor = reward_write[i].actor;
                 }
             }
         }

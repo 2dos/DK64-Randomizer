@@ -276,7 +276,7 @@ int canDie(void) {
 
 void sendDeath(void) {
     if (isAPEnabled()) {
-        if (!isActorLoaded(CUSTOM_ACTORS_START + NEWACTOR_KOPDUMMY)) {
+        if (!isActorLoaded(NEWACTOR_KOPDUMMY)) {
             ap_info.send_death = 1;
         }
     }

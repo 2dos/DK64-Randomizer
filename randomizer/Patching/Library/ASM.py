@@ -219,13 +219,6 @@ def getVar(ref: str) -> int:
     return label_value
 
 
-def getActorIndex(input: int) -> int:
-    """Get actor index from provided value."""
-    if input & 0x8000:
-        return CUSTOM_ACTORS_START + (input & 0x7FFF)
-    return input
-
-
 item_type_table_conversion = {
     # sym, item size
     Types.Blueprint: ("bp_item_table", 2),
