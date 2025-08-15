@@ -1050,7 +1050,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
 
                     if archipelago_item_name:
                         # Use the Archipelago item name, limit length to fit in textbox
-                        item_text = archipelago_item_name.upper()[:32]  # Limit to 32 characters
+                        item_text = archipelago_item_name.upper()[:31]  # Limit Beetles to 31 characters due to null terminator
                     else:
                         # Use the standard item preview text
                         item_text = getItemPreviewText(item.new_item, item.location, THEMATIC_TEXT, getModelMask(item.new_subitem))
