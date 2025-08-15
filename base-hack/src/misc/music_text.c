@@ -51,35 +51,43 @@ void detectSongChange(void) {
     }
 }
 
-static unsigned char last_song = SONG_SILENCE;
+// 480k (default) / 1.5
+#define SPEED_UP_TEMPO 320000
 
-void SpeedUpMusicInner(void) {
-    if (last_song == SONG_SILENCE) {
-        return;
-    }
+void SpeedUpMusic(void) {
     if (!Rando.song_speed_near_win) {
         return;
     }
-    if (Rando.win_condition != GOAL_CUSTOMITEM) {
+    win_conditions win_con = Rando.win_condition;
+    requirement_item win_con_item = Rando.win_condition_extra.item;
+    int win_con_count = Rando.win_condition_extra.count;
+    if (win_con == GOAL_KROOL) {
+        win_con_item = REQITEM_KEY;
+        win_con_count = 9; // Triggers upon picking up key 8
+    } else if (win_con != GOAL_CUSTOMITEM) {
         // Goal is inelligible for speed up
         return;
     }
-    if (Rando.win_condition_extra.count < 2) {
+    if (win_con_count < 2) {
         // Doesn't work for 1-item win conditions
         return;
     }
-    int item_count = getItemCountReq(Rando.win_condition_extra.item);
-    if (item_count == (Rando.win_condition_extra.count - 1)) {
-        int slot = getSongWriteSlot(last_song);
-        alCSPSetTempo(compactSequencePlayers[slot], 320000); // 480k (default) / 1.5
-    }
-}
-
-void SpeedUpMusic(void) {
     if (!isGamemode(GAMEMODE_ADVENTURE, 1)) {
         return;
     }
-    SpeedUpMusicInner();
+    int item_count = getItemCountReq(win_con_item);
+    if (item_count != (win_con_count - 1)) {
+        return;
+    }
+    for (int i = 0; i < 4; i++) {
+        songs song = SongInWriteSlot[i];
+        if ((music_types[song] == SONGTYPE_BGM) && (song != SONG_BABOONBALLOON)) {
+            int existing_tempo = getSongTempo(compactSequencePlayers[i]);
+            if (existing_tempo != SPEED_UP_TEMPO) {
+                alCSPSetTempo(compactSequencePlayers[i], SPEED_UP_TEMPO);
+            }
+        }
+    }
 }
 
 void initSongDisplay(int song) {
@@ -96,8 +104,6 @@ void initSongDisplay(int song) {
     if (DisplayedSongNamePointer) {
         complex_free(DisplayedSongNamePointer);
     }
-    last_song = song;
-    SpeedUpMusic();
     DisplayedSongNamePointer = getTextPointer(46, song, 0);
     displayed_text_offset = -1;
     int text_length = cstring_strlen(DisplayedSongNamePointer);

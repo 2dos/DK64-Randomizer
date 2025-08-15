@@ -817,6 +817,7 @@ class SettingsStringEnum(IntEnum):
     tricks_selected = 261
     shops_dont_cost = 262
     less_fragile_boulders = 263
+    ice_trap_count = 264
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1038,6 +1039,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.helmhurry_list_pearl: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_rainbow_coin: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_starting_time: SettingsStringDataType.u16,
+    SettingsStringEnum.ice_trap_count: SettingsStringDataType.int16,
     SettingsStringEnum.item_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.item_reward_previews: SettingsStringDataType.bool,
     SettingsStringEnum.kasplat_rando_setting: KasplatRandoSetting,

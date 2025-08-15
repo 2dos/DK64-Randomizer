@@ -44,6 +44,8 @@ def ApplyMirrorMode(settings: Settings, ROM_COPY: LocalROM):
                 dl_start = readDataFromBytestream(data, 0x34, 4)
                 dl_end = readDataFromBytestream(data, 0x38, 4)
             elif tbl == TableNames.ActorGeometry:
+                if file_index == (file_count - 1):
+                    continue
                 addr_offset = readDataFromBytestream(data, 0, 4)
                 dl_end = 0x28 + (readDataFromBytestream(data, 4, 4) - addr_offset)
                 dl_start = 0x28 + (readDataFromBytestream(data, dl_end, 4) - addr_offset)

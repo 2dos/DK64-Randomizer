@@ -53,22 +53,20 @@
                 </div>
                 <div style="width:50%">
                     <div class="mx-auto" style="width: fit-content">
-                        <div class="item-select">
+                        <div>
                             <p class="select-title">Ice Trap Frequency</p>
-                            <select name="ice_trap_frequency"
-                                    id="ice_trap_frequency"
+                            <input  name="ice_trap_count"
+                                    id="ice_trap_count"
+                                    type="number"
                                     display_name="Ice Trap Frequency"
-                                    class="form-select"
+                                    class="form-control mt-3"
                                     aria-label="Ice Trap Frequency"
                                     data-toggle="tooltip"
-                                    title="Frequency of ice traps attempted to be placed into the world.&#10;-Rare: 4 ice traps.&#10;-Mild: 10 ice traps.&#10;-Common: 32 ice traps.&#10;-Frequent: 64 ice traps.&#10;-Pain: 100 ice traps.">
-                                <option id="rare" value="rare">Rare</option>
-                                <option id="mild" selected value="mild">Mild</option>
-                                <option id="common" value="common">Common</option>
-                                <option id="frequent" value="frequent">Frequent</option>
-                                <option id="pain" value="pain">Pain</option>
-                                <option id="unlimited" value="unlimited">Unlimited</option>
-                            </select>
+                                    title="The amount of ice traps that will be attempted to be placed into the world."
+                                    min="0"
+                                    max="999"
+                                    value="0"
+                            />
                         </div>
                     </div>
                 </div>
