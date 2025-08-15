@@ -99,6 +99,7 @@ class ReceiveNotifications(Choice):
     option_display_extra_fast = 4
     option_display_extra_items = 5
     option_display_only_progression = 6
+    option_display_nothing = 7
     default = 1
 
 

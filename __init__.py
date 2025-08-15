@@ -365,7 +365,7 @@ if baseclasses_loaded:
         def chunky_item_group() -> str:
             """Item group for Chunky Moves."""
             res = set()
-            chunky_items = ["Pineapple", "Triangle", "Primate Punch", "Saxophone", "Triangle"]
+            chunky_items = ["Pineapple", "Triangle", "Primate Punch", "Hunky Chunky", "Triangle"]
             for item in chunky_items:
                 if item in full_item_table:
                     res.add(item)
@@ -487,8 +487,21 @@ if baseclasses_loaded:
         def helm_locations() -> str:
             """Location group for Helm locations."""
             res = set()
+            # Locations to exclude from Helm group
+            excluded_locations = {
+                "Helm Donkey Barrel 1",
+                "Helm Donkey Barrel 2",
+                "Helm Diddy Barrel 1",
+                "Helm Diddy Barrel 2",
+                "Helm Lanky Barrel 1",
+                "Helm Lanky Barrel 2",
+                "Helm Tiny Barrel 1",
+                "Helm Tiny Barrel 2",
+                "Helm Chunky Barrel 1",
+                "Helm Chunky Barrel 2",
+            }
             for location_name in all_locations.keys():
-                if location_name.startswith("Helm"):
+                if location_name.startswith("Helm") and location_name not in excluded_locations:
                     res.add(location_name)
             return res
 
@@ -894,8 +907,8 @@ if baseclasses_loaded:
 
             for item in self.options.start_inventory:
                 item_obj = DK64RItem.ItemList[logic_item_name_to_id.get(item)]
-                if item_obj.type not in [Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing]:
-                    # Ensure that the items in the start inventory are only keys, shops, shockwaves, training barrels or climbing items
+                if item_obj.type not in [Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
+                    # Ensure that the items in the start inventory are only keys, shops, shockwaves, training barrels, climbing items, or shop owners
                     raise ValueError(f"Invalid item type for starting inventory: {item}. Starting inventory can only contain keys or moves.")
 
             Generate_Spoiler(self.spoiler)
@@ -961,6 +974,8 @@ if baseclasses_loaded:
                 spoiler.settings.player_name = self.multiworld.get_player_name(self.player)
                 spoiler.first_move_item = None  # Not relevant with Fast Start always enabled
                 spoiler.pregiven_items = []
+                # Initialize dictionary to store Archipelago location to item name mappings for textbox display
+                spoiler.archipelago_locations = {}
                 for item in self.multiworld.precollected_items[self.player]:
                     dk64_item = logic_item_name_to_id[item.name]
                     # Only moves can be pushed to the pregiven_items list
@@ -984,6 +999,9 @@ if baseclasses_loaded:
                         ap_item = ap_location.item
                         # Any item that isn't for this player is placed as an AP item, regardless of whether or not it could be a DK64 item
                         if ap_item.player != self.player:
+                            # Store the Archipelago item name for textbox display (items from other players)
+                            player_name = self.multiworld.get_player_name(ap_item.player)
+                            spoiler.archipelago_locations[dk64_location_id] = f"{ap_item.name} ({player_name})"
                             spoiler.LocationList[dk64_location_id].PlaceItem(spoiler, DK64RItems.ArchipelagoItem)
                             # If Jetpac has an progression AP item, we should hint is as if it were a major item
                             if dk64_location_id == DK64RLocations.RarewareCoin and ap_item.advancement:
@@ -1014,6 +1032,8 @@ if baseclasses_loaded:
                                     self.junked_locations.append(ap_location.name)
                                 # Blueprints can't be on fairies for technical reasons. Instead we'll patch it in as an AP item and have AP handle it.
                                 if dk64_item in DK64RItemPool.Blueprints() and dk64_location.type == Types.Fairy:
+                                    # Store the item name for textbox display since this becomes an Archipelago item
+                                    spoiler.archipelago_locations[dk64_location_id] = ap_item.name
                                     dk64_item = DK64RItems.ArchipelagoItem
                                 # Track explicit "No Item" placements
                                 elif ap_item.name == "No Item":
