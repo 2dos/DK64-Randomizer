@@ -453,7 +453,7 @@ async function update_music_select_options(isInitialLoad, has_custom_music) {
     MinorItem: cosmetic_names.minoritems,
     Event: cosmetic_names.events,
   };
-  let cosmetic_truncated_names = {
+  cosmetic_truncated_names = {
     bgm: [],
     majoritems: [],
     minoritems: [],
