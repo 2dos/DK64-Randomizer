@@ -255,6 +255,11 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     all_eligible_starting_moves.extend(DK64RItemPoolUtility.JunkSharedMoves)
     all_eligible_starting_moves.append(DK64RItems.Camera)
     all_eligible_starting_moves.append(DK64RItems.Shockwave)
+    # Add shop keepers as possible starting items
+    all_eligible_starting_moves.append(DK64RItems.Cranky)
+    all_eligible_starting_moves.append(DK64RItems.Funky)
+    all_eligible_starting_moves.append(DK64RItems.Candy)
+    all_eligible_starting_moves.append(DK64RItems.Snide)
     # Either include Climbing as an eligible starting move or place it in the starting inventory
     if world.options.climbing_shuffle:
         all_eligible_starting_moves.extend(DK64RItemPoolUtility.ClimbingAbilities())
