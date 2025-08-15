@@ -154,10 +154,10 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
                 // Progressive instrument
                 int ins_level = getInstrumentLevel();
                 for (int i = 0; i < 5; i++) {
-                    MovesBase[i].instrument_bitfield |= (1 << (ins_level + 2));
+                    MovesBase[i].instrument_bitfield |= (1 << (ins_level + 1));
                 }
                 int cap = 2;
-                if (ins_level > 1) {
+                if (MovesBase[0].instrument_bitfield & 4) {
                     cap = 3;
                 }
                 if (CollectableBase.Melons < cap) {

@@ -3249,7 +3249,7 @@
                     "easy_random": 100
                 },
                 "standard": {
-                    "normal_random": 100
+                    "medium_random": 100
                 },
                 "difficult": {
                     "hard_random": 100
@@ -3264,7 +3264,7 @@
                     "easy_random": 100
                 },
                 "standard": {
-                    "normal_random": 100
+                    "medium_random": 100
                 },
                 "difficult": {
                     "hard_random": 100
@@ -3279,7 +3279,7 @@
                     "easy_random": 100
                 },
                 "standard": {
-                    "normal_random": 100
+                    "medium_random": 100
                 },
                 "difficult": {
                     "hard_random": 100
@@ -3294,7 +3294,7 @@
                     "easy_random": 100
                 },
                 "standard": {
-                    "normal_random": 100
+                    "medium_random": 100
                 },
                 "difficult": {
                     "hard_random": 100
