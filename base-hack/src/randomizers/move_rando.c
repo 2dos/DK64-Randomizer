@@ -47,13 +47,15 @@ int isShopEmpty(vendors vendor, int level, int kong) {
 }
 
 int getInstrumentLevel(void) {
-	int level = 0;
-	for (int i = 0; i < 3; i++) {
-		if (MovesBase[0].instrument_bitfield & (1 << (i + 1))) {
-			level = i;
-		}
+	int val = MovesBase[0].instrument_bitfield;
+	if (val & 8) {
+		return 3;
+	} else if (val & 4) {
+		return 2;
+	} else if (val & 2) {
+		return 1;
 	}
-	return level;
+	return 0;
 }
 
 int getPrice(purchase_struct *shop_data) {
