@@ -545,7 +545,7 @@ class ShopkeeperHints(DefaultOnToggle):
 
 
 class MicroHints(Choice):
-    """Extra hints are placed in late-game to provide extra information if you are stuck on where an item is
+    """Extra hints are placed in late-game to provide extra information if you are stuck on where an item is.
 
     - Monkeyport will be hinted upon touching the lower Monkeyport pad in Isles with the B. Locker requirements to enter all of the first 7 levels.
     - Gorilla Gone will be hinted upon touching the pad inside Helm Lobby with the B. Locker requirement to enter Helm.
