@@ -1066,7 +1066,7 @@ if baseclasses_loaded:
 
                 if microhints_enabled:
                     # Finalize microhints
-                    if self.options.shopkeeper_hints.value == True:
+                    if self.options.shopkeeper_hints.value:
                         shopkeepers = [DK64RItems.Candy, DK64RItems.Cranky, DK64RItems.Funky, DK64RItems.Snide]
                     else:
                         shopkeepers = []
@@ -1098,7 +1098,7 @@ if baseclasses_loaded:
                                 hinted_slams.append(f"\x07{slam[0]}: {slam[1]}\x07")
                             slam_text = " or ".join(hinted_slams)
                             text = f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
-                        elif self.options.shopkeeper_hints.value == True and hintedItem in shopkeepers:
+                        elif self.options.shopkeeper_hints.value and hintedItem in shopkeepers:
                             text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0]}'s\x07 \x0d{self.foreignMicroHints[hintedItem][1]}\x0d.".upper()
 
                         # Only create microhint if we have text to display
