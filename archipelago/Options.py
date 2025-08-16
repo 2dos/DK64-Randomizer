@@ -413,6 +413,12 @@ class ChaosBLockers(Toggle):
     display_name = "Chaos B. Lockers"
 
 
+class MaximizeHelmBLocker(Toggle):
+    """Ensures that Level 8's B. Locker will always be at the maximum value."""
+
+    display_name = "Maximize Helm B. Locker"
+
+
 class Level1Blocker(Range):
     """Determines the value of Level 1's B. Locker if Randomize B. Lockers are turned off."""
 
@@ -582,6 +588,7 @@ class DK64Options(PerGameCommonOptions):
     randomize_blocker_required_amounts: RandomizeBlockers
     blocker_max: MaximumBLocker
     enable_chaos_blockers: ChaosBLockers
+    maximize_helm_blocker: MaximizeHelmBLocker
     chaos_ratio: ChaosRatio
     level1_blocker: Level1Blocker
     level2_blocker: Level2Blocker
@@ -636,6 +643,7 @@ dk64_option_groups: List[OptionGroup] = [
             RandomizeBlockers,
             MaximumBLocker,
             ChaosBLockers,
+            MaximizeHelmBLocker,
             ChaosRatio,
             Level1Blocker,
             Level2Blocker,

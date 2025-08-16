@@ -617,14 +617,6 @@ if baseclasses_loaded:
             settings_dict["hard_mode"] = self.options.hard_mode.value
             settings_dict["key_8_helm"] = self.options.key8_lock.value
             settings_dict["shuffle_helm_location"] = self.options.shuffle_helm_level_order.value
-            # Blocker settings
-            if self.options.enable_chaos_blockers.value:
-                settings_dict["blocker_text"] = self.options.chaos_ratio.value
-                settings_dict["blocker_selection_behavior"] = BLockerSetting.chaos
-            else:
-                settings_dict["blocker_text"] = self.options.blocker_max.value
-
-            settings_dict["randomize_blocker_required_amounts"] = self.options.randomize_blocker_required_amounts.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
 
             # Level blocker settings
@@ -639,8 +631,20 @@ if baseclasses_loaded:
                 self.options.level8_blocker,
             ]
 
-            for i, blocker in enumerate(blocker_options):
-                settings_dict[f"blocker_{i}"] = blocker.value
+            # Blocker settings - prioritize chaos blockers, then randomization setting
+            settings_dict["maximize_helm_blocker"] = self.options.maximize_helm_blocker.value
+            if self.options.enable_chaos_blockers.value:
+                settings_dict["blocker_text"] = self.options.chaos_ratio.value
+                settings_dict["blocker_selection_behavior"] = BLockerSetting.chaos
+            elif self.options.randomize_blocker_required_amounts.value is True:
+                settings_dict["blocker_text"] = self.options.blocker_max.value
+                settings_dict["blocker_selection_behavior"] = BLockerSetting.normal_random
+            else:  # randomize_blocker_required_amounts is False and chaos blockers is False
+                settings_dict["blocker_text"] = self.options.blocker_max.value
+                settings_dict["blocker_selection_behavior"] = BLockerSetting.pre_selected
+                # When using pre-selected, we need to set the blocker values
+                for i, blocker in enumerate(blocker_options):
+                    settings_dict[f"blocker_{i}"] = blocker.value
 
             # Item randomization
             settings_dict["item_rando_list_selected"] = []
