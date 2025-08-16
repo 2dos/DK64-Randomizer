@@ -8,13 +8,23 @@ from enum import IntEnum, auto
 
 ## Heavily based on the autoconnector work in GSTHD by JXJacob
 
+class Emulators(IntEnum):
+    """Emulator enum."""
 
-@dataclass
+    Project64 = auto()
+    BizHawk = auto()
+    Project64_v4 = auto()
+    RMG = auto()
+    Simple64 = auto()
+    ParallelLauncher = auto()
+    RetroArch = auto()
+
 class EmulatorInfo:
     """Class to store emulator information."""
 
     def __init__(
         self,
+        id: Emulators,
         readable_emulator_name: str,
         process_name: str,
         find_dll: bool,
@@ -25,6 +35,7 @@ class EmulatorInfo:
         range_step: int = 16,
         extra_offset: int = 0,
     ):
+        self.id = id
         self.readable_emulator_name = readable_emulator_name
         self.process_name = process_name
         self.find_dll = find_dll
@@ -37,7 +48,7 @@ class EmulatorInfo:
         self.connected_process: pymem.Pymem = None
         self.connected_offset: int = None
 
-    def attach_to_emulator(self, emu_key: str) -> Optional[Tuple[pymem.Pymem, int]]:
+    def attach_to_emulator(self) -> Optional[Tuple[pymem.Pymem, int]]:
         """Grab  memory addresses of where emulated RDRAM is."""
         # Reset
         self.connected_process = None
@@ -60,7 +71,7 @@ class EmulatorInfo:
                     address_dll = module.lpBaseOfDll
                     break
 
-            if address_dll == 0 and emu_key == Emulators.BizHawk:
+            if address_dll == 0 and self.id == Emulators.BizHawk:
                 address_dll = 2024407040  # fallback guess
             elif address_dll == 0:
                 print(f"Could not find {self.dll_name} in {self.readable_emulator_name}")
@@ -91,33 +102,52 @@ class EmulatorInfo:
                 print("FOUND")
                 self.connected_process = pm
                 self.connected_offset = read_address + self.extra_offset
+                return
 
         if not has_seen_nonzero:
             print(f"Could not read any data from {self.readable_emulator_name}")
 
-
-class Emulators(IntEnum):
-    """Emulator enum."""
-
-    Project64 = auto()
-    BizHawk = auto()
-    Project64_v4 = auto()
-    RMG = auto()
-    Simple64 = auto()
-    ParallelLauncher = auto()
-    RetroArch = auto()
-
+    def readBytes(self, address: int, size: int) -> int:
+        """Read a series of bytes and cast to an int"""
+        if self.connected_process is None:
+            raise Exception("Not connected to a process, exiting")
+        if address & 0x80000000:
+            address &= 0x7FFFFFFF
+        mem_address = self.connected_offset + address
+        value = 0
+        for offset in range(size):
+            local_value = self.connected_process.read_uchar(mem_address + offset)
+            value <<= 8
+            value += local_value
+        return value
+    
+    def writeBytes(self, address: int, size: int, value: int):
+        """Write a series of bytes to memory."""
+        if self.connected_process is None:
+            raise Exception("Not connected to a process, exiting")
+        if address & 0x80000000:
+            address &= 0x7FFFFFFF
+        mem_address = self.connected_offset + address
+        val_series = [0] * size
+        local_value = value
+        for x in range(size):
+            val_series[(size - 1) - x] = local_value & 0xFF
+            local_value >>= 8
+        for offset, val in enumerate(val_series):
+            self.connected_process.write_uchar(mem_address + offset, val)
+        
 
 EMULATOR_CONFIGS = {
-    Emulators.Project64: EmulatorInfo("Project64", "project64", False, None, False, 0xDFD00000, 0xE01FFFFF),
-    Emulators.Project64_v4: EmulatorInfo("Project64", "project64", False, None, False, 0xFDD00000, 0xFE1FFFFF),
-    Emulators.BizHawk: EmulatorInfo("Bizhawk", "emuhawk", True, "mupen64plus.dll", False, 0x5A000, 0x5658DF),
-    Emulators.RMG: EmulatorInfo("Rosalie's Mupen GUI", "rmg", True, "mupen64plus.dll", True, 0x29C15D8, 0x2FC15D8, extra_offset=0x80000000),
-    Emulators.Simple64: EmulatorInfo("simple64", "simple64-gui", True, "libmupen64plus.dll", True, 0x1380000, 0x29C95D8),
-    Emulators.ParallelLauncher: EmulatorInfo("Parallel Launcher", "retroarch", True, "parallel_n64_next_libretro.dll", True, 0x845000, 0xD56000),
-    Emulators.RetroArch: EmulatorInfo("RetroArch", "retroarch", True, "mupen64plus_next_libretro.dll", True, 0, 0xFFFFFF, range_step=4),
+    Emulators.Project64: EmulatorInfo(Emulators.Project64, "Project64", "project64", False, None, False, 0xDFD00000, 0xE01FFFFF),
+    Emulators.Project64_v4: EmulatorInfo(Emulators.Project64_v4, "Project64", "project64", False, None, False, 0xFDD00000, 0xFE1FFFFF),
+    Emulators.BizHawk: EmulatorInfo(Emulators.BizHawk, "Bizhawk", "emuhawk", True, "mupen64plus.dll", False, 0x5A000, 0x5658DF),
+    Emulators.RMG: EmulatorInfo(Emulators.RMG, "Rosalie's Mupen GUI", "rmg", True, "mupen64plus.dll", True, 0x29C15D8, 0x2FC15D8, extra_offset=0x80000000),
+    Emulators.Simple64: EmulatorInfo(Emulators.Simple64, "simple64", "simple64-gui", True, "libmupen64plus.dll", True, 0x1380000, 0x29C95D8),
+    Emulators.ParallelLauncher: EmulatorInfo(Emulators.ParallelLauncher, "Parallel Launcher", "retroarch", True, "parallel_n64_next_libretro.dll", True, 0x845000, 0xD56000),
+    Emulators.RetroArch: EmulatorInfo(Emulators.RetroArch, "RetroArch", "retroarch", True, "mupen64plus_next_libretro.dll", True, 0, 0xFFFFFF, range_step=4),
 }
 
-EMULATOR_CONFIGS[Emulators.Project64].attach_to_emulator(Emulators.Project64)
-print(EMULATOR_CONFIGS[Emulators.Project64].connected_process)
-print(EMULATOR_CONFIGS[Emulators.Project64].connected_offset)
+def attachWrapper(emu: Emulators) -> EmulatorInfo:
+    """Wrapper function for attaching to an emulator."""
+    EMULATOR_CONFIGS[emu].attach_to_emulator()
+    return EMULATOR_CONFIGS[emu]
