@@ -1087,40 +1087,20 @@ if baseclasses_loaded:
                         hinted_slams = self.spoiler.microhints[DK64RItems.ProgressiveSlam].replace(text1, "")
                         hinted_slams.replace(" for the elusive slam.", "")
                         hinted_slams.split(" or ")
-                    # Define static item categories to avoid overlap issues
-                    helm_progression_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
-                    instrument_items = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
-
                     for hintedItem in self.foreignMicroHints.keys():
                         text = ""
-
-                        # Handle Progressive Slam
-                        if hintedItem == DK64RItems.ProgressiveSlam:
+                        if hintedItem in helm_prog_items and self.options.microhints.value in [1, 2]:
+                            text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
+                        elif hintedItem in instruments and self.options.microhints.value == 2:
+                            text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
+                        elif hintedItem == DK64RItems.ProgressiveSlam:
                             for slam in self.foreignMicroHints[DK64RItems.ProgressiveSlam]:
                                 hinted_slams.append(f"\x07{slam[0]}: {slam[1]}\x07")
                             slam_text = " or ".join(hinted_slams)
                             text = f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
-
-                        # Handle helm progression items
-                        elif hintedItem in helm_progression_items:
-                            if self.options.microhints.value in [1, 2]:  # some or all
-                                text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
-                            elif self.options.microhints.value == 0:  # off
-                                text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking somewhere else in the multiworld.".upper()
-
-                        # Handle instruments
-                        elif hintedItem in instrument_items:
-                            if self.options.microhints.value == 2:  # all
-                                text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
-                            elif self.options.microhints.value in [0, 1]:  # off or some
-                                text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking somewhere else in the multiworld.".upper()
-
-                        # Handle shopkeepers
                         elif self.options.shopkeeper_hints.value == True and hintedItem in shopkeepers:
                             text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0]}'s\x07 \x0d{self.foreignMicroHints[hintedItem][1]}\x0d.".upper()
-                        elif self.options.shopkeeper_hints.value == False and hintedItem in shopkeepers:
-                            text = f"DEAR AP Player, IT APPEARS \x07{hintedItem.name}\x07 HAS GOTTEN LOST SOMEWHERE. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK".upper()
-
+                        
                         # Only create microhint if we have text to display
                         if text:
                             for letter in text:
