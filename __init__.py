@@ -123,7 +123,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Items import Items as DK64RItems
     from randomizer.SettingStrings import decrypt_settings_string_enum
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options, Goal, SwitchSanity
+    from archipelago.Options import DK64Options, Goal, SwitchSanity, dk64_option_groups
     from archipelago.Regions import all_locations, create_regions, connect_regions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
@@ -248,6 +248,7 @@ if baseclasses_loaded:
         setup_en = Tutorial("Multiworld Setup Guide", "A guide to setting up the Donkey Kong 64 randomizer connected to an Archipelago Multiworld.", "English", "setup_en.md", "setup/en", ["PoryGone"])
 
         tutorials = [setup_en]
+        option_groups = dk64_option_groups
 
     class DK64World(World):
         """Donkey Kong 64 is a 3D collectathon platforming game.
@@ -614,6 +615,8 @@ if baseclasses_loaded:
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["mirror_mode"] = self.options.mirror_mode.value
             settings_dict["hard_mode"] = self.options.hard_mode.value
+            settings_dict["key_8_helm"] = self.options.key8_lock.value
+            settings_dict["shuffle_helm_location"] = self.options.shuffle_helm_level_order.value
             # Blocker settings
             if self.options.enable_chaos_blockers.value:
                 settings_dict["blocker_text"] = self.options.chaos_ratio.value
@@ -1063,9 +1066,20 @@ if baseclasses_loaded:
 
                 if microhints_enabled:
                     # Finalize microhints
-                    shopkeepers = [DK64RItems.Candy, DK64RItems.Cranky, DK64RItems.Funky, DK64RItems.Snide]
-                    helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
-                    instruments = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
+                    if self.options.shopkeeper_hints.value == True:
+                        shopkeepers = [DK64RItems.Candy, DK64RItems.Cranky, DK64RItems.Funky, DK64RItems.Snide]
+                    else:
+                        shopkeepers = []
+                    # Define helm_prog_items only when microhints is "some" or "all"
+                    if self.options.microhints.value in [1, 2]:  # some or all
+                        helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
+                    else:
+                        helm_prog_items = []
+                    # Define instruments only when microhints is "all"
+                    if self.options.microhints.value == 2:  # all
+                        instruments = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
+                    else:
+                        instruments = []
                     hinted_slams = []
                     if DK64RItems.ProgressiveSlam in self.foreignMicroHints.keys() and DK64RItems.ProgressiveSlam in self.spoiler.microhints:
                         # Break down the slam hint to retrieve raw data
@@ -1073,21 +1087,46 @@ if baseclasses_loaded:
                         hinted_slams = self.spoiler.microhints[DK64RItems.ProgressiveSlam].replace(text1, "")
                         hinted_slams.replace(" for the elusive slam.", "")
                         hinted_slams.split(" or ")
+                    # Define static item categories to avoid overlap issues
+                    helm_progression_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
+                    instrument_items = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
+
                     for hintedItem in self.foreignMicroHints.keys():
                         text = ""
-                        if hintedItem in instruments or hintedItem in helm_prog_items:
-                            text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
-                        elif hintedItem == DK64RItems.ProgressiveSlam:
+
+                        # Handle Progressive Slam
+                        if hintedItem == DK64RItems.ProgressiveSlam:
                             for slam in self.foreignMicroHints[DK64RItems.ProgressiveSlam]:
                                 hinted_slams.append(f"\x07{slam[0]}: {slam[1]}\x07")
                             slam_text = " or ".join(hinted_slams)
                             text = f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
-                        elif hintedItem in shopkeepers:
+
+                        # Handle helm progression items
+                        elif hintedItem in helm_progression_items:
+                            if self.options.microhints.value in [1, 2]:  # some or all
+                                text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
+                            elif self.options.microhints.value == 0:  # off
+                                text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking somewhere else in the multiworld.".upper()
+
+                        # Handle instruments
+                        elif hintedItem in instrument_items:
+                            if self.options.microhints.value == 2:  # all
+                                text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
+                            elif self.options.microhints.value in [0, 1]:  # off or some
+                                text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking somewhere else in the multiworld.".upper()
+
+                        # Handle shopkeepers
+                        elif self.options.shopkeeper_hints.value == True and hintedItem in shopkeepers:
                             text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0]}'s\x07 \x0d{self.foreignMicroHints[hintedItem][1]}\x0d.".upper()
-                        for letter in text:
-                            if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
-                                text = text.replace(letter, " ")
-                        self.spoiler.microhints[DK64RItem.ItemList[hintedItem].name] = text
+                        elif self.options.shopkeeper_hints.value == False and hintedItem in shopkeepers:
+                            text = f"DEAR AP Player, IT APPEARS \x07{hintedItem.name}\x07 HAS GOTTEN LOST SOMEWHERE. YOUR SEED, AS A RESULT, IS TEN PERCENT WORSE. GOOD LUCK".upper()
+
+                        # Only create microhint if we have text to display
+                        if text:
+                            for letter in text:
+                                if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+                                    text = text.replace(letter, " ")
+                            self.spoiler.microhints[DK64RItem.ItemList[hintedItem].name] = text
 
                 spoiler.majorItems = IdentifyMajorItems(spoiler)
                 if ap_item_is_major_item:

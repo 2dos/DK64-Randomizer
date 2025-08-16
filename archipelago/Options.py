@@ -3,8 +3,8 @@
 from dataclasses import dataclass
 import typing
 
-from Options import Choice, PerGameCommonOptions, Range, Option, Toggle, DeathLink, DefaultOnToggle, OptionList
-
+from Options import Choice, PerGameCommonOptions, Range, Option, OptionList, Toggle, DeathLink, DefaultOnToggle, OptionGroup
+from typing import List
 from randomizer.Enums.Settings import SettingsStringEnum
 from randomizer.Enums.Settings import SettingsStringTypeMap
 from randomizer.Enums.Settings import SettingsStringDataType
@@ -416,6 +416,8 @@ class ChaosBLockers(Toggle):
 class Level1Blocker(Range):
     """Determines the value of Level 1's B. Locker if Randomize B. Lockers are turned off."""
 
+    display_name = "Level 1 B. Locker"
+
     range_start = 0
     range_end = 201
     default = 0
@@ -423,6 +425,8 @@ class Level1Blocker(Range):
 
 class Level2Blocker(Range):
     """Determines the value of Level 2's B. Locker if Randomize B. Lockers are turned off."""
+
+    display_name = "Level 2 B. Locker"
 
     range_start = 0
     range_end = 201
@@ -432,6 +436,8 @@ class Level2Blocker(Range):
 class Level3Blocker(Range):
     """Determines the value of Level 3's B. Locker if Randomize B. Lockers are turned off."""
 
+    display_name = "Level 3 B. Locker"
+
     range_start = 0
     range_end = 201
     default = 0
@@ -439,6 +445,8 @@ class Level3Blocker(Range):
 
 class Level4Blocker(Range):
     """Determines the value of Level 4's B. Locker if Randomize B. Lockers are turned off."""
+
+    display_name = "Level 4 B. Locker"
 
     range_start = 0
     range_end = 201
@@ -448,6 +456,8 @@ class Level4Blocker(Range):
 class Level5Blocker(Range):
     """Determines the value of Level 5's B. Locker if Randomize B. Lockers are turned off."""
 
+    display_name = "Level 5 B. Locker"
+
     range_start = 0
     range_end = 201
     default = 0
@@ -455,6 +465,8 @@ class Level5Blocker(Range):
 
 class Level6Blocker(Range):
     """Determines the value of Level 6's B. Locker if Randomize B. Lockers are turned off."""
+
+    display_name = "Level 6 B. Locker"
 
     range_start = 0
     range_end = 201
@@ -464,6 +476,8 @@ class Level6Blocker(Range):
 class Level7Blocker(Range):
     """Determines the value of Level 7's B. Locker if Randomize B. Lockers are turned off."""
 
+    display_name = "Level 7 B. Locker"
+
     range_start = 0
     range_end = 201
     default = 0
@@ -471,6 +485,8 @@ class Level7Blocker(Range):
 
 class Level8Blocker(Range):
     """Determines the value of Level 8's B. Locker if Randomize B. Lockers are turned off."""
+
+    display_name = "Level 8 B. Locker"
 
     range_start = 0
     range_end = 201
@@ -510,6 +526,39 @@ class ShopKeepers(Toggle):
     display_name = "Shop Keepers in Pool"
 
 
+class Key8Helm(DefaultOnToggle):
+    """Determines if Key 8 is randomized within the multiworld."""
+
+    display_name = "Add Key 8 to Pool"
+
+
+class ShuffleHelmLevel(Toggle):
+    """Determined if Helm is shuffled into the level order."""
+
+    display_name = "Shuffle Helm"
+
+
+class ShopkeeperHints(Toggle):
+    """Determines if Entering a shop with Shopkeepers in the pool will give you a hint on where the shopkeeper is."""
+
+    display_name = "Shopkeeper Hint"
+
+
+class MicroHints(Choice):
+    """Extra hints are placed in late-game to provide extra information if you are stuck on where an item is
+
+    - Monkeyport will be hinted upon touching the lower Monkeyport pad in Isles with the B. Locker requirements to enter all of the first 7 levels.
+    - Gorilla Gone will be hinted upon touching the pad inside Helm Lobby with the B. Locker requirement to enter Helm.
+    - Instruments will be hinted upon touching their pad in Helm.
+    """
+
+    display_name = "Micro Hints"
+
+    option_Off = 0
+    option_some = 1
+    option_all = 2
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -519,6 +568,8 @@ class DK64Options(PerGameCommonOptions):
     tag_link: TagLink
     goal: Goal
     krool_key_count: KeysRequiredToBeatKrool
+    key8_lock: Key8Helm
+    shuffle_helm_level_order: ShuffleHelmLevel
     krool_phase_count: KroolPhaseCount
     helm_phase_count: HelmPhaseCount
     krool_in_boss_pool: KroolInBossPool
@@ -554,6 +605,8 @@ class DK64Options(PerGameCommonOptions):
     hints_in_item_pool: HintItemRandomization
     boulders_in_pool: BouldersInPool
     dropsanity: Dropsanity
+    shopkeeper_hints: ShopkeeperHints
+    microhints: MicroHints
     trap_fill_percentage: TrapFillPercentage
     bubble_trap_weight: BubbleTrapWeight
     reverse_trap_weight: ReverseTrapWeight
@@ -563,3 +616,105 @@ class DK64Options(PerGameCommonOptions):
     disable_c_trap: DisableCWeight
     disable_z_trap: DisableZWeight
     receive_notifications: ReceiveNotifications
+
+
+dk64_option_groups: List[OptionGroup] = [
+    OptionGroup(
+        "Victory Conditions",
+        [
+            Goal,
+            KeysRequiredToBeatKrool,
+            HelmPhaseCount,
+            KroolPhaseCount,
+            KroolInBossPool,
+        ],
+    ),
+    OptionGroup(
+        "B. Locker Settings",
+        [
+            RandomizeBlockers,
+            MaximumBLocker,
+            ChaosBLockers,
+            ChaosRatio,
+            Level1Blocker,
+            Level2Blocker,
+            Level3Blocker,
+            Level4Blocker,
+            Level5Blocker,
+            Level6Blocker,
+            Level7Blocker,
+            Level8Blocker,
+        ],
+    ),
+    OptionGroup(
+        "Item Pool",
+        [
+            StartingKongCount,
+            StartingMoveCount,
+            Key8Helm,
+            ClimbingShuffle,
+            ShopKeepers,
+            BouldersInPool,
+            Dropsanity,
+            HintItemRandomization,
+        ],
+    ),
+    OptionGroup(
+        "Levels/Barriers",
+        [
+            ShuffleHelmLevel,
+            OpenLobbies,
+            SwitchSanity,
+            RemoveBarriers,
+        ],
+    ),
+    OptionGroup(
+        "Logic",
+        [
+            LogicType,
+            TricksSelected,
+            GlitchesSelected,
+            MedalColorBananaRequirement,
+            MermaidRequirement,
+            RarewareGBRequirement,
+            JetpacRequirement,
+        ],
+    ),
+    OptionGroup(
+        "Hard Mode",
+        [
+            HardModeEnabled,
+            HardModeSelected,
+            MirrorMode,
+        ],
+    ),
+    OptionGroup(
+        "Hints",
+        [
+            ShopkeeperHints,
+            MicroHints,
+        ],
+    ),
+    OptionGroup(
+        "Trap Weights",
+        [
+            TrapFillPercentage,
+            BubbleTrapWeight,
+            SlowTrapWeight,
+            ReverseTrapWeight,
+            DisableAWeight,
+            DisableBWeight,
+            DisableCWeight,
+            DisableZWeight,
+        ],
+    ),
+    OptionGroup(
+        "Links",
+        [
+            TagLink,
+            RingLink,
+            DeathLink,
+        ],
+    ),
+    OptionGroup("Notifications", [ReceiveNotifications]),
+]
