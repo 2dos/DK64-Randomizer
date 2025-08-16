@@ -538,7 +538,7 @@ class ShuffleHelmLevel(Toggle):
     display_name = "Shuffle Helm"
 
 
-class ShopkeeperHints(Toggle):
+class ShopkeeperHints(DefaultOnToggle):
     """Determines if Entering a shop with Shopkeepers in the pool will give you a hint on where the shopkeeper is."""
 
     display_name = "Shopkeeper Hint"
@@ -557,6 +557,7 @@ class MicroHints(Choice):
     option_Off = 0
     option_some = 1
     option_all = 2
+    default = 2
 
 
 @dataclass
