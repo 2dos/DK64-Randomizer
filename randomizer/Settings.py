@@ -2381,11 +2381,6 @@ class Settings:
                 # These locations do not have a set Kong assigned to them and can't have blueprints
                 badBPLocations = (
                     Locations.IslesDonkeyJapesRock,
-                    Locations.JapesDonkeyFrontofCage,
-                    Locations.JapesDonkeyFreeDiddy,
-                    Locations.AztecDiddyFreeTiny,
-                    Locations.AztecDonkeyFreeLanky,
-                    Locations.FactoryLankyFreeChunky,
                 )
                 blueprintLocations = [location for location in shuffledNonMoveLocations if location not in badBPLocations and spoiler.LocationList[location].type in blueprintValidTypes]
                 self.valid_locations[Types.Blueprint] = {}
@@ -2428,7 +2423,7 @@ class Settings:
                 self.valid_locations[Types.Snide] = [x for x in shuffledLocationsShopOwner.copy() if spoiler.LocationList[x].level != Levels.HideoutHelm]
             if Types.RainbowCoin in self.shuffled_location_types:
                 self.valid_locations[Types.RainbowCoin] = [
-                    x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing)
+                    x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing, Types.Kong)
                 ]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (
