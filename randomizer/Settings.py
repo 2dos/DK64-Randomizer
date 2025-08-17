@@ -2379,9 +2379,7 @@ class Settings:
                 # Blueprints are banned from Key, Crown, Fairy and Rainbow Coin Locations
                 blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key, Types.Fairy, Types.RainbowCoin, Types.Kong)]
                 # These locations do not have a set Kong assigned to them and can't have blueprints
-                badBPLocations = (
-                    Locations.IslesDonkeyJapesRock,
-                )
+                badBPLocations = (Locations.IslesDonkeyJapesRock,)
                 blueprintLocations = [location for location in shuffledNonMoveLocations if location not in badBPLocations and spoiler.LocationList[location].type in blueprintValidTypes]
                 self.valid_locations[Types.Blueprint] = {}
                 self.valid_locations[Types.Blueprint][Kongs.donkey] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.donkey]
