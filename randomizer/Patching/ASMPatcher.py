@@ -967,7 +967,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806FBE44, Overlay.Static, "getCharWidthMask", offset_dict)
 
     # Alter data for zinger flamethrower enemy
-    writeValue(ROM_COPY, 0x8075F210, Overlay.Static, 345 + (CustomActors.ZingerFlamethrower - 0x8000), offset_dict)
+    writeValue(ROM_COPY, 0x8075F210, Overlay.Static, CustomActors.ZingerFlamethrower, offset_dict)
     writeValue(ROM_COPY, 0x8075F212, Overlay.Static, Model.Zinger + 1, offset_dict)
     writeValue(ROM_COPY, 0x8075F214, Overlay.Static, 0x250, offset_dict)
     writeValue(ROM_COPY, 0x8075F216, Overlay.Static, 0, offset_dict)
@@ -981,7 +981,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806B3E38, Overlay.Static, 0x5700, offset_dict)  # BEQL -> BNEL
 
     # Alter data for bug enemy
-    writeValue(ROM_COPY, 0x8075F0F0, Overlay.Static, 345 + (CustomActors.Scarab - 0x8000), offset_dict)
+    writeValue(ROM_COPY, 0x8075F0F0, Overlay.Static, CustomActors.Scarab, offset_dict)
     writeValue(ROM_COPY, 0x8075F0F2, Overlay.Static, 0x118 + 1, offset_dict)
     writeValue(ROM_COPY, 0x8075F0F4, Overlay.Static, 0x281, offset_dict)
     writeValue(ROM_COPY, 0x8075F0F6, Overlay.Static, 0, offset_dict)
