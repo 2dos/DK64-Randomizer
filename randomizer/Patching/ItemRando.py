@@ -17,6 +17,7 @@ from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOv
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
 import randomizer.ItemPool as ItemPool
+import unicodedata
 
 TRAINING_LOCATIONS = (
     Locations.IslesSwimTrainingBarrel,
@@ -641,6 +642,14 @@ def getDefaultIPD(shuffled_types: list[Types]) -> list:
     return output_ipd
 
 
+def normalize_location_name(name: str):
+    """Normalize a location name so it can be patched in."""
+    res = "".join([x for xi, x in enumerate([*name]) if x != "\n" and xi < 30])
+    res = unicodedata.normalize("NFKD", res)
+    res = "".join(char for char in res if char.isascii())
+    return res
+
+
 def place_randomized_items(spoiler, ROM_COPY: LocalROM):
     """Place randomized items into ROM."""
     sav = spoiler.settings.rom_data
@@ -994,7 +1003,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 # Check if this is an Archipelago item and we have location data
                 archipelago_item_name = None
                 if spoiler.settings.archipelago and hasattr(spoiler, "archipelago_locations") and textbox.location in spoiler.archipelago_locations:
-                    archipelago_item_name = spoiler.archipelago_locations[textbox.location]
+                    archipelago_item_name = normalize_location_name(spoiler.archipelago_locations[textbox.location])
 
                 if not textbox.force_pipe or archipelago_item_name:
                     if archipelago_item_name:
@@ -1046,7 +1055,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     # Check if this is an Archipelago item and we have location data
                     archipelago_item_name = None
                     if spoiler.settings.archipelago and hasattr(spoiler, "archipelago_locations") and item.location in spoiler.archipelago_locations:
-                        archipelago_item_name = spoiler.archipelago_locations[item.location]
+                        archipelago_item_name = normalize_location_name(spoiler.archipelago_locations[item.location])
 
                     if archipelago_item_name:
                         # Use the Archipelago item name, limit length to fit in textbox
