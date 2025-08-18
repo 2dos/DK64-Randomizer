@@ -1,4 +1,5 @@
 """Script to run all test functions."""
+
 from loader import Emulators, EmulatorInfo, attachWrapper
 from test_enums import Maps
 from time import sleep
