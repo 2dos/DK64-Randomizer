@@ -1,9 +1,11 @@
+"""Script to run all test functions."""
 from loader import Emulators, EmulatorInfo, attachWrapper
 from test_enums import Maps
 from time import sleep
 
 
 def test_does_boot(container: EmulatorInfo):
+    """Test whether the game successfully performs the boot procedure."""
     sleep(3)
     res = container.readBytes(0x8076A0A8, 4)
     return res != Maps.NintendoLogo

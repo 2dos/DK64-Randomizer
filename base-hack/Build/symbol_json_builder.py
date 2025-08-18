@@ -10,7 +10,7 @@ NUM_CHARS = [str(x) for x in list(range(10))] + ["-"]
 
 
 def parseEnumLine(line: str) -> tuple:
-    """Parses an enum line and returns the name and value."""
+    """Parse an enum line and returns the name and value."""
     line = line.split("//")[0].strip()  # Remove any // comment
     new_line = ""
     in_comment = 0
