@@ -641,6 +641,7 @@ def getDefaultIPD(shuffled_types: list[Types]) -> list:
             output_ipd.extend(no_shuffler_ipd[test_type])
     return output_ipd
 
+
 def normalize_location_name(name: str):
     """Normalize a location name so it can be patched in."""
     res = "".join([x for xi, x in enumerate([*name]) if x != "\n" and xi < 30])
