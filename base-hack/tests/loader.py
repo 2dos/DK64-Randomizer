@@ -5,7 +5,7 @@ import pymem
 from typing import Optional, Tuple
 from enum import IntEnum, auto
 
-## Heavily based on the autoconnector work in GSTHD by JXJacob
+# Heavily based on the autoconnector work in GSTHD by JXJacob
 
 
 class Emulators(IntEnum):
