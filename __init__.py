@@ -372,6 +372,15 @@ if baseclasses_loaded:
                     res.add(item)
             return res
 
+        def key_item_group() -> str:
+            """Item group for Keys."""
+            res = set()
+            key_items = ["Key 1", "Key 2", "Key 3", "Key 4", "Key 5", "Key 6", "Key 7", "Key 8"]
+            for item in key_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
         def kong_item_group() -> str:
             """Item group for Kongs."""
             res = set()
@@ -449,7 +458,7 @@ if baseclasses_loaded:
             """Location group for Factory locations."""
             res = set()
             for location_name in all_locations.keys():
-                if location_name.startswith("Factory"):
+                if location_name.startswith("Factory") or location_name.startswith("DK Arcade"):
                     res.add(location_name)
             return res
 
@@ -457,7 +466,7 @@ if baseclasses_loaded:
             """Location group for Galleon locations."""
             res = set()
             for location_name in all_locations.keys():
-                if location_name.startswith("Galleon"):
+                if location_name.startswith("Galleon") or location_name.startswith("Treasure Chest"):
                     res.add(location_name)
             return res
 
@@ -504,6 +513,8 @@ if baseclasses_loaded:
             for location_name in all_locations.keys():
                 if location_name.startswith("Helm") and location_name not in excluded_locations:
                     res.add(location_name)
+                if location_name == "The End of Helm":
+                    res.add(location_name)
             return res
 
         def medal_locations() -> str:
@@ -514,25 +525,34 @@ if baseclasses_loaded:
                     res.add(location_name)
             return res
 
+        def boss_locations() -> str:
+            """Location group for Boss locations."""
+            res = set()
+            for location_name in all_locations.keys():
+                if "Boss Defeated" in location_name:
+                    res.add(location_name)
+            return res
+
         item_name_groups = {
             "Blueprints": blueprint_item_group(),
             "Guns": gun_item_group(),
-            "Intrument": inst_item_group(),
+            "Instruments": inst_item_group(),
             "Shared Moves": shared_item_group(),
-            "Transformation Barrel": barrels_item_group(),
-            "Active Move": active_item_group(),
-            "Pad Move": pad_item_group(),
-            "DK Move": dk_item_group(),
-            "Diddy Move": diddy_item_group(),
-            "Lanky Move": lanky_item_group(),
-            "Tiny Move": tiny_item_group(),
-            "Chunky Move": chunky_item_group(),
+            "Transformation Barrels": barrels_item_group(),
+            "Active Moves": active_item_group(),
+            "Pad Moves": pad_item_group(),
+            "DK Moves": dk_item_group(),
+            "Diddy Moves": diddy_item_group(),
+            "Lanky Moves": lanky_item_group(),
+            "Tiny Moves": tiny_item_group(),
+            "Chunky Moves": chunky_item_group(),
             "Donkey Kong": dk_name(),
             "Diddy Kong": diddy_name(),
             "Lanky Kong": lanky_name(),
             "Tiny Kong": tiny_name(),
             "Chunky Kong": chunky_name(),
-            "Kong": kong_item_group(),
+            "Keys": key_item_group(),
+            "Kongs": kong_item_group(),
         }
 
         location_name_groups = {
@@ -546,6 +566,7 @@ if baseclasses_loaded:
             "Creepy Castle": castle_locations(),
             "Hideout Helm": helm_locations(),
             "Banana Medals": medal_locations(),
+            "Bosses": boss_locations(),
         }
 
         # with open("donklocations.txt", "w") as f:
@@ -636,7 +657,7 @@ if baseclasses_loaded:
             if self.options.enable_chaos_blockers.value:
                 settings_dict["blocker_text"] = self.options.chaos_ratio.value
                 settings_dict["blocker_selection_behavior"] = BLockerSetting.chaos
-            elif self.options.randomize_blocker_required_amounts.value is True:
+            elif self.options.randomize_blocker_required_amounts.value:
                 settings_dict["blocker_text"] = self.options.blocker_max.value
                 settings_dict["blocker_selection_behavior"] = BLockerSetting.normal_random
             else:  # randomize_blocker_required_amounts is False and chaos blockers is False
@@ -855,6 +876,16 @@ if baseclasses_loaded:
             if self.options.goal == Goal.option_dk_rap:
                 settings_dict["win_condition_item"] = WinConditionComplex.dk_rap_items
 
+            settings_dict["starting_moves_list_1"] = []
+            for item in self.options.start_inventory:
+                item_obj = DK64RItem.ItemList[logic_item_name_to_id.get(item)]
+                if item_obj.type not in [Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
+                    # Ensure that the items in the start inventory are only keys, shops, shockwaves, training barrels, climbing items, or shop owners
+                    raise ValueError(f"Invalid item type for starting inventory: {item}. Starting inventory can only contain keys, shopkeepers, or moves.")
+                elif self.options.shopowners_in_pool.value and item_obj.type in [Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
+                    settings_dict["starting_moves_list_1"].append(item_obj.type)
+            settings_dict["starting_moves_list_count_1"] = len(settings_dict["starting_moves_list_1"])
+
             # Create settings object
             settings = Settings(settings_dict, self.random)
             # Archipelago really wants the number of locations to match the number of items. Keep track of how many locations we've made here
@@ -911,12 +942,6 @@ if baseclasses_loaded:
             # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
             self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
-
-            for item in self.options.start_inventory:
-                item_obj = DK64RItem.ItemList[logic_item_name_to_id.get(item)]
-                if item_obj.type not in [Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
-                    # Ensure that the items in the start inventory are only keys, shops, shockwaves, training barrels, climbing items, or shop owners
-                    raise ValueError(f"Invalid item type for starting inventory: {item}. Starting inventory can only contain keys or moves.")
 
             Generate_Spoiler(self.spoiler)
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
@@ -986,7 +1011,7 @@ if baseclasses_loaded:
                 for item in self.multiworld.precollected_items[self.player]:
                     dk64_item = logic_item_name_to_id[item.name]
                     # Only moves can be pushed to the pregiven_items list
-                    if DK64RItem.ItemList[dk64_item].type in [Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing]:
+                    if DK64RItem.ItemList[dk64_item].type in [Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
                         spoiler.pregiven_items.append(dk64_item)
                 local_trap_count = 0
                 ap_item_is_major_item = False

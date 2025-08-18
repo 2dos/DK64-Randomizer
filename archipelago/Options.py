@@ -394,14 +394,14 @@ class HintItemRandomization(Toggle):
 class RandomizeBlockers(Toggle):
     """Determines if B. Locker values are randomized."""
 
-    display_name = "Randomizer B. Lockers"
+    display_name = "Randomize B. Lockers"
     default = True
 
 
 class MaximumBLocker(Range):
     """Determines the Maximum Value for B. Lockers if Randomize B.Lockers are enabled."""
 
-    display_name = "Randomizer B. Lockers"
+    display_name = "Maximum B. Locker"
     range_start = 0
     range_end = 201
     default = 64

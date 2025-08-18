@@ -181,9 +181,10 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     # The Bean and Pearls are handled correctly by GetItemsNeedingToBeAssumed via MiscItemRandoItems(), so no manual addition needed
     # Junk moves are never assumed because they're just not needed for anything
     all_shuffled_items.extend(DK64RItemPoolUtility.JunkSharedMoves)
+    key_in_helm = DK64RItemPoolUtility.getHelmKey(world.spoiler.settings)
     # Key 8 may not be included from the assumption method, but we need it in this list to complete the item table. It won't count towards the item pool size if it is statically placed later.
-    if DK64RItems.HideoutHelmKey not in all_shuffled_items:
-        all_shuffled_items.append(DK64RItems.HideoutHelmKey)
+    if key_in_helm not in all_shuffled_items:
+        all_shuffled_items.append(key_in_helm)
 
     for seed_item in all_shuffled_items:
         item = DK64RItem.ItemList[seed_item]
@@ -214,8 +215,18 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             classification = ItemClassification.progression
         else:  # double check jetpac, eh?
             classification = ItemClassification.useful
-        if seed_item == DK64RItems.HideoutHelmKey and world.spoiler.settings.key_8_helm:
-            world.multiworld.get_location("The End of Helm", world.player).place_locked_item(DK64Item("Key 8", ItemClassification.progression, full_item_table[item.name].code, world.player))
+        if seed_item == DK64RItemPoolUtility.getHelmKey(world.spoiler.settings) and world.spoiler.settings.key_8_helm:
+            helm_level = 0
+            for key, value in world.spoiler.settings.level_order.items():
+                if value == Levels.HideoutHelm:
+                    helm_level = key
+                    break
+            if helm_level == 0:
+                # Very bad, we can't place the Helm Key even though we were asked to
+                raise Exception("Could not determine Helm level for Key 8 placement.")
+            world.multiworld.get_location("The End of Helm", world.player).place_locked_item(
+                DK64Item(f"Key {helm_level}", ItemClassification.progression, full_item_table[item.name].code, world.player)
+            )
             world.spoiler.settings.location_pool_size -= 1
             continue
         item_table.append(DK64Item(use_original_name_or_trap_name(item), classification, full_item_table[item.name].code, world.player))
@@ -255,11 +266,6 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     all_eligible_starting_moves.extend(DK64RItemPoolUtility.JunkSharedMoves)
     all_eligible_starting_moves.append(DK64RItems.Camera)
     all_eligible_starting_moves.append(DK64RItems.Shockwave)
-    # Add shop keepers as possible starting items
-    all_eligible_starting_moves.append(DK64RItems.Cranky)
-    all_eligible_starting_moves.append(DK64RItems.Funky)
-    all_eligible_starting_moves.append(DK64RItems.Candy)
-    all_eligible_starting_moves.append(DK64RItems.Snide)
     # Either include Climbing as an eligible starting move or place it in the starting inventory
     if world.options.climbing_shuffle:
         all_eligible_starting_moves.extend(DK64RItemPoolUtility.ClimbingAbilities())
