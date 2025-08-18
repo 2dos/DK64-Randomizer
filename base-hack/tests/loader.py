@@ -151,6 +151,6 @@ EMULATOR_CONFIGS = {
 
 
 def attachWrapper(emu: Emulators) -> EmulatorInfo:
-    """Wrapping function for attaching to an emulator."""
+    """Wrap function for attaching to an emulator."""
     EMULATOR_CONFIGS[emu].attach_to_emulator()
     return EMULATOR_CONFIGS[emu]
