@@ -526,6 +526,7 @@ if baseclasses_loaded:
             return res
 
         def boss_locations() -> str:
+            """Location group for Boss locations."""
             res = set()
             for location_name in all_locations.keys():
                 if "Boss Defeated" in location_name:
