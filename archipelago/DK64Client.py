@@ -136,7 +136,13 @@ class DK64Client:
         next_index = index + 1
         item_data = item_ids.get(item_id)
         if item_data:
-            if self.send_mode == 6:
+            if self.send_mode == 7:
+                if self.current_speed != 130:
+                    self.set_speed(130)
+                    self.current_speed = 130
+                # Send nothing from progression or extended_whitelist
+                pass
+            elif self.send_mode == 6:
                 if self.current_speed != 130:
                     self.set_speed(130)
                     self.current_speed = 130

@@ -3637,6 +3637,20 @@ def BlockCompletionOfLevelSet(settings: Settings, lockedLevels):
             settings.BossBananas[i] = 1000
 
 
+def HandleArchipelagoBLockers(settings: Settings) -> None:
+    """Handle chaos locker logic for Archipelago."""
+    # Only process if we're using chaos lockers
+    if settings.blocker_selection_behavior == BLockerSetting.chaos:
+        # Handle helm blocker maximization for chaos lockers
+        if settings.maximize_helm_blocker:
+            # When maximizing, use the chaos ratio maximum
+            settings.BLockerEntryCount[7] = ceil(settings.blocker_limits[settings.BLockerEntryItems[7]] * settings.blocker_text)
+        else:
+            # If not maximizing, use a random value between 1 and the chaos ratio maximum
+            chaos_max = ceil(settings.blocker_limits[settings.BLockerEntryItems[7]] * settings.blocker_text)
+            settings.BLockerEntryCount[7] = settings.random.randint(1, chaos_max)
+
+
 def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     """Generate a complete spoiler based on input settings."""
     # Check for settings incompatibilities
@@ -3651,6 +3665,8 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     # Handle misc randomizations
     ShuffleMisc(spoiler)
     if spoiler.settings.archipelago:
+        # For Archipelago, we still need to handle chaos lockers and helm blocker logic
+        HandleArchipelagoBLockers(spoiler.settings)
         return
     # Handle Loading Zones - this will handle LO and LZR appropriately
     if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
