@@ -1050,6 +1050,9 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     archipelago_item_name = None
                     if spoiler.settings.archipelago and hasattr(spoiler, "archipelago_locations") and item.location in spoiler.archipelago_locations:
                         archipelago_item_name = spoiler.archipelago_locations[item.location]
+                        for letter in archipelago_item_name:
+                            if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+                                archipelago_item_name = archipelago_item_name.replace(letter, " ")
 
                     if archipelago_item_name:
                         # Use the Archipelago item name, limit length to fit in textbox
