@@ -371,7 +371,7 @@ if baseclasses_loaded:
                 if item in full_item_table:
                     res.add(item)
             return res
-        
+
         def key_item_group() -> str:
             """Item group for Keys."""
             res = set()
