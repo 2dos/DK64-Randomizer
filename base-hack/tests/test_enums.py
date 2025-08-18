@@ -1,5 +1,6 @@
 from enum import IntEnum
 
+
 class Maps(IntEnum):
     """Maps Enum."""
 

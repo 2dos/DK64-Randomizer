@@ -53,16 +53,6 @@ void overlay_mod_menu(void) {
 	if (Rando.default_camera_mode) {
 		InvertedControls = 1;
 	}
-
-	// Snide
-	// if (Rando.item_rando) {		
-	// 	if (Rando.quality_of_life.blueprint_compression) {
-	// 		// writeFunction(0x80024840, &give_all_blueprints); // Change initial check
-	// 		// *(int*)(0x80024850) = 0xAFA90040; // SW $t1, 0x40 ($sp)
-	// 		// *(int*)(0x80024854) = 0; // NOP
-	// 		// *(short*)(0x8002485C) = 0x1000; // Force Branch
-	// 	}
-	// }
 	if (Rando.colorblind_mode != COLORBLIND_OFF) {
 		int colorblind_offset = 5 * (Rando.colorblind_mode - 1);
 		for (int i = 0; i < 16; i++) {

@@ -5,6 +5,7 @@ import math
 import io
 import randomizer.ItemPool as ItemPool
 from typing import Union
+from randomizer.Patching.Library.Assets import getPointerLocation
 from randomizer.Patching.Library.Generic import Overlay, IsItemSelected, TableNames, IsDDMSSelected
 from randomizer.Patching.Library.Image import getImageFile, TextureFormat
 from randomizer.Patching.Library.ItemRando import CustomActors
@@ -560,6 +561,22 @@ def patchVersionStack(ROM_COPY: LocalROM, settings: Settings):
     ROM_COPY.writeBytes(bytes(string_to_write, "ascii"))
 
 
+def getModelTwoAllowances(ROM_COPY: LocalROM) -> dict:
+    """Get the total amount of model 2 items in each map."""
+    max_default = 0
+    output = {}
+    for x in range(216):
+        file_start = getPointerLocation(TableNames.Setups, x)
+        ROM_COPY.seek(file_start)
+        model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        if x in (7, 0x1A, 0x1E, 0x26, 0x30):
+            output[x] = model2_count
+        elif max_default < model2_count:
+            max_default = model2_count
+    output["default"] = max_default
+    return output
+
+
 def patchAssembly(ROM_COPY, spoiler):
     """Patch all assembly instructions."""
     patchVersionStack(ROM_COPY, spoiler.settings)
@@ -793,12 +810,14 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFloat(ROM_COPY, 0x807533DC, Overlay.Static, 260, offset_dict)  # Lanky Air
     writeFloat(ROM_COPY, 0x807533E0, Overlay.Static, 260, offset_dict)  # Tiny Air
     # Bump Model Two Allowance
-    writeValue(ROM_COPY, 0x80632026, Overlay.Static, 550, offset_dict)  # Japes
-    writeValue(ROM_COPY, 0x80632006, Overlay.Static, 550, offset_dict)  # Aztec
-    writeValue(ROM_COPY, 0x80631FF6, Overlay.Static, 550, offset_dict)  # Factory
-    writeValue(ROM_COPY, 0x80632016, Overlay.Static, 550, offset_dict)  # Galleon
-    writeValue(ROM_COPY, 0x80631FE6, Overlay.Static, 550, offset_dict)  # Fungi
-    writeValue(ROM_COPY, 0x80632036, Overlay.Static, 550, offset_dict)  # Others
+    allowances = getModelTwoAllowances(ROM_COPY)
+    buffer = 25
+    writeValue(ROM_COPY, 0x80632026, Overlay.Static, allowances[7] + buffer, offset_dict)  # Japes
+    writeValue(ROM_COPY, 0x80632006, Overlay.Static, allowances[0x26] + buffer, offset_dict)  # Aztec
+    writeValue(ROM_COPY, 0x80631FF6, Overlay.Static, allowances[0x1A] + buffer, offset_dict)  # Factory
+    writeValue(ROM_COPY, 0x80632016, Overlay.Static, allowances[0x1E] + buffer, offset_dict)  # Galleon
+    writeValue(ROM_COPY, 0x80631FE6, Overlay.Static, allowances[0x30] + buffer, offset_dict)  # Fungi
+    writeValue(ROM_COPY, 0x80632036, Overlay.Static, allowances["default"] + buffer, offset_dict)  # Others
 
     writeFunction(ROM_COPY, 0x80732314, Overlay.Static, "CrashHandler", offset_dict)
     writeFunction(ROM_COPY, 0x8073231C, Overlay.Static, "CrashHandler", offset_dict)

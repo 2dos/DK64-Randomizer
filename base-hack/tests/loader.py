@@ -2,11 +2,11 @@
 
 import psutil
 import pymem
-from dataclasses import dataclass
 from typing import Optional, Tuple
 from enum import IntEnum, auto
 
 ## Heavily based on the autoconnector work in GSTHD by JXJacob
+
 
 class Emulators(IntEnum):
     """Emulator enum."""
@@ -18,6 +18,7 @@ class Emulators(IntEnum):
     Simple64 = auto()
     ParallelLauncher = auto()
     RetroArch = auto()
+
 
 class EmulatorInfo:
     """Class to store emulator information."""
@@ -35,6 +36,7 @@ class EmulatorInfo:
         range_step: int = 16,
         extra_offset: int = 0,
     ):
+        """Initialize with given parameters."""
         self.id = id
         self.readable_emulator_name = readable_emulator_name
         self.process_name = process_name
@@ -83,7 +85,7 @@ class EmulatorInfo:
                 rom_addr_start = address_dll + pot_off
                 try:
                     read_address = pm.read_longlong(rom_addr_start)
-                except:
+                except Exception:
                     continue
                 if read_address != 0:
                     has_seen_nonzero = True
@@ -94,7 +96,7 @@ class EmulatorInfo:
 
             try:
                 test_value = pm.read_int(addr)
-            except:
+            except Exception:
                 continue
             if test_value != 0:
                 has_seen_nonzero = True
@@ -108,7 +110,7 @@ class EmulatorInfo:
             print(f"Could not read any data from {self.readable_emulator_name}")
 
     def readBytes(self, address: int, size: int) -> int:
-        """Read a series of bytes and cast to an int"""
+        """Read a series of bytes and cast to an int."""
         if self.connected_process is None:
             raise Exception("Not connected to a process, exiting")
         if address & 0x80000000:
@@ -120,7 +122,7 @@ class EmulatorInfo:
             value <<= 8
             value += local_value
         return value
-    
+
     def writeBytes(self, address: int, size: int, value: int):
         """Write a series of bytes to memory."""
         if self.connected_process is None:
@@ -135,7 +137,7 @@ class EmulatorInfo:
             local_value >>= 8
         for offset, val in enumerate(val_series):
             self.connected_process.write_uchar(mem_address + offset, val)
-        
+
 
 EMULATOR_CONFIGS = {
     Emulators.Project64: EmulatorInfo(Emulators.Project64, "Project64", "project64", False, None, False, 0xDFD00000, 0xE01FFFFF),
@@ -147,7 +149,8 @@ EMULATOR_CONFIGS = {
     Emulators.RetroArch: EmulatorInfo(Emulators.RetroArch, "RetroArch", "retroarch", True, "mupen64plus_next_libretro.dll", True, 0, 0xFFFFFF, range_step=4),
 }
 
+
 def attachWrapper(emu: Emulators) -> EmulatorInfo:
-    """Wrapper function for attaching to an emulator."""
+    """Wrapping function for attaching to an emulator."""
     EMULATOR_CONFIGS[emu].attach_to_emulator()
     return EMULATOR_CONFIGS[emu]

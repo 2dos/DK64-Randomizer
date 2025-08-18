@@ -569,6 +569,7 @@ class Settings:
         self.music_minoritems_randomized = False
         self.music_events_randomized = False
         self.random_music = False
+        self.music_rando_enabled = False
         self.music_is_custom = False
         self.music_vanilla_locations = False
         self.music_disable_reverb = False

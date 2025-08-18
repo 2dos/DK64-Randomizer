@@ -248,11 +248,6 @@ def writeSongVolume(ROM_COPY: ROM, index: int, song_type: SongType):
         SongType.MajorItem: 27000,
         SongType.MinorItem: 25000,
     }
-    ROM_COPY.seek(TYPE_ARRAY + index)
-    if song_type in TYPE_VALUES:
-        ROM_COPY.write(TYPE_VALUES.index(song_type))
-    else:
-        ROM_COPY.write(255)
     if song_type in volumes:
         writeValue(ROM_COPY, 0x807454F0 + (index * 2), Overlay.Static, volumes.get(song_type, 23000), offset_dict)
 
@@ -469,7 +464,6 @@ def insertUploaded(
 
 
 ENABLE_CHAOS = False  # Enable DK Rap everywhere
-TYPE_ARRAY = 0x1FEE200
 TYPE_VALUES = [SongType.BGM, SongType.Event, SongType.MajorItem, SongType.MinorItem]
 
 
@@ -492,12 +486,6 @@ def randomize_music(settings: Settings, ROM_COPY: ROM):
             settings.music_majoritems_randomized = js.document.getElementById("music_majoritems_randomized").checked
             settings.music_minoritems_randomized = js.document.getElementById("music_minoritems_randomized").checked
             settings.music_events_randomized = js.document.getElementById("music_events_randomized").checked
-    else:
-        if settings.random_music or settings.music_is_custom:
-            settings.music_bgm_randomized = True
-            settings.music_majoritems_randomized = True
-            settings.music_minoritems_randomized = True
-            settings.music_events_randomized = True
 
     NON_BGM_DATA = [
         # Minor Items
@@ -545,6 +533,7 @@ def randomize_music(settings: Settings, ROM_COPY: ROM):
         or settings.music_minoritems_randomized
         or categoriesHaveAssignedSongs(settings, TYPE_VALUES)
     ):
+        settings.music_rando_enabled = True
         sav = settings.rom_data
         ROM_COPY.seek(sav + 0x12E)
         ROM_COPY.write(1)
