@@ -1534,7 +1534,7 @@ if baseclasses_loaded:
             change = super().collect(state, item)
             if change:
                 if self.player in state.dk64_logic_holder.keys():
-                    state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
+                    state.dk64_logic_holder[self.player].AddArchipelagoItem(item)
                 elif hasattr(self, "spoiler"):
                     state.dk64_logic_holder[self.player] = LogicVarHolder(self.spoiler, self.player)  # If the CollectionState dodged the creation of a logic_holder object, fix it here
                     state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
