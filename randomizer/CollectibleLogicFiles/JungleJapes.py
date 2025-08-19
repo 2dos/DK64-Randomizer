@@ -83,7 +83,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: Events.Rambi in l.Events or l.CanPhase(), None, 1),  # In breakable hut
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),  # In Lanky BP room
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),  # By hut
-        Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 2),  # Before Rambi door
+        Collectible(Collectibles.banana, Kongs.tiny, lambda _: True, None, 2),  # Before Rambi door
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.climbing, None, 1),  # On treetop in Cranky area
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: Events.Rambi in l.Events or l.CanPhase(), None, 1),  # In breakable hut
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # By hut

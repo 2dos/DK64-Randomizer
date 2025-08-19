@@ -49,32 +49,6 @@ void sendTrap(ICE_TRAP_TYPES trap_type) {
 void handleSentItem(void) {
     archipelago_items FedItem = ap_info.fed_item;
     switch (FedItem) {
-        case TRANSFER_ITEM_GB:
-            giveGB();
-            break;
-        case TRANSFER_ITEM_CROWN:
-            giveItem(REQITEM_CROWN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
-            break;
-        case TRANSFER_ITEM_PEARL:
-            giveItem(REQITEM_PEARL, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
-            break;
-        case TRANSFER_ITEM_MEDAL:
-            giveItem(REQITEM_MEDAL, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
-            break;
-        case TRANSFER_ITEM_FAIRY:
-            giveItem(REQITEM_FAIRY, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
-            break;
-        case TRANSFER_ITEM_KEY1:
-        case TRANSFER_ITEM_KEY2:
-        case TRANSFER_ITEM_KEY3:
-        case TRANSFER_ITEM_KEY4:
-        case TRANSFER_ITEM_KEY5:
-        case TRANSFER_ITEM_KEY6:
-        case TRANSFER_ITEM_KEY7:
-        case TRANSFER_ITEM_KEY8:
-            giveItem(REQITEM_KEY, FedItem - TRANSFER_ITEM_KEY1, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
-            auto_turn_keys();
-            break;
         case TRANSFER_ITEM_RAINBOWCOIN:
             giveItem(REQITEM_RAINBOWCOIN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .give_coins = 1});
             break;
@@ -92,10 +66,6 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_FAKEITEM_DISABLEZ:
         case TRANSFER_ITEM_FAKEITEM_DISABLECU:
             sendTrap((FedItem - TRANSFER_ITEM_FAKEITEM_DISABLEA) + ICETRAP_DISABLEA);
-            break;
-        case TRANSFER_ITEM_JUNKITEM:
-            applyDamageMask(0, 1);
-            giveItem(REQITEM_JUNK, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case TRANSFER_ITEM_BABOONBLAST:
         case TRANSFER_ITEM_STRONGKONG:
@@ -147,16 +117,6 @@ void handleSentItem(void) {
             break;
         case TRANSFER_ITEM_INSTRUMENTUPGRADE:
             giveItem(REQITEM_MOVE, 9, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
-            break;
-        case TRANSFER_ITEM_CAMERA:
-            setFlagMove(FLAG_ABILITY_CAMERA);
-            break;
-        case TRANSFER_ITEM_SHOCKWAVE:
-            setFlagMove(FLAG_ABILITY_SHOCKWAVE);
-            break;
-        case TRANSFER_ITEM_CAMERASHOCKWAVECOMBO:
-            setFlagMove(FLAG_ABILITY_CAMERA);
-            setFlagMove(FLAG_ABILITY_SHOCKWAVE);
             break;
     }
 }
@@ -276,7 +236,7 @@ int canDie(void) {
 
 void sendDeath(void) {
     if (isAPEnabled()) {
-        if (!isActorLoaded(CUSTOM_ACTORS_START + NEWACTOR_KOPDUMMY)) {
+        if (!isActorLoaded(NEWACTOR_KOPDUMMY)) {
             ap_info.send_death = 1;
         }
     }

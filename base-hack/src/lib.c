@@ -1198,31 +1198,6 @@ void giveCrystal(void) {
 	changeCollectableCount(5, 0, 150);
 }
 
-int getActorIndex(int actor_input) {
-	/**
-	 * @brief Changes actor index based on whether the generic bit is set
-	 * 
-	 * @param actor_input Raw input type
-	 * 
-	 * @return Final actor index
-	 */
-	if (actor_input & 0x8000) {
-		return CUSTOM_ACTORS_START + (actor_input & 0x7FFF);
-	}
-	return actor_input;
-}
-
-int getCustomActorIndex(new_custom_actors offset) {
-	/**
-	 * @brief Gets the actor index of a new custom actor based on the offset
-	 * 
-	 * @param offset Offset index
-	 * 
-	 * @return Actor index
-	 */
-	return CUSTOM_ACTORS_START + offset;
-}
-
 move_text_overlay_struct text_overlay_data[TEXT_OVERLAY_BUFFER] = {};
 
 int spawnItemOverlay(requirement_item type, int level, int kong, int force) {
@@ -1231,7 +1206,7 @@ int spawnItemOverlay(requirement_item type, int level, int kong, int force) {
 			continue;
 		}
 		if (force) {
-			spawnActor(getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY), 0);
+			spawnActor(NEWACTOR_JETPACITEMOVERLAY, 0);
 		} else {
 			spawnActor(324,0);
 		}

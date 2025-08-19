@@ -11,8 +11,6 @@ extern void callParentMapFilter(void);
 extern void shiftBrokenJapesPortal(void);
 extern void quickInit(void);
 extern int getCenter(int style, char* str);
-extern int getActorIndex(int actor_input);
-extern int getCustomActorIndex(new_custom_actors offset);
 extern int spawnItemOverlay(requirement_item type, int level, int kong, int force);
 extern int giveSlamLevel(void);
 extern int inBattleCrown(maps map);

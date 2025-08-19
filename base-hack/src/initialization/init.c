@@ -91,7 +91,7 @@ char music_types[SONG_COUNT] = {
 	SONGTYPE_BGM,
 	SONGTYPE_BGM,
 	SONGTYPE_BGM,
-	SONGTYPE_BGM,
+	-1,
 	SONGTYPE_MAJORITEM,
 	SONGTYPE_BGM,
 	SONGTYPE_BGM,
@@ -191,7 +191,7 @@ char music_types[SONG_COUNT] = {
 	SONGTYPE_EVENT,
 	-1,
 	SONGTYPE_BGM,
-	-1
+	-1,
 };
 
 typedef struct musicInfo {
@@ -205,64 +205,8 @@ void fixMusicRando(void) {
 	 */
 	if (Rando.music_rando_on) {
 		// Type indexes
-		int size = SONG_COUNT;
-		char* write_space_0 = getFile(size, 0x1FEE200);
-		for (int i = 0; i < SONG_COUNT; i++) {
-			// Handle Type Index
-			if (write_space_0[i] > -1) {
-				song_types type = write_space_0[i];
-				music_types[i] = type;
-			}
-		}
 		*(short*)(0x806CA97E) = 0x560 | ((songData[0x6B] >> 1) & 3); // Baboon Balloon
-		*(float*)(0x807565D8) = 1.0f; // Funky and Candy volumes
-		*(int*)(0x80604B50) = 0; // Disable galleon outside track isolation
-		*(int*)(0x80604A54) = 0; // Disable galleon outside track isolation
-		complex_free(write_space_0);
 	}
-	/*
-	// Music
-	if (Rando.music_rando_on) {
-		// Type bitfields
-		int size = SONG_COUNT << 1;
-		musicInfo* write_space = dk_malloc(size);
-		int* file_size;
-		*(int*)(&file_size) = size;
-		copyFromROM(0x1FFF000,write_space,&file_size,0,0,0,0);
-		// Type indexes
-		size = SONG_COUNT;
-		char* write_space_0 = dk_malloc(size);
-		*(int*)(&file_size) = size;
-		copyFromROM(0x1FEE200,write_space_0,&file_size,0,0,0,0);
-		for (int i = 0; i < SONG_COUNT; i++) {
-			// Handle Bitfield
-			int subchannel = (write_space->data[i] & 6) >> 1;
-			int channel = (write_space->data[i] & 0x78) >> 3;
-			songData[i] &= 0xFF81;
-			songData[i] |= (subchannel & 3) << 1;
-			songData[i] |= (channel & 0xF) << 3;
-
-			// Handle Type Index
-			music_types[i] = write_space_0[i];
-			if (write_space_0[i] > -1) {
-				song_types type = write_space_0[i];
-				int volume = 0;
-				if (type == SONGTYPE_BGM) {
-					volume = 23000;
-				} else if (type == SONGTYPE_MAJORITEM) {
-					volume = 27000;
-				} else {
-					// Event or Minor Item
-					volume = 25000;
-				}
-				songVolumes[i] = volume;
-			}
-		}
-		complex_free(write_space);
-		complex_free(write_space_0);
-
-	}
-	*/
 }
 
 void writeEndSequence(void) {

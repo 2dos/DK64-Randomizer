@@ -247,7 +247,7 @@ void dummyGuardCode(void) {
 }
 
 int cc_allower_spawnkop(void) {
-    if (isActorLoaded(CUSTOM_ACTORS_START + NEWACTOR_KOPDUMMY)) {
+    if (isActorLoaded(NEWACTOR_KOPDUMMY)) {
         return 0;
     }
     if(TransitionSpeed != 0){
@@ -260,7 +260,7 @@ int cc_enabler_spawnkop(void) {
     if (!cc_allower_spawnkop()) {
         return 0;
     }
-    spawnActor(CUSTOM_ACTORS_START + NEWACTOR_KOPDUMMY, 0x3F);
+    spawnActor(NEWACTOR_KOPDUMMY, 0x3F);
     float dx = determineXRatioMovement(Player->facing_angle) * 50.0f;
     float dz = determineZRatioMovement(Player->facing_angle) * 50.0f;
     LastSpawnedActor->xPos = Player->xPos + dx;

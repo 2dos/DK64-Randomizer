@@ -34,7 +34,7 @@ IceTrapItems = [
 class CustomActors(IntEnum):
     """Custom Actors Enum."""
 
-    NintendoCoin = 0x8000  # Starts at 0x8000
+    NintendoCoin = 345
     RarewareCoin = auto()
     Null = auto()
     PotionDK = auto()

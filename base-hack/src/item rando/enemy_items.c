@@ -43,7 +43,7 @@ void populateEnemyMapData(void) {
 
 int getEnemyItem(int id) {
     if (current_map_items[id].spawn.actor != 0) {
-        return getActorIndex(current_map_items[id].spawn.actor);
+        return current_map_items[id].spawn.actor;
     }
     return -1;
 }
