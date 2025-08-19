@@ -1941,7 +1941,10 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
     # Rig the valid_locations for all relevant items to only be able to place things on bosses
     for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops would already be placed
         # Any item eligible to be on a boss can be on any boss
-        spoiler.settings.valid_locations[typ] = empty_boss_locations
+        if typ in spoiler.settings.valid_locations:
+            empty_boss_local_list = [x for x in spoiler.settings.valid_locations[typ] if x in empty_boss_locations]
+            if len(empty_boss_local_list) > 0:
+                spoiler.settings.valid_locations[typ] = empty_boss_local_list
     # Now we get the full list of items we could place here
     unplaced_items = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
     # Checkless can be on bosses, but we need shops in the pool in order to have room to do this reliably
