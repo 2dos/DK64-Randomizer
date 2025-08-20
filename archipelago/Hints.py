@@ -42,9 +42,14 @@ def CompileArchipelagoHints(world, hint_data: list):
     ClearHintMessages()
     # All input lists are in the form of [loc]
     # Settings
-    woth_count = 10
-    major_count = 7
-    deep_count = 8
+    if world.options.hint_style == 1:
+        woth_count = 0  # disabled
+        major_count = 15
+        deep_count = 35  # overly high to cover the bases
+    if world.options.hint_style == 2:
+        woth_count = 10
+        major_count = 7
+        deep_count = 8
 
     # Variables
     hints_remaining = 35  # Keep count how many hints we placed

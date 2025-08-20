@@ -646,11 +646,6 @@ class LogicVarHolder:
                         self.Blueprints.append(corresponding_item_id)
                     if corresponding_item_id >= Items.JapesDonkeyHint and corresponding_item_id <= Items.CastleChunkyHint:
                         self.Hints.append(corresponding_item_id)
-                
-                
-            # ownedItems.append(corresponding_item_id)
-
-        # self.Update(ownedItems)
 
     def RemoveArchipelagoItem(self, ap_item):
         """Add an Archipelago item to the owned items list."""
@@ -818,46 +813,47 @@ class LogicVarHolder:
         self.Beans = sum(1 for x in ownedItems if x == Items.Bean)
         self.Pearls = sum(1 for x in ownedItems if x in [Items.Pearl, Items.FillerPearl])
 
-        photo_subjects = [
-            Items.PhotoBeaverBlue,
-            Items.PhotoBook,
-            Items.PhotoZingerCharger,
-            Items.PhotoKlobber,
-            Items.PhotoKlump,
-            Items.PhotoKaboom,
-            Items.PhotoKlaptrapGreen,
-            Items.PhotoZingerLime,
-            Items.PhotoKlaptrapPurple,
-            Items.PhotoKlaptrapRed,
-            Items.PhotoBeaverGold,
-            Items.PhotoFireball,
-            Items.PhotoMushroomMan,
-            Items.PhotoRuler,
-            Items.PhotoRoboKremling,
-            Items.PhotoKremling,
-            Items.PhotoKasplatDK,
-            Items.PhotoKasplatDiddy,
-            Items.PhotoKasplatLanky,
-            Items.PhotoKasplatTiny,
-            Items.PhotoKasplatChunky,
-            Items.PhotoZingerRobo,
-            Items.PhotoKrossbones,
-            Items.PhotoShuri,
-            Items.PhotoGimpfish,
-            Items.PhotoMrDice0,
-            Items.PhotoSirDomino,
-            Items.PhotoMrDice1,
-            Items.PhotoBat,
-            Items.PhotoGhost,
-            Items.PhotoPufftup,
-            Items.PhotoKosha,
-            Items.PhotoSpider,
-            Items.PhotoBug,
-            Items.PhotoKop,
-            Items.PhotoTomato,
-        ]
-        for subject in photo_subjects:
-            self.Photos[subject] = sum(1 for x in ownedItems if x == subject)
+        # Don't need this until we add Krem Kap. It's very slow.
+        # photo_subjects = [
+        #     Items.PhotoBeaverBlue,
+        #     Items.PhotoBook,
+        #     Items.PhotoZingerCharger,
+        #     Items.PhotoKlobber,
+        #     Items.PhotoKlump,
+        #     Items.PhotoKaboom,
+        #     Items.PhotoKlaptrapGreen,
+        #     Items.PhotoZingerLime,
+        #     Items.PhotoKlaptrapPurple,
+        #     Items.PhotoKlaptrapRed,
+        #     Items.PhotoBeaverGold,
+        #     Items.PhotoFireball,
+        #     Items.PhotoMushroomMan,
+        #     Items.PhotoRuler,
+        #     Items.PhotoRoboKremling,
+        #     Items.PhotoKremling,
+        #     Items.PhotoKasplatDK,
+        #     Items.PhotoKasplatDiddy,
+        #     Items.PhotoKasplatLanky,
+        #     Items.PhotoKasplatTiny,
+        #     Items.PhotoKasplatChunky,
+        #     Items.PhotoZingerRobo,
+        #     Items.PhotoKrossbones,
+        #     Items.PhotoShuri,
+        #     Items.PhotoGimpfish,
+        #     Items.PhotoMrDice0,
+        #     Items.PhotoSirDomino,
+        #     Items.PhotoMrDice1,
+        #     Items.PhotoBat,
+        #     Items.PhotoGhost,
+        #     Items.PhotoPufftup,
+        #     Items.PhotoKosha,
+        #     Items.PhotoSpider,
+        #     Items.PhotoBug,
+        #     Items.PhotoKop,
+        #     Items.PhotoTomato,
+        # ]
+        # for subject in photo_subjects:
+        #     self.Photos[subject] = sum(1 for x in ownedItems if x == subject)
 
         self.UpdateCoins()
 
