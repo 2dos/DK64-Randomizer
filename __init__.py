@@ -159,6 +159,7 @@ if baseclasses_loaded:
         SwitchsanityGone,
         BLockerSetting,
         RandomPrices,
+        WrinklyHints,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
@@ -886,6 +887,9 @@ if baseclasses_loaded:
                     settings_dict["starting_moves_list_1"].append(item_obj.type)
             settings_dict["starting_moves_list_count_1"] = len(settings_dict["starting_moves_list_1"])
 
+            if self.options.hint_style == 0:
+                settings_dict["wrinkly_hints"] = WrinklyHints.off
+
             # Create settings object
             settings = Settings(settings_dict, self.random)
             # Archipelago really wants the number of locations to match the number of items. Keep track of how many locations we've made here
@@ -1085,8 +1089,8 @@ if baseclasses_loaded:
                 self.updateBossKongs(spoiler)
                 compileMicrohints(spoiler)
                 # Could add a hints on/off setting?
-                microhints_enabled = True
-                hints_enabled = True
+                microhints_enabled = self.options.shopkeeper_hints.value or self.options.microhints.value > 0
+                hints_enabled = self.options.hint_style > 0
                 if hints_enabled or microhints_enabled:
                     self.hint_data_available.wait()
 
@@ -1190,7 +1194,14 @@ if baseclasses_loaded:
             # Hint stuff
             try:
                 # Get players that have hints enabled.
-                players = {autoworld.player for autoworld in multiworld.get_game_worlds("Donkey Kong 64")}
+                players = {
+                    autoworld.player
+                    for autoworld in multiworld.get_game_worlds("Donkey Kong 64")
+                    if autoworld.options.hint_style > 0 or autoworld.options.shopkeeper_hints or autoworld.options.microhints > 0
+                }
+                if not players:
+                    # Bail if every player has hints off
+                    return
                 # Locations that could get a "deep locations" hint:
                 deep_location_names = [
                     "Returning the Banana Fairies",
@@ -1241,10 +1252,6 @@ if baseclasses_loaded:
                     autoworld = multiworld.worlds[player]
                     locworld = multiworld.worlds[loc.player]
 
-                    # Seems unlikely that we would get here but just in case
-                    if not players:
-                        continue
-
                     is_donk_item = player in players
                     is_donk_location = loc.player in players
 
@@ -1255,12 +1262,16 @@ if baseclasses_loaded:
                     is_microhintable = is_donk_item and loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]
 
                     # Gather information on microhints
-                    if is_microhintable:
+                    if (autoworld.options.microhints > 0 or autoworld.options.shopkeeper_hints) and is_microhintable:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
                             else:
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name[:80]]
+
+                    # Bail if hints are disabled at this point
+                    if autoworld.options.hint_style == 0 and not is_donk_location:
+                        continue
 
                     # From here, no need to hint shopkeepers, since their microhints are basically free
                     if is_donk_item and loc.item.name in ("Candy", "Cranky", "Funky", "Snide"):
@@ -1287,7 +1298,8 @@ if baseclasses_loaded:
                         # Skip item at location and see if game is still beatable
                         state = CollectionState(multiworld)
                         state.locations_checked.add(loc)
-                        if not multiworld.can_beat_game(state):
+                        # VERY SLOW! User needs to explicitly enable this option.
+                        if autoworld.options.hint_style == 2 and not multiworld.can_beat_game(state):
                             autoworld.hint_data["woth"].append(loc)
 
             except Exception as e:
@@ -1534,7 +1546,7 @@ if baseclasses_loaded:
             change = super().collect(state, item)
             if change:
                 if self.player in state.dk64_logic_holder.keys():
-                    state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
+                    state.dk64_logic_holder[self.player].AddArchipelagoItem(item)
                 elif hasattr(self, "spoiler"):
                     state.dk64_logic_holder[self.player] = LogicVarHolder(self.spoiler, self.player)  # If the CollectionState dodged the creation of a logic_holder object, fix it here
                     state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
