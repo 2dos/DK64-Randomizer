@@ -7,12 +7,11 @@ import pkgutil
 from configparser import ConfigParser
 import sys
 import subprocess
-from Utils import open_filename
-from Utils import get_settings
+from Utils import open_filename, get_settings, init_logging
 import uuid
 
 if __name__ == "__main__":
-    Utils.init_logging("DK64Context", exception_logger="Client")
+    init_logging("DK64Context", exception_logger="Client")
 from CommonClient import logger
 
 
