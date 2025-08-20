@@ -28,7 +28,7 @@ void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutsc
     if ((index > 0) && (index < BONUS_DATA_COUNT)) {
         object = bonus_data[index].spawn_actor;
     }
-    if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
+    if (object != NEWACTOR_NULL) {
         spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
     }
 }
@@ -44,7 +44,7 @@ void spawnRewardAtActor(int object, int flag) {
     if ((index > 0) && (index < BONUS_DATA_COUNT)) {
         object = bonus_data[index].spawn_actor;
     }
-    if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
+    if (object != NEWACTOR_NULL) {
         if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
             spawnObjectAtActor(object, flag);
         }
@@ -60,7 +60,7 @@ void spawnMinecartReward(int object, int flag) {
      */
     for (int i = 0; i < BONUS_DATA_COUNT; i++) {
         if (bonus_data[i].flag == flag) {
-            if (bonus_data[i].spawn_actor != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
+            if (bonus_data[i].spawn_actor != NEWACTOR_NULL) {
                 spawnActorWithFlag(bonus_data[i].spawn_actor, Player->xPos, Player->yPos, Player->zPos, 0, 0, flag, 0);
                 // spawnObjectAtActor(bonus_data[i].spawn_actor, flag); // Causes some interesting side-effects with collision
             }
@@ -86,7 +86,7 @@ void spawnCrownReward(int object, float x, float y, float z, int unk0, int cutsc
     if (new_obj != 0) {
         object = new_obj;
     }
-    if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
+    if (object != NEWACTOR_NULL) {
         spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
     }
 }
@@ -108,7 +108,7 @@ void spawnBossReward(int object, float x, float y, float z, int unk0, int cutsce
     if (new_obj != 0) {
         object = new_obj;
     }
-    if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
+    if (object != NEWACTOR_NULL) {
         // Protect against null objects
         if ((actor_master_types[object] == ACTORMASTER_SPRITE) && ((CurrentMap == MAP_FUNGIDOGADON) || (CurrentMap == MAP_AZTECDOGADON))) {
             // Sprite & Dogadon Fight
@@ -147,7 +147,7 @@ void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int c
     if (new_obj != 0) {
         object = new_obj;
     }
-    if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
+    if (object != NEWACTOR_NULL) {
         if (isBounceObject(object)) {
             cutscene = 2;
         }
@@ -196,13 +196,13 @@ void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1,
     int id = ObjectModel2Pointer[convertSubIDToIndex(index)].object_id;
     int flag = getCrateFlag(id);
     int spawn_count = 1;
-    int object = getActorIndex(crate_item_table[flag - FLAG_MELONCRATE_0]);
+    int object = crate_item_table[flag - FLAG_MELONCRATE_0];
     int cutscene = 1;
     if (object == 0x2F) {
         // Junk Item. Set flag as we're spawning 4 unflagged melons and we want it to update check screen
         setPermFlag(flag);
     }
-    if (checkFlag(flag, FLAGTYPE_PERMANENT) || (object == (CUSTOM_ACTORS_START + NEWACTOR_NULL))) {
+    if (checkFlag(flag, FLAGTYPE_PERMANENT) || (object == NEWACTOR_NULL)) {
         spawn_count = 4;
         flag = -1;
         object = 0x2F;
@@ -261,7 +261,7 @@ void spawnBoulderObject(actorData *actor) {
     if (!item) {
         return;
     }
-    if (item == (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
+    if (item == NEWACTOR_NULL) {
         return;
     }
     int cutscene = 1;

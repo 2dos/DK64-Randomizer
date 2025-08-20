@@ -124,11 +124,4 @@ void overlay_mod_bonus(void) {
 
 	// Krazy Kong Klamour - Adjsut flicker speeds
 	PatchBonusCode();
-
-	if (Rando.music_rando_on) {
-		// Lower Crowd SFX Volume
-		*(short*)(0x80025192) = CROWD_VOLUME;
-		*(short*)(0x80025166) = CROWD_VOLUME;
-		*(short*)(0x80025112) = CROWD_VOLUME;
-	}
 }

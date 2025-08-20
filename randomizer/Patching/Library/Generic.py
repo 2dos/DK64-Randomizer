@@ -818,7 +818,6 @@ plando_colors = {
         "keys",
         "donkey",
         "aztec",
-        "freekongs",
         "dogadon1",
     ],
     "\x05": [
@@ -856,6 +855,7 @@ plando_colors = {
         "caves",
         "fridge",
         "dillo2",
+        "freekongs",
     ],
     "\x0b": [
         "rust",

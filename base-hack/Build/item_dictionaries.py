@@ -5,34 +5,6 @@ from enum import IntEnum, auto
 from BuildEnums import Kong, Song, Maps
 
 
-class InGameItem:
-    """Class to define an in-game item."""
-
-    def __init__(self, *, name="", actor=0, model_two=0, scale=0.25, base=None, force_dance=True, boss_enabled=True, bounce=False, will_dance=True, is_null=False, is_custom=False):
-        """Initialize with given parameters."""
-        if base is not None and False:
-            self.name = base.name
-            self.actor = base.actor
-            self.model_two = base.model_two
-            self.scale = base.scale
-            self.force_dance = base.force_dance
-            self.boss_enabled = base.boss_enabled
-            self.bounce = base.bounce
-            self.will_dance = base.will_dance
-            self.is_null = base.is_null
-        self.name = name
-        self.actor = actor
-        self.model_two = model_two
-        if is_custom:
-            self.actor = self.actor + 345
-        self.scale = scale
-        self.force_dance = force_dance  # Force dance if in boss/crown
-        self.boss_enabled = boss_enabled  # Can be a boss reward
-        self.bounce = bounce  # Will bounce (excl sprites)
-        self.will_dance = will_dance  # Produces dance animation upon grabbing it (if auto-dance skip off)
-        self.is_null = is_null
-
-
 class CollectableTypes(IntEnum):
     """Collectable Types Enum."""
 
@@ -60,23 +32,6 @@ class Hitbox:
         self.height = height
 
 
-class ItemRandoDef:
-    """Class to store information regarding item collision and spawning."""
-
-    def __init__(self, object_id: int, item_type: CollectableTypes, kong: Kong = None, actor_equivalent: int = 0, hitbox: Hitbox = None, custom_actor: bool = False):
-        """Initialize with given parameters."""
-        self.object_id = object_id
-        self.item_type = item_type
-        self.kong = 0
-        if kong is not None:
-            self.kong = int(kong) + 2
-        self.actor_equivalent = actor_equivalent
-        self.hitbox = hitbox
-        self.custom_actor = custom_actor
-        if hitbox is None:
-            self.hitbox = Hitbox(0, 0, 0)
-
-
 class EnemyDropDef:
     """Class to store information regarding the drops an enemy makes."""
 
@@ -91,7 +46,7 @@ class EnemyDropDef:
 class CustomActors(IntEnum):
     """Custom Actors Enum."""
 
-    NintendoCoin = 0
+    NintendoCoin = 345
     RarewareCoin = auto()
     Null = auto()
     PotionDK = auto()
@@ -207,177 +162,155 @@ def initActor(actor_data: dict, actor_type: int, func: str, master_type: int, he
     return actor_data
 
 
-base_potion = InGameItem(scale=0.25, bounce=True)
-base_kong = InGameItem(scale=0.25, bounce=True)
-base_bp = InGameItem(scale=2, will_dance=False)
-base_coin = InGameItem(scale=0.4, will_dance=False)
+class Item:
+    """Class to store information pertaining to an item."""
 
-db = [
-    InGameItem(name="Golden Banana", actor=45, model_two=0x74, scale=0.25, bounce=True),
-    InGameItem(name="DK Blueprint", actor=78, model_two=0xDE, base=base_bp, scale=2),
-    InGameItem(name="Diddy Blueprint", actor=75, model_two=0xE0, base=base_bp, scale=2),
-    InGameItem(name="Lanky Blueprint", actor=77, model_two=0xE1, base=base_bp, scale=2),
-    InGameItem(name="Tiny Blueprint", actor=79, model_two=0xDD, base=base_bp, scale=2),
-    InGameItem(name="Chunky Blueprint", actor=76, model_two=0xDF, base=base_bp, scale=2),
-    InGameItem(name="Nintendo Coin", actor=CustomActors.NintendoCoin, is_custom=True, model_two=0x48, base=base_coin, scale=0.4, bounce=True),
-    InGameItem(name="Rareware Coin", actor=CustomActors.RarewareCoin, is_custom=True, model_two=0x28F, base=base_coin, scale=0.4, bounce=True),
-    InGameItem(name="Boss Key", actor=72, model_two=0x13C, scale=0.17, bounce=True),
-    InGameItem(name="Battle Crown", actor=86, model_two=0x18D, scale=0.25, bounce=True),
-    InGameItem(name="Banana Medal", actor=CustomActors.Medal, is_custom=True, model_two=0x90, scale=0.22, bounce=True),
-    InGameItem(name="DK Potion", actor=CustomActors.PotionDK, is_custom=True, model_two=0x5B, base=base_potion, bounce=True),
-    InGameItem(name="Diddy Potion", actor=CustomActors.PotionDiddy, is_custom=True, model_two=0x1F2, base=base_potion, bounce=True),
-    InGameItem(name="Lanky Potion", actor=CustomActors.PotionLanky, is_custom=True, model_two=0x59, base=base_potion, bounce=True),
-    InGameItem(name="Tiny Potion", actor=CustomActors.PotionTiny, is_custom=True, model_two=0x1F3, base=base_potion, bounce=True),
-    InGameItem(name="Chunky Potion", actor=CustomActors.PotionChunky, is_custom=True, model_two=0x1F5, base=base_potion, bounce=True),
-    InGameItem(name="Any Potion", actor=CustomActors.PotionAny, is_custom=True, model_two=0x1F6, base=base_potion, bounce=True),
-    InGameItem(name="No Item", actor=CustomActors.Null, is_custom=True, model_two=0x0, scale=0.25, force_dance=False, boss_enabled=False, is_null=True),
-    InGameItem(name="DK Item", actor=CustomActors.KongDK, is_custom=True, model_two=0x257, base=base_kong, bounce=True),
-    InGameItem(name="Diddy Item", actor=CustomActors.KongDiddy, is_custom=True, model_two=0x258, base=base_kong, bounce=True),
-    InGameItem(name="Lanky Item", actor=CustomActors.KongLanky, is_custom=True, model_two=0x259, base=base_kong, bounce=True),
-    InGameItem(name="Tiny Item", actor=CustomActors.KongTiny, is_custom=True, model_two=0x25A, base=base_kong, bounce=True),
-    InGameItem(name="Chunky Item", actor=CustomActors.KongChunky, is_custom=True, model_two=0x25B, base=base_kong, bounce=True),
-    InGameItem(name="Bean", actor=CustomActors.Bean, is_custom=True, model_two=0x198, scale=0.25, will_dance=False, bounce=True),
-    InGameItem(name="Pearl", actor=CustomActors.Pearl, is_custom=True, model_two=0x1B4, scale=0.25, will_dance=False, bounce=True),
-    InGameItem(name="Fairy", actor=CustomActors.Fairy, is_custom=True, model_two=0x25C, bounce=True, scale=0.25),
-    InGameItem(name="Rainbow Coin", actor=140, model_two=0xB7, scale=0.25),
-    InGameItem(name="Fake Item (Bubble)", actor=CustomActors.IceTrapBubble, is_custom=True, model_two=0x25D, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Reverse)", actor=CustomActors.IceTrapReverse, is_custom=True, model_two=0x264, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Slow)", actor=CustomActors.IceTrapSlow, is_custom=True, model_two=0x265, bounce=True, scale=0.25),
-    InGameItem(name="Junk Item (Orange)", actor=0x34, model_two=0x56, will_dance=False, force_dance=False, scale=1),
-    InGameItem(name="Junk Item (Melon)", actor=0x2F, model_two=0x25E, will_dance=False, force_dance=False, scale=0.25),
-    InGameItem(name="Junk Item (Crystal)", actor=0x79, model_two=0x8E, will_dance=False, force_dance=False, scale=1),
-    InGameItem(name="Junk Item (Ammo)", actor=0x33, model_two=0x8F, will_dance=False, force_dance=False, scale=1),
-    InGameItem(name="Cranky Item", actor=CustomActors.CrankyItem, is_custom=True, model_two=0x25F, base=base_kong, bounce=True),
-    InGameItem(name="Funky Item", actor=CustomActors.FunkyItem, is_custom=True, model_two=0x260, base=base_kong, bounce=True),
-    InGameItem(name="Candy Item", actor=CustomActors.CandyItem, is_custom=True, model_two=0x261, base=base_kong, bounce=True),
-    InGameItem(name="Snide Item", actor=CustomActors.SnideItem, is_custom=True, model_two=0x262, base=base_kong, bounce=True),
-    InGameItem(name="Hint Item (DK)", actor=CustomActors.HintItemDK, is_custom=True, model_two=638, base=base_kong, bounce=True),
-    InGameItem(name="Hint Item (Diddy)", actor=CustomActors.HintItemDiddy, is_custom=True, model_two=649, base=base_kong, bounce=True),
-    InGameItem(name="Hint Item (Lanky)", actor=CustomActors.HintItemLanky, is_custom=True, model_two=650, base=base_kong, bounce=True),
-    InGameItem(name="Hint Item (Tiny)", actor=CustomActors.HintItemTiny, is_custom=True, model_two=651, base=base_kong, bounce=True),
-    InGameItem(name="Hint Item (Chunky)", actor=CustomActors.HintItemChunky, is_custom=True, model_two=652, base=base_kong, bounce=True),
-    InGameItem(name="Archipelago Item", actor=CustomActors.ArchipelagoItem, is_custom=True, model_two=0x291, base=base_kong, bounce=True),
-    InGameItem(name="Fake Item (Bean Bubble)", actor=151, is_custom=False, model_two=0x292, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Bean Reverse)", actor=152, is_custom=False, model_two=0x293, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Bean Slow)", actor=153, is_custom=False, model_two=0x294, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Key Bubble)", actor=154, is_custom=False, model_two=0x295, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Key Reverse)", actor=155, is_custom=False, model_two=0x296, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Key Slow)", actor=157, is_custom=False, model_two=0x297, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (GB Dis A)", actor=CustomActors.IceTrapDisableAGB, is_custom=True, model_two=0x2A6, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (GB Dis B)", actor=CustomActors.IceTrapDisableBGB, is_custom=True, model_two=0x299, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (GB Dis Z)", actor=CustomActors.IceTrapDisableZGB, is_custom=True, model_two=0x29A, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (GB Dis CU)", actor=CustomActors.IceTrapDisableCUGB, is_custom=True, model_two=0x29B, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Bean Dis A)", actor=CustomActors.IceTrapDisableABean, is_custom=True, model_two=0x29C, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Bean Dis B)", actor=CustomActors.IceTrapDisableBBean, is_custom=True, model_two=0x29D, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Bean Dis Z)", actor=CustomActors.IceTrapDisableZBean, is_custom=True, model_two=0x29E, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Bean Dis CU)", actor=CustomActors.IceTrapDisableCUBean, is_custom=True, model_two=0x29F, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Key Dis A)", actor=CustomActors.IceTrapDisableAKey, is_custom=True, model_two=0x2A0, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Key Dis B)", actor=CustomActors.IceTrapDisableBKey, is_custom=True, model_two=0x2A1, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Key Dis Z)", actor=CustomActors.IceTrapDisableZKey, is_custom=True, model_two=0x2A4, base=base_kong, bounce=True, scale=0.25),
-    InGameItem(name="Fake Item (Key Dis CU)", actor=CustomActors.IceTrapDisableCUKey, is_custom=True, model_two=0x2A5, base=base_kong, bounce=True, scale=0.25),
-]
+    def __init__(
+        self,
+        name: str = "",
+        actor: int = 0,
+        model_two: int = 0,
+        scale: float = 0.25,
+        force_dance: bool = True,
+        boss_enabled: bool = True,
+        bounce: bool = False,
+        will_dance: bool = True,
+        is_null: bool = False,
+        item_db: bool = True,
+        item_type: CollectableTypes = CollectableTypes.Null,
+        kong: Kong = None,
+        hitbox: Hitbox = None,
+        has_collision: bool = False,
+    ):
+        """Initialize with given parameters."""
+        self.name = name
+        self.actor = actor
+        self.model_two = model_two
+        self.scale = scale
+        self.force_dance = force_dance
+        self.bounce = bounce
+        self.boss_enabled = boss_enabled
+        self.will_dance = will_dance
+        self.is_null = is_null
+        self.item_db = item_db
+        self.item_type = item_type
+        self.kong = 0
+        if kong is not None:
+            self.kong = kong + 2
+        if hitbox is None:
+            self.hitbox = Hitbox(8, 4, 13)
+        else:
+            self.hitbox = hitbox
+        self.has_collision = has_collision
 
-db2 = [
-    # Colored Bananas
-    ItemRandoDef(0x000D, CollectableTypes.ColoredBanana, Kong.DK),
-    ItemRandoDef(0x000A, CollectableTypes.ColoredBanana, Kong.Diddy),
-    ItemRandoDef(0x001F, CollectableTypes.ColoredBanana, Kong.Chunky),
-    ItemRandoDef(0x001E, CollectableTypes.ColoredBanana, Kong.Lanky),
-    ItemRandoDef(0x0016, CollectableTypes.ColoredBanana, Kong.Tiny),
-    # Coins
-    ItemRandoDef(0x0024, CollectableTypes.Coin, Kong.Diddy),
-    ItemRandoDef(0x0023, CollectableTypes.Coin, Kong.Lanky, 0x35),
-    ItemRandoDef(0x0027, CollectableTypes.Coin, Kong.Chunky),
-    ItemRandoDef(0x001C, CollectableTypes.Coin, Kong.Tiny),
-    ItemRandoDef(0x001D, CollectableTypes.Coin, Kong.DK),
-    # Bunch
-    ItemRandoDef(0x002B, CollectableTypes.ColoredBanana, Kong.DK),
-    ItemRandoDef(0x0208, CollectableTypes.ColoredBanana, Kong.Diddy),
-    ItemRandoDef(0x0206, CollectableTypes.ColoredBanana, Kong.Chunky, 0x6E),
-    ItemRandoDef(0x0205, CollectableTypes.ColoredBanana, Kong.Lanky),
-    ItemRandoDef(0x0207, CollectableTypes.ColoredBanana, Kong.Tiny),
-    # Pellets
-    ItemRandoDef(0x0091, CollectableTypes.AmmoPellet),  # Peanut
-    ItemRandoDef(0x015D, CollectableTypes.AmmoPellet),  # Feather
-    ItemRandoDef(0x015E, CollectableTypes.AmmoPellet),  # Grape
-    ItemRandoDef(0x015F, CollectableTypes.AmmoPellet),  # Pineapple
-    ItemRandoDef(0x0160, CollectableTypes.AmmoPellet),  # Coconut
-    # Blueprint
-    ItemRandoDef(0x00DE, CollectableTypes.Blueprint, Kong.DK, 0x4E, Hitbox(8, 4, 13)),
-    ItemRandoDef(0x00E0, CollectableTypes.Blueprint, Kong.Diddy, 0x4B, Hitbox(8, 4, 13)),
-    ItemRandoDef(0x00E1, CollectableTypes.Blueprint, Kong.Lanky, 0x4D, Hitbox(8, 4, 13)),
-    ItemRandoDef(0x00DD, CollectableTypes.Blueprint, Kong.Tiny, 0x4F, Hitbox(8, 4, 13)),
-    ItemRandoDef(0x00DF, CollectableTypes.Blueprint, Kong.Chunky, 0x4C, Hitbox(8, 4, 13)),
-    # Multiplayer
-    ItemRandoDef(0x01CF, CollectableTypes.Null, None, 0x78),  # Yellow CB Powerup
-    ItemRandoDef(0x01D0, CollectableTypes.Null, None, 0x77),  # Blue CB Powerup
-    ItemRandoDef(0x01D1, CollectableTypes.Null, None, 0x76),  # Coin Powerup
-    ItemRandoDef(0x01D2, CollectableTypes.Coin, None, 0x7A),  # Coin Multiplayer
-    # Potions
-    ItemRandoDef(0x005B, CollectableTypes.Null, None, CustomActors.PotionDK, Hitbox(8, 4, 13), True),  # Potion DK
-    ItemRandoDef(0x01F2, CollectableTypes.Null, None, CustomActors.PotionDiddy, Hitbox(8, 4, 13), True),  # Potion Diddy
-    ItemRandoDef(0x0059, CollectableTypes.Null, None, CustomActors.PotionLanky, Hitbox(8, 4, 13), True),  # Potion Lanky
-    ItemRandoDef(0x01F3, CollectableTypes.Null, None, CustomActors.PotionTiny, Hitbox(8, 4, 13), True),  # Potion Tiny
-    ItemRandoDef(0x01F5, CollectableTypes.Null, None, CustomActors.PotionChunky, Hitbox(8, 4, 13), True),  # Potion Chunky
-    ItemRandoDef(0x01F6, CollectableTypes.Null, None, CustomActors.PotionAny, Hitbox(8, 4, 13), True),  # Potion Any
+
+item_database = [
+    Item(name="Boss Key", actor=72, model_two=0x13C, scale=0.17, bounce=True, has_collision=True),
+    Item(name="Battle Crown", actor=86, model_two=0x18D, scale=0.25, bounce=True, has_collision=True),
+    Item(name="Banana Medal", actor=CustomActors.Medal, model_two=0x90, scale=0.22, bounce=True, has_collision=True, item_type=CollectableTypes.Medal),
+    Item(name="No Item", actor=CustomActors.Null, model_two=0x0, scale=0.25, force_dance=False, boss_enabled=False, is_null=True),
+    Item(name="Bean", actor=CustomActors.Bean, model_two=0x198, scale=0.25, will_dance=False, bounce=True, has_collision=True),
+    Item(name="Pearl", actor=CustomActors.Pearl, model_two=0x1B4, scale=0.25, will_dance=False, bounce=True, has_collision=True),
+    Item(name="Fairy", actor=CustomActors.Fairy, model_two=0x25C, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Rainbow Coin", actor=140, model_two=0xB7, scale=0.25, has_collision=True, item_type=CollectableTypes.Coin),
+    Item(name="Archipelago Item", actor=CustomActors.ArchipelagoItem, model_two=0x291, bounce=True, has_collision=True),
+    Item(name="Race Coin", actor=0x36, model_two=0xEC, item_db=False, item_type=CollectableTypes.RaceCoin, has_collision=True, hitbox=Hitbox(0, 0, 0)),
+    Item(name="Film", actor=0, model_two=0x98, item_db=False, item_type=CollectableTypes.Film, has_collision=True, hitbox=Hitbox(0, 0, 0)),
+    # GBs
+    Item(name="Golden Banana", actor=0x2D, model_two=0x74, scale=0.25, bounce=True, has_collision=True, item_type=CollectableTypes.GoldenBanana),
+    Item(name="Rareware Banana", actor=0x2D, model_two=0x288, has_collision=True, item_type=CollectableTypes.GoldenBanana, item_db=False),
+    # Blueprints
+    Item(name="DK Blueprint", actor=78, model_two=0xDE, scale=2, has_collision=True, item_type=CollectableTypes.Blueprint, kong=Kong.DK),
+    Item(name="Diddy Blueprint", actor=75, model_two=0xE0, scale=2, has_collision=True, item_type=CollectableTypes.Blueprint, kong=Kong.Diddy),
+    Item(name="Lanky Blueprint", actor=77, model_two=0xE1, scale=2, has_collision=True, item_type=CollectableTypes.Blueprint, kong=Kong.Lanky),
+    Item(name="Tiny Blueprint", actor=79, model_two=0xDD, scale=2, has_collision=True, item_type=CollectableTypes.Blueprint, kong=Kong.Tiny),
+    Item(name="Chunky Blueprint", actor=76, model_two=0xDF, scale=2, has_collision=True, item_type=CollectableTypes.Blueprint, kong=Kong.Chunky),
+    # Junk
+    Item(name="Junk Item (Orange)", actor=0x34, model_two=0x56, will_dance=False, force_dance=False, scale=1, has_collision=True, item_type=CollectableTypes.Orange, hitbox=Hitbox(0, 0, 0)),
+    Item(name="Junk Item (Melon)", actor=0x2F, model_two=0x25E, will_dance=False, force_dance=False, scale=0.25),
+    Item(name="Junk Item (Crystal)", actor=0x79, model_two=0x8E, will_dance=False, force_dance=False, scale=1, has_collision=True, item_type=CollectableTypes.Crystal, hitbox=Hitbox(0, 0, 0)),
+    Item(name="Junk Item (Ammo)", actor=0x33, model_two=0x8F, will_dance=False, force_dance=False, scale=1, has_collision=True, item_type=CollectableTypes.AmmoBox, hitbox=Hitbox(0, 0, 0)),
+    Item(name="Homing Ammo", actor=0, model_two=0x11, item_db=False, has_collision=True, item_type=CollectableTypes.AmmoBox, hitbox=Hitbox(0, 0, 0)),
+    Item(name="Melon (Collision 1)", actor=0x2F, model_two=0x57, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0)),
+    Item(name="Melon (Collision 2)", actor=0, model_two=0x25E, item_db=False, has_collision=True),
+    # Company Coin
+    Item(name="Nintendo Coin", actor=CustomActors.NintendoCoin, model_two=0x48, scale=0.4, bounce=True, has_collision=True),
+    Item(name="Rareware Coin", actor=CustomActors.RarewareCoin, model_two=0x28F, scale=0.4, bounce=True, has_collision=True),
+    # Potion
+    Item(name="DK Potion", actor=CustomActors.PotionDK, model_two=0x5B, bounce=True, has_collision=True),
+    Item(name="Diddy Potion", actor=CustomActors.PotionDiddy, model_two=0x1F2, bounce=True, has_collision=True),
+    Item(name="Lanky Potion", actor=CustomActors.PotionLanky, model_two=0x59, bounce=True, has_collision=True),
+    Item(name="Tiny Potion", actor=CustomActors.PotionTiny, model_two=0x1F3, bounce=True, has_collision=True),
+    Item(name="Chunky Potion", actor=CustomActors.PotionChunky, model_two=0x1F5, bounce=True, has_collision=True),
+    Item(name="Any Potion", actor=CustomActors.PotionAny, model_two=0x1F6, bounce=True, has_collision=True),
     # Kongs
-    ItemRandoDef(0x0257, CollectableTypes.Null, None, CustomActors.KongDK, Hitbox(8, 4, 13), True),  # DK
-    ItemRandoDef(0x0258, CollectableTypes.Null, None, CustomActors.KongDiddy, Hitbox(8, 4, 13), True),  # Diddy
-    ItemRandoDef(0x0259, CollectableTypes.Null, None, CustomActors.KongLanky, Hitbox(8, 4, 13), True),  # Lanky
-    ItemRandoDef(0x025A, CollectableTypes.Null, None, CustomActors.KongTiny, Hitbox(8, 4, 13), True),  # Tiny
-    ItemRandoDef(0x025B, CollectableTypes.Null, None, CustomActors.KongChunky, Hitbox(8, 4, 13), True),  # Chunky
-    # Misc
-    ItemRandoDef(0x00B7, CollectableTypes.Coin, None, 0x8C, Hitbox(8, 4, 13)),  # Rainbow Coin
-    # Others
-    ItemRandoDef(0x0074, CollectableTypes.GoldenBanana, None, 0x2D, Hitbox(8, 4, 13)),  # Golden Banana
-    ItemRandoDef(0x0056, CollectableTypes.Orange, None, 0x34),  # Orange
-    ItemRandoDef(0x008F, CollectableTypes.AmmoBox, None, 0x33),  # Ammo Crate
-    ItemRandoDef(0x0011, CollectableTypes.AmmoBox),  # Homing Ammo Crate
-    ItemRandoDef(0x008E, CollectableTypes.Crystal, None, 0x79),  # Crystal
-    ItemRandoDef(0x0057, CollectableTypes.Null, None, 0x2F),  # Watermelon
-    ItemRandoDef(0x025E, CollectableTypes.Null, None, 0, Hitbox(8, 4, 13)),  # Watermelon - Duplicate
-    ItemRandoDef(0x0098, CollectableTypes.Film),  # Film
-    ItemRandoDef(0x0090, CollectableTypes.Medal, None, CustomActors.Medal, Hitbox(8, 4, 13), True),  # Medal
-    ItemRandoDef(0x00EC, CollectableTypes.RaceCoin, None, 0x36),  # Race Coin
-    ItemRandoDef(0x013C, CollectableTypes.Null, None, 0x48, Hitbox(8, 4, 13)),  # Boss Key
-    ItemRandoDef(0x018D, CollectableTypes.Null, None, 0x56, Hitbox(8, 4, 13)),  # Battle Crown
-    ItemRandoDef(0x0288, CollectableTypes.GoldenBanana, None, 0x2D, Hitbox(8, 4, 13)),  # Rareware GB
-    ItemRandoDef(0x0048, CollectableTypes.Null, None, CustomActors.NintendoCoin, Hitbox(8, 4, 13), True),  # Nintendo Coin
-    ItemRandoDef(0x028F, CollectableTypes.Null, None, CustomActors.RarewareCoin, Hitbox(8, 4, 13), True),  # Rareware Coin
-    ItemRandoDef(0x0198, CollectableTypes.Null, None, CustomActors.Bean, Hitbox(8, 4, 13), True),  # Bean
-    ItemRandoDef(0x01B4, CollectableTypes.Null, None, CustomActors.Pearl, Hitbox(8, 4, 13), True),  # Pearl
-    ItemRandoDef(0x025C, CollectableTypes.Null, None, CustomActors.Fairy, Hitbox(8, 4, 13), True),  # Fairy
-    ItemRandoDef(0x025D, CollectableTypes.Null, None, CustomActors.IceTrapBubble, Hitbox(8, 4, 13), True),  # Fake Item
-    ItemRandoDef(0x0264, CollectableTypes.Null, None, CustomActors.IceTrapReverse, Hitbox(8, 4, 13), True),  # Fake Item
-    ItemRandoDef(0x0265, CollectableTypes.Null, None, CustomActors.IceTrapSlow, Hitbox(8, 4, 13), True),  # Fake Item
-    ItemRandoDef(0x025F, CollectableTypes.Null, None, CustomActors.CrankyItem, Hitbox(8, 4, 13), True),  # Cranky
-    ItemRandoDef(0x0260, CollectableTypes.Null, None, CustomActors.FunkyItem, Hitbox(8, 4, 13), True),  # Funky
-    ItemRandoDef(0x0261, CollectableTypes.Null, None, CustomActors.CandyItem, Hitbox(8, 4, 13), True),  # Candy
-    ItemRandoDef(0x0262, CollectableTypes.Null, None, CustomActors.SnideItem, Hitbox(8, 4, 13), True),  # Snide
-    ItemRandoDef(0x027E, CollectableTypes.Null, None, CustomActors.HintItemDK, Hitbox(8, 4, 13), True),  # Hint
-    ItemRandoDef(0x0289, CollectableTypes.Null, None, CustomActors.HintItemDiddy, Hitbox(8, 4, 13), True),  # Hint
-    ItemRandoDef(0x028A, CollectableTypes.Null, None, CustomActors.HintItemLanky, Hitbox(8, 4, 13), True),  # Hint
-    ItemRandoDef(0x028B, CollectableTypes.Null, None, CustomActors.HintItemTiny, Hitbox(8, 4, 13), True),  # Hint
-    ItemRandoDef(0x028C, CollectableTypes.Null, None, CustomActors.HintItemChunky, Hitbox(8, 4, 13), True),  # Hint
-    ItemRandoDef(0x0291, CollectableTypes.Null, None, CustomActors.ArchipelagoItem, Hitbox(8, 4, 13), True),  # AP Item
-    ItemRandoDef(0x0292, CollectableTypes.Null, None, 151, Hitbox(8, 4, 13), False),  # Fake Item - Bean
-    ItemRandoDef(0x0293, CollectableTypes.Null, None, 152, Hitbox(8, 4, 13), False),  # Fake Item - Bean
-    ItemRandoDef(0x0294, CollectableTypes.Null, None, 153, Hitbox(8, 4, 13), False),  # Fake Item - Bean
-    ItemRandoDef(0x0295, CollectableTypes.Null, None, 154, Hitbox(8, 4, 13), False),  # Fake Item - Key
-    ItemRandoDef(0x0296, CollectableTypes.Null, None, 155, Hitbox(8, 4, 13), False),  # Fake Item - Key
-    ItemRandoDef(0x0297, CollectableTypes.Null, None, 157, Hitbox(8, 4, 13), False),  # Fake Item - Key
-    ItemRandoDef(0x02A6, CollectableTypes.Null, None, CustomActors.IceTrapDisableAGB, Hitbox(8, 4, 13), True),  # Fake Item - GB
-    ItemRandoDef(0x0299, CollectableTypes.Null, None, CustomActors.IceTrapDisableBGB, Hitbox(8, 4, 13), True),  # Fake Item - GB
-    ItemRandoDef(0x029A, CollectableTypes.Null, None, CustomActors.IceTrapDisableZGB, Hitbox(8, 4, 13), True),  # Fake Item - GB
-    ItemRandoDef(0x029B, CollectableTypes.Null, None, CustomActors.IceTrapDisableCUGB, Hitbox(8, 4, 13), True),  # Fake Item - GB
-    ItemRandoDef(0x029C, CollectableTypes.Null, None, CustomActors.IceTrapDisableABean, Hitbox(8, 4, 13), True),  # Fake Item - Bean
-    ItemRandoDef(0x029D, CollectableTypes.Null, None, CustomActors.IceTrapDisableBBean, Hitbox(8, 4, 13), True),  # Fake Item - Bean
-    ItemRandoDef(0x029E, CollectableTypes.Null, None, CustomActors.IceTrapDisableZBean, Hitbox(8, 4, 13), True),  # Fake Item - Bean
-    ItemRandoDef(0x029F, CollectableTypes.Null, None, CustomActors.IceTrapDisableCUBean, Hitbox(8, 4, 13), True),  # Fake Item - Bean
-    ItemRandoDef(0x02A0, CollectableTypes.Null, None, CustomActors.IceTrapDisableAKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
-    ItemRandoDef(0x02A1, CollectableTypes.Null, None, CustomActors.IceTrapDisableBKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
-    ItemRandoDef(0x02A4, CollectableTypes.Null, None, CustomActors.IceTrapDisableZKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
-    ItemRandoDef(0x02A5, CollectableTypes.Null, None, CustomActors.IceTrapDisableCUKey, Hitbox(8, 4, 13), True),  # Fake Item - Key
+    Item(name="DK Item", actor=CustomActors.KongDK, model_two=0x257, bounce=True, has_collision=True),
+    Item(name="Diddy Item", actor=CustomActors.KongDiddy, model_two=0x258, bounce=True, has_collision=True),
+    Item(name="Lanky Item", actor=CustomActors.KongLanky, model_two=0x259, bounce=True, has_collision=True),
+    Item(name="Tiny Item", actor=CustomActors.KongTiny, model_two=0x25A, bounce=True, has_collision=True),
+    Item(name="Chunky Item", actor=CustomActors.KongChunky, model_two=0x25B, bounce=True, has_collision=True),
+    # Shopkeepers
+    Item(name="Cranky Item", actor=CustomActors.CrankyItem, model_two=0x25F, bounce=True, has_collision=True),
+    Item(name="Funky Item", actor=CustomActors.FunkyItem, model_two=0x260, bounce=True, has_collision=True),
+    Item(name="Candy Item", actor=CustomActors.CandyItem, model_two=0x261, bounce=True, has_collision=True),
+    Item(name="Snide Item", actor=CustomActors.SnideItem, model_two=0x262, bounce=True, has_collision=True),
+    # Ice Traps
+    Item(name="Fake Item (Bubble)", actor=CustomActors.IceTrapBubble, model_two=0x25D, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Reverse)", actor=CustomActors.IceTrapReverse, model_two=0x264, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Slow)", actor=CustomActors.IceTrapSlow, model_two=0x265, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (GB Dis A)", actor=CustomActors.IceTrapDisableAGB, model_two=0x2A6, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (GB Dis B)", actor=CustomActors.IceTrapDisableBGB, model_two=0x299, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (GB Dis Z)", actor=CustomActors.IceTrapDisableZGB, model_two=0x29A, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (GB Dis CU)", actor=CustomActors.IceTrapDisableCUGB, model_two=0x29B, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Bean Bubble)", actor=151, model_two=0x292, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Bean Reverse)", actor=152, model_two=0x293, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Bean Slow)", actor=153, model_two=0x294, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Bean Dis A)", actor=CustomActors.IceTrapDisableABean, model_two=0x29C, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Bean Dis B)", actor=CustomActors.IceTrapDisableBBean, model_two=0x29D, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Bean Dis Z)", actor=CustomActors.IceTrapDisableZBean, model_two=0x29E, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Bean Dis CU)", actor=CustomActors.IceTrapDisableCUBean, model_two=0x29F, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Key Bubble)", actor=154, model_two=0x295, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Key Reverse)", actor=155, model_two=0x296, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Key Slow)", actor=157, model_two=0x297, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Key Dis A)", actor=CustomActors.IceTrapDisableAKey, model_two=0x2A0, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Key Dis B)", actor=CustomActors.IceTrapDisableBKey, model_two=0x2A1, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Key Dis Z)", actor=CustomActors.IceTrapDisableZKey, model_two=0x2A4, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Key Dis CU)", actor=CustomActors.IceTrapDisableCUKey, model_two=0x2A5, bounce=True, scale=0.25, has_collision=True),
+    # Singles
+    Item(name="DK Single", actor=0, model_two=0xD, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.DK),
+    Item(name="Diddy Single", actor=0, model_two=0xA, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.Diddy),
+    Item(name="Lanky Single", actor=0, model_two=0x1E, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.Lanky),
+    Item(name="Tiny Single", actor=0, model_two=0x16, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.Tiny),
+    Item(name="Chunky Single", actor=0, model_two=0x1F, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.Chunky),
+    # Coins
+    Item(name="DK Coin", actor=0, model_two=0x1D, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.Coin, kong=Kong.DK),
+    Item(name="Diddy Coin", actor=0, model_two=0x24, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.Coin, kong=Kong.Diddy),
+    Item(name="Lanky Coin", actor=0x35, model_two=0x23, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.Coin, kong=Kong.Lanky),
+    Item(name="Tiny Coin", actor=0, model_two=0x1C, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.Coin, kong=Kong.Tiny),
+    Item(name="Chunky Coin", actor=0, model_two=0x27, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.Coin, kong=Kong.Chunky),
+    # Bunch
+    Item(name="DK Bunch", actor=0, model_two=0x2B, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.DK),
+    Item(name="Diddy Bunch", actor=0, model_two=0x208, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.Diddy),
+    Item(name="Lanky Bunch", actor=0, model_two=0x205, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.Lanky),
+    Item(name="Tiny Bunch", actor=0, model_two=0x207, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.Tiny),
+    Item(name="Chunky Bunch", actor=0x6E, model_two=0x206, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.Chunky),
+    # Pellets
+    Item(name="Coconut", actor=0, model_two=0x160, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.AmmoPellet),
+    Item(name="Peanut", actor=0, model_two=0x91, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.AmmoPellet, kong=Kong.Diddy),
+    Item(name="Grape", actor=0, model_two=0x15E, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.AmmoPellet, kong=Kong.Lanky),
+    Item(name="Feather", actor=0, model_two=0x15D, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.AmmoPellet, kong=Kong.Tiny),
+    Item(name="Pineapple", actor=0, model_two=0x15F, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.AmmoPellet, kong=Kong.Chunky),
+    # Hints
+    Item(name="Hint Item (DK)", actor=CustomActors.HintItemDK, model_two=638, bounce=True, has_collision=True),
+    Item(name="Hint Item (Diddy)", actor=CustomActors.HintItemDiddy, model_two=649, bounce=True, has_collision=True),
+    Item(name="Hint Item (Lanky)", actor=CustomActors.HintItemLanky, model_two=650, bounce=True, has_collision=True),
+    Item(name="Hint Item (Tiny)", actor=CustomActors.HintItemTiny, model_two=651, bounce=True, has_collision=True),
+    Item(name="Hint Item (Chunky)", actor=CustomActors.HintItemChunky, model_two=652, bounce=True, has_collision=True),
+    # Multiplayer
+    Item(name="Yellow CB Powerup", actor=0x78, model_two=0x1CF, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0)),
+    Item(name="Blue CB Powerup", actor=0x77, model_two=0x1D0, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0)),
+    Item(name="Coin Powerup", actor=0x76, model_two=0x1D1, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0)),
+    Item(name="Coin Multiplayer", actor=0x7A, model_two=0x1D2, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0)),
 ]
 
 item_drops = [
@@ -413,16 +346,16 @@ item_drops = [
     EnemyDropDef(273, 0x34, Song.Silence, 1),  # Fireball with Glasses
     EnemyDropDef(230, 0x2F, Song.MelonSliceDrop, 1),  # Ruler
     EnemyDropDef(340, 0x2F, Song.MelonSliceDrop, 1),  # Bug
-    EnemyDropDef(345 + CustomActors.ZingerFlamethrower, 0x2F, Song.MelonSliceDrop, 2),  # Flamethrowing Zinger
-    EnemyDropDef(345 + CustomActors.Scarab, 0x2F, Song.MelonSliceDrop, 1),  # Kiosk Bug Replica
+    EnemyDropDef(CustomActors.ZingerFlamethrower, 0x2F, Song.MelonSliceDrop, 2),  # Flamethrowing Zinger
+    EnemyDropDef(CustomActors.Scarab, 0x2F, Song.MelonSliceDrop, 1),  # Kiosk Bug Replica
     EnemyDropDef(288, 0x34, Song.Silence, 1),
 ]
 
-dance_acceptable_items = [x for x in db if x.force_dance]
-boss_enabled_items = [x for x in db if x.boss_enabled]
-bounce_items = [x for x in db if x.bounce]
-actor_drops = [x for x in db if x.actor is not None]
-danceless_items = [x for x in db if not x.will_dance]
+dance_acceptable_items = [x for x in item_database if x.item_db and x.force_dance]
+boss_enabled_items = [x for x in item_database if x.item_db and x.boss_enabled]
+bounce_items = [x for x in item_database if x.item_db and x.bounce]
+actor_drops = [x for x in item_database if x.item_db and x.actor is not None]
+danceless_items = [x for x in item_database if x.item_db and not x.will_dance]
 warning_text_data = [
     "This is a pre-generated file. Please don't directly modify this file as this will be overwritten upon next build.",
     "Visit build/item_dictionaries.py to modify this output.",
@@ -438,10 +371,10 @@ with open("include/item_data.h", "w") as fh:
     fh.write(f"extern const unsigned short bounce_objects[{len(bounce_items)}];\n")
     fh.write(f"extern const unsigned short actor_drops[{len(actor_drops)}];\n")
     # fh.write(f"extern const unsigned short danceless_items[{len(danceless_items)}];\n")
-    fh.write(f"extern const item_scale_info item_scales[{len(db)}];\n")
+    fh.write(f"extern const item_scale_info item_scales[{len([x for x in item_database if x.item_db])}];\n")
     fh.write(f"typedef enum new_custom_actors {{\n")
     for e in CustomActors:
-        fh.write(f"\t/* 0x{'{:03X}'.format(e.value)} */ NEWACTOR_{e.name.upper()}, \n")
+        fh.write(f"\t/* 0x{'{:03X}'.format(e.value)} */ NEWACTOR_{e.name.upper()} = {hex(e.value)}, \n")
     fh.write("\t/* ----- */ NEWACTOR_TERMINATOR, \n")
     fh.write("} new_custom_actors;\n")
     fh.write(f"#define DROP_COUNT {len(item_drops) + 1}\n")
@@ -454,13 +387,14 @@ with open("src/lib_items.c", "w") as fh:
     fh.write("\nconst unsigned short bounce_objects[] = {" + ",".join([str(x.actor) for x in bounce_items]) + "};")
     fh.write("\nconst unsigned short actor_drops[] = {" + ",".join([str(x.actor) for x in actor_drops]) + "};")
     # fh.write("\nconst unsigned short danceless_items[] = {" + ",".join([str(x.actor) for x in danceless_items]) + "};")
-    fh.write("\nconst item_scale_info item_scales[] = {\n\t" + ",\n\t".join([f"{{.type={x.model_two}, .scale={x.scale:.2f}f}}" for x in db]) + "\n};")
+    fh.write("\nconst item_scale_info item_scales[] = {\n\t" + ",\n\t".join([f"{{.type={x.model_two}, .scale={x.scale:.2f}f}}" for x in item_database if x.item_db]) + "\n};")
     fh.write(
         "\ncollision_info object_collisions[] = {\n\t"
         + ",\n\t".join(
             [
-                f"{{.type={x.object_id}, .collectable_type={x.item_type}, .unk4=0.08f, .unk8=0.95f, .intended_actor={x.kong}, .actor_equivalent={f'{x.actor_equivalent} + CUSTOM_ACTORS_START' if x.custom_actor else x.actor_equivalent}, .hitbox_y_center={x.hitbox.y}, .hitbox_radius={x.hitbox.radius}, .hitbox_height={x.hitbox.height}}}"
-                for x in db2
+                f"{{.type={x.model_two}, .collectable_type={x.item_type}, .unk4=0.08f, .unk8=0.95f, .intended_actor={x.kong}, .actor_equivalent={x.actor}, .hitbox_y_center={x.hitbox.y}, .hitbox_radius={x.hitbox.radius}, .hitbox_height={x.hitbox.height}}}"
+                for x in item_database
+                if x.has_collision
             ]
         )
         + "\n};"
@@ -486,14 +420,14 @@ with open("src/lib_items.c", "w") as fh:
     actor_data["actor_defs"].extend(
         [
             {
-                "actor_type": 345 + CustomActors.NintendoCoin,
+                "actor_type": CustomActors.NintendoCoin,
                 "model": 0x10B,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Nintendo Coin
             {
-                "actor_type": 345 + CustomActors.RarewareCoin,
+                "actor_type": CustomActors.RarewareCoin,
                 "model": 0x10D,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
@@ -501,42 +435,42 @@ with open("src/lib_items.c", "w") as fh:
             },  # Rareware Coin
             # Potions
             {
-                "actor_type": 345 + CustomActors.PotionDK,
+                "actor_type": CustomActors.PotionDK,
                 "model": 0xEE,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # DK Potion
             {
-                "actor_type": 345 + CustomActors.PotionDiddy,
+                "actor_type": CustomActors.PotionDiddy,
                 "model": 0xEF,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Diddy Potion
             {
-                "actor_type": 345 + CustomActors.PotionLanky,
+                "actor_type": CustomActors.PotionLanky,
                 "model": 0xF0,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Lanky Potion
             {
-                "actor_type": 345 + CustomActors.PotionTiny,
+                "actor_type": CustomActors.PotionTiny,
                 "model": 0xF1,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Tiny Potion
             {
-                "actor_type": 345 + CustomActors.PotionChunky,
+                "actor_type": CustomActors.PotionChunky,
                 "model": 0xF2,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Chunky Potion
             {
-                "actor_type": 345 + CustomActors.PotionAny,
+                "actor_type": CustomActors.PotionAny,
                 "model": 0xF3,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
@@ -544,35 +478,35 @@ with open("src/lib_items.c", "w") as fh:
             },  # Any Potion
             # Kongs
             {
-                "actor_type": 345 + CustomActors.KongDK,
+                "actor_type": CustomActors.KongDK,
                 "model": 0xFE,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # DK
             {
-                "actor_type": 345 + CustomActors.KongDiddy,
+                "actor_type": CustomActors.KongDiddy,
                 "model": 0xFF,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Diddy
             {
-                "actor_type": 345 + CustomActors.KongLanky,
+                "actor_type": CustomActors.KongLanky,
                 "model": 0x100,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Lanky
             {
-                "actor_type": 345 + CustomActors.KongTiny,
+                "actor_type": CustomActors.KongTiny,
                 "model": 0x101,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Tiny
             {
-                "actor_type": 345 + CustomActors.KongChunky,
+                "actor_type": CustomActors.KongChunky,
                 "model": 0x102,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
@@ -580,28 +514,28 @@ with open("src/lib_items.c", "w") as fh:
             },  # Chunky
             # Shop Owners
             {
-                "actor_type": 345 + CustomActors.CrankyItem,
+                "actor_type": CustomActors.CrankyItem,
                 "model": 0x10F,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Cranky
             {
-                "actor_type": 345 + CustomActors.FunkyItem,
+                "actor_type": CustomActors.FunkyItem,
                 "model": 0x110,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Funky
             {
-                "actor_type": 345 + CustomActors.CandyItem,
+                "actor_type": CustomActors.CandyItem,
                 "model": 0x111,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Candy
             {
-                "actor_type": 345 + CustomActors.SnideItem,
+                "actor_type": CustomActors.SnideItem,
                 "model": 0x112,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
@@ -609,98 +543,98 @@ with open("src/lib_items.c", "w") as fh:
             },  # Snide
             # Misc
             {
-                "actor_type": 345 + CustomActors.Bean,
+                "actor_type": CustomActors.Bean,
                 "model": 0x105,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Bean
             {
-                "actor_type": 345 + CustomActors.Pearl,
+                "actor_type": CustomActors.Pearl,
                 "model": 0x107,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Pearl
             {
-                "actor_type": 345 + CustomActors.Fairy,
+                "actor_type": CustomActors.Fairy,
                 "model": 0xFC,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fairy
             {
-                "actor_type": 345 + CustomActors.Null,
+                "actor_type": CustomActors.Null,
                 "model": 0,
                 "code": 0x80689F80,
                 "unk10": 0x8068A10C,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Nothing
             {
-                "actor_type": 345 + CustomActors.Medal,
+                "actor_type": CustomActors.Medal,
                 "model": 0x109,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Medal
             {
-                "actor_type": 345 + CustomActors.IceTrapBubble,
+                "actor_type": CustomActors.IceTrapBubble,
                 "model": 0xFD,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapReverse,
+                "actor_type": CustomActors.IceTrapReverse,
                 "model": 0xFD,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapSlow,
+                "actor_type": CustomActors.IceTrapSlow,
                 "model": 0xFD,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.HintItemDK,
+                "actor_type": CustomActors.HintItemDK,
                 "model": 0x11A,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Hint Item
             {
-                "actor_type": 345 + CustomActors.HintItemDiddy,
+                "actor_type": CustomActors.HintItemDiddy,
                 "model": 0x11C,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Hint Item
             {
-                "actor_type": 345 + CustomActors.HintItemLanky,
+                "actor_type": CustomActors.HintItemLanky,
                 "model": 0x11E,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Hint Item
             {
-                "actor_type": 345 + CustomActors.HintItemTiny,
+                "actor_type": CustomActors.HintItemTiny,
                 "model": 0x120,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Hint Item
             {
-                "actor_type": 345 + CustomActors.HintItemChunky,
+                "actor_type": CustomActors.HintItemChunky,
                 "model": 0x122,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Hint Item
             {
-                "actor_type": 345 + CustomActors.ArchipelagoItem,
+                "actor_type": CustomActors.ArchipelagoItem,
                 "model": 0x124,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
@@ -749,84 +683,84 @@ with open("src/lib_items.c", "w") as fh:
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item (Key)
             {
-                "actor_type": 345 + CustomActors.IceTrapDisableAGB,
+                "actor_type": CustomActors.IceTrapDisableAGB,
                 "model": 0xFD,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapDisableBGB,
+                "actor_type": CustomActors.IceTrapDisableBGB,
                 "model": 0xFD,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapDisableZGB,
+                "actor_type": CustomActors.IceTrapDisableZGB,
                 "model": 0xFD,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapDisableCUGB,
+                "actor_type": CustomActors.IceTrapDisableCUGB,
                 "model": 0xFD,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapDisableABean,
+                "actor_type": CustomActors.IceTrapDisableABean,
                 "model": 0x126,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapDisableBBean,
+                "actor_type": CustomActors.IceTrapDisableBBean,
                 "model": 0x126,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapDisableZBean,
+                "actor_type": CustomActors.IceTrapDisableZBean,
                 "model": 0x126,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapDisableCUBean,
+                "actor_type": CustomActors.IceTrapDisableCUBean,
                 "model": 0x126,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapDisableAKey,
+                "actor_type": CustomActors.IceTrapDisableAKey,
                 "model": 0x129,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapDisableBKey,
+                "actor_type": CustomActors.IceTrapDisableBKey,
                 "model": 0x129,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapDisableZKey,
+                "actor_type": CustomActors.IceTrapDisableZKey,
                 "model": 0x129,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": 345 + CustomActors.IceTrapDisableCUKey,
+                "actor_type": CustomActors.IceTrapDisableCUKey,
                 "model": 0x129,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
@@ -861,43 +795,43 @@ with open("src/lib_items.c", "w") as fh:
     actor_data["actor_functions"][324] = "&getNextMoveText"
     actor_data["actor_functions"][320] = "&getNextMoveText"
     actor_data["actor_functions"][107] = "&HelmBarrelCode"
-    actor_data = initActor(actor_data, 345 + CustomActors.NintendoCoin, "&GoldenBananaCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.RarewareCoin, "&GoldenBananaCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.Null, "&NothingCode", 4, 0, 1, 8, 0)
-    actor_data = initActor(actor_data, 345 + CustomActors.Medal, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.NintendoCoin, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.RarewareCoin, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.Null, "&NothingCode", 4, 0, 1, 8, 0)
+    actor_data = initActor(actor_data, CustomActors.Medal, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     for potion in POTIONS:
-        actor_data = initActor(actor_data, 345 + potion, "&PotionCode", 2, 0, 1, 8, 45)
+        actor_data = initActor(actor_data, potion, "&PotionCode", 2, 0, 1, 8, 45)
     for kong in KONGS:
-        actor_data = initActor(actor_data, 345 + kong, "&KongDropCode", 2, 0, 1, 8, 45)
+        actor_data = initActor(actor_data, kong, "&KongDropCode", 2, 0, 1, 8, 45)
     for shopkeeper in SHOPKEEPERS:
-        actor_data = initActor(actor_data, 345 + shopkeeper, "&shopOwnerItemCode", 2, 0, 1, 8, 45)
+        actor_data = initActor(actor_data, shopkeeper, "&shopOwnerItemCode", 2, 0, 1, 8, 45)
     for trap in TRAPS:
-        actor_data = initActor(actor_data, 345 + trap, "&FakeGBCode", 2, 0, 1, 8, 45)
+        actor_data = initActor(actor_data, trap, "&FakeGBCode", 2, 0, 1, 8, 45)
 
-    actor_data = initActor(actor_data, 345 + CustomActors.Bean, "&GoldenBananaCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.Pearl, "&GoldenBananaCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.Fairy, "&fairyDuplicateCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.HintItemDK, "&GoldenBananaCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.HintItemDiddy, "&GoldenBananaCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.HintItemLanky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.HintItemTiny, "&GoldenBananaCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.HintItemChunky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.ArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.Bean, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.Pearl, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.Fairy, "&fairyDuplicateCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.HintItemDK, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.HintItemDiddy, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.HintItemLanky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.HintItemTiny, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.HintItemChunky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.ArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 151, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 152, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 153, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 154, "&FakeKeyCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 155, "&FakeKeyCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, 157, "&FakeKeyCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 345 + CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
-    actor_data = initActor(actor_data, 345 + CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
-    actor_data = initActor(actor_data, 345 + CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)
+    actor_data = initActor(actor_data, CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
+    actor_data = initActor(actor_data, CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
+    actor_data = initActor(actor_data, CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, 141, "&charSpawnerItemCode", 2, 0, 1, 0x40, 197)
-    actor_data["actor_collisions"][345 + CustomActors.Scarab] = {
+    actor_data["actor_collisions"][CustomActors.Scarab] = {
         "collision_info": 0x8074B240,
         "unk_4": 1,
     }
-    actor_data = initActor(actor_data, 345 + CustomActors.KopDummy, "&dummyGuardCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.KopDummy, "&dummyGuardCode", 2, 0, 1, 8, 45)
     # Flag Mapping
     for item in actor_data["new_flag_mapping"]:
         if item["map"] == Maps.Helm:

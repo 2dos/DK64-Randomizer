@@ -267,7 +267,7 @@ void getNextMoveText(void) {
 	int start_hiding = 0;
 	actorData* shop_owner = paad->shop_owner;
 	shop_paad* shop_data = 0;
-	int is_jetpac = CurrentActorPointer_0->actorType == getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY);
+	int is_jetpac = CurrentActorPointer_0->actorType == NEWACTOR_JETPACITEMOVERLAY;
 	if (!is_jetpac) {
 		if ((shop_owner == 0) && (inShop(CurrentMap, 0))) {
 			shop_owner = getSpawnerTiedActor(1,0);

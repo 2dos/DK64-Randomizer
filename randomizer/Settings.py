@@ -92,10 +92,9 @@ class Settings:
             self.generate_spoilerlog = False
         self.random = random
         self.seed = str(self.seed) + self.__hash + str(json.dumps(form_data))
+        self.ice_trap_count = 0
         if not self.archipelago:
             self.set_seed()
-        else:
-            self.ice_trap_count = 0
         self.seed_hash = [self.random.randint(0, 9) for i in range(5)]
         self.krool_keys_required = []
         self.starting_key_list = []
@@ -570,6 +569,7 @@ class Settings:
         self.music_minoritems_randomized = False
         self.music_events_randomized = False
         self.random_music = False
+        self.music_rando_enabled = False
         self.music_is_custom = False
         self.music_vanilla_locations = False
         self.music_disable_reverb = False

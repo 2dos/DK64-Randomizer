@@ -42,8 +42,7 @@ void KongDropCode(void) {
      */
     GoldenBananaCode();
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        int current_type = CurrentActorPointer_0->actorType - CUSTOM_ACTORS_START;
-        int kong = current_type - NEWACTOR_KONGDK;
+        int kong = CurrentActorPointer_0->actorType - NEWACTOR_KONGDK;
         if (kong >= 0) {
             updateActorHandStates(CurrentActorPointer_0, kong + 2);
             playActorAnimation(CurrentActorPointer_0, AnimationTable1[(0x8B * 7) + kong]);
@@ -86,8 +85,7 @@ void shopOwnerItemCode(void) {
     GoldenBananaCode();
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF; // Make color blends work
-        int current_type = CurrentActorPointer_0->actorType - CUSTOM_ACTORS_START;
-        int owner = current_type - NEWACTOR_CRANKYITEM;
+        int owner = CurrentActorPointer_0->actorType - NEWACTOR_CRANKYITEM;
         playActorAnimation(CurrentActorPointer_0, shop_owner_anims[owner]);
     }
 }

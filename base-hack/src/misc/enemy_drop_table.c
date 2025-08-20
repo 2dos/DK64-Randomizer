@@ -81,7 +81,7 @@ void spawnEnemyDrops(actorData* actor) {
             if (canSpawnEnemyReward()) {
                 if (Rando.item_rando) {
                     int proposition = getEnemyItem(spawner_id);
-                    if ((proposition != -1) && (proposition != (CUSTOM_ACTORS_START + NEWACTOR_NULL))) {
+                    if ((proposition != -1) && (proposition != NEWACTOR_NULL)) {
                         drop_type = proposition;
                         drop_count = 1;
                     }

@@ -3196,7 +3196,7 @@ def GenerateMultipathDict(
         if len(path_to_camera) > 0:
             hint_text_components.append(path_to_camera[0])
         if path_to_family:
-            hint_text_components.append("\x04Free Kongs\x04")
+            hint_text_components.append("\x0cFree Kongs\x0c")
         if path_to_bean:
             hint_text_components.append("\x07The Bean\x07")
         if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:

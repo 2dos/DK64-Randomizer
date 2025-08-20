@@ -313,8 +313,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM_COPY.seek(sav + 0x1B7)
             ROM_COPY.writeMultipleBytes(write_data[0], 1)
 
-            patchAssemblyCosmetic(ROM_COPY, settings)
             music_data, music_names = randomize_music(settings, ROM_COPY)
+            patchAssemblyCosmetic(ROM_COPY, settings)
             # Disable dynamic FXMix (reverb)
             # If this impacts non-BGM music in a way that produces unwanted behavior, we'll want to only apply this to BGM
             if settings.music_disable_reverb:
