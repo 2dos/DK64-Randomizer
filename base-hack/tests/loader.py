@@ -50,6 +50,11 @@ class EmulatorInfo:
         self.connected_process: pymem.Pymem = None
         self.connected_offset: int = None
 
+    def disconnect(self):
+        """Disconnect emulator from process management."""
+        self.connected_offset = None
+        self.connected_process = None
+
     def attach_to_emulator(self) -> Optional[Tuple[pymem.Pymem, int]]:
         """Grab  memory addresses of where emulated RDRAM is."""
         # Reset
@@ -101,7 +106,6 @@ class EmulatorInfo:
             if test_value != 0:
                 has_seen_nonzero = True
             if test_value == 0x52414D42:
-                print("FOUND")
                 self.connected_process = pm
                 self.connected_offset = read_address + self.extra_offset
                 return
@@ -111,32 +115,25 @@ class EmulatorInfo:
 
     def readBytes(self, address: int, size: int) -> int:
         """Read a series of bytes and cast to an int."""
-        if self.connected_process is None:
+        if self.connected_process is None or self.connected_offset is None:
             raise Exception("Not connected to a process, exiting")
         if address & 0x80000000:
             address &= 0x7FFFFFFF
         mem_address = self.connected_offset + address
-        value = 0
-        for offset in range(size):
-            local_value = self.connected_process.read_uchar(mem_address + offset)
-            value <<= 8
-            value += local_value
+        data = self.connected_process.read_bytes(mem_address, size)
+        value = int.from_bytes(data, "big")
         return value
 
     def writeBytes(self, address: int, size: int, value: int):
         """Write a series of bytes to memory."""
-        if self.connected_process is None:
+        if self.connected_process is None or self.connected_offset is None:
             raise Exception("Not connected to a process, exiting")
         if address & 0x80000000:
             address &= 0x7FFFFFFF
         mem_address = self.connected_offset + address
-        val_series = [0] * size
-        local_value = value
-        for x in range(size):
-            val_series[(size - 1) - x] = local_value & 0xFF
-            local_value >>= 8
-        for offset, val in enumerate(val_series):
-            self.connected_process.write_uchar(mem_address + offset, val)
+        data = value.to_bytes(size, byteorder="little")  # or "big"
+        self.connected_process.write_bytes(mem_address, data, size)
+        print("Written data")
 
 
 EMULATOR_CONFIGS = {
