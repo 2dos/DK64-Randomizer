@@ -159,7 +159,7 @@ if baseclasses_loaded:
         SwitchsanityGone,
         BLockerSetting,
         RandomPrices,
-        WrinklyHints
+        WrinklyHints,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
