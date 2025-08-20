@@ -49,6 +49,9 @@ void sendTrap(ICE_TRAP_TYPES trap_type) {
 void handleSentItem(void) {
     archipelago_items FedItem = ap_info.fed_item;
     switch (FedItem) {
+        case TRANSFER_ITEM_GB:
+            giveGB();
+            break;
         case TRANSFER_ITEM_RAINBOWCOIN:
             giveItem(REQITEM_RAINBOWCOIN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .give_coins = 1});
             break;
