@@ -1303,7 +1303,6 @@ if baseclasses_loaded:
                             autoworld.hint_data["woth"].append(loc)
 
             except Exception as e:
-                print(e)
                 raise e
             finally:
                 for autoworld in multiworld.get_game_worlds("Donkey Kong 64"):

@@ -413,7 +413,6 @@ class LogicVarHolder:
 
     def AddArchipelagoItem(self, ap_item):
         """Add an Archipelago item to the owned items list."""
-        # ownedItems = self.latest_owned_items.copy()  Start with the current owned items list
         if ap_item.name.startswith("Collectible CBs"):
             # CBs are carefully named in the following format:
             # index 0: "Collectible CBs" - needed to identify this as a collectible item
