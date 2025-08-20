@@ -551,7 +551,7 @@ class ShopkeeperHints(DefaultOnToggle):
 
 
 class HintStyle(Choice):
-    """ "Choose the style of Wrinkly hints you'd like to play with. These do not affect shopkeeper or microhints.
+    """Choose the style of Wrinkly hints you'd like to play with. These do not affect shopkeeper or microhints.
 
     - off: No in-game hints at all.
     - no_woth: Hints can tell you about your K. Rool phases, and directly hint important items and hard locations.
