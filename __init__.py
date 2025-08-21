@@ -1255,6 +1255,9 @@ if baseclasses_loaded:
                     is_donk_item = player in players
                     is_donk_location = loc.player in players
 
+                    microhints_enabled = is_donk_item and autoworld.options.microhints > 0
+                    shopkeepers_enabled = is_donk_item and autoworld.options.shopkeeper_hints
+
                     # Skip locations that aren't related to DK64 or are clearly unimportant to us
                     if not (is_donk_location and loc.name in deep_location_names) and not (is_donk_item and autoworld.isMajorItem(loc.item)):
                         continue
@@ -1262,7 +1265,7 @@ if baseclasses_loaded:
                     is_microhintable = is_donk_item and loc.item.name in microHintItemNames and microHintItemNames[loc.item.name] in microhint_categories[autoworld.spoiler.settings.microhints_enabled]
 
                     # Gather information on microhints
-                    if (autoworld.options.microhints > 0 or autoworld.options.shopkeeper_hints) and is_microhintable:
+                    if (microhints_enabled or shopkeepers_enabled) and is_microhintable:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
@@ -1270,7 +1273,7 @@ if baseclasses_loaded:
                                 autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name[:80]]
 
                     # Bail if hints are disabled at this point
-                    if autoworld.options.hint_style == 0 and not is_donk_location:
+                    if (is_donk_item and autoworld.options.hint_style == 0) and not is_donk_location:
                         continue
 
                     # From here, no need to hint shopkeepers, since their microhints are basically free

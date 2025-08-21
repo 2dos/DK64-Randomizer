@@ -1,3 +1,3 @@
 """Holds the version for Archipelago."""
 
-version = "1.1.6"
+version = "1.1.7"
