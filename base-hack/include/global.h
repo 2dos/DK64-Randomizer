@@ -72,7 +72,6 @@ extern void PatchCrankyCode(void);
 extern void PatchBonusCode(void);
 extern void kioskBugCode(void);
 extern void FileScreenDLCode_Write(void);
-extern void pre_turn_keys(void);
 extern void auto_turn_keys(void);
 extern void handle_WTI(void);
 extern void warpToIsles(void);
@@ -338,14 +337,6 @@ extern int isFlagInRange(int test_flag, int start_flag, int count);
 extern void wipeHintCache(void);
 extern void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0);
 
-extern int initFile_hasGun(int kong);
-extern int initFile_hasInstrument(int kong);
-extern int initFile_getBeltLevel(int inc_training);
-extern int initFile_getInsUpgradeLevel(int inc_training);
-extern int initFile_getSlamLevel(int inc_training);
-extern int initFile_getKongPotionBitfield(int kong);
-extern int initFile_checkTraining(int type_check, int level_check, int kong_check);
-
 extern void fixHelmTimerCorrection(void);
 extern void exitBoss(void);
 
@@ -503,3 +494,5 @@ extern unsigned short trap_enabled_buttons;
 extern purchase_text_hint_struct purchase_hint_text_items[120];
 extern char aztec_beetle[0x20];
 extern char caves_beetle[0x20];
+extern unsigned char pregiven_status[56];
+extern StartingItemsStruct starting_item_data;

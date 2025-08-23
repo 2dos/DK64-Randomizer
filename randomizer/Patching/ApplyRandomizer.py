@@ -60,7 +60,7 @@ from randomizer.Patching.EntranceRando import (
     placeLevelOrder,
 )
 from randomizer.Patching.FairyPlacer import PlaceFairies
-from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements
+from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements, calculateInitFileScreen
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
@@ -624,18 +624,6 @@ def patching_response(spoiler):
                     else:
                         spoiler.text_changes[file] = [data]
 
-    keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
-    if len(spoiler.settings.krool_keys_required) > 0:
-        for key in spoiler.settings.krool_keys_required:
-            key_index = key - 4
-            if key_index in keys_turned_in:
-                keys_turned_in.remove(key_index)
-    key_bitfield = 0
-    for key in keys_turned_in:
-        key_bitfield = key_bitfield | (1 << key)
-    ROM_COPY.seek(sav + 0x127)
-    ROM_COPY.write(key_bitfield)
-
     if spoiler.settings.rareware_gb_fairies != 20:
         ROM_COPY.seek(sav + 0x36)
         ROM_COPY.write(spoiler.settings.rareware_gb_fairies)
@@ -737,6 +725,8 @@ def patching_response(spoiler):
 
         patchAssembly(ROM_COPY, spoiler)
         ApplyMirrorMode(spoiler.settings, ROM_COPY)
+
+    calculateInitFileScreen(spoiler, ROM_COPY)
 
     # Apply Hash
     order = 0

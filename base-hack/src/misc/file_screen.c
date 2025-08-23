@@ -152,133 +152,64 @@ static passMapping button_mapping_password[] = {
 	{.button_required = Start_Button, .btf_val = PASSKEY_S, .text_char='S'},
 };
 static char passTextDisplay[9];
-
-int isMovePregiven(int index) {
-	/**
-	 * @brief Get the tracker move initial state (Empty File)
-	 * 
-	 * @param index Tracker item index
-	 * 
-	 * @return State
-	 */
-	switch(index) {
-		case TRACKER_TYPE_COCONUT:
-		case TRACKER_TYPE_PEANUT:
-		case TRACKER_TYPE_GRAPE:
-		case TRACKER_TYPE_FEATHER:
-		case TRACKER_TYPE_PINEAPPLE:
-			return initFile_hasGun(index / 5);
-		case TRACKER_TYPE_BONGOS:
-		case TRACKER_TYPE_GUITAR:
-		case TRACKER_TYPE_TROMBONE:
-		case TRACKER_TYPE_SAX:
-		case TRACKER_TYPE_TRIANGLE:
-			return initFile_hasInstrument((index - 1) / 5);
-		case TRACKER_TYPE_GRAB:
-			return Rando.moves_pregiven.grab || initFile_checkTraining(REQITEM_MOVE, 2, 0);
-		case TRACKER_TYPE_BLAST:
-			return Rando.moves_pregiven.blast || initFile_checkTraining(REQITEM_MOVE, 0, 0);
-		case TRACKER_TYPE_STRONG:
-			return Rando.moves_pregiven.strong_kong || initFile_checkTraining(REQITEM_MOVE, 1, 0);
-		case TRACKER_TYPE_CHARGE:
-			return Rando.moves_pregiven.charge || initFile_checkTraining(REQITEM_MOVE, 0, 1);
-		case TRACKER_TYPE_SPRING:
-			return Rando.moves_pregiven.spring || initFile_checkTraining(REQITEM_MOVE, 2, 1);
-		case TRACKER_TYPE_ROCKET:
-			return Rando.moves_pregiven.rocketbarrel || initFile_checkTraining(REQITEM_MOVE, 1, 1);
-		case TRACKER_TYPE_OSTAND:
-			return Rando.moves_pregiven.ostand || initFile_checkTraining(REQITEM_MOVE, 0, 2);
-		case TRACKER_TYPE_BALLOON:
-			return Rando.moves_pregiven.balloon || initFile_checkTraining(REQITEM_MOVE, 1, 2);
-		case TRACKER_TYPE_OSPRINT:
-			return Rando.moves_pregiven.osprint || initFile_checkTraining(REQITEM_MOVE, 2, 2);
-		case TRACKER_TYPE_PTT:
-			return Rando.moves_pregiven.twirl || initFile_checkTraining(REQITEM_MOVE, 1, 3);
-		case TRACKER_TYPE_MONKEYPORT:
-			return Rando.moves_pregiven.monkeyport || initFile_checkTraining(REQITEM_MOVE, 2, 3);
-		case TRACKER_TYPE_MINI:
-			return Rando.moves_pregiven.mini || initFile_checkTraining(REQITEM_MOVE, 0, 3);
-		case TRACKER_TYPE_PUNCH:
-			return Rando.moves_pregiven.punch || initFile_checkTraining(REQITEM_MOVE, 1, 4);
-		case TRACKER_TYPE_GONE:
-			return Rando.moves_pregiven.gone || initFile_checkTraining(REQITEM_MOVE, 2, 4);
-		case TRACKER_TYPE_HUNKY:
-			return Rando.moves_pregiven.hunky || initFile_checkTraining(REQITEM_MOVE, 0, 4);
-		case TRACKER_TYPE_CAMERA:
-			return Rando.moves_pregiven.camera || initFile_checkTraining(REQITEM_MOVE, 10, 4);
-		case TRACKER_TYPE_SHOCKWAVE:
-			return Rando.moves_pregiven.shockwave || initFile_checkTraining(REQITEM_MOVE, 10, 5);
-		case TRACKER_TYPE_SLAM:
-		case TRACKER_TYPE_SLAM_HAS:
-			return initFile_getSlamLevel(1);
-		case TRACKER_TYPE_HOMING:
-			return Rando.moves_pregiven.homing || initFile_checkTraining(REQITEM_MOVE, 5, -1);
-		case TRACKER_TYPE_SNIPER:
-			return Rando.moves_pregiven.sniper || initFile_checkTraining(REQITEM_MOVE, 6, -1);
-		case TRACKER_TYPE_CLIMB:
-			return Rando.moves_pregiven.climbing || initFile_checkTraining(REQITEM_MOVE, 11, -1);
-		case TRACKER_TYPE_DIVE:
-			return Rando.moves_pregiven.dive || initFile_checkTraining(REQITEM_MOVE, 10, 0);
-		case TRACKER_TYPE_ORANGE:
-			return Rando.moves_pregiven.oranges || initFile_checkTraining(REQITEM_MOVE, 10, 1);
-		case TRACKER_TYPE_BARREL:
-			return Rando.moves_pregiven.barrels || initFile_checkTraining(REQITEM_MOVE, 10, 2);
-		case TRACKER_TYPE_VINE:
-			return Rando.moves_pregiven.vines || initFile_checkTraining(REQITEM_MOVE, 10, 3);
-		case TRACKER_TYPE_MELON_2:
-			if (initFile_getInsUpgradeLevel(1) >= 1) {
-				return 1;
-			}
-			for (int i = 0; i < 5; i++) {
-				if (initFile_hasInstrument(i)) {
-					return 1;
-				}
-			}
-			return 0;
-		case TRACKER_TYPE_MELON_3:
-			return initFile_getInsUpgradeLevel(1) >= 2;
-		case TRACKER_TYPE_INSUPG_1:
-			return initFile_getInsUpgradeLevel(1) >= 1;
-		case TRACKER_TYPE_INSUPG_2:
-			return initFile_getInsUpgradeLevel(1) >= 3;
-		case TRACKER_TYPE_BELT_1:
-			return initFile_getBeltLevel(1) >= 1;
-		case TRACKER_TYPE_BELT_2:
-			return initFile_getBeltLevel(1) >= 2;
-		case TRACKER_TYPE_AMMOBELT:
-			return initFile_getBeltLevel(1);
-		case TRACKER_TYPE_INSTRUMENT_UPG:
-			if (initFile_getInsUpgradeLevel(1) >= 3) {
-				return 2;
-			} else if (initFile_getInsUpgradeLevel(1) >= 1) {
-				return 1;
-			}
-			return 0;
-		case TRACKER_TYPE_KEY1:
-		case TRACKER_TYPE_KEY2:
-		case TRACKER_TYPE_KEY3:
-		case TRACKER_TYPE_KEY4:
-		case TRACKER_TYPE_KEY5:
-		case TRACKER_TYPE_KEY6:
-		case TRACKER_TYPE_KEY7:
-		case TRACKER_TYPE_KEY8:
-			if (Rando.keys_preturned & (1 << (index - TRACKER_TYPE_KEY1))) {
-				return 1;
-			}
-			return 0;
-		case TRACKER_TYPE_CRANKY:
-		case TRACKER_TYPE_FUNKY:
-		case TRACKER_TYPE_CANDY:
-		case TRACKER_TYPE_SNIDE:
-			if (Rando.check_shop_flags & (0x80 >> (index - TRACKER_TYPE_CRANKY))) {
-				return 1;
-			}
-			return 0;
-		default:
-			break;
-	}
-	return 0;
-}
+unsigned char pregiven_status[] = {
+	0, // 0  = TRACKER_TYPE_COCONUT
+	0, // 1  = TRACKER_TYPE_BONGOS
+	0, // 2  = TRACKER_TYPE_GRAB
+	0, // 3  = TRACKER_TYPE_STRONG
+	0, // 4  = TRACKER_TYPE_BLAST
+	0, // 5  = TRACKER_TYPE_PEANUT
+	0, // 6  = TRACKER_TYPE_GUITAR
+	0, // 7  = TRACKER_TYPE_CHARGE
+	0, // 8  = TRACKER_TYPE_ROCKET
+	0, // 9  = TRACKER_TYPE_SPRING
+	0, // 10 = TRACKER_TYPE_GRAPE
+	0, // 11 = TRACKER_TYPE_TROMBONE
+	0, // 12 = TRACKER_TYPE_OSTAND
+	0, // 13 = TRACKER_TYPE_OSPRINT
+	0, // 14 = TRACKER_TYPE_BALLOON
+	0, // 15 = TRACKER_TYPE_FEATHER
+	0, // 16 = TRACKER_TYPE_SAX
+	0, // 17 = TRACKER_TYPE_PTT
+	0, // 18 = TRACKER_TYPE_MINI
+	0, // 19 = TRACKER_TYPE_MONKEYPORT
+	0, // 20 = TRACKER_TYPE_PINEAPPLE
+	0, // 21 = TRACKER_TYPE_TRIANGLE
+	0, // 22 = TRACKER_TYPE_PUNCH
+	0, // 23 = TRACKER_TYPE_HUNKY
+	0, // 24 = TRACKER_TYPE_GONE
+	0, // 25 = TRACKER_TYPE_SLAM
+	0, // 26 = TRACKER_TYPE_SLAM_HAS
+	0, // 27 = TRACKER_TYPE_HOMING
+	0, // 28 = TRACKER_TYPE_SNIPER
+	0, // 29 = TRACKER_TYPE_AMMOBELT
+	0, // 30 = TRACKER_TYPE_INSTRUMENT_UPG
+	1, // 31 = TRACKER_TYPE_DIVE
+	1, // 32 = TRACKER_TYPE_ORANGE
+	1, // 33 = TRACKER_TYPE_BARREL
+	1, // 34 = TRACKER_TYPE_VINE
+	0, // 35 = TRACKER_TYPE_CAMERA
+	0, // 36 = TRACKER_TYPE_SHOCKWAVE
+	0, // 37 = TRACKER_TYPE_KEY1
+	0, // 38 = TRACKER_TYPE_KEY2
+	0, // 39 = TRACKER_TYPE_KEY3
+	0, // 40 = TRACKER_TYPE_KEY4
+	0, // 41 = TRACKER_TYPE_KEY5
+	0, // 42 = TRACKER_TYPE_KEY6
+	0, // 43 = TRACKER_TYPE_KEY7
+	0, // 44 = TRACKER_TYPE_KEY8
+	0, // 45 = TRACKER_TYPE_MELON_2
+	0, // 46 = TRACKER_TYPE_MELON_3
+	0, // 47 = TRACKER_TYPE_INSUPG_1
+	0, // 48 = TRACKER_TYPE_INSUPG_2
+	0, // 49 = TRACKER_TYPE_BELT_1
+	0, // 50 = TRACKER_TYPE_BELT_2
+	1, // 51 = TRACKER_TYPE_CRANKY
+	1, // 52 = TRACKER_TYPE_FUNKY
+	1, // 53 = TRACKER_TYPE_CANDY
+	1, // 54 = TRACKER_TYPE_SNIDE
+	1, // 55 = TRACKER_TYPE_CLIMB
+};
 
 int getEnabledState(int index) {
 	/**
@@ -293,7 +224,7 @@ int getEnabledState(int index) {
 		file_empty = isFileEmpty(0);
 	}
 	if (file_empty) { // Empty file check
-		return isMovePregiven(index);
+		return pregiven_status[index];
 	}
 	switch(index) {
 		case TRACKER_TYPE_COCONUT:
@@ -401,14 +332,7 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_KEY8:
 			{
 				// Keys in
-				int key_index = index - TRACKER_TYPE_KEY1;
-				int key_there = getItemCount_new(REQITEM_KEY, key_index, 0);
-				if (!key_there) {
-					if (Rando.keys_preturned & (1 << key_index)) {
-						key_there = 1;
-					}
-				}
-				return key_there;
+				return getItemCount_new(REQITEM_KEY, index - TRACKER_TYPE_KEY1, 0);
 			}
 		case TRACKER_TYPE_CRANKY:
 		case TRACKER_TYPE_FUNKY:
@@ -765,7 +689,6 @@ void startFile(void) {
 		if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {
 			setPermFlag(FLAG_MODIFIER_LLAMAFREE); // No item check
 		}
-		pre_turn_keys();
 		Character = Rando.starting_kong;
 		setFlag(FLAG_HELM_HURRY_DISABLED, 0, FLAGTYPE_PERMANENT);
 		if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {

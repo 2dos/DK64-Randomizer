@@ -53,6 +53,21 @@ typedef struct CountStruct {
     /* 0x018 */ MoveSpecialStruct flag_moves;
 } CountStruct;
 
+typedef struct StartingItemsKongwiseStruct {
+	/* 0x000 */ unsigned char special_moves;
+	/* 0x001 */ unsigned char gun;
+	/* 0x002 */ unsigned char instrument;
+} StartingItemsKongwiseStruct;
+
+typedef struct StartingItemsStruct {
+	/* 0x000 */ CountStruct others; // Has an 0x1 pad afterwards
+	/* 0x01A */ StartingItemsKongwiseStruct kongs[5];
+	/* 0x029 */ unsigned char melons;
+	/* 0x02A */ unsigned char slam;
+	/* 0x02B */ unsigned char belt;
+    /* 0x02C */ unsigned char climbing;
+} StartingItemsStruct;
+
 typedef struct MoveSpecialBijectionStruct {
     unsigned short flag;
     unsigned short move_enum;

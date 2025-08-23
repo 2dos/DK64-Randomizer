@@ -1,177 +1,53 @@
 #include "../../include/common.h"
 
-int initFile_checkTraining(int type_check, int level_check, int kong_check) {
-	int count = 0;
-	if (Rando.fast_start_beginning) {
-		for (int i = 0; i < 5; i++) {
-			purchase_struct* handler = &FirstMove_New;
-			if (i < 4) {
-				handler = &TrainingMoves_New[i];
-			}
-			if (handler->item.item_type == type_check) {
-				if ((kong_check == -1) || (handler->item.kong == kong_check)) {
-					if (handler->item.level == level_check) {
-						if (kong_check == -1) {
-							count += 1;
-						} else {
-							return 1;
-						}
-					}
-				}
-			}
+StartingItemsStruct starting_item_data = {
+	.others = {
+		.flag_moves = {
+			.barrels = 1,
+			.diving = 1,
+			.oranges = 1,
+			.vines = 1,
 		}
-	}
-	return count;
-}
+	},
+	.melons = 1,
+	.slam = 1,
+};
 
-int initFile_hasGun(int kong) {
-	int guns[] = {Rando.moves_pregiven.coconut, Rando.moves_pregiven.peanut, Rando.moves_pregiven.grape, Rando.moves_pregiven.feather, Rando.moves_pregiven.pineapple};
-	return (guns[kong] != 0) || (initFile_checkTraining(REQITEM_MOVE, 4, kong));
-}
-
-int initFile_hasInstrument(int kong) {
-	int instruments[] = {Rando.moves_pregiven.bongos, Rando.moves_pregiven.guitar, Rando.moves_pregiven.trombone, Rando.moves_pregiven.sax, Rando.moves_pregiven.triangle};
-	return (instruments[kong] != 0) || (initFile_checkTraining(REQITEM_MOVE, 8, kong));
-}
-
-int initFile_getBeltLevel(int inc_training) {
-	int belts[] = {Rando.moves_pregiven.belt_upgrade_0, Rando.moves_pregiven.belt_upgrade_1};
-	int belt_level = 0;
-	for (int i = 0; i < 2; i++) {
-		if (belts[i]) {
-			belt_level += 1;
-		}
-	}
-	if (inc_training) {
-		belt_level += initFile_checkTraining(REQITEM_MOVE, 7, -1);
-	}
-	return belt_level;
-}
-
-int initFile_getInsUpgradeLevel(int inc_training) {
-	int instrument_upgrades[] = {Rando.moves_pregiven.ins_upgrade_0, Rando.moves_pregiven.ins_upgrade_1, Rando.moves_pregiven.ins_upgrade_2};
-	int instrument_upgrade_level = 0;
-	for (int i = 0; i < 3; i++) {
-		if (instrument_upgrades[i]) {
-			instrument_upgrade_level += 1;
-		}
-	}
-	if (inc_training) {
-		instrument_upgrade_level += initFile_checkTraining(REQITEM_MOVE, 9, -1);
-	}
-	return instrument_upgrade_level;
-}
-
-int initFile_getSlamLevel(int inc_training) {
-	int slams[] = {Rando.moves_pregiven.slam_upgrade_0, Rando.moves_pregiven.slam_upgrade_1, Rando.moves_pregiven.slam_upgrade_2};
-	int slam_level = 0;
-	for (int i = 0; i < 3; i++) {
-		if (slams[i]) {
-			slam_level += 1;
-		}
-	}
-	if (inc_training) {
-		slam_level += initFile_checkTraining(REQITEM_MOVE, 3, -1);
-	}
-	return slam_level;
-}
-
-int initFile_getKongPotionBitfield(int kong) {
-	int potions[5][3] = {
-		{Rando.moves_pregiven.blast, Rando.moves_pregiven.strong_kong, Rando.moves_pregiven.grab},
-		{Rando.moves_pregiven.charge, Rando.moves_pregiven.rocketbarrel, Rando.moves_pregiven.spring},
-		{Rando.moves_pregiven.ostand, Rando.moves_pregiven.balloon, Rando.moves_pregiven.osprint},
-		{Rando.moves_pregiven.mini, Rando.moves_pregiven.twirl, Rando.moves_pregiven.monkeyport},
-		{Rando.moves_pregiven.hunky, Rando.moves_pregiven.punch, Rando.moves_pregiven.gone},
-	};
-	int bitfield = 0;
-	for (int i = 0; i < 3; i++) {
-		if (potions[kong][i]) {
-			bitfield |= (1 << i);
-		}
-		if (initFile_checkTraining(REQITEM_MOVE, i, kong)) {
-			bitfield |= (1 << i);
-		}
-	}
-	return bitfield;
-}
+static const unsigned short fast_start_flags[] = {
+	FLAG_TBARREL_DIVE,
+	FLAG_TBARREL_ORANGE,
+	FLAG_TBARREL_BARREL,
+	FLAG_TBARREL_VINE,
+	FLAG_ABILITY_SIMSLAM,
+};
 
 void unlockMoves(void) {
-	// Evaluate progressives
-	int has_instrument = 0;
-	for (int i = 0; i < 5; i++) {
-		if (initFile_hasInstrument(i)) {
-			has_instrument = 1;
-		}
-	}
 	CollectableBase.Oranges = 15;
 	CollectableBase.Crystals = 1500;
-	int slam_level = initFile_getSlamLevel(0);
-	int belt_level = initFile_getBeltLevel(0);
-	int base_gun_bitfield = 0;
-	int base_ins_bitfield = ((1 << initFile_getInsUpgradeLevel(0)) - 1) << 1;
-	if ((Rando.moves_pregiven.homing) || (initFile_checkTraining(REQITEM_MOVE, 5, -1))) {
-		base_gun_bitfield |= 2;
-	}
-	if ((Rando.moves_pregiven.sniper) || (initFile_checkTraining(REQITEM_MOVE, 6, -1))) {
-		base_gun_bitfield |= 4;
-	}
-	for (int i = 0; i < 5; i++) {
-		int has_kong_instrument = initFile_hasInstrument(i);
-		int has_kong_gun = initFile_hasGun(i);
-		MovesBase[i].special_moves = initFile_getKongPotionBitfield(i);
-		MovesBase[i].simian_slam = slam_level;
-		MovesBase[i].weapon_bitfield = base_gun_bitfield | (has_kong_gun != 0);
-		MovesBase[i].ammo_belt = belt_level;
-		MovesBase[i].instrument_bitfield = base_ins_bitfield | (has_kong_instrument != 0);
-		if (has_kong_instrument) {
-			if (Rando.quality_of_life.global_instrument) {
-				CollectableBase.InstrumentEnergy = 12;
-			} else {
-				MovesBase[i].instrument_energy = 12;
-			}
-			has_instrument = 1;
-		}
-		if (has_kong_gun) {
-			CollectableBase.StandardAmmo = 100;
-		}
-	}
-	int ins_check = initFile_getInsUpgradeLevel(1);
-	if (ins_check >= 2) {
-		CollectableBase.Melons = 3;
-		CollectableBase.Health = 12;
+	CollectableBase.StandardAmmo = 100;
+	CollectableBase.Film = 5;
+	if (Rando.quality_of_life.global_instrument) {
+		CollectableBase.InstrumentEnergy = 12;
 	} else {
-		if ((has_instrument) || (ins_check >= 1)) {
-			CollectableBase.Melons = 2;
-			CollectableBase.Health = 8;
+		
+	}
+	CollectableBase.Melons = starting_item_data.melons;
+	CollectableBase.Health = starting_item_data.melons << 2;
+	for (int i = 0; i < 5; i++) {
+		StartingItemsKongwiseStruct *kong = &starting_item_data.kongs[i];
+		MovesBase[i].ammo_belt = starting_item_data.belt;
+		MovesBase[i].instrument_bitfield = kong->instrument;
+		MovesBase[i].simian_slam = starting_item_data.slam;
+		MovesBase[i].special_moves = kong->special_moves;
+		MovesBase[i].weapon_bitfield = kong->gun;
+		MovesBase[i].instrument_energy = 12;
+		if (Rando.fast_start_beginning) {
+			setPermFlag(fast_start_flags[i]);
 		}
 	}
-	if (Rando.fast_start_beginning) {
-		setLocationStatus(LOCATION_FIRSTMOVE);
-		for (int i = 0; i < 4; i++) {
-			setLocationStatus(LOCATION_DIVE + i);
-		}
+	*ItemInventory = starting_item_data.others;
+	if (starting_item_data.climbing) {
+		setPermFlag(FLAG_ABILITY_CLIMBING);
 	}
-	if ((Rando.moves_pregiven.camera) || (initFile_checkTraining(REQITEM_MOVE, 10, MOVE_SPECIAL_CAMERA))) {
-		setFlagMove(FLAG_ABILITY_CAMERA);
-		CollectableBase.Film = 5;
-	}
-	if ((Rando.moves_pregiven.shockwave) || (initFile_checkTraining(REQITEM_MOVE, 10, MOVE_SPECIAL_SHOCKWAVE))) {
-		setFlagMove(FLAG_ABILITY_SHOCKWAVE);
-	}
-	if ((Rando.moves_pregiven.climbing) || (initFile_checkTraining(REQITEM_MOVE, 11, -1))) {
-		setFlagMove(FLAG_ABILITY_CLIMBING);
-	}
-	if ((Rando.moves_pregiven.dive) || (initFile_checkTraining(REQITEM_MOVE, 10, MOVE_SPECIAL_DIVING))) {
-		setFlagMove(FLAG_TBARREL_DIVE);
-	}
-	if ((Rando.moves_pregiven.oranges) || (initFile_checkTraining(REQITEM_MOVE, 10, MOVE_SPECIAL_ORANGES))) {
-		setFlagMove(FLAG_TBARREL_ORANGE);
-	}
-	if ((Rando.moves_pregiven.barrels) || (initFile_checkTraining(REQITEM_MOVE, 10, MOVE_SPECIAL_BARRELS))) {
-		setFlagMove(FLAG_TBARREL_BARREL);
-	}
-	if ((Rando.moves_pregiven.vines) || (initFile_checkTraining(REQITEM_MOVE, 10, MOVE_SPECIAL_VINES))) {
-		setFlagMove(FLAG_TBARREL_VINE);
-	}
+	auto_turn_keys();
 }
