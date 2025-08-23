@@ -229,7 +229,7 @@ typedef struct steel_keg_struct {
 static steel_keg_struct SteelKegMapping[] = {
     {.map = MAP_FUNGIMILLFRONT, .grabbable_id = GRABBABLE_MILL_FRONT_NEAR, .spawner_id = 4},
     {.map = MAP_FUNGIMILLFRONT, .grabbable_id = GRABBABLE_MILL_FRONT_FAR, .spawner_id = 6},
-    {.map = MAP_FUNGIMILLREAR, .grabbable_id = MAP_FUNGIMILLREAR, .spawner_id = 6},
+    {.map = MAP_FUNGIMILLREAR, .grabbable_id = GRABBABLE_MILL_REAR, .spawner_id = 6},
 };
 
 void* updateKegIDs(int actor, float x, float y, float z) {
