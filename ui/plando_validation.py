@@ -264,8 +264,8 @@ def hint_text_validation_fn(hintString: str) -> str:
     for color in colors:
         trimmedHintString = trimmedHintString.replace(f"[{color}]", "")
         trimmedHintString = trimmedHintString.replace(f"[/{color}]", "")
-    if re.search("[^A-Za-z0-9 '\,\:\.\-\?!]", trimmedHintString) is not None:
-        errString = "Only letters, numbers, spaces, the characters ',.:-?! and color tags are allowed in hints."
+    if re.search("[^A-Za-z0-9 '\,\:\.\-\?!()]", trimmedHintString) is not None:
+        errString = "Only letters, numbers, spaces, the characters ',.:-?!() and color tags are allowed in hints."
         return errString
     if len(trimmedHintString) > 123:
         errString = "Hints can be a maximum of 123 characters (excluding color tags)."
