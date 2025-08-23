@@ -156,6 +156,7 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     writeValue(ROM_COPY, 0x8060D026, Overlay.Static, 0x20 + save_index_offset, offset_dict)  # Read from File - Camera Type
     # Offset clamping
     writeValue(ROM_COPY, 0x8060C432, Overlay.Static, -(0x11 + save_index_offset), offset_dict, 2, True)
+    writeValue(ROM_COPY, 0x8060BFBA, Overlay.Static, -(0x11 + save_index_offset), offset_dict, 2, True)
 
 
 def saveUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
