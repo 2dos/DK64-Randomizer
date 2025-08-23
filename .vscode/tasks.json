@@ -128,6 +128,12 @@
       "type": "shell",
       "command": "${command:python.interpreterPath} ./cb_calc.py",
       "problemMatcher": []
+    },
+    {
+      "label": "Package APWorld",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./tools/package_apworld.py",
+      "problemMatcher": [],
     }
   ]
 }

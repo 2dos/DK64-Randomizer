@@ -31,7 +31,6 @@ class DK64Client:
     """Client for Donkey Kong 64."""
 
     n64_client = None
-    tracker = None
     game = None
     auth = None
     locations_scouted = {}
@@ -851,7 +850,6 @@ class DK64Context(CommonContext):
         class DK64Manager(GameManager):
             logging_pairs = [
                 ("Client", "Archipelago"),
-                ("Tracker", "Tracker"),
             ]
             base_title = f"Archipelago Donkey Kong 64 Client (Version {ap_version})"
 
