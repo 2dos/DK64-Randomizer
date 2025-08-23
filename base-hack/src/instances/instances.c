@@ -430,7 +430,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_CRANKY:
 				if (param2 == ITEM_RAREWARE_COIN) {
-					giveItemFromPacket(&company_coin_table[1]);
+					giveItemFromPacket(&company_coin_table[1], 0);
 				}
 				break;
 			case MAP_KROOLCHUNKY:
@@ -934,7 +934,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (((param2 >= FACTORY_BLOCKELEVATOR_0) && (param2 <= FACTORY_BLOCKELEVATOR_4)) || (param2 == FACTORY_BLOCKELEVATOR_5) || (param2 == FACTORY_BLOCKELEVATOR_6)) {
 					behaviour_pointer->timer = (RNG & 63) + 15;
 				} else if (param2 == ITEM_NINTENDO_COIN) {
-					giveItemFromPacket(&company_coin_table[0]);
+					giveItemFromPacket(&company_coin_table[0], 0);
 				}
 				break;
 			case MAP_FUNGIMILLFRONT:

@@ -52,7 +52,7 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
     float reward_y = 120.0f;
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
         setPermFlag(flag);
-        giveItemFromPacket(item_send);
+        giveItemFromPacket(item_send, 0);
         void* sprite = 0;
         requirement_item item_type = item_send->item_type;
         int item_kong = item_send->kong;
@@ -410,6 +410,7 @@ void getItem(int object_type) {
                 }
                 setAction(action, 0, 0);
             }
+            playSong(SONG_GBGET, 1.0f);
             break;
         case 0x18D:
             // Crown

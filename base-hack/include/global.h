@@ -411,7 +411,7 @@ extern purchase_struct* getShopData(vendors vendor, int kong, int level);
 extern void initQoL_Cutscenes(void);
 
 extern void giveItem(requirement_item item, int level, int kong, giveItemConfig config);
-extern void giveItemFromPacket(item_packet *packet);
+extern void giveItemFromPacket(item_packet *packet, int force_text);
 extern int getItemCount_new(requirement_item item, int level, int kong);
 extern int hasFlagMove(int flag);
 extern void setFlagMove(int flag);

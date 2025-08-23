@@ -24,70 +24,555 @@ typedef struct tracker_struct {
 	/* 0x006 */ short max_y;
 	/* 0x008 */ unsigned char enabled;
 	/* 0x009 */ unsigned char type;
+	/* 0x00A */ unsigned char item;
+	/* 0x00B */ char level;
+	/* 0x00C */ char kong;
 } tracker_struct;
 
 #define TRACKER_ENABLED_DEFAULT 1
 
 static tracker_struct tracker_info[] = {
 	// Position of items on the tracker image
-	{.min_x = 0, .max_x = 20, .min_y = 0, .max_y = 22, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_COCONUT}, // Coconut
-	{.min_x = 0, .max_x = 20, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BONGOS}, // Bongos
-	{.min_x = 0, .max_x = 20, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_GRAB}, // Grab
-	{.min_x = 0, .max_x = 20, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BLAST}, // Blast
-	{.min_x = 0, .max_x = 20, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_STRONG}, // Strong
-	{.min_x = 22, .max_x = 42, .min_y = 0, .max_y = 22, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_PEANUT}, // Peanut
-	{.min_x = 22, .max_x = 42, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_GUITAR}, // Guitar
-	{.min_x = 22, .max_x = 42, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CHARGE}, // Charge
-	{.min_x = 22, .max_x = 42, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SPRING}, // Spring
-	{.min_x = 22, .max_x = 42, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_ROCKET}, // Rocket
-	{.min_x = 44, .max_x = 64, .min_y = 0, .max_y = 22, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_GRAPE}, // Grape
-	{.min_x = 44, .max_x = 64, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_TROMBONE}, // Trombone
-	{.min_x = 44, .max_x = 64, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_OSTAND}, // OStand
-	{.min_x = 44, .max_x = 64, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BALLOON}, // Balloon
-	{.min_x = 44, .max_x = 64, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_OSPRINT}, // OSprint
-	{.min_x = 66, .max_x = 86, .min_y = 0, .max_y = 22, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_FEATHER}, // Feather
-	{.min_x = 66, .max_x = 86, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SAX}, // Sax
-	{.min_x = 66, .max_x = 86, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_PTT}, // PTT
-	{.min_x = 66, .max_x = 86, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MONKEYPORT}, // Monkeyport
-	{.min_x = 66, .max_x = 86, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MINI}, // Mini
-	{.min_x = 88, .max_x = 108, .min_y = 0, .max_y = 22, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_PINEAPPLE}, // Pineapple
-	{.min_x = 88, .max_x = 108, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_TRIANGLE}, // Triangle
-	{.min_x = 88, .max_x = 108, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_PUNCH}, // Punch
-	{.min_x = 88, .max_x = 108, .min_y = 66, .max_y = 86, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_GONE}, // Gone
-	{.min_x = 88, .max_x = 108, .min_y = 88, .max_y = 108, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_HUNKY}, // Hunky
-	{.min_x = 156, .max_x = 172, .min_y = 64, .max_y = 84, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY1}, // Key1
-	{.min_x = 172, .max_x = 189, .min_y = 64, .max_y = 84, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY2}, // Key2
-	{.min_x = 189, .max_x = 203, .min_y = 64, .max_y = 84, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY3}, // Key3
-	{.min_x = 205, .max_x = 221, .min_y = 64, .max_y = 84, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY4}, // Key4
-	{.min_x = 157, .max_x = 172, .min_y = 86, .max_y = 105, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY5}, // Key5
-	{.min_x = 173, .max_x = 188, .min_y = 86, .max_y = 105, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY6}, // Key6
-	{.min_x = 189, .max_x = 204, .min_y = 86, .max_y = 105, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY7}, // Key7
-	{.min_x = 205, .max_x = 220, .min_y = 86, .max_y = 105, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_KEY8}, // Key8
-	{.min_x = 136, .max_x = 150, .min_y = 0, .max_y = 20, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CAMERA}, // Camera
-	{.min_x = 130, .max_x = 152, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SHOCKWAVE}, // Shockwave
-	{.min_x = 132, .max_x = 138, .min_y = 54, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
-	{.min_x = 138, .max_x = 141, .min_y = 52, .max_y = 55, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
-	{.min_x = 138, .max_x = 146, .min_y = 60, .max_y = 63, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
-	{.min_x = 146, .max_x = 152, .min_y = 54, .max_y = 63, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
-	{.min_x = 144, .max_x = 146, .min_y = 52, .max_y = 55, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
-	{.min_x = 132, .max_x = 152, .min_y = 46, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM_HAS}, // Slam Has
-	{.min_x = 134, .max_x = 149, .min_y = 66, .max_y = 79, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_HOMING}, // Homing
-	{.min_x = 132, .max_x = 152, .min_y = 92, .max_y = 104, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SNIPER}, // Sniper
-	{.min_x = 0, .max_x = 20, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_DIVE}, // Dive
-	{.min_x = 22, .max_x = 42, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_ORANGE}, // Orange
-	{.min_x = 44, .max_x = 64, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BARREL}, // Barrel
-	{.min_x = 66, .max_x = 86, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_VINE}, // Vine
-	{.min_x = 87, .max_x = 107, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CLIMB}, // Climbing
-	{.min_x = 176, .max_x = 192, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_2}, // Melon_2
-	{.min_x = 192, .max_x = 209, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_MELON_3}, // Melon_3
-	{.min_x = 218, .max_x = 238, .min_y = 0, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_1}, // InsUpg_1
-	{.min_x = 239, .max_x = 249, .min_y = 3, .max_y = 18, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_INSUPG_2}, // InsUpg_2
-	{.min_x = 220, .max_x = 235, .min_y = 22, .max_y = 36, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_1}, // Belt_1
-	{.min_x = 236, .max_x = 244, .min_y = 22, .max_y = 37, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BELT_2}, // Belt_2
-	{.min_x = 135, .max_x = 149, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CRANKY}, // Cranky
-	{.min_x = 157, .max_x = 173, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_FUNKY}, // Funky
-	{.min_x = 177, .max_x = 194, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_CANDY}, // Candy
-	{.min_x = 199, .max_x = 217, .min_y = 113, .max_y = 123, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SNIDE}, // Snide
+	{
+		// Coconut
+		.min_x = 0, .max_x = 20,
+		.min_y = 0, .max_y = 22,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_COCONUT,
+		.item = REQITEM_MOVE,
+		.level = 4,
+		.kong = KONG_DK,
+	},
+	{
+		// Bongos
+		.min_x = 0, .max_x = 20,
+		.min_y = 22, .max_y = 42,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_BONGOS,
+		.item = REQITEM_MOVE,
+		.level = 8,
+		.kong = KONG_DK,
+	},
+	{
+		// Grab
+		.min_x = 0, .max_x = 20,
+		.min_y = 44, .max_y = 64,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_GRAB,
+		.item = REQITEM_MOVE,
+		.level = 2,
+		.kong = KONG_DK,
+	},
+	{
+		// Blast
+		.min_x = 0, .max_x = 20,
+		.min_y = 66, .max_y = 86,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_BLAST,
+		.item = REQITEM_MOVE,
+		.level = 0,
+		.kong = KONG_DK,
+	},
+	{
+		// Strong
+		.min_x = 0, .max_x = 20,
+		.min_y = 88, .max_y = 108,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_STRONG,
+		.item = REQITEM_MOVE,
+		.level = 1,
+		.kong = KONG_DK,
+	},
+	{
+		// Peanut
+		.min_x = 22, .max_x = 42,
+		.min_y = 0, .max_y = 22,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_PEANUT,
+		.item = REQITEM_MOVE,
+		.level = 4,
+		.kong = KONG_DIDDY,
+	},
+	{
+		// Guitar
+		.min_x = 22, .max_x = 42,
+		.min_y = 22, .max_y = 42,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_GUITAR,
+		.item = REQITEM_MOVE,
+		.level = 8,
+		.kong = KONG_DIDDY,
+	},
+	{
+		// Charge
+		.min_x = 22, .max_x = 42,
+		.min_y = 44, .max_y = 64,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_CHARGE,
+		.item = REQITEM_MOVE,
+		.level = 0,
+		.kong = KONG_DIDDY,
+	},
+	{
+		// Spring
+		.min_x = 22, .max_x = 42,
+		.min_y = 66, .max_y = 86,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_SPRING,
+		.item = REQITEM_MOVE,
+		.level = 2,
+		.kong = KONG_DIDDY,
+	},
+	{
+		// Rocket
+		.min_x = 22, .max_x = 42,
+		.min_y = 88, .max_y = 108,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_ROCKET,
+		.item = REQITEM_MOVE,
+		.level = 1,
+		.kong = KONG_DIDDY,
+	},
+	{
+		// Grape
+		.min_x = 44, .max_x = 64,
+		.min_y = 0, .max_y = 22,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_GRAPE,
+		.item = REQITEM_MOVE,
+		.level = 4,
+		.kong = KONG_LANKY,
+	},
+	{
+		// Trombone
+		.min_x = 44, .max_x = 64,
+		.min_y = 22, .max_y = 42,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_TROMBONE,
+		.item = REQITEM_MOVE,
+		.level = 8,
+		.kong = KONG_LANKY,
+	},
+	{
+		// OStand
+		.min_x = 44, .max_x = 64,
+		.min_y = 44, .max_y = 64,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_OSTAND,
+		.item = REQITEM_MOVE,
+		.level = 0,
+		.kong = KONG_LANKY,
+	},
+	{
+		// Balloon
+		.min_x = 44, .max_x = 64,
+		.min_y = 66, .max_y = 86,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_BALLOON,
+		.item = REQITEM_MOVE,
+		.level = 1,
+		.kong = KONG_LANKY,
+	},
+	{
+		// OSprint
+		.min_x = 44, .max_x = 64,
+		.min_y = 88, .max_y = 108,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_OSPRINT,
+		.item = REQITEM_MOVE,
+		.level = 2,
+		.kong = KONG_LANKY,
+	},
+	{
+		// Feather
+		.min_x = 66, .max_x = 86,
+		.min_y = 0, .max_y = 22,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_FEATHER,
+		.item = REQITEM_MOVE,
+		.level = 4,
+		.kong = KONG_TINY,
+	},
+	{
+		// Sax
+		.min_x = 66, .max_x = 86,
+		.min_y = 22, .max_y = 42,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_SAX,
+		.item = REQITEM_MOVE,
+		.level = 8,
+		.kong = KONG_TINY,
+	},
+	{
+		// PTT
+		.min_x = 66, .max_x = 86,
+		.min_y = 44, .max_y = 64,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_PTT,
+		.item = REQITEM_MOVE,
+		.level = 1,
+		.kong = KONG_TINY,
+	},
+	{
+		// Monkeyport
+		.min_x = 66, .max_x = 86,
+		.min_y = 66, .max_y = 86,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_MONKEYPORT,
+		.item = REQITEM_MOVE,
+		.level = 2,
+		.kong = KONG_TINY,
+	},
+	{
+		// Mini
+		.min_x = 66, .max_x = 86,
+		.min_y = 88, .max_y = 108,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_MINI,
+		.item = REQITEM_MOVE,
+		.level = 0,
+		.kong = KONG_TINY,
+	},
+	{
+		// Pineapple
+		.min_x = 88, .max_x = 108,
+		.min_y = 0, .max_y = 22,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_PINEAPPLE,
+		.item = REQITEM_MOVE,
+		.level = 4,
+		.kong = KONG_CHUNKY,
+	},
+	{
+		// Triangle
+		.min_x = 88, .max_x = 108,
+		.min_y = 22, .max_y = 42,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_TRIANGLE,
+		.item = REQITEM_MOVE,
+		.level = 8,
+		.kong = KONG_CHUNKY,
+	},
+	{
+		// Punch
+		.min_x = 88, .max_x = 108,
+		.min_y = 44, .max_y = 64,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_PUNCH,
+		.item = REQITEM_MOVE,
+		.level = 1,
+		.kong = KONG_CHUNKY,
+	},
+	{
+		// Gone
+		.min_x = 88, .max_x = 108,
+		.min_y = 66, .max_y = 86,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_GONE,
+		.item = REQITEM_MOVE,
+		.level = 2,
+		.kong = KONG_CHUNKY,
+	},
+	{
+		// Hunky
+		.min_x = 88, .max_x = 108,
+		.min_y = 88, .max_y = 108,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_HUNKY,
+		.item = REQITEM_MOVE,
+		.level = 0,
+		.kong = KONG_CHUNKY,
+	},
+	{
+		// Key1
+		.min_x = 156, .max_x = 172,
+		.min_y = 64, .max_y = 84,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_KEY1,
+		.item = REQITEM_KEY,
+		.level = 0,
+	},
+	{
+		// Key2
+		.min_x = 172, .max_x = 189,
+		.min_y = 64, .max_y = 84,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_KEY2,
+		.item = REQITEM_KEY,
+		.level = 1,
+	},
+	{
+		// Key3
+		.min_x = 189, .max_x = 203,
+		.min_y = 64, .max_y = 84,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_KEY3,
+		.item = REQITEM_KEY,
+		.level = 2,
+	},
+	{
+		// Key4
+		.min_x = 205, .max_x = 221,
+		.min_y = 64, .max_y = 84,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_KEY4,
+		.item = REQITEM_KEY,
+		.level = 3,
+	},
+	{
+		// Key5
+		.min_x = 157, .max_x = 172,
+		.min_y = 86, .max_y = 105,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_KEY5,
+		.item = REQITEM_KEY,
+		.level = 4,
+	},
+	{
+		// Key6
+		.min_x = 173, .max_x = 188,
+		.min_y = 86, .max_y = 105,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_KEY6,
+		.item = REQITEM_KEY,
+		.level = 5,
+	},
+	{
+		// Key7
+		.min_x = 189, .max_x = 204,
+		.min_y = 86, .max_y = 105,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_KEY7,
+		.item = REQITEM_KEY,
+		.level = 6,
+	},
+	{
+		// Key8
+		.min_x = 205, .max_x = 220,
+		.min_y = 86, .max_y = 105,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_KEY8,
+		.item = REQITEM_KEY,
+		.level = 7,
+	},
+	{
+		// Camera
+		.min_x = 136, .max_x = 150,
+		.min_y = 0, .max_y = 20,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_CAMERA,
+		.item = REQITEM_MOVE,
+		.level = 10,
+		.kong = 4,
+	},
+	{
+		// Shockwave
+		.min_x = 130, .max_x = 152,
+		.min_y = 22, .max_y = 42,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_SHOCKWAVE,
+		.item = REQITEM_MOVE,
+		.level = 10,
+		.kong = 5,
+	},
+	{
+		// Slam
+		.min_x = 132, .max_x = 138,
+		.min_y = 54, .max_y = 64,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_SLAM,
+		.item = REQITEM_MOVE,
+		.level = 3,
+	},
+	{
+		// Slam
+		.min_x = 138, .max_x = 141,
+		.min_y = 52, .max_y = 55,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_SLAM,
+		.item = REQITEM_MOVE,
+		.level = 3,
+	},
+	{
+		// Slam
+		.min_x = 138, .max_x = 146,
+		.min_y = 60, .max_y = 63,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_SLAM,
+		.item = REQITEM_MOVE,
+		.level = 3,
+	},
+	{
+		// Slam
+		.min_x = 146, .max_x = 152,
+		.min_y = 54, .max_y = 63,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_SLAM,
+		.item = REQITEM_MOVE,
+		.level = 3,
+	},
+	{
+		// Slam
+		.min_x = 144, .max_x = 146,
+		.min_y = 52, .max_y = 55,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_SLAM,
+		.item = REQITEM_MOVE,
+	},
+	{
+		 //Slam Has
+		.min_x = 132, .max_x = 152,
+		.min_y = 46, .max_y = 64,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_SLAM_HAS,
+		.item = REQITEM_MOVE,
+		.level = 3,
+	},
+	{
+		// Homing
+		.min_x = 134, .max_x = 149,
+		.min_y = 66, .max_y = 79,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_HOMING,
+		.item = REQITEM_MOVE,
+		.level = 5,
+	},
+	{
+		// Sniper
+		.min_x = 132, .max_x = 152,
+		.min_y = 92, .max_y = 104,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_SNIPER,
+		.item = REQITEM_MOVE,
+		.level = 6,
+	},
+	{
+		// Dive
+		.min_x = 0, .max_x = 20,
+		.min_y = 108, .max_y = 128,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_DIVE,
+		.item = REQITEM_MOVE,
+		.level = 10,
+		.kong = 0,
+	},
+	{
+		// Orange
+		.min_x = 22, .max_x = 42,
+		.min_y = 108, .max_y = 128,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_ORANGE,
+		.item = REQITEM_MOVE,
+		.level = 10,
+		.kong = 1,
+	},
+	{
+		// Barrel
+		.min_x = 44, .max_x = 64,
+		.min_y = 108, .max_y = 128,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_BARREL,
+		.item = REQITEM_MOVE,
+		.level = 10,
+		.kong = 2,
+	},
+	{
+		// Vine
+		.min_x = 66, .max_x = 86,
+		.min_y = 108, .max_y = 128,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_VINE,
+		.item = REQITEM_MOVE,
+		.level = 10,
+		.kong = 3,
+	},
+	{
+		// Climbing
+		.min_x = 87, .max_x = 107,
+		.min_y = 108, .max_y = 128,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_CLIMB,
+		.item = REQITEM_MOVE,
+		.level = 11,
+	},
+	{
+		// Melon_2
+		.min_x = 176, .max_x = 192,
+		.min_y = 0, .max_y = 18,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_MELON_2,
+	},
+	{
+		// Melon_3
+		.min_x = 192, .max_x = 209,
+		.min_y = 0, .max_y = 18,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_MELON_3,
+	},
+	{
+		// InsUpg_1
+		.min_x = 218, .max_x = 238,
+		.min_y = 0, .max_y = 18,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_INSUPG_1,
+	},
+	{
+		// InsUpg_2
+		.min_x = 239, .max_x = 249,
+		.min_y = 3, .max_y = 18,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_INSUPG_2,
+	},
+	{
+		// Belt_1
+		.min_x = 220, .max_x = 235,
+		.min_y = 22, .max_y = 36,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_BELT_1,
+	},
+	{
+		// Belt_2
+		.min_x = 236, .max_x = 244,
+		.min_y = 22, .max_y = 37,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_BELT_2,
+	},
+	{
+		// Cranky
+		.min_x = 135, .max_x = 149,
+		.min_y = 108, .max_y = 128,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_CRANKY,
+		.item = REQITEM_SHOPKEEPER,
+		.kong = 0,
+	},
+	{
+		// Funky
+		.min_x = 157, .max_x = 173,
+		.min_y = 108, .max_y = 128,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_FUNKY,
+		.item = REQITEM_SHOPKEEPER,
+		.kong = 1,
+	},
+	{
+		// Candy
+		.min_x = 177, .max_x = 194,
+		.min_y = 108, .max_y = 128,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_CANDY,
+		.item = REQITEM_SHOPKEEPER,
+		.kong = 2,
+	},
+	{
+		// Snide
+		.min_x = 199, .max_x = 217,
+		.min_y = 113, .max_y = 123,
+		.enabled = TRACKER_ENABLED_DEFAULT,
+		.type = TRACKER_TYPE_SNIDE,
+		.item = REQITEM_SHOPKEEPER,
+		.kong = 3,
+	},
 };
 
 void wipeTrackerCache(void) {
@@ -211,7 +696,7 @@ unsigned char pregiven_status[] = {
 	1, // 55 = TRACKER_TYPE_CLIMB
 };
 
-int getEnabledState(int index) {
+int getEnabledState(tracker_struct *segment) {
 	/**
 	 * @brief Get the enabled state of a tracker item
 	 * 
@@ -220,127 +705,23 @@ int getEnabledState(int index) {
 	 * @return State
 	 */
 	int file_empty = 0;
+	int index = segment->type;
 	if (CurrentMap == MAP_MAINMENU) {
 		file_empty = isFileEmpty(0);
 	}
 	if (file_empty) { // Empty file check
 		return pregiven_status[index];
 	}
-	switch(index) {
-		case TRACKER_TYPE_COCONUT:
-		case TRACKER_TYPE_PEANUT:
-		case TRACKER_TYPE_GRAPE:
-		case TRACKER_TYPE_FEATHER:
-		case TRACKER_TYPE_PINEAPPLE:
-			{
-				int kong = index / 5;
-				return MovesBase[kong].weapon_bitfield & 1;
-			}
-		case TRACKER_TYPE_BONGOS:
-		case TRACKER_TYPE_GUITAR:
-		case TRACKER_TYPE_TROMBONE:
-		case TRACKER_TYPE_SAX:
-		case TRACKER_TYPE_TRIANGLE:
-			{
-				int kong = index / 5;
-				return MovesBase[kong].instrument_bitfield & 1;
-			}
-		case TRACKER_TYPE_GRAB:
-			return MovesBase[KONG_DK].special_moves & MOVECHECK_GRAB;
-		case TRACKER_TYPE_BLAST:
-			return MovesBase[KONG_DK].special_moves & MOVECHECK_BLAST;
-		case TRACKER_TYPE_STRONG:
-			return MovesBase[KONG_DK].special_moves & MOVECHECK_STRONG;
-		case TRACKER_TYPE_CHARGE:
-			return MovesBase[KONG_DIDDY].special_moves & MOVECHECK_CHARGE;
-		case TRACKER_TYPE_SPRING:
-			return MovesBase[KONG_DIDDY].special_moves & MOVECHECK_SPRING;
-		case TRACKER_TYPE_ROCKET:
-			return MovesBase[KONG_DIDDY].special_moves & MOVECHECK_ROCKETBARREL;
-		case TRACKER_TYPE_OSTAND:
-			return MovesBase[KONG_LANKY].special_moves & MOVECHECK_OSTAND;
-		case TRACKER_TYPE_BALLOON:
-			return MovesBase[KONG_LANKY].special_moves & MOVECHECK_BALLOON;
-		case TRACKER_TYPE_OSPRINT:
-			return MovesBase[KONG_LANKY].special_moves & MOVECHECK_OSPRINT;
-		case TRACKER_TYPE_PTT:
-			return MovesBase[KONG_TINY].special_moves & MOVECHECK_TWIRL;
-		case TRACKER_TYPE_MONKEYPORT:
-			return MovesBase[KONG_TINY].special_moves & MOVECHECK_MONKEYPORT;
-		case TRACKER_TYPE_MINI:
-			return MovesBase[KONG_TINY].special_moves & MOVECHECK_MINI;
-		case TRACKER_TYPE_PUNCH:
-			return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_PUNCH;
-		case TRACKER_TYPE_GONE:
-			return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_GONE;
-		case TRACKER_TYPE_HUNKY:
-			return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_HUNKY;
-		case TRACKER_TYPE_CAMERA:
-			return hasFlagMove(FLAG_ABILITY_CAMERA);
-		case TRACKER_TYPE_SHOCKWAVE:
-			return hasFlagMove(FLAG_ABILITY_SHOCKWAVE);
-		case TRACKER_TYPE_SLAM:
-		case TRACKER_TYPE_SLAM_HAS:
-			return MovesBase[KONG_DK].simian_slam;
-		case TRACKER_TYPE_HOMING:
-			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_HOMING;
-		case TRACKER_TYPE_SNIPER:
-			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_SNIPER;
-		case TRACKER_TYPE_CLIMB:
-			return checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
-		case TRACKER_TYPE_DIVE:
-			return hasFlagMove(FLAG_TBARREL_DIVE);
-		case TRACKER_TYPE_ORANGE:
-			return hasFlagMove(FLAG_TBARREL_ORANGE);
-		case TRACKER_TYPE_BARREL:
-			return hasFlagMove(FLAG_TBARREL_BARREL);
-		case TRACKER_TYPE_VINE:
-			return hasFlagMove(FLAG_TBARREL_VINE);
-		case TRACKER_TYPE_MELON_2:
-			for (int i = 0; i < 5; i++) {
-				if (MovesBase[i].instrument_bitfield != 0) {
-					return 1;
-				}
-			}
-			return 0;
-		case TRACKER_TYPE_MELON_3:
-			return MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_THIRDMELON;
-		case TRACKER_TYPE_INSUPG_1:
-			return MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_UPGRADE1;
-		case TRACKER_TYPE_INSUPG_2:
-			return MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_UPGRADE2;
-		case TRACKER_TYPE_BELT_1:
-			return MovesBase[KONG_DK].ammo_belt >= 1;
-		case TRACKER_TYPE_BELT_2:
-			return MovesBase[KONG_DK].ammo_belt >= 2;
-		case TRACKER_TYPE_AMMOBELT:
-			return MovesBase[KONG_DK].ammo_belt;
-		case TRACKER_TYPE_INSTRUMENT_UPG:
-			if (MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_UPGRADE2) {
-				return 2;
-			} else if (MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_UPGRADE1) {
-				return 1;
-			}
-			return 0;
-		case TRACKER_TYPE_KEY1:
-		case TRACKER_TYPE_KEY2:
-		case TRACKER_TYPE_KEY3:
-		case TRACKER_TYPE_KEY4:
-		case TRACKER_TYPE_KEY5:
-		case TRACKER_TYPE_KEY6:
-		case TRACKER_TYPE_KEY7:
-		case TRACKER_TYPE_KEY8:
-			{
-				// Keys in
-				return getItemCount_new(REQITEM_KEY, index - TRACKER_TYPE_KEY1, 0);
-			}
-		case TRACKER_TYPE_CRANKY:
-		case TRACKER_TYPE_FUNKY:
-		case TRACKER_TYPE_CANDY:
-		case TRACKER_TYPE_SNIDE:
-			return checkFlag(FLAG_ITEM_CRANKY + (index - TRACKER_TYPE_CRANKY), FLAGTYPE_PERMANENT);
-		default:
-			break;
+	if ((index == TRACKER_TYPE_MELON_2) || (index == TRACKER_TYPE_MELON_3)) {
+		return CollectableBase.Melons >= (2 + (index - TRACKER_TYPE_MELON_2));
+	} else if (index == TRACKER_TYPE_INSUPG_1) {
+		return MovesBase[0].instrument_bitfield & 2;
+	} else if (index == TRACKER_TYPE_INSUPG_2) {
+		return MovesBase[0].instrument_bitfield & 8;
+	} else if ((index == TRACKER_TYPE_BELT_1) || (index == TRACKER_TYPE_BELT_2)) {
+		return MovesBase[0].ammo_belt > (index - TRACKER_TYPE_BELT_1);
+	} else {
+		return getItemCount_new(segment->item, segment->level, segment->kong);
 	}
 	return 0;
 }
@@ -377,7 +758,7 @@ void updateEnabledStates(void) {
 		}
 	}
 	for (int i = 0; i < (int)(sizeof(tracker_info) / sizeof(tracker_struct)); i++) {
-		tracker_info[i].enabled = getEnabledState(tracker_info[i].type);
+		tracker_info[i].enabled = getEnabledState(&tracker_info[i]);
 	}
 }
 
@@ -494,11 +875,6 @@ void modifyTrackerImage(int dl_offset) {
 	}
 }
 
-int getTrackerYOffset(void) {
-	float y_temp = DEFAULT_TRACKER_Y_OFFSET;
-	return y_temp;
-}
-
 Gfx* display_file_images(Gfx* dl, int y_offset) {
 	/**
 	 * @brief Display images on the file screen
@@ -509,7 +885,7 @@ Gfx* display_file_images(Gfx* dl, int y_offset) {
 	 * @return New Display List Address
 	 */
 	int tracker_x = 160;
-	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, tracker_x, y_offset + getTrackerYOffset(),1.0f, 1.0f,0xFF);
+	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, tracker_x, y_offset + DEFAULT_TRACKER_Y_OFFSET,1.0f, 1.0f,0xFF);
 	modifyTrackerImage(y_offset);
 	if (CurrentMap == MAP_MAINMENU) {
 		int opacity = 0x80;
