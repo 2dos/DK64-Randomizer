@@ -59,8 +59,34 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="progslam-reset-vanilla">Reset to Vanilla</button>
+                <button type="button" class="btn btn-secondary" id="progslam-reset-random">Set to Random</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function resetToState(state) {
+        for (let i = 0; i < 8; i++) {
+            let default_value = "green";
+            if (state == "random") {
+                default_value = "random";
+            } else {
+                if (i > 5) {
+                    default_value = "red";
+                } else if (i > 3) {
+                    default_value = "blue";
+                }
+            }
+            document.getElementById(`prog_slam_level_${i + 1}`).value = default_value;
+        }
+    }
+
+    document.getElementById("progslam-reset-vanilla").addEventListener("click", (e) => {
+        resetToState("vanilla");
+    })
+    document.getElementById("progslam-reset-random").addEventListener("click", (e) => {
+        resetToState("random");
+    })
+</script>
