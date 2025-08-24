@@ -976,6 +976,11 @@ void correctKongFaces(void) {
 			KongUnlockedMenuArray[i] = (starting_item_data.others.kong_bitfield >> i) & 1;
 		}
 	}
+	if (!getItemCount_new(REQITEM_KONG, 0, KONG_DK)) {
+		if ((starting_item_data.others.kong_bitfield & 1) == 0) {
+			KongUnlockedMenuArray[0] = 0;
+		}
+	}
 }
 
 void wipeFileMod(int file, int will_save) {

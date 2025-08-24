@@ -453,7 +453,7 @@ TRACKER_ITEM_PAIRING = {
     },
     TrackerItems.CLIMB: {
         "item": Items.Climbing,
-        "packets": [{"offset": EXTRA_STRUCT_OFFSET, "mode": "set", "value": 1}],
+        "packets": [{"offset": EXTRA_STRUCT_OFFSET + 3, "mode": "set", "value": 1}],
     },
 }
 TRACKER_SHOPKEEPER_PAIRING = {
