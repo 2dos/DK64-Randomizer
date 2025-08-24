@@ -13,7 +13,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Settings import Settings
-from randomizer.Patching.Library.Generic import IsDDMSSelected, MEDAL_PROGRESSIVE_RATIOS
+from randomizer.Patching.Library.Generic import IsDDMSSelected, IsItemSelected, MEDAL_PROGRESSIVE_RATIOS
 
 # Used when level order rando is ON
 LobbyEntrancePool = [
@@ -244,7 +244,8 @@ def ShuffleExits(spoiler):
                 settings.switch_allocation[level] = allocation[x]
         if settings.cb_medal_behavior_new == CBRequirement.progressive:
             ratios = MEDAL_PROGRESSIVE_RATIOS.copy()
-            ratios[7] = 1
+            if not IsItemSelected(settings.cb_rando_enabled, settings.cb_rando_list_selected, Levels.DKIsles):
+                ratios[6] = 1
             allocation = [int(settings.medal_cb_req * x) for x in ratios]
             for x in range(8):
                 level = settings.level_order[x + 1]

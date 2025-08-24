@@ -1142,7 +1142,8 @@ class Settings:
             self.medal_cb_req_level = [req] * 8
         elif self.cb_medal_behavior_new == CBRequirement.progressive:
             ratios = MEDAL_PROGRESSIVE_RATIOS.copy()
-            ratios[7] = 1
+            if not IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
+                ratios[6] = 1
             allocation = [int(self.medal_cb_req * x) for x in ratios]
             self.random.shuffle(allocation)
             self.medal_cb_req_level = allocation.copy()
