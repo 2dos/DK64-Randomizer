@@ -45,7 +45,10 @@ void unlockMoves(void) {
 			setPermFlag(fast_start_flags[i]);
 		}
 	}
+	// Preserve existing Kong bitfield when setting ItemInventory
+	unsigned char existing_kong_bitfield = ItemInventory->kong_bitfield;
 	*ItemInventory = starting_item_data.others;
+	ItemInventory->kong_bitfield = existing_kong_bitfield;
 	if (starting_item_data.climbing) {
 		setPermFlag(FLAG_ABILITY_CLIMBING);
 	}

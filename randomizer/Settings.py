@@ -2761,6 +2761,10 @@ class Settings:
             ItemRandoListSelected.trainingmoves: [4, 0],
             ItemRandoListSelected.trainingbarrels: [0, 4],
         }
+        # Failsafe: Ensure half medals have a minimum of 1 if they're enabled in the pool
+        if ItemRandoListSelected.halfmedal in self.item_rando_list_1:
+            if item_check_counts[ItemRandoListSelected.halfmedal][0] < 1:
+                item_check_counts[ItemRandoListSelected.halfmedal][0] = 1
         if self.smaller_shops:
             item_check_counts[ItemRandoListSelected.shop] = [0, 60]
         if IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):

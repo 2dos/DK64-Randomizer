@@ -1078,7 +1078,7 @@ class Spoiler:
                 continue
             text = x
             if Types.HalfMedal in self.settings.shuffled_location_types:  # Half Medals
-                text = f"{x} ({int(x / 2)})"
+                text = f"{x} ({max(1, int(x >> 1))})"
             humanspoiler["Medal CB Requirements"][levels[xi]] = text
 
         if len(self.microhints) > 0:

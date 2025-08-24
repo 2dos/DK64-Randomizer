@@ -117,11 +117,11 @@ LogicRegions = {
         LocationLogic(Locations.IslesLankyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.lanky] >= l.settings.medal_cb_req_level[7]),
         LocationLogic(Locations.IslesTinyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.tiny] >= l.settings.medal_cb_req_level[7]),
         LocationLogic(Locations.IslesChunkyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.chunky] >= l.settings.medal_cb_req_level[7]),
-        LocationLogic(Locations.IslesDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.donkey] >= int(l.settings.medal_cb_req_level[7] >> 1)),
-        LocationLogic(Locations.IslesDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.diddy] >= int(l.settings.medal_cb_req_level[7] >> 1)),
-        LocationLogic(Locations.IslesLankyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.lanky] >= int(l.settings.medal_cb_req_level[7] >> 1)),
-        LocationLogic(Locations.IslesTinyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.tiny] >= int(l.settings.medal_cb_req_level[7] >> 1)),
-        LocationLogic(Locations.IslesChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.chunky] >= int(l.settings.medal_cb_req_level[7] >> 1)),
+        LocationLogic(Locations.IslesDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.donkey] >= max(1, int(l.settings.medal_cb_req_level[7] >> 1))),
+        LocationLogic(Locations.IslesDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.diddy] >= max(1, int(l.settings.medal_cb_req_level[7] >> 1))),
+        LocationLogic(Locations.IslesLankyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.lanky] >= max(1, int(l.settings.medal_cb_req_level[7] >> 1))),
+        LocationLogic(Locations.IslesTinyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.tiny] >= max(1, int(l.settings.medal_cb_req_level[7] >> 1))),
+        LocationLogic(Locations.IslesChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.chunky] >= max(1, int(l.settings.medal_cb_req_level[7] >> 1))),
     ], [], [], restart=-1),
 
     Regions.Credits: Region("Credits", HintRegion.Credits, Levels.DKIsles, False, None, [

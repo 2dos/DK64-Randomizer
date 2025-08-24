@@ -21,11 +21,11 @@ LogicRegions = {
         LocationLogic(Locations.CastleLankyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.lanky] >= l.settings.medal_cb_req_level[6]),
         LocationLogic(Locations.CastleTinyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.tiny] >= l.settings.medal_cb_req_level[6]),
         LocationLogic(Locations.CastleChunkyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.chunky] >= l.settings.medal_cb_req_level[6]),
-        LocationLogic(Locations.CastleDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.donkey] >= int(l.settings.medal_cb_req_level[6] >> 1)),
-        LocationLogic(Locations.CastleDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.diddy] >= int(l.settings.medal_cb_req_level[6] >> 1)),
-        LocationLogic(Locations.CastleLankyHalfMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.lanky] >= int(l.settings.medal_cb_req_level[6] >> 1)),
-        LocationLogic(Locations.CastleTinyHalfMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.tiny] >= int(l.settings.medal_cb_req_level[6] >> 1)),
-        LocationLogic(Locations.CastleChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.chunky] >= int(l.settings.medal_cb_req_level[6] >> 1)),
+        LocationLogic(Locations.CastleDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.donkey] >= max(1, int(l.settings.medal_cb_req_level[6] >> 1))),
+        LocationLogic(Locations.CastleDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.diddy] >= max(1, int(l.settings.medal_cb_req_level[6] >> 1))),
+        LocationLogic(Locations.CastleLankyHalfMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.lanky] >= max(1, int(l.settings.medal_cb_req_level[6] >> 1))),
+        LocationLogic(Locations.CastleTinyHalfMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.tiny] >= max(1, int(l.settings.medal_cb_req_level[6] >> 1))),
+        LocationLogic(Locations.CastleChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.chunky] >= max(1, int(l.settings.medal_cb_req_level[6] >> 1))),
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location

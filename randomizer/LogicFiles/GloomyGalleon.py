@@ -22,11 +22,11 @@ LogicRegions = {
         LocationLogic(Locations.GalleonLankyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.lanky] >= l.settings.medal_cb_req_level[3]),
         LocationLogic(Locations.GalleonTinyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.tiny] >= l.settings.medal_cb_req_level[3]),
         LocationLogic(Locations.GalleonChunkyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.chunky] >= l.settings.medal_cb_req_level[3]),
-        LocationLogic(Locations.GalleonDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.donkey] >= int(l.settings.medal_cb_req_level[3] >> 1)),
-        LocationLogic(Locations.GalleonDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.diddy] >= int(l.settings.medal_cb_req_level[3] >> 1)),
-        LocationLogic(Locations.GalleonLankyHalfMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.lanky] >= int(l.settings.medal_cb_req_level[3] >> 1)),
-        LocationLogic(Locations.GalleonTinyHalfMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.tiny] >= int(l.settings.medal_cb_req_level[3] >> 1)),
-        LocationLogic(Locations.GalleonChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.chunky] >= int(l.settings.medal_cb_req_level[3] >> 1)),
+        LocationLogic(Locations.GalleonDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.donkey] >= max(1, int(l.settings.medal_cb_req_level[3] >> 1))),
+        LocationLogic(Locations.GalleonDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.diddy] >= max(1, int(l.settings.medal_cb_req_level[3] >> 1))),
+        LocationLogic(Locations.GalleonLankyHalfMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.lanky] >= max(1, int(l.settings.medal_cb_req_level[3] >> 1))),
+        LocationLogic(Locations.GalleonTinyHalfMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.tiny] >= max(1, int(l.settings.medal_cb_req_level[3] >> 1))),
+        LocationLogic(Locations.GalleonChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.chunky] >= max(1, int(l.settings.medal_cb_req_level[3] >> 1))),
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location
