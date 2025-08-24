@@ -1415,8 +1415,8 @@ if baseclasses_loaded:
                 ),
                 "Shopkeepers": self.options.shopowners_in_pool.value,
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
-                "Autocomplete": self.options.auto_complete_bonus_barrels.value
-                "HelmBarrelCount": self.options.helm_room_bonus_count.value
+                "Autocomplete": self.options.auto_complete_bonus_barrels.value,
+                "HelmBarrelCount": self.options.helm_room_bonus_count.value,
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
