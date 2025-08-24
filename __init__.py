@@ -897,6 +897,12 @@ if baseclasses_loaded:
             settings_dict["disable_hard_minigames"] = not self.options.hard_minigames.value
             settings_dict["bonus_barrel_auto_complete"] = self.options.auto_complete_bonus_barrels.value
             settings_dict["helm_room_bonus_count"] = HelmBonuses(self.options.helm_room_bonus_count.value)
+            if hasattr(self.multiworld, "generation_is_fake"):
+                if hasattr(self.multiworld, "re_gen_passthrough"):
+                    if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
+                        passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+                        settings_dict["bonus_barrel_auto_complete"] = passthrough["Autocomplete"]
+                        settings_dict["helm_room_bonus_count"] = HelmBonuses(passthrough["HelmBarrelCount"])
 
             # Create settings object
             settings = Settings(settings_dict, self.random)
