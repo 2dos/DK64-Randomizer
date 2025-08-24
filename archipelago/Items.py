@@ -188,7 +188,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
 
     for seed_item in all_shuffled_items:
         item = DK64RItem.ItemList[seed_item]
-        if item.type in [DK64RItems.JunkCrystal, DK64RItems.JunkMelon, DK64RItems.JunkAmmo, DK64RItems.JunkFilm, DK64RItems.JunkOrange, DK64RItems.CrateMelon]:
+        if item.type in [DK64RItems.JunkCrystal, DK64RItems.JunkMelon, DK64RItems.JunkAmmo, DK64RItems.JunkFilm, DK64RItems.JunkOrange, DK64RItems.CrateMelon, DK64RItems.HalfMedal]:
             classification = ItemClassification.filler
         elif item.type in [
             DK64RItems.IceTrapBubble,

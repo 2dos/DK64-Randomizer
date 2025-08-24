@@ -185,8 +185,6 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x806BD304, Overlay.Static, "getItemCount_new", offset_dict)  # Key flag check: K. Lumsy
     #
     writeValue(ROM_COPY, 0x806F56F8, Overlay.Static, 0, offset_dict, 4)  # Disable Flag Set for blueprints
-    writeFunction(ROM_COPY, 0x806F938C, Overlay.Static, "banana_medal_acquisition", offset_dict)  # Medal Give
-    writeValue(ROM_COPY, 0x806F9394, Overlay.Static, 0, offset_dict, 4)
     writeFunction(ROM_COPY, 0x806A6CA8, Overlay.Static, "canItemPersist", offset_dict)  # Item Despawn Check
     writeValue(ROM_COPY, 0x806A741C, Overlay.Static, 0, offset_dict, 4)  # Prevent Key Twinkly Sound
     writeFunction(ROM_COPY, 0x80688714, Overlay.Static, "setupHook", offset_dict)  # Setup Load Hook
@@ -334,6 +332,8 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeFunction(ROM_COPY, 0x806A206C, Overlay.Static, "getDirtPatchSkin", offset_dict)  # Get Dirt Flag Check
     writeFunction(ROM_COPY, 0x80681854, Overlay.Static, "getBonusFlag", offset_dict)  # Get Bonus Flag Check
     writeFunction(ROM_COPY, 0x806C63A8, Overlay.Static, "getBonusFlag", offset_dict)  # Get Bonus Flag Check
+    # Medals
+    writeHook(ROM_COPY, 0x806F9348, Overlay.Static, "banana_medal_handler", offset_dict)
     # Move Decoupling
     # Strong Kong
     writeValue(ROM_COPY, 0x8067ECFC, Overlay.Static, 0x30810002, offset_dict, 4)  # ANDI $at $a0 2

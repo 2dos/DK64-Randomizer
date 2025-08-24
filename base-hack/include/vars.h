@@ -92,7 +92,8 @@
 #define FLAG_MEDAL_ISLES_DK 0x3C6 // 0x3C6, 0x3C7, 0x3C8, 0x3C9, 0x3CA
 #define FLAG_HELM_HURRY_DISABLED 0x3CB
 #define FLAG_HELM_MINIGAMES 0x3CC // 0x3CC -> 0x3D5 (inc.)
-#define FLAG_ENEMY_KILLED_0 0x3D6 // 0x3D6 -> 0x57F (inc.) (428 flags)
+#define FLAG_HALF_MEDAL_JAPES_DK 0x3D6 // 0x3D6 -> 0x3FD (inc.) - 40 flags
+#define FLAG_ENEMY_KILLED_0 0x3FE // 0x3FE -> 0x59E (inc.) (428 flags)
 
 #define MODEL_COUNT 0xED
 

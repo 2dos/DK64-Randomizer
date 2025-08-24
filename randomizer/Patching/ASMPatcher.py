@@ -1231,10 +1231,7 @@ def patchAssembly(ROM_COPY, spoiler):
     lowerReplenishibles(ROM_COPY, settings, offset_dict)
 
     donkInTheManySettings(ROM_COPY, settings, offset_dict)
-    if settings.medal_cb_req > 0:
-        writeValue(ROM_COPY, 0x806F934E, Overlay.Static, settings.medal_cb_req, offset_dict)  # Acquisition
-        writeValue(ROM_COPY, 0x806F935A, Overlay.Static, settings.medal_cb_req, offset_dict)  # Acquisition
-        writeValue(ROM_COPY, 0x806AA942, Overlay.Static, settings.medal_cb_req, offset_dict)  # Pause Menu Tick
+    writeValue(ROM_COPY, 0x806AA8E8, Overlay.Static, 0x00005825, offset_dict, 4)  # Disable rendering the medal icon in the pause menu
 
     if settings.fungi_time_internal == FungiTimeSetting.dusk:
         writeValue(ROM_COPY, 0x806C5614, Overlay.Static, 0x50000006, offset_dict, 4)
@@ -1561,7 +1558,6 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Uncontrollable Fixes
     writeFunction(ROM_COPY, 0x806F56E0, Overlay.Static, "getFlagIndex_Corrected", offset_dict)  # BP Acquisition - Correct for character
-    writeFunction(ROM_COPY, 0x806F9374, Overlay.Static, "getFlagIndex_MedalCorrected", offset_dict)  # Medal Acquisition - Correct for character
     # Inverted Controls Option
     writeValue(ROM_COPY, 0x8060D04C, Overlay.Static, 0x1000, offset_dict)  # Prevent inverted controls overwrite
     # Disable Sprint Music in Fungi Forest

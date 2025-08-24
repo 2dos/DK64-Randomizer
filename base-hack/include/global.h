@@ -256,7 +256,6 @@ extern void finalizeBeatGame(void);
 extern void exitTrapBubbleController(void);
 
 extern int getFlagIndex_Corrected(int start, int level);
-extern int getFlagIndex_MedalCorrected(int start, int level);
 extern int getBPItem(int index);
 extern int getCrownItem(maps map);
 extern int getKeyItem(int old_flag);
@@ -412,6 +411,7 @@ extern void initQoL_Cutscenes(void);
 
 extern void giveItem(requirement_item item, int level, int kong, giveItemConfig config);
 extern void giveItemFromPacket(item_packet *packet, int force_text);
+extern void banana_medal_acquisition(int cb_count, int world, int change);
 extern int getItemCount_new(requirement_item item, int level, int kong);
 extern int hasFlagMove(int flag);
 extern void setFlagMove(int flag);

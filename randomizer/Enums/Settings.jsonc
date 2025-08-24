@@ -100,6 +100,18 @@
   },
 
   /*
+    CBRequirement:
+    - Determines how the CB requirement is determined.
+  */
+  "CBRequirement": {
+    "pre_selected": 0,
+    "easy_random": 1,
+    "medium_random": 2,
+    "hard_random": 3,
+    "progressive": 4
+  },
+
+  /*
     CharacterColors:
     - Determines the colors for the Kongs, Rambi, and Enguarde.
     - vanilla: The character uses vanilla colors.
@@ -527,7 +539,9 @@
     "dummyitem_boulderitem": 39,
     "dummyitem_crateitem": 40,
     "trainingmoves": 41,
-    "trainingbarrels": 42
+    "trainingbarrels": 42,
+    "halfmedal": 43,
+    "dummyitem_halfmedal": 44
   },
 
   "ItemRandoFiller": {
@@ -1319,7 +1333,8 @@
     "tricks_selected": 261,
     "shops_dont_cost": 262,
     "less_fragile_boulders": 263,
-    "ice_trap_count": 264
+    "ice_trap_count": 264,
+    "cb_medal_behavior_new": 265
   },
   /*
     SettingsStringDataType:
@@ -1409,6 +1424,7 @@
     "pearl_mermaid_behavior": { "obj": "RandomRequirement" },
     "fairy_queen_behavior": { "obj": "RandomRequirement" },
     "cb_medal_behavior": { "obj": "RandomRequirement" },
+    "cb_medal_behavior_new": { "obj": "CBRequirement" },
     "wrinkly_hints": { "obj": "WrinklyHints" },
     "spoiler_hints": { "obj": "SpoilerHints" },
     "starting_kong": { "obj": "Kongs" },
@@ -1806,6 +1822,7 @@
     "SettingsStringEnum.pearl_mermaid_behavior": { "obj": "RandomRequirement" },
     "SettingsStringEnum.fairy_queen_behavior": { "obj": "RandomRequirement" },
     "SettingsStringEnum.cb_medal_behavior": { "obj": "RandomRequirement" },
+    "SettingsStringEnum.cb_medal_behavior_new": { "obj": "CBRequirement" },
     "SettingsStringEnum.win_condition_count": {
       "obj": "SettingsStringDataType.var_int"
     },

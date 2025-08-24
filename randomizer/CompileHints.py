@@ -1994,6 +1994,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 if location.level != Levels.HideoutHelm and location.type in (
                     Types.Shop,  # TODO: Investigate the feasibility of hinting shops if they're outside of the level's main map (while still taking into consideration shop location shuffle)
                     Types.Medal,
+                    Types.HalfMedal,
                     Types.Key,
                     Types.RarewareCoin,
                     Types.TrainingBarrel,
@@ -3422,7 +3423,7 @@ def ScoreCompleteHintSet(spoiler, hint_distribution, multipath_dict_goals):
             if location_item.type == Types.Kong:
                 continue
             # Medal locations and Bosses get an automatic x1.5 unhinted multiplier because they are awful to orphan
-            if node_location.type in (Types.Medal, Types.Key):
+            if node_location.type in (Types.Medal, Types.HalfMedal, Types.Key):
                 node.score_multiplier *= 1.5
             # Scores get a multplier boost if the location is not in the main map of a level. This is to simulate having to go out of your way to find this unhinted item.
             # This isn't a foolproof metric, but you are generally more likely to peek or check locations in the main map of each level.

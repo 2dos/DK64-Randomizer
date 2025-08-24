@@ -97,7 +97,7 @@ extern int getBoulderIndex(void);
 
 #define BONUS_DATA_COUNT 99
 extern unsigned short bp_item_table[40];
-extern item_packet medal_item_table[45];
+extern item_packet medal_item_table[85];
 extern item_packet wrinkly_item_table[35];
 extern unsigned short crown_item_table[10];
 extern unsigned short key_item_table[8];

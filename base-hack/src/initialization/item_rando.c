@@ -21,7 +21,7 @@ unsigned short bp_item_table[40] = {
     78, 75, 77, 79, 76,
     78, 75, 77, 79, 76,
 };
-item_packet medal_item_table[45] = {
+item_packet medal_item_table[85] = {
     // Medal Rewards
     {.item_type = REQITEM_MEDAL},
     {.item_type = REQITEM_MEDAL},

@@ -913,6 +913,7 @@ if baseclasses_loaded:
                         settings.BLockerEntryItems = passthrough["BLockerEntryItems"]
                         settings.BLockerEntryCount = passthrough["BLockerEntryCount"]
                         settings.medal_cb_req = passthrough["MedalCBRequirement"]
+                        settings.medal_cb_req_level = [settings.medal_cb_req] * 8
                         settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
                         settings.BossBananas = passthrough["BossBananas"]
                         settings.boss_maps = passthrough["BossMaps"]
@@ -1525,7 +1526,7 @@ if baseclasses_loaded:
                 return True
             if item_obj.type == Types.JunkItem:
                 # In a location that can't have junk
-                if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies) or (loc_obj.type == Types.Key or loc_obj.level == Levels.HideoutHelm):
+                if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies, Types.HalfMedal) or (loc_obj.type == Types.Key or loc_obj.level == Levels.HideoutHelm):
                     return True
             return False
 

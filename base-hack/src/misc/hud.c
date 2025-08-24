@@ -519,11 +519,11 @@ Gfx* drawDPad(Gfx* dl) {
     if (Rando.quality_of_life.hud_bp_multibunch) {
         // Blueprint Show
         int applied_requirement = 75;
-        if (Rando.medal_cb_req > 0) {
-            applied_requirement = Rando.medal_cb_req;
+        int world = getWorld(CurrentMap, 1);
+        if (Rando.cb_medal_requirement[world] > 0) {
+            applied_requirement = Rando.cb_medal_requirement[world];
         }
         int mdl_opacity = 0x80;
-        int world = getWorld(CurrentMap, 1);
         int world_limit = 7;
         if (Rando.isles_cb_rando) {
             world_limit = 8;

@@ -1637,7 +1637,7 @@ function item_req_update(behavior, container, count, min, max) {
   const selection = document.getElementById(behavior);
   const containerEl = document.getElementById(container);
   const req = document.getElementById(count);
-  const disabled = selection.value != "pre_selected";
+  const disabled = !["pre_selected", "progressive"].includes(selection.value);
 
   if (disabled) {
     containerEl.classList.add("hide-input");
@@ -1670,9 +1670,9 @@ document.getElementById("fairy_queen_behavior")
   .addEventListener("change", () => {
     item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
   });
-document.getElementById("cb_medal_behavior")
+document.getElementById("cb_medal_behavior_new")
   .addEventListener("change", () => {
-    item_req_update("cb_medal_behavior", "cb_medal_behavior_container", "medal_cb_req", 1, 100);
+    item_req_update("cb_medal_behavior_new", "cb_medal_behavior_new_container", "medal_cb_req", 1, 100);
   });
 
 $(document).on('mousedown', 'select option.starting_moves_option', function (e) {
@@ -1960,7 +1960,7 @@ function update_ui_states() {
   item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
   item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
   item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
-  item_req_update("cb_medal_behavior", "cb_medal_behavior_container", "medal_cb_req", 1, 100);
+  item_req_update("cb_medal_behavior_new", "cb_medal_behavior_new_container", "medal_cb_req", 1, 100);
   disable_tag_spawn();
   disable_krool_phases();
   disable_helm_phases();

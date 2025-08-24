@@ -8,6 +8,7 @@ import time
 from tempfile import mktemp
 from randomizer.Enums.Settings import (
     BananaportRando,
+    CBRequirement,
     CrownEnemyDifficulty,
     DamageAmount,
     FasterChecksSelected,
@@ -631,10 +632,6 @@ def patching_response(spoiler):
     ROM_COPY.seek(sav + 0x1EB)
     ROM_COPY.write(spoiler.settings.mermaid_gb_pearls)
 
-    if spoiler.settings.medal_cb_req != 75:
-        ROM_COPY.seek(sav + 0x112)
-        ROM_COPY.write(spoiler.settings.medal_cb_req)
-
     if spoiler.settings.random_starting_region:
         ROM_COPY.seek(sav + 0x10C)
         ROM_COPY.write(spoiler.settings.starting_region["map"])
@@ -645,6 +642,13 @@ def patching_response(spoiler):
         for x in range(7):  # Shouldn't need index 8 since Helm has no slam switches in it
             ROM_COPY.seek(sav + 0x104 + x)
             ROM_COPY.write(spoiler.settings.switch_allocation[x])
+    ROM_COPY.seek(sav + 0x060)
+    for x in spoiler.settings.medal_cb_req_level:
+        ROM_COPY.writeMultipleBytes(x, 1)
+    if Types.HalfMedal in spoiler.settings.shuffled_location_types:
+        ROM_COPY.seek(sav + 0x068)
+        ROM_COPY.write(1)
+
 
     # Helm Required Minigames - Always set to 2 for now
     ROM_COPY.seek(sav + 0x2D)

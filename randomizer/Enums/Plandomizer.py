@@ -93,6 +93,7 @@ class PlandoItems(IntEnum):
     CrateItem = auto()
     BoulderItem = auto()
     EnemyItem = auto()
+    HalfMedal = auto()
 
     # A generic junk item to represent all specific junk items.
     JunkItem = auto()

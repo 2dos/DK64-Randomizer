@@ -241,7 +241,6 @@
    "win_condition":5,
    "version":2,
    "item_rando":1,
-   "medal_cb_req":5,
    "remove_oscillation_effects":1,
    "rareware_gb_fairies":1,
    "call_parent_filter":0,

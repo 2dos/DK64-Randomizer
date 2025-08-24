@@ -45,6 +45,14 @@ export enum CBRando {
     on_with_isles = 3,
 }
 
+export enum CBRequirement {
+    pre_selected = 0,
+    easy_random = 1,
+    medium_random = 2,
+    hard_random = 3,
+    progressive = 4,
+}
+
 export enum CharacterColors {
     vanilla = 1,
     randomized = 2,
@@ -300,6 +308,8 @@ export enum ItemRandoListSelected {
     dummyitem_crateitem = 40,
     trainingmoves = 41,
     trainingbarrels = 42,
+    halfmedal = 43,
+    dummyitem_halfmedal = 44,
 }
 
 export enum ItemRandoFiller {
@@ -879,6 +889,7 @@ export enum SettingsStringEnum {
     shops_dont_cost = 262,
     less_fragile_boulders = 263,
     ice_trap_count = 264,
+    cb_medal_behavior_new = 265,
 }
 
 export enum SettingsStringDataType {
@@ -961,6 +972,7 @@ export const SettingsMap = {
     'pearl_mermaid_behavior': RandomRequirement,
     'fairy_queen_behavior': RandomRequirement,
     'cb_medal_behavior': RandomRequirement,
+    'cb_medal_behavior_new': CBRequirement,
     'wrinkly_hints': WrinklyHints,
     'spoiler_hints': SpoilerHints,
     'starting_kong': Kongs,
@@ -1178,6 +1190,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.pearl_mermaid_behavior: RandomRequirement,
     SettingsStringEnum.fairy_queen_behavior: RandomRequirement,
     SettingsStringEnum.cb_medal_behavior: RandomRequirement,
+    SettingsStringEnum.cb_medal_behavior_new: CBRequirement,
     SettingsStringEnum.win_condition_count: SettingsStringDataType.var_int,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,

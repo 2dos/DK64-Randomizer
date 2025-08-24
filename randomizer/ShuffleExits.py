@@ -7,13 +7,13 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones, RemovedBarriersSelected, CrownEnemyDifficulty
+from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones, RemovedBarriersSelected, CrownEnemyDifficulty, CBRequirement
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Settings import Settings
-from randomizer.Patching.Library.Generic import IsDDMSSelected
+from randomizer.Patching.Library.Generic import IsDDMSSelected, MEDAL_PROGRESSIVE_RATIOS
 
 # Used when level order rando is ON
 LobbyEntrancePool = [
@@ -242,6 +242,13 @@ def ShuffleExits(spoiler):
             for x in range(8):
                 level = settings.level_order[x + 1]
                 settings.switch_allocation[level] = allocation[x]
+        if settings.cb_medal_behavior_new == CBRequirement.progressive:
+            ratios = MEDAL_PROGRESSIVE_RATIOS.copy()
+            ratios[7] = 1
+            allocation = [int(settings.medal_cb_req * x) for x in ratios]
+            for x in range(8):
+                level = settings.level_order[x + 1]
+                settings.medal_cb_req_level[level] = allocation[x]
         if settings.crown_enemy_difficulty == CrownEnemyDifficulty.progressive:
             # There's 4 levels of easy, 2 of medium, 2 of hard
             # Both Isles crowns will be a random difficulty.

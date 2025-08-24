@@ -737,7 +737,7 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
     })
     # Starting moves writer
     starting_item_base_addr = getROMAddress(getSym("starting_item_data"), Overlay.Custom, offset_dict)
-    ROM_COPY.seek(starting_item_base_addr + packet["offset"])
+    ROM_COPY.seek(starting_item_base_addr)
     for _ in range(EXTRA_STRUCT_OFFSET + 4):
         ROM_COPY.writeMultipleBytes(0, 1)  # Clear cache
     for packet in starting_move_packets:
@@ -1296,12 +1296,15 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         ROM_COPY.writeMultipleBytes(spoiler.enemy_location_list[item.location].map, 1)
                         ROM_COPY.writeMultipleBytes(spoiler.enemy_location_list[item.location].id, 1)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
-                    elif item.old_item in (Types.Medal, Types.Hint):
+                    elif item.old_item in (Types.Medal, Types.Hint, Types.HalfMedal):
                         offset = None
-                        if item.old_item == Types.Medal:
-                            offset = item.old_flag - 549
-                            if item.old_flag >= 0x3C6 and item.old_flag < 0x3CB:  # Isles Medals
-                                offset = 40 + (item.old_flag - 0x3C6)
+                        if item.old_item in (Types.Medal, Types.HalfMedal):
+                            if item.old_item == Types.Medal:
+                                offset = item.old_flag - 549
+                                if item.old_flag >= 0x3C6 and item.old_flag < 0x3CB:  # Isles Medals
+                                    offset = 40 + (item.old_flag - 0x3C6)
+                            elif item.old_item  == Types.HalfMedal:
+                                offset = 45 + (item.old_flag - 0x3D6)
                         elif item.old_item == Types.Hint:
                             offset = item.old_flag - 0x384
                         addr = getItemTableWriteAddress(ROM_COPY, item.old_item, offset, offset_dict)
