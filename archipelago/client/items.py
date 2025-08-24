@@ -217,3 +217,50 @@ item_ids = {
 
 # Automatically create another table that is the Name to the key
 item_names_to_id = {item_ids[key]["name"]: key for key in item_ids}
+
+# For TrapLink
+trap_name_to_index: dict[str, int] = {
+    # Our native Traps
+    "Bubble Trap": 1,
+    "Reverse Trap": 2,
+    "Slow Trap": 3,
+    "Disable A Trap": 5,
+    "Disable B Trap": 6,
+    "Disable Z Trap": 7,
+    "Disable C Up Trap": 8,
+    # Common other trap names
+    "Bee Trap": 6,  # Disable B Trap
+    "Blue Balls Curse": 1,  # Bubble Trap
+    "Chaos Control Trap": 1,  # Bubble Trap
+    "Confound Trap": 2,  # Reverse Trap
+    "Confuse Trap": 2,  # Reverse Trap
+    "Confusion Trap": 2,  # Reverse Trap
+    "Fear Trap": 3,  # Slow Trap
+    "Freeze Trap": 1,  # Bubble Trap
+    "Frozen Trap": 1,  # Bubble Trap
+    "Fuzzy Trap": 2,  # Reverse Trap
+    "Honey Trap": 5,  # Disable A Trap
+    "Ice Trap": 1,  # Bubble Trap
+    "Iron Boots Trap": 5,  # Disable A Trap
+    "Jump Trap": 5,  # Disable A Trap
+    "No Vac Trap": 7,  # Disable Z Trap
+    "Paralyze Trap": 1,  # Bubble Trap
+    "Poison Mushroom": 3,  # Slow Trap
+    "Poison Trap": 3,  # Slow Trap
+    "Reversal Trap": 2,  # Reverse Trap
+    "Screen Flip Trap": 2,  # Screen Flip Trap
+    "Slowness Trap": 3,  # Slow Trap
+    "Sticky Floor Trap": 5,  # Disable A Trap
+    "Stun Trap": 1,  # Bubble Trap
+    "Timer Trap": 3,  # Slow Trap
+}
+
+trap_index_to_name: dict[int, str] = {
+    1: "Bubble Trap",
+    2: "Reverse Trap",
+    3: "Slow Trap",
+    5: "Disable A Trap",
+    6: "Disable B Trap",
+    7: "Disable Z Trap",
+    8: "Disable C Up Trap",
+}
