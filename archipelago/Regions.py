@@ -471,4 +471,5 @@ def hasDK64REvent(state: CollectionState, player: int, event: Event):
 
 
 def canDoBonusBarrel(state: CollectionState, player: int, location: LocationLogic):
+    """Check if we can complete the bonus barrel in the given state."""
     return MinigameRequirements[state.dk64_logic_holder[player].spoiler.shuffled_barrel_data[location.id].minigame].logic(state.dk64_logic_holder[player])

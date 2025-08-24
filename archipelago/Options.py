@@ -650,7 +650,8 @@ class HardMinigames(Toggle):
 class AutoCompleteBonusBarrels(Toggle):
     """If turned on, bonus barrels will instantly spawn their reward instead of requiring a minigame to complete.
 
-    This option does NOT autocomplete Helm barrels! Use the helm_room_bonus_count option."""
+    This option does NOT autocomplete Helm barrels! Use the helm_room_bonus_count option.
+    """
 
     display_name = "Auto Complete Bonus Barrels"
 
@@ -658,7 +659,8 @@ class AutoCompleteBonusBarrels(Toggle):
 class HelmRoomBonusCount(Range):
     """Determines how many bonus barrels need to be done in each Helm room.
 
-    If set to 0, there will be no bonus barrels and Blast-O-Matic sections will turn off immediately upon playing the instrument pad to open the room."""
+    If set to 0, there will be no bonus barrels and Blast-O-Matic sections will turn off immediately upon playing the instrument pad to open the room.
+    """
 
     display_name = "Helm Room Bonus Count"
 
