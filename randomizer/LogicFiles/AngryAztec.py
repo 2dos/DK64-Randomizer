@@ -22,11 +22,11 @@ LogicRegions = {
         LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= l.settings.medal_cb_req_level[1]),
         LocationLogic(Locations.AztecTinyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.tiny] >= l.settings.medal_cb_req_level[1]),
         LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= l.settings.medal_cb_req_level[1]),
-        LocationLogic(Locations.AztecDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.donkey] >= int(l.settings.medal_cb_req_level[1] >> 1)),
-        LocationLogic(Locations.AztecDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.diddy] >= int(l.settings.medal_cb_req_level[1] >> 1)),
-        LocationLogic(Locations.AztecLankyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= int(l.settings.medal_cb_req_level[1] >> 1)),
-        LocationLogic(Locations.AztecTinyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.tiny] >= int(l.settings.medal_cb_req_level[1] >> 1)),
-        LocationLogic(Locations.AztecChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= int(l.settings.medal_cb_req_level[1] >> 1)),
+        LocationLogic(Locations.AztecDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.donkey] >= max(1, int(l.settings.medal_cb_req_level[1] >> 1))),
+        LocationLogic(Locations.AztecDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.diddy] >= max(1, int(l.settings.medal_cb_req_level[1] >> 1))),
+        LocationLogic(Locations.AztecLankyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= max(1, int(l.settings.medal_cb_req_level[1] >> 1))),
+        LocationLogic(Locations.AztecTinyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.tiny] >= max(1, int(l.settings.medal_cb_req_level[1] >> 1))),
+        LocationLogic(Locations.AztecChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= max(1, int(l.settings.medal_cb_req_level[1] >> 1))),
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location

@@ -22,11 +22,11 @@ LogicRegions = {
         LocationLogic(Locations.FactoryLankyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.lanky] >= l.settings.medal_cb_req_level[2]),
         LocationLogic(Locations.FactoryTinyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.tiny] >= l.settings.medal_cb_req_level[2]),
         LocationLogic(Locations.FactoryChunkyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.chunky] >= l.settings.medal_cb_req_level[2]),
-        LocationLogic(Locations.FactoryDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.donkey] >= int(l.settings.medal_cb_req_level[2] >> 1)),
-        LocationLogic(Locations.FactoryDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.diddy] >= int(l.settings.medal_cb_req_level[2] >> 1)),
-        LocationLogic(Locations.FactoryLankyHalfMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.lanky] >= int(l.settings.medal_cb_req_level[2] >> 1)),
-        LocationLogic(Locations.FactoryTinyHalfMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.tiny] >= int(l.settings.medal_cb_req_level[2] >> 1)),
-        LocationLogic(Locations.FactoryChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.chunky] >= int(l.settings.medal_cb_req_level[2] >> 1)),
+        LocationLogic(Locations.FactoryDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.donkey] >= max(1, int(l.settings.medal_cb_req_level[2] >> 1))),
+        LocationLogic(Locations.FactoryDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.diddy] >= max(1, int(l.settings.medal_cb_req_level[2] >> 1))),
+        LocationLogic(Locations.FactoryLankyHalfMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.lanky] >= max(1, int(l.settings.medal_cb_req_level[2] >> 1))),
+        LocationLogic(Locations.FactoryTinyHalfMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.tiny] >= max(1, int(l.settings.medal_cb_req_level[2] >> 1))),
+        LocationLogic(Locations.FactoryChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.chunky] >= max(1, int(l.settings.medal_cb_req_level[2] >> 1))),
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location

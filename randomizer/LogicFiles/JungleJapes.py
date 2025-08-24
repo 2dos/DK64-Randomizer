@@ -22,11 +22,11 @@ LogicRegions = {
         LocationLogic(Locations.JapesLankyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.lanky] >= l.settings.medal_cb_req_level[0]),
         LocationLogic(Locations.JapesTinyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.tiny] >= l.settings.medal_cb_req_level[0]),
         LocationLogic(Locations.JapesChunkyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.chunky] >= l.settings.medal_cb_req_level[0]),
-        LocationLogic(Locations.JapesDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.donkey] >= int(l.settings.medal_cb_req_level[0] >> 1)),
-        LocationLogic(Locations.JapesDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.diddy] >= int(l.settings.medal_cb_req_level[0] >> 1)),
-        LocationLogic(Locations.JapesLankyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.lanky] >= int(l.settings.medal_cb_req_level[0] >> 1)),
-        LocationLogic(Locations.JapesTinyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.tiny] >= int(l.settings.medal_cb_req_level[0] >> 1)),
-        LocationLogic(Locations.JapesChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.chunky] >= int(l.settings.medal_cb_req_level[0] >> 1)),
+        LocationLogic(Locations.JapesDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.donkey] >= max(1, int(l.settings.medal_cb_req_level[0] >> 1))),
+        LocationLogic(Locations.JapesDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.diddy] >= max(1, int(l.settings.medal_cb_req_level[0] >> 1))),
+        LocationLogic(Locations.JapesLankyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.lanky] >= max(1, int(l.settings.medal_cb_req_level[0] >> 1))),
+        LocationLogic(Locations.JapesTinyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.tiny] >= max(1, int(l.settings.medal_cb_req_level[0] >> 1))),
+        LocationLogic(Locations.JapesChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.chunky] >= max(1, int(l.settings.medal_cb_req_level[0] >> 1))),
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location

@@ -247,6 +247,8 @@ def ShuffleExits(spoiler):
             if not IsItemSelected(settings.cb_rando_enabled, settings.cb_rando_list_selected, Levels.DKIsles):
                 ratios[6] = 1
             allocation = [int(settings.medal_cb_req * x) for x in ratios]
+            # ensures that progressive will never set a 0 for CB medal which would fuck logic
+            allocation = [max(1, cb_req) for cb_req in allocation]
             for x in range(8):
                 level = settings.level_order[x + 1]
                 settings.medal_cb_req_level[level] = allocation[x]
