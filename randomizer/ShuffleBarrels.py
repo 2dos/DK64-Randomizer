@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import TYPE_CHECKING, List
 import math
 import randomizer.Lists.Exceptions as Ex
@@ -10,17 +11,17 @@ from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Settings import MinigameBarrels, MinigamesListSelected
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
-from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
+from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements, MinigameLocationData
 from randomizer.Settings import Settings
 
 
-def Reset(barrelLocations: List[Locations]) -> None:
+def Reset(shuffled_barrel_data: dict[Locations, MinigameLocationData], barrelLocations: List[Locations]) -> None:
     """Reset bonus barrel associations."""
     for key in barrelLocations:
-        BarrelMetaData[key].minigame = Minigames.NoGame
+        shuffled_barrel_data[key].minigame = Minigames.NoGame
 
 
-def PreplacePlandoMinigames(settings: Settings, barrelLocations: List[Locations]):
+def PreplacePlandoMinigames(settings: Settings, shuffled_barrel_data: dict[Locations, MinigameLocationData], barrelLocations: List[Locations]):
     """Apply plandomized minigame placement."""
     preplaced_minigame_locations = []
     for loc in barrelLocations:
@@ -28,7 +29,7 @@ def PreplacePlandoMinigames(settings: Settings, barrelLocations: List[Locations]
         if str(loc.value) in settings.plandomizer_dict["plando_bonus_barrels"].keys():
             plando_minigame = settings.plandomizer_dict["plando_bonus_barrels"][str(loc.value)]
             if validate_minigame(loc, plando_minigame):
-                BarrelMetaData[loc].minigame = plando_minigame
+                shuffled_barrel_data[loc].minigame = plando_minigame
                 minigame_placed = True
             else:
                 raise Ex.PlandoIncompatibleException(f"Invalid minigame for {loc.name}: {MinigameRequirements[plando_minigame].name}")
@@ -59,13 +60,13 @@ def getRandomMinigame(location: Locations, pool: list[Minigames]) -> tuple:
     return None, False, None
 
 
-def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigamePool: List[Minigames]) -> None:
+def ShuffleBarrels(settings: Settings, shuffled_barrel_data: dict[Locations, MinigameLocationData], barrelLocations: List[Locations], minigamePool: List[Minigames]) -> None:
     """Shuffle minigames to different barrels."""
     settings.random.shuffle(barrelLocations)
 
     # Apply plandomized minigame placement
     if settings.enable_plandomizer and settings.plandomizer_dict["plando_bonus_barrels"] != {}:
-        PreplacePlandoMinigames(settings, barrelLocations)
+        PreplacePlandoMinigames(settings, shuffled_barrel_data, barrelLocations)
     # Get barrel location count
     barrel_count = 0
     for barrel in barrelLocations:
@@ -88,7 +89,7 @@ def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigam
         # Check each remaining minigame to see if placing it will produce a valid world
         minigame, success, index_to_remove = getRandomMinigame(location, duped_minigame_pool)
         if success:
-            BarrelMetaData[location].minigame = minigame
+            shuffled_barrel_data[location].minigame = minigame
             del duped_minigame_pool[index_to_remove]
         else:
             raise Ex.BarrelOutOfMinigames
@@ -105,10 +106,11 @@ def validate_minigame(location: Locations, minigame: Minigames):
     return False
 
 
-def BarrelShuffle(settings: Settings) -> None:
+def BarrelShuffle(settings: Settings) -> dict[Locations, MinigameLocationData]:
     """Facilitate shuffling of barrels."""
     # First make master copies of locations and minigames
     barrelLocations = list(BarrelMetaData.keys())
+    shuffled_barrel_data = deepcopy(BarrelMetaData)
     if (
         settings.bonus_barrels == MinigameBarrels.selected
         or (settings.helm_barrels == MinigameBarrels.random and settings.minigames_list_selected)
@@ -242,6 +244,6 @@ def BarrelShuffle(settings: Settings) -> None:
     if settings.disable_hard_minigames:
         minigamePool = [game for game in minigamePool if not MinigameRequirements[game].is_hard]
     # Shuffle barrels
-    Reset(barrelLocations)
-    ShuffleBarrels(settings, barrelLocations.copy(), minigamePool.copy())
-    return
+    Reset(shuffled_barrel_data, barrelLocations)
+    ShuffleBarrels(settings, shuffled_barrel_data, barrelLocations.copy(), minigamePool.copy())
+    return shuffled_barrel_data

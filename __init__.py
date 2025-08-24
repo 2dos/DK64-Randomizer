@@ -144,6 +144,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Kongs import Kongs
     from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
+    from randomizer.Enums.Minigames import Minigames
     from randomizer.Enums.Locations import Locations as DK64RLocations
     from randomizer.Enums.Settings import (
         WinConditionComplex,
@@ -160,6 +161,8 @@ if baseclasses_loaded:
         BLockerSetting,
         RandomPrices,
         WrinklyHints,
+        MinigamesListSelected,
+        HelmBonuses,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
@@ -890,6 +893,11 @@ if baseclasses_loaded:
             if self.options.hint_style == 0:
                 settings_dict["wrinkly_hints"] = WrinklyHints.off
 
+            settings_dict["minigames_list_selected"] = [MinigamesListSelected[minigame] for minigame in self.options.shuffled_bonus_barrels]
+            settings_dict["disable_hard_minigames"] = not self.options.hard_minigames.value
+            settings_dict["bonus_barrel_auto_complete"] = self.options.auto_complete_bonus_barrels.value
+            settings_dict["helm_room_bonus_count"] = HelmBonuses(self.options.helm_room_bonus_count.value)
+
             # Create settings object
             settings = Settings(settings_dict, self.random)
             # Archipelago really wants the number of locations to match the number of items. Keep track of how many locations we've made here
@@ -955,7 +963,7 @@ if baseclasses_loaded:
                     ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
                 self.spoiler.UpdateExits()
 
-            # Repopulate the enemy table if gen is fake
+            # Repopulate any spoiler-related stuff at this point from slot data
             if hasattr(self.multiworld, "generation_is_fake"):
                 if hasattr(self.multiworld, "re_gen_passthrough"):
                     if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
@@ -963,6 +971,9 @@ if baseclasses_loaded:
                         if passthrough["EnemyData"]:
                             for location, data in passthrough["EnemyData"].items():
                                 self.spoiler.enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], 0, [], False)
+                        if passthrough["MinigameData"]:
+                            for loc, minigame in passthrough["MinigameData"].items():
+                                self.spoiler.shuffled_barrel_data[DK64RLocations[loc]].minigame = Minigames[minigame]
 
             # Handle hint preparation by initiating some variables
             self.hint_data = {
@@ -1403,6 +1414,12 @@ if baseclasses_loaded:
                     else {}
                 ),
                 "Shopkeepers": self.options.shopowners_in_pool.value,
+                "MinigameData": (
+                    {
+                        location_id.name: minigame_data.minigame.name
+                        for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()
+                    }
+                )
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -1449,6 +1466,10 @@ if baseclasses_loaded:
                     kong_name = data.kong.name if hasattr(data.kong, "name") else Kongs(data.kong).name
                     switch_type_name = data.switch_type.name if hasattr(data.switch_type, "name") else SwitchType(data.switch_type).name
                     spoiler_handle.write(f"  - {switch.name}: {kong_name} with {switch_type_name}\n")
+            if not self.spoiler.settings.bonus_barrel_auto_complete and self.spoiler.settings.minigames_list_selected:
+                spoiler_handle.write("Shuffled Bonus Barrels: \n")
+                for loc, minigame in self.spoiler.shuffled_barrel_data.items():
+                    spoiler_handle.write(f" - {loc.name}: {minigame.minigame.name}\n")
             spoiler_handle.write("Generated Time: " + time.strftime("%d-%m-%Y %H:%M:%S", time.gmtime()) + " GMT")
             spoiler_handle.write("\n")
             spoiler_handle.write("Randomizer Version: " + self.spoiler.settings.version)
@@ -1603,6 +1624,8 @@ if baseclasses_loaded:
                 shopkeepers = slot_data.get("Shopkeepers", False)
             else:
                 raise ValueError(f"This world is generated with an old version of DK64 Randomizer. Please downgrade to the correct version: {version}.")
+            if self.version_check(version, "1.1.11"):
+                minigame_data = slot_data["MinigameData"]
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -1630,4 +1653,5 @@ if baseclasses_loaded:
             relevant_data["Dropsanity"] = dropsanity
             relevant_data["EnemyData"] = enemy_data
             relevant_data["Shopkeepers"] = shopkeepers
+            relevant_data["MinigameData"] = minigame_data
             return relevant_data
