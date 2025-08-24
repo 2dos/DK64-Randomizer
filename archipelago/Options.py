@@ -124,25 +124,25 @@ class SlowTrapWeight(BaseTrapWeight):
 class DisableAWeight(BaseTrapWeight):
     """Likelihood of receiving a trap which disables your A button."""
 
-    display_name = "Disable A Trap"
+    display_name = "Disable A Trap Weight"
 
 
 class DisableBWeight(BaseTrapWeight):
     """Likelihood of receiving a trap which disables your B button."""
 
-    display_name = "Disable B Trap"
+    display_name = "Disable B Trap Weight"
 
 
 class DisableZWeight(BaseTrapWeight):
     """Likelihood of receiving a trap which disables your Z button."""
 
-    display_name = "Disable Z Trap"
+    display_name = "Disable Z Trap Weight"
 
 
 class DisableCWeight(BaseTrapWeight):
     """Likelihood of receiving a trap which disables your C buttons."""
 
-    display_name = "Disable C Trap"
+    display_name = "Disable C Trap Weight"
 
 
 class KroolPhaseCount(Range):
@@ -303,6 +303,15 @@ class TagLink(Toggle):
     """
 
     display_name = "Tag Link"
+
+
+class TrapLink(Toggle):
+    """Determines if the Trap Link is enabled.
+
+    If enabled, your received Traps will link to other players with Trap Link enabled, and their received traps will link to you
+    """
+
+    display_name = "Trap Link"
 
 
 class MirrorMode(Toggle):
@@ -589,6 +598,7 @@ class DK64Options(PerGameCommonOptions):
     death_link: DeathLink
     ring_link: RingLink
     tag_link: TagLink
+    trap_link: TrapLink
     goal: Goal
     krool_key_count: KeysRequiredToBeatKrool
     key8_lock: Key8Helm
@@ -635,10 +645,10 @@ class DK64Options(PerGameCommonOptions):
     bubble_trap_weight: BubbleTrapWeight
     reverse_trap_weight: ReverseTrapWeight
     slow_trap_weight: SlowTrapWeight
-    disable_a_trap: DisableAWeight
-    disable_b_trap: DisableBWeight
-    disable_c_trap: DisableCWeight
-    disable_z_trap: DisableZWeight
+    disable_a_trap_weight: DisableAWeight
+    disable_b_trap_weight: DisableBWeight
+    disable_c_trap_weight: DisableCWeight
+    disable_z_trap_weight: DisableZWeight
     receive_notifications: ReceiveNotifications
     hint_style: HintStyle
 
@@ -740,6 +750,7 @@ dk64_option_groups: List[OptionGroup] = [
         [
             TagLink,
             RingLink,
+            TrapLink,
             DeathLink,
         ],
     ),
