@@ -552,10 +552,10 @@ class ShopKeepers(Toggle):
     display_name = "Shop Keepers in Pool"
 
 
-class Key8Helm(DefaultOnToggle):
-    """Determines if Key 8 is randomized within the multiworld."""
+class HelmKeyLock(DefaultOnToggle):
+    """Determines if a key will be locked at the end of Helm."""
 
-    display_name = "Add Key 8 to Pool"
+    display_name = "Lock Helm Key"
 
 
 class ShuffleHelmLevel(Toggle):
@@ -622,7 +622,7 @@ class DK64Options(PerGameCommonOptions):
     tag_link: TagLink
     goal: Goal
     krool_key_count: KeysRequiredToBeatKrool
-    key8_lock: Key8Helm
+    helm_key_lock: HelmKeyLock
     shuffle_helm_level_order: ShuffleHelmLevel
     krool_phase_count: KroolPhaseCount
     helm_phase_count: HelmPhaseCount
@@ -710,7 +710,7 @@ dk64_option_groups: List[OptionGroup] = [
         [
             StartingKongCount,
             StartingMoveCount,
-            Key8Helm,
+            HelmKeyLock,
             ClimbingShuffle,
             ShopKeepers,
             BouldersInPool,

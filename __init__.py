@@ -641,7 +641,7 @@ if baseclasses_loaded:
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["mirror_mode"] = self.options.mirror_mode.value
             settings_dict["hard_mode"] = self.options.hard_mode.value
-            settings_dict["key_8_helm"] = self.options.key8_lock.value
+            settings_dict["key_8_helm"] = self.options.helm_key_lock.value
             settings_dict["shuffle_helm_location"] = self.options.shuffle_helm_level_order.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
             settings_dict["cb_medal_behavior_new"] = self.options.medal_distribution.value
