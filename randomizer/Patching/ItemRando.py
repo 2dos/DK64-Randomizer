@@ -314,281 +314,146 @@ def writeBuyText(item: Items, address: int, ROM_COPY: LocalROM):
     ROM_COPY.write(data[0])
     ROM_COPY.write(data[1] + BuyText.terminator)
 
+
 COUNT_STRUCT_SIZE = 0x1A  # This is technically 1 byte more than it should actually uses, but kong specific stuff does get 2-byte aligned
 KONG_STRUCT_SIZE = 0x3
 EXTRA_STRUCT_OFFSET = COUNT_STRUCT_SIZE + (5 * KONG_STRUCT_SIZE)
 TRACKER_ITEM_PAIRING = {
     TrackerItems.COCONUT: {
         "item": Items.Coconut,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 1,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 1}],
     },
     TrackerItems.BONGOS: {
         "item": Items.Bongos,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 2,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": 1}],
     },
     TrackerItems.GRAB: {
         "item": Items.GorillaGrab,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 4
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 4}],
     },
     TrackerItems.STRONG: {
         "item": Items.StrongKong,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 2
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 2}],
     },
     TrackerItems.BLAST: {
         "item": Items.BaboonBlast,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 1}],
     },
     TrackerItems.PEANUT: {
         "item": Items.Peanut,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 1,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 1}],
     },
     TrackerItems.GUITAR: {
         "item": Items.Guitar,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 2,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": 1}],
     },
     TrackerItems.CHARGE: {
         "item": Items.ChimpyCharge,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 1}],
     },
     TrackerItems.ROCKET: {
         "item": Items.RocketbarrelBoost,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 2
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 2}],
     },
     TrackerItems.SPRING: {
         "item": Items.SimianSpring,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 4
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 4}],
     },
     TrackerItems.GRAPE: {
         "item": Items.Grape,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 1,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 1}],
     },
     TrackerItems.TROMBONE: {
         "item": Items.Trombone,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 2,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": 1}],
     },
     TrackerItems.OSTAND: {
         "item": Items.OrangstandSprint,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 1}],
     },
     TrackerItems.OSPRINT: {
         "item": Items.OrangstandSprint,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 4
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 4}],
     },
     TrackerItems.BALLOON: {
         "item": Items.BaboonBalloon,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 2
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 2}],
     },
     TrackerItems.FEATHER: {
         "item": Items.Feather,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 1,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 1}],
     },
     TrackerItems.SAX: {
         "item": Items.Saxophone,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 2,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": 1}],
     },
     TrackerItems.PTT: {
         "item": Items.PonyTailTwirl,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 2
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 2}],
     },
     TrackerItems.MINI: {
         "item": Items.MiniMonkey,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 1}],
     },
     TrackerItems.MONKEYPORT: {
         "item": Items.Monkeyport,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 4
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 4}],
     },
     TrackerItems.PINEAPPLE: {
         "item": Items.Pineapple,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 1,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 1}],
     },
     TrackerItems.TRIANGLE: {
         "item": Items.Triangle,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 2,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": 1}],
     },
     TrackerItems.PUNCH: {
         "item": Items.PrimatePunch,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 2
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 2}],
     },
     TrackerItems.HUNKY: {
         "item": Items.HunkyChunky,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 1
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 1}],
     },
     TrackerItems.GONE: {
         "item": Items.GorillaGone,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 0,
-            "mode": "or",
-            "value": 4
-        }],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 4}],
     },
     TrackerItems.HOMING: {
         "item": Items.HomingAmmo,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (x * KONG_STRUCT_SIZE) + 1,
-            "mode": "or",
-            "value": 2
-        } for x in range(5)],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (x * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 2} for x in range(5)],
     },
     TrackerItems.SNIPER: {
         "item": Items.SniperSight,
-        "packets": [{
-            "offset": COUNT_STRUCT_SIZE + (x * KONG_STRUCT_SIZE) + 1,
-            "mode": "or",
-            "value": 4
-        } for x in range(5)],
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (x * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 4} for x in range(5)],
     },
     TrackerItems.DIVE: {
         "item": Items.Swim,
-        "packets": [{
-            "offset": 0x18,
-            "mode": "or",
-            "value": 0x80
-        }],
+        "packets": [{"offset": 0x18, "mode": "or", "value": 0x80}],
     },
     TrackerItems.ORANGE: {
         "item": Items.Oranges,
-        "packets": [{
-            "offset": 0x18,
-            "mode": "or",
-            "value": 0x40
-        }],
+        "packets": [{"offset": 0x18, "mode": "or", "value": 0x40}],
     },
     TrackerItems.BARREL: {
         "item": Items.Barrels,
-        "packets": [{
-            "offset": 0x18,
-            "mode": "or",
-            "value": 0x20
-        }],
+        "packets": [{"offset": 0x18, "mode": "or", "value": 0x20}],
     },
     TrackerItems.VINE: {
         "item": Items.Vines,
-        "packets": [{
-            "offset": 0x18,
-            "mode": "or",
-            "value": 0x10
-        }],
+        "packets": [{"offset": 0x18, "mode": "or", "value": 0x10}],
     },
     TrackerItems.CAMERA: {
         "item": Items.Camera,
-        "packets": [{
-            "offset": 0x18,
-            "mode": "or",
-            "value": 0x8
-        }],
+        "packets": [{"offset": 0x18, "mode": "or", "value": 0x8}],
     },
     TrackerItems.SHOCKWAVE: {
         "item": Items.Shockwave,
-        "packets": [{
-            "offset": 0x18,
-            "mode": "or",
-            "value": 0x4
-        }],
+        "packets": [{"offset": 0x18, "mode": "or", "value": 0x4}],
     },
     TrackerItems.CLIMB: {
         "item": Items.Climbing,
-        "packets": [{
-            "offset": EXTRA_STRUCT_OFFSET,
-            "mode": "set",
-            "value": 1
-        }],
+        "packets": [{"offset": EXTRA_STRUCT_OFFSET, "mode": "set", "value": 1}],
     },
 }
 TRACKER_SHOPKEEPER_PAIRING = {
@@ -597,6 +462,7 @@ TRACKER_SHOPKEEPER_PAIRING = {
     TrackerItems.CANDY: Items.Candy,
     TrackerItems.SNIDE: Items.Snide,
 }
+
 
 def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
     """Calculate the items that need to be shown on the file screen for a new file, as well as the struct to give starting items."""
@@ -659,11 +525,7 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
                     give_move_packets.extend(TRACKER_ITEM_PAIRING[x]["packets"])
         elif x in [TrackerItems.SLAM, TrackerItems.SLAM_HAS]:
             value = starting_slam_level
-            give_move_packets.append({
-                "offset": EXTRA_STRUCT_OFFSET + 1,
-                "mode": "set",
-                "value": starting_slam_level
-            })
+            give_move_packets.append({"offset": EXTRA_STRUCT_OFFSET + 1, "mode": "set", "value": starting_slam_level})
         elif x == TrackerItems.MELON_2:
             if has_melon_2:
                 value = 1
@@ -699,11 +561,7 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
             key = x - TrackerItems.KEY1
             if key in keys_turned_in:
                 value = 1
-                give_move_packets.append({
-                    "offset": 0xA,
-                    "mode": "or",
-                    "value": 1 << key
-                })
+                give_move_packets.append({"offset": 0xA, "mode": "or", "value": 1 << key})
         elif x in list(TRACKER_SHOPKEEPER_PAIRING.keys()):
             matching_item = TRACKER_SHOPKEEPER_PAIRING[x]
             if matching_item in list(OTHER_STARTING_ITEMS.values()):
@@ -717,24 +575,12 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
         melon_count = 3
     elif has_melon_2:
         melon_count = 2
-    starting_move_packets.append({
-        "offset": EXTRA_STRUCT_OFFSET + 0,
-        "mode": "set",
-        "value": melon_count
-    })
+    starting_move_packets.append({"offset": EXTRA_STRUCT_OFFSET + 0, "mode": "set", "value": melon_count})
     # Instrument Upgrades
     if starting_ins_upg_level > 0:
-        starting_move_packets.extend([{
-            "offset": COUNT_STRUCT_SIZE + (x * KONG_STRUCT_SIZE) + 2,
-            "mode": "or",
-            "value": (2 << starting_ins_upg_level) - 2
-        } for x in range(5)])
+        starting_move_packets.extend([{"offset": COUNT_STRUCT_SIZE + (x * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": (2 << starting_ins_upg_level) - 2} for x in range(5)])
     # Belts
-    starting_move_packets.append({
-        "offset": EXTRA_STRUCT_OFFSET + 2,
-        "mode": "set",
-        "value": starting_belt_level
-    })
+    starting_move_packets.append({"offset": EXTRA_STRUCT_OFFSET + 2, "mode": "set", "value": starting_belt_level})
     # Starting moves writer
     starting_item_base_addr = getROMAddress(getSym("starting_item_data"), Overlay.Custom, offset_dict)
     ROM_COPY.seek(starting_item_base_addr)
@@ -754,6 +600,7 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
                 ROM_COPY.writeMultipleBytes(value + old_value, size)
             elif mode == "or":
                 ROM_COPY.writeMultipleBytes(old_value | value, size)
+
 
 NUMBERS_AS_WORDS = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
@@ -1303,7 +1150,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                                 offset = item.old_flag - 549
                                 if item.old_flag >= 0x3C6 and item.old_flag < 0x3CB:  # Isles Medals
                                     offset = 40 + (item.old_flag - 0x3C6)
-                            elif item.old_item  == Types.HalfMedal:
+                            elif item.old_item == Types.HalfMedal:
                                 offset = 45 + (item.old_flag - 0x3D6)
                         elif item.old_item == Types.Hint:
                             offset = item.old_flag - 0x384

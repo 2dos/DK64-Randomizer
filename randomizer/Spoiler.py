@@ -1081,7 +1081,6 @@ class Spoiler:
                 text = f"{x} ({int(x / 2)})"
             humanspoiler["Medal CB Requirements"][levels[xi]] = text
 
-
         if len(self.microhints) > 0:
             human_microhints = {}
             for name, hint in self.microhints.items():

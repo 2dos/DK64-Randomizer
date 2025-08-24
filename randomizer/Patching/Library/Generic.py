@@ -652,6 +652,7 @@ def getBLockerThresholds(settings) -> tuple:
     max_v = blocker_max_thresholds.get(settings.blocker_selection_behavior, 0.7)
     return (min_v, max_v)
 
+
 MEDAL_PROGRESSIVE_RATIOS = [
     0.50,
     0.57,

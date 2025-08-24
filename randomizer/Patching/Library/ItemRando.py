@@ -260,6 +260,7 @@ class NoBuyText(IntEnum):
     medal = auto()
     kong = auto()
 
+
 class TrackerItems(IntEnum):
     """Tracker Items Enum."""
 
@@ -320,6 +321,7 @@ class TrackerItems(IntEnum):
     SNIDE = auto()
     CLIMB = auto()
     TERMINATOR = auto()
+
 
 pregiven_item_order = [
     Items.BaboonBlast,

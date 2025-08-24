@@ -649,7 +649,6 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0x068)
         ROM_COPY.write(1)
 
-
     # Helm Required Minigames - Always set to 2 for now
     ROM_COPY.seek(sav + 0x2D)
     ROM_COPY.write(int(spoiler.settings.helm_room_bonus_count))
