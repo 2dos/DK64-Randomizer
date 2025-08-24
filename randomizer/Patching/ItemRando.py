@@ -581,6 +581,30 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
         starting_move_packets.extend([{"offset": COUNT_STRUCT_SIZE + (x * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": (2 << starting_ins_upg_level) - 2} for x in range(5)])
     # Belts
     starting_move_packets.append({"offset": EXTRA_STRUCT_OFFSET + 2, "mode": "set", "value": starting_belt_level})
+    # Kongs
+    # Unlock All Kongs
+    kong_items = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
+    starting_kongs = []
+    if spoiler.settings.starting_kongs_count == 5:
+        starting_move_packets.append({
+            "offset": 0xB,
+            "mode": "set",
+            "value": 0x1F
+        })
+        starting_kongs = kong_items.copy()
+    else:
+        bin_value = 0
+        for x in spoiler.settings.starting_kong_list:
+            bin_value |= 1 << x
+            starting_kongs.append(kong_items[x])
+        starting_move_packets.append({
+            "offset": 0xB,
+            "mode": "set",
+            "value": bin_value
+        })
+    for kong in starting_kongs:
+        setItemReferenceName(spoiler, kong, 0, "Starting Kong", 0)
+    
     # Starting moves writer
     starting_item_base_addr = getROMAddress(getSym("starting_item_data"), Overlay.Custom, offset_dict)
     ROM_COPY.seek(starting_item_base_addr)

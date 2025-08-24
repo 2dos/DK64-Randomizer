@@ -122,15 +122,16 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
 }
 
 void banana_medal_check(int count, int change, int requirement, int flag, int index) {
+    if (requirement < 1) {
+        requirement = 1;
+    }
     if (count < requirement) {
         return;
     }
     if ((count - change) >= requirement) {
         return;
     }
-    item_packet *item_send = 0;
-    item_send = &medal_item_table[index];
-    displayMedalOverlay(flag, item_send);
+    displayMedalOverlay(flag, &medal_item_table[index]);
 }
 
 void banana_medal_acquisition(int cb_count, int world, int change) {

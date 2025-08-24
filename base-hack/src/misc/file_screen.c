@@ -968,28 +968,12 @@ void correctKongFaces(void) {
 	/**
 	 * @brief Alter the kong faces on the file screen to handle pre-given kongs
 	 */
-	if (Rando.unlock_kongs) {
-		for (int i = 0; i < 5; i++) {
-			int flag = getItemCount_new(REQITEM_KONG, 0, i);
-			KongUnlockedMenuArray[i] = flag;
-			if (!flag) {
-				KongUnlockedMenuArray[i] = (Rando.unlock_kongs & (1 << i)) != 0;
-			}
-		}
-		if (!getItemCount_new(REQITEM_KONG, 0, KONG_DK)) {
-			if ((Rando.unlock_kongs & 1) == 0) {
-				KongUnlockedMenuArray[0] = 0;
-			}
-		}
-	} else {
-		for (int i = 0; i < 5; i++) {
-			KongUnlockedMenuArray[i] = getItemCount_new(REQITEM_KONG, 0, i);
-		}
-		KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
-		if (Rando.starting_kong != 0) {
-			if (!getItemCount_new(REQITEM_KONG, 0, KONG_DK)) {
-				KongUnlockedMenuArray[0] = 0;
-			}
+	for (int i = 0; i < 5; i++) {
+		int has_kong = getItemCount_new(REQITEM_KONG, 0, i);
+		KongUnlockedMenuArray[i] = has_kong;
+		if (!has_kong) {
+			// If you don't have the kong, check the starting moves data
+			KongUnlockedMenuArray[i] = (starting_item_data.others.kong_bitfield >> i) & 1;
 		}
 	}
 }
@@ -1055,11 +1039,6 @@ void startFile(void) {
 	if (file_empty) {
 		// New File
 		setAllDefaultFlags();
-		for (int i = 0; i < 5; i++) {
-			if (Rando.unlock_kongs & (1 << i)) {
-				giveItem(REQITEM_KONG, 0, i, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 0});
-			}
-		}
 		unlockMoves();
 		giveCollectables();
 		if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {

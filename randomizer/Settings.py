@@ -1118,9 +1118,9 @@ class Settings:
                 RandomRequirement.hard_random: (14, 20),
             },
             "cbs": {
-                RandomRequirement.easy_random: (1, 30),
-                RandomRequirement.medium_random: (31, 50),
-                RandomRequirement.hard_random: (51, 100),
+                CBRequirement.easy_random: (1, 30),
+                CBRequirement.medium_random: (31, 50),
+                CBRequirement.hard_random: (51, 100),
             },
         }
         if self.pearl_mermaid_behavior != RandomRequirement.pre_selected:
@@ -1137,12 +1137,6 @@ class Settings:
             self.rareware_gb_fairies = self.random.randint(min_bound, max_bound)
         if self.cb_medal_behavior_new == CBRequirement.pre_selected:
             self.medal_cb_req_level = [self.medal_cb_req] * 8
-        elif self.cb_medal_behavior_new not in (CBRequirement.pre_selected, CBRequirement.progressive):
-            cb_behavior_mapped = RandomRequirement(self.cb_medal_behavior_new)
-            min_bound = req_data["cbs"][cb_behavior_mapped][0]
-            max_bound = req_data["cbs"][cb_behavior_mapped][1]
-            req = self.random.randint(min_bound, max_bound)
-            self.medal_cb_req_level = [req] * 8
         elif self.cb_medal_behavior_new == CBRequirement.progressive:
             ratios = MEDAL_PROGRESSIVE_RATIOS.copy()
             if not IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
@@ -1150,6 +1144,11 @@ class Settings:
             allocation = [int(self.medal_cb_req * x) for x in ratios]
             self.random.shuffle(allocation)
             self.medal_cb_req_level = allocation.copy()
+        else:
+            min_bound = req_data["cbs"][self.cb_medal_behavior_new][0]
+            max_bound = req_data["cbs"][self.cb_medal_behavior_new][1]
+            req = self.random.randint(min_bound, max_bound)
+            self.medal_cb_req_level = [req] * 8
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
         if IsDDMSSelected(self.hard_mode_selected, HardModeSelected.water_is_lava):

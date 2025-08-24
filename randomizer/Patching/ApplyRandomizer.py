@@ -190,22 +190,6 @@ def patching_response(spoiler):
             level_order.append(vanilla_lobby_exit_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
         placeLevelOrder(spoiler, level_order, ROM_COPY)
 
-    # Unlock All Kongs
-    kong_items = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
-    starting_kongs = []
-    if spoiler.settings.starting_kongs_count == 5:
-        ROM_COPY.seek(sav + 0x02C)
-        ROM_COPY.write(0x1F)
-        starting_kongs = kong_items.copy()
-    else:
-        bin_value = 0
-        for x in spoiler.settings.starting_kong_list:
-            bin_value |= 1 << x
-            starting_kongs.append(kong_items[x])
-        ROM_COPY.seek(sav + 0x02C)
-        ROM_COPY.write(bin_value)
-    for kong in starting_kongs:
-        setItemReferenceName(spoiler, kong, 0, "Starting Kong", 0)
     ROM_COPY.seek(sav + 0x151)
     ROM_COPY.writeMultipleBytes(spoiler.settings.starting_kong, 1)
 
