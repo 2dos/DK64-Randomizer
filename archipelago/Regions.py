@@ -217,19 +217,13 @@ def create_region(
             match location_logic.bonusBarrel:
                 case MinigameType.BonusBarrel:
                     if not logic_holder.settings.bonus_barrel_auto_complete:
-                        add_rule(
-                            location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic)
-                        )
+                        add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
                 case MinigameType.HelmBarrelFirst:
                     if logic_holder.settings.helm_room_bonus_count > 0:
-                        add_rule(
-                            location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic)
-                        )
+                        add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
                 case MinigameType.HelmBarrelSecond:
                     if logic_holder.settings.helm_room_bonus_count == 2:
-                        add_rule(
-                            location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic)
-                        )
+                        add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
             # Item placement limitations! These only apply to items in your own world, as other worlds' items will be AP items, and those can be anywhere.
             # Fairy locations cannot have your own world's blueprints on them for technical reasons.
             if location_obj.type == Types.Fairy:

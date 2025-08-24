@@ -1414,12 +1414,7 @@ if baseclasses_loaded:
                     else {}
                 ),
                 "Shopkeepers": self.options.shopowners_in_pool.value,
-                "MinigameData": (
-                    {
-                        location_id.name: minigame_data.minigame.name
-                        for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()
-                    }
-                )
+                "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
