@@ -19,12 +19,13 @@ import time
 import typing
 from client.common import DK64MemoryMap, create_task_log_exception, check_version
 from client.pj64 import PJ64Client
-from client.items import item_ids, item_names_to_id
+from client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
 from client.check_flag_locations import location_flag_to_name, location_name_to_flag
 from client.ap_check_ids import check_id_to_name, check_names_to_id
 from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop, ClientCommandProcessor
 from NetUtils import ClientStatus
 from ap_version import version as ap_version
+from randomizer.Patching.ItemRando import normalize_location_name
 
 
 class DK64Client:
@@ -50,6 +51,7 @@ class DK64Client:
     ENABLE_DEATHLINK = False
     ENABLE_RINGLINK = False
     ENABLE_TAGLINK = False
+    ENABLE_TRAPLINK = False
     current_speed = 130
     current_map = 0
     read_half = 0
@@ -106,7 +108,8 @@ class DK64Client:
         """Send a message to the game."""
 
         def sanitize_and_trim(input_string, max_length=0x20):
-            sanitized = "".join(e for e in input_string if e.isalnum() or e == " ").strip()
+            normalized = normalize_location_name(input_string)
+            sanitized = "".join(e for e in normalized if e.isalnum() or e == " ").strip()
             return sanitized[:max_length]
 
         stripped_item_name = sanitize_and_trim(item_name)
@@ -662,7 +665,7 @@ class DK64Client:
                 return data
         return data
 
-    async def main_tick(self, item_get_cb, deathlink_cb, map_change_cb, ring_link, tag_link):
+    async def main_tick(self, item_get_cb, deathlink_cb, map_change_cb, ring_link, tag_link, trap_link):
         """Game loop tick."""
         await self.readChecks(item_get_cb)
         # await self.item_tracker.readItems()
@@ -697,6 +700,8 @@ class DK64Client:
             await ring_link()
         if self.ENABLE_TAGLINK:
             await tag_link()
+        if self.ENABLE_TRAPLINK:
+            await trap_link()
         current_deliver_count = self.get_current_deliver_count()
         # If current_deliver_count is None
         if current_deliver_count is None:
@@ -797,6 +802,21 @@ class DK64CommandProcessor(ClientCommandProcessor):
                 self.ctx.tags.add("RingLink")
             create_task_log_exception(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
 
+    def _cmd_traplink(self):
+        """Toggle traplink from client. Overrides default setting."""
+        if isinstance(self.ctx, DK64Context):
+            if self.ctx.ENABLE_TRAPLINK:
+                self.ctx.ENABLE_TRAPLINK = False
+                self.ctx.client.ENABLE_TRAPLINK = False
+                self.ctx.tags.discard("TrapLink")
+                logger.info("Traplink disabled")
+            else:
+                self.ctx.ENABLE_TRAPLINK = True
+                self.ctx.client.ENABLE_TRAPLINK = True
+                logger.info("Traplink enabled")
+                self.ctx.tags.add("TrapLink")
+            create_task_log_exception(self.ctx.send_msgs([{"cmd": "ConnectUpdate", "tags": self.ctx.tags}]))
+
 
 class DK64Context(CommonContext):
     """Context for Donkey Kong 64."""
@@ -809,6 +829,7 @@ class DK64Context(CommonContext):
     ENABLE_DEATHLINK = False
     ENABLE_RINGLINK = False
     ENABLE_TAGLINK = False
+    ENABLE_TRAPLINK = False
     command_processor = DK64CommandProcessor
     won = False
 
@@ -934,6 +955,12 @@ class DK64Context(CommonContext):
                     self.ENABLE_TAGLINK = True
                     self.client.ENABLE_TAGLINK = True
                     asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
+            if self.slot_data.get("trap_link"):
+                if "TrapLink" not in self.tags:
+                    self.tags.add("TrapLink")
+                    self.ENABLE_TRAPLINK = True
+                    self.client.ENABLE_TRAPLINK = True
+                    asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
             if self.slot_data.get("receive_notifications"):
                 self.client.send_mode = self.slot_data.get("receive_notifications")
             self.client.players = self.player_names
@@ -969,6 +996,15 @@ class DK64Context(CommonContext):
                 except Exception:
                     kong = 5
                 self.pending_tag_link = True, kong
+            if "TrapLink" in self.tags and source_name != self.player_names.get(self.slot) and "TrapLink" in args.get("tags", []):
+                if not hasattr(self, "pending_trap_link"):
+                    self.pending_trap_link = 0
+
+                self.pending_trap_link = trap_name_to_index.get(args["data"]["trap_name"], 0)
+
+                if self.pending_trap_link != 0:
+                    self.pending_trap_original = args["data"]["trap_name"]
+                    self.pending_trap_source = source_name
 
     async def send_ring_link(self, amount: int):
         """Send a ring link message."""
@@ -1185,6 +1221,39 @@ class DK64Context(CommonContext):
                 self.previous_kong = current_kong
                 self.pending_tag_link = False, 0  # Reset pending tag link
 
+    async def send_trap_link(self, trap_name: str):
+        """Send a trap link message."""
+        if "TrapLink" not in self.tags or self.slot is None:
+            return
+        logger.info(f"Sending trap link: {trap_name}")
+
+        player_name = self.player_names.get(self.slot)
+
+        await self.send_msgs([{"cmd": "Bounce", "tags": ["TrapLink"], "data": {"time": time.time(), "source": player_name, "trap_name": trap_name}}])
+
+    async def handle_trap_link(self):
+        """Handle trap link functionality for DK64 items."""
+        if not self.client.ENABLE_TRAPLINK:
+            return
+
+        activated_trap = self.client.n64_client.read_u8(self.client.memory_pointer + DK64MemoryMap.is_trapped)
+        if activated_trap != 0:
+            trap_name = trap_index_to_name.get(activated_trap, "Bubble Trap")
+            await self.send_trap_link(trap_name)
+            self.client.n64_client.write_u8(self.client.memory_pointer + DK64MemoryMap.is_trapped, 0)
+
+        if not hasattr(self, "pending_trap_link"):
+            self.pending_trap_link = 0
+        if not hasattr(self, "pending_trap_original"):
+            self.pending_trap_original = ""
+        if not hasattr(self, "pending_trap_source"):
+            self.pending_trap_source = ""
+
+        if self.pending_trap_link != 0:
+            self.client.n64_client.write_u8(self.client.memory_pointer + DK64MemoryMap.sent_trap, self.pending_trap_link)
+            self.pending_trap_link = 0
+            logger.info(f"Received linked {self.pending_trap_original} from {self.pending_trap_source}")
+
     async def sync(self):
         """Sync the game."""
         sync_msg = [{"cmd": "Sync"}]
@@ -1216,6 +1285,10 @@ class DK64Context(CommonContext):
         async def tag_link():
             """Handle a tag link."""
             await self.handle_tag_link()
+
+        async def trap_link():
+            """Handle a trap link."""
+            await self.handle_trap_link()
 
         async def deathlink():
             """Handle a deathlink."""
@@ -1278,7 +1351,7 @@ class DK64Context(CommonContext):
                     if status is False:
                         await asyncio.sleep(0.5)
                         continue
-                    await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link)
+                    await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link, trap_link)
                     await asyncio.sleep(0.5)
                     now = time.time()
                     if self.last_resend + 0.5 < now:
