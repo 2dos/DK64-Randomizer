@@ -176,11 +176,11 @@ class MedalDistribution(Choice):
     """Determines how the CB requirement is determined.
 
     Options:
-    pre_selected: Player chooses specific values for each CB requirement
+    pre_selected: Player chooses a specific value for CB requirements
     easy_random: Random values are chosen with an easier progression curve
     medium_random: Random values are chosen with a medium progression curve
     hard_random: Random values are chosen with a hard progression curve
-    progressive: CB requirements increase progressively through levels
+    progressive: CB requirements increase progressively through levels depending on your medal_cb_requirement.
     """
 
     display_name = "CB Requirement Setting"
@@ -607,6 +607,10 @@ class HalfMedals(Toggle):
 
     If medal_cb_req is set to 50, you will get a check at 25 Colored Bananas.
     """
+
+    display_name = "Half Medals in Pool"
+
+    default = False
 
 
 @dataclass
