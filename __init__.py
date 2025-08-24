@@ -1415,6 +1415,8 @@ if baseclasses_loaded:
                 ),
                 "Shopkeepers": self.options.shopowners_in_pool.value,
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
+                "Autocomplete": self.options.auto_complete_bonus_barrels.value
+                "HelmBarrelCount": self.options.helm_room_bonus_count.value
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -1621,6 +1623,12 @@ if baseclasses_loaded:
                 raise ValueError(f"This world is generated with an old version of DK64 Randomizer. Please downgrade to the correct version: {version}.")
             if self.version_check(version, "1.1.11"):
                 minigame_data = slot_data["MinigameData"]
+                autocomplete = slot_data["Autocomplete"]
+                helm_barrel_count = slot_data["HelmBarrelCount"]
+            else:
+                minigame_data = {}
+                autocomplete = True
+                helm_barrel_count = 0
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
@@ -1649,4 +1657,6 @@ if baseclasses_loaded:
             relevant_data["EnemyData"] = enemy_data
             relevant_data["Shopkeepers"] = shopkeepers
             relevant_data["MinigameData"] = minigame_data
+            relevant_data["Autocomplete"] = autocomplete
+            relevant_data["HelmBarrelCount"] = helm_barrel_count
             return relevant_data
