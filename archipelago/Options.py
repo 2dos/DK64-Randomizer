@@ -172,6 +172,26 @@ class MedalColorBananaRequirement(Range):
     default = 40
 
 
+class MedalDistribution(Choice):
+    """Determines how the CB requirement is determined.
+
+    Options:
+    pre_selected: Player chooses a specific value for CB requirements
+    easy_random: Random values are chosen with an easier progression curve
+    medium_random: Random values are chosen with a medium progression curve
+    hard_random: Random values are chosen with a hard progression curve
+    progressive: CB requirements increase progressively through levels depending on your medal_cb_requirement.
+    """
+
+    display_name = "CB Requirement Setting"
+    option_pre_selected = 0
+    option_easy_random = 1
+    option_medium_random = 2
+    option_hard_random = 3
+    option_progressive = 4
+    default = 0
+
+
 class RarewareGBRequirement(Range):
     """Determines how many Fairies are needed to unlock the Rareware Door."""
 
@@ -582,6 +602,17 @@ class MicroHints(Choice):
     default = 2
 
 
+class HalfMedals(Toggle):
+    """Determines if Half Medals are added to the pool.
+
+    If medal_cb_req is set to 50, you will get a check at 25 Colored Bananas.
+    """
+
+    display_name = "Half Medals in Pool"
+
+    default = False
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -598,6 +629,7 @@ class DK64Options(PerGameCommonOptions):
     krool_in_boss_pool: KroolInBossPool
     remove_barriers_selected: RemoveBarriers
     medal_cb_req: MedalColorBananaRequirement
+    medal_distribution: MedalDistribution
     mermaid_gb_pearls: MermaidRequirement
     medal_requirement: JetpacRequirement
     rareware_gb_fairies: RarewareGBRequirement
@@ -622,6 +654,7 @@ class DK64Options(PerGameCommonOptions):
     shopowners_in_pool: ShopKeepers
     logic_type: LogicType
     tricks_selected: TricksSelected
+    half_medals_in_pool: HalfMedals
     glitches_selected: GlitchesSelected
     hard_mode: HardModeEnabled
     hard_mode_selected: HardModeSelected
@@ -683,6 +716,7 @@ dk64_option_groups: List[OptionGroup] = [
             BouldersInPool,
             Dropsanity,
             HintItemRandomization,
+            HalfMedals,
         ],
     ),
     OptionGroup(
@@ -701,6 +735,7 @@ dk64_option_groups: List[OptionGroup] = [
             TricksSelected,
             GlitchesSelected,
             MedalColorBananaRequirement,
+            MedalDistribution,
             MermaidRequirement,
             RarewareGBRequirement,
             JetpacRequirement,

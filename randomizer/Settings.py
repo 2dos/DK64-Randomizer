@@ -1135,9 +1135,12 @@ class Settings:
             min_bound = req_data["fairies"][self.fairy_queen_behavior][0]
             max_bound = req_data["fairies"][self.fairy_queen_behavior][1]
             self.rareware_gb_fairies = self.random.randint(min_bound, max_bound)
-        if self.cb_medal_behavior_new not in (CBRequirement.pre_selected, CBRequirement.progressive):
-            min_bound = req_data["cbs"][self.cb_medal_behavior][0]
-            max_bound = req_data["cbs"][self.cb_medal_behavior][1]
+        if self.cb_medal_behavior_new == CBRequirement.pre_selected:
+            self.medal_cb_req_level = [self.medal_cb_req] * 8
+        elif self.cb_medal_behavior_new not in (CBRequirement.pre_selected, CBRequirement.progressive):
+            cb_behavior_mapped = RandomRequirement(self.cb_medal_behavior_new)
+            min_bound = req_data["cbs"][cb_behavior_mapped][0]
+            max_bound = req_data["cbs"][cb_behavior_mapped][1]
             req = self.random.randint(min_bound, max_bound)
             self.medal_cb_req_level = [req] * 8
         elif self.cb_medal_behavior_new == CBRequirement.progressive:

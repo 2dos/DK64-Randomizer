@@ -602,9 +602,11 @@ def MelonCrateItems():
     """Return a list of No Items to be placed."""
     return []
 
+
 def HalfMedalItems():
     """Return a list of No Items to be placed."""
     return []
+
 
 def BoulderItems():
     """Return a list of boulder items to be placed."""
