@@ -571,8 +571,8 @@ if baseclasses_loaded:
             "Bosses": boss_locations(),
         }
 
-        with open("donklocations.txt", "w") as f:
-            print(location_name_to_id, file=f)
+        # with open("donklocations.txt", "w") as f:
+        #     print(location_name_to_id, file=f)
 
         web = DK64Web()
 
