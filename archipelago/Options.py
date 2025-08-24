@@ -172,7 +172,7 @@ class MedalColorBananaRequirement(Range):
     default = 40
 
 
-class CBRequirement(Choice):
+class MedalDistribution(Choice):
     """Determines how the CB requirement is determined.
 
     Options:
@@ -625,7 +625,7 @@ class DK64Options(PerGameCommonOptions):
     krool_in_boss_pool: KroolInBossPool
     remove_barriers_selected: RemoveBarriers
     medal_cb_req: MedalColorBananaRequirement
-    cb_requirement: CBRequirement
+    medal_distribution: MedalDistribution
     mermaid_gb_pearls: MermaidRequirement
     medal_requirement: JetpacRequirement
     rareware_gb_fairies: RarewareGBRequirement
@@ -731,7 +731,7 @@ dk64_option_groups: List[OptionGroup] = [
             TricksSelected,
             GlitchesSelected,
             MedalColorBananaRequirement,
-            CBRequirement,
+            MedalDistribution,
             MermaidRequirement,
             RarewareGBRequirement,
             JetpacRequirement,

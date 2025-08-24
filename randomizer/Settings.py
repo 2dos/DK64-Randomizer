@@ -1135,15 +1135,15 @@ class Settings:
             min_bound = req_data["fairies"][self.fairy_queen_behavior][0]
             max_bound = req_data["fairies"][self.fairy_queen_behavior][1]
             self.rareware_gb_fairies = self.random.randint(min_bound, max_bound)
-        if self.cb_medal_behavior_new == 0:  # pre_selected
+        if self.cb_medal_behavior_new == CBRequirement.pre_selected:
             self.medal_cb_req_level = [self.medal_cb_req] * 8
-        elif self.cb_medal_behavior_new not in (0, 4):  # not pre_selected or progressive
+        elif self.cb_medal_behavior_new not in (CBRequirement.pre_selected, CBRequirement.progressive):
             cb_behavior_mapped = RandomRequirement(self.cb_medal_behavior_new)
             min_bound = req_data["cbs"][cb_behavior_mapped][0]
             max_bound = req_data["cbs"][cb_behavior_mapped][1]
             req = self.random.randint(min_bound, max_bound)
             self.medal_cb_req_level = [req] * 8
-        elif self.cb_medal_behavior_new == 4:  # progressive
+        elif self.cb_medal_behavior_new == CBRequirement.progressive:
             ratios = MEDAL_PROGRESSIVE_RATIOS.copy()
             if not IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
                 ratios[6] = 1
