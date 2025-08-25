@@ -613,6 +613,8 @@ class Spoiler:
                 Types.Snide,
             ) and location.item in (None, Items.NoItem):
                 continue
+            if location.type == Types.HalfMedal and Types.HalfMedal not in self.settings.shuffled_location_types:
+                continue
             # Separate Kong locations
             if location.type == Types.Kong:
                 humanspoiler["Items"]["Kongs"][location.name] = item.name
