@@ -72,7 +72,6 @@ extern void PatchCrankyCode(void);
 extern void PatchBonusCode(void);
 extern void kioskBugCode(void);
 extern void FileScreenDLCode_Write(void);
-extern void pre_turn_keys(void);
 extern void auto_turn_keys(void);
 extern void handle_WTI(void);
 extern void warpToIsles(void);
@@ -257,7 +256,6 @@ extern void finalizeBeatGame(void);
 extern void exitTrapBubbleController(void);
 
 extern int getFlagIndex_Corrected(int start, int level);
-extern int getFlagIndex_MedalCorrected(int start, int level);
 extern int getBPItem(int index);
 extern int getCrownItem(maps map);
 extern int getKeyItem(int old_flag);
@@ -338,14 +336,6 @@ extern int isFlagInRange(int test_flag, int start_flag, int count);
 extern void wipeHintCache(void);
 extern void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0);
 
-extern int initFile_hasGun(int kong);
-extern int initFile_hasInstrument(int kong);
-extern int initFile_getBeltLevel(int inc_training);
-extern int initFile_getInsUpgradeLevel(int inc_training);
-extern int initFile_getSlamLevel(int inc_training);
-extern int initFile_getKongPotionBitfield(int kong);
-extern int initFile_checkTraining(int type_check, int level_check, int kong_check);
-
 extern void fixHelmTimerCorrection(void);
 extern void exitBoss(void);
 
@@ -420,7 +410,8 @@ extern purchase_struct* getShopData(vendors vendor, int kong, int level);
 extern void initQoL_Cutscenes(void);
 
 extern void giveItem(requirement_item item, int level, int kong, giveItemConfig config);
-extern void giveItemFromPacket(item_packet *packet);
+extern void giveItemFromPacket(item_packet *packet, int force_text);
+extern void banana_medal_acquisition(int cb_count, int world, int change);
 extern int getItemCount_new(requirement_item item, int level, int kong);
 extern int hasFlagMove(int flag);
 extern void setFlagMove(int flag);
@@ -503,3 +494,5 @@ extern unsigned short trap_enabled_buttons;
 extern purchase_text_hint_struct purchase_hint_text_items[120];
 extern char aztec_beetle[0x20];
 extern char caves_beetle[0x20];
+extern unsigned char pregiven_status[56];
+extern StartingItemsStruct starting_item_data;

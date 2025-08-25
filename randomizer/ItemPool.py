@@ -92,6 +92,7 @@ def PlaceConstants(spoiler):
     if not IsItemSelected(spoiler.settings.cb_rando_enabled, spoiler.settings.cb_rando_list_selected, Levels.DKIsles):
         for x in range(5):
             spoiler.LocationList[Locations.IslesDonkeyMedal + x].PlaceConstantItem(spoiler, Items.NoItem)
+            spoiler.LocationList[Locations.IslesDonkeyHalfMedal + x].PlaceConstantItem(spoiler, Items.NoItem)
     # Handle key placements
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and Types.Key not in settings.shuffled_location_types:
         # Place keys in the lobbies they normally belong in
@@ -161,6 +162,7 @@ def AllItemsUnrestricted(settings):
     allItems.extend(FairyItems())
     allItems.extend(RainbowCoinItems())
     allItems.extend(MelonCrateItems())
+    allItems.extend(HalfMedalItems())
     allItems.extend(BoulderItems())
     allItems.extend(EnemyItems())
     allItems.extend(FakeItems(settings))
@@ -214,6 +216,8 @@ def AllItems(settings):
         allItems.extend(RainbowCoinItems())
     if Types.CrateItem in settings.shuffled_location_types:
         allItems.extend(MelonCrateItems())
+    if Types.HalfMedal in settings.shuffled_location_types:
+        allItems.extend(HalfMedalItems())
     if Types.BoulderItem in settings.shuffled_location_types:
         allItems.extend(BoulderItems())
     if Types.Hint in settings.shuffled_location_types:
@@ -284,6 +288,8 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(RainbowCoinItems())
     if Types.CrateItem in settings.shuffled_location_types:
         allItems.extend(MelonCrateItems())
+    if Types.HalfMedal in settings.shuffled_location_types:
+        allItems.extend(HalfMedalItems())
     if Types.BoulderItem in settings.shuffled_location_types:
         allItems.extend(BoulderItems())
     if Types.Hint in settings.shuffled_location_types:
@@ -597,6 +603,11 @@ def MelonCrateItems():
     return []
 
 
+def HalfMedalItems():
+    """Return a list of No Items to be placed."""
+    return []
+
+
 def BoulderItems():
     """Return a list of boulder items to be placed."""
     return []
@@ -777,6 +788,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(RainbowCoinItems())
     if Types.CrateItem in unplacedTypes:
         itemPool.extend(MelonCrateItems())
+    if Types.HalfMedal in unplacedTypes:
+        itemPool.extend(HalfMedalItems())
     if Types.BoulderItem in unplacedTypes:
         itemPool.extend(BoulderItems())
     if Types.Enemies in unplacedTypes:

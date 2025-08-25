@@ -114,3 +114,5 @@ extern void dynflagcheck_0(void);
 extern void dynflagcheck_1(void);
 extern void dynflagcheck_2(void);
 extern void dynflagcheck_3(void);
+
+extern void banana_medal_handler(void);

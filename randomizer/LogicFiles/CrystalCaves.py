@@ -16,11 +16,16 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
 
 LogicRegions = {
     Regions.CrystalCavesMedals: Region("Crystal Caves Medals", HintRegion.CavesCBs, Levels.CrystalCaves, False, None, [
-        LocationLogic(Locations.CavesDonkeyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.donkey] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.CavesDiddyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.diddy] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.CavesLankyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.lanky] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.CavesTinyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.tiny] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.CavesChunkyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.chunky] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.CavesDonkeyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.donkey] >= l.settings.medal_cb_req_level[5]),
+        LocationLogic(Locations.CavesDiddyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.diddy] >= l.settings.medal_cb_req_level[5]),
+        LocationLogic(Locations.CavesLankyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.lanky] >= l.settings.medal_cb_req_level[5]),
+        LocationLogic(Locations.CavesTinyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.tiny] >= l.settings.medal_cb_req_level[5]),
+        LocationLogic(Locations.CavesChunkyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.chunky] >= l.settings.medal_cb_req_level[5]),
+        LocationLogic(Locations.CavesDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.donkey] >= max(1, int(l.settings.medal_cb_req_level[5] >> 1))),
+        LocationLogic(Locations.CavesDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.diddy] >= max(1, int(l.settings.medal_cb_req_level[5] >> 1))),
+        LocationLogic(Locations.CavesLankyHalfMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.lanky] >= max(1, int(l.settings.medal_cb_req_level[5] >> 1))),
+        LocationLogic(Locations.CavesTinyHalfMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.tiny] >= max(1, int(l.settings.medal_cb_req_level[5] >> 1))),
+        LocationLogic(Locations.CavesChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.chunky] >= max(1, int(l.settings.medal_cb_req_level[5] >> 1))),
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location

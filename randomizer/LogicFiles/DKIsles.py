@@ -112,11 +112,16 @@ LogicRegions = {
     ]),
 
     Regions.DKIslesMedals: Region("DK Isles Medals", HintRegion.IslesCBs, Levels.DKIsles, False, None, [
-        LocationLogic(Locations.IslesDonkeyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.donkey] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.IslesDiddyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.diddy] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.IslesLankyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.lanky] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.IslesTinyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.tiny] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.IslesChunkyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.chunky] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.IslesDonkeyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.donkey] >= l.settings.medal_cb_req_level[7]),
+        LocationLogic(Locations.IslesDiddyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.diddy] >= l.settings.medal_cb_req_level[7]),
+        LocationLogic(Locations.IslesLankyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.lanky] >= l.settings.medal_cb_req_level[7]),
+        LocationLogic(Locations.IslesTinyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.tiny] >= l.settings.medal_cb_req_level[7]),
+        LocationLogic(Locations.IslesChunkyMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.chunky] >= l.settings.medal_cb_req_level[7]),
+        LocationLogic(Locations.IslesDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.donkey] >= max(1, int(l.settings.medal_cb_req_level[7] >> 1))),
+        LocationLogic(Locations.IslesDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.diddy] >= max(1, int(l.settings.medal_cb_req_level[7] >> 1))),
+        LocationLogic(Locations.IslesLankyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.lanky] >= max(1, int(l.settings.medal_cb_req_level[7] >> 1))),
+        LocationLogic(Locations.IslesTinyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.tiny] >= max(1, int(l.settings.medal_cb_req_level[7] >> 1))),
+        LocationLogic(Locations.IslesChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.DKIsles][Kongs.chunky] >= max(1, int(l.settings.medal_cb_req_level[7] >> 1))),
     ], [], [], restart=-1),
 
     Regions.Credits: Region("Credits", HintRegion.Credits, Levels.DKIsles, False, None, [

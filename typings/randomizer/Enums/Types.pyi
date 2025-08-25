@@ -44,6 +44,7 @@ class Types(IntEnum):
     HelmMedal = 41
     HelmKey = 42
     EnemyPhoto = 43
+    HalfMedal = 44
 
 class BarrierItems(IntEnum):
     Nothing = 0

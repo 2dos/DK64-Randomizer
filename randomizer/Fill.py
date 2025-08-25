@@ -609,6 +609,11 @@ def VerifyWorld(spoiler: Spoiler) -> bool:
                 Locations.IslesLankyMedal,
                 Locations.IslesTinyMedal,
                 Locations.IslesChunkyMedal,
+                Locations.IslesDonkeyHalfMedal,
+                Locations.IslesDiddyHalfMedal,
+                Locations.IslesLankyHalfMedal,
+                Locations.IslesTinyHalfMedal,
+                Locations.IslesChunkyHalfMedal,
             ]
         ]
     allLocationsReached = len(unreachables) == 0
@@ -946,6 +951,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
                 Types.Fairy,
                 Types.RainbowCoin,
                 Types.CrateItem,
+                Types.HalfMedal,
                 Types.BoulderItem,
                 Types.Enemies,
             )
@@ -1101,6 +1107,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             Types.Fairy,
             Types.RainbowCoin,
             Types.CrateItem,
+            Types.HalfMedal,
             Types.Enemies,
         )
     ]
@@ -2389,6 +2396,9 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.CrateItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.CrateItem)
         # Crates hold nothing, so leave this one empty
+    if Types.HalfMedal in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.HalfMedal)
+        # Half medals hold nothing, so leave this one empty
     if Types.BoulderItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.BoulderItem)
         # Boulders/Vases/Kegs hold nothing, so leave this one empty

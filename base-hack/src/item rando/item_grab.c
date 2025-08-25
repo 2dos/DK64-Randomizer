@@ -52,7 +52,7 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
     float reward_y = 120.0f;
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
         setPermFlag(flag);
-        giveItemFromPacket(item_send);
+        giveItemFromPacket(item_send, 0);
         void* sprite = 0;
         requirement_item item_type = item_send->item_type;
         int item_kong = item_send->kong;
@@ -121,19 +121,40 @@ void displayMedalOverlay(int flag, item_packet *item_send) {
     }
 }
 
-void banana_medal_acquisition(int flag) {
+void banana_medal_check(int count, int change, int requirement, int flag, int index) {
+    if (requirement < 1) {
+        requirement = 1;
+    }
+    if (count < requirement) {
+        return;
+    }
+    if ((count - change) >= requirement) {
+        return;
+    }
+    displayMedalOverlay(flag, &medal_item_table[index]);
+}
+
+void banana_medal_acquisition(int cb_count, int world, int change) {
     /**
      * @brief Acquire a banana medal, and handle the item acquired from it
      * 
      * @param flag Flag index of the banana medal
      */
-    item_packet *item_send = 0;
-    if (flag >= FLAG_MEDAL_ISLES_DK) {
-        item_send = &medal_item_table[(flag - FLAG_MEDAL_ISLES_DK) + 40];
-    } else {
-        item_send = &medal_item_table[flag - FLAG_MEDAL_JAPES_DK];
+    int requirement = Rando.cb_medal_requirement[world];
+    int flag = 0;
+    int kong = getKong(0);
+    int offset = (5 * world) + kong;
+    if (Rando.include_half_medals) {
+        flag = FLAG_HALF_MEDAL_JAPES_DK + offset;
+        banana_medal_check(cb_count, change, requirement >> 1, flag, 45 + offset);
     }
-    displayMedalOverlay(flag, item_send);
+    flag = FLAG_MEDAL_JAPES_DK + offset;
+    if (world == 7) {
+        flag = FLAG_MEDAL_ISLES_DK + kong;
+        offset = 40 + kong;
+    }
+    banana_medal_check(cb_count, change, requirement, flag, offset);
+    
 }
 
 int getFlagIndex_Corrected(int start, int level) {
@@ -146,21 +167,6 @@ int getFlagIndex_Corrected(int start, int level) {
      * @return New flag index
      */
     return start + (5 * level) + getKong(0);
-}
-
-int getFlagIndex_MedalCorrected(int start, int level) {
-    /**
-     * @brief Get a corrected flag index for a medal, which will convert Rambi/Enguarde into the kong who entered the transformation crate
-     * 
-     * @param start Start flag index
-     * @param level Level Index
-     * 
-     * @return New flag index
-     */
-    if (level < 7) {
-        return getFlagIndex_Corrected(start, level);
-    }
-    return FLAG_MEDAL_ISLES_DK + getKong(0);
 }
 
 void giveItemFromSend(item_packet *send) {
@@ -410,6 +416,7 @@ void getItem(int object_type) {
                 }
                 setAction(action, 0, 0);
             }
+            playSong(SONG_GBGET, 1.0f);
             break;
         case 0x18D:
             // Crown

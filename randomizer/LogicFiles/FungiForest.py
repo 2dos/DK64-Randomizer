@@ -18,11 +18,16 @@ from randomizer.Enums.Settings import FungiTimeSetting, MinigameBarrels, Removed
 
 LogicRegions = {
     Regions.FungiForestMedals: Region("Fungi Forest Medals", HintRegion.ForestCBs, Levels.FungiForest, False, None, [
-        LocationLogic(Locations.ForestDonkeyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.donkey] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.ForestDiddyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.diddy] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.ForestLankyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.lanky] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.ForestTinyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.tiny] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.ForestDonkeyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.donkey] >= l.settings.medal_cb_req_level[4]),
+        LocationLogic(Locations.ForestDiddyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.diddy] >= l.settings.medal_cb_req_level[4]),
+        LocationLogic(Locations.ForestLankyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.lanky] >= l.settings.medal_cb_req_level[4]),
+        LocationLogic(Locations.ForestTinyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.tiny] >= l.settings.medal_cb_req_level[4]),
+        LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= l.settings.medal_cb_req_level[4]),
+        LocationLogic(Locations.ForestDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.donkey] >= max(1, int(l.settings.medal_cb_req_level[4] >> 1))),
+        LocationLogic(Locations.ForestDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.diddy] >= max(1, int(l.settings.medal_cb_req_level[4] >> 1))),
+        LocationLogic(Locations.ForestLankyHalfMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.lanky] >= max(1, int(l.settings.medal_cb_req_level[4] >> 1))),
+        LocationLogic(Locations.ForestTinyHalfMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.tiny] >= max(1, int(l.settings.medal_cb_req_level[4] >> 1))),
+        LocationLogic(Locations.ForestChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= max(1, int(l.settings.medal_cb_req_level[4] >> 1))),
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location

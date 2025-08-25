@@ -160,6 +160,7 @@ if baseclasses_loaded:
         BLockerSetting,
         RandomPrices,
         WrinklyHints,
+        CBRequirement,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
@@ -632,14 +633,18 @@ if baseclasses_loaded:
             settings_dict["krool_in_boss_pool"] = self.options.krool_in_boss_pool.value
             settings_dict["helm_phase_count"] = self.options.helm_phase_count.value
             settings_dict["krool_phase_count"] = self.options.krool_phase_count.value
-            settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
+            if self.options.medal_distribution.value == 0:  # pre_selected
+                settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
+            elif self.options.medal_distribution.value == 4:  # progressive
+                settings_dict["medal_cb_req"] = self.options.medal_requirement.value
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["mirror_mode"] = self.options.mirror_mode.value
             settings_dict["hard_mode"] = self.options.hard_mode.value
-            settings_dict["key_8_helm"] = self.options.key8_lock.value
+            settings_dict["key_8_helm"] = self.options.helm_key_lock.value
             settings_dict["shuffle_helm_location"] = self.options.shuffle_helm_level_order.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
+            settings_dict["cb_medal_behavior_new"] = self.options.medal_distribution.value
 
             # Level blocker settings
             blocker_options = [
@@ -702,6 +707,8 @@ if baseclasses_loaded:
                 settings_dict["item_rando_list_1"].append(ItemRandoListSelected.enemies)
             if self.options.shopowners_in_pool.value:
                 settings_dict["item_rando_list_1"].append(ItemRandoListSelected.shopowners)
+            if self.options.half_medals_in_pool.value:
+                settings_dict["item_rando_list_1"].append(ItemRandoListSelected.halfmedal)
             # Hard mode settings
             # More to be added soon (Except maybe lava water)
             settings_dict["hard_mode_selected"] = []
@@ -913,6 +920,7 @@ if baseclasses_loaded:
                         settings.BLockerEntryItems = passthrough["BLockerEntryItems"]
                         settings.BLockerEntryCount = passthrough["BLockerEntryCount"]
                         settings.medal_cb_req = passthrough["MedalCBRequirement"]
+                        settings.medal_cb_req_level = [settings.medal_cb_req] * 8
                         settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
                         settings.BossBananas = passthrough["BossBananas"]
                         settings.boss_maps = passthrough["BossMaps"]
@@ -1356,6 +1364,12 @@ if baseclasses_loaded:
                 "ForestTime": self.spoiler.settings.fungi_time_internal.name,
                 "GalleonWater": self.spoiler.settings.galleon_water_internal.name,
                 "MedalCBRequirement": self.spoiler.settings.medal_cb_req,
+                "MedalCBRequirementLevel": ", ".join(
+                    [
+                        f"{level}: {req}"
+                        for level, req in zip(["JungleJapes", "AngryAztec", "FranticFactory", "GloomyGalleon", "FungiForest", "CrystalCaves", "CreepyCastle"], self.spoiler.settings.medal_cb_req_level)
+                    ]
+                ),
                 "BLockerValues": ", ".join(
                     [
                         f"{['Japes', 'Aztec', 'Factory', 'Galleon', 'Forest', 'Caves', 'Castle', 'Helm'][i]}: {count} {barrier_type.name}"
@@ -1403,6 +1417,7 @@ if baseclasses_loaded:
                     else {}
                 ),
                 "Shopkeepers": self.options.shopowners_in_pool.value,
+                "HalfMedals": self.options.half_medals_in_pool.value,
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -1526,7 +1541,9 @@ if baseclasses_loaded:
                 return True
             if item_obj.type == Types.JunkItem:
                 # In a location that can't have junk
-                if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies) or (loc_obj.type == Types.Key or loc_obj.level == Levels.HideoutHelm):
+                if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies, Types.HalfMedal) or (
+                    loc_obj.type == Types.Key or loc_obj.level == Levels.HideoutHelm
+                ):
                     return True
             return False
 

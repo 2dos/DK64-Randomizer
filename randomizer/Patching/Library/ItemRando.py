@@ -261,6 +261,114 @@ class NoBuyText(IntEnum):
     kong = auto()
 
 
+class TrackerItems(IntEnum):
+    """Tracker Items Enum."""
+
+    COCONUT = 0
+    BONGOS = auto()
+    GRAB = auto()
+    STRONG = auto()
+    BLAST = auto()
+    PEANUT = auto()
+    GUITAR = auto()
+    CHARGE = auto()
+    ROCKET = auto()
+    SPRING = auto()
+    GRAPE = auto()
+    TROMBONE = auto()
+    OSTAND = auto()
+    OSPRINT = auto()
+    BALLOON = auto()
+    FEATHER = auto()
+    SAX = auto()
+    PTT = auto()
+    MINI = auto()
+    MONKEYPORT = auto()
+    PINEAPPLE = auto()
+    TRIANGLE = auto()
+    PUNCH = auto()
+    HUNKY = auto()
+    GONE = auto()
+    SLAM = auto()
+    SLAM_HAS = auto()
+    HOMING = auto()
+    SNIPER = auto()
+    AMMOBELT = auto()
+    INSTRUMENT_UPG = auto()
+    DIVE = auto()
+    ORANGE = auto()
+    BARREL = auto()
+    VINE = auto()
+    CAMERA = auto()
+    SHOCKWAVE = auto()
+    KEY1 = auto()
+    KEY2 = auto()
+    KEY3 = auto()
+    KEY4 = auto()
+    KEY5 = auto()
+    KEY6 = auto()
+    KEY7 = auto()
+    KEY8 = auto()
+    MELON_2 = auto()
+    MELON_3 = auto()
+    INSUPG_1 = auto()
+    INSUPG_2 = auto()
+    BELT_1 = auto()
+    BELT_2 = auto()
+    CRANKY = auto()
+    FUNKY = auto()
+    CANDY = auto()
+    SNIDE = auto()
+    CLIMB = auto()
+    TERMINATOR = auto()
+
+
+pregiven_item_order = [
+    Items.BaboonBlast,
+    Items.StrongKong,
+    Items.GorillaGrab,
+    Items.ChimpyCharge,
+    Items.RocketbarrelBoost,
+    Items.SimianSpring,
+    Items.Orangstand,
+    Items.BaboonBalloon,
+    Items.OrangstandSprint,
+    Items.MiniMonkey,
+    Items.PonyTailTwirl,
+    Items.Monkeyport,
+    Items.HunkyChunky,
+    Items.PrimatePunch,
+    Items.GorillaGone,
+    Items.ProgressiveSlam,
+    Items.ProgressiveSlam,
+    Items.ProgressiveSlam,
+    Items.Coconut,
+    Items.Peanut,
+    Items.Grape,
+    Items.Feather,
+    Items.Pineapple,
+    Items.Bongos,
+    Items.Guitar,
+    Items.Trombone,
+    Items.Saxophone,
+    Items.Triangle,
+    Items.ProgressiveAmmoBelt,
+    Items.ProgressiveAmmoBelt,
+    Items.HomingAmmo,
+    Items.SniperSight,
+    Items.ProgressiveInstrumentUpgrade,
+    Items.ProgressiveInstrumentUpgrade,
+    Items.ProgressiveInstrumentUpgrade,
+    Items.Swim,
+    Items.Oranges,
+    Items.Barrels,
+    Items.Vines,
+    Items.Camera,
+    Items.Shockwave,
+    Items.Climbing,
+]
+
+
 class ItemPlacementData:
     """Class to store information pertaining to writing Item Rando data."""
 

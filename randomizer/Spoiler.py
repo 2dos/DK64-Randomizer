@@ -19,6 +19,7 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
     BLockerSetting,
+    CBRequirement,
     DKPortalRando,
     GlitchesSelected,
     LogicType,
@@ -243,6 +244,7 @@ class Spoiler:
             Types.FakeItem: "Ice Traps",
             Types.JunkItem: "Junk Items",
             Types.CrateItem: "Melon Crates",
+            Types.HalfMedal: "Half-Medals",
             Types.BoulderItem: "Holdable Objects",
             Types.Enemies: "Enemy Drops",
             Types.Cranky: "Shop Owners",
@@ -336,7 +338,6 @@ class Spoiler:
         settings["Coin Door Open"] = self.settings.coin_door_item == BarrierItems.Nothing
         settings["Shockwave Shuffle"] = self.settings.shockwave_status.name
         settings["Random Jetpac Medal Requirement"] = self.settings.random_medal_requirement
-        settings["Bananas Required for Medal"] = self.settings.medal_cb_req
         settings["Fairies Required for Rareware GB"] = self.settings.rareware_gb_fairies
         settings["Pearls Required for Mermaid GB"] = self.settings.mermaid_gb_pearls
         settings["Random Shop Prices"] = self.settings.random_prices.name
@@ -1061,6 +1062,24 @@ class Spoiler:
             }
             if self.settings.shuffle_helm_location:
                 humanspoiler["Level Switch Strength"]["Hideout Helm"] = SLAM_NAMES[self.settings.switch_allocation[Levels.HideoutHelm]]
+        humanspoiler["Medal CB Requirements"] = {}
+        levels = [
+            "Jungle Japes",
+            "Angry Aztec",
+            "Frantic Factory",
+            "Gloomy Galleon",
+            "Fungi Forest",
+            "Crystal Caves",
+            "Creepy Castle",
+            "DK Isles",
+        ]
+        for xi, x in enumerate(self.settings.medal_cb_req_level):
+            if xi == 7 and not IsItemSelected(self.settings.cb_rando_enabled, self.settings.cb_rando_list_selected, Levels.DKIsles):
+                continue
+            text = x
+            if Types.HalfMedal in self.settings.shuffled_location_types:  # Half Medals
+                text = f"{x} ({max(1, int(x >> 1))})"
+            humanspoiler["Medal CB Requirements"][levels[xi]] = text
 
         if len(self.microhints) > 0:
             human_microhints = {}

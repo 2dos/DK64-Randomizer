@@ -40,6 +40,13 @@ class CBRando(IntEnum):
     on = 2
     on_with_isles = 3
 
+class CBRequirement(IntEnum):
+    pre_selected = 0
+    easy_random = 1
+    medium_random = 2
+    hard_random = 3
+    progressive = 4
+
 class CharacterColors(IntEnum):
     vanilla = 1
     randomized = 2
@@ -271,6 +278,8 @@ class ItemRandoListSelected(IntEnum):
     dummyitem_crateitem = 40
     trainingmoves = 41
     trainingbarrels = 42
+    halfmedal = 43
+    dummyitem_halfmedal = 44
 
 class ItemRandoFiller(IntEnum):
     junkitem = 1
@@ -818,6 +827,7 @@ class SettingsStringEnum(IntEnum):
     shops_dont_cost = 262
     less_fragile_boulders = 263
     ice_trap_count = 264
+    cb_medal_behavior_new = 265
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -898,6 +908,7 @@ SettingsMap: dict = {
     "pearl_mermaid_behavior": RandomRequirement,
     "fairy_queen_behavior": RandomRequirement,
     "cb_medal_behavior": RandomRequirement,
+    "cb_medal_behavior_new": CBRequirement,
     "wrinkly_hints": WrinklyHints,
     "spoiler_hints": SpoilerHints,
     "starting_kong": Kongs,
@@ -1115,6 +1126,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.pearl_mermaid_behavior: RandomRequirement,
     SettingsStringEnum.fairy_queen_behavior: RandomRequirement,
     SettingsStringEnum.cb_medal_behavior: RandomRequirement,
+    SettingsStringEnum.cb_medal_behavior_new: CBRequirement,
     SettingsStringEnum.win_condition_count: SettingsStringDataType.var_int,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,

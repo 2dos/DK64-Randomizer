@@ -186,6 +186,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Fakeitem: 70%
 	- Junkitem: 70%
 	- Crateitem: 70%
+	- Halfmedal: 70%
 	- Shopowners: 30%
 - Item Reward Previews: 75%
 - Random Kasplat Locations: 

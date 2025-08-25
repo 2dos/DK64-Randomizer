@@ -190,9 +190,9 @@ void purchaseFirstMoveHandler(shop_paad* paad) {
 	purchaseMove(paad);
 }
 
-void setLocation(purchase_struct* purchase_data) {
+void setLocation(purchase_struct* purchase_data, int force_text) {
 	if (purchase_data->item.item_type) {
-		giveItemFromPacket(&purchase_data->item);
+		giveItemFromPacket(&purchase_data->item, force_text);
 	}
 }
 
@@ -209,13 +209,13 @@ void setLocationStatus(location_list location_index) {
 	int location_int = (int)location_index;
 	if (location_int < 4) {
 		// TBarrels
-		setLocation(&TrainingMoves_New[location_int]);
+		setLocation(&TrainingMoves_New[location_int], 0);
 	} else if (location_index == LOCATION_BFI) {
 		// BFI
-		setLocation(&BFIMove_New);
+		setLocation(&BFIMove_New, 1);
 	} else if (location_index == LOCATION_FIRSTMOVE) {
 		// First Move (Normally Slam 1)
-		setLocation(&FirstMove_New);
+		setLocation(&FirstMove_New, 0);
 	}
 	setPermFlag(flag_location_series[location_index]);
 }

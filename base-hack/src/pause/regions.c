@@ -249,6 +249,27 @@ static const char map_hint_regions[] = {
     REFERENCE_PARENT, // jetpac_rocket
 };
 
+static const char fungi_chunk_regions[] = {
+    REGION_FORESTSTART, // 0 = Starting area
+    REGION_FORESTMILLS, // 1 = Blue Tunnel
+    REGION_FORESTMILLS, // 2 = Mills Main
+    REGION_FORESTMILLS, // 3 = Snide Area
+    REGION_FORESTMILLS, // 4 = Dark Attic Area
+    REGION_FORESTMILLS, // 5 = Thornvine Area
+    REGION_FORESTMILLS, // 6 = Rear of Thornvine Barn
+    REGION_FORESTSTART, // 7 = Green Tunnel
+    REGION_FORESTSTART, // 8 = Apple area
+    REGION_FORESTSTART, // 9 = Beanstalk Area
+    REGION_FORESTGMEXT, // 10
+    REGION_FORESTGMEXT, // 11
+    REGION_FORESTOWL, // 12 = Yellow Tunnel
+    REGION_FORESTOWL, // 13 = Start of owl tree area
+    REGION_FORESTOWL, // 14 = Owl Tree Area Main
+    REGION_FORESTOWL, // 15 = Rabbit Race Area
+    REGION_FORESTOWL, // 16 = Anthill Area
+    REGION_FORESTOWL, // 17 = Owl Tree Rocketbarrel Area
+};
+
 int setHintRegion(void) {
     int current_region = map_hint_regions[CurrentMap];
     if (current_region >= 0) {
@@ -298,27 +319,7 @@ int setHintRegion(void) {
                 }
                 return REGION_CAVESMAIN;
             case MAP_FUNGI:
-                if ((chunk == 0) || (chunk == 7) || (chunk == 8) || (chunk == 9)) {
-                    // 0 = Starting area, 7 = Green Tunnel, 8 = Apple area, 9 = Beanstalk Area
-                    return REGION_FORESTSTART;
-                } else if ((chunk >= 1) && (chunk <= 6)) {
-                    // 1 = Blue Tunnel
-                    // 2 = Mills Main
-                    // 3 = Snide Area
-                    // 4 = Dark Attic Area
-                    // 5 = Thornvine Area
-                    // 6 = Rear of Thornvine Barn
-                    return REGION_FORESTMILLS;
-                } else if ((chunk >= 12) && (chunk <= 17)) {
-                    // 12 = Yellow Tunnel
-                    // 13 = Start of owl tree area
-                    // 14 = Owl Tree Area Main
-                    // 15 = Rabbit Race Area
-                    // 16 = Anthill Area
-                    // 17 = Owl Tree Rocketbarrel Area
-                    return REGION_FORESTOWL;
-                }
-                return REGION_FORESTGMEXT;
+                return fungi_chunk_regions[chunk];
             case MAP_AZTEC:
                 if ((chunk == 4) || (chunk == 12)) {
                     // 4 = Oasis, 12 = Totem
@@ -345,7 +346,6 @@ int setHintRegion(void) {
                         return REGION_ISLESOUTER;
                     }
                     return REGION_ISLESMAIN;
-                    
                 }
             case MAP_GALLEON:
                 if ((chunk >= 9) && (chunk <= 11)) {

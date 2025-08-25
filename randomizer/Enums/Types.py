@@ -57,6 +57,8 @@ check_map = {
     "dummyitem_crateitem": 40,
     "trainingmoves": 41,
     "trainingbarrels": 42,
+    "halfmedal": 43,
+    "dummyitem_halfmedal": 44,
 }
 for item in ItemRandoSelector:
     item["num_val"] = check_map.get(item["value"], 0)

@@ -123,7 +123,6 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             RaceCoinCount = current_item_data.race_coins;
             break;
         case REQITEM_MOVE:
-            // TODO: Move logic here
             if ((level >= 0) && (level < 3)) {
                 // Special Moves
                 MovesBase[kong].special_moves |= (1 << level);
@@ -184,15 +183,17 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
     if (config.apply_helm_hurry) {
         addHelmTime(hh_item, 1);
     }
-    if (config.display_item_text) {
-        if (display_text) {
-            spawnItemOverlay(item, level, kong, 0);
-        }
+    if ((config.display_item_text && display_text) || (config.force_display_item_text)) {
+        spawnItemOverlay(item, level, kong, 0);
     }
 }
 
-void giveItemFromPacket(item_packet *packet) {
-    giveItem(packet->item_type, packet->level, packet->kong, (giveItemConfig){.display_item_text = 1, .apply_helm_hurry = 1, .give_coins = 1, .apply_ice_trap = 1});
+void giveItemFromPacket(item_packet *packet, int force_text) {
+    giveItemConfig cfg = {.display_item_text = 1, .apply_helm_hurry = 1, .give_coins = 1, .apply_ice_trap = 1};
+    if (force_text) {
+        cfg.force_display_item_text = 1;
+    }
+    giveItem(packet->item_type, packet->level, packet->kong, cfg);
 }
 
 int getItemCount_new(requirement_item item, int level, int kong) {
@@ -294,6 +295,39 @@ int getItemCount_new(requirement_item item, int level, int kong) {
             return current_item_data.junk_items;
         case REQITEM_RACECOIN:
             return current_item_data.race_coins;
+        case REQITEM_SHOPKEEPER:
+            return checkFlag(FLAG_ITEM_CRANKY + kong, FLAGTYPE_PERMANENT);
+        case REQITEM_MOVE:
+            if ((level >= 0) && (level < 3)) {
+                // Special Moves
+                return (MovesBase[kong].special_moves >> level) & 1;
+            } else if (level == 3) {
+                // Slam
+                return MovesBase[0].simian_slam;
+            } else if (level == 4) {
+                // Gun
+                return MovesBase[kong].weapon_bitfield & 1;
+            } else if ((level == 5) || (level == 6)) {
+                // Homing/Sniper
+                return (MovesBase[0].weapon_bitfield >> (level - 4)) & 1;
+            } else if (level == 7) {
+                // Ammo Belt
+                return MovesBase[0].ammo_belt;
+            } else if (level == 8) {
+                // Instrument
+                return MovesBase[kong].instrument_bitfield & 1;
+            } else if (level == 9) {
+                // Progressive instrument
+                return getInstrumentLevel();
+            } else if (level == 10) {
+                if ((*(unsigned char*)(&current_item_data.flag_moves) << kong) == 0x80) {
+                    return 1;
+                }
+                return 0;
+            } else if (level == 11) {
+                return checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
+            }
+            break;
     }
     return 0;
 }

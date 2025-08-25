@@ -11,7 +11,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Library.DataTypes import intf_to_float
 from randomizer.Patching.Library.Generic import setItemReferenceName
-from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, getPropFromItem, getModelMask, getItemDBEntry, item_shop_text_mapping, BuyText
+from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, getPropFromItem, getModelMask, getItemDBEntry, item_shop_text_mapping, BuyText, TrackerItems
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, CompTextFiles, ItemPreview
 from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay, writeValue
 from randomizer.Patching.Patcher import LocalROM
@@ -313,6 +313,309 @@ def writeBuyText(item: Items, address: int, ROM_COPY: LocalROM):
     data = item_shop_text_mapping.get(item, (0, 0))
     ROM_COPY.write(data[0])
     ROM_COPY.write(data[1] + BuyText.terminator)
+
+
+COUNT_STRUCT_SIZE = 0x1A  # This is technically 1 byte more than it should actually uses, but kong specific stuff does get 2-byte aligned
+KONG_STRUCT_SIZE = 0x3
+EXTRA_STRUCT_OFFSET = COUNT_STRUCT_SIZE + (5 * KONG_STRUCT_SIZE)
+TRACKER_ITEM_PAIRING = {
+    TrackerItems.COCONUT: {
+        "item": Items.Coconut,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 1}],
+    },
+    TrackerItems.BONGOS: {
+        "item": Items.Bongos,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": 1}],
+    },
+    TrackerItems.GRAB: {
+        "item": Items.GorillaGrab,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 4}],
+    },
+    TrackerItems.STRONG: {
+        "item": Items.StrongKong,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 2}],
+    },
+    TrackerItems.BLAST: {
+        "item": Items.BaboonBlast,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.donkey * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 1}],
+    },
+    TrackerItems.PEANUT: {
+        "item": Items.Peanut,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 1}],
+    },
+    TrackerItems.GUITAR: {
+        "item": Items.Guitar,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": 1}],
+    },
+    TrackerItems.CHARGE: {
+        "item": Items.ChimpyCharge,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 1}],
+    },
+    TrackerItems.ROCKET: {
+        "item": Items.RocketbarrelBoost,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 2}],
+    },
+    TrackerItems.SPRING: {
+        "item": Items.SimianSpring,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.diddy * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 4}],
+    },
+    TrackerItems.GRAPE: {
+        "item": Items.Grape,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 1}],
+    },
+    TrackerItems.TROMBONE: {
+        "item": Items.Trombone,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": 1}],
+    },
+    TrackerItems.OSTAND: {
+        "item": Items.OrangstandSprint,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 1}],
+    },
+    TrackerItems.OSPRINT: {
+        "item": Items.OrangstandSprint,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 4}],
+    },
+    TrackerItems.BALLOON: {
+        "item": Items.BaboonBalloon,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 2}],
+    },
+    TrackerItems.FEATHER: {
+        "item": Items.Feather,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 1}],
+    },
+    TrackerItems.SAX: {
+        "item": Items.Saxophone,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": 1}],
+    },
+    TrackerItems.PTT: {
+        "item": Items.PonyTailTwirl,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 2}],
+    },
+    TrackerItems.MINI: {
+        "item": Items.MiniMonkey,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 1}],
+    },
+    TrackerItems.MONKEYPORT: {
+        "item": Items.Monkeyport,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.tiny * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 4}],
+    },
+    TrackerItems.PINEAPPLE: {
+        "item": Items.Pineapple,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 1}],
+    },
+    TrackerItems.TRIANGLE: {
+        "item": Items.Triangle,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": 1}],
+    },
+    TrackerItems.PUNCH: {
+        "item": Items.PrimatePunch,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 2}],
+    },
+    TrackerItems.HUNKY: {
+        "item": Items.HunkyChunky,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 1}],
+    },
+    TrackerItems.GONE: {
+        "item": Items.GorillaGone,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.chunky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 4}],
+    },
+    TrackerItems.HOMING: {
+        "item": Items.HomingAmmo,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (x * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 2} for x in range(5)],
+    },
+    TrackerItems.SNIPER: {
+        "item": Items.SniperSight,
+        "packets": [{"offset": COUNT_STRUCT_SIZE + (x * KONG_STRUCT_SIZE) + 1, "mode": "or", "value": 4} for x in range(5)],
+    },
+    TrackerItems.DIVE: {
+        "item": Items.Swim,
+        "packets": [{"offset": 0x18, "mode": "or", "value": 0x80}],
+    },
+    TrackerItems.ORANGE: {
+        "item": Items.Oranges,
+        "packets": [{"offset": 0x18, "mode": "or", "value": 0x40}],
+    },
+    TrackerItems.BARREL: {
+        "item": Items.Barrels,
+        "packets": [{"offset": 0x18, "mode": "or", "value": 0x20}],
+    },
+    TrackerItems.VINE: {
+        "item": Items.Vines,
+        "packets": [{"offset": 0x18, "mode": "or", "value": 0x10}],
+    },
+    TrackerItems.CAMERA: {
+        "item": Items.Camera,
+        "packets": [{"offset": 0x18, "mode": "or", "value": 0x8}],
+    },
+    TrackerItems.SHOCKWAVE: {
+        "item": Items.Shockwave,
+        "packets": [{"offset": 0x18, "mode": "or", "value": 0x4}],
+    },
+    TrackerItems.CLIMB: {
+        "item": Items.Climbing,
+        "packets": [{"offset": EXTRA_STRUCT_OFFSET + 3, "mode": "set", "value": 1}],
+    },
+}
+TRACKER_SHOPKEEPER_PAIRING = {
+    TrackerItems.CRANKY: Items.Cranky,
+    TrackerItems.FUNKY: Items.Funky,
+    TrackerItems.CANDY: Items.Candy,
+    TrackerItems.SNIDE: Items.Snide,
+}
+
+
+def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
+    """Calculate the items that need to be shown on the file screen for a new file, as well as the struct to give starting items."""
+    OTHER_STARTING_ITEMS = {
+        Locations.IslesVinesTrainingBarrel: Items.Vines,
+        Locations.IslesSwimTrainingBarrel: Items.Swim,
+        Locations.IslesOrangesTrainingBarrel: Items.Oranges,
+        Locations.IslesBarrelsTrainingBarrel: Items.Barrels,
+        Locations.ShopOwner_Location00: Items.Cranky,
+        Locations.ShopOwner_Location01: Items.Funky,
+        Locations.ShopOwner_Location02: Items.Candy,
+        Locations.ShopOwner_Location03: Items.Snide,
+    }
+    if not spoiler.settings.fast_start_beginning_of_game:
+        del OTHER_STARTING_ITEMS[Locations.IslesVinesTrainingBarrel]
+        del OTHER_STARTING_ITEMS[Locations.IslesSwimTrainingBarrel]
+        del OTHER_STARTING_ITEMS[Locations.IslesOrangesTrainingBarrel]
+        del OTHER_STARTING_ITEMS[Locations.IslesBarrelsTrainingBarrel]
+    found_shopkeeper = False
+    if spoiler.settings.shuffle_items:
+        for item in spoiler.item_assignment:
+            if item.location >= Locations.ShopOwner_Location00 and item.location <= Locations.ShopOwner_Location03:
+                found_shopkeeper = True
+            if item.can_have_item:
+                if item.location in list(OTHER_STARTING_ITEMS.keys()):
+                    OTHER_STARTING_ITEMS[item.location] = item.new_subitem
+    if not found_shopkeeper:
+        OTHER_STARTING_ITEMS[Locations.ShopOwner_Location00] = Items.NoItem
+        OTHER_STARTING_ITEMS[Locations.ShopOwner_Location01] = Items.NoItem
+        OTHER_STARTING_ITEMS[Locations.ShopOwner_Location02] = Items.NoItem
+        OTHER_STARTING_ITEMS[Locations.ShopOwner_Location03] = Items.NoItem
+    starting_slam_level = 0
+    starting_belt_level = 0
+    starting_ins_upg_level = 0
+    has_melon_2 = False
+    starting_items = list(OTHER_STARTING_ITEMS.values()) + spoiler.pregiven_items
+    for item in starting_items:
+        if item in (Items.ProgressiveSlam, Items.ProgressiveSlam2, Items.ProgressiveSlam3):
+            starting_slam_level += 1
+        elif item in (Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt2):
+            starting_belt_level += 1
+        elif item in (Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3):
+            starting_ins_upg_level += 1
+            has_melon_2 = True
+        elif item in (Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle):
+            has_melon_2 = True
+    offset_dict = populateOverlayOffsets(ROM_COPY)
+    base_addr = getROMAddress(getSym("pregiven_status"), Overlay.Custom, offset_dict)
+    starting_move_packets = []
+    for x in range(TrackerItems.TERMINATOR):
+        value = 0
+        give_move_packets = []
+        if x in TRACKER_ITEM_PAIRING:
+            checked_items = [TRACKER_ITEM_PAIRING[x]["item"]]
+            if x in (TrackerItems.CAMERA, TrackerItems.SHOCKWAVE):
+                checked_items.append(Items.CameraAndShockwave)
+            for checked_item in checked_items:
+                if checked_item in starting_items:
+                    value = 1
+                    give_move_packets.extend(TRACKER_ITEM_PAIRING[x]["packets"])
+        elif x in [TrackerItems.SLAM, TrackerItems.SLAM_HAS]:
+            value = starting_slam_level
+            give_move_packets.append({"offset": EXTRA_STRUCT_OFFSET + 1, "mode": "set", "value": starting_slam_level})
+        elif x == TrackerItems.MELON_2:
+            if has_melon_2:
+                value = 1
+        elif x == TrackerItems.MELON_3:
+            if starting_ins_upg_level > 1:
+                value = 1
+        elif x == TrackerItems.INSUPG_1:
+            if starting_ins_upg_level > 0:
+                value = 1
+        elif x == TrackerItems.INSUPG_2:
+            if starting_ins_upg_level > 2:
+                value = 1
+        elif x == TrackerItems.BELT_1:
+            if starting_belt_level > 0:
+                value = 1
+        elif x == TrackerItems.BELT_2:
+            if starting_belt_level > 1:
+                value = 1
+        elif x == TrackerItems.AMMOBELT:
+            value = starting_belt_level
+        elif x == TrackerItems.INSTRUMENT_UPG:
+            if starting_ins_upg_level > 2:
+                value = 2
+            elif starting_ins_upg_level > 0:
+                value = 1
+        elif x >= TrackerItems.KEY1 and x <= TrackerItems.KEY8:
+            keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
+            if len(spoiler.settings.krool_keys_required) > 0:
+                for key in spoiler.settings.krool_keys_required:
+                    key_index = key - 4
+                    if key_index in keys_turned_in:
+                        keys_turned_in.remove(key_index)
+            key = x - TrackerItems.KEY1
+            if key in keys_turned_in:
+                value = 1
+                give_move_packets.append({"offset": 0xA, "mode": "or", "value": 1 << key})
+        elif x in list(TRACKER_SHOPKEEPER_PAIRING.keys()):
+            matching_item = TRACKER_SHOPKEEPER_PAIRING[x]
+            if matching_item in list(OTHER_STARTING_ITEMS.values()):
+                value = 1
+        ROM_COPY.seek(base_addr + x)
+        ROM_COPY.writeMultipleBytes(value, 1)
+        starting_move_packets.extend(give_move_packets)
+    # Melons
+    melon_count = 1
+    if starting_ins_upg_level > 1:
+        melon_count = 3
+    elif has_melon_2:
+        melon_count = 2
+    starting_move_packets.append({"offset": EXTRA_STRUCT_OFFSET + 0, "mode": "set", "value": melon_count})
+    # Instrument Upgrades
+    if starting_ins_upg_level > 0:
+        starting_move_packets.extend([{"offset": COUNT_STRUCT_SIZE + (x * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": (2 << starting_ins_upg_level) - 2} for x in range(5)])
+    # Belts
+    starting_move_packets.append({"offset": EXTRA_STRUCT_OFFSET + 2, "mode": "set", "value": starting_belt_level})
+    # Kongs
+    # Unlock All Kongs
+    kong_items = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
+    starting_kongs = []
+    if spoiler.settings.starting_kongs_count == 5:
+        starting_move_packets.append({"offset": 0xB, "mode": "set", "value": 0x1F})
+        starting_kongs = kong_items.copy()
+    else:
+        bin_value = 0
+        for x in spoiler.settings.starting_kong_list:
+            bin_value |= 1 << x
+            starting_kongs.append(kong_items[x])
+        starting_move_packets.append({"offset": 0xB, "mode": "set", "value": bin_value})
+    for kong in starting_kongs:
+        setItemReferenceName(spoiler, kong, 0, "Starting Kong", 0)
+
+    # Starting moves writer
+    starting_item_base_addr = getROMAddress(getSym("starting_item_data"), Overlay.Custom, offset_dict)
+    ROM_COPY.seek(starting_item_base_addr)
+    for _ in range(EXTRA_STRUCT_OFFSET + 4):
+        ROM_COPY.writeMultipleBytes(0, 1)  # Clear cache
+    for packet in starting_move_packets:
+        ROM_COPY.seek(starting_item_base_addr + packet["offset"])
+        mode = packet["mode"]
+        value = packet["value"]
+        size = packet.get("size", 1)
+        if mode == "set":
+            ROM_COPY.writeMultipleBytes(value, size)
+        else:
+            old_value = int.from_bytes(ROM_COPY.readBytes(size), "big")
+            ROM_COPY.seek(starting_item_base_addr + packet["offset"])
+            if mode == "add":
+                ROM_COPY.writeMultipleBytes(value + old_value, size)
+            elif mode == "or":
+                ROM_COPY.writeMultipleBytes(old_value | value, size)
 
 
 NUMBERS_AS_WORDS = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE"]
@@ -856,12 +1159,15 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         ROM_COPY.writeMultipleBytes(spoiler.enemy_location_list[item.location].map, 1)
                         ROM_COPY.writeMultipleBytes(spoiler.enemy_location_list[item.location].id, 1)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
-                    elif item.old_item in (Types.Medal, Types.Hint):
+                    elif item.old_item in (Types.Medal, Types.Hint, Types.HalfMedal):
                         offset = None
-                        if item.old_item == Types.Medal:
-                            offset = item.old_flag - 549
-                            if item.old_flag >= 0x3C6 and item.old_flag < 0x3CB:  # Isles Medals
-                                offset = 40 + (item.old_flag - 0x3C6)
+                        if item.old_item in (Types.Medal, Types.HalfMedal):
+                            if item.old_item == Types.Medal:
+                                offset = item.old_flag - 549
+                                if item.old_flag >= 0x3C6 and item.old_flag < 0x3CB:  # Isles Medals
+                                    offset = 40 + (item.old_flag - 0x3C6)
+                            elif item.old_item == Types.HalfMedal:
+                                offset = 45 + (item.old_flag - 0x3D6)
                         elif item.old_item == Types.Hint:
                             offset = item.old_flag - 0x384
                         addr = getItemTableWriteAddress(ROM_COPY, item.old_item, offset, offset_dict)

@@ -8,6 +8,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Generic import setItemReferenceName
 from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
+from randomizer.Patching.Library.ItemRando import pregiven_item_order
 from randomizer.CompileHints import getHelmProgItems
 
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
@@ -341,50 +342,6 @@ def getNextSlot(spoiler, ROM_COPY: LocalROM, item: Items) -> int:
 
 def place_pregiven_moves(spoiler, ROM_COPY: LocalROM):
     """Place pre-given moves."""
-    item_order = [
-        Items.BaboonBlast,
-        Items.StrongKong,
-        Items.GorillaGrab,
-        Items.ChimpyCharge,
-        Items.RocketbarrelBoost,
-        Items.SimianSpring,
-        Items.Orangstand,
-        Items.BaboonBalloon,
-        Items.OrangstandSprint,
-        Items.MiniMonkey,
-        Items.PonyTailTwirl,
-        Items.Monkeyport,
-        Items.HunkyChunky,
-        Items.PrimatePunch,
-        Items.GorillaGone,
-        Items.ProgressiveSlam,
-        Items.ProgressiveSlam,
-        Items.ProgressiveSlam,
-        Items.Coconut,
-        Items.Peanut,
-        Items.Grape,
-        Items.Feather,
-        Items.Pineapple,
-        Items.Bongos,
-        Items.Guitar,
-        Items.Trombone,
-        Items.Saxophone,
-        Items.Triangle,
-        Items.ProgressiveAmmoBelt,
-        Items.ProgressiveAmmoBelt,
-        Items.HomingAmmo,
-        Items.SniperSight,
-        Items.ProgressiveInstrumentUpgrade,
-        Items.ProgressiveInstrumentUpgrade,
-        Items.ProgressiveInstrumentUpgrade,
-        Items.Swim,
-        Items.Oranges,
-        Items.Barrels,
-        Items.Vines,
-        Items.Camera,
-        Items.Shockwave,
-        Items.Climbing,
-    ]
     progressives = (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam)
     name_str = "Extra Training"
     for item in spoiler.pregiven_items:
@@ -393,11 +350,11 @@ def place_pregiven_moves(spoiler, ROM_COPY: LocalROM):
             new_slot = None
             if item in progressives:
                 new_slot = getNextSlot(spoiler, ROM_COPY, item)
-            elif item in item_order:
-                new_slot = item_order.index(item)
+            elif item in pregiven_item_order:
+                new_slot = pregiven_item_order.index(item)
             elif item == Items.CameraAndShockwave:
                 new_slot = None  # Setting is handled by the code below
-                for index in [item_order.index(Items.Camera), item_order.index(Items.Shockwave)]:
+                for index in [pregiven_item_order.index(Items.Camera), pregiven_item_order.index(Items.Shockwave)]:
                     offset = int(index >> 3)
                     check = int(index % 8)
                     ROM_COPY.seek(spoiler.settings.rom_data + 0xD5 + offset)
