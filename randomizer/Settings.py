@@ -61,6 +61,7 @@ from randomizer.ShuffleBosses import (
     ShuffleTinyPhaseToes,
 )
 from version import version as randomizer_version
+from ap_version import version as archipelago_version
 
 
 class Settings:
@@ -84,6 +85,7 @@ class Settings:
 
         # Debugging
         self.version = version
+        self.ap_version = archipelago_version
         self.branch = os.environ.get("BRANCH", "LOCAL")
 
         self.apply_form_data(form_data)
