@@ -671,6 +671,28 @@ class ShuffledBonusBarrels(OptionList):
         "arcade",
     }
 
+    default = [
+        "batty_barrel_bandit",
+        "big_bug_bash",
+        "busy_barrel_barrage",
+        "mad_maze_maul",
+        "minecart_mayhem",
+        "beaver_bother",
+        "teetering_turtle_trouble",
+        "stealthy_snoop",
+        "stash_snatch",
+        "splish_splash_salvage",
+        "speedy_swing_sortie",
+        "krazy_kong_klamour",
+        "searchlight_seek",
+        "kremling_kosh",
+        "peril_path_panic",
+        "helm_minigames",
+        "arenas",
+        "training_minigames",
+        "arcade",
+    ]
+
 
 class HardMinigames(Toggle):
     """Determines if hard minigames are shuffled into the barrel pool."""
