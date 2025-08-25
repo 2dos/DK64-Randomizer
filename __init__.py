@@ -935,6 +935,8 @@ if baseclasses_loaded:
                         settings.BLockerEntryCount = passthrough["BLockerEntryCount"]
                         settings.medal_cb_req = passthrough["MedalCBRequirement"]
                         settings.medal_cb_req_level = [settings.medal_cb_req] * 8
+                        for level, value in passthrough["MedalCBRequirementLevel"]:
+                            settings.medal_cb_req_level[Levels[level]] = value
                         settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
                         settings.BossBananas = passthrough["BossBananas"]
                         settings.boss_maps = passthrough["BossMaps"]
