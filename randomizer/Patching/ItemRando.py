@@ -368,7 +368,7 @@ TRACKER_ITEM_PAIRING = {
         "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 2, "mode": "or", "value": 1}],
     },
     TrackerItems.OSTAND: {
-        "item": Items.OrangstandSprint,
+        "item": Items.Orangstand,
         "packets": [{"offset": COUNT_STRUCT_SIZE + (Kongs.lanky * KONG_STRUCT_SIZE) + 0, "mode": "or", "value": 1}],
     },
     TrackerItems.OSPRINT: {
@@ -476,7 +476,7 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
         Locations.ShopOwner_Location02: Items.Candy,
         Locations.ShopOwner_Location03: Items.Snide,
     }
-    if not spoiler.settings.fast_start_beginning_of_game:
+    if (not spoiler.settings.fast_start_beginning_of_game) or spoiler.settings.archipelago:
         del OTHER_STARTING_ITEMS[Locations.IslesVinesTrainingBarrel]
         del OTHER_STARTING_ITEMS[Locations.IslesSwimTrainingBarrel]
         del OTHER_STARTING_ITEMS[Locations.IslesOrangesTrainingBarrel]
