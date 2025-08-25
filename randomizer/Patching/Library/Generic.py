@@ -7,6 +7,7 @@ from enum import IntEnum, auto
 from typing import TYPE_CHECKING, Any, List, Union
 from functools import lru_cache
 
+import re
 import js
 import math
 from randomizer.Enums.ScriptTypes import ScriptTypes
@@ -799,13 +800,27 @@ def sumChecks(spoiler, ownedItems, locations: list) -> int:
     return sum(spoiler.LocationList[loc].inaccessible or spoiler.LocationList[loc].item in ownedItems for loc in locations)
 
 
+def getDebugString(gen: str, cosmetic: str, ap: str, branch: str) -> str:
+    """Return the debug string to be written to ROM."""
+    return f"G{gen}C{cosmetic}A{ap}{branch[0]}".upper()
+
+
+def decodeDebugString(s: str) -> tuple:
+    pattern = r"^G([\d\.]+)C([\d\.]+)A([\d\.]+)([A-Z])$"
+    match = re.match(pattern, s.upper())
+    if not match:
+        raise ValueError("String does not match expected format")
+    gen, cosmetic, ap, branch0 = match.groups()
+    return (gen, cosmetic, ap, branch0)
+
+
 def writeDebugInformation(ROM_COPY, cosmetic_version=None, settings=None):
     """Write the debug info string to ROM."""
     output = ""
     DEBUG_LOCATION = 0x1FEDA00
     if cosmetic_version is None and settings is not None:
         # Create string from scratch
-        output = f"G{settings.version}C{settings.version}A{settings.ap_version}{settings.branch[0]}".upper()
+        output = getDebugString(settings.version, "0", settings.ap_version, settings.branch)
     elif cosmetic_version is not None:
         # Read existing string
         ROM_COPY.seek(DEBUG_LOCATION)
@@ -813,8 +828,21 @@ def writeDebugInformation(ROM_COPY, cosmetic_version=None, settings=None):
         if indic == 0xFF:
             # Missing debug information, don't write
             return
+        str_length = 0x20
         ROM_COPY.seek(DEBUG_LOCATION)
-
+        for x in range(0x20):
+            val = int.from_bytes(ROM_COPY.readBytes(1), "big")
+            if val in (0, 0xFF):
+                str_length = x
+                break
+        ROM_COPY.seek(DEBUG_LOCATION)
+        data = ROM_COPY.readBytes(str_length)
+        print(str_length)
+        print(data)
+        written_string = data.decode("ascii")
+        print(written_string)
+        gen, _, ap, branch = decodeDebugString(written_string)
+        output = getDebugString(gen, cosmetic_version, ap, branch)
     ROM_COPY.seek(DEBUG_LOCATION)
     ROM_COPY.writeBytes(bytes(f"{output}\0", "ascii"))
 

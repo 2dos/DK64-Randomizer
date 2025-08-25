@@ -64,7 +64,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items, alterTextboxRequirements, calculateInitFileScreen
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
+from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected, writeDebugInformation
 from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
 from randomizer.Patching.MiscSetupChanges import (
     randomize_setup,
@@ -701,6 +701,7 @@ def patching_response(spoiler):
     enableTriggerText(spoiler, ROM_COPY)
     shortenCastleMinecart(spoiler, ROM_COPY)
     alterStoryCutsceneWarps(spoiler, ROM_COPY)
+    writeDebugInformation(ROM_COPY, None, spoiler.settings)
 
     if "PYTEST_CURRENT_TEST" not in os.environ:
         replaceIngameText(spoiler, ROM_COPY)

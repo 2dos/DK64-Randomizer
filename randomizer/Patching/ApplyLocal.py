@@ -26,7 +26,7 @@ from randomizer.Patching.CosmeticColors import (
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Library.Generic import recalculatePointerJSON, camelCaseToWords, getHoliday, Holidays, IsColorOptionSelected
+from randomizer.Patching.Library.Generic import recalculatePointerJSON, camelCaseToWords, getHoliday, Holidays, IsColorOptionSelected, writeDebugInformation
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, writeText
 from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic, disableDynamicReverb, fixLankyIncompatibility
 
@@ -312,6 +312,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                     write_data[offset] |= 0x80 >> check
             ROM_COPY.seek(sav + 0x1B7)
             ROM_COPY.writeMultipleBytes(write_data[0], 1)
+            writeDebugInformation(ROM_COPY, rando_version)
 
             music_data, music_names = randomize_music(settings, ROM_COPY)
             patchAssemblyCosmetic(ROM_COPY, settings)
