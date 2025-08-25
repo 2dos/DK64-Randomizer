@@ -799,6 +799,26 @@ def sumChecks(spoiler, ownedItems, locations: list) -> int:
     return sum(spoiler.LocationList[loc].inaccessible or spoiler.LocationList[loc].item in ownedItems for loc in locations)
 
 
+def writeDebugInformation(ROM_COPY, cosmetic_version=None, settings=None):
+    """Write the debug info string to ROM."""
+    output = ""
+    DEBUG_LOCATION = 0x1FEDA00
+    if cosmetic_version is None and settings is not None:
+        # Create string from scratch
+        output = f"G{settings.version}C{settings.version}A{settings.ap_version}{settings.branch[0]}".upper()
+    elif cosmetic_version is not None:
+        # Read existing string
+        ROM_COPY.seek(DEBUG_LOCATION)
+        indic = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        if indic == 0xFF:
+            # Missing debug information, don't write
+            return
+        ROM_COPY.seek(DEBUG_LOCATION)
+
+    ROM_COPY.seek(DEBUG_LOCATION)
+    ROM_COPY.writeBytes(bytes(f"{output}\0", "ascii"))
+
+
 def getHolidaySetting(settings):
     """Get the holiday setting."""
     is_offseason = True
