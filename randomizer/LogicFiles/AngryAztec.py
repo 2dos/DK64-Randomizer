@@ -17,11 +17,16 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
 
 LogicRegions = {
     Regions.AngryAztecMedals: Region("Angry Aztec Medals", HintRegion.AztecCBs, Levels.AngryAztec, False, None, [
-        LocationLogic(Locations.AztecDonkeyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.donkey] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.AztecDiddyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.diddy] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.AztecTinyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.tiny] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.AztecDonkeyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.donkey] >= l.settings.medal_cb_req_level[1]),
+        LocationLogic(Locations.AztecDiddyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.diddy] >= l.settings.medal_cb_req_level[1]),
+        LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= l.settings.medal_cb_req_level[1]),
+        LocationLogic(Locations.AztecTinyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.tiny] >= l.settings.medal_cb_req_level[1]),
+        LocationLogic(Locations.AztecChunkyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= l.settings.medal_cb_req_level[1]),
+        LocationLogic(Locations.AztecDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.donkey] >= max(1, int(l.settings.medal_cb_req_level[1] >> 1))),
+        LocationLogic(Locations.AztecDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.diddy] >= max(1, int(l.settings.medal_cb_req_level[1] >> 1))),
+        LocationLogic(Locations.AztecLankyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= max(1, int(l.settings.medal_cb_req_level[1] >> 1))),
+        LocationLogic(Locations.AztecTinyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.tiny] >= max(1, int(l.settings.medal_cb_req_level[1] >> 1))),
+        LocationLogic(Locations.AztecChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.chunky] >= max(1, int(l.settings.medal_cb_req_level[1] >> 1))),
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location

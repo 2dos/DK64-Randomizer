@@ -68,12 +68,17 @@ class Location:
             if self.level in (Levels.DKIsles, Levels.HideoutHelm):
                 level_index = 7
             self.map_id_list = [MapIDCombo(0, -1, 469 + self.kong + (5 * level_index), self.kong)]
-        elif self.type in [Types.Medal, Types.IslesMedal] and self.level != Levels.HideoutHelm:
+        elif self.type in [Types.Medal, Types.IslesMedal, Types.HalfMedal] and self.level != Levels.HideoutHelm:
             level_index = int(self.level)
-            if self.level == Levels.DKIsles:
-                self.map_id_list = [MapIDCombo(0, -1, 0x3C6 + self.kong, self.kong)]
+            if self.type == Types.HalfMedal:
+                if self.level == Levels.DKIsles:
+                    level_index = 7
+                self.map_id_list = [MapIDCombo(0, -1, 0x3D6 + (5 * level_index) + self.kong)]
             else:
-                self.map_id_list = [MapIDCombo(0, -1, 549 + self.kong + (5 * level_index), self.kong)]
+                if self.level == Levels.DKIsles:
+                    self.map_id_list = [MapIDCombo(0, -1, 0x3C6 + self.kong, self.kong)]
+                else:
+                    self.map_id_list = [MapIDCombo(0, -1, 549 + self.kong + (5 * level_index), self.kong)]
         elif self.type == Types.Hint:
             level_index = int(self.level)
             self.map_id_list = [MapIDCombo(0, -1, 0x384 + self.kong + (5 * level_index), self.kong)]
@@ -143,7 +148,7 @@ class Location:
                     location_obj.inaccessible = False
 
 
-DROPSANITY_FLAG_START = 0x3D6
+DROPSANITY_FLAG_START = 0x3FE
 
 
 LocationListOriginal = {
@@ -1673,6 +1678,47 @@ LocationListOriginal = {
     Locations.KremKap_IslesMainEnemy_PineappleCage1: Location(Levels.DKIsles, "Photo of Isles Enemy: Pineapple Cage (1)", Items.PhotoZingerCharger, Types.EnemyPhoto, Kongs.any, []),
     Locations.KremKap_IslesMainEnemy_LowerFactoryPath0: Location(Levels.DKIsles, "Photo of Isles Enemy: Lower Factory Path (0)", Items.PhotoZingerLime, Types.EnemyPhoto, Kongs.any, []),
     Locations.KremKap_IslesMainEnemy_LowerFactoryPath1: Location(Levels.DKIsles, "Photo of Isles Enemy: Lower Factory Path (1)", Items.PhotoZingerLime, Types.EnemyPhoto, Kongs.any, []),
+    # Half Medals
+    Locations.JapesDonkeyHalfMedal: Location(Levels.JungleJapes, "Japes Donkey Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.donkey),
+    Locations.JapesDiddyHalfMedal: Location(Levels.JungleJapes, "Japes Diddy Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.diddy),
+    Locations.JapesLankyHalfMedal: Location(Levels.JungleJapes, "Japes Lanky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.lanky),
+    Locations.JapesTinyHalfMedal: Location(Levels.JungleJapes, "Japes Tiny Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.tiny),
+    Locations.JapesChunkyHalfMedal: Location(Levels.JungleJapes, "Japes Chunky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.chunky),
+    Locations.AztecDonkeyHalfMedal: Location(Levels.AngryAztec, "Aztec Donkey Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.donkey),
+    Locations.AztecDiddyHalfMedal: Location(Levels.AngryAztec, "Aztec Diddy Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.diddy),
+    Locations.AztecLankyHalfMedal: Location(Levels.AngryAztec, "Aztec Lanky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.lanky),
+    Locations.AztecTinyHalfMedal: Location(Levels.AngryAztec, "Aztec Tiny Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.tiny),
+    Locations.AztecChunkyHalfMedal: Location(Levels.AngryAztec, "Aztec Chunky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.chunky),
+    Locations.FactoryDonkeyHalfMedal: Location(Levels.FranticFactory, "Factory Donkey Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.donkey),
+    Locations.FactoryDiddyHalfMedal: Location(Levels.FranticFactory, "Factory Diddy Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.diddy),
+    Locations.FactoryLankyHalfMedal: Location(Levels.FranticFactory, "Factory Lanky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.lanky),
+    Locations.FactoryTinyHalfMedal: Location(Levels.FranticFactory, "Factory Tiny Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.tiny),
+    Locations.FactoryChunkyHalfMedal: Location(Levels.FranticFactory, "Factory Chunky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.chunky),
+    Locations.GalleonDonkeyHalfMedal: Location(Levels.GloomyGalleon, "Galleon Donkey Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.donkey),
+    Locations.GalleonDiddyHalfMedal: Location(Levels.GloomyGalleon, "Galleon Diddy Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.diddy),
+    Locations.GalleonLankyHalfMedal: Location(Levels.GloomyGalleon, "Galleon Lanky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.lanky),
+    Locations.GalleonTinyHalfMedal: Location(Levels.GloomyGalleon, "Galleon Tiny Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.tiny),
+    Locations.GalleonChunkyHalfMedal: Location(Levels.GloomyGalleon, "Galleon Chunky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.chunky),
+    Locations.ForestDonkeyHalfMedal: Location(Levels.FungiForest, "Forest Donkey Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.donkey),
+    Locations.ForestDiddyHalfMedal: Location(Levels.FungiForest, "Forest Diddy Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.diddy),
+    Locations.ForestLankyHalfMedal: Location(Levels.FungiForest, "Forest Lanky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.lanky),
+    Locations.ForestTinyHalfMedal: Location(Levels.FungiForest, "Forest Tiny Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.tiny),
+    Locations.ForestChunkyHalfMedal: Location(Levels.FungiForest, "Forest Chunky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.chunky),
+    Locations.CavesDonkeyHalfMedal: Location(Levels.CrystalCaves, "Caves Donkey Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.donkey),
+    Locations.CavesDiddyHalfMedal: Location(Levels.CrystalCaves, "Caves Diddy Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.diddy),
+    Locations.CavesLankyHalfMedal: Location(Levels.CrystalCaves, "Caves Lanky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.lanky),
+    Locations.CavesTinyHalfMedal: Location(Levels.CrystalCaves, "Caves Tiny Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.tiny),
+    Locations.CavesChunkyHalfMedal: Location(Levels.CrystalCaves, "Caves Chunky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.chunky),
+    Locations.CastleDonkeyHalfMedal: Location(Levels.CreepyCastle, "Castle Donkey Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.donkey),
+    Locations.CastleDiddyHalfMedal: Location(Levels.CreepyCastle, "Castle Diddy Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.diddy),
+    Locations.CastleLankyHalfMedal: Location(Levels.CreepyCastle, "Castle Lanky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.lanky),
+    Locations.CastleTinyHalfMedal: Location(Levels.CreepyCastle, "Castle Tiny Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.tiny),
+    Locations.CastleChunkyHalfMedal: Location(Levels.CreepyCastle, "Castle Chunky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.chunky),
+    Locations.IslesDonkeyHalfMedal: Location(Levels.DKIsles, "Isles Donkey Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.donkey),
+    Locations.IslesDiddyHalfMedal: Location(Levels.DKIsles, "Isles Diddy Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.diddy),
+    Locations.IslesLankyHalfMedal: Location(Levels.DKIsles, "Isles Lanky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.lanky),
+    Locations.IslesTinyHalfMedal: Location(Levels.DKIsles, "Isles Tiny Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.tiny),
+    Locations.IslesChunkyHalfMedal: Location(Levels.DKIsles, "Isles Chunky Half-Medal", Items.HalfMedal, Types.HalfMedal, Kongs.chunky),
 }
 
 TrainingBarrelLocations = {

@@ -369,6 +369,11 @@
                 <option id="hard_random" value="hard_random">
                     Hard Random
                 </option>
+                {% if behavior_name == "cb_medal_behavior_new" %}
+                    <option id="progressive" value="progressive">
+                        Progressive
+                    </option>
+                {% endif %}
             </select>
             <input min="{{ min }}"
                 max="{{ max }}"

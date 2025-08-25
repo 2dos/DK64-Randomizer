@@ -10,21 +10,6 @@
  */
 #include "../../include/common.h"
 
-#define COLLECTABLE_AMMOBOX -2
-#define COLLECTABLE_NONE -1
-#define COLLECTABLE_CB 0
-#define COLLECTABLE_COIN 1
-#define COLLECTABLE_AMMOPELLET 2
-#define COLLECTABLE_ORANGE 4
-#define COLLECTABLE_CRYSTAL 5
-#define COLLECTABLE_FILM 6
-#define COLLECTABLE_GB 8
-#define COLLECTABLE_MEDAL 10
-#define COLLECTABLE_RACECOIN 11
-#define COLLECTABLE_BP 12
-
-#define KONG_NONE -2
-
 const collision_tree_struct fixed_shockwave_collision[3] = {
     {.actor_interaction = -1, .target_interaction=COLBTF_SHOCKWAVE, .collision_type=1, .unk9=2, .force_break=1}, // If you're shockwaving, treat as immune
     {.actor_interaction = -1, .target_interaction=-1, .function=(void*)0x80676C10, .collision_type=1, .unk9=2, .force_break=2},

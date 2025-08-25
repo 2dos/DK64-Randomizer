@@ -737,6 +737,7 @@ typedef struct giveItemConfig {
 	unsigned char apply_helm_hurry : 1;
 	unsigned char give_coins : 1;
 	unsigned char apply_ice_trap : 1;
+	unsigned char force_display_item_text : 1;
 } giveItemConfig;
 
 typedef struct purchase_struct {

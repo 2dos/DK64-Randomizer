@@ -474,6 +474,8 @@ int canUseDPad(void) {
     return CAN_USE_DPAD | CAN_SHOW_DPAD;
 }
 
+static char mdl_text[4] = "100";
+
 Gfx* drawDPad(Gfx* dl) {
     /**
      * @brief Draws the DPad menu
@@ -517,24 +519,45 @@ Gfx* drawDPad(Gfx* dl) {
         }
     }
     if (Rando.quality_of_life.hud_bp_multibunch) {
-        // Blueprint Show
+        // Medal Show
         int applied_requirement = 75;
-        if (Rando.medal_cb_req > 0) {
-            applied_requirement = Rando.medal_cb_req;
-        }
-        int mdl_opacity = 0x80;
         int world = getWorld(CurrentMap, 1);
+        // Get Requirements
+        if (Rando.cb_medal_requirement[world] > 0) {
+            applied_requirement = Rando.cb_medal_requirement[world];
+        }
+        if (applied_requirement < 1) {
+            applied_requirement = 1;
+        }
+        int half_medal_count = applied_requirement >> 1;
+        if (half_medal_count < 1) {
+            half_medal_count = 1;
+        }
+        // Vars
+        int mdl_num = 1;
+        int display_mdl_num = 1;
         int world_limit = 7;
         if (Rando.isles_cb_rando) {
             world_limit = 8;
         }
         if (world < world_limit) {
-            int kong_sum = MovesBase[(int)Character].tns_cb_count[world] + MovesBase[(int)Character].cb_count[world];
-            if (kong_sum >= applied_requirement) {
-                mdl_opacity = 0xFF;
+            int kong_count = MovesBase[(int)Character].tns_cb_count[world] + MovesBase[(int)Character].cb_count[world];
+            if (kong_count >= applied_requirement) {
+                display_mdl_num = 0;
+            } else if (Rando.include_half_medals && kong_count < half_medal_count) {
+                mdl_num = half_medal_count;
+            } else {
+                mdl_num = applied_requirement;
             }
+        } else {
+            display_mdl_num = 0;
         }
-        dl = drawImage(dl, 116, RGBA16, 32, 32, dpad_x_pos + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, mdl_opacity);
+        if (display_mdl_num) {
+            dk_strFormat(&mdl_text, "%d", mdl_num);
+            dl = printText(dl, dpad_x_pos + 80, DPAD_Y - 15, 0.5f, &mdl_text);
+        } else {
+            dl = drawImage(dl, 116, RGBA16, 32, 32, dpad_x_pos + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, 0xFF);
+        }
     }
     return dl;
 }

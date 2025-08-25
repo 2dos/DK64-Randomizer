@@ -216,6 +216,7 @@ ItemList = {
     Items.FillerPearl: Item("Pearl", False, Types.FillerPearl, Kongs.any),
     Items.FillerMedal: Item("Banana Medal", False, Types.FillerMedal, Kongs.any),
     Items.CrateMelon: Item("Crate Melon", False, Types.CrateItem, Kongs.any),
+    Items.HalfMedal: Item("Half Medal", False, Types.HalfMedal, Kongs.any),
     Items.BoulderItem: Item("Boulder Drop", False, Types.BoulderItem, Kongs.any),
     Items.EnemyItem: Item("Enemy Item", False, Types.Enemies, Kongs.any),
     Items.Cranky: Item("Cranky", True, Types.Cranky, Kongs.any),

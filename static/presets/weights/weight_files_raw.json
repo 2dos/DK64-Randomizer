@@ -3287,7 +3287,7 @@
             },
             "qol_uses_hard": true
         },
-        "cb_medal_behavior": {
+        "cb_medal_behavior_new": {
             "setting_type": "choice_single",
             "options": {
                 "easy": {
