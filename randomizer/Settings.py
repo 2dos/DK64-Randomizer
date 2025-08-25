@@ -73,6 +73,7 @@ class Settings:
             form_data (dict): Post data from the html form.
         """
         self.__hash = randomizer_version
+        self.public_hash = randomizer_version
         self.algorithm = FillAlgorithm.forward
         self.generate_main()
         self.generate_progression()
@@ -83,7 +84,6 @@ class Settings:
 
         # Debugging
         self.version = version
-        self.ap_version = archipelago_version
         self.branch = os.environ.get("BRANCH", "LOCAL")
 
         self.apply_form_data(form_data)
