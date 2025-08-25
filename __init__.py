@@ -1646,7 +1646,17 @@ if baseclasses_loaded:
                 shopkeepers = slot_data.get("Shopkeepers", False)
             else:
                 raise ValueError(f"This world is generated with an old version of DK64 Randomizer. Please downgrade to the correct version: {version}.")
+            
+            # Added in half-medals/progressive medal reqs update
             if self.version_check(version, "1.1.11"):
+                medal_cb_requirement_level = slot_data["MedalCBRequirementLevel"]
+                half_medals = slot_data["HalfMedals"]
+            else:
+                medal_cb_requirement_level = {}
+                half_medals = False
+
+            # Added in the bonus barrels update
+            if self.version_check(version, "1.1.13"):
                 minigame_data = slot_data["MinigameData"]
                 autocomplete = slot_data["Autocomplete"]
                 helm_barrel_count = slot_data["HelmBarrelCount"]
@@ -1659,6 +1669,7 @@ if baseclasses_loaded:
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
             relevant_data["MedalCBRequirement"] = medal_cb_req
+            relevant_data["MedalCBRequirementLevel"] = medal_cb_requirement_level
             relevant_data["FairyRequirement"] = fairy_req
             relevant_data["MermaidPearls"] = pearl_req
             relevant_data["JetpacReq"] = jetpac_req
@@ -1684,4 +1695,5 @@ if baseclasses_loaded:
             relevant_data["MinigameData"] = minigame_data
             relevant_data["Autocomplete"] = autocomplete
             relevant_data["HelmBarrelCount"] = helm_barrel_count
+            relevant_data["HalfMedals"] = half_medals
             return relevant_data
