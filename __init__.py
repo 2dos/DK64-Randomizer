@@ -1646,10 +1646,10 @@ if baseclasses_loaded:
                 shopkeepers = slot_data.get("Shopkeepers", False)
             else:
                 raise ValueError(f"This world is generated with an old version of DK64 Randomizer. Please downgrade to the correct version: {version}.")
-            
+
             # Added in half-medals/progressive medal reqs update
             if self.version_check(version, "1.1.11"):
-                medal_cb_requirement_level = list(map(lambda lvl_and_value: lvl_and_value[lvl_and_value.find(":") + 2:], slot_data["MedalCBRequirementLevel"].split(", ")))
+                medal_cb_requirement_level = list(map(lambda lvl_and_value: lvl_and_value[lvl_and_value.find(":") + 2 :], slot_data["MedalCBRequirementLevel"].split(", ")))
                 half_medals = slot_data["HalfMedals"]
             else:
                 medal_cb_requirement_level = {}
