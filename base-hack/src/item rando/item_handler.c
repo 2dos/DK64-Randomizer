@@ -320,7 +320,8 @@ int getItemCount_new(requirement_item item, int level, int kong) {
                 // Progressive instrument
                 return getInstrumentLevel();
             } else if (level == 10) {
-                if ((*(unsigned char*)(&current_item_data.flag_moves) << kong) == 0x80) {
+                int value = *(unsigned char*)(&current_item_data.flag_moves);
+                if (value & (0x80 >> kong)) {
                     return 1;
                 }
                 return 0;
