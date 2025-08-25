@@ -935,8 +935,8 @@ if baseclasses_loaded:
                         settings.BLockerEntryCount = passthrough["BLockerEntryCount"]
                         settings.medal_cb_req = passthrough["MedalCBRequirement"]
                         settings.medal_cb_req_level = [settings.medal_cb_req] * 8
-                        for level, value in passthrough["MedalCBRequirementLevel"]:
-                            settings.medal_cb_req_level[Levels[level]] = value
+                        for level, value in enumerate(passthrough["MedalCBRequirementLevel"]):
+                            settings.medal_cb_req_level[Levels(level)] = int(value)
                         settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
                         settings.BossBananas = passthrough["BossBananas"]
                         settings.boss_maps = passthrough["BossMaps"]
@@ -1649,7 +1649,7 @@ if baseclasses_loaded:
             
             # Added in half-medals/progressive medal reqs update
             if self.version_check(version, "1.1.11"):
-                medal_cb_requirement_level = slot_data["MedalCBRequirementLevel"]
+                medal_cb_requirement_level = list(map(lambda lvl_and_value: lvl_and_value[lvl_and_value.find(":") + 2:], slot_data["MedalCBRequirementLevel"].split(", ")))
                 half_medals = slot_data["HalfMedals"]
             else:
                 medal_cb_requirement_level = {}
