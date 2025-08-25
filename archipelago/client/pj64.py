@@ -82,7 +82,7 @@ class PJ64Client:
             with open("worlds/dk64/archipelago/client/adapter.js", "r", encoding="utf8", newline="\n") as f:
                 adapter_content = f.read()
         except Exception:
-            adapter_content = pkgutil.get_data("worlds.dk64", "adapter.js").decode().replace("\r\n", "\n").replace("\r", "\n")
+            adapter_content = pkgutil.get_data("worlds.dk64", "archipelago/client/adapter.js").decode().replace("\r\n", "\n").replace("\r", "\n")
         # Check if the file is in use
         matching_content = False
         # Check if the contents match
