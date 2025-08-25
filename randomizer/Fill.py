@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from math import ceil
 from typing import TYPE_CHECKING, Any, List, Optional, Set, Tuple, Union
 from functools import lru_cache
@@ -53,7 +54,7 @@ from randomizer.Lists.CustomLocations import resetCustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import SharedMoveLocations, SharedShopLocations, ShopLocationReference
-from randomizer.Lists.Minigame import MinigameRequirements
+from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex
 from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Patching import ApplyRandomizer
@@ -3731,6 +3732,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
     resetCustomLocations(spoiler)
     ResetPorts()
+    spoiler.shuffled_barrel_data = deepcopy(BarrelMetaData)
     if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off:
         port_replacements = {}
         port_human_replacements = {}
