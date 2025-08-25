@@ -61,7 +61,6 @@ from randomizer.ShuffleBosses import (
     ShuffleTinyPhaseToes,
 )
 from version import version as randomizer_version
-from ap_version import version as archipelago_version
 
 
 class Settings:
@@ -74,7 +73,6 @@ class Settings:
             form_data (dict): Post data from the html form.
         """
         self.__hash = randomizer_version
-        self.public_hash = randomizer_version
         self.algorithm = FillAlgorithm.forward
         self.generate_main()
         self.generate_progression()
