@@ -726,7 +726,7 @@ class Spoiler:
             or self.settings.training_barrels_minigames == MinigameBarrels.random
         ):
             shuffled_barrels = OrderedDict()
-            for location, minigame in self.shuffled_barrel_data.items():
+            for location, minigame in [(location, value.minigame) for location, value in self.shuffled_barrel_data.items()]:
                 if location in HelmMinigameLocations and self.settings.helm_barrels == MinigameBarrels.skip:
                     continue
                 if location in TrainingMinigameLocations and self.settings.training_barrels_minigames == MinigameBarrels.skip:

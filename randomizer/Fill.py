@@ -53,7 +53,7 @@ from randomizer.Lists.CustomLocations import resetCustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import SharedMoveLocations, SharedShopLocations, ShopLocationReference
-from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
+from randomizer.Lists.Minigame import MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex
 from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Patching import ApplyRandomizer
@@ -202,7 +202,7 @@ def should_skip_location(location, location_obj, spoiler, settings, region):
             or (location.bonusBarrel is MinigameType.HelmBarrelSecond and (settings.helm_barrels == MinigameBarrels.skip or settings.helm_room_bonus_count != HelmBonuses.two))
             or (location.bonusBarrel is MinigameType.TrainingBarrel and settings.training_barrels_minigames == MinigameBarrels.skip)
         ):
-            if not MinigameRequirements[BarrelMetaData[location.id].minigame].logic(spoiler.LogicVariables):
+            if not MinigameRequirements[spoiler.shuffled_barrel_data[location.id].minigame].logic(spoiler.LogicVariables):
                 return True
 
     # Skip hint doors if the wrong Kong
@@ -3828,8 +3828,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         or spoiler.settings.helm_barrels == MinigameBarrels.random
         or spoiler.settings.training_barrels_minigames == MinigameBarrels.random
     ):
-        BarrelShuffle(spoiler.settings)
-        spoiler.UpdateBarrels()
+        spoiler.shuffled_barrel_data = BarrelShuffle(spoiler.settings)
     # CB Shuffle
     if spoiler.settings.cb_rando_enabled:
         ShuffleCBs(spoiler)
