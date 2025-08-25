@@ -806,7 +806,7 @@ def getDebugString(gen: str, cosmetic: str, ap: str, branch: str) -> str:
 
 
 def decodeDebugString(s: str) -> tuple:
-    pattern = r"^G([\d\.]+)C([\d\.]+)A([\d\.]+)([A-Z])$"
+    pattern = r"^G([\d\.]+)C([\d\.]+)([A-Z])$"
     match = re.match(pattern, s.upper())
     if not match:
         raise ValueError("String does not match expected format")
@@ -820,7 +820,7 @@ def writeDebugInformation(ROM_COPY, cosmetic_version=None, settings=None):
     DEBUG_LOCATION = 0x1FEDA00
     if cosmetic_version is None and settings is not None:
         # Create string from scratch
-        output = getDebugString(settings.version, "0", settings.ap_version, settings.branch)
+        output = getDebugString(settings.version, "0", settings.branch)
     elif cosmetic_version is not None:
         # Read existing string
         ROM_COPY.seek(DEBUG_LOCATION)
@@ -841,8 +841,8 @@ def writeDebugInformation(ROM_COPY, cosmetic_version=None, settings=None):
         print(data)
         written_string = data.decode("ascii")
         print(written_string)
-        gen, _, ap, branch = decodeDebugString(written_string)
-        output = getDebugString(gen, cosmetic_version, ap, branch)
+        gen, _, branch = decodeDebugString(written_string)
+        output = getDebugString(gen, cosmetic_version, branch)
     ROM_COPY.seek(DEBUG_LOCATION)
     ROM_COPY.writeBytes(bytes(f"{output}\0", "ascii"))
 

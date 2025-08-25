@@ -496,3 +496,4 @@ extern char aztec_beetle[0x20];
 extern char caves_beetle[0x20];
 extern unsigned char pregiven_status[56];
 extern StartingItemsStruct starting_item_data;
+extern char debug_string[0x20];

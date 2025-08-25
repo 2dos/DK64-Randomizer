@@ -14,6 +14,7 @@
 
 static char music_storage[MUSIC_SIZE];
 unsigned char HeadSize[MODEL_COUNT];
+char debug_string[0x20] = "NO DEBUG STRING";
 
 char music_types[SONG_COUNT] = {
 	-1,
@@ -261,6 +262,10 @@ void initHack(int source) {
 			DamageMultiplier = Rando.damage_multiplier; // Keep for Crowd Control. Needs it to know what to set damage mult back to
 			initItemRandoPointer();
 			initAP();
+			char *dbgstr = getFile(0x20, 0x1FEDA00);
+			if (dbgstr[0] != 0xFF) {
+				dk_memcpy(&debug_string, dbgstr, 0x20);
+			}
 			// HUD Re-allocation fixes
 			*(short*)(0x806FB246) = ITEMID_TERMINATOR;
 			*(short*)(0x806FABAA) = ITEMID_TERMINATOR;
