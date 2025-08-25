@@ -545,9 +545,25 @@ class ShuffleHelmLevel(Toggle):
 
 
 class ShopkeeperHints(DefaultOnToggle):
-    """Determines if Entering a shop with Shopkeepers in the pool will give you a hint on where the shopkeeper is."""
+    """Determines if entering a shop with Shopkeepers in the pool will give you a hint on where the shopkeeper is."""
 
     display_name = "Shopkeeper Hint"
+
+
+class HintStyle(Choice):
+    """Choose the style of Wrinkly hints you'd like to play with. These do not affect shopkeeper or microhints.
+
+    - off: No in-game hints at all.
+    - no_woth: Hints can tell you about your K. Rool phases, and directly hint important items and hard locations.
+    - woth: Same as no_woth, but Way of the Hoard hints can appear, which will tell you a location is required but not what item is at that location. Increases gen time significantly, especially in larger multiworlds.
+    """
+
+    display_name = "Hint Style"
+
+    option_off = 0
+    option_no_woth = 1
+    option_woth = 2
+    default = 1
 
 
 class MicroHints(Choice):
@@ -624,6 +640,7 @@ class DK64Options(PerGameCommonOptions):
     disable_c_trap: DisableCWeight
     disable_z_trap: DisableZWeight
     receive_notifications: ReceiveNotifications
+    hint_style: HintStyle
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -700,6 +717,7 @@ dk64_option_groups: List[OptionGroup] = [
     OptionGroup(
         "Hints",
         [
+            HintStyle,
             ShopkeeperHints,
             MicroHints,
         ],

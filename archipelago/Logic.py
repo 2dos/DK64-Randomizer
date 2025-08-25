@@ -162,6 +162,7 @@ class LogicVarHolder:
         self.vines = self.settings.training_barrels == TrainingBarrels.normal
         self.swim = self.settings.training_barrels == TrainingBarrels.normal
         self.oranges = self.settings.training_barrels == TrainingBarrels.normal
+        self.adv_orange_usage = self.oranges and self.advanced_grenading
         self.barrels = self.settings.training_barrels == TrainingBarrels.normal
         self.climbing = self.settings.climbing_status == ClimbingStatus.normal
         self.can_use_vines = self.vines  # and self.climbing to restore old behavior
@@ -412,7 +413,6 @@ class LogicVarHolder:
 
     def AddArchipelagoItem(self, ap_item):
         """Add an Archipelago item to the owned items list."""
-        ownedItems = self.latest_owned_items.copy()  # Start with the current owned items list
         if ap_item.name.startswith("Collectible CBs"):
             # CBs are carefully named in the following format:
             # index 0: "Collectible CBs" - needed to identify this as a collectible item
@@ -430,12 +430,221 @@ class LogicVarHolder:
             # index 1: the Events enum name as a string
             item_data = ap_item.name.split(", ")
             event = Events[item_data[1]]
+            if event in [Events.ForestEntered, Events.CastleEntered] and Items.HomingAmmo in self.latest_owned_items:
+                self.homing = True
             self.AddEvent(event)
         else:
             corresponding_item_id = logic_item_name_to_id[ap_item.name]
-            ownedItems.append(corresponding_item_id)
-
-        self.Update(ownedItems)
+            self.latest_owned_items.append(corresponding_item_id)
+            match corresponding_item_id:
+                case Items.Donkey:
+                    self.donkey = True
+                    self.isdonkey = True
+                    self.blast = Items.BaboonBlast in self.latest_owned_items
+                    self.strongKong = Items.StrongKong in self.latest_owned_items
+                    self.grab = Items.GorillaGrab in self.latest_owned_items
+                    self.coconut = Items.Coconut in self.latest_owned_items
+                    self.bongos = Items.Bongos in self.latest_owned_items
+                case Items.Diddy:
+                    self.diddy = True
+                    self.isdiddy = True
+                    self.charge = Items.ChimpyCharge in self.latest_owned_items
+                    self.jetpack = Items.RocketbarrelBoost in self.latest_owned_items
+                    self.spring = Items.SimianSpring in self.latest_owned_items
+                    self.peanut = Items.Peanut in self.latest_owned_items
+                    self.guitar = Items.Guitar in self.latest_owned_items
+                case Items.Lanky:
+                    self.lanky = True
+                    self.islanky = True
+                    self.handstand = Items.Orangstand in self.latest_owned_items
+                    self.balloon = Items.BaboonBalloon in self.latest_owned_items
+                    self.sprint = Items.OrangstandSprint in self.latest_owned_items
+                    self.grape = Items.Grape in self.latest_owned_items
+                    self.trombone = Items.Trombone in self.latest_owned_items
+                case Items.Tiny:
+                    self.tiny = True
+                    self.istiny = True
+                    self.mini = Items.MiniMonkey in self.latest_owned_items
+                    self.twirl = Items.PonyTailTwirl in self.latest_owned_items
+                    self.monkeyport = Items.Monkeyport in self.latest_owned_items
+                    self.feather = Items.Feather in self.latest_owned_items
+                    self.saxophone = Items.Saxophone in self.latest_owned_items
+                case Items.Chunky:
+                    self.chunky = True
+                    self.ischunky = True
+                    self.hunkyChunky = Items.HunkyChunky in self.latest_owned_items
+                    self.punch = Items.PrimatePunch in self.latest_owned_items
+                    self.gorillaGone = Items.GorillaGone in self.latest_owned_items
+                    self.pineapple = Items.Pineapple in self.latest_owned_items
+                    self.triangle = Items.Triangle in self.latest_owned_items
+                case Items.Climbing:
+                    self.climbing = True
+                case Items.Vines:
+                    self.vines = True
+                    self.can_use_vines = True
+                case Items.Swim:
+                    self.swim = True
+                case Items.Oranges:
+                    self.oranges = True
+                    self.adv_orange_usage = self.oranges and self.advanced_grenading
+                case Items.Barrels:
+                    self.barrels = True
+                case Items.BaboonBlast:
+                    self.blast = self.donkey
+                case Items.StrongKong:
+                    self.strongKong = self.donkey
+                case Items.GorillaGrab:
+                    self.grab = self.donkey
+                case Items.ChimpyCharge:
+                    self.charge = self.diddy
+                case Items.RocketbarrelBoost:
+                    self.jetpack = self.diddy
+                case Items.SimianSpring:
+                    self.spring = self.diddy
+                case Items.Orangstand:
+                    self.handstand = self.lanky
+                case Items.BaboonBalloon:
+                    self.balloon = self.lanky
+                case Items.OrangstandSprint:
+                    self.sprint = self.lanky
+                case Items.MiniMonkey:
+                    self.mini = self.tiny
+                case Items.PonyTailTwirl:
+                    self.twirl = self.tiny
+                case Items.Monkeyport:
+                    self.monkeyport = self.tiny
+                case Items.HunkyChunky:
+                    self.hunkyChunky = self.chunky
+                case Items.PrimatePunch:
+                    self.punch = self.chunky
+                case Items.GorillaGone:
+                    self.gorillaGone = self.chunky
+                case Items.Coconut:
+                    self.coconut = self.donkey
+                case Items.Peanut:
+                    self.peanut = self.diddy
+                case Items.Grape:
+                    self.grape = self.lanky
+                case Items.Feather:
+                    self.feather = self.tiny
+                case Items.Pineapple:
+                    self.pineapple = self.chunky
+                case Items.Bongos:
+                    self.bongos = self.donkey
+                    if self.Melons < 2:
+                        self.Melons = 2
+                case Items.Guitar:
+                    self.guitar = self.diddy
+                    if self.Melons < 2:
+                        self.Melons = 2
+                case Items.Trombone:
+                    self.trombone = self.lanky
+                    if self.Melons < 2:
+                        self.Melons = 2
+                case Items.Saxophone:
+                    self.saxophone = self.tiny
+                    if self.Melons < 2:
+                        self.Melons = 2
+                case Items.Triangle:
+                    self.triangle = self.chunky
+                    if self.Melons < 2:
+                        self.Melons = 2
+                case Items.Cranky:
+                    self.crankyAccess = True
+                case Items.Funky:
+                    self.funkyAccess = True
+                case Items.Candy:
+                    self.candyAccess = True
+                case Items.Snide:
+                    self.snideAccess = True
+                case Items.NintendoCoin:
+                    self.nintendoCoin = True
+                case Items.RarewareCoin:
+                    self.rarewareCoin = True
+                case Items.JungleJapesKey:
+                    self.JapesKey = True
+                case Items.AngryAztecKey:
+                    self.AztecKey = True
+                case Items.FranticFactoryKey:
+                    self.FactoryKey = True
+                case Items.GloomyGalleonKey:
+                    self.GalleonKey = True
+                case Items.FungiForestKey:
+                    self.ForestKey = True
+                case Items.CrystalCavesKey:
+                    self.CavesKey = True
+                case Items.CreepyCastleKey:
+                    self.CastleKey = True
+                case Items.HideoutHelmKey:
+                    self.HelmKey = True
+                case Items.HelmDonkey1:
+                    self.HelmDonkey1 = True
+                case Items.HelmDonkey2:
+                    self.HelmDonkey2 = True
+                case Items.HelmDiddy1:
+                    self.HelmDiddy1 = True
+                case Items.HelmDiddy2:
+                    self.HelmDiddy2 = True
+                case Items.HelmLanky1:
+                    self.HelmLanky1 = True
+                case Items.HelmLanky2:
+                    self.HelmLanky2 = True
+                case Items.HelmTiny1:
+                    self.HelmTiny1 = True
+                case Items.HelmTiny2:
+                    self.HelmTiny2 = True
+                case Items.HelmChunky1:
+                    self.HelmChunky1 = True
+                case Items.HelmChunky2:
+                    self.HelmChunky2 = True
+                case Items.ProgressiveSlam:
+                    self.Slam += 1
+                    if self.Slam >= 2:
+                        self.superSlam = True
+                    if self.Slam >= 3:
+                        self.superDuperSlam = True
+                case Items.ProgressiveAmmoBelt:
+                    self.AmmoBelts += 1
+                case Items.ProgressiveInstrumentUpgrade:
+                    self.InstUpgrades += 1
+                    if self.InstUpgrades >= 2:
+                        self.Melons = 3
+                    else:
+                        self.Melons = 2
+                case Items.GoldenBanana | Items.FillerBanana:
+                    self.GoldenBananas += 1
+                case Items.BananaFairy | Items.FillerFairy:
+                    self.BananaFairies += 1
+                case Items.BananaMedal | Items.FillerMedal:
+                    self.BananaMedals += 1
+                case Items.BattleCrown | Items.FillerCrown:
+                    self.BattleCrowns += 1
+                case Items.RainbowCoin:
+                    self.RainbowCoins += 1
+                    for x in range(5):
+                        self.Coins[x] += 5
+                case Items.CameraAndShockwave:
+                    self.camera = True
+                    self.shockwave = True
+                case Items.Camera:
+                    self.camera = True
+                case Items.Shockwave:
+                    self.shockwave = True
+                case Items.SniperSight:
+                    self.scope = True
+                case Items.HomingAmmo:
+                    self.homing = Events.ForestEntered in self.Events or Events.CastleEntered in self.Events or self.assumeFillSuccess
+                case Items.Bean:
+                    self.Beans += 1
+                case Items.Pearl | Items.FillerPearl:
+                    self.Pearls += 1
+                case Items.BananaHoard:
+                    self.bananaHoard = True
+                case _:
+                    if corresponding_item_id >= Items.JungleJapesDonkeyBlueprint and corresponding_item_id <= Items.DKIslesChunkyBlueprint:
+                        self.Blueprints.append(corresponding_item_id)
+                    if corresponding_item_id >= Items.JapesDonkeyHint and corresponding_item_id <= Items.CastleChunkyHint:
+                        self.Hints.append(corresponding_item_id)
 
     def RemoveArchipelagoItem(self, ap_item):
         """Add an Archipelago item to the owned items list."""
@@ -603,46 +812,47 @@ class LogicVarHolder:
         self.Beans = sum(1 for x in ownedItems if x == Items.Bean)
         self.Pearls = sum(1 for x in ownedItems if x in [Items.Pearl, Items.FillerPearl])
 
-        photo_subjects = [
-            Items.PhotoBeaverBlue,
-            Items.PhotoBook,
-            Items.PhotoZingerCharger,
-            Items.PhotoKlobber,
-            Items.PhotoKlump,
-            Items.PhotoKaboom,
-            Items.PhotoKlaptrapGreen,
-            Items.PhotoZingerLime,
-            Items.PhotoKlaptrapPurple,
-            Items.PhotoKlaptrapRed,
-            Items.PhotoBeaverGold,
-            Items.PhotoFireball,
-            Items.PhotoMushroomMan,
-            Items.PhotoRuler,
-            Items.PhotoRoboKremling,
-            Items.PhotoKremling,
-            Items.PhotoKasplatDK,
-            Items.PhotoKasplatDiddy,
-            Items.PhotoKasplatLanky,
-            Items.PhotoKasplatTiny,
-            Items.PhotoKasplatChunky,
-            Items.PhotoZingerRobo,
-            Items.PhotoKrossbones,
-            Items.PhotoShuri,
-            Items.PhotoGimpfish,
-            Items.PhotoMrDice0,
-            Items.PhotoSirDomino,
-            Items.PhotoMrDice1,
-            Items.PhotoBat,
-            Items.PhotoGhost,
-            Items.PhotoPufftup,
-            Items.PhotoKosha,
-            Items.PhotoSpider,
-            Items.PhotoBug,
-            Items.PhotoKop,
-            Items.PhotoTomato,
-        ]
-        for subject in photo_subjects:
-            self.Photos[subject] = sum(1 for x in ownedItems if x == subject)
+        # Don't need this until we add Krem Kap. It's very slow.
+        # photo_subjects = [
+        #     Items.PhotoBeaverBlue,
+        #     Items.PhotoBook,
+        #     Items.PhotoZingerCharger,
+        #     Items.PhotoKlobber,
+        #     Items.PhotoKlump,
+        #     Items.PhotoKaboom,
+        #     Items.PhotoKlaptrapGreen,
+        #     Items.PhotoZingerLime,
+        #     Items.PhotoKlaptrapPurple,
+        #     Items.PhotoKlaptrapRed,
+        #     Items.PhotoBeaverGold,
+        #     Items.PhotoFireball,
+        #     Items.PhotoMushroomMan,
+        #     Items.PhotoRuler,
+        #     Items.PhotoRoboKremling,
+        #     Items.PhotoKremling,
+        #     Items.PhotoKasplatDK,
+        #     Items.PhotoKasplatDiddy,
+        #     Items.PhotoKasplatLanky,
+        #     Items.PhotoKasplatTiny,
+        #     Items.PhotoKasplatChunky,
+        #     Items.PhotoZingerRobo,
+        #     Items.PhotoKrossbones,
+        #     Items.PhotoShuri,
+        #     Items.PhotoGimpfish,
+        #     Items.PhotoMrDice0,
+        #     Items.PhotoSirDomino,
+        #     Items.PhotoMrDice1,
+        #     Items.PhotoBat,
+        #     Items.PhotoGhost,
+        #     Items.PhotoPufftup,
+        #     Items.PhotoKosha,
+        #     Items.PhotoSpider,
+        #     Items.PhotoBug,
+        #     Items.PhotoKop,
+        #     Items.PhotoTomato,
+        # ]
+        # for subject in photo_subjects:
+        #     self.Photos[subject] = sum(1 for x in ownedItems if x == subject)
 
         self.UpdateCoins()
 

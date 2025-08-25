@@ -144,7 +144,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
 
             # Add progression items
             for i in range(progression_count):
-                item_table.append(DK64Item(item_obj.name, ItemClassification.progression, full_item_table[item_obj.name].code, world.player))
+                item_table.append(DK64Item(item_obj.name, ItemClassification.progression_skip_balancing, full_item_table[item_obj.name].code, world.player))
 
             # Add remaining items as useful
             for i in range(max_quantity - progression_count):

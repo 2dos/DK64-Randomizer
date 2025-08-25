@@ -618,7 +618,7 @@ def patching_response(spoiler):
                 or spoiler.settings.puzzle_rando_difficulty != PuzzleRando.off
             ):
                 data = {"textbox_index": 21, "mode": "replace", "search": "21132", "target": mill_text}
-                for file in [CompTextFiles.Wrinkly, CompTextFiles.WrinklyShort]:
+                for file in [CompTextFiles.Wrinkly]:
                     if file in spoiler.text_changes:
                         spoiler.text_changes[file].append(data)
                     else:
