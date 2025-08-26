@@ -849,11 +849,6 @@ check_names_to_id = {
     "Castle Lanky Half Medal": 14042355,
     "Castle Tiny Half Medal": 14042356,
     "Castle Chunky Half Medal": 14042357,
-    "Isles Donkey Half Medal": 14042358,
-    "Isles Diddy Half Medal": 14042359,
-    "Isles Lanky Half Medal": 14042360,
-    "Isles Tiny Half Medal": 14042361,
-    "Isles Chunky Half Medal": 14042362,
 }
 
 check_id_to_name = {v: k for k, v in check_names_to_id.items()}
