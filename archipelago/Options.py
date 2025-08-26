@@ -722,6 +722,13 @@ class HelmRoomBonusCount(Range):
     default = 0
 
 
+class SmallerShops(Toggle):
+    """If enabled, shops would have a max of 3 items to sell."""
+
+    default = True
+    display_name = "Smaller Shops"
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -788,6 +795,7 @@ class DK64Options(PerGameCommonOptions):
     hard_minigames: HardMinigames
     auto_complete_bonus_barrels: AutoCompleteBonusBarrels
     helm_room_bonus_count: HelmRoomBonusCount
+    smaller_shops: SmallerShops
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -831,6 +839,7 @@ dk64_option_groups: List[OptionGroup] = [
             Dropsanity,
             HintItemRandomization,
             HalfMedals,
+            SmallerShops,
         ],
     ),
     OptionGroup(

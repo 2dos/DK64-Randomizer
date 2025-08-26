@@ -183,6 +183,9 @@ def create_region(
             # Skip enemy photos if the win condition is not Krem Kapture.
             if location_obj.type == Types.EnemyPhoto and logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
                 continue
+            # Skip locations marked as inaccessible by smaller shops
+            if hasattr(location_obj, "smallerShopsInaccessible") and location_obj.smallerShopsInaccessible and logic_holder.settings.smaller_shops:
+                continue
             loc_id = all_locations.get(location_obj.name, 0)
             # Universal Tracker: don't add this location if it has no item
             if hasattr(multiworld, "generation_is_fake"):
