@@ -144,6 +144,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Kongs import Kongs
     from randomizer.Enums.Levels import Levels
     from randomizer.Enums.Maps import Maps
+    from randomizer.Enums.Minigames import Minigames
     from randomizer.Enums.Locations import Locations as DK64RLocations
     from randomizer.Enums.Settings import (
         WinConditionComplex,
@@ -160,11 +161,15 @@ if baseclasses_loaded:
         BLockerSetting,
         RandomPrices,
         WrinklyHints,
+        CBRequirement,
+        MinigamesListSelected,
+        HelmBonuses,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
     from randomizer.Enums.EnemySubtypes import EnemySubtype
     from randomizer.Lists import Item as DK64RItem
+    from randomizer.Lists.Location import ShopLocationReference
     from randomizer.Lists.Switches import SwitchInfo
     from randomizer.Lists.EnemyTypes import EnemyLoc, EnemyMetaData
     from worlds.LauncherComponents import Component, components, Type, icon_paths
@@ -621,7 +626,7 @@ if baseclasses_loaded:
             """Generate the world."""
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
             # Goal is to hard code every setting to the dict but this will do for now
-            self.settings_string = "PxZlegAAvwAAYIAAMMAAGKAAD/QNPAKAgYCA4GCAQEgoKBgWDgwIgCdUsbgAbwAcAAcQAcgAcwAdAAuQATMBCcTAhQmBhhNBAmqAFaBaJaRaZaiaqaza7bNbUNutyt2u6t6uGuCt+u+vCuKueuOuSuWuauiumuquuuyu2pmJqEkXCAZaolQCCiBRgpAUoKYCCLgswCNllPwdDISytgLcBI0EKakl6LELYvVOBUQsAhMQoAkiR2qqrJlhyZJ3iKA5XkCsaBjyWMDIABVM8Q3QQhAALQoAFoYACUOABKIAAdWgAOiQAFRQABosAB0YAAqNAANXAAWT4S34KpsDQVgui2PZniyDBHDAM5kj0Ng+GaWAPl2KYqFoY4rA0FYhjEIo1hcTwkhCfxLEGSJdF4XBASFBYYGhwgIiQoKiwwMjQ4OjxAQkRGSEpMTlBSVFZYWlxeYGJkZmhquLq8v1i+AGAAMIAYgAdgA0gD9ASnABOh4kaKzxNXm94dI8YBDuuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOFATCIZCmOhKlsa58IymfwBZAEFBGVCiPBEMhTHQlS2Nc+EZTpW18Z1vnfPIEminhe4A8xAkMI8pZhIVp5Ryikx8CwIhZpxCCKaq7Lbr4w8EcktT0AHyAPUAfQA9gB9gA"
+            self.settings_string = "PyEAAUvQAAX4AAMEAAGGAADFAAB/oGngFAQMBAcDBAICQUFAwLBwYEQBOqWNwAN4AOAAOIAOQAOYAOgAXIAJmAhOJgQoTAwwmhIJqgBWgWiWkWmWomqms2u2zW1Dbrcrdrurerhrgrfrvrwrirnrjrkrlrmrorprqrrrsrtokk1JmFwgGWqJUAgogUYKQFKCmAgi4LMAjZZT8HQyEsrYC3ASNBCmpJeixC2L1TgVELAITEKAJIkdqqqygYyw5Mk7xFAcryBWODzyWMDIABVM8Q3QQhAALQoAFoYACUOABKIAAdWgAOiQAFRQABosAB0YAAqNAANXAAWT4S34KpsDQgxWC6LY9meLIMEcMAzmSPQ2D4ZpYA+XYpioWhjisDQViGMQijWFxPCSEJ/EsQZIl0XhcEBIUFhgaHCAiJCgqLDAyNDg6PEBCREZISkxOUFJUVlhaXF5gYmRmaGq4ury/WL4AYAAwgBiAB2ADSAP0BKcAE6HiRorPE1eb3h0jxgEO64gy1iEF6+fwDZ4+GE0c7upXsrMzimzq2L4U4UBMIhkKY6EqWxrnwjKZ/AFkAQUEZUKI8EQyFMdCVLY1z4RlOlbXxnW+d88gSKaGx7gDzEZ6CQg1BSjD0lmGnHqXwLxjkVyyAiDKlmnIIpstuvrwVPQAfIA9QB9AD2AH2AA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
 
             # Settings
@@ -632,14 +637,19 @@ if baseclasses_loaded:
             settings_dict["krool_in_boss_pool"] = self.options.krool_in_boss_pool.value
             settings_dict["helm_phase_count"] = self.options.helm_phase_count.value
             settings_dict["krool_phase_count"] = self.options.krool_phase_count.value
-            settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
+            if self.options.medal_distribution.value == 0:  # pre_selected
+                settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
+            elif self.options.medal_distribution.value == 4:  # progressive
+                settings_dict["medal_cb_req"] = self.options.medal_requirement.value
             settings_dict["medal_requirement"] = self.options.medal_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["mirror_mode"] = self.options.mirror_mode.value
             settings_dict["hard_mode"] = self.options.hard_mode.value
-            settings_dict["key_8_helm"] = self.options.key8_lock.value
+            settings_dict["key_8_helm"] = self.options.helm_key_lock.value
             settings_dict["shuffle_helm_location"] = self.options.shuffle_helm_level_order.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
+            settings_dict["cb_medal_behavior_new"] = self.options.medal_distribution.value
+            settings_dict["smaller_shops"] = self.options.smaller_shops.value
 
             # Level blocker settings
             blocker_options = [
@@ -671,9 +681,13 @@ if baseclasses_loaded:
             # Item randomization
             settings_dict["item_rando_list_selected"] = []
 
+            # Reset item randomization list to ensure it starts empty
+            settings_dict["item_rando_list_1"] = []
+
             # Always enabled item categories
             always_enabled_categories = [
                 ItemRandoListSelected.shop,
+                ItemRandoListSelected.moves,
                 ItemRandoListSelected.banana,
                 ItemRandoListSelected.toughbanana,
                 ItemRandoListSelected.crown,
@@ -689,8 +703,10 @@ if baseclasses_loaded:
                 ItemRandoListSelected.crateitem,
                 ItemRandoListSelected.rarewarecoin,
                 ItemRandoListSelected.shockwave,
+                ItemRandoListSelected.trainingmoves,
             ]
             settings_dict["item_rando_list_1"].extend(always_enabled_categories)
+            settings_dict["decouple_item_rando"] = False
             settings_dict["filler_items_selected"].append(ItemRandoFiller.junkitem)
 
             # Conditional item categories
@@ -702,6 +718,8 @@ if baseclasses_loaded:
                 settings_dict["item_rando_list_1"].append(ItemRandoListSelected.enemies)
             if self.options.shopowners_in_pool.value:
                 settings_dict["item_rando_list_1"].append(ItemRandoListSelected.shopowners)
+            if self.options.half_medals_in_pool.value:
+                settings_dict["item_rando_list_1"].append(ItemRandoListSelected.halfmedal)
             # Hard mode settings
             # More to be added soon (Except maybe lava water)
             settings_dict["hard_mode_selected"] = []
@@ -890,6 +908,17 @@ if baseclasses_loaded:
             if self.options.hint_style == 0:
                 settings_dict["wrinkly_hints"] = WrinklyHints.off
 
+            settings_dict["minigames_list_selected"] = [MinigamesListSelected[minigame] for minigame in self.options.shuffled_bonus_barrels]
+            settings_dict["disable_hard_minigames"] = not self.options.hard_minigames.value
+            settings_dict["bonus_barrel_auto_complete"] = self.options.auto_complete_bonus_barrels.value
+            settings_dict["helm_room_bonus_count"] = HelmBonuses(self.options.helm_room_bonus_count.value)
+            if hasattr(self.multiworld, "generation_is_fake"):
+                if hasattr(self.multiworld, "re_gen_passthrough"):
+                    if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
+                        passthrough = self.multiworld.re_gen_passthrough["Donkey Kong 64"]
+                        settings_dict["bonus_barrel_auto_complete"] = passthrough["Autocomplete"]
+                        settings_dict["helm_room_bonus_count"] = HelmBonuses(passthrough["HelmBarrelCount"])
+
             # Create settings object
             settings = Settings(settings_dict, self.random)
             # Archipelago really wants the number of locations to match the number of items. Keep track of how many locations we've made here
@@ -913,6 +942,9 @@ if baseclasses_loaded:
                         settings.BLockerEntryItems = passthrough["BLockerEntryItems"]
                         settings.BLockerEntryCount = passthrough["BLockerEntryCount"]
                         settings.medal_cb_req = passthrough["MedalCBRequirement"]
+                        settings.medal_cb_req_level = [settings.medal_cb_req] * 8
+                        for level, value in enumerate(passthrough["MedalCBRequirementLevel"]):
+                            settings.medal_cb_req_level[Levels(level)] = int(value)
                         settings.mermaid_gb_pearls = passthrough["MermaidPearls"]
                         settings.BossBananas = passthrough["BossBananas"]
                         settings.boss_maps = passthrough["BossMaps"]
@@ -955,7 +987,7 @@ if baseclasses_loaded:
                     ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
                 self.spoiler.UpdateExits()
 
-            # Repopulate the enemy table if gen is fake
+            # Repopulate any spoiler-related stuff at this point from slot data
             if hasattr(self.multiworld, "generation_is_fake"):
                 if hasattr(self.multiworld, "re_gen_passthrough"):
                     if "Donkey Kong 64" in self.multiworld.re_gen_passthrough:
@@ -963,6 +995,9 @@ if baseclasses_loaded:
                         if passthrough["EnemyData"]:
                             for location, data in passthrough["EnemyData"].items():
                                 self.spoiler.enemy_location_list[DK64RLocations[location]] = EnemyLoc(Maps[data["map"]], Enemies[data["enemy"]], 0, [], False)
+                        if passthrough["MinigameData"]:
+                            for loc, minigame in passthrough["MinigameData"].items():
+                                self.spoiler.shuffled_barrel_data[DK64RLocations[loc]].minigame = Minigames[minigame]
 
             # Handle hint preparation by initiating some variables
             self.hint_data = {
@@ -1340,6 +1375,34 @@ if baseclasses_loaded:
             """Modify the multidata."""
             pass
 
+        def get_smaller_shops_data(self) -> dict:
+            """Get information about which shops appear with smaller shops enabled."""
+            if not (self.options.smaller_shops.value and Types.Shop in self.spoiler.settings.shuffled_location_types):
+                return {}
+
+            smaller_shops_data = {}
+            for level_enum, vendor_data in ShopLocationReference.items():
+                level_name = level_enum.name
+
+                for vendor_enum, location_list in vendor_data.items():
+                    vendor_name = vendor_enum.name
+
+                    # Kong names in order: DK, Diddy, Lanky, Tiny, Chunky, then Shared
+                    kong_names = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky", "Shared"]
+
+                    for i, location_id in enumerate(location_list):
+                        location_obj = self.spoiler.LocationList[location_id]
+                        # Create key like "IslesCrankyDonkey"
+                        if i < 5:  # Kong-specific locations
+                            key = f"{level_name}{vendor_name}{kong_names[i]}"
+                        else:  # We shouldn't need this
+                            key = f"{level_name}{vendor_name}Shared"
+
+                        # Set 1 if accessible, 0 if blocked by smaller shops
+                        smaller_shops_data[key] = 0 if location_obj.smallerShopsInaccessible else 1
+
+            return smaller_shops_data
+
         def fill_slot_data(self) -> dict:
             """Fill the slot data."""
             return {
@@ -1349,12 +1412,19 @@ if baseclasses_loaded:
                 "death_link": self.options.death_link.value,
                 "ring_link": self.options.ring_link.value,
                 "tag_link": self.options.tag_link.value,
+                "trap_link": self.options.trap_link.value,
                 "receive_notifications": self.options.receive_notifications.value,
                 "LevelOrder": ", ".join([level.name for order, level in self.spoiler.settings.level_order.items()]),
                 "StartingKongs": ", ".join([kong.name for kong in self.spoiler.settings.starting_kong_list]),
                 "ForestTime": self.spoiler.settings.fungi_time_internal.name,
                 "GalleonWater": self.spoiler.settings.galleon_water_internal.name,
                 "MedalCBRequirement": self.spoiler.settings.medal_cb_req,
+                "MedalCBRequirementLevel": ", ".join(
+                    [
+                        f"{level}: {req}"
+                        for level, req in zip(["JungleJapes", "AngryAztec", "FranticFactory", "GloomyGalleon", "FungiForest", "CrystalCaves", "CreepyCastle"], self.spoiler.settings.medal_cb_req_level)
+                    ]
+                ),
                 "BLockerValues": ", ".join(
                     [
                         f"{['Japes', 'Aztec', 'Factory', 'Galleon', 'Forest', 'Caves', 'Castle', 'Helm'][i]}: {count} {barrier_type.name}"
@@ -1402,6 +1472,11 @@ if baseclasses_loaded:
                     else {}
                 ),
                 "Shopkeepers": self.options.shopowners_in_pool.value,
+                "HalfMedals": self.options.half_medals_in_pool.value,
+                "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
+                "Autocomplete": self.options.auto_complete_bonus_barrels.value,
+                "HelmBarrelCount": self.options.helm_room_bonus_count.value,
+                "SmallerShopsData": self.get_smaller_shops_data(),
             }
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
@@ -1448,6 +1523,10 @@ if baseclasses_loaded:
                     kong_name = data.kong.name if hasattr(data.kong, "name") else Kongs(data.kong).name
                     switch_type_name = data.switch_type.name if hasattr(data.switch_type, "name") else SwitchType(data.switch_type).name
                     spoiler_handle.write(f"  - {switch.name}: {kong_name} with {switch_type_name}\n")
+            if not self.spoiler.settings.bonus_barrel_auto_complete and self.spoiler.settings.minigames_list_selected:
+                spoiler_handle.write("Shuffled Bonus Barrels: \n")
+                for loc, minigame in self.spoiler.shuffled_barrel_data.items():
+                    spoiler_handle.write(f" - {loc.name}: {minigame.minigame.name}\n")
             spoiler_handle.write("Generated Time: " + time.strftime("%d-%m-%Y %H:%M:%S", time.gmtime()) + " GMT")
             spoiler_handle.write("\n")
             spoiler_handle.write("Randomizer Version: " + self.spoiler.settings.version)
@@ -1525,7 +1604,9 @@ if baseclasses_loaded:
                 return True
             if item_obj.type == Types.JunkItem:
                 # In a location that can't have junk
-                if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies) or (loc_obj.type == Types.Key or loc_obj.level == Levels.HideoutHelm):
+                if loc_obj.type in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies, Types.HalfMedal) or (
+                    loc_obj.type == Types.Key or loc_obj.level == Levels.HideoutHelm
+                ):
                     return True
             return False
 
@@ -1603,10 +1684,35 @@ if baseclasses_loaded:
             else:
                 raise ValueError(f"This world is generated with an old version of DK64 Randomizer. Please downgrade to the correct version: {version}.")
 
+            # Added in half-medals/progressive medal reqs update
+            if self.version_check(version, "1.1.11"):
+                medal_cb_requirement_level = list(map(lambda lvl_and_value: lvl_and_value[lvl_and_value.find(":") + 2 :], slot_data["MedalCBRequirementLevel"].split(", ")))
+                half_medals = slot_data["HalfMedals"]
+            else:
+                medal_cb_requirement_level = {}
+                half_medals = False
+
+            # Added in the bonus barrels update
+            if self.version_check(version, "1.1.13"):
+                minigame_data = slot_data["MinigameData"]
+                autocomplete = slot_data["Autocomplete"]
+                helm_barrel_count = slot_data["HelmBarrelCount"]
+            else:
+                minigame_data = {}
+                autocomplete = True
+                helm_barrel_count = 0
+
+            # Added smaller shops data visibility
+            if self.version_check(version, "1.1.14"):
+                smaller_shops_data = slot_data.get("SmallerShopsData", {})
+            else:
+                smaller_shops_data = {}
+
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
             relevant_data["MedalCBRequirement"] = medal_cb_req
+            relevant_data["MedalCBRequirementLevel"] = medal_cb_requirement_level
             relevant_data["FairyRequirement"] = fairy_req
             relevant_data["MermaidPearls"] = pearl_req
             relevant_data["JetpacReq"] = jetpac_req
@@ -1629,4 +1735,9 @@ if baseclasses_loaded:
             relevant_data["Dropsanity"] = dropsanity
             relevant_data["EnemyData"] = enemy_data
             relevant_data["Shopkeepers"] = shopkeepers
+            relevant_data["MinigameData"] = minigame_data
+            relevant_data["Autocomplete"] = autocomplete
+            relevant_data["HelmBarrelCount"] = helm_barrel_count
+            relevant_data["HalfMedals"] = half_medals
+            relevant_data["SmallerShopsData"] = smaller_shops_data
             return relevant_data

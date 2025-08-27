@@ -357,6 +357,23 @@
             "item_count": 0,
             "is_check": true,
             "tied": "trainingmoves"
+        },
+        {
+            "name": "Half-Medals",
+            "value": "halfmedal",
+            "tooltip": "Collecting half of the required CBs for a medal will yield an item.",
+            "check_count": 35,
+            "item_count": 0,
+            "is_check": true
+        },
+        {
+            "name": "Half-Medals",
+            "value": "dummyitem_halfmedal",
+            "tooltip": "Collecting half of the required CBs for a medal will yield an item.",
+            "check_count": 35,
+            "item_count": 0,
+            "is_check": false,
+            "is_dummy": true
         }
     ],
     "ItemRandoFillerSelector": [

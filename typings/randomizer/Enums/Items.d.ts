@@ -232,4 +232,5 @@ export enum Items {
     PhotoZingerLime = 231,
     PhotoZingerCharger = 232,
     PhotoBug = 233,
+    HalfMedal = 234,
 }

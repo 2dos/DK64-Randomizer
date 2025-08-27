@@ -1404,7 +1404,7 @@ function set_preset_options() {
   item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
   item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
   item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
-  item_req_update("cb_medal_behavior", "cb_medal_behavior_container", "medal_cb_req", 1, 100);
+  item_req_update("cb_medal_behavior_new", "cb_medal_behavior_new_container", "medal_cb_req", 1, 100);
 
   // // Load the data
   // load_data();

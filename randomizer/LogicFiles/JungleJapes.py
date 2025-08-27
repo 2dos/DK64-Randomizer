@@ -17,11 +17,16 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
 
 LogicRegions = {
     Regions.JungleJapesMedals: Region("Jungle Japes Medals", HintRegion.JapesCBs, Levels.JungleJapes, False, None, [
-        LocationLogic(Locations.JapesDonkeyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.donkey] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.JapesDiddyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.diddy] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.JapesLankyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.lanky] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.JapesTinyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.tiny] >= l.settings.medal_cb_req),
-        LocationLogic(Locations.JapesChunkyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.chunky] >= l.settings.medal_cb_req),
+        LocationLogic(Locations.JapesDonkeyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.donkey] >= l.settings.medal_cb_req_level[0]),
+        LocationLogic(Locations.JapesDiddyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.diddy] >= l.settings.medal_cb_req_level[0]),
+        LocationLogic(Locations.JapesLankyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.lanky] >= l.settings.medal_cb_req_level[0]),
+        LocationLogic(Locations.JapesTinyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.tiny] >= l.settings.medal_cb_req_level[0]),
+        LocationLogic(Locations.JapesChunkyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.chunky] >= l.settings.medal_cb_req_level[0]),
+        LocationLogic(Locations.JapesDonkeyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.donkey] >= max(1, int(l.settings.medal_cb_req_level[0] >> 1))),
+        LocationLogic(Locations.JapesDiddyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.diddy] >= max(1, int(l.settings.medal_cb_req_level[0] >> 1))),
+        LocationLogic(Locations.JapesLankyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.lanky] >= max(1, int(l.settings.medal_cb_req_level[0] >> 1))),
+        LocationLogic(Locations.JapesTinyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.tiny] >= max(1, int(l.settings.medal_cb_req_level[0] >> 1))),
+        LocationLogic(Locations.JapesChunkyHalfMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.chunky] >= max(1, int(l.settings.medal_cb_req_level[0] >> 1))),
     ], [], [], restart=-1),
 
     # This region serves to set up the entry for the level based on the DK Portal Location

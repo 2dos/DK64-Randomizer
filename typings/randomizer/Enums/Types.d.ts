@@ -42,6 +42,7 @@ export enum Types {
     HelmMedal = 41,
     HelmKey = 42,
     EnemyPhoto = 43,
+    HalfMedal = 44,
 }
 
 export enum BarrierItems {

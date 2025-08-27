@@ -188,7 +188,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
 
     for seed_item in all_shuffled_items:
         item = DK64RItem.ItemList[seed_item]
-        if item.type in [DK64RItems.JunkCrystal, DK64RItems.JunkMelon, DK64RItems.JunkAmmo, DK64RItems.JunkFilm, DK64RItems.JunkOrange, DK64RItems.CrateMelon]:
+        if item.type in [DK64RItems.JunkCrystal, DK64RItems.JunkMelon, DK64RItems.JunkAmmo, DK64RItems.JunkFilm, DK64RItems.JunkOrange, DK64RItems.CrateMelon, DK64RItems.HalfMedal]:
             classification = ItemClassification.filler
         elif item.type in [
             DK64RItems.IceTrapBubble,
@@ -305,10 +305,10 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     trap_weights += [DK64RItems.IceTrapBubble] * world.options.bubble_trap_weight.value
     trap_weights += [DK64RItems.IceTrapReverse] * world.options.reverse_trap_weight.value
     trap_weights += [DK64RItems.IceTrapSlow] * world.options.slow_trap_weight.value
-    trap_weights += [DK64RItems.IceTrapDisableA] * world.options.disable_a_trap.value
-    trap_weights += [DK64RItems.IceTrapDisableB] * world.options.disable_b_trap.value
-    trap_weights += [DK64RItems.IceTrapDisableZ] * world.options.disable_z_trap.value
-    trap_weights += [DK64RItems.IceTrapDisableCU] * world.options.disable_c_trap.value
+    trap_weights += [DK64RItems.IceTrapDisableA] * world.options.disable_a_trap_weight.value
+    trap_weights += [DK64RItems.IceTrapDisableB] * world.options.disable_b_trap_weight.value
+    trap_weights += [DK64RItems.IceTrapDisableZ] * world.options.disable_z_trap_weight.value
+    trap_weights += [DK64RItems.IceTrapDisableCU] * world.options.disable_c_trap_weight.value
 
     trap_count = 0 if (len(trap_weights) == 0) else math.ceil(filler_item_count * (world.options.trap_fill_percentage.value / 100.0))
     filler_item_count -= trap_count

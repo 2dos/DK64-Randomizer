@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from math import ceil
 from typing import TYPE_CHECKING, Any, List, Optional, Set, Tuple, Union
 from functools import lru_cache
@@ -202,7 +203,7 @@ def should_skip_location(location, location_obj, spoiler, settings, region):
             or (location.bonusBarrel is MinigameType.HelmBarrelSecond and (settings.helm_barrels == MinigameBarrels.skip or settings.helm_room_bonus_count != HelmBonuses.two))
             or (location.bonusBarrel is MinigameType.TrainingBarrel and settings.training_barrels_minigames == MinigameBarrels.skip)
         ):
-            if not MinigameRequirements[BarrelMetaData[location.id].minigame].logic(spoiler.LogicVariables):
+            if not MinigameRequirements[spoiler.shuffled_barrel_data[location.id].minigame].logic(spoiler.LogicVariables):
                 return True
 
     # Skip hint doors if the wrong Kong
@@ -609,6 +610,11 @@ def VerifyWorld(spoiler: Spoiler) -> bool:
                 Locations.IslesLankyMedal,
                 Locations.IslesTinyMedal,
                 Locations.IslesChunkyMedal,
+                Locations.IslesDonkeyHalfMedal,
+                Locations.IslesDiddyHalfMedal,
+                Locations.IslesLankyHalfMedal,
+                Locations.IslesTinyHalfMedal,
+                Locations.IslesChunkyHalfMedal,
             ]
         ]
     allLocationsReached = len(unreachables) == 0
@@ -946,6 +952,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
                 Types.Fairy,
                 Types.RainbowCoin,
                 Types.CrateItem,
+                Types.HalfMedal,
                 Types.BoulderItem,
                 Types.Enemies,
             )
@@ -1101,6 +1108,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             Types.Fairy,
             Types.RainbowCoin,
             Types.CrateItem,
+            Types.HalfMedal,
             Types.Enemies,
         )
     ]
@@ -2389,6 +2397,9 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.CrateItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.CrateItem)
         # Crates hold nothing, so leave this one empty
+    if Types.HalfMedal in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.HalfMedal)
+        # Half medals hold nothing, so leave this one empty
     if Types.BoulderItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.BoulderItem)
         # Boulders/Vases/Kegs hold nothing, so leave this one empty
@@ -3721,6 +3732,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
     resetCustomLocations(spoiler)
     ResetPorts()
+    spoiler.shuffled_barrel_data = deepcopy(BarrelMetaData)
     if spoiler.settings.bananaport_placement_rando != ShufflePortLocations.off:
         port_replacements = {}
         port_human_replacements = {}
@@ -3818,8 +3830,7 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         or spoiler.settings.helm_barrels == MinigameBarrels.random
         or spoiler.settings.training_barrels_minigames == MinigameBarrels.random
     ):
-        BarrelShuffle(spoiler.settings)
-        spoiler.UpdateBarrels()
+        spoiler.shuffled_barrel_data = BarrelShuffle(spoiler.settings)
     # CB Shuffle
     if spoiler.settings.cb_rando_enabled:
         ShuffleCBs(spoiler)
