@@ -1,0 +1,587 @@
+<html data-bs-theme="dark">
+    <head>
+        <title>String Transposer | DK64 Randomizer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="./static/styles/gui.css" rel="stylesheet" type="text/css" />
+        <link href="./static/styles/styles.css" rel="stylesheet" type="text/css" />
+        <style>
+            .string_ta {
+                min-height: 250px !important;
+                resize: vertical;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="position-relative" style="height: 100%">
+            <div class="card position-absolute top-50 start-50 translate-middle text-center">
+                <div class="card-body">
+                    <h1>DK64 Randomizer</h1>
+                    <h5>String Transposer</h5>
+                    <p>
+                        This site converts a settings string made in a previous version of the randomizer into something that 
+                        <em>should</em> be compatible with the current version.
+                    </p>
+                    <div class="form-floating m-2">
+                        <select id="version_dropdown" class="form-select"></select>
+                        <label for="version_dropdown">Version of Settings String</label>
+                    </div>
+                    <div class="form-floating m-2">
+                        <textarea id="input_string" class="form-control string_ta">Px+VmV6AAi/AAtggACwwAAYoAAP9A0AAoCBgUDh4IHgSZApBBagDGSAJ1ABuHhvPBwZBxfRylhzrx0yC5+hMwEJxECFCYGGEkECaeAVoFolpFplqJqprNrtsWzW1DbbcbdTuDebhLgLfDvLwDiDnLjDkTlbmDoDpLqjrTsbtkGpmJqEkXGAZaolRWQIKIFGCkBSgpgIIuCzEI1hZZD9d0/WkNQyEsrYC3CCM5imkBOSFIs1JL0WIWxeqcCohYKCYhQCJEjtVVWUDGWHJkneIoDiGV5ArHB55LGpkGEqmeIboKQgAFoUAC0MABKHAAlEAAOrQAHRIACooAA0WAA6MAAVGgAGrgALSMngllUaBdFsezPFkGCOGAZzJHobB8M0DhTFQxxWCsQxrC4nhJP4liDLovCIJCgsOEBESFBUWGBkaHB0eICEiIyQlJicoKSwtLi8wNDWsXwWGBpUVmJkZri6vL7AAQhhADEADsAP0CPTgUGJDoSuDHp0PEjRWeJq83vDpHjAId1xBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwoB4REMhKlsa58IzP4AsgFwUBRRHgiGQpjoSpbGufCMp0ra+M63zvnkBKRPcClVeYjMSGkEUY1CsfS49PQw+BCpBcZ18cRFs4iQ1lN6AIr5BAYC43qAPoAewA+wA</textarea>
+                        <label for="input_string">Input Settings String</label>
+                    </div>
+                    <div class="form-floating m-2">
+                        <textarea id="output_string" class="form-control string_ta" disabled></textarea>
+                        <label for="output_string">Output Settings String</label>
+                    </div>
+                    <div class="m-2">
+                        <button class="btn btn-success" id="convert_button">
+                            Convert
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            let settings;
+            let latest_setting;
+            let bonus_enums = {};
+            let types = {};
+            const bonus_enum_list = ["Items", "Kongs", "Enemies", "Levels", "Maps"];
+            const settingsExclusionMap = {
+                helm_hurry: {
+                    false: [
+                        "helmhurry_list_banana_medal",
+                        "helmhurry_list_battle_crown",
+                        "helmhurry_list_bean",
+                        "helmhurry_list_blueprint",
+                        "helmhurry_list_boss_key",
+                        "helmhurry_list_colored_bananas",
+                        "helmhurry_list_company_coins",
+                        "helmhurry_list_fairies",
+                        "helmhurry_list_golden_banana",
+                        "helmhurry_list_ice_traps",
+                        "helmhurry_list_kongs",
+                        "helmhurry_list_move",
+                        "helmhurry_list_pearl",
+                        "helmhurry_list_rainbow_coin",
+                        "helmhurry_list_starting_time",
+                    ]
+                },
+                shuffle_items: {false: ["item_rando_list_selected"]},
+                cb_rando_enabled: {false: ["cb_rando_list_selected"]},
+                logic_type: {
+                    glitchless: ["glitches_selected"],
+                    nologic: ["glitches_selected"],
+                    minimal: ["glitches_selected"]
+                },
+                spoiler_hints: {
+                    off: [
+                        "points_list_kongs",
+                        "points_list_keys",
+                        "points_list_guns",
+                        "points_list_instruments",
+                        "points_list_training_moves",
+                        "points_list_fairy_moves",
+                        "points_list_important_shared",
+                        "points_list_pad_moves",
+                        "points_list_barrel_moves",
+                        "points_list_active_moves",
+                        "points_list_bean",
+                        "points_list_shopkeepers",
+                    ],
+                    vial_colors: [
+                        "points_list_kongs",
+                        "points_list_keys",
+                        "points_list_guns",
+                        "points_list_instruments",
+                        "points_list_training_moves",
+                        "points_list_fairy_moves",
+                        "points_list_important_shared",
+                        "points_list_pad_moves",
+                        "points_list_barrel_moves",
+                        "points_list_active_moves",
+                        "points_list_bean",
+                        "points_list_shopkeepers",
+                    ],
+                },
+            }
+
+            function numericVersion(version_string) {
+                const spl = version_string.split(".");
+                let num = 0;
+                spl.forEach(v => {
+                    num *= 1000;
+                    num += parseInt(v);
+                });
+                return num;
+            }
+
+            async function pullAllSettings() {
+                let allCommits = [];
+                let page = 0;
+                let has_found_v4 = false;
+                let latest_version = null;
+                while (true) {
+                    const url = `https://api.github.com/repos/2dos/DK64-Randomizer/commits?path=version.py&page=${page}`
+                    const res = await fetch(url, {
+                        headers: {
+                            "Accept": "application/vnd.github+json",
+                        }
+                    })
+                    if (!res.ok) {
+                        console.error(`GitHub API error: ${res.status} ${res.statusText}`);
+                        break;
+                    }
+                    const commits = await res.json();
+                    if (commits.length === 0) break;
+                    for (let commit of commits) {
+                        if (commit.commit.message && !has_found_v4) {
+                            const msg_split = commit.commit.message.split(" ");
+                            const version = msg_split[msg_split.length - 1];
+                            if (latest_version === null) {
+                                latest_version = version;
+                            }
+                            console.log(version)
+                            if (version[0] == "4") {
+                                has_found_v4 = true;
+                            }
+                        }
+                        if (!has_found_v4) {
+                            allCommits.push(commit)
+                        }
+                    }
+                    if (has_found_v4) break;
+                    page++;
+                }
+                let jsonc_files = [];
+                await Promise.all(
+                    allCommits.map(async(commit) => {
+                        const spl = commit.commit.message.split(" ");
+                        const version = spl[spl.length - 1];
+                        const jsonc_url = `https://raw.githubusercontent.com/2dos/DK64-Randomizer/${commit.sha}/randomizer/Enums/Settings.jsonc`;
+                        const res = await fetch(jsonc_url);
+                        if (!res.ok) {
+                            console.warn(`⚠️ Could not fetch file at ${commit.sha} (${res.status})`);
+                            return null;
+                        }
+                        const text = await res.text();
+                        let found_jsonc = false;
+                        for (let f of jsonc_files) {{
+                            if (f.text === text) {
+                                if (!f.versions.includes(version)) {
+                                    f.versions.push(version);
+                                }
+                                if (version === latest_version) {
+                                    f.is_latest = true;
+                                }
+                                found_jsonc = true;
+                            }
+                        }}
+                        if (!found_jsonc) {
+                            jsonc_files.push({
+                                versions: [
+                                    version,
+                                ],
+                                text: text,
+                                is_latest: false,
+                            })
+                        }
+                    })
+                )
+                
+                await Promise.all(
+                    bonus_enum_list.map(async (benum) => {
+                        const jsonc_url = `https://raw.githubusercontent.com/2dos/DK64-Randomizer/refs/heads/dev/randomizer/Enums/${benum}.jsonc`;
+                        const res = await fetch(jsonc_url);
+                        if (!res.ok) {
+                            console.warn(`⚠️ Could not fetch file (${res.status})`);
+                            return null;
+                        }
+                        const text = await res.text();
+                        bonus_enums[benum] = text;
+                    })
+                );
+                const types_json_url = 'https://raw.githubusercontent.com/2dos/DK64-Randomizer/refs/heads/dev/randomizer/Enums/Types.json';
+                const types_res = await fetch(types_json_url);
+                if (!types_res.ok) {
+                    console.warn(`⚠️ Could not fetch file (${types_res.status})`);
+                    return null;
+                }
+                const types_text = await types_res.text();
+                types = JSON.parse(types_text);
+
+                return jsonc_files;
+            }
+
+            async function populateSite() {
+                let temp_settings = await pullAllSettings();
+                latest_setting = temp_settings.find(k => k.is_latest);
+                settings = temp_settings.filter(k => !k.is_latest);
+                settings.forEach(setting => {
+                    let version_nums = setting.versions.map(k => numericVersion(k));
+                    version_nums.sort((a, b) => {
+                        return a - b;
+                    });
+                    const min_v_num = version_nums[0];
+                    const max_v_num = version_nums[version_nums.length - 1];
+                    setting.min_version = `${parseInt(min_v_num / 1000000) % 1000}.${parseInt(min_v_num / 1000) % 1000}.${min_v_num % 1000}`
+                    setting.max_version = `${parseInt(max_v_num / 1000000) % 1000}.${parseInt(max_v_num / 1000) % 1000}.${max_v_num % 1000}`
+                })
+                settings.sort((a, b) => {
+                    return numericVersion(b.max_version) - numericVersion(a.max_version);
+                })
+                document.getElementById("version_dropdown").innerHTML = settings.map((s, index) => {
+                    return `<option value="${index}">${s.min_version} → ${s.max_version}</option>`    
+                })
+                console.log(settings)
+                console.log(latest_setting)
+            }
+            populateSite()
+
+            function jsoncToJson(jsoncStr) {
+                // remove // comments
+                let noSingleLine = jsoncStr.replace(/\/\/.*$/gm, "");
+                // remove /* */ block comments
+                let noComments = noSingleLine.replace(/\/\*[\s\S]*?\*\//g, "");
+                return noComments.trim();
+            }
+
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+            const index_to_letter = Object.fromEntries(
+                Array.from({ length: 64 }, (_, i) => [i, letters[i]])
+            );
+            const letter_to_index = Object.fromEntries(
+                Array.from(letters, (ch, i) => [ch, i])
+            );
+
+            // Setting string conversion functions
+            function bin_string_to_int(binStr, bytesize) {
+                if (binStr[0] === "1") {
+                    // negative number in two's complement
+                    return parseInt(binStr, 2) - (1 << bytesize);
+                } else {
+                    return parseInt(binStr, 2);
+                }
+            }
+
+            function get_var_int_encode_details(settingEnum, input_jsonc) {
+                range = input_jsonc.SettingsStringIntRangeMap[settingEnum]
+                max_val = range.max
+                min_val = range.min
+                limiting_val = max_val
+                negatives_possible = min_val < 0
+                if (negatives_possible && (Math.abs(min_val) > max_val))  {
+                    /*
+                        We subtract one, to handle the edge case where the absolute value is
+                        a negative power of 2.
+                    */
+                    limiting_val = abs(min_val) - 1
+                }
+                // Get the bit length of the limiting value.
+                bit_len = limiting_val.toString(2).length;
+                // If negatives are possible, add one to the bit length.
+                if (negatives_possible) {
+                    bit_len++
+                }
+                return {
+                    "bit_len": bit_len,
+                    "negatives_possible": negatives_possible,
+                }
+            }
+
+            function decode_var_int(settingEnum, bin_str, input_jsonc) {
+                data = get_var_int_encode_details(settingEnum, input_jsonc);
+                bit_len = data.bit_len;
+                negatives_possible = data.negatives_possible;
+                if (negatives_possible) {
+                    return bin_string_to_int(bin_str, bit_len)
+                }
+                return parseInt(bin_str, 2);
+            }
+
+            function decryptString(encrypted_string, input_jsonc) {
+                let bitstring = "";
+                encrypted_string.split("").forEach(letter => {
+                    let index = letter_to_index[letter]
+                    bitstring += index.toString(2).padStart(6, "0");
+                })
+                let bitstring_length = bitstring.length;
+                let settings_dict = {}
+                let bit_index = 0;
+                const maxValue = Math.max(...Object.values(input_jsonc.SettingsStringEnum));
+                const key_size = maxValue.toString(2).length;
+                /*
+                    If there are fewer than (key_size + 1) characters left in our bitstring,
+                    we have hit the padding. (key_size + 1 characters is the minimum needed
+                    for a key and a value.)
+                */
+                while (bit_index < (bitstring_length - (key_size + 1))) {
+                    // Consume the next key.
+                    let key = parseInt(bitstring.slice(bit_index, bit_index + key_size), 2);
+                    bit_index += key_size;
+                    let key_name = null;
+                    Object.keys(input_jsonc.SettingsStringEnum).forEach(k => {
+                        if (input_jsonc.SettingsStringEnum[k] == key) {
+                            key_name = k;
+                        }
+                    })
+                    key_data_type = input_jsonc.SettingsStringTypeMap[`SettingsStringEnum.${key_name}`].obj;
+                    let val = null;
+                    if (key_data_type == 'SettingsStringDataType.bool') {
+                        val = bitstring[bit_index] == "1"
+                        bit_index += 1
+                    } else if (key_data_type == 'SettingsStringDataType.int4') {
+                        val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 4), 4)
+                        bit_index += 4
+                    } else if (key_data_type == 'SettingsStringDataType.int8') {
+                        val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 8), 8)
+                        bit_index += 8
+                    } else if (['SettingsStringDataType.int16', 'SettingsStringDataType.u16'].includes(key_data_type)) {
+                        val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 16), 16)
+                        if (key_data_type == 'SettingsStringDataType.u16' && val < 0) {
+                            val += 65536
+                        }
+                        bit_index += 16
+                    } else  if (key_data_type == 'SettingsStringDataType.var_int') {
+                        data = get_var_int_encode_details(`SettingsStringEnum.${key_name}`, input_jsonc);
+                        bit_len = data.bit_len;
+                        val = decode_var_int(`SettingsStringEnum.${key_name}`, bitstring.slice(bit_index, bit_index + bit_len), input_jsonc);
+                        bit_index += bit_len
+                    } else if (key_data_type == 'SettingsStringDataType.list') {
+                        let list_length = parseInt(bitstring.slice(bit_index, bit_index + 8), 2)
+                        bit_index += 8
+                        val = []
+                        console.log(input_jsonc.SettingsStringListTypeMap[`SettingsStringEnum.${key_name}`].obj)
+                        key_list_data_type = input_jsonc.SettingsStringListTypeMap[`SettingsStringEnum.${key_name}`].obj;
+                        for (let x = 0; x < list_length; x++) {
+                            let list_val = null;
+                            if (key_list_data_type == 'SettingsStringDataType.bool') {
+                                list_val = bitstring[bit_index] == "1"
+                                bit_index += 1
+                            } else if (key_list_data_type == 'SettingsStringDataType.int4') {
+                                list_val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 4), 4)
+                                bit_index += 4
+                            } else if (key_list_data_type == 'SettingsStringDataType.int8') {
+                                list_val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 8), 8)
+                                bit_index += 8
+                            } else if (['SettingsStringDataType.int16', 'SettingsStringDataType.u16'].includes(key_list_data_type)) {
+                                list_val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 16), 16)
+                                if (key_data_type == 'SettingsStringDataType.u16' && val < 0) {
+                                    val += 65536
+                                }
+                                bit_index += 16
+                            } else if (key_data_type == 'SettingsStringDataType.var_int') {
+                                data = get_var_int_encode_details(`SettingsStringEnum.${key_name}`, input_jsonc);
+                                bit_len = data.bit_len;
+                                list_val = decode_var_int(`SettingsStringEnum.${key_name}`, bitstring.slice(bit_index, bit_index + bit_len), input_jsonc);
+                                bit_index += bit_len
+                            } else {
+                                // The value is an enum.
+                                max_value = Math.max(...Object.values(input_jsonc[key_list_data_type]));
+                                int_val = parseInt(bitstring.slice(bit_index, bit_index + max_value.toString(2).length), 2);
+                                list_val = null;
+                                Object.keys(input_jsonc[key_list_data_type]).forEach(k => {
+                                    if (input_jsonc[key_list_data_type][k] == int_val) {
+                                        list_val = k;
+                                    }
+                                })
+                                bit_index += max_value.toString(2).length;
+                            }
+                            val.push(list_val)
+                        }
+                    } else {
+                        // The value is an enum.
+                        console.log(key_data_type)
+                        console.log(input_jsonc)
+                        max_value = Math.max(...Object.values(input_jsonc[key_data_type]));
+                        let int_val = parseInt(bitstring.slice(bit_index, bit_index + max_value.toString(2).length), 2)
+                        val = null;
+                        Object.keys(input_jsonc[key_data_type]).forEach(k => {
+                            if (input_jsonc[key_data_type][k] == int_val) {
+                                console.log(key_name, k)
+                                val = k;
+                            }
+                        })
+                        bit_index += max_value.toString(2).length;
+                    }
+                    /*
+                        If this setting is not deprecated, add it.
+                        The plando setting needs to be encoded in settings strings but not applied when decoding for logging purposes.
+                    */
+                    if (key_name != 'enable_plandomizer') {
+                        settings_dict[key_name] = val
+                    }
+                }
+                return settings_dict
+            }
+
+            function int_to_bin_string(num, bytesize) {
+                const val = num >= 0 ? num : (1 << bytesize) + num;
+                return val.toString(2).padStart(bytesize, "0");
+            }
+
+            function encode_var_int(settingEnum, num, input_jsonc) {
+                data = get_var_int_encode_details(settingEnum, input_jsonc)
+                return int_to_bin_string(num, data.bit_len)
+            }
+
+            function prune_settings(settings_dict) {
+                settings_to_remove = ["plandomizer_data", "enable_song_select", "music_selections"]
+                for (const [keySetting, exclusions] of Object.entries(settingsExclusionMap)) {
+                    console.log(keySetting, exclusions)
+                    if (Object.keys(settings_dict).includes(keySetting) && Object.keys(exclusions).includes(settings_dict[keySetting])) {
+                        settings_to_remove = settings_to_remove.concat(exclusions[settings_dict[keySetting]]);
+                    }
+                }
+                // Remove any deprecated settings.
+                settings_to_remove.forEach(pop => {
+                    if (Object.keys(settings_dict).includes(pop)) {
+                        delete settings_dict[pop];
+                    }
+                })
+                return settings_dict
+            }
+
+            function splitIntoChunks(str, size = 6) {
+                let chunks = [];
+                for (let i = 0; i < str.length; i += size) {
+                    chunks.push(str.slice(i, i + size));
+                }
+                return chunks;
+            }
+
+            function encryptString(dict_data, input_jsonc) {
+                let bitstring = ""
+                for (let x = 0; x < 5; x++) {
+                    const list_item = `starting_moves_list_${x + 1}`;
+                    if (Object.keys(dict_data).includes(list_item)) {
+                        dict_data[list_item].sort();
+                    }
+                }
+                dict_data = prune_settings(dict_data);
+                Object.keys(dict_data).forEach(key => {
+                    value = dict_data[key]
+                    // At this time, all strings represent ints, so just convert.
+                    if (typeof value == "string") {
+                        const tied_type = input_jsonc.SettingsStringTypeMap[`SettingsStringEnum.${key}`].obj;
+                        value = input_jsonc[tied_type][value];
+                    }
+                    key_enum = key
+                    key_data_type = input_jsonc.SettingsStringTypeMap[`SettingsStringEnum.${key_enum}`].obj;
+                    // Encode the key.
+                    key_size = Math.max(...Object.values(input_jsonc.SettingsStringEnum)).toString(2).length;
+                    bitstring += input_jsonc.SettingsStringEnum[key_enum].toString(2).padStart(key_size, "0");
+                    if (key_data_type == 'SettingsStringDataType.bool') {
+                        bitstring += (value ? "1" : "0");
+                    } else if (key_data_type == 'SettingsStringDataType.int4') {
+                        bitstring += int_to_bin_string(value, 4)
+                    } else if (key_data_type == 'SettingsStringDataType.int8') {
+                        bitstring += int_to_bin_string(value, 8)
+                    } else if (['SettingsStringDataType.int16', 'SettingsStringDataType.u16'].includes(key_data_type)) {
+                        bitstring += int_to_bin_string(value, 16)
+                    } else if (key_data_type == 'SettingsStringDataType.var_int') {
+                        bitstring += encode_var_int(`SettingsStringEnum.${key_enum}`, value, input_jsonc)
+                    } else if (key_data_type == 'SettingsStringDataType.list') {
+                        bitstring += value.length.toString(2).padStart(8, "0");
+                        key_list_data_type = input_jsonc.SettingsStringListTypeMap[`SettingsStringEnum.${key_enum}`].obj;
+                        value.forEach(item => {
+                            if (typeof item == "string") {
+                                const tied_type = input_jsonc.SettingsStringListTypeMap[`SettingsStringEnum.${key}`].obj;
+                                item = input_jsonc[tied_type][item];
+                            }
+                            if (key_list_data_type == 'SettingsStringDataType.bool') {
+                                bitstring += (item ? "1" : "0");
+                            } else if (key_list_data_type == 'SettingsStringDataType.int4') {
+                                bitstring += int_to_bin_string(item, 4)
+                            } else if (key_list_data_type == 'SettingsStringDataType.int8') {
+                                bitstring += int_to_bin_string(item, 8)
+                            } else if (['SettingsStringDataType.int16', 'SettingsStringDataType.u16'].includes(key_list_data_type)) {
+                                bitstring += int_to_bin_string(item, 16)
+                            } else if (key_list_data_type == 'SettingsStringDataType.var_int') {
+                                bitstring += encode_var_int(`SettingsStringEnum.${key_enum}`, item, input_jsonc)
+                            } else {
+                                // The value is an enum.
+                                max_value = Math.max(...Object.values(input_jsonc[key_list_data_type]));
+                                const bitLength = max_value === 0 ? 0 : Math.floor(Math.log2(max_value)) + 1;
+                                bitstring += item.toString(2).padStart(bitLength, "0");
+                            }
+                        })
+                    } else {
+                        // The value is an enum.
+                        max_value = Math.max(...Object.values(input_jsonc[key_data_type]));
+                        // If value is an int
+                        if (typeof value == "number")  {
+                            const bitLength = max_value === 0 ? 0 : Math.floor(Math.log2(max_value)) + 1;
+                            bitstring += value.toString(2).padStart(bitLength, "0");
+
+                        } else {
+                            console.log("Value.value", value)
+                            const bitLength = max_value === 0 ? 0 : Math.floor(Math.log2(max_value)) + 1;
+                            bitstring += value.value.toString(2).padStart(bitLength, "0");
+                        }
+                    }
+                })
+                // Pad the bitstring with zeroes until the length is divisible by 6.
+                remainder = bitstring.length % 6
+                if (remainder > 0) {
+                    for (let x = 0; x < 6 - remainder; x++) {
+                        bitstring += "0";
+                    }
+                }
+                /*
+                    Split the bitstring into 6-bit chunks and look up the corresponding letters.
+                */
+                letter_string = ""
+                for (let i = 0; i < bitstring.length; i += 6) {
+                    const chunk = parseInt(bitstring.slice(i, i + 6), 2);
+                    letter_string += letters[chunk];
+                }
+                return letter_string
+            }
+
+            document.getElementById("convert_button").addEventListener("click", (e) => {
+                const selected_version = parseInt(document.getElementById("version_dropdown").value);
+                const string_jsonc = settings[selected_version].text;
+                const string_json = JSON.parse(jsoncToJson(string_jsonc));
+                const output_json = JSON.parse(jsoncToJson(latest_setting.text));
+                const input_string = document.getElementById("input_string").value;
+                Object.keys(bonus_enums).forEach(benum => {
+                    const json = JSON.parse(jsoncToJson(bonus_enums[benum]));
+                    string_json[benum] = json[benum];
+                    output_json[benum] = json[benum];
+                })
+    
+    
+                let setting_data = decryptString(input_string, string_json);
+
+                // Do any bonus transpositions
+                const sel_version_num = numericVersion(settings[selected_version].max_version);
+                if (sel_version_num <= numericVersion("5.1.9")) {
+                    // Convert CB Behavior to CB Behavior new
+                    setting_data.cb_medal_behavior_new = setting_data.cb_medal_behavior;
+                    delete setting_data.cb_medal_behavior;
+                }
+                // Update to include all unhandled options to unsorted
+                const all_valid_items = Object.keys(output_json.ItemRandoListSelected);
+                let mentioned_items = [];
+                for (let x = 0; x < 10; x++) {
+                    mentioned_items = mentioned_items.concat(setting_data[`item_rando_list_${x}`])
+                }
+                const missing_items = all_valid_items.filter(x => !mentioned_items.includes(x));
+                missing_items.forEach(entry => {
+                    const item_entry = types.ItemRandoSelector.find(k => k.value == entry);
+                    if (item_entry.is_check) {
+                        setting_data.item_rando_list_5.push(entry);
+                    } else {
+                        setting_data.item_rando_list_0.push(entry);
+                    }
+                })
+
+                const output_string = encryptString(setting_data, output_json);
+                document.getElementById("output_string").value = output_string;
+            })
+
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    </body>
+</html>
