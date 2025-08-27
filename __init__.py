@@ -584,6 +584,7 @@ if baseclasses_loaded:
             """Initialize the DK64 world."""
             self.rom_name_available_event = threading.Event()
             self.hint_data_available = threading.Event()
+            self.hint_compilation_complete = threading.Event()
             super().__init__(multiworld, player)
 
         @classmethod
@@ -1007,7 +1008,10 @@ if baseclasses_loaded:
                 "major": [],
                 "deep": [],
             }
+            # Initialize hint location mapping
+            self.hint_location_mapping = {}
             self.foreignMicroHints = {}
+            self.hint_location_mapping = {}  # Initialize hint location mapping
 
             # Handle locations that start empty due to being junk
             self.junked_locations = []
@@ -1131,6 +1135,11 @@ if baseclasses_loaded:
 
                 if hints_enabled:
                     CompileArchipelagoHints(self, self.hint_data)
+                    # Signal that hint compilation is complete
+                    self.hint_compilation_complete.set()
+                else:
+                    # If hints are not enabled, immediately set the event
+                    self.hint_compilation_complete.set()
 
                 if microhints_enabled:
                     # Finalize microhints
@@ -1405,7 +1414,14 @@ if baseclasses_loaded:
 
         def fill_slot_data(self) -> dict:
             """Fill the slot data."""
-            return {
+            # If hints are enabled, wait for hint compilation to complete
+            if hasattr(self, "options") and self.options.hint_style > 0:
+                self.hint_compilation_complete.wait()
+
+            # Get hint location mapping
+            hint_mapping = getattr(self, "hint_location_mapping", {})
+
+            slot_data = {
                 "Goal": self.options.goal.value,
                 "ClimbingShuffle": self.options.climbing_shuffle.value,
                 "PlayerNum": self.player,
@@ -1477,7 +1493,27 @@ if baseclasses_loaded:
                 "Autocomplete": self.options.auto_complete_bonus_barrels.value,
                 "HelmBarrelCount": self.options.helm_room_bonus_count.value,
                 "SmallerShopsData": self.get_smaller_shops_data(),
+                "HintLocationMapping": hint_mapping,
             }
+
+            # Create item information for hint status determination
+            hint_item_info = {}
+
+            # Get all locations and their items
+            for location in self.multiworld.get_locations(self.player):
+                if location.address is not None and location.item is not None:
+                    location_id = str(location.address)
+
+                    # Get item classification as string
+                    classification_map = {1: "progression", 2: "useful", 3: "filler", 4: "trap"}
+
+                    classification_str = classification_map.get(location.item.classification.value, "unknown")
+
+                    hint_item_info[location_id] = {"name": location.item.name, "classification": classification_str}
+
+            slot_data["HintItemInfo"] = hint_item_info
+
+            return slot_data
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
             """Write the spoiler."""
