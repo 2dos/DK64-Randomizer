@@ -1,16 +1,7 @@
 #include "../../include/common.h"
 
 StartingItemsStruct starting_item_data = {
-	.others = {
-		.flag_moves = {
-			.barrels = 1,
-			.diving = 1,
-			.oranges = 1,
-			.vines = 1,
-		}
-	},
 	.melons = 1,
-	.slam = 1,
 };
 
 static const unsigned short fast_start_flags[] = {
