@@ -231,7 +231,11 @@
                     return numericVersion(b.max_version) - numericVersion(a.max_version);
                 })
                 document.getElementById("version_dropdown").innerHTML = settings.map((s, index) => {
-                    return `<option value="${index}">${s.min_version} → ${s.max_version}</option>`    
+                    let opt_text = s.min_version;
+                    if (s.min_version != s.max_version) {
+                        opt_text = `${s.min_version} → ${s.max_version}`
+                    }
+                    return `<option value="${index}">${opt_text}</option>`    
                 })
                 console.log(settings)
                 console.log(latest_setting)
