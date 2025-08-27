@@ -208,7 +208,7 @@ if baseclasses_loaded:
 
         launch_component(launch, name="DK64 Client")
 
-    components.append(Component("DK64 Client", "DK64Client", func=launch_client, component_type=Type.CLIENT, icon="dk64"))
+    components.append(Component("DK64 Client", func=launch_client, component_type=Type.CLIENT, icon="dk64"))
     icon_paths["dk64"] = f"ap:{__name__}/base-hack/assets/DKTV/logo3.png"
 
     class DK64CollectionState(metaclass=AutoLogicRegister):
