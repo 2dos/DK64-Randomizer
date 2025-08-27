@@ -315,7 +315,9 @@ class Settings:
             locked_blocker_items = []
             for slot in range(8):
                 item = self.random.choice([key for key in self.blocker_limits.keys() if key not in locked_blocker_items])
-                count = self.random.randint(1, math.ceil(self.blocker_limits[item] * self.blocker_text))
+                count = 0
+                if self.blocker_text > 0:
+                    count = self.random.randint(1, math.ceil(self.blocker_limits[item] * self.blocker_text))
                 self.BLockerEntryItems[slot] = item
                 self.BLockerEntryCount[slot] = count
                 # Some barriers can only show up once

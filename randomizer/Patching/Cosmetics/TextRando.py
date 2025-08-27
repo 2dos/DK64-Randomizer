@@ -79,6 +79,9 @@ boot_phrases = (
     "Color-coding Krusha for convenience",
     "Adding the dot com",
     "Plugging the randomizer",
+    "Ensuring Lanky isn't in a keg",
+    "Generating a jet seed",
+    "Generating a casino",
 )
 
 crown_heads = (
