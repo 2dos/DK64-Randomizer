@@ -2135,33 +2135,7 @@
             "qol_uses_hard": true
         },
         "ice_trap_frequency": {
-            "setting_type": "choice_single",
-            "options": {
-                "easy": {
-                    "rare": 70.0,
-                    "mild": 20.0,
-                    "common": 10.0
-                },
-                "standard": {
-                    "rare": 50.0,
-                    "mild": 30.0,
-                    "common": 15.0,
-                    "frequent": 5.0
-                },
-                "difficult": {
-                    "mild": 45.0,
-                    "common": 40.0,
-                    "frequent": 10.0,
-                    "pain": 5.0
-                },
-                "difficult_with_qol_shuffle": {
-                    "mild": 45.0,
-                    "common": 40.0,
-                    "frequent": 10.0,
-                    "pain": 5.0
-                }
-            },
-            "qol_uses_hard": true
+            "ignore": true
         },
         "ice_traps_damage": {
             "setting_type": "bool",
