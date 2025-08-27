@@ -1506,7 +1506,19 @@ class DK64Context(CommonContext):
                 ]
 
                 # Useful items
-                useful_keywords = ["golden banana", "ammo belt", "instrument upgrade", "blueprint", "hint", "banana medal", "nintendo coin", "rareware coin", "rainbow coin", "battle crown", "banana fairy"]
+                useful_keywords = [
+                    "golden banana",
+                    "ammo belt",
+                    "instrument upgrade",
+                    "blueprint",
+                    "hint",
+                    "banana medal",
+                    "nintendo coin",
+                    "rareware coin",
+                    "rainbow coin",
+                    "battle crown",
+                    "banana fairy",
+                ]
 
                 # Items to avoid hinting
                 avoid_keywords = ["melon", "junk", "trap"]
