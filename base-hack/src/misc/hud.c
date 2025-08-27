@@ -553,7 +553,9 @@ Gfx* drawDPad(Gfx* dl) {
             display_mdl_num = 0;
         }
         if (display_mdl_num) {
+            dl = initDisplayList(dl);
             dk_strFormat(&mdl_text, "%d", mdl_num);
+            gDPSetCombineMode(dl++, G_CC_DECALRGBA, G_CC_DECALRGBA);
             dl = printText(dl, dpad_x_pos + 80, DPAD_Y - 15, 0.5f, &mdl_text);
         } else {
             dl = drawImage(dl, 116, RGBA16, 32, 32, dpad_x_pos + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, 0xFF);

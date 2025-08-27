@@ -364,40 +364,6 @@ function plando_disable_kasplat_custom_locations() {
 document
   .getElementById("kasplat_rando_setting")
   .addEventListener("change", plando_disable_kasplat_custom_locations);
-function plando_disable_patch_custom_locations() {
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
-  let patchesShuffled = false;
-
-  for (let option of itemRandoPool) {
-    if (option.value === "rainbowcoin") {
-      patchesShuffled = option.selected;
-    }
-  }
-
-  const randomPatches = document.getElementById("random_patches").checked;
-  const customPatchesElem = document.getElementById("plando_place_patches");
-  let tooltip = "Allows the user to specify locations for each dirt patch.";
-
-  if (patchesShuffled && randomPatches) {
-    customPatchesElem.removeAttribute("disabled");
-  } else {
-    customPatchesElem.setAttribute("disabled", "disabled");
-    customPatchesElem.checked = false;
-    tooltip =
-      "To use this feature, rainbow coins must be in the item pool, and dirt patch locations must be shuffled.";
-  }
-
-  customPatchesElem.parentElement.setAttribute(
-    "data-bs-original-title",
-    tooltip
-  );
-}
-
-document
-  .getElementById("random_patches")
-  .addEventListener("click", plando_disable_patch_custom_locations);
 
 // Enable or disable custom locations for Wrinkly doors
 function plando_disable_wrinkly_custom_locations() {
@@ -955,7 +921,6 @@ document
     plando_disable_crate_custom_locations(evt);
     plando_disable_fairy_custom_locations(evt);
     plando_disable_kasplat_custom_locations(evt);
-    plando_disable_patch_custom_locations(evt);
     plando_disable_wrinkly_custom_locations(evt);
     plando_disable_tns_custom_locations(evt);
     plando_disable_isles_medals(evt);

@@ -670,6 +670,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x80600674, Overlay.Static, "updateLag", offset_dict)
     writeHook(ROM_COPY, 0x806FC990, Overlay.Static, "ApplyTextRecolorHints", offset_dict)
 
+    writeValue(ROM_COPY, 0x8002DECE, Overlay.Bonus, 0x58, offset_dict, 1)
+
     if CAMERA_RESET_REDUCTION:
         # Credit: Retroben
         writeValue(ROM_COPY, 0x8061BDF0, Overlay.Static, 0x1000, offset_dict)
