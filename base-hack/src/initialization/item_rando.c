@@ -369,73 +369,89 @@ int getBoulderItem(void) {
 
 typedef struct barrel_skin_tie {
     /* 0x000 */ unsigned short actor;
-    /* 0x002 */ unsigned short skin;
+    /* 0x002 */ unsigned char reqitem;
+    /* 0x003 */ unsigned char skin;
+    /* 0x004 */ char level;
+    /* 0x005 */ char kong;
 } barrel_skin_tie;
 
 static const barrel_skin_tie bonus_skins[] = {
-    {.actor = 78, .skin=SKIN_BLUEPRINT},
-    {.actor = 75, .skin=SKIN_BLUEPRINT},
-    {.actor = 77, .skin=SKIN_BLUEPRINT},
-    {.actor = 79, .skin=SKIN_BLUEPRINT},
-    {.actor = 76, .skin=SKIN_BLUEPRINT},
-    {.actor = NEWACTOR_NINTENDOCOIN, .skin=SKIN_NINTENDO_COIN},
-    {.actor = NEWACTOR_RAREWARECOIN, .skin=SKIN_RAREWARE_COIN},
-    {.actor = 72, .skin=SKIN_KEY},
-    {.actor = 86, .skin=SKIN_CROWN},
-    {.actor = NEWACTOR_MEDAL, .skin=SKIN_MEDAL},
-    {.actor = NEWACTOR_POTIONDK, .skin=SKIN_POTION},
-    {.actor = NEWACTOR_POTIONDIDDY, .skin=SKIN_POTION},
-    {.actor = NEWACTOR_POTIONLANKY, .skin=SKIN_POTION},
-    {.actor = NEWACTOR_POTIONTINY, .skin=SKIN_POTION},
-    {.actor = NEWACTOR_POTIONCHUNKY, .skin=SKIN_POTION},
-    {.actor = NEWACTOR_POTIONANY, .skin=SKIN_POTION},
-    {.actor = NEWACTOR_KONGDK, .skin=SKIN_KONG_DK},
-    {.actor = NEWACTOR_KONGDIDDY, .skin=SKIN_KONG_DIDDY},
-    {.actor = NEWACTOR_KONGLANKY, .skin=SKIN_KONG_LANKY},
-    {.actor = NEWACTOR_KONGTINY, .skin=SKIN_KONG_TINY},
-    {.actor = NEWACTOR_KONGCHUNKY, .skin=SKIN_KONG_CHUNKY},
-    {.actor = NEWACTOR_BEAN, .skin=SKIN_BEAN},
-    {.actor = NEWACTOR_PEARL, .skin=SKIN_PEARL},
-    {.actor = NEWACTOR_FAIRY, .skin=SKIN_FAIRY},
-    {.actor = 140, .skin=SKIN_RAINBOW_COIN},
-    {.actor = NEWACTOR_ICETRAPBUBBLE, .skin=SKIN_FAKE_ITEM},
-    {.actor = 0x2F, .skin=SKIN_JUNK_ITEM},
-    {.actor = NEWACTOR_CRANKYITEM, .skin=SKIN_CRANKY},
-    {.actor = NEWACTOR_FUNKYITEM, .skin=SKIN_FUNKY},
-    {.actor = NEWACTOR_CANDYITEM, .skin=SKIN_CANDY},
-    {.actor = NEWACTOR_SNIDEITEM, .skin=SKIN_SNIDE},
-    {.actor = NEWACTOR_ICETRAPREVERSE, .skin=SKIN_FAKE_ITEM},
-    {.actor = NEWACTOR_ICETRAPSLOW, .skin=SKIN_FAKE_ITEM},
-    {.actor = NEWACTOR_HINTITEMDK, .skin=SKIN_HINT},
-    {.actor = NEWACTOR_HINTITEMDIDDY, .skin=SKIN_HINT},
-    {.actor = NEWACTOR_HINTITEMLANKY, .skin=SKIN_HINT},
-    {.actor = NEWACTOR_HINTITEMTINY, .skin=SKIN_HINT},
-    {.actor = NEWACTOR_HINTITEMCHUNKY, .skin=SKIN_HINT},
-    {.actor = NEWACTOR_ARCHIPELAGOITEM, .skin=SKIN_AP},
-    {.actor = 151, .skin=SKIN_FAKE_BEAN},
-    {.actor = 152, .skin=SKIN_FAKE_BEAN},
-    {.actor = 153, .skin=SKIN_FAKE_BEAN},
-    {.actor = 154, .skin=SKIN_FAKE_KEY},
-    {.actor = 155, .skin=SKIN_FAKE_KEY},
-    {.actor = 157, .skin=SKIN_FAKE_KEY},
-    {.actor = NEWACTOR_ICETRAPDISABLEABEAN, .skin=SKIN_FAKE_BEAN},
-    {.actor = NEWACTOR_ICETRAPDISABLEBBEAN, .skin=SKIN_FAKE_BEAN},
-    {.actor = NEWACTOR_ICETRAPDISABLEZBEAN, .skin=SKIN_FAKE_BEAN},
-    {.actor = NEWACTOR_ICETRAPDISABLECUBEAN, .skin=SKIN_FAKE_BEAN},
-    {.actor = NEWACTOR_ICETRAPDISABLEAKEY, .skin=SKIN_FAKE_KEY},
-    {.actor = NEWACTOR_ICETRAPDISABLEBKEY, .skin=SKIN_FAKE_KEY},
-    {.actor = NEWACTOR_ICETRAPDISABLEZKEY, .skin=SKIN_FAKE_KEY},
-    {.actor = NEWACTOR_ICETRAPDISABLECUKEY, .skin=SKIN_FAKE_KEY},
-    {.actor = NEWACTOR_ICETRAPDISABLEAGB, .skin=SKIN_FAKE_ITEM},
-    {.actor = NEWACTOR_ICETRAPDISABLEBGB, .skin=SKIN_FAKE_ITEM},
-    {.actor = NEWACTOR_ICETRAPDISABLEZGB, .skin=SKIN_FAKE_ITEM},
-    {.actor = NEWACTOR_ICETRAPDISABLECUGB, .skin=SKIN_FAKE_ITEM},
+    {.actor = 78,                               .reqitem=REQITEM_BLUEPRINT,         .level=-1, .kong=-1, .skin=SKIN_BLUEPRINT},
+    {.actor = 75,                               .reqitem=REQITEM_BLUEPRINT,         .level=-1, .kong=-1, .skin=SKIN_BLUEPRINT},
+    {.actor = 77,                               .reqitem=REQITEM_BLUEPRINT,         .level=-1, .kong=-1, .skin=SKIN_BLUEPRINT},
+    {.actor = 79,                               .reqitem=REQITEM_BLUEPRINT,         .level=-1, .kong=-1, .skin=SKIN_BLUEPRINT},
+    {.actor = 76,                               .reqitem=REQITEM_BLUEPRINT,         .level=-1, .kong=-1, .skin=SKIN_BLUEPRINT},
+    {.actor = NEWACTOR_NINTENDOCOIN,            .reqitem=REQITEM_COMPANYCOIN,       .level=-1, .kong= 0, .skin=SKIN_NINTENDO_COIN},
+    {.actor = NEWACTOR_RAREWARECOIN,            .reqitem=REQITEM_COMPANYCOIN,       .level=-1, .kong= 1, .skin=SKIN_RAREWARE_COIN},
+    {.actor = 72,                               .reqitem=REQITEM_KEY,               .level=-1, .kong=-1, .skin=SKIN_KEY},
+    {.actor = 86,                               .reqitem=REQITEM_CROWN,             .level=-1, .kong=-1, .skin=SKIN_CROWN},
+    {.actor = NEWACTOR_MEDAL,                   .reqitem=REQITEM_MEDAL,             .level=-1, .kong=-1, .skin=SKIN_MEDAL},
+    {.actor = NEWACTOR_POTIONDK,                .reqitem=REQITEM_MOVE,              .level=-1, .kong=-1, .skin=SKIN_POTION},
+    {.actor = NEWACTOR_POTIONDIDDY,             .reqitem=REQITEM_MOVE,              .level=-1, .kong=-1, .skin=SKIN_POTION},
+    {.actor = NEWACTOR_POTIONLANKY,             .reqitem=REQITEM_MOVE,              .level=-1, .kong=-1, .skin=SKIN_POTION},
+    {.actor = NEWACTOR_POTIONTINY,              .reqitem=REQITEM_MOVE,              .level=-1, .kong=-1, .skin=SKIN_POTION},
+    {.actor = NEWACTOR_POTIONCHUNKY,            .reqitem=REQITEM_MOVE,              .level=-1, .kong=-1, .skin=SKIN_POTION},
+    {.actor = NEWACTOR_POTIONANY,               .reqitem=REQITEM_MOVE,              .level=-1, .kong=-1, .skin=SKIN_POTION},
+    {.actor = NEWACTOR_KONGDK,                  .reqitem=REQITEM_KONG,              .level=-1, .kong= 0, .skin=SKIN_KONG_DK},
+    {.actor = NEWACTOR_KONGDIDDY,               .reqitem=REQITEM_KONG,              .level=-1, .kong= 1, .skin=SKIN_KONG_DIDDY},
+    {.actor = NEWACTOR_KONGLANKY,               .reqitem=REQITEM_KONG,              .level=-1, .kong= 2, .skin=SKIN_KONG_LANKY},
+    {.actor = NEWACTOR_KONGTINY,                .reqitem=REQITEM_KONG,              .level=-1, .kong= 3, .skin=SKIN_KONG_TINY},
+    {.actor = NEWACTOR_KONGCHUNKY,              .reqitem=REQITEM_KONG,              .level=-1, .kong= 4, .skin=SKIN_KONG_CHUNKY},
+    {.actor = NEWACTOR_BEAN,                    .reqitem=REQITEM_BEAN,              .level=-1, .kong=-1, .skin=SKIN_BEAN},
+    {.actor = NEWACTOR_PEARL,                   .reqitem=REQITEM_PEARL,             .level=-1, .kong=-1, .skin=SKIN_PEARL},
+    {.actor = NEWACTOR_FAIRY,                   .reqitem=REQITEM_FAIRY,             .level=-1, .kong=-1, .skin=SKIN_FAIRY},
+    {.actor = 140,                              .reqitem=REQITEM_RAINBOWCOIN,       .level=-1, .kong=-1, .skin=SKIN_RAINBOW_COIN},
+    {.actor = NEWACTOR_ICETRAPBUBBLE,           .reqitem=REQITEM_ICETRAP,           .level= 0, .kong=-1, .skin=SKIN_FAKE_ITEM},
+    {.actor = 0x2F,                             .reqitem=REQITEM_JUNK,              .level=-1, .kong=-1, .skin=SKIN_JUNK_ITEM},
+    {.actor = NEWACTOR_CRANKYITEM,              .reqitem=REQITEM_SHOPKEEPER,        .level=-1, .kong= 0, .skin=SKIN_CRANKY},
+    {.actor = NEWACTOR_FUNKYITEM,               .reqitem=REQITEM_SHOPKEEPER,        .level=-1, .kong= 1, .skin=SKIN_FUNKY},
+    {.actor = NEWACTOR_CANDYITEM,               .reqitem=REQITEM_SHOPKEEPER,        .level=-1, .kong= 2, .skin=SKIN_CANDY},
+    {.actor = NEWACTOR_SNIDEITEM,               .reqitem=REQITEM_SHOPKEEPER,        .level=-1, .kong= 3, .skin=SKIN_SNIDE},
+    {.actor = NEWACTOR_ICETRAPREVERSE,          .reqitem=REQITEM_ICETRAP,           .level= 0, .kong=-1, .skin=SKIN_FAKE_ITEM},
+    {.actor = NEWACTOR_ICETRAPSLOW,             .reqitem=REQITEM_ICETRAP,           .level= 0, .kong=-1, .skin=SKIN_FAKE_ITEM},
+    {.actor = NEWACTOR_HINTITEMDK,              .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
+    {.actor = NEWACTOR_HINTITEMDIDDY,           .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
+    {.actor = NEWACTOR_HINTITEMLANKY,           .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
+    {.actor = NEWACTOR_HINTITEMTINY,            .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
+    {.actor = NEWACTOR_HINTITEMCHUNKY,          .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
+    {.actor = NEWACTOR_ARCHIPELAGOITEM,         .reqitem=REQITEM_AP,                .level=-1, .kong=-1, .skin=SKIN_AP},
+    {.actor = 151,                              .reqitem=REQITEM_ICETRAP,           .level= 1, .kong=-1, .skin=SKIN_FAKE_BEAN},
+    {.actor = 152,                              .reqitem=REQITEM_ICETRAP,           .level= 1, .kong=-1, .skin=SKIN_FAKE_BEAN},
+    {.actor = 153,                              .reqitem=REQITEM_ICETRAP,           .level= 1, .kong=-1, .skin=SKIN_FAKE_BEAN},
+    {.actor = 154,                              .reqitem=REQITEM_ICETRAP,           .level= 2, .kong=-1, .skin=SKIN_FAKE_KEY},
+    {.actor = 155,                              .reqitem=REQITEM_ICETRAP,           .level= 2, .kong=-1, .skin=SKIN_FAKE_KEY},
+    {.actor = 157,                              .reqitem=REQITEM_ICETRAP,           .level= 2, .kong=-1, .skin=SKIN_FAKE_KEY},
+    {.actor = NEWACTOR_ICETRAPDISABLEABEAN,     .reqitem=REQITEM_ICETRAP,           .level= 1, .kong=-1, .skin=SKIN_FAKE_BEAN},
+    {.actor = NEWACTOR_ICETRAPDISABLEBBEAN,     .reqitem=REQITEM_ICETRAP,           .level= 1, .kong=-1, .skin=SKIN_FAKE_BEAN},
+    {.actor = NEWACTOR_ICETRAPDISABLEZBEAN,     .reqitem=REQITEM_ICETRAP,           .level= 1, .kong=-1, .skin=SKIN_FAKE_BEAN},
+    {.actor = NEWACTOR_ICETRAPDISABLECUBEAN,    .reqitem=REQITEM_ICETRAP,           .level= 1, .kong=-1, .skin=SKIN_FAKE_BEAN},
+    {.actor = NEWACTOR_ICETRAPDISABLEAKEY,      .reqitem=REQITEM_ICETRAP,           .level= 2, .kong=-1, .skin=SKIN_FAKE_KEY},
+    {.actor = NEWACTOR_ICETRAPDISABLEBKEY,      .reqitem=REQITEM_ICETRAP,           .level= 2, .kong=-1, .skin=SKIN_FAKE_KEY},
+    {.actor = NEWACTOR_ICETRAPDISABLEZKEY,      .reqitem=REQITEM_ICETRAP,           .level= 2, .kong=-1, .skin=SKIN_FAKE_KEY},
+    {.actor = NEWACTOR_ICETRAPDISABLECUKEY,     .reqitem=REQITEM_ICETRAP,           .level= 2, .kong=-1, .skin=SKIN_FAKE_KEY},
+    {.actor = NEWACTOR_ICETRAPDISABLEAGB,       .reqitem=REQITEM_ICETRAP,           .level= 0, .kong=-1, .skin=SKIN_FAKE_ITEM},
+    {.actor = NEWACTOR_ICETRAPDISABLEBGB,       .reqitem=REQITEM_ICETRAP,           .level= 0, .kong=-1, .skin=SKIN_FAKE_ITEM},
+    {.actor = NEWACTOR_ICETRAPDISABLEZGB,       .reqitem=REQITEM_ICETRAP,           .level= 0, .kong=-1, .skin=SKIN_FAKE_ITEM},
+    {.actor = NEWACTOR_ICETRAPDISABLECUGB,      .reqitem=REQITEM_ICETRAP,           .level= 0, .kong=-1, .skin=SKIN_FAKE_ITEM},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {
     for (int i = 0; i < (sizeof(bonus_skins) / sizeof(barrel_skin_tie)); i++) {
         if (bonus_skins[i].actor == actor) {
             return bonus_skins[i].skin;
+        }
+    }
+    return SKIN_GB;
+}
+
+enum_bonus_skin getShopSkinIndex(purchase_struct *data) {
+    for (int i = 0; i < (sizeof(bonus_skins) / sizeof(barrel_skin_tie)); i++) {
+        if (bonus_skins[i].reqitem == data->item.item_type) {
+            if ((bonus_skins[i].level == -1) || (bonus_skins[i].level == data->item.level)) {
+                if ((bonus_skins[i].kong == -1) || (bonus_skins[i].kong == data->item.kong)) {
+                    return bonus_skins[i].skin;
+                }
+            }
         }
     }
     return SKIN_GB;

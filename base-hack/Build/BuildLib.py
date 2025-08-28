@@ -51,6 +51,16 @@ barrel_skins = (
     "ap",
     "fakebean",
     "fakekey",
+    "shared",
+    "soldout",
+    "dillo1",
+    "dog1",
+    "mj",
+    "pufftoss",
+    "dog2",
+    "dillo2",
+    "kko",
+    "null",
 )
 
 

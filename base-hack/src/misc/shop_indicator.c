@@ -42,77 +42,12 @@ typedef struct counter_paad {
 	/* 0x019 */ unsigned char shop;
 } counter_paad;
 
-typedef enum counter_items {
-	/* 0x000 */ COUNTER_NO_ITEM,
-	/* 0x001 */ COUNTER_DK_FACE,
-	/* 0x002 */ COUNTER_DIDDY_FACE,
-	/* 0x003 */ COUNTER_LANKY_FACE,
-	/* 0x004 */ COUNTER_TINY_FACE,
-	/* 0x005 */ COUNTER_CHUNKY_FACE,
-	/* 0x006 */ COUNTER_SHARED_FACE,
-	/* 0x007 */ COUNTER_SOLDOUT,
-	/* 0x008 */ COUNTER_GB,
-	/* 0x009 */ COUNTER_BP,
-	/* 0x00A */ COUNTER_CROWN,
-	/* 0x00B */ COUNTER_KEY,
-	/* 0x00C */ COUNTER_MEDAL,
-	/* 0x00D */ COUNTER_POTION,
-	/* 0x00E */ COUNTER_NINCOIN,
-	/* 0x00F */ COUNTER_RWCOIN,
-	/* 0x010 */ COUNTER_BEAN,
-	/* 0x011 */ COUNTER_PEARL,
-	/* 0x012 */ COUNTER_FAIRY,
-	/* 0x013 */ COUNTER_RAINBOWCOIN,
-	/* 0x014 */ COUNTER_FAKEITEM,
-	/* 0x015 */ COUNTER_HINT,
-	/* 0x016 */ COUNTER_AP,
-	/* 0x017 */ COUNTER_DILLO1,
-	/* 0x018 */ COUNTER_DOG1,
-	/* 0x019 */ COUNTER_MJ,
-	/* 0x01A */ COUNTER_PUFFTOSS,
-	/* 0x01B */ COUNTER_DOG2,
-	/* 0x01C */ COUNTER_DILLO2,
-	/* 0x01D */ COUNTER_KKO,
-} counter_items;
-
-static unsigned char tied_counter[] = {
-	COUNTER_NO_ITEM, // REQITEM_NONE
-	COUNTER_DK_FACE, // REQITEM_KONG - Handled with special case
-	COUNTER_POTION, // REQITEM_MOVE
-	COUNTER_GB, // REQITEM_GOLDENBANANA
-	COUNTER_BP, // REQITEM_BLUEPRINT
-	COUNTER_FAIRY, // REQITEM_FAIRY
-	COUNTER_KEY, // REQITEM_KEY
-	COUNTER_CROWN, // REQITEM_CROWN
-	COUNTER_NINCOIN, // REQITEM_COMPANYCOIN - Handled with special case
-	COUNTER_MEDAL, // REQITEM_MEDAL
-	COUNTER_BEAN, // REQITEM_BEAN
-	COUNTER_PEARL, // REQITEM_PEARL
-	COUNTER_RAINBOWCOIN, // REQITEM_RAINBOWCOIN
-	COUNTER_FAKEITEM, // REQITEM_ICETRAP
-	COUNTER_NO_ITEM, // REQITEM_GAMEPERCENTAGE
-	COUNTER_NO_ITEM, // REQITEM_COLOREDBANANA
-	COUNTER_NO_ITEM, // REQITEM_BOSSES
-	COUNTER_NO_ITEM, // REQITEM_BONUSES
-	COUNTER_NO_ITEM, // REQITEM_JUNK
-	COUNTER_HINT, // REQITEM_HINT
-	COUNTER_NO_ITEM, // REQITEM_SHOPKEEPER
-	COUNTER_AP, // REQITEM_AP
-};
-
 int getCounterItem(vendors shop_index, int kong, int level) {
 	purchase_struct* data = getShopData(shop_index, kong, level);
 	if (data) {
-		requirement_item item_type = data->item.item_type;
-		if (item_type == REQITEM_KONG) {
-			return COUNTER_DK_FACE + data->item.kong;
-		} else if (item_type == REQITEM_COMPANYCOIN) {
-			return data->item.kong ? COUNTER_RWCOIN : COUNTER_NINCOIN;
-		} else {
-			return tied_counter[item_type];
-		}
+		return getShopSkinIndex(data);
 	}
-	return COUNTER_NO_ITEM;
+	return SKIN_NULL;
 }
 
 int getMoveCountInShop(counter_paad* paad, vendors shop_index) {
@@ -123,7 +58,7 @@ int getMoveCountInShop(counter_paad* paad, vendors shop_index) {
 			if (!isShopEmpty(shop_index, level, i)) {
 				// Shop is some item
 				if (isSharedMove(shop_index, level)) {
-					paad->kong_images[0] = COUNTER_SHARED_FACE;
+					paad->kong_images[0] = SKIN_SHARED;
 					paad->item_images[0] = getCounterItem(shop_index, i, level);
 					return 1;
 				} else {
@@ -139,12 +74,11 @@ int getMoveCountInShop(counter_paad* paad, vendors shop_index) {
 
 #define IMG_WIDTH 32
 
-#define COUNTER_CACHE_SIZE 32
-static void* texture_data[COUNTER_CACHE_SIZE] = {};
-static unsigned char texture_load[COUNTER_CACHE_SIZE] = {};
+static void* texture_data[SKIN_TERMINATOR] = {};
+static unsigned char texture_load[SKIN_TERMINATOR] = {};
 
 void wipeCounterImageCache(void) {
-	for (int i = 0; i < COUNTER_CACHE_SIZE; i++) {
+	for (int i = 0; i < SKIN_TERMINATOR; i++) {
 		texture_data[i] = 0;
 		texture_load[i] = 0;
 	}
@@ -177,12 +111,6 @@ void updateCounterDisplay(void) {
 	if (paad->cap > 0) {
 		int kong_image = paad->kong_images[index];
 		int item_image = paad->item_images[index];
-		if ((kong_image < 0) || (kong_image >= COUNTER_DILLO1)) {
-			kong_image = 0;
-		}
-		if ((item_image < 0) || (item_image >= COUNTER_DILLO1)) {
-			item_image = 0;
-		}
 		if (paad->use_item_display) {
 			paad->image_slots[0] = loadFontTexture_Counter(paad->image_slots[0], kong_image, 0);
 			paad->image_slots[2] = loadFontTexture_Counter(paad->image_slots[2], item_image, 2);
@@ -299,19 +227,19 @@ typedef struct krool_head {
 } krool_head;
 
 static const krool_head helm_heads[] = {
-	{.map = MAP_JAPESDILLO, .texture_offset=COUNTER_DILLO1},
-	{.map = MAP_AZTECDOGADON, .texture_offset=COUNTER_DOG1},
-	{.map = MAP_FACTORYJACK, .texture_offset=COUNTER_MJ},
-	{.map = MAP_GALLEONPUFFTOSS, .texture_offset=COUNTER_PUFFTOSS},
-	{.map = MAP_FUNGIDOGADON, .texture_offset=COUNTER_DOG2},
-	{.map = MAP_CAVESDILLO, .texture_offset=COUNTER_DILLO2},
-	{.map = MAP_CASTLEKUTOUT, .texture_offset=COUNTER_KKO},
-	{.map = MAP_KROOLDK, .texture_offset=COUNTER_DK_FACE},
-	{.map = MAP_KROOLDIDDY, .texture_offset=COUNTER_DIDDY_FACE},
-	{.map = MAP_KROOLLANKY, .texture_offset=COUNTER_LANKY_FACE},
-	{.map = MAP_KROOLTINY, .texture_offset=COUNTER_TINY_FACE},
-	{.map = MAP_KROOLCHUNKY, .texture_offset=COUNTER_CHUNKY_FACE},
-	{.map = 0xFF, .texture_offset=COUNTER_NO_ITEM},
+	{.map = MAP_JAPESDILLO, .texture_offset=SKIN_DILLO_1},
+	{.map = MAP_AZTECDOGADON, .texture_offset=SKIN_DOGA_1},
+	{.map = MAP_FACTORYJACK, .texture_offset=SKIN_MAD_JACK},
+	{.map = MAP_GALLEONPUFFTOSS, .texture_offset=SKIN_PUFFTOSS},
+	{.map = MAP_FUNGIDOGADON, .texture_offset=SKIN_DOGA_2},
+	{.map = MAP_CAVESDILLO, .texture_offset=SKIN_DILLO_2},
+	{.map = MAP_CASTLEKUTOUT, .texture_offset=SKIN_KKO},
+	{.map = MAP_KROOLDK, .texture_offset=SKIN_KONG_DK},
+	{.map = MAP_KROOLDIDDY, .texture_offset=SKIN_KONG_DIDDY},
+	{.map = MAP_KROOLLANKY, .texture_offset=SKIN_KONG_LANKY},
+	{.map = MAP_KROOLTINY, .texture_offset=SKIN_KONG_TINY},
+	{.map = MAP_KROOLCHUNKY, .texture_offset=SKIN_KONG_CHUNKY},
+	{.map = 0xFF, .texture_offset=SKIN_NULL},
 };
 
 static const short float_ids[] = {0x1F4, 0x36};
@@ -331,7 +259,7 @@ void newCounterCode(void) {
 				}
 				// Initialize slots
 				for (int i = 0; i < 3; i++) {
-					paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], 0, i);
+					paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], SKIN_NULL, i);
 				}
 				CurrentActorPointer_0->rot_z = 3072; // Facing vertical
 				int closest_shop = getClosestShop();
@@ -343,8 +271,8 @@ void newCounterCode(void) {
 					paad->current_slot = 0;
 					updateCounterDisplay();
 					if (paad->cap == 0) {
-						paad->kong_images[0] = COUNTER_SOLDOUT;
-						paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], 7, 1);
+						paad->kong_images[0] = SKIN_SOLDOUT;
+						paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], SKIN_SOLDOUT, 1);
 						paad->cap = 1;
 						paad->use_item_display = 0;
 					}
@@ -382,11 +310,11 @@ void newCounterCode(void) {
 		} else {
 			// Helm Indicator
 			for (int i = 0; i < 3; i++) {
-				paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], 0, i);
+				paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], SKIN_NULL, i);
 			}
 			int id = getActorSpawnerIDFromTiedActor(CurrentActorPointer_0);
 			int face_map = Rando.k_rool_order[id - 0x100];
-			int face_img = COUNTER_NO_ITEM;
+			int face_img = SKIN_NULL;
 			for (int i = 0; i < sizeof(helm_heads)/sizeof(krool_head); i++) {
 				if (helm_heads[i].map == face_map) {
 					face_img = helm_heads[i].texture_offset;

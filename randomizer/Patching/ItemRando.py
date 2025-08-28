@@ -193,25 +193,25 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
     elif item_type == Types.FakeItem:
         idx_lst = [Items.IceTrapBubble, Items.IceTrapBubbleBean, Items.IceTrapBubbleKey]
         if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 1)
+            return ItemPatchingInfo(13, idx_lst.index(item), 1)
         idx_lst = [Items.IceTrapReverse, Items.IceTrapReverseBean, Items.IceTrapReverseKey]
         if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 2)
+            return ItemPatchingInfo(13, idx_lst.index(item), 2)
         idx_lst = [Items.IceTrapSlow, Items.IceTrapSlowBean, Items.IceTrapSlowKey]
         if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 3)
+            return ItemPatchingInfo(13, idx_lst.index(item), 3)
         idx_lst = [Items.IceTrapDisableA, Items.IceTrapDisableABean, Items.IceTrapDisableAKey]
         if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 5)
+            return ItemPatchingInfo(13, idx_lst.index(item), 5)
         idx_lst = [Items.IceTrapDisableB, Items.IceTrapDisableBBean, Items.IceTrapDisableBKey]
         if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 6)
+            return ItemPatchingInfo(13, idx_lst.index(item), 6)
         idx_lst = [Items.IceTrapDisableZ, Items.IceTrapDisableZBean, Items.IceTrapDisableZKey]
         if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 7)
+            return ItemPatchingInfo(13, idx_lst.index(item), 7)
         idx_lst = [Items.IceTrapDisableCU, Items.IceTrapDisableCUBean, Items.IceTrapDisableCUKey]
         if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 8)
+            return ItemPatchingInfo(13, idx_lst.index(item), 8)
         raise Exception("Ice Trap Type provided, but invalid Ice Trap item provided resulting in search mismatch")
     elif item_type == Types.Blueprint:
         bp_index = getItemPatchingFromList(ItemPool.Blueprints(), item, "BP")

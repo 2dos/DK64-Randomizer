@@ -1059,6 +1059,16 @@ typedef enum enum_bonus_skin {
     /* 0x018 */ SKIN_AP,
     /* 0x019 */ SKIN_FAKE_BEAN,
     /* 0x01A */ SKIN_FAKE_KEY,
+    /* 0x01B */ SKIN_SHARED,
+    /* 0x01C */ SKIN_SOLDOUT,
+    /* 0x01D */ SKIN_DILLO_1,
+    /* 0x01E */ SKIN_DOGA_1,
+    /* 0x01F */ SKIN_MAD_JACK,
+    /* 0x020 */ SKIN_PUFFTOSS,
+    /* 0x021 */ SKIN_DOGA_2,
+    /* 0x022 */ SKIN_DILLO_2,
+    /* 0x023 */ SKIN_KKO,
+    /* 0x024 */ SKIN_NULL,
     /* ----- */ SKIN_TERMINATOR,
 } enum_bonus_skin;
 

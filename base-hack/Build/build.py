@@ -854,38 +854,6 @@ for start in [0xD60, 0xD64, 0xD62, 0xD66, 0xD61, 0xD65, 0xD63, 0xD67]:
         )
     )
 
-shop_face_array = [
-    "none",  # No Face
-    "dk_face",
-    "diddy_face",
-    "lanky_face",
-    "tiny_face",
-    "chunky_face",
-    "shared",  # Shared Move
-    "soldout32",  # Sold Out
-    "gb",
-    "lanky_bp",
-    "crown_shop",
-    "key",
-    "medal",
-    "potion32",
-    "nin_coin",
-    "rw_coin",
-    "bean32",
-    "pearl32",
-    "fairy",
-    "rainbow_coin",
-    "fake_gb_shop",
-    "wrinkly32",
-    "ap32",
-    "head32_dillo1",
-    "head32_dog1",
-    "head32_mj",
-    "head32_pufftoss",
-    "head32_dog2",
-    "head32_dillo2",
-    "head32_kko",
-]
 file_dict.append(
     File(
         name="Win Con Logo",
@@ -897,12 +865,12 @@ file_dict.append(
         target_uncompressed_size=32 * 32 * 2,
     )
 )
-for x, shop in enumerate(shop_face_array):
+for x, shop in enumerate(barrel_skins):
     data = File(
         name=f"Shop Indicator ({shop})",
         pointer_table_index=TableNames.TexturesHUD,
         file_index=196 + x,
-        source_file=f"assets/displays/{shop}.png",
+        source_file=f"assets/displays/shop_{shop}.png",
         texture_format=TextureFormat.RGBA32,
     )
     if "_face" in shop:
@@ -2392,9 +2360,10 @@ with open(newROMName, "r+b") as fh:
         "fakekey",
         "disco_shirt_gap",
         "white_special_chars",
+        "blank",
     ]
     for b in barrel_skins:
-        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
+        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"shop_{b}"])
     for disp in displays:
         for ext in [".png", ".rgba32", ".rgba5551"]:
             other_remove.append(f"displays/{disp}{ext}")

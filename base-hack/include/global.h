@@ -399,6 +399,7 @@ extern Gfx* displaySongNameHandler(Gfx* dl);
 extern void resetDisplayedMusic(void);
 
 extern enum_bonus_skin getBarrelSkinIndex(int actor);
+extern enum_bonus_skin getShopSkinIndex(purchase_struct *data);
 extern void crankyCodeHandler(void);
 extern void funkyCodeHandler(void);
 extern void candyCodeHandler(void);
