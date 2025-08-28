@@ -28,6 +28,25 @@ from ap_version import version as ap_version
 from randomizer.Patching.ItemRando import normalize_location_name
 
 
+class CreateHintsParams:
+    """Parameters for creating hints."""
+    
+    def __init__(self, location_id: int, player_id: int):
+        """Initialize CreateHintsParams."""
+        self.location = location_id
+        self.player = player_id
+    
+    def __eq__(self, other):
+        """Check equality for CreateHintsParams."""
+        if not isinstance(other, CreateHintsParams):
+            return False
+        return self.location == other.location and self.player == other.player
+    
+    def __hash__(self):
+        """Hash for CreateHintsParams."""
+        return hash((self.location, self.player))
+
+
 # Mapping of hint door checks to their kong/level combination for hint bitfield tracking
 hint_door_to_bitfield = {
     # Japes
@@ -923,6 +942,7 @@ class DK64Context(CommonContext):
     command_processor = DK64CommandProcessor
     won = False
     hint_locations = {}
+    handled_scouts = []
 
     def reset_checks(self):
         """Reset the checks."""
@@ -932,6 +952,8 @@ class DK64Context(CommonContext):
         self.client.pending_checks = []
         self.found_checks = []
         self.client.flag_lookup = None
+        self.handled_scouts = []
+        self.create_hints_params = []
 
     def __init__(self, server_address: typing.Optional[str], password: typing.Optional[str]) -> None:
         """Initialize the DK64 context."""
@@ -1402,17 +1424,41 @@ class DK64Context(CommonContext):
             if 0 <= kong < 5 and 0 <= level < 7:
                 level_name = level_names[level]
                 kong_name = kong_names[kong]
-                logger.info(f"Hint accessed: {kong_name} in {level_name}")
+                logger.debug(f"Hint accessed: {kong_name} in {level_name}")
 
                 # Check if we have hint location mapping from slot data
                 if hasattr(self, "hint_locations") and hint_key in self.hint_locations:
-                    location_id = self.hint_locations[hint_key]
+                    wrinkly_door_id = self.hint_locations[hint_key]
 
-                    # Determine hint status based on item importance
-                    hint_status = self.determine_hint_status(location_id)
-
-                    # Send CreateHints command to the server
-                    await self.send_msgs([{"cmd": "CreateHints", "locations": [location_id], "status": hint_status}])
+                    # Check if we have hint data using the wrinkly door location ID as key (like BT client)
+                    hints_data = self.slot_data.get("hints", {})
+                    hint_data = hints_data.get(str(wrinkly_door_id), None)
+                    
+                    if hint_data:
+                        # Use hint data if available
+                        if (hint_data.get('should_add_hint') 
+                            and hint_data.get('location_id') is not None
+                            and hint_data.get('location_player_id') is not None):
+                            
+                            # Get the actual location and player from hint data
+                            actual_location_id = hint_data['location_id']
+                            finding_player_id = hint_data['location_player_id']
+                            
+                            logger.debug(f"Creating hint for location {actual_location_id} owned by player {finding_player_id}")
+                            
+                            # Create hint parameters
+                            params = CreateHintsParams(actual_location_id, finding_player_id)
+                            if params not in self.handled_scouts:
+                                # Collect params for batch processing
+                                if not hasattr(self, 'create_hints_params'):
+                                    self.create_hints_params = []
+                                self.create_hints_params.append(params)
+                            else:
+                                logger.debug(f"Hint params already handled: {params}")
+                        else:
+                            logger.debug(f"Hint data validation failed for location {wrinkly_door_id}")
+                    else:
+                        logger.debug(f"No hint data found for wrinkly door location {wrinkly_door_id}")
                 else:
                     logger.warning(f"No hint location mapping found for {kong_name} in {level_name}")
             else:
@@ -1431,10 +1477,15 @@ class DK64Context(CommonContext):
 
             if location_str in item_info:
                 item_data = item_info[location_str]
-                item_name = item_data.get("name", "").lower()
+                item_player = item_data.get("player")
+                
+                # For items from other players, must use unspecified status
+                if item_player != self.slot:
+                    return None  # Unspecified status for items from other players
+                
                 item_classification = item_data.get("classification", "")
 
-                # Determine status based on item classification
+                # Determine status based on item classification (only for this player's items)
                 if item_classification == "progression":
                     return HintStatus.HINT_PRIORITY
                 elif item_classification == "useful":
@@ -1442,107 +1493,24 @@ class DK64Context(CommonContext):
                 elif item_classification in ("filler", "trap"):
                     return HintStatus.HINT_AVOID
 
-                priority_keywords = [
-                    "donkey",
-                    "diddy",
-                    "lanky",
-                    "tiny",
-                    "chunky",
-                    "vines",
-                    "diving",
-                    "oranges",
-                    "barrels",
-                    "climbing",
-                    "progression slam",
-                    "baboon blast",
-                    "strong kong",
-                    "gorilla grab",
-                    "chimpy charge",
-                    "rocketbarrel boost",
-                    "simian spring",
-                    "orangstand",
-                    "baboon balloon",
-                    "orangstand sprint",
-                    "mini monkey",
-                    "pony tail twirl",
-                    "monkeyport",
-                    "hunky chunky",
-                    "primate punch",
-                    "gorilla gone",
-                    "coconut",
-                    "peanut",
-                    "grape",
-                    "feather",
-                    "pineapple",
-                    "homing ammo",
-                    "sniper sight",
-                    "bongos",
-                    "guitar",
-                    "trombone",
-                    "saxophone",
-                    "triangle",
-                    "fairy camera",
-                    "shockwave",
-                    "camera and shockwave",
-                    "key 1",
-                    "key 2",
-                    "key 3",
-                    "key 4",
-                    "key 5",
-                    "key 6",
-                    "key 7",
-                    "key 8",
-                    "bean",
-                    "pearl",
-                    "cranky",
-                    "funky",
-                    "candy",
-                    "snide",
-                    "barrel",
-                    "slam",
-                    "pad",
-                    "key",
-                    "kong",
-                ]
-
-                # Useful items
-                useful_keywords = [
-                    "golden banana",
-                    "ammo belt",
-                    "instrument upgrade",
-                    "blueprint",
-                    "hint",
-                    "banana medal",
-                    "nintendo coin",
-                    "rareware coin",
-                    "rainbow coin",
-                    "battle crown",
-                    "banana fairy",
-                ]
-
-                # Items to avoid hinting
-                avoid_keywords = ["melon", "junk", "trap"]
-
-                for keyword in priority_keywords:
-                    if keyword in item_name:
-                        return HintStatus.HINT_PRIORITY
-
-                for keyword in useful_keywords:
-                    if keyword in item_name:
-                        return HintStatus.HINT_NO_PRIORITY
-
-                for keyword in avoid_keywords:
-                    if keyword in item_name:
-                        return HintStatus.HINT_AVOID
-
-            # Default to no priority if we can't determine the item
-            return HintStatus.HINT_NO_PRIORITY
+            # Default to unspecified if we can't determine the item
+            return None
 
         except Exception as e:
             logger.warning(f"Error determining hint status for location {location_id}: {e}")
-            from NetUtils import HintStatus
+            return None
 
-            return HintStatus.HINT_NO_PRIORITY
+    async def process_hint_params(self):
+        """Process collected hint parameters and send them to the server."""
+        if hasattr(self, 'create_hints_params') and self.create_hints_params:
+            for params in self.create_hints_params:
+                await self.send_msgs([{
+                    "cmd": "CreateHints",
+                    "locations": [params.location],
+                    "player": params.player
+                }])
+                self.handled_scouts.append(params)
+            self.create_hints_params.clear()
 
     async def run_game_loop(self):
         """Run the game loop."""
@@ -1634,6 +1602,7 @@ class DK64Context(CommonContext):
                     if self.last_resend + 0.5 < now:
                         self.last_resend = now
                         await self.send_checks()
+                    await self.process_hint_params()
                     if self.client.should_reset_auth:
                         self.client.should_reset_auth = False
                         raise Exception("Resetting due to wrong archipelago server")

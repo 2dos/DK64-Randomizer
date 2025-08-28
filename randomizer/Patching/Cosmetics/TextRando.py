@@ -98,6 +98,22 @@ archipelago_boot_phrases = (
     "Updating APworld once again",
     "Maxing out B. Lockers",
     "Starting the gen gamba",
+    "Rolling around at the speed of sound",
+    "Skipping Aginah",
+    "Hunting for the Ice Rod",
+    "Constructing additional Pylons",
+    "Sleeping until Winter",
+    "BLJing to Bowser",
+    "Rolling the Dice",
+    "Looking for Oak's Parcel",
+    "Teleporting back to Lumbridge",
+    "Putting off Deepnest",
+    "Asking what Raspberries are",
+    "Asking if everyone is OK with a death",
+    "Junking Hailfire Peaks",
+    "Going out of logic",
+    "Adding another sanity option",
+    "Sending the Bean",
 )
 
 crown_heads = (
