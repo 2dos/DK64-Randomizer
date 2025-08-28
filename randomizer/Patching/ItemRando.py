@@ -481,6 +481,16 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
         del OTHER_STARTING_ITEMS[Locations.IslesSwimTrainingBarrel]
         del OTHER_STARTING_ITEMS[Locations.IslesOrangesTrainingBarrel]
         del OTHER_STARTING_ITEMS[Locations.IslesBarrelsTrainingBarrel]
+    else:
+        # If the training barrels are inaccessible, remove them from starting items to avoid errant training moves
+        if spoiler.LocationList[Locations.IslesVinesTrainingBarrel].inaccessible:
+            del OTHER_STARTING_ITEMS[Locations.IslesVinesTrainingBarrel]
+        if spoiler.LocationList[Locations.IslesSwimTrainingBarrel].inaccessible:
+            del OTHER_STARTING_ITEMS[Locations.IslesSwimTrainingBarrel]
+        if spoiler.LocationList[Locations.IslesOrangesTrainingBarrel].inaccessible:
+            del OTHER_STARTING_ITEMS[Locations.IslesOrangesTrainingBarrel]
+        if spoiler.LocationList[Locations.IslesBarrelsTrainingBarrel].inaccessible:
+            del OTHER_STARTING_ITEMS[Locations.IslesBarrelsTrainingBarrel]
     found_shopkeeper = False
     if spoiler.settings.shuffle_items:
         for item in spoiler.item_assignment:
