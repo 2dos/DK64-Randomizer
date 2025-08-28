@@ -30,18 +30,18 @@ from randomizer.Patching.ItemRando import normalize_location_name
 
 class CreateHintsParams:
     """Parameters for creating hints."""
-    
+
     def __init__(self, location_id: int, player_id: int):
         """Initialize CreateHintsParams."""
         self.location = location_id
         self.player = player_id
-    
+
     def __eq__(self, other):
         """Check equality for CreateHintsParams."""
         if not isinstance(other, CreateHintsParams):
             return False
         return self.location == other.location and self.player == other.player
-    
+
     def __hash__(self):
         """Hash for CreateHintsParams."""
         return hash((self.location, self.player))
@@ -1433,24 +1433,22 @@ class DK64Context(CommonContext):
                     # Check if we have hint data using the wrinkly door location ID as key (like BT client)
                     hints_data = self.slot_data.get("hints", {})
                     hint_data = hints_data.get(str(wrinkly_door_id), None)
-                    
+
                     if hint_data:
                         # Use hint data if available
-                        if (hint_data.get('should_add_hint') 
-                            and hint_data.get('location_id') is not None
-                            and hint_data.get('location_player_id') is not None):
-                            
+                        if hint_data.get("should_add_hint") and hint_data.get("location_id") is not None and hint_data.get("location_player_id") is not None:
+
                             # Get the actual location and player from hint data
-                            actual_location_id = hint_data['location_id']
-                            finding_player_id = hint_data['location_player_id']
-                            
+                            actual_location_id = hint_data["location_id"]
+                            finding_player_id = hint_data["location_player_id"]
+
                             logger.debug(f"Creating hint for location {actual_location_id} owned by player {finding_player_id}")
-                            
+
                             # Create hint parameters
                             params = CreateHintsParams(actual_location_id, finding_player_id)
                             if params not in self.handled_scouts:
                                 # Collect params for batch processing
-                                if not hasattr(self, 'create_hints_params'):
+                                if not hasattr(self, "create_hints_params"):
                                     self.create_hints_params = []
                                 self.create_hints_params.append(params)
                             else:
@@ -1478,11 +1476,11 @@ class DK64Context(CommonContext):
             if location_str in item_info:
                 item_data = item_info[location_str]
                 item_player = item_data.get("player")
-                
+
                 # For items from other players, must use unspecified status
                 if item_player != self.slot:
                     return None  # Unspecified status for items from other players
-                
+
                 item_classification = item_data.get("classification", "")
 
                 # Determine status based on item classification (only for this player's items)
@@ -1502,13 +1500,9 @@ class DK64Context(CommonContext):
 
     async def process_hint_params(self):
         """Process collected hint parameters and send them to the server."""
-        if hasattr(self, 'create_hints_params') and self.create_hints_params:
+        if hasattr(self, "create_hints_params") and self.create_hints_params:
             for params in self.create_hints_params:
-                await self.send_msgs([{
-                    "cmd": "CreateHints",
-                    "locations": [params.location],
-                    "player": params.player
-                }])
+                await self.send_msgs([{"cmd": "CreateHints", "locations": [params.location], "player": params.player}])
                 self.handled_scouts.append(params)
             self.create_hints_params.clear()
 

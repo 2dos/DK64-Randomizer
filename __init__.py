@@ -1130,7 +1130,7 @@ if baseclasses_loaded:
                 # Could add a hints on/off setting?
                 microhints_enabled = self.options.shopkeeper_hints.value or self.options.microhints.value > 0
                 hints_enabled = self.options.hint_style > 0
-                
+
                 if hints_enabled or microhints_enabled:
                     self.hint_data_available.wait()
 
@@ -1514,11 +1514,7 @@ if baseclasses_loaded:
 
                         classification_str = classification_map.get(location.item.classification.value, "unknown")
 
-                        hint_item_info[location_id] = {
-                            "name": item_name, 
-                            "classification": classification_str,
-                            "player": location.item.player  # Add player information
-                        }
+                        hint_item_info[location_id] = {"name": item_name, "classification": classification_str, "player": location.item.player}  # Add player information
                         seen_items.add(item_name)
 
             slot_data["HintItemInfo"] = hint_item_info

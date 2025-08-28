@@ -85,33 +85,21 @@ def convert_hint_door_name_to_full_name(hint_door_name):
     """Convert a short hint door name to the full location name used in ap_check_ids."""
     if not hint_door_name:
         return None
-        
-    # Handle the naming conventions
-    # Short names like "Japes Chunky", "Aztec DK", "Castle Tiny" 
-    # Need to become "Japes Chunky Hint Door", "Aztec Donkey Hint Door", "Castle Tiny Hint Door"
-    
     # Map short kong names to full names
-    kong_name_mapping = {
-        "DK": "Donkey",
-        "Donkey": "Donkey",
-        "Diddy": "Diddy", 
-        "Lanky": "Lanky",
-        "Tiny": "Tiny",
-        "Chunky": "Chunky"
-    }
-    
+    kong_name_mapping = {"DK": "Donkey", "Donkey": "Donkey", "Diddy": "Diddy", "Lanky": "Lanky", "Tiny": "Tiny", "Chunky": "Chunky"}
+
     parts = hint_door_name.split()
     if len(parts) >= 2:
         level_name = parts[0]  # e.g., "Japes", "Aztec", "Castle"
-        kong_name = parts[1]   # e.g., "DK", "Chunky", "Tiny"
-        
+        kong_name = parts[1]  # e.g., "DK", "Chunky", "Tiny"
+
         # Convert short kong name to full name
         full_kong_name = kong_name_mapping.get(kong_name, kong_name)
-        
+
         # Construct the full hint door name
         full_name = f"{level_name} {full_kong_name} Hint Door"
         return full_name
-    
+
     return None
 
 
@@ -222,30 +210,25 @@ def CompileArchipelagoHints(world, hint_data: list):
         if location_obj is not None:
             # Convert hint_location to a (kong, level) tuple
             kong, level = hint_location_to_kong_level(hint_location)
-            
+
             if kong is not None and level is not None:
                 # We need to find the hint door location ID from the hint door name
-                hint_door_name = getattr(hint_location, 'name', None)
-                
+                hint_door_name = getattr(hint_location, "name", None)
+
                 # Convert short hint door name to full name
                 full_hint_door_name = convert_hint_door_name_to_full_name(hint_door_name)
-                
+
                 # Import the hint door location mappings
                 try:
                     from archipelago.client.ap_check_ids import check_names_to_id
+
                     hint_door_location_id = check_names_to_id.get(full_hint_door_name, None)
-                    
+
                     if hint_door_location_id:
                         hint_location_mapping[f"{kong},{level}"] = hint_door_location_id
-                        
-                        # Also populate dynamic_hints for CreateHints functionality
                         # Use the hint door location ID as the key
-                        target_location_id = location_obj.address if hasattr(location_obj, 'address') else location_obj.id
-                        world.dynamic_hints[hint_door_location_id] = {
-                            'should_add_hint': True,
-                            'location_id': target_location_id,
-                            'location_player_id': location_obj.player
-                        }
+                        target_location_id = location_obj.address if hasattr(location_obj, "address") else location_obj.id
+                        world.dynamic_hints[hint_door_location_id] = {"should_add_hint": True, "location_id": target_location_id, "location_player_id": location_obj.player}
                 except ImportError:
                     # Fallback if import fails - hints will not work but generation can continue
                     pass
