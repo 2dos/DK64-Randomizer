@@ -5,7 +5,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import MicrohintsEnabled
+from randomizer.Enums.Settings import MicrohintsEnabled, TrainingBarrels
 from randomizer.Enums.VendorType import VendorType
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
@@ -481,7 +481,7 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
         del OTHER_STARTING_ITEMS[Locations.IslesSwimTrainingBarrel]
         del OTHER_STARTING_ITEMS[Locations.IslesOrangesTrainingBarrel]
         del OTHER_STARTING_ITEMS[Locations.IslesBarrelsTrainingBarrel]
-    else:
+    elif spoiler.settings.training_barrels != TrainingBarrels.normal:
         # If the training barrels are inaccessible, remove them from starting items to avoid errant training moves
         if spoiler.LocationList[Locations.IslesVinesTrainingBarrel].inaccessible:
             del OTHER_STARTING_ITEMS[Locations.IslesVinesTrainingBarrel]
