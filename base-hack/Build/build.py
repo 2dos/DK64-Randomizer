@@ -1803,6 +1803,33 @@ for x in range(216):
             )
         )
 
+# Helm Heads
+helm_head_data = {
+    "chunky_face_0_noflip": ExtraTextures.FinalBoss5Left,
+    "chunky_face_1_noflip": ExtraTextures.FinalBoss5Right,
+    "tiny_face_0_noflip": ExtraTextures.FinalBoss4Right,
+    "tiny_face_1_noflip": ExtraTextures.FinalBoss4Left,
+    "lanky_face_0_noflip": ExtraTextures.FinalBoss3Left,
+    "lanky_face_1_noflip": ExtraTextures.FinalBoss3Right,
+    "diddy_face_0_noflip": ExtraTextures.FinalBoss2Left,
+    "diddy_face_1_noflip": ExtraTextures.FinalBoss2Right,
+    "dk_face_0_noflip": ExtraTextures.FinalBoss1Right,
+    "dk_face_1_noflip": ExtraTextures.FinalBoss1Left,
+}
+
+for tex, index in helm_head_data.items():
+    file_dict.append(
+        File(
+            name=f"Helm Head ({int(index)})",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(index),
+            source_file=f"assets/hash/{tex}.png",
+            texture_format=TextureFormat.RGBA5551,
+            do_not_extract=True,
+            target_size=2 * 32 * 64,
+        )
+    )
+
 # Force all geo files to not be compressed
 expanded_tables = {
     TableNames.MapGeometry: list(range(216)),
@@ -1917,7 +1944,7 @@ for x in file_dict:
 
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
-    clampCompressedTextures(fh, 6200)
+    clampCompressedTextures(fh, 6300)
     new_ptr_6_unc_size = len(comptext_files)
     print(f" - Expanding pointer table {TableNames.Unknown6} from 0 bytes to {4 * new_ptr_6_unc_size} bytes")
     data = []
@@ -2437,6 +2464,16 @@ with open(newROMName, "r+b") as fh:
         "disco_glove",
         "disco_shirt",
         "disco_skin",
+        "chunky_face_0_noflip",
+        "chunky_face_1_noflip",
+        "tiny_face_0_noflip",
+        "tiny_face_1_noflip",
+        "lanky_face_0_noflip",
+        "lanky_face_1_noflip",
+        "diddy_face_0_noflip",
+        "diddy_face_1_noflip",
+        "dk_face_0_noflip",
+        "dk_face_1_noflip",
     ]
     tagbarrel_removals = ["plain_shell", "shell", "cannon_support", "cannon_base", "cannon_left", "cannon_right", "barrel_base"]
     for face in barrel_faces:

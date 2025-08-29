@@ -133,6 +133,7 @@ tex_idx = 0x273
 for kong in kong_tex:
     for x in range(2):
         images.append(ImageData(f"{kong}_face_{x}", TextureFormat.RGBA5551, TableNames.TexturesGeometry, tex_idx + x, 32, 64, False, True))
+        images.append(ImageData(f"{kong}_face_{x}_noflip", TextureFormat.RGBA5551, TableNames.TexturesGeometry, tex_idx + x, 32, 64, False, False))
     tex_idx += 2
 
 for x in range(7):

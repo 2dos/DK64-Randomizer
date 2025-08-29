@@ -44,7 +44,7 @@ from randomizer.Patching.BananaPortRando import randomize_bananaport, move_banan
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.CoinPlacer import randomize_coins
 from randomizer.Patching.Cosmetics.TextRando import writeBootMessages
-from randomizer.Patching.Cosmetics.Puzzles import updateMillLeverTexture, updateCryptLeverTexture, updateDiddyDoors
+from randomizer.Patching.Cosmetics.Puzzles import updateMillLeverTexture, updateCryptLeverTexture, updateDiddyDoors, updateHelmFaces
 from randomizer.Patching.CosmeticColors import (
     applyHelmDoorCosmetics,
     applyKongModelSwaps,
@@ -709,6 +709,7 @@ def patching_response(spoiler):
         updateDiddyDoors(spoiler.settings, ROM_COPY)
         applyHelmDoorCosmetics(spoiler.settings, ROM_COPY)
         applyKongModelSwaps(spoiler.settings, ROM_COPY)
+        updateHelmFaces(spoiler.settings, ROM_COPY)
 
         patchAssembly(ROM_COPY, spoiler)
         ApplyMirrorMode(spoiler.settings, ROM_COPY)

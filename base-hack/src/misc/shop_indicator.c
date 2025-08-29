@@ -187,34 +187,18 @@ typedef struct ModelData {
 	/* 0x00C */ float scale;
 } ModelData;
 
+static short shop_objects[] = {0x73, 0x7A, 0x124, 0x79};
+
 float getShopScale(int index) {
 	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < ObjectModel2Count; i++) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object) {
-			if (index == 0) { // Crankys
-				if (_object->object_type == 0x73) {
-					ModelData* model = _object->model_pointer;
-					if (model) {
-						return model->scale;
-					}
+			if (_object->object_type == shop_objects[index]) {
+				ModelData* model = _object->model_pointer;
+				if (model) {
+					return model->scale;
 				}
-			} else if (index == 1) { // Funkys
-				if (_object->object_type == 0x7A) {
-					ModelData* model = _object->model_pointer;
-					if (model) {
-						return model->scale;
-					}
-				}
-			} else if (index == 2) { // Candys
-				if (_object->object_type == 0x124) {
-					ModelData* model = _object->model_pointer;
-					if (model) {
-						return model->scale;
-					}
-				}
-			} else if (index == 3) { // Snide
-				return 1.0f;
 			}
 		}
 	}
@@ -245,129 +229,93 @@ static const krool_head helm_heads[] = {
 static const short float_ids[] = {0x1F4, 0x36};
 static const short shop_obj_types[] = {0x73, 0x7A, 0x124};
 static const float float_offsets[] = {51.0f, 45.0f, 45.0f};
+static const float h_factors[] = {60.0f, 60.0f, 62.0f};
 
 void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 		// Init Code
-		if (CurrentMap != MAP_HELM) {
-			if (Rando.shop_indicator_on) {
-				if (Rando.shop_indicator_on == 2) {
-					paad->use_item_display = 1;
-				} else {
-					paad->use_item_display = 0;
-				}
-				// Initialize slots
-				for (int i = 0; i < 3; i++) {
-					paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], SKIN_NULL, i);
-				}
-				CurrentActorPointer_0->rot_z = 3072; // Facing vertical
-				int closest_shop = getClosestShop();
-				paad->shop = closest_shop;
-				if (closest_shop == 3) { // Snide is closest
-					deleteActorContainer(CurrentActorPointer_0);
-				} else {
-					paad->cap = getMoveCountInShop(paad, paad->shop);
-					paad->current_slot = 0;
-					updateCounterDisplay();
-					if (paad->cap == 0) {
-						paad->kong_images[0] = SKIN_SOLDOUT;
-						paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], SKIN_SOLDOUT, 1);
-						paad->cap = 1;
-						paad->use_item_display = 0;
-					}
-					// Update Position depending on scale
-					float h_factor = 1.0f;
-					float y_factor = 1.0f;
-					if (closest_shop == 0) { // Cranky
-						h_factor = 60.0f;
-						y_factor = 40.0f;
-					} else if (closest_shop == 1) { // Funky
-						h_factor = 60.0f;
-						y_factor = 40.0f;
-					} else if (closest_shop == 2) { // Candy
-						h_factor = 62.0f;
-						y_factor = 40.0f;
-					}
-					float scale = getShopScale(closest_shop);
-					float x_r = determineXRatioMovement(CurrentActorPointer_0->rot_y);
-					float x_d = scale * h_factor * x_r;
-					float z_d = scale * h_factor * determineZRatioMovement(CurrentActorPointer_0->rot_y);
-					float y_d = scale * y_factor;
-					CurrentActorPointer_0->xPos += x_d;
-					CurrentActorPointer_0->yPos += y_d;
-					CurrentActorPointer_0->zPos += z_d;
-					CurrentActorPointer_0->rot_y = (CurrentActorPointer_0->rot_y + 2048) % 4096;
-					renderingParamsData* render = CurrentActorPointer_0->render;
-					if (render) {
-						render->scale_x = 0.0375f * scale;
-						render->scale_z = 0.0375f * scale;
-					}
-				}
+		if (Rando.shop_indicator_on) {
+			if (Rando.shop_indicator_on == 2) {
+				paad->use_item_display = 1;
 			} else {
-				deleteActorContainer(CurrentActorPointer_0);
+				paad->use_item_display = 0;
 			}
-		} else {
-			// Helm Indicator
+			// Initialize slots
 			for (int i = 0; i < 3; i++) {
 				paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], SKIN_NULL, i);
 			}
-			int id = getActorSpawnerIDFromTiedActor(CurrentActorPointer_0);
-			int face_map = Rando.k_rool_order[id - 0x100];
-			int face_img = SKIN_NULL;
-			for (int i = 0; i < sizeof(helm_heads)/sizeof(krool_head); i++) {
-				if (helm_heads[i].map == face_map) {
-					face_img = helm_heads[i].texture_offset;
-				}
-			}
 			CurrentActorPointer_0->rot_z = 3072; // Facing vertical
-			paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], face_img, 1);
+			int closest_shop = getClosestShop();
+			paad->shop = closest_shop;
+			if (closest_shop == 3) { // Snide is closest
+				deleteActorContainer(CurrentActorPointer_0);
+			} else {
+				paad->cap = getMoveCountInShop(paad, paad->shop);
+				paad->current_slot = 0;
+				updateCounterDisplay();
+				if (paad->cap == 0) {
+					paad->kong_images[0] = SKIN_SOLDOUT;
+					paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], SKIN_SOLDOUT, 1);
+					paad->cap = 1;
+					paad->use_item_display = 0;
+				}
+				// Update Position depending on scale
+				float h_factor = h_factors[closest_shop];
+				float y_factor = 40.0f;
+				float scale = getShopScale(closest_shop);
+				float x_r = determineXRatioMovement(CurrentActorPointer_0->rot_y);
+				float x_d = scale * h_factor * x_r;
+				float z_d = scale * h_factor * determineZRatioMovement(CurrentActorPointer_0->rot_y);
+				float y_d = scale * y_factor;
+				CurrentActorPointer_0->xPos += x_d;
+				CurrentActorPointer_0->yPos += y_d;
+				CurrentActorPointer_0->zPos += z_d;
+				CurrentActorPointer_0->rot_y = (CurrentActorPointer_0->rot_y + 2048) % 4096;
+				renderingParamsData* render = CurrentActorPointer_0->render;
+				if (render) {
+					render->scale_x = 0.0375f * scale;
+					render->scale_z = 0.0375f * scale;
+				}
+			}
+		} else {
+			deleteActorContainer(CurrentActorPointer_0);
 		}
-	} else {
-		if (CurrentMap != MAP_HELM) {
-			if ((ObjectModel2Timer % 20) == 0) {
-				int lim = paad->cap;
-				if (lim > 1) {
-					paad->current_slot += 1;
-					if (paad->current_slot >= lim) {
-						paad->current_slot = 0;
-					}
-					updateCounterDisplay();
-				}
+		return;
+	}
+	if ((ObjectModel2Timer % 20) == 0) {
+		int lim = paad->cap;
+		if (lim > 1) {
+			paad->current_slot += 1;
+			if (paad->current_slot >= lim) {
+				paad->current_slot = 0;
 			}
-			if (paad->linked_behaviour) {
-				if (paad->linked_behaviour->current_state == 0xC) {
-					CurrentActorPointer_0->obj_props_bitfield |= 0x4;
-				} else {
-					CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFFFFB;
-				}
-			}
-			if (CurrentMap == MAP_GALLEON) {
-				int shop = paad->shop;
-				int* m2location = (int*)ObjectModel2Pointer;
-				int is_float = 0;
-				float float_y = 0.0f;
-				for (int i = 0; i < 2; i++) {
-					int float_id = float_ids[i];
-					int float_slot = convertIDToIndex(float_id);
-					if (float_slot > -1) {
-						ModelTwoData* float_slot_object = getObjectArrayAddr(m2location,0x90,float_slot);
-						int float_slot_obj_type = float_slot_object->object_type;
-						for (int j = 0; j < 3; j++) {
-							if (shop_obj_types[j] == float_slot_obj_type) {
-								if (j == shop) {
-									is_float = 1;
-									float_y = float_slot_object->yPos;
-								}
-							}
+			updateCounterDisplay();
+		}
+	}
+	if (paad->linked_behaviour) {
+		if (paad->linked_behaviour->current_state == 0xC) {
+			CurrentActorPointer_0->obj_props_bitfield |= 0x4;
+		} else {
+			CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFFFFB;
+		}
+	}
+	if (CurrentMap == MAP_GALLEON) {
+		int shop = paad->shop;
+		for (int i = 0; i < 2; i++) {
+			int float_slot = convertIDToIndex(float_ids[i]);
+			if (float_slot > -1) {
+				ModelTwoData* float_slot_object = &ObjectModel2Pointer[float_slot];
+				int float_slot_obj_type = float_slot_object->object_type;
+				for (int j = 0; j < 3; j++) {
+					if (shop_obj_types[j] == float_slot_obj_type) {
+						if (j == shop) {
+							CurrentActorPointer_0->yPos = float_slot_object->yPos + float_offsets[shop];
 						}
 					}
-				}
-				if (is_float) {
-					CurrentActorPointer_0->yPos = float_y + float_offsets[shop];
 				}
 			}
 		}
 	}
-	renderActor(CurrentActorPointer_0,0);
+	renderActor(CurrentActorPointer_0, 0);
 }
