@@ -697,7 +697,7 @@ def patching_response(spoiler):
     if Types.Hint in spoiler.settings.shuffled_location_types and spoiler.settings.progressive_hint_item == ProgressiveHintItem.off:
         PushHintTiedRegions(spoiler, ROM_COPY)
 
-    writeBootMessages(ROM_COPY, spoiler.settings.random)
+    writeBootMessages(ROM_COPY, spoiler)
     enableTriggerText(spoiler, ROM_COPY)
     shortenCastleMinecart(spoiler, ROM_COPY)
     alterStoryCutsceneWarps(spoiler, ROM_COPY)

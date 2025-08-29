@@ -3,6 +3,8 @@
 # from worlds.dk64 import DK64World
 from randomizer.CompileHints import UpdateSpoilerHintList, getRandomHintLocation, replaceKongNameWithKrusha
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Lists.WrinklyHints import ClearHintMessages
 from randomizer.Patching.UpdateHints import UpdateHint
 
@@ -36,12 +38,76 @@ boss_colors = {
 }
 
 
+def hint_location_to_kong_level(hint_location):
+    """Convert a hint location to a (kong, level) tuple based on the wrinkly door system."""
+    if hint_location is None:
+        return None, None
+
+    try:
+        kong_index = hint_location.kong
+        level_index = hint_location.level
+        if not isinstance(kong_index, int):
+            kong_index = getattr(kong_index, "value", kong_index)
+        if not isinstance(level_index, int):
+            level_index = getattr(level_index, "value", level_index)
+        if not isinstance(kong_index, int):
+            kong_names = {
+                Kongs.donkey: 0,
+                Kongs.diddy: 1,
+                Kongs.lanky: 2,
+                Kongs.tiny: 3,
+                Kongs.chunky: 4,
+            }
+            kong_index = kong_names.get(hint_location.kong, None)
+
+        # Map levels to 0-6 range
+        if not isinstance(level_index, int) or level_index > 6:
+            level_names = {
+                Levels.JungleJapes: 0,
+                Levels.AngryAztec: 1,
+                Levels.FranticFactory: 2,
+                Levels.GloomyGalleon: 3,
+                Levels.FungiForest: 4,
+                Levels.CrystalCaves: 5,
+                Levels.CreepyCastle: 6,
+            }
+            level_index = level_names.get(hint_location.level, None)
+        if kong_index is not None and level_index is not None and 0 <= kong_index <= 4 and 0 <= level_index <= 6:
+            return kong_index, level_index
+
+    except Exception:
+        pass
+
+    return None, None
+
+
+def convert_hint_door_name_to_full_name(hint_door_name):
+    """Convert a short hint door name to the full location name used in ap_check_ids."""
+    if not hint_door_name:
+        return None
+    # Map short kong names to full names
+    kong_name_mapping = {"DK": "Donkey", "Donkey": "Donkey", "Diddy": "Diddy", "Lanky": "Lanky", "Tiny": "Tiny", "Chunky": "Chunky"}
+
+    parts = hint_door_name.split()
+    if len(parts) >= 2:
+        level_name = parts[0]  # e.g., "Japes", "Aztec", "Castle"
+        kong_name = parts[1]  # e.g., "DK", "Chunky", "Tiny"
+
+        # Convert short kong name to full name
+        full_kong_name = kong_name_mapping.get(kong_name, kong_name)
+
+        # Construct the full hint door name
+        full_name = f"{level_name} {full_kong_name} Hint Door"
+        return full_name
+
+    return None
+
+
 def CompileArchipelagoHints(world, hint_data: list):
     """Insert Archipelago hints."""
     replaceKongNameWithKrusha(world.spoiler)
     ClearHintMessages()
-    # All input lists are in the form of [loc]
-    # Settings
+    hint_location_mapping = {}
     if world.options.hint_style == 1:
         woth_count = 0  # disabled
         major_count = 15
@@ -54,6 +120,7 @@ def CompileArchipelagoHints(world, hint_data: list):
     # Variables
     hints_remaining = 35  # Keep count how many hints we placed
     hints = []  # The hints we compile
+    hint_locations_used = []  # Track which hint locations are used for mapping
     woth_duplicates = []
     kong_locations = hint_data["kong"]
     key_locations = hint_data["key"]
@@ -61,21 +128,24 @@ def CompileArchipelagoHints(world, hint_data: list):
     major_locations = hint_data["major"]
     deep_locations = hint_data["deep"]
     already_hinted = kong_locations + key_locations
-
-    # Creating the hints
-
-    # K. Rool order hint
-    hints.append(parseKRoolHint(world))
+    hint_location_pairs = []
+    krool_hint = parseKRoolHint(world)
+    hints.append(krool_hint)
+    hint_location_pairs.append((krool_hint, None))  # K. Rool hints don't have a specific location
     hints_remaining -= 1
 
     # Kong hints
     for kong_loc in kong_locations:
-        hints.append(parseKongHint(world, kong_loc))
+        kong_hint = parseKongHint(world, kong_loc)
+        hints.append(kong_hint)
+        hint_location_pairs.append((kong_hint, kong_loc))
         hints_remaining -= 1
 
     # Key hints
     for key_loc in key_locations:
-        hints.append(parseKeyHint(world, key_loc))
+        key_hint = parseKeyHint(world, key_loc)
+        hints.append(key_hint)
+        hint_location_pairs.append((key_hint, key_loc))
         hints_remaining -= 1
 
     # Woth hints
@@ -86,6 +156,7 @@ def CompileArchipelagoHints(world, hint_data: list):
         already_hinted.append(woth_loc)
         this_hint = parseWothHint(world, woth_loc)
         hints.append(this_hint)
+        hint_location_pairs.append((this_hint, None))
         woth_duplicates.append(this_hint)
         hints_remaining -= 1
 
@@ -94,19 +165,25 @@ def CompileArchipelagoHints(world, hint_data: list):
     major_count = min(min(len(major_locations), major_count), hints_remaining)
     major_locations = world.spoiler.settings.random.sample(major_locations, major_count)
     for major_loc in major_locations:
-        hints.append(parseMajorItemHint(world, major_loc))
+        major_hint = parseMajorItemHint(world, major_loc)
+        hints.append(major_hint)
+        hint_location_pairs.append((major_hint, major_loc))
         hints_remaining -= 1
 
     # Deep check hints
     deep_count = min(min(len(deep_locations), deep_count), hints_remaining)
     deep_locations = world.spoiler.settings.random.sample(deep_locations, deep_count)
     for deep_loc in deep_locations:
-        hints.append(parseDeepHint(world, deep_loc))
+        deep_hint = parseDeepHint(world, deep_loc)
+        hints.append(deep_hint)
+        hint_location_pairs.append((deep_hint, deep_loc))
         hints_remaining -= 1
 
     # Woth hint duplicates as needed
     while hints_remaining > 0 and len(woth_duplicates) > 0:
-        hints.append(woth_duplicates.pop())
+        duplicate_hint = woth_duplicates.pop()
+        hints.append(duplicate_hint)
+        hint_location_pairs.append((duplicate_hint, None))  # Duplicates don't need location mapping
         hints_remaining -= 1
 
     # Sanity check that 35 hints were placed
@@ -114,13 +191,52 @@ def CompileArchipelagoHints(world, hint_data: list):
         # This part of the code should not be reached.
         print("Not enough hints. Please wait. stage_generate_output might be crashing.")
         while hints_remaining > 0:
-            hints.append("no hint, sorry...".upper())
+            filler_hint = "no hint, sorry...".upper()
+            hints.append(filler_hint)
+            hint_location_pairs.append((filler_hint, None))  # Filler hints don't have locations
             hints_remaining -= 1
 
-    for hint in hints:
+    # Place hints and create mapping
+    for i, (hint, location_obj) in enumerate(hint_location_pairs):
         hint_location = getRandomHintLocation(random=world.spoiler.settings.random)
+
+        if hint_location is None:
+            continue
+
         UpdateHint(hint_location, hint)
+        hint_locations_used.append(hint_location)
+
+        # Create mapping if we have a corresponding location for this hint
+        if location_obj is not None:
+            # Convert hint_location to a (kong, level) tuple
+            kong, level = hint_location_to_kong_level(hint_location)
+
+            if kong is not None and level is not None:
+                # We need to find the hint door location ID from the hint door name
+                hint_door_name = getattr(hint_location, "name", None)
+
+                # Convert short hint door name to full name
+                full_hint_door_name = convert_hint_door_name_to_full_name(hint_door_name)
+
+                # Import the hint door location mappings
+                try:
+                    from archipelago.client.ap_check_ids import check_names_to_id
+
+                    hint_door_location_id = check_names_to_id.get(full_hint_door_name, None)
+
+                    if hint_door_location_id:
+                        hint_location_mapping[f"{kong},{level}"] = hint_door_location_id
+                        # Use the hint door location ID as the key
+                        target_location_id = location_obj.address if hasattr(location_obj, "address") else location_obj.id
+                        world.dynamic_hints[hint_door_location_id] = {"should_add_hint": True, "location_id": target_location_id, "location_player_id": location_obj.player}
+                except ImportError:
+                    # Fallback if import fails - hints will not work but generation can continue
+                    pass
+
     UpdateSpoilerHintList(world.spoiler)
+
+    # Store the hint location mapping in the world for use in slot_data
+    world.hint_location_mapping = hint_location_mapping
 
 
 def parseKeyHint(world, location):
