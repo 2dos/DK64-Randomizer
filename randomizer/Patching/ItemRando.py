@@ -5,7 +5,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import MicrohintsEnabled, TrainingBarrels
+from randomizer.Enums.Settings import ItemRandoListSelected, MicrohintsEnabled, TrainingBarrels
 from randomizer.Enums.VendorType import VendorType
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
@@ -499,7 +499,7 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
             if item.can_have_item:
                 if item.location in list(OTHER_STARTING_ITEMS.keys()):
                     OTHER_STARTING_ITEMS[item.location] = item.new_subitem
-    if not found_shopkeeper:
+    if not found_shopkeeper and ItemRandoListSelected.shopowners in spoiler.settings.item_rando_list_selected:
         OTHER_STARTING_ITEMS[Locations.ShopOwner_Location00] = Items.NoItem
         OTHER_STARTING_ITEMS[Locations.ShopOwner_Location01] = Items.NoItem
         OTHER_STARTING_ITEMS[Locations.ShopOwner_Location02] = Items.NoItem
