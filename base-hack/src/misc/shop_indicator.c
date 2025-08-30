@@ -139,6 +139,8 @@ unsigned int getActorModelTwoDist(ModelTwoData* _object) {
 	return (dx * dx) + (dy * dy) + (dz * dz);
 }
 
+static short shop_objects[] = {0x73, 0x7A, 0x124, 0x79};
+
 int getClosestShop(void) {
 	/*
 		Cranky's: 0x73
@@ -146,54 +148,34 @@ int getClosestShop(void) {
 		Candy's Shop: 0x124
 		Snide's HQ: 0x79
 	*/
-	unsigned int dists[4] = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
-	int* m2location = (int*)ObjectModel2Pointer;
-	int found_counter = 0;
-	behaviour_data* behavs[4] = {};
 	counter_paad* paad = CurrentActorPointer_0->paad;
+	int closest_dist = -1;
+	int closest_shop_index = -1;
+	paad->linked_behaviour = 0;
 	for (int i = 0; i < ObjectModel2Count; i++) {
-		if (found_counter < 4) {
-			ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
-			if (_object->object_type == 0x73) {
-				dists[0] = getActorModelTwoDist(_object);
-				behavs[0] = _object->behaviour_pointer;
-				found_counter += 1;
-			} else if (_object->object_type == 0x7A) {
-				dists[1] = getActorModelTwoDist(_object);
-				behavs[1] = _object->behaviour_pointer;
-				found_counter += 1;
-			} else if (_object->object_type == 0x124) {
-				dists[2] = getActorModelTwoDist(_object);
-				behavs[2] = _object->behaviour_pointer;
-				found_counter += 1;
-			} else if (_object->object_type == 0x79) {
-				dists[3] = getActorModelTwoDist(_object);
-				behavs[3] = _object->behaviour_pointer;
-				found_counter += 1;
+		ModelTwoData* _object = &ObjectModel2Pointer[i];
+		int local_idx = -1;
+		for (int j = 0; j < 4; j++) {
+			if (_object->object_type == shop_objects[j]) {
+				local_idx = j;
+			}
+		}
+		if (local_idx > -1) {
+			int temp_dist = getActorModelTwoDist(_object);
+			if ((closest_dist == -1) || (temp_dist < closest_dist)) {
+				closest_dist = temp_dist;
+				closest_shop_index = local_idx;
+				paad->linked_behaviour = _object->behaviour_pointer;
 			}
 		}
 	}
-	int closest_index = 0;
-	int closest_dist = dists[0];
-	for (int i = 1; i < 4; i++) {
-		if (dists[i] < closest_dist) {
-			closest_dist = dists[i];
-			paad->linked_behaviour = behavs[i];
-			closest_index = i;
-		}
-	}
-	if (found_counter > 0) {
-		paad->linked_behaviour = behavs[closest_index];
-	}
-	return closest_index;
+	return closest_shop_index;
 }
 
 typedef struct ModelData {
 	/* 0x000 */ float pos[3];
 	/* 0x00C */ float scale;
 } ModelData;
-
-static short shop_objects[] = {0x73, 0x7A, 0x124, 0x79};
 
 float getShopScale(int index) {
 	int* m2location = (int*)ObjectModel2Pointer;
@@ -233,7 +215,6 @@ static const krool_head helm_heads[] = {
 };
 
 static const short float_ids[] = {0x1F4, 0x36};
-static const short shop_obj_types[] = {0x73, 0x7A, 0x124};
 static const float float_offsets[] = {51.0f, 45.0f, 45.0f};
 static const float h_factors[] = {60.0f, 60.0f, 62.0f};
 
@@ -267,10 +248,10 @@ void newCounterCode(void) {
 					paad->use_item_display = 0;
 				}
 				// Update Position depending on scale
-				float h_factor = h_factors[closest_shop];
-				float y_factor = 40.0f;
 				float scale = getShopScale(closest_shop);
 				float x_r = determineXRatioMovement(CurrentActorPointer_0->rot_y);
+				float h_factor = h_factors[closest_shop];
+				float y_factor = 40.0f;
 				float x_d = scale * h_factor * x_r;
 				float z_d = scale * h_factor * determineZRatioMovement(CurrentActorPointer_0->rot_y);
 				float y_d = scale * y_factor;
@@ -314,7 +295,7 @@ void newCounterCode(void) {
 				ModelTwoData* float_slot_object = &ObjectModel2Pointer[float_slot];
 				int float_slot_obj_type = float_slot_object->object_type;
 				for (int j = 0; j < 3; j++) {
-					if (shop_obj_types[j] == float_slot_obj_type) {
+					if (shop_objects[j] == float_slot_obj_type) {
 						if (j == shop) {
 							CurrentActorPointer_0->yPos = float_slot_object->yPos + float_offsets[shop];
 						}
