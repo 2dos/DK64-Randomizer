@@ -16,6 +16,12 @@ int isSharedMove(vendors shop_index, int level) {
 	if (!targ) {
 		return 1;
 	}
+	
+	// If we're in Archipelago and all items are an AP item, dont group them together
+	if (isAPEnabled() && targ->item.item_type == REQITEM_AP) {
+		return 0;
+	}
+	
 	for (int i = 1; i < 5; i++) {
 		purchase_struct* src = getShopData(shop_index, i, level);
 		if (src) {
