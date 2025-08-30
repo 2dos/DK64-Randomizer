@@ -92,7 +92,6 @@ class Settings:
             self.generate_spoilerlog = False
         self.random = random
         self.seed = str(self.seed) + self.__hash + str(json.dumps(form_data))
-        self.ice_trap_count = 0
         if not self.archipelago:
             self.set_seed()
         self.seed_hash = [self.random.randint(0, 9) for i in range(5)]
@@ -372,7 +371,7 @@ class Settings:
         self.disable_hard_minigames = None
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
-        self.ice_trap_frequency = IceTrapFrequency.mild
+        self.ice_trap_frequency = IceTrapFrequency.mild  # Deprecated
         self.start_with_slam = False
         self.random_patches = None
         self.random_crates = None
