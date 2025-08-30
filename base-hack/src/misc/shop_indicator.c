@@ -17,8 +17,8 @@ int isSharedMove(vendors shop_index, int level) {
 		return 1;
 	}
 	
-	// If we're in Archipelago and all items are an AP item, dont group them together
-	if (isAPEnabled() && targ->item.item_type == REQITEM_AP) {
+	// if shop has an AP item, dont make it shared
+	if (targ->item.item_type == REQITEM_AP) {
 		return 0;
 	}
 	
