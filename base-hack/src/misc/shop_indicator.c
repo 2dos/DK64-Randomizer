@@ -139,15 +139,15 @@ unsigned int getActorModelTwoDist(ModelTwoData* _object) {
 	return (dx * dx) + (dy * dy) + (dz * dz);
 }
 
+/*
+	Cranky's: 0x73
+	Funky's Hut: 0x7A
+	Candy's Shop: 0x124
+	Snide's HQ: 0x79
+*/
 static short shop_objects[] = {0x73, 0x7A, 0x124, 0x79};
 
 int getClosestShop(void) {
-	/*
-		Cranky's: 0x73
-		Funky's Hut: 0x7A
-		Candy's Shop: 0x124
-		Snide's HQ: 0x79
-	*/
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	int closest_dist = -1;
 	int closest_shop_index = -1;
