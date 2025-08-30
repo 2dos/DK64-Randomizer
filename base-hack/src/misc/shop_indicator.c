@@ -16,6 +16,12 @@ int isSharedMove(vendors shop_index, int level) {
 	if (!targ) {
 		return 1;
 	}
+	
+	// if shop has an AP item, dont make it shared
+	if (targ->item.item_type == REQITEM_AP) {
+		return 0;
+	}
+	
 	for (int i = 1; i < 5; i++) {
 		purchase_struct* src = getShopData(shop_index, i, level);
 		if (src) {
