@@ -584,6 +584,7 @@ if baseclasses_loaded:
             """Initialize the DK64 world."""
             self.rom_name_available_event = threading.Event()
             self.hint_data_available = threading.Event()
+            self.hint_compilation_complete = threading.Event()
             super().__init__(multiworld, player)
 
         @classmethod
@@ -1007,6 +1008,9 @@ if baseclasses_loaded:
                 "major": [],
                 "deep": [],
             }
+            # Initialize hint location mapping and dynamic hints storage
+            self.hint_location_mapping = {}
+            self.dynamic_hints = {}  # Store dynamic hints for CreateHints functionality
             self.foreignMicroHints = {}
 
             # Handle locations that start empty due to being junk
@@ -1126,11 +1130,17 @@ if baseclasses_loaded:
                 # Could add a hints on/off setting?
                 microhints_enabled = self.options.shopkeeper_hints.value or self.options.microhints.value > 0
                 hints_enabled = self.options.hint_style > 0
+
                 if hints_enabled or microhints_enabled:
                     self.hint_data_available.wait()
 
                 if hints_enabled:
                     CompileArchipelagoHints(self, self.hint_data)
+                    # Signal that hint compilation is complete
+                    self.hint_compilation_complete.set()
+                else:
+                    # If hints are not enabled, immediately set the event
+                    self.hint_compilation_complete.set()
 
                 if microhints_enabled:
                     # Finalize microhints
@@ -1405,7 +1415,13 @@ if baseclasses_loaded:
 
         def fill_slot_data(self) -> dict:
             """Fill the slot data."""
-            return {
+            # If hints are enabled, wait for hint compilation to complete
+            if hasattr(self, "options") and self.options.hint_style > 0:
+                self.hint_compilation_complete.wait()
+            hint_mapping = getattr(self, "hint_location_mapping", {})
+            dynamic_hints = getattr(self, "dynamic_hints", {})
+
+            slot_data = {
                 "Goal": self.options.goal.value,
                 "ClimbingShuffle": self.options.climbing_shuffle.value,
                 "PlayerNum": self.player,
@@ -1477,7 +1493,33 @@ if baseclasses_loaded:
                 "Autocomplete": self.options.auto_complete_bonus_barrels.value,
                 "HelmBarrelCount": self.options.helm_room_bonus_count.value,
                 "SmallerShopsData": self.get_smaller_shops_data(),
+                "HintLocationMapping": hint_mapping,
+                "hints": {str(location): hint_data for location, hint_data in dynamic_hints.items()},
             }
+
+            # Create item information for hint status determination
+            hint_item_info = {}
+            seen_items = set()  # Lets not flood slot data
+
+            # Get all locations and their items
+            for location in self.multiworld.get_locations(self.player):
+                if location.address is not None and location.item is not None:
+                    location_id = str(location.address)
+                    item_name = location.item.name
+
+                    # Only add one unique item of each name to prevent flooding slot data
+                    if item_name not in seen_items:
+                        # Get item classification as string
+                        classification_map = {1: "progression", 2: "useful", 3: "filler", 4: "trap"}
+
+                        classification_str = classification_map.get(location.item.classification.value, "unknown")
+
+                        hint_item_info[location_id] = {"name": item_name, "classification": classification_str, "player": location.item.player}  # Add player information
+                        seen_items.add(item_name)
+
+            slot_data["HintItemInfo"] = hint_item_info
+
+            return slot_data
 
         def write_spoiler(self, spoiler_handle: typing.TextIO):
             """Write the spoiler."""

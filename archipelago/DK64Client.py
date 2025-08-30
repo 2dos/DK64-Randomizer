@@ -28,6 +28,72 @@ from ap_version import version as ap_version
 from randomizer.Patching.ItemRando import normalize_location_name
 
 
+class CreateHintsParams:
+    """Parameters for creating hints."""
+
+    def __init__(self, location_id: int, player_id: int):
+        """Initialize CreateHintsParams."""
+        self.location = location_id
+        self.player = player_id
+
+    def __eq__(self, other):
+        """Check equality for CreateHintsParams."""
+        if not isinstance(other, CreateHintsParams):
+            return False
+        return self.location == other.location and self.player == other.player
+
+    def __hash__(self):
+        """Hash for CreateHintsParams."""
+        return hash((self.location, self.player))
+
+
+# Mapping of hint door checks to their kong/level combination for hint bitfield tracking
+hint_door_to_bitfield = {
+    # Japes
+    "Japes Donkey Hint Door": (0, 0),
+    "Japes Diddy Hint Door": (1, 0),
+    "Japes Lanky Hint Door": (2, 0),
+    "Japes Tiny Hint Door": (3, 0),
+    "Japes Chunky Hint Door": (4, 0),
+    # Aztec
+    "Aztec Donkey Hint Door": (0, 1),
+    "Aztec Diddy Hint Door": (1, 1),
+    "Aztec Lanky Hint Door": (2, 1),
+    "Aztec Tiny Hint Door": (3, 1),
+    "Aztec Chunky Hint Door": (4, 1),
+    # Factory
+    "Factory Donkey Hint Door": (0, 2),
+    "Factory Diddy Hint Door": (1, 2),
+    "Factory Lanky Hint Door": (2, 2),
+    "Factory Tiny Hint Door": (3, 2),
+    "Factory Chunky Hint Door": (4, 2),
+    # Galleon
+    "Galleon Donkey Hint Door": (0, 3),
+    "Galleon Diddy Hint Door": (1, 3),
+    "Galleon Lanky Hint Door": (2, 3),
+    "Galleon Tiny Hint Door": (3, 3),
+    "Galleon Chunky Hint Door": (4, 3),
+    # Forest
+    "Forest Donkey Hint Door": (0, 4),
+    "Forest Diddy Hint Door": (1, 4),
+    "Forest Lanky Hint Door": (2, 4),
+    "Forest Tiny Hint Door": (3, 4),
+    "Forest Chunky Hint Door": (4, 4),
+    # Caves
+    "Caves Donkey Hint Door": (0, 5),
+    "Caves Diddy Hint Door": (1, 5),
+    "Caves Lanky Hint Door": (2, 5),
+    "Caves Tiny Hint Door": (3, 5),
+    "Caves Chunky Hint Door": (4, 5),
+    # Castle
+    "Castle Donkey Hint Door": (0, 6),
+    "Castle Diddy Hint Door": (1, 6),
+    "Castle Lanky Hint Door": (2, 6),
+    "Castle Tiny Hint Door": (3, 6),
+    "Castle Chunky Hint Door": (4, 6),
+}
+
+
 class DK64Client:
     """Client for Donkey Kong 64."""
 
@@ -55,6 +121,8 @@ class DK64Client:
     current_speed = 130
     current_map = 0
     read_half = 0
+    last_hint_bitfield = [0, 0, 0, 0, 0]
+    sent_hints = set()
 
     async def wait_for_pj64(self):
         """Wait for PJ64 to connect to the game."""
@@ -665,7 +733,7 @@ class DK64Client:
                 return data
         return data
 
-    async def main_tick(self, item_get_cb, deathlink_cb, map_change_cb, ring_link, tag_link, trap_link):
+    async def main_tick(self, item_get_cb, deathlink_cb, map_change_cb, ring_link, tag_link, trap_link, hint_cb=None):
         """Game loop tick."""
         await self.readChecks(item_get_cb)
         # await self.item_tracker.readItems()
@@ -702,6 +770,11 @@ class DK64Client:
             await tag_link()
         if self.ENABLE_TRAPLINK:
             await trap_link()
+
+        # Check for hint access
+        if hint_cb:
+            await self.check_hint_access(hint_cb)
+
         current_deliver_count = self.get_current_deliver_count()
         # If current_deliver_count is None
         if current_deliver_count is None:
@@ -743,6 +816,42 @@ class DK64Client:
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.send_death, 0)
         self.pending_deathlink = False
         self.deathlink_debounce = True
+
+    def read_hint_bitfield(self):
+        """Read the current hint bitfield from memory."""
+        count_struct_address = self.n64_client.read_u32(DK64MemoryMap.count_struct_pointer)
+        if count_struct_address == 0:
+            return [0, 0, 0, 0, 0]
+
+        hint_bitfield = []
+        for i in range(5):  # 5 bytes for hint bitfield
+            address = count_struct_address + 0x005 + i
+            hint_bitfield.append(self.n64_client.read_u8(address))
+        return hint_bitfield
+
+    async def check_hint_access(self, hint_callback):
+        """Check if any new hints have been accessed."""
+        if not self.memory_pointer:
+            return
+
+        current_hint_bitfield = self.read_hint_bitfield()
+
+        # Check each byte and bit for changes
+        for kong in range(5):  # 5 kongs
+            for level in range(7):  # 7 levels (0-6)
+                if level < 7:  # Valid bit range
+                    old_bit = (self.last_hint_bitfield[kong] >> level) & 1
+                    new_bit = (current_hint_bitfield[kong] >> level) & 1
+
+                    # If bit changed from 0 to 1, a hint was accessed
+                    if old_bit == 0 and new_bit == 1:
+                        hint_key = (kong, level)
+                        if hint_key not in self.sent_hints:
+                            self.sent_hints.add(hint_key)
+                            await hint_callback(kong, level)
+
+        # Update last known state
+        self.last_hint_bitfield = current_hint_bitfield.copy()
 
 
 class DK64CommandProcessor(ClientCommandProcessor):
@@ -832,6 +941,8 @@ class DK64Context(CommonContext):
     ENABLE_TRAPLINK = False
     command_processor = DK64CommandProcessor
     won = False
+    hint_locations = {}
+    handled_scouts = []
 
     def reset_checks(self):
         """Reset the checks."""
@@ -841,6 +952,8 @@ class DK64Context(CommonContext):
         self.client.pending_checks = []
         self.found_checks = []
         self.client.flag_lookup = None
+        self.handled_scouts = []
+        self.create_hints_params = []
 
     def __init__(self, server_address: typing.Optional[str], password: typing.Optional[str]) -> None:
         """Initialize the DK64 context."""
@@ -938,6 +1051,7 @@ class DK64Context(CommonContext):
         if cmd == "Connected":
             self.game = self.slot_info[self.slot].game
             self.slot_data = args.get("slot_data", {})
+            self.setup_hint_locations()
             if self.slot_data.get("death_link"):
                 if "DeathLink" not in self.tags:
                     create_task_log_exception(self.update_death_link(True))
@@ -1271,6 +1385,127 @@ class DK64Context(CommonContext):
         if self.ENABLE_DEATHLINK:
             self.client.pending_deathlink = True
 
+    def setup_hint_locations(self):
+        """Set up the mapping between hint positions and location IDs."""
+        try:
+            if not hasattr(self, "hint_locations"):
+                self.hint_locations = {}
+
+            # Get hint location mapping from slot_data
+            hint_mapping = self.slot_data.get("HintLocationMapping", {})
+
+            # Convert string keys back to tuples and store as location IDs
+            for key, location_id in hint_mapping.items():
+                if "," in key:
+                    parts = key.split(",")
+                    if len(parts) == 2:
+                        try:
+                            kong = int(parts[0])
+                            level = int(parts[1])
+                            self.hint_locations[(kong, level)] = location_id
+                        except ValueError:
+                            logger.warning(f"Invalid hint mapping key format: {key}")
+        except Exception as e:
+            logger.error(f"Error setting up hint locations: {e}")
+            import traceback
+
+            logger.error(traceback.format_exc())
+
+    async def handle_hint_accessed(self, kong: int, level: int):
+        """Handle when a hint is accessed in the game."""
+        try:
+            # Create a unique identifier for this hint position
+            hint_key = (kong, level)
+
+            # Map level index to actual level names for logging
+            level_names = ["Japes", "Aztec", "Factory", "Galleon", "Forest", "Caves", "Castle"]
+            kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
+
+            if 0 <= kong < 5 and 0 <= level < 7:
+                level_name = level_names[level]
+                kong_name = kong_names[kong]
+                logger.debug(f"Hint accessed: {kong_name} in {level_name}")
+
+                # Check if we have hint location mapping from slot data
+                if hasattr(self, "hint_locations") and hint_key in self.hint_locations:
+                    wrinkly_door_id = self.hint_locations[hint_key]
+
+                    # Check if we have hint data using the wrinkly door location ID as key (like BT client)
+                    hints_data = self.slot_data.get("hints", {})
+                    hint_data = hints_data.get(str(wrinkly_door_id), None)
+
+                    if hint_data:
+                        # Use hint data if available
+                        if hint_data.get("should_add_hint") and hint_data.get("location_id") is not None and hint_data.get("location_player_id") is not None:
+
+                            # Get the actual location and player from hint data
+                            actual_location_id = hint_data["location_id"]
+                            finding_player_id = hint_data["location_player_id"]
+
+                            logger.debug(f"Creating hint for location {actual_location_id} owned by player {finding_player_id}")
+
+                            # Create hint parameters
+                            params = CreateHintsParams(actual_location_id, finding_player_id)
+                            if params not in self.handled_scouts:
+                                # Collect params for batch processing
+                                if not hasattr(self, "create_hints_params"):
+                                    self.create_hints_params = []
+                                self.create_hints_params.append(params)
+                            else:
+                                logger.debug(f"Hint params already handled: {params}")
+                        else:
+                            logger.debug(f"Hint data validation failed for location {wrinkly_door_id}")
+                    else:
+                        logger.debug(f"No hint data found for wrinkly door location {wrinkly_door_id}")
+                else:
+                    logger.warning(f"No hint location mapping found for {kong_name} in {level_name}")
+            else:
+                logger.warning(f"Invalid hint position: kong={kong}, level={level}")
+        except Exception as e:
+            logger.error(f"Error handling hint access: {e}")
+
+    def determine_hint_status(self, location_id: int) -> int:
+        """Determine the appropriate hint status based on the location and its item."""
+        try:
+            from NetUtils import HintStatus
+
+            # Check if we have item information from slot_data
+            item_info = self.slot_data.get("HintItemInfo", {})
+            location_str = str(location_id)
+
+            if location_str in item_info:
+                item_data = item_info[location_str]
+                item_player = item_data.get("player")
+
+                # For items from other players, must use unspecified status
+                if item_player != self.slot:
+                    return None  # Unspecified status for items from other players
+
+                item_classification = item_data.get("classification", "")
+
+                # Determine status based on item classification (only for this player's items)
+                if item_classification == "progression":
+                    return HintStatus.HINT_PRIORITY
+                elif item_classification == "useful":
+                    return HintStatus.HINT_NO_PRIORITY
+                elif item_classification in ("filler", "trap"):
+                    return HintStatus.HINT_AVOID
+
+            # Default to unspecified if we can't determine the item
+            return None
+
+        except Exception as e:
+            logger.warning(f"Error determining hint status for location {location_id}: {e}")
+            return None
+
+    async def process_hint_params(self):
+        """Process collected hint parameters and send them to the server."""
+        if hasattr(self, "create_hints_params") and self.create_hints_params:
+            for params in self.create_hints_params:
+                await self.send_msgs([{"cmd": "CreateHints", "locations": [params.location], "player": params.player}])
+                self.handled_scouts.append(params)
+            self.create_hints_params.clear()
+
     async def run_game_loop(self):
         """Run the game loop."""
 
@@ -1297,6 +1532,10 @@ class DK64Context(CommonContext):
         async def map_change(map_id):
             """Send a current map id on map change."""
             await self.send_msgs([{"cmd": "Set", "key": f"DK64Rando_{self.team}_{self.slot}_map", "default": hex(0), "want_reply": False, "operations": [{"operation": "replace", "value": map_id}]}])
+
+        async def hint_accessed(kong, level):
+            """Handle when a hint is accessed in-game."""
+            await self.handle_hint_accessed(kong, level)
 
         def on_item_get(dk64_checks):
             """Handle an item get."""
@@ -1351,12 +1590,13 @@ class DK64Context(CommonContext):
                     if status is False:
                         await asyncio.sleep(0.5)
                         continue
-                    await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link, trap_link)
+                    await self.client.main_tick(on_item_get, deathlink, map_change, ring_link, tag_link, trap_link, hint_accessed)
                     await asyncio.sleep(0.5)
                     now = time.time()
                     if self.last_resend + 0.5 < now:
                         self.last_resend = now
                         await self.send_checks()
+                    await self.process_hint_params()
                     if self.client.should_reset_auth:
                         self.client.should_reset_auth = False
                         raise Exception("Resetting due to wrong archipelago server")
