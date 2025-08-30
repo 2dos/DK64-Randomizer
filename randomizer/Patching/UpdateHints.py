@@ -1,7 +1,7 @@
 """Update wrinkly hints compressed file."""
 
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Lists.WrinklyHints import HintLocation, hints
+from randomizer.Lists.WrinklyHints import HintLocation, global_hints
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, grabText, writeText, CompTextFiles, writeRawFile
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.ASMPatcher import writeItemReferenceFlags
@@ -251,17 +251,17 @@ def updateRandomHint(random, message: str, kongs_req=[], keywords=[], levels=[])
         message (str): Hint message to write.
     """
     hint_pool = []
-    for x in range(len(hints)):
-        if hints[x].hint == "" and hints[x].kong in kongs_req and hints[x].level in levels:
+    for x in range(len(global_hints)):
+        if global_hints[x].hint == "" and global_hints[x].kong in kongs_req and global_hints[x].level in levels:
             is_banned = False
-            for banned in hints[x].banned_keywords:
+            for banned in global_hints[x].banned_keywords:
                 if banned in keywords:
                     is_banned = True
             if not is_banned:
                 hint_pool.append(x)
     if len(hint_pool) > 0:
         selected = random.choice(hint_pool)
-        return UpdateHint(hints[selected], message)
+        return UpdateHint(global_hints[selected], message)
     return False
 
 
@@ -284,9 +284,9 @@ def PushHints(spoiler, ROM_COPY: LocalROM):
 
 def wipeHints():
     """Wipe the hint block."""
-    for x in range(len(hints)):
-        if hints[x].kong != Kongs.any:
-            hints[x].hint = ""
+    for x in range(len(global_hints)):
+        if global_hints[x].kong != Kongs.any:
+            global_hints[x].hint = ""
 
 
 def PushItemLocations(spoiler, ROM_COPY: LocalROM):
