@@ -581,7 +581,6 @@ skins = {
     "dillo2": ("head32_dillo2", None, "displays"),
     "kko": ("head32_kko", None, "displays"),
     "null": ("blank", None, "displays"),
-
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32

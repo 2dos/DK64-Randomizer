@@ -124,6 +124,7 @@ def updateCryptLeverTexture(settings: Settings, ROM_COPY: LocalROM) -> None:
         writeColorImageToROM(texture_0, 25, 0x99A, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
         writeColorImageToROM(texture_1, 25, 0x999, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
 
+
 def updateHelmFaces(settings: Settings, ROM_COPY: LocalROM) -> None:
     """Write the textures for Helm Order."""
     helm_order_images = [
