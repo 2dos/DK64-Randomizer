@@ -869,7 +869,7 @@ extern char KKOPhaseRandoOn;
 extern unsigned short MultiBunchCount;
 extern char QueueHelmTimer;
 extern char ToggleAmmoOn;
-extern void* WarpData;
+extern warp_info_data* WarpData;
 extern unsigned char InvertedControls;
 extern unsigned char ChunkyModel;
 extern unsigned char EnemyInView;

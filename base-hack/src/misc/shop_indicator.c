@@ -178,9 +178,8 @@ typedef struct ModelData {
 } ModelData;
 
 float getShopScale(int index) {
-	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < ObjectModel2Count; i++) {
-		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
+		ModelTwoData* _object = &ObjectModel2Pointer[i];
 		if (_object) {
 			if (_object->object_type == shop_objects[index]) {
 				ModelData* model = _object->model_pointer;

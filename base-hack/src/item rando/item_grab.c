@@ -532,8 +532,7 @@ int getObjectCollectability(int id, int unk1, int model2_type) {
      * @return Whether item is collectable or not
      */
     int index = indexOfNextObj(id);
-    int* m2location = (int*)ObjectModel2Pointer;
-    ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+    ModelTwoData* _object = &ObjectModel2Pointer[index];
     if (model2_type == 0x11) {
         // Homing
         return 1;

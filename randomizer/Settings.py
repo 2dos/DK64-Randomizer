@@ -893,6 +893,7 @@ class Settings:
         self.prog_slam_level_6 = SlamRequirement.blue
         self.prog_slam_level_7 = SlamRequirement.red
         self.prog_slam_level_8 = SlamRequirement.red
+        self.ice_trap_count = 0
         self.switch_allocation = [
             self.prog_slam_level_1,
             self.prog_slam_level_2,

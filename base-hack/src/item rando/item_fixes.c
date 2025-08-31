@@ -323,13 +323,12 @@ void refreshPads(pad_refresh_signals signal) {
         }
     } else {
         int _count = ObjectModel2Count;
-        int *m2location = (int *)ObjectModel2Pointer;
         for (int i = 0; i < (int)(sizeof(pads) / sizeof(pad_refresh_struct)); i++) {
             if ((CurrentMap == pads[i].map) && (signal == pads[i].requirement)) {
                 int found_item = 0;
                 int j = 0;
                 while ((!found_item) && (j < _count)) {
-                    ModelTwoData*_object = getObjectArrayAddr(m2location, 0x90, j);
+                    ModelTwoData*_object = &ObjectModel2Pointer[j];
                     if (_object->object_id == pads[i].object_id) {
                         behaviour_data* behavior = _object->behaviour_pointer;
                         if (behavior) {
