@@ -66,11 +66,6 @@ void initActorDefs(void) {
     }
 }
 
-void changeFeatherToSprite(void) {
-    actor_defs[24].model = 0;
-    actor_master_types[43] = ACTORMASTER_SPRITE;
-}
-
 void setActorDamage(int actor, int new_damage) {
     actor_health_damage[actor].damage_applied = new_damage;
 }

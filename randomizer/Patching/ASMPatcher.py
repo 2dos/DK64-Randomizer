@@ -468,19 +468,6 @@ def writeActorHealth(ROM_COPY, actor_index: int, new_health: int):
     start = getSym("actor_health_damage") + (4 * actor_index)
     writeValue(ROM_COPY, start, Overlay.Custom, new_health, {})
 
-
-def updateActorFunctionInt(ROM_COPY, actor_index: int, new_function: int):
-    """Update the actor function in the table based on a int value."""
-    start = getSym("actor_functions") + (4 * actor_index)
-    writeValue(ROM_COPY, start, Overlay.Custom, new_function, {}, 4)
-
-
-def updateActorFunction(ROM_COPY, actor_index: int, new_function_sym: str):
-    """Update the actor function in the table based on a sym value."""
-    start = getSym("actor_functions") + (4 * actor_index)
-    writeLabelValue(ROM_COPY, start, Overlay.Custom, new_function_sym, {})
-
-
 def disableDynamicReverb(ROM_COPY: ROM):
     """Disable the dynamic FXMix (Reverb) that would otherwise be applied in tunnels and underwater."""
     for index in range(1, 175):
@@ -640,6 +627,7 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8062F09C, Overlay.Static, 0x240F1F40, offset_dict, 4)
 
     adjustKongModelHandlers(ROM_COPY, settings, offset_dict)
+    krushaChanges(ROM_COPY, settings, offset_dict)
 
     writeHook(ROM_COPY, 0x8063EE08, Overlay.Static, "InstanceScriptCheck", offset_dict)
     writeHook(ROM_COPY, 0x806FF384, Overlay.Static, "ModifyCameraColor", offset_dict)

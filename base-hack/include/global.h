@@ -231,7 +231,6 @@ extern void adjustAnimationTables(void);
 extern void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_index);
 extern void adaptKrushaZBAnimation_Charge(actorData* actor, int anim);
 extern void OrangeGunCode(void);
-extern void changeFeatherToSprite(void);
 extern void setActorDamage(int actor, int new_damage);
 extern void updateCutsceneModels(actorData* actor, int size);
 extern void* DiddySwimFix(int ptr, int file, int c0, int c1);
