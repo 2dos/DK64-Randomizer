@@ -2239,7 +2239,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         else:
             jokes = joke_hint_list.copy()
             spoiler.settings.random.shuffle(jokes)
-            message = jokes.pop().hint
+            message = jokes.pop()
         # Way of the Bean joke hint - yes, this IS worth it
         if message == "[[WOTB]]":
             bean_location_id = None
@@ -2302,7 +2302,7 @@ def compileHints(spoiler: Spoiler) -> bool:
 
     # Dim hints - these are only useful (and doable) if item rando is on
     if spoiler.settings.dim_solved_hints and spoiler.settings.shuffle_items:
-        AssociateHintsWithFlags(spoiler)
+        AssociateHintsWithFlags(spoiler, hintset)
 
     return True
 
