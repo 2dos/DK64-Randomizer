@@ -7,7 +7,6 @@ from math import ceil, floor, sqrt
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Union
 from randomizer.Enums.MoveTypes import MoveTypes
 
-from randomizer.Enums.WrinklyKong import WrinklyLocation
 import randomizer.ItemPool as ItemPool
 from randomizer.Enums.Events import Events
 from randomizer.Enums.HintType import HintType
@@ -49,7 +48,7 @@ from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.PathHintTree import BuildPathHintTree
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import (
-    HintLocation,
+    HintSet,
     all_levels,
     boss_names,
     boss_colors,
@@ -68,162 +67,13 @@ from randomizer.Lists.WrinklyHints import (
     shop_owners,
     joke_hint_list,
     vacation_levels_properties,
-    global_hints,
+    UpdateHint,
 )
-from randomizer.Patching.UpdateHints import UpdateHint
 from randomizer.Patching.Library.Generic import plando_colors, IsDDMSSelected
 
 if TYPE_CHECKING:
     from randomizer.LogicClasses import Region
     from randomizer.Spoiler import Spoiler
-
-
-def getDefaultHintList() -> List[HintLocation]:
-    """Return the default set of hints."""
-    return [
-        HintLocation(
-            "First Time Talk",
-            Kongs.any,
-            WrinklyLocation.ftt,
-            "WELCOME TO THE DONKEY KONG 64 RANDOMIZER. MADE BY 2DOS, BALLAAM, KILLKLLI, SHADOWSHINE, CFOX, BISMUTH & ZNERNICUS",
-            Levels.DKIsles,
-        ),
-        HintLocation("Japes DK", Kongs.donkey, WrinklyLocation.japes, "", Levels.JungleJapes),
-        HintLocation("Japes Diddy", Kongs.diddy, WrinklyLocation.japes, "", Levels.JungleJapes),
-        HintLocation("Japes Lanky", Kongs.lanky, WrinklyLocation.japes, "", Levels.JungleJapes),
-        HintLocation("Japes Tiny", Kongs.tiny, WrinklyLocation.japes, "", Levels.JungleJapes),
-        HintLocation("Japes Chunky", Kongs.chunky, WrinklyLocation.japes, "", Levels.JungleJapes),
-        HintLocation("Aztec DK", Kongs.donkey, WrinklyLocation.aztec, "", Levels.AngryAztec),
-        HintLocation("Aztec Diddy", Kongs.diddy, WrinklyLocation.aztec, "", Levels.AngryAztec),
-        HintLocation("Aztec Lanky", Kongs.lanky, WrinklyLocation.aztec, "", Levels.AngryAztec),
-        HintLocation("Aztec Tiny", Kongs.tiny, WrinklyLocation.aztec, "", Levels.AngryAztec),
-        HintLocation(
-            "Aztec Chunky",
-            Kongs.chunky,
-            WrinklyLocation.aztec,
-            "",
-            Levels.AngryAztec,
-            banned_keywords=["Hunky Chunky", "Feather Bow"],
-        ),
-        HintLocation("Factory DK", Kongs.donkey, WrinklyLocation.factory, "", Levels.FranticFactory),
-        HintLocation(
-            "Factory Diddy",
-            Kongs.diddy,
-            WrinklyLocation.factory,
-            "",
-            Levels.FranticFactory,
-            banned_keywords=["Gorilla Grab"],
-        ),
-        HintLocation(
-            "Factory Lanky",
-            Kongs.lanky,
-            WrinklyLocation.factory,
-            "",
-            Levels.FranticFactory,
-            banned_keywords=["Gorilla Grab"],
-        ),
-        HintLocation("Factory Tiny", Kongs.tiny, WrinklyLocation.factory, "", Levels.FranticFactory, banned_keywords=["Gorilla Grab"]),
-        HintLocation("Factory Chunky", Kongs.chunky, WrinklyLocation.factory, "", Levels.FranticFactory),
-        HintLocation("Galleon DK", Kongs.donkey, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
-        HintLocation("Galleon Diddy", Kongs.diddy, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
-        HintLocation("Galleon Lanky", Kongs.lanky, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
-        HintLocation("Galleon Tiny", Kongs.tiny, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
-        HintLocation("Galleon Chunky", Kongs.chunky, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
-        HintLocation("Fungi DK", Kongs.donkey, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
-        HintLocation("Fungi Diddy", Kongs.diddy, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
-        HintLocation("Fungi Lanky", Kongs.lanky, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
-        HintLocation("Fungi Tiny", Kongs.tiny, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
-        HintLocation("Fungi Chunky", Kongs.chunky, WrinklyLocation.fungi, "", Levels.FungiForest),
-        HintLocation("Caves DK", Kongs.donkey, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
-        HintLocation(
-            "Caves Diddy",
-            Kongs.diddy,
-            WrinklyLocation.caves,
-            "",
-            Levels.CrystalCaves,
-            banned_keywords=["Primate Punch", "Rocketbarrel Boost"],
-        ),
-        HintLocation("Caves Lanky", Kongs.lanky, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
-        HintLocation("Caves Tiny", Kongs.tiny, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
-        HintLocation("Caves Chunky", Kongs.chunky, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
-        HintLocation("Castle DK", Kongs.donkey, WrinklyLocation.castle, "", Levels.CreepyCastle),
-        HintLocation("Castle Diddy", Kongs.diddy, WrinklyLocation.castle, "", Levels.CreepyCastle),
-        HintLocation("Castle Lanky", Kongs.lanky, WrinklyLocation.castle, "", Levels.CreepyCastle),
-        HintLocation("Castle Tiny", Kongs.tiny, WrinklyLocation.castle, "", Levels.CreepyCastle),
-        HintLocation("Castle Chunky", Kongs.chunky, WrinklyLocation.castle, "", Levels.CreepyCastle),
-    ]
-
-
-class HintSet:
-    """A set of hints and all pertinent information about them."""
-
-    def __init__(self):
-        """Create a hint set object."""
-        self.hints: List[HintLocation] = getDefaultHintList()
-        self.expectedDistribution = {}
-        self.currentDistribution = {}
-
-    def ClearHintMessages(self) -> None:
-        """Reset the hint message for all hints."""
-        self.hints = getDefaultHintList()
-
-    def getRandomHintLocation(self, random, location_list=None, kongs=None, levels=None, move_name=None) -> HintLocation:
-        """Return an unoccupied hint location. The parameters can be used to specify location requirements."""
-        valid_unoccupied_hint_locations = [
-            hint
-            for hint in self.hints
-            if hint.hint == ""
-            and (location_list is None or hint in location_list)
-            and (kongs is None or hint.kong in kongs)
-            and (levels is None or hint.level in levels)
-            and move_name not in hint.banned_keywords
-        ]
-        # If it's too specific, we may not be able to find any
-        if len(valid_unoccupied_hint_locations) == 0:
-            return None
-        hint_location = random.choice(valid_unoccupied_hint_locations)
-        # Update the reference so we're updating the main list instead of a copy of it
-        for hint in self.hints:
-            if hint.name == hint_location.name:
-                return hint
-        return None
-
-    def getHintLocationsForAccessibleHintItems(self, hint_item_ids: Union[Set[Items], List[Items]], include_occupied=False) -> List[Union[HintLocation, Any]]:
-        """Given a list of hint item ids, return unoccupied HintLocation objects they correspond to, possibly returning an empty list."""
-        accessible_hints = []
-        for item_id in hint_item_ids:
-            item = ItemList[item_id]
-            matching_hint = [hint for hint in self.hints if hint.level == item.level and hint.kong == item.kong][0]  # Should only match one
-            accessible_hints.append(matching_hint)
-        if include_occupied:
-            return accessible_hints
-        return [hint for hint in accessible_hints if hint.hint == ""]  # Filter out the occupied ones
-
-    def ApplyPlandoHints(self, spoiler):
-        """Apply plandomizer hint messages, returning the number of hints placed."""
-        plando_hints_placed = 0
-        for loc_id, message in spoiler.settings.plandomizer_dict["hints"].items():
-            if message != "":
-                final_message = ApplyColorToPlandoHint(message)
-                location = spoiler.LocationList[int(loc_id)]
-                hint_location = [hint_loc for hint_loc in self.hints if hint_loc.level == location.level and hint_loc.kong == location.kong][0]  # Matches exactly one hint
-                UpdateHint(hint_location, final_message)
-                hint_location.hint_type = HintType.Plando
-                plando_hints_placed += 1
-        return plando_hints_placed
-
-
-def ApplyColorToPlandoHint(hint):
-    """Replace plandomizer color tags with the appropriate characters."""
-    new_hint = hint
-    color_replace_dict = {}
-    for code in plando_colors:
-        for key in plando_colors[code]:
-            color_replace_dict[f"[{key}]"] = code
-            color_replace_dict[f"[/{key}]"] = code
-    for color_tag, color_character in color_replace_dict.items():
-        new_hint = new_hint.replace(color_tag, color_character)
-    return new_hint
 
 
 class StartingSpoiler:
@@ -373,7 +223,15 @@ def compileHints(spoiler: Spoiler) -> bool:
     hint_distribution = hint_distribution_default.copy()
     plando_hints_placed = 0
     if spoiler.settings.enable_plandomizer:
-        plando_hints_placed = hintset.ApplyPlandoHints(spoiler)
+        plando_hints_placed = 0
+        for loc_id, message in spoiler.settings.plandomizer_dict["hints"].items():
+            if message != "":
+                final_message = ApplyColorToPlandoHint(message)
+                location = spoiler.LocationList[int(loc_id)]
+                hint_location = [hint_loc for hint_loc in hintset.hints if hint_loc.level == location.level and hint_loc.kong == location.kong][0]  # Matches exactly one hint
+                UpdateHint(hint_location, final_message)
+                hint_location.hint_type = HintType.Plando
+                plando_hints_placed += 1
         hint_distribution[HintType.Plando] = plando_hints_placed
     level_order_matters = spoiler.settings.logic_type not in (LogicType.nologic, LogicType.minimal) and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all
     globally_hinted_location_ids = []
@@ -2297,13 +2155,12 @@ def compileHints(spoiler: Spoiler) -> bool:
     #             ScoreCompleteHintSet(spoiler, hint_distribution, multipath_dict_goals)
     #             spoiler.hint_swap_advisory = spoiler.LocationList[ugliest_location].name + " was deemed too unhinted and given a hint."
 
-    UpdateSpoilerHintList(spoiler, hintset)
-    spoiler.hint_distribution = hint_distribution
-
     # Dim hints - these are only useful (and doable) if item rando is on
     if spoiler.settings.dim_solved_hints and spoiler.settings.shuffle_items:
         AssociateHintsWithFlags(spoiler, hintset)
 
+    spoiler.hintset = hintset
+    spoiler.hint_distribution = hint_distribution
     return True
 
 
@@ -2672,30 +2529,6 @@ def GetConnectedEntrances(spoiler: Spoiler, target_map: Maps, target_transitions
     return relevant_entrances
 
 
-def UpdateSpoilerHintList(spoiler: Spoiler, hintset: HintSet) -> None:
-    """Write hints to spoiler object."""
-    global_hints = hintset.hints  # This updates the global hint list for patching purposes
-    for hint in global_hints:
-        spoiler.hint_list[hint.name] = hint.hint
-        spoiler.short_hint_list[hint.name] = hint.short_hint if hint.short_hint is not None else hint.hint
-        loc_name = None
-        item_name = None
-        if hint.related_location is not None:
-            loc_name = spoiler.LocationList[hint.related_location].name
-            for location_selection in spoiler.item_assignment:
-                if location_selection.location == hint.related_location:
-                    item_name = location_selection.new_subitem
-                    if item_name is not None:
-                        item_name = ItemList[item_name].name
-                    break
-        spoiler.tied_hint_locations[hint.name] = loc_name
-        spoiler.tied_hint_items[hint.name] = item_name
-        show_info_on_log = hint.hint_type in (HintType.ItemHinting, HintType.KongLocation, HintType.Multipath, HintType.WothLocation, HintType.RequiredKongHint)
-        if hint.related_location in TrainingBarrelLocations or hint.related_location in PreGivenLocations:
-            show_info_on_log = False
-        spoiler.show_tied_info_on_log[hint.name] = show_info_on_log
-
-
 def GetRegionIdOfLocation(spoiler: Spoiler, location_id: Locations) -> Regions:
     """Given the id of a Location, return the Region it belongs to."""
     location = spoiler.LocationList[location_id]
@@ -2986,6 +2819,19 @@ def getHelmOrderHint(spoiler):
             spoiler.text_changes[file_index].append(data)
         else:
             spoiler.text_changes[file_index] = [data]
+
+
+def ApplyColorToPlandoHint(hint):
+    """Replace plandomizer color tags with the appropriate characters."""
+    new_hint = hint
+    color_replace_dict = {}
+    for code in plando_colors:
+        for key in plando_colors[code]:
+            color_replace_dict[f"[{key}]"] = code
+            color_replace_dict[f"[/{key}]"] = code
+    for color_tag, color_character in color_replace_dict.items():
+        new_hint = new_hint.replace(color_tag, color_character)
+    return new_hint
 
 
 def ScoreCompleteHintSet(spoiler, hintset, hint_distribution, multipath_dict_goals):

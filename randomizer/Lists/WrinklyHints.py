@@ -4,15 +4,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, List, Union, Set
 
+from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import Types
 
 from randomizer.Enums.WrinklyKong import WrinklyLocation
-
-
-global_hints = []  # This is where the final set of hints will be stored!
+from randomizer.Lists.Item import ItemList
 
 
 class HintLocation:
@@ -44,6 +43,8 @@ class HintLocation:
         self.banned_keywords = banned_keywords.copy()
         self.level = level
         self.related_location = None
+        self.related_location_name = None
+        self.related_location_item_name = None
         self.related_flag = None
 
 
@@ -63,6 +64,149 @@ class MoveInfo:
         if ref_kong == Kongs.any:
             ref_kong = Kongs.donkey
         self.item_key = {"move_type": move_type, "move_lvl": move_level - 1, "move_kong": ref_kong}
+
+
+def getDefaultHintList() -> List[HintLocation]:
+    """Return the default set of hints."""
+    return [
+        HintLocation(
+            "First Time Talk",
+            Kongs.any,
+            WrinklyLocation.ftt,
+            "WELCOME TO THE DONKEY KONG 64 RANDOMIZER. MADE BY 2DOS, BALLAAM, KILLKLLI, SHADOWSHINE, CFOX, BISMUTH & ZNERNICUS",
+            Levels.DKIsles,
+        ),
+        HintLocation("Japes DK", Kongs.donkey, WrinklyLocation.japes, "", Levels.JungleJapes),
+        HintLocation("Japes Diddy", Kongs.diddy, WrinklyLocation.japes, "", Levels.JungleJapes),
+        HintLocation("Japes Lanky", Kongs.lanky, WrinklyLocation.japes, "", Levels.JungleJapes),
+        HintLocation("Japes Tiny", Kongs.tiny, WrinklyLocation.japes, "", Levels.JungleJapes),
+        HintLocation("Japes Chunky", Kongs.chunky, WrinklyLocation.japes, "", Levels.JungleJapes),
+        HintLocation("Aztec DK", Kongs.donkey, WrinklyLocation.aztec, "", Levels.AngryAztec),
+        HintLocation("Aztec Diddy", Kongs.diddy, WrinklyLocation.aztec, "", Levels.AngryAztec),
+        HintLocation("Aztec Lanky", Kongs.lanky, WrinklyLocation.aztec, "", Levels.AngryAztec),
+        HintLocation("Aztec Tiny", Kongs.tiny, WrinklyLocation.aztec, "", Levels.AngryAztec),
+        HintLocation(
+            "Aztec Chunky",
+            Kongs.chunky,
+            WrinklyLocation.aztec,
+            "",
+            Levels.AngryAztec,
+            banned_keywords=["Hunky Chunky", "Feather Bow"],
+        ),
+        HintLocation("Factory DK", Kongs.donkey, WrinklyLocation.factory, "", Levels.FranticFactory),
+        HintLocation(
+            "Factory Diddy",
+            Kongs.diddy,
+            WrinklyLocation.factory,
+            "",
+            Levels.FranticFactory,
+            banned_keywords=["Gorilla Grab"],
+        ),
+        HintLocation(
+            "Factory Lanky",
+            Kongs.lanky,
+            WrinklyLocation.factory,
+            "",
+            Levels.FranticFactory,
+            banned_keywords=["Gorilla Grab"],
+        ),
+        HintLocation("Factory Tiny", Kongs.tiny, WrinklyLocation.factory, "", Levels.FranticFactory, banned_keywords=["Gorilla Grab"]),
+        HintLocation("Factory Chunky", Kongs.chunky, WrinklyLocation.factory, "", Levels.FranticFactory),
+        HintLocation("Galleon DK", Kongs.donkey, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
+        HintLocation("Galleon Diddy", Kongs.diddy, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
+        HintLocation("Galleon Lanky", Kongs.lanky, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
+        HintLocation("Galleon Tiny", Kongs.tiny, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
+        HintLocation("Galleon Chunky", Kongs.chunky, WrinklyLocation.galleon, "", Levels.GloomyGalleon),
+        HintLocation("Fungi DK", Kongs.donkey, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
+        HintLocation("Fungi Diddy", Kongs.diddy, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
+        HintLocation("Fungi Lanky", Kongs.lanky, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
+        HintLocation("Fungi Tiny", Kongs.tiny, WrinklyLocation.fungi, "", Levels.FungiForest, banned_keywords=["Gorilla Grab"]),
+        HintLocation("Fungi Chunky", Kongs.chunky, WrinklyLocation.fungi, "", Levels.FungiForest),
+        HintLocation("Caves DK", Kongs.donkey, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
+        HintLocation(
+            "Caves Diddy",
+            Kongs.diddy,
+            WrinklyLocation.caves,
+            "",
+            Levels.CrystalCaves,
+            banned_keywords=["Primate Punch", "Rocketbarrel Boost"],
+        ),
+        HintLocation("Caves Lanky", Kongs.lanky, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
+        HintLocation("Caves Tiny", Kongs.tiny, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
+        HintLocation("Caves Chunky", Kongs.chunky, WrinklyLocation.caves, "", Levels.CrystalCaves, banned_keywords=["Primate Punch"]),
+        HintLocation("Castle DK", Kongs.donkey, WrinklyLocation.castle, "", Levels.CreepyCastle),
+        HintLocation("Castle Diddy", Kongs.diddy, WrinklyLocation.castle, "", Levels.CreepyCastle),
+        HintLocation("Castle Lanky", Kongs.lanky, WrinklyLocation.castle, "", Levels.CreepyCastle),
+        HintLocation("Castle Tiny", Kongs.tiny, WrinklyLocation.castle, "", Levels.CreepyCastle),
+        HintLocation("Castle Chunky", Kongs.chunky, WrinklyLocation.castle, "", Levels.CreepyCastle),
+    ]
+
+
+class HintSet:
+    """A set of hints and all pertinent information about them."""
+
+    def __init__(self):
+        """Create a hint set object."""
+        self.hints: List[HintLocation] = getDefaultHintList()
+        self.expectedDistribution = {}
+        self.currentDistribution = {}
+
+    def ClearHintMessages(self) -> None:
+        """Reset the hint message for all hints."""
+        self.hints = getDefaultHintList()
+
+    def getRandomHintLocation(self, random, location_list=None, kongs=None, levels=None, move_name=None) -> HintLocation:
+        """Return an unoccupied hint location. The parameters can be used to specify location requirements."""
+        valid_unoccupied_hint_locations = [
+            hint
+            for hint in self.hints
+            if hint.hint == ""
+            and (location_list is None or hint in location_list)
+            and (kongs is None or hint.kong in kongs)
+            and (levels is None or hint.level in levels)
+            and move_name not in hint.banned_keywords
+        ]
+        # If it's too specific, we may not be able to find any
+        if len(valid_unoccupied_hint_locations) == 0:
+            return None
+        hint_location = random.choice(valid_unoccupied_hint_locations)
+        # Update the reference so we're updating the main list instead of a copy of it
+        for hint in self.hints:
+            if hint.name == hint_location.name:
+                return hint
+        return None
+
+    def getHintLocationsForAccessibleHintItems(self, hint_item_ids: Union[Set[Items], List[Items]], include_occupied=False) -> List[Union[HintLocation, Any]]:
+        """Given a list of hint item ids, return unoccupied HintLocation objects they correspond to, possibly returning an empty list."""
+        accessible_hints = []
+        for item_id in hint_item_ids:
+            item = ItemList[item_id]
+            matching_hint = [hint for hint in self.hints if hint.level == item.level and hint.kong == item.kong][0]  # Should only match one
+            accessible_hints.append(matching_hint)
+        if include_occupied:
+            return accessible_hints
+        return [hint for hint in accessible_hints if hint.hint == ""]  # Filter out the occupied ones
+
+    def RemoveFTT(self) -> None:
+        """Remove the FTT hint from the hintset."""
+        self.hints = [hint for hint in self.hints if hint.name != "First Time Talk"]
+
+
+def UpdateHint(WrinklyHint: HintLocation, message: str):
+    """Update the wrinkly hint with the new string.
+
+    Args:
+        WrinklyHint (Hint): Wrinkly hint object.
+        message (str): Hint message to write.
+    """
+    # Seek to the wrinkly data
+    if len(message) <= 914:
+        # We're safely below the character limit
+        WrinklyHint.hint = message
+        return True
+    else:
+        raise Exception("Hint message is longer than allowed.")
+    return False
 
 
 joke_hint_list = [
