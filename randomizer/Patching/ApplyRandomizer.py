@@ -82,7 +82,6 @@ from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from randomizer.Patching.UpdateHints import (
     PushHints,
     replaceIngameText,
-    wipeHints,
     PushItemLocations,
     PushHelpfulHints,
     PushHintTiedRegions,
@@ -690,7 +689,6 @@ def patching_response(spoiler):
     PushItemLocations(spoiler, ROM_COPY)
 
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
-        wipeHints()
         PushHints(spoiler, ROM_COPY)
         if spoiler.settings.dim_solved_hints:
             PushHelpfulHints(spoiler, ROM_COPY)

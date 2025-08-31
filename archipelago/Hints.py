@@ -1,11 +1,11 @@
 """Hints for DK64R Archipelago."""
 
 # from worlds.dk64 import DK64World
-from randomizer.CompileHints import HintSet, UpdateSpoilerHintList, replaceKongNameWithKrusha
+from randomizer.CompileHints import HintSet, replaceKongNameWithKrusha
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Patching.UpdateHints import UpdateHint
+from randomizer.Lists.WrinklyHints import UpdateHint
 
 boss_names = {
     Maps.JapesBoss: "Army Dillo 1",
@@ -87,6 +87,9 @@ def convert_hint_door_name_to_full_name(hint_door_name):
     # Map short kong names to full names
     kong_name_mapping = {"DK": "Donkey", "Donkey": "Donkey", "Diddy": "Diddy", "Lanky": "Lanky", "Tiny": "Tiny", "Chunky": "Chunky"}
 
+    # Map hint system level names to client expected level names
+    level_name_mapping = {"Fungi": "Forest"}
+
     parts = hint_door_name.split()
     if len(parts) >= 2:
         level_name = parts[0]  # e.g., "Japes", "Aztec", "Castle"
@@ -94,6 +97,9 @@ def convert_hint_door_name_to_full_name(hint_door_name):
 
         # Convert short kong name to full name
         full_kong_name = kong_name_mapping.get(kong_name, kong_name)
+
+        # Convert Forest name
+        level_name = level_name_mapping.get(level_name, level_name)
 
         # Construct the full hint door name
         full_name = f"{level_name} {full_kong_name} Hint Door"
@@ -118,7 +124,7 @@ def CompileArchipelagoHints(world, hint_data: list):
 
     # Variables
     hints_remaining = 35  # Keep count how many hints we placed
-    hintset.hints = []  # The hints we compile
+    compiled_hints = []  # The hints we compile
     hint_locations_used = []  # Track which hint locations are used for mapping
     woth_duplicates = []
     kong_locations = hint_data["kong"]
@@ -129,21 +135,21 @@ def CompileArchipelagoHints(world, hint_data: list):
     already_hinted = kong_locations + key_locations
     hint_location_pairs = []
     krool_hint = parseKRoolHint(world)
-    hintset.hints.append(krool_hint)
+    compiled_hints.append(krool_hint)
     hint_location_pairs.append((krool_hint, None))  # K. Rool hints don't have a specific location
     hints_remaining -= 1
 
     # Kong hints
     for kong_loc in kong_locations:
         kong_hint = parseKongHint(world, kong_loc)
-        hintset.hints.append(kong_hint)
+        compiled_hints.append(kong_hint)
         hint_location_pairs.append((kong_hint, kong_loc))
         hints_remaining -= 1
 
     # Key hints
     for key_loc in key_locations:
         key_hint = parseKeyHint(world, key_loc)
-        hintset.hints.append(key_hint)
+        compiled_hints.append(key_hint)
         hint_location_pairs.append((key_hint, key_loc))
         hints_remaining -= 1
 
@@ -154,7 +160,7 @@ def CompileArchipelagoHints(world, hint_data: list):
     for woth_loc in woth_locations:
         already_hinted.append(woth_loc)
         this_hint = parseWothHint(world, woth_loc)
-        hintset.hints.append(this_hint)
+        compiled_hints.append(this_hint)
         hint_location_pairs.append((this_hint, None))
         woth_duplicates.append(this_hint)
         hints_remaining -= 1
@@ -165,7 +171,7 @@ def CompileArchipelagoHints(world, hint_data: list):
     major_locations = world.spoiler.settings.random.sample(major_locations, major_count)
     for major_loc in major_locations:
         major_hint = parseMajorItemHint(world, major_loc)
-        hintset.hints.append(major_hint)
+        compiled_hints.append(major_hint)
         hint_location_pairs.append((major_hint, major_loc))
         hints_remaining -= 1
 
@@ -174,14 +180,14 @@ def CompileArchipelagoHints(world, hint_data: list):
     deep_locations = world.spoiler.settings.random.sample(deep_locations, deep_count)
     for deep_loc in deep_locations:
         deep_hint = parseDeepHint(world, deep_loc)
-        hintset.hints.append(deep_hint)
+        compiled_hints.append(deep_hint)
         hint_location_pairs.append((deep_hint, deep_loc))
         hints_remaining -= 1
 
     # Woth hint duplicates as needed
     while hints_remaining > 0 and len(woth_duplicates) > 0:
         duplicate_hint = woth_duplicates.pop()
-        hintset.hints.append(duplicate_hint)
+        compiled_hints.append(duplicate_hint)
         hint_location_pairs.append((duplicate_hint, None))  # Duplicates don't need location mapping
         hints_remaining -= 1
 
@@ -191,7 +197,7 @@ def CompileArchipelagoHints(world, hint_data: list):
         print("Not enough hints. Please wait. stage_generate_output might be crashing.")
         while hints_remaining > 0:
             filler_hint = "no hint, sorry...".upper()
-            hintset.hints.append(filler_hint)
+            compiled_hints.append(filler_hint)
             hint_location_pairs.append((filler_hint, None))  # Filler hints don't have locations
             hints_remaining -= 1
 
@@ -232,7 +238,7 @@ def CompileArchipelagoHints(world, hint_data: list):
                     # Fallback if import fails - hints will not work but generation can continue
                     pass
 
-    UpdateSpoilerHintList(world.spoiler, hintset)
+    world.spoiler.hintset = hintset
 
     # Store the hint location mapping in the world for use in slot_data
     world.hint_location_mapping = hint_location_mapping

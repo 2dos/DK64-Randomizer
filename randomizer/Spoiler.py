@@ -53,6 +53,7 @@ from randomizer.Lists.Minigame import (
 )
 from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector
 from randomizer.Lists.EnemyTypes import EnemySelector, enemy_location_list
+from randomizer.Lists.WrinklyHints import HintSet
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
@@ -154,11 +155,7 @@ class Spoiler:
                     master_moves = [{"move_type": None}]
             self.move_data.append(master_moves)
 
-        self.hint_list = {}
-        self.short_hint_list = {}
-        self.tied_hint_locations = {}
-        self.show_tied_info_on_log = {}
-        self.tied_hint_items = {}
+        self.hintset = HintSet()
         self.tied_hint_flags = {}
         self.tied_hint_regions = [HintRegion.NoRegion] * 35
         self.settings.finalize_world_settings(self)
@@ -1098,11 +1095,11 @@ class Spoiler:
                 filtered_hint = filtered_hint.replace("\x0d", "")
                 human_microhints[name] = filtered_hint
             humanspoiler["Direct Item Hints"] = human_microhints
-        if len(self.hint_list) > 0:
+        if len(self.hintset.hints) > 0:
             human_hint_list = {}
             # Here it filters out the coloring from the hints to make it actually readable in the spoiler log
-            for name, hint in self.hint_list.items():
-                filtered_hint = hint.replace("\x04", "")
+            for hint_info in self.hintset.hints:
+                filtered_hint = hint_info.hint.replace("\x04", "")
                 filtered_hint = filtered_hint.replace("\x05", "")
                 filtered_hint = filtered_hint.replace("\x06", "")
                 filtered_hint = filtered_hint.replace("\x07", "")
@@ -1112,11 +1109,12 @@ class Spoiler:
                 filtered_hint = filtered_hint.replace("\x0b", "")
                 filtered_hint = filtered_hint.replace("\x0c", "")
                 filtered_hint = filtered_hint.replace("\x0d", "")
-                human_hint_list[name] = filtered_hint
-                if name in self.tied_hint_locations:
-                    if self.tied_hint_locations[name] is not None:
-                        if self.show_tied_info_on_log[name]:
-                            human_hint_list[name] += f" | (Hinting towards: {self.tied_hint_items[name]} at {self.tied_hint_locations[name]})"
+                human_hint_list[hint_info.name] = filtered_hint
+                if hint_info.related_location is not None:
+                    location = self.LocationList[hint_info.related_location]
+                    if location.item is not None and location.item != Items.NoItem and not (hint_info.related_location in TrainingBarrelLocations or hint_info.related_location in PreGivenLocations):
+                        item = ItemList[location.item]
+                        human_hint_list[hint_info.name] += f" | (Hinting towards: {item.name} at {location.name})"
             humanspoiler["Wrinkly Hints"] = human_hint_list
             # humanspoiler["Unhinted Score"] = self.unhinted_score
             # humanspoiler["Potentially Awful Locations"] = {}

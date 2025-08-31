@@ -1,7 +1,6 @@
 """Update wrinkly hints compressed file."""
 
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Lists.WrinklyHints import HintLocation, global_hints
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, grabText, writeText, CompTextFiles, writeRawFile
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.ASMPatcher import writeItemReferenceFlags
@@ -227,66 +226,20 @@ def writeWrinklyHints(ROM_COPY: LocalROM, table_index: int, file_index: int, tex
     writeRawFile(table_index, file_index, compressed, bytearray(data), ROM_COPY)
 
 
-def UpdateHint(WrinklyHint: HintLocation, message: str):
-    """Update the wrinkly hint with the new string.
-
-    Args:
-        WrinklyHint (Hint): Wrinkly hint object.
-        message (str): Hint message to write.
-    """
-    # Seek to the wrinkly data
-    if len(message) <= 914:
-        # We're safely below the character limit
-        WrinklyHint.hint = message
-        return True
-    else:
-        raise Exception("Hint message is longer than allowed.")
-    return False
-
-
-def updateRandomHint(random, message: str, kongs_req=[], keywords=[], levels=[]):
-    """Update a random hint with the string specifed.
-
-    Args:
-        message (str): Hint message to write.
-    """
-    hint_pool = []
-    for x in range(len(global_hints)):
-        if global_hints[x].hint == "" and global_hints[x].kong in kongs_req and global_hints[x].level in levels:
-            is_banned = False
-            for banned in global_hints[x].banned_keywords:
-                if banned in keywords:
-                    is_banned = True
-            if not is_banned:
-                hint_pool.append(x)
-    if len(hint_pool) > 0:
-        selected = random.choice(hint_pool)
-        return UpdateHint(global_hints[selected], message)
-    return False
-
-
 def PushHints(spoiler, ROM_COPY: LocalROM):
     """Update the ROM with all hints."""
     hint_arr = []
     short_hint_arr = []
-    for replacement_hint in spoiler.hint_list.values():
-        if replacement_hint == "":
-            replacement_hint = "error: missing hint - report this error to the discord"
-        hint_arr.append([replacement_hint.upper()])
-    for short_hint in spoiler.short_hint_list.values():
-        if short_hint == "":
-            short_hint = "error: missing hint - report this error to the discord"
-        short_hint_arr.append([short_hint.upper()])
+    for hint_info in spoiler.hintset.hints:
+        if hint_info.hint == "":
+            hint_info.hint = "error: missing hint - report this error to the discord"
+        hint_arr.append([hint_info.hint.upper()])
+        if hint_info.short_hint is None:
+            hint_info.short_hint = hint_info.hint
+        short_hint_arr.append([hint_info.short_hint.upper()])
     writeWrinklyHints(ROM_COPY, TableNames.Unknown6, CompTextFiles.Wrinkly & 0x3F, hint_arr, True)
     writeFastHints(ROM_COPY, TableNames.Unknown6, CompTextFiles.WrinklyShort & 0x3F, short_hint_arr[1:], True)
-    spoiler.hint_list.pop("First Time Talk")  # The FTT needs to be written to the ROM but should not be found in the spoiler log
-
-
-def wipeHints():
-    """Wipe the hint block."""
-    for x in range(len(global_hints)):
-        if global_hints[x].kong != Kongs.any:
-            global_hints[x].hint = ""
+    spoiler.hintset.RemoveFTT()  # The FTT needs to be written to the ROM but should not be found in the spoiler log
 
 
 def PushItemLocations(spoiler, ROM_COPY: LocalROM):
