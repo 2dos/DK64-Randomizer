@@ -225,18 +225,9 @@ float getOscillationDelta(void) {
 }
 
 void loadHooks(void) {
-	for (int i = 0; i < 5; i++) {
-		if (Rando.kong_models[i] == KONGMODEL_KRUSHA) {
-			loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
-			loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
-			break;
-		}
-	}
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
 	}
-	loadSingularHook(0x8061A4C8, &AlterHeadSize);
-	loadSingularHook(0x806198D4, &AlterHeadSize_0);
 }
 
 void initHack(int source) {

@@ -171,6 +171,8 @@ def krushaChanges(ROM_COPY: LocalROM, settings, offset_dict: dict):
                 writeValue(ROM_COPY, 0x8074E85C + (4 * kong_index), Overlay.Static, 6, offset_dict, 4)
             else:
                 writeValue(ROM_COPY, 0x8074E85C + (4 * kong_index), Overlay.Static, 7, offset_dict, 4)
+            writeHook(ROM_COPY, 0x806F97B8, Overlay.Static, "FixKrushaAmmoHUDColor", offset_dict)
+            writeHook(ROM_COPY, 0x806F97E8, Overlay.Static, "FixKrushaAmmoHUDSize", offset_dict)
             if kong_index == Kongs.donkey:
                 writeValue(ROM_COPY, 0x806F0AFE, Overlay.Static, 0, offset_dict)  # Remove gun from hands in Tag Barrel
                 writeValue(ROM_COPY, 0x806F0AF0, Overlay.Static, 0x24050001, offset_dict, 4)  # Fix Hand State

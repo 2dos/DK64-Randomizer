@@ -1553,18 +1553,10 @@ void exitBoss(void) {
 	initiateTransition(MAP_TROFFNSCOFF, 2);
 }
 
+static const unsigned char krusha_adj_models[] = {KONGMODEL_KRUSHA, KONGMODEL_KROOL_CUTSCENE, KONGMODEL_KROOL_FIGHT};
 int isKrushaAdjacentModel(int kong) {
 	custom_kong_models slot_value = Rando.kong_models[kong];
-	if (slot_value == KONGMODEL_KRUSHA) {
-		return 1;
-	}
-	if (slot_value == KONGMODEL_KROOL_CUTSCENE) {
-		return 1;
-	}
-	if (slot_value == KONGMODEL_KROOL_FIGHT) {
-		return 1;
-	}
-	return 0;
+	return inU8List(slot_value, &krusha_adj_models, 3);
 }
 
 int isGlobalCutscenePlaying(int cutscene_index) {

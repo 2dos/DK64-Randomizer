@@ -628,6 +628,8 @@ def patchAssembly(ROM_COPY, spoiler):
 
     adjustKongModelHandlers(ROM_COPY, settings, offset_dict)
     krushaChanges(ROM_COPY, settings, offset_dict)
+    writeHook(ROM_COPY, 0x8061A4C8, Overlay.Static, "AlterHeadSize", offset_dict)
+    writeHook(ROM_COPY, 0x806198D4, Overlay.Static, "AlterHeadSize_0", offset_dict)
 
     writeHook(ROM_COPY, 0x8063EE08, Overlay.Static, "InstanceScriptCheck", offset_dict)
     writeHook(ROM_COPY, 0x806FF384, Overlay.Static, "ModifyCameraColor", offset_dict)
