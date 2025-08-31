@@ -5,7 +5,7 @@ from randomizer.CompileHints import HintSet, replaceKongNameWithKrusha
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Patching.UpdateHints import UpdateHint
+from randomizer.Lists.WrinklyHints import UpdateHint
 
 boss_names = {
     Maps.JapesBoss: "Army Dillo 1",
