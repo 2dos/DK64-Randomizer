@@ -2302,7 +2302,7 @@ def compileHints(spoiler: Spoiler) -> bool:
 
     # Dim hints - these are only useful (and doable) if item rando is on
     if spoiler.settings.dim_solved_hints and spoiler.settings.shuffle_items:
-        AssociateHintsWithFlags(spoiler)
+        AssociateHintsWithFlags(spoiler, hintset)
 
     return True
 
