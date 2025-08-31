@@ -1374,6 +1374,7 @@ colorblind_changes = [
     [0x1484, 0x1484],  # Star Flare
     [0xBAD, 0xBAE],  # Green Slam Switches
     [0xD01, 0xD02],  # Blue Slam Switches
+    [0x12E1, 0x12E5],  # BBB Images
 ]
 
 file_dict.append(
