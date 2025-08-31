@@ -626,6 +626,11 @@ def patching_response(spoiler):
         for x in range(7):  # Shouldn't need index 8 since Helm has no slam switches in it
             ROM_COPY.seek(sav + 0x104 + x)
             ROM_COPY.write(spoiler.settings.switch_allocation[x])
+    # Dartboard order
+    ROM_COPY.seek(sav + 0x173)
+    for x in range(6):
+        ROM_COPY.writeMultipleBytes(spoiler.settings.dartboard_order[x], 1)
+
     ROM_COPY.seek(sav + 0x060)
     for x in spoiler.settings.medal_cb_req_level:
         ROM_COPY.writeMultipleBytes(x, 1)

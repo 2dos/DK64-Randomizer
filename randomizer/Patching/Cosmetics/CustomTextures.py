@@ -47,6 +47,7 @@ def getImageShrink(im_f, width: int, height: int):
     im_new.paste(im_f, (dw, dh), im_f)
     return im_new
 
+
 def getImageChunk(im_f, width: int, height: int):
     """Get an image chunk based on a width and height."""
     width_height_ratio = width / height
@@ -579,6 +580,7 @@ def writeCustomArcadeSprites(settings: Settings, ROM_COPY: ROM) -> None:
         image = Image.open(BytesIO(bytes(file[0])))
         image = image.convert("RGBA")
         writeColorImageToAddress(image, addr, sprite_set.common_width, sprite_set.common_height, False, TextureFormat.RGBA5551, ROM_COPY, False, 2 * sprite_set.common_width * sprite_set.common_height)
+
 
 def writeCustomReels(settings: Settings, ROM_COPY: ROM) -> None:
     """Write custom painting files to ROM."""

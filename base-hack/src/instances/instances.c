@@ -213,6 +213,7 @@
 #define FACTORY_CRUSHER_4 0x4
 
 static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
+static const unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
@@ -907,6 +908,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							}
 						}
 						return 0;
+					} else if (index < 12) {
+						int img_index = Rando.dartboard_order[index - 6];
+						displayImageOnObject(id, 1, dartboard_images[img_index], 0);
 					}
 				} else if (param2 == FACTORY_LARGEMETALSECTION) {
 					if (Rando.quality_of_life.vanilla_fixes) {

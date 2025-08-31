@@ -45,6 +45,7 @@ CROSSHAIRS = {
     ColorblindMode.trit: ColorBlindCrosshair(0xC72020, 0xFFFFFF, 0x13C4D8),
 }
 
+
 def modelCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
     """Write cosmetic options related to models."""
     writeValue(ROM_COPY, 0x8075F602, Overlay.Static, settings.caves_tomato_model + 1, offset_dict)

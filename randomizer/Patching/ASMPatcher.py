@@ -468,6 +468,7 @@ def writeActorHealth(ROM_COPY, actor_index: int, new_health: int):
     start = getSym("actor_health_damage") + (4 * actor_index)
     writeValue(ROM_COPY, start, Overlay.Custom, new_health, {})
 
+
 def disableDynamicReverb(ROM_COPY: ROM):
     """Disable the dynamic FXMix (Reverb) that would otherwise be applied in tunnels and underwater."""
     for index in range(1, 175):

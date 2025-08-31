@@ -115,25 +115,24 @@ def adjustKongModelHandlers(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeFunction(ROM_COPY, 0x806F77EC, Overlay.Static, "pullOutGunHandler", offset_dict)
     writeLabelValue(ROM_COPY, 0x80746D90, Overlay.Static, "pullOutGunHandler", offset_dict)
 
+
 def updateActorFunction(ROM_COPY, actor_index: int, new_function_sym: str):
     """Update the actor function in the table based on a sym value."""
     start = getSym("actor_functions") + (4 * actor_index)
     writeLabelValue(ROM_COPY, start, Overlay.Custom, new_function_sym, {})
+
 
 def updateActorFunctionInt(ROM_COPY, actor_index: int, new_function: int):
     """Update the actor function in the table based on a int value."""
     start = getSym("actor_functions") + (4 * actor_index)
     writeValue(ROM_COPY, start, Overlay.Custom, new_function, {}, 4)
 
+
 ORANGE_GUN_SFX = 400
 ORANGE_GUN_VARIANCE = 5
-KONG_PELLETS = [
-    48,
-    36,
-    42,
-    43,
-    38
-]
+KONG_PELLETS = [48, 36, 42, 43, 38]
+
+
 def krushaChanges(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """Coding changes relevant for Krusha."""
     # These would normally reside in Cosmetic.py, but Krusha is a non-cosmetic model swap, so it has to reside in here
