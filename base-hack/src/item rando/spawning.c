@@ -14,8 +14,9 @@ typedef struct actorSpawnStruct {
     float spawn_type;
     float unk0;
     float flag;
-    float item_level;
-    float item_kong;
+    unsigned char item_type;  // Non-standard, but just to prevent float conversion issues
+    unsigned char item_level;  // Non-standard, but just to prevent float conversion issues
+    unsigned char item_kong;  // Non-standard, but just to prevent float conversion issues
 } actorSpawnStruct;
 
 void spawnActorWithFlagHandler(int object, float x, float y, float z, int unk0, int spawn_type, int flag, int unk1, int item_level, int item_kong) {
@@ -27,6 +28,7 @@ void spawnActorWithFlagHandler(int object, float x, float y, float z, int unk0, 
     data.spawn_type = spawn_type;
     data.unk0 = unk0;
     data.flag = flag;
+    data.item_type = 0;
     data.item_level = item_level;
     data.item_kong = item_kong;
     spawnActorSpawnerContainer(object, x, y, z, 0, *(int*)(&temp), unk1, &data);

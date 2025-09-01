@@ -31,7 +31,7 @@ extern void applyPaperMode(void);
 
 extern void resolveBonusContainer(void);
 
-extern int getEnemyItem(int id);
+extern enemy_item_db_item *getEnemyItem(int id);
 extern int getEnemyFlag(int id);
 extern void setEnemyDBPopulation(int value);
 extern void populateEnemyMapData(void);
@@ -254,8 +254,9 @@ extern void spawnEnemyDrops(actorData* actor);
 extern void finalizeBeatGame(void);
 extern void exitTrapBubbleController(void);
 
+extern void spawnActorWithFlagHandler(int object, float x, float y, float z, int unk0, int spawn_type, int flag, int unk1, int item_level, int item_kong);
+
 extern int getFlagIndex_Corrected(int start, int level);
-extern int getBPItem(int index);
 extern int getCrownIndex(maps map);
 extern int getKeyIndex(int old_flag);
 extern void PotionCode(void);

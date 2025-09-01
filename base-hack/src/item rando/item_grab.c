@@ -641,47 +641,9 @@ void handleModelTwoOpacity(short object_type, unsigned char* unk0, short* opacit
 }
 
 void getFlagMappingData(int index, char *level, char *kong) {
-    int id = getObjectID(index);
-    int flag = -1;
-    for (int i = 0; i < sizeof(new_flag_mapping)/sizeof(GBDictItem); i++) {
-        if (new_flag_mapping[i].map == CurrentMap) {
-            if (new_flag_mapping[i].model2_id == id) {
-                flag = new_flag_mapping[i].flag_index;
-                break;
-            }
-        }
-    }
-    if (flag == -1) {
-        // Check actor spawned flag mapping
-        for (int i = 0; i < 24; i++) {
-            if (actorSpawnedFlagMapping[i].map == CurrentMap) {
-                if (actorSpawnedFlagMapping[i].model2_id == id) {
-                    flag = actorSpawnedFlagMapping[i].flag_index;
-                    break;
-                }
-            }
-        }
-    }
-    if (flag != -1) {
-        // Check ItemIdentifier
-        int limit = sizeof(ItemIdentifier)/sizeof(ItemIdentifierStruct);
-        int i = 0;
-        while (1) {
-            int input_flag = ItemIdentifier[i].input_flag;
-            if (ItemIdentifier[i].input_flag == flag) {
-                *level = ItemIdentifier[i].level;
-                *kong = ItemIdentifier[i].kong;
-                return;
-            }
-            if (input_flag == -1) {
-                return;
-            }
-            i++;
-            if (i >= limit) {
-                return;
-            }
-        }
-    }
+    int om2_index = indexOfNextObj(index);
+    *level = ObjectModel2Pointer[om2_index].unk_8D[1];
+    *kong = ObjectModel2Pointer[om2_index].unk_8D[2];
 }
 
 void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index) {
@@ -866,7 +828,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x2A1:
         case 0x2A4:
         case 0x2A5:
-            giveItem(REQITEM_ICETRAP, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            giveItem(REQITEM_ICETRAP, item_level, item_kong, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
         case 0x27E:
         case 0x289:

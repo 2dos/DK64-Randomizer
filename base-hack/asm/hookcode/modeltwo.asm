@@ -60,3 +60,31 @@ WriteDefaultShopBone:
     lwc1 $f0, 0x0 ($t9)
     j 0x8063366C
     swc1 $f0, 0x0 ($a3)
+
+SetupModelTwoHandler:
+    addu $t0, $t9, $s0
+    swc1 $f16, 0x10 ($t0)
+    lbu $t1, 0x10 ($s1)
+    sb $t1, 0x8D ($t0)
+    lbu $t1, 0x11 ($s1)
+    sb $t1, 0x8E ($t0)
+    lbu $t1, 0x12 ($s1)
+    j 0x80632204
+    sb $t1, 0x8F ($t0)
+
+ActorToModelTwoHandler:
+    addu $a2, $t9, $t0
+    ; Parse actor
+    lw $a1, 0x124 ($s2)  ; Load actor extra data
+    beqz $a1, ActorToModelTwoHandler_finish
+    nop
+    lbu $a3, 0xC ($a1)
+    sb $a3, 0x8D ($a2)
+    lbu $a3, 0xD ($a1)
+    sb $a3, 0x8E ($a2)
+    lbu $a3, 0xE ($a1)
+    sb $a3, 0x8F ($a2)
+    
+    ActorToModelTwoHandler_finish:
+        j 0x806F792C
+        addiu $a2, $a2, 0x8C

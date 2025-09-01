@@ -2022,6 +2022,9 @@ def patchAssembly(ROM_COPY, spoiler):
 
     writeLabelValue(ROM_COPY, 0x80748088, Overlay.Static, "CrownDoorCheck", offset_dict)  # Update check on Crown Door
 
+    writeHook(ROM_COPY, 0x806321FC, Overlay.Static, "SetupModelTwoHandler", offset_dict)  # Setup transfer for model 2
+    writeHook(ROM_COPY, 0x806F7924, Overlay.Static, "ActorToModelTwoHandler", offset_dict)  # Actor transfer for model 2
+
     # Fast Start: Beginning of game
     if settings.fast_start_beginning_of_game:
         writeValue(ROM_COPY, 0x80714540, Overlay.Static, 0, offset_dict, 4)

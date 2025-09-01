@@ -12,46 +12,46 @@
 
 actor_spawn_packet bp_item_table[40] = {
     // Kasplat Rewards
-    {.actor = 78},
-    {.actor = 75},
-    {.actor = 77},
-    {.actor = 79},
-    {.actor = 76},
-    {.actor = 78},
-    {.actor = 75},
-    {.actor = 77},
-    {.actor = 79},
-    {.actor = 76},
-    {.actor = 78},
-    {.actor = 75},
-    {.actor = 77},
-    {.actor = 79},
-    {.actor = 76},
-    {.actor = 78},
-    {.actor = 75},
-    {.actor = 77},
-    {.actor = 79},
-    {.actor = 76},
-    {.actor = 78},
-    {.actor = 75},
-    {.actor = 77},
-    {.actor = 79},
-    {.actor = 76},
-    {.actor = 78},
-    {.actor = 75},
-    {.actor = 77},
-    {.actor = 79},
-    {.actor = 76},
-    {.actor = 78},
-    {.actor = 75},
-    {.actor = 77},
-    {.actor = 79},
-    {.actor = 76},
-    {.actor = 78},
-    {.actor = 75},
-    {.actor = 77},
-    {.actor = 79},
-    {.actor = 76},
+    {.actor = 78, .item_level=0, .item_kong=KONG_DK},
+    {.actor = 75, .item_level=0, .item_kong=KONG_DIDDY},
+    {.actor = 77, .item_level=0, .item_kong=KONG_LANKY},
+    {.actor = 79, .item_level=0, .item_kong=KONG_TINY},
+    {.actor = 76, .item_level=0, .item_kong=KONG_CHUNKY},
+    {.actor = 78, .item_level=1, .item_kong=KONG_DK},
+    {.actor = 75, .item_level=1, .item_kong=KONG_DIDDY},
+    {.actor = 77, .item_level=1, .item_kong=KONG_LANKY},
+    {.actor = 79, .item_level=1, .item_kong=KONG_TINY},
+    {.actor = 76, .item_level=1, .item_kong=KONG_CHUNKY},
+    {.actor = 78, .item_level=2, .item_kong=KONG_DK},
+    {.actor = 75, .item_level=2, .item_kong=KONG_DIDDY},
+    {.actor = 77, .item_level=2, .item_kong=KONG_LANKY},
+    {.actor = 79, .item_level=2, .item_kong=KONG_TINY},
+    {.actor = 76, .item_level=2, .item_kong=KONG_CHUNKY},
+    {.actor = 78, .item_level=3, .item_kong=KONG_DK},
+    {.actor = 75, .item_level=3, .item_kong=KONG_DIDDY},
+    {.actor = 77, .item_level=3, .item_kong=KONG_LANKY},
+    {.actor = 79, .item_level=3, .item_kong=KONG_TINY},
+    {.actor = 76, .item_level=3, .item_kong=KONG_CHUNKY},
+    {.actor = 78, .item_level=4, .item_kong=KONG_DK},
+    {.actor = 75, .item_level=4, .item_kong=KONG_DIDDY},
+    {.actor = 77, .item_level=4, .item_kong=KONG_LANKY},
+    {.actor = 79, .item_level=4, .item_kong=KONG_TINY},
+    {.actor = 76, .item_level=4, .item_kong=KONG_CHUNKY},
+    {.actor = 78, .item_level=5, .item_kong=KONG_DK},
+    {.actor = 75, .item_level=5, .item_kong=KONG_DIDDY},
+    {.actor = 77, .item_level=5, .item_kong=KONG_LANKY},
+    {.actor = 79, .item_level=5, .item_kong=KONG_TINY},
+    {.actor = 76, .item_level=5, .item_kong=KONG_CHUNKY},
+    {.actor = 78, .item_level=6, .item_kong=KONG_DK},
+    {.actor = 75, .item_level=6, .item_kong=KONG_DIDDY},
+    {.actor = 77, .item_level=6, .item_kong=KONG_LANKY},
+    {.actor = 79, .item_level=6, .item_kong=KONG_TINY},
+    {.actor = 76, .item_level=6, .item_kong=KONG_CHUNKY},
+    {.actor = 78, .item_level=7, .item_kong=KONG_DK},
+    {.actor = 75, .item_level=7, .item_kong=KONG_DIDDY},
+    {.actor = 77, .item_level=7, .item_kong=KONG_LANKY},
+    {.actor = 79, .item_level=7, .item_kong=KONG_TINY},
+    {.actor = 76, .item_level=7, .item_kong=KONG_CHUNKY},
 };
 item_packet medal_item_table[85] = {
     // Medal Rewards
@@ -154,14 +154,14 @@ actor_spawn_packet crown_item_table[10] = {
 };
 actor_spawn_packet key_item_table[8] = {
     // Boss Rewards
-    {.actor = 72},
-    {.actor = 72},
-    {.actor = 72},
-    {.actor = 72},
-    {.actor = 72},
-    {.actor = 72},
-    {.actor = 72},
-    {.actor = 72},
+    {.actor = 72, .item_level=0},
+    {.actor = 72, .item_level=1},
+    {.actor = 72, .item_level=2},
+    {.actor = 72, .item_level=3},
+    {.actor = 72, .item_level=4},
+    {.actor = 72, .item_level=5},
+    {.actor = 72, .item_level=6},
+    {.actor = 72, .item_level=7},
 };
 model_item_data fairy_item_table[20] = {
     // Fairy Rewards
@@ -359,17 +359,6 @@ item_packet company_coin_table[2] = {
     {.item_type = REQITEM_COMPANYCOIN, .kong = 0}, // Nintendo Coin
     {.item_type = REQITEM_COMPANYCOIN, .kong = 1}, // Rareware Coin
 };
-
-int getBPItem(int index) {
-    /**
-     * @brief Get Blueprint item from kasplat index
-     * 
-     * @param index Kasplat Index: (5 * level) + kong
-     * 
-     * @return Actor Index of the reward
-     */
-	return bp_item_table[index].actor;
-}
 
 int getCrownIndex(maps map) {
     /**

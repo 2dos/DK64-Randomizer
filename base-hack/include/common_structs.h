@@ -725,13 +725,6 @@ typedef struct main_menu_moves_struct {
 	/* 0x007 */ char melons;
 } main_menu_moves_struct;
 
-typedef struct item_packet {
-	/* 0x000 */ unsigned char item_type;
-	/* 0x001 */ unsigned char level;
-	/* 0x002 */ unsigned char kong;
-	/* 0x003 */ unsigned char audiovisual_index;
-} item_packet;
-
 typedef struct giveItemConfig {
 	unsigned char display_item_text : 1;
 	unsigned char apply_helm_hurry : 1;
@@ -739,12 +732,6 @@ typedef struct giveItemConfig {
 	unsigned char apply_ice_trap : 1;
 	unsigned char force_display_item_text : 1;
 } giveItemConfig;
-
-typedef struct purchase_struct {
-	/* 0x000 */ item_packet item;
-	/* 0x004 */ char pad;
-	/* 0x005 */ unsigned char price;
-} purchase_struct;
 
 typedef struct race_exit_struct {
 	/* 0x000 */ int race_map;
@@ -842,13 +829,6 @@ typedef struct charspawner_flagstruct {
 	/* 0x004 */ short tied_flag;
 	/* 0x006 */ char unk_06[2];
 } charspawner_flagstruct;
-
-typedef struct model_item_data {
-	/* 0x000 */ short model;
-	/* 0x002 */ char has_no_textures;
-	/* 0x003 */ char pad;
-	/* 0x004 */ item_packet item;
-} model_item_data;
 
 typedef struct GBDictItem {
 	/* 0x000 */ unsigned char map;
@@ -1686,22 +1666,6 @@ typedef struct Chunk {
 	/* 0x04C */ ChunkSub* color_pointer;
 	/* 0x050 */ char unk50[0x1C8-0x50];
 } Chunk;
-
-typedef struct enemy_item_memory_item {
-	/* 0x000 */ unsigned short actor;
-	/* 0x002 */ unsigned short flag;
-} enemy_item_memory_item;
-
-typedef struct enemy_item_rom_item {
-	/* 0x000 */ unsigned char map;
-	/* 0x001 */ unsigned char char_spawner_id;
-	/* 0x002 */ unsigned short actor;
-} enemy_item_rom_item;
-
-typedef struct enemy_item_db_item {
-	/* 0x000 */ enemy_item_memory_item spawn;
-	/* 0x004 */ unsigned short global_index;
-} enemy_item_db_item;
 
 typedef struct drop_item {
     /* 0x000 */ short source_object;
