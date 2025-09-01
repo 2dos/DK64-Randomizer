@@ -105,11 +105,6 @@ SHOPKEEPERS = (
     CustomActors.CandyItem,
     CustomActors.SnideItem,
 )
-TRAPS = (
-    CustomActors.IceTrapGB,
-    CustomActors.IceTrapBean,
-    CustomActors.IceTrapKey,
-)
 
 
 def getActorDefaultString(input) -> str:
@@ -636,8 +631,9 @@ with open("src/lib_items.c", "w") as fh:
         actor_data = initActor(actor_data, kong, "&KongDropCode", 2, 0, 1, 8, 45)
     for shopkeeper in SHOPKEEPERS:
         actor_data = initActor(actor_data, shopkeeper, "&shopOwnerItemCode", 2, 0, 1, 8, 45)
-    for trap in TRAPS:
-        actor_data = initActor(actor_data, trap, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.IceTrapGB, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.IceTrapBean, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.IceTrapKey, "&FakeKeyCode", 2, 0, 1, 8, 45)
 
     actor_data = initActor(actor_data, CustomActors.Bean, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.Pearl, "&GoldenBananaCode", 2, 0, 1, 8, 45)
@@ -648,12 +644,6 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, CustomActors.HintItemTiny, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.HintItemChunky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.ArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 151, "&FakeGBCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 152, "&FakeGBCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 153, "&FakeGBCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 154, "&FakeKeyCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 155, "&FakeKeyCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 157, "&FakeKeyCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
     actor_data = initActor(actor_data, CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)
