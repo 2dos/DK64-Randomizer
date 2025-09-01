@@ -145,6 +145,24 @@ class DisableCWeight(BaseTrapWeight):
     display_name = "Disable C Trap Weight"
 
 
+class GetOutTrapWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which tells you to Get Out."""
+
+    display_name = "Get Out Trap Weight"
+
+
+class DryTrapWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which removes all of your consumables."""
+
+    display_name = "Dry Trap Weight"
+
+
+class FlipTrapWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which flips the camera."""
+
+    display_name = "Flip Trap Weight"
+
+
 class KroolPhaseCount(Range):
     """Pick how many phases are in the final battle against K. Rool."""
 
@@ -789,6 +807,9 @@ class DK64Options(PerGameCommonOptions):
     disable_b_trap_weight: DisableBWeight
     disable_c_trap_weight: DisableCWeight
     disable_z_trap_weight: DisableZWeight
+    get_out_trap_weight: GetOutTrapWeight
+    dry_trap_weight: DryTrapWeight
+    flip_trap_weight: FlipTrapWeight
     receive_notifications: ReceiveNotifications
     hint_style: HintStyle
     shuffled_bonus_barrels: ShuffledBonusBarrels
@@ -900,6 +921,9 @@ dk64_option_groups: List[OptionGroup] = [
             DisableBWeight,
             DisableCWeight,
             DisableZWeight,
+            GetOutTrapWeight,
+            DryTrapWeight,
+            FlipTrapWeight,
         ],
     ),
     OptionGroup(
