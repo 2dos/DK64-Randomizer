@@ -529,11 +529,11 @@ void handleIceTrapButtons(void) {
                 trap_enabled_buttons |= data->button_btf;
             }
         }
-        if (flip_timer > 0) {
-            flip_timer--;
-            if (flip_timer == 0) {
-                *(unsigned char*)(0x80010520) = 0x3F;
-            }
+    }
+    if (flip_timer > 0) {
+        flip_timer--;
+        if (flip_timer == 0) {
+            *(unsigned char*)(0x80010520) = 0x3F;
         }
     }
 }
