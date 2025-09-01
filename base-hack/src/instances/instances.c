@@ -297,8 +297,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		switch(CurrentMap) {
 			case MAP_GALLEON:
 				{
-					int gate_index = -1;
-					int gate_flag = -1;
+					int gate_flag = 0;
 					switch (param2) {
 						case SEASICK_SHIP:
 							initiateLZRTransition(&Rando.seasick_ship_enter, MAP_GALLEONSEASICKSHIP, 0);
@@ -330,36 +329,29 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							}
 							break;
 						case GALLEON_DK_5DSDOOR:
-							gate_index = 0;
 							gate_flag = GALLEON_5DSOPEN_DK;
 						case GALLEON_DIDDY_5DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 1;
+							if (!gate_flag) {
 								gate_flag = GALLEON_5DSOPEN_DIDDY;
 							}
 						case GALLEON_LANKY_5DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 2;
+							if (!gate_flag) {
 								gate_flag = GALLEON_5DSOPEN_LANKY;
 							}
 						case GALLEON_TINY_5DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 3;
+							if (!gate_flag) {
 								gate_flag = GALLEON_5DSOPEN_TINY;
 							}
 						case GALLEON_CHUNKY_5DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 4;
+							if (!gate_flag) {
 								gate_flag = GALLEON_5DSOPEN_CHUNKY;
 							}
 						case GALLEON_LANKY_2DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 5;
+							if (!gate_flag) {
 								gate_flag = GALLEON_2DSOPEN_LANKY;
 							}
 						case GALLEON_TINY_2DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 6;
+							if (!gate_flag) {
 								gate_flag = GALLEON_2DSOPEN_TINY;
 							}
 							if (index == 0) {

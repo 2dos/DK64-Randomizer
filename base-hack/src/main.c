@@ -195,14 +195,17 @@ void earlyFrame(void) {
 				setFlag(FLAG_KROOL_TOE_1 + i,0,FLAGTYPE_TEMPORARY); // Clear Toes
 			}
 		}
-		int boat_speed = 5000 << (CurrentMap == MAP_GALLEONPUFFTOSS);
+		int boat_speed = 5000;
+		if (CurrentMap == MAP_GALLEONPUFFTOSS)  {
+			boat_speed = 10000;
+		}
 		for (int i = 0; i < 2; i++) {
 			BoatSpeeds[i] = boat_speed;
 		}
 		PauseText = 0;
 		if (isLobby(CurrentMap)) {
 			PauseText = 1;
-		} else if (inShop(CurrentMap, 0)) {
+		} else if (inShop(CurrentMap, 1)) {
 			PauseText = 1;
 		}
 		if (CurrentMap == MAP_HELM) {

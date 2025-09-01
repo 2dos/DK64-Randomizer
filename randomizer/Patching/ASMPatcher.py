@@ -91,6 +91,7 @@ HARDER_CRUSHERS = True
 BOULDERS_DONT_DESTROY = True
 CAN_THROW_KEGS = True
 CAN_THROW_APPLES = True
+DISABLE_LONG_JUMP = False
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -1688,6 +1689,10 @@ def patchAssembly(ROM_COPY, spoiler):
         # Can throw the Apple
         writeValue(ROM_COPY, 0x806E4C94, Overlay.Static, 0, offset_dict, 4)  # Apple (Grounded)
         writeValue(ROM_COPY, 0x806E4D38, Overlay.Static, 0, offset_dict, 4)  # Apple (Non-Grounded)
+
+    if DISABLE_LONG_JUMP:
+        writeFloatUpper(ROM_COPY, 0x806E30E6, Overlay.Static, 8000000, offset_dict)
+        writeValue(ROM_COPY, 0x806D81E4, Overlay.Static, 0, offset_dict, 4)  # Removes a set to 0 for backflips, making them feel better
 
     if settings.shops_dont_cost:
         writeValue(ROM_COPY, 0x8064EA8C, Overlay.Static, 0, offset_dict, 4)  # Remove Arcade Costing Coins
