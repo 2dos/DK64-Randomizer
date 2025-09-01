@@ -162,6 +162,19 @@ def getItemPatchingFromList(list_set: list, item: Items, type_str: str, throw_er
         return None
     return list_set.index(item)
 
+ice_trap_data = [
+    [Items.IceTrapBubble, Items.IceTrapBubbleBean, Items.IceTrapBubbleKey],
+    [Items.IceTrapReverse, Items.IceTrapReverseBean, Items.IceTrapReverseKey],
+    [Items.IceTrapSlow, Items.IceTrapSlowBean, Items.IceTrapSlowKey],
+    [],  # Super Bubble
+    [Items.IceTrapDisableA, Items.IceTrapDisableABean, Items.IceTrapDisableAKey],
+    [Items.IceTrapDisableB, Items.IceTrapDisableBBean, Items.IceTrapDisableBKey],
+    [Items.IceTrapDisableZ, Items.IceTrapDisableZBean, Items.IceTrapDisableZKey],
+    [Items.IceTrapDisableCU, Items.IceTrapDisableCUBean, Items.IceTrapDisableCUKey],
+    [Items.IceTrapGetOutGB, Items.IceTrapGetOutBean, Items.IceTrapGetOutKey],
+    [Items.IceTrapDryGB, Items.IceTrapDryBean, Items.IceTrapDryKey],
+    [Items.IceTrapFlipGB, Items.IceTrapFlipBean, Items.IceTrapFlipKey],
+]
 
 def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
     """Get the data associated with how an item is patched into ROM from various attributes."""
@@ -191,27 +204,9 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
         key_index = getItemPatchingFromList(ItemPool.Keys(), item, "Key")
         return ItemPatchingInfo(6, key_index)
     elif item_type == Types.FakeItem:
-        idx_lst = [Items.IceTrapBubble, Items.IceTrapBubbleBean, Items.IceTrapBubbleKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, idx_lst.index(item), 1)
-        idx_lst = [Items.IceTrapReverse, Items.IceTrapReverseBean, Items.IceTrapReverseKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, idx_lst.index(item), 2)
-        idx_lst = [Items.IceTrapSlow, Items.IceTrapSlowBean, Items.IceTrapSlowKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, idx_lst.index(item), 3)
-        idx_lst = [Items.IceTrapDisableA, Items.IceTrapDisableABean, Items.IceTrapDisableAKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, idx_lst.index(item), 5)
-        idx_lst = [Items.IceTrapDisableB, Items.IceTrapDisableBBean, Items.IceTrapDisableBKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, idx_lst.index(item), 6)
-        idx_lst = [Items.IceTrapDisableZ, Items.IceTrapDisableZBean, Items.IceTrapDisableZKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, idx_lst.index(item), 7)
-        idx_lst = [Items.IceTrapDisableCU, Items.IceTrapDisableCUBean, Items.IceTrapDisableCUKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, idx_lst.index(item), 8)
+        for effect_index, idx_lst in enumerate(ice_trap_data):
+            if item in idx_lst:
+                return ItemPatchingInfo(13, idx_lst.index(item), effect_index + 1)
         raise Exception("Ice Trap Type provided, but invalid Ice Trap item provided resulting in search mismatch")
     elif item_type == Types.Blueprint:
         bp_index = getItemPatchingFromList(ItemPool.Blueprints(), item, "BP")

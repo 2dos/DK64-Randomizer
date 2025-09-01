@@ -198,6 +198,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             DK64RItems.IceTrapDisableB,
             DK64RItems.IceTrapDisableCU,
             DK64RItems.IceTrapDisableZ,
+            DK64RItems.IceTrapGetOutGB,
+            DK64RItems.IceTrapDryGB,
+            DK64RItems.IceTrapFlipGB,
         ]:
             classification = ItemClassification.trap
         elif item.type == DK64RTypes.Key:

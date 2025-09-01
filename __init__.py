@@ -1095,6 +1095,9 @@ if baseclasses_loaded:
                                     DK64RItems.IceTrapDisableB,
                                     DK64RItems.IceTrapDisableCU,
                                     DK64RItems.IceTrapDisableZ,
+                                    DK64RItems.IceTrapGetOutGB,
+                                    DK64RItems.IceTrapDryGB,
+                                    DK64RItems.IceTrapFlipGB,
                                 ]:
                                     local_trap_count += 1
 

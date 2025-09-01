@@ -463,6 +463,12 @@ class DK64Client:
                 await self.writeFedData(0x044)  # TRANSFER_ITEM_FAKEITEM_DISABLEZ
             elif ice_trap_type == "disable_c_up":
                 await self.writeFedData(0x045)  # TRANSFER_ITEM_FAKEITEM_DISABLECU
+            elif ice_trap_type == "get_out":
+                await self.writeFedData(0x046)  # TRANSFER_ITEM_FAKEITEM_GETOUT
+            elif ice_trap_type == "dry":
+                await self.writeFedData(0x047)  # TRANSFER_ITEM_FAKEITEM_DRY
+            elif ice_trap_type == "flip":
+                await self.writeFedData(0x048)  # TRANSFER_ITEM_FAKEITEM_FLIP
             else:
                 # Default to bubble if unknown type
                 await self.writeFedData(0x018)

@@ -235,3 +235,12 @@ class Items(IntEnum):
     PhotoZingerCharger = 232
     PhotoBug = 233
     HalfMedal = 234
+    IceTrapGetOutGB = 235
+    IceTrapGetOutBean = 236
+    IceTrapGetOutKey = 237
+    IceTrapDryGB = 238
+    IceTrapDryBean = 239
+    IceTrapDryKey = 240
+    IceTrapFlipGB = 241
+    IceTrapFlipBean = 242
+    IceTrapFlipKey = 243
