@@ -244,3 +244,13 @@ class Items(IntEnum):
     IceTrapFlipGB = 241
     IceTrapFlipBean = 242
     IceTrapFlipKey = 243
+    IceTrapBubbleFairy = 244
+    IceTrapReverseFairy = 245
+    IceTrapSlowFairy = 246
+    IceTrapDisableAFairy = 247
+    IceTrapDisableBFairy = 248
+    IceTrapDisableZFairy = 249
+    IceTrapDisableCUFairy = 250
+    IceTrapGetOutFairy = 251
+    IceTrapDryFairy = 252
+    IceTrapFlipFairy = 253

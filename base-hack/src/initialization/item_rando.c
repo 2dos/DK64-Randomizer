@@ -557,6 +557,7 @@ static const barrel_skin_tie bonus_skins[] = {
     {.actor = NEWACTOR_SNIDEITEM,               .reqitem=REQITEM_SHOPKEEPER,        .level=-1, .kong= 3, .skin=SKIN_SNIDE},
     {.actor = NEWACTOR_ICETRAPBEAN,             .reqitem=REQITEM_ICETRAP,           .level= 1, .kong=-1, .skin=SKIN_FAKE_BEAN},
     {.actor = NEWACTOR_ICETRAPKEY,              .reqitem=REQITEM_ICETRAP,           .level= 2, .kong=-1, .skin=SKIN_FAKE_KEY},
+    {.actor = NEWACTOR_ICETRAPFAIRY,            .reqitem=REQITEM_ICETRAP,           .level= 3, .kong=-1, .skin=SKIN_FAKE_FAIRY},
     {.actor = NEWACTOR_HINTITEMDK,              .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
     {.actor = NEWACTOR_HINTITEMDIDDY,           .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
     {.actor = NEWACTOR_HINTITEMLANKY,           .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},

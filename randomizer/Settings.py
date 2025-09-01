@@ -1323,7 +1323,7 @@ class Settings:
             "dry": 2,
             "flip": 2,
         }
-        models_chance = {"gb": 10, "key": 2, "bean": 1}
+        models_chance = {"gb": 10, "key": 2, "bean": 1, "fairy": 4}
         trap_data = {
             "gb": {
                 "bubble": Items.IceTrapBubble,
@@ -1360,6 +1360,18 @@ class Settings:
                 "getout": Items.IceTrapGetOutKey,
                 "dry": Items.IceTrapDryKey,
                 "flip": Items.IceTrapFlipKey,
+            },
+            "fairy": {
+                "bubble": Items.IceTrapBubbleFairy,
+                "reverse": Items.IceTrapReverseFairy,
+                "slow": Items.IceTrapSlowFairy,
+                "disa": Items.IceTrapDisableAFairy,
+                "disb": Items.IceTrapDisableBFairy,
+                "disz": Items.IceTrapDisableZFairy,
+                "discu": Items.IceTrapDisableCUFairy,
+                "getout": Items.IceTrapGetOutFairy,
+                "dry": Items.IceTrapDryFairy,
+                "flip": Items.IceTrapFlipFairy,
             },
         }
         self.trap_assortment = []

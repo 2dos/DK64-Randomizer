@@ -169,6 +169,7 @@ extern void fairyDuplicateCode(void);
 extern void shopOwnerItemCode(void);
 extern void FakeGBCode(void);
 extern void FakeKeyCode(void);
+extern void FakeFairyCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec);

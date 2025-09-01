@@ -8,7 +8,7 @@ Thanks,
 		Ballaam
 */
 
-const short acceptable_items[] = {0x13c,0x18d,0x90,0x198,0x1b4,0x25c,0xb7,0x291,0x74,0xde,0xe0,0xe1,0xdd,0xdf,0x48,0x28f,0x5b,0x1f2,0x59,0x1f3,0x1f5,0x1f6,0x257,0x258,0x259,0x25a,0x25b,0x25f,0x260,0x261,0x262,0x25d,0x264,0x265,0x27e,0x289,0x28a,0x28b,0x28c};
+const short acceptable_items[] = {0x13c,0x18d,0x90,0x198,0x1b4,0x25c,0xb7,0x291,0x74,0xde,0xe0,0xe1,0xdd,0xdf,0x48,0x28f,0x5b,0x1f2,0x59,0x1f3,0x1f5,0x1f6,0x257,0x258,0x259,0x25a,0x25b,0x25f,0x260,0x261,0x262,0x25d,0x264,0x265,0x299,0x27e,0x289,0x28a,0x28b,0x28c};
 const item_conversion_info item_conversions[] = {
 	{.actor=72, .model_two=316, .scale=0.17f},
 	{.actor=86, .model_two=397, .scale=0.25f},
@@ -48,14 +48,15 @@ const item_conversion_info item_conversions[] = {
 	{.actor=364, .model_two=605, .scale=0.25f},
 	{.actor=365, .model_two=612, .scale=0.25f},
 	{.actor=366, .model_two=613, .scale=0.25f},
+	{.actor=382, .model_two=665, .scale=0.25f},
 	{.actor=375, .model_two=638, .scale=0.25f},
 	{.actor=377, .model_two=649, .scale=0.25f},
 	{.actor=378, .model_two=650, .scale=0.25f},
 	{.actor=379, .model_two=651, .scale=0.25f},
 	{.actor=380, .model_two=652, .scale=0.25f}
 };
-const unsigned short bounce_objects[] = {72,86,367,361,362,363,381,45,345,346,348,349,350,351,352,353,354,355,356,357,358,369,370,371,372,364,365,366,375,377,378,379,380};
-const unsigned short actor_drops[] = {72,86,367,347,361,362,363,140,381,45,78,75,77,79,76,52,47,121,51,345,346,348,349,350,351,352,353,354,355,356,357,358,369,370,371,372,364,365,366,375,377,378,379,380};
+const unsigned short bounce_objects[] = {72,86,367,361,362,363,381,45,345,346,348,349,350,351,352,353,354,355,356,357,358,369,370,371,372,364,365,366,382,375,377,378,379,380};
+const unsigned short actor_drops[] = {72,86,367,347,361,362,363,140,381,45,78,75,77,79,76,52,47,121,51,345,346,348,349,350,351,352,353,354,355,356,357,358,369,370,371,372,364,365,366,382,375,377,378,379,380};
 const item_scale_info item_scales[] = {
 	{.type=316, .scale=0.17f},
 	{.type=397, .scale=0.25f},
@@ -96,6 +97,7 @@ const item_scale_info item_scales[] = {
 	{.type=605, .scale=0.25f},
 	{.type=612, .scale=0.25f},
 	{.type=613, .scale=0.25f},
+	{.type=665, .scale=0.25f},
 	{.type=638, .scale=0.25f},
 	{.type=649, .scale=0.25f},
 	{.type=650, .scale=0.25f},
@@ -146,6 +148,7 @@ collision_info object_collisions[] = {
 	{.type=605, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=364, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
 	{.type=612, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=365, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
 	{.type=613, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=366, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
+	{.type=665, .collectable_type=-1, .unk4=0.08f, .unk8=0.95f, .intended_actor=0, .actor_equivalent=382, .hitbox_y_center=8, .hitbox_radius=4, .hitbox_height=13},
 	{.type=13, .collectable_type=0, .unk4=0.08f, .unk8=0.95f, .intended_actor=2, .actor_equivalent=0, .hitbox_y_center=0, .hitbox_radius=0, .hitbox_height=0},
 	{.type=10, .collectable_type=0, .unk4=0.08f, .unk8=0.95f, .intended_actor=3, .actor_equivalent=0, .hitbox_y_center=0, .hitbox_radius=0, .hitbox_height=0},
 	{.type=30, .collectable_type=0, .unk4=0.08f, .unk8=0.95f, .intended_actor=4, .actor_equivalent=0, .hitbox_y_center=0, .hitbox_radius=0, .hitbox_height=0},
@@ -368,6 +371,7 @@ actor_behaviour_def actor_defs[] = {
 	{.actor_type = 364, .model = 253, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 365, .model = 294, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 366, .model = 297, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 382, .model = 300, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 375, .model = 282, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 377, .model = 284, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 378, .model = 286, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
@@ -745,6 +749,7 @@ unsigned char actor_master_types[] = {
 	2,
 	2,
 	3,
+	2,
 	2,
 	2,
 	2,
@@ -1141,6 +1146,7 @@ short actor_interactions[] = {
 	8,
 	8,
 	8,
+	8,
 	8
 };
 health_damage_struct actor_health_damage[] = {
@@ -1519,6 +1525,7 @@ health_damage_struct actor_health_damage[] = {
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 1, .damage_applied = 0},
 	{.init_health = 1, .damage_applied = 0},
+	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
@@ -1909,6 +1916,7 @@ collision_data_struct actor_collisions[] = {
 	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0}
 };
 void* actor_functions[] = {
@@ -2293,7 +2301,8 @@ void* actor_functions[] = {
 	&GoldenBananaCode,
 	&GoldenBananaCode,
 	&GoldenBananaCode,
-	&GoldenBananaCode
+	&GoldenBananaCode,
+	&FakeFairyCode
 };
 short* actor_extra_data_sizes[] = {
 	2155141956,
@@ -2671,6 +2680,7 @@ short* actor_extra_data_sizes[] = {
 	2155142172,
 	2155142752,
 	2155142752,
+	2155142172,
 	2155142172,
 	2155142172,
 	2155142172,

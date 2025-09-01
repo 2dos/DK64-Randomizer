@@ -192,27 +192,6 @@ float getShopScale(int index) {
 	return 1.0f;
 }
 
-typedef struct krool_head {
-	/* 0x000 */ unsigned char map;
-	/* 0x001 */ unsigned char texture_offset;
-} krool_head;
-
-static const krool_head helm_heads[] = {
-	{.map = MAP_JAPESDILLO, .texture_offset=SKIN_DILLO_1},
-	{.map = MAP_AZTECDOGADON, .texture_offset=SKIN_DOGA_1},
-	{.map = MAP_FACTORYJACK, .texture_offset=SKIN_MAD_JACK},
-	{.map = MAP_GALLEONPUFFTOSS, .texture_offset=SKIN_PUFFTOSS},
-	{.map = MAP_FUNGIDOGADON, .texture_offset=SKIN_DOGA_2},
-	{.map = MAP_CAVESDILLO, .texture_offset=SKIN_DILLO_2},
-	{.map = MAP_CASTLEKUTOUT, .texture_offset=SKIN_KKO},
-	{.map = MAP_KROOLDK, .texture_offset=SKIN_KONG_DK},
-	{.map = MAP_KROOLDIDDY, .texture_offset=SKIN_KONG_DIDDY},
-	{.map = MAP_KROOLLANKY, .texture_offset=SKIN_KONG_LANKY},
-	{.map = MAP_KROOLTINY, .texture_offset=SKIN_KONG_TINY},
-	{.map = MAP_KROOLCHUNKY, .texture_offset=SKIN_KONG_CHUNKY},
-	{.map = 0xFF, .texture_offset=SKIN_NULL},
-};
-
 static const short float_ids[] = {0x1F4, 0x36};
 static const float float_offsets[] = {51.0f, 45.0f, 45.0f};
 static const float h_factors[] = {60.0f, 60.0f, 62.0f};

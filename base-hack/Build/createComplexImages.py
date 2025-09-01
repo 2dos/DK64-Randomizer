@@ -503,6 +503,8 @@ fake_key_im = Image.open(f"{hash_dir}key_om2_palette.png")
 hueShift(fake_key_im, FAKE_GB_SHIFT).save(f"{disp_dir}fake_key_shine_palette.png")
 fake_key_im = Image.open(f"{hash_dir}key.png")
 hueShift(fake_key_im.transpose(Image.Transpose.FLIP_LEFT_RIGHT), FAKE_GB_SHIFT).save(f"{disp_dir}fakekey.png")
+fake_key_im = Image.open(f"{hash_dir}fairy.png")
+hueShift(fake_key_im.transpose(Image.Transpose.FLIP_LEFT_RIGHT), FAKE_GB_SHIFT).save(f"{disp_dir}fakefairy.png")
 
 # Melon
 melon_im = Image.open(f"{hash_dir}melon_resized.png")
@@ -573,14 +575,8 @@ skins = {
     "fakekey": ("fakekey", None, "displays"),
     "shared": ("shared", None, "displays"),
     "soldout": ("soldout32", None, "displays"),
-    "dillo1": ("head32_dillo1", None, "displays"),
-    "dog1": ("head32_dog1", None, "displays"),
-    "mj": ("head32_mj", None, "displays"),
-    "pufftoss": ("head32_pufftoss", None, "displays"),
-    "dog2": ("head32_dog2", None, "displays"),
-    "dillo2": ("head32_dillo2", None, "displays"),
-    "kko": ("head32_kko", None, "displays"),
     "null": ("blank", None, "displays"),
+    "fakefairy": ("fakefairy", None, "displays"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32

@@ -163,17 +163,17 @@ def getItemPatchingFromList(list_set: list, item: Items, type_str: str, throw_er
     return list_set.index(item)
 
 ice_trap_data = [
-    [Items.IceTrapBubble, Items.IceTrapBubbleBean, Items.IceTrapBubbleKey],
-    [Items.IceTrapReverse, Items.IceTrapReverseBean, Items.IceTrapReverseKey],
-    [Items.IceTrapSlow, Items.IceTrapSlowBean, Items.IceTrapSlowKey],
+    [Items.IceTrapBubble, Items.IceTrapBubbleBean, Items.IceTrapBubbleKey, Items.IceTrapBubbleFairy],
+    [Items.IceTrapReverse, Items.IceTrapReverseBean, Items.IceTrapReverseKey, Items.IceTrapReverseFairy],
+    [Items.IceTrapSlow, Items.IceTrapSlowBean, Items.IceTrapSlowKey, Items.IceTrapSlowFairy],
     [],  # Super Bubble
-    [Items.IceTrapDisableA, Items.IceTrapDisableABean, Items.IceTrapDisableAKey],
-    [Items.IceTrapDisableB, Items.IceTrapDisableBBean, Items.IceTrapDisableBKey],
-    [Items.IceTrapDisableZ, Items.IceTrapDisableZBean, Items.IceTrapDisableZKey],
-    [Items.IceTrapDisableCU, Items.IceTrapDisableCUBean, Items.IceTrapDisableCUKey],
-    [Items.IceTrapGetOutGB, Items.IceTrapGetOutBean, Items.IceTrapGetOutKey],
-    [Items.IceTrapDryGB, Items.IceTrapDryBean, Items.IceTrapDryKey],
-    [Items.IceTrapFlipGB, Items.IceTrapFlipBean, Items.IceTrapFlipKey],
+    [Items.IceTrapDisableA, Items.IceTrapDisableABean, Items.IceTrapDisableAKey, Items.IceTrapDisableAFairy],
+    [Items.IceTrapDisableB, Items.IceTrapDisableBBean, Items.IceTrapDisableBKey, Items.IceTrapDisableBFairy],
+    [Items.IceTrapDisableZ, Items.IceTrapDisableZBean, Items.IceTrapDisableZKey, Items.IceTrapDisableZFairy],
+    [Items.IceTrapDisableCU, Items.IceTrapDisableCUBean, Items.IceTrapDisableCUKey, Items.IceTrapDisableCUFairy],
+    [Items.IceTrapGetOutGB, Items.IceTrapGetOutBean, Items.IceTrapGetOutKey, Items.IceTrapGetOutFairy],
+    [Items.IceTrapDryGB, Items.IceTrapDryBean, Items.IceTrapDryKey, Items.IceTrapDryFairy],
+    [Items.IceTrapFlipGB, Items.IceTrapFlipBean, Items.IceTrapFlipKey, Items.IceTrapFlipFairy],
 ]
 
 def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
@@ -1217,7 +1217,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
                             if model is not None:
                                 idx = kong_idx[item.location]
-                                has_no_textures = item.new_item in (
+                                no_texture_tuple = (
                                     Types.Candy,
                                     Types.Climbing,
                                     Types.Cranky,
@@ -1228,6 +1228,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                                     Types.Shop,
                                     Types.TrainingBarrel,
                                 )
+                                has_no_textures = item.new_item in no_texture_tuple or getModelMask(item.new_subitem) in no_texture_tuple
                                 addr = getItemTableWriteAddress(ROM_COPY, Types.Kong, idx, offset_dict)
                                 ROM_COPY.seek(addr)
                                 ROM_COPY.writeMultipleBytes(model, 2)
@@ -1241,28 +1242,6 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 offset = item.new_flag - 0x384
                 tied_region = GetRegionIdOfLocation(spoiler, item.location)
                 spoiler.tied_hint_regions[offset] = spoiler.RegionList[tied_region].hint_name
-            helm_medals = (
-                Locations.HelmDonkeyMedal,
-                Locations.HelmDiddyMedal,
-                Locations.HelmLankyMedal,
-                Locations.HelmTinyMedal,
-                Locations.HelmChunkyMedal,
-            )
-            placed_items = (
-                # Anything that's pre-placed into the world or spawns an item that's grabbed physically by the player
-                Types.Blueprint,
-                Types.CrateItem,
-                Types.BoulderItem,
-                Types.Key,
-                Types.RainbowCoin,
-                Types.Banana,
-                Types.NintendoCoin,
-                Types.RarewareCoin,
-                Types.Enemies,
-                Types.Crown,
-                Types.Pearl,
-                Types.Bean,
-            )
             ref_index = 0
             if item.new_subitem == Items.ProgressiveAmmoBelt:
                 ref_index = item.new_flag - 0x292

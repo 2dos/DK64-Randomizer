@@ -507,6 +507,7 @@ file_dict = [
     ),
     File(name="Fake Bean Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x264, source_file="fake_bean_0.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Fake Key Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x265, source_file="fake_key_0.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Fairy Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x299, source_file="fake_fairy_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Animation Code", pointer_table_index=TableNames.Unknown13, file_index=0, source_file="animation_code.bin", do_not_delete_source=True),
     File(
         name="Disco Shirt",
@@ -1449,6 +1450,7 @@ shrinkModel(True, "potion_tiny_om1.bin", 0, 0.08, "shrink_potion_tiny.bin", Fals
 shrinkModel(True, "potion_chunky_om1.bin", 0, 0.08, "shrink_potion_chunky.bin", False)  # Potion (Chunky)
 shrinkModel(True, "potion_any_om1.bin", 0, 0.08, "shrink_potion_any.bin", False)  # Potion (Any)
 shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin", True)  # Fairy
+shrinkModel(True, "fake_fairy_om1.bin", 0, 5, "shrink_fake_fairy.bin", True)  # Fake Fairy
 shrinkModel(True, "dk_base.bin", 0, 1 / 0.15, "shrink_dk.bin", True)  # DK
 shrinkModel(False, "", 0, 1 / 0.15, "shrink_diddy.bin", True)  # Diddy
 shrinkModel(True, "lanky_base.bin", 0, 1 / 0.15, "shrink_lanky.bin", True)  # Lanky
@@ -1566,7 +1568,8 @@ model_changes = [
     ModelChange(0x127, "shrink_fake_key.bin"),
     ModelChange(0x128, "fake_key_om1.bin"),
     ModelChange(0x129, "disco_donkey.bin"),
-    ModelChange(0x12A, FINAL_RACE_HOOP),
+    ModelChange(0x12A, "fake_fairy_om1.bin"),
+    ModelChange(0x12B, "shrink_fake_fairy.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 
@@ -2371,6 +2374,7 @@ with open(newROMName, "r+b") as fh:
         "disco_shirt_gap",
         "white_special_chars",
         "blank",
+        "fakefairy",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"shop_{b}"])

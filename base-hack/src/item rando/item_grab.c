@@ -457,11 +457,10 @@ void getItem(int object_type) {
             break;
         case 0x25C:
             playSong(SONG_FAIRYTICK, 1.0f);
-            forceDance();
-            break;
         case 0x25D:
         case 0x264:
         case 0x265:
+        case 0x299:
             forceDance();
             break;
         case 0x27E:
@@ -771,6 +770,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x25D:
         case 0x264:
         case 0x265:
+        case 0x299:
             giveItem(REQITEM_ICETRAP, item_level, item_kong, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .apply_ice_trap=1});
             break;
         case 0x27E:

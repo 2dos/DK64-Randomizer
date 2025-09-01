@@ -83,6 +83,7 @@ class CustomActors(IntEnum):
     HintItemTiny = auto()
     HintItemChunky = auto()
     ArchipelagoItem = auto()
+    IceTrapFairy = auto()
 
 POTIONS = (
     CustomActors.PotionDK,
@@ -228,6 +229,7 @@ item_database = [
     Item(name="Fake Item (GB)", actor=CustomActors.IceTrapGB, model_two=0x25D, bounce=True, scale=0.25, has_collision=True),
     Item(name="Fake Item (Bean)", actor=CustomActors.IceTrapBean, model_two=0x264, bounce=True, scale=0.25, has_collision=True),
     Item(name="Fake Item (Key)", actor=CustomActors.IceTrapKey, model_two=0x265, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Fairy)", actor=CustomActors.IceTrapFairy, model_two=0x299, bounce=True, scale=0.25, has_collision=True),
     # Singles
     Item(name="DK Single", actor=0, model_two=0xD, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.DK),
     Item(name="Diddy Single", actor=0, model_two=0xA, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.Diddy),
@@ -551,6 +553,13 @@ with open("src/lib_items.c", "w") as fh:
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
+                "actor_type": CustomActors.IceTrapFairy,
+                "model": 0x12C,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
                 "actor_type": CustomActors.HintItemDK,
                 "model": 0x11A,
                 "code": 0x80689F80,
@@ -634,6 +643,7 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, CustomActors.IceTrapGB, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.IceTrapBean, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.IceTrapKey, "&FakeKeyCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.IceTrapFairy, "&FakeFairyCode", 2, 0, 1, 8, 45)
 
     actor_data = initActor(actor_data, CustomActors.Bean, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.Pearl, "&GoldenBananaCode", 2, 0, 1, 8, 45)

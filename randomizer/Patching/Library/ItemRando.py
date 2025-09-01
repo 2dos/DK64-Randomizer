@@ -37,8 +37,18 @@ IceTrapMasks = {
     Items.IceTrapFlipGB: Types.Banana,
     Items.IceTrapFlipBean: Types.Bean,
     Items.IceTrapFlipKey: Types.Key,
+    Items.IceTrapBubbleFairy: Types.Fairy,
+    Items.IceTrapReverseFairy: Types.Fairy,
+    Items.IceTrapSlowFairy: Types.Fairy,
+    Items.IceTrapDisableAFairy: Types.Fairy,
+    Items.IceTrapDisableBFairy: Types.Fairy,
+    Items.IceTrapDisableZFairy: Types.Fairy,
+    Items.IceTrapDisableCUFairy: Types.Fairy,
+    Items.IceTrapGetOutFairy: Types.Fairy,
+    Items.IceTrapDryFairy: Types.Fairy,
+    Items.IceTrapFlipFairy: Types.Fairy,
 }
-IceTrapMaskIndexes = [Types.Banana, Types.Bean, Types.Key]
+IceTrapMaskIndexes = [Types.Banana, Types.Bean, Types.Key, Types.Fairy]
 
 
 class CustomActors(IntEnum):
@@ -81,6 +91,7 @@ class CustomActors(IntEnum):
     HintItemTiny = auto()
     HintItemChunky = auto()
     ArchipelagoItem = auto()
+    IceTrapFairy = auto()
 
 
 class GraphicOverlay(IntEnum):
@@ -520,16 +531,17 @@ item_db = {
         seal_preview_text="\x04WEIRD MONKEY\x04",
     ),
     Types.FakeItem: ItemPlacementData(
-        model_index=[0x103, 0x127, 0x128],
-        model_two_index=[0x25D, 0x264, 0x265],
+        model_index=[0x103, 0x127, 0x128, 0x12B],
+        model_two_index=[0x25D, 0x264, 0x265, 0x299],
         actor_index=[
             CustomActors.IceTrapGB,
             CustomActors.IceTrapBean,
             CustomActors.IceTrapKey,
+            CustomActors.IceTrapFairy,
         ],
-        arcade_reward_index=[ArcadeRewards.IceTrap] * 3,
-        jetpac_reward_index=[JetpacRewards.IceTrap] * 3,
-        overlay=[GraphicOverlay.IceTrapBubble] * 3,
+        arcade_reward_index=[ArcadeRewards.IceTrap] * 4,
+        jetpac_reward_index=[JetpacRewards.IceTrap] * 4,
+        overlay=[GraphicOverlay.IceTrapBubble] * 4,
         index_getter=lambda item, flag, shared: IceTrapMaskIndexes.index(IceTrapMasks[item]),
         preview_text="\x04GLODEN BANANE\x04",
         seal_preview_text="\x04BANANA OF FOOLS GOLD\x04",
@@ -916,6 +928,16 @@ item_shop_text_mapping = {
     Items.IceTrapFlipGB: (BuyText.ice_trap, NoBuyText.misc_item),
     Items.IceTrapFlipBean: (BuyText.ice_trap, NoBuyText.misc_item),
     Items.IceTrapFlipKey: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapBubbleFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapReverseFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapSlowFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableAFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableBFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableZFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDisableCUFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapGetOutFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapDryFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapFlipFairy: (BuyText.ice_trap, NoBuyText.misc_item),
     # Items not yet considered
     # Items.RainbowCoin: (BuyText.blueprint, NoBuyText.misc_item),
     # Items.JunkCrystal: (BuyText.blueprint, NoBuyText.misc_item),
