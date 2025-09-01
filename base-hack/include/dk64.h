@@ -874,7 +874,6 @@ extern unsigned char InvertedControls;
 extern unsigned char ChunkyModel;
 extern unsigned char EnemyInView;
 extern unsigned char ItemRandoOn;
-extern ItemIdentifierStruct ItemIdentifier[0x190];
 extern unsigned char KasplatSpawnBitfield;
 extern unsigned short HoldableSpawnBitfield;
 extern char KrushaSlot;

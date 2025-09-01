@@ -2352,12 +2352,6 @@ typedef struct FogData {
 	/* 0x008 */ short cap_range;
 } FogData;
 
-typedef struct ItemIdentifierStruct {
-	/* 0x000 */ short input_flag;
-	/* 0x002 */ unsigned char level;
-	/* 0x003 */ unsigned char kong;
-} ItemIdentifierStruct;
-
 typedef struct BoulderItemStruct {
 	/* 0x000 */ short item;
 	/* 0x002 */ short map;
