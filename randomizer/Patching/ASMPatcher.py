@@ -2033,6 +2033,8 @@ def patchAssembly(ROM_COPY, spoiler):
                 0x180,  # First Slam Given
             ]
         )
+        for x in range(4):
+            patchBonus(ROM_COPY, 95 + x, offset_dict, flag=0)
     else:
         writeValue(ROM_COPY, 0x80755F4C, Overlay.Static, 0, offset_dict)  # Remove escape cutscene
     if settings.auto_keys:

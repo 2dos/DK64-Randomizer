@@ -10,16 +10,48 @@
  */
 #include "../../include/common.h"
 
-unsigned short bp_item_table[40] = {
+actor_spawn_packet bp_item_table[40] = {
     // Kasplat Rewards
-    78, 75, 77, 79, 76,
-    78, 75, 77, 79, 76,
-    78, 75, 77, 79, 76,
-    78, 75, 77, 79, 76,
-    78, 75, 77, 79, 76,
-    78, 75, 77, 79, 76,
-    78, 75, 77, 79, 76,
-    78, 75, 77, 79, 76,
+    {.actor = 78},
+    {.actor = 75},
+    {.actor = 77},
+    {.actor = 79},
+    {.actor = 76},
+    {.actor = 78},
+    {.actor = 75},
+    {.actor = 77},
+    {.actor = 79},
+    {.actor = 76},
+    {.actor = 78},
+    {.actor = 75},
+    {.actor = 77},
+    {.actor = 79},
+    {.actor = 76},
+    {.actor = 78},
+    {.actor = 75},
+    {.actor = 77},
+    {.actor = 79},
+    {.actor = 76},
+    {.actor = 78},
+    {.actor = 75},
+    {.actor = 77},
+    {.actor = 79},
+    {.actor = 76},
+    {.actor = 78},
+    {.actor = 75},
+    {.actor = 77},
+    {.actor = 79},
+    {.actor = 76},
+    {.actor = 78},
+    {.actor = 75},
+    {.actor = 77},
+    {.actor = 79},
+    {.actor = 76},
+    {.actor = 78},
+    {.actor = 75},
+    {.actor = 77},
+    {.actor = 79},
+    {.actor = 76},
 };
 item_packet medal_item_table[85] = {
     // Medal Rewards
@@ -107,16 +139,29 @@ item_packet wrinkly_item_table[35] = {
     {.item_type = REQITEM_HINT, .level = 6, .kong = KONG_TINY},
     {.item_type = REQITEM_HINT, .level = 6, .kong = KONG_CHUNKY},
 };
-unsigned short crown_item_table[10] = {
+actor_spawn_packet crown_item_table[10] = {
     // Crown Rewards
-    86, 86, 86, 86,
-    86, 86, 86, 86,
-    86, 86,
+    {.actor = 86},
+    {.actor = 86},
+    {.actor = 86},
+    {.actor = 86},
+    {.actor = 86},
+    {.actor = 86},
+    {.actor = 86},
+    {.actor = 86},
+    {.actor = 86},
+    {.actor = 86},
 };
-unsigned short key_item_table[8] = {
+actor_spawn_packet key_item_table[8] = {
     // Boss Rewards
-    72, 72, 72, 72,
-    72, 72, 72, 72,
+    {.actor = 72},
+    {.actor = 72},
+    {.actor = 72},
+    {.actor = 72},
+    {.actor = 72},
+    {.actor = 72},
+    {.actor = 72},
+    {.actor = 72},
 };
 model_item_data fairy_item_table[20] = {
     // Fairy Rewards
@@ -141,19 +186,43 @@ model_item_data fairy_item_table[20] = {
     {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
     {.model = 0x3D, .item = {.item_type = REQITEM_FAIRY}},
 };
-unsigned short rcoin_item_table[16] = {
+actor_spawn_packet rcoin_item_table[16] = {
     // Dirt Patch Rewards
-    0x8C, 0x8C, 0x8C, 0x8C,
-    0x8C, 0x8C, 0x8C, 0x8C,
-    0x8C, 0x8C, 0x8C, 0x8C,
-    0x8C, 0x8C, 0x8C, 0x8C,
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
+    {.actor = 0x8C},
 };
-unsigned short crate_item_table[16] = {
+actor_spawn_packet crate_item_table[16] = {
     // Crate Rewards
-    0x2F, 0x2F, 0x2F, 0x2F,
-    0x2F, 0x2F, 0x2F, 0x2F,
-    0x2F, 0x2F, 0x2F, 0x2F,
-    0x2F, 0x2F, 0x2F, 0x2F,
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
+    {.actor = 0x2F},
 };
 patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
 BoulderItemStruct boulder_item_table[16] = {
@@ -175,7 +244,109 @@ BoulderItemStruct boulder_item_table[16] = {
     { .map = MAP_AZTEC, .spawner_id = 1},
     { .map = MAP_AZTEC, .spawner_id = 0},
 };
-bonus_barrel_info bonus_data[BONUS_DATA_COUNT] = {}; // Bonus Barrel Rewards
+bonus_barrel_info bonus_data[BONUS_DATA_COUNT] = {
+    {.flag=0x186,               .spawn_actor=45,                    .kong_actor=1},
+    {.flag=0xe0,                .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x1c4,               .spawn_actor=45,                    .kong_actor=0},
+    {.flag=0x131,               .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x132,               .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x2,                 .spawn_actor=45,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x1,                 .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x1c,                .spawn_actor=45,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x87,                .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0xe3,                .spawn_actor=45,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0xeb,                .spawn_actor=45,                    .kong_actor=2 + KONG_DK},
+    {.flag=0x86,                .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x88,                .spawn_actor=45,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x89,                .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0xb,                 .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x74,                .spawn_actor=45,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x3c,                .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x3b,                .spawn_actor=45,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x107,               .spawn_actor=45,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x137,               .spawn_actor=45,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x13b,               .spawn_actor=45,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0xd3,                .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x49,                .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0xa3,                .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0xa4,                .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x13c,               .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x3e,                .spawn_actor=45,                    .kong_actor=2 + KONG_DK},
+    {.flag=0x34,                .spawn_actor=45,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x13f,               .spawn_actor=45,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x44,                .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x18,                .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0xb8,                .spawn_actor=45,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x18e,               .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x192,               .spawn_actor=45,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x194,               .spawn_actor=45,                    .kong_actor=2 + KONG_DK},
+    {.flag=0x13e,               .spawn_actor=45,                    .kong_actor=2 + KONG_DK},
+    {.flag=0xfe,                .spawn_actor=45,                    .kong_actor=2 + KONG_DK},
+    {.flag=0x196,               .spawn_actor=45,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x19a,               .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x19f,               .spawn_actor=45,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x1a0,               .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x1a8,               .spawn_actor=45,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x1a9,               .spawn_actor=45,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x1ac,               .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x126,               .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x127,               .spawn_actor=45,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x12a,               .spawn_actor=45,                    .kong_actor=2 + KONG_DK},
+    {.flag=0xc6,                .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0xc5,                .spawn_actor=45,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0xc8,                .spawn_actor=45,                    .kong_actor=2 + KONG_DK},
+    {.flag=0xca,                .spawn_actor=45,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0xfa,                .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x19,                .spawn_actor=45,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x15e,               .spawn_actor=45,                    .kong_actor=2 + KONG_DIDDY},
+    // Kasplat Rewards
+    {.flag=0x1d5,               .spawn_actor=78,                    .kong_actor=2 + KONG_DK},
+    {.flag=0x1d6,               .spawn_actor=75,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x1d7,               .spawn_actor=77,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x1d8,               .spawn_actor=79,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x1d9,               .spawn_actor=76,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x1da,               .spawn_actor=78,                    .kong_actor=2 + KONG_DK},
+    {.flag=0x1db,               .spawn_actor=75,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x1dc,               .spawn_actor=77,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x1dd,               .spawn_actor=79,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x1de,               .spawn_actor=76,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x1df,               .spawn_actor=78,                    .kong_actor=2 + KONG_DK},
+    {.flag=0x1e0,               .spawn_actor=75,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x1e1,               .spawn_actor=77,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x1e2,               .spawn_actor=79,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x1e3,               .spawn_actor=76,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x1e4,               .spawn_actor=78,                    .kong_actor=2 + KONG_DK},
+    {.flag=0x1e5,               .spawn_actor=75,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x1e6,               .spawn_actor=77,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x1e7,               .spawn_actor=79,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x1e8,               .spawn_actor=76,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x1e9,               .spawn_actor=78,                    .kong_actor=2 + KONG_DK},
+    {.flag=0x1ea,               .spawn_actor=75,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x1eb,               .spawn_actor=77,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x1ec,               .spawn_actor=79,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x1ed,               .spawn_actor=76,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x1ee,               .spawn_actor=78,                    .kong_actor=2 + KONG_DK},
+    {.flag=0x1ef,               .spawn_actor=75,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x1f0,               .spawn_actor=77,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x1f1,               .spawn_actor=79,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x1f2,               .spawn_actor=76,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x1f3,               .spawn_actor=78,                    .kong_actor=2 + KONG_DK},
+    {.flag=0x1f4,               .spawn_actor=75,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x1f5,               .spawn_actor=77,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x1f6,               .spawn_actor=79,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x1f7,               .spawn_actor=76,                    .kong_actor=2 + KONG_CHUNKY},
+    {.flag=0x1f8,               .spawn_actor=78,                    .kong_actor=2 + KONG_DK},
+    {.flag=0x1f9,               .spawn_actor=75,                    .kong_actor=2 + KONG_DIDDY},
+    {.flag=0x1fa,               .spawn_actor=77,                    .kong_actor=2 + KONG_LANKY},
+    {.flag=0x1fb,               .spawn_actor=79,                    .kong_actor=2 + KONG_TINY},
+    {.flag=0x1fc,               .spawn_actor=76,                    .kong_actor=2 + KONG_CHUNKY},
+    // Misc
+    {.flag=215,                 .spawn_actor=45,                    .kong_actor=2 + KONG_CHUNKY},  // Chunky Minecart
+    {.flag=FLAG_TBARREL_DIVE,   .spawn_actor=NEWACTOR_POTIONANY,    .kong_actor=0},
+    {.flag=FLAG_TBARREL_VINE,   .spawn_actor=NEWACTOR_POTIONANY,    .kong_actor=0},
+    {.flag=FLAG_TBARREL_ORANGE, .spawn_actor=NEWACTOR_POTIONANY,    .kong_actor=0},
+    {.flag=FLAG_TBARREL_BARREL, .spawn_actor=NEWACTOR_POTIONANY,    .kong_actor=0},
+};
 meloncrate_db_item crate_flags[16] = {}; // Melon crate table
 model_item_data kong_check_data[4] = {
     // Kong table
@@ -197,10 +368,10 @@ int getBPItem(int index) {
      * 
      * @return Actor Index of the reward
      */
-	return bp_item_table[index];
+	return bp_item_table[index].actor;
 }
 
-int getCrownItem(maps map) {
+int getCrownIndex(maps map) {
     /**
      * @brief Get Crown item from map index
      * 
@@ -210,13 +381,13 @@ int getCrownItem(maps map) {
      */
 	for (int i = 0; i < 10; i++) {
 		if (map == crown_maps[i]) {
-			return crown_item_table[i];
+			return i;
 		}
 	}
 	return 0;
 }
 
-int getKeyItem(int old_flag) {
+int getKeyIndex(int old_flag) {
     /**
      * @brief Get Boss Reward from the original flag
      * 
@@ -226,21 +397,10 @@ int getKeyItem(int old_flag) {
      */
 	for (int i = 0; i < 8; i++) {
 		if (old_flag == normal_key_flags[i]) {
-			return key_item_table[i];
+			return i;
 		}
 	}
 	return 0;
-}
-
-int getRainbowCoinItem(int old_flag) {
-	/**
-	 * @brief Get Dirt Patch reward from the old flag
-     * 
-     * @param old_flag Original flag of the dirt patch
-	 * 
-     * @return Actor Index of the reward
-	 */
-	return rcoin_item_table[old_flag - FLAG_RAINBOWCOIN_0];
 }
 
 int getPatchFlag(int id) {
@@ -359,8 +519,7 @@ int getBoulderIndex(void) {
     return -1;
 }
 
-int getBoulderItem(void) {
-    int index = getBoulderIndex();
+int getBoulderItem(int index) {
     if (index < 0) {
         return 0;
     }
@@ -483,7 +642,7 @@ int getDirtPatchSkin(int flag, flagtypes flag_type) {
     if (Rando.location_visuals.dirt_patches) {
         int index = flag - FLAG_RAINBOWCOIN_0;
         if (index < 16) {
-            int actor = getRainbowCoinItem(flag);
+            int actor = rcoin_item_table[flag - FLAG_RAINBOWCOIN_0].actor;
             enum_bonus_skin skin = getBarrelSkinIndex(actor);
             blink(CurrentActorPointer_0, 0, 1);
             applyImageToActor(CurrentActorPointer_0, 0, 0);
@@ -498,28 +657,7 @@ void initItemRando(void) {
     /**
      * @brief Initialize Item Rando functionality
      */
-    
-    // Item Rando
-    for (int i = 0; i < 54; i++) {
-        bonus_data[i].flag = BonusBarrelData[i].flag;
-        bonus_data[i].spawn_actor = 45;
-        bonus_data[i].kong_actor = BonusBarrelData[i].kong_actor;
-    }
-    // Add Chunky Minecart GB
-    bonus_data[94].flag = 215;
-    bonus_data[94].spawn_actor = 45;
-    bonus_data[94].kong_actor = 6;
-    // Add 4 Training Minigames
-    for (int i = 0; i < 4; i++) {
-        int tbarrel_flag = 0;
-        if (!Rando.fast_start_beginning) {
-            tbarrel_flag = FLAG_TBARREL_DIVE + i;
-        }
-        bonus_data[95 + i].flag = tbarrel_flag;
-        bonus_data[95 + i].spawn_actor = NEWACTOR_POTIONANY;
-        bonus_data[95 + i].kong_actor = 0;
-    }
-    
+        
     // Checks Screen
     pausescreenlist screen_count = PAUSESCREEN_TERMINATOR; // 4 screens vanilla + hint screen + check screen + move tracker
     *(short*)(0x806A8672) = screen_count - 1; // Screen decrease cap
@@ -530,22 +668,6 @@ void initItemRando(void) {
     unsigned char* head_write = getFile(load_size, 0x1FEE800);
     for (int i = 0; i < load_size; i++) {
         HeadSize[i] = head_write[i];
-    }
-    // Reward Table
-    for (int i = 0; i < 40; i++) {
-        bonus_data[54 + i].flag = 469 + i;
-        bonus_data[54 + i].kong_actor = (i % 5) + 2;
-        bonus_data[54 + i].spawn_actor = getBPItem(i);
-    }
-    reward_rom_struct* reward_write = getFile(0x100, 0x1FF1200);
-    for (int i = 0; i < 0x40; i++) {
-        if (reward_write[i].flag > -1) {
-            for (int j = 0; j < BONUS_DATA_COUNT; j++) {
-                if (bonus_data[j].flag == reward_write[i].flag) {
-                    bonus_data[j].spawn_actor = reward_write[i].actor;
-                }
-            }
-        }
     }
     // Other init
     initActorDefs();

@@ -1328,6 +1328,8 @@ typedef struct bonus_barrel_info {
 	/* 0x002 */ unsigned char kong_actor;
 	/* 0x003 */ unsigned char unused;
 	/* 0x004 */ unsigned short spawn_actor;
+	/* 0x006 */ unsigned char item_level;
+	/* 0x007 */ unsigned char item_kong;
 } bonus_barrel_info;
 
 typedef struct bonus_paad {
@@ -2396,7 +2398,8 @@ typedef struct BoulderItemStruct {
 	/* 0x000 */ short item;
 	/* 0x002 */ short map;
 	/* 0x004 */ short spawner_id;
-	/* 0x006 */ short pad;
+	/* 0x006 */ unsigned char level;
+	/* 0x007 */ unsigned char kong;
 } BoulderItemStruct;
 
 typedef struct purchase_text_hint_struct {

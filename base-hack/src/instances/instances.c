@@ -597,7 +597,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						float x = 730.0f;
 						float y = 267.0f;
 						float z = 728.0f;
-						short actor = getCrownItem(CurrentMap);
+						short crown_index = getCrownIndex(CurrentMap);
+						short actor = crown_item_table[crown_index].actor;
 						short item = -1;
 						float scale = 0.0f;
 						if (actor != 0) {
@@ -638,7 +639,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						int world = getWorld(CurrentMap, 0);
 						if (world < 7) {
 							int flag = normal_key_flags[world];
-							getModelTwoItemFromActor(getKeyItem(flag), &item, &scale);
+							int key_index = getKeyIndex(flag);
+							getModelTwoItemFromActor(key_item_table[key_index].actor, &item, &scale);
 							if (item >= 0) {
 								spawnModelTwo(item, x, y, z, scale, 0x16);
 								int i = 0;

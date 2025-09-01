@@ -256,9 +256,8 @@ extern void exitTrapBubbleController(void);
 
 extern int getFlagIndex_Corrected(int start, int level);
 extern int getBPItem(int index);
-extern int getCrownItem(maps map);
-extern int getKeyItem(int old_flag);
-extern int getRainbowCoinItem(int old_flag);
+extern int getCrownIndex(maps map);
+extern int getKeyIndex(int old_flag);
 extern void PotionCode(void);
 extern void KongDropCode(void);
 extern void getItem(int object_type);

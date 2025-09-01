@@ -820,6 +820,24 @@ def getPropFromItem(item: Items, item_type: Types, flag: int, shared: bool = Fal
     index = getItemDBEntry(item_type).index_getter(item, flag, shared)
     return getItemDBEntry(item_type).model_two_index[index]
 
+ice_trap_effects = [
+    [Items.IceTrapBubble, Items.IceTrapBubbleBean, Items.IceTrapBubbleKey],
+    [Items.IceTrapReverse, Items.IceTrapReverseBean, Items.IceTrapReverseKey],
+    [Items.IceTrapSlow, Items.IceTrapSlowBean, Items.IceTrapSlowKey],
+    [Items.IceTrapDisableA, Items.IceTrapDisableABean, Items.IceTrapDisableAKey],
+    [Items.IceTrapDisableB, Items.IceTrapDisableBBean, Items.IceTrapDisableBKey],
+    [Items.IceTrapDisableZ, Items.IceTrapDisableZBean, Items.IceTrapDisableZKey],
+    [Items.IceTrapDisableCU, Items.IceTrapDisableCUBean, Items.IceTrapDisableCUKey],
+]
+
+def getExtraDataFromItem(item: Items, item_type: Types) -> int:
+    """Get the extra data associated with an item for better patching purposes."""
+    if item_type == Types.FakeItem:
+        for index, data in enumerate(ice_trap_effects):
+            if item in data:
+                return (data.index(item), index)
+    return None
+
 
 IceTrapMasks = {
     Items.IceTrapBubble: Types.Banana,
