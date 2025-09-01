@@ -6,29 +6,30 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Locations import Locations
 
-IceTrapItems = [
-    Items.IceTrapBubble,
-    Items.IceTrapReverse,
-    Items.IceTrapSlow,
-    Items.IceTrapBubbleBean,
-    Items.IceTrapReverseBean,
-    Items.IceTrapSlowBean,
-    Items.IceTrapBubbleKey,
-    Items.IceTrapReverseKey,
-    Items.IceTrapSlowKey,
-    Items.IceTrapDisableA,
-    Items.IceTrapDisableB,
-    Items.IceTrapDisableZ,
-    Items.IceTrapDisableCU,
-    Items.IceTrapDisableABean,
-    Items.IceTrapDisableBBean,
-    Items.IceTrapDisableZBean,
-    Items.IceTrapDisableCUBean,
-    Items.IceTrapDisableAKey,
-    Items.IceTrapDisableBKey,
-    Items.IceTrapDisableZKey,
-    Items.IceTrapDisableCUKey,
-]
+IceTrapMasks = {
+    Items.IceTrapBubble: Types.Banana,
+    Items.IceTrapReverse: Types.Banana,
+    Items.IceTrapSlow: Types.Banana,
+    Items.IceTrapBubbleBean: Types.Bean,
+    Items.IceTrapReverseBean: Types.Bean,
+    Items.IceTrapSlowBean: Types.Bean,
+    Items.IceTrapBubbleKey: Types.Key,
+    Items.IceTrapReverseKey: Types.Key,
+    Items.IceTrapSlowKey: Types.Key,
+    Items.IceTrapDisableA: Types.Banana,
+    Items.IceTrapDisableABean: Types.Bean,
+    Items.IceTrapDisableAKey: Types.Key,
+    Items.IceTrapDisableB: Types.Banana,
+    Items.IceTrapDisableBBean: Types.Bean,
+    Items.IceTrapDisableBKey: Types.Key,
+    Items.IceTrapDisableZ: Types.Banana,
+    Items.IceTrapDisableZBean: Types.Bean,
+    Items.IceTrapDisableZKey: Types.Key,
+    Items.IceTrapDisableCU: Types.Banana,
+    Items.IceTrapDisableCUBean: Types.Bean,
+    Items.IceTrapDisableCUKey: Types.Key,
+}
+IceTrapMaskIndexes = [Types.Banana, Types.Bean, Types.Key]
 
 
 class CustomActors(IntEnum):
@@ -53,9 +54,9 @@ class CustomActors(IntEnum):
     Bean = auto()
     Pearl = auto()
     Fairy = auto()
-    IceTrapBubble = auto()
-    IceTrapReverse = auto()
-    IceTrapSlow = auto()
+    IceTrapGB = auto()
+    IceTrapBean = auto()
+    IceTrapKey = auto()
     Medal = auto()
     JetpacItemOverlay = auto()
     CrankyItem = auto()
@@ -71,18 +72,6 @@ class CustomActors(IntEnum):
     HintItemTiny = auto()
     HintItemChunky = auto()
     ArchipelagoItem = auto()
-    IceTrapDisableAGB = auto()
-    IceTrapDisableBGB = auto()
-    IceTrapDisableZGB = auto()
-    IceTrapDisableCUGB = auto()
-    IceTrapDisableABean = auto()
-    IceTrapDisableBBean = auto()
-    IceTrapDisableZBean = auto()
-    IceTrapDisableCUBean = auto()
-    IceTrapDisableAKey = auto()
-    IceTrapDisableBKey = auto()
-    IceTrapDisableZKey = auto()
-    IceTrapDisableCUKey = auto()
 
 
 class GraphicOverlay(IntEnum):
@@ -401,7 +390,6 @@ class ItemPlacementData:
         self.seal_preview_text = seal_preview_text
         self.scale = scale
 
-
 item_db = {
     Types.Banana: ItemPlacementData(
         model_index=[0x69],
@@ -523,57 +511,17 @@ item_db = {
         seal_preview_text="\x04WEIRD MONKEY\x04",
     ),
     Types.FakeItem: ItemPlacementData(
-        model_index=[0x103, 0x103, 0x103, 0x127, 0x127, 0x127, 0x128, 0x128, 0x128, 0x103, 0x103, 0x103, 0x103, 0x127, 0x127, 0x127, 0x127, 0x128, 0x128, 0x128, 0x128],
-        model_two_index=[0x25D, 0x264, 0x265, 0x292, 0x293, 0x294, 0x295, 0x296, 0x297, 0x2A6, 0x299, 0x29A, 0x29B, 0x29C, 0x29D, 0x29E, 0x29F, 0x2A0, 0x2A1, 0x2A4, 0x2A5],
+        model_index=[0x103, 0x127, 0x128],
+        model_two_index=[0x25D, 0x264, 0x265],
         actor_index=[
-            CustomActors.IceTrapBubble,
-            CustomActors.IceTrapReverse,
-            CustomActors.IceTrapSlow,
-            151,
-            152,
-            153,
-            154,
-            155,
-            157,
-            CustomActors.IceTrapDisableAGB,
-            CustomActors.IceTrapDisableBGB,
-            CustomActors.IceTrapDisableZGB,
-            CustomActors.IceTrapDisableCUGB,
-            CustomActors.IceTrapDisableABean,
-            CustomActors.IceTrapDisableBBean,
-            CustomActors.IceTrapDisableZBean,
-            CustomActors.IceTrapDisableCUBean,
-            CustomActors.IceTrapDisableAKey,
-            CustomActors.IceTrapDisableBKey,
-            CustomActors.IceTrapDisableZKey,
-            CustomActors.IceTrapDisableCUKey,
+            CustomActors.IceTrapGB,
+            CustomActors.IceTrapBean,
+            CustomActors.IceTrapKey,
         ],
-        arcade_reward_index=[ArcadeRewards.IceTrap] * (3 * 7),
-        jetpac_reward_index=[JetpacRewards.IceTrap] * (3 * 7),
-        overlay=[
-            GraphicOverlay.IceTrapBubble,
-            GraphicOverlay.IceTrapReverse,
-            GraphicOverlay.IceTrapSlow,
-            GraphicOverlay.IceTrapBubble,
-            GraphicOverlay.IceTrapReverse,
-            GraphicOverlay.IceTrapSlow,
-            GraphicOverlay.IceTrapBubble,
-            GraphicOverlay.IceTrapReverse,
-            GraphicOverlay.IceTrapSlow,
-            GraphicOverlay.IceTrapDisableA,
-            GraphicOverlay.IceTrapDisableB,
-            GraphicOverlay.IceTrapDisableZ,
-            GraphicOverlay.IceTrapDisableCU,
-            GraphicOverlay.IceTrapDisableA,
-            GraphicOverlay.IceTrapDisableB,
-            GraphicOverlay.IceTrapDisableZ,
-            GraphicOverlay.IceTrapDisableCU,
-            GraphicOverlay.IceTrapDisableA,
-            GraphicOverlay.IceTrapDisableB,
-            GraphicOverlay.IceTrapDisableZ,
-            GraphicOverlay.IceTrapDisableCU,
-        ],
-        index_getter=lambda item, flag, shared: IceTrapItems.index(item),
+        arcade_reward_index=[ArcadeRewards.IceTrap] * 3,
+        jetpac_reward_index=[JetpacRewards.IceTrap] * 3,
+        overlay=[GraphicOverlay.IceTrapBubble] * 3,
+        index_getter=lambda item, flag, shared: IceTrapMaskIndexes.index(IceTrapMasks[item]),
         preview_text="\x04GLODEN BANANE\x04",
         seal_preview_text="\x04BANANA OF FOOLS GOLD\x04",
     ),
@@ -819,31 +767,6 @@ def getPropFromItem(item: Items, item_type: Types, flag: int, shared: bool = Fal
     """Get the prop index associated with an item."""
     index = getItemDBEntry(item_type).index_getter(item, flag, shared)
     return getItemDBEntry(item_type).model_two_index[index]
-
-IceTrapMasks = {
-    Items.IceTrapBubble: Types.Banana,
-    Items.IceTrapReverse: Types.Banana,
-    Items.IceTrapSlow: Types.Banana,
-    Items.IceTrapBubbleBean: Types.Bean,
-    Items.IceTrapReverseBean: Types.Bean,
-    Items.IceTrapSlowBean: Types.Bean,
-    Items.IceTrapBubbleKey: Types.Key,
-    Items.IceTrapReverseKey: Types.Key,
-    Items.IceTrapSlowKey: Types.Key,
-    Items.IceTrapDisableA: Types.Banana,
-    Items.IceTrapDisableABean: Types.Bean,
-    Items.IceTrapDisableAKey: Types.Key,
-    Items.IceTrapDisableB: Types.Banana,
-    Items.IceTrapDisableBBean: Types.Bean,
-    Items.IceTrapDisableBKey: Types.Key,
-    Items.IceTrapDisableZ: Types.Banana,
-    Items.IceTrapDisableZBean: Types.Bean,
-    Items.IceTrapDisableZKey: Types.Key,
-    Items.IceTrapDisableCU: Types.Banana,
-    Items.IceTrapDisableCUBean: Types.Bean,
-    Items.IceTrapDisableCUKey: Types.Key,
-}
-
 
 def getModelMask(item: Items) -> Types:
     """Get the model mask for an ice trap."""

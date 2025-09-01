@@ -460,48 +460,9 @@ void getItem(int object_type) {
             forceDance();
             break;
         case 0x25D:
-        case 0x292:
-        case 0x295:
-            // Fake Item
-            it_type = ICETRAP_BUBBLE;
         case 0x264:
-        case 0x293:
-        case 0x296:
-            if (it_type == -1) {
-                it_type = ICETRAP_REVERSECONTROLS;
-            }
         case 0x265:
-        case 0x294:
-        case 0x297:
-            if (it_type == -1) {
-                it_type = ICETRAP_SLOWED;
-            }
-        case 0x2A6:
-        case 0x29C:
-        case 0x2A0:
-            if (it_type == -1) {
-                it_type = ICETRAP_DISABLEA;
-            }
-        case 0x299:
-        case 0x29D:
-        case 0x2A1:
-            if (it_type == -1) {
-                it_type = ICETRAP_DISABLEB;
-            }
-        case 0x29A:
-        case 0x29E:
-        case 0x2A4:
-            if (it_type == -1) {
-                it_type = ICETRAP_DISABLEZ;
-            }
-        case 0x29B:
-        case 0x29F:
-        case 0x2A5:
-            if (it_type == -1) {
-                it_type = ICETRAP_DISABLECU;
-            }
             forceDance();
-            queueIceTrap(it_type, 1);
             break;
         case 0x27E:
         case 649:
@@ -810,25 +771,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0x25D:
         case 0x264:
         case 0x265:
-        case 0x292:
-        case 0x293:
-        case 0x294:
-        case 0x295:
-        case 0x296:
-        case 0x297:
-        case 0x2A6:
-        case 0x299:
-        case 0x29A:
-        case 0x29B:
-        case 0x29C:
-        case 0x29D:
-        case 0x29E:
-        case 0x29F:
-        case 0x2A0:
-        case 0x2A1:
-        case 0x2A4:
-        case 0x2A5:
-            giveItem(REQITEM_ICETRAP, item_level, item_kong, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            giveItem(REQITEM_ICETRAP, item_level, item_kong, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .apply_ice_trap=1});
             break;
         case 0x27E:
         case 0x289:
