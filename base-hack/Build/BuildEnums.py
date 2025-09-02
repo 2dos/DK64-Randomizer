@@ -897,6 +897,16 @@ class ExtraTextures(IntEnum):
     PotionSpin8 = auto()
     DiscoDonkShirt = auto()
     DiscoDonkGlove = auto()
+    FinalBoss1Left = auto()
+    FinalBoss1Right = auto()
+    FinalBoss2Left = auto()
+    FinalBoss2Right = auto()
+    FinalBoss3Left = auto()
+    FinalBoss3Right = auto()
+    FinalBoss4Left = auto()
+    FinalBoss4Right = auto()
+    FinalBoss5Left = auto()
+    FinalBoss5Right = auto()
 
 
 class MoveTypes(IntEnum):

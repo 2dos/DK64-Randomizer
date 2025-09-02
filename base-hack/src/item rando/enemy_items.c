@@ -35,17 +35,19 @@ void populateEnemyMapData(void) {
         if (enemy_write[i].map == CurrentMap) {
             int spawn_id = enemy_write[i].char_spawner_id;
             current_map_items[spawn_id].spawn.actor = enemy_write[i].actor;
+            current_map_items[spawn_id].item_level = enemy_write[i].item.level;
+            current_map_items[spawn_id].item_kong = enemy_write[i].item.kong;
             current_map_items[spawn_id].global_index = i;
         }
     }
     setEnemyDBPopulation(1);
 }
 
-int getEnemyItem(int id) {
+enemy_item_db_item *getEnemyItem(int id) {
     if (current_map_items[id].spawn.actor != 0) {
-        return current_map_items[id].spawn.actor;
+        return &current_map_items[id];
     }
-    return -1;
+    return 0;
 }
 
 int getEnemyFlag(int id) {

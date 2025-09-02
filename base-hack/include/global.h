@@ -31,7 +31,7 @@ extern void applyPaperMode(void);
 
 extern void resolveBonusContainer(void);
 
-extern int getEnemyItem(int id);
+extern enemy_item_db_item *getEnemyItem(int id);
 extern int getEnemyFlag(int id);
 extern void setEnemyDBPopulation(int value);
 extern void populateEnemyMapData(void);
@@ -169,6 +169,7 @@ extern void fairyDuplicateCode(void);
 extern void shopOwnerItemCode(void);
 extern void FakeGBCode(void);
 extern void FakeKeyCode(void);
+extern void FakeFairyCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern Gfx* renderIndicatorSprite(Gfx* dl, int sprite, int dim, unsigned char* timer, int width, int height, codecs codec);
@@ -231,7 +232,6 @@ extern void adjustAnimationTables(void);
 extern void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_index);
 extern void adaptKrushaZBAnimation_Charge(actorData* actor, int anim);
 extern void OrangeGunCode(void);
-extern void changeFeatherToSprite(void);
 extern void setActorDamage(int actor, int new_damage);
 extern void updateCutsceneModels(actorData* actor, int size);
 extern void* DiddySwimFix(int ptr, int file, int c0, int c1);
@@ -255,11 +255,11 @@ extern void spawnEnemyDrops(actorData* actor);
 extern void finalizeBeatGame(void);
 extern void exitTrapBubbleController(void);
 
+extern void spawnActorWithFlagHandler(int object, float x, float y, float z, int unk0, int spawn_type, int flag, int unk1, int item_level, int item_kong);
+
 extern int getFlagIndex_Corrected(int start, int level);
-extern int getBPItem(int index);
-extern int getCrownItem(maps map);
-extern int getKeyItem(int old_flag);
-extern int getRainbowCoinItem(int old_flag);
+extern int getCrownIndex(maps map);
+extern int getKeyIndex(int old_flag);
 extern void PotionCode(void);
 extern void KongDropCode(void);
 extern void getItem(int object_type);
@@ -399,6 +399,7 @@ extern Gfx* displaySongNameHandler(Gfx* dl);
 extern void resetDisplayedMusic(void);
 
 extern enum_bonus_skin getBarrelSkinIndex(int actor);
+extern enum_bonus_skin getShopSkinIndex(purchase_struct *data);
 extern void crankyCodeHandler(void);
 extern void funkyCodeHandler(void);
 extern void candyCodeHandler(void);

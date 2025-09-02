@@ -601,9 +601,9 @@ hint_region_list = [
     HintRegion("Japes Hillside", "JapesHigh"),
     HintRegion("Stormy Tunnel Area", "JapesStorm"),
     HintRegion("Hive Tunnel Area", "JapesHive"),
-    HintRegion("Japes Caves and Mines", "JapesCaverns"),
+    HintRegion("Japes Caves & Mines", "JapesCaverns"),
     # Aztec
-    HintRegion("Aztec Oasis and Totem Area", "AztecOasisTotem"),
+    HintRegion("Aztec Oasis & Totem Area", "AztecOasisTotem"),
     HintRegion("Tiny Temple", "AztecTiny"),
     HintRegion("5 Door Temple", "AztecGetOut"),
     HintRegion("Llama Temple", "AztecLlama"),
@@ -611,8 +611,8 @@ hint_region_list = [
     # Factory
     HintRegion("Frantic Factory Start", "FactoryStart"),
     HintRegion("Testing Area", "FactoryTesting"),
-    HintRegion("Research and Development Area", "FactoryResearch"),
-    HintRegion("Storage and Arcade", "FactoryStorage"),
+    HintRegion("R&D Area", "FactoryResearch"),
+    HintRegion("Storage & Arcade", "FactoryStorage"),
     HintRegion("Production Room", "FactoryProd"),
     # Galleon
     HintRegion("Galleon Caverns", "GalleonCaverns"),
@@ -621,7 +621,7 @@ hint_region_list = [
     HintRegion("Treasure Room", "GalleonTreasure"),
     HintRegion("5 Door Ship", "GalleonShip"),
     # Forest
-    HintRegion("Forest Center and Beanstalk", "ForestStart"),
+    HintRegion("Forest Center & Beanstalk", "ForestStart"),
     HintRegion("Giant Mushroom Exterior", "ForestGMExt"),
     HintRegion("Giant Mushroom Insides", "ForestGMInt"),
     HintRegion("Owl Tree", "ForestOwl"),

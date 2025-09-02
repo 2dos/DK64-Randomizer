@@ -51,6 +51,8 @@ void spawnEnemyDrops(actorData* actor) {
     }
     int drop_count = item_data->drop_count;
     int drop_type = item_data->dropped_object;
+    int drop_type_level = 0;
+    int drop_type_kong = 0;
     if (drop_count <= 0) {
         return;
     }
@@ -63,7 +65,10 @@ void spawnEnemyDrops(actorData* actor) {
         if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
             return;
         } else if (Rando.item_rando) {
-            drop_type = getBPItem(flag - 469);
+            int idx = flag - 469;
+            drop_type = bp_item_table[idx].actor;
+            drop_type_level = bp_item_table[idx].item_level;
+            drop_type_kong = bp_item_table[idx].item_kong;
             drop_count = 1;
             if (isBounceObject(drop_type)) {
                 drop_arg = 2;
@@ -80,10 +85,15 @@ void spawnEnemyDrops(actorData* actor) {
             flag = getEnemyFlag(spawner_id);
             if (canSpawnEnemyReward()) {
                 if (Rando.item_rando) {
-                    int proposition = getEnemyItem(spawner_id);
-                    if ((proposition != -1) && (proposition != NEWACTOR_NULL)) {
-                        drop_type = proposition;
-                        drop_count = 1;
+                    enemy_item_db_item *proposition = getEnemyItem(spawner_id);
+                    if (proposition) {
+                        int actor = proposition->spawn.actor;
+                        if (actor != NEWACTOR_NULL) {
+                            drop_type = actor;
+                            drop_type_level = proposition->item_level;
+                            drop_type_kong = proposition->item_kong;
+                            drop_count = 1;
+                        }
                     }
                     if (isBounceObject(drop_type)) {
                         drop_arg = 2;
@@ -102,6 +112,6 @@ void spawnEnemyDrops(actorData* actor) {
     drop_rotation_divisor /= drop_count;
     for (int i = 0; i < drop_count; i++) {
         int drop_rotation = i * drop_rotation_divisor;
-        spawnActorWithFlag(drop_type, actor->xPos, actor->yPos, actor->zPos, drop_rotation, drop_arg, flag, 0);
+        spawnActorWithFlagHandler(drop_type, actor->xPos, actor->yPos, actor->zPos, drop_rotation, drop_arg, flag, 0, drop_type_level, drop_type_kong);
     }
 }

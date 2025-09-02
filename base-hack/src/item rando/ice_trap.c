@@ -439,6 +439,7 @@ static button_ice_struct button_ice_data[] = {
     {.ice_trap_type = ICETRAP_DISABLEZ, .button_btf = CONT_G, .button_sprite = (void*)0x80720D38},
     {.ice_trap_type = ICETRAP_DISABLECU, .button_btf = CONT_E, .button_sprite = (void*)0x80720D80},
 };
+static unsigned char flip_timer = 0;
 
 void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration) {
     float repeat_count = (float)duration / (float)sprite->image_count;
@@ -481,6 +482,27 @@ void initIceTrap(void) {
                 renderSpritesOnPlayer(data->button_sprite, 3, 240);
             }
             break;
+        case ICETRAP_GETOUT:
+            if (CCEffectData) {
+                CCEffectData->get_out = CC_ENABLING;
+            }
+            break;
+        case ICETRAP_DRY:
+            CollectableBase.Crystals = 0;
+            CollectableBase.Film = 0;
+            CollectableBase.HomingAmmo = 0;
+            CollectableBase.InstrumentEnergy = 0;
+            CollectableBase.Oranges = 0;
+            CollectableBase.StandardAmmo = 0;
+            for (int i = 0; i < 5; i++) {
+                MovesBase[i].instrument_energy = 0;
+            }
+            displaySpriteAtXYZ((void*)(0x8071FE08), 1.0f, Player->xPos, Player->yPos, Player->zPos);
+            break;
+        case ICETRAP_FLIP:
+            *(unsigned char*)(0x80010520) = 0xBF;
+            flip_timer = 240;
+            break;
     }
     playSFX(0x2D4); // K Rool Laugh
     GameStats[STAT_TRAPPED]++;
@@ -492,8 +514,9 @@ void initIceTrap(void) {
 
 void resetIceTrapButtons(void) {
     for (int i = 0; i < sizeof(button_ice_data)/sizeof(button_ice_struct); i++) {
-        button_ice_data[i].ice_trap_timer;
+        button_ice_data[i].ice_trap_timer = 0;
     }
+    flip_timer = 0;
     trap_enabled_buttons = 0xFFFF;
 }
 
@@ -505,6 +528,12 @@ void handleIceTrapButtons(void) {
             if (data->ice_trap_timer == 0) {
                 trap_enabled_buttons |= data->button_btf;
             }
+        }
+    }
+    if (flip_timer > 0) {
+        flip_timer--;
+        if (flip_timer == 0) {
+            *(unsigned char*)(0x80010520) = 0x3F;
         }
     }
 }

@@ -10,6 +10,30 @@
  */
 #include "../../include/common.h"
 
+typedef struct actorSpawnStruct {
+    float spawn_type;
+    float unk0;
+    float flag;
+    unsigned char item_type;  // Non-standard, but just to prevent float conversion issues
+    unsigned char item_level;  // Non-standard, but just to prevent float conversion issues
+    unsigned char item_kong;  // Non-standard, but just to prevent float conversion issues
+} actorSpawnStruct;
+
+void spawnActorWithFlagHandler(int object, float x, float y, float z, int unk0, int spawn_type, int flag, int unk1, int item_level, int item_kong) {
+    actorSpawnStruct data;
+    float temp = *(float*)(0x8075A9A0);
+    if (*(int*)(0x807FBB68) & 0x10) {
+        temp *= 2;
+    }
+    data.spawn_type = spawn_type;
+    data.unk0 = unk0;
+    data.flag = flag;
+    data.item_type = 0;
+    data.item_level = item_level;
+    data.item_kong = item_kong;
+    spawnActorSpawnerContainer(object, x, y, z, 0, *(int*)(&temp), unk1, &data);
+}
+
 void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
     /**
      * @brief Spawn bonus reward
@@ -29,7 +53,7 @@ void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutsc
         object = bonus_data[index].spawn_actor;
     }
     if (object != NEWACTOR_NULL) {
-        spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
+        spawnActorWithFlagHandler(object, x, y, z, unk0, cutscene, flag, unk1, bonus_data[index].item_level, bonus_data[index].item_kong);
     }
 }
 
@@ -46,7 +70,14 @@ void spawnRewardAtActor(int object, int flag) {
     }
     if (object != NEWACTOR_NULL) {
         if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
-            spawnObjectAtActor(object, flag);
+            spawnActorWithFlagHandler(object,
+                CurrentActorPointer_0->xPos,
+                CurrentActorPointer_0->yPos,
+                CurrentActorPointer_0->zPos,
+                0, 0, flag, CurrentActorPointer_0,
+                bonus_data[index].item_level,
+                bonus_data[index].item_kong
+            );
         }
     }
 }
@@ -61,8 +92,7 @@ void spawnMinecartReward(int object, int flag) {
     for (int i = 0; i < BONUS_DATA_COUNT; i++) {
         if (bonus_data[i].flag == flag) {
             if (bonus_data[i].spawn_actor != NEWACTOR_NULL) {
-                spawnActorWithFlag(bonus_data[i].spawn_actor, Player->xPos, Player->yPos, Player->zPos, 0, 0, flag, 0);
-                // spawnObjectAtActor(bonus_data[i].spawn_actor, flag); // Causes some interesting side-effects with collision
+                spawnActorWithFlagHandler(bonus_data[i].spawn_actor, Player->xPos, Player->yPos, Player->zPos, 0, 0, flag, 0, bonus_data[i].item_level, bonus_data[i].item_kong);
             }
             return;
         }
@@ -82,12 +112,13 @@ void spawnCrownReward(int object, float x, float y, float z, int unk0, int cutsc
      * @param flag Tied flag
      * @param unk1 Unknown
      */
-    int new_obj = getCrownItem(CurrentMap);
+    int reward_index = getCrownIndex(CurrentMap);
+    int new_obj = crown_item_table[reward_index].actor;
     if (new_obj != 0) {
         object = new_obj;
     }
     if (object != NEWACTOR_NULL) {
-        spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
+        spawnActorWithFlagHandler(object, x, y, z, unk0, cutscene, flag, unk1, crown_item_table[reward_index].item_level, crown_item_table[reward_index].item_kong);
     }
 }
 
@@ -104,7 +135,8 @@ void spawnBossReward(int object, float x, float y, float z, int unk0, int cutsce
      * @param flag Tied flag
      * @param unk1 Unknown
      */
-    int new_obj = getKeyItem(flag);
+    int table_index = getKeyIndex(flag);
+    int new_obj = key_item_table[table_index].actor;
     if (new_obj != 0) {
         object = new_obj;
     }
@@ -124,7 +156,7 @@ void spawnBossReward(int object, float x, float y, float z, int unk0, int cutsce
             // AD2/MJ
             cutscene = 1;
         }
-        spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
+        spawnActorWithFlagHandler(object, x, y, z, unk0, cutscene, flag, unk1, key_item_table[table_index].item_level, key_item_table[table_index].item_kong);
         // Fix items which have short spawn ranges
         ActorSpawnerPointer->spawn_range = 4000000.0f;
     }
@@ -143,7 +175,8 @@ void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int c
      * @param flag Tied flag
      * @param unk1 Unknown
      */
-    int new_obj = getRainbowCoinItem(flag);
+    int idx = flag - FLAG_RAINBOWCOIN_0;
+    int new_obj = rcoin_item_table[idx].actor;
     if (new_obj != 0) {
         object = new_obj;
     }
@@ -151,7 +184,7 @@ void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int c
         if (isBounceObject(object)) {
             cutscene = 2;
         }
-        spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
+        spawnActorWithFlagHandler(object, x, y, z, unk0, cutscene, flag, unk1, rcoin_item_table[idx].item_level, rcoin_item_table[idx].item_kong);
     }
 }
 
@@ -196,7 +229,8 @@ void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1,
     int id = ObjectModel2Pointer[convertSubIDToIndex(index)].object_id;
     int flag = getCrateFlag(id);
     int spawn_count = 1;
-    int object = crate_item_table[flag - FLAG_MELONCRATE_0];
+    int idx = flag - FLAG_MELONCRATE_0;
+    int object = crate_item_table[idx].actor;
     int cutscene = 1;
     if (object == 0x2F) {
         // Junk Item. Set flag as we're spawning 4 unflagged melons and we want it to update check screen
@@ -214,7 +248,7 @@ void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1,
     float y = collisionPos[1] + 15.0f;
     float z = collisionPos[2];
     for (int i = 0; i < spawn_count; i++) {
-        spawnActorWithFlag(object, x, y, z, 0x400 * i, cutscene, flag, 0);
+        spawnActorWithFlagHandler(object, x, y, z, 0x400 * i, cutscene, flag, 0, crate_item_table[idx].item_level, crate_item_table[idx].item_kong);
     }
     unkSpriteRenderFunc_1(1);
     displaySpriteAtXYZ(sprite_table[31], 2.5f, x, y + 15.0f, z);
@@ -257,7 +291,7 @@ void spawnBoulderObject(actorData *actor) {
     if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
         return;
     }
-    int item = getBoulderItem();
+    int item = getBoulderItem(index);
     if (!item) {
         return;
     }
@@ -268,11 +302,13 @@ void spawnBoulderObject(actorData *actor) {
     if (isBounceObject(item)) {
         cutscene = 2;
     }
-    spawnActorWithFlag(item,
+    spawnActorWithFlagHandler(item,
         actor->xPos,
         actor->yPos,
         actor->zPos,
         0, cutscene,
-        flag, 0);
+        flag, 0,
+        boulder_item_table[index].level,
+        boulder_item_table[index].kong);
     HoldableSpawnBitfield |= (1 << index);
 }

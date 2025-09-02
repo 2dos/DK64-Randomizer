@@ -72,6 +72,9 @@ typedef enum archipelago_items {
     /* 0x043 */ TRANSFER_ITEM_FAKEITEM_DISABLEB,
     /* 0x044 */ TRANSFER_ITEM_FAKEITEM_DISABLEZ,
     /* 0x045 */ TRANSFER_ITEM_FAKEITEM_DISABLECU,
+    /* 0x046 */ TRANSFER_ITEM_FAKEITEM_GETOUT,
+    /* 0x047 */ TRANSFER_ITEM_FAKEITEM_DRY,
+    /* 0x048 */ TRANSFER_ITEM_FAKEITEM_FLIP,
 } archipelago_items;
 
 typedef struct archipelago_data {

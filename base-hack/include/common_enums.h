@@ -1059,6 +1059,10 @@ typedef enum enum_bonus_skin {
     /* 0x018 */ SKIN_AP,
     /* 0x019 */ SKIN_FAKE_BEAN,
     /* 0x01A */ SKIN_FAKE_KEY,
+    /* 0x01B */ SKIN_SHARED,
+    /* 0x01C */ SKIN_SOLDOUT,
+    /* 0x01D */ SKIN_NULL,
+	/* 0x01E */ SKIN_FAKE_FAIRY,
     /* ----- */ SKIN_TERMINATOR,
 } enum_bonus_skin;
 
@@ -1102,6 +1106,9 @@ typedef enum ICE_TRAP_TYPES {
 	/* 0x006 */ ICETRAP_DISABLEB,
 	/* 0x007 */ ICETRAP_DISABLEZ,
 	/* 0x008 */ ICETRAP_DISABLECU,
+	/* 0x009 */ ICETRAP_GETOUT,
+	/* 0x00A */ ICETRAP_DRY,
+	/* 0x00B */ ICETRAP_FLIP,
 } ICE_TRAP_TYPES;
 
 typedef enum COLLISION_BTF {

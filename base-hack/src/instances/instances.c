@@ -213,6 +213,7 @@
 #define FACTORY_CRUSHER_4 0x4
 
 static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
+static const unsigned char dartboard_images[] = {3, 1, 2, 0, 5, 4, 6, 7}; // 3 & 0 get swapped, 4 & 5 get swapped
 
 void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
 	int world = getWorld(CurrentMap, 0);
@@ -251,9 +252,8 @@ void setCrusher(void) {
 	if (CurrentMap == MAP_FUNGIMILLFRONT) {
 		if ((ObjectModel2Timer < 10) && (ObjectModel2Timer > 5)) {
 			int crusher_index = convertIDToIndex(8);
-			int* m2location = (int*)ObjectModel2Pointer;
 			if (crusher_index > -1) {
-				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,crusher_index);
+				ModelTwoData* _object = &ObjectModel2Pointer[crusher_index];
 				if (_object) {
 					behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
 					if (behaviour) {
@@ -297,8 +297,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		switch(CurrentMap) {
 			case MAP_GALLEON:
 				{
-					int gate_index = -1;
-					int gate_flag = -1;
+					int gate_flag = 0;
 					switch (param2) {
 						case SEASICK_SHIP:
 							initiateLZRTransition(&Rando.seasick_ship_enter, MAP_GALLEONSEASICKSHIP, 0);
@@ -330,36 +329,29 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							}
 							break;
 						case GALLEON_DK_5DSDOOR:
-							gate_index = 0;
 							gate_flag = GALLEON_5DSOPEN_DK;
 						case GALLEON_DIDDY_5DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 1;
+							if (!gate_flag) {
 								gate_flag = GALLEON_5DSOPEN_DIDDY;
 							}
 						case GALLEON_LANKY_5DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 2;
+							if (!gate_flag) {
 								gate_flag = GALLEON_5DSOPEN_LANKY;
 							}
 						case GALLEON_TINY_5DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 3;
+							if (!gate_flag) {
 								gate_flag = GALLEON_5DSOPEN_TINY;
 							}
 						case GALLEON_CHUNKY_5DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 4;
+							if (!gate_flag) {
 								gate_flag = GALLEON_5DSOPEN_CHUNKY;
 							}
 						case GALLEON_LANKY_2DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 5;
+							if (!gate_flag) {
 								gate_flag = GALLEON_2DSOPEN_LANKY;
 							}
 						case GALLEON_TINY_2DSDOOR:
-							if (gate_index < 0) {
-								gate_index = 6;
+							if (!gate_flag) {
 								gate_flag = GALLEON_2DSOPEN_TINY;
 							}
 							if (index == 0) {
@@ -605,7 +597,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						float x = 730.0f;
 						float y = 267.0f;
 						float z = 728.0f;
-						short actor = getCrownItem(CurrentMap);
+						short crown_index = getCrownIndex(CurrentMap);
+						short actor = crown_item_table[crown_index].actor;
 						short item = -1;
 						float scale = 0.0f;
 						if (actor != 0) {
@@ -646,7 +639,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						int world = getWorld(CurrentMap, 0);
 						if (world < 7) {
 							int flag = normal_key_flags[world];
-							getModelTwoItemFromActor(getKeyItem(flag), &item, &scale);
+							int key_index = getKeyIndex(flag);
+							getModelTwoItemFromActor(key_item_table[key_index].actor, &item, &scale);
 							if (item >= 0) {
 								spawnModelTwo(item, x, y, z, scale, 0x16);
 								int i = 0;
@@ -702,8 +696,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if(index == 1){
 						// Obtain bamboo gate variables
 						int bambooGateIndex = convertIDToIndex(64);
-						int* m2location = (int*)ObjectModel2Pointer;
-						ModelTwoData* gateModelTwoPointer = getObjectArrayAddr(m2location,0x90,bambooGateIndex);
+						ModelTwoData* gateModelTwoPointer = &ObjectModel2Pointer[bambooGateIndex];
 						if (gateModelTwoPointer) {
 							// If pointer exists with that id, check behaviour
 							behaviour_data* bambooGateBehaviour = gateModelTwoPointer->behaviour_pointer;
@@ -881,9 +874,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 1) {
 						// Check if GB is in a state >= 3, this means it was spawned.
 						int index = convertIDToIndex(96);
-						int* m2location = (int*)ObjectModel2Pointer;
 						if (index > -1) {
-							ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
+							ModelTwoData* _object = &ObjectModel2Pointer[index];
 							behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
 							if (_object && behaviour) {
 								if(behaviour->current_state <= 3) {
@@ -904,25 +896,24 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (behaviour_pointer->contact_actor_type == 43) {
 								if (canHitSwitch()) {
 									int index = convertSubIDToIndex(id);
-									int* m2location = (int*)ObjectModel2Pointer;
-									ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-									setSomeTimer(_object->object_type);
+									setSomeTimer(ObjectModel2Pointer[index].object_type);
 									return 1;
 								}
 							}
 						}
 						return 0;
+					} else if (index < 12) {
+						int img_index = Rando.dartboard_order[index - 6];
+						displayImageOnObject(id, 1, dartboard_images[img_index], 0);
 					}
 				} else if (param2 == FACTORY_LARGEMETALSECTION) {
 					if (Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->current_state = 10;
 						unsigned char crusher_compontents[] = {1,3,8,9,4,10,11,12,13,2,5,6,7};
-						int* m2location = (int*)ObjectModel2Pointer;
 						for (int component = 0; component < sizeof(crusher_compontents); component++) {
 							int index = convertIDToIndex(crusher_compontents[component]);
 							if (index > -1) {
-								ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-								behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+								behaviour_data* behaviour = ObjectModel2Pointer[index].behaviour_pointer;
 								if (behaviour) {
 									behaviour->next_state = 10;
 								}
@@ -1096,9 +1087,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if ((behaviour_pointer->contact_actor_type >= 2) && (behaviour_pointer->contact_actor_type <= 6)) { // isKong
 								if (canHitSwitch()) {
 									int index = convertSubIDToIndex(id);
-									int* m2location = (int*)ObjectModel2Pointer;
-									ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-									setSomeTimer(_object->object_type);
+									setSomeTimer(ObjectModel2Pointer[index].object_type);
 									return 1;
 								}
 							}
@@ -1138,9 +1127,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						//obtain gate variables
 						int id_needed = 1;
 						int gateIndex = convertIDToIndex(id_needed);
-						int* m2location = (int*)ObjectModel2Pointer;
 						int gateSlot = convertIDToIndex(1);
-						ModelTwoData* gateModelTwoPointer = getObjectArrayAddr(m2location,0x90,gateSlot);
+						ModelTwoData* gateModelTwoPointer = &ObjectModel2Pointer[gateSlot];
 						if (gateModelTwoPointer) {
 							// If pointer exists with that id, check behaviour
 							behaviour_data* gateBehaviour = gateModelTwoPointer->behaviour_pointer;
@@ -1159,7 +1147,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						int grape_switch_id_needed = 17;
 						int grapeSlot = convertIDToIndex(17);
 						int grapeIndex = convertIDToIndex(grape_switch_id_needed);
-						ModelTwoData* grapeSwitchModelTwoPointer = getObjectArrayAddr(m2location,0x90,grapeSlot);
+						ModelTwoData* grapeSwitchModelTwoPointer = &ObjectModel2Pointer[grapeSlot];
 						if (grapeSwitchModelTwoPointer) {
 							// If pointer exists with that id, check behaviour
 							behaviour_data* grapeSwitchBehaviour = grapeSwitchModelTwoPointer->behaviour_pointer;
@@ -1191,9 +1179,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					for(int hand = 0; hand < sizeof(hands); hand++){
 						//obtain hand variables
 						// Get model two pointer of the Goo Hand in question
-						int* m2location = (int*)ObjectModel2Pointer;
 						int slot = convertIDToIndex(hands[hand]);
-						ModelTwoData* handModelTwoPointer = getObjectArrayAddr(m2location,0x90,slot);
+						ModelTwoData* handModelTwoPointer = &ObjectModel2Pointer[slot];
 						if (handModelTwoPointer) {
 							// If pointer exists with that id, check behaviour
 							behaviour_data* behaviour = handModelTwoPointer->behaviour_pointer;
@@ -1350,10 +1337,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		if (!cached_data) {
 			cached_data = dk_malloc(2);
 			int wrinkly_index = convertIDToIndex(param2);
-			int* m2location = (int*)ObjectModel2Pointer;
 			int wrinkly_doors[] = {0xF0, 0xF2, 0xEF, 0x67, 0xF1};
 			if (wrinkly_index > -1) {
-				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,wrinkly_index);
+				ModelTwoData* _object = &ObjectModel2Pointer[wrinkly_index];
 				for (int i = 0; i < 5; i++) {
 					if (_object->object_type == wrinkly_doors[i]) {
 						kong = i;
@@ -1446,14 +1432,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			}
 		}
 		return 1;
-	} else if (index == -9) {
-		// shopGenericCode(behaviour_pointer, id, param2, SHOP_CRANKY);
-	} else if (index == -10) {
-		// shopGenericCode(behaviour_pointer, id, param2, SHOP_FUNKY);
-	} else if (index == -11) {
-		// shopGenericCode(behaviour_pointer, id, param2, SHOP_CANDY);
-	} else if (index == -12) {
-		// shopGenericCode(behaviour_pointer, id, param2, SHOP_SNIDE);
 	} else if (index == -13) {
 		MelonCrateGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -14) {
@@ -1494,9 +1472,7 @@ void disableDiddyRDDoors(void) {
 	 */
 	for(int i = 63; i < 66; ++i) {
 		int index = convertIDToIndex(i);
-		int* m2location = (int*)ObjectModel2Pointer;
-		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-		behaviour_data* behaviour = (behaviour_data*)_object->behaviour_pointer;
+		behaviour_data* behaviour = ObjectModel2Pointer[index].behaviour_pointer;
 		if (behaviour) {
 			setScriptRunState(behaviour, RUNSTATE_PAUSED, 0);
 		}

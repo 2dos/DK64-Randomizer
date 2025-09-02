@@ -160,6 +160,11 @@ void FakeGBCode(void) {
     CurrentActorPointer_0->rot_y -= 0xE4; // Spin in reverse
 }
 
+void FakeFairyCode(void) {
+    fairyDuplicateCode();
+    CurrentActorPointer_0->rot_y -= 0xE4; // Spin in reverse
+}
+
 void mermaidCheck(void) {
     /**
      * @brief Set the mermaid control state based on the amount of pearls you have

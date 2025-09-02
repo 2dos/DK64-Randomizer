@@ -221,15 +221,15 @@ def getVar(ref: str) -> int:
 
 item_type_table_conversion = {
     # sym, item size
-    Types.Blueprint: ("bp_item_table", 2),
+    Types.Blueprint: ("bp_item_table", 4),
     Types.Medal: ("medal_item_table", 4),
     Types.HalfMedal: ("medal_item_table", 4),
     Types.Hint: ("wrinkly_item_table", 4),
-    Types.Crown: ("crown_item_table", 2),
-    Types.Key: ("key_item_table", 2),
+    Types.Crown: ("crown_item_table", 4),
+    Types.Key: ("key_item_table", 4),
     Types.Fairy: ("fairy_item_table", 8),
-    Types.RainbowCoin: ("rcoin_item_table", 2),
-    Types.CrateItem: ("crate_item_table", 2),
+    Types.RainbowCoin: ("rcoin_item_table", 4),
+    Types.CrateItem: ("crate_item_table", 4),
     Types.BoulderItem: ("boulder_item_table", 8),
     Types.Kong: ("kong_check_data", 8),
     Types.Shop: ("purchase_hint_text_items", 2),  # Shop Hints
@@ -245,3 +245,38 @@ def getItemTableWriteAddress(ROM_COPY, target_type: Types, index: int, offset_di
     ram_start = getSym(item_type_table_conversion[target_type][0])
     ram_offset = index * item_type_table_conversion[target_type][1]
     return getROMAddress(ram_start + ram_offset, Overlay.Custom, offset_dict)
+
+
+def patchBonus(ROM_COPY, index: int, offset_dict: dict, flag: int = None, kong_actor: int = None, spawn_actor: int = None, level: int = None, item_kong: int = None):
+    """Patch bonus data with provided inputs."""
+    ram_start = getSym("bonus_data")
+    ram_offset = index * 8
+    rom_address = getROMAddress(ram_start + ram_offset, Overlay.Custom, offset_dict)
+    if flag is not None:
+        ROM_COPY.seek(rom_address + 0)
+        ROM_COPY.writeMultipleBytes(flag, 2)
+    if kong_actor is not None:
+        ROM_COPY.seek(rom_address + 2)
+        ROM_COPY.writeMultipleBytes(kong_actor, 1)
+    if spawn_actor is not None:
+        ROM_COPY.seek(rom_address + 4)
+        ROM_COPY.writeMultipleBytes(spawn_actor, 2)
+    if level is not None:
+        ROM_COPY.seek(rom_address + 6)
+        ROM_COPY.writeMultipleBytes(level, 1)
+    if item_kong is not None:
+        ROM_COPY.seek(rom_address + 7)
+        ROM_COPY.writeMultipleBytes(item_kong, 1)
+
+
+def getBonusIndex(ROM_COPY, offset_dict: int, target_flag: int) -> int:
+    """Get the index associated with a certain flag."""
+    ram_start = getSym("bonus_data")
+    rom_address = getROMAddress(ram_start, Overlay.Custom, offset_dict)
+    count = getVar("bonus_data_count")
+    for x in range(count):
+        ROM_COPY.seek(rom_address + (x * 8))
+        data = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        if data == target_flag:
+            return x
+    return None

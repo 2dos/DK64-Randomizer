@@ -13,7 +13,7 @@ from randomizer.Patching.Library.DataTypes import intf_to_float
 from randomizer.Patching.Library.Generic import setItemReferenceName
 from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, getPropFromItem, getModelMask, getItemDBEntry, item_shop_text_mapping, BuyText, TrackerItems
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, CompTextFiles, ItemPreview
-from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay, writeValue
+from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay, writeValue, patchBonus, getBonusIndex
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
 import randomizer.ItemPool as ItemPool
@@ -163,6 +163,21 @@ def getItemPatchingFromList(list_set: list, item: Items, type_str: str, throw_er
     return list_set.index(item)
 
 
+ice_trap_data = [
+    [Items.IceTrapBubble, Items.IceTrapBubbleBean, Items.IceTrapBubbleKey, Items.IceTrapBubbleFairy],
+    [Items.IceTrapReverse, Items.IceTrapReverseBean, Items.IceTrapReverseKey, Items.IceTrapReverseFairy],
+    [Items.IceTrapSlow, Items.IceTrapSlowBean, Items.IceTrapSlowKey, Items.IceTrapSlowFairy],
+    [],  # Super Bubble
+    [Items.IceTrapDisableA, Items.IceTrapDisableABean, Items.IceTrapDisableAKey, Items.IceTrapDisableAFairy],
+    [Items.IceTrapDisableB, Items.IceTrapDisableBBean, Items.IceTrapDisableBKey, Items.IceTrapDisableBFairy],
+    [Items.IceTrapDisableZ, Items.IceTrapDisableZBean, Items.IceTrapDisableZKey, Items.IceTrapDisableZFairy],
+    [Items.IceTrapDisableCU, Items.IceTrapDisableCUBean, Items.IceTrapDisableCUKey, Items.IceTrapDisableCUFairy],
+    [Items.IceTrapGetOutGB, Items.IceTrapGetOutBean, Items.IceTrapGetOutKey, Items.IceTrapGetOutFairy],
+    [Items.IceTrapDryGB, Items.IceTrapDryBean, Items.IceTrapDryKey, Items.IceTrapDryFairy],
+    [Items.IceTrapFlipGB, Items.IceTrapFlipBean, Items.IceTrapFlipKey, Items.IceTrapFlipFairy],
+]
+
+
 def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
     """Get the data associated with how an item is patched into ROM from various attributes."""
     simple_types = {
@@ -191,27 +206,9 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
         key_index = getItemPatchingFromList(ItemPool.Keys(), item, "Key")
         return ItemPatchingInfo(6, key_index)
     elif item_type == Types.FakeItem:
-        idx_lst = [Items.IceTrapBubble, Items.IceTrapBubbleBean, Items.IceTrapBubbleKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 1)
-        idx_lst = [Items.IceTrapReverse, Items.IceTrapReverseBean, Items.IceTrapReverseKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 2)
-        idx_lst = [Items.IceTrapSlow, Items.IceTrapSlowBean, Items.IceTrapSlowKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 3)
-        idx_lst = [Items.IceTrapDisableA, Items.IceTrapDisableABean, Items.IceTrapDisableAKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 5)
-        idx_lst = [Items.IceTrapDisableB, Items.IceTrapDisableBBean, Items.IceTrapDisableBKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 6)
-        idx_lst = [Items.IceTrapDisableZ, Items.IceTrapDisableZBean, Items.IceTrapDisableZKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 7)
-        idx_lst = [Items.IceTrapDisableCU, Items.IceTrapDisableCUBean, Items.IceTrapDisableCUKey]
-        if item in idx_lst:
-            return ItemPatchingInfo(13, 0, 8)
+        for effect_index, idx_lst in enumerate(ice_trap_data):
+            if item in idx_lst:
+                return ItemPatchingInfo(13, idx_lst.index(item), effect_index + 1)
         raise Exception("Ice Trap Type provided, but invalid Ice Trap item provided resulting in search mismatch")
     elif item_type == Types.Blueprint:
         bp_index = getItemPatchingFromList(ItemPool.Blueprints(), item, "BP")
@@ -816,9 +813,7 @@ model_two_items = [
     0x1B4,  # Pearls
 ]
 
-POINTER_ROM_BONUSES = 0x1FF1200
 POINTER_ROM_ENEMIES = 0x1FF9000
-POINTER_ROM_IPDTABLE = 0x1FF2000
 
 items_needing_ipd = (
     Types.Blueprint,
@@ -978,7 +973,6 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
 
         map_items = {}
         bonus_table_offset = 0
-        ipd_data = getDefaultIPD(spoiler.settings.shuffled_location_types)
         offset_dict = populateOverlayOffsets(ROM_COPY)
         pushItemMicrohints(spoiler)
         pregiven_shop_owners = None
@@ -1017,17 +1011,8 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         if not FAST_START:
                             # Add to bonus table
                             old_tflag = 0x182 + TRAINING_LOCATIONS.index(item.location)
-                            ROM_COPY.seek(POINTER_ROM_BONUSES + (4 * bonus_table_offset))
-                            ROM_COPY.writeMultipleBytes(old_tflag, 2)
-                            ROM_COPY.writeMultipleBytes(getActorIndex(item), 2)
-                            bonus_table_offset += 1
-                            # Append to FLUT
-                            data = [old_tflag]
-                            if item.new_item is None:
-                                data.append(0)
-                            else:
-                                data.append(item.new_flag)
-                            ipd_data.append(data)
+                            bonus_index = getBonusIndex(ROM_COPY, offset_dict, old_tflag)
+                            patchBonus(ROM_COPY, bonus_index, offset_dict, spawn_actor=getActorIndex(item), level=item_properties.level, item_kong=item_properties.kong)
                     for placement in item.placement_index:
                         write_space = movespaceOffset + (6 * placement)
                         if item.new_item is None:
@@ -1113,10 +1098,8 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     elif item.location in (Locations.ForestDonkeyBaboonBlast, Locations.CavesDonkeyBaboonBlast):
                         # Autocomplete bonus barrel fix
                         actor_index = getActorIndex(item)
-                        ROM_COPY.seek(POINTER_ROM_BONUSES + (4 * bonus_table_offset))
-                        ROM_COPY.writeMultipleBytes(item.old_flag, 2)
-                        ROM_COPY.writeMultipleBytes(actor_index, 2)
-                        bonus_table_offset += 1
+                        bonus_index = getBonusIndex(ROM_COPY, offset_dict, item.old_flag)
+                        patchBonus(ROM_COPY, bonus_index, offset_dict, spawn_actor=actor_index, level=item_properties.level, item_kong=item_properties.kong)
                 else:
                     if item.old_item != Types.Medal:
                         actor_index = getActorIndex(item)
@@ -1126,23 +1109,32 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         addr = getItemTableWriteAddress(ROM_COPY, Types.Blueprint, item.old_flag - 469, offset_dict)
                         ROM_COPY.seek(addr)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
+                        ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                        ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
+                        patchBonus(ROM_COPY, (item.old_flag - 469) + 54, offset_dict, spawn_actor=actor_index, level=item_properties.level, item_kong=item_properties.kong)
                     elif item.old_item == Types.Crown:
                         # Write to Crown Table
                         crown_flags = [0x261, 0x262, 0x263, 0x264, 0x265, 0x268, 0x269, 0x266, 0x26A, 0x267]
                         addr = getItemTableWriteAddress(ROM_COPY, Types.Crown, crown_flags.index(item.old_flag), offset_dict)
                         ROM_COPY.seek(addr)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
+                        ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                        ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
                     elif item.old_item == Types.Key:
                         key_flags = [26, 74, 138, 168, 236, 292, 317, 380]
                         addr = getItemTableWriteAddress(ROM_COPY, Types.Key, key_flags.index(item.old_flag), offset_dict)
                         ROM_COPY.seek(addr)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
+                        ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                        ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
                     elif item.old_item == Types.RainbowCoin:
                         index = item.location - Locations.RainbowCoin_Location00
                         if index < 16:
                             addr = getItemTableWriteAddress(ROM_COPY, Types.RainbowCoin, index, offset_dict)
                             ROM_COPY.seek(addr)
                             ROM_COPY.writeMultipleBytes(actor_index, 2)
+                            ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                            ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
                         else:
                             raise Exception("Dirt Patch Item Placement Error")
                     elif item.old_item == Types.CrateItem:
@@ -1151,6 +1143,8 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             addr = getItemTableWriteAddress(ROM_COPY, Types.CrateItem, index, offset_dict)
                             ROM_COPY.seek(addr)
                             ROM_COPY.writeMultipleBytes(actor_index, 2)
+                            ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                            ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
                         else:
                             raise Exception("Melon Crate Item Placement Error")
                     elif item.old_item == Types.BoulderItem:
@@ -1161,14 +1155,20 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             ROM_COPY.writeMultipleBytes(actor_index, 2)
                             ROM_COPY.writeMultipleBytes(HOLDABLE_LOCATION_INFO[item.location]["map_id"], 2)
                             ROM_COPY.writeMultipleBytes(HOLDABLE_LOCATION_INFO[item.location]["spawner_id"], 2)
+                            ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                            ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
                         else:
                             raise Exception("Melon Crate Item Placement Error")
                     elif item.old_item == Types.Enemies:
                         index = item.location - Locations.JapesMainEnemy_Start
-                        ROM_COPY.seek(POINTER_ROM_ENEMIES + (index * 4))
+                        ROM_COPY.seek(POINTER_ROM_ENEMIES + (index * 8))
                         ROM_COPY.writeMultipleBytes(spoiler.enemy_location_list[item.location].map, 1)
                         ROM_COPY.writeMultipleBytes(spoiler.enemy_location_list[item.location].id, 1)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
+                        ROM_COPY.writeMultipleBytes(item_properties.response_type, 1)
+                        ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                        ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
+                        ROM_COPY.writeMultipleBytes(item_properties.audiovisual_medal, 1)
                     elif item.old_item in (Types.Medal, Types.Hint, Types.HalfMedal):
                         offset = None
                         if item.old_item in (Types.Medal, Types.HalfMedal):
@@ -1194,10 +1194,8 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         spoiler.aztec_vulture_actor = actor_index
                     elif item.old_item == Types.Banana:
                         # Bonus GB Table
-                        ROM_COPY.seek(POINTER_ROM_BONUSES + (4 * bonus_table_offset))
-                        ROM_COPY.writeMultipleBytes(item.old_flag, 2)
-                        ROM_COPY.writeMultipleBytes(actor_index, 2)
-                        bonus_table_offset += 1
+                        bonus_index = getBonusIndex(ROM_COPY, offset_dict, item.old_flag)
+                        patchBonus(ROM_COPY, bonus_index, offset_dict, spawn_actor=actor_index, level=item_properties.level, item_kong=item_properties.kong)
                     elif item.old_item == Types.Fairy:
                         # Fairy Item
                         model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
@@ -1221,7 +1219,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
                             if model is not None:
                                 idx = kong_idx[item.location]
-                                has_no_textures = item.new_item in (
+                                no_texture_tuple = (
                                     Types.Candy,
                                     Types.Climbing,
                                     Types.Cranky,
@@ -1232,6 +1230,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                                     Types.Shop,
                                     Types.TrainingBarrel,
                                 )
+                                has_no_textures = item.new_item in no_texture_tuple or getModelMask(item.new_subitem) in no_texture_tuple
                                 addr = getItemTableWriteAddress(ROM_COPY, Types.Kong, idx, offset_dict)
                                 ROM_COPY.seek(addr)
                                 ROM_COPY.writeMultipleBytes(model, 2)
@@ -1245,33 +1244,6 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 offset = item.new_flag - 0x384
                 tied_region = GetRegionIdOfLocation(spoiler, item.location)
                 spoiler.tied_hint_regions[offset] = spoiler.RegionList[tied_region].hint_name
-            helm_medals = (
-                Locations.HelmDonkeyMedal,
-                Locations.HelmDiddyMedal,
-                Locations.HelmLankyMedal,
-                Locations.HelmTinyMedal,
-                Locations.HelmChunkyMedal,
-            )
-            placed_items = (
-                # Anything that's pre-placed into the world or spawns an item that's grabbed physically by the player
-                Types.Blueprint,
-                Types.CrateItem,
-                Types.BoulderItem,
-                Types.Key,
-                Types.RainbowCoin,
-                Types.Banana,
-                Types.NintendoCoin,
-                Types.RarewareCoin,
-                Types.Enemies,
-                Types.Crown,
-                Types.Pearl,
-                Types.Bean,
-            )
-            if item.old_item in placed_items or item.location in helm_medals:
-                if item.new_item in items_needing_ipd:
-                    # Write item placement data
-                    ipd = getItemPatchingData(item.new_item, item.new_subitem)
-                    ipd_data.append([item.old_flag, ipd.level, ipd.kong])
             ref_index = 0
             if item.new_subitem == Items.ProgressiveAmmoBelt:
                 ref_index = item.new_flag - 0x292
@@ -1394,13 +1366,6 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
             placed_text = major_item if new_item in major_items else minor_item
             spoiler.text_changes[8].append({"textbox_index": 0, "mode": "replace", "search": "FOR MY AMAZING SURPRISE", "target": placed_text})
 
-        # Terminate IPD
-        ipd_data.append([0xFFFF, 0xFF, 0xFF])
-        ROM_COPY.seek(POINTER_ROM_IPDTABLE)
-        for ipd_info in sorted(ipd_data, key=lambda x: x[0]):
-            ROM_COPY.writeMultipleBytes(ipd_info[0], 2)
-            ROM_COPY.writeMultipleBytes(ipd_info[1], 1)
-            ROM_COPY.writeMultipleBytes(ipd_info[2], 1)
         # Setup Changes
         for map_id in map_items:
             cont_map_setup_address = getPointerLocation(TableNames.Setups, map_id)
@@ -1420,6 +1385,12 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     ROM_COPY.seek(start + 0x28)
                     item_obj_index = getPropFromItem(item_slot["subitem"], item_slot["obj"], item_slot["flag"], item_slot["shared"])
                     ROM_COPY.writeMultipleBytes(item_obj_index, 2)
+                    extra_data = getItemPatchingData(item_slot["obj"], item_slot["subitem"])
+                    if extra_data is not None:
+                        ROM_COPY.seek(start + 0x10)
+                        ROM_COPY.writeMultipleBytes(extra_data.response_type, 1)
+                        ROM_COPY.writeMultipleBytes(extra_data.level, 1)
+                        ROM_COPY.writeMultipleBytes(extra_data.kong, 1)
                     if item_slot["loc"] == Locations.IslesChunkyPoundtheX:
                         writeValue(ROM_COPY, 0x80747D4A, Overlay.Static, item_obj_index, offset_dict)
                     # Scaling fix

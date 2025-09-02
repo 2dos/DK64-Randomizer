@@ -117,9 +117,9 @@ HINT_REGION_PAIRING = {
     HintRegion.Hillside: "Japes Hillside",
     HintRegion.StormyTunnel: "Japes Stormy Tunnel Area",
     HintRegion.HiveTunnel: "Hive Tunnel Area",
-    HintRegion.CavesAndMines: "Japes Caves and Mines",
+    HintRegion.CavesAndMines: "Japes Caves & Mines",
     # Aztec
-    HintRegion.OasisAndTotem: "Aztec Oasis and Totem Area",
+    HintRegion.OasisAndTotem: "Aztec Oasis & Totem Area",
     HintRegion.TinyTemple: "Tiny Temple",
     HintRegion.FiveDoorTemple: "5 Door Temple",
     HintRegion.LlamaTemple: "Llama Temple",
@@ -128,7 +128,7 @@ HINT_REGION_PAIRING = {
     HintRegion.FactoryStart: "Frantic Factory Start",
     HintRegion.Testing: "Testing Area",
     HintRegion.ResearchAndDevelopment: "R&D Area",
-    HintRegion.Storage: "Storage and Arcade Area",
+    HintRegion.Storage: "Storage & Arcade Area",
     HintRegion.ProductionRoom: "Production Room",
     # Galleon
     HintRegion.GalleonCaverns: "Galleon Caverns",
@@ -137,7 +137,7 @@ HINT_REGION_PAIRING = {
     HintRegion.TreasureRoom: "Treasure Room",
     HintRegion.FiveDoorShip: "5 Door Ship",
     # Forest
-    HintRegion.ForestCenterAndBeanstalk: "Forest Center and Beanstalk",
+    HintRegion.ForestCenterAndBeanstalk: "Forest Center & Beanstalk",
     HintRegion.MushroomExterior: "Giant Mushroom Exterior",
     HintRegion.MushroomInterior: "Giant Mushroom Insides",
     HintRegion.OwlTree: "Owl Tree Area",

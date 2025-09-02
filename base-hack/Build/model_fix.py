@@ -5,7 +5,7 @@ import zlib
 import math
 
 from BuildEnums import TableNames, ExtraTextures
-from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS
+from BuildLib import ROMName, main_pointer_table_offset, barrel_skins, getBonusSkinOffset, INSTRUMENT_PADS, hueShiftColor
 
 # lanky_fix = """
 #     E7 00 00 00 00 00 00 00
@@ -597,6 +597,31 @@ with open(ROMName, "rb") as rom:
             for x in range(5):
                 fh.write(tex.to_bytes(2, "big"))
             fh.write((0).to_bytes(2, "big"))
+    # Fake Fairies
+    rom.seek(actor_table + (0x3C << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    rom.seek(model_start)
+    indic = int.from_bytes(rom.read(2), "big")
+    rom.seek(model_start)
+    data = rom.read(model_size)
+    if indic == 0x1F8B:
+        data = zlib.decompress(data, (15 + 32))
+    with open("fake_fairy_om1.bin", "wb") as fh:
+        fh.write(data)
+    with open("fake_fairy_om1.bin", "r+b") as fh:
+        for x in range(0x200):
+            fh.seek(0x28 + (x * 0x10) + 0xC)
+            color_red = int.from_bytes(fh.read(1), "big")
+            color_green = int.from_bytes(fh.read(1), "big")
+            color_blue = int.from_bytes(fh.read(1), "big")
+            color_red, color_green, color_blue = hueShiftColor((color_red, color_green, color_blue), 20)
+            fh.seek(0x28 + (x * 0x10) + 0xC)
+            fh.write(color_red.to_bytes(1, "big"))
+            fh.write(color_green.to_bytes(1, "big"))
+            fh.write(color_blue.to_bytes(1, "big"))
+
     # Make inside match outside
     # SHINE_TEXTURE = 0xBAB
     # with open("updated_medal.bin", "r+b") as fh:

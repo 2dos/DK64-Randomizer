@@ -65,9 +65,9 @@ class CustomActors(IntEnum):
     Bean = auto()
     Pearl = auto()
     Fairy = auto()
-    IceTrapBubble = auto()
-    IceTrapReverse = auto()
-    IceTrapSlow = auto()
+    IceTrapGB = auto()
+    IceTrapBean = auto()
+    IceTrapKey = auto()
     Medal = auto()
     JetpacItemOverlay = auto()
     CrankyItem = auto()
@@ -83,18 +83,7 @@ class CustomActors(IntEnum):
     HintItemTiny = auto()
     HintItemChunky = auto()
     ArchipelagoItem = auto()
-    IceTrapDisableAGB = auto()
-    IceTrapDisableBGB = auto()
-    IceTrapDisableZGB = auto()
-    IceTrapDisableCUGB = auto()
-    IceTrapDisableABean = auto()
-    IceTrapDisableBBean = auto()
-    IceTrapDisableZBean = auto()
-    IceTrapDisableCUBean = auto()
-    IceTrapDisableAKey = auto()
-    IceTrapDisableBKey = auto()
-    IceTrapDisableZKey = auto()
-    IceTrapDisableCUKey = auto()
+    IceTrapFairy = auto()
 
 
 POTIONS = (
@@ -117,23 +106,6 @@ SHOPKEEPERS = (
     CustomActors.FunkyItem,
     CustomActors.CandyItem,
     CustomActors.SnideItem,
-)
-TRAPS = (
-    CustomActors.IceTrapBubble,
-    CustomActors.IceTrapReverse,
-    CustomActors.IceTrapSlow,
-    CustomActors.IceTrapDisableAGB,
-    CustomActors.IceTrapDisableBGB,
-    CustomActors.IceTrapDisableZGB,
-    CustomActors.IceTrapDisableCUGB,
-    CustomActors.IceTrapDisableABean,
-    CustomActors.IceTrapDisableBBean,
-    CustomActors.IceTrapDisableZBean,
-    CustomActors.IceTrapDisableCUBean,
-    CustomActors.IceTrapDisableAKey,
-    CustomActors.IceTrapDisableBKey,
-    CustomActors.IceTrapDisableZKey,
-    CustomActors.IceTrapDisableCUKey,
 )
 
 
@@ -255,27 +227,10 @@ item_database = [
     Item(name="Candy Item", actor=CustomActors.CandyItem, model_two=0x261, bounce=True, has_collision=True),
     Item(name="Snide Item", actor=CustomActors.SnideItem, model_two=0x262, bounce=True, has_collision=True),
     # Ice Traps
-    Item(name="Fake Item (Bubble)", actor=CustomActors.IceTrapBubble, model_two=0x25D, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Reverse)", actor=CustomActors.IceTrapReverse, model_two=0x264, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Slow)", actor=CustomActors.IceTrapSlow, model_two=0x265, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (GB Dis A)", actor=CustomActors.IceTrapDisableAGB, model_two=0x2A6, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (GB Dis B)", actor=CustomActors.IceTrapDisableBGB, model_two=0x299, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (GB Dis Z)", actor=CustomActors.IceTrapDisableZGB, model_two=0x29A, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (GB Dis CU)", actor=CustomActors.IceTrapDisableCUGB, model_two=0x29B, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Bean Bubble)", actor=151, model_two=0x292, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Bean Reverse)", actor=152, model_two=0x293, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Bean Slow)", actor=153, model_two=0x294, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Bean Dis A)", actor=CustomActors.IceTrapDisableABean, model_two=0x29C, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Bean Dis B)", actor=CustomActors.IceTrapDisableBBean, model_two=0x29D, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Bean Dis Z)", actor=CustomActors.IceTrapDisableZBean, model_two=0x29E, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Bean Dis CU)", actor=CustomActors.IceTrapDisableCUBean, model_two=0x29F, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Key Bubble)", actor=154, model_two=0x295, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Key Reverse)", actor=155, model_two=0x296, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Key Slow)", actor=157, model_two=0x297, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Key Dis A)", actor=CustomActors.IceTrapDisableAKey, model_two=0x2A0, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Key Dis B)", actor=CustomActors.IceTrapDisableBKey, model_two=0x2A1, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Key Dis Z)", actor=CustomActors.IceTrapDisableZKey, model_two=0x2A4, bounce=True, scale=0.25, has_collision=True),
-    Item(name="Fake Item (Key Dis CU)", actor=CustomActors.IceTrapDisableCUKey, model_two=0x2A5, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (GB)", actor=CustomActors.IceTrapGB, model_two=0x25D, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Bean)", actor=CustomActors.IceTrapBean, model_two=0x264, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Key)", actor=CustomActors.IceTrapKey, model_two=0x265, bounce=True, scale=0.25, has_collision=True),
+    Item(name="Fake Item (Fairy)", actor=CustomActors.IceTrapFairy, model_two=0x299, bounce=True, scale=0.25, has_collision=True),
     # Singles
     Item(name="DK Single", actor=0, model_two=0xD, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.DK),
     Item(name="Diddy Single", actor=0, model_two=0xA, item_db=False, has_collision=True, hitbox=Hitbox(0, 0, 0), item_type=CollectableTypes.ColoredBanana, kong=Kong.Diddy),
@@ -578,22 +533,29 @@ with open("src/lib_items.c", "w") as fh:
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Medal
             {
-                "actor_type": CustomActors.IceTrapBubble,
+                "actor_type": CustomActors.IceTrapGB,
                 "model": 0xFD,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": CustomActors.IceTrapReverse,
-                "model": 0xFD,
+                "actor_type": CustomActors.IceTrapBean,
+                "model": 0x126,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # Fake Item
             {
-                "actor_type": CustomActors.IceTrapSlow,
-                "model": 0xFD,
+                "actor_type": CustomActors.IceTrapKey,
+                "model": 0x129,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # Fake Item
+            {
+                "actor_type": CustomActors.IceTrapFairy,
+                "model": 0x12C,
                 "code": 0x80689F80,
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
@@ -640,132 +602,6 @@ with open("src/lib_items.c", "w") as fh:
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # AP Item
-            {
-                "actor_type": 151,
-                "model": 0x126,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item (Bean)
-            {
-                "actor_type": 152,
-                "model": 0x126,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item (Bean)
-            {
-                "actor_type": 153,
-                "model": 0x126,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item (Bean)
-            {
-                "actor_type": 154,
-                "model": 0x129,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item (Key)
-            {
-                "actor_type": 155,
-                "model": 0x129,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item (Key)
-            {
-                "actor_type": 157,
-                "model": 0x129,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item (Key)
-            {
-                "actor_type": CustomActors.IceTrapDisableAGB,
-                "model": 0xFD,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item
-            {
-                "actor_type": CustomActors.IceTrapDisableBGB,
-                "model": 0xFD,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item
-            {
-                "actor_type": CustomActors.IceTrapDisableZGB,
-                "model": 0xFD,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item
-            {
-                "actor_type": CustomActors.IceTrapDisableCUGB,
-                "model": 0xFD,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item
-            {
-                "actor_type": CustomActors.IceTrapDisableABean,
-                "model": 0x126,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item
-            {
-                "actor_type": CustomActors.IceTrapDisableBBean,
-                "model": 0x126,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item
-            {
-                "actor_type": CustomActors.IceTrapDisableZBean,
-                "model": 0x126,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item
-            {
-                "actor_type": CustomActors.IceTrapDisableCUBean,
-                "model": 0x126,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item
-            {
-                "actor_type": CustomActors.IceTrapDisableAKey,
-                "model": 0x129,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item
-            {
-                "actor_type": CustomActors.IceTrapDisableBKey,
-                "model": 0x129,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item
-            {
-                "actor_type": CustomActors.IceTrapDisableZKey,
-                "model": 0x129,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item
-            {
-                "actor_type": CustomActors.IceTrapDisableCUKey,
-                "model": 0x129,
-                "code": 0x80689F80,
-                "unk10": 0x80689FEC,
-                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
-            },  # Fake Item
         ]
     )
     default_values = {
@@ -805,8 +641,10 @@ with open("src/lib_items.c", "w") as fh:
         actor_data = initActor(actor_data, kong, "&KongDropCode", 2, 0, 1, 8, 45)
     for shopkeeper in SHOPKEEPERS:
         actor_data = initActor(actor_data, shopkeeper, "&shopOwnerItemCode", 2, 0, 1, 8, 45)
-    for trap in TRAPS:
-        actor_data = initActor(actor_data, trap, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.IceTrapGB, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.IceTrapBean, "&FakeGBCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.IceTrapKey, "&FakeKeyCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.IceTrapFairy, "&FakeFairyCode", 2, 0, 1, 8, 45)
 
     actor_data = initActor(actor_data, CustomActors.Bean, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.Pearl, "&GoldenBananaCode", 2, 0, 1, 8, 45)
@@ -817,12 +655,6 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, CustomActors.HintItemTiny, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.HintItemChunky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.ArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 151, "&FakeGBCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 152, "&FakeGBCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 153, "&FakeGBCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 154, "&FakeKeyCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 155, "&FakeKeyCode", 2, 0, 1, 8, 45)
-    actor_data = initActor(actor_data, 157, "&FakeKeyCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
     actor_data = initActor(actor_data, CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)

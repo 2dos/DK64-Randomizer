@@ -503,6 +503,8 @@ fake_key_im = Image.open(f"{hash_dir}key_om2_palette.png")
 hueShift(fake_key_im, FAKE_GB_SHIFT).save(f"{disp_dir}fake_key_shine_palette.png")
 fake_key_im = Image.open(f"{hash_dir}key.png")
 hueShift(fake_key_im.transpose(Image.Transpose.FLIP_LEFT_RIGHT), FAKE_GB_SHIFT).save(f"{disp_dir}fakekey.png")
+fake_key_im = Image.open(f"{hash_dir}fairy.png")
+hueShift(fake_key_im.transpose(Image.Transpose.FLIP_LEFT_RIGHT), FAKE_GB_SHIFT).save(f"{disp_dir}fakefairy.png")
 
 # Melon
 melon_im = Image.open(f"{hash_dir}melon_resized.png")
@@ -534,6 +536,15 @@ for x in range(16):
         barrel_skin.paste(barrel_bottom, (x, 32), barrel_bottom)
 barrel_skin_0 = barrel_skin.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
 
+# Boss Heads
+bosses = ["dillo1", "dillo2", "dog1", "dog2", "kko", "mj", "pufftoss"]
+for boss in bosses:
+    boss_im = Image.open(f"{disp_dir}head_{boss}.png").resize((32, 32))
+    boss_im.save(f"{disp_dir}head32_{boss}.png")
+
+blank_im = Image.new(mode="RGBA", size=(32, 32))
+blank_im.save(f"{disp_dir}blank.png")
+
 skins = {
     "gb": ("gb", None, "displays"),
     "dk": ("dk_face_1", "dk_face_0", "hash"),
@@ -562,6 +573,10 @@ skins = {
     "ap": ("ap_logo", None, "displays"),
     "fakebean": ("fakebean", None, "displays"),
     "fakekey": ("fakekey", None, "displays"),
+    "shared": ("shared", None, "displays"),
+    "soldout": ("soldout32", None, "displays"),
+    "null": ("blank", None, "displays"),
+    "fakefairy": ("fakefairy", None, "displays"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32
@@ -614,6 +629,8 @@ for skin_type in skins:
         barrel_1.paste(right, (0, BASE_SIZE), right)
     barrel_0.save(f"{disp_dir}barrel_{skin_type}_0.png")
     barrel_1.save(f"{disp_dir}barrel_{skin_type}_1.png")
+    # Shops
+    whole.transpose(Image.Transpose.FLIP_LEFT_RIGHT).resize((32, 32)).save(f"{disp_dir}shop_{skin_type}.png")
 
 # Win Con Logo
 base_im = Image.new(mode="RGBA", size=(64, 64))
@@ -763,12 +780,6 @@ for x in range(2):
 # Gun Crosshair
 crosshair_im = Image.open(f"{hash_dir}gun_crosshair.png")
 stroke(crosshair_im, (0, 0, 0)).save(f"{disp_dir}crosshair.png")
-
-# Boss Heads
-bosses = ["dillo1", "dillo2", "dog1", "dog2", "kko", "mj", "pufftoss"]
-for boss in bosses:
-    boss_im = Image.open(f"{disp_dir}head_{boss}.png").resize((32, 32))
-    boss_im.save(f"{disp_dir}head32_{boss}.png")
 
 # AP Shop Icon
 ap_im = Image.open(f"{disp_dir}ap_logo.png")

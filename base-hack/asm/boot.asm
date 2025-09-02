@@ -19,14 +19,6 @@ START:
 		// LUI a0, 0x8060
 		// JAL 0x805FB7E4 // Render Nintendo Logo
 		// SW r0, 0xBBCC (a0)
-		// Load item data
-		LUI a0, hi(itemROM)
-		LUI a1, hi(itemROM + itemdatasize)
-		ADDIU a1, a1, lo(itemROM + itemdatasize)
-		ADDIU a0, a0, lo(itemROM)
-		LUI a2, hi(ItemIdentifier)
-		JAL dmaFileTransfer
-		ADDIU a2, a2, lo(ItemIdentifier)
     
 		//
 		LUI v0, 0x8001

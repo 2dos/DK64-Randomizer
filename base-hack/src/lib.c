@@ -813,10 +813,8 @@ void setPermFlag(short flagIndex) {
 int convertIDToIndex(short obj_index) {
 	int _count = ObjectModel2Count;
 	int index = -1;
-	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < _count; i++) {
-		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
-		if (_object->object_id == obj_index) {
+		if (ObjectModel2Pointer[i].object_id == obj_index) {
 			index = i;
 			return i;
 		}
@@ -827,10 +825,8 @@ int convertIDToIndex(short obj_index) {
 int convertSubIDToIndex(short obj_index) {
 	int _count = ObjectModel2Count;
 	int index = -1;
-	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < _count; i++) {
-		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
-		if (_object->sub_id == obj_index) {
+		if (ObjectModel2Pointer[i].sub_id == obj_index) {
 			index = i;
 			return i;
 		}
@@ -903,9 +899,8 @@ void correctDKPortal(void) {
 		}
 	}		
 	int _count = ObjectModel2Count;
-	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < _count; i++) {
-		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
+		ModelTwoData* _object = &ObjectModel2Pointer[i];
 		if (_object->object_type == 0x2AD) {
 			behaviour_data* behav = _object->behaviour_pointer;
 			if (behav) {
@@ -1558,18 +1553,10 @@ void exitBoss(void) {
 	initiateTransition(MAP_TROFFNSCOFF, 2);
 }
 
+static const unsigned char krusha_adj_models[] = {KONGMODEL_KRUSHA, KONGMODEL_KROOL_CUTSCENE, KONGMODEL_KROOL_FIGHT};
 int isKrushaAdjacentModel(int kong) {
 	custom_kong_models slot_value = Rando.kong_models[kong];
-	if (slot_value == KONGMODEL_KRUSHA) {
-		return 1;
-	}
-	if (slot_value == KONGMODEL_KROOL_CUTSCENE) {
-		return 1;
-	}
-	if (slot_value == KONGMODEL_KROOL_FIGHT) {
-		return 1;
-	}
-	return 0;
+	return inU8List(slot_value, &krusha_adj_models, 3);
 }
 
 int isGlobalCutscenePlaying(int cutscene_index) {

@@ -106,6 +106,9 @@ item_ids = {
     14041283: {"name": "Disable C Up Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "disable_c_up"}, "flag_id": None, "extended_whitelist": True},
     14041284: {"name": "Ice Trap (Disable C Up - Bean)", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "disable_c_up"}, "flag_id": None, "extended_whitelist": True},
     14041285: {"name": "Ice Trap (Disable C Up - Key)", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "disable_c_up"}, "flag_id": None, "extended_whitelist": True},
+    14041323: {"name": "Get Out Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "get_out"}, "flag_id": None, "extended_whitelist": True},
+    14041326: {"name": "Dry Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "dry"}, "flag_id": None, "extended_whitelist": True},
+    14041329: {"name": "Flip Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "flip"}, "flag_id": None, "extended_whitelist": True},
     14041173: {"name": "Junk Item (Crystal)", "count_id": {"field": "junk_items", "increment": 1}, "flag_id": None, "extended_whitelist": True},
     14041174: {"name": "Junk Item (Melon Slice)", "count_id": {"field": "junk_items", "increment": 1}, "flag_id": None, "extended_whitelist": True},
     14041175: {"name": "Junk Item (Ammo Crate)", "count_id": {"field": "junk_items", "increment": 1}, "flag_id": None, "extended_whitelist": True},
@@ -228,31 +231,41 @@ trap_name_to_index: dict[str, int] = {
     "Disable B Trap": 6,
     "Disable Z Trap": 7,
     "Disable C Up Trap": 8,
+    "Get Out Trap": 9,
+    "Dry Trap": 10,
+    "Flip Trap": 11,
     # Common other trap names
     "Bee Trap": 6,  # Disable B Trap
     "Blue Balls Curse": 1,  # Bubble Trap
+    "Buyon Trap": 9,  # Get Out Trap
     "Chaos Control Trap": 1,  # Bubble Trap
     "Confound Trap": 2,  # Reverse Trap
     "Confuse Trap": 2,  # Reverse Trap
     "Confusion Trap": 2,  # Reverse Trap
+    "Damage Trap": 9,  # Get Out Trap
+    "Depletion Trap": 10,  # Dry Trap
+    "Eject Ability": 10,  # Dry Trap
     "Fear Trap": 3,  # Slow Trap
     "Freeze Trap": 1,  # Bubble Trap
     "Frozen Trap": 1,  # Bubble Trap
     "Fuzzy Trap": 2,  # Reverse Trap
     "Honey Trap": 5,  # Disable A Trap
+    "Home Trap": 9,  # Get Out Trap
     "Ice Trap": 1,  # Bubble Trap
+    "Instant Death Trap": 9,  # Get Out Trap
     "Iron Boots Trap": 5,  # Disable A Trap
     "Jump Trap": 5,  # Disable A Trap
     "No Vac Trap": 7,  # Disable Z Trap
     "Paralyze Trap": 1,  # Bubble Trap
     "Poison Mushroom": 3,  # Slow Trap
-    "Poison Trap": 3,  # Slow Trap
+    "Poison Trap": 10,  # Dry Trap
+    "Police Trap": 9,  # Get Out Trap
     "Reversal Trap": 2,  # Reverse Trap
-    "Screen Flip Trap": 2,  # Screen Flip Trap
+    "Screen Flip Trap": 11,  # Flip Trap
     "Slowness Trap": 3,  # Slow Trap
     "Sticky Floor Trap": 5,  # Disable A Trap
     "Stun Trap": 1,  # Bubble Trap
-    "Timer Trap": 3,  # Slow Trap
+    "Timer Trap": 9,  # Slow Trap
 }
 
 trap_index_to_name: dict[int, str] = {
@@ -263,4 +276,7 @@ trap_index_to_name: dict[int, str] = {
     6: "Disable B Trap",
     7: "Disable Z Trap",
     8: "Disable C Up Trap",
+    9: "Get Out Trap",
+    10: "Dry Trap",
+    11: "Flip Trap",
 }

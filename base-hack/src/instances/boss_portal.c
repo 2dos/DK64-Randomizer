@@ -13,12 +13,11 @@
 #define PORTAL_DELTA 40
 
 void alterParentLocationTNS(int id) {
-	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < 17; i++) {
 		if (parentData[i].in_submap) {
 			if ((parentData[i].map == CurrentMap) && (parentData[i].transition_properties_bitfield == 3)) {
 				int index = convertIDToIndex(id);
-				ModelTwoData* tied_object = getObjectArrayAddr(m2location,0x90,index);
+				ModelTwoData* tied_object = &ObjectModel2Pointer[index];
 				model_struct* model = tied_object->model_pointer;
 				float angle = model->rot_y;
 				angle /= 360;
@@ -155,10 +154,8 @@ void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id) {
 		}
 		if (CurrentMap == MAP_JAPES) {
 			if (id == 0x220) {
-				int* m2location = (int*)ObjectModel2Pointer;
 				int slot = convertIDToIndex(0x220);
-				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
-				model_struct* _model = _object->model_pointer;
+				model_struct* _model = ObjectModel2Pointer[slot].model_pointer;
 				if (_model) {
 					_model->x = 722.473f;
 					_model->z = 2386.608f;

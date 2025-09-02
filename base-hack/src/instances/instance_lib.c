@@ -146,9 +146,7 @@ int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, int ID)
 		if (behaviour_pointer->contact_actor_type == bullet_type) {
 			if (canHitSwitch()) {
 				int index = convertSubIDToIndex(ID);
-				int* m2location = (int*)ObjectModel2Pointer;
-				ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);
-				setSomeTimer(_object->object_type);
+				setSomeTimer(ObjectModel2Pointer[index].object_type);
 				return 1;
 			}
 		}
