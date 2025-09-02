@@ -18,7 +18,7 @@ import traceback
 import time
 import typing
 from client.common import DK64MemoryMap, create_task_log_exception, check_version
-from client.pj64 import PJ64Client
+from client.emu_loader import EmuLoaderClient
 from client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
 from client.check_flag_locations import location_flag_to_name, location_name_to_flag
 from client.ap_check_ids import check_id_to_name, check_names_to_id
@@ -125,34 +125,45 @@ class DK64Client:
     sent_hints = set()
 
     async def wait_for_pj64(self):
-        """Wait for PJ64 to connect to the game."""
+        """Wait for emulator to connect to the game."""
         clear_waiting_message = True
         if not self.stop_bizhawk_spam:
-            logger.info("Waiting on connection to PJ64...")
-            self.n64_client = PJ64Client()
+            logger.info("Waiting on connection to emulator...")
+            self.n64_client = EmuLoaderClient()
             self.stop_bizhawk_spam = True
         while True:
             try:
-                socket_connected = False
-                valid_rom = self.n64_client.validate_rom(self.game, DK64MemoryMap.memory_pointer)
-                if self.n64_client.socket is not None and not socket_connected:
-                    logger.info("Connected to PJ64")
-                    socket_connected = True
+                emulator_connected = False
+                
+                # Try to connect to any available emulator
+                if not self.n64_client.is_connected():
+                    emulator_connected = self.n64_client.connect()
+                else:
+                    emulator_connected = True
+                
+                valid_rom = False
+                if emulator_connected:
+                    valid_rom = self.n64_client.validate_rom(self.game, DK64MemoryMap.memory_pointer)
+                
                 while not valid_rom:
-                    if self.n64_client.socket is not None and not socket_connected:
-                        logger.info("Connected to PJ64")
-                        socket_connected = True
+                    if not self.n64_client.is_connected():
+                        emulator_connected = self.n64_client.connect()
                     if clear_waiting_message:
                         logger.info("Waiting on valid ROM...")
                         clear_waiting_message = False
                     await asyncio.sleep(1.0)
-                    valid_rom = self.n64_client.validate_rom(self.game, DK64MemoryMap.memory_pointer)
+                    if self.n64_client.is_connected():
+                        valid_rom = self.n64_client.validate_rom(self.game, DK64MemoryMap.memory_pointer)
+                
                 self.stop_bizhawk_spam = False
-                logger.info("PJ64 Connected to ROM!")
+                logger.info("Emulator Connected to ROM!")
                 return
-            except (BlockingIOError, TimeoutError, ConnectionResetError):
+            except Exception as e:
                 await asyncio.sleep(1.0)
-                logger.error("Error connecting to PJ64, retrying...")
+                logger.error(f"Error connecting to emulator, retrying... {str(e)}")
+                # Reset connection on error
+                if self.n64_client:
+                    self.n64_client.disconnect()
                 pass
 
     def check_safe_gameplay(self):
