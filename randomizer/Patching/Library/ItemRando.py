@@ -410,6 +410,7 @@ class ItemPlacementData:
         self.seal_preview_text = seal_preview_text
         self.scale = scale
 
+
 item_db = {
     Types.Banana: ItemPlacementData(
         model_index=[0x69],
@@ -788,6 +789,7 @@ def getPropFromItem(item: Items, item_type: Types, flag: int, shared: bool = Fal
     """Get the prop index associated with an item."""
     index = getItemDBEntry(item_type).index_getter(item, flag, shared)
     return getItemDBEntry(item_type).model_two_index[index]
+
 
 def getModelMask(item: Items) -> Types:
     """Get the model mask for an ice trap."""

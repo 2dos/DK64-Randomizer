@@ -1470,40 +1470,6 @@ class DK64Context(CommonContext):
         except Exception as e:
             logger.error(f"Error handling hint access: {e}")
 
-    def determine_hint_status(self, location_id: int) -> int:
-        """Determine the appropriate hint status based on the location and its item."""
-        try:
-            from NetUtils import HintStatus
-
-            # Check if we have item information from slot_data
-            item_info = self.slot_data.get("HintItemInfo", {})
-            location_str = str(location_id)
-
-            if location_str in item_info:
-                item_data = item_info[location_str]
-                item_player = item_data.get("player")
-
-                # For items from other players, must use unspecified status
-                if item_player != self.slot:
-                    return None  # Unspecified status for items from other players
-
-                item_classification = item_data.get("classification", "")
-
-                # Determine status based on item classification (only for this player's items)
-                if item_classification == "progression":
-                    return HintStatus.HINT_PRIORITY
-                elif item_classification == "useful":
-                    return HintStatus.HINT_NO_PRIORITY
-                elif item_classification in ("filler", "trap"):
-                    return HintStatus.HINT_AVOID
-
-            # Default to unspecified if we can't determine the item
-            return None
-
-        except Exception as e:
-            logger.warning(f"Error determining hint status for location {location_id}: {e}")
-            return None
-
     async def process_hint_params(self):
         """Process collected hint parameters and send them to the server."""
         if hasattr(self, "create_hints_params") and self.create_hints_params:

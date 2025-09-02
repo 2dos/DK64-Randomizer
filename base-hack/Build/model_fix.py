@@ -622,7 +622,6 @@ with open(ROMName, "rb") as rom:
             fh.write(color_green.to_bytes(1, "big"))
             fh.write(color_blue.to_bytes(1, "big"))
 
-
     # Make inside match outside
     # SHINE_TEXTURE = 0xBAB
     # with open("updated_medal.bin", "r+b") as fh:

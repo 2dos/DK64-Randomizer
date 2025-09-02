@@ -98,6 +98,7 @@ def hueShift(im: Image, amount: int):
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
 
+
 def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
     """Apply a hue shift to a color."""
     # RGB -> HSV Conversion

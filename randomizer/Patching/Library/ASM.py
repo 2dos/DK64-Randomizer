@@ -246,6 +246,7 @@ def getItemTableWriteAddress(ROM_COPY, target_type: Types, index: int, offset_di
     ram_offset = index * item_type_table_conversion[target_type][1]
     return getROMAddress(ram_start + ram_offset, Overlay.Custom, offset_dict)
 
+
 def patchBonus(ROM_COPY, index: int, offset_dict: dict, flag: int = None, kong_actor: int = None, spawn_actor: int = None, level: int = None, item_kong: int = None):
     """Patch bonus data with provided inputs."""
     ram_start = getSym("bonus_data")
@@ -266,6 +267,7 @@ def patchBonus(ROM_COPY, index: int, offset_dict: dict, flag: int = None, kong_a
     if item_kong is not None:
         ROM_COPY.seek(rom_address + 7)
         ROM_COPY.writeMultipleBytes(item_kong, 1)
+
 
 def getBonusIndex(ROM_COPY, offset_dict: int, target_flag: int) -> int:
     """Get the index associated with a certain flag."""

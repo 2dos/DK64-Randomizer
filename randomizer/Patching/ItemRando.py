@@ -162,6 +162,7 @@ def getItemPatchingFromList(list_set: list, item: Items, type_str: str, throw_er
         return None
     return list_set.index(item)
 
+
 ice_trap_data = [
     [Items.IceTrapBubble, Items.IceTrapBubbleBean, Items.IceTrapBubbleKey, Items.IceTrapBubbleFairy],
     [Items.IceTrapReverse, Items.IceTrapReverseBean, Items.IceTrapReverseKey, Items.IceTrapReverseFairy],
@@ -175,6 +176,7 @@ ice_trap_data = [
     [Items.IceTrapDryGB, Items.IceTrapDryBean, Items.IceTrapDryKey, Items.IceTrapDryFairy],
     [Items.IceTrapFlipGB, Items.IceTrapFlipBean, Items.IceTrapFlipKey, Items.IceTrapFlipFairy],
 ]
+
 
 def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
     """Get the data associated with how an item is patched into ROM from various attributes."""

@@ -85,6 +85,7 @@ class CustomActors(IntEnum):
     ArchipelagoItem = auto()
     IceTrapFairy = auto()
 
+
 POTIONS = (
     CustomActors.PotionDK,
     CustomActors.PotionDiddy,
