@@ -7,7 +7,7 @@ import glob
 import json
 from typing import Optional, Tuple, List, Dict, Any
 from enum import IntEnum, auto
-
+from CommonClient import logger
 # Heavily based on the autoconnector work in GSTHD by JXJacob
 
 # Detect operating system
@@ -307,10 +307,11 @@ class ProcessMemory:
             size,
             ctypes.byref(bytes_written)
         )
-        logger.info(result)
+        
         if not result:
-            raise Exception(f"Failed to write memory at address 0x{address:08x}")
-    
+            error_code = ctypes.windll.kernel32.GetLastError()
+            raise Exception(f"WriteProcessMemory failed at 0x{address:08x}, error: {error_code}")
+
     def _write_bytes_linux(self, address: int, data: bytes, size: int):
         """Write bytes to process memory on Linux."""
         if not self.mem_file:
@@ -518,7 +519,7 @@ class EmulatorInfo:
             address &= 0x7FFFFFFF
         mem_address = self.connected_offset + address
         data = self.connected_process.read_bytes(mem_address, size)
-        value = int.from_bytes(data, "big")
+        value = int.from_bytes(data, "little")
         return value
 
     def writeBytes(self, address: int, size: int, value: int):
@@ -529,7 +530,7 @@ class EmulatorInfo:
         if address & 0x80000000:
             address &= 0x7FFFFFFF
         mem_address = self.connected_offset + address
-        data = value.to_bytes(size, byteorder="little")  # N64 is big endian
+        data = value.to_bytes(size, byteorder="little")  # or "big"
         self.connected_process.write_bytes(mem_address, data, size)
 
     def read_u8(self, address: int) -> int:
@@ -546,17 +547,17 @@ class EmulatorInfo:
 
     def write_u8(self, address: int, value: int):
         """Write an 8-bit unsigned integer to memory."""
-        logger.info(f"Writing u8 value {value} to address {hex(address)}")
+        logger.info(f"write_u8: address=0x{address:08x}, value={value}")
         self.writeBytes(address, 1, value)
 
     def write_u16(self, address: int, value: int):
         """Write a 16-bit unsigned integer to memory."""
-        logger.info(f"Writing u16 value {value} to address {hex(address)}")
+        logger.info(f"write_u16: address=0x{address:08x}, value={value}")
         self.writeBytes(address, 2, value)
 
     def write_u32(self, address: int, value: int):
         """Write a 32-bit unsigned integer to memory."""
-        logger.info(f"Writing u32 value {value} to address {hex(address)}")
+        logger.info(f"write_u32: address=0x{address:08x}, value={value}")
         self.writeBytes(address, 4, value)
 
     def read_dict(self, address_dict: dict) -> dict:
@@ -591,7 +592,10 @@ class EmulatorInfo:
     def read_bytestring(self, address: int, length: int) -> str:
         """Read a bytestring from memory."""
         result = ""
+        logger.info("Reading bytestring:")
         for i in range(length):
+            logger.info(f" Reading byte at address 0x{address + i:08x}")
+            logger.info(result)
             byte_val = self.read_u8(address + i)
             if byte_val == 0:  # Null terminator
                 break
@@ -622,13 +626,14 @@ class EmulatorInfo:
 
 
 EMULATOR_CONFIGS = {
-    Emulators.Project64: EmulatorInfo(Emulators.Project64, "Project64", "project64", False, None, False, 0xDFD00000, 0xE01FFFFF),
-    Emulators.Project64_v4: EmulatorInfo(Emulators.Project64_v4, "Project64", "project64", False, None, False, 0xFDD00000, 0xFE1FFFFF),
+    Emulators.Project64_v4: EmulatorInfo(Emulators.Project64_v4, "Project64 4.0", "project64", False, None, False, 0xFDD00000, 0xFE1FFFFF),
     Emulators.BizHawk: EmulatorInfo(Emulators.BizHawk, "Bizhawk", "emuhawk", True, "mupen64plus.dll", False, 0x5A000, 0x5658DF, linux_dll_name="libmupen64plus.so"),
     Emulators.RMG: EmulatorInfo(Emulators.RMG, "Rosalie's Mupen GUI", "rmg", True, "mupen64plus.dll", True, 0x29C15D8, 0x2FC15D8, extra_offset=0x80000000, linux_dll_name="libmupen64plus.so"),
     Emulators.Simple64: EmulatorInfo(Emulators.Simple64, "simple64", "simple64-gui", True, "libmupen64plus.dll", True, 0x1380000, 0x29C95D8, linux_dll_name="libmupen64plus.so"),
     Emulators.ParallelLauncher: EmulatorInfo(Emulators.ParallelLauncher, "Parallel Launcher", "retroarch", True, "parallel_n64_next_libretro.dll", True, 0x845000, 0xD56000, linux_dll_name="parallel_n64_next_libretro.so"),
     Emulators.RetroArch: EmulatorInfo(Emulators.RetroArch, "RetroArch", "retroarch", True, "mupen64plus_next_libretro.dll", True, 0, 0xFFFFFF, range_step=4, linux_dll_name="mupen64plus_next_libretro.so"),
+    Emulators.Project64: EmulatorInfo(Emulators.Project64, "Project64 3.0", "project64", False, None, False, 0xDFD00000, 0xE01FFFFF),
+
 }
 
 
@@ -637,8 +642,6 @@ def attachWrapper(emu: Emulators) -> EmulatorInfo:
     EMULATOR_CONFIGS[emu].attach_to_emulator()
     return EMULATOR_CONFIGS[emu]
 
-# Load the logger for debug output
-from CommonClient import logger
 
 def connect_to_emulator() -> Optional[EmulatorInfo]:
     """Try to connect to any available emulator and return the connected instance."""
@@ -650,7 +653,7 @@ def connect_to_emulator() -> Optional[EmulatorInfo]:
                 print(f"Connected to {emulator_info.readable_emulator_name}")
                 return emulator_info
         except Exception as e:
-            print(f"Failed to connect to {EMULATOR_CONFIGS[emu].readable_emulator_name}: {str(e)}")
+            logger.info(f"Failed to connect to {EMULATOR_CONFIGS[emu].readable_emulator_name}: {str(e)}")
             continue
     return None
 
@@ -677,6 +680,7 @@ class EmuLoaderClient:
     
     def is_connected(self) -> bool:
         """Check if connected to an emulator."""
+        logger.info(f"EmuLoaderClient is_connected: {self.connected and self.emulator_info is not None}")
         return self.connected and self.emulator_info is not None
     
     # Direct memory access methods
@@ -720,12 +724,14 @@ class EmuLoaderClient:
         """Read a dictionary of memory addresses and return the values."""
         if not self.is_connected():
             raise Exception("Not connected to emulator")
+        logger.info(f"read_dict: {json.dumps(address_dict)}")
         return self.emulator_info.read_dict(address_dict)
     
     def read_bytestring(self, address: int, length: int) -> str:
         """Read a bytestring from memory."""
         if not self.is_connected():
             raise Exception("Not connected to emulator")
+        logger.info(f"read_bytestring: address=0x{address:08x}, length={length}")
         return self.emulator_info.read_bytestring(address, length)
     
     def write_bytestring(self, address: int, data: str):
@@ -742,6 +748,7 @@ class EmuLoaderClient:
     
     def rominfo(self) -> dict:
         """Retrieve ROM information from the emulator."""
+        logger.info("rominfo called")
         if not self.is_connected():
             return {}
         return self.emulator_info.rominfo()

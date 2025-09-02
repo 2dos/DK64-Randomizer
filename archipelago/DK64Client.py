@@ -140,10 +140,12 @@ class DK64Client:
                     emulator_connected = self.n64_client.connect()
                 else:
                     emulator_connected = True
-                
+                logger.info(f"Emulator connected: {emulator_connected}")
                 valid_rom = False
                 if emulator_connected:
                     valid_rom = self.n64_client.validate_rom(self.game, DK64MemoryMap.memory_pointer)
+                    logger.info("Emulator connected, validating ROM...")
+                    logger.info(valid_rom)
                 
                 while not valid_rom:
                     if not self.n64_client.is_connected():
@@ -179,8 +181,10 @@ class DK64Client:
 
     async def validate_client_connection(self):
         """Validate the client connection."""
+        logger.info("Validating client connection...")
         if not self.memory_pointer:
             self.memory_pointer = self.n64_client.read_u32(DK64MemoryMap.memory_pointer)
+            logger.info(f"Memory pointer found: {self.memory_pointer}")
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.connection, 0xFF)
 
     def send_message(self, item_name, player_name, event_type="from"):
@@ -1582,16 +1586,19 @@ class DK64Context(CommonContext):
                         await self.disconnect()
 
                 while self.auth is None:
+                    logger.info("Waiting for auth...")
                     await self.client.validate_client_connection()
                     await self.client.reset_auth()
                     await disconnect_check()
                     await asyncio.sleep(3)
 
                 if not self.client.recvd_checks:
+                    logger.info("No checks received yet, requesting...")
                     await self.sync()
 
                 await asyncio.sleep(1.0)
                 while True:
+                    logger.debug("Game loop tick")
                     await self.client.reset_auth()
                     await disconnect_check()
                     await self.client.validate_client_connection()
