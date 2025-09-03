@@ -515,24 +515,64 @@ class EmulatorInfo:
         return None
 
     def readBytes(self, address: int, size: int) -> int:
-        """Read a series of bytes and cast to an int."""
+        """Read a series of bytes and cast to an int with N64 address fixing."""
         if self.connected_process is None or self.connected_offset is None:
             self.runtime_error = "Not connected to a process, exiting"
             raise Exception(self.runtime_error)
         if address & 0x80000000:
             address &= 0x7FFFFFFF
+        
+        # Apply N64 address fixing based on size
+        if size == 1:  # 8-bit operation
+            remainder = address % 4
+            if remainder == 0:
+                address += 3
+            elif remainder == 1:
+                address += 1
+            elif remainder == 2:
+                address -= 1
+            elif remainder == 3:
+                address -= 3
+        elif size == 2:  # 16-bit operation
+            remainder = address % 4
+            if remainder in (2, 3):
+                address -= 2
+            elif remainder in (0, 1):
+                address += 2
+        # 32-bit operations (size == 4) don't need address fixing
+        
         mem_address = self.connected_offset + address
         data = self.connected_process.read_bytes(mem_address, size)
         value = int.from_bytes(data, "little")
         return value
 
     def writeBytes(self, address: int, size: int, value: int):
-        """Write a series of bytes to memory."""
+        """Write a series of bytes to memory with N64 address fixing."""
         if self.connected_process is None or self.connected_offset is None:
             self.runtime_error = "Not connected to a process, exiting"
             raise Exception(self.runtime_error)
         if address & 0x80000000:
             address &= 0x7FFFFFFF
+        
+        # Apply N64 address fixing based on size
+        if size == 1:  # 8-bit operation
+            remainder = address % 4
+            if remainder == 0:
+                address += 3
+            elif remainder == 1:
+                address += 1
+            elif remainder == 2:
+                address -= 1
+            elif remainder == 3:
+                address -= 3
+        elif size == 2:  # 16-bit operation
+            remainder = address % 4
+            if remainder in (2, 3):
+                address -= 2
+            elif remainder in (0, 1):
+                address += 2
+        # 32-bit operations (size == 4) don't need address fixing
+        
         mem_address = self.connected_offset + address
         data = value.to_bytes(size, byteorder="little")  # or "big"
         self.connected_process.write_bytes(mem_address, data, size)
