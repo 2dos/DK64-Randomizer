@@ -518,6 +518,7 @@ void resetIceTrapButtons(void) {
     }
     flip_timer = 0;
     trap_enabled_buttons = 0xFFFF;
+    *(unsigned char*)(0x80010520) = 0x3F;
 }
 
 void handleIceTrapButtons(void) {

@@ -283,13 +283,13 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
         if item == Items.Climbing:
             return ItemPatchingInfo(2, 11, 0, 1)
         raise Exception("Could not find valid move")
-    elif item is None or item == Items.NoItem:
+    elif item is None or item == Items.NoItem or item_type is None or item_type == Types.NoItem:
         return ItemPatchingInfo(0)
     elif item_type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
         shopkeeper_lst = [Items.Cranky, Items.Funky, Items.Candy, Items.Snide]
         shopkeeper_index = getItemPatchingFromList(shopkeeper_lst, item, "Shopkeeper")
         return ItemPatchingInfo(20, 0, shopkeeper_index)
-    raise Exception("Invalid item for patching")
+    raise Exception(f"Invalid item for patching: {item_type.name}, {item}")
 
 
 def appendTextboxChange(spoiler, file_index: int, textbox_index: int, search: str, target: str):
@@ -1050,7 +1050,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                                     "flag": 0,
                                     "upscale": 1,
                                     "shared": False,
-                                    "subitem": 0,
+                                    "subitem": Items.NoItem,
                                 }
                             )
                         else:

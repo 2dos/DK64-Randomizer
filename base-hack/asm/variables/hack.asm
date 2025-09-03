@@ -37,6 +37,7 @@
 .definelabel RandomSwitches, 0x807FFF20
 .definelabel SwitchLevel, 0x807FFF21
 .definelabel APData, 0x807FFF1C
+.definelabel APName, 0x807E2EE0
 
 .definelabel KrushaSlot, 0x807FFF2E
 .definelabel KasplatSpawnBitfield, 0x807FFF2F
