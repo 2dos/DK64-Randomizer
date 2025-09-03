@@ -1,9 +1,9 @@
 .definelabel dataStart, 0x01FED020
 .definelabel dataRDRAM, 0x807FF800
 .definelabel musicInfo, 0x01FFF000
-.definelabel itemROM, 0x01FF2000
+.definelabel itemROM, 0x01FF3000
 .definelabel codeEnd, 0x805FAE00
-.definelabel itemdatasize, 0xD00
+.definelabel itemdatasize, 0x30
 
 START:
 	displacedBootCode:
@@ -19,6 +19,14 @@ START:
 		// LUI a0, 0x8060
 		// JAL 0x805FB7E4 // Render Nintendo Logo
 		// SW r0, 0xBBCC (a0)
+		// Load item data
+		LUI a0, hi(itemROM)
+		LUI a1, hi(itemROM + itemdatasize)
+		ADDIU a1, a1, lo(itemROM + itemdatasize)
+		ADDIU a0, a0, lo(itemROM)
+		LUI a2, hi(APName)
+		JAL dmaFileTransfer
+		ADDIU a2, a2, lo(APName)
     
 		//
 		LUI v0, 0x8001
