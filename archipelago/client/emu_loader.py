@@ -7,7 +7,11 @@ import glob
 import json
 from typing import Optional, Tuple, List, Dict, Any
 from enum import IntEnum, auto
-from CommonClient import logger
+try:
+    from CommonClient import logger
+except ImportError:
+    import logging
+    logger = logging.getLogger(__name__)
 # Heavily based on the autoconnector work in GSTHD by JXJacob
 
 # Detect operating system
