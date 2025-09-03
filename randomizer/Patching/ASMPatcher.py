@@ -2024,6 +2024,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     writeHook(ROM_COPY, 0x806321FC, Overlay.Static, "SetupModelTwoHandler", offset_dict)  # Setup transfer for model 2
     writeHook(ROM_COPY, 0x806F7924, Overlay.Static, "ActorToModelTwoHandler", offset_dict)  # Actor transfer for model 2
+    writeHook(ROM_COPY, 0x8063BA04, Overlay.Static, "ModelTwoToSetupState", offset_dict)  # Model 2 transfer to setup
 
     # Fast Start: Beginning of game
     if settings.fast_start_beginning_of_game:
