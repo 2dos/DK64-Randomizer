@@ -88,3 +88,14 @@ ActorToModelTwoHandler:
     ActorToModelTwoHandler_finish:
         j 0x806F792C
         addiu $a2, $a2, 0x8C
+
+ModelTwoToSetupState:
+    lwc1 $f10, 0xC ($t8)
+    swc1 $f10, 0xC ($v1)
+    lbu $t9, 0x8D ($t8)
+    sb $t9, 0x10 ($v1)
+    lbu $t9, 0x8E ($t8)
+    sb $t9, 0x11 ($v1)
+    lbu $t9, 0x8F ($t8)
+    j 0x8063BA0C
+    sb $t9, 0x12 ($v1)
