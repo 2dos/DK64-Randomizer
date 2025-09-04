@@ -14,7 +14,7 @@ class DK64MemoryMap:
 
     name_location = 0x807E2EE0  # Location where the player's name is stored (16 bytes)
     memory_pointer = 0x807FFF1C
-    rom_flags = 0x807ff8c4
+    rom_flags = 0x807FF8C4
     rom_flag_ap_status = 0x10
     counter_offset = 0x000
     start_flag = 0x002

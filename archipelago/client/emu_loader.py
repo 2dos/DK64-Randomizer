@@ -8,10 +8,12 @@ import json
 from typing import Optional, Tuple, List, Dict, Any
 from enum import IntEnum, auto
 from client.common import DK64MemoryMap
+
 try:
     from CommonClient import logger
 except ImportError:
     import logging
+
     logger = logging.getLogger(__name__)
 # Heavily based on the autoconnector work in GSTHD by JXJacob
 
@@ -23,7 +25,7 @@ IS_LINUX = platform.system() == "Linux"
 if IS_WINDOWS:
     import ctypes
     import ctypes.wintypes
-    
+
     PROCESS_VM_READ = 0x0010
     PROCESS_VM_WRITE = 0x0020
     PROCESS_VM_OPERATION = 0x0008
@@ -67,97 +69,88 @@ if IS_WINDOWS:
 def get_running_processes() -> List[Dict[str, Any]]:
     """Get list of running processes using native OS methods."""
     processes: List[Dict[str, Any]] = []
-    
+
     if IS_WINDOWS:
         processes = _get_windows_processes()
     elif IS_LINUX:
         processes = _get_linux_processes()
-    
+
     return processes
 
 
 def _get_windows_processes() -> List[Dict[str, Any]]:
     """Get running processes on Windows using native API."""
     processes: List[Dict[str, Any]] = []
-    
+
     snapshot = ctypes.windll.kernel32.CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)
     if snapshot == -1:
         return processes
-    
+
     try:
         pe32 = PROCESSENTRY32()
         pe32.dwSize = ctypes.sizeof(PROCESSENTRY32)
-        
+
         if ctypes.windll.kernel32.Process32First(snapshot, ctypes.byref(pe32)):
             while True:
                 try:
-                    process_name = pe32.szExeFile.decode('utf-8')
-                    processes.append({
-                        'name': process_name,
-                        'pid': pe32.th32ProcessID
-                    })
+                    process_name = pe32.szExeFile.decode("utf-8")
+                    processes.append({"name": process_name, "pid": pe32.th32ProcessID})
                 except UnicodeDecodeError:
                     # Skip processes with invalid names
                     pass
-                
+
                 if not ctypes.windll.kernel32.Process32Next(snapshot, ctypes.byref(pe32)):
                     break
     finally:
         ctypes.windll.kernel32.CloseHandle(snapshot)
-    
+
     return processes
 
 
 def _get_linux_processes() -> List[Dict[str, Any]]:
     """Get running processes on Linux by reading /proc."""
     processes: List[Dict[str, Any]] = []
-    
+
     try:
-        for pid_dir in glob.glob('/proc/[0-9]*'):
+        for pid_dir in glob.glob("/proc/[0-9]*"):
             try:
                 pid = int(os.path.basename(pid_dir))
-                
+
                 # Read process name from /proc/pid/comm
-                comm_path = os.path.join(pid_dir, 'comm')
+                comm_path = os.path.join(pid_dir, "comm")
                 if os.path.exists(comm_path):
-                    with open(comm_path, 'r') as f:
+                    with open(comm_path, "r") as f:
                         process_name = f.read().strip()
-                        processes.append({
-                            'name': process_name,
-                            'pid': pid
-                        })
+                        processes.append({"name": process_name, "pid": pid})
             except (ValueError, OSError, IOError):
                 # Skip invalid PIDs or inaccessible processes
                 continue
     except OSError:
         pass
-    
+
     return processes
+
 
 class ProcessMemory:
     """Class to handle process memory operations using ctypes on Windows and Linux."""
-    
+
     def __init__(self, process_name: str):
         self.process_name = process_name
         self.process_handle = None
         self.process_id = None
         self.mem_file = None  # For Linux /proc/pid/mem
         self._attach_to_process()
-    
+
     def _attach_to_process(self):
         """Attach to the process by name."""
         processes = get_running_processes()
-        
+
         for proc in processes:
             if proc["name"] and proc["name"].lower().startswith(self.process_name.lower()):
                 self.process_id = proc["pid"]
-                
+
                 if IS_WINDOWS:
-                    self.process_handle = ctypes.windll.kernel32.OpenProcess(
-                        PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_VM_OPERATION | PROCESS_QUERY_INFORMATION,
-                        False,
-                        self.process_id
-                    )
+                    self.process_handle = ctypes.windll.kernel32.OpenProcess(PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_VM_OPERATION | PROCESS_QUERY_INFORMATION, False, self.process_id)
                     if not self.process_handle:
                         raise Exception(f"Failed to open process {self.process_name}")
                 elif IS_LINUX:
@@ -168,57 +161,51 @@ class ProcessMemory:
                         raise Exception(f"Failed to open memory file for process {self.process_name}: {e}")
                 return
         raise Exception(f"Process {self.process_name} not found")
-    
+
     def list_modules(self):
         """List modules in the process."""
         modules = []
-        
+
         if IS_WINDOWS:
             return self._list_modules_windows()
         elif IS_LINUX:
             return self._list_modules_linux()
-        
+
         return modules
-    
+
     def _list_modules_windows(self):
         """List modules on Windows."""
         modules = []
         if not self.process_handle or not self.process_id:
             return modules
-        
-        snapshot = ctypes.windll.kernel32.CreateToolhelp32Snapshot(
-            TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, 
-            self.process_id
-        )
-        
+
+        snapshot = ctypes.windll.kernel32.CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, self.process_id)
+
         if snapshot == -1:
             return modules
-        
+
         try:
             me32 = MODULEENTRY32()
             me32.dwSize = ctypes.sizeof(MODULEENTRY32)
-            
+
             if ctypes.windll.kernel32.Module32First(snapshot, ctypes.byref(me32)):
                 while True:
-                    module_info = type('ModuleInfo', (), {
-                        'name': me32.szModule.decode('utf-8'),
-                        'lpBaseOfDll': ctypes.cast(me32.modBaseAddr, ctypes.c_void_p).value
-                    })()
+                    module_info = type("ModuleInfo", (), {"name": me32.szModule.decode("utf-8"), "lpBaseOfDll": ctypes.cast(me32.modBaseAddr, ctypes.c_void_p).value})()
                     modules.append(module_info)
-                    
+
                     if not ctypes.windll.kernel32.Module32Next(snapshot, ctypes.byref(me32)):
                         break
         finally:
             ctypes.windll.kernel32.CloseHandle(snapshot)
-        
+
         return modules
-    
+
     def _list_modules_linux(self):
         """List modules on Linux by reading /proc/pid/maps."""
         modules = []
         if not self.process_id:
             return modules
-        
+
         try:
             with open(f"/proc/{self.process_id}/maps", "r") as maps_file:
                 seen_modules = set()
@@ -228,23 +215,20 @@ class ProcessMemory:
                         address_range = parts[0]
                         permissions = parts[1]
                         pathname = parts[5] if len(parts) > 5 else ""
-                        
+
                         # Only include executable mappings with file paths
-                        if 'x' in permissions and pathname and pathname != "[vdso]" and not pathname.startswith("["):
+                        if "x" in permissions and pathname and pathname != "[vdso]" and not pathname.startswith("["):
                             module_name = os.path.basename(pathname)
                             if module_name not in seen_modules:
-                                start_addr = int(address_range.split('-')[0], 16)
-                                module_info = type('ModuleInfo', (), {
-                                    'name': module_name,
-                                    'lpBaseOfDll': start_addr
-                                })()
+                                start_addr = int(address_range.split("-")[0], 16)
+                                module_info = type("ModuleInfo", (), {"name": module_name, "lpBaseOfDll": start_addr})()
                                 modules.append(module_info)
                                 seen_modules.add(module_name)
         except (OSError, IOError):
             pass
-        
+
         return modules
-    
+
     def read_bytes(self, address: int, size: int) -> bytes:
         """Read bytes from process memory."""
         if IS_WINDOWS:
@@ -253,33 +237,27 @@ class ProcessMemory:
             return self._read_bytes_linux(address, size)
         else:
             raise Exception("Unsupported operating system")
-    
+
     def _read_bytes_windows(self, address: int, size: int) -> bytes:
         """Read bytes from process memory on Windows."""
         if not self.process_handle:
             raise Exception("Process not attached")
-        
+
         buffer = ctypes.create_string_buffer(size)
         bytes_read = ctypes.wintypes.DWORD(0)
-        
-        result = ctypes.windll.kernel32.ReadProcessMemory(
-            self.process_handle,
-            ctypes.c_void_p(address),
-            buffer,
-            size,
-            ctypes.byref(bytes_read)
-        )
-        
+
+        result = ctypes.windll.kernel32.ReadProcessMemory(self.process_handle, ctypes.c_void_p(address), buffer, size, ctypes.byref(bytes_read))
+
         if not result:
             raise Exception(f"Failed to read memory at address 0x{address:08x}")
-        
-        return buffer.raw[:bytes_read.value]
-    
+
+        return buffer.raw[: bytes_read.value]
+
     def _read_bytes_linux(self, address: int, size: int) -> bytes:
         """Read bytes from process memory on Linux."""
         if not self.mem_file:
             raise Exception("Process not attached")
-        
+
         try:
             self.mem_file.seek(address)
             data = self.mem_file.read(size)
@@ -288,7 +266,7 @@ class ProcessMemory:
             return data
         except (OSError, IOError) as e:
             raise Exception(f"Failed to read memory at address 0x{address:08x}: {e}")
-    
+
     def write_bytes(self, address: int, data: bytes, size: int):
         """Write bytes to process memory."""
         if IS_WINDOWS:
@@ -297,22 +275,16 @@ class ProcessMemory:
             self._write_bytes_linux(address, data, size)
         else:
             raise Exception("Unsupported operating system")
-    
+
     def _write_bytes_windows(self, address: int, data: bytes, size: int):
         """Write bytes to process memory on Windows."""
         if not self.process_handle:
             raise Exception("Process not attached")
-        
+
         bytes_written = ctypes.wintypes.DWORD(0)
-        
-        result = ctypes.windll.kernel32.WriteProcessMemory(
-            self.process_handle,
-            ctypes.c_void_p(address),
-            data,
-            size,
-            ctypes.byref(bytes_written)
-        )
-        
+
+        result = ctypes.windll.kernel32.WriteProcessMemory(self.process_handle, ctypes.c_void_p(address), data, size, ctypes.byref(bytes_written))
+
         if not result:
             error_code = ctypes.windll.kernel32.GetLastError()
             raise Exception(f"WriteProcessMemory failed at 0x{address:08x}, error: {error_code}")
@@ -321,7 +293,7 @@ class ProcessMemory:
         """Write bytes to process memory on Linux."""
         if not self.mem_file:
             raise Exception("Process not attached")
-        
+
         try:
             self.mem_file.seek(address)
             written = self.mem_file.write(data[:size])
@@ -330,17 +302,17 @@ class ProcessMemory:
                 raise Exception(f"Failed to write {size} bytes at address 0x{address:08x}")
         except (OSError, IOError) as e:
             raise Exception(f"Failed to write memory at address 0x{address:08x}: {e}")
-    
+
     def read_int(self, address: int) -> int:
         """Read a 4-byte integer from memory."""
         data = self.read_bytes(address, 4)
         return int.from_bytes(data, "little")
-    
+
     def read_longlong(self, address: int) -> int:
         """Read an 8-byte long long from memory."""
         data = self.read_bytes(address, 8)
         return int.from_bytes(data, "little")
-    
+
     def close(self):
         """Close the process handle or file."""
         if IS_WINDOWS and self.process_handle:
@@ -409,26 +381,26 @@ class EmulatorInfo:
         primary_name = self.get_library_name()
         if primary_name:
             names.append(primary_name)
-            
+
         # Add common variations on Linux
         if IS_LINUX and self.dll_name:
             # Convert .dll to .so
-            if self.dll_name.endswith('.dll'):
-                so_name = self.dll_name[:-4] + '.so'
+            if self.dll_name.endswith(".dll"):
+                so_name = self.dll_name[:-4] + ".so"
                 if so_name not in names:
                     names.append(so_name)
-            
+
             # Add lib prefix if not present
-            if not self.dll_name.startswith('lib'):
-                lib_name = 'lib' + self.dll_name
+            if not self.dll_name.startswith("lib"):
+                lib_name = "lib" + self.dll_name
                 if lib_name not in names:
                     names.append(lib_name)
                 # Also try with .so extension
-                if lib_name.endswith('.dll'):
-                    lib_so_name = lib_name[:-4] + '.so'
+                if lib_name.endswith(".dll"):
+                    lib_so_name = lib_name[:-4] + ".so"
                     if lib_so_name not in names:
                         names.append(lib_so_name)
-        
+
         return [name for name in names if name]  # Filter out None values
 
     def disconnect(self):
@@ -450,7 +422,7 @@ class EmulatorInfo:
         # Find process by name
         target_proc = None
         processes = get_running_processes()
-        
+
         for proc in processes:
             if proc["name"] and proc["name"].lower().startswith(self.process_name.lower()):
                 target_proc = proc
@@ -464,7 +436,7 @@ class EmulatorInfo:
         except Exception as e:
             self.raiseError(f"Failed to attach to process: {str(e)}")
             return None
-            
+
         address_dll = 0
         if self.find_dll:
             possible_names = self.get_possible_library_names()
@@ -512,7 +484,7 @@ class EmulatorInfo:
 
         if not has_seen_nonzero:
             self.raiseError(f"Could not read any data from {self.readable_emulator_name}")
-        
+
         return None
 
     def readBytes(self, address: int, size: int) -> int:
@@ -522,7 +494,7 @@ class EmulatorInfo:
             raise Exception(self.runtime_error)
         if address & 0x80000000:
             address &= 0x7FFFFFFF
-        
+
         # Apply N64 address fixing based on size
         if size == 1:  # 8-bit operation
             remainder = address % 4
@@ -541,7 +513,7 @@ class EmulatorInfo:
             elif remainder in (0, 1):
                 address += 2
         # 32-bit operations (size == 4) don't need address fixing
-        
+
         mem_address = self.connected_offset + address
         data = self.connected_process.read_bytes(mem_address, size)
         value = int.from_bytes(data, "little")
@@ -554,7 +526,7 @@ class EmulatorInfo:
             raise Exception(self.runtime_error)
         if address & 0x80000000:
             address &= 0x7FFFFFFF
-        
+
         # Apply N64 address fixing based on size
         if size == 1:  # 8-bit operation
             remainder = address % 4
@@ -573,7 +545,7 @@ class EmulatorInfo:
             elif remainder in (0, 1):
                 address += 2
         # 32-bit operations (size == 4) don't need address fixing
-        
+
         mem_address = self.connected_offset + address
         data = value.to_bytes(size, byteorder="little")  # or "big"
         self.connected_process.write_bytes(mem_address, data, size)
@@ -624,16 +596,18 @@ class EmulatorInfo:
         return (self.read_u8(DK64MemoryMap.rom_flags) & DK64MemoryMap.rom_flag_ap_status) != 0
 
 
-
 EMULATOR_CONFIGS = {
     Emulators.Project64_v4: EmulatorInfo(Emulators.Project64_v4, "Project64 4.0", "project64", False, None, False, 0xFDD00000, 0xFE1FFFFF),
     Emulators.BizHawk: EmulatorInfo(Emulators.BizHawk, "Bizhawk", "emuhawk", True, "mupen64plus.dll", False, 0x5A000, 0x5658DF, linux_dll_name="libmupen64plus.so"),
     Emulators.RMG: EmulatorInfo(Emulators.RMG, "Rosalie's Mupen GUI", "rmg", True, "mupen64plus.dll", True, 0x29C15D8, 0x2FC15D8, extra_offset=0x80000000, linux_dll_name="libmupen64plus.so"),
     Emulators.Simple64: EmulatorInfo(Emulators.Simple64, "simple64", "simple64-gui", True, "libmupen64plus.dll", True, 0x1380000, 0x29C95D8, linux_dll_name="libmupen64plus.so"),
-    Emulators.ParallelLauncher: EmulatorInfo(Emulators.ParallelLauncher, "Parallel Launcher", "retroarch", True, "parallel_n64_next_libretro.dll", True, 0x845000, 0xD56000, linux_dll_name="parallel_n64_next_libretro.so"),
-    Emulators.RetroArch: EmulatorInfo(Emulators.RetroArch, "RetroArch", "retroarch", True, "mupen64plus_next_libretro.dll", True, 0, 0xFFFFFF, range_step=4, linux_dll_name="mupen64plus_next_libretro.so"),
+    Emulators.ParallelLauncher: EmulatorInfo(
+        Emulators.ParallelLauncher, "Parallel Launcher", "retroarch", True, "parallel_n64_next_libretro.dll", True, 0x845000, 0xD56000, linux_dll_name="parallel_n64_next_libretro.so"
+    ),
+    Emulators.RetroArch: EmulatorInfo(
+        Emulators.RetroArch, "RetroArch", "retroarch", True, "mupen64plus_next_libretro.dll", True, 0, 0xFFFFFF, range_step=4, linux_dll_name="mupen64plus_next_libretro.so"
+    ),
     Emulators.Project64: EmulatorInfo(Emulators.Project64, "Project64", "project64", False, None, False, 0xDFD00000, 0xE01FFFFF),
-
 }
 
 
@@ -660,83 +634,83 @@ def connect_to_emulator() -> Optional[EmulatorInfo]:
 
 class EmuLoaderClient:
     """Drop-in replacement client for PJ64Client using direct memory access."""
-    
+
     def __init__(self):
         self.emulator_info: Optional[EmulatorInfo] = None
         self.connected = False
-        
+
     def connect(self) -> bool:
         """Connect to an available emulator."""
         self.emulator_info = connect_to_emulator()
         self.connected = self.emulator_info is not None
         return self.connected
-    
+
     def disconnect(self):
         """Disconnect from the emulator."""
         if self.emulator_info:
             self.emulator_info.disconnect()
         self.connected = False
         self.emulator_info = None
-    
+
     def is_connected(self) -> bool:
         """Check if connected to an emulator."""
         return self.connected and self.emulator_info is not None
-    
+
     # Direct memory access methods
     def read_u8(self, address: int) -> int:
         """Read an 8-bit unsigned integer from memory."""
         if not self.is_connected():
             raise Exception("Not connected to emulator")
         return self.emulator_info.read_u8(address)
-    
+
     def read_u16(self, address: int) -> int:
         """Read a 16-bit unsigned integer from memory."""
         if not self.is_connected():
             raise Exception("Not connected to emulator")
         return self.emulator_info.read_u16(address)
-    
+
     def read_u32(self, address: int) -> int:
         """Read a 32-bit unsigned integer from memory."""
         if not self.is_connected():
             raise Exception("Not connected to emulator")
         return self.emulator_info.read_u32(address)
-    
+
     def write_u8(self, address: int, value: int):
         """Write an 8-bit unsigned integer to memory."""
         if not self.is_connected():
             raise Exception("Not connected to emulator")
         self.emulator_info.write_u8(address, value)
-    
+
     def write_u16(self, address: int, value: int):
         """Write a 16-bit unsigned integer to memory."""
         if not self.is_connected():
             raise Exception("Not connected to emulator")
         self.emulator_info.write_u16(address, value)
-    
+
     def write_u32(self, address: int, value: int):
         """Write a 32-bit unsigned integer to memory."""
         if not self.is_connected():
             raise Exception("Not connected to emulator")
         self.emulator_info.write_u32(address, value)
-    
+
     def read_bytestring(self, address: int, length: int) -> str:
         """Read a bytestring from memory."""
         if not self.is_connected():
             raise Exception("Not connected to emulator")
         return self.emulator_info.read_bytestring(address, length)
-    
+
     def write_bytestring(self, address: int, data: str):
         """Write a bytestring to memory."""
         if not self.is_connected():
             raise Exception("Not connected to emulator")
         self.emulator_info.write_bytestring(address, data)
-    
+
     def validate_rom(self) -> bool:
         """Validate the ROM by checking name and optional memory location."""
         if not self.is_connected():
             return False
         return self.emulator_info.validate_rom()
-    
+
 
 # Example usage and testing code (commented out)
 # # Try to connect to each emu type and see if it works

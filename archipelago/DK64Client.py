@@ -132,7 +132,7 @@ class DK64Client:
         while True:
             try:
                 emulator_connected = False
-                
+
                 # Try to connect to any available emulator
                 if not self.n64_client.is_connected():
                     emulator_connected = self.n64_client.connect()
@@ -142,7 +142,7 @@ class DK64Client:
                 if emulator_connected:
                     valid_rom = self.n64_client.validate_rom()
                     logger.info("Emulator connected, validating ROM...")
-                
+
                 while not valid_rom:
                     if not self.n64_client.is_connected():
                         emulator_connected = self.n64_client.connect()
@@ -152,7 +152,7 @@ class DK64Client:
                     await asyncio.sleep(1.0)
                     if self.n64_client.is_connected():
                         valid_rom = self.n64_client.validate_rom()
-                
+
                 self.stop_bizhawk_spam = False
                 logger.info("Emulator Connected to ROM!")
                 return
