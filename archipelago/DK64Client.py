@@ -119,7 +119,6 @@ class DK64Client:
     ENABLE_TRAPLINK = False
     current_speed = 130
     current_map = 0
-    read_half = 0
     last_hint_bitfield = [0, 0, 0, 0, 0]
     sent_hints = set()
 
@@ -585,12 +584,7 @@ class DK64Client:
     async def readChecks(self, cb):
         """Run checks in parallel using asyncio."""
         new_checks = []
-        if self.read_half == 0:
-            checks_to_read = self.remaining_checks[: len(self.remaining_checks) // 2]
-            self.read_half = 1
-        else:
-            checks_to_read = self.remaining_checks[len(self.remaining_checks) // 2 :]
-            self.read_half = 0
+        checks_to_read = self.remaining_checks
 
         for id in checks_to_read:
             name = check_id_to_name.get(id)

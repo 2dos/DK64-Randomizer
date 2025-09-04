@@ -602,35 +602,6 @@ class EmulatorInfo:
         """Write a 32-bit unsigned integer to memory."""
         self.writeBytes(address, 4, value)
 
-    # def read_dict(self, address_dict: dict) -> dict:
-    #     """Read a dictionary of memory addresses and return the values."""
-    #     result = {}
-    #     for key, address_info in address_dict.items():
-    #         if isinstance(address_info, dict):
-    #             address = address_info.get("adr", address_info.get("address", 0))
-    #             size = address_info.get("size", 1)
-    #             data_type = address_info.get("type", "u8")
-                
-    #             if data_type == "u8":
-    #                 if size == 1:
-    #                     result[key] = [self.read_u8(address)]
-    #                 else:
-    #                     result[key] = [self.read_u8(address + i) for i in range(size)]
-    #             elif data_type == "u16":
-    #                 if size <= 2:
-    #                     result[key] = [self.read_u16(address)]
-    #                 else:
-    #                     result[key] = [self.read_u16(address + i * 2) for i in range(size // 2)]
-    #             elif data_type == "u32":
-    #                 if size <= 4:
-    #                     result[key] = [self.read_u32(address)]
-    #                 else:
-    #                     result[key] = [self.read_u32(address + i * 4) for i in range(size // 4)]
-    #         else:
-    #             # Assume it's just an address for u8 read
-    #             result[key] = [self.read_u8(address_info)]
-    #     return result
-
     def read_bytestring(self, address: int, length: int) -> str:
         """Read a bytestring from memory."""
         result = ""
@@ -747,13 +718,6 @@ class EmuLoaderClient:
         if not self.is_connected():
             raise Exception("Not connected to emulator")
         self.emulator_info.write_u32(address, value)
-    
-    # def read_dict(self, address_dict: dict) -> dict:
-    #     """Read a dictionary of memory addresses and return the values."""
-    #     if not self.is_connected():
-    #         raise Exception("Not connected to emulator")
-    #     logger.info(f"read_dict: {json.dumps(address_dict)}")
-    #     return self.emulator_info.read_dict(address_dict)
     
     def read_bytestring(self, address: int, length: int) -> str:
         """Read a bytestring from memory."""
