@@ -153,7 +153,7 @@ file_dict = [
         source_file="assets/hash/dk_tie_palette.png",
         do_not_extract=True,
         texture_format=TextureFormat.RGBA5551,
-        target_compressed_size=BLOCK_COLOR_SIZE,
+        target_size=BLOCK_COLOR_SIZE,
     ),
     File(
         name="Tiny Overalls Palette",
@@ -162,7 +162,7 @@ file_dict = [
         source_file="assets/hash/tiny_palette.png",
         do_not_extract=True,
         texture_format=TextureFormat.RGBA5551,
-        target_compressed_size=BLOCK_COLOR_SIZE,
+        target_size=BLOCK_COLOR_SIZE,
     ),
     File(name="Bean Sprite", pointer_table_index=TableNames.TexturesGeometry, file_index=6020, source_file="assets/displays/bean.png", do_not_extract=True, texture_format=TextureFormat.RGBA5551),
     File(name="Pearl Sprite", pointer_table_index=TableNames.TexturesGeometry, file_index=6021, source_file="assets/displays/pearl.png", do_not_extract=True, texture_format=TextureFormat.RGBA5551),
@@ -524,6 +524,42 @@ file_dict = [
         source_file="assets/hash/disco_glove.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
+    ),
+    File(
+        name="Bandit Image 0",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BanditImage0),
+        source_file="assets/hash/bandit_grape.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+        target_size=32 * 32 * 2,
+    ),
+    File(
+        name="Bandit Image 1",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BanditImage1),
+        source_file="assets/hash/bandit_coconut.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+        target_size=40 * 51 * 2,
+    ),
+    File(
+        name="Bandit Image 2",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BanditImage2),
+        source_file="assets/hash/bandit_melon.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+        target_size=48 * 42 * 2,
+    ),
+    File(
+        name="Bandit Image 3",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(ExtraTextures.BanditImage3),
+        source_file="assets/hash/bandit_pineapple.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+        target_size=32 * 48 * 2,
     ),
 ]
 
@@ -1257,8 +1293,8 @@ kong_palettes = {
 }
 for x in kong_palettes:
     x_s = kong_palettes[x][0][0] * kong_palettes[x][0][1] * 2
-    if kong_palettes[x][0][0] == 32 and kong_palettes[x][0][1] == 32 and kong_palettes[x][1] == "block":
-        x_s = BLOCK_COLOR_SIZE
+    # if kong_palettes[x][0][0] == 32 and kong_palettes[x][0][1] == 32 and kong_palettes[x][1] == "block":
+    #     x_s = BLOCK_COLOR_SIZE
     file_dict.append(File(name=f"Palette Expansion ({hex(x)})", pointer_table_index=TableNames.TexturesGeometry, file_index=x, source_file=f"palette_{x}.bin", target_compressed_size=x_s))
 
 for tex in range(0x273, 0x27D):
@@ -1357,7 +1393,6 @@ colorblind_changes = [
     [0x1484, 0x1484],  # Star Flare
     [0xBAD, 0xBAE],  # Green Slam Switches
     [0xD01, 0xD02],  # Blue Slam Switches
-    [0x12E1, 0x12E5],  # BBB Images
 ]
 
 file_dict.append(
@@ -1493,6 +1528,10 @@ model_changes = [
     ModelChange(3, "dk_base.bin"),
     ModelChange(8, "tiny_base.bin"),
     ModelChange(9, "tiny_ins.bin"),
+    ModelChange(0x8F, "reel0.bin"),
+    ModelChange(0x90, "reel1.bin"),
+    ModelChange(0x91, "reel2.bin"),
+    ModelChange(0x92, "reel3.bin"),
     ModelChange(0xEC, "disco_instrument.bin"),
     ModelChange(0xDA, "krusha_base.bin"),
     ModelChange(0xED, "potion_dk_om1.bin", True),
@@ -2461,6 +2500,10 @@ with open(newROMName, "r+b") as fh:
         "diddy_face_1_noflip",
         "dk_face_0_noflip",
         "dk_face_1_noflip",
+        "bandit_coconut",
+        "bandit_pineapple",
+        "bandit_melon",
+        "bandit_grape",
     ]
     tagbarrel_removals = ["plain_shell", "shell", "cannon_support", "cannon_base", "cannon_left", "cannon_right", "barrel_base"]
     for face in barrel_faces:
