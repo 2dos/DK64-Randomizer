@@ -67,6 +67,9 @@ class ObjectChange:
         rz: float = None,
         use_stream: bool = False,
         new_bonus_id: int = None,
+        new_reqitem: int = None,
+        new_itemlevel: int = None,
+        new_itemkong: int = None,
     ):
         """Initialize with given parameters."""
         # Mandatory
@@ -87,6 +90,9 @@ class ObjectChange:
         self.ry = ry
         self.rz = rz
         self.new_bonus_id = new_bonus_id
+        self.new_reqitem = new_reqitem
+        self.new_itemlevel = new_itemlevel
+        self.new_itemkong = new_itemkong
         self.added = False
 
     def getStream(self, data_stream: bytes) -> bytes:
@@ -121,6 +127,9 @@ class ObjectChange:
             byte_array = writeValueToByteArray(byte_array, self.ry, 4, 0x1C, True, self.obj_master_type == ObjectTypes.modeltwo)
             byte_array = writeValueToByteArray(byte_array, self.ry, 2, 0x30, False, self.obj_master_type == ObjectTypes.actor)
             byte_array = writeValueToByteArray(byte_array, self.rz, 4, 0x20, True, self.obj_master_type == ObjectTypes.modeltwo)
+            byte_array = writeValueToByteArray(byte_array, self.new_reqitem, 1, 0x10, False, self.obj_master_type == ObjectTypes.modeltwo)
+            byte_array = writeValueToByteArray(byte_array, self.new_itemlevel, 1, 0x11, False, self.obj_master_type == ObjectTypes.modeltwo)
+            byte_array = writeValueToByteArray(byte_array, self.new_itemkong, 1, 0x12, False, self.obj_master_type == ObjectTypes.modeltwo)
             print(hex(len(byte_array)))
             return bytes(byte_array)
         return data_stream
@@ -208,6 +217,7 @@ def getObjectModifications(target_map: Maps) -> list:
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x91, x=2326.88),  # Japes Film 1
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x92, x=2319.835),  # Japes Film 2
         ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Japes, 0x93, x=2330.393),  # Japes Film 3
+        ObjectChange(ObjectTypes.modeltwo, ObjectChangeType.edit, Maps.Helm, 0x5A, new_reqitem=6, new_itemlevel=7, new_itemkong=0),  # Key 8 Default data
     ]
 
     for switch_index in range(16):
