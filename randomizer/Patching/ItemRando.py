@@ -1012,7 +1012,8 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             # Add to bonus table
                             old_tflag = 0x182 + TRAINING_LOCATIONS.index(item.location)
                             bonus_index = getBonusIndex(ROM_COPY, offset_dict, old_tflag)
-                            patchBonus(ROM_COPY, bonus_index, offset_dict, spawn_actor=getActorIndex(item), level=item_properties.level, item_kong=item_properties.kong)
+                            if bonus_index is not None:
+                                patchBonus(ROM_COPY, bonus_index, offset_dict, spawn_actor=getActorIndex(item), level=item_properties.level, item_kong=item_properties.kong)
                     for placement in item.placement_index:
                         write_space = movespaceOffset + (6 * placement)
                         if item.new_item is None:
@@ -1099,7 +1100,8 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         # Autocomplete bonus barrel fix
                         actor_index = getActorIndex(item)
                         bonus_index = getBonusIndex(ROM_COPY, offset_dict, item.old_flag)
-                        patchBonus(ROM_COPY, bonus_index, offset_dict, spawn_actor=actor_index, level=item_properties.level, item_kong=item_properties.kong)
+                        if bonus_index is not None:
+                            patchBonus(ROM_COPY, bonus_index, offset_dict, spawn_actor=actor_index, level=item_properties.level, item_kong=item_properties.kong)
                 else:
                     if item.old_item != Types.Medal:
                         actor_index = getActorIndex(item)
@@ -1186,16 +1188,22 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         ROM_COPY.write(item_properties.level)
                         ROM_COPY.write(item_properties.kong)
                         ROM_COPY.write(item_properties.audiovisual_medal)
-                    elif item.location == Locations.JapesChunkyBoulder:
-                        # Write to Boulder Spawn Location
-                        spoiler.japes_rock_actor = actor_index
-                    elif item.location == Locations.AztecLankyVulture:
-                        # Write to Vulture Spawn Location
-                        spoiler.aztec_vulture_actor = actor_index
+                    elif item.location in (Locations.JapesChunkyBoulder, Locations.AztecLankyVulture):
+                        # Write to Boulder/Vulture Spawn Location
+                        offset = 0
+                        if item.location == Locations.AztecLankyVulture:
+                            offset = 4
+                        ram_start = getSym("extra_actor_spawns")
+                        rom_addr = getROMAddress(ram_start + offset, Overlay.Custom, offset_dict)
+                        ROM_COPY.seek(rom_addr)
+                        ROM_COPY.writeMultipleBytes(actor_index, 2)
+                        ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                        ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
                     elif item.old_item == Types.Banana:
                         # Bonus GB Table
                         bonus_index = getBonusIndex(ROM_COPY, offset_dict, item.old_flag)
-                        patchBonus(ROM_COPY, bonus_index, offset_dict, spawn_actor=actor_index, level=item_properties.level, item_kong=item_properties.kong)
+                        if bonus_index is not None:
+                            patchBonus(ROM_COPY, bonus_index, offset_dict, spawn_actor=actor_index, level=item_properties.level, item_kong=item_properties.kong)
                     elif item.old_item == Types.Fairy:
                         # Fairy Item
                         model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
