@@ -8,7 +8,6 @@ import Utils
 
 if __name__ == "__main__":
     Utils.init_logging("DK64Context", exception_logger="Client")
-import json
 import asyncio
 import colorama
 import sys
@@ -18,7 +17,7 @@ import traceback
 import time
 import typing
 from client.common import DK64MemoryMap, create_task_log_exception, check_version
-from client.pj64 import PJ64Client
+from client.emu_loader import EmuLoaderClient
 from client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
 from client.check_flag_locations import location_flag_to_name, location_name_to_flag
 from client.ap_check_ids import check_id_to_name, check_names_to_id
@@ -120,39 +119,49 @@ class DK64Client:
     ENABLE_TRAPLINK = False
     current_speed = 130
     current_map = 0
-    read_half = 0
     last_hint_bitfield = [0, 0, 0, 0, 0]
     sent_hints = set()
 
     async def wait_for_pj64(self):
-        """Wait for PJ64 to connect to the game."""
+        """Wait for emulator to connect to the game."""
         clear_waiting_message = True
         if not self.stop_bizhawk_spam:
-            logger.info("Waiting on connection to PJ64...")
-            self.n64_client = PJ64Client()
+            logger.info("Waiting on connection to emulator...")
+            self.n64_client = EmuLoaderClient()
             self.stop_bizhawk_spam = True
         while True:
             try:
-                socket_connected = False
-                valid_rom = self.n64_client.validate_rom(self.game, DK64MemoryMap.memory_pointer)
-                if self.n64_client.socket is not None and not socket_connected:
-                    logger.info("Connected to PJ64")
-                    socket_connected = True
+                emulator_connected = False
+
+                # Try to connect to any available emulator
+                if not self.n64_client.is_connected():
+                    emulator_connected = self.n64_client.connect()
+                else:
+                    emulator_connected = True
+                valid_rom = False
+                if emulator_connected:
+                    valid_rom = self.n64_client.validate_rom()
+                    logger.info("Emulator connected, validating ROM...")
+
                 while not valid_rom:
-                    if self.n64_client.socket is not None and not socket_connected:
-                        logger.info("Connected to PJ64")
-                        socket_connected = True
+                    if not self.n64_client.is_connected():
+                        emulator_connected = self.n64_client.connect()
                     if clear_waiting_message:
                         logger.info("Waiting on valid ROM...")
                         clear_waiting_message = False
                     await asyncio.sleep(1.0)
-                    valid_rom = self.n64_client.validate_rom(self.game, DK64MemoryMap.memory_pointer)
+                    if self.n64_client.is_connected():
+                        valid_rom = self.n64_client.validate_rom()
+
                 self.stop_bizhawk_spam = False
-                logger.info("PJ64 Connected to ROM!")
+                logger.info("Emulator Connected to ROM!")
                 return
-            except (BlockingIOError, TimeoutError, ConnectionResetError):
+            except Exception as e:
                 await asyncio.sleep(1.0)
-                logger.error("Error connecting to PJ64, retrying...")
+                logger.error(f"Error connecting to emulator, retrying... {str(e)}")
+                # Reset connection on error
+                if self.n64_client:
+                    self.n64_client.disconnect()
                 pass
 
     def check_safe_gameplay(self):
@@ -182,8 +191,8 @@ class DK64Client:
 
         stripped_item_name = sanitize_and_trim(item_name)
         stripped_player_name = sanitize_and_trim(player_name)
-        self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_string, f"{stripped_item_name}")
-        self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_subtitle, f"{event_type} {stripped_player_name}")
+        self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_string, f"{stripped_item_name}".upper())
+        self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_subtitle, f"{event_type} {stripped_player_name}".upper())
 
     def set_speed(self, speed: int):
         """Set the speed of the display text in game."""
@@ -568,37 +577,14 @@ class DK64Client:
             offset = item_index - 1
         return ((value >> offset) & 1) != 0
 
-    def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None, _bulk_read_dict=None) -> bool:
+    def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None) -> bool:
         """Get the status of a check."""
-        if _bulk_read_dict is not None and flag_index in _bulk_read_dict.keys():
-            return _bulk_read_dict.get(flag_index)
-        else:
-            return self.readFlag(flag_index)
+        return self.readFlag(flag_index)
 
     async def readChecks(self, cb):
         """Run checks in parallel using asyncio."""
         new_checks = []
-        _bulk_read_dict = {}
-        if self.read_half == 0:
-            checks_to_read = self.remaining_checks[: len(self.remaining_checks) // 2]
-            self.read_half = 1
-        else:
-            checks_to_read = self.remaining_checks[len(self.remaining_checks) // 2 :]
-            self.read_half = 0
-        for id in checks_to_read:
-            name = check_id_to_name.get(id)
-            check = location_name_to_flag.get(name)
-            if check:
-                byte_index = check >> 3
-                offset = DK64MemoryMap.EEPROM + byte_index
-                _bulk_read_dict[check] = offset
-        dict_data = self.n64_client.read_dict(_bulk_read_dict)
-        # Json loads the dict_data
-        dict_data = json.loads(dict_data)
-        for key, value in dict_data.items():
-            shift = int(key) & 7
-            flag_status = (int(value[0]) >> shift) & 1
-            _bulk_read_dict[int(key)] = flag_status
+        checks_to_read = self.remaining_checks
 
         for id in checks_to_read:
             name = check_id_to_name.get(id)
@@ -606,7 +592,7 @@ class DK64Client:
             check = location_name_to_flag.get(name)
             if check:
                 # Assuming we did find it in location_name_to_flag
-                check_status = self.getCheckStatus("location", check, _bulk_read_dict=_bulk_read_dict)
+                check_status = self.getCheckStatus("location", check)
                 if check_status:
                     self.remaining_checks.remove(id)
                     new_checks.append(id)
@@ -657,7 +643,7 @@ class DK64Client:
 
     async def reset_auth(self):
         """Reset the auth by looking up a username from ROM."""
-        username = self.n64_client.read_bytestring(0x1FF3000 + 0xB0000000, 16).strip()
+        username = self.n64_client.read_bytestring(DK64MemoryMap.name_location, 16).strip()
         # Strip all trailing \x00
         username = username.replace("\x00", "")
         self.auth = username
@@ -1549,10 +1535,12 @@ class DK64Context(CommonContext):
                     await asyncio.sleep(3)
 
                 if not self.client.recvd_checks:
+                    logger.info("No checks received yet, requesting...")
                     await self.sync()
 
                 await asyncio.sleep(1.0)
                 while True:
+                    logger.debug("Game loop tick")
                     await self.client.reset_auth()
                     await disconnect_check()
                     await self.client.validate_client_connection()
