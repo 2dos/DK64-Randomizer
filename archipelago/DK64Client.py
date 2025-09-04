@@ -8,7 +8,6 @@ import Utils
 
 if __name__ == "__main__":
     Utils.init_logging("DK64Context", exception_logger="Client")
-import json
 import asyncio
 import colorama
 import sys
@@ -579,37 +578,19 @@ class DK64Client:
             offset = item_index - 1
         return ((value >> offset) & 1) != 0
 
-    def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None, _bulk_read_dict=None) -> bool:
+    def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None) -> bool:
         """Get the status of a check."""
-        if _bulk_read_dict is not None and flag_index in _bulk_read_dict.keys():
-            return _bulk_read_dict.get(flag_index)
-        else:
-            return self.readFlag(flag_index)
+        return self.readFlag(flag_index)
 
     async def readChecks(self, cb):
         """Run checks in parallel using asyncio."""
         new_checks = []
-        _bulk_read_dict = {}
         if self.read_half == 0:
             checks_to_read = self.remaining_checks[: len(self.remaining_checks) // 2]
             self.read_half = 1
         else:
             checks_to_read = self.remaining_checks[len(self.remaining_checks) // 2 :]
             self.read_half = 0
-        for id in checks_to_read:
-            name = check_id_to_name.get(id)
-            check = location_name_to_flag.get(name)
-            if check:
-                byte_index = check >> 3
-                offset = DK64MemoryMap.EEPROM + byte_index
-                _bulk_read_dict[check] = offset
-        dict_data = self.n64_client.read_dict(_bulk_read_dict)
-        # Json loads the dict_data
-        dict_data = json.loads(dict_data)
-        for key, value in dict_data.items():
-            shift = int(key) & 7
-            flag_status = (int(value[0]) >> shift) & 1
-            _bulk_read_dict[int(key)] = flag_status
 
         for id in checks_to_read:
             name = check_id_to_name.get(id)
@@ -617,7 +598,7 @@ class DK64Client:
             check = location_name_to_flag.get(name)
             if check:
                 # Assuming we did find it in location_name_to_flag
-                check_status = self.getCheckStatus("location", check, _bulk_read_dict=_bulk_read_dict)
+                check_status = self.getCheckStatus("location", check)
                 if check_status:
                     self.remaining_checks.remove(id)
                     new_checks.append(id)
