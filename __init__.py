@@ -164,6 +164,7 @@ if baseclasses_loaded:
         CBRequirement,
         MinigamesListSelected,
         HelmBonuses,
+        HardBossesSelected,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
@@ -644,8 +645,8 @@ if baseclasses_loaded:
             if self.options.medal_distribution.value == 0:  # pre_selected
                 settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
             elif self.options.medal_distribution.value == 4:  # progressive
-                settings_dict["medal_cb_req"] = self.options.medal_requirement.value
-            settings_dict["medal_requirement"] = self.options.medal_requirement.value
+                settings_dict["medal_cb_req"] = self.options.medal_cb_req.value
+            settings_dict["medal_requirement"] = self.options.jetpac_requirement.value
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["mirror_mode"] = self.options.mirror_mode.value
             settings_dict["hard_mode"] = self.options.hard_mode.value
@@ -654,6 +655,7 @@ if baseclasses_loaded:
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
             settings_dict["cb_medal_behavior_new"] = self.options.medal_distribution.value
             settings_dict["smaller_shops"] = self.options.smaller_shops.value
+            settings_dict["puzzle_rando_difficulty"] = self.options.puzzle_rando.value
 
             # Level blocker settings
             blocker_options = [
@@ -872,6 +874,21 @@ if baseclasses_loaded:
                     settings_dict["glitches_selected"].append(glitches_mapping[glitch])
             # Starting keys configuration
             settings_dict["starting_keys_list_selected"] = []
+
+            # Hard Boss mapping
+            hard_boss_mapping = {
+                "fast_mad_jack": HardBossesSelected.fast_mad_jack,
+                "alternative_mad_jack_kongs": HardBossesSelected.alternative_mad_jack_kongs,
+                "pufftoss_star_rando": HardBossesSelected.pufftoss_star_rando,
+                "pufftoss_star_raised": HardBossesSelected.pufftoss_star_raised,
+                "kut_out_phase_rando": HardBossesSelected.kut_out_phase_rando,
+                "k_rool_toes_rando": HardBossesSelected.k_rool_toes_rando,
+                "beta_lanky_phase": HardBossesSelected.beta_lanky_phase,
+            }
+
+            for hardboss in self.options.harder_bosses:
+                if hardboss in hard_boss_mapping:
+                    settings_dict["hard_bosses_selected"].append(hard_boss_mapping[hardboss])
 
             # Key mapping for starting inventory
             key_mapping = {
@@ -1108,7 +1125,7 @@ if baseclasses_loaded:
                                 # Most of these item restrictions should be handled by item rules, so this is a failsafe.
                                 # Junk items can't be placed in shops, bosses, or arenas. Fortunately this is junk, so we can just patch a NoItem there instead.
                                 # Shops are allowed to get Junk items placed by AP in order to artificially slightly reduce the number of checks in shops.
-                                if DK64RItem.ItemList[dk64_item].type == Types.JunkItem and (dk64_location.type in [Types.Shop, Types.Key, Types.Crown]):
+                                if DK64RItem.ItemList[dk64_item].type == Types.JunkItem and (dk64_location.type in [Types.Key, Types.Crown]):
                                     dk64_item = DK64RItems.NoItem
                                     self.junked_locations.append(ap_location.name)
                                 # Blueprints can't be on fairies for technical reasons. Instead we'll patch it in as an AP item and have AP handle it.

@@ -747,6 +747,43 @@ class SmallerShops(Toggle):
     display_name = "Smaller Shops"
 
 
+class HardBosses(OptionList):
+    """Determines which bosses are harder.
+
+    Valid Keys:
+    "fast_mad_jack": Mad Jack will move at quantum speeds.
+    "alternative_mad_jack_kongs": Logic can expect Donkey, Chunky, or Tiny without twirl to fight Mad Jack.
+    "pufftoss_star_rando": The stars in the Pufftoss fight are now in random locations.
+    "pufftoss_star_raised": The stars in the Pufftoss fight are now slightly raised to require you to jump to activate the stars.
+    "kut_out_phase_rando": Kutout phases are now in random order and also a chance to see the secret 4th phase.
+    "k_rool_toes_rando": The toes in Tiny phase K. Rool now attack in a random order.
+    "beta_lanky_phase": K. Rool is now distracted by shooting a balloon rather than playing an instrument.
+    """
+
+    display_name = "Hard Bosses"
+
+    valid_keys: {"fast_mad_jack", "alternative_mad_jack_kongs", "pufftoss_star_rando", "pufftoss_star_raised", "kut_out_phase_rando", "k_rool_toes_rando", "beta_lanky_phase"}
+
+
+class PuzzleRando(Choice):
+    """Determines the difficulty of puzzle randomization.
+
+    off: Puzzle solutions are NOT randomized.
+    easy: Easy boundaries.
+    medium: Medium boundaries.
+    hard: Hard boundaries, Castle Car Race is randomized.
+    chaos: Any value in the easy, medium, or hard bounds.
+    """
+
+    display_name = "Puzzle Randomization"
+    option_off = 0
+    option_easy = 1
+    option_medium = 2
+    option_hard = 3
+    option_chaos = 4
+    default = 0
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -766,7 +803,7 @@ class DK64Options(PerGameCommonOptions):
     medal_cb_req: MedalColorBananaRequirement
     medal_distribution: MedalDistribution
     mermaid_gb_pearls: MermaidRequirement
-    medal_requirement: JetpacRequirement
+    jetpac_requirement: JetpacRequirement
     rareware_gb_fairies: RarewareGBRequirement
     randomize_blocker_required_amounts: RandomizeBlockers
     blocker_max: MaximumBLocker
@@ -817,6 +854,8 @@ class DK64Options(PerGameCommonOptions):
     auto_complete_bonus_barrels: AutoCompleteBonusBarrels
     helm_room_bonus_count: HelmRoomBonusCount
     smaller_shops: SmallerShops
+    harder_bosses: HardBosses
+    puzzle_rando: PuzzleRando
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -883,6 +922,7 @@ dk64_option_groups: List[OptionGroup] = [
             MermaidRequirement,
             RarewareGBRequirement,
             JetpacRequirement,
+            PuzzleRando,
         ],
     ),
     OptionGroup(
@@ -899,6 +939,7 @@ dk64_option_groups: List[OptionGroup] = [
         [
             HardModeEnabled,
             HardModeSelected,
+            HardBosses,
             MirrorMode,
         ],
     ),

@@ -169,9 +169,8 @@ def create_region(
                     continue
                 elif not logic_holder.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and region_name == "FactoryBaboonBlast":
                     continue
-            # Starting move locations and Kongs may be shuffled but their locations are not relevant ever due to item placement restrictions
-            # V1 LIMITATION: Kong locations are always empty because we can't put the vast majority of items (including AP items) there yet
-            if location_obj.type in (Types.TrainingBarrel, Types.PreGivenMove, Types.Kong):
+            # Starting move locations may be shuffled but their locations are not relevant ever due to item placement restrictions
+            if location_obj.type in (Types.TrainingBarrel, Types.PreGivenMove):
                 continue
             # Dropsanity would otherwise flood the world with irrelevant locked locations, greatly slowing seed gen
             if location_obj.type == Types.Enemies and Types.Enemies not in logic_holder.settings.shuffled_location_types:
