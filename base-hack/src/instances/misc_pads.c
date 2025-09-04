@@ -105,9 +105,7 @@ void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index) {
             setObjectScriptState(55, 20, 0);
             int tied_index = convertIDToIndex(55);
             if (tied_index > -1) {
-                int* m2location = (int*)ObjectModel2Pointer;
-                ModelTwoData* tied_object = getObjectArrayAddr(m2location,0x90,tied_index);
-                behaviour_data* tied_behaviour = (behaviour_data*)tied_object->behaviour_pointer;
+                behaviour_data* tied_behaviour = ObjectModel2Pointer[tied_index].behaviour_pointer;
                 if (tied_behaviour) {
                     setScriptRunState(tied_behaviour, RUNSTATE_RUNNING, 0);
                 }

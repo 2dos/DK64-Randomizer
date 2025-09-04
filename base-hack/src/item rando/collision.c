@@ -75,9 +75,8 @@ item_collision* writeItemScale(int id) {
      * @return collision object
      */
     item_collision* data = dk_malloc(0x20);
-    int* m2location = (int*)ObjectModel2Pointer;
     for (int i = 0; i < ObjectModel2Count; i++) {
-        ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
+        ModelTwoData* _object = &ObjectModel2Pointer[i];
         if (_object->object_id == id) {
             for (int j = 0; j < (int)(sizeof(item_scales) / sizeof(item_scale_info)); j++) {
                 if (item_scales[j].type == _object->object_type) {

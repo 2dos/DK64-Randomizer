@@ -32,6 +32,22 @@ def writeTransition(settings: Settings, ROM_COPY: ROM) -> None:
     writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4, ROM_COPY)
 
 
+def getImageShrink(im_f, width: int, height: int):
+    """Shrink image so the entirety of it fits within the selected width and height."""
+    im_w, im_h = im_f.size
+    scale_w = width / im_w
+    scale_h = height / im_h
+    scale = min(scale_w, scale_h)
+    new_w = int(im_w * scale)
+    new_h = int(im_h * scale)
+    im_f = im_f.resize((new_w, new_h))
+    im_new = Image.new(mode="RGBA", size=(width, height))
+    dw = int((width - new_w) / 2)
+    dh = int((height - new_h) / 2)
+    im_new.paste(im_f, (dw, dh), im_f)
+    return im_new
+
+
 def getImageChunk(im_f, width: int, height: int):
     """Get an image chunk based on a width and height."""
     width_height_ratio = width / height
@@ -129,9 +145,9 @@ def writeCustomPaintings(settings: Settings, ROM_COPY: ROM) -> None:
     """Write custom painting files to ROM."""
     if js.cosmetics is None:
         return
-    if js.cosmetics.tns_portals is None:
+    if js.cosmetics.paintings is None:
         return
-    if js.cosmetic_names.tns_portals is None:
+    if js.cosmetic_names.paintings is None:
         return
     PAINTING_INFO = [
         PaintingData(64, 64, 2, 1, False, [0x1EA, 0x1E9]),  # DK Isles
@@ -564,3 +580,45 @@ def writeCustomArcadeSprites(settings: Settings, ROM_COPY: ROM) -> None:
         image = Image.open(BytesIO(bytes(file[0])))
         image = image.convert("RGBA")
         writeColorImageToAddress(image, addr, sprite_set.common_width, sprite_set.common_height, False, TextureFormat.RGBA5551, ROM_COPY, False, 2 * sprite_set.common_width * sprite_set.common_height)
+
+
+def writeCustomReels(settings: Settings, ROM_COPY: ROM) -> None:
+    """Write custom painting files to ROM."""
+    if js.cosmetics is None:
+        return
+    if js.cosmetics.reel_sprites is None:
+        return
+    if js.cosmetic_names.reel_sprites is None:
+        return
+    REEL_INFO = [
+        PaintingData(32, 32, 1, 1, False, [0x12E1]),  # Grape
+        PaintingData(40, 51, 1, 1, False, [0x12E3]),  # Coconut
+        PaintingData(48, 42, 1, 1, False, [0x12E4]),  # Melon
+        PaintingData(32, 48, 1, 1, False, [0x12E5]),  # Pineapple
+    ]
+    file_data = list(zip(js.cosmetics.reel_sprites, js.cosmetic_names.reel_sprites))
+    if len(file_data) == 0:
+        return
+    list_pool = file_data.copy()
+    settings.random.shuffle(list_pool)
+    for reel in REEL_INFO:
+        reel.name = None
+        if len(list_pool) < 1:
+            continue
+        selected_reel = list_pool.pop(0)
+        reel.name = selected_reel[1].split("/")[-1]  # File Name
+        im_f = Image.open(BytesIO(bytes(selected_reel[0])))
+        im_f = getImageShrink(im_f, reel.width, reel.height)
+        im_f = im_f.transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
+        chunks = []
+        chunk_w = int(reel.width / reel.x_split)
+        chunk_h = int(reel.height / reel.y_split)
+        for y in range(reel.y_split):
+            for x in range(reel.x_split):
+                left = x * chunk_w
+                top = y * chunk_h
+                chunk_im = im_f.crop((int(left), int(top), int(left + chunk_w), int(top + chunk_h)))
+                chunks.append(chunk_im)
+        for chunk_index, chunk in enumerate(chunks):
+            img_index = reel.texture_order[chunk_index]
+            writeColorImageToROM(chunk, 25, img_index, chunk_w, chunk_h, True, TextureFormat.RGBA5551, ROM_COPY)

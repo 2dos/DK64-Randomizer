@@ -44,8 +44,6 @@ CROSSHAIRS = {
     ColorblindMode.deut: ColorBlindCrosshair(0x318DFF, 0xFFFFFF, 0xE3A900),
     ColorblindMode.trit: ColorBlindCrosshair(0xC72020, 0xFFFFFF, 0x13C4D8),
 }
-ORANGE_GUN_SFX = 400
-ORANGE_GUN_VARIANCE = 5
 
 
 def modelCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
@@ -101,71 +99,6 @@ def modelCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
             writeValue(ROM_COPY, 0x806F1274, Overlay.Static, 0, offset_dict, 4)  # Prevent model change for GGone
             writeValue(ROM_COPY, 0x806CBB84, Overlay.Static, 0, offset_dict, 4)  # Enable opacity filter GGone
             writeValue(ROM_COPY, 0x8075BF3E, Overlay.Static, 0x2F5C, offset_dict)  # Make CS Model Behave normally
-        elif value in (KongModels.krool_cutscene, KongModels.krool_fight, KongModels.krusha):
-            writeValue(ROM_COPY, 0x80753568 + (2 * kong_index), Overlay.Static, 175, offset_dict)  # Krusha sliding speed
-            writeValue(ROM_COPY, 0x8074AB5A, Overlay.Static, 0x0040, offset_dict)  # Enables Krusha's spin attack to knock kasplats down
-            writeValue(ROM_COPY, 0x8071AAC4, Overlay.Static, 0, offset_dict, 4)
-            writeValue(ROM_COPY, 0x8075DBB4 + (kong_index << 2), Overlay.Static, 0x806FAE0C, offset_dict, 4)
-            writeValue(ROM_COPY, 0x806E240A, Overlay.Static, 0x3E80, offset_dict)
-            # Krusha properties
-            ledge_hang_y = 0x80753D70
-            ledge_hang_y_0 = 0x80753D8C
-            potion_anim = 0x8075D380
-            writeFloat(ROM_COPY, ledge_hang_y + (4 * kong_index), Overlay.Static, 31, offset_dict)
-            writeFloat(ROM_COPY, ledge_hang_y_0 + (4 * kong_index), Overlay.Static, 14, offset_dict)
-            writeValue(ROM_COPY, potion_anim + (2 * kong_index), Overlay.Static, 0xE, offset_dict)
-            if kong_index == Kongs.donkey:
-                writeValue(ROM_COPY, 0x806F0AFE, Overlay.Static, 0, offset_dict)  # Remove gun from hands in Tag Barrel
-                writeValue(ROM_COPY, 0x806F0AF0, Overlay.Static, 0x24050001, offset_dict, 4)  # Fix Hand State
-                writeValue(ROM_COPY, 0x806D5EC4, Overlay.Static, 0, offset_dict, 4)  # Prevent Moving Ground Attack pop up
-                writeValue(ROM_COPY, 0x8064AF5E, Overlay.Static, 5, offset_dict)  # Reduce slam range for DK Dungeon GB Slam
-                writeValue(ROM_COPY, 0x806E2AA2, Overlay.Static, ORANGE_GUN_SFX, offset_dict)  # SFX
-                writeValue(ROM_COPY, 0x806E2AA6, Overlay.Static, ORANGE_GUN_VARIANCE, offset_dict)  # Variance
-            elif kong_index == Kongs.diddy:
-                writeValue(ROM_COPY, 0x806F0A6C, Overlay.Static, 0x0C1A29D9, offset_dict, 4)  # Replace hand state call
-                writeValue(ROM_COPY, 0x806F0A78, Overlay.Static, 0, offset_dict, 4)  # Replace hand state call
-                writeValue(ROM_COPY, 0x806E4938, Overlay.Static, 0, offset_dict, 4)  # Always run adapt code
-                writeValue(ROM_COPY, 0x806E4940, Overlay.Static, 0, offset_dict, 4)  # NOP Animation calls
-                writeValue(ROM_COPY, 0x806E4950, Overlay.Static, 0, offset_dict, 4)  # NOP Animation calls
-                writeValue(ROM_COPY, 0x806E4958, Overlay.Static, 0, offset_dict, 4)  # NOP Animation calls
-                writeValue(ROM_COPY, 0x806E499C, Overlay.Static, 0, offset_dict, 4)  # NOP Animation calls
-                writeValue(ROM_COPY, 0x806E49C8, Overlay.Static, 0, offset_dict, 4)  # NOP Animation calls
-                writeValue(ROM_COPY, 0x806E49F0, Overlay.Static, 0, offset_dict, 4)  # NOP Animation calls
-                writeValue(ROM_COPY, 0x806CF5F0, Overlay.Static, 0x5000, offset_dict)  # Prevent blink special cases
-                writeValue(ROM_COPY, 0x806CF76C, Overlay.Static, 0, offset_dict, 4)  # Prevent blink special cases
-                writeValue(ROM_COPY, 0x806832B8, Overlay.Static, 0, offset_dict, 4)  # Prevent tag blinking
-                writeValue(ROM_COPY, 0x806C1050, Overlay.Static, 0, offset_dict, 4)  # Prevent Cutscene Kong blinking
-                writeValue(ROM_COPY, 0x8075D19F, Overlay.Static, 0xA0, offset_dict, 1)  # Fix Gun Firing
-                writeValue(ROM_COPY, 0x80749764, Overlay.Static, 10, offset_dict)  # Fix Diddy Swimming (A)
-                writeValue(ROM_COPY, 0x80749758, Overlay.Static, 10, offset_dict)  # Fix Diddy Swimming (B)
-                writeValue(ROM_COPY, 0x8074974C, Overlay.Static, 10, offset_dict)  # Fix Diddy Swimming (Z/First Person)
-                writeValue(ROM_COPY, 0x806E2AB2, Overlay.Static, ORANGE_GUN_SFX, offset_dict)  # SFX
-            elif kong_index == Kongs.lanky:
-                writeValue(ROM_COPY, 0x806F0ABE, Overlay.Static, 0, offset_dict)  # Remove gun from hands in Tag Barrel
-                writeValue(ROM_COPY, 0x806E48B4, Overlay.Static, 0, offset_dict, 4)  # Always run `adaptKrushaZBAnimation`
-                writeValue(ROM_COPY, 0x806F0AB0, Overlay.Static, 0x24050001, offset_dict, 4)  # Fix Hand State
-                writeValue(ROM_COPY, 0x80749C74, Overlay.Static, 10, offset_dict)  # Fix Lanky Swimming (A)
-                writeValue(ROM_COPY, 0x80749C80, Overlay.Static, 10, offset_dict)  # Fix Lanky Swimming (B)
-                writeValue(ROM_COPY, 0x80749CA4, Overlay.Static, 10, offset_dict)  # Fix Lanky Swimming (Z/First Person)
-                writeValue(ROM_COPY, 0x806E2A7E, Overlay.Static, ORANGE_GUN_SFX, offset_dict)  # SFX
-                writeValue(ROM_COPY, 0x806E2A86, Overlay.Static, ORANGE_GUN_VARIANCE, offset_dict)  # Variance
-            elif kong_index == Kongs.tiny:
-                writeValue(ROM_COPY, 0x806F0ADE, Overlay.Static, 0, offset_dict)  # Remove gun from hands in Tag Barrel
-                writeValue(ROM_COPY, 0x806E47F8, Overlay.Static, 0, offset_dict, 4)  # Prevent slide bounce
-                writeValue(ROM_COPY, 0x806CF784, Overlay.Static, 0x5000, offset_dict)  # Prevent blink special cases
-                writeValue(ROM_COPY, 0x806832C0, Overlay.Static, 0x5000, offset_dict)  # Prevent tag blinking
-                writeValue(ROM_COPY, 0x806C1058, Overlay.Static, 0, offset_dict, 4)  # Prevent Cutscene Kong blinking
-                writeValue(ROM_COPY, 0x806F0AD0, Overlay.Static, 0x24050001, offset_dict, 4)  # Fix Hand State
-                writeValue(ROM_COPY, 0x806E2A8A, Overlay.Static, ORANGE_GUN_SFX, offset_dict)  # SFX
-                writeValue(ROM_COPY, 0x806E2A90, Overlay.Static, 0x24030000 | ORANGE_GUN_VARIANCE, offset_dict, 4)  # Variance
-                writeFloat(ROM_COPY, 0x80753E38, Overlay.Static, 350, offset_dict)
-            elif kong_index == Kongs.chunky:
-                writeValue(ROM_COPY, 0x806CF37C, Overlay.Static, 0, offset_dict, 4)  # Fix object holding
-                writeValue(ROM_COPY, 0x806F1274, Overlay.Static, 0, offset_dict, 4)  # Prevent model change for GGone
-                writeValue(ROM_COPY, 0x806CBB84, Overlay.Static, 0, offset_dict, 4)  # Enable opacity filter GGone
-                writeValue(ROM_COPY, 0x806E48F8, Overlay.Static, 0, offset_dict, 4)  # Always run `adaptKrushaZBAnimation`
-                writeValue(ROM_COPY, 0x806F0A9E, Overlay.Static, 0, offset_dict)  # Remove gun from hands in Tag Barrel
-                writeValue(ROM_COPY, 0x806F0A90, Overlay.Static, 0x24050001, offset_dict, 4)  # Fix Hand State
     if settings.beetle_model == Model.Rabbit:
         writeValue(ROM_COPY, 0x8075ECD2, Overlay.Static, 0x47, offset_dict)  # Model
         writeValue(ROM_COPY, 0x8075ECD4, Overlay.Static, 0x309, offset_dict)

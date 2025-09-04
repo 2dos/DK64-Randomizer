@@ -39,23 +39,23 @@ typedef enum regions {
 	/* 0x01C */ REGION_JAPESHIGH, // Japes Hillside
 	/* 0x01D */ REGION_JAPESSTORM, // Stormy Tunnel Area
 	/* 0x01E */ REGION_JAPESHIVE, // Hive Tunnel Area
-	/* 0x01F */ REGION_JAPESCAVERNS, // Japes Caves and Mines
-	/* 0x020 */ REGION_AZTECOASISTOTEM, // Aztec Oasis and Totem Area
+	/* 0x01F */ REGION_JAPESCAVERNS, // Japes Caves & Mines
+	/* 0x020 */ REGION_AZTECOASISTOTEM, // Aztec Oasis & Totem Area
 	/* 0x021 */ REGION_AZTECTINY, // Tiny Temple
 	/* 0x022 */ REGION_AZTECGETOUT, // 5 Door Temple
 	/* 0x023 */ REGION_AZTECLLAMA, // Llama Temple
 	/* 0x024 */ REGION_AZTECTUNNELS, // Various Aztec Tunnels
 	/* 0x025 */ REGION_FACTORYSTART, // Frantic Factory Start
 	/* 0x026 */ REGION_FACTORYTESTING, // Testing Area
-	/* 0x027 */ REGION_FACTORYRESEARCH, // Research and Development Area
-	/* 0x028 */ REGION_FACTORYSTORAGE, // Storage and Arcade
+	/* 0x027 */ REGION_FACTORYRESEARCH, // R&D Area
+	/* 0x028 */ REGION_FACTORYSTORAGE, // Storage & Arcade
 	/* 0x029 */ REGION_FACTORYPROD, // Production Room
 	/* 0x02A */ REGION_GALLEONCAVERNS, // Galleon Caverns
 	/* 0x02B */ REGION_GALLEONLIGHTHOUSE, // Lighthouse Area
 	/* 0x02C */ REGION_GALLEONSHIPYARD, // Shipyard Outskirts
 	/* 0x02D */ REGION_GALLEONTREASURE, // Treasure Room
 	/* 0x02E */ REGION_GALLEONSHIP, // 5 Door Ship
-	/* 0x02F */ REGION_FORESTSTART, // Forest Center and Beanstalk
+	/* 0x02F */ REGION_FORESTSTART, // Forest Center & Beanstalk
 	/* 0x030 */ REGION_FORESTGMEXT, // Giant Mushroom Exterior
 	/* 0x031 */ REGION_FORESTGMINT, // Giant Mushroom Insides
 	/* 0x032 */ REGION_FORESTOWL, // Owl Tree

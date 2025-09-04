@@ -5,6 +5,19 @@ typedef enum kongcheck_enum {
     /* 3 */ KONGCHECK_FACTORY,
 } kongcheck_enum;
 
+typedef struct item_packet {
+	/* 0x000 */ unsigned char item_type;
+	/* 0x001 */ unsigned char level;
+	/* 0x002 */ unsigned char kong;
+	/* 0x003 */ unsigned char audiovisual_index;
+} item_packet;
+
+typedef struct purchase_struct {
+	/* 0x000 */ item_packet item;
+	/* 0x004 */ char pad;
+	/* 0x005 */ unsigned char price;
+} purchase_struct;
+
 typedef struct CountSpecialStruct {
     unsigned char nintendo_coin : 1; // 0x80
     unsigned char rareware_coin : 1; // 0x40
@@ -90,20 +103,52 @@ typedef struct meloncrate_db_item {
     /* 0x003 */ unsigned char world;
 } meloncrate_db_item;
 
+typedef struct actor_spawn_packet {
+    /* 0x000 */ unsigned short actor;
+    /* 0x002 */ unsigned char item_level;
+    /* 0x003 */ unsigned char item_kong;
+} actor_spawn_packet;
+
+typedef struct enemy_item_memory_item {
+	/* 0x000 */ unsigned short actor;
+	/* 0x002 */ unsigned short flag;
+} enemy_item_memory_item;
+
+typedef struct enemy_item_rom_item {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ unsigned char char_spawner_id;
+	/* 0x002 */ unsigned short actor;
+    /* 0x004 */ item_packet item;
+} enemy_item_rom_item;
+
+typedef struct enemy_item_db_item {
+	/* 0x000 */ enemy_item_memory_item spawn;
+	/* 0x004 */ unsigned short global_index;
+    /* 0x006 */ unsigned char item_level;
+    /* 0x007 */ unsigned char item_kong;
+} enemy_item_db_item;
+
+typedef struct model_item_data {
+	/* 0x000 */ short model;
+	/* 0x002 */ char has_no_textures;
+	/* 0x003 */ char pad;
+	/* 0x004 */ item_packet item;
+} model_item_data;
+
 extern void giveItemFromKongData(model_item_data *db_item, int flag);
 extern void updateBoulderId(int index, int id);
-extern int getBoulderItem(void);
+extern int getBoulderItem(int index);
 extern int getBoulderIndex(void);
 
 #define BONUS_DATA_COUNT 99
-extern unsigned short bp_item_table[40];
+extern actor_spawn_packet bp_item_table[40];
 extern item_packet medal_item_table[85];
 extern item_packet wrinkly_item_table[35];
-extern unsigned short crown_item_table[10];
-extern unsigned short key_item_table[8];
+extern actor_spawn_packet crown_item_table[10];
+extern actor_spawn_packet key_item_table[8];
 extern model_item_data fairy_item_table[20];
-extern unsigned short rcoin_item_table[16];
-extern unsigned short crate_item_table[16];
+extern actor_spawn_packet rcoin_item_table[16];
+extern actor_spawn_packet crate_item_table[16];
 extern patch_db_item patch_flags[16];
 extern BoulderItemStruct boulder_item_table[16];
 extern bonus_barrel_info bonus_data[BONUS_DATA_COUNT];

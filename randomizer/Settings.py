@@ -92,7 +92,6 @@ class Settings:
             self.generate_spoilerlog = False
         self.random = random
         self.seed = str(self.seed) + self.__hash + str(json.dumps(form_data))
-        self.ice_trap_count = 0
         if not self.archipelago:
             self.set_seed()
         self.seed_hash = [self.random.randint(0, 9) for i in range(5)]
@@ -372,7 +371,7 @@ class Settings:
         self.disable_hard_minigames = None
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
-        self.ice_trap_frequency = IceTrapFrequency.mild
+        self.ice_trap_frequency = IceTrapFrequency.mild  # Deprecated
         self.start_with_slam = False
         self.random_patches = None
         self.random_crates = None
@@ -745,6 +744,7 @@ class Settings:
         self.mill_levers = [0] * 5
         self.jetpac_enemy_order = list(range(8))
         self.crypt_levers = [1, 4, 3]
+        self.dartboard_order = [3, 1, 2, 0, 5, 4]  # Orange, Melon, Banana, Crystal, Medal, Ammo Crate
         self.diddy_rnd_doors = [[0] * 4, [0] * 4, [0] * 4]
         # self.enemy_rando = False  # Deprecated
         # self.crown_enemy_rando = CrownEnemyRando.off  # Deprecated
@@ -894,6 +894,7 @@ class Settings:
         self.prog_slam_level_6 = SlamRequirement.blue
         self.prog_slam_level_7 = SlamRequirement.red
         self.prog_slam_level_8 = SlamRequirement.red
+        self.ice_trap_count = 0
         self.switch_allocation = [
             self.prog_slam_level_1,
             self.prog_slam_level_2,
@@ -1318,8 +1319,11 @@ class Settings:
             "disb": 1,
             "discu": 1,
             "disz": 1,
+            "getout": 1,
+            "dry": 2,
+            "flip": 2,
         }
-        models_chance = {"gb": 10, "key": 2, "bean": 1}
+        models_chance = {"gb": 10, "key": 2, "bean": 1, "fairy": 4}
         trap_data = {
             "gb": {
                 "bubble": Items.IceTrapBubble,
@@ -1329,6 +1333,9 @@ class Settings:
                 "disb": Items.IceTrapDisableB,
                 "disz": Items.IceTrapDisableZ,
                 "discu": Items.IceTrapDisableCU,
+                "getout": Items.IceTrapGetOutGB,
+                "dry": Items.IceTrapDryGB,
+                "flip": Items.IceTrapFlipGB,
             },
             "bean": {
                 "bubble": Items.IceTrapBubbleBean,
@@ -1338,6 +1345,9 @@ class Settings:
                 "disb": Items.IceTrapDisableBBean,
                 "disz": Items.IceTrapDisableZBean,
                 "discu": Items.IceTrapDisableCUBean,
+                "getout": Items.IceTrapGetOutBean,
+                "dry": Items.IceTrapDryBean,
+                "flip": Items.IceTrapFlipBean,
             },
             "key": {
                 "bubble": Items.IceTrapBubbleKey,
@@ -1347,6 +1357,21 @@ class Settings:
                 "disb": Items.IceTrapDisableBKey,
                 "disz": Items.IceTrapDisableZKey,
                 "discu": Items.IceTrapDisableCUKey,
+                "getout": Items.IceTrapGetOutKey,
+                "dry": Items.IceTrapDryKey,
+                "flip": Items.IceTrapFlipKey,
+            },
+            "fairy": {
+                "bubble": Items.IceTrapBubbleFairy,
+                "reverse": Items.IceTrapReverseFairy,
+                "slow": Items.IceTrapSlowFairy,
+                "disa": Items.IceTrapDisableAFairy,
+                "disb": Items.IceTrapDisableBFairy,
+                "disz": Items.IceTrapDisableZFairy,
+                "discu": Items.IceTrapDisableCUFairy,
+                "getout": Items.IceTrapGetOutFairy,
+                "dry": Items.IceTrapDryFairy,
+                "flip": Items.IceTrapFlipFairy,
             },
         }
         self.trap_assortment = []
@@ -1898,6 +1923,10 @@ class Settings:
         if self.puzzle_rando_difficulty != PuzzleRando.off:
             # Crypt Levers
             self.crypt_levers = self.random.sample([x + 1 for x in range(6)], 3)
+            dartboard_order = []
+            for _ in range(6):
+                dartboard_order.append(self.random.randint(0, 7))
+            self.dartboard_order = dartboard_order.copy()
             # Diddy R&D Doors
             self.diddy_rnd_doors = []
             start = list(range(4))

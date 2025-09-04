@@ -35,7 +35,6 @@ def handleHeap(size: int, rando_flut_size: int):
         fh.write(getLabel("heap_start_upper", variables["upper"]))
         fh.write(getLabel("heap_start_lower", variables["lower"]))
         fh.write(getLabel("heap_size", size))
-        # fh.write(getLabel("ItemIdentifier", 0x805FAE00 - rando_flut_size))
     with open("asm/header.asm", "w") as fh:
         fh.write(f".headersize {hex(0x7E000000 | (variables['start'] & 0xFFFFFF))}\n")
         fh.write(f".org {hex(variables['start'])}")

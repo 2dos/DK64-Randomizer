@@ -46,6 +46,20 @@ void sendTrap(ICE_TRAP_TYPES trap_type) {
     giveItem(REQITEM_ICETRAP, 0, trap_type, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .apply_ice_trap = 1});
 }
 
+static unsigned char ice_trap_feds[] = {
+    TRANSFER_ITEM_FAKEITEM,
+    TRANSFER_ITEM_FAKEITEM_REVERSE,
+    TRANSFER_ITEM_FAKEITEM_SLOW,
+    0, // Super Bubble
+    TRANSFER_ITEM_FAKEITEM_DISABLEA,
+    TRANSFER_ITEM_FAKEITEM_DISABLEB,
+    TRANSFER_ITEM_FAKEITEM_DISABLEZ,
+    TRANSFER_ITEM_FAKEITEM_DISABLECU,
+    TRANSFER_ITEM_FAKEITEM_GETOUT,
+    TRANSFER_ITEM_FAKEITEM_DRY,
+    TRANSFER_ITEM_FAKEITEM_FLIP,
+};
+
 void handleSentItem(void) {
     archipelago_items FedItem = ap_info.fed_item;
     switch (FedItem) {
@@ -56,19 +70,20 @@ void handleSentItem(void) {
             giveItem(REQITEM_RAINBOWCOIN, 0, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .give_coins = 1});
             break;
         case TRANSFER_ITEM_FAKEITEM:
-            sendTrap(ICETRAP_BUBBLE);
-            break;
-        case TRANSFER_ITEM_FAKEITEM_SLOW:
-            sendTrap(ICETRAP_SLOWED);
-            break;
         case TRANSFER_ITEM_FAKEITEM_REVERSE:
-            sendTrap(ICETRAP_REVERSECONTROLS);
-            break;
+        case TRANSFER_ITEM_FAKEITEM_SLOW:
         case TRANSFER_ITEM_FAKEITEM_DISABLEA:
         case TRANSFER_ITEM_FAKEITEM_DISABLEB:
         case TRANSFER_ITEM_FAKEITEM_DISABLEZ:
         case TRANSFER_ITEM_FAKEITEM_DISABLECU:
-            sendTrap((FedItem - TRANSFER_ITEM_FAKEITEM_DISABLEA) + ICETRAP_DISABLEA);
+        case TRANSFER_ITEM_FAKEITEM_GETOUT:
+        case TRANSFER_ITEM_FAKEITEM_DRY:
+        case TRANSFER_ITEM_FAKEITEM_FLIP:
+            for (int i = 0; i < sizeof(ice_trap_feds); i++) {
+                if (ice_trap_feds[i] == FedItem) {
+                    sendTrap(ICETRAP_BUBBLE + i);
+                } 
+            }
             break;
         case TRANSFER_ITEM_BABOONBLAST:
         case TRANSFER_ITEM_STRONGKONG:

@@ -91,6 +91,7 @@ HARDER_CRUSHERS = True
 BOULDERS_DONT_DESTROY = True
 CAN_THROW_KEGS = True
 CAN_THROW_APPLES = True
+DISABLE_LONG_JUMP = False
 
 WARPS_JAPES = [
     0x20,  # FLAG_WARP_JAPES_W1_PORTAL,
@@ -469,18 +470,6 @@ def writeActorHealth(ROM_COPY, actor_index: int, new_health: int):
     writeValue(ROM_COPY, start, Overlay.Custom, new_health, {})
 
 
-def updateActorFunctionInt(ROM_COPY, actor_index: int, new_function: int):
-    """Update the actor function in the table based on a int value."""
-    start = getSym("actor_functions") + (4 * actor_index)
-    writeValue(ROM_COPY, start, Overlay.Custom, new_function, {}, 4)
-
-
-def updateActorFunction(ROM_COPY, actor_index: int, new_function_sym: str):
-    """Update the actor function in the table based on a sym value."""
-    start = getSym("actor_functions") + (4 * actor_index)
-    writeLabelValue(ROM_COPY, start, Overlay.Custom, new_function_sym, {})
-
-
 def disableDynamicReverb(ROM_COPY: ROM):
     """Disable the dynamic FXMix (Reverb) that would otherwise be applied in tunnels and underwater."""
     for index in range(1, 175):
@@ -640,6 +629,9 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8062F09C, Overlay.Static, 0x240F1F40, offset_dict, 4)
 
     adjustKongModelHandlers(ROM_COPY, settings, offset_dict)
+    krushaChanges(ROM_COPY, settings, offset_dict)
+    writeHook(ROM_COPY, 0x8061A4C8, Overlay.Static, "AlterHeadSize", offset_dict)
+    writeHook(ROM_COPY, 0x806198D4, Overlay.Static, "AlterHeadSize_0", offset_dict)
 
     writeHook(ROM_COPY, 0x8063EE08, Overlay.Static, "InstanceScriptCheck", offset_dict)
     writeHook(ROM_COPY, 0x806FF384, Overlay.Static, "ModifyCameraColor", offset_dict)
@@ -1698,6 +1690,10 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x806E4C94, Overlay.Static, 0, offset_dict, 4)  # Apple (Grounded)
         writeValue(ROM_COPY, 0x806E4D38, Overlay.Static, 0, offset_dict, 4)  # Apple (Non-Grounded)
 
+    if DISABLE_LONG_JUMP:
+        writeFloatUpper(ROM_COPY, 0x806E30E6, Overlay.Static, 8000000, offset_dict)
+        writeValue(ROM_COPY, 0x806D81E4, Overlay.Static, 0, offset_dict, 4)  # Removes a set to 0 for backflips, making them feel better
+
     if settings.shops_dont_cost:
         writeValue(ROM_COPY, 0x8064EA8C, Overlay.Static, 0, offset_dict, 4)  # Remove Arcade Costing Coins
 
@@ -2026,6 +2022,10 @@ def patchAssembly(ROM_COPY, spoiler):
 
     writeLabelValue(ROM_COPY, 0x80748088, Overlay.Static, "CrownDoorCheck", offset_dict)  # Update check on Crown Door
 
+    writeHook(ROM_COPY, 0x806321FC, Overlay.Static, "SetupModelTwoHandler", offset_dict)  # Setup transfer for model 2
+    writeHook(ROM_COPY, 0x806F7924, Overlay.Static, "ActorToModelTwoHandler", offset_dict)  # Actor transfer for model 2
+    writeHook(ROM_COPY, 0x8063BA04, Overlay.Static, "ModelTwoToSetupState", offset_dict)  # Model 2 transfer to setup
+
     # Fast Start: Beginning of game
     if settings.fast_start_beginning_of_game:
         writeValue(ROM_COPY, 0x80714540, Overlay.Static, 0, offset_dict, 4)
@@ -2037,6 +2037,8 @@ def patchAssembly(ROM_COPY, spoiler):
                 0x180,  # First Slam Given
             ]
         )
+        for x in range(4):
+            patchBonus(ROM_COPY, 95 + x, offset_dict, flag=0)
     else:
         writeValue(ROM_COPY, 0x80755F4C, Overlay.Static, 0, offset_dict)  # Remove escape cutscene
     if settings.auto_keys:

@@ -1,9 +1,9 @@
 .definelabel dataStart, 0x01FED020
 .definelabel dataRDRAM, 0x807FF800
 .definelabel musicInfo, 0x01FFF000
-.definelabel itemROM, 0x01FF2000
+.definelabel itemROM, 0x01FF3000
 .definelabel codeEnd, 0x805FAE00
-.definelabel itemdatasize, 0xD00
+.definelabel itemdatasize, 0x30
 
 START:
 	displacedBootCode:
@@ -24,9 +24,9 @@ START:
 		LUI a1, hi(itemROM + itemdatasize)
 		ADDIU a1, a1, lo(itemROM + itemdatasize)
 		ADDIU a0, a0, lo(itemROM)
-		LUI a2, hi(ItemIdentifier)
+		LUI a2, hi(APName)
 		JAL dmaFileTransfer
-		ADDIU a2, a2, lo(ItemIdentifier)
+		ADDIU a2, a2, lo(APName)
     
 		//
 		LUI v0, 0x8001

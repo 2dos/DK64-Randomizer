@@ -5,11 +5,11 @@
 Thanks,
 		Ballaam
 */
-extern const short acceptable_items[57];
-extern const item_conversion_info item_conversions[61];
-extern const unsigned short bounce_objects[51];
-extern const unsigned short actor_drops[62];
-extern const item_scale_info item_scales[62];
+extern const short acceptable_items[40];
+extern const item_conversion_info item_conversions[44];
+extern const unsigned short bounce_objects[34];
+extern const unsigned short actor_drops[45];
+extern const item_scale_info item_scales[45];
 typedef enum new_custom_actors {
 	/* 0x159 */ NEWACTOR_NINTENDOCOIN = 0x159, 
 	/* 0x15A */ NEWACTOR_RAREWARECOIN = 0x15a, 
@@ -30,9 +30,9 @@ typedef enum new_custom_actors {
 	/* 0x169 */ NEWACTOR_BEAN = 0x169, 
 	/* 0x16A */ NEWACTOR_PEARL = 0x16a, 
 	/* 0x16B */ NEWACTOR_FAIRY = 0x16b, 
-	/* 0x16C */ NEWACTOR_ICETRAPBUBBLE = 0x16c, 
-	/* 0x16D */ NEWACTOR_ICETRAPREVERSE = 0x16d, 
-	/* 0x16E */ NEWACTOR_ICETRAPSLOW = 0x16e, 
+	/* 0x16C */ NEWACTOR_ICETRAPGB = 0x16c, 
+	/* 0x16D */ NEWACTOR_ICETRAPBEAN = 0x16d, 
+	/* 0x16E */ NEWACTOR_ICETRAPKEY = 0x16e, 
 	/* 0x16F */ NEWACTOR_MEDAL = 0x16f, 
 	/* 0x170 */ NEWACTOR_JETPACITEMOVERLAY = 0x170, 
 	/* 0x171 */ NEWACTOR_CRANKYITEM = 0x171, 
@@ -48,18 +48,7 @@ typedef enum new_custom_actors {
 	/* 0x17B */ NEWACTOR_HINTITEMTINY = 0x17b, 
 	/* 0x17C */ NEWACTOR_HINTITEMCHUNKY = 0x17c, 
 	/* 0x17D */ NEWACTOR_ARCHIPELAGOITEM = 0x17d, 
-	/* 0x17E */ NEWACTOR_ICETRAPDISABLEAGB = 0x17e, 
-	/* 0x17F */ NEWACTOR_ICETRAPDISABLEBGB = 0x17f, 
-	/* 0x180 */ NEWACTOR_ICETRAPDISABLEZGB = 0x180, 
-	/* 0x181 */ NEWACTOR_ICETRAPDISABLECUGB = 0x181, 
-	/* 0x182 */ NEWACTOR_ICETRAPDISABLEABEAN = 0x182, 
-	/* 0x183 */ NEWACTOR_ICETRAPDISABLEBBEAN = 0x183, 
-	/* 0x184 */ NEWACTOR_ICETRAPDISABLEZBEAN = 0x184, 
-	/* 0x185 */ NEWACTOR_ICETRAPDISABLECUBEAN = 0x185, 
-	/* 0x186 */ NEWACTOR_ICETRAPDISABLEAKEY = 0x186, 
-	/* 0x187 */ NEWACTOR_ICETRAPDISABLEBKEY = 0x187, 
-	/* 0x188 */ NEWACTOR_ICETRAPDISABLEZKEY = 0x188, 
-	/* 0x189 */ NEWACTOR_ICETRAPDISABLECUKEY = 0x189, 
+	/* 0x17E */ NEWACTOR_ICETRAPFAIRY = 0x17e, 
 	/* ----- */ NEWACTOR_TERMINATOR, 
 } new_custom_actors;
 #define DROP_COUNT 36

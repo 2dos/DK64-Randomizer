@@ -37,6 +37,7 @@
 .definelabel RandomSwitches, 0x807FFF20
 .definelabel SwitchLevel, 0x807FFF21
 .definelabel APData, 0x807FFF1C
+.definelabel APName, 0x807E2EE0
 
 .definelabel KrushaSlot, 0x807FFF2E
 .definelabel KasplatSpawnBitfield, 0x807FFF2F
@@ -47,5 +48,4 @@
 .definelabel BFIMove_New, 0x807FF6E8
 .definelabel FirstMove_New, 0x807FF6EE
 .definelabel ExtraSaveData, 0x807ED2A8
-.definelabel ItemIdentifier, 0x807E2EE0 // Used to be occupied by music channel 0 // Vanilla 0x807E00C0
 .definelabel MenuDarkness, 0x8075EAE4

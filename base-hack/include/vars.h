@@ -33,8 +33,8 @@
 #define static_expansion_size 0x100
 
 #define ACTOR_VANILLA_LIMIT 345
-#define COLLISION_LIMIT 90
-#define DEFS_LIMIT 177
+#define COLLISION_LIMIT 73
+#define DEFS_LIMIT 160
 #define ACTOR_LIMIT (345 + NEWACTOR_TERMINATOR)
 #define CUSTOM_ACTORS_START 345
 

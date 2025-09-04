@@ -20,53 +20,6 @@ static const char* cranky_name = "CRANKY";
 static const char* candy_name = "CANDY";
 static const char* funky_name = "FUNKY";
 
-void initKrusha(int slot) {
-    /**
-     * @brief Initialize the Krusha Cosmetic/Gameplay feature
-     * 
-     */
-    writeFunction(0x80677E94, &adjustAnimationTables); // Give Krusha animations to slot
-    writeFunction(0x806C32B8, &updateCutsceneModels); // Fix cutscene models
-    if (Rando.kong_models[slot] == KONGMODEL_KRUSHA) {
-        KongTextNames[slot] = KongTextNames[5];
-        KongTagNames[slot] = 6; // Change kong name in Tag Barrel
-    } else {
-        KongTextNames[slot] = krool_name;
-        KongTagNames[slot] = 7; // Change kong name in Tag Barrel
-    }
-    actor_functions[2 + slot] = (void*)0x806C9F44; // Replace Kong Code w/ Krusha Code
-    // Gun Stuff
-    int focused_pellet = pellets[slot];
-    actor_functions[focused_pellet] = &OrangeGunCode;
-    setActorDamage(focused_pellet, 3);
-    switch (slot) {
-        case 1:
-            // Diddy
-            writeFunction(0x806E495C, &adaptKrushaZBAnimation_Charge); // Allow Krusha to use slide move if fast enough (Charge)
-            writeFunction(0x806141B4, &DiddySwimFix); // Fix Diddy's Swim Animation
-            writeFunction(0x806E903C, &MinecartJumpFix); // Fix Diddy Minecart Jump
-            writeFunction(0x806D259C, &MinecartJumpFix_0); // Fix Diddy Minecart Jump
-            break;
-        case 2:
-            // Lanky
-            /*
-                Issues:
-                    Lanky Phase arm extension has a poly tri not correctly aligned
-            */
-            writeFunction(0x806E48BC, &adaptKrushaZBAnimation_PunchOStand); // Allow Krusha to use slide move if fast enough (OStand)
-            writeFunction(0x806141B4, &DiddySwimFix); // Fix Lanky's Swim Animation
-            break;
-        case 3:
-            // Tiny
-            changeFeatherToSprite();
-            break;
-        case 4:
-            // Chunky
-            writeFunction(0x806E4900, &adaptKrushaZBAnimation_PunchOStand); // Allow Krusha to use slide move if fast enough (PPunch)
-        break;
-    }
-}
-
 typedef struct kongmodel_recolor_data {
     /* 0x000 */ unsigned char kong;
     /* 0x001 */ unsigned char model;
@@ -248,7 +201,9 @@ void initModelChanges(void) {
             case KONGMODEL_KRUSHA:
             case KONGMODEL_KROOL_CUTSCENE:
             case KONGMODEL_KROOL_FIGHT:
-                initKrusha(i);
+                if (Rando.kong_models[i] != KONGMODEL_KRUSHA) {
+                    KongTextNames[i] = krool_name;
+                }
                 break;
             case KONGMODEL_CRANKY:
                 KongTagNames[i] = 8;

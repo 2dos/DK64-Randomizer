@@ -13,7 +13,7 @@ requirements_file = "requirements.txt"
 
 # Files and folders to copy into dk64
 files_to_copy = ["__init__.py", "js.py", "version.py", "static/compiled.jsonc", "ap_version.py"]
-folders_to_copy = ["archipelago", "base-hack/assets/arcade_jetpac", "base-hack/assets/DKTV", "randomizer", "static/patches"]
+folders_to_copy = ["archipelago", "base-hack/assets/arcade_jetpac", "base-hack/assets/DKTV", "base-hack/assets/displays", "randomizer", "static/patches"]
 
 # Ensure dk64 directory exists
 os.makedirs(dk64_folder, exist_ok=True)

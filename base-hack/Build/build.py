@@ -309,12 +309,6 @@ file_dict = [
         do_not_delete_source=True,
     ),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item_0.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=612, source_file="fake_item_1.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=613, source_file="fake_item_2.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A6, source_file="fake_item_3.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x299, source_file="fake_item_4.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29A, source_file="fake_item_5.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29B, source_file="fake_item_6.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_3d_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Sprint Switch", pointer_table_index=TableNames.ModelTwoGeometry, file_index=611, source_file="assets/Gong/sprint_switch.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Factory Door", pointer_table_index=TableNames.ModelTwoGeometry, file_index=664, source_file="assets/Gong/factory_door.bin", do_not_extract=True, do_not_delete_source=True),
@@ -511,20 +505,9 @@ file_dict = [
         source_file="hoard.bin",
         do_not_delete_source=True,
     ),
-    File(name="Fake Bean Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x292, source_file="fake_bean_0.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Bean Model (1)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x293, source_file="fake_bean_1.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Bean Model (2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x294, source_file="fake_bean_2.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Bean Model (3)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29C, source_file="fake_bean_3.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Bean Model (4)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29D, source_file="fake_bean_4.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Bean Model (5)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29E, source_file="fake_bean_5.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Bean Model (6)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x29F, source_file="fake_bean_6.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Key Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x295, source_file="fake_key_0.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Key Model (1)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x296, source_file="fake_key_1.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Key Model (2)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x297, source_file="fake_key_2.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Key Model (3)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A0, source_file="fake_key_3.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Key Model (4)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A1, source_file="fake_key_4.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Key Model (5)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A4, source_file="fake_key_5.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Fake Key Model (6)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x2A5, source_file="fake_key_6.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Bean Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x264, source_file="fake_bean_0.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Key Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x265, source_file="fake_key_0.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fake Fairy Model (0)", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x299, source_file="fake_fairy_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Animation Code", pointer_table_index=TableNames.Unknown13, file_index=0, source_file="animation_code.bin", do_not_delete_source=True),
     File(
         name="Disco Shirt",
@@ -854,38 +837,6 @@ for start in [0xD60, 0xD64, 0xD62, 0xD66, 0xD61, 0xD65, 0xD63, 0xD67]:
         )
     )
 
-shop_face_array = [
-    "none",  # No Face
-    "dk_face",
-    "diddy_face",
-    "lanky_face",
-    "tiny_face",
-    "chunky_face",
-    "shared",  # Shared Move
-    "soldout32",  # Sold Out
-    "gb",
-    "lanky_bp",
-    "crown_shop",
-    "key",
-    "medal",
-    "potion32",
-    "nin_coin",
-    "rw_coin",
-    "bean32",
-    "pearl32",
-    "fairy",
-    "rainbow_coin",
-    "fake_gb_shop",
-    "wrinkly32",
-    "ap32",
-    "head32_dillo1",
-    "head32_dog1",
-    "head32_mj",
-    "head32_pufftoss",
-    "head32_dog2",
-    "head32_dillo2",
-    "head32_kko",
-]
 file_dict.append(
     File(
         name="Win Con Logo",
@@ -897,12 +848,12 @@ file_dict.append(
         target_uncompressed_size=32 * 32 * 2,
     )
 )
-for x, shop in enumerate(shop_face_array):
+for x, shop in enumerate(barrel_skins):
     data = File(
         name=f"Shop Indicator ({shop})",
         pointer_table_index=TableNames.TexturesHUD,
         file_index=196 + x,
-        source_file=f"assets/displays/{shop}.png",
+        source_file=f"assets/displays/shop_{shop}.png",
         texture_format=TextureFormat.RGBA32,
     )
     if "_face" in shop:
@@ -1406,6 +1357,7 @@ colorblind_changes = [
     [0x1484, 0x1484],  # Star Flare
     [0xBAD, 0xBAE],  # Green Slam Switches
     [0xD01, 0xD02],  # Blue Slam Switches
+    [0x12E1, 0x12E5],  # BBB Images
 ]
 
 file_dict.append(
@@ -1498,6 +1450,7 @@ shrinkModel(True, "potion_tiny_om1.bin", 0, 0.08, "shrink_potion_tiny.bin", Fals
 shrinkModel(True, "potion_chunky_om1.bin", 0, 0.08, "shrink_potion_chunky.bin", False)  # Potion (Chunky)
 shrinkModel(True, "potion_any_om1.bin", 0, 0.08, "shrink_potion_any.bin", False)  # Potion (Any)
 shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin", True)  # Fairy
+shrinkModel(True, "fake_fairy_om1.bin", 0, 5, "shrink_fake_fairy.bin", True)  # Fake Fairy
 shrinkModel(True, "dk_base.bin", 0, 1 / 0.15, "shrink_dk.bin", True)  # DK
 shrinkModel(False, "", 0, 1 / 0.15, "shrink_diddy.bin", True)  # Diddy
 shrinkModel(True, "lanky_base.bin", 0, 1 / 0.15, "shrink_lanky.bin", True)  # Lanky
@@ -1615,7 +1568,8 @@ model_changes = [
     ModelChange(0x127, "shrink_fake_key.bin"),
     ModelChange(0x128, "fake_key_om1.bin"),
     ModelChange(0x129, "disco_donkey.bin"),
-    ModelChange(0x12A, FINAL_RACE_HOOP),
+    ModelChange(0x12A, "fake_fairy_om1.bin"),
+    ModelChange(0x12B, "shrink_fake_fairy.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 
@@ -1835,6 +1789,33 @@ for x in range(216):
             )
         )
 
+# Helm Heads
+helm_head_data = {
+    "chunky_face_0_noflip": ExtraTextures.FinalBoss5Left,
+    "chunky_face_1_noflip": ExtraTextures.FinalBoss5Right,
+    "tiny_face_0_noflip": ExtraTextures.FinalBoss4Right,
+    "tiny_face_1_noflip": ExtraTextures.FinalBoss4Left,
+    "lanky_face_0_noflip": ExtraTextures.FinalBoss3Left,
+    "lanky_face_1_noflip": ExtraTextures.FinalBoss3Right,
+    "diddy_face_0_noflip": ExtraTextures.FinalBoss2Left,
+    "diddy_face_1_noflip": ExtraTextures.FinalBoss2Right,
+    "dk_face_0_noflip": ExtraTextures.FinalBoss1Right,
+    "dk_face_1_noflip": ExtraTextures.FinalBoss1Left,
+}
+
+for tex, index in helm_head_data.items():
+    file_dict.append(
+        File(
+            name=f"Helm Head ({int(index)})",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(index),
+            source_file=f"assets/hash/{tex}.png",
+            texture_format=TextureFormat.RGBA5551,
+            do_not_extract=True,
+            target_size=2 * 32 * 64,
+        )
+    )
+
 # Force all geo files to not be compressed
 expanded_tables = {
     TableNames.MapGeometry: list(range(216)),
@@ -1949,7 +1930,7 @@ for x in file_dict:
 
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
-    clampCompressedTextures(fh, 6200)
+    clampCompressedTextures(fh, 6300)
     new_ptr_6_unc_size = len(comptext_files)
     print(f" - Expanding pointer table {TableNames.Unknown6} from 0 bytes to {4 * new_ptr_6_unc_size} bytes")
     data = []
@@ -2392,9 +2373,11 @@ with open(newROMName, "r+b") as fh:
         "fakekey",
         "disco_shirt_gap",
         "white_special_chars",
+        "blank",
+        "fakefairy",
     ]
     for b in barrel_skins:
-        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}"])
+        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"shop_{b}"])
     for disp in displays:
         for ext in [".png", ".rgba32", ".rgba5551"]:
             other_remove.append(f"displays/{disp}{ext}")
@@ -2468,6 +2451,16 @@ with open(newROMName, "r+b") as fh:
         "disco_glove",
         "disco_shirt",
         "disco_skin",
+        "chunky_face_0_noflip",
+        "chunky_face_1_noflip",
+        "tiny_face_0_noflip",
+        "tiny_face_1_noflip",
+        "lanky_face_0_noflip",
+        "lanky_face_1_noflip",
+        "diddy_face_0_noflip",
+        "diddy_face_1_noflip",
+        "dk_face_0_noflip",
+        "dk_face_1_noflip",
     ]
     tagbarrel_removals = ["plain_shell", "shell", "cannon_support", "cannon_base", "cannon_left", "cannon_right", "barrel_base"]
     for face in barrel_faces:

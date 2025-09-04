@@ -51,6 +51,10 @@ barrel_skins = (
     "ap",
     "fakebean",
     "fakekey",
+    "shared",
+    "soldout",
+    "null",
+    "fakefairy",
 )
 
 
@@ -93,6 +97,60 @@ def hueShift(im: Image, amount: int):
             new.append(list(im_px[x, y])[3])
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
+
+
+def hueShiftColor(color: tuple, amount: int, head_ratio: int = None) -> tuple:
+    """Apply a hue shift to a color."""
+    # RGB -> HSV Conversion
+    red_ratio = color[0] / 255
+    green_ratio = color[1] / 255
+    blue_ratio = color[2] / 255
+    color_max = max(red_ratio, green_ratio, blue_ratio)
+    color_min = min(red_ratio, green_ratio, blue_ratio)
+    color_delta = color_max - color_min
+    hue = 0
+    if color_delta != 0:
+        if color_max == red_ratio:
+            hue = 60 * (((green_ratio - blue_ratio) / color_delta) % 6)
+        elif color_max == green_ratio:
+            hue = 60 * (((blue_ratio - red_ratio) / color_delta) + 2)
+        else:
+            hue = 60 * (((red_ratio - green_ratio) / color_delta) + 4)
+    sat = 0 if color_max == 0 else color_delta / color_max
+    val = color_max
+    # Adjust Hue
+    if head_ratio is not None and sat != 0:
+        amount = head_ratio / (sat * 100)
+    hue = (hue + amount) % 360
+    # HSV -> RGB Conversion
+    c = val * sat
+    x = c * (1 - abs(((hue / 60) % 2) - 1))
+    m = val - c
+    if hue < 60:
+        red_ratio = c
+        green_ratio = x
+        blue_ratio = 0
+    elif hue < 120:
+        red_ratio = x
+        green_ratio = c
+        blue_ratio = 0
+    elif hue < 180:
+        red_ratio = 0
+        green_ratio = c
+        blue_ratio = x
+    elif hue < 240:
+        red_ratio = 0
+        green_ratio = x
+        blue_ratio = c
+    elif hue < 300:
+        red_ratio = x
+        green_ratio = 0
+        blue_ratio = c
+    else:
+        red_ratio = c
+        green_ratio = 0
+        blue_ratio = x
+    return (int((red_ratio + m) * 255), int((green_ratio + m) * 255), int((blue_ratio + m) * 255))
 
 
 def convertToRGBA32(png_file):
