@@ -38,6 +38,8 @@ if IS_WINDOWS:
 
     # Structures for Windows API
     class MODULEENTRY32(ctypes.Structure):
+        """Module entry structure for Windows API."""
+
         _fields_ = [
             ("dwSize", ctypes.wintypes.DWORD),
             ("th32ModuleID", ctypes.wintypes.DWORD),
@@ -52,6 +54,8 @@ if IS_WINDOWS:
         ]
 
     class PROCESSENTRY32(ctypes.Structure):
+        """Process entry structure for Windows API."""
+
         _fields_ = [
             ("dwSize", ctypes.wintypes.DWORD),
             ("cntUsage", ctypes.wintypes.DWORD),
@@ -135,6 +139,7 @@ class ProcessMemory:
     """Class to handle process memory operations using ctypes on Windows and Linux."""
 
     def __init__(self, process_name: str):
+        """Initialize with the process name."""
         self.process_name = process_name
         self.process_handle = None
         self.process_id = None
@@ -411,6 +416,7 @@ class EmulatorInfo:
         self.connected_process = None
 
     def raiseError(self, msg: str):
+        """Raise an error and log it."""
         print(msg)
         self.connection_error = msg
 
@@ -636,6 +642,7 @@ class EmuLoaderClient:
     """Drop-in replacement client for PJ64Client using direct memory access."""
 
     def __init__(self):
+        """Initialize the EmuLoaderClient."""
         self.emulator_info: Optional[EmulatorInfo] = None
         self.connected = False
 
