@@ -7,6 +7,7 @@ import glob
 import json
 from typing import Optional, Tuple, List, Dict, Any
 from enum import IntEnum, auto
+from client.common import DK64MemoryMap
 try:
     from CommonClient import logger
 except ImportError:
@@ -591,55 +592,49 @@ class EmulatorInfo:
 
     def write_u8(self, address: int, value: int):
         """Write an 8-bit unsigned integer to memory."""
-        logger.info(f"write_u8: address=0x{address:08x}, value={value}")
         self.writeBytes(address, 1, value)
 
     def write_u16(self, address: int, value: int):
         """Write a 16-bit unsigned integer to memory."""
-        logger.info(f"write_u16: address=0x{address:08x}, value={value}")
         self.writeBytes(address, 2, value)
 
     def write_u32(self, address: int, value: int):
         """Write a 32-bit unsigned integer to memory."""
-        logger.info(f"write_u32: address=0x{address:08x}, value={value}")
         self.writeBytes(address, 4, value)
 
-    def read_dict(self, address_dict: dict) -> dict:
-        """Read a dictionary of memory addresses and return the values."""
-        result = {}
-        for key, address_info in address_dict.items():
-            if isinstance(address_info, dict):
-                address = address_info.get("adr", address_info.get("address", 0))
-                size = address_info.get("size", 1)
-                data_type = address_info.get("type", "u8")
+    # def read_dict(self, address_dict: dict) -> dict:
+    #     """Read a dictionary of memory addresses and return the values."""
+    #     result = {}
+    #     for key, address_info in address_dict.items():
+    #         if isinstance(address_info, dict):
+    #             address = address_info.get("adr", address_info.get("address", 0))
+    #             size = address_info.get("size", 1)
+    #             data_type = address_info.get("type", "u8")
                 
-                if data_type == "u8":
-                    if size == 1:
-                        result[key] = [self.read_u8(address)]
-                    else:
-                        result[key] = [self.read_u8(address + i) for i in range(size)]
-                elif data_type == "u16":
-                    if size <= 2:
-                        result[key] = [self.read_u16(address)]
-                    else:
-                        result[key] = [self.read_u16(address + i * 2) for i in range(size // 2)]
-                elif data_type == "u32":
-                    if size <= 4:
-                        result[key] = [self.read_u32(address)]
-                    else:
-                        result[key] = [self.read_u32(address + i * 4) for i in range(size // 4)]
-            else:
-                # Assume it's just an address for u8 read
-                result[key] = [self.read_u8(address_info)]
-        return result
+    #             if data_type == "u8":
+    #                 if size == 1:
+    #                     result[key] = [self.read_u8(address)]
+    #                 else:
+    #                     result[key] = [self.read_u8(address + i) for i in range(size)]
+    #             elif data_type == "u16":
+    #                 if size <= 2:
+    #                     result[key] = [self.read_u16(address)]
+    #                 else:
+    #                     result[key] = [self.read_u16(address + i * 2) for i in range(size // 2)]
+    #             elif data_type == "u32":
+    #                 if size <= 4:
+    #                     result[key] = [self.read_u32(address)]
+    #                 else:
+    #                     result[key] = [self.read_u32(address + i * 4) for i in range(size // 4)]
+    #         else:
+    #             # Assume it's just an address for u8 read
+    #             result[key] = [self.read_u8(address_info)]
+    #     return result
 
     def read_bytestring(self, address: int, length: int) -> str:
         """Read a bytestring from memory."""
         result = ""
-        logger.info("Reading bytestring:")
         for i in range(length):
-            logger.info(f" Reading byte at address 0x{address + i:08x}")
-            logger.info(result)
             byte_val = self.read_u8(address + i)
             if byte_val == 0:  # Null terminator
                 break
@@ -653,20 +648,10 @@ class EmulatorInfo:
         # Add null terminator
         self.write_u8(address + len(data), 0)
 
-    def validate_rom(self, name: str, memory_location: Optional[int] = None) -> bool:
-        """Validate the ROM by checking name and optional memory location."""
-        # For now, return True as a placeholder until we implement proper ROM validation
-        # This matches the PJ64 functionality where it checks ROM info
-        return True
+    def validate_rom(self) -> bool:
+        """Validate the ROM."""
+        return (self.read_u8(DK64MemoryMap.rom_flags) & DK64MemoryMap.rom_flag_ap_status) != 0
 
-    def rominfo(self) -> dict:
-        """Retrieve ROM information from the emulator."""
-        # Placeholder implementation - in PJ64 this returns actual ROM info
-        # For direct memory access, we might need to read ROM header info directly
-        return {
-            "goodName": "DONKEY KONG 64",
-            "status": "connected"
-        }
 
 
 EMULATOR_CONFIGS = {
@@ -724,7 +709,6 @@ class EmuLoaderClient:
     
     def is_connected(self) -> bool:
         """Check if connected to an emulator."""
-        logger.info(f"EmuLoaderClient is_connected: {self.connected and self.emulator_info is not None}")
         return self.connected and self.emulator_info is not None
     
     # Direct memory access methods
@@ -764,18 +748,17 @@ class EmuLoaderClient:
             raise Exception("Not connected to emulator")
         self.emulator_info.write_u32(address, value)
     
-    def read_dict(self, address_dict: dict) -> dict:
-        """Read a dictionary of memory addresses and return the values."""
-        if not self.is_connected():
-            raise Exception("Not connected to emulator")
-        logger.info(f"read_dict: {json.dumps(address_dict)}")
-        return self.emulator_info.read_dict(address_dict)
+    # def read_dict(self, address_dict: dict) -> dict:
+    #     """Read a dictionary of memory addresses and return the values."""
+    #     if not self.is_connected():
+    #         raise Exception("Not connected to emulator")
+    #     logger.info(f"read_dict: {json.dumps(address_dict)}")
+    #     return self.emulator_info.read_dict(address_dict)
     
     def read_bytestring(self, address: int, length: int) -> str:
         """Read a bytestring from memory."""
         if not self.is_connected():
             raise Exception("Not connected to emulator")
-        logger.info(f"read_bytestring: address=0x{address:08x}, length={length}")
         return self.emulator_info.read_bytestring(address, length)
     
     def write_bytestring(self, address: int, data: str):
@@ -784,19 +767,12 @@ class EmuLoaderClient:
             raise Exception("Not connected to emulator")
         self.emulator_info.write_bytestring(address, data)
     
-    def validate_rom(self, name: str, memory_location: Optional[int] = None) -> bool:
+    def validate_rom(self) -> bool:
         """Validate the ROM by checking name and optional memory location."""
         if not self.is_connected():
             return False
-        return self.emulator_info.validate_rom(name, memory_location)
+        return self.emulator_info.validate_rom()
     
-    def rominfo(self) -> dict:
-        """Retrieve ROM information from the emulator."""
-        logger.info("rominfo called")
-        if not self.is_connected():
-            return {}
-        return self.emulator_info.rominfo()
-
 
 # Example usage and testing code (commented out)
 # # Try to connect to each emu type and see if it works

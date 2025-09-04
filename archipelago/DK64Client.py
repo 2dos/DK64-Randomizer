@@ -140,12 +140,10 @@ class DK64Client:
                     emulator_connected = self.n64_client.connect()
                 else:
                     emulator_connected = True
-                logger.info(f"Emulator connected: {emulator_connected}")
                 valid_rom = False
                 if emulator_connected:
-                    valid_rom = self.n64_client.validate_rom(self.game, DK64MemoryMap.memory_pointer)
+                    valid_rom = self.n64_client.validate_rom()
                     logger.info("Emulator connected, validating ROM...")
-                    logger.info(valid_rom)
                 
                 while not valid_rom:
                     if not self.n64_client.is_connected():
@@ -155,7 +153,7 @@ class DK64Client:
                         clear_waiting_message = False
                     await asyncio.sleep(1.0)
                     if self.n64_client.is_connected():
-                        valid_rom = self.n64_client.validate_rom(self.game, DK64MemoryMap.memory_pointer)
+                        valid_rom = self.n64_client.validate_rom()
                 
                 self.stop_bizhawk_spam = False
                 logger.info("Emulator Connected to ROM!")
@@ -181,10 +179,8 @@ class DK64Client:
 
     async def validate_client_connection(self):
         """Validate the client connection."""
-        logger.info("Validating client connection...")
         if not self.memory_pointer:
             self.memory_pointer = self.n64_client.read_u32(DK64MemoryMap.memory_pointer)
-            logger.info(f"Memory pointer found: {self.memory_pointer}")
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.connection, 0xFF)
 
     def send_message(self, item_name, player_name, event_type="from"):
@@ -672,7 +668,7 @@ class DK64Client:
 
     async def reset_auth(self):
         """Reset the auth by looking up a username from ROM."""
-        username = self.n64_client.read_bytestring(0x1FF3000 + 0xB0000000, 16).strip()
+        username = self.n64_client.read_bytestring(DK64MemoryMap.name_location, 16).strip()
         # Strip all trailing \x00
         username = username.replace("\x00", "")
         self.auth = username
@@ -1558,7 +1554,6 @@ class DK64Context(CommonContext):
                         await self.disconnect()
 
                 while self.auth is None:
-                    logger.info("Waiting for auth...")
                     await self.client.validate_client_connection()
                     await self.client.reset_auth()
                     await disconnect_check()
