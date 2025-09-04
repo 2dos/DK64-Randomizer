@@ -191,8 +191,8 @@ class DK64Client:
 
         stripped_item_name = sanitize_and_trim(item_name)
         stripped_player_name = sanitize_and_trim(player_name)
-        self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_string, f"{stripped_item_name}")
-        self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_subtitle, f"{event_type} {stripped_player_name}")
+        self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_string, f"{stripped_item_name}".upper())
+        self.n64_client.write_bytestring(self.memory_pointer + DK64MemoryMap.fed_subtitle, f"{event_type} {stripped_player_name}".upper())
 
     def set_speed(self, speed: int):
         """Set the speed of the display text in game."""
