@@ -970,6 +970,15 @@ class LogicVarHolder:
             return kong_data and instrument_abilities[data.kong]
         elif data.switch_type == SwitchType.SlamSwitch:
             return kong_data and self.CanSlamSwitch(level, default_slam_level)
+        elif data.switch_type == SwitchType.GunInstrumentCombo:
+            gun_abilities = [self.coconut, self.peanut, self.grape, self.feather, self.pineapple]
+            instrument_abilities = [self.bongos, self.guitar, self.trombone, self.saxophone, self.triangle]
+            return kong_data and gun_abilities[data.kong] and instrument_abilities[data.kong]
+        elif data.switch_type == SwitchType.PushableButton:
+            if data.kong == Kongs.diddy:
+                return kong_data and self.charge
+            if data.kong == Kongs.chunky:
+                return kong_data and self.punch
         return False
 
     def CanPhaseswim(self):
@@ -1199,73 +1208,54 @@ class LogicVarHolder:
 
     def CanFreeDiddy(self):
         """Check if the cage locking Diddy's vanilla location can be opened."""
-        return self.HasGun(self.settings.diddy_freeing_kong)  # In Archipelago, we can't put a Kong in the cage (yet?)
-        # return self.spoiler.LocationList[Locations.DiddyKong].item == Items.NoItem or self.HasGun(self.settings.diddy_freeing_kong)
+        return self.spoiler.LocationList[Locations.DiddyKong].item == Items.NoItem or self.hasMoveSwitchsanity(Switches.JapesFreeKong)
 
     def CanOpenJapesGates(self):
         """Check if we can pick up the item inside Diddy's cage, thus opening the gates in Japes."""
-        # In Archipelago, we can't know what item is in this location, but we do know that it will always contain something
-        # caged_item_id = self.spoiler.LocationList[Locations.JapesDonkeyFreeDiddy].item
+        caged_item_id = self.spoiler.LocationList[Locations.JapesDonkeyFreeDiddy].item
         # If it's NoItem, then the gates are already open
-        # if caged_item_id == Items.NoItem:
-        #     return True
+        if caged_item_id == Items.NoItem:
+            return True
         # If we can't free Diddy, then we can't access the item so we can't reach the item
-        # if not self.CanFreeDiddy():
-        #     return False
+        if not self.CanFreeDiddy():
+            return False
         # If we are the right kong, then we can always get the item
         if self.IsKong(self.settings.diddy_freeing_kong):
             return True
         # If we aren't the right kong, we need free trade to be on
         elif self.settings.free_trade_items:
-            return True  # In Archipelago, we can't know what item is in this location. We must assume full FTA, so the rest of this is irrelevant
-            # # During the fill we can't assume this item is accessible quite yet - this could cause errors with placing items in the back of Japes
-            # if caged_item_id is None:
-            #     return False
-            # # If it's not a blueprint, free trade gets us the item
-            # if ItemList[caged_item_id].type != Types.Blueprint:
-            #     return True
-            # # But if it is a blueprint, we need to check blueprint access (which checks blueprint free trade)
-            # else:
-            #     return self.BlueprintAccess(ItemList[caged_item_id])
+            # During the fill we can't assume this item is accessible quite yet - this could cause errors with placing items in the back of Japes
+            if caged_item_id is None:
+                return False
+            # If it's not a blueprint, free trade gets us the item
+            if ItemList[caged_item_id].type != Types.Blueprint:
+                return True
+            # But if it is a blueprint, we need to check blueprint access (which checks blueprint free trade)
+            else:
+                return self.BlueprintAccess(ItemList[caged_item_id])
         # If we failed to hit a successful condition, we failed to reach the caged item
         return False
 
     def CanFreeTiny(self):
-        """Check if kong at Tiny location can be freed, requires either chimpy charge or primate punch."""
-        # In Archipelago, we can't put a Kong in the cage (yet?)
-        return self.IsKong(self.settings.tiny_freeing_kong) or self.settings.free_trade_items
-        # if self.spoiler.LocationList[Locations.TinyKong].item == Items.NoItem:
-        #     return self.IsKong(self.settings.tiny_freeing_kong) or self.settings.free_trade_items
-        # elif self.settings.tiny_freeing_kong == Kongs.diddy:
-        #     return self.charge and self.isdiddy
-        # elif self.settings.tiny_freeing_kong == Kongs.chunky:
-        #     return self.punch and self.ischunky
-        # # Used only as placeholder during fill when kong puzzles are not yet assigned
-        # elif self.settings.tiny_freeing_kong == Kongs.any:
-        #     return True
+        """Check if kong at Tiny location can be freed."""
+        return self.spoiler.LocationList[Locations.TinyKong].item == Items.NoItem or self.hasMoveSwitchsanity(Switches.AztecOKONGPuzzle)
 
     def CanLlamaSpit(self):
         """Check if the Llama spit can be triggered."""
         return self.HasInstrument(self.settings.lanky_freeing_kong)
 
     def CanFreeLanky(self):
-        """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
-        # In Archipelago, we can't put a Kong in the cage (yet?)
-        return (self.swim and self.HasInstrument(self.settings.lanky_freeing_kong)) or self.CanPhase() or self.CanPhaseswim()
-        # return (self.HasGun(self.settings.lanky_freeing_kong) or self.spoiler.LocationList[Locations.LankyKong].item == Items.NoItem) and (
-        #     (self.swim and self.HasInstrument(self.settings.lanky_freeing_kong)) or self.CanPhase() or self.CanPhaseswim()
-        # )
+        """Check if kong at Lanky location can be freed."""
+        return self.spoiler.LocationList[Locations.LankyKong].item == Items.NoItem or self.hasMoveSwitchsanity(Switches.AztecLlamaPuzzle)
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
-        # In Archipelago, we can't put a Kong in the cage (yet?)
-        return self.IsKong(self.settings.chunky_freeing_kong) or self.settings.free_trade_items
-        # # If the cage is empty, the item is just lying on the ground
-        # if self.spoiler.LocationList[Locations.ChunkyKong].item == Items.NoItem:
-        #     return self.IsKong(self.settings.chunky_freeing_kong) or self.settings.free_trade_items
-        # # Otherwise you need the right slam level (usually 1)
-        # else:
-        #     return self.CanSlamSwitch(Levels.FranticFactory, 1) and self.IsKong(self.settings.chunky_freeing_kong)
+        # If the cage is empty, the item is just lying on the ground
+        if self.spoiler.LocationList[Locations.ChunkyKong].item == Items.NoItem:
+            return self.IsKong(self.settings.chunky_freeing_kong) or self.settings.free_trade_items
+        # Otherwise you need the right slam level (usually 1)
+        else:
+            return self.hasMoveSwitchsanity(Switches.FactoryFreeKong, level=Levels.FranticFactory, default_slam_level=1) and (self.slope_resets or self.handstand)
 
     def CanOpenForestLobbyGoneDoor(self):
         """Check if the player can open the door to the gone pad in forest lobby."""
