@@ -856,7 +856,7 @@ for x, shop in enumerate(barrel_skins):
         source_file=f"assets/displays/shop_{shop}.png",
         texture_format=TextureFormat.RGBA32,
     )
-    if "_face" in shop:
+    if shop in ("dk", "diddy", "lanky", "tiny", "chunky"):
         data.target_compressed_size = 32 * 32 * 4
     file_dict.append(data)
 
