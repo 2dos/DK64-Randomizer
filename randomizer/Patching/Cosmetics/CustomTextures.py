@@ -6,7 +6,7 @@ from io import BytesIO
 
 from randomizer.Settings import Settings
 from randomizer.Patching.Library.ASM import getROMAddress, populateOverlayOffsets, Overlay
-from randomizer.Patching.Library.Image import writeColorImageToROM, TextureFormat, getImageFile, writeColorImageToAddress
+from randomizer.Patching.Library.Image import writeColorImageToROM, TextureFormat, getImageFile, writeColorImageToAddress, ExtraTextures, getBonusSkinOffset
 from randomizer.Patching.Patcher import ROM
 from PIL import Image
 
@@ -591,10 +591,10 @@ def writeCustomReels(settings: Settings, ROM_COPY: ROM) -> None:
     if js.cosmetic_names.reel_sprites is None:
         return
     REEL_INFO = [
-        PaintingData(32, 32, 1, 1, False, [0x12E1]),  # Grape
-        PaintingData(40, 51, 1, 1, False, [0x12E3]),  # Coconut
-        PaintingData(48, 42, 1, 1, False, [0x12E4]),  # Melon
-        PaintingData(32, 48, 1, 1, False, [0x12E5]),  # Pineapple
+        PaintingData(32, 32, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage0)]),  # Grape
+        PaintingData(40, 51, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage1)]),  # Coconut
+        PaintingData(48, 42, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage2)]),  # Melon
+        PaintingData(32, 48, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage3)]),  # Pineapple
     ]
     file_data = list(zip(js.cosmetics.reel_sprites, js.cosmetic_names.reel_sprites))
     if len(file_data) == 0:

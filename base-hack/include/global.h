@@ -153,6 +153,8 @@ extern void adjustGunBone(playerData* player);
 extern void SpeedUpMusic(void);
 extern void restartSongWrapper(int write_slot, int song, float volume);
 
+extern void spawnWeirdReward(int index, int flag);
+
 extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);
 extern int hasAccessToKong(int kong);

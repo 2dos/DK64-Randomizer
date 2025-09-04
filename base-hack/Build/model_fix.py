@@ -621,6 +621,38 @@ with open(ROMName, "rb") as rom:
             fh.write(color_red.to_bytes(1, "big"))
             fh.write(color_green.to_bytes(1, "big"))
             fh.write(color_blue.to_bytes(1, "big"))
+    # Reels
+    reel_img_bijection = {
+        0x12E1: ExtraTextures.BanditImage0,
+        0x12E3: ExtraTextures.BanditImage1,
+        0x12E4: ExtraTextures.BanditImage2,
+        0x12E5: ExtraTextures.BanditImage3,
+    }
+    for x in range(4):
+        rom.seek(actor_table + ((0x8F + x) << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"reel{x}.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"reel{x}.bin", "r+b") as fh:
+            for y in range(0x51):
+                fh.seek(0x408 + (y * 8))
+                command_type = int.from_bytes(fh.read(1), "big")
+                if command_type != 0xFD:
+                    continue
+                fh.seek(0x408 + (y * 8) + 4)
+                original_texture = int.from_bytes(fh.read(4), "big")
+                if original_texture in reel_img_bijection:
+                    new_texture = getBonusSkinOffset(reel_img_bijection[original_texture])
+                    fh.seek(0x408 + (y * 8) + 4)
+                    fh.write(new_texture.to_bytes(4, "big"))
 
     # Make inside match outside
     # SHINE_TEXTURE = 0xBAB

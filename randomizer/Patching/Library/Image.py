@@ -126,6 +126,10 @@ class ExtraTextures(IntEnum):
     FinalBoss4Right = auto()
     FinalBoss5Left = auto()
     FinalBoss5Right = auto()
+    BanditImage0 = auto()
+    BanditImage1 = auto()
+    BanditImage2 = auto()
+    BanditImage3 = auto()
 
 
 barrel_skins = (

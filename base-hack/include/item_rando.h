@@ -149,6 +149,7 @@ extern actor_spawn_packet key_item_table[8];
 extern model_item_data fairy_item_table[20];
 extern actor_spawn_packet rcoin_item_table[16];
 extern actor_spawn_packet crate_item_table[16];
+extern actor_spawn_packet extra_actor_spawns[2];
 extern patch_db_item patch_flags[16];
 extern BoulderItemStruct boulder_item_table[16];
 extern bonus_barrel_info bonus_data[BONUS_DATA_COUNT];

@@ -224,6 +224,10 @@ actor_spawn_packet crate_item_table[16] = {
     {.actor = 0x2F},
     {.actor = 0x2F},
 };
+actor_spawn_packet extra_actor_spawns[2] = {
+    {.actor = 45}, // Japes Boulder
+    {.actor = 45}, // Aztec Vulture
+};
 patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
 BoulderItemStruct boulder_item_table[16] = {
     // Holdable Object Rewards

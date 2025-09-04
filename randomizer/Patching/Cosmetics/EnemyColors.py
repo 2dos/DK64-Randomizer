@@ -750,8 +750,6 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
         blue_switch_shift = getRandomHueShift()
         hueShiftImageContainer(25, 0xD01, 64, 16, TextureFormat.RGBA5551, blue_switch_shift, ROM_COPY)
         hueShiftImageContainer(25, 0xD02, 64, 16, TextureFormat.RGBA5551, blue_switch_shift, ROM_COPY)
-        # Bandit Reel
-        # hueShiftImageContainer(25, 0x12E2, 32, 32, TextureFormat.RGBA5551, getRandomHueShift(), ROM_COPY)
 
     for enemy in enemy_changes:
         file_data = bytearray(getRawFile(ROM_COPY, 5, enemy, True))

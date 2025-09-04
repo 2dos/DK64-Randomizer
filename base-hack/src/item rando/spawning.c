@@ -34,6 +34,19 @@ void spawnActorWithFlagHandler(int object, float x, float y, float z, int unk0, 
     spawnActorSpawnerContainer(object, x, y, z, 0, *(int*)(&temp), unk1, &data);
 }
 
+void spawnWeirdReward(int index, int flag) {
+    actor_spawn_packet *def = &extra_actor_spawns[index];
+    spawnActorWithFlagHandler(def->actor,
+        CurrentActorPointer_0->xPos,
+        CurrentActorPointer_0->yPos,
+        CurrentActorPointer_0->zPos,
+        0, 0, flag,
+        CurrentActorPointer_0,
+        def->item_level,
+        def->item_kong
+    );
+}
+
 void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
     /**
      * @brief Spawn bonus reward

@@ -116,6 +116,10 @@ images = [
     ImageData("disco_shirt", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xEC1, 32, 32, False, False),
     ImageData("disco_glove", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xEC2, 32, 32, False, False),
     ImageData("disco_skin", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xE64, 32, 32, False, False),
+    ImageData("bandit_grape", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12E1, 32, 32, False, False),
+    ImageData("bandit_coconut", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12E3, 40, 51, False, False),
+    ImageData("bandit_melon", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12E4, 48, 42, False, False),
+    ImageData("bandit_pineapple", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12E5, 32, 48, False, False),
 ]
 
 shop_owners = {
