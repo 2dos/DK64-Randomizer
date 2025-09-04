@@ -615,7 +615,7 @@ class EmulatorInfo:
     def write_bytestring(self, address: int, data: str):
         """Write a bytestring to memory."""
         for i, char in enumerate(data):
-            self.write_u8(address + i, ord(str(char).upper()))
+            self.write_u8(address + i, ord(char))
         # Add null terminator
         self.write_u8(address + len(data), 0)
 
