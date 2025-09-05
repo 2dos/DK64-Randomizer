@@ -34,8 +34,21 @@ class LocationLogic:
         self.id = id
         self.logic = logic  # Lambda function for accessibility
         if id >= Locations.JapesMainEnemy_Start and id <= Locations.IslesMainEnemy_LowerFactoryPath1:
-            # Handle enemy logic
-            self.logic = lambda l: logic(l) and l.spoiler.enemy_location_list[id].canDropItem(l)
+
+            def create_enemy_logic(location_id):
+                def enemy_logic(l):
+                    if not logic(l):
+                        return False
+                    region_id = None
+                    for reg_id, region in l.spoiler.RegionList.items():
+                        if location_id in [loc.id for loc in region.locations if not loc.isAuxiliaryLocation]:
+                            region_id = reg_id
+                            break
+                    return l.spoiler.enemy_location_list[location_id].canDropItem(l, region_id)
+
+                return enemy_logic
+
+            self.logic = create_enemy_logic(id)
         self.bonusBarrel = bonusBarrel  # Uses MinigameType enum
         self.isAuxiliaryLocation = (
             isAuxiliary  # For when the Location needs to be in a region but not count as in the region (used for locations that need to be accessible in different regions depending on settings)

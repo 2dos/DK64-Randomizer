@@ -190,9 +190,9 @@ class EnemyLoc:
                     return True
         return False
 
-    def canDropItem(self, logic_variable):
+    def canDropItem(self, logic_variable, region=None):
         """Determine if the enemy can drop an item."""
-        return self.canKill(logic_variable) and self.enemy not in [Enemies.Book]  # Checking evil tomato
+        return self.canKill(logic_variable, region) and self.enemy not in [Enemies.Book]  # Checking evil tomato
 
     def canBypass(self) -> bool:
         """Determine if the enemy can be bypassed."""
