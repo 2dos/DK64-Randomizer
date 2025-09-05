@@ -618,7 +618,10 @@ def patching_response(spoiler):
     if spoiler.settings.random_starting_region:
         ROM_COPY.seek(sav + 0x10C)
         ROM_COPY.write(spoiler.settings.starting_region["map"])
-        ROM_COPY.write(spoiler.settings.starting_region["exit"])
+        exit_val = spoiler.settings.starting_region["exit"]
+        if exit_val == -1:
+            exit_val = 0xFF
+        ROM_COPY.write(exit_val)
     if spoiler.settings.alter_switch_allocation:
         ROM_COPY.seek(sav + 0x103)
         ROM_COPY.write(1)
