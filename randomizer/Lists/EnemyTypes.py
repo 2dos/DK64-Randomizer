@@ -10,12 +10,25 @@ from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Regions import Regions
 
 ENEMY_REPLACEMENT_PRIORITY = {
     EnemySubtype.GroundSimple: [EnemySubtype.GroundBeefy, EnemySubtype.Water, EnemySubtype.Air],
     EnemySubtype.GroundBeefy: [EnemySubtype.GroundSimple, EnemySubtype.Water, EnemySubtype.Air],
     EnemySubtype.Water: [EnemySubtype.Air, EnemySubtype.GroundSimple, EnemySubtype.GroundBeefy],
     EnemySubtype.Air: [EnemySubtype.GroundSimple, EnemySubtype.GroundBeefy, EnemySubtype.Water],
+}
+
+INSTRUMENT_RESTRICTED_REGIONS = {
+    Regions.MillAttic,
+    Regions.SpiderRoom,
+    Regions.DonkeyCabin,
+    Regions.DiddyLowerCabin,
+    Regions.LankyCabin,
+    Regions.TinyCabin,
+    Regions.ChunkyCabin,
+    Regions.ChunkyIgloo,
+    Regions.AngryAztecLobby,
 }
 
 
@@ -155,7 +168,7 @@ class EnemyLoc:
                 self.aggro_speed = random.randint(enemy_data.min_speed, enemy_data.max_speed)
         return self.enemy
 
-    def canKill(self, logic_variable) -> bool:
+    def canKill(self, logic_variable, region=None) -> bool:
         """Determine if the enemy can be killed."""
         if self.enemy in EnemyMetaData:
             interaction: InteractionMethods = EnemyMetaData[self.enemy].interaction
@@ -169,16 +182,17 @@ class EnemyLoc:
                 if interaction.kill_shockwave and logic_variable.shockwave:
                     return True
                 if interaction.kill_instrument and logic_variable.HasInstrument(Kongs.any):
-                    return True
+                    # Check if instruments can be played in this region
+                    return region is None or region not in INSTRUMENT_RESTRICTED_REGIONS
                 if interaction.kill_punch and logic_variable.punch and logic_variable.ischunky:
                     return True
                 if interaction.kill_hunky and logic_variable.hunkyChunky and logic_variable.ischunky:
                     return True
         return False
 
-    def canDropItem(self, logic_variable):
+    def canDropItem(self, logic_variable, region=None):
         """Determine if the enemy can drop an item."""
-        return self.canKill(logic_variable) and self.enemy not in [Enemies.Book]  # Checking evil tomato
+        return self.canKill(logic_variable, region) and self.enemy not in [Enemies.Book]  # Checking evil tomato
 
     def canBypass(self) -> bool:
         """Determine if the enemy can be bypassed."""
