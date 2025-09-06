@@ -21,6 +21,7 @@ class Goal(Choice):
     option_krool = 0
     option_all_keys = 1
     option_dk_rap = 2
+    option_treasure_hurry = 3
     default = 0
 
 

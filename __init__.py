@@ -915,6 +915,24 @@ if baseclasses_loaded:
                 settings_dict["win_condition_count"] = 8
             if self.options.goal == Goal.option_dk_rap:
                 settings_dict["win_condition_item"] = WinConditionComplex.dk_rap_items
+            if self.options.goal == Goal.option_treasure_hurry:
+                settings_dict["win_condition_item"] = WinConditionComplex.beat_krool
+                settings_dict["helm_hurry"] = True
+                settings_dict["helmhurry_list_starting_time"] = 43200
+                settings_dict["helmhurry_list_golden_banana"] = -60
+                settings_dict["helmhurry_list_blueprint"] = -120
+                settings_dict["helmhurry_list_company_coins"] = -3600
+                settings_dict["helmhurry_list_move"] = 0
+                settings_dict["helmhurry_list_banana_medal"] = -300
+                settings_dict["helmhurry_list_rainbow_coin"] = 0
+                settings_dict["helmhurry_list_boss_key"] = -900
+                settings_dict["helmhurry_list_battle_crown"] = -1200
+                settings_dict["helmhurry_list_bean"] = -5400
+                settings_dict["helmhurry_list_pearl"] = -1800
+                settings_dict["helmhurry_list_kongs"] = 0
+                settings_dict["helmhurry_list_fairies"] = -600
+                settings_dict["helmhurry_list_colored_bananas"] = -2
+                settings_dict["helmhurry_list_ice_traps"] = 120
 
             settings_dict["starting_moves_list_1"] = []
             for item in self.options.start_inventory:
@@ -1446,6 +1464,8 @@ if baseclasses_loaded:
 
             slot_data = {
                 "Goal": self.options.goal.value,
+                "win_condition_item": self.spoiler.settings.win_condition_item.value,
+                "helm_hurry": self.spoiler.settings.helm_hurry,
                 "ClimbingShuffle": self.options.climbing_shuffle.value,
                 "PlayerNum": self.player,
                 "death_link": self.options.death_link.value,
