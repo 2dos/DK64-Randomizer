@@ -1137,9 +1137,6 @@ class DK64Context(CommonContext):
                 self.client.send_mode = self.slot_data.get("receive_notifications")
             # Set Helm Hurry flag in client
             self.client.helm_hurry_enabled = self.slot_data.get("helm_hurry", False)
-            logger.info(f"Slot data keys: {list(self.slot_data.keys())}")
-            logger.info(f"Helm Hurry value in slot_data: {self.slot_data.get('helm_hurry', 'NOT_FOUND')}")
-            logger.info(f"Client Helm Hurry enabled: {self.client.helm_hurry_enabled}")
             self.client.players = self.player_names
             self.reset_checks()
             missing_locations = self.missing_locations
