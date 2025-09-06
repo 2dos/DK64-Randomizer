@@ -510,7 +510,7 @@ def dropTableUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
                 ROM_COPY.seek(drop_i + 2)
                 drop_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 if drop_type in REPLENISHABLES:
-                    writeValue(ROM_COPY, drop_i, Overlay.Custom, 3, offset_dict)
+                    writeValue(ROM_COPY, DROP_START, Overlay.Custom, 3, offset_dict)
 
 
 def pauseUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
