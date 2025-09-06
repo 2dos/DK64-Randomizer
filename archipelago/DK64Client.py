@@ -564,22 +564,7 @@ class DK64Client:
 
         # Send Helm Hurry timer update if we have a relevant item type and Helm Hurry is enabled
         if helm_hurry_item_type is not None and self.helm_hurry_enabled:
-            # Debug: Check if the game's Rando.helm_hurry_mode is actually enabled
-            rando_base_address = 0x807FF800
-            helm_hurry_mode_offset = 0x0AE
-            helm_hurry_mode_address = rando_base_address + helm_hurry_mode_offset
-            try:
-                game_helm_hurry_mode = self.n64_client.read_u8(helm_hurry_mode_address)
-                logger.info(f"Game's Rando.helm_hurry_mode value: {game_helm_hurry_mode} (at address 0x{helm_hurry_mode_address:08X})")
-            except Exception as e:
-                logger.warning(f"Failed to read game's helm_hurry_mode: {e}")
-            
-            logger.info(f"Sending Helm Hurry timer update for item type: 0x{helm_hurry_item_type:03X} (field: {field})")
             await self.writeFedData(helm_hurry_item_type)
-        elif helm_hurry_item_type is not None and not self.helm_hurry_enabled:
-            logger.debug(f"Skipping Helm Hurry update - Helm Hurry not enabled (field: {field})")
-        else:
-            logger.debug(f"No Helm Hurry update needed for field: {field}")
 
     def _getShopStatus(self, p_type: int, p_value: int, p_kong: int) -> bool:
         """Get the status of a shop item."""
