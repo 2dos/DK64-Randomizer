@@ -168,7 +168,7 @@ class EnemyLoc:
                 self.aggro_speed = random.randint(enemy_data.min_speed, enemy_data.max_speed)
         return self.enemy
 
-    def canKill(self, logic_variable, region=None, instrument_restricted=None) -> bool:
+    def canKill(self, logic_variable, instrument_restricted=None) -> bool:
         """Determine if the enemy can be killed."""
         if self.enemy in EnemyMetaData:
             interaction: InteractionMethods = EnemyMetaData[self.enemy].interaction
@@ -184,8 +184,6 @@ class EnemyLoc:
                 if interaction.kill_instrument and logic_variable.HasInstrument(Kongs.any):
                     if instrument_restricted is not None:
                         return not instrument_restricted
-                    if region is not None:
-                        return region not in INSTRUMENT_RESTRICTED_REGIONS
                     return True
                 if interaction.kill_punch and logic_variable.punch and logic_variable.ischunky:
                     return True
@@ -193,9 +191,9 @@ class EnemyLoc:
                     return True
         return False
 
-    def canDropItem(self, logic_variable, region=None, instrument_restricted=None):
+    def canDropItem(self, logic_variable, instrument_restricted=None):
         """Determine if the enemy can drop an item."""
-        return self.canKill(logic_variable, region, instrument_restricted) and self.enemy not in [Enemies.Book]  # Checking evil tomato
+        return self.canKill(logic_variable, instrument_restricted) and self.enemy not in [Enemies.Book]  # Checking evil tomato
 
     def canBypass(self) -> bool:
         """Determine if the enemy can be bypassed."""

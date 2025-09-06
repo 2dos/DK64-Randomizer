@@ -46,7 +46,7 @@ class LocationLogic:
                             region_id = reg_id
                             break
                     instrument_restricted = region_id in INSTRUMENT_RESTRICTED_REGIONS if region_id is not None else False
-                    return l.spoiler.enemy_location_list[location_id].canDropItem(l, region_id, instrument_restricted)
+                    return l.spoiler.enemy_location_list[location_id].canDropItem(l, instrument_restricted)
 
                 return enemy_logic
 
