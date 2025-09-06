@@ -459,6 +459,9 @@ class DK64Client:
 
         elif field == "rainbow_coins":
             await self.writeFedData(0x015)  # TRANSFER_ITEM_RAINBOWCOIN
+            # Rainbow coins should trigger Helm Hurry with HHITEM_RAINBOWCOIN (6)
+            if self.helm_hurry_enabled:
+                self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.helm_hurry_item, 6)
 
         elif field == "ice_traps":
             # Ice traps: 2 byte counter at offset 0x012
@@ -552,11 +555,16 @@ class DK64Client:
                 fed_id = item_id
 
             await self.writeFedData(fed_id)
+            # Most fed items with levels are moves, so they should trigger Helm Hurry
+            helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
 
         elif count_data.get("item") is not None and count_data.get("level") is None:
             # These are requirement_item enum values that map to archipelago_items
             fed_id = count_data.get("item")
             await self.writeFedData(fed_id)
+            # These could be various types, but most are moves or other progression items
+            # For now, assume they're moves unless we have better classification
+            helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
 
         else:
             logger.warning(f"Unknown count_data field: {count_data}")
@@ -564,7 +572,29 @@ class DK64Client:
 
         # Send Helm Hurry timer update if we have a relevant item type and Helm Hurry is enabled
         if helm_hurry_item_type is not None and self.helm_hurry_enabled:
-            await self.writeFedData(helm_hurry_item_type)
+            self.writeHelmHurryItem(helm_hurry_item_type)
+
+    def writeHelmHurryItem(self, helm_hurry_item_type):
+        """Write Helm Hurry item type directly to memory."""
+        # Map the hex values to the corresponding HHITEM enum values
+        # Based on common_enums.h HHITEM enum (1-indexed, 0 = HHITEM_NOTHING)
+        helm_hurry_mapping = {
+            0x04A: 2,   # HHITEM_BLUEPRINT
+            0x04B: 3,   # HHITEM_COMPANYCOIN  
+            0x04C: 4,   # HHITEM_MOVE
+            0x04D: 5,   # HHITEM_MEDAL
+            0x04F: 7,   # HHITEM_KEY
+            0x050: 8,   # HHITEM_CROWN
+            0x051: 9,   # HHITEM_BEAN
+            0x052: 10,  # HHITEM_PEARL
+            0x053: 11,  # HHITEM_KONG
+            0x054: 12,  # HHITEM_FAIRY
+            0x056: 14,  # HHITEM_FAKEITEM
+        }
+        
+        hhitem_value = helm_hurry_mapping.get(helm_hurry_item_type, 0)
+        if hhitem_value > 0:
+            self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.helm_hurry_item, hhitem_value)
 
     def _getShopStatus(self, p_type: int, p_value: int, p_kong: int) -> bool:
         """Get the status of a shop item."""

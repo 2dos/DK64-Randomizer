@@ -75,20 +75,6 @@ typedef enum archipelago_items {
     /* 0x046 */ TRANSFER_ITEM_FAKEITEM_GETOUT,
     /* 0x047 */ TRANSFER_ITEM_FAKEITEM_DRY,
     /* 0x048 */ TRANSFER_ITEM_FAKEITEM_FLIP,
-    /* 0x049 */ TRANSFER_ITEM_HELM_HURRY_GB,
-    /* 0x04A */ TRANSFER_ITEM_HELM_HURRY_BLUEPRINT,
-    /* 0x04B */ TRANSFER_ITEM_HELM_HURRY_COMPANYCOIN,
-    /* 0x04C */ TRANSFER_ITEM_HELM_HURRY_MOVE,
-    /* 0x04D */ TRANSFER_ITEM_HELM_HURRY_MEDAL,
-    /* 0x04E */ TRANSFER_ITEM_HELM_HURRY_RAINBOWCOIN,
-    /* 0x04F */ TRANSFER_ITEM_HELM_HURRY_KEY,
-    /* 0x050 */ TRANSFER_ITEM_HELM_HURRY_CROWN,
-    /* 0x051 */ TRANSFER_ITEM_HELM_HURRY_BEAN,
-    /* 0x052 */ TRANSFER_ITEM_HELM_HURRY_PEARL,
-    /* 0x053 */ TRANSFER_ITEM_HELM_HURRY_KONG,
-    /* 0x054 */ TRANSFER_ITEM_HELM_HURRY_FAIRY,
-    /* 0x055 */ TRANSFER_ITEM_HELM_HURRY_CB,
-    /* 0x056 */ TRANSFER_ITEM_HELM_HURRY_FAKEITEM,
 } archipelago_items;
 
 typedef struct archipelago_data {
@@ -108,6 +94,7 @@ typedef struct archipelago_data {
     /* 0x061 */ unsigned char can_tag;
     /* 0x062 */ unsigned char is_trapped;
     /* 0x063 */ unsigned char sent_trap;
+    /* 0x064 */ unsigned char helm_hurry_item;
 } archipelago_data;
 
 extern archipelago_data *APData;

@@ -43,7 +43,7 @@ void saveAPCounter(void) {
 }
 
 void sendTrap(ICE_TRAP_TYPES trap_type) {
-    giveItem(REQITEM_ICETRAP, 0, trap_type, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .apply_ice_trap = 1});
+    giveItem(REQITEM_ICETRAP, 0, trap_type, (giveItemConfig){.display_item_text = 0, .apply_ice_trap = 1});
 }
 
 static unsigned char ice_trap_feds[] = {
@@ -136,48 +136,6 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_INSTRUMENTUPGRADE:
             giveItem(REQITEM_MOVE, 9, 0, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             break;
-        case TRANSFER_ITEM_HELM_HURRY_GB:
-            addHelmTime(HHITEM_GB, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_BLUEPRINT:
-            addHelmTime(HHITEM_BLUEPRINT, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_COMPANYCOIN:
-            addHelmTime(HHITEM_COMPANYCOIN, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_MOVE:
-            addHelmTime(HHITEM_MOVE, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_MEDAL:
-            addHelmTime(HHITEM_MEDAL, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_RAINBOWCOIN:
-            addHelmTime(HHITEM_RAINBOWCOIN, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_KEY:
-            addHelmTime(HHITEM_KEY, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_CROWN:
-            addHelmTime(HHITEM_CROWN, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_BEAN:
-            addHelmTime(HHITEM_BEAN, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_PEARL:
-            addHelmTime(HHITEM_PEARL, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_KONG:
-            addHelmTime(HHITEM_KONG, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_FAIRY:
-            addHelmTime(HHITEM_FAIRY, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_CB:
-            addHelmTime(HHITEM_CB, 1);
-            break;
-        case TRANSFER_ITEM_HELM_HURRY_FAKEITEM:
-            addHelmTime(HHITEM_FAKEITEM, 1);
-            break;
     }
 }
 
@@ -266,6 +224,11 @@ void handleArchipelagoFeed(void) {
     if (ap_info.sent_trap) {
         queueIceTrap(ap_info.sent_trap, 0);
         ap_info.sent_trap = 0;
+    }
+    // Helm Hurry item handling
+    if (ap_info.helm_hurry_item) {
+        addHelmTime(ap_info.helm_hurry_item, 1);
+        ap_info.helm_hurry_item = 0;
     }
 }
 
