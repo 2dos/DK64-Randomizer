@@ -31,7 +31,7 @@ void spawnActorWithFlagHandler(int object, float x, float y, float z, int unk0, 
     data.item_type = 0;
     data.item_level = item_level;
     data.item_kong = item_kong;
-    spawnActorSpawnerContainer(object, x, y, z, 0, *(int*)(&temp), unk1, &data);
+    spawnActorSpawnerContainer(object, x, y, z, 0, temp, unk1, &data);
 }
 
 void spawnWeirdReward(int index, int flag) {
@@ -44,6 +44,14 @@ void spawnWeirdReward(int index, int flag) {
         CurrentActorPointer_0,
         def->item_level,
         def->item_kong
+    );
+}
+
+void spawnWeirdReward0(int index, float x, float y, float z, int unk0, int spawn_type, int flag, int unk1) {
+    actor_spawn_packet *def = &extra_actor_spawns[index];
+    spawnActorWithFlagHandler(def->actor,
+        x, y, z, unk0, spawn_type, flag, unk1,
+        def->item_level, def->item_kong
     );
 }
 

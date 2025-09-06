@@ -17,7 +17,7 @@ extern unsigned long long getTimestamp(void);
 extern void dmaFileTransfer(int romStart, int romEnd, int ramStart);
 extern void deleteActor(void* actor);
 extern int spawnActor(int actorID, int actorBehaviour);
-extern void* spawnActorSpawnerContainer(short actor, float x, float y, float z, int unk0, int unk1, int unk2, void* unk3);
+extern void* spawnActorSpawnerContainer(short actor, float x, float y, float z, int unk0, float unk1, int unk2, void* unk3);
 extern void spawnTextOverlay(int style, int x, int y, char* string, int timer1, int timer2, unsigned char effect, unsigned char speed);
 extern void sendActorSignal(int unk0, int unk1, int unk2, int unk3, int unk4);
 extern void disappearPeel(void* actor);
