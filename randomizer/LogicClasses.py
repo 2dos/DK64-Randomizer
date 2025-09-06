@@ -10,6 +10,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.HintRegion import HintRegion, HINT_REGION_PAIRING, MEDAL_REWARD_REGIONS, SHOP_REGIONS
+from randomizer.Lists.EnemyTypes import INSTRUMENT_RESTRICTED_REGIONS
 
 if TYPE_CHECKING:
     from randomizer.Enums.Collectibles import Collectibles
@@ -44,7 +45,8 @@ class LocationLogic:
                         if location_id in [loc.id for loc in region.locations if not loc.isAuxiliaryLocation]:
                             region_id = reg_id
                             break
-                    return l.spoiler.enemy_location_list[location_id].canDropItem(l, region_id)
+                    instrument_restricted = region_id in INSTRUMENT_RESTRICTED_REGIONS if region_id is not None else False
+                    return l.spoiler.enemy_location_list[location_id].canDropItem(l, region_id, instrument_restricted)
 
                 return enemy_logic
 
