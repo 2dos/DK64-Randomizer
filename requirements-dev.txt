@@ -9,7 +9,7 @@ css-html-js-minify==2.5.5
 bs4==0.0.2
 beautifulsoup4==4.13.5
 djlint==1.36.4
-cpplint==1.6.1
+cpplint==2.0.2
 GitPython==3.1.45
 pytest-xdist==3.8.0
 parameterized==0.9.0
