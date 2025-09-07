@@ -6,12 +6,12 @@ black==25.1.0
 pycodestyle==2.14.0
 pydocstyle==6.3.0
 css-html-js-minify==2.5.5
-bs4==0.0.1
-beautifulsoup4==4.12.2
-djlint==1.30.2
+bs4==0.0.2
+beautifulsoup4==4.13.5
+djlint==1.36.4
 cpplint==1.6.1
-GitPython==3.1.41
-pytest-xdist==3.5.0
+GitPython==3.1.45
+pytest-xdist==3.8.0
 parameterized==0.9.0
 -r requirements.txt
 -r requirements-server.txt
