@@ -10,6 +10,7 @@ from types import SimpleNamespace
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists import Item as DK64RItem
 from randomizer.Enums.Items import Items as DK64RItems
+from randomizer.Enums.Settings import WinConditionComplex
 from randomizer.Enums.Types import Types as DK64RTypes, BarrierItems
 import randomizer.ItemPool as DK64RItemPoolUtility
 
@@ -233,7 +234,6 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             world.spoiler.settings.location_pool_size -= 1
             continue
         item_table.append(DK64Item(use_original_name_or_trap_name(item), classification, full_item_table[item.name].code, world.player))
-        # print("Adding item: " + seed_item.name + " | " + str(classification))
 
     # Extract starting moves from the item table - these items will be placed in your starting inventory directly
     for move in world.options.start_inventory:

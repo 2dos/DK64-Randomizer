@@ -1,27 +1,147 @@
 """Options for DK64R."""
 
 from dataclasses import dataclass
+import numbers
 import typing
 
-from Options import Choice, PerGameCommonOptions, Range, Option, OptionList, Toggle, DeathLink, DefaultOnToggle, OptionGroup
+from BaseClasses import PlandoOptions
+from Options import Choice, PerGameCommonOptions, Range, Option, OptionDict, OptionError, OptionList, Toggle, DeathLink, DefaultOnToggle, OptionGroup
 from typing import List
 from randomizer.Enums.Settings import SettingsStringEnum
 from randomizer.Enums.Settings import SettingsStringTypeMap
 from randomizer.Enums.Settings import SettingsStringDataType
 from randomizer.Enums.Settings import SettingsMap as DK64RSettingsMap
+from worlds.AutoWorld import World
 
 
 # DK64_TODO: Get Options from DK64R
 
 
 class Goal(Choice):
-    """Determines the goal of the seed."""
+    """Determines the goal of the seed.
+
+    Options:
+    - beat_k_rool: Defeat K. Rool! K. Rool can be fought by finding all 8 keys, then entering the ship that appears at the back of DK Isle.
+    - acquire_key_8: Win by obtaining Key 8, which is normally found at the end of Hideout Helm.
+    - kremling_kapture: Take a picture of every enemy to win.
+    - dk_rap: Obtain all items mentioned in the DK Rap to win.
+    - golden_bananas: Find a certain number of Golden Bananas to win. See goal_quantity option for more info.
+    - blueprints: Find a certain number of Blueprints to win. See goal_quantity option for more info.
+    - company_coins: Find the Nintendo and/or Rareware Coin to win. See goal_quantity option for more info.
+    - keys: Find a certain number of Boss Keys to win. See goal_quantity option for more info.
+    - medals: Find a certain number of Banana Medals to win. See goal_quantity option for more info.
+    - crowns: Find a certain number of Battle Crowns to win. See goal_quantity option for more info.
+    - fairies: Find a certain number of Banana Fairies to win. See goal_quantity option for more info.
+    - rainbow_coins: Find a certain number of Rainbow Coins to win. See goal_quantity option for more info.
+    - bean: Find The Bean to win.
+    - pearls: Find a certain number of Pearls to win. See goal_quantity option for more info.
+    - bosses: Defeat a certain number of bosses to win. See goal_quantity option for more info.
+    - bonuses: Complete a certain number of Bonus Barrels to win. Automatically disables auto_complete_bonus_barrels if set. See goal_quantity option for more info.
+    - treasure_hurry: Run down the timer by collecting treasure! You win when the timer reaches 0.
+    """
 
     display_name = "Goal"
-    option_krool = 0
-    option_all_keys = 1
-    option_dk_rap = 2
+    option_beat_k_rool = 0
+    option_acquire_key_8 = 1
+    option_kremling_kapture = 2
+    option_dk_rap = 3
+    option_golden_bananas = 4
+    option_blueprints = 5
+    option_company_coins = 6
+    option_keys = 7
+    option_medals = 8
+    option_crowns = 9
+    option_fairies = 10
+    option_rainbow_coins = 11
+    option_bean = 12
+    option_pearls = 13
+    option_bosses = 14
+    option_bonuses = 15
+    option_treasure_hurry = 16
     default = 0
+
+
+class GoalQuantity(OptionDict):
+    """Determines how many of a particular item you need to goal.
+
+    You can set multiple values to account for any win conditions above, but it will only use the one that matches the win condition.
+    (i.e. if you set your win condition to "blueprints", the "keys" field will be ignored) This is useful in case you randomize your win condition.
+
+    Valid Keys:
+    - "golden_bananas"
+    - "blueprints"
+    - "company_coins"
+    - "keys"
+    - "medals"
+    - "crowns"
+    - "fairies"
+    - "rainbow_coins"
+    - "pearls"
+    - "bosses"
+    - "bonuses"
+
+    Valid Values:
+    - a number from 1 to the maximum value for the key type
+    - "random", which will pick a random valid value for you
+    - a range in the form "x-y", which will pick a random valid value between x and y
+    """
+
+    min = 1
+    max_values_dict: dict[str, int] = {
+        "golden_bananas": 201,
+        "blueprints": 40,
+        "company_coins": 2,
+        "keys": 8,
+        "medals": 40,
+        "crowns": 10,
+        "fairies": 20,
+        "rainbow_coins": 16,
+        "pearls": 5,
+        "bosses": 7,
+        "bonuses": 53,
+    }
+
+    def verify(self, world: type[World], player_name: str, plando_options: PlandoOptions) -> None:
+        """Verify Goal Quantity."""
+        super(GoalQuantity, self).verify(world, player_name, plando_options)
+
+        for key in self.value.keys():
+            if key not in self.max_values_dict.keys():
+                raise OptionError(f"{key} is not a valid key for goal_quantity.")
+
+        accumulated_errors = []
+
+        for key, value in self.value.items():
+            print(f"Checking {key}: {value}")
+            max = self.max_values_dict[key]
+            if isinstance(value, numbers.Integral):
+                value = int(value)
+                if value > max:
+                    accumulated_errors.append(f"{key}: {value} is higher than maximum allowed value {max}")
+                elif value < self.min:
+                    accumulated_errors.append(f"{key}: {value} is lower than minimum allowed value {self.min}")
+            else:
+                if value == "random":
+                    continue
+                split = value.split("-")
+                if len(split) != 2:
+                    accumulated_errors.append(f'{key}: {value} is not an integer or range, nor is it "random".')
+                else:
+                    for bound in split:
+                        try:
+                            bound = int(bound)
+                        except (ValueError, TypeError):
+                            accumulated_errors.append(f'{key}: {value} is not an integer or range, nor is it "random".')
+                            continue
+                        if bound > max:
+                            accumulated_errors.append(f"{key}: Upper edge of range {bound} is higher than maximum allowed value {max}")
+                        elif bound < self.min:
+                            accumulated_errors.append(f"{key}: Lower edge of range {bound} is lower than minimum allowed value {self.min}")
+        print("\n".join(accumulated_errors))
+        if accumulated_errors:
+            raise OptionError("Found errors with option goal_quantity:\n" + "\n".join(accumulated_errors))
+
+    default = {"golden_bananas": 100, "blueprints": 20, "company_coins": 2, "keys": 8, "medals": 15, "crowns": 5, "fairies": 15, "rainbow_coins": 10, "pearls": 3, "bosses": 7, "bonuses": 15}
 
 
 class OpenLobbies(Toggle):
@@ -781,7 +901,7 @@ class PuzzleRando(Choice):
     option_medium = 2
     option_hard = 3
     option_chaos = 4
-    default = 0
+    default = 2
 
 
 @dataclass
@@ -856,6 +976,7 @@ class DK64Options(PerGameCommonOptions):
     smaller_shops: SmallerShops
     harder_bosses: HardBosses
     puzzle_rando: PuzzleRando
+    goal_quantity: GoalQuantity
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -863,6 +984,7 @@ dk64_option_groups: List[OptionGroup] = [
         "Victory Conditions",
         [
             Goal,
+            GoalQuantity,
             KeysRequiredToBeatKrool,
             HelmPhaseCount,
             KroolPhaseCount,

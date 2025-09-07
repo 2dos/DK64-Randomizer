@@ -122,6 +122,7 @@ if baseclasses_loaded:
 
     from randomizer.Enums.Items import Items as DK64RItems
     from randomizer.SettingStrings import decrypt_settings_string_enum
+    from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
     from archipelago.Options import DK64Options, Goal, SwitchSanity, dk64_option_groups
     from archipelago.Regions import all_locations, create_regions, connect_regions
@@ -654,7 +655,7 @@ if baseclasses_loaded:
             settings_dict["shuffle_helm_location"] = self.options.shuffle_helm_level_order.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
             settings_dict["cb_medal_behavior_new"] = self.options.medal_distribution.value
-            settings_dict["smaller_shops"] = self.options.smaller_shops.value
+            settings_dict["smaller_shops"] = self.options.smaller_shops.value and not hasattr(self.multiworld, "generation_is_fake")
             settings_dict["puzzle_rando_difficulty"] = self.options.puzzle_rando.value
 
             # Level blocker settings
@@ -909,12 +910,30 @@ if baseclasses_loaded:
             if settings_dict["starting_keys_list_selected"]:
                 settings_dict["select_keys"] = True
 
-            # Win condition settings
-            if self.options.goal == Goal.option_all_keys:
-                settings_dict["win_condition_item"] = WinConditionComplex.req_key
-                settings_dict["win_condition_count"] = 8
-            if self.options.goal == Goal.option_dk_rap:
-                settings_dict["win_condition_item"] = WinConditionComplex.dk_rap_items
+            settings_dict["win_condition_item"] = GOAL_MAPPING[self.options.goal]
+
+            if self.options.goal in QUANTITY_GOALS.keys():
+                goal_name = QUANTITY_GOALS[self.options.goal]
+                settings_dict["win_condition_count"] = calculate_quantity(goal_name, self.options.goal_quantity.value, self.random)
+
+            # Treasure hurry settings
+            if self.options.goal == Goal.option_treasure_hurry:
+                settings_dict["helm_hurry"] = True
+                settings_dict["helmhurry_list_starting_time"] = 43200
+                settings_dict["helmhurry_list_golden_banana"] = -60
+                settings_dict["helmhurry_list_blueprint"] = -120
+                settings_dict["helmhurry_list_company_coins"] = -3600
+                settings_dict["helmhurry_list_move"] = 0
+                settings_dict["helmhurry_list_banana_medal"] = -300
+                settings_dict["helmhurry_list_rainbow_coin"] = 0
+                settings_dict["helmhurry_list_boss_key"] = -900
+                settings_dict["helmhurry_list_battle_crown"] = -1200
+                settings_dict["helmhurry_list_bean"] = -5400
+                settings_dict["helmhurry_list_pearl"] = -1800
+                settings_dict["helmhurry_list_kongs"] = 0
+                settings_dict["helmhurry_list_fairies"] = -600
+                settings_dict["helmhurry_list_colored_bananas"] = -2
+                settings_dict["helmhurry_list_ice_traps"] = 120
 
             settings_dict["starting_moves_list_1"] = []
             for item in self.options.start_inventory:
@@ -931,7 +950,7 @@ if baseclasses_loaded:
 
             settings_dict["minigames_list_selected"] = [MinigamesListSelected[minigame] for minigame in self.options.shuffled_bonus_barrels]
             settings_dict["disable_hard_minigames"] = not self.options.hard_minigames.value
-            settings_dict["bonus_barrel_auto_complete"] = self.options.auto_complete_bonus_barrels.value
+            settings_dict["bonus_barrel_auto_complete"] = self.options.auto_complete_bonus_barrels.value and self.options.goal.value != Goal.option_bonuses
             settings_dict["helm_room_bonus_count"] = HelmBonuses(self.options.helm_room_bonus_count.value)
             if hasattr(self.multiworld, "generation_is_fake"):
                 if hasattr(self.multiworld, "re_gen_passthrough"):
@@ -1082,7 +1101,7 @@ if baseclasses_loaded:
                 # Read through all item assignments in this AP world and find their DK64 equivalents so we can update our world state for patching purposes
                 for ap_location in self.multiworld.get_locations(self.player):
                     # We never need to place Collectibles or Events in our world state
-                    if "Collectible" in ap_location.name or "Event" in ap_location.name:
+                    if "Collectible" in ap_location.name or "Event" in ap_location.name or "Token" in ap_location.name:
                         continue
                     # Find the corresponding DK64 Locations enum
                     dk64_location_id = None
@@ -1102,7 +1121,7 @@ if baseclasses_loaded:
                             if dk64_location_id == DK64RLocations.RarewareCoin and ap_item.advancement:
                                 ap_item_is_major_item = True
                         # Collectibles don't get placed in the LocationList
-                        elif "Collectible" in ap_item.name:
+                        elif "Collectible" in ap_item.name or "Boss Defeated" == ap_item.name or "Bonus Completed" in ap_item.name:
                             continue
                         else:
                             dk64_item = logic_item_name_to_id[ap_item.name]
@@ -1446,6 +1465,8 @@ if baseclasses_loaded:
 
             slot_data = {
                 "Goal": self.options.goal.value,
+                "win_condition_item": self.spoiler.settings.win_condition_item.value,
+                "helm_hurry": self.spoiler.settings.helm_hurry,
                 "ClimbingShuffle": self.options.climbing_shuffle.value,
                 "PlayerNum": self.player,
                 "death_link": self.options.death_link.value,
@@ -1526,6 +1547,8 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Additional Settings info for player: " + self.player_name)
             spoiler_handle.write("\n")
+            spoiler_handle.write(f"Goal: {pp_wincon(self.spoiler.settings.win_condition_item, self.spoiler.settings.win_condition_count)}")
+            spoiler_handle.write("\n")
             spoiler_handle.write("Level Order: " + ", ".join([level.name for order, level in self.spoiler.settings.level_order.items()]))
             spoiler_handle.write("\n")
             human_boss_order = []
@@ -1596,8 +1619,8 @@ if baseclasses_loaded:
 
         def isMajorItem(self, item: DK64Item):
             """Determine whether a DK64Item is a Major Item."""
-            # Events, colored bananas
-            if "," in item.name:
+            # Events, colored bananas, tokens
+            if "," in item.name or "Boss Defeated" in item.name or "Bonus Completed" in item.name:
                 return False
             # Not progression
             if item.classification != ItemClassification.progression and item.classification != ItemClassification.progression_skip_balancing:
@@ -1624,6 +1647,8 @@ if baseclasses_loaded:
             if ", " in location.item.name:
                 return False
             if location.item.name == "BananaHoard":
+                return False
+            if location.item.name == "Boss Defeated" or location.item.name == "Bonus Completed":
                 return False
             for loc in self.spoiler.LocationList.keys():
                 if self.spoiler.LocationList[loc].name == location.name:
