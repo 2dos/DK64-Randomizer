@@ -5,23 +5,76 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    target-branch: "develop"
+  # All Python dependencies - this should catch all requirements*.txt files
+  - package-ecosystem: "pip"
+    directory: "/"
+    target-branch: "dev"
     schedule:
       interval: "daily"
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    target-branch: "develop"
+    open-pull-requests-limit: 10
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    # Force checking of all requirements files
+    ignore:
+      - dependency-name: "ignore-nothing-to-force-all-files"
+  # Discord bot requirements
+  - package-ecosystem: "pip"
+    directory: "/discord_bot"
+    target-branch: "dev"
     schedule:
       interval: "daily"
-  - package-ecosystem: "composer" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    target-branch: "develop"
+    open-pull-requests-limit: 3
+    groups:
+      bot-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+  # NPM dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    target-branch: "dev"
     schedule:
       interval: "daily"
-  - package-ecosystem: "github-actions" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    target-branch: "develop"
+    groups:
+      npm-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+  # Composer dependencies  
+  - package-ecosystem: "composer"
+    directory: "/"
+    target-branch: "dev"
     schedule:
       interval: "daily"
+    groups:
+      composer-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "dev"
+    schedule:
+      interval: "daily"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
