@@ -1,7 +1,7 @@
-psutil==5.9.5
+psutil==7.0.0
 jinja2==3.1.6
-pytest==7.4.2
-pytest-cov==4.1.0
+pytest==8.4.2
+pytest-cov==6.3.0
 black==25.1.0
 pycodestyle==2.14.0
 pydocstyle==6.3.0
