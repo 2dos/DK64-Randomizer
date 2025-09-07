@@ -94,6 +94,7 @@ typedef struct archipelago_data {
     /* 0x061 */ unsigned char can_tag;
     /* 0x062 */ unsigned char is_trapped;
     /* 0x063 */ unsigned char sent_trap;
+    /* 0x064 */ unsigned char helm_hurry_item;
 } archipelago_data;
 
 extern archipelago_data *APData;

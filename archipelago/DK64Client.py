@@ -121,6 +121,7 @@ class DK64Client:
     current_map = 0
     last_hint_bitfield = [0, 0, 0, 0, 0]
     sent_hints = set()
+    helm_hurry_enabled = False
 
     async def wait_for_pj64(self):
         """Wait for emulator to connect to the game."""
@@ -343,6 +344,7 @@ class DK64Client:
 
         # Write directly to CountStruct based on the field type
         field = count_data.get("field")
+        helm_hurry_item_type = None
 
         if field == "bp_bitfield":
             # Blueprint bitfield: 5 bytes starting at offset 0x000
@@ -360,6 +362,7 @@ class DK64Client:
                 current_value = self.n64_client.read_u8(address)
                 new_value = current_value | (1 << bit_index)
                 self.n64_client.write_u8(address, new_value)
+                helm_hurry_item_type = 0x04A  # TRANSFER_ITEM_HELM_HURRY_BLUEPRINT
 
         elif field == "hint_bitfield":
             # Hint bitfield: 5 bytes starting at offset 0x005
@@ -394,6 +397,7 @@ class DK64Client:
             current_value = self.n64_client.read_u8(address)
             new_value = current_value | (1 << bit_index)
             self.n64_client.write_u8(address, new_value)
+            helm_hurry_item_type = 0x04F  # TRANSFER_ITEM_HELM_HURRY_KEY
 
         elif field == "kong_bitfield":
             # Kong bitfield: 1 byte at offset 0x00B
@@ -402,12 +406,14 @@ class DK64Client:
             current_value = self.n64_client.read_u8(address)
             new_value = current_value | (1 << bit_index)
             self.n64_client.write_u8(address, new_value)
+            helm_hurry_item_type = 0x053  # TRANSFER_ITEM_HELM_HURRY_KONG
 
         elif field == "crowns":
             # Crowns: 1 byte counter at offset 0x00C
             address = count_struct_address + 0x00C
             current_value = self.n64_client.read_u8(address)
             self.n64_client.write_u8(address, current_value + 1)
+            helm_hurry_item_type = 0x050  # TRANSFER_ITEM_HELM_HURRY_CROWN
 
         elif field == "special_items":
             # Special items: 1 byte bitfield at offset 0x00D
@@ -417,10 +423,13 @@ class DK64Client:
 
             if bit_name == "nintendo_coin":
                 new_value = current_value | 0x80  # bit 7
+                helm_hurry_item_type = 0x04B  # TRANSFER_ITEM_HELM_HURRY_COMPANYCOIN
             elif bit_name == "rareware_coin":
                 new_value = current_value | 0x40  # bit 6
+                helm_hurry_item_type = 0x04B  # TRANSFER_ITEM_HELM_HURRY_COMPANYCOIN
             elif bit_name == "bean":
                 new_value = current_value | 0x20  # bit 5
+                helm_hurry_item_type = 0x051  # TRANSFER_ITEM_HELM_HURRY_BEAN
             else:
                 logger.warning(f"Unknown special_items bit: {bit_name}")
                 return
@@ -432,21 +441,27 @@ class DK64Client:
             address = count_struct_address + 0x00E
             current_value = self.n64_client.read_u8(address)
             self.n64_client.write_u8(address, current_value + 1)
+            helm_hurry_item_type = 0x04D  # TRANSFER_ITEM_HELM_HURRY_MEDAL
 
         elif field == "pearls":
             # Pearls: 1 byte counter at offset 0x00F
             address = count_struct_address + 0x00F
             current_value = self.n64_client.read_u8(address)
             self.n64_client.write_u8(address, current_value + 1)
+            helm_hurry_item_type = 0x052  # TRANSFER_ITEM_HELM_HURRY_PEARL
 
         elif field == "fairies":
             # Fairies: 1 byte counter at offset 0x010
             address = count_struct_address + 0x010
             current_value = self.n64_client.read_u8(address)
             self.n64_client.write_u8(address, current_value + 1)
+            helm_hurry_item_type = 0x054  # TRANSFER_ITEM_HELM_HURRY_FAIRY
 
         elif field == "rainbow_coins":
             await self.writeFedData(0x015)  # TRANSFER_ITEM_RAINBOWCOIN
+            # Rainbow coins should trigger Helm Hurry with HHITEM_RAINBOWCOIN (6)
+            if self.helm_hurry_enabled:
+                self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.helm_hurry_item, 6)
 
         elif field == "ice_traps":
             # Ice traps: 2 byte counter at offset 0x012
@@ -454,6 +469,7 @@ class DK64Client:
             address = count_struct_address + 0x012
             current_value = self.n64_client.read_u16(address)
             self.n64_client.write_u16(address, current_value + 1)
+            helm_hurry_item_type = 0x056  # TRANSFER_ITEM_HELM_HURRY_FAKEITEM
 
             # Now trigger the actual ice trap effect based on the ice trap type
             # We need to determine which type of ice trap this is and send it via fed system
@@ -487,36 +503,43 @@ class DK64Client:
             address = count_struct_address + 0x014
             current_value = self.n64_client.read_u16(address)
             self.n64_client.write_u16(address, current_value + 1)
+            # Junk items don't contribute to Helm Hurry timer
 
         elif field == "race_coins":
             # Race coins: 2 byte counter at offset 0x016
             address = count_struct_address + 0x016
             current_value = self.n64_client.read_u16(address)
             self.n64_client.write_u16(address, current_value + 1)
+            # Race coins don't contribute to Helm Hurry timer
 
         elif field == "flag_moves":
             # Flag moves: bitfield at offset 0x018
             bit_name = count_data.get("bit")
             address = count_struct_address + 0x018
             current_value = self.n64_client.read_u8(address)
-            new_value = current_value  # Initialize with current value
 
-            # The C code uses 0x80 >> move_enum for bit positions
             if bit_name == "diving":
                 new_value = current_value | 0x80  # bit 7 (0x80 >> 0)
+                helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
             elif bit_name == "oranges":
                 new_value = current_value | 0x40  # bit 6 (0x80 >> 1)
+                helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
             elif bit_name == "barrels":
                 new_value = current_value | 0x20  # bit 5 (0x80 >> 2)
+                helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
             elif bit_name == "vines":
                 new_value = current_value | 0x10  # bit 4 (0x80 >> 3)
+                helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
             elif bit_name == "camera":
                 new_value = current_value | 0x08  # bit 3 (0x80 >> 4)
+                helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
             elif bit_name == "shockwave":
                 new_value = current_value | 0x04  # bit 2 (0x80 >> 5)
+                helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
             else:
                 logger.warning(f"Unknown flag_moves bit: {bit_name}")
                 return
+
             self.n64_client.write_u8(address, new_value)
 
         elif count_data.get("item") is not None and count_data.get("level") is not None:
@@ -532,15 +555,46 @@ class DK64Client:
                 fed_id = item_id
 
             await self.writeFedData(fed_id)
+            # Most fed items with levels are moves, so they should trigger Helm Hurry
+            helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
 
         elif count_data.get("item") is not None and count_data.get("level") is None:
             # These are requirement_item enum values that map to archipelago_items
             fed_id = count_data.get("item")
             await self.writeFedData(fed_id)
+            # These could be various types, but most are moves or other progression items
+            # For now, assume they're moves unless we have better classification
+            helm_hurry_item_type = 0x04C  # TRANSFER_ITEM_HELM_HURRY_MOVE
 
         else:
             logger.warning(f"Unknown count_data field: {count_data}")
             return
+
+        # Send Helm Hurry timer update if we have a relevant item type and Helm Hurry is enabled
+        if helm_hurry_item_type is not None and self.helm_hurry_enabled:
+            self.writeHelmHurryItem(helm_hurry_item_type)
+
+    def writeHelmHurryItem(self, helm_hurry_item_type):
+        """Write Helm Hurry item type directly to memory."""
+        # Map the hex values to the corresponding HHITEM enum values
+        # Based on common_enums.h HHITEM enum (1-indexed, 0 = HHITEM_NOTHING)
+        helm_hurry_mapping = {
+            0x04A: 2,   # HHITEM_BLUEPRINT
+            0x04B: 3,   # HHITEM_COMPANYCOIN  
+            0x04C: 4,   # HHITEM_MOVE
+            0x04D: 5,   # HHITEM_MEDAL
+            0x04F: 7,   # HHITEM_KEY
+            0x050: 8,   # HHITEM_CROWN
+            0x051: 9,   # HHITEM_BEAN
+            0x052: 10,  # HHITEM_PEARL
+            0x053: 11,  # HHITEM_KONG
+            0x054: 12,  # HHITEM_FAIRY
+            0x056: 14,  # HHITEM_FAKEITEM
+        }
+        
+        hhitem_value = helm_hurry_mapping.get(helm_hurry_item_type, 0)
+        if hhitem_value > 0:
+            self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.helm_hurry_item, hhitem_value)
 
     def _getShopStatus(self, p_type: int, p_value: int, p_kong: int) -> bool:
         """Get the status of a shop item."""
@@ -703,9 +757,21 @@ class DK64Client:
                 raise Exception("Resetting due to wrong archipelago server")
         logger.info("Game connection ready!")
 
-    async def is_victory(self):
+    async def is_victory(self, win_condition_item=0, helm_hurry=False):
         """Check if the game is in a victory state."""
-        return self.readFlag(DK64MemoryMap.end_credits) == 1
+        end_credits_complete = self.readFlag(DK64MemoryMap.end_credits) == 1
+        win_condition = win_condition_item  # WinConditionComplex.beat_krool = 0 is default
+        
+        # Helm hurry can be enabled either by specific win conditions OR by the helm_hurry flag (treasure hurry)
+        helm_hurry_enabled = helm_hurry or win_condition not in [0, 1, 2]  # beat_krool, get_key8, krem_kapture don't use Helm Hurry unless explicitly enabled
+        
+        if helm_hurry_enabled:
+            # For Helm Hurry, victory is achieved when EITHER the helm hurry completion flag is set OR K. Rool is beaten
+            helm_hurry_finished = self.readFlag(0x3CB) == 1  # FLAG_HELM_HURRY_DISABLED (0x3CB = 971)
+            return helm_hurry_finished or end_credits_complete
+        else:
+            # Standard mode: only end credits count as victory
+            return end_credits_complete
 
     async def get_current_map(self):
         """Get the current map."""
@@ -1069,6 +1135,8 @@ class DK64Context(CommonContext):
                     asyncio.create_task(self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}]))
             if self.slot_data.get("receive_notifications"):
                 self.client.send_mode = self.slot_data.get("receive_notifications")
+            # Set Helm Hurry flag in client
+            self.client.helm_hurry_enabled = self.slot_data.get("helm_hurry", False)
             self.client.players = self.player_names
             self.reset_checks()
             missing_locations = self.missing_locations
@@ -1544,7 +1612,7 @@ class DK64Context(CommonContext):
                     await self.client.reset_auth()
                     await disconnect_check()
                     await self.client.validate_client_connection()
-                    if await self.client.is_victory():
+                    if await self.client.is_victory(self.slot_data.get("win_condition_item", 0), self.slot_data.get("helm_hurry", False)):
                         await victory()
                     status = self.client.check_safe_gameplay()
                     if status is False:

@@ -36,7 +36,8 @@ class Goal(Choice):
     - bean: Find The Bean to win.
     - pearls: Find a certain number of Pearls to win. See goal_quantity option for more info.
     - bosses: Defeat a certain number of bosses to win. See goal_quantity option for more info.
-    - bonuses: Complete a certain number of Bonus Barrels to win. Automatically disables auto_complete_bonus_barrels if set. See goal_quantity option for more info."""
+    - bonuses: Complete a certain number of Bonus Barrels to win. Automatically disables auto_complete_bonus_barrels if set. See goal_quantity option for more info.
+    - treasure_hurry: Run down the timer by collecting treasure! You win when the timer reaches 0."""
 
     display_name = "Goal"
     option_beat_k_rool = 0
@@ -55,6 +56,7 @@ class Goal(Choice):
     option_pearls = 13
     option_bosses = 14
     option_bonuses = 15
+    option_treasure_hurry = 16
     default = 0
 
 

@@ -1447,6 +1447,8 @@ if baseclasses_loaded:
 
             slot_data = {
                 "Goal": self.options.goal.value,
+                "win_condition_item": self.spoiler.settings.win_condition_item.value,
+                "helm_hurry": self.spoiler.settings.helm_hurry,
                 "ClimbingShuffle": self.options.climbing_shuffle.value,
                 "PlayerNum": self.player,
                 "death_link": self.options.death_link.value,

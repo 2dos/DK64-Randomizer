@@ -43,7 +43,7 @@ void saveAPCounter(void) {
 }
 
 void sendTrap(ICE_TRAP_TYPES trap_type) {
-    giveItem(REQITEM_ICETRAP, 0, trap_type, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1, .apply_ice_trap = 1});
+    giveItem(REQITEM_ICETRAP, 0, trap_type, (giveItemConfig){.display_item_text = 0, .apply_ice_trap = 1});
 }
 
 static unsigned char ice_trap_feds[] = {
@@ -224,6 +224,11 @@ void handleArchipelagoFeed(void) {
     if (ap_info.sent_trap) {
         queueIceTrap(ap_info.sent_trap, 0);
         ap_info.sent_trap = 0;
+    }
+    // Helm Hurry item handling
+    if (ap_info.helm_hurry_item) {
+        addHelmTime(ap_info.helm_hurry_item, 1);
+        ap_info.helm_hurry_item = 0;
     }
 }
 
