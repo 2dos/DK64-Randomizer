@@ -655,7 +655,7 @@ if baseclasses_loaded:
             settings_dict["shuffle_helm_location"] = self.options.shuffle_helm_level_order.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
             settings_dict["cb_medal_behavior_new"] = self.options.medal_distribution.value
-            settings_dict["smaller_shops"] = self.options.smaller_shops.value
+            settings_dict["smaller_shops"] = self.options.smaller_shops.value and not hasattr(self.multiworld, "generation_is_fake")
             settings_dict["puzzle_rando_difficulty"] = self.options.puzzle_rando.value
 
             # Level blocker settings
