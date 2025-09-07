@@ -61,7 +61,7 @@ void cutsceneDKCode(void) {
 		unkCutsceneKongFunction_1(0);
 		DisplayTextFlagCheck(6,1,temp_flag);
 	}
-	// Define jump as having an animation timer > 80.0f
+	// Define jump as having an animation timer > 80
 	int anim_timer = getAnimationTimer(CurrentActorPointer_0);
 	if (anim_timer > 80) {
 		jumping_started = 1;
