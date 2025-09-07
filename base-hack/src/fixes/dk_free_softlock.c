@@ -17,10 +17,9 @@ void freeDK(void) {
 	 */
 	cancelCutscene(0); // Cancel cutscene
 	// Delete cutscene DK
-	actorData* cutscene_dk = (actorData*)findActorWithType(196);
-	SpawnerInfo* spawner = cutscene_dk->tied_character_spawner;
+	SpawnerInfo* spawner = CurrentActorPointer_0->tied_character_spawner;
 	spawner->spawn_state = 0;
-	deleteActorContainer(cutscene_dk);
+	deleteActorContainer(CurrentActorPointer_0);
 }
 
 static char jumping_started = 0; // Global variable indicating that the jumping sequence has started
@@ -62,9 +61,9 @@ void cutsceneDKCode(void) {
 		unkCutsceneKongFunction_1(0);
 		DisplayTextFlagCheck(6,1,temp_flag);
 	}
-	// Define jump as having an animation timer > 80.0f
+	// Define jump as having an animation timer > 80
 	int anim_timer = getAnimationTimer(CurrentActorPointer_0);
-	if (anim_timer > 80.0f) {
+	if (anim_timer > 80) {
 		jumping_started = 1;
 	}
 	if (jumping_started) {

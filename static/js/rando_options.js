@@ -1047,6 +1047,12 @@ document
   .getElementById("helm_random")
   .addEventListener("click", disable_helm_phases);
 
+function refreshItemRandoSortable() {
+  updateCheckItemCounter(document.getElementById("item_rando-category-container"));
+}
+
+document.getElementById("smaller_shops").addEventListener("click", refreshItemRandoSortable);
+
 // Enable and disable settings based on the Item Rando pool changing
 function item_rando_list_changed(evt) {
   let itemRandoDisabled = true;
