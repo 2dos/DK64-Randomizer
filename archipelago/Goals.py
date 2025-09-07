@@ -53,12 +53,12 @@ def calculate_quantity(wincon_name: str, option_value: typing.Any, random: Rando
     try:
         # Try the easy case where this is just a number first
         quantity = int(requested_quantity)
-        assert quantity < QUANTITY_MAX[wincon_name]
+        assert quantity <= QUANTITY_MAX[wincon_name]
         return quantity
     except (TypeError, ValueError):
         # User requested a range, so give them a random option
         assert requested_quantity == "random" or len(requested_quantity.split("-")) == 2
-        upper_bound = QUANTITY_MAX[wincon_name] if requested_quantity == "random" else int(requested_quantity.split("-")[1])
+        upper_bound = (QUANTITY_MAX[wincon_name] if requested_quantity == "random" else int(requested_quantity.split("-")[1])) + 1
         lower_bound = 1 if requested_quantity == "random" else int(requested_quantity.split("-")[0])
         return random.randrange(lower_bound, upper_bound)
 

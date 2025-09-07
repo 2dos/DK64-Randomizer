@@ -62,7 +62,7 @@ from randomizer.Enums.Types import Types, BarrierItems
 from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Patching.Library.Generic import getProgHintBarrierItem, IsDDMSSelected
+from randomizer.Patching.Library.Generic import getProgHintBarrierItem, sumChecks, getCompletableBonuses, IsDDMSSelected
 from randomizer.Prices import AnyKongCanBuy, CanBuy
 from archipelago.Items import use_original_name_or_trap_name
 
@@ -109,6 +109,9 @@ class LogicVarHolder:
 
         # Archipelago really wants the number of locations to match the number of items. Keep track of how many locations we've made here
         self.location_pool_size = 0
+
+        self.bosses_beaten = 0
+        self.bonuses_beaten = 0
 
         self.startkong = self.settings.starting_kong
         # AGL
@@ -372,12 +375,18 @@ class LogicVarHolder:
         ownedItems = []
         cbArchItems = []
         eventArchItems = []
+        bossesDefeated = 0
+        bonusesCompleted = 0
         for item_name, item_count in collectionState.prog_items[self.ap_player].items():
             if item_name.startswith("Collectible CBs"):
                 for i in range(item_count):
                     cbArchItems.append(item_name)
             elif item_name.startswith("Event, "):
                 eventArchItems.append(item_name)
+            elif item_name.startswith("Boss Defeated"):
+                bossesDefeated += 1
+            elif item_name.startswith("Bonus Completed"):
+                bonusesCompleted += 1
             else:
                 corresponding_item_id = logic_item_name_to_id[item_name]
                 for i in range(item_count):
@@ -393,6 +402,9 @@ class LogicVarHolder:
             event = Events[item_data[1]]
             event_list.append(event)
         self.Events = event_list
+
+        self.bosses_beaten = bossesDefeated
+        self.bonuses_beaten = bonusesCompleted
 
         self.Update(ownedItems)
 
@@ -433,6 +445,10 @@ class LogicVarHolder:
             if event in [Events.ForestEntered, Events.CastleEntered] and Items.HomingAmmo in self.latest_owned_items:
                 self.homing = True
             self.AddEvent(event)
+        elif ap_item.name.startswith("Boss Defeated"):
+            self.bosses_beaten += 1
+        elif ap_item.name.startswith("Bonus Completed"):
+            self.bonuses_beaten += 1
         else:
             corresponding_item_id = logic_item_name_to_id[ap_item.name]
             self.latest_owned_items.append(corresponding_item_id)
@@ -669,6 +685,10 @@ class LogicVarHolder:
             item_data = ap_item.name.split(", ")
             event = Events[item_data[1]]
             self.Events = [evt for evt in self.Events if evt != event]
+        elif ap_item.name.startswith("Boss Defeated"):
+            self.bosses_beaten -= 1
+        elif ap_item.name.startswith("Bonus Completed"):
+            self.bonuses_beaten -= 1
         else:
             corresponding_item_id = logic_item_name_to_id[ap_item.name]
             if corresponding_item_id in ownedItems:
@@ -1623,6 +1643,10 @@ class LogicVarHolder:
                 if not k:
                     return False
             return True
+        elif self.settings.win_condition_item == WinConditionComplex.req_bosses:
+            return self.bosses_beaten >= self.settings.win_condition_count
+        elif self.settings.win_condition_item == WinConditionComplex.req_bonuses:
+            return self.bonuses_beaten >= self.settings.win_condition_count
         # Get X amount of Y item win cons
         win_con_table = {
             WinConditionComplex.req_bean: BarrierItems.Bean,
