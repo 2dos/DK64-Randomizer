@@ -899,7 +899,7 @@ class PuzzleRando(Choice):
     option_medium = 2
     option_hard = 3
     option_chaos = 4
-    default = 0
+    default = 2
 
 
 @dataclass
