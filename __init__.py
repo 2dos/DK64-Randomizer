@@ -916,6 +916,25 @@ if baseclasses_loaded:
                 goal_name = QUANTITY_GOALS[self.options.goal]
                 settings_dict["win_condition_count"] = calculate_quantity(goal_name, self.options.goal_quantity.value, self.random)
 
+            # Treasure hurry settings
+            if self.options.goal == Goal.option_treasure_hurry:
+                settings_dict["helm_hurry"] = True
+                settings_dict["helmhurry_list_starting_time"] = 43200
+                settings_dict["helmhurry_list_golden_banana"] = -60
+                settings_dict["helmhurry_list_blueprint"] = -120
+                settings_dict["helmhurry_list_company_coins"] = -3600
+                settings_dict["helmhurry_list_move"] = 0
+                settings_dict["helmhurry_list_banana_medal"] = -300
+                settings_dict["helmhurry_list_rainbow_coin"] = 0
+                settings_dict["helmhurry_list_boss_key"] = -900
+                settings_dict["helmhurry_list_battle_crown"] = -1200
+                settings_dict["helmhurry_list_bean"] = -5400
+                settings_dict["helmhurry_list_pearl"] = -1800
+                settings_dict["helmhurry_list_kongs"] = 0
+                settings_dict["helmhurry_list_fairies"] = -600
+                settings_dict["helmhurry_list_colored_bananas"] = -2
+                settings_dict["helmhurry_list_ice_traps"] = 120
+
 
             settings_dict["starting_moves_list_1"] = []
             for item in self.options.start_inventory:

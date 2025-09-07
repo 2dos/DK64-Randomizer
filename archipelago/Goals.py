@@ -22,7 +22,8 @@ GOAL_MAPPING = {
     Goal.option_bean: WinConditionComplex.req_bean,
     Goal.option_pearls: WinConditionComplex.req_pearl,
     Goal.option_bosses: WinConditionComplex.req_bosses,
-    Goal.option_bonuses: WinConditionComplex.req_bonuses
+    Goal.option_bonuses: WinConditionComplex.req_bonuses,
+    Goal.option_treasure_hurry: WinConditionComplex.beat_krool
 }
 # List of goals that care about the quantity field
 QUANTITY_GOALS = {
