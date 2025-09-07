@@ -154,6 +154,51 @@ class Settings:
             Levels.CreepyCastle: ItemPool.AllKongMoves().copy(),
         }
 
+        self.item_check_counts = {
+            # Item, Checks
+            ItemRandoListSelected.shop: [0, 100],
+            ItemRandoListSelected.moves: [36, 0],
+            ItemRandoListSelected.shockwave: [2, 0],
+            ItemRandoListSelected.bfi_gift: [0, 1],
+            ItemRandoListSelected.banana: [161, 0],
+            ItemRandoListSelected.banana_checks: [0, 148],
+            ItemRandoListSelected.toughbanana: [0, 13],
+            ItemRandoListSelected.arenas: [0, 10],
+            ItemRandoListSelected.crown: [10, 0],
+            ItemRandoListSelected.blueprint: [40, 0],
+            ItemRandoListSelected.kasplat: [0, 40],
+            ItemRandoListSelected.key: [8, 0],
+            ItemRandoListSelected.bosses: [0, 7],
+            ItemRandoListSelected.endofhelm: [0, 1],
+            ItemRandoListSelected.medal: [40, 0],
+            ItemRandoListSelected.medal_checks: [0, 35],
+            ItemRandoListSelected.medal_checks_helm: [0, 5],
+            ItemRandoListSelected.nintendocoin: [1, 0],
+            ItemRandoListSelected.arcade: [0, 1],
+            ItemRandoListSelected.rarewarecoin: [1, 0],
+            ItemRandoListSelected.jetpac: [0, 1],
+            ItemRandoListSelected.kong: [4, 0],
+            ItemRandoListSelected.kong_cages: [0, 4],
+            ItemRandoListSelected.fairy: [20, 0],
+            ItemRandoListSelected.fairy_checks: [0, 20],
+            ItemRandoListSelected.rainbowcoin: [16, 0],
+            ItemRandoListSelected.dirt_patches: [0, 16],
+            ItemRandoListSelected.pearl: [5, 0],
+            ItemRandoListSelected.clams: [0, 5],
+            ItemRandoListSelected.bean: [1, 0],
+            ItemRandoListSelected.anthillreward: [0, 1],
+            ItemRandoListSelected.crateitem: [0, 13],
+            ItemRandoListSelected.halfmedal: [0, 40],
+            ItemRandoListSelected.shopowners: [0, 0],  # Max is 4, calculated during post-processing
+            ItemRandoListSelected.hint: [35, 0],
+            ItemRandoListSelected.wrinkly: [0, 35],
+            ItemRandoListSelected.boulderitem: [0, 16],
+            ItemRandoListSelected.enemies: [0, 289],
+            ItemRandoListSelected.trainingmoves: [4, 0],
+            ItemRandoListSelected.trainingbarrels: [0, 4],
+        }
+        self.pool_index_with_shops = None
+
         if self.enable_plandomizer:
             self.ApplyPlandomizerSettings()
 
@@ -2196,9 +2241,14 @@ class Settings:
             # if Types.Kong in self.shuffled_location_types:
             #     self.location_item_balance -= 4  # Kong cages *can* be filled by Kongs, but nothing else. We'll treat these as lost locations in all worlds due to the rarity of this.
         # With some light algebra we get the maximum number of shared shops we can fill before we start running into fill problems
-        self.max_shared_shops = math.floor(25 - self.location_item_balance / -4)
+        shop_reduction = 4
+        self.max_shared_shops = math.floor(25 - self.location_item_balance / -shop_reduction)
         if self.smaller_shops:
-            self.max_shared_shops = math.floor(30 - self.location_item_balance / -2)
+            shop_reduction = 2
+            self.max_shared_shops = math.floor(30 - self.location_item_balance / -shop_reduction)
+        buffers = self.getPoolBuffer()
+        if self.pool_index_with_shops is not None:
+            self.max_shared_shops = min(self.max_shared_shops, int(buffers[self.pool_index_with_shops] / shop_reduction) - 2)  # Never have more shared shops than spaces allow
         self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
         self.placed_shared_shops = 0
 
@@ -2746,81 +2796,53 @@ class Settings:
                 elif song.type == SongType.Event:
                     self.events_songs_selected = True
 
-    def is_valid_item_pool(self):
-        """Confirm that the item pool is a valid combination of items. Must be run after valid locations are calculated without any restrictions."""
-        item_check_counts = {
-            # Item, Checks
-            ItemRandoListSelected.shop: [0, 100],
-            ItemRandoListSelected.moves: [36, 0],
-            ItemRandoListSelected.shockwave: [2, 0],
-            ItemRandoListSelected.bfi_gift: [0, 1],
-            ItemRandoListSelected.banana: [161, 0],
-            ItemRandoListSelected.banana_checks: [0, 148],
-            ItemRandoListSelected.toughbanana: [0, 13],
-            ItemRandoListSelected.arenas: [0, 10],
-            ItemRandoListSelected.crown: [10, 0],
-            ItemRandoListSelected.blueprint: [40, 0],
-            ItemRandoListSelected.kasplat: [0, 40],
-            ItemRandoListSelected.key: [8, 0],
-            ItemRandoListSelected.bosses: [0, 7],
-            ItemRandoListSelected.endofhelm: [0, 1],
-            ItemRandoListSelected.medal: [40, 0],
-            ItemRandoListSelected.medal_checks: [0, 35],
-            ItemRandoListSelected.medal_checks_helm: [0, 5],
-            ItemRandoListSelected.nintendocoin: [1, 0],
-            ItemRandoListSelected.arcade: [0, 1],
-            ItemRandoListSelected.rarewarecoin: [1, 0],
-            ItemRandoListSelected.jetpac: [0, 1],
-            ItemRandoListSelected.kong: [4, 0],
-            ItemRandoListSelected.kong_cages: [0, 4],
-            ItemRandoListSelected.fairy: [20, 0],
-            ItemRandoListSelected.fairy_checks: [0, 20],
-            ItemRandoListSelected.rainbowcoin: [16, 0],
-            ItemRandoListSelected.dirt_patches: [0, 16],
-            ItemRandoListSelected.pearl: [5, 0],
-            ItemRandoListSelected.clams: [0, 5],
-            ItemRandoListSelected.bean: [1, 0],
-            ItemRandoListSelected.anthillreward: [0, 1],
-            ItemRandoListSelected.crateitem: [0, 13],
-            ItemRandoListSelected.halfmedal: [0, 40],
-            ItemRandoListSelected.shopowners: [0, 0],  # Max is 4, calculated during post-processing
-            ItemRandoListSelected.hint: [35, 0],
-            ItemRandoListSelected.wrinkly: [0, 35],
-            ItemRandoListSelected.boulderitem: [0, 16],
-            ItemRandoListSelected.enemies: [0, 289],
-            ItemRandoListSelected.trainingmoves: [4, 0],
-            ItemRandoListSelected.trainingbarrels: [0, 4],
-        }
+    def getPoolBuffer(self):
+        """Get the item and check counts for each pool."""
         if self.smaller_shops:
-            item_check_counts[ItemRandoListSelected.shop] = [0, 60]
+            self.item_check_counts[ItemRandoListSelected.shop] = [0, 60]
         if IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
-            item_check_counts[ItemRandoListSelected.medal] = [45, 0]
-            item_check_counts[ItemRandoListSelected.medal_checks] = [0, 40]
-        item_check_counts[ItemRandoListSelected.kong][0] = 5 - len(self.starting_kong_list)
+            self.item_check_counts[ItemRandoListSelected.medal] = [45, 0]
+            self.item_check_counts[ItemRandoListSelected.medal_checks] = [0, 40]
+        self.item_check_counts[ItemRandoListSelected.kong][0] = 5 - len(self.starting_kong_list)
+        self.item_check_counts[ItemRandoListSelected.shopowners][0] = 0  # Reset it back to a default state every time
         if Types.Cranky in self.shuffled_location_types:
-            item_check_counts[ItemRandoListSelected.shopowners][0] += 1
-            if len(self.valid_locations[Types.Cranky]) <= 0:
-                return False
+            self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         if Types.Funky in self.shuffled_location_types:
-            item_check_counts[ItemRandoListSelected.shopowners][0] += 1
-            if len(self.valid_locations[Types.Funky]) <= 0:
-                return False
+            self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         if Types.Candy in self.shuffled_location_types:
-            item_check_counts[ItemRandoListSelected.shopowners][0] += 1
-            if len(self.valid_locations[Types.Candy]) <= 0:
-                return False
+            self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         if Types.Snide in self.shuffled_location_types:
-            item_check_counts[ItemRandoListSelected.shopowners][0] += 1
-            if len(self.valid_locations[Types.Snide]) <= 0:
-                return False
+            self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
+        buffers = []
         for x in range(4):
             item_count = 0
             check_count = 0
             for item_selector in self.item_search[x]:
-                item_count += item_check_counts[item_selector][0]
+                item_count += self.item_check_counts[item_selector][0]
             for check_selector in self.check_search[x]:
-                check_count += item_check_counts[check_selector][1]
-            if item_count > check_count:
+                check_count += self.item_check_counts[check_selector][1]
+                if check_selector == ItemRandoListSelected.shop:
+                    self.pool_index_with_shops = x
+            buffers.append(check_count - item_count)
+        return buffers
+
+    def is_valid_item_pool(self):
+        """Confirm that the item pool is a valid combination of items. Must be run after valid locations are calculated without any restrictions."""
+        if Types.Cranky in self.shuffled_location_types:
+            if len(self.valid_locations[Types.Cranky]) <= 0:
+                return False
+        if Types.Funky in self.shuffled_location_types:
+            if len(self.valid_locations[Types.Funky]) <= 0:
+                return False
+        if Types.Candy in self.shuffled_location_types:
+            if len(self.valid_locations[Types.Candy]) <= 0:
+                return False
+        if Types.Snide in self.shuffled_location_types:
+            if len(self.valid_locations[Types.Snide]) <= 0:
+                return False
+        buffers = self.getPoolBuffer()
+        for buffer in buffers:
+            if buffer < 0:  # More items than checks
                 return False
         return True
 

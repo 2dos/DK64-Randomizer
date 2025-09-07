@@ -308,17 +308,33 @@
                 !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
     }
 
+    function getItemChange(item, original_value) {
+        if (item == "medal" && islesCBs()) {
+            return 45;
+        }
+        return original_value;
+    }
+
+    function getCheckChange(item, original_value) {
+        if ((item === "shop") && document.getElementById("smaller_shops").checked) {
+            return 60
+        } else if ((["halfmedal", "medal_checks"].includes(item)) && islesCBs()) {
+            return 40
+        }
+        return original_value;
+    }
+
+    function islesCBs() {
+        return document.querySelector("#cb_rando_list_selected option[value='DKIsles']").selected;
+    }
+
     function getTiedCheckCount(value) {
         const data_items_json = document.getElementById("item_rando-category-container").getAttribute("data-items");
         const data_items = JSON.parse(data_items_json);
         const tied_checks = data_items.filter(k => (k.is_check && k.tied == value) || (k.is_dummy && k.value == value));
         let count = 0;
         tied_checks.forEach(k => {
-            if ((k.value === "shop") && document.getElementById("smaller_shops").checked) {
-                count += 60;
-            } else {
-                count += k.check_count;
-            }
+            count += getCheckChange(k.value, k.check_count);
         });
         return count;
     }
@@ -362,16 +378,12 @@
                         parsed = true;
                     } else if (j == 1) {
                         if (isNumeric(check_count_raw)) {
-                            if ((opt_value === "shop") && document.getElementById("smaller_shops").checked) {
-                                local_check_count += 60;
-                            } else {
-                                local_check_count += parseInt(check_count_raw);
-                            }
+                            local_check_count += getCheckChange(opt_value, parseInt(check_count_raw));
                             parsed = true;
                         }
                     }
                     if (isNumeric(item_count_raw)) {
-                        local_item_count += parseInt(item_count_raw);
+                        local_item_count += getItemChange(opt_value, parseInt(item_count_raw));
                         parsed = true;
                     }
                     if (parsed) {

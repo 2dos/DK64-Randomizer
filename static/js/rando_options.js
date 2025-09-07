@@ -1052,6 +1052,7 @@ function refreshItemRandoSortable() {
 }
 
 document.getElementById("smaller_shops").addEventListener("click", refreshItemRandoSortable);
+document.querySelector("#cb_rando_list_selected option[value='DKIsles']").addEventListener("click", refreshItemRandoSortable);
 
 // Enable and disable settings based on the Item Rando pool changing
 function item_rando_list_changed(evt) {
@@ -1924,6 +1925,7 @@ function update_ui_states() {
   update_door_one_num_access();
   update_door_two_num_access();
   update_win_con_num_access();
+  refreshItemRandoSortable();
   update_prog_hint_num_access();
   update_blocker_num_access();
   update_ice_trap_count();
