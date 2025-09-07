@@ -498,7 +498,7 @@ MinigameRequirements = {
         group="Training Minigames",
         map_id=Maps.VineBarrel,
         can_repeat=True,
-        logic=lambda l: (l.can_use_vines and l.climbing) or not IsDDMSSelected(l.settings.minigames_list_selected, MinigamesListSelected.training_minigames),
+        logic=lambda l: ((l.can_use_vines or l.CanMoonkick()) and l.climbing) or not IsDDMSSelected(l.settings.minigames_list_selected, MinigamesListSelected.training_minigames),
     ),
     Minigames.DiveBarrel: Minigame(
         name="Dive Training",
