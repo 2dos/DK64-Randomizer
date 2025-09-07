@@ -63,9 +63,9 @@ class Goal(Choice):
 class GoalQuantity(OptionDict):
     """Determines how many of a particular item you need to goal.
 
-    You can set multiple values to account for any win conditions above, but it will only use the one that matches the win condition. 
-    (i.e. if you set your win condition to "blueprints", the "keys" field will be ignored) This is useful in case you randomize your win condition.    
-    
+    You can set multiple values to account for any win conditions above, but it will only use the one that matches the win condition.
+    (i.e. if you set your win condition to "blueprints", the "keys" field will be ignored) This is useful in case you randomize your win condition.
+
     Valid Keys:
     - "golden_bananas"
     - "blueprints"

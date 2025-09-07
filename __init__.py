@@ -935,7 +935,6 @@ if baseclasses_loaded:
                 settings_dict["helmhurry_list_colored_bananas"] = -2
                 settings_dict["helmhurry_list_ice_traps"] = 120
 
-
             settings_dict["starting_moves_list_1"] = []
             for item in self.options.start_inventory:
                 item_obj = DK64RItem.ItemList[logic_item_name_to_id.get(item)]

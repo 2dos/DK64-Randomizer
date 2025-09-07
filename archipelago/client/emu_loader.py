@@ -17,7 +17,7 @@ except ImportError:
     logger = logging.getLogger(__name__)
 
 
-def sanitize_and_trim(input_string, max_length=0x20):
+def sanitize_and_trim(input_string, max_length=0x1F):
     """Sanitize and trim a string for safe memory writing."""
     normalized = input_string.replace("'", "").replace("`", "").replace("'", "").strip()
     sanitized = "".join(e for e in normalized if e.isalnum() or e == " ").strip()

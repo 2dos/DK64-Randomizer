@@ -23,7 +23,7 @@ GOAL_MAPPING = {
     Goal.option_pearls: WinConditionComplex.req_pearl,
     Goal.option_bosses: WinConditionComplex.req_bosses,
     Goal.option_bonuses: WinConditionComplex.req_bonuses,
-    Goal.option_treasure_hurry: WinConditionComplex.beat_krool
+    Goal.option_treasure_hurry: WinConditionComplex.beat_krool,
 }
 # List of goals that care about the quantity field
 QUANTITY_GOALS = {
@@ -37,40 +37,29 @@ QUANTITY_GOALS = {
     Goal.option_rainbow_coins: "rainbow_coins",
     Goal.option_pearls: "pearls",
     Goal.option_bosses: "bosses",
-    Goal.option_bonuses: "bonuses"
+    Goal.option_bonuses: "bonuses",
 }
 # Maximum possible goals for each wincon
-QUANTITY_MAX = {
-    "golden_bananas": 201,
-    "blueprints": 40,
-    "company_coins": 2,
-    "keys": 8,
-    "medals": 40,
-    "crowns": 10,
-    "fairies": 20,
-    "rainbow_coins": 16,
-    "pearls": 5,
-    "bosses": 7,
-    "bonuses": 53
-}
+QUANTITY_MAX = {"golden_bananas": 201, "blueprints": 40, "company_coins": 2, "keys": 8, "medals": 40, "crowns": 10, "fairies": 20, "rainbow_coins": 16, "pearls": 5, "bosses": 7, "bonuses": 53}
 
 
 def calculate_quantity(wincon_name: str, option_value: typing.Any, random: Random):
-    assert(wincon_name in QUANTITY_MAX.keys())
+    assert wincon_name in QUANTITY_MAX.keys()
     requested_quantity = option_value[wincon_name]
 
     try:
         # Try the easy case where this is just a number first
         quantity = int(requested_quantity)
-        assert (quantity < QUANTITY_MAX[wincon_name])
+        assert quantity < QUANTITY_MAX[wincon_name]
         return quantity
     except (TypeError, ValueError):
         # User requested a range, so give them a random option
-        assert(requested_quantity == "random" or len(requested_quantity.split("-")) == 2)
+        assert requested_quantity == "random" or len(requested_quantity.split("-")) == 2
         upper_bound = QUANTITY_MAX[wincon_name] if requested_quantity == "random" else int(requested_quantity.split("-")[1])
         lower_bound = 1 if requested_quantity == "random" else int(requested_quantity.split("-")[0])
         return random.randrange(lower_bound, upper_bound)
-    
+
+
 def pp_wincon(win_condition_item, wc_count=0):
     win_con_name_table = {
         WinConditionComplex.beat_krool: "Beat K. Rool",

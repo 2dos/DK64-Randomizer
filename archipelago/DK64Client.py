@@ -579,19 +579,19 @@ class DK64Client:
         # Map the hex values to the corresponding HHITEM enum values
         # Based on common_enums.h HHITEM enum (1-indexed, 0 = HHITEM_NOTHING)
         helm_hurry_mapping = {
-            0x04A: 2,   # HHITEM_BLUEPRINT
-            0x04B: 3,   # HHITEM_COMPANYCOIN  
-            0x04C: 4,   # HHITEM_MOVE
-            0x04D: 5,   # HHITEM_MEDAL
-            0x04F: 7,   # HHITEM_KEY
-            0x050: 8,   # HHITEM_CROWN
-            0x051: 9,   # HHITEM_BEAN
+            0x04A: 2,  # HHITEM_BLUEPRINT
+            0x04B: 3,  # HHITEM_COMPANYCOIN
+            0x04C: 4,  # HHITEM_MOVE
+            0x04D: 5,  # HHITEM_MEDAL
+            0x04F: 7,  # HHITEM_KEY
+            0x050: 8,  # HHITEM_CROWN
+            0x051: 9,  # HHITEM_BEAN
             0x052: 10,  # HHITEM_PEARL
             0x053: 11,  # HHITEM_KONG
             0x054: 12,  # HHITEM_FAIRY
             0x056: 14,  # HHITEM_FAKEITEM
         }
-        
+
         hhitem_value = helm_hurry_mapping.get(helm_hurry_item_type, 0)
         if hhitem_value > 0:
             self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.helm_hurry_item, hhitem_value)
@@ -761,10 +761,10 @@ class DK64Client:
         """Check if the game is in a victory state."""
         end_credits_complete = self.readFlag(DK64MemoryMap.end_credits) == 1
         win_condition = win_condition_item  # WinConditionComplex.beat_krool = 0 is default
-        
+
         # Helm hurry can be enabled either by specific win conditions OR by the helm_hurry flag (treasure hurry)
         helm_hurry_enabled = helm_hurry or win_condition not in [0, 1, 2]  # beat_krool, get_key8, krem_kapture don't use Helm Hurry unless explicitly enabled
-        
+
         if helm_hurry_enabled:
             # For Helm Hurry, victory is achieved when EITHER the helm hurry completion flag is set OR K. Rool is beaten
             helm_hurry_finished = self.readFlag(0x3CB) == 1  # FLAG_HELM_HURRY_DISABLED (0x3CB = 971)
