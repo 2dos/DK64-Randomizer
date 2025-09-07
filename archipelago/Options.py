@@ -101,6 +101,7 @@ class GoalQuantity(OptionDict):
     }
 
     def verify(self, world: type[World], player_name: str, plando_options: PlandoOptions) -> None:
+        """Verify Goal Quantity."""
         super(GoalQuantity, self).verify(world, player_name, plando_options)
 
         for key in self.value.keys():

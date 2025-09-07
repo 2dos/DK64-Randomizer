@@ -1,3 +1,4 @@
+"""Script for determining win conditions."""
 from random import Random
 import typing
 
@@ -44,6 +45,7 @@ QUANTITY_MAX = {"golden_bananas": 201, "blueprints": 40, "company_coins": 2, "ke
 
 
 def calculate_quantity(wincon_name: str, option_value: typing.Any, random: Random):
+    """Calculates bounds of wincon value."""
     assert wincon_name in QUANTITY_MAX.keys()
     requested_quantity = option_value[wincon_name]
 
@@ -61,6 +63,7 @@ def calculate_quantity(wincon_name: str, option_value: typing.Any, random: Rando
 
 
 def pp_wincon(win_condition_item, wc_count=0):
+    """Pretty print win condition name with count."""
     win_con_name_table = {
         WinConditionComplex.beat_krool: "Beat K. Rool",
         WinConditionComplex.get_key8: "Acquire Key 8",
