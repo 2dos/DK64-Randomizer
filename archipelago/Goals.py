@@ -1,4 +1,5 @@
 """Script for determining win conditions."""
+
 from random import Random
 import typing
 
