@@ -46,7 +46,7 @@ jobs:
         run: bump2version ${{ steps.bump.outputs.VERSION_PART }}
 
       - id: create_token
-        uses: tibdex/github-app-token@v1
+        uses: tibdex/github-app-token@v2
         with:
           app_id: 715479
           installation_id: 45211287
