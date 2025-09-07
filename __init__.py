@@ -1101,7 +1101,7 @@ if baseclasses_loaded:
                 # Read through all item assignments in this AP world and find their DK64 equivalents so we can update our world state for patching purposes
                 for ap_location in self.multiworld.get_locations(self.player):
                     # We never need to place Collectibles or Events in our world state
-                    if "Collectible" in ap_location.name or "Event" in ap_location.name:
+                    if "Collectible" in ap_location.name or "Event" in ap_location.name or "Token" in ap_location.name:
                         continue
                     # Find the corresponding DK64 Locations enum
                     dk64_location_id = None
@@ -1121,7 +1121,7 @@ if baseclasses_loaded:
                             if dk64_location_id == DK64RLocations.RarewareCoin and ap_item.advancement:
                                 ap_item_is_major_item = True
                         # Collectibles don't get placed in the LocationList
-                        elif "Collectible" in ap_item.name:
+                        elif "Collectible" in ap_item.name or "Boss Defeated" == ap_item.name or "Bonus Completed" in ap_item.name:
                             continue
                         else:
                             dk64_item = logic_item_name_to_id[ap_item.name]
@@ -1619,8 +1619,8 @@ if baseclasses_loaded:
 
         def isMajorItem(self, item: DK64Item):
             """Determine whether a DK64Item is a Major Item."""
-            # Events, colored bananas
-            if "," in item.name:
+            # Events, colored bananas, tokens
+            if "," in item.name or "Boss Defeated" in item.name or "Bonus Completed" in item.name:
                 return False
             # Not progression
             if item.classification != ItemClassification.progression and item.classification != ItemClassification.progression_skip_balancing:
@@ -1647,6 +1647,8 @@ if baseclasses_loaded:
             if ", " in location.item.name:
                 return False
             if location.item.name == "BananaHoard":
+                return False
+            if location.item.name == "Boss Defeated" or location.item.name == "Bonus Completed":
                 return False
             for loc in self.spoiler.LocationList.keys():
                 if self.spoiler.LocationList[loc].name == location.name:
