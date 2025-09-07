@@ -10,7 +10,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-        - uses: actions/checkout@v3
+        - uses: actions/checkout@v5
 
         - name: Setup python
           uses: actions/setup-python@v4.1.0
@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Run Tests
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       - name: Setup python
         uses: actions/setup-python@v4.1.0
@@ -79,7 +79,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
