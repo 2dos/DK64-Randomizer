@@ -46,7 +46,7 @@ QUANTITY_MAX = {"golden_bananas": 201, "blueprints": 40, "company_coins": 2, "ke
 
 
 def calculate_quantity(wincon_name: str, option_value: typing.Any, random: Random):
-    """Calculates bounds of wincon value."""
+    """Calculate bounds of wincon value."""
     assert wincon_name in QUANTITY_MAX.keys()
     requested_quantity = option_value[wincon_name]
 
