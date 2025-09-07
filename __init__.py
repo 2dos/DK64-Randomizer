@@ -122,6 +122,7 @@ if baseclasses_loaded:
 
     from randomizer.Enums.Items import Items as DK64RItems
     from randomizer.SettingStrings import decrypt_settings_string_enum
+    from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
     from archipelago.Options import DK64Options, Goal, SwitchSanity, dk64_option_groups
     from archipelago.Regions import all_locations, create_regions, connect_regions
@@ -909,14 +910,14 @@ if baseclasses_loaded:
             if settings_dict["starting_keys_list_selected"]:
                 settings_dict["select_keys"] = True
 
-            # Win condition settings
-            if self.options.goal == Goal.option_all_keys:
-                settings_dict["win_condition_item"] = WinConditionComplex.req_key
-                settings_dict["win_condition_count"] = 8
-            if self.options.goal == Goal.option_dk_rap:
-                settings_dict["win_condition_item"] = WinConditionComplex.dk_rap_items
+            settings_dict["win_condition_item"] = GOAL_MAPPING[self.options.goal]
+
+            if self.options.goal in QUANTITY_GOALS.keys():
+                goal_name = QUANTITY_GOALS[self.options.goal]
+                settings_dict["win_condition_count"] = calculate_quantity(goal_name, self.options.goal_quantity.value, self.random)
+
+            # Treasure hurry settings
             if self.options.goal == Goal.option_treasure_hurry:
-                settings_dict["win_condition_item"] = WinConditionComplex.beat_krool
                 settings_dict["helm_hurry"] = True
                 settings_dict["helmhurry_list_starting_time"] = 43200
                 settings_dict["helmhurry_list_golden_banana"] = -60
@@ -934,6 +935,7 @@ if baseclasses_loaded:
                 settings_dict["helmhurry_list_colored_bananas"] = -2
                 settings_dict["helmhurry_list_ice_traps"] = 120
 
+
             settings_dict["starting_moves_list_1"] = []
             for item in self.options.start_inventory:
                 item_obj = DK64RItem.ItemList[logic_item_name_to_id.get(item)]
@@ -949,7 +951,7 @@ if baseclasses_loaded:
 
             settings_dict["minigames_list_selected"] = [MinigamesListSelected[minigame] for minigame in self.options.shuffled_bonus_barrels]
             settings_dict["disable_hard_minigames"] = not self.options.hard_minigames.value
-            settings_dict["bonus_barrel_auto_complete"] = self.options.auto_complete_bonus_barrels.value
+            settings_dict["bonus_barrel_auto_complete"] = self.options.auto_complete_bonus_barrels.value and self.options.goal.value != Goal.option_bonuses
             settings_dict["helm_room_bonus_count"] = HelmBonuses(self.options.helm_room_bonus_count.value)
             if hasattr(self.multiworld, "generation_is_fake"):
                 if hasattr(self.multiworld, "re_gen_passthrough"):
@@ -1545,6 +1547,8 @@ if baseclasses_loaded:
             """Write the spoiler."""
             spoiler_handle.write("\n")
             spoiler_handle.write("Additional Settings info for player: " + self.player_name)
+            spoiler_handle.write("\n")
+            spoiler_handle.write(f"Goal: {pp_wincon(self.spoiler.settings.win_condition_item, self.spoiler.settings.win_condition_count)}")
             spoiler_handle.write("\n")
             spoiler_handle.write("Level Order: " + ", ".join([level.name for order, level in self.spoiler.settings.level_order.items()]))
             spoiler_handle.write("\n")
