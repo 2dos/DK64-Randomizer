@@ -1053,6 +1053,7 @@ function refreshItemRandoSortable() {
 
 document.getElementById("smaller_shops").addEventListener("click", refreshItemRandoSortable);
 document.querySelector("#cb_rando_list_selected option[value='DKIsles']").addEventListener("click", refreshItemRandoSortable);
+document.getElementById("cb_rando_enabled").addEventListener("click", refreshItemRandoSortable);
 
 // Enable and disable settings based on the Item Rando pool changing
 function item_rando_list_changed(evt) {

@@ -1609,6 +1609,12 @@ model_changes = [
     ModelChange(0x129, "disco_donkey.bin"),
     ModelChange(0x12A, "fake_fairy_om1.bin"),
     ModelChange(0x12B, "shrink_fake_fairy.bin"),
+    ModelChange(0x12C, "rainbow_coin_om1.bin"),
+    ModelChange(0x12D, "blueprint_dk_om1.bin"),
+    ModelChange(0x12E, "blueprint_diddy_om1.bin"),
+    ModelChange(0x12F, "blueprint_lanky_om1.bin"),
+    ModelChange(0x130, "blueprint_tiny_om1.bin"),
+    ModelChange(0x131, "blueprint_chunky_om1.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 

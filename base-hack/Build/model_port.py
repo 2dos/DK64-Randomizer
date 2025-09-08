@@ -659,7 +659,12 @@ def loadNewModels():
     portActorToModelTwo(0x12, "", "candy", 0x90, True, 0.5)
     portActorToModelTwo(0x1E, "", "snide", 0x90, True, 0.5)
     portActorToModelTwo(0, "fake_fairy_om1.bin", "fake_fairy", 0x90, True, 0.5)
-    # portModelTwoToActor(0, "rainbow_coin_om2.bin", "rainbow_coin", 0x68, True, 1.0)
+    portModelTwoToActor(0, "rainbow_coin_om2.bin", "rainbow_coin", 0x68, True, 1.0)
+    portModelTwoToActor(0xDE, "", "blueprint_dk", 0x90, True, 1.0)
+    portModelTwoToActor(0xE0, "", "blueprint_diddy", 0x90, True, 1.0)
+    portModelTwoToActor(0xE1, "", "blueprint_lanky", 0x90, True, 1.0)
+    portModelTwoToActor(0xDD, "", "blueprint_tiny", 0x90, True, 1.0)
+    portModelTwoToActor(0xDF, "", "blueprint_chunky", 0x90, True, 1.0)
     # Fake Items
     with open("bean_om1.bin", "rb") as fh:
         with open("fake_bean_om1.bin", "wb") as fg:
