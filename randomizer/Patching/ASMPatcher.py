@@ -2026,6 +2026,14 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x806F7924, Overlay.Static, "ActorToModelTwoHandler", offset_dict)  # Actor transfer for model 2
     writeHook(ROM_COPY, 0x8063BA04, Overlay.Static, "ModelTwoToSetupState", offset_dict)  # Model 2 transfer to setup
 
+    # Rainbow Ammo Static Functions
+    writeFunction(ROM_COPY, 0x806F97D0, Overlay.Static, "colorRainbowAmmoHUD", offset_dict)  # HUD Code
+    writeFunction(ROM_COPY, 0x80694FAC, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Coconut Code
+    writeFunction(ROM_COPY, 0x80692BCC, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Peanut Code
+    writeFunction(ROM_COPY, 0x806930DC, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Grape Code
+    writeFunction(ROM_COPY, 0x80695444, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Feather Code
+    writeFunction(ROM_COPY, 0x80694748, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Pineapple Code
+
     # Fast Start: Beginning of game
     if settings.fast_start_beginning_of_game:
         writeValue(ROM_COPY, 0x80714540, Overlay.Static, 0, offset_dict, 4)

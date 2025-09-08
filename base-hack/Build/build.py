@@ -672,6 +672,7 @@ for x in range(8):
             source_file=f"assets/displays/feather{x}.png",
             texture_format=TextureFormat.RGBA5551,
             do_not_delete_source=True,
+            bloat_compression=True,
         )
     )
 
@@ -1393,6 +1394,12 @@ colorblind_changes = [
     [0x1484, 0x1484],  # Star Flare
     [0xBAD, 0xBAE],  # Green Slam Switches
     [0xD01, 0xD02],  # Blue Slam Switches
+    [0x1474, 0x1483],  # Peanut
+    [0x1506, 0x1514],  # Grape
+    [0x12E1, 0x12E1],  # Grape
+    [0x15A3, 0x15AA],  # Feather
+    [0x12E5, 0x12E5],  # Pineapple
+    [0x14A7, 0x14B5],  # Pineapple
 ]
 
 file_dict.append(
@@ -2426,6 +2433,8 @@ with open(newROMName, "r+b") as fh:
     for disp in displays:
         for ext in [".png", ".rgba32", ".rgba5551"]:
             other_remove.append(f"displays/{disp}{ext}")
+    for x in range(8):
+        other_remove.append(f"displays/feather{x}.rgba5551")
     for x in range(8):
         other_remove.append(f"file_screen/key{x+1}.png")
     for x in range(12):

@@ -514,7 +514,7 @@ def patchRaceRequirements(spoiler, ROM_COPY: LocalROM):
     if puzzle_rando_setting == PuzzleRando.off and not race_coin_rando_on:
         return
     offset_dict = populateOverlayOffsets(ROM_COPY)
-    ram_addr = getSym("getSym")
+    ram_addr = getSym("CoinHUDElements")
     rom_addr = getROMAddress(ram_addr, Overlay.Custom, offset_dict)
     for coinreq in coin_req_info:
         ROM_COPY.seek(rom_addr + (4 * coinreq.offset) + 2)

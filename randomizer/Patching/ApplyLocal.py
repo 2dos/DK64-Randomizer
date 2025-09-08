@@ -16,7 +16,7 @@ from randomizer.Enums.Settings import RandomModels, BigHeadMode, ColorOptions
 from randomizer.Lists.Songs import ExcludedSongsSelector
 from randomizer.Patching.Cosmetics.TextRando import writeCrownNames
 from randomizer.Patching.Cosmetics.Holiday import applyHolidayMode
-from randomizer.Patching.Cosmetics.EnemyColors import writeMiscCosmeticChanges
+from randomizer.Patching.Cosmetics.EnemyColors import writeMiscCosmeticChanges, writeRainbowAmmo
 from randomizer.Patching.CosmeticColors import (
     apply_cosmetic_colors,
     overwrite_object_colors,
@@ -184,6 +184,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         if settings.override_cosmetics:
             overwrite_object_colors(settings, ROM_COPY)
             writeMiscCosmeticChanges(settings, ROM_COPY)
+            writeRainbowAmmo(settings, ROM_COPY)
             applyHolidayMode(settings, ROM_COPY)
             darkenPauseBubble(settings, ROM_COPY)
             if settings.misc_cosmetics:
@@ -295,6 +296,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 BooleanProperties(settings.fps_display, 0x96),  # FPS Display
                 BooleanProperties(settings.song_speed_near_win, 0x1B4),  # Song Win Con Speedup
                 BooleanProperties(settings.disable_flavor_text, 0xAF),  # Disable Flavor Text
+                BooleanProperties(settings.rainbow_ammo, 0x112),  # Rainbow Ammo
             ]
 
             for prop in boolean_props:

@@ -427,6 +427,9 @@ extern void resetIceTrapButtons(void);
 extern void handleIceTrapButtons(void);
 extern int getCharWidthMask(int style, unsigned char *character);
 
+extern void colorRainbowAmmo(void* actor);
+extern void colorRainbowAmmoHUD(int red, int green, int blue, int alpha);
+
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
