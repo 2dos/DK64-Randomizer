@@ -612,7 +612,7 @@ song_data = {
         mood_tags=[SongGroup.Gloomy, SongGroup.Calm],
     ),
     Songs.CastleShed: Song(
-        "Fungi Forest (Winch)",
+        "Creepy Castle (Shed)",
         mem_idx=139,
         type=SongType.BGM,
         memory=0x100,
