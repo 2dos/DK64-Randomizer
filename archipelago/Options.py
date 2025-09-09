@@ -907,7 +907,8 @@ class PuzzleRando(Choice):
 class SelectStartingKong(Choice):
     """Determines which Kong you will start with. This is the Kong that will walk out onto DK Isle at the beginning of the game.
 
-    Select "any" if you want your starting kong to be randomly determined."""
+    Select "any" if you want your starting kong to be randomly determined.
+    """
 
     display_name = "Select Starting Kong"
     option_donkey = 0
