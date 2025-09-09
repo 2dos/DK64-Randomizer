@@ -904,6 +904,22 @@ class PuzzleRando(Choice):
     default = 2
 
 
+class SelectStartingKong(Choice):
+    """Determines which Kong you will start with. This is the Kong that will walk out onto DK Isle at the beginning of the game.
+
+    Select "any" if you want your starting kong to be randomly determined."""
+
+    display_name = "Select Starting Kong"
+    option_donkey = 0
+    option_diddy = 1
+    option_lanky = 2
+    option_tiny = 3
+    option_chunky = 4
+    option_any = 5
+
+    default = 5
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -977,6 +993,7 @@ class DK64Options(PerGameCommonOptions):
     harder_bosses: HardBosses
     puzzle_rando: PuzzleRando
     goal_quantity: GoalQuantity
+    select_starting_kong: SelectStartingKong
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1013,6 +1030,7 @@ dk64_option_groups: List[OptionGroup] = [
         "Item Pool",
         [
             StartingKongCount,
+            SelectStartingKong,
             StartingMoveCount,
             HelmKeyLock,
             ClimbingShuffle,
