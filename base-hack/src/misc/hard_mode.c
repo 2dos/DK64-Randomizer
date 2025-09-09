@@ -439,7 +439,7 @@ static unsigned char stalactite_spawn_bans[] = {
     0x88, // Exiting Portal
 };
 
-void* spawnStalactite(short actor, float x, float y, float z, int unk0, int unk1, int unk2, void* unk3) {
+void* spawnStalactite(short actor, float x, float y, float z, int unk0, float unk1, int unk2, void* unk3) {
     if (ObjectModel2Timer < 90) { // Prevent 
         return (void*)0;
     }
@@ -462,7 +462,7 @@ static int pop_timer;
 
 void spawnKRoolLankyBalloon(void) {
     balloon_data data = {.path = 1, .speed = 5};
-    spawnActorSpawnerContainer(147, 796.0f, 106.0f, 745.0f, 0, 0x3F000000, 0, &data);
+    spawnActorSpawnerContainer(147, 796.0f, 106.0f, 745.0f, 0, 0.5f, 0, &data);
 }
 
 void popExistingBalloon(void) {

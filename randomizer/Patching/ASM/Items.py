@@ -235,7 +235,7 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x806B4E1A, Overlay.Static, 1, offset_dict)
     writeFunction(ROM_COPY, 0x806B4E40, Overlay.Static, "spawnWeirdReward", offset_dict)
     writeValue(ROM_COPY, 0x8069C266, Overlay.Static, 0, offset_dict)
-    writeFunction(ROM_COPY, 0x8069C29C, Overlay.Static, "spawnWeirdReward", offset_dict)
+    writeFunction(ROM_COPY, 0x8069C29C, Overlay.Static, "spawnWeirdReward0", offset_dict)
     # Melon Crates
     writeLabelValue(ROM_COPY, 0x80747EB0, Overlay.Static, "melonCrateItemHandler", offset_dict)
     # Grabbable Item Rando
@@ -510,7 +510,7 @@ def dropTableUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
                 ROM_COPY.seek(drop_i + 2)
                 drop_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 if drop_type in REPLENISHABLES:
-                    writeValue(ROM_COPY, drop_i, Overlay.Custom, 3, offset_dict)
+                    writeValue(ROM_COPY, DROP_START, Overlay.Custom, 3, offset_dict)
 
 
 def pauseUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):

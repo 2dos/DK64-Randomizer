@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(github.actor, '[bot]')
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
 
     - name: Check if ap_version.py version is newer than latest release
       id: check_version
@@ -38,7 +38,7 @@ jobs:
         fi
 
     - name: Setup python
-      uses: actions/setup-python@v4.1.0
+      uses: actions/setup-python@v6.0.0
       with:
           python-version: 3.12.0
           architecture: x64

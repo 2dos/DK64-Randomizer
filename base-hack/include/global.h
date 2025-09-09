@@ -154,6 +154,7 @@ extern void SpeedUpMusic(void);
 extern void restartSongWrapper(int write_slot, int song, float volume);
 
 extern void spawnWeirdReward(int index, int flag);
+extern void spawnWeirdReward0(int index, float x, float y, float z, int unk0, int spawn_type, int flag, int unk1);
 
 extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);

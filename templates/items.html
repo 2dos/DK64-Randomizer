@@ -314,7 +314,11 @@
         const tied_checks = data_items.filter(k => (k.is_check && k.tied == value) || (k.is_dummy && k.value == value));
         let count = 0;
         tied_checks.forEach(k => {
-            count += k.check_count;
+            if ((k.value === "shop") && document.getElementById("smaller_shops").checked) {
+                count += 60;
+            } else {
+                count += k.check_count;
+            }
         });
         return count;
     }
@@ -358,7 +362,11 @@
                         parsed = true;
                     } else if (j == 1) {
                         if (isNumeric(check_count_raw)) {
-                            local_check_count += parseInt(check_count_raw);
+                            if ((opt_value === "shop") && document.getElementById("smaller_shops").checked) {
+                                local_check_count += 60;
+                            } else {
+                                local_check_count += parseInt(check_count_raw);
+                            }
                             parsed = true;
                         }
                     }
@@ -379,8 +387,18 @@
                 if (local_item_count > local_check_count) {
                     is_valid_item_spread = false;
                 }
-                const text_color = local_item_count > local_check_count ? "red" : "green";
                 const check_hint_el = document.getElementById(`${name}_check_hint_${index}`);
+                check_hint_el.title = "";
+                let text_color = "DarkCyan";
+                if (local_item_count > local_check_count) {
+                    // Too many items for the amount of checks
+                    text_color = "red";
+                } else if (local_item_count == local_check_count) {
+                    text_color = "DarkOrange";
+                    check_hint_el.title = "This pool might have some trouble generating.";
+                } else {
+                    text_color = "green";
+                }
                 check_hint_el.innerHTML = inner_text;
                 check_hint_el.style.color = text_color;
             }

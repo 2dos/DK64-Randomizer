@@ -15,6 +15,15 @@ except ImportError:
     import logging
 
     logger = logging.getLogger(__name__)
+
+
+def sanitize_and_trim(input_string, max_length=0x1F):
+    """Sanitize and trim a string for safe memory writing."""
+    normalized = input_string.replace("'", "").replace("`", "").replace("'", "").strip()
+    sanitized = "".join(e for e in normalized if e.isalnum() or e == " ").strip()
+    return sanitized.upper()[:max_length]
+
+
 # Heavily based on the autoconnector work in GSTHD by JXJacob
 
 # Detect operating system
@@ -592,10 +601,12 @@ class EmulatorInfo:
 
     def write_bytestring(self, address: int, data: str):
         """Write a bytestring to memory."""
-        for i, char in enumerate(data):
+        # Always sanitize the input data before writing to memory
+        sanitized_data = sanitize_and_trim(data)
+        for i, char in enumerate(sanitized_data):
             self.write_u8(address + i, ord(char))
         # Add null terminator
-        self.write_u8(address + len(data), 0)
+        self.write_u8(address + len(sanitized_data), 0)
 
     def validate_rom(self) -> bool:
         """Validate the ROM."""
