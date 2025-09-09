@@ -381,6 +381,21 @@ def portModelTwoToActor(model_two_index: int, input_file: str, output_file: str,
                     raw = 0xFFFF
                 fh.seek(vert_start_pointer + (0x10 * v) + 2)
                 fh.write(raw.to_bytes(2, "big"))
+                for o in (0, 4):
+                    fh.seek(vert_start_pointer + (0x10 * v) + o)
+                    raw = int.from_bytes(fh.read(2), "big")
+                    if raw > 0x7FFF:
+                        raw -= 0x10000
+                    raw *= scale
+                    raw = int(raw)
+                    if raw < 0:
+                        raw += 0x10000
+                    if raw < 0:
+                        raw = 0
+                    elif raw > 0xFFFF:
+                        raw = 0xFFFF
+                    fh.seek(vert_start_pointer + (0x10 * v) + o)
+                    fh.write(raw.to_bytes(2, "big"))
         # Write data to temp files
         fh.seek(dl_start_pointer)
         dl_data = b"\xda\x38\x00\x03\x04\x00\x00\x00" + fh.read(dl_size)
@@ -660,11 +675,11 @@ def loadNewModels():
     portActorToModelTwo(0x1E, "", "snide", 0x90, True, 0.5)
     portActorToModelTwo(0, "fake_fairy_om1.bin", "fake_fairy", 0x90, True, 0.5)
     portModelTwoToActor(0, "rainbow_coin_om2.bin", "rainbow_coin", 0x68, True, 1.0)
-    portModelTwoToActor(0xDE, "", "blueprint_dk", 0x90, True, 1.0)
-    portModelTwoToActor(0xE0, "", "blueprint_diddy", 0x90, True, 1.0)
-    portModelTwoToActor(0xE1, "", "blueprint_lanky", 0x90, True, 1.0)
-    portModelTwoToActor(0xDD, "", "blueprint_tiny", 0x90, True, 1.0)
-    portModelTwoToActor(0xDF, "", "blueprint_chunky", 0x90, True, 1.0)
+    portModelTwoToActor(0xDE, "", "blueprint_dk", 0x90, True, 2 / 0.15)
+    portModelTwoToActor(0xE0, "", "blueprint_diddy", 0x90, True, 2 / 0.15)
+    portModelTwoToActor(0xE1, "", "blueprint_lanky", 0x90, True, 2 / 0.15)
+    portModelTwoToActor(0xDD, "", "blueprint_tiny", 0x90, True, 2 / 0.15)
+    portModelTwoToActor(0xDF, "", "blueprint_chunky", 0x90, True, 2 / 0.15)
     # Fake Items
     with open("bean_om1.bin", "rb") as fh:
         with open("fake_bean_om1.bin", "wb") as fg:

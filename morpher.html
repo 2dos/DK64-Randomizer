@@ -564,6 +564,10 @@
                     setting_data.cb_medal_behavior_new = setting_data.cb_medal_behavior;
                     delete setting_data.cb_medal_behavior;
                 }
+                if (sel_version_num <= numericVersion("5.4.0")) {
+                    // Convert free trade setting to utilize a boolean
+                    setting_data.free_trade_setting = setting_data.free_trade_setting != 'none';
+                }
                 // Update to include all unhandled options to unsorted
                 const all_valid_items = Object.keys(output_json.ItemRandoListSelected);
                 let mentioned_items = [];

@@ -472,11 +472,7 @@ class Settings:
         self.enemy_drop_rando = False
 
         # In item rando, can any Kong collect any item?
-        # free_trade_setting: FreeTradeSetting
-        # none
-        # not_blueprints - this excludes blueprints and lesser collectibles like cbs and coins
-        # major_collectibles - includes blueprints, does not include lesser collectibles like cbs and coins
-        self.free_trade_setting = FreeTradeSetting.none
+        self.free_trade_setting = False
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -2218,8 +2214,8 @@ class Settings:
             ItemList[Items.Pearl].playthrough = True
             ItemList[Items.FillerPearl].playthrough = True
 
-        self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none
-        self.free_trade_blueprints = self.free_trade_setting == FreeTradeSetting.major_collectibles
+        self.free_trade_items = self.free_trade_setting
+        self.free_trade_blueprints = self.free_trade_setting
 
         if IsDDMSSelected(self.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles):
             self.remove_wrinkly_puzzles = True
@@ -2479,16 +2475,29 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.chunky] = locations_excluding_shared_shops.copy()
             if Types.Blueprint in self.shuffled_location_types:
                 # Blueprints are banned from Key, Crown, Fairy and Rainbow Coin Locations
-                blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key, Types.Fairy, Types.RainbowCoin, Types.Kong)]
+                badBlueprintTypes = [
+                    Types.Crown,
+                    Types.Key,
+                    Types.Fairy,
+                    Types.RainbowCoin,
+                    Types.Kong,
+                ]
+                badBlueprintLocations = [
+                    Locations.IslesDonkeyJapesRock,
+                ]
+                if self.free_trade_setting:
+                    badBlueprintTypes = []
+                    badBlueprintLocations = []
+                blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in badBlueprintTypes]
+
                 # These locations do not have a set Kong assigned to them and can't have blueprints
-                badBPLocations = (Locations.IslesDonkeyJapesRock,)
-                blueprintLocations = [location for location in shuffledNonMoveLocations if location not in badBPLocations and spoiler.LocationList[location].type in blueprintValidTypes]
+                blueprintLocations = [location for location in shuffledNonMoveLocations if location not in badBlueprintLocations and spoiler.LocationList[location].type in blueprintValidTypes]
                 self.valid_locations[Types.Blueprint] = {}
-                self.valid_locations[Types.Blueprint][Kongs.donkey] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.donkey]
-                self.valid_locations[Types.Blueprint][Kongs.diddy] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.diddy]
-                self.valid_locations[Types.Blueprint][Kongs.lanky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.lanky]
-                self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.tiny]
-                self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.chunky]
+                for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
+                    if self.free_trade_setting:
+                        self.valid_locations[Types.Blueprint][kong] = blueprintLocations.copy()
+                    else:
+                        self.valid_locations[Types.Blueprint][kong] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == kong]
             if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations]
             if Types.FillerBanana in self.shuffled_location_types:
