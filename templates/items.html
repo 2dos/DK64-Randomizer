@@ -78,10 +78,9 @@
                         {% if x == 0 %}
                             Unshuffled
                         {% else %}
-                            Pool {{ x }}
+                            Pool {{ x }} <span id="item_rando_check_hint_{{ x }}"></span>
                         {% endif %}
                     </p>
-                    <div id="item_rando_check_hint_{{ x }}" style="min-height: 24px; margin-bottom: 10px;"></div>
                     {% if x == 0 %}
                     <div class="text-start hide-if-ir-decouple">
                         <h6>Items</h6>
@@ -96,9 +95,25 @@
                             {% for option in itemRando %}
                                 {% if not option.is_check %}
                                     {% if option.is_dummy %}
-                                        <li class="list-group-item show-if-ir-decouple" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">{{ option.name }}</li>
+                                        <li class="list-group-item d-flex show-if-ir-decouple" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">
+                                            <span class="fs-6 d-flex">
+                                                <i class="fas fa-arrows-alt handle" style="height: 20px; width: 20px; margin-right: 5px"></i>
+                                                <i class="fas fa-clone clone-btn" style="height: 20px; width: 20px; margin-right: 5px"></i>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                {{ option.name }}
+                                            </span>
+                                        </li>
                                     {% else %}
-                                        <li class="list-group-item" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">{{ option.name }}</li>
+                                        <li class="list-group-item d-flex" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">
+                                            <span class="fs-6 d-flex">
+                                                <i class="fas fa-arrows-alt handle" style="height: 20px; width: 20px; margin-right: 5px"></i>
+                                                <i class="fas fa-clone clone-btn" style="height: 20px; width: 20px; margin-right: 5px"></i>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                {{ option.name }}
+                                            </span>
+                                        </li>
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}
@@ -117,7 +132,15 @@
                         {% if x == 0 %}
                             {% for option in itemRando %}
                                 {% if option.is_check %}
-                                    <li class="list-group-item ischeck" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}" tied_item="{{ option.tied }}">{{ option.name }}</li>
+                                    <li class="list-group-item d-flex ischeck" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}" tied_item="{{ option.tied }}">
+                                        <span class="fs-6 d-flex">
+                                            <i class="fas fa-arrows-alt handle" style="height: 20px; width: 20px; margin-right: 5px"></i>
+                                            <i class="fas fa-clone clone-btn" style="height: 20px; width: 20px; margin-right: 5px"></i>
+                                        </span>
+                                        <span class="flex-grow-1">
+                                            {{ option.name }}
+                                        </span>
+                                    </li>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
@@ -277,29 +300,67 @@
     const sort_sections_items = sort_container.getElementsByClassName("shared");
     const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
     let offset = sort_sections_items.length;
+    function makeSortable(el, groupName) {
+        let dragFromCloneBtn = false; // flag to indicate next drag starts from clone button
+
+        // detect mousedown/touchstart on clone buttons
+        el.addEventListener('mousedown', e => {
+            dragFromCloneBtn = !!e.target.closest('.clone-btn');
+        });
+        el.addEventListener('touchstart', e => {
+            dragFromCloneBtn = !!e.target.closest('.clone-btn');
+        });
+
+        new Sortable(el, {
+            group: {
+                name: groupName,
+                pull: (t, f, d, e) => {
+                    return dragFromCloneBtn ? 'clone' : true;
+                }, // always clone; emulate move if needed
+                put: [groupName]
+            },
+            handle: '.handle, .clone-btn', // only handle moves normally
+            animation: 150,
+            fallbackTolerance: 3,
+            sort: false,
+
+            onStart(evt) {
+                // set a dataset flag on the dragged item based on pre-recorded info
+                evt.item.dataset.cloneMode = dragFromCloneBtn ? 'true' : 'false';
+            },
+
+            onAdd(evt) {
+                const item = evt.item;
+                const to = evt.to;
+                const cloneMode = item.dataset.cloneMode === 'true';
+
+                if (!cloneMode) {
+                    const from = evt.from;
+                    if (from && from.contains(item)) {
+                    from.removeChild(item); // emulate move
+                    }
+                }
+
+                // remove duplicates in the destination based on value attribute
+                const value = item.getAttribute('value');
+                if (value) {
+                    const duplicates = Array.from(to.querySelectorAll('li')).filter(
+                        li => li !== item && li.getAttribute('value') === value
+                    );
+                    duplicates.forEach(dup => dup.remove());
+                }
+
+                delete item.dataset.cloneMode;
+
+                const changeEvent = new Event('change', { bubbles: true, cancelable: false });
+                evt.to.dispatchEvent(changeEvent);
+                updateCheckItemCounter(evt.to.parentElement.parentElement);
+            }
+        });
+    }
     for (let i = 0; i < offset; i++) {
-        new Sortable(sort_sections_items[i], {
-            group: 'shared',
-            animation: 150,
-            fallbackTolerance: 3,
-            sort: false,
-            onEnd: (evt) => {
-                const event = new Event("change", { bubbles: true, cancelable: false });
-                evt.to.dispatchEvent(event);
-                updateCheckItemCounter(evt.to.parentElement.parentElement);
-            }
-        });
-        new Sortable(sort_sections_checks[i], {
-            group: 'sharedchecks',
-            animation: 150,
-            fallbackTolerance: 3,
-            sort: false,
-            onEnd: (evt) => {
-                const event = new Event("change", { bubbles: true, cancelable: false });
-                evt.to.dispatchEvent(event);
-                updateCheckItemCounter(evt.to.parentElement.parentElement);
-            }
-        });
+        makeSortable(sort_sections_items[i], 'shared');
+        makeSortable(sort_sections_checks[i], 'sharedchecks');
     }
 
     function isNumeric(str) {
@@ -333,10 +394,29 @@
         const data_items = JSON.parse(data_items_json);
         const tied_checks = data_items.filter(k => (k.is_check && k.tied == value) || (k.is_dummy && k.value == value));
         let count = 0;
+        let latest_value = null;
         tied_checks.forEach(k => {
             count += getCheckChange(k.value, k.check_count);
+            latest_value = k.value;
         });
-        return count;
+        return {
+            "size": count,
+            "name": latest_value,
+        }
+    }
+
+    function populateCheck(outputs, name, size, index) {
+        if (index > 0) {
+            if (!Object.keys(outputs).includes(name)) {
+                outputs[name] = {
+                    size: size,
+                    pools: [index]
+                }
+            } else {
+                outputs[name].pools.push(index)
+            }
+        }
+        return outputs;
     }
 
     function updateCheckItemCounter(ctr) {
@@ -349,6 +429,10 @@
         let item_shuffle_cache = {};
         let item_shuffle_tied = {};
         let offset = sort_sections_items.length;
+        let inputs = {};
+        let outputs = {};
+        let pools = {};
+        let poolstatus = {};
         for (let index = 0; index < offset; index++) {
             let local_check_count = 0;
             let local_item_count = 0;
@@ -374,16 +458,25 @@
                         item_shuffle_tied[opt_value] = tied_item_raw;
                     }
                     if (!decoupled) {
-                        local_check_count += getTiedCheckCount(opt_value);
+                        let data = getTiedCheckCount(opt_value);
+                        if (data.size > 0) {
+                            outputs = populateCheck(outputs, data.name, data.size, index);
+                        }
                         parsed = true;
                     } else if (j == 1) {
                         if (isNumeric(check_count_raw)) {
-                            local_check_count += getCheckChange(opt_value, parseInt(check_count_raw));
+                            let size = getCheckChange(opt_value, parseInt(check_count_raw));
+                            if (size > 0) {
+                                outputs = populateCheck(outputs, opt_value, size, index);
+                            }
                             parsed = true;
                         }
                     }
                     if (isNumeric(item_count_raw)) {
-                        local_item_count += getItemChange(opt_value, parseInt(item_count_raw));
+                        let size = getItemChange(opt_value, parseInt(item_count_raw));
+                        if (size > 0) {
+                            inputs = populateCheck(inputs, opt_value, size, index);
+                        }
                         parsed = true;
                     }
                     if (parsed) {
@@ -391,6 +484,11 @@
                     }
                 }
             }
+            if (index > 0) {
+                pools[index] = [];
+                poolstatus[index] = true;
+            }
+            /*
             if (index > 0) {
                 let inner_text = "";
                 if (parsed_options > 0) {
@@ -414,7 +512,183 @@
                 check_hint_el.innerHTML = inner_text;
                 check_hint_el.style.color = text_color;
             }
+            */
         }
+        // Calculations
+        class Dinic {
+            constructor(n) {
+                this.n = n;
+                this.adj = Array.from({ length: n }, () => []);
+            }
+
+            addEdge(u, v, cap) {
+                const fwd = { to: v, rev: this.adj[v].length, cap: cap, orig: cap };
+                const rev = { to: u, rev: this.adj[u].length, cap: 0, orig: 0 };
+                this.adj[u].push(fwd);
+                this.adj[v].push(rev);
+            }
+
+            maxFlow(s, t) {
+                const INF = Number.MAX_SAFE_INTEGER;
+                let flow = 0;
+                const level = new Array(this.n);
+                const q = [];
+
+                const bfs = () => {
+                level.fill(-1);
+                q.length = 0;
+                q.push(s);
+                level[s] = 0;
+                for (let qi = 0; qi < q.length; qi++) {
+                    const u = q[qi];
+                    for (const e of this.adj[u]) {
+                    if (e.cap > 0 && level[e.to] < 0) {
+                        level[e.to] = level[u] + 1;
+                        q.push(e.to);
+                    }
+                    }
+                }
+                return level[t] >= 0;
+                };
+
+                const it = new Array(this.n);
+                const dfs = (u, f) => {
+                if (u === t) return f;
+                for (let i = it[u]; i < this.adj[u].length; i++, it[u]++) {
+                    const e = this.adj[u][i];
+                    if (e.cap > 0 && level[e.to] === level[u] + 1) {
+                    const pushed = dfs(e.to, Math.min(f, e.cap));
+                    if (pushed > 0) {
+                        e.cap -= pushed;
+                        this.adj[e.to][e.rev].cap += pushed;
+                        return pushed;
+                    }
+                    }
+                }
+                return 0;
+                };
+
+                while (bfs()) {
+                it.fill(0);
+                let pushed;
+                while ((pushed = dfs(s, INF)) > 0) {
+                    flow += pushed;
+                }
+                }
+                return flow;
+            }
+        }
+
+        /**
+        * Main function
+        * @param {Array<{size:number, pools:number[]}>} liquids
+        * @param {Array<{size:number, pools:number[]}>} buckets
+        * @returns {Object} { allFit: boolean, roomStatus: {room: boolean}, assignment: Array of assignments per liquid }
+        */
+        function checkDistribution(liquids, buckets) {
+            const nL = liquids.length;
+            const nB = buckets.length;
+
+            // Build set of rooms found (works for arbitrary pool ids)
+            const roomsSet = new Set();
+            liquids.forEach(l => (l.pools || []).forEach(r => roomsSet.add(r)));
+            buckets.forEach(b => (b.pools || []).forEach(r => roomsSet.add(r)));
+            const rooms = Array.from(roomsSet).sort((a, b) => a - b);
+
+            // Node indexing
+            const S = 0;
+            const Lstart = 1;
+            const Bstart = Lstart + nL;
+            const T = Bstart + nB;
+            const N = T + 1;
+
+            const dinic = new Dinic(N);
+
+            // S -> liquid nodes
+            let totalLiquid = 0;
+            for (let i = 0; i < nL; i++) {
+                const size = Number(liquids[i].size) || 0;
+                totalLiquid += size;
+                dinic.addEdge(S, Lstart + i, size);
+            }
+
+            // bucket nodes -> T
+            for (let j = 0; j < nB; j++) {
+                const cap = Number(buckets[j].size) || 0;
+                dinic.addEdge(Bstart + j, T, cap);
+            }
+
+            // liquid -> bucket edges (eligible if pools intersect)
+            for (let i = 0; i < nL; i++) {
+                const lp = new Set((liquids[i].pools || []));
+                for (let j = 0; j < nB; j++) {
+                const bp = buckets[j].pools || [];
+                // check intersection
+                let eligible = false;
+                for (const p of bp) {
+                    if (lp.has(p)) { eligible = true; break; }
+                }
+                if (eligible) {
+                    // capacity can be at most the liquid's size (no need for larger)
+                    dinic.addEdge(Lstart + i, Bstart + j, Number(liquids[i].size) || 0);
+                }
+                }
+            }
+
+            const flow = dinic.maxFlow(S, T);
+            const allFit = flow === totalLiquid;
+
+            // Extract assignment: how much of each liquid went to each bucket
+            const assignment = Array.from({ length: nL }, () => []);
+            for (let i = 0; i < nL; i++) {
+                const node = Lstart + i;
+                for (const e of dinic.adj[node]) {
+                // edges that go to buckets have index in [Bstart, Bstart+nB-1]
+                    if (e.to >= Bstart && e.to < Bstart + nB) {
+                        const used = (e.orig || 0) - (e.cap || 0); // flow = original cap - remaining cap
+                        if (used > 0) {
+                        assignment[i].push({ bucketIndex: e.to - Bstart, amount: used });
+                        }
+                    }
+                }
+            }
+
+            // Room status: conservative check: a room is bad only if its buckets cannot hold the sum of liquids that are EXCLUSIVE to that room.
+            const roomStatus = {};
+            for (const r of rooms) {
+                // capacity in this room (sum of bucket sizes that include the room)
+                let capInRoom = 0;
+                for (const b of buckets) {
+                    if ((b.pools || []).includes(r)) capInRoom += Number(b.size) || 0;
+                }
+                // exclusive demand = sum of liquids whose pools array === [r] (or only contains r)
+                let exclusiveDemand = 0;
+                for (const l of liquids) {
+                    const lp = (l.pools || []);
+                    if (lp.length === 1 && lp[0] === r) exclusiveDemand += Number(l.size) || 0;
+                }
+                roomStatus[r] = capInRoom >= exclusiveDemand;
+            }
+
+            return { allFit, flow, totalLiquid, roomStatus, assignment };
+        }
+
+        const result = checkDistribution(Object.values(inputs), Object.values(outputs));
+        for (let x = 0; x < 4; x++) {
+            const node = document.getElementById(`item_rando_check_hint_${x + 1}`);
+            if (result.roomStatus[x + 1] !== false) {  // Keep like this, it either has to be undefined (therefore no items in that pool) or true
+                node.innerText = "✓";
+                node.style.color = "green";
+                node.title = "Pool is valid";
+                is_valid_item_spread = true;
+            } else {
+                node.innerText = "⨯";
+                node.style.color = "red";
+                node.title = "Pool is invalid due to too few items";
+                is_valid_item_spread = false;
+            }
+        }
+
         let is_valid_item_shuffle = true;
         Object.keys(item_shuffle_tied).forEach(key => {
             const val = item_shuffle_tied[key];
@@ -439,9 +713,25 @@
         const offset = sort_sections_items.length;
         let total_html_items = "";
         let total_html_checks = "";
+        let total_items_values = [];
+        let total_checks_values = [];
         for (let i = 0; i < offset; i++) {
-            total_html_items += sort_sections_items[i].innerHTML;
-            total_html_checks += sort_sections_checks[i].innerHTML;
+            const items = sort_sections_items[i].getElementsByTagName("li");
+            const checks = sort_sections_checks[i].getElementsByTagName("li");
+            for (let k = 0; k < items.length; k++) {
+                const item_value = items[k].getAttribute("value");
+                if (!total_items_values.includes(item_value)) {
+                    total_items_values.push(item_value);
+                    total_html_items += items[k].outerHTML;
+                }
+            }
+            for (let k = 0; k < checks.length; k++) {
+                const check_value = checks[k].getAttribute("value");
+                if (!total_checks_values.includes(check_value)) {
+                    total_checks_values.push(check_value);
+                    total_html_checks += checks[k].outerHTML;
+                }
+            }
         }
         for (let i = 0; i < offset; i++) {
             if (i == index) {

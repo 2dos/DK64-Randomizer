@@ -7,6 +7,7 @@ import random
 import os
 from version import version
 from copy import deepcopy
+from collections import deque
 
 from randomizer.Enums.Transitions import Transitions
 import randomizer.ItemPool as ItemPool
@@ -2850,11 +2851,159 @@ class Settings:
         if Types.Snide in self.shuffled_location_types:
             if len(self.valid_locations[Types.Snide]) <= 0:
                 return False
-        buffers = self.getPoolBuffer()
-        for buffer in buffers:
-            if buffer < 0:  # More items than checks
-                return False
-        return True
+        
+        class Edge:
+            def __init__(self, to, rev, cap, orig):
+                self.to = to
+                self.rev = rev
+                self.cap = cap
+                self.orig = orig
+
+
+        class Dinic:
+            def __init__(self, n):
+                self.n = n
+                self.adj = [[] for _ in range(n)]
+
+            def add_edge(self, u, v, cap):
+                fwd = Edge(v, len(self.adj[v]), cap, cap)
+                rev = Edge(u, len(self.adj[u]), 0, 0)
+                self.adj[u].append(fwd)
+                self.adj[v].append(rev)
+
+            def max_flow(self, s, t):
+                INF = float('inf')
+                flow = 0
+                level = [0] * self.n
+                it = [0] * self.n
+
+                def bfs():
+                    nonlocal level
+                    level = [-1] * self.n
+                    queue = deque([s])
+                    level[s] = 0
+                    while queue:
+                        u = queue.popleft()
+                        for e in self.adj[u]:
+                            if e.cap > 0 and level[e.to] < 0:
+                                level[e.to] = level[u] + 1
+                                queue.append(e.to)
+                    return level[t] >= 0
+
+                def dfs(u, f):
+                    if u == t:
+                        return f
+                    while it[u] < len(self.adj[u]):
+                        e = self.adj[u][it[u]]
+                        if e.cap > 0 and level[e.to] == level[u] + 1:
+                            pushed = dfs(e.to, min(f, e.cap))
+                            if pushed > 0:
+                                e.cap -= pushed
+                                self.adj[e.to][e.rev].cap += pushed
+                                return pushed
+                        it[u] += 1
+                    return 0
+
+                while bfs():
+                    it = [0] * self.n
+                    while True:
+                        pushed = dfs(s, INF)
+                        if pushed == 0:
+                            break
+                        flow += pushed
+                return flow
+
+
+        def check_distribution(liquids, buckets):
+            nL = len(liquids)
+            nB = len(buckets)
+
+            # Build set of rooms
+            rooms_set = set()
+            for l in liquids:
+                for r in l.get("pools", []):
+                    rooms_set.add(r)
+            for b in buckets:
+                for r in b.get("pools", []):
+                    rooms_set.add(r)
+            rooms = sorted(rooms_set)
+
+            # Node indexing
+            S = 0
+            Lstart = 1
+            Bstart = Lstart + nL
+            T = Bstart + nB
+            N = T + 1
+
+            dinic = Dinic(N)
+
+            total_liquid = 0
+
+            # S -> liquids
+            for i, l in enumerate(liquids):
+                size = int(l.get("size", 0))
+                total_liquid += size
+                dinic.add_edge(S, Lstart + i, size)
+
+            # Buckets -> T
+            for j, b in enumerate(buckets):
+                size = int(b.get("size", 0))
+                dinic.add_edge(Bstart + j, T, size)
+
+            # Liquids -> Buckets (if pool matches)
+            for i, l in enumerate(liquids):
+                lp = set(l.get("pools", []))
+                for j, b in enumerate(buckets):
+                    bp = set(b.get("pools", []))
+                    if lp & bp:
+                        dinic.add_edge(Lstart + i, Bstart + j, int(l.get("size", 0)))
+
+            flow = dinic.max_flow(S, T)
+            all_fit = flow == total_liquid
+
+            # Assignment
+            assignment = [[] for _ in range(nL)]
+            for i in range(nL):
+                node = Lstart + i
+                for e in dinic.adj[node]:
+                    if Bstart <= e.to < Bstart + nB:
+                        used = e.orig - e.cap
+                        if used > 0:
+                            assignment[i].append({
+                                "bucketIndex": e.to - Bstart,
+                                "amount": used
+                            })
+
+            # Room status
+            room_status = {}
+            for r in rooms:
+                cap_in_room = sum(int(b.get("size", 0)) for b in buckets if r in b.get("pools", []))
+                exclusive_demand = sum(int(l.get("size", 0)) for l in liquids if l.get("pools", []) == [r])
+                room_status[r] = cap_in_room >= exclusive_demand
+
+            return all_fit
+
+        inputs = {}
+        outputs = {}
+        self.getPoolBuffer()
+        for x in range(4):
+            for item_selector in self.item_search[x]:
+                if item_selector not in inputs:
+                    inputs[item_selector] = {
+                        "size": self.item_check_counts[item_selector][0],
+                        "pools": [x]
+                    }
+                else:
+                    inputs[item_selector]["pools"].append(x)
+            for check_selector in self.check_search[x]:
+                if check_selector not in outputs:
+                    outputs[check_selector] = {
+                        "size": self.item_check_counts[check_selector][1],
+                        "pools": [x]
+                    }
+                else:
+                    outputs[check_selector]["pools"].append(x)
+        return check_distribution(list(inputs.values()), list(outputs.values()))
 
     def __repr__(self):
         """Return printable version of the object as json.
