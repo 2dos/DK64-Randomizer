@@ -2851,137 +2851,150 @@ class Settings:
         if Types.Snide in self.shuffled_location_types:
             if len(self.valid_locations[Types.Snide]) <= 0:
                 return False
-        
-        class Edge:
-            def __init__(self, to, rev, cap, orig):
-                self.to = to
-                self.rev = rev
-                self.cap = cap
-                self.orig = orig
-
-
-        class Dinic:
-            def __init__(self, n):
-                self.n = n
-                self.adj = [[] for _ in range(n)]
-
-            def add_edge(self, u, v, cap):
-                fwd = Edge(v, len(self.adj[v]), cap, cap)
-                rev = Edge(u, len(self.adj[u]), 0, 0)
-                self.adj[u].append(fwd)
-                self.adj[v].append(rev)
-
-            def max_flow(self, s, t):
-                INF = float('inf')
-                flow = 0
-                level = [0] * self.n
-                it = [0] * self.n
-
-                def bfs():
-                    nonlocal level
-                    level = [-1] * self.n
-                    queue = deque([s])
-                    level[s] = 0
-                    while queue:
-                        u = queue.popleft()
-                        for e in self.adj[u]:
-                            if e.cap > 0 and level[e.to] < 0:
-                                level[e.to] = level[u] + 1
-                                queue.append(e.to)
-                    return level[t] >= 0
-
-                def dfs(u, f):
-                    if u == t:
-                        return f
-                    while it[u] < len(self.adj[u]):
-                        e = self.adj[u][it[u]]
-                        if e.cap > 0 and level[e.to] == level[u] + 1:
-                            pushed = dfs(e.to, min(f, e.cap))
-                            if pushed > 0:
-                                e.cap -= pushed
-                                self.adj[e.to][e.rev].cap += pushed
-                                return pushed
-                        it[u] += 1
-                    return 0
-
-                while bfs():
-                    it = [0] * self.n
-                    while True:
-                        pushed = dfs(s, INF)
-                        if pushed == 0:
-                            break
-                        flow += pushed
-                return flow
-
 
         def check_distribution(liquids, buckets):
-            nL = len(liquids)
-            nB = len(buckets)
-
-            # Build set of rooms
-            rooms_set = set()
-            for l in liquids:
-                for r in l.get("pools", []):
-                    rooms_set.add(r)
-            for b in buckets:
-                for r in b.get("pools", []):
-                    rooms_set.add(r)
-            rooms = sorted(rooms_set)
-
-            # Node indexing
-            S = 0
-            Lstart = 1
-            Bstart = Lstart + nL
-            T = Bstart + nB
-            N = T + 1
-
-            dinic = Dinic(N)
-
-            total_liquid = 0
-
-            # S -> liquids
-            for i, l in enumerate(liquids):
-                size = int(l.get("size", 0))
-                total_liquid += size
-                dinic.add_edge(S, Lstart + i, size)
-
-            # Buckets -> T
-            for j, b in enumerate(buckets):
-                size = int(b.get("size", 0))
-                dinic.add_edge(Bstart + j, T, size)
-
-            # Liquids -> Buckets (if pool matches)
-            for i, l in enumerate(liquids):
-                lp = set(l.get("pools", []))
-                for j, b in enumerate(buckets):
-                    bp = set(b.get("pools", []))
-                    if lp & bp:
-                        dinic.add_edge(Lstart + i, Bstart + j, int(l.get("size", 0)))
-
-            flow = dinic.max_flow(S, T)
-            all_fit = flow == total_liquid
-
-            # Assignment
-            assignment = [[] for _ in range(nL)]
-            for i in range(nL):
-                node = Lstart + i
-                for e in dinic.adj[node]:
-                    if Bstart <= e.to < Bstart + nB:
-                        used = e.orig - e.cap
-                        if used > 0:
-                            assignment[i].append({
-                                "bucketIndex": e.to - Bstart,
-                                "amount": used
-                            })
-
-            # Room status
-            room_status = {}
-            for r in rooms:
-                cap_in_room = sum(int(b.get("size", 0)) for b in buckets if r in b.get("pools", []))
-                exclusive_demand = sum(int(l.get("size", 0)) for l in liquids if l.get("pools", []) == [r])
-                room_status[r] = cap_in_room >= exclusive_demand
-
-            return all_fit
+            pool_count = 4
+            pool_valid = [True] * pool_count
+            pool_verified = [False] * pool_count
+            pool_liquids = [0] * pool_count
+            pool_buckets = [0] * pool_count
+            lq_copy = liquids.copy()
+            bk_copy = buckets.copy()
+            iter_count = 100
+            ran_rules = []
+            while True:
+                # Rule 1:
+                # Any pools which only have checks or only have items should get filtered out
+                # if their non-filtered version has more than 0 items.
+                # This can only be ran once.
+                if 1 not in ran_rules:
+                    has_liquids = [False] * pool_count
+                    has_buckets = [False] * pool_count
+                    for lq in lq_copy:
+                        for pl in lq["pools"]:
+                            has_liquids[pl] = True
+                    for bk in bk_copy:
+                        for pl in bk["pools"]:
+                            has_buckets[pl] = True
+                    pools_to_filter = []
+                    for x in range(pool_count):
+                        if not has_buckets[x] or not has_liquids[x]:
+                            pools_to_filter.append(x)
+                    for pl in pools_to_filter:
+                        for lq in lq_copy:
+                            if pl in lq["pools"]:
+                                filtered_version = [x for x in lq["pools"] if x not in pools_to_filter]
+                                if len(filtered_version) > 0:
+                                    lq["pools"] = filtered_version.copy()
+                                else:
+                                    pool_valid[pl] = False
+                                    pool_verified[pl] = True
+                        for bk in bk_copy:
+                            if pl in bk["pools"]:
+                                filtered_version = [x for x in bk["pools"] if x not in pools_to_filter]
+                                if len(filtered_version) > 0:
+                                    bk["pools"] = filtered_version.copy()
+                                else:
+                                    pool_valid[pl] = False
+                                    pool_verified[pl] = True
+                    ran_rules.append(1)
+                # Rule 2:
+                # Any completely empty pools should add all of their items/checks in them
+                # Any pools with greater amounts of items than checks gets flagged as invalid.
+                found_lq = [False] * pool_count
+                found_bk = [False] * pool_count
+                for lq in lq_copy:
+                    for pl in lq["pools"]:
+                        found_lq[pl] = True
+                for bk in bk_copy:
+                    for pl in bk["pools"]:
+                        found_bk[pl] = True
+                for x in range(pool_count):
+                    if not found_lq[x] and not found_bk[x]:
+                        if pool_buckets[x] < pool_liquids[x]:
+                            pool_valid[x] = False
+                            pool_verified[x] = True
+                #  Rule 3:
+                # Any items/checks which are only part of 1 pool should get filtered out and applied to a guaranteed liq/buck total
+                temp_lq = []
+                for lq in lq_copy:
+                    if len(lq["pools"]) == 1:
+                        pool_liquids[lq["pools"][0]] += lq["size"]
+                    else:
+                        temp_lq.append(lq)
+                lq_copy = temp_lq.copy()
+                temp_bk = []
+                for bk in bk_copy:
+                    if len(bk["pools"]) == 1:
+                        pool_buckets[bk["pools"][0]] += bk["size"]
+                    else:
+                        temp_bk.append(bk)
+                bk_copy = temp_bk.copy()
+                # Rule 4:
+                # For all remaining buckets, check the pools which need the checks the most
+                bucket_deficit = [x - pool_buckets[xi] for xi, x in enumerate(pool_liquids)]
+                temp_bk = []
+                for bk in bk_copy:
+                    remove = False
+                    bucket_needed = None
+                    bucket_deficit_needed = None
+                    for pl in bk["pools"]:
+                        if bucket_needed is None or bucket_deficit[pl] > bucket_deficit_needed:
+                            bucket_needed = pl
+                            bucket_deficit_needed = bucket_deficit[pl]
+                    if bucket_needed is not None:
+                        bucket_capacity_supplied = min(bucket_deficit_needed, bk["size"])
+                        bk["size"] -= bucket_capacity_supplied
+                        pool_buckets[bucket_needed] += bucket_capacity_supplied
+                        bk["pools"] = [x for x in bk["pools"] if x != bucket_needed]
+                        if bk["size"] < 1:
+                            remove = True
+                    if not remove:
+                        temp_bk.append(bk)
+                bk_copy = temp_bk.copy()
+                # Rule 5:
+                # For all remaining liquids, check the pools which have the smallest bucket gap
+                bucket_surplus = [x - pool_liquids[xi] for xi, x in enumerate(pool_buckets)]
+                temp_lq = []
+                for lq in lq_copy:
+                    remove = False
+                    bucket_needed = None
+                    bucket_surplus_needed = None
+                    for pl in lq["pools"]:
+                        if (bucket_needed is None or bucket_surplus[pl] < bucket_surplus_needed):
+                            bucket_needed = pl
+                            bucket_surplus_needed = bucket_surplus[pl]
+                    if bucket_needed is not None:
+                        liquid_supplied = min(bucket_surplus_needed, lq["size"])
+                        lq["size"] -= liquid_supplied
+                        pool_liquids[bucket_needed] += liquid_supplied
+                        lq["pools"] = [x for x in lq["pools"] if x != bucket_needed]
+                        if lq["size"] < 1:
+                            remove = True
+                    if not remove:
+                        temp_lq.append(lq)
+                lq_copy = temp_lq.copy()
+                # Termination checks
+                terminate = len(lq_copy) == 0 and len(bk_copy) == 0
+                if terminate:
+                    pool_valid = [(pool_valid[i] and v <= pool_buckets[i]) != 0 for i, v in enumerate(pool_liquids)]
+                    pool_verified = [True] * pool_count
+                terminate_verified = True
+                for x in range(pool_count):
+                    if pool_valid[x]:
+                        terminate = False
+                    if not pool_verified[x]:
+                        terminate_verified = False
+                if terminate or terminate_verified:
+                    break
+                iter_count -= 1
+                if iter_count < 1:
+                    break
+            valid = True
+            for x in pool_valid:
+                if not x:
+                    valid = False
+            return valid
 
         inputs = {}
         outputs = {}

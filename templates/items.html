@@ -678,7 +678,7 @@
                 bk_copy = temp_bk.slice();
                 /*
                     Rule 5:
-                    For all remaining liquids, check the pools which have the largest bucket gap
+                    For all remaining liquids, check the pools which have the smallest bucket gap
                 */
                 let bucket_surplus = pool_buckets.map((v, i) => v - pool_liquids[i]);
                 temp_lq = [];
