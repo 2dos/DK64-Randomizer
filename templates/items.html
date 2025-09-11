@@ -657,9 +657,11 @@
                     let bucket_needed = null;
                     let bucket_deficit_needed = null;
                     bk.pools.forEach(pl => {
-                        if (bucket_needed === null || bucket_deficit[pl] > bucket_deficit_needed) {
-                            bucket_needed = pl;
-                            bucket_deficit_needed = bucket_deficit[pl];
+                        if (bucket_deficit[pl] >= 0) {
+                            if (bucket_needed === null || bucket_deficit[pl] > bucket_deficit_needed) {
+                                bucket_needed = pl;
+                                bucket_deficit_needed = bucket_deficit[pl];
+                            }
                         }
                     })
                     if (bucket_needed !== null) {
@@ -687,9 +689,11 @@
                     let bucket_needed = null;
                     let bucket_surplus_needed = null;
                     lq.pools.forEach(pl => {
-                        if (bucket_needed === null || bucket_surplus[pl] < bucket_surplus_needed) {
-                            bucket_needed = pl;
-                            bucket_surplus_needed = bucket_surplus[pl];
+                        if (bucket_surplus[pl] >= 0) {
+                            if (bucket_needed === null || bucket_surplus[pl] < bucket_surplus_needed) {
+                                bucket_needed = pl;
+                                bucket_surplus_needed = bucket_surplus[pl];
+                            }
                         }
                     })
                     if (bucket_needed !== null) {
