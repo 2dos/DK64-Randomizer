@@ -2939,9 +2939,10 @@ class Settings:
                     bucket_needed = None
                     bucket_deficit_needed = None
                     for pl in bk["pools"]:
-                        if bucket_needed is None or bucket_deficit[pl] > bucket_deficit_needed:
-                            bucket_needed = pl
-                            bucket_deficit_needed = bucket_deficit[pl]
+                        if bucket_deficit[pl] >= 0:
+                            if bucket_needed is None or bucket_deficit[pl] > bucket_deficit_needed:
+                                bucket_needed = pl
+                                bucket_deficit_needed = bucket_deficit[pl]
                     if bucket_needed is not None:
                         bucket_capacity_supplied = min(bucket_deficit_needed, bk["size"])
                         bk["size"] -= bucket_capacity_supplied
@@ -2961,9 +2962,10 @@ class Settings:
                     bucket_needed = None
                     bucket_surplus_needed = None
                     for pl in lq["pools"]:
-                        if bucket_needed is None or bucket_surplus[pl] < bucket_surplus_needed:
-                            bucket_needed = pl
-                            bucket_surplus_needed = bucket_surplus[pl]
+                        if bucket_surplus[pl] >= 0:
+                            if bucket_needed is None or bucket_surplus[pl] < bucket_surplus_needed:
+                                bucket_needed = pl
+                                bucket_surplus_needed = bucket_surplus[pl]
                     if bucket_needed is not None:
                         liquid_supplied = min(bucket_surplus_needed, lq["size"])
                         lq["size"] -= liquid_supplied
