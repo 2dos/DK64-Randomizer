@@ -78,8 +78,9 @@
                         {% if x == 0 %}
                             Unshuffled
                         {% else %}
-                            Pool {{ x }} <span id="item_rando_check_hint_{{ x }}"></span>
+                            Pool {{ x }}
                         {% endif %}
+                        <div id="item_rando_check_hint_{{ x }}">&nbsp;</div>
                     </p>
                     {% if x == 0 %}
                     <div class="text-start hide-if-ir-decouple">
@@ -410,10 +411,10 @@
             if (!Object.keys(outputs).includes(name)) {
                 outputs[name] = {
                     size: size,
-                    pools: [index]
+                    pools: [index - 1]
                 }
             } else {
-                outputs[name].pools.push(index)
+                outputs[name].pools.push(index - 1)
             }
         }
         return outputs;
@@ -515,177 +516,249 @@
             */
         }
         // Calculations
-        class Dinic {
-            constructor(n) {
-                this.n = n;
-                this.adj = Array.from({ length: n }, () => []);
+        function checkDistribution(liquids, buckets, debug=false) {
+            if (debug) console.clear();
+            if (debug) console.log("Checking distribution");
+            const pool_count = 4;
+            let pool_valid = [];
+            let pool_verified = [];
+            let pool_liquids = [];
+            let pool_buckets = [];
+            for (let x = 0; x < pool_count; x++) {
+                pool_valid.push(true);
+                pool_verified.push(false);
+                pool_liquids.push(0);
+                pool_buckets.push(0);
             }
-
-            addEdge(u, v, cap) {
-                const fwd = { to: v, rev: this.adj[v].length, cap: cap, orig: cap };
-                const rev = { to: u, rev: this.adj[u].length, cap: 0, orig: 0 };
-                this.adj[u].push(fwd);
-                this.adj[v].push(rev);
-            }
-
-            maxFlow(s, t) {
-                const INF = Number.MAX_SAFE_INTEGER;
-                let flow = 0;
-                const level = new Array(this.n);
-                const q = [];
-
-                const bfs = () => {
-                level.fill(-1);
-                q.length = 0;
-                q.push(s);
-                level[s] = 0;
-                for (let qi = 0; qi < q.length; qi++) {
-                    const u = q[qi];
-                    for (const e of this.adj[u]) {
-                    if (e.cap > 0 && level[e.to] < 0) {
-                        level[e.to] = level[u] + 1;
-                        q.push(e.to);
+            let lq_copy = liquids.slice();
+            let bk_copy = buckets.slice();
+            let iter_count = 100;
+            let ran_rules = [];
+            while (true) {
+                /*
+                    Rule 1:
+                    Any pools which only have checks or only have items should get filtered out
+                    if their non-filtered version has more than 0 items.
+                    This can only be ran once.
+                */
+                if (!ran_rules.includes(1)) {
+                    let has_liquids = [];
+                    let has_buckets = [];
+                    for (let x = 0; x < pool_count; x++) {
+                        has_liquids.push(false);
+                        has_buckets.push(false);
                     }
+                    lq_copy.forEach(lq => {
+                        lq.pools.forEach(pl => {
+                            has_liquids[pl] = true;
+                        })
+                    });
+                    bk_copy.forEach(bk => {
+                        bk.pools.forEach(pl => {
+                            has_buckets[pl] = true;
+                        })
+                    });
+                    let pools_to_filter = [];
+                    for (let x = 0; x < pool_count; x++) {
+                        if (!has_buckets[x] || !has_liquids[x]) {
+                            pools_to_filter.push(x);
+                        }
                     }
+                    pools_to_filter.forEach(pl => {
+                        lq_copy.forEach(lq => {
+                            if (lq.pools.includes(pl)) {
+                                let filtered_version = lq.pools.filter(i => !pools_to_filter.includes(i));
+                                if (filtered_version.length > 0) {
+                                    if (debug) console.log(`Filtering out ${lq.pools.length - filtered_version.length} values from pool ${pl}`);
+                                    lq.pools = filtered_version.slice();
+                                } else {
+                                    // This is the only instance of this item, thus making this pool invalid
+                                    pool_valid[pl] = false;
+                                    pool_verified[pl] = true;
+                                }
+                            }
+                        });
+                        bk_copy.forEach(bk => {
+                            if (bk.pools.includes(pl)) {
+                                let filtered_version = bk.pools.filter(i => !pools_to_filter.includes(i));
+                                if (filtered_version.length > 0) {
+                                    if (debug) console.log(`Filtering out ${bk.pools.length - filtered_version.length} values from pool ${pl}`);
+                                    bk.pools = filtered_version.slice();
+                                } else {
+                                    // This is the only instance of this item, thus making this pool invalid
+                                    pool_valid[pl] = false;
+                                    pool_verified[pl] = true;
+                                }
+                            }
+                        });
+                    })
+                    ran_rules.push(1);
                 }
-                return level[t] >= 0;
-                };
-
-                const it = new Array(this.n);
-                const dfs = (u, f) => {
-                if (u === t) return f;
-                for (let i = it[u]; i < this.adj[u].length; i++, it[u]++) {
-                    const e = this.adj[u][i];
-                    if (e.cap > 0 && level[e.to] === level[u] + 1) {
-                    const pushed = dfs(e.to, Math.min(f, e.cap));
-                    if (pushed > 0) {
-                        e.cap -= pushed;
-                        this.adj[e.to][e.rev].cap += pushed;
-                        return pushed;
-                    }
-                    }
+                /*
+                    Rule 2:
+                    Any completely empty pools should add all of their items/checks in them
+                    Any pools with greater amounts of items than checks gets flagged as invalid.
+                */
+                let found_lq = [];
+                let found_bk = [];
+                for (let x = 0; x < pool_count; x++) {
+                    found_lq.push(false);
+                    found_bk.push(false);
                 }
-                return 0;
-                };
-
-                while (bfs()) {
-                it.fill(0);
-                let pushed;
-                while ((pushed = dfs(s, INF)) > 0) {
-                    flow += pushed;
-                }
-                }
-                return flow;
-            }
-        }
-
-        /**
-        * Main function
-        * @param {Array<{size:number, pools:number[]}>} liquids
-        * @param {Array<{size:number, pools:number[]}>} buckets
-        * @returns {Object} { allFit: boolean, roomStatus: {room: boolean}, assignment: Array of assignments per liquid }
-        */
-        function checkDistribution(liquids, buckets) {
-            const nL = liquids.length;
-            const nB = buckets.length;
-
-            // Build set of rooms found (works for arbitrary pool ids)
-            const roomsSet = new Set();
-            liquids.forEach(l => (l.pools || []).forEach(r => roomsSet.add(r)));
-            buckets.forEach(b => (b.pools || []).forEach(r => roomsSet.add(r)));
-            const rooms = Array.from(roomsSet).sort((a, b) => a - b);
-
-            // Node indexing
-            const S = 0;
-            const Lstart = 1;
-            const Bstart = Lstart + nL;
-            const T = Bstart + nB;
-            const N = T + 1;
-
-            const dinic = new Dinic(N);
-
-            // S -> liquid nodes
-            let totalLiquid = 0;
-            for (let i = 0; i < nL; i++) {
-                const size = Number(liquids[i].size) || 0;
-                totalLiquid += size;
-                dinic.addEdge(S, Lstart + i, size);
-            }
-
-            // bucket nodes -> T
-            for (let j = 0; j < nB; j++) {
-                const cap = Number(buckets[j].size) || 0;
-                dinic.addEdge(Bstart + j, T, cap);
-            }
-
-            // liquid -> bucket edges (eligible if pools intersect)
-            for (let i = 0; i < nL; i++) {
-                const lp = new Set((liquids[i].pools || []));
-                for (let j = 0; j < nB; j++) {
-                const bp = buckets[j].pools || [];
-                // check intersection
-                let eligible = false;
-                for (const p of bp) {
-                    if (lp.has(p)) { eligible = true; break; }
-                }
-                if (eligible) {
-                    // capacity can be at most the liquid's size (no need for larger)
-                    dinic.addEdge(Lstart + i, Bstart + j, Number(liquids[i].size) || 0);
-                }
-                }
-            }
-
-            const flow = dinic.maxFlow(S, T);
-            const allFit = flow === totalLiquid;
-
-            // Extract assignment: how much of each liquid went to each bucket
-            const assignment = Array.from({ length: nL }, () => []);
-            for (let i = 0; i < nL; i++) {
-                const node = Lstart + i;
-                for (const e of dinic.adj[node]) {
-                // edges that go to buckets have index in [Bstart, Bstart+nB-1]
-                    if (e.to >= Bstart && e.to < Bstart + nB) {
-                        const used = (e.orig || 0) - (e.cap || 0); // flow = original cap - remaining cap
-                        if (used > 0) {
-                        assignment[i].push({ bucketIndex: e.to - Bstart, amount: used });
+                lq_copy.forEach(lq => {
+                    lq.pools.forEach(pl => {
+                        found_lq[pl] = true;
+                    })
+                })
+                bk_copy.forEach(bk => {
+                    bk.pools.forEach(pl => {
+                        found_bk[pl] = true;
+                    })
+                })
+                for (let x = 0; x < pool_count; x++) {
+                    if (!found_lq[x] && !found_bk[x]) {
+                        if (pool_buckets[x] < pool_liquids[x]) {
+                            if (debug) console.log(`Too many items for pool ${x + 1}: ${pool_liquids[x]} vs ${pool_buckets[x]}`);
+                            pool_valid[x] = false;
+                            pool_verified[x] = true;
                         }
                     }
                 }
-            }
-
-            // Room status: conservative check: a room is bad only if its buckets cannot hold the sum of liquids that are EXCLUSIVE to that room.
-            const roomStatus = {};
-            for (const r of rooms) {
-                // capacity in this room (sum of bucket sizes that include the room)
-                let capInRoom = 0;
-                for (const b of buckets) {
-                    if ((b.pools || []).includes(r)) capInRoom += Number(b.size) || 0;
+                /*
+                    Rule 3:
+                    Any items/checks which are only part of 1 pool should get filtered out and applied to a guaranteed liq/buck total
+                */
+                let temp_lq = [];
+                lq_copy.forEach(lq => {
+                    if (lq.pools.length == 1) {
+                        pool_liquids[lq.pools[0]] += lq.size;
+                    } else {
+                        temp_lq.push(lq);
+                    } 
+                });
+                lq_copy = temp_lq.slice();
+                let temp_bk = [];
+                bk_copy.forEach(bk => {
+                    if (bk.pools.length == 1) {
+                        pool_buckets[bk.pools[0]] += bk.size;
+                    } else {
+                        temp_bk.push(bk);
+                    } 
+                });
+                bk_copy = temp_bk.slice();
+                /*
+                    Rule 4:
+                    For all remaining buckets, check the pools which need the checks the most
+                */
+                let bucket_deficit = pool_liquids.map((v, i) => v - pool_buckets[i]);
+                temp_bk = [];
+                bk_copy.forEach(bk => {
+                    let remove = false;
+                    let bucket_needed = null;
+                    let bucket_deficit_needed = null;
+                    bk.pools.forEach(pl => {
+                        if (bucket_needed === null || bucket_deficit[pl] > bucket_deficit_needed) {
+                            bucket_needed = pl;
+                            bucket_deficit_needed = bucket_deficit[pl];
+                        }
+                    })
+                    if (bucket_needed !== null) {
+                        let bucket_capacity_supplied = Math.min(bucket_deficit_needed, bk.size);
+                        bk.size -= bucket_capacity_supplied;
+                        pool_buckets[bucket_needed] += bucket_capacity_supplied;
+                        bk.pools = bk.pools.filter(i => i !== bucket_needed);
+                        if (bk.size < 1) {
+                            remove = true;
+                        }
+                    }
+                    if (!remove) {
+                        temp_bk.push(bk);
+                    }
+                })
+                bk_copy = temp_bk.slice();
+                /*
+                    Rule 5:
+                    For all remaining liquids, check the pools which have the largest bucket gap
+                */
+                let bucket_surplus = pool_buckets.map((v, i) => v - pool_liquids[i]);
+                temp_lq = [];
+                lq_copy.forEach(lq => {
+                    let remove = false;
+                    let bucket_needed = null;
+                    let bucket_surplus_needed = null;
+                    lq.pools.forEach(pl => {
+                        if (bucket_needed === null || bucket_surplus[pl] < bucket_surplus_needed) {
+                            bucket_needed = pl;
+                            bucket_surplus_needed = bucket_surplus[pl];
+                        }
+                    })
+                    if (bucket_needed !== null) {
+                        let liquid_supplied = Math.min(bucket_surplus_needed, lq.size);
+                        lq.size -= liquid_supplied;
+                        pool_liquids[bucket_needed] += liquid_supplied;
+                        lq.pools = lq.pools.filter(i => i !== bucket_needed);
+                        if (lq.size < 1) {
+                            remove = true;
+                        }
+                    }
+                    if (!remove) {
+                        temp_lq.push(lq);
+                    }
+                })
+                lq_copy = temp_lq.slice();
+                // Termination checks
+                let terminate = lq_copy.length == 0 && bk_copy.length == 0;
+                if (terminate) {
+                    pool_valid = pool_liquids.map((v, i) => (pool_valid[i] & v <= pool_buckets[i]) !== 0);
+                    pool_verified = [true, true, true, true];
                 }
-                // exclusive demand = sum of liquids whose pools array === [r] (or only contains r)
-                let exclusiveDemand = 0;
-                for (const l of liquids) {
-                    const lp = (l.pools || []);
-                    if (lp.length === 1 && lp[0] === r) exclusiveDemand += Number(l.size) || 0;
+                let terminate_verified = true;
+                for (let x = 0; x < pool_count; x++) {
+                    if (pool_valid[x]) {
+                        terminate = false;
+                    }
+                    if (!pool_verified[x]) {
+                        terminate_verified = false;
+                    }
                 }
-                roomStatus[r] = capInRoom >= exclusiveDemand;
+                if (terminate || terminate_verified) {
+                    break;
+                }
+                iter_count--;
+                if (iter_count < 1) {
+                    break;
+                }
             }
-
-            return { allFit, flow, totalLiquid, roomStatus, assignment };
+            if (debug) {
+                let data = {
+                    remaining_liquids: lq_copy,
+                    remaining_buckets: bk_copy,
+                    verified: pool_verified,
+                    valid: pool_valid,
+                    liquid_sum: pool_liquids,
+                    bucket_sum: pool_buckets,
+                }
+                console.log(data);
+            }
+            return {
+                valid: pool_valid,
+                item_counts: pool_liquids,
+                check_counts: pool_buckets,
+            }
         }
 
-        const result = checkDistribution(Object.values(inputs), Object.values(outputs));
+        const result = checkDistribution(Object.values(inputs), Object.values(outputs), true);
+        is_valid_item_spread = true;
         for (let x = 0; x < 4; x++) {
             const node = document.getElementById(`item_rando_check_hint_${x + 1}`);
-            if (result.roomStatus[x + 1] !== false) {  // Keep like this, it either has to be undefined (therefore no items in that pool) or true
-                node.innerText = "✓";
+            node.innerText = `Items: ${result.item_counts[x]} | Checks: ${result.check_counts[x]}`;
+            is_valid_item_spread &= result.valid[x];
+            if (result.valid[x]) {
                 node.style.color = "green";
                 node.title = "Pool is valid";
-                is_valid_item_spread = true;
             } else {
-                node.innerText = "⨯";
                 node.style.color = "red";
-                node.title = "Pool is invalid due to too few items";
-                is_valid_item_spread = false;
+                node.title = "Pool is invalid due to too many items/too few checks";
             }
         }
 
