@@ -1885,17 +1885,37 @@ function hide_irrelevant_details_coupled_item_rando() {
   const antidetails = document.getElementsByClassName("show-if-ir-decouple");
   if (value) {
     for (let el of details) {
-      el.removeAttribute("hidden");
+      if (el.classList.contains("decouple-hide")) {
+        el.removeAttribute("hidden");
+      } else {
+        el.classList.add("d-flex");
+        el.classList.remove("d-none");
+      }
     }
     for (let el of antidetails) {
-      el.setAttribute("hidden","hidden");
+      if (el.classList.contains("decouple-hide")) {
+        el.setAttribute("hidden", "hidden");
+      } else {
+        el.classList.remove("d-flex");
+        el.classList.add("d-none");
+      }
     }
   } else {
     for (let el of details) {
-      el.setAttribute("hidden","hidden");
+      if (el.classList.contains("decouple-hide")) {
+        el.setAttribute("hidden", "hidden");
+      } else {
+        el.classList.remove("d-flex");
+        el.classList.add("d-none");
+      }
     }
     for (let el of antidetails) {
-      el.removeAttribute("hidden");
+      if (el.classList.contains("decouple-hide")) {
+        el.removeAttribute("hidden");
+      } else {
+        el.classList.add("d-flex");
+        el.classList.remove("d-none");
+      }
     }
   }
 }

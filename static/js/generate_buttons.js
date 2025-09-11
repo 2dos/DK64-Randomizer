@@ -629,14 +629,16 @@ async function import_settings_string_internal(settingsString) {
                             i_handle.classList.add("handle");
                             i_handle.style.height = "20px";
                             i_handle.style.width = "20px";
-                            i_handle.style["margin-right"] = "5px";
+                            i_handle.style["padding-right"] = "5px";
+                            i_handle.setAttribute("title", "Drag to Move");
                             const i_clone = document.createElement("i");
                             i_clone.classList.add("fas");
                             i_clone.classList.add("fa-clone");
                             i_clone.classList.add("clone-btn");
                             i_clone.style.height = "20px";
                             i_clone.style.width = "20px";
-                            i_clone.style["margin-right"] = "5px";
+                            i_clone.style["padding-right"] = "5px";
+                            i_clone.setAttribute("title", "Drag to Clone");
                             span0.appendChild(i_handle)
                             span0.appendChild(i_clone)
                             option.appendChild(span0)
@@ -660,7 +662,8 @@ async function import_settings_string_internal(settingsString) {
                                         } else if (k.is_dummy) {
                                             option.classList.add("show-if-ir-decouple");
                                             if (settings["decouple_item_rando"]) {
-                                                option.setAttribute("hidden", "hidden");
+                                                option.classList.remove("d-flex");
+                                                option.classList.add("d-none");
                                             }
                                         }
                                         opt_tied_item = k.tied ? k.tied : "";

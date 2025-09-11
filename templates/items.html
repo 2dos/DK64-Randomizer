@@ -7,12 +7,12 @@
             <div class="flex-container">
                 <div class="text-start">
                     <p>
-                        Shuffles <span class="ir-hint items">items</span><span class="hide-if-ir-decouple"> with <span class="ir-hint checks">checks</span></span> into pools.
+                        Shuffles <span class="ir-hint items">items</span><span class="hide-if-ir-decouple decouple-hide"> with <span class="ir-hint checks">checks</span></span> into pools.
                         Drag and drop items <span class="hide-if-ir-decouple">and checks </span>into various pools to determine where items can be placed.
                     </p>
                     <h5>Rules</h5>
                     <ul>
-                        <li id="rule-item-shuffle" class="hide-if-ir-decouple">If an item or check remains unshuffled, it's corresponding item/check has to also remain unshuffled.</li>
+                        <li id="rule-item-shuffle" class="hide-if-ir-decouple decouple-hide">If an item or check remains unshuffled, it's corresponding item/check has to also remain unshuffled.</li>
                         <li id="rule-item-count">Check count must not be lower than item count.</li>
                     </ul>
                 </div>
@@ -98,8 +98,8 @@
                                     {% if option.is_dummy %}
                                         <li class="list-group-item d-flex show-if-ir-decouple" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">
                                             <span class="fs-6 d-flex">
-                                                <i class="fas fa-arrows-alt handle" style="height: 20px; width: 20px; margin-right: 5px"></i>
-                                                <i class="fas fa-clone clone-btn" style="height: 20px; width: 20px; margin-right: 5px"></i>
+                                                <i class="fas fa-arrows-alt handle" style="height: 20px; width: 20px; padding-right: 5px" title="Drag to Move"></i>
+                                                <i class="fas fa-clone clone-btn" style="height: 20px; width: 20px; padding-right: 5px" title="Drag to clone"></i>
                                             </span>
                                             <span class="flex-grow-1">
                                                 {{ option.name }}
@@ -108,8 +108,8 @@
                                     {% else %}
                                         <li class="list-group-item d-flex" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">
                                             <span class="fs-6 d-flex">
-                                                <i class="fas fa-arrows-alt handle" style="height: 20px; width: 20px; margin-right: 5px"></i>
-                                                <i class="fas fa-clone clone-btn" style="height: 20px; width: 20px; margin-right: 5px"></i>
+                                                <i class="fas fa-arrows-alt handle" style="height: 20px; width: 20px; padding-right: 5px" title="Drag to Move"></i>
+                                                <i class="fas fa-clone clone-btn" style="height: 20px; width: 20px; padding-right: 5px" title="Drag to Clone"></i>
                                             </span>
                                             <span class="flex-grow-1">
                                                 {{ option.name }}
@@ -135,8 +135,8 @@
                                 {% if option.is_check %}
                                     <li class="list-group-item d-flex ischeck" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}" tied_item="{{ option.tied }}">
                                         <span class="fs-6 d-flex">
-                                            <i class="fas fa-arrows-alt handle" style="height: 20px; width: 20px; margin-right: 5px"></i>
-                                            <i class="fas fa-clone clone-btn" style="height: 20px; width: 20px; margin-right: 5px"></i>
+                                            <i class="fas fa-arrows-alt handle" style="height: 20px; width: 20px; padding-right: 5px" title="Drag to Move"></i>
+                                            <i class="fas fa-clone clone-btn" style="height: 20px; width: 20px; padding-right: 5px" title="Drag to Clone"></i>
                                         </span>
                                         <span class="flex-grow-1">
                                             {{ option.name }}
