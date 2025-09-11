@@ -135,10 +135,12 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             # For medals and fairies, also consider non-B. Locker progression requirements
             if barrier_type == BarrierItems.Medal:
                 medal_requirement = world.spoiler.settings.medal_requirement if world.spoiler.settings.medal_requirement > 0 else 0
-                progression_count = max(progression_count, medal_requirement)
+                wincon_requirement = world.spoiler.settings.win_condition_count if world.spoiler.settings.win_condition_item == WinConditionComplex.req_medal else 0
+                progression_count = max(progression_count, medal_requirement, wincon_requirement)
             elif barrier_type == BarrierItems.Fairy:
                 fairy_requirement = world.spoiler.settings.rareware_gb_fairies if world.spoiler.settings.rareware_gb_fairies > 0 else 0
-                progression_count = max(progression_count, fairy_requirement)
+                wincon_requirement = world.spoiler.settings.win_condition_count if world.spoiler.settings.win_condition_item == WinConditionComplex.req_fairy else 0
+                progression_count = max(progression_count, fairy_requirement, wincon_requirement)
 
             # Cap at maximum available
             progression_count = min(progression_count, max_quantity)
