@@ -7,6 +7,7 @@ from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Generic import IsDDMSSelected
 from randomizer.Patching.Library.DataTypes import float_to_hex
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
+from randomizer.Patching.Library.ASM import getROMAddress, populateOverlayOffsets, getSym, Overlay
 from randomizer.Enums.Settings import FasterChecksSelected, PuzzleRando
 
 
@@ -467,12 +468,12 @@ class PuzzleItem:
 
 
 coin_req_info = [
-    PuzzleItem("Caves Beetle Race", Maps.CavesLankyRace, 0x13C, PuzzleRandoBound(10, 60)),
-    PuzzleItem("Aztec Beetle Race", Maps.AztecTinyRace, 0x13E, PuzzleRandoBound(20, 60)),
+    PuzzleItem("Caves Beetle Race", Maps.CavesLankyRace, 3, PuzzleRandoBound(10, 60)),
+    PuzzleItem("Aztec Beetle Race", Maps.AztecTinyRace, 0, PuzzleRandoBound(20, 60)),
     PuzzleItem(
         "Factory Car Race",
         Maps.FactoryTinyRace,
-        0x140,
+        4,
         PuzzleRandoBound(5, 18),
         PuzzleRandoBound(3, 12),
         FasterChecksSelected.factory_car_race,
@@ -480,7 +481,7 @@ coin_req_info = [
     PuzzleItem(
         "Galleon Seal Race",
         Maps.GalleonSealRace,
-        0x142,
+        6,
         PuzzleRandoBound(5, 12),
         PuzzleRandoBound(5, 10),
         FasterChecksSelected.galleon_seal_race,
@@ -488,17 +489,17 @@ coin_req_info = [
     PuzzleItem(
         "Castle Car Race",
         Maps.CastleTinyRace,
-        0x144,
+        5,
         PuzzleRandoBound(5, 15),
         PuzzleRandoBound(5, 12),
         FasterChecksSelected.castle_car_race,
     ),
-    PuzzleItem("Japes Minecart", Maps.JapesMinecarts, 0x146, PuzzleRandoBound(40, 70)),
-    PuzzleItem("Forest Minecart", Maps.ForestMinecarts, 0x148, PuzzleRandoBound(25, 60)),
+    PuzzleItem("Japes Minecart", Maps.JapesMinecarts, 1, PuzzleRandoBound(40, 70)),
+    PuzzleItem("Forest Minecart", Maps.ForestMinecarts, 2, PuzzleRandoBound(25, 60)),
     PuzzleItem(
         "Castle Minecart",
         Maps.CastleMinecarts,
-        0x14A,
+        7,
         PuzzleRandoBound(10, 45),
         PuzzleRandoBound(5, 30),
         FasterChecksSelected.castle_minecart,
@@ -512,9 +513,11 @@ def patchRaceRequirements(spoiler, ROM_COPY: LocalROM):
     race_coin_rando_on = spoiler.settings.race_coin_rando
     if puzzle_rando_setting == PuzzleRando.off and not race_coin_rando_on:
         return
-    sav = spoiler.settings.rom_data
+    offset_dict = populateOverlayOffsets(ROM_COPY)
+    ram_addr = getSym("CoinHUDElements")
+    rom_addr = getROMAddress(ram_addr, Overlay.Custom, offset_dict)
     for coinreq in coin_req_info:
-        ROM_COPY.seek(sav + coinreq.offset)
+        ROM_COPY.seek(rom_addr + (4 * coinreq.offset) + 2)
         ROM_COPY.writeMultipleBytes(spoiler.coin_requirements[coinreq.tied_map], 2)
 
 

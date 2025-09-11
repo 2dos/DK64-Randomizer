@@ -354,7 +354,7 @@ class Spoiler:
         settings["Complex Level Order"] = self.settings.hard_level_progression
         settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
         settings["Switchsanity"] = self.settings.switchsanity_enabled
-        settings["Free Trade Agreement"] = self.settings.free_trade_setting.name
+        settings["Free Trade Agreement"] = self.settings.free_trade_setting
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
         settings["Randomize Crates"] = self.settings.random_crates

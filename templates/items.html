@@ -7,12 +7,12 @@
             <div class="flex-container">
                 <div class="text-start">
                     <p>
-                        Shuffles <span class="ir-hint items">items</span><span class="hide-if-ir-decouple"> with <span class="ir-hint checks">checks</span></span> into pools.
+                        Shuffles <span class="ir-hint items">items</span><span class="hide-if-ir-decouple decouple-hide"> with <span class="ir-hint checks">checks</span></span> into pools.
                         Drag and drop items <span class="hide-if-ir-decouple">and checks </span>into various pools to determine where items can be placed.
                     </p>
                     <h5>Rules</h5>
                     <ul>
-                        <li id="rule-item-shuffle" class="hide-if-ir-decouple">If an item or check remains unshuffled, it's corresponding item/check has to also remain unshuffled.</li>
+                        <li id="rule-item-shuffle" class="hide-if-ir-decouple decouple-hide">If an item or check remains unshuffled, it's corresponding item/check has to also remain unshuffled.</li>
                         <li id="rule-item-count">Check count must not be lower than item count.</li>
                     </ul>
                 </div>
@@ -80,8 +80,8 @@
                         {% else %}
                             Pool {{ x }}
                         {% endif %}
+                        <div id="item_rando_check_hint_{{ x }}">&nbsp;</div>
                     </p>
-                    <div id="item_rando_check_hint_{{ x }}" style="min-height: 24px; margin-bottom: 10px;"></div>
                     {% if x == 0 %}
                     <div class="text-start hide-if-ir-decouple">
                         <h6>Items</h6>
@@ -96,9 +96,25 @@
                             {% for option in itemRando %}
                                 {% if not option.is_check %}
                                     {% if option.is_dummy %}
-                                        <li class="list-group-item show-if-ir-decouple" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">{{ option.name }}</li>
+                                        <li class="list-group-item d-flex show-if-ir-decouple" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">
+                                            <span class="fs-6 d-flex">
+                                                <i class="fas fa-arrows-alt handle" style="height: 20px; width: 20px; padding-right: 5px" title="Drag to Move"></i>
+                                                <i class="fas fa-clone clone-btn" style="height: 20px; width: 20px; padding-right: 5px" title="Drag to clone"></i>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                {{ option.name }}
+                                            </span>
+                                        </li>
                                     {% else %}
-                                        <li class="list-group-item" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">{{ option.name }}</li>
+                                        <li class="list-group-item d-flex" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}">
+                                            <span class="fs-6 d-flex">
+                                                <i class="fas fa-arrows-alt handle" style="height: 20px; width: 20px; padding-right: 5px" title="Drag to Move"></i>
+                                                <i class="fas fa-clone clone-btn" style="height: 20px; width: 20px; padding-right: 5px" title="Drag to Clone"></i>
+                                            </span>
+                                            <span class="flex-grow-1">
+                                                {{ option.name }}
+                                            </span>
+                                        </li>
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}
@@ -117,7 +133,15 @@
                         {% if x == 0 %}
                             {% for option in itemRando %}
                                 {% if option.is_check %}
-                                    <li class="list-group-item ischeck" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}" tied_item="{{ option.tied }}">{{ option.name }}</li>
+                                    <li class="list-group-item d-flex ischeck" value="{{ option.value }}" tooltip="{{ option.tooltip }}" check_count="{{ option.check_count }}" items_count="{{ option.item_count }}" tied_item="{{ option.tied }}">
+                                        <span class="fs-6 d-flex">
+                                            <i class="fas fa-arrows-alt handle" style="height: 20px; width: 20px; padding-right: 5px" title="Drag to Move"></i>
+                                            <i class="fas fa-clone clone-btn" style="height: 20px; width: 20px; padding-right: 5px" title="Drag to Clone"></i>
+                                        </span>
+                                        <span class="flex-grow-1">
+                                            {{ option.name }}
+                                        </span>
+                                    </li>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
@@ -277,29 +301,67 @@
     const sort_sections_items = sort_container.getElementsByClassName("shared");
     const sort_sections_checks = sort_container.getElementsByClassName("sharedchecks");
     let offset = sort_sections_items.length;
+    function makeSortable(el, groupName) {
+        let dragFromCloneBtn = false; // flag to indicate next drag starts from clone button
+
+        // detect mousedown/touchstart on clone buttons
+        el.addEventListener('mousedown', e => {
+            dragFromCloneBtn = !!e.target.closest('.clone-btn');
+        });
+        el.addEventListener('touchstart', e => {
+            dragFromCloneBtn = !!e.target.closest('.clone-btn');
+        });
+
+        new Sortable(el, {
+            group: {
+                name: groupName,
+                pull: (t, f, d, e) => {
+                    return dragFromCloneBtn ? 'clone' : true;
+                }, // always clone; emulate move if needed
+                put: [groupName]
+            },
+            handle: '.handle, .clone-btn', // only handle moves normally
+            animation: 150,
+            fallbackTolerance: 3,
+            sort: false,
+
+            onStart(evt) {
+                // set a dataset flag on the dragged item based on pre-recorded info
+                evt.item.dataset.cloneMode = dragFromCloneBtn ? 'true' : 'false';
+            },
+
+            onAdd(evt) {
+                const item = evt.item;
+                const to = evt.to;
+                const cloneMode = item.dataset.cloneMode === 'true';
+
+                if (!cloneMode) {
+                    const from = evt.from;
+                    if (from && from.contains(item)) {
+                    from.removeChild(item); // emulate move
+                    }
+                }
+
+                // remove duplicates in the destination based on value attribute
+                const value = item.getAttribute('value');
+                if (value) {
+                    const duplicates = Array.from(to.querySelectorAll('li')).filter(
+                        li => li !== item && li.getAttribute('value') === value
+                    );
+                    duplicates.forEach(dup => dup.remove());
+                }
+
+                delete item.dataset.cloneMode;
+
+                const changeEvent = new Event('change', { bubbles: true, cancelable: false });
+                evt.to.dispatchEvent(changeEvent);
+                updateCheckItemCounter(evt.to.parentElement.parentElement);
+            }
+        });
+    }
     for (let i = 0; i < offset; i++) {
-        new Sortable(sort_sections_items[i], {
-            group: 'shared',
-            animation: 150,
-            fallbackTolerance: 3,
-            sort: false,
-            onEnd: (evt) => {
-                const event = new Event("change", { bubbles: true, cancelable: false });
-                evt.to.dispatchEvent(event);
-                updateCheckItemCounter(evt.to.parentElement.parentElement);
-            }
-        });
-        new Sortable(sort_sections_checks[i], {
-            group: 'sharedchecks',
-            animation: 150,
-            fallbackTolerance: 3,
-            sort: false,
-            onEnd: (evt) => {
-                const event = new Event("change", { bubbles: true, cancelable: false });
-                evt.to.dispatchEvent(event);
-                updateCheckItemCounter(evt.to.parentElement.parentElement);
-            }
-        });
+        makeSortable(sort_sections_items[i], 'shared');
+        makeSortable(sort_sections_checks[i], 'sharedchecks');
     }
 
     function isNumeric(str) {
@@ -308,19 +370,54 @@
                 !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
     }
 
+    function getItemChange(item, original_value) {
+        if (item == "medal" && islesCBs()) {
+            return 45;
+        }
+        return original_value;
+    }
+
+    function getCheckChange(item, original_value) {
+        if ((item === "shop") && document.getElementById("smaller_shops").checked) {
+            return 60
+        } else if ((["halfmedal", "medal_checks"].includes(item)) && islesCBs()) {
+            return 40
+        }
+        return original_value;
+    }
+
+    function islesCBs() {
+        return document.querySelector("#cb_rando_list_selected option[value='DKIsles']").selected && document.getElementById("cb_rando_enabled").checked;
+    }
+
     function getTiedCheckCount(value) {
         const data_items_json = document.getElementById("item_rando-category-container").getAttribute("data-items");
         const data_items = JSON.parse(data_items_json);
         const tied_checks = data_items.filter(k => (k.is_check && k.tied == value) || (k.is_dummy && k.value == value));
         let count = 0;
+        let latest_value = null;
         tied_checks.forEach(k => {
-            if ((k.value === "shop") && document.getElementById("smaller_shops").checked) {
-                count += 60;
-            } else {
-                count += k.check_count;
-            }
+            count += getCheckChange(k.value, k.check_count);
+            latest_value = k.value;
         });
-        return count;
+        return {
+            "size": count,
+            "name": latest_value,
+        }
+    }
+
+    function populateCheck(outputs, name, size, index) {
+        if (index > 0) {
+            if (!Object.keys(outputs).includes(name)) {
+                outputs[name] = {
+                    size: size,
+                    pools: [index - 1]
+                }
+            } else {
+                outputs[name].pools.push(index - 1)
+            }
+        }
+        return outputs;
     }
 
     function updateCheckItemCounter(ctr) {
@@ -333,6 +430,10 @@
         let item_shuffle_cache = {};
         let item_shuffle_tied = {};
         let offset = sort_sections_items.length;
+        let inputs = {};
+        let outputs = {};
+        let pools = {};
+        let poolstatus = {};
         for (let index = 0; index < offset; index++) {
             let local_check_count = 0;
             let local_item_count = 0;
@@ -358,20 +459,25 @@
                         item_shuffle_tied[opt_value] = tied_item_raw;
                     }
                     if (!decoupled) {
-                        local_check_count += getTiedCheckCount(opt_value);
+                        let data = getTiedCheckCount(opt_value);
+                        if (data.size > 0) {
+                            outputs = populateCheck(outputs, data.name, data.size, index);
+                        }
                         parsed = true;
                     } else if (j == 1) {
                         if (isNumeric(check_count_raw)) {
-                            if ((opt_value === "shop") && document.getElementById("smaller_shops").checked) {
-                                local_check_count += 60;
-                            } else {
-                                local_check_count += parseInt(check_count_raw);
+                            let size = getCheckChange(opt_value, parseInt(check_count_raw));
+                            if (size > 0) {
+                                outputs = populateCheck(outputs, opt_value, size, index);
                             }
                             parsed = true;
                         }
                     }
                     if (isNumeric(item_count_raw)) {
-                        local_item_count += parseInt(item_count_raw);
+                        let size = getItemChange(opt_value, parseInt(item_count_raw));
+                        if (size > 0) {
+                            inputs = populateCheck(inputs, opt_value, size, index);
+                        }
                         parsed = true;
                     }
                     if (parsed) {
@@ -379,6 +485,11 @@
                     }
                 }
             }
+            if (index > 0) {
+                pools[index] = [];
+                poolstatus[index] = true;
+            }
+            /*
             if (index > 0) {
                 let inner_text = "";
                 if (parsed_options > 0) {
@@ -402,7 +513,255 @@
                 check_hint_el.innerHTML = inner_text;
                 check_hint_el.style.color = text_color;
             }
+            */
         }
+        // Calculations
+        function checkDistribution(liquids, buckets, debug=false) {
+            if (debug) console.clear();
+            if (debug) console.log("Checking distribution");
+            const pool_count = 4;
+            let pool_valid = [];
+            let pool_verified = [];
+            let pool_liquids = [];
+            let pool_buckets = [];
+            for (let x = 0; x < pool_count; x++) {
+                pool_valid.push(true);
+                pool_verified.push(false);
+                pool_liquids.push(0);
+                pool_buckets.push(0);
+            }
+            let lq_copy = liquids.slice();
+            let bk_copy = buckets.slice();
+            let iter_count = 100;
+            let ran_rules = [];
+            while (true) {
+                /*
+                    Rule 1:
+                    Any pools which only have checks or only have items should get filtered out
+                    if their non-filtered version has more than 0 items.
+                    This can only be ran once.
+                */
+                if (!ran_rules.includes(1)) {
+                    let has_liquids = [];
+                    let has_buckets = [];
+                    for (let x = 0; x < pool_count; x++) {
+                        has_liquids.push(false);
+                        has_buckets.push(false);
+                    }
+                    lq_copy.forEach(lq => {
+                        lq.pools.forEach(pl => {
+                            has_liquids[pl] = true;
+                        })
+                    });
+                    bk_copy.forEach(bk => {
+                        bk.pools.forEach(pl => {
+                            has_buckets[pl] = true;
+                        })
+                    });
+                    let pools_to_filter = [];
+                    for (let x = 0; x < pool_count; x++) {
+                        if (!has_buckets[x] || !has_liquids[x]) {
+                            pools_to_filter.push(x);
+                        }
+                    }
+                    pools_to_filter.forEach(pl => {
+                        lq_copy.forEach(lq => {
+                            if (lq.pools.includes(pl)) {
+                                let filtered_version = lq.pools.filter(i => !pools_to_filter.includes(i));
+                                if (filtered_version.length > 0) {
+                                    if (debug) console.log(`Filtering out ${lq.pools.length - filtered_version.length} values from pool ${pl}`);
+                                    lq.pools = filtered_version.slice();
+                                } else {
+                                    // This is the only instance of this item, thus making this pool invalid
+                                    pool_valid[pl] = false;
+                                    pool_verified[pl] = true;
+                                }
+                            }
+                        });
+                        bk_copy.forEach(bk => {
+                            if (bk.pools.includes(pl)) {
+                                let filtered_version = bk.pools.filter(i => !pools_to_filter.includes(i));
+                                if (filtered_version.length > 0) {
+                                    if (debug) console.log(`Filtering out ${bk.pools.length - filtered_version.length} values from pool ${pl}`);
+                                    bk.pools = filtered_version.slice();
+                                } else {
+                                    // This is the only instance of this item, thus making this pool invalid
+                                    pool_valid[pl] = false;
+                                    pool_verified[pl] = true;
+                                }
+                            }
+                        });
+                    })
+                    ran_rules.push(1);
+                }
+                /*
+                    Rule 2:
+                    Any completely empty pools should add all of their items/checks in them
+                    Any pools with greater amounts of items than checks gets flagged as invalid.
+                */
+                let found_lq = [];
+                let found_bk = [];
+                for (let x = 0; x < pool_count; x++) {
+                    found_lq.push(false);
+                    found_bk.push(false);
+                }
+                lq_copy.forEach(lq => {
+                    lq.pools.forEach(pl => {
+                        found_lq[pl] = true;
+                    })
+                })
+                bk_copy.forEach(bk => {
+                    bk.pools.forEach(pl => {
+                        found_bk[pl] = true;
+                    })
+                })
+                for (let x = 0; x < pool_count; x++) {
+                    if (!found_lq[x] && !found_bk[x]) {
+                        if (pool_buckets[x] < pool_liquids[x]) {
+                            if (debug) console.log(`Too many items for pool ${x + 1}: ${pool_liquids[x]} vs ${pool_buckets[x]}`);
+                            pool_valid[x] = false;
+                            pool_verified[x] = true;
+                        }
+                    }
+                }
+                /*
+                    Rule 3:
+                    Any items/checks which are only part of 1 pool should get filtered out and applied to a guaranteed liq/buck total
+                */
+                let temp_lq = [];
+                lq_copy.forEach(lq => {
+                    if (lq.pools.length == 1) {
+                        pool_liquids[lq.pools[0]] += lq.size;
+                    } else {
+                        temp_lq.push(lq);
+                    } 
+                });
+                lq_copy = temp_lq.slice();
+                let temp_bk = [];
+                bk_copy.forEach(bk => {
+                    if (bk.pools.length == 1) {
+                        pool_buckets[bk.pools[0]] += bk.size;
+                    } else {
+                        temp_bk.push(bk);
+                    } 
+                });
+                bk_copy = temp_bk.slice();
+                /*
+                    Rule 4:
+                    For all remaining buckets, check the pools which need the checks the most
+                */
+                let bucket_deficit = pool_liquids.map((v, i) => v - pool_buckets[i]);
+                temp_bk = [];
+                bk_copy.forEach(bk => {
+                    let remove = false;
+                    let bucket_needed = null;
+                    let bucket_deficit_needed = null;
+                    bk.pools.forEach(pl => {
+                        if (bucket_needed === null || bucket_deficit[pl] > bucket_deficit_needed) {
+                            bucket_needed = pl;
+                            bucket_deficit_needed = bucket_deficit[pl];
+                        }
+                    })
+                    if (bucket_needed !== null) {
+                        let bucket_capacity_supplied = Math.min(bucket_deficit_needed, bk.size);
+                        bk.size -= bucket_capacity_supplied;
+                        pool_buckets[bucket_needed] += bucket_capacity_supplied;
+                        bk.pools = bk.pools.filter(i => i !== bucket_needed);
+                        if (bk.size < 1) {
+                            remove = true;
+                        }
+                    }
+                    if (!remove) {
+                        temp_bk.push(bk);
+                    }
+                })
+                bk_copy = temp_bk.slice();
+                /*
+                    Rule 5:
+                    For all remaining liquids, check the pools which have the smallest bucket gap
+                */
+                let bucket_surplus = pool_buckets.map((v, i) => v - pool_liquids[i]);
+                temp_lq = [];
+                lq_copy.forEach(lq => {
+                    let remove = false;
+                    let bucket_needed = null;
+                    let bucket_surplus_needed = null;
+                    lq.pools.forEach(pl => {
+                        if (bucket_needed === null || bucket_surplus[pl] < bucket_surplus_needed) {
+                            bucket_needed = pl;
+                            bucket_surplus_needed = bucket_surplus[pl];
+                        }
+                    })
+                    if (bucket_needed !== null) {
+                        let liquid_supplied = Math.min(bucket_surplus_needed, lq.size);
+                        lq.size -= liquid_supplied;
+                        pool_liquids[bucket_needed] += liquid_supplied;
+                        lq.pools = lq.pools.filter(i => i !== bucket_needed);
+                        if (lq.size < 1) {
+                            remove = true;
+                        }
+                    }
+                    if (!remove) {
+                        temp_lq.push(lq);
+                    }
+                })
+                lq_copy = temp_lq.slice();
+                // Termination checks
+                let terminate = lq_copy.length == 0 && bk_copy.length == 0;
+                if (terminate) {
+                    pool_valid = pool_liquids.map((v, i) => (pool_valid[i] & v <= pool_buckets[i]) !== 0);
+                    pool_verified = [true, true, true, true];
+                }
+                let terminate_verified = true;
+                for (let x = 0; x < pool_count; x++) {
+                    if (pool_valid[x]) {
+                        terminate = false;
+                    }
+                    if (!pool_verified[x]) {
+                        terminate_verified = false;
+                    }
+                }
+                if (terminate || terminate_verified) {
+                    break;
+                }
+                iter_count--;
+                if (iter_count < 1) {
+                    break;
+                }
+            }
+            if (debug) {
+                let data = {
+                    remaining_liquids: lq_copy,
+                    remaining_buckets: bk_copy,
+                    verified: pool_verified,
+                    valid: pool_valid,
+                    liquid_sum: pool_liquids,
+                    bucket_sum: pool_buckets,
+                }
+                console.log(data);
+            }
+            return {
+                valid: pool_valid,
+                item_counts: pool_liquids,
+                check_counts: pool_buckets,
+            }
+        }
+
+        const result = checkDistribution(Object.values(inputs), Object.values(outputs), true);
+        is_valid_item_spread = true;
+        for (let x = 0; x < 4; x++) {
+            const node = document.getElementById(`item_rando_check_hint_${x + 1}`);
+            node.innerText = `Items: ${result.item_counts[x]} | Checks: ${result.check_counts[x]}`;
+            is_valid_item_spread &= result.valid[x];
+            if (result.valid[x]) {
+                node.style.color = "green";
+                node.title = "Pool is valid";
+            } else {
+                node.style.color = "red";
+                node.title = "Pool is invalid due to too many items/too few checks";
+            }
+        }
+
         let is_valid_item_shuffle = true;
         Object.keys(item_shuffle_tied).forEach(key => {
             const val = item_shuffle_tied[key];
@@ -427,9 +786,25 @@
         const offset = sort_sections_items.length;
         let total_html_items = "";
         let total_html_checks = "";
+        let total_items_values = [];
+        let total_checks_values = [];
         for (let i = 0; i < offset; i++) {
-            total_html_items += sort_sections_items[i].innerHTML;
-            total_html_checks += sort_sections_checks[i].innerHTML;
+            const items = sort_sections_items[i].getElementsByTagName("li");
+            const checks = sort_sections_checks[i].getElementsByTagName("li");
+            for (let k = 0; k < items.length; k++) {
+                const item_value = items[k].getAttribute("value");
+                if (!total_items_values.includes(item_value)) {
+                    total_items_values.push(item_value);
+                    total_html_items += items[k].outerHTML;
+                }
+            }
+            for (let k = 0; k < checks.length; k++) {
+                const check_value = checks[k].getAttribute("value");
+                if (!total_checks_values.includes(check_value)) {
+                    total_checks_values.push(check_value);
+                    total_html_checks += checks[k].outerHTML;
+                }
+            }
         }
         for (let i = 0; i < offset; i++) {
             if (i == index) {

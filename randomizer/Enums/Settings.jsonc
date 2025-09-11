@@ -1377,7 +1377,6 @@
     "enemies_selected": { "obj": "Enemies" },
     "enguarde_colors": { "obj": "CharacterColors" },
     "excluded_songs_selected": { "obj": "ExcludedSongs" },
-    "free_trade_setting": { "obj": "FreeTradeSetting" },
     "fungi_time": { "obj": "FungiTimeSetting" },
     "galleon_water": { "obj": "GalleonWaterSetting" },
     "gb_colors": { "obj": "CharacterColors" },
@@ -1590,7 +1589,7 @@
     },
     "SettingsStringEnum.fast_warps": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.fps_display": { "obj": "SettingsStringDataType.bool" },
-    "SettingsStringEnum.free_trade_setting": { "obj": "FreeTradeSetting" },
+    "SettingsStringEnum.free_trade_setting": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.generate_spoilerlog": {
       "obj": "SettingsStringDataType.bool"
     },

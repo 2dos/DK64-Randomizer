@@ -391,7 +391,7 @@ class ItemPlacementData:
         overlay: list[GraphicOverlay] = None,
         index_getter=None,
         preview_text: str = "",
-        seal_preview_text: str = "",
+        special_preview_text: dict = {},
         scale: float = 0.25,
     ):
         """Initialize with given parameters."""
@@ -406,8 +406,11 @@ class ItemPlacementData:
             self.index_getter = lambda item, flag, shared: 0
         else:
             self.index_getter = index_getter
-        self.preview_text = preview_text
-        self.seal_preview_text = seal_preview_text
+        self.preview_text = f"\x04{preview_text}\x04"
+        temp_data = {}
+        for key, string in special_preview_text.items():
+            temp_data[key] = f"\x04{string}\x04"
+        self.special_preview_text = temp_data.copy()
         self.scale = scale
 
 
@@ -419,8 +422,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.Banana],
         jetpac_reward_index=[JetpacRewards.Banana],
         overlay=[GraphicOverlay.Banana],
-        preview_text="\x04GOLDEN BANANA\x04",
-        seal_preview_text="\x04BANANA OF PURE GOLD\x04",
+        preview_text="GOLDEN BANANA",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "BANANA OF PURE GOLD",
+            Locations.ForestDiddyOwlRace: "BRIGHT FRUIT OF GOLD",
+        },
     ),
     Types.Key: ItemPlacementData(
         model_index=[0xF5],
@@ -429,8 +435,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.Key],
         jetpac_reward_index=[JetpacRewards.Key],
         overlay=[GraphicOverlay.Key],
-        preview_text="\x04BOSS KEY\x04",
-        seal_preview_text="\x04KEY TO DAVY JONES LOCKER\x04",
+        preview_text="BOSS KEY",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "KEY TO DAVY JONES LOCKER",
+            Locations.ForestDiddyOwlRace: "HEAVY DOOR OPENER",
+        },
         scale=0.17,
     ),
     Types.Crown: ItemPlacementData(
@@ -440,8 +449,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.Crown],
         jetpac_reward_index=[JetpacRewards.Crown],
         overlay=[GraphicOverlay.Crown],
-        preview_text="\x04BATTLE CROWN\x04",
-        seal_preview_text="\x04CROWN TO PLACE ATOP YER HEAD\x04",
+        preview_text="BATTLE CROWN",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "CROWN TO PLACE ATOP YER HEAD",
+            Locations.ForestDiddyOwlRace: "CIRCLE OF RULING",
+        },
     ),
     Types.Fairy: ItemPlacementData(
         model_index=[0x3D],
@@ -450,8 +462,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.Fairy],
         jetpac_reward_index=[JetpacRewards.Fairy],
         overlay=[GraphicOverlay.Fairy],
-        preview_text="\x04BANANA FAIRY\x04",
-        seal_preview_text="\x04MAGICAL FLYING PIXIE\x04",
+        preview_text="BANANA FAIRY",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "MAGICAL FLYING PIXIE",
+            Locations.ForestDiddyOwlRace: "SMALL WINGED CREATURE",
+        },
     ),
     Types.Shop: ItemPlacementData(
         model_index=[0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB],
@@ -475,8 +490,11 @@ item_db = {
         jetpac_reward_index=[JetpacRewards.Potion] * 6,
         overlay=[GraphicOverlay.CrankyPotion] * 6,  # Handled elsewhere
         index_getter=lambda item, flag, shared: (flag >> 12) & 7 if flag & 0x8000 and not shared and ((flag >> 12) & 7) < 5 else 5,
-        preview_text="\x04POTION\x04",
-        seal_preview_text="\x04BOTTLE OF GROG\x04",
+        preview_text="POTION",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "BOTTLE OF GROG",
+            Locations.ForestDiddyOwlRace: "STRANGE BREW",
+        },
     ),
     Types.Shockwave: ItemPlacementData(
         model_index=[0xFB],
@@ -485,8 +503,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.PotionAny],
         jetpac_reward_index=[JetpacRewards.Potion],
         overlay=[GraphicOverlay.Shockwave],
-        preview_text="\x04POTION\x04",
-        seal_preview_text="\x04BOTTLE OF GROG\x04",
+        preview_text="POTION",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "BOTTLE OF GROG",
+            Locations.ForestDiddyOwlRace: "STRANGE BREW",
+        },
     ),
     Types.TrainingBarrel: ItemPlacementData(
         model_index=[0xFB],
@@ -495,8 +516,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.PotionAny],
         jetpac_reward_index=[JetpacRewards.Potion],
         overlay=[GraphicOverlay.TrainingBarrel],
-        preview_text="\x04POTION\x04",
-        seal_preview_text="\x04BOTTLE OF GROG\x04",
+        preview_text="POTION",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "BOTTLE OF GROG",
+            Locations.ForestDiddyOwlRace: "STRANGE BREW",
+        },
     ),
     Types.Climbing: ItemPlacementData(
         model_index=[0xFB],
@@ -505,8 +529,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.PotionAny],
         jetpac_reward_index=[JetpacRewards.Potion],
         overlay=[GraphicOverlay.TrainingBarrel],
-        preview_text="\x04POTION\x04",
-        seal_preview_text="\x04BOTTLE OF GROG\x04",
+        preview_text="POTION",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "BOTTLE OF GROG",
+            Locations.ForestDiddyOwlRace: "STRANGE BREW",
+        },
     ),
     Types.Kong: ItemPlacementData(
         model_index=[4, 1, 6, 9, 0xC],
@@ -528,8 +555,11 @@ item_db = {
         jetpac_reward_index=[JetpacRewards.Kong] * 5,
         overlay=[GraphicOverlay.Kong],
         index_getter=lambda item, flag, shared: (385, 6, 70, 66, 117).index(flag),
-        preview_text="\x04KONG\x04",
-        seal_preview_text="\x04WEIRD MONKEY\x04",
+        preview_text="KONG",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "WEIRD MONKEY",
+            Locations.ForestDiddyOwlRace: "NOISY JUNGLE BEAST",
+        },
     ),
     Types.FakeItem: ItemPlacementData(
         model_index=[0x103, 0x127, 0x128, 0x12B],
@@ -544,8 +574,11 @@ item_db = {
         jetpac_reward_index=[JetpacRewards.IceTrap] * 4,
         overlay=[GraphicOverlay.IceTrapBubble] * 4,
         index_getter=lambda item, flag, shared: IceTrapMaskIndexes.index(IceTrapMasks[item]),
-        preview_text="\x04GLODEN BANANE\x04",
-        seal_preview_text="\x04BANANA OF FOOLS GOLD\x04",
+        preview_text="GLODEN BANANE",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "BANANA OF FOOLS GOLD",
+            Locations.ForestDiddyOwlRace: "SOMETHING THAT DOESN'T BELONG",
+        },
     ),
     Types.Bean: ItemPlacementData(
         model_index=[0x104],
@@ -554,8 +587,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.Bean],
         jetpac_reward_index=[JetpacRewards.Bean],
         overlay=[GraphicOverlay.Bean],
-        preview_text="\x04BEAN\x04",
-        seal_preview_text="\x04QUESTIONABLE VEGETABLE\x04",
+        preview_text="BEAN",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "QUESTIONABLE VEGETABLE",
+            Locations.ForestDiddyOwlRace: "TINY SEED OF LIFE",
+        },
     ),
     Types.Pearl: ItemPlacementData(
         model_index=[0x106],
@@ -564,8 +600,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.Pearl],
         jetpac_reward_index=[JetpacRewards.Pearl],
         overlay=[GraphicOverlay.Pearl],
-        preview_text="\x04PEARL\x04",
-        seal_preview_text="\x04BLACK PEARL\x04",
+        preview_text="PEARL",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "BLACK PEARL",
+            Locations.ForestDiddyOwlRace: "THE WHITE GEM OF THE OCEAN",
+        },
     ),
     Types.Medal: ItemPlacementData(
         model_index=[0x108],
@@ -574,8 +613,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.Medal],
         jetpac_reward_index=[JetpacRewards.Medal],
         overlay=[GraphicOverlay.Medal],
-        preview_text="\x04BANANA MEDAL\x04",
-        seal_preview_text="\x04MEDALLION\x04",
+        preview_text="BANANA MEDAL",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "MEDALLION",
+            Locations.ForestDiddyOwlRace: "FRUIT EARNED HONOR",
+        },
         scale=0.22,
     ),
     Types.NintendoCoin: ItemPlacementData(
@@ -585,8 +627,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.NintendoCoin],
         jetpac_reward_index=[JetpacRewards.NintendoCoin],
         overlay=[GraphicOverlay.CompanyCoin],
-        preview_text="\x04NINTENDO COIN\x04",
-        seal_preview_text="\x04ANCIENT DOUBLOON\x04",
+        preview_text="NINTENDO COIN",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "ANCIENT DOUBLOON",
+            Locations.ForestDiddyOwlRace: "A PUBLISHERS TREASURED TOKEN",
+        },
         scale=0.4,
     ),
     Types.RarewareCoin: ItemPlacementData(
@@ -596,8 +641,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.RarewareCoin],
         jetpac_reward_index=[JetpacRewards.RarewareCoin],
         overlay=[GraphicOverlay.CompanyCoin],
-        preview_text="\x04RAREWARE COIN\x04",
-        seal_preview_text="\x04DOUBLOON OF THE RAREST KIND\x04",
+        preview_text="RAREWARE COIN",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "DOUBLOON OF THE RAREST KIND",
+            Locations.ForestDiddyOwlRace: "ANCIENT RARE PRIZE",
+        },
         scale=0.4,
     ),
     Types.JunkItem: ItemPlacementData(
@@ -607,8 +655,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.JunkItem],
         jetpac_reward_index=[JetpacRewards.JunkItem],
         overlay=[GraphicOverlay.JunkMelon],
-        preview_text="\x04JUNK ITEM\x04",
-        seal_preview_text="\x04HEAP OF JUNK\x04",
+        preview_text="JUNK ITEM",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "HEAP OF JUNK",
+            Locations.ForestDiddyOwlRace: "WORTHLESS TRINKET",
+        },
     ),
     Types.Cranky: ItemPlacementData(
         model_index=[0x11],
@@ -617,8 +668,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.Cranky],
         jetpac_reward_index=[JetpacRewards.Cranky],
         overlay=[GraphicOverlay.CrankyItem],
-        preview_text="\x04SHOPKEEPER\x04",
-        seal_preview_text="\x04BARTERING SOUL\x04",
+        preview_text="SHOPKEEPER",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "BARTERING SOUL",
+            Locations.ForestDiddyOwlRace: "WATCHER OF WARES",
+        },
     ),
     Types.Funky: ItemPlacementData(
         model_index=[0x12],
@@ -627,8 +681,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.Funky],
         jetpac_reward_index=[JetpacRewards.Funky],
         overlay=[GraphicOverlay.FunkyItem],
-        preview_text="\x04SHOPKEEPER\x04",
-        seal_preview_text="\x04BARTERING SOUL\x04",
+        preview_text="SHOPKEEPER",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "BARTERING SOUL",
+            Locations.ForestDiddyOwlRace: "WATCHER OF WARES",
+        },
     ),
     Types.Candy: ItemPlacementData(
         model_index=[0x13],
@@ -637,8 +694,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.Candy],
         jetpac_reward_index=[JetpacRewards.Candy],
         overlay=[GraphicOverlay.CandyItem],
-        preview_text="\x04SHOPKEEPER\x04",
-        seal_preview_text="\x04BARTERING SOUL\x04",
+        preview_text="SHOPKEEPER",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "BARTERING SOUL",
+            Locations.ForestDiddyOwlRace: "WATCHER OF WARES",
+        },
     ),
     Types.Snide: ItemPlacementData(
         model_index=[0x1F],
@@ -647,8 +707,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.Snide],
         jetpac_reward_index=[JetpacRewards.Snide],
         overlay=[GraphicOverlay.SnideItem],
-        preview_text="\x04SHOPKEEPER\x04",
-        seal_preview_text="\x04NERDY SOUL\x04",
+        preview_text="SHOPKEEPER",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "NERDY SOUL",
+            Locations.ForestDiddyOwlRace: "THINKER OF MYSTERIES",
+        },
     ),
     Types.Hint: ItemPlacementData(
         model_index=[0x11B, 0x11D, 0x11F, 0x121, 0x123],
@@ -664,10 +727,14 @@ item_db = {
         jetpac_reward_index=[JetpacRewards.Hint] * 5,
         overlay=[GraphicOverlay.Hint],
         index_getter=lambda item, flag, shared: (flag - 0x384) % 5,
-        preview_text="\x04HINT\x04",
-        seal_preview_text="\x04LAYTON RIDDLE\x04",
+        preview_text="HINT",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "LAYTON RIDDLE",
+            Locations.ForestDiddyOwlRace: "SMALL MORSEL OF WISDOM SHARED",
+        },
     ),
     Types.Blueprint: ItemPlacementData(
+        model_index=[0x12E, 0x12F, 0x130, 0x131, 0x132],
         model_two_index=[0xDE, 0xE0, 0xE1, 0xDD, 0xDF],
         actor_index=[78, 75, 77, 79, 76],
         overlay=[GraphicOverlay.Blueprint],
@@ -680,18 +747,25 @@ item_db = {
         ],
         jetpac_reward_index=[JetpacRewards.Blueprint] * 5,
         index_getter=lambda item, flag, shared: (flag - 0x1D5) % 5,
-        preview_text="\x04BLUEPRINT\x04",
-        seal_preview_text="\x04MAP O' DEATH MACHINE\x04",
+        preview_text="BLUEPRINT",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "MAP O' DEATH MACHINE",
+            Locations.ForestDiddyOwlRace: "PLANS UPON A PARCHMENT",
+        },
         scale=2,
     ),
     Types.RainbowCoin: ItemPlacementData(
+        model_index=[0x12D],
         model_two_index=[0xB7],
         actor_index=[0x8C],
         arcade_reward_index=[ArcadeRewards.RainbowCoin],
         jetpac_reward_index=[JetpacRewards.RainbowCoin],
         overlay=[GraphicOverlay.RainbowCoin],
-        preview_text="\x04RAINBOW COIN\x04",
-        seal_preview_text="\x04COLORFUL COIN HIDDEN FOR 17 YEARS\x04",
+        preview_text="RAINBOW COIN",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "COLORFUL COIN HIDDEN FOR 17 YEARS",
+            Locations.ForestDiddyOwlRace: "COLORS BOUND IN A CIRCLE",
+        },
     ),
     Types.NoItem: ItemPlacementData(
         model_two_index=[0],
@@ -699,8 +773,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.NintendoCoin],
         jetpac_reward_index=[JetpacRewards.RarewareCoin],
         overlay=[GraphicOverlay.NoItem],
-        preview_text="\x04NOTHING\x04",
-        seal_preview_text="\x04DIDDLY SQUAT\x04",
+        preview_text="NOTHING",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "DIDDLY SQUAT",
+            Locations.ForestDiddyOwlRace: "EMPTY AIR ONLY",
+        },
     ),
     Types.ArchipelagoItem: ItemPlacementData(
         model_index=[0x125],
@@ -709,8 +786,11 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.APItem],
         jetpac_reward_index=[JetpacRewards.APItem],
         overlay=[GraphicOverlay.Hint],
-        preview_text="\x04ARCHIPELAGO ITEM\x04",
-        seal_preview_text="\x04ANOTHER SCALLYWAG'S BOOTY\x04",
+        preview_text="ARCHIPELAGO ITEM",
+        special_preview_text={
+            Locations.GalleonDonkeySealRace: "ANOTHER SCALLYWAG'S BOOTY",
+            Locations.ForestDiddyOwlRace: "A GIFT BEYOND THIS REALM",
+        },
     ),
 }
 
@@ -798,7 +878,6 @@ def getModelMask(item: Items) -> Types:
 
 def getItemPreviewText(item_type: Types, location: Locations, allow_special_text: bool = True, masked_model: Types = None) -> str:
     """Get the preview text for an item."""
-    use_special_text = location == Locations.GalleonDonkeySealRace and allow_special_text
     reference_item = item_type
     if item_type == Types.FakeItem:
         reference_item = masked_model
@@ -806,8 +885,8 @@ def getItemPreviewText(item_type: Types, location: Locations, allow_special_text
         return ""
     item_data = getItemDBEntry(reference_item)
     text = item_data.preview_text
-    if use_special_text:
-        text = item_data.seal_preview_text
+    if allow_special_text:
+        text = item_data.special_preview_text.get(location, text)
     if item_type == Types.FakeItem:
         return getIceTrapText(text)
     return text

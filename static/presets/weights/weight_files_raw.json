@@ -437,27 +437,12 @@
             "ignore": true
         },
         "free_trade_setting": {
-            "setting_type": "choice_single",
+            "setting_type": "bool",
             "options": {
-                "easy": {
-                    "not_blueprints": 30.0,
-                    "major_collectibles": 70.0
-                },
-                "standard": {
-                    "none": 10.0,
-                    "not_blueprints": 30.0,
-                    "major_collectibles": 60.0
-                },
-                "difficult": {
-                    "none": 20.0,
-                    "not_blueprints": 30.0,
-                    "major_collectibles": 50.0
-                },
-                "difficult_with_qol_shuffle": {
-                    "none": 20.0,
-                    "not_blueprints": 30.0,
-                    "major_collectibles": 50.0
-                }
+                "easy": 100,
+                "standard": 90,
+                "difficult": 80,
+                "difficult_with_qol_shuffle": 80
             },
             "qol_uses_hard": true
         },

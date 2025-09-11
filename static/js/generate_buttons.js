@@ -585,10 +585,10 @@ async function import_settings_string_internal(settingsString) {
                             total_settings_list_items = total_settings_list_items.concat(settings[`${list_predicate}${i}`]);
                             total_settings_list_checks = total_settings_list_checks.concat(settings[`${list_predicate}${i + list_count}`]);
                         }
-                        if (total_settings_list_items.length != items_list.length) {
+                        if ([...new Set(total_settings_list_items)].length != items_list.length) {
                             valid = false;
                         }
-                        if (total_settings_list_checks.length != checks_list.length) {
+                        if ([...new Set(total_settings_list_checks)].length != checks_list.length) {
                             valid = false;
                         }
                         total_settings_list_items.forEach(value => {
@@ -619,6 +619,31 @@ async function import_settings_string_internal(settingsString) {
                             // Find the selected option by the value of the option
                             const option = document.createElement("li");
                             option.classList.add("list-group-item");
+                            option.classList.add("d-flex");
+                            const span0 = document.createElement("span");
+                            span0.classList.add("fs-6");
+                            span0.classList.add("d-flex");
+                            const i_handle = document.createElement("i");
+                            i_handle.classList.add("fas");
+                            i_handle.classList.add("fa-arrows-alt");
+                            i_handle.classList.add("handle");
+                            i_handle.style.height = "20px";
+                            i_handle.style.width = "20px";
+                            i_handle.style["padding-right"] = "5px";
+                            i_handle.setAttribute("title", "Drag to Move");
+                            const i_clone = document.createElement("i");
+                            i_clone.classList.add("fas");
+                            i_clone.classList.add("fa-clone");
+                            i_clone.classList.add("clone-btn");
+                            i_clone.style.height = "20px";
+                            i_clone.style.width = "20px";
+                            i_clone.style["padding-right"] = "5px";
+                            i_clone.setAttribute("title", "Drag to Clone");
+                            span0.appendChild(i_handle)
+                            span0.appendChild(i_clone)
+                            option.appendChild(span0)
+                            const span1 = document.createElement("span");
+                            span1.classList.add("flex-grow-1");
                             let opt_name = "";
                             let opt_tooltip = "";
                             let opt_checks = "";
@@ -637,7 +662,8 @@ async function import_settings_string_internal(settingsString) {
                                         } else if (k.is_dummy) {
                                             option.classList.add("show-if-ir-decouple");
                                             if (settings["decouple_item_rando"]) {
-                                                option.setAttribute("hidden", "hidden");
+                                                option.classList.remove("d-flex");
+                                                option.classList.add("d-none");
                                             }
                                         }
                                         opt_tied_item = k.tied ? k.tied : "";
@@ -645,13 +671,14 @@ async function import_settings_string_internal(settingsString) {
                                 }
                             })
                             if (opt_name != "") {
-                                option.innerText = opt_name; // Not sure what to do for this
+                                span1.innerText = opt_name; // Not sure what to do for this
                                 option.title = opt_tooltip;
                                 if (list_predicate == "item_rando_list_") {
                                     option.setAttribute("check_count", opt_checks);
                                     option.setAttribute("items_count", opt_items);
                                     option.setAttribute("tied_item", opt_tied_item);
                                 }
+                                option.appendChild(span1);
                                 selector.appendChild(option);
                             }
                         });

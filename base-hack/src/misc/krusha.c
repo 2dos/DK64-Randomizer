@@ -414,7 +414,7 @@ void OrangeGunCode(void) {
     }
     float life = orange_life;
     unkBonusFunction(CurrentActorPointer_0);
-    unkProjectileCode_2(CurrentActorPointer_0);
+    colorRainbowAmmo(CurrentActorPointer_0);
     unkProjectileCode_3(CurrentActorPointer_0, 0);
     int making_contact = madeContact();
     if (

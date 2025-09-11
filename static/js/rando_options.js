@@ -1052,6 +1052,8 @@ function refreshItemRandoSortable() {
 }
 
 document.getElementById("smaller_shops").addEventListener("click", refreshItemRandoSortable);
+document.querySelector("#cb_rando_list_selected option[value='DKIsles']").addEventListener("click", refreshItemRandoSortable);
+document.getElementById("cb_rando_enabled").addEventListener("click", refreshItemRandoSortable);
 
 // Enable and disable settings based on the Item Rando pool changing
 function item_rando_list_changed(evt) {
@@ -1883,17 +1885,37 @@ function hide_irrelevant_details_coupled_item_rando() {
   const antidetails = document.getElementsByClassName("show-if-ir-decouple");
   if (value) {
     for (let el of details) {
-      el.removeAttribute("hidden");
+      if (el.classList.contains("decouple-hide")) {
+        el.removeAttribute("hidden");
+      } else {
+        el.classList.add("d-flex");
+        el.classList.remove("d-none");
+      }
     }
     for (let el of antidetails) {
-      el.setAttribute("hidden","hidden");
+      if (el.classList.contains("decouple-hide")) {
+        el.setAttribute("hidden", "hidden");
+      } else {
+        el.classList.remove("d-flex");
+        el.classList.add("d-none");
+      }
     }
   } else {
     for (let el of details) {
-      el.setAttribute("hidden","hidden");
+      if (el.classList.contains("decouple-hide")) {
+        el.setAttribute("hidden", "hidden");
+      } else {
+        el.classList.remove("d-flex");
+        el.classList.add("d-none");
+      }
     }
     for (let el of antidetails) {
-      el.removeAttribute("hidden");
+      if (el.classList.contains("decouple-hide")) {
+        el.removeAttribute("hidden");
+      } else {
+        el.classList.add("d-flex");
+        el.classList.remove("d-none");
+      }
     }
   }
 }
@@ -1924,6 +1946,7 @@ function update_ui_states() {
   update_door_one_num_access();
   update_door_two_num_access();
   update_win_con_num_access();
+  refreshItemRandoSortable();
   update_prog_hint_num_access();
   update_blocker_num_access();
   update_ice_trap_count();

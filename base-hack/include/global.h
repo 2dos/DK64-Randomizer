@@ -427,6 +427,9 @@ extern void resetIceTrapButtons(void);
 extern void handleIceTrapButtons(void);
 extern int getCharWidthMask(int style, unsigned char *character);
 
+extern void colorRainbowAmmo(void* actor);
+extern void colorRainbowAmmoHUD(int red, int green, int blue, int alpha);
+
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
@@ -500,3 +503,4 @@ extern char aztec_beetle[0x20];
 extern char caves_beetle[0x20];
 extern unsigned char pregiven_status[56];
 extern StartingItemsStruct starting_item_data;
+extern coinHUDStruct CoinHUDElements[8];

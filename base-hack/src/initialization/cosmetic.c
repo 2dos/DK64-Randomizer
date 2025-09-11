@@ -10,8 +10,6 @@
  */
 #include "../../include/common.h"
 
-static short pellets[] = {48, 36, 42, 43, 38};
-
 #define ORANGE_GUN_SFX 400
 #define ORANGE_GUN_VARIANCE 5
 
@@ -284,5 +282,59 @@ void setFog(int enabled) {
             EnvironmentFog.cap_range = fog_data[i].fog_cap;
             return;
         }
+    }
+}
+
+void getRainbowAmmoColor(rgba *color) {
+    int pos = ObjectModel2Timer % 1536;
+    int step = pos >> 8;
+    switch (step) {
+        case 0:
+            // 0 <= pos <= 255
+            color->red = 255;
+            color->green = pos;
+            break;
+        case 1:
+            // 255 < pos <= 511
+            color->red = 511 - pos;
+            color->green = 255;
+            break;
+        case 2:
+            // 511 < pos <= 767
+            color->green = 255;
+            color->blue = pos - 512;
+            break;
+        case 3:
+            // 767 < pos <= 1023
+            color->green = 1023 - pos;
+            color->blue = 255;
+            break;
+        case 4:
+            // 1023 < pos <= 1279
+            color->red = pos - 1024;
+            color->blue = 255;
+            break;
+        default:
+            // 1280 < pos <= 1535
+            color->red = 255;
+            color->blue = 1535 - pos;
+            break;
+    }
+}
+
+void colorRainbowAmmo(void* actor) {
+    unkProjectileCode_2(actor);
+    if (Rando.rainbow_ammo) {
+        rgba color = {.red = 0, .green = 0, .blue = 0, .alpha = 0xFF};
+        getRainbowAmmoColor(&color);
+        changeActorColor(color.red, color.green, color.blue, color.alpha);
+    }
+}
+
+void colorRainbowAmmoHUD(int red, int green, int blue, int alpha) {
+    changeActorColor(red, green, blue, alpha);
+    if (Rando.rainbow_ammo) {
+        SpriteRGBA.alpha = 0xFF;
+        getRainbowAmmoColor(&SpriteRGBA);
     }
 }
