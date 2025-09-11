@@ -124,7 +124,7 @@ if baseclasses_loaded:
     from randomizer.SettingStrings import decrypt_settings_string_enum
     from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options, Goal, SwitchSanity, dk64_option_groups
+    from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups
     from archipelago.Regions import all_locations, create_regions, connect_regions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
@@ -747,6 +747,19 @@ if baseclasses_loaded:
             if hasattr(self.multiworld, "generation_is_fake"):
                 # If gen is fake, don't pick random keys to start with, trust the slot data
                 settings_dict["krool_key_count"] = 8
+
+            # Kong settings
+            kong_mapping = {
+                SelectStartingKong.option_donkey: Kongs.donkey,
+                SelectStartingKong.option_diddy: Kongs.diddy,
+                SelectStartingKong.option_lanky: Kongs.lanky,
+                SelectStartingKong.option_tiny: Kongs.tiny,
+                SelectStartingKong.option_chunky: Kongs.diddy,
+                SelectStartingKong.option_any: Kongs.any,
+            }
+
+            settings_dict["starting_kong"] = kong_mapping[self.options.select_starting_kong.value]
+
             # Switchsanity configuration
             settings_dict["switchsanity_enabled"] = self.options.switchsanity.value != SwitchSanity.option_off
 

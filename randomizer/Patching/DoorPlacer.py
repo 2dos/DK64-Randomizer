@@ -394,7 +394,7 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                                 spoiler.settings.misc_changes_selected,
                                 MiscChangesSelected.remove_wrinkly_puzzles,
                             )
-                            or spoiler.settings.remove_wrinkly_puzzles
+                            or spoiler.settings.wrinkly_location_rando
                         ):
                             # If hint doors should exist (no progressive hints unless hints are in the pool, or the edge case of wrinkly puzzles
                             # being removed without wrinkly location rando AND progressive hints being set to off)
@@ -406,10 +406,7 @@ def place_door_locations(spoiler, ROM_COPY: LocalROM):
                                         spoiler.settings.misc_changes_selected,
                                         MiscChangesSelected.remove_wrinkly_puzzles,
                                     )
-                                    and not IsDDMSSelected(
-                                        spoiler.settings.misc_changes_selected,
-                                        MiscChangesSelected.remove_wrinkly_puzzles,
-                                    )
+                                    and not spoiler.settings.wrinkly_location_rando
                                     and spoiler.settings.progressive_hint_item == ProgressiveHintItem.off
                                 )
                             ):
