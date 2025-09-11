@@ -2961,7 +2961,7 @@ class Settings:
                     bucket_needed = None
                     bucket_surplus_needed = None
                     for pl in lq["pools"]:
-                        if (bucket_needed is None or bucket_surplus[pl] < bucket_surplus_needed):
+                        if bucket_needed is None or bucket_surplus[pl] < bucket_surplus_needed:
                             bucket_needed = pl
                             bucket_surplus_needed = bucket_surplus[pl]
                     if bucket_needed is not None:
@@ -3002,18 +3002,12 @@ class Settings:
         for x in range(4):
             for item_selector in self.item_search[x]:
                 if item_selector not in inputs:
-                    inputs[item_selector] = {
-                        "size": self.item_check_counts[item_selector][0],
-                        "pools": [x]
-                    }
+                    inputs[item_selector] = {"size": self.item_check_counts[item_selector][0], "pools": [x]}
                 else:
                     inputs[item_selector]["pools"].append(x)
             for check_selector in self.check_search[x]:
                 if check_selector not in outputs:
-                    outputs[check_selector] = {
-                        "size": self.item_check_counts[check_selector][1],
-                        "pools": [x]
-                    }
+                    outputs[check_selector] = {"size": self.item_check_counts[check_selector][1], "pools": [x]}
                 else:
                     outputs[check_selector]["pools"].append(x)
         return check_distribution(list(inputs.values()), list(outputs.values()))

@@ -770,6 +770,7 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
         ROM_COPY.seek(getPointerLocation(TableNames.ActorGeometry, enemy))
         ROM_COPY.writeBytes(file_data)
 
+
 def writeRainbowAmmo(settings, ROM_COPY: ROM):
     """Desaturate all ammo textures so that they look good with rainbow ammo."""
     if not settings.rainbow_ammo:
