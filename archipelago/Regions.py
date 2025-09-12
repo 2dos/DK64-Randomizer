@@ -220,7 +220,7 @@ def create_region(
                 case MinigameType.BonusBarrel:
                     if not logic_holder.settings.bonus_barrel_auto_complete:
                         add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
-                        if logic_holder.settings.win_condition_item == WinConditionComplex.req_bonuses:
+                        if logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
                             token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
                             set_rule(
                                 token_location,
@@ -231,7 +231,7 @@ def create_region(
                 case MinigameType.HelmBarrelFirst:
                     if logic_holder.settings.helm_room_bonus_count > 0:
                         add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
-                        if logic_holder.settings.win_condition_item == WinConditionComplex.req_bonuses:
+                        if logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
                             token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
                             set_rule(
                                 token_location,
@@ -242,7 +242,7 @@ def create_region(
                 case MinigameType.HelmBarrelSecond:
                     if logic_holder.settings.helm_room_bonus_count == 2:
                         add_rule(location, lambda state, player=player, location_logic=location_logic: canDoBonusBarrel(state, player, location_logic))
-                        if logic_holder.settings.win_condition_item == WinConditionComplex.req_bonuses:
+                        if logic_holder.settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
                             token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
                             set_rule(
                                 token_location,
@@ -260,7 +260,7 @@ def create_region(
             # Shops cannot have shopkeepers for the time being due to funny haha display bug
             if location_obj.type == Types.Shop:
                 add_item_rule(location, lambda item: not (item.player == player and item.name in ["Cranky", "Funky", "Candy", "Snide"]))
-            if location_obj.type == Types.Key and logic_holder.settings.win_condition_item == WinConditionComplex.req_bosses:
+            if location_obj.type == Types.Key and logic_holder.settings.win_condition_item in (WinConditionComplex.req_bosses, WinConditionComplex.krools_challenge):
                 token_location = DK64Location(player, location_obj.name + " Token", None, new_region)
                 set_rule(token_location, lambda state, player=player, location_logic=location_logic: hasDK64RLocation(state, player, location_logic))
                 token_location.place_locked_item(DK64Item("Boss Defeated", ItemClassification.progression_skip_balancing, None, player))
