@@ -115,6 +115,11 @@
                 return num;
             }
 
+            function isLocal() {
+                const local_hostnames = ["127.0.0.1", "localhost"]
+                return local_hostnames.includes(window.location.hostname);
+            }
+
             async function pullAllSettings() {
                 let allCommits = [];
                 let page = 0;
@@ -140,7 +145,6 @@
                             if (latest_version === null) {
                                 latest_version = version;
                             }
-                            console.log(version)
                             if (version[0] == "4") {
                                 has_found_v4 = true;
                             }
@@ -171,7 +175,7 @@
                                     f.versions.push(version);
                                 }
                                 if (version === latest_version) {
-                                    f.is_latest = true;
+                                    f.is_latest = !isLocal();
                                 }
                                 found_jsonc = true;
                             }
@@ -187,10 +191,23 @@
                         }
                     })
                 )
+                if (isLocal()) {
+                    const local_jsonc = './randomizer/Enums/Settings.jsonc';
+                    const local_res = await fetch(local_jsonc);
+                    if (!local_res.ok) {
+                        console.warn(`⚠️ Could not fetch file (${local_res.status})`);
+                        return null;
+                    }
+                    jsonc_files.push({
+                        versions: [],
+                        text: await local_res.text(),
+                        is_latest: true,
+                    })
+                }
                 
                 await Promise.all(
                     bonus_enum_list.map(async (benum) => {
-                        const jsonc_url = `https://raw.githubusercontent.com/2dos/DK64-Randomizer/refs/heads/dev/randomizer/Enums/${benum}.jsonc`;
+                        const jsonc_url = `./randomizer/Enums/${benum}.jsonc`;
                         const res = await fetch(jsonc_url);
                         if (!res.ok) {
                             console.warn(`⚠️ Could not fetch file (${res.status})`);
@@ -200,7 +217,7 @@
                         bonus_enums[benum] = text;
                     })
                 );
-                const types_json_url = 'https://raw.githubusercontent.com/2dos/DK64-Randomizer/refs/heads/dev/randomizer/Enums/Types.json';
+                const types_json_url = './randomizer/Enums/Types.json';
                 const types_res = await fetch(types_json_url);
                 if (!types_res.ok) {
                     console.warn(`⚠️ Could not fetch file (${types_res.status})`);
@@ -236,8 +253,6 @@
                     }
                     return `<option value="${index}">${opt_text}</option>`    
                 })
-                console.log(settings)
-                console.log(latest_setting)
             }
             populateSite()
 
@@ -354,7 +369,6 @@
                         let list_length = parseInt(bitstring.slice(bit_index, bit_index + 8), 2)
                         bit_index += 8
                         val = []
-                        console.log(input_jsonc.SettingsStringListTypeMap[`SettingsStringEnum.${key_name}`].obj)
                         key_list_data_type = input_jsonc.SettingsStringListTypeMap[`SettingsStringEnum.${key_name}`].obj;
                         for (let x = 0; x < list_length; x++) {
                             let list_val = null;
@@ -394,14 +408,11 @@
                         }
                     } else {
                         // The value is an enum.
-                        console.log(key_data_type)
-                        console.log(input_jsonc)
                         max_value = Math.max(...Object.values(input_jsonc[key_data_type]));
                         let int_val = parseInt(bitstring.slice(bit_index, bit_index + max_value.toString(2).length), 2)
                         val = null;
                         Object.keys(input_jsonc[key_data_type]).forEach(k => {
                             if (input_jsonc[key_data_type][k] == int_val) {
-                                console.log(key_name, k)
                                 val = k;
                             }
                         })
@@ -431,7 +442,6 @@
             function prune_settings(settings_dict) {
                 settings_to_remove = ["plandomizer_data", "enable_song_select", "music_selections"]
                 for (const [keySetting, exclusions] of Object.entries(settingsExclusionMap)) {
-                    console.log(keySetting, exclusions)
                     if (Object.keys(settings_dict).includes(keySetting) && Object.keys(exclusions).includes(settings_dict[keySetting])) {
                         settings_to_remove = settings_to_remove.concat(exclusions[settings_dict[keySetting]]);
                     }
@@ -518,7 +528,6 @@
                             bitstring += value.toString(2).padStart(bitLength, "0");
 
                         } else {
-                            console.log("Value.value", value)
                             const bitLength = max_value === 0 ? 0 : Math.floor(Math.log2(max_value)) + 1;
                             bitstring += value.value.toString(2).padStart(bitLength, "0");
                         }
@@ -554,15 +563,24 @@
                     output_json[benum] = json[benum];
                 })
     
-    
+                console.log("input_jsonc")
+                console.log(string_json)
                 let setting_data = decryptString(input_string, string_json);
+                console.log("Parsed Settings")
+                console.log({...setting_data})
 
                 // Do any bonus transpositions
                 const sel_version_num = numericVersion(settings[selected_version].max_version);
                 if (sel_version_num <= numericVersion("5.1.9")) {
                     // Convert CB Behavior to CB Behavior new
+                    console.log('Remapping CB Medal Behavior');
                     setting_data.cb_medal_behavior_new = setting_data.cb_medal_behavior;
                     delete setting_data.cb_medal_behavior;
+                }
+                if (sel_version_num <= numericVersion("5.4.0")) {
+                    // Convert free trade setting to utilize a boolean
+                    console.log(`Free Trade: ${setting_data.free_trade_setting} -> ${setting_data.free_trade_setting != 'none'}`);
+                    setting_data.free_trade_setting = setting_data.free_trade_setting != 'none';
                 }
                 // Update to include all unhandled options to unsorted
                 const all_valid_items = Object.keys(output_json.ItemRandoListSelected);
@@ -572,6 +590,7 @@
                 }
                 const missing_items = all_valid_items.filter(x => !mentioned_items.includes(x));
                 missing_items.forEach(entry => {
+                    console.log(`Adding item ${entry} to item rando selector`)
                     const item_entry = types.ItemRandoSelector.find(k => k.value == entry);
                     if (item_entry.is_check) {
                         setting_data.item_rando_list_5.push(entry);
@@ -580,6 +599,8 @@
                     }
                 })
 
+                console.log("Output Settings")
+                console.log(setting_data)
                 const output_string = encryptString(setting_data, output_json);
                 document.getElementById("output_string").value = output_string;
             })

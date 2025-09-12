@@ -1227,3 +1227,7 @@ input[type=range][disabled]::-ms-fill-upper {
 .ir-hint.checks {
   background-color: #00779c;
 }
+
+ul#item_rando_list_0 .clone-btn, ul#item_rando_list_5 .clone-btn {
+  display: none;
+}

@@ -7,6 +7,7 @@ import random
 import os
 from version import version
 from copy import deepcopy
+from collections import deque
 
 from randomizer.Enums.Transitions import Transitions
 import randomizer.ItemPool as ItemPool
@@ -153,6 +154,51 @@ class Settings:
             Levels.CrystalCaves: ItemPool.AllKongMoves().copy(),
             Levels.CreepyCastle: ItemPool.AllKongMoves().copy(),
         }
+
+        self.item_check_counts = {
+            # Item, Checks
+            ItemRandoListSelected.shop: [0, 100],
+            ItemRandoListSelected.moves: [36, 0],
+            ItemRandoListSelected.shockwave: [2, 0],
+            ItemRandoListSelected.bfi_gift: [0, 1],
+            ItemRandoListSelected.banana: [161, 0],
+            ItemRandoListSelected.banana_checks: [0, 148],
+            ItemRandoListSelected.toughbanana: [0, 13],
+            ItemRandoListSelected.arenas: [0, 10],
+            ItemRandoListSelected.crown: [10, 0],
+            ItemRandoListSelected.blueprint: [40, 0],
+            ItemRandoListSelected.kasplat: [0, 40],
+            ItemRandoListSelected.key: [8, 0],
+            ItemRandoListSelected.bosses: [0, 7],
+            ItemRandoListSelected.endofhelm: [0, 1],
+            ItemRandoListSelected.medal: [40, 0],
+            ItemRandoListSelected.medal_checks: [0, 35],
+            ItemRandoListSelected.medal_checks_helm: [0, 5],
+            ItemRandoListSelected.nintendocoin: [1, 0],
+            ItemRandoListSelected.arcade: [0, 1],
+            ItemRandoListSelected.rarewarecoin: [1, 0],
+            ItemRandoListSelected.jetpac: [0, 1],
+            ItemRandoListSelected.kong: [4, 0],
+            ItemRandoListSelected.kong_cages: [0, 4],
+            ItemRandoListSelected.fairy: [20, 0],
+            ItemRandoListSelected.fairy_checks: [0, 20],
+            ItemRandoListSelected.rainbowcoin: [16, 0],
+            ItemRandoListSelected.dirt_patches: [0, 16],
+            ItemRandoListSelected.pearl: [5, 0],
+            ItemRandoListSelected.clams: [0, 5],
+            ItemRandoListSelected.bean: [1, 0],
+            ItemRandoListSelected.anthillreward: [0, 1],
+            ItemRandoListSelected.crateitem: [0, 13],
+            ItemRandoListSelected.halfmedal: [0, 40],
+            ItemRandoListSelected.shopowners: [0, 0],  # Max is 4, calculated during post-processing
+            ItemRandoListSelected.hint: [35, 0],
+            ItemRandoListSelected.wrinkly: [0, 35],
+            ItemRandoListSelected.boulderitem: [0, 16],
+            ItemRandoListSelected.enemies: [0, 289],
+            ItemRandoListSelected.trainingmoves: [4, 0],
+            ItemRandoListSelected.trainingbarrels: [0, 4],
+        }
+        self.pool_index_with_shops = None
 
         if self.enable_plandomizer:
             self.ApplyPlandomizerSettings()
@@ -427,11 +473,7 @@ class Settings:
         self.enemy_drop_rando = False
 
         # In item rando, can any Kong collect any item?
-        # free_trade_setting: FreeTradeSetting
-        # none
-        # not_blueprints - this excludes blueprints and lesser collectibles like cbs and coins
-        # major_collectibles - includes blueprints, does not include lesser collectibles like cbs and coins
-        self.free_trade_setting = FreeTradeSetting.none
+        self.free_trade_setting = False
 
     def set_seed(self):
         """Forcibly re-set the random seed to the seed set in the config."""
@@ -661,6 +703,7 @@ class Settings:
         self.krusha_kong = None
         self.misc_cosmetics = False
         self.remove_water_oscillation = False
+        self.rainbow_ammo = False
         self.song_speed_near_win = False
         self.disable_flavor_text = False
         self.head_balloons = False
@@ -2172,8 +2215,8 @@ class Settings:
             ItemList[Items.Pearl].playthrough = True
             ItemList[Items.FillerPearl].playthrough = True
 
-        self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none
-        self.free_trade_blueprints = self.free_trade_setting == FreeTradeSetting.major_collectibles
+        self.free_trade_items = self.free_trade_setting
+        self.free_trade_blueprints = self.free_trade_setting
 
         if IsDDMSSelected(self.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles):
             self.remove_wrinkly_puzzles = True
@@ -2196,9 +2239,14 @@ class Settings:
             # if Types.Kong in self.shuffled_location_types:
             #     self.location_item_balance -= 4  # Kong cages *can* be filled by Kongs, but nothing else. We'll treat these as lost locations in all worlds due to the rarity of this.
         # With some light algebra we get the maximum number of shared shops we can fill before we start running into fill problems
-        self.max_shared_shops = math.floor(25 - self.location_item_balance / -4)
+        shop_reduction = 4
+        self.max_shared_shops = math.floor(25 - self.location_item_balance / -shop_reduction)
         if self.smaller_shops:
-            self.max_shared_shops = math.floor(30 - self.location_item_balance / -2)
+            shop_reduction = 2
+            self.max_shared_shops = math.floor(30 - self.location_item_balance / -shop_reduction)
+        buffers = self.getPoolBuffer()
+        if self.pool_index_with_shops is not None:
+            self.max_shared_shops = min(self.max_shared_shops, int(buffers[self.pool_index_with_shops] / shop_reduction) - 2)  # Never have more shared shops than spaces allow
         self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
         self.placed_shared_shops = 0
 
@@ -2428,16 +2476,29 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.chunky] = locations_excluding_shared_shops.copy()
             if Types.Blueprint in self.shuffled_location_types:
                 # Blueprints are banned from Key, Crown, Fairy and Rainbow Coin Locations
-                blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key, Types.Fairy, Types.RainbowCoin, Types.Kong)]
+                badBlueprintTypes = [
+                    Types.Crown,
+                    Types.Key,
+                    Types.Fairy,
+                    Types.RainbowCoin,
+                    Types.Kong,
+                ]
+                badBlueprintLocations = [
+                    Locations.IslesDonkeyJapesRock,
+                ]
+                if self.free_trade_setting:
+                    badBlueprintTypes = []
+                    badBlueprintLocations = []
+                blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in badBlueprintTypes]
+
                 # These locations do not have a set Kong assigned to them and can't have blueprints
-                badBPLocations = (Locations.IslesDonkeyJapesRock,)
-                blueprintLocations = [location for location in shuffledNonMoveLocations if location not in badBPLocations and spoiler.LocationList[location].type in blueprintValidTypes]
+                blueprintLocations = [location for location in shuffledNonMoveLocations if location not in badBlueprintLocations and spoiler.LocationList[location].type in blueprintValidTypes]
                 self.valid_locations[Types.Blueprint] = {}
-                self.valid_locations[Types.Blueprint][Kongs.donkey] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.donkey]
-                self.valid_locations[Types.Blueprint][Kongs.diddy] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.diddy]
-                self.valid_locations[Types.Blueprint][Kongs.lanky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.lanky]
-                self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.tiny]
-                self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.chunky]
+                for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
+                    if self.free_trade_setting:
+                        self.valid_locations[Types.Blueprint][kong] = blueprintLocations.copy()
+                    else:
+                        self.valid_locations[Types.Blueprint][kong] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == kong]
             if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations]
             if Types.FillerBanana in self.shuffled_location_types:
@@ -2472,7 +2533,7 @@ class Settings:
                 self.valid_locations[Types.Snide] = [x for x in shuffledLocationsShopOwner.copy() if spoiler.LocationList[x].level != Levels.HideoutHelm]
             if Types.RainbowCoin in self.shuffled_location_types:
                 self.valid_locations[Types.RainbowCoin] = [
-                    x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing, Types.Kong)
+                    x for x in shuffledNonMoveLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing)
                 ]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (
@@ -2746,83 +2807,212 @@ class Settings:
                 elif song.type == SongType.Event:
                     self.events_songs_selected = True
 
-    def is_valid_item_pool(self):
-        """Confirm that the item pool is a valid combination of items. Must be run after valid locations are calculated without any restrictions."""
-        item_check_counts = {
-            # Item, Checks
-            ItemRandoListSelected.shop: [0, 100],
-            ItemRandoListSelected.moves: [36, 0],
-            ItemRandoListSelected.shockwave: [2, 0],
-            ItemRandoListSelected.bfi_gift: [0, 1],
-            ItemRandoListSelected.banana: [161, 0],
-            ItemRandoListSelected.banana_checks: [0, 148],
-            ItemRandoListSelected.toughbanana: [0, 13],
-            ItemRandoListSelected.arenas: [0, 10],
-            ItemRandoListSelected.crown: [10, 0],
-            ItemRandoListSelected.blueprint: [40, 0],
-            ItemRandoListSelected.kasplat: [0, 40],
-            ItemRandoListSelected.key: [8, 0],
-            ItemRandoListSelected.bosses: [0, 7],
-            ItemRandoListSelected.endofhelm: [0, 1],
-            ItemRandoListSelected.medal: [40, 0],
-            ItemRandoListSelected.medal_checks: [0, 35],
-            ItemRandoListSelected.medal_checks_helm: [0, 5],
-            ItemRandoListSelected.nintendocoin: [1, 0],
-            ItemRandoListSelected.arcade: [0, 1],
-            ItemRandoListSelected.rarewarecoin: [1, 0],
-            ItemRandoListSelected.jetpac: [0, 1],
-            ItemRandoListSelected.kong: [4, 0],
-            ItemRandoListSelected.kong_cages: [0, 4],
-            ItemRandoListSelected.fairy: [20, 0],
-            ItemRandoListSelected.fairy_checks: [0, 20],
-            ItemRandoListSelected.rainbowcoin: [16, 0],
-            ItemRandoListSelected.dirt_patches: [0, 16],
-            ItemRandoListSelected.pearl: [5, 0],
-            ItemRandoListSelected.clams: [0, 5],
-            ItemRandoListSelected.bean: [1, 0],
-            ItemRandoListSelected.anthillreward: [0, 1],
-            ItemRandoListSelected.crateitem: [0, 13],
-            ItemRandoListSelected.halfmedal: [0, 40],
-            ItemRandoListSelected.shopowners: [0, 0],  # Max is 4, calculated during post-processing
-            ItemRandoListSelected.hint: [35, 0],
-            ItemRandoListSelected.wrinkly: [0, 35],
-            ItemRandoListSelected.boulderitem: [0, 16],
-            ItemRandoListSelected.enemies: [0, 289],
-            ItemRandoListSelected.trainingmoves: [4, 0],
-            ItemRandoListSelected.trainingbarrels: [0, 4],
-        }
+    def getPoolBuffer(self):
+        """Get the item and check counts for each pool."""
         if self.smaller_shops:
-            item_check_counts[ItemRandoListSelected.shop] = [0, 60]
+            self.item_check_counts[ItemRandoListSelected.shop] = [0, 60]
         if IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
-            item_check_counts[ItemRandoListSelected.medal] = [45, 0]
-            item_check_counts[ItemRandoListSelected.medal_checks] = [0, 40]
-        item_check_counts[ItemRandoListSelected.kong][0] = 5 - len(self.starting_kong_list)
+            self.item_check_counts[ItemRandoListSelected.medal] = [45, 0]
+            self.item_check_counts[ItemRandoListSelected.medal_checks] = [0, 40]
+        self.item_check_counts[ItemRandoListSelected.kong][0] = 5 - len(self.starting_kong_list)
+        self.item_check_counts[ItemRandoListSelected.shopowners][0] = 0  # Reset it back to a default state every time
         if Types.Cranky in self.shuffled_location_types:
-            item_check_counts[ItemRandoListSelected.shopowners][0] += 1
-            if len(self.valid_locations[Types.Cranky]) <= 0:
-                return False
+            self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         if Types.Funky in self.shuffled_location_types:
-            item_check_counts[ItemRandoListSelected.shopowners][0] += 1
-            if len(self.valid_locations[Types.Funky]) <= 0:
-                return False
+            self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         if Types.Candy in self.shuffled_location_types:
-            item_check_counts[ItemRandoListSelected.shopowners][0] += 1
-            if len(self.valid_locations[Types.Candy]) <= 0:
-                return False
+            self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         if Types.Snide in self.shuffled_location_types:
-            item_check_counts[ItemRandoListSelected.shopowners][0] += 1
-            if len(self.valid_locations[Types.Snide]) <= 0:
-                return False
+            self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
+        buffers = []
         for x in range(4):
             item_count = 0
             check_count = 0
             for item_selector in self.item_search[x]:
-                item_count += item_check_counts[item_selector][0]
+                item_count += self.item_check_counts[item_selector][0]
             for check_selector in self.check_search[x]:
-                check_count += item_check_counts[check_selector][1]
-            if item_count > check_count:
+                check_count += self.item_check_counts[check_selector][1]
+                if check_selector == ItemRandoListSelected.shop:
+                    self.pool_index_with_shops = x
+            buffers.append(check_count - item_count)
+        return buffers
+
+    def is_valid_item_pool(self):
+        """Confirm that the item pool is a valid combination of items. Must be run after valid locations are calculated without any restrictions."""
+        if Types.Cranky in self.shuffled_location_types:
+            if len(self.valid_locations[Types.Cranky]) <= 0:
                 return False
-        return True
+        if Types.Funky in self.shuffled_location_types:
+            if len(self.valid_locations[Types.Funky]) <= 0:
+                return False
+        if Types.Candy in self.shuffled_location_types:
+            if len(self.valid_locations[Types.Candy]) <= 0:
+                return False
+        if Types.Snide in self.shuffled_location_types:
+            if len(self.valid_locations[Types.Snide]) <= 0:
+                return False
+
+        def check_distribution(liquids, buckets):
+            pool_count = 4
+            pool_valid = [True] * pool_count
+            pool_verified = [False] * pool_count
+            pool_liquids = [0] * pool_count
+            pool_buckets = [0] * pool_count
+            lq_copy = liquids.copy()
+            bk_copy = buckets.copy()
+            iter_count = 100
+            ran_rules = []
+            while True:
+                # Rule 1:
+                # Any pools which only have checks or only have items should get filtered out
+                # if their non-filtered version has more than 0 items.
+                # This can only be ran once.
+                if 1 not in ran_rules:
+                    has_liquids = [False] * pool_count
+                    has_buckets = [False] * pool_count
+                    for lq in lq_copy:
+                        for pl in lq["pools"]:
+                            has_liquids[pl] = True
+                    for bk in bk_copy:
+                        for pl in bk["pools"]:
+                            has_buckets[pl] = True
+                    pools_to_filter = []
+                    for x in range(pool_count):
+                        if not has_buckets[x] or not has_liquids[x]:
+                            pools_to_filter.append(x)
+                    for pl in pools_to_filter:
+                        for lq in lq_copy:
+                            if pl in lq["pools"]:
+                                filtered_version = [x for x in lq["pools"] if x not in pools_to_filter]
+                                if len(filtered_version) > 0:
+                                    lq["pools"] = filtered_version.copy()
+                                else:
+                                    pool_valid[pl] = False
+                                    pool_verified[pl] = True
+                        for bk in bk_copy:
+                            if pl in bk["pools"]:
+                                filtered_version = [x for x in bk["pools"] if x not in pools_to_filter]
+                                if len(filtered_version) > 0:
+                                    bk["pools"] = filtered_version.copy()
+                                else:
+                                    pool_valid[pl] = False
+                                    pool_verified[pl] = True
+                    ran_rules.append(1)
+                # Rule 2:
+                # Any completely empty pools should add all of their items/checks in them
+                # Any pools with greater amounts of items than checks gets flagged as invalid.
+                found_lq = [False] * pool_count
+                found_bk = [False] * pool_count
+                for lq in lq_copy:
+                    for pl in lq["pools"]:
+                        found_lq[pl] = True
+                for bk in bk_copy:
+                    for pl in bk["pools"]:
+                        found_bk[pl] = True
+                for x in range(pool_count):
+                    if not found_lq[x] and not found_bk[x]:
+                        if pool_buckets[x] < pool_liquids[x]:
+                            pool_valid[x] = False
+                            pool_verified[x] = True
+                #  Rule 3:
+                # Any items/checks which are only part of 1 pool should get filtered out and applied to a guaranteed liq/buck total
+                temp_lq = []
+                for lq in lq_copy:
+                    if len(lq["pools"]) == 1:
+                        pool_liquids[lq["pools"][0]] += lq["size"]
+                    else:
+                        temp_lq.append(lq)
+                lq_copy = temp_lq.copy()
+                temp_bk = []
+                for bk in bk_copy:
+                    if len(bk["pools"]) == 1:
+                        pool_buckets[bk["pools"][0]] += bk["size"]
+                    else:
+                        temp_bk.append(bk)
+                bk_copy = temp_bk.copy()
+                # Rule 4:
+                # For all remaining buckets, check the pools which need the checks the most
+                bucket_deficit = [x - pool_buckets[xi] for xi, x in enumerate(pool_liquids)]
+                temp_bk = []
+                for bk in bk_copy:
+                    remove = False
+                    bucket_needed = None
+                    bucket_deficit_needed = None
+                    for pl in bk["pools"]:
+                        if bucket_deficit[pl] >= 0:
+                            if bucket_needed is None or bucket_deficit[pl] > bucket_deficit_needed:
+                                bucket_needed = pl
+                                bucket_deficit_needed = bucket_deficit[pl]
+                    if bucket_needed is not None:
+                        bucket_capacity_supplied = min(bucket_deficit_needed, bk["size"])
+                        bk["size"] -= bucket_capacity_supplied
+                        pool_buckets[bucket_needed] += bucket_capacity_supplied
+                        bk["pools"] = [x for x in bk["pools"] if x != bucket_needed]
+                        if bk["size"] < 1:
+                            remove = True
+                    if not remove:
+                        temp_bk.append(bk)
+                bk_copy = temp_bk.copy()
+                # Rule 5:
+                # For all remaining liquids, check the pools which have the smallest bucket gap
+                bucket_surplus = [x - pool_liquids[xi] for xi, x in enumerate(pool_buckets)]
+                temp_lq = []
+                for lq in lq_copy:
+                    remove = False
+                    bucket_needed = None
+                    bucket_surplus_needed = None
+                    for pl in lq["pools"]:
+                        if bucket_surplus[pl] >= 0:
+                            if bucket_needed is None or bucket_surplus[pl] < bucket_surplus_needed:
+                                bucket_needed = pl
+                                bucket_surplus_needed = bucket_surplus[pl]
+                    if bucket_needed is not None:
+                        liquid_supplied = min(bucket_surplus_needed, lq["size"])
+                        lq["size"] -= liquid_supplied
+                        pool_liquids[bucket_needed] += liquid_supplied
+                        lq["pools"] = [x for x in lq["pools"] if x != bucket_needed]
+                        if lq["size"] < 1:
+                            remove = True
+                    if not remove:
+                        temp_lq.append(lq)
+                lq_copy = temp_lq.copy()
+                # Termination checks
+                terminate = len(lq_copy) == 0 and len(bk_copy) == 0
+                if terminate:
+                    pool_valid = [(pool_valid[i] and v <= pool_buckets[i]) != 0 for i, v in enumerate(pool_liquids)]
+                    pool_verified = [True] * pool_count
+                terminate_verified = True
+                for x in range(pool_count):
+                    if pool_valid[x]:
+                        terminate = False
+                    if not pool_verified[x]:
+                        terminate_verified = False
+                if terminate or terminate_verified:
+                    break
+                iter_count -= 1
+                if iter_count < 1:
+                    break
+            valid = True
+            for x in pool_valid:
+                if not x:
+                    valid = False
+            return valid
+
+        inputs = {}
+        outputs = {}
+        self.getPoolBuffer()
+        for x in range(4):
+            for item_selector in self.item_search[x]:
+                if item_selector not in inputs:
+                    inputs[item_selector] = {"size": self.item_check_counts[item_selector][0], "pools": [x]}
+                else:
+                    inputs[item_selector]["pools"].append(x)
+            for check_selector in self.check_search[x]:
+                if check_selector not in outputs:
+                    outputs[check_selector] = {"size": self.item_check_counts[check_selector][1], "pools": [x]}
+                else:
+                    outputs[check_selector]["pools"].append(x)
+        return check_distribution(list(inputs.values()), list(outputs.values()))
 
     def __repr__(self):
         """Return printable version of the object as json.

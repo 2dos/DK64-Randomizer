@@ -769,3 +769,89 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
         file_data = gzip.compress(file_data, compresslevel=9)
         ROM_COPY.seek(getPointerLocation(TableNames.ActorGeometry, enemy))
         ROM_COPY.writeBytes(file_data)
+
+
+def writeRainbowAmmo(settings, ROM_COPY: ROM):
+    """Desaturate all ammo textures so that they look good with rainbow ammo."""
+    if not settings.rainbow_ammo:
+        return
+    entries = [
+        {
+            # Coconut
+            "first": 0x2A3,
+            "last": 0x2B2,
+            "table": TableNames.TexturesUncompressed,
+            "width": 0x28,
+            "height": 0x33,
+        },
+        {
+            # Peanut
+            "first": 0x1474,
+            "last": 0x1483,
+            "table": TableNames.TexturesGeometry,
+            "width": 0x20,
+            "height": 0x20,
+        },
+        {
+            # Grape
+            "first": 0x1506,
+            "last": 0x1514,
+            "table": TableNames.TexturesGeometry,
+            "width": 0x20,
+            "height": 0x20,
+        },
+        {
+            # Grape
+            "first": 0x12E1,
+            "last": 0x12E1,
+            "table": TableNames.TexturesGeometry,
+            "width": 0x20,
+            "height": 0x20,
+        },
+        {
+            # Feather
+            "first": 0x15A3,
+            "last": 0x15AA,
+            "table": TableNames.TexturesGeometry,
+            "width": 0x20,
+            "height": 0x20,
+        },
+        {
+            # Feather Custom Sprite
+            "first": getBonusSkinOffset(ExtraTextures.Feather0),
+            "last": getBonusSkinOffset(ExtraTextures.Feather7),
+            "table": TableNames.TexturesGeometry,
+            "width": 0x20,
+            "height": 0x20,
+        },
+        {
+            # Pineapple
+            "first": 0x12E5,
+            "last": 0x12E5,
+            "table": TableNames.TexturesGeometry,
+            "width": 0x20,
+            "height": 0x30,
+        },
+        {
+            # Pineapple
+            "first": 0x14A7,
+            "last": 0x14B5,
+            "table": TableNames.TexturesGeometry,
+            "width": 0x20,
+            "height": 0x30,
+        },
+    ]
+    for entry in entries:
+        delta = entry["last"] - entry["first"]
+        table = entry["table"]
+        for x in range(delta + 1):
+            file = entry["first"] + x
+            im_f = getImageFile(ROM_COPY, table, file, table != TableNames.TexturesUncompressed, entry["width"], entry["height"], TextureFormat.RGBA5551)
+            if im_f.mode != "RGBA":
+                im_f = im_f.convert("RGBA")
+            r, g, b, a = im_f.split()
+            rgb = Image.merge("RGB", (r, g, b))
+            gray = rgb.convert("L")
+            # Recombine with alpha
+            desat_im_f = Image.merge("RGBA", (gray, gray, gray, a))
+            writeColorImageToROM(desat_im_f, table, file, entry["width"], entry["height"], False, TextureFormat.RGBA5551, ROM_COPY)

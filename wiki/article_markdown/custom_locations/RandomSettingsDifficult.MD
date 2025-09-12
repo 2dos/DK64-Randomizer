@@ -115,7 +115,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Castle Minecart: 70%
 	- Castle Car Race: 70%
 	- Jetpac: 70%
-- Free Trade Agreement: 
+- Free Trade Setting: 
 	- None: 20%
 	- Not Blueprints: 30%
 	- Major Collectibles: 50%

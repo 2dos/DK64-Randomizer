@@ -872,7 +872,7 @@ class LogicVarHolder:
             Items.PhotoKop,
             Items.PhotoTomato,
         ]
-        self.Photos = {x: 1 for x in ownedItems if x in photo_subjects}
+        self.Photos = {x: item_counts[x] for x in photo_subjects}
 
         self.UpdateCoins()
 
