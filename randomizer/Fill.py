@@ -3988,7 +3988,7 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
                 found_incompatibilities += "Cannot turn on 'Angry Caves' with a damage modifier higher than double damage with Irondonk enabled. "
     if settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
         if settings.bonus_barrel_auto_complete:
-            found_incompatibilities += "Autocomplete Bonus Barrels is not compatible with Bonus Barrels or K. Rool's Challenge Win Conditions. "
+            found_incompatibilities += "Autocomplete Bonus Barrels cannot be enabled when the win condition requires completing bonus barrels. "
     if not settings.is_valid_item_pool():
         found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
     if settings.krool_access and Items.HideoutHelmKey in settings.starting_keys_list_selected:
