@@ -374,7 +374,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         # Build the list of valid hint types
         # If K. Rool is live it is guaranteed a hint in this distribution if it is not hinted otherwise via spoiler hints
         if (
-            (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random or getattr(spoiler.settings, 'krool_in_boss_pool', False))
+            (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random or getattr(spoiler.settings, "krool_in_boss_pool", False))
             and spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge)
             and spoiler.settings.spoiler_hints == SpoilerHints.off
         ):
@@ -608,7 +608,9 @@ def compileHints(spoiler: Spoiler) -> bool:
                 if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
                     valid_types.append(HintType.RequiredWinConditionHint)
                     # Count the number of non-trivial phases
-                    hint_distribution[HintType.RequiredWinConditionHint] = len([kong for kong in spoiler.settings.krool_order if kong in spoiler.krool_paths and len(spoiler.krool_paths[kong]) - len(useless_locations[kong]) > 0])
+                    hint_distribution[HintType.RequiredWinConditionHint] = len(
+                        [kong for kong in spoiler.settings.krool_order if kong in spoiler.krool_paths and len(spoiler.krool_paths[kong]) - len(useless_locations[kong]) > 0]
+                    )
                 if spoiler.settings.win_condition_item == WinConditionComplex.req_bean:
                     valid_types.append(HintType.RequiredWinConditionHint)
                     hint_distribution[HintType.RequiredWinConditionHint] = 1

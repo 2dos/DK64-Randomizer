@@ -1645,11 +1645,7 @@ class LogicVarHolder:
             return True
         elif self.settings.win_condition_item == WinConditionComplex.krools_challenge:
             # Krool's Challenge: Beat K. Rool + collect all Keys, Blueprints, Bosses, and Bonus Barrels
-            return (Events.KRoolDefeated in self.Events and
-                    self.ItemCheck(BarrierItems.Key, 8) and
-                    self.ItemCheck(BarrierItems.Blueprint, 40) and
-                    self.bosses_beaten >= 7 and
-                    self.bonuses_beaten >= 43)
+            return Events.KRoolDefeated in self.Events and self.ItemCheck(BarrierItems.Key, 8) and self.ItemCheck(BarrierItems.Blueprint, 40) and self.bosses_beaten >= 7 and self.bonuses_beaten >= 43
         elif self.settings.win_condition_item == WinConditionComplex.req_bosses:
             return self.bosses_beaten >= self.settings.win_condition_count
         elif self.settings.win_condition_item == WinConditionComplex.req_bonuses:
