@@ -1141,7 +1141,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             ordered_interesting_locations.append(locationId)
 
     # If K. Rool is the win condition, prepare phase-specific paths as well
-    if spoiler.settings.win_condition_item == WinConditionComplex.beat_krool:
+    if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
         for phase in spoiler.settings.krool_order:
             spoiler.krool_paths[phase] = []
     for locationId in ordered_interesting_locations:
@@ -1165,7 +1165,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             if other_location not in accessible:
                 spoiler.other_paths[other_location].append(locationId)
         # If the win condition is K. Rool, also add this location to those paths as applicable
-        if spoiler.settings.win_condition_item == WinConditionComplex.beat_krool:
+        if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
             final_boss_associated_event = {
                 Maps.JapesBoss: Events.KRoolDillo1,
                 Maps.AztecBoss: Events.KRoolDog1,

@@ -235,6 +235,7 @@ trap_name_to_index: dict[str, int] = {
     "Dry Trap": 10,
     "Flip Trap": 11,
     # Common other trap names
+    "Banana Peel Trap": 3, # Slow Trap
     "Bee Trap": 6,  # Disable B Trap
     "Blue Balls Curse": 1,  # Bubble Trap
     "Buyon Trap": 9,  # Get Out Trap
@@ -258,12 +259,14 @@ trap_name_to_index: dict[str, int] = {
     "Iron Boots Trap": 5,  # Disable A Trap
     "Jump Trap": 5,  # Disable A Trap
     "Mirror Trap": 11,  # Flip Trap
+    "Monkey Mash Trap": 2, # Reverse Trap
     "No Stocks": 10,  # Dry Trap
     "No Vac Trap": 7,  # Disable Z Trap
     "Paralyze Trap": 1,  # Bubble Trap
     "Poison Mushroom": 3,  # Slow Trap
     "Poison Trap": 10,  # Dry Trap
     "Police Trap": 9,  # Get Out Trap
+    "Resistance Trap": 9, # Get Out Trap
     "Reversal Trap": 2,  # Reverse Trap
     "Screen Flip Trap": 11,  # Flip Trap
     "Slowness Trap": 3,  # Slow Trap

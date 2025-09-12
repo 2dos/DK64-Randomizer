@@ -494,10 +494,19 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->next_state = 21;
 					}
 				} else if (param2 == K_ROOL_SHIP) {
-					for (int i = 0; i < 8; i++) {
-						if (Rando.krool_requirements & (1 << i)) {
-							if (!getItemCount_new(REQITEM_KEY, i, 0)) {
-								return 0;
+					// Check access requirements based on ship spawn method
+					if (Rando.krool_ship_spawn_method == 1) {
+						// Collectible-based access
+						if (!canAccessKroolsChallenge()) {
+							return 0;
+						}
+					} else {
+						// Key-based access
+						for (int i = 0; i < 8; i++) {
+							if (Rando.krool_requirements & (1 << i)) {
+								if (!getItemCount_new(REQITEM_KEY, i, 0)) {
+									return 0;
+								}
 							}
 						}
 					}

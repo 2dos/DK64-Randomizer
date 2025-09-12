@@ -1083,7 +1083,7 @@ if baseclasses_loaded:
 
         def set_rules(self):
             """Set the rules."""
-            set_rules(self.multiworld, self.player)
+            set_rules(self.multiworld, self.player, self)
 
         def generate_basic(self):
             """Generate the basic world."""
