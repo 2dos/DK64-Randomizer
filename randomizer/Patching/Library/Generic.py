@@ -728,7 +728,7 @@ def getCompletableBonuses(settings) -> list:
         Locations.JapesChunkyGiantBonusBarrel,
         Locations.JapesLankySlope,
         Locations.AztecLankyLlamaTempleBarrel,
-        Locations.AztecLankyLlamaTempleBarrel,
+        Locations.AztecLanky5DoorTemple,
         Locations.AztecChunky5DoorTemple,
         Locations.FactoryDiddyBlockTower,
         Locations.FactoryDiddyChunkyRoomBarrel,

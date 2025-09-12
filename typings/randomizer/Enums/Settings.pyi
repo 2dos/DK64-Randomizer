@@ -548,6 +548,7 @@ class WinConditionComplex(IntEnum):
     dk_rap_items = 16
     req_bosses = 17
     req_bonuses = 18
+    krools_challenge = 19
 
 class WrinklyHints(IntEnum):
     off = 0

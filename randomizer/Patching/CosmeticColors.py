@@ -695,7 +695,7 @@ class WinConData:
 def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
     """Alter the image that's shown on the main menu to display the win condition."""
     win_con = settings.win_condition_item
-    if win_con == WinConditionComplex.beat_krool:
+    if win_con in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
         # Default, don't alter image
         return
     if win_con == WinConditionComplex.get_key8:

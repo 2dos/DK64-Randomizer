@@ -1437,6 +1437,7 @@ function update_win_con_num_access() {
     "get_key8",
     "krem_kapture",
     "dk_rap_items",
+    "krools_challenge",
   ];
   const KROOL_WIN_CONS = [
     "easy_random",
@@ -1463,7 +1464,10 @@ function update_win_con_num_access() {
     kroolSection.setAttribute("hidden", "hidden");
   }
 
-  if (!winConReq.value) {
+  // Set K. Rool's Challenge to always be locked to 5 (all K. Rool phases)
+  if (winConSelection.value === "krools_challenge") {
+    winConReq.value = 5;
+  } else if (!winConReq.value) {
     winConReq.value = 1;
   } else {
     const item_type = winConSelection.value;

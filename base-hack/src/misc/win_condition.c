@@ -112,6 +112,30 @@ int hasBeatenDKRapWinCon(void) {
     return 1;
 }
 
+int canAccessKroolsChallenge(void) {
+    // Check all 8 Keys
+    if (getItemCount_new(REQITEM_KEY, -1, -1) < 8) {
+        return 0;
+    }
+    
+    // Check all 40 Blueprints  
+    if (getItemCount_new(REQITEM_BLUEPRINT, -1, -1) < 40) {
+        return 0;
+    }
+    
+    // Check all 7 Bosses
+    if (getItemCountReq(REQITEM_BOSSES) < 7) {
+        return 0;
+    }
+    
+    // Check all 43 Bonus Barrels
+    if (getItemCountReq(REQITEM_BONUSES) < 43) {
+        return 0;
+    }
+    
+    return 1;
+}
+
 void checkSeedVictory(void) {
     if (!checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
         switch(Rando.win_condition) {
