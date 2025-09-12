@@ -161,20 +161,6 @@ void checkSeedVictory(void) {
                     beatGame();
                 }
                 break;
-            case GOAL_KROOLS_CHALLENGE:
-                {
-                    int krool_beaten = 1;
-                    for (int i = 0; i < 5; i++) {
-                        if (!checkFlag(FLAG_KROOL_ENTERED + i, FLAGTYPE_PERMANENT)) {
-                            krool_beaten = 0;
-                            break;
-                        }
-                    }
-                    if (krool_beaten) {
-                        beatGame();
-                    }
-                }
-                break;
             case GOAL_CUSTOMITEM:
                 if (isItemRequirementSatisfied(&Rando.win_condition_extra)) {
                     beatGame();
