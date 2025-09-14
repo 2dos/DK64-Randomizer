@@ -962,14 +962,14 @@ if baseclasses_loaded:
             settings_dict["starting_moves_list_count_1"] = len(settings_dict["starting_moves_list_1"])
             
             # Initialize the other starting_moves_list attributes that are expected by Settings
-            settings_dict["starting_moves_list_2"] = []
-            settings_dict["starting_moves_list_3"] = []
-            settings_dict["starting_moves_list_4"] = []
-            settings_dict["starting_moves_list_5"] = []
-            settings_dict["starting_moves_list_count_2"] = 0
-            settings_dict["starting_moves_list_count_3"] = 0
-            settings_dict["starting_moves_list_count_4"] = 0
-            settings_dict["starting_moves_list_count_5"] = 0
+            # settings_dict["starting_moves_list_2"] = []
+            # settings_dict["starting_moves_list_3"] = []
+            # settings_dict["starting_moves_list_4"] = []
+            # settings_dict["starting_moves_list_5"] = []
+            # settings_dict["starting_moves_list_count_2"] = 0
+            # settings_dict["starting_moves_list_count_3"] = 0
+            # settings_dict["starting_moves_list_count_4"] = 0
+            # settings_dict["starting_moves_list_count_5"] = 0
 
             if self.options.hint_style == 0:
                 settings_dict["wrinkly_hints"] = WrinklyHints.off
