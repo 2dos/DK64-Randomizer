@@ -703,7 +703,7 @@ class Settings:
         self.krusha_kong = None
         self.misc_cosmetics = False
         self.remove_water_oscillation = False
-        self.rainbow_ammo = True
+        self.rainbow_ammo = False
         self.song_speed_near_win = False
         self.disable_flavor_text = False
         self.head_balloons = False
