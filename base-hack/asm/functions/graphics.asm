@@ -40,3 +40,5 @@
 .definelabel updateCamera, 0x805FCA94
 .definelabel guPerspectiveF, 0x80006050
 .definelabel spawnKeyTwinklies, 0x80686CF8
+.definelabel HUDSpriteUpdate, 0x8071BE04
+.definelabel PauseSpriteUpdate, 0x806AC07C

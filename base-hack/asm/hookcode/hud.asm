@@ -286,3 +286,17 @@ checkKRoolPause:
     lw $v0, 0xBB64 ($v0)
     j 0x806A8964
     andi $at, $at, 0x200
+
+loadHUDFunction:
+    lw $a1, 0x3C ($sp)
+    jal setHUDUpdateFunction
+    addiu $a0, $a0, 0xBE04
+    j 0x806F97B0
+    nop
+
+loadPauseHUDFunction:
+    lw $a1, 0x4C ($sp)
+    jal setHUDUpdateFunction_0
+    addiu $a0, $a0, 0xC07C
+    j 0x806AB530
+    nop

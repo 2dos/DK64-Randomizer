@@ -603,7 +603,7 @@ item_db = {
         preview_text="PEARL",
         special_preview_text={
             Locations.GalleonDonkeySealRace: "BLACK PEARL",
-            Locations.ForestDiddyOwlRace: "THE WHITE GEM OF THE OCEAN",
+            Locations.ForestDiddyOwlRace: "WHITE GEM OF THE OCEAN",
         },
     ),
     Types.Medal: ItemPlacementData(
