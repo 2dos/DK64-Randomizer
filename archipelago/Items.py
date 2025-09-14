@@ -340,10 +340,6 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     # print("projected available locations: " + str(world.spoiler.settings.location_pool_size - 1))
     # print("projected items to place: " + str(len(item_table)))
 
-    # Example of accessing Option result
-    if world.options.goal == "krool":
-        pass
-
     # DEBUG
     # for k, v in full_item_table.items():
     #    print(k + ": " + hex(v.code) + " | " + str(v.progression))

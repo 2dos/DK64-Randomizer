@@ -384,9 +384,9 @@ class LogicVarHolder:
             elif item_name.startswith("Event, "):
                 eventArchItems.append(item_name)
             elif item_name.startswith("Boss Defeated"):
-                bossesDefeated += 1
+                bossesDefeated += item_count
             elif item_name.startswith("Bonus Completed"):
-                bonusesCompleted += 1
+                bonusesCompleted += item_count
             else:
                 corresponding_item_id = logic_item_name_to_id[item_name]
                 for i in range(item_count):
