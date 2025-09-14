@@ -40,11 +40,27 @@
                 </div>
             </div>
         </div>
+        <div id="modal_hook" class="modal show fade"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" style="display:block;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button id="close_button" type="button" class="btn-close d-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Loading Site...</p>
+                        <div id="progress" class="progress" role="progressbar" aria-label="Warning example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar text-bg-warning" style="width: 0%">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script>
             let settings;
             let latest_setting;
-            let bonus_enums = {};
             let types = {};
+            let commits_parsed = 0;
             const bonus_enum_list = ["Items", "Kongs", "Enemies", "Levels", "Maps"];
             const settingsExclusionMap = {
                 helm_hurry: {
@@ -120,6 +136,21 @@
                 return local_hostnames.includes(window.location.hostname);
             }
 
+            function updateBar(count, total_count, complete = false) {
+                if (complete) {
+                    const modal = document.getElementById("modal_hook");
+                    modal.classList.remove("show");
+                    modal.style.display = "none";
+                    return;
+                }
+                const perc = parseInt(100 * (count / total_count));
+                const container = document.getElementById("progress");
+                container.setAttribute("aria-valuenow", perc.toString());
+                const bar = container.getElementsByClassName("progress-bar")[0];
+                bar.style.width = `${perc}%`;
+                bar.innerText = `${perc}%`;
+            }
+
             async function pullAllSettings() {
                 let allCommits = [];
                 let page = 0;
@@ -168,9 +199,27 @@
                             return null;
                         }
                         const text = await res.text();
+                        let bonus_enums = {};
+                        let bonus_enums_bitlength = {};
+                        await Promise.all(
+                            bonus_enum_list.map(async (benum) => {
+                                const jsonc_url = `https://raw.githubusercontent.com/2dos/DK64-Randomizer/${commit.sha}/randomizer/Enums/${benum}.jsonc`;
+                                const res = await fetch(jsonc_url);
+                                if (!res.ok) {
+                                    console.warn(`⚠️ Could not fetch file (${res.status})`);
+                                    return null;
+                                }
+                                const text = await res.text();
+                                const benum_json = JSON.parse(jsoncToJson(text));
+                                const max_benum_value = Math.max(...Object.values(benum_json[benum]));
+                                bonus_enums[benum] = benum_json;
+                                bonus_enums_bitlength[benum] = max_benum_value.toString(2).length;
+                            })
+                        );
+                        bonus_enums_bitlength = Object.fromEntries(Object.entries(bonus_enums_bitlength).sort());
                         let found_jsonc = false;
                         for (let f of jsonc_files) {{
-                            if (f.text === text) {
+                            if ((f.text === text) && (JSON.stringify(f.bonus_enums_bitlength) === JSON.stringify(bonus_enums_bitlength))) {
                                 if (!f.versions.includes(version)) {
                                     f.versions.push(version);
                                 }
@@ -187,8 +236,12 @@
                                 ],
                                 text: text,
                                 is_latest: false,
+                                bonus_enums: bonus_enums,  // Deepcopy
+                                bonus_enums_bitlength: bonus_enums_bitlength,
                             })
                         }
+                        commits_parsed++;
+                        updateBar(commits_parsed, allCommits.length);
                     })
                 )
                 if (isLocal()) {
@@ -198,25 +251,34 @@
                         console.warn(`⚠️ Could not fetch file (${local_res.status})`);
                         return null;
                     }
+                    let bonus_enums = {};
+                    let bonus_enums_bitlength = {};
+                    await Promise.all(
+                        bonus_enum_list.map(async (benum) => {
+                            const jsonc_url = `./randomizer/Enums/${benum}.jsonc`;
+                            const res = await fetch(jsonc_url);
+                            if (!res.ok) {
+                                console.warn(`⚠️ Could not fetch file (${res.status})`);
+                                return null;
+                            }
+                            const text = await res.text();
+                            const benum_json = JSON.parse(jsoncToJson(text));
+                            const max_benum_value = Math.max(...Object.values(benum_json[benum]));
+                            bonus_enums[benum] = benum_json;
+                            bonus_enums_bitlength[benum] = max_benum_value.toString(2).length;
+                        })
+                    );
                     jsonc_files.push({
                         versions: [],
                         text: await local_res.text(),
                         is_latest: true,
+                        bonus_enums: bonus_enums,
+                        bonus_enums_bitlength: bonus_enums_bitlength,
                     })
                 }
+                console.log(jsonc_files)
                 
-                await Promise.all(
-                    bonus_enum_list.map(async (benum) => {
-                        const jsonc_url = `./randomizer/Enums/${benum}.jsonc`;
-                        const res = await fetch(jsonc_url);
-                        if (!res.ok) {
-                            console.warn(`⚠️ Could not fetch file (${res.status})`);
-                            return null;
-                        }
-                        const text = await res.text();
-                        bonus_enums[benum] = text;
-                    })
-                );
+                
                 const types_json_url = './randomizer/Enums/Types.json';
                 const types_res = await fetch(types_json_url);
                 if (!types_res.ok) {
@@ -253,6 +315,7 @@
                     }
                     return `<option value="${index}">${opt_text}</option>`    
                 })
+                updateBar(0, 0, true);
             }
             populateSite()
 
@@ -557,8 +620,8 @@
                 const string_json = JSON.parse(jsoncToJson(string_jsonc));
                 const output_json = JSON.parse(jsoncToJson(latest_setting.text));
                 const input_string = document.getElementById("input_string").value;
-                Object.keys(bonus_enums).forEach(benum => {
-                    const json = JSON.parse(jsoncToJson(bonus_enums[benum]));
+                Object.keys(settings[selected_version].bonus_enums).forEach(benum => {
+                    const json = settings[selected_version].bonus_enums[benum];
                     string_json[benum] = json[benum];
                     output_json[benum] = json[benum];
                 })
