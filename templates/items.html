@@ -53,21 +53,7 @@
                 </div>
                 <div style="width:50%">
                     <div class="mx-auto" style="width: fit-content">
-                        <div>
-                            <p class="select-title">Ice Trap Frequency</p>
-                            <input  name="ice_trap_count"
-                                    id="ice_trap_count"
-                                    type="number"
-                                    display_name="Ice Trap Frequency"
-                                    class="form-control mt-3"
-                                    aria-label="Ice Trap Frequency"
-                                    data-toggle="tooltip"
-                                    title="The amount of ice traps that will be attempted to be placed into the world."
-                                    min="0"
-                                    max="999"
-                                    value="0"
-                            />
-                        </div>
+                        {% include "complex-options/ice-trap.html" %}
                     </div>
                 </div>
             </div>
@@ -751,7 +737,7 @@
             }
         }
 
-        const result = checkDistribution(Object.values(inputs), Object.values(outputs), true);
+        const result = checkDistribution(Object.values(inputs), Object.values(outputs), false);
         is_valid_item_spread = true;
         for (let x = 0; x < 4; x++) {
             const node = document.getElementById(`item_rando_check_hint_${x + 1}`);

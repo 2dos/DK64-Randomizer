@@ -32,6 +32,7 @@ from randomizer.Enums.Settings import (
     FungiTimeSetting,
     HardModeSelected,
     HelmBonuses,
+    ItemRandoFiller,
     LogicType,
     MinigameBarrels,
     MoveRando,
@@ -3989,6 +3990,27 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
     if settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
         if settings.bonus_barrel_auto_complete:
             found_incompatibilities += "Autocomplete Bonus Barrels cannot be enabled when the win condition requires completing bonus barrels. "
+    trap_weights = [
+        settings.trap_weight_bubble,
+        settings.trap_weight_reverse,
+        settings.trap_weight_slow,
+        settings.trap_weight_disablea,
+        settings.trap_weight_disableb,
+        settings.trap_weight_disablez,
+        settings.trap_weight_disablecu,
+        settings.trap_weight_getout,
+        settings.trap_weight_dry,
+        settings.trap_weight_flip,
+    ]
+    if IsDDMSSelected(settings.filler_items_selected, ItemRandoFiller.icetraps) and not settings.archipelago:
+        if settings.ice_trap_count == 0:
+            found_incompatibilities += "You have Ice Traps enabled as filler, but with an ice trap frequency of 0. Either disable ice traps as filler or increase the ice trap frequency. "
+        all_zero_weights = True
+        for val in trap_weights:
+            if val > 0:
+                all_zero_weights = False
+        if all_zero_weights:
+            found_incompatibilities += "All Ice Traps have a zero weight, meaning it can't place anything. "
     if not settings.is_valid_item_pool():
         found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
     if settings.krool_access and Items.HideoutHelmKey in settings.starting_keys_list_selected:

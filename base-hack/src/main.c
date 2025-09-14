@@ -117,7 +117,7 @@ void cFuncLoop(void) {
 			int control_state = Player->control_state;
 			EnemyInView = 0;
 			if ((control_state == 4) || (control_state == 5)) {
-				EnemyInView = isSnapEnemyInRange();
+				EnemyInView = isSnapEnemyInRange(0);
 			}
 			if (Player->strong_kong_ostand_bitfield & 0x8000) {
 				picture_bitfield = 1;

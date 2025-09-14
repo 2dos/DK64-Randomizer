@@ -10,19 +10,6 @@
  */
 #include "../../include/common.h"
 
-static const unsigned char no_purchase_bases[] = {
-	MRT_NOBUY_SPECIALMOVE,
-	MRT_NOBUY_SPECIALMOVE,
-	MRT_NOBUY_SPECIALMOVE,
-	MRT_NOBUY_SLAM,
-	MRT_NOBUY_GUN,
-	MRT_NOBUY_GUNUPGRADE,
-	MRT_NOBUY_GUNUPGRADE,
-	MRT_NOBUY_AMMOBELT,
-	MRT_NOBUY_INSTRUMENT,
-	MRT_NOBUY_INSTRUMENT,
-};
-
 purchase_text_hint_struct purchase_hint_text_items[120] = {
 	// Cranky
 		// DK

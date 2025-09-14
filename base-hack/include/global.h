@@ -247,7 +247,7 @@ extern void resetTracker(void);
 extern void wipeFileMod(int file, int will_save);
 extern void enterFileProgress(int sfx);
 extern void pokemonSnapMode(void);
-extern int isSnapEnemyInRange(void);
+extern int isSnapEnemyInRange(int set);
 extern int getPkmnSnapData(int* frames, int* current, int* total);
 extern void pressSkipHandler(void* actor);
 extern void clearSkipCache(void);

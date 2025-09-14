@@ -1369,6 +1369,20 @@ document
 document
   .getElementById("apply_preset")
   .addEventListener("click", preset_select_changed);
+
+const default_trap_weights = {
+  "trap_weight_bubble": 3,
+  "trap_weight_reverse": 3,
+  "trap_weight_slow": 3,
+  "trap_weight_disablea": 1,
+  "trap_weight_disableb": 1,
+  "trap_weight_disablez": 1,
+  "trap_weight_disablecu": 1,
+  "trap_weight_getout": 1,
+  "trap_weight_dry": 2,
+  "trap_weight_flip": 2,
+};
+
 function set_preset_options() {
   // Set the Blocker presets on the page
 
@@ -1410,6 +1424,10 @@ function set_preset_options() {
   update_prog_hint_num_access();
   update_blocker_num_access();
   update_ice_trap_count();
+  let local_trap_weight_reset = false;
+  Object.keys(default_trap_weights).forEach(stg => {
+    local_trap_weight_reset = update_trap_weight(document.getElementById(stg), default_trap_weights[stg], local_trap_weight_reset);
+  })
   update_troff_number_access();
   item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
   item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
