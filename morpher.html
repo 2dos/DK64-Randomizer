@@ -623,6 +623,9 @@
                 Object.keys(settings[selected_version].bonus_enums).forEach(benum => {
                     const json = settings[selected_version].bonus_enums[benum];
                     string_json[benum] = json[benum];
+                })
+                Object.keys(latest_setting.bonus_enums).forEach(benum => {
+                    const json = latest_setting.bonus_enums[benum];
                     output_json[benum] = json[benum];
                 })
     
