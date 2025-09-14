@@ -264,6 +264,8 @@
 .definelabel chunk_count, 0x807F6C28
 .definelabel chunkArray, 0x807F6C18
 
+.definelabel SpriteRGBA, 0x807FDB0C
+
 .definelabel BlueprintLargeImageColors, 0x80033228
 
 .definelabel SFXVolume, 0x8074583C

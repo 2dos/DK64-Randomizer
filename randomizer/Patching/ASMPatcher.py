@@ -1196,15 +1196,13 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80731996, Overlay.Static, getHiSym("bonus_data"), offset_dict)
     writeValue(ROM_COPY, 0x807319A2, Overlay.Static, getLoSym("bonus_data"), offset_dict)
 
-    if settings.free_trade_setting != FreeTradeSetting.none:
+    if settings.free_trade_setting:
         # Non-BP Items
         writeValue(ROM_COPY, 0x807319C0, Overlay.Static, 0x00001025, offset_dict, 4)  # OR $v0, $r0, $r0 - Make all reward spots think no kong
         # writeValue(ROM_COPY, 0x80632E94, Overlay.Static, 0x00001025, offset_dict, 4)  # OR $v0, $r0, $r0 - Make flag mapping think no kong
         writeFunction(ROM_COPY, 0x80632E94, Overlay.Static, "getItemRequiredKong", offset_dict)  # Get required kong for item, used to set Stump GB as Tiny
-
-        if settings.free_trade_setting == FreeTradeSetting.major_collectibles:
-            writeValue(ROM_COPY, 0x806F56F8, Overlay.Static, 0, offset_dict, 4)  # Disable Flag Set for blueprints
-            writeValue(ROM_COPY, 0x806A606C, Overlay.Static, 0, offset_dict, 4)  # Disable translucency for blueprints
+        writeValue(ROM_COPY, 0x806F56F8, Overlay.Static, 0, offset_dict, 4)  # Disable Flag Set for blueprints
+        writeValue(ROM_COPY, 0x806A606C, Overlay.Static, 0, offset_dict, 4)  # Disable translucency for blueprints
 
     writeFunction(ROM_COPY, 0x806B26A0, Overlay.Static, "fireballEnemyDeath", offset_dict)
     if Types.Enemies in settings.shuffled_location_types:
@@ -2025,6 +2023,14 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x806321FC, Overlay.Static, "SetupModelTwoHandler", offset_dict)  # Setup transfer for model 2
     writeHook(ROM_COPY, 0x806F7924, Overlay.Static, "ActorToModelTwoHandler", offset_dict)  # Actor transfer for model 2
     writeHook(ROM_COPY, 0x8063BA04, Overlay.Static, "ModelTwoToSetupState", offset_dict)  # Model 2 transfer to setup
+
+    # Rainbow Ammo Static Functions
+    writeFunction(ROM_COPY, 0x806F97D0, Overlay.Static, "colorRainbowAmmoHUD", offset_dict)  # HUD Code
+    writeFunction(ROM_COPY, 0x80694FAC, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Coconut Code
+    writeFunction(ROM_COPY, 0x80692BCC, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Peanut Code
+    writeFunction(ROM_COPY, 0x806930DC, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Grape Code
+    writeFunction(ROM_COPY, 0x80695444, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Feather Code
+    writeFunction(ROM_COPY, 0x80694748, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Pineapple Code
 
     # Fast Start: Beginning of game
     if settings.fast_start_beginning_of_game:

@@ -58,6 +58,7 @@ class Goal(Choice):
     option_bosses = 14
     option_bonuses = 15
     option_treasure_hurry = 16
+    option_krools_challenge = 17
     default = 0
 
 
@@ -550,6 +551,18 @@ class RemoveBarriers(OptionList):
         "caves_ice_walls",
         "castle_crypt_doors",
     }
+
+    default = [
+        "japes_coconut_gates",
+        "aztec_tunnel_door",
+        "aztec_5dtemple_switches",
+        "aztec_tiny_temple_ice",
+        "factory_testing_gate",
+        "factory_production_room",
+        "galleon_lighthouse_gate",
+        "galleon_seasick_ship",
+        "caves_igloo_pads",
+    ]
 
 
 class HintItemRandomization(Toggle):

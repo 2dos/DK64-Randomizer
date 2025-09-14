@@ -224,30 +224,10 @@
                     </label>
                 </div>
                 {{ toggle_input("shops_dont_cost", "Tooie-Style Shops", "Shops will not deduct coins from the player, but will require a certain amount of coins to purchase the item, akin to Banjo-Tooie's Jamjars silos.") }}
-                <div class="spacer"></div>
+                {{ toggle_input("free_trade_setting", "Free Trade Agreement", "Allow Kongs to pick up items assigned to other kongs.")}}
             </div>
             <div class="flex-container">
                 {{ dropdown_multiselector(remove_barriers, "remove_barriers", "Remove Barriers", "This will open a dropdown that will let you customize what barriers are removed.", 12, 1) }}
-                <div class="item-select">
-                    <p class="select-title">Free Trade Agreement</p>
-                    <select name="free_trade_setting"
-                            id="free_trade_setting"
-                            class="form-select"
-                            aria-label="Randomization type"
-                            display_name="Free Trade Agreement"
-                            data-toggle="tooltip"
-                            title="Allow Kongs to pick up items assigned to other kongs.&#10;-None: Kongs must pick up items assigned to them.&#10;-Major Collectibles except Blueprints: All major items excluding blueprints can be picked up by any Kong.&#10;-Major Collectibles: All major items can be picked up by any kong.">
-                        <option id="none" selected value="none">
-                            None
-                        </option>
-                        <option id="not_blueprints" value="not_blueprints">
-                            Major Collectibles except Blueprints
-                        </option>
-                        <option id="major_collectibles" value="major_collectibles">
-                            Major Collectibles
-                        </option>
-                    </select>
-                </div>
                 <div class="item-select">
                     <p class="select-title">Galleon Water</p>
                     <select name="galleon_water"
@@ -357,6 +337,7 @@
                         </option>
                     </select>
                 </div>
+                <div class="spacer"></div>
             </div>
         </div>
     </div>

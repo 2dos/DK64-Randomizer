@@ -790,6 +790,8 @@ extern char* ReasonExceptions[20];
 extern unsigned char ReasonCode;
 extern int ReasonValues[3];
 
+extern rgba SpriteRGBA;
+
 extern int StackTraceX;
 extern int StackTraceY;
 extern int StackTraceSize;

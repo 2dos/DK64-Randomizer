@@ -226,6 +226,7 @@ extern void FileProgressInit(actorData* menu_controller);
 extern void checkTotalCache(void);
 extern void checkSeedVictory(void);
 extern void checkVictory_flaghook(int flag);
+extern int canAccessKroolsChallenge(void);
 extern void FileProgressInitSub(int file, int shuffle);
 extern void handleFileSelectSprites(void* paad, void* sprite, int x, int y, float scale, int unk0, int control);
 extern void checkSkippableCutscene(void);
@@ -427,6 +428,9 @@ extern void resetIceTrapButtons(void);
 extern void handleIceTrapButtons(void);
 extern int getCharWidthMask(int style, unsigned char *character);
 
+extern void colorRainbowAmmo(void* actor);
+extern void colorRainbowAmmoHUD(int red, int green, int blue, int alpha);
+
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
@@ -500,3 +504,4 @@ extern char aztec_beetle[0x20];
 extern char caves_beetle[0x20];
 extern unsigned char pregiven_status[56];
 extern StartingItemsStruct starting_item_data;
+extern coinHUDStruct CoinHUDElements[8];

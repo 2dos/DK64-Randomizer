@@ -76,7 +76,7 @@ typedef struct varspace {
 	/* 0x10F */ unsigned char remove_oscillation_effects; // Removes water oscillation + Seasick Ship interior rocking
 	/* 0x110 */ unsigned char arcade_reward; // Reward Index for R2 of Arcade
 	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
-	/* 0x112 */ char unk_112;
+	/* 0x112 */ char rainbow_ammo;
 	/* 0x113 */ FreeTradeAgreement any_kong_items;
 	/* 0x114 */ char fix_lanky_tiny_prod;
 	/* 0x115 */ unsigned char progressive_hint_gb_cap; // 0 = Off, 1 or more = Hints are rewarded for collecting GBs, rather than hint doors, 35th hint is unlocked at x
@@ -101,14 +101,7 @@ typedef struct varspace {
 	/* 0x139 */ char dpad_visual_enabled; // 0 = Vanilla, 1 = Visual shown
 	/* 0x13A */ char fast_warp; // 0 = Vanilla, 1 = Use Multiplayer warp
 	/* 0x13B */ char short_bosses; // 0 = Vanilla fights, 1 = Short fights
-	/* 0x13C */ unsigned short coinreq_cavesbeetle;
-	/* 0x13E */ unsigned short coinreq_aztecbeetle;
-	/* 0x140 */ unsigned short coinreq_factorycar;
-	/* 0x142 */ unsigned short coinreq_sealrace;
-	/* 0x144 */ unsigned short coinreq_castlecar;
-	/* 0x146 */ unsigned short coinreq_japescart;
-	/* 0x148 */ unsigned short coinreq_fungicart;
-	/* 0x14A */ unsigned short coinreq_castlecart;
+	/* 0x13C */ char unk_13c[0x14C - 0x13C];
 	/* 0x14C */ unsigned char lobbies_open_bitfield; // hccf gfaj
 	/* 0x14D */ char perma_lose_kongs; // 0 = Off, 1 = On. AKA "iateyourpie mode"
 	/* 0x14E */ char unk_14E[2];
@@ -137,7 +130,7 @@ typedef struct varspace {
 	/* 0x1B0 */ int password;
 	/* 0x1B4 */ char song_speed_near_win;
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
-	/* 0x1B6 */ unsigned char unk_1B6; // 0 = Vanilla
+	/* 0x1B6 */ unsigned char krool_ship_spawn_method; // 0 = Key Bases, 1 = Collectible Based
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;
 	/* 0x1B8 */ unsigned char kong_models[5];
 	/* 0x1BD */ char unk_1bd[0x1C6 - 0x1BD];

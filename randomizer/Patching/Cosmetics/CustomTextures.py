@@ -607,7 +607,7 @@ def writeCustomReels(settings: Settings, ROM_COPY: ROM) -> None:
             continue
         selected_reel = list_pool.pop(0)
         reel.name = selected_reel[1].split("/")[-1]  # File Name
-        im_f = Image.open(BytesIO(bytes(selected_reel[0])))
+        im_f = Image.open(BytesIO(bytes(selected_reel[0]))).convert("RGBA")
         im_f = getImageShrink(im_f, reel.width, reel.height)
         im_f = im_f.transpose(Image.FLIP_TOP_BOTTOM).convert("RGBA")
         chunks = []

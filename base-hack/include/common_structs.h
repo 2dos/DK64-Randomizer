@@ -2378,3 +2378,8 @@ typedef struct warp_info_data {
 	/* 0x008 */ unsigned char tied_exit;
 	/* 0x009 */ char unk9;
 } warp_info_data;
+
+typedef struct coinHUDStruct {
+	/* 0x000 */ unsigned short map_id;
+	/* 0x004 */ unsigned short requirement;
+} coinHUDStruct;

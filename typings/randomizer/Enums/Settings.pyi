@@ -548,6 +548,7 @@ class WinConditionComplex(IntEnum):
     dk_rap_items = 16
     req_bosses = 17
     req_bonuses = 18
+    krools_challenge = 19
 
 class WrinklyHints(IntEnum):
     off = 0
@@ -861,7 +862,6 @@ SettingsMap: dict = {
     "enemies_selected": Enemies,
     "enguarde_colors": CharacterColors,
     "excluded_songs_selected": ExcludedSongs,
-    "free_trade_setting": FreeTradeSetting,
     "fungi_time": FungiTimeSetting,
     "galleon_water": GalleonWaterSetting,
     "gb_colors": CharacterColors,
@@ -1018,7 +1018,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.fast_start_beginning_of_game_dummy: SettingsStringDataType.bool,
     SettingsStringEnum.fast_warps: SettingsStringDataType.bool,
     SettingsStringEnum.fps_display: SettingsStringDataType.bool,
-    SettingsStringEnum.free_trade_setting: FreeTradeSetting,
+    SettingsStringEnum.free_trade_setting: SettingsStringDataType.bool,
     SettingsStringEnum.generate_spoilerlog: SettingsStringDataType.bool,
     SettingsStringEnum.glitches_selected: SettingsStringDataType.list,
     SettingsStringEnum.tricks_selected: SettingsStringDataType.list,

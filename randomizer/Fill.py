@@ -1141,7 +1141,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             ordered_interesting_locations.append(locationId)
 
     # If K. Rool is the win condition, prepare phase-specific paths as well
-    if spoiler.settings.win_condition_item == WinConditionComplex.beat_krool:
+    if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
         for phase in spoiler.settings.krool_order:
             spoiler.krool_paths[phase] = []
     for locationId in ordered_interesting_locations:
@@ -1165,7 +1165,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             if other_location not in accessible:
                 spoiler.other_paths[other_location].append(locationId)
         # If the win condition is K. Rool, also add this location to those paths as applicable
-        if spoiler.settings.win_condition_item == WinConditionComplex.beat_krool:
+        if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
             final_boss_associated_event = {
                 Maps.JapesBoss: Events.KRoolDillo1,
                 Maps.AztecBoss: Events.KRoolDog1,
@@ -3986,6 +3986,9 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
         if settings.perma_death or settings.wipe_file_on_death:
             if settings.damage_amount == DamageAmount.quad or settings.damage_amount == DamageAmount.ohko:
                 found_incompatibilities += "Cannot turn on 'Angry Caves' with a damage modifier higher than double damage with Irondonk enabled. "
+    if settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
+        if settings.bonus_barrel_auto_complete:
+            found_incompatibilities += "Autocomplete Bonus Barrels cannot be enabled when the win condition requires completing bonus barrels. "
     if not settings.is_valid_item_pool():
         found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
     if settings.krool_access and Items.HideoutHelmKey in settings.starting_keys_list_selected:
