@@ -632,7 +632,7 @@ if baseclasses_loaded:
             """Generate the world."""
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
             # Goal is to hard code every setting to the dict but this will do for now
-            self.settings_string = "hAAFL0AAF+AADBAABhgAAxQAAf6Bp4BQEDAQHAwQCAkFBQMCwcGBEATqljcADeADgADiADkADmADoAFyACZgITiYEKEwMMJoSCaoAVoFolpFplqJqprNrts1tQ263K3a7q3q4a4K36768K4q56465K5a5q6K6a6q667K7aJKakzC4QDLVEqAQUQKMFIClBTAQRcFmARssp+DoZCWVsBbgJGghTUkvRYhbF6pwKiFgEJiFAEkSO1VVZQMZYcmSd4igOV5ArHB55LGBkAAqmeIboIJ8Jb8FU2BoQYrBdFsezPFkGCOGAZzJHobB8M0sAfLsUxULQxxWBoKxDGIRRrC4nhJCE/iWIMkS6LwuGRALLDReFAwjXCZdIhIlLSggHB4KGBokJx0hKisxMjMNDqwVLzUWXykRCTAuCF8AMAAYQAxAA7ABpAH6AlOACdDxI0VniavN7w6R4wCHdcQZaxCC9fP4Bs8fDCaOd3Ur2VmZxTZ1bF8KcKAmEQyFMdCVLY1z4RlM/gCyAIKCMqFEeCIZCmOhKlsa58IynStr4zrfO+eQJFNDY9wB5iM9BIQagpRh6SzDTj1L4F4xyK5ZARBlSzTkEU2W3X14KnoAPkAeoA+gB7AD7AA"
+            self.settings_string = "PyEAAUvQAAX4AAMEAAGGAADFAAB/oGngFAQMBAcDBAICQUFAwLBwYEQBOqWNwAN4AOAAOIAOQAOYAOgAXIAJmAhOJgQoTAwwmhIJqgBWgWiWkWmWomqms2u2zW1DbrcrdrurerhrgrfrvrwrirnrjrkrlrmrorprqrrrsrtokpqTMLhAMtUSoBBRAowUgKUFMBBFwWYBGyyn4ZCWVsBbgJGghTUkvRYhbF6pwKiFgEJiFAEkSO1VVZQMZYcmSd4igOV5ArHB55LGBkAAqmeIboIQgAFoUAC0MABKHAAlEAAOrQAHRIACooAA0WAA6MAAVGgAGrgALJ8Jb8FU2BoQYrBdFsezPFkGCOGAZzJHobB8M0sAfLsDhTFQtDHFYGgrEMYhFGsLieEkIT+JYgyRLovC4EAkFAsGA0HBAIhIKBULBgMhoOB0PCAQiIRiQSiYTigUioViwWi4XjAYjIZjQalwul4vqxfADAAGEAMQAOwAaQB+gJTgAnQ8SNFZ4mrze8OkeMAh3XEGWsQgvXz+AbPHwwmjnd1K9lZmcU2dWxfCnCgJhEMhTHQlS2Nc+EZTP4AsgCCgjKhRHgiGQpjoSpbGufCMp0ra+M63zvnkCRTQ2PcAeYjPQSEGoKUYeksw049S+BeMciuWQEQZUs05BFNlt19eCp6AD5AHqAPoAewA+wA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
 
             # Settings
@@ -714,6 +714,9 @@ if baseclasses_loaded:
             ]
             settings_dict["item_rando_list_1"].extend(always_enabled_categories)
             settings_dict["decouple_item_rando"] = False
+            
+            # Initialize filler_items_selected if not present
+            settings_dict["filler_items_selected"] = []
             settings_dict["filler_items_selected"].append(ItemRandoFiller.junkitem)
 
             # Conditional item categories
@@ -957,6 +960,16 @@ if baseclasses_loaded:
                 elif self.options.shopowners_in_pool.value and item_obj.type in [Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
                     settings_dict["starting_moves_list_1"].append(item_obj.type)
             settings_dict["starting_moves_list_count_1"] = len(settings_dict["starting_moves_list_1"])
+            
+            # Initialize the other starting_moves_list attributes that are expected by Settings
+            settings_dict["starting_moves_list_2"] = []
+            settings_dict["starting_moves_list_3"] = []
+            settings_dict["starting_moves_list_4"] = []
+            settings_dict["starting_moves_list_5"] = []
+            settings_dict["starting_moves_list_count_2"] = 0
+            settings_dict["starting_moves_list_count_3"] = 0
+            settings_dict["starting_moves_list_count_4"] = 0
+            settings_dict["starting_moves_list_count_5"] = 0
 
             if self.options.hint_style == 0:
                 settings_dict["wrinkly_hints"] = WrinklyHints.off
@@ -1150,6 +1163,7 @@ if baseclasses_loaded:
                                     DK64RItems.IceTrapGetOutGB,
                                     DK64RItems.IceTrapDryGB,
                                     DK64RItems.IceTrapFlipGB,
+                                    DK64RItems.IceTrapIceFloorGB,
                                 ]:
                                     local_trap_count += 1
 

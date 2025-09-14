@@ -175,6 +175,7 @@ ice_trap_data = [
     [Items.IceTrapGetOutGB, Items.IceTrapGetOutBean, Items.IceTrapGetOutKey, Items.IceTrapGetOutFairy],
     [Items.IceTrapDryGB, Items.IceTrapDryBean, Items.IceTrapDryKey, Items.IceTrapDryFairy],
     [Items.IceTrapFlipGB, Items.IceTrapFlipBean, Items.IceTrapFlipKey, Items.IceTrapFlipFairy],
+    [Items.IceTrapIceFloorGB, Items.IceTrapIceFloorBean, Items.IceTrapIceFloorKey, Items.IceTrapIceFloorFairy],
 ]
 
 

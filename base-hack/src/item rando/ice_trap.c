@@ -503,6 +503,10 @@ void initIceTrap(void) {
             *(unsigned char*)(0x80010520) = 0xBF;
             flip_timer = 240;
             break;
+        case ICETRAP_ICEFLOOR:
+            Player->traction = 1;
+            Player->trap_bubble_timer = 240;
+            break;
     }
     playSFX(0x2D4); // K Rool Laugh
     GameStats[STAT_TRAPPED]++;

@@ -933,6 +933,10 @@ class SelectStartingKong(Choice):
 
     default = 5
 
+class IceFloorWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which turns the floor slippery."""
+
+    display_name = "Ice Floor Weight"
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
@@ -1008,6 +1012,7 @@ class DK64Options(PerGameCommonOptions):
     puzzle_rando: PuzzleRando
     goal_quantity: GoalQuantity
     select_starting_kong: SelectStartingKong
+    ice_floor_weight: IceFloorWeight
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1119,6 +1124,7 @@ dk64_option_groups: List[OptionGroup] = [
             GetOutTrapWeight,
             DryTrapWeight,
             FlipTrapWeight,
+            IceFloorWeight,
         ],
     ),
     OptionGroup(

@@ -494,6 +494,8 @@ class DK64Client:
                 await self.writeFedData(0x047)  # TRANSFER_ITEM_FAKEITEM_DRY
             elif ice_trap_type == "flip":
                 await self.writeFedData(0x048)  # TRANSFER_ITEM_FAKEITEM_FLIP
+            elif ice_trap_type == "icefloor":
+                await self.writeFedData(0x049)  # TRANSFER_ITEM_FAKEITEM_ICEFLOOR
             else:
                 # Default to bubble if unknown type
                 await self.writeFedData(0x018)

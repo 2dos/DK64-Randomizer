@@ -109,6 +109,7 @@ item_ids = {
     14041323: {"name": "Get Out Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "get_out"}, "flag_id": None, "extended_whitelist": True},
     14041326: {"name": "Dry Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "dry"}, "flag_id": None, "extended_whitelist": True},
     14041329: {"name": "Flip Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "flip"}, "flag_id": None, "extended_whitelist": True},
+    14041342: {"name": "Ice Floor Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "icefloor"}, "flag_id": None, "extended_whitelist": True},
     14041173: {"name": "Junk Item (Crystal)", "count_id": {"field": "junk_items", "increment": 1}, "flag_id": None, "extended_whitelist": True},
     14041174: {"name": "Junk Item (Melon Slice)", "count_id": {"field": "junk_items", "increment": 1}, "flag_id": None, "extended_whitelist": True},
     14041175: {"name": "Junk Item (Ammo Crate)", "count_id": {"field": "junk_items", "increment": 1}, "flag_id": None, "extended_whitelist": True},
@@ -234,6 +235,7 @@ trap_name_to_index: dict[str, int] = {
     "Get Out Trap": 9,
     "Dry Trap": 10,
     "Flip Trap": 11,
+    "Ice Floor Trap": 12,
     # Common other trap names
     "Banana Peel Trap": 3,  # Slow Trap
     "Bee Trap": 6,  # Disable B Trap
@@ -288,4 +290,5 @@ trap_index_to_name: dict[int, str] = {
     9: "Get Out Trap",
     10: "Dry Trap",
     11: "Flip Trap",
+    12: "Ice Floor Trap",
 }
