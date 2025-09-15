@@ -285,7 +285,6 @@ extern void setSpawnBitfield(int id, int state);
 extern void setSpawnBitfieldFromFlag(int flag, int state);
 
 extern Gfx* pauseScreen3And4ItemName(Gfx* dl, int x, int y, float scale, char* text);
-extern void handleSpriteCode(int control_type);
 extern void initPauseMenu(void);
 extern void storeHintRegion(void);
 extern void getHintRegionText(void);
@@ -430,6 +429,9 @@ extern int getCharWidthMask(int style, unsigned char *character);
 
 extern void colorRainbowAmmo(void* actor, float x, float y, float z, int unk0);
 extern void colorRainbowAmmoHUD(sprite_info *sprite);
+
+extern void totalsSprite(sprite_struct* sprite, char* render);
+extern void checksSprite(sprite_struct* sprite, char* render);
 
 extern int cc_enabler_slip(void);
 extern int cc_allower_generic(void);
