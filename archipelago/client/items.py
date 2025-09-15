@@ -248,6 +248,7 @@ trap_name_to_index: dict[str, int] = {
     "Confuse Trap": 2,  # Reverse Trap
     "Confusion Trap": 2,  # Reverse Trap
     "Damage Trap": 9,  # Get Out Trap
+    "Deisometric Trap": 13,  # Paper Trap
     "Depletion Trap": 10,  # Dry Trap
     "Eject Ability": 10,  # Dry Trap
     "Fear Trap": 3,  # Slow Trap
@@ -259,8 +260,10 @@ trap_name_to_index: dict[str, int] = {
     "Ice Trap": 12,  # Ice Floor Trap
     "Instant Crystal Trap": 1,  # Bubble Trap
     "Instant Death Trap": 9,  # Get Out Trap
+    "Invisible Trap": 13,  # Paper Trap
     "Iron Boots Trap": 5,  # Disable A Trap
     "Jump Trap": 5,  # Disable A Trap
+    "Literature Trap": 13,  # Paper Trap
     "Mirror Trap": 11,  # Flip Trap
     "Monkey Mash Trap": 2,  # Reverse Trap
     "No Stocks": 10,  # Dry Trap
@@ -269,23 +272,20 @@ trap_name_to_index: dict[str, int] = {
     "Poison Mushroom": 3,  # Slow Trap
     "Poison Trap": 10,  # Dry Trap
     "Police Trap": 9,  # Get Out Trap
+    "PowerPoint Trap": 13,  # Paper Trap
+    "Push Trap": 12,  # Ice Floor Trap
     "Resistance Trap": 9,  # Get Out Trap
     "Reversal Trap": 2,  # Reverse Trap
     "Screen Flip Trap": 11,  # Flip Trap
     "Slowness Trap": 3,  # Slow Trap
     "Spike Ball Trap": 9,  # Get Out Trap
+    "Spooky Time": 13,  # Paper Trap
     "Sticky Floor Trap": 5,  # Disable A Trap
     "Stun Trap": 1,  # Bubble Trap
     "Time Limit": 9,  # Get Out Trap
     "Timer Trap": 9,  # Slow Trap
-    "W I D E Trap": 13,  # Paper Trap
-    "Invisible Trap": 13,  # Paper Trap
-    "Literature Trap": 13,  # Paper Trap
-    "PowerPoint Trap": 13,  # Paper Trap
-    "Spooky Time": 13,  # Paper Trap
     "Tiny Trap": 13,  # Paper Trap
-    "Deisometric Trap": 13,  # Paper Trap
-    "Push Trap": 12,  # Ice Floor Trap
+    "W I D E Trap": 13,  # Paper Trap
 }
 
 trap_index_to_name: dict[int, str] = {
