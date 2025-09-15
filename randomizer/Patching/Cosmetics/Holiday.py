@@ -104,6 +104,7 @@ def changeBarrelColor(settings, ROM_COPY: ROM, barrel_color: tuple = None, metal
             img_output = img_output.convert("RGBA")
             writeColorImageToROM(img_output, 25, img, 16, 1, False, TextureFormat.RGBA5551, ROM_COPY)
 
+
 def applyCelebrationRims(ROM_COPY: ROM, hue_shift: int, enabled_bananas: list[bool] = [False, False, False, False, False]):
     """Retexture the warp pad rims to have a more celebratory tone."""
     banana_textures = []

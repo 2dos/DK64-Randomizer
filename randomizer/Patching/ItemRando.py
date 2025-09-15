@@ -819,6 +819,7 @@ model_two_items = [
 
 POINTER_ROM_ENEMIES = 0x1FF9000
 
+
 def normalize_location_name(name: str):
     """Normalize a location name so it can be patched in."""
     res = "".join([x for xi, x in enumerate([*name]) if x != "\n" and xi < 30])

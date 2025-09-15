@@ -633,7 +633,7 @@ if baseclasses_loaded:
             """Generate the world."""
             # V1 LIMITATION: We are restricting settings pretty heavily. This string serves as the base for all seeds, with AP options overriding some options
             # Goal is to hard code every setting to the dict but this will do for now
-            self.settings_string = "PyEAAUvQAAX4AAMEAAGGAADFAAB/oGngFAQMBAcDBAICQUFAwLBwYEQBOqWNwAN4AOAAOIAOQAOYAOgAXIAJmAhOJgQoTAwwmhIJqgBWgWiWkWmWomqms2u2zW1DbrcrdrurerhrgrfrvrwrirnrjrkrlrmrorprqrrrsrtokpqTMLhAMtUSoBBRAowUgKUFMBBFwWYBGyyn4ZCWVsBbgJGghTUkvRYhbF6pwKiFgEJiFAEkSO1VVZQMZYcmSd4igOV5ArHB55LGBkAAqmeIboIQgAFoUAC0MABKHAAlEAAOrQAHRIACooAA0WAA6MAAVGgAGrgALJ8Jb8FU2BoQYrBdFsezPFkGCOGAZzJHobB8M0sAfLsDhTFQtDHFYGgrEMYhFGsLieEkIT+JYgyRLovC4EAkFAsGA0HBAIhIKBULBgMhoOB0PCAQiIRiQSiYTigUioViwWi4XjAYjIZjQalwul4vqxfADAAGEAMQAOwAaQB+gJTgAnQ8SNFZ4mrze8OkeMAh3XEGWsQgvXz+AbPHwwmjnd1K9lZmcU2dWxfCnCgJhEMhTHQlS2Nc+EZTP4AsgCCgjKhRHgiGQpjoSpbGufCMp0ra+M63zvnkCRTQ2PcAeYjPQSEGoKUYeksw049S+BeMciuWQEQZUs05BFNlt19eCp6AD5AHqAPoAewA+wA"
+            self.settings_string = "hAAFL0AAF+AADBAABhgAAxQAAf6Bp4BQEDAQHAwQCAkFBQMCwcGBEATqljcADeADgADiADkADmADoAFyACZgITiYEKEwMMJoSCaoAVoFolpFplqJqprNrts1tQ263K3a7q3q4a4K36768K4q56465K5a5q6K6a6q667K7aJKakzC4QDLVEqAQUQKMFIClBTAQRcFmARssp+GQllbAW4CRoIU1JL0WIWxeqcCohYBCYhQBJEjtVVWUDGWHJkneIoDleQKxweeSxgZAAKpniG6CCfCW/BVNgaEGKwXRbHszxZBgjhgGcyR6GwfDNLAHy7A4UxULQxxWBoKxDGIRRrC4nhJCE/iWIMkS6LwuDIQBYsGheCgMEZcExdEQSEotFAgDgeBQYDQkE4dEIqFYxGQzBoOVgVF41CxfFIRBIwFwIXwAwABhADEADsAGkAfoCU4AJ0PEjRWeJq83vDpHjAId1xBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwoCYRDIUx0JUtjXPhGUz+ALIAgoIyoUR4IhkKY6EqWxrnwjKdK2vjOt8755AkU0Nj3AHmIz0EhBqClGHpLMNOPUvgXjHIrlkBEGVLNOQRTZbdfXgqegA+QB6gD6AHsAPsA"
             settings_dict = decrypt_settings_string_enum(self.settings_string)
 
             # Settings
@@ -1158,6 +1158,7 @@ if baseclasses_loaded:
                                     DK64RItems.IceTrapFlipGB,
                                     DK64RItems.IceTrapIceFloorGB,
                                     DK64RItems.IceTrapPaperGB,
+                                    DK64RItems.IceTrapSlipGB,
                                 ]:
                                     local_trap_count += 1
 
