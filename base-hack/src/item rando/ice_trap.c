@@ -583,6 +583,41 @@ void resetIceTrapButtons(void) {
     resetScreenFlip();
 }
 
+int canLoadIceTrap(ICE_TRAP_TYPES trap_type) {
+    if (!Player) {
+        return 0;
+    }
+    if (Player->collision_queue_pointer) {
+        // Crashes
+        return 0;
+    }
+    if (ObjectModel2Timer < 5) {
+        return 0;
+    }
+    if (LZFadeoutProgress > 15.0f) {
+        return 0;
+    }
+    if (Player->strong_kong_ostand_bitfield & 0x100) {
+        // Seasick
+        return 0;
+    }
+    if (IsAutowalking) {
+        return 0;
+    }
+    if (Player->shockwave_timer != -1) {
+        return 0;
+    }
+    // Check Map
+    if (isBannedTrapMap(CurrentMap, trap_type)) {
+        return 0;
+    }
+    // Check Control State
+    if (getBitArrayValue(&banned_trap_movement, Player->control_state)) {
+        return 0;
+    }
+    return 1;
+}
+
 void handleIceTrapButtons(void) {
     for (int i = 0; i < sizeof(button_ice_data)/sizeof(button_ice_struct); i++) {
         button_ice_struct *data = &button_ice_data[i];
@@ -603,7 +638,7 @@ void handleIceTrapButtons(void) {
         if (slip_timers[i] > 1) {
             slip_timers[i]--;
         } else if (slip_timers[i] == 1) {
-            if (cc_allower_generic()) {
+            if (canLoadIceTrap(ICETRAP_SLIP) && (ice_trap_queued == ICETRAP_OFF)) {
                 spawnActor(NEWACTOR_SLIPPEEL, 0xE5);
                 warpActorToParent(LastSpawnedActor, Player, 0.05f);
                 cc_enabler_slip();
@@ -640,7 +675,7 @@ int isBannedTrapMap(maps map, ICE_TRAP_TYPES type) {
         return 0;
     }
     if (ban_state == ICETRAPREQ_SUPER) {
-        if (type == ICETRAP_SUPERBUBBLE) {
+        if ((type == ICETRAP_SUPERBUBBLE) || (type == ICETRAP_SLIP)) {
             return 0;
         }
     }
@@ -679,35 +714,7 @@ void playIceTrapSong(int song, float volume) {
 
 void callIceTrap(void) {
     if (ice_trap_queued) {
-        if (Player) {
-            if (Player->collision_queue_pointer) {
-                // Crashes
-                return;
-            }
-            if (ObjectModel2Timer < 5) {
-                return;
-            }
-            if (LZFadeoutProgress > 15.0f) {
-                return;
-            }
-            if (Player->strong_kong_ostand_bitfield & 0x100) {
-                // Seasick
-                return;
-            }
-            if (IsAutowalking) {
-                return;
-            }
-            if (Player->shockwave_timer != -1) {
-                return;
-            }
-            // Check Map
-            if (isBannedTrapMap(CurrentMap, ice_trap_queued)) {
-                return;
-            }
-            // Check Control State
-            if (getBitArrayValue(&banned_trap_movement, Player->control_state)) {
-                return;
-            }
+        if (canLoadIceTrap(ice_trap_queued)) {
             initIceTrap();
         }
     }
