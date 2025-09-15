@@ -296,6 +296,7 @@ loadHUDFunction:
 
 loadPauseHUDFunction:
     lw $a1, 0x4C ($sp)
+    lw $a2, 0x60 ($sp)
     jal setHUDUpdateFunction_0
     addiu $a0, $a0, 0xC07C
     j 0x806AB530

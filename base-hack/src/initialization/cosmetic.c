@@ -286,7 +286,7 @@ void setFog(int enabled) {
 }
 
 void getRainbowAmmoColor(rgba *color) {
-    int pos = ObjectModel2Timer % 1536;
+    int pos = FrameReal % 1536;
     int step = pos >> 8;
     switch (step) {
         case 0:
@@ -358,9 +358,13 @@ void setHUDUpdateFunction(void* function, int item_index) {
         loadSpriteFunction(function);
     }
 }
-void setHUDUpdateFunction_0(void* function, int item_index) {
+void setHUDUpdateFunction_0(void* function, int item_index, int control_type) {
     if ((item_index == 2) || (item_index == 3)) {
         loadSpriteFunction(&colorRainbowAmmoHUD_0);
+    } else if (control_type == 16) {
+        loadSpriteFunction((int)&totalsSprite);
+    } else if (control_type == 17) {
+        loadSpriteFunction((int)&checksSprite);
     } else {
         loadSpriteFunction(function);
     }
