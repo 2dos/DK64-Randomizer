@@ -25,24 +25,15 @@ const requirement_data = {
             new Requirement(1, [[Moves.Moveless]]), // 1 banana in JungleJapesStart
             new Requirement(5, [[Moves.Diving]]), // 5 bananas in JungleJapesStart
             new Requirement(10, [[Moves.ClimbingCheck]]), // 1 bunch, 1 bunch in JapesHillTop
+            new Requirement(2, [[Moves.Orangstand]]), // 2 bananas in JapesPaintingRoomHill
             new Requirement(3, [[Moves.JapesCoconut]]), // 1 banana, 2 bananas in JapesBeyondCoconutGate2
             new Requirement(5, [[Moves.ClimbingCheck, Moves.JapesCoconut]]), // 1 bunch in JapesBeyondCoconutGate2
             new Requirement(10, [[Moves.Coconut, Moves.JapesCoconut]]), // 5 bananas in BeyondRambiGate; 1 bunch in JapesBeyondCoconutGate2
             new Requirement(5, [[Moves.Peanut, Moves.Grape]]), // 1 bunch in JapesBeyondPeanutGate
+            new Requirement(20, [[Moves.Peanut, Moves.Orangstand]]), // 2 bunches, 2 bunches in JapesLankyCave
             new Requirement(20, [[Moves.Grape, Moves.JapesCoconut]]), // 1 balloon, 1 balloon in JapesBeyondCoconutGate2
             new Requirement(9, [[Moves.Orangstand, Moves.JapesCoconut]]), // 2 bananas in JapesBeyondCoconutGate2; 1 bunch, 2 bananas in JapesUselessSlope
-            new Requirement(2, [ // 2 bananas in JapesPaintingRoomHill
-                [Moves.Orangstand],
-                [Moves.ClimbingCheck, Moves.Twirl],
-            ]),
-            new Requirement(20, [ // 2 bunches, 2 bunches in JapesLankyCave
-                [Moves.Peanut, Moves.Orangstand],
-                [Moves.ClimbingCheck, Moves.Peanut, Moves.Twirl],
-            ]),
-            new Requirement(10, [ // 1 balloon in JapesLankyCave
-                [Moves.Peanut, Moves.Grape, Moves.Orangstand],
-                [Moves.ClimbingCheck, Moves.Peanut, Moves.Grape, Moves.Twirl],
-            ]),
+            new Requirement(10, [[Moves.Peanut, Moves.Grape, Moves.Orangstand]]), // 1 balloon in JapesLankyCave
         ],
         "Tiny": [
             new Requirement(5, [[Moves.Moveless]]), // 5 bananas in JungleJapesStart
