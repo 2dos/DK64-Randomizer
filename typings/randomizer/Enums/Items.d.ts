@@ -256,4 +256,8 @@ export enum Items {
     IceTrapIceFloorBean = 255,
     IceTrapIceFloorKey = 256,
     IceTrapIceFloorFairy = 257,
+    IceTrapPaperGB = 258,
+    IceTrapPaperBean = 259,
+    IceTrapPaperKey = 260,
+    IceTrapPaperFairy = 261,
 }

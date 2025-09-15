@@ -51,6 +51,10 @@ IceTrapMasks = {
     Items.IceTrapIceFloorBean: Types.Bean,
     Items.IceTrapIceFloorKey: Types.Key,
     Items.IceTrapIceFloorFairy: Types.Fairy,
+    Items.IceTrapPaperGB: Types.Banana,
+    Items.IceTrapPaperBean: Types.Bean,
+    Items.IceTrapPaperKey: Types.Key,
+    Items.IceTrapPaperFairy: Types.Fairy,
 }
 IceTrapMaskIndexes = [Types.Banana, Types.Bean, Types.Key, Types.Fairy]
 
@@ -1027,6 +1031,10 @@ item_shop_text_mapping = {
     Items.IceTrapIceFloorBean: (BuyText.ice_trap, NoBuyText.misc_item),
     Items.IceTrapIceFloorKey: (BuyText.ice_trap, NoBuyText.misc_item),
     Items.IceTrapIceFloorFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapPaperGB: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapPaperBean: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapPaperKey: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapPaperFairy: (BuyText.ice_trap, NoBuyText.misc_item),
     # Items not yet considered
     # Items.RainbowCoin: (BuyText.blueprint, NoBuyText.misc_item),
     # Items.JunkCrystal: (BuyText.blueprint, NoBuyText.misc_item),

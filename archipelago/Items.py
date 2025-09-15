@@ -205,6 +205,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
             DK64RItems.IceTrapDryGB,
             DK64RItems.IceTrapFlipGB,
             DK64RItems.IceTrapIceFloorGB,
+            DK64RItems.IceTrapPaperGB,
         ]:
             classification = ItemClassification.trap
         elif item.type == DK64RTypes.Key:
@@ -319,6 +320,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     trap_weights += [DK64RItems.IceTrapDryGB] * world.options.dry_trap_weight.value
     trap_weights += [DK64RItems.IceTrapFlipGB] * world.options.flip_trap_weight.value
     trap_weights += [DK64RItems.IceTrapIceFloorGB] * world.options.ice_floor_weight.value
+    trap_weights += [DK64RItems.IceTrapPaperGB] * world.options.paper_weight.value
 
     trap_count = 0 if (len(trap_weights) == 0) else math.ceil(filler_item_count * (world.options.trap_fill_percentage.value / 100.0))
     filler_item_count -= trap_count

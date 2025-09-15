@@ -10,6 +10,11 @@
  */
 #include "../../include/common.h"
 
+int cc_enabler_ice(void);
+int cc_disabler_ice(void);
+int cc_enabler_paper(void);
+int cc_disabler_paper(void);
+
 ICE_TRAP_TYPES ice_trap_queued = ICETRAP_OFF;
 
 typedef enum ice_trap_map_state {
@@ -440,6 +445,8 @@ static button_ice_struct button_ice_data[] = {
     {.ice_trap_type = ICETRAP_DISABLECU, .button_btf = CONT_E, .button_sprite = (void*)0x80720D80},
 };
 static unsigned char flip_timer = 0;
+static unsigned short ice_floor_timer = 0;
+static unsigned short paper_timer = 0;
 
 void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration) {
     float repeat_count = (float)duration / (float)sprite->image_count;
@@ -504,8 +511,12 @@ void initIceTrap(void) {
             flip_timer = 240;
             break;
         case ICETRAP_ICEFLOOR:
-            Player->traction = 1;
-            Player->trap_bubble_timer = 240;
+            cc_enabler_ice();
+            ice_floor_timer = 450;
+            break;
+        case ICETRAP_PAPER:
+            cc_enabler_paper();
+            paper_timer = 450;
             break;
     }
     playSFX(0x2D4); // K Rool Laugh
@@ -521,6 +532,8 @@ void resetIceTrapButtons(void) {
         button_ice_data[i].ice_trap_timer = 0;
     }
     flip_timer = 0;
+    ice_floor_timer = 0;
+    paper_timer = 0;
     trap_enabled_buttons = 0xFFFF;
     *(unsigned char*)(0x80010520) = 0x3F;
 }
@@ -539,6 +552,18 @@ void handleIceTrapButtons(void) {
         flip_timer--;
         if (flip_timer == 0) {
             *(unsigned char*)(0x80010520) = 0x3F;
+        }
+    }
+    if (ice_floor_timer > 0) {
+        ice_floor_timer--;
+        if (ice_floor_timer == 0) {
+            cc_disabler_ice(); // Call CC function directly
+        }
+    }
+    if (paper_timer > 0) {
+        paper_timer--;
+        if (paper_timer == 0) {
+            cc_disabler_paper(); // Call CC function directly
         }
     }
 }

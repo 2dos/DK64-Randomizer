@@ -1365,7 +1365,8 @@ class Settings:
             "getout": 1,
             "dry": 2,
             "flip": 2,
-            "icefloor": 2
+            "icefloor": 2,
+            "paper": 2
         }
         models_chance = {"gb": 10, "key": 2, "bean": 1, "fairy": 4}
         trap_data = {
@@ -1381,6 +1382,7 @@ class Settings:
                 "dry": Items.IceTrapDryGB,
                 "flip": Items.IceTrapFlipGB,
                 "icefloor": Items.IceTrapIceFloorGB,
+                "paper": Items.IceTrapPaperGB,
             },
             "bean": {
                 "bubble": Items.IceTrapBubbleBean,
@@ -1394,6 +1396,7 @@ class Settings:
                 "dry": Items.IceTrapDryBean,
                 "flip": Items.IceTrapFlipBean,
                 "icefloor": Items.IceTrapIceFloorBean,
+                "paper": Items.IceTrapPaperBean,
             },
             "key": {
                 "bubble": Items.IceTrapBubbleKey,
@@ -1407,6 +1410,7 @@ class Settings:
                 "dry": Items.IceTrapDryKey,
                 "flip": Items.IceTrapFlipKey,
                 "icefloor": Items.IceTrapIceFloorKey,
+                "paper": Items.IceTrapPaperKey,
             },
             "fairy": {
                 "bubble": Items.IceTrapBubbleFairy,
@@ -1420,6 +1424,7 @@ class Settings:
                 "dry": Items.IceTrapDryFairy,
                 "flip": Items.IceTrapFlipFairy,
                 "icefloor": Items.IceTrapIceFloorFairy,
+                "paper": Items.IceTrapPaperFairy,
             },
         }
         self.trap_assortment = []

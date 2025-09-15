@@ -166,6 +166,7 @@ if baseclasses_loaded:
         MinigamesListSelected,
         HelmBonuses,
         HardBossesSelected,
+        ExtraCutsceneSkips,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
@@ -657,6 +658,8 @@ if baseclasses_loaded:
             settings_dict["cb_medal_behavior_new"] = self.options.medal_distribution.value
             settings_dict["smaller_shops"] = self.options.smaller_shops.value and not hasattr(self.multiworld, "generation_is_fake")
             settings_dict["puzzle_rando_difficulty"] = self.options.puzzle_rando.value
+            if self.options.enable_cutscenes.value:
+                settings_dict["more_cutscene_skips"] = ExtraCutsceneSkips.press
 
             # Level blocker settings
             blocker_options = [
@@ -1164,6 +1167,7 @@ if baseclasses_loaded:
                                     DK64RItems.IceTrapDryGB,
                                     DK64RItems.IceTrapFlipGB,
                                     DK64RItems.IceTrapIceFloorGB,
+                                    DK64RItems.IceTrapPaperGB,
                                 ]:
                                     local_trap_count += 1
 
