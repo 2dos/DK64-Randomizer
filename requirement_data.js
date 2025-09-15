@@ -456,12 +456,12 @@ const requirement_data = {
         ],
         "Tiny": [
             new Requirement(50, [[Moves.Moveless]]), // 1 bunch, 45 bananas in CreepyCastleMain
-            new Requirement(5, [[Moves.LevelSlam]]), // 1 bunch in Ballroom
             new Requirement(10, [[Moves.Feather]]), // 1 balloon in LowerCave
             new Requirement(5, [[Moves.Mini]]), // 1 bunch in TrashCan
-            new Requirement(15, [[Moves.LevelSlam, Moves.Monkeyport]]), // 1 bunch, 2 bunches in MuseumBehindGlass
+            new Requirement(5, [[Moves.LevelSlam, Moves.Diddy]]), // 1 bunch in Ballroom
             new Requirement(5, [[Moves.Twirl, Moves.CryptTinyEntry]]), // 1 bunch in Mausoleum
-            new Requirement(10, [[Moves.LevelSlam, Moves.Feather, Moves.Monkeyport]]), // 1 balloon in MuseumBehindGlass
+            new Requirement(15, [[Moves.LevelSlam, Moves.Monkeyport, Moves.Diddy]]), // 1 bunch, 2 bunches in MuseumBehindGlass
+            new Requirement(10, [[Moves.LevelSlam, Moves.Feather, Moves.Monkeyport, Moves.Diddy]]), // 1 balloon in MuseumBehindGlass
         ],
         "Chunky": [
             new Requirement(30, [[Moves.Moveless]]), // 30 bananas in UpperCave
