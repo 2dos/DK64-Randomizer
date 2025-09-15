@@ -128,6 +128,8 @@ extern int getObjectID(int index);
 extern void HUDSpriteUpdate(sprite_info *sprite);
 extern void PauseSpriteUpdate(sprite_info *sprite);
 
+extern void warpActorToParent(void *actor, void *parent, float scale);
+
 extern void updateCamera(void* mtx_i);
 extern void spawnKeyTwinklies(void *actor);
 extern void getControllerContainer(void *cont);

@@ -431,6 +431,10 @@ extern int getCharWidthMask(int style, unsigned char *character);
 extern void colorRainbowAmmo(void* actor, float x, float y, float z, int unk0);
 extern void colorRainbowAmmoHUD(sprite_info *sprite);
 
+extern int cc_enabler_slip(void);
+extern int cc_allower_generic(void);
+extern void slipPeelCode(void);
+
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];

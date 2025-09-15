@@ -440,6 +440,7 @@ static button_ice_struct button_ice_data[] = {
     {.ice_trap_type = ICETRAP_DISABLECU, .button_btf = CONT_E, .button_sprite = (void*)0x80720D80},
 };
 static unsigned char flip_timer = 0;
+static unsigned short slip_timers[8] = {};
 
 void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration) {
     float repeat_count = (float)duration / (float)sprite->image_count;
@@ -497,11 +498,24 @@ void initIceTrap(void) {
             for (int i = 0; i < 5; i++) {
                 MovesBase[i].instrument_energy = 0;
             }
-            displaySpriteAtXYZ((void*)(0x8071FE08), 1.0f, Player->xPos, Player->yPos, Player->zPos);
+            displaySpriteAtXYZ((void*)(0x8071FE08), 1.0f, Player->xPos, Player->yPos + 6.0f, Player->zPos);
             break;
         case ICETRAP_FLIP:
             *(unsigned char*)(0x80010520) = 0xBF;
             flip_timer = 240;
+            break;
+        case ICETRAP_SLIP:
+        case ICETRAP_SLIP_INSTANT:
+            for (int i = 0; i < 8; i++) {
+                if (slip_timers[i] == 0) {
+                    if (ice_trap_queued == ICETRAP_SLIP_INSTANT) {
+                        slip_timers[i] = 1;
+                    } else {
+                        slip_timers[i] = (getRNGLower31() & 0x3FF) + 150; // Some time between 5s and 39.1s
+                    }
+                    break;
+                }
+            }
             break;
     }
     playSFX(0x2D4); // K Rool Laugh
@@ -510,6 +524,23 @@ void initIceTrap(void) {
         customDamageCode();
     }
     ice_trap_queued = ICETRAP_OFF;
+}
+
+void slipPeelCode(void) {
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        CurrentActorPointer_0->control_state_progress = 45;
+        CurrentActorPointer_0->noclip_byte = 1;
+    }
+    if (CurrentActorPointer_0->control_state_progress > 0) {
+        CurrentActorPointer_0->control_state_progress--;
+    } else {
+        CurrentActorPointer_0->obj_props_bitfield &= 0xFFFF7FFF;
+        CurrentActorPointer_0->shadow_intensity -= 10;
+        if (CurrentActorPointer_0->shadow_intensity < 0) {
+            deleteActorContainer(CurrentActorPointer_0);
+        }
+    }
+    renderActor(CurrentActorPointer_0, 0);
 }
 
 void resetIceTrapButtons(void) {
@@ -535,6 +566,18 @@ void handleIceTrapButtons(void) {
         flip_timer--;
         if (flip_timer == 0) {
             *(unsigned char*)(0x80010520) = 0x3F;
+        }
+    }
+    for (int i = 0; i < 8; i++) {
+        if (slip_timers[i] > 1) {
+            slip_timers[i]--;
+        } else if (slip_timers[i] == 1) {
+            if (cc_allower_generic()) {
+                spawnActor(NEWACTOR_SLIPPEEL, 0xE5);
+                warpActorToParent(LastSpawnedActor, Player, 0.05f);
+                cc_enabler_slip();
+                slip_timers[i] = 0;
+            }
         }
     }
 }

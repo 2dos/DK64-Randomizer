@@ -92,6 +92,7 @@ class CustomActors(IntEnum):
     HintItemChunky = auto()
     ArchipelagoItem = auto()
     IceTrapFairy = auto()
+    SlipPeel = auto()
 
 
 class GraphicOverlay(IntEnum):
