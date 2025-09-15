@@ -1378,9 +1378,9 @@ class Settings:
             "getout": self.trap_weight_getout,
             "dry": self.trap_weight_dry,
             "flip": self.trap_weight_flip,
-            "icefloor": 2,
-            "paper": 2,
-            "slip": 3,
+            "icefloor": self.trap_weight_icefloor,
+            "paper": self.trap_weight_paper,
+            "slip": self.trap_weight_slip,
         }
         models_chance = {"gb": 10, "key": 2, "bean": 1, "fairy": 4}
         trap_data = {
