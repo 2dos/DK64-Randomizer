@@ -286,7 +286,7 @@ void setFog(int enabled) {
 }
 
 void getRainbowAmmoColor(rgba *color) {
-    int pos = ObjectModel2Timer % 1536;
+    int pos = FrameReal % 1536;
     int step = pos >> 8;
     switch (step) {
         case 0:

@@ -554,8 +554,6 @@ def pauseUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     writeValue(ROM_COPY, 0x806AB3B4, Overlay.Static, 0xAFB00018, offset_dict, 4)  # SW $s0, 0x18 ($sp). Change last param to index
     writeValue(ROM_COPY, 0x806AB3A0, Overlay.Static, 0xAFA90014, offset_dict, 4)  # SW $t1, 0x14 ($sp). Change 2nd-to-last param to local index
     writeValue(ROM_COPY, 0x806AB444, Overlay.Static, 0, offset_dict, 4)  # Prevent joystick sprite rendering
-    writeFunction(ROM_COPY, 0x806AB528, Overlay.Static, "handleSpriteCode", offset_dict)  # Change sprite control function
-    writeValue(ROM_COPY, 0x806AB52C, Overlay.Static, 0x8FA40060, offset_dict, 4)  # LW $a0, 0x60 ($sp). Change param
     writeValue(ROM_COPY, 0x806A8DB2, Overlay.Static, 0x0029, offset_dict)  # Swap left/right direction
     writeValue(ROM_COPY, 0x806A8DBA, Overlay.Static, 0xFFD8, offset_dict)  # Swap left/right direction
     writeValue(ROM_COPY, 0x806A8DB4, Overlay.Static, 0x5420, offset_dict)  # BEQL -> BNEL

@@ -296,7 +296,7 @@ loadHUDFunction:
 
 loadPauseHUDFunction:
     lw $a1, 0x4C ($sp)
-    jal setHUDUpdateFunction_0
-    addiu $a0, $a0, 0xC07C
+    jal handleSpriteCode
+    lw $a0, 0x60 ($sp)
     j 0x806AB530
     nop
