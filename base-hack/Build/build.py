@@ -1402,16 +1402,26 @@ colorblind_changes = [
     [0x14A7, 0x14B5],  # Pineapple
 ]
 
-file_dict.append(
-    # Giant Mushroom Cap
-    File(
-        name="Colorblind Expansion 1779",
-        pointer_table_index=TableNames.TexturesGeometry,
-        file_index=0x6F3,
-        source_file="colorblind_exp_1779.bin",
-        target_size=0x40,
+palette_files = [
+    0x6F3,  # Giant Mushroom Cap
+    0x145,  # Bonus Barrel Map Geo Shell
+    0x147,  # Bonus Barrel Map Geo Shell
+    0x14C,  # Bonus Barrel Map Geo Shell
+    0x14E,  # Bonus Barrel Map Geo Shell
+    0x150,  # Bonus Barrel Map Geo Shell
+    0x152,  # Bonus Barrel Map Geo Shell
+    0x154,  # Bonus Barrel Map Geo Shell
+]
+for file in palette_files:
+    file_dict.append(
+        File(
+            name=f"Colorblind Expansion ({file})",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=file,
+            source_file=f"colorblind_exp_{file}.bin",
+            target_size=0x40,
+        )
     )
-)
 
 kremling_dimensions = [
     [32, 64],  # FCE
@@ -1915,7 +1925,6 @@ with open(ROMName, "rb") as fh:
     print("Pushing Colorblind Changes")
     for change in colorblind_changes:
         for file_index in range(change[0], change[1] + 1):
-            print(hex(file_index))
             fh.seek(unc_table_25 + (file_index << 2))
             file_size = int.from_bytes(fh.read(4), "big")
             file_dict.append(

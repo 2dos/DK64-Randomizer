@@ -84,6 +84,25 @@ def changeBarrelColor(settings, ROM_COPY: ROM, barrel_color: tuple = None, metal
             img_output = getImageFile(ROM_COPY, 25, img, True, dim_x, dim_y, TextureFormat.RGBA5551)
             img_output = maskImageWithColor(img_output, barrel_color)
             writeColorImageToROM(img_output, 25, img, dim_x, dim_y, False, TextureFormat.RGBA5551, ROM_COPY)
+    # Barrel Palette
+    if barrel_color is not None:
+        palette_files = {
+            0x145: [],
+            0x147: [1, 3, 4, 6, 9, 10, 12, 15],
+            0x14C: [],
+            0x14E: [],
+            0x150: [],
+            0x152: [1, 2, 3, 5, 7, 8, 9, 10, 12],
+            0x154: [1, 3, 4, 5, 7, 9, 12],
+        }
+        for img in palette_files:
+            initial_img = getImageFile(ROM_COPY, 25, img, True, 16, 1, TextureFormat.RGBA5551)
+            img_output = maskImageWithColor(initial_img, barrel_color).convert("RGB")
+            pixels = palette_files[img]
+            for px in pixels:
+                img_output.putpixel((px, 0), initial_img.getpixel((px, 0)))
+            img_output = img_output.convert("RGBA")
+            writeColorImageToROM(img_output, 25, img, 16, 1, False, TextureFormat.RGBA5551, ROM_COPY)
 
 
 def applyCelebrationRims(ROM_COPY: ROM, hue_shift: int, enabled_bananas: list[bool] = [False, False, False, False, False]):

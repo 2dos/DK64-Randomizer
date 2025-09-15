@@ -1926,6 +1926,32 @@ function hide_irrelevant_details_coupled_item_rando() {
 document.getElementById("decouple_item_rando")
   .addEventListener("click", hide_irrelevant_details_coupled_item_rando)
 
+function update_trap_weight(el, default_value, force) {
+  let all_zero = true;
+  if (!force) {
+    Object.keys(default_trap_weights).forEach(s => {
+      if (document.getElementById(s).value > 0) {
+        all_zero = false;
+      }
+    })
+  }
+  if ((!el.value && el.value !== 0) || all_zero) {
+    el.value = default_value;
+  } else if (el.value < 0) {
+    el.value = 0;
+  } else if (el.value > 100) {
+    el.value = 100;
+  }
+  return all_zero;
+}
+
+let force_trap_weight_reset = false;
+Object.keys(default_trap_weights).forEach(stg => {
+  document.getElementById(stg).addEventListener("change", (e) => {
+    force_trap_weight_reset = update_trap_weight(e.target, default_trap_weights[stg], force_trap_weight_reset);
+  })
+})
+
 // Bind custom update UI event for "apply_preset"
 function update_ui_states() {
   /** Trigger any function that would update the status of a UI element based on the current settings configuration. */
@@ -1954,6 +1980,10 @@ function update_ui_states() {
   update_prog_hint_num_access();
   update_blocker_num_access();
   update_ice_trap_count();
+  let local_trap_weight_reset = false;
+  Object.keys(default_trap_weights).forEach(stg => {
+    local_trap_weight_reset = update_trap_weight(document.getElementById(stg), default_trap_weights[stg], local_trap_weight_reset);
+  })
   update_troff_number_access();
   item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
   item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);

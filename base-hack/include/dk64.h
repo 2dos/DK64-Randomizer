@@ -125,6 +125,10 @@ extern void updateModel(void* data);
 extern void bounceObjectCode(int convert_to_model_two);
 
 extern int getObjectID(int index);
+extern void HUDSpriteUpdate(sprite_info *sprite);
+extern void PauseSpriteUpdate(sprite_info *sprite);
+
+extern void warpActorToParent(void *actor, void *parent, float scale);
 
 extern void updateCamera(void* mtx_i);
 extern void spawnKeyTwinklies(void *actor);
@@ -433,7 +437,7 @@ extern int madeContact(void);
 extern int madeGroundContact(void);
 extern void unkProjectileCode_0(void* actor, float unk0);
 extern void unkProjectileCode_1(void* actor, float x, float y, float z, float scale, int unk4);
-extern void allocateBone(void* actor, int unk0, int unk1, int unk2, int unk3);
+extern void allocateBone(void* actor, float unk0, float unk1, float unk2, int unk3);
 extern void unkProjectileCode_2(void* actor);
 extern void unkProjectileCode_3(void* actor, int unk0);
 extern void playSFXFromActor(void* actor, int sfx, int unk0, int unk1, int unk2);

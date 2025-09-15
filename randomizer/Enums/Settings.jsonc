@@ -1335,7 +1335,21 @@
     "shops_dont_cost": 262,
     "less_fragile_boulders": 263,
     "ice_trap_count": 264,
-    "cb_medal_behavior_new": 265
+    "cb_medal_behavior_new": 265,
+    "trap_weight_bubble": 266,
+    "trap_weight_reverse": 267,
+    "trap_weight_slow": 268,
+    "trap_weight_disablea": 269,
+    "trap_weight_disableb": 270,
+    "trap_weight_disablez": 271,
+    "trap_weight_disablecu": 272,
+    "trap_weight_getout": 273,
+    "trap_weight_dry": 274,
+    "trap_weight_flip": 275,
+    "trap_weight_icefloor": 276,
+    "trap_weight_paper": 277,
+    "trap_weight_slip": 278
+
   },
   /*
     SettingsStringDataType:
@@ -2046,7 +2060,20 @@
     "SettingsStringEnum.switchsanity_switch_japes_free_kong": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.switchsanity_switch_aztec_free_tiny": { "obj": "SwitchsanityKong" },
     "SettingsStringEnum.switchsanity_switch_aztec_free_lanky": { "obj": "SwitchsanityKong" },
-    "SettingsStringEnum.switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" }
+    "SettingsStringEnum.switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" },
+    "SettingsStringEnum.trap_weight_bubble": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_reverse": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_slow": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_disablea": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_disableb": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_disablez": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_disablecu": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_getout": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_dry": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_flip": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_icefloor": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_paper": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_slip": { "obj": "SettingsStringDataType.int8" }
   },
   // ALL LIST SETTINGS NEED AN ENTRY HERE!
   // Another map for list settings, for the underlying data type of the list.
@@ -2093,7 +2120,20 @@
     "SettingsStringEnum.item_rando_list_6": { "obj": "ItemRandoListSelected" },
     "SettingsStringEnum.item_rando_list_7": { "obj": "ItemRandoListSelected" },
     "SettingsStringEnum.item_rando_list_8": { "obj": "ItemRandoListSelected" },
-    "SettingsStringEnum.item_rando_list_9": { "obj": "ItemRandoListSelected" }
+    "SettingsStringEnum.item_rando_list_9": { "obj": "ItemRandoListSelected" },
+    "SettingsStringEnum.trap_weight_bubble": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_reverse": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_slow": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_disablea": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_disableb": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_disablez": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_disablecu": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_getout": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_dry": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_flip": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_icefloor": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_paper": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_slip": { "obj": "SettingsStringDataType.int8" }
   },
   // This map specifies the minimum and maximum values for numeric settings.
   "SettingsStringIntRangeMap": {

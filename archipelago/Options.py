@@ -946,6 +946,12 @@ class PaperTrapWeight(BaseTrapWeight):
     display_name = "Paper Trap Weight"
 
 
+class SlipTrapWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which slips a kong on a banana peel."""
+
+    display_name = "Slip Trap Weight"
+
+
 class EnableCutscenes(Toggle):
     """Enabling this will re-add skippable cutscenes to your seed."""
 
@@ -1028,6 +1034,7 @@ class DK64Options(PerGameCommonOptions):
     select_starting_kong: SelectStartingKong
     ice_floor_weight: IceFloorWeight
     paper_weight: PaperTrapWeight
+    slip_weight: SlipTrapWeight
     enable_cutscenes: EnableCutscenes
 
 

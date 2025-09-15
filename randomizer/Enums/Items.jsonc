@@ -287,6 +287,10 @@
         "IceTrapPaperGB": 258,
         "IceTrapPaperBean": 259,
         "IceTrapPaperKey": 260,
-        "IceTrapPaperFairy": 261
+        "IceTrapPaperFairy": 261,
+        "IceTrapSlipGB": 262,
+        "IceTrapSlipBean": 263,
+        "IceTrapSlipKey": 264,
+        "IceTrapSlipFairy": 265
     }
 }

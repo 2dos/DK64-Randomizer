@@ -177,6 +177,8 @@ ice_trap_data = [
     [Items.IceTrapFlipGB, Items.IceTrapFlipBean, Items.IceTrapFlipKey, Items.IceTrapFlipFairy],
     [Items.IceTrapIceFloorGB, Items.IceTrapIceFloorBean, Items.IceTrapIceFloorKey, Items.IceTrapIceFloorFairy],
     [Items.IceTrapPaperGB, Items.IceTrapPaperBean, Items.IceTrapPaperKey, Items.IceTrapPaperFairy],
+    [Items.IceTrapSlipGB, Items.IceTrapSlipBean, Items.IceTrapSlipKey, Items.IceTrapSlipFairy],
+    [],  # Instant Slip
 ]
 
 
@@ -817,140 +819,6 @@ model_two_items = [
 
 POINTER_ROM_ENEMIES = 0x1FF9000
 
-items_needing_ipd = (
-    Types.Blueprint,
-    Types.Hint,
-    Types.Key,
-    Types.Shockwave,
-    Types.Shop,
-    Types.Climbing,
-    Types.TrainingBarrel,
-)
-
-
-def getShopFlag(level: int, kong: Kongs, vendor: VendorType) -> int:
-    """Calculate the shop flag based on the level, kong and vendor."""
-    kong_index = int(kong) if kong != Kongs.any else 0
-    if vendor == VendorType.Cranky:
-        return 0x320 + (level * 5) + kong_index
-    elif (vendor == VendorType.Funky) and (level < 7):
-        return 0x320 + ((level + 8) * 5) + kong_index
-    elif vendor == VendorType.Candy:
-        if level in (Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon):
-            candy_offset = level - Levels.AngryAztec
-            return 0x320 + ((candy_offset + 15) * 5) + kong_index
-        elif level in (Levels.CrystalCaves, Levels.CreepyCastle):
-            candy_offset = level - Levels.CrystalCaves
-            return 0x320 + ((candy_offset + 18) * 5) + kong_index
-    return 0
-
-
-def getDefaultIPD(shuffled_types: list[Types]) -> list:
-    """Calculate the default IPD based on the settings you have enabled."""
-    no_shuffler_ipd = {}
-    for item in items_needing_ipd:
-        no_shuffler_ipd[item] = []
-    for x in range(40):
-        no_shuffler_ipd[Types.Blueprint].append(
-            [
-                469 + x,
-                int(x / 5),
-                x % 5,
-            ]
-        )
-    for x in range(35):
-        no_shuffler_ipd[Types.Hint].append(
-            [
-                0x384 + x,
-                int(x / 5),
-                x % 5,
-            ]
-        )
-    no_shuffler_ipd[Types.Key] = [
-        [26, 0, 0],
-        [74, 1, 0],
-        [138, 2, 0],
-        [168, 3, 0],
-        [236, 4, 0],
-        [292, 5, 0],
-        [317, 6, 0],
-        [360, 7, 0],
-    ]
-    no_shuffler_ipd[Types.Shockwave] = [[0x179, 10, 5]]
-    no_shuffler_ipd[Types.TrainingBarrel] = [
-        [386, 10, 0],
-        [387, 10, 3],
-        [388, 10, 1],
-        [389, 10, 2],
-    ]
-    cranky_0 = [
-        0,
-        1,
-        2,
-        2,
-        3,
-        None,
-        3,
-        None,
-    ]
-    cranky_1 = [
-        0,
-        0,
-        1,
-        1,
-        3,
-        2,
-        3,
-        None,
-    ]
-    funky = [
-        4,
-        4,
-        7,
-        None,
-        5,
-        7,
-        6,
-        None,
-    ]
-    candy = [
-        8,
-        8,
-        8,
-        9,
-        None,
-        9,
-        9,
-        None,
-    ]
-    shared_data = (3, 5, 6, 7, 9)
-    for kong_id in (Kongs.donkey, Kongs.diddy):
-        for level_index, data in enumerate(cranky_0):
-            if data in shared_data and kong_id != Kongs.donkey:
-                continue
-            if data is not None:
-                no_shuffler_ipd[Types.Shop].append([getShopFlag(level_index, kong_id, VendorType.Cranky), data, kong_id])
-    for kong_id in (Kongs.lanky, Kongs.tiny, Kongs.chunky):
-        for level_index, data in enumerate(cranky_1):
-            if data is not None and data not in shared_data:
-                no_shuffler_ipd[Types.Shop].append([getShopFlag(level_index, kong_id, VendorType.Cranky), data, kong_id])
-    for kong_id in (Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky):
-        for level_index, data in enumerate(funky):
-            if data in shared_data and kong_id != Kongs.donkey:
-                continue
-            if data is not None:
-                no_shuffler_ipd[Types.Shop].append([getShopFlag(level_index, kong_id, VendorType.Funky), data, kong_id])
-        for level_index, data in enumerate(candy):
-            if data in shared_data and kong_id != Kongs.donkey:
-                continue
-            if data is not None:
-                no_shuffler_ipd[Types.Shop].append([getShopFlag(level_index, kong_id, VendorType.Candy), data, kong_id])
-    output_ipd = []
-    for test_type in no_shuffler_ipd:
-        if test_type not in shuffled_types:
-            output_ipd.extend(no_shuffler_ipd[test_type])
-    return output_ipd
-
 
 def normalize_location_name(name: str):
     """Normalize a location name so it can be patched in."""
@@ -974,7 +842,6 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
         item_data = spoiler.item_assignment
 
         map_items = {}
-        bonus_table_offset = 0
         offset_dict = populateOverlayOffsets(ROM_COPY)
         pushItemMicrohints(spoiler)
         pregiven_shop_owners = None
@@ -1291,12 +1158,10 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
             for textbox in textboxes:
                 new_item = textbox.default_type
                 new_subitem = textbox.default_item
-                flag = 379  # Rareware Coin flag for RW Coin textbox
                 for item in item_data:
                     if textbox.location == item.location:
                         new_item = item.new_item
                         new_subitem = item.new_subitem
-                        flag = item.new_flag
                 replacement = textbox.replacement_text
                 # Check if this is an Archipelago item and we have location data
                 archipelago_item_name = None

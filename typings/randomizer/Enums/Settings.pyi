@@ -829,6 +829,19 @@ class SettingsStringEnum(IntEnum):
     less_fragile_boulders = 263
     ice_trap_count = 264
     cb_medal_behavior_new = 265
+    trap_weight_bubble = 266
+    trap_weight_reverse = 267
+    trap_weight_slow = 268
+    trap_weight_disablea = 269
+    trap_weight_disableb = 270
+    trap_weight_disablez = 271
+    trap_weight_disablecu = 272
+    trap_weight_getout = 273
+    trap_weight_dry = 274
+    trap_weight_flip = 275
+    trap_weight_icefloor = 276
+    trap_weight_paper = 277
+    trap_weight_slip = 278
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1239,6 +1252,19 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.switchsanity_switch_aztec_free_tiny: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_aztec_free_lanky: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_factory_free_kong: SwitchsanityKong,
+    SettingsStringEnum.trap_weight_bubble: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_reverse: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slow: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablea: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disableb: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablez: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablecu: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_getout: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_dry: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_flip: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_icefloor: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_paper: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slip: SettingsStringDataType.int8,
 }
 
 SettingsStringListTypeMap: dict = {
@@ -1273,6 +1299,19 @@ SettingsStringListTypeMap: dict = {
     SettingsStringEnum.item_rando_list_7: ItemRandoListSelected,
     SettingsStringEnum.item_rando_list_8: ItemRandoListSelected,
     SettingsStringEnum.item_rando_list_9: ItemRandoListSelected,
+    SettingsStringEnum.trap_weight_bubble: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_reverse: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slow: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablea: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disableb: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablez: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablecu: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_getout: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_dry: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_flip: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_icefloor: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_paper: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slip: SettingsStringDataType.int8,
 }
 
 SettingsStringIntRangeMap: dict = {

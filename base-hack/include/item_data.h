@@ -49,6 +49,7 @@ typedef enum new_custom_actors {
 	/* 0x17C */ NEWACTOR_HINTITEMCHUNKY = 0x17c, 
 	/* 0x17D */ NEWACTOR_ARCHIPELAGOITEM = 0x17d, 
 	/* 0x17E */ NEWACTOR_ICETRAPFAIRY = 0x17e, 
+	/* 0x17F */ NEWACTOR_SLIPPEEL = 0x17f, 
 	/* ----- */ NEWACTOR_TERMINATOR, 
 } new_custom_actors;
 #define DROP_COUNT 36
