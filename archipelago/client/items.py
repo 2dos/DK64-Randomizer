@@ -278,14 +278,14 @@ trap_name_to_index: dict[str, int] = {
     "Stun Trap": 1,  # Bubble Trap
     "Time Limit": 9,  # Get Out Trap
     "Timer Trap": 9,  # Slow Trap
-    "W I D E Trap": 13, # Paper Trap
-    "Invisible Trap": 13, # Paper Trap
-    "Literature Trap": 13, # Paper Trap
-    "PowerPoint Trap": 13, # Paper Trap
-    "Spooky Time": 13, # Paper Trap
-    "Tiny Trap": 13, # Paper Trap
-    "Deisometric Trap": 13, # Paper Trap
-    "Push Trap": 12, # Ice Floor Trap
+    "W I D E Trap": 13,  # Paper Trap
+    "Invisible Trap": 13,  # Paper Trap
+    "Literature Trap": 13,  # Paper Trap
+    "PowerPoint Trap": 13,  # Paper Trap
+    "Spooky Time": 13,  # Paper Trap
+    "Tiny Trap": 13,  # Paper Trap
+    "Deisometric Trap": 13,  # Paper Trap
+    "Push Trap": 12,  # Ice Floor Trap
 }
 
 trap_index_to_name: dict[int, str] = {

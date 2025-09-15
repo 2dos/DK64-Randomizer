@@ -717,7 +717,7 @@ if baseclasses_loaded:
             ]
             settings_dict["item_rando_list_1"].extend(always_enabled_categories)
             settings_dict["decouple_item_rando"] = False
-            
+
             # Initialize filler_items_selected if not present
             settings_dict["filler_items_selected"] = []
             settings_dict["filler_items_selected"].append(ItemRandoFiller.junkitem)
@@ -963,7 +963,7 @@ if baseclasses_loaded:
                 elif self.options.shopowners_in_pool.value and item_obj.type in [Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
                     settings_dict["starting_moves_list_1"].append(item_obj.type)
             settings_dict["starting_moves_list_count_1"] = len(settings_dict["starting_moves_list_1"])
-            
+
             # Initialize the other starting_moves_list attributes that are expected by Settings
             # settings_dict["starting_moves_list_2"] = []
             # settings_dict["starting_moves_list_3"] = []

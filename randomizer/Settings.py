@@ -1354,20 +1354,7 @@ class Settings:
         self.crown_door_item = DoorItemToBarrierItem(self.crown_door_item, False, True)
 
         # Determine ice trap order
-        effects = {
-            "bubble": 3,
-            "reverse": 3,
-            "slow": 3,
-            "disa": 1,
-            "disb": 1,
-            "discu": 1,
-            "disz": 1,
-            "getout": 1,
-            "dry": 2,
-            "flip": 2,
-            "icefloor": 2,
-            "paper": 2
-        }
+        effects = {"bubble": 3, "reverse": 3, "slow": 3, "disa": 1, "disb": 1, "discu": 1, "disz": 1, "getout": 1, "dry": 2, "flip": 2, "icefloor": 2, "paper": 2}
         models_chance = {"gb": 10, "key": 2, "bean": 1, "fairy": 4}
         trap_data = {
             "gb": {

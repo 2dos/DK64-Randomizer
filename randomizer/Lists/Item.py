@@ -232,7 +232,6 @@ ItemList = {
     Items.IceTrapPaperBean: Item("Ice Trap (Paper - Bean)", False, Types.FakeItem, Kongs.any),
     Items.IceTrapPaperKey: Item("Ice Trap (Paper - Key)", False, Types.FakeItem, Kongs.any),
     Items.IceTrapPaperFairy: Item("Ice Trap (Paper - Fairy)", False, Types.FakeItem, Kongs.any),
-
     Items.JunkCrystal: Item("Junk Item (Crystal)", False, Types.JunkItem, Kongs.any),
     Items.JunkMelon: Item("Junk Item (Melon Slice)", False, Types.JunkItem, Kongs.any),
     Items.JunkAmmo: Item("Junk Item (Ammo Crate)", False, Types.JunkItem, Kongs.any),
