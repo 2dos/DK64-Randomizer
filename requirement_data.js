@@ -93,9 +93,9 @@ const requirement_data = {
                 [Moves.Rocket, Moves.AztecTunnelDoor],
             ]),
             new Requirement(10, [ // 1 balloon in AztecDonkeyQuicksandCave
-                [Moves.LevelSlam, Moves.Coconut, Moves.Strong, Moves.Peanut, Moves.AztecTunnelDoor, Moves.AztecLlama],
-                [Moves.LevelSlam, Moves.Strong, Moves.Peanut, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama],
-                [Moves.LevelSlam, Moves.Strong, Moves.Peanut, Moves.Feather, Moves.AztecTunnelDoor, Moves.AztecLlama],
+                [Moves.LevelSlam, Moves.Coconut, Moves.Strong, Moves.Peanut, Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.AztecW5Bonus],
+                [Moves.LevelSlam, Moves.Strong, Moves.Peanut, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.AztecW5Bonus],
+                [Moves.LevelSlam, Moves.Strong, Moves.Peanut, Moves.Feather, Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.AztecW5Bonus],
             ]),
         ],
         "Lanky": [
@@ -422,10 +422,10 @@ const requirement_data = {
             new Requirement(5, [[Moves.Barrels]]), // 1 bunch in CrystalCavesMain
             new Requirement(11, [[Moves.CavesIceWalls]]), // 1 bunch, 3 bananas in CavesGGRoom; 3 bananas in CavesSnideArea
             new Requirement(6, [[Moves.Barrels, Moves.CavesIceWalls]]), // 6 bananas in BoulderCave
-            new Requirement(10, [[Moves.Mini, Moves.Pineapple]]), // 1 balloon in CavesBonusCave
             new Requirement(10, [[Moves.Pineapple, Moves.CavesIceWalls]]), // 1 balloon in CavesSnideArea
             new Requirement(10, [[Moves.Barrels, Moves.Hunky, Moves.CavesIceWalls]]), // 1 bunch in BoulderCave; 5 bananas in IglooArea
             new Requirement(20, [[Moves.Slam, Moves.Triangle, Moves.Gone]]), // 4 bunches in ChunkyCabin
+            new Requirement(10, [[Moves.Mini, Moves.Pineapple, Moves.CavesW3Bonus]]), // 1 balloon in CavesBonusCave
             new Requirement(10, [[Moves.Pineapple, Moves.Triangle, Moves.CavesIglooPads]]), // 1 balloon in ChunkyIgloo
         ],
     },
