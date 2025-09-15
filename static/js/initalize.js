@@ -1381,6 +1381,9 @@ const default_trap_weights = {
   "trap_weight_getout": 1,
   "trap_weight_dry": 2,
   "trap_weight_flip": 2,
+  "trap_weight_icefloor": 2,
+  "trap_weight_paper": 2,
+  "trap_weight_slip": 3,
 };
 
 function set_preset_options() {

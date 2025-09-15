@@ -901,6 +901,9 @@ export enum SettingsStringEnum {
     trap_weight_getout = 273,
     trap_weight_dry = 274,
     trap_weight_flip = 275,
+    trap_weight_icefloor = 276,
+    trap_weight_paper = 277,
+    trap_weight_slip = 278,
 }
 
 export enum SettingsStringDataType {
@@ -1323,6 +1326,9 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.trap_weight_getout: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_dry: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_flip: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_icefloor: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_paper: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slip: SettingsStringDataType.int8,
 }
 
 export const SettingsStringListTypeMap = {
@@ -1367,6 +1373,9 @@ export const SettingsStringListTypeMap = {
     SettingsStringEnum.trap_weight_getout: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_dry: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_flip: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_icefloor: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_paper: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slip: SettingsStringDataType.int8,
 }
 
 export const SettingsStringIntRangeMap = {

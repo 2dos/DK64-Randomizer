@@ -434,6 +434,10 @@ extern void colorRainbowAmmoHUD(sprite_info *sprite);
 extern int cc_enabler_slip(void);
 extern int cc_allower_generic(void);
 extern void slipPeelCode(void);
+extern int cc_enabler_ice(void);
+extern int cc_disabler_ice(void);
+extern int cc_enabler_paper(void);
+extern int cc_disabler_paper(void);
 
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];

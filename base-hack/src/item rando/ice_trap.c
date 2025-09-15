@@ -10,11 +10,6 @@
  */
 #include "../../include/common.h"
 
-int cc_enabler_ice(void);
-int cc_disabler_ice(void);
-int cc_enabler_paper(void);
-int cc_disabler_paper(void);
-
 ICE_TRAP_TYPES ice_trap_queued = ICETRAP_OFF;
 
 typedef enum ice_trap_map_state {
@@ -444,8 +439,27 @@ static button_ice_struct button_ice_data[] = {
     {.ice_trap_type = ICETRAP_DISABLEZ, .button_btf = CONT_G, .button_sprite = (void*)0x80720D38},
     {.ice_trap_type = ICETRAP_DISABLECU, .button_btf = CONT_E, .button_sprite = (void*)0x80720D80},
 };
-static unsigned char flip_timer = 0;
-static unsigned short slip_timers[8] = {};
+typedef struct ice_trap_timer_struct {
+    /* 0x000 */ unsigned short timer;
+    /* 0x002 */ char active;
+    /* 0x003 */ char unk3;
+    /* 0x004 */ void *disable_func;
+    /* 0x008 */ void *enable_func;
+} ice_trap_timer_struct;
+
+void resetScreenFlip(void) {
+    *(unsigned char*)(0x80010520) = 0x3F;
+}
+
+static ice_trap_timer_struct ice_trap_timers[] = {
+    {.timer = 0, .active=0, .disable_func=&resetScreenFlip}, // Flip
+    {.timer = 0, .active=1, .disable_func=&cc_disabler_paper, .enable_func=&cc_enabler_paper}, // Paper
+    {.timer = 0, .active=0, .disable_func=&cc_disabler_ice}, // Ice
+};
+
+
+static unsigned short flip_timer = 0;
+static unsigned short slip_timers[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 static unsigned short ice_floor_timer = 0;
 static unsigned short paper_timer = 0;
 
@@ -509,15 +523,16 @@ void initIceTrap(void) {
             break;
         case ICETRAP_FLIP:
             *(unsigned char*)(0x80010520) = 0xBF;
-            flip_timer = 240;
+            ice_trap_timers[0].timer = 240;
             break;
         case ICETRAP_ICEFLOOR:
             cc_enabler_ice();
-            ice_floor_timer = 450;
+            ice_trap_timers[2].timer = 450;
             break;
         case ICETRAP_PAPER:
             cc_enabler_paper();
-            paper_timer = 450;
+            ice_trap_timers[1].timer = 450;
+            break;
         case ICETRAP_SLIP:
         case ICETRAP_SLIP_INSTANT:
             for (int i = 0; i < 8; i++) {
@@ -565,7 +580,7 @@ void resetIceTrapButtons(void) {
     ice_floor_timer = 0;
     paper_timer = 0;
     trap_enabled_buttons = 0xFFFF;
-    *(unsigned char*)(0x80010520) = 0x3F;
+    resetScreenFlip();
 }
 
 void handleIceTrapButtons(void) {
@@ -581,7 +596,7 @@ void handleIceTrapButtons(void) {
     if (flip_timer > 0) {
         flip_timer--;
         if (flip_timer == 0) {
-            *(unsigned char*)(0x80010520) = 0x3F;
+            resetScreenFlip();
         }
     }
     for (int i = 0; i < 8; i++) {
@@ -596,16 +611,15 @@ void handleIceTrapButtons(void) {
             }
         }
     }
-    if (ice_floor_timer > 0) {
-        ice_floor_timer--;
-        if (ice_floor_timer == 0) {
-            cc_disabler_ice(); // Call CC function directly
-        }
-    }
-    if (paper_timer > 0) {
-        paper_timer--;
-        if (paper_timer == 0) {
-            cc_disabler_paper(); // Call CC function directly
+    for (int i = 0; i < 3; i++) {
+        ice_trap_timer_struct *data = &ice_trap_timers[i];
+        if (data->timer > 0) {
+            data->timer--;
+            if (data->timer == 0) {
+                callFunc(data->disable_func, 0);
+            } else if (data->active) {
+                callFunc(data->enable_func, 0);
+            }
         }
     }
 }

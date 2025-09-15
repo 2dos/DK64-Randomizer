@@ -1345,7 +1345,10 @@
     "trap_weight_disablecu": 272,
     "trap_weight_getout": 273,
     "trap_weight_dry": 274,
-    "trap_weight_flip": 275
+    "trap_weight_flip": 275,
+    "trap_weight_icefloor": 276,
+    "trap_weight_paper": 277,
+    "trap_weight_slip": 278
 
   },
   /*
@@ -2067,7 +2070,10 @@
     "SettingsStringEnum.trap_weight_disablecu": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_getout": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_dry": { "obj": "SettingsStringDataType.int8" },
-    "SettingsStringEnum.trap_weight_flip": { "obj": "SettingsStringDataType.int8" }
+    "SettingsStringEnum.trap_weight_flip": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_icefloor": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_paper": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_slip": { "obj": "SettingsStringDataType.int8" }
   },
   // ALL LIST SETTINGS NEED AN ENTRY HERE!
   // Another map for list settings, for the underlying data type of the list.
@@ -2124,7 +2130,10 @@
     "SettingsStringEnum.trap_weight_disablecu": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_getout": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_dry": { "obj": "SettingsStringDataType.int8" },
-    "SettingsStringEnum.trap_weight_flip": { "obj": "SettingsStringDataType.int8" }
+    "SettingsStringEnum.trap_weight_flip": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_icefloor": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_paper": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.trap_weight_slip": { "obj": "SettingsStringDataType.int8" }
   },
   // This map specifies the minimum and maximum values for numeric settings.
   "SettingsStringIntRangeMap": {

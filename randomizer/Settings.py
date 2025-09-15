@@ -948,6 +948,9 @@ class Settings:
         self.trap_weight_getout = 1
         self.trap_weight_dry = 2
         self.trap_weight_flip = 2
+        self.trap_weight_icefloor = 2
+        self.trap_weight_paper = 2
+        self.trap_weight_slip = 3
         self.switch_allocation = [
             self.prog_slam_level_1,
             self.prog_slam_level_2,
@@ -1394,6 +1397,7 @@ class Settings:
                 "flip": Items.IceTrapFlipGB,
                 "icefloor": Items.IceTrapIceFloorGB,
                 "paper": Items.IceTrapPaperGB,
+                "slip": Items.IceTrapSlipGB,
             },
             "bean": {
                 "bubble": Items.IceTrapBubbleBean,
@@ -1408,6 +1412,7 @@ class Settings:
                 "flip": Items.IceTrapFlipBean,
                 "icefloor": Items.IceTrapIceFloorBean,
                 "paper": Items.IceTrapPaperBean,
+                "slip": Items.IceTrapSlipBean,
             },
             "key": {
                 "bubble": Items.IceTrapBubbleKey,
@@ -1422,6 +1427,7 @@ class Settings:
                 "flip": Items.IceTrapFlipKey,
                 "icefloor": Items.IceTrapIceFloorKey,
                 "paper": Items.IceTrapPaperKey,
+                "slip": Items.IceTrapSlipKey,
             },
             "fairy": {
                 "bubble": Items.IceTrapBubbleFairy,
@@ -1436,6 +1442,7 @@ class Settings:
                 "flip": Items.IceTrapFlipFairy,
                 "icefloor": Items.IceTrapIceFloorFairy,
                 "paper": Items.IceTrapPaperFairy,
+                "slip": Items.IceTrapSlipFairy,
             },
         }
         self.trap_assortment = []

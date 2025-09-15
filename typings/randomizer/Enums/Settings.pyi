@@ -839,6 +839,9 @@ class SettingsStringEnum(IntEnum):
     trap_weight_getout = 273
     trap_weight_dry = 274
     trap_weight_flip = 275
+    trap_weight_icefloor = 276
+    trap_weight_paper = 277
+    trap_weight_slip = 278
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1259,6 +1262,9 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.trap_weight_getout: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_dry: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_flip: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_icefloor: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_paper: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slip: SettingsStringDataType.int8,
 }
 
 SettingsStringListTypeMap: dict = {
@@ -1303,6 +1309,9 @@ SettingsStringListTypeMap: dict = {
     SettingsStringEnum.trap_weight_getout: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_dry: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_flip: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_icefloor: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_paper: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slip: SettingsStringDataType.int8,
 }
 
 SettingsStringIntRangeMap: dict = {

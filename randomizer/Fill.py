@@ -4001,6 +4001,9 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
         settings.trap_weight_getout,
         settings.trap_weight_dry,
         settings.trap_weight_flip,
+        settings.trap_weight_icefloor,
+        settings.trap_weight_paper,
+        settings.trap_weight_slip,
     ]
     if IsDDMSSelected(settings.filler_items_selected, ItemRandoFiller.icetraps) and not settings.archipelago:
         if settings.ice_trap_count == 0:

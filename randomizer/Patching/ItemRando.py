@@ -177,6 +177,8 @@ ice_trap_data = [
     [Items.IceTrapFlipGB, Items.IceTrapFlipBean, Items.IceTrapFlipKey, Items.IceTrapFlipFairy],
     [Items.IceTrapIceFloorGB, Items.IceTrapIceFloorBean, Items.IceTrapIceFloorKey, Items.IceTrapIceFloorFairy],
     [Items.IceTrapPaperGB, Items.IceTrapPaperBean, Items.IceTrapPaperKey, Items.IceTrapPaperFairy],
+    [Items.IceTrapSlipGB, Items.IceTrapSlipBean, Items.IceTrapSlipKey, Items.IceTrapSlipFairy],
+    [],  # Instant Slip
 ]
 
 
