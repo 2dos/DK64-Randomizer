@@ -10,6 +10,11 @@
  */
 #include "../../include/common.h"
 
+int cc_enabler_ice(void);
+int cc_disabler_ice(void);
+int cc_enabler_paper(void);
+int cc_disabler_paper(void);
+
 ICE_TRAP_TYPES ice_trap_queued = ICETRAP_OFF;
 
 typedef enum ice_trap_map_state {
@@ -441,6 +446,8 @@ static button_ice_struct button_ice_data[] = {
 };
 static unsigned char flip_timer = 0;
 static unsigned short slip_timers[8] = {};
+static unsigned short ice_floor_timer = 0;
+static unsigned short paper_timer = 0;
 
 void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration) {
     float repeat_count = (float)duration / (float)sprite->image_count;
@@ -504,6 +511,13 @@ void initIceTrap(void) {
             *(unsigned char*)(0x80010520) = 0xBF;
             flip_timer = 240;
             break;
+        case ICETRAP_ICEFLOOR:
+            cc_enabler_ice();
+            ice_floor_timer = 450;
+            break;
+        case ICETRAP_PAPER:
+            cc_enabler_paper();
+            paper_timer = 450;
         case ICETRAP_SLIP:
         case ICETRAP_SLIP_INSTANT:
             for (int i = 0; i < 8; i++) {
@@ -548,6 +562,8 @@ void resetIceTrapButtons(void) {
         button_ice_data[i].ice_trap_timer = 0;
     }
     flip_timer = 0;
+    ice_floor_timer = 0;
+    paper_timer = 0;
     trap_enabled_buttons = 0xFFFF;
     *(unsigned char*)(0x80010520) = 0x3F;
 }
@@ -578,6 +594,18 @@ void handleIceTrapButtons(void) {
                 cc_enabler_slip();
                 slip_timers[i] = 0;
             }
+        }
+    }
+    if (ice_floor_timer > 0) {
+        ice_floor_timer--;
+        if (ice_floor_timer == 0) {
+            cc_disabler_ice(); // Call CC function directly
+        }
+    }
+    if (paper_timer > 0) {
+        paper_timer--;
+        if (paper_timer == 0) {
+            cc_disabler_paper(); // Call CC function directly
         }
     }
 }
