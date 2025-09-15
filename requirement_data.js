@@ -326,22 +326,16 @@ const requirement_data = {
             new Requirement(10, [[Moves.Feather]]), // 1 balloon in ThornvineArea
             new Requirement(8, [[Moves.ForestYellowTunnel]]), // 8 bananas in HollowTreeArea
             new Requirement(4, [[Moves.ForestGreenTunnelFeather]]), // 4 bananas in FungiForestStart
-            new Requirement(5, [[Moves.Punch, Moves.Day]]), // 1 bunch in MillChunkyTinyArea
+            new Requirement(10, [[Moves.Mini, Moves.Day]]), // 2 bunches in MillChunkyTinyArea
             new Requirement(1, [[Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]), // 1 banana in WormArea
             new Requirement(15, [[Moves.ClimbingCheck, Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]), // 3 bunches in WormArea
             new Requirement(5, [[Moves.Sax, Moves.Mini, Moves.ForestYellowTunnel]]), // 1 bunch in HollowTreeArea
-            new Requirement(10, [ // 2 bunches in MillChunkyTinyArea
-                [Moves.Mini, Moves.Day],
-                [Moves.Punch, Moves.Day],
-            ]),
+            new Requirement(5, [[Moves.Mini, Moves.Punch, Moves.Day]]), // 1 bunch in MillChunkyTinyArea
+            new Requirement(5, [[Moves.Mini, Moves.Punch, Moves.Night, Moves.Day]]), // 1 bunch in SpiderRoom
             new Requirement(10, [ // 1 balloon in MushroomLowerExterior
                 [Moves.ClimbingCheck, Moves.Feather],
                 [Moves.Rocket, Moves.Feather],
                 [Moves.Feather, Moves.CheckOfLegends],
-            ]),
-            new Requirement(5, [ // 1 bunch in SpiderRoom
-                [Moves.Mini, Moves.Night, Moves.Day],
-                [Moves.Punch, Moves.Night, Moves.Day],
             ]),
         ],
         "Chunky": [
