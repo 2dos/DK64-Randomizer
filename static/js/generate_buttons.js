@@ -12,6 +12,7 @@ function lanky_file_changed(event) {
 
         document.getElementById("patchfileloader").classList.add("is-valid");
         window.loaded_patch = loaded_patch;
+        window.loaded_patch_filename = file.name; // Store filename for format detection
     }
 
     // Attempt to find the loaded file

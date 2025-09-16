@@ -42,10 +42,57 @@ async function plando_import_filebox() {
   input.click();
 }
 
+function isBase64(str) {
+  // Check if string is base64 encoded
+  try {
+    return btoa(atob(str)) === str;
+  } catch (err) {
+    return false;
+  }
+}
+
+function isApdksfFormat(filename) {
+  // Check if the file is an .apdksf format
+  return filename && filename.toLowerCase().endsWith('.apdksf');
+}
+
 async function apply_patch(data, run_async) {
-  // Base64 decode the response
+  // Determine if we need to decode as base64 or handle as raw data
   event_response_data = data;
-  var decodedData = base64ToArrayBuffer(data);
+  
+  let decodedData;
+  let isApdksfFile = window.loaded_patch_filename && isApdksfFormat(window.loaded_patch_filename);
+  
+  // Check if this is an .apdksf file
+  if (isApdksfFile) {
+    // For .apdksf files, skip the JavaScript xdelta processing and go directly to Python
+    if (run_async === true) {
+      // load pyodide
+      await setup_pyodide();
+      console.log("Applying Archipelago DK64 Seed File");
+      apply_conversion();
+      
+      // Skip apply_xdelta for .apdksf files since they may use unsupported compression
+      window["event_response_data"] = data;
+      // Return the promise for pyodide.runPythonAsync
+      return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
+try:
+  register_hook("/")  # type: ignore  # noqa
+except Exception:
+  pass
+import js
+from randomizer.Patching.ApplyLocal import patching_response
+patching_response(str(js.event_response_data), from_patch_gen=True)
+                `);
+    } else {
+      shared_url_ui(data);
+    }
+    return; // Exit early for .apdksf files
+  }
+  
+  // For .lanky files or base64 encoded data, decode as base64
+  decodedData = base64ToArrayBuffer(data);
+  
   zip = new JSZip();
 
   try {
