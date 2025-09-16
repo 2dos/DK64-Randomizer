@@ -145,9 +145,10 @@ def getDefaultHintList() -> List[HintLocation]:
 class HintSet:
     """A set of hints and all pertinent information about them."""
 
-    def __init__(self):
+    def __init__(self, hint_cap=35):
         """Create a hint set object."""
         self.hints: List[HintLocation] = getDefaultHintList()
+        self.hint_cap = hint_cap
         self.expectedDistribution = {}
         self.currentDistribution = {}
 
@@ -264,13 +265,16 @@ joke_hint_list = [
     "Something in the \x0dHalt! The remainder of this hint has been confiscated by the top Kop on the force.\x0d",
     "When I finish Pizza Tower, this hint will update.",
     "Will we see a sub hour seasonal seed? Not a chance. The movement is too optimized at this point. I expect at most 10-20 more seconds can be saved, maybe a minute with TAS.",
-    "The dk64randomizer.com wiki has lots of helpful information about hints.",
+    "I could put something useful here, but the \x04dk64randomizer.com\x04 wiki has lots of helpful information about hints already.",
     "If you're watching on YouTube, be sure to like, comment, subscribe, and smash that bell.",
     "I could really go for a hot dog right now.",
     "You can find statues of dinosnakes in Angry Aztec.",
     "If this seed was a channel point redemption, you have my condolences. If it wasn't, you have many options for victims.",
     "You wouldn't steal a coin. You wouldn't steal a banana. You wouldn't fail to report a bug to the devs.",
     "It's time to get your counting practice in: 1, 2, 3, 4, 5, 6, 9...",
+    "I asked AI to help you and it said: 'The best way to get better at this game is to play it.'",
+    "The hint you're looking for is on the next page, keep scrolling.",
+    "Banandium? Void Kong? Pauline? DK, what are you talking about? It's 1999! Go get Cranky to knock some sense into your head.",
 ]
 
 kong_list = ["\x04Donkey\x04", "\x05Diddy\x05", "\x06Lanky\x06", "\x07Tiny\x07", "\x08Chunky\x08", "\x04Any kong\x04"]
