@@ -1574,12 +1574,18 @@ class Settings:
             for x in range(4):
                 self.item_search[x] = [y for y in self.item_search[x] if y not in item_search_removal]
             # Build mapping based on item_search and check_search
+            shopkeeper_type_mapping = {
+                Types.Cranky: Items.Cranky,
+                Types.Funky: Items.Funky,
+                Types.Candy: Items.Candy,
+                Types.Snide: Items.Snide,
+            }
             for pool_index in range(4):
                 for selector_value in self.check_search[pool_index]:
                     selector_type = item_ui_pairing[selector_value][1]
                     selector_types = [selector_type]
                     if selector_type == Types.Cranky:
-                        selector_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if sk not in guaranteed_starting_moves]
+                        selector_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if shopkeeper_type_mapping[sk] not in guaranteed_starting_moves]
                     elif selector_type == Types.TrainingBarrel:
                         selector_types = [Types.TrainingBarrel, Types.PreGivenMove]
                         if self.climbing_status != ClimbingStatus.normal:
@@ -1591,7 +1597,7 @@ class Settings:
                         item_type = item_ui_pairing[item_selector_value][1]
                         item_types = [item_type]
                         if item_type == Types.Cranky:
-                            item_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if sk not in guaranteed_starting_moves]
+                            item_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if shopkeeper_type_mapping[sk] not in guaranteed_starting_moves]
                         elif item_type == Types.TrainingBarrel:
                             item_types = [Types.TrainingBarrel, Types.PreGivenMove]
                             if self.climbing_status != ClimbingStatus.normal:
