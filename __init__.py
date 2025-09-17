@@ -13,6 +13,7 @@ import pkgutil
 import shutil
 import sys
 import tempfile
+from typing import Any
 
 
 from BaseClasses import Location
@@ -129,6 +130,7 @@ if baseclasses_loaded:
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
     from worlds.AutoWorld import WebWorld, World, AutoLogicRegister
+    from worlds.Files import APPlayerContainer
     from archipelago.Logic import LogicVarHolder, logic_item_name_to_id
     from randomizer.Spoiler import Spoiler
     from randomizer.Settings import Settings
@@ -175,7 +177,7 @@ if baseclasses_loaded:
     from randomizer.Lists.Location import ShopLocationReference
     from randomizer.Lists.Switches import SwitchInfo
     from randomizer.Lists.EnemyTypes import EnemyLoc, EnemyMetaData
-    from worlds.LauncherComponents import Component, components, Type, icon_paths
+    from worlds.LauncherComponents import Component, SuffixIdentifier, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
     from Utils import open_filename
     import shutil
@@ -211,8 +213,30 @@ if baseclasses_loaded:
 
         launch_component(launch, name="DK64 Client")
 
-    components.append(Component("DK64 Client", func=launch_client, component_type=Type.CLIENT, icon="dk64"))
+    components.append(Component("DK64 Client", func=launch_client, component_type=Type.CLIENT, file_identifier=SuffixIdentifier(".chunky"), icon="dk64"))
     icon_paths["dk64"] = f"ap:{__name__}/base-hack/assets/DKTV/logo3.png"
+
+    class DK64Container(APPlayerContainer):
+        """This class defines the container file for DK64."""
+
+        game: str = "Donkey Kong 64"
+        patch_file_ending: str = ".chunky"
+
+        def __init__(self, *args: Any, **kwargs: Any) -> None:
+            """Initialize the DK64 container."""
+            if "data" in kwargs:
+                self.data = kwargs["data"]
+                del kwargs["data"]
+
+            super().__init__(*args, **kwargs)
+
+        def write_contents(self, opened_zipfile: zipfile.ZipFile) -> None:
+            """Write the contents of the container file."""
+            super().write_contents(opened_zipfile)
+
+            # Write the patch data for the game
+            if "patch_data" in self.data:
+                opened_zipfile.writestr("patch_data", self.data["patch_data"])
 
     class DK64CollectionState(metaclass=AutoLogicRegister):
         """Logic Mixin to handle some awkward situations when the CollectionState is copied."""
@@ -1254,14 +1278,25 @@ if baseclasses_loaded:
                 if ap_item_is_major_item:
                     spoiler.majorItems.append(DK64RItems.ArchipelagoItem)
                 patch_data, _ = patching_response(spoiler)
-                patch_file = self.update_seed_results(patch_data, spoiler, self.player)
-                out_path = os.path.join(output_directory, f"{self.multiworld.get_out_file_name_base(self.player)}.lanky")
-                print(out_path)
-                # with open("output/" + f"{self.multiworld.get_out_file_name_base(self.player)}.lanky", "w") as f:
-                with open(out_path, "w") as f:
-                    f.write(patch_file)
-                # Copy the patch file to the outpath
-                # shutil.copy("output/" + f"{self.multiworld.get_out_file_name_base(self.player)}.lanky", out_path)
+                lanky = self.update_seed_results(patch_data, spoiler, self.player)
+
+                output_data = {
+                    "patch_data": lanky,
+                    "player": self.player,
+                    "player_name": self.player_name,
+                    "version": ap_version,
+                    "seed": self.multiworld.seed_name,
+                }
+
+                # Output the patch details to file using the container
+                dk64_container = DK64Container(
+                    path=os.path.join(output_directory, f"{self.multiworld.get_out_file_name_base(self.player)}{DK64Container.patch_file_ending}"),
+                    player=self.player,
+                    player_name=self.player_name,
+                    data=output_data,
+                )
+                dk64_container.write()
+
                 # Clear the path_data out of memory to flush memory usage
                 del patch_data
             except Exception:
