@@ -203,7 +203,7 @@ if baseclasses_loaded:
     from randomizer.Lists.EnemyTypes import EnemyLoc, EnemyMetaData
     from worlds.LauncherComponents import Component, SuffixIdentifier, components, Type, icon_paths
     import randomizer.ShuffleExits as ShuffleExits
-    from archipelago.fillsettings import fillsettings
+    from archipelago.FillSettings import fillsettings
     from Utils import open_filename
     import shutil
     import zlib
