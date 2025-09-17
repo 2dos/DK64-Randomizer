@@ -649,7 +649,8 @@
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
-      "toughbanana": 0.5,
+      "racebanana": 0.5,
+      "gauntletbanana": 0.5,
       "crown": 0.7,
       "blueprint": 0.7,
       "key": 0.85,
@@ -1097,7 +1098,8 @@
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
-      "toughbanana": 0.95,
+      "racebanana": 0.95,
+      "gauntletbanana": 0.95,
       "crown": 0.7,
       "blueprint": 0.7,
       "key": 0.85,
@@ -1576,7 +1578,8 @@
     "item_rando_list_selected": {
       "shop": 0.95,
       "banana": 0.95,
-      "toughbanana": 0.95,
+      "racebanana": 0.95,
+      "gauntletbanana": 0.95,
       "crown": 0.7,
       "blueprint": 0.7,
       "key": 0.85,

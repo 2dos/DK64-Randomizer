@@ -643,10 +643,20 @@
                     setting_data.cb_medal_behavior_new = setting_data.cb_medal_behavior;
                     delete setting_data.cb_medal_behavior;
                 }
-                if (sel_version_num <= numericVersion("5.4.0")) {
+                if (sel_version_num < numericVersion("5.4.0")) {
                     // Convert free trade setting to utilize a boolean
                     console.log(`Free Trade: ${setting_data.free_trade_setting} -> ${setting_data.free_trade_setting != 'none'}`);
                     setting_data.free_trade_setting = setting_data.free_trade_setting != 'none';
+                }
+                if (sel_version_num < numericVersion("5.5.5")) {
+                    console.log(`Converting toughbanana to racebanana`)
+                    for (let x = 0; x < 10; x++) {
+                        const lst_str = `item_rando_list_${x}`;
+                        if (setting_data[lst_str].includes("toughbanana")) {
+                            setting_data[lst_str] = setting_data[lst_str].filter(v => v != "toughbanana");
+                            setting_data[lst_str].push("racebanana");
+                        }
+                    }
                 }
                 // Update to include all unhandled options to unsorted
                 const all_valid_items = Object.keys(output_json.ItemRandoListSelected);

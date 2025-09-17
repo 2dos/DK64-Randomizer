@@ -7,7 +7,6 @@ import random
 import os
 from version import version
 from copy import deepcopy
-from collections import deque
 
 from randomizer.Enums.Transitions import Transitions
 import randomizer.ItemPool as ItemPool
@@ -162,8 +161,9 @@ class Settings:
             ItemRandoListSelected.shockwave: [2, 0],
             ItemRandoListSelected.bfi_gift: [0, 1],
             ItemRandoListSelected.banana: [161, 0],
-            ItemRandoListSelected.banana_checks: [0, 148],
-            ItemRandoListSelected.toughbanana: [0, 13],
+            ItemRandoListSelected.banana_checks: [0, 134],
+            ItemRandoListSelected.racebanana: [0, 11],
+            ItemRandoListSelected.gauntletbanana: [0, 16],
             ItemRandoListSelected.arenas: [0, 10],
             ItemRandoListSelected.crown: [10, 0],
             ItemRandoListSelected.blueprint: [40, 0],
@@ -1479,7 +1479,8 @@ class Settings:
                 ItemRandoListSelected.bfi_gift: (Types.Shockwave, Types.Shockwave, True),
                 ItemRandoListSelected.banana: (Types.Banana, Types.Banana, False),
                 ItemRandoListSelected.banana_checks: (Types.Banana, Types.Banana, True),
-                ItemRandoListSelected.toughbanana: (Types.Banana, Types.ToughBanana, True),
+                ItemRandoListSelected.racebanana: (Types.Banana, Types.RaceBanana, True),
+                ItemRandoListSelected.gauntletbanana: (Types.Banana, Types.GauntletBanana, True),
                 ItemRandoListSelected.arenas: (Types.Crown, Types.Crown, True),
                 ItemRandoListSelected.crown: (Types.Crown, Types.Crown, False),
                 ItemRandoListSelected.blueprint: (Types.Blueprint, Types.Blueprint, False),
@@ -1537,7 +1538,7 @@ class Settings:
                 ItemRandoListSelected.dummyitem_crateitem,
                 ItemRandoListSelected.dummyitem_halfmedal,
             ]
-            dummy_location_types = [Types.ToughBanana, Types.HelmKey, Types.HelmMedal]
+            dummy_location_types = [Types.HelmKey, Types.HelmMedal]
             self.item_search = [
                 self.item_rando_list_1.copy(),
                 self.item_rando_list_2.copy(),
@@ -2423,44 +2424,6 @@ class Settings:
         """Calculate (or recalculate) valid locations for items by type."""
         self.valid_locations = {}
         self.valid_locations[Types.Kong] = self.kong_locations.copy()
-        # If shops are not shuffled into the larger pool, calculate shop locations for shop-bound moves
-        if self.move_rando not in (MoveRando.off, MoveRando.item_shuffle):
-            self.valid_locations[Types.Shop] = {}
-            self.valid_locations[Types.Shop][Kongs.donkey] = []
-            self.valid_locations[Types.Shop][Kongs.diddy] = []
-            self.valid_locations[Types.Shop][Kongs.lanky] = []
-            self.valid_locations[Types.Shop][Kongs.tiny] = []
-            self.valid_locations[Types.Shop][Kongs.chunky] = []
-            if self.move_rando == MoveRando.on:
-                self.valid_locations[Types.Shop][Kongs.donkey] = DonkeyMoveLocations.copy()
-                self.valid_locations[Types.Shop][Kongs.diddy] = DiddyMoveLocations.copy()
-                self.valid_locations[Types.Shop][Kongs.lanky] = LankyMoveLocations.copy()
-                self.valid_locations[Types.Shop][Kongs.tiny] = TinyMoveLocations.copy()
-                self.valid_locations[Types.Shop][Kongs.chunky] = ChunkyMoveLocations.copy()
-            elif self.move_rando == MoveRando.cross_purchase:
-                allKongMoveLocations = DonkeyMoveLocations.copy()
-                allKongMoveLocations.update(DiddyMoveLocations.copy())
-                allKongMoveLocations.update(TinyMoveLocations.copy())
-                allKongMoveLocations.update(ChunkyMoveLocations.copy())
-                allKongMoveLocations.update(LankyMoveLocations.copy())
-                if self.training_barrels == TrainingBarrels.shuffled and Types.TrainingBarrel not in self.shuffled_location_types:
-                    allKongMoveLocations.update(TrainingBarrelLocations.copy())
-                if self.shockwave_status == ShockwaveStatus.vanilla:
-                    allKongMoveLocations.remove(Locations.CameraAndShockwave)
-                self.valid_locations[Types.Shop][Kongs.donkey] = allKongMoveLocations.copy()
-                self.valid_locations[Types.Shop][Kongs.diddy] = allKongMoveLocations.copy()
-                self.valid_locations[Types.Shop][Kongs.lanky] = allKongMoveLocations.copy()
-                self.valid_locations[Types.Shop][Kongs.tiny] = allKongMoveLocations.copy()
-                self.valid_locations[Types.Shop][Kongs.chunky] = allKongMoveLocations.copy()
-            self.valid_locations[Types.Shop][Kongs.any] = SharedShopLocations.copy()
-            if self.shockwave_status not in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with) and Types.Shockwave not in self.shuffled_location_types:
-                self.valid_locations[Types.Shop][Kongs.any].add(Locations.CameraAndShockwave)
-            elif Locations.CameraAndShockwave in self.valid_locations[Types.Shop][Kongs.tiny]:
-                self.valid_locations[Types.Shop][Kongs.tiny].remove(Locations.CameraAndShockwave)
-            self.valid_locations[Types.Shockwave] = self.valid_locations[Types.Shop][Kongs.any]
-            self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
-            self.valid_locations[Types.Climbing] = self.valid_locations[Types.Shop][Kongs.any]
-
         if self.shuffle_items and any(self.shuffled_location_types):
             # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) and Shop Owner Locations - those can only be Kongs and Shop Owners respectively
             shuffledLocations = [
@@ -2533,7 +2496,16 @@ class Settings:
                         self.valid_locations[Types.Blueprint][kong] = blueprintLocations.copy()
                     else:
                         self.valid_locations[Types.Blueprint][kong] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == kong]
-            if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
+            banana_types = [
+                Types.Banana,
+                Types.RaceBanana,
+                Types.GauntletBanana,
+            ]
+            has_banana = False
+            for btype in banana_types:
+                if btype in self.shuffled_location_types:
+                    has_banana = True
+            if has_banana:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations]
             if Types.FillerBanana in self.shuffled_location_types:
                 self.valid_locations[Types.FillerBanana] = [location for location in shuffledNonMoveLocations]
@@ -2654,35 +2626,56 @@ class Settings:
                     inverted_allowances[k].append(item_type)
             for item_type in inverted_allowances:
                 inverted_allowances[item_type] = list(set(inverted_allowances[item_type]))
-            tough_gb_locations = [
-                Locations.RarewareBanana,
+            race_gb_locations = [
                 Locations.JapesDiddyMinecarts,
                 Locations.AztecDiddyVultureRace,
                 Locations.AztecTinyBeetleRace,
-                Locations.FactoryDonkeyDKArcade,
+                Locations.FactoryTinyCarRace,
                 Locations.GalleonDonkeySealRace,
-                Locations.ForestChunkyMinecarts,
-                Locations.ForestDonkeyBaboonBlast,
                 Locations.ForestDiddyOwlRace,
                 Locations.ForestLankyRabbitRace,
-                Locations.CavesDonkeyBaboonBlast,
+                Locations.ForestChunkyMinecarts,
                 Locations.CavesLankyBeetleRace,
                 Locations.CastleDonkeyMinecarts,
+                Locations.CastleTinyCarRace,
             ]
+            gauntlet_gb_locations = [
+                Locations.JapesLankyFairyCave,
+                Locations.AztecTinyKlaptrapRoom,
+                Locations.AztecChunkyKlaptrapRoom,
+                Locations.FactoryDiddyRandD,
+                Locations.ForestLankyAttic,
+                Locations.ForestTinyAnthill,
+                Locations.ForestTinySpiderBoss,
+                Locations.ForestChunkyApple,
+                Locations.CavesDonkey5DoorCabin,
+                Locations.CavesDiddy5DoorCabinLower,
+                Locations.CavesLanky5DoorIgloo,
+                Locations.CavesTiny5DoorCabin,
+                Locations.CavesChunky5DoorIgloo,
+                Locations.CastleDonkeyLibrary,
+                Locations.CastleTinyTrashCan,
+                Locations.CastleChunkyShed,
+            ]
+            banana_types = {
+                Types.Banana: [x for x in spoiler.LocationList if spoiler.LocationList[x].type == Types.Banana and x not in race_gb_locations and x not in gauntlet_gb_locations],
+                Types.RaceBanana: race_gb_locations.copy(),
+                Types.GauntletBanana: gauntlet_gb_locations.copy(),
+            }
             for item_type in self.valid_locations:
                 if item_type in inverted_allowances:
-                    valid_allowance_types = inverted_allowances[item_type]
+                    valid_allowance_types = inverted_allowances[item_type].copy()
                     valid_locations_lambda_list = [
                         lambda l, _: l.type in valid_allowance_types,
                     ]
                     valid_locations_lambda = lambda l, _: l.type in valid_allowance_types
                     # Banana
-                    if Types.ToughBanana in valid_allowance_types and Types.Banana not in valid_allowance_types:
-                        valid_allowance_types.remove(Types.ToughBanana)
-                        valid_locations_lambda_list.append(lambda _, v: v in tough_gb_locations)
-                    elif Types.Banana in valid_allowance_types and Types.ToughBanana not in valid_allowance_types:
-                        valid_allowance_types.remove(Types.Banana)
-                        valid_locations_lambda_list.append(lambda l, v: l.type == Types.Banana and v not in tough_gb_locations)
+                    valid_banana_locations = []
+                    for btype in banana_types:
+                        if btype in valid_allowance_types:
+                            valid_allowance_types.remove(btype)
+                            valid_banana_locations.extend(banana_types[btype])
+                    valid_locations_lambda_list.append(lambda _, v: v in valid_banana_locations)
                     # Medal
                     if Types.HelmMedal in valid_allowance_types and Types.Medal not in valid_allowance_types:
                         valid_allowance_types.remove(Types.HelmMedal)
@@ -2703,6 +2696,7 @@ class Settings:
                             self.valid_locations[item_type][kong] = [v for v in self.valid_locations[item_type][kong] if valid_locations_lambda(spoiler.LocationList[v], v)]
                     else:
                         self.valid_locations[item_type] = [v for v in self.valid_locations[item_type] if valid_locations_lambda(spoiler.LocationList[v], v)]
+
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""

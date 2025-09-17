@@ -175,8 +175,8 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     #     item_table.append(DK64Item(rareware_item.name, ItemClassification.progression_skip_balancing, full_item_table[rareware_item.name].code, world.player))
     #     types_handled_directly.extend([DK64RTypes.NintendoCoin, DK64RTypes.RarewareCoin])
 
-    # Always include ToughBanana in types handled directly
-    types_handled_directly.append(DK64RTypes.ToughBanana)
+    # Always include Misc Banana Types in types handled directly
+    types_handled_directly.extend([DK64RTypes.RaceBanana, DK64RTypes.GauntletBanana])
 
     # Get remaining items from the assumption method, excluding types we handled directly
     all_shuffled_items = DK64RItemPoolUtility.GetItemsNeedingToBeAssumed(world.spoiler.settings, types_handled_directly, [])

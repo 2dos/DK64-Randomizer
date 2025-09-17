@@ -553,10 +553,6 @@ def RarewareCoinItems():
     """Return Rareware Coin."""
     return [Items.RarewareCoin]
 
-
-TOUGH_BANANA_COUNT = 13
-
-
 def GoldenBananaItems():
     """Return a list of GBs to be placed."""
     itemPool = []

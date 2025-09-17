@@ -46,16 +46,25 @@
             "name": "Golden Bananas Checks",
             "value": "banana_checks",
             "tooltip": "",
-            "check_count": 148,
+            "check_count": 134,
             "item_count": 0,
             "is_check": true,
             "tied": "banana"
         },
         {
-            "name": "Tough Golden Banana Checks",
-            "value": "toughbanana",
-            "tooltip": "Tougher Golden Banana checks will be in the pool:&#10;- All 3 Minecart Rides&#10;- Both Beetle Races&#10;- Fungi and Caves Baboon Blasts&#10;- Rabbit, Owl, Vulture and Seal Races&#10;- Arcade Round 1&#10;- Rareware Golden Banana",
-            "check_count": 13,
+            "name": "Minecart & Race Checks",
+            "value": "racebanana",
+            "tooltip": "All banana checks tied to a minecart ride or race.",
+            "check_count": 11,
+            "item_count": 0,
+            "is_check": true,
+            "tied": "banana"
+        },
+        {
+            "name": "Gauntlet & Mini-Boss Checks",
+            "value": "gauntletbanana",
+            "tooltip": "All banana checks which are obtained after killing a hoard of enemies or killing a mini boss.",
+            "check_count": 16,
             "item_count": 0,
             "is_check": true,
             "tied": "banana"
