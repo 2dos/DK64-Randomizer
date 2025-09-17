@@ -23,9 +23,9 @@ function lanky_file_changed(event) {
 
     // If a file is loaded, set up the event listener to read it appropriately
     if (file) {
-        // Check if this is an .apdksf file (binary) or .lanky file (text)
-        if (file.name.toLowerCase().endsWith('.apdksf')) {
-            // Read as ArrayBuffer for binary .apdksf files
+        // Check if this is an .chunky file (binary) or .lanky file (text)
+        if (file.name.toLowerCase().endsWith('.chunky')) {
+            // Read as ArrayBuffer for binary .chunky files
             reader.readAsArrayBuffer(file);
         } else {
             // Read as text for .lanky files
