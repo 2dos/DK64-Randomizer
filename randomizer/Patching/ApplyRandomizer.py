@@ -341,11 +341,23 @@ def patching_response(spoiler):
     is_dw = IsDDMSSelected(spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world)
     is_sky = IsDDMSSelected(spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_sky)
     if is_dw and is_sky:
-        # Memory challenge
+        # Memory Challenge
         ROM_COPY.seek(sav + 0x0C6)
         old = int.from_bytes(ROM_COPY.readBytes(1), "big")
         ROM_COPY.seek(sav + 0x0C6)
-        ROM_COPY.write(old | 0x2)
+        ROM_COPY.write(old | 0x8 | 0x2)
+    elif is_dw and not is_sky:
+        # Dark world only
+        ROM_COPY.seek(sav + 0x0C6)
+        old = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        ROM_COPY.seek(sav + 0x0C6)
+        ROM_COPY.write(old | 0x8)
+    elif is_sky and not is_dw:
+        # Sky only
+        ROM_COPY.seek(sav + 0x0C6)
+        old = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        ROM_COPY.seek(sav + 0x0C6)
+        ROM_COPY.write(old | 0x4)
 
     keys = 0xFF
     if spoiler.settings.k_rool_vanilla_requirement:
