@@ -73,7 +73,7 @@ full_item_table.update(event_table)  # Temp for generating goal item
 
 
 def random_starting_moves(world: World) -> typing.List[str]:
-    """Handle starting move alterations here"""
+    """Handle starting move alterations here."""
     starting_moves = []
 
     all_eligible_starting_moves = DK64RItemPoolUtility.AllKongMoves()
@@ -102,7 +102,7 @@ def random_starting_moves(world: World) -> typing.List[str]:
 
 
 def setup_items(world: World) -> typing.List[DK64Item]:
-    """Set up the item table for the world"""
+    """Set up the item table for the world."""
     item_table = []
     starting_moves = random_starting_moves(world)
 
