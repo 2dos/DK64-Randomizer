@@ -14,6 +14,7 @@ from randomizer.Enums.Items import Items as DK64RItems
 from randomizer.Enums.Settings import WinConditionComplex
 from randomizer.Enums.Types import Types as DK64RTypes, BarrierItems
 import randomizer.ItemPool as DK64RItemPoolUtility
+import copy
 
 BASE_ID = 0xD64000
 
@@ -117,7 +118,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 else:
                     ap_item.classification = ItemClassification.progression_deprioritized_skip_balancing
                 for _ in range(num_bananas):
-                    item_table.append(ap_item)
+                    item_table.append(copy.copy(ap_item))
             case DK64RTypes.Shop | DK64RTypes.TrainingBarrel | DK64RTypes.Shockwave:
                 if name == "Camera and Shockwave":
                     continue
@@ -131,16 +132,16 @@ def setup_items(world: World) -> typing.List[DK64Item]:
 
                 if name in world.options.start_inventory or name in starting_moves:
                     for _ in range(world.options.start_inventory[name] + starting_moves.count(name)):
-                        world.multiworld.push_precollected(ap_item)
+                        world.multiworld.push_precollected(copy.copy(ap_item))
                         num_moves -= 1
                 for _ in range(num_moves):
-                    item_table.append(ap_item)
+                    item_table.append(copy.copy(ap_item))
             case DK64RTypes.Blueprint:
                 if world.options.goal in {Goal.option_blueprints, Goal.option_krools_challenge}:
                     ap_item.classification = ItemClassification.progression_skip_balancing
                 else:
                     ap_item.classification = ItemClassification.progression_deprioritized_skip_balancing
-                item_table.append(ap_item)
+                item_table.append(copy.copy(ap_item))
             case DK64RTypes.Fairy:
                 num_fairies = 20
                 if world.options.goal == Goal.option_fairies:
@@ -148,7 +149,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 else:
                     ap_item.classification = ItemClassification.progression_deprioritized_skip_balancing
                 for _ in range(num_fairies):
-                    item_table.append(ap_item)
+                    item_table.append(copy.copy(ap_item))
             case DK64RTypes.Key:
                 # Keys are weird because there's a lot of possibilities based on settings.
                 level_keys = {"Key 1", "Key 2", "Key 4", "Key 5", "Key 6", "Key 7"}
@@ -161,12 +162,12 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     ap_item.classification = ItemClassification.progression_skip_balancing
 
                 if item_id in world.spoiler.settings.starting_key_list:
-                    world.multiworld.push_precollected(ap_item)
+                    world.multiworld.push_precollected(copy.copy(ap_item))
                 elif item_id == DK64RItemPoolUtility.getHelmKey(world.spoiler.settings) and world.spoiler.settings.key_8_helm:
-                    world.multiworld.get_location("The End of Helm", world.player).place_locked_item(ap_item)
+                    world.multiworld.get_location("The End of Helm", world.player).place_locked_item(copy.copy(ap_item))
                     world.spoiler.settings.location_pool_size -= 1
                 else:
-                    item_table.append(ap_item)
+                    item_table.append(copy.copy(ap_item))
             case DK64RTypes.Crown:
                 num_crowns = 10
                 if world.options.goal == Goal.option_crowns:
@@ -174,13 +175,13 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 else:
                     ap_item.classification = ItemClassification.filler
                 for _ in range(num_crowns):
-                    item_table.append(ap_item)
+                    item_table.append(copy.copy(ap_item))
             case DK64RTypes.Kong:
                 kong = DK64RItemPoolUtility.GetKongForItem(item_id)
                 if kong in world.spoiler.settings.starting_kong_list:
-                    world.multiworld.push_precollected(ap_item)
+                    world.multiworld.push_precollected(copy.copy(ap_item))
                 else:
-                    item_table.append(ap_item)
+                    item_table.append(copy.copy(ap_item))
             case DK64RTypes.Medal:
                 num_medals = 40
                 if world.options.goal == Goal.option_medals:
@@ -188,11 +189,11 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 else:
                     ap_item.classification = ItemClassification.progression_deprioritized_skip_balancing
                 for _ in range(num_medals):
-                    item_table.append(ap_item)
+                    item_table.append(copy.copy(ap_item))
             case DK64RTypes.Bean:
                 if world.options.goal == Goal.option_bean:
                     ap_item.classification = ItemClassification.progression_skip_balancing
-                item_table.append(ap_item)
+                item_table.append(copy.copy(ap_item))
             case DK64RTypes.Pearl:
                 num_pearls = 5
                 if world.options.goal == Goal.option_pearls:
@@ -200,7 +201,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 else:
                     ap_item.classification = ItemClassification.progression_deprioritized
                 for _ in range(num_pearls):
-                    item_table.append(ap_item)
+                    item_table.append(copy.copy(ap_item))
             case DK64RTypes.RainbowCoin:
                 num_coins = 16
                 if world.options.goal == Goal.option_rainbow_coins or world.options.enable_chaos_blockers:
@@ -208,31 +209,31 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 else:
                     ap_item.classification = ItemClassification.filler
                 for _ in range(num_coins):
-                    item_table.append(ap_item)
+                    item_table.append(copy.copy(ap_item))
             case DK64RTypes.Climbing:
                 if name in world.options.start_inventory or not world.options.climbing_shuffle:
-                    world.multiworld.push_precollected(ap_item)
+                    world.multiworld.push_precollected(copy.copy(ap_item))
                 else:
-                    item_table.append(ap_item)
+                    item_table.append(copy.copy(ap_item))
             case DK64RTypes.Hint:
                 if not world.options.hints_in_item_pool:
                     continue
                 else:
                     ap_item.classification = ItemClassification.useful
-                    item_table.append(ap_item)
+                    item_table.append(copy.copy(ap_item))
             case DK64RTypes.NintendoCoin | DK64RTypes.RarewareCoin:
                 if world.options.goal != Goal.option_company_coins and not world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.filler
                 elif world.options.goal == Goal.option_company_coins and not world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.progression_skip_balancing
-                item_table.append(ap_item)
+                item_table.append(copy.copy(ap_item))
             case DK64RTypes.Cranky | DK64RTypes.Funky | DK64RTypes.Candy | DK64RTypes.Snide:
                 if not world.options.shopowners_in_pool:
                     continue
                 if name in world.options.start_inventory:
-                    world.multiworld.push_precollected(ap_item)
+                    world.multiworld.push_precollected(copy.copy(ap_item))
                 else:
-                    item_table.append(ap_item)
+                    item_table.append(copy.copy(ap_item))
             case (
                 DK64RTypes.BlueprintBanana
                 | DK64RTypes.Constant
