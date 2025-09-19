@@ -167,9 +167,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Crown:
                 num_crowns = 10
-                if not (world.options.goal == Goal.option_crowns or world.options.enable_chaos_blockers):
+                if not (world.options.goal in {Goal.option_crowns, Goal.option_treasure_hurry} or world.options.enable_chaos_blockers):
                     ap_item.classification = ItemClassification.filler
-                elif world.options.goal == Goal.option_crowns and not world.options.enable_chaos_blockers:
+                elif world.options.goal in {Goal.option_crowns, Goal.option_treasure_hurry} and not world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.progression_skip_balancing
                 for _ in range(num_crowns):
                     item_table.append(copy.copy(ap_item))
@@ -195,9 +195,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.RainbowCoin:
                 num_coins = 16
-                if not (world.options.goal == Goal.option_rainbow_coins or world.options.enable_chaos_blockers):
+                if not (world.options.goal in {Goal.option_rainbow_coins, Goal.option_treasure_hurry} or world.options.enable_chaos_blockers):
                     ap_item.classification = ItemClassification.filler
-                elif world.options.goal == Goal.option_rainbow_coins and not world.options.enable_chaos_blockers:
+                elif world.options.goal in {Goal.option_rainbow_coins, Goal.option_treasure_hurry} and not world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.progression_skip_balancing
                 for _ in range(num_coins):
                     item_table.append(copy.copy(ap_item))
@@ -215,9 +215,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     ap_item.classification = ItemClassification.useful
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.NintendoCoin | DK64RTypes.RarewareCoin:
-                if world.options.goal != Goal.option_company_coins and not world.options.enable_chaos_blockers:
+                if not (world.options.goal in {Goal.option_company_coins, Goal.option_treasure_hurry} or world.options.enable_chaos_blockers):
                     ap_item.classification = ItemClassification.filler
-                elif world.options.goal == Goal.option_company_coins and not world.options.enable_chaos_blockers:
+                elif world.options.goal in {Goal.option_company_coins, Goal.option_treasure_hurry} and not world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.progression_skip_balancing
                 item_table.append(copy.copy(ap_item))
             case DK64RTypes.Cranky | DK64RTypes.Funky | DK64RTypes.Candy | DK64RTypes.Snide:
