@@ -723,6 +723,7 @@ if baseclasses_loaded:
                 spoiler.pregiven_items = []
                 # Initialize dictionary to store Archipelago location to item name mappings for textbox display
                 spoiler.archipelago_locations = {}
+                print(self.multiworld.precollected_items[self.player])
                 for item in self.multiworld.precollected_items[self.player]:
                     dk64_item = logic_item_name_to_id[item.name]
                     # Only moves can be pushed to the pregiven_items list

@@ -92,7 +92,7 @@ def random_starting_moves(world: World) -> typing.List[str]:
         move_id = all_eligible_starting_moves.pop()
         move = DK64RItem.ItemList[move_id]
         # We don't want to pick anything we're already starting with. As an aside, the starting inventory move name may or may not have spaces in it.
-        if move.name in world.options.start_inventory.options:
+        if move.name in world.options.start_inventory:
             # If we were to choose a move we're forcibly starting with, pick another
             i -= 1
             continue
@@ -127,9 +127,10 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     num_moves = 2
                 elif item_id == DK64RItems.ProgressiveInstrumentUpgrade or item_id == DK64RItems.ProgressiveSlam:
                     num_moves = 3
-
-                if name in world.options.start_inventory or name in starting_moves:
-                    for _ in range(world.options.start_inventory[name] + starting_moves.count(name)):
+                if name in world.options.start_inventory:
+                    num_moves -= world.options.start_inventory[name]
+                if name in starting_moves:
+                    for _ in range(starting_moves.count(name)):
                         world.multiworld.push_precollected(copy.copy(ap_item))
                         num_moves -= 1
                 for _ in range(num_moves):
@@ -201,8 +202,10 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 for _ in range(num_coins):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Climbing:
-                if name in world.options.start_inventory or not world.options.climbing_shuffle:
+                if name in starting_moves or not world.options.climbing_shuffle:
                     world.multiworld.push_precollected(copy.copy(ap_item))
+                elif name in world.options.start_inventory:
+                    continue
                 else:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Hint:
@@ -221,7 +224,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 if not world.options.shopowners_in_pool:
                     continue
                 if name in world.options.start_inventory:
-                    world.multiworld.push_precollected(copy.copy(ap_item))
+                    continue
                 else:
                     item_table.append(copy.copy(ap_item))
             case (
