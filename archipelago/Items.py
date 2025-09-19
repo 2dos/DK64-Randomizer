@@ -170,7 +170,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Crown:
                 num_crowns = 10
-                if world.options.goal == Goal.option_crowns:
+                if world.options.goal == Goal.option_crowns or world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.progression_skip_balancing
                 else:
                     ap_item.classification = ItemClassification.filler
