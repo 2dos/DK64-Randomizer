@@ -113,10 +113,8 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         match dk64r_item.type:
             case DK64RTypes.Banana:
                 num_bananas = 161
-                if world.options.goal == Goal.option_golden_bananas:
-                    ap_item.classification = ItemClassification.progression_skip_balancing
-                else:
-                    ap_item.classification = ItemClassification.progression_deprioritized_skip_balancing
+                if not world.options.goal == Goal.option_golden_bananas:
+                    ap_item.classification = ItemClassification.progression_deprioritized
                 for _ in range(num_bananas):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Shop | DK64RTypes.TrainingBarrel | DK64RTypes.Shockwave:
@@ -138,16 +136,14 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Blueprint:
                 if world.options.goal in {Goal.option_blueprints, Goal.option_krools_challenge}:
-                    ap_item.classification = ItemClassification.progression_skip_balancing
+                    ap_item.classification = ItemClassification.progression
                 else:
-                    ap_item.classification = ItemClassification.progression_deprioritized_skip_balancing
+                    ap_item.classification = ItemClassification.progression_deprioritized
                 item_table.append(copy.copy(ap_item))
             case DK64RTypes.Fairy:
                 num_fairies = 20
-                if world.options.goal == Goal.option_fairies:
-                    ap_item.classification = ItemClassification.progression_skip_balancing
-                else:
-                    ap_item.classification = ItemClassification.progression_deprioritized_skip_balancing
+                if not world.options.goal == Goal.option_fairies:
+                    ap_item.classification = ItemClassification.progression_deprioritized
                 for _ in range(num_fairies):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Key:
@@ -170,10 +166,10 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Crown:
                 num_crowns = 10
-                if world.options.goal == Goal.option_crowns or world.options.enable_chaos_blockers:
-                    ap_item.classification = ItemClassification.progression_skip_balancing
-                else:
+                if not (world.options.goal == Goal.option_crowns or world.options.enable_chaos_blockers):
                     ap_item.classification = ItemClassification.filler
+                elif world.options.goal == Goal.option_crowns and not world.options.enable_chaos_blockers:
+                    ap_item.classification = ItemClassification.progression_skip_balancing
                 for _ in range(num_crowns):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Kong:
@@ -184,30 +180,24 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Medal:
                 num_medals = 40
-                if world.options.goal == Goal.option_medals:
-                    ap_item.classification = ItemClassification.progression_skip_balancing
-                else:
-                    ap_item.classification = ItemClassification.progression_deprioritized_skip_balancing
+                if not world.options.goal == Goal.option_medals:
+                    ap_item.classification = ItemClassification.progression_deprioritized
                 for _ in range(num_medals):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Bean:
-                if world.options.goal == Goal.option_bean:
-                    ap_item.classification = ItemClassification.progression_skip_balancing
                 item_table.append(copy.copy(ap_item))
             case DK64RTypes.Pearl:
                 num_pearls = 5
-                if world.options.goal == Goal.option_pearls:
-                    ap_item.classification = ItemClassification.progression_skip_balancing
-                else:
+                if not world.options.goal == Goal.option_pearls:
                     ap_item.classification = ItemClassification.progression_deprioritized
                 for _ in range(num_pearls):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.RainbowCoin:
                 num_coins = 16
-                if world.options.goal == Goal.option_rainbow_coins or world.options.enable_chaos_blockers:
-                    ap_item.classification = ItemClassification.progression_deprioritized_skip_balancing
-                else:
+                if not (world.options.goal == Goal.option_rainbow_coins or world.options.enable_chaos_blockers):
                     ap_item.classification = ItemClassification.filler
+                elif world.options.goal == Goal.option_rainbow_coins and not world.options.enable_chaos_blockers:
+                    ap_item.classification = ItemClassification.progression_skip_balancing
                 for _ in range(num_coins):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Climbing:
