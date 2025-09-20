@@ -25,20 +25,28 @@ const DISABLED_HELM_DOOR_VALUES = [
   "opened",
 ];
 
-const ITEM_CAPS = {
-  "req_gb": 201,
-  "req_bp": 40,
-  "req_key": 8,
-  "req_medal": 40,
-  "req_crown": 10,
-  "req_fairy": 20,
-  "req_bean": 1,
-  "req_pearl": 5,
-  "req_rainbowcoin": 16,
-  "req_bosses": 7,
-  "req_bonuses": 53,
-  "req_cb": 3500,
-  "req_companycoins": 2,
+
+
+function getItemCap(item) {
+  const ITEM_CAPS = {
+    "req_gb": parseInt(document.getElementById("total_gbs").value),
+    "req_bp": 40,
+    "req_key": 8,
+    "req_medal": parseInt(document.getElementById("total_medals").value),
+    "req_crown": parseInt(document.getElementById("total_crowns").value),
+    "req_fairy": parseInt(document.getElementById("total_fairies").value),
+    "req_bean": 1,
+    "req_pearl": parseInt(document.getElementById("total_pearls").value),
+    "req_rainbowcoin": parseInt(document.getElementById("total_rainbow_coins").value),
+    "req_bosses": 7,
+    "req_bonuses": 53,
+    "req_cb": 3500,
+    "req_companycoins": 2,
+  }
+  if (Object.keys(ITEM_CAPS).includes(item)) {
+    return ITEM_CAPS[item];
+  }
+  return null;
 }
 
 // Attach the function as an event listener to the "change" event on the "logic_type" element
@@ -1227,9 +1235,10 @@ function update_prog_hint_num_access() {
     progHintReq.value = 1;
   } else {
     const item_type = progHintSelection.value;
-    if (Object.keys(ITEM_CAPS).includes(item_type)) {
-      if (parseInt(progHintReq.value) > ITEM_CAPS[item_type]) {
-        progHintReq.value = ITEM_CAPS[item_type];
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(progHintReq.value) > cap) {
+        progHintReq.value = cap;
       }
     }
   }
@@ -1386,9 +1395,10 @@ function update_door_one_num_access() {
     doorOneReq.value = 1;
   } else {
     const item_type = doorOneSelection.value == "vanilla" ? "req_crown" : doorOneSelection.value;
-    if (Object.keys(ITEM_CAPS).includes(item_type)) {
-      if (parseInt(doorOneReq.value) > ITEM_CAPS[item_type]) {
-        doorOneReq.value = ITEM_CAPS[item_type];
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(doorOneReq.value) > cap) {
+        doorOneReq.value = cap;
       }
     }
   }
@@ -1415,9 +1425,10 @@ function update_door_two_num_access() {
     doorTwoReq.value = 1;
   } else {
     const item_type = doorTwoSelection.value == "vanilla" ? "req_companycoins" : doorTwoSelection.value;
-    if (Object.keys(ITEM_CAPS).includes(item_type)) {
-      if (parseInt(doorTwoReq.value) > ITEM_CAPS[item_type]) {
-        doorTwoReq.value = ITEM_CAPS[item_type];
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(doorTwoReq.value) > cap) {
+        doorTwoReq.value = cap;
       }
     }
   }
@@ -1471,9 +1482,10 @@ function update_win_con_num_access() {
     winConReq.value = 1;
   } else {
     const item_type = winConSelection.value;
-    if (Object.keys(ITEM_CAPS).includes(item_type)) {
-      if (parseInt(winConReq.value) > ITEM_CAPS[item_type]) {
-        winConReq.value = ITEM_CAPS[item_type];
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(winConReq.value) > cap) {
+        winConReq.value = cap;
       }
     }
   }
@@ -1496,9 +1508,10 @@ document
       doorOneReq.value = 1;
     } else {
       const item_type = doorOneSelection.value == "vanilla" ? "req_crown" : doorOneSelection.value;
-      if (Object.keys(ITEM_CAPS).includes(item_type)) {
-        if (parseInt(doorOneReq.value) > ITEM_CAPS[item_type]) {
-          doorOneReq.value = ITEM_CAPS[item_type];
+      const cap = getItemCap(item_type);
+      if (cap !== null) {
+        if (parseInt(doorOneReq.value) > cap) {
+          doorOneReq.value = cap;
         }
       }
     }
@@ -1517,9 +1530,10 @@ document
       doorTwoReq.value = 1;
     } else {
       const item_type = doorTwoSelection.value == "vanilla" ? "req_companycoins" : doorTwoSelection.value;
-      if (Object.keys(ITEM_CAPS).includes(item_type)) {
-        if (parseInt(doorTwoReq.value) > ITEM_CAPS[item_type]) {
-          doorTwoReq.value = ITEM_CAPS[item_type];
+      const cap = getItemCap(item_type);
+      if (cap !== null) {
+        if (parseInt(doorTwoReq.value) > cap) {
+          doorTwoReq.value = cap;
         }
       }
     }
@@ -1969,10 +1983,10 @@ function getTotalItemCounts() {
         } else if (["total_crowns", "total_rainbow_coins"].includes(local_id)) {
             local_min = 0;
         }
-        if ((local_value < local_min) || (local_value > local_max)) {
-            local_header.style.color = "red";
-        } else {
-            local_header.style.color = "white";
+        if (local_value < local_min) {
+          alt_v[a].value = local_min;
+        } else if (local_value > local_max) {
+          alt_v[a].value = local_max;
         }
         total += local_value;
     }
