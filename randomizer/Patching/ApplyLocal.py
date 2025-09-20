@@ -85,13 +85,12 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     js.event_response_data = data
     if lanky_from_history:
         js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
-        loop.run_until_complete(ProgressBar().reset())
+        await ProgressBar().reset()
         return
     # elif settings.download_patch_file and from_patch_gen is False:
     #     js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
     #     js.load_old_seeds()
     #     js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
-    #     loop.run_until_complete(ProgressBar().reset())
     #     return
     elif from_patch_gen is True:
         if (js.document.getElementById("download_patch_file").checked or js.document.getElementById("load_patch_file").checked) and js.document.getElementById(
@@ -354,7 +353,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         await ProgressBar().update_progress(10, "Seed Generated.")
     js.document.getElementById("nav-settings-tab").removeAttribute("hidden")
     js.document.getElementById("spoiler_log_block").style.display = ""
-    loop.run_until_complete(js.GenerateSpoiler(json.dumps(spoiler)))
+    await js.GenerateSpoiler(json.dumps(spoiler))
     js.document.getElementById("generated_seed_id").innerHTML = seed_id
     # Set the current URL to the seed ID so that it can be shared without reloading the page
     js.window.history.pushState("generated_seed", hash_id, f"/randomizer?seed_id={hash_id}")
@@ -375,7 +374,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     if from_patch_gen is True:
         ROM_COPY.fixSecurityValue()
         ROM_COPY.save(f"dk64r-rom-{seed_id}.z64")
-        loop.run_until_complete(ProgressBar().reset())
+        await ProgressBar().reset()
     js.jq("#nav-settings-tab").tab("show")
     js.check_seed_info_tab()
 
