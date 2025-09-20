@@ -358,8 +358,8 @@ typedef struct KongBase {
 	/* 0x002 */ char weapon_bitfield;
 	/* 0x003 */ char ammo_belt;
 	/* 0x004 */ char instrument_bitfield;
-	/* 0x005 */ char unk_05[0x2];
-	/* 0x007 */ unsigned char coins;
+	/* 0x005 */ char unk_05[0x1];
+	/* 0x006 */ unsigned short coins;
 	/* 0x008 */ short instrument_energy;
 	/* 0x00A */ short cb_count[0xE];
 	/* 0x026 */ short tns_cb_count[0xE];
