@@ -1174,7 +1174,7 @@ void giveMelon(void) {
 int inShortList(int target, short* list, int count) {
 	for (int i = 0; i < count; i++) {
 		if (list[i] == target) {
-			return 1;
+			return i + 1;
 		}
 	}
 	return 0;
@@ -1183,7 +1183,7 @@ int inShortList(int target, short* list, int count) {
 int inU8List(int target, unsigned char* list, int count) {
 	for (int i = 0; i < count; i++) {
 		if (list[i] == target) {
-			return 1;
+			return i + 1;
 		}
 	}
 	return 0;

@@ -938,6 +938,19 @@ class Settings:
         self.prog_slam_level_7 = SlamRequirement.red
         self.prog_slam_level_8 = SlamRequirement.red
         self.ice_trap_count = 0
+        self.trap_weight_bubble = 3
+        self.trap_weight_reverse = 3
+        self.trap_weight_slow = 3
+        self.trap_weight_disablea = 1
+        self.trap_weight_disableb = 1
+        self.trap_weight_disablez = 1
+        self.trap_weight_disablecu = 1
+        self.trap_weight_getout = 1
+        self.trap_weight_dry = 2
+        self.trap_weight_flip = 2
+        self.trap_weight_icefloor = 2
+        self.trap_weight_paper = 2
+        self.trap_weight_slip = 3
         self.switch_allocation = [
             self.prog_slam_level_1,
             self.prog_slam_level_2,
@@ -1355,16 +1368,19 @@ class Settings:
 
         # Determine ice trap order
         effects = {
-            "bubble": 3,
-            "reverse": 3,
-            "slow": 3,
-            "disa": 1,
-            "disb": 1,
-            "discu": 1,
-            "disz": 1,
-            "getout": 1,
-            "dry": 2,
-            "flip": 2,
+            "bubble": self.trap_weight_bubble,
+            "reverse": self.trap_weight_reverse,
+            "slow": self.trap_weight_slow,
+            "disa": self.trap_weight_disablea,
+            "disb": self.trap_weight_disableb,
+            "discu": self.trap_weight_disablecu,
+            "disz": self.trap_weight_disablez,
+            "getout": self.trap_weight_getout,
+            "dry": self.trap_weight_dry,
+            "flip": self.trap_weight_flip,
+            "icefloor": self.trap_weight_icefloor,
+            "paper": self.trap_weight_paper,
+            "slip": self.trap_weight_slip,
         }
         models_chance = {"gb": 10, "key": 2, "bean": 1, "fairy": 4}
         trap_data = {
@@ -1379,6 +1395,9 @@ class Settings:
                 "getout": Items.IceTrapGetOutGB,
                 "dry": Items.IceTrapDryGB,
                 "flip": Items.IceTrapFlipGB,
+                "icefloor": Items.IceTrapIceFloorGB,
+                "paper": Items.IceTrapPaperGB,
+                "slip": Items.IceTrapSlipGB,
             },
             "bean": {
                 "bubble": Items.IceTrapBubbleBean,
@@ -1391,6 +1410,9 @@ class Settings:
                 "getout": Items.IceTrapGetOutBean,
                 "dry": Items.IceTrapDryBean,
                 "flip": Items.IceTrapFlipBean,
+                "icefloor": Items.IceTrapIceFloorBean,
+                "paper": Items.IceTrapPaperBean,
+                "slip": Items.IceTrapSlipBean,
             },
             "key": {
                 "bubble": Items.IceTrapBubbleKey,
@@ -1403,6 +1425,9 @@ class Settings:
                 "getout": Items.IceTrapGetOutKey,
                 "dry": Items.IceTrapDryKey,
                 "flip": Items.IceTrapFlipKey,
+                "icefloor": Items.IceTrapIceFloorKey,
+                "paper": Items.IceTrapPaperKey,
+                "slip": Items.IceTrapSlipKey,
             },
             "fairy": {
                 "bubble": Items.IceTrapBubbleFairy,
@@ -1415,6 +1440,9 @@ class Settings:
                 "getout": Items.IceTrapGetOutFairy,
                 "dry": Items.IceTrapDryFairy,
                 "flip": Items.IceTrapFlipFairy,
+                "icefloor": Items.IceTrapIceFloorFairy,
+                "paper": Items.IceTrapPaperFairy,
+                "slip": Items.IceTrapSlipFairy,
             },
         }
         self.trap_assortment = []
@@ -1546,12 +1574,18 @@ class Settings:
             for x in range(4):
                 self.item_search[x] = [y for y in self.item_search[x] if y not in item_search_removal]
             # Build mapping based on item_search and check_search
+            shopkeeper_type_mapping = {
+                Types.Cranky: Items.Cranky,
+                Types.Funky: Items.Funky,
+                Types.Candy: Items.Candy,
+                Types.Snide: Items.Snide,
+            }
             for pool_index in range(4):
                 for selector_value in self.check_search[pool_index]:
                     selector_type = item_ui_pairing[selector_value][1]
                     selector_types = [selector_type]
                     if selector_type == Types.Cranky:
-                        selector_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if sk not in guaranteed_starting_moves]
+                        selector_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if shopkeeper_type_mapping[sk] not in guaranteed_starting_moves]
                     elif selector_type == Types.TrainingBarrel:
                         selector_types = [Types.TrainingBarrel, Types.PreGivenMove]
                         if self.climbing_status != ClimbingStatus.normal:
@@ -1563,7 +1597,7 @@ class Settings:
                         item_type = item_ui_pairing[item_selector_value][1]
                         item_types = [item_type]
                         if item_type == Types.Cranky:
-                            item_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if sk not in guaranteed_starting_moves]
+                            item_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if shopkeeper_type_mapping[sk] not in guaranteed_starting_moves]
                         elif item_type == Types.TrainingBarrel:
                             item_types = [Types.TrainingBarrel, Types.PreGivenMove]
                             if self.climbing_status != ClimbingStatus.normal:

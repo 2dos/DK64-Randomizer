@@ -42,10 +42,41 @@ async function plando_import_filebox() {
   input.click();
 }
 
+function isValidBase64(str) {
+  try {
+    return btoa(atob(str)) === str;
+  } catch (err) {
+    return false;
+  }
+}
+
 async function apply_patch(data, run_async) {
-  // Base64 decode the response
-  event_response_data = data;
-  var decodedData = base64ToArrayBuffer(data);
+  // Check if this is an .chunky file
+  let ischunkyFile = window.loaded_patch_filename && window.loaded_patch_filename.toLowerCase().endsWith('.chunky');
+  var extracted_data = data
+
+  if (ischunkyFile) {
+    // For .chunky files, the data is already an ArrayBuffer from FileReader
+    var chunkyZip= new JSZip();
+    try {
+      const chunkyZipFile = await chunkyZip.loadAsync(data);
+      
+      // Extract the patch_data file and treat it as lanky content
+      const patchDataEntry = chunkyZipFile.file("patch_data");
+      if (patchDataEntry) {
+        const patchData = await patchDataEntry.async("string");
+        extracted_data = patchData;
+      } else {
+        throw new Error("patch_data file not found in .chunky archive");
+      }
+    } catch (error) {
+      console.error("Error processing .chunky file:", error);
+      throw error;
+    }
+  }
+  // For .lanky files or base64 encoded data, decode as base64
+  decodedData = base64ToArrayBuffer(extracted_data);
+  
   zip = new JSZip();
 
   try {
@@ -72,7 +103,12 @@ async function apply_patch(data, run_async) {
                 console.log("Applying Xdelta Patch");
                 apply_conversion();
                 apply_xdelta(fileContent);
-                window["event_response_data"] = data;
+                if (ischunkyFile) {
+                  window["event_response_data"] = extracted_data;
+                }
+                else {
+                  window["event_response_data"] = data;
+                }
                 // Return the promise for pyodide.runPythonAsync
                 return pyodide.runPythonAsync(`from pyodide_importer import register_hook  # type: ignore  # noqa
 try:

@@ -934,6 +934,30 @@ class SelectStartingKong(Choice):
     default = 5
 
 
+class IceFloorWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which turns the floor slippery."""
+
+    display_name = "Ice Floor Weight"
+
+
+class PaperTrapWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which turns Kongs into Paper."""
+
+    display_name = "Paper Trap Weight"
+
+
+class SlipTrapWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which slips a kong on a banana peel."""
+
+    display_name = "Slip Trap Weight"
+
+
+class EnableCutscenes(Toggle):
+    """Enabling this will re-add skippable cutscenes to your seed."""
+
+    display_name = "Re-Enable Cutscenes"
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1008,6 +1032,10 @@ class DK64Options(PerGameCommonOptions):
     puzzle_rando: PuzzleRando
     goal_quantity: GoalQuantity
     select_starting_kong: SelectStartingKong
+    ice_floor_weight: IceFloorWeight
+    paper_weight: PaperTrapWeight
+    slip_weight: SlipTrapWeight
+    enable_cutscenes: EnableCutscenes
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1119,6 +1147,8 @@ dk64_option_groups: List[OptionGroup] = [
             GetOutTrapWeight,
             DryTrapWeight,
             FlipTrapWeight,
+            IceFloorWeight,
+            PaperTrapWeight,
         ],
     ),
     OptionGroup(
@@ -1130,5 +1160,11 @@ dk64_option_groups: List[OptionGroup] = [
             DeathLink,
         ],
     ),
-    OptionGroup("Notifications", [ReceiveNotifications]),
+    OptionGroup(
+        "Quality of Life",
+        [
+            EnableCutscenes,
+            ReceiveNotifications,
+        ],
+    ),
 ]

@@ -47,6 +47,18 @@ IceTrapMasks = {
     Items.IceTrapGetOutFairy: Types.Fairy,
     Items.IceTrapDryFairy: Types.Fairy,
     Items.IceTrapFlipFairy: Types.Fairy,
+    Items.IceTrapIceFloorGB: Types.Banana,
+    Items.IceTrapIceFloorBean: Types.Bean,
+    Items.IceTrapIceFloorKey: Types.Key,
+    Items.IceTrapIceFloorFairy: Types.Fairy,
+    Items.IceTrapPaperGB: Types.Banana,
+    Items.IceTrapPaperBean: Types.Bean,
+    Items.IceTrapPaperKey: Types.Key,
+    Items.IceTrapPaperFairy: Types.Fairy,
+    Items.IceTrapSlipGB: Types.Banana,
+    Items.IceTrapSlipBean: Types.Bean,
+    Items.IceTrapSlipKey: Types.Key,
+    Items.IceTrapSlipFairy: Types.Fairy,
 }
 IceTrapMaskIndexes = [Types.Banana, Types.Bean, Types.Key, Types.Fairy]
 
@@ -92,6 +104,7 @@ class CustomActors(IntEnum):
     HintItemChunky = auto()
     ArchipelagoItem = auto()
     IceTrapFairy = auto()
+    SlipPeel = auto()
 
 
 class GraphicOverlay(IntEnum):
@@ -603,7 +616,7 @@ item_db = {
         preview_text="PEARL",
         special_preview_text={
             Locations.GalleonDonkeySealRace: "BLACK PEARL",
-            Locations.ForestDiddyOwlRace: "THE WHITE GEM OF THE OCEAN",
+            Locations.ForestDiddyOwlRace: "WHITE GEM OF THE OCEAN",
         },
     ),
     Types.Medal: ItemPlacementData(
@@ -1019,6 +1032,18 @@ item_shop_text_mapping = {
     Items.IceTrapGetOutFairy: (BuyText.ice_trap, NoBuyText.misc_item),
     Items.IceTrapDryFairy: (BuyText.ice_trap, NoBuyText.misc_item),
     Items.IceTrapFlipFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapIceFloorGB: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapIceFloorBean: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapIceFloorKey: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapIceFloorFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapPaperGB: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapPaperBean: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapPaperKey: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapPaperFairy: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapSlipGB: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapSlipBean: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapSlipKey: (BuyText.ice_trap, NoBuyText.misc_item),
+    Items.IceTrapSlipFairy: (BuyText.ice_trap, NoBuyText.misc_item),
     # Items not yet considered
     # Items.RainbowCoin: (BuyText.blueprint, NoBuyText.misc_item),
     # Items.JunkCrystal: (BuyText.blueprint, NoBuyText.misc_item),

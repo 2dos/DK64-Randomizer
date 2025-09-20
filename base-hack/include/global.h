@@ -247,7 +247,7 @@ extern void resetTracker(void);
 extern void wipeFileMod(int file, int will_save);
 extern void enterFileProgress(int sfx);
 extern void pokemonSnapMode(void);
-extern int isSnapEnemyInRange(void);
+extern int isSnapEnemyInRange(int set);
 extern int getPkmnSnapData(int* frames, int* current, int* total);
 extern void pressSkipHandler(void* actor);
 extern void clearSkipCache(void);
@@ -285,7 +285,6 @@ extern void setSpawnBitfield(int id, int state);
 extern void setSpawnBitfieldFromFlag(int flag, int state);
 
 extern Gfx* pauseScreen3And4ItemName(Gfx* dl, int x, int y, float scale, char* text);
-extern void handleSpriteCode(int control_type);
 extern void initPauseMenu(void);
 extern void storeHintRegion(void);
 extern void getHintRegionText(void);
@@ -428,8 +427,19 @@ extern void resetIceTrapButtons(void);
 extern void handleIceTrapButtons(void);
 extern int getCharWidthMask(int style, unsigned char *character);
 
-extern void colorRainbowAmmo(void* actor);
-extern void colorRainbowAmmoHUD(int red, int green, int blue, int alpha);
+extern void colorRainbowAmmo(void* actor, float x, float y, float z, int unk0);
+extern void colorRainbowAmmoHUD(sprite_info *sprite);
+
+extern void totalsSprite(sprite_struct* sprite, char* render);
+extern void checksSprite(sprite_struct* sprite, char* render);
+
+extern int cc_enabler_slip(void);
+extern int cc_allower_generic(void);
+extern void slipPeelCode(void);
+extern int cc_enabler_ice(void);
+extern int cc_disabler_ice(void);
+extern int cc_enabler_paper(void);
+extern int cc_disabler_paper(void);
 
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
