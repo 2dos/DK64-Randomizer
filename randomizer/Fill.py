@@ -38,6 +38,7 @@ from randomizer.Enums.Settings import (
     MoveRando,
     ProgressiveHintItem,
     RandomPrices,
+    RandomRequirement,
     RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
@@ -4052,6 +4053,63 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
             found_incompatibilities += f"Total count of {item_name} cannot be less than {min_v}"
         if count_v > max_v:
             found_incompatibilities += f"Total count of {item_name} cannot exceed {max_v}"
+    if settings.total_gbs < settings.blocker_text and settings.blocker_selection_behavior == BLockerSetting.pre_selected:
+        found_incompatibilities += "Less GBs selected than your highest B Locker. "
+    if settings.total_medals < settings.medal_requirement and settings.medal_jetpac_behavior == RandomRequirement.pre_selected:
+        found_incompatibilities += "Less Medals selected than the requirement for Jetpac. "
+    if settings.total_pearls < settings.mermaid_gb_pearls and settings.pearl_mermaid_behavior == RandomRequirement.pre_selected:
+        found_incompatibilities += "Less Pearls selected than the requirement for Mermaid Check. "
+    if settings.total_fairies < settings.rareware_gb_fairies and settings.fairy_queen_behavior == RandomRequirement.pre_selected:
+        found_incompatibilities += "Less Fairies selected than the requirement for Fairy Queen Check. "
+    # Check Win Con and Helm Doors for these requirements too
+    door_mapping = [
+        {
+            "name_plural": "Golden Bananas",
+            "setting_value": settings.total_gbs,
+            "win_con": WinConditionComplex.req_gb,
+            "barrier": BarrierItems.GoldenBanana,
+        },
+        {
+            "name_plural": "Medals",
+            "setting_value": settings.total_medals,
+            "win_con": WinConditionComplex.req_medal,
+            "barrier": BarrierItems.Medal,
+        },
+        {
+            "name_plural": "Fairies",
+            "setting_value": settings.total_fairies,
+            "win_con": WinConditionComplex.req_fairy,
+            "barrier": BarrierItems.Fairy,
+        },
+        {
+            "name_plural": "Rainbow Coins",
+            "setting_value": settings.total_rainbow_coins,
+            "win_con": WinConditionComplex.req_rainbowcoin,
+            "barrier": BarrierItems.RainbowCoin,
+        },
+        {
+            "name_plural": "Pearls",
+            "setting_value": settings.total_pearls,
+            "win_con": WinConditionComplex.req_pearl,
+            "barrier": BarrierItems.Pearl,
+        },
+        {
+            "name_plural": "Crowns",
+            "setting_value": settings.total_crowns,
+            "win_con": WinConditionComplex.req_crown,
+            "barrier": BarrierItems.Crown,
+        },
+    ]
+    for item_map in door_mapping:
+        if settings.win_condition_item == item_map["win_con"] and settings.win_condition_count > item_map["setting_value"]:
+            found_incompatibilities += f"Less {item_map['name_plural']} selected than your win condition. "
+        if settings.crown_door_item == item_map["barrier"] and settings.crown_door_item_count > item_map["setting_value"]:
+            found_incompatibilities += f"Less {item_map['name_plural']} selected than your first helm door. "
+        if settings.coin_door_item == item_map["barrier"] and settings.coin_door_item_count > item_map["setting_value"]:
+            found_incompatibilities += f"Less {item_map['name_plural']} selected than your second helm door. "
+
+
+
     if not settings.is_valid_item_pool():
         found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
     if settings.krool_access and Items.HideoutHelmKey in settings.starting_keys_list_selected:
