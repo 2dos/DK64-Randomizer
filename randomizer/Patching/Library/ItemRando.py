@@ -813,6 +813,7 @@ FILLER_MAPPING = {
     Types.FillerFairy: Types.Fairy,
     Types.FillerMedal: Types.Medal,
     Types.FillerPearl: Types.Pearl,
+    Types.FillerRainbowCoin: Types.RainbowCoin,
 }
 
 
@@ -1046,6 +1047,7 @@ item_shop_text_mapping = {
     Items.IceTrapSlipFairy: (BuyText.ice_trap, NoBuyText.misc_item),
     # Items not yet considered
     # Items.RainbowCoin: (BuyText.blueprint, NoBuyText.misc_item),
+    # Items.FillerRainbowCoin: (BuyText.blueprint, NoBuyText.misc_item),
     # Items.JunkCrystal: (BuyText.blueprint, NoBuyText.misc_item),
     # Items.JunkMelon: (BuyText.blueprint, NoBuyText.misc_item),
     # Items.JunkAmmo: (BuyText.blueprint, NoBuyText.misc_item),

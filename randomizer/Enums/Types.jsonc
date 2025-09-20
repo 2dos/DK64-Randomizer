@@ -45,7 +45,8 @@
     "EnemyPhoto": 43,
     "HalfMedal": 44,
     "RaceBanana": 45,
-    "GauntletBanana": 46
+    "GauntletBanana": 46,
+    "FillerRainbowCoin": 47
   },
   "BarrierItems": {
     "Nothing": 0,

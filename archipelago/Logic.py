@@ -635,7 +635,7 @@ class LogicVarHolder:
                     self.BananaMedals += 1
                 case Items.BattleCrown | Items.FillerCrown:
                     self.BattleCrowns += 1
-                case Items.RainbowCoin:
+                case Items.RainbowCoin | Items.FillerRainbowCoin:
                     self.RainbowCoins += 1
                     for x in range(5):
                         self.Coins[x] += 5
@@ -817,7 +817,7 @@ class LogicVarHolder:
         self.BananaFairies = item_counts[Items.BananaFairy] + item_counts[Items.FillerFairy]
         self.BananaMedals = item_counts[Items.BananaMedal] + item_counts[Items.FillerMedal]
         self.BattleCrowns = item_counts[Items.BattleCrown] + item_counts[Items.FillerCrown]
-        self.RainbowCoins = item_counts[Items.RainbowCoin]
+        self.RainbowCoins = item_counts[Items.RainbowCoin] + item_counts[Items.FillerRainbowCoin]
 
         self.camera = self.camera or Items.CameraAndShockwave in ownedItems or Items.Camera in ownedItems
         self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems or Items.Shockwave in ownedItems

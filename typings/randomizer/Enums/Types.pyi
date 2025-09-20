@@ -47,6 +47,7 @@ class Types(IntEnum):
     HalfMedal = 44
     RaceBanana = 45
     GauntletBanana = 46
+    FillerRainbowCoin = 47
 
 class BarrierItems(IntEnum):
     Nothing = 0

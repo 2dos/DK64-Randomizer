@@ -197,7 +197,9 @@ def ShuffleItems(spoiler):
                     locations_not_needing_flags.append(location_selection)
                 # Otherwise we need to put it in the list of locations needing flags
                 else:
-                    locations_needing_flags.append(location_selection)
+                    location_selection.new_flag = 0x7FFF
+                    locations_not_needing_flags.append(location_selection)
+                    # locations_needing_flags.append(location_selection)
             # If this location is empty, it doesn't need a flag and we need to None out these fields
             else:
                 location_selection.new_item = None

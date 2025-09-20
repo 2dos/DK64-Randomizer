@@ -184,6 +184,7 @@ ItemList = {
     Items.Bean: Item("The Bean", False, Types.Bean, Kongs.any),
     Items.Pearl: Item("Pearl", False, Types.Pearl, Kongs.any),
     Items.RainbowCoin: Item("Rainbow Coin", False, Types.RainbowCoin, Kongs.any),
+    Items.FillerRainbowCoin: Item("Rainbow Coin", False, Types.FillerRainbowCoin, Kongs.any),
     Items.IceTrapBubble: Item("Ice Trap (Bubble - GB)", False, Types.FakeItem, Kongs.any),
     Items.IceTrapReverse: Item("Ice Trap (Reverse - GB)", False, Types.FakeItem, Kongs.any),
     Items.IceTrapSlow: Item("Ice Trap (Slow - GB)", False, Types.FakeItem, Kongs.any),

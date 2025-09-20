@@ -340,16 +340,16 @@ class Settings:
             # BarrierItems.Nothing: 0,
             # BarrierItems.Kong: 5,
             # BarrierItems.Move: 41,
-            BarrierItems.GoldenBanana: 200,
+            BarrierItems.GoldenBanana: self.total_gbs - 1,
             BarrierItems.Blueprint: 40,
-            BarrierItems.Fairy: 20,
+            BarrierItems.Fairy: self.total_fairies,
             # BarrierItems.Key: 8,
-            BarrierItems.Crown: 10,
+            BarrierItems.Crown: self.total_crowns,
             BarrierItems.CompanyCoin: 2,
-            BarrierItems.Medal: 40,
+            BarrierItems.Medal: self.total_medals,
             BarrierItems.Bean: 1,
-            BarrierItems.Pearl: 5,
-            BarrierItems.RainbowCoin: 16,
+            BarrierItems.Pearl: self.total_pearls,
+            BarrierItems.RainbowCoin: self.total_rainbow_coins,
             # BarrierItems.IceTrap: 10,
             # BarrierItems.Percentage: 20,
             # BarrierItems.ColoredBanana: 1000,
@@ -467,6 +467,14 @@ class Settings:
         self.chunky_freeing_kong = Kongs.lanky
         self.switchsanity_data = {}
         self.extreme_debugging = False  # Use when you want to know VERY specifically where things fail in the fill - unnecessarily slows seed generation!
+
+        # Item Counts
+        self.total_gbs = 201
+        self.total_crowns = 10
+        self.total_pearls = 5
+        self.total_medals = 40
+        self.total_fairies = 20
+        self.total_rainbow_coins = 16
 
         # The major setting for item randomization
         self.shuffle_items = True
@@ -1530,6 +1538,7 @@ class Settings:
                 ItemRandoFiller.fairy: Types.FillerFairy,
                 ItemRandoFiller.medal: Types.FillerMedal,
                 ItemRandoFiller.pearl: Types.FillerPearl,
+                ItemRandoFiller.rainbowcoin: Types.RainbowCoin,
             }
             item_search_removal = [
                 # Anything which doesn't have accompanying checks. Usually starts with dummy_item
@@ -1633,6 +1642,23 @@ class Settings:
                 self.shockwave_status = ShockwaveStatus.start_with
             else:
                 self.shockwave_status = ShockwaveStatus.shuffled_decoupled
+            banana_types = [Types.Banana, Types.GauntletBanana, Types.RaceBanana]
+            has_banana = False
+            for btype in banana_types:
+                if btype in self.shuffled_location_types:
+                    has_banana = True
+            if not has_banana:
+                self.total_gbs = 201
+            if Types.Crown not in self.shuffled_location_types:
+                self.total_crowns = 10
+            if Types.RainbowCoin not in self.shuffled_location_types:
+                self.total_rainbow_coins = 16
+            if Types.Fairy not in self.shuffled_location_types:
+                self.total_fairies = 20
+            if Types.Medal not in self.shuffled_location_types:
+                self.total_medals = 40
+            if Types.Pearl not in self.shuffled_location_types:
+                self.total_pearls = 5
 
         kongs = GetKongs()
 
@@ -1812,9 +1838,9 @@ class Settings:
             WinConditionComplex.get_key8: HelmDoorInfo(1),
             WinConditionComplex.req_gb: HelmDoorInfo(
                 201,
-                HelmDoorRandomInfo(80, 150, 0.1),
-                HelmDoorRandomInfo(60, 80, 0.1),
-                HelmDoorRandomInfo(40, 60, 0.15),
+                HelmDoorRandomInfo(int(0.4 * self.total_gbs), int(0.75 * self.total_gbs), 0.1),
+                HelmDoorRandomInfo(int(0.3 * self.total_gbs), int(0.4 * self.total_gbs), 0.1),
+                HelmDoorRandomInfo(int(0.2 * self.total_gbs), int(0.3 * self.total_gbs), 0.15),
             ),
             WinConditionComplex.req_bp: HelmDoorInfo(
                 40,
@@ -1834,27 +1860,27 @@ class Settings:
             ),
             WinConditionComplex.req_medal: HelmDoorInfo(
                 40,
-                HelmDoorRandomInfo(25, 35, 0.09),
-                HelmDoorRandomInfo(20, 25, 0.1),
-                HelmDoorRandomInfo(5, 20, 0.1),
+                HelmDoorRandomInfo(int(0.625 * self.total_medals), int(0.875 * self.total_medals), 0.09),
+                HelmDoorRandomInfo(int(0.5 * self.total_medals), int(0.625 * self.total_medals), 0.1),
+                HelmDoorRandomInfo(int(0.125 * self.total_medals), int(0.5 * self.total_medals), 0.1),
             ),
             WinConditionComplex.req_crown: HelmDoorInfo(
                 10,
-                HelmDoorRandomInfo(7, 9, 0.1),
-                HelmDoorRandomInfo(4, 7, 0.1),
-                HelmDoorRandomInfo(2, 4, 0.06),
+                HelmDoorRandomInfo(int(0.7 * self.total_crowns), int(0.9 * self.total_crowns), 0.1),
+                HelmDoorRandomInfo(int(0.4 * self.total_crowns), int(0.7 * self.total_crowns), 0.1),
+                HelmDoorRandomInfo(int(0.2 * self.total_crowns), int(0.4 * self.total_crowns), 0.06),
             ),
             WinConditionComplex.req_fairy: HelmDoorInfo(
                 20,
-                HelmDoorRandomInfo(12, 18, 0.1),
-                HelmDoorRandomInfo(8, 12, 0.12),
-                HelmDoorRandomInfo(1, 8, 0.18),
+                HelmDoorRandomInfo(int(0.6 * self.total_fairies), int(0.9 * self.total_fairies), 0.1),
+                HelmDoorRandomInfo(int(0.4 * self.total_fairies), int(0.6 * self.total_fairies), 0.12),
+                HelmDoorRandomInfo(int(0.05 * self.total_fairies), int(0.4 * self.total_fairies), 0.18),
             ),
             WinConditionComplex.req_rainbowcoin: HelmDoorInfo(
                 16,
-                HelmDoorRandomInfo(10, 16, 0.11),
-                HelmDoorRandomInfo(6, 10, 0.14),
-                HelmDoorRandomInfo(3, 6, 0.18),
+                HelmDoorRandomInfo(int(0.625 * self.total_rainbow_coins), int(1.0 * self.total_rainbow_coins), 0.11),
+                HelmDoorRandomInfo(int(0.375 * self.total_rainbow_coins), int(0.625 * self.total_rainbow_coins), 0.14),
+                HelmDoorRandomInfo(int(0.1875 * self.total_rainbow_coins), int(0.375 * self.total_rainbow_coins), 0.18),
             ),
             WinConditionComplex.req_bean: HelmDoorInfo(
                 1,
@@ -1863,9 +1889,9 @@ class Settings:
             ),
             WinConditionComplex.req_pearl: HelmDoorInfo(
                 5,
-                HelmDoorRandomInfo(4, 5, 0.05),
-                HelmDoorRandomInfo(3, 4, 0.1),
-                HelmDoorRandomInfo(1, 3, 0.13),
+                HelmDoorRandomInfo(int(0.8 * self.total_pearls), int(1.0 * self.total_pearls), 0.05),
+                HelmDoorRandomInfo(int(0.6 * self.total_pearls), int(0.8 * self.total_pearls), 0.1),
+                HelmDoorRandomInfo(int(0.2 * self.total_pearls), int(0.6 * self.total_pearls), 0.13),
             ),
             WinConditionComplex.req_bosses: HelmDoorInfo(7),
             WinConditionComplex.req_bonuses: HelmDoorInfo(len(getCompletableBonuses(self))),
@@ -2224,6 +2250,7 @@ class Settings:
             ItemList[Items.FillerFairy].playthrough = True
         if self.win_condition_item == WinConditionComplex.req_rainbowcoin or self.crown_door_item == BarrierItems.RainbowCoin or self.coin_door_item == BarrierItems.RainbowCoin:
             ItemList[Items.RainbowCoin].playthrough = True
+            ItemList[Items.FillerRainbowCoin].playthrough = True
         if self.win_condition_item == WinConditionComplex.req_bp or self.crown_door_item == BarrierItems.Blueprint or self.coin_door_item == BarrierItems.Blueprint:
             for item_index in ItemList:
                 if ItemList[item_index].type == Types.Blueprint:
@@ -2287,15 +2314,15 @@ class Settings:
 
         prog_hint_max = {
             ProgressiveHintItem.off: 0,
-            ProgressiveHintItem.req_gb: 201,
+            ProgressiveHintItem.req_gb: self.total_gbs,
             ProgressiveHintItem.req_bp: 40,
             ProgressiveHintItem.req_key: 8,
-            ProgressiveHintItem.req_medal: 40,
-            ProgressiveHintItem.req_crown: 10,
-            ProgressiveHintItem.req_fairy: 20,
-            ProgressiveHintItem.req_rainbowcoin: 16,
+            ProgressiveHintItem.req_medal: self.total_medals,
+            ProgressiveHintItem.req_crown: self.total_crowns,
+            ProgressiveHintItem.req_fairy: self.total_fairies,
+            ProgressiveHintItem.req_rainbowcoin: self.total_rainbow_coins,
             ProgressiveHintItem.req_bean: 1,
-            ProgressiveHintItem.req_pearl: 5,
+            ProgressiveHintItem.req_pearl: self.total_pearls,
             ProgressiveHintItem.req_cb: 3500,
         }
         prog_max = prog_hint_max.get(self.progressive_hint_item, 0)
@@ -2541,6 +2568,8 @@ class Settings:
                 self.valid_locations[Types.RainbowCoin] = [
                     x for x in shuffledNonMoveLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing)
                 ]
+            if Types.FillerRainbowCoin in self.shuffled_location_types:
+                self.valid_locations[Types.FillerRainbowCoin] = self.valid_locations[Types.RainbowCoin].copy()
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (
                     # Miscellaneous issues
@@ -2840,7 +2869,6 @@ class Settings:
         if self.smaller_shops:
             self.item_check_counts[ItemRandoListSelected.shop] = [0, 60]
         if IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
-            self.item_check_counts[ItemRandoListSelected.medal] = [45, 0]
             self.item_check_counts[ItemRandoListSelected.medal_checks] = [0, 40]
         self.item_check_counts[ItemRandoListSelected.kong][0] = 5 - len(self.starting_kong_list)
         self.item_check_counts[ItemRandoListSelected.shopowners][0] = 0  # Reset it back to a default state every time
@@ -2852,6 +2880,12 @@ class Settings:
             self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         if Types.Snide in self.shuffled_location_types:
             self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
+        self.item_check_counts[ItemRandoListSelected.medal][0] = self.total_medals
+        self.item_check_counts[ItemRandoListSelected.banana][0] = self.total_gbs - 40
+        self.item_check_counts[ItemRandoListSelected.fairy][0] = self.total_fairies
+        self.item_check_counts[ItemRandoListSelected.rainbowcoin][0] = self.total_rainbow_coins
+        self.item_check_counts[ItemRandoListSelected.crown][0] = self.total_crowns
+        self.item_check_counts[ItemRandoListSelected.pearl][0] = self.total_pearls
         buffers = []
         for x in range(4):
             item_count = 0

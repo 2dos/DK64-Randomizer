@@ -266,3 +266,4 @@ class Items(IntEnum):
     IceTrapSlipBean = 263
     IceTrapSlipKey = 264
     IceTrapSlipFairy = 265
+    FillerRainbowCoin = 266

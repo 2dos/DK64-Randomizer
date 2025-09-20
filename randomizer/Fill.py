@@ -1046,6 +1046,7 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
         majorItems.append(Items.Bean)
     if checkCommonBarriers(spoiler.settings, BarrierItems.RainbowCoin, WinConditionComplex.req_rainbowcoin):
         majorItems.append(Items.RainbowCoin)
+        majorItems.append(Items.FillerRainbowCoin)
     # The contents of some locations can make entire classes of items not foolish
     # Loop through these locations until no new items are added to the list of major items
     newFoolishItems = True
@@ -2004,7 +2005,7 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.RainbowCoin in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.RainbowCoin)
         spoiler.Reset()
-        rainbowCoinsToPlace = ItemPool.RainbowCoinItems().copy()
+        rainbowCoinsToPlace = ItemPool.RainbowCoinItems(spoiler.settings).copy()
         for item in preplaced_items:
             if item in rainbowCoinsToPlace:
                 rainbowCoinsToPlace.remove(item)
@@ -2149,7 +2150,7 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.Pearl in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Pearl)
         spoiler.Reset()
-        miscItemsToPlace = ItemPool.PearlItems().copy()
+        miscItemsToPlace = ItemPool.PearlItems(spoiler.settings).copy()
         for item in preplaced_items:
             if item in miscItemsToPlace:
                 miscItemsToPlace.remove(item)
@@ -2242,7 +2243,7 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.Crown in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Crown)
         spoiler.Reset()
-        crownsToPlace = ItemPool.BattleCrownItems()
+        crownsToPlace = ItemPool.BattleCrownItems(spoiler.settings)
         for item in preplaced_items:
             if item in crownsToPlace:
                 crownsToPlace.remove(item)
@@ -2298,7 +2299,7 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.Fairy in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Fairy)
         spoiler.Reset()
-        fairiesToBePlaced = ItemPool.FairyItems()
+        fairiesToBePlaced = ItemPool.FairyItems(spoiler.settings)
         for item in preplaced_items:
             if item in fairiesToBePlaced:
                 fairiesToBePlaced.remove(item)
@@ -2328,7 +2329,7 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.Banana in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Banana)
         spoiler.Reset()
-        gbsToBePlaced = ItemPool.GoldenBananaItems()
+        gbsToBePlaced = ItemPool.GoldenBananaItems(spoiler.settings)
         for item in preplaced_items:
             if item in gbsToBePlaced:
                 gbsToBePlaced.remove(item)
@@ -2383,6 +2384,7 @@ def Fill(spoiler: Spoiler) -> None:
         Types.FillerFairy,
         Types.FillerPearl,
         Types.FillerMedal,
+        Types.FillerRainbowCoin,
     ]
     filler_types_in_pool = [x for x in filler_types if x in spoiler.settings.shuffled_location_types]
     if len(filler_types_in_pool) > 0:
@@ -4014,6 +4016,42 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
                 all_zero_weights = False
         if all_zero_weights:
             found_incompatibilities += "All Ice Traps have a zero weight, meaning it can't place anything. "
+    total_item_counts = settings.total_gbs + settings.total_crowns + settings.total_fairies + settings.total_medals + settings.total_pearls + settings.total_rainbow_coins
+    max_item_counts = 201 + 10 + 20 + 45 + 5 + 16
+    if total_item_counts > max_item_counts:
+        found_incompatibilities += f"Total amounts of GBs, Crowns, Fairies, Medals, Pearls, and Rainbow coins exceeds {max_item_counts}. "
+    custom_item_count_data = {
+        "Golden Bananas": {
+            "value": settings.total_gbs,
+            "min": 40,
+        },
+        "Crowns": {
+            "value": settings.total_crowns,
+        },
+        "Medals": {
+            "value": settings.total_medals,
+            "min": 1,
+        },
+        "Fairies": {
+            "value": settings.total_fairies,
+            "min": 1,
+        },
+        "Rainbow Coins": {
+            "value": settings.total_rainbow_coins,
+        },
+        "Pearls": {
+            "value": settings.total_pearls,
+            "min": 1,
+        },
+    }
+    for item_name, item_data in custom_item_count_data.items():
+        min_v = item_data.get("min", 0)
+        max_v = item_data.get("max", 255)
+        count_v = item_data.get("value", 0)
+        if count_v < min_v:
+            found_incompatibilities += f"Total count of {item_name} cannot be less than {min_v}"
+        if count_v > max_v:
+            found_incompatibilities += f"Total count of {item_name} cannot exceed {max_v}"
     if not settings.is_valid_item_pool():
         found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
     if settings.krool_access and Items.HideoutHelmKey in settings.starting_keys_list_selected:
