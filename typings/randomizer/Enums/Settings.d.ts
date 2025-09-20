@@ -907,6 +907,12 @@ export enum SettingsStringEnum {
     trap_weight_icefloor = 276,
     trap_weight_paper = 277,
     trap_weight_slip = 278,
+    total_gbs = 279,
+    total_medals = 280,
+    total_rainbow_coins = 281,
+    total_pearls = 282,
+    total_crowns = 283,
+    total_fairies = 284,
 }
 
 export enum SettingsStringDataType {
@@ -1332,6 +1338,12 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.trap_weight_icefloor: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_paper: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_slip: SettingsStringDataType.int8,
+    SettingsStringEnum.total_gbs: SettingsStringDataType.int8,
+    SettingsStringEnum.total_medals: SettingsStringDataType.int8,
+    SettingsStringEnum.total_rainbow_coins: SettingsStringDataType.int8,
+    SettingsStringEnum.total_pearls: SettingsStringDataType.int8,
+    SettingsStringEnum.total_crowns: SettingsStringDataType.int8,
+    SettingsStringEnum.total_fairies: SettingsStringDataType.int8,
 }
 
 export const SettingsStringListTypeMap = {
@@ -1379,6 +1391,12 @@ export const SettingsStringListTypeMap = {
     SettingsStringEnum.trap_weight_icefloor: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_paper: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_slip: SettingsStringDataType.int8,
+    SettingsStringEnum.total_gbs: SettingsStringDataType.int8,
+    SettingsStringEnum.total_medals: SettingsStringDataType.int8,
+    SettingsStringEnum.total_rainbow_coins: SettingsStringDataType.int8,
+    SettingsStringEnum.total_pearls: SettingsStringDataType.int8,
+    SettingsStringEnum.total_crowns: SettingsStringDataType.int8,
+    SettingsStringEnum.total_fairies: SettingsStringDataType.int8,
 }
 
 export const SettingsStringIntRangeMap = {

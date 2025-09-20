@@ -56,6 +56,13 @@
                         {% include "complex-options/ice-trap.html" %}
                     </div>
                 </div>
+                <div style="width:50%">
+                    <div class="mx-auto" style="width: fit-content">
+                        {% include "complex-options/item-totals.html" %}
+                    </div>
+                </div>
+                <div style="width:50%">
+                </div>
             </div>
             <div class="d-flex" id="item_rando-category-container" data-items="{{ itemRando | tojsonarr | escape }}" data-count="5" data-predicate="item_rando_list_">
                 {% for x in range(5) %}
@@ -356,9 +363,21 @@
                 !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
     }
 
+    const item_count_mapping = {
+        "medal": "total_medals",
+        "banana": "total_gbs",
+        "fairy": "total_fairies",
+        "pearl": "total_pearls",
+        "crown": "total_crowns",
+        "rainbowcoin": "total_rainbow_coins",
+    }
     function getItemChange(item, original_value) {
-        if (item == "medal" && islesCBs()) {
-            return 45;
+        if (Object.keys(item_count_mapping).includes(item)) {
+            const ic_value = parseInt(document.getElementById(item_count_mapping[item]).value)
+            if (item == "banana") {
+                return Math.max(ic_value - 40, 0);
+            }
+            return ic_value;
         }
         return original_value;
     }
@@ -728,7 +747,6 @@
                     liquid_sum: pool_liquids,
                     bucket_sum: pool_buckets,
                 }
-                console.log(data);
             }
             return {
                 valid: pool_valid,

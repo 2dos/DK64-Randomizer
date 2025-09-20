@@ -1,0 +1,74 @@
+<div>
+    <div>
+        <div class="d-flex">
+            <button
+                class="btn btn-secondary btn-custom-large"
+                type="button"
+                href="#"
+                data-bs-toggle="modal"
+                data-bs-target="#itemCountModal"
+                data-toggle="modal"
+                title="Customize what models each slam gets">
+                Item Count Modifier
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="itemCountModal" tabindex="-1" aria-labelledby="itemCountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title title" id="itemCountModalLabel">CONFIGURE ITEM COUNTS</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <p>
+                        Configure the total amount of items for some item types that will be placed into the world.<br />
+                        <strong id="item_count_collective">The collective total must be less than 298</strong>.
+                    </p>
+                    <div class="d-flex flex-wrap justify-content-center">
+                        {% set item_list = [
+                            { "name": "Golden Bananas", "default_value": 201, "min_value": 40, "setting": "total_gbs", "effect": "Alters the total amount of Golden Bananas placed into the world.\nMinimum: 40.\nMaximum: 255" },
+                            { "name": "Banana Medals", "default_value": 40, "min_value": 1, "setting": "total_medals", "effect": "Alters the total amount of Banana Medals placed into the world.\nMinimum: 1.\nMaximum: 255" },
+                            { "name": "Banana Fairies", "default_value": 20, "min_value": 1, "setting": "total_fairies", "effect": "Alters the total amount of Banana Fairies placed into the world.\nMinimum: 1.\nMaximum: 255" },
+                            { "name": "Battle Crowns", "default_value": 10, "min_value": 0, "setting": "total_crowns", "effect": "Alters the total amount of Battle Crowns placed into the world.\nMinimum: 0.\nMaximum: 255" },
+                            { "name": "Rainbow Coins", "default_value": 16, "min_value": 0, "setting": "total_rainbow_coins", "effect": "Alters the total amount of Rainbow Coins placed into the world.\nMinimum: 0.\nMaximum: 255" },
+                            { "name": "Pearls", "default_value": 5, "min_value": 1, "setting": "total_pearls", "effect": "Alters the total amount of Pearls placed into the world.\nMinimum: 1.\nMaximum: 255" }
+                        ] %}
+                        {% for item in item_list %}
+                            <div class="item-select" style="margin:0;flex:0;min-width:150px;" title="{{ item.effect }}">
+                                <p class="select-title" id="{{ item.setting }}_title">{{ item.name }}</p>
+                                <input name="{{ item.setting }}"
+                                    id="{{ item.setting }}"
+                                    type="number"
+                                    display_name="Item Placement Count - {{ item.name }}"
+                                    class="form-control my-3 mx-auto item-count-alterer"
+                                    aria-label="Item Placement Count - {{ item.name }}"
+                                    data-toggle="tooltip"
+                                    style="width:15%"
+                                    min="{{ item.min_value }}"
+                                    max="255"
+                                    value="{{ item.default_value }}"
+                                />
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="item_count_reset_default">Reset to default</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("item_count_reset_default").addEventListener("click", (e) => {
+        Object.keys(default_item_counts).forEach(stg => {
+            document.getElementById(stg).value = default_item_counts[stg];
+        })
+        getTotalItemCounts();
+        refreshItemRandoSortable();
+    })
+</script>

@@ -1945,12 +1945,48 @@ function update_trap_weight(el, default_value, force) {
   return all_zero;
 }
 
-let force_trap_weight_reset = false;
-Object.keys(default_trap_weights).forEach(stg => {
-  document.getElementById(stg).addEventListener("change", (e) => {
-    force_trap_weight_reset = update_trap_weight(e.target, default_trap_weights[stg], force_trap_weight_reset);
+function update_all_trap_weights() {
+  let force_trap_weight_reset = false;
+  Object.keys(default_trap_weights).forEach(stg => {
+    document.getElementById(stg).addEventListener("change", (e) => {
+      force_trap_weight_reset = update_trap_weight(e.target, default_trap_weights[stg], force_trap_weight_reset);
+    })
   })
-})
+}
+
+const alterers = document.getElementsByClassName("item-count-alterer");
+function getTotalItemCounts() {
+    const alt_v = document.getElementsByClassName("item-count-alterer")
+    let total = 0;
+    for (let a = 0; a < alt_v.length; a++) {
+        const local_value = parseInt(alt_v[a].value);
+        const local_id = alt_v[a].getAttribute("id");
+        const local_header = document.getElementById(`${local_id}_title`);
+        let local_min = 1;
+        const local_max = 255;
+        if (local_id == "total_gbs") {
+            local_min = 40;
+        } else if (["total_crowns", "total_rainbow_coins"].includes(local_id)) {
+            local_min = 0;
+        }
+        if ((local_value < local_min) || (local_value > local_max)) {
+            local_header.style.color = "red";
+        } else {
+            local_header.style.color = "white";
+        }
+        total += local_value;
+    }
+    const notifier = document.getElementById("item_count_collective");
+    if (total < 298) {
+        notifier.style.color = "white";
+    } else {
+        notifier.style.color = "red";
+    }
+}
+for (let a = 0; a < alterers.length; a++) {
+    alterers[a].addEventListener("change", getTotalItemCounts);
+    alterers[a].addEventListener("change", refreshItemRandoSortable);
+}
 
 // Bind custom update UI event for "apply_preset"
 function update_ui_states() {
@@ -1980,10 +2016,8 @@ function update_ui_states() {
   update_prog_hint_num_access();
   update_blocker_num_access();
   update_ice_trap_count();
-  let local_trap_weight_reset = false;
-  Object.keys(default_trap_weights).forEach(stg => {
-    local_trap_weight_reset = update_trap_weight(document.getElementById(stg), default_trap_weights[stg], local_trap_weight_reset);
-  })
+  getTotalItemCounts();
+  update_all_trap_weights();
   update_troff_number_access();
   item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
   item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);

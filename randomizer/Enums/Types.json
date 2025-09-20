@@ -417,6 +417,11 @@
             "tooltip": "Pearls will be added to filler."
         },
         {
+            "name": "Rainbow Coins",
+            "value": "rainbowcoin",
+            "tooltip": "Rainbow Coins will be added to filler."
+        },
+        {
             "name": "Golden Banana",
             "value": "banana",
             "tooltip": "Golden Banana will be added to filler."
