@@ -24,6 +24,7 @@ from randomizer.LogicFiles.JungleJapes import LogicRegions as JapesLogic
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.Enums.Switches import Switches
@@ -40,21 +41,6 @@ class MockSettings:
     shuffle_shops = False
 
 
-class MockEvents:
-    """Mock of the Events object."""
-
-    def __init__(self, requirements):
-        """Initialize the events class with a set of requirements."""
-        self.reqs = requirements
-
-    def __contains__(self, event):
-        """Check if a given event is in the events (requirements)."""
-        return event in self.reqs
-
-
-TINY_TEMPLE_REGIONS = {Regions.TempleStart, Regions.TempleGuitarPad, Regions.TempleUnderwater, Regions.TempleVultureRoom, Regions.TempleKONGRoom}
-CASTLE_CRYPT_REGIONS = {Regions.Crypt, Regions.CryptDonkeyRoom, Regions.CryptDiddyRoom, Regions.CryptChunkyRoom, Regions.CastleMinecarts}
-GUN_MAP = {Kongs.donkey: "coconut", Kongs.lanky: "grape", Kongs.diddy: "peanut", Kongs.tiny: "feather", Kongs.chunky: "pineapple"}
 SWITCHSANITY_MOVES = {
     # These first two switches are removed because they are special_requirements
     Switches.FungiGreenFeather: None,
@@ -82,15 +68,10 @@ BASE_REQUIREMENTS = [
     *["grape", "trombone", "handstand", "sprint", "balloon"],
     *["feather", "saxophone", "twirl", "mini", "monkeyport"],
     *["pineapple", "triangle", "punch", "hunkyChunky", "gorillaGone"],
-]
-ALWAYS_IN_LOGIC = [
-    # These represent 'you are kong X', which assumes that you have a tag barrel accessible.
-    *["isdonkey", "islanky", "isdiddy", "istiny", "ischunky"],
+    # These represent 'you are kong X'
+    *["isdonkey", "isdiddy", "islanky", "istiny", "ischunky"],
     # These represent 'is kong X unlocked'
-    *["donkey", "lanky", "diddy", "tiny", "chunky"],
-    # These are region-based assumptions (should be quite rare)
-    Events.HatchOpened,
-    # 'assumeAztecEntry',  # I could use this but I'm using a different starting region instead.
+    *["donkey", "diddy", "lanky", "tiny", "chunky"],
 ]
 
 
@@ -99,9 +80,10 @@ class Logic:
 
     def __init__(self, requirements):
         """Initialize the logic class with custom requirements."""
-        self.reqs = set([*ALWAYS_IN_LOGIC, *requirements])
+        self.reqs = set(requirements)
         self.settings = MockSettings()
-        self.Events = MockEvents(self.reqs)  # Just a small wrapper since the code uses 'if Events.Foo in l.Events'
+        self.Events = [req for req in self.reqs if isinstance(req, Events)]
+        self.SpecialLocationsReached = [req for req in self.reqs if isinstance(req, Locations)]
 
     def get(self, key):
         """Check if a given key is in the requirements."""
@@ -131,13 +113,9 @@ class Logic:
         """Check if a given barrier is in the requirements."""
         return barrier in self.reqs
 
-    def HasGun(self, kong):
-        """Is handled separately by Moves.Night / Moves.Day."""
-        return False
-
     def CanSlamSwitch(self, level, default_requirement_level):
         """Check if a level slam is in the requirements."""
-        return "levelSlam" in self.reqs
+        return self.levelSlam
 
     def canOpenLlamaTemple(self):
         """Check if a access to the llama temple is in the requirements."""
@@ -147,18 +125,6 @@ class Logic:
         """Check if diving is in the requirements."""
         return self.swim
 
-    def IsBossReachable(self, level):
-        """Not strictly necessary (there aren't CBs inside boss rooms) but allows for assumed tagging inside boss rooms."""
-        return True
-
-    def HasInstrument(self, kong):
-        """Not strictly necessary but I'm not sure why."""
-        return False
-
-    def galleonGatesStayOpen(self):
-        """I'm pretty sure this QoL is always enabled in rando."""
-        return True
-
     def CanOpenJapesGates(self):
         """Quality of life improvement from rando."""
         return True
@@ -166,6 +132,26 @@ class Logic:
     def CanLlamaSpit(self):
         """I don't think this matters but I think tiny canonically frees lanky."""
         return lambda: self.saxophone
+
+    def IsBossReachable(self, level):
+        """Not strictly necessary (there aren't CBs inside boss rooms) but allows for assumed tagging inside boss rooms."""
+        return True
+
+    def HasGun(self, kong):
+        """Not needed, this is handled separately by Moves.Night / Moves.Day."""
+        return False
+
+    def HasInstrument(self, kong):
+        """Not needed, this is only used for free trade guns."""
+        return False
+
+    def isKrushaAdjacent(self, kong):
+        """Check if a given kong is krusha adjacent."""
+        return False
+
+    def galleonGatesStayOpen(self):
+        """I'm pretty sure this QoL is always enabled in rando."""
+        return True
 
     def IsLavaWater(self):
         """Hardmode requirements are all assumed false."""
@@ -274,6 +260,8 @@ class SetOfSets:
         i.e. a required event which also has its own SetOfSets requirements.
         This breaks some encapsulation rules, but is tremendously helpful and simple.
         """
+        if len(event_requirements) == 0:
+            return
         did_any_replacements = False
         i = 0
         while i < len(self.requirements):
@@ -282,11 +270,15 @@ class SetOfSets:
                 i += 1
                 continue
 
-            did_any_replacements = True
-            self.requirements.pop(i)
             requirement = requirement - {event}
             for event_requirement in event_requirements:
-                self.add(requirement | event_requirement)
+                if event in event_requirement:
+                    raise ValueError(f"Attempted to replace {event.name} with a set of requirements which contained itself, specifically {event_requirement}")
+                did_any_replacements = True
+                self.requirements.append(requirement | event_requirement)  # Eeeeh. I was calling .add() here but we've gotta be more careful.
+
+            if did_any_replacements:
+                self.requirements.pop(i)
 
         return did_any_replacements
 
@@ -296,9 +288,11 @@ class MockRegion:
 
     def __init__(self, region_id):
         """Initialize the MockRegion with a region ID."""
-        self.events = collections.defaultdict(SetOfSets)  # Will be populated later
-        self.cbs = collections.defaultdict(SetOfSets)  # Will be populated later
-        self.exits = collections.defaultdict(SetOfSets)  # Will be populated later
+        self.events = collections.defaultdict(SetOfSets)
+        self.cbs = collections.defaultdict(SetOfSets)
+        self.exits = collections.defaultdict(SetOfSets)
+        self.warps = {}
+        self.taggable = False
 
         self.name = region_id
 
@@ -340,6 +334,19 @@ def walk_region_graph(regions, starting_region):
                 adjacent_regions.add(other_region)
 
 
+def relax_kong_requirement(requirement):
+    """Replace any 'is' kong requirements with their softer 'has' kong version."""
+    for kong in ["donkey", "diddy", "lanky", "tiny", "chunky"]:
+        if "is" + kong in requirement:
+            requirement.discard("is" + kong)
+            requirement.add(kong)
+
+
+def all_kongs_can_use(requirement):
+    """Determine if a given requirement requires a specific kong, or can be used by all kongs."""
+    return requirement.isdisjoint(["isdonkey", "isdiddy", "islanky", "istiny", "ischunky"])
+
+
 def flatten_graph(region_logic, region_bananas, requirements):
     """Stage 1 of computation: Convert the raw data formats.
 
@@ -364,9 +371,7 @@ def flatten_graph(region_logic, region_bananas, requirements):
     event_names = set()
     for region_id, region in region_logic.items():
         for event in region.events:
-            if Events.JapesW1aTagged <= event.name <= Events.IslesW5bTagged:
-                continue  # Warps do not contribute to new regions becoming accessible, so we ignore them for perf benefits
-            elif event.name in requirements:
+            if event.name in requirements:
                 regions[region_id].events[event.name] = SetOfSets()
                 continue  # Events which are explicitly listed as requirements shouldn't be satisfiable
             elif event.logic(no_requirements):
@@ -385,7 +390,7 @@ def flatten_graph(region_logic, region_bananas, requirements):
         for region_id, event in events:
             if event.logic(l):
                 if regions[region_id].events[event.name].add(requirement):
-                    # print('Event', event.name.name, 'in region', region.name, 'is directly possible using requirement', requirement)
+                    # print(f"Event {event.name.name} in region {region.name} is directly possible using requirement {requirement}")
                     pass
 
     # Sanity check to make sure all events were processed
@@ -393,8 +398,6 @@ def flatten_graph(region_logic, region_bananas, requirements):
     handled_events = {event for region in regions.values() for event in region.events}
     unhandled_events = raw_events - handled_events
     for event in unhandled_events:
-        if Events.JapesW1aTagged <= event <= Events.IslesW5bTagged:
-            continue  # Warps do not contribute to new regions becoming accessible, so we ignore them for perf benefits
         raise ValueError(f"Unable to determine requirements for event {event.name}")
 
     print("Finding all collectibles")
@@ -432,8 +435,31 @@ def flatten_graph(region_logic, region_bananas, requirements):
         for source, transition in transitions:
             if transition.logic(l) and l.TimeAccess(transition.dest, transition.time):
                 if regions[source].exits[transition.dest].add(requirement):
-                    # print('Found transition from', source.name, 'to', transition.dest.name, 'with requirement', requirement)
+                    # print(f"Found transition from {source.name} to {transition.dest.name} with requirement {requirement}")
                     pass
+
+    print("Finding all warp pads")
+    warp_regions = {}
+    for region in regions.values():
+        for event in region.events:
+            if Events.JapesW1aTagged <= event <= Events.IslesW5bTagged:
+                warp_regions[event] = region.name
+
+    for warp1, source in warp_regions.items():
+        # The warp events are all in order, and all of the 'A' warps are odd.
+        # As such, we can do a little bit of math to find the paired warp event.
+        if warp1 % 2 == 1:
+            warp2 = Events(warp1 + 1)
+        else:
+            warp2 = Events(warp1 - 1)
+        dest = warp_regions[warp2]
+        if source != dest:  # There's no need to evaluate warps if both pads are in the same region
+            regions[source].warps[dest] = (warp1, warp2)
+
+    print("Finding all tag barrels")
+    for region_id, region in region_logic.items():
+        if region.tagbarrel:
+            regions[region_id].taggable = True
 
     # Hack: The ice walls in Crystal Caves aren't events, so they aren't nicely compatible with the event_requirements system.
     # Instead, I'm manually replacing punch with ice_walls and rbb with igloo_pads here.
@@ -478,22 +504,71 @@ def traverse_graph(regions, entry_region):
         for next_region in walk_region_graph(regions, entry_region):
             # Find all ways to reach this node from the current graph
             for region in list(region_requirements.keys()):
-                if next_region not in regions[region].exits:
-                    continue
+                # Region transitions using doorways
+                if next_region in regions[region].exits:
+                    for region_requirement in region_requirements[region]:
+                        # Find the cross product between 'ways to access region' and 'ways to traverse from region -> next_region'
+                        for exit_requirement in regions[region].exits[next_region]:
+                            # If you need it to be a particular time of day to reach the region, you cannot change the time for an event.
+                            # The same is true for water level (although it doesn't impact anything in particular).
+                            if any(
+                                [
+                                    Events.Day in region_requirement and Events.Night in exit_requirement,
+                                    Events.Night in region_requirement and Events.Day in exit_requirement,
+                                    Events.WaterRaised in region_requirement and Events.WaterLowered in exit_requirement,
+                                    Events.WaterLowered in region_requirement and Events.WaterRaised in exit_requirement,
+                                ]
+                            ):
+                                # print(f"Attempted to use transition from {region.name} to {next_region.name} using requirement {exit_requirement}, but access to the region requires {region_requirement}")
+                                continue
 
-                for region_requirement in region_requirements[region]:
-                    # Find the cross product between 'ways to access region' and 'ways to traverse from region -> next_region'
-                    for exit_requirement in regions[region].exits[next_region]:
-                        # If any of those products are new ways to reach next_region, then we do another loop afterwards
-                        if region_requirements[next_region].add(exit_requirement | region_requirement):
-                            # print('Found new transition from', region.name, 'to', next_region.name, 'using exit requirement', exit_requirement, 'and region requirement', region_requirement)
-                            found_new_requirement = True
+                            # If any of those products are new ways to reach next_region, then we do another loop afterwards
+                            if region_requirements[next_region].add(exit_requirement | region_requirement):
+                                # print(f"Found new transition from {region.name} to {next_region.name} using exit requirement {exit_requirement} and region requirement {region_requirement}")
+                                found_new_requirement = True
 
-                    # Find the cross product between 'ways to access region' and 'ways to trigger events in the region'
-                    for event in regions[region].events:
+                    # Flood fill 'tag-ability' from regions with tag barrels
+                    if regions[region].taggable and not regions[next_region].taggable:
+                        for exit_requirement in regions[region].exits[next_region]:
+                            if all_kongs_can_use(exit_requirement):
+                                # print(f"Marking region {next_region.name} as taggable because it can be accessed from taggable region {region.name} with all 5 kongs using {exit_requirement}")
+                                regions[next_region].taggable = True
+                                found_new_requirement = True
+                                break
+
+                # Region transitions using warp pads
+                if next_region in regions[region].warps:
+                    warp1, warp2 = regions[region].warps[next_region]
+                    for warp1_requirement in event_requirements[warp1]:
+                        for warp2_requirement in event_requirements[warp2]:
+                            # This logic exists to handle unusual requirements, where you can access a region with one kong,
+                            # but must warp back to the region later with another kong.
+                            # As such, we can downgrade any explicit 'is' kong requirements to the less restrictive 'has' kong versions.
+                            requirement = warp1_requirement | warp2_requirement
+                            relax_kong_requirement(requirement)
+                            if region_requirements[next_region].add(requirement):
+                                # print(f"Found new transition from {region.name} to {next_region.name} using combined requirement {combined_requirement}")
+                                found_new_requirement = True
+
+                # Update any events based on new region requirements
+                for event in regions[region].events:
+                    for region_requirement in region_requirements[region]:
+                        if event in region_requirement:
+                            continue  # Events cannot be on the path to the regions they are in. For example, you cannot use a warp to access a region for the first time.
                         for event_requirement in regions[region].events[event]:
-                            if event_requirements[event].add(event_requirement | region_requirement):
-                                # print('Found new path to event', event.name, 'in region', region.name, 'using event requirement', event_requirement, 'and region requirement', region_requirement)
+                            if event in event_requirement:
+                                continue  # Events cannot be on the path to themselves, either. For example, you cannot use a switch to activate itself.
+
+                            # There are various events in DK64 which require you to use a particular move on a particular kong.
+                            # Usually, we encode their requirements just with the move, e.g. {'peanut'}.
+                            # However, in some cases the event takes place in a region with a kong requirement,
+                            # which causes problems down the line if the event is used in a non-kong-locked region.
+                            # Since kong-locked regions will already encode the kong requirements, we relax the requirements here
+                            # so that they only require you to 'have' the kong, instead of 'be' the kong.
+                            requirement = event_requirement | region_requirement
+                            relax_kong_requirement(requirement)
+                            if event_requirements[event].add(requirement):
+                                # print(f"Found new path to event {event.name} in region {region.name} using event requirement {event_requirement} and region requirement {region_requirement}")
                                 found_new_requirement = True
 
         if not found_new_requirement:
@@ -507,6 +582,7 @@ def traverse_graph(regions, entry_region):
         for event in event_requirements:
             for other_event in event_requirements:
                 if event_requirements[event].replace_event(other_event, event_requirements[other_event]):
+                    # print(f"Replaced event {other_event.name} with {event_requirements[other_event]} inside event {event.name}")
                     expanded_any_events = True
         if not expanded_any_events:
             break
@@ -516,13 +592,18 @@ def traverse_graph(regions, entry_region):
     for region in region_requirements:
         for event in event_requirements:
             if region_requirements[region].replace_event(event, event_requirements[event]):
-                # print('Replaced event', event.name, 'in region', region.name, 'with its requirements', event_requirements[event])
+                # print(f"Replaced event {event.name} in region {region.name} with its requirements {event_requirements[event]}")
                 pass
 
-    return region_requirements, event_requirements
+            for cb_requirements in regions[region].cbs.values():
+                if cb_requirements.replace_event(event, event_requirements[event]):
+                    # print(f"Replaced event {event.name} in region {region.name} with its requirements {event_requirements[event]}")
+                    pass
+
+    return region_requirements
 
 
-def compute_cb_requirements(regions, region_requirements, event_requirements):
+def compute_cb_requirements(regions, region_requirements):
     """Stage 3: Compute the requirements to reach each CB/Bunch/Balloon.
 
     We already parsed out the relevant collectible objects during our flatten_graph prepass.
@@ -533,8 +614,6 @@ def compute_cb_requirements(regions, region_requirements, event_requirements):
     Just determine the cross-product between the direct requirements to acquire a CB
     (e.g. 'coconut' for a balloon), and the transitive requirements to access a region
     (e.g. 'climbing' to get up to the japes hillside).
-
-    We also need to do a quick fix-up for event requirements, but there's a handy utility for that.
     """
     print("Computing CB requirements")
     all_cb_requirements = collections.defaultdict(lambda: collections.defaultdict(list))
@@ -545,46 +624,48 @@ def compute_cb_requirements(regions, region_requirements, event_requirements):
             for cb_requirement in cb_requirements:
                 for region_requirement in region_requirements[region]:
                     requirement = region_requirement | cb_requirement
-                    # Slight hack -- this logic does not check region.tagbarrel when evaluating region requirements.
-                    # The tiny temple famously does not have a tag barrel, and so you cannot (logically) change kongs inside of it.
-                    # The main way this assumption manifests is assuming access to the tiny temple with another kong's gun.
-                    if region in TINY_TEMPLE_REGIONS and GUN_MAP[cb.kong] not in region_requirement:
+                    if not all_kongs_can_use(requirement) and "is" + cb.kong.name.lower() not in requirement:
+                        # print(f"Region requirement {region_requirement} for region {region.name} does not include kong {cb.kong.name}, skipping {cb.amount} {cb.type.name}")
                         continue
-                    # The castle crypt rooms are also bereft of a tag barrel, but since this script is already reporting on
-                    # castle_crypt_doors directly, it's implicitly handled by separating out those requirements during flatten_graph.
-                    #
-                    # The third tag anywhere "gotcha" is access to the 10 diddy CBs inside the Caves Blueprint Cave.
-                    # You can only access this cave as mini, but it has warp 4 in it so you can come back as diddy.
-                    # However, warp 4 logically requires jetpack to reach it, so we adjust the requirements here.
-                    if cb.kong == Kongs.diddy and region == Regions.CavesBlueprintCave:
-                        requirement |= {"jetpack"}
-                    # On the other hand, there is a bunch of lanky CBs on top of the sprint cabin (on the trombone pad).
-                    # Logically you are supposed to use balloon to reach them, but you can also get up there with jetpack.
-                    # If there isn't a boss portal up there (uncommon with Dos's doors), the bunch is not in logic.
-                    if cb.kong == Kongs.lanky and region == Regions.CavesSprintCabinRoof and region_requirement == {"jetpack"}:
-                        continue
-                    # Additional hack #1: We require "night" and "day" separately from guns, but they are overlapping.
+
+                    # Special case #1: We require "night" and "day" separately from guns, but they are overlapping.
                     # If the requirement contains night or day access *and* one of the 5 guns, remove night/day.
                     if requirement.intersection({"coconut", "peanut", "grape", "feather", "pineapple"}):
                         requirement.discard(Events.Night)
                         requirement.discard(Events.Day)
-                    # Additional hack #2: We require "levelSlam" (i.e. switch color) separately from just "slam" (i.e. pounding a box).
+                    # Special case #2: We require "levelSlam" (i.e. switch color) separately from just "slam" (i.e. pounding a box).
                     # If the requirement contains both, just report levelSlam (the more restrictive requirement)
                     if requirement.intersection({"levelSlam"}):
                         requirement.discard("Slam")
-                    # Additional hack #3: We list Enguarde as a requirement for the DK CBs in Galleon (idk why).
-                    # For everyone's sanity, we *shouldn't* list Enguarde as a requirement for any Lanky CBs.
+                    # Special case #3: We assume Enguarde is available if lanky is available.
                     if cb.kong == Kongs.lanky:
                         requirement.discard(Events.ShipyardEnguarde)
                         requirement.discard(Events.LighthouseEnguarde)
+                    # Special case #4: We assume kongs are implied if any kong-specific moves are required.
+                    if requirement.intersection({"coconut", "bongos", "grab", "strongKong", "blast"}):
+                        requirement.discard("isdonkey")
+                        requirement.discard("donkey")
+                    if requirement.intersection({"peanut", "guitar", "charge", "jetpack", "spring"}):
+                        requirement.discard("isdiddy")
+                        requirement.discard("diddy")
+                    if requirement.intersection({"grape", "trombone", "handstand", "sprint", "balloon"}):
+                        requirement.discard("islanky")
+                        requirement.discard("lanky")
+                    if requirement.intersection({"feather", "saxophone", "twirl", "mini", "monkeyport"}):
+                        requirement.discard("istiny")
+                        requirement.discard("tiny")
+                    if requirement.intersection({"pineapple", "triangle", "punch", "hunkyChunky", "gorillaGone"}):
+                        requirement.discard("ischunky")
+                        requirement.discard("chunky")
+                    # Special case #5: We assume kongs are implied for their own CBs
+                    requirement.discard("is" + cb.kong.name.lower())
+                    requirement.discard(cb.kong.name.lower())
+
                     # Finally, once we're done processing all the hacks, add the requirements.
                     requirements_crossproduct.add(requirement)
-            # If the cb requires a non-requirement event, substitute in the event's requirements
-            for event in event_requirements:
-                requirements_crossproduct.replace_event(event, event_requirements[event])
 
             if len(requirements_crossproduct) == 0:
-                raise ValueError("Unable to determine requirements for cb in region", region.name, "with original requirements", cb_requirements)
+                raise ValueError(f"Unable to determine requirements for {cb.amount} {cb.kong.name} {cb.type.name} in region {region.name} with original requirements {cb_requirements}")
 
             all_cb_requirements[cb.kong][requirements_crossproduct].append((cb, region))
 
@@ -592,9 +673,9 @@ def compute_cb_requirements(regions, region_requirements, event_requirements):
 
 
 def to_javascript(cb_requirements, special_requirements):
-    """Stage 4: Generate the output for Ballaam.
+    """Stage 4: Generate the output for Ballaam's CB calculator.
 
-    And finally, we need to emit this data in some format that Javascript can understand.
+    Finally, we need to emit this data in some format that Javascript can understand.
     Thankfully, that's not too bad -- there's just a bit of renaming and other small fixups.
     We've already grouped CBs by their requirements in the previous step, but this stage is also
     responsible for counting the total number of CBs for each SetOfSets requirement.
@@ -613,6 +694,9 @@ def to_javascript(cb_requirements, special_requirements):
         **{"grape": "Grape", "trombone": "Trombone", "handstand": "Orangstand", "sprint": "Sprint", "balloon": "Balloon"},
         **{"feather": "Feather", "saxophone": "Sax", "twirl": "Twirl", "mini": "Mini", "monkeyport": "Monkeyport"},
         **{"pineapple": "Pineapple", "triangle": "Triangle", "punch": "Punch", "hunkyChunky": "Hunky", "gorillaGone": "Gone"},
+        # Kongs
+        **{"donkey": "Donkey", "diddy": "Diddy", "lanky": "Lanky", "tiny": "Tiny", "chunky": "Chunky"},
+        **{"isdonkey": "IsDonkey", "isdiddy": "IsDiddy", "islanky": "IsLanky", "istiny": "IsTiny", "ischunky": "IsChunky"},
     }
     move_map.update(special_requirements)
     move_map_keys = list(move_map.keys())
@@ -699,6 +783,7 @@ LEVELS = [
         "special_requirements": {
             Events.JapesFreeKongOpenGates: "JapesCoconut",
             "japes_shellhive_gate": "JapesShellhive",
+            Locations.JapesDiddyMountain: "JapesW5Bonus",  # Not actually required for any CBs, but used by interim logic
         },
     },
     {
@@ -712,6 +797,7 @@ LEVELS = [
             Events.LlamaFreed: "AztecLlama",
             Events.AztecIceMelted: "TinyTempleIce",
             Events.FedTotem: "Aztec5DT",
+            Locations.AztecDonkeyQuicksandCave: "AztecW5Bonus",
         },
     },
     {
@@ -738,6 +824,7 @@ LEVELS = [
             Events.ShipyardTreasureRoomOpened: "GalleonTreasure",
             Events.ShipyardEnguarde: "Enguarde",
             Events.LighthouseEnguarde: "Enguarde",
+            Locations.GalleonDiddyGoldTower: "DiddyGoldTower",
         },
     },
     {
@@ -762,6 +849,7 @@ LEVELS = [
         "special_requirements": {
             RemovedBarriersSelected.caves_ice_walls: "CavesIceWalls",
             RemovedBarriersSelected.caves_igloo_pads: "CavesIglooPads",
+            Locations.CavesTinyCaveBarrel: "CavesW3Bonus",
         },
     },
     {
@@ -780,13 +868,15 @@ if __name__ == "__main__":
     for level in LEVELS:
         requirements = [*BASE_REQUIREMENTS, *level["special_requirements"].keys()]
 
-        print("Evaluating level", level["name"])
+        print("\tEvaluating level", level["name"])
 
         regions = flatten_graph(level["logic"], level["bananas"], requirements)
 
-        region_requirements, event_requirements = traverse_graph(regions, level["entry_region"])
+        region_requirements = traverse_graph(regions, level["entry_region"])
 
-        cb_requirements = compute_cb_requirements(regions, region_requirements, event_requirements)
+        cb_requirements = compute_cb_requirements(regions, region_requirements)
+
+        print("\tFinished level", level["name"])
 
         output += f'    "{level["name"]}": {{\n'
         output += to_javascript(cb_requirements, level["special_requirements"])
