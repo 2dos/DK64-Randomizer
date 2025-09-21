@@ -1322,7 +1322,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 point_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 for y in range(point_count):
                     point_start = path_address + offset + 6 + (y * 10)
-                    if y == 0:
+                    if y < 2:
                         continue
                     ROM_COPY.seek(point_start + 8)
                     ROM_COPY.writeMultipleBytes(2, 1)  # Double the speed at this path point
