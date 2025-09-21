@@ -130,6 +130,10 @@ class ExtraTextures(IntEnum):
     BanditImage1 = auto()
     BanditImage2 = auto()
     BanditImage3 = auto()
+    SpecialAPPearlGold = auto()
+    SpecialAPPearlSilver = auto()
+    FoolsAPPearlBlack = auto()
+    FoolsAPPearlSilver = auto()
 
 
 barrel_skins = (

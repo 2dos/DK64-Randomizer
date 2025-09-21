@@ -565,48 +565,56 @@ def createArchiItem():
                 rgba = int.from_bytes(fh.read(4), "big")
                 vt_data.append({"coords": coords.copy(), "uv": u.copy(), "rgba": rgba})
             footer_data = fh.read()
-        with open("archi_om2.bin", "wb") as fh:
-            # Initial pass
-            fh.write(header_data)
-            fh.write(dl_head)
-            for idx in range(6):
-                # Get DL
-                written_dl = bytes(dl_data)  # Make copy of bytes obj
-                # Morph it
-                written_dl = writeValueToBytes(written_dl, 0x540 * idx, 5, 3)
-                written_dl = writeValueToBytes(written_dl, getBonusSkinOffset(ExtraTextures.APPearl0) + idx, 0x44, 4)
-                written_dl = writeValueToBytes(written_dl, (0x540 * idx) + 0x200, 0x1A5, 3)
-                written_dl = writeValueToBytes(written_dl, (0x540 * idx) + 0x400, 0x2CD, 3)
-                # Write it
-                fh.write(written_dl)
-            fh.write(dl_foot)
-            fh.write(bonus_dl_data)
-            for idx in range(6):
-                for vert in vt_data:
-                    for ci, c in enumerate(vert["coords"]):
-                        v = c * ARCHI_SCALE
-                        if ci < 2:
-                            # x or y
-                            v += ARCHI_XY_OFFSETS[idx][ci]
-                        v = int(v)
-                        if v < 0:
-                            v += 0x10000
-                        fh.write(v.to_bytes(2, "big"))
-                    for u in vert["uv"]:
-                        fh.write(u.to_bytes(2, "big"))
-                    fh.write(vert["rgba"].to_bytes(4, "big"))
-            fh.write(footer_data)
-        with open("archi_om2.bin", "r+b") as fh:
-            # Correct pointers
-            offset = 5 * len(dl_data)
-            for x in range(11):
-                if x == 2:
-                    offset += 5 * 0x540
-                fh.seek(0x44 + (x * 4))
-                initial = int.from_bytes(fh.read(4), "big")
-                initial += offset
-                fh.seek(0x44 + (x * 4))
-                fh.write(initial.to_bytes(4, "big"))
+        for ap_item in ("archi_om2", "special_archi_om2", "fools_archi_om2", "trap_archi_om2"):
+            with open(f"{ap_item}.bin", "wb") as fh:
+                # Initial pass
+                fh.write(header_data)
+                fh.write(dl_head)
+                for idx in range(6):
+                    texture_index = ExtraTextures.APPearl0 + idx
+                    if ap_item == "special_archi_om2":
+                        texture_index = ExtraTextures.SpecialAPPearlGold + (idx % 2)
+                    elif ap_item == "fools_archi_om2":
+                        texture_index = ExtraTextures.FoolsAPPearlBlack + (idx % 2)
+                    elif ap_item == "trap_archi_om2":
+                        texture_index = ExtraTextures.APPearl5 - idx
+                    # Get DL
+                    written_dl = bytes(dl_data)  # Make copy of bytes obj
+                    # Morph it
+                    written_dl = writeValueToBytes(written_dl, 0x540 * idx, 5, 3)
+                    written_dl = writeValueToBytes(written_dl, getBonusSkinOffset(texture_index), 0x44, 4)
+                    written_dl = writeValueToBytes(written_dl, (0x540 * idx) + 0x200, 0x1A5, 3)
+                    written_dl = writeValueToBytes(written_dl, (0x540 * idx) + 0x400, 0x2CD, 3)
+                    # Write it
+                    fh.write(written_dl)
+                fh.write(dl_foot)
+                fh.write(bonus_dl_data)
+                for idx in range(6):
+                    for vert in vt_data:
+                        for ci, c in enumerate(vert["coords"]):
+                            v = c * ARCHI_SCALE
+                            if ci < 2:
+                                # x or y
+                                v += ARCHI_XY_OFFSETS[idx][ci]
+                            v = int(v)
+                            if v < 0:
+                                v += 0x10000
+                            fh.write(v.to_bytes(2, "big"))
+                        for u in vert["uv"]:
+                            fh.write(u.to_bytes(2, "big"))
+                        fh.write(vert["rgba"].to_bytes(4, "big"))
+                fh.write(footer_data)
+            with open(f"{ap_item}.bin", "r+b") as fh:
+                # Correct pointers
+                offset = 5 * len(dl_data)
+                for x in range(11):
+                    if x == 2:
+                        offset += 5 * 0x540
+                    fh.seek(0x44 + (x * 4))
+                    initial = int.from_bytes(fh.read(4), "big")
+                    initial += offset
+                    fh.seek(0x44 + (x * 4))
+                    fh.write(initial.to_bytes(4, "big"))
 
 
 def loadNewModels():
@@ -667,6 +675,9 @@ def loadNewModels():
     portModelTwoToActor(0, "melon_3d_om2.bin", "melon_3d", 0x68, True, 1.0)
     createArchiItem()
     portModelTwoToActor(0, "archi_om2.bin", "archi", 0x68, True, 1.0)
+    portModelTwoToActor(0, "special_archi_om2.bin", "special_archi", 0x68, True, 1.0)
+    portModelTwoToActor(0, "fools_archi_om2.bin", "fools_archi", 0x68, True, 1.0)
+    portModelTwoToActor(0, "trap_archi_om2.bin", "trap_archi", 0x68, True, 1.0)
     portModelTwoToActor(694, "", "race_hoop", 0xC0, False, 1.0)
     # Shop Owners
     portActorToModelTwo(0x10, "", "cranky", 0x90, True, 0.5)

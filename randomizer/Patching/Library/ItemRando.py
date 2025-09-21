@@ -105,6 +105,9 @@ class CustomActors(IntEnum):
     ArchipelagoItem = auto()
     IceTrapFairy = auto()
     SlipPeel = auto()
+    SpecialArchipelagoItem = auto()
+    FoolsArchipelagoItem = auto()
+    TrapArchipelagoItem = auto()
 
 
 class GraphicOverlay(IntEnum):
@@ -793,12 +796,13 @@ item_db = {
         },
     ),
     Types.ArchipelagoItem: ItemPlacementData(
-        model_index=[0x125],
-        model_two_index=[0x291],
-        actor_index=[CustomActors.ArchipelagoItem],
-        arcade_reward_index=[ArcadeRewards.APItem],
-        jetpac_reward_index=[JetpacRewards.APItem],
-        overlay=[GraphicOverlay.Hint],
+        model_index=[0x125, 0x134, 0x136, 0x138],
+        model_two_index=[0x291, 0x292, 0x293, 0x294],
+        actor_index=[CustomActors.ArchipelagoItem, CustomActors.SpecialArchipelagoItem, CustomActors.FoolsArchipelagoItem, CustomActors.TrapArchipelagoItem],
+        arcade_reward_index=[ArcadeRewards.APItem] * 4,
+        jetpac_reward_index=[JetpacRewards.APItem] * 4,
+        overlay=[GraphicOverlay.Hint] * 4,
+        index_getter=lambda item, flag, shared: [Items.ArchipelagoItem, Items.SpecialArchipelagoItem, Items.FoolsArchipelagoItem, Items.TrapArchipelagoItem].index(item),
         preview_text="ARCHIPELAGO ITEM",
         special_preview_text={
             Locations.GalleonDonkeySealRace: "ANOTHER SCALLYWAG'S BOOTY",

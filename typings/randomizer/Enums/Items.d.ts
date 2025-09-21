@@ -265,4 +265,7 @@ export enum Items {
     IceTrapSlipKey = 264,
     IceTrapSlipFairy = 265,
     FillerRainbowCoin = 266,
+    SpecialArchipelagoItem = 267,
+    FoolsArchipelagoItem = 268,
+    TrapArchipelagoItem = 269,
 }

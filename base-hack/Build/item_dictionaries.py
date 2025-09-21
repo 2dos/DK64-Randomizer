@@ -85,6 +85,9 @@ class CustomActors(IntEnum):
     ArchipelagoItem = auto()
     IceTrapFairy = auto()
     SlipPeel = auto()
+    SpecialArchipelagoItem = auto()
+    FoolsArchipelagoItem = auto()
+    TrapArchipelagoItem = auto()
 
 
 POTIONS = (
@@ -187,6 +190,9 @@ item_database = [
     Item(name="Fairy", actor=CustomActors.Fairy, model_two=0x25C, bounce=True, scale=0.25, has_collision=True),
     Item(name="Rainbow Coin", actor=140, model_two=0xB7, scale=0.25, has_collision=True, item_type=CollectableTypes.Coin),
     Item(name="Archipelago Item", actor=CustomActors.ArchipelagoItem, model_two=0x291, bounce=True, has_collision=True),
+    Item(name="Special Archipelago Item", actor=CustomActors.SpecialArchipelagoItem, model_two=0x292, bounce=True, has_collision=True),
+    Item(name="Fools Archipelago Item", actor=CustomActors.FoolsArchipelagoItem, model_two=0x293, bounce=True, has_collision=True),
+    Item(name="Trap Archipelago Item", actor=CustomActors.TrapArchipelagoItem, model_two=0x294, bounce=True, has_collision=True),
     Item(name="Race Coin", actor=0x36, model_two=0xEC, item_db=False, item_type=CollectableTypes.RaceCoin, has_collision=True, hitbox=Hitbox(0, 0, 0)),
     Item(name="Film", actor=0, model_two=0x98, item_db=False, item_type=CollectableTypes.Film, has_collision=True, hitbox=Hitbox(0, 0, 0)),
     # GBs
@@ -603,6 +609,27 @@ with open("src/lib_items.c", "w") as fh:
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # AP Item
+            {
+                "actor_type": CustomActors.SpecialArchipelagoItem,
+                "model": 0x133,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # AP Item
+            {
+                "actor_type": CustomActors.FoolsArchipelagoItem,
+                "model": 0x135,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # AP Item
+            {
+                "actor_type": CustomActors.TrapArchipelagoItem,
+                "model": 0x137,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # AP Item
         ]
     )
     default_values = {
@@ -656,6 +683,9 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, CustomActors.HintItemTiny, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.HintItemChunky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.ArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.SpecialArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.FoolsArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.TrapArchipelagoItem, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
     actor_data = initActor(actor_data, CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)

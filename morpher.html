@@ -668,10 +668,12 @@
                 missing_items.forEach(entry => {
                     console.log(`Adding item ${entry} to item rando selector`)
                     const item_entry = types.ItemRandoSelector.find(k => k.value == entry);
-                    if (item_entry.is_check) {
-                        setting_data.item_rando_list_5.push(entry);
-                    } else {
-                        setting_data.item_rando_list_0.push(entry);
+                    if (item_entry) {
+                        if (item_entry.is_check) {
+                            setting_data.item_rando_list_5.push(entry);
+                        } else {
+                            setting_data.item_rando_list_0.push(entry);
+                        }
                     }
                 })
 
