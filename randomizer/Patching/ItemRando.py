@@ -914,6 +914,24 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         if spoiler.settings.enable_shop_hints and placement < 120:
                             addr = getItemTableWriteAddress(ROM_COPY, Types.Shop, placement, offset_dict)
                             writeBuyText(item.new_subitem, addr, ROM_COPY)
+                elif item.location >= Locations.TurnInDKIslesDonkeyBlueprint and item.location <= Locations.TurnInCreepyCastleChunkyBlueprint:
+                    if item.location <= Locations.TurnInDKIslesChunkyBlueprint:
+                        index = 35 + (item.location - Locations.TurnInDKIslesDonkeyBlueprint)
+                    else:
+                        index = item.location - Locations.TurnInJungleJapesDonkeyBlueprint
+                    snide_reward_addr_start = getROMAddress(getSym("snide_rewards"), Overlay.Custom, offset_dict)
+                    ROM_COPY.seek(snide_reward_addr_start + (index * 8))
+                    if item.new_item is None or item.new_item == Types.NoItem:
+                        ROM_COPY.writeMultipleBytes(0, 2)
+                        ROM_COPY.writeMultipleBytes(0, 2)
+                    else:
+                        obj_index = getPropFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
+                        ROM_COPY.writeMultipleBytes(obj_index, 2)
+                        ROM_COPY.writeMultipleBytes(0, 2)
+                    ROM_COPY.writeMultipleBytes(item_properties.response_type, 1)
+                    ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                    ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
+                    ROM_COPY.writeMultipleBytes(item_properties.audiovisual_medal, 1)
                 elif not item.reward_spot:
                     for map_id in item.placement_data:
                         if map_id not in map_items:
@@ -1282,3 +1300,31 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     new_scale = old_scale * item_slot["upscale"]
                     ROM_COPY.seek(start + 0xC)
                     ROM_COPY.writeFloat(new_scale)
+        # Remove GBs from Snide's
+        if spoiler.settings.snide_reward_rando:
+            cont_map_setup_address = getPointerLocation(TableNames.Setups, Maps.Snide)
+            ROM_COPY.seek(cont_map_setup_address)
+            model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+            for item in range(model2_count):
+                start = cont_map_setup_address + 4 + (item * 0x30)
+                ROM_COPY.seek(start + 0x2A)
+                item_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                if item_id in (2, 3, 4, 0x10, 0x12, 0x13, 0x14, 0x15):  # Item IDs for the snide GBs
+                    ROM_COPY.seek(start + 0x28)
+                    ROM_COPY.writeMultipleBytes(0, 2)  # Set to nothing object
+            # Speed up the path points for points 2, 3 and 4
+            path_address = getPointerLocation(TableNames.Paths, Maps.Snide)
+            ROM_COPY.seek(path_address)
+            path_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            offset = 2
+            for x in range(path_count):
+                ROM_COPY.seek(path_address + offset + 2)
+                point_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                for y in range(point_count):
+                    point_start = path_address + offset + 6 + (y * 10)
+                    if y == 0:
+                        continue
+                    ROM_COPY.seek(point_start + 8)
+                    ROM_COPY.writeMultipleBytes(2, 1)  # Double the speed at this path point
+                offset += 6
+                offset += (point_count * 10)

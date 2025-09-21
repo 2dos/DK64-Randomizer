@@ -70,6 +70,15 @@
             "tied": "banana"
         },
         {
+            "name": "Snide's Rewards",
+            "value": "blueprintbanana",
+            "tooltip": "All banana checks which are obtained after turning in a blueprint is in the pool.",
+            "check_count": 40,
+            "item_count": 0,
+            "is_check": true,
+            "tied": "banana"
+        },
+        {
             "name": "Crown Arenas",
             "value": "arenas",
             "tooltip": "Battle Arenas become possible locations for items.",

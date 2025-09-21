@@ -26,3 +26,4 @@
 .definelabel KongRGBA, 0x8075054C
 .definelabel unkFloatArray, 0x80753250
 .definelabel BackflipVelArray, 0x8075371C
+.definelabel SnideRewardIDs, 0x800330A4

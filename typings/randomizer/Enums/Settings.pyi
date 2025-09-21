@@ -282,6 +282,7 @@ class ItemRandoListSelected(IntEnum):
     dummyitem_halfmedal = 44
     racebanana = 45
     gauntletbanana = 46
+    blueprintbanana = 47
 
 class ItemRandoFiller(IntEnum):
     junkitem = 1

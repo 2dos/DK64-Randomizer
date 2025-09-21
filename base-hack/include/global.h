@@ -27,6 +27,12 @@ extern void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1)
 extern int isBounceObject(int object);
 extern void genericStatUpdate(bonus_stat stat);
 
+extern int isModelTwoTiedFlag_new(maps map, setup_item * item);
+extern float getModelTwoScale(int obj_id);
+extern void getBPCountStats(int kong, unsigned char *has, unsigned char *turned);
+extern int getFirstEmptyBP(int kong);
+extern int getFirstEmptySnideReward(int offset);
+
 extern void applyPaperMode(void);
 
 extern void resolveBonusContainer(void);

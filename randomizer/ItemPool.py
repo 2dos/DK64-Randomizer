@@ -48,6 +48,40 @@ def getHelmKey(settings) -> Items:
     return key_item
 
 
+race_gb_locations = [
+    Locations.JapesDiddyMinecarts,
+    Locations.AztecDiddyVultureRace,
+    Locations.AztecTinyBeetleRace,
+    Locations.FactoryTinyCarRace,
+    Locations.GalleonDonkeySealRace,
+    Locations.ForestDiddyOwlRace,
+    Locations.ForestLankyRabbitRace,
+    Locations.ForestChunkyMinecarts,
+    Locations.CavesLankyBeetleRace,
+    Locations.CastleDonkeyMinecarts,
+    Locations.CastleTinyCarRace,
+]
+gauntlet_gb_locations = [
+    Locations.JapesLankyFairyCave,
+    Locations.AztecTinyKlaptrapRoom,
+    Locations.AztecChunkyKlaptrapRoom,
+    Locations.FactoryDiddyRandD,
+    Locations.ForestLankyAttic,
+    Locations.ForestTinyAnthill,
+    Locations.ForestTinySpiderBoss,
+    Locations.ForestChunkyApple,
+    Locations.CavesDonkey5DoorCabin,
+    Locations.CavesDiddy5DoorCabinLower,
+    Locations.CavesLanky5DoorIgloo,
+    Locations.CavesTiny5DoorCabin,
+    Locations.CavesChunky5DoorIgloo,
+    Locations.CastleDonkeyLibrary,
+    Locations.CastleTinyTrashCan,
+    Locations.CastleChunkyShed,
+]
+blueprint_gb_locations = [Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(40)]
+    
+
 def PlaceConstants(spoiler):
     """Place items which are to be put in a hard-coded location."""
     # Settings-dependent locations
@@ -68,8 +102,17 @@ def PlaceConstants(spoiler):
     # Invert this list because I think it'll be faster
     typesOfItemsNotShuffled = [typ for typ in Types if typ not in typesOfItemsShuffled]
     # Place the default item at every location of a type we're not shuffling
+    banana_types = {
+        Types.RaceBanana: race_gb_locations.copy(),
+        Types.GauntletBanana: gauntlet_gb_locations.copy(),
+        Types.BlueprintBanana: blueprint_gb_locations.copy(),
+    }
+    unshuffled_bananas = []
+    for btype, lst in banana_types.items():
+        if btype not in settings.shuffled_location_types:
+            unshuffled_bananas.extend(lst)
     for location in spoiler.LocationList:
-        if spoiler.LocationList[location].type in typesOfItemsNotShuffled:
+        if spoiler.LocationList[location].type in typesOfItemsNotShuffled or location in unshuffled_bananas:
             spoiler.LocationList[location].PlaceDefaultItem(spoiler)
             # If we're placing a vanilla training move, we have to make the location available
             if spoiler.LocationList[location].type in (Types.TrainingBarrel, Types.Climbing, Types.PreGivenMove):
@@ -556,7 +599,16 @@ def RarewareCoinItems():
 def GoldenBananaItems(settings):
     """Return a list of GBs to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.GoldenBanana, settings.total_gbs - 40))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
+    decrease = 0
+    decrease_values = {
+        Types.RaceBanana: 11,
+        Types.GauntletBanana: 16,
+        Types.BlueprintBanana: 40,
+    }
+    for item_type, value in decrease_values.items():
+        if item_type not in settings.shuffled_location_types:
+            decrease += value
+    itemPool.extend(itertools.repeat(Items.GoldenBanana, settings.total_gbs - decrease))
     return itemPool
 
 

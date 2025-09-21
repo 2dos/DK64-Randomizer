@@ -160,10 +160,11 @@ class Settings:
             ItemRandoListSelected.moves: [36, 0],
             ItemRandoListSelected.shockwave: [2, 0],
             ItemRandoListSelected.bfi_gift: [0, 1],
-            ItemRandoListSelected.banana: [161, 0],
+            ItemRandoListSelected.banana: [201, 0],
             ItemRandoListSelected.banana_checks: [0, 134],
             ItemRandoListSelected.racebanana: [0, 11],
             ItemRandoListSelected.gauntletbanana: [0, 16],
+            ItemRandoListSelected.blueprintbanana: [0, 40],
             ItemRandoListSelected.arenas: [0, 10],
             ItemRandoListSelected.crown: [10, 0],
             ItemRandoListSelected.blueprint: [40, 0],
@@ -479,6 +480,7 @@ class Settings:
         # The major setting for item randomization
         self.shuffle_items = True
         self.enemy_drop_rando = False
+        self.snide_reward_rando = False
 
         # In item rando, can any Kong collect any item?
         self.free_trade_setting = False
@@ -1489,6 +1491,7 @@ class Settings:
                 ItemRandoListSelected.banana_checks: (Types.Banana, Types.Banana, True),
                 ItemRandoListSelected.racebanana: (Types.Banana, Types.RaceBanana, True),
                 ItemRandoListSelected.gauntletbanana: (Types.Banana, Types.GauntletBanana, True),
+                ItemRandoListSelected.blueprintbanana: (Types.Banana, Types.BlueprintBanana, True),
                 ItemRandoListSelected.arenas: (Types.Crown, Types.Crown, True),
                 ItemRandoListSelected.crown: (Types.Crown, Types.Crown, False),
                 ItemRandoListSelected.blueprint: (Types.Blueprint, Types.Blueprint, False),
@@ -1642,7 +1645,7 @@ class Settings:
                 self.shockwave_status = ShockwaveStatus.start_with
             else:
                 self.shockwave_status = ShockwaveStatus.shuffled_decoupled
-            banana_types = [Types.Banana, Types.GauntletBanana, Types.RaceBanana]
+            banana_types = [Types.Banana, Types.GauntletBanana, Types.RaceBanana, Types.BlueprintBanana]
             has_banana = False
             for btype in banana_types:
                 if btype in self.shuffled_location_types:
@@ -2306,6 +2309,7 @@ class Settings:
         if self.smaller_shops:
             shop_reduction = 2
             self.max_shared_shops = math.floor(30 - self.location_item_balance / -shop_reduction)
+        self.snide_reward_rando = Types.BlueprintBanana in self.shuffled_location_types
         buffers = self.getPoolBuffer()
         if self.pool_index_with_shops is not None:
             self.max_shared_shops = min(self.max_shared_shops, int(buffers[self.pool_index_with_shops] / shop_reduction) - 2)  # Never have more shared shops than spaces allow
@@ -2513,6 +2517,7 @@ class Settings:
                 if self.free_trade_setting:
                     badBlueprintTypes = []
                     badBlueprintLocations = []
+                badBlueprintLocations.extend([Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(40)])  # Don't allow blueprints on snide rewards... very bad idea
                 blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in badBlueprintTypes]
 
                 # These locations do not have a set Kong assigned to them and can't have blueprints
@@ -2527,6 +2532,7 @@ class Settings:
                 Types.Banana,
                 Types.RaceBanana,
                 Types.GauntletBanana,
+                Types.BlueprintBanana,
             ]
             has_banana = False
             for btype in banana_types:
@@ -2686,10 +2692,12 @@ class Settings:
                 Locations.CastleTinyTrashCan,
                 Locations.CastleChunkyShed,
             ]
+            blueprint_gb_locations = [Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(40)]
             banana_types = {
-                Types.Banana: [x for x in spoiler.LocationList if spoiler.LocationList[x].type == Types.Banana and x not in race_gb_locations and x not in gauntlet_gb_locations],
+                Types.Banana: [x for x in spoiler.LocationList if spoiler.LocationList[x].type == Types.Banana and x not in race_gb_locations and x not in gauntlet_gb_locations and x not in blueprint_gb_locations],
                 Types.RaceBanana: race_gb_locations.copy(),
                 Types.GauntletBanana: gauntlet_gb_locations.copy(),
+                Types.BlueprintBanana: blueprint_gb_locations.copy(),
             }
             for item_type in self.valid_locations:
                 if item_type in inverted_allowances:
@@ -2881,11 +2889,19 @@ class Settings:
         if Types.Snide in self.shuffled_location_types:
             self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         self.item_check_counts[ItemRandoListSelected.medal][0] = self.total_medals
-        self.item_check_counts[ItemRandoListSelected.banana][0] = self.total_gbs - 40
+        self.item_check_counts[ItemRandoListSelected.banana][0] = self.total_gbs
         self.item_check_counts[ItemRandoListSelected.fairy][0] = self.total_fairies
         self.item_check_counts[ItemRandoListSelected.rainbowcoin][0] = self.total_rainbow_coins
         self.item_check_counts[ItemRandoListSelected.crown][0] = self.total_crowns
         self.item_check_counts[ItemRandoListSelected.pearl][0] = self.total_pearls
+        misc_banana_mapping = {
+            Types.RaceBanana: ItemRandoListSelected.racebanana,
+            Types.GauntletBanana: ItemRandoListSelected.gauntletbanana,
+            Types.BlueprintBanana: ItemRandoListSelected.blueprintbanana,
+        }
+        for item_type, list_type in misc_banana_mapping.items():
+            if item_type not in self.shuffled_location_types:
+                self.item_check_counts[ItemRandoListSelected.banana][0] -= self.item_check_counts[list_type][1]
         buffers = []
         for x in range(4):
             item_count = 0

@@ -1930,7 +1930,13 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8002EA64, Overlay.Menu, 0xA64B0008, offset_dict, 4)  # Disable option 1 write
     # Menu/Shop: Snide's
     writeValue(ROM_COPY, 0x8002402C, Overlay.Menu, 0x240E000C, offset_dict, 4)  # No extra contraption cutscenes
-    writeValue(ROM_COPY, 0x80024054, Overlay.Menu, 0x24080001, offset_dict, 4)  # 1 GB Turn in
+    if settings.snide_reward_rando:
+        writeFunction(ROM_COPY, 0x80632188, Overlay.Static, "isModelTwoTiedFlag_new", offset_dict)  # Update setup to account for snide
+        writeValue(ROM_COPY, 0x8063218C, Overlay.Static, 0x02202825, offset_dict, 4)  # Modify arg
+        writeValue(ROM_COPY, 0x800248B0, Overlay.Menu, 0, offset_dict, 4)  # Remove flag set
+        writeValue(ROM_COPY, 0x800248C0, Overlay.Menu, 0, offset_dict, 4)  # Remove increment
+    else:
+        writeValue(ROM_COPY, 0x80024054, Overlay.Menu, 0x24080001, offset_dict, 4)  # 1 GB Turn in
     # Menu/Shop: Candy's
     writeValue(ROM_COPY, 0x80027678, Overlay.Menu, 0x1000, offset_dict)  # Patch Candy's Shop Glitch
     writeValue(ROM_COPY, 0x8002769C, Overlay.Menu, 0x1000, offset_dict)  # Patch Candy's Shop Glitch

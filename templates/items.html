@@ -371,11 +371,42 @@
         "crown": "total_crowns",
         "rainbowcoin": "total_rainbow_coins",
     }
+    function isShuffled(item_or_check) {
+        for (let x = 1; x < 5; x++) {
+            for (let y = 0; y < 2; y++) {
+                const idx = (y * 5) + x;
+                const ul = document.getElementById(`item_rando_list_${idx}`);
+                const ils = ul.getElementsByTagName("li");
+                for (let i = 0; i < ils.length; i++) {
+                    if (ils[i].getAttribute("value") == item_or_check) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    function getBananaReduction() {
+        const reduction_data = {
+            "blueprintbanana": 40,
+            "racebanana": 11,
+            "gauntletbanana": 16,
+        };
+        let total = 0;
+        Object.keys(reduction_data).forEach(item_type => {
+            if (!isShuffled(item_type)) {
+                total += reduction_data[item_type];
+            }
+        })
+        return total;
+    }
+
     function getItemChange(item, original_value) {
         if (Object.keys(item_count_mapping).includes(item)) {
             const ic_value = parseInt(document.getElementById(item_count_mapping[item]).value)
             if (item == "banana") {
-                return Math.max(ic_value - 40, 0);
+                return Math.max(ic_value - getBananaReduction(), 0);
             }
             return ic_value;
         }
@@ -773,12 +804,18 @@
         let is_valid_item_shuffle = true;
         Object.keys(item_shuffle_tied).forEach(key => {
             const val = item_shuffle_tied[key];
-            const key_slot = item_shuffle_cache[key];
-            const val_slot = item_shuffle_cache[val];
-            if (key_slot != val_slot) {
-                if ((key_slot == 0) || (val_slot == 0)) {
-                    // Key or val is in slot 0, but not both
-                    is_valid_item_shuffle = false;
+            let valid_check = true;
+            if ((val == "banana") && (key != "banana_checks")) {
+                valid_check = false;
+            }
+            if (valid_check) {
+                const key_slot = item_shuffle_cache[key];
+                const val_slot = item_shuffle_cache[val];
+                if (key_slot != val_slot) {
+                    if ((key_slot == 0) || (val_slot == 0)) {
+                        // Key or val is in slot 0, but not both
+                        is_valid_item_shuffle = false;
+                    }
                 }
             }
         });

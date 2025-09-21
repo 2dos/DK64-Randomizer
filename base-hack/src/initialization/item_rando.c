@@ -363,6 +363,56 @@ item_packet company_coin_table[2] = {
     {.item_type = REQITEM_COMPANYCOIN, .kong = 0}, // Nintendo Coin
     {.item_type = REQITEM_COMPANYCOIN, .kong = 1}, // Rareware Coin
 };
+snide_packet snide_rewards[40] = {
+    // Japes
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Aztec
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Factory
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Galleon
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Fungi
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Caves
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Castle
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Isles
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+};
 
 int getCrownIndex(maps map) {
     /**

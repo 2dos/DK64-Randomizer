@@ -232,7 +232,8 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 | DK64RTypes.Constant
                 | DK64RTypes.NoItem
                 | DK64RTypes.FakeItem
-                | DK64RTypes.ToughBanana
+                | DK64RTypes.RaceBanana
+                | DK64RTypes.GauntletBanana
                 | DK64RTypes.JunkItem
                 | DK64RTypes.CrateItem
                 | DK64RTypes.Enemies

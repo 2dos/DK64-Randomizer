@@ -25,14 +25,7 @@ typedef struct arena_controller_paad {
 
 int wonArena(void) {
     arena_controller_paad* paad = CurrentActorPointer_0->paad;
-    int score = paad->internal_score;
-    if (CurrentMap == MAP_RAMBIARENA) {
-        int mult = RambiArenaComboSize > 1 ? 2 : 1;
-        for (int i = 0; i < RambiArenaComboSize; i++) {
-            score -= (RambiArenaComboChain[i] * mult);
-        }
-    }
-    return score <= 0;
+    return paad->internal_score <= 0;
 }
 
 static short barrel_types[3] = {0x1C, 0x86, 0x6B};

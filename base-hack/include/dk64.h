@@ -507,6 +507,7 @@ extern int getDistanceCap(short input_dist);
 
 extern void customDamageCode(void);
 extern void unkSoundFunction(void *actor, int unk);
+extern int isModelTwoTiedFlagSet(maps map, int id);
 
 //vanilla data
 extern OSThread* __osActiveQueue;
@@ -840,6 +841,9 @@ extern SingleExitStruct DefaultExit;
 extern FogData EnvironmentFog;
 
 extern GBDictItem actorSpawnedFlagMapping[];
+
+extern int SnideRewardIDs[8];
+extern short modelTwoIDs[600];
 
 //hack data
 extern int TestVariable;
