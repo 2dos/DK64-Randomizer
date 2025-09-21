@@ -1064,6 +1064,9 @@ typedef enum enum_bonus_skin {
     /* 0x01C */ SKIN_SOLDOUT,
     /* 0x01D */ SKIN_NULL,
 	/* 0x01E */ SKIN_FAKE_FAIRY,
+	/* 0x01F */ SKIN_AP_USEFUL,
+	/* 0x020 */ SKIN_AP_JUNK,
+	/* 0x021 */ SKIN_AP_TRAP,
     /* ----- */ SKIN_TERMINATOR,
 } enum_bonus_skin;
 

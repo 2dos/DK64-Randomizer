@@ -168,6 +168,9 @@ barrel_skins = (
     "soldout",
     "null",
     "fakefairy",
+    "ap_useful",
+    "ap_junk",
+    "ap_trap",
 )
 
 

@@ -198,7 +198,7 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
         Types.FillerCrown: 7,
         Types.FillerMedal: 9,
         Types.FillerPearl: 11,
-        Types.ArchipelagoItem: 0x15,
+        Types.FillerRainbowCoin: 12,
     }
     if item_type in simple_types:
         return ItemPatchingInfo(simple_types[item_type])
@@ -293,6 +293,14 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
         shopkeeper_lst = [Items.Cranky, Items.Funky, Items.Candy, Items.Snide]
         shopkeeper_index = getItemPatchingFromList(shopkeeper_lst, item, "Shopkeeper")
         return ItemPatchingInfo(20, 0, shopkeeper_index)
+    elif item_type == Types.ArchipelagoItem:
+        arch_item_list = (
+            Items.ArchipelagoItem,
+            Items.SpecialArchipelagoItem,
+            Items.FoolsArchipelagoItem,
+            Items.TrapArchipelagoItem,
+        )
+        return ItemPatchingInfo(0x15, arch_item_list.index(item))
     raise Exception(f"Invalid item for patching: {item_type.name}, {item}")
 
 

@@ -567,10 +567,10 @@ static const barrel_skin_tie bonus_skins[] = {
     {.actor = NEWACTOR_HINTITEMLANKY,           .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
     {.actor = NEWACTOR_HINTITEMTINY,            .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
     {.actor = NEWACTOR_HINTITEMCHUNKY,          .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
-    {.actor = NEWACTOR_ARCHIPELAGOITEM,         .reqitem=REQITEM_AP,                .level=-1, .kong=-1, .skin=SKIN_AP},
-    {.actor = NEWACTOR_SPECIALARCHIPELAGOITEM,  .reqitem=REQITEM_AP,                .level=-1, .kong=-1, .skin=SKIN_AP},
-    {.actor = NEWACTOR_FOOLSARCHIPELAGOITEM,    .reqitem=REQITEM_AP,                .level=-1, .kong=-1, .skin=SKIN_AP},
-    {.actor = NEWACTOR_TRAPARCHIPELAGOITEM,     .reqitem=REQITEM_AP,                .level=-1, .kong=-1, .skin=SKIN_AP},
+    {.actor = NEWACTOR_ARCHIPELAGOITEM,         .reqitem=REQITEM_AP,                .level= 0, .kong=-1, .skin=SKIN_AP},
+    {.actor = NEWACTOR_SPECIALARCHIPELAGOITEM,  .reqitem=REQITEM_AP,                .level= 1, .kong=-1, .skin=SKIN_AP_USEFUL},
+    {.actor = NEWACTOR_FOOLSARCHIPELAGOITEM,    .reqitem=REQITEM_AP,                .level= 2, .kong=-1, .skin=SKIN_AP_JUNK},
+    {.actor = NEWACTOR_TRAPARCHIPELAGOITEM,     .reqitem=REQITEM_AP,                .level= 3, .kong=-1, .skin=SKIN_AP_TRAP},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {

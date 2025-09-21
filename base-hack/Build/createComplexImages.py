@@ -577,6 +577,9 @@ skins = {
     "soldout": ("soldout32", None, "displays"),
     "null": ("blank", None, "displays"),
     "fakefairy": ("fakefairy", None, "displays"),
+    "ap_useful": ("ap_logo_useful", None, "displays"),
+    "ap_junk": ("ap_logo_junk", None, "displays"),
+    "ap_trap": ("ap_logo_trap", None, "displays"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32

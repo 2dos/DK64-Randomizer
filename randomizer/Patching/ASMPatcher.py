@@ -408,6 +408,9 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
             MinigameImageLoader("hint"),
         ),
         Minigame8BitImage([Items.ArchipelagoItem], MinigameImageLoader("ap"), MinigameImageLoader("ap")),
+        Minigame8BitImage([Items.SpecialArchipelagoItem], MinigameImageLoader("ap_useful"), MinigameImageLoader("ap")),
+        Minigame8BitImage([Items.FoolsArchipelagoItem], MinigameImageLoader("ap_junk"), MinigameImageLoader("ap")),
+        Minigame8BitImage([Items.TrapArchipelagoItem], MinigameImageLoader("ap_trap"), MinigameImageLoader("ap")),
         Minigame8BitImage(
             [Items.Cranky],
             MinigameImageLoader(None, 25, 0x1387, 32, 32, TextureFormat.RGBA5551, [0x1388, 0x1389, 0x138A]),
