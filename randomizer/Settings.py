@@ -779,6 +779,7 @@ class Settings:
         self.spoiler_include_woth_count = False
         self.spoiler_include_level_order = False
         self.serious_hints = False
+        self.avoid_hints_for_items_in_shops = False
         self.fast_warps = False
         self.dpad_display = DPadDisplays.off
         self.auto_keys = False

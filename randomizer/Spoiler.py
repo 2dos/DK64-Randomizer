@@ -445,6 +445,7 @@ class Spoiler:
             settings["Progressive Hint Cap"] = int(self.settings.progressive_hint_count)
         settings["Dim Solved Hints"] = self.settings.dim_solved_hints
         settings["No Joke Hints"] = self.settings.serious_hints
+        settings["Avoid Hints for Items in Shops"] = self.settings.avoid_hints_for_items_in_shops
         settings["Item Reward Previews"] = self.settings.item_reward_previews
         settings["Bonus Barrel Rando"] = self.dumpMultiselector(self.settings.minigames_list_selected, MinigameSelector)
         if any(self.settings.enemies_selected):

@@ -16,7 +16,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.HintRegion import HintRegion, MEDAL_REWARD_REGIONS, HINT_REGION_PAIRING
+from randomizer.Enums.HintRegion import HintRegion, MEDAL_REWARD_REGIONS, SHOP_REGIONS, HINT_REGION_PAIRING
 from randomizer.Enums.Settings import (
     BananaportRando,
     BLockerSetting,
@@ -325,6 +325,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     minned_hint_types = []  # Some hint types cannot have all their hints removed
     # If we're using the racing hints preset, we use the predetermined distribution with no exceptions
     if spoiler.settings.wrinkly_hints == WrinklyHints.fixed_racing:
+        valid_types = None
         hint_distribution = race_hint_distribution.copy()
         # Extract plando hints from foolish hints - gotta pick something and I think these are the least impactful
         if spoiler.settings.enable_plandomizer:
@@ -766,6 +767,14 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_location.hint_type = HintType.RequiredSlamHint
             UpdateHint(hint_location, message)
     # Item rando kong hints are required and highly restrictive, only hinted to free kongs before (or as) the location is available
+    valid_remaining_hint_types = None if not valid_types else set([
+        # HintType.ItemHinting,
+        # HintType.FoolishRegion,
+        # HintType.WothLocation,
+        HintType.MoveLocation,
+        HintType.RegionItemCount,
+    ]).intersection(set(valid_types))
+
     if hintset.expectedDistribution[HintType.RequiredKongHint] > 0:
         placed_requiredkonghints = 0
         # The length of this list should match hintset.expectedDistribution[HintType.RequiredKongHint]
@@ -807,6 +816,14 @@ def compileHints(spoiler: Spoiler) -> bool:
                     location_name = "\x06" + spoiler.settings.random.choice(item_type_names_cryptic[kong_location.type]) + "\x06"
                 message = f"{freed_kong} is held by {location_name} in {level_name}."
             elif kong_location.type == Types.Shop:
+                # Remove hint if this kong is purchased in a shop,
+                # if avoid_hints_for_items_in_shops is enabled
+                # and an alternative hint can be placed.
+                if spoiler.settings.avoid_hints_for_items_in_shops and valid_remaining_hint_types:
+                    filler_type = spoiler.settings.random.choice(list(valid_remaining_hint_types))
+                    if not(filler_type in locked_hint_types or filler_type in maxed_hint_types):
+                        hintset.expectedDistribution[filler_type] += 1
+                        continue
                 message = f"{freed_kong} can be bought in {level_name}."
             elif freeing_kong_name == freed_kong:
                 grammar = "himself"
@@ -854,6 +871,8 @@ def compileHints(spoiler: Spoiler) -> bool:
     #     hint_location.hint_type = HintType.BLocker
     #     UpdateHint(hint_location, message)
 
+    # if valid_remaining_hint_types:
+    #     valid_remaining_hint_types.discard(HintType.ItemHinting)
     # Item region hints take up a ton of hint doors, and some hints have restrictions on placement
     if hintset.expectedDistribution[HintType.ItemHinting] > 0:
         # This array is arranged in such a way as to place the more important items to hint (kongs, keys, woth moves) first
@@ -872,6 +891,14 @@ def compileHints(spoiler: Spoiler) -> bool:
                     level_limit = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon]
                 hint_location = hintset.getRandomHintLocation(random=spoiler.settings.random, levels=level_limit)
             location = spoiler.LocationList[loc_id]
+
+            # # Yet untested
+            # if location.type == Types.Shop and spoiler.settings.avoid_hints_for_items_in_shops and valid_remaining_hint_types:
+            #     filler_type = spoiler.settings.random.choice(list(valid_remaining_hint_types))
+            #     if not(filler_type in locked_hint_types or filler_type in maxed_hint_types):
+            #         # replace this hint with a different filler hint
+            #         hintset.expectedDistribution[filler_type] += 1
+            #         continue
             item = ItemList[location.item]
             item_color = kong_colors[item.kong]  # Color based on the Kong of the item
             if item.type == Types.Key:  # Except Keys are gold
@@ -981,6 +1008,11 @@ def compileHints(spoiler: Spoiler) -> bool:
             # If we haven't hinted anything on this path, pick something
             if not any(hinted_locations_on_this_path):
                 location_options = [loc for loc in spoiler.woth_paths[key_location_ids[key_id]] if loc in multipath_dict_hints.keys()]
+                # The first location in location_options is the final location in the logical path.
+                # If this is a key in a shop, the hint would say e.g. "Item in [Level] Shops leads to Key [x]".
+                # This is the type of low-value hint that avoid_hints_for_items_in_shops seeks to avoid.
+                if location_options and spoiler.settings.avoid_hints_for_items_in_shops and spoiler.LocationList[location_options[0]].type == Types.Shop:
+                    location_options.pop(0)
                 # If there are no valid options, that means everything on this path is either worthless to hint or already hinted, so we're good
                 if len(location_options) != 0:
                     # Otherwise pick a random location on this path - this guarantees each Key has at least one hint in its direction
@@ -1026,7 +1058,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             hinted_path_locations = spoiler.settings.random.sample(hinted_path_locations, hintset.expectedDistribution[HintType.Multipath])
         # pick randomly from remaining locations in the keys to the multipath dict
         while len(hinted_path_locations) < hintset.expectedDistribution[HintType.Multipath]:
-            location_to_hint = spoiler.settings.random.choice([loc for loc in multipath_dict_hints.keys() if loc not in hinted_path_locations])
+            location_to_hint = spoiler.settings.random.choice([loc for loc in multipath_dict_hints.keys() if loc not in hinted_path_locations and not (spoiler.settings.avoid_hints_for_items_in_shops and spoiler.LocationList[loc].type == Types.Shop)])
             hinted_path_locations.append(location_to_hint)
         # When placing hints, go from start to finish by woth_locations - this *roughly* places hints in most-restricted to least-restricted order
         for loc in spoiler.woth_locations:
@@ -1279,6 +1311,8 @@ def compileHints(spoiler: Spoiler) -> bool:
     moves_hinted_and_lobbies = {}  # Avoid putting a hint for the same move in the same lobby twice
     locationless_move_keys = []  # Keep track of moves we know have run out of locations to hint
     placed_move_hints = 0
+    if valid_remaining_hint_types:
+        valid_remaining_hint_types.discard(HintType.MoveLocation)
     while placed_move_hints < hintset.expectedDistribution[HintType.MoveLocation]:
         # First pick a random item from the WOTH - valid items are moves (not kongs) and must not be one of our known impossible-to-place items
         woth_item = None
@@ -1710,6 +1744,12 @@ def compileHints(spoiler: Spoiler) -> bool:
                 0
             ]  # Weighted random choice from list of foolish region names
             del foolish_region_location_score[hinted_region_name]
+            # If avoid_hints_for_items_in_shops is enabled, also avoid foolish hints for shops.
+            if spoiler.settings.avoid_hints_for_items_in_shops and valid_remaining_hint_types and hinted_region_name in SHOP_REGIONS:
+                filler_type = spoiler.settings.random.choice(list(valid_remaining_hint_types))
+                if not(filler_type in locked_hint_types or filler_type in maxed_hint_types):
+                    hintset.expectedDistribution[filler_type] += 1
+                    continue
             hint_location = hintset.getRandomHintLocation(random=spoiler.settings.random)
             level_color = "\x05"
             level = Levels.DKIsles

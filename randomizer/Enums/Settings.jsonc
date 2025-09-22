@@ -1348,7 +1348,8 @@
     "trap_weight_flip": 275,
     "trap_weight_icefloor": 276,
     "trap_weight_paper": 277,
-    "trap_weight_slip": 278
+    "trap_weight_slip": 278,
+    "avoid_hints_for_items_in_shops": 279
 
   },
   /*
@@ -1931,6 +1932,9 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.serious_hints": {
+      "obj": "SettingsStringDataType.bool"
+    },
+    "SettingsStringEnum.avoid_hints_for_items_in_shops": {
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.cannons_require_blast": {

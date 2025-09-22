@@ -298,6 +298,7 @@ def get_default_settings() -> dict:
         "remove_barriers_selected": [],
         "select_keys": False,
         "serious_hints": True,
+        "avoid_hints_for_items_in_shops": False,
         "shop_indicator": True,
         "shops_dont_cost": False,
         "shorten_boss": True,

@@ -2036,6 +2036,15 @@
             },
             "qol_uses_hard": true
         },
+        "avoid_hints_for_items_in_shops": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 0,
+                "difficult": 0
+            },
+            "qol_uses_hard": true
+        },
         "cannons_require_blast": {
             "setting_type": "bool",
             "options": {

@@ -842,6 +842,7 @@ class SettingsStringEnum(IntEnum):
     trap_weight_icefloor = 276
     trap_weight_paper = 277
     trap_weight_slip = 278
+    avoid_hints_for_items_in_shops = 279
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1176,6 +1177,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.k_rool_vanilla_requirement: SettingsStringDataType.bool,
     SettingsStringEnum.disable_hard_minigames: SettingsStringDataType.bool,
     SettingsStringEnum.serious_hints: SettingsStringDataType.bool,
+    SettingsStringEnum.avoid_hints_for_items_in_shops: SettingsStringDataType.bool,
     SettingsStringEnum.cannons_require_blast: SettingsStringDataType.bool,
     SettingsStringEnum.chaos_blockers: SettingsStringDataType.bool,
     SettingsStringEnum.mermaid_gb_pearls: SettingsStringDataType.var_int,
