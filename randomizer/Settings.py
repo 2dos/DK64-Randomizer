@@ -481,6 +481,7 @@ class Settings:
         self.shuffle_items = True
         self.enemy_drop_rando = False
         self.snide_reward_rando = False
+        self.most_snide_rewards = 40
 
         # In item rando, can any Kong collect any item?
         self.free_trade_setting = False
@@ -2540,6 +2541,12 @@ class Settings:
                     has_banana = True
             if has_banana:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations]
+            excluded_bp_locations = []
+            if Types.BlueprintBanana in self.shuffled_location_types and self.most_snide_rewards < 40:
+                excluded_bp_locations = [Locations.TurnInJungleJapesDonkeyBlueprint + x for x in range(35)] + [Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(5)]
+                count_to_exclude = 40 - self.most_snide_rewards
+                excluded_bp_locations = excluded_bp_locations[-count_to_exclude:]
+
             if Types.FillerBanana in self.shuffled_location_types:
                 self.valid_locations[Types.FillerBanana] = [location for location in shuffledNonMoveLocations]
             regular_items = (

@@ -235,6 +235,7 @@ class LogicVarHolder:
         self.bonuses_beaten = 0
 
         self.Blueprints = []
+        self.BlueprintsWithKong = 0
 
         self.Events = []
 
