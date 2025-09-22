@@ -414,8 +414,11 @@
                     } else if (key_data_type == 'SettingsStringDataType.int4') {
                         val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 4), 4)
                         bit_index += 4
-                    } else if (key_data_type == 'SettingsStringDataType.int8') {
+                    } else if (['SettingsStringDataType.int8', 'SettingsStringDataType.u8'].includes(key_data_type)) {
                         val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 8), 8)
+                        if (key_data_type == 'SettingsStringDataType.u8' && val < 0) {
+                            val += 256
+                        }
                         bit_index += 8
                     } else if (['SettingsStringDataType.int16', 'SettingsStringDataType.u16'].includes(key_data_type)) {
                         val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 16), 16)
@@ -441,12 +444,15 @@
                             } else if (key_list_data_type == 'SettingsStringDataType.int4') {
                                 list_val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 4), 4)
                                 bit_index += 4
-                            } else if (key_list_data_type == 'SettingsStringDataType.int8') {
+                            } else if (['SettingsStringDataType.int8', 'SettingsStringDataType.u8'].includes(key_list_data_type)) {
                                 list_val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 8), 8)
+                                if (key_list_data_type == 'SettingsStringDataType.u8' && val < 0) {
+                                    val += 256
+                                }
                                 bit_index += 8
                             } else if (['SettingsStringDataType.int16', 'SettingsStringDataType.u16'].includes(key_list_data_type)) {
                                 list_val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 16), 16)
-                                if (key_data_type == 'SettingsStringDataType.u16' && val < 0) {
+                                if (key_list_data_type == 'SettingsStringDataType.u16' && val < 0) {
                                     val += 65536
                                 }
                                 bit_index += 16
@@ -551,7 +557,7 @@
                         bitstring += (value ? "1" : "0");
                     } else if (key_data_type == 'SettingsStringDataType.int4') {
                         bitstring += int_to_bin_string(value, 4)
-                    } else if (key_data_type == 'SettingsStringDataType.int8') {
+                    } else if (['SettingsStringDataType.int8', 'SettingsStringDataType.u8'].includes(key_data_type)) {
                         bitstring += int_to_bin_string(value, 8)
                     } else if (['SettingsStringDataType.int16', 'SettingsStringDataType.u16'].includes(key_data_type)) {
                         bitstring += int_to_bin_string(value, 16)
@@ -569,7 +575,7 @@
                                 bitstring += (item ? "1" : "0");
                             } else if (key_list_data_type == 'SettingsStringDataType.int4') {
                                 bitstring += int_to_bin_string(item, 4)
-                            } else if (key_list_data_type == 'SettingsStringDataType.int8') {
+                            } else if (['SettingsStringDataType.int8', 'SettingsStringDataType.u8'].includes(key_list_data_type)) {
                                 bitstring += int_to_bin_string(item, 8)
                             } else if (['SettingsStringDataType.int16', 'SettingsStringDataType.u16'].includes(key_list_data_type)) {
                                 bitstring += int_to_bin_string(item, 16)
