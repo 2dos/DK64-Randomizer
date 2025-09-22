@@ -481,7 +481,7 @@ class Settings:
         self.shuffle_items = True
         self.enemy_drop_rando = False
         self.snide_reward_rando = False
-        self.most_snide_rewards = 40
+        self.most_snide_rewards = 25
 
         # In item rando, can any Kong collect any item?
         self.free_trade_setting = False
@@ -2740,6 +2740,28 @@ class Settings:
                             self.valid_locations[item_type][kong] = [v for v in self.valid_locations[item_type][kong] if valid_locations_lambda(spoiler.LocationList[v], v)]
                     else:
                         self.valid_locations[item_type] = [v for v in self.valid_locations[item_type] if valid_locations_lambda(spoiler.LocationList[v], v)]
+            # Remove any locations where we're excluding BPs
+            if Types.Shop in self.valid_locations:
+                for kong in self.valid_locations[Types.Shop]:
+                    self.valid_locations[Types.Shop][kong] = [v for v in self.valid_locations[Types.Shop][kong] if v not in excluded_bp_locations]
+            exclude_bp_types = (
+                # These types tend to be pretty important. Lets make sure that if the user specifies they want useful items to stop at a certain BP amount, these don't appear after that amount
+                Types.Key,
+                Types.Shockwave,
+                Types.Bean,
+                Types.Pearl,
+                Types.Candy,
+                Types.Funky,
+                Types.Cranky,
+                Types.Snide,
+                Types.Climbing,
+                Types.RarewareCoin,
+                Types.NintendoCoin,
+                Types.Kong,
+            )
+            for item_type in exclude_bp_types:
+                if item_type in self.valid_locations:
+                    self.valid_locations[item_type] = [v for v in self.valid_locations[item_type] if v not in excluded_bp_locations]
 
 
     def GetValidLocationsForItem(self, item_id):
