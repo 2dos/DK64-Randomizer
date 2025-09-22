@@ -6535,9 +6535,9 @@ BananaCoinGroupList = {
             konglist=[Kongs.donkey],
             region=Regions.DonkeyCabin,
             locations=[
-                [1.0, 58, 303, 326],
-                [1.0, 265, 309, 604],
-                [1.0, 542, 305, 394],
+                [1.0, 429, 0, 392],
+                [1.0, 417, 0, 275],
+                [1.0, 233, 0, 220],
             ],
         ),
         BananaCoinGroup(
