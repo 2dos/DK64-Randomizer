@@ -1698,7 +1698,7 @@ ColoredBananaGroupList = [
         name="Dark room entrance",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.chunky and l.punch,
+        logic=lambda l: l.ischunky and l.punch,
         locations=[
             [1, 1.0, 1747, 6, 667],
             [1, 1.0, 1762, 6, 667],
@@ -1713,7 +1713,7 @@ ColoredBananaGroupList = [
         name="Box in a corner of dark room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.chunky and l.punch,
+        logic=lambda l: l.ischunky and l.punch,
         locations=[[5, 1.0, 1804, 42, 914]],
     ),
     ColoredBananaGroup(
@@ -1813,7 +1813,7 @@ ColoredBananaGroupList = [
         name="Mini-block steps up the block tower",
         konglist=[Kongs.diddy],
         region=Regions.Testing,
-        logic=lambda l: l.spring,
+        logic=lambda l: l.spring or l.CanMoontail(),
         locations=[
             [1, 1.0, 2387, 1206, 1326],
             [1, 1.0, 2386, 1206, 1346],
@@ -1940,7 +1940,7 @@ ColoredBananaGroupList = [
         name="On the R&D triangle pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.RandDUpper,
-        logic=lambda l: l.chunky and l.punch and l.climbing,
+        logic=lambda l: l.ischunky and l.punch and l.climbing,
         locations=[[5, 1.0, 4405, 1427, 1395]],
     ),
     ColoredBananaGroup(
