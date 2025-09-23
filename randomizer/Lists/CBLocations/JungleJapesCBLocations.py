@@ -1859,7 +1859,7 @@ ColoredBananaGroupList = [
         name="Rambi lake Bouldertech",  # Hard
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondRambiGate,
-        logic=lambda l: l.chunky and l.barrels,
+        logic=lambda l: l.ischunky and l.barrels,
         locations=[[5, 1.2, 660, 340, 3003]],
     ),
     ColoredBananaGroup(
