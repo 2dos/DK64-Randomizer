@@ -1851,7 +1851,13 @@ ColoredBananaGroupList = [
         locations=[[5, 1.1, 2435, 343, 992]],
     ),
     ColoredBananaGroup(
-        group=117, map_id=Maps.AngryAztec, name="Start tunnel arch", konglist=[Kongs.diddy], region=Regions.AngryAztecOasis, logic=lambda l: l.jetpack and l.climbing, locations=[[5, 1.0, 2082, 244, 882]]
+        group=117,
+        map_id=Maps.AngryAztec,
+        name="Start tunnel arch",
+        konglist=[Kongs.diddy],
+        region=Regions.AngryAztecOasis,
+        logic=lambda l: l.jetpack and l.climbing,
+        locations=[[5, 1.0, 2082, 244, 882]],
     ),
     ColoredBananaGroup(
         group=118,
