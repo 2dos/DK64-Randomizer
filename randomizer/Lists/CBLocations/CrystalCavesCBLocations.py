@@ -2622,7 +2622,7 @@ BalloonList = [
         speed=7,
         konglist=[Kongs.diddy],
         region=Regions.DiddyUpperCabin,
-        logic=lambda l: l.jetpack and (l.guitar or l.oranges) and (l.spring or l.CanMoontail()),
+        logic=lambda l: (l.guitar or l.oranges) and (l.spring or (l.CanMoontail() and not l.cabinBarrelMoved())) and l.jetpack),
         points=[[420, 460, 151], [197, 460, 157]],
     ),  # Double Check -> double checked by Snap : sniper is NOT a good idea for this one
     Balloon(
