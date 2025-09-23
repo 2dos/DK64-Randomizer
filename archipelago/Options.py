@@ -957,6 +957,10 @@ class EnableCutscenes(Toggle):
 
     display_name = "Re-Enable Cutscenes"
 
+class SnideTurnins(Toggle):
+    """Determines if Snide rewards are added to the pool."""
+
+    display_name = "Snide Turnins"
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
@@ -1036,6 +1040,7 @@ class DK64Options(PerGameCommonOptions):
     paper_weight: PaperTrapWeight
     slip_weight: SlipTrapWeight
     enable_cutscenes: EnableCutscenes
+    snide_turnins_in_pool: SnideTurnins
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1082,6 +1087,7 @@ dk64_option_groups: List[OptionGroup] = [
             HintItemRandomization,
             HalfMedals,
             SmallerShops,
+            SnideTurnins,
         ],
     ),
     OptionGroup(
@@ -1149,6 +1155,7 @@ dk64_option_groups: List[OptionGroup] = [
             FlipTrapWeight,
             IceFloorWeight,
             PaperTrapWeight,
+            SlipTrapWeight,
         ],
     ),
     OptionGroup(

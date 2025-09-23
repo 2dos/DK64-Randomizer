@@ -112,7 +112,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         ap_item = DK64Item(name, ItemClassification.progression, full_item_table[name].code, world.player)
         match dk64r_item.type:
             case DK64RTypes.Banana:
-                num_bananas = 161
+                num_bananas = 201
                 if not world.options.goal == Goal.option_golden_bananas:
                     ap_item.classification = ItemClassification.progression_deprioritized
                 for _ in range(num_bananas):

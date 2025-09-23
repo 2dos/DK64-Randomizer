@@ -422,10 +422,16 @@ class ItemPlacementData:
             self.index_getter = lambda item, flag, shared: 0
         else:
             self.index_getter = index_getter
-        self.preview_text = f"\x04{preview_text}\x04"
+        if isinstance(preview_text, list):
+            self.preview_text = [f"\x04{text}\x04" for text in preview_text]
+        else:
+            self.preview_text = f"\x04{preview_text}\x04"
         temp_data = {}
-        for key, string in special_preview_text.items():
-            temp_data[key] = f"\x04{string}\x04"
+        for key, string_or_list in special_preview_text.items():
+            if isinstance(string_or_list, list):
+                temp_data[key] = [f"\x04{text}\x04" for text in string_or_list]
+            else:
+                temp_data[key] = f"\x04{string_or_list}\x04"
         self.special_preview_text = temp_data.copy()
         self.scale = scale
 
@@ -803,10 +809,10 @@ item_db = {
         jetpac_reward_index=[JetpacRewards.APItem] * 4,
         overlay=[GraphicOverlay.Hint] * 4,
         index_getter=lambda item, flag, shared: [Items.ArchipelagoItem, Items.SpecialArchipelagoItem, Items.FoolsArchipelagoItem, Items.TrapArchipelagoItem].index(item),
-        preview_text="ARCHIPELAGO ITEM",
+        preview_text=["SPECIAL ARCHIPELAGO ITEM", "USEFUL AP ITEM", "JUNK ARCHIPELAGO ITEM", "SPECIAL AP ITEM"],
         special_preview_text={
-            Locations.GalleonDonkeySealRace: "ANOTHER SCALLYWAG'S BOOTY",
-            Locations.ForestDiddyOwlRace: "A GIFT BEYOND THIS REALM",
+            Locations.GalleonDonkeySealRace: ["ANOTHER MAN'S TREASURE", "ANOTHER PIRATE'S EYEPATCH", "ONE MAN'S TRASH", "ONE MAN'S TREESURE"],
+            Locations.ForestDiddyOwlRace: ["A RABBIT'S FOOT", "A PENNY", "A BLACK CAT", "A RABBTI'S FOOT"],
         },
     ),
 }
@@ -894,7 +900,7 @@ def getModelMask(item: Items) -> Types:
     return IceTrapMasks.get(item, Types.Banana)
 
 
-def getItemPreviewText(item_type: Types, location: Locations, allow_special_text: bool = True, masked_model: Types = None) -> str:
+def getItemPreviewText(item_type: Types, location: Locations, allow_special_text: bool = True, masked_model: Types = None, item: Items = None) -> str:
     """Get the preview text for an item."""
     reference_item = item_type
     if item_type == Types.FakeItem:
@@ -902,10 +908,31 @@ def getItemPreviewText(item_type: Types, location: Locations, allow_special_text
     if reference_item not in item_db and reference_item not in FILLER_MAPPING:
         return ""
     item_data = getItemDBEntry(reference_item)
-    text = item_data.preview_text
+    
+    # Handle array-based preview text (like Archipelago items)
+    if isinstance(item_data.preview_text, list) and item is not None:
+        try:
+            index = item_data.index_getter(item, 0, False)
+            text = item_data.preview_text[index]
+        except (ValueError, IndexError):
+            text = item_data.preview_text[0] if item_data.preview_text else ""
+    else:
+        text = item_data.preview_text if isinstance(item_data.preview_text, str) else (item_data.preview_text[0] if item_data.preview_text else "")
+    
     if allow_special_text:
-        text = item_data.special_preview_text.get(location, text)
+        special_text_data = item_data.special_preview_text.get(location)
+        if isinstance(special_text_data, list) and item is not None:
+            try:
+                index = item_data.index_getter(item, 0, False)
+                text = special_text_data[index]
+            except (ValueError, IndexError):
+                pass  # Keep the default text
+        elif special_text_data is not None:
+            text = special_text_data
+            
     if item_type == Types.FakeItem:
+        return getIceTrapText(text)
+    elif item_type == Types.ArchipelagoItem and item == Items.TrapArchipelagoItem:
         return getIceTrapText(text)
     return text
 

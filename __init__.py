@@ -712,6 +712,19 @@ if baseclasses_loaded:
 
             self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("Banana Hoard", ItemClassification.progression_skip_balancing, 0xD64060, self.player))  # TEMP?
 
+        def get_archipelago_item_type_by_classification(self, item_classification: ItemClassification) -> DK64RItems:
+            """Get the appropriate DK64R Archipelago item type based on the ItemClassification."""
+            if item_classification in [ItemClassification.progression, ItemClassification.progression_skip_balancing]:
+                return DK64RItems.ArchipelagoItem
+            elif item_classification == ItemClassification.useful:
+                return DK64RItems.SpecialArchipelagoItem
+            elif item_classification == ItemClassification.trap:
+                return DK64RItems.TrapArchipelagoItem
+            elif item_classification == ItemClassification.filler:
+                return DK64RItems.ArchipelagoItem.FoolsArchipelagoItem
+            else:
+                return DK64RItems.ArchipelagoItem
+
         def generate_output(self, output_directory: str):
             """Generate the output."""
             try:
@@ -730,6 +743,7 @@ if baseclasses_loaded:
                         spoiler.pregiven_items.append(dk64_item)
                 local_trap_count = 0
                 ap_item_is_major_item = False
+                ap_major_item_type = None  # Track which archipelago item type to add to major items
                 self.junked_locations = []
                 # Read through all item assignments in this AP world and find their DK64 equivalents so we can update our world state for patching purposes
                 for ap_location in self.multiworld.get_locations(self.player):
@@ -749,10 +763,12 @@ if baseclasses_loaded:
                             # Store the Archipelago item name for textbox display (items from other players)
                             player_name = self.multiworld.get_player_name(ap_item.player)
                             spoiler.archipelago_locations[dk64_location_id] = f"{ap_item.name} ({player_name})"
-                            spoiler.LocationList[dk64_location_id].PlaceItem(spoiler, DK64RItems.ArchipelagoItem)
+                            archipelago_item_type = self.get_archipelago_item_type_by_classification(ap_item.classification)
+                            spoiler.LocationList[dk64_location_id].PlaceItem(spoiler, archipelago_item_type)
                             # If Jetpac has an progression AP item, we should hint is as if it were a major item
                             if dk64_location_id == DK64RLocations.RarewareCoin and ap_item.advancement:
                                 ap_item_is_major_item = True
+                                ap_major_item_type = archipelago_item_type
                         # Collectibles don't get placed in the LocationList
                         elif "Collectible" in ap_item.name or "Boss Defeated" == ap_item.name or "Bonus Completed" in ap_item.name:
                             continue
@@ -787,7 +803,7 @@ if baseclasses_loaded:
                                 if dk64_item in DK64RItemPool.Blueprints() and dk64_location.type == Types.Fairy:
                                     # Store the item name for textbox display since this becomes an Archipelago item
                                     spoiler.archipelago_locations[dk64_location_id] = ap_item.name
-                                    dk64_item = DK64RItems.ArchipelagoItem
+                                    dk64_item = self.get_archipelago_item_type_by_classification(ap_item.classification)
                                 # Track explicit "No Item" placements
                                 elif ap_item.name == "No Item":
                                     self.junked_locations.append(ap_location.name)
@@ -865,8 +881,8 @@ if baseclasses_loaded:
                             self.spoiler.microhints[DK64RItem.ItemList[hintedItem].name] = text
 
                 spoiler.majorItems = IdentifyMajorItems(spoiler)
-                if ap_item_is_major_item:
-                    spoiler.majorItems.append(DK64RItems.ArchipelagoItem)
+                if ap_item_is_major_item and ap_major_item_type is not None:
+                    spoiler.majorItems.append(ap_major_item_type)
                 patch_data, _ = patching_response(spoiler)
                 lanky = self.update_seed_results(patch_data, spoiler, self.player)
 
