@@ -1851,7 +1851,7 @@ ColoredBananaGroupList = [
         locations=[[5, 1.1, 2435, 343, 992]],
     ),
     ColoredBananaGroup(
-        group=117, map_id=Maps.AngryAztec, name="Start tunnel arch", konglist=[Kongs.diddy], region=Regions.AngryAztecOasis, logic=lambda l: l.jetpack, locations=[[5, 1.0, 2082, 244, 882]]
+        group=117, map_id=Maps.AngryAztec, name="Start tunnel arch", konglist=[Kongs.diddy], region=Regions.AngryAztecOasis, logic=lambda l: l.jetpack and l.climbing, locations=[[5, 1.0, 2082, 244, 882]]
     ),
     ColoredBananaGroup(
         group=118,
@@ -1859,7 +1859,7 @@ ColoredBananaGroupList = [
         name="Top center of Tiny temple",
         konglist=[Kongs.diddy],
         region=Regions.AngryAztecOasis,
-        logic=lambda l: l.jetpack,
+        logic=lambda l: l.jetpack and l.climbing,
         locations=[[1, 1.0, 3062, 351, 732], [1, 1.0, 3065, 360, 732], [1, 1.0, 3062, 369, 732], [1, 1.0, 3059, 377, 732], [1, 1.0, 3062, 386, 732]],
     ),
     ColoredBananaGroup(
@@ -1868,7 +1868,7 @@ ColoredBananaGroupList = [
         name="Guitar door arch",
         konglist=[Kongs.diddy],
         region=Regions.AngryAztecOasis,
-        logic=lambda l: l.jetpack,
+        logic=lambda l: l.jetpack and l.climbing,
         locations=[[1, 1.0, 2768, 225, 1450], [1, 1.0, 2719, 244, 1439], [1, 1.0, 2678, 261, 1457], [1, 1.0, 2636, 244, 1456], [1, 1.0, 2583, 225, 1455]],
     ),
     ColoredBananaGroup(
@@ -2185,7 +2185,7 @@ ColoredBananaGroupList = [
         name="Vases room central platform",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BetweenVinesByPortal,
-        logic=lambda l: l.pineapple or l.CanPhase(),
+        logic=lambda l: (l.pineapple and l.ischunky) or l.CanPhase(),
         locations=[
             [1, 1.0, 407, 140, 786],
             [1, 1.0, 440, 140, 741],
@@ -2250,7 +2250,7 @@ ColoredBananaGroupList = [
         name="Sun symbol above the vulture cage",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
-        logic=lambda l: (l.climbing and l.vines) or (l.jetpack and l.isdiddy),
+        logic=lambda l: (l.climbing and l.can_use_vines) or (l.jetpack and l.isdiddy),
         locations=[[5, 1.0, 4008, 282, 4590]],
     ),
     ColoredBananaGroup(
