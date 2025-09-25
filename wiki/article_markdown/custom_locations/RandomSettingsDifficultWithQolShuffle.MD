@@ -174,6 +174,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 	- Banana: 95%
 	- Racebanana: 95%
 	- Gauntletbanana: 95%
+	- Blueprintbanana: 20%
 	- Crown: 70%
 	- Blueprint: 70%
 	- Key: 85%

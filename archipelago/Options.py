@@ -957,10 +957,12 @@ class EnableCutscenes(Toggle):
 
     display_name = "Re-Enable Cutscenes"
 
+
 class SnideTurnins(Toggle):
     """Determines if Snide rewards are added to the pool."""
 
     display_name = "Snide Turnins"
+
 
 @dataclass
 class DK64Options(PerGameCommonOptions):

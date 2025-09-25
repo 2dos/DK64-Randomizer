@@ -908,7 +908,7 @@ def getItemPreviewText(item_type: Types, location: Locations, allow_special_text
     if reference_item not in item_db and reference_item not in FILLER_MAPPING:
         return ""
     item_data = getItemDBEntry(reference_item)
-    
+
     # Handle array-based preview text (like Archipelago items)
     if isinstance(item_data.preview_text, list) and item is not None:
         try:
@@ -918,7 +918,7 @@ def getItemPreviewText(item_type: Types, location: Locations, allow_special_text
             text = item_data.preview_text[0] if item_data.preview_text else ""
     else:
         text = item_data.preview_text if isinstance(item_data.preview_text, str) else (item_data.preview_text[0] if item_data.preview_text else "")
-    
+
     if allow_special_text:
         special_text_data = item_data.special_preview_text.get(location)
         if isinstance(special_text_data, list) and item is not None:
@@ -929,7 +929,7 @@ def getItemPreviewText(item_type: Types, location: Locations, allow_special_text
                 pass  # Keep the default text
         elif special_text_data is not None:
             text = special_text_data
-            
+
     if item_type == Types.FakeItem:
         return getIceTrapText(text)
     elif item_type == Types.ArchipelagoItem and item == Items.TrapArchipelagoItem:

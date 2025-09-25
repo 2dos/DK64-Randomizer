@@ -2701,7 +2701,11 @@ class Settings:
             ]
             blueprint_gb_locations = [Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(40)]
             banana_types = {
-                Types.Banana: [x for x in spoiler.LocationList if spoiler.LocationList[x].type == Types.Banana and x not in race_gb_locations and x not in gauntlet_gb_locations and x not in blueprint_gb_locations],
+                Types.Banana: [
+                    x
+                    for x in spoiler.LocationList
+                    if spoiler.LocationList[x].type == Types.Banana and x not in race_gb_locations and x not in gauntlet_gb_locations and x not in blueprint_gb_locations
+                ],
                 Types.RaceBanana: race_gb_locations.copy(),
                 Types.GauntletBanana: gauntlet_gb_locations.copy(),
                 Types.BlueprintBanana: blueprint_gb_locations.copy(),
@@ -2762,7 +2766,6 @@ class Settings:
             for item_type in exclude_bp_types:
                 if item_type in self.valid_locations:
                     self.valid_locations[item_type] = [v for v in self.valid_locations[item_type] if v not in excluded_bp_locations]
-
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""

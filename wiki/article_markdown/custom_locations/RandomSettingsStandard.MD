@@ -162,6 +162,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Banana: 95%
 	- Racebanana: 50%
 	- Gauntletbanana: 50%
+	- Blueprintbanana: 20%
 	- Crown: 70%
 	- Blueprint: 70%
 	- Key: 85%

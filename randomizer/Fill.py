@@ -4108,8 +4108,6 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
         if settings.coin_door_item == item_map["barrier"] and settings.coin_door_item_count > item_map["setting_value"]:
             found_incompatibilities += f"Less {item_map['name_plural']} selected than your second helm door. "
 
-
-
     if not settings.is_valid_item_pool():
         found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
     if settings.krool_access and Items.HideoutHelmKey in settings.starting_keys_list_selected:

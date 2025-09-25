@@ -80,7 +80,7 @@ gauntlet_gb_locations = [
     Locations.CastleChunkyShed,
 ]
 blueprint_gb_locations = [Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(40)]
-    
+
 
 def PlaceConstants(spoiler):
     """Place items which are to be put in a hard-coded location."""
@@ -595,6 +595,7 @@ def NintendoCoinItems():
 def RarewareCoinItems():
     """Return Rareware Coin."""
     return [Items.RarewareCoin]
+
 
 def GoldenBananaItems(settings):
     """Return a list of GBs to be placed."""

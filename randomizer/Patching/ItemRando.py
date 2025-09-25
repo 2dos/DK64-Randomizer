@@ -1237,12 +1237,12 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
             new_item = Items.RarewareCoin
             for item in item_data:
                 if item.location == Locations.RarewareCoin:
-                    new_item = item.new_subitem    
+                    new_item = item.new_subitem
             if new_item in [Items.ArchipelagoItem, Items.SpecialArchipelagoItem, Items.FoolsArchipelagoItem, Items.TrapArchipelagoItem]:
                 placed_text = major_item if new_item == Items.ArchipelagoItem else minor_item
             else:
                 placed_text = major_item if new_item in major_items else minor_item
-            
+
             spoiler.text_changes[8].append({"textbox_index": 0, "mode": "replace", "search": "FOR MY AMAZING SURPRISE", "target": placed_text})
 
         # Setup Changes
@@ -1305,4 +1305,4 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     ROM_COPY.seek(point_start + 8)
                     ROM_COPY.writeMultipleBytes(2, 1)  # Double the speed at this path point
                 offset += 6
-                offset += (point_count * 10)
+                offset += point_count * 10
