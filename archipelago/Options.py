@@ -965,6 +965,7 @@ class SnideMaximum(Range):
     range_end = 40
     default = 20
 
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
