@@ -16,7 +16,7 @@ import tempfile
 from typing import Any
 
 
-from BaseClasses import Location
+from BaseClasses import Location, LocationProgressType
 from worlds.dk64.ap_version import version as ap_version
 
 baseclasses_loaded = False
@@ -691,6 +691,26 @@ if baseclasses_loaded:
         def create_regions(self) -> None:
             """Create the regions."""
             create_regions(self.multiworld, self.player, self.spoiler)
+             
+            def exclude_locations(location_names: typing.List[str]):
+                for location_name in location_names:
+                    try:
+                        self.multiworld.get_location(location_name, self.player).progress_type = LocationProgressType.EXCLUDED
+                    except KeyError:
+                        continue  # Location not in multiworld
+            
+            maximum_snide = self.options.maximum_snide.value
+            excluded_locations = []
+            
+            # Add blueprint turn-in locations above the maximum_snide threshold
+            for blueprint_count in range(maximum_snide + 1, 41):
+                location_name = f"Turning In {blueprint_count} Blueprints"
+                if location_name in all_locations:
+                    excluded_locations.append(location_name)
+            
+            # Exclude the locations using Archipelago's exclude_locations mechanism
+            if excluded_locations:
+                exclude_locations(excluded_locations)
 
         def create_items(self) -> None:
             """Create the items."""

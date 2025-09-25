@@ -449,8 +449,6 @@ def apply_item_randomization_settings(settings_dict: dict, options) -> None:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.shopowners)
     if options.half_medals_in_pool.value:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.halfmedal)
-    if options.snide_turnins_in_pool.value:
-        settings_dict["item_rando_list_1"].append(ItemRandoListSelected.blueprintbanana)
 
 
 def apply_hard_mode_settings(settings_dict: dict, options) -> None:

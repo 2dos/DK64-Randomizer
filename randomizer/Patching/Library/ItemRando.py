@@ -809,7 +809,7 @@ item_db = {
         jetpac_reward_index=[JetpacRewards.APItem] * 4,
         overlay=[GraphicOverlay.Hint] * 4,
         index_getter=lambda item, flag, shared: [Items.ArchipelagoItem, Items.SpecialArchipelagoItem, Items.FoolsArchipelagoItem, Items.TrapArchipelagoItem].index(item),
-        preview_text=["SPECIAL ARCHIPELAGO ITEM", "USEFUL AP ITEM", "JUNK ARCHIPELAGO ITEM", "SPECIAL AP ITEM"],
+        preview_text=["SPECIAL AP ITEM", "USEFUL AP ITEM", "JUNK AP ITEM", "SPECIAL AP ITEM"],
         special_preview_text={
             Locations.GalleonDonkeySealRace: ["ANOTHER MAN'S TREASURE", "ANOTHER PIRATE'S EYEPATCH", "ONE MAN'S TRASH", "ONE MAN'S TREESURE"],
             Locations.ForestDiddyOwlRace: ["A RABBIT'S FOOT", "A PENNY", "A BLACK CAT", "A RABBTI'S FOOT"],

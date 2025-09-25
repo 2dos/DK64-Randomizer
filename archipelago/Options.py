@@ -958,11 +958,12 @@ class EnableCutscenes(Toggle):
     display_name = "Re-Enable Cutscenes"
 
 
-class SnideTurnins(Toggle):
-    """Determines if Snide rewards are added to the pool."""
+class SnideMaximum(Range):
+    """Determines the maximum reward for Snide Turnins to have progression."""
 
-    display_name = "Snide Turnins"
-
+    range_start = 0
+    range_end = 40
+    default = 20
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
@@ -1042,7 +1043,7 @@ class DK64Options(PerGameCommonOptions):
     paper_weight: PaperTrapWeight
     slip_weight: SlipTrapWeight
     enable_cutscenes: EnableCutscenes
-    snide_turnins_in_pool: SnideTurnins
+    maximum_snide: SnideMaximum
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1089,7 +1090,7 @@ dk64_option_groups: List[OptionGroup] = [
             HintItemRandomization,
             HalfMedals,
             SmallerShops,
-            SnideTurnins,
+            SnideMaximum,
         ],
     ),
     OptionGroup(
