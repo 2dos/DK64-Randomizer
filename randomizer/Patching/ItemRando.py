@@ -198,7 +198,7 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
         Types.FillerCrown: 7,
         Types.FillerMedal: 9,
         Types.FillerPearl: 11,
-        Types.ArchipelagoItem: 0x15,
+        Types.FillerRainbowCoin: 12,
     }
     if item_type in simple_types:
         return ItemPatchingInfo(simple_types[item_type])
@@ -293,6 +293,14 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
         shopkeeper_lst = [Items.Cranky, Items.Funky, Items.Candy, Items.Snide]
         shopkeeper_index = getItemPatchingFromList(shopkeeper_lst, item, "Shopkeeper")
         return ItemPatchingInfo(20, 0, shopkeeper_index)
+    elif item_type == Types.ArchipelagoItem:
+        arch_item_list = (
+            Items.ArchipelagoItem,
+            Items.SpecialArchipelagoItem,
+            Items.FoolsArchipelagoItem,
+            Items.TrapArchipelagoItem,
+        )
+        return ItemPatchingInfo(0x15, arch_item_list.index(item))
     raise Exception(f"Invalid item for patching: {item_type.name}, {item}")
 
 
@@ -906,6 +914,24 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         if spoiler.settings.enable_shop_hints and placement < 120:
                             addr = getItemTableWriteAddress(ROM_COPY, Types.Shop, placement, offset_dict)
                             writeBuyText(item.new_subitem, addr, ROM_COPY)
+                elif item.location >= Locations.TurnInDKIslesDonkeyBlueprint and item.location <= Locations.TurnInCreepyCastleChunkyBlueprint:
+                    if item.location <= Locations.TurnInDKIslesChunkyBlueprint:
+                        index = 35 + (item.location - Locations.TurnInDKIslesDonkeyBlueprint)
+                    else:
+                        index = item.location - Locations.TurnInJungleJapesDonkeyBlueprint
+                    snide_reward_addr_start = getROMAddress(getSym("snide_rewards"), Overlay.Custom, offset_dict)
+                    ROM_COPY.seek(snide_reward_addr_start + (index * 8))
+                    if item.new_item is None or item.new_item == Types.NoItem:
+                        ROM_COPY.writeMultipleBytes(0, 2)
+                        ROM_COPY.writeMultipleBytes(0, 2)
+                    else:
+                        obj_index = getPropFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
+                        ROM_COPY.writeMultipleBytes(obj_index, 2)
+                        ROM_COPY.writeMultipleBytes(0, 2)
+                    ROM_COPY.writeMultipleBytes(item_properties.response_type, 1)
+                    ROM_COPY.writeMultipleBytes(item_properties.level, 1)
+                    ROM_COPY.writeMultipleBytes(item_properties.kong, 1)
+                    ROM_COPY.writeMultipleBytes(item_properties.audiovisual_medal, 1)
                 elif not item.reward_spot:
                     for map_id in item.placement_data:
                         if map_id not in map_items:
@@ -1163,18 +1189,9 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         new_item = item.new_item
                         new_subitem = item.new_subitem
                 replacement = textbox.replacement_text
-                # Check if this is an Archipelago item and we have location data
-                archipelago_item_name = None
-                if spoiler.settings.archipelago and hasattr(spoiler, "archipelago_locations") and textbox.location in spoiler.archipelago_locations:
-                    archipelago_item_name = normalize_location_name(spoiler.archipelago_locations[textbox.location])
-
-                if not textbox.force_pipe or archipelago_item_name:
-                    if archipelago_item_name:
-                        # Use the Archipelago item name, limit length to fit in textbox
-                        reward_text = archipelago_item_name.upper()[:32]  # Limit to 32 characters
-                    else:
-                        # Use the standard item preview text
-                        reward_text = getItemPreviewText(new_item, textbox.location, True, getModelMask(new_subitem))
+                if not textbox.force_pipe:
+                    # Use the standard item preview text
+                    reward_text = getItemPreviewText(new_item, textbox.location, True, getModelMask(new_subitem), new_subitem)
                     replacement = replacement.replace("|", reward_text)
                 file_data = {
                     textbox.file_index: {
@@ -1186,14 +1203,9 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 }
                 if textbox.file_index == CompTextFiles.PreviewsFlavor:
                     replacement = textbox.replacement_text
-                    if not textbox.force_pipe or archipelago_item_name:
-                        if archipelago_item_name:
-                            # Use the Archipelago item name, limit length to fit in textbox
-                            reward_text = archipelago_item_name.upper()[:32]  # Limit to 32 characters
-                        else:
-                            # Use the standard item preview text
-                            reward_text = getItemPreviewText(new_item, textbox.location, False, getModelMask(new_subitem))
-                        replacement = replacement.replace("|", reward_text)
+                    if not textbox.force_pipe:
+                        reward_text = getItemPreviewText(new_item, textbox.location, False, getModelMask(new_subitem), new_subitem)
+                    replacement = replacement.replace("|", reward_text)
                     file_data[CompTextFiles.PreviewsNormal] = {
                         "textbox_index": textbox.textbox_index,
                         "mode": "replace",
@@ -1214,19 +1226,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 if item.location in beetle_locations:
                     VERSION_STRING_START = getSym(beetle_data[item.location])
                     addr = getROMAddress(VERSION_STRING_START, Overlay.Custom, offset_dict)
-
-                    # Check if this is an Archipelago item and we have location data
-                    archipelago_item_name = None
-                    if spoiler.settings.archipelago and hasattr(spoiler, "archipelago_locations") and item.location in spoiler.archipelago_locations:
-                        archipelago_item_name = normalize_location_name(spoiler.archipelago_locations[item.location])
-
-                    if archipelago_item_name:
-                        # Use the Archipelago item name, limit length to fit in textbox
-                        item_text = archipelago_item_name.upper()[:31]  # Limit Beetles to 31 characters due to null terminator
-                    else:
-                        # Use the standard item preview text
-                        item_text = getItemPreviewText(item.new_item, item.location, THEMATIC_TEXT, getModelMask(item.new_subitem))
-
+                    item_text = getItemPreviewText(item.new_item, item.location, THEMATIC_TEXT, getModelMask(new_subitem), item.new_subitem)
                     ROM_COPY.seek(addr)
                     ROM_COPY.writeBytes(bytes(f"{item_text}\0", "ascii"))
             minor_item = "\x05FOR A FOOLISH GAME\x05"
@@ -1238,7 +1238,11 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
             for item in item_data:
                 if item.location == Locations.RarewareCoin:
                     new_item = item.new_subitem
-            placed_text = major_item if new_item in major_items else minor_item
+            if new_item in [Items.ArchipelagoItem, Items.SpecialArchipelagoItem, Items.FoolsArchipelagoItem, Items.TrapArchipelagoItem]:
+                placed_text = major_item if new_item == Items.ArchipelagoItem else minor_item
+            else:
+                placed_text = major_item if new_item in major_items else minor_item
+
             spoiler.text_changes[8].append({"textbox_index": 0, "mode": "replace", "search": "FOR MY AMAZING SURPRISE", "target": placed_text})
 
         # Setup Changes
@@ -1274,3 +1278,31 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     new_scale = old_scale * item_slot["upscale"]
                     ROM_COPY.seek(start + 0xC)
                     ROM_COPY.writeFloat(new_scale)
+        # Remove GBs from Snide's
+        if spoiler.settings.snide_reward_rando:
+            cont_map_setup_address = getPointerLocation(TableNames.Setups, Maps.Snide)
+            ROM_COPY.seek(cont_map_setup_address)
+            model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+            for item in range(model2_count):
+                start = cont_map_setup_address + 4 + (item * 0x30)
+                ROM_COPY.seek(start + 0x2A)
+                item_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                if item_id in (2, 3, 4, 0x10, 0x12, 0x13, 0x14, 0x15):  # Item IDs for the snide GBs
+                    ROM_COPY.seek(start + 0x28)
+                    ROM_COPY.writeMultipleBytes(0, 2)  # Set to nothing object
+            # Speed up the path points for points 2, 3 and 4
+            path_address = getPointerLocation(TableNames.Paths, Maps.Snide)
+            ROM_COPY.seek(path_address)
+            path_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+            offset = 2
+            for x in range(path_count):
+                ROM_COPY.seek(path_address + offset + 2)
+                point_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                for y in range(point_count):
+                    point_start = path_address + offset + 6 + (y * 10)
+                    if y < 2:
+                        continue
+                    ROM_COPY.seek(point_start + 8)
+                    ROM_COPY.writeMultipleBytes(2, 1)  # Double the speed at this path point
+                offset += 6
+                offset += point_count * 10

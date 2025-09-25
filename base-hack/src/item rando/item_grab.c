@@ -473,9 +473,18 @@ void getItem(int object_type) {
             playSound(0x2EA, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
         case 0x291:
-            // Archi Item
-            forceDance();
-            playSound(69, 0x7FFF, 63.0f, 1.0f, 5, 0);
+        case 0x292:
+        case 0x293:
+        case 0x294:
+            {
+                // Archi Item
+                float speed = 1.0f;
+                if (object_type == 0x294) {
+                    speed = 0.5f;
+                }
+                forceDance();
+                playSound(69, 0x7FFF, 63.0f, speed, 5, 0);
+            }
             break;
     }
     addHelmTime(hh_item, multiplier);

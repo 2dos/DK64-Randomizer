@@ -130,6 +130,10 @@ class ExtraTextures(IntEnum):
     BanditImage1 = auto()
     BanditImage2 = auto()
     BanditImage3 = auto()
+    SpecialAPPearlGold = auto()
+    SpecialAPPearlSilver = auto()
+    FoolsAPPearlBlack = auto()
+    FoolsAPPearlSilver = auto()
 
 
 barrel_skins = (
@@ -164,6 +168,9 @@ barrel_skins = (
     "soldout",
     "null",
     "fakefairy",
+    "ap_useful",
+    "ap_junk",
+    "ap_trap",
 )
 
 

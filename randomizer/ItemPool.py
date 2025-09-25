@@ -48,6 +48,40 @@ def getHelmKey(settings) -> Items:
     return key_item
 
 
+race_gb_locations = [
+    Locations.JapesDiddyMinecarts,
+    Locations.AztecDiddyVultureRace,
+    Locations.AztecTinyBeetleRace,
+    Locations.FactoryTinyCarRace,
+    Locations.GalleonDonkeySealRace,
+    Locations.ForestDiddyOwlRace,
+    Locations.ForestLankyRabbitRace,
+    Locations.ForestChunkyMinecarts,
+    Locations.CavesLankyBeetleRace,
+    Locations.CastleDonkeyMinecarts,
+    Locations.CastleTinyCarRace,
+]
+gauntlet_gb_locations = [
+    Locations.JapesLankyFairyCave,
+    Locations.AztecTinyKlaptrapRoom,
+    Locations.AztecChunkyKlaptrapRoom,
+    Locations.FactoryDiddyRandD,
+    Locations.ForestLankyAttic,
+    Locations.ForestTinyAnthill,
+    Locations.ForestTinySpiderBoss,
+    Locations.ForestChunkyApple,
+    Locations.CavesDonkey5DoorCabin,
+    Locations.CavesDiddy5DoorCabinLower,
+    Locations.CavesLanky5DoorIgloo,
+    Locations.CavesTiny5DoorCabin,
+    Locations.CavesChunky5DoorIgloo,
+    Locations.CastleDonkeyLibrary,
+    Locations.CastleTinyTrashCan,
+    Locations.CastleChunkyShed,
+]
+blueprint_gb_locations = [Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(40)]
+
+
 def PlaceConstants(spoiler):
     """Place items which are to be put in a hard-coded location."""
     # Settings-dependent locations
@@ -68,8 +102,17 @@ def PlaceConstants(spoiler):
     # Invert this list because I think it'll be faster
     typesOfItemsNotShuffled = [typ for typ in Types if typ not in typesOfItemsShuffled]
     # Place the default item at every location of a type we're not shuffling
+    banana_types = {
+        Types.RaceBanana: race_gb_locations.copy(),
+        Types.GauntletBanana: gauntlet_gb_locations.copy(),
+        Types.BlueprintBanana: blueprint_gb_locations.copy(),
+    }
+    unshuffled_bananas = []
+    for btype, lst in banana_types.items():
+        if btype not in settings.shuffled_location_types:
+            unshuffled_bananas.extend(lst)
     for location in spoiler.LocationList:
-        if spoiler.LocationList[location].type in typesOfItemsNotShuffled:
+        if spoiler.LocationList[location].type in typesOfItemsNotShuffled or location in unshuffled_bananas:
             spoiler.LocationList[location].PlaceDefaultItem(spoiler)
             # If we're placing a vanilla training move, we have to make the location available
             if spoiler.LocationList[location].type in (Types.TrainingBarrel, Types.Climbing, Types.PreGivenMove):
@@ -151,16 +194,16 @@ def AllItemsUnrestricted(settings):
     """Return all placeable items regardless of shuffle status."""
     allItems = []
     allItems.extend(Blueprints())
-    allItems.extend(GoldenBananaItems())
+    allItems.extend(GoldenBananaItems(settings))
     allItems.extend(NintendoCoinItems())
     allItems.extend(RarewareCoinItems())
-    allItems.extend(BattleCrownItems())
+    allItems.extend(BattleCrownItems(settings))
     allItems.extend(Keys())
     allItems.extend(BananaMedalItems(settings))
     allItems.extend(BeanItems())
-    allItems.extend(PearlItems())
-    allItems.extend(FairyItems())
-    allItems.extend(RainbowCoinItems())
+    allItems.extend(PearlItems(settings))
+    allItems.extend(FairyItems(settings))
+    allItems.extend(RainbowCoinItems(settings))
     allItems.extend(MelonCrateItems())
     allItems.extend(HalfMedalItems())
     allItems.extend(BoulderItems())
@@ -195,13 +238,13 @@ def AllItems(settings):
     if Types.Blueprint in settings.shuffled_location_types:
         allItems.extend(Blueprints())
     if Types.Banana in settings.shuffled_location_types:
-        allItems.extend(GoldenBananaItems())
+        allItems.extend(GoldenBananaItems(settings))
     if Types.NintendoCoin in settings.shuffled_location_types:
         allItems.extend(NintendoCoinItems())
     if Types.RarewareCoin in settings.shuffled_location_types:
         allItems.extend(RarewareCoinItems())
     if Types.Crown in settings.shuffled_location_types:
-        allItems.extend(BattleCrownItems())
+        allItems.extend(BattleCrownItems(settings))
     if Types.Key in settings.shuffled_location_types:
         allItems.extend(Keys())
     if Types.Medal in settings.shuffled_location_types:
@@ -209,11 +252,11 @@ def AllItems(settings):
     if Types.Bean in settings.shuffled_location_types:
         allItems.extend(BeanItems())
     if Types.Pearl in settings.shuffled_location_types:
-        allItems.extend(PearlItems())
+        allItems.extend(PearlItems(settings))
     if Types.Fairy in settings.shuffled_location_types:
-        allItems.extend(FairyItems())
+        allItems.extend(FairyItems(settings))
     if Types.RainbowCoin in settings.shuffled_location_types:
-        allItems.extend(RainbowCoinItems())
+        allItems.extend(RainbowCoinItems(settings))
     if Types.CrateItem in settings.shuffled_location_types:
         allItems.extend(MelonCrateItems())
     if Types.HalfMedal in settings.shuffled_location_types:
@@ -236,7 +279,7 @@ def AllItems(settings):
         allItems.extend(FakeItems(settings))
     if Types.JunkItem in settings.shuffled_location_types:
         allItems.extend(JunkItems())
-    filler_types = [x for x in [Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerPearl, Types.FillerMedal] if x in settings.shuffled_location_types]
+    filler_types = [x for x in [Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerPearl, Types.FillerMedal, Types.FillerRainbowCoin] if x in settings.shuffled_location_types]
     if len(filler_types) > 0:
         allItems.extend(FillerItems(settings))
     if settings.move_rando != MoveRando.off:
@@ -267,13 +310,13 @@ def AllItemsForMovePlacement(settings):
     if Types.Blueprint in settings.shuffled_location_types:
         allItems.extend(Blueprints())
     if Types.Banana in settings.shuffled_location_types:
-        allItems.extend(GoldenBananaItems())
+        allItems.extend(GoldenBananaItems(settings))
     if Types.NintendoCoin in settings.shuffled_location_types:
         allItems.extend(NintendoCoinItems())
     if Types.RarewareCoin in settings.shuffled_location_types:
         allItems.extend(RarewareCoinItems())
     if Types.Crown in settings.shuffled_location_types:
-        allItems.extend(BattleCrownItems())
+        allItems.extend(BattleCrownItems(settings))
     if Types.Key in settings.shuffled_location_types:
         allItems.extend(Keys())
     if Types.Medal in settings.shuffled_location_types:
@@ -281,11 +324,11 @@ def AllItemsForMovePlacement(settings):
     if Types.Bean in settings.shuffled_location_types:
         allItems.extend(BeanItems())
     if Types.Pearl in settings.shuffled_location_types:
-        allItems.extend(PearlItems())
+        allItems.extend(PearlItems(settings))
     if Types.Fairy in settings.shuffled_location_types:
-        allItems.extend(FairyItems())
+        allItems.extend(FairyItems(settings))
     if Types.RainbowCoin in settings.shuffled_location_types:
-        allItems.extend(RainbowCoinItems())
+        allItems.extend(RainbowCoinItems(settings))
     if Types.CrateItem in settings.shuffled_location_types:
         allItems.extend(MelonCrateItems())
     if Types.HalfMedal in settings.shuffled_location_types:
@@ -308,7 +351,7 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(FakeItems(settings))
     if Types.JunkItem in settings.shuffled_location_types:
         allItems.extend(JunkItems())
-    filler_types = [x for x in [Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerPearl, Types.FillerMedal] if x in settings.shuffled_location_types]
+    filler_types = [x for x in [Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerPearl, Types.FillerMedal, Types.FillerRainbowCoin] if x in settings.shuffled_location_types]
     if len(filler_types) > 0:
         allItems.extend(FillerItems(settings))
     return allItems
@@ -554,13 +597,19 @@ def RarewareCoinItems():
     return [Items.RarewareCoin]
 
 
-TOUGH_BANANA_COUNT = 13
-
-
-def GoldenBananaItems():
+def GoldenBananaItems(settings):
     """Return a list of GBs to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.GoldenBanana, 161))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
+    decrease = 0
+    decrease_values = {
+        Types.RaceBanana: 11,
+        Types.GauntletBanana: 16,
+        Types.BlueprintBanana: 40,
+    }
+    for item_type, value in decrease_values.items():
+        if item_type not in settings.shuffled_location_types:
+            decrease += value
+    itemPool.extend(itertools.repeat(Items.GoldenBanana, settings.total_gbs - decrease))
     return itemPool
 
 
@@ -570,14 +619,14 @@ def BananaMedalItems(settings):
     count = 40
     if IsItemSelected(settings.cb_rando_enabled, settings.cb_rando_list_selected, Levels.DKIsles):
         count = 45
-    itemPool.extend(itertools.repeat(Items.BananaMedal, count))
+    itemPool.extend(itertools.repeat(Items.BananaMedal, settings.total_medals))
     return itemPool
 
 
-def BattleCrownItems():
+def BattleCrownItems(settings):
     """Return a list of Crowns to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.BattleCrown, 10))
+    itemPool.extend(itertools.repeat(Items.BattleCrown, settings.total_crowns))
     return itemPool
 
 
@@ -586,15 +635,15 @@ def BeanItems():
     return [Items.Bean]
 
 
-def PearlItems():
+def PearlItems(settings):
     """Return a list of pearls."""
-    return list(itertools.repeat(Items.Pearl, 5))
+    return list(itertools.repeat(Items.Pearl, settings.total_pearls))
 
 
-def RainbowCoinItems():
+def RainbowCoinItems(settings):
     """Return a list of Rainbow Coins to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.RainbowCoin, 16))
+    itemPool.extend(itertools.repeat(Items.RainbowCoin, settings.total_rainbow_coins))
     return itemPool
 
 
@@ -618,10 +667,10 @@ def EnemyItems():
     return []
 
 
-def FairyItems():
+def FairyItems(settings):
     """Return a list of Fairies to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
+    itemPool.extend(itertools.repeat(Items.BananaFairy, settings.total_fairies))
     return itemPool
 
 
@@ -656,13 +705,15 @@ def FillerItems(settings):
         Types.FillerFairy: Items.FillerFairy,
         Types.FillerPearl: Items.FillerPearl,
         Types.FillerMedal: Items.FillerMedal,
+        Types.FillerRainbowCoin: Items.FillerRainbowCoin,
     }
     filler_mapping_allowances = {
-        Items.FillerBanana: 255 - 201,  # Don't think we need to worry about the 8 bit limit, but just to be safe
-        Items.FillerCrown: 255 - 10,
-        Items.FillerFairy: 255 - 20,
-        Items.FillerPearl: 255 - 5,
-        Items.FillerMedal: 255 - 45,
+        Items.FillerBanana: 255 - settings.total_gbs,  # Don't think we need to worry about the 8 bit limit, but just to be safe
+        Items.FillerCrown: 255 - settings.total_crowns,
+        Items.FillerFairy: 255 - settings.total_fairies,
+        Items.FillerPearl: 255 - settings.total_pearls,
+        Items.FillerMedal: 255 - settings.total_medals,
+        Items.FillerRainbowCoin: 255 - settings.total_rainbow_coins,
     }
     filler_types_in_pool = [x for x in list(filler_mapping.keys()) if x in settings.shuffled_location_types]
     item_types_for_filler = []
@@ -755,17 +806,17 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     itemPool = []
     unplacedTypes = [typ for typ in settings.shuffled_location_types if typ not in placed_types]
     if Types.Banana in unplacedTypes:
-        itemPool.extend(GoldenBananaItems())
+        itemPool.extend(GoldenBananaItems(settings))
     if Types.Shop in unplacedTypes:
         itemPool.extend(AllKongMoves())
     if Types.Blueprint in unplacedTypes:
         itemPool.extend(Blueprints())
     if Types.Fairy in unplacedTypes:
-        itemPool.extend(FairyItems())
+        itemPool.extend(FairyItems(settings))
     if Types.Key in unplacedTypes:
         itemPool.extend(Keys())
     if Types.Crown in unplacedTypes:
-        itemPool.extend(BattleCrownItems())
+        itemPool.extend(BattleCrownItems(settings))
     if Types.NintendoCoin in unplacedTypes:
         itemPool.extend(NintendoCoinItems())
     if Types.RarewareCoin in unplacedTypes:
@@ -783,9 +834,9 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     if Types.Bean in unplacedTypes:
         itemPool.extend(BeanItems())
     if Types.Pearl in unplacedTypes:
-        itemPool.extend(PearlItems())
+        itemPool.extend(PearlItems(settings))
     if Types.RainbowCoin in unplacedTypes:
-        itemPool.extend(RainbowCoinItems())
+        itemPool.extend(RainbowCoinItems(settings))
     if Types.CrateItem in unplacedTypes:
         itemPool.extend(MelonCrateItems())
     if Types.HalfMedal in unplacedTypes:

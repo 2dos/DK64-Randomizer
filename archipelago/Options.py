@@ -958,6 +958,14 @@ class EnableCutscenes(Toggle):
     display_name = "Re-Enable Cutscenes"
 
 
+class SnideMaximum(Range):
+    """Determines the maximum reward for Snide Turnins to have progression."""
+
+    range_start = 0
+    range_end = 40
+    default = 20
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1036,6 +1044,7 @@ class DK64Options(PerGameCommonOptions):
     paper_weight: PaperTrapWeight
     slip_weight: SlipTrapWeight
     enable_cutscenes: EnableCutscenes
+    maximum_snide: SnideMaximum
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1082,6 +1091,7 @@ dk64_option_groups: List[OptionGroup] = [
             HintItemRandomization,
             HalfMedals,
             SmallerShops,
+            SnideMaximum,
         ],
     ),
     OptionGroup(
@@ -1149,6 +1159,7 @@ dk64_option_groups: List[OptionGroup] = [
             FlipTrapWeight,
             IceFloorWeight,
             PaperTrapWeight,
+            SlipTrapWeight,
         ],
     ),
     OptionGroup(

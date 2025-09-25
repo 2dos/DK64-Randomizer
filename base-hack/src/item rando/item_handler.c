@@ -143,6 +143,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
                 for (int i = 0; i < 5; i++) {
                     MovesBase[i].ammo_belt = base + 1;
                 }
+                CollectableBase.StandardAmmo = 50 << (base + 1);
             } else if (level == 8) {
                 // Instrument
                 MovesBase[kong].instrument_bitfield |= 1;

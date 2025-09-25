@@ -354,8 +354,8 @@ void earlyFrame(void) {
 }
 
 static char fpsStr[15] = "";
-static char bp_numerator = 0;
-static char bp_denominator = 0;
+static unsigned char bp_numerator = 0;
+static unsigned char bp_denominator = 0;
 static char bpStr[10] = "";
 static char pkmnStr[10] = "";
 static char hud_timer = 0;
@@ -551,18 +551,9 @@ Gfx* displayListModifiers(Gfx* dl) {
 				int hud_st = HUD->item[0xC].hud_state;
 				if (hud_st) {
 					if ((hud_st == 1) || (hud_st == 2)) {
-						bp_numerator = 0;
-						bp_denominator = 0;
-						for (int i = 0; i < 8; i++) {
-							int bp_has = getItemCount_new(REQITEM_BLUEPRINT, i, Character);
-							int bp_turn = checkFlag(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,FLAGTYPE_PERMANENT);
-							if (!bp_turn) {
-								if (bp_has) {
-									bp_numerator += 1;
-								}
-								bp_denominator += 1;
-							}
-						}
+						getBPCountStats(Character, &bp_numerator, &bp_denominator);
+						bp_numerator -= bp_denominator;
+						bp_denominator = 8 - bp_denominator;
 						if (hud_st == 1) {
 							hud_timer += 1;
 						}

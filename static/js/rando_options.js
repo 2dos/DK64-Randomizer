@@ -25,20 +25,28 @@ const DISABLED_HELM_DOOR_VALUES = [
   "opened",
 ];
 
-const ITEM_CAPS = {
-  "req_gb": 201,
-  "req_bp": 40,
-  "req_key": 8,
-  "req_medal": 40,
-  "req_crown": 10,
-  "req_fairy": 20,
-  "req_bean": 1,
-  "req_pearl": 5,
-  "req_rainbowcoin": 16,
-  "req_bosses": 7,
-  "req_bonuses": 53,
-  "req_cb": 3500,
-  "req_companycoins": 2,
+
+
+function getItemCap(item) {
+  const ITEM_CAPS = {
+    "req_gb": parseInt(document.getElementById("total_gbs").value),
+    "req_bp": 40,
+    "req_key": 8,
+    "req_medal": parseInt(document.getElementById("total_medals").value),
+    "req_crown": parseInt(document.getElementById("total_crowns").value),
+    "req_fairy": parseInt(document.getElementById("total_fairies").value),
+    "req_bean": 1,
+    "req_pearl": parseInt(document.getElementById("total_pearls").value),
+    "req_rainbowcoin": parseInt(document.getElementById("total_rainbow_coins").value),
+    "req_bosses": 7,
+    "req_bonuses": 53,
+    "req_cb": 3500,
+    "req_companycoins": 2,
+  }
+  if (Object.keys(ITEM_CAPS).includes(item)) {
+    return ITEM_CAPS[item];
+  }
+  return null;
 }
 
 // Attach the function as an event listener to the "change" event on the "logic_type" element
@@ -1227,9 +1235,10 @@ function update_prog_hint_num_access() {
     progHintReq.value = 1;
   } else {
     const item_type = progHintSelection.value;
-    if (Object.keys(ITEM_CAPS).includes(item_type)) {
-      if (parseInt(progHintReq.value) > ITEM_CAPS[item_type]) {
-        progHintReq.value = ITEM_CAPS[item_type];
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(progHintReq.value) > cap) {
+        progHintReq.value = cap;
       }
     }
   }
@@ -1254,6 +1263,21 @@ function max_randomized_blocker() {
 document
   .getElementById("blocker_text")
   .addEventListener("focusout", max_randomized_blocker);
+
+function max_snide_reward() {
+  const snideRewardText = document.getElementById("most_snide_rewards");
+  if (!snideRewardText.value) {
+    snideRewardText.value = 40;
+  } else if (parseInt(snideRewardText.value) < 0) {
+    snideRewardText.value = 0;
+  } else if (parseInt(snideRewardText.value) > 40) {
+    snideRewardText.value = 40;
+  }
+}
+
+document
+  .getElementById("most_snide_rewards")
+  .addEventListener("focusout", max_snide_reward);
 
 // Validate troff input on loss of focus
 function max_randomized_troff() {
@@ -1386,9 +1410,10 @@ function update_door_one_num_access() {
     doorOneReq.value = 1;
   } else {
     const item_type = doorOneSelection.value == "vanilla" ? "req_crown" : doorOneSelection.value;
-    if (Object.keys(ITEM_CAPS).includes(item_type)) {
-      if (parseInt(doorOneReq.value) > ITEM_CAPS[item_type]) {
-        doorOneReq.value = ITEM_CAPS[item_type];
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(doorOneReq.value) > cap) {
+        doorOneReq.value = cap;
       }
     }
   }
@@ -1415,9 +1440,10 @@ function update_door_two_num_access() {
     doorTwoReq.value = 1;
   } else {
     const item_type = doorTwoSelection.value == "vanilla" ? "req_companycoins" : doorTwoSelection.value;
-    if (Object.keys(ITEM_CAPS).includes(item_type)) {
-      if (parseInt(doorTwoReq.value) > ITEM_CAPS[item_type]) {
-        doorTwoReq.value = ITEM_CAPS[item_type];
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(doorTwoReq.value) > cap) {
+        doorTwoReq.value = cap;
       }
     }
   }
@@ -1471,9 +1497,10 @@ function update_win_con_num_access() {
     winConReq.value = 1;
   } else {
     const item_type = winConSelection.value;
-    if (Object.keys(ITEM_CAPS).includes(item_type)) {
-      if (parseInt(winConReq.value) > ITEM_CAPS[item_type]) {
-        winConReq.value = ITEM_CAPS[item_type];
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(winConReq.value) > cap) {
+        winConReq.value = cap;
       }
     }
   }
@@ -1496,9 +1523,10 @@ document
       doorOneReq.value = 1;
     } else {
       const item_type = doorOneSelection.value == "vanilla" ? "req_crown" : doorOneSelection.value;
-      if (Object.keys(ITEM_CAPS).includes(item_type)) {
-        if (parseInt(doorOneReq.value) > ITEM_CAPS[item_type]) {
-          doorOneReq.value = ITEM_CAPS[item_type];
+      const cap = getItemCap(item_type);
+      if (cap !== null) {
+        if (parseInt(doorOneReq.value) > cap) {
+          doorOneReq.value = cap;
         }
       }
     }
@@ -1517,9 +1545,10 @@ document
       doorTwoReq.value = 1;
     } else {
       const item_type = doorTwoSelection.value == "vanilla" ? "req_companycoins" : doorTwoSelection.value;
-      if (Object.keys(ITEM_CAPS).includes(item_type)) {
-        if (parseInt(doorTwoReq.value) > ITEM_CAPS[item_type]) {
-          doorTwoReq.value = ITEM_CAPS[item_type];
+      const cap = getItemCap(item_type);
+      if (cap !== null) {
+        if (parseInt(doorTwoReq.value) > cap) {
+          doorTwoReq.value = cap;
         }
       }
     }
@@ -1945,12 +1974,48 @@ function update_trap_weight(el, default_value, force) {
   return all_zero;
 }
 
-let force_trap_weight_reset = false;
-Object.keys(default_trap_weights).forEach(stg => {
-  document.getElementById(stg).addEventListener("change", (e) => {
-    force_trap_weight_reset = update_trap_weight(e.target, default_trap_weights[stg], force_trap_weight_reset);
+function update_all_trap_weights() {
+  let force_trap_weight_reset = false;
+  Object.keys(default_trap_weights).forEach(stg => {
+    document.getElementById(stg).addEventListener("change", (e) => {
+      force_trap_weight_reset = update_trap_weight(e.target, default_trap_weights[stg], force_trap_weight_reset);
+    })
   })
-})
+}
+
+const alterers = document.getElementsByClassName("item-count-alterer");
+function getTotalItemCounts() {
+    const alt_v = document.getElementsByClassName("item-count-alterer")
+    let total = 0;
+    for (let a = 0; a < alt_v.length; a++) {
+        const local_value = parseInt(alt_v[a].value);
+        const local_id = alt_v[a].getAttribute("id");
+        const local_header = document.getElementById(`${local_id}_title`);
+        let local_min = 1;
+        const local_max = 255;
+        if (local_id == "total_gbs") {
+            local_min = 40;
+        } else if (["total_crowns", "total_rainbow_coins"].includes(local_id)) {
+            local_min = 0;
+        }
+        if (local_value < local_min) {
+          alt_v[a].value = local_min;
+        } else if (local_value > local_max) {
+          alt_v[a].value = local_max;
+        }
+        total += local_value;
+    }
+    const notifier = document.getElementById("item_count_collective");
+    if (total < 298) {
+        notifier.style.color = "white";
+    } else {
+        notifier.style.color = "red";
+    }
+}
+for (let a = 0; a < alterers.length; a++) {
+    alterers[a].addEventListener("change", getTotalItemCounts);
+    alterers[a].addEventListener("change", refreshItemRandoSortable);
+}
 
 // Bind custom update UI event for "apply_preset"
 function update_ui_states() {
@@ -1959,6 +2024,7 @@ function update_ui_states() {
   disable_colors();
   disable_music();
   max_randomized_blocker();
+  max_snide_reward();
   max_randomized_troff();
   max_music();
   max_music_proportion();
@@ -1980,10 +2046,8 @@ function update_ui_states() {
   update_prog_hint_num_access();
   update_blocker_num_access();
   update_ice_trap_count();
-  let local_trap_weight_reset = false;
-  Object.keys(default_trap_weights).forEach(stg => {
-    local_trap_weight_reset = update_trap_weight(document.getElementById(stg), default_trap_weights[stg], local_trap_weight_reset);
-  })
+  getTotalItemCounts();
+  update_all_trap_weights();
   update_troff_number_access();
   item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
   item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);

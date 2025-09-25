@@ -276,6 +276,7 @@ class Spoiler:
             Types.Pearl: "Pearls",
             Types.FillerPearl: "Pearls",
             Types.RainbowCoin: "Rainbow Coins",
+            Types.FillerRainbowCoin: "Rainbow Coins",
             Types.FakeItem: "Ice Traps",
             Types.JunkItem: "Junk Items",
             Types.CrateItem: "Melon Crates",
@@ -1369,7 +1370,7 @@ class Spoiler:
             # WinConditionComplex.req_key: [Types.Key],
             WinConditionComplex.req_medal: [Types.Medal, Types.FillerMedal],
             WinConditionComplex.req_pearl: [Types.Pearl, Types.FillerPearl],
-            WinConditionComplex.req_rainbowcoin: [Types.RainbowCoin],
+            WinConditionComplex.req_rainbowcoin: [Types.RainbowCoin, Types.FillerRainbowCoin],
         }
         # Win condition items are more important than GBs but less than moves
         if self.settings.win_condition_item in win_con_type_table:

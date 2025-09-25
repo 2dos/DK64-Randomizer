@@ -259,6 +259,8 @@ RegionMapList = {
     Regions.HideoutHelmKeyRoom: Maps.HideoutHelm,
     Regions.HideoutHelmOOBChunky: Maps.HideoutHelm,
     Regions.HideoutHelmOOBLanky: Maps.HideoutHelm,
+    # Misc
+    Regions.Snide: Maps.Snide,
 }
 
 LevelMapTable = {

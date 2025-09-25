@@ -541,7 +541,10 @@
     "trainingmoves": 41,
     "trainingbarrels": 42,
     "halfmedal": 43,
-    "dummyitem_halfmedal": 44
+    "dummyitem_halfmedal": 44,
+    "racebanana": 45,
+    "gauntletbanana": 46,
+    "blueprintbanana": 47
   },
 
   "ItemRandoFiller": {
@@ -551,7 +554,8 @@
     "fairy": 4,
     "medal": 5,
     "pearl": 6,
-    "banana": 7
+    "banana": 7,
+    "rainbowcoin": 8
   },
 
   /*
@@ -1348,8 +1352,14 @@
     "trap_weight_flip": 275,
     "trap_weight_icefloor": 276,
     "trap_weight_paper": 277,
-    "trap_weight_slip": 278
-
+    "trap_weight_slip": 278,
+    "total_gbs": 279,
+    "total_medals": 280,
+    "total_rainbow_coins": 281,
+    "total_pearls": 282,
+    "total_crowns": 283,
+    "total_fairies": 284,
+    "most_snide_rewards": 285
   },
   /*
     SettingsStringDataType:
@@ -1368,7 +1378,9 @@
     "str": 6,
     "list": 7,
     // Can represent up to 65,536 values (0 to 65535)
-    "u16": 8
+    "u16": 8,
+    // Can represent up to 256 values (0 to 256)
+    "u8": 9
   },
   "SettingsMap": {
     "activate_all_bananaports": { "obj": "ActivateAllBananaports" },
@@ -1525,16 +1537,16 @@
       "obj": "ShufflePortLocations"
     },
     "SettingsStringEnum.bananaport_rando": { "obj": "BananaportRando" },
-    "SettingsStringEnum.blocker_0": { "obj": "SettingsStringDataType.var_int" },
-    "SettingsStringEnum.blocker_1": { "obj": "SettingsStringDataType.var_int" },
-    "SettingsStringEnum.blocker_2": { "obj": "SettingsStringDataType.var_int" },
-    "SettingsStringEnum.blocker_3": { "obj": "SettingsStringDataType.var_int" },
-    "SettingsStringEnum.blocker_4": { "obj": "SettingsStringDataType.var_int" },
-    "SettingsStringEnum.blocker_5": { "obj": "SettingsStringDataType.var_int" },
-    "SettingsStringEnum.blocker_6": { "obj": "SettingsStringDataType.var_int" },
-    "SettingsStringEnum.blocker_7": { "obj": "SettingsStringDataType.var_int" },
+    "SettingsStringEnum.blocker_0": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.blocker_1": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.blocker_2": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.blocker_3": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.blocker_4": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.blocker_5": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.blocker_6": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.blocker_7": { "obj": "SettingsStringDataType.u8" },
     "SettingsStringEnum.blocker_text": {
-      "obj": "SettingsStringDataType.var_int"
+      "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.bonus_barrel_auto_complete": {
       "obj": "SettingsStringDataType.bool"
@@ -1551,7 +1563,7 @@
     "SettingsStringEnum.cb_rando": { "obj": "CBRando" },
     "SettingsStringEnum.coin_door_item": { "obj": "HelmDoorItem" },
     "SettingsStringEnum.coin_door_item_count": {
-      "obj": "SettingsStringDataType.var_int"
+      "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.random_crates": {
       "obj": "SettingsStringDataType.bool"
@@ -1561,7 +1573,7 @@
     },
     "SettingsStringEnum.crown_door_item": { "obj": "HelmDoorItem" },
     "SettingsStringEnum.crown_door_item_count": {
-      "obj": "SettingsStringDataType.var_int"
+      "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.crown_enemy_rando": { "obj": "CrownEnemyRando" },
     "SettingsStringEnum.crown_enemy_difficulty": { "obj": "CrownEnemyDifficulty" },
@@ -1722,11 +1734,14 @@
     "SettingsStringEnum.maximize_helm_blocker": {
       "obj": "SettingsStringDataType.bool"
     },
+    "SettingsStringEnum.most_snide_rewards": {
+      "obj": "SettingsStringDataType.var_int"
+    },
     "SettingsStringEnum.medal_cb_req": {
       "obj": "SettingsStringDataType.var_int"
     },
     "SettingsStringEnum.medal_requirement": {
-      "obj": "SettingsStringDataType.var_int"
+      "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.microhints_enabled": { "obj": "MicrohintsEnabled" },
     "SettingsStringEnum.minigames_list_selected": {
@@ -1776,7 +1791,7 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.rareware_gb_fairies": {
-      "obj": "SettingsStringDataType.var_int"
+      "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.select_keys": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.shockwave_status": { "obj": "ShockwaveStatus" },
@@ -1838,7 +1853,7 @@
     "SettingsStringEnum.cb_medal_behavior": { "obj": "RandomRequirement" },
     "SettingsStringEnum.cb_medal_behavior_new": { "obj": "CBRequirement" },
     "SettingsStringEnum.win_condition_count": {
-      "obj": "SettingsStringDataType.var_int"
+      "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.wrinkly_available": {
       "obj": "SettingsStringDataType.bool"
@@ -1894,10 +1909,10 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.progressive_hint_text": {
-      "obj": "SettingsStringDataType.var_int"
+      "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.progressive_hint_count": {
-      "obj": "SettingsStringDataType.var_int"
+      "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.random_starting_move_list_selected": {
       "obj": "SettingsStringDataType.list"
@@ -1940,7 +1955,7 @@
       "obj": "SettingsStringDataType.bool"
     },
     "SettingsStringEnum.mermaid_gb_pearls": {
-      "obj": "SettingsStringDataType.var_int"
+      "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.chunky_phase_slam_req": { "obj": "SlamRequirement" },
     "SettingsStringEnum.shuffle_helm_location": {
@@ -2073,7 +2088,13 @@
     "SettingsStringEnum.trap_weight_flip": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_icefloor": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_paper": { "obj": "SettingsStringDataType.int8" },
-    "SettingsStringEnum.trap_weight_slip": { "obj": "SettingsStringDataType.int8" }
+    "SettingsStringEnum.trap_weight_slip": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.total_gbs": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.total_medals": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.total_rainbow_coins": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.total_pearls": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.total_crowns": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.total_fairies": { "obj": "SettingsStringDataType.u8" }
   },
   // ALL LIST SETTINGS NEED AN ENTRY HERE!
   // Another map for list settings, for the underlying data type of the list.
@@ -2133,28 +2154,35 @@
     "SettingsStringEnum.trap_weight_flip": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_icefloor": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_paper": { "obj": "SettingsStringDataType.int8" },
-    "SettingsStringEnum.trap_weight_slip": { "obj": "SettingsStringDataType.int8" }
+    "SettingsStringEnum.trap_weight_slip": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.total_gbs": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.total_medals": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.total_rainbow_coins": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.total_pearls": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.total_crowns": { "obj": "SettingsStringDataType.u8" },
+    "SettingsStringEnum.total_fairies": { "obj": "SettingsStringDataType.u8" }
   },
   // This map specifies the minimum and maximum values for numeric settings.
   "SettingsStringIntRangeMap": {
-    "SettingsStringEnum.blocker_0": { "max": 201, "min": 0 },
-    "SettingsStringEnum.blocker_1": { "max": 201, "min": 0 },
-    "SettingsStringEnum.blocker_2": { "max": 201, "min": 0 },
-    "SettingsStringEnum.blocker_3": { "max": 201, "min": 0 },
-    "SettingsStringEnum.blocker_4": { "max": 201, "min": 0 },
-    "SettingsStringEnum.blocker_5": { "max": 201, "min": 0 },
-    "SettingsStringEnum.blocker_6": { "max": 201, "min": 0 },
-    "SettingsStringEnum.blocker_7": { "max": 201, "min": 0 },
-    "SettingsStringEnum.blocker_text": { "max": 201, "min": 0 },
-    "SettingsStringEnum.coin_door_item_count": { "max": 201, "min": 0 },
-    "SettingsStringEnum.crown_door_item_count": { "max": 201, "min": 0 },
+    "SettingsStringEnum.blocker_0": { "max": 255, "min": 0 },
+    "SettingsStringEnum.blocker_1": { "max": 255, "min": 0 },
+    "SettingsStringEnum.blocker_2": { "max": 255, "min": 0 },
+    "SettingsStringEnum.blocker_3": { "max": 255, "min": 0 },
+    "SettingsStringEnum.blocker_4": { "max": 255, "min": 0 },
+    "SettingsStringEnum.blocker_5": { "max": 255, "min": 0 },
+    "SettingsStringEnum.blocker_6": { "max": 255, "min": 0 },
+    "SettingsStringEnum.blocker_7": { "max": 255, "min": 0 },
+    "SettingsStringEnum.blocker_text": { "max": 255, "min": 0 },
+    "SettingsStringEnum.coin_door_item_count": { "max": 255, "min": 0 },
+    "SettingsStringEnum.crown_door_item_count": { "max": 255, "min": 0 },
     "SettingsStringEnum.helm_phase_count": { "max": 5, "min": 0 },
     "SettingsStringEnum.krool_key_count": { "max": 8, "min": 0 },
     "SettingsStringEnum.krool_phase_count": { "max": 5, "min": 0 },
     "SettingsStringEnum.medal_cb_req": { "max": 100, "min": 0 },
-    "SettingsStringEnum.medal_requirement": { "max": 40, "min": 0 },
-    "SettingsStringEnum.mermaid_gb_pearls": { "max": 5, "min": 0 },
-    "SettingsStringEnum.rareware_gb_fairies": { "max": 20, "min": 0 },
+    "SettingsStringEnum.most_snide_rewards": { "max": 40, "min": 0 },
+    "SettingsStringEnum.medal_requirement": { "max": 255, "min": 0 },
+    "SettingsStringEnum.mermaid_gb_pearls": { "max": 255, "min": 0 },
+    "SettingsStringEnum.rareware_gb_fairies": { "max": 255, "min": 0 },
     "SettingsStringEnum.starting_kongs_count": { "max": 5, "min": 0 },
     "SettingsStringEnum.starting_moves_count": { "max": 40, "min": 0 },
     "SettingsStringEnum.troff_0": { "max": 500, "min": 0 },
@@ -2168,6 +2196,6 @@
     "SettingsStringEnum.troff_text": { "max": 500, "min": 0 },
     "SettingsStringEnum.progressive_hint_text": { "max": 201, "min": 0 },
     "SettingsStringEnum.progressive_hint_count": { "max": 3500, "min": 0 },
-    "SettingsStringEnum.win_condition_count": { "max": 201, "min": 0 }
+    "SettingsStringEnum.win_condition_count": { "max": 255, "min": 0 }
   }
 }

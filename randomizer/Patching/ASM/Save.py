@@ -63,9 +63,10 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     flag_block_size = 0x320 + expansion
     targ_gb_bits = 7  # Max 127
     GB_LEVEL_COUNT = 9
+    COIN_BITS = 16
     added_bits = (targ_gb_bits - 3) * 8
     added_bits += targ_gb_bits + 7 + 7
-    kong_var_size = 0xA1 + added_bits
+    kong_var_size = 0xA1 + added_bits + (COIN_BITS - 8)
     file_info_location = flag_block_size + (5 * kong_var_size)
     file_default_size = file_info_location + 0x3F + sum(FileInfoSizes)
     # Flag Block Size
@@ -84,6 +85,9 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     writeValue(ROM_COPY, 0x8060C352, Overlay.Static, file_default_size, offset_dict)
     writeValue(ROM_COPY, 0x8060BF96, Overlay.Static, file_default_size, offset_dict)
     writeValue(ROM_COPY, 0x8060BA7A, Overlay.Static, file_default_size, offset_dict)
+    # Coin Bits
+    writeValue(ROM_COPY, 0x8060BD5A, Overlay.Static, COIN_BITS, offset_dict)
+    writeValue(ROM_COPY, 0x8060BD4E, Overlay.Static, COIN_BITS, offset_dict)
 
     writeValue(ROM_COPY, getSym("file_info_expansion"), Overlay.Custom, file_info_location, offset_dict)
     # Increase GB Storage Size

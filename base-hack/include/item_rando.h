@@ -64,6 +64,7 @@ typedef struct CountStruct {
     /* 0x014 */ short junk_items;
     /* 0x016 */ short race_coins;
     /* 0x018 */ MoveSpecialStruct flag_moves;
+    /* 0x019 */ unsigned char snide_rewards_given;
 } CountStruct;
 
 typedef struct StartingItemsKongwiseStruct {
@@ -73,7 +74,7 @@ typedef struct StartingItemsKongwiseStruct {
 } StartingItemsKongwiseStruct;
 
 typedef struct StartingItemsStruct {
-	/* 0x000 */ CountStruct others; // Has an 0x1 pad afterwards
+	/* 0x000 */ CountStruct others;
 	/* 0x01A */ StartingItemsKongwiseStruct kongs[5];
 	/* 0x029 */ unsigned char melons;
 	/* 0x02A */ unsigned char slam;
@@ -135,6 +136,12 @@ typedef struct model_item_data {
 	/* 0x004 */ item_packet item;
 } model_item_data;
 
+typedef struct snide_packet {
+    /* 0x000 */ unsigned short object_id;
+    /* 0x002 */ char pad[2];
+    /* 0x004 */ item_packet item;
+} snide_packet;
+
 extern void giveItemFromKongData(model_item_data *db_item, int flag);
 extern void updateBoulderId(int index, int id);
 extern int getBoulderItem(int index);
@@ -156,3 +163,4 @@ extern bonus_barrel_info bonus_data[BONUS_DATA_COUNT];
 extern meloncrate_db_item crate_flags[16];
 extern model_item_data kong_check_data[4];
 extern item_packet company_coin_table[2];
+extern snide_packet snide_rewards[40];

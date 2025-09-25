@@ -577,6 +577,9 @@ skins = {
     "soldout": ("soldout32", None, "displays"),
     "null": ("blank", None, "displays"),
     "fakefairy": ("fakefairy", None, "displays"),
+    "ap_useful": ("ap_logo_useful", None, "displays"),
+    "ap_junk": ("ap_logo_junk", None, "displays"),
+    "ap_trap": ("ap_logo_trap", None, "displays"),
 }
 BARREL_BASE_IS_HELM = True
 BASE_SIZE = 32
@@ -663,9 +666,18 @@ ap_colors = [
     "#DA7ACC",  # PURPLE
 ]
 
+special_ap_colors = {
+    "special_gold": "#6D8BE8",
+    "special_silver": "#0115A5",
+    "fools_black": "#000000",
+    "fools_silver": "#708090",
+}
+
 pearl_im = Image.open(f"{hash_dir}pearl.png").convert("L")
 for index, shift in enumerate(ap_colors):
     ImageOps.colorize(pearl_im, black="black", white=shift).save(f"{disp_dir}ap_pearl_{index}.png")
+for name, shift in special_ap_colors.items():
+    ImageOps.colorize(pearl_im, black="black", white=shift).save(f"{disp_dir}ap_pearl_{name}.png")
 
 # # Christmas Theme
 # snow_by = []

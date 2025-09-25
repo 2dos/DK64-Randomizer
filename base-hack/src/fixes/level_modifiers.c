@@ -77,7 +77,7 @@ void handleTimeOfDay(time_of_day_calls call) {
 			setPermFlag(FLAG_MODIFIER_FUNGINIGHT);
 		}
 	} else if (time == TIME_DUSK) {
-		if (call == TODCALL_FUNGIACTIVE) {
+		if (call == TODCALL_FUNGIACTIVE && (!Rando.hard_mode.dark_world && !Rando.hard_mode.memory_challenge)) {
 			for (int i = 0; i < chunk_count; i++) {
 				setChunkLighting(0.6f, 0.6f, 0.3f, i);
 			}
@@ -106,7 +106,7 @@ void handleTimeOfDay(time_of_day_calls call) {
 				}
 			}
 			if ((prev_tod_subseg != tod_subseg) || (force_update)) {
-				if (tod_subseg < 6) {
+				if ((tod_subseg < 6) && (!Rando.hard_mode.dark_world && !Rando.hard_mode.memory_challenge)) {
 					// Handle skylight
 					float brightness = subseg_brightnesses[tod_subseg];
 					float blueness = 1.0f - ((1.0f - brightness) / 2);

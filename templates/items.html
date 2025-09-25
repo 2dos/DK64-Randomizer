@@ -56,6 +56,30 @@
                         {% include "complex-options/ice-trap.html" %}
                     </div>
                 </div>
+                <div style="width:50%">
+                    <div class="mx-auto" style="width: fit-content">
+                        {% include "complex-options/item-totals.html" %}
+                    </div>
+                </div>
+                <div style="width:50%">
+                    <div class="mx-auto" style="width: fit-content">
+                        <div>
+                            <p class="select-title">Max Snide Reward Limit</p>
+                            <input name="most_snide_rewards"
+                                    id="most_snide_rewards"
+                                    type="number"
+                                    display_name="Max Snide Reward Limit"
+                                    class="form-control me-2"
+                                    aria-label="Max Snide Reward Limit"
+                                    data-toggle="tooltip"
+                                    title="THIS IS ONLY RELEVANT IF YOU'RE SHUFFLING SNIDE REWARDS&#10;The max amount of blueprints that can be required to obtain a uncommon reward."
+                                    min="0"
+                                    max="40"
+                                    value="40"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="d-flex" id="item_rando-category-container" data-items="{{ itemRando | tojsonarr | escape }}" data-count="5" data-predicate="item_rando_list_">
                 {% for x in range(5) %}
@@ -356,9 +380,52 @@
                 !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
     }
 
+    const item_count_mapping = {
+        "medal": "total_medals",
+        "banana": "total_gbs",
+        "fairy": "total_fairies",
+        "pearl": "total_pearls",
+        "crown": "total_crowns",
+        "rainbowcoin": "total_rainbow_coins",
+    }
+    function isShuffled(item_or_check) {
+        for (let x = 1; x < 5; x++) {
+            for (let y = 0; y < 2; y++) {
+                const idx = (y * 5) + x;
+                const ul = document.getElementById(`item_rando_list_${idx}`);
+                const ils = ul.getElementsByTagName("li");
+                for (let i = 0; i < ils.length; i++) {
+                    if (ils[i].getAttribute("value") == item_or_check) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    function getBananaReduction() {
+        const reduction_data = {
+            "blueprintbanana": 40,
+            "racebanana": 11,
+            "gauntletbanana": 16,
+        };
+        let total = 0;
+        Object.keys(reduction_data).forEach(item_type => {
+            if (!isShuffled(item_type)) {
+                total += reduction_data[item_type];
+            }
+        })
+        return total;
+    }
+
     function getItemChange(item, original_value) {
-        if (item == "medal" && islesCBs()) {
-            return 45;
+        if (Object.keys(item_count_mapping).includes(item)) {
+            const ic_value = parseInt(document.getElementById(item_count_mapping[item]).value)
+            if (item == "banana") {
+                return Math.max(ic_value - getBananaReduction(), 0);
+            }
+            return ic_value;
         }
         return original_value;
     }
@@ -728,7 +795,6 @@
                     liquid_sum: pool_liquids,
                     bucket_sum: pool_buckets,
                 }
-                console.log(data);
             }
             return {
                 valid: pool_valid,
@@ -755,12 +821,18 @@
         let is_valid_item_shuffle = true;
         Object.keys(item_shuffle_tied).forEach(key => {
             const val = item_shuffle_tied[key];
-            const key_slot = item_shuffle_cache[key];
-            const val_slot = item_shuffle_cache[val];
-            if (key_slot != val_slot) {
-                if ((key_slot == 0) || (val_slot == 0)) {
-                    // Key or val is in slot 0, but not both
-                    is_valid_item_shuffle = false;
+            let valid_check = true;
+            if ((val == "banana") && (key != "banana_checks")) {
+                valid_check = false;
+            }
+            if (valid_check) {
+                const key_slot = item_shuffle_cache[key];
+                const val_slot = item_shuffle_cache[val];
+                if (key_slot != val_slot) {
+                    if ((key_slot == 0) || (val_slot == 0)) {
+                        // Key or val is in slot 0, but not both
+                        is_valid_item_shuffle = false;
+                    }
                 }
             }
         });

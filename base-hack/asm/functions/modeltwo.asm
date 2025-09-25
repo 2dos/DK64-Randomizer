@@ -50,3 +50,4 @@
 .definelabel displayShopIcon, 0x8064826C
 .definelabel hideShop, 0x8064C9F8
 .definelabel checkLeverAngle, 0x8064BBD8
+.definelabel isModelTwoTiedFlagSet, 0x807315D4
