@@ -1264,6 +1264,21 @@ document
   .getElementById("blocker_text")
   .addEventListener("focusout", max_randomized_blocker);
 
+function max_snide_reward() {
+  const snideRewardText = document.getElementById("most_snide_rewards");
+  if (!snideRewardText.value) {
+    snideRewardText.value = 40;
+  } else if (parseInt(snideRewardText.value) < 0) {
+    snideRewardText.value = 0;
+  } else if (parseInt(snideRewardText.value) > 40) {
+    snideRewardText.value = 40;
+  }
+}
+
+document
+  .getElementById("most_snide_rewards")
+  .addEventListener("focusout", max_snide_reward);
+
 // Validate troff input on loss of focus
 function max_randomized_troff() {
   const troffText = document.getElementById("troff_text");
@@ -2009,6 +2024,7 @@ function update_ui_states() {
   disable_colors();
   disable_music();
   max_randomized_blocker();
+  max_snide_reward();
   max_randomized_troff();
   max_music();
   max_music_proportion();

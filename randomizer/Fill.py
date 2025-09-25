@@ -2205,7 +2205,7 @@ def Fill(spoiler: Spoiler) -> None:
         # Blueprints can be placed largely randomly - there's no location (yet) that can cause blueprints to lock themselves
         blueprintsUnplaced = PlaceItems(
             spoiler,
-            FillAlgorithm.careful_random,
+            spoiler.settings.algorithm,
             blueprintsToPlace,
             ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items),
         )

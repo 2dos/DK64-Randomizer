@@ -914,6 +914,7 @@ export enum SettingsStringEnum {
     total_pearls = 282,
     total_crowns = 283,
     total_fairies = 284,
+    most_snide_rewards = 285,
 }
 
 export enum SettingsStringDataType {
@@ -1158,6 +1159,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.level_randomization: LevelRandomization,
     SettingsStringEnum.logic_type: LogicType,
     SettingsStringEnum.maximize_helm_blocker: SettingsStringDataType.bool,
+    SettingsStringEnum.most_snide_rewards: SettingsStringDataType.var_int,
     SettingsStringEnum.medal_cb_req: SettingsStringDataType.var_int,
     SettingsStringEnum.medal_requirement: SettingsStringDataType.u8,
     SettingsStringEnum.microhints_enabled: MicrohintsEnabled,
@@ -1417,6 +1419,7 @@ export const SettingsStringIntRangeMap = {
     SettingsStringEnum.krool_key_count: {'max': 8, 'min': 0},
     SettingsStringEnum.krool_phase_count: {'max': 5, 'min': 0},
     SettingsStringEnum.medal_cb_req: {'max': 100, 'min': 0},
+    SettingsStringEnum.most_snide_rewards: {'max': 40, 'min': 0},
     SettingsStringEnum.medal_requirement: {'max': 255, 'min': 0},
     SettingsStringEnum.mermaid_gb_pearls: {'max': 255, 'min': 0},
     SettingsStringEnum.rareware_gb_fairies: {'max': 255, 'min': 0},
