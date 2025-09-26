@@ -84,7 +84,7 @@ item_ids = {
     14041167: {"name": "Bean", "count_id": {"field": "special_items", "bit": "bean"}, "flag_id": None, "progression": True},
     14041353: {"name": "Forest Second Anthill Reward", "count_id": {"field": "special_items", "bit": "bean"}, "flag_id": None},
     14041269: {"name": "Pearl", "count_id": {"field": "pearls", "increment": 1}, "flag_id": None, "progression": True},
-    14041169: {"name": "Rainbow Coin", "count_id": {"field": "rainbow_coins", "increment": 1}, "flag_id": None, "extended_whitelist": True},
+    14041354: {"name": "Rainbow Coin", "count_id": {"field": "rainbow_coins", "increment": 1}, "flag_id": None, "extended_whitelist": True},
     14041170: {"name": "Bubble Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "bubble"}, "flag_id": None, "extended_whitelist": True},
     14041171: {"name": "Reverse Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "reverse"}, "flag_id": None, "extended_whitelist": True},
     14041172: {"name": "Slow Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "slow"}, "flag_id": None, "extended_whitelist": True},
