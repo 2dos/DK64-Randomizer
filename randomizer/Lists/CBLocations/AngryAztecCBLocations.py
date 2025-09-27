@@ -2191,7 +2191,7 @@ ColoredBananaGroupList = [
         name="Vases room central platform",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BetweenVinesByPortal,
-        logic=lambda l: (l.pineapple and l.ischunky) or l.CanPhase(),
+        logic=lambda l: (l.pineapple and l.chunky) or l.CanPhase(),
         locations=[
             [1, 1.0, 407, 140, 786],
             [1, 1.0, 440, 140, 741],
