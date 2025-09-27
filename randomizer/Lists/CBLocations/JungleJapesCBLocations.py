@@ -1795,6 +1795,7 @@ ColoredBananaGroupList = [
         name="Behind the Lanky slope bonus barrel",
         konglist=[Kongs.lanky],
         region=Regions.JapesBeyondCoconutGate2,
+        logic=lambda l: l.handstand,
         locations=[[1, 1.0, 1751, 338, 2505], [1, 1.0, 1747, 338, 2441], [1, 1.0, 1815, 338, 2381], [1, 1.0, 1897, 338, 2375], [1, 1.0, 1934, 338, 2411]],
     ),
     ColoredBananaGroup(
@@ -1859,7 +1860,7 @@ ColoredBananaGroupList = [
         name="Rambi lake Bouldertech",  # Hard
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BeyondRambiGate,
-        logic=lambda l: l.ischunky and l.barrels,
+        logic=lambda l: l.chunky and l.barrels,
         locations=[[5, 1.2, 660, 340, 3003]],
     ),
     ColoredBananaGroup(
