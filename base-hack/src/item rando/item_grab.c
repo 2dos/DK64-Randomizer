@@ -688,7 +688,7 @@ void updateItemTotalsHandler(int player, int obj_type, int is_homing, int index)
         case 0xE0:
         case 0xE1:
             // Blueprint
-            giveItem(REQITEM_BLUEPRINT, item_level, item_kong, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
+            giveItem(REQITEM_BLUEPRINT, 0, item_kong, (giveItemConfig){.display_item_text = 0, .apply_helm_hurry = 1});
             save_game = 1;
             break;
         case 0xEC:

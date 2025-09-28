@@ -90,27 +90,18 @@ void swapKremlingModel(void) {
 }
 
 void getBPCountStats(int kong, unsigned char *has, unsigned char *turned) {
-    *has = getItemCount_new(REQITEM_BLUEPRINT, -1, kong);
-    int turned_count = 0;
-    for (int i = 0; i < 8; i++) {
-        int offset = (5 * i) + kong;
-        if (checkFlag(FLAG_BP_JAPES_DK_TURN + offset, FLAGTYPE_PERMANENT)) {
-            turned_count++;
-        }
-    }
-    *turned = turned_count;
+    *has = getItemCount_new(REQITEM_BLUEPRINT, 0, kong);
+    *turned = ItemInventory->turned_in_bp_count[kong];
 }
 
-int getFirstEmptyBP(int kong) {
-    for (int i = 0; i < 8; i++) {
-        if (getItemCount_new(REQITEM_BLUEPRINT, i, kong)) {
-            int local_offset = (5 * i) + kong;
-            if (!checkFlag(FLAG_BP_JAPES_DK_TURN + local_offset, FLAGTYPE_PERMANENT)) {
-                return local_offset;
-            }
+int getTurnedCount(int kong) {
+    int count = 0;
+    for (int i = 0; i < 5; i++) {
+        if ((kong == i) || (kong == -1)) {
+            count += ItemInventory->turned_in_bp_count[i];
         }
     }
-    return -1;
+    return count;
 }
 
 int getFirstEmptySnideReward(int offset) {

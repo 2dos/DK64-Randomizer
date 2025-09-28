@@ -1965,8 +1965,8 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
         if item in unplaced_items:
             unplaced_items.remove(item)
     debug_failed_to_place_items = []
-    possible_items = [item for item in unplaced_items if item < Items.JungleJapesDonkeyBlueprint or item > Items.DKIslesChunkyBlueprint]  # To save some time, we know blueprints can't be on bosses
-    spoiler.settings.random.shuffle(possible_items)
+    possible_items = [item for item in unplaced_items]
+    spoiler.settings.random.shuffle(unplaced_items)
     # Until we have placed enough items...
     while len(placed_on_bosses) < len(empty_boss_locations):
         if len(possible_items) == 0:

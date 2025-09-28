@@ -1477,10 +1477,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		int snide_index = getFirstEmptySnideReward(0);
 		setPermFlag(FLAG_SNIDE_REWARD + snide_index);
 		giveItemFromPacket(&snide_rewards[snide_index].item, 0);
-		int offset = getFirstEmptyBP(Character);
-		if (offset > -1) {
-			setPermFlag(FLAG_BP_JAPES_DK_TURN + offset);
-		}
 	}
 	return 0;
 }

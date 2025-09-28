@@ -51,7 +51,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             giveGB();
             break;
         case REQITEM_BLUEPRINT:
-            current_item_data.bp_bitfield[kong] |= (1 << level);
+            current_item_data.bp_count[kong]++;
             hh_item = HHITEM_BLUEPRINT;
             break;
         case REQITEM_FAIRY:
@@ -228,8 +228,6 @@ int getItemCount_new(requirement_item item, int level, int kong) {
                 }
             }
             return count;
-        case REQITEM_BLUEPRINT:
-            bitfield_series = &current_item_data.bp_bitfield;
         case REQITEM_HINT:
             if (!bitfield_series) {
                 bitfield_series = &current_item_data.hint_bitfield;
@@ -261,6 +259,13 @@ int getItemCount_new(requirement_item item, int level, int kong) {
                 return count;
             }
             break;
+        case REQITEM_BLUEPRINT:
+            for (int i = 0; i < 5; i++) {
+                if ((kong == i) || (kong == -1)) {
+                    count += current_item_data.bp_count[i];
+                }
+            }
+            return count;
         case REQITEM_FAIRY:
             return current_item_data.fairies;
         case REQITEM_CROWN:

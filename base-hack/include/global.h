@@ -30,7 +30,7 @@ extern void genericStatUpdate(bonus_stat stat);
 extern int isModelTwoTiedFlag_new(maps map, setup_item * item);
 extern float getModelTwoScale(int obj_id);
 extern void getBPCountStats(int kong, unsigned char *has, unsigned char *turned);
-extern int getFirstEmptyBP(int kong);
+extern int getTurnedCount(int kong);
 extern int getFirstEmptySnideReward(int offset);
 
 extern void applyPaperMode(void);

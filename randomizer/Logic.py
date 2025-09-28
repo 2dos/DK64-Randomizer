@@ -488,11 +488,14 @@ class LogicVarHolder:
         self.superDuperSlam = self.Slam >= 3
 
         total_bp_count = 0
+        total_bp_count_nokong = 0
         kong_ownership = [self.donkey, self.diddy, self.lanky, self.tiny, self.chunky]
+        bp_counts = [item_counts[Items.DonkeyBlueprint + kong] for kong in range(5)]
         for kong in range(5):
             if kong_ownership[kong]:
-                total_bp_count += len([level for level in range(8) if (Items.JungleJapesDonkeyBlueprint + (level * 5) + kong) in ownedItems])
-        self.Blueprints = [x for x in ownedItems if x >= Items.JungleJapesDonkeyBlueprint and x <= Items.DKIslesChunkyBlueprint]
+                total_bp_count += bp_counts[kong]
+            total_bp_count_nokong += bp_counts[kong]
+        self.Blueprints = total_bp_count_nokong
         self.BlueprintsWithKong = total_bp_count
         self.Hints = [x for x in ownedItems if x >= Items.JapesDonkeyHint and x <= Items.CastleChunkyHint]
         self.Beans = sum(1 for x in ownedItems if x == Items.Bean)

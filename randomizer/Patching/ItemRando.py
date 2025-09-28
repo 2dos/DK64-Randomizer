@@ -324,7 +324,7 @@ def writeBuyText(item: Items, address: int, ROM_COPY: LocalROM):
     ROM_COPY.write(data[1] + BuyText.terminator)
 
 
-COUNT_STRUCT_SIZE = 0x1A  # This is technically 1 byte more than it should actually uses, but kong specific stuff does get 2-byte aligned
+COUNT_STRUCT_SIZE = 0x1E
 KONG_STRUCT_SIZE = 0x3
 EXTRA_STRUCT_OFFSET = COUNT_STRUCT_SIZE + (5 * KONG_STRUCT_SIZE)
 TRACKER_ITEM_PAIRING = {

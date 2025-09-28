@@ -72,12 +72,7 @@ def FindLevel(spoiler, location):
 
 def GetBlueprintItemForKongAndLevel(level, kong):
     """For the Level and Kong enum values, return the Blueprint Item enum tied to it."""
-    baseOffset = int(Items.JungleJapesDonkeyBlueprint)  # Japes/Donkey is the first Blueprint item and they're all grouped together
-    levelOffset = int(level)
-    # Other levels are 0-6 but Helm is 7, DK Isles is 8, and I'm too scared to change it so it's accounted for here
-    if levelOffset > 7:
-        levelOffset = 7
-    return Items(baseOffset + (5 * levelOffset) + int(kong))
+    return Items(int(Items.DonkeyBlueprint) + int(kong))
 
 
 def GetBlueprintLocationForKongAndLevel(level, kong):
