@@ -259,7 +259,7 @@ class LogicVarHolder:
         self.superSlam = False
         self.superDuperSlam = False
 
-        self.Blueprints = []
+        self.Blueprints = 0
         self.BlueprintsWithKong = 0
         self.Photos = {}
 
@@ -948,7 +948,7 @@ class LogicVarHolder:
     def canAccessHelm(self) -> bool:
         """Determine whether the player can access helm whilst the timer is active."""
         if IsDDMSSelected(self.settings.hard_mode_selected, HardModeSelected.strict_helm_timer):
-            return self.snideAccess and len(self.Blueprints) > (4 + (2 * self.settings.helm_phase_count))
+            return self.snideAccess and self.Blueprints > (4 + (2 * self.settings.helm_phase_count))
         return self.snideAccess or self.assumeFillSuccess
 
     @lru_cache(maxsize=None)
@@ -1219,7 +1219,7 @@ class LogicVarHolder:
         # Create check counts dictionary
         check_counts = {
             BarrierItems.GoldenBanana: self.GoldenBananas,
-            BarrierItems.Blueprint: len(self.Blueprints),
+            BarrierItems.Blueprint: self.Blueprints,
             BarrierItems.CompanyCoin: company_coins,
             BarrierItems.Key: keys,
             BarrierItems.Medal: self.BananaMedals,
