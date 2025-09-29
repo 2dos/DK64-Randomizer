@@ -10,7 +10,7 @@ from randomizer.Enums.VendorType import VendorType
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Library.DataTypes import intf_to_float
-from randomizer.Patching.Library.Generic import setItemReferenceName
+from randomizer.Patching.Library.Generic import setItemReferenceName, ReqItems
 from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, getPropFromItem, getModelMask, getItemDBEntry, item_shop_text_mapping, BuyText, TrackerItems
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, CompTextFiles, ItemPreview
 from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay, writeValue, patchBonus, getBonusIndex
@@ -185,92 +185,84 @@ ice_trap_data = [
 def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
     """Get the data associated with how an item is patched into ROM from various attributes."""
     simple_types = {
-        Types.Banana: 3,
-        Types.Fairy: 5,
-        Types.Crown: 7,
-        Types.Medal: 9,
-        Types.Bean: 10,
-        Types.Pearl: 11,
-        Types.RainbowCoin: 12,
-        Types.JunkItem: 18,
-        Types.FillerBanana: 3,
-        Types.FillerFairy: 5,
-        Types.FillerCrown: 7,
-        Types.FillerMedal: 9,
-        Types.FillerPearl: 11,
-        Types.FillerRainbowCoin: 12,
+        Types.Banana: ReqItems.GoldenBanana,
+        Types.Fairy: ReqItems.Fairy,
+        Types.Crown: ReqItems.Crown,
+        Types.Medal: ReqItems.Medal,
+        Types.Bean: ReqItems.Bean,
+        Types.Pearl: ReqItems.Pearl,
+        Types.RainbowCoin: ReqItems.RainbowCoin,
+        Types.JunkItem: ReqItems.JunkItem,
+        Types.FillerBanana: ReqItems.GoldenBanana,
+        Types.FillerFairy: ReqItems.Fairy,
+        Types.FillerCrown: ReqItems.Crown,
+        Types.FillerMedal: ReqItems.Medal,
+        Types.FillerPearl: ReqItems.Pearl,
+        Types.FillerRainbowCoin: ReqItems.RainbowCoin,
     }
     if item_type in simple_types:
         return ItemPatchingInfo(simple_types[item_type])
     elif item_type == Types.NintendoCoin:
-        return ItemPatchingInfo(8, 0, 0)
+        return ItemPatchingInfo(ReqItems.CompanyCoin, 0, 0)
     elif item_type == Types.RarewareCoin:
-        return ItemPatchingInfo(8, 0, 1)
+        return ItemPatchingInfo(ReqItems.CompanyCoin, 0, 1)
     elif item_type == Types.Key:
         key_index = getItemPatchingFromList(ItemPool.Keys(), item, "Key")
-        return ItemPatchingInfo(6, key_index)
+        return ItemPatchingInfo(ReqItems.Key, key_index)
     elif item_type == Types.FakeItem:
         for effect_index, idx_lst in enumerate(ice_trap_data):
             if item in idx_lst:
-                return ItemPatchingInfo(13, idx_lst.index(item), effect_index + 1)
+                return ItemPatchingInfo(ReqItems.IceTrap, idx_lst.index(item), effect_index + 1)
         raise Exception("Ice Trap Type provided, but invalid Ice Trap item provided resulting in search mismatch")
     elif item_type == Types.Blueprint:
-        bp_index = getItemPatchingFromList(ItemPool.Blueprints(), item, "BP")
-        bp_level = int(bp_index / 5)
-        bp_kong = bp_index % 5
-        # Isles is first on that BP list, so shift it to last
-        if bp_level == 0:
-            bp_level = 7
-        else:
-            bp_level -= 1
-        return ItemPatchingInfo(4, bp_level, bp_kong)
+        return ItemPatchingInfo(ReqItems.Blueprint, 0, item - Items.DonkeyBlueprint)
     elif item_type == Types.Kong:
         kong_lst = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
         kong_index = getItemPatchingFromList(kong_lst, item, "Kong")
-        return ItemPatchingInfo(1, 0, kong_index)
+        return ItemPatchingInfo(ReqItems.Kong, 0, kong_index)
     elif item_type in (Types.Hint, Types.ProgressiveHint):
         hint_index = getItemPatchingFromList(ItemPool.HintItems(), item, "Hint")
         hint_level = int(hint_index / 5)
         hint_kong = hint_index % 5
-        return ItemPatchingInfo(19, hint_level, hint_kong)
+        return ItemPatchingInfo(ReqItems.Hint, hint_level, hint_kong)
     elif item_type in (Types.Shockwave, Types.Shop, Types.Climbing, Types.TrainingBarrel):
         # Special Moves
         idx_lst = [Items.BaboonBlast, Items.ChimpyCharge, Items.Orangstand, Items.MiniMonkey, Items.HunkyChunky]
         idx = getItemPatchingFromList(idx_lst, item, "Move", False)
         if idx is not None:
-            return ItemPatchingInfo(2, 0, idx, 1)
+            return ItemPatchingInfo(ReqItems.Move, 0, idx, 1)
         idx_lst = [Items.StrongKong, Items.RocketbarrelBoost, Items.BaboonBalloon, Items.PonyTailTwirl, Items.PrimatePunch]
         idx = getItemPatchingFromList(idx_lst, item, "Move", False)
         if idx is not None:
-            return ItemPatchingInfo(2, 1, idx, 1)
+            return ItemPatchingInfo(ReqItems.Move, 1, idx, 1)
         idx_lst = [Items.GorillaGrab, Items.SimianSpring, Items.OrangstandSprint, Items.Monkeyport, Items.GorillaGone]
         idx = getItemPatchingFromList(idx_lst, item, "Move", False)
         if idx is not None:
-            return ItemPatchingInfo(2, 2, idx, 1)
+            return ItemPatchingInfo(ReqItems.Move, 2, idx, 1)
         # Slam
         if item in [Items.ProgressiveSlam, Items.ProgressiveSlam2, Items.ProgressiveSlam3]:
-            return ItemPatchingInfo(2, 3, 0, 1)
+            return ItemPatchingInfo(ReqItems.Move, 3, 0, 1)
         # Gun
         idx_lst = [Items.Coconut, Items.Peanut, Items.Grape, Items.Feather, Items.Pineapple]
         idx = getItemPatchingFromList(idx_lst, item, "Move", False)
         if idx is not None:
-            return ItemPatchingInfo(2, 4, idx, 2)
+            return ItemPatchingInfo(ReqItems.Move, 4, idx, 2)
         # Homing/Sniper
         if item == Items.HomingAmmo:
-            return ItemPatchingInfo(2, 5, 2)
+            return ItemPatchingInfo(ReqItems.Move, 5, 2)
         if item == Items.SniperSight:
-            return ItemPatchingInfo(2, 6, 2)
+            return ItemPatchingInfo(ReqItems.Move, 6, 2)
         # Ammo Belt
         if item in (Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt2):
-            return ItemPatchingInfo(2, 7, 2)
+            return ItemPatchingInfo(ReqItems.Move, 7, 2)
         # Instrument
         idx_lst = [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle]
         idx = getItemPatchingFromList(idx_lst, item, "Move", False)
         if idx is not None:
-            return ItemPatchingInfo(2, 8, idx, 3)
+            return ItemPatchingInfo(ReqItems.Move, 8, idx, 3)
         # Progressive Instrument Upgrades
         if item in (Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3):
-            return ItemPatchingInfo(2, 9, 0, 3)
+            return ItemPatchingInfo(ReqItems.Move, 9, 0, 3)
         # Misc flag moves
         idx_lst = [Items.Swim, Items.Oranges, Items.Barrels, Items.Vines, Items.Camera, Items.Shockwave]
         idx = getItemPatchingFromList(idx_lst, item, "Move", False)
@@ -280,19 +272,19 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
                 visual_index = 4
             elif item == Items.Shockwave:
                 visual_index = 5
-            return ItemPatchingInfo(2, 10, idx, visual_index)
+            return ItemPatchingInfo(ReqItems.Move, 10, idx, visual_index)
         if item == Items.CameraAndShockwave:
-            return ItemPatchingInfo(2, 10, 4, 4)
+            return ItemPatchingInfo(ReqItems.Move, 10, 4, 4)
         # Climbing
         if item == Items.Climbing:
-            return ItemPatchingInfo(2, 11, 0, 1)
+            return ItemPatchingInfo(ReqItems.Move, 11, 0, 1)
         raise Exception("Could not find valid move")
     elif item is None or item == Items.NoItem or item_type is None or item_type == Types.NoItem:
         return ItemPatchingInfo(0)
     elif item_type in (Types.Cranky, Types.Funky, Types.Candy, Types.Snide):
         shopkeeper_lst = [Items.Cranky, Items.Funky, Items.Candy, Items.Snide]
         shopkeeper_index = getItemPatchingFromList(shopkeeper_lst, item, "Shopkeeper")
-        return ItemPatchingInfo(20, 0, shopkeeper_index)
+        return ItemPatchingInfo(ReqItems.Shopkeeper, 0, shopkeeper_index)
     elif item_type == Types.ArchipelagoItem:
         arch_item_list = (
             Items.ArchipelagoItem,
@@ -300,7 +292,7 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
             Items.FoolsArchipelagoItem,
             Items.TrapArchipelagoItem,
         )
-        return ItemPatchingInfo(0x15, arch_item_list.index(item))
+        return ItemPatchingInfo(ReqItems.ArchipelagoItem, arch_item_list.index(item))
     raise Exception(f"Invalid item for patching: {item_type.name}, {item}")
 
 

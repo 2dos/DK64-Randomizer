@@ -768,7 +768,7 @@ item_db = {
             ArcadeRewards.BPChunky,
         ],
         jetpac_reward_index=[JetpacRewards.Blueprint] * 5,
-        index_getter=lambda item, flag, shared: (flag - 0x1D5) % 5,
+        index_getter=lambda item, flag, shared: (item - Items.DonkeyBlueprint) % 5,
         preview_text="BLUEPRINT",
         special_preview_text={
             Locations.GalleonDonkeySealRace: "MAP O' DEATH MACHINE",

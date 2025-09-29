@@ -237,7 +237,7 @@ LogicRegions = {
         TransitionFront(Regions.CrankyGeneric, lambda _: True),
     ]),
 
-    Regions.Snide: Region("Snide", HintRegion.Error, Levels.Shops, False, None, [
+    Regions.Snide: Region("Snide", HintRegion.Snide, Levels.Shops, False, None, [
         LocationLogic(Locations.TurnInJungleJapesDonkeyBlueprint, lambda l: l.BlueprintsWithKong >= 1),
         LocationLogic(Locations.TurnInJungleJapesDiddyBlueprint, lambda l: l.BlueprintsWithKong >= 2),
         LocationLogic(Locations.TurnInJungleJapesLankyBlueprint, lambda l: l.BlueprintsWithKong >= 3),
