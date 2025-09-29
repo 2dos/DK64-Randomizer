@@ -29,6 +29,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Enums.Models import Model
 from randomizer.Patching.Patcher import ROM, LocalROM
@@ -1171,8 +1172,9 @@ def patchAssembly(ROM_COPY, spoiler):
     if settings.shuffle_items:
         for item in spoiler.item_assignment:
             if item.can_have_item and not item.is_shop and item.old_item not in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
-                if item.new_item is None or item.new_item == Types.NoItem:
-                    file_init_flags.append(item.old_flag)
+                if item.location < Locations.TurnInDKIslesDonkeyBlueprint or item.location > Locations.TurnInCreepyCastleChunkyBlueprint:
+                    if item.new_item is None or item.new_item == Types.NoItem:
+                        file_init_flags.append(item.old_flag)
     SCREEN_SHAKE_CAP = 7
     screen_shake_cap_patch = {
         0x8061F0C8: [
