@@ -1280,7 +1280,7 @@ class Settings:
 
         # Helm Doors
         helmdoor_items = {
-            HelmDoorItem.req_gb: HelmDoorInfo(201),
+            HelmDoorItem.req_gb: HelmDoorInfo(self.total_gbs),
             HelmDoorItem.req_bp: HelmDoorInfo(
                 40,
                 HelmDoorRandomInfo(20, 30, 0.1),
@@ -1293,25 +1293,25 @@ class Settings:
             ),
             HelmDoorItem.req_key: HelmDoorInfo(8),
             HelmDoorItem.req_medal: HelmDoorInfo(
-                40,
+                self.total_medals,
                 HelmDoorRandomInfo(20, 30, 0.2),
                 HelmDoorRandomInfo(10, 20, 0.21),
                 HelmDoorRandomInfo(4, 10, 0.25),
             ),
             HelmDoorItem.req_crown: HelmDoorInfo(
-                10,
+                self.total_crowns,
                 HelmDoorRandomInfo(5, 7, 0.14),
                 HelmDoorRandomInfo(3, 5, 0.14),
                 HelmDoorRandomInfo(1, 3, 0.1),
             ),
             HelmDoorItem.req_fairy: HelmDoorInfo(
-                18,
+                self.total_fairies,
                 HelmDoorRandomInfo(9, 14, 0.18),
                 HelmDoorRandomInfo(5, 9, 0.18),
                 HelmDoorRandomInfo(2, 5, 0.18),
             ),  # Remove two fairies since you can't get the final two fairies glitchless if on the crown door
             HelmDoorItem.req_rainbowcoin: HelmDoorInfo(
-                16,
+                self.total_rainbow_coins,
                 HelmDoorRandomInfo(8, 12, 0.18),
                 HelmDoorRandomInfo(4, 8, 0.18),
                 HelmDoorRandomInfo(2, 4, 0.18),
@@ -1322,7 +1322,7 @@ class Settings:
                 HelmDoorRandomInfo(1, 1, 0.01),
             ),
             HelmDoorItem.req_pearl: HelmDoorInfo(
-                5,
+                self.total_pearls,
                 HelmDoorRandomInfo(2, 4, 0.1),
                 HelmDoorRandomInfo(1, 2, 0.08),
                 HelmDoorRandomInfo(1, 1, 0.04),
@@ -1841,7 +1841,7 @@ class Settings:
             ),
             WinConditionComplex.get_key8: HelmDoorInfo(1),
             WinConditionComplex.req_gb: HelmDoorInfo(
-                201,
+                self.total_gbs,
                 HelmDoorRandomInfo(int(0.4 * self.total_gbs), int(0.75 * self.total_gbs), 0.1),
                 HelmDoorRandomInfo(int(0.3 * self.total_gbs), int(0.4 * self.total_gbs), 0.1),
                 HelmDoorRandomInfo(int(0.2 * self.total_gbs), int(0.3 * self.total_gbs), 0.15),
@@ -1863,25 +1863,25 @@ class Settings:
                 HelmDoorRandomInfo(7, 8, 0.1),
             ),
             WinConditionComplex.req_medal: HelmDoorInfo(
-                40,
+                self.total_medals,
                 HelmDoorRandomInfo(int(0.625 * self.total_medals), int(0.875 * self.total_medals), 0.09),
                 HelmDoorRandomInfo(int(0.5 * self.total_medals), int(0.625 * self.total_medals), 0.1),
                 HelmDoorRandomInfo(int(0.125 * self.total_medals), int(0.5 * self.total_medals), 0.1),
             ),
             WinConditionComplex.req_crown: HelmDoorInfo(
-                10,
+                self.total_crowns,
                 HelmDoorRandomInfo(int(0.7 * self.total_crowns), int(0.9 * self.total_crowns), 0.1),
                 HelmDoorRandomInfo(int(0.4 * self.total_crowns), int(0.7 * self.total_crowns), 0.1),
                 HelmDoorRandomInfo(int(0.2 * self.total_crowns), int(0.4 * self.total_crowns), 0.06),
             ),
             WinConditionComplex.req_fairy: HelmDoorInfo(
-                20,
+                self.total_fairies,
                 HelmDoorRandomInfo(int(0.6 * self.total_fairies), int(0.9 * self.total_fairies), 0.1),
                 HelmDoorRandomInfo(int(0.4 * self.total_fairies), int(0.6 * self.total_fairies), 0.12),
                 HelmDoorRandomInfo(int(0.05 * self.total_fairies), int(0.4 * self.total_fairies), 0.18),
             ),
             WinConditionComplex.req_rainbowcoin: HelmDoorInfo(
-                16,
+                self.total_rainbow_coins,
                 HelmDoorRandomInfo(int(0.625 * self.total_rainbow_coins), int(1.0 * self.total_rainbow_coins), 0.11),
                 HelmDoorRandomInfo(int(0.375 * self.total_rainbow_coins), int(0.625 * self.total_rainbow_coins), 0.14),
                 HelmDoorRandomInfo(int(0.1875 * self.total_rainbow_coins), int(0.375 * self.total_rainbow_coins), 0.18),
@@ -1892,7 +1892,7 @@ class Settings:
                 HelmDoorRandomInfo(1, 1, 0.01),
             ),
             WinConditionComplex.req_pearl: HelmDoorInfo(
-                5,
+                self.total_pearls,
                 HelmDoorRandomInfo(int(0.8 * self.total_pearls), int(1.0 * self.total_pearls), 0.05),
                 HelmDoorRandomInfo(int(0.6 * self.total_pearls), int(0.8 * self.total_pearls), 0.1),
                 HelmDoorRandomInfo(int(0.2 * self.total_pearls), int(0.6 * self.total_pearls), 0.13),
