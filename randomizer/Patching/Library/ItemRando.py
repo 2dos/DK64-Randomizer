@@ -2,6 +2,7 @@
 
 import random
 from enum import IntEnum, auto
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Locations import Locations
@@ -62,6 +63,83 @@ IceTrapMasks = {
 }
 IceTrapMaskIndexes = [Types.Banana, Types.Bean, Types.Key, Types.Fairy]
 
+hint_indexes = [
+    [Items.JapesDonkeyHint, Items.AztecDonkeyHint, Items.FactoryDonkeyHint, Items.GalleonDonkeyHint, Items.ForestDonkeyHint, Items.CavesDonkeyHint, Items.CastleDonkeyHint],
+    [Items.JapesDiddyHint, Items.AztecDiddyHint, Items.FactoryDiddyHint, Items.GalleonDiddyHint, Items.ForestDiddyHint, Items.CavesDiddyHint, Items.CastleDiddyHint],
+    [Items.JapesLankyHint, Items.AztecLankyHint, Items.FactoryLankyHint, Items.GalleonLankyHint, Items.ForestLankyHint, Items.CavesLankyHint, Items.CastleLankyHint],
+    [Items.JapesTinyHint, Items.AztecTinyHint, Items.FactoryTinyHint, Items.GalleonTinyHint, Items.ForestTinyHint, Items.CavesTinyHint, Items.CastleTinyHint],
+    [Items.JapesChunkyHint, Items.AztecChunkyHint, Items.FactoryChunkyHint, Items.GalleonChunkyHint, Items.ForestChunkyHint, Items.CavesChunkyHint, Items.CastleChunkyHint],
+]
+
+move_indexes = {
+    Kongs.donkey: [
+        Items.Coconut,
+        Items.Bongos,
+        Items.BaboonBlast,
+        Items.StrongKong,
+        Items.GorillaGrab,
+    ],
+    Kongs.diddy: [
+        Items.Peanut,
+        Items.Guitar,
+        Items.ChimpyCharge,
+        Items.RocketbarrelBoost,
+        Items.SimianSpring,
+    ],
+    Kongs.lanky: [
+        Items.Grape,
+        Items.Trombone,
+        Items.Orangstand,
+        Items.BaboonBalloon,
+        Items.OrangstandSprint,
+    ],
+    Kongs.tiny: [
+        Items.Feather,
+        Items.Saxophone,
+        Items.MiniMonkey,
+        Items.PonyTailTwirl,
+        Items.Monkeyport,
+    ],
+    Kongs.chunky: [
+        Items.Pineapple,
+        Items.Triangle,
+        Items.HunkyChunky,
+        Items.PrimatePunch,
+        Items.GorillaGone,
+    ],
+    Kongs.any: [
+        Items.ProgressiveAmmoBelt,
+        Items.ProgressiveAmmoBelt2,
+        Items.ProgressiveInstrumentUpgrade,
+        Items.ProgressiveInstrumentUpgrade2,
+        Items.ProgressiveInstrumentUpgrade3,
+        Items.ProgressiveSlam,
+        Items.ProgressiveSlam2,
+        Items.ProgressiveSlam3,
+        Items.Swim,
+        Items.Oranges,
+        Items.Barrels,
+        Items.Vines,
+        Items.Camera,
+        Items.Shockwave,
+        Items.CameraAndShockwave,
+        Items.Climbing,
+        Items.SniperSight,
+        Items.HomingAmmo,
+    ],
+}
+
+def getHintKong(item: Items) -> int:
+    for index, lst in enumerate(hint_indexes):
+        if item in lst:
+            return index
+    return None
+
+def getMoveKong(item: Items) -> int:
+    for kong, lst in move_indexes.items():
+        if item in lst:
+            return kong
+    return None
 
 class CustomActors(IntEnum):
     """Custom Actors Enum."""
@@ -419,7 +497,7 @@ class ItemPlacementData:
         self.actor_index = actor_index
         self.overlay = overlay
         if index_getter is None:
-            self.index_getter = lambda item, flag, shared: 0
+            self.index_getter = lambda item: 0
         else:
             self.index_getter = index_getter
         if isinstance(preview_text, list):
@@ -511,7 +589,7 @@ item_db = {
         ],
         jetpac_reward_index=[JetpacRewards.Potion] * 6,
         overlay=[GraphicOverlay.CrankyPotion] * 6,  # Handled elsewhere
-        index_getter=lambda item, flag, shared: (flag >> 12) & 7 if flag & 0x8000 and not shared and ((flag >> 12) & 7) < 5 else 5,
+        index_getter=lambda item: getMoveKong(item),
         preview_text="POTION",
         special_preview_text={
             Locations.GalleonDonkeySealRace: "BOTTLE OF GROG",
@@ -576,7 +654,7 @@ item_db = {
         ],
         jetpac_reward_index=[JetpacRewards.Kong] * 5,
         overlay=[GraphicOverlay.Kong],
-        index_getter=lambda item, flag, shared: (385, 6, 70, 66, 117).index(flag),
+        index_getter=lambda item: (Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky).index(item),
         preview_text="KONG",
         special_preview_text={
             Locations.GalleonDonkeySealRace: "WEIRD MONKEY",
@@ -595,7 +673,7 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.IceTrap] * 4,
         jetpac_reward_index=[JetpacRewards.IceTrap] * 4,
         overlay=[GraphicOverlay.IceTrapBubble] * 4,
-        index_getter=lambda item, flag, shared: IceTrapMaskIndexes.index(IceTrapMasks[item]),
+        index_getter=lambda item: IceTrapMaskIndexes.index(IceTrapMasks[item]),
         preview_text="GLODEN BANANE",
         special_preview_text={
             Locations.GalleonDonkeySealRace: "BANANA OF FOOLS GOLD",
@@ -748,7 +826,7 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.Hint] * 5,
         jetpac_reward_index=[JetpacRewards.Hint] * 5,
         overlay=[GraphicOverlay.Hint],
-        index_getter=lambda item, flag, shared: (flag - 0x384) % 5,
+        index_getter=lambda item: getHintKong(item),
         preview_text="HINT",
         special_preview_text={
             Locations.GalleonDonkeySealRace: "LAYTON RIDDLE",
@@ -768,7 +846,7 @@ item_db = {
             ArcadeRewards.BPChunky,
         ],
         jetpac_reward_index=[JetpacRewards.Blueprint] * 5,
-        index_getter=lambda item, flag, shared: (item - Items.DonkeyBlueprint) % 5,
+        index_getter=lambda item: (item - Items.DonkeyBlueprint) % 5,
         preview_text="BLUEPRINT",
         special_preview_text={
             Locations.GalleonDonkeySealRace: "MAP O' DEATH MACHINE",
@@ -808,7 +886,7 @@ item_db = {
         arcade_reward_index=[ArcadeRewards.APItem] * 4,
         jetpac_reward_index=[JetpacRewards.APItem] * 4,
         overlay=[GraphicOverlay.Hint] * 4,
-        index_getter=lambda item, flag, shared: [Items.ArchipelagoItem, Items.SpecialArchipelagoItem, Items.FoolsArchipelagoItem, Items.TrapArchipelagoItem].index(item),
+        index_getter=lambda item: [Items.ArchipelagoItem, Items.SpecialArchipelagoItem, Items.FoolsArchipelagoItem, Items.TrapArchipelagoItem].index(item),
         preview_text=["SPECIAL AP ITEM", "USEFUL AP ITEM", "JUNK AP ITEM", "SPECIAL AP ITEM"],
         special_preview_text={
             Locations.GalleonDonkeySealRace: ["ANOTHER MAN'S TREASURE", "ANOTHER PIRATE'S EYEPATCH", "ONE MAN'S TRASH", "ONE MAN'S TREESURE"],
@@ -878,20 +956,20 @@ def getIceTrapText(input_text: str) -> str:
             return new_text
 
 
-def getModelFromItem(item: Items, item_type: Types, flag: int, shared: bool = False) -> int:
+def getModelFromItem(item: Items, item_type: Types) -> int:
     """Get the model index associated with an item."""
     if item_type not in item_db and item_type not in FILLER_MAPPING:
         return None
     item_db_entry = getItemDBEntry(item_type)
     if not item_db_entry.has_model:
         return None
-    index = item_db_entry.index_getter(item, flag, shared)
+    index = item_db_entry.index_getter(item)
     return item_db_entry.model_index[index]
 
 
-def getPropFromItem(item: Items, item_type: Types, flag: int, shared: bool = False) -> int:
+def getPropFromItem(item: Items, item_type: Types) -> int:
     """Get the prop index associated with an item."""
-    index = getItemDBEntry(item_type).index_getter(item, flag, shared)
+    index = getItemDBEntry(item_type).index_getter(item)
     return getItemDBEntry(item_type).model_two_index[index]
 
 
@@ -912,7 +990,7 @@ def getItemPreviewText(item_type: Types, location: Locations, allow_special_text
     # Handle array-based preview text (like Archipelago items)
     if isinstance(item_data.preview_text, list) and item is not None:
         try:
-            index = item_data.index_getter(item, 0, False)
+            index = item_data.index_getter(item)
             text = item_data.preview_text[index]
         except (ValueError, IndexError):
             text = item_data.preview_text[0] if item_data.preview_text else ""
@@ -923,7 +1001,7 @@ def getItemPreviewText(item_type: Types, location: Locations, allow_special_text
         special_text_data = item_data.special_preview_text.get(location)
         if isinstance(special_text_data, list) and item is not None:
             try:
-                index = item_data.index_getter(item, 0, False)
+                index = item_data.index_getter(item)
                 text = special_text_data[index]
             except (ValueError, IndexError):
                 pass  # Keep the default text

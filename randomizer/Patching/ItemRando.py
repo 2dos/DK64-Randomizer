@@ -6,12 +6,21 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import ItemRandoListSelected, MicrohintsEnabled, TrainingBarrels
-from randomizer.Enums.VendorType import VendorType
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Library.DataTypes import intf_to_float
 from randomizer.Patching.Library.Generic import setItemReferenceName, ReqItems
-from randomizer.Patching.Library.ItemRando import getModelFromItem, getItemPreviewText, getPropFromItem, getModelMask, getItemDBEntry, item_shop_text_mapping, BuyText, TrackerItems
+from randomizer.Patching.Library.ItemRando import (
+    getModelFromItem,
+    getItemPreviewText,
+    getPropFromItem,
+    getModelMask,
+    getItemDBEntry,
+    item_shop_text_mapping,
+    BuyText,
+    TrackerItems,
+    getHintKong,
+)
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, CompTextFiles, ItemPreview
 from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay, writeValue, patchBonus, getBonusIndex
 from randomizer.Patching.Patcher import LocalROM
@@ -796,7 +805,7 @@ def getActorIndex(item):
     item_type = item.new_item
     if item_type is None:
         item_type = Types.NoItem
-    index = getItemDBEntry(item_type).index_getter(item.new_subitem, item.new_flag, item.shared)
+    index = getItemDBEntry(item_type).index_getter(item.new_subitem)
     return getItemDBEntry(item_type).actor_index[index]
 
 
@@ -917,7 +926,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         ROM_COPY.writeMultipleBytes(0, 2)
                         ROM_COPY.writeMultipleBytes(0, 2)
                     else:
-                        obj_index = getPropFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
+                        obj_index = getPropFromItem(item.new_subitem, item.new_item)
                         ROM_COPY.writeMultipleBytes(obj_index, 2)
                         ROM_COPY.writeMultipleBytes(0, 2)
                     ROM_COPY.writeMultipleBytes(item_properties.response_type, 1)
@@ -960,7 +969,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     if item.location == Locations.NintendoCoin:
                         spoiler.arcade_item_reward = item.new_subitem
                         db_item = getItemDBEntry(item.new_item)
-                        db_index = db_item.index_getter(item.new_subitem, item.new_flag, item.shared)
+                        db_index = db_item.index_getter(item.new_subitem)
                         arcade_reward_index = db_item.arcade_reward_index[db_index]
                         ROM_COPY.seek(sav + 0x110)
                         ROM_COPY.write(arcade_reward_index)
@@ -973,7 +982,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     elif item.location == Locations.RarewareCoin:
                         spoiler.jetpac_item_reward = item.new_subitem
                         db_item = getItemDBEntry(item.new_item)
-                        db_index = db_item.index_getter(item.new_subitem, item.new_flag, item.shared)
+                        db_index = db_item.index_getter(item.new_subitem)
                         jetpac_reward_index = db_item.jetpac_reward_index[db_index]
                         ROM_COPY.seek(sav + 0x111)
                         ROM_COPY.write(jetpac_reward_index)
@@ -1093,7 +1102,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             patchBonus(ROM_COPY, bonus_index, offset_dict, spawn_actor=actor_index, level=item_properties.level, item_kong=item_properties.kong)
                     elif item.old_item == Types.Fairy:
                         # Fairy Item
-                        model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
+                        model = getModelFromItem(item.new_subitem, item.new_item)
                         if model is not None:
                             addr = getItemTableWriteAddress(ROM_COPY, Types.Fairy, item.old_flag - 589, offset_dict)
                             ROM_COPY.seek(addr)
@@ -1111,7 +1120,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             Locations.ChunkyKong: 3,
                         }
                         if item.location in kong_idx:
-                            model = getModelFromItem(item.new_subitem, item.new_item, item.new_flag, item.shared)
+                            model = getModelFromItem(item.new_subitem, item.new_item)
                             if model is not None:
                                 idx = kong_idx[item.location]
                                 no_texture_tuple = (
@@ -1136,7 +1145,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                                 ROM_COPY.write(item_properties.kong)
                                 ROM_COPY.write(item_properties.audiovisual_medal)
             if item.new_item == Types.Hint:
-                offset = item.new_flag - 0x384
+                offset = item.new_subitem - Items.JapesDonkeyHint
                 tied_region = GetRegionIdOfLocation(spoiler, item.location)
                 spoiler.tied_hint_regions[offset] = spoiler.RegionList[tied_region].hint_name
             ref_index = 0
@@ -1254,7 +1263,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     if old_item not in model_two_items:
                         continue
                     ROM_COPY.seek(start + 0x28)
-                    item_obj_index = getPropFromItem(item_slot["subitem"], item_slot["obj"], item_slot["flag"], item_slot["shared"])
+                    item_obj_index = getPropFromItem(item_slot["subitem"], item_slot["obj"])
                     ROM_COPY.writeMultipleBytes(item_obj_index, 2)
                     extra_data = getItemPatchingData(item_slot["obj"], item_slot["subitem"])
                     if extra_data is not None:
