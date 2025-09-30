@@ -1173,7 +1173,7 @@ def patchAssembly(ROM_COPY, spoiler):
         for item in spoiler.item_assignment:
             if item.can_have_item and not item.is_shop and item.old_item not in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
                 if item.location < Locations.TurnInDKIslesDonkeyBlueprint or item.location > Locations.TurnInCreepyCastleChunkyBlueprint:
-                    if item.new_item is None or item.new_item == Types.NoItem:
+                    if item.new_type is None or item.new_type == Types.NoItem:
                         file_init_flags.append(item.old_flag)
     SCREEN_SHAKE_CAP = 7
     screen_shake_cap_patch = {

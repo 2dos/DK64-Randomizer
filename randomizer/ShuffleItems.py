@@ -10,57 +10,7 @@ from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import ShopLocationReference
-
-
-class LocationSelection:
-    """Class which contains information pertaining to assortment."""
-
-    def __init__(
-        self,
-        *,
-        vanilla_item=None,
-        placement_data=None,
-        is_reward_point=False,
-        flag=None,
-        kong=Kongs.any,
-        location=None,
-        name="",
-        is_shop=False,
-        price=0,
-        placement_index=0,
-        can_have_item=True,
-        can_place_item=True,
-        shop_locked=False,
-        shared=False,
-        order=0,
-        move_name="",
-    ):
-        """Initialize with given data."""
-        self.name = name
-        self.old_item = vanilla_item
-        self.placement_data = placement_data
-        self.old_flag = flag
-        self.old_kong = kong
-        self.reward_spot = is_reward_point
-        self.location = location
-        self.is_shop = is_shop
-        self.price = price
-        self.placement_index = placement_index
-        self.can_have_item = can_have_item
-        self.can_place_item = can_place_item
-        self.shop_locked = shop_locked
-        self.shared = shared
-        self.order = order
-        self.move_name = ""
-        self.new_item = None
-        self.new_flag = None
-        self.new_kong = None
-        self.new_subitem = None
-
-    def PlaceFlag(self, flag, kong):
-        """Place item for assortment."""
-        self.new_flag = flag
-        self.new_kong = kong
+from randomizer.Patching.Library.ItemRando import LocationSelection
 
 
 class MoveData:
@@ -177,9 +127,9 @@ def ShuffleItems(spoiler):
                 new_item = ItemList[item_location.item]
             # If this location isn't empty, set the new item and required kong
             if new_item is not None:
-                location_selection.new_item = new_item.type
+                location_selection.new_type = new_item.type
                 location_selection.new_kong = new_item.kong
-                location_selection.new_subitem = item_location.item
+                location_selection.new_item = item_location.item
                 # If this item has a dedicated specific flag, then set it now (Moves, Kongs, andKeys right now)
                 if new_item.rando_flag is not None:
                     if new_item.rando_flag == -1:  # This means it's a progressive move or fake item and they need special flags
@@ -202,7 +152,7 @@ def ShuffleItems(spoiler):
                     # locations_needing_flags.append(location_selection)
             # If this location is empty, it doesn't need a flag and we need to None out these fields
             else:
-                location_selection.new_item = None
+                location_selection.new_type = None
                 location_selection.new_kong = None
                 location_selection.new_flag = None
                 locations_not_needing_flags.append(location_selection)
@@ -226,10 +176,10 @@ def ShuffleItems(spoiler):
     spoiler.settings.random.shuffle(locations_needing_flags)
     for location in locations_needing_flags:
         if location.new_flag is None:
-            if location.new_item == Types.Blueprint:
+            if location.new_type == Types.Blueprint:
                 location.new_flag = blueprint_flag_dict[spoiler.LocationList[location.location].item]
-            elif location.new_item:
-                location.new_flag = flag_dict[location.new_item].pop()
+            elif location.new_type:
+                location.new_flag = flag_dict[location.new_type].pop()
 
     # If we failed to give any location a flag, something is very wrong
     if any([data for data in locations_needing_flags if data.new_flag is None]):
@@ -240,7 +190,7 @@ def ShuffleItems(spoiler):
     # human_item_data = {}
     # for loc in spoiler.item_assignment:
     #     name = "Nothing"
-    #     if loc.new_item is not None:
+    #     if loc.new_type is not None:
     #         name = ItemList[spoiler.LocationList[loc.location].item].name
     #     location_name = loc.name
     #     if "Kasplat" in location_name:

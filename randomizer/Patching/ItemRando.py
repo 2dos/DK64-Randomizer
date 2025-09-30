@@ -19,7 +19,7 @@ from randomizer.Patching.Library.ItemRando import (
     item_shop_text_mapping,
     BuyText,
     TrackerItems,
-    getHintKong,
+    LocationSelection,
 )
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, CompTextFiles, ItemPreview
 from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay, writeValue, patchBonus, getBonusIndex
@@ -508,7 +508,7 @@ def calculateInitFileScreen(spoiler, ROM_COPY: LocalROM):
                 found_shopkeeper = True
             if item.can_have_item:
                 if item.location in list(OTHER_STARTING_ITEMS.keys()):
-                    OTHER_STARTING_ITEMS[item.location] = item.new_subitem
+                    OTHER_STARTING_ITEMS[item.location] = item.new_item
     if not found_shopkeeper and ItemRandoListSelected.shopowners in spoiler.settings.item_rando_list_selected:
         OTHER_STARTING_ITEMS[Locations.ShopOwner_Location00] = Items.NoItem
         OTHER_STARTING_ITEMS[Locations.ShopOwner_Location01] = Items.NoItem
@@ -802,10 +802,10 @@ def setItemInWorld(ROM_COPY: LocalROM, offset: int, base_flag: int, current_flag
 
 def getActorIndex(item):
     """Get actor index from item."""
-    item_type = item.new_item
+    item_type = item.new_type
     if item_type is None:
         item_type = Types.NoItem
-    index = getItemDBEntry(item_type).index_getter(item.new_subitem)
+    index = getItemDBEntry(item_type).index_getter(item.new_item)
     return getItemDBEntry(item_type).actor_index[index]
 
 
@@ -848,7 +848,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
     if spoiler.settings.shuffle_items:
         ROM_COPY.seek(sav + 0x034)
         ROM_COPY.write(1)  # Item Rando Enabled
-        item_data = spoiler.item_assignment
+        item_data: list[LocationSelection] = spoiler.item_assignment
 
         map_items = {}
         offset_dict = populateOverlayOffsets(ROM_COPY)
@@ -881,7 +881,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
         for item in item_data:
             if item.can_have_item:
                 # Write placement
-                item_properties = getItemPatchingData(item.new_item, item.new_subitem)
+                item_properties = getItemPatchingData(item.new_type, item.new_item)
                 if item.is_shop:
                     # Write in placement index
                     movespaceOffset = spoiler.settings.move_location_data
@@ -894,7 +894,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                                 patchBonus(ROM_COPY, bonus_index, offset_dict, spawn_actor=getActorIndex(item), level=item_properties.level, item_kong=item_properties.kong)
                     for placement in item.placement_index:
                         write_space = movespaceOffset + (6 * placement)
-                        if item.new_item is None:
+                        if item.new_type is None:
                             # Is Nothing
                             # First check if there is an item here
                             ROM_COPY.seek(write_space)
@@ -911,7 +911,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             writeShopData(ROM_COPY, write_space, item_properties, price_var)
                         if spoiler.settings.enable_shop_hints and placement < 120:
                             addr = getItemTableWriteAddress(ROM_COPY, Types.Shop, placement, offset_dict)
-                            writeBuyText(item.new_subitem, addr, ROM_COPY)
+                            writeBuyText(item.new_item, addr, ROM_COPY)
                 elif item.location >= Locations.TurnInDKIslesDonkeyBlueprint and item.location <= Locations.TurnInCreepyCastleChunkyBlueprint:
                     if item.location <= Locations.TurnInDKIslesChunkyBlueprint:
                         index = 35 + (item.location - Locations.TurnInDKIslesDonkeyBlueprint)
@@ -919,11 +919,11 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         index = item.location - Locations.TurnInJungleJapesDonkeyBlueprint
                     snide_reward_addr_start = getROMAddress(getSym("snide_rewards"), Overlay.Custom, offset_dict)
                     ROM_COPY.seek(snide_reward_addr_start + (index * 8))
-                    if item.new_item is None or item.new_item == Types.NoItem:
+                    if item.new_type is None or item.new_type == Types.NoItem:
                         ROM_COPY.writeMultipleBytes(0, 2)
                         ROM_COPY.writeMultipleBytes(0, 2)
                     else:
-                        obj_index = getPropFromItem(item.new_subitem, item.new_item)
+                        obj_index = getPropFromItem(item.new_item, item.new_type)
                         ROM_COPY.writeMultipleBytes(obj_index, 2)
                         ROM_COPY.writeMultipleBytes(0, 2)
                     ROM_COPY.writeMultipleBytes(item_properties.response_type, 1)
@@ -934,7 +934,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     for map_id in item.placement_data:
                         if map_id not in map_items:
                             map_items[map_id] = []
-                        if item.new_item is None:
+                        if item.new_type is None:
                             map_items[map_id].append(
                                 {
                                     "id": item.placement_data[map_id],
@@ -948,25 +948,25 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                                 }
                             )
                         else:
-                            numerator = getItemDBEntry(item.new_item).scale
+                            numerator = getItemDBEntry(item.new_type).scale
                             denominator = getItemDBEntry(item.old_item).scale
                             upscale = numerator / denominator
                             map_items[map_id].append(
                                 {
                                     "id": item.placement_data[map_id],
-                                    "obj": item.new_item,
+                                    "obj": item.new_type,
                                     "loc": item.location,
                                     "kong": item.new_kong,
                                     "flag": item.new_flag,
                                     "upscale": upscale,
                                     "shared": item.shared,
-                                    "subitem": item.new_subitem,
+                                    "subitem": item.new_item,
                                 }
                             )
                     if item.location == Locations.NintendoCoin:
-                        spoiler.arcade_item_reward = item.new_subitem
-                        db_item = getItemDBEntry(item.new_item)
-                        db_index = db_item.index_getter(item.new_subitem)
+                        spoiler.arcade_item_reward = item.new_item
+                        db_item = getItemDBEntry(item.new_type)
+                        db_index = db_item.index_getter(item.new_item)
                         arcade_reward_index = db_item.arcade_reward_index[db_index]
                         ROM_COPY.seek(sav + 0x110)
                         ROM_COPY.write(arcade_reward_index)
@@ -977,9 +977,9 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                         ROM_COPY.write(item_properties.kong)
                         ROM_COPY.write(item_properties.audiovisual_medal)
                     elif item.location == Locations.RarewareCoin:
-                        spoiler.jetpac_item_reward = item.new_subitem
-                        db_item = getItemDBEntry(item.new_item)
-                        db_index = db_item.index_getter(item.new_subitem)
+                        spoiler.jetpac_item_reward = item.new_item
+                        db_item = getItemDBEntry(item.new_type)
+                        db_index = db_item.index_getter(item.new_item)
                         jetpac_reward_index = db_item.jetpac_reward_index[db_index]
                         ROM_COPY.seek(sav + 0x111)
                         ROM_COPY.write(jetpac_reward_index)
@@ -1099,7 +1099,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             patchBonus(ROM_COPY, bonus_index, offset_dict, spawn_actor=actor_index, level=item_properties.level, item_kong=item_properties.kong)
                     elif item.old_item == Types.Fairy:
                         # Fairy Item
-                        model = getModelFromItem(item.new_subitem, item.new_item)
+                        model = getModelFromItem(item.new_item, item.new_type)
                         if model is not None:
                             addr = getItemTableWriteAddress(ROM_COPY, Types.Fairy, item.old_flag - 589, offset_dict)
                             ROM_COPY.seek(addr)
@@ -1117,7 +1117,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             Locations.ChunkyKong: 3,
                         }
                         if item.location in kong_idx:
-                            model = getModelFromItem(item.new_subitem, item.new_item)
+                            model = getModelFromItem(item.new_item, item.new_type)
                             if model is not None:
                                 idx = kong_idx[item.location]
                                 no_texture_tuple = (
@@ -1131,7 +1131,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                                     Types.Shop,
                                     Types.TrainingBarrel,
                                 )
-                                has_no_textures = item.new_item in no_texture_tuple or getModelMask(item.new_subitem) in no_texture_tuple
+                                has_no_textures = item.new_type in no_texture_tuple or getModelMask(item.new_item) in no_texture_tuple
                                 addr = getItemTableWriteAddress(ROM_COPY, Types.Kong, idx, offset_dict)
                                 ROM_COPY.seek(addr)
                                 ROM_COPY.writeMultipleBytes(model, 2)
@@ -1141,26 +1141,26 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                                 ROM_COPY.write(item_properties.level)
                                 ROM_COPY.write(item_properties.kong)
                                 ROM_COPY.write(item_properties.audiovisual_medal)
-            if item.new_item == Types.Hint:
-                offset = item.new_subitem - Items.JapesDonkeyHint
+            if item.new_type == Types.Hint:
+                offset = item.new_item - Items.JapesDonkeyHint
                 tied_region = GetRegionIdOfLocation(spoiler, item.location)
                 spoiler.tied_hint_regions[offset] = spoiler.RegionList[tied_region].hint_name
             ref_index = 0
-            if item.new_subitem == Items.ProgressiveAmmoBelt:
+            if item.new_item == Items.ProgressiveAmmoBelt:
                 ref_index = item.new_flag - 0x292
-            elif item.new_subitem == Items.ProgressiveInstrumentUpgrade:
+            elif item.new_item == Items.ProgressiveInstrumentUpgrade:
                 ref_index = item.new_flag - 0x294
-            elif item.new_subitem == Items.ProgressiveSlam:
+            elif item.new_item == Items.ProgressiveSlam:
                 ref_index = item.new_flag - 0x3BC
-            setItemReferenceName(spoiler, item.new_subitem, ref_index, spoiler.LocationList[item.location].name, item.old_flag)
+            setItemReferenceName(spoiler, item.new_item, ref_index, spoiler.LocationList[item.location].name, item.old_flag)
             # Handle pre-given shops, only ran into if shop owners are in the pool
             if item.old_item in shop_owner_types:
                 if pregiven_shop_owners is None:
                     pregiven_shop_owners = []
-                if item.new_item in shop_owner_types:
-                    pregiven_shop_owners.append(item.new_item)
-                elif item.new_subitem != Items.NoItem and item.new_item is not None:
-                    raise Exception(f"Invalid item {item.new_subitem.name} placed in shopkeeper slot. This shouldn't happen.")
+                if item.new_type in shop_owner_types:
+                    pregiven_shop_owners.append(item.new_type)
+                elif item.new_item != Items.NoItem and item.new_type is not None:
+                    raise Exception(f"Invalid item {item.new_item.name} placed in shopkeeper slot. This shouldn't happen.")
         # Patch pre-given shops
         if pregiven_shop_owners is not None:  # Shop owners in pool
             data = 0
@@ -1180,16 +1180,16 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
         # Text stuff
         if spoiler.settings.item_reward_previews:
             for textbox in textboxes:
-                new_item = textbox.default_type
-                new_subitem = textbox.default_item
+                new_type = textbox.default_type
+                new_item = textbox.default_item
                 for item in item_data:
                     if textbox.location == item.location:
+                        new_type = item.new_type
                         new_item = item.new_item
-                        new_subitem = item.new_subitem
                 replacement = textbox.replacement_text
                 if not textbox.force_pipe:
                     # Use the standard item preview text
-                    reward_text = getItemPreviewText(new_item, textbox.location, True, getModelMask(new_subitem), new_subitem)
+                    reward_text = getItemPreviewText(new_type, textbox.location, True, getModelMask(new_item), new_item)
                     replacement = replacement.replace("|", reward_text)
                 file_data = {
                     textbox.file_index: {
@@ -1202,7 +1202,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 if textbox.file_index == CompTextFiles.PreviewsFlavor:
                     replacement = textbox.replacement_text
                     if not textbox.force_pipe:
-                        reward_text = getItemPreviewText(new_item, textbox.location, False, getModelMask(new_subitem), new_subitem)
+                        reward_text = getItemPreviewText(new_item, textbox.location, False, getModelMask(new_item), new_item)
                     replacement = replacement.replace("|", reward_text)
                     file_data[CompTextFiles.PreviewsNormal] = {
                         "textbox_index": textbox.textbox_index,
@@ -1224,7 +1224,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 if item.location in beetle_locations:
                     VERSION_STRING_START = getSym(beetle_data[item.location])
                     addr = getROMAddress(VERSION_STRING_START, Overlay.Custom, offset_dict)
-                    item_text = getItemPreviewText(item.new_item, item.location, THEMATIC_TEXT, getModelMask(new_subitem), item.new_subitem)
+                    item_text = getItemPreviewText(item.new_type, item.location, THEMATIC_TEXT, getModelMask(new_item), item.new_item)
                     ROM_COPY.seek(addr)
                     ROM_COPY.writeBytes(bytes(f"{item_text}\0", "ascii"))
             minor_item = "\x05FOR A FOOLISH GAME\x05"
@@ -1235,7 +1235,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
             new_item = Items.RarewareCoin
             for item in item_data:
                 if item.location == Locations.RarewareCoin:
-                    new_item = item.new_subitem
+                    new_item = item.new_item
             if new_item in [Items.ArchipelagoItem, Items.SpecialArchipelagoItem, Items.FoolsArchipelagoItem, Items.TrapArchipelagoItem]:
                 placed_text = major_item if new_item == Items.ArchipelagoItem else minor_item
             else:

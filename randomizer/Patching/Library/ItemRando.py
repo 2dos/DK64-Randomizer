@@ -425,6 +425,55 @@ class TrackerItems(IntEnum):
     CLIMB = auto()
     TERMINATOR = auto()
 
+class LocationSelection:
+    """Class which contains information pertaining to assortment."""
+
+    def __init__(
+        self,
+        *,
+        vanilla_item=None,
+        placement_data=None,
+        is_reward_point=False,
+        flag=None,
+        kong=Kongs.any,
+        location=None,
+        name="",
+        is_shop=False,
+        price=0,
+        placement_index=0,
+        can_have_item=True,
+        can_place_item=True,
+        shop_locked=False,
+        shared=False,
+        order=0,
+    ):
+        """Initialize with given data."""
+        self.name = name
+        self.old_item = vanilla_item
+        self.placement_data = placement_data
+        self.old_flag = flag
+        self.old_kong = kong
+        self.reward_spot = is_reward_point
+        self.location = location
+        self.is_shop = is_shop
+        self.price = price
+        self.placement_index = placement_index
+        self.can_have_item = can_have_item
+        self.can_place_item = can_place_item
+        self.shop_locked = shop_locked
+        self.shared = shared
+        self.order = order
+        self.move_name = ""
+        self.new_type: Types = None
+        self.new_flag: int = None
+        self.new_kong: Kongs = None
+        self.new_item: Items = None
+
+    def PlaceFlag(self, flag, kong):
+        """Place item for assortment."""
+        self.new_flag = flag
+        self.new_kong = kong
+
 
 pregiven_item_order = [
     Items.BaboonBlast,
