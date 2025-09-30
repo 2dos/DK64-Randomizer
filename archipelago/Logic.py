@@ -462,9 +462,7 @@ class LogicVarHolder:
                     self.grab = Items.GorillaGrab in self.latest_owned_items
                     self.coconut = Items.Coconut in self.latest_owned_items
                     self.bongos = Items.Bongos in self.latest_owned_items
-                    # Add blueprints for this Kong (Donkey = Kong 0)
-                    donkey_blueprints = len([level for level in range(8) if (Items.JungleJapesDonkeyBlueprint + (level * 5) + 0) in self.latest_owned_items])
-                    self.BlueprintsWithKong += donkey_blueprints
+                    self._recalculateBlueprints()
                 case Items.Diddy:
                     self.diddy = True
                     self.isdiddy = True
@@ -473,9 +471,7 @@ class LogicVarHolder:
                     self.spring = Items.SimianSpring in self.latest_owned_items
                     self.peanut = Items.Peanut in self.latest_owned_items
                     self.guitar = Items.Guitar in self.latest_owned_items
-                    # Add blueprints for this Kong (Diddy = Kong 1)
-                    diddy_blueprints = len([level for level in range(8) if (Items.JungleJapesDonkeyBlueprint + (level * 5) + 1) in self.latest_owned_items])
-                    self.BlueprintsWithKong += diddy_blueprints
+                    self._recalculateBlueprints()
                 case Items.Lanky:
                     self.lanky = True
                     self.islanky = True
@@ -484,9 +480,7 @@ class LogicVarHolder:
                     self.sprint = Items.OrangstandSprint in self.latest_owned_items
                     self.grape = Items.Grape in self.latest_owned_items
                     self.trombone = Items.Trombone in self.latest_owned_items
-                    # Add blueprints for this Kong (Lanky = Kong 2)
-                    lanky_blueprints = len([level for level in range(8) if (Items.JungleJapesDonkeyBlueprint + (level * 5) + 2) in self.latest_owned_items])
-                    self.BlueprintsWithKong += lanky_blueprints
+                    self._recalculateBlueprints()
                 case Items.Tiny:
                     self.tiny = True
                     self.istiny = True
@@ -495,9 +489,7 @@ class LogicVarHolder:
                     self.monkeyport = Items.Monkeyport in self.latest_owned_items
                     self.feather = Items.Feather in self.latest_owned_items
                     self.saxophone = Items.Saxophone in self.latest_owned_items
-                    # Add blueprints for this Kong (Tiny = Kong 3)
-                    tiny_blueprints = len([level for level in range(8) if (Items.JungleJapesDonkeyBlueprint + (level * 5) + 3) in self.latest_owned_items])
-                    self.BlueprintsWithKong += tiny_blueprints
+                    self._recalculateBlueprints()
                 case Items.Chunky:
                     self.chunky = True
                     self.ischunky = True
@@ -506,9 +498,7 @@ class LogicVarHolder:
                     self.gorillaGone = Items.GorillaGone in self.latest_owned_items
                     self.pineapple = Items.Pineapple in self.latest_owned_items
                     self.triangle = Items.Triangle in self.latest_owned_items
-                    # Add blueprints for this Kong (Chunky = Kong 4)
-                    chunky_blueprints = len([level for level in range(8) if (Items.JungleJapesDonkeyBlueprint + (level * 5) + 4) in self.latest_owned_items])
-                    self.BlueprintsWithKong += chunky_blueprints
+                    self._recalculateBlueprints()
                 case Items.Climbing:
                     self.climbing = True
                 case Items.Vines:
@@ -673,13 +663,9 @@ class LogicVarHolder:
                 case Items.BananaHoard:
                     self.bananaHoard = True
                 case _:
-                    if corresponding_item_id >= Items.JungleJapesDonkeyBlueprint and corresponding_item_id <= Items.DKIslesChunkyBlueprint:
-                        self.Blueprints.append(corresponding_item_id)
-                        # When a blueprint is received, check if we have the corresponding Kong and add 1
-                        blueprint_kong_id = (corresponding_item_id - Items.JungleJapesDonkeyBlueprint) % 5
-                        kong_ownership = [self.donkey, self.diddy, self.lanky, self.tiny, self.chunky]
-                        if kong_ownership[blueprint_kong_id]:
-                            self.BlueprintsWithKong += 1
+                    if corresponding_item_id >= Items.DonkeyBlueprint and corresponding_item_id <= Items.ChunkyBlueprint:
+                        # For generic blueprints, just recalculate totals since Update() handles the counting
+                        self._recalculateBlueprints()
                     if corresponding_item_id >= Items.JapesDonkeyHint and corresponding_item_id <= Items.CastleChunkyHint:
                         self.Hints.append(corresponding_item_id)
                     if corresponding_item_id >= Items.PhotoBat and corresponding_item_id <= Items.PhotoBug:
@@ -907,6 +893,23 @@ class LogicVarHolder:
         self.UpdateCoins()
 
         self.bananaHoard = self.bananaHoard or Items.BananaHoard in ownedItems
+
+    def _recalculateBlueprints(self):
+        """Recalculate blueprint totals based on current owned items and Kong ownership."""
+        item_counts = Counter(self.latest_owned_items)
+        
+        total_bp_count = 0
+        total_bp_count_nokong = 0
+        kong_ownership = [self.donkey, self.diddy, self.lanky, self.tiny, self.chunky]
+        bp_counts = [item_counts[Items.DonkeyBlueprint + kong] for kong in range(5)]
+        
+        for kong in range(5):
+            if kong_ownership[kong]:
+                total_bp_count += bp_counts[kong]
+            total_bp_count_nokong += bp_counts[kong]
+            
+        self.Blueprints = total_bp_count_nokong
+        self.BlueprintsWithKong = total_bp_count
 
     def GetCoins(self, kong):
         """Get Coin Total for a kong."""
