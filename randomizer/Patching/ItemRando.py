@@ -901,9 +901,6 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                             check = int.from_bytes(ROM_COPY.readBytes(1), "big")
                             if check == 0 or placement >= 120:  # No Item
                                 writeNullShopSlot(ROM_COPY, write_space)
-                        elif item.new_flag & 0x8000:
-                            # Is Move
-                            writeShopData(ROM_COPY, write_space, item_properties, item.price)
                         else:
                             # Is Flagged Item
                             price_var = 0
@@ -1162,7 +1159,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     pregiven_shop_owners = []
                 if item.new_item in shop_owner_types:
                     pregiven_shop_owners.append(item.new_item)
-                elif item.new_item != Items.NoItem and item.new_item is not None:
+                elif item.new_subitem != Items.NoItem and item.new_item is not None:
                     raise Exception(f"Invalid item {item.new_subitem.name} placed in shopkeeper slot. This shouldn't happen.")
         # Patch pre-given shops
         if pregiven_shop_owners is not None:  # Shop owners in pool
