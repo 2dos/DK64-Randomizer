@@ -197,7 +197,7 @@ float getShopScale(int index) {
 
 static const short float_ids[] = {0x1F4, 0x36};
 static const float float_offsets[] = {51.0f, 45.0f, 45.0f, 47.5f};
-static const float h_factors[] = {60.0f, 60.0f, 62.0f, 128.6f};
+static const float h_factors[] = {60.0f, 60.0f, 62.0f, 120.6f};
 
 void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;

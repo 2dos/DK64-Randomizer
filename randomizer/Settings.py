@@ -2131,9 +2131,15 @@ class Settings:
             # Range roughly from 4 to 15, average around 10
             self.medal_requirement = round(self.random.normalvariate(10, 1.5))
         self.original_medal_requirement = self.medal_requirement
-        self.logical_medal_requirement = min(self.total_medals, max(self.medal_requirement + 1, math.floor(self.medal_requirement * 1.2)))
+        if self.original_medal_requirement == 0:
+            self.logical_medal_requirement = 0
+        else:
+            self.logical_medal_requirement = min(self.total_medals, max(self.medal_requirement + 1, math.floor(self.medal_requirement * 1.2)))
         self.original_fairy_requirement = self.rareware_gb_fairies
-        self.logical_fairy_requirement = min(self.total_fairies, max(self.rareware_gb_fairies + 1, int(self.rareware_gb_fairies * 1.2)))
+        if self.original_fairy_requirement == 0:
+            self.logical_fairy_requirement = 0
+        else:
+            self.logical_fairy_requirement = min(self.total_fairies, max(self.rareware_gb_fairies + 1, int(self.rareware_gb_fairies * 1.2)))
 
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando, self)

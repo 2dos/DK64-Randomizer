@@ -179,7 +179,7 @@ void mermaidCheck(void) {
      * @brief Set the mermaid control state based on the amount of pearls you have
      */
     int count = getItemCount_new(REQITEM_PEARL, 0, 0);
-    if (count == 0) {
+    if ((count == 0) && (Rando.mermaid_requirement > 0)) {
         CurrentActorPointer_0->control_state = 0x1E;
     } else if (count < Rando.mermaid_requirement) {
         CurrentActorPointer_0->control_state = 0x1F;
@@ -194,11 +194,7 @@ int fairyQueenCutsceneInit(int start, int count, flagtypes type) {
      * @brief Set BFI Queen control state based on the amount of fairies you have
      */
     int fairies_in_possession = getItemCount_new(REQITEM_FAIRY, 0, 0);
-    int fairy_limit = 20;
-    if (Rando.rareware_gb_fairies > 0) {
-        fairy_limit = Rando.rareware_gb_fairies;
-    }
-    if (fairies_in_possession < fairy_limit) {
+    if (fairies_in_possession < Rando.rareware_gb_fairies) {
         // Not enough fairies
         CurrentActorPointer_0->control_state = 10;
     } else {

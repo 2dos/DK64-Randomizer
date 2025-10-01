@@ -1372,8 +1372,8 @@ document
     const fairyReq = document.getElementById("rareware_gb_fairies");
     if (!fairyReq.value) {
       fairyReq.value = 20;
-    } else if (parseInt(fairyReq.value) < 1) {
-      fairyReq.value = 1;
+    } else if (parseInt(fairyReq.value) < 0) {
+      fairyReq.value = 0;
     } else if (parseInt(fairyReq.value) > 20) {
       fairyReq.value = 20;
     }
@@ -1666,15 +1666,15 @@ function item_req_update(behavior, container, count, min, max) {
 
 document.getElementById("medal_jetpac_behavior")
   .addEventListener("change", () => {
-    item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
+    item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 0, 40);
   });
 document.getElementById("pearl_mermaid_behavior")
   .addEventListener("change", () => {
-    item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
+    item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 0, 5);
   });
 document.getElementById("fairy_queen_behavior")
   .addEventListener("change", () => {
-    item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
+    item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 0, 20);
   });
 document.getElementById("cb_medal_behavior_new")
   .addEventListener("change", () => {
@@ -2049,9 +2049,9 @@ function update_ui_states() {
   getTotalItemCounts();
   update_all_trap_weights();
   update_troff_number_access();
-  item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
-  item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
-  item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
+  item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 0, 40);
+  item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 0, 5);
+  item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 0, 20);
   item_req_update("cb_medal_behavior_new", "cb_medal_behavior_new_container", "medal_cb_req", 1, 100);
   disable_tag_spawn();
   disable_krool_phases();

@@ -4031,18 +4031,15 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
         },
         "Medals": {
             "value": settings.total_medals,
-            "min": 1,
         },
         "Fairies": {
             "value": settings.total_fairies,
-            "min": 1,
         },
         "Rainbow Coins": {
             "value": settings.total_rainbow_coins,
         },
         "Pearls": {
             "value": settings.total_pearls,
-            "min": 1,
         },
     }
     for item_name, item_data in custom_item_count_data.items():

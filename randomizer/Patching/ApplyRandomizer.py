@@ -629,9 +629,8 @@ def patching_response(spoiler):
                     else:
                         spoiler.text_changes[file] = [data]
 
-    if spoiler.settings.rareware_gb_fairies != 20:
-        ROM_COPY.seek(sav + 0x36)
-        ROM_COPY.write(spoiler.settings.rareware_gb_fairies)
+    ROM_COPY.seek(sav + 0x36)
+    ROM_COPY.write(spoiler.settings.rareware_gb_fairies)
 
     ROM_COPY.seek(sav + 0x1EB)
     ROM_COPY.write(spoiler.settings.mermaid_gb_pearls)
