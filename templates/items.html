@@ -887,7 +887,7 @@
         
         let first_inputs = JSON.parse(JSON.stringify(inputs));
         let first_outputs = JSON.parse(JSON.stringify(outputs));
-        const result = checkDistribution(Object.values(first_inputs), Object.values(first_outputs), true, true);
+        const result = checkDistribution(Object.values(first_inputs), Object.values(first_outputs), true);
         let second_inputs = JSON.parse(JSON.stringify(inputs));
         let second_outputs = JSON.parse(JSON.stringify(outputs));
         const backupResult = checkDistribution(Object.values(second_inputs), Object.values(second_outputs), false);
