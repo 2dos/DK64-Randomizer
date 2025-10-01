@@ -186,6 +186,7 @@ class CustomActors(IntEnum):
     SpecialArchipelagoItem = auto()
     FoolsArchipelagoItem = auto()
     TrapArchipelagoItem = auto()
+    SpreadCounter = auto()
 
 
 class GraphicOverlay(IntEnum):

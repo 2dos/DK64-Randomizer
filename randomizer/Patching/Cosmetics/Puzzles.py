@@ -6,7 +6,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Settings import Settings
 from randomizer.Patching.Library.Image import writeColorImageToROM, TextureFormat, getImageFile, getNumberImage, ExtraTextures, getBonusSkinOffset, TableNames
 from randomizer.Patching.Patcher import LocalROM
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 
 def updateMillLeverTexture(settings: Settings, ROM_COPY: LocalROM) -> None:
@@ -213,3 +213,12 @@ def updateHelmFaces(settings: Settings, ROM_COPY: LocalROM) -> None:
                 # Pull image from ROM
                 img_written = getImageFile(ROM_COPY, TableNames.TexturesGeometry, data["images"][index % 2], True, 32, 64, TextureFormat.RGBA5551)
         writeColorImageToROM(img_written, TableNames.TexturesGeometry, img_index, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
+
+def updateSnidePanel(settings: Settings, ROM_COPY: LocalROM)->None:
+    """Modify the panel on Snide's to make it easier to spot the indicator."""
+    if not settings.snide_reward_rando:
+        return
+    im_f = getImageFile(ROM_COPY, TableNames.TexturesGeometry, 0xA6F, True, 32, 64, TextureFormat.RGBA5551)
+    enhancer = ImageEnhance.Brightness(im_f)
+    im_f = enhancer.enhance(0.5)
+    writeColorImageToROM(im_f, TableNames.TexturesGeometry, 0xB85, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)

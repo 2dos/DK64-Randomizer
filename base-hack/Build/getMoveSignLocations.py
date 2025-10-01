@@ -1,7 +1,7 @@
 """Get move sign data."""
 
 from BuildLib import float_to_hex
-from BuildEnums import Maps, Vendors
+from BuildEnums import Maps, Vendors, CustomActors
 
 
 class SignInformation:
@@ -101,6 +101,7 @@ def getMoveSignData(map_index):
                     "z": sign.z,
                     "ry": convertAngle(sign.angle + a_offset) % 4096,
                     "id": id,
+                    "obj": CustomActors.SpreadCounter if sign.vendor == Vendors.Snide else 70
                 }
             )
     return sign_arr

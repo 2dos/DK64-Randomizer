@@ -2526,7 +2526,7 @@ class Settings:
                 self.valid_locations[Types.Blueprint] = {}
                 for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
                     if self.free_trade_setting:
-                        self.valid_locations[Types.Blueprint][kong] = blueprintLocations.copy()
+                        self.valid_locations[Types.Blueprint][kong] = [location for location in blueprintLocations if spoiler.LocationList[location].kong in (kong, Kongs.any)]
                     else:
                         self.valid_locations[Types.Blueprint][kong] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == kong]
             banana_types = [
@@ -2566,10 +2566,9 @@ class Settings:
                     self.valid_locations[item] = shuffledNonMoveLocations.copy()
             if Types.Hint in self.shuffled_location_types:
                 self.valid_locations[Types.Hint] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
-            if Types.Medal in self.shuffled_location_types:
-                self.valid_locations[Types.Medal] = fairyBannedLocations.copy()
-            if Types.FillerMedal in self.shuffled_location_types:
-                self.valid_locations[Types.FillerMedal] = fairyBannedLocations.copy()
+            for item in (Types.Medal, Types.FillerMedal):
+                if item in self.shuffled_location_types:
+                    self.valid_locations[item] = fairyBannedLocations.copy()
             shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky)
             for item in shop_owner_items:
                 if item in self.shuffled_location_types:
@@ -2608,6 +2607,47 @@ class Settings:
                     # Messes with the ice trap audio
                     Locations.HelmBananaFairy1,
                     Locations.HelmBananaFairy2,
+                    # Snide Rewards
+                    Locations.TurnInDKIslesDonkeyBlueprint,
+                    Locations.TurnInDKIslesDiddyBlueprint,
+                    Locations.TurnInDKIslesLankyBlueprint,
+                    Locations.TurnInDKIslesTinyBlueprint,
+                    Locations.TurnInDKIslesChunkyBlueprint,
+                    Locations.TurnInJungleJapesDonkeyBlueprint,
+                    Locations.TurnInJungleJapesDiddyBlueprint,
+                    Locations.TurnInJungleJapesLankyBlueprint,
+                    Locations.TurnInJungleJapesTinyBlueprint,
+                    Locations.TurnInJungleJapesChunkyBlueprint,
+                    Locations.TurnInAngryAztecDonkeyBlueprint,
+                    Locations.TurnInAngryAztecDiddyBlueprint,
+                    Locations.TurnInAngryAztecLankyBlueprint,
+                    Locations.TurnInAngryAztecTinyBlueprint,
+                    Locations.TurnInAngryAztecChunkyBlueprint,
+                    Locations.TurnInFranticFactoryDonkeyBlueprint,
+                    Locations.TurnInFranticFactoryDiddyBlueprint,
+                    Locations.TurnInFranticFactoryLankyBlueprint,
+                    Locations.TurnInFranticFactoryTinyBlueprint,
+                    Locations.TurnInFranticFactoryChunkyBlueprint,
+                    Locations.TurnInGloomyGalleonDonkeyBlueprint,
+                    Locations.TurnInGloomyGalleonDiddyBlueprint,
+                    Locations.TurnInGloomyGalleonLankyBlueprint,
+                    Locations.TurnInGloomyGalleonTinyBlueprint,
+                    Locations.TurnInGloomyGalleonChunkyBlueprint,
+                    Locations.TurnInFungiForestDonkeyBlueprint,
+                    Locations.TurnInFungiForestDiddyBlueprint,
+                    Locations.TurnInFungiForestLankyBlueprint,
+                    Locations.TurnInFungiForestTinyBlueprint,
+                    Locations.TurnInFungiForestChunkyBlueprint,
+                    Locations.TurnInCrystalCavesDonkeyBlueprint,
+                    Locations.TurnInCrystalCavesDiddyBlueprint,
+                    Locations.TurnInCrystalCavesLankyBlueprint,
+                    Locations.TurnInCrystalCavesTinyBlueprint,
+                    Locations.TurnInCrystalCavesChunkyBlueprint,
+                    Locations.TurnInCreepyCastleDonkeyBlueprint,
+                    Locations.TurnInCreepyCastleDiddyBlueprint,
+                    Locations.TurnInCreepyCastleLankyBlueprint,
+                    Locations.TurnInCreepyCastleTinyBlueprint,
+                    Locations.TurnInCreepyCastleChunkyBlueprint,
                 )
                 self.valid_locations[Types.FakeItem] = [x for x in shuffledNonMoveLocations if not self.isBadIceTrapLocation(spoiler.LocationList[x]) and x not in bad_fake_locations]
             if Types.JunkItem in self.shuffled_location_types:

@@ -236,7 +236,7 @@ def applyHolidayMode(settings, ROM_COPY: ROM):
         # Pad Rim
         applyCelebrationRims(ROM_COPY, -12)
         # Tag Barrel, Bonus Barrel & Transform Barrels
-        changeBarrelColor(settings, ROM_COPY, (0x00, 0xC0, 0x00))
+        changeBarrelColor(settings, ROM_COPY, (0x60, 0x78, 0x60))
         # Turn Ice Tomato Orange
         sizes = {
             0x1237: 700,

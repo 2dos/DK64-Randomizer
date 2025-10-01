@@ -889,11 +889,11 @@
             }
         }
         
-        const first_inputs = JSON.parse(JSON.stringify(inputs));
-        const first_outputs = JSON.parse(JSON.stringify(inputs));
+        let first_inputs = JSON.parse(JSON.stringify(inputs));
+        let first_outputs = JSON.parse(JSON.stringify(inputs));
         const result = checkDistribution(Object.values(first_inputs), Object.values(first_outputs), true);
-        const second_inputs = JSON.parse(JSON.stringify(inputs));
-        const second_outputs = JSON.parse(JSON.stringify(inputs));
+        let second_inputs = JSON.parse(JSON.stringify(inputs));
+        let second_outputs = JSON.parse(JSON.stringify(inputs));
         const backupResult = checkDistribution(Object.values(second_inputs), Object.values(second_outputs), false);
         is_valid_item_spread = true;
         for (let x = 0; x < 4; x++) {
