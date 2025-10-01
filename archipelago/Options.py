@@ -38,6 +38,7 @@ class Goal(Choice):
     - bosses: Defeat a certain number of bosses to win. See goal_quantity option for more info.
     - bonuses: Complete a certain number of Bonus Barrels to win. Automatically disables auto_complete_bonus_barrels if set. See goal_quantity option for more info.
     - treasure_hurry: Run down the timer by collecting treasure! You win when the timer reaches 0.
+    - krools_challenge: K. Rool's ship does not spawn until you collect All keys, Defeat All bosses, Play all Bonus Barrels, and collect All Blueprints.
     """
 
     display_name = "Goal"
