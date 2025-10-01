@@ -2719,7 +2719,7 @@ ColoredBananaGroupList = [
         name="Keg Bouldertech above the entrance",  # Hard
         konglist=[Kongs.diddy],
         region=Regions.GrinderRoom,
-        logic=lambda l: l.ischunky and l.barrels,
+        logic=lambda l: l.chunky and l.barrels,
         locations=[[1, 1.0, 627, 137, 487], [1, 1.0, 627, 137, 461], [1, 1.0, 627, 137, 434], [1, 1.0, 627, 137, 408], [1, 1.0, 627, 137, 382]],
     ),
     ColoredBananaGroup(
@@ -2742,7 +2742,7 @@ ColoredBananaGroupList = [
         name="On the wooden wall",
         konglist=[Kongs.donkey, Kongs.lanky, Kongs.chunky],
         region=Regions.GrinderRoom,
-        logic=lambda l: l.ischunky and l.barrels,
+        logic=lambda l: l.chunky and l.barrels,
         locations=[[1, 1.0, 45, 70, 364], [1, 1.0, 73, 70, 364], [1, 1.0, 101, 70, 364], [1, 1.0, 129, 70, 364], [1, 1.0, 157, 70, 364]],
     ),
     ColoredBananaGroup(
