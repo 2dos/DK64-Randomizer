@@ -129,17 +129,20 @@ move_indexes = {
     ],
 }
 
+
 def getHintKong(item: Items) -> int:
     for index, lst in enumerate(hint_indexes):
         if item in lst:
             return index
     return None
 
+
 def getMoveKong(item: Items) -> int:
     for kong, lst in move_indexes.items():
         if item in lst:
             return kong
     return None
+
 
 class CustomActors(IntEnum):
     """Custom Actors Enum."""
@@ -425,6 +428,7 @@ class TrackerItems(IntEnum):
     SNIDE = auto()
     CLIMB = auto()
     TERMINATOR = auto()
+
 
 class LocationSelection:
     """Class which contains information pertaining to assortment."""

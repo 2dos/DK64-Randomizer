@@ -21,6 +21,7 @@ POT_COLOR_STRENGTHS = (
     0xEB,
 )
 
+
 class Vtx:
     def __init__(self, x: int, y: int, z: int, color_strength: int, alpha: int = 0xFF, forced_color: tuple = None):
         self.x = x
@@ -54,6 +55,7 @@ class Vtx:
             fh.write(channel.to_bytes(1, "big"))
         fh.write(self.alpha.to_bytes(1, "big"))
 
+
 vertex_information = [
     Vtx(0, POT_Y_BOTTOM, -POT_H_FAR, POT_COLOR_STRENGTHS[2]),
     Vtx(POT_H_FAR, POT_Y_BOTTOM, 0, POT_COLOR_STRENGTHS[0]),
@@ -72,8 +74,8 @@ vertex_information = [
     Vtx(-POT_H_NEAR, POT_Y_MIDDLE, 0, 0xFF, 0x66, (0x78, 0xB9, 0xAF)),
     Vtx(POT_H_NEAR, POT_Y_TOP, 0, 0xFF, 0x66, (0x78, 0xB9, 0xAF)),
     Vtx(POT_H_NEAR, POT_Y_MIDDLE, 0, 0xFF, 0x66, (0x78, 0xB9, 0xAF)),
-    Vtx(0, POT_Y_TOP, POT_H_NEAR, 0xFF, 0x66, (0x49, 0X71, 0x6B)),
-    Vtx(0, POT_Y_MIDDLE, POT_H_NEAR, 0xFF, 0x66, (0x49, 0X71, 0x6B)),
+    Vtx(0, POT_Y_TOP, POT_H_NEAR, 0xFF, 0x66, (0x49, 0x71, 0x6B)),
+    Vtx(0, POT_Y_MIDDLE, POT_H_NEAR, 0xFF, 0x66, (0x49, 0x71, 0x6B)),
     Vtx(-POT_H_NEAR, POT_Y_TOP, 0, 0xFF, 0x66, (0x78, 0xB9, 0xAF)),
 ]
 

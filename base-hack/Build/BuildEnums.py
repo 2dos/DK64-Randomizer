@@ -987,6 +987,7 @@ class CompTextFiles(IntEnum):
     WrinklyShort = auto()
     ItemLocations = auto()
 
+
 class CustomActors(IntEnum):
     """Custom Actors Enum."""
 

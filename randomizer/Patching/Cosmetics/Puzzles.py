@@ -214,7 +214,8 @@ def updateHelmFaces(settings: Settings, ROM_COPY: LocalROM) -> None:
                 img_written = getImageFile(ROM_COPY, TableNames.TexturesGeometry, data["images"][index % 2], True, 32, 64, TextureFormat.RGBA5551)
         writeColorImageToROM(img_written, TableNames.TexturesGeometry, img_index, 32, 64, False, TextureFormat.RGBA5551, ROM_COPY)
 
-def updateSnidePanel(settings: Settings, ROM_COPY: LocalROM)->None:
+
+def updateSnidePanel(settings: Settings, ROM_COPY: LocalROM) -> None:
     """Modify the panel on Snide's to make it easier to spot the indicator."""
     if not settings.snide_reward_rando:
         return

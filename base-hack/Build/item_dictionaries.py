@@ -42,6 +42,7 @@ class EnemyDropDef:
         self.drop_music = drop_music
         self.drop_count = drop_count
 
+
 POTIONS = (
     CustomActors.PotionDK,
     CustomActors.PotionDiddy,

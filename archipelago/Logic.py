@@ -897,17 +897,17 @@ class LogicVarHolder:
     def _recalculateBlueprints(self):
         """Recalculate blueprint totals based on current owned items and Kong ownership."""
         item_counts = Counter(self.latest_owned_items)
-        
+
         total_bp_count = 0
         total_bp_count_nokong = 0
         kong_ownership = [self.donkey, self.diddy, self.lanky, self.tiny, self.chunky]
         bp_counts = [item_counts[Items.DonkeyBlueprint + kong] for kong in range(5)]
-        
+
         for kong in range(5):
             if kong_ownership[kong]:
                 total_bp_count += bp_counts[kong]
             total_bp_count_nokong += bp_counts[kong]
-            
+
         self.Blueprints = total_bp_count_nokong
         self.BlueprintsWithKong = total_bp_count
 

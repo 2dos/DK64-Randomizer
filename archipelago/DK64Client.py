@@ -356,7 +356,7 @@ class DK64Client:
                 byte_index = kong
             else:
                 byte_index = count_data.get("byte", 0)
-            
+
             if byte_index < 5:
                 address = count_struct_address + 0x000 + byte_index
                 current_value = self.n64_client.read_u8(address)
