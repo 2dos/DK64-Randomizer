@@ -648,10 +648,6 @@
                                 if (filtered_version.length > 0) {
                                     if (debug) console.log(`Filtering out ${bk.pools.length - filtered_version.length} values from pool ${pl}`);
                                     bk.pools = filtered_version.slice();
-                                } else {
-                                    // This is the only instance of this item, thus making this pool invalid
-                                    pool_valid[pl] = false;
-                                    pool_verified[pl] = true;
                                 }
                             }
                         });
@@ -890,10 +886,10 @@
         }
         
         let first_inputs = JSON.parse(JSON.stringify(inputs));
-        let first_outputs = JSON.parse(JSON.stringify(inputs));
-        const result = checkDistribution(Object.values(first_inputs), Object.values(first_outputs), true);
+        let first_outputs = JSON.parse(JSON.stringify(outputs));
+        const result = checkDistribution(Object.values(first_inputs), Object.values(first_outputs), true, true);
         let second_inputs = JSON.parse(JSON.stringify(inputs));
-        let second_outputs = JSON.parse(JSON.stringify(inputs));
+        let second_outputs = JSON.parse(JSON.stringify(outputs));
         const backupResult = checkDistribution(Object.values(second_inputs), Object.values(second_outputs), false);
         is_valid_item_spread = true;
         for (let x = 0; x < 4; x++) {

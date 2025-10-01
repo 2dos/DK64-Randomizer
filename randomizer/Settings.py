@@ -3044,9 +3044,6 @@ class Settings:
                                 filtered_version = [x for x in bk["pools"] if x not in pools_to_filter]
                                 if len(filtered_version) > 0:
                                     bk["pools"] = filtered_version.copy()
-                                else:
-                                    pool_valid[pl] = False
-                                    pool_verified[pl] = True
                     ran_rules.append(1)
                 # Rule 2:
                 # Any completely empty pools should add all of their items/checks in them
