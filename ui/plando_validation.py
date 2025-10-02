@@ -1131,6 +1131,8 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
 
     def is_plando_input(inputName: str) -> bool:
         """Determine if an input is a plando input."""
+        if not isinstance(inputName, str):
+            return False
         return inputName is not None and inputName.startswith("plando_")
 
     # Process all the plando-related inputs.
