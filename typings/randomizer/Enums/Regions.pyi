@@ -286,3 +286,8 @@ class Regions(IntEnum):
     ForestMillTopOfNightCage = 283
     HideoutHelmLobbyPastVines = 284
     MushroomUpperVineFloor = 285
+    SnideFirstGroup = 286
+    SnideSecondGroup = 287
+    SnideThirdGroup = 288
+    SnideFourthGroup = 289
+    SnideLastGroup = 290

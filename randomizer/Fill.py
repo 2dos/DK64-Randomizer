@@ -2070,6 +2070,10 @@ def Fill(spoiler: Spoiler) -> None:
         if Types.Snide in spoiler.settings.shuffled_location_types:
             placed_types.append(Types.Snide)
             bigListOfItemsToPlace.extend(ItemPool.SnideItems())
+        # If we have Snide rewards, Blueprints become much more logically important and need to be placed in the big fill so as to not bias towards those locations, especially if there's a large cap
+        if Types.BlueprintBanana in spoiler.settings.shuffled_location_types:
+            placed_types.append(Types.Blueprint)
+            bigListOfItemsToPlace.extend(ItemPool.Blueprints().copy())
         for item in preplaced_items:
             if item in bigListOfItemsToPlace:
                 bigListOfItemsToPlace.remove(item)
@@ -2194,8 +2198,8 @@ def Fill(spoiler: Spoiler) -> None:
             "things on Bosses",
         )
 
-    # Then place Blueprints - these are moderately restrictive in their placement
-    if Types.Blueprint in spoiler.settings.shuffled_location_types:
+    # Then place Blueprints - these are moderately restrictive in their placement (so much so that we may have to place them earlier than this)
+    if Types.Blueprint in spoiler.settings.shuffled_location_types and Types.Blueprint not in placed_types:
         placed_types.append(Types.Blueprint)
         spoiler.Reset()
         blueprintsToPlace = ItemPool.Blueprints().copy()
