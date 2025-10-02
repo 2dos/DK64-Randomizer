@@ -1,4 +1,4 @@
-"""Generates (.vtx) files for potions"""
+"""Generates (.vtx) files for potions."""
 
 from typing import BinaryIO
 
