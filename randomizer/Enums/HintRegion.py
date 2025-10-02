@@ -77,6 +77,7 @@ class HintRegion(IntEnum):
     # Other
     Helm = auto()
     Bosses = auto()
+    Snide = auto()
     # Debuggging
     Error = auto()
 
@@ -125,7 +126,7 @@ HINT_REGION_PAIRING = {
     HintRegion.LlamaTemple: "Llama Temple",
     HintRegion.AztecTunnels: "Various Aztec Tunnels",
     # Factory
-    HintRegion.FactoryStart: "Frantic Factory Start",
+    HintRegion.FactoryStart: "Frantic Factory Foyer",
     HintRegion.Testing: "Testing Area",
     HintRegion.ResearchAndDevelopment: "R&D Area",
     HintRegion.Storage: "Storage & Arcade Area",

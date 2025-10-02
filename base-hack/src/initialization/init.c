@@ -261,6 +261,7 @@ void initHack(int source) {
 			*(short*)(0x806F99C6) = ITEMID_RESERVED_CANDY;
 			*(short*)(0x806F99DA) = ITEMID_RESERVED_DK;
 			RandomizerVersion = 5;
+			RandomizerSubVersion = 1;  // Use this for tracker changes
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
 			}

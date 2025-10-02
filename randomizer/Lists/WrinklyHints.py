@@ -324,7 +324,7 @@ all_levels = [
     Levels.CrystalCaves,
     Levels.CreepyCastle,
 ]
-level_colors = ["\x08", "\x04", "\x0c", "\x06", "\x07", "\x0a", "\x09", "\x05", "\x0b", "\x0d"]
+level_colors = ["\x08", "\x04", "\x0c", "\x06", "\x07", "\x0a", "\x09", "\x05", "\x0b", "\x0d", "\x0d"]
 level_list = [
     "Jungle Japes",
     "Angry Aztec",
@@ -336,6 +336,7 @@ level_list = [
     "Hideout Helm",
     "DK Isles",
     "Cranky's Lab",
+    "Snide's HQ",
 ]
 short_level_list = [
     "Japes",
@@ -348,6 +349,7 @@ short_level_list = [
     "Helm",
     "Isles",
     "Cranky's Lab",
+    "Snide's HQ",
 ]
 vacation_levels_properties = [
     "Glorious Hills",
@@ -360,6 +362,7 @@ vacation_levels_properties = [
     "Timeless Corridors",
     "Undeniable Serenity",
     "Arcade Dwellers Paradise",
+    "Rube Goldberg Cacophony",
 ]
 
 level_cryptic = [

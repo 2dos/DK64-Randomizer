@@ -353,16 +353,15 @@ def create_shop_region(multiworld: MultiWorld, player: int, region_name: str, re
     new_region = Region(region_name, player, multiworld)
     # Snide and his blueprint locations are one-to-one every time
     if "Snide" in region_name:
-        blueprint_id = Items.JungleJapesDonkeyBlueprint
-        for item in range(40):
-            blueprint_obj = DK64RItem.ItemList[blueprint_id]
-            location_name = "Turn In " + blueprint_obj.name
-            loc_id = all_locations.get(location_name, 0)
-            location = DK64Location(player, location_name, loc_id, new_region)
-            set_rule(location, lambda state, blueprint_name=blueprint_obj.name: state.has(blueprint_name, player))
-            location.place_locked_item(DK64Item(blueprint_obj.name, ItemClassification.progression_skip_balancing, None, player))
-            new_region.locations.append(location)
-            blueprint_id += 1
+        for _ in range(8):
+            for kong in range(5):
+                blueprint_obj = DK64RItem.ItemList[Items.DonkeyBlueprint + kong]
+                location_name = "Turn In " + blueprint_obj.name
+                loc_id = all_locations.get(location_name, 0)
+                location = DK64Location(player, location_name, loc_id, new_region)
+                set_rule(location, lambda state, blueprint_name=blueprint_obj.name: state.has(blueprint_name, player))
+                location.place_locked_item(DK64Item(blueprint_obj.name, ItemClassification.progression_skip_balancing, None, player))
+                new_region.locations.append(location)
     # The one special child here is Cranky Generic, home of Jetpac, the only shop location with any relevant logic
     elif region_name == "Cranky Generic":
         location = DK64Location(player, "Jetpac", all_locations.get("Jetpac", 0), new_region)

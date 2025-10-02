@@ -5,6 +5,7 @@
 .definelabel InitialPauseHeight, 0x807FFFF6
 .definelabel DisplayedSongNamePointer, 0x807FFFF0
 .definelabel RandomizerVersion, 0x807FFFF4
+.definelabel RandomizerSubVersion, 0x807FFFF5
 .definelabel LoadedHooks, 0x807FFFEF // u8
 .definelabel HoldableSpawnBitfield, 0x807FFFEC // u16
 .definelabel bonusAutocomplete, 0x807FFFE9 // u8

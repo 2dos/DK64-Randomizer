@@ -289,7 +289,7 @@ int canPlayJetpac(void) {
 	 * @return Amount of medals the player has. Set to 0 if you have the Jetpac Reward
 	 */
 	if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN, FLAGTYPE_PERMANENT)) {
-		return 0;
+		return -1;
 	} else {
 		return getItemCount_new(REQITEM_MEDAL, -1, -1);
 	}

@@ -609,7 +609,7 @@ hint_region_list = [
     HintRegion("Llama Temple", "AztecLlama"),
     HintRegion("Various Aztec Tunnels", "AztecTunnels"),
     # Factory
-    HintRegion("Frantic Factory Start", "FactoryStart"),
+    HintRegion("Frantic Factory Foyer", "FactoryStart"),
     HintRegion("Testing Area", "FactoryTesting"),
     HintRegion("R&D Area", "FactoryResearch"),
     HintRegion("Storage & Arcade", "FactoryStorage"),
@@ -637,6 +637,7 @@ hint_region_list = [
     # Other
     HintRegion("Hideout Helm", "OtherHelm"),
     HintRegion("Troff n Scoff", "OtherTnS"),
+    HintRegion("Snide HQ", "OtherSnide"),
     HintRegion("This should not be hinted", "Error"),
 ]
 

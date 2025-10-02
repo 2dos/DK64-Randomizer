@@ -44,7 +44,7 @@ from randomizer.Patching.BananaPortRando import randomize_bananaport, move_banan
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.CoinPlacer import randomize_coins
 from randomizer.Patching.Cosmetics.TextRando import writeBootMessages
-from randomizer.Patching.Cosmetics.Puzzles import updateMillLeverTexture, updateCryptLeverTexture, updateDiddyDoors, updateHelmFaces
+from randomizer.Patching.Cosmetics.Puzzles import updateMillLeverTexture, updateCryptLeverTexture, updateDiddyDoors, updateHelmFaces, updateSnidePanel
 from randomizer.Patching.CosmeticColors import (
     applyHelmDoorCosmetics,
     applyKongModelSwaps,
@@ -221,6 +221,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.race_coin_rando, 0x94),  # Race Coin Location Rando
         BooleanProperties(spoiler.settings.disable_racing_patches, 0x91),  # Disable Racing Patches
         BooleanProperties(spoiler.settings.shops_dont_cost, 0x95),  # Shops don't cost
+        BooleanProperties(spoiler.settings.snide_reward_rando, 0x69),  # Snides has rewards
     ]
 
     for prop in boolean_props:
@@ -628,9 +629,8 @@ def patching_response(spoiler):
                     else:
                         spoiler.text_changes[file] = [data]
 
-    if spoiler.settings.rareware_gb_fairies != 20:
-        ROM_COPY.seek(sav + 0x36)
-        ROM_COPY.write(spoiler.settings.rareware_gb_fairies)
+    ROM_COPY.seek(sav + 0x36)
+    ROM_COPY.write(spoiler.settings.rareware_gb_fairies)
 
     ROM_COPY.seek(sav + 0x1EB)
     ROM_COPY.write(spoiler.settings.mermaid_gb_pearls)
@@ -736,6 +736,7 @@ def patching_response(spoiler):
         applyHelmDoorCosmetics(spoiler.settings, ROM_COPY)
         applyKongModelSwaps(spoiler.settings, ROM_COPY)
         updateHelmFaces(spoiler.settings, ROM_COPY)
+        updateSnidePanel(spoiler.settings, ROM_COPY)
 
         patchAssembly(ROM_COPY, spoiler)
         ApplyMirrorMode(spoiler.settings, ROM_COPY)

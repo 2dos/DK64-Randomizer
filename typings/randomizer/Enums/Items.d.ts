@@ -268,4 +268,9 @@ export enum Items {
     SpecialArchipelagoItem = 267,
     FoolsArchipelagoItem = 268,
     TrapArchipelagoItem = 269,
+    DonkeyBlueprint = 270,
+    DiddyBlueprint = 271,
+    LankyBlueprint = 272,
+    TinyBlueprint = 273,
+    ChunkyBlueprint = 274,
 }

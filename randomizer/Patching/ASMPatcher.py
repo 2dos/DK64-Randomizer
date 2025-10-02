@@ -29,6 +29,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Enums.Models import Model
 from randomizer.Patching.Patcher import ROM, LocalROM
@@ -1171,8 +1172,9 @@ def patchAssembly(ROM_COPY, spoiler):
     if settings.shuffle_items:
         for item in spoiler.item_assignment:
             if item.can_have_item and not item.is_shop and item.old_item not in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
-                if item.new_item is None or item.new_item == Types.NoItem:
-                    file_init_flags.append(item.old_flag)
+                if item.location < Locations.TurnInDKIslesDonkeyBlueprint or item.location > Locations.TurnInCreepyCastleChunkyBlueprint:
+                    if item.new_type is None or item.new_type == Types.NoItem:
+                        file_init_flags.append(item.old_flag)
     SCREEN_SHAKE_CAP = 7
     screen_shake_cap_patch = {
         0x8061F0C8: [
@@ -1731,14 +1733,9 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Jetpac Requirement
     written_requirement = settings.medal_requirement
-    if written_requirement != 15:
-        if written_requirement < 0:
-            written_requirement = 0
-        elif written_requirement > 40:
-            written_requirement = 40
-        writeValue(ROM_COPY, 0x80026513, Overlay.Menu, written_requirement, offset_dict, 1)  # Actual requirement
-        writeValue(ROM_COPY, 0x8002644B, Overlay.Menu, written_requirement, offset_dict, 1)  # Text variable
-        writeValue(ROM_COPY, 0x80027583, Overlay.Menu, written_requirement, offset_dict, 1)  # Text Variable
+    writeValue(ROM_COPY, 0x80026513, Overlay.Menu, written_requirement, offset_dict, 1)  # Actual requirement
+    writeValue(ROM_COPY, 0x8002644B, Overlay.Menu, written_requirement, offset_dict, 1)  # Text variable
+    writeValue(ROM_COPY, 0x80027583, Overlay.Menu, written_requirement, offset_dict, 1)  # Text Variable
 
     # Boss Key Mapping
     for i in range(7):
@@ -1748,9 +1745,8 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # BFI
     writeFunction(ROM_COPY, 0x80028080, Overlay.Critter, "displayBFIMoveText", offset_dict)  # BFI Text Display
-    if settings.rareware_gb_fairies > 0:
-        writeValue(ROM_COPY, 0x80027E70, Overlay.Critter, 0x2C410000 | settings.rareware_gb_fairies, offset_dict, 4)  # SLTIU $at, $v0, count
-        writeValue(ROM_COPY, 0x80027E74, Overlay.Critter, 0x1420, offset_dict)  # BNEZ $at, 0x6
+    writeValue(ROM_COPY, 0x80027E70, Overlay.Critter, 0x2C410000 | settings.rareware_gb_fairies, offset_dict, 4)  # SLTIU $at, $v0, count
+    writeValue(ROM_COPY, 0x80027E74, Overlay.Critter, 0x1420, offset_dict)  # BNEZ $at, 0x6
     if settings.win_condition_item == WinConditionComplex.dk_rap_items:
         writeValue(ROM_COPY, 0x8071280E, Overlay.Static, Maps.DKRap, offset_dict)  # End Sequence destination map
         writeValue(ROM_COPY, 0x80712816, Overlay.Static, 0, offset_dict)  # End Sequence cutscene
@@ -1935,8 +1931,10 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8063218C, Overlay.Static, 0x02202825, offset_dict, 4)  # Modify arg
         writeValue(ROM_COPY, 0x800248B0, Overlay.Menu, 0, offset_dict, 4)  # Remove flag set
         writeValue(ROM_COPY, 0x800248C0, Overlay.Menu, 0, offset_dict, 4)  # Remove increment
+        writeHook(ROM_COPY, 0x8002480C, Overlay.Menu, "HandleSnideEndReward_finish", offset_dict)
     else:
         writeValue(ROM_COPY, 0x80024054, Overlay.Menu, 0x24080001, offset_dict, 4)  # 1 GB Turn in
+        writeHook(ROM_COPY, 0x8002480C, Overlay.Menu, "HandleSnideEndReward", offset_dict)
     # Menu/Shop: Candy's
     writeValue(ROM_COPY, 0x80027678, Overlay.Menu, 0x1000, offset_dict)  # Patch Candy's Shop Glitch
     writeValue(ROM_COPY, 0x8002769C, Overlay.Menu, 0x1000, offset_dict)  # Patch Candy's Shop Glitch

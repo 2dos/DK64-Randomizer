@@ -136,11 +136,15 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 for _ in range(num_moves):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Blueprint:
-                if world.options.goal in {Goal.option_blueprints, Goal.option_krools_challenge}:
-                    ap_item.classification = ItemClassification.progression
-                else:
-                    ap_item.classification = ItemClassification.progression_deprioritized
-                item_table.append(copy.copy(ap_item))
+                # Need to remove the old blueprints
+                if item_id >= 270 and item_id <= 274:
+                    if world.options.goal in {Goal.option_blueprints, Goal.option_krools_challenge}:
+                        ap_item.classification = ItemClassification.progression
+                    else:
+                        ap_item.classification = ItemClassification.progression_deprioritized
+                    # Add 8 of each generic blueprint (8 per kong = 40 total)
+                    for _ in range(8):
+                        item_table.append(copy.copy(ap_item))
             case DK64RTypes.Fairy:
                 num_fairies = 20
                 if not world.options.goal == Goal.option_fairies:
@@ -195,9 +199,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.RainbowCoin:
                 num_coins = 16
-                if not (world.options.goal in {Goal.option_rainbow_coins, Goal.option_treasure_hurry} or world.options.enable_chaos_blockers):
+                if not (world.options.goal == Goal.option_rainbow_coins or world.options.enable_chaos_blockers):
                     ap_item.classification = ItemClassification.filler
-                elif world.options.goal in {Goal.option_rainbow_coins, Goal.option_treasure_hurry} and not world.options.enable_chaos_blockers:
+                elif world.options.goal == Goal.option_rainbow_coins and not world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.progression_skip_balancing
                 for _ in range(num_coins):
                     item_table.append(copy.copy(ap_item))

@@ -30,7 +30,7 @@ extern void genericStatUpdate(bonus_stat stat);
 extern int isModelTwoTiedFlag_new(maps map, setup_item * item);
 extern float getModelTwoScale(int obj_id);
 extern void getBPCountStats(int kong, unsigned char *has, unsigned char *turned);
-extern int getFirstEmptyBP(int kong);
+extern int getTurnedCount(int kong);
 extern int getFirstEmptySnideReward(int offset);
 
 extern void applyPaperMode(void);
@@ -408,7 +408,7 @@ extern Gfx* displaySongNameHandler(Gfx* dl);
 extern void resetDisplayedMusic(void);
 
 extern enum_bonus_skin getBarrelSkinIndex(int actor);
-extern enum_bonus_skin getShopSkinIndex(purchase_struct *data);
+extern enum_bonus_skin getShopSkinIndex(item_packet *data);
 extern void crankyCodeHandler(void);
 extern void funkyCodeHandler(void);
 extern void candyCodeHandler(void);

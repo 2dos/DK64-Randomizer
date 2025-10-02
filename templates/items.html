@@ -90,7 +90,7 @@
                         {% else %}
                             Pool {{ x }}
                         {% endif %}
-                        <div id="item_rando_check_hint_{{ x }}">&nbsp;</div>
+                        <div id="item_rando_check_hint_{{ x }}">&nbsp;<br>&nbsp;</div>
                     </p>
                     {% if x == 0 %}
                     <div class="text-start hide-if-ir-decouple">
@@ -569,8 +569,8 @@
             */
         }
         // Calculations
-        function checkDistribution(liquids, buckets, debug=false) {
-            if (debug) console.clear();
+        function checkDistribution(liquids, buckets, allow_splitting, debug=false) {
+            //if (debug) console.clear();
             if (debug) console.log("Checking distribution");
             const pool_count = 4;
             let pool_valid = [];
@@ -588,6 +588,17 @@
             let iter_count = 100;
             let ran_rules = [];
             while (true) {
+                if (debug) {
+                    console.log("Init -> Rule 1")
+                    console.log({
+                        remaining_liquids: JSON.parse(JSON.stringify(lq_copy)),
+                        remaining_buckets: JSON.parse(JSON.stringify(bk_copy)),
+                        verified: JSON.parse(JSON.stringify(pool_verified)),
+                        valid: JSON.parse(JSON.stringify(pool_valid)),
+                        liquid_sum: JSON.parse(JSON.stringify(pool_liquids)),
+                        bucket_sum: JSON.parse(JSON.stringify(pool_buckets)),
+                    })   
+                }
                 /*
                     Rule 1:
                     Any pools which only have checks or only have items should get filtered out
@@ -637,10 +648,6 @@
                                 if (filtered_version.length > 0) {
                                     if (debug) console.log(`Filtering out ${bk.pools.length - filtered_version.length} values from pool ${pl}`);
                                     bk.pools = filtered_version.slice();
-                                } else {
-                                    // This is the only instance of this item, thus making this pool invalid
-                                    pool_valid[pl] = false;
-                                    pool_verified[pl] = true;
                                 }
                             }
                         });
@@ -652,6 +659,17 @@
                     Any completely empty pools should add all of their items/checks in them
                     Any pools with greater amounts of items than checks gets flagged as invalid.
                 */
+                if (debug) {
+                    console.log("Rule 1 -> Rule 2")
+                    console.log({
+                        remaining_liquids: JSON.parse(JSON.stringify(lq_copy)),
+                        remaining_buckets: JSON.parse(JSON.stringify(bk_copy)),
+                        verified: JSON.parse(JSON.stringify(pool_verified)),
+                        valid: JSON.parse(JSON.stringify(pool_valid)),
+                        liquid_sum: JSON.parse(JSON.stringify(pool_liquids)),
+                        bucket_sum: JSON.parse(JSON.stringify(pool_buckets)),
+                    })   
+                }
                 let found_lq = [];
                 let found_bk = [];
                 for (let x = 0; x < pool_count; x++) {
@@ -681,9 +699,21 @@
                     Rule 3:
                     Any items/checks which are only part of 1 pool should get filtered out and applied to a guaranteed liq/buck total
                 */
+                if (debug) {
+                    console.log("Rule 2 -> Rule 3")
+                    console.log({
+                        remaining_liquids: JSON.parse(JSON.stringify(lq_copy)),
+                        remaining_buckets: JSON.parse(JSON.stringify(bk_copy)),
+                        verified: JSON.parse(JSON.stringify(pool_verified)),
+                        valid: JSON.parse(JSON.stringify(pool_valid)),
+                        liquid_sum: JSON.parse(JSON.stringify(pool_liquids)),
+                        bucket_sum: JSON.parse(JSON.stringify(pool_buckets)),
+                    })   
+                }
                 let temp_lq = [];
                 lq_copy.forEach(lq => {
                     if (lq.pools.length == 1) {
+                        if (debug) console.log(`Eliminate Liquid ${JSON.stringify(lq)}`);
                         pool_liquids[lq.pools[0]] += lq.size;
                     } else {
                         temp_lq.push(lq);
@@ -693,76 +723,126 @@
                 let temp_bk = [];
                 bk_copy.forEach(bk => {
                     if (bk.pools.length == 1) {
+                        if (debug) console.log(`Eliminate Bucket ${JSON.stringify(bk)}`);
                         pool_buckets[bk.pools[0]] += bk.size;
                     } else {
                         temp_bk.push(bk);
                     } 
                 });
-                bk_copy = temp_bk.slice();
-                /*
-                    Rule 4:
-                    For all remaining buckets, check the pools which need the checks the most
-                */
-                let bucket_deficit = pool_liquids.map((v, i) => v - pool_buckets[i]);
-                temp_bk = [];
-                bk_copy.forEach(bk => {
-                    let remove = false;
-                    let bucket_needed = null;
-                    let bucket_deficit_needed = null;
-                    bk.pools.forEach(pl => {
-                        if (bucket_deficit[pl] >= 0) {
-                            if (bucket_needed === null || bucket_deficit[pl] > bucket_deficit_needed) {
-                                bucket_needed = pl;
-                                bucket_deficit_needed = bucket_deficit[pl];
+                if (debug) {
+                    console.log("Rule 3 -> Rule 4")
+                    console.log({
+                        remaining_liquids: JSON.parse(JSON.stringify(lq_copy)),
+                        remaining_buckets: JSON.parse(JSON.stringify(bk_copy)),
+                        verified: JSON.parse(JSON.stringify(pool_verified)),
+                        valid: JSON.parse(JSON.stringify(pool_valid)),
+                        liquid_sum: JSON.parse(JSON.stringify(pool_liquids)),
+                        bucket_sum: JSON.parse(JSON.stringify(pool_buckets)),
+                    })   
+                }
+                if (allow_splitting) {
+                    bk_copy = temp_bk.slice();
+                    /*
+                        Rule 4:
+                        For all remaining buckets, check the pools which need the checks the most
+                    */
+                    let bucket_deficit = pool_liquids.map((v, i) => v - pool_buckets[i]);
+                    temp_bk = [];
+                    bk_copy.forEach(bk => {
+                        let remove = false;
+                        let bucket_needed = null;
+                        let bucket_deficit_needed = null;
+                        bk.pools.forEach(pl => {
+                            if (bucket_deficit[pl] >= 0) {
+                                if (bucket_needed === null || bucket_deficit[pl] > bucket_deficit_needed) {
+                                    bucket_needed = pl;
+                                    bucket_deficit_needed = bucket_deficit[pl];
+                                }
+                            }
+                        })
+                        if (bucket_needed !== null) {
+                            let bucket_capacity_supplied = Math.min(bucket_deficit_needed, bk.size);
+                            bk.size -= bucket_capacity_supplied;
+                            pool_buckets[bucket_needed] += bucket_capacity_supplied;
+                            bk.pools = bk.pools.filter(i => i !== bucket_needed);
+                            if (bk.size < 1) {
+                                remove = true;
                             }
                         }
-                    })
-                    if (bucket_needed !== null) {
-                        let bucket_capacity_supplied = Math.min(bucket_deficit_needed, bk.size);
-                        bk.size -= bucket_capacity_supplied;
-                        pool_buckets[bucket_needed] += bucket_capacity_supplied;
-                        bk.pools = bk.pools.filter(i => i !== bucket_needed);
-                        if (bk.size < 1) {
-                            remove = true;
+                        if (!remove) {
+                            temp_bk.push(bk);
                         }
-                    }
-                    if (!remove) {
-                        temp_bk.push(bk);
-                    }
-                })
-                bk_copy = temp_bk.slice();
-                /*
-                    Rule 5:
-                    For all remaining liquids, check the pools which have the smallest bucket gap
-                */
-                let bucket_surplus = pool_buckets.map((v, i) => v - pool_liquids[i]);
-                temp_lq = [];
-                lq_copy.forEach(lq => {
-                    let remove = false;
-                    let bucket_needed = null;
-                    let bucket_surplus_needed = null;
-                    lq.pools.forEach(pl => {
-                        if (bucket_surplus[pl] >= 0) {
-                            if (bucket_needed === null || bucket_surplus[pl] < bucket_surplus_needed) {
-                                bucket_needed = pl;
-                                bucket_surplus_needed = bucket_surplus[pl];
+                    })
+                    bk_copy = temp_bk.slice();
+                } else {
+                    /*
+                        Rule 4b:
+                        If splitting is not allowed, no buckets get added
+                    */
+                    bk_copy.forEach(bk => {
+                        bk.size = 0;
+                        bk.pools = [];
+                    })
+                    bk_copy = [];
+                }
+                if (debug) {
+                    console.log("Rule 4 -> Rule 5")
+                    console.log({
+                        remaining_liquids: JSON.parse(JSON.stringify(lq_copy)),
+                        remaining_buckets: JSON.parse(JSON.stringify(bk_copy)),
+                        verified: JSON.parse(JSON.stringify(pool_verified)),
+                        valid: JSON.parse(JSON.stringify(pool_valid)),
+                        liquid_sum: JSON.parse(JSON.stringify(pool_liquids)),
+                        bucket_sum: JSON.parse(JSON.stringify(pool_buckets)),
+                    })   
+                }
+                if (allow_splitting) {
+                    /*
+                        Rule 5:
+                        For all remaining liquids, check the pools which have the smallest bucket gap
+                    */
+                    let bucket_surplus = pool_buckets.map((v, i) => v - pool_liquids[i]);
+                    temp_lq = [];
+                    lq_copy.forEach(lq => {
+                        let remove = false;
+                        let bucket_needed = null;
+                        let bucket_surplus_needed = null;
+                        lq.pools.forEach(pl => {
+                            if (bucket_surplus[pl] >= 0) {
+                                if (bucket_needed === null || bucket_surplus[pl] < bucket_surplus_needed) {
+                                    bucket_needed = pl;
+                                    bucket_surplus_needed = bucket_surplus[pl];
+                                }
+                            }
+                        })
+                        if (bucket_needed !== null) {
+                            let liquid_supplied = Math.min(bucket_surplus_needed, lq.size);
+                            lq.size -= liquid_supplied;
+                            pool_liquids[bucket_needed] += liquid_supplied;
+                            lq.pools = lq.pools.filter(i => i !== bucket_needed);
+                            if (lq.size < 1) {
+                                remove = true;
                             }
                         }
-                    })
-                    if (bucket_needed !== null) {
-                        let liquid_supplied = Math.min(bucket_surplus_needed, lq.size);
-                        lq.size -= liquid_supplied;
-                        pool_liquids[bucket_needed] += liquid_supplied;
-                        lq.pools = lq.pools.filter(i => i !== bucket_needed);
-                        if (lq.size < 1) {
-                            remove = true;
+                        if (!remove) {
+                            temp_lq.push(lq);
                         }
-                    }
-                    if (!remove) {
-                        temp_lq.push(lq);
-                    }
-                })
-                lq_copy = temp_lq.slice();
+                    })
+                    lq_copy = temp_lq.slice();
+                } else {
+                    /*
+                        Rule 5b:
+                        If splitting is not allowed, add liquids to all buckets
+                    */
+                    lq_copy.forEach(lq => {
+                        lq.pools.forEach(pl => {
+                            pool_liquids[pl] += lq.size;
+                        });
+                        lq.size = 0;
+                        lq.pools = [];
+                    })
+                    lq_copy = [];
+                }
                 // Termination checks
                 let terminate = lq_copy.length == 0 && bk_copy.length == 0;
                 if (terminate) {
@@ -795,23 +875,36 @@
                     liquid_sum: pool_liquids,
                     bucket_sum: pool_buckets,
                 }
+                console.log(data)
             }
             return {
                 valid: pool_valid,
                 item_counts: pool_liquids,
                 check_counts: pool_buckets,
+                verified: pool_verified,
             }
         }
-
-        const result = checkDistribution(Object.values(inputs), Object.values(outputs), false);
+        
+        let first_inputs = JSON.parse(JSON.stringify(inputs));
+        let first_outputs = JSON.parse(JSON.stringify(outputs));
+        const result = checkDistribution(Object.values(first_inputs), Object.values(first_outputs), true);
+        let second_inputs = JSON.parse(JSON.stringify(inputs));
+        let second_outputs = JSON.parse(JSON.stringify(outputs));
+        const backupResult = checkDistribution(Object.values(second_inputs), Object.values(second_outputs), false);
         is_valid_item_spread = true;
         for (let x = 0; x < 4; x++) {
             const node = document.getElementById(`item_rando_check_hint_${x + 1}`);
-            node.innerText = `Items: ${result.item_counts[x]} | Checks: ${result.check_counts[x]}`;
+            node.innerText = `Items: Up to ${backupResult.item_counts[x]}\nChecks: At least ${backupResult.check_counts[x]}`;
+            node.title = `Optimal Placement: Items: ${result.item_counts[x]} | Checks: ${result.check_counts[x]}.`
             is_valid_item_spread &= result.valid[x];
             if (result.valid[x]) {
-                node.style.color = "green";
-                node.title = "Pool is valid";
+                if (!backupResult.valid[x]) {
+                    node.style.color = "orange";
+                    node.title = `Pool may have some trouble filling\n${node.title}`;
+                } else {
+                    node.style.color = "green";
+                    node.title = `Pool is valid\n${node.title}`;
+                }
             } else {
                 node.style.color = "red";
                 node.title = "Pool is invalid due to too many items/too few checks";

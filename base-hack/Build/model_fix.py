@@ -105,6 +105,12 @@ modifications = [
         "wipe": [[0x68, 0x6A], [0x78, 0x7A], [0x88, 0x8A], [0x98, 0x9A], [0xA8, 0xAA], [0xB8, 0xBA], [0xC8, 0xCA], [0xD8, 0xDA]],
         "add": [counter_adjustment_0, counter_adjustment_1, counter_adjustment_1, counter_adjustment_0, counter_adjustment_2, counter_adjustment_2, counter_adjustment_0, counter_adjustment_0],
     },
+    {
+        "model_index": 0xA3,
+        "model_file": "counter_spread.bin",
+        "wipe": [],
+        "add": [],
+    },
 ]
 
 kong_models = [0, 0, 0, 0, 0]

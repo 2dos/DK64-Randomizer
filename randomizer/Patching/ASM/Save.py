@@ -32,6 +32,11 @@ FileInfoSizes = [
     16,  # Junk Items
     16,  # Race Coins
     8,  # Special Moves
+    8,  # DK BP Turn-In
+    8,  # Diddy BP Turn-In
+    8,  # Lanky BP Turn-In
+    8,  # Tiny BP Turn-In
+    8,  # Chunky BP Turn-In
     16,  # AP Item Count
     22,  # IGT Japes
     22,  # IGT Aztec

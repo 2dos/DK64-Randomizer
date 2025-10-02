@@ -47,7 +47,7 @@ char* hint_region_names[] = {
 	"5 DOOR TEMPLE",
 	"LLAMA TEMPLE",
 	"VARIOUS AZTEC TUNNELS",
-	"FRANTIC FACTORY START",
+	"FRANTIC FACTORY FOYER",
 	"TESTING AREA",
 	"R&D AREA",
 	"STORAGE & ARCADE",
@@ -70,6 +70,7 @@ char* hint_region_names[] = {
 	"CASTLE UNDERGROUND",
 	"HIDEOUT HELM",
 	"TROFF N SCOFF",
+	"SNIDE HQ",
 	"THIS SHOULD NOT BE HINTED",
 };
 

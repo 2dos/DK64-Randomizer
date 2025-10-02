@@ -396,48 +396,9 @@ def ShockwaveTypeItems(settings):
 
 def Blueprints():
     """Return all blueprint items."""
-    blueprints = [
-        Items.DKIslesDonkeyBlueprint,
-        Items.DKIslesDiddyBlueprint,
-        Items.DKIslesLankyBlueprint,
-        Items.DKIslesTinyBlueprint,
-        Items.DKIslesChunkyBlueprint,
-        Items.JungleJapesDonkeyBlueprint,
-        Items.JungleJapesDiddyBlueprint,
-        Items.JungleJapesLankyBlueprint,
-        Items.JungleJapesTinyBlueprint,
-        Items.JungleJapesChunkyBlueprint,
-        Items.AngryAztecDonkeyBlueprint,
-        Items.AngryAztecDiddyBlueprint,
-        Items.AngryAztecLankyBlueprint,
-        Items.AngryAztecTinyBlueprint,
-        Items.AngryAztecChunkyBlueprint,
-        Items.FranticFactoryDonkeyBlueprint,
-        Items.FranticFactoryDiddyBlueprint,
-        Items.FranticFactoryLankyBlueprint,
-        Items.FranticFactoryTinyBlueprint,
-        Items.FranticFactoryChunkyBlueprint,
-        Items.GloomyGalleonDonkeyBlueprint,
-        Items.GloomyGalleonDiddyBlueprint,
-        Items.GloomyGalleonLankyBlueprint,
-        Items.GloomyGalleonTinyBlueprint,
-        Items.GloomyGalleonChunkyBlueprint,
-        Items.FungiForestDonkeyBlueprint,
-        Items.FungiForestDiddyBlueprint,
-        Items.FungiForestLankyBlueprint,
-        Items.FungiForestTinyBlueprint,
-        Items.FungiForestChunkyBlueprint,
-        Items.CrystalCavesDonkeyBlueprint,
-        Items.CrystalCavesDiddyBlueprint,
-        Items.CrystalCavesLankyBlueprint,
-        Items.CrystalCavesTinyBlueprint,
-        Items.CrystalCavesChunkyBlueprint,
-        Items.CreepyCastleDonkeyBlueprint,
-        Items.CreepyCastleDiddyBlueprint,
-        Items.CreepyCastleLankyBlueprint,
-        Items.CreepyCastleTinyBlueprint,
-        Items.CreepyCastleChunkyBlueprint,
-    ]
+    blueprints = []
+    for bp in (Items.DonkeyBlueprint, Items.DiddyBlueprint, Items.LankyBlueprint, Items.TinyBlueprint, Items.ChunkyBlueprint):
+        blueprints.extend(itertools.repeat(bp, 8))
     return blueprints
 
 

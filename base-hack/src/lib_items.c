@@ -389,7 +389,8 @@ actor_behaviour_def actor_defs[] = {
 	{.actor_type = 381, .model = 292, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 384, .model = 307, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
 	{.actor_type = 385, .model = 309, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
-	{.actor_type = 386, .model = 311, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}}
+	{.actor_type = 386, .model = 311, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}},
+	{.actor_type = 387, .model = 313, .code = 2154340224, .unk10 = 2154340332, .unk4 = {0, 0, 0, 0, 2, 38, 0, 0}}
 };
 unsigned char actor_master_types[] = {
 	1,
@@ -761,6 +762,7 @@ unsigned char actor_master_types[] = {
 	2,
 	2,
 	3,
+	2,
 	2,
 	2,
 	2,
@@ -1167,6 +1169,7 @@ short actor_interactions[] = {
 	8,
 	8,
 	8,
+	8,
 	8
 };
 health_damage_struct actor_health_damage[] = {
@@ -1554,6 +1557,7 @@ health_damage_struct actor_health_damage[] = {
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 1, .damage_applied = 0},
+	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1}
@@ -1945,6 +1949,7 @@ collision_data_struct actor_collisions[] = {
 	{.collision_info = 2155135020, .unk_4 = 1},
 	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0}
 };
 void* actor_functions[] = {
@@ -2334,7 +2339,8 @@ void* actor_functions[] = {
 	&slipPeelCode,
 	&GoldenBananaCode,
 	&GoldenBananaCode,
-	&FakeGBCode
+	&FakeGBCode,
+	&newCounterCode
 };
 short* actor_extra_data_sizes[] = {
 	2155141956,
@@ -2723,7 +2729,8 @@ short* actor_extra_data_sizes[] = {
 	2155143028,
 	2155142172,
 	2155142172,
-	2155142172
+	2155142172,
+	2155142276
 };
 GBDictItem new_flag_mapping[] = {
 	{.map = 37, .unk_01 = 0, .model2_id = 1, .flag_index = 3, .intended_kong_actor = 2, .unk_07 = 0},

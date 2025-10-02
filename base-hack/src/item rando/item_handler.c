@@ -51,7 +51,7 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
             giveGB();
             break;
         case REQITEM_BLUEPRINT:
-            current_item_data.bp_bitfield[kong] |= (1 << level);
+            current_item_data.bp_count[kong]++;
             hh_item = HHITEM_BLUEPRINT;
             break;
         case REQITEM_FAIRY:
@@ -228,8 +228,6 @@ int getItemCount_new(requirement_item item, int level, int kong) {
                 }
             }
             return count;
-        case REQITEM_BLUEPRINT:
-            bitfield_series = &current_item_data.bp_bitfield;
         case REQITEM_HINT:
             if (!bitfield_series) {
                 bitfield_series = &current_item_data.hint_bitfield;
@@ -261,6 +259,13 @@ int getItemCount_new(requirement_item item, int level, int kong) {
                 return count;
             }
             break;
+        case REQITEM_BLUEPRINT:
+            for (int i = 0; i < 5; i++) {
+                if ((kong == i) || (kong == -1)) {
+                    count += current_item_data.bp_count[i];
+                }
+            }
+            return count;
         case REQITEM_FAIRY:
             return current_item_data.fairies;
         case REQITEM_CROWN:
@@ -418,6 +423,11 @@ static unsigned char FileInfoData[] = {
     16, // Junk Items
     16, // Race Coins
     8, // Special Moves
+    8, // DK BP Turn-In
+    8, // Diddy BP Turn-In
+    8, // Lanky BP Turn-In
+    8, // Tiny BP Turn-In
+    8, // Chunky BP Turn-In
     16, // AP Item Count
     22, // IGT Japes
     22, // IGT Aztec
@@ -461,7 +471,8 @@ void initItemRandoPointer(void) {
 void readItemsFromFile(void) {
     wipeTurnedInArray();
     for (int i = 0; i < 5; i++) {
-        current_item_data.bp_bitfield[i] = ReadFile(DATA_DKBP + i, 0, 0, FileIndex);
+        current_item_data.bp_count[i] = ReadFile(DATA_DKBP + i, 0, 0, FileIndex);
+        current_item_data.turned_in_bp_count[i] = ReadFile(DATA_DKBPTURNIN + i, 0, 0, FileIndex);
         current_item_data.hint_bitfield[i] = ReadFile(DATA_DKHINTS + i, 0, 0, FileIndex);
     }
     current_item_data.key_bitfield = ReadFile(DATA_KEYS, 0, 0, FileIndex);
@@ -483,7 +494,8 @@ void readItemsFromFile(void) {
 
 void saveItemsToFile(void) {
     for (int i = 0; i < 5; i++) {
-        SaveToFile(DATA_DKBP + i, 0, 0, FileIndex, current_item_data.bp_bitfield[i]);
+        SaveToFile(DATA_DKBP + i, 0, 0, FileIndex, current_item_data.bp_count[i]);
+        SaveToFile(DATA_DKBPTURNIN + i, 0, 0, FileIndex, current_item_data.turned_in_bp_count[i]);
         SaveToFile(DATA_DKHINTS + i, 0, 0, FileIndex, current_item_data.hint_bitfield[i]);
     }
     SaveToFile(DATA_KEYS, 0, 0, FileIndex, current_item_data.key_bitfield);

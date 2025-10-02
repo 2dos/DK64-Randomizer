@@ -1419,6 +1419,7 @@ colorblind_changes = [
     [0x15A3, 0x15AA],  # Feather
     [0x12E5, 0x12E5],  # Pineapple
     [0x14A7, 0x14B5],  # Pineapple
+    [0xB85, 0xB85],  # Snide HQ Sign
 ]
 
 palette_files = [
@@ -1661,6 +1662,7 @@ model_changes = [
     ModelChange(0x135, "fools_archi_om1.bin"),
     ModelChange(0x136, "shrink_trap_archi.bin"),
     ModelChange(0x137, "trap_archi_om1.bin"),
+    ModelChange(0x138, "counter_spread.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 

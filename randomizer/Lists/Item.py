@@ -250,6 +250,12 @@ ItemList = {
     Items.Funky: Item("Funky", True, Types.Funky, Kongs.any),
     Items.Candy: Item("Candy", True, Types.Candy, Kongs.any),
     Items.Snide: Item("Snide", True, Types.Snide, Kongs.any),
+    Items.DonkeyBlueprint: Item("Donkey Blueprint", False, Types.Blueprint, Kongs.donkey),
+    Items.DiddyBlueprint: Item("Diddy Blueprint", False, Types.Blueprint, Kongs.diddy),
+    Items.LankyBlueprint: Item("Lanky Blueprint", False, Types.Blueprint, Kongs.lanky),
+    Items.TinyBlueprint: Item("Tiny Blueprint", False, Types.Blueprint, Kongs.tiny),
+    Items.ChunkyBlueprint: Item("Chunky Blueprint", False, Types.Blueprint, Kongs.chunky),
+    # Blueprints for exact levels (deprecated)
     Items.DKIslesDonkeyBlueprint: Item("DK Isles Donkey Blueprint", False, Types.Blueprint, Kongs.donkey),
     Items.DKIslesDiddyBlueprint: Item("DK Isles Diddy Blueprint", False, Types.Blueprint, Kongs.diddy),
     Items.DKIslesLankyBlueprint: Item("DK Isles Lanky Blueprint", False, Types.Blueprint, Kongs.lanky),
@@ -290,6 +296,7 @@ ItemList = {
     Items.CreepyCastleLankyBlueprint: Item("Creepy Castle Lanky Blueprint", False, Types.Blueprint, Kongs.lanky),
     Items.CreepyCastleTinyBlueprint: Item("Creepy Castle Tiny Blueprint", False, Types.Blueprint, Kongs.tiny),
     Items.CreepyCastleChunkyBlueprint: Item("Creepy Castle Chunky Blueprint", False, Types.Blueprint, Kongs.chunky),
+    # Hints
     Items.JapesDonkeyHint: Item("Japes Donkey Hint", False, Types.Hint, Kongs.donkey, [Levels.JungleJapes]),
     Items.JapesDiddyHint: Item("Japes Diddy Hint", False, Types.Hint, Kongs.diddy, [Levels.JungleJapes]),
     Items.JapesLankyHint: Item("Japes Lanky Hint", False, Types.Hint, Kongs.lanky, [Levels.JungleJapes]),

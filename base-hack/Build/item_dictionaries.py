@@ -2,7 +2,7 @@
 
 import json
 from enum import IntEnum, auto
-from BuildEnums import Kong, Song, Maps
+from BuildEnums import Kong, Song, Maps, CustomActors
 
 
 class CollectableTypes(IntEnum):
@@ -41,53 +41,6 @@ class EnemyDropDef:
         self.dropped_object = dropped_object
         self.drop_music = drop_music
         self.drop_count = drop_count
-
-
-class CustomActors(IntEnum):
-    """Custom Actors Enum."""
-
-    NintendoCoin = 345
-    RarewareCoin = auto()
-    Null = auto()
-    PotionDK = auto()
-    PotionDiddy = auto()
-    PotionLanky = auto()
-    PotionTiny = auto()
-    PotionChunky = auto()
-    PotionAny = auto()
-    KongDK = auto()
-    KongDiddy = auto()
-    KongLanky = auto()
-    KongTiny = auto()
-    KongChunky = auto()
-    KongDisco = auto()
-    KongKrusha = auto()
-    Bean = auto()
-    Pearl = auto()
-    Fairy = auto()
-    IceTrapGB = auto()
-    IceTrapBean = auto()
-    IceTrapKey = auto()
-    Medal = auto()
-    JetpacItemOverlay = auto()
-    CrankyItem = auto()
-    FunkyItem = auto()
-    CandyItem = auto()
-    SnideItem = auto()
-    ZingerFlamethrower = auto()
-    Scarab = auto()
-    HintItemDK = auto()
-    KopDummy = auto()
-    HintItemDiddy = auto()
-    HintItemLanky = auto()
-    HintItemTiny = auto()
-    HintItemChunky = auto()
-    ArchipelagoItem = auto()
-    IceTrapFairy = auto()
-    SlipPeel = auto()
-    SpecialArchipelagoItem = auto()
-    FoolsArchipelagoItem = auto()
-    TrapArchipelagoItem = auto()
 
 
 POTIONS = (
@@ -630,6 +583,13 @@ with open("src/lib_items.c", "w") as fh:
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # AP Item
+            {
+                "actor_type": CustomActors.SpreadCounter,
+                "model": 0x139,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # AP Item
         ]
     )
     default_values = {
@@ -673,6 +633,7 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, CustomActors.IceTrapBean, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.IceTrapKey, "&FakeKeyCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.IceTrapFairy, "&FakeFairyCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.SpreadCounter, "&newCounterCode", 2, 0, 1, 8, 70)
 
     actor_data = initActor(actor_data, CustomActors.Bean, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.Pearl, "&GoldenBananaCode", 2, 0, 1, 8, 45)

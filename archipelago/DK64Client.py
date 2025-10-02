@@ -346,23 +346,24 @@ class DK64Client:
         field = count_data.get("field")
         helm_hurry_item_type = None
 
-        if field == "bp_bitfield":
-            # Blueprint bitfield: 5 bytes starting at offset 0x000
-            if "kong" in count_data and "level" in count_data:
+        if field == "bp_count":
+            if "kong" in count_data:
                 kong = count_data.get("kong", 0)
-                level = count_data.get("level", 0)
+                # Validate ranges
+                if kong < 0 or kong > 4:
+                    logger.warning(f"Invalid Kong: Kong={kong}")
+                    return
                 byte_index = kong
-                bit_index = level
             else:
                 byte_index = count_data.get("byte", 0)
-                bit_index = count_data.get("bit", 0)
 
             if byte_index < 5:
                 address = count_struct_address + 0x000 + byte_index
                 current_value = self.n64_client.read_u8(address)
-                new_value = current_value | (1 << bit_index)
-                self.n64_client.write_u8(address, new_value)
+                self.n64_client.write_u8(address, current_value + 1)
                 helm_hurry_item_type = 0x04A  # TRANSFER_ITEM_HELM_HURRY_BLUEPRINT
+            else:
+                logger.warning(f"Invalid hint bitfield position: byte={byte_index}")
 
         elif field == "hint_bitfield":
             # Hint bitfield: 5 bytes starting at offset 0x005

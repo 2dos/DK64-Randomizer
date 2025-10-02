@@ -1280,7 +1280,7 @@ class Settings:
 
         # Helm Doors
         helmdoor_items = {
-            HelmDoorItem.req_gb: HelmDoorInfo(201),
+            HelmDoorItem.req_gb: HelmDoorInfo(self.total_gbs),
             HelmDoorItem.req_bp: HelmDoorInfo(
                 40,
                 HelmDoorRandomInfo(20, 30, 0.1),
@@ -1293,25 +1293,25 @@ class Settings:
             ),
             HelmDoorItem.req_key: HelmDoorInfo(8),
             HelmDoorItem.req_medal: HelmDoorInfo(
-                40,
+                self.total_medals,
                 HelmDoorRandomInfo(20, 30, 0.2),
                 HelmDoorRandomInfo(10, 20, 0.21),
                 HelmDoorRandomInfo(4, 10, 0.25),
             ),
             HelmDoorItem.req_crown: HelmDoorInfo(
-                10,
+                self.total_crowns,
                 HelmDoorRandomInfo(5, 7, 0.14),
                 HelmDoorRandomInfo(3, 5, 0.14),
                 HelmDoorRandomInfo(1, 3, 0.1),
             ),
             HelmDoorItem.req_fairy: HelmDoorInfo(
-                18,
+                self.total_fairies,
                 HelmDoorRandomInfo(9, 14, 0.18),
                 HelmDoorRandomInfo(5, 9, 0.18),
                 HelmDoorRandomInfo(2, 5, 0.18),
             ),  # Remove two fairies since you can't get the final two fairies glitchless if on the crown door
             HelmDoorItem.req_rainbowcoin: HelmDoorInfo(
-                16,
+                self.total_rainbow_coins,
                 HelmDoorRandomInfo(8, 12, 0.18),
                 HelmDoorRandomInfo(4, 8, 0.18),
                 HelmDoorRandomInfo(2, 4, 0.18),
@@ -1322,7 +1322,7 @@ class Settings:
                 HelmDoorRandomInfo(1, 1, 0.01),
             ),
             HelmDoorItem.req_pearl: HelmDoorInfo(
-                5,
+                self.total_pearls,
                 HelmDoorRandomInfo(2, 4, 0.1),
                 HelmDoorRandomInfo(1, 2, 0.08),
                 HelmDoorRandomInfo(1, 1, 0.04),
@@ -1841,7 +1841,7 @@ class Settings:
             ),
             WinConditionComplex.get_key8: HelmDoorInfo(1),
             WinConditionComplex.req_gb: HelmDoorInfo(
-                201,
+                self.total_gbs,
                 HelmDoorRandomInfo(int(0.4 * self.total_gbs), int(0.75 * self.total_gbs), 0.1),
                 HelmDoorRandomInfo(int(0.3 * self.total_gbs), int(0.4 * self.total_gbs), 0.1),
                 HelmDoorRandomInfo(int(0.2 * self.total_gbs), int(0.3 * self.total_gbs), 0.15),
@@ -1863,25 +1863,25 @@ class Settings:
                 HelmDoorRandomInfo(7, 8, 0.1),
             ),
             WinConditionComplex.req_medal: HelmDoorInfo(
-                40,
+                self.total_medals,
                 HelmDoorRandomInfo(int(0.625 * self.total_medals), int(0.875 * self.total_medals), 0.09),
                 HelmDoorRandomInfo(int(0.5 * self.total_medals), int(0.625 * self.total_medals), 0.1),
                 HelmDoorRandomInfo(int(0.125 * self.total_medals), int(0.5 * self.total_medals), 0.1),
             ),
             WinConditionComplex.req_crown: HelmDoorInfo(
-                10,
+                self.total_crowns,
                 HelmDoorRandomInfo(int(0.7 * self.total_crowns), int(0.9 * self.total_crowns), 0.1),
                 HelmDoorRandomInfo(int(0.4 * self.total_crowns), int(0.7 * self.total_crowns), 0.1),
                 HelmDoorRandomInfo(int(0.2 * self.total_crowns), int(0.4 * self.total_crowns), 0.06),
             ),
             WinConditionComplex.req_fairy: HelmDoorInfo(
-                20,
+                self.total_fairies,
                 HelmDoorRandomInfo(int(0.6 * self.total_fairies), int(0.9 * self.total_fairies), 0.1),
                 HelmDoorRandomInfo(int(0.4 * self.total_fairies), int(0.6 * self.total_fairies), 0.12),
                 HelmDoorRandomInfo(int(0.05 * self.total_fairies), int(0.4 * self.total_fairies), 0.18),
             ),
             WinConditionComplex.req_rainbowcoin: HelmDoorInfo(
-                16,
+                self.total_rainbow_coins,
                 HelmDoorRandomInfo(int(0.625 * self.total_rainbow_coins), int(1.0 * self.total_rainbow_coins), 0.11),
                 HelmDoorRandomInfo(int(0.375 * self.total_rainbow_coins), int(0.625 * self.total_rainbow_coins), 0.14),
                 HelmDoorRandomInfo(int(0.1875 * self.total_rainbow_coins), int(0.375 * self.total_rainbow_coins), 0.18),
@@ -1892,7 +1892,7 @@ class Settings:
                 HelmDoorRandomInfo(1, 1, 0.01),
             ),
             WinConditionComplex.req_pearl: HelmDoorInfo(
-                5,
+                self.total_pearls,
                 HelmDoorRandomInfo(int(0.8 * self.total_pearls), int(1.0 * self.total_pearls), 0.05),
                 HelmDoorRandomInfo(int(0.6 * self.total_pearls), int(0.8 * self.total_pearls), 0.1),
                 HelmDoorRandomInfo(int(0.2 * self.total_pearls), int(0.6 * self.total_pearls), 0.13),
@@ -2131,9 +2131,15 @@ class Settings:
             # Range roughly from 4 to 15, average around 10
             self.medal_requirement = round(self.random.normalvariate(10, 1.5))
         self.original_medal_requirement = self.medal_requirement
-        self.logical_medal_requirement = min(self.total_medals, max(self.medal_requirement + 1, math.floor(self.medal_requirement * 1.2)))
+        if self.original_medal_requirement == 0:
+            self.logical_medal_requirement = 0
+        else:
+            self.logical_medal_requirement = min(self.total_medals, max(self.medal_requirement + 1, math.floor(self.medal_requirement * 1.2)))
         self.original_fairy_requirement = self.rareware_gb_fairies
-        self.logical_fairy_requirement = min(self.total_fairies, max(self.rareware_gb_fairies + 1, int(self.rareware_gb_fairies * 1.2)))
+        if self.original_fairy_requirement == 0:
+            self.logical_fairy_requirement = 0
+        else:
+            self.logical_fairy_requirement = min(self.total_fairies, max(self.rareware_gb_fairies + 1, int(self.rareware_gb_fairies * 1.2)))
 
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando, self)
@@ -2526,7 +2532,7 @@ class Settings:
                 self.valid_locations[Types.Blueprint] = {}
                 for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
                     if self.free_trade_setting:
-                        self.valid_locations[Types.Blueprint][kong] = blueprintLocations.copy()
+                        self.valid_locations[Types.Blueprint][kong] = [location for location in blueprintLocations if spoiler.LocationList[location].kong in (kong, Kongs.any)]
                     else:
                         self.valid_locations[Types.Blueprint][kong] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == kong]
             banana_types = [
@@ -2566,10 +2572,9 @@ class Settings:
                     self.valid_locations[item] = shuffledNonMoveLocations.copy()
             if Types.Hint in self.shuffled_location_types:
                 self.valid_locations[Types.Hint] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
-            if Types.Medal in self.shuffled_location_types:
-                self.valid_locations[Types.Medal] = fairyBannedLocations.copy()
-            if Types.FillerMedal in self.shuffled_location_types:
-                self.valid_locations[Types.FillerMedal] = fairyBannedLocations.copy()
+            for item in (Types.Medal, Types.FillerMedal):
+                if item in self.shuffled_location_types:
+                    self.valid_locations[item] = fairyBannedLocations.copy()
             shop_owner_items = (Types.Cranky, Types.Candy, Types.Funky)
             for item in shop_owner_items:
                 if item in self.shuffled_location_types:
@@ -2608,6 +2613,47 @@ class Settings:
                     # Messes with the ice trap audio
                     Locations.HelmBananaFairy1,
                     Locations.HelmBananaFairy2,
+                    # Snide Rewards
+                    Locations.TurnInDKIslesDonkeyBlueprint,
+                    Locations.TurnInDKIslesDiddyBlueprint,
+                    Locations.TurnInDKIslesLankyBlueprint,
+                    Locations.TurnInDKIslesTinyBlueprint,
+                    Locations.TurnInDKIslesChunkyBlueprint,
+                    Locations.TurnInJungleJapesDonkeyBlueprint,
+                    Locations.TurnInJungleJapesDiddyBlueprint,
+                    Locations.TurnInJungleJapesLankyBlueprint,
+                    Locations.TurnInJungleJapesTinyBlueprint,
+                    Locations.TurnInJungleJapesChunkyBlueprint,
+                    Locations.TurnInAngryAztecDonkeyBlueprint,
+                    Locations.TurnInAngryAztecDiddyBlueprint,
+                    Locations.TurnInAngryAztecLankyBlueprint,
+                    Locations.TurnInAngryAztecTinyBlueprint,
+                    Locations.TurnInAngryAztecChunkyBlueprint,
+                    Locations.TurnInFranticFactoryDonkeyBlueprint,
+                    Locations.TurnInFranticFactoryDiddyBlueprint,
+                    Locations.TurnInFranticFactoryLankyBlueprint,
+                    Locations.TurnInFranticFactoryTinyBlueprint,
+                    Locations.TurnInFranticFactoryChunkyBlueprint,
+                    Locations.TurnInGloomyGalleonDonkeyBlueprint,
+                    Locations.TurnInGloomyGalleonDiddyBlueprint,
+                    Locations.TurnInGloomyGalleonLankyBlueprint,
+                    Locations.TurnInGloomyGalleonTinyBlueprint,
+                    Locations.TurnInGloomyGalleonChunkyBlueprint,
+                    Locations.TurnInFungiForestDonkeyBlueprint,
+                    Locations.TurnInFungiForestDiddyBlueprint,
+                    Locations.TurnInFungiForestLankyBlueprint,
+                    Locations.TurnInFungiForestTinyBlueprint,
+                    Locations.TurnInFungiForestChunkyBlueprint,
+                    Locations.TurnInCrystalCavesDonkeyBlueprint,
+                    Locations.TurnInCrystalCavesDiddyBlueprint,
+                    Locations.TurnInCrystalCavesLankyBlueprint,
+                    Locations.TurnInCrystalCavesTinyBlueprint,
+                    Locations.TurnInCrystalCavesChunkyBlueprint,
+                    Locations.TurnInCreepyCastleDonkeyBlueprint,
+                    Locations.TurnInCreepyCastleDiddyBlueprint,
+                    Locations.TurnInCreepyCastleLankyBlueprint,
+                    Locations.TurnInCreepyCastleTinyBlueprint,
+                    Locations.TurnInCreepyCastleChunkyBlueprint,
                 )
                 self.valid_locations[Types.FakeItem] = [x for x in shuffledNonMoveLocations if not self.isBadIceTrapLocation(spoiler.LocationList[x]) and x not in bad_fake_locations]
             if Types.JunkItem in self.shuffled_location_types:
@@ -3004,9 +3050,6 @@ class Settings:
                                 filtered_version = [x for x in bk["pools"] if x not in pools_to_filter]
                                 if len(filtered_version) > 0:
                                     bk["pools"] = filtered_version.copy()
-                                else:
-                                    pool_valid[pl] = False
-                                    pool_verified[pl] = True
                     ran_rules.append(1)
                 # Rule 2:
                 # Any completely empty pools should add all of their items/checks in them

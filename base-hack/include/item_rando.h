@@ -50,7 +50,7 @@ typedef struct MoveSpecialStruct {
 } MoveSpecialStruct;
 
 typedef struct CountStruct {
-    /* 0x000 */ unsigned char bp_bitfield[5];
+    /* 0x000 */ unsigned char bp_count[5];
     /* 0x005 */ unsigned char hint_bitfield[5];
     /* 0x00A */ unsigned char key_bitfield;
     /* 0x00B */ unsigned char kong_bitfield;
@@ -64,7 +64,7 @@ typedef struct CountStruct {
     /* 0x014 */ short junk_items;
     /* 0x016 */ short race_coins;
     /* 0x018 */ MoveSpecialStruct flag_moves;
-    /* 0x019 */ unsigned char snide_rewards_given;
+    /* 0x019 */ unsigned char turned_in_bp_count[5];
 } CountStruct;
 
 typedef struct StartingItemsKongwiseStruct {
@@ -75,11 +75,11 @@ typedef struct StartingItemsKongwiseStruct {
 
 typedef struct StartingItemsStruct {
 	/* 0x000 */ CountStruct others;
-	/* 0x01A */ StartingItemsKongwiseStruct kongs[5];
-	/* 0x029 */ unsigned char melons;
-	/* 0x02A */ unsigned char slam;
-	/* 0x02B */ unsigned char belt;
-    /* 0x02C */ unsigned char climbing;
+	/* 0x01E */ StartingItemsKongwiseStruct kongs[5];
+	/* 0x02D */ unsigned char melons;
+	/* 0x02E */ unsigned char slam;
+	/* 0x02F */ unsigned char belt;
+    /* 0x030 */ unsigned char climbing;
 } StartingItemsStruct;
 
 typedef struct MoveSpecialBijectionStruct {

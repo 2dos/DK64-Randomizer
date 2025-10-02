@@ -632,11 +632,11 @@ enum_bonus_skin getBarrelSkinIndex(int actor) {
     return SKIN_GB;
 }
 
-enum_bonus_skin getShopSkinIndex(purchase_struct *data) {
+enum_bonus_skin getShopSkinIndex(item_packet *data) {
     for (int i = 0; i < (sizeof(bonus_skins) / sizeof(barrel_skin_tie)); i++) {
-        if (bonus_skins[i].reqitem == data->item.item_type) {
-            if ((bonus_skins[i].level == -1) || (bonus_skins[i].level == data->item.level)) {
-                if ((bonus_skins[i].kong == -1) || (bonus_skins[i].kong == data->item.kong)) {
+        if (bonus_skins[i].reqitem == data->item_type) {
+            if ((bonus_skins[i].level == -1) || (bonus_skins[i].level == data->level)) {
+                if ((bonus_skins[i].kong == -1) || (bonus_skins[i].kong == data->kong)) {
                     return bonus_skins[i].skin;
                 }
             }

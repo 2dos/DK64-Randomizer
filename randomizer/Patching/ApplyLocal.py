@@ -199,7 +199,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ]
             holiday_colors = {
                 Holidays.Anniv25: [0xFF, 0xFF, 0x00],
-                Holidays.Halloween: [0xFF, 0x00, 0x00],
+                Holidays.Halloween: [0x80, 0x20, 0x20],
                 Holidays.Christmas: [0x00, 0xFF, 0xFF],
             }
             if holiday in holiday_colors:
