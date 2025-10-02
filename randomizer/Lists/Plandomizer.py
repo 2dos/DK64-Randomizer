@@ -160,7 +160,7 @@ PlandomizerPanels = {
         "name": "Snide HQ",
         "locations": {
             "All Kongs": [],
-        }
+        },
     },
     "Switches": {
         "name": "Switches",
