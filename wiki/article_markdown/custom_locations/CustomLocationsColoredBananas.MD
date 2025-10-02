@@ -118,7 +118,7 @@
 | Torch near Diddy kasplat | 5 | `self.logic = lambda _: True` | 
 | Above upper big torch | 5 | `self.logic = lambda _: True` | 
 | Above lower big torch | 5 | `self.logic = lambda _: True` | 
-| Behind the Lanky slope bonus barrel | 5 | `self.logic = lambda _: True` | 
+| Behind the Lanky slope bonus barrel | 5 | `l.handstand` | 
 | Cranky area entrance sides | 10 | `self.logic = lambda _: True` | 
 | Flower near Rambi cage | 5 | `self.logic = lambda _: True` | 
 | Flower near Lanky hut | 5 | `self.logic = lambda _: True` | 
@@ -126,7 +126,7 @@
 | Flower near Diddy hut | 5 | `self.logic = lambda _: True` | 
 | Flower near Tiny hut | 5 | `self.logic = lambda _: True` | 
 | High against the Rambi door | 5 | `self.logic = lambda _: True` | 
-| Rambi lake Bouldertech | 5 | `l.ischunky and l.barrels` | 
+| Rambi lake Bouldertech | 5 | `l.chunky and l.barrels` | 
 | Rambi lake shore | 5 | `self.logic = lambda _: True` | 
 | Starting area lower (DK portal side) | Balloon | `self.logic = lambda _: True` | 
 | Starting area lower (gate side) | Balloon | `self.logic = lambda _: True` | 
@@ -360,7 +360,7 @@
 | Stairs to the baboon blast pad | 5 | `self.logic = lambda _: True` | 
 | Left of Llama temple stairs | 5 | `self.logic = lambda _: True` | 
 | Right of Llama temple stairs | 5 | `self.logic = lambda _: True` | 
-| Vases room central platform | 10 | `(l.pineapple and l.ischunky) or l.CanPhase()` | 
+| Vases room central platform | 10 | `(l.pineapple and l.chunky) or l.CanPhase()` | 
 | Totem rocketbarrel liftoff !! | 10 | `l.jetpack` | 
 | Orbit around the sun | 15 | `l.jetpack` | 
 | Sun symbol above the vulture cage | 5 | `(l.climbing and l.can_use_vines) or (l.jetpack and l.isdiddy)` | 
@@ -690,8 +690,8 @@
 | Among the storage boxes | 10 | `self.logic = lambda _: True` | 
 | Between the storage shops | 5 | `self.logic = lambda _: True` | 
 | Between boxes near the storage shops | 10 | `self.logic = lambda _: True` | 
-| Dark room entrance | 5 | `l.ischunky and l.punch` | 
-| Box in a corner of dark room | 5 | `l.ischunky and l.punch` | 
+| Dark room entrance | 5 | `l.chunky and l.punch` | 
+| Box in a corner of dark room | 5 | `l.chunky and l.punch` | 
 | On the table around warp 5 | 10 | `self.logic = lambda _: True` | 
 | Lower step of Snide | 5 | `self.logic = lambda _: True` | 
 | Testing factory-map | 5 | `self.logic = lambda _: True` | 
@@ -708,7 +708,7 @@
 | Toy sales board in the lever room | 5 | `self.logic = lambda _: True` | 
 | On the R&D trombone pad | 5 | `self.logic = lambda _: True` | 
 | On the R&D guitar pad | 5 | `self.logic = lambda _: True` | 
-| On the R&D triangle pad | 5 | `l.ischunky and l.punch and l.climbing` | 
+| On the R&D triangle pad | 5 | `l.chunky and l.punch and l.climbing` | 
 | Power hut coconut switch | 5 | `self.logic = lambda _: True` | 
 | First room left corner | Balloon | `self.logic = lambda _: True` | 
 | First room right side | Balloon | `self.logic = lambda _: True` | 
@@ -1312,9 +1312,9 @@
 | On conveyor belt | 5 | `self.logic = lambda _: True` | 
 | On DK switch (Donkey) | 5 | `l.Slam` | 
 | In the nooks in the rafters | 10 | `self.logic = lambda _: True` | 
-| Keg Bouldertech above the entrance | 5 | `l.ischunky and l.barrels` | 
+| Keg Bouldertech above the entrance | 5 | `l.chunky and l.barrels` | 
 | On the pile of boxes | 5 | `self.logic = lambda _: True` | 
-| On the wooden wall | 5 | `l.ischunky and l.barrels` | 
+| On the wooden wall | 5 | `l.chunky and l.barrels` | 
 | Between the levers | 10 | `l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.CanPhase()` | 
 | Near the boxes | 5 | `self.logic = lambda _: True` | 
 | Middle of the room | Balloon | `self.logic = lambda _: True` | 

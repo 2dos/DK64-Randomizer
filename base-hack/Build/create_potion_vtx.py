@@ -1,3 +1,5 @@
+"""Generates (.vtx) files for potions"""
+
 from typing import BinaryIO
 
 kong_colors = {
@@ -23,7 +25,10 @@ POT_COLOR_STRENGTHS = (
 
 
 class Vtx:
+    """Represents a 3D vertex for potion model geometry."""
+
     def __init__(self, x: int, y: int, z: int, color_strength: int, alpha: int = 0xFF, forced_color: tuple = None):
+        """Initialize Potion Vertex."""
         self.x = x
         self.y = y
         self.z = z
@@ -32,6 +37,7 @@ class Vtx:
         self.forced_color = forced_color
 
     def writeVtx(self, fh: BinaryIO, color: tuple):
+        """Write vertex data to binary file."""
         output_color = None
         if self.forced_color is not None:
             output_color = self.forced_color

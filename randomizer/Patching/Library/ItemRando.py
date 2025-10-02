@@ -131,6 +131,7 @@ move_indexes = {
 
 
 def getHintKong(item: Items) -> int:
+    """Get the Kong index for a hint item."""
     for index, lst in enumerate(hint_indexes):
         if item in lst:
             return index
@@ -138,6 +139,7 @@ def getHintKong(item: Items) -> int:
 
 
 def getMoveKong(item: Items) -> int:
+    """Get the Kong enum for a move."""
     for kong, lst in move_indexes.items():
         if item in lst:
             return kong
