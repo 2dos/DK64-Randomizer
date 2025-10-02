@@ -2232,11 +2232,12 @@ ColoredBananaGroupList = [
         ],
     ),
     ColoredBananaGroup(
-        group=179, map_id=Maps.FungiForest, 
-        name="On the blue tunnel lip (mills side)", 
-        konglist=[Kongs.tiny], 
-        region=Regions.MillArea, 
-        logic=lambda l: l.twirl and l.climbing, 
+        group=179,
+        map_id=Maps.FungiForest,
+        name="On the blue tunnel lip (mills side)",
+        konglist=[Kongs.tiny],
+        region=Regions.MillArea,
+        logic=lambda l: l.twirl and l.climbing,
         locations=[[5, 1.0, 3589, 327, 3038]],
     ),
     ColoredBananaGroup(
