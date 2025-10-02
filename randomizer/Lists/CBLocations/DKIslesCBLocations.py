@@ -3162,7 +3162,7 @@ BalloonList = [
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.KremIsleBeyondLift,
-        points=[[2485, 1247, 3931], [2485, 1350, 3931], [2457, 1377, 3869], [2485, 1350, 3931], [2485, 1247, 3931]],
+        points=[[2485, 1247, 3931], [2485, 1350, 3931], [2457, 1377, 3869], [2485, 1350, 3931]],
     ),
     # Balloon(
     #     id=29,
@@ -3253,7 +3253,6 @@ BalloonList = [
             [257, 222, 598],
             [486, 166, 594],
             [651, 200, 600],
-            [675, 208, 368],
         ],
     ),
     Balloon(
@@ -3272,7 +3271,6 @@ BalloonList = [
             [759, 300, 625],
             [600, 200, 650],
             [491, 300, 645],
-            [400, 200, 700],
         ],
     ),
     Balloon(
