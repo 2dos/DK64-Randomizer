@@ -69,7 +69,12 @@ typedef enum regions {
 	/* 0x03A */ REGION_OTHERHELM, // Hideout Helm
 	/* 0x03B */ REGION_OTHERTNS, // Troff n Scoff
 	/* 0x03C */ REGION_OTHERSNIDE, // Snide HQ
-	/* 0x03D */ REGION_ERROR, // This should not be hinted
+	/* 0x03D */ REGION_OTHERSNIDEREWARDS1, // 1st to 8th Blueprint Rewards
+	/* 0x03E */ REGION_OTHERSNIDEREWARDS2, // 9th to 16th Blueprint Rewards
+	/* 0x03F */ REGION_OTHERSNIDEREWARDS3, // 17th to 24th Blueprint Rewards
+	/* 0x040 */ REGION_OTHERSNIDEREWARDS4, // 25th to 32nd Blueprint Rewards
+	/* 0x041 */ REGION_OTHERSNIDEREWARDS5, // 33rd to 40th Blueprint Rewards
+	/* 0x042 */ REGION_ERROR, // This should not be hinted
 } regions;
-extern char* hint_region_names[62];
+extern char* hint_region_names[67];
 extern FastTextStruct unknown_hints[5];
