@@ -697,7 +697,7 @@ def apply_starting_moves_settings(settings_dict: dict, options) -> None:
             # Ensure that the items in the start inventory are only keys, shops, shockwaves, training barrels, climbing items, or shop owners
             raise ValueError(f"Invalid item type for starting inventory: {item}. Starting inventory can only contain keys, shopkeepers, or moves.")
         elif options.shopowners_in_pool.value and item_obj.type in [Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
-            settings_dict["starting_moves_list_1"].append(item_obj.type)
+            settings_dict["starting_moves_list_1"].append(logic_item_name_to_id.get(item))
 
     settings_dict["starting_moves_list_count_1"] = len(settings_dict["starting_moves_list_1"])
 
