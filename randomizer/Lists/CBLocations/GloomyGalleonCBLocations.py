@@ -1856,6 +1856,7 @@ ColoredBananaGroupList = [
         name="Twirl from the upper planks",
         konglist=[Kongs.tiny],
         region=Regions.GalleonPastVines,
+        logic=lambda l: l.twirl,
         locations=[[1, 1.1, 3371, 1922, 2903], [1, 1.1, 3388, 1916, 2850], [1, 1.1, 3407, 1910, 2793], [1, 1.1, 3426, 1882, 2734], [1, 1.1, 3445, 1826, 2677]],
     ),
     ColoredBananaGroup(
