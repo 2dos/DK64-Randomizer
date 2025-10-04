@@ -237,49 +237,62 @@ LogicRegions = {
         TransitionFront(Regions.CrankyGeneric, lambda _: True),
     ]),
 
-    Regions.Snide: Region("Snide", HintRegion.Snide, Levels.Shops, False, None, [
+    Regions.Snide: Region("Snide", HintRegion.Snide, Levels.Snide, False, None, [], [], [
+        TransitionFront(Regions.SnideFirstGroup, lambda l: True),
+        TransitionFront(Regions.SnideSecondGroup, lambda l: True),
+        TransitionFront(Regions.SnideThirdGroup, lambda l: True),
+        TransitionFront(Regions.SnideFourthGroup, lambda l: True),
+        TransitionFront(Regions.SnideLastGroup, lambda l: True),
+    ]),
+
+    Regions.SnideFirstGroup: Region("Snide First Group", HintRegion.SnideFirstGroup, Levels.Snide, False, None, [
         LocationLogic(Locations.TurnInJungleJapesDonkeyBlueprint, lambda l: l.BlueprintsWithKong >= 1),
         LocationLogic(Locations.TurnInJungleJapesDiddyBlueprint, lambda l: l.BlueprintsWithKong >= 2),
         LocationLogic(Locations.TurnInJungleJapesLankyBlueprint, lambda l: l.BlueprintsWithKong >= 3),
         LocationLogic(Locations.TurnInJungleJapesTinyBlueprint, lambda l: l.BlueprintsWithKong >= 4),
         LocationLogic(Locations.TurnInJungleJapesChunkyBlueprint, lambda l: l.BlueprintsWithKong >= 5),
-
         LocationLogic(Locations.TurnInAngryAztecDonkeyBlueprint, lambda l: l.BlueprintsWithKong >= 6),
         LocationLogic(Locations.TurnInAngryAztecDiddyBlueprint, lambda l: l.BlueprintsWithKong >= 7),
         LocationLogic(Locations.TurnInAngryAztecLankyBlueprint, lambda l: l.BlueprintsWithKong >= 8),
+    ], [], []),
+
+    Regions.SnideSecondGroup: Region("Snide Second Group", HintRegion.SnideSecondGroup, Levels.Snide, False, None, [
         LocationLogic(Locations.TurnInAngryAztecTinyBlueprint, lambda l: l.BlueprintsWithKong >= 9),
         LocationLogic(Locations.TurnInAngryAztecChunkyBlueprint, lambda l: l.BlueprintsWithKong >= 10),
-
         LocationLogic(Locations.TurnInFranticFactoryDonkeyBlueprint, lambda l: l.BlueprintsWithKong >= 11),
         LocationLogic(Locations.TurnInFranticFactoryDiddyBlueprint, lambda l: l.BlueprintsWithKong >= 12),
         LocationLogic(Locations.TurnInFranticFactoryLankyBlueprint, lambda l: l.BlueprintsWithKong >= 13),
         LocationLogic(Locations.TurnInFranticFactoryTinyBlueprint, lambda l: l.BlueprintsWithKong >= 14),
         LocationLogic(Locations.TurnInFranticFactoryChunkyBlueprint, lambda l: l.BlueprintsWithKong >= 15),
-
         LocationLogic(Locations.TurnInGloomyGalleonDonkeyBlueprint, lambda l: l.BlueprintsWithKong >= 16),
+    ], [], []),
+
+    Regions.SnideThirdGroup: Region("Snide Third Group", HintRegion.SnideThirdGroup, Levels.Snide, False, None, [
         LocationLogic(Locations.TurnInGloomyGalleonDiddyBlueprint, lambda l: l.BlueprintsWithKong >= 17),
         LocationLogic(Locations.TurnInGloomyGalleonLankyBlueprint, lambda l: l.BlueprintsWithKong >= 18),
         LocationLogic(Locations.TurnInGloomyGalleonTinyBlueprint, lambda l: l.BlueprintsWithKong >= 19),
         LocationLogic(Locations.TurnInGloomyGalleonChunkyBlueprint, lambda l: l.BlueprintsWithKong >= 20),
-
         LocationLogic(Locations.TurnInFungiForestDonkeyBlueprint, lambda l: l.BlueprintsWithKong >= 21),
         LocationLogic(Locations.TurnInFungiForestDiddyBlueprint, lambda l: l.BlueprintsWithKong >= 22),
         LocationLogic(Locations.TurnInFungiForestLankyBlueprint, lambda l: l.BlueprintsWithKong >= 23),
         LocationLogic(Locations.TurnInFungiForestTinyBlueprint, lambda l: l.BlueprintsWithKong >= 24),
-        LocationLogic(Locations.TurnInFungiForestChunkyBlueprint, lambda l: l.BlueprintsWithKong >= 25),
+    ], [], []),
 
+    Regions.SnideFourthGroup: Region("Snide Fourth Group", HintRegion.SnideFourthGroup, Levels.Snide, False, None, [
+        LocationLogic(Locations.TurnInFungiForestChunkyBlueprint, lambda l: l.BlueprintsWithKong >= 25),
         LocationLogic(Locations.TurnInCrystalCavesDonkeyBlueprint, lambda l: l.BlueprintsWithKong >= 26),
         LocationLogic(Locations.TurnInCrystalCavesDiddyBlueprint, lambda l: l.BlueprintsWithKong >= 27),
         LocationLogic(Locations.TurnInCrystalCavesLankyBlueprint, lambda l: l.BlueprintsWithKong >= 28),
         LocationLogic(Locations.TurnInCrystalCavesTinyBlueprint, lambda l: l.BlueprintsWithKong >= 29),
         LocationLogic(Locations.TurnInCrystalCavesChunkyBlueprint, lambda l: l.BlueprintsWithKong >= 30),
-
         LocationLogic(Locations.TurnInCreepyCastleDonkeyBlueprint, lambda l: l.BlueprintsWithKong >= 31),
         LocationLogic(Locations.TurnInCreepyCastleDiddyBlueprint, lambda l: l.BlueprintsWithKong >= 32),
+    ], [], []),
+
+    Regions.SnideLastGroup: Region("Snide Last Group", HintRegion.SnideLastGroup, Levels.Snide, False, None, [
         LocationLogic(Locations.TurnInCreepyCastleLankyBlueprint, lambda l: l.BlueprintsWithKong >= 33),
         LocationLogic(Locations.TurnInCreepyCastleTinyBlueprint, lambda l: l.BlueprintsWithKong >= 34),
         LocationLogic(Locations.TurnInCreepyCastleChunkyBlueprint, lambda l: l.BlueprintsWithKong >= 35),
-
         LocationLogic(Locations.TurnInDKIslesDonkeyBlueprint, lambda l: l.BlueprintsWithKong >= 36),
         LocationLogic(Locations.TurnInDKIslesDiddyBlueprint, lambda l: l.BlueprintsWithKong >= 37),
         LocationLogic(Locations.TurnInDKIslesLankyBlueprint, lambda l: l.BlueprintsWithKong >= 38),

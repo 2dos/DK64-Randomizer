@@ -392,12 +392,9 @@ level_cryptic = [
     ],
     ["The timed level", "The level with no boss", "The level with no small bananas"],
 ]
-level_cryptic_isles = level_cryptic.copy()
-level_cryptic_isles.remove(level_cryptic_isles[-1])
-level_cryptic_isles.append(["The hub world", "The world with DK's ugly mug on it", "The world with only a Cranky's Lab and Snide's HQ in it"])
 
 level_cryptic_helm_isles = level_cryptic.copy()
-level_cryptic_helm_isles.append(level_cryptic_isles[-1])
+level_cryptic_helm_isles.append(["The hub world", "The world with DK's ugly mug on it", "The world with only a Cranky's Lab and Snide's HQ in it"])
 
 shop_owners = ["\x04Cranky\x04", "\x04Funky\x04", "\x04Candy\x04"]
 shop_cryptic = [
@@ -422,6 +419,10 @@ shop_cryptic = [
 ]
 
 crankys_cryptic = ["a location out of this world", "a location 5000 points deep", "a mad scientist's laboratory"]
+level_cryptic_helm_isles.append(crankys_cryptic)
+
+snides_cryptic = ["the home of the King K Industries employee", "a place to go to if you need time", "a base of covert operations"]
+level_cryptic_helm_isles.append(snides_cryptic)
 
 item_type_names = {
     Types.Blueprint: "\x06a kasplat\x06",

@@ -54,12 +54,10 @@ from randomizer.Lists.WrinklyHints import (
     boss_colors,
     level_colors,
     level_list,
-    level_cryptic,
     level_cryptic_helm_isles,
     kong_list,
     kong_cryptic,
     kong_colors,
-    crankys_cryptic,
     colorless_kong_list,
     item_type_names,
     item_type_names_cryptic,
@@ -790,15 +788,9 @@ def compileHints(spoiler: Spoiler) -> bool:
             globally_hinted_location_ids.append(kong_location_id)
             freeing_kong_name = kong_list[kong_location.kong]
             if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
-                if kong_location.level == Levels.Shops:  # Exactly Jetpac
-                    level_name = "\x08" + spoiler.settings.random.choice(crankys_cryptic) + "\x08"
-                else:
-                    level_name = "\x08" + spoiler.settings.random.choice(level_cryptic_helm_isles[kong_location.level]) + "\x08"
+                level_name = "\x08" + spoiler.settings.random.choice(level_cryptic_helm_isles[kong_location.level]) + "\x08"
             else:
-                if kong_location.level == Levels.Shops:  # Exactly Jetpac
-                    level_name = "Cranky's Lab"
-                else:
-                    level_name = level_colors[kong_location.level] + level_list[kong_location.level] + level_colors[kong_location.level]
+                level_name = level_colors[kong_location.level] + level_list[kong_location.level] + level_colors[kong_location.level]
             freed_kong = kong_list[ItemPool.GetKongForItem(kong_location.item)]
             message = ""
             if kong_location.type in item_type_names.keys():
@@ -1082,10 +1074,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 if location.kong == Kongs.any and location.type == Types.Key and location.level != Levels.HideoutHelm:
                     kong_index = spoiler.settings.boss_kongs[location.level]
                 if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
-                    if location.level == Levels.Shops:
-                        level_name = "\x08" + spoiler.settings.random.choice(crankys_cryptic) + "\x08"
-                    else:
-                        level_name = "\x08" + spoiler.settings.random.choice(level_cryptic_helm_isles[location.level]) + "\x08"
+                    level_name = "\x08" + spoiler.settings.random.choice(level_cryptic_helm_isles[location.level]) + "\x08"
                     kong_name = "\x07" + spoiler.settings.random.choice(kong_cryptic[kong_index]) + "\x07"
                 else:
                     level_name = level_colors[location.level] + level_list[location.level] + level_colors[location.level]
