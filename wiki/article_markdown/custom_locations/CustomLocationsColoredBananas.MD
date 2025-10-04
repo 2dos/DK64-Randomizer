@@ -766,7 +766,7 @@
 | Above the headphones | Balloon | `self.logic = lambda _: True` | 
 | Arcade machine | Balloon | `self.logic = lambda _: True` | 
 | Window of the number game | Balloon | `self.logic = lambda _: True` | 
-| Shoot at the moon | Balloon | `l.spring` | 
+| Shoot at the moon | Balloon | `l.spring or l.CanMoontail()` | 
 | Ceiling pipe towards Funky | Balloon | `self.logic = lambda _: True` | 
 | Top of pole to R&D | Balloon | `self.logic = lambda _: True` | 
 | R&D right side | Balloon | `self.logic = lambda _: True` | 
@@ -907,7 +907,7 @@
 | Bow of Cranky's wreck | 5 | `self.logic = lambda _: True` | 
 | Klobber and Kaboom in the tunnel | 10 | `self.logic = lambda _: True` | 
 | Front of the chests | 5 | `self.logic = lambda _: True` | 
-| Twirl from the upper planks | 5 | `self.logic = lambda _: True` | 
+| Twirl from the upper planks | 5 | `l.twirl` | 
 | In the water around the lighthouse platform | 10 | `Events.WaterLowered in l.Events or l.swim` | 
 | On Kevin's spot (lighthouse alcove) | 5 | `self.logic = lambda _: True` | 
 | Ceiling of the Enguarde cave | 5 | `Events.WaterRaised in l.Events` | 
@@ -1200,7 +1200,7 @@
 | Above the meme hidden dirt patch | 5 | `self.logic = lambda _: True` | 
 | Outer ledge between the meme dirt patch and rafters barn | 5 | `self.logic = lambda _: True` | 
 | Tag barrel near rafters barn | 10 | `self.logic = lambda _: True` | 
-| On the blue tunnel lip (mills side) | 5 | `l.twirl, locations=[[5, 1.0, 3589, 327, 3038]]` | 
+| On the blue tunnel lip (mills side) | 5 | `l.twirl and l.climbing` | 
 | Cobblestone path to Snide | 5 | `self.logic = lambda _: True` | 
 | Around the winch cage | 5 | `self.logic = lambda _: True` | 
 | Near the breakable door of the mill | 10 | `self.logic = lambda _: True` | 
