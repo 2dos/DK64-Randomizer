@@ -410,6 +410,15 @@ if baseclasses_loaded:
                     res.add(item)
             return res
 
+        def company_coin_item_group() -> str:
+            """Item group for Company Coins."""
+            res = set()
+            coin_items = ["Nintendo Coin", "Rareware Coin"]
+            for item in coin_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
         def dk_name() -> str:
             """Add Kong to end of Kongs."""
             res = set()
@@ -573,6 +582,7 @@ if baseclasses_loaded:
             "Chunky Kong": chunky_name(),
             "Keys": key_item_group(),
             "Kongs": kong_item_group(),
+            "Company Coins": company_coin_item_group(),
         }
 
         location_name_groups = {
