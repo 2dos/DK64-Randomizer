@@ -557,7 +557,9 @@ if baseclasses_loaded:
             """Location group for Cranky locations."""
             res = set()
             for location_name in all_locations.keys():
-                if " " in location_name:
+                if "Jetpac" == location_name:
+                    res.add(location_name)
+                elif " " in location_name:
                     if "Cranky" == location_name.split(" ")[1]:
                         res.add(location_name)
             return res
@@ -592,7 +594,9 @@ if baseclasses_loaded:
             """Location group for Shop locations."""
             res = set()
             for location_name in all_locations.keys():
-                if "Turning In" in location_name:
+                if "Jetpac" == location_name:
+                    res.add(location_name)
+                elif "Turning In" in location_name:
                     res.add(location_name)
                 elif " " in location_name:
                     if "Cranky" == location_name.split(" ")[1]\
