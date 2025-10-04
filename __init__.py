@@ -690,7 +690,7 @@ if baseclasses_loaded:
 
         def create_regions(self) -> None:
             """Create the regions."""
-            create_regions(self.multiworld, self.player, self.spoiler)
+            create_regions(self.multiworld, self.player, self.spoiler, self.options)
 
             def exclude_locations(location_names: typing.List[str]):
                 for location_name in location_names:

@@ -20,6 +20,7 @@ from randomizer.Enums.Settings import HelmSetting, FungiTimeSetting, FasterCheck
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists import Location as DK64RLocation, Item as DK64RItem
+from randomizer.Lists.Location import SharedShopLocations, ShopLocationReference
 from randomizer.Lists.Minigame import MinigameRequirements
 from randomizer.LogicClasses import Collectible, Event, LocationLogic, TransitionFront, Region as DK64Region
 from randomizer.Patching.Library.Generic import IsItemSelected
@@ -99,13 +100,43 @@ gun_for_kong = {Kongs.donkey: "Coconut", Kongs.diddy: "Peanut", Kongs.lanky: "Gr
 name_for_kong = {Kongs.donkey: "Donkey", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky"}
 
 
-def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler):
+def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, options=None):
     """Create the regions for the given player's world."""
     menu_region = Region("Menu", player, multiworld)
     multiworld.regions.append(menu_region)
 
     # okay okay OKAY you get a logicVarHolder object for JUST THIS ONCE. Codes these days...
     logic_holder = LogicVarHolder(spoiler, player)
+
+    # Pick random 10 shops to make shared
+    # Only if shared shops are enabled in settings
+    if options.enable_shared_shops.value:
+        all_shared_shops = list(SharedShopLocations)
+        logic_holder.settings.random.shuffle(all_shared_shops)
+        logic_holder.available_shared_shops = set(all_shared_shops[:10])  # Select 10 random shared shops
+
+        # Track which vendor/level combinations have shared shops to make individual shops inaccessible
+        shared_shop_vendors = set()
+
+        # Pre-process to identify which vendor/level combinations will have shared shops
+        for region_id in all_logic_regions:
+            region_obj = all_logic_regions[region_id]
+            location_logics = [loc for loc in region_obj.locations if (not loc.isAuxiliaryLocation) or region_id.name == "FactoryBaboonBlast"]
+
+            for location_logic in location_logics:
+                location_obj = logic_holder.spoiler.LocationList[location_logic.id]
+                # Check if this is a shared shop that will be created
+                if location_obj.type == Types.Shop and location_obj.kong == Kongs.any:
+                    if location_logic.id in logic_holder.available_shared_shops:
+                        # Mark this vendor/level combination as having a shared shop
+                        shared_shop_vendors.add((location_obj.level, location_obj.vendor))
+
+        # Store shared shop vendors in logic_holder for access in create_region
+        logic_holder.shared_shop_vendors = shared_shop_vendors
+    else:
+        # Shared shops disabled - no shared shops available
+        logic_holder.available_shared_shops = set()
+        logic_holder.shared_shop_vendors = set()
 
     # # Print contents of all_locations
     # print("All Locations:")
@@ -172,13 +203,17 @@ def create_region(
             # Starting move locations may be shuffled but their locations are not relevant ever due to item placement restrictions
             if location_obj.type in (Types.TrainingBarrel, Types.PreGivenMove):
                 continue
-            # Dropsanity would otherwise flood the world with irrelevant locked locations, greatly slowing seed gen
-            if location_obj.type == Types.Enemies and Types.Enemies not in logic_holder.settings.shuffled_location_types:
-                continue
-            # V1 LIMITATION: Shared shops cannot exist because we need the space in shops to guarantee enough locations for every item
-            # Because there's no shared shops, this may mean shared potions can end up in Kong shops. This is fine.
+
+            # Skip shared shops that are not in the available pool
             if location_obj.type == Types.Shop and location_obj.kong == Kongs.any:
-                continue
+                if location_logic.id not in logic_holder.available_shared_shops:
+                    continue
+
+            # Skip individual Kong shops if their vendor/level has a shared shop
+            if location_obj.type == Types.Shop and location_obj.kong != Kongs.any:
+                vendor_level_key = (location_obj.level, location_obj.vendor)
+                if vendor_level_key in logic_holder.shared_shop_vendors:
+                    continue
             # Skip enemy photos if the win condition is not Krem Kapture.
             if location_obj.type == Types.EnemyPhoto and logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
                 continue

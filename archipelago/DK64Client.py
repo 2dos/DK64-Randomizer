@@ -8,14 +8,15 @@ import Utils
 
 if __name__ == "__main__":
     Utils.init_logging("DK64Context", exception_logger="Client")
+
 import asyncio
 import colorama
-import sys
 import random
-import traceback
-
+import sys
 import time
+import traceback
 import typing
+
 from client.common import DK64MemoryMap, create_task_log_exception, check_version
 from client.emu_loader import EmuLoaderClient
 from client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
@@ -25,6 +26,16 @@ from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, se
 from NetUtils import ClientStatus
 from ap_version import version as ap_version
 from randomizer.Patching.ItemRando import normalize_location_name
+
+# Constants
+MAX_DELIVER_COUNT = 10000
+MAX_STRING_LENGTH = 0x20
+FAST_TEXT_SPEED = 50
+NORMAL_TEXT_SPEED = 130
+MIN_ITEMS_FOR_SPEED_SCALING = 5
+KONG_COUNT = 5
+LEVEL_COUNT = 7
+HINT_BITFIELD_SIZE = 5
 
 
 class CreateHintsParams:
@@ -46,51 +57,133 @@ class CreateHintsParams:
         return hash((self.location, self.player))
 
 
-# Mapping of hint door checks to their kong/level combination for hint bitfield tracking
-hint_door_to_bitfield = {
-    # Japes
-    "Japes Donkey Hint Door": (0, 0),
-    "Japes Diddy Hint Door": (1, 0),
-    "Japes Lanky Hint Door": (2, 0),
-    "Japes Tiny Hint Door": (3, 0),
-    "Japes Chunky Hint Door": (4, 0),
-    # Aztec
-    "Aztec Donkey Hint Door": (0, 1),
-    "Aztec Diddy Hint Door": (1, 1),
-    "Aztec Lanky Hint Door": (2, 1),
-    "Aztec Tiny Hint Door": (3, 1),
-    "Aztec Chunky Hint Door": (4, 1),
-    # Factory
-    "Factory Donkey Hint Door": (0, 2),
-    "Factory Diddy Hint Door": (1, 2),
-    "Factory Lanky Hint Door": (2, 2),
-    "Factory Tiny Hint Door": (3, 2),
-    "Factory Chunky Hint Door": (4, 2),
-    # Galleon
-    "Galleon Donkey Hint Door": (0, 3),
-    "Galleon Diddy Hint Door": (1, 3),
-    "Galleon Lanky Hint Door": (2, 3),
-    "Galleon Tiny Hint Door": (3, 3),
-    "Galleon Chunky Hint Door": (4, 3),
-    # Forest
-    "Forest Donkey Hint Door": (0, 4),
-    "Forest Diddy Hint Door": (1, 4),
-    "Forest Lanky Hint Door": (2, 4),
-    "Forest Tiny Hint Door": (3, 4),
-    "Forest Chunky Hint Door": (4, 4),
-    # Caves
-    "Caves Donkey Hint Door": (0, 5),
-    "Caves Diddy Hint Door": (1, 5),
-    "Caves Lanky Hint Door": (2, 5),
-    "Caves Tiny Hint Door": (3, 5),
-    "Caves Chunky Hint Door": (4, 5),
-    # Castle
-    "Castle Donkey Hint Door": (0, 6),
-    "Castle Diddy Hint Door": (1, 6),
-    "Castle Lanky Hint Door": (2, 6),
-    "Castle Tiny Hint Door": (3, 6),
-    "Castle Chunky Hint Door": (4, 6),
-}
+class MessageDisplayHandler:
+    """Handles message display modes and speeds."""
+
+    def __init__(self, client):
+        """Initialize message display handler."""
+        self.client = client
+
+    def should_display_item(self, item_data: dict, send_mode: int) -> bool:
+        """Determine if an item should be displayed based on send mode."""
+        if send_mode == 7:
+            return False  # Send nothing
+        elif send_mode == 6:
+            return item_data.get("progression", False)
+        elif send_mode == 5:
+            return item_data.get("progression", False) or item_data.get("extended_whitelist", False)
+        else:
+            return item_data.get("progression", False) or item_data.get("extended_whitelist", False)
+
+    def calculate_speed(self, send_mode: int, item_data: dict, pending_count: int, index: int) -> int:
+        """Calculate appropriate text display speed."""
+        if send_mode in [5, 6, 7]:
+            return NORMAL_TEXT_SPEED
+
+        if send_mode == 4:
+            return FAST_TEXT_SPEED if item_data.get("extended_whitelist", False) else NORMAL_TEXT_SPEED
+
+        if send_mode == 3:
+            return FAST_TEXT_SPEED
+
+        # Modes 1 and 2: dynamic speed based on queue length
+        remaining_items = pending_count - index
+        if remaining_items <= MIN_ITEMS_FOR_SPEED_SCALING:
+            return NORMAL_TEXT_SPEED
+
+        speed = round(NORMAL_TEXT_SPEED - (80 / remaining_items))
+        return max(speed, FAST_TEXT_SPEED)
+
+    def update_speed_if_needed(self, new_speed: int):
+        """Update text speed if it has changed."""
+        if self.client.current_speed != new_speed:
+            self.client.current_speed = new_speed
+            self.client.set_speed(new_speed)
+
+
+class IceTrapHandler:
+    """Handles ice trap logic and mappings."""
+
+    # Ice trap type to fed ID mapping
+    ICE_TRAP_MAPPINGS = {
+        "bubble": 0x018,  # TRANSFER_ITEM_FAKEITEM
+        "reverse": 0x041,  # TRANSFER_ITEM_FAKEITEM_REVERSE
+        "slow": 0x040,  # TRANSFER_ITEM_FAKEITEM_SLOW
+        "disable_a": 0x042,  # TRANSFER_ITEM_FAKEITEM_DISABLEA
+        "disable_b": 0x043,  # TRANSFER_ITEM_FAKEITEM_DISABLEB
+        "disable_z": 0x044,  # TRANSFER_ITEM_FAKEITEM_DISABLEZ
+        "disable_c_up": 0x045,  # TRANSFER_ITEM_FAKEITEM_DISABLECU
+        "get_out": 0x046,  # TRANSFER_ITEM_FAKEITEM_GETOUT
+        "dry": 0x047,  # TRANSFER_ITEM_FAKEITEM_DRY
+        "flip": 0x048,  # TRANSFER_ITEM_FAKEITEM_FLIP
+        "icefloor": 0x049,  # TRANSFER_ITEM_FAKEITEM_ICEFLOOR
+        "paper": 0x04A,  # TRANSFER_ITEM_FAKEITEM_PAPER
+        "slip": 0x04B,  # TRANSFER_ITEM_FAKEITEM_SLIP
+    }
+
+    @classmethod
+    async def handle_ice_trap(cls, client, count_data: dict):
+        """Handle ice trap processing."""
+        # Update counter
+        count_struct_address = client.n64_client.read_u32(DK64MemoryMap.count_struct_pointer)
+        if count_struct_address == 0:
+            logger.warning("CountStruct pointer is null, cannot write ice trap data")
+            return None
+
+        address = count_struct_address + 0x012
+        current_value = client.n64_client.read_u16(address)
+        client.n64_client.write_u16(address, current_value + 1)
+
+        # Trigger the actual ice trap effect
+        ice_trap_type = count_data.get("ice_trap_type", "bubble")
+        fed_id = cls.ICE_TRAP_MAPPINGS.get(ice_trap_type, 0x018)  # Default to bubble
+        await client.writeFedData(fed_id)
+
+        return 0x056  # TRANSFER_ITEM_HELM_HURRY_FAKEITEM
+
+
+class CountStructHandler:
+    """Handles CountStruct memory operations."""
+
+    # Field offsets within CountStruct
+    OFFSETS = {
+        "bp_count": 0x000,
+        "hint_bitfield": 0x005,
+        "key_bitfield": 0x00A,
+        "kong_bitfield": 0x00B,
+        "crowns": 0x00C,
+        "special_items": 0x00D,
+        "medals": 0x00E,
+        "pearls": 0x00F,
+        "fairies": 0x010,
+        "ice_traps": 0x012,
+        "junk_items": 0x014,
+        "race_coins": 0x016,
+        "flag_moves": 0x018,
+    }
+
+    @classmethod
+    def get_address(cls, client, field: str, offset: int = 0) -> int:
+        """Get the memory address for a CountStruct field."""
+        count_struct_address = client.n64_client.read_u32(DK64MemoryMap.count_struct_pointer)
+        if count_struct_address == 0:
+            raise ValueError("CountStruct pointer is null")
+
+        base_offset = cls.OFFSETS.get(field)
+        if base_offset is None:
+            raise ValueError(f"Unknown CountStruct field: {field}")
+
+        return count_struct_address + base_offset + offset
+
+    @classmethod
+    def validate_bounds(cls, kong: int = None, level: int = None, bit: int = None):
+        """Validate kong, level, and bit bounds."""
+        if kong is not None and (kong < 0 or kong >= KONG_COUNT):
+            raise ValueError(f"Invalid kong: {kong} (must be 0-{KONG_COUNT - 1})")
+        if level is not None and (level < 0 or level >= LEVEL_COUNT):
+            raise ValueError(f"Invalid level: {level} (must be 0-{LEVEL_COUNT - 1})")
+        if bit is not None and (bit < 0 or bit >= 8):
+            raise ValueError(f"Invalid bit: {bit} (must be 0-7)")
 
 
 class DK64Client:
@@ -99,29 +192,35 @@ class DK64Client:
     n64_client = None
     game = None
     auth = None
+    memory_pointer = None
+    stop_bizhawk_spam = False
+    seed_started = False
     locations_scouted = {}
     recvd_checks = {}
     pending_checks = []
-    players = None
-    stop_bizhawk_spam = False
     remaining_checks = []
-    seed_started = False
     sent_checks = []
     item_names = None
-    memory_pointer = None
+    players = None
     _purchase_cache = {}
-    deathlink_debounce = True
-    pending_deathlink = False
-    send_mode = 1
     ENABLE_DEATHLINK = False
     ENABLE_RINGLINK = False
     ENABLE_TAGLINK = False
     ENABLE_TRAPLINK = False
-    current_speed = 130
+    deathlink_debounce = True
+    pending_deathlink = False
+
+    # Display and speed settings
+    send_mode = 1
+    current_speed = NORMAL_TEXT_SPEED
     current_map = 0
-    last_hint_bitfield = [0, 0, 0, 0, 0]
+
+    # Hint system
+    last_hint_bitfield = [0] * HINT_BITFIELD_SIZE
     sent_hints = set()
     helm_hurry_enabled = False
+
+    # ==================== CONNECTION METHODS ====================
 
     async def wait_for_pj64(self):
         """Wait for emulator to connect to the game."""
@@ -165,6 +264,8 @@ class DK64Client:
                     self.n64_client.disconnect()
                 pass
 
+    # ==================== GAME STATE METHODS ====================
+
     def check_safe_gameplay(self):
         """Check if the game is in a valid state for sending items."""
         current_gamemode = self.n64_client.read_u8(DK64MemoryMap.CurrentGamemode)
@@ -182,10 +283,12 @@ class DK64Client:
             self.memory_pointer = self.n64_client.read_u32(DK64MemoryMap.memory_pointer)
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.connection, 0xFF)
 
+    # ==================== MESSAGING METHODS ====================
+
     def send_message(self, item_name, player_name, event_type="from"):
         """Send a message to the game."""
 
-        def sanitize_and_trim(input_string, max_length=0x20):
+        def sanitize_and_trim(input_string, max_length=MAX_STRING_LENGTH):
             normalized = normalize_location_name(input_string)
             sanitized = "".join(e for e in normalized if e.isalnum() or e == " ").strip()
             return sanitized[:max_length]
@@ -199,119 +302,52 @@ class DK64Client:
         """Set the speed of the display text in game."""
         self.n64_client.write_u8(self.memory_pointer + DK64MemoryMap.text_timer, speed)
 
+    # ==================== ITEM PROCESSING METHODS ====================
+
     async def recved_item_from_ap(self, item_id, item_name, from_player, index):
         """Handle an item received from Archipelago."""
-        # Don't allow getting an item until you've got your first check
         if not self.started_file():
             return
 
-        # Spin until we either:
-        # get an exception from a bad read (emu shut down or reset)
-        # beat the game
-        # the client handles the last pending item
-        status = self.safe_to_send()
-        while not status:
-            await asyncio.sleep(0.1)
-            status = self.safe_to_send()
-        next_index = index + 1
-        item_data = item_ids.get(item_id)
-        if item_data:
-            if self.send_mode == 7:
-                if self.current_speed != 130:
-                    self.set_speed(130)
-                    self.current_speed = 130
-                # Send nothing from progression or extended_whitelist
-                pass
-            elif self.send_mode == 6:
-                if self.current_speed != 130:
-                    self.set_speed(130)
-                    self.current_speed = 130
-                # Progression only, no speed changes
-                if item_data.get("progression", False):
-                    self.send_message(item_name, from_player, "from")
-            elif self.send_mode == 5:
-                if self.current_speed != 130:
-                    self.set_speed(130)
-                    self.current_speed = 130
-                # Extended whitelist, no speed changes
-                if item_data.get("progression", False):
-                    self.send_message(item_name, from_player, "from")
-                elif item_data.get("extended_whitelist", False):
-                    self.send_message(item_name, from_player, "from")
-            elif self.send_mode == 4:
-                # Display both default and extended whitelist items
-                # But display just the extended whitelist items at a faster speed
-                if item_data.get("progression", False):
-                    if self.current_speed != 130:
-                        self.set_speed(130)
-                        self.current_speed = 130
-                    self.send_message(item_name, from_player, "from")
-                elif item_data.get("extended_whitelist", False):
-                    if self.current_speed != 50:
-                        self.set_speed(50)
-                        self.current_speed = 50
-                    self.send_message(item_name, from_player, "from")
-            elif self.send_mode == 3:
-                # Send everything super fast on both whitelist and extended whitelist
-                if self.current_speed != 50:
-                    self.current_speed = 50
-                    self.set_speed(50)
-                if item_data.get("progression", False):
-                    self.send_message(item_name, from_player, "from")
-                elif item_data.get("extended_whitelist", False):
-                    self.send_message(item_name, from_player, "from")
-            elif self.send_mode == 2:
-                # If we have more than 5 items queued, from 130 to 50, do a percentage of the total items
-                # But only display progression items, discard the rest
-                length = len(self.pending_checks) - index
-                if length <= 5:
-                    if self.current_speed != 130:
-                        self.current_speed = 130
-                        self.set_speed(130)
-                    if item_data.get("progression", False):
-                        self.send_message(item_name, from_player, "from")
-                    elif item_data.get("extended_whitelist", False):
-                        self.send_message(item_name, from_player, "from")
-                else:
-                    speed = round(130 - (80 / length))
-                    if speed < 50:
-                        speed = 50
-                    if self.current_speed != speed:
-                        self.current_speed = speed
-                        self.set_speed(speed)
-                    if item_data.get("progression", False):
-                        self.send_message(item_name, from_player, "from")
-            elif self.send_mode == 1:
-                # If we have more than 5 items queued, from 130 to 50, do a percentage of the total items
-                # If we have 5 or less, do 130
-                length = len(self.pending_checks) - index
-                if length <= 5:
-                    if self.current_speed != 130:
-                        self.current_speed = 130
-                        self.set_speed(130)
-                else:
-                    speed = round(130 - (80 / length))
-                    if speed < 50:
-                        speed = 50
-                    if self.current_speed != speed:
-                        self.current_speed = speed
-                        self.set_speed(speed)
-                if item_data.get("progression", False):
-                    self.send_message(item_name, from_player, "from")
-                elif item_data.get("extended_whitelist", False):
-                    self.send_message(item_name, from_player, "from")
-            else:
-                raise Exception("Invalid message mode")
+        await self._wait_for_safe_send()
 
-            if item_data.get("flag_id", None) is not None:
-                self.setFlag(item_data.get("flag_id"))
-            elif item_data.get("fed_id", None) is not None:
-                await self.writeFedData(item_data.get("fed_id"))
-            elif item_data.get("count_id", None) is not None:
-                await self.writeCountData(item_data.get("count_id"))
-            else:
-                logger.warning(f"Item {item_name} has no flag, fed, or count id")
+        item_data = item_ids.get(item_id)
+        if not item_data:
+            logger.warning(f"Unknown item ID: {item_id}")
+            return
+
+        self._handle_message_display(item_data, item_name, from_player, index)
+        await self._process_item_data(item_data, item_name)
+
+        next_index = index + 1
         self.n64_client.write_u16(self.memory_pointer + DK64MemoryMap.counter_offset, next_index)
+
+    async def _wait_for_safe_send(self):
+        """Wait until it's safe to send an item."""
+        while not self.safe_to_send():
+            await asyncio.sleep(0.1)
+
+    def _handle_message_display(self, item_data: dict, item_name: str, from_player: str, index: int):
+        """Handle message display based on send mode and item type."""
+        if not hasattr(self, "_message_handler"):
+            self._message_handler = MessageDisplayHandler(self)
+
+        should_display = self._message_handler.should_display_item(item_data, self.send_mode)
+        if should_display:
+            speed = self._message_handler.calculate_speed(self.send_mode, item_data, len(self.pending_checks), index)
+            self._message_handler.update_speed_if_needed(speed)
+            self.send_message(item_name, from_player, "from")
+
+    async def _process_item_data(self, item_data: dict, item_name: str):
+        """Process the item data and apply it to the game."""
+        if item_data.get("flag_id") is not None:
+            self.setFlag(item_data.get("flag_id"))
+        elif item_data.get("fed_id") is not None:
+            await self.writeFedData(item_data.get("fed_id"))
+        elif item_data.get("count_id") is not None:
+            await self.writeCountData(item_data.get("count_id"))
+        else:
+            logger.warning(f"Item {item_name} has no flag, fed, or count id")
 
     async def writeFedData(self, fed_item):
         """Write the fed item data to the game."""
@@ -371,20 +407,17 @@ class DK64Client:
             if "kong" in count_data and "level" in count_data:
                 kong = count_data.get("kong", 0)
                 level = count_data.get("level", 0)
-                # Validate ranges: 7 levels (0-6), 5 kongs (0-4)
-                if level < 0 or level > 6 or kong < 0 or kong > 4:
-                    logger.warning(f"Invalid hint kong/level: kong={kong}, level={level}")
-                    return
-                # Direct mapping: kong is byte index, level is bit index
+                CountStructHandler.validate_bounds(kong=kong, level=level)
                 byte_index = kong
                 bit_index = level
             else:
                 byte_index = count_data.get("byte", 0)
                 bit_index = count_data.get("bit", 0)
+                CountStructHandler.validate_bounds(kong=byte_index, level=bit_index)
 
             # Ensure we don't exceed the 5-byte hint bitfield and 7 bits per kong
-            if byte_index < 5 and bit_index < 7:
-                address = count_struct_address + 0x005 + byte_index
+            if byte_index < HINT_BITFIELD_SIZE and bit_index < LEVEL_COUNT:
+                address = CountStructHandler.get_address(self, "hint_bitfield", byte_index)
                 current_value = self.n64_client.read_u8(address)
                 new_value = current_value | (1 << bit_index)
                 self.n64_client.write_u8(address, new_value)
@@ -467,43 +500,7 @@ class DK64Client:
         elif field == "ice_traps":
             # Ice traps: 2 byte counter at offset 0x012
             # Also need to trigger the actual ice trap effect via fed system
-            address = count_struct_address + 0x012
-            current_value = self.n64_client.read_u16(address)
-            self.n64_client.write_u16(address, current_value + 1)
-            helm_hurry_item_type = 0x056  # TRANSFER_ITEM_HELM_HURRY_FAKEITEM
-
-            # Now trigger the actual ice trap effect based on the ice trap type
-            # We need to determine which type of ice trap this is and send it via fed system
-            ice_trap_type = count_data.get("ice_trap_type", "bubble")  # default to bubble
-            if ice_trap_type == "bubble":
-                await self.writeFedData(0x018)  # TRANSFER_ITEM_FAKEITEM
-            elif ice_trap_type == "reverse":
-                await self.writeFedData(0x041)  # TRANSFER_ITEM_FAKEITEM_REVERSE
-            elif ice_trap_type == "slow":
-                await self.writeFedData(0x040)  # TRANSFER_ITEM_FAKEITEM_SLOW
-            elif ice_trap_type == "disable_a":
-                await self.writeFedData(0x042)  # TRANSFER_ITEM_FAKEITEM_DISABLEA
-            elif ice_trap_type == "disable_b":
-                await self.writeFedData(0x043)  # TRANSFER_ITEM_FAKEITEM_DISABLEB
-            elif ice_trap_type == "disable_z":
-                await self.writeFedData(0x044)  # TRANSFER_ITEM_FAKEITEM_DISABLEZ
-            elif ice_trap_type == "disable_c_up":
-                await self.writeFedData(0x045)  # TRANSFER_ITEM_FAKEITEM_DISABLECU
-            elif ice_trap_type == "get_out":
-                await self.writeFedData(0x046)  # TRANSFER_ITEM_FAKEITEM_GETOUT
-            elif ice_trap_type == "dry":
-                await self.writeFedData(0x047)  # TRANSFER_ITEM_FAKEITEM_DRY
-            elif ice_trap_type == "flip":
-                await self.writeFedData(0x048)  # TRANSFER_ITEM_FAKEITEM_FLIP
-            elif ice_trap_type == "icefloor":
-                await self.writeFedData(0x049)  # TRANSFER_ITEM_FAKEITEM_ICEFLOOR
-            elif ice_trap_type == "paper":
-                await self.writeFedData(0x04A)  # TRANSFER_ITEM_FAKEITEM_PAPER
-            elif ice_trap_type == "slip":
-                await self.writeFedData(0x04B)  # TRANSFER_ITEM_FAKEITEM_SLIP
-            else:
-                # Default to bubble if unknown type
-                await self.writeFedData(0x018)
+            helm_hurry_item_type = await IceTrapHandler.handle_ice_trap(self, count_data)
 
         elif field == "junk_items":
             # Junk items: 2 byte counter at offset 0x014
@@ -640,7 +637,15 @@ class DK64Client:
 
     def getCheckStatus(self, check_type, flag_index=None, shop_index=None, level_index=None, kong_index=None) -> bool:
         """Get the status of a check."""
-        return self.readFlag(flag_index)
+        if check_type == "shop" and shop_index is not None and level_index is not None and kong_index is not None:
+            # Calculate shop flag using the same formula as the C code
+            # FLAG_SHOPFLAG = 800 (0x320)
+            # Shop flag = FLAG_SHOPFLAG + (vendor * 40) + (level * 5) + kong
+            FLAG_SHOPFLAG = 800
+            shop_flag = FLAG_SHOPFLAG + (shop_index * 40) + (level_index * 5) + kong_index
+            return self.readFlag(shop_flag)
+        else:
+            return self.readFlag(flag_index)
 
     async def readChecks(self, cb):
         """Run checks in parallel using asyncio."""
@@ -671,6 +676,10 @@ class DK64Client:
                     level_index = level_mapping.get(content[0])
                     shop_index = shop_mapping.get(content[1])
                     kong_index = kong_mapping.get(content[2])
+
+                    # Handle shared shops by checking the DK flag (kong_index 0)
+                    if content[2] == "Shared":
+                        kong_index = 0  # Use DK flag for shared shops
 
                     # If any of these are not set, continue
                     if level_index is None or shop_index is None or kong_index is None:
@@ -721,6 +730,8 @@ class DK64Client:
 
     should_reset_auth = False
 
+    # ==================== MEMORY OPERATIONS ====================
+
     def setFlag(self, index: int) -> int:
         """Set a flag in the game."""
         byte_index = index >> 3
@@ -740,20 +751,18 @@ class DK64Client:
 
     def hasKong(self, kong_index: int) -> bool:
         """Check if a kong is available using the CountStruct system."""
-        if kong_index < 0 or kong_index > 4:
+        if kong_index < 0 or kong_index >= KONG_COUNT:
             return False
 
-        # Get the CountStruct address from the pointer
-        count_struct_address = self.n64_client.read_u32(DK64MemoryMap.count_struct_pointer)
-        if count_struct_address == 0:
+        try:
+            # Kong bitfield: 1 byte at offset 0x00B
+            address = CountStructHandler.get_address(self, "kong_bitfield")
+            current_value = self.n64_client.read_u8(address)
+
+            # Check if the bit for this kong is set
+            return (current_value & (1 << kong_index)) != 0
+        except ValueError:
             return False
-
-        # Kong bitfield: 1 byte at offset 0x00B
-        address = count_struct_address + 0x00B
-        current_value = self.n64_client.read_u8(address)
-
-        # Check if the bit for this kong is set
-        return (current_value & (1 << kong_index)) != 0
 
     async def wait_for_game_ready(self):
         """Wait for the game to be ready."""
@@ -787,15 +796,13 @@ class DK64Client:
     def get_current_deliver_count(self):
         """Get the current deliver count."""
         data = self.n64_client.read_u16(self.memory_pointer + DK64MemoryMap.counter_offset)
-        # If our data is too high, (Above 10000) we need to reset it
-        if data > 10000:
-            # Try reading again
+
+        # If our data is too high, try reading again
+        if data > MAX_DELIVER_COUNT:
             data = self.n64_client.read_u16(self.memory_pointer + DK64MemoryMap.counter_offset)
-            # If its still too high, raise an exception
-            if data > 10000:
+            if data > MAX_DELIVER_COUNT:
                 return None
-            else:
-                return data
+
         return data
 
     async def main_tick(self, item_get_cb, deathlink_cb, map_change_cb, ring_link, tag_link, trap_link, hint_cb=None):
@@ -841,15 +848,15 @@ class DK64Client:
             await self.check_hint_access(hint_cb)
 
         current_deliver_count = self.get_current_deliver_count()
-        # If current_deliver_count is None
         if current_deliver_count is None:
             return
 
-        if current_deliver_count > 10000:
+        if current_deliver_count > MAX_DELIVER_COUNT:
             logger.info(f"Current deliver count: {current_deliver_count}")
-            logger.info(f"Recieved checks: {len(self.recvd_checks)}")
+            logger.info(f"Received checks: {len(self.recvd_checks)}")
             logger.info(f"Pending checks: {len(self.pending_checks)}")
             logger.info("Current deliver count is too high, PLEASE REPORT THIS TO THE DK64 TEAM")
+            return
         if current_deliver_count in self.recvd_checks:
             # Get the next item in recvd_checks
             item = self.recvd_checks[current_deliver_count]
@@ -882,14 +889,16 @@ class DK64Client:
         self.pending_deathlink = False
         self.deathlink_debounce = True
 
+    # ==================== HINT SYSTEM METHODS ====================
+
     def read_hint_bitfield(self):
         """Read the current hint bitfield from memory."""
         count_struct_address = self.n64_client.read_u32(DK64MemoryMap.count_struct_pointer)
         if count_struct_address == 0:
-            return [0, 0, 0, 0, 0]
+            return [0] * HINT_BITFIELD_SIZE
 
         hint_bitfield = []
-        for i in range(5):  # 5 bytes for hint bitfield
+        for i in range(HINT_BITFIELD_SIZE):
             address = count_struct_address + 0x005 + i
             hint_bitfield.append(self.n64_client.read_u8(address))
         return hint_bitfield
@@ -902,18 +911,17 @@ class DK64Client:
         current_hint_bitfield = self.read_hint_bitfield()
 
         # Check each byte and bit for changes
-        for kong in range(5):  # 5 kongs
-            for level in range(7):  # 7 levels (0-6)
-                if level < 7:  # Valid bit range
-                    old_bit = (self.last_hint_bitfield[kong] >> level) & 1
-                    new_bit = (current_hint_bitfield[kong] >> level) & 1
+        for kong in range(KONG_COUNT):
+            for level in range(LEVEL_COUNT):
+                old_bit = (self.last_hint_bitfield[kong] >> level) & 1
+                new_bit = (current_hint_bitfield[kong] >> level) & 1
 
-                    # If bit changed from 0 to 1, a hint was accessed
-                    if old_bit == 0 and new_bit == 1:
-                        hint_key = (kong, level)
-                        if hint_key not in self.sent_hints:
-                            self.sent_hints.add(hint_key)
-                            await hint_callback(kong, level)
+                # If bit changed from 0 to 1, a hint was accessed
+                if old_bit == 0 and new_bit == 1:
+                    hint_key = (kong, level)
+                    if hint_key not in self.sent_hints:
+                        self.sent_hints.add(hint_key)
+                        await hint_callback(kong, level)
 
         # Update last known state
         self.last_hint_bitfield = current_hint_bitfield.copy()
@@ -1011,7 +1019,22 @@ class DK64Context(CommonContext):
 
     def reset_checks(self):
         """Reset the checks."""
-        self.remaining_checks = list(check_id_to_name.keys()).copy()
+        # Only include location IDs that actually exist in this multiworld
+        # For shared shops, only the 10 selected ones will be in missing_locations
+        all_possible_checks = set(check_id_to_name.keys())
+        if hasattr(self, "missing_locations") and self.missing_locations:
+            # Filter to only locations that exist in this world
+            actual_checks = all_possible_checks.intersection(self.missing_locations)
+            self.remaining_checks = list(actual_checks)
+
+            # Debug logging for shared shops
+            shared_shop_ids = set()
+            for location_id in actual_checks:
+                location_name = check_id_to_name.get(location_id, "")
+                if "Shared" in location_name:
+                    shared_shop_ids.add(location_id)
+        else:
+            self.remaining_checks = list(all_possible_checks)
         self.client.remaining_checks = self.remaining_checks
         self.client.recvd_checks = {}
         self.client.pending_checks = []
@@ -1145,6 +1168,7 @@ class DK64Context(CommonContext):
             # Set Helm Hurry flag in client
             self.client.helm_hurry_enabled = self.slot_data.get("helm_hurry", False)
             self.client.players = self.player_names
+            # Reset checks after we have missing_locations info
             self.reset_checks()
             missing_locations = self.missing_locations
             asyncio.create_task(self.send_msgs([{"cmd": "LocationScouts", "locations": list(missing_locations)}]))

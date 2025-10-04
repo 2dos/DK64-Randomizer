@@ -20,8 +20,6 @@ from randomizer.Settings import CharacterColors, KongModels, ColorOptions
 
 def changeBarrelColor(settings, ROM_COPY: ROM, barrel_color: tuple = None, metal_color: tuple = None, brighten_barrel: bool = False):
     """Change the colors of the various barrels."""
-    if settings.archipelago:  # Something weird going on with AP
-        return
     wood_img = getImageFile(ROM_COPY, 25, getBonusSkinOffset(ExtraTextures.ShellWood), True, 32, 64, TextureFormat.RGBA5551)
     metal_img = getImageFile(ROM_COPY, 25, getBonusSkinOffset(ExtraTextures.ShellMetal), True, 32, 64, TextureFormat.RGBA5551)
     qmark_img = getImageFile(ROM_COPY, 25, getBonusSkinOffset(ExtraTextures.ShellQMark), True, 32, 64, TextureFormat.RGBA5551)
