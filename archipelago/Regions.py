@@ -20,7 +20,7 @@ from randomizer.Enums.Settings import HelmSetting, FungiTimeSetting, FasterCheck
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists import Location as DK64RLocation, Item as DK64RItem
-from randomizer.Lists.Location import SharedShopLocations, ShopLocationReference
+from randomizer.Lists.Location import SharedShopLocations
 from randomizer.Lists.Minigame import MinigameRequirements
 from randomizer.LogicClasses import Collectible, Event, LocationLogic, TransitionFront, Region as DK64Region
 from randomizer.Patching.Library.Generic import IsItemSelected

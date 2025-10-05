@@ -608,7 +608,6 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806F88A8, Overlay.Static, 0x1000, offset_dict)  # Force disable coin cheat
     writeValue(ROM_COPY, 0x805FEA14, Overlay.Static, 0, offset_dict, 4)  # Prevent Enguarde arena setting kong as Enguarde
     writeValue(ROM_COPY, 0x805FEA08, Overlay.Static, 0, offset_dict, 4)  # Prevent Rambi arena setting kong as Rambi
-    writeValue(ROM_COPY, 0x80712552, Overlay.Static, -1, offset_dict, 2, True)
 
     writeFunction(ROM_COPY, 0x805FC164, Overlay.Static, "cFuncLoop", offset_dict)  # Main Function Loop
     writeFunction(ROM_COPY, 0x8060CB7C, Overlay.Static, "fixChimpyCamBug", offset_dict)  # Fix bug with PJ
@@ -617,6 +616,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x806C3B5C, Overlay.Static, "mermaidCheck", offset_dict)  # Mermaid Check
     writeFunction(ROM_COPY, 0x806ADA70, Overlay.Static, "HandleSpiderSilkSpawn", offset_dict)  # Fix some silk memes
     writeFunction(ROM_COPY, 0x80712558, Overlay.Static, "getTurnedCount", offset_dict)  # Blueprint Turn-ins
+    writeValue(ROM_COPY, 0x80712552, Overlay.Static, -1, offset_dict, 2, True)
 
     if ENABLE_HITSCAN:
         writeFunction(ROM_COPY, 0x80694FAC, Overlay.Static, "movePelletWrapper", offset_dict)
