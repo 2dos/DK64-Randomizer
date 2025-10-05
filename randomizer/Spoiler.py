@@ -1155,13 +1155,13 @@ class Spoiler:
                     if location.item is not None and location.item != Items.NoItem and not (hint_info.related_location in TrainingBarrelLocations or hint_info.related_location in PreGivenLocations):
                         item = ItemList[location.item]
                         human_hint_list[hint_info.name] += f" | (Hinting towards: {item.name} at {location.name})"
+                        if hint_info.is_last_woth_hint:
+                            human_hint_list[hint_info.name] += "*"
             humanspoiler["Wrinkly Hints"] = human_hint_list
-            # humanspoiler["Unhinted Score"] = self.unhinted_score
-            # humanspoiler["Potentially Awful Locations"] = {}
-            # for location_description in self.poor_scoring_locations:
-            #     humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
-            # if hasattr(self, "hint_swap_advisory"):
-            #     humanspoiler["Hint Swap Advisory"] = self.hint_swap_advisory
+            humanspoiler["Unhinted Score"] = self.unhinted_score
+            humanspoiler["Potentially Awful Locations"] = {}
+            for location_description in self.poor_scoring_locations:
+                humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
         self.json = json.dumps(humanspoiler, indent=4)
 
     def UpdateKasplats(self, kasplat_map: Dict[Locations, Kongs]) -> None:
