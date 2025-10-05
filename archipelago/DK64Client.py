@@ -338,7 +338,6 @@ class DK64Client:
             self._message_handler.update_speed_if_needed(speed)
             self.send_message(item_name, from_player, "from")
 
-
     async def _process_item_data(self, item_data: dict, item_name: str):
         """Process the item data and apply it to the game."""
         if item_data.get("flag_id") is not None:
