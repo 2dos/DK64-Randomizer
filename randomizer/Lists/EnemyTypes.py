@@ -85,7 +85,6 @@ class EnemyData:
         interaction: InteractionMethods = None,
         placeable=True,
         default_size=None,
-        audio_engine_burden=False,
     ) -> None:
         """Initialize with given parameters."""
         self.name = name
@@ -108,9 +107,6 @@ class EnemyData:
         self.interaction = interaction
         self.placeable = placeable
         self.default_size = default_size
-        self.audio_engine_burden = (
-            audio_engine_burden  # Enemies with this tag are known to cause game freezes due to overloading the SoundPlayer with events, causing it to lose its critically important event
-        )
         if air:
             self.minigame_enabled = False
 
@@ -152,15 +148,13 @@ class EnemyLoc:
                 for xi, x in enumerate(ENEMY_REPLACEMENT_PRIORITY[self.default_type]):
                     self.allowed_enemies[xi + 1] = getEnemyPermitted(x, banned_enemies)
 
-    def placeNewEnemy(self, random, enabled_enemies: List[Any], enable_speed: bool, sound_safeguard) -> Enemies:
+    def placeNewEnemy(self, random, enabled_enemies: List[Any], enable_speed: bool) -> Enemies:
         """Place new enemy in slot."""
         if self.enable_randomization:
             permitted = []
             for x in range(4):
                 if len(permitted) == 0:
                     permitted = [enemy for enemy in self.allowed_enemies[x] if enemy in enabled_enemies and EnemyMetaData[enemy].selector_enabled]
-                    if sound_safeguard:
-                        permitted = [enemy for enemy in permitted if not EnemyMetaData[enemy].audio_engine_burden]
             if len(permitted) > 0:
                 self.enemy = random.choice(permitted)
             if enable_speed and self.enemy in EnemyMetaData:
@@ -343,7 +337,6 @@ EnemyMetaData = {
         disruptive=1,
         interaction=InteractionMethods(kill_melee=False, kill_gun=False, kill_punch=True),
         default_size=50,
-        audio_engine_burden=True,
     ),  #
     Enemies.Kremling: EnemyData(
         name="Kremling",
@@ -472,7 +465,6 @@ EnemyMetaData = {
         crown_enabled=False,
         interaction=InteractionMethods(),
         default_size=55,
-        # audio_engine_burden=True,
     ),  # with projectiles, disruptive will need to be set to 2
     Enemies.Bat: EnemyData(
         name="Bat",
@@ -572,7 +564,6 @@ EnemyMetaData = {
 }
 
 enemies_nokill_gun = [enemy for enemy in EnemyMetaData if ((not EnemyMetaData[enemy].interaction.kill_gun) and (not EnemyMetaData[enemy].interaction.kill_melee)) or enemy == Enemies.Guard]
-enemies_noisy = [enemy for enemy in EnemyMetaData if EnemyMetaData[enemy].audio_engine_burden]
 enemies_shockwave_immune = [
     Enemies.Bat,
     Enemies.KlaptrapPurple,
@@ -937,7 +928,7 @@ enemy_location_list = {
     Locations.Caves5DCDiddyUpperEnemy_Enemy0: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 1, [], True, False),
     Locations.Caves5DCDiddyUpperEnemy_Enemy1: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 2, [], True, False),
     # Tiny 5DC
-    Locations.Caves5DCTinyEnemy_Gauntlet0: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 1, [Enemies.Kosha, Enemies.Guard] + enemies_noisy, True, False),
+    Locations.Caves5DCTinyEnemy_Gauntlet0: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 1, [Enemies.Kosha, Enemies.Guard], True, False),
     Locations.Caves5DCTinyEnemy_Gauntlet1: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 2, [Enemies.Kosha, Enemies.Guard], True, False),
     Locations.Caves5DCTinyEnemy_Gauntlet2: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 3, [Enemies.Kosha, Enemies.Guard], True, False),
     Locations.Caves5DCTinyEnemy_Gauntlet3: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 4, [Enemies.Kosha, Enemies.Guard], True, False),

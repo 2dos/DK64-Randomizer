@@ -595,7 +595,6 @@ krem_kap_mapping = {
 def randomize_enemies_0(spoiler):
     """Determine randomized enemies."""
     data = {}
-    noise_management_dict = {}  # Prevent known game freezes
     pkmn = []
     resetPkmnSnap()
     spoiler.valid_photo_items = [
@@ -610,13 +609,10 @@ def randomize_enemies_0(spoiler):
     ]
     for loc in spoiler.enemy_location_list:
         if spoiler.enemy_location_list[loc].enable_randomization:
-            sound_safeguard = False
             map = spoiler.enemy_location_list[loc].map
             if map not in data:
                 data[map] = []
-                noise_management_dict[map] = 0
-            sound_safeguard = noise_management_dict[map] > 2
-            new_enemy = spoiler.enemy_location_list[loc].placeNewEnemy(spoiler.settings.random, spoiler.settings.enemies_selected, True, sound_safeguard)
+            new_enemy = spoiler.enemy_location_list[loc].placeNewEnemy(spoiler.settings.random, spoiler.settings.enemies_selected, True)
             krem_kap_location = (loc - Locations.JapesMainEnemy_Start) + Locations.KremKap_JapesMainEnemy_Start
             if krem_kap_location in spoiler.LocationList:
                 item = krem_kap_mapping[new_enemy]
@@ -629,8 +625,6 @@ def randomize_enemies_0(spoiler):
                     print(f"ALERT: INCORRECT ENEMY {loc.name}")
             elif spoiler.enemy_location_list[loc].respawns:
                 print(f"ALERT: MISSING ENEMY {loc.name}")
-            if map == Maps.ForestAnthill or not spoiler.enemy_location_list[loc].respawns and EnemyMetaData[new_enemy].audio_engine_burden:
-                noise_management_dict[map] += 1
             data[map].append(
                 {
                     "enemy": new_enemy,
