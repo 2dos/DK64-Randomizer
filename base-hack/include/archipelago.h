@@ -108,6 +108,4 @@ extern void saveAPCounter(void);
 extern int isAPEnabled(void);
 extern void sendDeath(void);
 extern void sendTrapLink(ICE_TRAP_TYPES trap_type);
-extern void processDeferredShopkeeperItems(void);
-extern int shouldDeferShopkeeperItem(int flag_id);
 extern Gfx *displayAPConnection(Gfx *dl);
