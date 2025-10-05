@@ -153,6 +153,11 @@ void sendTrapLink(ICE_TRAP_TYPES trap_type) {
 }
 
 int canReceiveItem(void) {
+    // Check if any shopkeeper actors are currently loaded
+    if (isActorLoaded(0xBD) || isActorLoaded(0xBE) || isActorLoaded(0xBF) || isActorLoaded(0xB8)) {
+        return 0; // Ban item sending if shopkeeper is present
+    }
+    
     if (isGamemode(GAMEMODE_ADVENTURE, 1) || isGamemode(GAMEMODE_SNIDEGAMES, 1)) {
         if (LZFadeoutProgress == 0) {
             return 1;
@@ -160,7 +165,6 @@ int canReceiveItem(void) {
     }
     return 0;
 }
-
 
 void handleArchipelagoFeed(void) {
     if (ap_info.connection > 0) {
