@@ -643,7 +643,7 @@ if baseclasses_loaded:
             "Candy Locations": candy_locations(),
             "Funky Locations": funky_locations(),
             "Snide Locations": snide_locations(),
-            "Shop Locations": shop_locations(),
+            "Shops": shop_locations(),
         }
 
         # with open("donklocations.txt", "w") as f:
