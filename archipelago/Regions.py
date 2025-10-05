@@ -203,7 +203,7 @@ def create_region(
             # Starting move locations may be shuffled but their locations are not relevant ever due to item placement restrictions
             if location_obj.type in (Types.TrainingBarrel, Types.PreGivenMove):
                 continue
-             # Dropsanity would otherwise flood the world with irrelevant locked locations, greatly slowing seed gen
+            # Dropsanity would otherwise flood the world with irrelevant locked locations, greatly slowing seed gen
             if location_obj.type == Types.Enemies and Types.Enemies not in logic_holder.settings.shuffled_location_types:
                 continue
             # Skip shared shops that are not in the available pool
