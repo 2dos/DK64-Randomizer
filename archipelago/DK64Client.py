@@ -338,45 +338,12 @@ class DK64Client:
             self._message_handler.update_speed_if_needed(speed)
             self.send_message(item_name, from_player, "from")
 
-    def _should_defer_shopkeeper_item(self, flag_id: int) -> bool:
-        """Check if a shopkeeper item should be deferred based on current map."""
-        # Shopkeeper flag IDs and their corresponding maps
-        shopkeeper_maps = {
-            962: 0x5,  # Cranky -> MAP_CRANKY
-            963: 0x1,  # Funky -> MAP_FUNKY
-            964: 0x19,  # Candy -> MAP_CANDY
-            965: 0xF,  # Snide -> MAP_SNIDE
-        }
-
-        # Use the already tracked current_map instead of reading from memory every time
-        return flag_id in shopkeeper_maps and self.current_map == shopkeeper_maps[flag_id]
-
-    def _defer_shopkeeper_item(self, flag_id: int):
-        """Store a shopkeeper item to be given later when exiting the shop."""
-        if not self.memory_pointer:
-            return
-
-        # Map flag IDs to memory offsets for deferred items
-        defer_offsets = {
-            962: 0x65,  # deferred_cranky
-            963: 0x66,  # deferred_funky
-            964: 0x67,  # deferred_candy
-            965: 0x68,  # deferred_snide
-        }
-
-        if flag_id in defer_offsets:
-            # Set the deferred flag in the archipelago data structure
-            self.n64_client.write_u8(self.memory_pointer + defer_offsets[flag_id], 1)
 
     async def _process_item_data(self, item_data: dict, item_name: str):
         """Process the item data and apply it to the game."""
         if item_data.get("flag_id") is not None:
             flag_id = item_data.get("flag_id")
-            # Check if this is a shopkeeper item that should be deferred
-            if self._should_defer_shopkeeper_item(flag_id):
-                self._defer_shopkeeper_item(flag_id)
-            else:
-                self.setFlag(flag_id)
+            self.setFlag(flag_id)
         elif item_data.get("fed_id") is not None:
             await self.writeFedData(item_data.get("fed_id"))
         elif item_data.get("count_id") is not None:

@@ -241,9 +241,6 @@ void handleArchipelagoFeed(void) {
         addHelmTime(ap_info.helm_hurry_item, 1);
         ap_info.helm_hurry_item = 0;
     }
-
-    // Process any deferred shopkeeper items
-    processDeferredShopkeeperItems();
 }
 
 int canDie(void) {
@@ -284,41 +281,6 @@ static char *ap_strings[] = {
     "APCLIENT DISCONNECTED"
 };
 
-int shouldDeferShopkeeperItem(int flag_id) {
-    // Check if we're in a shop and the item is the corresponding shopkeeper
-    switch (flag_id) {
-        case 962: // Cranky
-            return (CurrentMap == MAP_CRANKY);
-        case 963: // Funky
-            return (CurrentMap == MAP_FUNKY);
-        case 964: // Candy
-            return (CurrentMap == MAP_CANDY);
-        case 965: // Snide
-            return (CurrentMap == MAP_SNIDE);
-        default:
-            return 0;
-    }
-}
-
-void processDeferredShopkeeperItems(void) {
-    // Check if we're no longer in the shops and can now give deferred items
-    if (ap_info.deferred_cranky && CurrentMap != MAP_CRANKY) {
-        setFlag(962, 1, FLAGTYPE_PERMANENT);
-        ap_info.deferred_cranky = 0;
-    }
-    if (ap_info.deferred_funky && CurrentMap != MAP_FUNKY) {
-        setFlag(963, 1, FLAGTYPE_PERMANENT);
-        ap_info.deferred_funky = 0;
-    }
-    if (ap_info.deferred_candy && CurrentMap != MAP_CANDY) {
-        setFlag(964, 1, FLAGTYPE_PERMANENT);
-        ap_info.deferred_candy = 0;
-    }
-    if (ap_info.deferred_snide && CurrentMap != MAP_SNIDE) {
-        setFlag(965, 1, FLAGTYPE_PERMANENT);
-        ap_info.deferred_snide = 0;
-    }
-}
 
 Gfx *displayAPConnection(Gfx *dl) {
     if (isAPEnabled()) {
