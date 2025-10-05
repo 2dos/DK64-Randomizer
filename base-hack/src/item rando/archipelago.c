@@ -27,10 +27,6 @@ void initAP(void) {
         APData = &ap_info;
         ap_info.text_timer = 0x82;
         ap_info.tag_kong = -1;
-        ap_info.deferred_cranky = 0;
-        ap_info.deferred_funky = 0;
-        ap_info.deferred_candy = 0;
-        ap_info.deferred_snide = 0;
     }
 }
 
@@ -280,7 +276,6 @@ static char *ap_strings[] = {
     "APCLIENT CONNECTED",
     "APCLIENT DISCONNECTED"
 };
-
 
 Gfx *displayAPConnection(Gfx *dl) {
     if (isAPEnabled()) {

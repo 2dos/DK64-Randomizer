@@ -98,10 +98,6 @@ typedef struct archipelago_data {
     /* 0x062 */ unsigned char is_trapped;
     /* 0x063 */ unsigned char sent_trap;
     /* 0x064 */ unsigned char helm_hurry_item;
-    /* 0x065 */ unsigned char deferred_cranky;
-    /* 0x066 */ unsigned char deferred_funky;
-    /* 0x067 */ unsigned char deferred_candy;
-    /* 0x068 */ unsigned char deferred_snide;
 } archipelago_data;
 
 extern archipelago_data *APData;
