@@ -283,11 +283,11 @@ class DK64Client:
             # First check the regular safety timer
             if not self.safe_to_send():
                 return False
-            
+
             # Then check if we can receive shopkeeper items (not in shops)
             can_receive = self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.can_receive_shopkeeper)
             return can_receive != 0
-        except:
+        except Exception:
             return self.safe_to_send()
 
     def is_shopkeeper_item(self, item_data: dict) -> bool:
@@ -295,7 +295,7 @@ class DK64Client:
         flag_id = item_data.get("flag_id")
         if flag_id is None:
             return False
-        
+
         shopkeeper_flags = {962, 963, 964, 965}  # Cranky, Funky, Candy, Snide
         return flag_id in shopkeeper_flags
 
@@ -338,7 +338,7 @@ class DK64Client:
 
         # Check if this is a shopkeeper item
         is_shopkeeper = self.is_shopkeeper_item(item_data)
-        
+
         await self._wait_for_safe_send(is_shopkeeper)
 
         self._handle_message_display(item_data, item_name, from_player, index)
