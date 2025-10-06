@@ -624,14 +624,14 @@ def randomize_enemies_0(spoiler):
         Items.PhotoKasplatLanky,
         Items.PhotoKasplatTiny,
         Items.PhotoKasplatChunky,
-        Items.PhotoBFI, # Not Randomized
-        Items.PhotoIceTomato, # Not Randomized
-        Items.PhotoMermaid, # Not Randomized
-        Items.PhotoLlama, # Not Randomized
-        Items.PhotoMechfish, # Not Randomized
-        Items.PhotoSeal, # Not Randomized
-        Items.PhotoBeanstalk, # Not Randomized
-        Items.PhotoSeasickCannon, # Not Randomized
+        Items.PhotoBFI,  # Not Randomized
+        Items.PhotoIceTomato,  # Not Randomized
+        Items.PhotoMermaid,  # Not Randomized
+        Items.PhotoLlama,  # Not Randomized
+        Items.PhotoMechfish,  # Not Randomized
+        Items.PhotoSeal,  # Not Randomized
+        Items.PhotoBeanstalk,  # Not Randomized
+        Items.PhotoSeasickCannon,  # Not Randomized
     ]
     for loc in spoiler.enemy_location_list:
         if spoiler.enemy_location_list[loc].enable_randomization:
