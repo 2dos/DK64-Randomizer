@@ -279,6 +279,4 @@ export enum Items {
     PhotoLlama = 278,
     PhotoMechfish = 279,
     PhotoSeal = 280,
-    PhotoBeanstalk = 281,
-    PhotoSeasickCannon = 282,
 }

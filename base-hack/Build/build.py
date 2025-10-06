@@ -2273,8 +2273,6 @@ with open(newROMName, "r+b") as fh:
         True,  # Llama
         True,  # Mechfish
         True,  # Seal
-        True,  # Beanstalk
-        True,  # Seasick Cannon
     ]
     values = [0, 0, 0, 0, 0, 0]
     for pi, p in enumerate(pkmn_snap_enemies):

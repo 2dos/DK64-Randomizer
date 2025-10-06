@@ -165,8 +165,6 @@ class Spoiler:
             Items.PhotoLlama,
             Items.PhotoMechfish,
             Items.PhotoSeal,
-            Items.PhotoBeanstalk,
-            Items.PhotoSeasickCannon,
         ]
 
         self.move_data = []

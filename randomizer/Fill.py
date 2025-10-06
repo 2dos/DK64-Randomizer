@@ -3838,8 +3838,6 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         Items.PhotoLlama,
         Items.PhotoMechfish,
         Items.PhotoSeal,
-        Items.PhotoBeanstalk,
-        Items.PhotoSeasickCannon,
     ]
     if len(spoiler.settings.enemies_selected) > 0:
         randomize_enemies_0(spoiler)

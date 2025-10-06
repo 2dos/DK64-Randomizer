@@ -96,9 +96,6 @@ pkmn_snap_enemies = [
     PkmnSnapEnemy(Enemies.Llama),
     PkmnSnapEnemy(Enemies.MechFish),
     PkmnSnapEnemy(Enemies.Seal1),
-    PkmnSnapEnemy(Enemies.Beanstalk),
-    PkmnSnapEnemy(Enemies.SeasickCannon),
-    PkmnSnapEnemy(Enemies.SquawksSpotlight),
 ]
 
 valid_maps = [
@@ -604,8 +601,6 @@ krem_kap_mapping = {
     Enemies.Llama: Items.PhotoLlama,
     Enemies.MechFish: Items.PhotoMechfish,
     Enemies.Seal1: Items.PhotoSeal,
-    Enemies.Beanstalk: Items.PhotoBeanstalk,
-    Enemies.SeasickCannon: Items.PhotoSeasickCannon,
 }
 
 
@@ -629,8 +624,6 @@ def randomize_enemies_0(spoiler):
         Items.PhotoLlama,  # Not Randomized
         Items.PhotoMechfish,  # Not Randomized
         Items.PhotoSeal,  # Not Randomized
-        Items.PhotoBeanstalk,  # Not Randomized
-        Items.PhotoSeasickCannon,  # Not Randomized
     ]
     for loc in spoiler.enemy_location_list:
         if spoiler.enemy_location_list[loc].enable_randomization:

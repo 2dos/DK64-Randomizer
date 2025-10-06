@@ -380,8 +380,6 @@ ItemList = {
     Items.PhotoLlama: Item("Photo (Llama)", False, Types.EnemyPhoto, Kongs.any),
     Items.PhotoMechfish: Item("Photo (Mechfish)", False, Types.EnemyPhoto, Kongs.any),
     Items.PhotoSeal: Item("Photo (Seal)", False, Types.EnemyPhoto, Kongs.any),
-    Items.PhotoBeanstalk: Item("Photo (Beanstalk)", False, Types.EnemyPhoto, Kongs.any),
-    Items.PhotoSeasickCannon: Item("Photo (Seasick Cannon)", False, Types.EnemyPhoto, Kongs.any),
 }
 
 HHItemSelector = []

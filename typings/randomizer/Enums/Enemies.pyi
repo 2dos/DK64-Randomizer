@@ -103,4 +103,3 @@ class Enemies(IntEnum):
     Bug = 110
     FairyQueen = 111
     IceTomato = 112
-    Beanstalk = 113

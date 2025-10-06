@@ -176,7 +176,6 @@ LogicRegions = {
 
     Regions.SickBay: Region("Sick Bay", HintRegion.Lighthouse, Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonChunkySeasick, lambda l: (l.punch and l.ischunky)),
-        LocationLogic(Locations.KremKap_GalleonActor_SeasickCannon, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.LighthousePlatform, lambda _: True, Transitions.GalleonSickBayToLighthouseArea),
     ]),

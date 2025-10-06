@@ -435,7 +435,6 @@ LogicRegions = {
 
     Regions.WormArea: Region("Worm Area", HintRegion.ForestCenterAndBeanstalk, Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestTinyBeanstalk, lambda l: l.saxophone and l.mini and l.istiny and l.Beans >= 1),
-        LocationLogic(Locations.KremKap_ForestNPC_Beanstalk, lambda l: l.Beans >= 1 and l.camera),
         LocationLogic(Locations.ForestChunkyApple, lambda l: Events.WormGatesOpened in l.Events and l.hunkyChunky and l.ischunky and l.barrels),
         LocationLogic(Locations.RainbowCoin_Location08, lambda _: True),
         LocationLogic(Locations.ForestMainEnemy_NearBeanstalk0, lambda _: True),
