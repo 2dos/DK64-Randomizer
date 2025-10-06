@@ -1572,5 +1572,5 @@ export enum Locations {
     KremKap_CavesNPC_IceTomato = 1571,
     KremKap_IslesNPC_BFIQueen = 1572,
     KremKap_GalleonActor_SeasickCannon = 1573,
-    KremKap_ForestNPC_Beanstalk = 1574
+    KremKap_ForestNPC_Beanstalk = 1574,
 }

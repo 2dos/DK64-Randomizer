@@ -1638,7 +1638,7 @@
 | ---- | ------ | ----- |
 | On crystal tower | 10 | `self.logic = lambda _: True` | 
 | Up the crystal tower (Lanky) | 5 | `l.balloon or l.monkey_maneuvers` | 
-| Upper balloon pad | 10 | `l.balloon or l.monkey_maneuvers` | 
+| Upper balloon pad | 5 | `l.balloon or l.monkey_maneuvers` | 
 | Around crystal tower (lower) | Balloon | `self.logic = lambda _: True` | 
 | In Lanky 5DI (Lanky) | Balloon | `self.logic = lambda _: True` | 
 ## Caves Tiny Igloo
