@@ -668,9 +668,7 @@ class LogicVarHolder:
                         self._recalculateBlueprints()
                     if corresponding_item_id >= Items.JapesDonkeyHint and corresponding_item_id <= Items.CastleChunkyHint:
                         self.Hints.append(corresponding_item_id)
-                    if (corresponding_item_id >= Items.PhotoBat and corresponding_item_id <= Items.PhotoBug) or (
-                        corresponding_item_id >= Items.PhotoBFI and corresponding_item_id <= Items.PhotoSeal
-                    ):
+                    if (corresponding_item_id >= Items.PhotoBat and corresponding_item_id <= Items.PhotoBug) or (corresponding_item_id >= Items.PhotoBFI and corresponding_item_id <= Items.PhotoSeal):
                         self.Photos[corresponding_item_id] = 1
 
     def RemoveArchipelagoItem(self, ap_item):
