@@ -2552,15 +2552,15 @@ ColoredBananaGroupList = [
         logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.trombone and l.balloon,
         locations=[[5, 1.2, 538, 211, 1489]],
     ),
-    ColoredBananaGroup(
-        group=205,
-        map_id=Maps.CastleDungeon,
-        name="In the goo in Lanky's room",
-        konglist=[Kongs.lanky],
-        region=Regions.Dungeon,
-        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase(),
-        locations=[[5, 1.0, 630, 90, 997]],
-    ),
+    # ColoredBananaGroup(
+    #     group=205,
+    #     map_id=Maps.CastleDungeon,
+    #     name="In the goo in Lanky's room",
+    #     konglist=[Kongs.lanky],
+    #     region=Regions.Dungeon,
+    #     logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase(),
+    #     locations=[[5, 1.0, 630, 90, 997]],
+    # ), Will probably add back later
     ColoredBananaGroup(
         group=206,
         map_id=Maps.CastleUpperCave,

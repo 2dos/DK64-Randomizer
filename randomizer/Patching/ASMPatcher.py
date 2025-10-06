@@ -615,6 +615,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x807313A4, Overlay.Static, "checkVictory_flaghook", offset_dict)  # perm flag set hook
     writeFunction(ROM_COPY, 0x806C3B5C, Overlay.Static, "mermaidCheck", offset_dict)  # Mermaid Check
     writeFunction(ROM_COPY, 0x806ADA70, Overlay.Static, "HandleSpiderSilkSpawn", offset_dict)  # Fix some silk memes
+    writeFunction(ROM_COPY, 0x80712558, Overlay.Static, "getTurnedCount", offset_dict)  # Blueprint Turn-ins
+    writeValue(ROM_COPY, 0x80712552, Overlay.Static, -1, offset_dict, 2, True)
 
     if ENABLE_HITSCAN:
         writeFunction(ROM_COPY, 0x80694FAC, Overlay.Static, "movePelletWrapper", offset_dict)
