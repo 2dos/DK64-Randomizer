@@ -1896,7 +1896,6 @@
 | Rotating throne | 5 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()` | 
 | Under the chain vines in Diddy's room | 5 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()` | 
 | Balloon backwards to the main dungeon | 5 | `(l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()) and l.trombone and l.balloon` | 
-| In the goo in Lanky's room | 5 | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()` | 
 | In Lanky's section | Balloon | `self.logic = lambda _: True` | 
 | In Diddy's section | Balloon | `self.logic = lambda _: True` | 
 | In DK's room | Balloon | `l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.CanPhase()` | 

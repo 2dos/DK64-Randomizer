@@ -967,6 +967,12 @@ class SnideMaximum(Range):
     default = 20
 
 
+class SharedShops(Toggle):
+    """If enabled, makes 10 random shops shared removing 20 locations from the pool."""
+
+    display_name = "Shared Shops"
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1046,6 +1052,7 @@ class DK64Options(PerGameCommonOptions):
     slip_weight: SlipTrapWeight
     enable_cutscenes: EnableCutscenes
     maximum_snide: SnideMaximum
+    enable_shared_shops: SharedShops
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1092,6 +1099,7 @@ dk64_option_groups: List[OptionGroup] = [
             HintItemRandomization,
             HalfMedals,
             SmallerShops,
+            SharedShops,
             SnideMaximum,
         ],
     ),

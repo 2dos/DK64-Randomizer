@@ -98,6 +98,7 @@ typedef struct archipelago_data {
     /* 0x062 */ unsigned char is_trapped;
     /* 0x063 */ unsigned char sent_trap;
     /* 0x064 */ unsigned char helm_hurry_item;
+    /* 0x065 */ unsigned char can_receive_shopkeeper;
 } archipelago_data;
 
 extern archipelago_data *APData;
@@ -109,3 +110,4 @@ extern int isAPEnabled(void);
 extern void sendDeath(void);
 extern void sendTrapLink(ICE_TRAP_TYPES trap_type);
 extern Gfx *displayAPConnection(Gfx *dl);
+extern int canReceiveShopkeeperItem(void);

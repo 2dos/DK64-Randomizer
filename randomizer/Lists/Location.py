@@ -521,7 +521,7 @@ LocationListOriginal = {
     Locations.HelmKey: Location(Levels.HideoutHelm, "The End of Helm", Items.HideoutHelmKey, Types.Key, Kongs.any, [MapIDCombo(Maps.HideoutHelm, 0x5A, 380)]),
 
     # Normal shop locations
-    Locations.SimianSlam: Location(Levels.DKIsles, "DK Isles Cranky Shared", Items.NoItem, Types.Shop, Kongs.any, [MoveTypes.Slam, 1, VendorType.Cranky]),
+    Locations.SimianSlam: Location(Levels.DKIsles, "Isles Cranky Shared", Items.NoItem, Types.Shop, Kongs.any, [MoveTypes.Slam, 1, VendorType.Cranky]),
     Locations.BaboonBlast: Location(Levels.JungleJapes, "Japes Cranky Donkey", Items.BaboonBlast, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 1, VendorType.Cranky]),
     Locations.ChimpyCharge: Location(Levels.JungleJapes, "Japes Cranky Diddy", Items.ChimpyCharge, Types.Shop, Kongs.diddy, [MoveTypes.Moves, 1, VendorType.Cranky]),
     Locations.Orangstand: Location(Levels.JungleJapes, "Japes Cranky Lanky", Items.Orangstand, Types.Shop, Kongs.lanky, [MoveTypes.Moves, 1, VendorType.Cranky]),

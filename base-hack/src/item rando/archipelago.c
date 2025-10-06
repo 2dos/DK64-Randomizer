@@ -161,6 +161,12 @@ int canReceiveItem(void) {
     return 0;
 }
 
+int canReceiveShopkeeperItem(void) {
+    if (inShop(CurrentMap, 1)) {
+        return 0;
+    }
+    return canReceiveItem();
+}
 
 void handleArchipelagoFeed(void) {
     if (ap_info.connection > 0) {
@@ -237,6 +243,7 @@ void handleArchipelagoFeed(void) {
         addHelmTime(ap_info.helm_hurry_item, 1);
         ap_info.helm_hurry_item = 0;
     }
+    ap_info.can_receive_shopkeeper = canReceiveShopkeeperItem();
 }
 
 int canDie(void) {
