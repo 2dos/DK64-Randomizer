@@ -277,6 +277,28 @@ class DK64Client:
         countdown_value = self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.safety_text_timer)
         return countdown_value == 0
 
+    def safe_to_send_shopkeeper(self):
+        """Check if it's safe to send a shopkeeper item."""
+        try:
+            # First check the regular safety timer
+            if not self.safe_to_send():
+                return False
+            
+            # Then check if we can receive shopkeeper items (not in shops)
+            can_receive = self.n64_client.read_u8(self.memory_pointer + DK64MemoryMap.can_receive_shopkeeper)
+            return can_receive != 0
+        except:
+            return self.safe_to_send()
+
+    def is_shopkeeper_item(self, item_data: dict) -> bool:
+        """Check if an item is a shopkeeper NPC."""
+        flag_id = item_data.get("flag_id")
+        if flag_id is None:
+            return False
+        
+        shopkeeper_flags = {962, 963, 964, 965}  # Cranky, Funky, Candy, Snide
+        return flag_id in shopkeeper_flags
+
     async def validate_client_connection(self):
         """Validate the client connection."""
         if not self.memory_pointer:
@@ -309,12 +331,15 @@ class DK64Client:
         if not self.started_file():
             return
 
-        await self._wait_for_safe_send()
-
         item_data = item_ids.get(item_id)
         if not item_data:
             logger.warning(f"Unknown item ID: {item_id}")
             return
+
+        # Check if this is a shopkeeper item
+        is_shopkeeper = self.is_shopkeeper_item(item_data)
+        
+        await self._wait_for_safe_send(is_shopkeeper)
 
         self._handle_message_display(item_data, item_name, from_player, index)
         await self._process_item_data(item_data, item_name)
@@ -322,10 +347,14 @@ class DK64Client:
         next_index = index + 1
         self.n64_client.write_u16(self.memory_pointer + DK64MemoryMap.counter_offset, next_index)
 
-    async def _wait_for_safe_send(self):
+    async def _wait_for_safe_send(self, is_shopkeeper=False):
         """Wait until it's safe to send an item."""
-        while not self.safe_to_send():
-            await asyncio.sleep(0.1)
+        if is_shopkeeper:
+            while not self.safe_to_send_shopkeeper():
+                await asyncio.sleep(0.1)
+        else:
+            while not self.safe_to_send():
+                await asyncio.sleep(0.1)
 
     def _handle_message_display(self, item_data: dict, item_name: str, from_player: str, index: int):
         """Handle message display based on send mode and item type."""
