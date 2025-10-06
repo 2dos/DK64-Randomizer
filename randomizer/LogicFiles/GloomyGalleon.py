@@ -168,12 +168,15 @@ LogicRegions = {
 
     Regions.MermaidRoom: Region("Mermaid Room", HintRegion.Lighthouse, Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonTinyPearls, lambda l: (l.Pearls >= l.settings.mermaid_gb_pearls) and (l.istiny or l.settings.free_trade_items)),
+        LocationLogic(Locations.KremKap_GalleonNPC_Mermaid, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_GalleonNPC_Seal, lambda l: l.camera and Events.SealReleased not in l.Events),
     ], [], [
         TransitionFront(Regions.LighthouseUnderwater, lambda _: True, Transitions.GalleonMermaidToLighthouseArea),
     ]),
 
     Regions.SickBay: Region("Sick Bay", HintRegion.Lighthouse, Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonChunkySeasick, lambda l: (l.punch and l.ischunky)),
+        LocationLogic(Locations.KremKap_GalleonActor_SeasickCannon, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.LighthousePlatform, lambda _: True, Transitions.GalleonSickBayToLighthouseArea),
     ]),
@@ -182,6 +185,7 @@ LogicRegions = {
         LocationLogic(Locations.GalleonDonkeyFreetheSeal, lambda l: Events.SealReleased in l.Events and (l.isdonkey or l.settings.free_trade_items)),
         LocationLogic(Locations.GalleonKasplatNearSub, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.MelonCrate_Location05, lambda _: True),
+        LocationLogic(Locations.KremKap_GalleonNPC_Seal, lambda l: l.camera and Events.SealReleased in l.Events),
     ], [
         Event(Events.ShipyardTreasureRoomOpened, lambda l: (Events.ShipyardEnguarde in l.Events and (Events.WaterRaised in l.Events or l.monkey_maneuvers)) or l.checkBarrier(RemovedBarriersSelected.galleon_treasure_room)),
         Event(Events.GalleonDonkeyPad, lambda l: l.bongos and l.isdonkey and (l.swim or l.galleonGatesStayOpen())),
@@ -205,6 +209,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_GalleonMainEnemy_Submarine, lambda l: l.camera),
         LocationLogic(Locations.KremKap_GalleonMainEnemy_5DS0, lambda l: l.camera),
         LocationLogic(Locations.KremKap_GalleonMainEnemy_5DS1, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_GalleonNPC_Mechfish, lambda l: l.camera and Events.MechafishSummoned in l.Events and l.isdiddy),
     ], [
         Event(Events.ShipyardEnguarde, lambda l: l.lanky),
     ], [

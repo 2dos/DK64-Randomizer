@@ -159,6 +159,14 @@ class Spoiler:
             Items.PhotoTomato,
             Items.PhotoZingerLime,
             Items.PhotoZingerCharger,
+            Items.PhotoBFI,
+            Items.PhotoIceTomato,
+            Items.PhotoMermaid,
+            Items.PhotoLlama,
+            Items.PhotoMechfish,
+            Items.PhotoSeal,
+            Items.PhotoBeanstalk,
+            Items.PhotoSeasickCannon,
         ]
 
         self.move_data = []

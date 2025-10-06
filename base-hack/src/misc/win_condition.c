@@ -27,17 +27,23 @@ void finalizeBeatGame(void) {
 // Pkmn Snap Spreadsheet: https://docs.google.com/spreadsheets/d/1nTZYi36dFaTB1XCgB7dJJffMsaKz-wOFmP5nDo8l3Uo/edit?usp=sharing
 
 static const short poke_snap_actors[] = {
+    117, // Beanstalk
+    163, // BFI Queen
+    164, // Ice Tomato
     175, // Kaboom
     178, // Blue Beaver
     181, // Book
     182, // Klobber
     183, // Zinger (Charger)
     187, // Klump
+    193, // Mermaid
+    201, // Llama
     205, // Klaptrap (Green)
     206, // Zinger (Bomber)
     208, // Klaptrap (Purple)
     209, // Klaptrap (Red)
     212, // Gold Beaver
+    220, // Seasick Cannon
     224, // Mushroom Man
     230, // Ruler
     235, // Robo-Kremling
@@ -47,6 +53,8 @@ static const short poke_snap_actors[] = {
     243, // Kasplat (Lanky)
     244, // Kasplat (Tiny)
     245, // Kasplat (Chunky)
+    246, // Mechanical Fish
+    247, // Seal
     259, // Kop
     261, // Robo-Zinger
     262, // Krossbones

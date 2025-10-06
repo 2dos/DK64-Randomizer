@@ -887,6 +887,14 @@ class LogicVarHolder:
             Items.PhotoBug,
             Items.PhotoKop,
             Items.PhotoTomato,
+            Items.PhotoBFI,
+            Items.PhotoIceTomato,
+            Items.PhotoMermaid,
+            Items.PhotoLlama,
+            Items.PhotoMechfish,
+            Items.PhotoSeal,
+            Items.PhotoBeanstalk,
+            Items.PhotoSeasickCannon,
         ]
         self.Photos = {x: item_counts[x] for x in photo_subjects}
 

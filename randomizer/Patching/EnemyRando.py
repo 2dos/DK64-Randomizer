@@ -90,6 +90,15 @@ pkmn_snap_enemies = [
     PkmnSnapEnemy(Enemies.Bug),
     PkmnSnapEnemy(Enemies.ZingerFlamethrower),
     PkmnSnapEnemy(Enemies.Scarab),
+    PkmnSnapEnemy(Enemies.FairyQueen),
+    PkmnSnapEnemy(Enemies.IceTomato),
+    PkmnSnapEnemy(Enemies.Mermaid),
+    PkmnSnapEnemy(Enemies.Llama),
+    PkmnSnapEnemy(Enemies.MechFish),
+    PkmnSnapEnemy(Enemies.Seal1),
+    PkmnSnapEnemy(Enemies.Beanstalk),
+    PkmnSnapEnemy(Enemies.SeasickCannon),
+    PkmnSnapEnemy(Enemies.SquawksSpotlight),
 ]
 
 valid_maps = [
@@ -589,6 +598,14 @@ krem_kap_mapping = {
     Enemies.FireballGlasses: Items.PhotoFireball,
     Enemies.Bug: Items.PhotoBug,
     Enemies.Guard: Items.PhotoKop,
+    Enemies.FairyQueen: Items.PhotoBFI,
+    Enemies.IceTomato: Items.PhotoIceTomato,
+    Enemies.Mermaid: Items.PhotoMermaid,
+    Enemies.Llama: Items.PhotoLlama,
+    Enemies.MechFish: Items.PhotoMechfish,
+    Enemies.Seal1: Items.PhotoSeal,
+    Enemies.Beanstalk: Items.PhotoBeanstalk,
+    Enemies.SeasickCannon: Items.PhotoSeasickCannon,
 }
 
 
@@ -830,6 +847,15 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                     True,  # Ghost
                     True,  # Pufftup
                     True,  # Kosha
+                    True,  # Fairy Queen
+                    True,  # Ice Tomato
+                    True,  # Mermaid
+                    True,  # Llama
+                    True,  # Mechfish
+                    True,  # Seal
+                    True,  # Beanstalk
+                    True,  # Seasick Cannon
+                    True,  # Squawks w/ Spotlight
                 ]
             for enemy_index, spawned in enumerate(spoiler.pkmn_snap_data):
                 if spawned:

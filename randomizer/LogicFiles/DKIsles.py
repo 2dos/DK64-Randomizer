@@ -244,6 +244,7 @@ LogicRegions = {
 
     Regions.BananaFairyRoom: Region("Banana Fairy Room", HintRegion.OuterIsles, Levels.DKIsles, False, None, [
         LocationLogic(Locations.CameraAndShockwave, lambda _: True),
+        LocationLogic(Locations.KremKap_IslesNPC_BFIQueen, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.OuterIsles, lambda _: True, Transitions.IslesFairyToMain),
         TransitionFront(Regions.RarewareGBRoom, lambda l: l.CanGetRarewareGB()),

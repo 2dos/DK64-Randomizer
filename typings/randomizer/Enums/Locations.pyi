@@ -1567,3 +1567,11 @@ class Locations(IntEnum):
     IslesLankyHalfMedal = 1564
     IslesTinyHalfMedal = 1565
     IslesChunkyHalfMedal = 1566
+    KremKap_AztecNPC_Llama = 1567
+    KremKap_GalleonNPC_Mechfish = 1568
+    KremKap_GalleonNPC_Seal = 1569
+    KremKap_GalleonNPC_Mermaid = 1570
+    KremKap_CavesNPC_IceTomato = 1571
+    KremKap_IslesNPC_BFIQueen = 1572
+    KremKap_GalleonActor_SeasickCannon = 1573
+    KremKap_ForestNPC_Beanstalk = 1574

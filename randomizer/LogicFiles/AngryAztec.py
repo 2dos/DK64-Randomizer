@@ -83,6 +83,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecMainEnemy_OasisDoor, lambda _: True),
         LocationLogic(Locations.KremKap_AztecMainEnemy_NearCandy, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecMainEnemy_OasisDoor, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecNPC_Llama, lambda l: l.camera and Events.LlamaFreed not in l.Events),
     ], [
         Event(Events.AztecGuitarPad, lambda l: ((l.can_use_vines and l.climbing) or (l.jetpack and l.isdiddy and l.climbing) or (l.monkey_maneuvers and (l.istiny or l.isdiddy))) and l.hasMoveSwitchsanity(Switches.AztecGuitar, True)),
         Event(Events.AztecW1bTagged, lambda _: True),
@@ -383,6 +384,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_AztecLlamaEnemy_Left, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecLlamaEnemy_MelonCrate, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecLlamaEnemy_SlamSwitch, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecNPC_Llama, lambda l: l.camera),
     ], [
         Event(Events.AztecDonkeySwitch, lambda l: l.hasMoveSwitchsanity(Switches.AztecQuicksandSwitch, False, Levels.AngryAztec, 1)),
         Event(Events.AztecLlamaSpit, lambda l: l.CanLlamaSpit()),

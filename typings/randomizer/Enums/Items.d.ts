@@ -273,4 +273,12 @@ export enum Items {
     LankyBlueprint = 272,
     TinyBlueprint = 273,
     ChunkyBlueprint = 274,
+    PhotoBFI = 275,
+    PhotoIceTomato = 276,
+    PhotoMermaid = 277,
+    PhotoLlama = 278,
+    PhotoMechfish = 279,
+    PhotoSeal = 280,
+    PhotoBeanstalk = 281,
+    PhotoSeasickCannon = 282,
 }

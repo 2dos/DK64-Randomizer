@@ -374,6 +374,14 @@ ItemList = {
     Items.PhotoBug: Item("Photo (Bug)", False, Types.EnemyPhoto, Kongs.any),
     Items.PhotoKop: Item("Photo (Kop)", False, Types.EnemyPhoto, Kongs.any),
     Items.PhotoTomato: Item("Photo (Tomato)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoBFI: Item("Photo (BFI Queen)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoIceTomato: Item("Photo (Ice Tomato)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoMermaid: Item("Photo (Mermaid)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoLlama: Item("Photo (Llama)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoMechfish: Item("Photo (Mechfish)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoSeal: Item("Photo (Seal)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoBeanstalk: Item("Photo (Beanstalk)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoSeasickCannon: Item("Photo (Seasick Cannon)", False, Types.EnemyPhoto, Kongs.any),
 }
 
 HHItemSelector = []
