@@ -1694,7 +1694,11 @@ def compileHints(spoiler: Spoiler) -> bool:
             regions_in_region = [region for region in spoiler.RegionList.values() if region.hint_name == foolish_name]
             for region in regions_in_region:
                 foolish_location_score += len(
-                    [loc for loc in region.locations if not spoiler.LocationList[loc.id].inaccessible and spoiler.LocationList[loc.id].type in spoiler.settings.shuffled_location_types]
+                    [
+                        loc
+                        for loc in region.locations
+                        if not spoiler.LocationList[loc.id].inaccessible and spoiler.LocationList[loc.id].type in spoiler.settings.shuffled_location_types and not spoiler.LocationList[loc.id].constant
+                    ]
                 )
                 if region.level == Levels.Shops and region.hint_name != HintRegion.Jetpac:  # Jetpac isn't a "real" shop, it's in the Shops level for convenience
                     shops_in_region += 1
