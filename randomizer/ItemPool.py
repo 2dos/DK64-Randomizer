@@ -124,6 +124,9 @@ def PlaceConstants(spoiler):
         if spoiler.LocationList[location].type == Types.Shop:
             spoiler.LocationList[location].inaccessible = spoiler.LocationList[location].smallerShopsInaccessible
             spoiler.LocationList[location].tooExpensiveInaccessible = False
+    if Types.BlueprintBanana in spoiler.settings.shuffled_location_types:
+        for location_id in spoiler.settings.excluded_bp_locations:
+            spoiler.LocationList[location_id].PlaceDefaultItem(spoiler)
     # Make extra sure the Helm Key is right
     if settings.key_8_helm:
         helm_key = getHelmKey(spoiler.settings)
@@ -570,6 +573,8 @@ def GoldenBananaItems(settings):
     for item_type, value in decrease_values.items():
         if item_type not in settings.shuffled_location_types:
             decrease += value
+    if Types.BlueprintBanana in settings.shuffled_location_types:
+        decrease += len(settings.excluded_bp_locations)
     itemPool.extend(itertools.repeat(Items.GoldenBanana, settings.total_gbs - decrease))
     return itemPool
 
