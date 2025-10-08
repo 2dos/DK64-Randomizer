@@ -2344,6 +2344,12 @@ class Settings:
             # Cap at prog max
             self.progressive_hint_count = prog_max
 
+        self.excluded_bp_locations = []
+        if Types.BlueprintBanana in self.shuffled_location_types and self.most_snide_rewards < 40:
+            self.excluded_bp_locations = [Locations.TurnInJungleJapesDonkeyBlueprint + x for x in range(35)] + [Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(5)]
+            count_to_exclude = 40 - self.most_snide_rewards
+            self.excluded_bp_locations = self.excluded_bp_locations[-count_to_exclude:]
+
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
         bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove]
@@ -2547,12 +2553,6 @@ class Settings:
                     has_banana = True
             if has_banana:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations]
-            excluded_bp_locations = []
-            if Types.BlueprintBanana in self.shuffled_location_types and self.most_snide_rewards < 40:
-                excluded_bp_locations = [Locations.TurnInJungleJapesDonkeyBlueprint + x for x in range(35)] + [Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(5)]
-                count_to_exclude = 40 - self.most_snide_rewards
-                excluded_bp_locations = excluded_bp_locations[-count_to_exclude:]
-
             if Types.FillerBanana in self.shuffled_location_types:
                 self.valid_locations[Types.FillerBanana] = [location for location in shuffledNonMoveLocations]
             regular_items = (
@@ -2790,28 +2790,6 @@ class Settings:
                             self.valid_locations[item_type][kong] = [v for v in self.valid_locations[item_type][kong] if valid_locations_lambda(spoiler.LocationList[v], v)]
                     else:
                         self.valid_locations[item_type] = [v for v in self.valid_locations[item_type] if valid_locations_lambda(spoiler.LocationList[v], v)]
-            # Remove any locations where we're excluding BPs
-            if Types.Shop in self.valid_locations:
-                for kong in self.valid_locations[Types.Shop]:
-                    self.valid_locations[Types.Shop][kong] = [v for v in self.valid_locations[Types.Shop][kong] if v not in excluded_bp_locations]
-            exclude_bp_types = (
-                # These types tend to be pretty important. Lets make sure that if the user specifies they want useful items to stop at a certain BP amount, these don't appear after that amount
-                Types.Key,
-                Types.Shockwave,
-                Types.Bean,
-                Types.Pearl,
-                Types.Candy,
-                Types.Funky,
-                Types.Cranky,
-                Types.Snide,
-                Types.Climbing,
-                Types.RarewareCoin,
-                Types.NintendoCoin,
-                Types.Kong,
-            )
-            for item_type in exclude_bp_types:
-                if item_type in self.valid_locations:
-                    self.valid_locations[item_type] = [v for v in self.valid_locations[item_type] if v not in excluded_bp_locations]
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""
