@@ -1062,37 +1062,29 @@ function refreshItemRandoSortable() {
 document.getElementById("smaller_shops").addEventListener("click", refreshItemRandoSortable);
 document.querySelector("#cb_rando_list_selected option[value='DKIsles']").addEventListener("click", refreshItemRandoSortable);
 document.getElementById("cb_rando_enabled").addEventListener("click", refreshItemRandoSortable);
+document.getElementById("item_rando_list_0").addEventListener("change", unshuffled_pool_list_changed);
 
-// Enable and disable settings based on the Item Rando pool changing
-function item_rando_list_changed(evt) {
-  let itemRandoDisabled = true;
-  // const itemRandoPool = document.getElementById(
-  //   "item_rando_list_selected"
-  // ).options;
+// Enable and disable settings based on the pool of unshuffled things changing
+function unshuffled_pool_list_changed(evt) {
   const smallerShops = document.getElementById("smaller_shops");
-  const moveVanilla = document.getElementById("move_off");
-  const moveRando = document.getElementById("move_on");
   const sharedShopWarning = document.getElementById("shared_shop_warning");
-  let shopsInPool = false;
-  let kongsInPool = false;
-  let shockwaveInPool = false;
-  let shopownersInPool = false;
-  let nothingSelected = true;
+  let shopsInPool = true;
+  let shockwaveInPool = true;
+  let shopownersInPool = true;
 
-  // for (let option of itemRandoPool) {
-  //   if (option.value === "shop" && option.selected) shopsInPool = true;
-  //   if (option.value === "kong" && option.selected) kongsInPool = true;
-  //   if (option.value === "shockwave" && option.selected) shockwaveInPool = true;
-  //   if (option.value === "shopowners" && option.selected) shopownersInPool = true;
-  //   if (option.selected) nothingSelected = false;
-  // }
-
-  // if (nothingSelected) {
-    shopsInPool = true;
-    kongsInPool = true;
-    shockwaveInPool = true;
-    shopownersInPool = true;
-  // }
+  const unshuffled_pool = document.getElementById(`item_rando_list_0`);
+    const types_in_pool = unshuffled_pool.getElementsByTagName("li");
+    for (let i = 0; i < types_in_pool.length; i++) {
+        if (types_in_pool[i].getAttribute("value") == "moves") {
+            shopsInPool = false;
+        }
+        if (types_in_pool[i].getAttribute("value") == "shockwave") {
+            shockwaveInPool = false;
+        }
+        if (types_in_pool[i].getAttribute("value") == "shopowners") {
+            shopownersInPool = false;
+        }
+    }
 
   let camera_option = document.getElementById("starting_move_52");
   let shockwave_option = document.getElementById("starting_move_53");
@@ -1103,14 +1095,7 @@ function item_rando_list_changed(evt) {
 
   if (shopsInPool) {
     sharedShopWarning.setAttribute("hidden", "hidden");
-    // if (moveVanilla.selected || moveRando.selected) {
-    //   document.getElementById("move_on_cross_purchase").selected = true;
-    // }
-    // moveVanilla.setAttribute("disabled", "disabled");
-    // moveRando.setAttribute("disabled", "disabled");
     smallerShops.removeAttribute("disabled");
-
-    
     if (!shockwaveInPool) {
       camera_option.setAttribute("hidden", "hidden");
       shockwave_option.setAttribute("hidden", "hidden");
@@ -1134,8 +1119,6 @@ function item_rando_list_changed(evt) {
 
   } else {
     sharedShopWarning.removeAttribute("hidden");
-    // moveVanilla.removeAttribute("disabled");
-    // moveRando.removeAttribute("disabled");
     smallerShops.setAttribute("disabled", "disabled");
     smallerShops.checked = false;
   }
@@ -2030,7 +2013,7 @@ function update_ui_states() {
   max_music_proportion();
   max_sfx();
   disable_switchsanity_modal();
-  item_rando_list_changed(null);
+  unshuffled_pool_list_changed(null);
   disable_custom_cb_locations_modal();
   toggle_bananaport_selector();
   disable_helm_hurry(null);
