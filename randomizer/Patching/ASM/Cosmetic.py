@@ -154,22 +154,23 @@ def holidayCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
             if random_skybox:
                 used_arr = [random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)]
             if used_arr is not None:
-                for zi, z in enumerate(used_arr):
-                    writeValue(ROM_COPY, 0x80754EF8 + (12 * x) + zi, Overlay.Static, z, offset_dict, 1)
                 # Calculate secondary blend
                 backup_rgb = used_arr.copy()
                 exceeded = False
                 for y in range(3):
-                    used_arr[y] = int(used_arr[y] * 1.2)
+                    used_arr[y] = int(used_arr[y] * 1.6)
                     if used_arr[y] > 255:
                         exceeded = True
                 if exceeded:
                     for y in range(3):
-                        used_arr[y] = int(backup_rgb[y] * 0.8)
+                        used_arr[y] = int(backup_rgb[y] * 0.4)
                 # Write secondary blend
-                for y in range(3):
+                for y in range(4):
                     for zi, z in enumerate(used_arr):
-                        writeValue(ROM_COPY, 0x80754EF8 + (12 * x) + ((y + 1) * 3) + zi, Overlay.Static, z, offset_dict, 1)
+                        delta = z - backup_rgb[zi]
+                        rate = delta / 3
+                        channel = int(backup_rgb[zi] + (rate * y))
+                        writeValue(ROM_COPY, 0x80754EF8 + (12 * x) + (y * 3) + zi, Overlay.Static, channel, offset_dict, 1)
         writeValue(ROM_COPY, 0x8075E1EC, Overlay.Static, 0x80708234, offset_dict, 4)
     # Holiday Mode Stuff
     if holiday == Holidays.Halloween:
