@@ -32,7 +32,6 @@ OVERLAY_ENDS = {
     Overlay.Jetpac: 0x8002EC30,
     Overlay.Custom: 0x805FAE00,
 }
-CUSTOM_ACTORS_START = 345
 
 
 def populateOverlayOffsets(ROM_COPY) -> dict:
