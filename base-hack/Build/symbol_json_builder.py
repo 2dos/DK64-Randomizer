@@ -83,7 +83,7 @@ with open(f"{PATH_PRE}rom/dev-symbols.sym", "r") as fh:
             # Disable out-of-range stuff (upper bound)
             continue
         data["symbols"][line_split[1]] = addr_int
-for fname in ("vars", "item_rando", "item_data"):
+for fname in ("vars", "item_rando", "item_data", "pause"):
     with open(f"{PATH_PRE}include/{fname}.h", "r") as fh:
         text = fh.read()
         lines = text.split(DELIMITER)
@@ -102,7 +102,7 @@ for fname in ("vars", "item_rando", "item_data"):
                     # Can't be parsed
                     continue
                 data["vars"][segs[1].lower()] = value
-for f in ["exported_enums", "item_data", "common_enums"]:
+for f in ["exported_enums", "item_data", "common_enums", "pause"]:
     with open(f"{PATH_PRE}include/{f}.h", "r") as fh:
         enum_count = 0
         started_enum = False

@@ -2528,7 +2528,7 @@ class Settings:
                     Locations.IslesDonkeyJapesRock,
                 ]
                 if self.free_trade_setting:
-                    badBlueprintTypes = []
+                    badBlueprintTypes = [Types.Fairy]
                     badBlueprintLocations = []
                 badBlueprintLocations.extend([Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(40)])  # Don't allow blueprints on snide rewards... very bad idea
                 blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in badBlueprintTypes]

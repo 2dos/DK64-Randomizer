@@ -31,6 +31,8 @@ extern int isModelTwoTiedFlag_new(maps map, setup_item * item);
 extern float getModelTwoScale(int obj_id);
 extern void getBPCountStats(int kong, unsigned char *has, unsigned char *turned);
 extern int getTurnedCount(int kong);
+extern int turnedAllIn(void);
+extern int hasTurnedInAtLeast(int vanilla_flag);
 extern int getFirstEmptySnideReward(int offset);
 
 extern void applyPaperMode(void);
@@ -295,7 +297,6 @@ extern void initPauseMenu(void);
 extern void storeHintRegion(void);
 extern void getHintRegionText(void);
 extern void initCarousel_onPause(void);
-extern void initCarousel_onBoot(void);
 extern Gfx* drawHintScreen(Gfx* dl, int level_x);
 extern Gfx* drawItemLocationScreen(Gfx* dl, int level_x);
 extern void handleCShifting(char* value, char limit);

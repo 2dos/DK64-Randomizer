@@ -104,6 +104,23 @@ int getTurnedCount(int kong) {
     return count;
 }
 
+int turnedAllIn(void) {
+    if (getTurnedCount(-1) == 40) {
+        return 1;
+    }
+    return 0;
+}
+
+int hasTurnedInAtLeast(int vanilla_flag) {
+    int offset = vanilla_flag - FLAG_BP_JAPES_DK_TURN;
+    int kong = offset % 5;
+    int requirement = (offset / 5);
+    if (getTurnedCount(kong) > requirement) {
+        return 1;
+    }
+    return 0;
+}
+
 int getFirstEmptySnideReward(int offset) {
     for (int i = 0; i < 40; i++) {
         if (!checkFlag(FLAG_SNIDE_REWARD + i, FLAGTYPE_PERMANENT)) {

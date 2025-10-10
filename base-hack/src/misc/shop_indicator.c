@@ -210,6 +210,15 @@ void newCounterCode(void) {
 			}
 			CurrentActorPointer_0->rot_z = 3072; // Facing vertical
 			int closest_shop = getClosestShop();
+			if (closest_shop == SHOP_SNIDE) {
+				if (!Rando.snide_has_rewards) {
+					deleteActorContainer(CurrentActorPointer_0);
+					return;
+				}
+				setActorModel(CurrentActorPointer_0, 0x139);
+			} else {
+				setActorModel(CurrentActorPointer_0, 0xA4);
+			}
 			paad->shop = closest_shop;
 			// Update Position depending on scale
 			float scale = getShopScale(closest_shop);
@@ -217,10 +226,6 @@ void newCounterCode(void) {
 			int rot_y_offset = 2048;
 			float y_factor = 40.0f;
 			if (closest_shop == SHOP_SNIDE) {
-				if (!Rando.snide_has_rewards) {
-					deleteActorContainer(CurrentActorPointer_0);
-					return;
-				}
 				rot_y -= 445;
 				rot_y_offset = 2048 + 423;
 				y_factor = 44.3f;
