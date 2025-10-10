@@ -171,9 +171,6 @@ void initCarousel_onPause(void) {
 }
 
 void initCarousel_onBoot(void) {
-    if (Rando.isles_cb_rando) {
-        file_item_caps[3] = 45;
-    }
     *(short*)(0x806AB2CE) = getHi(&file_items[CHECK_TERMINATOR]);
     *(short*)(0x806AB2D6) = getLo(&file_items[CHECK_TERMINATOR]);
     *(short*)(0x806AB3F6) = CHECK_TERMINATOR;
