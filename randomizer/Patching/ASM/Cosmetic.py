@@ -180,14 +180,14 @@ def holidayCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
         writeValue(ROM_COPY, 0x80754DAA, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
         writeValue(ROM_COPY, 0x80754DBA, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
         writeValue(ROM_COPY, 0x80754DCA, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
-        # 
+        #
         writeValue(ROM_COPY, 0x80754DFA, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
         writeValue(ROM_COPY, 0x80754E0A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
         writeValue(ROM_COPY, 0x80754E1A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
         writeValue(ROM_COPY, 0x80754E2A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
         writeValue(ROM_COPY, 0x80754E3A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
         writeValue(ROM_COPY, 0x80754E4A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
-        # 
+        #
         writeValue(ROM_COPY, 0x80754E7A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
         writeValue(ROM_COPY, 0x80754E8A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
         writeValue(ROM_COPY, 0x80754E9A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
