@@ -11,7 +11,7 @@ from randomizer.Patching.Library.Generic import (
     IsColorOptionSelected,
     IsDDMSSelected,
 )
-from randomizer.Patching.Library.Image import getBonusSkinOffset, ExtraTextures, getRandomHueShift, hueShiftImageFromAddress, TextureFormat
+from randomizer.Patching.Library.Image import getBonusSkinOffset, ExtraTextures, getRandomHueShift, hueShiftImageFromAddress, TextureFormat, hueShiftColor
 from randomizer.Patching.MiscSetupChanges import SpeedUpFungiRabbit
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Models import Model, Sprite
@@ -158,20 +158,42 @@ def holidayCosmetics(ROM_COPY: ROM, settings, offset_dict: dict):
                 backup_rgb = used_arr.copy()
                 exceeded = False
                 for y in range(3):
-                    used_arr[y] = int(used_arr[y] * 1.6)
+                    used_arr[y] = int(used_arr[y] * 2)
                     if used_arr[y] > 255:
                         exceeded = True
                 if exceeded:
                     for y in range(3):
-                        used_arr[y] = int(backup_rgb[y] * 0.4)
+                        used_arr[y] = int(backup_rgb[y] * 0.3)
+                used_arr = list(hueShiftColor(tuple(used_arr), 60))
                 # Write secondary blend
                 for y in range(4):
                     for zi, z in enumerate(used_arr):
-                        delta = z - backup_rgb[zi]
-                        rate = delta / 3
-                        channel = int(backup_rgb[zi] + (rate * y))
+                        channel = z
+                        if y == 0:
+                            channel = backup_rgb[zi]
                         writeValue(ROM_COPY, 0x80754EF8 + (12 * x) + (y * 3) + zi, Overlay.Static, channel, offset_dict, 1)
         writeValue(ROM_COPY, 0x8075E1EC, Overlay.Static, 0x80708234, offset_dict, 4)
+        # Improve blend code
+        writeValue(ROM_COPY, 0x80754D7A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
+        writeValue(ROM_COPY, 0x80754D8A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
+        writeValue(ROM_COPY, 0x80754D9A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
+        writeValue(ROM_COPY, 0x80754DAA, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
+        writeValue(ROM_COPY, 0x80754DBA, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
+        writeValue(ROM_COPY, 0x80754DCA, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
+        # 
+        writeValue(ROM_COPY, 0x80754DFA, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
+        writeValue(ROM_COPY, 0x80754E0A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
+        writeValue(ROM_COPY, 0x80754E1A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
+        writeValue(ROM_COPY, 0x80754E2A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
+        writeValue(ROM_COPY, 0x80754E3A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
+        writeValue(ROM_COPY, 0x80754E4A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
+        # 
+        writeValue(ROM_COPY, 0x80754E7A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
+        writeValue(ROM_COPY, 0x80754E8A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
+        writeValue(ROM_COPY, 0x80754E9A, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
+        writeValue(ROM_COPY, 0x80754EAA, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
+        writeValue(ROM_COPY, 0x80754EBA, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 2
+        writeValue(ROM_COPY, 0x80754ECA, Overlay.Static, 0x3C0, offset_dict)  # Adjust y of vtx 3
     # Holiday Mode Stuff
     if holiday == Holidays.Halloween:
         writeValue(ROM_COPY, 0x800271F2, Overlay.Bonus, Model.Krossbones + 1, offset_dict)  # Green
