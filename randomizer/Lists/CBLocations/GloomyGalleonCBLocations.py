@@ -2198,7 +2198,7 @@ ColoredBananaGroupList = [
         name="First elevator platform",
         konglist=[Kongs.donkey],
         region=Regions.LighthouseAboveLadder,
-        locations=[[1, 1.0, 451, 442, 369], [1, 1.0, 451, 444, 369], [1, 1.0, 451, 447, 369], [1, 1.0, 451, 449, 369], [1, 1.0, 451, 451, 369]],
+        locations=[[1, 1.0, 451, 442, 369], [1, 1.0, 451, 467, 369], [1, 1.0, 451, 491, 369], [1, 1.0, 451, 516, 369], [1, 1.0, 451, 540, 369]],
     ),
     ColoredBananaGroup(
         group=185,
