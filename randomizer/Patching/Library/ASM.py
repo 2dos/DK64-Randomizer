@@ -217,6 +217,13 @@ def getVar(ref: str) -> int:
         raise Exception(f"Couldn't find variable {ref}.")
     return label_value
 
+def getEnum(ref: str) -> int:
+    """Get variable value."""
+    label_value = js.rom_symbols["enums"].get(ref.lower(), None)
+    if label_value is None:
+        raise Exception(f"Couldn't find enum {ref}.")
+    return label_value
+
 
 item_type_table_conversion = {
     # sym, item size

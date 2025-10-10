@@ -1083,9 +1083,6 @@ void startFile(void) {
 }
 
 int testPasswordSequence(void) {
-	if (Rando.password == 0) {
-		return 1; // Any password will work, we'll remove this once we get some stuff working
-	}
 	return encPass(&inputtedPass, &Rando.hash) == Rando.password;
 }
 

@@ -297,7 +297,6 @@ extern void initPauseMenu(void);
 extern void storeHintRegion(void);
 extern void getHintRegionText(void);
 extern void initCarousel_onPause(void);
-extern void initCarousel_onBoot(void);
 extern Gfx* drawHintScreen(Gfx* dl, int level_x);
 extern Gfx* drawItemLocationScreen(Gfx* dl, int level_x);
 extern void handleCShifting(char* value, char limit);
