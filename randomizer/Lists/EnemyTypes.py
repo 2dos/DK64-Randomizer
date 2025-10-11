@@ -528,7 +528,7 @@ EnemyMetaData = {
         aggro=1,
         crown_enabled=False,
         minigame_enabled=False,
-        interaction=InteractionMethods(kill_melee=False, can_bypass=False),  # Can be meleed with distraction mechanic, but we'll ignore that for now
+        interaction=InteractionMethods(kill_melee=False, can_bypass=False, kill_shockwave=False),  # Can be meleed with distraction mechanic, but we'll ignore that for now
         default_size=50,
         max_speed=100,
     ),

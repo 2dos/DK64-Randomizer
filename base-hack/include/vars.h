@@ -32,11 +32,9 @@
 // Other
 #define static_expansion_size 0x100
 
-#define ACTOR_VANILLA_LIMIT 345
 #define COLLISION_LIMIT 76
 #define DEFS_LIMIT 164
 #define ACTOR_LIMIT (345 + NEWACTOR_TERMINATOR)
-#define CUSTOM_ACTORS_START 345
 
 #define KONG_LOCKED_START 0x2E8
 #define SNOOPDOOR_OPEN 0x2ED

@@ -66,8 +66,7 @@ void updateEnemyKillStat(void) {
     resetDisplayedMusic(); // Just to prevent against free issues
     // Update Stat
     if (isGamemode(GAMEMODE_ADVENTURE, 1) && (canSaveHelmHurry())) {
-        GameStats[DATA_STAT_ENEMY_KILLS] += EnemiesKilledCounter;
-        SaveToGlobal();
+        GameStats[STAT_ENEMIESKILLED] += EnemiesKilledCounter;
     }
     handleMusicTransition();
 }

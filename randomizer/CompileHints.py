@@ -610,8 +610,8 @@ def compileHints(spoiler: Spoiler) -> bool:
             if HintType.KRoolOrder in valid_types:
                 valid_types.remove(HintType.KRoolOrder)
         # If somehow you threaded the needle with no valid hint types, you'll get joke hints whether you like it or not
-        if len(valid_types) == 0:
-            valid_types = [HintType.Joke]
+        if len([typ for typ in valid_types if typ not in locked_hint_types and typ not in maxed_hint_types]) == 0:
+            valid_types.append(HintType.Joke)
 
         # Make sure we have exactly 35 hints placed
         hint_count = 0

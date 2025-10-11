@@ -32,7 +32,6 @@ OVERLAY_ENDS = {
     Overlay.Jetpac: 0x8002EC30,
     Overlay.Custom: 0x805FAE00,
 }
-CUSTOM_ACTORS_START = 345
 
 
 def populateOverlayOffsets(ROM_COPY) -> dict:
@@ -216,6 +215,14 @@ def getVar(ref: str) -> int:
     label_value = js.rom_symbols["vars"].get(ref.lower(), None)
     if label_value is None:
         raise Exception(f"Couldn't find variable {ref}.")
+    return label_value
+
+
+def getEnum(ref: str) -> int:
+    """Get variable value."""
+    label_value = js.rom_symbols["enums"].get(ref.lower(), None)
+    if label_value is None:
+        raise Exception(f"Couldn't find enum {ref}.")
     return label_value
 
 

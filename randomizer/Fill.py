@@ -1068,6 +1068,14 @@ def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
         if spoiler.LocationList[Locations.ForestTinyBeanstalk].item in majorItems and Items.Bean not in majorItems:
             majorItems.append(Items.Bean)
             newFoolishItems = True
+        if Types.BlueprintBanana in spoiler.settings.shuffled_location_types and Items.DonkeyBlueprint not in majorItems:
+            bp_reward_location_id = Locations.TurnInJungleJapesDonkeyBlueprint
+            while bp_reward_location_id <= Locations.TurnInCreepyCastleChunkyBlueprint:
+                if spoiler.LocationList[bp_reward_location_id].item in majorItems:
+                    majorItems.extend(ItemPool.Blueprints())
+                    newFoolishItems = True
+                    break
+                bp_reward_location_id += 1
     return majorItems
 
 
@@ -1362,6 +1370,20 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
                 spoiler.region_hintable_count[region.hint_name] += regionItemCount
     # The regions that are foolish are all regions not in this list (that have locations in them!)
     spoiler.foolish_region_names = list(set([region.hint_name for id, region in spoiler.RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames]))
+
+    # If any Snide region is not foolish, none of the Snide regions preceding it can be foolish
+    if HintRegion.SnideLastGroup not in spoiler.foolish_region_names:
+        if HintRegion.SnideFourthGroup in spoiler.foolish_region_names:
+            spoiler.foolish_region_names.remove(HintRegion.SnideFourthGroup)
+    if HintRegion.SnideFourthGroup not in spoiler.foolish_region_names:
+        if HintRegion.SnideThirdGroup in spoiler.foolish_region_names:
+            spoiler.foolish_region_names.remove(HintRegion.SnideThirdGroup)
+    if HintRegion.SnideThirdGroup not in spoiler.foolish_region_names:
+        if HintRegion.SnideSecondGroup in spoiler.foolish_region_names:
+            spoiler.foolish_region_names.remove(HintRegion.SnideSecondGroup)
+    if HintRegion.SnideSecondGroup not in spoiler.foolish_region_names:
+        if HintRegion.SnideFirstGroup in spoiler.foolish_region_names:
+            spoiler.foolish_region_names.remove(HintRegion.SnideFirstGroup)
 
     # Determine non-path items (foolish v2)
     # Non-path items are items that are not on the path to anything. This is similar but different to a foolish hint, so the phrasing on the hint will be different.

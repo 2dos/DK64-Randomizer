@@ -438,6 +438,9 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x80024CE6, Overlay.Menu, -1, offset_dict, 2, True)
     writeFunction(ROM_COPY, 0x80024D28, Overlay.Menu, "getTurnedCount", offset_dict)
     writeValue(ROM_COPY, 0x80024D20, Overlay.Menu, 0x00E02025, offset_dict, 4)  # Copy kong to arg0
+    writeFunction(ROM_COPY, 0x80024980, Overlay.Menu, "turnedAllIn", offset_dict)
+    writeValue(ROM_COPY, 0x8002498A, Overlay.Menu, 2, offset_dict)  # speed up lookup
+    writeFunction(ROM_COPY, 0x800254A8, Overlay.Menu, "hasTurnedInAtLeast", offset_dict)
 
 
 def fairyFix(ROM_COPY: LocalROM, settings, offset_dict: dict):
