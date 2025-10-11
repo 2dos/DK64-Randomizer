@@ -116,20 +116,21 @@
                     {{ toggle_input("smoother_camera", "Smoother Camera", "Controlling the camera with the C Buttons behaves closer to how Banjo-Tooie operates.") }}
                     {{ toggle_input("song_speed_near_win", "Speed up song near Win Condition", "Speeds up the music when you are 1 item away from your win condition. ONLY works for item count based win conditions and Beat K Rool (where it speeds up upon picking up your 8th key).") }}
                     {{ toggle_input("disable_flavor_text", "Disable Flavor Text", "Disables special item preview text that is stylized to sound in-line with how certain NPCs talk. Instead, the item names will be just the plain names.") }}
+                    {{ toggle_input("rainbow_ammo", "Rainbow Ammo", "Ammo will slowly change color overtime.") }}
                     <div class="spacer"></div>
-                    <div class="form-check form-switch item-switch holiday" data-toggle="tooltip" hidden
+                    <div class="form-check form-switch item-switch holiday" data-toggle="tooltip"
                         title="Happy Holidays from the DK64 Randomizer dev team. Limited time option.">
                         <input
                             class="form-check-input"
                             type="checkbox"
                             role="switch"
-                            name="holiday_setting_offseason"
-                            id="holiday_setting_offseason"
+                            name="holiday_setting"
+                            id="holiday_setting"
                             display_name="Holiday Mode"
-                            value="False" />
-                        <label class="form-check-label" for="holiday_setting_offseason">Holiday Mode</label>
+                            value="True" />
+                        <label class="form-check-label" for="holiday_setting">Spooky Mode</label>
                     </div>
-                    <div class="spacer holiday hidden"></div>
+                    <div class="spacer holiday"></div>
                     {# 
                     HANDLING HOLIDAY MODE:
                     Supported Holiday Mode (Is currently a holiday season)

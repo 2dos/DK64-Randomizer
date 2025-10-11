@@ -52,6 +52,7 @@ class DK64MemoryMap:
     is_trapped = 0x062
     sent_trap = 0x063
     helm_hurry_item = 0x064
+    can_receive_shopkeeper = 0x065
     current_kong = 0x8074E77C
     count_struct_pointer = 0x807FFFB8  # Pointer to CountStruct containing item counts
 

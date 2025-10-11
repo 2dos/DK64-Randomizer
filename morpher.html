@@ -414,8 +414,11 @@
                     } else if (key_data_type == 'SettingsStringDataType.int4') {
                         val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 4), 4)
                         bit_index += 4
-                    } else if (key_data_type == 'SettingsStringDataType.int8') {
+                    } else if (['SettingsStringDataType.int8', 'SettingsStringDataType.u8'].includes(key_data_type)) {
                         val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 8), 8)
+                        if (key_data_type == 'SettingsStringDataType.u8' && val < 0) {
+                            val += 256
+                        }
                         bit_index += 8
                     } else if (['SettingsStringDataType.int16', 'SettingsStringDataType.u16'].includes(key_data_type)) {
                         val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 16), 16)
@@ -441,12 +444,15 @@
                             } else if (key_list_data_type == 'SettingsStringDataType.int4') {
                                 list_val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 4), 4)
                                 bit_index += 4
-                            } else if (key_list_data_type == 'SettingsStringDataType.int8') {
+                            } else if (['SettingsStringDataType.int8', 'SettingsStringDataType.u8'].includes(key_list_data_type)) {
                                 list_val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 8), 8)
+                                if (key_list_data_type == 'SettingsStringDataType.u8' && val < 0) {
+                                    val += 256
+                                }
                                 bit_index += 8
                             } else if (['SettingsStringDataType.int16', 'SettingsStringDataType.u16'].includes(key_list_data_type)) {
                                 list_val = bin_string_to_int(bitstring.slice(bit_index, bit_index + 16), 16)
-                                if (key_data_type == 'SettingsStringDataType.u16' && val < 0) {
+                                if (key_list_data_type == 'SettingsStringDataType.u16' && val < 0) {
                                     val += 65536
                                 }
                                 bit_index += 16
@@ -551,7 +557,7 @@
                         bitstring += (value ? "1" : "0");
                     } else if (key_data_type == 'SettingsStringDataType.int4') {
                         bitstring += int_to_bin_string(value, 4)
-                    } else if (key_data_type == 'SettingsStringDataType.int8') {
+                    } else if (['SettingsStringDataType.int8', 'SettingsStringDataType.u8'].includes(key_data_type)) {
                         bitstring += int_to_bin_string(value, 8)
                     } else if (['SettingsStringDataType.int16', 'SettingsStringDataType.u16'].includes(key_data_type)) {
                         bitstring += int_to_bin_string(value, 16)
@@ -569,7 +575,7 @@
                                 bitstring += (item ? "1" : "0");
                             } else if (key_list_data_type == 'SettingsStringDataType.int4') {
                                 bitstring += int_to_bin_string(item, 4)
-                            } else if (key_list_data_type == 'SettingsStringDataType.int8') {
+                            } else if (['SettingsStringDataType.int8', 'SettingsStringDataType.u8'].includes(key_list_data_type)) {
                                 bitstring += int_to_bin_string(item, 8)
                             } else if (['SettingsStringDataType.int16', 'SettingsStringDataType.u16'].includes(key_list_data_type)) {
                                 bitstring += int_to_bin_string(item, 16)
@@ -643,10 +649,20 @@
                     setting_data.cb_medal_behavior_new = setting_data.cb_medal_behavior;
                     delete setting_data.cb_medal_behavior;
                 }
-                if (sel_version_num <= numericVersion("5.4.0")) {
+                if (sel_version_num < numericVersion("5.4.0")) {
                     // Convert free trade setting to utilize a boolean
                     console.log(`Free Trade: ${setting_data.free_trade_setting} -> ${setting_data.free_trade_setting != 'none'}`);
                     setting_data.free_trade_setting = setting_data.free_trade_setting != 'none';
+                }
+                if (sel_version_num < numericVersion("5.5.13")) {
+                    console.log(`Converting toughbanana to racebanana`)
+                    for (let x = 0; x < 10; x++) {
+                        const lst_str = `item_rando_list_${x}`;
+                        if (setting_data[lst_str].includes("toughbanana")) {
+                            setting_data[lst_str] = setting_data[lst_str].filter(v => v != "toughbanana");
+                            setting_data[lst_str].push("racebanana");
+                        }
+                    }
                 }
                 // Update to include all unhandled options to unsorted
                 const all_valid_items = Object.keys(output_json.ItemRandoListSelected);
@@ -658,10 +674,12 @@
                 missing_items.forEach(entry => {
                     console.log(`Adding item ${entry} to item rando selector`)
                     const item_entry = types.ItemRandoSelector.find(k => k.value == entry);
-                    if (item_entry.is_check) {
-                        setting_data.item_rando_list_5.push(entry);
-                    } else {
-                        setting_data.item_rando_list_0.push(entry);
+                    if (item_entry) {
+                        if (item_entry.is_check) {
+                            setting_data.item_rando_list_5.push(entry);
+                        } else {
+                            setting_data.item_rando_list_0.push(entry);
+                        }
                     }
                 })
 

@@ -88,3 +88,44 @@ void swapKremlingModel(void) {
     }
     CharSpawnerActorData[59].model = kremling_model;
 }
+
+void getBPCountStats(int kong, unsigned char *has, unsigned char *turned) {
+    *has = getItemCount_new(REQITEM_BLUEPRINT, 0, kong);
+    *turned = ItemInventory->turned_in_bp_count[kong];
+}
+
+int getTurnedCount(int kong) {
+    int count = 0;
+    for (int i = 0; i < 5; i++) {
+        if ((kong == i) || (kong == -1)) {
+            count += ItemInventory->turned_in_bp_count[i];
+        }
+    }
+    return count;
+}
+
+int turnedAllIn(void) {
+    if (getTurnedCount(-1) == 40) {
+        return 1;
+    }
+    return 0;
+}
+
+int hasTurnedInAtLeast(int vanilla_flag) {
+    int offset = vanilla_flag - FLAG_BP_JAPES_DK_TURN;
+    int kong = offset % 5;
+    int requirement = (offset / 5);
+    if (getTurnedCount(kong) > requirement) {
+        return 1;
+    }
+    return 0;
+}
+
+int getFirstEmptySnideReward(int offset) {
+    for (int i = 0; i < 40; i++) {
+        if (!checkFlag(FLAG_SNIDE_REWARD + i, FLAGTYPE_PERMANENT)) {
+            return i + offset;
+        }
+    }
+    return -1;
+}

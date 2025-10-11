@@ -25,20 +25,28 @@ const DISABLED_HELM_DOOR_VALUES = [
   "opened",
 ];
 
-const ITEM_CAPS = {
-  "req_gb": 201,
-  "req_bp": 40,
-  "req_key": 8,
-  "req_medal": 40,
-  "req_crown": 10,
-  "req_fairy": 20,
-  "req_bean": 1,
-  "req_pearl": 5,
-  "req_rainbowcoin": 16,
-  "req_bosses": 7,
-  "req_bonuses": 53,
-  "req_cb": 3500,
-  "req_companycoins": 2,
+
+
+function getItemCap(item) {
+  const ITEM_CAPS = {
+    "req_gb": parseInt(document.getElementById("total_gbs").value),
+    "req_bp": 40,
+    "req_key": 8,
+    "req_medal": parseInt(document.getElementById("total_medals").value),
+    "req_crown": parseInt(document.getElementById("total_crowns").value),
+    "req_fairy": parseInt(document.getElementById("total_fairies").value),
+    "req_bean": 1,
+    "req_pearl": parseInt(document.getElementById("total_pearls").value),
+    "req_rainbowcoin": parseInt(document.getElementById("total_rainbow_coins").value),
+    "req_bosses": 7,
+    "req_bonuses": 53,
+    "req_cb": 3500,
+    "req_companycoins": 2,
+  }
+  if (Object.keys(ITEM_CAPS).includes(item)) {
+    return ITEM_CAPS[item];
+  }
+  return null;
 }
 
 // Attach the function as an event listener to the "change" event on the "logic_type" element
@@ -1054,37 +1062,29 @@ function refreshItemRandoSortable() {
 document.getElementById("smaller_shops").addEventListener("click", refreshItemRandoSortable);
 document.querySelector("#cb_rando_list_selected option[value='DKIsles']").addEventListener("click", refreshItemRandoSortable);
 document.getElementById("cb_rando_enabled").addEventListener("click", refreshItemRandoSortable);
+document.getElementById("item_rando_list_0").addEventListener("change", unshuffled_pool_list_changed);
 
-// Enable and disable settings based on the Item Rando pool changing
-function item_rando_list_changed(evt) {
-  let itemRandoDisabled = true;
-  // const itemRandoPool = document.getElementById(
-  //   "item_rando_list_selected"
-  // ).options;
+// Enable and disable settings based on the pool of unshuffled things changing
+function unshuffled_pool_list_changed(evt) {
   const smallerShops = document.getElementById("smaller_shops");
-  const moveVanilla = document.getElementById("move_off");
-  const moveRando = document.getElementById("move_on");
   const sharedShopWarning = document.getElementById("shared_shop_warning");
-  let shopsInPool = false;
-  let kongsInPool = false;
-  let shockwaveInPool = false;
-  let shopownersInPool = false;
-  let nothingSelected = true;
+  let shopsInPool = true;
+  let shockwaveInPool = true;
+  let shopownersInPool = true;
 
-  // for (let option of itemRandoPool) {
-  //   if (option.value === "shop" && option.selected) shopsInPool = true;
-  //   if (option.value === "kong" && option.selected) kongsInPool = true;
-  //   if (option.value === "shockwave" && option.selected) shockwaveInPool = true;
-  //   if (option.value === "shopowners" && option.selected) shopownersInPool = true;
-  //   if (option.selected) nothingSelected = false;
-  // }
-
-  // if (nothingSelected) {
-    shopsInPool = true;
-    kongsInPool = true;
-    shockwaveInPool = true;
-    shopownersInPool = true;
-  // }
+  const unshuffled_pool = document.getElementById(`item_rando_list_0`);
+    const types_in_pool = unshuffled_pool.getElementsByTagName("li");
+    for (let i = 0; i < types_in_pool.length; i++) {
+        if (types_in_pool[i].getAttribute("value") == "moves") {
+            shopsInPool = false;
+        }
+        if (types_in_pool[i].getAttribute("value") == "shockwave") {
+            shockwaveInPool = false;
+        }
+        if (types_in_pool[i].getAttribute("value") == "shopowners") {
+            shopownersInPool = false;
+        }
+    }
 
   let camera_option = document.getElementById("starting_move_52");
   let shockwave_option = document.getElementById("starting_move_53");
@@ -1095,14 +1095,7 @@ function item_rando_list_changed(evt) {
 
   if (shopsInPool) {
     sharedShopWarning.setAttribute("hidden", "hidden");
-    // if (moveVanilla.selected || moveRando.selected) {
-    //   document.getElementById("move_on_cross_purchase").selected = true;
-    // }
-    // moveVanilla.setAttribute("disabled", "disabled");
-    // moveRando.setAttribute("disabled", "disabled");
     smallerShops.removeAttribute("disabled");
-
-    
     if (!shockwaveInPool) {
       camera_option.setAttribute("hidden", "hidden");
       shockwave_option.setAttribute("hidden", "hidden");
@@ -1126,8 +1119,6 @@ function item_rando_list_changed(evt) {
 
   } else {
     sharedShopWarning.removeAttribute("hidden");
-    // moveVanilla.removeAttribute("disabled");
-    // moveRando.removeAttribute("disabled");
     smallerShops.setAttribute("disabled", "disabled");
     smallerShops.checked = false;
   }
@@ -1227,9 +1218,10 @@ function update_prog_hint_num_access() {
     progHintReq.value = 1;
   } else {
     const item_type = progHintSelection.value;
-    if (Object.keys(ITEM_CAPS).includes(item_type)) {
-      if (parseInt(progHintReq.value) > ITEM_CAPS[item_type]) {
-        progHintReq.value = ITEM_CAPS[item_type];
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(progHintReq.value) > cap) {
+        progHintReq.value = cap;
       }
     }
   }
@@ -1254,6 +1246,21 @@ function max_randomized_blocker() {
 document
   .getElementById("blocker_text")
   .addEventListener("focusout", max_randomized_blocker);
+
+function max_snide_reward() {
+  const snideRewardText = document.getElementById("most_snide_rewards");
+  if (!snideRewardText.value) {
+    snideRewardText.value = 40;
+  } else if (parseInt(snideRewardText.value) < 0) {
+    snideRewardText.value = 0;
+  } else if (parseInt(snideRewardText.value) > 40) {
+    snideRewardText.value = 40;
+  }
+}
+
+document
+  .getElementById("most_snide_rewards")
+  .addEventListener("focusout", max_snide_reward);
 
 // Validate troff input on loss of focus
 function max_randomized_troff() {
@@ -1348,8 +1355,8 @@ document
     const fairyReq = document.getElementById("rareware_gb_fairies");
     if (!fairyReq.value) {
       fairyReq.value = 20;
-    } else if (parseInt(fairyReq.value) < 1) {
-      fairyReq.value = 1;
+    } else if (parseInt(fairyReq.value) < 0) {
+      fairyReq.value = 0;
     } else if (parseInt(fairyReq.value) > 20) {
       fairyReq.value = 20;
     }
@@ -1386,9 +1393,10 @@ function update_door_one_num_access() {
     doorOneReq.value = 1;
   } else {
     const item_type = doorOneSelection.value == "vanilla" ? "req_crown" : doorOneSelection.value;
-    if (Object.keys(ITEM_CAPS).includes(item_type)) {
-      if (parseInt(doorOneReq.value) > ITEM_CAPS[item_type]) {
-        doorOneReq.value = ITEM_CAPS[item_type];
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(doorOneReq.value) > cap) {
+        doorOneReq.value = cap;
       }
     }
   }
@@ -1415,9 +1423,10 @@ function update_door_two_num_access() {
     doorTwoReq.value = 1;
   } else {
     const item_type = doorTwoSelection.value == "vanilla" ? "req_companycoins" : doorTwoSelection.value;
-    if (Object.keys(ITEM_CAPS).includes(item_type)) {
-      if (parseInt(doorTwoReq.value) > ITEM_CAPS[item_type]) {
-        doorTwoReq.value = ITEM_CAPS[item_type];
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(doorTwoReq.value) > cap) {
+        doorTwoReq.value = cap;
       }
     }
   }
@@ -1471,9 +1480,10 @@ function update_win_con_num_access() {
     winConReq.value = 1;
   } else {
     const item_type = winConSelection.value;
-    if (Object.keys(ITEM_CAPS).includes(item_type)) {
-      if (parseInt(winConReq.value) > ITEM_CAPS[item_type]) {
-        winConReq.value = ITEM_CAPS[item_type];
+    const cap = getItemCap(item_type);
+    if (cap !== null) {
+      if (parseInt(winConReq.value) > cap) {
+        winConReq.value = cap;
       }
     }
   }
@@ -1496,9 +1506,10 @@ document
       doorOneReq.value = 1;
     } else {
       const item_type = doorOneSelection.value == "vanilla" ? "req_crown" : doorOneSelection.value;
-      if (Object.keys(ITEM_CAPS).includes(item_type)) {
-        if (parseInt(doorOneReq.value) > ITEM_CAPS[item_type]) {
-          doorOneReq.value = ITEM_CAPS[item_type];
+      const cap = getItemCap(item_type);
+      if (cap !== null) {
+        if (parseInt(doorOneReq.value) > cap) {
+          doorOneReq.value = cap;
         }
       }
     }
@@ -1517,9 +1528,10 @@ document
       doorTwoReq.value = 1;
     } else {
       const item_type = doorTwoSelection.value == "vanilla" ? "req_companycoins" : doorTwoSelection.value;
-      if (Object.keys(ITEM_CAPS).includes(item_type)) {
-        if (parseInt(doorTwoReq.value) > ITEM_CAPS[item_type]) {
-          doorTwoReq.value = ITEM_CAPS[item_type];
+      const cap = getItemCap(item_type);
+      if (cap !== null) {
+        if (parseInt(doorTwoReq.value) > cap) {
+          doorTwoReq.value = cap;
         }
       }
     }
@@ -1637,15 +1649,15 @@ function item_req_update(behavior, container, count, min, max) {
 
 document.getElementById("medal_jetpac_behavior")
   .addEventListener("change", () => {
-    item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
+    item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 0, 40);
   });
 document.getElementById("pearl_mermaid_behavior")
   .addEventListener("change", () => {
-    item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
+    item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 0, 5);
   });
 document.getElementById("fairy_queen_behavior")
   .addEventListener("change", () => {
-    item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
+    item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 0, 20);
   });
 document.getElementById("cb_medal_behavior_new")
   .addEventListener("change", () => {
@@ -1926,6 +1938,68 @@ function hide_irrelevant_details_coupled_item_rando() {
 document.getElementById("decouple_item_rando")
   .addEventListener("click", hide_irrelevant_details_coupled_item_rando)
 
+function update_trap_weight(el, default_value, force) {
+  let all_zero = true;
+  if (!force) {
+    Object.keys(default_trap_weights).forEach(s => {
+      if (document.getElementById(s).value > 0) {
+        all_zero = false;
+      }
+    })
+  }
+  if ((!el.value && el.value !== 0) || all_zero) {
+    el.value = default_value;
+  } else if (el.value < 0) {
+    el.value = 0;
+  } else if (el.value > 100) {
+    el.value = 100;
+  }
+  return all_zero;
+}
+
+function update_all_trap_weights() {
+  let force_trap_weight_reset = false;
+  Object.keys(default_trap_weights).forEach(stg => {
+    document.getElementById(stg).addEventListener("change", (e) => {
+      force_trap_weight_reset = update_trap_weight(e.target, default_trap_weights[stg], force_trap_weight_reset);
+    })
+  })
+}
+
+const alterers = document.getElementsByClassName("item-count-alterer");
+function getTotalItemCounts() {
+    const alt_v = document.getElementsByClassName("item-count-alterer")
+    let total = 0;
+    for (let a = 0; a < alt_v.length; a++) {
+        const local_value = parseInt(alt_v[a].value);
+        const local_id = alt_v[a].getAttribute("id");
+        const local_header = document.getElementById(`${local_id}_title`);
+        let local_min = 1;
+        const local_max = 255;
+        if (local_id == "total_gbs") {
+            local_min = 40;
+        } else if (["total_crowns", "total_rainbow_coins"].includes(local_id)) {
+            local_min = 0;
+        }
+        if (local_value < local_min) {
+          alt_v[a].value = local_min;
+        } else if (local_value > local_max) {
+          alt_v[a].value = local_max;
+        }
+        total += local_value;
+    }
+    const notifier = document.getElementById("item_count_collective");
+    if (total < 298) {
+        notifier.style.color = "white";
+    } else {
+        notifier.style.color = "red";
+    }
+}
+for (let a = 0; a < alterers.length; a++) {
+    alterers[a].addEventListener("change", getTotalItemCounts);
+    alterers[a].addEventListener("change", refreshItemRandoSortable);
+}
+
 // Bind custom update UI event for "apply_preset"
 function update_ui_states() {
   /** Trigger any function that would update the status of a UI element based on the current settings configuration. */
@@ -1933,12 +2007,13 @@ function update_ui_states() {
   disable_colors();
   disable_music();
   max_randomized_blocker();
+  max_snide_reward();
   max_randomized_troff();
   max_music();
   max_music_proportion();
   max_sfx();
   disable_switchsanity_modal();
-  item_rando_list_changed(null);
+  unshuffled_pool_list_changed(null);
   disable_custom_cb_locations_modal();
   toggle_bananaport_selector();
   disable_helm_hurry(null);
@@ -1954,10 +2029,12 @@ function update_ui_states() {
   update_prog_hint_num_access();
   update_blocker_num_access();
   update_ice_trap_count();
+  getTotalItemCounts();
+  update_all_trap_weights();
   update_troff_number_access();
-  item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
-  item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
-  item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
+  item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 0, 40);
+  item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 0, 5);
+  item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 0, 20);
   item_req_update("cb_medal_behavior_new", "cb_medal_behavior_new_container", "medal_cb_req", 1, 100);
   disable_tag_spawn();
   disable_krool_phases();

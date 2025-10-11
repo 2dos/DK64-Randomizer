@@ -84,7 +84,7 @@ item_ids = {
     14041167: {"name": "Bean", "count_id": {"field": "special_items", "bit": "bean"}, "flag_id": None, "progression": True},
     14041353: {"name": "Forest Second Anthill Reward", "count_id": {"field": "special_items", "bit": "bean"}, "flag_id": None},
     14041269: {"name": "Pearl", "count_id": {"field": "pearls", "increment": 1}, "flag_id": None, "progression": True},
-    14041169: {"name": "Rainbow Coin", "count_id": {"field": "rainbow_coins", "increment": 1}, "flag_id": None, "extended_whitelist": True},
+    14041354: {"name": "Rainbow Coin", "count_id": {"field": "rainbow_coins", "increment": 1}, "flag_id": None, "extended_whitelist": True},
     14041170: {"name": "Bubble Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "bubble"}, "flag_id": None, "extended_whitelist": True},
     14041171: {"name": "Reverse Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "reverse"}, "flag_id": None, "extended_whitelist": True},
     14041172: {"name": "Slow Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "slow"}, "flag_id": None, "extended_whitelist": True},
@@ -109,6 +109,9 @@ item_ids = {
     14041323: {"name": "Get Out Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "get_out"}, "flag_id": None, "extended_whitelist": True},
     14041326: {"name": "Dry Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "dry"}, "flag_id": None, "extended_whitelist": True},
     14041329: {"name": "Flip Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "flip"}, "flag_id": None, "extended_whitelist": True},
+    14041342: {"name": "Ice Floor Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "icefloor"}, "flag_id": None, "extended_whitelist": True},
+    14041346: {"name": "Paper Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "paper"}, "flag_id": None, "extended_whitelist": True},
+    14041350: {"name": "Slip Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "slip"}, "flag_id": None, "extended_whitelist": True},
     14041173: {"name": "Junk Item (Crystal)", "count_id": {"field": "junk_items", "increment": 1}, "flag_id": None, "extended_whitelist": True},
     14041174: {"name": "Junk Item (Melon Slice)", "count_id": {"field": "junk_items", "increment": 1}, "flag_id": None, "extended_whitelist": True},
     14041175: {"name": "Junk Item (Ammo Crate)", "count_id": {"field": "junk_items", "increment": 1}, "flag_id": None, "extended_whitelist": True},
@@ -120,46 +123,11 @@ item_ids = {
     14041181: {"name": "Funky", "count_id": None, "flag_id": 963, "progression": True},
     14041182: {"name": "Candy", "count_id": None, "flag_id": 964, "progression": True},
     14041183: {"name": "Snide", "count_id": None, "flag_id": 965, "progression": True},
-    14041255: {"name": "DK Isles Donkey Blueprint", "count_id": {"field": "bp_bitfield", "kong": 0, "level": 7}, "flag_id": None, "extended_whitelist": True},
-    14041256: {"name": "DK Isles Diddy Blueprint", "count_id": {"field": "bp_bitfield", "kong": 1, "level": 7}, "flag_id": None, "extended_whitelist": True},
-    14041257: {"name": "DK Isles Lanky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 2, "level": 7}, "flag_id": None, "extended_whitelist": True},
-    14041258: {"name": "DK Isles Tiny Blueprint", "count_id": {"field": "bp_bitfield", "kong": 3, "level": 7}, "flag_id": None, "extended_whitelist": True},
-    14041259: {"name": "DK Isles Chunky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 4, "level": 7}, "flag_id": None, "extended_whitelist": True},
-    14041220: {"name": "Jungle Japes Donkey Blueprint", "count_id": {"field": "bp_bitfield", "kong": 0, "level": 0}, "flag_id": None, "extended_whitelist": True},
-    14041221: {"name": "Jungle Japes Diddy Blueprint", "count_id": {"field": "bp_bitfield", "kong": 1, "level": 0}, "flag_id": None, "extended_whitelist": True},
-    14041222: {"name": "Jungle Japes Lanky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 2, "level": 0}, "flag_id": None, "extended_whitelist": True},
-    14041223: {"name": "Jungle Japes Tiny Blueprint", "count_id": {"field": "bp_bitfield", "kong": 3, "level": 0}, "flag_id": None, "extended_whitelist": True},
-    14041224: {"name": "Jungle Japes Chunky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 4, "level": 0}, "flag_id": None, "extended_whitelist": True},
-    14041225: {"name": "Angry Aztec Donkey Blueprint", "count_id": {"field": "bp_bitfield", "kong": 0, "level": 1}, "flag_id": None, "extended_whitelist": True},
-    14041226: {"name": "Angry Aztec Diddy Blueprint", "count_id": {"field": "bp_bitfield", "kong": 1, "level": 1}, "flag_id": None, "extended_whitelist": True},
-    14041227: {"name": "Angry Aztec Lanky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 2, "level": 1}, "flag_id": None, "extended_whitelist": True},
-    14041228: {"name": "Angry Aztec Tiny Blueprint", "count_id": {"field": "bp_bitfield", "kong": 3, "level": 1}, "flag_id": None, "extended_whitelist": True},
-    14041229: {"name": "Angry Aztec Chunky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 4, "level": 1}, "flag_id": None, "extended_whitelist": True},
-    14041230: {"name": "Frantic Factory Donkey Blueprint", "count_id": {"field": "bp_bitfield", "kong": 0, "level": 2}, "flag_id": None, "extended_whitelist": True},
-    14041231: {"name": "Frantic Factory Diddy Blueprint", "count_id": {"field": "bp_bitfield", "kong": 1, "level": 2}, "flag_id": None, "extended_whitelist": True},
-    14041232: {"name": "Frantic Factory Lanky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 2, "level": 2}, "flag_id": None, "extended_whitelist": True},
-    14041233: {"name": "Frantic Factory Tiny Blueprint", "count_id": {"field": "bp_bitfield", "kong": 3, "level": 2}, "flag_id": None, "extended_whitelist": True},
-    14041234: {"name": "Frantic Factory Chunky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 4, "level": 2}, "flag_id": None, "extended_whitelist": True},
-    14041235: {"name": "Gloomy Galleon Donkey Blueprint", "count_id": {"field": "bp_bitfield", "kong": 0, "level": 3}, "flag_id": None, "extended_whitelist": True},
-    14041236: {"name": "Gloomy Galleon Diddy Blueprint", "count_id": {"field": "bp_bitfield", "kong": 1, "level": 3}, "flag_id": None, "extended_whitelist": True},
-    14041237: {"name": "Gloomy Galleon Lanky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 2, "level": 3}, "flag_id": None, "extended_whitelist": True},
-    14041238: {"name": "Gloomy Galleon Tiny Blueprint", "count_id": {"field": "bp_bitfield", "kong": 3, "level": 3}, "flag_id": None, "extended_whitelist": True},
-    14041239: {"name": "Gloomy Galleon Chunky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 4, "level": 3}, "flag_id": None, "extended_whitelist": True},
-    14041240: {"name": "Fungi Forest Donkey Blueprint", "count_id": {"field": "bp_bitfield", "kong": 0, "level": 4}, "flag_id": None, "extended_whitelist": True},
-    14041241: {"name": "Fungi Forest Diddy Blueprint", "count_id": {"field": "bp_bitfield", "kong": 1, "level": 4}, "flag_id": None, "extended_whitelist": True},
-    14041242: {"name": "Fungi Forest Lanky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 2, "level": 4}, "flag_id": None, "extended_whitelist": True},
-    14041243: {"name": "Fungi Forest Tiny Blueprint", "count_id": {"field": "bp_bitfield", "kong": 3, "level": 4}, "flag_id": None, "extended_whitelist": True},
-    14041244: {"name": "Fungi Forest Chunky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 4, "level": 4}, "flag_id": None, "extended_whitelist": True},
-    14041245: {"name": "Crystal Caves Donkey Blueprint", "count_id": {"field": "bp_bitfield", "kong": 0, "level": 5}, "flag_id": None, "extended_whitelist": True},
-    14041246: {"name": "Crystal Caves Diddy Blueprint", "count_id": {"field": "bp_bitfield", "kong": 1, "level": 5}, "flag_id": None, "extended_whitelist": True},
-    14041247: {"name": "Crystal Caves Lanky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 2, "level": 5}, "flag_id": None, "extended_whitelist": True},
-    14041248: {"name": "Crystal Caves Tiny Blueprint", "count_id": {"field": "bp_bitfield", "kong": 3, "level": 5}, "flag_id": None, "extended_whitelist": True},
-    14041249: {"name": "Crystal Caves Chunky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 4, "level": 5}, "flag_id": None, "extended_whitelist": True},
-    14041250: {"name": "Creepy Castle Donkey Blueprint", "count_id": {"field": "bp_bitfield", "kong": 0, "level": 6}, "flag_id": None, "extended_whitelist": True},
-    14041251: {"name": "Creepy Castle Diddy Blueprint", "count_id": {"field": "bp_bitfield", "kong": 1, "level": 6}, "flag_id": None, "extended_whitelist": True},
-    14041252: {"name": "Creepy Castle Lanky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 2, "level": 6}, "flag_id": None, "extended_whitelist": True},
-    14041253: {"name": "Creepy Castle Tiny Blueprint", "count_id": {"field": "bp_bitfield", "kong": 3, "level": 6}, "flag_id": None, "extended_whitelist": True},
-    14041254: {"name": "Creepy Castle Chunky Blueprint", "count_id": {"field": "bp_bitfield", "kong": 4, "level": 6}, "flag_id": None, "extended_whitelist": True},
+    14041358: {"name": "Donkey Blueprint", "count_id": {"field": "bp_count", "kong": 0}, "flag_id": None, "extended_whitelist": True},
+    14041359: {"name": "Diddy Blueprint", "count_id": {"field": "bp_count", "kong": 1}, "flag_id": None, "extended_whitelist": True},
+    14041360: {"name": "Lanky Blueprint", "count_id": {"field": "bp_count", "kong": 2}, "flag_id": None, "extended_whitelist": True},
+    14041361: {"name": "Tiny Blueprint", "count_id": {"field": "bp_count", "kong": 3}, "flag_id": None, "extended_whitelist": True},
+    14041362: {"name": "Chunky Blueprint", "count_id": {"field": "bp_count", "kong": 4}, "flag_id": None, "extended_whitelist": True},
     14041185: {"name": "Japes Donkey Hint", "count_id": {"field": "hint_bitfield", "kong": 0, "level": 0}, "flag_id": None, "extended_whitelist": True},
     14041186: {"name": "Japes Diddy Hint", "count_id": {"field": "hint_bitfield", "kong": 1, "level": 0}, "flag_id": None, "extended_whitelist": True},
     14041187: {"name": "Japes Lanky Hint", "count_id": {"field": "hint_bitfield", "kong": 2, "level": 0}, "flag_id": None, "extended_whitelist": True},
@@ -234,8 +202,9 @@ trap_name_to_index: dict[str, int] = {
     "Get Out Trap": 9,
     "Dry Trap": 10,
     "Flip Trap": 11,
+    "Ice Floor Trap": 12,
     # Common other trap names
-    "Banana Peel Trap": 3,  # Slow Trap
+    "Banana Peel Trap": 15,  # Slip Trap
     "Bee Trap": 6,  # Disable B Trap
     "Blue Balls Curse": 1,  # Bubble Trap
     "Buyon Trap": 9,  # Get Out Trap
@@ -245,6 +214,7 @@ trap_name_to_index: dict[str, int] = {
     "Confuse Trap": 2,  # Reverse Trap
     "Confusion Trap": 2,  # Reverse Trap
     "Damage Trap": 9,  # Get Out Trap
+    "Deisometric Trap": 13,  # Paper Trap
     "Depletion Trap": 10,  # Dry Trap
     "Eject Ability": 10,  # Dry Trap
     "Fear Trap": 3,  # Slow Trap
@@ -253,11 +223,13 @@ trap_name_to_index: dict[str, int] = {
     "Fuzzy Trap": 2,  # Reverse Trap
     "Home Trap": 9,  # Get Out Trap
     "Honey Trap": 5,  # Disable A Trap
-    "Ice Trap": 1,  # Bubble Trap
+    "Ice Trap": 12,  # Ice Floor Trap
     "Instant Crystal Trap": 1,  # Bubble Trap
     "Instant Death Trap": 9,  # Get Out Trap
+    "Invisible Trap": 13,  # Paper Trap
     "Iron Boots Trap": 5,  # Disable A Trap
     "Jump Trap": 5,  # Disable A Trap
+    "Literature Trap": 13,  # Paper Trap
     "Mirror Trap": 11,  # Flip Trap
     "Monkey Mash Trap": 2,  # Reverse Trap
     "No Stocks": 10,  # Dry Trap
@@ -266,15 +238,20 @@ trap_name_to_index: dict[str, int] = {
     "Poison Mushroom": 3,  # Slow Trap
     "Poison Trap": 10,  # Dry Trap
     "Police Trap": 9,  # Get Out Trap
+    "PowerPoint Trap": 13,  # Paper Trap
+    "Push Trap": 12,  # Ice Floor Trap
     "Resistance Trap": 9,  # Get Out Trap
     "Reversal Trap": 2,  # Reverse Trap
     "Screen Flip Trap": 11,  # Flip Trap
     "Slowness Trap": 3,  # Slow Trap
     "Spike Ball Trap": 9,  # Get Out Trap
+    "Spooky Time": 13,  # Paper Trap
     "Sticky Floor Trap": 5,  # Disable A Trap
     "Stun Trap": 1,  # Bubble Trap
     "Time Limit": 9,  # Get Out Trap
     "Timer Trap": 9,  # Slow Trap
+    "Tiny Trap": 13,  # Paper Trap
+    "W I D E Trap": 13,  # Paper Trap
 }
 
 trap_index_to_name: dict[int, str] = {
@@ -288,4 +265,7 @@ trap_index_to_name: dict[int, str] = {
     9: "Get Out Trap",
     10: "Dry Trap",
     11: "Flip Trap",
+    12: "Ice Floor Trap",
+    13: "Paper Trap",
+    15: "Slip Trap",
 }

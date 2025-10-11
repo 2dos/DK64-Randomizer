@@ -280,6 +280,9 @@ class ItemRandoListSelected(IntEnum):
     trainingbarrels = 42
     halfmedal = 43
     dummyitem_halfmedal = 44
+    racebanana = 45
+    gauntletbanana = 46
+    blueprintbanana = 47
 
 class ItemRandoFiller(IntEnum):
     junkitem = 1
@@ -289,6 +292,7 @@ class ItemRandoFiller(IntEnum):
     medal = 5
     pearl = 6
     banana = 7
+    rainbowcoin = 8
 
 class KasplatRandoSetting(IntEnum):
     off = 0
@@ -829,6 +833,26 @@ class SettingsStringEnum(IntEnum):
     less_fragile_boulders = 263
     ice_trap_count = 264
     cb_medal_behavior_new = 265
+    trap_weight_bubble = 266
+    trap_weight_reverse = 267
+    trap_weight_slow = 268
+    trap_weight_disablea = 269
+    trap_weight_disableb = 270
+    trap_weight_disablez = 271
+    trap_weight_disablecu = 272
+    trap_weight_getout = 273
+    trap_weight_dry = 274
+    trap_weight_flip = 275
+    trap_weight_icefloor = 276
+    trap_weight_paper = 277
+    trap_weight_slip = 278
+    total_gbs = 279
+    total_medals = 280
+    total_rainbow_coins = 281
+    total_pearls = 282
+    total_crowns = 283
+    total_fairies = 284
+    most_snide_rewards = 285
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -839,6 +863,7 @@ class SettingsStringDataType(IntEnum):
     str = 6
     list = 7
     u16 = 8
+    u8 = 9
 
 SettingsMap: dict = {
     "activate_all_bananaports": ActivateAllBananaports,
@@ -979,26 +1004,26 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.auto_keys: SettingsStringDataType.bool,
     SettingsStringEnum.bananaport_placement_rando: ShufflePortLocations,
     SettingsStringEnum.bananaport_rando: BananaportRando,
-    SettingsStringEnum.blocker_0: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_1: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_2: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_3: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_4: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_5: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_6: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_7: SettingsStringDataType.var_int,
-    SettingsStringEnum.blocker_text: SettingsStringDataType.var_int,
+    SettingsStringEnum.blocker_0: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_1: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_2: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_3: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_4: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_5: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_6: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_7: SettingsStringDataType.u8,
+    SettingsStringEnum.blocker_text: SettingsStringDataType.u8,
     SettingsStringEnum.bonus_barrel_auto_complete: SettingsStringDataType.bool,
     SettingsStringEnum.bonus_barrel_rando: SettingsStringDataType.bool,
     SettingsStringEnum.boss_kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.boss_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.cb_rando: CBRando,
     SettingsStringEnum.coin_door_item: HelmDoorItem,
-    SettingsStringEnum.coin_door_item_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.coin_door_item_count: SettingsStringDataType.u8,
     SettingsStringEnum.random_crates: SettingsStringDataType.bool,
     SettingsStringEnum.crown_placement_rando: SettingsStringDataType.bool,
     SettingsStringEnum.crown_door_item: HelmDoorItem,
-    SettingsStringEnum.crown_door_item_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.crown_door_item_count: SettingsStringDataType.u8,
     SettingsStringEnum.crown_enemy_rando: CrownEnemyRando,
     SettingsStringEnum.crown_enemy_difficulty: CrownEnemyDifficulty,
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
@@ -1070,8 +1095,9 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.level_randomization: LevelRandomization,
     SettingsStringEnum.logic_type: LogicType,
     SettingsStringEnum.maximize_helm_blocker: SettingsStringDataType.bool,
+    SettingsStringEnum.most_snide_rewards: SettingsStringDataType.var_int,
     SettingsStringEnum.medal_cb_req: SettingsStringDataType.var_int,
-    SettingsStringEnum.medal_requirement: SettingsStringDataType.var_int,
+    SettingsStringEnum.medal_requirement: SettingsStringDataType.u8,
     SettingsStringEnum.microhints_enabled: MicrohintsEnabled,
     SettingsStringEnum.minigames_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.cb_rando_enabled: SettingsStringDataType.bool,
@@ -1093,7 +1119,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.randomize_blocker_required_amounts: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_cb_required_amounts: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_pickups: SettingsStringDataType.bool,
-    SettingsStringEnum.rareware_gb_fairies: SettingsStringDataType.var_int,
+    SettingsStringEnum.rareware_gb_fairies: SettingsStringDataType.u8,
     SettingsStringEnum.select_keys: SettingsStringDataType.bool,
     SettingsStringEnum.shockwave_status: ShockwaveStatus,
     SettingsStringEnum.shop_indicator: SettingsStringDataType.bool,
@@ -1127,7 +1153,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.fairy_queen_behavior: RandomRequirement,
     SettingsStringEnum.cb_medal_behavior: RandomRequirement,
     SettingsStringEnum.cb_medal_behavior_new: CBRequirement,
-    SettingsStringEnum.win_condition_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.win_condition_count: SettingsStringDataType.u8,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,
     SettingsStringEnum.wrinkly_location_rando: SettingsStringDataType.bool,
@@ -1147,8 +1173,8 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.start_with_slam: SettingsStringDataType.bool,
     SettingsStringEnum.spoiler_include_level_order: SettingsStringDataType.bool,
     SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
-    SettingsStringEnum.progressive_hint_text: SettingsStringDataType.var_int,
-    SettingsStringEnum.progressive_hint_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.progressive_hint_text: SettingsStringDataType.u8,
+    SettingsStringEnum.progressive_hint_count: SettingsStringDataType.u8,
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
@@ -1165,7 +1191,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.serious_hints: SettingsStringDataType.bool,
     SettingsStringEnum.cannons_require_blast: SettingsStringDataType.bool,
     SettingsStringEnum.chaos_blockers: SettingsStringDataType.bool,
-    SettingsStringEnum.mermaid_gb_pearls: SettingsStringDataType.var_int,
+    SettingsStringEnum.mermaid_gb_pearls: SettingsStringDataType.u8,
     SettingsStringEnum.chunky_phase_slam_req: SlamRequirement,
     SettingsStringEnum.shuffle_helm_location: SettingsStringDataType.bool,
     SettingsStringEnum.points_list_fairy_moves: SettingsStringDataType.int16,
@@ -1239,6 +1265,25 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.switchsanity_switch_aztec_free_tiny: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_aztec_free_lanky: SwitchsanityKong,
     SettingsStringEnum.switchsanity_switch_factory_free_kong: SwitchsanityKong,
+    SettingsStringEnum.trap_weight_bubble: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_reverse: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slow: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablea: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disableb: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablez: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablecu: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_getout: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_dry: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_flip: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_icefloor: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_paper: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slip: SettingsStringDataType.int8,
+    SettingsStringEnum.total_gbs: SettingsStringDataType.u8,
+    SettingsStringEnum.total_medals: SettingsStringDataType.u8,
+    SettingsStringEnum.total_rainbow_coins: SettingsStringDataType.u8,
+    SettingsStringEnum.total_pearls: SettingsStringDataType.u8,
+    SettingsStringEnum.total_crowns: SettingsStringDataType.u8,
+    SettingsStringEnum.total_fairies: SettingsStringDataType.u8,
 }
 
 SettingsStringListTypeMap: dict = {
@@ -1273,27 +1318,47 @@ SettingsStringListTypeMap: dict = {
     SettingsStringEnum.item_rando_list_7: ItemRandoListSelected,
     SettingsStringEnum.item_rando_list_8: ItemRandoListSelected,
     SettingsStringEnum.item_rando_list_9: ItemRandoListSelected,
+    SettingsStringEnum.trap_weight_bubble: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_reverse: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slow: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablea: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disableb: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablez: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disablecu: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_getout: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_dry: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_flip: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_icefloor: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_paper: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_slip: SettingsStringDataType.int8,
+    SettingsStringEnum.total_gbs: SettingsStringDataType.u8,
+    SettingsStringEnum.total_medals: SettingsStringDataType.u8,
+    SettingsStringEnum.total_rainbow_coins: SettingsStringDataType.u8,
+    SettingsStringEnum.total_pearls: SettingsStringDataType.u8,
+    SettingsStringEnum.total_crowns: SettingsStringDataType.u8,
+    SettingsStringEnum.total_fairies: SettingsStringDataType.u8,
 }
 
 SettingsStringIntRangeMap: dict = {
-    SettingsStringEnum.blocker_0: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_1: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_2: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_3: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_4: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_5: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_6: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_7: {"max": 201, "min": 0},
-    SettingsStringEnum.blocker_text: {"max": 201, "min": 0},
-    SettingsStringEnum.coin_door_item_count: {"max": 201, "min": 0},
-    SettingsStringEnum.crown_door_item_count: {"max": 201, "min": 0},
+    SettingsStringEnum.blocker_0: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_1: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_2: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_3: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_4: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_5: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_6: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_7: {"max": 255, "min": 0},
+    SettingsStringEnum.blocker_text: {"max": 255, "min": 0},
+    SettingsStringEnum.coin_door_item_count: {"max": 255, "min": 0},
+    SettingsStringEnum.crown_door_item_count: {"max": 255, "min": 0},
     SettingsStringEnum.helm_phase_count: {"max": 5, "min": 0},
     SettingsStringEnum.krool_key_count: {"max": 8, "min": 0},
     SettingsStringEnum.krool_phase_count: {"max": 5, "min": 0},
     SettingsStringEnum.medal_cb_req: {"max": 100, "min": 0},
-    SettingsStringEnum.medal_requirement: {"max": 40, "min": 0},
-    SettingsStringEnum.mermaid_gb_pearls: {"max": 5, "min": 0},
-    SettingsStringEnum.rareware_gb_fairies: {"max": 20, "min": 0},
+    SettingsStringEnum.most_snide_rewards: {"max": 40, "min": 0},
+    SettingsStringEnum.medal_requirement: {"max": 255, "min": 0},
+    SettingsStringEnum.mermaid_gb_pearls: {"max": 255, "min": 0},
+    SettingsStringEnum.rareware_gb_fairies: {"max": 255, "min": 0},
     SettingsStringEnum.starting_kongs_count: {"max": 5, "min": 0},
     SettingsStringEnum.starting_moves_count: {"max": 40, "min": 0},
     SettingsStringEnum.troff_0: {"max": 500, "min": 0},
@@ -1307,5 +1372,5 @@ SettingsStringIntRangeMap: dict = {
     SettingsStringEnum.troff_text: {"max": 500, "min": 0},
     SettingsStringEnum.progressive_hint_text: {"max": 201, "min": 0},
     SettingsStringEnum.progressive_hint_count: {"max": 3500, "min": 0},
-    SettingsStringEnum.win_condition_count: {"max": 201, "min": 0},
+    SettingsStringEnum.win_condition_count: {"max": 255, "min": 0},
 }

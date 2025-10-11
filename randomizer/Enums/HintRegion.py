@@ -77,6 +77,12 @@ class HintRegion(IntEnum):
     # Other
     Helm = auto()
     Bosses = auto()
+    Snide = auto()
+    SnideFirstGroup = auto()
+    SnideSecondGroup = auto()
+    SnideThirdGroup = auto()
+    SnideFourthGroup = auto()
+    SnideLastGroup = auto()
     # Debuggging
     Error = auto()
 
@@ -93,6 +99,11 @@ HINT_REGION_PAIRING = {
     HintRegion.CavesShops: "Caves Shops",
     HintRegion.CastleShops: "Castle Shops",
     HintRegion.Jetpac: "Jetpac Game",
+    HintRegion.SnideFirstGroup: "1st to 8th Blueprint Rewards",
+    HintRegion.SnideSecondGroup: "9th to 16th Blueprint Rewards",
+    HintRegion.SnideThirdGroup: "17th to 24th Blueprint Rewards",
+    HintRegion.SnideFourthGroup: "25th to 32nd Blueprint Rewards",
+    HintRegion.SnideLastGroup: "33rd to 40th Blueprint Rewards",
     # CB Regions
     HintRegion.IslesCBs: "Isles Medal Rewards",
     HintRegion.JapesCBs: "Japes Medal Rewards",
@@ -125,7 +136,7 @@ HINT_REGION_PAIRING = {
     HintRegion.LlamaTemple: "Llama Temple",
     HintRegion.AztecTunnels: "Various Aztec Tunnels",
     # Factory
-    HintRegion.FactoryStart: "Frantic Factory Start",
+    HintRegion.FactoryStart: "Frantic Factory Foyer",
     HintRegion.Testing: "Testing Area",
     HintRegion.ResearchAndDevelopment: "R&D Area",
     HintRegion.Storage: "Storage & Arcade Area",

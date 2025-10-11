@@ -27,6 +27,14 @@ extern void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1)
 extern int isBounceObject(int object);
 extern void genericStatUpdate(bonus_stat stat);
 
+extern int isModelTwoTiedFlag_new(maps map, setup_item * item);
+extern float getModelTwoScale(int obj_id);
+extern void getBPCountStats(int kong, unsigned char *has, unsigned char *turned);
+extern int getTurnedCount(int kong);
+extern int turnedAllIn(void);
+extern int hasTurnedInAtLeast(int vanilla_flag);
+extern int getFirstEmptySnideReward(int offset);
+
 extern void applyPaperMode(void);
 
 extern void resolveBonusContainer(void);
@@ -247,7 +255,7 @@ extern void resetTracker(void);
 extern void wipeFileMod(int file, int will_save);
 extern void enterFileProgress(int sfx);
 extern void pokemonSnapMode(void);
-extern int isSnapEnemyInRange(void);
+extern int isSnapEnemyInRange(int set);
 extern int getPkmnSnapData(int* frames, int* current, int* total);
 extern void pressSkipHandler(void* actor);
 extern void clearSkipCache(void);
@@ -285,12 +293,10 @@ extern void setSpawnBitfield(int id, int state);
 extern void setSpawnBitfieldFromFlag(int flag, int state);
 
 extern Gfx* pauseScreen3And4ItemName(Gfx* dl, int x, int y, float scale, char* text);
-extern void handleSpriteCode(int control_type);
 extern void initPauseMenu(void);
 extern void storeHintRegion(void);
 extern void getHintRegionText(void);
 extern void initCarousel_onPause(void);
-extern void initCarousel_onBoot(void);
 extern Gfx* drawHintScreen(Gfx* dl, int level_x);
 extern Gfx* drawItemLocationScreen(Gfx* dl, int level_x);
 extern void handleCShifting(char* value, char limit);
@@ -403,7 +409,7 @@ extern Gfx* displaySongNameHandler(Gfx* dl);
 extern void resetDisplayedMusic(void);
 
 extern enum_bonus_skin getBarrelSkinIndex(int actor);
-extern enum_bonus_skin getShopSkinIndex(purchase_struct *data);
+extern enum_bonus_skin getShopSkinIndex(item_packet *data);
 extern void crankyCodeHandler(void);
 extern void funkyCodeHandler(void);
 extern void candyCodeHandler(void);
@@ -428,8 +434,19 @@ extern void resetIceTrapButtons(void);
 extern void handleIceTrapButtons(void);
 extern int getCharWidthMask(int style, unsigned char *character);
 
-extern void colorRainbowAmmo(void* actor);
-extern void colorRainbowAmmoHUD(int red, int green, int blue, int alpha);
+extern void colorRainbowAmmo(void* actor, float x, float y, float z, int unk0);
+extern void colorRainbowAmmoHUD(sprite_info *sprite);
+
+extern void totalsSprite(sprite_struct* sprite, char* render);
+extern void checksSprite(sprite_struct* sprite, char* render);
+
+extern int cc_enabler_slip(void);
+extern int cc_allower_generic(void);
+extern void slipPeelCode(void);
+extern int cc_enabler_ice(void);
+extern int cc_disabler_ice(void);
+extern int cc_enabler_paper(void);
+extern int cc_disabler_paper(void);
 
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];

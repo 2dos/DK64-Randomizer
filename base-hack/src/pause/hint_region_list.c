@@ -47,7 +47,7 @@ char* hint_region_names[] = {
 	"5 DOOR TEMPLE",
 	"LLAMA TEMPLE",
 	"VARIOUS AZTEC TUNNELS",
-	"FRANTIC FACTORY START",
+	"FRANTIC FACTORY FOYER",
 	"TESTING AREA",
 	"R&D AREA",
 	"STORAGE & ARCADE",
@@ -70,13 +70,19 @@ char* hint_region_names[] = {
 	"CASTLE UNDERGROUND",
 	"HIDEOUT HELM",
 	"TROFF N SCOFF",
+	"SNIDE HQ",
+	"1ST TO 8TH BLUEPRINT REWARDS",
+	"9TH TO 16TH BLUEPRINT REWARDS",
+	"17TH TO 24TH BLUEPRINT REWARDS",
+	"25TH TO 32ND BLUEPRINT REWARDS",
+	"33RD TO 40TH BLUEPRINT REWARDS",
 	"THIS SHOULD NOT BE HINTED",
 };
 
 FastTextStruct unknown_hints[] = {
-	{ .lines = { "??? - FOREST CENTER & BEANSTALK", 0, 0 } },
-	{ .lines = { "??? - FOREST CENTER & BEANSTALK", 0, 0 } },
-	{ .lines = { "??? - FOREST CENTER & BEANSTALK", 0, 0 } },
-	{ .lines = { "??? - FOREST CENTER & BEANSTALK", 0, 0 } },
-	{ .lines = { "??? - FOREST CENTER & BEANSTALK", 0, 0 } },
+	{ .lines = { "??? - 17TH TO 24TH BLUEPRINT REWARDS", 0, 0 } },
+	{ .lines = { "??? - 17TH TO 24TH BLUEPRINT REWARDS", 0, 0 } },
+	{ .lines = { "??? - 17TH TO 24TH BLUEPRINT REWARDS", 0, 0 } },
+	{ .lines = { "??? - 17TH TO 24TH BLUEPRINT REWARDS", 0, 0 } },
+	{ .lines = { "??? - 17TH TO 24TH BLUEPRINT REWARDS", 0, 0 } },
 };

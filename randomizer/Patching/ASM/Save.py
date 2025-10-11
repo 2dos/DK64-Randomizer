@@ -32,6 +32,11 @@ FileInfoSizes = [
     16,  # Junk Items
     16,  # Race Coins
     8,  # Special Moves
+    8,  # DK BP Turn-In
+    8,  # Diddy BP Turn-In
+    8,  # Lanky BP Turn-In
+    8,  # Tiny BP Turn-In
+    8,  # Chunky BP Turn-In
     16,  # AP Item Count
     22,  # IGT Japes
     22,  # IGT Aztec
@@ -63,9 +68,10 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     flag_block_size = 0x320 + expansion
     targ_gb_bits = 7  # Max 127
     GB_LEVEL_COUNT = 9
+    COIN_BITS = 16
     added_bits = (targ_gb_bits - 3) * 8
     added_bits += targ_gb_bits + 7 + 7
-    kong_var_size = 0xA1 + added_bits
+    kong_var_size = 0xA1 + added_bits + (COIN_BITS - 8)
     file_info_location = flag_block_size + (5 * kong_var_size)
     file_default_size = file_info_location + 0x3F + sum(FileInfoSizes)
     # Flag Block Size
@@ -84,6 +90,9 @@ def expandSaveFile(ROM_COPY: LocalROM, static_expansion: int, actor_count: int, 
     writeValue(ROM_COPY, 0x8060C352, Overlay.Static, file_default_size, offset_dict)
     writeValue(ROM_COPY, 0x8060BF96, Overlay.Static, file_default_size, offset_dict)
     writeValue(ROM_COPY, 0x8060BA7A, Overlay.Static, file_default_size, offset_dict)
+    # Coin Bits
+    writeValue(ROM_COPY, 0x8060BD5A, Overlay.Static, COIN_BITS, offset_dict)
+    writeValue(ROM_COPY, 0x8060BD4E, Overlay.Static, COIN_BITS, offset_dict)
 
     writeValue(ROM_COPY, getSym("file_info_expansion"), Overlay.Custom, file_info_location, offset_dict)
     # Increase GB Storage Size
@@ -163,7 +172,7 @@ def saveUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict):
     """All changes related to a save file."""
     # Files
     balloon_patch_count = 150
-    static_expansion = 0x100
+    static_expansion = 0x140
     if settings.enemy_drop_rando:
         static_expansion += 428  # Total Enemies
     expandSaveFile(ROM_COPY, static_expansion, balloon_patch_count, offset_dict)

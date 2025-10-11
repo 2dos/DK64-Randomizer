@@ -38,6 +38,7 @@ class Goal(Choice):
     - bosses: Defeat a certain number of bosses to win. See goal_quantity option for more info.
     - bonuses: Complete a certain number of Bonus Barrels to win. Automatically disables auto_complete_bonus_barrels if set. See goal_quantity option for more info.
     - treasure_hurry: Run down the timer by collecting treasure! You win when the timer reaches 0.
+    - krools_challenge: K. Rool's ship does not spawn until you collect All keys, Defeat All bosses, Play all Bonus Barrels, and collect All Blueprints.
     """
 
     display_name = "Goal"
@@ -934,6 +935,44 @@ class SelectStartingKong(Choice):
     default = 5
 
 
+class IceFloorWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which turns the floor slippery."""
+
+    display_name = "Ice Floor Weight"
+
+
+class PaperTrapWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which turns Kongs into Paper."""
+
+    display_name = "Paper Trap Weight"
+
+
+class SlipTrapWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which slips a kong on a banana peel."""
+
+    display_name = "Slip Trap Weight"
+
+
+class EnableCutscenes(Toggle):
+    """Enabling this will re-add skippable cutscenes to your seed."""
+
+    display_name = "Re-Enable Cutscenes"
+
+
+class SnideMaximum(Range):
+    """Determines the maximum reward for Snide Turnins to have progression."""
+
+    range_start = 0
+    range_end = 40
+    default = 20
+
+
+class SharedShops(Toggle):
+    """If enabled, makes 10 random shops shared removing 20 locations from the pool."""
+
+    display_name = "Shared Shops"
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1008,6 +1047,12 @@ class DK64Options(PerGameCommonOptions):
     puzzle_rando: PuzzleRando
     goal_quantity: GoalQuantity
     select_starting_kong: SelectStartingKong
+    ice_floor_weight: IceFloorWeight
+    paper_weight: PaperTrapWeight
+    slip_weight: SlipTrapWeight
+    enable_cutscenes: EnableCutscenes
+    maximum_snide: SnideMaximum
+    enable_shared_shops: SharedShops
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1054,6 +1099,8 @@ dk64_option_groups: List[OptionGroup] = [
             HintItemRandomization,
             HalfMedals,
             SmallerShops,
+            SharedShops,
+            SnideMaximum,
         ],
     ),
     OptionGroup(
@@ -1119,6 +1166,9 @@ dk64_option_groups: List[OptionGroup] = [
             GetOutTrapWeight,
             DryTrapWeight,
             FlipTrapWeight,
+            IceFloorWeight,
+            PaperTrapWeight,
+            SlipTrapWeight,
         ],
     ),
     OptionGroup(
@@ -1130,5 +1180,11 @@ dk64_option_groups: List[OptionGroup] = [
             DeathLink,
         ],
     ),
-    OptionGroup("Notifications", [ReceiveNotifications]),
+    OptionGroup(
+        "Quality of Life",
+        [
+            EnableCutscenes,
+            ReceiveNotifications,
+        ],
+    ),
 ]

@@ -29,6 +29,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Enums.Models import Model
 from randomizer.Patching.Patcher import ROM, LocalROM
@@ -401,13 +402,16 @@ def alter8bitRewardImages(ROM_COPY, offset_dict: dict, arcade_item: Items = Item
         Minigame8BitImage([Items.JunkMelon], MinigameImageLoader(None, 7, 0x142, 48, 42), MinigameImageLoader("melon")),
         Minigame8BitImage([Items.NintendoCoin], None, MinigameImageLoader("nintendo")),
         Minigame8BitImage([Items.RarewareCoin], MinigameImageLoader(None, 25, 5905, 44, 44), None),
-        Minigame8BitImage([Items.RainbowCoin], MinigameImageLoader(None, 25, 5963, 48, 44), MinigameImageLoader("rainbow")),
+        Minigame8BitImage([Items.RainbowCoin, Items.FillerRainbowCoin], MinigameImageLoader(None, 25, 5963, 48, 44), MinigameImageLoader("rainbow")),
         Minigame8BitImage(
             ItemPool.HintItems(),
             MinigameImageLoader(None, 25, 0x1775, 64, 64, TextureFormat.IA8),
             MinigameImageLoader("hint"),
         ),
         Minigame8BitImage([Items.ArchipelagoItem], MinigameImageLoader("ap"), MinigameImageLoader("ap")),
+        Minigame8BitImage([Items.SpecialArchipelagoItem], MinigameImageLoader("ap_useful"), MinigameImageLoader("ap")),
+        Minigame8BitImage([Items.FoolsArchipelagoItem], MinigameImageLoader("ap_junk"), MinigameImageLoader("ap")),
+        Minigame8BitImage([Items.TrapArchipelagoItem], MinigameImageLoader("ap_trap"), MinigameImageLoader("ap")),
         Minigame8BitImage(
             [Items.Cranky],
             MinigameImageLoader(None, 25, 0x1387, 32, 32, TextureFormat.RGBA5551, [0x1388, 0x1389, 0x138A]),
@@ -611,6 +615,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x807313A4, Overlay.Static, "checkVictory_flaghook", offset_dict)  # perm flag set hook
     writeFunction(ROM_COPY, 0x806C3B5C, Overlay.Static, "mermaidCheck", offset_dict)  # Mermaid Check
     writeFunction(ROM_COPY, 0x806ADA70, Overlay.Static, "HandleSpiderSilkSpawn", offset_dict)  # Fix some silk memes
+    writeFunction(ROM_COPY, 0x80712558, Overlay.Static, "getTurnedCount", offset_dict)  # Blueprint Turn-ins
+    writeValue(ROM_COPY, 0x80712552, Overlay.Static, -1, offset_dict, 2, True)
 
     if ENABLE_HITSCAN:
         writeFunction(ROM_COPY, 0x80694FAC, Overlay.Static, "movePelletWrapper", offset_dict)
@@ -1168,8 +1174,9 @@ def patchAssembly(ROM_COPY, spoiler):
     if settings.shuffle_items:
         for item in spoiler.item_assignment:
             if item.can_have_item and not item.is_shop and item.old_item not in (Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
-                if item.new_item is None or item.new_item == Types.NoItem:
-                    file_init_flags.append(item.old_flag)
+                if item.location < Locations.TurnInDKIslesDonkeyBlueprint or item.location > Locations.TurnInCreepyCastleChunkyBlueprint:
+                    if item.new_type is None or item.new_type == Types.NoItem:
+                        file_init_flags.append(item.old_flag)
     SCREEN_SHAKE_CAP = 7
     screen_shake_cap_patch = {
         0x8061F0C8: [
@@ -1666,6 +1673,11 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80600DA2, Overlay.Static, 0x38, offset_dict)
     writeValue(ROM_COPY, 0x80600DA6, Overlay.Static, 0x70, offset_dict)
 
+    # Soundplayer Fix
+    writeValue(ROM_COPY, 0x80735C9E, Overlay.Static, 0xFFFF, offset_dict)  # initSoundPlayer creates the event
+    writeValue(ROM_COPY, 0x80735D0E, Overlay.Static, 0xFFFF, offset_dict)  # __sndpVoiceHandler checks for the event
+    writeValue(ROM_COPY, 0x80735D26, Overlay.Static, 0xFFFF, offset_dict)  # __sndpVoiceHandler creates the event
+
     if HARDER_CRUSHERS:
         writeValue(ROM_COPY, 0x8064C520, Overlay.Static, 0xA218006E, offset_dict, 4)  # Make the crushers in Factory Crusher Room always damage you
     # Diddy Slam Crash Fix
@@ -1728,14 +1740,9 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Jetpac Requirement
     written_requirement = settings.medal_requirement
-    if written_requirement != 15:
-        if written_requirement < 0:
-            written_requirement = 0
-        elif written_requirement > 40:
-            written_requirement = 40
-        writeValue(ROM_COPY, 0x80026513, Overlay.Menu, written_requirement, offset_dict, 1)  # Actual requirement
-        writeValue(ROM_COPY, 0x8002644B, Overlay.Menu, written_requirement, offset_dict, 1)  # Text variable
-        writeValue(ROM_COPY, 0x80027583, Overlay.Menu, written_requirement, offset_dict, 1)  # Text Variable
+    writeValue(ROM_COPY, 0x80026513, Overlay.Menu, written_requirement, offset_dict, 1)  # Actual requirement
+    writeValue(ROM_COPY, 0x8002644B, Overlay.Menu, written_requirement, offset_dict, 1)  # Text variable
+    writeValue(ROM_COPY, 0x80027583, Overlay.Menu, written_requirement, offset_dict, 1)  # Text Variable
 
     # Boss Key Mapping
     for i in range(7):
@@ -1745,9 +1752,8 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # BFI
     writeFunction(ROM_COPY, 0x80028080, Overlay.Critter, "displayBFIMoveText", offset_dict)  # BFI Text Display
-    if settings.rareware_gb_fairies > 0:
-        writeValue(ROM_COPY, 0x80027E70, Overlay.Critter, 0x2C410000 | settings.rareware_gb_fairies, offset_dict, 4)  # SLTIU $at, $v0, count
-        writeValue(ROM_COPY, 0x80027E74, Overlay.Critter, 0x1420, offset_dict)  # BNEZ $at, 0x6
+    writeValue(ROM_COPY, 0x80027E70, Overlay.Critter, 0x2C410000 | settings.rareware_gb_fairies, offset_dict, 4)  # SLTIU $at, $v0, count
+    writeValue(ROM_COPY, 0x80027E74, Overlay.Critter, 0x1420, offset_dict)  # BNEZ $at, 0x6
     if settings.win_condition_item == WinConditionComplex.dk_rap_items:
         writeValue(ROM_COPY, 0x8071280E, Overlay.Static, Maps.DKRap, offset_dict)  # End Sequence destination map
         writeValue(ROM_COPY, 0x80712816, Overlay.Static, 0, offset_dict)  # End Sequence cutscene
@@ -1782,6 +1788,22 @@ def patchAssembly(ROM_COPY, spoiler):
             writeValue(ROM_COPY, 0x807480BC + (2 * index), Overlay.Static, 0, offset_dict)
     for index, map_id in enumerate(settings.level_void_maps):
         writeValue(ROM_COPY, 0x80744748 + (2 * index), Overlay.Static, map_id, offset_dict)
+
+    # Pause Carousel
+    check_term = getEnum("CHECK_TERMINATOR")
+    writeValue(ROM_COPY, 0x806AB3F6, Overlay.Static, check_term, offset_dict)
+    file_item_end = getSym("file_items") + (2 * check_term)
+    writeValue(ROM_COPY, 0x806AB2CE, Overlay.Static, getHi(file_item_end), offset_dict)
+    writeValue(ROM_COPY, 0x806AB2D6, Overlay.Static, getLo(file_item_end), offset_dict)
+
+    # HUD
+    writeValue(ROM_COPY, 0x806FB246, Overlay.Static, getEnum("ITEMID_TERMINATOR"), offset_dict)
+    writeValue(ROM_COPY, 0x806FABAA, Overlay.Static, getEnum("ITEMID_TERMINATOR"), offset_dict)
+    writeValue(ROM_COPY, 0x806F9992, Overlay.Static, getEnum("ITEMID_RESERVED_FUNKY"), offset_dict)
+    writeValue(ROM_COPY, 0x806F99AA, Overlay.Static, getEnum("ITEMID_RESERVED_CRANKY"), offset_dict)
+    writeValue(ROM_COPY, 0x806F9986, Overlay.Static, getEnum("ITEMID_RESERVED_SCOFF"), offset_dict)
+    writeValue(ROM_COPY, 0x806F99C6, Overlay.Static, getEnum("ITEMID_RESERVED_CANDY"), offset_dict)
+    writeValue(ROM_COPY, 0x806F99DA, Overlay.Static, getEnum("ITEMID_RESERVED_DK"), offset_dict)
 
     # Write Mech Fish entry
     writeValue(ROM_COPY, 0x806C6DC6, Overlay.Static, settings.mech_fish_entrance["map"], offset_dict)
@@ -1927,7 +1949,15 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8002EA64, Overlay.Menu, 0xA64B0008, offset_dict, 4)  # Disable option 1 write
     # Menu/Shop: Snide's
     writeValue(ROM_COPY, 0x8002402C, Overlay.Menu, 0x240E000C, offset_dict, 4)  # No extra contraption cutscenes
-    writeValue(ROM_COPY, 0x80024054, Overlay.Menu, 0x24080001, offset_dict, 4)  # 1 GB Turn in
+    if settings.snide_reward_rando:
+        writeFunction(ROM_COPY, 0x80632188, Overlay.Static, "isModelTwoTiedFlag_new", offset_dict)  # Update setup to account for snide
+        writeValue(ROM_COPY, 0x8063218C, Overlay.Static, 0x02202825, offset_dict, 4)  # Modify arg
+        writeValue(ROM_COPY, 0x800248B0, Overlay.Menu, 0, offset_dict, 4)  # Remove flag set
+        writeValue(ROM_COPY, 0x800248C0, Overlay.Menu, 0, offset_dict, 4)  # Remove increment
+        writeHook(ROM_COPY, 0x8002480C, Overlay.Menu, "HandleSnideEndReward_finish", offset_dict)
+    else:
+        writeValue(ROM_COPY, 0x80024054, Overlay.Menu, 0x24080001, offset_dict, 4)  # 1 GB Turn in
+        writeHook(ROM_COPY, 0x8002480C, Overlay.Menu, "HandleSnideEndReward", offset_dict)
     # Menu/Shop: Candy's
     writeValue(ROM_COPY, 0x80027678, Overlay.Menu, 0x1000, offset_dict)  # Patch Candy's Shop Glitch
     writeValue(ROM_COPY, 0x8002769C, Overlay.Menu, 0x1000, offset_dict)  # Patch Candy's Shop Glitch
@@ -2025,12 +2055,16 @@ def patchAssembly(ROM_COPY, spoiler):
     writeHook(ROM_COPY, 0x8063BA04, Overlay.Static, "ModelTwoToSetupState", offset_dict)  # Model 2 transfer to setup
 
     # Rainbow Ammo Static Functions
-    writeFunction(ROM_COPY, 0x806F97D0, Overlay.Static, "colorRainbowAmmoHUD", offset_dict)  # HUD Code
-    writeFunction(ROM_COPY, 0x80694FAC, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Coconut Code
-    writeFunction(ROM_COPY, 0x80692BCC, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Peanut Code
-    writeFunction(ROM_COPY, 0x806930DC, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Grape Code
-    writeFunction(ROM_COPY, 0x80695444, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Feather Code
-    writeFunction(ROM_COPY, 0x80694748, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Pineapple Code
+    writeFunction(ROM_COPY, 0x80694E14, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Coconut Code
+    writeFunction(ROM_COPY, 0x80692A34, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Peanut Code
+    writeFunction(ROM_COPY, 0x80692F44, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Grape Code
+    # writeFunction(ROM_COPY, 0x80695444, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Feather Code
+    writeFunction(ROM_COPY, 0x806945B0, Overlay.Static, "colorRainbowAmmo", offset_dict)  # Pineapple Code
+    writeHook(ROM_COPY, 0x806F97A8, Overlay.Static, "loadHUDFunction", offset_dict)  # HUD Code
+    writeHook(ROM_COPY, 0x806AB528, Overlay.Static, "loadPauseHUDFunction", offset_dict)  # HUD Code - Pause Menu
+    writeValue(ROM_COPY, 0x80690CD0, Overlay.Static, 0, offset_dict, 4)  # Disable hud sprite duping
+    writeValue(ROM_COPY, 0x80690CD8, Overlay.Static, 0, offset_dict, 4)  # Disable hud sprite duping
+    writeValue(ROM_COPY, 0x80690D00, Overlay.Static, 0, offset_dict, 4)  # Disable hud sprite duping
 
     # Fast Start: Beginning of game
     if settings.fast_start_beginning_of_game:

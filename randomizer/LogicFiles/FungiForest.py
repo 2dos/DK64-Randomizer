@@ -450,7 +450,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_ForestMainEnemy_AppleGauntlet2, lambda l: l.camera),
         LocationLogic(Locations.KremKap_ForestMainEnemy_AppleGauntlet3, lambda l: l.camera),
     ], [
-        Event(Events.ForestW2aTagged, lambda _: True),
+        Event(Events.ForestW2bTagged, lambda _: True),
     ], [
         TransitionFront(Regions.FungiForestStart, lambda l: Events.WormGatesOpened in l.Events),
         TransitionFront(Regions.FunkyForest, lambda l: l.funkyAccess),

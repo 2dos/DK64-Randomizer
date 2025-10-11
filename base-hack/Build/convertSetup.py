@@ -269,7 +269,9 @@ def getObjectModifications(target_map: Maps) -> list:
     shop_signs = getMoveSignData(target_map)
     for sign in shop_signs:
         obj_modifications.append(
-            ObjectChange(ObjectTypes.actor, ObjectChangeType.add, target_map, None, new_id=sign["id"], x=sign["x"], y=sign["y"], z=sign["z"], rx=0, ry=sign["ry"], rz=0, scale=0.25, obj_type=54)
+            ObjectChange(
+                ObjectTypes.actor, ObjectChangeType.add, target_map, None, new_id=sign["id"], x=sign["x"], y=sign["y"], z=sign["z"], rx=0, ry=sign["ry"], rz=0, scale=0.25, obj_type=sign["obj"] - 16
+            )
         )
     return [x for x in obj_modifications if x.object_map == target_map]
 

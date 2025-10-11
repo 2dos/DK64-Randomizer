@@ -7,11 +7,12 @@ function lanky_file_changed(event) {
     */
 
     function onload(e) {
-        // Load the text of the patch
+        // Load the patch data
         const loaded_patch = e.target.result;
 
         document.getElementById("patchfileloader").classList.add("is-valid");
         window.loaded_patch = loaded_patch;
+        window.loaded_patch_filename = file.name; // Store filename for format detection
     }
 
     // Attempt to find the loaded file
@@ -20,9 +21,16 @@ function lanky_file_changed(event) {
     
     const reader = new FileReader();
 
-    // If a file is loaded, set up the event listener to read it as text
+    // If a file is loaded, set up the event listener to read it appropriately
     if (file) {
-        reader.readAsText(file);
+        // Check if this is an .chunky file (binary) or .lanky file (text)
+        if (file.name.toLowerCase().endsWith('.chunky')) {
+            // Read as ArrayBuffer for binary .chunky files
+            reader.readAsArrayBuffer(file);
+        } else {
+            // Read as text for .lanky files
+            reader.readAsText(file);
+        }
         reader.addEventListener("load", onload);
     }
 }

@@ -2,7 +2,7 @@
 
 import json
 from enum import IntEnum, auto
-from BuildEnums import Kong, Song, Maps
+from BuildEnums import Kong, Song, Maps, CustomActors
 
 
 class CollectableTypes(IntEnum):
@@ -41,49 +41,6 @@ class EnemyDropDef:
         self.dropped_object = dropped_object
         self.drop_music = drop_music
         self.drop_count = drop_count
-
-
-class CustomActors(IntEnum):
-    """Custom Actors Enum."""
-
-    NintendoCoin = 345
-    RarewareCoin = auto()
-    Null = auto()
-    PotionDK = auto()
-    PotionDiddy = auto()
-    PotionLanky = auto()
-    PotionTiny = auto()
-    PotionChunky = auto()
-    PotionAny = auto()
-    KongDK = auto()
-    KongDiddy = auto()
-    KongLanky = auto()
-    KongTiny = auto()
-    KongChunky = auto()
-    KongDisco = auto()
-    KongKrusha = auto()
-    Bean = auto()
-    Pearl = auto()
-    Fairy = auto()
-    IceTrapGB = auto()
-    IceTrapBean = auto()
-    IceTrapKey = auto()
-    Medal = auto()
-    JetpacItemOverlay = auto()
-    CrankyItem = auto()
-    FunkyItem = auto()
-    CandyItem = auto()
-    SnideItem = auto()
-    ZingerFlamethrower = auto()
-    Scarab = auto()
-    HintItemDK = auto()
-    KopDummy = auto()
-    HintItemDiddy = auto()
-    HintItemLanky = auto()
-    HintItemTiny = auto()
-    HintItemChunky = auto()
-    ArchipelagoItem = auto()
-    IceTrapFairy = auto()
 
 
 POTIONS = (
@@ -186,6 +143,9 @@ item_database = [
     Item(name="Fairy", actor=CustomActors.Fairy, model_two=0x25C, bounce=True, scale=0.25, has_collision=True),
     Item(name="Rainbow Coin", actor=140, model_two=0xB7, scale=0.25, has_collision=True, item_type=CollectableTypes.Coin),
     Item(name="Archipelago Item", actor=CustomActors.ArchipelagoItem, model_two=0x291, bounce=True, has_collision=True),
+    Item(name="Special Archipelago Item", actor=CustomActors.SpecialArchipelagoItem, model_two=0x292, bounce=True, has_collision=True),
+    Item(name="Fools Archipelago Item", actor=CustomActors.FoolsArchipelagoItem, model_two=0x293, bounce=True, has_collision=True),
+    Item(name="Trap Archipelago Item", actor=CustomActors.TrapArchipelagoItem, model_two=0x294, bounce=True, has_collision=True),
     Item(name="Race Coin", actor=0x36, model_two=0xEC, item_db=False, item_type=CollectableTypes.RaceCoin, has_collision=True, hitbox=Hitbox(0, 0, 0)),
     Item(name="Film", actor=0, model_two=0x98, item_db=False, item_type=CollectableTypes.Film, has_collision=True, hitbox=Hitbox(0, 0, 0)),
     # GBs
@@ -602,6 +562,34 @@ with open("src/lib_items.c", "w") as fh:
                 "unk10": 0x80689FEC,
                 "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
             },  # AP Item
+            {
+                "actor_type": CustomActors.SpecialArchipelagoItem,
+                "model": 0x133,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # AP Item
+            {
+                "actor_type": CustomActors.FoolsArchipelagoItem,
+                "model": 0x135,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # AP Item
+            {
+                "actor_type": CustomActors.TrapArchipelagoItem,
+                "model": 0x137,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # AP Item
+            {
+                "actor_type": CustomActors.SpreadCounter,
+                "model": 0x139,
+                "code": 0x80689F80,
+                "unk10": 0x80689FEC,
+                "unk4": [0, 0, 0, 0, 0x02, 0x26, 0, 0],
+            },  # AP Item
         ]
     )
     default_values = {
@@ -645,6 +633,7 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, CustomActors.IceTrapBean, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.IceTrapKey, "&FakeKeyCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.IceTrapFairy, "&FakeFairyCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.SpreadCounter, "&newCounterCode", 2, 0, 1, 8, 70)
 
     actor_data = initActor(actor_data, CustomActors.Bean, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.Pearl, "&GoldenBananaCode", 2, 0, 1, 8, 45)
@@ -655,9 +644,13 @@ with open("src/lib_items.c", "w") as fh:
     actor_data = initActor(actor_data, CustomActors.HintItemTiny, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.HintItemChunky, "&GoldenBananaCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.ArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.SpecialArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.FoolsArchipelagoItem, "&GoldenBananaCode", 2, 0, 1, 8, 45)
+    actor_data = initActor(actor_data, CustomActors.TrapArchipelagoItem, "&FakeGBCode", 2, 0, 1, 8, 45)
     actor_data = initActor(actor_data, CustomActors.JetpacItemOverlay, "&getNextMoveText", 3, 0, 0, 0x10, 324)
     actor_data = initActor(actor_data, CustomActors.ZingerFlamethrower, "(void*)0x806B4958", 2, 1, 0, 2, 183)
     actor_data = initActor(actor_data, CustomActors.Scarab, "&kioskBugCode", 2, 1, 0, 2, 183)
+    actor_data = initActor(actor_data, CustomActors.SlipPeel, "&slipPeelCode", 2, 1, 0, 8, 0xDE)
     actor_data = initActor(actor_data, 141, "&charSpawnerItemCode", 2, 0, 1, 0x40, 197)
     actor_data["actor_collisions"][CustomActors.Scarab] = {
         "collision_info": 0x8074B240,

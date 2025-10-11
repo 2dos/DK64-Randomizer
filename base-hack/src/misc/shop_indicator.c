@@ -17,11 +17,6 @@ int isSharedMove(vendors shop_index, int level) {
 		return 1;
 	}
 	
-	// if shop has an AP item, dont make it shared
-	if (targ->item.item_type == REQITEM_AP) {
-		return 0;
-	}
-	
 	for (int i = 1; i < 5; i++) {
 		purchase_struct* src = getShopData(shop_index, i, level);
 		if (src) {
@@ -51,7 +46,7 @@ typedef struct counter_paad {
 int getCounterItem(vendors shop_index, int kong, int level) {
 	purchase_struct* data = getShopData(shop_index, kong, level);
 	if (data) {
-		return getShopSkinIndex(data);
+		return getShopSkinIndex(&data->item);
 	}
 	return SKIN_NULL;
 }
@@ -184,6 +179,9 @@ float getShopScale(int index) {
 			if (_object->object_type == shop_objects[index]) {
 				ModelData* model = _object->model_pointer;
 				if (model) {
+					if (index == SHOP_SNIDE) {
+						return model->scale * 1.4f;
+					}
 					return model->scale;
 				}
 			}
@@ -193,8 +191,8 @@ float getShopScale(int index) {
 }
 
 static const short float_ids[] = {0x1F4, 0x36};
-static const float float_offsets[] = {51.0f, 45.0f, 45.0f};
-static const float h_factors[] = {60.0f, 60.0f, 62.0f};
+static const float float_offsets[] = {51.0f, 45.0f, 45.0f, 47.5f};
+static const float h_factors[] = {60.0f, 60.0f, 62.0f, 120.6f};
 
 void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
@@ -212,12 +210,56 @@ void newCounterCode(void) {
 			}
 			CurrentActorPointer_0->rot_z = 3072; // Facing vertical
 			int closest_shop = getClosestShop();
+			if (closest_shop == SHOP_SNIDE) {
+				if (!Rando.snide_has_rewards) {
+					deleteActorContainer(CurrentActorPointer_0);
+					return;
+				}
+				setActorModel(CurrentActorPointer_0, 0x139);
+			} else {
+				setActorModel(CurrentActorPointer_0, 0xA4);
+			}
 			paad->shop = closest_shop;
-			if (closest_shop == 3) { // Snide is closest
-				deleteActorContainer(CurrentActorPointer_0);
+			// Update Position depending on scale
+			float scale = getShopScale(closest_shop);
+			int rot_y = CurrentActorPointer_0->rot_y;
+			int rot_y_offset = 2048;
+			float y_factor = 40.0f;
+			if (closest_shop == SHOP_SNIDE) {
+				rot_y -= 445;
+				rot_y_offset = 2048 + 423;
+				y_factor = 44.3f;
+			}
+			float h_factor = h_factors[closest_shop];
+			float x_d = scale * h_factor * determineXRatioMovement(rot_y);
+			float z_d = scale * h_factor * determineZRatioMovement(rot_y);
+			float y_d = scale * y_factor;
+			CurrentActorPointer_0->xPos += x_d;
+			CurrentActorPointer_0->yPos += y_d;
+			CurrentActorPointer_0->zPos += z_d;
+			CurrentActorPointer_0->rot_y = (CurrentActorPointer_0->rot_y + rot_y_offset) % 4096;
+			renderingParamsData* render = CurrentActorPointer_0->render;
+			if (render) {
+				render->scale_x = 0.0375f * scale;
+				render->scale_z = 0.0375f * scale;
+			}
+			paad->current_slot = 0;
+			if (closest_shop == SHOP_SNIDE) { // Snide is closest
+				// Rules for Snide
+				int snide_index = getTurnedCount(-1);
+				if (snide_index > 39) {
+					deleteActorContainer(CurrentActorPointer_0);
+					return;
+				}
+				for (int i = 0; i < 3; i++) {
+					if ((snide_index + i) < 40) {
+						int img_idx = getShopSkinIndex(&snide_rewards[snide_index + i].item);
+						paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], img_idx, i);
+					}
+				}
+				paad->cap = 1;
 			} else {
 				paad->cap = getMoveCountInShop(paad, paad->shop);
-				paad->current_slot = 0;
 				updateCounterDisplay();
 				if (paad->cap == 0) {
 					paad->kong_images[0] = SKIN_SOLDOUT;
@@ -225,23 +267,7 @@ void newCounterCode(void) {
 					paad->cap = 1;
 					paad->use_item_display = 0;
 				}
-				// Update Position depending on scale
-				float scale = getShopScale(closest_shop);
-				float x_r = determineXRatioMovement(CurrentActorPointer_0->rot_y);
-				float h_factor = h_factors[closest_shop];
-				float y_factor = 40.0f;
-				float x_d = scale * h_factor * x_r;
-				float z_d = scale * h_factor * determineZRatioMovement(CurrentActorPointer_0->rot_y);
-				float y_d = scale * y_factor;
-				CurrentActorPointer_0->xPos += x_d;
-				CurrentActorPointer_0->yPos += y_d;
-				CurrentActorPointer_0->zPos += z_d;
-				CurrentActorPointer_0->rot_y = (CurrentActorPointer_0->rot_y + 2048) % 4096;
-				renderingParamsData* render = CurrentActorPointer_0->render;
-				if (render) {
-					render->scale_x = 0.0375f * scale;
-					render->scale_z = 0.0375f * scale;
-				}
+				
 			}
 		} else {
 			deleteActorContainer(CurrentActorPointer_0);

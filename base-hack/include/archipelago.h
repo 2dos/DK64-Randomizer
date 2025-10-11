@@ -75,6 +75,9 @@ typedef enum archipelago_items {
     /* 0x046 */ TRANSFER_ITEM_FAKEITEM_GETOUT,
     /* 0x047 */ TRANSFER_ITEM_FAKEITEM_DRY,
     /* 0x048 */ TRANSFER_ITEM_FAKEITEM_FLIP,
+    /* 0x049 */ TRANSFER_ITEM_FAKEITEM_ICEFLOOR,
+    /* 0x04A */ TRANSFER_ITEM_FAKEITEM_PAPER,
+    /* 0x04B */ TRANSFER_ITEM_FAKEITEM_SLIP,
 } archipelago_items;
 
 typedef struct archipelago_data {
@@ -95,6 +98,7 @@ typedef struct archipelago_data {
     /* 0x062 */ unsigned char is_trapped;
     /* 0x063 */ unsigned char sent_trap;
     /* 0x064 */ unsigned char helm_hurry_item;
+    /* 0x065 */ unsigned char can_receive_shopkeeper;
 } archipelago_data;
 
 extern archipelago_data *APData;
@@ -106,3 +110,4 @@ extern int isAPEnabled(void);
 extern void sendDeath(void);
 extern void sendTrapLink(ICE_TRAP_TYPES trap_type);
 extern Gfx *displayAPConnection(Gfx *dl);
+extern int canReceiveShopkeeperItem(void);

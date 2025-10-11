@@ -363,6 +363,56 @@ item_packet company_coin_table[2] = {
     {.item_type = REQITEM_COMPANYCOIN, .kong = 0}, // Nintendo Coin
     {.item_type = REQITEM_COMPANYCOIN, .kong = 1}, // Rareware Coin
 };
+snide_packet snide_rewards[40] = {
+    // Japes
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Aztec
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Factory
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Galleon
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Fungi
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Caves
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Castle
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    // Isles
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+    {.object_id = 0x74, .item={ .item_type=REQITEM_GOLDENBANANA }},
+};
 
 int getCrownIndex(maps map) {
     /**
@@ -567,7 +617,10 @@ static const barrel_skin_tie bonus_skins[] = {
     {.actor = NEWACTOR_HINTITEMLANKY,           .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
     {.actor = NEWACTOR_HINTITEMTINY,            .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
     {.actor = NEWACTOR_HINTITEMCHUNKY,          .reqitem=REQITEM_HINT,              .level=-1, .kong=-1, .skin=SKIN_HINT},
-    {.actor = NEWACTOR_ARCHIPELAGOITEM,         .reqitem=REQITEM_AP,                .level=-1, .kong=-1, .skin=SKIN_AP},
+    {.actor = NEWACTOR_ARCHIPELAGOITEM,         .reqitem=REQITEM_AP,                .level= 0, .kong=-1, .skin=SKIN_AP},
+    {.actor = NEWACTOR_SPECIALARCHIPELAGOITEM,  .reqitem=REQITEM_AP,                .level= 1, .kong=-1, .skin=SKIN_AP_USEFUL},
+    {.actor = NEWACTOR_FOOLSARCHIPELAGOITEM,    .reqitem=REQITEM_AP,                .level= 2, .kong=-1, .skin=SKIN_AP_JUNK},
+    {.actor = NEWACTOR_TRAPARCHIPELAGOITEM,     .reqitem=REQITEM_AP,                .level= 3, .kong=-1, .skin=SKIN_AP_TRAP},
 };
 
 enum_bonus_skin getBarrelSkinIndex(int actor) {
@@ -579,11 +632,11 @@ enum_bonus_skin getBarrelSkinIndex(int actor) {
     return SKIN_GB;
 }
 
-enum_bonus_skin getShopSkinIndex(purchase_struct *data) {
+enum_bonus_skin getShopSkinIndex(item_packet *data) {
     for (int i = 0; i < (sizeof(bonus_skins) / sizeof(barrel_skin_tie)); i++) {
-        if (bonus_skins[i].reqitem == data->item.item_type) {
-            if ((bonus_skins[i].level == -1) || (bonus_skins[i].level == data->item.level)) {
-                if ((bonus_skins[i].kong == -1) || (bonus_skins[i].kong == data->item.kong)) {
+        if (bonus_skins[i].reqitem == data->item_type) {
+            if ((bonus_skins[i].level == -1) || (bonus_skins[i].level == data->level)) {
+                if ((bonus_skins[i].kong == -1) || (bonus_skins[i].kong == data->kong)) {
                     return bonus_skins[i].skin;
                 }
             }

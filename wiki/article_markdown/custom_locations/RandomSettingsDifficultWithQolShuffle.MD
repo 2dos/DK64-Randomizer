@@ -172,7 +172,9 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Item Rando List Selected: 
 	- Shop: 95%
 	- Banana: 95%
-	- Toughbanana: 95%
+	- Racebanana: 95%
+	- Gauntletbanana: 95%
+	- Blueprintbanana: 20%
 	- Crown: 70%
 	- Blueprint: 70%
 	- Key: 85%

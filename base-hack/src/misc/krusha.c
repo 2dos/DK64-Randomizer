@@ -377,7 +377,7 @@ void OrangeGunCode(void) {
         CurrentActorPointer_0->noclip_byte = 0x3C;
         unkProjectileCode_0(CurrentActorPointer_0, 60.0f);
         unkProjectileCode_1(CurrentActorPointer_0, 0.0f, 0.0f, 0.0f, 50.0f, -1);
-        allocateBone(CurrentActorPointer_0, 0, 0, 0, -1);
+        colorRainbowAmmo(CurrentActorPointer_0, 0.0f, 0.0f, 0.0f, -1);
         unkSpriteRenderFunc(-1);
         unkSpriteRenderFunc_1(1);
         unkSpriteRenderFunc_2(4);
@@ -414,7 +414,7 @@ void OrangeGunCode(void) {
     }
     float life = orange_life;
     unkBonusFunction(CurrentActorPointer_0);
-    colorRainbowAmmo(CurrentActorPointer_0);
+    unkProjectileCode_2(CurrentActorPointer_0);
     unkProjectileCode_3(CurrentActorPointer_0, 0);
     int making_contact = madeContact();
     if (

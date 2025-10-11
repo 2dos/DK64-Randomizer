@@ -4,6 +4,29 @@ const listeners = [];
 const progression_presets = [];
 const random_settings_presets = [];
 let random_settings_settings = {};
+const default_trap_weights = {
+  "trap_weight_bubble": 3,
+  "trap_weight_reverse": 3,
+  "trap_weight_slow": 3,
+  "trap_weight_disablea": 1,
+  "trap_weight_disableb": 1,
+  "trap_weight_disablez": 1,
+  "trap_weight_disablecu": 1,
+  "trap_weight_getout": 1,
+  "trap_weight_dry": 2,
+  "trap_weight_flip": 2,
+  "trap_weight_icefloor": 2,
+  "trap_weight_paper": 2,
+  "trap_weight_slip": 3,
+};
+const default_item_counts = {
+  "total_gbs": 201,
+  "total_medals": 40,
+  "total_fairies": 20,
+  "total_crowns": 10,
+  "total_rainbow_coins": 16,
+  "total_pearls": 5,
+};
 
 // Determine the correct URL for fetching presets based on the hostname
 let base_url;
@@ -1369,6 +1392,9 @@ document
 document
   .getElementById("apply_preset")
   .addEventListener("click", preset_select_changed);
+
+
+
 function set_preset_options() {
   // Set the Blocker presets on the page
 
@@ -1410,10 +1436,16 @@ function set_preset_options() {
   update_prog_hint_num_access();
   update_blocker_num_access();
   update_ice_trap_count();
+  update_all_trap_weights();
+  getTotalItemCounts();
+  let local_trap_weight_reset = false;
+  Object.keys(default_trap_weights).forEach(stg => {
+    local_trap_weight_reset = update_trap_weight(document.getElementById(stg), default_trap_weights[stg], local_trap_weight_reset);
+  })
   update_troff_number_access();
-  item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 1, 40);
-  item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 1, 5);
-  item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 1, 20);
+  item_req_update("medal_jetpac_behavior", "medal_jetpac_behavior_container", "medal_requirement", 0, 40);
+  item_req_update("pearl_mermaid_behavior", "pearl_mermaid_behavior_container", "mermaid_gb_pearls", 0, 5);
+  item_req_update("fairy_queen_behavior", "fairy_queen_behavior_container", "rareware_gb_fairies", 0, 20);
   item_req_update("cb_medal_behavior_new", "cb_medal_behavior_new_container", "medal_cb_req", 1, 100);
 
   // // Load the data

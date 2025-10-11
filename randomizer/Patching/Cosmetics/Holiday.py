@@ -20,8 +20,6 @@ from randomizer.Settings import CharacterColors, KongModels, ColorOptions
 
 def changeBarrelColor(settings, ROM_COPY: ROM, barrel_color: tuple = None, metal_color: tuple = None, brighten_barrel: bool = False):
     """Change the colors of the various barrels."""
-    if settings.archipelago:  # Something weird going on with AP
-        return
     wood_img = getImageFile(ROM_COPY, 25, getBonusSkinOffset(ExtraTextures.ShellWood), True, 32, 64, TextureFormat.RGBA5551)
     metal_img = getImageFile(ROM_COPY, 25, getBonusSkinOffset(ExtraTextures.ShellMetal), True, 32, 64, TextureFormat.RGBA5551)
     qmark_img = getImageFile(ROM_COPY, 25, getBonusSkinOffset(ExtraTextures.ShellQMark), True, 32, 64, TextureFormat.RGBA5551)
@@ -84,6 +82,25 @@ def changeBarrelColor(settings, ROM_COPY: ROM, barrel_color: tuple = None, metal
             img_output = getImageFile(ROM_COPY, 25, img, True, dim_x, dim_y, TextureFormat.RGBA5551)
             img_output = maskImageWithColor(img_output, barrel_color)
             writeColorImageToROM(img_output, 25, img, dim_x, dim_y, False, TextureFormat.RGBA5551, ROM_COPY)
+    # Barrel Palette
+    if barrel_color is not None:
+        palette_files = {
+            0x145: [],
+            0x147: [1, 3, 4, 6, 9, 10, 12, 15],
+            0x14C: [],
+            0x14E: [],
+            0x150: [],
+            0x152: [1, 2, 3, 5, 7, 8, 9, 10, 12],
+            0x154: [1, 3, 4, 5, 7, 9, 12],
+        }
+        for img in palette_files:
+            initial_img = getImageFile(ROM_COPY, 25, img, True, 16, 1, TextureFormat.RGBA5551)
+            img_output = maskImageWithColor(initial_img, barrel_color).convert("RGB")
+            pixels = palette_files[img]
+            for px in pixels:
+                img_output.putpixel((px, 0), initial_img.getpixel((px, 0)))
+            img_output = img_output.convert("RGBA")
+            writeColorImageToROM(img_output, 25, img, 16, 1, False, TextureFormat.RGBA5551, ROM_COPY)
 
 
 def applyCelebrationRims(ROM_COPY: ROM, hue_shift: int, enabled_bananas: list[bool] = [False, False, False, False, False]):
@@ -217,7 +234,7 @@ def applyHolidayMode(settings, ROM_COPY: ROM):
         # Pad Rim
         applyCelebrationRims(ROM_COPY, -12)
         # Tag Barrel, Bonus Barrel & Transform Barrels
-        changeBarrelColor(settings, ROM_COPY, (0x00, 0xC0, 0x00))
+        changeBarrelColor(settings, ROM_COPY, (0x8D, 0xB3, 0x93))
         # Turn Ice Tomato Orange
         sizes = {
             0x1237: 700,
@@ -233,7 +250,7 @@ def applyHolidayMode(settings, ROM_COPY: ROM):
             0x1241: 1404,
         }
         for img in range(0x1237, 0x1241 + 1):
-            hueShiftImageContainer(25, img, 1, sizes[img], TextureFormat.RGBA5551, 240)
+            hueShiftImageContainer(25, img, 1, sizes[img], TextureFormat.RGBA5551, 171, ROM_COPY)
     elif HOLIDAY == Holidays.Anniv25:
         changeBarrelColor(settings, ROM_COPY, (0xFF, 0xFF, 0x00), None, True)
         sticker_im = getImageFile(ROM_COPY, 25, getBonusSkinOffset(ExtraTextures.Anniv25Sticker), True, 1, 1372, TextureFormat.RGBA5551)

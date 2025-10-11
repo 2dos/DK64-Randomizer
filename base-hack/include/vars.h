@@ -32,11 +32,9 @@
 // Other
 #define static_expansion_size 0x100
 
-#define ACTOR_VANILLA_LIMIT 345
-#define COLLISION_LIMIT 73
-#define DEFS_LIMIT 160
+#define COLLISION_LIMIT 76
+#define DEFS_LIMIT 164
 #define ACTOR_LIMIT (345 + NEWACTOR_TERMINATOR)
-#define CUSTOM_ACTORS_START 345
 
 #define KONG_LOCKED_START 0x2E8
 #define SNOOPDOOR_OPEN 0x2ED
@@ -93,7 +91,8 @@
 #define FLAG_HELM_HURRY_DISABLED 0x3CB
 #define FLAG_HELM_MINIGAMES 0x3CC // 0x3CC -> 0x3D5 (inc.)
 #define FLAG_HALF_MEDAL_JAPES_DK 0x3D6 // 0x3D6 -> 0x3FD (inc.) - 40 flags
-#define FLAG_ENEMY_KILLED_0 0x3FE // 0x3FE -> 0x59E (inc.) (428 flags)
+#define FLAG_SNIDE_REWARD 0x3FE // 0x3FE -> 0x425 (inc.) - 40 flags
+#define FLAG_ENEMY_KILLED_0 0x426 // 0x426 -> 0x5C6 (inc.) (428 flags)
 
 #define MODEL_COUNT 0xED
 

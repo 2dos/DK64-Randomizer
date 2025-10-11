@@ -10,6 +10,7 @@
  */
 #include "../../include/common.h"
 
+#define REFERENCE_SHOP -4
 #define REFERENCE_PARENT -3
 #define NO_HINT_REGION -2
 #define INCONSISTENT_HINT_REGION -1
@@ -27,11 +28,11 @@ static const char map_hint_regions[] = {
             >= 0 = Hint region is always a certain enum value
     */
     NO_HINT_REGION, // test_map
-    REFERENCE_PARENT, // funkys_store
+    REFERENCE_SHOP, // funkys_store
     REGION_FACTORYSTORAGE, // dk_arcade
     REFERENCE_PARENT, // k_rool_barrel_lankys_maze
     REGION_JAPESCAVERNS, // jungle_japes_mountain
-    REFERENCE_PARENT, // crankys_lab
+    REFERENCE_SHOP, // crankys_lab
     REGION_JAPESCAVERNS, // jungle_japes_minecart
     INCONSISTENT_HINT_REGION, // jungle_japes
     REGION_OTHERTNS, // jungle_japes_army_dillo
@@ -41,7 +42,7 @@ static const char map_hint_regions[] = {
     REGION_JAPESHIVE, // jungle_japes_shell
     REGION_JAPESCAVERNS, // jungle_japes_lankys_cave
     REGION_AZTECOASISTOTEM, // angry_aztec_beetle_race
-    REFERENCE_PARENT, // snides_hq
+    REGION_OTHERSNIDE, // snides_hq
     REGION_AZTECTINY, // angry_aztec_tinys_temple
     REGION_OTHERHELM, // hideout_helm
     REFERENCE_PARENT, // teetering_turtle_trouble_very_easy
@@ -51,7 +52,7 @@ static const char map_hint_regions[] = {
     REGION_AZTECGETOUT, // angry_aztec_five_door_temple_tiny
     REGION_AZTECGETOUT, // angry_aztec_five_door_temple_lanky
     REGION_AZTECGETOUT, // angry_aztec_five_door_temple_chunky
-    REFERENCE_PARENT, // candys_music_shop
+    REFERENCE_SHOP, // candys_music_shop
     INCONSISTENT_HINT_REGION, // frantic_factory
     REGION_FACTORYRESEARCH, // frantic_factory_car_race
     NO_HINT_REGION, // hideout_helm_level_intros_game_over
@@ -276,26 +277,24 @@ int setHintRegion(void) {
         return current_region;
     } else if (current_region == NO_HINT_REGION) {
         return -1;
+    } else if (current_region == REFERENCE_SHOP) {
+        int level = getWorld(CurrentMap, 1);
+        if (level == 7) {
+            return REGION_SHOPISLES;
+        }
+        if (level < 7) {
+            return REGION_SHOPJAPES + level;
+        }
     } else if (current_region == REFERENCE_PARENT) {
-        if (inShop(CurrentMap, 1)) {
-            int level = getWorld(CurrentMap, 1);
-            if (level == 7) {
-                return REGION_SHOPISLES;
-            }
-            if (level < 7) {
-                return REGION_SHOPJAPES + level;
-            }
-        } else {
-            int parent_map = 0;
-            int parent_exit = 0;
-            getParentMap(&parent_map, &parent_exit);
-            if ((parent_map >= 0) && (parent_map < 216)) {
-                current_region = map_hint_regions[parent_map];
-                if (current_region >= 0) {
-                    return current_region;
-                } else if (last_safe_parent >= 0) {
-                    return last_safe_parent;
-                }
+        int parent_map = 0;
+        int parent_exit = 0;
+        getParentMap(&parent_map, &parent_exit);
+        if ((parent_map >= 0) && (parent_map < 216)) {
+            current_region = map_hint_regions[parent_map];
+            if (current_region >= 0) {
+                return current_region;
+            } else if (last_safe_parent >= 0) {
+                return last_safe_parent;
             }
         }
     }

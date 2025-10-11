@@ -38,7 +38,7 @@ LogicRegions = {
         TransitionFront(Regions.FranticFactoryStart, lambda _: True),  # Don't move this away from index 1 (ShuffleDoors.py relies on this being index 1)
     ], restart=-1),
 
-    Regions.FranticFactoryStart: Region("Frantic Factory Start", HintRegion.FactoryStart, Levels.FranticFactory, False, None, [
+    Regions.FranticFactoryStart: Region("Frantic Factory Foyer", HintRegion.FactoryStart, Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryMainEnemy_LobbyLeft, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_LobbyRight, lambda _: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToHatch, lambda _: True),

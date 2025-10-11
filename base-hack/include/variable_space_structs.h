@@ -27,7 +27,7 @@ typedef struct varspace {
 	/* 0x05E */ LZREntrance aztec_beetle_enter; // Map and exit replacing the loading zone which normally bring you to Aztec Beetle Race from Aztec. First byte is map, second byte is exit value. Same logic applies until (and including) "enter_levels[7]"
 	/* 0x060 */ char cb_medal_requirement[8]; 
 	/* 0x068 */ char include_half_medals; // Medals have a corresponding check for collecting 1/2 the bananas of the standard requirement
-	/* 0x069 */ char unk_69;
+	/* 0x069 */ char snide_has_rewards;
 	/* 0x06A */ LZREntrance seasick_ship_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x06C */ LZREntrance fungi_minecart_enter; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x06E */ char unk_6E[6];

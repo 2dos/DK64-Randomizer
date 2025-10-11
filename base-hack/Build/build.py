@@ -202,6 +202,9 @@ file_dict = [
     File(name="Candy Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=609, source_file="candy_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Snide Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=610, source_file="snide_om2.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="AP Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x291, source_file="archi_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Special AP Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x292, source_file="special_archi_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Fools AP Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x293, source_file="fools_archi_om2.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Trap AP Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x294, source_file="trap_archi_om2.bin", do_not_delete_source=True, do_not_extract=True),
     # File(name="K. Rool (Cutscenes) Model", pointer_table_index=TableNames.ActorGeometry, file_index=0x48, source_file="k_rool_cutscenes_om1.bin", do_not_delete_source=True),
     File(
         name="Snow Texture",
@@ -1230,6 +1233,22 @@ for x in range(6):
             texture_format=TextureFormat.RGBA5551,
         )
     )
+special_ap_pearls = {
+    ExtraTextures.SpecialAPPearlGold: "special_gold",
+    ExtraTextures.SpecialAPPearlSilver: "special_silver",
+    ExtraTextures.FoolsAPPearlBlack: "fools_black",
+    ExtraTextures.FoolsAPPearlSilver: "fools_silver",
+}
+for tex, name in special_ap_pearls.items():
+    file_dict.append(
+        File(
+            name=f"Special AP Pearl {name}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(tex),
+            source_file=f"assets/displays/ap_pearl_{name}.png",
+            texture_format=TextureFormat.RGBA5551,
+        )
+    )
 
 for x in range(12):
     file_dict.append(
@@ -1400,18 +1419,29 @@ colorblind_changes = [
     [0x15A3, 0x15AA],  # Feather
     [0x12E5, 0x12E5],  # Pineapple
     [0x14A7, 0x14B5],  # Pineapple
+    [0xB85, 0xB85],  # Snide HQ Sign
 ]
 
-file_dict.append(
-    # Giant Mushroom Cap
-    File(
-        name="Colorblind Expansion 1779",
-        pointer_table_index=TableNames.TexturesGeometry,
-        file_index=0x6F3,
-        source_file="colorblind_exp_1779.bin",
-        target_size=0x40,
+palette_files = [
+    0x6F3,  # Giant Mushroom Cap
+    0x145,  # Bonus Barrel Map Geo Shell
+    0x147,  # Bonus Barrel Map Geo Shell
+    0x14C,  # Bonus Barrel Map Geo Shell
+    0x14E,  # Bonus Barrel Map Geo Shell
+    0x150,  # Bonus Barrel Map Geo Shell
+    0x152,  # Bonus Barrel Map Geo Shell
+    0x154,  # Bonus Barrel Map Geo Shell
+]
+for file in palette_files:
+    file_dict.append(
+        File(
+            name=f"Colorblind Expansion ({file})",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=file,
+            source_file=f"colorblind_exp_{file}.bin",
+            target_size=0x40,
+        )
     )
-)
 
 kremling_dimensions = [
     [32, 64],  # FCE
@@ -1518,6 +1548,9 @@ shrinkModel(True, "hint_item_actor_lanky.bin", 0, 1 / 0.15, "shrink_qmark_lanky.
 shrinkModel(True, "hint_item_actor_tiny.bin", 0, 1 / 0.15, "shrink_qmark_tiny.bin", True)
 shrinkModel(True, "hint_item_actor_chunky.bin", 0, 1 / 0.15, "shrink_qmark_chunky.bin", True)
 shrinkModel(True, "archi_om1.bin", 0, 1 / 0.15, "shrink_archi.bin", False)
+shrinkModel(True, "special_archi_om1.bin", 0, 1 / 0.15, "shrink_special_archi.bin", False)
+shrinkModel(True, "fools_archi_om1.bin", 0, 1 / 0.15, "shrink_fools_archi.bin", False)
+shrinkModel(True, "trap_archi_om1.bin", 0, 1 / 0.15, "shrink_trap_archi.bin", False)
 FINAL_RACE_HOOP = "shrink_race_hoop.bin"
 shrinkModel(True, "race_hoop_om1.bin", 0, 1 / 0.15, FINAL_RACE_HOOP, False)
 
@@ -1622,6 +1655,14 @@ model_changes = [
     ModelChange(0x12F, "blueprint_lanky_om1.bin"),
     ModelChange(0x130, "blueprint_tiny_om1.bin"),
     ModelChange(0x131, "blueprint_chunky_om1.bin"),
+    # Special Archi Items
+    ModelChange(0x132, "shrink_special_archi.bin"),
+    ModelChange(0x133, "special_archi_om1.bin"),
+    ModelChange(0x134, "shrink_fools_archi.bin"),
+    ModelChange(0x135, "fools_archi_om1.bin"),
+    ModelChange(0x136, "shrink_trap_archi.bin"),
+    ModelChange(0x137, "trap_archi_om1.bin"),
+    ModelChange(0x138, "counter_spread.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 
@@ -1915,7 +1956,6 @@ with open(ROMName, "rb") as fh:
     print("Pushing Colorblind Changes")
     for change in colorblind_changes:
         for file_index in range(change[0], change[1] + 1):
-            print(hex(file_index))
             fh.seek(unc_table_25 + (file_index << 2))
             file_size = int.from_bytes(fh.read(4), "big")
             file_dict.append(
@@ -2417,6 +2457,10 @@ with open(newROMName, "r+b") as fh:
         "ap_pearl_3",
         "ap_pearl_4",
         "ap_pearl_5",
+        "ap_pearl_special_gold",
+        "ap_pearl_special_silver",
+        "ap_pearl_fools_black",
+        "ap_pearl_fools_silver",
         "ap32",
         "fake_bean",
         "fake_key_shine",

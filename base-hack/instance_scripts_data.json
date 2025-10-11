@@ -252,6 +252,10 @@
         "map": 113
     },
     {
+        "name": "./assets/instance_scripts\\snide",
+        "map": 15
+    },
+    {
         "name": "./assets/instance_scripts\\tgrounds",
         "map": 176
     },

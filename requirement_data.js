@@ -25,24 +25,15 @@ const requirement_data = {
             new Requirement(1, [[Moves.Moveless]]), // 1 banana in JungleJapesStart
             new Requirement(5, [[Moves.Diving]]), // 5 bananas in JungleJapesStart
             new Requirement(10, [[Moves.ClimbingCheck]]), // 1 bunch, 1 bunch in JapesHillTop
+            new Requirement(2, [[Moves.Orangstand]]), // 2 bananas in JapesPaintingRoomHill
             new Requirement(3, [[Moves.JapesCoconut]]), // 1 banana, 2 bananas in JapesBeyondCoconutGate2
             new Requirement(5, [[Moves.ClimbingCheck, Moves.JapesCoconut]]), // 1 bunch in JapesBeyondCoconutGate2
             new Requirement(10, [[Moves.Coconut, Moves.JapesCoconut]]), // 5 bananas in BeyondRambiGate; 1 bunch in JapesBeyondCoconutGate2
             new Requirement(5, [[Moves.Peanut, Moves.Grape]]), // 1 bunch in JapesBeyondPeanutGate
+            new Requirement(20, [[Moves.Peanut, Moves.Orangstand]]), // 2 bunches, 2 bunches in JapesLankyCave
             new Requirement(20, [[Moves.Grape, Moves.JapesCoconut]]), // 1 balloon, 1 balloon in JapesBeyondCoconutGate2
             new Requirement(9, [[Moves.Orangstand, Moves.JapesCoconut]]), // 2 bananas in JapesBeyondCoconutGate2; 1 bunch, 2 bananas in JapesUselessSlope
-            new Requirement(2, [ // 2 bananas in JapesPaintingRoomHill
-                [Moves.Orangstand],
-                [Moves.ClimbingCheck, Moves.Twirl],
-            ]),
-            new Requirement(20, [ // 2 bunches, 2 bunches in JapesLankyCave
-                [Moves.Peanut, Moves.Orangstand],
-                [Moves.ClimbingCheck, Moves.Peanut, Moves.Twirl],
-            ]),
-            new Requirement(10, [ // 1 balloon in JapesLankyCave
-                [Moves.Peanut, Moves.Grape, Moves.Orangstand],
-                [Moves.ClimbingCheck, Moves.Peanut, Moves.Grape, Moves.Twirl],
-            ]),
+            new Requirement(10, [[Moves.Peanut, Moves.Grape, Moves.Orangstand]]), // 1 balloon in JapesLankyCave
         ],
         "Tiny": [
             new Requirement(5, [[Moves.Moveless]]), // 5 bananas in JungleJapesStart
@@ -102,9 +93,9 @@ const requirement_data = {
                 [Moves.Rocket, Moves.AztecTunnelDoor],
             ]),
             new Requirement(10, [ // 1 balloon in AztecDonkeyQuicksandCave
-                [Moves.LevelSlam, Moves.Coconut, Moves.Strong, Moves.Peanut, Moves.AztecTunnelDoor, Moves.AztecLlama],
-                [Moves.LevelSlam, Moves.Strong, Moves.Peanut, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama],
-                [Moves.LevelSlam, Moves.Strong, Moves.Peanut, Moves.Feather, Moves.AztecTunnelDoor, Moves.AztecLlama],
+                [Moves.LevelSlam, Moves.Coconut, Moves.Strong, Moves.Peanut, Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.AztecW5Bonus],
+                [Moves.LevelSlam, Moves.Strong, Moves.Peanut, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.AztecW5Bonus],
+                [Moves.LevelSlam, Moves.Strong, Moves.Peanut, Moves.Feather, Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.AztecW5Bonus],
             ]),
         ],
         "Lanky": [
@@ -335,22 +326,16 @@ const requirement_data = {
             new Requirement(10, [[Moves.Feather]]), // 1 balloon in ThornvineArea
             new Requirement(8, [[Moves.ForestYellowTunnel]]), // 8 bananas in HollowTreeArea
             new Requirement(4, [[Moves.ForestGreenTunnelFeather]]), // 4 bananas in FungiForestStart
-            new Requirement(5, [[Moves.Punch, Moves.Day]]), // 1 bunch in MillChunkyTinyArea
+            new Requirement(10, [[Moves.Mini, Moves.Day]]), // 2 bunches in MillChunkyTinyArea
             new Requirement(1, [[Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]), // 1 banana in WormArea
             new Requirement(15, [[Moves.ClimbingCheck, Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]), // 3 bunches in WormArea
             new Requirement(5, [[Moves.Sax, Moves.Mini, Moves.ForestYellowTunnel]]), // 1 bunch in HollowTreeArea
-            new Requirement(10, [ // 2 bunches in MillChunkyTinyArea
-                [Moves.Mini, Moves.Day],
-                [Moves.Punch, Moves.Day],
-            ]),
+            new Requirement(5, [[Moves.Mini, Moves.Punch, Moves.Day]]), // 1 bunch in MillChunkyTinyArea
+            new Requirement(5, [[Moves.Mini, Moves.Punch, Moves.Night, Moves.Day]]), // 1 bunch in SpiderRoom
             new Requirement(10, [ // 1 balloon in MushroomLowerExterior
                 [Moves.ClimbingCheck, Moves.Feather],
                 [Moves.Rocket, Moves.Feather],
                 [Moves.Feather, Moves.CheckOfLegends],
-            ]),
-            new Requirement(5, [ // 1 bunch in SpiderRoom
-                [Moves.Mini, Moves.Night, Moves.Day],
-                [Moves.Punch, Moves.Night, Moves.Day],
             ]),
         ],
         "Chunky": [
@@ -437,10 +422,10 @@ const requirement_data = {
             new Requirement(5, [[Moves.Barrels]]), // 1 bunch in CrystalCavesMain
             new Requirement(11, [[Moves.CavesIceWalls]]), // 1 bunch, 3 bananas in CavesGGRoom; 3 bananas in CavesSnideArea
             new Requirement(6, [[Moves.Barrels, Moves.CavesIceWalls]]), // 6 bananas in BoulderCave
-            new Requirement(10, [[Moves.Mini, Moves.Pineapple]]), // 1 balloon in CavesBonusCave
             new Requirement(10, [[Moves.Pineapple, Moves.CavesIceWalls]]), // 1 balloon in CavesSnideArea
             new Requirement(10, [[Moves.Barrels, Moves.Hunky, Moves.CavesIceWalls]]), // 1 bunch in BoulderCave; 5 bananas in IglooArea
             new Requirement(20, [[Moves.Slam, Moves.Triangle, Moves.Gone]]), // 4 bunches in ChunkyCabin
+            new Requirement(10, [[Moves.Mini, Moves.Pineapple, Moves.CavesW3Bonus]]), // 1 balloon in CavesBonusCave
             new Requirement(10, [[Moves.Pineapple, Moves.Triangle, Moves.CavesIglooPads]]), // 1 balloon in ChunkyIgloo
         ],
     },
@@ -471,12 +456,12 @@ const requirement_data = {
         ],
         "Tiny": [
             new Requirement(50, [[Moves.Moveless]]), // 1 bunch, 45 bananas in CreepyCastleMain
-            new Requirement(5, [[Moves.LevelSlam]]), // 1 bunch in Ballroom
             new Requirement(10, [[Moves.Feather]]), // 1 balloon in LowerCave
             new Requirement(5, [[Moves.Mini]]), // 1 bunch in TrashCan
-            new Requirement(15, [[Moves.LevelSlam, Moves.Monkeyport]]), // 1 bunch, 2 bunches in MuseumBehindGlass
+            new Requirement(5, [[Moves.LevelSlam, Moves.Diddy]]), // 1 bunch in Ballroom
             new Requirement(5, [[Moves.Twirl, Moves.CryptTinyEntry]]), // 1 bunch in Mausoleum
-            new Requirement(10, [[Moves.LevelSlam, Moves.Feather, Moves.Monkeyport]]), // 1 balloon in MuseumBehindGlass
+            new Requirement(15, [[Moves.LevelSlam, Moves.Monkeyport, Moves.Diddy]]), // 1 bunch, 2 bunches in MuseumBehindGlass
+            new Requirement(10, [[Moves.LevelSlam, Moves.Feather, Moves.Monkeyport, Moves.Diddy]]), // 1 balloon in MuseumBehindGlass
         ],
         "Chunky": [
             new Requirement(30, [[Moves.Moveless]]), // 30 bananas in UpperCave

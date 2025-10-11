@@ -44,7 +44,7 @@ from randomizer.Patching.BananaPortRando import randomize_bananaport, move_banan
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.CoinPlacer import randomize_coins
 from randomizer.Patching.Cosmetics.TextRando import writeBootMessages
-from randomizer.Patching.Cosmetics.Puzzles import updateMillLeverTexture, updateCryptLeverTexture, updateDiddyDoors, updateHelmFaces
+from randomizer.Patching.Cosmetics.Puzzles import updateMillLeverTexture, updateCryptLeverTexture, updateDiddyDoors, updateHelmFaces, updateSnidePanel
 from randomizer.Patching.CosmeticColors import (
     applyHelmDoorCosmetics,
     applyKongModelSwaps,
@@ -221,6 +221,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.race_coin_rando, 0x94),  # Race Coin Location Rando
         BooleanProperties(spoiler.settings.disable_racing_patches, 0x91),  # Disable Racing Patches
         BooleanProperties(spoiler.settings.shops_dont_cost, 0x95),  # Shops don't cost
+        BooleanProperties(spoiler.settings.snide_reward_rando, 0x69),  # Snides has rewards
     ]
 
     for prop in boolean_props:
@@ -341,11 +342,23 @@ def patching_response(spoiler):
     is_dw = IsDDMSSelected(spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_dark_world)
     is_sky = IsDDMSSelected(spoiler.settings.hard_mode_selected, HardModeSelected.donk_in_the_sky)
     if is_dw and is_sky:
-        # Memory challenge
+        # Memory Challenge
         ROM_COPY.seek(sav + 0x0C6)
         old = int.from_bytes(ROM_COPY.readBytes(1), "big")
         ROM_COPY.seek(sav + 0x0C6)
-        ROM_COPY.write(old | 0x2)
+        ROM_COPY.write(old | 0x8 | 0x2)
+    elif is_dw and not is_sky:
+        # Dark world only
+        ROM_COPY.seek(sav + 0x0C6)
+        old = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        ROM_COPY.seek(sav + 0x0C6)
+        ROM_COPY.write(old | 0x8)
+    elif is_sky and not is_dw:
+        # Sky only
+        ROM_COPY.seek(sav + 0x0C6)
+        old = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        ROM_COPY.seek(sav + 0x0C6)
+        ROM_COPY.write(old | 0x4)
 
     keys = 0xFF
     if spoiler.settings.k_rool_vanilla_requirement:
@@ -616,9 +629,8 @@ def patching_response(spoiler):
                     else:
                         spoiler.text_changes[file] = [data]
 
-    if spoiler.settings.rareware_gb_fairies != 20:
-        ROM_COPY.seek(sav + 0x36)
-        ROM_COPY.write(spoiler.settings.rareware_gb_fairies)
+    ROM_COPY.seek(sav + 0x36)
+    ROM_COPY.write(spoiler.settings.rareware_gb_fairies)
 
     ROM_COPY.seek(sav + 0x1EB)
     ROM_COPY.write(spoiler.settings.mermaid_gb_pearls)
@@ -724,6 +736,7 @@ def patching_response(spoiler):
         applyHelmDoorCosmetics(spoiler.settings, ROM_COPY)
         applyKongModelSwaps(spoiler.settings, ROM_COPY)
         updateHelmFaces(spoiler.settings, ROM_COPY)
+        updateSnidePanel(spoiler.settings, ROM_COPY)
 
         patchAssembly(ROM_COPY, spoiler)
         ApplyMirrorMode(spoiler.settings, ROM_COPY)

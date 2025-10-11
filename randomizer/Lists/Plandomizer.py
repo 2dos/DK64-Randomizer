@@ -156,6 +156,12 @@ PlandomizerPanels = {
         "name": "Shops",
         "levels": createPlannableLevelObj(include_isles=True),
     },
+    "Snide": {
+        "name": "Snide HQ",
+        "locations": {
+            "All Kongs": [],
+        },
+    },
     "Switches": {
         "name": "Switches",
         "locations": [],

@@ -114,12 +114,12 @@ int hasBeatenDKRapWinCon(void) {
 
 int canAccessKroolsChallenge(void) {
     // Check all 8 Keys
-    if (getItemCount_new(REQITEM_KEY, -1, -1) < 8) {
+    if (getItemCountReq(REQITEM_KEY) < 8) {
         return 0;
     }
     
     // Check all 40 Blueprints  
-    if (getItemCount_new(REQITEM_BLUEPRINT, -1, -1) < 40) {
+    if (getItemCountReq(REQITEM_BLUEPRINT) < 40) {
         return 0;
     }
     
@@ -175,24 +175,29 @@ void checkVictory_flaghook(int flag) {
     checkSeedVictory();
 }
 
-int isSnapEnemyInRange(void) {
+int isSnapEnemyInRange(int set) {
+    int updated = 0;
     for (int i = 0; i < LoadedActorCount; i++) {
         actorData* actor = LoadedActorArray[i].actor;
         if (actor) {
-            int type = actor->actorType;
-            for (int j = 0; j < (sizeof(poke_snap_actors) / 2); j++) {
-                if (poke_snap_actors[j] == type) {
-                    if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, FLAGTYPE_PERMANENT)) {
-                        int offset = j >> 3;
-                        int shift = j & 7;
-                        if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
-                            float x_store = 0;
-                            float y_store = 0;
-                            calculateScreenPosition(actor->xPos, actor->yPos + 10.0f, actor->zPos, &x_store, &y_store, 0, 1.0f, 0);
-                            int x_int = x_store;
-                            int y_int = y_store;
-                            if ((x_int >= 0x51) && (x_int <= 0xE9)) { // Normal fairy bounds: 0x8A -> 0xB0
-                                if ((y_int >= 0x3B) && (y_int <= 0xAD)) { // Normal fairy bounds: 0x61 -> 0x87
+            int index = inShortList(actor->actorType, &poke_snap_actors, sizeof(poke_snap_actors) >> 1);
+            if (index) {
+                int j = index - 1;
+                if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, FLAGTYPE_PERMANENT)) {
+                    int offset = j >> 3;
+                    int shift = j & 7;
+                    if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
+                        float x_store = 0;
+                        float y_store = 0;
+                        calculateScreenPosition(actor->xPos, actor->yPos + 10.0f, actor->zPos, &x_store, &y_store, 0, 1.0f, 0);
+                        int x_int = x_store;
+                        int y_int = y_store;
+                        if ((x_int >= 0x51) && (x_int <= 0xE9)) { // Normal fairy bounds: 0x8A -> 0xB0
+                            if ((y_int >= 0x3B) && (y_int <= 0xAD)) { // Normal fairy bounds: 0x61 -> 0x87
+                                if (set) {
+                                    updated = 1;
+                                    setPermFlag(FLAG_PKMNSNAP_PICTURES + j);
+                                } else {
                                     return 1;
                                 }
                             }
@@ -202,7 +207,7 @@ int isSnapEnemyInRange(void) {
             }
         }
     }
-    return 0;
+    return updated;
 }
 
 static unsigned char pkmn_snap_frames = 0;
@@ -223,35 +228,7 @@ int getPkmnSnapData(int* frames, int* current, int* total) {
 }
 
 void pokemonSnapMode(void) {
-    int updated = 0;
-    for (int i = 0; i < LoadedActorCount; i++) {
-        actorData* actor = LoadedActorArray[i].actor;
-        if (actor) {
-            int type = actor->actorType;
-            for (int j = 0; j < (sizeof(poke_snap_actors) / 2); j++) {
-                if (poke_snap_actors[j] == type) {
-                    if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, FLAGTYPE_PERMANENT)) {
-                        int offset = j >> 3;
-                        int shift = j & 7;
-                        if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
-                            float x_store = 0;
-                            float y_store = 0;
-                            calculateScreenPosition(actor->xPos, actor->yPos + 10.0f, actor->zPos, &x_store, &y_store, 0, 1.0f, 0);
-                            int x_int = x_store;
-                            int y_int = y_store;
-                            if ((x_int >= 0x51) && (x_int <= 0xE9)) { // Normal fairy bounds: 0x8A -> 0xB0
-                                if ((y_int >= 0x3B) && (y_int <= 0xAD)) { // Normal fairy bounds: 0x61 -> 0x87
-                                    setPermFlag(FLAG_PKMNSNAP_PICTURES + j);
-                                    updated = 1;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    if (updated) {
+    if (isSnapEnemyInRange(1)) {
         int captured_count = 0;
         int total_count = 0;
         for (int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {

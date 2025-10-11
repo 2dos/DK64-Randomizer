@@ -550,6 +550,7 @@ def getItemNumberString(count: int, item_type: Types) -> str:
         Types.Pearl: "Pearl",
         Types.FillerPearl: "Pearl",
         Types.RainbowCoin: "Rainbow Coin",
+        Types.FillerRainbowCoin: "Rainbow Coin",
         Types.FakeItem: "Ice Trap",
         Types.JunkItem: "Junk Item",
         Types.Hint: "Hint",
@@ -801,7 +802,7 @@ def sumChecks(spoiler, ownedItems, locations: list) -> int:
 
 def getHolidaySetting(settings):
     """Get the holiday setting."""
-    is_offseason = True
+    is_offseason = False
     if is_offseason:
         return settings.holiday_setting_offseason
     return settings.holiday_setting
@@ -810,7 +811,7 @@ def getHolidaySetting(settings):
 def getHoliday(settings):
     """Get the holiday experienced."""
     if getHolidaySetting(settings):
-        return Holidays.Christmas
+        return Holidays.Halloween
     return Holidays.no_holiday
 
 

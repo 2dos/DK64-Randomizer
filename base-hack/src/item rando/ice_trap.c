@@ -439,7 +439,29 @@ static button_ice_struct button_ice_data[] = {
     {.ice_trap_type = ICETRAP_DISABLEZ, .button_btf = CONT_G, .button_sprite = (void*)0x80720D38},
     {.ice_trap_type = ICETRAP_DISABLECU, .button_btf = CONT_E, .button_sprite = (void*)0x80720D80},
 };
-static unsigned char flip_timer = 0;
+typedef struct ice_trap_timer_struct {
+    /* 0x000 */ unsigned short timer;
+    /* 0x002 */ char active;
+    /* 0x003 */ char unk3;
+    /* 0x004 */ void *disable_func;
+    /* 0x008 */ void *enable_func;
+} ice_trap_timer_struct;
+
+void resetScreenFlip(void) {
+    *(unsigned char*)(0x80010520) = 0x3F;
+}
+
+static ice_trap_timer_struct ice_trap_timers[] = {
+    {.timer = 0, .active=0, .disable_func=&resetScreenFlip}, // Flip
+    {.timer = 0, .active=1, .disable_func=&cc_disabler_paper, .enable_func=&cc_enabler_paper}, // Paper
+    {.timer = 0, .active=0, .disable_func=&cc_disabler_ice}, // Ice
+};
+
+
+static unsigned short flip_timer = 0;
+static unsigned short slip_timers[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+static unsigned short ice_floor_timer = 0;
+static unsigned short paper_timer = 0;
 
 void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration) {
     float repeat_count = (float)duration / (float)sprite->image_count;
@@ -497,11 +519,32 @@ void initIceTrap(void) {
             for (int i = 0; i < 5; i++) {
                 MovesBase[i].instrument_energy = 0;
             }
-            displaySpriteAtXYZ((void*)(0x8071FE08), 1.0f, Player->xPos, Player->yPos, Player->zPos);
+            displaySpriteAtXYZ((void*)(0x8071FE08), 1.0f, Player->xPos, Player->yPos + 6.0f, Player->zPos);
             break;
         case ICETRAP_FLIP:
             *(unsigned char*)(0x80010520) = 0xBF;
-            flip_timer = 240;
+            ice_trap_timers[0].timer = 240;
+            break;
+        case ICETRAP_ICEFLOOR:
+            cc_enabler_ice();
+            ice_trap_timers[2].timer = 450;
+            break;
+        case ICETRAP_PAPER:
+            cc_enabler_paper();
+            ice_trap_timers[1].timer = 450;
+            break;
+        case ICETRAP_SLIP:
+        case ICETRAP_SLIP_INSTANT:
+            for (int i = 0; i < 8; i++) {
+                if (slip_timers[i] == 0) {
+                    if (ice_trap_queued == ICETRAP_SLIP_INSTANT) {
+                        slip_timers[i] = 1;
+                    } else {
+                        slip_timers[i] = (getRNGLower31() & 0x3FF) + 150; // Some time between 5s and 39.1s
+                    }
+                    break;
+                }
+            }
             break;
     }
     playSFX(0x2D4); // K Rool Laugh
@@ -512,13 +555,67 @@ void initIceTrap(void) {
     ice_trap_queued = ICETRAP_OFF;
 }
 
+void slipPeelCode(void) {
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        CurrentActorPointer_0->control_state_progress = 45;
+        CurrentActorPointer_0->noclip_byte = 1;
+    }
+    if (CurrentActorPointer_0->control_state_progress > 0) {
+        CurrentActorPointer_0->control_state_progress--;
+    } else {
+        CurrentActorPointer_0->obj_props_bitfield &= 0xFFFF7FFF;
+        CurrentActorPointer_0->shadow_intensity -= 10;
+        if (CurrentActorPointer_0->shadow_intensity < 0) {
+            deleteActorContainer(CurrentActorPointer_0);
+        }
+    }
+    renderActor(CurrentActorPointer_0, 0);
+}
+
 void resetIceTrapButtons(void) {
     for (int i = 0; i < sizeof(button_ice_data)/sizeof(button_ice_struct); i++) {
         button_ice_data[i].ice_trap_timer = 0;
     }
     flip_timer = 0;
+    ice_floor_timer = 0;
+    paper_timer = 0;
     trap_enabled_buttons = 0xFFFF;
-    *(unsigned char*)(0x80010520) = 0x3F;
+    resetScreenFlip();
+}
+
+int canLoadIceTrap(ICE_TRAP_TYPES trap_type) {
+    if (!Player) {
+        return 0;
+    }
+    if (Player->collision_queue_pointer) {
+        // Crashes
+        return 0;
+    }
+    if (ObjectModel2Timer < 5) {
+        return 0;
+    }
+    if (LZFadeoutProgress > 15.0f) {
+        return 0;
+    }
+    if (Player->strong_kong_ostand_bitfield & 0x100) {
+        // Seasick
+        return 0;
+    }
+    if (IsAutowalking) {
+        return 0;
+    }
+    if (Player->shockwave_timer != -1) {
+        return 0;
+    }
+    // Check Map
+    if (isBannedTrapMap(CurrentMap, trap_type)) {
+        return 0;
+    }
+    // Check Control State
+    if (getBitArrayValue(&banned_trap_movement, Player->control_state)) {
+        return 0;
+    }
+    return 1;
 }
 
 void handleIceTrapButtons(void) {
@@ -534,7 +631,30 @@ void handleIceTrapButtons(void) {
     if (flip_timer > 0) {
         flip_timer--;
         if (flip_timer == 0) {
-            *(unsigned char*)(0x80010520) = 0x3F;
+            resetScreenFlip();
+        }
+    }
+    for (int i = 0; i < 8; i++) {
+        if (slip_timers[i] > 1) {
+            slip_timers[i]--;
+        } else if (slip_timers[i] == 1) {
+            if (canLoadIceTrap(ICETRAP_SLIP) && (ice_trap_queued == ICETRAP_OFF)) {
+                spawnActor(NEWACTOR_SLIPPEEL, 0xE5);
+                warpActorToParent(LastSpawnedActor, Player, 0.05f);
+                cc_enabler_slip();
+                slip_timers[i] = 0;
+            }
+        }
+    }
+    for (int i = 0; i < 3; i++) {
+        ice_trap_timer_struct *data = &ice_trap_timers[i];
+        if (data->timer > 0) {
+            data->timer--;
+            if (data->timer == 0) {
+                callFunc(data->disable_func, 0);
+            } else if (data->active) {
+                callFunc(data->enable_func, 0);
+            }
         }
     }
 }
@@ -555,7 +675,7 @@ int isBannedTrapMap(maps map, ICE_TRAP_TYPES type) {
         return 0;
     }
     if (ban_state == ICETRAPREQ_SUPER) {
-        if (type == ICETRAP_SUPERBUBBLE) {
+        if ((type == ICETRAP_SUPERBUBBLE) || (type == ICETRAP_SLIP)) {
             return 0;
         }
     }
@@ -594,35 +714,7 @@ void playIceTrapSong(int song, float volume) {
 
 void callIceTrap(void) {
     if (ice_trap_queued) {
-        if (Player) {
-            if (Player->collision_queue_pointer) {
-                // Crashes
-                return;
-            }
-            if (ObjectModel2Timer < 5) {
-                return;
-            }
-            if (LZFadeoutProgress > 15.0f) {
-                return;
-            }
-            if (Player->strong_kong_ostand_bitfield & 0x100) {
-                // Seasick
-                return;
-            }
-            if (IsAutowalking) {
-                return;
-            }
-            if (Player->shockwave_timer != -1) {
-                return;
-            }
-            // Check Map
-            if (isBannedTrapMap(CurrentMap, ice_trap_queued)) {
-                return;
-            }
-            // Check Control State
-            if (getBitArrayValue(&banned_trap_movement, Player->control_state)) {
-                return;
-            }
+        if (canLoadIceTrap(ice_trap_queued)) {
             initIceTrap();
         }
     }

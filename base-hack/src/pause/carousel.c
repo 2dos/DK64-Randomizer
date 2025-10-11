@@ -156,21 +156,6 @@ void checksSprite(sprite_struct* sprite, char* render) {
     newPauseSpriteCode(sprite, render, 0);
 }
 
-void handleSpriteCode(int control_type) {
-    /**
-     * @brief Changes sprite code to be the carousel effect if the index is greater than 16
-     * 
-     * @param control_type Type of sprite that's being displayed and the controls you have access to
-     */
-    if (control_type < 16) {
-        loadSpriteFunction(0x806AC07C);
-    } else if (control_type == 16) {
-        loadSpriteFunction((int)&totalsSprite);
-    } else if (control_type == 17) {
-        loadSpriteFunction((int)&checksSprite);
-    }
-}
-
 void initCarousel_onPause(void) {
     for (int i = 0; i < 8; i++) {
         file_items[i] = FileVariables[i];
@@ -183,13 +168,4 @@ void initCarousel_onPause(void) {
     file_items[CHECK_CRATE] = getItemCount_new(REQITEM_JUNK, 0, 0);
     file_items[CHECK_SHOPS] = getTotalMoveCount();
     file_items[CHECK_KEY] = getItemCount_new(REQITEM_KEY, -1, -1);
-}
-
-void initCarousel_onBoot(void) {
-    if (Rando.isles_cb_rando) {
-        file_item_caps[3] = 45;
-    }
-    *(short*)(0x806AB2CE) = getHi(&file_items[CHECK_TERMINATOR]);
-    *(short*)(0x806AB2D6) = getLo(&file_items[CHECK_TERMINATOR]);
-    *(short*)(0x806AB3F6) = CHECK_TERMINATOR;
 }

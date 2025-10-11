@@ -1,0 +1,89 @@
+<div>
+    <div>
+        <p class="select-title">Ice Trap Frequency</p>
+        <div class="d-flex">
+            <input name="ice_trap_count"
+                    id="ice_trap_count"
+                    type="number"
+                    display_name="Ice Trap Frequency"
+                    class="form-control me-2"
+                    aria-label="Ice Trap Frequency"
+                    data-toggle="tooltip"
+                    title="The amount of ice traps that will be attempted to be placed into the world."
+                    min="0"
+                    max="999"
+                    value="0"
+            />
+            <input class="customize"
+                type="button"
+                href="#"
+                data-bs-toggle="modal"
+                data-bs-target="#trapModal"
+                data-toggle="modal"
+                title="Customize what models each slam gets"/>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="trapModal" tabindex="-1" aria-labelledby="trapModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title title" id="trapModalLabel">CONFIGURE ICE TRAPS</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <p>
+                        Configure the weights of all ice trap types. Hover over an ice trap name to learn it's effect.
+                        Setting a weight to 0 disables that trap effect from being used.
+                    </p>
+                    <div class="d-flex flex-wrap justify-content-center">
+                        {% set trap_list = [
+                            { "name": "Bubble Trap", "setting": "trap_weight_bubble", "effect": "Places you in a bubble for 8 seconds. Can be broken prematurely by spinning the stick" },
+                            { "name": "Reverse Trap", "setting": "trap_weight_reverse", "effect": "Reverses your directional controls for 8 seconds." },
+                            { "name": "Slow Trap", "setting": "trap_weight_slow", "effect": "Slows the player down for 8 seconds." },
+                            { "name": "Disable A Trap", "setting": "trap_weight_disablea", "effect": "Disables the A Button for 8 seconds." },
+                            { "name": "Disable B Trap", "setting": "trap_weight_disableb", "effect": "Disables the B Button for 8 seconds." },
+                            { "name": "Disable Z Trap", "setting": "trap_weight_disablez", "effect": "Disables the Z Button for 8 seconds." },
+                            { "name": "Disable C-Up Trap", "setting": "trap_weight_disablecu", "effect": "Disables the C-Up Button for 8 seconds." },
+                            { "name": "Get Out Trap", "setting": "trap_weight_getout", "effect": "Spawns a get out guy. You have to enter another map within 10 seconds, or you'll die. The start button is disabled." },
+                            { "name": "Dry Trap", "setting": "trap_weight_dry", "effect": "Removes all replenishables." },
+                            { "name": "Flip Trap", "setting": "trap_weight_flip", "effect": "Flips the screen for 8 seconds." },
+                            { "name": "Ice Floor Trap", "setting": "trap_weight_icefloor", "effect": "Turns the floor icy for 15 seconds." },
+                            { "name": "Paper Trap", "setting": "trap_weight_paper", "effect": "Turns the kong into a paper version of itself for 15 seconds." },
+                            { "name": "Slip Trap", "setting": "trap_weight_slip", "effect": "Slips the player at some random point between 5 and 40 seconds after receiving the trap." }
+                        ] %}
+                        {% for trap in trap_list %}
+                            <div class="item-select" style="margin:0;flex:0;min-width:150px;" title="{{ trap.effect }}">
+                                <p class="select-title">{{ trap.name }}</p>
+                                <input name="{{ trap.setting }}"
+                                    id="{{ trap.setting }}"
+                                    type="number"
+                                    display_name="Trap Weight - {{ trap.name }}"
+                                    class="form-control my-3 mx-auto"
+                                    aria-label="Trap Weight - {{ trap.name }}"
+                                    data-toggle="tooltip"
+                                    style="width:15%"
+                                    min="0"
+                                    max="100"
+                                    value="0"
+                                />
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="trap_reset_default">Reset to default</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("trap_reset_default").addEventListener("click", (e) => {
+        Object.keys(default_trap_weights).forEach(stg => {
+            document.getElementById(stg).value = default_trap_weights[stg];
+        })
+    })
+</script>

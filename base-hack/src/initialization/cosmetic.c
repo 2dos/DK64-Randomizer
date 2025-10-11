@@ -286,7 +286,7 @@ void setFog(int enabled) {
 }
 
 void getRainbowAmmoColor(rgba *color) {
-    int pos = ObjectModel2Timer % 1536;
+    int pos = FrameReal % 1536;
     int step = pos >> 8;
     switch (step) {
         case 0:
@@ -322,19 +322,50 @@ void getRainbowAmmoColor(rgba *color) {
     }
 }
 
-void colorRainbowAmmo(void* actor) {
-    unkProjectileCode_2(actor);
+void updateSpriteColor(sprite_info *sprite) {
+    rgba temp = {.alpha = 0xFF};
+    getRainbowAmmoColor(&temp);
+    sprite->red = temp.red;
+    sprite->green = temp.green;
+    sprite->blue = temp.blue;
+}
+
+void colorRainbowAmmo(void* actor, float x, float y, float z, int unk0) {
+    allocateBone(actor, x, y, z, unk0);
     if (Rando.rainbow_ammo) {
-        rgba color = {.red = 0, .green = 0, .blue = 0, .alpha = 0xFF};
-        getRainbowAmmoColor(&color);
-        changeActorColor(color.red, color.green, color.blue, color.alpha);
+        loadSpriteFunction(&updateSpriteColor);
     }
 }
 
-void colorRainbowAmmoHUD(int red, int green, int blue, int alpha) {
-    changeActorColor(red, green, blue, alpha);
+void colorRainbowAmmoHUD(sprite_info *sprite) {
+    HUDSpriteUpdate(sprite);
     if (Rando.rainbow_ammo) {
-        SpriteRGBA.alpha = 0xFF;
-        getRainbowAmmoColor(&SpriteRGBA);
+        updateSpriteColor(sprite);
+    }
+}
+
+void colorRainbowAmmoHUD_0(sprite_info *sprite) {
+    PauseSpriteUpdate(sprite);
+    if (Rando.rainbow_ammo) {
+        updateSpriteColor(sprite);
+    }
+}
+
+void setHUDUpdateFunction(void* function, int item_index) {
+    if ((item_index == 2) || (item_index == 3)) {
+        loadSpriteFunction(&colorRainbowAmmoHUD);
+    } else {
+        loadSpriteFunction(function);
+    }
+}
+void setHUDUpdateFunction_0(void* function, int item_index, int control_type) {
+    if ((item_index == 2) || (item_index == 3)) {
+        loadSpriteFunction(&colorRainbowAmmoHUD_0);
+    } else if (control_type == 16) {
+        loadSpriteFunction((int)&totalsSprite);
+    } else if (control_type == 17) {
+        loadSpriteFunction((int)&checksSprite);
+    } else {
+        loadSpriteFunction(function);
     }
 }
