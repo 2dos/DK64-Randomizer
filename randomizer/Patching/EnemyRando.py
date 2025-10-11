@@ -848,9 +848,6 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                     True,  # Llama
                     True,  # Mechfish
                     True,  # Seal
-                    True,  # Beanstalk
-                    True,  # Seasick Cannon
-                    True,  # Squawks w/ Spotlight
                 ]
             for enemy_index, spawned in enumerate(spoiler.pkmn_snap_data):
                 if spawned:
