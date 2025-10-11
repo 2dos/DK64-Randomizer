@@ -668,7 +668,7 @@ def apply_goal_settings(settings_dict: dict, options, random_obj) -> None:
     # Treasure hurry settings
     if options.goal == Goal.option_treasure_hurry:
         settings_dict["helm_hurry"] = True
-        settings_dict["helmhurry_list_starting_time"] = 43200
+        settings_dict["helmhurry_list_starting_time"] = 60000
         settings_dict["helmhurry_list_golden_banana"] = -60
         settings_dict["helmhurry_list_blueprint"] = -120
         settings_dict["helmhurry_list_company_coins"] = -3600
