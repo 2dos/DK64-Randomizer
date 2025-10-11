@@ -47,6 +47,7 @@ from opentelemetry_instrumentation_rq import RQInstrumentor
 from ap_version import version as archipelago_version
 
 COOLDOWN_PERIOD = 300  # 5 minutes in seconds
+JOB_TIMEOUT = 300  # Timeout in seconds (5 minutes)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -127,10 +128,10 @@ class TaskThread(threading.Thread):
             self.result = self.target(self.kwargs.get("args")[0])
 
 
-task_queue_high_stable = Queue("tasks_high_priority_stable", connection=redis_conn)  # High-priority queue
-task_queue_low_stable = Queue("tasks_low_priority_stable", connection=redis_conn)  # Low-priority queue
-task_queue_low_dev = Queue("tasks_low_priority_dev", connection=redis_conn)  # Low-priority queue
-task_queue_high_dev = Queue("tasks_high_priority_dev", connection=redis_conn)  # High-priority queue
+task_queue_high_stable = Queue("tasks_high_priority_stable", connection=redis_conn, default_timeout=JOB_TIMEOUT)  # High-priority queue
+task_queue_low_stable = Queue("tasks_low_priority_stable", connection=redis_conn, default_timeout=JOB_TIMEOUT)  # Low-priority queue
+task_queue_low_dev = Queue("tasks_low_priority_dev", connection=redis_conn, default_timeout=JOB_TIMEOUT)  # Low-priority queue
+task_queue_high_dev = Queue("tasks_high_priority_dev", connection=redis_conn, default_timeout=JOB_TIMEOUT)  # High-priority queue
 CORS(app, origins=["https://dev.dk64randomizer.com", "https://dk64randomizer.com"])
 # Prepend all routes with /api
 secret_token = secrets.token_hex(256)
@@ -272,12 +273,12 @@ def submit_task():
     if last_submission_time is None or current_time - int(last_submission_time) > COOLDOWN_PERIOD:
         # High-priority queue
         max_retries = 4
-        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch, "max_retries": max_retries}, retry=Retry(max=max_retries))
+        task = task_queue_high.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch, "max_retries": max_retries}, retry=Retry(max=max_retries), job_timeout=JOB_TIMEOUT)
         priority = "High"
     else:
         # Low-priority queue
         max_retries = 3
-        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch, "max_retries": max_retries}, retry=Retry(max=max_retries))
+        task = task_queue_low.enqueue("tasks.generate_seed", settings_data, meta={"ip": user_ip, "branch": branch, "max_retries": max_retries}, retry=Retry(max=max_retries), job_timeout=JOB_TIMEOUT)
         priority = "Low"
 
     # Update the last submission time for this IP
