@@ -465,11 +465,16 @@ int cc_enabler_crate(void) {
     return spawnActorSpawnerContainer(21, Player->xPos, Player->yPos, Player->zPos, 0, 1.0f, 0, &unk);
 }
 
+static const short ignored_paper_types[] = {
+    188, // Camera
+    139, // Dirt Patch
+};
+
 int cc_enabler_paper(void) {
     for (int i = 0; i < ActorCount; i++) {
         actorData *actor = ActorArray[i];
         if (actor) {
-            if (actor->actorType != 188) { // Not Camera
+            if (inShortList(actor->actorType, &ignored_paper_types, sizeof(ignored_paper_types) >> 1)) {
                 if (actor->render) {
                     actor->render->scale_z = 0.015f;
                 }   

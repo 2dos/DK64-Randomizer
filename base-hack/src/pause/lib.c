@@ -344,6 +344,5 @@ void initPauseMenu(void) {
      * @brief Initialize the pause menu changes for Rando
      */
     
-    initCarousel_onBoot();
     initHintFlags();
 }

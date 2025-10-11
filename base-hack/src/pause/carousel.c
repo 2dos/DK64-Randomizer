@@ -169,12 +169,3 @@ void initCarousel_onPause(void) {
     file_items[CHECK_SHOPS] = getTotalMoveCount();
     file_items[CHECK_KEY] = getItemCount_new(REQITEM_KEY, -1, -1);
 }
-
-void initCarousel_onBoot(void) {
-    if (Rando.isles_cb_rando) {
-        file_item_caps[3] = 45;
-    }
-    *(short*)(0x806AB2CE) = getHi(&file_items[CHECK_TERMINATOR]);
-    *(short*)(0x806AB2D6) = getLo(&file_items[CHECK_TERMINATOR]);
-    *(short*)(0x806AB3F6) = CHECK_TERMINATOR;
-}
