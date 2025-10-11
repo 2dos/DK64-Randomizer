@@ -169,7 +169,6 @@ LogicRegions = {
     Regions.MermaidRoom: Region("Mermaid Room", HintRegion.Lighthouse, Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonTinyPearls, lambda l: (l.Pearls >= l.settings.mermaid_gb_pearls) and (l.istiny or l.settings.free_trade_items)),
         LocationLogic(Locations.KremKap_GalleonNPC_Mermaid, lambda l: l.camera),
-        LocationLogic(Locations.KremKap_GalleonNPC_Seal, lambda l: l.camera and Events.SealReleased not in l.Events),
     ], [], [
         TransitionFront(Regions.LighthouseUnderwater, lambda _: True, Transitions.GalleonMermaidToLighthouseArea),
     ]),
