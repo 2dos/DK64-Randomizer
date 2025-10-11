@@ -13,7 +13,7 @@ item_ids = {
     14041097: {"name": "Diving", "count_id": {"field": "flag_moves", "bit": "diving"}, "flag_id": None, "progression": True},
     14041098: {"name": "Oranges", "count_id": {"field": "flag_moves", "bit": "oranges"}, "flag_id": None, "progression": True},
     14041099: {"name": "Barrels", "count_id": {"field": "flag_moves", "bit": "barrels"}, "flag_id": None, "progression": True},
-    14041100: {"name": "Climbing", "count_id": None, "flag_id": 663, "progression": True},
+    14041100: {"name": "Climbing", "count_id": None, "flag_id": 671, "progression": True},
     14041101: {"name": "progression Slam", "count_id": {"item": 2, "level": 3}, "flag_id": None, "progression": True},
     14041102: {"name": "progression Slam ", "count_id": {"item": 2, "level": 3}, "flag_id": None, "progression": True},
     14041260: {"name": "progression Slam  ", "count_id": {"item": 2, "level": 3}, "flag_id": None, "progression": True},

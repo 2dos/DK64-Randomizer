@@ -769,22 +769,22 @@ LocationListOriginal = {
     Locations.ProgressiveHint_35: Location(Levels.CreepyCastle, "Progressive Hint 35", Items.CastleChunkyHint, Types.ProgressiveHint, Kongs.chunky),
 
     # Rainbow Coins - Has to be in order of map index
-    Locations.RainbowCoin_Location00: Location(Levels.JungleJapes, "Japes Dirt: Painting Hill", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x29E)]),  # Painting Hill
-    Locations.RainbowCoin_Location01: Location(Levels.AngryAztec, "Aztec Dirt: Chunky Temple", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AztecChunky5DTemple, -1, 0x29F)]),  # Chunky 5DT
-    Locations.RainbowCoin_Location02: Location(Levels.FranticFactory, "Factory Dirt: Dark Room", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x2A0)]),  # Dark Room
-    Locations.RainbowCoin_Location03: Location(Levels.DKIsles, "Isles Dirt: Cabin Isle", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A1)]),  # Fungi Entrance
-    Locations.RainbowCoin_Location04: Location(Levels.DKIsles, "Isles Dirt: Under Caves Lobby", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A2)]),  # Caves Slope
-    Locations.RainbowCoin_Location05: Location(Levels.DKIsles, "Isles Dirt: Aztec Roof", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A3)]),  # Aztec Roof
-    Locations.RainbowCoin_Location06: Location(Levels.AngryAztec, "Aztec Dirt: Oasis", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2A4)]),  # Oasis
-    Locations.RainbowCoin_Location07: Location(Levels.FungiForest, "Forest Dirt: Mills Grass", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2A5)]),  # Isotarge Coin
-    Locations.RainbowCoin_Location08: Location(Levels.FungiForest, "Forest Dirt: Beanstalk", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2A6)]),  # Beanstalk
-    Locations.RainbowCoin_Location09: Location(Levels.GloomyGalleon, "Galleon Dirt: Lighthouse", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.GalleonLighthouse, -1, 0x2A7)]),  # Lighthouse
-    Locations.RainbowCoin_Location10: Location(Levels.CrystalCaves, "Caves Dirt: Giant Kosha", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2A8)]),  # Giant Kosha
-    Locations.RainbowCoin_Location11: Location(Levels.CreepyCastle, "Castle Dirt: Top Floor", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x2A9)]),  # Castle Top
-    Locations.RainbowCoin_Location12: Location(Levels.DKIsles, "Isles Dirt: Back of Prison", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.KLumsy, -1, 0x2AA)]),  # K. Lumsy
-    Locations.RainbowCoin_Location13: Location(Levels.DKIsles, "Isles Dirt: Training Grounds Rear Tunnel", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AB)]),  # Back of TG
-    Locations.RainbowCoin_Location14: Location(Levels.DKIsles, "Isles Dirt: Banana Hoard", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AC)]),  # Banana Hoard
-    Locations.RainbowCoin_Location15: Location(Levels.DKIsles, "Isles Dirt: Castle Lobby", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2AD)]),  # Castle Lobby
+    Locations.RainbowCoin_Location00: Location(Levels.JungleJapes, "Japes Dirt: Painting Hill", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x2A6)]),  # Painting Hill
+    Locations.RainbowCoin_Location01: Location(Levels.AngryAztec, "Aztec Dirt: Chunky Temple", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AztecChunky5DTemple, -1, 0x2A7)]),  # Chunky 5DT
+    Locations.RainbowCoin_Location02: Location(Levels.FranticFactory, "Factory Dirt: Dark Room", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x2A8)]),  # Dark Room
+    Locations.RainbowCoin_Location03: Location(Levels.DKIsles, "Isles Dirt: Cabin Isle", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A9)]),  # Fungi Entrance
+    Locations.RainbowCoin_Location04: Location(Levels.DKIsles, "Isles Dirt: Under Caves Lobby", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2AA)]),  # Caves Slope
+    Locations.RainbowCoin_Location05: Location(Levels.DKIsles, "Isles Dirt: Aztec Roof", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2AB)]),  # Aztec Roof
+    Locations.RainbowCoin_Location06: Location(Levels.AngryAztec, "Aztec Dirt: Oasis", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2AC)]),  # Oasis
+    Locations.RainbowCoin_Location07: Location(Levels.FungiForest, "Forest Dirt: Mills Grass", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2AD)]),  # Isotarge Coin
+    Locations.RainbowCoin_Location08: Location(Levels.FungiForest, "Forest Dirt: Beanstalk", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2AE)]),  # Beanstalk
+    Locations.RainbowCoin_Location09: Location(Levels.GloomyGalleon, "Galleon Dirt: Lighthouse", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.GalleonLighthouse, -1, 0x2AF)]),  # Lighthouse
+    Locations.RainbowCoin_Location10: Location(Levels.CrystalCaves, "Caves Dirt: Giant Kosha", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2B0)]),  # Giant Kosha
+    Locations.RainbowCoin_Location11: Location(Levels.CreepyCastle, "Castle Dirt: Top Floor", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x2B1)]),  # Castle Top
+    Locations.RainbowCoin_Location12: Location(Levels.DKIsles, "Isles Dirt: Back of Prison", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.KLumsy, -1, 0x2B2)]),  # K. Lumsy
+    Locations.RainbowCoin_Location13: Location(Levels.DKIsles, "Isles Dirt: Training Grounds Rear Tunnel", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2B3)]),  # Back of TG
+    Locations.RainbowCoin_Location14: Location(Levels.DKIsles, "Isles Dirt: Banana Hoard", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2B4)]),  # Banana Hoard
+    Locations.RainbowCoin_Location15: Location(Levels.DKIsles, "Isles Dirt: Castle Lobby", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2B5)]),  # Castle Lobby
 
     Locations.MelonCrate_Location00: Location(Levels.JungleJapes, "Japes Crate: Behind the Mountain", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3AC)]),  # Japes behind mountain
     Locations.MelonCrate_Location01: Location(Levels.JungleJapes, "Japes Crate: In the Rambi Cave", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3AD)]),  # Japes near cb boulder
@@ -800,22 +800,22 @@ LocationListOriginal = {
     Locations.MelonCrate_Location11: Location(Levels.FungiForest, "Forest Crate: In Thornvine Barn", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.ForestThornvineBarn, -1, 0x3B7)]),  # Fungi in DK Barn
     Locations.MelonCrate_Location12: Location(Levels.CreepyCastle, "Castle Crate: Behind Mausoleum Entrance", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x3B8)]),  # Crypt behind Mausoleum entrance
 
-    Locations.HoldableBoulderIslesNearAztec: Location(Levels.DKIsles, "Isles Boulder: Near Level 2", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2AE)]),
-    Locations.HoldableBoulderIslesNearCaves: Location(Levels.DKIsles, "Isles Boulder: Near Level 6", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2AF)]),
-    Locations.HoldableBoulderAztec: Location(Levels.AngryAztec, "Aztec Boulder: Tunnel", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2B0)]),
-    Locations.HoldableBoulderCavesSmall: Location(Levels.CrystalCaves, "Caves Boulder: Small", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2B1)]),
-    Locations.HoldableBoulderCavesLarge: Location(Levels.CrystalCaves, "Caves Boulder: Large", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2B2)]),
-    Locations.HoldableBoulderMuseum: Location(Levels.CreepyCastle, "Castle Boulder: Museum", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CastleMuseum, -1, 0x2B3)]),
-    Locations.HoldableBoulderJapesLobby: Location(Levels.DKIsles, "Isles Boulder: Japes Lobby", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.JungleJapesLobby, -1, 0x2B4)]),
-    Locations.HoldableBoulderCastleLobby: Location(Levels.DKIsles, "Isles Boulder: Castle Lobby", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2B5)]),
-    Locations.HoldableBoulderCavesLobby: Location(Levels.DKIsles, "Isles Boulder: Caves Lobby", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CrystalCavesLobby, -1, 0x2B6)]),
-    Locations.HoldableKegMillFrontNear: Location(Levels.FungiForest, "Forest Keg: Mill Front Near", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.ForestMillFront, -1, 0x2B7)]),
-    Locations.HoldableKegMillFrontFar: Location(Levels.FungiForest, "Forest Keg: Mill Front Far", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.ForestMillFront, -1, 0x2B8)]),
-    Locations.HoldableKegMillRear: Location(Levels.FungiForest, "Forest Keg: Mill Back", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.ForestMillBack, -1, 0x2B9)]),
-    Locations.HoldableVaseCircle: Location(Levels.AngryAztec, "Aztec Vase: Circle", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2BA)]),
-    Locations.HoldableVaseColon: Location(Levels.AngryAztec, "Aztec Vase: Colon", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2BB)]),
-    Locations.HoldableVaseTriangle: Location(Levels.AngryAztec, "Aztec Vase: Triangle", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2BC)]),
-    Locations.HoldableVasePlus: Location(Levels.AngryAztec, "Aztec Vase: Plus", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2BD)]),
+    Locations.HoldableBoulderIslesNearAztec: Location(Levels.DKIsles, "Isles Boulder: Near Level 2", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2B6)]),
+    Locations.HoldableBoulderIslesNearCaves: Location(Levels.DKIsles, "Isles Boulder: Near Level 6", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2B7)]),
+    Locations.HoldableBoulderAztec: Location(Levels.AngryAztec, "Aztec Boulder: Tunnel", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2B8)]),
+    Locations.HoldableBoulderCavesSmall: Location(Levels.CrystalCaves, "Caves Boulder: Small", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2B9)]),
+    Locations.HoldableBoulderCavesLarge: Location(Levels.CrystalCaves, "Caves Boulder: Large", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2BA)]),
+    Locations.HoldableBoulderMuseum: Location(Levels.CreepyCastle, "Castle Boulder: Museum", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CastleMuseum, -1, 0x2BB)]),
+    Locations.HoldableBoulderJapesLobby: Location(Levels.DKIsles, "Isles Boulder: Japes Lobby", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.JungleJapesLobby, -1, 0x2BC)]),
+    Locations.HoldableBoulderCastleLobby: Location(Levels.DKIsles, "Isles Boulder: Castle Lobby", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2BD)]),
+    Locations.HoldableBoulderCavesLobby: Location(Levels.DKIsles, "Isles Boulder: Caves Lobby", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.CrystalCavesLobby, -1, 0x2BE)]),
+    Locations.HoldableKegMillFrontNear: Location(Levels.FungiForest, "Forest Keg: Mill Front Near", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.ForestMillFront, -1, 0x2BF)]),
+    Locations.HoldableKegMillFrontFar: Location(Levels.FungiForest, "Forest Keg: Mill Front Far", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.ForestMillFront, -1, 0x2C0)]),
+    Locations.HoldableKegMillRear: Location(Levels.FungiForest, "Forest Keg: Mill Back", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.ForestMillBack, -1, 0x2C1)]),
+    Locations.HoldableVaseCircle: Location(Levels.AngryAztec, "Aztec Vase: Circle", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2C2)]),
+    Locations.HoldableVaseColon: Location(Levels.AngryAztec, "Aztec Vase: Colon", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2C3)]),
+    Locations.HoldableVaseTriangle: Location(Levels.AngryAztec, "Aztec Vase: Triangle", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2C4)]),
+    Locations.HoldableVasePlus: Location(Levels.AngryAztec, "Aztec Vase: Plus", Items.BoulderItem, Types.BoulderItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2C5)]),
 
     Locations.JapesMainEnemy_Start: Location(Levels.JungleJapes, "Japes Enemy: Start", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, DROPSANITY_FLAG_START + 0x0)]),
     Locations.JapesMainEnemy_DiddyCavern: Location(Levels.JungleJapes, "Japes Enemy: Diddy Cavern", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, DROPSANITY_FLAG_START + 0x1)]),
