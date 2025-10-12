@@ -30,7 +30,7 @@ class PkmnSnapEnemy:
             Enemies.Llama,
             Enemies.Mermaid,
             Enemies.Seal1,
-            Enemies.MechFish
+            Enemies.MechFish,
         ):
             # Always spawned, not in pool
             self.spawned = True
