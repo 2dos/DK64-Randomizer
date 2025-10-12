@@ -65,6 +65,12 @@ static const short poke_snap_actors[] = {
     340, // Bug (Trash Can)
     NEWACTOR_ZINGERFLAMETHROWER, // Zinger (Flamethrower)
     NEWACTOR_SCARAB, // Scarab
+    163, // BFI Queen
+    164, // Ice Tomato
+    193, // Mermaid
+    201, // Llama
+    246, // Mechanical Fish
+    247, // Seal
 };
 
 typedef struct move_kong_pairs {

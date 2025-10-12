@@ -539,6 +539,12 @@ class LogicVarHolder:
             Items.PhotoBug,
             Items.PhotoKop,
             Items.PhotoTomato,
+            Items.PhotoBFI,
+            Items.PhotoIceTomato,
+            Items.PhotoMermaid,
+            Items.PhotoLlama,
+            Items.PhotoMechfish,
+            Items.PhotoSeal,
         ]
         for subject in photo_subjects:
             self.Photos[subject] = sum(1 for x in ownedItems if x == subject)

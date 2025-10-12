@@ -111,7 +111,7 @@ ItemList = {
     Items.Swim: Item("Diving", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "dive", 386]),
     Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "orange", 388]),
     Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "barrel", 389]),
-    Items.Climbing: Item("Climbing", True, Types.Climbing, Kongs.any, [MoveTypes.Flag, "climbing", 0x297]),
+    Items.Climbing: Item("Climbing", True, Types.Climbing, Kongs.any, [MoveTypes.Flag, "climbing", 0x29F]),
     Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, Kongs.any, [MoveTypes.Slam, 2, -1]),
     Items.ProgressiveSlam2: Item("Progressive Slam ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.ProgressiveSlam3: Item("Progressive Slam  ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
@@ -374,6 +374,12 @@ ItemList = {
     Items.PhotoBug: Item("Photo (Bug)", False, Types.EnemyPhoto, Kongs.any),
     Items.PhotoKop: Item("Photo (Kop)", False, Types.EnemyPhoto, Kongs.any),
     Items.PhotoTomato: Item("Photo (Tomato)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoBFI: Item("Photo (BFI Queen)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoIceTomato: Item("Photo (Ice Tomato)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoMermaid: Item("Photo (Mermaid)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoLlama: Item("Photo (Llama)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoMechfish: Item("Photo (Mechfish)", False, Types.EnemyPhoto, Kongs.any),
+    Items.PhotoSeal: Item("Photo (Seal)", False, Types.EnemyPhoto, Kongs.any),
 }
 
 HHItemSelector = []

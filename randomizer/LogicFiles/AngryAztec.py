@@ -383,6 +383,7 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_AztecLlamaEnemy_Left, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecLlamaEnemy_MelonCrate, lambda l: l.camera),
         LocationLogic(Locations.KremKap_AztecLlamaEnemy_SlamSwitch, lambda l: l.camera),
+        LocationLogic(Locations.KremKap_AztecNPC_Llama, lambda l: l.camera),
     ], [
         Event(Events.AztecDonkeySwitch, lambda l: l.hasMoveSwitchsanity(Switches.AztecQuicksandSwitch, False, Levels.AngryAztec, 1)),
         Event(Events.AztecLlamaSpit, lambda l: l.CanLlamaSpit()),

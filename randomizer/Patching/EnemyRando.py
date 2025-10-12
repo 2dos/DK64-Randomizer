@@ -25,6 +25,12 @@ class PkmnSnapEnemy:
             Enemies.KasplatChunky,
             Enemies.Book,
             Enemies.EvilTomato,
+            Enemies.FairyQueen,
+            Enemies.IceTomato,
+            Enemies.Llama,
+            Enemies.Mermaid,
+            Enemies.Seal1,
+            Enemies.MechFish,
         ):
             # Always spawned, not in pool
             self.spawned = True
@@ -90,6 +96,12 @@ pkmn_snap_enemies = [
     PkmnSnapEnemy(Enemies.Bug),
     PkmnSnapEnemy(Enemies.ZingerFlamethrower),
     PkmnSnapEnemy(Enemies.Scarab),
+    PkmnSnapEnemy(Enemies.FairyQueen),
+    PkmnSnapEnemy(Enemies.IceTomato),
+    PkmnSnapEnemy(Enemies.Mermaid),
+    PkmnSnapEnemy(Enemies.Llama),
+    PkmnSnapEnemy(Enemies.MechFish),
+    PkmnSnapEnemy(Enemies.Seal1),
 ]
 
 valid_maps = [
@@ -589,6 +601,12 @@ krem_kap_mapping = {
     Enemies.FireballGlasses: Items.PhotoFireball,
     Enemies.Bug: Items.PhotoBug,
     Enemies.Guard: Items.PhotoKop,
+    Enemies.FairyQueen: Items.PhotoBFI,
+    Enemies.IceTomato: Items.PhotoIceTomato,
+    Enemies.Mermaid: Items.PhotoMermaid,
+    Enemies.Llama: Items.PhotoLlama,
+    Enemies.MechFish: Items.PhotoMechfish,
+    Enemies.Seal1: Items.PhotoSeal,
 }
 
 
@@ -606,6 +624,12 @@ def randomize_enemies_0(spoiler):
         Items.PhotoKasplatLanky,
         Items.PhotoKasplatTiny,
         Items.PhotoKasplatChunky,
+        Items.PhotoBFI,  # Not Randomized
+        Items.PhotoIceTomato,  # Not Randomized
+        Items.PhotoMermaid,  # Not Randomized
+        Items.PhotoLlama,  # Not Randomized
+        Items.PhotoMechfish,  # Not Randomized
+        Items.PhotoSeal,  # Not Randomized
     ]
     for loc in spoiler.enemy_location_list:
         if spoiler.enemy_location_list[loc].enable_randomization:
@@ -783,7 +807,7 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                         ROM_COPY.writeMultipleBytes(crown_timer, 1)  # Determine Crown length. DK64 caps at 255 seconds
         if spoiler.settings.win_condition_item == WinConditionComplex.krem_kapture:
             # Pkmn snap handler
-            values = [0, 0, 0, 0, 0]
+            values = [0, 0, 0, 0, 0, 0]
             # In some cases, the Pkmn Snap data hasn't yet been initialized (enemy rando disabled)
             # so we use the default values
             if len(spoiler.pkmn_snap_data) == 0:
@@ -824,12 +848,18 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                     True,  # Ghost
                     True,  # Pufftup
                     True,  # Kosha
+                    True,  # Fairy Queen
+                    True,  # Ice Tomato
+                    True,  # Mermaid
+                    True,  # Llama
+                    True,  # Mechfish
+                    True,  # Seal
                 ]
             for enemy_index, spawned in enumerate(spoiler.pkmn_snap_data):
                 if spawned:
                     offset = enemy_index >> 3
                     shift = enemy_index & 7
                     values[offset] |= 1 << shift
-            ROM_COPY.seek(spoiler.settings.rom_data + 0x117)
+            ROM_COPY.seek(spoiler.settings.rom_data + 0x196)
             for value in values:
                 ROM_COPY.writeMultipleBytes(value, 1)

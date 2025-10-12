@@ -2267,15 +2267,21 @@ with open(newROMName, "r+b") as fh:
         False,  # Bug
         False,  # Scarab
         False,  # Zinger Flames
+        True,  # Fairy Queen
+        True,  # Ice Tomato
+        True,  # Mermaid
+        True,  # Llama
+        True,  # Mechfish
+        True,  # Seal
     ]
-    values = [0, 0, 0, 0, 0]
+    values = [0, 0, 0, 0, 0, 0]
     for pi, p in enumerate(pkmn_snap_enemies):
         if p is True:
             offset = pi >> 3
             shift = pi & 7
             values[offset] |= 1 << shift
-    fh.seek(ROM_DATA_OFFSET + 0x117)
-    for x in range(5):
+    fh.seek(ROM_DATA_OFFSET + 0x196)
+    for x in range(6):
         fh.write(values[x].to_bytes(1, "big"))
 
     # Chunky Phase Slam
