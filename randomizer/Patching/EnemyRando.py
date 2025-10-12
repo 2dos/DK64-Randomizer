@@ -25,6 +25,12 @@ class PkmnSnapEnemy:
             Enemies.KasplatChunky,
             Enemies.Book,
             Enemies.EvilTomato,
+            Enemies.FairyQueen,
+            Enemies.IceTomato,
+            Enemies.Llama,
+            Enemies.Mermaid,
+            Enemies.Seal1,
+            Enemies.MechFish
         ):
             # Always spawned, not in pool
             self.spawned = True
@@ -801,7 +807,7 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                         ROM_COPY.writeMultipleBytes(crown_timer, 1)  # Determine Crown length. DK64 caps at 255 seconds
         if spoiler.settings.win_condition_item == WinConditionComplex.krem_kapture:
             # Pkmn snap handler
-            values = [0, 0, 0, 0, 0]
+            values = [0, 0, 0, 0, 0, 0]
             # In some cases, the Pkmn Snap data hasn't yet been initialized (enemy rando disabled)
             # so we use the default values
             if len(spoiler.pkmn_snap_data) == 0:
@@ -854,6 +860,6 @@ def randomize_enemies(spoiler, ROM_COPY: LocalROM):
                     offset = enemy_index >> 3
                     shift = enemy_index & 7
                     values[offset] |= 1 << shift
-            ROM_COPY.seek(spoiler.settings.rom_data + 0x117)
+            ROM_COPY.seek(spoiler.settings.rom_data + 0x196)
             for value in values:
                 ROM_COPY.writeMultipleBytes(value, 1)

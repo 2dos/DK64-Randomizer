@@ -2280,7 +2280,7 @@ with open(newROMName, "r+b") as fh:
             offset = pi >> 3
             shift = pi & 7
             values[offset] |= 1 << shift
-    fh.seek(ROM_DATA_OFFSET + 0x117)
+    fh.seek(ROM_DATA_OFFSET + 0x196)
     for x in range(6):
         fh.write(values[x].to_bytes(1, "big"))
 

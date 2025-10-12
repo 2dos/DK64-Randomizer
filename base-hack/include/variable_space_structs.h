@@ -81,7 +81,7 @@ typedef struct varspace {
 	/* 0x114 */ char fix_lanky_tiny_prod;
 	/* 0x115 */ unsigned char progressive_hint_gb_cap; // 0 = Off, 1 or more = Hints are rewarded for collecting GBs, rather than hint doors, 35th hint is unlocked at x
 	/* 0x116 */ char cutscene_skip_setting; // 0 = Off, 1 = On Button Press, 2 = Automatic
-	/* 0x117 */ unsigned char enabled_pkmnsnap_enemies[5]; // Bitfield
+	/* 0x117 */ char unk_117[5];
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
 	/* 0x11D */ unsigned char win_condition; // See vars.h for enum
 	/* 0x11E */ char tns_indicator;
@@ -125,7 +125,8 @@ typedef struct varspace {
 	/* 0x186 */ char unk_186[0x190-0x186];
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
 	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
-	/* 0x196 */ unsigned char unk_196[0x1A2 - 0x196];
+	/* 0x196 */ unsigned char enabled_pkmnsnap_enemies[6]; // Bitfield
+	/* 0x19C */ unsigned char unk_19C[0x1A2 - 0x19C];
 	/* 0x1A2 */ LZREntrance blast_entrances[7];
 	/* 0x1B0 */ int password;
 	/* 0x1B4 */ char song_speed_near_win;
