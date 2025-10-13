@@ -1912,7 +1912,7 @@
       "obj": "SettingsStringDataType.u8"
     },
     "SettingsStringEnum.progressive_hint_count": {
-      "obj": "SettingsStringDataType.u8"
+      "obj": "SettingsStringDataType.u16"
     },
     "SettingsStringEnum.random_starting_move_list_selected": {
       "obj": "SettingsStringDataType.list"

@@ -1238,7 +1238,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.spoiler_include_level_order: SettingsStringDataType.bool,
     SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_text: SettingsStringDataType.u8,
-    SettingsStringEnum.progressive_hint_count: SettingsStringDataType.u8,
+    SettingsStringEnum.progressive_hint_count: SettingsStringDataType.u16,
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
