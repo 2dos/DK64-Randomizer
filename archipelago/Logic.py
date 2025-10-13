@@ -1721,6 +1721,11 @@ class LogicVarHolder:
         required_level_order = max(2, min(ceil(self.settings.rareware_gb_fairies / 2), 5))  # At least level 2 to give space for fairy placements, at most level 5 to allow shenanigans
         return have_enough_fairies and is_correct_kong and self.HasFillRequirementsForLevel(self.settings.level_order[required_level_order])
 
+    def CanGetBlueprintReward(self, value):
+        """Check if you have sufficient access to a Blueprint reward location."""
+        # Archipelago keeps it simple - no need for a buffer
+        return self.BlueprintsWithKong >= value
+
     def CanSurviveFallDamage(self):
         """Check if you can survive a single instance of fall damage."""
         if self.settings.damage_amount != DamageAmount.ohko:
