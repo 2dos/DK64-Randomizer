@@ -1379,6 +1379,14 @@ class LogicVarHolder:
         required_level_order = max(2, min(ceil(self.settings.rareware_gb_fairies / 2), 5))  # At least level 2 to give space for fairy placements, at most level 5 to allow shenanigans
         return have_enough_fairies and is_correct_kong and self.HasFillRequirementsForLevel(self.settings.level_order[required_level_order])
 
+    def CanGetBlueprintReward(self, value):
+        """Check if you have sufficient access to a Blueprint reward location."""
+        # A Blueprint buffer is not required after the fill is complete or if there can only be GBs here
+        if self.assumeFillSuccess or Types.BlueprintBanana not in self.settings.shuffled_location_types or value > self.settings.most_snide_rewards:
+            return self.BlueprintsWithKong >= value
+        bufferValue = ceil(value * 0.2)
+        return self.BlueprintsWithKong >= max(40, bufferValue + value)
+
     def HasAllItems(self):
         """Return if you have all progression items."""
         self.Update(self.latest_owned_items)
