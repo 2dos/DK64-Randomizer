@@ -990,10 +990,12 @@ class AnimalTrapWeight(BaseTrapWeight):
 
     display_name = "Animal Trap Weight"
 
+
 class RockfallTrapWeight(BaseTrapWeight):
     """Likelihood of receiving a trap which spawns falling stalactites for a short time."""
 
     display_name = "Rockfall Trap Weight"
+
 
 class DisableTagTrapWeight(BaseTrapWeight):
     """Likelihood of receiving a trap which slips a kong on a banana peel."""

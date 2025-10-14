@@ -67,7 +67,7 @@ IceTrapMasks = {
     Items.IceTrapRockfallGB: Types.Banana,
     Items.IceTrapRockfallBean: Types.Bean,
     Items.IceTrapRockfallKey: Types.Key,
-    Items.IceTrapRockfallFairy:  Types.Fairy,
+    Items.IceTrapRockfallFairy: Types.Fairy,
     Items.IceTrapDisableTagGB: Types.Banana,
     Items.IceTrapDisableTagBean: Types.Bean,
     Items.IceTrapDisableTagKey: Types.Key,
