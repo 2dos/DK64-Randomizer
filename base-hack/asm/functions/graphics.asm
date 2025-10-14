@@ -42,3 +42,8 @@
 .definelabel spawnKeyTwinklies, 0x80686CF8
 .definelabel HUDSpriteUpdate, 0x8071BE04
 .definelabel PauseSpriteUpdate, 0x806AC07C
+.definelabel isCutsceneBarsPresent, 0x805FCA64
+.definelabel unkDLFunction, 0x8070068C
+.definelabel getDLFunction0, 0x806FE078
+.definelabel getDLFunction1, 0x8068DC54
+.definelabel unkTextFunction1, 0x806FDB8C

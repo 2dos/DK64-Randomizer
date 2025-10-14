@@ -57,3 +57,16 @@ ArcadeIntroCheck:
     ArcadeIntroCheck_finish:
         j 0x80024FDC
         sb $t5, 0xC724 ($at)
+
+checkNewMayhemWin:
+    jal wonMinecartMayhem
+    nop
+    beq $v0, $zero, checkNewMayhemWin_no
+    nop
+    ; Has won
+    j 0x8002522C
+    nop
+
+    checkNewMayhemWin_no:
+        j 0x80025254
+        nop

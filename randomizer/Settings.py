@@ -51,6 +51,7 @@ from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.Songs import song_data
 from randomizer.Lists.Switches import SwitchData
 from randomizer.Patching.Library.Generic import IsItemSelected, HelmDoorInfo, HelmDoorRandomInfo, DoorItemToBarrierItem, getCompletableBonuses, IsDDMSSelected, MEDAL_PROGRESSIVE_RATIOS
+from randomizer.Patching.CoinPlacer import gen_mayhem_coins
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.ShuffleBosses import (
@@ -563,6 +564,9 @@ class Settings:
         self.helm_barrels = MinigameBarrels.normal
         self.training_barrels_minigames = MinigameBarrels.normal
         self.bonus_barrel_auto_complete = False
+
+        # Alternate Minecart Mayhem where you get coins to win
+        self.alt_minecart_mayhem = True
 
         # Not making these a series of settings that can be toggled by the user yet.
         # If people want to be able to toggle this, we can make a simple UI switch and the back-end has already been handled appropriately
@@ -2027,6 +2031,9 @@ class Settings:
             jetpac_levels = list(range(8))
             self.random.shuffle(jetpac_levels)
             self.jetpac_enemy_order = jetpac_levels
+
+        # Mayhem Coins
+        gen_mayhem_coins(self, self.random)
 
         if self.puzzle_rando_difficulty != PuzzleRando.off:
             # Crypt Levers
