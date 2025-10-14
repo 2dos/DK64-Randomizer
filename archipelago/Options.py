@@ -962,6 +962,8 @@ class EnableCutscenes(Toggle):
 class SnideMaximum(Range):
     """Determines the maximum reward for Snide Turnins to have progression."""
 
+    display_name = "Snide Maximum"
+
     range_start = 0
     range_end = 40
     default = 20
@@ -971,6 +973,16 @@ class SharedShops(Toggle):
     """If enabled, makes 10 random shops shared removing 20 locations from the pool."""
 
     display_name = "Shared Shops"
+
+
+class FillerItems(DefaultOnToggle):
+    """If enabled, Filler Items will fill the world depending on Chaos B. Lockers being enabled.
+
+    Chaos B. Lockers enabled will replace "Junk Item (Melon Slice)" with a combination of GBs, Crowns, Fairies, Medals, Pearls, and Rainbow Coins.
+    Without Chaos B. Lockers, Junk Items will be replaced with a combination of GBs, Fairies, Medals, and Pearls.
+    """
+
+    display_name = "Filler Items"
 
 
 @dataclass
@@ -1053,6 +1065,7 @@ class DK64Options(PerGameCommonOptions):
     enable_cutscenes: EnableCutscenes
     maximum_snide: SnideMaximum
     enable_shared_shops: SharedShops
+    enable_filler_items: FillerItems
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1101,6 +1114,7 @@ dk64_option_groups: List[OptionGroup] = [
             SmallerShops,
             SharedShops,
             SnideMaximum,
+            FillerItems,
         ],
     ),
     OptionGroup(
