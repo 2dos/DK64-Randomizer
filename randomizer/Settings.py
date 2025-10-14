@@ -1392,6 +1392,9 @@ class Settings:
             "icefloor": self.trap_weight_icefloor,
             "paper": self.trap_weight_paper,
             "slip": self.trap_weight_slip,
+            "animal": self.trap_weight_animal,
+            "rockfall": self.trap_weight_rockfall,
+            "disabletag": self.trap_weight_disabletag,
         }
         models_chance = {"gb": 10, "key": 2, "bean": 1, "fairy": 4}
         trap_data = {
@@ -1409,6 +1412,9 @@ class Settings:
                 "icefloor": Items.IceTrapIceFloorGB,
                 "paper": Items.IceTrapPaperGB,
                 "slip": Items.IceTrapSlipGB,
+                "animal": Items.IceTrapAnimalGB,
+                "rockfall": Items.IceTrapRockfallGB,
+                "disabletag": Items.IceTrapDisableTagGB,
             },
             "bean": {
                 "bubble": Items.IceTrapBubbleBean,
@@ -1424,6 +1430,9 @@ class Settings:
                 "icefloor": Items.IceTrapIceFloorBean,
                 "paper": Items.IceTrapPaperBean,
                 "slip": Items.IceTrapSlipBean,
+                "animal": Items.IceTrapAnimalBean,
+                "rockfall": Items.IceTrapRockfallBean,
+                "disabletag": Items.IceTrapDisableTagBean,
             },
             "key": {
                 "bubble": Items.IceTrapBubbleKey,
@@ -1439,6 +1448,9 @@ class Settings:
                 "icefloor": Items.IceTrapIceFloorKey,
                 "paper": Items.IceTrapPaperKey,
                 "slip": Items.IceTrapSlipKey,
+                "animal": Items.IceTrapAnimalKey,
+                "rockfall": Items.IceTrapRockfallKey,
+                "disabletag": Items.IceTrapDisableTagKey,
             },
             "fairy": {
                 "bubble": Items.IceTrapBubbleFairy,
@@ -1454,6 +1466,9 @@ class Settings:
                 "icefloor": Items.IceTrapIceFloorFairy,
                 "paper": Items.IceTrapPaperFairy,
                 "slip": Items.IceTrapSlipFairy,
+                "animal": Items.IceTrapAnimalFairy,
+                "rockfall": Items.IceTrapRockfallFairy,
+                "disabletag": Items.IceTrapDisableTagFairy,
             },
         }
         self.trap_assortment = []

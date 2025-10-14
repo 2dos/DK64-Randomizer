@@ -820,6 +820,9 @@ if baseclasses_loaded:
                                     DK64RItems.IceTrapIceFloorGB,
                                     DK64RItems.IceTrapPaperGB,
                                     DK64RItems.IceTrapSlipGB,
+                                    DK64RItems.IceTrapAnimalGB,
+                                    DK64RItems.IceTrapRockfallGB,
+                                    DK64RItems.IceTrapDisableTagGB,
                                 ]:
                                     local_trap_count += 1
 

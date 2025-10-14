@@ -62,6 +62,9 @@ static unsigned char ice_trap_feds[] = {
     TRANSFER_ITEM_FAKEITEM_PAPER,
     0, // Non-Instant Slip Trap
     TRANSFER_ITEM_FAKEITEM_SLIP,
+    TRANSFER_ITEM_FAKEITEM_ANIMAL,
+    TRANSFER_ITEM_FAKEITEM_ROCKFALL,
+    TRANSFER_ITEM_FAKEITEM_DISABLETAG,
 };
 
 void handleSentItem(void) {
@@ -86,6 +89,9 @@ void handleSentItem(void) {
         case TRANSFER_ITEM_FAKEITEM_ICEFLOOR:
         case TRANSFER_ITEM_FAKEITEM_PAPER:
         case TRANSFER_ITEM_FAKEITEM_SLIP:
+        case TRANSFER_ITEM_FAKEITEM_ANIMAL:
+        case TRANSFER_ITEM_FAKEITEM_ROCKFALL:
+        case TRANSFER_ITEM_FAKEITEM_DISABLETAG:
             for (int i = 0; i < sizeof(ice_trap_feds); i++) {
                 if (ice_trap_feds[i] == FedItem) {
                     sendTrap(ICETRAP_BUBBLE + i);

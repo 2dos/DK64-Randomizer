@@ -119,6 +119,9 @@ class IceTrapHandler:
         "icefloor": 0x049,  # TRANSFER_ITEM_FAKEITEM_ICEFLOOR
         "paper": 0x04A,  # TRANSFER_ITEM_FAKEITEM_PAPER
         "slip": 0x04B,  # TRANSFER_ITEM_FAKEITEM_SLIP
+        "animal": 0x04C, # TRANSFER_ITEM_FAKEITEM_ANIMAL
+        "rockfall": 0x04D, # TRANSFER_ITEM_FAKEITEM_ROCKFALL
+        "disabletag": 0x04E, # TRANSFER_ITEM_FAKEITEM_DISABLETAG
     }
 
     @classmethod

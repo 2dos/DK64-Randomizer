@@ -280,6 +280,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     trap_weights += [DK64RItems.IceTrapIceFloorGB] * world.options.ice_floor_weight.value
     trap_weights += [DK64RItems.IceTrapPaperGB] * world.options.paper_weight.value
     trap_weights += [DK64RItems.IceTrapSlipGB] * world.options.slip_weight.value
+    trap_weights += [DK64RItems.IceTrapAnimalGB] * world.options.animal_trap_weight.value
+    trap_weights += [DK64RItems.IceTrapRockfallGB] * world.options.rockfall_trap_weight.value
+    trap_weights += [DK64RItems.IceTrapDisableTagGB] * world.options.disabletag_trap_weight.value
 
     trap_count = 0 if (len(trap_weights) == 0) else math.ceil(filler_item_count * (world.options.trap_fill_percentage.value / 100.0))
     filler_item_count -= trap_count

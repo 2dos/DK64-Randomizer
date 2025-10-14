@@ -455,6 +455,7 @@ static ice_trap_timer_struct ice_trap_timers[] = {
     {.timer = 0, .active=0, .disable_func=&resetScreenFlip}, // Flip
     {.timer = 0, .active=1, .disable_func=&cc_disabler_paper, .enable_func=&cc_enabler_paper}, // Paper
     {.timer = 0, .active=0, .disable_func=&cc_disabler_ice}, // Ice
+    {.timer = 0, .active=0, .disable_func=&cc_disabler_animals}, // Animals
 };
 
 
@@ -544,6 +545,22 @@ void initIceTrap(void) {
                     }
                     break;
                 }
+            }
+            break;
+        case ICETRAP_ANIMALS:
+            if (cc_allower_animals()) {
+                cc_enabler_animals();
+                ice_trap_timers[3].timer = 450;
+            }
+            break;
+        case ICETRAP_ROCKFALL:
+            if (cc_allower_rockfall()) {
+                cc_enabler_rockfall();
+            }
+            break;
+        case ICETRAP_TAG:
+            if (cc_allower_tag()) {
+                cc_enabler_tag();
             }
             break;
     }
@@ -646,7 +663,7 @@ void handleIceTrapButtons(void) {
             }
         }
     }
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
         ice_trap_timer_struct *data = &ice_trap_timers[i];
         if (data->timer > 0) {
             data->timer--;

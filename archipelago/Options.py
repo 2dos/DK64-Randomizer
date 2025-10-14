@@ -985,6 +985,22 @@ class FillerItems(DefaultOnToggle):
     display_name = "Filler Items"
 
 
+class AnimalTrapWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which transforms you into an Animal Buddy for a short time."""
+
+    display_name = "Animal Trap Weight"
+
+class RockfallTrapWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which spawns falling stalactites for a short time."""
+
+    display_name = "Rockfall Trap Weight"
+
+class DisableTagTrapWeight(BaseTrapWeight):
+    """Likelihood of receiving a trap which slips a kong on a banana peel."""
+
+    display_name = "Disable Tag Trap Weight"
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1066,6 +1082,9 @@ class DK64Options(PerGameCommonOptions):
     maximum_snide: SnideMaximum
     enable_shared_shops: SharedShops
     enable_filler_items: FillerItems
+    animal_trap_weight: AnimalTrapWeight
+    rockfall_trap_weight: RockfallTrapWeight
+    disabletag_trap_weight: DisableTagTrapWeight
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1183,6 +1202,9 @@ dk64_option_groups: List[OptionGroup] = [
             IceFloorWeight,
             PaperTrapWeight,
             SlipTrapWeight,
+            AnimalTrapWeight,
+            RockfallTrapWeight,
+            DisableTagTrapWeight,
         ],
     ),
     OptionGroup(

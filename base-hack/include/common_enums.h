@@ -1122,6 +1122,9 @@ typedef enum ICE_TRAP_TYPES {
 	/* 0x00D */ ICETRAP_PAPER,
     /* 0x00E */ ICETRAP_SLIP,
 	/* 0x00F */ ICETRAP_SLIP_INSTANT, // Instant Slip
+	/* 0x010 */ ICETRAP_ANIMALS,
+	/* 0x011 */ ICETRAP_ROCKFALL,
+	/* 0x012 */ ICETRAP_TAG,
 } ICE_TRAP_TYPES;
 
 typedef enum COLLISION_BTF {
