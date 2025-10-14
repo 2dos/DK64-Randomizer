@@ -434,10 +434,16 @@ def apply_item_randomization_settings(settings_dict: dict, options) -> None:
     settings_dict["item_rando_list_1"].extend(always_enabled_categories)
     settings_dict["decouple_item_rando"] = False
 
-    # Initialize filler_items_selected if not present
-    settings_dict["filler_items_selected"] = []
-    settings_dict["filler_items_selected"].append(ItemRandoFiller.junkitem)
-
+    if options.enable_filler_items.value:
+        if options.enable_chaos_blockers.value:
+            settings_dict["filler_items_selected"] = [ItemRandoFiller.banana, ItemRandoFiller.crown, ItemRandoFiller.fairy, ItemRandoFiller.medal, ItemRandoFiller.pearl, ItemRandoFiller.rainbowcoin]
+        else:
+            settings_dict["filler_items_selected"] = [
+                ItemRandoFiller.banana,
+                ItemRandoFiller.fairy,
+                ItemRandoFiller.medal,
+                ItemRandoFiller.pearl,
+            ]
     # Conditional item categories
     if options.hints_in_item_pool.value:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.hint)
