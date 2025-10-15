@@ -1431,6 +1431,9 @@ palette_files = [
     0x150,  # Bonus Barrel Map Geo Shell
     0x152,  # Bonus Barrel Map Geo Shell
     0x154,  # Bonus Barrel Map Geo Shell
+    0x2EA,  # Minecart Mayhem Walls
+    0x86B,  # Minecart Mayhem Rails (1)
+    0x86D,  # Minecart Mayhem Rails (2)
 ]
 for file in palette_files:
     file_dict.append(

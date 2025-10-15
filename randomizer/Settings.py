@@ -566,7 +566,7 @@ class Settings:
         self.bonus_barrel_auto_complete = False
 
         # Alternate Minecart Mayhem where you get coins to win
-        self.alt_minecart_mayhem = True
+        self.alt_minecart_mayhem = False
 
         # Not making these a series of settings that can be toggled by the user yet.
         # If people want to be able to toggle this, we can make a simple UI switch and the back-end has already been handled appropriately
