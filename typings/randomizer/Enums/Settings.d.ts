@@ -915,9 +915,7 @@ export enum SettingsStringEnum {
     total_crowns = 283,
     total_fairies = 284,
     most_snide_rewards = 285,
-    trap_weight_animal = 286,
-    trap_weight_rockfall = 287,
-    trap_weight_disabletag = 288,
+    alt_minecart_mayhem = 286,
 }
 
 export enum SettingsStringDataType {
@@ -1296,6 +1294,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.item_rando_list_9: SettingsStringDataType.list,
     SettingsStringEnum.decouple_item_rando: SettingsStringDataType.bool,
     SettingsStringEnum.shops_dont_cost: SettingsStringDataType.bool,
+    SettingsStringEnum.alt_minecart_mayhem: SettingsStringDataType.bool,
     SettingsStringEnum.less_fragile_boulders: SettingsStringDataType.bool,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,

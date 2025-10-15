@@ -452,6 +452,9 @@ extern int cc_disabler_animals(void);
 extern int cc_enabler_rockfall(void);
 extern int cc_enabler_tag(void);
 
+extern void initMMayhem(actorData *actor, int cutscene, int type);
+extern int renderGetWrapper(void);
+
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
@@ -483,6 +486,7 @@ extern short* actor_extra_data_sizes[ACTOR_LIMIT];
 extern collision_data_struct actor_collisions[ACTOR_LIMIT];
 extern collision_info object_collisions[COLLISION_LIMIT];
 extern unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE];
+extern short mayhem_minecart_size[3];
 
 extern mtx_item static_mtx[22];
 extern FastTextStruct hint_pointers[35];

@@ -126,3 +126,70 @@ void ArenaEarlyCompletionCheck(void) {
     }
     addDLToOverlay((void*)0x8002D010, CurrentActorPointer_0, 3);
 }
+
+/*
+    Alt Minecart Mayhem:
+    - Spawn Timer: Minecart::80025340
+    - Win condition check: getItemCount(0xB, 0) >= req
+    - bonus::80024000 shows the get counter?
+*/
+
+int getMinecartMayhemCoinReq(void) {
+    if (CurrentMap == MAP_MMAYHEM_EASY) {
+        return 10;
+    } else if (CurrentMap == MAP_MMAYHEM_NORMAL) {
+        return 12;
+    } else if (CurrentMap == MAP_MMAYHEM_HARD) {
+        return 15;
+    }
+    return 0;
+}
+
+typedef struct MinecartMinigame {
+    /* 0x000 */ char pad0[2];
+    /* 0x002 */ short hit_req;
+    /* 0x004 */ short hit_req_hud;
+    /* 0x006 */ char pad6[2];
+    /* 0x008 */ unsigned char text;
+    /* 0x009 */ unsigned char unk9;
+} MinecartMinigame;
+
+Gfx *renderGet(Gfx *dl, actorData *actor) {
+    MinecartMinigame *data = actor->paad2;
+    if (isCutsceneBarsPresent()) {
+        gSPDisplayList(dl++, 0x01000118);
+        dl = unkDLFunction(dl);
+        gDPSetCombineMode(dl++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+        gDPSetPrimColor(dl++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+        gSPMatrix(dl++, 0x02000180, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        dl = getDLFunction0(dl, data->unk9, 8, 30.0f, 36.0f, 0.0f, 1.5f);
+        dl = getDLFunction1(dl, 0x26, 0x32, &data->hit_req, data->hit_req_hud, &data->text);
+    }
+    return dl;
+}
+
+int renderGetWrapper(void) {
+    MinecartMinigame *data = CurrentActorPointer_0->paad2;
+    data->hit_req_hud = getMinecartMayhemCoinReq() - getItemCount(ITEMID_RACECOIN, 0);
+    addDLToOverlay(&renderGet, CurrentActorPointer_0, 3);
+    return isCutsceneActive();
+}
+
+int wonMinecartMayhem(void) {
+    if (getItemCount(ITEMID_RACECOIN, 0) >= getMinecartMayhemCoinReq()) {
+        return 1;
+    }
+    return 0;
+}
+
+short mayhem_minecart_size[3] = {0x2E, 10, 0};
+
+void initMMayhem(actorData *actor, int cutscene, int type) {
+    MinecartMinigame *data = CurrentActorPointer_0->paad2;
+    data->hit_req = getMinecartMayhemCoinReq();
+    data->hit_req_hud = data->hit_req;
+    void *text = getTextPointer(0x1A, 3, 1);
+    data->text = unkTextFunction1(1, text, 8, 0.0f, 0.0f, 0.0f);
+    playCutscene(actor, cutscene, type);
+}
+
