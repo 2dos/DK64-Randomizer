@@ -915,6 +915,9 @@ export enum SettingsStringEnum {
     total_crowns = 283,
     total_fairies = 284,
     most_snide_rewards = 285,
+    trap_weight_animal = 286,
+    trap_weight_rockfall = 287,
+    trap_weight_disabletag = 288,
 }
 
 export enum SettingsStringDataType {
@@ -1348,6 +1351,9 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.total_pearls: SettingsStringDataType.u8,
     SettingsStringEnum.total_crowns: SettingsStringDataType.u8,
     SettingsStringEnum.total_fairies: SettingsStringDataType.u8,
+    SettingsStringEnum.trap_weight_animal: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_rockfall: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disabletag: SettingsStringDataType.int8,
 }
 
 export const SettingsStringListTypeMap = {
@@ -1401,6 +1407,9 @@ export const SettingsStringListTypeMap = {
     SettingsStringEnum.total_pearls: SettingsStringDataType.u8,
     SettingsStringEnum.total_crowns: SettingsStringDataType.u8,
     SettingsStringEnum.total_fairies: SettingsStringDataType.u8,
+    SettingsStringEnum.trap_weight_animal: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_rockfall: SettingsStringDataType.int8,
+    SettingsStringEnum.trap_weight_disabletag: SettingsStringDataType.int8,
 }
 
 export const SettingsStringIntRangeMap = {
