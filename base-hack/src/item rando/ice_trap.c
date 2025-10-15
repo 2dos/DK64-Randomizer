@@ -458,9 +458,6 @@ void resetTagAnywhere(void) {
 }
 
 void resetAnimalButtons(void) {
-    // Re-enable B button that was disabled during Rambi form
-    trap_enabled_buttons |= CONT_B;
-    button_ice_data[1].ice_trap_timer = 0; // B button
     cc_disabler_animals();
 }
 
@@ -569,9 +566,10 @@ void initIceTrap(void) {
             ice_trap_timers[3].timer = 450;
             if (Player->characterID == 8) {
                 // Rambi - trigger B button disable trap
-                ice_trap_queued = ICETRAP_DISABLEB;
-                initIceTrap();
-                ice_trap_queued = ICETRAP_OFF;
+                button_ice_struct *data = &button_ice_data[1];
+                data->ice_trap_timer = 450;
+                trap_enabled_buttons &= ~data->button_btf;
+                renderSpritesOnPlayer(data->button_sprite, 3, 450);
             }
             break;
         case ICETRAP_ROCKFALL:
@@ -662,10 +660,9 @@ void handleIceTrapButtons(void) {
         button_ice_struct *data = &button_ice_data[i];
         if (data->ice_trap_timer > 0) {
             data->ice_trap_timer--;
-            // Don't re-enable B button if animal timer is active
             if (data->ice_trap_timer == 0) {
+                // Don't re-enable B button if animal timer is active
                 if (i == 1 && ice_trap_timers[3].timer > 0) {
-                    // B button controlled by animal timer, don't re-enable yet
                     continue;
                 }
                 trap_enabled_buttons |= data->button_btf;
