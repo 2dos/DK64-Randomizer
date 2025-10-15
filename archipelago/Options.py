@@ -1002,10 +1002,12 @@ class DisableTagTrapWeight(BaseTrapWeight):
 
     display_name = "Disable Tag Trap Weight"
 
+
 class AlternateMinecartMayhem(Toggle):
     """If enabled, Minecart Mayhem will be a coin based bonus barrel and the timer will be removed."""
 
     display_name = "Alternate Minecart Mayhem"
+
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
