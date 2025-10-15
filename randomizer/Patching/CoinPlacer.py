@@ -19,7 +19,7 @@ MINIGAME_MAPS = [
     Maps.SpeedySwingSortieHard,
     Maps.DiveBarrel,
     Maps.VineBarrel,
-    Maps.MinecartMayhemEasy, 
+    Maps.MinecartMayhemEasy,
     Maps.MinecartMayhemNormal,
     Maps.MinecartMayhemHard,
 ]
@@ -149,6 +149,7 @@ def randomize_coins(spoiler, ROM_COPY: LocalROM):
                 for y in x:
                     ROM_COPY.writeMultipleBytes(y, 4)
 
+
 MAYHEM_Y_POSITION = 170
 MAYHEM_BANDS = [
     # Ring 0 (Outer)
@@ -179,6 +180,7 @@ MAYHEM_BANDS = [
         (468, 179),  # BL
     ],
 ]
+
 
 def gen_mayhem_coins(settings, random):
     settings.mayhem_coins = [[], [], []]
@@ -214,11 +216,7 @@ def gen_mayhem_coins(settings, random):
 def place_mayhem_coins(spoiler, ROM_COPY: LocalROM):
     if not spoiler.settings.alt_minecart_mayhem:
         return
-    minecart_maps = (
-        Maps.MinecartMayhemEasy,
-        Maps.MinecartMayhemNormal,
-        Maps.MinecartMayhemHard
-    )
+    minecart_maps = (Maps.MinecartMayhemEasy, Maps.MinecartMayhemNormal, Maps.MinecartMayhemHard)
     for index, map_id in enumerate(minecart_maps):
         setup_table = getPointerLocation(TableNames.Setups, map_id)
         ROM_COPY.seek(setup_table)
