@@ -1002,6 +1002,10 @@ class DisableTagTrapWeight(BaseTrapWeight):
 
     display_name = "Disable Tag Trap Weight"
 
+class AlternateMinecartMayhem(Toggle):
+    """If enabled, Minecart Mayhem will be a coin based bonus barrel and the timer will be removed."""
+
+    display_name = "Alternate Minecart Mayhem"
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
@@ -1087,6 +1091,7 @@ class DK64Options(PerGameCommonOptions):
     animal_trap_weight: AnimalTrapWeight
     rockfall_trap_weight: RockfallTrapWeight
     disabletag_trap_weight: DisableTagTrapWeight
+    alternate_minecart_mayhem: AlternateMinecartMayhem
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1168,6 +1173,7 @@ dk64_option_groups: List[OptionGroup] = [
             HardMinigames,
             AutoCompleteBonusBarrels,
             HelmRoomBonusCount,
+            AlternateMinecartMayhem,
         ],
     ),
     OptionGroup(

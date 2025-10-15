@@ -854,6 +854,9 @@ class SettingsStringEnum(IntEnum):
     total_fairies = 284
     most_snide_rewards = 285
     alt_minecart_mayhem = 286
+    trap_weight_animal = 287
+    trap_weight_rockfall = 288
+    trap_weight_disabletag = 289
 
 class SettingsStringDataType(IntEnum):
     bool = 1

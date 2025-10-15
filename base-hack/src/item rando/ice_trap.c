@@ -457,11 +457,20 @@ void resetTagAnywhere(void) {
     }
 }
 
+void resetAnimalButtons(void) {
+    // Re-enable buttons that were disabled during animal form
+    trap_enabled_buttons |= (CONT_A | CONT_B | CONT_G);
+    button_ice_data[0].ice_trap_timer = 0; // A button
+    button_ice_data[1].ice_trap_timer = 0; // B button
+    button_ice_data[2].ice_trap_timer = 0; // Z button
+    cc_disabler_animals();
+}
+
 static ice_trap_timer_struct ice_trap_timers[] = {
     {.timer = 0, .active=0, .disable_func=&resetScreenFlip}, // Flip
     {.timer = 0, .active=1, .disable_func=&cc_disabler_paper, .enable_func=&cc_enabler_paper}, // Paper
     {.timer = 0, .active=0, .disable_func=&cc_disabler_ice}, // Ice
-    {.timer = 0, .active=0, .disable_func=&cc_disabler_animals}, // Animals
+    {.timer = 0, .active=0, .disable_func=&resetAnimalButtons}, // Animals (resets buttons, then cc_disabler_animals is called separately)
     {.timer = 0, .active=0, .disable_func=&resetTagAnywhere}, // Tag
 };
 
@@ -558,6 +567,14 @@ void initIceTrap(void) {
         case ICETRAP_ANIMALS:
             cc_enabler_animals();
             ice_trap_timers[3].timer = 450;
+            if (Player->characterID == 9) {
+                // Enguarde - disable A and Z buttons, zero velocities
+                trap_enabled_buttons &= ~(CONT_A | CONT_G);
+                Player->yVelocity = 0.0f;
+            } else if (Player->characterID == 8) {
+                // Rambi - disable B button
+                trap_enabled_buttons &= ~CONT_B;
+            }
             break;
         case ICETRAP_ROCKFALL:
             rockfall_timer = 450;
