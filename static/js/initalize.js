@@ -18,6 +18,9 @@ const default_trap_weights = {
   "trap_weight_icefloor": 2,
   "trap_weight_paper": 2,
   "trap_weight_slip": 3,
+  "trap_weight_animal": 1
+  "trap_weight_rockfall": 1
+  "trap_weight_disabletag": 2
 };
 const default_item_counts = {
   "total_gbs": 201,

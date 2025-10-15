@@ -962,6 +962,9 @@ class Settings:
         self.trap_weight_icefloor = 2
         self.trap_weight_paper = 2
         self.trap_weight_slip = 3
+        self.trap_weight_animal = 1
+        self.trap_weight_rockfall = 1
+        self.trap_weight_disabletag = 2
         self.switch_allocation = [
             self.prog_slam_level_1,
             self.prog_slam_level_2,
