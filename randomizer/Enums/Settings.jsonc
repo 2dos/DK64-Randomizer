@@ -1359,7 +1359,8 @@
     "total_pearls": 282,
     "total_crowns": 283,
     "total_fairies": 284,
-    "most_snide_rewards": 285
+    "most_snide_rewards": 285,
+    "alt_minecart_mayhem": 286
   },
   /*
     SettingsStringDataType:
@@ -2040,6 +2041,7 @@
     },
     "SettingsStringEnum.decouple_item_rando": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.shops_dont_cost": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.alt_minecart_mayhem": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.less_fragile_boulders": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.prog_slam_level_1": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_2": { "obj": "SlamRequirement" },

@@ -853,6 +853,7 @@ class SettingsStringEnum(IntEnum):
     total_crowns = 283
     total_fairies = 284
     most_snide_rewards = 285
+    alt_minecart_mayhem = 286
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1229,6 +1230,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.item_rando_list_9: SettingsStringDataType.list,
     SettingsStringEnum.decouple_item_rando: SettingsStringDataType.bool,
     SettingsStringEnum.shops_dont_cost: SettingsStringDataType.bool,
+    SettingsStringEnum.alt_minecart_mayhem: SettingsStringDataType.bool,
     SettingsStringEnum.less_fragile_boulders: SettingsStringDataType.bool,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,

@@ -1931,6 +1931,21 @@ def patchAssembly(ROM_COPY, spoiler):
         writeFunction(ROM_COPY, 0x800306D4, Overlay.Menu, "password_screen_init", offset_dict)
         writeFunction(ROM_COPY, 0x800306C4, Overlay.Menu, "password_screen_code", offset_dict)
 
+    # Alt Minecart Mayhem:
+    if settings.alt_minecart_mayhem:
+        SIZE_DEFS = getSym("actor_extra_data_sizes")
+        NEW_SIZE = getSym("mayhem_minecart_size")
+        writeValue(ROM_COPY, SIZE_DEFS + (87 * 4), Overlay.Custom, NEW_SIZE, offset_dict, 4)  # Increase size
+        writeValue(ROM_COPY, 0x80025340, Overlay.Minecart, 0, offset_dict, 4)  # Remove timer spawn
+        writeValue(ROM_COPY, 0x80025350, Overlay.Minecart, 0, offset_dict, 4)  # Prevent action on parent
+        writeFunction(ROM_COPY, 0x80025070, Overlay.Minecart, "initMMayhem", offset_dict)  # Init requirements
+        writeFunction(ROM_COPY, 0x80025160, Overlay.Minecart, "renderGetWrapper", offset_dict)  # Render the get counter
+        writeHook(ROM_COPY, 0x80025214, Overlay.Minecart, "checkNewMayhemWin", offset_dict)
+        writeValue(ROM_COPY, 0x8002407C, Overlay.Minecart, 0, offset_dict, 4)  # Prevent action on parent
+        writeValue(ROM_COPY, 0x80024084, Overlay.Minecart, 0, offset_dict, 4)  # Prevent action on parent
+        writeValue(ROM_COPY, 0x80024140, Overlay.Minecart, 0, offset_dict, 4)  # Prevent action on parent
+        writeValue(ROM_COPY, 0x80024148, Overlay.Minecart, 0, offset_dict, 4)  # Prevent action on parent
+
     # Menu/Shop Stuff
     # Menu/Shop: Force enable cheats
     writeValue(ROM_COPY, 0x800280DC, Overlay.Menu, 0x1000, offset_dict)  # Force access to mystery menu

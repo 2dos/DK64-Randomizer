@@ -619,6 +619,14 @@ def writeMiscCosmeticChanges(settings, ROM_COPY: ROM):
                     hueShiftImageContainer(7, img_index, 32, 32, TextureFormat.RGBA5551, number_hue_shift, ROM_COPY)
             hueShiftImageContainer(25, 0xC2D, 32, 32, TextureFormat.RGBA5551, colors[1], ROM_COPY)
             hueShiftImageContainer(25, 0xC2E, 32, 32, TextureFormat.RGBA5551, colors[0], ROM_COPY)
+        hueShiftImageContainer(TableNames.TexturesGeometry, 0x2EA, 4, 4, TextureFormat.RGBA5551, getRandomHueShift(), ROM_COPY)
+        rail_color = getEnemySwapColor(min_channel_variance=200)
+        rail_color_list = [(rail_color >> 16) & 0xFF, (rail_color >> 8) & 0xFF, rail_color & 0xFF]
+        for palette in (0x86B, 0x86D):
+            pal_im = getImageFile(ROM_COPY, TableNames.TexturesGeometry, palette, True, 4, 4, TextureFormat.RGBA5551)
+            pal_im = maskImageWithColor(pal_im, tuple(rail_color_list))
+            writeColorImageToROM(pal_im, TableNames.TexturesGeometry, palette, 4, 4, False, TextureFormat.RGBA5551, ROM_COPY)
+
     if IsColorOptionSelected(settings, ColorOptions.playable_characters):
         # Jetman
         for xi, x in enumerate(settings.jetman_color):

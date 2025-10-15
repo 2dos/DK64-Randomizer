@@ -124,6 +124,12 @@ extern void CrownGet(void);
 extern void updateModel(void* data);
 extern void bounceObjectCode(int convert_to_model_two);
 
+extern int isCutsceneBarsPresent(void);
+extern Gfx *unkDLFunction(Gfx *dl);
+extern Gfx *getDLFunction0(Gfx *dl, int unk0, int unk1, float unk2, float unk3, float unk4, float unk5);
+extern Gfx *getDLFunction1(Gfx *dl, int unk0, int unk1, void *unk2, int unk3, void *unk4);
+extern int unkTextFunction1(int unk0, void *text, int unk2, float unk3, float unk4, float unk5); // Unsure if the last 2 are used?
+
 extern int getObjectID(int index);
 extern void HUDSpriteUpdate(sprite_info *sprite);
 extern void PauseSpriteUpdate(sprite_info *sprite);

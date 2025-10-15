@@ -42,7 +42,7 @@ from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector,
 from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport, move_bananaports
 from randomizer.Patching.BarrelRando import randomize_barrels
-from randomizer.Patching.CoinPlacer import randomize_coins
+from randomizer.Patching.CoinPlacer import randomize_coins, place_mayhem_coins
 from randomizer.Patching.Cosmetics.TextRando import writeBootMessages
 from randomizer.Patching.Cosmetics.Puzzles import updateMillLeverTexture, updateCryptLeverTexture, updateDiddyDoors, updateHelmFaces, updateSnidePanel
 from randomizer.Patching.CosmeticColors import (
@@ -681,6 +681,7 @@ def patching_response(spoiler):
     randomize_puzzles(spoiler, ROM_COPY)
     randomize_cbs(spoiler, ROM_COPY)
     randomize_coins(spoiler, ROM_COPY)
+    place_mayhem_coins(spoiler, ROM_COPY)
     ApplyShopRandomizer(spoiler, ROM_COPY)
     showWinCondition(spoiler.settings, ROM_COPY)
     remove5DSCameraPoint(spoiler, ROM_COPY)
