@@ -428,9 +428,11 @@ static const char bone_slow_bones[] = {1, 5, 6};
 
 typedef struct button_ice_struct {
     /* 0x000 */ unsigned char ice_trap_type;
-    /* 0x001 */ unsigned char ice_trap_timer;
+    /* 0x001 */ unsigned char pad1;
     /* 0x002 */ unsigned short button_btf;
     /* 0x004 */ void *button_sprite;
+    /* 0x008 */ unsigned short ice_trap_timer;
+    /* 0x00A */ char padA[2];
 } button_ice_struct;
 
 static button_ice_struct button_ice_data[] = {
@@ -661,10 +663,6 @@ void handleIceTrapButtons(void) {
         if (data->ice_trap_timer > 0) {
             data->ice_trap_timer--;
             if (data->ice_trap_timer == 0) {
-                // Don't re-enable B button if animal timer is active
-                if (i == 1 && ice_trap_timers[3].timer > 0) {
-                    continue;
-                }
                 trap_enabled_buttons |= data->button_btf;
             }
         }
