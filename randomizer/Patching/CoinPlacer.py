@@ -183,6 +183,7 @@ MAYHEM_BANDS = [
 
 
 def gen_mayhem_coins(settings, random):
+    """Generate the list of coin locations."""
     settings.mayhem_coins = [[], [], []]
     if not settings.alt_minecart_mayhem:
         return
@@ -214,6 +215,7 @@ def gen_mayhem_coins(settings, random):
 
 
 def place_mayhem_coins(spoiler, ROM_COPY: LocalROM):
+    """Place the minecart mayhem coins in the setup."""
     if not spoiler.settings.alt_minecart_mayhem:
         return
     minecart_maps = (Maps.MinecartMayhemEasy, Maps.MinecartMayhemNormal, Maps.MinecartMayhemHard)
