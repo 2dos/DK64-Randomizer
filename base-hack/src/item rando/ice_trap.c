@@ -451,11 +451,18 @@ void resetScreenFlip(void) {
     *(unsigned char*)(0x80010520) = 0x3F;
 }
 
+void resetTagAnywhere(void) {
+    if (CCEffectData) {
+        CCEffectData->disable_tag_anywhere = CC_READY;
+    }
+}
+
 static ice_trap_timer_struct ice_trap_timers[] = {
     {.timer = 0, .active=0, .disable_func=&resetScreenFlip}, // Flip
     {.timer = 0, .active=1, .disable_func=&cc_disabler_paper, .enable_func=&cc_enabler_paper}, // Paper
     {.timer = 0, .active=0, .disable_func=&cc_disabler_ice}, // Ice
     {.timer = 0, .active=0, .disable_func=&cc_disabler_animals}, // Animals
+    {.timer = 0, .active=0, .disable_func=&resetTagAnywhere}, // Tag
 };
 
 
@@ -463,6 +470,7 @@ static unsigned short flip_timer = 0;
 static unsigned short slip_timers[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 static unsigned short ice_floor_timer = 0;
 static unsigned short paper_timer = 0;
+static unsigned short rockfall_timer = 0;
 
 void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration) {
     float repeat_count = (float)duration / (float)sprite->image_count;
@@ -548,20 +556,18 @@ void initIceTrap(void) {
             }
             break;
         case ICETRAP_ANIMALS:
-            if (cc_allower_animals()) {
-                cc_enabler_animals();
-                ice_trap_timers[3].timer = 450;
-            }
+            cc_enabler_animals();
+            ice_trap_timers[3].timer = 450;
             break;
         case ICETRAP_ROCKFALL:
-            if (cc_allower_rockfall()) {
-                cc_enabler_rockfall();
-            }
+            rockfall_timer = 450;
             break;
         case ICETRAP_TAG:
-            if (cc_allower_tag()) {
-                cc_enabler_tag();
+            cc_enabler_tag();
+            if (CCEffectData) {
+                CCEffectData->disable_tag_anywhere = CC_ENABLED;
             }
+            ice_trap_timers[4].timer = 450;
             break;
     }
     playSFX(0x2D4); // K Rool Laugh
@@ -596,6 +602,7 @@ void resetIceTrapButtons(void) {
     flip_timer = 0;
     ice_floor_timer = 0;
     paper_timer = 0;
+    rockfall_timer = 0;
     trap_enabled_buttons = 0xFFFF;
     resetScreenFlip();
 }
@@ -651,6 +658,10 @@ void handleIceTrapButtons(void) {
             resetScreenFlip();
         }
     }
+    if (rockfall_timer > 0) {
+        rockfall_timer--;
+        cc_enabler_rockfall();
+    }
     for (int i = 0; i < 8; i++) {
         if (slip_timers[i] > 1) {
             slip_timers[i]--;
@@ -663,7 +674,7 @@ void handleIceTrapButtons(void) {
             }
         }
     }
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         ice_trap_timer_struct *data = &ice_trap_timers[i];
         if (data->timer > 0) {
             data->timer--;

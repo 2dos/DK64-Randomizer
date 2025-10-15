@@ -449,11 +449,8 @@ extern int cc_enabler_paper(void);
 extern int cc_disabler_paper(void);
 extern int cc_enabler_animals(void);
 extern int cc_disabler_animals(void);
-extern int cc_allower_animals(void);
 extern int cc_enabler_rockfall(void);
-extern int cc_allower_rockfall(void);
 extern int cc_enabler_tag(void);
-extern int cc_allower_tag(void);
 
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
