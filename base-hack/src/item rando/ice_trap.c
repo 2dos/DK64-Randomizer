@@ -458,11 +458,9 @@ void resetTagAnywhere(void) {
 }
 
 void resetAnimalButtons(void) {
-    // Re-enable buttons that were disabled during animal form
-    trap_enabled_buttons |= (CONT_A | CONT_B | CONT_G);
-    button_ice_data[0].ice_trap_timer = 0; // A button
+    // Re-enable B button that was disabled during Rambi form
+    trap_enabled_buttons |= CONT_B;
     button_ice_data[1].ice_trap_timer = 0; // B button
-    button_ice_data[2].ice_trap_timer = 0; // Z button
     cc_disabler_animals();
 }
 
@@ -517,9 +515,11 @@ void initIceTrap(void) {
         case ICETRAP_DISABLECU:
             {
                 button_ice_struct *data = &button_ice_data[ice_trap_queued - ICETRAP_DISABLEA];
-                data->ice_trap_timer = 240;
+                // Check if this is being called from ICETRAP_ANIMALS (Rambi)
+                int duration = (ice_trap_timers[3].timer > 0) ? 450 : 240;
+                data->ice_trap_timer = duration;
                 trap_enabled_buttons &= ~data->button_btf;
-                renderSpritesOnPlayer(data->button_sprite, 3, 240);
+                renderSpritesOnPlayer(data->button_sprite, 3, duration);
             }
             break;
         case ICETRAP_GETOUT:
@@ -567,17 +567,15 @@ void initIceTrap(void) {
         case ICETRAP_ANIMALS:
             cc_enabler_animals();
             ice_trap_timers[3].timer = 450;
-            if (Player->characterID == 9) {
-                // Enguarde - disable A and Z buttons, zero velocities
-                trap_enabled_buttons &= ~(CONT_A | CONT_G);
-                Player->yVelocity = 0.0f;
-            } else if (Player->characterID == 8) {
-                // Rambi - disable B button
-                trap_enabled_buttons &= ~CONT_B;
+            if (Player->characterID == 8) {
+                // Rambi - trigger B button disable trap
+                ice_trap_queued = ICETRAP_DISABLEB;
+                initIceTrap();
+                ice_trap_queued = ICETRAP_OFF;
             }
             break;
         case ICETRAP_ROCKFALL:
-            rockfall_timer = 450;
+            rockfall_timer = 300;
             break;
         case ICETRAP_TAG:
             cc_enabler_tag();
@@ -664,7 +662,12 @@ void handleIceTrapButtons(void) {
         button_ice_struct *data = &button_ice_data[i];
         if (data->ice_trap_timer > 0) {
             data->ice_trap_timer--;
+            // Don't re-enable B button if animal timer is active
             if (data->ice_trap_timer == 0) {
+                if (i == 1 && ice_trap_timers[3].timer > 0) {
+                    // B button controlled by animal timer, don't re-enable yet
+                    continue;
+                }
                 trap_enabled_buttons |= data->button_btf;
             }
         }
