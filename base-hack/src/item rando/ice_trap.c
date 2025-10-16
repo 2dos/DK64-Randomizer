@@ -516,7 +516,7 @@ void initIceTrap(void) {
                 button_ice_struct *data = &button_ice_data[ice_trap_queued - ICETRAP_DISABLEA];
                 data->ice_trap_timer = 240;
                 trap_enabled_buttons &= ~data->button_btf;
-                renderSpritesOnPlayer(data->button_sprite,3, 240);
+                renderSpritesOnPlayer(data->button_sprite, 3, 240);
             }
             break;
         case ICETRAP_GETOUT:
