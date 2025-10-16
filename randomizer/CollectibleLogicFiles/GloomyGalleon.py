@@ -87,7 +87,7 @@ LogicRegions = {
     ],
     Regions.Shipyard: [
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Cactus
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.diving or Events.WaterLowered in l.Events, None, 1),  # Cactus
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.swim or Events.WaterLowered in l.Events, None, 1),  # Cactus
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),  # Over the main area
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: Events.WaterRaised in l.Events, None, 1),  # Above Warp 2
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Near Warp 2
