@@ -514,11 +514,9 @@ void initIceTrap(void) {
         case ICETRAP_DISABLECU:
             {
                 button_ice_struct *data = &button_ice_data[ice_trap_queued - ICETRAP_DISABLEA];
-                // Check if this is being called from ICETRAP_ANIMALS (Rambi)
-                int duration = (ice_trap_timers[3].timer > 0) ? 450 : 240;
-                data->ice_trap_timer = duration;
+                data->ice_trap_timer = 240;
                 trap_enabled_buttons &= ~data->button_btf;
-                renderSpritesOnPlayer(data->button_sprite, 3, duration);
+                renderSpritesOnPlayer(data->button_sprite,3, 240);
             }
             break;
         case ICETRAP_GETOUT:
