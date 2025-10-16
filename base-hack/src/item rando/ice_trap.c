@@ -428,9 +428,11 @@ static const char bone_slow_bones[] = {1, 5, 6};
 
 typedef struct button_ice_struct {
     /* 0x000 */ unsigned char ice_trap_type;
-    /* 0x001 */ unsigned char ice_trap_timer;
+    /* 0x001 */ unsigned char pad1;
     /* 0x002 */ unsigned short button_btf;
     /* 0x004 */ void *button_sprite;
+    /* 0x008 */ unsigned short ice_trap_timer;
+    /* 0x00A */ char padA[2];
 } button_ice_struct;
 
 static button_ice_struct button_ice_data[] = {
@@ -451,10 +453,23 @@ void resetScreenFlip(void) {
     *(unsigned char*)(0x80010520) = 0x3F;
 }
 
+void resetTagAnywhere(void) {
+    if (CCEffectData) {
+        CCEffectData->disable_tag_anywhere = CC_READY;
+    }
+}
+
+void resetAnimalButtons(void) {
+    cc_disabler_animals();
+}
+
 static ice_trap_timer_struct ice_trap_timers[] = {
     {.timer = 0, .active=0, .disable_func=&resetScreenFlip}, // Flip
     {.timer = 0, .active=1, .disable_func=&cc_disabler_paper, .enable_func=&cc_enabler_paper}, // Paper
     {.timer = 0, .active=0, .disable_func=&cc_disabler_ice}, // Ice
+    {.timer = 0, .active=0, .disable_func=&resetAnimalButtons}, // Animals (resets buttons, then cc_disabler_animals is called separately)
+    {.timer = 0, .active=0, .disable_func=&resetTagAnywhere}, // Tag
+    {.timer = 0, .active=1, .enable_func=&cc_enabler_rockfall}, // Rockfall
 };
 
 
@@ -545,6 +560,27 @@ void initIceTrap(void) {
                     break;
                 }
             }
+            break;
+        case ICETRAP_ANIMALS:
+            cc_enabler_animals();
+            ice_trap_timers[3].timer = 450;
+            if (Player->characterID == 8) {
+                // Rambi - trigger B button disable trap
+                button_ice_struct *data = &button_ice_data[1];
+                data->ice_trap_timer = 450;
+                trap_enabled_buttons &= ~data->button_btf;
+                renderSpritesOnPlayer(data->button_sprite, 3, 450);
+            }
+            break;
+        case ICETRAP_ROCKFALL:
+            ice_trap_timers[5].timer = 300;
+            break;
+        case ICETRAP_TAG:
+            cc_enabler_tag();
+            if (CCEffectData) {
+                CCEffectData->disable_tag_anywhere = CC_ENABLED;
+            }
+            ice_trap_timers[4].timer = 450;
             break;
     }
     playSFX(0x2D4); // K Rool Laugh
@@ -646,12 +682,14 @@ void handleIceTrapButtons(void) {
             }
         }
     }
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 6; i++) {
         ice_trap_timer_struct *data = &ice_trap_timers[i];
         if (data->timer > 0) {
             data->timer--;
             if (data->timer == 0) {
-                callFunc(data->disable_func, 0);
+                if (data->disable_func) {
+                    callFunc(data->disable_func, 0);
+                }
             } else if (data->active) {
                 callFunc(data->enable_func, 0);
             }

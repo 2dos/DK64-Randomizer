@@ -370,6 +370,7 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     settings_dict["puzzle_rando_difficulty"] = options.puzzle_rando.value
     if options.enable_cutscenes.value:
         settings_dict["more_cutscene_skips"] = ExtraCutsceneSkips.press
+    settings_dict["alt_minecart_mayhem"] = options.alternate_minecart_mayhem.value
 
 
 def apply_blocker_settings(settings_dict: dict, options) -> None:

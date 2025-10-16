@@ -306,6 +306,18 @@
         "PhotoMermaid": 277,
         "PhotoLlama": 278,
         "PhotoMechfish": 279,
-        "PhotoSeal": 280
+        "PhotoSeal": 280,
+        "IceTrapAnimalGB": 281,
+        "IceTrapAnimalBean": 282,
+        "IceTrapAnimalKey": 283,
+        "IceTrapAnimalFairy":284,
+        "IceTrapRockfallGB": 285,
+        "IceTrapRockfallBean": 286,
+        "IceTrapRockfallKey": 287,
+        "IceTrapRockfallFairy":288,
+        "IceTrapDisableTagGB": 289,
+        "IceTrapDisableTagBean": 290,
+        "IceTrapDisableTagKey": 291,
+        "IceTrapDisableTagFairy":292
     }
 }

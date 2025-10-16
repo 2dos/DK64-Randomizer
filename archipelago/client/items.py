@@ -112,6 +112,9 @@ item_ids = {
     14041342: {"name": "Ice Floor Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "icefloor"}, "flag_id": None, "extended_whitelist": True},
     14041346: {"name": "Paper Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "paper"}, "flag_id": None, "extended_whitelist": True},
     14041350: {"name": "Slip Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "slip"}, "flag_id": None, "extended_whitelist": True},
+    14041369: {"name": "Animal Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "animal"}, "flag_id": None, "extended_whitelist": True},
+    14041373: {"name": "Rockfall Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "rockfall"}, "flag_id": None, "extended_whitelist": True},
+    14041377: {"name": "Disable Tag Trap", "count_id": {"field": "ice_traps", "increment": 1, "ice_trap_type": "disabletag"}, "flag_id": None, "extended_whitelist": True},
     14041173: {"name": "Junk Item (Crystal)", "count_id": {"field": "junk_items", "increment": 1}, "flag_id": None, "extended_whitelist": True},
     14041174: {"name": "Junk Item (Melon Slice)", "count_id": {"field": "junk_items", "increment": 1}, "flag_id": None, "extended_whitelist": True},
     14041175: {"name": "Junk Item (Ammo Crate)", "count_id": {"field": "junk_items", "increment": 1}, "flag_id": None, "extended_whitelist": True},
@@ -203,6 +206,11 @@ trap_name_to_index: dict[str, int] = {
     "Dry Trap": 10,
     "Flip Trap": 11,
     "Ice Floor Trap": 12,
+    "Paper Trap": 13,
+    "Slip Trap": 15,
+    "Animal Trap": 16,
+    "Rockfall Trap": 17,
+    "Disable Tag Trap": 18,
     # Common other trap names
     "Banana Peel Trap": 15,  # Slip Trap
     "Bee Trap": 6,  # Disable B Trap
@@ -268,4 +276,7 @@ trap_index_to_name: dict[int, str] = {
     12: "Ice Floor Trap",
     13: "Paper Trap",
     15: "Slip Trap",
+    16: "Animal Trap",
+    17: "Rockfall Trap",
+    18: "Disable Tag Trap",
 }

@@ -447,6 +447,10 @@ extern int cc_enabler_ice(void);
 extern int cc_disabler_ice(void);
 extern int cc_enabler_paper(void);
 extern int cc_disabler_paper(void);
+extern int cc_enabler_animals(void);
+extern int cc_disabler_animals(void);
+extern int cc_enabler_rockfall(void);
+extern int cc_enabler_tag(void);
 
 extern void initMMayhem(actorData *actor, int cutscene, int type);
 extern int renderGetWrapper(void);
