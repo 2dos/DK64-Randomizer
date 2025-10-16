@@ -1385,7 +1385,7 @@ class LogicVarHolder:
         if self.assumeFillSuccess or Types.BlueprintBanana not in self.settings.shuffled_location_types or value > self.settings.most_snide_rewards:
             return self.BlueprintsWithKong >= value
         bufferValue = ceil(value * 0.2)
-        return self.BlueprintsWithKong >= max(40, bufferValue + value)
+        return self.BlueprintsWithKong >= min(40, bufferValue + value)
 
     def HasAllItems(self):
         """Return if you have all progression items."""
