@@ -469,6 +469,7 @@ static ice_trap_timer_struct ice_trap_timers[] = {
     {.timer = 0, .active=0, .disable_func=&cc_disabler_ice}, // Ice
     {.timer = 0, .active=0, .disable_func=&resetAnimalButtons}, // Animals (resets buttons, then cc_disabler_animals is called separately)
     {.timer = 0, .active=0, .disable_func=&resetTagAnywhere}, // Tag
+    {.timer = 0, .active=1, .enable_func=&cc_enabler_rockfall}, // Rockfall
 };
 
 
@@ -476,7 +477,6 @@ static unsigned short flip_timer = 0;
 static unsigned short slip_timers[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 static unsigned short ice_floor_timer = 0;
 static unsigned short paper_timer = 0;
-static unsigned short rockfall_timer = 0;
 
 void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration) {
     float repeat_count = (float)duration / (float)sprite->image_count;
@@ -573,7 +573,7 @@ void initIceTrap(void) {
             }
             break;
         case ICETRAP_ROCKFALL:
-            rockfall_timer = 300;
+            ice_trap_timers[5].timer = 300;
             break;
         case ICETRAP_TAG:
             cc_enabler_tag();
@@ -615,7 +615,6 @@ void resetIceTrapButtons(void) {
     flip_timer = 0;
     ice_floor_timer = 0;
     paper_timer = 0;
-    rockfall_timer = 0;
     trap_enabled_buttons = 0xFFFF;
     resetScreenFlip();
 }
@@ -671,10 +670,6 @@ void handleIceTrapButtons(void) {
             resetScreenFlip();
         }
     }
-    if (rockfall_timer > 0) {
-        rockfall_timer--;
-        cc_enabler_rockfall();
-    }
     for (int i = 0; i < 8; i++) {
         if (slip_timers[i] > 1) {
             slip_timers[i]--;
@@ -687,12 +682,14 @@ void handleIceTrapButtons(void) {
             }
         }
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 6; i++) {
         ice_trap_timer_struct *data = &ice_trap_timers[i];
         if (data->timer > 0) {
             data->timer--;
             if (data->timer == 0) {
-                callFunc(data->disable_func, 0);
+                if (data->disable_func) {
+                    callFunc(data->disable_func, 0);
+                }
             } else if (data->active) {
                 callFunc(data->enable_func, 0);
             }
