@@ -4,6 +4,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, grabText, writeText, CompTextFiles, writeRawFile
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.ASMPatcher import writeItemReferenceFlags
+from randomizer.Enums.Settings import WinConditionComplex
 
 MAX_LINES = 3
 MAX_LINE_LENGTH = 400
@@ -166,7 +167,7 @@ def splitText(text: str, truncate_split: bool) -> str:
     return f"{base_text}\x00"
 
 
-def writeFastHints(ROM_COPY: LocalROM, table_index: int, file_index: int, input_text: list, compressed: bool, truncate_split: bool = True):
+def writeFastHints(ROM_COPY: LocalROM, table_index: int, file_index: int, input_text: list, compressed: bool, truncate_split: bool = True, elmer_fudd: bool = False):
     """Write a fast lookup version of text to ROM."""
     bad_chars = ["\x00, \x0f"]
     entries = []
@@ -174,6 +175,9 @@ def writeFastHints(ROM_COPY: LocalROM, table_index: int, file_index: int, input_
         text = ""
         for line in textbox:
             filtered_line = "".join(c for c in line if c not in bad_chars)
+            if elmer_fudd:
+                filtered_line = filtered_line.replace("r", "w")
+                filtered_line = filtered_line.replace("R", "W")
             text += f"{filtered_line} "
         entries.append(splitText(text, truncate_split))
     raw_text = "".join(entries)
@@ -186,7 +190,7 @@ def writeFastHints(ROM_COPY: LocalROM, table_index: int, file_index: int, input_
     writeRawFile(table_index, file_index, compressed, bytearray(data), ROM_COPY)
 
 
-def writeWrinklyHints(ROM_COPY: LocalROM, table_index: int, file_index: int, text: list, compressed: bool):
+def writeWrinklyHints(ROM_COPY: LocalROM, table_index: int, file_index: int, text: list, compressed: bool, elmer_fudd: bool = False):
     """Write the text to ROM."""
     data = [len(text)]
     position = 0
@@ -217,7 +221,11 @@ def writeWrinklyHints(ROM_COPY: LocalROM, table_index: int, file_index: int, tex
     for textbox in text:
         for string in textbox:
             for x in range(len(string)):
-                data.append(int.from_bytes(string[x].encode("ascii"), "big"))
+                written_string = string[x]
+                if elmer_fudd:
+                    written_string = written_string.replace("r", "w")
+                    written_string = written_string.replace("R", "W")
+                data.append(int.from_bytes(written_string.encode("ascii"), "big"))
     unc_size = len(data)
     if compressed:
         unc_table = getPointerLocation(TableNames.UncompressedFileSizes, table_index)
@@ -237,8 +245,9 @@ def PushHints(spoiler, ROM_COPY: LocalROM):
         if hint_info.short_hint is None:
             hint_info.short_hint = hint_info.hint
         short_hint_arr.append([hint_info.short_hint.upper()])
-    writeWrinklyHints(ROM_COPY, TableNames.Unknown6, CompTextFiles.Wrinkly & 0x3F, hint_arr, True)
-    writeFastHints(ROM_COPY, TableNames.Unknown6, CompTextFiles.WrinklyShort & 0x3F, short_hint_arr[1:], True)
+    elmer_fudd = spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit
+    writeWrinklyHints(ROM_COPY, TableNames.Unknown6, CompTextFiles.Wrinkly & 0x3F, hint_arr, True, elmer_fudd)
+    writeFastHints(ROM_COPY, TableNames.Unknown6, CompTextFiles.WrinklyShort & 0x3F, short_hint_arr[1:], True, elmer_fudd)
     spoiler.hintset.RemoveFTT()  # The FTT needs to be written to the ROM but should not be found in the spoiler log
 
 
