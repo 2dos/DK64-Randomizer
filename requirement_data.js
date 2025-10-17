@@ -222,7 +222,6 @@ const requirement_data = {
         ],
         "Lanky": [
             new Requirement(5, [[Moves.Moveless]]), // 5 bananas in GloomyGalleonStart
-            new Requirement(5, [[Moves.GalleonPeanut]]), // 1 bunch in Shipyard
             new Requirement(25, [[Moves.Diving, Moves.GalleonLighthouse]]), // 4 bunches, 5 bananas in LighthouseUnderwater
             new Requirement(5, [[Moves.Diving, Moves.GalleonPeanut]]), // 1 bunch in ShipyardUnderwater
             new Requirement(20, [[Moves.Grape, Moves.Punch]]), // 2 balloons in GloomyGalleonStart
@@ -230,6 +229,10 @@ const requirement_data = {
             new Requirement(10, [[Moves.Diving, Moves.LevelSlam, Moves.GalleonPeanut]]), // 1 bunch, 5 bananas in LankyShip
             new Requirement(15, [[Moves.Diving, Moves.Trombone, Moves.LoweredWater, Moves.GalleonPeanut]]), // 3 bunches in TromboneShip
             new Requirement(1, [[Moves.Diving, Moves.RaisedWater, Moves.GalleonPeanut, Moves.GalleonTreasure]]), // 1 banana in TreasureRoom
+            new Requirement(5, [ // 1 bunch in Shipyard
+                [Moves.Diving, Moves.GalleonPeanut],
+                [Moves.LoweredWater, Moves.GalleonPeanut],
+            ]),
             new Requirement(4, [[Moves.Diving, Moves.Balloon, Moves.RaisedWater, Moves.GalleonPeanut, Moves.GalleonTreasure]]), // 4 bananas in TreasureRoom
         ],
         "Tiny": [
