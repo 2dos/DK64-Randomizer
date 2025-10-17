@@ -247,7 +247,7 @@ def PushHints(spoiler, ROM_COPY: LocalROM):
         short_hint_arr.append([hint_info.short_hint.upper()])
     elmer_fudd = spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit
     writeWrinklyHints(ROM_COPY, TableNames.Unknown6, CompTextFiles.Wrinkly & 0x3F, hint_arr, True, elmer_fudd)
-    writeFastHints(ROM_COPY, TableNames.Unknown6, CompTextFiles.WrinklyShort & 0x3F, short_hint_arr[1:], True, elmer_fudd)
+    writeFastHints(ROM_COPY, TableNames.Unknown6, CompTextFiles.WrinklyShort & 0x3F, short_hint_arr[1:], True, True, elmer_fudd)
     spoiler.hintset.RemoveFTT()  # The FTT needs to be written to the ROM but should not be found in the spoiler log
 
 
