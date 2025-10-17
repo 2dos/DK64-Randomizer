@@ -427,6 +427,7 @@ class Spoiler:
                 WinConditionComplex.dk_rap_items: "Complete the Rap",
                 WinConditionComplex.req_bean: "Acquire the Bean",
                 WinConditionComplex.krools_challenge: "Beat K. Rool's Challenge",
+                WinConditionComplex.kill_the_rabbit: "Kill the Rabbit",
                 WinConditionComplex.req_bp: f"{wc_count} Blueprint{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_companycoins: f"{wc_count} Company Coin{'s' if wc_count != 1 else ''}",
                 WinConditionComplex.req_crown: f"{wc_count} Crown{'s' if wc_count != 1 else ''}",

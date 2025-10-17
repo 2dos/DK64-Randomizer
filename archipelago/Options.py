@@ -39,6 +39,7 @@ class Goal(Choice):
     - bonuses: Complete a certain number of Bonus Barrels to win. Automatically disables auto_complete_bonus_barrels if set. See goal_quantity option for more info.
     - treasure_hurry: Run down the timer by collecting treasure! You win when the timer reaches 0.
     - krools_challenge: K. Rool's ship does not spawn until you collect All keys, Defeat All bosses, Play all Bonus Barrels, and collect All Blueprints.
+    - kill_the_rabbit: Kill the rabbit in Chunky's igloo in Caves. Turn it to Ash. Simple as that.
     """
 
     display_name = "Goal"
@@ -60,6 +61,7 @@ class Goal(Choice):
     option_bonuses = 15
     option_treasure_hurry = 16
     option_krools_challenge = 17
+    option_kill_the_rabbit = 18
     default = 0
 
 

@@ -1772,6 +1772,16 @@ def patchAssembly(ROM_COPY, spoiler):
                 ROM_COPY.seek(0x1FFF800 + (index * 6))
                 ROM_COPY.writeMultipleBytes(int(duration * scale_down), 2)
                 ROM_COPY.writeMultipleBytes(int(cooldown * scale_down), 2)
+    elif settings.win_condition_item == WinConditionComplex.kill_the_rabbit:
+        writeFunction(ROM_COPY, 0x806B2320, Overlay.Static, "winRabbitSeed", offset_dict)
+        writeValue(ROM_COPY, 0x806B231A, Overlay.Static, 40, offset_dict)  # Change song that plays to success (for the laughs)
+        # Make sure the rabbit always is there, even if the check is done
+        writeValue(ROM_COPY, 0x80755E2C, Overlay.Static, 0, offset_dict)  # Set flag to 0 (always set)
+        writeValue(ROM_COPY, 0x80755E2E, Overlay.Static, 1, offset_dict, 1)  # Set rabbit to spawn with this flag
+        # Make sure the cutscene doesn't play if the rabbit reward has already been given
+        writeFunction(ROM_COPY, 0x806B23B4, Overlay.Static, "safeguardRabbitReward", offset_dict)
+        # Change the tied trigger map for the cutscene so that it always plays (allows you to kill the rabbit after getting it's check)
+        writeValue(ROM_COPY, 0x80755F10, Overlay.Static, 0xFF, offset_dict, 1)
     writeValue(ROM_COPY, 0x8069215E, Overlay.Static, 0x3F, offset_dict)  # Reduce fireball collision volume
 
     # Helm Warp Handler

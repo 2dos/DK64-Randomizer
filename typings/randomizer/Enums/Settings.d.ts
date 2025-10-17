@@ -612,6 +612,7 @@ export enum WinConditionComplex {
     req_bosses = 17,
     req_bonuses = 18,
     krools_challenge = 19,
+    kill_the_rabbit = 20,
 }
 
 export enum WrinklyHints {
