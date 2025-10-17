@@ -234,6 +234,8 @@ extern void FileProgressInit(actorData* menu_controller);
 extern void checkTotalCache(void);
 extern void checkSeedVictory(void);
 extern void checkVictory_flaghook(int flag);
+extern void winRabbitSeed(int song, float volume);
+extern void safeguardRabbitReward(void);
 extern int canAccessKroolsChallenge(void);
 extern void FileProgressInitSub(int file, int shuffle);
 extern void handleFileSelectSprites(void* paad, void* sprite, int x, int y, float scale, int unk0, int control);

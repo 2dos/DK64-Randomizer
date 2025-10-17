@@ -695,9 +695,29 @@ class WinConData:
 def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
     """Alter the image that's shown on the main menu to display the win condition."""
     win_con = settings.win_condition_item
-    if win_con in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+    if win_con == WinConditionComplex.beat_krool:
         # Default, don't alter image
         return
+    if win_con == WinConditionComplex.krools_challenge:
+        images = [
+            (0x903, 0, 1),
+            (0x904, 0, 2),
+            (0x905, 0, 3),
+            (0x906, 1, 3),
+            (0x907, 1, 2),
+            (0x908, 1, 1),
+            (0x909, 1, 0),
+            (0x90A, 0, 0),
+        ]
+        output_image = Image.new(mode="RGBA", size=(128, 128))
+        for img in images:
+            local_img = getImageFile(ROM_COPY, 25, img[0], True, 64, 32, TextureFormat.RGBA5551)
+            local_img = local_img.convert("RGBA")
+            pos_x = 64 * img[1]
+            pos_y = 32 * img[2]
+            output_image.paste(local_img, (pos_x, pos_y), local_img)
+        output_image = output_image.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
+        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
     if win_con == WinConditionComplex.get_key8:
         output_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/key8.png")))
         output_image = output_image.resize((32, 32))
@@ -716,6 +736,11 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
         item_im = getImageFile(ROM_COPY, 7, 0x3D3, False, 40, 40, TextureFormat.RGBA5551)
         item_im = item_im.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
         writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+        return
+    if win_con == WinConditionComplex.kill_the_rabbit:
+        output_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/kill_the_rabbit.png")))
+        output_image = output_image.resize((32, 32))
+        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
         return
     win_con_data = {
         WinConditionComplex.req_bp: WinConData(25, 0x1593, TextureFormat.RGBA5551, 48, 42, True, 40),

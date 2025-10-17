@@ -470,6 +470,9 @@ def patching_response(spoiler):
         WinConditionComplex.krools_challenge: {
             "index": 5,
         },
+        WinConditionComplex.kill_the_rabbit: {
+            "index": 6,
+        },
         WinConditionComplex.req_bean: {
             "index": 3,
             "item": 0xA,

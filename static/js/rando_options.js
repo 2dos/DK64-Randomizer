@@ -1447,6 +1447,7 @@ function update_win_con_num_access() {
     "krem_kapture",
     "dk_rap_items",
     "krools_challenge",
+    "kill_the_rabbit",
   ];
   const KROOL_WIN_CONS = [
     "easy_random",

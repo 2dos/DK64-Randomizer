@@ -206,4 +206,5 @@ export enum Events {
     AirSpaceEntered = 205,
     HelmLobbyW1aTagged = 206,
     HelmLobbyW1bTagged = 207,
+    KilledRabbit = 208,
 }

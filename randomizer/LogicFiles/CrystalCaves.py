@@ -203,7 +203,9 @@ LogicRegions = {
 
     Regions.ChunkyIgloo: Region("Chunky Igloo", HintRegion.Igloo, Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesChunky5DoorIgloo, lambda l: l.ischunky or l.settings.free_trade_items),
-    ], [], [
+    ], [
+        Event(Events.KilledRabbit, lambda _: True),
+    ], [
         TransitionFront(Regions.IglooArea, lambda _: True, Transitions.CavesChunkyToIgloo),
     ]),
 

@@ -27,6 +27,7 @@ GOAL_MAPPING = {
     Goal.option_bonuses: WinConditionComplex.req_bonuses,
     Goal.option_treasure_hurry: WinConditionComplex.beat_krool,
     Goal.option_krools_challenge: WinConditionComplex.krools_challenge,
+    Goal.option_kill_the_rabbit: WinConditionComplex.kill_the_rabbit,
 }
 # List of goals that care about the quantity field
 QUANTITY_GOALS = {
@@ -84,6 +85,7 @@ def pp_wincon(win_condition_item, wc_count=0):
         WinConditionComplex.req_bonuses: f"{wc_count} Bonus Barrel{'s' if wc_count != 1 else ''}",
         WinConditionComplex.req_bosses: f"{wc_count} Boss{'es' if wc_count != 1 else ''}",
         WinConditionComplex.krools_challenge: "Krool's Challenge",
+        WinConditionComplex.kill_the_rabbit: "Kill the Rabbit",
     }
     if win_condition_item in win_con_name_table:
         return win_con_name_table[win_condition_item]

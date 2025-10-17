@@ -176,6 +176,18 @@ void checkSeedVictory(void) {
     }
 }
 
+void winRabbitSeed(int song, float volume) {
+    playSong(song, volume);
+    beatGame();
+}
+
+void safeguardRabbitReward(void) {
+    if (checkFlag(FLAG_COLLECTABLE_CAVES_CHUNKY_5DI, FLAGTYPE_PERMANENT)) {
+        return;
+    }
+    playCutscene(CurrentActorPointer_0, 3, 1);
+}
+
 void checkVictory_flaghook(int flag) {
     checkGlobalProgress(flag);
     checkSeedVictory();
