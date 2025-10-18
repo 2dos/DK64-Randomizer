@@ -473,8 +473,6 @@ extern int getTotalGBs(void);
 extern void displayPauseSpriteNumber(void* handler, int x, int y, int unk0, int unk1, int count, int unk2, int unk3);
 extern void headphonesCode(int unused, int enable); // Note: Only has parameters for *if* we're passing in an enabled state for the headphones fix qol change
 
-extern void alCSPSetTempo(void *player, int speed);
-
 extern int getSpawnerIndexOfResolvedBonus(void* unk0, int unk1, int* map_storage);
 extern void resolveBonus(short unk0, int unk1, int unk2, float unk3);
 extern void failBonus(int unk0, int unk1);
