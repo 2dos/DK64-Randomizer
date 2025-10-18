@@ -1155,6 +1155,9 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
     if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
         for phase in spoiler.settings.krool_order:
             spoiler.krool_paths[phase] = []
+    # If the Rabbit is the win condition, prepare a path for him.
+    if spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit:
+        spoiler.rabbit_path = []
     for locationId in ordered_interesting_locations:
         # Remove the item from the location
         location = spoiler.LocationList[locationId]
@@ -1194,6 +1197,9 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             for map_id in final_boss_associated_event:
                 if map_id in spoiler.settings.krool_order and final_boss_associated_event[map_id] not in spoiler.LogicVariables.Events:
                     spoiler.krool_paths[map_id].append(locationId)
+        if spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit:
+            if Events.KilledRabbit not in spoiler.LogicVariables.Events:
+                spoiler.rabbit_path.append(locationId)
         elif spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
             rap_assoc_name = {
                 "Donkey Verse": Events.DonkeyVerse,

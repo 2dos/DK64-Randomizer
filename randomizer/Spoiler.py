@@ -93,6 +93,7 @@ class Spoiler:
         self.woth_locations = {}
         self.woth_paths = {}
         self.krool_paths = {}
+        self.rabbit_path = []
         self.rap_win_con_paths = {}
         self.other_paths = {}
         self.shuffled_door_data = {}

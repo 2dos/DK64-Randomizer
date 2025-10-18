@@ -2528,6 +2528,7 @@ def GenerateMultipathDict(
         relevant_goal_locations = []
         path_to_family = False
         path_to_bean = False
+        path_to_rabbit = False
         path_to_verses = [False] * 6
         has_path_to_verse = False
         verse_items = [
@@ -2574,6 +2575,10 @@ def GenerateMultipathDict(
                 if location in spoiler.krool_paths[map_id]:
                     path_to_krool_phases.append(boss_colors[map_id] + boss_names[map_id] + boss_colors[map_id])
                     relevant_goal_locations.append(Maps(map_id))
+        # If that wascally wabbit needs to be killed, determine if we're on the path to that.
+        if spoiler.settings.win_condition_item == WinConditionComplex.kill_the_rabbit and location in spoiler.rabbit_path:
+            path_to_rabbit = True
+            relevant_goal_locations.append(Locations(woth_loc))
         # Determine if this location is on the path to taking photos for certain win conditions
         if spoiler.settings.win_condition_item in (WinConditionComplex.req_fairy, WinConditionComplex.krem_kapture) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             camera_location_id = None
@@ -2615,6 +2620,8 @@ def GenerateMultipathDict(
             hint_text_components.append("\x0cFree Kongs\x0c")
         if path_to_bean:
             hint_text_components.append("\x07The Bean\x07")
+        if path_to_rabbit:
+            hint_text_components.append("\x05The Rabbit\x05")
         if spoiler.settings.win_condition_item == WinConditionComplex.dk_rap_items:
             all_verses = [xi for xi, x in enumerate(path_to_verses) if x]
             if len(all_verses) == 6:
@@ -2633,7 +2640,7 @@ def GenerateMultipathDict(
                         hint_text_components.append(f"{join_words(kong_names)} Verses")
                 if path_to_verses[5]:
                     hint_text_components.append(f"{verse_colors[5]}The Fridge{verse_colors[5]}")
-        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family or path_to_bean or has_path_to_verse:
+        if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0 or path_to_family or path_to_bean or has_path_to_verse or path_to_rabbit:
             multipath_dict_hints[location] = join_words(hint_text_components)
             multipath_dict_goals[location] = relevant_goal_locations
     return multipath_dict_hints, multipath_dict_goals
