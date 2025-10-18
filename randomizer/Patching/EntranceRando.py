@@ -7,7 +7,7 @@ from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.Assets import getPointerLocation, TableNames
 
-valid_lz_types = [9, 12, 13, 16]
+valid_lz_types = [9, 12, 13, 15, 16]
 
 
 def getFilteredExit(settings, mapId, exit):
@@ -71,13 +71,26 @@ def randomize_entrances(spoiler, ROM_COPY: LocalROM):
                 lz_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 # print(lz_type)
                 if lz_type in valid_lz_types:
-                    ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
-                    lz_map = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                    ROM_COPY.seek(cont_map_lzs_address + start + 0x14)
-                    lz_exit = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                    if lz_type == 15:
+                        # Warp Trigger
+                        lz_map = cont_map_id
+                        ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
+                        lz_exit = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                        print(lz_map)
+                        print(lz_exit)
+                        print(cont_map["zones"])
+                    else:
+                        ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
+                        lz_map = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                        ROM_COPY.seek(cont_map_lzs_address + start + 0x14)
+                        lz_exit = int.from_bytes(ROM_COPY.readBytes(2), "big")
                     for zone in cont_map["zones"]:
                         if lz_map == zone["vanilla_map"]:
                             if lz_exit == zone["vanilla_exit"] or (lz_map == Maps.FactoryCrusher):
+                                if lz_type == 15:
+                                    # Set the type
+                                    ROM_COPY.seek(cont_map_lzs_address + start + 0x10)
+                                    ROM_COPY.writeMultipleBytes(12, 2)
                                 ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
                                 ROM_COPY.writeMultipleBytes(zone["new_map"], 2)
                                 ROM_COPY.seek(cont_map_lzs_address + start + 0x14)

@@ -83,8 +83,10 @@ void SpeedUpMusic(void) {
         songs song = SongInWriteSlot[i];
         if ((music_types[song] == SONGTYPE_BGM) && (song != SONG_BABOONBALLOON)) {
             int existing_tempo = getSongTempo(compactSequencePlayers[i]);
-            if (existing_tempo != SPEED_UP_TEMPO) {
-                alCSPSetTempo(compactSequencePlayers[i], SPEED_UP_TEMPO);
+            float tempo = musicStorage[i]->division * compactSequencePlayers[i]->uspt;
+            float targ_tempo = tempo / 1.5f;
+            if (existing_tempo != targ_tempo) {
+                alCSPSetTempo(compactSequencePlayers[i], targ_tempo);
             }
         }
     }

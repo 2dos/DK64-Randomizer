@@ -718,7 +718,8 @@ extern short songData[SONG_COUNT];
 extern short trackStateArray[12];
 extern unsigned char SongInWriteSlot[4];
 extern short songVolumes[SONG_COUNT];
-extern int* compactSequencePlayers[4];
+extern ALCSPlayer* compactSequencePlayers[4];
+extern ALCMidiHdr* musicStorage[4];
 extern unsigned int DKTVData[5];
 
 extern void* ExitPointer;

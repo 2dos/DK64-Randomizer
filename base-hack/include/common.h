@@ -10,6 +10,7 @@
 #define ENEMIES_TOTAL 428
 #define ENEMY_REWARD_CACHE_SIZE 16
 #include "../include2/ultra64.h"
+#include "libaudio.h"
 #include "common_enums.h"
 #include "common_structs.h"
 #include "item_rando.h"
