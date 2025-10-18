@@ -58,26 +58,33 @@ void SpeedUpMusic(void) {
     if (!Rando.song_speed_near_win) {
         return;
     }
-    win_conditions win_con = Rando.win_condition;
-    requirement_item win_con_item = Rando.win_condition_extra.item;
-    int win_con_count = Rando.win_condition_extra.count;
-    if (win_con == GOAL_KROOL) {
-        win_con_item = REQITEM_KEY;
-        win_con_count = 9; // Triggers upon picking up key 8
-    } else if (win_con != GOAL_CUSTOMITEM) {
-        // Goal is inelligible for speed up
-        return;
-    }
-    if (win_con_count < 2) {
-        // Doesn't work for 1-item win conditions
-        return;
-    }
     if (!isGamemode(GAMEMODE_ADVENTURE, 1)) {
         return;
     }
-    int item_count = getItemCountReq(win_con_item);
-    if (item_count != (win_con_count - 1)) {
-        return;
+    win_conditions win_con = Rando.win_condition;
+    if (win_con == GOAL_KROOLS_CHALLENGE) {
+        if (!canAccessKroolsChallenge()) {
+            return;
+        }
+    } else {
+        requirement_item win_con_item = Rando.win_condition_extra.item;
+        int win_con_count = Rando.win_condition_extra.count;
+        // Checking items
+        if (win_con == GOAL_KROOL) {
+            win_con_item = REQITEM_KEY;
+            win_con_count = 9; // Triggers upon picking up key 8
+        } else if (win_con != GOAL_CUSTOMITEM) {
+            // Goal is inelligible for speed up
+            return;
+        }
+        if (win_con_count < 2) {
+            // Doesn't work for 1-item win conditions
+            return;
+        }
+        int item_count = getItemCountReq(win_con_item);
+        if (item_count != (win_con_count - 1)) {
+            return;
+        }
     }
     for (int i = 0; i < 4; i++) {
         songs song = SongInWriteSlot[i];
