@@ -193,12 +193,23 @@ void checkVictory_flaghook(int flag) {
     checkSeedVictory();
 }
 
+static unsigned short extra_kops[] = {
+    NEWACTOR_GUARDDISABLEA,
+    NEWACTOR_GUARDDISABLEZ,
+    NEWACTOR_GUARDGETOUT,
+    NEWACTOR_GUARDTAG,
+};
+
 int isSnapEnemyInRange(int set) {
     int updated = 0;
     for (int i = 0; i < LoadedActorCount; i++) {
         actorData* actor = LoadedActorArray[i].actor;
         if (actor) {
-            int index = inShortList(actor->actorType, &poke_snap_actors, sizeof(poke_snap_actors) >> 1);
+            int ref_actor = actor->actorType;
+            if (inShortList(ref_actor, &extra_kops, 4)) {
+                ref_actor = 259;
+            }
+            int index = inShortList(ref_actor, &poke_snap_actors, sizeof(poke_snap_actors) >> 1);
             if (index) {
                 int j = index - 1;
                 if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, FLAGTYPE_PERMANENT)) {

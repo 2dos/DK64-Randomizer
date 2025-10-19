@@ -204,6 +204,10 @@ class CustomActors(IntEnum):
     FoolsArchipelagoItem = auto()
     TrapArchipelagoItem = auto()
     SpreadCounter = auto()
+    GuardDisableA = auto()
+    GuardDisableZ = auto()
+    GuardGetOut = auto()
+    GuardTag = auto()
 
 
 class GraphicOverlay(IntEnum):

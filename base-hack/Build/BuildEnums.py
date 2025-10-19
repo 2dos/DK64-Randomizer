@@ -494,11 +494,13 @@ class Enemies(IntEnum):
     GiantClam = 1
     Krash = 2
     Book = 3
+    GuardDisableA = 4
     ZingerCharger = 5
     Klobber = 6
     Snide = 7
     ArmyDillo = 8
     Klump = 9
+    GuardDisableZ = 10
     Cranky = 11
     Funky = 12
     Candy = 13
@@ -522,12 +524,14 @@ class Enemies(IntEnum):
     KlaptrapRed = 31
     GetOut = 32
     BeaverGold = 33
+    GuardGetOut = 34
     FireColumn = 35
     TNTMinecart0 = 36
     TNTMinecart1 = 37
     Pufftoss = 38
     SeasickCannon = 39
     KRoolFoot = 40
+    GuardTag = 41
     Fireball = 42
     MushroomMan = 44
     Troff = 46
@@ -539,6 +543,7 @@ class Enemies(IntEnum):
     Scoff = 55
     RoboKremling = 56
     Dogadon = 57
+    Scarab = 58
     Kremling = 59
     SpotlightFish = 60
     KasplatDK = 61
@@ -550,6 +555,7 @@ class Enemies(IntEnum):
     Seal1 = 67
     Fairy = 68
     SquawksSpotlight = 69
+    ZingerFlamethrower = 70
     Rabbit = 72
     Owl = 73
     NintendoLogo = 74
@@ -569,6 +575,7 @@ class Enemies(IntEnum):
     SirDomino = 88
     MrDice1 = 89
     Rabbit1 = 90
+    CharSpawnerItem = 91
     FireballGlasses = 92
     KLumsy = 93
     SpiderBoss = 94
@@ -1034,3 +1041,7 @@ class CustomActors(IntEnum):
     FoolsArchipelagoItem = auto()
     TrapArchipelagoItem = auto()
     SpreadCounter = auto()
+    GuardDisableA = auto()
+    GuardDisableZ = auto()
+    GuardGetOut = auto()
+    GuardTag = auto()

@@ -26,6 +26,7 @@ from randomizer.Enums.Settings import (
     ProgressiveHintItem,
     WrinklyHints,
 )
+from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Levels import Levels
@@ -1014,12 +1015,31 @@ def patchAssembly(ROM_COPY, spoiler):
     CHAR_SPAWNER_DATA_SIZE = 0x18
     for x in range(6):
         source_addr = getROMAddress(0x8075EB80 + (0x13 * CHAR_SPAWNER_DATA_SIZE) + (x * 4), Overlay.Static, offset_dict)
-        target_addr = getROMAddress(0x8075EB80 + (0x5B * CHAR_SPAWNER_DATA_SIZE) + (x * 4), Overlay.Static, offset_dict)
+        target_addr = getROMAddress(0x8075EB80 + (Enemies.CharSpawnerItem * CHAR_SPAWNER_DATA_SIZE) + (x * 4), Overlay.Static, offset_dict)
         ROM_COPY.seek(source_addr)
         val = int.from_bytes(ROM_COPY.readBytes(4), "big")
         ROM_COPY.seek(target_addr)
         ROM_COPY.writeMultipleBytes(val, 4)
-    writeValue(ROM_COPY, 0x8075EB80 + (0x5B * CHAR_SPAWNER_DATA_SIZE), Overlay.Static, 141, offset_dict)
+    writeValue(ROM_COPY, 0x8075EB80 + (Enemies.CharSpawnerItem * CHAR_SPAWNER_DATA_SIZE), Overlay.Static, 141, offset_dict)
+    guard_extra_data = {
+        CustomActors.GuardDisableA: (Enemies.GuardDisableA, 0x13B),
+        CustomActors.GuardDisableZ: (Enemies.GuardDisableZ, 0x13B),
+        CustomActors.GuardTag: (Enemies.GuardTag, 0x13C),
+        CustomActors.GuardGetOut: (Enemies.GuardGetOut, 0x13A),
+    }
+    for new_actor, data in guard_extra_data.items():
+        new_enemy = data[0]
+        new_model = data[1]
+        for x in range(6):
+            source_addr = getROMAddress(0x8075EB80 + (Enemies.Guard * CHAR_SPAWNER_DATA_SIZE) + (x * 4), Overlay.Static, offset_dict)
+            target_addr = getROMAddress(0x8075EB80 + (new_enemy * CHAR_SPAWNER_DATA_SIZE) + (x * 4), Overlay.Static, offset_dict)
+            ROM_COPY.seek(source_addr)
+            val = int.from_bytes(ROM_COPY.readBytes(4), "big")
+            ROM_COPY.seek(target_addr)
+            ROM_COPY.writeMultipleBytes(val, 4)
+        writeValue(ROM_COPY, 0x8075EB80 + (new_enemy * CHAR_SPAWNER_DATA_SIZE), Overlay.Static, new_actor, offset_dict)
+        writeValue(ROM_COPY, 0x8075EB80 + (new_enemy * CHAR_SPAWNER_DATA_SIZE) + 2, Overlay.Static, new_model, offset_dict)
+    writeFunction(ROM_COPY, 0x806AE4C4, Overlay.Static, "renderKopLightHandler", offset_dict)
 
     # Statistics
     writeFunction(ROM_COPY, 0x806C8ED0, Overlay.Static, "updateTagStat", offset_dict)

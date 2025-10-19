@@ -780,6 +780,10 @@ unsigned char actor_master_types[] = {
 	2,
 	2,
 	2,
+	2,
+	2,
+	2,
+	2,
 	2
 };
 short actor_interactions[] = {
@@ -1170,7 +1174,11 @@ short actor_interactions[] = {
 	8,
 	8,
 	8,
-	8
+	8,
+	2,
+	2,
+	2,
+	2
 };
 health_damage_struct actor_health_damage[] = {
 	{.init_health = 0, .damage_applied = 0},
@@ -1560,7 +1568,11 @@ health_damage_struct actor_health_damage[] = {
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
 	{.init_health = 0, .damage_applied = 1},
-	{.init_health = 0, .damage_applied = 1}
+	{.init_health = 0, .damage_applied = 1},
+	{.init_health = 3, .damage_applied = 0},
+	{.init_health = 3, .damage_applied = 0},
+	{.init_health = 3, .damage_applied = 0},
+	{.init_health = 3, .damage_applied = 0}
 };
 collision_data_struct actor_collisions[] = {
 	{.collision_info = 0, .unk_4 = 0},
@@ -1950,7 +1962,11 @@ collision_data_struct actor_collisions[] = {
 	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0},
 	{.collision_info = 0, .unk_4 = 0},
-	{.collision_info = 0, .unk_4 = 0}
+	{.collision_info = 0, .unk_4 = 0},
+	{.collision_info = 2155132884, .unk_4 = 1},
+	{.collision_info = 2155132884, .unk_4 = 1},
+	{.collision_info = 2155132884, .unk_4 = 1},
+	{.collision_info = 2155132884, .unk_4 = 1}
 };
 void* actor_functions[] = {
 	2154268652,
@@ -2340,7 +2356,11 @@ void* actor_functions[] = {
 	&GoldenBananaCode,
 	&GoldenBananaCode,
 	&FakeGBCode,
-	&newCounterCode
+	&newCounterCode,
+	(void*)0x806AF688,
+	(void*)0x806AF688,
+	(void*)0x806AF688,
+	(void*)0x806AF688
 };
 short* actor_extra_data_sizes[] = {
 	2155141956,
@@ -2730,7 +2750,11 @@ short* actor_extra_data_sizes[] = {
 	2155142172,
 	2155142172,
 	2155142172,
-	2155142276
+	2155142276,
+	2155143240,
+	2155143240,
+	2155143240,
+	2155143240
 };
 GBDictItem new_flag_mapping[] = {
 	{.map = 37, .unk_01 = 0, .model2_id = 1, .flag_index = 3, .intended_kong_actor = 2, .unk_07 = 0},

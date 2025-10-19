@@ -49,22 +49,55 @@ int isBadMovementState(void) {
     return 1;
 }
 
+typedef struct guard_effect_struct {
+    /* 0x000 */ unsigned short timer;
+    /* 0x002 */ unsigned short btf;
+    /* 0x004 */ void *sprite;
+} guard_effect_struct;
+
+static guard_effect_struct guard_effect_timers[2] = {
+    {.timer = 0, .btf = CONT_A, .sprite = 0x80720CF0}, // Disable A
+    {.timer = 0, .btf = CONT_G, .sprite = 0x80720D38}, // Disable Z
+};
+unsigned short guard_tag_timer = 0;
+
 void guardCatchInternal(void) {
-    warp_timer = 80;
     tagKong(Player->new_kong);
-    Player->noclip = 1;
-    if (Player->control_state != 0x7D) {
-        if ((Player->grounded_bitfield & 4) == 0) {
-            playAnimation(Player,0x5D);
-        } else {
-            playAnimation(Player,0x34);
+    int actor = CurrentActorPointer_0->actorType;
+    if ((actor == 259) || (actor == NEWACTOR_KOPDUMMY)) {
+        warp_timer = 80;
+        Player->noclip = 1;
+        if (Player->control_state != 0x7D) {
+            if ((Player->grounded_bitfield & 4) == 0) {
+                playAnimation(Player,0x5D);
+            } else {
+                playAnimation(Player,0x34);
+            }
         }
+        Player->control_state = 0x70;
+        Player->control_state_progress = 0;
+        Player->yVelocity = 0;
+        Player->hSpeed = 0;
+        playSong(SONG_FAILURE, 1.0f);
+    } else {
+        clearTagSlide(Player);
+        if ((actor == NEWACTOR_GUARDDISABLEA) || (actor == NEWACTOR_GUARDDISABLEZ)) {
+            guard_effect_struct *data = &guard_effect_timers[actor - NEWACTOR_GUARDDISABLEA];
+            data->timer = 900; // 30s
+            guard_enabled_buttons &= ~data->btf;
+            renderSpritesOnPlayer(data->sprite, 3, 900);
+        } else if (actor == NEWACTOR_GUARDTAG) {
+            cc_enabler_tag();  // Tag to a random kong
+            guard_tag_timer = 900;  // 30s
+        } else if (actor == NEWACTOR_GUARDGETOUT) {
+            if (CCEffectData) {
+                if (CCEffectData->get_out != CC_ENABLED) {
+                    CCEffectData->get_out = CC_ENABLING;
+                }
+            }
+        }
+        playSFX(0x2D4); // K Rool Laugh
     }
-    Player->control_state = 0x70;
-    Player->control_state_progress = 0;
-    Player->yVelocity = 0;
-    Player->hSpeed = 0;
-    playSong(SONG_FAILURE, 1.0f);
 }
 
 void guardCatch(void) {
@@ -81,7 +114,9 @@ void guardCatch(void) {
                 - Not in a cutscene (CutsceneActive == 0)
             */
             guardCatchInternal();
-            sendDeath();
+            if (CurrentActorPointer_0->actorType == 259) {
+                sendDeath();
+            }
         }
     }
 }
@@ -121,6 +156,20 @@ void catchWarpHandle(void) {
         // Protect against warping if in a transition, which can cause a warp to an invalid map
         warp_timer = 0;
     }
+    for (int i = 0; i < 2; i++) {
+        guard_effect_struct *data = &guard_effect_timers[i];
+        if (data->timer > 0) {
+            data->timer--;
+            if (data->timer == 0) {
+                guard_enabled_buttons |= data->btf;
+            } else if (ObjectModel2Timer == 2) {
+                renderSpritesOnPlayer(data->sprite, 3, data->timer);
+            }
+        }
+    }
+    if (guard_tag_timer > 0) {
+        guard_tag_timer--;
+    }
 }
 
 int inRabbitRace(void) {
@@ -128,6 +177,25 @@ int inRabbitRace(void) {
         return MapProperties.unk29 != 0; // In Rabbit Race
     }
     return 0;
+}
+
+static const rgb kop_color_data[] = {
+    {.red = 0xFF, .green = 0x9D, .blue = 0}, // Disable A
+    {.red = 0xFF, .green = 0x9D, .blue = 0}, // Disable Z
+    {.red = 0, .green = 0, .blue = 0}, // Get Out
+    {.red = 0x5C, .green = 0xCF, .blue = 0xC3}, // Disable TA
+};
+
+void renderKopLightHandler(float x, float y, float z, float x2, float y2, float z2, float radius, int unk0, int red, int green, int blue) {
+    for (int i = 0; i < 4; i++) {
+        int index = CurrentActorPointer_0->actorType - NEWACTOR_GUARDDISABLEA;
+        if (index == i) {
+            red = kop_color_data[i].red;
+            green = kop_color_data[i].green;
+            blue = kop_color_data[i].blue;
+        }
+    }
+    renderLight(x, y, z, x2, y2, z2, radius, unk0, red, green, blue);
 }
 
 void newGuardCode(void) {

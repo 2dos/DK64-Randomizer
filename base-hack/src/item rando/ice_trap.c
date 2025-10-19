@@ -488,6 +488,19 @@ void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration) 
     }
 }
 
+void wipeReplenishibles(void) {
+    CollectableBase.Crystals = 0;
+    CollectableBase.Film = 0;
+    CollectableBase.HomingAmmo = 0;
+    CollectableBase.InstrumentEnergy = 0;
+    CollectableBase.Oranges = 0;
+    CollectableBase.StandardAmmo = 0;
+    for (int i = 0; i < 5; i++) {
+        MovesBase[i].instrument_energy = 0;
+    }
+    displaySpriteAtXYZ((void*)(0x8071FE08), 1.0f, Player->xPos, Player->yPos + 6.0f, Player->zPos);
+}
+
 void initIceTrap(void) {
     /**
      * @brief Initialize an ice trap
@@ -525,16 +538,7 @@ void initIceTrap(void) {
             }
             break;
         case ICETRAP_DRY:
-            CollectableBase.Crystals = 0;
-            CollectableBase.Film = 0;
-            CollectableBase.HomingAmmo = 0;
-            CollectableBase.InstrumentEnergy = 0;
-            CollectableBase.Oranges = 0;
-            CollectableBase.StandardAmmo = 0;
-            for (int i = 0; i < 5; i++) {
-                MovesBase[i].instrument_energy = 0;
-            }
-            displaySpriteAtXYZ((void*)(0x8071FE08), 1.0f, Player->xPos, Player->yPos + 6.0f, Player->zPos);
+            wipeReplenishibles();
             break;
         case ICETRAP_FLIP:
             *(unsigned char*)(0x80010520) = 0xBF;
@@ -650,6 +654,13 @@ int canLoadIceTrap(ICE_TRAP_TYPES trap_type) {
     // Check Control State
     if (getBitArrayValue(&banned_trap_movement, Player->control_state)) {
         return 0;
+    }
+    if (trap_type == ICETRAP_GETOUT) {
+        if (CCEffectData) {
+            if (CCEffectData->get_out == CC_ENABLED) {
+                return 0;
+            }
+        }
     }
     return 1;
 }
