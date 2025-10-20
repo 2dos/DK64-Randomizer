@@ -551,7 +551,7 @@ Gfx* displayListModifiers(Gfx* dl) {
 				int hud_st = HUD->item[0xC].hud_state;
 				if (hud_st) {
 					if ((hud_st == 1) || (hud_st == 2)) {
-						getBPCountStats(Character, &bp_numerator, &bp_denominator);
+						getBPCountStats(getKong(0), &bp_numerator, &bp_denominator);
 						bp_numerator -= bp_denominator;
 						bp_denominator = 8 - bp_denominator;
 						if (hud_st == 1) {

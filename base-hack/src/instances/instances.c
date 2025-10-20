@@ -1477,7 +1477,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		int snide_index = getFirstEmptySnideReward(0);
 		setPermFlag(FLAG_SNIDE_REWARD + snide_index);
 		giveItemFromPacket(&snide_rewards[snide_index].item, 0);
-		ItemInventory->turned_in_bp_count[Character]++;
+		ItemInventory->turned_in_bp_count[getKong(0)]++;
 	}
 	return 0;
 }
