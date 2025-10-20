@@ -162,7 +162,7 @@ LogicRegions = {
         Event(Events.TestingGateOpened, lambda l: l.Slam),
         Event(Events.FactoryW1bTagged, lambda _: True),
     ], [
-        TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing),
+        TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing, Transitions.FactoryStorageToArcade),
         TransitionFront(Regions.LowerCore, lambda _: True),
         TransitionFront(Regions.ChunkyRoomPlatform, lambda l: l.CanMoonkick() or (l.twirl and l.istiny and l.monkey_maneuvers) or (l.isdiddy and l.monkey_maneuvers)),
         TransitionFront(Regions.CrankyFactory, lambda l: l.crankyAccess),
@@ -186,7 +186,7 @@ LogicRegions = {
     ], [
         Event(Events.FactoryW5aTagged, lambda _: True),
     ], [
-        TransitionFront(Regions.BeyondHatch, lambda _: True),
+        TransitionFront(Regions.BeyondHatch, lambda _: True, Transitions.FactoryArcadeToStorage),
     ]),
 
     Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", HintRegion.Storage, Levels.FranticFactory, False, None, [

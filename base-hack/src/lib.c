@@ -1680,8 +1680,9 @@ int getProjectileCount_modified(void *player, unsigned short int_bitfield, void*
 unsigned short enabled_buttons = 0xFFFF;
 unsigned short cc_enabled_buttons = 0xFFFF;
 unsigned short trap_enabled_buttons = 0xFFFF;
+unsigned short guard_enabled_buttons = 0xFFFF;
 
 void applyButtonBansInternals(void *cont) {
 	getControllerContainer(cont);
-	enabled_buttons = ButtonsEnabledBitfield & cc_enabled_buttons & trap_enabled_buttons;
+	enabled_buttons = ButtonsEnabledBitfield & cc_enabled_buttons & trap_enabled_buttons & guard_enabled_buttons;
 }

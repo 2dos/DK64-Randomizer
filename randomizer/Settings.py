@@ -1564,7 +1564,7 @@ class Settings:
                 ItemRandoFiller.fairy: Types.FillerFairy,
                 ItemRandoFiller.medal: Types.FillerMedal,
                 ItemRandoFiller.pearl: Types.FillerPearl,
-                ItemRandoFiller.rainbowcoin: Types.RainbowCoin,
+                ItemRandoFiller.rainbowcoin: Types.FillerRainbowCoin,
             }
             item_search_removal = [
                 # Anything which doesn't have accompanying checks. Usually starts with dummy_item

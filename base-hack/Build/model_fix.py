@@ -156,6 +156,120 @@ BARREL_BASE = 0xE3  # 0x75
 BLOCKER_BASE = 0x64
 DIRT_BASE = 0xDF
 
+
+def recolorBones(filename: str, bones: list[int], color: tuple):
+    """Recolor the bones of a model."""
+    with open(filename, "r+b") as fh:
+        offset = int.from_bytes(fh.read(4), "big")
+        dl_end = (int.from_bytes(fh.read(4), "big") - offset) + 0x28
+        fh.seek(dl_end)
+        dl_start = (int.from_bytes(fh.read(4), "big") - offset) + 0x28
+        fh.seek(0x20)
+        bone_count = int.from_bytes(fh.read(1), "big")
+        verts_to_modify = []
+        verts = list(range((dl_start - 0x28) >> 4))
+        used_verts = []
+        vert_bones = []
+        vert_cache = [None] * 32
+        for _ in range(bone_count):
+            vert_bones.append([])  # Can't do [[]] * bone_count because of referencing errors
+        dl_count = int((dl_end - dl_start) >> 3)
+        for x in range(dl_count):
+            ins_start = dl_start + (x * 8)
+            fh.seek(ins_start)
+            instruction = int.from_bytes(fh.read(1), "big")
+            fh.seek(ins_start)
+            i_hi = int.from_bytes(fh.read(4), "big")
+            i_lo = int.from_bytes(fh.read(4), "big")
+            print(hex(instruction), hex(ins_start))
+            if instruction == 0xDA:
+                fh.seek(ins_start + 6)
+                bone_index = int(int.from_bytes(fh.read(2), "big") / 0x40)
+            elif instruction == 1:
+                fh.seek(ins_start + 1)
+                loaded_vert_count = int.from_bytes(fh.read(2), "big") >> 4
+                fh.seek(ins_start + 6)
+                loaded_vert_start = int(int.from_bytes(fh.read(2), "big") / 0x10)
+                for v in range(loaded_vert_count):
+                    focused_vert = loaded_vert_start + v
+                    if focused_vert not in used_verts:
+                        used_verts.append(focused_vert)
+                    vert_bones[bone_index].append(focused_vert)
+                i_vert_count = (i_hi >> 12) & 0xFF
+                i_vert_buffer_end = i_hi & 0xFF
+                # i_vert_buffer_start = i_vert_buffer_end - (i_vert_count * 2)
+                i_vert_buffer_start = (i_vert_buffer_end >> 1) - i_vert_count
+                i_load_position = i_lo & 0xFFFFFF
+                offset = 0
+                vert_cap = 0xFFFFFFFFF
+                # if self.pointer_table == 1:
+                #     offset = vert_offsets[chunk_index]
+                #     vert_cap = vert_caps[chunk_index] >> 4
+                i_load_vert = (i_load_position + offset) >> 4
+                i_load_vert_end = min(i_load_vert + i_vert_count, vert_cap)
+                verts_loaded = verts[i_load_vert:i_load_vert_end]
+                for yi, y in enumerate(verts_loaded):
+                    # print(i_vert_buffer_start, yi, len(verts_loaded), i_vert_buffer_start + yi)
+                    if i_vert_buffer_start + yi < 32:
+                        vert_cache[i_vert_buffer_start + yi] = y
+                    else:
+                        print(hex(i_hi), hex(i_lo))
+            elif instruction == 5:
+                # G_TRI
+                tri_buffer_positions = [
+                    ((i_hi >> 16) & 0xFF) >> 1,
+                    ((i_hi >> 8) & 0xFF) >> 1,
+                    ((i_hi >> 0) & 0xFF) >> 1,
+                ]
+                if bone_index in bones:
+                    print(vert_cache)
+                    verts_to_modify.extend(
+                        [
+                            vert_cache[tri_buffer_positions[0]],
+                            vert_cache[tri_buffer_positions[1]],
+                            vert_cache[tri_buffer_positions[2]],
+                        ]
+                    )
+            elif instruction in (6, 7):
+                # G_TRI2 / # G_QUAD
+                tri_buffer_positions = [
+                    ((i_hi >> 16) & 0xFF) >> 1,
+                    ((i_hi >> 8) & 0xFF) >> 1,
+                    ((i_hi >> 0) & 0xFF) >> 1,
+                    ((i_lo >> 16) & 0xFF) >> 1,
+                    ((i_lo >> 8) & 0xFF) >> 1,
+                    ((i_lo >> 0) & 0xFF) >> 1,
+                ]
+                if bone_index in bones:
+                    print(vert_cache, tri_buffer_positions)
+                    verts_to_modify.extend(
+                        [
+                            vert_cache[tri_buffer_positions[0]],
+                            vert_cache[tri_buffer_positions[1]],
+                            vert_cache[tri_buffer_positions[2]],
+                        ]
+                    )
+                    verts_to_modify.extend(
+                        [
+                            vert_cache[tri_buffer_positions[3]],
+                            vert_cache[tri_buffer_positions[4]],
+                            vert_cache[tri_buffer_positions[5]],
+                        ]
+                    )
+        for vert in verts_to_modify:
+            fh.seek(0x28 + (vert * 0x10) + 0xC)
+            original_color = []
+            for x in range(3):
+                original_color.append(int.from_bytes(fh.read(1), "big"))
+            for idx, seg in enumerate(original_color):
+                ratio = seg / 0xFF
+                new_seg = int(color[idx] * ratio)
+                original_color[idx] = new_seg
+            fh.seek(0x28 + (vert * 0x10) + 0xC)
+            for seg in original_color:
+                fh.write(seg.to_bytes(1, "big"))
+
+
 with open(ROMName, "rb") as rom:
     rom.seek(main_pointer_table_offset + (TableNames.ActorGeometry * 4))
     actor_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
@@ -659,7 +773,26 @@ with open(ROMName, "rb") as rom:
                     new_texture = getBonusSkinOffset(reel_img_bijection[original_texture])
                     fh.seek(0x408 + (y * 8) + 4)
                     fh.write(new_texture.to_bytes(4, "big"))
-
+    # Kop Variants
+    kop_colors = {
+        "disable_buttons": (0xFF, 0x9D, 0x00),
+        "disable_tag": (0x5C, 0xCF, 0xC3),
+        "get_out": (0x00, 0x00, 0x00),
+    }
+    for name, color in kop_colors.items():
+        rom.seek(actor_table + (0x3E << 2))
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_size = model_end - model_start
+        rom.seek(model_start)
+        indic = int.from_bytes(rom.read(2), "big")
+        rom.seek(model_start)
+        data = rom.read(model_size)
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"kop_{name}.bin", "wb") as fh:
+            fh.write(data)
+        recolorBones(f"kop_{name}.bin", [1, 2, 8], color)
     # Make inside match outside
     # SHINE_TEXTURE = 0xBAB
     # with open("updated_medal.bin", "r+b") as fh:

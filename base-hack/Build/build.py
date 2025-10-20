@@ -1666,6 +1666,10 @@ model_changes = [
     ModelChange(0x136, "shrink_trap_archi.bin"),
     ModelChange(0x137, "trap_archi_om1.bin"),
     ModelChange(0x138, "counter_spread.bin"),
+    # Test
+    ModelChange(0x139, "kop_get_out.bin"),
+    ModelChange(0x13A, "kop_disable_buttons.bin"),
+    ModelChange(0x13B, "kop_disable_tag.bin"),
 ]
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 

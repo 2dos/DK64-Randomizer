@@ -426,6 +426,9 @@ int canTagAnywhere(void) {
             return 0;
         }
     }
+    if (guard_tag_timer > 0) {
+        return 0;
+    }
     if (Player->strong_kong_ostand_bitfield & 0x100) {
         // Seasick
         return 0;

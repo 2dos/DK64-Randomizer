@@ -431,6 +431,8 @@ def GetAccessibleLocations(
                     if is_shuffled:
                         shuffled_exit = ShuffleExits.ShufflableExits[shuffle_id]
                         if shuffled_exit.shuffled:
+                            if not shuffled_exit.shuffledId:
+                                print(shuffled_exit.__dict__)
                             destination = ShuffleExits.ShufflableExits[shuffled_exit.shuffledId].back.regionId
                         elif shuffled_exit.toBeShuffled:
                             continue

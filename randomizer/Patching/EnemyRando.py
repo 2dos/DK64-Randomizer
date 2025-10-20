@@ -252,7 +252,10 @@ def resetPkmnSnap():
 def setPkmnSnapEnemy(focused_enemy):
     """Set enemy to being spawned."""
     for enemy in pkmn_snap_enemies:
-        if enemy.enemy == focused_enemy:
+        ref_enemies = [enemy.enemy]
+        if enemy.enemy == Enemies.Guard:
+            ref_enemies = [Enemies.Guard, Enemies.GuardDisableA, Enemies.GuardDisableZ, Enemies.GuardTag, Enemies.GuardGetOut]
+        if focused_enemy in ref_enemies:
             enemy.addEnemy()
 
 
@@ -601,6 +604,10 @@ krem_kap_mapping = {
     Enemies.FireballGlasses: Items.PhotoFireball,
     Enemies.Bug: Items.PhotoBug,
     Enemies.Guard: Items.PhotoKop,
+    Enemies.GuardDisableA: Items.PhotoKop,
+    Enemies.GuardDisableZ: Items.PhotoKop,
+    Enemies.GuardGetOut: Items.PhotoKop,
+    Enemies.GuardTag: Items.PhotoKop,
     Enemies.FairyQueen: Items.PhotoBFI,
     Enemies.IceTomato: Items.PhotoIceTomato,
     Enemies.Mermaid: Items.PhotoMermaid,

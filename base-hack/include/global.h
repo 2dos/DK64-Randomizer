@@ -457,6 +457,11 @@ extern int cc_enabler_tag(void);
 extern void initMMayhem(actorData *actor, int cutscene, int type);
 extern int renderGetWrapper(void);
 
+extern void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int duration);
+extern void wipeReplenishibles(void);
+
+extern void renderKopLightHandler(float x, float y, float z, float x2, float y2, float z2, float radius, int unk0, int red, int green, int blue);
+
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
@@ -526,9 +531,11 @@ extern LZREntrance blast_entrances[8];
 extern unsigned short enabled_buttons;
 extern unsigned short cc_enabled_buttons;
 extern unsigned short trap_enabled_buttons;
+extern unsigned short guard_enabled_buttons;
 extern purchase_text_hint_struct purchase_hint_text_items[120];
 extern char aztec_beetle[0x20];
 extern char caves_beetle[0x20];
 extern unsigned char pregiven_status[56];
 extern StartingItemsStruct starting_item_data;
 extern coinHUDStruct CoinHUDElements[8];
+extern unsigned short guard_tag_timer;

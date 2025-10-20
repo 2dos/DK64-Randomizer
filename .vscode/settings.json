@@ -34,6 +34,8 @@
         "compare": "c",
         "xmemory": "c",
         "xtr1common": "c",
-        "pause.h": "c"
+        "pause.h": "c",
+        "crowd_control.h": "c",
+        "archipelago.h": "c"
     }
 }

@@ -4,6 +4,7 @@ from enum import IntEnum
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
 from randomizer.Patching.Library.Generic import IsDDMSSelected
+from randomizer.Patching.Library.ItemRando import CustomActors
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Settings import HardModeSelected, DamageAmount, MiscChangesSelected, HardBossesSelected, ExtraCutsceneSkips
 
@@ -51,7 +52,8 @@ def hardEnemies(ROM_COPY: LocalROM, settings, offset_dict: dict):
     if IsDDMSSelected(settings.hard_mode_selected, HardModeSelected.hard_enemies):
         writeValue(ROM_COPY, 0x806B12DA, Overlay.Static, 0x3A9, offset_dict)  # Kasplat Shockwave Chance
         writeValue(ROM_COPY, 0x806B12FE, Overlay.Static, 0x3B3, offset_dict)  # Kasplat Shockwave Chance
-        writeActorHealth(ROM_COPY, 259, 9)  # Increase kop health
+        for actor in (259, CustomActors.GuardTag, CustomActors.GuardDisableA, CustomActors.GuardDisableZ, CustomActors.GuardGetOut):
+            writeActorHealth(ROM_COPY, actor, 9)  # Increase kop health
 
 
 def weakAnkles(ROM_COPY: LocalROM, settings, offset_dict: dict):
