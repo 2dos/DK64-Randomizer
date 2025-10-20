@@ -533,7 +533,7 @@ EnemyMetaData = {
         placeable=False,
     ),
     Enemies.Guard: EnemyData(
-        name="Kop (Basic)",
+        name="Kop (Warp Out)",
         e_type=EnemySubtype.GroundBeefy,
         aggro=1,
         crown_enabled=False,
@@ -563,7 +563,7 @@ EnemyMetaData = {
         max_speed=100,
     ),
     Enemies.GuardTag: EnemyData(
-        name="Kop (Tag)",
+        name="Kop (Disable Tag Anywhere)",
         e_type=EnemySubtype.GroundBeefy,
         aggro=1,
         crown_enabled=False,
