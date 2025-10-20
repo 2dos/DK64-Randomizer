@@ -158,6 +158,7 @@ DIRT_BASE = 0xDF
 
 
 def recolorBones(filename: str, bones: list[int], color: tuple):
+    """Recolor the bones of a model."""
     with open(filename, "r+b") as fh:
         offset = int.from_bytes(fh.read(4), "big")
         dl_end = (int.from_bytes(fh.read(4), "big") - offset) + 0x28
