@@ -38,13 +38,7 @@ int isBadMovementState(void) {
      * @brief Check if you're in a bad control state
      */
     if (Player) {
-        int control_state = Player->control_state;
-        for (int i = 0; i < sizeof(bad_guard_states); i++) {
-            if (control_state == bad_guard_states[i]) {
-                return 1;
-            }
-        }
-        return 0;
+        return inU8List(Player->control_state, &bad_guard_states, sizeof(bad_guard_states));
     }
     return 1;
 }
@@ -83,12 +77,12 @@ void guardCatchInternal(void) {
         clearTagSlide(Player);
         if ((actor == NEWACTOR_GUARDDISABLEA) || (actor == NEWACTOR_GUARDDISABLEZ)) {
             guard_effect_struct *data = &guard_effect_timers[actor - NEWACTOR_GUARDDISABLEA];
-            data->timer = 900; // 30s
+            data->timer = SECONDS_TO_F(20); // 20s
             guard_enabled_buttons &= ~data->btf;
-            renderSpritesOnPlayer(data->sprite, 3, 900);
+            renderSpritesOnPlayer(data->sprite, 3, SECONDS_TO_F(30));
         } else if (actor == NEWACTOR_GUARDTAG) {
             cc_enabler_tag();  // Tag to a random kong
-            guard_tag_timer = 900;  // 30s
+            guard_tag_timer = SECONDS_TO_F(30);  // 30s
         } else if (actor == NEWACTOR_GUARDGETOUT) {
             if (CCEffectData) {
                 if (CCEffectData->get_out != CC_ENABLED) {
@@ -187,13 +181,11 @@ static const rgb kop_color_data[] = {
 };
 
 void renderKopLightHandler(float x, float y, float z, float x2, float y2, float z2, float radius, int unk0, int red, int green, int blue) {
-    for (int i = 0; i < 4; i++) {
-        int index = CurrentActorPointer_0->actorType - NEWACTOR_GUARDDISABLEA;
-        if (index == i) {
-            red = kop_color_data[i].red;
-            green = kop_color_data[i].green;
-            blue = kop_color_data[i].blue;
-        }
+    int i = CurrentActorPointer_0->actorType - NEWACTOR_GUARDDISABLEA;
+    if ((i >= 0) && (i < 4)) {
+        red = kop_color_data[i].red;
+        green = kop_color_data[i].green;
+        blue = kop_color_data[i].blue;
     }
     renderLight(x, y, z, x2, y2, z2, radius, unk0, red, green, blue);
 }

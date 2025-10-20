@@ -1219,7 +1219,7 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Bonus barrel kong check
     writeValue(ROM_COPY, 0x8073199E, Overlay.Static, getVar("BONUS_DATA_COUNT"), offset_dict)  # Set bonus count
-    writeValue(ROM_COPY, 0x807319CA, Overlay.Static, 6, offset_dict)  # Set size of item
+    writeValue(ROM_COPY, 0x807319CA, Overlay.Static, 8, offset_dict)  # Set size of item
     writeValue(ROM_COPY, 0x80731996, Overlay.Static, getHiSym("bonus_data"), offset_dict)
     writeValue(ROM_COPY, 0x807319A2, Overlay.Static, getLoSym("bonus_data"), offset_dict)
 
