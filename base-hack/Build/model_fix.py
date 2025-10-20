@@ -156,6 +156,7 @@ BARREL_BASE = 0xE3  # 0x75
 BLOCKER_BASE = 0x64
 DIRT_BASE = 0xDF
 
+
 def recolorBones(filename: str, bones: list[int], color: tuple):
     with open(filename, "r+b") as fh:
         offset = int.from_bytes(fh.read(4), "big")
@@ -205,7 +206,7 @@ def recolorBones(filename: str, bones: list[int], color: tuple):
                 #     vert_cap = vert_caps[chunk_index] >> 4
                 i_load_vert = (i_load_position + offset) >> 4
                 i_load_vert_end = min(i_load_vert + i_vert_count, vert_cap)
-                verts_loaded = verts[i_load_vert: i_load_vert_end]       
+                verts_loaded = verts[i_load_vert:i_load_vert_end]
                 for yi, y in enumerate(verts_loaded):
                     # print(i_vert_buffer_start, yi, len(verts_loaded), i_vert_buffer_start + yi)
                     if i_vert_buffer_start + yi < 32:
@@ -221,11 +222,13 @@ def recolorBones(filename: str, bones: list[int], color: tuple):
                 ]
                 if bone_index in bones:
                     print(vert_cache)
-                    verts_to_modify.extend([
-                        vert_cache[tri_buffer_positions[0]],
-                        vert_cache[tri_buffer_positions[1]],
-                        vert_cache[tri_buffer_positions[2]],
-                    ])
+                    verts_to_modify.extend(
+                        [
+                            vert_cache[tri_buffer_positions[0]],
+                            vert_cache[tri_buffer_positions[1]],
+                            vert_cache[tri_buffer_positions[2]],
+                        ]
+                    )
             elif instruction in (6, 7):
                 # G_TRI2 / # G_QUAD
                 tri_buffer_positions = [
@@ -238,16 +241,20 @@ def recolorBones(filename: str, bones: list[int], color: tuple):
                 ]
                 if bone_index in bones:
                     print(vert_cache, tri_buffer_positions)
-                    verts_to_modify.extend([
-                        vert_cache[tri_buffer_positions[0]],
-                        vert_cache[tri_buffer_positions[1]],
-                        vert_cache[tri_buffer_positions[2]],
-                    ])
-                    verts_to_modify.extend([
-                        vert_cache[tri_buffer_positions[3]],
-                        vert_cache[tri_buffer_positions[4]],
-                        vert_cache[tri_buffer_positions[5]],
-                    ])
+                    verts_to_modify.extend(
+                        [
+                            vert_cache[tri_buffer_positions[0]],
+                            vert_cache[tri_buffer_positions[1]],
+                            vert_cache[tri_buffer_positions[2]],
+                        ]
+                    )
+                    verts_to_modify.extend(
+                        [
+                            vert_cache[tri_buffer_positions[3]],
+                            vert_cache[tri_buffer_positions[4]],
+                            vert_cache[tri_buffer_positions[5]],
+                        ]
+                    )
         for vert in verts_to_modify:
             fh.seek(0x28 + (vert * 0x10) + 0xC)
             original_color = []
