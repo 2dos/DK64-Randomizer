@@ -887,18 +887,18 @@ if baseclasses_loaded:
                     else:
                         instruments = []
                     hinted_slams = []
-                    if DK64RItems.ProgressiveSlam in self.foreignMicroHints.keys() and DK64RItems.ProgressiveSlam in self.spoiler.microhints:
+                    if DK64RItems.ProgressiveSlam in self.foreignMicroHints.keys() and DK64RItem.ItemList[DK64RItems.ProgressiveSlam].name in self.spoiler.microhints.keys():
                         # Break down the slam hint to retrieve raw data
                         text1 = "Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in "
-                        hinted_slams = self.spoiler.microhints[DK64RItems.ProgressiveSlam].replace(text1, "")
-                        hinted_slams.replace(" for the elusive slam.", "")
-                        hinted_slams.split(" or ")
+                        local_hinted_slams = self.spoiler.microhints[DK64RItem.ItemList[DK64RItems.ProgressiveSlam].name].replace(text1.upper(), "")
+                        local_hinted_slams = local_hinted_slams.replace(" for the elusive slam.".upper(), "")
+                        hinted_slams = local_hinted_slams.split(" or ".upper())
                     for hintedItem in self.foreignMicroHints.keys():
                         text = ""
                         if hintedItem in helm_prog_items and self.options.microhints.value in [1, 2]:
-                            text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
+                            text = f"\x07{self.foreignMicroHints[hintedItem][0][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][0][1]}\x07 for this.".upper()
                         elif hintedItem in instruments and self.options.microhints.value == 2:
-                            text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
+                            text = f"\x07{self.foreignMicroHints[hintedItem][0][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][0][1]}\x07 for this.".upper()
                         elif hintedItem == DK64RItems.ProgressiveSlam:
                             for slam in self.foreignMicroHints[DK64RItems.ProgressiveSlam]:
                                 hinted_slams.append(f"\x07{slam[0]}: {slam[1]}\x07")
@@ -1052,9 +1052,9 @@ if baseclasses_loaded:
                     if (microhints_enabled or shopkeepers_enabled) and is_microhintable:
                         if player != loc.player:
                             if microHintItemNames[loc.item.name] in autoworld.foreignMicroHints.keys():
-                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append([multiworld.get_player_name(loc.player), loc.name[:80]])
+                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]].append((multiworld.get_player_name(loc.player), loc.name[:80]))
                             else:
-                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [multiworld.get_player_name(loc.player), loc.name[:80]]
+                                autoworld.foreignMicroHints[microHintItemNames[loc.item.name]] = [(multiworld.get_player_name(loc.player), loc.name[:80])]
 
                     # Bail if hints are disabled at this point
                     if (is_donk_item and autoworld.options.hint_style == 0) and not is_donk_location:
