@@ -79,7 +79,7 @@ void guardCatchInternal(void) {
             guard_effect_struct *data = &guard_effect_timers[actor - NEWACTOR_GUARDDISABLEA];
             data->timer = SECONDS_TO_F(20); // 20s
             guard_enabled_buttons &= ~data->btf;
-            renderSpritesOnPlayer(data->sprite, 3, SECONDS_TO_F(30));
+            renderSpritesOnPlayer(data->sprite, 3, SECONDS_TO_F(20));
         } else if (actor == NEWACTOR_GUARDTAG) {
             cc_enabler_tag();  // Tag to a random kong
             guard_tag_timer = SECONDS_TO_F(30);  // 30s
