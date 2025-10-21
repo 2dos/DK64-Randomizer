@@ -35,6 +35,7 @@ from randomizer.Enums.Settings import (
     TrainingBarrels,
     TroffSetting,
     WinConditionComplex,
+    WrinklyHints,
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types, BarrierItems
@@ -1166,10 +1167,11 @@ class Spoiler:
                         if hint_info.is_last_woth_hint:
                             human_hint_list[hint_info.name] += "*"
             humanspoiler["Wrinkly Hints"] = human_hint_list
-            humanspoiler["Unhinted Score"] = self.unhinted_score
-            humanspoiler["Potentially Awful Locations"] = {}
-            for location_description in self.poor_scoring_locations:
-                humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
+            if self.settings.wrinkly_hints != WrinklyHints.off:
+                humanspoiler["Unhinted Score"] = self.unhinted_score
+                humanspoiler["Potentially Awful Locations"] = {}
+                for location_description in self.poor_scoring_locations:
+                    humanspoiler["Potentially Awful Locations"][location_description] = self.poor_scoring_locations[location_description]
         self.json = json.dumps(humanspoiler, indent=4)
 
     def UpdateKasplats(self, kasplat_map: Dict[Locations, Kongs]) -> None:
