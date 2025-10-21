@@ -580,6 +580,7 @@ def apply_glitches_and_tricks_settings(settings_dict: dict, options) -> None:
         if glitch in glitches_mapping:
             settings_dict["glitches_selected"].append(glitches_mapping[glitch])
 
+
 def apply_enemies(settings_dict: dict, options) -> None:
     """Apply Enemy settings."""
     settings_dict["enemies_selected"] = []
@@ -625,10 +626,11 @@ def apply_enemies(settings_dict: dict, options) -> None:
         "GuardTag": Enemies.GuardTag,
         "GuardGetOut": Enemies.GuardGetOut,
     }
-    
+
     for enemy in options.enemies_selected:
         if enemy in enemy_mapping:
             settings_dict["enemies_selected"].append(enemy_mapping[enemy])
+
 
 def apply_boss_and_key_settings(settings_dict: dict, options) -> None:
     """Apply boss and key settings."""

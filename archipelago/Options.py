@@ -977,7 +977,6 @@ class SharedShops(Toggle):
     display_name = "Shared Shops"
 
 
-
 class AnimalTrapWeight(BaseTrapWeight):
     """Likelihood of receiving a trap which transforms you into an Animal Buddy for a short time."""
 
@@ -1053,9 +1052,10 @@ class AlternateMinecartMayhem(Toggle):
 
     display_name = "Alternate Minecart Mayhem"
 
+
 class EnemiesSelected(OptionList):
     """Determines what Enemies are in the pool.
-    
+
     Valid Keys:
     "Bat"
     "BeaverBlue"
@@ -1140,9 +1140,8 @@ class EnemiesSelected(OptionList):
         "GuardDisableZ",
         "GuardTag",
         "GuardGetOut",
-        }
+    }
 
-    
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
@@ -1332,7 +1331,7 @@ dk64_option_groups: List[OptionGroup] = [
         "Enemies",
         [
             EnemiesSelected,
-        ]
+        ],
     ),
     OptionGroup(
         "Hints",
@@ -1352,7 +1351,7 @@ dk64_option_groups: List[OptionGroup] = [
             MedalFillerWeight,
             PearlFillerWeight,
             RainbowCoinFillerWeight,
-        ]
+        ],
     ),
     OptionGroup(
         "Trap Weights",
