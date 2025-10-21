@@ -977,15 +977,6 @@ class SharedShops(Toggle):
     display_name = "Shared Shops"
 
 
-class FillerItems(DefaultOnToggle):
-    """If enabled, Filler Items will fill the world depending on Chaos B. Lockers being enabled.
-
-    Chaos B. Lockers enabled will replace "Junk Item (Melon Slice)" with a combination of GBs, Crowns, Fairies, Medals, Pearls, and Rainbow Coins.
-    Without Chaos B. Lockers, Junk Items will be replaced with a combination of GBs, Fairies, Medals, and Pearls.
-    """
-
-    display_name = "Filler Items"
-
 
 class AnimalTrapWeight(BaseTrapWeight):
     """Likelihood of receiving a trap which transforms you into an Animal Buddy for a short time."""
@@ -1005,11 +996,153 @@ class DisableTagTrapWeight(BaseTrapWeight):
     display_name = "Disable Tag Trap Weight"
 
 
+class BaseFillerWeight(Choice):
+    """Base Class for Filler Weights."""
+
+    option_none = 0
+    option_low = 1
+    option_medium = 2
+    option_high = 4
+    default = 0
+
+
+class JunkFillerWeight(BaseFillerWeight):
+    """Likelihood of receiving junk items as filler."""
+
+    display_name = "Junk Filler Weight"
+
+
+class BananaFillerWeight(BaseFillerWeight):
+    """Likelihood of receiving golden bananas as filler."""
+
+    display_name = "Banana Filler Weight"
+
+
+class CrownFillerWeight(BaseFillerWeight):
+    """Likelihood of receiving battle crowns as filler."""
+
+    display_name = "Crown Filler Weight"
+
+
+class FairyFillerWeight(BaseFillerWeight):
+    """Likelihood of receiving banana fairies as filler."""
+
+    display_name = "Fairy Filler Weight"
+
+
+class MedalFillerWeight(BaseFillerWeight):
+    """Likelihood of receiving banana medals as filler."""
+
+    display_name = "Medal Filler Weight"
+
+
+class PearlFillerWeight(BaseFillerWeight):
+    """Likelihood of receiving pearls as filler."""
+
+    display_name = "Pearl Filler Weight"
+
+
+class RainbowCoinFillerWeight(BaseFillerWeight):
+    """Likelihood of receiving rainbow coins as filler."""
+
+    display_name = "Rainbow Coin Filler Weight"
+
+
 class AlternateMinecartMayhem(Toggle):
     """If enabled, Minecart Mayhem will be a coin based bonus barrel and the timer will be removed."""
 
     display_name = "Alternate Minecart Mayhem"
 
+class EnemiesSelected(OptionList):
+    """Determines what Enemies are in the pool.
+    
+    Valid Keys:
+    "Bat"
+    "BeaverBlue"
+    "BeaverGold"
+    "Bug"
+    "FireballGlasses"
+    "GetOut"
+    "Ghost"
+    "Gimpfish"
+    "Kaboom"
+    "KasplatChunky"
+    "KasplatDK"
+    "KasplatDiddy"
+    "KasplatLanky"
+    "KasplatTiny"
+    "KlaptrapGreen"
+    "KlaptrapPurple"
+    "KlaptrapRed"
+    "Klobber"
+    "Klump"
+    "Guard"
+    "Kosha"
+    "Kremling"
+    "Krossbones"
+    "MrDice0"
+    "MrDice1"
+    "MushroomMan"
+    "Pufftup"
+    "RoboKremling"
+    "ZingerRobo"
+    "Ruler"
+    "Shuri"
+    "SirDomino"
+    "SpiderSmall"
+    "ZingerCharger"
+    "ZingerLime"
+    "GuardDisableA"
+    "GuardDisableZ"
+    "GuardTag"
+    "GuardGetOut"
+    """
+
+    display_name = "Enemies Selected"
+
+    default = {
+        "Bat",
+        "BeaverBlue",
+        "BeaverGold",
+        "Bug",
+        "FireballGlass",
+        "GetOut",
+        "Ghost",
+        "Gimpfish",
+        "Kaboom",
+        "KasplatChunky",
+        "KasplatDK",
+        "KasplatDiddy",
+        "KasplatLanky",
+        "KasplatTiny",
+        "KlaptrapGreen",
+        "KlaptrapPurple",
+        "KlaptrapRed",
+        "Klobber",
+        "Klump",
+        "Guard",
+        "Kosha",
+        "Kremling",
+        "Krossbones",
+        "MrDice0",
+        "MrDice1",
+        "MushroomMan",
+        "Pufftup",
+        "RoboKremling",
+        "ZingerRobo",
+        "Ruler",
+        "Shuri",
+        "SirDomino",
+        "SpiderSmall",
+        "ZingerCharger",
+        "ZingerLime",
+        "GuardDisableA",
+        "GuardDisableZ",
+        "GuardTag",
+        "GuardGetOut",
+        }
+
+    
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
@@ -1091,11 +1224,18 @@ class DK64Options(PerGameCommonOptions):
     enable_cutscenes: EnableCutscenes
     maximum_snide: SnideMaximum
     enable_shared_shops: SharedShops
-    enable_filler_items: FillerItems
     animal_trap_weight: AnimalTrapWeight
     rockfall_trap_weight: RockfallTrapWeight
     disabletag_trap_weight: DisableTagTrapWeight
+    junk_filler_weight: JunkFillerWeight
+    banana_filler_weight: BananaFillerWeight
+    crown_filler_weight: CrownFillerWeight
+    fairy_filler_weight: FairyFillerWeight
+    medal_filler_weight: MedalFillerWeight
+    pearl_filler_weight: PearlFillerWeight
+    rainbowcoin_filler_weight: RainbowCoinFillerWeight
     alternate_minecart_mayhem: AlternateMinecartMayhem
+    enemies_selected: EnemiesSelected
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1144,7 +1284,6 @@ dk64_option_groups: List[OptionGroup] = [
             SmallerShops,
             SharedShops,
             SnideMaximum,
-            FillerItems,
         ],
     ),
     OptionGroup(
@@ -1190,12 +1329,30 @@ dk64_option_groups: List[OptionGroup] = [
         ],
     ),
     OptionGroup(
+        "Enemies",
+        [
+            EnemiesSelected,
+        ]
+    ),
+    OptionGroup(
         "Hints",
         [
             HintStyle,
             ShopkeeperHints,
             MicroHints,
         ],
+    ),
+    OptionGroup(
+        "Filler Weights",
+        [
+            JunkFillerWeight,
+            BananaFillerWeight,
+            CrownFillerWeight,
+            FairyFillerWeight,
+            MedalFillerWeight,
+            PearlFillerWeight,
+            RainbowCoinFillerWeight,
+        ]
     ),
     OptionGroup(
         "Trap Weights",

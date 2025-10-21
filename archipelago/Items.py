@@ -11,7 +11,7 @@ from archipelago.Options import Goal
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists import Item as DK64RItem
 from randomizer.Enums.Items import Items as DK64RItems
-from randomizer.Enums.Settings import WinConditionComplex, ItemRandoFiller
+from randomizer.Enums.Settings import WinConditionComplex
 from randomizer.Enums.Types import Types as DK64RTypes, BarrierItems
 import randomizer.ItemPool as DK64RItemPoolUtility
 import copy
@@ -287,26 +287,22 @@ def setup_items(world: World) -> typing.List[DK64Item]:
     trap_count = 0 if (len(trap_weights) == 0) else math.ceil(filler_item_count * (world.options.trap_fill_percentage.value / 100.0))
     filler_item_count -= trap_count
 
-    filler_mapping = {
-        ItemRandoFiller.junkitem: [DK64RItems.JunkMelon],
-        ItemRandoFiller.banana: [DK64RItems.FillerBanana],
-        ItemRandoFiller.crown: [DK64RItems.FillerCrown],
-        ItemRandoFiller.fairy: [DK64RItems.FillerFairy],
-        ItemRandoFiller.medal: [DK64RItems.FillerMedal],
-        ItemRandoFiller.pearl: [DK64RItems.FillerPearl],
-        ItemRandoFiller.rainbowcoin: [DK64RItems.FillerRainbowCoin],
-    }
+    # Build filler weights based on options
+    filler_weights = []
+    filler_weights += [DK64RItems.JunkMelon] * world.options.junk_filler_weight.value
+    filler_weights += [DK64RItems.FillerBanana] * world.options.banana_filler_weight.value
+    filler_weights += [DK64RItems.FillerCrown] * world.options.crown_filler_weight.value
+    filler_weights += [DK64RItems.FillerFairy] * world.options.fairy_filler_weight.value
+    filler_weights += [DK64RItems.FillerMedal] * world.options.medal_filler_weight.value
+    filler_weights += [DK64RItems.FillerPearl] * world.options.pearl_filler_weight.value
+    filler_weights += [DK64RItems.FillerRainbowCoin] * world.options.rainbowcoin_filler_weight.value
 
-    possible_junk = []
-    for filler_type in world.spoiler.settings.filler_items_selected:
-        if filler_type in filler_mapping:
-            possible_junk.extend(filler_mapping[filler_type])
-
-    if not possible_junk:
-        possible_junk = [DK64RItems.JunkMelon]
+    # If no filler weights are set, default to junk
+    if not filler_weights:
+        filler_weights = [DK64RItems.JunkMelon]
 
     for _ in range(filler_item_count):
-        junk_enum = world.random.choice(possible_junk)
+        junk_enum = world.random.choice(filler_weights)
         junk_item = DK64RItem.ItemList[junk_enum]
         item_table.append(DK64Item(junk_item.name, ItemClassification.filler, full_item_table[junk_item.name].code, world.player))
 
