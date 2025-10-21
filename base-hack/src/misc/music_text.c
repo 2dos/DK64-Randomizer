@@ -72,9 +72,9 @@ void SpeedUpMusic(void) {
         // Checking items
         if (win_con == GOAL_KROOL) {
             win_con_item = REQITEM_KEY;
-            win_con_count = 9; // Triggers upon picking up key 8
+            win_con_count = 9; // Triggers upon picking up the 8th key
         } else if (win_con != GOAL_CUSTOMITEM) {
-            // Goal is inelligible for speed up
+            // Goal is ineligible for speed up
             return;
         }
         if (win_con_count < 2) {
@@ -90,10 +90,11 @@ void SpeedUpMusic(void) {
         songs song = SongInWriteSlot[i];
         if ((music_types[song] == SONGTYPE_BGM) && (song != SONG_BABOONBALLOON)) {
             int existing_tempo = getSongTempo(compactSequencePlayers[i]);
-            float tempo = musicStorage[i]->division * compactSequencePlayers[i]->uspt;
-            float targ_tempo = tempo / 1.5f;
-            if (existing_tempo != targ_tempo) {
-                alCSPSetTempo(compactSequencePlayers[i], targ_tempo);
+            float current_inverse_division = compactSequencePlayers[i]->target->qnpt;
+            float target_inverse_division = (1.0f / musicStorage[i]->division / 1.5f);
+            if (current_inverse_division != target_inverse_division) {
+                compactSequencePlayers[i]->target->qnpt = target_inverse_division;
+                alCSPSetTempo(compactSequencePlayers[i], existing_tempo);
             }
         }
     }

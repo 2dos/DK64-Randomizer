@@ -13,7 +13,8 @@ print("Installed Packages:")
 for pkg in installed_packages_list:
     print("-", pkg)
     pkg_data = pkg.split("==")
-    current_packages.append({"name": pkg_data[0], "version": pkg_data[1]})
+    if len(pkg_data) > 1:
+        current_packages.append({"name": pkg_data[0], "version": pkg_data[1]})
 
 print("Checking Packages:")
 for req_pkg in required_build_packages:
