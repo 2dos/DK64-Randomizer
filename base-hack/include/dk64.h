@@ -513,6 +513,9 @@ extern void customDamageCode(void);
 extern void unkSoundFunction(void *actor, int unk);
 extern int isModelTwoTiedFlagSet(maps map, int id);
 
+extern ALParam* getNextFreeSynthUpdate(void);
+extern void SetParam(PVoice* pvoice, short type, ALParam* param);
+
 //vanilla data
 extern OSThread* __osActiveQueue;
 extern float TransitionSpeed;
@@ -718,6 +721,7 @@ extern unsigned char SongInWriteSlot[4];
 extern short songVolumes[SONG_COUNT];
 extern ALCSPlayer* compactSequencePlayers[4];
 extern ALCMidiHdr* musicStorage[4];
+extern ALSynth synthesizer;
 extern unsigned int DKTVData[5];
 
 extern void* ExitPointer;

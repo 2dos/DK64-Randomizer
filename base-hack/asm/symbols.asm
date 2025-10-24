@@ -209,6 +209,7 @@
 .definelabel MusicTrackChannels, 0x807458DC
 .definelabel BoatSpeeds, 0x8075A04C
 .definelabel textParameter, 0x80750AC8
+.definelabel synthesizer, 0x8076D708
 
 .definelabel collisionType, 0x807FBD70
 .definelabel collisionActive, 0x807FBB85

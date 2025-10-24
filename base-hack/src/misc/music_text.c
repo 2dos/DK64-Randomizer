@@ -163,3 +163,46 @@ Gfx* displaySongNameHandler(Gfx* dl) {
     }
     return dl;
 }   
+
+void fixBrokenVoices(ALSeqPlayer* seq_p) {
+    if(SongInWriteSlot[2] != 0x2B || MusicTrackChannels[8] == 0x12){
+        seq_p->state = 1;
+        return;
+    }
+    PVoice* pVoice = (PVoice*) 0x8076D714;
+    int* samples = *(int*) 0x8076D724;
+    int delta = * samples;
+    while(pVoice != 0){
+        // if stop voice update didn't come through
+        if (pVoice->debug1 == 0x01){
+            if(postSynUpdate(pVoice, (pVoice->delay + samples), 0xF) == 1){
+                pVoice->debug1 = 0;
+            }
+        }
+        // if stop voice update came through, but free voice update didn't come through
+        if (pVoice->debug1 == 0 && pVoice->debug2 == 0x02){
+            if(postSynUpdate(pVoice, (pVoice->delay + samples), 0) == 1){
+                pVoice->debug1 = 0;
+                pVoice->debug2 = 0;
+            }
+        }
+        pVoice = (PVoice*) (int*) pVoice->node.next;
+    }
+
+    // finally set the sequence player's state to 1 (playing), which is the code that this function overwrites
+    seq_p->state = 1;
+}
+
+char postSynUpdate(PVoice* pVoice, int delta, short type){
+    if(pVoice){
+        ALParam* param = getNextFreeSynthUpdate();
+        if(param != 0){
+            param->delta = delta;
+            param->updateType = type;
+            param->pitch = (int*) pVoice;
+            SetParam(pVoice, 3, param);
+            return 1;
+        }
+    }
+    return 0;
+}

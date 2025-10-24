@@ -409,6 +409,7 @@ extern void handleCrownTimerInternal(void);
 extern void initSongDisplay(int song);
 extern Gfx* displaySongNameHandler(Gfx* dl);
 extern void resetDisplayedMusic(void);
+extern char postSynUpdate(PVoice* pVoice, int delta, short type);
 
 extern enum_bonus_skin getBarrelSkinIndex(int actor);
 extern enum_bonus_skin getShopSkinIndex(item_packet *data);

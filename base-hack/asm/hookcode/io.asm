@@ -217,3 +217,27 @@ dynflagcheck_3:
     lhu $a0, 0x0028 ($s0)
     j 0x80631E44
     nop
+
+stopVoiceFail:
+    lw $t8, 0x8 ($a0)
+    addiu $v0, $zero, 0x1
+    j 0x8073B740
+    sb $v0, 0x88 ($t8) ;byte 1 offset
+
+stopVoiceFail2:
+    bne $t9, $zero, stopVoiceNotFail
+    nop
+    lw $t8, 0x24 ($sp)
+    addiu $v0, $zero, 0x1
+    j 0x8073CC48
+    sb $v0, 0x88 ($t8) ;byte 1 offset
+
+    stopVoiceNotFail:
+    j 0x8073CBF8
+    nop
+
+freeVoiceFail:
+    lw $t2, 0x8 ($a0)
+    addiu $t4, $zero, 0x2
+    j 0x8073B814
+    sb $t4, 0x89 ($t2) ;byte 2 offset

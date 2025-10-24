@@ -1689,9 +1689,58 @@ def patchAssembly(ROM_COPY, spoiler):
             writeFunction(ROM_COPY, 0x8061DD80, Overlay.Static, "pressSkipHandler", offset_dict)  # Handler for press start to skip
 
     # Music Fix
+    # Increase music resources to mitigate the music bug killing the audio engine
     writeValue(ROM_COPY, 0x807452B0, Overlay.Static, 0xD00, offset_dict, 4)
     writeValue(ROM_COPY, 0x80600DA2, Overlay.Static, 0x38, offset_dict)
     writeValue(ROM_COPY, 0x80600DA6, Overlay.Static, 0x70, offset_dict)
+
+    # Repair the audio engine if damage did occur
+    # Write debug bytes to identify permanently damaged voices and how to fix them
+    writeHook(ROM_COPY, 0x8073B6E4, Overlay.Static, "stopVoiceFail", offset_dict)
+    writeHook(ROM_COPY, 0x8073B798, Overlay.Static, "freeVoiceFail", offset_dict)
+    # This particular hook is pretty ugly, but I don't see another way. It's probably
+    # explicitly not a function because of how deep this might be in the stack with handleMIDIEvents
+    writeHook(ROM_COPY, 0x8073CBF0, Overlay.Static, "stopVoiceFail2", offset_dict)
+
+    # Write function that fixes the permanently damaged voices
+    writeFunction(ROM_COPY, 0x80733750, Overlay.Static, "fixBrokenVoices", offset_dict)
+    writeValue(ROM_COPY, 0x80733754, Overlay.Static, 0x8FA40074, offset_dict, 4)  # LW a0, 0x74 (sp)
+
+    # Accomodate for there being 2 new debug byte fields in a struct that didn't have them
+    # These are pairs of writes that change each command from LW to LH and increase the offset to
+    # compensate for the changed data type
+    writeValue(ROM_COPY, 0x8073B704, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
+    writeValue(ROM_COPY, 0x8073B707, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
+
+    writeValue(ROM_COPY, 0x8073B7B8, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
+    writeValue(ROM_COPY, 0x8073B7BB, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
+
+    writeValue(ROM_COPY, 0x8073B88C, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
+    writeValue(ROM_COPY, 0x8073B88F, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
+
+    writeValue(ROM_COPY, 0x8073B958, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
+    writeValue(ROM_COPY, 0x8073B95B, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
+
+    writeValue(ROM_COPY, 0x8073BA08, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
+    writeValue(ROM_COPY, 0x8073BA0B, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
+
+    writeValue(ROM_COPY, 0x8073BAB8, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
+    writeValue(ROM_COPY, 0x8073BABB, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
+
+    writeValue(ROM_COPY, 0x8073C878, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
+    writeValue(ROM_COPY, 0x8073C87B, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
+
+    writeValue(ROM_COPY, 0x8073CE30, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
+    writeValue(ROM_COPY, 0x8073CE33, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
+
+    writeValue(ROM_COPY, 0x8073CF58, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
+    writeValue(ROM_COPY, 0x8073CF5B, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
+
+    writeValue(ROM_COPY, 0x8073D008, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
+    writeValue(ROM_COPY, 0x8073D00B, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
+
+    writeValue(ROM_COPY, 0x8073CD68, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
+    writeValue(ROM_COPY, 0x8073CD6B, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
 
     # Soundplayer Fix
     writeValue(ROM_COPY, 0x80735C9E, Overlay.Static, 0xFFFF, offset_dict)  # initSoundPlayer creates the event
