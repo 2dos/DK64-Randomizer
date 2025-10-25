@@ -1695,7 +1695,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80600DA6, Overlay.Static, 0x70, offset_dict)
 
     # Repair the audio engine if damage did occur
-    # Write debug bytes to identify permanently damaged voices and how to fix them
+    # Write debug bytes to identify permanently damaged voices and what kind of damage they suffer from
     writeHook(ROM_COPY, 0x8073B6E4, Overlay.Static, "stopVoiceFail", offset_dict)
     writeHook(ROM_COPY, 0x8073B798, Overlay.Static, "freeVoiceFail", offset_dict)
     # This particular hook is pretty ugly, but I don't see another way. It's probably
@@ -1708,7 +1708,8 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Accomodate for there being 2 new debug byte fields in a struct that didn't have them
     # These are pairs of writes that change each command from LW to LH and increase the offset to
-    # compensate for the changed data type
+    # compensate for the changed data type. This only affects read commands, because
+    # whenever the delay is set, the voice can't possibly be in a bad state in terms of this change.
     writeValue(ROM_COPY, 0x8073B704, Overlay.Static, 0x85, offset_dict, 1)  # LW -> LH
     writeValue(ROM_COPY, 0x8073B707, Overlay.Static, 0x8A, offset_dict, 1)  # 0x88 -> 0x8A
 

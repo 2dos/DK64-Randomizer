@@ -194,12 +194,17 @@ void fixBrokenVoices(ALSeqPlayer* seq_p) {
 }
 
 char postSynUpdate(PVoice* pVoice, int delta, short type){
+    // Sends an update to the Synthesizer. type 0xF is for stopping voices and type 0x0 is for freeing voices
     if(pVoice){
+        // Typical dk64 bureaucracy, everything goes through updates, very much similar to MIDI's events
+        // but yeah, we need one, so let's see if we can get one
         ALParam* param = getNextFreeSynthUpdate();
         if(param != 0){
             param->delta = delta;
             param->updateType = type;
             param->pitch = (int*) pVoice;
+            // the "3" here signifies that we're adding an update to a pVoice.
+            // the exact function in dk64 is... a function of all time,
             SetParam(pVoice, 3, param);
             return 1;
         }
