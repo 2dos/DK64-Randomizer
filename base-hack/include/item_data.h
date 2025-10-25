@@ -60,7 +60,7 @@ typedef enum new_custom_actors {
 	/* 0x187 */ NEWACTOR_GUARDTAG = 0x187, 
 	/* ----- */ NEWACTOR_TERMINATOR, 
 } new_custom_actors;
-#define DROP_COUNT 36
+#define DROP_COUNT 40
 extern GBDictItem new_flag_mapping[122];
 #define FILE_INFO_SIZE 0x8e4
 #define GB_DICTIONARY_COUNT 122

@@ -101,43 +101,7 @@ def get_default_settings() -> dict:
         "dos_door_rando": False,
         "enable_shop_hints": True,
         "enable_tag_anywhere": True,
-        "enemies_selected": [
-            Enemies.Bat,
-            Enemies.BeaverBlue,
-            Enemies.BeaverGold,
-            Enemies.Bug,
-            Enemies.FireballGlasses,
-            Enemies.GetOut,
-            Enemies.Ghost,
-            Enemies.Gimpfish,
-            Enemies.Kaboom,
-            Enemies.KasplatChunky,
-            Enemies.KasplatDK,
-            Enemies.KasplatDiddy,
-            Enemies.KasplatLanky,
-            Enemies.KasplatTiny,
-            Enemies.KlaptrapGreen,
-            Enemies.KlaptrapPurple,
-            Enemies.KlaptrapRed,
-            Enemies.Klobber,
-            Enemies.Klump,
-            Enemies.Guard,
-            Enemies.Kosha,
-            Enemies.Kremling,
-            Enemies.Krossbones,
-            Enemies.MrDice0,
-            Enemies.MrDice1,
-            Enemies.MushroomMan,
-            Enemies.Pufftup,
-            Enemies.RoboKremling,
-            Enemies.ZingerRobo,
-            Enemies.Ruler,
-            Enemies.Shuri,
-            Enemies.SirDomino,
-            Enemies.SpiderSmall,
-            Enemies.ZingerCharger,
-            Enemies.ZingerLime,
-        ],
+        "enemies_selected": [],
         "enemy_kill_crown_timer": True,
         "enemy_speed_rando": False,
         "fairy_queen_behavior": RandomRequirement.pre_selected,
@@ -435,16 +399,9 @@ def apply_item_randomization_settings(settings_dict: dict, options) -> None:
     settings_dict["item_rando_list_1"].extend(always_enabled_categories)
     settings_dict["decouple_item_rando"] = False
 
-    if options.enable_filler_items.value:
-        if options.enable_chaos_blockers.value:
-            settings_dict["filler_items_selected"] = [ItemRandoFiller.banana, ItemRandoFiller.crown, ItemRandoFiller.fairy, ItemRandoFiller.medal, ItemRandoFiller.pearl, ItemRandoFiller.rainbowcoin]
-        else:
-            settings_dict["filler_items_selected"] = [
-                ItemRandoFiller.banana,
-                ItemRandoFiller.fairy,
-                ItemRandoFiller.medal,
-                ItemRandoFiller.pearl,
-            ]
+    # Set a default filler list for compatibility with core randomizer
+    settings_dict["filler_items_selected"] = [ItemRandoFiller.junkitem]
+
     # Conditional item categories
     if options.hints_in_item_pool.value:
         settings_dict["item_rando_list_1"].append(ItemRandoListSelected.hint)
@@ -622,6 +579,57 @@ def apply_glitches_and_tricks_settings(settings_dict: dict, options) -> None:
     for glitch in options.glitches_selected:
         if glitch in glitches_mapping:
             settings_dict["glitches_selected"].append(glitches_mapping[glitch])
+
+
+def apply_enemies(settings_dict: dict, options) -> None:
+    """Apply Enemy settings."""
+    settings_dict["enemies_selected"] = []
+
+    enemy_mapping = {
+        "Bat": Enemies.Bat,
+        "BeaverBlue": Enemies.BeaverBlue,
+        "BeaverGold": Enemies.BeaverGold,
+        "Bug": Enemies.Bug,
+        "FireballGlasses": Enemies.FireballGlasses,
+        "GetOut": Enemies.GetOut,
+        "Ghost": Enemies.Ghost,
+        "Gimpfish": Enemies.Gimpfish,
+        "Kaboom": Enemies.Kaboom,
+        "KasplatChunky": Enemies.KasplatChunky,
+        "KasplatDK": Enemies.KasplatDK,
+        "KasplatDiddy": Enemies.KasplatDiddy,
+        "KasplatLanky": Enemies.KasplatLanky,
+        "KasplatTiny": Enemies.KasplatTiny,
+        "KlaptrapGreen": Enemies.KlaptrapGreen,
+        "KlaptrapPurple": Enemies.KlaptrapPurple,
+        "KlaptrapRed": Enemies.KlaptrapRed,
+        "Klobber": Enemies.Klobber,
+        "Klump": Enemies.Klump,
+        "Guard": Enemies.Guard,
+        "Kosha": Enemies.Kosha,
+        "Kremling": Enemies.Kremling,
+        "Krossbones": Enemies.Krossbones,
+        "MrDice0": Enemies.MrDice0,
+        "MrDice1": Enemies.MrDice1,
+        "MushroomMan": Enemies.MushroomMan,
+        "Pufftup": Enemies.Pufftup,
+        "RoboKremling": Enemies.RoboKremling,
+        "ZingerRobo": Enemies.ZingerRobo,
+        "Ruler": Enemies.Ruler,
+        "Shuri": Enemies.Shuri,
+        "SirDomino": Enemies.SirDomino,
+        "SpiderSmall": Enemies.SpiderSmall,
+        "ZingerCharger": Enemies.ZingerCharger,
+        "ZingerLime": Enemies.ZingerLime,
+        "GuardDisableA": Enemies.GuardDisableA,
+        "GuardDisableZ": Enemies.GuardDisableZ,
+        "GuardTag": Enemies.GuardTag,
+        "GuardGetOut": Enemies.GuardGetOut,
+    }
+
+    for enemy in options.enemies_selected:
+        if enemy in enemy_mapping:
+            settings_dict["enemies_selected"].append(enemy_mapping[enemy])
 
 
 def apply_boss_and_key_settings(settings_dict: dict, options) -> None:
@@ -808,6 +816,7 @@ def fillsettings(options, multiworld, random_obj):
     apply_starting_moves_settings(settings_dict, options)
     apply_hint_settings(settings_dict, options)
     apply_minigame_settings(settings_dict, options, multiworld)
+    apply_enemies(settings_dict, options)
 
     # Handle fake generation keys if needed
     if hasattr(multiworld, "generation_is_fake"):

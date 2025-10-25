@@ -905,7 +905,7 @@ if baseclasses_loaded:
                             slam_text = " or ".join(hinted_slams)
                             text = f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
                         elif self.options.shopkeeper_hints.value and hintedItem in shopkeepers:
-                            text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0]}'s\x07 \x0d{self.foreignMicroHints[hintedItem][1]}\x0d.".upper()
+                            text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0][0]}'s\x07 \x0d{self.foreignMicroHints[hintedItem][0][1]}\x0d.".upper()
 
                         # Only create microhint if we have text to display
                         if text:

@@ -263,6 +263,10 @@ item_drops = [
     EnemyDropDef(0xB6, 0x2F, Song.MelonSliceDrop, 1),  # Klobber
     EnemyDropDef(0xAF, 0x2F, Song.MelonSliceDrop, 1),  # Kaboom
     EnemyDropDef(0x103, 0x79, Song.Silence, 1),  # Guard
+    EnemyDropDef(CustomActors.GuardDisableA, 0x79, Song.Silence, 1),  # Guard
+    EnemyDropDef(CustomActors.GuardDisableZ, 0x79, Song.Silence, 1),  # Guard
+    EnemyDropDef(CustomActors.GuardTag, 0x79, Song.Silence, 1),  # Guard
+    EnemyDropDef(CustomActors.GuardGetOut, 0x79, Song.Silence, 1),  # Guard
     EnemyDropDef(276, 0x34, Song.Silence, 2),  # Spiderling
     EnemyDropDef(273, 0x34, Song.Silence, 1),  # Fireball with Glasses
     EnemyDropDef(230, 0x2F, Song.MelonSliceDrop, 1),  # Ruler
