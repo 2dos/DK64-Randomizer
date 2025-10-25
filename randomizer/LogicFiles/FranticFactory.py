@@ -162,7 +162,7 @@ LogicRegions = {
         Event(Events.TestingGateOpened, lambda l: l.Slam),
         Event(Events.FactoryW1bTagged, lambda _: True),
     ], [
-        TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing, Transitions.FactoryStorageToArcade),
+        TransitionFront(Regions.FactoryArcadePole, lambda l: l.climbing, Transitions.FactoryStorageToArcade),
         TransitionFront(Regions.LowerCore, lambda _: True),
         TransitionFront(Regions.ChunkyRoomPlatform, lambda l: l.CanMoonkick() or (l.twirl and l.istiny and l.monkey_maneuvers) or (l.isdiddy and l.monkey_maneuvers)),
         TransitionFront(Regions.CrankyFactory, lambda l: l.crankyAccess),
@@ -178,6 +178,12 @@ LogicRegions = {
         TransitionFront(Regions.BeyondHatch, lambda _: True),
     ]),
 
+    # Fake region because actually getting out of the loading zone requires Climbing
+    Regions.FactoryArcadePole: Region("Factory Arcade Upper Pole", HintRegion.Storage, Levels.FranticFactory, False, None, [], [], [
+        TransitionFront(Regions.FactoryArcadeTunnel, lambda l: l.climbing),
+        TransitionFront(Regions.BeyondHatch, lambda _: True, Transitions.FactoryArcadeToStorage)
+    ]),
+
     Regions.FactoryArcadeTunnel: Region("Arcade Tunnel", HintRegion.Storage, Levels.FranticFactory, False, None, [
         LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey and (l.GetCoins(Kongs.donkey) >= 2)),
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: (l.mini and l.tiny) or l.CanPhase()),
@@ -186,7 +192,7 @@ LogicRegions = {
     ], [
         Event(Events.FactoryW5aTagged, lambda _: True),
     ], [
-        TransitionFront(Regions.BeyondHatch, lambda _: True, Transitions.FactoryArcadeToStorage),
+        TransitionFront(Regions.FactoryArcadePole, lambda _: True),
     ]),
 
     Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", HintRegion.Storage, Levels.FranticFactory, False, None, [
