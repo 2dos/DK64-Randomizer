@@ -266,6 +266,7 @@ RegionMapList = {
     Regions.SnideThirdGroup: Maps.Snide,
     Regions.SnideFourthGroup: Maps.Snide,
     Regions.SnideLastGroup: Maps.Snide,
+    Regions.FactoryArcadePole: Maps.FranticFactory,
 }
 
 LevelMapTable = {
