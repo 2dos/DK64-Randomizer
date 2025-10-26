@@ -217,3 +217,25 @@ dynflagcheck_3:
     lhu $a0, 0x0028 ($s0)
     j 0x80631E44
     nop
+
+pleaseDontStopIslesMusic:
+    addiu $at, $at, 0xA0A8  ; currentMap pointer
+    lw $a0, 0x0 ($at)
+    lui $at, 0x22
+    bne $at, $a0, maybeOutsideKrem
+    lbu $a0, 0xb ($s1)
+    
+    cancelTheSong:
+    JAL cancelMusic
+    nop
+
+    inIsles:
+    j 0x8060378C
+    nop
+
+    maybeOutsideKrem:
+    addiu $at, $zero, 0x6E
+    bne $at, $a0, inIsles
+    nop
+    b cancelTheSong
+    nop
