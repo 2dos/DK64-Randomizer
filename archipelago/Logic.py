@@ -63,7 +63,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Patching.Library.Generic import getProgHintBarrierItem, sumChecks, getCompletableBonuses, IsDDMSSelected
-from randomizer.Prices import AnyKongCanBuy, CanBuy
+from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 from archipelago.Items import use_original_name_or_trap_name
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
@@ -105,7 +105,7 @@ class LogicVarHolder:
 
         # One Archipelago-specific exception - assuming infinite coins shortcuts a few price-related functions that we don't care about
         # In Archipelago, shops are free cause we're not tackling coin logic yet
-        self.assumeInfiniteCoins = True
+        self.assumeInfiniteCoins = False
 
         # Archipelago really wants the number of locations to match the number of items. Keep track of how many locations we've made here
         self.location_pool_size = 0
@@ -375,6 +375,7 @@ class LogicVarHolder:
         self.Reset()
         ownedItems = []
         cbArchItems = []
+        coinArchItems = []
         eventArchItems = []
         bossesDefeated = 0
         bonusesCompleted = 0
@@ -382,6 +383,9 @@ class LogicVarHolder:
             if item_name.startswith("Collectible CBs"):
                 for i in range(item_count):
                     cbArchItems.append(item_name)
+            elif item_name.startswith("Collectible Coins"):
+                for i in range(item_count):
+                    coinArchItems.append(item_name)
             elif item_name.startswith("Event, "):
                 eventArchItems.append(item_name)
             elif item_name.startswith("Boss Defeated"):
@@ -423,6 +427,18 @@ class LogicVarHolder:
             quantity = int(item_data[3])
             colored_banana_counts[level][kong] += quantity
         self.ColoredBananas = colored_banana_counts
+        
+        # Track coin collectibles
+        for item_name in coinArchItems:
+            # Coins are carefully named in the following format:
+            # index 0: "Collectible Coins" - needed to identify this as a coin collectible item
+            # index 1: the Kong's name, matching the Kongs enum
+            # index 2: the quantity of coins (as a string!)
+            item_data = item_name.split(", ")
+            kong = Kongs[item_data[1]]
+            quantity = int(item_data[2])
+            self.RegularCoins[kong] += quantity
+        self.UpdateCoins()
 
     def AddArchipelagoItem(self, ap_item):
         """Add an Archipelago item to the owned items list."""
@@ -437,6 +453,16 @@ class LogicVarHolder:
             level = Levels[item_data[2]]
             quantity = int(item_data[3])
             self.ColoredBananas[level][kong] += quantity
+        elif ap_item.name.startswith("Collectible Coins"):
+            # Coins are carefully named in the following format:
+            # index 0: "Collectible Coins" - needed to identify this as a coin collectible item
+            # index 1: the Kong's name, matching the Kongs enum
+            # index 2: the quantity of coins (as a string!)
+            item_data = ap_item.name.split(", ")
+            kong = Kongs[item_data[1]]
+            quantity = int(item_data[2])
+            self.RegularCoins[kong] += quantity
+            self.UpdateCoins()
         elif ap_item.name.startswith("Event, "):
             # Event names are carefully named in the following format:
             # index 0: "Event" - needed to identify this as an Event item
@@ -685,6 +711,16 @@ class LogicVarHolder:
             level = Levels[item_data[2]]
             quantity = int(item_data[3])
             self.ColoredBananas[level][kong] -= quantity
+        elif ap_item.name.startswith("Collectible Coins"):
+            # Coins are carefully named in the following format:
+            # index 0: "Collectible Coins" - needed to identify this as a coin collectible item
+            # index 1: the Kong's name, matching the Kongs enum
+            # index 2: the quantity of coins (as a string!)
+            item_data = ap_item.name.split(", ")
+            kong = Kongs[item_data[1]]
+            quantity = int(item_data[2])
+            self.RegularCoins[kong] -= quantity
+            self.UpdateCoins()
         elif ap_item.name.startswith("Event, "):
             # Event names are carefully named in the following format:
             # index 0: "Event" - needed to identify this as an Event item
@@ -919,9 +955,8 @@ class LogicVarHolder:
 
     def GetCoins(self, kong):
         """Get Coin Total for a kong."""
-        # In Archipelago, we will assume infinite coins in all worlds - the only snag *might* be Arcade Round 2, but there is an uninterrupted straight running line from the Arcade to 3 DK coins.
-        # self.UpdateCoins()
-        return 1000  # self.Coins[kong]
+        self.UpdateCoins()
+        return self.Coins[kong]
 
     def CanSlamSwitch(self, level: Levels, default_requirement_level: int):
         """Determine whether the player can operate the necessary slam operation.
@@ -1349,23 +1384,24 @@ class LogicVarHolder:
 
     def PurchaseShopItem(self, location_id):
         """Purchase from this location and subtract price from logical coin counts."""
-        # In Archipelago, all shops are free - we're not touching coin logic with a 12000000 ft pole
-        return
-        # location = self.spoiler.LocationList[location_id]
-        # price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
-        # if price is None:  # This shouldn't happen but it's probably harmless
-        #     return  # TODO: solve this
-        # # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
-        # if location.kong == Kongs.any:
-        #     for kong in range(0, 5):
-        #         self.Coins[kong] -= price
-        #         self.SpentCoins[kong] += price
-        #     return
-        # # If kong specific move, just that kong paid for it
-        # else:
-        #     self.Coins[location.kong] -= price
-        #     self.SpentCoins[location.kong] += price
-        #     return
+        location = self.spoiler.LocationList[location_id]
+        price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
+        if price is None:  # This shouldn't happen but it's probably harmless
+            return  # TODO: solve this
+        if self.settings.shops_dont_cost:
+            # If shops don't cost anything, then don't deduct this cost
+            return
+        # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
+        if location.kong == Kongs.any:
+            for kong in range(0, 5):
+                self.Coins[kong] -= price
+                self.SpentCoins[kong] += price
+            return
+        # If kong specific move, just that kong paid for it
+        else:
+            self.Coins[location.kong] -= price
+            self.SpentCoins[location.kong] += price
+            return
 
     def TimeAccess(self, region, time):
         """Check if a certain region has the given time of day access for current kong."""
@@ -1398,24 +1434,30 @@ class LogicVarHolder:
     def CanBuy(self, location, buy_empty=False):
         """Check if there are enough coins to purchase this location."""
         if self.spoiler.LocationList[location].vendor == VendorType.Cranky:
-            return self.crankyAccess
+            if not self.crankyAccess:
+                return False
         elif self.spoiler.LocationList[location].vendor == VendorType.Funky:
-            return self.funkyAccess
+            if not self.funkyAccess:
+                return False
         elif self.spoiler.LocationList[location].vendor == VendorType.Candy:
-            return self.candyAccess
-        return False
-        # return CanBuy(self.spoiler, location, self, buy_empty)
+            if not self.candyAccess:
+                return False
+        # Check coin requirements (shops_dont_cost only affects actual purchase, not logic)
+        return CanBuy(self.spoiler, location, self, buy_empty)
 
     def AnyKongCanBuy(self, location, buy_empty=False):
         """Check if there are enough coins for any owned kong to purchase this location."""
         if self.spoiler.LocationList[location].vendor == VendorType.Cranky:
-            return self.crankyAccess
+            if not self.crankyAccess:
+                return False
         elif self.spoiler.LocationList[location].vendor == VendorType.Funky:
-            return self.funkyAccess
+            if not self.funkyAccess:
+                return False
         elif self.spoiler.LocationList[location].vendor == VendorType.Candy:
-            return self.candyAccess
-        return False
-        # return AnyKongCanBuy(self.spoiler, location, self, buy_empty)
+            if not self.candyAccess:
+                return False
+        # Check coin requirements (shops_dont_cost only affects actual purchase, not logic)
+        return AnyKongCanBuy(self.spoiler, location, self, buy_empty)
 
     def CanAccessKRool(self):
         """Make sure that each required key has been turned in."""

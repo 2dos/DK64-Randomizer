@@ -1143,6 +1143,10 @@ class EnemiesSelected(OptionList):
     }
 
 
+class TooieStyleShops(Toggle):
+    """Insert text here"""
+
+    display_name = "Test"
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1235,6 +1239,7 @@ class DK64Options(PerGameCommonOptions):
     rainbowcoin_filler_weight: RainbowCoinFillerWeight
     alternate_minecart_mayhem: AlternateMinecartMayhem
     enemies_selected: EnemiesSelected
+    tooie_style_shops: TooieStyleShops
 
 
 dk64_option_groups: List[OptionGroup] = [

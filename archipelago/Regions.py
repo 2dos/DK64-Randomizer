@@ -165,7 +165,10 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
                 location_logics = [loc for loc in location_logics if loc.id not in (Locations.HelmChunky1, Locations.HelmChunky2)]
         collectibles = []
         if region_id in all_collectible_regions.keys():
-            collectibles = [col for col in all_collectible_regions[region_id] if col.type in (Collectibles.bunch, Collectibles.banana, Collectibles.balloon)]
+            collectible_types = [Collectibles.bunch, Collectibles.banana, Collectibles.balloon]
+            if logic_holder.settings.shops_dont_cost:
+                collectible_types.append(Collectibles.coin)
+            collectibles = [col for col in all_collectible_regions[region_id] if col.type in collectible_types]
         events = [event for event in region_obj.events]
 
         # if region_obj.level == Levels.Shops:
@@ -327,11 +330,10 @@ def create_region(
         elif collectible.type == Collectibles.balloon:
             quantity *= 10
             add_rule(location, lambda state, collectible_kong=collectible.kong: state.has(gun_for_kong[collectible_kong], player))  # We need to be sure we check for gun access for this balloon
-        add_rule(
-            location, lambda state, collectible_kong=collectible.kong: state.has(name_for_kong[collectible_kong], player)
-        )  # There's no FTA for collectibles - you *must* own the right kong to collect it
-        location.place_locked_item(DK64Item("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
-        # print("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity))
+        if collectible.type == Collectibles.coin:
+            location.place_locked_item(DK64Item("Collectible Coins, " + collectible.kong.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
+        else:
+            location.place_locked_item(DK64Item("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
         new_region.locations.append(location)
 
     for event in events:
