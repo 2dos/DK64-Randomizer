@@ -1693,10 +1693,6 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x80600DA2, Overlay.Static, 0x38, offset_dict)
     writeValue(ROM_COPY, 0x80600DA6, Overlay.Static, 0x70, offset_dict)
 
-    # Make Isles Fully Musical (make it never play song 0 as bgm in Isles)
-    writeHook(ROM_COPY, 0x80603784, Overlay.Static, "pleaseDontStopIslesMusic", offset_dict)
-    writeValue(ROM_COPY, 0x80603788, Overlay.Static, 0x3C018077, offset_dict, 4)  # LUI at, 0x8077
-
     # Soundplayer Fix
     writeValue(ROM_COPY, 0x80735C9E, Overlay.Static, 0xFFFF, offset_dict)  # initSoundPlayer creates the event
     writeValue(ROM_COPY, 0x80735D0E, Overlay.Static, 0xFFFF, offset_dict)  # __sndpVoiceHandler checks for the event

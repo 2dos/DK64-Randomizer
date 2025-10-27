@@ -87,7 +87,7 @@ typedef struct varspace {
 	/* 0x11E */ char tns_indicator;
 	/* 0x11F */ char unk_11F[7];
 	/* 0x126 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels
-	/* 0x127 */ char unk_127;
+	/* 0x127 */ char isles_cool_musical;
 	/* 0x128 */ char disable_drops; // 0 = Off. 1 = No Klump/Melon/Ammo Crate Drops
 	/* 0x129 */ unsigned char hash[5];
 	/* 0x12E */ char music_rando_on; // 0 = Off, 1 = Music Rando on, apply extra data shuffle

@@ -99,6 +99,18 @@
                         Disable Dynamic Reverb
                     </label>
                 </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                    title="If true, Isles will play music everywhere, even between the Islands, where in vanilla it'd be silent.">
+                        <input class="form-check-input"
+                        type="checkbox"
+                        name="isles_cool_musical"
+                        id="isles_cool_musical"
+                        display_name="DK Isles has full music coverage"
+                        value="True"/>
+                        DK Isles has full music coverage
+                    </label>
+                </div>
                 {{ dropdown_multiselector(excluded_songs, "excluded_songs", "Disabled Songs", "This will open a dropdown that will let you customize what songs are disabled.", 4) }}
                 {{ dropdown_multiselector(song_filters, "music_filtering", "Music Filtering", "This will open a dropdown that will let you customize how the game applies additional filters.") }}
             </div>

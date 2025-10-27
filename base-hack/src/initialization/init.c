@@ -228,6 +228,11 @@ void loadHooks(void) {
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
 	}
+	if(Rando.isles_cool_musical != 0){
+		// Make Isles Fully Musical (make it never play song 0 as bgm in Isles)
+		loadSingularHook(0x80603784, &pleaseDontStopIslesMusic);
+		*(int*)(0x80603788) = 0x3C018077;  // LUI at, 0x8077
+	}
 }
 
 void initHack(int source) {

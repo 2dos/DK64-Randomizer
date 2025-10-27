@@ -221,21 +221,21 @@ dynflagcheck_3:
 pleaseDontStopIslesMusic:
     addiu $at, $at, 0xA0A8  ; currentMap pointer
     lw $a0, 0x0 ($at)
-    lui $at, 0x22
-    bne $at, $a0, maybeOutsideKrem
+    addiu $at, $zero, 0x22
+    beq $at, $a0, mapIsIsles
     lbu $a0, 0xb ($s1)
     
     cancelTheSong:
     JAL cancelMusic
     nop
 
-    inIsles:
+    PDSTMReturn:  ; because "return" would possibly be too common
     j 0x8060378C
     nop
 
-    maybeOutsideKrem:
+    mapIsIsles:
     addiu $at, $zero, 0x6E
-    bne $at, $a0, inIsles
+    bne $at, $a0, PDSTMReturn
     nop
     b cancelTheSong
     nop
