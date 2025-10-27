@@ -240,6 +240,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "delayed_spoilerlog_release",
         "shockwave_status",  # Deprecated with starting move selector rework - this is now derived in the settings constructor
         "music_disable_reverb",
+        "isles_cool_musical",
         "archipelago",
         "bonus_barrel_rando",  # Deprecated with dropdown multiselector rework
         "hard_mode",  # Deprecated with dropdown multiselector rework
