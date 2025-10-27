@@ -296,7 +296,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 BooleanProperties(settings.song_speed_near_win, 0x1B4),  # Song Win Con Speedup
                 BooleanProperties(settings.disable_flavor_text, 0xAF),  # Disable Flavor Text
                 BooleanProperties(settings.rainbow_ammo, 0x112),  # Rainbow Ammo
-                BooleanProperties(settings.isles_cool_musical, 0x127)  # DK Isles always plays music
+                BooleanProperties(settings.isles_cool_musical, 0x127),  # DK Isles always plays music
             ]
 
             for prop in boolean_props:
