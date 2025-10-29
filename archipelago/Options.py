@@ -715,6 +715,27 @@ class ShopKeepers(Toggle):
     display_name = "Shop Keepers in Pool"
 
 
+class ShopPrices(Choice):
+    """Determines the difficulty/cost of shop purchases.
+    
+    Options:
+    - free: All shop items cost 0 coins.
+    - easy: Shop items cost coins, but total costs are reasonable (~90 coins max per kong).
+    - medium: Shop items cost moderate amounts (~180 coins max per kong).
+    - hard: Shop items cost significant amounts (~270 coins max per kong).
+    
+    Note: This only applies when TooieStyleShops is enabled. With TooieStyleShops disabled, shops are location checks.
+    Max coins available: DK-179, Diddy-183, Lanky-187, Tiny-198, Chunky-227.
+    """
+    
+    display_name = "Shop Prices"
+    option_free = 0
+    option_easy = 1
+    option_medium = 2
+    option_hard = 3
+    default = 1
+
+
 class HelmKeyLock(DefaultOnToggle):
     """Determines if a key will be locked at the end of Helm."""
 
@@ -1142,11 +1163,6 @@ class EnemiesSelected(OptionList):
         "GuardGetOut",
     }
 
-
-class TooieStyleShops(Toggle):
-    """Insert text here"""
-
-    display_name = "Test"
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1239,7 +1255,7 @@ class DK64Options(PerGameCommonOptions):
     rainbowcoin_filler_weight: RainbowCoinFillerWeight
     alternate_minecart_mayhem: AlternateMinecartMayhem
     enemies_selected: EnemiesSelected
-    tooie_style_shops: TooieStyleShops
+    shop_prices: ShopPrices
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1287,6 +1303,7 @@ dk64_option_groups: List[OptionGroup] = [
             HalfMedals,
             SmallerShops,
             SharedShops,
+            ShopPrices,
             SnideMaximum,
         ],
     ),

@@ -264,6 +264,7 @@ def get_default_settings() -> dict:
         "serious_hints": True,
         "shop_indicator": True,
         "shorten_boss": True,
+        "shops_dont_cost": True,
         "shuffle_helm_location": False,
         "shuffle_shops": False,
         "smaller_shops": False,
@@ -333,9 +334,6 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     if options.enable_cutscenes.value:
         settings_dict["more_cutscene_skips"] = ExtraCutsceneSkips.press
     settings_dict["alt_minecart_mayhem"] = options.alternate_minecart_mayhem.value
-    if options.tooie_style_shops.value:
-        settings_dict["shops_dont_cost"] = True
-        settings_dict["random_prices"] = RandomPrices.medium
 
 def apply_blocker_settings(settings_dict: dict, options) -> None:
     """Apply level blocker settings."""
