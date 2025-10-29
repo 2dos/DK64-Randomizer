@@ -716,17 +716,7 @@ class ShopKeepers(Toggle):
 
 
 class ShopPrices(Choice):
-    """Determines the difficulty/cost of shop purchases.
-    
-    Options:
-    - free: All shop items cost 0 coins.
-    - easy: Shop items cost coins, but total costs are reasonable (~90 coins max per kong).
-    - medium: Shop items cost moderate amounts (~180 coins max per kong).
-    - hard: Shop items cost significant amounts (~270 coins max per kong).
-    
-    Note: This only applies when TooieStyleShops is enabled. With TooieStyleShops disabled, shops are location checks.
-    Max coins available: DK-179, Diddy-183, Lanky-187, Tiny-198, Chunky-227.
-    """
+    """Determines the cost of shop purchases."""
     
     display_name = "Shop Prices"
     option_free = 0
