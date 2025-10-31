@@ -111,9 +111,13 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
     # Pick random 10 shops to make shared
     # Only if shared shops are enabled in settings
     if options.enable_shared_shops.value:
-        all_shared_shops = list(SharedShopLocations)
-        logic_holder.settings.random.shuffle(all_shared_shops)
-        logic_holder.available_shared_shops = set(all_shared_shops[:10])  # Select 10 random shared shops
+        # If not set (e.g., free prices), select them now
+        if hasattr(logic_holder.spoiler.settings, 'selected_shared_shops') and logic_holder.spoiler.settings.selected_shared_shops:
+            logic_holder.available_shared_shops = logic_holder.spoiler.settings.selected_shared_shops
+        else:
+            all_shared_shops = list(SharedShopLocations)
+            logic_holder.settings.random.shuffle(all_shared_shops)
+            logic_holder.available_shared_shops = set(all_shared_shops[:10])
 
         # Track which vendor/level combinations have shared shops to make individual shops inaccessible
         shared_shop_vendors = set()
@@ -166,8 +170,7 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
         collectibles = []
         if region_id in all_collectible_regions.keys():
             collectible_types = [Collectibles.bunch, Collectibles.banana, Collectibles.balloon]
-            if logic_holder.settings.shops_dont_cost:
-                collectible_types.append(Collectibles.coin)
+            collectible_types.append(Collectibles.coin)
             collectibles = [col for col in all_collectible_regions[region_id] if col.type in collectible_types]
         events = [event for event in region_obj.events]
 

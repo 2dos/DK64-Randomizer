@@ -1391,17 +1391,7 @@ class LogicVarHolder:
         if self.settings.shops_dont_cost:
             # If shops don't cost anything, then don't deduct this cost
             return
-        # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
-        if location.kong == Kongs.any:
-            for kong in range(0, 5):
-                self.Coins[kong] -= price
-                self.SpentCoins[kong] += price
-            return
-        # If kong specific move, just that kong paid for it
-        else:
-            self.Coins[location.kong] -= price
-            self.SpentCoins[location.kong] += price
-            return
+        return
 
     def TimeAccess(self, region, time):
         """Check if a certain region has the given time of day access for current kong."""
@@ -1429,10 +1419,9 @@ class LogicVarHolder:
             return self.chunky and (location.kong == Kongs.chunky or (self.donkey and self.grab))
         return self.HasKong(location.kong)
 
-    # V1 LIMITATION: Shops must be free to avoid being locked out by coin logic - undoing this will require substantial safeguards or a great deal of caution
-    # The current workaround also needs to check if you own the right shopkeeper
-    def CanBuy(self, location, buy_empty=False):
+    def CanBuy(self, location, buy_empty=True):
         """Check if there are enough coins to purchase this location."""
+        # Check shopkeeper access first
         if self.spoiler.LocationList[location].vendor == VendorType.Cranky:
             if not self.crankyAccess:
                 return False
@@ -1445,8 +1434,9 @@ class LogicVarHolder:
         # Check coin requirements (shops_dont_cost only affects actual purchase, not logic)
         return CanBuy(self.spoiler, location, self, buy_empty)
 
-    def AnyKongCanBuy(self, location, buy_empty=False):
+    def AnyKongCanBuy(self, location, buy_empty=True):
         """Check if there are enough coins for any owned kong to purchase this location."""
+        # Check shopkeeper access first
         if self.spoiler.LocationList[location].vendor == VendorType.Cranky:
             if not self.crankyAccess:
                 return False
