@@ -112,7 +112,7 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
     # Only if shared shops are enabled in settings
     if options.enable_shared_shops.value:
         # If not set (e.g., free prices), select them now
-        if hasattr(logic_holder.spoiler.settings, 'selected_shared_shops') and logic_holder.spoiler.settings.selected_shared_shops:
+        if hasattr(logic_holder.spoiler.settings, "selected_shared_shops") and logic_holder.spoiler.settings.selected_shared_shops:
             logic_holder.available_shared_shops = logic_holder.spoiler.settings.selected_shared_shops
         else:
             all_shared_shops = list(SharedShopLocations)

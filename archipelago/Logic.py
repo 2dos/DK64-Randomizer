@@ -427,7 +427,7 @@ class LogicVarHolder:
             quantity = int(item_data[3])
             colored_banana_counts[level][kong] += quantity
         self.ColoredBananas = colored_banana_counts
-        
+
         # Track coin collectibles
         for item_name in coinArchItems:
             # Coins are carefully named in the following format:

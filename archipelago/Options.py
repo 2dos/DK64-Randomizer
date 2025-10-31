@@ -717,7 +717,7 @@ class ShopKeepers(Toggle):
 
 class ShopPrices(Choice):
     """Determines the cost of shop purchases."""
-    
+
     display_name = "Shop Prices"
     option_free = 0
     option_easy = 1
@@ -1152,6 +1152,7 @@ class EnemiesSelected(OptionList):
         "GuardTag",
         "GuardGetOut",
     }
+
 
 @dataclass
 class DK64Options(PerGameCommonOptions):
