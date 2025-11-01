@@ -225,6 +225,9 @@ def create_region(
             # Skip enemy photos if the win condition is not Krem Kapture.
             if location_obj.type == Types.EnemyPhoto and logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
                 continue
+            # Skip hint locations if hints are not in the pool
+            if location_obj.type == Types.Hint and Types.Hint not in logic_holder.settings.shuffled_location_types:
+                continue
             # Skip locations marked as inaccessible by smaller shops
             if hasattr(location_obj, "smallerShopsInaccessible") and location_obj.smallerShopsInaccessible and logic_holder.settings.smaller_shops:
                 continue
@@ -327,6 +330,8 @@ def create_region(
             set_rule(location, lambda state: True)
         else:
             set_rule(location, lambda state, player=player, collectible=collectible: hasDK64RCollectible(state, player, collectible))
+        kong_name = name_for_kong[collectible.kong]
+        add_rule(location, lambda state, kong_name=kong_name: state.has(kong_name, player))
         quantity = collectible.amount
         if collectible.type == Collectibles.bunch:
             quantity *= 5

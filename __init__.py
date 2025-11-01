@@ -717,21 +717,16 @@ if baseclasses_loaded:
             """Calculate average price per shop for each kong."""
             avg_prices_per_kong = {}
 
-            # Rainbow coins: 16 total, each gives 5 coins to ALL kongs
-            # This means 80 coins per kong are from rainbow coins (shared across all kongs)
-            rainbow_coin_total = 16 * 5
-
             for kong in Kongs:
                 if kong == Kongs.any or shops_per_kong[kong] == 0:
                     continue
 
-                # Calculate target based on TOTAL coins (including rainbow coins)
-                # Then subtract rainbow coins to get budget for kong-specific shops
-                total_budget = max_coins[kong] * percentage
-                kong_specific_budget = total_budget - rainbow_coin_total
+                # Calculate budget based on max coins available to this kong
+                kong_budget = max_coins[kong] * percentage
 
-                # Use 75% safety margin and ensure we don't go negative
-                target = max(1, kong_specific_budget * 0.75)
+                # Use higher safety margins: 80% for easy/medium, 95% for hard mode
+                safety_margin = 0.80 if percentage < 0.85 else 0.95
+                target = max(1, kong_budget * safety_margin)
                 avg_prices_per_kong[kong] = target / shops_per_kong[kong]
 
             return avg_prices_per_kong
@@ -784,6 +779,7 @@ if baseclasses_loaded:
             This mimics the logic from determineFinalPriceAssortment:
             - Progressive items add to all kongs' totals, price stored is average of all totals
             - Kong-specific shops add to that kong's total only
+            - Cumulative prices are capped at max_cumulative_per_kong to ensure accessibility
             """
             price_assignment = []
 
@@ -813,10 +809,14 @@ if baseclasses_loaded:
                     for kong_index in range(5):
                         current_kong_total += total_cost[kong_index]
                         total_cost[kong_index] += written_price
+                        # Cap at maximum affordable amount
+                        total_cost[kong_index] = min(total_cost[kong_index], max_cumulative_per_kong[kong_index])
                     written_price = int(current_kong_total / 5)
                 else:
                     # Kong-specific shop - add to that kong's total
                     total_cost[kong] += written_price
+                    # Cap at maximum affordable amount
+                    total_cost[kong] = min(total_cost[kong], max_cumulative_per_kong[kong])
                     written_price = total_cost[kong]
 
                 # Store cumulative price
@@ -842,11 +842,11 @@ if baseclasses_loaded:
 
             # Constants
             MAX_COINS = {
-                Kongs.donkey: 179,
+                Kongs.donkey: 178,
                 Kongs.diddy: 183,
-                Kongs.lanky: 187,
+                Kongs.lanky: 190,
                 Kongs.tiny: 198,
-                Kongs.chunky: 227,
+                Kongs.chunky: 219,
             }
 
             PRICE_PERCENTAGES = {
@@ -860,7 +860,8 @@ if baseclasses_loaded:
             shopprices = self.options.shop_prices.value
             percentage = PRICE_PERCENTAGES[shopprices]
             min_max_coins = min(MAX_COINS.values())
-            max_cumulative_per_kong = {kong: int(MAX_COINS[kong] * percentage) for kong in MAX_COINS}
+            # Cap cumulative prices at actual max coins (rainbow coins are tracked separately as collectibles)
+            max_cumulative_per_kong = {kong: MAX_COINS[kong] for kong in MAX_COINS}
 
             # Categorize shops
             shared_shop_vendors, available_shared_shops = self._get_shared_shop_vendors(Kongs, Types)
