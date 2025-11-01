@@ -723,16 +723,16 @@ class ShopPrices(Choice):
 
     Difficulty Percentages:
     - free (0%): All shops cost 0 coins
-    - easy (35%): Lower coin requirements, casual gameplay
+    - low (35%): Lower coin requirements, casual gameplay
     - medium (55%): Moderate coin requirements, balanced difficulty
-    - hard (85%): High coin requirements, requires collecting most coins
+    - high (85%): High coin requirements, requires collecting most coins
     """
 
     display_name = "Shop Prices"
     option_free = 0
-    option_easy = 1
+    option_low = 1
     option_medium = 2
-    option_hard = 3
+    option_high = 3
     default = 1
 
 
