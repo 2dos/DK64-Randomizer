@@ -1312,7 +1312,7 @@ dk64_option_groups: List[OptionGroup] = [
             SmallerShops,
             SharedShops,
         ]
-    )
+    ),
     OptionGroup(
         "Levels/Barriers",
         [

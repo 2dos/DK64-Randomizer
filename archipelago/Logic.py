@@ -1431,7 +1431,6 @@ class LogicVarHolder:
         elif self.spoiler.LocationList[location].vendor == VendorType.Candy:
             if not self.candyAccess:
                 return False
-        # Check coin requirements (shops_dont_cost only affects actual purchase, not logic)
         return CanBuy(self.spoiler, location, self, buy_empty)
 
     def AnyKongCanBuy(self, location, buy_empty=True):
@@ -1446,7 +1445,6 @@ class LogicVarHolder:
         elif self.spoiler.LocationList[location].vendor == VendorType.Candy:
             if not self.candyAccess:
                 return False
-        # Check coin requirements (shops_dont_cost only affects actual purchase, not logic)
         return AnyKongCanBuy(self.spoiler, location, self, buy_empty)
 
     def CanAccessKRool(self):
