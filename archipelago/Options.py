@@ -720,7 +720,7 @@ class ShopPrices(Choice):
 
     Shops uses the standalone Tooie Shops settings making it so purchases don't deduct your coins when making purchases.
     Prices are randomized within difficulty-based budgets calculated from each kong's total available coins.
-    
+
     Difficulty Percentages:
     - free (0%): All shops cost 0 coins
     - easy (35%): Lower coin requirements, casual gameplay
@@ -1311,7 +1311,7 @@ dk64_option_groups: List[OptionGroup] = [
             ShopPrices,
             SmallerShops,
             SharedShops,
-        ]
+        ],
     ),
     OptionGroup(
         "Levels/Barriers",
