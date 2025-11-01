@@ -1011,7 +1011,7 @@ class RockfallTrapWeight(BaseTrapWeight):
 
 
 class DisableTagTrapWeight(BaseTrapWeight):
-    """Likelihood of receiving a trap which slips a kong on a banana peel."""
+    """Likelihood of receiving a trap which tags to a different Kong and also disabled Tagging for 15 seconds."""
 
     display_name = "Disable Tag Trap Weight"
 
