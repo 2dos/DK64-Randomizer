@@ -577,9 +577,11 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
             if data.level == level_7 and data.item == Items.FungiForestKey:
                 print("Placement invalid because of Key 5 being in Level 7")
                 return False
-        for kong_index, kong_locs in enumerate(kong_shop_locations):
-            if loc in kong_locs and data.item == kong_items[kong_index]:
-                print("Placement invalid due to shop in shop location")
+        # Check if any kong is placed in a shop location associated with that kong
+        if data.item in kong_items:
+            kong_item_index = kong_items.index(data.item)
+            if loc in kong_shop_locations[kong_item_index]:
+                print("Placement invalid due to kong in their own shop location")
                 return False
     # Blasts/Arcade R2 can't contain DK
     non_dk_locations = [
