@@ -52,7 +52,6 @@ from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Types import Types, BarrierItems
-from randomizer.Enums.VendorType import VendorType
 from randomizer.Lists.CustomLocations import resetCustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Item import ItemList
