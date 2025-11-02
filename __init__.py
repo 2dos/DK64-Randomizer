@@ -651,6 +651,267 @@ if baseclasses_loaded:
                 # "death_link": self.options.death_link.value,
             }
 
+        def _get_shared_shop_vendors(self, Kongs, Types):
+            """Identify vendor/level combinations that have shared shops."""
+            from randomizer.Lists.Location import SharedShopLocations
+
+            shared_shop_vendors = set()
+
+            if not self.options.enable_shared_shops.value:
+                if not hasattr(self.spoiler.settings, "selected_shared_shops"):
+                    self.spoiler.settings.selected_shared_shops = set()
+                return shared_shop_vendors, set()
+
+            # Get or create the set of available shared shops
+            if hasattr(self.spoiler.settings, "selected_shared_shops") and self.spoiler.settings.selected_shared_shops:
+                available_shared_shops = self.spoiler.settings.selected_shared_shops
+            else:
+                all_shared_shops = list(SharedShopLocations)
+                self.random.shuffle(all_shared_shops)
+                available_shared_shops = set(all_shared_shops[:10])
+                self.spoiler.settings.selected_shared_shops = available_shared_shops
+
+            # Build set of vendor/level combinations
+            for location_id, location in self.spoiler.LocationList.items():
+                if location.type == Types.Shop and location.kong == Kongs.any:
+                    if location_id in available_shared_shops:
+                        shared_shop_vendors.add((location.level, location.vendor))
+
+            return shared_shop_vendors, available_shared_shops
+
+        def _categorize_shop_locations(self, shared_shop_vendors, available_shared_shops, Kongs, Types):
+            """Categorize shops into included and excluded based on settings."""
+            shop_locations = []
+            excluded_shop_locations = []
+            shops_per_kong = {kong: 0 for kong in Kongs}
+
+            for location_id, location in self.spoiler.LocationList.items():
+                if location.type != Types.Shop:
+                    continue
+
+                # Check if shop is excluded by smaller_shops setting
+                if hasattr(location, "smallerShopsInaccessible") and location.smallerShopsInaccessible and self.options.smaller_shops.value:
+                    excluded_shop_locations.append(location_id)
+                    continue
+
+                # Check if shared shop is excluded
+                if location.kong == Kongs.any:
+                    if not self.options.enable_shared_shops.value or location_id not in available_shared_shops:
+                        excluded_shop_locations.append(location_id)
+                        continue
+
+                # Check if kong shop is blocked by a shared shop at same vendor/level
+                if location.kong != Kongs.any and self.options.enable_shared_shops.value:
+                    if (location.level, location.vendor) in shared_shop_vendors:
+                        excluded_shop_locations.append(location_id)
+                        continue
+
+                # Shop is included
+                shop_locations.append(location_id)
+                if location.kong != Kongs.any:
+                    shops_per_kong[location.kong] += 1
+
+            return shop_locations, excluded_shop_locations, shops_per_kong
+
+        def _calculate_kong_averages(self, shops_per_kong, max_coins, percentage, min_max_coins, Kongs):
+            """Calculate average price per shop for each kong."""
+            avg_prices_per_kong = {}
+
+            for kong in Kongs:
+                if kong == Kongs.any or shops_per_kong[kong] == 0:
+                    continue
+
+                # Calculate budget based on max coins available to this kong
+                kong_budget = max_coins[kong] * percentage
+
+                # Use higher safety margins: 80% for easy/medium, 95% for hard mode
+                safety_margin = 0.80 if percentage < 0.85 else 0.95
+                target = max(1, kong_budget * safety_margin)
+                avg_prices_per_kong[kong] = target / shops_per_kong[kong]
+
+            return avg_prices_per_kong
+
+        def _generate_individual_prices(self, shop_locations, avg_prices_per_kong, progressive_avg_price, progressive_stddev, shopprices, DK64RItems, Kongs):
+            """Generate random individual prices for shops and progressive items."""
+            individual_prices = {}
+
+            # Generate shop prices
+            for location_id in shop_locations:
+                location = self.spoiler.LocationList[location_id]
+
+                if shopprices == 0:
+                    individual_prices[location_id] = 0
+                    continue
+
+                # Determine average and stddev for this shop
+                if location.kong == Kongs.any:
+                    kong_avg = progressive_avg_price
+                    kong_stddev = progressive_stddev
+                else:
+                    kong_avg = avg_prices_per_kong.get(location.kong, progressive_avg_price)
+                    kong_stddev = kong_avg * 0.3
+
+                price = round(self.random.normalvariate(kong_avg, kong_stddev))
+                price = max(1, min(price, int(kong_avg * 2)))
+                individual_prices[location_id] = price
+
+            progressive_moves = {
+                DK64RItems.ProgressiveSlam: 3,
+                DK64RItems.ProgressiveAmmoBelt: 2,
+                DK64RItems.ProgressiveInstrumentUpgrade: 3,
+            }
+
+            for item, count in progressive_moves.items():
+                individual_prices[item] = []
+                for _ in range(count):
+                    if shopprices == 0:
+                        individual_prices[item].append(0)
+                    else:
+                        price = round(self.random.normalvariate(progressive_avg_price, progressive_stddev))
+                        price = max(1, min(price, int(progressive_avg_price * 2)))
+                        individual_prices[item].append(price)
+
+            return individual_prices
+
+        def _convert_to_cumulative_prices(self, individual_prices, shop_locations, max_cumulative_per_kong, Kongs):
+            """Convert individual prices to cumulative running totals per kong.
+
+            This mimics the logic from determineFinalPriceAssortment:
+            - Progressive items add to all kongs' totals, price stored is average of all totals
+            - Kong-specific shops add to that kong's total only
+            - Cumulative prices are capped at max_cumulative_per_kong to ensure accessibility
+            """
+            price_assignment = []
+
+            # Build list of price assignments
+            for key, value in individual_prices.items():
+                if isinstance(value, list):
+                    # Progressive move - add multiple entries
+                    for price in value:
+                        price_assignment.append({"is_prog": True, "cost": price, "item": key, "kong": Kongs.any})
+                elif key in shop_locations:
+                    # Shop location
+                    location = self.spoiler.LocationList[key]
+                    price_assignment.append({"is_prog": False, "cost": value, "item": key, "kong": location.kong})
+
+            # Shuffle and calculate cumulative prices
+            self.random.shuffle(price_assignment)
+            total_cost = [0] * 5
+            cumulative_prices = {}
+
+            for assignment in price_assignment:
+                kong = assignment["kong"]
+                written_price = assignment["cost"]
+
+                if kong == Kongs.any:
+                    # Progressive item - add to all kongs, price is average of current totals
+                    current_kong_total = 0
+                    for kong_index in range(5):
+                        current_kong_total += total_cost[kong_index]
+                        total_cost[kong_index] += written_price
+                        # Cap at maximum affordable amount
+                        total_cost[kong_index] = min(total_cost[kong_index], max_cumulative_per_kong[kong_index])
+                    written_price = int(current_kong_total / 5)
+                else:
+                    # Kong-specific shop - add to that kong's total
+                    total_cost[kong] += written_price
+                    # Cap at maximum affordable amount
+                    total_cost[kong] = min(total_cost[kong], max_cumulative_per_kong[kong])
+                    written_price = total_cost[kong]
+
+                # Store cumulative price
+                key = assignment["item"]
+                if assignment["is_prog"]:
+                    if key not in cumulative_prices:
+                        cumulative_prices[key] = []
+                    cumulative_prices[key].append(written_price)
+                else:
+                    cumulative_prices[key] = written_price
+
+            return cumulative_prices
+
+        def _generate_archipelago_prices(self):
+            """Generate custom shop prices for Archipelago.
+
+            Generates individual prices for each shop and progressive item, then converts them
+            to cumulative prices (running totals) per kong. Excluded shops are set to 0 cost.
+            """
+            from randomizer.Enums.Items import Items as DK64RItems
+            from randomizer.Lists.Item import ItemList as DK64RItemList
+            from randomizer.Enums.Kongs import Kongs
+
+            # Constants
+            MAX_COINS = {
+                Kongs.donkey: 178,
+                Kongs.diddy: 183,
+                Kongs.lanky: 190,
+                Kongs.tiny: 198,
+                Kongs.chunky: 219,
+            }
+
+            PRICE_PERCENTAGES = {
+                0: 0.0,  # free
+                1: 0.35,  # easy
+                2: 0.55,  # medium
+                3: 0.85,  # hard
+            }
+
+            # Get settings
+            shopprices = self.options.shop_prices.value
+            percentage = PRICE_PERCENTAGES[shopprices]
+            min_max_coins = min(MAX_COINS.values())
+            # Cap cumulative prices at actual max coins (rainbow coins are tracked separately as collectibles)
+            max_cumulative_per_kong = {kong: MAX_COINS[kong] for kong in MAX_COINS}
+
+            # Categorize shops
+            shared_shop_vendors, available_shared_shops = self._get_shared_shop_vendors(Kongs, Types)
+            shop_locations, excluded_shop_locations, shops_per_kong = self._categorize_shop_locations(shared_shop_vendors, available_shared_shops, Kongs, Types)
+
+            # Calculate pricing averages
+            avg_prices_per_kong = self._calculate_kong_averages(shops_per_kong, MAX_COINS, percentage, min_max_coins, Kongs)
+            # Progressive items use 25% of budget, divided among 8 total progressive items
+            progressive_avg_price = (min_max_coins * percentage * 0.25) / 8 if shopprices > 0 else 0
+            progressive_stddev = progressive_avg_price * 0.3
+
+            # Generate individual prices
+            individual_prices = self._generate_individual_prices(shop_locations, avg_prices_per_kong, progressive_avg_price, progressive_stddev, shopprices, DK64RItems, Kongs)
+
+            # Add 0 prices for non-shop items and excluded shops
+            for item_id in DK64RItemList.keys():
+                if item_id not in individual_prices:
+                    individual_prices[item_id] = 0
+
+            for location_id in excluded_shop_locations:
+                individual_prices[location_id] = 0
+
+            # Store and finalize prices
+            self.spoiler.settings.original_prices = individual_prices.copy()
+
+            if shopprices > 0:
+                # Convert to cumulative prices
+                cumulative_prices = self._convert_to_cumulative_prices(individual_prices, shop_locations, max_cumulative_per_kong, Kongs)
+
+                # Add 0 prices for items not in shops
+                for item_id in DK64RItemList.keys():
+                    if item_id not in cumulative_prices:
+                        cumulative_prices[item_id] = 0
+
+                # Add 0 prices for all location IDs not already priced
+                for location_id in self.spoiler.LocationList.keys():
+                    if location_id not in cumulative_prices:
+                        cumulative_prices[location_id] = 0
+
+                for location_id in excluded_shop_locations:
+                    cumulative_prices[location_id] = 0
+
+                self.spoiler.settings.prices = cumulative_prices
+            else:
+                # Free prices - ensure all locations exist with 0 cost
+                for location_id in self.spoiler.LocationList.keys():
+                    if location_id not in individual_prices:
+                        individual_prices[location_id] = 0
+                self.spoiler.settings.prices = individual_prices.copy()
+
         def generate_early(self):
             """Generate the world."""
             # Use the fillsettings function to configure all settings
@@ -661,6 +922,16 @@ if baseclasses_loaded:
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
 
             Generate_Spoiler(self.spoiler)
+            if self.options.enable_shared_shops.value:
+                from randomizer.Lists.Location import SharedShopLocations
+
+                all_shared_shops = list(SharedShopLocations)
+                self.random.shuffle(all_shared_shops)
+                self.spoiler.settings.selected_shared_shops = set(all_shared_shops[:10])
+            else:
+                self.spoiler.settings.selected_shared_shops = set()
+
+            self._generate_archipelago_prices()
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
             if self.spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
                 # UT should not reshuffle the level order, but should update the exits
@@ -682,6 +953,17 @@ if baseclasses_loaded:
                         if passthrough["JunkedLocations"]:
                             for loc in passthrough["JunkedLocations"]:
                                 del self.location_name_to_id[loc]
+                        if passthrough.get("ShopPrices"):
+                            # Restore shop prices from slot data (shop locations only)
+                            restored_prices = {}
+                            for location_name, price in passthrough["ShopPrices"].items():
+                                # Convert location name string back to enum
+                                try:
+                                    location_id = DK64RLocations[location_name]
+                                    restored_prices[location_id] = price
+                                except (KeyError, AttributeError):
+                                    print(f"Warning: Could not restore price for location {location_name}")
+                            self.spoiler.settings.prices = restored_prices
 
             # Handle hint preparation by initiating some variables
             self.hint_data = {
@@ -917,6 +1199,8 @@ if baseclasses_loaded:
                 spoiler.majorItems = IdentifyMajorItems(spoiler)
                 if ap_item_is_major_item and ap_major_item_type is not None:
                     spoiler.majorItems.append(ap_major_item_type)
+
+                # Generate patch with cumulative prices (what players see in-game)
                 patch_data, _ = patching_response(spoiler)
                 lanky = self.update_seed_results(patch_data, spoiler, self.player)
 
@@ -1234,6 +1518,15 @@ if baseclasses_loaded:
                 "Autocomplete": self.options.auto_complete_bonus_barrels.value,
                 "HelmBarrelCount": self.options.helm_room_bonus_count.value,
                 "SmallerShopsData": self.get_smaller_shops_data(),
+                "ShopPrices": (
+                    {
+                        (location_id.name if hasattr(location_id, "name") else str(location_id)): price
+                        for location_id, price in self.spoiler.settings.prices.items()
+                        if location_id in self.spoiler.LocationList and self.spoiler.LocationList[location_id].type == Types.Shop
+                    }
+                    if hasattr(self.spoiler.settings, "prices")
+                    else {}
+                ),
                 "HintLocationMapping": hint_mapping,
                 "hints": {str(location): hint_data for location, hint_data in dynamic_hints.items()},
             }
@@ -1294,6 +1587,53 @@ if baseclasses_loaded:
             spoiler_handle.write("Randomizer Version: " + self.spoiler.settings.version)
             spoiler_handle.write("\n")
             spoiler_handle.write("APWorld Version: " + ap_version)
+            spoiler_handle.write("\n")
+
+            # Write shop prices
+            spoiler_handle.write("\n")
+            spoiler_handle.write("=== Shop Prices ===\n")
+
+            # Get price shopprices name
+            price_shopprices_names = {0: "Free", 1: "Easy", 2: "Medium", 3: "Hard"}
+            shopprices_name = price_shopprices_names.get(self.options.shop_prices.value, "Unknown")
+            spoiler_handle.write(f"Price Difficulty: {shopprices_name}\n")
+            spoiler_handle.write("\n")
+
+            # Progressive moves
+            from randomizer.Enums.Items import Items as DK64RItems
+
+            progressive_moves = {
+                DK64RItems.ProgressiveSlam: "Progressive Slam",
+                DK64RItems.ProgressiveAmmoBelt: "Progressive Ammo Belt",
+                DK64RItems.ProgressiveInstrumentUpgrade: "Progressive Instrument Upgrade",
+            }
+
+            spoiler_handle.write("Progressive Move Prices:\n")
+            for item_id, item_name in progressive_moves.items():
+                if item_id in self.spoiler.settings.prices:
+                    prices = self.spoiler.settings.prices[item_id]
+                    if isinstance(prices, list):
+                        price_str = ", ".join([str(p) for p in prices])
+                        spoiler_handle.write(f"  {item_name}: [{price_str}]\n")
+
+            spoiler_handle.write("\n")
+            spoiler_handle.write("Shop Location Prices:\n")
+
+            # Organize shop locations by vendor and level
+            from randomizer.Enums.Locations import Locations as DK64RLocations
+
+            shop_prices_by_location = []
+            for location_id, location in self.spoiler.LocationList.items():
+                if location.type == Types.Shop and location_id in self.spoiler.settings.prices:
+                    price = self.spoiler.settings.prices[location_id]
+                    shop_prices_by_location.append((location.name, price))
+
+            # Sort alphabetically by location name
+            shop_prices_by_location.sort(key=lambda x: x[0])
+
+            for location_name, price in shop_prices_by_location:
+                spoiler_handle.write(f"  {location_name}: {price} coins\n")
+
             spoiler_handle.write("\n")
 
         def create_item(self, name: str, force_non_progression=False) -> Item:
@@ -1472,6 +1812,12 @@ if baseclasses_loaded:
             else:
                 smaller_shops_data = {}
 
+            # Added shop prices for UT
+            if self.version_check(version, "1.4.11"):
+                shop_prices = slot_data.get("ShopPrices", {})
+            else:
+                shop_prices = {}
+
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
@@ -1504,4 +1850,5 @@ if baseclasses_loaded:
             relevant_data["HelmBarrelCount"] = helm_barrel_count
             relevant_data["HalfMedals"] = half_medals
             relevant_data["SmallerShopsData"] = smaller_shops_data
+            relevant_data["ShopPrices"] = shop_prices
             return relevant_data

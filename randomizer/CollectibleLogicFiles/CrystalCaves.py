@@ -58,7 +58,7 @@ LogicRegions = {
     Regions.CavesBonusCave: [
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),  # Warp 3 cave
 
-        Collectible(Collectibles.coin, Kongs.chunky, lambda _: True, None, 3),  # Warp 3 cave
+        Collectible(Collectibles.coin, Kongs.chunky, lambda _: True, None, 5),  # Warp 3 cave
     ],
     Regions.CavesBlueprintPillar: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda _: True, None, 4),  # Warp 5 platform
