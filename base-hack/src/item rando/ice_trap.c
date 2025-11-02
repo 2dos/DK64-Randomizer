@@ -662,6 +662,11 @@ int canLoadIceTrap(ICE_TRAP_TYPES trap_type) {
             }
         }
     }
+    if (trap_type == ICETRAP_ANIMALS) {
+        if (Player->characterID >= 6) {
+            return 0;
+        }
+    }
     return 1;
 }
 
