@@ -199,9 +199,11 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.RainbowCoin:
                 num_coins = 16
-                if not (world.options.goal == Goal.option_rainbow_coins or world.options.enable_chaos_blockers):
+                if world.options.shop_prices != 0:
+                    ap_item.classification = ItemClassification.progression_skip_balancing
+                elif not (world.options.goal == Goal.option_rainbow_coins or world.options.enable_chaos_blockers):
                     ap_item.classification = ItemClassification.filler
-                elif world.options.goal == Goal.option_rainbow_coins and not world.options.enable_chaos_blockers:
+                else:
                     ap_item.classification = ItemClassification.progression_skip_balancing
                 for _ in range(num_coins):
                     item_table.append(copy.copy(ap_item))
