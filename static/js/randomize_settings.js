@@ -105,7 +105,7 @@ function random_multi_select_setting(weights_obj) {
     /** Generate a random list of values for a multi-select setting. */
     const settingList = [];
     for (const [option, weight] of Object.entries(weights_obj)) {
-        let randValue = Math.random();
+        let randValue = Math.random() * 100.0;
         if (randValue <= weight) {
             settingList.push(option);
         }
