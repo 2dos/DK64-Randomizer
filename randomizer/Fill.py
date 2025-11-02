@@ -607,16 +607,6 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
                 print(f"Placement invalid: {kong_items[data.kong].name} is on their own medal location at {data.name}")
                 return False
 
-        # Fairy camera cannot be on fairy locations
-        if data.type == Types.Fairy and data.item == Items.Camera:
-            print(f"Placement invalid: Fairy Camera is on a fairy location at {data.name}")
-            return False
-
-        # Shockwave cannot be on dirt patch locations
-        if data.type == Types.RainbowCoin and data.item == Items.Shockwave:
-            print(f"Placement invalid: Shockwave is on a dirt patch location at {data.name}")
-            return False
-
     # Blasts/Arcade R2 can't contain DK
     non_dk_locations = [
         Locations.JapesDonkeyBaboonBlast,
