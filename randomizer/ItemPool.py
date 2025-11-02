@@ -212,7 +212,6 @@ def AllItemsUnrestricted(settings):
     allItems.extend(BoulderItems())
     allItems.extend(EnemyItems())
     allItems.extend(FakeItems(settings))
-    allItems.extend(JunkItems())
     allItems.extend(DonkeyMoves)
     allItems.extend(DiddyMoves)
     allItems.extend(LankyMoves)
@@ -280,9 +279,7 @@ def AllItems(settings):
         allItems.extend(SnideItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems(settings))
-    if Types.JunkItem in settings.shuffled_location_types:
-        allItems.extend(JunkItems())
-    filler_types = [x for x in [Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerPearl, Types.FillerMedal, Types.FillerRainbowCoin] if x in settings.shuffled_location_types]
+    filler_types = [x for x in [Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerPearl, Types.FillerMedal, Types.FillerRainbowCoin, Types.JunkItem] if x in settings.shuffled_location_types]
     if len(filler_types) > 0:
         allItems.extend(FillerItems(settings))
     if settings.move_rando != MoveRando.off:
@@ -352,9 +349,7 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(SnideItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems(settings))
-    if Types.JunkItem in settings.shuffled_location_types:
-        allItems.extend(JunkItems())
-    filler_types = [x for x in [Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerPearl, Types.FillerMedal, Types.FillerRainbowCoin] if x in settings.shuffled_location_types]
+    filler_types = [x for x in [Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerPearl, Types.FillerMedal, Types.FillerRainbowCoin, Types.JunkItem] if x in settings.shuffled_location_types]
     if len(filler_types) > 0:
         allItems.extend(FillerItems(settings))
     return allItems
@@ -672,24 +667,71 @@ def FillerItems(settings):
         Types.FillerPearl: Items.FillerPearl,
         Types.FillerMedal: Items.FillerMedal,
         Types.FillerRainbowCoin: Items.FillerRainbowCoin,
+        Types.JunkItem: Items.JunkMelon,
     }
     filler_mapping_allowances = {
-        Items.FillerBanana: 255 - settings.total_gbs,  # Don't think we need to worry about the 8 bit limit, but just to be safe
-        Items.FillerCrown: 255 - settings.total_crowns,
-        Items.FillerFairy: 255 - settings.total_fairies,
-        Items.FillerPearl: 255 - settings.total_pearls,
-        Items.FillerMedal: 255 - settings.total_medals,
-        Items.FillerRainbowCoin: 255 - settings.total_rainbow_coins,
+        Items.FillerBanana: {
+            # Don't think we need to worry about the 8 bit limit, but just to be safe
+            "count": 255 - settings.total_gbs,
+            "weight": 10,
+        },
+        Items.FillerCrown: {
+            "count": 255 - settings.total_crowns,
+            "weight": 2,
+        },
+        Items.FillerFairy: {
+            "count": 255 - settings.total_fairies,
+            "weight": 4,
+        },
+        Items.FillerPearl: {
+            "count": 255 - settings.total_pearls,
+            "weight": 1,
+        },
+        Items.FillerMedal: {
+            "count": 255 - settings.total_medals,
+            "weight": 6,
+        },
+        Items.FillerRainbowCoin: {
+            "count": 255 - settings.total_rainbow_coins,
+            "weight": 3,
+        },
+        Items.JunkMelon: {
+            "count": 1000,
+            "weight": 2
+        },
     }
+    max_weight = max([x["weight"] for x in list(filler_mapping_allowances.values())])
     filler_types_in_pool = [x for x in list(filler_mapping.keys()) if x in settings.shuffled_location_types]
     item_types_for_filler = []
     for item_type in filler_types_in_pool:
         item_types_for_filler.append(filler_mapping[item_type])
     distro = []
-    for x in range(255):
+    placed_count = {}
+    total_placed_count = 0
+    offset = settings.junk_offset
+    compiled_weights = []  # Compiled weight distro to avoid clumping
+    for x in range(max_weight):
         for item_type in item_types_for_filler:
-            if x < filler_mapping_allowances[item_type]:
+            assoc_weight = filler_mapping_allowances[item_type]["weight"]
+            count_per_item = max_weight / assoc_weight
+            prev_index = int(x / count_per_item)
+            curr_index = int((x + 1) / count_per_item)
+            if prev_index != curr_index:
+                compiled_weights.append(item_type)
+    if len(compiled_weights) == 0:
+        return []
+    for x in range(1000):
+        for item_type in compiled_weights:
+            existing_count = placed_count.get(item_type, 0)
+            if existing_count < filler_mapping_allowances[item_type]["count"]:
+                if offset > 0:
+                    offset -= 1
+                    continue
                 distro.append(item_type)
+                placed_count[item_type] = existing_count + 1
+                total_placed_count += 1
+        if total_placed_count > 1000:
+            break
     return distro
 
 
@@ -754,19 +796,6 @@ def HintItems():
     ]
 
 
-def JunkItems():
-    """Return a list of Junk Items to be placed."""
-    junk_count = 1000
-    itemPool = []
-    # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkFilm, Items.JunkMelon, Items.JunkOrange)
-    # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkOrange)
-    items_to_place = [Items.JunkMelon]
-    lim = int(junk_count / len(items_to_place))
-    for item_type in items_to_place:
-        itemPool.extend(itertools.repeat(item_type, lim))
-    return itemPool
-
-
 def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     """Return a list of all items that will be assumed for immediate item placement."""
     itemPool = []
@@ -822,8 +851,6 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     # Never logic-affecting items
     # if Types.FakeItem in unplacedTypes:
     #     itemPool.extend(FakeItems())
-    # if Types.JunkItem in unplacedTypes:
-    #     itemPool.extend(JunkItems())
     if Types.Hint in unplacedTypes:
         itemPool.extend(HintItems())
     # If shops are not part of the larger item pool and are not placed, we may still need to assume them

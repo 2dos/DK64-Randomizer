@@ -664,6 +664,11 @@
                         }
                     }
                 }
+                if (sel_version_num < numericVersion("5.7.19")) {
+                    console.log('Remapping Random Starting Location');
+                    setting_data.random_starting_region_new = setting_data.random_starting_region ? "all" : "off";
+                    delete setting_data.random_starting_region;
+                }
                 // Update to include all unhandled options to unsorted
                 const all_valid_items = Object.keys(output_json.ItemRandoListSelected);
                 let mentioned_items = [];

@@ -38,6 +38,7 @@ from randomizer.Enums.Settings import (
     MoveRando,
     ProgressiveHintItem,
     RandomPrices,
+    RandomStartingRegion,
     RandomRequirement,
     RemovedBarriersSelected,
     ShockwaveStatus,
@@ -418,7 +419,7 @@ def GetAccessibleLocations(
                             if levelExitTransitionId not in spoiler.playthroughTransitionOrder:
                                 spoiler.playthroughTransitionOrder.append(levelExitTransitionId)
                 # If loading zones are not shuffled but you have a random starting location, you may need to exit level to escape some regions
-                elif settings.random_starting_region and region.level != Levels.DKIsles and region.level != Levels.Shops and region.restart is None:
+                elif settings.random_starting_region_new == RandomStartingRegion.all and region.level != Levels.DKIsles and region.level != Levels.Shops and region.restart is None:
                     levelLobby = GetLobbyOfRegion(region.level)
                     if levelLobby is not None and levelLobby not in kongAccessibleRegions[kong]:
                         exits.append(TransitionFront(levelLobby, lambda _: True))
@@ -443,7 +444,7 @@ def GetAccessibleLocations(
 
                     # Handle water/lava restrictions
                     is_lava_water = spoiler.LogicVariables.IsLavaWater()
-                    if is_lava_water and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
+                    if is_lava_water and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region_new != RandomStartingRegion.off):
                         if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
                             continue
                         if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
@@ -2420,18 +2421,13 @@ def Fill(spoiler: Spoiler) -> None:
         Types.FillerPearl,
         Types.FillerMedal,
         Types.FillerRainbowCoin,
+        Types.JunkItem,
     ]
     filler_types_in_pool = [x for x in filler_types if x in spoiler.settings.shuffled_location_types]
     if len(filler_types_in_pool) > 0:
         placed_types.extend(filler_types_in_pool)
         spoiler.Reset()
         PlaceItems(spoiler, FillAlgorithm.random, ItemPool.FillerItems(spoiler.settings), [])
-    # Fill in junk items
-    if Types.JunkItem in spoiler.settings.shuffled_location_types:
-        placed_types.append(Types.JunkItem)
-        spoiler.Reset()
-        PlaceItems(spoiler, FillAlgorithm.random, ItemPool.JunkItems(), [])
-        # Don't raise exception if unplaced junk items
     if Types.CrateItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.CrateItem)
         # Crates hold nothing, so leave this one empty
@@ -2994,7 +2990,7 @@ def FillWorld(spoiler: Spoiler) -> None:
             # Every 3rd fill, retry more aggressively by reshuffling level order, move prices, and starting location as applicable
             if retries % 3 == 0:
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))
-                if spoiler.settings.random_starting_region:
+                if spoiler.settings.random_starting_region_new != RandomStartingRegion.off:
                     spoiler.settings.RandomizeStartingLocation(spoiler)
                 if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:  # TODO: Reshuffling LZR doesn't work yet, but it might be nice? Not sure how necessary it is
                     ShuffleExits.ShuffleExits(spoiler)
@@ -4010,7 +4006,7 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
     if not settings.fast_start_beginning_of_game:
         if settings.shuffle_loading_zones == ShuffleLoadingZones.all:
             found_incompatibilities += "Cannot turn off Fast Start with Loading Zones Randomized. "
-        if settings.random_starting_region:
+        if settings.random_starting_region_new != RandomStartingRegion.off:
             found_incompatibilities += "Cannot turn off Fast Start with a Random Starting Location. "
         if not settings.start_with_slam:
             found_incompatibilities += "Cannot turn off Fast Start unless you are guaranteed to start with a Progressive Slam. "
