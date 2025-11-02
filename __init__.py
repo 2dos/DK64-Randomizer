@@ -842,11 +842,11 @@ if baseclasses_loaded:
 
             # Constants
             MAX_COINS = {
-                Kongs.donkey: 178,
+                Kongs.donkey: 179,
                 Kongs.diddy: 183,
                 Kongs.lanky: 190,
                 Kongs.tiny: 198,
-                Kongs.chunky: 219,
+                Kongs.chunky: 224,
             }
 
             PRICE_PERCENTAGES = {
