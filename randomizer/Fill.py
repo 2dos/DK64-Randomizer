@@ -561,7 +561,7 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
         else:
             # Vanilla Order
             level_7 = Levels.CreepyCastle
-        
+
         # Map the level to its lobby map
         lobby_map_dict = {
             Levels.JungleJapes: Maps.JungleJapesLobby,
@@ -577,11 +577,11 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
 
     kong_items = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
     for loc, data in spoiler.LocationList.items():
-        
+
         # Track items in Level 7
         if level_7 is not None and data.level == level_7 and data.item is not None:
             level_7_items.append(data.item)
-        
+
         # Key 5 cannot be in Level 7 or its lobby
         if level_7 is not None and data.item == Items.FungiForestKey:
             # Check if in the level itself
@@ -594,19 +594,19 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
                     if map_data.map == level_7_lobby_map:
                         print(f"Placement invalid because of Key 5 being in Level 7 lobby at {data.name}")
                         return False
-        
+
         # Kongs cannot be locked behind shops that require that specific Kong to access
         if data.type == Types.Shop and data.kong < 5:
             if data.item == kong_items[data.kong]:
                 print(f"Placement invalid: {kong_items[data.kong].name} is locked behind their own shop at {data.name}")
                 return False
-        
+
         # Kongs cannot be on their own banana medal or half-medal locations
         if data.type in (Types.Medal, Types.HalfMedal) and data.kong < 5:
             if data.item == kong_items[data.kong]:
                 print(f"Placement invalid: {kong_items[data.kong].name} is on their own medal location at {data.name}")
                 return False
-        
+
         # Shop owners cannot be in shops of their own type
         if data.type == Types.Shop:
             shop_owner_map = {
@@ -618,23 +618,23 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
             if data.vendor in shop_owner_map and data.item == shop_owner_map[data.vendor]:
                 print(f"Placement invalid: {shop_owner_map[data.vendor].name} is locked in their own shop at {data.name}")
                 return False
-        
+
         # Chunky cannot be in holdable object locations
         # Also includes the Japes Chunky Boulder location
         if (data.type == Types.BoulderItem or loc == Locations.JapesChunkyBoulder) and data.item == Items.Chunky:
             print(f"Placement invalid: Chunky is locked in a holdable object at {data.name}")
             return False
-        
+
         # Fairy camera cannot be on fairy locations
         if data.type == Types.Fairy and data.item == Items.Camera:
             print(f"Placement invalid: Fairy Camera is on a fairy location at {data.name}")
             return False
-        
+
         # Shockwave cannot be on dirt patch locations
         if data.type == Types.RainbowCoin and data.item == Items.Shockwave:
             print(f"Placement invalid: Shockwave is on a dirt patch location at {data.name}")
             return False
-    
+
     # Blasts/Arcade R2 can't contain DK
     non_dk_locations = [
         Locations.JapesDonkeyBaboonBlast,
@@ -1520,7 +1520,7 @@ def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = Fals
         spoiler.settings.random.shuffle(itemEmpty)
         locationId = itemEmpty.pop()
         spoiler.LocationList[locationId].PlaceItem(spoiler, item)
-        
+
         # In minimal logic, verify placement doesn't violate minimal logic rules
         if settings.logic_type == LogicType.minimal:
             if not VerifyMinimalLogic(spoiler):
@@ -1528,7 +1528,7 @@ def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = Fals
                 spoiler.LocationList[locationId].UnplaceItem(spoiler)
                 itemsToPlace.append(item)
                 continue
-        
+
         empty.remove(locationId)
         if locationId in SharedShopLocations:
             settings.placed_shared_shops += 1
