@@ -607,24 +607,6 @@ def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
                 print(f"Placement invalid: {kong_items[data.kong].name} is on their own medal location at {data.name}")
                 return False
 
-        # Shop owners cannot be in shops of their own type
-        if data.type == Types.Shop:
-            shop_owner_map = {
-                VendorType.Cranky: Items.Cranky,
-                VendorType.Funky: Items.Funky,
-                VendorType.Candy: Items.Candy,
-                VendorType.Snide: Items.Snide,
-            }
-            if data.vendor in shop_owner_map and data.item == shop_owner_map[data.vendor]:
-                print(f"Placement invalid: {shop_owner_map[data.vendor].name} is locked in their own shop at {data.name}")
-                return False
-
-        # Chunky cannot be in holdable object locations
-        # Also includes the Japes Chunky Boulder location
-        if (data.type == Types.BoulderItem or loc == Locations.JapesChunkyBoulder) and data.item == Items.Chunky:
-            print(f"Placement invalid: Chunky is locked in a holdable object at {data.name}")
-            return False
-
         # Fairy camera cannot be on fairy locations
         if data.type == Types.Fairy and data.item == Items.Camera:
             print(f"Placement invalid: Fairy Camera is on a fairy location at {data.name}")
