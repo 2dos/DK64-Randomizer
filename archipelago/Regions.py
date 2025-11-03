@@ -111,9 +111,13 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
     # Pick random 10 shops to make shared
     # Only if shared shops are enabled in settings
     if options.enable_shared_shops.value:
-        all_shared_shops = list(SharedShopLocations)
-        logic_holder.settings.random.shuffle(all_shared_shops)
-        logic_holder.available_shared_shops = set(all_shared_shops[:10])  # Select 10 random shared shops
+        # If not set (e.g., free prices), select them now
+        if hasattr(logic_holder.spoiler.settings, "selected_shared_shops") and logic_holder.spoiler.settings.selected_shared_shops:
+            logic_holder.available_shared_shops = logic_holder.spoiler.settings.selected_shared_shops
+        else:
+            all_shared_shops = list(SharedShopLocations)
+            logic_holder.settings.random.shuffle(all_shared_shops)
+            logic_holder.available_shared_shops = set(all_shared_shops[:10])
 
         # Track which vendor/level combinations have shared shops to make individual shops inaccessible
         shared_shop_vendors = set()
@@ -165,7 +169,9 @@ def create_regions(multiworld: MultiWorld, player: int, spoiler: Spoiler, option
                 location_logics = [loc for loc in location_logics if loc.id not in (Locations.HelmChunky1, Locations.HelmChunky2)]
         collectibles = []
         if region_id in all_collectible_regions.keys():
-            collectibles = [col for col in all_collectible_regions[region_id] if col.type in (Collectibles.bunch, Collectibles.banana, Collectibles.balloon)]
+            collectible_types = [Collectibles.bunch, Collectibles.banana, Collectibles.balloon]
+            collectible_types.append(Collectibles.coin)
+            collectibles = [col for col in all_collectible_regions[region_id] if col.type in collectible_types]
         events = [event for event in region_obj.events]
 
         # if region_obj.level == Levels.Shops:
@@ -218,6 +224,9 @@ def create_region(
                     continue
             # Skip enemy photos if the win condition is not Krem Kapture.
             if location_obj.type == Types.EnemyPhoto and logic_holder.settings.win_condition_item != WinConditionComplex.krem_kapture:
+                continue
+            # Skip hint locations if hints are not in the pool
+            if location_obj.type == Types.Hint and Types.Hint not in logic_holder.settings.shuffled_location_types:
                 continue
             # Skip locations marked as inaccessible by smaller shops
             if hasattr(location_obj, "smallerShopsInaccessible") and location_obj.smallerShopsInaccessible and logic_holder.settings.smaller_shops:
@@ -321,17 +330,18 @@ def create_region(
             set_rule(location, lambda state: True)
         else:
             set_rule(location, lambda state, player=player, collectible=collectible: hasDK64RCollectible(state, player, collectible))
+        kong_name = name_for_kong[collectible.kong]
+        add_rule(location, lambda state, kong_name=kong_name: state.has(kong_name, player))
         quantity = collectible.amount
         if collectible.type == Collectibles.bunch:
             quantity *= 5
         elif collectible.type == Collectibles.balloon:
             quantity *= 10
             add_rule(location, lambda state, collectible_kong=collectible.kong: state.has(gun_for_kong[collectible_kong], player))  # We need to be sure we check for gun access for this balloon
-        add_rule(
-            location, lambda state, collectible_kong=collectible.kong: state.has(name_for_kong[collectible_kong], player)
-        )  # There's no FTA for collectibles - you *must* own the right kong to collect it
-        location.place_locked_item(DK64Item("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
-        # print("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity))
+        if collectible.type == Collectibles.coin:
+            location.place_locked_item(DK64Item("Collectible Coins, " + collectible.kong.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
+        else:
+            location.place_locked_item(DK64Item("Collectible CBs, " + collectible.kong.name + ", " + level.name + ", " + str(quantity), ItemClassification.progression_skip_balancing, None, player))
         new_region.locations.append(location)
 
     for event in events:

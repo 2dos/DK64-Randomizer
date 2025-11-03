@@ -715,6 +715,27 @@ class ShopKeepers(Toggle):
     display_name = "Shop Keepers in Pool"
 
 
+class ShopPrices(Choice):
+    """Determines the cost of shop purchases.
+
+    Shops uses the standalone Tooie Shops settings making it so purchases don't deduct your coins when making purchases.
+    Prices are randomized within difficulty-based budgets calculated from each kong's total available coins.
+
+    Difficulty Percentages:
+    - free (0%): All shops cost 0 coins
+    - low (35%): Lower coin requirements, casual gameplay
+    - medium (55%): Moderate coin requirements, balanced difficulty
+    - high (85%): High coin requirements, requires collecting most coins
+    """
+
+    display_name = "Shop Prices"
+    option_free = 0
+    option_low = 1
+    option_medium = 2
+    option_high = 3
+    default = 1
+
+
 class HelmKeyLock(DefaultOnToggle):
     """Determines if a key will be locked at the end of Helm."""
 
@@ -990,7 +1011,7 @@ class RockfallTrapWeight(BaseTrapWeight):
 
 
 class DisableTagTrapWeight(BaseTrapWeight):
-    """Likelihood of receiving a trap which slips a kong on a banana peel."""
+    """Likelihood of receiving a trap which tags to a different Kong and also disabled Tagging for 15 seconds."""
 
     display_name = "Disable Tag Trap Weight"
 
@@ -1235,6 +1256,7 @@ class DK64Options(PerGameCommonOptions):
     rainbowcoin_filler_weight: RainbowCoinFillerWeight
     alternate_minecart_mayhem: AlternateMinecartMayhem
     enemies_selected: EnemiesSelected
+    shop_prices: ShopPrices
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1280,9 +1302,15 @@ dk64_option_groups: List[OptionGroup] = [
             Dropsanity,
             HintItemRandomization,
             HalfMedals,
+            SnideMaximum,
+        ],
+    ),
+    OptionGroup(
+        "Shops",
+        [
+            ShopPrices,
             SmallerShops,
             SharedShops,
-            SnideMaximum,
         ],
     ),
     OptionGroup(

@@ -241,3 +241,25 @@ freeVoiceFail:
     addiu $t4, $zero, 0x2
     j 0x8073B814
     sb $t4, 0x89 ($t2) ;byte 2 offset
+    
+pleaseDontStopIslesMusic:
+    addiu $at, $at, 0xA0A8  ; currentMap pointer
+    lw $a0, 0x0 ($at)
+    addiu $at, $zero, 0x22
+    beq $at, $a0, mapIsIsles
+    lbu $a0, 0xb ($s1)
+    
+    cancelTheSong:
+    JAL cancelMusic
+    nop
+
+    PDSTMReturn:  ; because "return" would possibly be too common
+    j 0x8060378C
+    nop
+
+    mapIsIsles:
+    addiu $at, $zero, 0x6E
+    bne $at, $a0, PDSTMReturn
+    nop
+    b cancelTheSong
+    nop

@@ -631,6 +631,7 @@ class Settings:
         self.music_is_custom = False
         self.music_vanilla_locations = False
         self.music_disable_reverb = False
+        self.isles_cool_musical = False
         self.music_selection_dict = {
             "vanilla": {},
             "custom": {},
