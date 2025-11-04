@@ -1205,7 +1205,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 if textbox.file_index == CompTextFiles.PreviewsFlavor:
                     replacement = textbox.replacement_text
                     if not textbox.force_pipe:
-                        reward_text = getItemPreviewText(new_item, textbox.location, False, getModelMask(new_item), new_item)
+                        reward_text = getItemPreviewText(new_type, textbox.location, False, getModelMask(new_item), new_item)
                     replacement = replacement.replace("|", reward_text)
                     file_data[CompTextFiles.PreviewsNormal] = {
                         "textbox_index": textbox.textbox_index,
