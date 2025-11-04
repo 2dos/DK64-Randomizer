@@ -733,7 +733,7 @@ class ShopPrices(Choice):
     option_low = 1
     option_medium = 2
     option_high = 3
-    default = 1
+    default = 0
 
 
 class HelmKeyLock(DefaultOnToggle):
