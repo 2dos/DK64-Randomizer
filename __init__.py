@@ -612,8 +612,7 @@ if baseclasses_loaded:
             self.rom_name_available_event = threading.Event()
             self.hint_data_available = threading.Event()
             self.hint_compilation_complete = threading.Event()
-            super().__init__(multiworld, player)\
-            
+            super().__init__(multiworld, player)
             self.ap_version = json.loads(pkgutil.get_data(__name__, "archipelago.json").decode("utf-8"))["world_version"]
 
         @classmethod

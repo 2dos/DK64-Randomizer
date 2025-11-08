@@ -38,6 +38,7 @@ KONG_COUNT = 5
 LEVEL_COUNT = 7
 HINT_BITFIELD_SIZE = 5
 
+
 class CreateHintsParams:
     """Parameters for creating hints."""
 

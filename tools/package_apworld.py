@@ -27,7 +27,7 @@ for file in files_to_copy:
         if file == "archipelago.json":
             # There's probably a better way to do this
             os.makedirs(os.path.join(dk64_folder, "archipelago/client"), exist_ok=True)
-            shutil.copy(file, os.path.join(os.path.join(dk64_folder, "archipelago/client"),file))
+            shutil.copy(file, os.path.join(os.path.join(dk64_folder, "archipelago/client"), file))
 
 # Copy specified folders
 for folder in folders_to_copy:

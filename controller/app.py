@@ -334,6 +334,7 @@ def get_version():
     """Get the version of the controller."""
     return set_response(json.dumps({"version": version}), 200)
 
+
 @api.route("/get_presets", methods=["GET"])
 @enforce_api_restrictions()
 def get_presets():

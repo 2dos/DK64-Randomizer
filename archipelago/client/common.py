@@ -8,9 +8,11 @@ import json
 import sys
 from Utils import get_settings
 
+
 def get_ap_version():
-    apworld_manifest = json.loads(pkgutil.get_data(__name__, "archipelago.json").decode("utf-8")) 
+    apworld_manifest = json.loads(pkgutil.get_data(__name__, "archipelago.json").decode("utf-8"))
     return apworld_manifest["world_version"]
+
 
 class DK64MemoryMap:
     """DK64MemoryMap is a class that contains memory addresses and offsets used in the game Donkey Kong 64."""
