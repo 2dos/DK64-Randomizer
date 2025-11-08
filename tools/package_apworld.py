@@ -12,7 +12,7 @@ vendor_folder = "dk64/vendor"
 requirements_file = "requirements.txt"
 
 # Files and folders to copy into dk64
-files_to_copy = ["__init__.py", "js.py", "version.py", "static/compiled.jsonc", "ap_version.py"]
+files_to_copy = ["__init__.py", "js.py", "version.py", "static/compiled.jsonc", "archipelago.json"]
 folders_to_copy = ["archipelago", "base-hack/assets/arcade_jetpac", "base-hack/assets/DKTV", "base-hack/assets/displays", "randomizer", "static/patches"]
 
 # Ensure dk64 directory exists
@@ -24,6 +24,10 @@ for file in files_to_copy:
         # Make the directory if it doesn't exist
         os.makedirs(os.path.join(dk64_folder, os.path.dirname(file)), exist_ok=True)
         shutil.copy(file, os.path.join(dk64_folder, file))
+        if file == "archipelago.json":
+            # There's probably a better way to do this
+            os.makedirs(os.path.join(dk64_folder, "archipelago/client"), exist_ok=True)
+            shutil.copy(file, os.path.join(os.path.join(dk64_folder, "archipelago/client"),file))
 
 # Copy specified folders
 for folder in folders_to_copy:

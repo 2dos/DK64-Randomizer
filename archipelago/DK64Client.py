@@ -11,20 +11,21 @@ if __name__ == "__main__":
 
 import asyncio
 import colorama
+import json
+import pkgutil
 import random
 import sys
 import time
 import traceback
 import typing
 
-from client.common import DK64MemoryMap, create_task_log_exception, check_version
+from client.common import DK64MemoryMap, create_task_log_exception, check_version, get_ap_version
 from client.emu_loader import EmuLoaderClient
 from client.items import item_ids, item_names_to_id, trap_name_to_index, trap_index_to_name
 from client.check_flag_locations import location_flag_to_name, location_name_to_flag
 from client.ap_check_ids import check_id_to_name, check_names_to_id
 from CommonClient import CommonContext, get_base_parser, gui_enabled, logger, server_loop, ClientCommandProcessor
 from NetUtils import ClientStatus
-from ap_version import version as ap_version
 from randomizer.Patching.ItemRando import normalize_location_name
 
 # Constants
@@ -36,7 +37,6 @@ MIN_ITEMS_FOR_SPEED_SCALING = 5
 KONG_COUNT = 5
 LEVEL_COUNT = 7
 HINT_BITFIELD_SIZE = 5
-
 
 class CreateHintsParams:
     """Parameters for creating hints."""
@@ -1106,7 +1106,7 @@ class DK64Context(CommonContext):
             logging_pairs = [
                 ("Client", "Archipelago"),
             ]
-            base_title = f"Archipelago Donkey Kong 64 Client (Version {ap_version})"
+            base_title = f"Archipelago Donkey Kong 64 Client (Version {get_ap_version()})"
 
             def build(self):
                 b = super().build()
