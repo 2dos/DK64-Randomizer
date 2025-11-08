@@ -11,8 +11,6 @@ if __name__ == "__main__":
 
 import asyncio
 import colorama
-import json
-import pkgutil
 import random
 import sys
 import time
