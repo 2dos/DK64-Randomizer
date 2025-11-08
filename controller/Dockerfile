@@ -27,8 +27,7 @@ RUN mv /app/static /app/controller/static && \
     mv /app/index.html /app/controller/index.html && \
     mv /app/randomizer.html /app/controller/randomizer.html && \
     mv /app/base-hack /app/controller/base-hack && \
-    mv /app/version.py /app/controller/version.py && \
-    mv /app/ap_version.py /app/controller/ap_version.py
+    mv /app/version.py /app/controller/version.py
 
 WORKDIR /app/controller
 
