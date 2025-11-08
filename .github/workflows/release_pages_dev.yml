@@ -74,7 +74,7 @@ jobs:
       env:
         GITHUB_ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         SRC_FOLDER: ./deploy-directory
-        DEST_OWNER: 2dos
+        DEST_OWNER: GreenestBeen
         DEST_REPO: DK64-Randomizer-Dev
         DEST_BRANCH: main
         DEST_FOLDER: ./
