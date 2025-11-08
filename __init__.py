@@ -614,9 +614,7 @@ if baseclasses_loaded:
             self.hint_compilation_complete = threading.Event()
             super().__init__(multiworld, player)\
             
-            # for 0.6.3 backwards compat
-            if not hasattr(self, "world_version"):
-                self.world_version = json.loads(pkgutil.get_data(__name__, "archipelago.json").decode("utf-8"))["world_version"]
+            self.ap_version = json.loads(pkgutil.get_data(__name__, "archipelago.json").decode("utf-8"))["world_version"]
 
         @classmethod
         def stage_assert_generate(cls, multiworld: MultiWorld):
@@ -1211,7 +1209,7 @@ if baseclasses_loaded:
                     "patch_data": lanky,
                     "player": self.player,
                     "player_name": self.player_name,
-                    "version": self.world_version,
+                    "version": self.ap_version,
                     "seed": self.multiworld.seed_name,
                 }
 
@@ -1505,7 +1503,7 @@ if baseclasses_loaded:
                 "HintsInPool": self.options.hints_in_item_pool.value,
                 "BouldersInPool": self.options.boulders_in_pool.value,
                 "Dropsanity": self.options.dropsanity.value,
-                "Version": self.world_version,
+                "Version": self.ap_version,
                 "EnemyData": (
                     {
                         location_id.name: {"map": enemy_loc.map.name, "enemy": enemy_loc.enemy.name}
@@ -1589,7 +1587,7 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Randomizer Version: " + self.spoiler.settings.version)
             spoiler_handle.write("\n")
-            spoiler_handle.write("APWorld Version: " + self.world_version)
+            spoiler_handle.write("APWorld Version: " + self.ap_version)
             spoiler_handle.write("\n")
 
             # Write shop prices
@@ -1759,8 +1757,8 @@ if baseclasses_loaded:
             """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
             # Parse the string data
             version = slot_data["Version"]
-            if version != self.world_version:
-                print(f"Version mismatch: {version} != {self.world_version}. You may experience unexpected behavior.")
+            if version != self.ap_version:
+                print(f"Version mismatch: {version} != {self.ap_version}. You may experience unexpected behavior.")
 
             level_order = slot_data["LevelOrder"].split(", ")
             starting_kongs = slot_data["StartingKongs"].split(", ")
