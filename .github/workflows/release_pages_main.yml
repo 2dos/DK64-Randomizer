@@ -83,7 +83,7 @@ jobs:
       if: steps.check_version.outputs.version_changed == 'true'
       id: get_version
       run: |
-        VERSION=$(jq -r '.world_version' ./deploy_directory/archipelago.json)
+        VERSION=$(jq -r '.world_version' ./deploy-directory/archipelago.json)
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Version: $VERSION"
 
