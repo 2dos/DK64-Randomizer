@@ -26,7 +26,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.lanky, lambda _: True, None, 5),
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda _: True, None, 2),  # Llama cage
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: (l.coconut or l.CanPhase()) and l.strongKong, None, 3),  # DK BP room
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.CanPhase()) and l.strongKong, None, 3),  # DK BP room
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # Oasis
         Collectible(Collectibles.coin, Kongs.diddy, lambda _: True, None, 5),  # W2
         Collectible(Collectibles.coin, Kongs.tiny, lambda _: True, None, 4),  # Oasis

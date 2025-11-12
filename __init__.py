@@ -117,7 +117,6 @@ if baseclasses_loaded:
     sys.path.append("custom_worlds/dk64.apworld/dk64/archipelago/")
     from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, CollectionState
     from BaseClasses import Location, LocationProgressType
-    from worlds.dk64.ap_version import version as ap_version
     import settings
 
     import randomizer.ItemPool as DK64RItemPool
@@ -614,6 +613,7 @@ if baseclasses_loaded:
             self.hint_data_available = threading.Event()
             self.hint_compilation_complete = threading.Event()
             super().__init__(multiworld, player)
+            self.ap_version = json.loads(pkgutil.get_data(__name__, "archipelago.json").decode("utf-8"))["world_version"]
 
         @classmethod
         def stage_assert_generate(cls, multiworld: MultiWorld):
@@ -842,11 +842,11 @@ if baseclasses_loaded:
 
             # Constants
             MAX_COINS = {
-                Kongs.donkey: 178,
+                Kongs.donkey: 179,
                 Kongs.diddy: 183,
                 Kongs.lanky: 190,
                 Kongs.tiny: 198,
-                Kongs.chunky: 219,
+                Kongs.chunky: 224,
             }
 
             PRICE_PERCENTAGES = {
@@ -1208,7 +1208,7 @@ if baseclasses_loaded:
                     "patch_data": lanky,
                     "player": self.player,
                     "player_name": self.player_name,
-                    "version": ap_version,
+                    "version": self.ap_version,
                     "seed": self.multiworld.seed_name,
                 }
 
@@ -1502,7 +1502,7 @@ if baseclasses_loaded:
                 "HintsInPool": self.options.hints_in_item_pool.value,
                 "BouldersInPool": self.options.boulders_in_pool.value,
                 "Dropsanity": self.options.dropsanity.value,
-                "Version": ap_version,
+                "Version": self.ap_version,
                 "EnemyData": (
                     {
                         location_id.name: {"map": enemy_loc.map.name, "enemy": enemy_loc.enemy.name}
@@ -1586,7 +1586,7 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("Randomizer Version: " + self.spoiler.settings.version)
             spoiler_handle.write("\n")
-            spoiler_handle.write("APWorld Version: " + ap_version)
+            spoiler_handle.write("APWorld Version: " + self.ap_version)
             spoiler_handle.write("\n")
 
             # Write shop prices
@@ -1756,8 +1756,8 @@ if baseclasses_loaded:
             """Parse slot data for any logical bits that need to match the real generation. Used by Universal Tracker."""
             # Parse the string data
             version = slot_data["Version"]
-            if version != ap_version:
-                print(f"Version mismatch: {version} != {ap_version}. You may experience unexpected behavior.")
+            if version != self.ap_version:
+                print(f"Version mismatch: {version} != {self.ap_version}. You may experience unexpected behavior.")
 
             level_order = slot_data["LevelOrder"].split(", ")
             starting_kongs = slot_data["StartingKongs"].split(", ")

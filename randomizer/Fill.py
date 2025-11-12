@@ -552,36 +552,61 @@ def GetAccessibleLocations(
 
 def VerifyMinimalLogic(spoiler: Spoiler) -> bool:
     """Verify a world in the context of minimal logic."""
-    # Key 5 not in Level 7 with non-LZR
     level_7 = None
+    level_7_lobby_map = None
     if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:  # Non-LZR
-        level_7 = Levels.CreepyCastle
         if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
-            level_7 = spoiler.settings.level_order[6]
+            # In level shuffle, check level 7
+            level_7 = spoiler.settings.level_order[7]
+        else:
+            # Vanilla Order
+            level_7 = Levels.CreepyCastle
 
-    # Kongs not in shops tied to them
-    kong_shop_locations = [
-        [],  # DK
-        [],  # Diddy
-        [],  # Lanky
-        [],  # Tiny
-        [],  # Chunky
-    ]
-    for level, shop_level_data in ShopLocationReference.items():
-        for vendor, shop_vendor_data in shop_level_data.items():
-            for kong_idx, kong_loc in enumerate(shop_vendor_data):
-                if kong_idx < 5:
-                    kong_shop_locations[kong_idx].append(kong_loc)
+        # Map the level to its lobby map
+        lobby_map_dict = {
+            Levels.JungleJapes: Maps.JungleJapesLobby,
+            Levels.AngryAztec: Maps.AngryAztecLobby,
+            Levels.FranticFactory: Maps.FranticFactoryLobby,
+            Levels.GloomyGalleon: Maps.GloomyGalleonLobby,
+            Levels.FungiForest: Maps.FungiForestLobby,
+            Levels.CrystalCaves: Maps.CrystalCavesLobby,
+            Levels.CreepyCastle: Maps.CreepyCastleLobby,
+        }
+        level_7_lobby_map = lobby_map_dict.get(level_7)
+    level_7_items = []
+
     kong_items = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
     for loc, data in spoiler.LocationList.items():
-        if level_7 is not None:
-            if data.level == level_7 and data.item == Items.FungiForestKey:
-                print("Placement invalid because of Key 5 being in Level 7")
+
+        # Track items in Level 7
+        if level_7 is not None and data.level == level_7 and data.item is not None:
+            level_7_items.append(data.item)
+
+        # Key 5 cannot be in Level 7 or its lobby
+        if level_7 is not None and data.item == Items.FungiForestKey:
+            # Check if in the level itself
+            if data.level == level_7:
+                print(f"Placement invalid because of Key 5 being in Level 7 at {data.name}")
                 return False
-        for kong_index, kong_locs in enumerate(kong_shop_locations):
-            if loc in kong_locs and data.item == kong_items[kong_index]:
-                print("Placement invalid due to shop in shop location")
+            # Check if in the level's lobby
+            if level_7_lobby_map is not None and data.default_mapid_data is not None:
+                for map_data in data.default_mapid_data:
+                    if map_data.map == level_7_lobby_map:
+                        print(f"Placement invalid because of Key 5 being in Level 7 lobby at {data.name}")
+                        return False
+
+        # Kongs cannot be locked behind shops that require that specific Kong to access
+        if data.type == Types.Shop and data.kong < 5:
+            if data.item == kong_items[data.kong]:
+                print(f"Placement invalid: {kong_items[data.kong].name} is locked behind their own shop at {data.name}")
                 return False
+
+        # Kongs cannot be on their own banana medal or half-medal locations
+        if data.type in (Types.Medal, Types.HalfMedal) and data.kong < 5:
+            if data.item == kong_items[data.kong]:
+                print(f"Placement invalid: {kong_items[data.kong].name} is on their own medal location at {data.name}")
+                return False
+
     # Blasts/Arcade R2 can't contain DK
     non_dk_locations = [
         Locations.JapesDonkeyBaboonBlast,
@@ -1467,6 +1492,15 @@ def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = Fals
         spoiler.settings.random.shuffle(itemEmpty)
         locationId = itemEmpty.pop()
         spoiler.LocationList[locationId].PlaceItem(spoiler, item)
+
+        # In minimal logic, verify placement doesn't violate minimal logic rules
+        if settings.logic_type == LogicType.minimal:
+            if not VerifyMinimalLogic(spoiler):
+                # Placement violated minimal logic, unplace and try another location
+                spoiler.LocationList[locationId].UnplaceItem(spoiler)
+                itemsToPlace.append(item)
+                continue
+
         empty.remove(locationId)
         if locationId in SharedShopLocations:
             settings.placed_shared_shops += 1

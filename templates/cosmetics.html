@@ -119,18 +119,18 @@
                     {{ toggle_input("rainbow_ammo", "Rainbow Ammo", "Ammo will slowly change color overtime.") }}
                     <div class="spacer"></div>
                     <div class="form-check form-switch item-switch holiday" data-toggle="tooltip"
-                        title="Happy Holidays from the DK64 Randomizer dev team. Limited time option.">
+                        title="Happy Holidays from the DK64 Randomizer dev team. Limited time option." hidden>
                         <input
                             class="form-check-input"
                             type="checkbox"
                             role="switch"
-                            name="holiday_setting"
-                            id="holiday_setting"
+                            name="holiday_setting_offseason"
+                            id="holiday_setting_offseason"
                             display_name="Holiday Mode"
-                            value="True" />
-                        <label class="form-check-label" for="holiday_setting">Spooky Mode</label>
+                            value="False" />
+                        <label class="form-check-label" for="holiday_setting_offseason">Spooky Mode</label>
                     </div>
-                    <div class="spacer holiday"></div>
+                    <div class="spacer holiday" hidden></div>
                     {# 
                     HANDLING HOLIDAY MODE:
                     Supported Holiday Mode (Is currently a holiday season)

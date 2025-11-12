@@ -3,10 +3,16 @@
 import asyncio
 import urllib.request
 import os
+import pkgutil
 import json
 import sys
-from ap_version import version as ap_version
 from Utils import get_settings
+
+
+def get_ap_version():
+    """Get the AP version from the manifest file."""
+    apworld_manifest = json.loads(pkgutil.get_data(__name__, "archipelago.json").decode("utf-8"))
+    return apworld_manifest["world_version"]
 
 
 class DK64MemoryMap:
@@ -125,6 +131,7 @@ def check_version():
             api_endpoint = f"https://api.github.com/repos/{repo}/releases/latest"
 
         request = urllib.request.Request(api_endpoint, headers={"User-Agent": "DK64Client/1.0"})
+        ap_version = get_ap_version()
         with urllib.request.urlopen(request) as response:
             data = json.load(response)
             latest_tag = data.get("tag_name")
