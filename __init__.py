@@ -117,6 +117,7 @@ if baseclasses_loaded:
     sys.path.append("custom_worlds/dk64.apworld/dk64/archipelago/")
     from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, CollectionState
     from BaseClasses import Location, LocationProgressType
+    from entrance_rando import randomize_entrances
     import settings
 
     import randomizer.ItemPool as DK64RItemPool
@@ -151,6 +152,7 @@ if baseclasses_loaded:
         Enemies,
         GlitchesSelected,
         Items,
+        LevelRandomization,
         Kongs,
         MicrohintsEnabled,
         ShuffleLoadingZones,
@@ -161,6 +163,7 @@ if baseclasses_loaded:
     from randomizer.Enums.EnemySubtypes import EnemySubtype
     from randomizer.Lists import Item as DK64RItem
     from randomizer.Lists.Location import ShopLocationReference
+    from randomizer.Lists.ShufflableExit import ShufflableExits
     from randomizer.Lists.Switches import SwitchInfo
     from randomizer.Lists.EnemyTypes import EnemyLoc, EnemyMetaData
     from worlds.LauncherComponents import Component, SuffixIdentifier, components, Type, icon_paths
@@ -916,6 +919,9 @@ if baseclasses_loaded:
             """Generate the world."""
             # Use the fillsettings function to configure all settings
             settings = fillsettings(self.options, self.multiworld, self.random)
+            # Force loading zone randomization for testing
+            settings.level_randomization = LevelRandomization.loadingzone
+            settings.shuffle_loading_zones = ShuffleLoadingZones.all
             self.spoiler = Spoiler(settings)
             # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
             self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
@@ -934,10 +940,12 @@ if baseclasses_loaded:
             self._generate_archipelago_prices()
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
             if self.spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
-                # UT should not reshuffle the level order, but should update the exits
-                if not hasattr(self.multiworld, "generation_is_fake"):
-                    ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
-                self.spoiler.UpdateExits()
+                if self.spoiler.settings.level_randomization != LevelRandomization.loadingzone:
+                    # UT should not reshuffle the level order, but should update the exits
+                    if not hasattr(self.multiworld, "generation_is_fake"):
+                        ShuffleExits.ExitShuffle(self.spoiler, skip_verification=True)
+                    self.spoiler.UpdateExits()
+                # else: LZR shuffling happens in connect_entrances()
 
             # Repopulate any spoiler-related stuff at this point from slot data
             if hasattr(self.multiworld, "generation_is_fake"):
@@ -1020,10 +1028,59 @@ if baseclasses_loaded:
 
         def generate_basic(self):
             """Generate the basic world."""
+            self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("Banana Hoard", ItemClassification.progression_skip_balancing, 0xD64060, self.player))  # TEMP?
+
+        def connect_entrances(self) -> None:
+            """Randomize and connect entrances if LZR is on."""
+            from randomizer.Lists.ShufflableExit import ShufflableExits
+            from randomizer.Enums.Transitions import Transitions
+
             LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
             connect_regions(self, self.spoiler.settings)
-
-            self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("Banana Hoard", ItemClassification.progression_skip_balancing, 0xD64060, self.player))  # TEMP?
+            if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone:
+                ap_entrance_to_transition = {}
+                for transition_enum, shufflable_exit in ShufflableExits.items():
+                    source_region = shufflable_exit.region.name
+                    dest_region = shufflable_exit.back.regionId.name
+                    ap_entrance_name = f"{source_region}->{dest_region}"
+                    ap_entrance_to_transition[ap_entrance_name] = transition_enum
+                
+                # Store entrance connections for ROM patching
+                def store_entrance_connections(state, exits, entrances):
+                    """Store entrance randomization results in the spoiler."""
+                    for source_exit, target_entrance in zip(exits, entrances):                        
+                        exit_name = source_exit.name
+                        source_transition = ap_entrance_to_transition.get(exit_name)
+                        if not source_transition:
+                            continue
+                        
+                        target_entrance_transition = ap_entrance_to_transition.get(target_entrance.name)
+                        if not target_entrance_transition:
+                            continue
+                        
+                        # Get the REVERSE transition - the one that leads back out
+                        target_shufflable_exit = ShufflableExits[target_entrance_transition]
+                        if target_shufflable_exit.back.reverse is not None:
+                            target_transition = target_shufflable_exit.back.reverse
+                        else:
+                            # No reverse, use the entrance itself
+                            target_transition = target_entrance_transition
+                        
+                        if source_transition and target_transition:
+                            ShufflableExits[source_transition].shuffledId = target_transition
+                            ShufflableExits[source_transition].shuffled = True
+                
+                randomize_entrances(self, True, {0: [0]}, on_connect=store_entrance_connections)
+                
+                # Initialize all non-shuffled transitions to point to themselves
+                for transition_enum, shufflable_exit in ShufflableExits.items():
+                    if not shufflable_exit.shuffled:
+                        # Mark as shuffled (even though it's vanilla) so UpdateExits includes it
+                        shufflable_exit.shuffled = True
+                        shufflable_exit.shuffledId = transition_enum  # Points to itself
+                
+                # After randomization, update the spoiler's exit data
+                self.spoiler.UpdateExits()
 
         def get_archipelago_item_type_by_classification(self, item_classification: ItemClassification) -> DK64RItems:
             """Get the appropriate DK64R Archipelago item type based on the ItemClassification."""
@@ -1529,6 +1586,18 @@ if baseclasses_loaded:
                 ),
                 "HintLocationMapping": hint_mapping,
                 "hints": {str(location): hint_data for location, hint_data in dynamic_hints.items()},
+                "EntranceRando": (
+                    {
+                        transition_enum.name: {
+                            "source": ShufflableExits[transition_enum].name,
+                            "destination": shuffled_back.name,
+                            "dest_region": shuffled_back.regionId.name,
+                        }
+                        for transition_enum, shuffled_back in self.spoiler.shuffled_exit_data.items()
+                    }
+                    if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data
+                    else {}
+                ),
             }
             return slot_data
 
@@ -1588,6 +1657,24 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("APWorld Version: " + self.ap_version)
             spoiler_handle.write("\n")
+            
+            # Write entrance randomization data if LZR is enabled
+            if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data:
+                from randomizer.Lists.ShufflableExit import ShufflableExits
+                spoiler_handle.write("\n")
+                spoiler_handle.write("=== Entrance Randomization (Loading Zone Randomizer) ===\n")
+                # Sort by transition name for readability
+                sorted_exits = sorted(self.spoiler.shuffled_exit_data.items(), key=lambda x: x[0].name)
+                for transition_enum, shuffled_back in sorted_exits:
+                    source_exit = ShufflableExits[transition_enum]
+                    # Find the ShufflableExit that contains this TransitionBack to get the full descriptive name
+                    dest_exit_name = shuffled_back.name  # Fallback to short name
+                    for other_transition, other_exit in ShufflableExits.items():
+                        if other_exit.back == shuffled_back:
+                            dest_exit_name = other_exit.name
+                            break
+                    spoiler_handle.write(f"{source_exit.name} -> {dest_exit_name}\n")
+                spoiler_handle.write("\n")
 
             # Write shop prices
             spoiler_handle.write("\n")
@@ -1818,6 +1905,9 @@ if baseclasses_loaded:
             else:
                 shop_prices = {}
 
+            # Added entrance randomization data
+            entrance_rando = slot_data.get("EntranceRando", {})
+
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
             relevant_data["StartingKongs"] = [Kongs[kong] for kong in starting_kongs]
@@ -1851,4 +1941,5 @@ if baseclasses_loaded:
             relevant_data["HalfMedals"] = half_medals
             relevant_data["SmallerShopsData"] = smaller_shops_data
             relevant_data["ShopPrices"] = shop_prices
+            relevant_data["EntranceRando"] = entrance_rando
             return relevant_data

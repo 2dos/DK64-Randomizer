@@ -31,6 +31,7 @@ LogicRegions = {
         Event(Events.HelmGatesPunched, lambda l: l.settings.helm_setting != HelmSetting.default),
         Event(Events.HelmFinished, lambda l: l.settings.helm_setting == HelmSetting.skip_all),
     ], [
+        TransitionFront(Regions.HideoutHelmLobbyPastVines, lambda l: Events.HelmFinished in l.Events, Transitions.HelmToIsles),
         # These transitions route you to where the loading zone entering Helm will take you
         # If we must turn off the Blast-O-Matic, also prevent the fill from entering Helm without Snide
         TransitionFront(Regions.HideoutHelmStart, lambda l: l.settings.helm_setting == HelmSetting.default and l.canAccessHelm()),
@@ -44,7 +45,6 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_HelmMainEnemy_Start0, lambda l: l.camera),
         LocationLogic(Locations.KremKap_HelmMainEnemy_Start1, lambda l: l.camera),
     ], [], [
-        TransitionFront(Regions.HideoutHelmLobbyPastVines, lambda l: Events.HelmFinished in l.Events, Transitions.HelmToIsles),
         TransitionFront(Regions.HideoutHelmSwitchRoom, lambda l: (l.handstand and l.islanky) or l.slope_resets),
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.settings.helm_setting == HelmSetting.skip_all or Events.HelmFinished in l.Events),  # W1
     ]),
