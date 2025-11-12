@@ -485,8 +485,12 @@ def connect_regions(world: World, settings: Settings):
     #         lobby_transition_mapping[exit_lobby_transitions_list[level]] = exit_lobby_transitions[exit_lobby_transitions_list[i]]
 
     for region_id, region_obj in all_logic_regions.items():
+        if region_id == Regions.HideoutHelmEntry:
+            print(region_id)
         for exit in region_obj.exits:
             destination_name = exit.dest.name
+            if region_id == Regions.HideoutHelmEntry:
+                print(destination_name)
             # If this is a Isles <-> Lobby transition and we're shuffling levels, respect the dictionary built earlier
             # if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and exit.exitShuffleId in lobby_transition_mapping.keys():
             #     destination_name = lobby_transition_mapping[exit.exitShuffleId]
