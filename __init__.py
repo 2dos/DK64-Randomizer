@@ -117,6 +117,7 @@ if baseclasses_loaded:
     sys.path.append("custom_worlds/dk64.apworld/dk64/archipelago/")
     from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, CollectionState
     from BaseClasses import Location, LocationProgressType
+    from entrance_rando import randomize_entrances
     import settings
 
     import randomizer.ItemPool as DK64RItemPool
@@ -151,6 +152,7 @@ if baseclasses_loaded:
         Enemies,
         GlitchesSelected,
         Items,
+        LevelRandomization,
         Kongs,
         MicrohintsEnabled,
         ShuffleLoadingZones,
@@ -916,6 +918,7 @@ if baseclasses_loaded:
             """Generate the world."""
             # Use the fillsettings function to configure all settings
             settings = fillsettings(self.options, self.multiworld, self.random)
+            settings.level_randomization = LevelRandomization.loadingzone
             self.spoiler = Spoiler(settings)
             # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
             self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
@@ -1020,10 +1023,15 @@ if baseclasses_loaded:
 
         def generate_basic(self):
             """Generate the basic world."""
+            self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("Banana Hoard", ItemClassification.progression_skip_balancing, 0xD64060, self.player))  # TEMP?
+
+        def connect_entrances(self) -> None:
+            """Randomize and connect entrances if LZR is on."""
+
             LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
             connect_regions(self, self.spoiler.settings)
-
-            self.multiworld.get_location("Banana Hoard", self.player).place_locked_item(DK64Item("Banana Hoard", ItemClassification.progression_skip_balancing, 0xD64060, self.player))  # TEMP?
+            if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone:
+                randomize_entrances(self, True, {0: [0]}, on_connect=lambda state, exits, entrances: print(list(zip(exits, entrances))))
 
         def get_archipelago_item_type_by_classification(self, item_classification: ItemClassification) -> DK64RItems:
             """Get the appropriate DK64R Archipelago item type based on the ItemClassification."""
