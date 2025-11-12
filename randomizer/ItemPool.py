@@ -279,7 +279,9 @@ def AllItems(settings):
         allItems.extend(SnideItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems(settings))
-    filler_types = [x for x in [Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerPearl, Types.FillerMedal, Types.FillerRainbowCoin, Types.JunkItem] if x in settings.shuffled_location_types]
+    filler_types = [
+        x for x in [Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerPearl, Types.FillerMedal, Types.FillerRainbowCoin, Types.JunkItem] if x in settings.shuffled_location_types
+    ]
     if len(filler_types) > 0:
         allItems.extend(FillerItems(settings))
     if settings.move_rando != MoveRando.off:
@@ -349,7 +351,9 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(SnideItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems(settings))
-    filler_types = [x for x in [Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerPearl, Types.FillerMedal, Types.FillerRainbowCoin, Types.JunkItem] if x in settings.shuffled_location_types]
+    filler_types = [
+        x for x in [Types.FillerBanana, Types.FillerCrown, Types.FillerFairy, Types.FillerPearl, Types.FillerMedal, Types.FillerRainbowCoin, Types.JunkItem] if x in settings.shuffled_location_types
+    ]
     if len(filler_types) > 0:
         allItems.extend(FillerItems(settings))
     return allItems
@@ -695,10 +699,7 @@ def FillerItems(settings):
             "count": 255 - settings.total_rainbow_coins,
             "weight": 3,
         },
-        Items.JunkMelon: {
-            "count": 1000,
-            "weight": 2
-        },
+        Items.JunkMelon: {"count": 1000, "weight": 2},
     }
     max_weight = max([x["weight"] for x in list(filler_mapping_allowances.values())])
     filler_types_in_pool = [x for x in list(filler_mapping.keys()) if x in settings.shuffled_location_types]
