@@ -331,7 +331,7 @@ LogicRegions = {
     Regions.CastleMinecarts: Region("Castle Minecarts", HintRegion.CastleUnderground, Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleDonkeyMinecarts, lambda l: l.HasEnoughRaceCoins(Maps.CastleMinecarts, Kongs.donkey, not l.settings.free_trade_items)),
     ], [], [
-        TransitionFront(Regions.Crypt, lambda _: True, Transitions.CastleCartsToCrypt),
+        TransitionFront(Regions.CryptDonkeyRoom, lambda _: True, Transitions.CastleCartsToCrypt),
     ], Transitions.CastleCryptToCarts
     ),
 
