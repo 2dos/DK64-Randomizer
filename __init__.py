@@ -1032,12 +1032,11 @@ if baseclasses_loaded:
 
         def connect_entrances(self) -> None:
             """Randomize and connect entrances if LZR is on."""
-            from randomizer.Lists.ShufflableExit import ShufflableExits
-            from randomizer.Enums.Transitions import Transitions
+            
 
             LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
             connect_regions(self, self.spoiler.settings)
-            if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone:
+            if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and not hasattr(self.multiworld, "generation_is_fake"):
                 ap_entrance_to_transition = {}
                 for transition_enum, shufflable_exit in ShufflableExits.items():
                     source_region = shufflable_exit.region.name
@@ -1070,7 +1069,7 @@ if baseclasses_loaded:
                             ShufflableExits[source_transition].shuffledId = target_transition
                             ShufflableExits[source_transition].shuffled = True
                 
-                randomize_entrances(self, True, {0: [0]}, on_connect=store_entrance_connections)
+                self.er_placement_state = randomize_entrances(self, True, {0: [0]}, on_connect=store_entrance_connections)
                 
                 # Initialize all non-shuffled transitions to point to themselves
                 for transition_enum, shufflable_exit in ShufflableExits.items():
@@ -1587,14 +1586,7 @@ if baseclasses_loaded:
                 "HintLocationMapping": hint_mapping,
                 "hints": {str(location): hint_data for location, hint_data in dynamic_hints.items()},
                 "EntranceRando": (
-                    {
-                        transition_enum.name: {
-                            "source": ShufflableExits[transition_enum].name,
-                            "destination": shuffled_back.name,
-                            "dest_region": shuffled_back.regionId.name,
-                        }
-                        for transition_enum, shuffled_back in self.spoiler.shuffled_exit_data.items()
-                    }
+                    self.er_placement_state.pairings
                     if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data
                     else {}
                 ),
@@ -1906,7 +1898,7 @@ if baseclasses_loaded:
                 shop_prices = {}
 
             # Added entrance randomization data
-            entrance_rando = slot_data.get("EntranceRando", {})
+            entrance_rando = slot_data.get("EntranceRando", [])
 
             relevant_data = {}
             relevant_data["LevelOrder"] = dict(enumerate([Levels[level] for level in level_order], start=1))
