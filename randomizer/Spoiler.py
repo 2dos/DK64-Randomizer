@@ -28,6 +28,7 @@ from randomizer.Enums.Settings import (
     PuzzleRando,
     ProgressiveHintItem,
     RandomPrices,
+    RandomStartingRegion,
     ShockwaveStatus,
     ShuffleLoadingZones,
     ShufflePortLocations,
@@ -478,9 +479,8 @@ class Spoiler:
                     humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toJSON()
             humanspoiler["Spoiler Hints"] = self.level_spoiler_human_readable
         humanspoiler["Requirements"] = {}
-        if self.settings.random_starting_region:
+        if self.settings.random_starting_region_new != RandomStartingRegion.off:
             humanspoiler["Game Start"] = {}
-            humanspoiler["Game Start"]["Starting Kong List"] = startKongList
             humanspoiler["Game Start"]["Starting Region"] = self.settings.starting_region["region_name"]
             humanspoiler["Game Start"]["Starting Exit"] = self.settings.starting_region["exit_name"]
         # GB Counts

@@ -817,7 +817,7 @@ ColoredBananaGroupList = [
         name="In the peanut cage",
         konglist=[Kongs.diddy],
         region=Regions.IslesAboveWaterfall,
-        logic=lambda l: l.peanut or l.CanPhase(),
+        logic=lambda l: l.peanut,
         locations=[
             [5, 1.0, 2954, 1483, 1357],
             [5, 1.0, 2909, 1483, 1349],

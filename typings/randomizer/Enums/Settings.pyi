@@ -448,6 +448,11 @@ class RandomRequirement(IntEnum):
     medium_random = 2
     hard_random = 3
 
+class RandomStartingRegion(IntEnum):
+    off = 0
+    isles_only = 1
+    all = 2
+
 class RemovedBarriersSelected(IntEnum):
     japes_coconut_gates = 1
     japes_shellhive_gate = 2
@@ -858,6 +863,7 @@ class SettingsStringEnum(IntEnum):
     trap_weight_animal = 287
     trap_weight_rockfall = 288
     trap_weight_disabletag = 289
+    random_starting_region_new = 290
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -938,6 +944,7 @@ SettingsMap: dict = {
     "pearl_mermaid_behavior": RandomRequirement,
     "fairy_queen_behavior": RandomRequirement,
     "cb_medal_behavior": RandomRequirement,
+    "random_starting_region_new": RandomStartingRegion,
     "cb_medal_behavior_new": CBRequirement,
     "wrinkly_hints": WrinklyHints,
     "spoiler_hints": SpoilerHints,
@@ -1158,6 +1165,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.fairy_queen_behavior: RandomRequirement,
     SettingsStringEnum.cb_medal_behavior: RandomRequirement,
     SettingsStringEnum.cb_medal_behavior_new: CBRequirement,
+    SettingsStringEnum.random_starting_region_new: RandomStartingRegion,
     SettingsStringEnum.win_condition_count: SettingsStringDataType.u8,
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,

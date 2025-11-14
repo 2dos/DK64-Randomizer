@@ -155,6 +155,10 @@ def ShuffleCBs(spoiler):
                     balloon_upper = balloons_left
                 else:
                     balloon_upper = min(int(balloons_left / (levels_to_populate - level_index)) + 3, int(balloons_left / global_divisor))
+                if level == Levels.FranticFactory:
+                    # Fill Factory with more balloons to mitigate OM2 overpopulation
+                    balloon_upper = int(balloon_upper * 1.5)
+                    balloon_lower = int(balloon_lower * 1.5)
                 balloon_lst = level_data[level]["balloons"].copy()
                 selected_balloon_count = min(
                     spoiler.settings.random.randint(min(balloon_lower, balloon_upper), max(balloon_lower, balloon_upper)),
