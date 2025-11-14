@@ -102,8 +102,8 @@ LogicRegions = {
         LocationLogic(Locations.KremKap_CastleMainEnemy_LowTnS, lambda l: l.camera),
     ], [], [
         TransitionFront(Regions.LowerCave, lambda _: True, Transitions.CastleMainToLower),
-        TransitionFront(Regions.CastleGraveyardPlatform, lambda l: l.climbing),
-        TransitionFront(Regions.CreepyCastleMain, lambda l: l.climbing),
+        TransitionFront(Regions.CastleGraveyardPlatform, lambda l: l.climbing or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.climbing or (l.monkey_maneuvers and (l.isdiddy or l.istiny))),
         TransitionFront(Regions.CastleBossLobby, lambda l: not l.settings.tns_location_rando)
     ]),
 

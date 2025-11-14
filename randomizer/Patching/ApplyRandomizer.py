@@ -20,6 +20,7 @@ from randomizer.Enums.Settings import (
     ProgressiveHintItem,
     PuzzleRando,
     RemovedBarriersSelected,
+    RandomStartingRegion,
     ShockwaveStatus,
     ShuffleLoadingZones,
     SlamRequirement,
@@ -638,7 +639,7 @@ def patching_response(spoiler):
     ROM_COPY.seek(sav + 0x1EB)
     ROM_COPY.write(spoiler.settings.mermaid_gb_pearls)
 
-    if spoiler.settings.random_starting_region:
+    if spoiler.settings.random_starting_region_new != RandomStartingRegion.off:
         ROM_COPY.seek(sav + 0x10C)
         ROM_COPY.write(spoiler.settings.starting_region["map"])
         exit_val = spoiler.settings.starting_region["exit"]

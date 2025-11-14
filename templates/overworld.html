@@ -64,17 +64,25 @@
                         </option>
                     </select>
                 </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
+                <div class="item-select">
+                    <p class="select-title">Random Starting Location</p>
+                    <select name="random_starting_region_new"
+                            id="random_starting_region_new"
+                            display_name="Random Starting Location"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
                             title="Randomizes the location you spawn in when starting a new file and when selecting the 'Exit to Spawn' option.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="random_starting_region"
-                                id="random_starting_region"
-                                display_name="Random Starting Location"
-                                value="True"/>
-                        Random Starting Location
-                    </label>
+                        <option id="off" selected value="off">
+                            Off
+                        </option>
+                        <option id="isles_only" value="isles_only" title="Will only spawn you in the Isles Main map.">
+                            Isles Main Only
+                        </option>
+                        <option id="all" value="all" title="Will spawn you from any map.">
+                            On
+                        </option>
+                    </select>
                 </div>
                 {% include "complex-options/kong-models.html" %}
             </div>

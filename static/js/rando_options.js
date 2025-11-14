@@ -1126,14 +1126,14 @@ function unshuffled_pool_list_changed(evt) {
 
 // Validate Fast Start Status
 document
-  .getElementById("random_starting_region")
-  .addEventListener("click", validate_fast_start_status);
+  .getElementById("random_starting_region_new")
+  .addEventListener("change", validate_fast_start_status);
 
 function validate_fast_start_status(evt) {
   const loadingZoneStatus = document.getElementById("level_randomization");
   const isRandomStartingRegion = document.getElementById(
-    "random_starting_region"
-  ).checked;
+    "random_starting_region_new"
+  ).value != "off";
   const fastStart = document.getElementById("fast_start_beginning_of_game_dummy");
 
   if (
