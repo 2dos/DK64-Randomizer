@@ -2139,7 +2139,7 @@
 | Above Caves lobby | 15 | `self.logic = lambda _: True` | 
 | Forest lobby roof | 10 | `self.logic = lambda _: True` | 
 | Flower sniffing near Forest | 5 | `self.logic = lambda _: True` | 
-| In the peanut cage | 10 | `l.peanut or l.CanPhase()` | 
+| In the peanut cage | 10 | `l.peanut` | 
 | Waterfall upstream | 5 | `self.logic = lambda _: True` | 
 | Flower next to peanut cage | 5 | `self.logic = lambda _: True` | 
 | Waterfall freefall | 10 | `self.logic = lambda _: True` | 
