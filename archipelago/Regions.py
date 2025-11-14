@@ -490,16 +490,10 @@ def connect_regions(world: World, settings: Settings):
             pairings = dict(world.multiworld.re_gen_passthrough["Donkey Kong 64"]["EntranceRando"])
             print(pairings)
     
-    connected_transitions = set()
     
     for region_id, region_obj in all_logic_regions.items():
         for exit in region_obj.exits:
             destination_name = exit.dest.name
-            # Skip glitch transitions from duplicate tracking since they intentionally reuse transition IDs
-            if exit.exitShuffleId is not None and not exit.isGlitchTransition and exit.exitShuffleId in connected_transitions:
-                continue   
-            if exit.exitShuffleId is not None and not exit.isGlitchTransition:
-                connected_transitions.add(exit.exitShuffleId)
             
             # If this is a Isles <-> Lobby transition and we're shuffling levels, respect the dictionary built earlier
             # if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and exit.exitShuffleId in lobby_transition_mapping.keys():
