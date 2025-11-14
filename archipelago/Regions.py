@@ -522,7 +522,6 @@ def connect_regions(world: World, settings: Settings):
                     connected_pairs.add(connection_key)
                 else:
                     connection = connect(world, region_id.name, destination_name, converted_logic)
-                    assigned_transitions += 1
                     connected_pairs.add(connection_key)
                     if settings.level_randomization == LevelRandomization.loadingzone:
                         if exit.exitShuffleId and not exit.isGlitchTransition and ShufflableExits[exit.exitShuffleId].back.reverse:
