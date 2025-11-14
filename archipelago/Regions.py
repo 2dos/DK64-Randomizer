@@ -489,9 +489,17 @@ def connect_regions(world: World, settings: Settings):
         if hasattr(world.multiworld, "re_gen_passthrough") and settings.level_randomization == LevelRandomization.loadingzone:
             pairings = dict(world.multiworld.re_gen_passthrough["Donkey Kong 64"]["EntranceRando"])
             print(pairings)
+    
+    connected_pairs = set()
+    
     for region_id, region_obj in all_logic_regions.items():
         for exit in region_obj.exits:
             destination_name = exit.dest.name
+            connection_key = (region_id.name, destination_name)
+            
+            if connection_key in connected_pairs:
+                continue
+            
             # If this is a Isles <-> Lobby transition and we're shuffling levels, respect the dictionary built earlier
             # if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and exit.exitShuffleId in lobby_transition_mapping.keys():
             #     destination_name = lobby_transition_mapping[exit.exitShuffleId]
@@ -511,8 +519,11 @@ def connect_regions(world: World, settings: Settings):
                     assigned_entrance_name = pairings[region_id.name + "->" + destination_name]
                     exits_to = assigned_entrance_name.split("->")[0]
                     connect(world, region_id.name, exits_to, converted_logic)
+                    connected_pairs.add(connection_key)
                 else:
                     connection = connect(world, region_id.name, destination_name, converted_logic)
+                    assigned_transitions += 1
+                    connected_pairs.add(connection_key)
                     if settings.level_randomization == LevelRandomization.loadingzone:
                         if exit.exitShuffleId and not exit.isGlitchTransition and ShufflableExits[exit.exitShuffleId].back.reverse:
                             disconnect_entrance_for_randomization(connection)
