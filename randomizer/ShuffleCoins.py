@@ -34,9 +34,15 @@ level_data = {
 }
 
 
-def getCoinRequirement(random) -> int:
+def getCoinRequirement(random, level: Levels) -> int:
     """Get requirement for a kong's coin amount."""
-    return int(random.randint(KONG_COIN_REQUIREMENT, KONG_COIN_CAP) / 8)
+    req = KONG_COIN_REQUIREMENT
+    cap = KONG_COIN_CAP
+    if level == Levels.FranticFactory:
+        # Reduce burden on Factory
+        req = 80
+        cap = 110
+    return int(random.randint(req, cap) / 8)
 
 
 def ShuffleCoins(spoiler):
@@ -57,11 +63,11 @@ def ShuffleCoins(spoiler):
                 level_placement = []
                 global_divisor = 7 - level_index
                 kong_specific_left = {
-                    Kongs.donkey: getCoinRequirement(spoiler.settings.random),
-                    Kongs.diddy: getCoinRequirement(spoiler.settings.random),
-                    Kongs.lanky: getCoinRequirement(spoiler.settings.random),
-                    Kongs.tiny: getCoinRequirement(spoiler.settings.random),
-                    Kongs.chunky: getCoinRequirement(spoiler.settings.random),
+                    Kongs.donkey: getCoinRequirement(spoiler.settings.random, level),
+                    Kongs.diddy: getCoinRequirement(spoiler.settings.random, level),
+                    Kongs.lanky: getCoinRequirement(spoiler.settings.random, level),
+                    Kongs.tiny: getCoinRequirement(spoiler.settings.random, level),
+                    Kongs.chunky: getCoinRequirement(spoiler.settings.random, level),
                 }
                 coins_left = (KONG_COIN_CAP * 5) - total_coins
                 coins_lower = max(int(coins_left / (8 - level_index)) - 10, 0)
@@ -161,10 +167,13 @@ def shuffleRaceCoins(spoiler):
                 for group in BananaCoinGroupList[level]:
                     if group.placed_type == Collectibles.racecoin:
                         group.placed_type = None
-            coins_to_place_in_level = RACE_COINS_TO_PLACE / len(level_data)
+            coins_to_place_factory = RACE_COINS_TO_PLACE / (len(level_data) * 2)
+            coins_to_place_in_level = (RACE_COINS_TO_PLACE - coins_to_place_factory) / (len(level_data) - 1)
             for level in level_data:
                 level_placement = []
                 coin_size = coins_to_place_in_level
+                if level == Levels.FranticFactory:
+                    coin_size = coins_to_place_factory
                 groupIds = list(set([group.group for group in BananaCoinGroupList[level] if group.placed_type is None and group.map not in BANNED_COIN_MAPS]))
                 spoiler.settings.random.shuffle(groupIds)
                 for groupId in groupIds:

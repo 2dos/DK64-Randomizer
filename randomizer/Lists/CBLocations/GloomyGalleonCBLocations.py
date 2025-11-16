@@ -2661,7 +2661,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
         logic=lambda l: (Events.WaterRaised in l.Events or (l.monkey_maneuvers and ((l.islanky and not l.isKrushaAdjacent(Kongs.lanky)) or l.ischunky))),
-        points=[[1274, 1680, 2590], [1339, 1680, 1554], [1331, 1690, 2635]],
+        points=[[1274, 1680, 2590], [1339, 1680, 2554], [1331, 1690, 2635]],
     ),
     Balloon(
         id=27,
