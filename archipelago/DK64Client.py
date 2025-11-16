@@ -678,7 +678,7 @@ class DK64Client:
             SHOP_CRANKY = 0
             SHOP_FUNKY = 1
             SHOP_CANDY = 2
-            
+
             if shop_index == SHOP_CRANKY:
                 # Cranky: FLAG_SHOPFLAG + (level * 5) + kong
                 shop_flag = FLAG_SHOPFLAG + (level_index * 5) + kong_index
@@ -697,7 +697,7 @@ class DK64Client:
                     return False
             else:
                 return False
-                
+
             return self.readFlag(shop_flag)
         else:
             return self.readFlag(flag_index)
