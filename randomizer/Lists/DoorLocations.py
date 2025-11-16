@@ -107,19 +107,13 @@ class DoorData:
         self.dos_door = dos_door  # We need extra doors in Japes to make Dos' Doors work - this flag is for specifically that
         self.door_type = door_type.copy()  # denotes what types it can be
         self.dk_portal_logic = dk_portal_logic
-        if True:  # Disable if we figure it's not necessary
-            if DoorType.dk_portal in self.door_type and self.logicregion in UNDERWATER_LOGIC_REGIONS:
-                # Disable portals in underwater regions
-                self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
-        # if self.default_placed == DoorType.dk_portal:
-        #     # Disable TnS spawning here because of it being slightly bugged when exiting as DK/Chunky
-        #     # Instantly re-activates the portal for some reason?
-        #     # TODO: Figure out how to prevent this so we can remove this condition
-        #     self.door_type = [x for x in self.door_type if x != DoorType.boss]
+        if DoorType.dk_portal in self.door_type and self.logicregion in UNDERWATER_LOGIC_REGIONS:
+            # Disable portals in underwater regions
+            self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
+        if DoorType.dk_portal in self.door_type and self.logicregion == Regions.Testing:
+            # Disable portals in Block Tower room
+            self.door_type = [x for x in self.door_type if x != DoorType.dk_portal]
         self.default_door_list = self.door_type.copy()
-        # if self.default_placed == DoorType.dk_portal:
-        #     # Disable other doors being able to occupy the space of DK portals, for now
-        #     self.door_type = [DoorType.dk_portal]
         self.assigned_kong = None
         self.far_enough_from_wall = far_enough_from_wall or placed != DoorType.null or rx != 0 or scale <= 0.8  # Keep track of which doors wouldn't benefit enough from a Z-buffering fix [NYI]
 

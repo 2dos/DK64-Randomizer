@@ -939,6 +939,7 @@ class Settings:
         self.key_8_helm = False
         self.k_rool_vanilla_requirement = False
         self.random_starting_region = False
+        self.random_starting_region_new = RandomStartingRegion.off
         self.starting_region = {}
         self.holiday_setting = False
         self.holiday_setting_offseason = False
@@ -1503,6 +1504,7 @@ class Settings:
             ]
 
         self.shuffled_location_types = []
+        self.junk_offset = 0
         self.shuffled_check_allowances = {}
         if self.shuffle_items:
             item_ui_pairing = {
@@ -1691,6 +1693,7 @@ class Settings:
 
         # B Locker and Troff n Scoff amounts Rando
         self.update_progression_totals()
+        self.junk_offset = self.random.randint(0, 255)  # Offset when seeding junk just to make sure it's not all the same every time
 
         # Handle K. Rool Phases
         self.krool_donkey = False
@@ -2388,7 +2391,7 @@ class Settings:
     def finalize_world_settings(self, spoiler):
         """Finalize the world state after settings initialization."""
         # Starting Region Randomization
-        if self.random_starting_region:
+        if self.random_starting_region_new != RandomStartingRegion.off:
             self.RandomizeStartingLocation(spoiler)
         self.shuffle_prices(spoiler)
         # Starting Move Location handling
@@ -2861,16 +2864,21 @@ class Settings:
 
     def RandomizeStartingLocation(self, spoiler):
         """Randomize the starting point of this seed."""
-        region_data = [
-            randomizer.LogicFiles.DKIsles.LogicRegions,
-            randomizer.LogicFiles.JungleJapes.LogicRegions,
-            randomizer.LogicFiles.AngryAztec.LogicRegions,
-            randomizer.LogicFiles.FranticFactory.LogicRegions,
-            randomizer.LogicFiles.GloomyGalleon.LogicRegions,
-            randomizer.LogicFiles.FungiForest.LogicRegions,
-            randomizer.LogicFiles.CrystalCaves.LogicRegions,
-            randomizer.LogicFiles.CreepyCastle.LogicRegions,
-        ]
+        if self.random_starting_region_new == RandomStartingRegion.isles_only:
+            region_data = [
+                randomizer.LogicFiles.DKIsles.LogicRegions,
+            ]
+        else:
+            region_data = [
+                randomizer.LogicFiles.DKIsles.LogicRegions,
+                randomizer.LogicFiles.JungleJapes.LogicRegions,
+                randomizer.LogicFiles.AngryAztec.LogicRegions,
+                randomizer.LogicFiles.FranticFactory.LogicRegions,
+                randomizer.LogicFiles.GloomyGalleon.LogicRegions,
+                randomizer.LogicFiles.FungiForest.LogicRegions,
+                randomizer.LogicFiles.CrystalCaves.LogicRegions,
+                randomizer.LogicFiles.CreepyCastle.LogicRegions,
+            ]
         selected_region_world = self.random.choice(region_data)
         valid_starting_regions = []
         banned_starting_regions = []
@@ -2912,9 +2920,15 @@ class Settings:
                 if region in RegionMapList:
                     # Has tied map
                     tied_map = GetMapId(self, region)
+                    if self.random_starting_region_new == RandomStartingRegion.isles_only:
+                        if tied_map != Maps.Isles:
+                            continue
                     for transition in transitions:
                         relevant_transition = ShufflableExits[transition].back.reverse
                         tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
+                        if tied_exit == 11 and tied_map == Maps.Isles:
+                            # Castle Lobby exit: Big nono
+                            continue
                         valid_starting_regions.append(
                             {
                                 "region": region,

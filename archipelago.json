@@ -1,6 +1,6 @@
 {
     "minimum_ap_version": "0.6.4", 
-    "world_version": "1.4.14",
+    "world_version": "1.4.15",
     "authors": ["2dos", "AlmostSeagull", "Ballaam", "Green Bean", "Killklli", "Lrauq", "PoryGone", "Umed"],
     "version": 7,
     "compatible_version": 7,

@@ -1341,12 +1341,20 @@
             },
             "qol_uses_hard": true
         },
-        "random_starting_region": {
-            "setting_type": "bool",
+        "random_starting_region_new": {
+            "setting_type": "choice_single",
             "options": {
-                "easy": 0,
-                "standard": 30,
-                "difficult": 60
+                "easy": {
+                    "off": 100.0
+                },
+                "standard": {
+                    "off": 70.0,
+                    "isles_only": 30.0
+                },
+                "difficult": {
+                    "off": 40.0,
+                    "isles_only": 60.0
+                }
             },
             "qol_uses_hard": true
         },

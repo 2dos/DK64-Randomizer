@@ -399,7 +399,7 @@ LogicRegions = {
     ]),
 
     Regions.IslesAboveWaterfall: Region("Isles Above Waterfall", HintRegion.MainIsles, Levels.DKIsles, False, None, [
-        LocationLogic(Locations.IslesDiddyCagedBanana, lambda l: (l.peanut and l.isdiddy) or (l.CanPhase() and l.settings.free_trade_items)),
+        LocationLogic(Locations.IslesDiddyCagedBanana, lambda l: l.peanut and l.isdiddy),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda _: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.monkey_maneuvers),
