@@ -2764,7 +2764,7 @@ CustomLocations = {
             group=2,
         ),
         CustomLocation(
-            name="Sick Bay: Chunky ship entrance",
+            name="Seasick Ship: Entrance",
             map=Maps.GalleonSickBay,
             x=628.0,
             y=20.0,
@@ -2795,7 +2795,7 @@ CustomLocations = {
         #     group=2,
         # ),
         CustomLocation(
-            name="Sick Bay: Chunky ship - back left corner",
+            name="Seasick Ship: Back left corner",
             map=Maps.GalleonSickBay,
             x=701.0,
             y=20.0,
@@ -2806,7 +2806,7 @@ CustomLocations = {
             group=2,
         ),
         CustomLocation(
-            name="Sick Bay: Chunky ship - behind the non-alcoholic tower",
+            name="Seasick Ship: Behind the non-alcoholic tower",
             map=Maps.GalleonSickBay,
             x=159.0,
             y=20.0,
