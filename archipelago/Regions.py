@@ -515,10 +515,16 @@ def connect_regions(world: World, settings: Settings):
                     exits_to = assigned_entrance_name.split("->")[0]
                     connect(world, region_id.name, exits_to, converted_logic)
                 else:
-                    connection = connect(world, region_id.name, destination_name, converted_logic)
+                    # For LZR, use the ShufflableExit name to prevent overwriting transitions
+                    entrance_name = None
                     if settings.level_randomization == LevelRandomization.loadingzone:
                         if exit.exitShuffleId and not exit.isGlitchTransition and ShufflableExits[exit.exitShuffleId].back.reverse:
-                            disconnect_entrance_for_randomization(connection)
+                            entrance_name = ShufflableExits[exit.exitShuffleId].name
+                    
+                    connection = connect(world, region_id.name, destination_name, converted_logic, entrance_name)
+                    
+                    if entrance_name is not None:
+                        disconnect_entrance_for_randomization(connection)
                 
                 # print("Connecting " + region_id.name + " to " + destination_name)
             except Exception as e:
@@ -531,12 +537,13 @@ def connect_regions(world: World, settings: Settings):
     pass
 
 
-def connect(world: World, source: str, target: str, rule: typing.Optional[typing.Callable] = None) -> Entrance:
+def connect(world: World, source: str, target: str, rule: typing.Optional[typing.Callable] = None, name: typing.Optional[str] = None) -> Entrance:
     """Connect two regions in the given world."""
     source_region = world.multiworld.get_region(source, world.player)
     target_region = world.multiworld.get_region(target, world.player)
 
-    name = source + "->" + target
+    if name is None:
+        name = source + "->" + target
     connection = Entrance(world.player, name, source_region, 0, EntranceType.TWO_WAY)
 
     if rule:
