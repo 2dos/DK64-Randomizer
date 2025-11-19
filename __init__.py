@@ -1039,11 +1039,10 @@ if baseclasses_loaded:
             if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and not hasattr(self.multiworld, "generation_is_fake"):
                 ap_entrance_to_transition = {}
                 for transition_enum, shufflable_exit in ShufflableExits.items():
-                    source_region = shufflable_exit.region.name
-                    dest_region = shufflable_exit.back.regionId.name
-                    ap_entrance_name = f"{source_region}->{dest_region}"
-                    ap_entrance_to_transition[ap_entrance_name] = transition_enum
-                
+                    # TODO: Make this configurable with DLZR
+                    if shufflable_exit.back.reverse is None:
+                        continue
+                    ap_entrance_to_transition[shufflable_exit.name] = transition_enum                
                 # Store entrance connections for ROM patching
                 def store_entrance_connections(state, exits, entrances):
                     """Store entrance randomization results in the spoiler."""
@@ -1053,30 +1052,18 @@ if baseclasses_loaded:
                         if not source_transition:
                             continue
                         
-                        target_entrance_transition = ap_entrance_to_transition.get(target_entrance.name)
-                        if not target_entrance_transition:
+                        target_transition = ap_entrance_to_transition.get(target_entrance.name)
+                        if not target_transition:
                             continue
                         
-                        # Get the REVERSE transition - the one that leads back out
-                        target_shufflable_exit = ShufflableExits[target_entrance_transition]
-                        if target_shufflable_exit.back.reverse is not None:
-                            target_transition = target_shufflable_exit.back.reverse
-                        else:
-                            # No reverse, use the entrance itself
-                            target_transition = target_entrance_transition
+                        target_reverse = ShufflableExits[target_transition].back.reverse
+                        if target_reverse is None:
+                            continue
                         
-                        if source_transition and target_transition:
-                            ShufflableExits[source_transition].shuffledId = target_transition
-                            ShufflableExits[source_transition].shuffled = True
+                        ShufflableExits[source_transition].shuffledId = target_reverse
+                        ShufflableExits[source_transition].shuffled = True
                 
                 self.er_placement_state = randomize_entrances(self, True, {0: [0]}, on_connect=store_entrance_connections)
-                
-                # Initialize all non-shuffled transitions to point to themselves
-                for transition_enum, shufflable_exit in ShufflableExits.items():
-                    if not shufflable_exit.shuffled:
-                        # Mark as shuffled (even though it's vanilla) so UpdateExits includes it
-                        shufflable_exit.shuffled = True
-                        shufflable_exit.shuffledId = transition_enum  # Points to itself
                 
                 # After randomization, update the spoiler's exit data
                 self.spoiler.UpdateExits()
