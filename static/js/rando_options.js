@@ -118,6 +118,27 @@ document
   .getElementById("plando_place_tns")
   .addEventListener("click", plando_toggle_custom_locations_tab);
 
+// Toggle individual Kong switches for Model Swap
+function toggle_modelmode_selector() {
+  const kong_list = ["dk", "diddy", "lanky", "tiny", "chunky"];
+
+  for (let i = 0; i < 5; i++) {
+    const kongModelCustomization = document.getElementById(
+      "kong_model_" + kong_list[i]
+    );
+
+    if (document.getElementById("kong_model_mode").value == "manual") {
+      kongModelCustomization.removeAttribute("disabled");
+    } else {
+      kongModelCustomization.setAttribute("disabled", "disabled");
+    }
+  }
+}
+
+document
+  .getElementById("kong_model_mode")
+  .addEventListener("change", toggle_modelmode_selector);
+
 // Toggle custom arena locations
 function plando_toggle_custom_arena_locations() {
   const arenaElem = document.getElementById(
