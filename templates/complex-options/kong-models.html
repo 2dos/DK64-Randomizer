@@ -10,7 +10,7 @@
         data-bs-toggle="modal"
         data-bs-target="#kongModelModal"
         data-toggle="modal"
-        title="Customize what models each slam gets"/>
+        title="Customize what models each Kong gets"/>
 </div>
 <div class="modal fade" id="kongModelModal" tabindex="-1" aria-labelledby="kongModelModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -66,6 +66,27 @@
                                 </select>
                             </div>
                         {% endfor %}
+                        <div class="item-select">   
+                                <p class="select-title">Mode</p>
+                                <select name="kong_model_mode"
+                                        id="kong_model_mode"
+                                        display_name="Model Replacement Mode"
+                                        class="form-select"
+                                        aria-label="mode">
+                                    <option selected value="manual"
+                                            title="Manually select the model for each Kong">
+                                        Manual
+                                    </option>
+                                    <option value="random_one"
+                                            title="Replace one of the Kong with Krusha">
+                                        Random One
+                                    </option>
+                                    <option value="random_all"
+                                            title="Randomly give a chance to replace each Kong">
+                                        Random All
+                                    </option>
+                                </select>
+                            </div>
                     </div>
                 </div>
             </div>

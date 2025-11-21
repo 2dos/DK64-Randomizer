@@ -927,6 +927,7 @@ export enum SettingsStringEnum {
     trap_weight_rockfall = 288,
     trap_weight_disabletag = 289,
     random_starting_region_new = 290,
+    kong_model_mode = 291,
 }
 
 export enum SettingsStringDataType {
@@ -1163,6 +1164,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.kong_model_lanky: KongModels,
     SettingsStringEnum.kong_model_tiny: KongModels,
     SettingsStringEnum.kong_model_chunky: KongModels,
+    SettingsStringEnum.kong_model_mode: SettingsStringDataType.int4,
     SettingsStringEnum.kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_access: SettingsStringDataType.bool,
     SettingsStringEnum.krool_key_count: SettingsStringDataType.var_int,

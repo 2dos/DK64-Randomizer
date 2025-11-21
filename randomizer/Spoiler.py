@@ -404,6 +404,7 @@ class Spoiler:
         settings["Lanky Model"] = self.settings.kong_model_lanky.name
         settings["Tiny Model"] = self.settings.kong_model_tiny.name
         settings["Chunky Model"] = self.settings.kong_model_chunky.name
+        settings["Model Swap Mode"] = self.settings.kong_model_mode.name
 
         settings["Key 8 Required"] = self.settings.krool_access
         settings["Vanilla K. Rool Requirement"] = self.settings.k_rool_vanilla_requirement

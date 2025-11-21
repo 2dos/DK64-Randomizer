@@ -1,7 +1,7 @@
 """Write ASM data for the actor elements."""
 
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import KongModels
+from randomizer.Enums.Settings import KongModels, KongModelMode
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
 
@@ -143,7 +143,7 @@ def krushaChanges(ROM_COPY: LocalROM, settings, offset_dict: dict):
         settings.kong_model_lanky,
         settings.kong_model_tiny,
         settings.kong_model_chunky,
-    ]
+    ]    
     for kong_index, value in enumerate(kong_model_setting_values):
         if value in (KongModels.krool_cutscene, KongModels.krool_fight, KongModels.krusha):
             writeValue(ROM_COPY, 0x80753568 + (2 * kong_index), Overlay.Static, 175, offset_dict)  # Krusha sliding speed

@@ -716,6 +716,7 @@ class Settings:
         self.kong_model_lanky = KongModels.default
         self.kong_model_tiny = KongModels.default
         self.kong_model_chunky = KongModels.default
+        self.kong_model_mode = KongModelMode.manual
         self.krusha_kong = None
         self.misc_cosmetics = False
         self.remove_water_oscillation = False
@@ -2378,6 +2379,36 @@ class Settings:
             self.excluded_bp_locations = [Locations.TurnInJungleJapesDonkeyBlueprint + x for x in range(35)] + [Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(5)]
             count_to_exclude = 40 - self.most_snide_rewards
             self.excluded_bp_locations = self.excluded_bp_locations[-count_to_exclude:]
+
+        # Kong Model Mode Randomization
+        if self.kong_model_mode == KongModelMode.random_one:
+            random_krusha = self.random.randint(0, 4)
+            kong_model_setting_values = [
+                KongModels.default,
+                KongModels.default,
+                KongModels.default,
+                KongModels.default,
+                KongModels.default
+            ]
+            kong_model_setting_values[random_krusha] = KongModels.krusha
+
+            self.kong_model_dk = kong_model_setting_values[0]
+            self.kong_model_diddy = kong_model_setting_values[1]
+            self.kong_model_lanky = kong_model_setting_values[2]
+            self.kong_model_tiny = kong_model_setting_values[3]
+            self.kong_model_chunky = kong_model_setting_values[4]
+
+        elif self.kong_model_mode == KongModelMode.random_all:
+            kong_model_setting_values = [
+                KongModels.default,
+                KongModels.krusha
+            ]
+            self.kong_model_dk = self.random.choice(kong_model_setting_values)
+            self.kong_model_diddy = self.random.choice(kong_model_setting_values)
+            self.kong_model_lanky = self.random.choice(kong_model_setting_values)
+            self.kong_model_tiny = self.random.choice(kong_model_setting_values)
+            self.kong_model_chunky = self.random.choice(kong_model_setting_values)
+            
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""

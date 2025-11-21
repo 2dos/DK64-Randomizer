@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageEnhance
 
 import js
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import CharacterColors, ColorblindMode, KongModels, WinConditionComplex
+from randomizer.Enums.Settings import CharacterColors, ColorblindMode, KongModels, KongModelMode, WinConditionComplex
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems
 from randomizer.Patching.Cosmetics.CustomTextures import writeTransition, writeCustomPaintings, writeCustomPortal, writeCustomArcadeSprites, writeCustomReels
