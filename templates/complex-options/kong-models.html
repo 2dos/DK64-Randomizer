@@ -67,7 +67,7 @@
                             </div>
                         {% endfor %}
                         <div class="item-select">   
-                                <p class="select-title">Mode</p>
+                                <p class="select-title">Random Model Mode</p>
                                 <select name="kong_model_mode"
                                         id="kong_model_mode"
                                         display_name="Model Replacement Mode"
@@ -80,6 +80,10 @@
                                     <option value="random_one"
                                             title="Replace one of the Kong with Krusha">
                                         Random One
+                                    </option>
+                                    <option value="sometimes_one"
+                                            title="Gives a chance to replace one of the Kong with Krusha">
+                                        Sometimes One
                                     </option>
                                     <option value="random_all"
                                             title="Randomly give a chance to replace each Kong">

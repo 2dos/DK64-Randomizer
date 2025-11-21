@@ -327,7 +327,8 @@ class KongModels(IntEnum):
 class KongModelMode(IntEnum):
     manual = 0
     random_one = 1
-    random_all = 2
+    sometimes_one = 2
+    random_all = 3
 
 class LevelRandomization(IntEnum):
     vanilla = 0

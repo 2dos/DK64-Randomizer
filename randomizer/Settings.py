@@ -2383,22 +2383,35 @@ class Settings:
         # Kong Model Mode Randomization
         if self.kong_model_mode == KongModelMode.random_one:
             random_krusha = self.random.randint(0, 4)
-            kong_model_setting_values = [KongModels.default, KongModels.default, KongModels.default, KongModels.default, KongModels.default]
-            kong_model_setting_values[random_krusha] = KongModels.krusha
+            kong_model_array = [KongModels.default, KongModels.default, KongModels.default, KongModels.default, KongModels.default]
+            kong_model_array[random_krusha] = KongModels.krusha
 
-            self.kong_model_dk = kong_model_setting_values[0]
-            self.kong_model_diddy = kong_model_setting_values[1]
-            self.kong_model_lanky = kong_model_setting_values[2]
-            self.kong_model_tiny = kong_model_setting_values[3]
-            self.kong_model_chunky = kong_model_setting_values[4]
+            self.kong_model_dk = kong_model_array[0]
+            self.kong_model_diddy = kong_model_array[1]
+            self.kong_model_lanky = kong_model_array[2]
+            self.kong_model_tiny = kong_model_array[3]
+            self.kong_model_chunky = kong_model_array[4]
+
+        elif self.kong_model_mode == KongModelMode.sometimes_one:
+            random_krusha = self.random.randint(0, 4)
+            kong_model_array = [KongModels.default, KongModels.default, KongModels.default, KongModels.default, KongModels.default]
+            krusha_model = [KongModels.default, KongModels.krusha]
+            kong_model_array[random_krusha] = self.random.choice([KongModels.default, KongModels.krusha])
+
+            self.kong_model_dk = kong_model_array[0]
+            self.kong_model_diddy = kong_model_array[1]
+            self.kong_model_lanky = kong_model_array[2]
+            self.kong_model_tiny = kong_model_array[3]
+            self.kong_model_chunky = kong_model_array[4]
 
         elif self.kong_model_mode == KongModelMode.random_all:
-            kong_model_setting_values = [KongModels.default, KongModels.krusha]
-            self.kong_model_dk = self.random.choice(kong_model_setting_values)
-            self.kong_model_diddy = self.random.choice(kong_model_setting_values)
-            self.kong_model_lanky = self.random.choice(kong_model_setting_values)
-            self.kong_model_tiny = self.random.choice(kong_model_setting_values)
-            self.kong_model_chunky = self.random.choice(kong_model_setting_values)
+            kong_model_list = [KongModels.default, KongModels.krusha]
+
+            self.kong_model_dk = self.random.choice(kong_model_list)
+            self.kong_model_diddy = self.random.choice(kong_model_list)
+            self.kong_model_lanky = self.random.choice(kong_model_list)
+            self.kong_model_tiny = self.random.choice(kong_model_list)
+            self.kong_model_chunky = self.random.choice(kong_model_list)
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
