@@ -1164,7 +1164,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.kong_model_lanky: KongModels,
     SettingsStringEnum.kong_model_tiny: KongModels,
     SettingsStringEnum.kong_model_chunky: KongModels,
-    SettingsStringEnum.kong_model_mode: SettingsStringDataType.int4,
+    SettingsStringEnum.kong_model_mode: KongModelMode,
     SettingsStringEnum.kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_access: SettingsStringDataType.bool,
     SettingsStringEnum.krool_key_count: SettingsStringDataType.var_int,

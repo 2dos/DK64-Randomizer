@@ -1,7 +1,7 @@
 """Write ASM data for the actor elements."""
 
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import KongModels, KongModelMode
+from randomizer.Enums.Settings import KongModels
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.Library.ASM import *
 
