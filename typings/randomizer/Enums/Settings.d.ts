@@ -360,6 +360,12 @@ export enum KongModels {
     disco_donkey = 8,
 }
 
+export enum KongModelMode {
+    manual = 0,
+    random_one = 1,
+    random_all = 2,
+}
+
 export enum LevelRandomization {
     vanilla = 0,
     level_order = 1,
@@ -1022,6 +1028,7 @@ export const SettingsMap = {
     'kong_model_lanky': KongModels,
     'kong_model_tiny': KongModels,
     'kong_model_chunky': KongModels,
+    'kong_model_mode': KongModelMode,
     'chunky_phase_slam_req': SlamRequirement,
     'puzzle_rando_difficulty': PuzzleRando,
     'progressive_hint_item': ProgressiveHintItem,

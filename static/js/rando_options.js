@@ -2066,6 +2066,7 @@ function update_ui_states() {
   toggle_dos_door_rando();
   validate_fast_start_status(null);
   hide_irrelevant_details_coupled_item_rando();
+  toggle_modelmode_selector();
 
   const sliders = document.getElementsByClassName("pretty-slider");
   for (let s = 0; s < sliders.length; s++) {

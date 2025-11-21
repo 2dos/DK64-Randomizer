@@ -323,7 +323,7 @@ class KongModels(IntEnum):
     candy = 6
     funky = 7
     disco_donkey = 8
-    
+
 class KongModelMode(IntEnum):
     manual = 0
     random_one = 1
@@ -962,6 +962,7 @@ SettingsMap: dict = {
     "kong_model_lanky": KongModels,
     "kong_model_tiny": KongModels,
     "kong_model_chunky": KongModels,
+    "kong_model_mode": KongModelMode,
     "chunky_phase_slam_req": SlamRequirement,
     "puzzle_rando_difficulty": PuzzleRando,
     "progressive_hint_item": ProgressiveHintItem,
