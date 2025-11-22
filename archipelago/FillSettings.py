@@ -151,6 +151,7 @@ def get_default_settings() -> dict:
             ItemRandoListSelected.wrinkly,
             ItemRandoListSelected.gauntletbanana,
             ItemRandoListSelected.racebanana,
+            ItemRandoListSelected.sniderewards,
             ItemRandoListSelected.arenas,
             ItemRandoListSelected.halfmedal,
             ItemRandoListSelected.enemies,
