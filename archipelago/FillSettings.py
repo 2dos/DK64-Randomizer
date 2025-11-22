@@ -382,6 +382,7 @@ def apply_item_randomization_settings(settings_dict: dict, options) -> None:
         ItemRandoListSelected.banana,
         ItemRandoListSelected.racebanana,
         ItemRandoListSelected.gauntletbanana,
+        ItemRandoListSelected.blueprintbanana,
         ItemRandoListSelected.crown,
         ItemRandoListSelected.blueprint,
         ItemRandoListSelected.key,
