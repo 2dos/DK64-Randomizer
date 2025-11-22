@@ -669,6 +669,15 @@
                     setting_data.random_starting_region_new = setting_data.random_starting_region ? "all" : "off";
                     delete setting_data.random_starting_region;
                 }
+                if (sel_version_num < numericVersion("5.7.31")) {
+                    console.log("Remapping Blueprint Banana");
+                    for (let i = 0; i < 10; i++) {
+                        if (setting_data[`item_rando_list_${i}`].includes("blueprintbanana")) {
+                            setting_data[`item_rando_list_${i}`] = setting_data[`item_rando_list_${i}`].filter(k => k !== "blueprintbanana");
+                            setting_data[`item_rando_list_${i}`].push("sniderewards");
+                        }
+                    }
+                }
                 // Update to include all unhandled options to unsorted
                 const all_valid_items = Object.keys(output_json.ItemRandoListSelected);
                 let mentioned_items = [];
