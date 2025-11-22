@@ -71,12 +71,20 @@
         },
         {
             "name": "Snide's Rewards",
-            "value": "blueprintbanana",
-            "tooltip": "All banana checks which are obtained after turning in a blueprint is in the pool.",
+            "value": "sniderewards",
+            "tooltip": "Snide can have random rewards instead of Golden Bananas. Use the Max Snide Reward Limit to customize how many locations will be shuffled.",
             "check_count": 40,
             "item_count": 0,
             "is_check": true,
-            "tied": "banana"
+            "tied": "blueprintbanana"
+        },
+        {
+            "name": "Snide's Bananas",
+            "value": "blueprintbanana",
+            "tooltip": "All banana checks which are obtained after turning in a blueprint are in the pool. Use the Max Snide Reward Limit to customize how many GBs will be shuffled.",
+            "check_count": 0,
+            "item_count": 40,
+            "is_check": false
         },
         {
             "name": "Crown Arenas",
