@@ -313,6 +313,7 @@ export enum ItemRandoListSelected {
     racebanana = 45,
     gauntletbanana = 46,
     blueprintbanana = 47,
+    sniderewards = 48,
 }
 
 export enum ItemRandoFiller {

@@ -193,7 +193,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Default: 100%
 - Kong Model Tiny: 
 	- Default: 100%
-- Key 8 Required: 70%
+- Don't Start with Key 8: 70%
 - Shuffle Boss Kong Required: 65%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 
