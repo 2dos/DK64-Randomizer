@@ -111,6 +111,7 @@ class LevelSpoiler:
         self.level_name = level_name
         self.vial_colors = []
         self.points = 0
+        self.level_items = []
         self.woth_count = 0
 
     def toJSON(self):
@@ -2304,7 +2305,13 @@ def compileSpoilerHints(spoiler):
                     starting_info.starting_moves_woth_count += 1
             else:
                 spoiler.level_spoiler[level_of_location].vial_colors.append(CategorizeItem(item_obj))
-                spoiler.level_spoiler[level_of_location].points += PointValueOfItem(spoiler.settings, location.item)
+                points = PointValueOfItem(spoiler.settings, location.item)
+                spoiler.level_spoiler[level_of_location].points += points
+                spoiler.level_spoiler[level_of_location].level_items.append({
+                    "item": location.item,
+                    "points": points,
+                    "flag": location.location_flag,
+                })
                 if location_id in spoiler.woth_locations:
                     spoiler.level_spoiler[level_of_location].woth_count += 1
     # Convert those spoiler hints to readable text

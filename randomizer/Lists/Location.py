@@ -10,6 +10,32 @@ from randomizer.Enums.Types import Types
 from randomizer.Enums.VendorType import VendorType
 from randomizer.Enums.Maps import Maps
 
+def placement_index_to_flag(index: int) -> int:
+    """Convert the placement index to a flag."""
+    if index < 120:
+        vendor = int(index / 40)
+        kong = int((index % 40) / 8)
+        level = index % 8
+        if vendor == VendorType.Cranky:
+            return 0x320 + (level * 5) + kong
+        elif vendor == VendorType.Funky:
+            return 0x320 + ((8 + level) * 5) + kong
+        elif vendor == VendorType.Candy:
+            candy_index = {
+                Levels.AngryAztec: 0,
+                Levels.FranticFactory: 1,
+                Levels.GloomyGalleon: 2,
+                Levels.CrystalCaves: 3,
+                Levels.CreepyCastle: 4,
+            }
+            return 0x320 + ((15 + candy_index[level]) * 5) + kong
+        return 0
+    flags = [386, 388, 389, 387, 377]
+    offset = index - 120
+    if offset > 4:
+        return 0
+    return flags[index - 120]
+    
 
 class MapIDCombo:
     """A combination of a map and an associated item ID. If id == -1 and map == 0, has no model 2 item, ignore those."""
@@ -39,6 +65,7 @@ class Location:
         self.map_id_list = None
         self.level = level
         self.kong = kong
+        self.location_flag = 0
         self.logically_relevant = logically_relevant  # This is True if this location is needed to derive the logic for another location
         self.placement_index = None
         self.inaccessible = False
@@ -58,34 +85,42 @@ class Location:
             else:
                 for kong_index in range(5):
                     lst.append((self.vendor * 40) + (kong_index * 8) + lvl_index)
+            self.location_flag = placement_index_to_flag(lst[0])
             self.placement_index = lst
             self.is_shop = True
         elif self.type in (Types.TrainingBarrel, Types.Shockwave):
+            self.location_flag = placement_index_to_flag(data[0])
             self.placement_index = [data[0]]
         elif self.type == Types.Blueprint:
             self.map = data[0]
             level_index = int(self.level)
             if self.level in (Levels.DKIsles, Levels.HideoutHelm):
                 level_index = 7
-            self.map_id_list = [MapIDCombo(0, -1, 469 + self.kong + (5 * level_index), self.kong)]
+            self.location_flag = 469 + self.kong + (5 * level_index)
+            self.map_id_list = [MapIDCombo(0, -1, self.location_flag, self.kong)]
         elif self.type in [Types.Medal, Types.IslesMedal, Types.HalfMedal] and self.level != Levels.HideoutHelm:
             level_index = int(self.level)
             if self.type == Types.HalfMedal:
                 if self.level == Levels.DKIsles:
                     level_index = 7
-                self.map_id_list = [MapIDCombo(0, -1, 0x3D6 + (5 * level_index) + self.kong)]
+                self.location_flag = 0x3D6 + (5 * level_index) + self.kong
+                self.map_id_list = [MapIDCombo(0, -1, self.location_flag)]
             else:
                 if self.level == Levels.DKIsles:
-                    self.map_id_list = [MapIDCombo(0, -1, 0x3C6 + self.kong, self.kong)]
+                    self.location_flag = 0x3C6 + self.kong
+                    self.map_id_list = [MapIDCombo(0, -1, self.location_flag, self.kong)]
                 else:
-                    self.map_id_list = [MapIDCombo(0, -1, 549 + self.kong + (5 * level_index), self.kong)]
+                    self.location_flag = 549 + self.kong + (5 * level_index)
+                    self.map_id_list = [MapIDCombo(0, -1, self.location_flag, self.kong)]
         elif self.type == Types.Hint:
             level_index = int(self.level)
-            self.map_id_list = [MapIDCombo(0, -1, 0x384 + self.kong + (5 * level_index), self.kong)]
+            self.location_flag = 0x384 + self.kong + (5 * level_index)
+            self.map_id_list = [MapIDCombo(0, -1, self.location_flag, self.kong)]
         elif self.type in (Types.Banana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.BoulderItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
             if data is None:
                 self.map_id_list = []
             else:
+                self.location_flag = data[0].flag
                 self.map_id_list = data
         self.default_mapid_data = self.map_id_list
         # "Reward" locations are locations that require an actor to exist for the location's item - something not all items have

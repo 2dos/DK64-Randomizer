@@ -357,6 +357,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let painting_promises = [];
       let arcade_promises = [];
       let reel_promises = [];
+      let item_promises = [];
 
       for (var filename of Object.keys(new_zip.files)) {
         if (validFilename(filename, "bgm/")) {
@@ -377,6 +378,8 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
           arcade_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/reels/", ".png")) {
           reel_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "textures/items/", ".png")) {
+          item_promises.push(createMusicLoadPromise(new_zip, filename));
         }
       }
 
@@ -393,6 +396,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let painting_files = await Promise.all(painting_promises);
       let arcade_files = await Promise.all(arcade_promises);
       let reel_files = await Promise.all(reel_promises);
+      let item_files = await Promise.all(item_promises);
 
       // BGM
       let bgm = bgm_files.map((x) => x.file);
@@ -433,6 +437,10 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       // Bandit Reels
       let reel_sprites = reel_files.map((x) => x.file);
       let reel_sprite_names = reel_files.map((x) => x.name);
+      
+      // Item Sprites
+      let item_sprites = item_files.map((x) => x.file);
+      let item_sprite_names = item_files.map((x) => x.name);
 
       let has_music = bgm_names.length > 0 || event_names.length > 0 || majoritem_names.length > 0 || minoritem_names.length > 0;
 
@@ -446,6 +454,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         paintings: paintings,
         arcade_sprites: arcade_sprites,
         reel_sprites: reel_sprites,
+        item_sprites: item_sprites,
       };
       cosmetic_names = {
         bgm: bgm_names,
@@ -457,6 +466,7 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         paintings: painting_names,
         arcade_sprites: arcade_sprite_names,
         reel_sprites: reel_sprite_names,
+        item_sprites: item_sprite_names,
       };
       cosmetic_extensions = {
         bgm: bgm_ext,
