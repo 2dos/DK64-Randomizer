@@ -161,11 +161,12 @@ class Settings:
             ItemRandoListSelected.moves: [36, 0],
             ItemRandoListSelected.shockwave: [2, 0],
             ItemRandoListSelected.bfi_gift: [0, 1],
-            ItemRandoListSelected.banana: [201, 0],
+            ItemRandoListSelected.banana: [161, 0],
             ItemRandoListSelected.banana_checks: [0, 134],
             ItemRandoListSelected.racebanana: [0, 11],
             ItemRandoListSelected.gauntletbanana: [0, 16],
-            ItemRandoListSelected.blueprintbanana: [0, 40],
+            ItemRandoListSelected.blueprintbanana: [40, 0],
+            ItemRandoListSelected.sniderewards: [0, 40],
             ItemRandoListSelected.arenas: [0, 10],
             ItemRandoListSelected.crown: [10, 0],
             ItemRandoListSelected.blueprint: [40, 0],
@@ -1518,7 +1519,8 @@ class Settings:
                 ItemRandoListSelected.banana_checks: (Types.Banana, Types.Banana, True),
                 ItemRandoListSelected.racebanana: (Types.Banana, Types.RaceBanana, True),
                 ItemRandoListSelected.gauntletbanana: (Types.Banana, Types.GauntletBanana, True),
-                ItemRandoListSelected.blueprintbanana: (Types.Banana, Types.BlueprintBanana, True),
+                ItemRandoListSelected.blueprintbanana: (Types.BlueprintBanana, Types.BlueprintBanana, False),
+                ItemRandoListSelected.sniderewards: (Types.BlueprintBanana, Types.BlueprintBanana, True),
                 ItemRandoListSelected.arenas: (Types.Crown, Types.Crown, True),
                 ItemRandoListSelected.crown: (Types.Crown, Types.Crown, False),
                 ItemRandoListSelected.blueprint: (Types.Blueprint, Types.Blueprint, False),
@@ -3019,15 +3021,16 @@ class Settings:
         if Types.Snide in self.shuffled_location_types:
             self.item_check_counts[ItemRandoListSelected.shopowners][0] += 1
         self.item_check_counts[ItemRandoListSelected.medal][0] = self.total_medals
-        self.item_check_counts[ItemRandoListSelected.banana][0] = self.total_gbs
+        self.item_check_counts[ItemRandoListSelected.banana][0] = self.total_gbs - 40  # Blueprint GBs are their own category for item pool calculations
         self.item_check_counts[ItemRandoListSelected.fairy][0] = self.total_fairies
         self.item_check_counts[ItemRandoListSelected.rainbowcoin][0] = self.total_rainbow_coins
         self.item_check_counts[ItemRandoListSelected.crown][0] = self.total_crowns
         self.item_check_counts[ItemRandoListSelected.pearl][0] = self.total_pearls
+        self.item_check_counts[ItemRandoListSelected.blueprintbanana][0] = self.most_snide_rewards
+        self.item_check_counts[ItemRandoListSelected.sniderewards][1] = self.most_snide_rewards
         misc_banana_mapping = {
             Types.RaceBanana: ItemRandoListSelected.racebanana,
             Types.GauntletBanana: ItemRandoListSelected.gauntletbanana,
-            Types.BlueprintBanana: ItemRandoListSelected.blueprintbanana,
         }
         for item_type, list_type in misc_banana_mapping.items():
             if item_type not in self.shuffled_location_types:

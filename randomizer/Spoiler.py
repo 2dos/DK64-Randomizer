@@ -405,7 +405,7 @@ class Spoiler:
         settings["Tiny Model"] = self.settings.kong_model_tiny.name
         settings["Chunky Model"] = self.settings.kong_model_chunky.name
         settings["Model Swap Mode"] = self.settings.kong_model_mode.name
-        settings["Key 8 Required"] = self.settings.krool_access
+        settings["Don't Start with Key 8"] = self.settings.krool_access
         settings["Vanilla K. Rool Requirement"] = self.settings.k_rool_vanilla_requirement
         settings["Key 8 in Helm"] = self.settings.key_8_helm
         settings["Select Starting Keys"] = self.settings.select_keys

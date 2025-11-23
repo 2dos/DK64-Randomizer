@@ -1436,6 +1436,8 @@ def compileHints(spoiler: Spoiler) -> bool:
             # The Castle Museum Map is segmented by glass walls. Different regions of the Museum care about different transitions.
             Regions.Museum: [Transitions.CastleMuseumToMain],
             Regions.MuseumBehindGlass: [Transitions.CastleMuseumToBallroom, Transitions.CastleMuseumToCarRace],
+            # The Arcade region doesn't contain the transition that leads into it because the transition needed dedicated climbing logic for the pole.
+            Regions.FactoryArcadeTunnel: [Transitions.FactoryArcadeToStorage],
         }
         # These are the maps we classify as "connectors" - they are regions with exactly two entrances
         connector_maps = {
@@ -1513,7 +1515,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Maps.CrystalCaves,
                 Maps.CreepyCastle,
             )
-            if woth_map in main_level_maps:
+            # One exception: the Arcade is effectively an isolated loading zone within the main map of Factory
+            if woth_map in main_level_maps and region_id != Regions.FactoryArcadeTunnel:
                 continue
             # Blast maps all happen to be contained in the main map of the respective level
             if woth_map in (
