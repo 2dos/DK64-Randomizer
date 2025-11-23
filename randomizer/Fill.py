@@ -2031,7 +2031,7 @@ def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
             unplaced_items.remove(item)
     debug_failed_to_place_items = []
     possible_items = [item for item in unplaced_items]
-    spoiler.settings.random.shuffle(unplaced_items)
+    spoiler.settings.random.shuffle(possible_items)
     # Until we have placed enough items...
     while len(placed_on_bosses) < len(empty_boss_locations):
         if len(possible_items) == 0:
