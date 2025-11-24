@@ -26,7 +26,7 @@ from randomizer.Enums.Settings import (
     SlamRequirement,
     WinConditionComplex,
     WrinklyHints,
-    RandomPrices
+    RandomPrices,
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
