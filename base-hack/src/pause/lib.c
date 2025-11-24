@@ -16,17 +16,6 @@ static int stored_igt = 0;
 spoiler_struct spoiler_items[SPOILER_COUNT] = {
     {.flag = 0},
 };
-spoiler_tracker_struct spoiler_tracker[9] = {
-    {.points = 0, .total = 0},
-    {.points = 0, .total = 0},
-    {.points = 0, .total = 0},
-    {.points = 0, .total = 0},
-    {.points = 0, .total = 0},
-    {.points = 0, .total = 0},
-    {.points = 0, .total = 0},
-    {.points = 0, .total = 0},
-    {.points = 0, .total = 0},
-};
 
 void getLevelPoints(int level, unsigned short *points, unsigned short *total_points) {
     int points_left = 0;
