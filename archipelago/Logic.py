@@ -46,6 +46,7 @@ from randomizer.Enums.Settings import (
     LogicType,
     MiscChangesSelected,
     ProgressiveHintItem,
+    RandomPrices,
     RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
@@ -1388,7 +1389,7 @@ class LogicVarHolder:
         price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
         if price is None:  # This shouldn't happen but it's probably harmless
             return  # TODO: solve this
-        if self.settings.shops_dont_cost:
+        if self.settings.shops_dont_cost and self.settings.random_prices != RandomPrices.vanilla:
             # If shops don't cost anything, then don't deduct this cost
             return
         return

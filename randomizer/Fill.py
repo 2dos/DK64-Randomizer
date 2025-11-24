@@ -397,7 +397,7 @@ def GetAccessibleLocations(
                             unpurchasedEmptyShopLocationIds.append(location.id)
                     elif location.id == Locations.NintendoCoin:
                         # Spend Two Coins for arcade lever
-                        if not spoiler.settings.shops_dont_cost:
+                        if not spoiler.settings.shops_dont_cost or spoiler.settings.random_prices == RandomPrices.vanilla:
                             spoiler.LogicVariables.Coins[Kongs.donkey] -= 2
                             spoiler.LogicVariables.SpentCoins[Kongs.donkey] += 2
 
@@ -690,14 +690,14 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
     pearlThreshold = settings.mermaid_gb_pearls
     already_run_through_a_permutation = False
     while 1:
-        if spoiler.settings.shops_dont_cost:
+        if spoiler.settings.shops_dont_cost and spoiler.settings.random_prices != RandomPrices.vanilla:
             if already_run_through_a_permutation:
                 return True
             already_run_through_a_permutation = True
         spoiler.Reset()
         reachable = GetAccessibleLocations(spoiler, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)
         # Subtract the price of the chosen location from maxCoinsNeeded
-        if spoiler.settings.shops_dont_cost:
+        if spoiler.settings.shops_dont_cost and spoiler.settings.random_prices != RandomPrices.vanilla:
             coinsSpent = [0] * 5
         else:
             coinsSpent = GetMaxCoinsSpent(spoiler, locationsToPurchase)

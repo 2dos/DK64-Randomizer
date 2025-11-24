@@ -26,6 +26,7 @@ from randomizer.Enums.Settings import (
     SlamRequirement,
     WinConditionComplex,
     WrinklyHints,
+    RandomPrices
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
@@ -223,6 +224,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.disable_racing_patches, 0x91),  # Disable Racing Patches
         BooleanProperties(spoiler.settings.shops_dont_cost, 0x95),  # Shops don't cost
         BooleanProperties(spoiler.settings.snide_reward_rando, 0x69),  # Snides has rewards
+        BooleanProperties(spoiler.settings.random_prices == RandomPrices.vanilla, 0x137),  # Vanilla prices
     ]
 
     for prop in boolean_props:

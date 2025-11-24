@@ -311,7 +311,8 @@ ITEMS_TO_IGNORE = [
 
 def determineFinalPriceAssortment(spoiler):
     """Determine the price of all items in the seed if shops don't cost."""
-    if not spoiler.settings.shops_dont_cost:
+    # If both shops_dont_cost and vanilla prices are enabled, vanilla prices take priority
+    if not spoiler.settings.shops_dont_cost or spoiler.settings.random_prices == RandomPrices.vanilla:
         return
     spoiler.settings.prices = spoiler.settings.original_prices.copy()  # This ensures we don't start double stacking in case of fill failure
     price_assignment = []
