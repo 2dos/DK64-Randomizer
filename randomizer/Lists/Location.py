@@ -10,6 +10,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Enums.VendorType import VendorType
 from randomizer.Enums.Maps import Maps
 
+
 def placement_index_to_flag(index: int) -> int:
     """Convert the placement index to a flag."""
     if index < 120:
@@ -35,7 +36,7 @@ def placement_index_to_flag(index: int) -> int:
     if offset > 4:
         return 0
     return flags[index - 120]
-    
+
 
 class MapIDCombo:
     """A combination of a map and an associated item ID. If id == -1 and map == 0, has no model 2 item, ignore those."""
