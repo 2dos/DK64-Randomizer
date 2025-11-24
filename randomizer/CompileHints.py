@@ -2317,11 +2317,13 @@ def compileSpoilerHints(spoiler):
                 spoiler.level_spoiler[level_of_location].vial_colors.append(CategorizeItem(item_obj))
                 points = PointValueOfItem(spoiler.settings, location.item)
                 spoiler.level_spoiler[level_of_location].points += points
-                spoiler.level_spoiler[level_of_location].level_items.append({
-                    "item": location.item,
-                    "points": points,
-                    "flag": location.location_flag,
-                })
+                spoiler.level_spoiler[level_of_location].level_items.append(
+                    {
+                        "item": location.item,
+                        "points": points,
+                        "flag": location.location_flag,
+                    }
+                )
                 if location_id in spoiler.woth_locations:
                     spoiler.level_spoiler[level_of_location].woth_count += 1
     # Convert those spoiler hints to readable text

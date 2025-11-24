@@ -1399,86 +1399,103 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
                 {
                     "name": "Potion",
                     "plural": "Potions",
-                    "count": sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing) and loc.item in regionCountHintableItems)
+                    "count": sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing) and loc.item in regionCountHintableItems),
                 }
             ]
             win_con_items = {
-                WinConditionComplex.krools_challenge: [{
-                    "name": "Blueprint",
-                    "plural": "Blueprints",
-                    "items": [Items.DonkeyBlueprint, Items.DiddyBlueprint, Items.LankyBlueprint, Items.TinyBlueprint, Items.ChunkyBlueprint],
-                }],
-                WinConditionComplex.req_bean: [{
-                    "name": "Bean",
-                    "plural": "Beans",
-                    "items": [Items.Bean],
-                }],
-                WinConditionComplex.req_bp: [{
-                    "name": "Blueprint",
-                    "plural": "Blueprints",
-                    "items": [Items.DonkeyBlueprint, Items.DiddyBlueprint, Items.LankyBlueprint, Items.TinyBlueprint, Items.ChunkyBlueprint],
-                }],
-                WinConditionComplex.req_companycoins: [{
-                    "name": "Company Coin",
-                    "plural": "Company Coins",
-                    "items": [Items.NintendoCoin, Items.RarewareCoin],
-                }],
-                WinConditionComplex.req_crown: [{
-                    "name": "Crown",
-                    "plural": "Crowns",
-                    "items": [Items.BattleCrown, Items.FillerCrown],
-                }],
-                WinConditionComplex.req_fairy: [{
-                    "name": "Fairy",
-                    "plural": "Fairies",
-                    "items": [Items.BananaFairy, Items.FillerFairy],
-                }],
-                WinConditionComplex.req_gb: [{
-                    "name": "Golden Banana",
-                    "plural": "Golden Bananas",
-                    "items": [Items.GoldenBanana, Items.FillerBanana],
-                }],
-                WinConditionComplex.req_medal: [{
-                    "name": "Medal",
-                    "plural": "Medals",
-                    "items": [Items.BananaMedal, Items.FillerMedal],
-                }],
-                WinConditionComplex.req_pearl: [{
-                    "name": "Pearl",
-                    "plural": "Pearls",
-                    "items": [Items.Pearl, Items.FillerPearl],
-                }],
-                WinConditionComplex.req_rainbowcoin: [{
-                    "name": "Rainbow Coin",
-                    "plural": "Rainbow Coins",
-                    "items": [Items.RainbowCoin, Items.FillerRainbowCoin],
-                }],
+                WinConditionComplex.krools_challenge: [
+                    {
+                        "name": "Blueprint",
+                        "plural": "Blueprints",
+                        "items": [Items.DonkeyBlueprint, Items.DiddyBlueprint, Items.LankyBlueprint, Items.TinyBlueprint, Items.ChunkyBlueprint],
+                    }
+                ],
+                WinConditionComplex.req_bean: [
+                    {
+                        "name": "Bean",
+                        "plural": "Beans",
+                        "items": [Items.Bean],
+                    }
+                ],
+                WinConditionComplex.req_bp: [
+                    {
+                        "name": "Blueprint",
+                        "plural": "Blueprints",
+                        "items": [Items.DonkeyBlueprint, Items.DiddyBlueprint, Items.LankyBlueprint, Items.TinyBlueprint, Items.ChunkyBlueprint],
+                    }
+                ],
+                WinConditionComplex.req_companycoins: [
+                    {
+                        "name": "Company Coin",
+                        "plural": "Company Coins",
+                        "items": [Items.NintendoCoin, Items.RarewareCoin],
+                    }
+                ],
+                WinConditionComplex.req_crown: [
+                    {
+                        "name": "Crown",
+                        "plural": "Crowns",
+                        "items": [Items.BattleCrown, Items.FillerCrown],
+                    }
+                ],
+                WinConditionComplex.req_fairy: [
+                    {
+                        "name": "Fairy",
+                        "plural": "Fairies",
+                        "items": [Items.BananaFairy, Items.FillerFairy],
+                    }
+                ],
+                WinConditionComplex.req_gb: [
+                    {
+                        "name": "Golden Banana",
+                        "plural": "Golden Bananas",
+                        "items": [Items.GoldenBanana, Items.FillerBanana],
+                    }
+                ],
+                WinConditionComplex.req_medal: [
+                    {
+                        "name": "Medal",
+                        "plural": "Medals",
+                        "items": [Items.BananaMedal, Items.FillerMedal],
+                    }
+                ],
+                WinConditionComplex.req_pearl: [
+                    {
+                        "name": "Pearl",
+                        "plural": "Pearls",
+                        "items": [Items.Pearl, Items.FillerPearl],
+                    }
+                ],
+                WinConditionComplex.req_rainbowcoin: [
+                    {
+                        "name": "Rainbow Coin",
+                        "plural": "Rainbow Coins",
+                        "items": [Items.RainbowCoin, Items.FillerRainbowCoin],
+                    }
+                ],
             }
             if spoiler.settings.win_condition_item in win_con_items:
                 win_con_data = win_con_items[spoiler.settings.win_condition_item]
                 for data in win_con_data:
-                    region_items.append({
-                        "name": data["name"],
-                        "plural": data["plural"],
-                        "count": sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing) and loc.item in data["items"])
-                    })
+                    region_items.append(
+                        {
+                            "name": data["name"],
+                            "plural": data["plural"],
+                            "count": sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove, Types.Climbing) and loc.item in data["items"]),
+                        }
+                    )
             for region_item in region_items:
                 if region_item["count"] > 0:
                     # If we need to create a new entry due to this region, do so
                     if region.hint_name not in spoiler.region_hintable_count.keys():
-                        spoiler.region_hintable_count[region.hint_name] = {
-                            region_item["name"]: {
-                                "plural": region_item["plural"],
-                                "count": 0
-                            }
-                        }
-                    if region_item['name'] not in spoiler.region_hintable_count[region.hint_name]:
-                        spoiler.region_hintable_count[region.hint_name][region_item['name']] = {
+                        spoiler.region_hintable_count[region.hint_name] = {region_item["name"]: {"plural": region_item["plural"], "count": 0}}
+                    if region_item["name"] not in spoiler.region_hintable_count[region.hint_name]:
+                        spoiler.region_hintable_count[region.hint_name][region_item["name"]] = {
                             "plural": region_item["plural"],
                             "count": 0,
                         }
                     # Keep a running tally of found vials in each region
-                    spoiler.region_hintable_count[region.hint_name][region_item['name']]["count"] += region_item["count"]
+                    spoiler.region_hintable_count[region.hint_name][region_item["name"]]["count"] += region_item["count"]
     # The regions that are foolish are all regions not in this list (that have locations in them!)
     spoiler.foolish_region_names = list(set([region.hint_name for id, region in spoiler.RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames]))
 

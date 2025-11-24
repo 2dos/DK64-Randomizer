@@ -623,6 +623,7 @@ def writeCustomReels(settings: Settings, ROM_COPY: ROM) -> None:
             img_index = reel.texture_order[chunk_index]
             writeColorImageToROM(chunk, 25, img_index, chunk_w, chunk_h, True, TextureFormat.RGBA5551, ROM_COPY)
 
+
 kong_colors = [
     (0xFF, 0xD7, 0x00),
     (0xFF, 0x00, 0x00),
@@ -631,6 +632,7 @@ kong_colors = [
     (0x41, 0xFF, 0x25),
     (0xFF, 0xFF, 0xFF),
 ]
+
 
 def writeCustomItemSprites(settings: Settings, ROM_COPY: ROM) -> None:
     """Write custom coin gif files to ROM."""
@@ -690,50 +692,50 @@ def writeCustomItemSprites(settings: Settings, ROM_COPY: ROM) -> None:
     frames_per_frame = len(groups[chosen_item]) / 8  # I promise this variable name makes sense
     coin_data = [
         # DK
-        { "table": 7, "image": 0x00E0, "frame": 0, "color": 0 },
-        { "table": 7, "image": 0x00E1, "frame": 1, "color": 0 },
-        { "table": 7, "image": 0x00E2, "frame": 2, "color": 0 },
-        { "table": 7, "image": 0x00E3, "frame": 3, "color": 0 },
-        { "table": 7, "image": 0x00E4, "frame": 4, "color": 0 },
-        { "table": 7, "image": 0x00E5, "frame": 5, "color": 0 },
-        { "table": 7, "image": 0x00E6, "frame": 6, "color": 0 },
-        { "table": 7, "image": 0x00E7, "frame": 7, "color": 0 },
+        {"table": 7, "image": 0x00E0, "frame": 0, "color": 0},
+        {"table": 7, "image": 0x00E1, "frame": 1, "color": 0},
+        {"table": 7, "image": 0x00E2, "frame": 2, "color": 0},
+        {"table": 7, "image": 0x00E3, "frame": 3, "color": 0},
+        {"table": 7, "image": 0x00E4, "frame": 4, "color": 0},
+        {"table": 7, "image": 0x00E5, "frame": 5, "color": 0},
+        {"table": 7, "image": 0x00E6, "frame": 6, "color": 0},
+        {"table": 7, "image": 0x00E7, "frame": 7, "color": 0},
         # Diddy
-        { "table": 7, "image": 0x0100, "frame": 0, "color": 1 },
-        { "table": 7, "image": 0x0101, "frame": 1, "color": 1 },
-        { "table": 7, "image": 0x0102, "frame": 2, "color": 1 },
-        { "table": 7, "image": 0x0103, "frame": 3, "color": 1 },
-        { "table": 7, "image": 0x0104, "frame": 4, "color": 1 },
-        { "table": 7, "image": 0x0105, "frame": 5, "color": 1 },
-        { "table": 7, "image": 0x0106, "frame": 6, "color": 1 },
-        { "table": 7, "image": 0x0107, "frame": 7, "color": 1 },
+        {"table": 7, "image": 0x0100, "frame": 0, "color": 1},
+        {"table": 7, "image": 0x0101, "frame": 1, "color": 1},
+        {"table": 7, "image": 0x0102, "frame": 2, "color": 1},
+        {"table": 7, "image": 0x0103, "frame": 3, "color": 1},
+        {"table": 7, "image": 0x0104, "frame": 4, "color": 1},
+        {"table": 7, "image": 0x0105, "frame": 5, "color": 1},
+        {"table": 7, "image": 0x0106, "frame": 6, "color": 1},
+        {"table": 7, "image": 0x0107, "frame": 7, "color": 1},
         # Lanky
-        { "table": 7, "image": 0x00F8, "frame": 0, "color": 2 },
-        { "table": 7, "image": 0x00F9, "frame": 1, "color": 2 },
-        { "table": 7, "image": 0x00FA, "frame": 2, "color": 2 },
-        { "table": 7, "image": 0x00FB, "frame": 3, "color": 2 },
-        { "table": 7, "image": 0x00FC, "frame": 4, "color": 2 },
-        { "table": 7, "image": 0x00FD, "frame": 5, "color": 2 },
-        { "table": 7, "image": 0x00FE, "frame": 6, "color": 2 },
-        { "table": 7, "image": 0x00FF, "frame": 7, "color": 2 },
+        {"table": 7, "image": 0x00F8, "frame": 0, "color": 2},
+        {"table": 7, "image": 0x00F9, "frame": 1, "color": 2},
+        {"table": 7, "image": 0x00FA, "frame": 2, "color": 2},
+        {"table": 7, "image": 0x00FB, "frame": 3, "color": 2},
+        {"table": 7, "image": 0x00FC, "frame": 4, "color": 2},
+        {"table": 7, "image": 0x00FD, "frame": 5, "color": 2},
+        {"table": 7, "image": 0x00FE, "frame": 6, "color": 2},
+        {"table": 7, "image": 0x00FF, "frame": 7, "color": 2},
         # Tiny
-        { "table": 7, "image": 0x00D8, "frame": 0, "color": 3 },
-        { "table": 7, "image": 0x00D9, "frame": 1, "color": 3 },
-        { "table": 7, "image": 0x00DA, "frame": 2, "color": 3 },
-        { "table": 7, "image": 0x00DB, "frame": 3, "color": 3 },
-        { "table": 7, "image": 0x00DC, "frame": 4, "color": 3 },
-        { "table": 7, "image": 0x00DD, "frame": 5, "color": 3 },
-        { "table": 7, "image": 0x00DE, "frame": 6, "color": 3 },
-        { "table": 7, "image": 0x00DF, "frame": 7, "color": 3 },
+        {"table": 7, "image": 0x00D8, "frame": 0, "color": 3},
+        {"table": 7, "image": 0x00D9, "frame": 1, "color": 3},
+        {"table": 7, "image": 0x00DA, "frame": 2, "color": 3},
+        {"table": 7, "image": 0x00DB, "frame": 3, "color": 3},
+        {"table": 7, "image": 0x00DC, "frame": 4, "color": 3},
+        {"table": 7, "image": 0x00DD, "frame": 5, "color": 3},
+        {"table": 7, "image": 0x00DE, "frame": 6, "color": 3},
+        {"table": 7, "image": 0x00DF, "frame": 7, "color": 3},
         # Chunky
-        { "table": 7, "image": 0x0108, "frame": 0, "color": 4 },
-        { "table": 7, "image": 0x0109, "frame": 1, "color": 4 },
-        { "table": 7, "image": 0x010A, "frame": 2, "color": 4 },
-        { "table": 7, "image": 0x010B, "frame": 3, "color": 4 },
-        { "table": 7, "image": 0x010C, "frame": 4, "color": 4 },
-        { "table": 7, "image": 0x010D, "frame": 5, "color": 4 },
-        { "table": 7, "image": 0x010E, "frame": 6, "color": 4 },
-        { "table": 7, "image": 0x010F, "frame": 7, "color": 4 },
+        {"table": 7, "image": 0x0108, "frame": 0, "color": 4},
+        {"table": 7, "image": 0x0109, "frame": 1, "color": 4},
+        {"table": 7, "image": 0x010A, "frame": 2, "color": 4},
+        {"table": 7, "image": 0x010B, "frame": 3, "color": 4},
+        {"table": 7, "image": 0x010C, "frame": 4, "color": 4},
+        {"table": 7, "image": 0x010D, "frame": 5, "color": 4},
+        {"table": 7, "image": 0x010E, "frame": 6, "color": 4},
+        {"table": 7, "image": 0x010F, "frame": 7, "color": 4},
     ]
 
     for x in range(8):

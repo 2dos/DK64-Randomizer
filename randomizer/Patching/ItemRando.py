@@ -1308,6 +1308,7 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 offset += 6
                 offset += point_count * 10
 
+
 def place_spoiler_hint_data(sav, spoiler, ROM_COPY: LocalROM):
     """Place the array data for spoiler hints."""
     if spoiler.settings.spoiler_hints == SpoilerHints.off:
