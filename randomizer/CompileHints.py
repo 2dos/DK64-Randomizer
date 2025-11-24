@@ -1831,10 +1831,20 @@ def compileHints(spoiler: Spoiler) -> bool:
                 if spoiler.RegionList[region_id].hint_name == region_name_to_hint:
                     level_color = level_colors[spoiler.RegionList[region_id].level]
                     break
-            plural = ""
-            if spoiler.region_hintable_count[region_name_to_hint] > 1:
-                plural = "s"
-            message = f"Scouring the {level_color}{HINT_REGION_PAIRING.get(region_name_to_hint, region_name_to_hint.name)}{level_color} will yield you \x0d{spoiler.region_hintable_count[region_name_to_hint]} potion{plural}\x0d."
+            region_items = list(spoiler.region_hintable_count[region_name_to_hint].keys())
+            max_item_name = None
+            max_plural = None
+            max_count = -1
+            for region_item in region_items:
+                region_item_data = spoiler.region_hintable_count[region_name_to_hint][region_item]
+                count = region_item_data["count"]
+                if count > max_count:
+                    # Find the item in the region with the most *stuff*. This is the most valuable
+                    max_count = count
+                    max_plural = region_item_data["plural"]
+                    max_item_name = region_item
+            displayed_item_name = max_plural if max_count > 1 else max_item_name
+            message = f"Scouring the {level_color}{HINT_REGION_PAIRING.get(region_name_to_hint, region_name_to_hint.name)}{level_color} will yield you \x0d{max_count} {displayed_item_name}\x0d."
             hint_location.hint_type = HintType.RegionItemCount
             hint_location.related_hint_region_id = region_name_to_hint
             UpdateHint(hint_location, message)
