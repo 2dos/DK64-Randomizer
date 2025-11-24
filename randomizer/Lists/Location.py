@@ -116,7 +116,7 @@ class Location:
             level_index = int(self.level)
             self.location_flag = 0x384 + self.kong + (5 * level_index)
             self.map_id_list = [MapIDCombo(0, -1, self.location_flag, self.kong)]
-        elif self.type in (Types.Banana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.BoulderItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
+        elif self.type in (Types.Banana, Types.BlueprintBanana, Types.Key, Types.NintendoCoin, Types.RarewareCoin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.BoulderItem, Types.Enemies, Types.Cranky, Types.Candy, Types.Funky, Types.Snide):
             if data is None:
                 self.map_id_list = []
             else:
