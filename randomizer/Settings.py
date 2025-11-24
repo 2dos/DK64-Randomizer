@@ -1742,6 +1742,9 @@ class Settings:
                 phases = self.random.sample(phases, self.krool_phase_count)
             else:
                 phases = phases[: self.krool_phase_count]
+        if phases[-1] == Maps.GalleonBoss:
+            # Pufftoss can't be last. Pick something else
+            phases[-1] == self.random.choice([x for x in possible_phases if x not in phases])
         # Plandomized K. Rool algorithm
         if self.enable_plandomizer:
             planned_phases = []

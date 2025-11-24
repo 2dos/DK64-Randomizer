@@ -138,3 +138,4 @@
 
 #define PATH_CAP 64
 #define TEXT_OVERLAY_BUFFER 4
+#define SPOILER_COUNT 70
