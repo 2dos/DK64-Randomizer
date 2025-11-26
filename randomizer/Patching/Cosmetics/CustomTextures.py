@@ -642,12 +642,6 @@ def writeCustomItemSprites(settings: Settings, ROM_COPY: ROM) -> None:
         return
     if js.cosmetic_names.item_sprites is None:
         return
-    REEL_INFO = [
-        PaintingData(32, 32, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage0)]),  # Grape
-        PaintingData(40, 51, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage1)]),  # Coconut
-        PaintingData(48, 42, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage2)]),  # Melon
-        PaintingData(32, 48, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage3)]),  # Pineapple
-    ]
     file_data = list(zip(js.cosmetics.item_sprites, js.cosmetic_names.item_sprites))
     if len(file_data) == 0:
         return
