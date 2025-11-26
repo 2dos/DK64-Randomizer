@@ -13,7 +13,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, ColorblindMode, KongModels, WinConditionComplex
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Types import BarrierItems
-from randomizer.Patching.Cosmetics.CustomTextures import writeTransition, writeCustomPaintings, writeCustomPortal, writeCustomArcadeSprites, writeCustomReels
+from randomizer.Patching.Cosmetics.CustomTextures import writeTransition, writeCustomPaintings, writeCustomPortal, writeCustomArcadeSprites, writeCustomReels, writeCustomItemSprites
 from randomizer.Patching.Cosmetics.Krusha import placeKrushaHead, fixBaboonBlasts, kong_index_mapping, fixModelSmallKongCollision
 from randomizer.Patching.Cosmetics.Colorblind import (
     recolorKlaptraps,
@@ -145,6 +145,7 @@ def apply_cosmetic_colors(settings: Settings, ROM_COPY: ROM):
         writeCustomPaintings(settings, ROM_COPY)
         writeCustomReels(settings, ROM_COPY)
         writeCustomArcadeSprites(settings, ROM_COPY)
+        writeCustomItemSprites(settings, ROM_COPY)
         settings.gb_colors = CharacterColors[js.document.getElementById("gb_colors").value]
         settings.gb_custom_color = js.document.getElementById("gb_custom_color").value
     else:
@@ -556,16 +557,8 @@ def darkenDPad(ROM_COPY: ROM):
     for y in range(32):
         for x in range(32):
             pix_data = list(px[x, y])
-            if pix_data[0] > 245 and pix_data[1] > 245 and pix_data[2] > 245:
-                # Main white bit
-                pix_data[0] = 0
-                pix_data[1] = 0
-                pix_data[2] = 0
-            elif pix_data[0] == 0 and pix_data[1] == 0 and pix_data[2] == 0:
-                # Arrow impressions
-                pix_data[0] = 0xAB
-                pix_data[1] = 0xAB
-                pix_data[2] = 0xAB
+            for c in range(3):
+                pix_data[c] = 255 - pix_data[c]
             value = 1 if pix_data[3] > 128 else 0
             for v in range(3):
                 value |= (pix_data[v] >> 3) << 1 + (5 * (2 - v))

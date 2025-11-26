@@ -5,7 +5,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import ItemRandoListSelected, MicrohintsEnabled, TrainingBarrels
+from randomizer.Enums.Settings import ItemRandoListSelected, MicrohintsEnabled, TrainingBarrels, SpoilerHints
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Library.DataTypes import intf_to_float
@@ -1307,3 +1307,39 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                     ROM_COPY.writeMultipleBytes(2, 1)  # Double the speed at this path point
                 offset += 6
                 offset += point_count * 10
+
+
+def place_spoiler_hint_data(sav, spoiler, ROM_COPY: LocalROM):
+    """Place the array data for spoiler hints."""
+    if spoiler.settings.spoiler_hints == SpoilerHints.off:
+        return
+    ROM_COPY.seek(sav + 0x12F)
+    ROM_COPY.writeMultipleBytes(spoiler.settings.spoiler_hints, 1)
+    # Compute & Write Table
+    base_addr = getROMAddress(getSym("spoiler_items"), Overlay.Custom, populateOverlayOffsets(ROM_COPY))
+    level_index_mapping = {
+        Levels.JungleJapes: 0,
+        Levels.AngryAztec: 1,
+        Levels.FranticFactory: 2,
+        Levels.GloomyGalleon: 3,
+        Levels.FungiForest: 4,
+        Levels.CrystalCaves: 5,
+        Levels.CreepyCastle: 6,
+        Levels.DKIsles: 7,
+        Levels.HideoutHelm: 8,
+    }
+    ROM_COPY.seek(base_addr)
+    for level, local_spoiler in spoiler.level_spoiler.items():
+        if level in ("starting_info", "point_spread"):
+            continue
+        for item in local_spoiler.level_items:
+            points = item["points"]
+            if points == 0:
+                continue
+            flag = item["flag"]
+            if flag == 0:
+                continue
+            level_index = level_index_mapping.get(level, 9)
+            ROM_COPY.writeMultipleBytes(flag, 2)
+            ROM_COPY.writeMultipleBytes(points, 1)
+            ROM_COPY.writeMultipleBytes(level_index, 1)
