@@ -4037,6 +4037,8 @@ def ValidateFixedHints(settings: Settings) -> None:
 def CheckForIncompatibleSettings(settings: Settings) -> None:
     """Check for known settings conflicts and throw an exception immediately."""
     found_incompatibilities = ""
+    if settings.shops_dont_cost and settings.random_prices == RandomPrices.vanilla:
+        found_incompatibilities += "Cannot enable Tooie-Style Shops with Vanilla prices. "
     if not settings.fast_start_beginning_of_game:
         if settings.shuffle_loading_zones == ShuffleLoadingZones.all:
             found_incompatibilities += "Cannot turn off Fast Start with Loading Zones Randomized. "
@@ -4060,9 +4062,6 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
         if settings.perma_death or settings.wipe_file_on_death:
             if settings.damage_amount == DamageAmount.quad or settings.damage_amount == DamageAmount.ohko:
                 found_incompatibilities += "Cannot turn on 'Angry Caves' with a damage modifier higher than double damage with Irondonk enabled. "
-    if settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
-        if settings.bonus_barrel_auto_complete:
-            found_incompatibilities += "Autocomplete Bonus Barrels cannot be enabled when the win condition requires completing bonus barrels. "
     trap_weights = [
         settings.trap_weight_bubble,
         settings.trap_weight_reverse,
