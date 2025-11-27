@@ -405,18 +405,20 @@
     }
 
     function getBananaReduction() {
+        const decoupled = document.getElementById("decouple_item_rando").checked;
         const reduction_data = {
-            "blueprintbanana": 40,
             "racebanana": 11,
             "gauntletbanana": 16,
         };
         let total = 0;
-        Object.keys(reduction_data).forEach(item_type => {
-            if (!isShuffled(item_type)) {
-                total += reduction_data[item_type];
-            }
-        })
-        return total;
+        if (decoupled) {
+            Object.keys(reduction_data).forEach(item_type => {
+                if (!isShuffled(item_type)) {
+                    total += reduction_data[item_type];
+                }
+            });
+        }
+        return total + 40; // Blueprint bananas are shuffled separately, so we always need to reduce them
     }
 
     function getItemChange(item, original_value) {
@@ -741,14 +743,16 @@
                     })   
                 }
                 if (allow_splitting) {
-                    bk_copy = temp_bk.slice();
+                    let bk_copy_largest_to_smallest = temp_bk.slice();
+                    bk_copy_largest_to_smallest.sort((a, b) => b.size - a.size);
+                    console.log(bk_copy_largest_to_smallest);
                     /*
                         Rule 4:
                         For all remaining buckets, check the pools which need the checks the most
                     */
                     let bucket_deficit = pool_liquids.map((v, i) => v - pool_buckets[i]);
                     temp_bk = [];
-                    bk_copy.forEach(bk => {
+                    bk_copy_largest_to_smallest.forEach(bk => {
                         let remove = false;
                         let bucket_needed = null;
                         let bucket_deficit_needed = null;
@@ -764,6 +768,7 @@
                             let bucket_capacity_supplied = Math.min(bucket_deficit_needed, bk.size);
                             bk.size -= bucket_capacity_supplied;
                             pool_buckets[bucket_needed] += bucket_capacity_supplied;
+                            bucket_deficit[bucket_needed] -= bucket_capacity_supplied;
                             bk.pools = bk.pools.filter(i => i !== bucket_needed);
                             if (bk.size < 1) {
                                 remove = true;

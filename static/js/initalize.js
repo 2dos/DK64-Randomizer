@@ -23,7 +23,7 @@ const default_trap_weights = {
   "trap_weight_disabletag": 2
 };
 const default_item_counts = {
-  "total_gbs": 201,
+  "total_gbs": 161,
   "total_medals": 40,
   "total_fairies": 20,
   "total_crowns": 10,
