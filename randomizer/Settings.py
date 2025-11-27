@@ -3140,12 +3140,13 @@ class Settings:
                         pool_buckets[bk["pools"][0]] += bk["size"]
                     else:
                         temp_bk.append(bk)
-                bk_copy = temp_bk.copy()
+                bk_copy_largest_to_smallest = temp_bk.copy()
+                bk_copy_largest_to_smallest.sort(key=lambda x: x["size"], reverse=True)
                 # Rule 4:
                 # For all remaining buckets, check the pools which need the checks the most
                 bucket_deficit = [x - pool_buckets[xi] for xi, x in enumerate(pool_liquids)]
                 temp_bk = []
-                for bk in bk_copy:
+                for bk in bk_copy_largest_to_smallest:
                     remove = False
                     bucket_needed = None
                     bucket_deficit_needed = None
@@ -3158,6 +3159,7 @@ class Settings:
                         bucket_capacity_supplied = min(bucket_deficit_needed, bk["size"])
                         bk["size"] -= bucket_capacity_supplied
                         pool_buckets[bucket_needed] += bucket_capacity_supplied
+                        bucket_deficit[bucket_needed] -= bucket_capacity_supplied
                         bk["pools"] = [x for x in bk["pools"] if x != bucket_needed]
                         if bk["size"] < 1:
                             remove = True
