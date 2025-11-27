@@ -743,7 +743,7 @@
                     })   
                 }
                 if (allow_splitting) {
-                    bk_copy_largest_to_smallest = temp_bk.slice();
+                    let bk_copy_largest_to_smallest = temp_bk.slice();
                     bk_copy_largest_to_smallest.sort((a, b) => b.size - a.size);
                     console.log(bk_copy_largest_to_smallest);
                     /*
