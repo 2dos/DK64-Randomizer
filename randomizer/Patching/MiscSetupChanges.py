@@ -372,7 +372,7 @@ def randomize_setup(spoiler, ROM_COPY: LocalROM):
                         if y_position < 0:
                             star_donut_boundaries = [230, 300.971]
                         else:
-                            star_donut_boundaries = [123.128, 235.971]
+                            star_donut_boundaries = [170.128, 235.971]
                         star_height_boundaries = [y_position, y_position]
                     elif cont_map_id == Maps.GalleonBoss:
                         star_donut_center = [1216, 1478]

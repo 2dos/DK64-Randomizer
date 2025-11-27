@@ -1055,7 +1055,7 @@ def getItemPreviewText(item_type: Types, location: Locations, allow_special_text
     reference_item = item_type
     if item_type == Types.FakeItem:
         reference_item = masked_model
-    if reference_item not in item_db and reference_item not in FILLER_MAPPING:
+    if reference_item not in item_db and reference_item not in FILLER_MAPPING and reference_item is not None:
         return ""
     item_data = getItemDBEntry(reference_item)
 
