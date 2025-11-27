@@ -1046,6 +1046,7 @@ wrinkly_item_text = [
     "Ooooo... Here is a shopkeeper for you, ~. Trade wisely, and do not let those sneaky prices fool you!",  # REQITEM_SHOPKEEPER,
     "Ooooo... This item feels... out of place, ~. Are you sure it belongs in our jungle?",  # REQITEM_AP,
     YOU_SHOULD_NOT_SEE_THIS,  # REQITEM_RACECOIN,
+    YOU_SHOULD_NOT_SEE_THIS,  # REQITEM_BONUSES_NOHELM,
 ]
 
 vanilla_track_names = [

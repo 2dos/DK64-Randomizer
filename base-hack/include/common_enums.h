@@ -992,6 +992,7 @@ typedef enum requirement_item {
 	/* 0x014 */ REQITEM_SHOPKEEPER,
 	/* 0x015 */ REQITEM_AP,
 	/* 0x016 */ REQITEM_RACECOIN,
+	/* 0x017 */ REQITEM_BONUSES_NOHELM,
 } requirement_item;
 
 typedef enum item_ids { 
