@@ -506,13 +506,13 @@
 | On the lava pedestals first switch | 5 | `self.logic = lambda _: True` | 
 | Lower ledge of the pedestal switch platforms | 10 | `(l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.monkey_maneuvers))` | 
 | Passage towards Lanky's cage | 5 | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase())` | 
-| In front of Lanky's cage | 5 | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase())` | 
+| In front of Lanky's cage | 5 | `(Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()` | 
 | Matching game room right side | Balloon | `self.logic = lambda _: True` | 
 | Above Llama | Balloon | `self.logic = lambda _: True` | 
 | Lava room | Balloon | `self.logic = lambda _: True` | 
 | Above lava/water (Tiny) | Balloon | `self.logic = lambda _: True` | 
-| In Lanky's room (Lanky) | Balloon | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase())` | 
-| In Lanky's room (Lanky) | Balloon | `(((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.CanPhase())` | 
+| In Lanky's room (Lanky) | Balloon | `(Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()` | 
+| In Lanky's room (Lanky) | Balloon | `(Events.AztecLlamaSpit in l.Events and l.swim) or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) or l.CanPhase()` | 
 | Entrance stairs | Balloon | `self.logic = lambda _: True` | 
 | Left side behind the llama | Balloon | `self.logic = lambda _: True` | 
 | Right side behind the llama | Balloon | `self.logic = lambda _: True` | 

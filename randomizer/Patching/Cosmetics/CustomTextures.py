@@ -24,10 +24,31 @@ def writeTransition(settings: Settings, ROM_COPY: ROM) -> None:
     if len(file_data) == 0:
         return
     selected_transition = settings.random.choice(file_data)
-    im_f = Image.open(BytesIO(bytes(selected_transition[0])))
+    im_f = Image.open(BytesIO(bytes(selected_transition[0]))).convert("RGBA")
+    # Check if image has any low-alpha pixels. If it does, assume shrink mode
+    low_alpha_found = False
+    px = im_f.load()
     w, h = im_f.size
-    if w != 64 or h != 64:
-        return
+    low_alpha_conversion = Image.new(mode="RGBA", size=(w, h))
+    px_new = low_alpha_conversion.load()
+    for y in range(h):
+        for x in range(w):
+            r, g, b, a = px[x, y]
+            if a < 128:
+                low_alpha_found = True
+            intensity = 255 - a
+            px_new[x, y] = (intensity, intensity, intensity, 255)
+    if low_alpha_found:
+        im_f = low_alpha_conversion.transpose(Image.FLIP_LEFT_RIGHT).resize((64, 64))
+        px = im_f.load()
+        for x in range(64):
+            px[0, x] = (255, 255, 255, 255)
+            px[63, x] = (255, 255, 255, 255)
+            px[x, 0] = (255, 255, 255, 255)
+            px[x, 63] = (255, 255, 255, 255)
+    else:
+        if w != 64 or h != 64:
+            return
     settings.custom_transition = selected_transition[1].split("/")[-1]  # File Name
     writeColorImageToROM(im_f, 14, 95, 64, 64, False, TextureFormat.IA4, ROM_COPY)
 
@@ -642,12 +663,6 @@ def writeCustomItemSprites(settings: Settings, ROM_COPY: ROM) -> None:
         return
     if js.cosmetic_names.item_sprites is None:
         return
-    REEL_INFO = [
-        PaintingData(32, 32, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage0)]),  # Grape
-        PaintingData(40, 51, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage1)]),  # Coconut
-        PaintingData(48, 42, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage2)]),  # Melon
-        PaintingData(32, 48, 1, 1, False, [getBonusSkinOffset(ExtraTextures.BanditImage3)]),  # Pineapple
-    ]
     file_data = list(zip(js.cosmetics.item_sprites, js.cosmetic_names.item_sprites))
     if len(file_data) == 0:
         return

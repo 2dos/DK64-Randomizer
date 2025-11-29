@@ -613,6 +613,17 @@
   },
 
   /*
+    KongModelMode:
+    - Model attribution mode for the Kongs.
+  */
+  "KongModelMode": {
+    "manual": 0,
+    "random_one": 1,
+    "sometimes_one": 2,
+    "random_all": 3
+  },
+
+  /*
     LevelRandomization:
     - Determines how entrances are randomized and placed.
     - vanilla: Entrances are the same as the base game.
@@ -1375,7 +1386,8 @@
     "trap_weight_animal": 287,
     "trap_weight_rockfall": 288,
     "trap_weight_disabletag": 289,
-    "random_starting_region_new": 290
+    "random_starting_region_new": 290,
+    "kong_model_mode": 291
   },
   /*
     SettingsStringDataType:
@@ -1478,6 +1490,7 @@
     "kong_model_lanky": { "obj": "KongModels" },
     "kong_model_tiny": { "obj": "KongModels" },
     "kong_model_chunky": { "obj": "KongModels" },
+    "kong_model_mode": { "obj": "KongModelMode" },
     "chunky_phase_slam_req": { "obj": "SlamRequirement" },
     "puzzle_rando_difficulty": { "obj": "PuzzleRando" },
     "progressive_hint_item": { "obj": "ProgressiveHintItem" },
@@ -1734,6 +1747,7 @@
     "SettingsStringEnum.kong_model_lanky": { "obj": "KongModels" },
     "SettingsStringEnum.kong_model_tiny": { "obj": "KongModels" },
     "SettingsStringEnum.kong_model_chunky": { "obj": "KongModels" },
+    "SettingsStringEnum.kong_model_mode": { "obj": "KongModelMode" },
     "SettingsStringEnum.kong_rando": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.krool_access": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.krool_key_count": {
