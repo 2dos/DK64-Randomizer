@@ -768,7 +768,7 @@ class DK64Context(CommonContext):
                                     f"Your version: {ap_version} | Generated version: {server_ver}")
                 if server_patch != ap_patch:
                     logger.warning("Your DK64 APworld does not match with the generated world, but this should not be a breaking change.")
-                    logger.warning("While we try to maintain backwards compatibility, be warned that something might break.")
+                    logger.warning("While we try to maintain backwards compatibility on patch versions, be warned that something might break.")
             if self.slot_data.get("death_link"):
                 if "DeathLink" not in self.tags:
                     create_task_log_exception(self.update_death_link(True))
