@@ -135,7 +135,7 @@ int canAccessKroolsChallenge(void) {
     }
     
     // Check all 43 Bonus Barrels
-    if (getItemCountReq(REQITEM_BONUSES) < 43) {
+    if (getItemCountReq(REQITEM_BONUSES_NOHELM) < 43) {
         return 0;
     }
     

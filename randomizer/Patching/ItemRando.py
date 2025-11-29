@@ -285,11 +285,12 @@ def getItemPatchingData(item_type: Types, item: Items) -> ItemPatchingInfo:
             elif item == Items.Shockwave:
                 visual_index = 5
             return ItemPatchingInfo(ReqItems.Move, 10, idx, visual_index)
-        if item == Items.CameraAndShockwave:
-            return ItemPatchingInfo(ReqItems.Move, 10, 4, 4)
         # Climbing
         if item == Items.Climbing:
             return ItemPatchingInfo(ReqItems.Move, 11, 0, 1)
+        # Camera Combo
+        if item == Items.CameraAndShockwave:
+            return ItemPatchingInfo(ReqItems.Move, 12, 0, 1)
         raise Exception("Could not find valid move")
     elif item is None or item == Items.NoItem or item_type is None or item_type == Types.NoItem:
         return ItemPatchingInfo(0)
