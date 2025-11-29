@@ -1205,11 +1205,10 @@ class DK64Context(CommonContext):
                 ap_major = ap_version.split(".")[0]
                 ap_minor = ap_version.split(".")[1]
                 ap_patch = ap_version.split(".")[2]
-                if server_major != ap_major or server_minor != server_minor:
+                if server_major != ap_major or server_minor != ap_minor:
                     logger.error("Your DK64 APworld does not match with the generated world.")
                     logger.error(f"Your version: {ap_version} | Generated version: {server_ver}")
-                    raise Exception("Your DK64 APworld does not match with the generated world.\n" +
-                                    f"Your version: {ap_version} | Generated version: {server_ver}")
+                    raise Exception("Your DK64 APworld does not match with the generated world.\n" + f"Your version: {ap_version} | Generated version: {server_ver}")
                 if server_patch != ap_patch:
                     logger.warning("Your DK64 APworld does not match with the generated world, but this should not be a breaking change.")
                     logger.warning("While we try to maintain backwards compatibility on patch versions, be warned that something might break.")
