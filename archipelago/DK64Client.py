@@ -752,6 +752,23 @@ class DK64Context(CommonContext):
         if cmd == "Connected":
             self.game = self.slot_info[self.slot].game
             self.slot_data = args.get("slot_data", {})
+            if self.slot_data.get("Version"):
+                server_ver = self.slot_data.get("Version")
+                server_major = server_ver.split(".")[0]
+                server_minor = server_ver.split(".")[1]
+                server_patch = server_ver.split(".")[2]
+                # Get the current version from the ap_version.py file
+                ap_major = ap_version.split(".")[0]
+                ap_minor = ap_version.split(".")[1]
+                ap_patch = ap_version.split(".")[2]
+                if server_major != ap_major or server_minor != server_minor:
+                    logger.error("Your DK64 APworld does not match with the generated world.")
+                    logger.error(f"Your version: {ap_version} | Generated version: {server_ver}")
+                    raise Exception("Your DK64 APworld does not match with the generated world.\n" +
+                                    f"Your version: {ap_version} | Generated version: {server_ver}")
+                if server_patch != ap_patch:
+                    logger.warning("Your DK64 APworld does not match with the generated world, but this should not be a breaking change.")
+                    logger.warning("While we try to maintain backwards compatibility, be warned that something might break.")
             if self.slot_data.get("death_link"):
                 if "DeathLink" not in self.tags:
                     create_task_log_exception(self.update_death_link(True))
