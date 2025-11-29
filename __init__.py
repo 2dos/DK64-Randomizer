@@ -126,7 +126,7 @@ if baseclasses_loaded:
     from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
     from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups
-    from archipelago.Regions import all_locations, create_regions, connect_regions
+    from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level_and_deathwarp, connect_glitch_transitions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
     from worlds.AutoWorld import WebWorld, World, AutoLogicRegister
@@ -1032,7 +1032,6 @@ if baseclasses_loaded:
 
         def connect_entrances(self) -> None:
             """Randomize and connect entrances if LZR is on."""
-            
 
             LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
             connect_regions(self, self.spoiler.settings)
@@ -1042,29 +1041,36 @@ if baseclasses_loaded:
                     # TODO: Make this configurable with DLZR
                     if shufflable_exit.back.reverse is None:
                         continue
-                    ap_entrance_to_transition[shufflable_exit.name] = transition_enum                
+                    ap_entrance_to_transition[shufflable_exit.name] = transition_enum
+
                 # Store entrance connections for ROM patching
                 def store_entrance_connections(state, exits, entrances):
                     """Store entrance randomization results in the spoiler."""
-                    for source_exit, target_entrance in zip(exits, entrances):                        
+                    for source_exit, target_entrance in zip(exits, entrances):
                         exit_name = source_exit.name
                         source_transition = ap_entrance_to_transition.get(exit_name)
                         if not source_transition:
                             continue
-                        
+
                         target_transition = ap_entrance_to_transition.get(target_entrance.name)
                         if not target_transition:
                             continue
-                        
+
                         target_reverse = ShufflableExits[target_transition].back.reverse
                         if target_reverse is None:
                             continue
-                        
+
                         ShufflableExits[source_transition].shuffledId = target_reverse
                         ShufflableExits[source_transition].shuffled = True
-                
+
                 self.er_placement_state = randomize_entrances(self, True, {0: [0]}, on_connect=store_entrance_connections)
-                
+
+                # Handle exit level and deathwarp
+                connect_exit_level_and_deathwarp(self, self.er_placement_state)
+
+                # Handle glitch transitions
+                connect_glitch_transitions(self, self.er_placement_state)
+
                 # After randomization, update the spoiler's exit data
                 self.spoiler.UpdateExits()
 
@@ -1572,11 +1578,7 @@ if baseclasses_loaded:
                 ),
                 "HintLocationMapping": hint_mapping,
                 "hints": {str(location): hint_data for location, hint_data in dynamic_hints.items()},
-                "EntranceRando": (
-                    self.er_placement_state.pairings
-                    if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data
-                    else {}
-                ),
+                "EntranceRando": (self.er_placement_state.pairings if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data else {}),
             }
             return slot_data
 
@@ -1636,10 +1638,11 @@ if baseclasses_loaded:
             spoiler_handle.write("\n")
             spoiler_handle.write("APWorld Version: " + self.ap_version)
             spoiler_handle.write("\n")
-            
+
             # Write entrance randomization data if LZR is enabled
             if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data:
                 from randomizer.Lists.ShufflableExit import ShufflableExits
+
                 spoiler_handle.write("\n")
                 spoiler_handle.write("=== Entrance Randomization (Loading Zone Randomizer) ===\n")
                 # Sort by transition name for readability
