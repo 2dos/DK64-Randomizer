@@ -717,6 +717,7 @@ class Settings:
         self.kong_model_lanky = KongModels.default
         self.kong_model_tiny = KongModels.default
         self.kong_model_chunky = KongModels.default
+        self.kong_model_mode = KongModelMode.manual
         self.krusha_kong = None
         self.misc_cosmetics = False
         self.remove_water_oscillation = False
@@ -1744,7 +1745,7 @@ class Settings:
                 phases = phases[: self.krool_phase_count]
         if phases[-1] == Maps.GalleonBoss:
             # Pufftoss can't be last. Pick something else
-            phases[-1] == self.random.choice([x for x in possible_phases if x not in phases])
+            phases[-1] = self.random.choice([x for x in possible_phases if x not in phases])
         # Plandomized K. Rool algorithm
         if self.enable_plandomizer:
             planned_phases = []
@@ -2383,6 +2384,39 @@ class Settings:
             self.excluded_bp_locations = [Locations.TurnInJungleJapesDonkeyBlueprint + x for x in range(35)] + [Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(5)]
             count_to_exclude = 40 - self.most_snide_rewards
             self.excluded_bp_locations = self.excluded_bp_locations[-count_to_exclude:]
+
+        # Kong Model Mode Randomization
+        if self.kong_model_mode == KongModelMode.random_one:
+            random_krusha = self.random.randint(0, 4)
+            kong_model_array = [KongModels.default, KongModels.default, KongModels.default, KongModels.default, KongModels.default]
+            kong_model_array[random_krusha] = KongModels.krusha
+
+            self.kong_model_dk = kong_model_array[0]
+            self.kong_model_diddy = kong_model_array[1]
+            self.kong_model_lanky = kong_model_array[2]
+            self.kong_model_tiny = kong_model_array[3]
+            self.kong_model_chunky = kong_model_array[4]
+
+        elif self.kong_model_mode == KongModelMode.sometimes_one:
+            random_krusha = self.random.randint(0, 4)
+            kong_model_array = [KongModels.default, KongModels.default, KongModels.default, KongModels.default, KongModels.default]
+            krusha_model = [KongModels.default, KongModels.krusha]
+            kong_model_array[random_krusha] = self.random.choice([KongModels.default, KongModels.krusha])
+
+            self.kong_model_dk = kong_model_array[0]
+            self.kong_model_diddy = kong_model_array[1]
+            self.kong_model_lanky = kong_model_array[2]
+            self.kong_model_tiny = kong_model_array[3]
+            self.kong_model_chunky = kong_model_array[4]
+
+        elif self.kong_model_mode == KongModelMode.random_all:
+            kong_model_list = [KongModels.default, KongModels.krusha]
+
+            self.kong_model_dk = self.random.choice(kong_model_list)
+            self.kong_model_diddy = self.random.choice(kong_model_list)
+            self.kong_model_lanky = self.random.choice(kong_model_list)
+            self.kong_model_tiny = self.random.choice(kong_model_list)
+            self.kong_model_chunky = self.random.choice(kong_model_list)
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
@@ -3106,12 +3140,13 @@ class Settings:
                         pool_buckets[bk["pools"][0]] += bk["size"]
                     else:
                         temp_bk.append(bk)
-                bk_copy = temp_bk.copy()
+                bk_copy_largest_to_smallest = temp_bk.copy()
+                bk_copy_largest_to_smallest.sort(key=lambda x: x["size"], reverse=True)
                 # Rule 4:
                 # For all remaining buckets, check the pools which need the checks the most
                 bucket_deficit = [x - pool_buckets[xi] for xi, x in enumerate(pool_liquids)]
                 temp_bk = []
-                for bk in bk_copy:
+                for bk in bk_copy_largest_to_smallest:
                     remove = False
                     bucket_needed = None
                     bucket_deficit_needed = None
@@ -3124,6 +3159,7 @@ class Settings:
                         bucket_capacity_supplied = min(bucket_deficit_needed, bk["size"])
                         bk["size"] -= bucket_capacity_supplied
                         pool_buckets[bucket_needed] += bucket_capacity_supplied
+                        bucket_deficit[bucket_needed] -= bucket_capacity_supplied
                         bk["pools"] = [x for x in bk["pools"] if x != bucket_needed]
                         if bk["size"] < 1:
                             remove = True
