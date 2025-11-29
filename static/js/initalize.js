@@ -23,7 +23,7 @@ const default_trap_weights = {
   "trap_weight_disabletag": 2
 };
 const default_item_counts = {
-  "total_gbs": 201,
+  "total_gbs": 161,
   "total_medals": 40,
   "total_fairies": 20,
   "total_crowns": 10,
@@ -230,6 +230,18 @@ function validFilename(filename, dir, valid_extension = null) {
           return true;
         }
       }
+    } else if (valid_extension == "image")  {
+      const f_spl = filename.split(".");
+      const f_ext = f_spl[f_spl.length - 1];
+      return ["png", "jpg", "jpeg", "webp"].includes(f_ext);
+    } else if (valid_extension == "image_gif")  {
+      const f_spl = filename.split(".");
+      const f_ext = f_spl[f_spl.length - 1];
+      return ["png", "jpg", "jpeg", "webp", "gif"].includes(f_ext);
+    } else if (valid_extension == "png_gif")  {
+      const f_spl = filename.split(".");
+      const f_ext = f_spl[f_spl.length - 1];
+      return ["png", "gif"].includes(f_ext);
     } else {
       if (filename.slice(0 - valid_extension.length) == valid_extension) {
         return true;
@@ -370,9 +382,9 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
           event_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/transitions/", ".png")) {
           transition_promises.push(createMusicLoadPromise(new_zip, filename));
-        } else if (validFilename(filename, "textures/tns_portal/", ".png")) {
+        } else if (validFilename(filename, "textures/tns_portal/", "image")) {
           portal_promises.push(createMusicLoadPromise(new_zip, filename));
-        } else if (validFilename(filename, "textures/paintings/", ".png")) {
+        } else if (validFilename(filename, "textures/paintings/", "image")) {
           painting_promises.push(createMusicLoadPromise(new_zip, filename));
         } else if (validFilename(filename, "textures/arcade_sprites/", ".png")) {
           arcade_promises.push(createMusicLoadPromise(new_zip, filename));
@@ -398,81 +410,37 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
       let reel_files = await Promise.all(reel_promises);
       let item_files = await Promise.all(item_promises);
 
-      // BGM
-      let bgm = bgm_files.map((x) => x.file);
-      let bgm_names = bgm_files.map((x) => x.name);
-      let bgm_ext = bgm_files.map((x) => x.extension);
-
-      // Major Items
-      let majoritems = majoritem_files.map((x) => x.file);
-      let majoritem_names = majoritem_files.map((x) => x.name);
-      let majoritem_ext = majoritem_files.map((x) => x.extension);
-
-      // Minor Items
-      let minoritems = minoritem_files.map((x) => x.file);
-      let minoritem_names = minoritem_files.map((x) => x.name);
-      let minoritem_ext = minoritem_files.map((x) => x.extension);
-
-      // Events
-      let events = event_files.map((x) => x.file);
-      let event_names = event_files.map((x) => x.name);
-      let event_ext = event_files.map((x) => x.extension);
-
-      // Transitions
-      let transitions = transition_files.map((x) => x.file);
-      let transition_names = transition_files.map((x) => x.name);
-
-      // T&S Portals
-      let tns_portals = portal_files.map((x) => x.file);
-      let tns_portal_names = portal_files.map((x) => x.name);
-
-      // Paintings
-      let paintings = painting_files.map((x) => x.file);
-      let painting_names = painting_files.map((x) => x.name);
-      
-      // Arcade Sprites
-      let arcade_sprites = arcade_files.map((x) => x.file);
-      let arcade_sprite_names = arcade_files.map((x) => x.name);
-      
-      // Bandit Reels
-      let reel_sprites = reel_files.map((x) => x.file);
-      let reel_sprite_names = reel_files.map((x) => x.name);
-      
-      // Item Sprites
-      let item_sprites = item_files.map((x) => x.file);
-      let item_sprite_names = item_files.map((x) => x.name);
-
-      let has_music = bgm_names.length > 0 || event_names.length > 0 || majoritem_names.length > 0 || minoritem_names.length > 0;
+      let has_music = bgm_files.length > 0 || event_files.length > 0 || majoritem_files.length > 0 || minoritem_files.length > 0;
 
       cosmetics = {
-        bgm: bgm,
-        majoritems: majoritems,
-        minoritems: minoritems,
-        events: events,
-        transitions: transitions,
-        tns_portals: tns_portals,
-        paintings: paintings,
-        arcade_sprites: arcade_sprites,
-        reel_sprites: reel_sprites,
-        item_sprites: item_sprites,
+        bgm: bgm_files.map((x) => x.file),
+        majoritems: majoritem_files.map((x) => x.file),
+        minoritems: minoritem_files.map((x) => x.file),
+        events: event_files.map((x) => x.file),
+        transitions: transition_files.map((x) => x.file),
+        tns_portals: portal_files.map((x) => x.file),
+        paintings: painting_files.map((x) => x.file),
+        arcade_sprites: arcade_files.map((x) => x.file),
+        reel_sprites: reel_files.map((x) => x.file),
+        item_sprites: item_files.map((x) => x.file),
       };
       cosmetic_names = {
-        bgm: bgm_names,
-        majoritems: majoritem_names,
-        minoritems: minoritem_names,
-        events: event_names,
-        transitions: transition_names,
-        tns_portals: tns_portal_names,
-        paintings: painting_names,
-        arcade_sprites: arcade_sprite_names,
-        reel_sprites: reel_sprite_names,
-        item_sprites: item_sprite_names,
+        bgm: bgm_files.map((x) => x.name),
+        majoritems: majoritem_files.map((x) => x.name),
+        minoritems: minoritem_files.map((x) => x.name),
+        events: event_files.map((x) => x.name),
+        transitions: transition_files.map((x) => x.name),
+        tns_portals: portal_files.map((x) => x.name),
+        paintings: painting_files.map((x) => x.name),
+        arcade_sprites: arcade_files.map((x) => x.name),
+        reel_sprites: reel_files.map((x) => x.name),
+        item_sprites: item_files.map((x) => x.name),
       };
       cosmetic_extensions = {
-        bgm: bgm_ext,
-        majoritems: majoritem_ext,
-        minoritems: minoritem_ext,
-        events: event_ext,
+        bgm: bgm_files.map((x) => x.extension),
+        majoritems: majoritem_files.map((x) => x.extension),
+        minoritems: minoritem_files.map((x) => x.extension),
+        events: event_files.map((x) => x.extension),
       };
 
       update_music_select_options(isInitialLoad, has_music);
