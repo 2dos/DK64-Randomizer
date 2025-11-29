@@ -1500,16 +1500,17 @@ int getItemCountReq(requirement_item item) {
 			}
 			return count;
 		case REQITEM_BONUSES:
+			for (int i = 0; i < 10; i++) {
+				if (checkFlag(FLAG_HELM_MINIGAMES + i, FLAGTYPE_PERMANENT)) {
+					count += 1;
+				}
+			}
+		case REQITEM_BONUSES_NOHELM:
 			for (int i = 1; i < 54; i++) {
 				if (!inU8List(i, &unused_bonus_ids, sizeof(unused_bonus_ids))) {
 					if (checkFlag(bonus_data[i].flag, FLAGTYPE_PERMANENT)) {
 						count += 1;
 					}
-				}
-			}
-			for (int i = 0; i < 10; i++) {
-				if (checkFlag(FLAG_HELM_MINIGAMES + i, FLAGTYPE_PERMANENT)) {
-					count += 1;
 				}
 			}
 			return count;

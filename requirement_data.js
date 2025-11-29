@@ -103,9 +103,9 @@ const requirement_data = {
             new Requirement(10, [[Moves.AztecTunnelDoor]]), // 1 bunch, 5 bananas in AngryAztecMain
             new Requirement(25, [[Moves.ClimbingCheck, Moves.AztecTunnelDoor]]), // 5 bunches in AngryAztecMain
             new Requirement(14, [[Moves.Diving, Moves.Grape, Moves.TinyTempleIce]]), // 1 bunch, 9 bananas in TempleVultureRoom
-            new Requirement(20, [[Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama]]), // 2 balloons in LlamaTemple
             new Requirement(10, [[Moves.Grape, Moves.AztecTunnelDoor, Moves.Aztec5DT]]), // 1 balloon in LankyTemple
             new Requirement(5, [[Moves.Vines, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama]]), // 1 bunch in LlamaTempleMatching
+            new Requirement(20, [[Moves.Diving, Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama]]), // 2 balloons in LlamaTemple
             new Requirement(11, [ // 1 bunch, 6 bananas in LlamaTemple
                 [Moves.Coconut, Moves.AztecTunnelDoor, Moves.AztecLlama],
                 [Moves.Grape, Moves.AztecTunnelDoor, Moves.AztecLlama],

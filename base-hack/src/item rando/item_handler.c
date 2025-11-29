@@ -168,6 +168,9 @@ void giveItem(requirement_item item, int level, int kong, giveItemConfig config)
                 *(unsigned char*)(&current_item_data.flag_moves) = base | (0x80 >> kong);
             } else if (level == 11) {
                 setPermFlag(FLAG_ABILITY_CLIMBING);
+            } else if (level == 12) {
+                current_item_data.flag_moves.camera = 1;
+                current_item_data.flag_moves.shockwave = 1;
             }
             hh_item = HHITEM_MOVE;
             display_text = 1;
@@ -333,6 +336,8 @@ int getItemCount_new(requirement_item item, int level, int kong) {
                 return 0;
             } else if (level == 11) {
                 return checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT);
+            } else if (level == 12) {
+                return current_item_data.flag_moves.camera && current_item_data.flag_moves.shockwave;
             }
             break;
     }
