@@ -210,15 +210,46 @@ def applyHolidayMode(settings, ROM_COPY: ROM):
         # Alter rims
         applyCelebrationRims(ROM_COPY, 50, [True, True, True, True, False])
         # Change DK's Tie and Tiny's Hair
-        if settings.dk_tie_colors != CharacterColors.custom and settings.kong_model_dk == KongModels.default:
-            tie_hang = [0xFF] * 0xAB8
-            tie_hang_data = gzip.compress(bytearray(tie_hang), compresslevel=9)
-            ROM_COPY.seek(getPointerLocation(TableNames.TexturesGeometry, 0xE8D))
-            ROM_COPY.writeBytes(tie_hang_data)
-            tie_loop = [0xFF] * (32 * 32 * 2)
-            tie_loop_data = gzip.compress(bytearray(tie_loop), compresslevel=9)
-            ROM_COPY.seek(getPointerLocation(TableNames.TexturesGeometry, 0x177D))
-            ROM_COPY.writeBytes(tie_loop_data)
+        if settings.dk_tie_colors != CharacterColors.custom:
+            if settings.kong_model_dk == KongModels.default:
+                tie_hang = [0xFF] * 0xAB8
+                tie_hang_data = gzip.compress(bytearray(tie_hang), compresslevel=9)
+                ROM_COPY.seek(getPointerLocation(TableNames.TexturesGeometry, 0xE8D))
+                ROM_COPY.writeBytes(tie_hang_data)
+                tie_loop = [0xFF] * (32 * 32 * 2)
+                tie_loop_data = gzip.compress(bytearray(tie_loop), compresslevel=9)
+                ROM_COPY.seek(getPointerLocation(TableNames.TexturesGeometry, 0x177D))
+                ROM_COPY.writeBytes(tie_loop_data)
+            elif settings.kong_model_dk == KongModels.disco_donkey:
+                gloves = [0xFF] * 32 * 32 * 2
+                clothes = []
+                for y in range(32):
+                    for x in range(32):
+                        sparkle_px = [
+                            [28, 5],
+                            [27, 10],
+                            [21, 11],
+                            [25, 14],
+                            [23, 15],
+                            [23, 16],
+                            [26, 18],
+                            [20, 19],
+                            [25, 25],
+                        ]
+                        is_sparkle = False
+                        for px in sparkle_px:
+                            if px[0] == x and px[1] == y:
+                                is_sparkle = True
+                        if is_sparkle:
+                            clothes.extend([0xFF, 0xFF])
+                        else:
+                            clothes.extend([0xF8, 0x01])
+                gloves_data = gzip.compress(bytearray(gloves), compresslevel=9)
+                ROM_COPY.seek(getPointerLocation(TableNames.TexturesGeometry, getBonusSkinOffset(ExtraTextures.DiscoDonkGlove)))
+                ROM_COPY.writeBytes(gloves_data)
+                clothes_data = gzip.compress(bytearray(clothes), compresslevel=9)
+                ROM_COPY.seek(getPointerLocation(TableNames.TexturesGeometry, getBonusSkinOffset(ExtraTextures.DiscoDonkShirt)))
+                ROM_COPY.writeBytes(clothes_data)
         if settings.tiny_hair_colors != CharacterColors.custom and settings.kong_model_tiny == KongModels.default:
             tiny_hair = []
             for x in range(32 * 32):

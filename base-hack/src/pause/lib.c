@@ -11,7 +11,27 @@
 #include "../../include/common.h"
 
 static char igt_text[20] = "IGT: 0000:00:00";
+static char points_text[21] = "420l801 POINTS LEFT";
 static int stored_igt = 0;
+spoiler_struct spoiler_items[SPOILER_COUNT] = {
+    {.flag = 0},
+};
+
+void getLevelPoints(int level, unsigned short *points, unsigned short *total_points) {
+    int points_left = 0;
+    int points_total = 0;
+    for (int i = 0; i < SPOILER_COUNT; i++) {
+        spoiler_struct *info = &spoiler_items[i];
+        if (info->level == level) {
+            if (!checkFlag(info->flag, FLAGTYPE_PERMANENT)) {
+                points_left += info->points;
+            }
+            points_total += info->points;
+        }
+    }
+    *points = points_left;
+    *total_points = points_total;
+}
 
 Gfx* printLevelIGT(Gfx* dl, int x, int y, float scale, char* str) {
     /**
@@ -24,19 +44,27 @@ Gfx* printLevelIGT(Gfx* dl, int x, int y, float scale, char* str) {
             level_index = i;
         }
     }
-    int igt_data = 0;
-    if (level_index < 9) {
-        igt_data = ReadFile(DATA_IGT_JAPES + level_index, 0, 0, FileIndex);
-    }
-    int igt_h = igt_data / 3600;
-    int igt_m = (igt_data / 60) % 60;
-    int igt_s = igt_data % 60;
-    if (igt_data < 3600) {
-        dk_strFormat(igt_text, "TIME: %02d:%02d", igt_m, igt_s);
+    if (Rando.spoiler_hints) {
+        unsigned short left = 0;
+        unsigned short total = 0;
+        getLevelPoints(level_index, &left, &total);
+        dk_strFormat(points_text, "%dl%d POINTS LEFT", left, total);
+        dl = printText(dl, x, y + 0x38, 0.5f, (char*)points_text);
     } else {
-        dk_strFormat(igt_text, "TIME: %d:%02d:%02d", igt_h, igt_m, igt_s);
+        int igt_data = 0;
+        if (level_index < 9) {
+            igt_data = ReadFile(DATA_IGT_JAPES + level_index, 0, 0, FileIndex);
+        }
+        int igt_h = igt_data / 3600;
+        int igt_m = (igt_data / 60) % 60;
+        int igt_s = igt_data % 60;
+        if (igt_data < 3600) {
+            dk_strFormat(igt_text, "TIME: %02d:%02d", igt_m, igt_s);
+        } else {
+            dk_strFormat(igt_text, "TIME: %d:%02d:%02d", igt_h, igt_m, igt_s);
+        }
+        dl = printText(dl, x, y + 0x38, 0.5f, (char*)igt_text);
     }
-    dl = printText(dl, x, y + 0x38, 0.5f, (char*)igt_text);
     return dl;
 }
 
