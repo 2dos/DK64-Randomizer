@@ -3563,7 +3563,7 @@ CustomLocations = {
             group=6,
         ),
         CustomLocation(
-            name="Thornvine Barn: Next to ladder",
+            name="DK Barn: Next to ladder",
             map=Maps.ForestThornvineBarn,
             x=80.0,
             y=4.0,
@@ -3575,7 +3575,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.ForestThornvineBarn,
-            name="Thornvine Barn: back left",
+            name="DK Barn: back left",
             x=566.02142333984,
             y=4,
             z=524.61657714844,
