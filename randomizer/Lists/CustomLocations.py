@@ -5359,7 +5359,7 @@ CustomLocations = {
             group=14,
         ),
         CustomLocation(
-            name="Banana Hoard",
+            name="Training Grounds: Banana Hoard",
             map=Maps.TrainingGrounds,
             x=2497.648,
             y=191.0,
@@ -5372,7 +5372,7 @@ CustomLocations = {
             group=1,
         ),
         CustomLocation(
-            name="Training Grounds Rear Tunnel",
+            name="Training Grounds: Rear Tunnel",
             map=Maps.TrainingGrounds,
             x=1223.714,
             y=37.208,
@@ -5384,7 +5384,7 @@ CustomLocations = {
             group=1,
         ),
         CustomLocation(
-            name="Back of Prison",
+            name="Prison: Back",
             map=Maps.KLumsy,
             x=1499.675,
             y=95.0,
@@ -6106,7 +6106,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.TrainingGrounds,
-            name="Training Grounds: Banana Hoard",
+            name="Training Grounds: Banana Hoard (back)",
             x=2500,
             y=211,
             z=920,
@@ -6213,7 +6213,7 @@ CustomLocations = {
             group=4,
         ),
         CustomLocation(
-            name="Next to Snide's",
+            name="Snide's Room: Next to Snide's",
             map=Maps.IslesSnideRoom,
             x=576.0,
             y=0.0,
@@ -6225,7 +6225,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.KLumsy,
-            name="K. Lumsy: Back Right",
+            name="Prison: Back Right",
             x=1580,
             y=95,
             z=868,
@@ -6235,7 +6235,7 @@ CustomLocations = {
         ),
         CustomLocation(
             map=Maps.KLumsy,
-            name="K. Lumsy: Near Left",
+            name="Prison: Near Left",
             x=560,
             y=95,
             z=1340,
@@ -6244,7 +6244,7 @@ CustomLocations = {
             group=5,
         ),
         CustomLocation(
-            name="K. Lumsy: Under K. Lumsy",
+            name="Prison: Under K. Lumsy",
             map=Maps.KLumsy,
             x=1020.0,
             y=50.0,
