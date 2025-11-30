@@ -705,7 +705,7 @@ CustomLocations = {
             tied_warp_event=Events.JapesW5bTagged,
         ),
         CustomLocation(
-            name="Vanilla Cranky Warp 4",
+            name="Vanilla Stormy Warp 4",
             map=Maps.JungleJapes,
             x=1696.499,
             y=280,
@@ -1252,7 +1252,7 @@ CustomLocations = {
             group=3,
         ),
         CustomLocation(
-            name="Vanilla Near Warp 1",
+            name="Vanilla Tunnel Warp 1",
             map=Maps.AngryAztec,
             x=805.376,
             y=120,
@@ -1330,7 +1330,7 @@ CustomLocations = {
             tied_warp_event=Events.AztecW1bTagged,
         ),
         CustomLocation(
-            name="Vanilla Near Warp 4",
+            name="Vanilla Totem Warp 4",
             map=Maps.AngryAztec,
             x=3412.203,
             y=121.381,
@@ -2075,7 +2075,7 @@ CustomLocations = {
             banned_types=[LocationTypes.MelonCrate, LocationTypes.Bananaport],
         ),
         CustomLocation(
-            name="Vanilla Close Warp 2",
+            name="Vanilla Foyer Warp 2",
             map=Maps.FranticFactory,
             x=1372.674,
             y=845.667,
@@ -2088,7 +2088,7 @@ CustomLocations = {
             tied_warp_event=Events.FactoryW1aTagged,
         ),
         CustomLocation(
-            name="Vanilla Close Warp 3",
+            name="Vanilla Foyer Warp 3",
             map=Maps.FranticFactory,
             x=1435.392,
             y=842.667,
@@ -2101,7 +2101,7 @@ CustomLocations = {
             tied_warp_event=Events.FactoryW3aTagged,
         ),
         CustomLocation(
-            name="Vanilla Far Warp 2",
+            name="Vanilla R&D Warp 2",
             map=Maps.FranticFactory,
             x=3802.578,
             y=1264,
@@ -2127,7 +2127,7 @@ CustomLocations = {
             tied_warp_event=Events.FactoryW3bTagged,
         ),
         CustomLocation(
-            name="Vanilla Upper Warp 4",
+            name="Vanilla High Warp 4",
             map=Maps.FranticFactory,
             x=907.894,
             y=422.5,
@@ -2140,7 +2140,7 @@ CustomLocations = {
             tied_warp_event=Events.FactoryW4bTagged,
         ),
         CustomLocation(
-            name="Vanilla Lower Warp 4",
+            name="Vanilla Low Warp 4",
             map=Maps.FranticFactory,
             x=916.314,
             y=0,
@@ -2153,7 +2153,7 @@ CustomLocations = {
             tied_warp_event=Events.FactoryW4aTagged,
         ),
         CustomLocation(
-            name="Vanilla Funky Warp 5",
+            name="Vanilla Testing Warp 5",
             map=Maps.FranticFactory,
             x=1624.949,
             y=1113.167,
@@ -2166,7 +2166,7 @@ CustomLocations = {
             tied_warp_event=Events.FactoryW5bTagged,
         ),
         CustomLocation(
-            name="Vanilla Near Warp 1",
+            name="Vanilla Foyer Warp 1",
             map=Maps.FranticFactory,
             x=1153.009,
             y=845.667,
@@ -2648,7 +2648,7 @@ CustomLocations = {
             tied_warp_event=Events.GalleonW1bTagged,
         ),
         CustomLocation(
-            name="Vanilla Snide Warp 3",
+            name="Vanilla Alcove Warp 3",
             map=Maps.GloomyGalleon,
             x=1981.99,
             y=1610,
@@ -2674,7 +2674,7 @@ CustomLocations = {
             tied_warp_event=Events.GalleonW5aTagged,
         ),
         CustomLocation(
-            name="Vanilla Start Warp 2",
+            name="Vanilla Cavern Warp 2",
             map=Maps.GloomyGalleon,
             x=2905.288,
             y=1700,
@@ -2687,7 +2687,7 @@ CustomLocations = {
             tied_warp_event=Events.GalleonW2aTagged,
         ),
         CustomLocation(
-            name="Vanilla Start Warp 3",
+            name="Vanilla Bridge Warp 3",
             map=Maps.GloomyGalleon,
             x=3067.098,
             y=1890,
@@ -2726,7 +2726,7 @@ CustomLocations = {
             tied_warp_event=Events.GalleonW4aTagged,
         ),
         CustomLocation(
-            name="Vanilla Start Warp 1",
+            name="Vanilla Cavern Warp 1",
             map=Maps.GloomyGalleon,
             x=2844.223,
             y=1673.752,
@@ -3457,7 +3457,7 @@ CustomLocations = {
             tied_warp_event=Events.ForestW4aTagged,
         ),
         CustomLocation(
-            name="Vanilla Tree Warp 4",
+            name="Vanilla Owl Tree Warp 4",
             map=Maps.FungiForest,
             x=1276.934,
             y=249.333,
@@ -4767,7 +4767,7 @@ CustomLocations = {
             group=5,
         ),
         CustomLocation(
-            name="Vanilla Upper Warp 2",
+            name="Vanilla Overhang Warp 2",
             map=Maps.CreepyCastle,
             x=1899.247,
             y=904.136,
@@ -4780,7 +4780,7 @@ CustomLocations = {
             tied_warp_event=Events.CastleW2bTagged,
         ),
         CustomLocation(
-            name="Vanilla Upper Warp 5",
+            name="Vanilla Top Warp 5",
             map=Maps.CreepyCastle,
             x=1341.102,
             y=1731.167,
@@ -4793,7 +4793,7 @@ CustomLocations = {
             tied_warp_event=Events.CastleW5bTagged,
         ),
         CustomLocation(
-            name="Vanilla Close Warp 1",
+            name="Vanilla Moat Warp 1",
             map=Maps.CreepyCastle,
             x=1532.901,
             y=673.575,
@@ -4806,7 +4806,7 @@ CustomLocations = {
             tied_warp_event=Events.CastleW1aTagged,
         ),
         CustomLocation(
-            name="Vanilla Close Warp 5",
+            name="Vanilla Moat Warp 5",
             map=Maps.CreepyCastle,
             x=938.578,
             y=673.5,
@@ -4819,7 +4819,7 @@ CustomLocations = {
             tied_warp_event=Events.CastleW5aTagged,
         ),
         CustomLocation(
-            name="Vanilla Rear Warp 1",
+            name="Vanilla Back Warp 1",
             map=Maps.CreepyCastle,
             x=1023.578,
             y=648.279,
@@ -4832,7 +4832,7 @@ CustomLocations = {
             tied_warp_event=Events.CastleW1bTagged,
         ),
         CustomLocation(
-            name="Vanilla Close Warp 3",
+            name="Vanilla Moat Warp 3",
             map=Maps.CreepyCastle,
             x=1214.247,
             y=673.5,
@@ -4845,7 +4845,7 @@ CustomLocations = {
             tied_warp_event=Events.CastleW3aTagged,
         ),
         CustomLocation(
-            name="Vanilla Close Warp 2",
+            name="Vanilla Moat Warp 2",
             map=Maps.CreepyCastle,
             x=1384.938,
             y=673.742,
@@ -4858,7 +4858,7 @@ CustomLocations = {
             tied_warp_event=Events.CastleW2aTagged,
         ),
         CustomLocation(
-            name="Vanilla Close Warp 4",
+            name="Vanilla Moat Warp 4",
             map=Maps.CreepyCastle,
             x=1082.711,
             y=673.5,
@@ -4871,7 +4871,7 @@ CustomLocations = {
             tied_warp_event=Events.CastleW4aTagged,
         ),
         CustomLocation(
-            name="Vanilla Upper Warp 3",
+            name="Vanilla Shop Warp 3",
             map=Maps.CreepyCastle,
             x=389.7,
             y=1135.469,
@@ -4884,7 +4884,7 @@ CustomLocations = {
             tied_warp_event=Events.CastleW3bTagged,
         ),
         CustomLocation(
-            name="Vanilla Upper Warp 4",
+            name="Vanilla Shed Warp 4",
             map=Maps.CreepyCastle,
             x=1536.106,
             y=1381.167,
@@ -5781,7 +5781,7 @@ CustomLocations = {
             tied_warp_event=Events.IslesW4aTagged,
         ),
         CustomLocation(
-            name="Vanilla Upper Warp 4",
+            name="Vanilla Krem Warp 4",
             map=Maps.Isles,
             x=2494.455,
             y=1200,
