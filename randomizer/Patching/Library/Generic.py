@@ -802,7 +802,7 @@ def sumChecks(spoiler, ownedItems, locations: list) -> int:
 
 def getHolidaySetting(settings):
     """Get the holiday setting."""
-    is_offseason = True
+    is_offseason = False
     if is_offseason:
         return settings.holiday_setting_offseason
     return settings.holiday_setting

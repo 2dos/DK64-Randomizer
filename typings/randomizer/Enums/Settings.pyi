@@ -283,6 +283,7 @@ class ItemRandoListSelected(IntEnum):
     racebanana = 45
     gauntletbanana = 46
     blueprintbanana = 47
+    sniderewards = 48
 
 class ItemRandoFiller(IntEnum):
     junkitem = 1
@@ -323,6 +324,12 @@ class KongModels(IntEnum):
     candy = 6
     funky = 7
     disco_donkey = 8
+
+class KongModelMode(IntEnum):
+    manual = 0
+    random_one = 1
+    sometimes_one = 2
+    random_all = 3
 
 class LevelRandomization(IntEnum):
     vanilla = 0
@@ -864,6 +871,7 @@ class SettingsStringEnum(IntEnum):
     trap_weight_rockfall = 288
     trap_weight_disabletag = 289
     random_starting_region_new = 290
+    kong_model_mode = 291
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -956,6 +964,7 @@ SettingsMap: dict = {
     "kong_model_lanky": KongModels,
     "kong_model_tiny": KongModels,
     "kong_model_chunky": KongModels,
+    "kong_model_mode": KongModelMode,
     "chunky_phase_slam_req": SlamRequirement,
     "puzzle_rando_difficulty": PuzzleRando,
     "progressive_hint_item": ProgressiveHintItem,
@@ -1098,6 +1107,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.kong_model_lanky: KongModels,
     SettingsStringEnum.kong_model_tiny: KongModels,
     SettingsStringEnum.kong_model_chunky: KongModels,
+    SettingsStringEnum.kong_model_mode: KongModelMode,
     SettingsStringEnum.kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_access: SettingsStringDataType.bool,
     SettingsStringEnum.krool_key_count: SettingsStringDataType.var_int,

@@ -617,6 +617,7 @@ if baseclasses_loaded:
             self.hint_compilation_complete = threading.Event()
             super().__init__(multiworld, player)
             self.ap_version = json.loads(pkgutil.get_data(__name__, "archipelago.json").decode("utf-8"))["world_version"]
+            self.entrance_connections: dict[str, str] = {}
 
         @classmethod
         def stage_assert_generate(cls, multiworld: MultiWorld):
@@ -1578,7 +1579,11 @@ if baseclasses_loaded:
                 ),
                 "HintLocationMapping": hint_mapping,
                 "hints": {str(location): hint_data for location, hint_data in dynamic_hints.items()},
-                "EntranceRando": (self.er_placement_state.pairings if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data else {}),
+                "EntranceRando": (
+                    {source_exit: target_entrance for source_exit, target_entrance in self.er_placement_state.pairings}
+                    if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and self.spoiler.shuffled_exit_data
+                    else {}
+                ),
             }
             return slot_data
 
@@ -1808,6 +1813,16 @@ if baseclasses_loaded:
                     state.dk64_logic_holder[self.player] = LogicVarHolder(self.spoiler, self.player)  # If the CollectionState dodged the creation of a logic_holder object, fix it here
                     state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
             return change
+
+        def _update_entrance_connections(self, state: CollectionState) -> None:
+            """Update the entrance_connections dictionary with all reachable connected entrances."""
+            self.entrance_connections.clear()
+            if self.player in state.reachable_regions:
+                regions_copy = list(state.reachable_regions[self.player])
+                for region in regions_copy:
+                    for entrance in region.exits:
+                        if entrance.can_reach(state) and entrance.connected_region is not None:
+                            self.entrance_connections[entrance.name] = entrance.connected_region.name
 
         def version_check(self, version: str, req_version: str) -> bool:
             """Check if the current version is greater than or equal to the one required for this slot data."""

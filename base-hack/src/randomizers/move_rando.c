@@ -399,6 +399,9 @@ void getNextMoveText(void) {
 						case 11:
 							top_item = ITEMTEXT_CLIMBING;
 							break;
+						case 12:
+							top_item = ITEMTEXT_CAMERACOMBO;
+							break;
 					}
 					break;
 				case REQITEM_GOLDENBANANA:

@@ -100,8 +100,6 @@ first_move = {"base_slam": MoveType(MoveIndexes.slam)}
 
 def convertItem(fh: BinaryIO, item: dict, kong: int) -> int:
     """Convert move item to encoded int."""
-    flag_types = [MoveIndexes.flag, MoveIndexes.gb]
-    shared_types = [MoveIndexes.slam, MoveIndexes.ammo_belt]  # Instrument covered by diff
     # Item Type
     if item.type == MoveIndexes.nothing:
         for _ in range(6):
@@ -149,8 +147,11 @@ def convertItem(fh: BinaryIO, item: dict, kong: int) -> int:
             flag_lst = [0x182, 0x184, 0x185, 0x183, 0x2FD, 0x179]
             parsed_index = item.index
             if parsed_index == -2:
-                parsed_index = 0x2FD
-            if parsed_index in flag_lst:
+                fh.write((12).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+                fh.write((0).to_bytes(1, "big"))
+            elif parsed_index in flag_lst:
                 fh.write((10).to_bytes(1, "big"))
                 fh.write(flag_lst.index(parsed_index).to_bytes(1, "big"))
                 fh.write((0).to_bytes(1, "big"))

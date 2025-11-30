@@ -1466,6 +1466,17 @@ typedef struct charSpawnerActorInfo {
 	/* 0x00C */ char unk_C[0x18-0xC];
 } charSpawnerActorInfo;
 
+typedef struct spoiler_struct {
+    unsigned short flag;
+    unsigned char points;
+    unsigned char level;
+} spoiler_struct;
+
+typedef struct spoiler_tracker_struct {
+	unsigned short points;
+	unsigned short total;
+} spoiler_tracker_struct;
+
 typedef struct player_collision_info {
     /* 0x000 */ float x;
     /* 0x004 */ float y;

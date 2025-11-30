@@ -111,6 +111,7 @@ class LevelSpoiler:
         self.level_name = level_name
         self.vial_colors = []
         self.points = 0
+        self.level_items = []
         self.woth_count = 0
 
     def toJSON(self):
@@ -1436,6 +1437,8 @@ def compileHints(spoiler: Spoiler) -> bool:
             # The Castle Museum Map is segmented by glass walls. Different regions of the Museum care about different transitions.
             Regions.Museum: [Transitions.CastleMuseumToMain],
             Regions.MuseumBehindGlass: [Transitions.CastleMuseumToBallroom, Transitions.CastleMuseumToCarRace],
+            # The Arcade region doesn't contain the transition that leads into it because the transition needed dedicated climbing logic for the pole.
+            Regions.FactoryArcadeTunnel: [Transitions.FactoryArcadeToStorage],
         }
         # These are the maps we classify as "connectors" - they are regions with exactly two entrances
         connector_maps = {
@@ -1513,7 +1516,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Maps.CrystalCaves,
                 Maps.CreepyCastle,
             )
-            if woth_map in main_level_maps:
+            # One exception: the Arcade is effectively an isolated loading zone within the main map of Factory
+            if woth_map in main_level_maps and region_id != Regions.FactoryArcadeTunnel:
                 continue
             # Blast maps all happen to be contained in the main map of the respective level
             if woth_map in (
@@ -1827,10 +1831,20 @@ def compileHints(spoiler: Spoiler) -> bool:
                 if spoiler.RegionList[region_id].hint_name == region_name_to_hint:
                     level_color = level_colors[spoiler.RegionList[region_id].level]
                     break
-            plural = ""
-            if spoiler.region_hintable_count[region_name_to_hint] > 1:
-                plural = "s"
-            message = f"Scouring the {level_color}{HINT_REGION_PAIRING.get(region_name_to_hint, region_name_to_hint.name)}{level_color} will yield you \x0d{spoiler.region_hintable_count[region_name_to_hint]} potion{plural}\x0d."
+            region_items = list(spoiler.region_hintable_count[region_name_to_hint].keys())
+            max_item_name = None
+            max_plural = None
+            max_count = -1
+            for region_item in region_items:
+                region_item_data = spoiler.region_hintable_count[region_name_to_hint][region_item]
+                count = region_item_data["count"]
+                if count > max_count:
+                    # Find the item in the region with the most *stuff*. This is the most valuable
+                    max_count = count
+                    max_plural = region_item_data["plural"]
+                    max_item_name = region_item
+            displayed_item_name = max_plural if max_count > 1 else max_item_name
+            message = f"Scouring the {level_color}{HINT_REGION_PAIRING.get(region_name_to_hint, region_name_to_hint.name)}{level_color} will yield you \x0d{max_count} {displayed_item_name}\x0d."
             hint_location.hint_type = HintType.RegionItemCount
             hint_location.related_hint_region_id = region_name_to_hint
             UpdateHint(hint_location, message)
@@ -2301,7 +2315,15 @@ def compileSpoilerHints(spoiler):
                     starting_info.starting_moves_woth_count += 1
             else:
                 spoiler.level_spoiler[level_of_location].vial_colors.append(CategorizeItem(item_obj))
-                spoiler.level_spoiler[level_of_location].points += PointValueOfItem(spoiler.settings, location.item)
+                points = PointValueOfItem(spoiler.settings, location.item)
+                spoiler.level_spoiler[level_of_location].points += points
+                spoiler.level_spoiler[level_of_location].level_items.append(
+                    {
+                        "item": location.item,
+                        "points": points,
+                        "flag": location.location_flag,
+                    }
+                )
                 if location_id in spoiler.woth_locations:
                     spoiler.level_spoiler[level_of_location].woth_count += 1
     # Convert those spoiler hints to readable text
