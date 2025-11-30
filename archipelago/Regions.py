@@ -487,8 +487,9 @@ def connect_regions(world: World, settings: Settings):
     pairings = None
     if hasattr(world.multiworld, "generation_is_fake"):
         if hasattr(world.multiworld, "re_gen_passthrough") and settings.level_randomization == LevelRandomization.loadingzone:
-            pairings = dict(world.multiworld.re_gen_passthrough["Donkey Kong 64"]["EntranceRando"])
-            print(pairings)
+            entrance_rando_data = world.multiworld.re_gen_passthrough["Donkey Kong 64"].get("EntranceRando", {})
+            if entrance_rando_data:
+                pairings = dict(entrance_rando_data)
 
     for region_id, region_obj in all_logic_regions.items():
         for exit in region_obj.exits:
@@ -509,24 +510,47 @@ def connect_regions(world: World, settings: Settings):
                     converted_logic = lambda state: True
                 else:
                     converted_logic = lambda state, player=world.player, exit=exit: hasDK64RTransition(state, player, exit)
-                if pairings and (region_id.name + "->" + destination_name) in pairings.keys():
-                    assigned_entrance_name = pairings[region_id.name + "->" + destination_name]
-                    exits_to = assigned_entrance_name.split("->")[0]
-                    connect(world, region_id.name, exits_to, converted_logic)
+                
+                # For LZR with pairings, check if this exit has a shufflable ID and use the pairing
+                entrance_name = None
+                if settings.level_randomization == LevelRandomization.loadingzone:
+                    if exit.exitShuffleId and not exit.isGlitchTransition and ShufflableExits[exit.exitShuffleId].back.reverse:
+                        entrance_name = ShufflableExits[exit.exitShuffleId].name
+                
+                # If we have pairings and this entrance is in them, connect to the paired target
+                if pairings and entrance_name and entrance_name in pairings:
+                    target_entrance_name = pairings[entrance_name]
+                    # Look up the target entrance in ShufflableExits to get its destination region
+                    target_shufflable_exit = None
+                    for transition_enum, shufflable_exit in ShufflableExits.items():
+                        if shufflable_exit.name == target_entrance_name:
+                            target_shufflable_exit = shufflable_exit
+                            break
+                    
+                    if target_shufflable_exit:
+                        target_region_name = target_shufflable_exit.region.name
+                        print(f"Connecting {region_id.name} via {entrance_name} to {target_region_name} (paired with {target_entrance_name})")
+                        connect(world, region_id.name, target_region_name, converted_logic, entrance_name)
+                    else:
+                        print(f"Warning: Could not find ShufflableExit for target entrance '{target_entrance_name}'")
+                        # Fallback to normal connection
+                        if not exit.isGlitchTransition:
+                            connection = connect(world, region_id.name, destination_name, converted_logic, entrance_name)
+                            if entrance_name is not None:
+                                disconnect_entrance_for_randomization(connection)
+                elif pairings and entrance_name:
+                    # This entrance should be shuffled but no pairing found - disconnect it
+                    print(f"Warning: No pairing found for entrance {entrance_name}, disconnecting")
+                    connection = connect(world, region_id.name, destination_name, converted_logic, entrance_name)
+                    disconnect_entrance_for_randomization(connection)
                 else:
-                    # For LZR, use the ShufflableExit name to prevent overwriting transitions
-                    entrance_name = None
-                    if settings.level_randomization == LevelRandomization.loadingzone:
-                        if exit.exitShuffleId and not exit.isGlitchTransition and ShufflableExits[exit.exitShuffleId].back.reverse:
-                            entrance_name = ShufflableExits[exit.exitShuffleId].name
-
-                    # Deal with glitch transitions in connect_entrances step, but otherwise do a connection here
+                    # No entrance randomization or not a shufflable entrance - connect normally
                     if not (settings.level_randomization == LevelRandomization.loadingzone and exit.isGlitchTransition):
                         connection = connect(world, region_id.name, destination_name, converted_logic, entrance_name)
-
-                    # If this is a shuffled entrance, prepare it to be randomized
-                    if entrance_name is not None:
-                        disconnect_entrance_for_randomization(connection)
+                        
+                        # If this is a shuffled entrance, prepare it to be randomized
+                        if entrance_name is not None:
+                            disconnect_entrance_for_randomization(connection)
 
                 # print("Connecting " + region_id.name + " to " + destination_name)
             except Exception as e:
@@ -536,7 +560,44 @@ def connect_regions(world: World, settings: Settings):
     connect(world, "IslesMain", "IslesMainUpper", lambda state: True)  # Pre-activated W2
     connect(world, "IslesMain", "KremIsleBeyondLift", lambda state: True)  # Pre-activated W4
 
-    pass
+    # For tracker regeneration with LZR, also handle deathwarps and exit level connections
+    if pairings:
+        # Handle deathwarps
+        for region_id, region_obj in all_logic_regions.items():
+            if region_obj.deathwarp:
+                connect(world, region_id.name, region_obj.deathwarp.dest.name, 
+                       lambda state, player=world.player, exit=region_obj.deathwarp: hasDK64RTransition(state, player, exit), 
+                       "Deathwarp: " + region_id.name + "->" + region_obj.deathwarp.dest.name)
+        
+        # Handle exit level connections
+        exit_level_transition_dict = {
+            Levels.JungleJapes: ShufflableExits[Transitions.JapesToIsles].name,
+            Levels.AngryAztec: ShufflableExits[Transitions.AztecToIsles].name,
+            Levels.FranticFactory: ShufflableExits[Transitions.FactoryToIsles].name,
+            Levels.GloomyGalleon: ShufflableExits[Transitions.GalleonToIsles].name,
+            Levels.FungiForest: ShufflableExits[Transitions.ForestToIsles].name,
+            Levels.CrystalCaves: ShufflableExits[Transitions.CavesToIsles].name,
+            Levels.CreepyCastle: ShufflableExits[Transitions.CastleToIsles].name,
+        }
+        
+        # For each level, find where its exit leads using the pairings
+        for level, exit_entrance_name in exit_level_transition_dict.items():
+            if exit_entrance_name in pairings:
+                target_entrance_name = pairings[exit_entrance_name]
+                # Look up the target entrance to get its region
+                target_shufflable_exit = None
+                for transition_enum, shufflable_exit in ShufflableExits.items():
+                    if shufflable_exit.name == target_entrance_name:
+                        target_shufflable_exit = shufflable_exit
+                        break
+                
+                if target_shufflable_exit:
+                    target_region_name = target_shufflable_exit.region.name
+                    # Connect all regions of this level that can exit to the target
+                    for region_id, region_obj in all_logic_regions.items():
+                        if not region_obj.restart and region_obj.level == level:
+                            print(f"Exit Level: Connecting {region_id.name} (level {level.name}) to {target_region_name}")
+                            connect(world, region_id.name, target_region_name, lambda state: True, None)
 
 
 def connect_glitch_transitions(world: World, er_placement_state: ERPlacementState):
@@ -572,7 +633,7 @@ def connect_exit_level_and_deathwarp(world: World, er_placement_state: ERPlaceme
     for region_id, region_obj in all_logic_regions.items():
         # Deathwarp
         if region_obj.deathwarp:
-            connect(world, region_id.name, region_obj.deathwarp.dest.name, lambda state, player=world.player, exit=region_obj.deathwarp: hasDK64RTransition(state, player, exit), None)S
+            connect(world, region_id.name, region_obj.deathwarp.dest.name, lambda state, player=world.player, exit=region_obj.deathwarp: hasDK64RTransition(state, player, exit), "Deathwarp: " + region_id.name + "->" + region_obj.deathwarp.dest.name)
         # Exit level
         if not region_obj.restart and region_obj.level in exit_level_target_dict:
             connect(world, region_id.name, exit_level_target_dict[region_obj.level].connected_region.name, lambda state: True, None)
