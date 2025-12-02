@@ -597,7 +597,7 @@ def connect_regions(world: World, settings: Settings):
                     for region_id, region_obj in all_logic_regions.items():
                         if not region_obj.restart and region_obj.level == level:
                             print(f"Exit Level: Connecting {region_id.name} (level {level.name}) to {target_region_name}")
-                            connect(world, region_id.name, target_region_name, lambda state: True, None)
+                            connect(world, region_id.name, target_region_name, lambda state: True, "Exit Level: " + region_id.name + "->" + target_region_name)
 
 
 def connect_glitch_transitions(world: World, er_placement_state: ERPlacementState):
@@ -609,7 +609,7 @@ def connect_glitch_transitions(world: World, er_placement_state: ERPlacementStat
         for exit in [exit for exit in region_obj.exits if exit.isGlitchTransition]:
             target = next((entrance for entrance in entrances if entrance.name == ShufflableExits[exit.exitShuffleId].name), None)
             if target:
-                connect(world, region_id.name, target.connected_region.name, lambda state, player=world.player, exit=exit: hasDK64RTransition(state, player, exit), None)
+                connect(world, region_id.name, target.connected_region.name, lambda state, player=world.player, exit=exit: hasDK64RTransition(state, player, exit), "Glitch: " + region_id.name + "->" + target.connected_region.name)
 
 
 def connect_exit_level_and_deathwarp(world: World, er_placement_state: ERPlacementState):
@@ -636,7 +636,7 @@ def connect_exit_level_and_deathwarp(world: World, er_placement_state: ERPlaceme
             connect(world, region_id.name, region_obj.deathwarp.dest.name, lambda state, player=world.player, exit=region_obj.deathwarp: hasDK64RTransition(state, player, exit), "Deathwarp: " + region_id.name + "->" + region_obj.deathwarp.dest.name)
         # Exit level
         if not region_obj.restart and region_obj.level in exit_level_target_dict:
-            connect(world, region_id.name, exit_level_target_dict[region_obj.level].connected_region.name, lambda state: True, None)
+            connect(world, region_id.name, exit_level_target_dict[region_obj.level].connected_region.name, lambda state: True, "Exit Level: " + region_id.name + "->" + exit_level_target_dict[region_obj.level].connected_region.name)
 
 
 def connect(world: World, source: str, target: str, rule: typing.Optional[typing.Callable] = None, name: typing.Optional[str] = None) -> Entrance:
