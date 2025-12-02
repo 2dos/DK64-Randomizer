@@ -13,7 +13,7 @@ import pkgutil
 import shutil
 import sys
 import tempfile
-from typing import Any
+from typing import Any, TypedDict
 
 
 baseclasses_loaded = False
@@ -125,7 +125,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Items import Items as DK64RItems
     from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups
+    from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups, LoadingZoneRando
     from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level_and_deathwarp, connect_glitch_transitions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
@@ -157,6 +157,7 @@ if baseclasses_loaded:
         MicrohintsEnabled,
         ShuffleLoadingZones,
         TricksSelected,
+        SlamRequirement,
     )
     from randomizer.Enums.Switches import Switches
     from randomizer.Enums.SwitchTypes import SwitchType
@@ -273,6 +274,10 @@ if baseclasses_loaded:
         tutorials = [setup_en]
         option_groups = dk64_option_groups
 
+    class LZRSeedGroup(TypedDict):
+        """Type definition for Loading Zone Randomizer seed groups."""
+        pass # Figure this out. We might not need this
+
     class DK64World(World):
         """Donkey Kong 64 is a 3D collectathon platforming game.
 
@@ -284,6 +289,8 @@ if baseclasses_loaded:
         options: DK64Options
         topology_present = False
         settings: typing.ClassVar[DK64Settings]
+        # TODO: Do This Later
+        # seed_groups: typing.ClassVar[dict[str, LZRSeedGroup]] = {}
 
         item_name_to_id = {name: data.code for name, data in full_item_table.items()}
         location_name_to_id = all_locations
@@ -648,6 +655,21 @@ if baseclasses_loaded:
                     print("Invalid DK64 ROM file, please make sure your ROM is big endian.")
                     raise FileNotFoundError("Invalid DK64 ROM file, please make sure your ROM is a vanilla DK64 file in big endian.")
             check_version()
+
+        # TODO: Do This Later
+        # @classmethod
+        # def stage_pre_fill(cls, multiworld: MultiWorld) -> None:
+        #     """Handle seed groups for Loading Zone Randomizer."""
+        #     dk64_worlds: tuple[DK64World] = multiworld.get_game_worlds("Donkey Kong 64")
+        #     for world in dk64_worlds:
+        #         # if it's one of the options (no/yes), then it isn't a custom seed group
+        #         if world.options.loading_zone_rando.value in LoadingZoneRando.options.values():
+        #             continue
+        #         group = world.options.loading_zone_rando.value
+        #         # if this is the first world in the group, register it
+        #         if group not in cls.seed_groups:
+        #             cls.seed_groups[group] = LZRSeedGroup()
+        #             continue
 
         def _get_slot_data(self):
             """Get the slot data."""
@@ -1036,6 +1058,7 @@ if baseclasses_loaded:
 
             LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
             connect_regions(self, self.spoiler.settings)
+
             if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and not hasattr(self.multiworld, "generation_is_fake"):
                 ap_entrance_to_transition = {}
                 for transition_enum, shufflable_exit in ShufflableExits.items():
@@ -1063,8 +1086,30 @@ if baseclasses_loaded:
 
                         ShufflableExits[source_transition].shuffledId = target_reverse
                         ShufflableExits[source_transition].shuffled = True
+                
+                # TODO: Part of LZR Seeds
+                # # If using a custom seed group, use that as the seed for entrance randomization
+                # if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
+                #     # Create a deterministic Random instance using the seed group name
+                #     seed_group_name = self.options.loading_zone_rando.value
+                #     # Combine multiworld seed with seed group name for determinism
+                #     combined_seed = f"{self.multiworld.seed}_{seed_group_name}"
+                #     # Create hash to get integer seed
+                #     from hashlib import sha256
+                #     seed_hash = int(sha256(combined_seed.encode()).hexdigest()[:16], 16)
+                #     # Create a new Random instance for this seed group
+                #     from random import Random
+                #     group_random = Random(seed_hash)
+                #     # Temporarily replace self.random with the group random
+                #     original_random = self.random
+                #     self.random = group_random
 
                 self.er_placement_state = randomize_entrances(self, True, {0: [0]}, on_connect=store_entrance_connections)
+                
+                # Same Here
+                # # Restore original random if we replaced it
+                # if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
+                #     self.random = original_random
 
                 # Handle exit level and deathwarp
                 connect_exit_level_and_deathwarp(self, self.er_placement_state)
@@ -1548,6 +1593,17 @@ if baseclasses_loaded:
                 "TricksSelected": ", ".join([trick.name for trick in self.spoiler.settings.tricks_selected]),
                 "GlitchesSelected": ", ".join([glitch.name for glitch in self.spoiler.settings.glitches_selected]),
                 "StartingKeyList": ", ".join([key.name for key in self.spoiler.settings.starting_key_list]),
+                "ProgressiveSwitchStrength": self.spoiler.settings.alter_switch_allocation,
+                "SlamLevels": (
+                    ", ".join(
+                        [
+                            f"{['JungleJapes', 'AngryAztec', 'FranticFactory', 'GloomyGalleon', 'FungiForest', 'CrystalCaves', 'CreepyCastle', 'HideoutHelm'][i]}: {slam_req.name}"
+                            for i, slam_req in enumerate(self.spoiler.settings.switch_allocation)
+                        ]
+                    )
+                    if self.spoiler.settings.alter_switch_allocation
+                    else ""
+                ),
                 "Junk": self.junked_locations,
                 "HintsInPool": self.options.hints_in_item_pool.value,
                 "BouldersInPool": self.options.boulders_in_pool.value,
@@ -1858,6 +1914,8 @@ if baseclasses_loaded:
             logic_type = slot_data["LogicType"]
             glitches_selected = slot_data["GlitchesSelected"].split(", ")
             starting_key_list = slot_data["StartingKeyList"].split(", ")
+            progressive_switch_strength = slot_data.get("ProgressiveSwitchStrength", False)
+            slam_levels_str = slot_data.get("SlamLevels", "")
             junk = slot_data["Junk"]
             blocker_data = list(map(lambda original_string: original_string[original_string.find(":") + 2 :], slot_data["BLockerValues"].split(", ")))
             blocker_item_type = list(map(lambda data: data.split(" ")[1], blocker_data))
@@ -1924,6 +1982,16 @@ if baseclasses_loaded:
             relevant_data["TricksSelected"] = [TricksSelected[trick] for trick in tricks_selected if trick != ""]
             relevant_data["GlitchesSelected"] = [GlitchesSelected[glitch] for glitch in glitches_selected if glitch != ""]
             relevant_data["StartingKeyList"] = [DK64RItems[key] for key in starting_key_list if key != ""]
+            relevant_data["ProgressiveSwitchStrength"] = progressive_switch_strength
+            if progressive_switch_strength and slam_levels_str:
+                slam_levels_list = []
+                for level_slam in slam_levels_str.split(", "):
+                    if ": " in level_slam:
+                        slam_name = level_slam.split(": ")[1]
+                        slam_levels_list.append(SlamRequirement[slam_name])
+                relevant_data["SlamLevels"] = slam_levels_list
+            else:
+                relevant_data["SlamLevels"] = []
             relevant_data["JunkedLocations"] = junk
             relevant_data["BLockerEntryItems"] = [BarrierItems[item] for item in blocker_item_type]
             relevant_data["BLockerEntryCount"] = blocker_item_quantity

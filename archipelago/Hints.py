@@ -5,6 +5,8 @@ from randomizer.CompileHints import HintSet, replaceKongNameWithKrusha
 from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Transitions import Transitions
+from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import UpdateHint
 
 boss_names = {
@@ -137,6 +139,12 @@ def CompileArchipelagoHints(world, hint_data: list):
     krool_hint = parseKRoolHint(world)
     compiled_hints.append(krool_hint)
     hint_location_pairs.append((krool_hint, None))  # K. Rool hints don't have a specific location
+    hints_remaining -= 1
+
+    # Isles to Helm transition hint
+    isles_to_helm_hint = parseIslesToHelmHint(world)
+    compiled_hints.append(isles_to_helm_hint)
+    hint_location_pairs.append((isles_to_helm_hint, None))  # Transition hints don't have a specific location
     hints_remaining -= 1
 
     # Kong hints
@@ -315,6 +323,30 @@ def parseKRoolHint(world):
     kong_krool_order = [boss_colors[map_id] + boss_names[map_id] + boss_colors[map_id] for map_id in world.spoiler.settings.krool_order]
     kong_krool_text = ", then ".join(kong_krool_order)
     text = f"\x08The final battle\x08 will be against {kong_krool_text}.".upper()
+    for letter in text:
+        if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+            text = text.replace(letter, " ")
+    return text
+
+
+def parseIslesToHelmHint(world):
+    """Write a hint for finding the transition that leads to Hideout Helm."""
+    
+    text = ""
+    # Check if entrance randomization is enabled
+    if hasattr(world.spoiler, 'shuffled_exit_data') and world.spoiler.shuffled_exit_data:
+        # Find which transition leads to Hideout Helm
+        source_transition = None
+        for transition, shuffled_back in world.spoiler.shuffled_exit_data.items():
+            # Check if this transition's destination is Hideout Helm
+            if shuffled_back.reverse == Transitions.HelmToIsles:
+                source_transition = transition
+                break
+        
+        if source_transition and source_transition in ShufflableExits:
+            source_name = ShufflableExits[source_transition].name
+            text = f"Looking for \x04Hideout Helm\x04? Try going from \x08{source_name}\x08.".upper()
+    
     for letter in text:
         if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
             text = text.replace(letter, " ")
