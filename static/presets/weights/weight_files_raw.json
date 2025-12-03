@@ -891,6 +891,27 @@
             },
             "qol_uses_hard": true
         },
+        "kong_model_mode": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "none": 40.0,
+                    "random_one": 40.0,
+                    "random_all": 20.0
+                },
+                "standard": {
+                    "none": 40.0,
+                    "random_one": 40.0,
+                    "random_all": 20.0
+                },
+                "difficult": {
+                    "none": 40.0,
+                    "random_one": 40.0,
+                    "random_all": 20.0
+                }
+            },
+            "qol_uses_hard": true
+        },
         "krool_access": {
             "setting_type": "bool",
             "options": {

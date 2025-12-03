@@ -362,10 +362,11 @@ export enum KongModels {
 }
 
 export enum KongModelMode {
-    manual = 0,
-    random_one = 1,
-    sometimes_one = 2,
-    random_all = 3,
+    none = 0,
+    manual = 1,
+    random_one = 2,
+    sometimes_one = 3,
+    random_all = 4,
 }
 
 export enum LevelRandomization {
