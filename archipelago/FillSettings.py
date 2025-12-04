@@ -751,10 +751,8 @@ def handle_fake_generation_settings(settings: Settings, multiworld) -> None:
 
                 # Switch logic lifted out of level shuffle due to static levels for UT
                 if settings.alter_switch_allocation:
-                    allocation = [1, 1, 1, 1, 2, 2, 3, 3]
                     for x in range(8):
-                        level = settings.level_order[x + 1]
-                        settings.switch_allocation[level] = allocation[x]
+                        settings.switch_allocation[x] = passthrough["SlamLevels"][x]
 
                 settings.starting_kong_list = passthrough["StartingKongs"]
                 settings.starting_kong = settings.starting_kong_list[0]  # fake a starting kong so that we don't force a different kong

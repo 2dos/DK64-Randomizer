@@ -125,7 +125,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Items import Items as DK64RItems
     from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups, LoadingZoneRando
+    from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups
     from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level_and_deathwarp, connect_glitch_transitions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
