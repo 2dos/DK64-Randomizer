@@ -41,7 +41,7 @@
         "purgecss": "^7.0.2"
     },
     "devDependencies": {
-        "electron": "^38.0.0",
+        "electron": "^39.2.5",
         "electron-builder": "^26.0.12"
     }
 }
