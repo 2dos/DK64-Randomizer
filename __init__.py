@@ -276,7 +276,8 @@ if baseclasses_loaded:
 
     class LZRSeedGroup(TypedDict):
         """Type definition for Loading Zone Randomizer seed groups."""
-        pass # Figure this out. We might not need this
+
+        pass  # Figure this out. We might not need this
 
     class DK64World(World):
         """Donkey Kong 64 is a 3D collectathon platforming game.
@@ -1086,7 +1087,7 @@ if baseclasses_loaded:
 
                         ShufflableExits[source_transition].shuffledId = target_reverse
                         ShufflableExits[source_transition].shuffled = True
-                
+
                 # TODO: Part of LZR Seeds
                 # # If using a custom seed group, use that as the seed for entrance randomization
                 # if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
@@ -1105,7 +1106,7 @@ if baseclasses_loaded:
                 #     self.random = group_random
 
                 self.er_placement_state = randomize_entrances(self, True, {0: [0]}, on_connect=store_entrance_connections)
-                
+
                 # Same Here
                 # # Restore original random if we replaced it
                 # if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
@@ -1508,6 +1509,16 @@ if baseclasses_loaded:
             if not (self.options.smaller_shops.value and Types.Shop in self.spoiler.settings.shuffled_location_types):
                 return {}
 
+            # Build set of vendor/level combinations that have shared shops
+            shared_shop_vendors = set()
+            if self.options.enable_shared_shops.value:
+                available_shared_shops = getattr(self.spoiler.settings, "selected_shared_shops", set())
+                for location_id in available_shared_shops:
+                    if location_id in self.spoiler.LocationList:
+                        location = self.spoiler.LocationList[location_id]
+                        if location.type == Types.Shop and location.kong == Kongs.any:
+                            shared_shop_vendors.add((location.level, location.vendor))
+
             smaller_shops_data = {}
             for level_enum, vendor_data in ShopLocationReference.items():
                 level_name = level_enum.name
@@ -1520,14 +1531,24 @@ if baseclasses_loaded:
 
                     for i, location_id in enumerate(location_list):
                         location_obj = self.spoiler.LocationList[location_id]
+
                         # Create key like "IslesCrankyDonkey"
                         if i < 5:  # Kong-specific locations
                             key = f"{level_name}{vendor_name}{kong_names[i]}"
-                        else:  # We shouldn't need this
+
+                            # Kong shops are inaccessible if:
+                            # 1. Blocked by smaller_shops setting, OR
+                            # 2. A shared shop exists at this vendor/level
+                            is_accessible = not location_obj.smallerShopsInaccessible and (level_enum, vendor_enum) not in shared_shop_vendors
+                        else:  # Shared shop location
                             key = f"{level_name}{vendor_name}Shared"
 
-                        # Set 1 if accessible, 0 if blocked by smaller shops
-                        smaller_shops_data[key] = 0 if location_obj.smallerShopsInaccessible else 1
+                            # Shared shops are accessible if:
+                            # 1. Not blocked by smaller_shops setting, AND
+                            # 2. This vendor/level has a shared shop enabled
+                            is_accessible = not location_obj.smallerShopsInaccessible and (level_enum, vendor_enum) in shared_shop_vendors
+
+                        smaller_shops_data[key] = 1 if is_accessible else 0
 
             return smaller_shops_data
 
