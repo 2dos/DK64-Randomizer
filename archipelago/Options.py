@@ -1163,6 +1163,7 @@ class EnemiesSelected(OptionList):
         "GuardGetOut",
     }
 
+
 # TODO: Find a better way to do this
 # class LoadingZoneRando(TextChoice):
 #     """

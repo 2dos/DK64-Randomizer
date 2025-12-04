@@ -331,10 +331,10 @@ def parseKRoolHint(world):
 
 def parseIslesToHelmHint(world):
     """Write a hint for finding the transition that leads to Hideout Helm."""
-    
+
     text = ""
     # Check if entrance randomization is enabled
-    if hasattr(world.spoiler, 'shuffled_exit_data') and world.spoiler.shuffled_exit_data:
+    if hasattr(world.spoiler, "shuffled_exit_data") and world.spoiler.shuffled_exit_data:
         # Find which transition leads to Hideout Helm
         source_transition = None
         for transition, shuffled_back in world.spoiler.shuffled_exit_data.items():
@@ -342,11 +342,11 @@ def parseIslesToHelmHint(world):
             if shuffled_back.reverse == Transitions.HelmToIsles:
                 source_transition = transition
                 break
-        
+
         if source_transition and source_transition in ShufflableExits:
             source_name = ShufflableExits[source_transition].name
             text = f"Looking for \x04Hideout Helm\x04? Try going from \x08{source_name}\x08.".upper()
-    
+
     for letter in text:
         if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
             text = text.replace(letter, " ")
