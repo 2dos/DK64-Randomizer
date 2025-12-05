@@ -943,6 +943,7 @@ if baseclasses_loaded:
             """Generate the world."""
             # Use the fillsettings function to configure all settings
             settings = fillsettings(self.options, self.multiworld, self.random)
+            print(settings.switch_allocation)
             # Enable entrance randomization if the option is set (any value other than no/off/false/0)
             if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
                 settings.level_randomization = LevelRandomization.loadingzone
