@@ -262,9 +262,8 @@
       "default": 1
     },
     "kong_model_mode": {
-      "none": 0.4,
-      "random_one": 0.4,
-      "random_all": 0.2
+      "none": 0.5,
+      "random_one": 0.5
     },
     "kong_model_tiny": {
       "default": 1
@@ -694,9 +693,9 @@
       "default": 1
     },
     "kong_model_mode": {
-      "none": 0.4,
-      "random_one": 0.4,
-      "random_all": 0.2
+      "none": 0.45,
+      "random_one": 0.45,
+      "random_all": 0.1
     },
     "kong_model_tiny": {
       "default": 1

@@ -895,14 +895,13 @@
             "setting_type": "choice_single",
             "options": {
                 "easy": {
-                    "none": 40.0,
-                    "random_one": 40.0,
-                    "random_all": 20.0
+                    "none": 50.0,
+                    "random_one": 50.0
                 },
                 "standard": {
-                    "none": 40.0,
-                    "random_one": 40.0,
-                    "random_all": 20.0
+                    "none": 45.0,
+                    "random_one": 45.0,
+                    "random_all": 10.0
                 },
                 "difficult": {
                     "none": 40.0,
