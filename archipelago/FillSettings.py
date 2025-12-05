@@ -316,6 +316,7 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     settings_dict["krool_in_boss_pool"] = options.krool_in_boss_pool.value
     settings_dict["helm_phase_count"] = options.helm_phase_count.value
     settings_dict["krool_phase_count"] = options.krool_phase_count.value
+    settings_dict["level_randomization"] = LevelRandomization.loadingzone if options.loading_zone_rando.value else LevelRandomization.level_order_complex
 
     # Medal distribution settings
     if options.medal_distribution.value == 0:  # pre_selected
