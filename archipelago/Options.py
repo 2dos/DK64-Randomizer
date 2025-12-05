@@ -1164,23 +1164,26 @@ class EnemiesSelected(OptionList):
     }
 
 
-# TODO: Find a better way to do this
-# class LoadingZoneRando(TextChoice):
-#     """
-#     Randomize the connections between loading zones.
+class LoadingZoneRando(TextChoice):
+    """Randomize the connections between loading zones (Loading Zone Randomizer).
 
-#     If you set this option's value to a string, it will be used as a custom seed.
-#     Every player who uses the same custom seed will have the same loading zone connections.
-#     """
-#     internal_name = "loading_zone_rando"
-#     display_name = "Loading Zone Rando"
-#     alias_false = 0
-#     alias_off = 0
-#     option_no = 0
-#     alias_true = 1
-#     alias_on = 1
-#     option_yes = 1
-#     default = 0
+    When enabled, all loading zone connections will be randomized.
+    This creates a highly shuffled world where areas connect in unexpected ways.
+
+    If you set this option's value to a string, it will be used as a custom seed.
+    Every player who uses the same custom seed will have the same loading zone connections.
+
+    WARNING: This is an advanced feature that significantly increases complexity.
+    """
+
+    display_name = "Loading Zone Rando"
+    alias_false = 0
+    alias_off = 0
+    option_no = 0
+    alias_true = 1
+    alias_on = 1
+    option_yes = 1
+    default = 0
 
 
 @dataclass
@@ -1276,7 +1279,7 @@ class DK64Options(PerGameCommonOptions):
     alternate_minecart_mayhem: AlternateMinecartMayhem
     enemies_selected: EnemiesSelected
     shop_prices: ShopPrices
-    # loading_zone_rando: LoadingZoneRando
+    loading_zone_rando: LoadingZoneRando
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1340,7 +1343,7 @@ dk64_option_groups: List[OptionGroup] = [
             OpenLobbies,
             SwitchSanity,
             RemoveBarriers,
-            # LoadingZoneRando,
+            LoadingZoneRando,
         ],
     ),
     OptionGroup(

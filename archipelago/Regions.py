@@ -515,7 +515,13 @@ def connect_regions(world: World, settings: Settings):
                 entrance_name = None
                 if settings.level_randomization == LevelRandomization.loadingzone:
                     if exit.exitShuffleId and not exit.isGlitchTransition and ShufflableExits[exit.exitShuffleId].back.reverse:
-                        entrance_name = ShufflableExits[exit.exitShuffleId].name
+                        # Skip Helm transitions if Helm location is not being shuffled
+                        helm_transitions = {Transitions.IslesMainToHelmLobby, Transitions.IslesHelmLobbyToMain, Transitions.IslesToHelm, Transitions.HelmToIsles}
+                        if not settings.shuffle_helm_location and exit.exitShuffleId in helm_transitions:
+                            # Don't mark this as a shufflable entrance - connect it normally
+                            pass
+                        else:
+                            entrance_name = ShufflableExits[exit.exitShuffleId].name
 
                 # If we have pairings and this entrance is in them, connect to the paired target
                 if pairings and entrance_name and entrance_name in pairings:
