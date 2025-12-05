@@ -125,7 +125,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Items import Items as DK64RItems
     from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity, pp_wincon
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups
+    from archipelago.Options import DK64Options, Goal, SwitchSanity, SelectStartingKong, dk64_option_groups, LoadingZoneRando
     from archipelago.Regions import all_locations, create_regions, connect_regions, connect_exit_level_and_deathwarp, connect_glitch_transitions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
@@ -290,8 +290,7 @@ if baseclasses_loaded:
         options: DK64Options
         topology_present = False
         settings: typing.ClassVar[DK64Settings]
-        # TODO: Do This Later
-        # seed_groups: typing.ClassVar[dict[str, LZRSeedGroup]] = {}
+        seed_groups: typing.ClassVar[dict[str, LZRSeedGroup]] = {}
 
         item_name_to_id = {name: data.code for name, data in full_item_table.items()}
         location_name_to_id = all_locations
@@ -658,19 +657,19 @@ if baseclasses_loaded:
             check_version()
 
         # TODO: Do This Later
-        # @classmethod
-        # def stage_pre_fill(cls, multiworld: MultiWorld) -> None:
-        #     """Handle seed groups for Loading Zone Randomizer."""
-        #     dk64_worlds: tuple[DK64World] = multiworld.get_game_worlds("Donkey Kong 64")
-        #     for world in dk64_worlds:
-        #         # if it's one of the options (no/yes), then it isn't a custom seed group
-        #         if world.options.loading_zone_rando.value in LoadingZoneRando.options.values():
-        #             continue
-        #         group = world.options.loading_zone_rando.value
-        #         # if this is the first world in the group, register it
-        #         if group not in cls.seed_groups:
-        #             cls.seed_groups[group] = LZRSeedGroup()
-        #             continue
+        @classmethod
+        def stage_pre_fill(cls, multiworld: MultiWorld) -> None:
+            """Handle seed groups for Loading Zone Randomizer."""
+            dk64_worlds: tuple[DK64World] = multiworld.get_game_worlds("Donkey Kong 64")
+            for world in dk64_worlds:
+                # if it's one of the options (no/yes), then it isn't a custom seed group
+                if world.options.loading_zone_rando.value in LoadingZoneRando.options.values():
+                    continue
+                group = world.options.loading_zone_rando.value
+                # if this is the first world in the group, register it
+                if group not in cls.seed_groups:
+                    cls.seed_groups[group] = LZRSeedGroup()
+                    continue
 
         def _get_slot_data(self):
             """Get the slot data."""
@@ -943,9 +942,13 @@ if baseclasses_loaded:
             """Generate the world."""
             # Use the fillsettings function to configure all settings
             settings = fillsettings(self.options, self.multiworld, self.random)
-            # Force loading zone randomization for testing
-            settings.level_randomization = LevelRandomization.loadingzone
-            settings.shuffle_loading_zones = ShuffleLoadingZones.all
+            # Enable entrance randomization if the option is set (any value other than no/off/false/0)
+            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                settings.level_randomization = LevelRandomization.loadingzone
+                settings.shuffle_loading_zones = ShuffleLoadingZones.all
+            else:
+                settings.level_randomization = LevelRandomization.level_order_complex
+                settings.shuffle_loading_zones = ShuffleLoadingZones.levels
             self.spoiler = Spoiler(settings)
             # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
             self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
@@ -1060,7 +1063,11 @@ if baseclasses_loaded:
             LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
             connect_regions(self, self.spoiler.settings)
 
-            if self.spoiler.settings.level_randomization == LevelRandomization.loadingzone and not hasattr(self.multiworld, "generation_is_fake"):
+            if (
+                self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]
+                and self.spoiler.settings.level_randomization == LevelRandomization.loadingzone
+                and not hasattr(self.multiworld, "generation_is_fake")
+            ):
                 ap_entrance_to_transition = {}
                 for transition_enum, shufflable_exit in ShufflableExits.items():
                     # TODO: Make this configurable with DLZR
@@ -1090,27 +1097,29 @@ if baseclasses_loaded:
 
                 # TODO: Part of LZR Seeds
                 # # If using a custom seed group, use that as the seed for entrance randomization
-                # if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
-                #     # Create a deterministic Random instance using the seed group name
-                #     seed_group_name = self.options.loading_zone_rando.value
-                #     # Combine multiworld seed with seed group name for determinism
-                #     combined_seed = f"{self.multiworld.seed}_{seed_group_name}"
-                #     # Create hash to get integer seed
-                #     from hashlib import sha256
-                #     seed_hash = int(sha256(combined_seed.encode()).hexdigest()[:16], 16)
-                #     # Create a new Random instance for this seed group
-                #     from random import Random
-                #     group_random = Random(seed_hash)
-                #     # Temporarily replace self.random with the group random
-                #     original_random = self.random
-                #     self.random = group_random
+                if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
+                    # Create a deterministic Random instance using the seed group name
+                    seed_group_name = self.options.loading_zone_rando.value
+                    # Combine multiworld seed with seed group name for determinism
+                    combined_seed = f"{self.multiworld.seed}_{seed_group_name}"
+                    # Create hash to get integer seed
+                    from hashlib import sha256
+
+                    seed_hash = int(sha256(combined_seed.encode()).hexdigest()[:16], 16)
+                    # Create a new Random instance for this seed group
+                    from random import Random
+
+                    group_random = Random(seed_hash)
+                    # Temporarily replace self.random with the group random
+                    original_random = self.random
+                    self.random = group_random
 
                 self.er_placement_state = randomize_entrances(self, True, {0: [0]}, on_connect=store_entrance_connections)
 
                 # Same Here
                 # # Restore original random if we replaced it
-                # if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
-                #     self.random = original_random
+                if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
+                    self.random = original_random
 
                 # Handle exit level and deathwarp
                 connect_exit_level_and_deathwarp(self, self.er_placement_state)

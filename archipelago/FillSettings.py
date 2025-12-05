@@ -194,7 +194,6 @@ def get_default_settings() -> dict:
         "krool_phase_order_rando": True,
         "krool_random": False,
         "less_fragile_boulders": True,
-        "level_randomization": LevelRandomization.level_order_complex,
         "logic_type": LogicType.glitchless,
         "maximize_helm_blocker": True,
         "medal_cb_req": 40,
