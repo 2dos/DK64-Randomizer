@@ -117,8 +117,9 @@ if baseclasses_loaded:
     sys.path.append("custom_worlds/dk64.apworld/dk64/archipelago/")
     from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, CollectionState
     from BaseClasses import Location, LocationProgressType
-    from entrance_rando import randomize_entrances
+    from entrance_rando import randomize_entrances, EntranceRandomizationError, disconnect_entrance_for_randomization
     import settings
+    import logging
 
     import randomizer.ItemPool as DK64RItemPool
 
@@ -1114,7 +1115,48 @@ if baseclasses_loaded:
                     original_random = self.random
                     self.random = group_random
 
-                self.er_placement_state = randomize_entrances(self, True, {0: [0]}, on_connect=store_entrance_connections)
+                # Store initial entrance/exit state before randomization attempts
+                initial_entrance_states = {}
+                for region in self.multiworld.get_regions(self.player):
+                    for entrance in region.entrances:
+                        if not entrance.parent_region:  # This is an ER target
+                            initial_entrance_states[entrance] = entrance.connected_region
+                
+                initial_exit_states = {}
+                for region in self.multiworld.get_regions(self.player):
+                    for exit in region.exits:
+                        if not exit.connected_region:  # This is a randomizable exit
+                            initial_exit_states[exit] = (region, exit.parent_region)
+
+                # Retry entrance randomization if it fails (similar to Crystalis implementation)
+                DK64_MAX_ER_ATTEMPTS = 20
+                for attempt in range(DK64_MAX_ER_ATTEMPTS):
+                    try:
+                        self.er_placement_state = randomize_entrances(self, True, {0: [0]}, on_connect=store_entrance_connections)
+                        break
+                    except EntranceRandomizationError as error:
+                        if attempt >= DK64_MAX_ER_ATTEMPTS - 1:
+                            raise EntranceRandomizationError(f"DK64: failed entrance randomization after {DK64_MAX_ER_ATTEMPTS} "
+                                                            f"attempts. Final error:\n\n{error}")
+                        logging.warning(f"DK64: Entrance randomization attempt {attempt + 1} failed, retrying...")
+                        
+                        # Restore entrance/exit state for retry
+                        # First, disconnect all exits that were connected during failed attempt
+                        for region in self.multiworld.get_regions(self.player):
+                            for exit in list(region.exits):
+                                if exit.connected_region and exit in initial_exit_states:
+                                    exit.connected_region = None
+                        
+                        # Restore ER targets to their original regions
+                        for entrance, original_region in initial_entrance_states.items():
+                            # Remove entrance from wherever it ended up
+                            if entrance.connected_region:
+                                if entrance in entrance.connected_region.entrances:
+                                    entrance.connected_region.entrances.remove(entrance)
+                            # Restore to original region
+                            entrance.connected_region = original_region
+                            if entrance not in original_region.entrances:
+                                original_region.entrances.append(entrance)
 
                 # Same Here
                 # # Restore original random if we replaced it
