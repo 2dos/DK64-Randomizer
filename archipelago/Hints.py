@@ -141,11 +141,12 @@ def CompileArchipelagoHints(world, hint_data: list):
     hint_location_pairs.append((krool_hint, None))  # K. Rool hints don't have a specific location
     hints_remaining -= 1
 
-    # Isles to Helm transition hint
-    isles_to_helm_hint = parseIslesToHelmHint(world)
-    compiled_hints.append(isles_to_helm_hint)
-    hint_location_pairs.append((isles_to_helm_hint, None))  # Transition hints don't have a specific location
-    hints_remaining -= 1
+    # Isles to Helm transition hint (only if loading zone rando is enabled and Helm is shuffled)
+    if world.options.loading_zone_rando != 0 and world.options.shuffle_helm_level_order:
+        isles_to_helm_hint = parseIslesToHelmHint(world)
+        compiled_hints.append(isles_to_helm_hint)
+        hint_location_pairs.append((isles_to_helm_hint, None))  # Transition hints don't have a specific location
+        hints_remaining -= 1
 
     # Kong hints
     for kong_loc in kong_locations:
