@@ -535,10 +535,8 @@ def connect_regions(world: World, settings: Settings):
 
                     if target_shufflable_exit:
                         target_region_name = target_shufflable_exit.region.name
-                        print(f"Connecting {region_id.name} via {entrance_name} to {target_region_name} (paired with {target_entrance_name})")
                         connect(world, region_id.name, target_region_name, converted_logic, entrance_name)
                     else:
-                        print(f"Warning: Could not find ShufflableExit for target entrance '{target_entrance_name}'")
                         # Fallback to normal connection
                         if not exit.isGlitchTransition:
                             connection = connect(world, region_id.name, destination_name, converted_logic, entrance_name)
@@ -546,7 +544,6 @@ def connect_regions(world: World, settings: Settings):
                                 disconnect_entrance_for_randomization(connection)
                 elif pairings and entrance_name:
                     # This entrance should be shuffled but no pairing found - disconnect it
-                    print(f"Warning: No pairing found for entrance {entrance_name}, disconnecting")
                     connection = connect(world, region_id.name, destination_name, converted_logic, entrance_name)
                     disconnect_entrance_for_randomization(connection)
                 else:
@@ -606,7 +603,6 @@ def connect_regions(world: World, settings: Settings):
                     # Connect all regions of this level that can exit to the target
                     for region_id, region_obj in all_logic_regions.items():
                         if not region_obj.restart and region_obj.level == level:
-                            print(f"Exit Level: Connecting {region_id.name} (level {level.name}) to {target_region_name}")
                             connect(world, region_id.name, target_region_name, lambda state: True, "Exit Level: " + region_id.name + "->" + target_region_name)
 
 
@@ -644,7 +640,6 @@ def connect_exit_level_and_deathwarp(world: World, er_placement_state: ERPlaceme
     }
 
     exit_level_target_dict = {key: next((entrance for entrance in entrances if entrance.name == value), None) for key, value in exit_level_transition_dict.items()}
-    print([entrance.connected_region for entrance in exit_level_target_dict.values()])
 
     for region_id, region_obj in all_logic_regions.items():
         # Deathwarp
