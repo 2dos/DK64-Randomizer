@@ -344,7 +344,16 @@ def parseIslesToHelmHint(world):
                 break
 
         if source_transition and source_transition in ShufflableExits:
-            source_name = ShufflableExits[source_transition].name
+            pathToHint = source_transition
+            # Don't hint entrances from connector rooms, follow the reverse pathway back until finding a non-connector
+            while ShufflableExits[pathToHint].category is None:
+                originPaths = [x for x, back in world.spoiler.shuffled_exit_data.items() if back.reverse == pathToHint]
+                # In a few cases, there is no reverse loading zone. In this case we must keep the original path to hint
+                if len(originPaths) == 0:
+                    break
+                pathToHint = originPaths[0]
+            
+            source_name = ShufflableExits[pathToHint].name
             text = f"Looking for \x04Hideout Helm\x04? Try going from \x08{source_name}\x08.".upper()
 
     for letter in text:
