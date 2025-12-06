@@ -141,11 +141,12 @@ def CompileArchipelagoHints(world, hint_data: list):
     hint_location_pairs.append((krool_hint, None))  # K. Rool hints don't have a specific location
     hints_remaining -= 1
 
-    # Isles to Helm transition hint
-    isles_to_helm_hint = parseIslesToHelmHint(world)
-    compiled_hints.append(isles_to_helm_hint)
-    hint_location_pairs.append((isles_to_helm_hint, None))  # Transition hints don't have a specific location
-    hints_remaining -= 1
+    # Isles to Helm transition hint (only if loading zone rando is enabled and Helm is shuffled)
+    if world.options.loading_zone_rando != 0 and world.options.shuffle_helm_level_order:
+        isles_to_helm_hint = parseIslesToHelmHint(world)
+        compiled_hints.append(isles_to_helm_hint)
+        hint_location_pairs.append((isles_to_helm_hint, None))  # Transition hints don't have a specific location
+        hints_remaining -= 1
 
     # Kong hints
     for kong_loc in kong_locations:
@@ -344,7 +345,16 @@ def parseIslesToHelmHint(world):
                 break
 
         if source_transition and source_transition in ShufflableExits:
-            source_name = ShufflableExits[source_transition].name
+            pathToHint = source_transition
+            # Don't hint entrances from connector rooms, follow the reverse pathway back until finding a non-connector
+            while ShufflableExits[pathToHint].category is None:
+                originPaths = [x for x, back in world.spoiler.shuffled_exit_data.items() if back.reverse == pathToHint]
+                # In a few cases, there is no reverse loading zone. In this case we must keep the original path to hint
+                if len(originPaths) == 0:
+                    break
+                pathToHint = originPaths[0]
+            
+            source_name = ShufflableExits[pathToHint].name
             text = f"Looking for \x04Hideout Helm\x04? Try going from \x08{source_name}\x08.".upper()
 
     for letter in text:
