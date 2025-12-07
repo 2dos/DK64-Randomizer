@@ -188,6 +188,9 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Default: 100%
 - Kong Model Lanky: 
 	- Default: 100%
+- Kong Model Mode: 
+	- None: 50%
+	- Random One: 50%
 - Kong Model Tiny: 
 	- Default: 100%
 - Don't Start with Key 8: 70%

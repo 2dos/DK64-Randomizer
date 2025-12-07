@@ -2048,7 +2048,7 @@ ColoredBananaGroupList = [
         name="On the headphones",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CabinArea,
-        locations=[[5, 1.0, 2580, 213, 806]],
+        locations=[[5, 1.0, 2580, 213, 1806]],
     ),
     ColoredBananaGroup(
         group=165,
