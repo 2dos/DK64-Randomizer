@@ -279,6 +279,19 @@ if baseclasses_loaded:
         """Type definition for Loading Zone Randomizer seed groups."""
 
         shuffle_helm_level_order: bool  # whether helm level order is shuffled
+        enable_chaos_blockers: bool  # whether chaos blockers are enabled (disabled if any player has it off)
+        randomize_blocker_required_amounts: bool  # whether to randomize B. Lockers
+        blocker_max: int  # maximum B. Locker value
+        maximize_helm_blocker: bool  # whether to maximize Helm B. Locker (enabled if any player has it on)
+        level1_blocker: int  # manual B. Locker values (if not randomized)
+        level2_blocker: int
+        level3_blocker: int
+        level4_blocker: int
+        level5_blocker: int
+        level6_blocker: int
+        level7_blocker: int
+        level8_blocker: int
+        generated_blockers: typing.Optional[typing.List[int]]  # actual blocker values after generation (shared across group)
 
     class DK64World(World):
         """Donkey Kong 64 is a 3D collectathon platforming game.
@@ -936,11 +949,54 @@ if baseclasses_loaded:
                         # if this is the first world in the group, set the rules equal to its rules
                         if group not in self.seed_groups:
                             helm_value = bool(world.options.shuffle_helm_level_order.value)
-                            self.seed_groups[group] = LZRSeedGroup(shuffle_helm_level_order=helm_value)
+                            self.seed_groups[group] = LZRSeedGroup(
+                                shuffle_helm_level_order=helm_value,
+                                enable_chaos_blockers=bool(world.options.enable_chaos_blockers.value),
+                                randomize_blocker_required_amounts=bool(world.options.randomize_blocker_required_amounts.value),
+                                blocker_max=int(world.options.blocker_max.value),
+                                maximize_helm_blocker=bool(world.options.maximize_helm_blocker.value),
+                                level1_blocker=int(world.options.level1_blocker.value),
+                                level2_blocker=int(world.options.level2_blocker.value),
+                                level3_blocker=int(world.options.level3_blocker.value),
+                                level4_blocker=int(world.options.level4_blocker.value),
+                                level5_blocker=int(world.options.level5_blocker.value),
+                                level6_blocker=int(world.options.level6_blocker.value),
+                                level7_blocker=int(world.options.level7_blocker.value),
+                                level8_blocker=int(world.options.level8_blocker.value),
+                                generated_blockers=None,  # will be filled after first player generates
+                            )
                         else:
-                            # Group already exists - if this player has shuffle_helm_level_order enabled, enable it for the group
+                            # Group already exists - update with more permissive/restrictive rules
+                            # shuffle_helm_level_order: if any player has it enabled, enable it for the group
                             if world.options.shuffle_helm_level_order.value:
                                 self.seed_groups[group]["shuffle_helm_level_order"] = True
+                            
+                            # chaos_blockers: if any player has it disabled, disable it for the group
+                            if not world.options.enable_chaos_blockers.value:
+                                self.seed_groups[group]["enable_chaos_blockers"] = False
+                            
+                            # randomize_blockers: if any player has it disabled, disable it for the group
+                            if not world.options.randomize_blocker_required_amounts.value:
+                                self.seed_groups[group]["randomize_blocker_required_amounts"] = False
+                            
+                            # blocker_max: use the lowest value in the group
+                            self.seed_groups[group]["blocker_max"] = min(
+                                self.seed_groups[group]["blocker_max"],
+                                int(world.options.blocker_max.value)
+                            )
+                            
+                            # maximize_helm_blocker: if any player has it enabled, enable it for the group
+                            if world.options.maximize_helm_blocker.value:
+                                self.seed_groups[group]["maximize_helm_blocker"] = True
+                            
+                            # level blockers: use the lowest value in the group for each
+                            for level_num in range(1, 9):
+                                blocker_key = f"level{level_num}_blocker"
+                                option_key = blocker_key
+                                self.seed_groups[group][blocker_key] = min(
+                                    self.seed_groups[group][blocker_key],
+                                    int(getattr(world.options, option_key).value)
+                                )
             
             # Apply seed group settings and create group random if using a custom seed group BEFORE fillsettings
             self.group_random = None
@@ -949,8 +1005,20 @@ if baseclasses_loaded:
                 if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
                     group = self.options.loading_zone_rando.value
                     if group in self.seed_groups:
-                        # Override player's shuffle_helm_level_order with seed group setting
+                        # Override player's options with seed group settings
                         self.options.shuffle_helm_level_order.value = int(self.seed_groups[group]["shuffle_helm_level_order"])
+                        self.options.enable_chaos_blockers.value = int(self.seed_groups[group]["enable_chaos_blockers"])
+                        self.options.randomize_blocker_required_amounts.value = int(self.seed_groups[group]["randomize_blocker_required_amounts"])
+                        self.options.blocker_max.value = self.seed_groups[group]["blocker_max"]
+                        self.options.maximize_helm_blocker.value = int(self.seed_groups[group]["maximize_helm_blocker"])
+                        self.options.level1_blocker.value = self.seed_groups[group]["level1_blocker"]
+                        self.options.level2_blocker.value = self.seed_groups[group]["level2_blocker"]
+                        self.options.level3_blocker.value = self.seed_groups[group]["level3_blocker"]
+                        self.options.level4_blocker.value = self.seed_groups[group]["level4_blocker"]
+                        self.options.level5_blocker.value = self.seed_groups[group]["level5_blocker"]
+                        self.options.level6_blocker.value = self.seed_groups[group]["level6_blocker"]
+                        self.options.level7_blocker.value = self.seed_groups[group]["level7_blocker"]
+                        self.options.level8_blocker.value = self.seed_groups[group]["level8_blocker"]
                         
                         # Create group random for LZR seed synchronization and replace self.random
                         combined_seed = f"{self.multiworld.seed}_{group}"
@@ -976,6 +1044,37 @@ if baseclasses_loaded:
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
 
             Generate_Spoiler(self.spoiler)
+            
+            # Store/retrieve blocker values for seed group synchronization
+            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
+                    group = self.options.loading_zone_rando.value
+                    if group in self.seed_groups:
+                        # If this is the first player to generate, store the blocker values
+                        if self.seed_groups[group]["generated_blockers"] is None:
+                            blocker_values = [
+                                self.spoiler.settings.blocker_0,
+                                self.spoiler.settings.blocker_1,
+                                self.spoiler.settings.blocker_2,
+                                self.spoiler.settings.blocker_3,
+                                self.spoiler.settings.blocker_4,
+                                self.spoiler.settings.blocker_5,
+                                self.spoiler.settings.blocker_6,
+                                self.spoiler.settings.blocker_7,
+                            ]
+                            self.seed_groups[group]["generated_blockers"] = blocker_values
+                        else:
+                            # Use the stored blocker values from the first player
+                            blocker_values = self.seed_groups[group]["generated_blockers"]
+                            self.spoiler.settings.blocker_0 = blocker_values[0]
+                            self.spoiler.settings.blocker_1 = blocker_values[1]
+                            self.spoiler.settings.blocker_2 = blocker_values[2]
+                            self.spoiler.settings.blocker_3 = blocker_values[3]
+                            self.spoiler.settings.blocker_4 = blocker_values[4]
+                            self.spoiler.settings.blocker_5 = blocker_values[5]
+                            self.spoiler.settings.blocker_6 = blocker_values[6]
+                            self.spoiler.settings.blocker_7 = blocker_values[7]
+            
             if self.options.enable_shared_shops.value:
                 from randomizer.Lists.Location import SharedShopLocations
 
