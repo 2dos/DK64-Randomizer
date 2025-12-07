@@ -603,10 +603,13 @@ class EmulatorInfo:
         """Write a bytestring to memory."""
         # Always sanitize the input data before writing to memory
         sanitized_data = sanitize_and_trim(data)
+        # Clear the entire buffer first to prevent old data from mixing with new data
+        # Using 0x20 (32 bytes) as the standard buffer size
+        for i in range(0x20):
+            self.write_u8(address + i, 0)
+        # Write the new string
         for i, char in enumerate(sanitized_data):
             self.write_u8(address + i, ord(char))
-        # Add null terminator
-        self.write_u8(address + len(sanitized_data), 0)
 
     def validate_rom(self) -> bool:
         """Validate the ROM."""
