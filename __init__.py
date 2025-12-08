@@ -1188,6 +1188,13 @@ if baseclasses_loaded:
                 and self.spoiler.settings.level_randomization == LevelRandomization.loadingzone
                 and not hasattr(self.multiworld, "generation_is_fake")
             ):
+                # Reset shuffle state for all exits to ensure clean state between players
+                # This prevents state contamination when multiple DK64 players have different helm shuffle settings
+                for exit in ShufflableExits.values():
+                    exit.toBeShuffled = False
+                    exit.shuffled = False
+                    exit.shuffledId = None
+                
                 ap_entrance_to_transition = {}
                 for transition_enum, shufflable_exit in ShufflableExits.items():
                     # TODO: Make this configurable with DLZR
