@@ -292,6 +292,9 @@ if baseclasses_loaded:
         level7_blocker: int
         level8_blocker: int
         generated_blockers: typing.Optional[typing.List[int]]  # actual blocker values after generation (shared across group)
+        logic_type: int  # logic type: 1=glitchless, 0=advanced_glitchless, 2=glitched
+        tricks_selected: typing.Set[str]  # intersection of tricks enabled by all players
+        glitches_selected: typing.Set[str]  # intersection of glitches enabled by all players
 
     class DK64World(World):
         """Donkey Kong 64 is a 3D collectathon platforming game.
@@ -944,7 +947,8 @@ if baseclasses_loaded:
             dk64_worlds: tuple[DK64World] = self.multiworld.get_game_worlds("Donkey Kong 64")
             for world in dk64_worlds:
                 if world.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
-                    if world.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
+                    # Only process custom seed group strings, not standard numeric option values
+                    if isinstance(world.options.loading_zone_rando.value, str):
                         group = world.options.loading_zone_rando.value
                         # if this is the first world in the group, set the rules equal to its rules
                         if group not in self.seed_groups:
@@ -964,6 +968,9 @@ if baseclasses_loaded:
                                 level7_blocker=int(world.options.level7_blocker.value),
                                 level8_blocker=int(world.options.level8_blocker.value),
                                 generated_blockers=None,  # will be filled after first player generates
+                                logic_type=int(world.options.logic_type.value),
+                                tricks_selected=set(world.options.tricks_selected.value),
+                                glitches_selected=set(world.options.glitches_selected.value),
                             )
                         else:
                             # Group already exists - update with more permissive/restrictive rules
@@ -976,6 +983,131 @@ if baseclasses_loaded:
                                 self.seed_groups[group]["enable_chaos_blockers"] = False
                             
                             # randomize_blockers: if any player has it disabled, disable it for the group
+                            if not world.options.randomize_blocker_required_amounts.value:
+                                self.seed_groups[group]["randomize_blocker_required_amounts"] = False
+                            
+                            # blocker_max: use the lowest value in the group
+                            self.seed_groups[group]["blocker_max"] = min(
+                                self.seed_groups[group]["blocker_max"],
+                                int(world.options.blocker_max.value)
+                            )
+                            
+                            # maximize_helm_blocker: if any player has it enabled, enable it for the group
+                            if world.options.maximize_helm_blocker.value:
+                                self.seed_groups[group]["maximize_helm_blocker"] = True
+                            
+                            # level blockers: use the lowest value in the group for each
+                            for level_num in range(1, 9):
+                                blocker_key = f"level{level_num}_blocker"
+                                option_key = blocker_key
+                                self.seed_groups[group][blocker_key] = min(
+                                    self.seed_groups[group][blocker_key],
+                                    int(getattr(world.options, option_key).value)
+                                )
+                            
+                            # logic_type: use most restrictive (glitchless=1 > advanced_glitchless=0 > glitched=2)
+                            # Priority order: glitchless (1) is most restrictive, then advanced_glitchless (0), then glitched (2)
+                            current_logic = self.seed_groups[group]["logic_type"]
+                            new_logic = int(world.options.logic_type.value)
+                            
+                            # If current is glitched (2) and new is anything else, use new (more restrictive)
+                            if current_logic == 2 and new_logic != 2:
+                                self.seed_groups[group]["logic_type"] = new_logic
+                            # If current is advanced_glitchless (0) and new is glitchless (1), use glitchless
+                            elif current_logic == 0 and new_logic == 1:
+                                self.seed_groups[group]["logic_type"] = 1
+                            # If current is glitchless (1), keep it (most restrictive)
+                            # If new is glitched (2), keep current (more restrictive)
+                            
+                            # tricks_selected: intersection of all players' tricks (only tricks ALL players have)
+                            self.seed_groups[group]["tricks_selected"] = self.seed_groups[group]["tricks_selected"].intersection(
+                                set(world.options.tricks_selected.value)
+                            )
+                            
+                            # glitches_selected: intersection of all players' glitches (only glitches ALL players have)
+                            self.seed_groups[group]["glitches_selected"] = self.seed_groups[group]["glitches_selected"].intersection(
+                                set(world.options.glitches_selected.value)
+                            )
+            
+            # Apply seed group settings and create group random if using a custom seed group BEFORE fillsettings
+            self.group_random = None
+            self.original_random = None
+            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                # Only apply seed group settings for custom string values, not standard numeric options
+                if isinstance(self.options.loading_zone_rando.value, str):
+                    group = self.options.loading_zone_rando.value
+                    if group in self.seed_groups:
+                        # Override player's options with seed group settings
+                        self.options.shuffle_helm_level_order.value = int(self.seed_groups[group]["shuffle_helm_level_order"])
+                        self.options.enable_chaos_blockers.value = int(self.seed_groups[group]["enable_chaos_blockers"])
+                        self.options.randomize_blocker_required_amounts.value = int(self.seed_groups[group]["randomize_blocker_required_amounts"])
+                        self.options.blocker_max.value = self.seed_groups[group]["blocker_max"]
+                        self.options.maximize_helm_blocker.value = int(self.seed_groups[group]["maximize_helm_blocker"])
+                        self.options.level1_blocker.value = self.seed_groups[group]["level1_blocker"]
+                        self.options.level2_blocker.value = self.seed_groups[group]["level2_blocker"]
+                        self.options.level3_blocker.value = self.seed_groups[group]["level3_blocker"]
+                        self.options.level4_blocker.value = self.seed_groups[group]["level4_blocker"]
+                        self.options.level5_blocker.value = self.seed_groups[group]["level5_blocker"]
+                        self.options.level6_blocker.value = self.seed_groups[group]["level6_blocker"]
+                        self.options.level7_blocker.value = self.seed_groups[group]["level7_blocker"]
+                        self.options.level8_blocker.value = self.seed_groups[group]["level8_blocker"]
+                        
+                        # Create group random for LZR seed synchronization and replace self.random
+                        combined_seed = f"{self.multiworld.seed}_{group}"
+                        from hashlib import sha256
+                        seed_hash = int(sha256(combined_seed.encode()).hexdigest()[:16], 16)
+                        from random import Random
+                        self.group_random = Random(seed_hash)
+                        self.original_random = self.random
+                        self.random = self.group_random
+            
+            # Use the fillsettings function to configure all settings
+            settings = fillsettings(self.options, self.multiworld, self.random)
+            # Enable entrance randomization if the option is set (any value other than no/off/false/0)
+            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                settings.level_randomization = LevelRandomization.loadingzone
+                settings.shuffle_loading_zones = ShuffleLoadingZones.all
+            else:
+                settings.level_randomization = LevelRandomization.level_order_complex
+                settings.shuffle_loading_zones = ShuffleLoadingZones.levels
+            self.spoiler = Spoiler(settings)
+            # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
+            self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
+            self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
+
+            Generate_Spoiler(self.spoiler)
+            
+            # Store/retrieve blocker values for seed group synchronization
+            if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
+                if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
+                    group = self.options.loading_zone_rando.value
+                    if group in self.seed_groups:
+                        # If this is the first player to generate, store the blocker values
+                        if self.seed_groups[group]["generated_blockers"] is None:
+                            blocker_values = [
+                                self.spoiler.settings.blocker_0,
+                                self.spoiler.settings.blocker_1,
+                                self.spoiler.settings.blocker_2,
+                                self.spoiler.settings.blocker_3,
+                                self.spoiler.settings.blocker_4,
+                                self.spoiler.settings.blocker_5,
+                                self.spoiler.settings.blocker_6,
+                                self.spoiler.settings.blocker_7,
+                            ]
+                            self.seed_groups[group]["generated_blockers"] = blocker_values
+                        else:
+                            # Use the stored blocker values from the first player
+                            blocker_values = self.seed_groups[group]["generated_blockers"]
+                            self.spoiler.settings.blocker_0 = blocker_values[0]
+                            self.spoiler.settings.blocker_1 = blocker_values[1]
+                            self.spoiler.settings.blocker_2 = blocker_values[2]
+                            self.spoiler.settings.blocker_3 = blocker_values[3]
+                            self.spoiler.settings.blocker_4 = blocker_values[4]
+                            self.spoiler.settings.blocker_5 = blocker_values[5]
+                            self.spoiler.settings.blocker_6 = blocker_values[6]
+                            self.spoiler.settings.blocker_7 = blocker_values[7]
+            
+   # randomize_blockers: if any player has it disabled, disable it for the group
                             if not world.options.randomize_blocker_required_amounts.value:
                                 self.seed_groups[group]["randomize_blocker_required_amounts"] = False
                             
@@ -1020,12 +1152,14 @@ if baseclasses_loaded:
                         self.options.level7_blocker.value = self.seed_groups[group]["level7_blocker"]
                         self.options.level8_blocker.value = self.seed_groups[group]["level8_blocker"]
                         
+                        # Apply synchronized logic and glitch settings
+                        self.options.logic_type.value = self.seed_groups[group]["logic_type"]
+                        self.options.tricks_selected.value = list(self.seed_groups[group]["tricks_selected"])
+                        self.options.glitches_selected.value = list(self.seed_groups[group]["glitches_selected"])
+                        
                         # Create group random for LZR seed synchronization and replace self.random
-                        combined_seed = f"{self.multiworld.seed}_{group}"
-                        from hashlib import sha256
-                        seed_hash = int(sha256(combined_seed.encode()).hexdigest()[:16], 16)
                         from random import Random
-                        self.group_random = Random(seed_hash)
+                        self.group_random = Random(group)
                         self.original_random = self.random
                         self.random = self.group_random
             
@@ -1188,6 +1322,13 @@ if baseclasses_loaded:
                 and self.spoiler.settings.level_randomization == LevelRandomization.loadingzone
                 and not hasattr(self.multiworld, "generation_is_fake")
             ):
+                # Reset shuffle state for all exits to ensure clean state between players
+                # This prevents state contamination when multiple DK64 players have different helm shuffle settings
+                for exit in ShufflableExits.values():
+                    exit.toBeShuffled = False
+                    exit.shuffled = False
+                    exit.shuffledId = None
+                
                 ap_entrance_to_transition = {}
                 for transition_enum, shufflable_exit in ShufflableExits.items():
                     # TODO: Make this configurable with DLZR
