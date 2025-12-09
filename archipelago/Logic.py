@@ -1469,11 +1469,27 @@ class LogicVarHolder:
                 return self.HelmKey
             elif condition == WinConditionComplex.dk_rap_items:
                 dk_rap_items = [
-                    self.donkey, self.diddy, self.lanky, self.tiny, self.chunky,
-                    self.coconut, self.peanut, self.grape, self.pineapple,
-                    self.guitar, self.trombone, self.strongKong, self.jetpack,
-                    self.handstand, self.balloon, self.mini, self.twirl,
-                    self.barrels, self.oranges, self.climbing, self.crankyAccess,
+                    self.donkey,
+                    self.diddy,
+                    self.lanky,
+                    self.tiny,
+                    self.chunky,
+                    self.coconut,
+                    self.peanut,
+                    self.grape,
+                    self.pineapple,
+                    self.guitar,
+                    self.trombone,
+                    self.strongKong,
+                    self.jetpack,
+                    self.handstand,
+                    self.balloon,
+                    self.mini,
+                    self.twirl,
+                    self.barrels,
+                    self.oranges,
+                    self.climbing,
+                    self.crankyAccess,
                 ]
                 return all(dk_rap_items)
             elif condition == WinConditionComplex.kill_the_rabbit:
@@ -1499,7 +1515,7 @@ class LogicVarHolder:
                 if condition in win_con_table:
                     return self.ItemCheck(win_con_table[condition], self.settings.win_condition_count)
                 return True
-        
+
         # Otherwise use key-based access
         required_base_keys = [
             Events.JapesKeyTurnedIn,
@@ -1717,7 +1733,7 @@ class LogicVarHolder:
         condition = self.settings.win_condition_item
         # When using win condition-based ship spawning, always require K. Rool defeat in addition to win condition items
         requires_krool_defeat = self.settings.krool_ship_spawn_method == 1
-        
+
         # Special Win Cons
         if condition == WinConditionComplex.beat_krool:
             return Events.KRoolDefeated in self.Events
