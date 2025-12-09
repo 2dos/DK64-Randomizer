@@ -447,43 +447,42 @@ def connect_regions(world: World, settings: Settings):
 
     # Shuffling level order should be going off of our ShufflableExits dictionary, but that's not properly isolated to the spoiler object yet.
     # For now, we have to pre-calculate what the destination region is for each of these transitions.
-    # if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
-    #     lobby_transition_mapping = {}
-    #     enter_lobby_transitions = {
-    #         Transitions.IslesMainToJapesLobby: None,
-    #         Transitions.IslesMainToAztecLobby: None,
-    #         Transitions.IslesMainToFactoryLobby: None,
-    #         Transitions.IslesMainToGalleonLobby: None,
-    #         Transitions.IslesMainToForestLobby: None,
-    #         Transitions.IslesMainToCavesLobby: None,
-    #         Transitions.IslesMainToCastleLobby: None,
-    #         Transitions.IslesMainToHelmLobby: None,
-    #     }
-    #     exit_lobby_transitions = {
-    #         Transitions.IslesJapesLobbyToMain: None,
-    #         Transitions.IslesAztecLobbyToMain: None,
-    #         Transitions.IslesFactoryLobbyToMain: None,
-    #         Transitions.IslesGalleonLobbyToMain: None,
-    #         Transitions.IslesForestLobbyToMain: None,
-    #         Transitions.IslesCavesLobbyToMain: None,
-    #         Transitions.IslesCastleLobbyToMain: None,
-    #         Transitions.IslesHelmLobbyToMain: None,
-    #     }
+    if settings.level_randomization == LevelRandomization.level_order_complex:
+        lobby_transition_mapping = {}
+        enter_lobby_transitions = {
+            Transitions.IslesMainToJapesLobby: None,
+            Transitions.IslesMainToAztecLobby: None,
+            Transitions.IslesMainToFactoryLobby: None,
+            Transitions.IslesMainToGalleonLobby: None,
+            Transitions.IslesMainToForestLobby: None,
+            Transitions.IslesMainToCavesLobby: None,
+            Transitions.IslesMainToCastleLobby: None,
+            Transitions.IslesMainToHelmLobby: None,
+        }
+        exit_lobby_transitions = {
+            Transitions.IslesJapesLobbyToMain: None,
+            Transitions.IslesAztecLobbyToMain: None,
+            Transitions.IslesFactoryLobbyToMain: None,
+            Transitions.IslesGalleonLobbyToMain: None,
+            Transitions.IslesForestLobbyToMain: None,
+            Transitions.IslesCavesLobbyToMain: None,
+            Transitions.IslesCastleLobbyToMain: None,
+            Transitions.IslesHelmLobbyToMain: None,
+        }
     #     # Identify which regions each lobby transition leads to in vanilla - this is as un-hard-coded as I can make it
-    #     for region_id, region_obj in DKIsles.LogicRegions.items():
-    #         for exit in region_obj.exits:
-    #             if exit.exitShuffleId in enter_lobby_transitions and not exit.isGlitchTransition:
-    #                 enter_lobby_transitions[exit.exitShuffleId] = exit.dest.name
-    #             if exit.exitShuffleId in exit_lobby_transitions and not exit.isGlitchTransition:
-    #                 exit_lobby_transitions[exit.exitShuffleId] = exit.dest.name
-    #     # Now we can map the transitions to the shuffled level order
-    #     enter_lobby_transitions_list = list(enter_lobby_transitions.keys())
-    #     exit_lobby_transitions_list = list(exit_lobby_transitions.keys())
-    #     for i in range(len(settings.level_order)):
-    #         level = settings.level_order[i + 1]
-    #         lobby_transition_mapping[enter_lobby_transitions_list[i]] = enter_lobby_transitions[enter_lobby_transitions_list[level]]
-    #         lobby_transition_mapping[exit_lobby_transitions_list[level]] = exit_lobby_transitions[exit_lobby_transitions_list[i]]
-
+        for region_id, region_obj in DKIsles.LogicRegions.items():
+            for exit in region_obj.exits:
+                if exit.exitShuffleId in enter_lobby_transitions and not exit.isGlitchTransition:
+                    enter_lobby_transitions[exit.exitShuffleId] = exit.dest.name
+                if exit.exitShuffleId in exit_lobby_transitions and not exit.isGlitchTransition:
+                    exit_lobby_transitions[exit.exitShuffleId] = exit.dest.name
+        # Now we can map the transitions to the shuffled level order
+        enter_lobby_transitions_list = list(enter_lobby_transitions.keys())
+        exit_lobby_transitions_list = list(exit_lobby_transitions.keys())
+        for i in range(len(settings.level_order)):
+            level = settings.level_order[i + 1]
+            lobby_transition_mapping[enter_lobby_transitions_list[i]] = enter_lobby_transitions[enter_lobby_transitions_list[level]]
+            lobby_transition_mapping[exit_lobby_transitions_list[level]] = exit_lobby_transitions[exit_lobby_transitions_list[i]]
     pairings = None
     if hasattr(world.multiworld, "generation_is_fake"):
         if hasattr(world.multiworld, "re_gen_passthrough") and settings.level_randomization == LevelRandomization.loadingzone:
@@ -496,8 +495,8 @@ def connect_regions(world: World, settings: Settings):
             destination_name = exit.dest.name
 
             # If this is a Isles <-> Lobby transition and we're shuffling levels, respect the dictionary built earlier
-            # if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and exit.exitShuffleId in lobby_transition_mapping.keys():
-            #     destination_name = lobby_transition_mapping[exit.exitShuffleId]
+            if settings.level_randomization == LevelRandomization.level_order_complex and exit.exitShuffleId in lobby_transition_mapping.keys():
+                destination_name = lobby_transition_mapping[exit.exitShuffleId]
             try:
                 # Quickly test and see if we can pass this exit with zero items
                 quick_success = False
