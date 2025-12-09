@@ -1080,7 +1080,59 @@ class LogicVarHolder:
         return AnyKongCanBuy(self.spoiler, location, self, buy_empty)
 
     def CanAccessKRool(self):
-        """Make sure that each required key has been turned in."""
+        """Make sure that each required key has been turned in, or if ship spawn method is win condition-based, check if win condition items are obtained."""
+        # If using win condition-based ship spawning, check if win condition item requirements are met
+        if self.settings.krool_ship_spawn_method == 1:
+            condition = self.settings.win_condition_item
+            if condition == WinConditionComplex.krem_kapture:
+                for subject in self.spoiler.valid_photo_items:
+                    if subject in (
+                        Items.PhotoKasplatDK,
+                        Items.PhotoKasplatDiddy,
+                        Items.PhotoKasplatLanky,
+                        Items.PhotoKasplatTiny,
+                        Items.PhotoKasplatChunky,
+                    ):
+                        continue
+                    if self.Photos.get(subject, 0) == 0:
+                        return False
+                return self.camera
+            elif condition == WinConditionComplex.get_key8:
+                return self.HelmKey
+            elif condition == WinConditionComplex.dk_rap_items:
+                dk_rap_items = [
+                    self.donkey, self.diddy, self.lanky, self.tiny, self.chunky,
+                    self.coconut, self.peanut, self.grape, self.pineapple,
+                    self.guitar, self.trombone, self.strongKong, self.jetpack,
+                    self.handstand, self.balloon, self.mini, self.twirl,
+                    self.barrels, self.oranges, self.climbing, self.crankyAccess,
+                ]
+                return all(dk_rap_items)
+            elif condition == WinConditionComplex.kill_the_rabbit:
+                return Events.KilledRabbit in self.Events
+            elif condition == WinConditionComplex.req_bonuses:
+                return self.bonuses_beaten >= self.settings.win_condition_count
+            elif condition == WinConditionComplex.req_bosses:
+                return self.bosses_beaten >= self.settings.win_condition_count
+            else:
+                # Item-based win conditions
+                win_con_table = {
+                    WinConditionComplex.req_bean: BarrierItems.Bean,
+                    WinConditionComplex.req_bp: BarrierItems.Blueprint,
+                    WinConditionComplex.req_companycoins: BarrierItems.CompanyCoin,
+                    WinConditionComplex.req_crown: BarrierItems.Crown,
+                    WinConditionComplex.req_fairy: BarrierItems.Fairy,
+                    WinConditionComplex.req_key: BarrierItems.Key,
+                    WinConditionComplex.req_gb: BarrierItems.GoldenBanana,
+                    WinConditionComplex.req_medal: BarrierItems.Medal,
+                    WinConditionComplex.req_pearl: BarrierItems.Pearl,
+                    WinConditionComplex.req_rainbowcoin: BarrierItems.RainbowCoin,
+                }
+                if condition in win_con_table:
+                    return self.ItemCheck(win_con_table[condition], self.settings.win_condition_count)
+                return True
+        
+        # Otherwise use key-based access
         required_base_keys = [
             Events.JapesKeyTurnedIn,
             Events.AztecKeyTurnedIn,
@@ -1290,6 +1342,9 @@ class LogicVarHolder:
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
         condition = self.settings.win_condition_item
+        # When using win condition-based ship spawning, always require K. Rool defeat in addition to win condition items
+        requires_krool_defeat = self.settings.krool_ship_spawn_method == 1
+        
         # Special Win Cons
         if condition == WinConditionComplex.beat_krool:
             return Events.KRoolDefeated in self.Events
@@ -1306,9 +1361,11 @@ class LogicVarHolder:
                 if self.Photos.get(subject, 0) == 0:
                     # print(f"Could not reach {subject.name}")
                     return False
-            return self.camera
+            result = self.camera
+            return result and Events.KRoolDefeated in self.Events if requires_krool_defeat else result
         elif condition == WinConditionComplex.get_key8:
-            return self.HelmKey
+            result = self.HelmKey
+            return result and Events.KRoolDefeated in self.Events if requires_krool_defeat else result
         elif condition == WinConditionComplex.dk_rap_items:
             dk_rap_items = [
                 self.donkey,
@@ -1340,16 +1397,20 @@ class LogicVarHolder:
             for k in dk_rap_items:
                 if not k:
                     return False
-            return True
+            result = True
+            return result and Events.KRoolDefeated in self.Events if requires_krool_defeat else result
         elif condition == WinConditionComplex.krools_challenge:
             # Krool's Challenge: Beat K. Rool + collect all Keys, Blueprints, Bosses, and Bonus Barrels
             return Events.KRoolDefeated in self.Events and self.ItemCheck(BarrierItems.Key, 8) and self.ItemCheck(BarrierItems.Blueprint, 40) and self.bosses_beaten >= 7 and self.bonuses_beaten >= 43
         elif condition == WinConditionComplex.kill_the_rabbit:
-            return Events.KilledRabbit in self.Events
+            result = Events.KilledRabbit in self.Events
+            return result and Events.KRoolDefeated in self.Events if requires_krool_defeat else result
         elif condition == WinConditionComplex.req_bonuses:
-            return self.bonuses_beaten >= self.settings.win_condition_count
+            result = self.bonuses_beaten >= self.settings.win_condition_count
+            return result and Events.KRoolDefeated in self.Events if requires_krool_defeat else result
         elif condition == WinConditionComplex.req_bosses:
-            return self.bosses_beaten >= self.settings.win_condition_count
+            result = self.bosses_beaten >= self.settings.win_condition_count
+            return result and Events.KRoolDefeated in self.Events if requires_krool_defeat else result
         # Get X amount of Y item win cons
         win_con_table = {
             WinConditionComplex.req_bean: BarrierItems.Bean,
@@ -1365,7 +1426,8 @@ class LogicVarHolder:
         }
         if condition not in win_con_table:
             raise Exception(f"Invalid Win Condition {self.settings.win_condition_item.name}")
-        return self.ItemCheck(win_con_table[condition], self.settings.win_condition_count)
+        result = self.ItemCheck(win_con_table[condition], self.settings.win_condition_count)
+        return result and Events.KRoolDefeated in self.Events if requires_krool_defeat else result
 
     def CanGetRarewareCoin(self):
         """Check if you meet the logical requirements to obtain the Rareware Coin."""

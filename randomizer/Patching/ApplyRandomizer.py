@@ -608,8 +608,8 @@ def patching_response(spoiler):
 
     # Set K. Rool ship spawn method
     ROM_COPY.seek(sav + 0x1B6)
-    krool_ship_spawn_method = 1 if spoiler.settings.win_condition_item == WinConditionComplex.krools_challenge else 0
-    ROM_COPY.writeMultipleBytes(krool_ship_spawn_method, 1)
+    # Write the user's setting directly - beat_krool/krools_challenge will use key-based spawning unless this is explicitly enabled
+    ROM_COPY.writeMultipleBytes(spoiler.settings.krool_ship_spawn_method, 1)
 
     # Mill Levers
     if spoiler.settings.mill_levers[0] > 0:

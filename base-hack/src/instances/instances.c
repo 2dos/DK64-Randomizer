@@ -496,8 +496,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (param2 == K_ROOL_SHIP) {
 					// Check access requirements based on ship spawn method
 					if (Rando.krool_ship_spawn_method == 1) {
-						// Collectible-based access
-						if (!canAccessKroolsChallenge()) {
+						// Win condition-based access
+						if (!canAccessWinCondition()) {
 							return 0;
 						}
 					} else {

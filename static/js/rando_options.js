@@ -1482,7 +1482,8 @@ function update_win_con_num_access() {
   const winConReq = document.getElementById("win_condition_count");
   const disabled = DISABLED_WIN_VALUES.includes(winConSelection.value);
   const kroolSection = document.getElementById("krool_section");
-  const isKRool = KROOL_WIN_CONS.includes(winConSelection.value);
+  const kroolShipSpawnMethod = document.getElementById("krool_ship_spawn_method");
+  const isKRool = KROOL_WIN_CONS.includes(winConSelection.value) || (kroolShipSpawnMethod && kroolShipSpawnMethod.checked);
 
   if (disabled) {
     winConContainer.classList.add("hide-input");
@@ -1513,6 +1514,10 @@ function update_win_con_num_access() {
 
 document
   .getElementById("win_condition_item")
+  .addEventListener("change", update_win_con_num_access);
+
+document
+  .getElementById("krool_ship_spawn_method")
   .addEventListener("change", update_win_con_num_access);
 
 // Validate Door 1 input on loss of focus

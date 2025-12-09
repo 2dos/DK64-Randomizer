@@ -142,8 +142,51 @@ int canAccessKroolsChallenge(void) {
     return 1;
 }
 
+int canAccessWinCondition(void) {
+    // Check if the win condition requirements are met
+    switch(Rando.win_condition) {
+        case GOAL_KEY8:
+            // Key 8 win condition - check for key 8
+            return getItemCount_new(REQITEM_KEY, 7, 0);
+        
+        case GOAL_POKESNAP:
+            // Pokemon Snap - check if all required photos are taken
+            for (int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
+                int offset = i >> 3;
+                int shift = i & 7;
+                if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
+                    if (!checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT)) {
+                        return 0;
+                    }
+                }
+            }
+            return 1;
+        
+        case GOAL_DKRAP:
+            // DK Rap - check for DK Rap completion
+            return hasBeatenDKRapWinCon();
+        
+        case GOAL_KROOLS_CHALLENGE:
+            // Krool's Challenge - check if all required items are collected
+            return canAccessKroolsChallenge();
+        
+        case GOAL_CUSTOMITEM:
+            // Custom item requirement - check the specified item count
+            return isItemRequirementSatisfied(&Rando.win_condition_extra);
+        
+        default:
+            // For beat K. Rool and other win conditions, return 0 so they use normal key-based spawning
+            // Only return 1 if explicitly using krool_ship_spawn_method
+            return 0;
+    }
+}
+
 void checkSeedVictory(void) {
     if (!checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
+        // If krool_ship_spawn_method is enabled, don't trigger victory on win condition items - only when K. Rool is defeated
+        if (Rando.krool_ship_spawn_method == 1) {
+            return;
+        }
         switch(Rando.win_condition) {
             case GOAL_KEY8:
                 if (getItemCount_new(REQITEM_KEY, 7, 0)) {

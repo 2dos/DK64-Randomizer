@@ -764,6 +764,7 @@ class Settings:
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
         self.krool_access = False
+        self.krool_ship_spawn_method = 0  # 0 = Key-based, 1 = Win condition-based
         self.helm_phase_order_rando = None
         self.open_lobbies = None
         self.randomize_pickups = False
@@ -2288,6 +2289,10 @@ class Settings:
         if self.kasplat_rando_setting == KasplatRandoSetting.location_shuffle:
             self.kasplat_rando = True
             self.kasplat_location_rando = True
+
+        # Force krool_ship_spawn_method to 0 for beat_krool and krools_challenge win conditions
+        if self.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+            self.krool_ship_spawn_method = 0
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
         if self.win_condition_item == WinConditionComplex.req_fairy or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
