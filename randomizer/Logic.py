@@ -1124,8 +1124,6 @@ class LogicVarHolder:
                     self.crankyAccess,
                 ]
                 return all(dk_rap_items)
-            elif condition == WinConditionComplex.kill_the_rabbit:
-                return Events.KilledRabbit in self.Events
             elif condition == WinConditionComplex.req_bonuses:
                 return self.bonuses_beaten >= self.settings.win_condition_count
             elif condition == WinConditionComplex.req_bosses:

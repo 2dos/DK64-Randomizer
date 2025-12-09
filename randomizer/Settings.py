@@ -2291,7 +2291,7 @@ class Settings:
             self.kasplat_location_rando = True
 
         # Force krool_ship_spawn_method to 0 for beat_krool and krools_challenge win conditions
-        if self.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+        if self.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge, WinConditionComplex.kill_the_rabbit):
             self.krool_ship_spawn_method = 0
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
