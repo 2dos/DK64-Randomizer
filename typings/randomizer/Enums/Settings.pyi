@@ -326,10 +326,11 @@ class KongModels(IntEnum):
     disco_donkey = 8
 
 class KongModelMode(IntEnum):
-    manual = 0
-    random_one = 1
-    sometimes_one = 2
-    random_all = 3
+    none = 0
+    manual = 1
+    random_one = 2
+    sometimes_one = 3
+    random_all = 4
 
 class LevelRandomization(IntEnum):
     vanilla = 0

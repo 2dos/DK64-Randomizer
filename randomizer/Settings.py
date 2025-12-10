@@ -2386,6 +2386,13 @@ class Settings:
             self.excluded_bp_locations = self.excluded_bp_locations[-count_to_exclude:]
 
         # Kong Model Mode Randomization
+        if self.kong_model_mode == KongModelMode.none:
+            self.kong_model_dk = KongModels.default
+            self.kong_model_diddy = KongModels.default
+            self.kong_model_lanky = KongModels.default
+            self.kong_model_tiny = KongModels.default
+            self.kong_model_chunky = KongModels.default
+
         if self.kong_model_mode == KongModelMode.random_one:
             random_krusha = self.random.randint(0, 4)
             kong_model_array = [KongModels.default, KongModels.default, KongModels.default, KongModels.default, KongModels.default]
@@ -2400,7 +2407,6 @@ class Settings:
         elif self.kong_model_mode == KongModelMode.sometimes_one:
             random_krusha = self.random.randint(0, 4)
             kong_model_array = [KongModels.default, KongModels.default, KongModels.default, KongModels.default, KongModels.default]
-            krusha_model = [KongModels.default, KongModels.krusha]
             kong_model_array[random_krusha] = self.random.choice([KongModels.default, KongModels.krusha])
 
             self.kong_model_dk = kong_model_array[0]
