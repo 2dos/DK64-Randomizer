@@ -10,7 +10,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Fast Warps
 - Random Helm Length
 - Item Reward Previews
-- Randomize Keys Required to Beat K. Rool
+- Randomize Amount of Keys Pregiven
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
 - Quality Of Life
@@ -38,7 +38,6 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Hard Shooting
 - Hard Troff N Scoff
 - Helm Hurry Mode
-- K Rool Vanilla Requirement
 - Mirror Mode
 - No Heals
 - No Melon Slice Drops

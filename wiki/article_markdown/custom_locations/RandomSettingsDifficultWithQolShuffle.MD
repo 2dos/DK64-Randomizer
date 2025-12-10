@@ -6,7 +6,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Fast Start - Beginning of Game
 - Random Helm Length
 - Ice Traps Damage Player
-- Randomize Keys Required to Beat K. Rool
+- Randomize Amount of Keys Pregiven
 - Random K. Rool Phase Count
 - Quality Of Life
 - Random Medal Requirement
@@ -19,7 +19,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 # Always Off
 - Dim Solved Hints
 - Enable Plandomizer
-- K Rool Vanilla Requirement
 - Irondonk
 - Guaranteed Starting Keys
 - No Joke Hints
