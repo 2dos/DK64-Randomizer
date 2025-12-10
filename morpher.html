@@ -686,6 +686,20 @@
                         setting_data.win_condition_count = 8;
                         setting_data.krool_ship_spawn_method = true;
                     }
+                    // Convert all_keys win condition to Keys (8) with krool_ship_spawn_method disabled
+                    if (setting_data.win_condition_item === "all_keys") {
+                        console.log('Converting all_keys win condition to Keys (8) with Require Beating K. Rool disabled');
+                        setting_data.win_condition_item = "req_key";
+                        setting_data.win_condition_count = 8;
+                        setting_data.krool_ship_spawn_method = false;
+                    }
+                    // Convert vanilla K. Rool requirement to Keys 3 and 8 win condition with krool enabled
+                    if (setting_data.k_rool_vanilla_requirement === true) {
+                        console.log('Converting vanilla K. Rool requirement to Keys 3 and 8 with Require Beating K. Rool enabled');
+                        setting_data.win_condition_item = "get_keys_3_and_8";
+                        setting_data.krool_ship_spawn_method = true;
+                        delete setting_data.k_rool_vanilla_requirement;
+                    }
                     // Invert krool_key_count to represent "keys pregiven" instead of "keys required"
                     if (setting_data.krool_key_count !== undefined) {
                         const old_value = setting_data.krool_key_count;
