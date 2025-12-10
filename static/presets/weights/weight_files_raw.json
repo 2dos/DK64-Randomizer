@@ -1932,15 +1932,6 @@
             },
             "qol_uses_hard": true
         },
-        "k_rool_vanilla_requirement": {
-            "setting_type": "bool",
-            "options": {
-                "easy": 0,
-                "standard": 0,
-                "difficult": 0
-            },
-            "qol_uses_hard": true
-        },
         "disable_hard_minigames": {
             "setting_type": "bool",
             "options": {
