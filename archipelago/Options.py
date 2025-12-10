@@ -376,7 +376,7 @@ class KeysRequiredToBeatKrool(Range):
 
 class RequireBeatingKrool(DefaultOnToggle):
     """Require defeating K. Rool in addition to the win condition requirements.
-    
+
     K. Rool's ship will not spawn until you meet your win condition requirements, and you must defeat K. Rool to win.
     Automatically enabled for Krool's Challenge. Automatically disabled for Kill the Rabbit.
     """

@@ -515,11 +515,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             else:
                 valid_types.append(HintType.Entrance)
         # If K. Rool is live it can get one hint if it is not hinted otherwise via spoiler hints
-        if (
-            (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random)
-            and spoiler.settings.krool_ship_spawn_method == 1
-            and spoiler.settings.spoiler_hints == SpoilerHints.off
-        ):
+        if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.krool_ship_spawn_method == 1 and spoiler.settings.spoiler_hints == SpoilerHints.off:
             valid_types.append(HintType.KRoolOrder)
             maxed_hint_types.append(HintType.KRoolOrder)
             # If the seed doesn't funnel you into helm, guarantee one K. Rool order hint

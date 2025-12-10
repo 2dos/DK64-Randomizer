@@ -679,7 +679,7 @@ def apply_boss_and_key_settings(settings_dict: dict, options) -> None:
 def apply_goal_settings(settings_dict: dict, options, random_obj) -> None:
     """Apply goal and win condition settings."""
     settings_dict["win_condition_item"] = GOAL_MAPPING[options.goal]
-    
+
     # Krool's Challenge always requires beating K. Rool otherwise wheres the challenge
     if options.goal == Goal.option_krools_challenge:
         settings_dict["krool_ship_spawn_method"] = 1

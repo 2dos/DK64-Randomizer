@@ -38,7 +38,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Hard Shooting
 - Hard Troff N Scoff
 - Helm Hurry Mode
-- Vanilla K. Rool Key Requirement
+- K Rool Vanilla Requirement
 - Mirror Mode
 - No Heals
 - No Melon Slice Drops
@@ -194,6 +194,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Kong Model Tiny: 
 	- Default: 100%
 - Don't Start with Key 8: 70%
+- Require Beating K. Rool: 30%
 - Shuffle Boss Kong Required: 80%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 

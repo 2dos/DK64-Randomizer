@@ -27,7 +27,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Hard Bosses
 - Hard Mode
 - Helm Hurry Mode
-- Vanilla K. Rool Key Requirement
+- K Rool Vanilla Requirement
 - Mirror Mode
 - Irondonk
 - Guaranteed Starting Keys
@@ -198,6 +198,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Kong Model Tiny: 
 	- Default: 100%
 - Don't Start with Key 8: 70%
+- Require Beating K. Rool: 50%
 - Shuffle Boss Kong Required: 65%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 
