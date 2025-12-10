@@ -109,24 +109,24 @@
                 </div>
             </div>
             <hr />
-            <h5 class="select-title">Keys Required To Beat K. Rool
+            <h5 class="select-title">Keys Pregiven
                 <label data-toggle="tooltip"
-                        title="Selects a random amount of pre-turned in Keys.&#10;i.e. Selecting '5' means 3 keys will be pre-turned in and you need 5 more.">
+                        title="Selects a random amount of pre-turned in Keys.&#10;i.e. Selecting '3' means 3 keys will be pre-turned in and you need 5 more.">
                     <input class="dice_checkbox"
                             type="checkbox"
                             name="keys_random"
                             id="keys_random"
-                            display_name="Randomize Keys Required to Beat K. Rool"
+                            display_name="Randomize Amount of Keys Pregiven"
                             onchange="toggle_clicks()"
                             value="True"/>
                     <label for="keys_random"></label>
                 </label></h5>
             <div class="flex-container" style="justify-content: space-between; width: 90%; margin: auto;">
-                <div style="display: flex;">Start with More Keys</div>
                 <div style="display: flex;">Start with Fewer Keys</div>
+                <div style="display: flex;">Start with More Keys</div>
             </div>
             <div class="flex-container flex-center">
-                {{ slider_input("krool_key_count", "Keys required to Beat K. Rool", 0, 8) }}
+                {{ slider_input("krool_key_count", "Keys Pregiven to Access K. Rool", 0, 8) }}
             </div>
             <div class="form-check form-switch item-switch center-flex">
                 <label data-toggle="tooltip" title="Select the keys you are guaranteed start with.">

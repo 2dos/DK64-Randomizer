@@ -540,7 +540,7 @@ class Settings:
         self.helm_phase_count = 3
         self.helm_random = False
         # krool_key_count: int, [0-8]
-        self.krool_key_count = 8
+        self.krool_key_count = 0
         self.keys_random = False
         # starting_kongs_count: int, [1-5]
         self.starting_kong = Kongs.any
@@ -2107,7 +2107,8 @@ class Settings:
         if self.keys_random:
             required_key_count = self.random.randint(0, 8)
         else:
-            required_key_count = self.krool_key_count
+            # I mean, I guess this works
+            required_key_count = 8 - self.krool_key_count
         key_8_required = self.krool_access or self.win_condition_item == WinConditionComplex.get_key8
         # Remove the need for keys we intend to start with
         if self.select_keys:

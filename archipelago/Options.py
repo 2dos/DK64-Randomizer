@@ -362,16 +362,16 @@ class MermaidRequirement(Range):
 
 
 class KeysRequiredToBeatKrool(Range):
-    """Determines how many keys are needed to spawn Krool's Ship.
+    """Determines how many keys are pregiven.
 
-    Choosing a value of 0 means you start with all 8 keys.
-    Choosing a value of 8 means you start with no keys.
+    Choosing a value of 0 means you start with 0 keys.
+    Choosing a value of 8 means you start with all 8 keys.
     """
 
-    display_name = "Keys Required to Beat Krool"
+    display_name = "Keys Pregiven to Access K. Rool"
     range_start = 0
     range_end = 8
-    default = 8
+    default = 0
 
 
 class RequireBeatingKrool(DefaultOnToggle):

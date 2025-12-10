@@ -678,6 +678,21 @@
                         }
                     }
                 }
+                if (sel_version_num < numericVersion("5.8.0")) {
+                    // Convert beat_krool win condition to Keys with krool_ship_spawn_method enabled
+                    if (setting_data.win_condition_item === "beat_krool") {
+                        console.log('Converting beat_krool win condition to Keys (8) with Require Beating K. Rool enabled');
+                        setting_data.win_condition_item = "req_key";
+                        setting_data.win_condition_count = 8;
+                        setting_data.krool_ship_spawn_method = true;
+                    }
+                    // Invert krool_key_count to represent "keys pregiven" instead of "keys required"
+                    if (setting_data.krool_key_count !== undefined) {
+                        const old_value = setting_data.krool_key_count;
+                        setting_data.krool_key_count = 8 - old_value;
+                        console.log(`Inverting krool_key_count: ${old_value} -> ${setting_data.krool_key_count} (keys pregiven)`);
+                    }
+                }
                 // Update to include all unhandled options to unsorted
                 const all_valid_items = Object.keys(output_json.ItemRandoListSelected);
                 let mentioned_items = [];

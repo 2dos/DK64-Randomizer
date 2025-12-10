@@ -189,7 +189,7 @@ def get_default_settings() -> dict:
         "kong_model_tiny": KongModels.default,
         "krool_access": False,
         "krool_in_boss_pool": False,
-        "krool_key_count": 8,
+        "krool_key_count": 0,
         "krool_phase_count": 3,
         "krool_phase_order_rando": True,
         "krool_random": False,

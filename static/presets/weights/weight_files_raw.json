@@ -933,19 +933,19 @@
             "setting_type": "range",
             "options": {
                 "easy": {
-                    "min": 1,
-                    "max": 5,
-                    "mean": 3
+                    "min": 7,
+                    "max": 3,
+                    "mean": 5
                 },
                 "standard": {
-                    "min": 3,
-                    "max": 7,
-                    "mean": 5
+                    "min": 5,
+                    "max": 1,
+                    "mean": 3
                 },
                 "difficult": {
                     "min": 4,
-                    "max": 8,
-                    "mean": 6
+                    "max": 0,
+                    "mean": 2
                 }
             },
             "qol_uses_hard": true
