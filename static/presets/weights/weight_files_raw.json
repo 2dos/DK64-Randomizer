@@ -920,6 +920,15 @@
             },
             "qol_uses_hard": true
         },
+        "krool_ship_spawn_method": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 30,
+                "standard": 50,
+                "difficult": 70
+            },
+            "qol_uses_hard": true
+        },
         "krool_key_count": {
             "setting_type": "range",
             "options": {

@@ -438,6 +438,7 @@ def apply_kong_settings(settings_dict: dict, options) -> None:
     """Apply Kong settings."""
     # Key settings
     settings_dict["krool_key_count"] = options.krool_key_count.value
+    settings_dict["krool_ship_spawn_method"] = 1 if options.require_beating_krool.value else 0
 
     # Kong mapping
     kong_mapping = {
@@ -678,6 +679,13 @@ def apply_boss_and_key_settings(settings_dict: dict, options) -> None:
 def apply_goal_settings(settings_dict: dict, options, random_obj) -> None:
     """Apply goal and win condition settings."""
     settings_dict["win_condition_item"] = GOAL_MAPPING[options.goal]
+    
+    # Krool's Challenge always requires beating K. Rool otherwise wheres the challenge
+    if options.goal == Goal.option_krools_challenge:
+        settings_dict["krool_ship_spawn_method"] = 1
+    # The rabbit is too powerful to allow this
+    elif options.goal == Goal.option_kill_the_rabbit:
+        settings_dict["krool_ship_spawn_method"] = 0
 
     if options.goal in QUANTITY_GOALS.keys():
         goal_name = QUANTITY_GOALS[options.goal]

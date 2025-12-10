@@ -462,6 +462,9 @@ def patching_response(spoiler):
         WinConditionComplex.get_key8: {
             "index": 1,
         },
+        WinConditionComplex.get_keys_3_and_8: {
+            "index": 7,
+        },
         WinConditionComplex.krem_kapture: {
             "index": 2,
         },

@@ -937,7 +937,7 @@ class Settings:
         self.big_head_mode = BigHeadMode.off
         # self.win_condition = WinCondition.beat_krool  # Deprecated
         self.win_condition_random = False
-        self.win_condition_item = WinConditionComplex.beat_krool
+        self.win_condition_item = WinConditionComplex.get_keys_3_and_8
         self.win_condition_count = 1
         self.key_8_helm = False
         self.k_rool_vanilla_requirement = False
@@ -1873,6 +1873,7 @@ class Settings:
                 HelmDoorRandomInfo(1, 1, 0.03),
             ),
             WinConditionComplex.get_key8: HelmDoorInfo(1),
+            WinConditionComplex.get_keys_3_and_8: HelmDoorInfo(1),
             WinConditionComplex.req_gb: HelmDoorInfo(
                 self.total_gbs,
                 HelmDoorRandomInfo(int(0.4 * self.total_gbs), int(0.75 * self.total_gbs), 0.1),
@@ -2290,8 +2291,12 @@ class Settings:
             self.kasplat_rando = True
             self.kasplat_location_rando = True
 
-        # Force krool_ship_spawn_method to 0 for beat_krool and krools_challenge win conditions
-        if self.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge, WinConditionComplex.kill_the_rabbit):
+        # Force krool_ship_spawn_method based on win condition
+        # Krool's Challenge always requires beating K. Rool
+        if self.win_condition_item == WinConditionComplex.krools_challenge:
+            self.krool_ship_spawn_method = 1
+        # Kill the Rabbit cannot require beating K. Rool (would softlock)
+        elif self.win_condition_item == WinConditionComplex.kill_the_rabbit:
             self.krool_ship_spawn_method = 0
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log

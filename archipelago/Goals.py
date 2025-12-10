@@ -9,7 +9,7 @@ from randomizer.Enums.Settings import WinConditionComplex
 
 # Goal mapping for wincon determination
 GOAL_MAPPING = {
-    Goal.option_beat_k_rool: WinConditionComplex.beat_krool,
+    Goal.option_acquire_keys_3_and_8: WinConditionComplex.get_keys_3_and_8,
     Goal.option_acquire_key_8: WinConditionComplex.get_key8,
     Goal.option_kremling_kapture: WinConditionComplex.krem_kapture,
     Goal.option_dk_rap: WinConditionComplex.dk_rap_items,
@@ -70,6 +70,7 @@ def pp_wincon(win_condition_item, wc_count=0):
     win_con_name_table = {
         WinConditionComplex.beat_krool: "Beat K. Rool",
         WinConditionComplex.get_key8: "Acquire Key 8",
+        WinConditionComplex.get_keys_3_and_8: "Acquire Keys 3 and 8",
         WinConditionComplex.krem_kapture: "Kremling Kapture",
         WinConditionComplex.dk_rap_items: "Complete the Rap",
         WinConditionComplex.req_bean: "Acquire the Bean",

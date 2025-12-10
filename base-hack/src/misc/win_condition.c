@@ -149,6 +149,10 @@ int canAccessWinCondition(void) {
             // Key 8 win condition - check for key 8
             return getItemCount_new(REQITEM_KEY, 7, 0);
         
+        case GOAL_KEYS_3_AND_8:
+            // Keys 3 and 8 win condition - check for both keys (vanilla K. Rool requirement)
+            return getItemCount_new(REQITEM_KEY, 2, 0) && getItemCount_new(REQITEM_KEY, 7, 0);
+        
         case GOAL_POKESNAP:
             // Pokemon Snap - check if all required photos are taken
             for (int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
@@ -187,34 +191,8 @@ void checkSeedVictory(void) {
         if (Rando.krool_ship_spawn_method == 1) {
             return;
         }
-        switch(Rando.win_condition) {
-            case GOAL_KEY8:
-                if (getItemCount_new(REQITEM_KEY, 7, 0)) {
-                    beatGame();
-                }
-                break;
-            case GOAL_POKESNAP:
-                for (int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
-                    int offset = i >> 3;
-                    int shift = i & 7;
-                    if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
-                        if (!checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT)) {
-                            return;
-                        }
-                    }
-                }
-                beatGame();
-                break;
-            case GOAL_DKRAP:
-                if (hasBeatenDKRapWinCon()) {
-                    beatGame();
-                }
-                break;
-            case GOAL_CUSTOMITEM:
-                if (isItemRequirementSatisfied(&Rando.win_condition_extra)) {
-                    beatGame();
-                }
-            break;
+        if (canAccessWinCondition()) {
+            beatGame();
         }
     }
 }

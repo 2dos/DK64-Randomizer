@@ -1380,6 +1380,9 @@ class LogicVarHolder:
         elif condition == WinConditionComplex.get_key8:
             result = self.HelmKey
             return result and Events.KRoolDefeated in self.Events if requires_krool_defeat else result
+        elif condition == WinConditionComplex.get_keys_3_and_8:
+            result = self.FactoryKey and self.HelmKey
+            return result and Events.KRoolDefeated in self.Events if requires_krool_defeat else result
         elif condition == WinConditionComplex.dk_rap_items:
             dk_rap_items = [
                 self.donkey,

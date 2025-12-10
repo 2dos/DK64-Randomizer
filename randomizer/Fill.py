@@ -1180,7 +1180,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             ordered_interesting_locations.append(locationId)
 
     # If K. Rool is the win condition, prepare phase-specific paths as well
-    if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge) or spoiler.settings.krool_ship_spawn_method == 1:
+    if spoiler.settings.krool_ship_spawn_method == 1:
         for phase in spoiler.settings.krool_order:
             spoiler.krool_paths[phase] = []
     # If the Rabbit is the win condition, prepare a path for him.
@@ -1207,7 +1207,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             if other_location not in accessible:
                 spoiler.other_paths[other_location].append(locationId)
         # If the win condition is K. Rool, also add this location to those paths as applicable
-        if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge) or spoiler.settings.krool_ship_spawn_method == 1:
+        if spoiler.settings.krool_ship_spawn_method == 1:
             final_boss_associated_event = {
                 Maps.JapesBoss: Events.KRoolDillo1,
                 Maps.AztecBoss: Events.KRoolDog1,
