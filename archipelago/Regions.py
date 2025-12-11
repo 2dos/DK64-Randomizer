@@ -469,7 +469,7 @@ def connect_regions(world: World, settings: Settings):
             Transitions.IslesCastleLobbyToMain: None,
             Transitions.IslesHelmLobbyToMain: None,
         }
-    #     # Identify which regions each lobby transition leads to in vanilla - this is as un-hard-coded as I can make it
+        #     # Identify which regions each lobby transition leads to in vanilla - this is as un-hard-coded as I can make it
         for region_id, region_obj in DKIsles.LogicRegions.items():
             for exit in region_obj.exits:
                 if exit.exitShuffleId in enter_lobby_transitions and not exit.isGlitchTransition:

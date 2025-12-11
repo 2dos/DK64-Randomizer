@@ -977,39 +977,33 @@ if baseclasses_loaded:
                             # shuffle_helm_level_order: if any player has it enabled, enable it for the group
                             if world.options.shuffle_helm_level_order.value:
                                 self.seed_groups[group]["shuffle_helm_level_order"] = True
-                            
+
                             # chaos_blockers: if any player has it disabled, disable it for the group
                             if not world.options.enable_chaos_blockers.value:
                                 self.seed_groups[group]["enable_chaos_blockers"] = False
-                            
+
                             # randomize_blockers: if any player has it disabled, disable it for the group
                             if not world.options.randomize_blocker_required_amounts.value:
                                 self.seed_groups[group]["randomize_blocker_required_amounts"] = False
-                            
+
                             # blocker_max: use the lowest value in the group
-                            self.seed_groups[group]["blocker_max"] = min(
-                                self.seed_groups[group]["blocker_max"],
-                                int(world.options.blocker_max.value)
-                            )
-                            
+                            self.seed_groups[group]["blocker_max"] = min(self.seed_groups[group]["blocker_max"], int(world.options.blocker_max.value))
+
                             # maximize_helm_blocker: if any player has it enabled, enable it for the group
                             if world.options.maximize_helm_blocker.value:
                                 self.seed_groups[group]["maximize_helm_blocker"] = True
-                            
+
                             # level blockers: use the lowest value in the group for each
                             for level_num in range(1, 9):
                                 blocker_key = f"level{level_num}_blocker"
                                 option_key = blocker_key
-                                self.seed_groups[group][blocker_key] = min(
-                                    self.seed_groups[group][blocker_key],
-                                    int(getattr(world.options, option_key).value)
-                                )
-                            
+                                self.seed_groups[group][blocker_key] = min(self.seed_groups[group][blocker_key], int(getattr(world.options, option_key).value))
+
                             # logic_type: use most restrictive (glitchless=1 > advanced_glitchless=0 > glitched=2)
                             # Priority order: glitchless (1) is most restrictive, then advanced_glitchless (0), then glitched (2)
                             current_logic = self.seed_groups[group]["logic_type"]
                             new_logic = int(world.options.logic_type.value)
-                            
+
                             # If current is glitched (2) and new is anything else, use new (more restrictive)
                             if current_logic == 2 and new_logic != 2:
                                 self.seed_groups[group]["logic_type"] = new_logic
@@ -1018,17 +1012,13 @@ if baseclasses_loaded:
                                 self.seed_groups[group]["logic_type"] = 1
                             # If current is glitchless (1), keep it (most restrictive)
                             # If new is glitched (2), keep current (more restrictive)
-                            
+
                             # tricks_selected: intersection of all players' tricks (only tricks ALL players have)
-                            self.seed_groups[group]["tricks_selected"] = self.seed_groups[group]["tricks_selected"].intersection(
-                                set(world.options.tricks_selected.value)
-                            )
-                            
+                            self.seed_groups[group]["tricks_selected"] = self.seed_groups[group]["tricks_selected"].intersection(set(world.options.tricks_selected.value))
+
                             # glitches_selected: intersection of all players' glitches (only glitches ALL players have)
-                            self.seed_groups[group]["glitches_selected"] = self.seed_groups[group]["glitches_selected"].intersection(
-                                set(world.options.glitches_selected.value)
-                            )
-            
+                            self.seed_groups[group]["glitches_selected"] = self.seed_groups[group]["glitches_selected"].intersection(set(world.options.glitches_selected.value))
+
             # Apply seed group settings and create group random if using a custom seed group BEFORE fillsettings
             self.group_random = None
             self.original_random = None
@@ -1051,16 +1041,18 @@ if baseclasses_loaded:
                         self.options.level6_blocker.value = self.seed_groups[group]["level6_blocker"]
                         self.options.level7_blocker.value = self.seed_groups[group]["level7_blocker"]
                         self.options.level8_blocker.value = self.seed_groups[group]["level8_blocker"]
-                        
+
                         # Create group random for LZR seed synchronization and replace self.random
                         combined_seed = f"{self.multiworld.seed}_{group}"
                         from hashlib import sha256
+
                         seed_hash = int(sha256(combined_seed.encode()).hexdigest()[:16], 16)
                         from random import Random
+
                         self.group_random = Random(seed_hash)
                         self.original_random = self.random
                         self.random = self.group_random
-            
+
             # Use the fillsettings function to configure all settings
             settings = fillsettings(self.options, self.multiworld, self.random)
             # Enable entrance randomization if the option is set (any value other than no/off/false/0)
@@ -1076,7 +1068,7 @@ if baseclasses_loaded:
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
 
             Generate_Spoiler(self.spoiler)
-            
+
             # Store/retrieve blocker values for seed group synchronization
             if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
                 if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
@@ -1106,30 +1098,24 @@ if baseclasses_loaded:
                             self.spoiler.settings.blocker_5 = blocker_values[5]
                             self.spoiler.settings.blocker_6 = blocker_values[6]
                             self.spoiler.settings.blocker_7 = blocker_values[7]
-            
-   # randomize_blockers: if any player has it disabled, disable it for the group
+
+                            # randomize_blockers: if any player has it disabled, disable it for the group
                             if not world.options.randomize_blocker_required_amounts.value:
                                 self.seed_groups[group]["randomize_blocker_required_amounts"] = False
-                            
+
                             # blocker_max: use the lowest value in the group
-                            self.seed_groups[group]["blocker_max"] = min(
-                                self.seed_groups[group]["blocker_max"],
-                                int(world.options.blocker_max.value)
-                            )
-                            
+                            self.seed_groups[group]["blocker_max"] = min(self.seed_groups[group]["blocker_max"], int(world.options.blocker_max.value))
+
                             # maximize_helm_blocker: if any player has it enabled, enable it for the group
                             if world.options.maximize_helm_blocker.value:
                                 self.seed_groups[group]["maximize_helm_blocker"] = True
-                            
+
                             # level blockers: use the lowest value in the group for each
                             for level_num in range(1, 9):
                                 blocker_key = f"level{level_num}_blocker"
                                 option_key = blocker_key
-                                self.seed_groups[group][blocker_key] = min(
-                                    self.seed_groups[group][blocker_key],
-                                    int(getattr(world.options, option_key).value)
-                                )
-            
+                                self.seed_groups[group][blocker_key] = min(self.seed_groups[group][blocker_key], int(getattr(world.options, option_key).value))
+
             # Apply seed group settings and create group random if using a custom seed group BEFORE fillsettings
             self.group_random = None
             self.original_random = None
@@ -1151,18 +1137,19 @@ if baseclasses_loaded:
                         self.options.level6_blocker.value = self.seed_groups[group]["level6_blocker"]
                         self.options.level7_blocker.value = self.seed_groups[group]["level7_blocker"]
                         self.options.level8_blocker.value = self.seed_groups[group]["level8_blocker"]
-                        
+
                         # Apply synchronized logic and glitch settings
                         self.options.logic_type.value = self.seed_groups[group]["logic_type"]
                         self.options.tricks_selected.value = list(self.seed_groups[group]["tricks_selected"])
                         self.options.glitches_selected.value = list(self.seed_groups[group]["glitches_selected"])
-                        
+
                         # Create group random for LZR seed synchronization and replace self.random
                         from random import Random
+
                         self.group_random = Random(group)
                         self.original_random = self.random
                         self.random = self.group_random
-            
+
             # Use the fillsettings function to configure all settings
             settings = fillsettings(self.options, self.multiworld, self.random)
             # Enable entrance randomization if the option is set (any value other than no/off/false/0)
@@ -1178,7 +1165,7 @@ if baseclasses_loaded:
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
 
             Generate_Spoiler(self.spoiler)
-            
+
             # Store/retrieve blocker values for seed group synchronization
             if self.options.loading_zone_rando.value not in [0, LoadingZoneRando.option_no]:
                 if self.options.loading_zone_rando.value not in LoadingZoneRando.options.values():
@@ -1208,7 +1195,7 @@ if baseclasses_loaded:
                             self.spoiler.settings.blocker_5 = blocker_values[5]
                             self.spoiler.settings.blocker_6 = blocker_values[6]
                             self.spoiler.settings.blocker_7 = blocker_values[7]
-            
+
             if self.options.enable_shared_shops.value:
                 from randomizer.Lists.Location import SharedShopLocations
 
@@ -1328,7 +1315,7 @@ if baseclasses_loaded:
                     exit.toBeShuffled = False
                     exit.shuffled = False
                     exit.shuffledId = None
-                
+
                 ap_entrance_to_transition = {}
                 for transition_enum, shufflable_exit in ShufflableExits.items():
                     # TODO: Make this configurable with DLZR
@@ -1362,7 +1349,7 @@ if baseclasses_loaded:
                     for entrance in region.entrances:
                         if not entrance.parent_region:  # This is an ER target
                             initial_entrance_states[entrance] = entrance.connected_region
-                
+
                 initial_exit_states = {}
                 for region in self.multiworld.get_regions(self.player):
                     for exit in region.exits:
@@ -1377,17 +1364,16 @@ if baseclasses_loaded:
                         break
                     except EntranceRandomizationError as error:
                         if attempt >= DK64_MAX_ER_ATTEMPTS - 1:
-                            raise EntranceRandomizationError(f"DK64: failed entrance randomization after {DK64_MAX_ER_ATTEMPTS} "
-                                                            f"attempts. Final error:\n\n{error}")
+                            raise EntranceRandomizationError(f"DK64: failed entrance randomization after {DK64_MAX_ER_ATTEMPTS} " f"attempts. Final error:\n\n{error}")
                         logging.warning(f"DK64: Entrance randomization attempt {attempt + 1} failed, retrying...")
-                        
+
                         # Restore entrance/exit state for retry
                         # First, disconnect all exits that were connected during failed attempt
                         for region in self.multiworld.get_regions(self.player):
                             for exit in list(region.exits):
                                 if exit.connected_region and exit in initial_exit_states:
                                     exit.connected_region = None
-                        
+
                         # Restore ER targets to their original regions
                         for entrance, original_region in initial_entrance_states.items():
                             # Remove entrance from wherever it ended up
@@ -1407,7 +1393,7 @@ if baseclasses_loaded:
 
                 # After randomization, update the spoiler's exit data
                 self.spoiler.UpdateExits()
-                
+
                 # Restore original random if we replaced it with group random
                 if self.original_random:
                     self.random = self.original_random
