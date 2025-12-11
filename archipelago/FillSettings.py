@@ -56,7 +56,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Switches import Switches
 from randomizer.Lists.Switches import SwitchInfo
-from archipelago.Options import Goal, SwitchSanity, SelectStartingKong
+from archipelago.Options import Goal, SwitchSanity, SelectStartingKong, GalleonWaterLevel
 from archipelago.Goals import GOAL_MAPPING, QUANTITY_GOALS, calculate_quantity
 from archipelago.Logic import logic_item_name_to_id
 
@@ -128,7 +128,6 @@ def get_default_settings() -> dict:
         "filler_items_selected": [ItemRandoFiller.junkitem],
         "free_trade_setting": True,
         "fungi_time": FungiTimeSetting.dusk,
-        "galleon_water": GalleonWaterSetting.raised,
         "generate_spoilerlog": True,
         "hard_bosses_selected": [],
         "hard_mode_selected": [],
@@ -337,6 +336,11 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     if options.enable_cutscenes.value:
         settings_dict["more_cutscene_skips"] = ExtraCutsceneSkips.press
     settings_dict["alt_minecart_mayhem"] = options.alternate_minecart_mayhem.value
+    settings_dict["galleon_water"] = options.galleon_water_level.value
+    if options.galleon_water_level == GalleonWaterLevel.option_lowered:
+        settings_dict["galleon_water"] = GalleonWaterSetting.lowered
+    elif options.galleon_water_level == GalleonWaterLevel.option_raised:
+        settings_dict["galleon_water_level"] = GalleonWaterSetting.raised
 
 
 def apply_blocker_settings(settings_dict: dict, options) -> None:
@@ -732,6 +736,66 @@ def apply_minigame_settings(settings_dict: dict, options, multiworld) -> None:
     settings_dict["disable_hard_minigames"] = not options.hard_minigames.value
     settings_dict["bonus_barrel_auto_complete"] = options.auto_complete_bonus_barrels.value and options.goal.value != Goal.option_bonuses
     settings_dict["helm_room_bonus_count"] = HelmBonuses(options.helm_room_bonus_count.value)
+    
+    # Map crown door and coin door settings
+    crown_door_mapping = {
+        0: HelmDoorItem.vanilla,
+        1: HelmDoorItem.opened,
+        2: HelmDoorItem.medium_random,
+        3: HelmDoorItem.req_gb,
+        4: HelmDoorItem.req_bp,
+        5: HelmDoorItem.req_companycoins,
+        6: HelmDoorItem.req_key,
+        7: HelmDoorItem.req_medal,
+        8: HelmDoorItem.req_crown,
+        9: HelmDoorItem.req_fairy,
+        10: HelmDoorItem.req_rainbowcoin,
+        11: HelmDoorItem.req_bean,
+        12: HelmDoorItem.req_pearl,
+        13: HelmDoorItem.easy_random,
+        14: HelmDoorItem.hard_random,
+    }
+    
+    coin_door_mapping = {
+        0: HelmDoorItem.vanilla,
+        1: HelmDoorItem.opened,
+        2: HelmDoorItem.medium_random,
+        3: HelmDoorItem.req_gb,
+        4: HelmDoorItem.req_bp,
+        6: HelmDoorItem.req_key,
+        7: HelmDoorItem.req_medal,
+        8: HelmDoorItem.req_crown,
+        9: HelmDoorItem.req_fairy,
+        10: HelmDoorItem.req_rainbowcoin,
+        11: HelmDoorItem.req_bean,
+        12: HelmDoorItem.req_pearl,
+        13: HelmDoorItem.easy_random,
+        14: HelmDoorItem.hard_random,
+    }
+    
+    # Map door item type to the key name in helm_door_item_count dict
+    door_item_to_key = {
+        3: "golden_bananas",  # req_gb
+        4: "blueprints",       # req_bp
+        5: "company_coins",    # req_companycoins
+        6: "keys",             # req_key
+        7: "medals",           # req_medal
+        8: "crowns",           # req_crown
+        9: "fairies",          # req_fairy
+        10: "rainbow_coins",   # req_rainbowcoin
+        11: "bean",            # req_bean
+        12: "pearls",          # req_pearl
+    }
+    
+    settings_dict["crown_door_item"] = crown_door_mapping.get(options.crown_door_item.value, HelmDoorItem.opened)
+    # Get count from dict based on selected item, default to 1 if not found
+    crown_item_key = door_item_to_key.get(options.crown_door_item.value)
+    settings_dict["crown_door_item_count"] = options.helm_door_item_count.value.get(crown_item_key, 1) if crown_item_key else 1
+    
+    settings_dict["coin_door_item"] = coin_door_mapping.get(options.coin_door_item.value, HelmDoorItem.opened)
+    # Get count from dict based on selected item, default to 1 if not found
+    coin_item_key = door_item_to_key.get(options.coin_door_item.value)
+    settings_dict["coin_door_item_count"] = options.helm_door_item_count.value.get(coin_item_key, 1) if coin_item_key else 1
 
     if hasattr(multiworld, "generation_is_fake"):
         if hasattr(multiworld, "re_gen_passthrough"):

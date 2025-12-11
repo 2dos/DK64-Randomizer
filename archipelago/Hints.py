@@ -353,7 +353,7 @@ def parseIslesToHelmHint(world):
                 if len(originPaths) == 0:
                     break
                 pathToHint = originPaths[0]
-            
+
             source_name = ShufflableExits[pathToHint].name
             text = f"Looking for \x04Hideout Helm\x04? Try going from \x08{source_name}\x08.".upper()
 
