@@ -368,7 +368,7 @@ class KeysRequiredToBeatKrool(Range):
     Choosing a value of 8 means you start with all 8 keys.
     """
 
-    display_name = "Keys Pregiven to Access K. Rool"
+    display_name = "Amount of Pregiven Keys"
     range_start = 0
     range_end = 8
     default = 0
