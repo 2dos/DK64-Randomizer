@@ -366,7 +366,8 @@ def create_region(
         ):
             if not event.logic(logic_holder):
                 continue
-        # Water level altering events: only allow the one matching the initial galleon_water_internal setting in GalleonStart
+        # Water level altering events: allow the one matching the initial galleon_water_internal setting in GalleonStart
+        # and allow the opposite event in LighthouseUnderwater (for the switchable state)
         if event.name in (Events.WaterLowered, Events.WaterRaised):
             from randomizer.Enums.Settings import GalleonWaterSetting
             if region_name == "GalleonStart":
@@ -376,8 +377,16 @@ def create_region(
                     pass  # Allow this event
                 else:
                     continue  # Skip the event that doesn't match the setting
+            elif region_name == "LighthouseUnderwater":
+                # Allow the opposite event (the one you can switch to)
+                if event.name == Events.WaterRaised and logic_holder.settings.galleon_water_internal == GalleonWaterSetting.lowered:
+                    pass  # Allow switching to raised
+                elif event.name == Events.WaterLowered and logic_holder.settings.galleon_water_internal == GalleonWaterSetting.raised:
+                    pass  # Allow switching to lowered
+                else:
+                    continue  # Skip the event that matches the initial setting
             else:
-                continue  # Skip water events in all other regions including LighthouseUnderwater
+                continue  # Skip water events in all other regions
         # This event only matters if you enter galleon via the Treasure Room and it spawns open
         if event.name == Events.ShipyardTreasureRoomOpened and region_name == "TreasureRoom":
             if not event.logic(logic_holder):
