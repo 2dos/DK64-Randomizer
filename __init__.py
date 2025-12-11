@@ -1921,6 +1921,10 @@ if baseclasses_loaded:
                 "MinigameData": ({location_id.name: minigame_data.minigame.name for location_id, minigame_data in self.spoiler.shuffled_barrel_data.items()}),
                 "Autocomplete": self.options.auto_complete_bonus_barrels.value,
                 "HelmBarrelCount": self.options.helm_room_bonus_count.value,
+                "CrownDoorItem": self.spoiler.settings.crown_door_item.name,
+                "CrownDoorItemCount": self.spoiler.settings.crown_door_item_count,
+                "CoinDoorItem": self.spoiler.settings.coin_door_item.name,
+                "CoinDoorItemCount": self.spoiler.settings.coin_door_item_count,
                 "SmallerShopsData": self.get_smaller_shops_data(),
                 "ShopPrices": (
                     {
@@ -2218,6 +2222,7 @@ if baseclasses_loaded:
             blocker_data = list(map(lambda original_string: original_string[original_string.find(":") + 2 :], slot_data["BLockerValues"].split(", ")))
             blocker_item_type = list(map(lambda data: data.split(" ")[1], blocker_data))
             blocker_item_quantity = list(map(lambda data: int(data.split(" ")[0]), blocker_data))
+            galleon_water = slot_data.get("GalleonWater", "lowered")
 
             if self.version_check(version, "1.1.0"):
                 tricks_selected = slot_data.get("TricksSelected", []).split(", ")
@@ -2245,6 +2250,18 @@ if baseclasses_loaded:
                 minigame_data = {}
                 autocomplete = True
                 helm_barrel_count = 0
+
+            # Added helm door settings
+            if self.version_check(version, "1.4.16"):
+                crown_door_item = slot_data.get("CrownDoorItem", "opened")
+                crown_door_item_count = slot_data.get("CrownDoorItemCount", 1)
+                coin_door_item = slot_data.get("CoinDoorItem", "opened")
+                coin_door_item_count = slot_data.get("CoinDoorItemCount", 1)
+            else:
+                crown_door_item = "opened"
+                crown_door_item_count = 1
+                coin_door_item = "opened"
+                coin_door_item_count = 1
 
             # Added smaller shops data visibility
             if self.version_check(version, "1.1.14"):
@@ -2301,8 +2318,13 @@ if baseclasses_loaded:
             relevant_data["MinigameData"] = minigame_data
             relevant_data["Autocomplete"] = autocomplete
             relevant_data["HelmBarrelCount"] = helm_barrel_count
+            relevant_data["CrownDoorItem"] = crown_door_item
+            relevant_data["CrownDoorItemCount"] = crown_door_item_count
+            relevant_data["CoinDoorItem"] = coin_door_item
+            relevant_data["CoinDoorItemCount"] = coin_door_item_count
             relevant_data["HalfMedals"] = half_medals
             relevant_data["SmallerShopsData"] = smaller_shops_data
             relevant_data["ShopPrices"] = shop_prices
             relevant_data["EntranceRando"] = entrance_rando
+            relevant_data["GalleonWater"] = galleon_water
             return relevant_data
