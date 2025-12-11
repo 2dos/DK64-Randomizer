@@ -1183,7 +1183,7 @@ class DK64Options(PerGameCommonOptions):
     tag_link: TagLink
     trap_link: TrapLink
     goal: Goal
-    krool_key_count: KeysRequiredToBeatKrool
+    pregiven_keys: KeysRequiredToBeatKrool
     require_beating_krool: RequireBeatingKrool
     helm_key_lock: HelmKeyLock
     shuffle_helm_level_order: ShuffleHelmLevel

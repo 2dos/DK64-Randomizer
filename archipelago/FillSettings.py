@@ -437,7 +437,7 @@ def apply_hard_mode_settings(settings_dict: dict, options) -> None:
 def apply_kong_settings(settings_dict: dict, options) -> None:
     """Apply Kong settings."""
     # Key settings
-    settings_dict["krool_key_count"] = options.krool_key_count.value
+    settings_dict["krool_key_count"] = options.pregiven_keys.value
     settings_dict["krool_ship_spawn_method"] = 1 if options.require_beating_krool.value else 0
 
     # Kong mapping
