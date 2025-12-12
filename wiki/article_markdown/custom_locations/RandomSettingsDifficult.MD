@@ -10,7 +10,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Random Helm Length
 - Ice Traps Damage Player
 - Item Reward Previews
-- Randomize Keys Required to Beat K. Rool
+- Randomize Amount of Keys Pregiven
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
 - Quality Of Life
@@ -26,7 +26,6 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 # Always Off
 - Dim Solved Hints
 - Enable Plandomizer
-- Vanilla K. Rool Key Requirement
 - Irondonk
 - Guaranteed Starting Keys
 - No Joke Hints
@@ -214,6 +213,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Kong Model Tiny: 
 	- Default: 100%
 - Don't Start with Key 8: 70%
+- Require Beating K. Rool: 70%
 - Shuffle Boss Kong Required: 50%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 

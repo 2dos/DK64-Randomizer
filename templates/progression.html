@@ -17,11 +17,15 @@
                                 aria-label="Win Condition"
                                 data-toggle="tooltip"
                                 title="Alter the condition required to show the credits.">
-                            <option selected id="beat_krool" value="beat_krool" title="">
-                                Beat K Rool
+                            <option id="req_key" value="req_key">
+                                Keys
+                            </option>
                             </option>
                             <option id="get_key8" value="get_key8">
                                 Acquire Key 8
+                            </option>
+                            <option selected id="get_keys_3_and_8" value="get_keys_3_and_8" title="Acquire Keys 3 and 8 (Vanilla K. Rool Requirement)">
+                                Acquire Keys 3 and 8
                             </option>
                             <option id="krem_kapture" value="krem_kapture" title="Photograph all enemies using the fairy camera">
                                 Kremling Kapture
@@ -52,9 +56,6 @@
                             </option>
                             <option id="req_companycoins" value="req_companycoins">
                                 Company Coins
-                            </option>
-                            <option id="req_key" value="req_key">
-                                Keys
                             </option>
                             <option id="req_medal" value="req_medal">
                                 Medals
@@ -93,27 +94,39 @@
                                 default="1"
                                 placeholder="1"/>
                     </div>
+                    <div class="form-check form-switch item-switch" style="padding-left: 0;">
+                        <label data-toggle="tooltip"
+                                title="K. Rool's ship will not spawn until you meet your win condition requirements, and you must defeat K. Rool to win. Automatically enabled for Krool's Challenge. Automatically disabled for Kill the Rabbit.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="win_condition_spawns_ship"
+                                    id="win_condition_spawns_ship"
+                                    display_name="Require Beating K. Rool"
+                                    value="True"/>
+                            Require Beating K. Rool
+                        </label>
+                    </div>
                 </div>
             </div>
             <hr />
-            <h5 class="select-title">Keys Required To Beat K. Rool
+            <h5 class="select-title">Keys Pregiven
                 <label data-toggle="tooltip"
-                        title="Selects a random amount of pre-turned in Keys.&#10;i.e. Selecting '5' means 3 keys will be pre-turned in and you need 5 more.">
+                        title="Selects a random amount of pre-turned in Keys.&#10;i.e. Selecting '3' means 3 keys will be pre-turned in and you need 5 more.">
                     <input class="dice_checkbox"
                             type="checkbox"
                             name="keys_random"
                             id="keys_random"
-                            display_name="Randomize Keys Required to Beat K. Rool"
+                            display_name="Randomize Amount of Keys Pregiven"
                             onchange="toggle_clicks()"
                             value="True"/>
                     <label for="keys_random"></label>
                 </label></h5>
             <div class="flex-container" style="justify-content: space-between; width: 90%; margin: auto;">
-                <div style="display: flex;">Start with More Keys</div>
                 <div style="display: flex;">Start with Fewer Keys</div>
+                <div style="display: flex;">Start with More Keys</div>
             </div>
             <div class="flex-container flex-center">
-                {{ slider_input("krool_key_count", "Keys required to Beat K. Rool", 0, 8) }}
+                {{ slider_input("krool_key_count", "Keys Pregiven to Access K. Rool", 0, 8) }}
             </div>
             <div class="form-check form-switch item-switch center-flex">
                 <label data-toggle="tooltip" title="Select the keys you are guaranteed start with.">
@@ -428,18 +441,7 @@
                             Shuffle K. Rool Phases
                         </label>
                     </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                                title="K. Rool will require only keys 3 and 8 to appear, just like in the vanilla game.">
-                            <input class="form-check-input"
-                                    type="checkbox"
-                                    name="k_rool_vanilla_requirement"
-                                    id="k_rool_vanilla_requirement"
-                                    display_name="Vanilla K. Rool Key Requirement"
-                                    value="True"/>
-                            Vanilla K. Rool Key Requirement
-                        </label>
-                    </div>
+                    <div class="spacer"></div>
                 </div>
                 <h5 class="select-title">
                     K. Rool Phase Length
