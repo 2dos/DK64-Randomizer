@@ -1480,7 +1480,6 @@ dk64_option_groups: List[OptionGroup] = [
             GoalQuantity,
             KeysRequiredToBeatKrool,
             HelmPhaseCount,
-            HelmRoomBonusCount,
             HelmDoor1Item,
             HelmDoor2Item,
             HelmDoorItemCount,
