@@ -76,7 +76,7 @@ lookup_id_to_name: typing.Dict[int, str] = {data.code: item_name for item_name, 
 full_item_table.update(event_table)  # Temp for generating goal item
 
 
-def random_starting_moves(world: DK64World) -> typing.List[str]:
+def random_starting_moves(world: "DK64World") -> typing.List[str]:
     """Handle starting move alterations here."""
     starting_moves = []
 
@@ -105,7 +105,7 @@ def random_starting_moves(world: DK64World) -> typing.List[str]:
     return starting_moves
 
 
-def setup_items(world: DK64World) -> typing.List[DK64Item]:
+def setup_items(world: "DK64World") -> typing.List[DK64Item]:
     """Set up the item table for the world."""
     item_table = []
     starting_moves = random_starting_moves(world)
