@@ -231,6 +231,7 @@ crown_heads = (
     "Beetle",
     "Vulture",
     "Boulder",
+    "Electric",
 )
 
 crown_tails = (
@@ -311,6 +312,7 @@ crown_tails = (
     "Tangle",
     "Crossfire",
     "Royale",
+    "Boogaloo",
 )
 
 

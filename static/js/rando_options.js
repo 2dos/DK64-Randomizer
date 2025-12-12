@@ -1463,8 +1463,8 @@ function update_win_con_num_access() {
     "easy_random",
     "medium_random",
     "hard_random",
-    "beat_krool",
     "get_key8",
+    "get_keys_3_and_8",
     "krem_kapture",
     "dk_rap_items",
     "krools_challenge",
@@ -1474,15 +1474,34 @@ function update_win_con_num_access() {
     "easy_random",
     "medium_random",
     "hard_random",
-    "beat_krool",
   ]
+  const KROOL_REQUIRED_WIN_CONS = ["krools_challenge"];
+  const KROOL_DISABLED_WIN_CONS = ["kill_the_rabbit"];
 
   const winConSelection = document.getElementById("win_condition_item");
   const winConContainer = document.getElementById("win_condition_container");
   const winConReq = document.getElementById("win_condition_count");
   const disabled = DISABLED_WIN_VALUES.includes(winConSelection.value);
   const kroolSection = document.getElementById("krool_section");
-  const isKRool = KROOL_WIN_CONS.includes(winConSelection.value);
+  const kroolShipSpawnMethod = document.getElementById("win_condition_spawns_ship");
+  
+  // Force enable checkbox for win conditions that require K. Rool
+  if (KROOL_REQUIRED_WIN_CONS.includes(winConSelection.value)) {
+    kroolShipSpawnMethod.checked = true;
+    kroolShipSpawnMethod.disabled = true;
+  }
+  // Force disable checkbox for win conditions incompatible with K. Rool requirement
+  else if (KROOL_DISABLED_WIN_CONS.includes(winConSelection.value)) {
+    kroolShipSpawnMethod.checked = false;
+    kroolShipSpawnMethod.disabled = true;
+  }
+  // Allow user control for other win conditions
+  else {
+    kroolShipSpawnMethod.disabled = false;
+  }
+  
+  // Show K. Rool section only when the "Require Beating K. Rool" checkbox is checked
+  const isKRool = kroolShipSpawnMethod && kroolShipSpawnMethod.checked;
 
   if (disabled) {
     winConContainer.classList.add("hide-input");
@@ -1513,6 +1532,10 @@ function update_win_con_num_access() {
 
 document
   .getElementById("win_condition_item")
+  .addEventListener("change", update_win_con_num_access);
+
+document
+  .getElementById("win_condition_spawns_ship")
   .addEventListener("change", update_win_con_num_access);
 
 // Validate Door 1 input on loss of focus

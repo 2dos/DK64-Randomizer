@@ -148,6 +148,13 @@ def CompileArchipelagoHints(world, hint_data: list):
         hint_location_pairs.append((isles_to_helm_hint, None))  # Transition hints don't have a specific location
         hints_remaining -= 1
 
+    # Helm Door hints (only if one or both doors were set to random)
+    if world.options.crown_door_item.value in [13, 2, 14] or world.options.coin_door_item.value in [13, 2, 14]:
+        helm_door_hint = parseHelmDoorHint(world)
+        compiled_hints.append(helm_door_hint)
+        hint_location_pairs.append((helm_door_hint, None))  # Helm door hints don't have a specific location
+        hints_remaining -= 1
+
     # Kong hints
     for kong_loc in kong_locations:
         kong_hint = parseKongHint(world, kong_loc)
@@ -361,3 +368,61 @@ def parseIslesToHelmHint(world):
         if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
             text = text.replace(letter, " ")
     return text
+
+
+def parseHelmDoorHint(world):
+    """Write a hint for the Helm door requirements if they're randomized."""
+    from randomizer.Enums.Settings import BarrierItems
+    
+    # Map BarrierItems to display names (singular)
+    item_names_singular = {
+        BarrierItems.GoldenBanana: "Golden Banana",
+        BarrierItems.Blueprint: "Blueprint",
+        BarrierItems.CompanyCoin: "Special Coin",
+        BarrierItems.Key: "Key",
+        BarrierItems.Medal: "Medal",
+        BarrierItems.Crown: "Crown",
+        BarrierItems.Fairy: "Fairy",
+        BarrierItems.RainbowCoin: "Rainbow Coin",
+        BarrierItems.Bean: "Bean",
+        BarrierItems.Pearl: "Pearl",
+    }
+    
+    crown_door_item = world.spoiler.settings.crown_door_item
+    crown_door_count = world.spoiler.settings.crown_door_item_count
+    coin_door_item = world.spoiler.settings.coin_door_item
+    coin_door_count = world.spoiler.settings.coin_door_item_count
+    
+    crown_door_randomized = world.options.crown_door_item.value in [13, 2, 14]  # easy, medium, hard random
+    coin_door_randomized = world.options.coin_door_item.value in [13, 2, 14]
+    
+    text = ""
+    
+    if crown_door_randomized:
+        crown_name = item_names_singular.get(crown_door_item, "item")
+        if crown_door_count > 1:
+            if crown_door_item == BarrierItems.Fairy:
+                crown_name = "Fairies"
+            else:
+                crown_name = crown_name + "s"
+        text = f"There lies a \x05gate in Hideout Helm\x05 that requires \x04{crown_door_count} {crown_name}\x04.".upper()
+    
+    if coin_door_randomized:
+        coin_name = item_names_singular.get(coin_door_item, "item")
+        if coin_door_count > 1:
+            if coin_door_item == BarrierItems.Fairy:
+                coin_name = "Fairies"
+            else:
+                coin_name = coin_name + "s"
+        coin_text = f"There lies a \x05gate in Hideout Helm\x05 that requires \x04{coin_door_count} {coin_name}\x04.".upper()
+        # If both doors are randomized, combine the hints
+        if crown_door_randomized:
+            text = text + " " + coin_text
+        else:
+            text = coin_text
+    
+    for letter in text:
+        if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+            text = text.replace(letter, " ")
+    return text
+

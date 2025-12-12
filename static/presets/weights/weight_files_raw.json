@@ -920,23 +920,32 @@
             },
             "qol_uses_hard": true
         },
+        "win_condition_spawns_ship": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 30,
+                "standard": 50,
+                "difficult": 70
+            },
+            "qol_uses_hard": true
+        },
         "krool_key_count": {
             "setting_type": "range",
             "options": {
                 "easy": {
-                    "min": 1,
-                    "max": 5,
-                    "mean": 3
-                },
-                "standard": {
                     "min": 3,
                     "max": 7,
                     "mean": 5
                 },
+                "standard": {
+                    "min": 1,
+                    "max": 5,
+                    "mean": 3
+                },
                 "difficult": {
-                    "min": 4,
-                    "max": 8,
-                    "mean": 6
+                    "min": 0,
+                    "max": 4,
+                    "mean": 2
                 }
             },
             "qol_uses_hard": true
@@ -1920,15 +1929,6 @@
                     "castle_car_race": 70.0,
                     "jetpac": 70.0
                 }
-            },
-            "qol_uses_hard": true
-        },
-        "k_rool_vanilla_requirement": {
-            "setting_type": "bool",
-            "options": {
-                "easy": 0,
-                "standard": 0,
-                "difficult": 0
             },
             "qol_uses_hard": true
         },

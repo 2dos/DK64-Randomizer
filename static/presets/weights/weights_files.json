@@ -269,10 +269,10 @@
       "default": 1
     },
     "krool_access": 0.7,
+    "win_condition_spawns_ship": 0.3,
     "krool_in_boss_pool": 0.8,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
-    "k_rool_vanilla_requirement": 0,
     "level_randomization": {
       "vanilla": 0.5,
       "level_order": 0.5
@@ -701,10 +701,10 @@
       "default": 1
     },
     "krool_access": 0.7,
+    "win_condition_spawns_ship": 0.5,
     "krool_in_boss_pool": 0.65,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
-    "k_rool_vanilla_requirement": 0,
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.65,
@@ -1156,10 +1156,10 @@
       "default": 1
     },
     "krool_access": 0.7,
+    "win_condition_spawns_ship": 0.7,
     "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
-    "k_rool_vanilla_requirement": 0,
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.4,
@@ -1642,10 +1642,10 @@
       "default": 1
     },
     "krool_access": 0.7,
+    "win_condition_spawns_ship": 0.7,
     "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
-    "k_rool_vanilla_requirement": 0,
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.4,

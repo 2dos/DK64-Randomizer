@@ -1054,7 +1054,8 @@
     "req_bosses": 17,
     "req_bonuses": 18,
     "krools_challenge": 19,
-    "kill_the_rabbit": 20
+    "kill_the_rabbit": 20,
+    "get_keys_3_and_8": 21
   },
 
   /*
@@ -1388,7 +1389,8 @@
     "trap_weight_rockfall": 288,
     "trap_weight_disabletag": 289,
     "random_starting_region_new": 290,
-    "kong_model_mode": 291
+    "kong_model_mode": 291,
+    "win_condition_spawns_ship": 292
   },
   /*
     SettingsStringDataType:
@@ -1751,6 +1753,7 @@
     "SettingsStringEnum.kong_model_mode": { "obj": "KongModelMode" },
     "SettingsStringEnum.kong_rando": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.krool_access": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.win_condition_spawns_ship": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.krool_key_count": {
       "obj": "SettingsStringDataType.var_int"
     },
