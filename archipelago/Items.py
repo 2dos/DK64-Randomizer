@@ -7,7 +7,7 @@ from BaseClasses import Item, ItemClassification
 from worlds.AutoWorld import World
 from types import SimpleNamespace
 
-from archipelago.Options import Goal
+from archipelago.Options import Goal, ShopPrices
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists import Item as DK64RItem
 from randomizer.Enums.Items import Items as DK64RItems
@@ -120,10 +120,7 @@ def setup_items(world: World) -> typing.List[DK64Item]:
         match dk64r_item.type:
             case DK64RTypes.Banana:
                 num_bananas = 201
-                if BarrierItems.GoldenBanana in helm_door_required_types:
-                    # Helm door requires golden bananas
-                    ap_item.classification = ItemClassification.progression_deprioritized
-                elif not world.options.goal == Goal.option_golden_bananas:
+                if world.options.goal != Goal.option_golden_bananas and not BarrierItems.GoldenBanana in helm_door_required_types:
                     ap_item.classification = ItemClassification.progression_deprioritized
                 for _ in range(num_bananas):
                     item_table.append(copy.copy(ap_item))
@@ -147,10 +144,10 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Blueprint:
                 # Need to remove the old blueprints
-                if item_id >= 270 and item_id <= 274:
+                if item_id >= DK64RItems.DonkeyBlueprint and item_id <= DK64RItems.ChunkyBlueprint:
                     if BarrierItems.Blueprint in helm_door_required_types:
                         # Helm door requires blueprints
-                        ap_item.classification = ItemClassification.progression_deprioritized
+                        ap_item.classification = ItemClassification.progression_skip_balancing
                     elif world.options.goal in {Goal.option_blueprints, Goal.option_krools_challenge}:
                         ap_item.classification = ItemClassification.progression
                     else:
@@ -160,9 +157,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                         item_table.append(copy.copy(ap_item))
             case DK64RTypes.Fairy:
                 num_fairies = 20
-                if BarrierItems.Fairy in helm_door_required_types:
+                if BarrierItems.Fairy in helm_door_required_types or world.options.goal == Goal.option_fairies:
                     # Helm door requires fairies
-                    ap_item.classification = ItemClassification.progression_deprioritized
+                    ap_item.classification = ItemClassification.progression_skip_balancing
                 elif not world.options.goal == Goal.option_fairies:
                     ap_item.classification = ItemClassification.progression_deprioritized
                 for _ in range(num_fairies):
@@ -187,12 +184,9 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Crown:
                 num_crowns = 10
-                if BarrierItems.Crown in helm_door_required_types:
-                    # Helm door requires crowns
-                    ap_item.classification = ItemClassification.progression_deprioritized
-                elif not (world.options.goal in {Goal.option_crowns, Goal.option_treasure_hurry} or world.options.enable_chaos_blockers):
+                if not (world.options.goal in {Goal.option_crowns, Goal.option_treasure_hurry} or BarrierItems.Crown in helm_door_required_types or world.options.enable_chaos_blockers):
                     ap_item.classification = ItemClassification.filler
-                elif world.options.goal in {Goal.option_crowns, Goal.option_treasure_hurry} and not world.options.enable_chaos_blockers:
+                elif (world.options.goal in {Goal.option_crowns, Goal.option_treasure_hurry} or BarrierItems.Crown in helm_door_required_types) and not world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.progression_skip_balancing
                 for _ in range(num_crowns):
                     item_table.append(copy.copy(ap_item))
@@ -206,33 +200,32 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 num_medals = 40
                 if BarrierItems.Medal in helm_door_required_types:
                     # Helm door requires medals
-                    ap_item.classification = ItemClassification.progression_deprioritized
+                    ap_item.classification = ItemClassification.progression_skip_balancing
                 elif not world.options.goal == Goal.option_medals:
                     ap_item.classification = ItemClassification.progression_deprioritized
                 for _ in range(num_medals):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Bean:
-                if BarrierItems.Bean in helm_door_required_types:
-                    # Helm door requires bean
-                    ap_item.classification = ItemClassification.progression_deprioritized
+                if BarrierItems.Bean in helm_door_required_types or world.options.goal == Goal.option_bean:
+                    # Helm door or win condition requires bean
+                    ap_item.classification = ItemClassification.progression_skip_balancing
                 item_table.append(copy.copy(ap_item))
             case DK64RTypes.Pearl:
                 num_pearls = 5
-                if BarrierItems.Pearl in helm_door_required_types:
+                if BarrierItems.Pearl in helm_door_required_types or world.options.goal == Goal.option_pearls:
                     # Helm door requires pearls
-                    ap_item.classification = ItemClassification.progression_deprioritized
+                    ap_item.classification = ItemClassification.progression_skip_balancing
                 elif not world.options.goal == Goal.option_pearls:
                     ap_item.classification = ItemClassification.progression_deprioritized
                 for _ in range(num_pearls):
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.RainbowCoin:
                 num_coins = 16
-                if BarrierItems.RainbowCoin in helm_door_required_types:
-                    # Helm door requires rainbow coins
-                    ap_item.classification = ItemClassification.progression_deprioritized
-                elif world.options.shop_prices != 0:
+                if BarrierItems.RainbowCoin in helm_door_required_types or world.options.goal == Goal.option_rainbow_coins:
                     ap_item.classification = ItemClassification.progression_skip_balancing
-                elif not (world.options.goal == Goal.option_rainbow_coins or world.options.enable_chaos_blockers):
+                elif world.options.shop_prices != ShopPrices.option_free:
+                    ap_item.classification = ItemClassification.progression_deprioritized
+                elif not world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.filler
                 else:
                     ap_item.classification = ItemClassification.progression_skip_balancing
@@ -252,12 +245,11 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                     ap_item.classification = ItemClassification.useful
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.NintendoCoin | DK64RTypes.RarewareCoin:
-                if BarrierItems.CompanyCoin in helm_door_required_types:
-                    # Helm door requires company coins
-                    ap_item.classification = ItemClassification.progression_deprioritized
-                elif not (world.options.goal in {Goal.option_company_coins, Goal.option_treasure_hurry} or world.options.enable_chaos_blockers):
+                if not (world.options.goal in {Goal.option_company_coins, Goal.option_treasure_hurry} or BarrierItems.CompanyCoin in helm_door_required_types or world.options.enable_chaos_blockers):
                     ap_item.classification = ItemClassification.filler
-                elif world.options.goal in {Goal.option_company_coins, Goal.option_treasure_hurry} and not world.options.enable_chaos_blockers:
+                elif (
+                    world.options.goal in {Goal.option_company_coins, Goal.option_treasure_hurry} or BarrierItems.CompanyCoin in helm_door_required_types
+                ) and not world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.progression_skip_balancing
                 item_table.append(copy.copy(ap_item))
             case DK64RTypes.Cranky | DK64RTypes.Funky | DK64RTypes.Candy | DK64RTypes.Snide:

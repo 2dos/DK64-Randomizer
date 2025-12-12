@@ -906,6 +906,7 @@ class HelmRoomBonusCount(Range):
     range_end = 2
     default = 0
 
+
 class HelmDoor1Item(Choice):
     """Determines what item is required to open the first door in Hideout Helm (Crown Door).
 
@@ -1361,6 +1362,7 @@ class LoadingZoneRando(TextChoice):
     option_yes = 1
     default = 0
 
+
 # Yes this was implemented after LZR
 class GalleonWaterLevel(Choice):
     """Determines what level the water in Galleon is set to."""
@@ -1369,6 +1371,7 @@ class GalleonWaterLevel(Choice):
     option_raised = 0
     option_lowered = 1
     default = 0
+
 
 @dataclass
 class DK64Options(PerGameCommonOptions):

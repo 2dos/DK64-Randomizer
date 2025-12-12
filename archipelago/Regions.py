@@ -370,6 +370,7 @@ def create_region(
         # and allow the opposite event in LighthouseUnderwater (for the switchable state)
         if event.name in (Events.WaterLowered, Events.WaterRaised):
             from randomizer.Enums.Settings import GalleonWaterSetting
+
             if region_name == "GalleonStart":
                 if event.name == Events.WaterLowered and logic_holder.settings.galleon_water_internal == GalleonWaterSetting.lowered:
                     pass  # Allow this event

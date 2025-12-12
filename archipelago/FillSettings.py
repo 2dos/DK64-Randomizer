@@ -745,7 +745,7 @@ def apply_minigame_settings(settings_dict: dict, options, multiworld) -> None:
     settings_dict["disable_hard_minigames"] = not options.hard_minigames.value
     settings_dict["bonus_barrel_auto_complete"] = options.auto_complete_bonus_barrels.value and options.goal.value != Goal.option_bonuses
     settings_dict["helm_room_bonus_count"] = HelmBonuses(options.helm_room_bonus_count.value)
-    
+
     # Map crown door and coin door settings
     crown_door_mapping = {
         0: HelmDoorItem.vanilla,
@@ -764,7 +764,7 @@ def apply_minigame_settings(settings_dict: dict, options, multiworld) -> None:
         13: HelmDoorItem.easy_random,
         14: HelmDoorItem.hard_random,
     }
-    
+
     coin_door_mapping = {
         0: HelmDoorItem.vanilla,
         1: HelmDoorItem.opened,
@@ -781,26 +781,26 @@ def apply_minigame_settings(settings_dict: dict, options, multiworld) -> None:
         13: HelmDoorItem.easy_random,
         14: HelmDoorItem.hard_random,
     }
-    
+
     # Map door item type to the key name in helm_door_item_count dict
     door_item_to_key = {
         3: "golden_bananas",  # req_gb
-        4: "blueprints",       # req_bp
-        5: "company_coins",    # req_companycoins
-        6: "keys",             # req_key
-        7: "medals",           # req_medal
-        8: "crowns",           # req_crown
-        9: "fairies",          # req_fairy
-        10: "rainbow_coins",   # req_rainbowcoin
-        11: "bean",            # req_bean
-        12: "pearls",          # req_pearl
+        4: "blueprints",  # req_bp
+        5: "company_coins",  # req_companycoins
+        6: "keys",  # req_key
+        7: "medals",  # req_medal
+        8: "crowns",  # req_crown
+        9: "fairies",  # req_fairy
+        10: "rainbow_coins",  # req_rainbowcoin
+        11: "bean",  # req_bean
+        12: "pearls",  # req_pearl
     }
-    
+
     settings_dict["crown_door_item"] = crown_door_mapping.get(options.crown_door_item.value, HelmDoorItem.opened)
     # Get count from dict based on selected item, default to 1 if not found
     crown_item_key = door_item_to_key.get(options.crown_door_item.value)
     settings_dict["crown_door_item_count"] = options.helm_door_item_count.value.get(crown_item_key, 1) if crown_item_key else 1
-    
+
     settings_dict["coin_door_item"] = coin_door_mapping.get(options.coin_door_item.value, HelmDoorItem.opened)
     # Get count from dict based on selected item, default to 1 if not found
     coin_item_key = door_item_to_key.get(options.coin_door_item.value)

@@ -373,7 +373,7 @@ def parseIslesToHelmHint(world):
 
 def parseHelmDoorHint(world):
     """Write hints for the Helm door requirements if they're randomized."""
-        
+
     # Map BarrierItems to display names (singular)
     item_names_singular = {
         BarrierItems.GoldenBanana: "Golden Banana",
@@ -387,18 +387,17 @@ def parseHelmDoorHint(world):
         BarrierItems.Bean: "Bean",
         BarrierItems.Pearl: "Pearl",
     }
-    
+
     crown_door_item = world.spoiler.settings.crown_door_item
     crown_door_count = world.spoiler.settings.crown_door_item_count
     coin_door_item = world.spoiler.settings.coin_door_item
     coin_door_count = world.spoiler.settings.coin_door_item_count
-    
+
     crown_door_randomized = world.options.crown_door_item.value in [13, 2, 14]  # easy, medium, hard random
     coin_door_randomized = world.options.coin_door_item.value in [13, 2, 14]
-    
-    
+
     hints = []
-    
+
     if crown_door_randomized:
         crown_name = item_names_singular.get(crown_door_item, "item")
         if crown_door_count > 1:
@@ -411,7 +410,7 @@ def parseHelmDoorHint(world):
             if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
                 text = text.replace(letter, " ")
         hints.append(text)
-    
+
     if coin_door_randomized:
         coin_name = item_names_singular.get(coin_door_item, "item")
         if coin_door_count > 1:
@@ -424,6 +423,5 @@ def parseHelmDoorHint(world):
             if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
                 coin_text = coin_text.replace(letter, " ")
         hints.append(coin_text)
-    
-    return hints
 
+    return hints
