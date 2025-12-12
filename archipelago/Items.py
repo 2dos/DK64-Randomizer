@@ -6,6 +6,7 @@ import typing
 from BaseClasses import Item, ItemClassification
 from worlds.AutoWorld import World
 from types import SimpleNamespace
+from typing import TYPE_CHECKING
 
 from archipelago.Options import Goal, ShopPrices
 from randomizer.Enums.Levels import Levels
@@ -15,6 +16,9 @@ from randomizer.Enums.Settings import WinConditionComplex
 from randomizer.Enums.Types import Types as DK64RTypes, BarrierItems
 import randomizer.ItemPool as DK64RItemPoolUtility
 import copy
+
+if TYPE_CHECKING:
+    from .. import DK64World
 
 BASE_ID = 0xD64000
 
@@ -44,7 +48,7 @@ event_table = {
 }
 
 
-def use_original_name_or_trap_name(item: DK64RItem) -> str:
+def use_original_name_or_trap_name(item: DK64RItem.Item) -> str:
     """Determine whether to use the original donk name or a renamed ice trap name."""
     if item.type == DK64RTypes.FakeItem:
         # Rename traps to be easier for trap link
@@ -65,14 +69,14 @@ def use_original_name_or_trap_name(item: DK64RItem) -> str:
 
 
 # Complete item table
-full_item_table = {use_original_name_or_trap_name(item): ItemData(int(BASE_ID + index), item.playthrough) for index, item in DK64RItem.ItemList.items()}
+full_item_table: dict[str, ItemData] = {use_original_name_or_trap_name(item): ItemData(int(BASE_ID + index), item.playthrough) for index, item in DK64RItem.ItemList.items()}
 
-lookup_id_to_name: typing.Dict[int, str] = {data.code: item_name for item_name, data in full_item_table.items()}
+lookup_id_to_name: typing.Dict[int, str] = {data.code: item_name for item_name, data in full_item_table.items() if data.code}
 
 full_item_table.update(event_table)  # Temp for generating goal item
 
 
-def random_starting_moves(world: World) -> typing.List[str]:
+def random_starting_moves(world: DK64World) -> typing.List[str]:
     """Handle starting move alterations here."""
     starting_moves = []
 
@@ -101,7 +105,7 @@ def random_starting_moves(world: World) -> typing.List[str]:
     return starting_moves
 
 
-def setup_items(world: World) -> typing.List[DK64Item]:
+def setup_items(world: DK64World) -> typing.List[DK64Item]:
     """Set up the item table for the world."""
     item_table = []
     starting_moves = random_starting_moves(world)
