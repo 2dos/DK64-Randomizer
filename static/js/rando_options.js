@@ -1483,7 +1483,7 @@ function update_win_con_num_access() {
   const winConReq = document.getElementById("win_condition_count");
   const disabled = DISABLED_WIN_VALUES.includes(winConSelection.value);
   const kroolSection = document.getElementById("krool_section");
-  const kroolShipSpawnMethod = document.getElementById("krool_ship_spawn_method");
+  const kroolShipSpawnMethod = document.getElementById("win_condition_spawns_ship");
   
   // Force enable checkbox for win conditions that require K. Rool
   if (KROOL_REQUIRED_WIN_CONS.includes(winConSelection.value)) {
@@ -1535,7 +1535,7 @@ document
   .addEventListener("change", update_win_con_num_access);
 
 document
-  .getElementById("krool_ship_spawn_method")
+  .getElementById("win_condition_spawns_ship")
   .addEventListener("change", update_win_con_num_access);
 
 // Validate Door 1 input on loss of focus

@@ -684,14 +684,14 @@
                         console.log('Converting beat_krool win condition to Keys (8) with Require Beating K. Rool enabled');
                         setting_data.win_condition_item = "req_key";
                         setting_data.win_condition_count = 8;
-                        setting_data.krool_ship_spawn_method = true;
+                        setting_data.win_condition_spawns_ship = true;
                     } else if (setting_data.win_condition_item === "krools_challenge") {
                         console.log('K. Rools Challenge win condition - enabling Require Beating K. Rool');
-                        setting_data.krool_ship_spawn_method = true;
+                        setting_data.win_condition_spawns_ship = true;
                     } else {
-                        // All other win conditions should have krool_ship_spawn_method disabled
+                        // All other win conditions should have win_condition_spawns_ship disabled
                         console.log(`Win condition "${setting_data.win_condition_item}" - disabling Require Beating K. Rool`);
-                        setting_data.krool_ship_spawn_method = false;
+                        setting_data.win_condition_spawns_ship = false;
                     }
                     // Invert krool_key_count to represent "keys pregiven" instead of "keys required"
                     if (setting_data.krool_key_count !== undefined) {

@@ -1390,7 +1390,7 @@
     "trap_weight_disabletag": 289,
     "random_starting_region_new": 290,
     "kong_model_mode": 291,
-    "krool_ship_spawn_method": 292
+    "win_condition_spawns_ship": 292
   },
   /*
     SettingsStringDataType:
@@ -1753,7 +1753,7 @@
     "SettingsStringEnum.kong_model_mode": { "obj": "KongModelMode" },
     "SettingsStringEnum.kong_rando": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.krool_access": { "obj": "SettingsStringDataType.bool" },
-    "SettingsStringEnum.krool_ship_spawn_method": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.win_condition_spawns_ship": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.krool_key_count": {
       "obj": "SettingsStringDataType.var_int"
     },

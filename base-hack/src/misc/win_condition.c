@@ -180,15 +180,15 @@ int canAccessWinCondition(void) {
         
         default:
             // For beat K. Rool and other win conditions, return 0 so they use normal key-based spawning
-            // Only return 1 if explicitly using krool_ship_spawn_method
+            // Only return 1 if explicitly using win_condition_spawns_ship
             return 0;
     }
 }
 
 void checkSeedVictory(void) {
     if (!checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
-        // If krool_ship_spawn_method is enabled, don't trigger victory on win condition items - only when K. Rool is defeated
-        if (Rando.krool_ship_spawn_method == 1) {
+        // If win_condition_spawns_ship is enabled, don't trigger victory on win condition items - only when K. Rool is defeated
+        if (Rando.win_condition_spawns_ship == 1) {
             return;
         }
         if (canAccessWinCondition()) {

@@ -920,7 +920,7 @@
             },
             "qol_uses_hard": true
         },
-        "krool_ship_spawn_method": {
+        "win_condition_spawns_ship": {
             "setting_type": "bool",
             "options": {
                 "easy": 30,
