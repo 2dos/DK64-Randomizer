@@ -260,6 +260,54 @@ def setup_items(world: World) -> typing.List[DK64Item]:
                 # Items that should not be added to the pool at all
                 continue
 
+    # Mark items as progression based on helm door requirements
+    helm_door_required_types = set()
+    
+    # Check crown door requirement - add to set if it requires a specific item type
+    # (not vanilla=0 or opened=1, but any specific item requirement)
+    if world.options.crown_door_item.value >= 2:  # Any requirement (random or specific)
+        crown_door_item = world.spoiler.settings.crown_door_item
+        helm_door_required_types.add(crown_door_item)
+    
+    # Check coin door requirement - add to set if it requires a specific item type  
+    if world.options.coin_door_item.value >= 2:  # Any requirement (random or specific)
+        coin_door_item = world.spoiler.settings.coin_door_item
+        helm_door_required_types.add(coin_door_item)
+    
+    # Map BarrierItems to item types we need to mark as progression
+    barrier_to_type_map = {
+        BarrierItems.GoldenBanana: DK64RTypes.Banana,
+        BarrierItems.Blueprint: DK64RTypes.Blueprint,
+        BarrierItems.Key: DK64RTypes.Key,
+        BarrierItems.Medal: DK64RTypes.Medal,
+        BarrierItems.Crown: DK64RTypes.Crown,
+        BarrierItems.Fairy: DK64RTypes.Fairy,
+        BarrierItems.RainbowCoin: DK64RTypes.RainbowCoin,
+        BarrierItems.Bean: DK64RTypes.Bean,
+        BarrierItems.Pearl: DK64RTypes.Pearl,
+        BarrierItems.CompanyCoin: None,  # This covers both Nintendo and Rareware coins
+    }
+    
+    # Update classification for items required by helm doors
+    for ap_item in item_table:
+        item_name = ap_item.name
+        # Find the corresponding DK64R item
+        for item_id, dk64r_item in DK64RItem.ItemList.items():
+            if use_original_name_or_trap_name(dk64r_item) == item_name:
+                item_type = dk64r_item.type
+                
+                # Check if this item type is required by a helm door
+                for required_barrier in helm_door_required_types:
+                    required_type = barrier_to_type_map.get(required_barrier)
+                    
+                    if required_type == item_type:
+                        if ap_item.classification not in [ItemClassification.progression, ItemClassification.progression_skip_balancing, ItemClassification.progression_deprioritized]:
+                            ap_item.classification = ItemClassification.progression_deprioritized
+                    elif required_barrier == BarrierItems.CompanyCoin and item_type in [DK64RTypes.NintendoCoin, DK64RTypes.RarewareCoin]:
+                        if ap_item.classification not in [ItemClassification.progression, ItemClassification.progression_skip_balancing, ItemClassification.progression_deprioritized]:
+                            ap_item.classification = ItemClassification.progression_deprioritized
+                break
+
     # Raise an error if we have too many items
     available_slots = world.spoiler.settings.location_pool_size - 1  # minus 1 for Banana Hoard
     if len(item_table) > available_slots:

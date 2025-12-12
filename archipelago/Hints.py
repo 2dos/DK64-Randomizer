@@ -6,6 +6,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Types import BarrierItems
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import UpdateHint
 
@@ -150,10 +151,11 @@ def CompileArchipelagoHints(world, hint_data: list):
 
     # Helm Door hints (only if one or both doors were set to random)
     if world.options.crown_door_item.value in [13, 2, 14] or world.options.coin_door_item.value in [13, 2, 14]:
-        helm_door_hint = parseHelmDoorHint(world)
-        compiled_hints.append(helm_door_hint)
-        hint_location_pairs.append((helm_door_hint, None))  # Helm door hints don't have a specific location
-        hints_remaining -= 1
+        helm_door_hints = parseHelmDoorHint(world)
+        for helm_door_hint in helm_door_hints:
+            compiled_hints.append(helm_door_hint)
+            hint_location_pairs.append((helm_door_hint, None))  # Helm door hints don't have a specific location
+            hints_remaining -= 1
 
     # Kong hints
     for kong_loc in kong_locations:
@@ -210,7 +212,6 @@ def CompileArchipelagoHints(world, hint_data: list):
     # Sanity check that 35 hints were placed
     if hints_remaining > 0:
         # This part of the code should not be reached.
-        print("Not enough hints. Please wait. stage_generate_output might be crashing.")
         while hints_remaining > 0:
             filler_hint = "no hint, sorry...".upper()
             compiled_hints.append(filler_hint)
@@ -371,9 +372,8 @@ def parseIslesToHelmHint(world):
 
 
 def parseHelmDoorHint(world):
-    """Write a hint for the Helm door requirements if they're randomized."""
-    from randomizer.Enums.Settings import BarrierItems
-    
+    """Write hints for the Helm door requirements if they're randomized."""
+        
     # Map BarrierItems to display names (singular)
     item_names_singular = {
         BarrierItems.GoldenBanana: "Golden Banana",
@@ -396,7 +396,8 @@ def parseHelmDoorHint(world):
     crown_door_randomized = world.options.crown_door_item.value in [13, 2, 14]  # easy, medium, hard random
     coin_door_randomized = world.options.coin_door_item.value in [13, 2, 14]
     
-    text = ""
+    
+    hints = []
     
     if crown_door_randomized:
         crown_name = item_names_singular.get(crown_door_item, "item")
@@ -406,6 +407,10 @@ def parseHelmDoorHint(world):
             else:
                 crown_name = crown_name + "s"
         text = f"There lies a \x05gate in Hideout Helm\x05 that requires \x04{crown_door_count} {crown_name}\x04.".upper()
+        for letter in text:
+            if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+                text = text.replace(letter, " ")
+        hints.append(text)
     
     if coin_door_randomized:
         coin_name = item_names_singular.get(coin_door_item, "item")
@@ -415,14 +420,10 @@ def parseHelmDoorHint(world):
             else:
                 coin_name = coin_name + "s"
         coin_text = f"There lies a \x05gate in Hideout Helm\x05 that requires \x04{coin_door_count} {coin_name}\x04.".upper()
-        # If both doors are randomized, combine the hints
-        if crown_door_randomized:
-            text = text + " " + coin_text
-        else:
-            text = coin_text
+        for letter in coin_text:
+            if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+                coin_text = coin_text.replace(letter, " ")
+        hints.append(coin_text)
     
-    for letter in text:
-        if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
-            text = text.replace(letter, " ")
-    return text
+    return hints
 

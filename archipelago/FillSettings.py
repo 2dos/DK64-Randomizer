@@ -336,11 +336,12 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     if options.enable_cutscenes.value:
         settings_dict["more_cutscene_skips"] = ExtraCutsceneSkips.press
     settings_dict["alt_minecart_mayhem"] = options.alternate_minecart_mayhem.value
-    settings_dict["galleon_water"] = options.galleon_water_level.value
     if options.galleon_water_level == GalleonWaterLevel.option_lowered:
         settings_dict["galleon_water"] = GalleonWaterSetting.lowered
     elif options.galleon_water_level == GalleonWaterLevel.option_raised:
-        settings_dict["galleon_water_level"] = GalleonWaterSetting.raised
+        settings_dict["galleon_water"] = GalleonWaterSetting.raised
+    else:
+        settings_dict["galleon_water"] = GalleonWaterSetting.vanilla
 
 
 def apply_blocker_settings(settings_dict: dict, options) -> None:
