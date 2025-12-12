@@ -64,12 +64,12 @@
 | --- | ---- | ----- |
 | Gloomy Galleon | In Punch Chest | `l.camera and l.punch and l.chunky` | 
 | Galleon5DShip DKTiny | Inside Tiny 5-Door Ship | `l.camera` | 
-| Gloomy Galleon | Tiny Slam Button | `l.camera` | 
+| Gloomy Galleon | Tiny Slam Switch | `l.camera` | 
 | Gloomy Galleon | Tunnel Intersection | `l.camera` | 
 | Gloomy Galleon | Under Cranky Platform | `l.camera` | 
 | Gloomy Galleon | Tunnel to Chest Area | `l.camera` | 
-| Gloomy Galleon | Inbetween 5-Door Ship and 2-Door Ship | `l.camera` | 
-| Gloomy Galleon | Inbetween 5-Door Ship and Seal Race | `l.camera` | 
+| Gloomy Galleon | Towards the 2-Door Ship | `l.camera` | 
+| Gloomy Galleon | Towards the Seal Race | `l.camera` | 
 | Gloomy Galleon | Around Cactus | `l.camera` | 
 | Gloomy Galleon | Around Lighthouse | `l.camera` | 
 | Galleon Sick Bay | Seasick Ship | `l.camera` | 
@@ -147,7 +147,7 @@
 | Castle Dungeon | Donkey Dungeon | `l.camera and ((l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.CanPhase())` | 
 | Castle Lower Cave | Above entrance to Mausoleum | `l.camera` | 
 | Castle Lower Cave | Near Funky's | `l.camera` | 
-| Castle Lower Cave | Above Donkey Diddy Chunky Crypt Entrance | `l.camera` | 
+| Castle Lower Cave | Above entrance to Crypt | `l.camera` | 
 | Castle Tower | Wind Tower | `l.camera` | 
 | Castle Library | Library | `l.camera` | 
 

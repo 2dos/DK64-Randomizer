@@ -1180,7 +1180,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             ordered_interesting_locations.append(locationId)
 
     # If K. Rool is the win condition, prepare phase-specific paths as well
-    if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+    if spoiler.settings.win_condition_spawns_ship == 1:
         for phase in spoiler.settings.krool_order:
             spoiler.krool_paths[phase] = []
     # If the Rabbit is the win condition, prepare a path for him.
@@ -1207,7 +1207,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             if other_location not in accessible:
                 spoiler.other_paths[other_location].append(locationId)
         # If the win condition is K. Rool, also add this location to those paths as applicable
-        if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+        if spoiler.settings.win_condition_spawns_ship == 1:
             final_boss_associated_event = {
                 Maps.JapesBoss: Events.KRoolDillo1,
                 Maps.AztecBoss: Events.KRoolDog1,
@@ -4131,6 +4131,8 @@ def ValidateFixedHints(settings: Settings) -> None:
 def CheckForIncompatibleSettings(settings: Settings) -> None:
     """Check for known settings conflicts and throw an exception immediately."""
     found_incompatibilities = ""
+    if settings.shops_dont_cost and settings.random_prices == RandomPrices.vanilla:
+        found_incompatibilities += "Cannot turn on Tooie-Style Shops with Vanilla Prices. "
     if not settings.fast_start_beginning_of_game:
         if settings.shuffle_loading_zones == ShuffleLoadingZones.all:
             found_incompatibilities += "Cannot turn off Fast Start with Loading Zones Randomized. "
@@ -4154,9 +4156,6 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
         if settings.perma_death or settings.wipe_file_on_death:
             if settings.damage_amount == DamageAmount.quad or settings.damage_amount == DamageAmount.ohko:
                 found_incompatibilities += "Cannot turn on 'Angry Caves' with a damage modifier higher than double damage with Irondonk enabled. "
-    if settings.win_condition_item in (WinConditionComplex.req_bonuses, WinConditionComplex.krools_challenge):
-        if settings.bonus_barrel_auto_complete:
-            found_incompatibilities += "Autocomplete Bonus Barrels cannot be enabled when the win condition requires completing bonus barrels. "
     trap_weights = [
         settings.trap_weight_bubble,
         settings.trap_weight_reverse,

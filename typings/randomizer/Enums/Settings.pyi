@@ -567,6 +567,7 @@ class WinConditionComplex(IntEnum):
     req_bonuses = 18
     krools_challenge = 19
     kill_the_rabbit = 20
+    get_keys_3_and_8 = 21
 
 class WrinklyHints(IntEnum):
     off = 0
@@ -873,6 +874,7 @@ class SettingsStringEnum(IntEnum):
     trap_weight_disabletag = 289
     random_starting_region_new = 290
     kong_model_mode = 291
+    win_condition_spawns_ship = 292
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1111,6 +1113,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.kong_model_mode: KongModelMode,
     SettingsStringEnum.kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_access: SettingsStringDataType.bool,
+    SettingsStringEnum.win_condition_spawns_ship: SettingsStringDataType.bool,
     SettingsStringEnum.krool_key_count: SettingsStringDataType.var_int,
     SettingsStringEnum.krool_phase_count: SettingsStringDataType.var_int,
     SettingsStringEnum.krool_phase_order_rando: SettingsStringDataType.bool,

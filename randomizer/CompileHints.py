@@ -371,7 +371,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         # If K. Rool is live it is guaranteed a hint in this distribution if it is not hinted otherwise via spoiler hints
         if (
             (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random or getattr(spoiler.settings, "krool_in_boss_pool", False))
-            and spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge)
+            and spoiler.settings.win_condition_spawns_ship == 1
             and spoiler.settings.spoiler_hints == SpoilerHints.off
         ):
             valid_types.append(HintType.KRoolOrder)
@@ -515,11 +515,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             else:
                 valid_types.append(HintType.Entrance)
         # If K. Rool is live it can get one hint if it is not hinted otherwise via spoiler hints
-        if (
-            (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random)
-            and spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge)
-            and spoiler.settings.spoiler_hints == SpoilerHints.off
-        ):
+        if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.win_condition_spawns_ship == 1 and spoiler.settings.spoiler_hints == SpoilerHints.off:
             valid_types.append(HintType.KRoolOrder)
             maxed_hint_types.append(HintType.KRoolOrder)
             # If the seed doesn't funnel you into helm, guarantee one K. Rool order hint
@@ -552,7 +548,7 @@ def compileHints(spoiler: Spoiler) -> bool:
 
                 valid_types.append(HintType.WothLocation)
                 # K. Rool seeds could use some help finding the last pesky moves
-                if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+                if spoiler.settings.win_condition_spawns_ship == 1:
                     valid_types.append(HintType.RequiredWinConditionHint)
                     # Count the number of non-trivial phases
                     hint_distribution[HintType.RequiredWinConditionHint] = len(
@@ -982,7 +978,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     location_to_hint = spoiler.settings.random.choice(location_options)
                     hinted_path_locations.append(location_to_hint)
         # If K. Rool is our goal, do the same with K. Rool phases
-        if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+        if spoiler.settings.win_condition_spawns_ship == 1:
             for kong in spoiler.krool_paths.keys():
                 # Determine if any location we're already hinting is on the path to this phase of K. Rool
                 hinted_locations_on_this_path = set(spoiler.krool_paths[kong]) & set(hinted_path_locations)
@@ -1156,7 +1152,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     # - Prevent 35 plando hints from causing problems here (I don't think it will, but double check it)
     if hintset.expectedDistribution[HintType.RequiredWinConditionHint] > 0:
         # To aid K. Rool goals create a number of path hints to help find items required specifically for K. Rool
-        if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+        if spoiler.settings.win_condition_spawns_ship == 1:
             path = spoiler.woth_paths[Locations.BananaHoard]
             already_chosen_krool_path_locations = []
             chosen_krool_path_location_cap = hintset.expectedDistribution[HintType.RequiredWinConditionHint]
@@ -2592,7 +2588,7 @@ def GenerateMultipathDict(
                 if endpoint_item.type == Types.Kong:
                     path_to_family = True
         # Determine which K. Rool phases this is on the path to (if relevant)
-        if spoiler.settings.win_condition_item in (WinConditionComplex.beat_krool, WinConditionComplex.krools_challenge):
+        if spoiler.settings.win_condition_spawns_ship == 1:
             for map_id in spoiler.krool_paths.keys():
                 if location in spoiler.krool_paths[map_id]:
                     path_to_krool_phases.append(boss_colors[map_id] + boss_names[map_id] + boss_colors[map_id])

@@ -540,7 +540,7 @@ class Settings:
         self.helm_phase_count = 3
         self.helm_random = False
         # krool_key_count: int, [0-8]
-        self.krool_key_count = 8
+        self.krool_key_count = 0
         self.keys_random = False
         # starting_kongs_count: int, [1-5]
         self.starting_kong = Kongs.any
@@ -764,6 +764,7 @@ class Settings:
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
         self.krool_access = False
+        self.win_condition_spawns_ship = 0  # 0 = Key-based, 1 = Win condition-based
         self.helm_phase_order_rando = None
         self.open_lobbies = None
         self.randomize_pickups = False
@@ -936,7 +937,7 @@ class Settings:
         self.big_head_mode = BigHeadMode.off
         # self.win_condition = WinCondition.beat_krool  # Deprecated
         self.win_condition_random = False
-        self.win_condition_item = WinConditionComplex.beat_krool
+        self.win_condition_item = WinConditionComplex.get_keys_3_and_8
         self.win_condition_count = 1
         self.key_8_helm = False
         self.k_rool_vanilla_requirement = False
@@ -1872,6 +1873,7 @@ class Settings:
                 HelmDoorRandomInfo(1, 1, 0.03),
             ),
             WinConditionComplex.get_key8: HelmDoorInfo(1),
+            WinConditionComplex.get_keys_3_and_8: HelmDoorInfo(1),
             WinConditionComplex.req_gb: HelmDoorInfo(
                 self.total_gbs,
                 HelmDoorRandomInfo(int(0.4 * self.total_gbs), int(0.75 * self.total_gbs), 0.1),
@@ -2105,7 +2107,8 @@ class Settings:
         if self.keys_random:
             required_key_count = self.random.randint(0, 8)
         else:
-            required_key_count = self.krool_key_count
+            # I mean, I guess this works
+            required_key_count = 8 - self.krool_key_count
         key_8_required = self.krool_access or self.win_condition_item == WinConditionComplex.get_key8
         # Remove the need for keys we intend to start with
         if self.select_keys:
@@ -2288,6 +2291,14 @@ class Settings:
         if self.kasplat_rando_setting == KasplatRandoSetting.location_shuffle:
             self.kasplat_rando = True
             self.kasplat_location_rando = True
+
+        # Force win_condition_spawns_ship based on win condition
+        # Krool's Challenge always requires beating K. Rool
+        if self.win_condition_item == WinConditionComplex.krools_challenge:
+            self.win_condition_spawns_ship = 1
+        # Kill the Rabbit cannot require beating K. Rool (would softlock)
+        elif self.win_condition_item == WinConditionComplex.kill_the_rabbit:
+            self.win_condition_spawns_ship = 0
 
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
         if self.win_condition_item == WinConditionComplex.req_fairy or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:

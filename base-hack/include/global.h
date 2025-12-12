@@ -237,6 +237,7 @@ extern void checkVictory_flaghook(int flag);
 extern void winRabbitSeed(int song, float volume);
 extern void safeguardRabbitReward(void);
 extern int canAccessKroolsChallenge(void);
+extern int canAccessWinCondition(void);
 extern void FileProgressInitSub(int file, int shuffle);
 extern void handleFileSelectSprites(void* paad, void* sprite, int x, int y, float scale, int unk0, int control);
 extern void checkSkippableCutscene(void);

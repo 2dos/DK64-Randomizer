@@ -43,7 +43,7 @@ class Goal(Choice):
     """
 
     display_name = "Goal"
-    option_beat_k_rool = 0
+    option_acquire_keys_3_and_8 = 0
     option_acquire_key_8 = 1
     option_kremling_kapture = 2
     option_dk_rap = 3
@@ -62,7 +62,7 @@ class Goal(Choice):
     option_treasure_hurry = 16
     option_krools_challenge = 17
     option_kill_the_rabbit = 18
-    default = 0
+    default = 7
 
 
 class GoalQuantity(OptionDict):
@@ -362,16 +362,26 @@ class MermaidRequirement(Range):
 
 
 class KeysRequiredToBeatKrool(Range):
-    """Determines how many keys are needed to spawn Krool's Ship.
+    """Determines how many keys are pregiven.
 
-    Choosing a value of 0 means you start with all 8 keys.
-    Choosing a value of 8 means you start with no keys.
+    Choosing a value of 0 means you start with 0 keys.
+    Choosing a value of 8 means you start with all 8 keys.
     """
 
-    display_name = "Keys Required to Beat Krool"
+    display_name = "Amount of Pregiven Keys"
     range_start = 0
     range_end = 8
-    default = 8
+    default = 0
+
+
+class RequireBeatingKrool(DefaultOnToggle):
+    """Require defeating K. Rool in addition to the win condition requirements.
+
+    K. Rool's ship will not spawn until you meet your win condition requirements, and you must defeat K. Rool to win.
+    Automatically enabled for Krool's Challenge. Automatically disabled for Kill the Rabbit.
+    """
+
+    display_name = "Require Beating K. Rool"
 
 
 class SwitchSanity(Choice):
@@ -1173,7 +1183,8 @@ class DK64Options(PerGameCommonOptions):
     tag_link: TagLink
     trap_link: TrapLink
     goal: Goal
-    krool_key_count: KeysRequiredToBeatKrool
+    pregiven_keys: KeysRequiredToBeatKrool
+    require_beating_krool: RequireBeatingKrool
     helm_key_lock: HelmKeyLock
     shuffle_helm_level_order: ShuffleHelmLevel
     krool_phase_count: KroolPhaseCount
@@ -1264,6 +1275,7 @@ dk64_option_groups: List[OptionGroup] = [
         "Victory Conditions",
         [
             Goal,
+            RequireBeatingKrool,
             GoalQuantity,
             KeysRequiredToBeatKrool,
             HelmPhaseCount,
