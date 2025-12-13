@@ -44,7 +44,7 @@ Gfx* printLevelIGT(Gfx* dl, int x, int y, float scale, char* str) {
             level_index = i;
         }
     }
-    if (Rando.spoiler_hints) {
+    if (Rando.spoiler_hints == 2) {
         unsigned short left = 0;
         unsigned short total = 0;
         getLevelPoints(level_index, &left, &total);

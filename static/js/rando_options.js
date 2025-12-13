@@ -49,6 +49,28 @@ function getItemCap(item) {
   return null;
 }
 
+function isItemShuffled(item_type, is_dummy = false) {
+  let limit = 5;
+  if (document.getElementById("decouple_item_rando").checked) {
+    limit = 10;
+  }
+  for (let i = 0; i < limit; i++) {
+    if ((i == 0) || (i == 5)) {
+      continue;
+    }
+    if ((i < 5) && (is_dummy) && (limit == 10)) {
+      continue;
+    }
+    const list_items = document.getElementById(`item_rando_list_${i}`).getElementsByTagName("li");
+    for (let j = 0; j < list_items.length; j++) {
+      if (list_items[j].getAttribute("value") == "item_type") {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 // Attach the function as an event listener to the "change" event on the "logic_type" element
 document
   .getElementById("logic_type")
@@ -253,17 +275,7 @@ document
 
 // Enable or disable custom locations for battle arenas
 function plando_disable_arena_custom_locations() {
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
-  let crownsShuffled = false;
-
-  for (let option of itemRandoPool) {
-    if (option.value === "crown") {
-      crownsShuffled = option.selected;
-    }
-  }
-
+  let crownsShuffled = isItemShuffled("crown");
   const randomCrowns = document.getElementById("crown_placement_rando").checked;
   const customCrownsElem = document.getElementById("plando_place_arenas");
   let tooltip = "Allows the user to specify locations for each battle arena.";
@@ -289,17 +301,7 @@ document
 
 // Enable or disable custom locations for melon crates
 function plando_disable_crate_custom_locations() {
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
-  let cratesShuffled = false;
-
-  for (let option of itemRandoPool) {
-    if (option.value === "crateitem") {
-      cratesShuffled = option.selected;
-    }
-  }
-
+  let cratesShuffled = isItemShuffled("dummyitem_crateitem", true) || isItemShuffled("crateitem");
   const randomCrates = document.getElementById("random_crates").checked;
   const customCratesElem = document.getElementById("plando_place_crates");
   let tooltip = "Allows the user to specify locations for each melon crate.";
@@ -324,17 +326,7 @@ document
   .addEventListener("click", plando_disable_crate_custom_locations);
 
 function plando_disable_fairy_custom_locations() {
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
-  let fairiesShuffled = false;
-
-  for (let option of itemRandoPool) {
-    if (option.value === "fairy") {
-      fairiesShuffled = option.selected;
-    }
-  }
-
+  let fairiesShuffled = isItemShuffled("fairy");
   const randomFairies = document.getElementById("random_fairies").checked;
   const customFairiesElem = document.getElementById("plando_place_fairies");
   let tooltip = "Allows the user to specify locations for each banana fairy.";
@@ -360,17 +352,7 @@ document
 
 // Enable or disable custom locations for Kasplats
 function plando_disable_kasplat_custom_locations() {
-  const itemRandoPool = document.getElementById(
-    "item_rando_list_selected"
-  ).options;
-  let kasplatsShuffled = false;
-
-  for (let option of itemRandoPool) {
-    if (option.value === "blueprint") {
-      kasplatsShuffled = option.selected;
-    }
-  }
-
+  let kasplatsShuffled = isItemShuffled("blueprint");
   const kasplatShuffle = document.getElementById("kasplat_rando_setting").value;
   const customKasplatsElem = document.getElementById("plando_place_kasplats");
   let tooltip = "Allows the user to specify locations for each Kasplat.";
