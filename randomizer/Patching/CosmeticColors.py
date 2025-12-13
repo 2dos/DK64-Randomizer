@@ -684,6 +684,7 @@ class WinConData:
         self.flip = flip
         self.default_count = default_count
 
+
 def writeWinConImage(settings: Settings, image: Image, ROM_COPY: LocalROM):
     """Wrapper function for writing a win con image, detecting K Rool win con."""
     # if settings.win_condition_spawns_ship:
@@ -699,6 +700,7 @@ def writeWinConImage(settings: Settings, image: Image, ROM_COPY: LocalROM):
     #     base_im = image
     base_im = image
     writeColorImageToROM(base_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+
 
 def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
     """Alter the image that's shown on the main menu to display the win condition."""
