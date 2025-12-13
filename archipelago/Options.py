@@ -1344,13 +1344,8 @@ class EnemiesSelected(OptionList):
 class LoadingZoneRando(TextChoice):
     """Randomize the connections between loading zones (Loading Zone Randomizer).
 
-    When enabled, all loading zone connections will be randomized.
-    This creates a highly shuffled world where areas connect in unexpected ways.
-
-    If you set this option's value to a string, it will be used as a custom seed.
+    If you set this option's value to a string (ie. "LZR": 50 instead of "yes": 50), it will be used as a custom seed.
     Every player who uses the same custom seed will have the same loading zone connections.
-
-    WARNING: This is an advanced feature that significantly increases complexity.
     """
 
     display_name = "Loading Zone Rando"
