@@ -1346,6 +1346,8 @@ class LoadingZoneRando(TextChoice):
 
     If you set this option's value to a string (ie. "LZR": 50 instead of "yes": 50), it will be used as a custom seed.
     Every player who uses the same custom seed will have the same loading zone connections.
+
+    WARNING: LZR is not for the faint of heart. Don't turn this on UNLESS you know what you're doing.
     """
 
     display_name = "Loading Zone Rando"
