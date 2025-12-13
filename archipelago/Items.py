@@ -188,7 +188,7 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
                     item_table.append(copy.copy(ap_item))
             case DK64RTypes.Crown:
                 num_crowns = 10
-                if not (world.options.goal in {Goal.option_crowns, Goal.option_treasure_hurry} or BarrierItems.Crown in helm_door_required_types or world.options.enable_chaos_blockers):
+                if world.options.goal not in {Goal.option_crowns, Goal.option_treasure_hurry} and BarrierItems.Crown not in helm_door_required_types and not world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.filler
                 elif (world.options.goal in {Goal.option_crowns, Goal.option_treasure_hurry} or BarrierItems.Crown in helm_door_required_types) and not world.options.enable_chaos_blockers:
                     ap_item.classification = ItemClassification.progression_skip_balancing
