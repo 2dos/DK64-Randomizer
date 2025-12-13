@@ -541,3 +541,4 @@ extern StartingItemsStruct starting_item_data;
 extern coinHUDStruct CoinHUDElements[8];
 extern unsigned short guard_tag_timer;
 extern spoiler_struct spoiler_items[SPOILER_COUNT];
+extern char k_rool_text[9];

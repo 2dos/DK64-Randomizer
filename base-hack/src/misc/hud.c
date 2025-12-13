@@ -356,7 +356,7 @@ void allocateHUD(int reallocate) {
         // Write Stuff, normally in switch case
         if (element_def->cheat) {
             if (CheatBitfield & element_def->cheat) {
-                *(element->item_count_pointer) = correctRefillCap(i, 0);
+                *(element_def->counter) = correctRefillCap(i, 0);
                 written_cheat = 1;
             }
         }

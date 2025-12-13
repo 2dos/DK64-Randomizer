@@ -13,6 +13,7 @@
 static char balanced_igt[20] = "";
 static char perc_str[7] = "";
 static char gb_str[5] = "";
+char k_rool_text[9] = "& K.ROOL";
 
 #define LINE_GAP 0x8C
 static char updated_tracker = 0;
