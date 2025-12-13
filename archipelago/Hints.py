@@ -340,7 +340,6 @@ def parseKRoolHint(world):
 
 def parseIslesToHelmHint(world):
     """Write a hint for finding the transition that leads to Hideout Helm."""
-
     text = ""
     # Check if entrance randomization is enabled
     if hasattr(world.spoiler, "shuffled_exit_data") and world.spoiler.shuffled_exit_data:
@@ -373,7 +372,6 @@ def parseIslesToHelmHint(world):
 
 def parseHelmDoorHint(world):
     """Write hints for the Helm door requirements if they're randomized."""
-
     # Map BarrierItems to display names (singular)
     item_names_singular = {
         BarrierItems.GoldenBanana: "Golden Banana",

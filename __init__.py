@@ -1300,7 +1300,6 @@ if baseclasses_loaded:
 
         def connect_entrances(self) -> None:
             """Randomize and connect entrances if LZR is on."""
-
             LinkWarps(self.spoiler)  # I am very skeptical that this works at all - must be resolved if we want to do more than Isles warps preactivated
             connect_regions(self, self.spoiler.settings)
 

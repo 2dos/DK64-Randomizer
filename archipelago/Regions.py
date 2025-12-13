@@ -626,7 +626,6 @@ def connect_regions(world: World, settings: Settings):
 
 def connect_glitch_transitions(world: World, er_placement_state: ERPlacementState):
     """Connect glitch transitions to the appropriate shuffled exit."""
-
     entrances = er_placement_state.placements
 
     for region_id, region_obj in all_logic_regions.items():
@@ -644,7 +643,6 @@ def connect_glitch_transitions(world: World, er_placement_state: ERPlacementStat
 
 def connect_exit_level_and_deathwarp(world: World, er_placement_state: ERPlacementState):
     """Connect exit level and deathwarp transitions."""
-
     entrances = er_placement_state.placements
 
     exit_level_transition_dict = {
