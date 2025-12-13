@@ -148,6 +148,7 @@
 
 .definelabel ExitPointer, 0x807FC900
 .definelabel ExitCount, 0x807FC904
+.definelabel CheatBitfield, 0x80744544
 
 .definelabel screenCenterX, 0x80744490
 .definelabel screenCenterY, 0x80744494

@@ -2437,7 +2437,7 @@ class Settings:
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
-        bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove]
+        bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove, Types.Hint]
         is_bad = location.type in bad_fake_types
         if self.ice_traps_damage:
             if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko) or self.perma_death or self.wipe_file_on_death:

@@ -685,6 +685,23 @@ class WinConData:
         self.default_count = default_count
 
 
+def writeWinConImage(settings: Settings, image: Image, ROM_COPY: LocalROM):
+    """Wrap function for writing a win con image, detecting K Rool win con."""
+    # if settings.win_condition_spawns_ship:
+    #     base_im = Image.new(mode="RGBA", size=(64, 64))
+    #     left_im = getImageFile(ROM_COPY, TableNames.TexturesGeometry, 0x383, True, 32, 64, TextureFormat.RGBA5551)
+    #     right_im = getImageFile(ROM_COPY, TableNames.TexturesGeometry, 0x384, True, 32, 64, TextureFormat.RGBA5551)
+    #     base_im.paste(left_im, (0, 0), left_im)
+    #     base_im.paste(right_im, (32, 0), right_im)
+    #     base_im = base_im.transpose(Image.FLIP_TOP_BOTTOM)
+    #     base_im = base_im.resize((32, 32))
+    #     base_im.paste(image, (0, 0), image)
+    # else:
+    #     base_im = image
+    base_im = image
+    writeColorImageToROM(base_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+
+
 def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
     """Alter the image that's shown on the main menu to display the win condition."""
     win_con = settings.win_condition_item
@@ -710,25 +727,25 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
             pos_y = 32 * img[2]
             output_image.paste(local_img, (pos_x, pos_y), local_img)
         output_image = output_image.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
-        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+        writeWinConImage(settings, output_image, LocalROM)
     if win_con == WinConditionComplex.get_key8:
         output_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/key8.png")))
         output_image = output_image.resize((32, 32))
-        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+        writeWinConImage(settings, output_image, LocalROM)
         return
     if win_con == WinConditionComplex.req_bean:
         output_image = Image.open(BytesIO(js.getFile("base-hack/assets/arcade_jetpac/arcade/bean.png")))
         output_image = output_image.resize((32, 32))
-        writeColorImageToROM(output_image, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+        writeWinConImage(settings, output_image, LocalROM)
         return
     if win_con == WinConditionComplex.krem_kapture:
         item_im = getImageFile(ROM_COPY, 14, 0x90, True, 32, 32, TextureFormat.RGBA5551)
-        writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+        writeWinConImage(settings, item_im, ROM_COPY)
         return
     if win_con == WinConditionComplex.dk_rap_items:
         item_im = getImageFile(ROM_COPY, 7, 0x3D3, False, 40, 40, TextureFormat.RGBA5551)
         item_im = item_im.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
-        writeColorImageToROM(item_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+        writeWinConImage(settings, item_im, ROM_COPY)
         return
     if win_con == WinConditionComplex.kill_the_rabbit:
         output_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/kill_the_rabbit.png")))
@@ -771,4 +788,4 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
     base_im = base_im.resize((32, 32))
     num_im = numberToImage(settings.win_condition_count, (20, 20), ROM_COPY)
     base_im.paste(num_im, (6, 6), num_im)
-    writeColorImageToROM(base_im, 14, 195, 32, 32, False, TextureFormat.RGBA5551, ROM_COPY)
+    writeWinConImage(settings, base_im, ROM_COPY)

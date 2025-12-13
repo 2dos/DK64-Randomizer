@@ -562,6 +562,7 @@ extern unsigned short PositionFacingAngle;
 extern char ChimpyCam;
 extern char ScreenRatio;
 extern char SoundType;
+extern unsigned short CheatBitfield;
 extern actorData* LastSpawnedActor;
 extern char LoadedActorCount;
 extern loadedActorArr LoadedActorArray[64];
