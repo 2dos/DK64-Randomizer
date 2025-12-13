@@ -686,7 +686,7 @@ class WinConData:
 
 
 def writeWinConImage(settings: Settings, image: Image, ROM_COPY: LocalROM):
-    """Wrapper function for writing a win con image, detecting K Rool win con."""
+    """Wrap function for writing a win con image, detecting K Rool win con."""
     # if settings.win_condition_spawns_ship:
     #     base_im = Image.new(mode="RGBA", size=(64, 64))
     #     left_im = getImageFile(ROM_COPY, TableNames.TexturesGeometry, 0x383, True, 32, 64, TextureFormat.RGBA5551)
