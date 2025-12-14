@@ -8,7 +8,7 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Fast Warps
 - Random Helm Length
 - Item Reward Previews
-- Randomize Amount of Keys Pregiven
+- Randomize Amount of Starting Keys
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
 - Quality Of Life

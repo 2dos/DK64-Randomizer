@@ -10,7 +10,7 @@ The generated settings will be of greater difficulty. Requirements for B. Locker
 - Random Helm Length
 - Ice Traps Damage Player
 - Item Reward Previews
-- Randomize Amount of Keys Pregiven
+- Randomize Amount of Starting Keys
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
 - Quality Of Life

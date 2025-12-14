@@ -276,37 +276,6 @@ class LogicVarHolder:
         # SpecialLocationsReached are only utilized for warp events for TA purposes, and can be therefore bypassed in Archipelago
         self.SpecialLocationsReached = [Locations.AztecDonkeyQuicksandCave, Locations.CavesTinyCaveBarrel, Locations.GalleonDiddyGoldTower, Locations.JapesDiddyMountain]
 
-        # Set key events for keys which are given to the player at start of game
-        keyEvents = [
-            Events.JapesKeyTurnedIn,
-            Events.AztecKeyTurnedIn,
-            Events.FactoryKeyTurnedIn,
-            Events.GalleonKeyTurnedIn,
-            Events.ForestKeyTurnedIn,
-            Events.CavesKeyTurnedIn,
-            Events.CastleKeyTurnedIn,
-            Events.HelmKeyTurnedIn,
-        ]
-        for keyEvent in keyEvents:
-            if keyEvent not in self.settings.krool_keys_required:
-                # This is horrifyingly bad to go keys -> events -> keys but the patcher is expecting events in krool_keys_required and I'm not touching the math there to fix it
-                if keyEvent == Events.JapesKeyTurnedIn:
-                    self.JapesKey = True
-                elif keyEvent == Events.AztecKeyTurnedIn:
-                    self.AztecKey = True
-                elif keyEvent == Events.FactoryKeyTurnedIn:
-                    self.FactoryKey = True
-                elif keyEvent == Events.GalleonKeyTurnedIn:
-                    self.GalleonKey = True
-                elif keyEvent == Events.ForestKeyTurnedIn:
-                    self.ForestKey = True
-                elif keyEvent == Events.CavesKeyTurnedIn:
-                    self.CavesKey = True
-                elif keyEvent == Events.CastleKeyTurnedIn:
-                    self.CastleKey = True
-                elif keyEvent == Events.HelmKeyTurnedIn:
-                    self.HelmKey = True
-
         activated_warp_maps = []
         if self.settings.activate_all_bananaports == ActivateAllBananaports.all:
             activated_warp_maps = [

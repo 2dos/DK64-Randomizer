@@ -369,7 +369,7 @@ LogicRegions = {
     ]),
 
     Regions.GloomyGalleonLobbyEntrance: Region("Gloomy Galleon Lobby Entrance", HintRegion.EarlyLobbies, Levels.DKIsles, False, None, [], [], [
-        TransitionFront(Regions.IslesMain, lambda _: True, Transitions.IslesGalleonLobbyToMain),
+        TransitionFront(Regions.KremIsle, lambda _: True, Transitions.IslesGalleonLobbyToMain),
         TransitionFront(Regions.GloomyGalleonLobby, lambda _: True),
     ]),
 
