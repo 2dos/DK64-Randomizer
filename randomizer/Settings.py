@@ -1506,6 +1506,7 @@ class Settings:
                 for k in level_base_maps
             ]
 
+        self.item_pool_info = []
         self.shuffled_location_types = []
         self.junk_offset = 0
         self.shuffled_check_allowances = {}
@@ -1624,6 +1625,7 @@ class Settings:
                 Types.Snide: Items.Snide,
             }
             for pool_index in range(4):
+                self.item_pool_info.append(ItemPoolInfo())
                 for selector_value in self.check_search[pool_index]:
                     selector_type = item_ui_pairing[selector_value][1]
                     selector_types = [selector_type]
@@ -1648,14 +1650,16 @@ class Settings:
                         elif item_type == Types.Medal and IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
                             item_types = [Types.Medal, Types.IslesMedal]
                         for x in selector_types:
+                            if x not in dummy_location_types:
+                                self.shuffled_location_types.append(x)
+                                self.item_pool_info[pool_index].location_types.append(x)
                             for y in item_types:
                                 if x not in self.shuffled_check_allowances:
                                     self.shuffled_check_allowances[x] = []
                                 self.shuffled_check_allowances[x].append(y)
-                                if x not in dummy_location_types:
-                                    self.shuffled_location_types.append(x)
                                 if y not in dummy_location_types:
                                     self.shuffled_location_types.append(y)
+                                    self.item_pool_info[pool_index].item_types.append(y)
                     for check, item_type in filler_pairing.items():
                         if check in self.filler_items_selected:
                             for x in selector_types:
@@ -1665,6 +1669,15 @@ class Settings:
                             self.shuffled_location_types.append(item_type)
                     for x in selector_types:
                         self.shuffled_check_allowances[x] = list(set(self.shuffled_check_allowances[x]))
+                self.item_pool_info[pool_index].location_types = list(set(self.item_pool_info[pool_index].location_types))
+                self.item_pool_info[pool_index].item_types = list(set(self.item_pool_info[pool_index].item_types))
+                # If location and item types are the same and exactly one type, then the pool isn't shuffled
+                if (
+                    len(self.item_pool_info[pool_index].location_types) == 1
+                    and len(self.item_pool_info[pool_index].item_types) == 1
+                    and self.item_pool_info[pool_index].location_types[0] == self.item_pool_info[pool_index].item_types[0]
+                ):
+                    self.item_pool_info[pool_index].is_shuffled = False
             self.shuffled_location_types = list(set(self.shuffled_location_types))
             self.enemy_drop_rando = Types.Enemies in self.shuffled_location_types
             if Types.Shop in self.shuffled_location_types:
@@ -2616,6 +2629,7 @@ class Settings:
                     badBlueprintTypes = [Types.Fairy]
                     badBlueprintLocations = []
                 badBlueprintLocations.extend([Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(40)])  # Don't allow blueprints on snide rewards... very bad idea
+                badBlueprintLocations.extend(SharedShopLocations)  # Blueprints in shared shops plays poorly with the fill and in practice
                 blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in badBlueprintTypes]
 
                 # These locations do not have a set Kong assigned to them and can't have blueprints
@@ -3260,3 +3274,14 @@ class Settings:
         if name == "_Settings__hash":
             raise Exception("Error: Attempted deletion of race hash.")
         super().__delattr__(name)
+
+
+class ItemPoolInfo:
+    """Class for storing item pool information for analysis."""
+
+    def __init__(self):
+        """Initialize the item pool info object."""
+        self.item_types = []
+        self.location_types = []
+        self.is_shuffled = True
+        self.foolish = True

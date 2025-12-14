@@ -1420,6 +1420,8 @@ def compileHints(spoiler: Spoiler) -> bool:
             Locations.JapesDiddyMountain: [Regions.Mine, Maps.JapesMountain],
             # Forest Diddy Winch naturally needs to find the Winch room very badly rather than Forest Main
             Locations.ForestDiddyCagedBanana: [Regions.WinchRoom, Maps.ForestWinchRoom],
+            # Forest Donkey Mill needs to find the Grinder Room rather than Forest Main
+            Locations.ForestDonkeyMill: [Regions.GrinderRoom, Maps.ForestMillFront],
         }
         region_exceptions = {
             # Most Galleon ships share a Map but have segmented sections. We want to be sure we're looking for the correct transition for each check.
@@ -1818,9 +1820,21 @@ def compileHints(spoiler: Spoiler) -> bool:
                             if candidate_region_name in hintable_region_names:
                                 region_name_to_hint = candidate_region_name
                                 hintable_region_names.remove(candidate_region_name)
-
-            if region_name_to_hint is None:
+            # Try to find a scouring-hintable region that actually contains useful info
+            valid_region_found = False
+            while not valid_region_found:
+                # If we somehow run out, kick back to the start of the loop - it handles that case there (RARE)
+                if len(hintable_region_names) == 0:
+                    continue
+                # Start with a random one
                 region_name_to_hint = hintable_region_names.pop()
+                # If the region's hintable items are only in unshuffled locations, it's not an interesting hint
+                # Crucially, unshuffled locations still contribute to the count so as to not make the hints lie
+                for region_item in spoiler.region_hintable_count[region_name_to_hint].keys():
+                    region_item_data = spoiler.region_hintable_count[region_name_to_hint][region_item]
+                    if any(region_item_data["shuffled_locations"]):
+                        valid_region_found = True
+                        break
             hint_location = hintset.getRandomHintLocation(random=spoiler.settings.random)
             level_color = "\x05"
             for region_id in Regions:
@@ -1834,7 +1848,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             for region_item in region_items:
                 region_item_data = spoiler.region_hintable_count[region_name_to_hint][region_item]
                 count = region_item_data["count"]
-                if count > max_count:
+                if count > max_count and len(region_item_data["shuffled_locations"]) > 0:
                     # Find the item in the region with the most *stuff*. This is the most valuable
                     max_count = count
                     max_plural = region_item_data["plural"]
