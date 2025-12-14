@@ -3972,8 +3972,8 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     ShuffleExits.Reset(spoiler)
     spoiler.createJson()
     js.postMessage("Patching ROM...")
-    print(spoiler)
-    print(spoiler.json)
+    # print(spoiler)
+    # print(spoiler.json)
     patch_data, password = ApplyRandomizer.patching_response(spoiler)
     return patch_data, spoiler, password
 
