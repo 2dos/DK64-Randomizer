@@ -727,16 +727,16 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
             pos_y = 32 * img[2]
             output_image.paste(local_img, (pos_x, pos_y), local_img)
         output_image = output_image.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
-        writeWinConImage(settings, output_image, LocalROM)
+        writeWinConImage(settings, output_image, ROM_COPY)
     if win_con == WinConditionComplex.get_key8:
         output_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/key8.png")))
         output_image = output_image.resize((32, 32))
-        writeWinConImage(settings, output_image, LocalROM)
+        writeWinConImage(settings, output_image, ROM_COPY)
         return
     if win_con == WinConditionComplex.req_bean:
         output_image = Image.open(BytesIO(js.getFile("base-hack/assets/arcade_jetpac/arcade/bean.png")))
         output_image = output_image.resize((32, 32))
-        writeWinConImage(settings, output_image, LocalROM)
+        writeWinConImage(settings, output_image, ROM_COPY)
         return
     if win_con == WinConditionComplex.krem_kapture:
         item_im = getImageFile(ROM_COPY, 14, 0x90, True, 32, 32, TextureFormat.RGBA5551)
