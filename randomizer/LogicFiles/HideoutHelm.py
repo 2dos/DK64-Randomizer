@@ -28,7 +28,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmDiddy2, lambda l: not l.settings.helm_diddy or l.settings.helm_setting == HelmSetting.skip_all),
     ], [
         Event(Events.HelmDoorsOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.helm_star_gates)),
-        Event(Events.HelmGatesPunched, lambda l: l.checkBarrier(RemovedBarriersSelected.helm_punch_gates)),
+        Event(Events.HelmGatesPunched, lambda l: l.checkBarrier(RemovedBarriersSelected.helm_punch_gates) and Events.HelmDoorsOpened in l.Events),
         Event(Events.HelmFinished, lambda l: l.settings.helm_setting == HelmSetting.skip_all),
     ], [
         # These transitions route you to where the loading zone entering Helm will take you
