@@ -700,6 +700,21 @@
                         console.log(`Inverting krool_key_count: ${old_value} -> ${setting_data.krool_key_count} (keys pregiven)`);
                     }
                 }
+                if (sel_version_num < numericVersion("5.7.49")) {
+                    // Migrate helm barriers based on helm_setting
+                    if (setting_data.helm_setting === "skip_start" || setting_data.helm_setting === "skip_all") {
+                        console.log('Helm setting is skip_start/skip_all - enabling helm barriers');
+                        if (!setting_data.remove_barriers_selected.includes("helm_star_gates")) {
+                            setting_data.remove_barriers_selected.push("helm_star_gates");
+                        }
+                        if (!setting_data.remove_barriers_selected.includes("helm_punch_gates")) {
+                            setting_data.remove_barriers_selected.push("helm_punch_gates");
+                        }
+                    } else if (setting_data.helm_setting === "default") {
+                        console.log('Helm setting is default - disabling helm barriers');
+                        setting_data.remove_barriers_selected = setting_data.remove_barriers_selected.filter(b => b !== "helm_star_gates" && b !== "helm_punch_gates");
+                    }
+                }
                 // Update to include all unhandled options to unsorted
                 const all_valid_items = Object.keys(output_json.ItemRandoListSelected);
                 let mentioned_items = [];

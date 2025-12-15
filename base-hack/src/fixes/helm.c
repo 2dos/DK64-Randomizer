@@ -89,12 +89,17 @@ void initHelmSetup(void) {
 	int setting = Rando.fast_start_helm;
 	if (setting > 0) {
 		setPermFlag(FLAG_STORY_HELM); // Helm Story
-		setFlag(FLAG_HELM_ROMANDOORS_OPEN,1,FLAGTYPE_TEMPORARY); // Roman Numeral Doors
-		for (int j = 0; j < 4; j++) {
-			setFlag(FLAG_HELM_GATE_0 + j,1,FLAGTYPE_TEMPORARY); // Gates knocked down
-		}
 		if (setting == 2) {
 			setPermFlag(FLAG_MODIFIER_HELMBOM);
+		}
+	}
+	// Check barrier flags for gates
+	if (Rando.removed_barriers.helm_star_gates) {
+		setFlag(FLAG_HELM_ROMANDOORS_OPEN,1,FLAGTYPE_TEMPORARY); // Roman Numeral Doors
+	}
+	if (Rando.removed_barriers.helm_punch_gates) {
+		for (int j = 0; j < 4; j++) {
+			setFlag(FLAG_HELM_GATE_0 + j,1,FLAGTYPE_TEMPORARY); // Gates knocked down
 		}
 	}
 }

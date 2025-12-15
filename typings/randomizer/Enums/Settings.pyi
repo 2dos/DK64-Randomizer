@@ -479,6 +479,8 @@ class RemovedBarriersSelected(IntEnum):
     caves_ice_walls = 15
     galleon_treasure_room = 16
     aztec_tiny_temple_ice = 17
+    helm_star_gates = 18
+    helm_punch_gates = 19
 
 class ShockwaveStatus(IntEnum):
     vanilla = 0

@@ -159,6 +159,8 @@ RemovedBarrierItems = [
     MultiselectorItem("Caves Igloo Pads", 3, "The pads to gain access to the five igloo rooms in Caves will be spawned."),
     MultiselectorItem("Caves Ice Walls", -1, "The various ice walls in Caves will be removed."),
     MultiselectorItem("Castle Crypt Doors", -1, "The various doors in the crypt and mausoleum areas of Creepy Castle will be removed."),
+    MultiselectorItem("Helm Star Gates", 14, "The Roman numeral gates in Hideout Helm will be opened."),
+    MultiselectorItem("Helm Punch Gates", 15, "The gates requiring Chunky's punch in Hideout Helm will be knocked down."),
 ]
 FasterCheckItems = [
     MultiselectorItem("Factory Toy Monster Fight", -1, "The toy monster fight in Factory will remove the initial enemy killing phase."),
