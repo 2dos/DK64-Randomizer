@@ -1688,7 +1688,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On puzzle (Donkey) | 5 | `self.logic = lambda _: True` | 
-| Back wall | 5 | `self.logic = lambda _: True` | 
+| Front of puzzle | 5 | `self.logic = lambda _: True` | 
 | Puzzles | Balloon | `self.logic = lambda _: True` | 
 ## Caves Diddy Lower Cabin
 | Name | Amount | Logic |
@@ -1864,7 +1864,7 @@
 | On monkeyport pad (Tiny) | 5 | `self.logic = lambda _: True` | 
 | On candles (Diddy) | 15 | `l.jetpack` | 
 | Entrance | 10 | `self.logic = lambda _: True` | 
-| Main room entrance | 10 | `self.logic = lambda _: True` | 
+| Main room entrance | 5 | `self.logic = lambda _: True` | 
 | Black spaces | 10 | `self.logic = lambda _: True` | 
 | White spaces | 10 | `self.logic = lambda _: True` | 
 | Near the monkeyport pad | 5 | `self.logic = lambda _: True` | 
