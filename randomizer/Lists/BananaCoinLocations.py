@@ -6484,9 +6484,9 @@ BananaCoinGroupList = {
             region=Regions.RotatingCabin,
             locations=[
                 [1.0, 440, 114, 104],
+                [1.0, 440, 124, 104],
                 [1.0, 191, 114, 103],
-                [1.0, 192, 114, 492],
-                [1.0, 444, 114, 489],
+                [1.0, 191, 124, 103],
             ],
         ),
         BananaCoinGroup(
