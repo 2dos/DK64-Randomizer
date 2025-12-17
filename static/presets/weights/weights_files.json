@@ -226,6 +226,10 @@
       "mild": 0.2,
       "common": 0.1
     },
+    "ice_trap_model": {
+      "simple": 0.5,
+      "complex": 0.5
+    },
     "ice_traps_damage": 0.2,
     "item_rando_list_selected": {
       "shop": 0.95,
@@ -352,7 +356,9 @@
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
       "caves_igloo_pads": 1,
-      "caves_ice_walls": 1
+      "caves_ice_walls": 1,
+      "helm_star_gates": 1,
+      "helm_punch_gates": 1
     },
     "select_keys": 0,
     "serious_hints": 0.7,
@@ -649,6 +655,10 @@
       "common": 0.15,
       "frequent": 0.05
     },
+    "ice_trap_model": {
+      "simple": 0.5,
+      "complex": 0.5
+    },
     "ice_traps_damage": 0.5,
     "item_rando_list_selected": {
       "shop": 0.95,
@@ -789,7 +799,9 @@
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
       "caves_igloo_pads": 0.8,
-      "caves_ice_walls": 0.7
+      "caves_ice_walls": 0.7,
+      "helm_star_gates": 0.7,
+      "helm_punch_gates": 0.7
     },
     "select_keys": 0,
     "serious_hints": 0.3,
@@ -1104,6 +1116,10 @@
       "frequent": 0.1,
       "pain": 0.05
     },
+    "ice_trap_model": {
+      "simple": 0.3,
+      "complex": 0.7
+    },
     "ice_traps_damage": 1,
     "item_rando_list_selected": {
       "shop": 0.95,
@@ -1275,7 +1291,9 @@
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
       "caves_igloo_pads": 0.8,
-      "caves_ice_walls": 0.7
+      "caves_ice_walls": 0.7,
+      "helm_star_gates": 0.6,
+      "helm_punch_gates": 0.6
     },
     "select_keys": 0,
     "serious_hints": 0,
@@ -1590,6 +1608,10 @@
       "frequent": 0.1,
       "pain": 0.05
     },
+    "ice_trap_model": {
+      "simple": 0.3,
+      "complex": 0.7
+    },
     "ice_traps_damage": 1,
     "item_rando_list_selected": {
       "shop": 0.95,
@@ -1761,7 +1783,9 @@
       "forest_green_tunnel": 0.75,
       "forest_yellow_tunnel": 0.75,
       "caves_igloo_pads": 0.8,
-      "caves_ice_walls": 0.7
+      "caves_ice_walls": 0.7,
+      "helm_star_gates": 0.6,
+      "helm_punch_gates": 0.6
     },
     "select_keys": 0,
     "serious_hints": 0,
