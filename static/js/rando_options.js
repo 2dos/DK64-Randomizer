@@ -1510,6 +1510,23 @@ function update_win_con_num_access() {
       }
     }
   }
+
+  // Update tooltip for special win conditions
+  const TOOLTIP_WIN_CONS = {
+    "krools_challenge": "Beat K. Rool and collect all Keys, Blueprints, Bosses, and Bonus Barrels",
+    "dk_rap_items": "Acquire all items referenced in each verse of the DK Rap:<br><br><strong>Donkey verse</strong> : Coconuts, Strong Kong<br><strong>Diddy verse</strong> : Rocketbarrels, Peanuts, Guitar<br><strong>Lanky verse</strong> : Orangstand, Baboon Balloon, Trombone<br><strong>Tiny verse</strong> : Mini Monkey, Ponytail Twirl, Climbing<br><strong>Chunky verse</strong> : Barrel Throwing<br><strong>The Fridge</strong> : Cranky, Peanuts, Pineapple, Grape, Orange Throwing, Coconuts",
+    "kill_the_rabbit": "Kill the rabbit in Chunky's igloo in Caves. Turn it to Ash. Simple as that."
+  };
+
+  const tooltip = document.getElementById("win_condition_tooltip");
+  const tooltipText = document.getElementById("win_condition_tooltip_text");
+
+  if (TOOLTIP_WIN_CONS[winConSelection.value]) {
+    tooltipText.innerHTML = TOOLTIP_WIN_CONS[winConSelection.value];
+    tooltip.classList.remove("hidden");
+  } else {
+    tooltip.classList.add("hidden");
+  }
 }
 
 document
