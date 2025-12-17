@@ -74,6 +74,21 @@
                             </div>
                         {% endfor %}
                     </div>
+                    <div class="mt-4 d-flex justify-content-center">
+                        <div style="width:30%;min-width:200px;">
+                            <p class="select-title text-center">Ice Trap Model Variety</p>
+                            <select name="ice_trap_model"
+                                    id="ice_trap_model"
+                                    display_name="Ice Trap Model Variety"
+                                    class="form-select"
+                                    aria-label="Ice Trap Model Variety"
+                                    data-toggle="tooltip"
+                                    title="Determines which visual models ice traps can appear as.&#10;-Simple: Ice traps only appear as Golden Bananas&#10;-Complex: Ice traps can appear as Golden Bananas (59%), Banana Fairies (24%), Boss Keys (12%), or Beans (6%)">
+                                <option id="simple" value="simple" selected>Simple</option>
+                                <option id="complex" value="complex">Complex</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
