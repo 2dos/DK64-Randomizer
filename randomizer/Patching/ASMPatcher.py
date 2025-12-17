@@ -1706,6 +1706,18 @@ def patchAssembly(ROM_COPY, spoiler):
     # Fix Null Lag Boost
     writeHook(ROM_COPY, 0x806CCA90, Overlay.Static, "fixNullLagBoost", offset_dict)
 
+    if settings.win_condition_spawns_ship:
+        writeValue(ROM_COPY, 0x80029706, Overlay.Menu, getHiSym("k_rool_text"), offset_dict)
+        writeValue(ROM_COPY, 0x8002970A, Overlay.Menu, getLoSym("k_rool_text"), offset_dict)
+        writeFloatUpper(ROM_COPY, 0x800296D2, Overlay.Menu, 280, offset_dict)
+        writeFloatUpper(ROM_COPY, 0x800296D6, Overlay.Menu, 192, offset_dict)
+        writeValue(ROM_COPY, 0x8002974E, Overlay.Menu, 0x3ECC, offset_dict)
+        writeValue(ROM_COPY, 0x80029752, Overlay.Menu, 0xCCCD, offset_dict)
+        writeFloat(ROM_COPY, 0x80033CA4, Overlay.Menu, 1, offset_dict)
+    else:
+        writeValue(ROM_COPY, 0x8002975C, Overlay.Menu, 0x02401025, offset_dict, 4)
+        writeValue(ROM_COPY, 0x80029760, Overlay.Menu, 0, offset_dict, 4)
+
     if settings.less_fragile_boulders:
         # Thrown boulders/vases/etc require getting thrown at a wall to destroy
         writeValue(ROM_COPY, 0x8069C1C2, Overlay.Static, 4, offset_dict)  # Contact with wall: Destroy

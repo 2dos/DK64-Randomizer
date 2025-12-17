@@ -330,7 +330,6 @@ void initHUDDirection(placementData* hud_data, int item) {
 }
 
 void allocateHUD(int reallocate) {
-    int cheat_bitfield = 0; // TODO: Hook this up
     int world = getWorld(CurrentMap, 1);
     if (reallocate) {
         HUD = dk_malloc(ITEMID_TERMINATOR * 0x30);
@@ -356,8 +355,8 @@ void allocateHUD(int reallocate) {
         int written_cheat = 0;
         // Write Stuff, normally in switch case
         if (element_def->cheat) {
-            if (cheat_bitfield & element_def->cheat) {
-                *(element->item_count_pointer) = correctRefillCap(i, 0);
+            if (CheatBitfield & element_def->cheat) {
+                *(element_def->counter) = correctRefillCap(i, 0);
                 written_cheat = 1;
             }
         }

@@ -73,6 +73,10 @@
                                         display_name="Model Replacement Mode"
                                         class="form-select"
                                         aria-label="mode">
+                                    <option selected value="none"
+                                            title="Use the default model for each Kong">
+                                        None
+                                    </option>
                                     <option selected value="manual"
                                             title="Manually select the model for each Kong">
                                         Manual
@@ -82,11 +86,11 @@
                                         Random One
                                     </option>
                                     <option value="sometimes_one"
-                                            title="Gives a chance to replace one of the Kong with Krusha">
+                                            title="Give a 50% chance to replace one of the Kong with Krusha">
                                         Sometimes One
                                     </option>
                                     <option value="random_all"
-                                            title="Randomly give a chance to replace each Kong">
+                                            title="Randomly give a 50% chance to replace each Kong with Krusha">
                                         Random All
                                     </option>
                                 </select>

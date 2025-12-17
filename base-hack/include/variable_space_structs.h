@@ -131,7 +131,7 @@ typedef struct varspace {
 	/* 0x1B0 */ int password;
 	/* 0x1B4 */ char song_speed_near_win;
 	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
-	/* 0x1B6 */ unsigned char krool_ship_spawn_method; // 0 = Key Bases, 1 = Collectible Based
+	/* 0x1B6 */ unsigned char win_condition_spawns_ship; // 0 = Key Bases, 1 = Collectible Based
 	/* 0x1B7 */ DisabledMusicStruct disabled_music;
 	/* 0x1B8 */ unsigned char kong_models[5];
 	/* 0x1BD */ char unk_1bd[0x1C6 - 0x1BD];

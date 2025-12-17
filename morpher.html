@@ -44,7 +44,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
+                        <h5 class="modal-title"></h5>
                         <button id="close_button" type="button" class="btn-close d-none" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -509,7 +509,7 @@
             }
 
             function prune_settings(settings_dict) {
-                settings_to_remove = ["plandomizer_data", "enable_song_select", "music_selections"]
+                settings_to_remove = ["plandomizer_data", "enable_song_select", "music_selections", "k_rool_vanilla_requirement"]
                 for (const [keySetting, exclusions] of Object.entries(settingsExclusionMap)) {
                     if (Object.keys(settings_dict).includes(keySetting) && Object.keys(exclusions).includes(settings_dict[keySetting])) {
                         settings_to_remove = settings_to_remove.concat(exclusions[settings_dict[keySetting]]);
@@ -676,6 +676,28 @@
                             setting_data[`item_rando_list_${i}`] = setting_data[`item_rando_list_${i}`].filter(k => k !== "blueprintbanana");
                             setting_data[`item_rando_list_${i}`].push("sniderewards");
                         }
+                    }
+                }
+                if (sel_version_num < numericVersion("5.7.43")) {
+                    // Convert beat_krool to Keys (8) with Require Beating Krool
+                    if (setting_data.win_condition_item === "beat_krool") {
+                        console.log('Converting beat_krool win condition to Keys (8) with Require Beating K. Rool enabled');
+                        setting_data.win_condition_item = "req_key";
+                        setting_data.win_condition_count = 8;
+                        setting_data.win_condition_spawns_ship = true;
+                    } else if (setting_data.win_condition_item === "krools_challenge") {
+                        console.log('K. Rools Challenge win condition - enabling Require Beating K. Rool');
+                        setting_data.win_condition_spawns_ship = true;
+                    } else {
+                        // All other win conditions should have win_condition_spawns_ship disabled
+                        console.log(`Win condition "${setting_data.win_condition_item}" - disabling Require Beating K. Rool`);
+                        setting_data.win_condition_spawns_ship = false;
+                    }
+                    // Invert krool_key_count to represent "keys pregiven" instead of "keys required"
+                    if (setting_data.krool_key_count !== undefined) {
+                        const old_value = setting_data.krool_key_count;
+                        setting_data.krool_key_count = 8 - old_value;
+                        console.log(`Inverting krool_key_count: ${old_value} -> ${setting_data.krool_key_count} (keys pregiven)`);
                     }
                 }
                 // Update to include all unhandled options to unsorted

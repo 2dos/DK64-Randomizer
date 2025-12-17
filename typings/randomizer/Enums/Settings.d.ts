@@ -362,10 +362,11 @@ export enum KongModels {
 }
 
 export enum KongModelMode {
-    manual = 0,
-    random_one = 1,
-    sometimes_one = 2,
-    random_all = 3,
+    none = 0,
+    manual = 1,
+    random_one = 2,
+    sometimes_one = 3,
+    random_all = 4,
 }
 
 export enum LevelRandomization {
@@ -627,6 +628,7 @@ export enum WinConditionComplex {
     req_bonuses = 18,
     krools_challenge = 19,
     kill_the_rabbit = 20,
+    get_keys_3_and_8 = 21,
 }
 
 export enum WrinklyHints {
@@ -936,6 +938,7 @@ export enum SettingsStringEnum {
     trap_weight_disabletag = 289,
     random_starting_region_new = 290,
     kong_model_mode = 291,
+    win_condition_spawns_ship = 292,
 }
 
 export enum SettingsStringDataType {
@@ -1176,6 +1179,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.kong_model_mode: KongModelMode,
     SettingsStringEnum.kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_access: SettingsStringDataType.bool,
+    SettingsStringEnum.win_condition_spawns_ship: SettingsStringDataType.bool,
     SettingsStringEnum.krool_key_count: SettingsStringDataType.var_int,
     SettingsStringEnum.krool_phase_count: SettingsStringDataType.var_int,
     SettingsStringEnum.krool_phase_order_rando: SettingsStringDataType.bool,

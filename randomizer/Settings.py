@@ -540,7 +540,7 @@ class Settings:
         self.helm_phase_count = 3
         self.helm_random = False
         # krool_key_count: int, [0-8]
-        self.krool_key_count = 8
+        self.krool_key_count = 0
         self.keys_random = False
         # starting_kongs_count: int, [1-5]
         self.starting_kong = Kongs.any
@@ -764,6 +764,7 @@ class Settings:
         self.enable_tag_anywhere = None
         self.krool_phase_order_rando = None
         self.krool_access = False
+        self.win_condition_spawns_ship = 0  # 0 = Key-based, 1 = Win condition-based
         self.helm_phase_order_rando = None
         self.open_lobbies = None
         self.randomize_pickups = False
@@ -936,7 +937,7 @@ class Settings:
         self.big_head_mode = BigHeadMode.off
         # self.win_condition = WinCondition.beat_krool  # Deprecated
         self.win_condition_random = False
-        self.win_condition_item = WinConditionComplex.beat_krool
+        self.win_condition_item = WinConditionComplex.get_keys_3_and_8
         self.win_condition_count = 1
         self.key_8_helm = False
         self.k_rool_vanilla_requirement = False
@@ -1505,6 +1506,7 @@ class Settings:
                 for k in level_base_maps
             ]
 
+        self.item_pool_info = []
         self.shuffled_location_types = []
         self.junk_offset = 0
         self.shuffled_check_allowances = {}
@@ -1623,6 +1625,7 @@ class Settings:
                 Types.Snide: Items.Snide,
             }
             for pool_index in range(4):
+                self.item_pool_info.append(ItemPoolInfo())
                 for selector_value in self.check_search[pool_index]:
                     selector_type = item_ui_pairing[selector_value][1]
                     selector_types = [selector_type]
@@ -1647,14 +1650,16 @@ class Settings:
                         elif item_type == Types.Medal and IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
                             item_types = [Types.Medal, Types.IslesMedal]
                         for x in selector_types:
+                            if x not in dummy_location_types:
+                                self.shuffled_location_types.append(x)
+                                self.item_pool_info[pool_index].location_types.append(x)
                             for y in item_types:
                                 if x not in self.shuffled_check_allowances:
                                     self.shuffled_check_allowances[x] = []
                                 self.shuffled_check_allowances[x].append(y)
-                                if x not in dummy_location_types:
-                                    self.shuffled_location_types.append(x)
                                 if y not in dummy_location_types:
                                     self.shuffled_location_types.append(y)
+                                    self.item_pool_info[pool_index].item_types.append(y)
                     for check, item_type in filler_pairing.items():
                         if check in self.filler_items_selected:
                             for x in selector_types:
@@ -1664,6 +1669,15 @@ class Settings:
                             self.shuffled_location_types.append(item_type)
                     for x in selector_types:
                         self.shuffled_check_allowances[x] = list(set(self.shuffled_check_allowances[x]))
+                self.item_pool_info[pool_index].location_types = list(set(self.item_pool_info[pool_index].location_types))
+                self.item_pool_info[pool_index].item_types = list(set(self.item_pool_info[pool_index].item_types))
+                # If location and item types are the same and exactly one type, then the pool isn't shuffled
+                if (
+                    len(self.item_pool_info[pool_index].location_types) == 1
+                    and len(self.item_pool_info[pool_index].item_types) == 1
+                    and self.item_pool_info[pool_index].location_types[0] == self.item_pool_info[pool_index].item_types[0]
+                ):
+                    self.item_pool_info[pool_index].is_shuffled = False
             self.shuffled_location_types = list(set(self.shuffled_location_types))
             self.enemy_drop_rando = Types.Enemies in self.shuffled_location_types
             if Types.Shop in self.shuffled_location_types:
@@ -1872,6 +1886,7 @@ class Settings:
                 HelmDoorRandomInfo(1, 1, 0.03),
             ),
             WinConditionComplex.get_key8: HelmDoorInfo(1),
+            WinConditionComplex.get_keys_3_and_8: HelmDoorInfo(1),
             WinConditionComplex.req_gb: HelmDoorInfo(
                 self.total_gbs,
                 HelmDoorRandomInfo(int(0.4 * self.total_gbs), int(0.75 * self.total_gbs), 0.1),
@@ -2105,7 +2120,8 @@ class Settings:
         if self.keys_random:
             required_key_count = self.random.randint(0, 8)
         else:
-            required_key_count = self.krool_key_count
+            # I mean, I guess this works
+            required_key_count = 8 - self.krool_key_count
         key_8_required = self.krool_access or self.win_condition_item == WinConditionComplex.get_key8
         # Remove the need for keys we intend to start with
         if self.select_keys:
@@ -2289,6 +2305,14 @@ class Settings:
             self.kasplat_rando = True
             self.kasplat_location_rando = True
 
+        # Force win_condition_spawns_ship based on win condition
+        # Krool's Challenge always requires beating K. Rool
+        if self.win_condition_item == WinConditionComplex.krools_challenge:
+            self.win_condition_spawns_ship = 1
+        # Kill the Rabbit cannot require beating K. Rool (would softlock)
+        elif self.win_condition_item == WinConditionComplex.kill_the_rabbit:
+            self.win_condition_spawns_ship = 0
+
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
         if self.win_condition_item == WinConditionComplex.req_fairy or self.crown_door_item == BarrierItems.Fairy or self.coin_door_item == BarrierItems.Fairy:
             ItemList[Items.BananaFairy].playthrough = True
@@ -2386,6 +2410,13 @@ class Settings:
             self.excluded_bp_locations = self.excluded_bp_locations[-count_to_exclude:]
 
         # Kong Model Mode Randomization
+        if self.kong_model_mode == KongModelMode.none:
+            self.kong_model_dk = KongModels.default
+            self.kong_model_diddy = KongModels.default
+            self.kong_model_lanky = KongModels.default
+            self.kong_model_tiny = KongModels.default
+            self.kong_model_chunky = KongModels.default
+
         if self.kong_model_mode == KongModelMode.random_one:
             random_krusha = self.random.randint(0, 4)
             kong_model_array = [KongModels.default, KongModels.default, KongModels.default, KongModels.default, KongModels.default]
@@ -2400,7 +2431,6 @@ class Settings:
         elif self.kong_model_mode == KongModelMode.sometimes_one:
             random_krusha = self.random.randint(0, 4)
             kong_model_array = [KongModels.default, KongModels.default, KongModels.default, KongModels.default, KongModels.default]
-            krusha_model = [KongModels.default, KongModels.krusha]
             kong_model_array[random_krusha] = self.random.choice([KongModels.default, KongModels.krusha])
 
             self.kong_model_dk = kong_model_array[0]
@@ -2420,7 +2450,7 @@ class Settings:
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
-        bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove]
+        bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove, Types.Hint]
         is_bad = location.type in bad_fake_types
         if self.ice_traps_damage:
             if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko) or self.perma_death or self.wipe_file_on_death:
@@ -2599,6 +2629,7 @@ class Settings:
                     badBlueprintTypes = [Types.Fairy]
                     badBlueprintLocations = []
                 badBlueprintLocations.extend([Locations.TurnInDKIslesDonkeyBlueprint + x for x in range(40)])  # Don't allow blueprints on snide rewards... very bad idea
+                badBlueprintLocations.extend(SharedShopLocations)  # Blueprints in shared shops plays poorly with the fill and in practice
                 blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in badBlueprintTypes]
 
                 # These locations do not have a set Kong assigned to them and can't have blueprints
@@ -2650,12 +2681,11 @@ class Settings:
             if Types.Snide in self.shuffled_location_types:
                 # Snide can't be placed in/after expected Helm Access. To help out fill, we'll ban Snide from any locations in Helm
                 self.valid_locations[Types.Snide] = [x for x in shuffledLocationsShopOwner.copy() if spoiler.LocationList[x].level != Levels.HideoutHelm]
-            if Types.RainbowCoin in self.shuffled_location_types:
-                self.valid_locations[Types.RainbowCoin] = [
-                    x for x in shuffledNonMoveLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing)
-                ]
-            if Types.FillerRainbowCoin in self.shuffled_location_types:
-                self.valid_locations[Types.FillerRainbowCoin] = self.valid_locations[Types.RainbowCoin].copy()
+            for item in (Types.RainbowCoin, Types.FillerRainbowCoin):
+                if item in self.shuffled_location_types:
+                    self.valid_locations[item] = [
+                        x for x in shuffledNonMoveLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove, Types.Climbing)
+                    ]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (
                     # Miscellaneous issues
@@ -3244,3 +3274,14 @@ class Settings:
         if name == "_Settings__hash":
             raise Exception("Error: Attempted deletion of race hash.")
         super().__delattr__(name)
+
+
+class ItemPoolInfo:
+    """Class for storing item pool information for analysis."""
+
+    def __init__(self):
+        """Initialize the item pool info object."""
+        self.item_types = []
+        self.location_types = []
+        self.is_shuffled = True
+        self.foolish = True

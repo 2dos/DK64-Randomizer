@@ -76,9 +76,9 @@ def randomize_entrances(spoiler, ROM_COPY: LocalROM):
                         lz_map = cont_map_id
                         ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
                         lz_exit = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                        print(lz_map)
-                        print(lz_exit)
-                        print(cont_map["zones"])
+                        # print(lz_map)
+                        # print(lz_exit)
+                        # print(cont_map["zones"])
                     else:
                         ROM_COPY.seek(cont_map_lzs_address + start + 0x12)
                         lz_map = int.from_bytes(ROM_COPY.readBytes(2), "big")

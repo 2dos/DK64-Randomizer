@@ -261,14 +261,18 @@
     "kong_model_lanky": {
       "default": 1
     },
+    "kong_model_mode": {
+      "none": 0.5,
+      "random_one": 0.5
+    },
     "kong_model_tiny": {
       "default": 1
     },
     "krool_access": 0.7,
+    "win_condition_spawns_ship": 0.3,
     "krool_in_boss_pool": 0.8,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
-    "k_rool_vanilla_requirement": 0,
     "level_randomization": {
       "vanilla": 0.5,
       "level_order": 0.5
@@ -688,14 +692,19 @@
     "kong_model_lanky": {
       "default": 1
     },
+    "kong_model_mode": {
+      "none": 0.45,
+      "random_one": 0.45,
+      "random_all": 0.1
+    },
     "kong_model_tiny": {
       "default": 1
     },
     "krool_access": 0.7,
+    "win_condition_spawns_ship": 0.5,
     "krool_in_boss_pool": 0.65,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
-    "k_rool_vanilla_requirement": 0,
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.65,
@@ -1138,14 +1147,19 @@
     "kong_model_lanky": {
       "default": 1
     },
+    "kong_model_mode": {
+      "none": 0.4,
+      "random_one": 0.4,
+      "random_all": 0.2
+    },
     "kong_model_tiny": {
       "default": 1
     },
     "krool_access": 0.7,
+    "win_condition_spawns_ship": 0.7,
     "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
-    "k_rool_vanilla_requirement": 0,
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.4,
@@ -1619,14 +1633,19 @@
     "kong_model_lanky": {
       "default": 1
     },
+    "kong_model_mode": {
+      "none": 0.4,
+      "random_one": 0.4,
+      "random_all": 0.2
+    },
     "kong_model_tiny": {
       "default": 1
     },
     "krool_access": 0.7,
+    "win_condition_spawns_ship": 0.7,
     "krool_in_boss_pool": 0.5,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
-    "k_rool_vanilla_requirement": 0,
     "level_randomization": {
       "vanilla": 0.2,
       "level_order": 0.4,

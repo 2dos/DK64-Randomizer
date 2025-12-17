@@ -314,6 +314,7 @@ typedef enum win_conditions {
 	/* 0x004 */ GOAL_DKRAP,
 	/* 0x005 */ GOAL_KROOLS_CHALLENGE,
 	/* 0x006 */ GOAL_KILL_THE_RABBIT,
+	/* 0x007 */ GOAL_KEYS_3_AND_8,
 } win_conditions;
 
 typedef enum master_types_list {

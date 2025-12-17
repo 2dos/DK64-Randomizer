@@ -5,7 +5,7 @@ import numbers
 import typing
 
 from BaseClasses import PlandoOptions
-from Options import Choice, PerGameCommonOptions, Range, Option, OptionDict, OptionError, OptionList, Toggle, DeathLink, DefaultOnToggle, OptionGroup
+from Options import Choice, PerGameCommonOptions, Range, Option, OptionDict, OptionError, OptionList, Toggle, DeathLink, DefaultOnToggle, OptionGroup, TextChoice
 from typing import List
 from randomizer.Enums.Settings import SettingsStringEnum
 from randomizer.Enums.Settings import SettingsStringTypeMap
@@ -43,7 +43,7 @@ class Goal(Choice):
     """
 
     display_name = "Goal"
-    option_beat_k_rool = 0
+    option_acquire_keys_3_and_8 = 0
     option_acquire_key_8 = 1
     option_kremling_kapture = 2
     option_dk_rap = 3
@@ -62,7 +62,7 @@ class Goal(Choice):
     option_treasure_hurry = 16
     option_krools_challenge = 17
     option_kill_the_rabbit = 18
-    default = 0
+    default = 7
 
 
 class GoalQuantity(OptionDict):
@@ -362,16 +362,26 @@ class MermaidRequirement(Range):
 
 
 class KeysRequiredToBeatKrool(Range):
-    """Determines how many keys are needed to spawn Krool's Ship.
+    """Determines how many keys are pregiven.
 
-    Choosing a value of 0 means you start with all 8 keys.
-    Choosing a value of 8 means you start with no keys.
+    Choosing a value of 0 means you start with 0 keys.
+    Choosing a value of 8 means you start with all 8 keys.
     """
 
-    display_name = "Keys Required to Beat Krool"
+    display_name = "Amount of Pregiven Keys"
     range_start = 0
     range_end = 8
-    default = 8
+    default = 0
+
+
+class RequireBeatingKrool(DefaultOnToggle):
+    """Require defeating K. Rool in addition to the win condition requirements.
+
+    K. Rool's ship will not spawn until you meet your win condition requirements, and you must defeat K. Rool to win.
+    Automatically enabled for Krool's Challenge. Automatically disabled for Kill the Rabbit.
+    """
+
+    display_name = "Require Beating K. Rool"
 
 
 class SwitchSanity(Choice):
@@ -897,6 +907,173 @@ class HelmRoomBonusCount(Range):
     default = 0
 
 
+class HelmDoor1Item(Choice):
+    """Determines what item is required to open the first door in Hideout Helm (Crown Door).
+
+    Options:
+    - vanilla: Requires Battle Crowns (as in the original game).
+    - opened: The door is automatically opened.
+    - golden_bananas: Requires Golden Bananas.
+    - blueprints: Requires Blueprints.
+    - company_coins: Requires Company Coins.
+    - keys: Requires Boss Keys.
+    - medals: Requires Banana Medals.
+    - fairies: Requires Banana Fairies.
+    - rainbow_coins: Requires Rainbow Coins.
+    - bean: Requires The Bean.
+    - pearls: Requires Pearls.
+    - easy_random: Random item (easier items).
+    - medium_random: Random item (medium difficulty).
+    - hard_random: Random item (harder items).
+    """
+
+    display_name = "Crown Door Item"
+    option_vanilla = 0
+    option_opened = 1
+    option_medium_random = 2
+    option_golden_bananas = 3
+    option_blueprints = 4
+    option_company_coins = 5
+    option_keys = 6
+    option_medals = 7
+    option_crowns = 8
+    option_fairies = 9
+    option_rainbow_coins = 10
+    option_bean = 11
+    option_pearls = 12
+    option_easy_random = 13
+    option_hard_random = 14
+    default = 1
+
+
+class HelmDoorItemCount(OptionDict):
+    """Determines how many of a particular item you need to open Helm doors.
+
+    You can set multiple values to account for different door item requirements.
+    (i.e. if you set crown_door_item to "blueprints", the "keys" field will be ignored)
+
+    Valid Keys:
+    - "golden_bananas"
+    - "blueprints"
+    - "company_coins"
+    - "keys"
+    - "medals"
+    - "crowns"
+    - "fairies"
+    - "rainbow_coins"
+    - "bean"
+    - "pearls"
+
+    Valid Values:
+    - a number from 0 to the maximum value for the key type
+    - "random", which will pick a random valid value for you
+    - a range in the form "x-y", which will pick a random valid value between x and y
+    """
+
+    min = 1
+    max_values_dict: dict[str, int] = {
+        "golden_bananas": 201,
+        "blueprints": 40,
+        "company_coins": 2,
+        "keys": 8,
+        "medals": 40,
+        "crowns": 10,
+        "fairies": 20,
+        "rainbow_coins": 16,
+        "bean": 1,
+        "pearls": 5,
+    }
+
+    def verify(self, world: type[World], player_name: str, plando_options: PlandoOptions) -> None:
+        """Verify Helm Door Item Count."""
+        super(HelmDoorItemCount, self).verify(world, player_name, plando_options)
+
+        for key in self.value.keys():
+            if key not in self.max_values_dict.keys():
+                raise OptionError(f"{key} is not a valid key for helm_door_item_count.")
+
+        accumulated_errors = []
+
+        for key, value in self.value.items():
+            max = self.max_values_dict[key]
+            if isinstance(value, numbers.Integral):
+                value = int(value)
+                if value > max:
+                    accumulated_errors.append(f"{key}: {value} is higher than maximum allowed value {max}")
+                elif value < self.min:
+                    accumulated_errors.append(f"{key}: {value} is lower than minimum allowed value {self.min}")
+            else:
+                if value == "random":
+                    continue
+                split = value.split("-")
+                if len(split) != 2:
+                    accumulated_errors.append(f'{key}: {value} is not an integer or range, nor is it "random".')
+                else:
+                    for bound in split:
+                        try:
+                            bound = int(bound)
+                        except (ValueError, TypeError):
+                            accumulated_errors.append(f'{key}: {value} is not an integer or range, nor is it "random".')
+                            continue
+                        if bound > max:
+                            accumulated_errors.append(f"{key}: Upper edge of range {bound} is higher than maximum allowed value {max}")
+                        elif bound < self.min:
+                            accumulated_errors.append(f"{key}: Lower edge of range {bound} is lower than minimum allowed value {self.min}")
+        if accumulated_errors:
+            raise OptionError("Found errors with option helm_door_item_count:\n" + "\n".join(accumulated_errors))
+
+    default = {
+        "golden_bananas": 1,
+        "blueprints": 1,
+        "company_coins": 1,
+        "keys": 1,
+        "medals": 1,
+        "crowns": 1,
+        "fairies": 1,
+        "rainbow_coins": 1,
+        "bean": 1,
+        "pearls": 1,
+    }
+
+
+class HelmDoor2Item(Choice):
+    """Determines what item is required to open the second door in Hideout Helm (Coin Door).
+
+    Options:
+    - vanilla: Requires Company Coins (as in the original game).
+    - opened: The door is automatically opened.
+    - golden_bananas: Requires Golden Bananas.
+    - blueprints: Requires Blueprints.
+    - keys: Requires Boss Keys.
+    - medals: Requires Banana Medals.
+    - crowns: Requires Battle Crowns.
+    - fairies: Requires Banana Fairies.
+    - rainbow_coins: Requires Rainbow Coins.
+    - bean: Requires The Bean.
+    - pearls: Requires Pearls.
+    - easy_random: Random item (easier items).
+    - medium_random: Random item (medium difficulty).
+    - hard_random: Random item (harder items).
+    """
+
+    display_name = "Coin Door Item"
+    option_vanilla = 0
+    option_opened = 1
+    option_medium_random = 2
+    option_golden_bananas = 3
+    option_blueprints = 4
+    option_keys = 6
+    option_medals = 7
+    option_crowns = 8
+    option_fairies = 9
+    option_rainbow_coins = 10
+    option_bean = 11
+    option_pearls = 12
+    option_easy_random = 13
+    option_hard_random = 14
+    default = 1
+
+
 class SmallerShops(Toggle):
     """If enabled, shops would have a max of 3 items to sell."""
 
@@ -1164,6 +1341,35 @@ class EnemiesSelected(OptionList):
     }
 
 
+class LoadingZoneRando(TextChoice):
+    """Randomize the connections between loading zones (Loading Zone Randomizer).
+
+    If you set this option's value to a string (ie. "LZR": 50 instead of "yes": 50), it will be used as a custom seed.
+    Every player who uses the same custom seed will have the same loading zone connections.
+
+    WARNING: LZR is not for the faint of heart. Don't turn this on UNLESS you know what you're doing.
+    """
+
+    display_name = "Loading Zone Rando"
+    alias_false = 0
+    alias_off = 0
+    option_no = 0
+    alias_true = 1
+    alias_on = 1
+    option_yes = 1
+    default = 0
+
+
+# Yes this was implemented after LZR
+class GalleonWaterLevel(Choice):
+    """Determines what level the water in Galleon is set to."""
+
+    display_name = "Galleon Water Level"
+    option_raised = 0
+    option_lowered = 1
+    default = 0
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1173,7 +1379,8 @@ class DK64Options(PerGameCommonOptions):
     tag_link: TagLink
     trap_link: TrapLink
     goal: Goal
-    krool_key_count: KeysRequiredToBeatKrool
+    pregiven_keys: KeysRequiredToBeatKrool
+    require_beating_krool: RequireBeatingKrool
     helm_key_lock: HelmKeyLock
     shuffle_helm_level_order: ShuffleHelmLevel
     krool_phase_count: KroolPhaseCount
@@ -1233,6 +1440,9 @@ class DK64Options(PerGameCommonOptions):
     hard_minigames: HardMinigames
     auto_complete_bonus_barrels: AutoCompleteBonusBarrels
     helm_room_bonus_count: HelmRoomBonusCount
+    crown_door_item: HelmDoor1Item
+    coin_door_item: HelmDoor2Item
+    helm_door_item_count: HelmDoorItemCount
     smaller_shops: SmallerShops
     harder_bosses: HardBosses
     puzzle_rando: PuzzleRando
@@ -1257,6 +1467,8 @@ class DK64Options(PerGameCommonOptions):
     alternate_minecart_mayhem: AlternateMinecartMayhem
     enemies_selected: EnemiesSelected
     shop_prices: ShopPrices
+    loading_zone_rando: LoadingZoneRando
+    galleon_water_level: GalleonWaterLevel
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1264,9 +1476,13 @@ dk64_option_groups: List[OptionGroup] = [
         "Victory Conditions",
         [
             Goal,
+            RequireBeatingKrool,
             GoalQuantity,
             KeysRequiredToBeatKrool,
             HelmPhaseCount,
+            HelmDoor1Item,
+            HelmDoor2Item,
+            HelmDoorItemCount,
             KroolPhaseCount,
             KroolInBossPool,
         ],
@@ -1320,6 +1536,8 @@ dk64_option_groups: List[OptionGroup] = [
             OpenLobbies,
             SwitchSanity,
             RemoveBarriers,
+            LoadingZoneRando,
+            GalleonWaterLevel,
         ],
     ),
     OptionGroup(

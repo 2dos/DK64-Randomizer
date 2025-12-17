@@ -10,7 +10,7 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Fast Warps
 - Random Helm Length
 - Item Reward Previews
-- Randomize Keys Required to Beat K. Rool
+- Randomize Amount of Starting Keys
 - Random K. Rool Phase Count
 - Troff n Scoff Portal Numbers
 - Quality Of Life
@@ -38,7 +38,6 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 - Hard Shooting
 - Hard Troff N Scoff
 - Helm Hurry Mode
-- Vanilla K. Rool Key Requirement
 - Mirror Mode
 - No Heals
 - No Melon Slice Drops
@@ -188,9 +187,13 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Default: 100%
 - Kong Model Lanky: 
 	- Default: 100%
+- Kong Model Mode: 
+	- None: 50%
+	- Random One: 50%
 - Kong Model Tiny: 
 	- Default: 100%
 - Don't Start with Key 8: 70%
+- Require Beating K. Rool: 30%
 - Shuffle Boss Kong Required: 80%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 
