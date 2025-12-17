@@ -1806,7 +1806,9 @@
                     "forest_green_tunnel": 75.0,
                     "forest_yellow_tunnel": 75.0,
                     "caves_igloo_pads": 100,
-                    "caves_ice_walls": 100
+                    "caves_ice_walls": 100,
+                    "helm_star_gates": 100,
+                    "helm_punch_gates": 100
                 },
                 "standard": {
                     "japes_coconut_gates": 75.0,
@@ -1823,7 +1825,9 @@
                     "forest_green_tunnel": 75.0,
                     "forest_yellow_tunnel": 75.0,
                     "caves_igloo_pads": 80.0,
-                    "caves_ice_walls": 70.0
+                    "caves_ice_walls": 70.0,
+                    "helm_star_gates": 70.0,
+                    "helm_punch_gates": 70.0
                 },
                 "difficult": {
                     "japes_coconut_gates": 75.0,
@@ -1840,7 +1844,9 @@
                     "forest_green_tunnel": 75.0,
                     "forest_yellow_tunnel": 75.0,
                     "caves_igloo_pads": 80.0,
-                    "caves_ice_walls": 70.0
+                    "caves_ice_walls": 70.0,
+                    "helm_star_gates": 60.0,
+                    "helm_punch_gates": 60.0
                 },
                 "difficult_with_qol_shuffle": {
                     "japes_coconut_gates": 75.0,
@@ -1857,7 +1863,9 @@
                     "forest_green_tunnel": 75.0,
                     "forest_yellow_tunnel": 75.0,
                     "caves_igloo_pads": 80.0,
-                    "caves_ice_walls": 70.0
+                    "caves_ice_walls": 70.0,
+                    "helm_star_gates": 60.0,
+                    "helm_punch_gates": 60.0
                 }
             },
             "qol_uses_hard": true
@@ -2149,6 +2157,28 @@
         },
         "ice_trap_frequency": {
             "ignore": true
+        },
+        "ice_trap_model": {
+            "setting_type": "choice_single",
+            "options": {
+                "easy": {
+                    "simple": 50.0,
+                    "complex": 50.0
+                },
+                "standard": {
+                    "simple": 50.0,
+                    "complex": 50.0
+                },
+                "difficult": {
+                    "simple": 30.0,
+                    "complex": 70.0
+                },
+                "difficult_with_qol_shuffle": {
+                    "simple": 30.0,
+                    "complex": 70.0
+                }
+            },
+            "qol_uses_hard": true
         },
         "ice_traps_damage": {
             "setting_type": "bool",

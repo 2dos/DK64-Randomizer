@@ -17,6 +17,8 @@ BITFIELDS = {
         "fungi_yellow_tunnel",
         "shipwreck_gate",
         "llama_switches",
+        "helm_star_gates",
+        "helm_punch_gates",
     ],
     "FasterChecks": [
         "piano",

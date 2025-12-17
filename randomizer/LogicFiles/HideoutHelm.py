@@ -8,7 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.HintRegion import HintRegion
-from randomizer.Enums.Settings import HelmSetting
+from randomizer.Enums.Settings import HelmSetting, RemovedBarriersSelected
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
@@ -27,8 +27,8 @@ LogicRegions = {
         LocationLogic(Locations.HelmDiddy1, lambda l: not l.settings.helm_diddy or l.settings.helm_setting == HelmSetting.skip_all),
         LocationLogic(Locations.HelmDiddy2, lambda l: not l.settings.helm_diddy or l.settings.helm_setting == HelmSetting.skip_all),
     ], [
-        Event(Events.HelmDoorsOpened, lambda l: l.settings.helm_setting != HelmSetting.default),
-        Event(Events.HelmGatesPunched, lambda l: l.settings.helm_setting != HelmSetting.default),
+        Event(Events.HelmDoorsOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.helm_star_gates)),
+        Event(Events.HelmGatesPunched, lambda l: l.checkBarrier(RemovedBarriersSelected.helm_punch_gates) and Events.HelmDoorsOpened in l.Events),
         Event(Events.HelmFinished, lambda l: l.settings.helm_setting == HelmSetting.skip_all),
     ], [
         # These transitions route you to where the loading zone entering Helm will take you

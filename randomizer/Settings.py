@@ -421,6 +421,7 @@ class Settings:
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
         self.ice_trap_frequency = IceTrapFrequency.mild  # Deprecated
+        self.ice_trap_model = IceTrapModel.simple
         self.start_with_slam = False
         self.random_patches = None
         self.random_crates = None
@@ -1408,7 +1409,10 @@ class Settings:
             "rockfall": self.trap_weight_rockfall,
             "disabletag": self.trap_weight_disabletag,
         }
-        models_chance = {"gb": 10, "key": 2, "bean": 1, "fairy": 4}
+        if self.ice_trap_model == IceTrapModel.simple:
+            models_chance = {"gb": 1}  # Only GB models
+        else:  # IceTrapModel.complex
+            models_chance = {"gb": 10, "key": 2, "bean": 1, "fairy": 4}  # Weighted distribution
         trap_data = {
             "gb": {
                 "bubble": Items.IceTrapBubble,

@@ -235,6 +235,10 @@ class IceTrapFrequency(IntEnum):
     pain = 4
     unlimited = 5
 
+class IceTrapModel(IntEnum):
+    simple = 0
+    complex = 1
+
 class ItemRandoListSelected(IntEnum):
     shop = 1
     moves = 2
@@ -479,6 +483,8 @@ class RemovedBarriersSelected(IntEnum):
     caves_ice_walls = 15
     galleon_treasure_room = 16
     aztec_tiny_temple_ice = 17
+    helm_star_gates = 18
+    helm_punch_gates = 19
 
 class ShockwaveStatus(IntEnum):
     vanilla = 0
@@ -875,6 +881,7 @@ class SettingsStringEnum(IntEnum):
     random_starting_region_new = 290
     kong_model_mode = 291
     win_condition_spawns_ship = 292
+    ice_trap_model = 293
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -920,6 +927,7 @@ SettingsMap: dict = {
     "helm_room_bonus_count": HelmBonuses,
     "helm_setting": HelmSetting,
     "ice_trap_frequency": IceTrapFrequency,
+    "ice_trap_model": IceTrapModel,
     "item_rando_list_selected": ItemRandoListSelected,
     "kasplat_rando_setting": KasplatRandoSetting,
     "krusha_ui": KrushaUi,
@@ -1227,6 +1235,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.krool_in_boss_pool: SettingsStringDataType.bool,
     SettingsStringEnum.enemy_kill_crown_timer: SettingsStringDataType.bool,
     SettingsStringEnum.ice_trap_frequency: IceTrapFrequency,
+    SettingsStringEnum.ice_trap_model: IceTrapModel,
     SettingsStringEnum.ice_traps_damage: SettingsStringDataType.bool,
     SettingsStringEnum.mirror_mode: SettingsStringDataType.bool,
     SettingsStringEnum.puzzle_rando_difficulty: PuzzleRando,
