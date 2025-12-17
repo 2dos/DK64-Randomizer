@@ -25,6 +25,7 @@ from randomizer.Patching.Library.Assets import getPointerLocation, TableNames, C
 from randomizer.Patching.Library.ASM import getItemTableWriteAddress, populateOverlayOffsets, getSym, getROMAddress, Overlay, writeValue, patchBonus, getBonusIndex
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.CompileHints import getHelmProgItems, GetRegionIdOfLocation
+from randomizer.Lists.WrinklyHints import kong_list
 import randomizer.ItemPool as ItemPool
 import unicodedata
 
@@ -1181,6 +1182,22 @@ def place_randomized_items(spoiler, ROM_COPY: LocalROM):
                 data |= or_data[x]
             ROM_COPY.seek(sav + 0x1EC)
             ROM_COPY.writeMultipleBytes(data, 1)
+
+        # Update Diddy Cage text to the actual Freeing Kong rather than Funky
+        kong_name = kong_list[spoiler.settings.diddy_freeing_kong].upper()
+
+        if 3 not in spoiler.text_changes:
+            spoiler.text_changes[3] = []
+
+        spoiler.text_changes[3].append(
+            {
+                "textbox_index": 2,
+                "mode": "replace",
+                "search": "FUNKY'S HELP",
+                "target": kong_name + "'S HELP",
+            }
+        )
+
         # Text stuff
         if spoiler.settings.item_reward_previews:
             for textbox in textboxes:
