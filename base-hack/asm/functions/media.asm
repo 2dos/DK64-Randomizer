@@ -20,3 +20,5 @@
 .definelabel wipeTurnedInArray, 0x806C7B00
 .definelabel alCSPSetTempo, 0x80738320
 .definelabel getSongTempo, 0x807383B0
+.definelabel getNextFreeSynthUpdate, 0x80739C88
+.definelabel SetParam, 0x8073F1E4

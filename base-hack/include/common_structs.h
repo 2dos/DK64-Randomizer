@@ -2408,3 +2408,26 @@ typedef struct coinHUDStruct {
 	/* 0x000 */ unsigned short map_id;
 	/* 0x004 */ unsigned short requirement;
 } coinHUDStruct;
+
+typedef struct ALParam_s {
+	/* 0x000 */ struct ALParam_s* next;
+	/* 0x004 */ int delta;
+	/* 0x008 */ short updateType;
+	/* 0x00A */ short unity;
+	/* 0x00C */ int pitch;
+	/* 0x010 */ short volume;
+	/* 0x012 */ char pan;
+	/* 0x013 */ char fxmix;
+	/* 0x014 */ char unk_14[0x1C-0x14];
+	/* 0x01C */ int samples;
+	/* 0x020 */ struct ALWaveTable_s* wave;
+} ALParam;
+
+// This is ugly, but gets very bloated and hard to read otherwise
+typedef struct PVoice {
+	/* 0x000 */ struct ALLink_s node;
+	/* 0x008 */ char unk_04[0x88-0x08];
+	/* 0x088 */ char debug1;
+	/* 0x089 */ char debug2;
+	/* 0x08A */ short delay;
+} PVoice;
