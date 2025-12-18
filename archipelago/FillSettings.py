@@ -234,6 +234,7 @@ def get_default_settings() -> dict:
             MiscChangesSelected.move_spring_cabin_rocketbarrel,
         ],
         "more_cutscene_skips": ExtraCutsceneSkips.auto,
+        "no_consumable_upgrades": False,
         "no_healing": False,
         "no_melons": False,
         "open_lobbies": False,
