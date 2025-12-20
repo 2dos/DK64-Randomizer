@@ -7,14 +7,14 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
 
-    - name: Check if ap_version.py version is newer than latest release
+    - name: Check if archipelago.json version is newer than latest release
       id: check_version
       run: |
-        # Get the version from ap_version.py in the current branch
-        AP_VERSION=$(python3 -c "exec(open('ap_version.py').read()); print(version)")
-        echo "Current ap_version.py version: $AP_VERSION"
+        # Get the version from archipelago.json in the current branch
+        AP_VERSION=$(jq -r '.world_version' archipelago.json)
+        echo "Current archipelago.json version: $AP_VERSION"
 
         # Get the latest release tag from DK64-Randomizer-Release
         LATEST_TAG=$(curl -s https://api.github.com/repos/2dos/DK64-Randomizer-Release/releases/latest | jq -r .tag_name)
@@ -31,13 +31,13 @@ jobs:
 
         echo "version_changed=$VERSION_CHANGED" >> $GITHUB_OUTPUT
         if [ "$VERSION_CHANGED" = "true" ]; then
-          echo "ap_version.py version ($AP_VERSION) is different from latest release ($LATEST_VERSION)"
+          echo "archipelago.json version ($AP_VERSION) is different from latest release ($LATEST_VERSION)"
         else
-          echo "ap_version.py version ($AP_VERSION) matches latest release ($LATEST_VERSION)"
+          echo "archipelago.json version ($AP_VERSION) matches latest release ($LATEST_VERSION)"
         fi
 
     - name: Setup python
-      uses: actions/setup-python@v4.1.0
+      uses: actions/setup-python@v6.0.0
       with:
           python-version: 3.13.0
           architecture: x64
@@ -79,11 +79,11 @@ jobs:
         DEST_FOLDER: ./
         DEST_PREDEPLOY_CLEANUP: rm -rf ./*
 
-    - name: Get version from ap_version.py
+    - name: Get version from archipelago.json
       if: steps.check_version.outputs.version_changed == 'true'
       id: get_version
       run: |
-        VERSION=$(python3 -c "exec(open('./deploy-directory/ap_version.py').read()); print(version)")
+        VERSION=$(jq -r '.world_version' ./deploy-directory/archipelago.json)
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Version: $VERSION"
 
