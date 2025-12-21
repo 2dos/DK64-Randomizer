@@ -155,6 +155,9 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Mild: 30%
 	- Common: 15%
 	- Frequent: 5%
+- Ice Trap Model: 
+	- Simple: 50%
+	- Complex: 50%
 - Ice Traps Damage Player: 50%
 - Item Rando List Selected: 
 	- Shop: 95%
@@ -253,6 +256,8 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 	- Forest Yellow Tunnel: 75%
 	- Caves Igloo Pads: 80%
 	- Caves Ice Walls: 70%
+	- Helm Star Gates: 70%
+	- Helm Punch Gates: 70%
 - No Joke Hints: 30%
 - Shuffle Helm Location / Include Helm: 50%
 - Shuffle Shops: 50%
