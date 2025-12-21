@@ -69,7 +69,7 @@ class DK64MemoryMap:
     count_struct_pointer = 0x807FFFB8  # Pointer to CountStruct containing item counts
 
 
-all_tasks : Set[Task[Any]] = set()
+all_tasks: Set[Task[Any]] = set()
 
 
 def create_task_log_exception(awaitable: CoroutineType[Any, Any, None]) -> Task[Any]:
