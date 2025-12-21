@@ -361,12 +361,6 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0x0C6)
         ROM_COPY.write(old | 0x4)
 
-    keys = 0xFF
-    if spoiler.settings.k_rool_vanilla_requirement:
-        keys = 0x84  # 8765 4321 bitfield, only enable the keys 3 and 8 bits, meaning 0b1000 0100, which is 0x84
-    ROM_COPY.seek(sav + 0x1DD)
-    ROM_COPY.write(keys)
-
     # Damage amount
     damage_multipliers = {
         DamageAmount.default: 1,

@@ -1496,7 +1496,7 @@ class LogicVarHolder:
             Events.CastleKeyTurnedIn,
             Events.HelmKeyTurnedIn,
         ]
-        if self.settings.k_rool_vanilla_requirement:
+        if self.settings.win_condition_item == WinConditionComplex.get_keys_3_and_8:
             required_base_keys = [
                 Events.FactoryKeyTurnedIn,
                 Events.HelmKeyTurnedIn,

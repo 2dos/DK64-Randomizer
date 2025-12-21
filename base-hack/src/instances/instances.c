@@ -495,19 +495,15 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == K_ROOL_SHIP) {
 					// Check access requirements based on ship spawn method
-					if (Rando.win_condition_spawns_ship == 1) {
+					if (Rando.win_condition_spawns_ship) {
 						// Win condition-based access
 						if (!canAccessWinCondition()) {
 							return 0;
 						}
 					} else {
 						// Key-based access
-						for (int i = 0; i < 8; i++) {
-							if (Rando.krool_requirements & (1 << i)) {
-								if (!getItemCount_new(REQITEM_KEY, i, 0)) {
-									return 0;
-								}
-							}
+						if (!getItemCount_new(REQITEM_KEY, -1, 0) < 8) {
+							return 0;
 						}
 					}
 					return 1;
