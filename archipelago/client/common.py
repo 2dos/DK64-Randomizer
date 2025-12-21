@@ -86,13 +86,12 @@ def create_task_log_exception(awaitable: CoroutineType[Any, Any, None]) -> Task[
 
     async def _log_exception(awaitable: CoroutineType[Any, Any, None]) -> None:
         try:
-            return await awaitable
+            await awaitable
         except Exception as e:
             logger.exception(e)
             pass
         finally:
             all_tasks.remove(task)
-        return
 
     task = create_task(_log_exception(awaitable))
     all_tasks.add(task)
