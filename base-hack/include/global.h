@@ -236,7 +236,6 @@ extern void checkSeedVictory(void);
 extern void checkVictory_flaghook(int flag);
 extern void winRabbitSeed(int song, float volume);
 extern void safeguardRabbitReward(void);
-extern int canAccessKroolsChallenge(void);
 extern int canAccessWinCondition(void);
 extern void FileProgressInitSub(int file, int shuffle);
 extern void handleFileSelectSprites(void* paad, void* sprite, int x, int y, float scale, int unk0, int control);
@@ -388,6 +387,9 @@ extern void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index);
 extern void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index);
 extern void setObjectOpacity(behaviour_data* behaviour_pointer, int opacity);
 extern int standingOnM2Object(int index);
+
+extern void renderSparkles(float scale);
+extern void renderBoulderSparkles(actorData *actor);
 
 extern int getItemCountReq(requirement_item item);
 extern int isItemRequirementSatisfied(ItemRequirement* req);

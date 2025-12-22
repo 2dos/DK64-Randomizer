@@ -300,23 +300,28 @@ void* updateKegIDs(int actor, float x, float y, float z) {
     return spawnActorAtXYZ(actor, x, y, z);
 }
 
-void spawnBoulderObject(actorData *actor) {
-    int index = getBoulderIndex();
+int isValidBoulderObject(int index) {
     if (index < 0) {
-        return;
+        return 0;
     }
     if (HoldableSpawnBitfield & (1 << index)) {
-        return;
+        return 0;
     }
     int flag = FLAG_GRABBABLES_DESTROYED + index;
     if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
-        return;
+        return 0;
     }
     int item = getBoulderItem(index);
-    if (!item) {
-        return;
-    }
     if (item == NEWACTOR_NULL) {
+        return 0;
+    }
+    return item;
+}
+
+void spawnBoulderObject(actorData *actor) {
+    int index = getBoulderIndex();
+    int item = isValidBoulderObject(index);
+    if (!item) {
         return;
     }
     int cutscene = 1;
@@ -328,8 +333,26 @@ void spawnBoulderObject(actorData *actor) {
         actor->yPos,
         actor->zPos,
         0, cutscene,
-        flag, 0,
+        FLAG_GRABBABLES_DESTROYED + index, 0,
         boulder_item_table[index].level,
         boulder_item_table[index].kong);
     HoldableSpawnBitfield |= (1 << index);
+}
+
+void renderBoulderSparkles(actorData *actor) {
+    unkBonusFunction(actor);
+    int index = getBoulderIndex();
+    int item = isValidBoulderObject(index);
+    if (!item) {
+        return;
+    }
+    int timer = ObjectModel2Timer + (index * 5);
+    if (timer % 10) {
+        return;
+    }
+    float scale = 1.0f;
+    if (index == GRABBABLE_CAVES_LARGE) {
+        scale = 3.0f;
+    }
+    renderSparkles(scale);
 }

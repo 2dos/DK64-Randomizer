@@ -138,7 +138,7 @@ typedef struct varspace {
 	/* 0x1C6 */ RandomSwitchesSetting switchsanity; // Size 0x15
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
 	/* 0x1DC */ unsigned char galleon_water_raised;
-	/* 0x1DD */ unsigned char krool_requirements; // K Rool bitfield 8765 4321
+	/* 0x1DD */ unsigned char unk_1dd;
 	/* 0x1DE */ RemovedBarriers removed_barriers; // Size: 2
 	/* 0x1E0 */ FasterChecks faster_checks; // Size: 1
 	/* 0x1E1 */ char big_head_mode; // 0 = off, 1 = on, 2 = small head
