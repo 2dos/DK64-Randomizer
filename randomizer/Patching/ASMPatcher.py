@@ -1706,7 +1706,7 @@ def patchAssembly(ROM_COPY, spoiler):
     # Fix Null Lag Boost
     writeHook(ROM_COPY, 0x806CCA90, Overlay.Static, "fixNullLagBoost", offset_dict)
 
-    if settings.win_condition_spawns_ship:
+    if settings.win_condition_spawns_ship and not (settings.helm_hurry and settings.archipelago):
         writeValue(ROM_COPY, 0x80029706, Overlay.Menu, getHiSym("k_rool_text"), offset_dict)
         writeValue(ROM_COPY, 0x8002970A, Overlay.Menu, getLoSym("k_rool_text"), offset_dict)
         writeFloatUpper(ROM_COPY, 0x800296D2, Overlay.Menu, 280, offset_dict)

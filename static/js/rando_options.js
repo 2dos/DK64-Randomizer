@@ -1510,6 +1510,35 @@ function update_win_con_num_access() {
       }
     }
   }
+
+  // Update tooltip for special win conditions
+  const TOOLTIP_WIN_CONS = {
+    "krools_challenge": "Beat K. Rool and collect all Keys, Blueprints, Bosses, and Bonus Barrels",
+    "dk_rap_items": "Acquire all items referenced in each verse of the DK Rap:<br><br><strong>Donkey verse</strong> : Coconuts, Strong Kong<br><strong>Diddy verse</strong> : Rocketbarrel, Peanuts, Guitar<br><strong>Lanky verse</strong> : Orangstand, Baboon Balloon, Trombone<br><strong>Tiny verse</strong> : Mini Monkey, Ponytail Twirl, Climbing<br><strong>Chunky verse</strong> : Barrel Throwing<br><strong>The Fridge</strong> : Cranky, Peanuts, Pineapple, Grape, Orange Throwing, Coconuts",
+    "kill_the_rabbit": "Kill the rabbit in Chunky's igloo in Caves. Turn it to Ash. Simple as that."
+  };
+
+  const infoIcon = document.getElementById("win_condition_info_icon");
+
+  // Always dispose existing tooltip first
+  $(infoIcon).tooltip('dispose');
+
+  if (TOOLTIP_WIN_CONS[winConSelection.value]) {
+    infoIcon.setAttribute("title", TOOLTIP_WIN_CONS[winConSelection.value]);
+    infoIcon.setAttribute("data-bs-original-title", TOOLTIP_WIN_CONS[winConSelection.value]);
+    infoIcon.classList.remove("hidden");
+    // Initialize Bootstrap tooltip
+    $(infoIcon).tooltip({
+      trigger: 'hover',
+      html: true,
+      placement: 'right',
+      customClass: 'win-condition-tooltip'
+    });
+  } else {
+    infoIcon.setAttribute("title", "");
+    infoIcon.setAttribute("data-bs-original-title", "");
+    infoIcon.classList.add("hidden");
+  }
 }
 
 document
