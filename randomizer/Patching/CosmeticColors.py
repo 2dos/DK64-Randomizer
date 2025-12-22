@@ -705,9 +705,8 @@ def writeWinConImage(settings: Settings, image: Image, ROM_COPY: LocalROM):
 def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
     """Alter the image that's shown on the main menu to display the win condition."""
     win_con = settings.win_condition_item
-    if win_con == WinConditionComplex.beat_krool:
-        # Default, don't alter image
-        return
+    helmhurry = settings.helm_hurry and settings.archipelago
+
     if win_con == WinConditionComplex.krools_challenge:
         images = [
             (0x903, 0, 1),
@@ -728,6 +727,11 @@ def showWinCondition(settings: Settings, ROM_COPY: LocalROM):
             output_image.paste(local_img, (pos_x, pos_y), local_img)
         output_image = output_image.resize((32, 32)).transpose(Image.FLIP_TOP_BOTTOM)
         writeWinConImage(settings, output_image, ROM_COPY)
+    if helmhurry:
+        output_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/treasurechest.png")))
+        output_image = output_image.resize((32, 32))
+        writeWinConImage(settings, output_image, ROM_COPY)
+        return
     if win_con == WinConditionComplex.get_key8:
         output_image = Image.open(BytesIO(js.getFile("base-hack/assets/displays/key8.png")))
         output_image = output_image.resize((32, 32))
