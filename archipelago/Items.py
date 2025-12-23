@@ -8,7 +8,7 @@ from worlds.AutoWorld import World
 from types import SimpleNamespace
 from typing import TYPE_CHECKING
 
-from archipelago.Options import Goal, ShopPrices
+from archipelago.Options import Goal, ShopPrices, HelmDoor1Item, HelmDoor2Item
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists import Item as DK64RItem
 from randomizer.Enums.Items import Items as DK64RItems
@@ -115,6 +115,12 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
         helm_door_required_types.add(world.spoiler.settings.crown_door_item)
     if world.options.coin_door_item.value >= 2:  # Any requirement (random or specific)
         helm_door_required_types.add(world.spoiler.settings.coin_door_item)
+
+    # Handle vanilla helm door requirements 
+    if world.options.crown_door_item.value == HelmDoor1Item.option_vanilla:
+        helm_door_required_types.add(BarrierItems.Crown)
+    if world.options.coin_door_item.value == HelmDoor2Item.option_vanilla:
+        helm_door_required_types.add(BarrierItems.CompanyCoin)
 
     for item_id, dk64r_item in DK64RItem.ItemList.items():
         name = use_original_name_or_trap_name(dk64r_item)
