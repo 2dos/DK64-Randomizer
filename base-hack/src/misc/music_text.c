@@ -62,26 +62,17 @@ void SpeedUpMusic(void) {
         return;
     }
     win_conditions win_con = Rando.win_condition;
-    if (win_con == GOAL_KROOLS_CHALLENGE) {
-        if (!canAccessKroolsChallenge()) {
+    if (Rando.win_condition_spawns_ship) {
+        if (!canAccessWinCondition()) {
             return;
         }
-    } else {
-        requirement_item win_con_item = Rando.win_condition_extra.item;
+    } else if (win_con == GOAL_CUSTOMITEM)  {
         int win_con_count = Rando.win_condition_extra.count;
-        // Checking items
-        if (win_con == GOAL_KROOL) {
-            win_con_item = REQITEM_KEY;
-            win_con_count = 9; // Triggers upon picking up the 8th key
-        } else if (win_con != GOAL_CUSTOMITEM) {
-            // Goal is ineligible for speed up
-            return;
-        }
         if (win_con_count < 2) {
             // Doesn't work for 1-item win conditions
             return;
         }
-        int item_count = getItemCountReq(win_con_item);
+        int item_count = getItemCountReq(Rando.win_condition_extra.item);
         if (item_count != (win_con_count - 1)) {
             return;
         }
