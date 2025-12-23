@@ -8,7 +8,7 @@ from worlds.AutoWorld import World
 from types import SimpleNamespace
 from typing import TYPE_CHECKING
 
-from archipelago.Options import Goal, ShopPrices
+from archipelago.Options import Goal, ShopPrices, HelmDoor1Item, HelmDoor2Item
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists import Item as DK64RItem
 from randomizer.Enums.Items import Items as DK64RItems
@@ -90,7 +90,7 @@ def random_starting_moves(world: "DK64World") -> typing.List[str]:
     if world.options.climbing_shuffle:
         all_eligible_starting_moves.extend(DK64RItemPoolUtility.ClimbingAbilities())
     world.random.shuffle(all_eligible_starting_moves)
-    for i in range(world.options.starting_move_count):
+    while len(starting_moves) < world.options.starting_move_count:
         if len(all_eligible_starting_moves) == 0:
             break
         move_id = all_eligible_starting_moves.pop()
@@ -98,7 +98,6 @@ def random_starting_moves(world: "DK64World") -> typing.List[str]:
         # We don't want to pick anything we're already starting with. As an aside, the starting inventory move name may or may not have spaces in it.
         if move.name in world.options.start_inventory:
             # If we were to choose a move we're forcibly starting with, pick another
-            i -= 1
             continue
         starting_moves.append(move.name)
 
@@ -116,6 +115,12 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
         helm_door_required_types.add(world.spoiler.settings.crown_door_item)
     if world.options.coin_door_item.value >= 2:  # Any requirement (random or specific)
         helm_door_required_types.add(world.spoiler.settings.coin_door_item)
+
+    # Handle vanilla helm door requirements
+    if world.options.crown_door_item.value == HelmDoor1Item.option_vanilla:
+        helm_door_required_types.add(BarrierItems.Crown)
+    if world.options.coin_door_item.value == HelmDoor2Item.option_vanilla:
+        helm_door_required_types.add(BarrierItems.CompanyCoin)
 
     for item_id, dk64r_item in DK64RItem.ItemList.items():
         name = use_original_name_or_trap_name(dk64r_item)

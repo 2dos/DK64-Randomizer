@@ -17,7 +17,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting, FungiTimeSetting, FasterChecksSelected, ShuffleLoadingZones, WinConditionComplex, LevelRandomization
+from randomizer.Enums.Settings import HelmSetting, FungiTimeSetting, FasterChecksSelected, RemovedBarriersSelected, ShuffleLoadingZones, WinConditionComplex, LevelRandomization
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists import Location as DK64RLocation, Item as DK64RItem
@@ -251,7 +251,7 @@ def create_region(
             # Quickly test and see if we can reach this location with zero items
             quick_success = False
             try:
-                quick_success = location.logic(None) and not location_logic.bonusBarrel
+                quick_success = not location_logic.bonusBarrel and location.logic(logic_holder)
             except Exception:
                 pass
             # If we can, we can greatly simplify the logic at this location
@@ -324,7 +324,7 @@ def create_region(
         # Quickly test and see if we can reach this location with zero items
         quick_success = False
         try:
-            quick_success = collectible.logic(None)
+            quick_success = collectible.logic(logic_holder)
         except Exception:
             pass
         # If we can, we can greatly simplify the logic at this location
@@ -351,27 +351,73 @@ def create_region(
         # Entering levels in weird spots can require a number of pre-completed events to be handled in Game Start
         # We need to filter out any that will return False (because they will never not return False)
         # V1 LIMITATION: We're not filtering out auto key turn ins, so that setting must be on (not really a problem for basically anyone)
-        if region_name == "GameStart" and event.name in (
-            Events.Night,
-            Events.Day,
-            Events.AztecIceMelted,
-            Events.MainCoreActivated,
-            Events.TestingGateOpened,
-            Events.LighthouseGateOpened,
-            Events.ShipyardGateOpened,
-            Events.ActivatedLighthouse,
-            Events.ShipyardTreasureRoomOpened,
-            Events.WormGatesOpened,
-            Events.HollowTreeGateOpened,
-        ):
+        if region_name == "GameStart" and event.name in (Events.Night, Events.Day):
             if not event.logic(logic_holder):
                 continue
+        if region_name == "GameStart":
+            if event.name == Events.AztecIceMelted:
+                if not logic_holder.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice):
+                    continue
+            elif event.name == Events.MainCoreActivated:
+                if not logic_holder.checkBarrier(RemovedBarriersSelected.factory_production_room):
+                    continue
+            elif event.name == Events.TestingGateOpened:
+                if not logic_holder.checkBarrier(RemovedBarriersSelected.factory_testing_gate):
+                    continue
+            elif event.name == Events.LighthouseGateOpened:
+                if not logic_holder.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate):
+                    continue
+            elif event.name == Events.ShipyardGateOpened:
+                if not logic_holder.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate):
+                    continue
+            elif event.name == Events.ActivatedLighthouse:
+                if not logic_holder.checkBarrier(RemovedBarriersSelected.galleon_seasick_ship):
+                    continue
+            elif event.name == Events.ShipyardTreasureRoomOpened:
+                if not logic_holder.checkBarrier(RemovedBarriersSelected.galleon_treasure_room):
+                    continue
+            elif event.name == Events.WormGatesOpened:
+                if not logic_holder.checkBarrier(RemovedBarriersSelected.forest_green_tunnel):
+                    continue
+            elif event.name == Events.HollowTreeGateOpened:
+                if not logic_holder.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel):
+                    continue
+        # Further, we need to remove the duplicate events for barriers that are pre-opened.
+        if region_name != "GameStart":
+            if event.name == Events.AztecIceMelted:
+                if logic_holder.checkBarrier(RemovedBarriersSelected.aztec_tiny_temple_ice):
+                    continue
+            elif event.name == Events.MainCoreActivated:
+                if logic_holder.checkBarrier(RemovedBarriersSelected.factory_production_room):
+                    continue
+            elif event.name == Events.TestingGateOpened:
+                if logic_holder.checkBarrier(RemovedBarriersSelected.factory_testing_gate):
+                    continue
+            elif event.name == Events.LighthouseGateOpened:
+                if logic_holder.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate):
+                    continue
+            elif event.name == Events.ShipyardGateOpened:
+                if logic_holder.checkBarrier(RemovedBarriersSelected.galleon_shipyard_area_gate):
+                    continue
+            elif event.name == Events.ActivatedLighthouse:
+                if logic_holder.checkBarrier(RemovedBarriersSelected.galleon_seasick_ship):
+                    continue
+            elif event.name == Events.ShipyardTreasureRoomOpened:
+                if logic_holder.checkBarrier(RemovedBarriersSelected.galleon_treasure_room):
+                    continue
+            elif event.name == Events.WormGatesOpened:
+                if logic_holder.checkBarrier(RemovedBarriersSelected.forest_green_tunnel):
+                    continue
+            elif event.name == Events.HollowTreeGateOpened:
+                if logic_holder.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel):
+                    continue
+
         # Water level altering events: allow the one matching the initial galleon_water_internal setting in GalleonStart
         # and allow the opposite event in LighthouseUnderwater (for the switchable state)
         if event.name in (Events.WaterLowered, Events.WaterRaised):
             from randomizer.Enums.Settings import GalleonWaterSetting
 
-            if region_name == "GalleonStart":
+            if region_name == "GloomyGalleonStart":
                 if event.name == Events.WaterLowered and logic_holder.settings.galleon_water_internal == GalleonWaterSetting.lowered:
                     pass  # Allow this event
                 elif event.name == Events.WaterRaised and logic_holder.settings.galleon_water_internal == GalleonWaterSetting.raised:
@@ -395,12 +441,23 @@ def create_region(
         # This HelmFinished event is only necessary for skip all Helm
         if event.name == Events.HelmFinished and region_name == "HideoutHelmEntry" and logic_holder.settings.helm_setting != HelmSetting.skip_all:
             continue
+        # Helm barrier deduplication.
+        if event.name == Events.HelmDoorsOpened:
+            if region_name == "HideoutHelmEntry" and not logic_holder.checkBarrier(RemovedBarriersSelected.helm_star_gates):
+                continue
+            elif region_name == "HideoutHelmMain" and logic_holder.checkBarrier(RemovedBarriersSelected.helm_star_gates):
+                continue
+        if event.name == Events.HelmGatesPunched:
+            if region_name == "HideoutHelmEntry" and not logic_holder.checkBarrier(RemovedBarriersSelected.helm_punch_gates):
+                continue
+            elif region_name == "HideoutHelmMain" and logic_holder.checkBarrier(RemovedBarriersSelected.helm_punch_gates):
+                continue
         location_name = region_name + " Event " + event.name.name
         location = DK64Location(player, location_name, None, new_region)
         # Quickly test and see if we can reach this location with zero items
         quick_success = False
         try:
-            quick_success = event.logic(None)
+            quick_success = event.logic(logic_holder)
         except Exception:
             pass
         # If we can, we can greatly simplify the logic at this location

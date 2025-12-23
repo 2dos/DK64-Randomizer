@@ -556,6 +556,8 @@ def apply_logic_and_barriers_settings(settings_dict: dict, options) -> None:
     for barrier in options.remove_barriers_selected:
         if barrier in barrier_mapping:
             settings_dict["remove_barriers_selected"].append(barrier_mapping[barrier])
+    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.helm_star_gates)
+    settings_dict["remove_barriers_selected"].append(RemovedBarriersSelected.helm_punch_gates)
 
 
 def apply_glitches_and_tricks_settings(settings_dict: dict, options) -> None:
@@ -771,6 +773,7 @@ def apply_minigame_settings(settings_dict: dict, options, multiworld) -> None:
         2: HelmDoorItem.medium_random,
         3: HelmDoorItem.req_gb,
         4: HelmDoorItem.req_bp,
+        5: HelmDoorItem.req_companycoins,
         6: HelmDoorItem.req_key,
         7: HelmDoorItem.req_medal,
         8: HelmDoorItem.req_crown,

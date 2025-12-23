@@ -1,7 +1,9 @@
 """Items module for Archipelago."""
 
+from typing import Dict, Any
+
 # AP_ID, Name, Flag Id (Hex int), Count ID (CountStruct field mapping)
-item_ids = {
+item_ids: Dict[int, Dict[str, Any]] = {
     14041089: {"name": "No Item", "count_id": None, "flag_id": 0},
     14041090: {"name": "Fill Helper Item - SHOULD NOT BE PLACED", "count_id": None, "flag_id": None},
     14041091: {"name": "Donkey", "count_id": {"field": "kong_bitfield", "bit": 0}, "flag_id": None, "progression": True},

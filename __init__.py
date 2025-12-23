@@ -2165,6 +2165,17 @@ if baseclasses_loaded:
                     state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
             return change
 
+        def remove(self, state: CollectionState, item: Item) -> bool:
+            """Remove the item."""
+            change = super().remove(state, item)
+            if change:
+                if self.player in state.dk64_logic_holder.keys():
+                    state.dk64_logic_holder[self.player].RemoveArchipelagoItem(item)
+                elif hasattr(self, "spoiler"):
+                    state.dk64_logic_holder[self.player] = LogicVarHolder(self.spoiler, self.player)  # If the CollectionState dodged the creation of a logic_holder object, fix it here
+                    state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
+            return change
+
         def _update_entrance_connections(self, state: CollectionState) -> None:
             """Update the entrance_connections dictionary with all reachable connected entrances."""
             self.entrance_connections.clear()
