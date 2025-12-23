@@ -406,7 +406,6 @@ class Spoiler:
         settings["Chunky Model"] = self.settings.kong_model_chunky.name
         settings["Model Swap Mode"] = self.settings.kong_model_mode.name
         settings["Don't Start with Key 8"] = self.settings.krool_access
-        settings["Vanilla K. Rool Requirement"] = self.settings.k_rool_vanilla_requirement
         settings["Key 8 in Helm"] = self.settings.key_8_helm
         settings["Select Starting Keys"] = self.settings.select_keys
         if not self.settings.keys_random:

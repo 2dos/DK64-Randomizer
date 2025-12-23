@@ -118,30 +118,6 @@ int hasBeatenDKRapWinCon(void) {
     return 1;
 }
 
-int canAccessKroolsChallenge(void) {
-    // Check all 8 Keys
-    if (getItemCountReq(REQITEM_KEY) < 8) {
-        return 0;
-    }
-    
-    // Check all 40 Blueprints  
-    if (getItemCountReq(REQITEM_BLUEPRINT) < 40) {
-        return 0;
-    }
-    
-    // Check all 7 Bosses
-    if (getItemCountReq(REQITEM_BOSSES) < 7) {
-        return 0;
-    }
-    
-    // Check all 43 Bonus Barrels
-    if (getItemCountReq(REQITEM_BONUSES_NOHELM) < 43) {
-        return 0;
-    }
-    
-    return 1;
-}
-
 int canAccessWinCondition(void) {
     // Check if the win condition requirements are met
     switch(Rando.win_condition) {
@@ -172,8 +148,19 @@ int canAccessWinCondition(void) {
         
         case GOAL_KROOLS_CHALLENGE:
             // Krool's Challenge - check if all required items are collected
-            return canAccessKroolsChallenge();
-        
+            if (getItemCountReq(REQITEM_KEY) < 8) {
+                return 0;
+            }
+            if (getItemCountReq(REQITEM_BLUEPRINT) < 40) {
+                return 0;
+            }
+            if (getItemCountReq(REQITEM_BOSSES) < 7) {
+                return 0;
+            }
+            if (getItemCountReq(REQITEM_BONUSES_NOHELM) < 43) {
+                return 0;
+            }
+            return 1;
         case GOAL_CUSTOMITEM:
             // Custom item requirement - check the specified item count
             return isItemRequirementSatisfied(&Rando.win_condition_extra);
@@ -188,7 +175,7 @@ int canAccessWinCondition(void) {
 void checkSeedVictory(void) {
     if (!checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
         // If win_condition_spawns_ship is enabled, don't trigger victory on win condition items - only when K. Rool is defeated
-        if (Rando.win_condition_spawns_ship == 1) {
+        if (Rando.win_condition_spawns_ship) {
             return;
         }
         if (canAccessWinCondition()) {

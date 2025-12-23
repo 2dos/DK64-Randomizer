@@ -635,8 +635,6 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x80663D30, Overlay.Static, 0x240B1F40, offset_dict, 4)
         writeValue(ROM_COPY, 0x8062F09C, Overlay.Static, 0x240F1F40, offset_dict, 4)
 
-    adjustKongModelHandlers(ROM_COPY, settings, offset_dict)
-    krushaChanges(ROM_COPY, settings, offset_dict)
     writeHook(ROM_COPY, 0x8061A4C8, Overlay.Static, "AlterHeadSize", offset_dict)
     writeHook(ROM_COPY, 0x806198D4, Overlay.Static, "AlterHeadSize_0", offset_dict)
 
@@ -872,6 +870,8 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x8002845A, Overlay.Menu, 11 + 1, offset_dict)  # Set cap to 12
 
     grabUpdates(ROM_COPY, settings, offset_dict, spoiler)
+    adjustKongModelHandlers(ROM_COPY, settings, offset_dict)
+    krushaChanges(ROM_COPY, settings, offset_dict)
     raceCoinRandoASMChanges(ROM_COPY, settings, offset_dict, spoiler)
     if settings.fast_warps:
         writeValue(ROM_COPY, 0x806EE692, Overlay.Static, 0x54, offset_dict)
@@ -1706,7 +1706,7 @@ def patchAssembly(ROM_COPY, spoiler):
     # Fix Null Lag Boost
     writeHook(ROM_COPY, 0x806CCA90, Overlay.Static, "fixNullLagBoost", offset_dict)
 
-    if settings.win_condition_spawns_ship:
+    if settings.win_condition_spawns_ship and not (settings.helm_hurry and settings.archipelago):
         writeValue(ROM_COPY, 0x80029706, Overlay.Menu, getHiSym("k_rool_text"), offset_dict)
         writeValue(ROM_COPY, 0x8002970A, Overlay.Menu, getLoSym("k_rool_text"), offset_dict)
         writeFloatUpper(ROM_COPY, 0x800296D2, Overlay.Menu, 280, offset_dict)

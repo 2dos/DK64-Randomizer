@@ -804,6 +804,41 @@ td.directional_divider {
   min-width: 125px;
 }
 
+#win_condition_container {
+  position: relative;
+}
+
+#win_condition_info_icon {
+  display: inline-block;
+  position: absolute;
+  right: -48px;
+  top: 50%;
+  transform: translateY(-50%) scale(0.7);
+  transform-origin: center center;
+}
+
+#win_condition_info_icon.hidden {
+  display: none !important;
+}
+
+.win-condition-tooltip {
+  opacity: 1 !important;
+}
+
+.win-condition-tooltip .tooltip-inner {
+  background-color: rgb(4, 130, 67, 0.95) !important;
+  border-left: 3px solid var(--donk-green);
+  color: #e3e3e3;
+  text-align: left;
+  line-height: 1.6;
+  max-width: 500px;
+  opacity: 1 !important;
+}
+
+.win-condition-tooltip.bs-tooltip-right .tooltip-arrow::before {
+  border-right-color: rgb(4, 130, 67, 0.95) !important;
+}
+
 #fairy-container {
   text-align: left;
   display: flex;
