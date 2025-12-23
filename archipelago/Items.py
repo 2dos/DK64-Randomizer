@@ -90,7 +90,7 @@ def random_starting_moves(world: "DK64World") -> typing.List[str]:
     if world.options.climbing_shuffle:
         all_eligible_starting_moves.extend(DK64RItemPoolUtility.ClimbingAbilities())
     world.random.shuffle(all_eligible_starting_moves)
-    for i in range(world.options.starting_move_count):
+    while len(starting_moves) < world.options.starting_move_count:
         if len(all_eligible_starting_moves) == 0:
             break
         move_id = all_eligible_starting_moves.pop()
@@ -98,7 +98,6 @@ def random_starting_moves(world: "DK64World") -> typing.List[str]:
         # We don't want to pick anything we're already starting with. As an aside, the starting inventory move name may or may not have spaces in it.
         if move.name in world.options.start_inventory:
             # If we were to choose a move we're forcibly starting with, pick another
-            i -= 1
             continue
         starting_moves.append(move.name)
 

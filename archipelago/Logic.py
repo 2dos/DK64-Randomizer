@@ -264,12 +264,6 @@ class LogicVarHolder:
         self.Photos = {}
 
         self.Events = []
-        # Galleon water needs slightly more care to account for the initial state of Galleon water
-        # dk64randomizer.com handles this with Events in Galleon, but AP needs a solution that doesn't litter event locations in the world
-        if self.settings.galleon_water_internal == GalleonWaterSetting.lowered:
-            self.AddEvent(Events.WaterLowered)
-        if self.settings.galleon_water_internal == GalleonWaterSetting.raised:
-            self.AddEvent(Events.WaterRaised)
 
         self.Hints = []
 
@@ -664,11 +658,10 @@ class LogicVarHolder:
                     if corresponding_item_id >= Items.JapesDonkeyHint and corresponding_item_id <= Items.CastleChunkyHint:
                         self.Hints.append(corresponding_item_id)
                     if (corresponding_item_id >= Items.PhotoBat and corresponding_item_id <= Items.PhotoBug) or (corresponding_item_id >= Items.PhotoBFI and corresponding_item_id <= Items.PhotoSeal):
-                        self.Photos[corresponding_item_id] = 1
+                        self.Photos[corresponding_item_id] += 1
 
     def RemoveArchipelagoItem(self, ap_item):
         """Add an Archipelago item to the owned items list."""
-        ownedItems = self.latest_owned_items.copy()  # Start with the current owned items list
         if ap_item.name.startswith("Collectible CBs"):
             # CBs are carefully named in the following format:
             # index 0: "Collectible CBs" - needed to identify this as a collectible item
@@ -696,17 +689,233 @@ class LogicVarHolder:
             # index 1: the Events enum name as a string
             item_data = ap_item.name.split(", ")
             event = Events[item_data[1]]
-            self.Events = [evt for evt in self.Events if evt != event]
+            if event in [Events.ForestEntered, Events.CastleEntered]:
+                self.homing = False
+            self.RemoveEvent(event)
         elif ap_item.name.startswith("Boss Defeated"):
             self.bosses_beaten -= 1
         elif ap_item.name.startswith("Bonus Completed"):
             self.bonuses_beaten -= 1
         else:
             corresponding_item_id = logic_item_name_to_id[ap_item.name]
-            if corresponding_item_id in ownedItems:
-                ownedItems.remove(corresponding_item_id)
-
-        self.Update(ownedItems)
+            self.latest_owned_items.remove(corresponding_item_id)
+            match corresponding_item_id:
+                case Items.Donkey:
+                    self.donkey = False
+                    self.isdonkey = False
+                    self.blast = False
+                    self.strongKong = False
+                    self.grab = False
+                    self.coconut = False
+                    self.bongos = False
+                    self._recalculateBlueprints()
+                case Items.Diddy:
+                    self.diddy = False
+                    self.isdiddy = False
+                    self.charge = False
+                    self.jetpack = False
+                    self.spring = False
+                    self.peanut = False
+                    self.guitar = False
+                    self._recalculateBlueprints()
+                case Items.Lanky:
+                    self.lanky = False
+                    self.islanky = False
+                    self.handstand = False
+                    self.balloon = False
+                    self.sprint = False
+                    self.grape = False
+                    self.trombone = False
+                    self._recalculateBlueprints()
+                case Items.Tiny:
+                    self.tiny = False
+                    self.istiny = False
+                    self.mini = False
+                    self.twirl = False
+                    self.monkeyport = False
+                    self.feather = False
+                    self.saxophone = False
+                    self._recalculateBlueprints()
+                case Items.Chunky:
+                    self.chunky = False
+                    self.ischunky = False
+                    self.hunkyChunky = False
+                    self.punch = False
+                    self.gorillaGone = False
+                    self.pineapple = False
+                    self.triangle = False
+                    self._recalculateBlueprints()
+                case Items.Climbing:
+                    self.climbing = False
+                case Items.Vines:
+                    self.vines = False
+                    self.can_use_vines = False
+                case Items.Swim:
+                    self.swim = False
+                case Items.Oranges:
+                    self.oranges = False
+                    self.adv_orange_usage = False
+                case Items.Barrels:
+                    self.barrels = False
+                case Items.BaboonBlast:
+                    self.blast = False
+                case Items.StrongKong:
+                    self.strongKong = False
+                case Items.GorillaGrab:
+                    self.grab = False
+                case Items.ChimpyCharge:
+                    self.charge = False
+                case Items.RocketbarrelBoost:
+                    self.jetpack = False
+                case Items.SimianSpring:
+                    self.spring = False
+                case Items.Orangstand:
+                    self.handstand = False
+                case Items.BaboonBalloon:
+                    self.balloon = False
+                case Items.OrangstandSprint:
+                    self.sprint = False
+                case Items.MiniMonkey:
+                    self.mini = False
+                case Items.PonyTailTwirl:
+                    self.twirl = False
+                case Items.Monkeyport:
+                    self.monkeyport = False
+                case Items.HunkyChunky:
+                    self.hunkyChunky = False
+                case Items.PrimatePunch:
+                    self.punch = False
+                case Items.GorillaGone:
+                    self.gorillaGone = False
+                case Items.Coconut:
+                    self.coconut = False
+                case Items.Peanut:
+                    self.peanut = False
+                case Items.Grape:
+                    self.grape = False
+                case Items.Feather:
+                    self.feather = False
+                case Items.Pineapple:
+                    self.pineapple = False
+                case Items.Bongos:
+                    self.bongos = False
+                    if self.Melons == 2 and not (self.guitar or self.trombone or self.saxophone or self.triangle or self.InstUpgrades > 0):
+                        self.Melons = 1
+                case Items.Guitar:
+                    self.guitar = False
+                    if self.Melons == 2 and not (self.bongos or self.trombone or self.saxophone or self.triangle or self.InstUpgrades > 0):
+                        self.Melons = 1
+                case Items.Trombone:
+                    self.trombone = False
+                    if self.Melons == 2 and not (self.bongos or self.guitar or self.saxophone or self.triangle or self.InstUpgrades > 0):
+                        self.Melons = 1
+                case Items.Saxophone:
+                    self.saxophone = False
+                    if self.Melons == 2 and not (self.bongos or self.guitar or self.trombone or self.triangle or self.InstUpgrades > 0):
+                        self.Melons = 1
+                case Items.Triangle:
+                    self.triangle = False
+                    if self.Melons == 2 and not (self.bongos or self.guitar or self.trombone or self.saxophone or self.InstUpgrades > 0):
+                        self.Melons = 1
+                case Items.Cranky:
+                    self.crankyAccess = False
+                case Items.Funky:
+                    self.funkyAccess = False
+                case Items.Candy:
+                    self.candyAccess = False
+                case Items.Snide:
+                    self.snideAccess = False
+                case Items.NintendoCoin:
+                    self.nintendoCoin = False
+                case Items.RarewareCoin:
+                    self.rarewareCoin = False
+                case Items.JungleJapesKey:
+                    self.JapesKey = False
+                case Items.AngryAztecKey:
+                    self.AztecKey = False
+                case Items.FranticFactoryKey:
+                    self.FactoryKey = False
+                case Items.GloomyGalleonKey:
+                    self.GalleonKey = False
+                case Items.FungiForestKey:
+                    self.ForestKey = False
+                case Items.CrystalCavesKey:
+                    self.CavesKey = False
+                case Items.CreepyCastleKey:
+                    self.CastleKey = False
+                case Items.HideoutHelmKey:
+                    self.HelmKey = False
+                case Items.HelmDonkey1:
+                    self.HelmDonkey1 = False
+                case Items.HelmDonkey2:
+                    self.HelmDonkey2 = False
+                case Items.HelmDiddy1:
+                    self.HelmDiddy1 = False
+                case Items.HelmDiddy2:
+                    self.HelmDiddy2 = False
+                case Items.HelmLanky1:
+                    self.HelmLanky1 = False
+                case Items.HelmLanky2:
+                    self.HelmLanky2 = False
+                case Items.HelmTiny1:
+                    self.HelmTiny1 = False
+                case Items.HelmTiny2:
+                    self.HelmTiny2 = False
+                case Items.HelmChunky1:
+                    self.HelmChunky1 = False
+                case Items.HelmChunky2:
+                    self.HelmChunky2 = False
+                case Items.ProgressiveSlam:
+                    self.Slam -= 1
+                    if self.Slam < 2:
+                        self.superSlam = False
+                    if self.Slam < 3:
+                        self.superDuperSlam = False
+                case Items.ProgressiveAmmoBelt:
+                    self.AmmoBelts -= 1
+                case Items.ProgressiveInstrumentUpgrade:
+                    self.InstUpgrades -= 1
+                    if self.InstUpgrades == 0 and not (self.bongos or self.guitar or self.trombone or self.saxophone or self.triangle):
+                        self.Melons = 1
+                    elif self.InstUpgrades < 2:
+                        self.Melons = 2
+                case Items.GoldenBanana | Items.FillerBanana:
+                    self.GoldenBananas -= 1
+                case Items.BananaFairy | Items.FillerFairy:
+                    self.BananaFairies -= 1
+                case Items.BananaMedal | Items.FillerMedal:
+                    self.BananaMedals -= 1
+                case Items.BattleCrown | Items.FillerCrown:
+                    self.BattleCrowns -= 1
+                case Items.RainbowCoin | Items.FillerRainbowCoin:
+                    self.RainbowCoins -= 1
+                    for x in range(5):
+                        self.Coins[x] -= 5
+                case Items.CameraAndShockwave:
+                    self.camera = False
+                    self.shockwave = False
+                case Items.Camera:
+                    self.camera = False
+                case Items.Shockwave:
+                    self.shockwave = False
+                case Items.SniperSight:
+                    self.scope = False
+                case Items.HomingAmmo:
+                    self.homing = False
+                case Items.Bean:
+                    self.Beans -= 1
+                case Items.Pearl | Items.FillerPearl:
+                    self.Pearls -= 1
+                case Items.BananaHoard:
+                    self.bananaHoard = False
+                case _:
+                    if corresponding_item_id >= Items.DonkeyBlueprint and corresponding_item_id <= Items.ChunkyBlueprint:
+                        # For generic blueprints, just recalculate totals since Update() handles the counting
+                        self._recalculateBlueprints()
+                    if corresponding_item_id >= Items.JapesDonkeyHint and corresponding_item_id <= Items.CastleChunkyHint:
+                        self.Hints.remove(corresponding_item_id)
+                    if (corresponding_item_id >= Items.PhotoBat and corresponding_item_id <= Items.PhotoBug) or (corresponding_item_id >= Items.PhotoBFI and corresponding_item_id <= Items.PhotoSeal):
+                        self.Photos[corresponding_item_id] -= 1
 
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
@@ -1098,6 +1307,11 @@ class LogicVarHolder:
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""
         self.Events.append(event)
+
+    def RemoveEvent(self, event):
+        """Remove an event from the events list."""
+        if event in self.Events:
+            self.Events.remove(event)
 
     def GetKongs(self):
         """Return all owned kongs."""
