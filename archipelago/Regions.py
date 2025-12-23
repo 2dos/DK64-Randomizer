@@ -251,7 +251,7 @@ def create_region(
             # Quickly test and see if we can reach this location with zero items
             quick_success = False
             try:
-                quick_success = not location_logic.bonusBarrel and location.logic(logic_holder) 
+                quick_success = not location_logic.bonusBarrel and location.logic(logic_holder)
             except Exception:
                 pass
             # If we can, we can greatly simplify the logic at this location
@@ -351,10 +351,7 @@ def create_region(
         # Entering levels in weird spots can require a number of pre-completed events to be handled in Game Start
         # We need to filter out any that will return False (because they will never not return False)
         # V1 LIMITATION: We're not filtering out auto key turn ins, so that setting must be on (not really a problem for basically anyone)
-        if region_name == "GameStart" and event.name in (
-            Events.Night,
-            Events.Day
-        ):
+        if region_name == "GameStart" and event.name in (Events.Night, Events.Day):
             if not event.logic(logic_holder):
                 continue
         if region_name == "GameStart":
@@ -414,7 +411,7 @@ def create_region(
             elif event.name == Events.HollowTreeGateOpened:
                 if logic_holder.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel):
                     continue
-        
+
         # Water level altering events: allow the one matching the initial galleon_water_internal setting in GalleonStart
         # and allow the opposite event in LighthouseUnderwater (for the switchable state)
         if event.name in (Events.WaterLowered, Events.WaterRaised):
@@ -763,6 +760,7 @@ def hasDK64RTransition(state: CollectionState, player: int, exit: TransitionFron
 def hasDK64RLocation(state: CollectionState, player: int, location: LocationLogic):
     """Check if the given location is accessible in the given state."""
     return location.logic(state.dk64_logic_holder[player])
+
 
 def hasDK64RCollectible(state: CollectionState, player: int, collectible: Collectible):
     """Check if the given collectible is accessible in the given state."""

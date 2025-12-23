@@ -2164,7 +2164,7 @@ if baseclasses_loaded:
                     state.dk64_logic_holder[self.player] = LogicVarHolder(self.spoiler, self.player)  # If the CollectionState dodged the creation of a logic_holder object, fix it here
                     state.dk64_logic_holder[self.player].UpdateFromArchipelagoItems(state)
             return change
-        
+
         def remove(self, state: CollectionState, item: Item) -> bool:
             """Remove the item."""
             change = super().remove(state, item)
