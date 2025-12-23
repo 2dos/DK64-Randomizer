@@ -116,7 +116,7 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
     if world.options.coin_door_item.value >= 2:  # Any requirement (random or specific)
         helm_door_required_types.add(world.spoiler.settings.coin_door_item)
 
-    # Handle vanilla helm door requirements 
+    # Handle vanilla helm door requirements
     if world.options.crown_door_item.value == HelmDoor1Item.option_vanilla:
         helm_door_required_types.add(BarrierItems.Crown)
     if world.options.coin_door_item.value == HelmDoor2Item.option_vanilla:
