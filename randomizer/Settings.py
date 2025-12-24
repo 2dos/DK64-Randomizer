@@ -949,6 +949,7 @@ class Settings:
         self.holiday_setting_offseason = False
         self.remove_wrinkly_puzzles = False
         self.smaller_shops = False
+        self.no_consumable_upgrades = False
         self.alter_switch_allocation = False
         self.prog_slam_level_1 = SlamRequirement.green
         self.prog_slam_level_2 = SlamRequirement.green
@@ -1087,6 +1088,11 @@ class Settings:
             self.climbing_status = ClimbingStatus.normal
         else:
             self.climbing_status = ClimbingStatus.shuffled
+        # If you start with two copies of Progressive Instrument Upgrade, you start with 3 melons of health
+        if guaranteed_starting_moves.count(Items.ProgressiveInstrumentUpgrade) == 2:
+            self.start_with_3rd_melon = True
+        else:
+            self.start_with_3rd_melon = False
 
         # Switchsanity handling
         ShufflableExits[Transitions.AztecMainToLlama].entryKongs = {
