@@ -156,6 +156,7 @@
 
 #define FUNGI_SWITCH_NIGHT 0x4
 #define FUNGI_SWITCH_DAY 0x5
+#define FUNGI_SWITCH_LANKY_MUSHROOM 0XEB
 
 #define JAPES_CAVE_GATE 0x2B
 #define JAPES_PEANUT_MOUNTAIN 0x58
@@ -408,6 +409,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
 					if (!Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->timer = 70;
+					}
+				} else if (param2 == FUNGI_SWITCH_LANKY_MUSHROOM) {
+					if (!Rando.quality_of_life.remove_cutscenes) {
+						PlayCutsceneFromModelTwoScript(behaviour_pointer,12,1,0);
 					}
 				}
 				break;
