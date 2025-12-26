@@ -229,6 +229,19 @@
   },
 
   /*
+    KroolInBossPool:
+    - Determines how K. Rool phases are shuffled with regular bosses.
+    - off: K. Rool phases remain in the final fight only. Regular bosses remain in T&S portals only.
+    - krool_only: K. Rool phases can appear as T&S bosses, but the final fight only has K. Rool phases.
+    - full_shuffle: K. Rool phases and regular bosses can be shuffled bidirectionally between T&S portals and the final fight.
+  */
+  "KroolInBossPool": {
+    "off": 0,
+    "krool_only": 1,
+    "full_shuffle": 2
+  },
+
+  /*
     ExcludedSongs:
     - Determines the types of songs excluded.
     - wrinkly: Excludes Wrinkly songs.
@@ -1404,7 +1417,8 @@
     "random_starting_region_new": 290,
     "kong_model_mode": 291,
     "win_condition_spawns_ship": 292,
-    "ice_trap_model": 293
+    "ice_trap_model": 293,
+    "krool_in_boss_pool_v2": 294
   },
   /*
     SettingsStringDataType:
@@ -1560,7 +1574,8 @@
     "switchsanity_switch_japes_free_kong": { "obj": "SwitchsanityKong" },
     "switchsanity_switch_aztec_free_tiny": { "obj": "SwitchsanityKong" },
     "switchsanity_switch_aztec_free_lanky": { "obj": "SwitchsanityKong" },
-    "switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" }
+    "switchsanity_switch_factory_free_kong": { "obj": "SwitchsanityKong" },
+    "krool_in_boss_pool_v2": { "obj": "KroolInBossPool" }
   },
   // ALL SETTINGS NEED AN ENTRY HERE!
   // This maps settings to the data types that will be used to encode them in the
@@ -2150,7 +2165,8 @@
     "SettingsStringEnum.total_fairies": { "obj": "SettingsStringDataType.u8" },
     "SettingsStringEnum.trap_weight_animal": { "obj": "SettingsStringDataType.int8" },
     "SettingsStringEnum.trap_weight_rockfall": { "obj": "SettingsStringDataType.int8" },
-    "SettingsStringEnum.trap_weight_disabletag": { "obj": "SettingsStringDataType.int8" }
+    "SettingsStringEnum.trap_weight_disabletag": { "obj": "SettingsStringDataType.int8" },
+    "SettingsStringEnum.krool_in_boss_pool_v2": { "obj": "KroolInBossPool" }
   },
   // ALL LIST SETTINGS NEED AN ENTRY HERE!
   // Another map for list settings, for the underlying data type of the list.

@@ -113,6 +113,12 @@ export enum DKPortalRando {
     on = 2,
 }
 
+export enum KroolInBossPool {
+    off = 0,
+    krool_only = 1,
+    full_shuffle = 2,
+}
+
 export enum ExcludedSongs {
     wrinkly = 1,
     transformation = 2,
@@ -947,6 +953,7 @@ export enum SettingsStringEnum {
     kong_model_mode = 291,
     win_condition_spawns_ship = 292,
     ice_trap_model = 293,
+    krool_in_boss_pool_v2 = 294,
 }
 
 export enum SettingsStringDataType {
@@ -1095,6 +1102,7 @@ export const SettingsMap = {
     'switchsanity_switch_aztec_free_tiny': SwitchsanityKong,
     'switchsanity_switch_aztec_free_lanky': SwitchsanityKong,
     'switchsanity_switch_factory_free_kong': SwitchsanityKong,
+    'krool_in_boss_pool_v2': KroolInBossPool,
 }
 
 export const SettingsStringTypeMap = {
@@ -1391,6 +1399,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.trap_weight_animal: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_rockfall: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_disabletag: SettingsStringDataType.int8,
+    SettingsStringEnum.krool_in_boss_pool_v2: KroolInBossPool,
 }
 
 export const SettingsStringListTypeMap = {

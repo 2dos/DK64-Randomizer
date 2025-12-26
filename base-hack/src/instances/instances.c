@@ -156,6 +156,7 @@
 
 #define FUNGI_SWITCH_NIGHT 0x4
 #define FUNGI_SWITCH_DAY 0x5
+#define FUNGI_SWITCH_LANKY_MUSHROOM 0XEB
 
 #define JAPES_CAVE_GATE 0x2B
 #define JAPES_PEANUT_MOUNTAIN 0x58
@@ -387,7 +388,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if ((param2 == AZTEC_LLAMACOCONUT) || (param2 == AZTEC_LLAMAGRAPE) || (param2 == AZTEC_LLAMAFEATHER)) {
 					if ((index == 0) && (param2 == AZTEC_LLAMACOCONUT)) {
-						if (!Rando.quality_of_life.remove_cutscenes) {
+						if (!Rando.cutscene_skip_setting != CSSKIP_AUTO) {
 							PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
 						}
 					} else if (index == 1) {
@@ -408,6 +409,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
 					if (!Rando.quality_of_life.vanilla_fixes) {
 						behaviour_pointer->timer = 70;
+					}
+				} else if (param2 == FUNGI_SWITCH_LANKY_MUSHROOM) {
+					if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
+						PlayCutsceneFromModelTwoScript(behaviour_pointer,12,1,0);
 					}
 				}
 				break;
@@ -518,7 +523,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (param2 == LLAMA_BONGOPAD) {
 					return Character == Rando.free_source_llama;
 				} else if (param2 == LLAMA_LAVAGATE) {
-					if (Rando.quality_of_life.remove_cutscenes) {
+					if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
 						hideObject(behaviour_pointer);
 						behaviour_pointer->pause_state = 1;
 					}
@@ -784,7 +789,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (MovesBase[KONG_DIDDY].special_moves & MOVECHECK_CHARGE) {
 						return 1;
 					}
-					if (Rando.quality_of_life.remove_cutscenes) {
+					if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
 						return 1;
 					}
 					return 0;
@@ -1169,7 +1174,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 
 						//play grape switch cutscene
-						if (!Rando.quality_of_life.remove_cutscenes) {
+						if (!Rando.cutscene_skip_setting != CSSKIP_AUTO) {
 							PlayCutsceneFromModelTwoScript(behaviour_pointer, 0, 1, 0);
 							behaviour_pointer->timer = 110;
 						}
