@@ -38,7 +38,7 @@ jobs:
         fi
 
     - name: Setup python
-      uses: actions/setup-python@v6.0.0
+      uses: actions/setup-python@v6.1.0
       with:
           python-version: 3.13.0
           architecture: x64
