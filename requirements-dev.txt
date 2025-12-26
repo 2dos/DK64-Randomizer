@@ -1,13 +1,13 @@
-psutil==7.1.0
+psutil==7.2.0
 jinja2==3.1.6
 pytest==8.4.2
 pytest-cov==7.0.0
-black==25.9.0
+black==25.12.0
 pycodestyle==2.14.0
 pydocstyle==6.3.0
 css-html-js-minify==2.5.5
 bs4==0.0.2
-beautifulsoup4==4.14.2
+beautifulsoup4==4.14.3
 djlint==1.36.4
 cpplint==2.0.2
 GitPython==3.1.45
