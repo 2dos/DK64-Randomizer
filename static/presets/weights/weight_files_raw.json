@@ -2117,12 +2117,24 @@
         "points_list_shopkeepers": {
             "ignore": true
         },
-        "krool_in_boss_pool": {
-            "setting_type": "bool",
+        "krool_in_boss_pool_v2": {
+            "setting_type": "choice_single",
             "options": {
-                "easy": 80,
-                "standard": 65,
-                "difficult": 50
+                "easy": {
+                    "off": 20.0,
+                    "krool_only": 30.0,
+                    "full_shuffle": 50.0
+                },
+                "standard": {
+                    "off": 35.0,
+                    "krool_only": 30.0,
+                    "full_shuffle": 35.0
+                },
+                "difficult": {
+                    "off": 25.0,
+                    "krool_only": 50.0,
+                    "full_shuffle": 25.0
+                }
             },
             "qol_uses_hard": true
         },

@@ -99,6 +99,11 @@ class DKPortalRando(IntEnum):
     main_only = 1
     on = 2
 
+class KroolInBossPool(IntEnum):
+    off = 0
+    krool_only = 1
+    full_shuffle = 2
+
 class ExcludedSongs(IntEnum):
     wrinkly = 1
     transformation = 2
@@ -882,6 +887,7 @@ class SettingsStringEnum(IntEnum):
     kong_model_mode = 291
     win_condition_spawns_ship = 292
     ice_trap_model = 293
+    krool_in_boss_pool_v2 = 294
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1028,6 +1034,7 @@ SettingsMap: dict = {
     "switchsanity_switch_aztec_free_tiny": SwitchsanityKong,
     "switchsanity_switch_aztec_free_lanky": SwitchsanityKong,
     "switchsanity_switch_factory_free_kong": SwitchsanityKong,
+    "krool_in_boss_pool_v2": KroolInBossPool,
 }
 
 SettingsStringTypeMap: dict = {
@@ -1324,6 +1331,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.trap_weight_animal: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_rockfall: SettingsStringDataType.int8,
     SettingsStringEnum.trap_weight_disabletag: SettingsStringDataType.int8,
+    SettingsStringEnum.krool_in_boss_pool_v2: KroolInBossPool,
 }
 
 SettingsStringListTypeMap: dict = {

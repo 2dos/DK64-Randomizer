@@ -892,10 +892,10 @@ document.getElementById("cb_rando_enabled").addEventListener("change", plando_di
 
 // Disable K. Rool phases as bosses if they are not in the boss pool.
 function plando_disable_krool_phases_as_bosses(evt) {
-  const kroolInBossPool = document.getElementById("krool_in_boss_pool").checked;
+  const kroolInBossPool = document.getElementById("krool_in_boss_pool_v2").value;
   const tnsBossOptions = document.getElementsByClassName("plando-tns-boss");
 
-  if (kroolInBossPool) {
+  if (kroolInBossPool !== "off") {
     for (let option of tnsBossOptions) {
       option.removeAttribute("disabled");
     }
@@ -912,7 +912,7 @@ function plando_disable_krool_phases_as_bosses(evt) {
   }
 }
 
-document.getElementById("krool_in_boss_pool").addEventListener("click", plando_disable_krool_phases_as_bosses);
+document.getElementById("krool_in_boss_pool_v2").addEventListener("change", plando_disable_krool_phases_as_bosses);
 
 // Make changes to the plando tab based on other settings
 document

@@ -192,17 +192,25 @@
             <h2 class="title">BOSSES</h2>
             <div class="flex-container">
                 {{ toggle_input("boss_location_rando", "Shuffle Boss Location", "The boss you can get in a level is different than normal.") }}
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="K. Rool phases can be found in the T&S, and T&S bosses can be encountered as an endgame phase.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="krool_in_boss_pool"
-                                id="krool_in_boss_pool"
-                                display_name="Shuffle Boss Kong Required"
-                                value="True"/>
-                        K Rool Phases as Bosses
-                    </label>
+                <div class="item-select">
+                    <p class="select-title">K. Rool in Boss Pool</p>
+                    <select name="krool_in_boss_pool_v2"
+                            id="krool_in_boss_pool_v2"
+                            display_name="K. Rool in Boss Pool"
+                            class="form-select"
+                            aria-label="K. Rool Boss Pool"
+                            data-toggle="tooltip"
+                            title="Determines how K. Rool phases are shuffled with regular bosses.&#10;-Off: K. Rool phases remain in the final fight only. Regular bosses remain as T&S bosses only.&#10;-K. Rool Only: K. Rool phases can appear as T&S bosses, but the final fight only has K. Rool phases.&#10;-Full Shuffle: K. Rool phases and regular bosses can be shuffled between each other.">
+                        <option selected id="off" value="off">
+                            Off
+                        </option>
+                        <option id="krool_only" value="krool_only">
+                            K. Rool Only
+                        </option>
+                        <option id="full_shuffle" value="full_shuffle">
+                            Full Shuffle
+                        </option>
+                    </select>
                 </div>
             </div>
         </div>

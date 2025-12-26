@@ -429,6 +429,7 @@ class Settings:
         self.random_prices = None
         self.boss_location_rando = None
         # self.boss_kong_rando = None  # Deprecated
+        self.krool_in_boss_pool_v2 = KroolInBossPool.off
         self.kasplat_rando_setting = None
         # self.puzzle_rando = None  # Deprecated
         self.puzzle_rando_difficulty = PuzzleRando.off
@@ -1737,7 +1738,7 @@ class Settings:
             Maps.KroolTinyPhase,
             Maps.KroolChunkyPhase,
         ]
-        if self.krool_in_boss_pool:
+        if self.krool_in_boss_pool_v2 == KroolInBossPool.full_shuffle:
             phases.extend(
                 [
                     Maps.JapesBoss,
