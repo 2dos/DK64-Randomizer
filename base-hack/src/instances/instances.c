@@ -411,8 +411,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->timer = 70;
 					}
 				} else if (param2 == FUNGI_SWITCH_LANKY_MUSHROOM) {
-					if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
-						PlayCutsceneFromModelTwoScript(behaviour_pointer,12,1,0);
+					if (index == 0) {
+						if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
+							PlayCutsceneFromModelTwoScript(behaviour_pointer,12,1,0);
+						}
+					} else if (index == 1) {
+						setPermFlag(FLAG_LANKY_MUSH_OPEN);
+					} else if (index == 2) {
+						return checkFlag(FLAG_LANKY_MUSH_OPEN, FLAGTYPE_PERMANENT);
 					}
 				}
 				break;

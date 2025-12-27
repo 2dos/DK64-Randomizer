@@ -58,7 +58,8 @@
 #define FLAG_COLLECTABLE_BEAN 0x300
 #define FLAG_PKMNSNAP_PICTURES 0x26B // 0x26B -> 0x296 (inc.) (44 flags)
 
-// Unused 0x297, 0x298, 0x299
+// Unused 0x297, 0x298
+#define FLAG_LANKY_MUSH_OPEN 0x299
 #define FLAG_ITEM_BELT_0 0x29A
 #define FLAG_ITEM_BELT_1 0x29B
 #define FLAG_ITEM_INS_0 0x29C
