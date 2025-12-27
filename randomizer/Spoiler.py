@@ -53,7 +53,7 @@ from randomizer.Lists.Minigame import (
     TrainingMinigameLocations,
     MinigameSelector,
 )
-from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector
+from randomizer.Lists.Multiselectors import FasterCheckSelector, RemovedBarrierSelector, QoLSelector, BossesSelector
 from randomizer.Lists.EnemyTypes import EnemySelector, enemy_location_list
 from randomizer.Lists.WrinklyHints import HintSet
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
@@ -419,6 +419,7 @@ class Spoiler:
         settings["Quality of Life"] = self.dumpMultiselector(self.settings.misc_changes_selected, QoLSelector)
         settings["Fast GBs"] = self.dumpMultiselector(self.settings.faster_checks_selected, FasterCheckSelector)
         settings["Barriers Removed"] = self.dumpMultiselector(self.settings.remove_barriers_selected, RemovedBarrierSelector)
+        settings["Bosses Selected"] = self.dumpMultiselector(self.settings.bosses_selected, BossesSelector)
         settings["Random Win Condition"] = self.settings.win_condition_random
         if not self.settings.win_condition_random:
             wc_count = self.settings.win_condition_count

@@ -1418,7 +1418,8 @@
     "kong_model_mode": 291,
     "win_condition_spawns_ship": 292,
     "ice_trap_model": 293,
-    "krool_in_boss_pool_v2": 294
+    "krool_in_boss_pool_v2": 294,
+    "bosses_selected": 295
   },
   /*
     SettingsStringDataType:
@@ -1485,6 +1486,7 @@
     "minigames_list_selected": { "obj": "MinigamesListSelected" },
     "cb_rando_list_selected": { "obj": "Levels" },
     "misc_changes_selected": { "obj": "MiscChangesSelected" },
+    "bosses_selected": { "obj": "Maps" },
     "more_cutscene_skips": { "obj": "ExtraCutsceneSkips" },
     "move_rando": { "obj": "MoveRando" },
     "music_filtering_selected": { "obj": "MusicFilters" },
@@ -1819,6 +1821,9 @@
       "obj": "SettingsStringDataType.list"
     },
     "SettingsStringEnum.misc_changes_selected": {
+      "obj": "SettingsStringDataType.list"
+    },
+    "SettingsStringEnum.bosses_selected": {
       "obj": "SettingsStringDataType.list"
     },
     "SettingsStringEnum.more_cutscene_skips": { "obj": "ExtraCutsceneSkips" },
@@ -2186,6 +2191,9 @@
     },
     "SettingsStringEnum.misc_changes_selected": {
       "obj": "MiscChangesSelected"
+    },
+    "SettingsStringEnum.bosses_selected": {
+      "obj": "Maps"
     },
     "SettingsStringEnum.starting_keys_list_selected": { "obj": "Items" },
     "SettingsStringEnum.warp_level_list_selected": { "obj": "Maps" },

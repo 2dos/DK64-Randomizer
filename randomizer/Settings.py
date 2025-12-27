@@ -893,6 +893,8 @@ class Settings:
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
+        self.bosses_selected = []
+        self.allow_boss_duping = False
         self.hard_mode_selected = []
         # Item Rando
         self.item_rando_list_0 = []
@@ -1751,6 +1753,7 @@ class Settings:
                     Maps.CastleBoss,
                 ]
             )
+        phases = [x for x in phases if x in self.bosses_selected]
         possible_phases = phases.copy()
         if self.krool_phase_order_rando:
             self.random.shuffle(phases)
@@ -1758,6 +1761,14 @@ class Settings:
             self.krool_phase_count = self.random.randint(1, 5)
         if isinstance(self.krool_phase_count, str) is True:
             self.krool_phase_count = 5
+        self.allow_boss_duping = len(self.bosses_selected) < (7 + self.krool_phase_count)
+        # Dupe phases so there's enough choice
+        if len(phases) < self.krool_phase_count:
+            dupe_count = math.ceil(self.krool_phase_count / len(phases))
+            init_phases = phases.copy()
+            for _ in range(dupe_count):
+                phases.extend(init_phases)
+        # Pick phases
         if self.krool_phase_count < len(phases):
             if self.krool_phase_order_rando:
                 phases = self.random.sample(phases, self.krool_phase_count)
@@ -1765,7 +1776,10 @@ class Settings:
                 phases = phases[: self.krool_phase_count]
         if phases[-1] == Maps.GalleonBoss:
             # Pufftoss can't be last. Pick something else
-            phases[-1] = self.random.choice([x for x in possible_phases if x not in phases])
+            if self.allow_boss_duping:
+                phases[-1] = self.random.choice([x for x in possible_phases if x != Maps.GalleonBoss])
+            else:
+                phases[-1] = self.random.choice([x for x in possible_phases if x not in phases and x != Maps.GalleonBoss])
         # Plandomized K. Rool algorithm
         if self.enable_plandomizer:
             planned_phases = []
