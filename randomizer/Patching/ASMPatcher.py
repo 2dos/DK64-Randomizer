@@ -1914,7 +1914,25 @@ def patchAssembly(ROM_COPY, spoiler):
     for boss_map in boss_maps:
         writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, 0xD, offset_dict, 1)  # Set map as a shared map
 
+    # Music Writes
+    writeFunction(ROM_COPY, 0x80024AE0, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x80025B6C, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x80027EBC, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x80028468, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x80029B5C, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x8002AA64, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x8002B6F8, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x8002C6D8, Overlay.Bonus, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x80025300, Overlay.Minecart, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x8002936C, Overlay.Menu, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x806BBAC8, Overlay.Static, "playBossSong", offset_dict)
+    writeFunction(ROM_COPY, 0x805FED60, Overlay.Static, "playSongWCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x8061E280, Overlay.Static, "playSongWCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x80629014, Overlay.Static, "playSongWCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x8064142C, Overlay.Static, "playSongWCheck", offset_dict)
+    writeFunction(ROM_COPY, 0x8064143C, Overlay.Static, "playSongWCheck", offset_dict)
 
+    # 
     writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase
     writeFunction(ROM_COPY, 0x80628034, Overlay.Static, "exitBoss", offset_dict)
 

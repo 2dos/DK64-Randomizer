@@ -111,6 +111,18 @@
                         Remove Silent Isles
                     </label>
                 </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                    title="If true, boss & bonus songs will choose from a pool of song every time they're played instead of a defined song.">
+                        <input class="form-check-input"
+                        type="checkbox"
+                        name="pool_tracks"
+                        id="pool_tracks"
+                        display_name="Boss & Bonus tracks choose from pool"
+                        value="True"/>
+                        Boss & Bonus tracks choose from pool
+                    </label>
+                </div>
                 {{ dropdown_multiselector(excluded_songs, "excluded_songs", "Disabled Songs", "This will open a dropdown that will let you customize what songs are disabled.", 4) }}
                 {{ dropdown_multiselector(song_filters, "music_filtering", "Music Filtering", "This will open a dropdown that will let you customize how the game applies additional filters.") }}
             </div>
@@ -136,7 +148,7 @@
                        placeholder="No File Chosen"/>
             </div>
             <div class="flex-container">
-                {{ toggle_input("fill_with_custom_music", "Fill game with provided songs", "Will fill each song slot available with a custom track, even if the amount of songs in that pack doesn't exceed the amount of song slots.") }}
+                {{ toggle_input("fill_with_custom_music", "Allow song duplicates", "Will enable the game to select a song multiple times when placing music. This is critical for small music packs when you want all songs to be filled.") }}
                 {{ toggle_input("show_song_name", "Display song name in-game", "Will display the song name for 2 seconds upon it playing (Only applies to BGM).") }}
             </div>
             <div class="flex-container">

@@ -17,7 +17,8 @@ typedef struct varspace {
 	/* 0x048 */ char unk_48[4];
 	/* 0x04C */ ItemRequirement crown_door_requirement;
 	/* 0x04E */ ItemRequirement coin_door_requirement;
-	/* 0x050 */ char unk_50[2];
+	/* 0x050 */ char bonus_music_rando; // Bonus Music picks from a pool of all bonus minigame songs
+	/* 0x051 */ char boss_music_rando; // Boss Music picks from a pool of all boss songs
 	/* 0x052 */ char disable_wrinkly_kong_requirement; // Disable Kongs being required to access a wrinkly door
 	/* 0x053 */ unsigned char ammo_belt_prices[2]; // Array of ammo belt prices: [1,2]. 1 item for each level of ammo belt
 	/* 0x055 */ unsigned char instrument_upgrade_prices[3]; // Array of instrument upgrade prices: [1,2,3]. 1st and 3rd items are the Upgrades 1 and 2 respectively. 2nd item is the 3rd melon cost

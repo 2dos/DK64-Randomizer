@@ -236,6 +236,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "crosshair_outline",
         "custom_music_proportion",
         "fill_with_custom_music",
+        "pool_tracks",
         "show_song_name",
         "delayed_spoilerlog_release",
         "shockwave_status",  # Deprecated with starting move selector rework - this is now derived in the settings constructor

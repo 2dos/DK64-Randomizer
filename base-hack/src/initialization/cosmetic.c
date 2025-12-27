@@ -358,6 +358,7 @@ void setHUDUpdateFunction(void* function, int item_index) {
         loadSpriteFunction(function);
     }
 }
+
 void setHUDUpdateFunction_0(void* function, int item_index, int control_type) {
     if ((item_index == 2) || (item_index == 3)) {
         loadSpriteFunction(&colorRainbowAmmoHUD_0);
@@ -368,4 +369,63 @@ void setHUDUpdateFunction_0(void* function, int item_index, int control_type) {
     } else {
         loadSpriteFunction(function);
     }
+}
+
+static unsigned char bonus_ost[] = {
+    SONG_MINIGAMES,
+    SONG_STEALTHYSNOOP,
+    SONG_BATTLEARENA,
+    SONG_MADMAZEMAUL,
+    SONG_MINECARTMAYHEM,
+    SONG_MONKEYSMASH,
+    SONG_HELMBONUS,
+    SONG_ENGUARDE,
+    SONG_RAMBI,
+};
+
+static unsigned char boss_ost[] = {
+    SONG_JAPESDILLO,
+    SONG_AZTECDOGADON,
+    SONG_FACTORYJACK,
+    SONG_GALLEONPUFFTOSS,
+    SONG_FORESTDOGADON,
+    SONG_CAVESDILLO,
+    SONG_CASTLEKUTOUT,
+    SONG_KROOLBATTLE,
+    SONG_MINIBOSS,
+    SONG_FORESTSPIDER,
+};
+
+int pickRandomFromPool(unsigned char* pool, int count) {
+    int rng = getRNGLower31() & 0xFF;
+    while (rng >= count) {
+        // Yes, I know rng % count is better, but if I don't do this, Wii U will crash
+        // What an A tier console....
+        rng -= count;
+    }
+    return pool[rng];
+}
+
+void playBonusSong(songs song, float volume) {
+    if (Rando.bonus_music_rando) {
+        song = pickRandomFromPool(&bonus_ost, sizeof(bonus_ost));
+    }
+    playSong(song, volume);
+}
+
+void playBossSong(songs song, float volume) {
+    if (Rando.boss_music_rando) {
+        song = pickRandomFromPool(&boss_ost, sizeof(boss_ost));
+    }
+    playSong(song, volume);
+}
+
+void playSongWCheck(songs song, float volume) {
+    if (Rando.bonus_music_rando && inU8List(song, &bonus_ost, sizeof(bonus_ost))) {
+        song = pickRandomFromPool(&bonus_ost, sizeof(bonus_ost));
+    }
+    if (Rando.boss_music_rando && inU8List(song, &boss_ost, sizeof(boss_ost))) {
+        song = pickRandomFromPool(&boss_ost, sizeof(boss_ost));
+    }
+    playSong(song, volume);
 }
