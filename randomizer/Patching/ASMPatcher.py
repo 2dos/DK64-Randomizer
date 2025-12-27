@@ -1911,7 +1911,9 @@ def patchAssembly(ROM_COPY, spoiler):
         boss_kong = settings.boss_kongs[i]
         writeValue(ROM_COPY, 0x80744700 + (i * 2), Overlay.Static, boss_map, offset_dict)
         writeValue(ROM_COPY, 0x807446F0 + i, Overlay.Static, boss_kong, offset_dict, 1)
-        writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, i, offset_dict, 1)
+    for boss_map in boss_maps:
+        writeValue(ROM_COPY, 0x807445E0 + boss_map, Overlay.Static, 0xD, offset_dict, 1)  # Set map as a shared map
+
 
     writeHook(ROM_COPY, 0x806C3260, Overlay.Static, "fixLankyPhaseHandState", offset_dict)  # Ensures K Rool has a head in the end cutscene if in Lanky Phase
     writeFunction(ROM_COPY, 0x80628034, Overlay.Static, "exitBoss", offset_dict)
