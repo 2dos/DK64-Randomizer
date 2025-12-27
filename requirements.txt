@@ -1,2 +1,2 @@
 pyxdelta==0.2.2
-pillow==11.3.0
+pillow==12.0.0
