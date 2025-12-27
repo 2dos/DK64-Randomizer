@@ -299,7 +299,9 @@ def grabUpdates(ROM_COPY: LocalROM, settings, offset_dict: dict, spoiler):
     writeValue(ROM_COPY, 0x806F6F76, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Film Refill
     writeFunction(ROM_COPY, 0x806F6F78, Overlay.Static, "hasFlagMove", offset_dict)
     writeValue(ROM_COPY, 0x806F916A, Overlay.Static, FLAG_ABILITY_CAMERA, offset_dict)  # Film max
-    writeFunction(ROM_COPY, 0x806F916C, Overlay.Static, "hasFlagMove", offset_dict)
+    # writeFunction(ROM_COPY, 0x806F916C, Overlay.Static, "hasFlagMove", offset_dict)
+    writeValue(ROM_COPY, 0x806F916C, Overlay.Static, 0x00000000, offset_dict, 4)  # NOP (Skip this check, as the line below will render it obsolete)
+    writeValue(ROM_COPY, 0x806F9174, Overlay.Static, 0x00000000, offset_dict, 4)  # NOP (Skip setting film count to 0, to prevent that from happening)
     # Shockwave
     writeFunction(ROM_COPY, 0x806CA308, Overlay.Static, "hasFlagMove", offset_dict)
     writeFunction(ROM_COPY, 0x806F6EBC, Overlay.Static, "hasFlagMove", offset_dict)
