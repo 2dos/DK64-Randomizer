@@ -197,7 +197,10 @@ The generated settings will be of lesser difficulty. Requirements for B. Locker,
 	- Default: 100%
 - Don't Start with Key 8: 70%
 - Require Beating K. Rool: 30%
-- Shuffle Boss Kong Required: 80%
+- K. Rool in Boss Pool: 
+	- Off: 20%
+	- Krool Only: 30%
+	- Full Shuffle: 50%
 - Shuffle K. Rool Phases: 80%
 - Entrance Randomizer: 
 	- Vanilla: 50%

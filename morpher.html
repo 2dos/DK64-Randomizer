@@ -718,6 +718,17 @@
                     console.log('Setting ice_trap_model to complex');
                     setting_data.ice_trap_model = "complex";
                 }
+                if (sel_version_num < numericVersion("5.7.57")) {
+                    // Migrate krool_in_boss_pool from boolean to enum
+                    if (setting_data.krool_in_boss_pool !== undefined) {
+                        console.log('Migrating krool_in_boss_pool from boolean to enum');
+                        if (setting_data.krool_in_boss_pool === true) {
+                            setting_data.krool_in_boss_pool_v2 = "full_shuffle";
+                        } else {
+                            setting_data.krool_in_boss_pool_v2 = "off";
+                        }
+                    }
+                }
                 // Update to include all unhandled options to unsorted
                 const all_valid_items = Object.keys(output_json.ItemRandoListSelected);
                 let mentioned_items = [];
