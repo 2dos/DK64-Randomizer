@@ -1418,7 +1418,8 @@
     "kong_model_mode": 291,
     "win_condition_spawns_ship": 292,
     "ice_trap_model": 293,
-    "krool_in_boss_pool_v2": 294
+    "krool_in_boss_pool_v2": 294,
+    "no_consumable_upgrades": 295
   },
   /*
     SettingsStringDataType:
@@ -2109,6 +2110,7 @@
     "SettingsStringEnum.shops_dont_cost": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.alt_minecart_mayhem": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.less_fragile_boulders": { "obj": "SettingsStringDataType.bool" },
+    "SettingsStringEnum.no_consumable_upgrades": { "obj": "SettingsStringDataType.bool" },
     "SettingsStringEnum.prog_slam_level_1": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_2": { "obj": "SlamRequirement" },
     "SettingsStringEnum.prog_slam_level_3": { "obj": "SlamRequirement" },

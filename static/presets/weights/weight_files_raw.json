@@ -1291,6 +1291,15 @@
             },
             "qol_uses_hard": true
         },
+        "no_consumable_upgrades": {
+            "setting_type": "bool",
+            "options": {
+                "easy": 0,
+                "standard": 25,
+                "difficult": 50
+            },
+            "qol_uses_hard": true
+        },
         "open_lobbies": {
             "setting_type": "bool",
             "options": {

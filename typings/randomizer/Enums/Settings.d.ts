@@ -954,6 +954,7 @@ export enum SettingsStringEnum {
     win_condition_spawns_ship = 292,
     ice_trap_model = 293,
     krool_in_boss_pool_v2 = 294,
+    no_consumable_upgrades = 295,
 }
 
 export enum SettingsStringDataType {
@@ -1342,6 +1343,7 @@ export const SettingsStringTypeMap = {
     SettingsStringEnum.shops_dont_cost: SettingsStringDataType.bool,
     SettingsStringEnum.alt_minecart_mayhem: SettingsStringDataType.bool,
     SettingsStringEnum.less_fragile_boulders: SettingsStringDataType.bool,
+    SettingsStringEnum.no_consumable_upgrades: SettingsStringDataType.bool,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,
     SettingsStringEnum.prog_slam_level_3: SlamRequirement,
