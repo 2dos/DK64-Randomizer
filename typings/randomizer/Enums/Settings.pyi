@@ -889,7 +889,8 @@ class SettingsStringEnum(IntEnum):
     win_condition_spawns_ship = 292
     ice_trap_model = 293
     krool_in_boss_pool_v2 = 294
-    bosses_selected = 295
+    no_consumable_upgrades = 295
+    bosses_selected = 296
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -1278,6 +1279,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.shops_dont_cost: SettingsStringDataType.bool,
     SettingsStringEnum.alt_minecart_mayhem: SettingsStringDataType.bool,
     SettingsStringEnum.less_fragile_boulders: SettingsStringDataType.bool,
+    SettingsStringEnum.no_consumable_upgrades: SettingsStringDataType.bool,
     SettingsStringEnum.prog_slam_level_1: SlamRequirement,
     SettingsStringEnum.prog_slam_level_2: SlamRequirement,
     SettingsStringEnum.prog_slam_level_3: SlamRequirement,
