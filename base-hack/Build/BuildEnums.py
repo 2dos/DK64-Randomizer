@@ -930,6 +930,9 @@ class ExtraTextures(IntEnum):
     LankyPadRight = auto()
     ChunkyPadLeft = auto()
     ChunkyPadRight = auto()
+    AnyGunFront = auto()
+    AnyInsLeft = auto()
+    AnyInsRight = auto()
 
 
 class MoveTypes(IntEnum):

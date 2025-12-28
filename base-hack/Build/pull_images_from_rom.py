@@ -130,6 +130,7 @@ images = [
     ImageData("w1_pad_right", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDFA, 32, 64, False, False),
     ImageData("w2_pad_left", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDF6, 32, 64, False, False),
     ImageData("w2_pad_right", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDF7, 32, 64, False, False),
+    ImageData("gun_face_base", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xC20, 32, 32, False, False),
 ]
 
 shop_owners = {

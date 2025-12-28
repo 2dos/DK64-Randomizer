@@ -1929,6 +1929,9 @@ pad_data = {
     "lanky_pad_right": ExtraTextures.LankyPadRight,
     "chunky_pad_left": ExtraTextures.ChunkyPadLeft,
     "chunky_pad_right": ExtraTextures.ChunkyPadRight,
+    "any_gun":  ExtraTextures.AnyGunFront,
+    "any_ins_left":  ExtraTextures.AnyInsLeft,
+    "any_ins_right":  ExtraTextures.AnyInsRight,
 }
 
 for tex, index in pad_data.items():
@@ -2519,6 +2522,9 @@ with open(newROMName, "r+b") as fh:
         "lanky_pad_right",
         "chunky_pad_left",
         "chunky_pad_right",
+        "any_gun",
+        "any_ins_left",
+        "any_ins_right",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"shop_{b}"])

@@ -181,7 +181,7 @@ def buildAnyKongSwitches():
 
     with open(any_gun_file, "r+b") as switch_f:
         switch_f.seek(0x22C)
-        switch_f.write((0xC20).to_bytes(4, "big"))
+        switch_f.write((getBonusSkinOffset(ExtraTextures.AnyGunFront)).to_bytes(4, "big"))
 
     with open(ROMName, "rb") as fh:
         ins_f = ROMPointerFile(fh, TableNames.ModelTwoGeometry, 0xAB)
@@ -191,10 +191,10 @@ def buildAnyKongSwitches():
             fg.write(dec)
 
     with open(any_ins_file, "r+b") as pad_f:
-        for instruction in (0x368, 0x370, 0x3B8, 0x3C0):
-            pad_f.seek(instruction)
-            pad_f.write((0).to_bytes(4, "big"))
-            pad_f.write((0).to_bytes(4, "big"))
+        pad_f.seek(0x324)
+        pad_f.write((getBonusSkinOffset(ExtraTextures.AnyInsLeft)).to_bytes(4, "big"))
+        pad_f.seek(0x384)
+        pad_f.write((getBonusSkinOffset(ExtraTextures.AnyInsRight)).to_bytes(4, "big"))
         pad_f.seek(0x50)
         floor_start = int.from_bytes(pad_f.read(4), "big")
         pad_f.seek(floor_start)

@@ -706,6 +706,20 @@ for kong, eq_warp in pad_warp_eq.items():
                     px[x, y] = c_px[x, y]
         pad_im.save(f"{disp_dir}{kong}_pad_{seg}.png")
 
+# Any kong activators
+gun_base = Image.open(f"{hash_dir}gun_face_base.png")
+crate_left = Image.open(f"{hash_dir}standard_crate_0.png").transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+crate_right = Image.open(f"{hash_dir}standard_crate_1.png").transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+crate_im = Image.new(mode="RGBA", size=(64, 64))
+crate_im.paste(crate_left, (0, 0), crate_left)
+crate_im.paste(crate_right, (32, 0), crate_right)
+crate_im = crate_im.resize((32, 32))
+gun_base.paste(crate_im, (0, -6), crate_im)
+gun_base.crop((0, 0, 32, 32)).save(f"{disp_dir}any_gun.png")
+headphones_im = Image.open(f"{hash_dir}headphones.png").transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+headphones_im.crop((0, 0, 20, 40)).resize((32, 64)).save(f"{disp_dir}any_ins_left.png")
+headphones_im.crop((20, 0, 40, 40)).resize((32, 64)).save(f"{disp_dir}any_ins_right.png")
+
 # AP Pearls
 ap_colors = [
     "#FB9152",  # ORANGE
@@ -992,6 +1006,7 @@ rmve = [
     "w1_pad_right.png",
     "w2_pad_left.png",
     "w2_pad_right.png",
+    "gun_face_base.png",
 ]
 for kong in kongs:
     for x in range(2):
