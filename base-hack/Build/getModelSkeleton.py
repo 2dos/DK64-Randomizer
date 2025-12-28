@@ -102,11 +102,7 @@ def getSkeleton(model_index: int, model_file: str = None):
         image.save(file_name)
 
 
-getSkeleton(3)
-getSkeleton(0x10)
-getSkeleton(0x48)
-getSkeleton(0x67)
-getSkeleton(0xDA)
-getSkeleton(8)
-getSkeleton(0x12)
-getSkeleton(0x11)
+for x in range(0xEC):
+    if x in (68, 132, 151, 213):
+        continue
+    getSkeleton(x)

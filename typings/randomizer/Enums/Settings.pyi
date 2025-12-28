@@ -542,6 +542,7 @@ class SwitchsanityKong(IntEnum):
     tiny = 3
     chunky = 4
     random = 5
+    any = 6
 
 class TrainingBarrels(IntEnum):
     normal = 0
@@ -889,6 +890,7 @@ class SettingsStringEnum(IntEnum):
     ice_trap_model = 293
     krool_in_boss_pool_v2 = 294
     no_consumable_upgrades = 295
+    bosses_selected = 296
 
 class SettingsStringDataType(IntEnum):
     bool = 1
@@ -945,6 +947,7 @@ SettingsMap: dict = {
     "minigames_list_selected": MinigamesListSelected,
     "cb_rando_list_selected": Levels,
     "misc_changes_selected": MiscChangesSelected,
+    "bosses_selected": Maps,
     "more_cutscene_skips": ExtraCutsceneSkips,
     "move_rando": MoveRando,
     "music_filtering_selected": MusicFilters,
@@ -1145,6 +1148,7 @@ SettingsStringTypeMap: dict = {
     SettingsStringEnum.cb_rando_enabled: SettingsStringDataType.bool,
     SettingsStringEnum.cb_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.misc_changes_selected: SettingsStringDataType.list,
+    SettingsStringEnum.bosses_selected: SettingsStringDataType.list,
     SettingsStringEnum.more_cutscene_skips: ExtraCutsceneSkips,
     SettingsStringEnum.move_rando: MoveRando,
     SettingsStringEnum.no_healing: SettingsStringDataType.bool,
@@ -1345,6 +1349,7 @@ SettingsStringListTypeMap: dict = {
     SettingsStringEnum.minigames_list_selected: MinigamesListSelected,
     SettingsStringEnum.cb_rando_list_selected: Levels,
     SettingsStringEnum.misc_changes_selected: MiscChangesSelected,
+    SettingsStringEnum.bosses_selected: Maps,
     SettingsStringEnum.starting_keys_list_selected: Items,
     SettingsStringEnum.warp_level_list_selected: Maps,
     SettingsStringEnum.hard_mode_selected: HardModeSelected,

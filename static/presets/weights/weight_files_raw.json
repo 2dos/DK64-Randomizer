@@ -1273,6 +1273,55 @@
             },
             "qol_uses_hard": false
         },
+        "bosses_selected": {
+            "setting_type": "choice_multiple",
+            "min_selected": 3,
+            "options": {
+                "easy": {
+                    "JapesBoss": 80,
+                    "AztecBoss": 80,
+                    "FactoryBoss": 80,
+                    "GalleonBoss": 80,
+                    "FungiBoss": 80,
+                    "CavesBoss": 80,
+                    "CastleBoss": 80,
+                    "KroolDonkeyPhase": 80,
+                    "KroolDiddyPhase": 80,
+                    "KroolLankyPhase": 80,
+                    "KroolTinyPhase": 80,
+                    "KroolChunkyPhase": 80
+                },
+                "standard": {
+                    "JapesBoss": 80,
+                    "AztecBoss": 80,
+                    "FactoryBoss": 80,
+                    "GalleonBoss": 80,
+                    "FungiBoss": 80,
+                    "CavesBoss": 80,
+                    "CastleBoss": 80,
+                    "KroolDonkeyPhase": 80,
+                    "KroolDiddyPhase": 80,
+                    "KroolLankyPhase": 80,
+                    "KroolTinyPhase": 80,
+                    "KroolChunkyPhase": 80
+                },
+                "difficult": {
+                    "JapesBoss": 80,
+                    "AztecBoss": 80,
+                    "FactoryBoss": 80,
+                    "GalleonBoss": 80,
+                    "FungiBoss": 80,
+                    "CavesBoss": 80,
+                    "CastleBoss": 80,
+                    "KroolDonkeyPhase": 80,
+                    "KroolDiddyPhase": 80,
+                    "KroolLankyPhase": 80,
+                    "KroolTinyPhase": 80,
+                    "KroolChunkyPhase": 80
+                }
+            },
+            "qol_uses_hard": true
+        },
         "no_healing": {
             "setting_type": "bool",
             "options": {

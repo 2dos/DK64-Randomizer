@@ -236,7 +236,12 @@ function randomize_settings() {
         } else if (data.setting_type == "choice_multiple") {
             // Generate a random number for every possible value and add that
             // value to the list if the number is's above the provided weight.
-            let randomList = random_multi_select_setting(data.options[parsed_weight_name]);
+            const min_selected = data.min_selected ?? 0;
+            let length = -1;
+            while (length >= min_selected) {
+                let randomList = random_multi_select_setting(data.options[parsed_weight_name]);
+                length = randomList.length;
+            }
             randSettings[settingName] = {
                 value: randomList,
                 type: "choice_multiple"

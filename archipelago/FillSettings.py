@@ -50,6 +50,7 @@ from randomizer.Enums.Settings import (
 )
 from randomizer.Enums.Items import Items as DK64RItems
 from randomizer.Enums.Types import Types
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -79,6 +80,20 @@ def get_default_settings() -> dict:
         "blocker_7": 8,
         "blocker_selection_behavior": BLockerSetting.normal_random,
         "blocker_text": 60,
+        "bosses_selected": [
+            Maps.JapesBoss,
+            Maps.AztecBoss,
+            Maps.FactoryBoss,
+            Maps.GalleonBoss,
+            Maps.FungiBoss,
+            Maps.CavesBoss,
+            Maps.CastleBoss,
+            Maps.KroolDonkeyPhase,
+            Maps.KroolDiddyPhase,
+            Maps.KroolLankyPhase,
+            Maps.KroolTinyPhase,
+            Maps.KroolChunkyPhase,
+        ],
         "bonus_barrel_auto_complete": False,
         "boss_location_rando": True,
         "cannons_require_blast": True,

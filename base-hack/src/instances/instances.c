@@ -411,8 +411,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->timer = 70;
 					}
 				} else if (param2 == FUNGI_SWITCH_LANKY_MUSHROOM) {
-					if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
-						PlayCutsceneFromModelTwoScript(behaviour_pointer,12,1,0);
+					if (index == 0) {
+						if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
+							PlayCutsceneFromModelTwoScript(behaviour_pointer,12,1,0);
+						}
+					} else if (index == 1) {
+						setPermFlag(FLAG_LANKY_MUSH_OPEN);
+					} else if (index == 2) {
+						return checkFlag(FLAG_LANKY_MUSH_OPEN, FLAGTYPE_PERMANENT);
 					}
 				}
 				break;
@@ -521,6 +527,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->next_state = 20;
 					}
 				} else if (param2 == LLAMA_BONGOPAD) {
+					if (Rando.free_source_llama == 5) {
+						return 1;
+					}
 					return Character == Rando.free_source_llama;
 				} else if (param2 == LLAMA_LAVAGATE) {
 					if (Rando.cutscene_skip_setting != CSSKIP_AUTO) {
@@ -541,6 +550,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 2) {
 						giveItemFromKongData(&kong_check_data[KONGCHECK_LLAMA], FLAG_KONG_LANKY);
 					} else if ((index >= 3) && (index <= 6)) {
+						if (Rando.free_source_llama == 5) {
+							int valid = 0;
+							for (int i = 0; i < 5; i++) {
+								valid |= getPressedSwitch(behaviour_pointer, kong_pellets[i], id);
+							}
+							return valid;
+						}
 						return getPressedSwitch(behaviour_pointer,kong_pellets[(int)Rando.free_source_llama],id);
 					}
 				} else if (param2 == LLAMA_GRAPE_SWITCH) {
@@ -744,6 +760,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index == 1) {
 						return !checkFlag(FLAG_KONG_DIDDY, FLAGTYPE_PERMANENT);
 					} else if ((index == 2) || (index == 3)) {
+						if (Rando.free_source_japes == 5) {
+							int valid = 0;
+							for (int i = 0; i < 5; i++) {
+								valid |= getPressedSwitch(behaviour_pointer, kong_pellets[i], id);
+							}
+							return valid;
+						}
 						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
 					} else if (index == 4) {
 						return !Rando.quality_of_life.remove_cutscenes; // TODO(theballaam96): Retry this

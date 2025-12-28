@@ -33,6 +33,7 @@ from randomizer.Enums.Settings import (
     HardModeSelected,
     HelmBonuses,
     ItemRandoFiller,
+    KroolInBossPool,
     LogicType,
     MinigameBarrels,
     MoveRando,
@@ -4381,6 +4382,15 @@ def CheckForIncompatibleSettings(settings: Settings) -> None:
         found_incompatibilities += "Item pool is not a valid combination of items and cannot successfully fill the world. "
     if settings.krool_access and Items.HideoutHelmKey in settings.starting_keys_list_selected:
         found_incompatibilities += "Cannot start with Key 8 and guarantee Key 8 to be required at the same time. "
+    if len(settings.bosses_selected) == 0:
+        found_incompatibilities += "Cannot fill a seed with 0 bosses. "
+    if len(settings.bosses_selected) == 1 and settings.bosses_selected[0] == Maps.GalleonBoss:
+        found_incompatibilities += "Galleon Boss cannot be the only boss in the pool due to technical reasons. "
+    krool_maps = (Maps.KroolDonkeyPhase, Maps.KroolDiddyPhase, Maps.KroolLankyPhase, Maps.KroolTinyPhase, Maps.KroolChunkyPhase)
+    if settings.krool_in_boss_pool_v2 == KroolInBossPool.off and len([x for x in settings.bosses_selected if x not in krool_maps]) == 0:
+        found_incompatibilities += "No non-K Rool bosses selected with K. Rool banned from T&S. "
+    if settings.krool_in_boss_pool_v2 != KroolInBossPool.full_shuffle and len([x for x in settings.bosses_selected if x in krool_maps]) == 0:
+        found_incompatibilities += "No K Rool bosses selected with regular bosses banned from final boss sequence. "
     if found_incompatibilities != "":
         raise Ex.SettingsIncompatibleException(found_incompatibilities)
 

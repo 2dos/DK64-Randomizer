@@ -192,6 +192,7 @@
             <h2 class="title">BOSSES</h2>
             <div class="flex-container">
                 {{ toggle_input("boss_location_rando", "Shuffle Boss Location", "The boss you can get in a level is different than normal.") }}
+                <div class="spacer"></div>
                 <div class="item-select">
                     <p class="select-title">K. Rool in Boss Pool</p>
                     <select name="krool_in_boss_pool_v2"
@@ -212,6 +213,7 @@
                         </option>
                     </select>
                 </div>
+                {{ dropdown_multiselector(bosses, "bosses", "Allowed Bosses", "This will open a popup that will let you customize what bosses are allowed to appear in your seed.&#10;This defaults to All options.", 12, 1) }}
             </div>
         </div>
         <div class="col border panel">

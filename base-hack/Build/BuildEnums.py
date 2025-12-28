@@ -922,6 +922,17 @@ class ExtraTextures(IntEnum):
     SpecialAPPearlSilver = auto()
     FoolsAPPearlBlack = auto()
     FoolsAPPearlSilver = auto()
+    DonkeyPadLeft = auto()
+    DonkeyPadRight = auto()
+    DiddyPadLeft = auto()
+    DiddyPadRight = auto()
+    LankyPadLeft = auto()
+    LankyPadRight = auto()
+    ChunkyPadLeft = auto()
+    ChunkyPadRight = auto()
+    AnyGunFront = auto()
+    AnyInsLeft = auto()
+    AnyInsRight = auto()
 
 
 class MoveTypes(IntEnum):

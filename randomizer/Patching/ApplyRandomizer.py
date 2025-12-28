@@ -296,17 +296,6 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0xD5 + offset)
         ROM_COPY.writeMultipleBytes(value, 1)
 
-    # Free Trade Agreement
-    if spoiler.settings.free_trade_items:
-        ROM_COPY.seek(sav + 0x113)
-        old = int.from_bytes(ROM_COPY.readBytes(1), "big")
-        ROM_COPY.seek(sav + 0x113)
-        ROM_COPY.write(old | 0x80)
-    if spoiler.settings.free_trade_blueprints:
-        ROM_COPY.seek(sav + 0x113)
-        old = int.from_bytes(ROM_COPY.readBytes(1), "big")
-        ROM_COPY.seek(sav + 0x113)
-        ROM_COPY.write(old | 0x40)
     writeMultiselector(
         spoiler.settings.misc_changes_selected,
         QoLSelector,

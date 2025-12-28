@@ -11,6 +11,8 @@ from BuildLib import ROMName, getBonusSkinOffset
 hint_file = "assets/Gong/hint_door.bin"
 switch_file = "assets/Gong/sprint_switch.bin"
 door_file = "assets/Gong/factory_door.bin"
+any_gun_file = "assets/Gong/any_gun.bin"
+any_ins_file = "assets/Gong/any_ins.bin"
 
 image_offsets = {
     Kong.DK: 0xF0,
@@ -166,3 +168,38 @@ def fixFactoryDoor():
                 new = old + inc
                 fg.seek(offset)
                 fg.write(new.to_bytes(4, "big"))
+
+
+def buildAnyKongSwitches():
+    """Build the prop models for the any kong switches."""
+    with open(ROMName, "rb") as fh:
+        gun_f = ROMPointerFile(fh, TableNames.ModelTwoGeometry, 0x125)
+        fh.seek(gun_f.start)
+        dec = zlib.decompress(fh.read(gun_f.size), 15 + 32)
+        with open(any_gun_file, "wb") as fg:
+            fg.write(dec)
+
+    with open(any_gun_file, "r+b") as switch_f:
+        switch_f.seek(0x22C)
+        switch_f.write((getBonusSkinOffset(ExtraTextures.AnyGunFront)).to_bytes(4, "big"))
+
+    with open(ROMName, "rb") as fh:
+        ins_f = ROMPointerFile(fh, TableNames.ModelTwoGeometry, 0xAB)
+        fh.seek(ins_f.start)
+        dec = zlib.decompress(fh.read(ins_f.size), 15 + 32)
+        with open(any_ins_file, "wb") as fg:
+            fg.write(dec)
+
+    with open(any_ins_file, "r+b") as pad_f:
+        pad_f.seek(0x324)
+        pad_f.write((getBonusSkinOffset(ExtraTextures.AnyInsLeft)).to_bytes(4, "big"))
+        pad_f.seek(0x384)
+        pad_f.write((getBonusSkinOffset(ExtraTextures.AnyInsRight)).to_bytes(4, "big"))
+        pad_f.seek(0x50)
+        floor_start = int.from_bytes(pad_f.read(4), "big")
+        pad_f.seek(floor_start)
+        floor_count = int.from_bytes(pad_f.read(4), "big")
+        for x in range(floor_count):
+            tri_start = floor_start + 0x10 + (0x18 * x)
+            pad_f.seek(tri_start + 0x15)
+            pad_f.write((2).to_bytes(1, "big"))

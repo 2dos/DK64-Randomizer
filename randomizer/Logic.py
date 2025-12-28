@@ -655,15 +655,21 @@ class LogicVarHolder:
             return kong_data and misc_abilities[data.kong]
         elif data.switch_type == SwitchType.GunSwitch:
             gun_abilities = [self.coconut, self.peanut, self.grape, self.feather, self.pineapple]
+            if data.kong == Kongs.any:
+                return self.HasGun(Kongs.any)
             return kong_data and gun_abilities[data.kong]
         elif data.switch_type == SwitchType.InstrumentPad:
             instrument_abilities = [self.bongos, self.guitar, self.trombone, self.saxophone, self.triangle]
+            if data.kong == Kongs.any:
+                return self.HasInstrument(Kongs.any)
             return kong_data and instrument_abilities[data.kong]
         elif data.switch_type == SwitchType.SlamSwitch:
             return kong_data and self.CanSlamSwitch(level, default_slam_level)
         elif data.switch_type == SwitchType.GunInstrumentCombo:
             gun_abilities = [self.coconut, self.peanut, self.grape, self.feather, self.pineapple]
             instrument_abilities = [self.bongos, self.guitar, self.trombone, self.saxophone, self.triangle]
+            if data.kong == Kongs.any:
+                return self.HasGun(Kongs.any) and self.HasInstrument(Kongs.any)
             return kong_data and gun_abilities[data.kong] and instrument_abilities[data.kong]
         elif data.switch_type == SwitchType.PushableButton:
             if data.kong == Kongs.diddy:

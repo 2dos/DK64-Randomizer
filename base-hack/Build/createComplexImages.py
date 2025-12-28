@@ -656,6 +656,70 @@ for y in range(font_im.height):
             px[x, y] = (0, 0, 0, 0)  # fully transparent
 font_im.save(f"{disp_dir}white_special_chars.png")
 
+pad_warp_eq = {
+    "donkey": 5,
+    "diddy": 4,
+    "lanky": 1,
+    "chunky": 2,
+}
+
+
+def pointInPolygon(x, y, polygon):
+    """Define whether an xy point is within a concave or concave polygon."""
+    inside = False
+    n = len(polygon)
+
+    j = n - 1
+    for i in range(n):
+        xi, yi = polygon[i]
+        xj, yj = polygon[j]
+
+        intersect = ((yi > y) != (yj > y)) and (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
+
+        if intersect:
+            inside = not inside
+
+        j = i
+
+    return inside
+
+
+for kong, eq_warp in pad_warp_eq.items():
+    for seg in ("left", "right"):
+        pad_im = Image.open(f"{hash_dir}ins_pad_{seg}.png")
+        color_im = Image.open(f"{hash_dir}w{eq_warp}_pad_{seg}.png")
+        apexes = [
+            [32, 6],
+            [12, 14],
+            [6, 32],
+            [13, 50],
+            [32, 58],
+        ]
+        if seg == "right":
+            for i, a in enumerate(apexes):
+                apexes[i][0] = 32 - apexes[i][0]
+        px = pad_im.load()
+        c_px = color_im.load()
+        for y in range(64):
+            for x in range(32):
+                if pointInPolygon(x, y, apexes):
+                    px[x, y] = c_px[x, y]
+        pad_im.save(f"{disp_dir}{kong}_pad_{seg}.png")
+
+# Any kong activators
+gun_base = Image.open(f"{hash_dir}gun_face_base.png")
+crate_left = Image.open(f"{hash_dir}standard_crate_0.png").transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+crate_right = Image.open(f"{hash_dir}standard_crate_1.png").transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+crate_im = Image.new(mode="RGBA", size=(64, 64))
+crate_im.paste(crate_left, (0, 0), crate_left)
+crate_im.paste(crate_right, (32, 0), crate_right)
+crate_im = crate_im.resize((32, 32))
+gun_base.paste(crate_im, (0, -6), crate_im)
+gun_base.crop((0, 0, 32, 32)).save(f"{disp_dir}any_gun.png")
+headphones_im = Image.open(f"{hash_dir}headphones.png").transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+headphones_im.crop((0, 0, 20, 40)).resize((32, 64)).save(f"{disp_dir}any_ins_left.png")
+headphones_im.crop((20, 0, 40, 40)).resize((32, 64)).save(f"{disp_dir}any_ins_right.png")
+
 # AP Pearls
 ap_colors = [
     "#FB9152",  # ORANGE
@@ -932,6 +996,17 @@ rmve = [
     "funky_face_3.png",
     "snide_face.png",
     "white_special_chars.png",
+    "ins_pad_left.png",
+    "ins_pad_right.png",
+    "w5_pad_left.png",
+    "w5_pad_right.png",
+    "w4_pad_left.png",
+    "w4_pad_right.png",
+    "w1_pad_left.png",
+    "w1_pad_right.png",
+    "w2_pad_left.png",
+    "w2_pad_right.png",
+    "gun_face_base.png",
 ]
 for kong in kongs:
     for x in range(2):

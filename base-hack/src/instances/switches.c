@@ -14,6 +14,14 @@
 int getPressedRandoSwitch(behaviour_data* behaviour_pointer, int setting, int vanilla_bullet_type, int ID) {
 	int bullet = vanilla_bullet_type;
 	if (setting != 0) {
+		if (setting == 6) {
+			// Any kong switch
+			int valid = 0;
+			for (int i = 0; i < 5; i++) {
+				valid |= getPressedSwitch(behaviour_pointer, kong_pellets[i], ID);
+			}
+			return valid;
+		}
 		bullet = kong_pellets[setting - 1];
 	}
 	return getPressedSwitch(behaviour_pointer, bullet, ID);
@@ -65,6 +73,9 @@ int randomInstrumentGenericCode(behaviour_data* behaviour_pointer, int index, in
 		setting = *pad_data[pad_index].setting_address;
 	}
 	if (setting != 0) {
+		if (setting == 6) {
+			return 1;
+		}
 		referenced_kong = setting - 1;
 	}
 	return Player->characterID == referenced_kong + 2;

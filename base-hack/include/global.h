@@ -464,6 +464,9 @@ extern void renderSpritesOnPlayer(sprite_data_struct *sprite, int count, int dur
 extern void wipeReplenishibles(void);
 
 extern void renderKopLightHandler(float x, float y, float z, float x2, float y2, float z2, float radius, int unk0, int red, int green, int blue);
+extern void playBonusSong(songs song, float volume);
+extern void playSongWCheck(songs song, float volume);
+extern void playBossSong(songs song, float volume);
 
 extern unsigned int cs_skip_db[2];
 extern const short kong_flags[5];
@@ -544,3 +547,4 @@ extern coinHUDStruct CoinHUDElements[8];
 extern unsigned short guard_tag_timer;
 extern spoiler_struct spoiler_items[SPOILER_COUNT];
 extern char k_rool_text[9];
+extern unsigned char k_rool_phase;

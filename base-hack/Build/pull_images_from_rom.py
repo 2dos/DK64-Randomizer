@@ -120,6 +120,17 @@ images = [
     ImageData("bandit_coconut", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12E3, 40, 51, False, False),
     ImageData("bandit_melon", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12E4, 48, 42, False, False),
     ImageData("bandit_pineapple", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0x12E5, 32, 48, False, False),
+    ImageData("ins_pad_left", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xBC5, 32, 64, False, False),
+    ImageData("ins_pad_right", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xBC4, 32, 64, False, False),
+    ImageData("w5_pad_left", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDEE, 32, 64, False, False),
+    ImageData("w5_pad_right", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDEF, 32, 64, False, False),
+    ImageData("w4_pad_left", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDF4, 32, 64, False, False),
+    ImageData("w4_pad_right", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDF5, 32, 64, False, False),
+    ImageData("w1_pad_left", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDF9, 32, 64, False, False),
+    ImageData("w1_pad_right", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDFA, 32, 64, False, False),
+    ImageData("w2_pad_left", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDF6, 32, 64, False, False),
+    ImageData("w2_pad_right", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xDF7, 32, 64, False, False),
+    ImageData("gun_face_base", TextureFormat.RGBA5551, TableNames.TexturesGeometry, 0xC20, 32, 32, False, False),
 ]
 
 shop_owners = {
