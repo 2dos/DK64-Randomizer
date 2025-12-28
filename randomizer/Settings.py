@@ -593,7 +593,7 @@ class Settings:
         # glitch - Glitch logic factored in
         # glitchless - Glitchless ruleset
         self.logic_type = LogicType.glitchless
-        
+
         # shuffle_loading_zones: ShuffleLoadingZones
         # none
         # levels

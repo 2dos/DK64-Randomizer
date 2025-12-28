@@ -1929,9 +1929,9 @@ pad_data = {
     "lanky_pad_right": ExtraTextures.LankyPadRight,
     "chunky_pad_left": ExtraTextures.ChunkyPadLeft,
     "chunky_pad_right": ExtraTextures.ChunkyPadRight,
-    "any_gun":  ExtraTextures.AnyGunFront,
-    "any_ins_left":  ExtraTextures.AnyInsLeft,
-    "any_ins_right":  ExtraTextures.AnyInsRight,
+    "any_gun": ExtraTextures.AnyGunFront,
+    "any_ins_left": ExtraTextures.AnyInsLeft,
+    "any_ins_right": ExtraTextures.AnyInsRight,
 }
 
 for tex, index in pad_data.items():

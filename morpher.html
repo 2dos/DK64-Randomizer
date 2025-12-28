@@ -729,6 +729,23 @@
                         }
                     }
                 }
+                if (sel_version_num < numericVersion("5.8.0")) {
+                    console.log("Pre-defining the boss pool.")
+                    setting_data.bosses_selected = [
+                        "JapesBoss",
+                        "AztecBoss",
+                        "FactoryBoss",
+                        "GalleonBoss",
+                        "FungiBoss",
+                        "CavesBoss",
+                        "CastleBoss",
+                        "KroolDonkeyPhase",
+                        "KroolDiddyPhase",
+                        "KroolLankyPhase",
+                        "KroolTinyPhase",
+                        "KroolChunkyPhase",
+                    ];
+                }
                 // Update to include all unhandled options to unsorted
                 const all_valid_items = Object.keys(output_json.ItemRandoListSelected);
                 let mentioned_items = [];
