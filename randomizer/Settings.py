@@ -743,6 +743,7 @@ class Settings:
         self.smoother_camera = False
         self.fill_with_custom_music = False
         self.pool_tracks = False
+        self.color_coded_powerups = True
         self.show_song_name = False
 
         # Custom Textures

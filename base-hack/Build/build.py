@@ -1916,6 +1916,30 @@ for tex, index in helm_head_data.items():
         )
     )
 
+# Pads
+pad_data = {
+    "donkey_pad_left": ExtraTextures.DonkeyPadLeft,
+    "donkey_pad_right": ExtraTextures.DonkeyPadRight,
+    "diddy_pad_left": ExtraTextures.DiddyPadLeft,
+    "diddy_pad_right": ExtraTextures.DiddyPadRight,
+    "lanky_pad_left": ExtraTextures.LankyPadLeft,
+    "lanky_pad_right": ExtraTextures.LankyPadRight,
+    "chunky_pad_left": ExtraTextures.ChunkyPadLeft,
+    "chunky_pad_right": ExtraTextures.ChunkyPadRight,
+}
+
+for tex, index in pad_data.items():
+    file_dict.append(
+        File(
+            name=f"Pad ({int(index)})",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=getBonusSkinOffset(index),
+            source_file=f"assets/displays/{tex}.png",
+            texture_format=TextureFormat.RGBA5551,
+            do_not_extract=True,
+        )
+    )
+
 # Force all geo files to not be compressed
 expanded_tables = {
     TableNames.MapGeometry: list(range(216)),
@@ -2484,6 +2508,14 @@ with open(newROMName, "r+b") as fh:
         "white_special_chars",
         "blank",
         "fakefairy",
+        "donkey_pad_left",
+        "donkey_pad_right",
+        "diddy_pad_left",
+        "diddy_pad_right",
+        "lanky_pad_left",
+        "lanky_pad_right",
+        "chunky_pad_left",
+        "chunky_pad_right",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1", f"dirt_reward_{b}", f"shop_{b}"])

@@ -1924,7 +1924,7 @@ def patchAssembly(ROM_COPY, spoiler):
     writeFunction(ROM_COPY, 0x8002B6F8, Overlay.Bonus, "playBonusSong", offset_dict)
     writeFunction(ROM_COPY, 0x8002C6D8, Overlay.Bonus, "playBonusSong", offset_dict)
     writeFunction(ROM_COPY, 0x80025300, Overlay.Minecart, "playBonusSong", offset_dict)
-    writeFunction(ROM_COPY, 0x8002936C, Overlay.Menu, "playBonusSong", offset_dict)
+    writeFunction(ROM_COPY, 0x8002936C, Overlay.Critter, "playBonusSong", offset_dict)
     writeFunction(ROM_COPY, 0x806BBAC8, Overlay.Static, "playBossSong", offset_dict)
     writeFunction(ROM_COPY, 0x805FED60, Overlay.Static, "playSongWCheck", offset_dict)
     writeFunction(ROM_COPY, 0x8061E280, Overlay.Static, "playSongWCheck", offset_dict)
