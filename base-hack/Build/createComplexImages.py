@@ -662,6 +662,8 @@ pad_warp_eq = {
     "lanky": 1,
     "chunky": 2,
 }
+
+
 def pointInPolygon(x, y, polygon):
     """Define whether an xy point is within a concave or concave polygon."""
     inside = False
@@ -672,8 +674,7 @@ def pointInPolygon(x, y, polygon):
         xi, yi = polygon[i]
         xj, yj = polygon[j]
 
-        intersect = ((yi > y) != (yj > y)) and \
-                    (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
+        intersect = ((yi > y) != (yj > y)) and (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
 
         if intersect:
             inside = not inside
@@ -681,6 +682,7 @@ def pointInPolygon(x, y, polygon):
         j = i
 
     return inside
+
 
 for kong, eq_warp in pad_warp_eq.items():
     for seg in ("left", "right"):

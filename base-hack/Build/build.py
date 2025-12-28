@@ -28,7 +28,7 @@ from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
 from end_seq_writer import createSquishFile, createTextFile
-from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch, fixFactoryDoor, modifyOtherWrinklyDoors
+from generate_yellow_wrinkly import generateYellowWrinkly, generateSprintSwitch, fixFactoryDoor, modifyOtherWrinklyDoors, buildAnyKongSwitches
 from helm_doors import getHelmDoorModel
 from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
@@ -67,6 +67,7 @@ generateYellowWrinkly()
 modifyOtherWrinklyDoors()
 generateSprintSwitch()
 fixFactoryDoor()
+buildAnyKongSwitches()
 generateIceMaze()
 
 getHelmDoorModel(6022, 6023, "crown_door.bin")
@@ -315,6 +316,8 @@ file_dict = [
     File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_3d_om2.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Sprint Switch", pointer_table_index=TableNames.ModelTwoGeometry, file_index=611, source_file="assets/Gong/sprint_switch.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="Factory Door", pointer_table_index=TableNames.ModelTwoGeometry, file_index=664, source_file="assets/Gong/factory_door.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Any Gun Switch", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x296, source_file="assets/Gong/any_gun.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Any Instrument Pad", pointer_table_index=TableNames.ModelTwoGeometry, file_index=0x297, source_file="assets/Gong/any_ins.bin", do_not_extract=True, do_not_delete_source=True),
     File(name="21132 Sign", pointer_table_index=TableNames.TexturesGeometry, file_index=0x7CA, source_file="21132_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 1", pointer_table_index=TableNames.TexturesGeometry, file_index=0x999, source_file="cryptlev1_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 2", pointer_table_index=TableNames.TexturesGeometry, file_index=0x99A, source_file="cryptlev2_tex.bin", target_size=2 * 64 * 32),

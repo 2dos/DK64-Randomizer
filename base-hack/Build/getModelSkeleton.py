@@ -101,7 +101,8 @@ def getSkeleton(model_index: int, model_file: str = None):
             file_name = f"./skeleton/model_{model_file.replace('.bin','').replace('../','')}.png"
         image.save(file_name)
 
+
 for x in range(0xEC):
-    if x in (68,132,151,213):
+    if x in (68, 132, 151, 213):
         continue
     getSkeleton(x)

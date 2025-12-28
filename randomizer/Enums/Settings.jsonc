@@ -1020,7 +1020,8 @@
     "lanky": 2,
     "tiny": 3,
     "chunky": 4,
-    "random": 5
+    "random": 5,
+    "any": 6
   },
 
   /*

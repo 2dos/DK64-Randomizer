@@ -602,6 +602,7 @@ export enum SwitchsanityKong {
     tiny = 3,
     chunky = 4,
     random = 5,
+    any = 6,
 }
 
 export enum TrainingBarrels {

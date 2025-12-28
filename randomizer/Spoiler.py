@@ -856,6 +856,11 @@ class Spoiler:
                     SwitchType.PushableButton: "Punch Button",
                     SwitchType.GunInstrumentCombo: "Pineapple Switch and Triangle Pad",
                 },
+                Kongs.any: {
+                    SwitchType.GunSwitch: "Any Gun Switch",
+                    SwitchType.InstrumentPad: "Any Instrument Pad",
+                    SwitchType.GunInstrumentCombo: "Any Gun Switch and Any Instrument Pad",
+                },
             }
             for slot in self.settings.switchsanity_data.values():
                 ss_data[slot.name] = ss_name_data[slot.kong][slot.switch_type]

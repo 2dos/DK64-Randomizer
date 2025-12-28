@@ -593,7 +593,7 @@ class Settings:
         # glitch - Glitch logic factored in
         # glitchless - Glitchless ruleset
         self.logic_type = LogicType.glitchless
-
+        
         # shuffle_loading_zones: ShuffleLoadingZones
         # none
         # levels
@@ -1156,6 +1156,7 @@ class Settings:
                         SwitchsanityKong.lanky: Kongs.lanky,
                         SwitchsanityKong.tiny: Kongs.tiny,
                         SwitchsanityKong.chunky: Kongs.chunky,
+                        SwitchsanityKong.any: Kongs.any,
                     }
                     bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
                     options = [
@@ -1164,18 +1165,30 @@ class Settings:
                         SwitchsanityKong.lanky,
                         SwitchsanityKong.tiny,
                         SwitchsanityKong.chunky,
+                        SwitchsanityKong.any,
                     ]
                     options = [x for x in options if kong_mapping[x] not in bad_kongs]
                     if slot == Switches.IslesMonkeyport:
                         options = [SwitchsanityKong.donkey, SwitchsanityKong.lanky, SwitchsanityKong.tiny]
                     elif slot == Switches.AztecOKONGPuzzle:
                         options = [SwitchsanityKong.diddy, SwitchsanityKong.chunky]
+                    elif slot == Switches.AztecQuicksandSwitch:
+                        options = [
+                            SwitchsanityKong.donkey,
+                            SwitchsanityKong.diddy,
+                            SwitchsanityKong.lanky,
+                            SwitchsanityKong.tiny,
+                            SwitchsanityKong.chunky,
+                        ]
                     if applied_setting == SwitchsanityKong.random:
                         applied_setting = self.random.choice(options)
                     if slot == Switches.FactoryFreeKong:
                         self.switchsanity_data[slot].kong = Kongs.lanky
                     else:
-                        self.switchsanity_data[slot].kong = Kongs.donkey + (applied_setting - SwitchsanityKong.donkey)
+                        if applied_setting == SwitchsanityKong.any:
+                            self.switchsanity_data[slot].kong = Kongs.any
+                        else:
+                            self.switchsanity_data[slot].kong = Kongs.donkey + (applied_setting - SwitchsanityKong.donkey)
             # If we've shuffled all loading zones, we need to account for some entrances changing hands
             if self.shuffle_loading_zones == ShuffleLoadingZones.all:
                 ShufflableExits[Transitions.AztecMainToLlama].entryKongs = {

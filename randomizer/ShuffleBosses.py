@@ -181,11 +181,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
             # Lanky Phase also needs Lanky and Trombone
             is_beta_lanky = IsDDMSSelected(spoiler.settings.hard_bosses_selected, HardBossesSelected.beta_lanky_phase)
             required_additional_item_lankyphase = Items.Grape if is_beta_lanky else Items.Trombone
-            if (
-                spoiler.settings.krool_in_boss_pool_v2 != KroolInBossPool.off
-                and Kongs.lanky in ownedKongs[level]
-                and required_additional_item_lankyphase in ownedMoves[level]
-            ):
+            if spoiler.settings.krool_in_boss_pool_v2 != KroolInBossPool.off and Kongs.lanky in ownedKongs[level] and required_additional_item_lankyphase in ownedMoves[level]:
                 bossOptions[level].append(Maps.KroolLankyPhase)
         # Mad Jack always requires a slam
         if Items.ProgressiveSlam in ownedMoves[level]:
@@ -244,9 +240,7 @@ def ShuffleBossesBasedOnOwnedItems(spoiler, ownedKongs: dict, ownedMoves: dict):
                 placedBossMaps = []  # Clear placed bosses
                 clearedBossMaps = True
                 continue
-        if not any(notTakenBossOptions) or (
-            spoiler.settings.krool_in_boss_pool_v2 != KroolInBossPool.off and len(placedLevels) < 2
-        ):
+        if not any(notTakenBossOptions) or (spoiler.settings.krool_in_boss_pool_v2 != KroolInBossPool.off and len(placedLevels) < 2):
             # If we don't have an option available, desperate times call for desperate measures
             # If T&S Bosses could be on endgame fights, we might have to go steal one
             if spoiler.settings.krool_in_boss_pool_v2 != KroolInBossPool.off:

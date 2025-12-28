@@ -931,6 +931,7 @@ class ExtraTextures(IntEnum):
     ChunkyPadLeft = auto()
     ChunkyPadRight = auto()
 
+
 class MoveTypes(IntEnum):
     """Move Types Enum."""
 
