@@ -77,7 +77,7 @@ typedef struct varspace {
 	/* 0x110 */ unsigned char arcade_reward; // Reward Index for R2 of Arcade
 	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
 	/* 0x112 */ char rainbow_ammo;
-	/* 0x113 */ FreeTradeAgreement any_kong_items;
+	/* 0x113 */ char unk_113;
 	/* 0x114 */ char fix_lanky_tiny_prod;
 	/* 0x115 */ unsigned char progressive_hint_gb_cap; // 0 = Off, 1 or more = Hints are rewarded for collecting GBs, rather than hint doors, 35th hint is unlocked at x
 	/* 0x116 */ char cutscene_skip_setting; // 0 = Off, 1 = On Button Press, 2 = Automatic

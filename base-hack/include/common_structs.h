@@ -1787,17 +1787,6 @@ typedef struct ItemRequirement {
 	/* 0x001 */ unsigned char count;
 } ItemRequirement;
 
-typedef struct FreeTradeAgreement {
-	unsigned char major_items : 1; // 0x80
-	unsigned char blueprints : 1; // 0x40
-	unsigned char coins_cbs : 1; // 0x20
-	unsigned char balloons : 1; // 0x10
-	unsigned char unk4 : 1; // 0x08
-	unsigned char unk5 : 1; // 0x04
-	unsigned char unk6 : 1; // 0x02
-	unsigned char unk7 : 1; // 0x01
-} FreeTradeAgreement;
-
 typedef struct LocationVisuals {
 	unsigned char crowns : 1; // 0x80
 	unsigned char boss_doors : 1; // 0x40
