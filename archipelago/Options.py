@@ -492,7 +492,6 @@ class MirrorMode(Toggle):
     display_name = "Mirror Mode"
 
 
-
 class HardModeSelected(OptionList):
     """If Hard Mode is enabled, determines which Hard Mode settings are included.
 
@@ -1364,14 +1363,16 @@ class GalleonWaterLevel(Choice):
     option_lowered = 1
     default = 0
 
+
 class RemoveBaitPotions(Toggle):
     """If enabled, Ammo Belts and Instrument Upgrades will not be placed in the world.
-    
+
     You can still start with them.
     Only recommended to enable this with Loading Zone Rando enabled.
     """
 
     display_name = "Remove Bait Potions"
+
 
 @dataclass
 class DK64Options(PerGameCommonOptions):

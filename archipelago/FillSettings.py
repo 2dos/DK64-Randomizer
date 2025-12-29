@@ -47,7 +47,7 @@ from randomizer.Enums.Settings import (
     TroffSetting,
     WinConditionComplex,
     WrinklyHints,
-    KroolInBossPool
+    KroolInBossPool,
 )
 from randomizer.Enums.Items import Items as DK64RItems
 from randomizer.Enums.Types import Types
