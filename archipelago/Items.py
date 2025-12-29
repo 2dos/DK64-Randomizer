@@ -136,6 +136,9 @@ def setup_items(world: "DK64World") -> typing.List[DK64Item]:
             case DK64RTypes.Shop | DK64RTypes.TrainingBarrel | DK64RTypes.Shockwave:
                 if name == "Camera and Shockwave":
                     continue
+                # Skip JunkSharedMoves if no_consumable_upgrades is enabled
+                if item_id in DK64RItemPoolUtility.JunkSharedMoves and world.spoiler.settings.no_consumable_upgrades:
+                    continue
                 if item_id in DK64RItemPoolUtility.JunkSharedMoves:
                     ap_item.classification = ItemClassification.useful
                 num_moves = 1  # Track the number of each potion, default 1

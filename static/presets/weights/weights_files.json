@@ -26,6 +26,20 @@
     "bonus_barrel_auto_complete": 0.5,
     "bonus_barrel_rando": 0.7,
     "boss_location_rando": 0.8,
+    "bosses_selected": {
+      "JapesBoss": 0.8,
+      "AztecBoss": 0.8,
+      "FactoryBoss": 0.8,
+      "GalleonBoss": 0.8,
+      "FungiBoss": 0.8,
+      "CavesBoss": 0.8,
+      "CastleBoss": 0.8,
+      "KroolDonkeyPhase": 0.8,
+      "KroolDiddyPhase": 0.8,
+      "KroolLankyPhase": 0.8,
+      "KroolTinyPhase": 0.8,
+      "KroolChunkyPhase": 0.8
+    },
     "cannons_require_blast": 0,
     "cb_rando_enabled": 0.3,
     "cb_rando_list_selected": {
@@ -453,6 +467,20 @@
     "bonus_barrel_auto_complete": 0.3,
     "bonus_barrel_rando": 0.7,
     "boss_location_rando": 0.8,
+    "bosses_selected": {
+      "JapesBoss": 0.8,
+      "AztecBoss": 0.8,
+      "FactoryBoss": 0.8,
+      "GalleonBoss": 0.8,
+      "FungiBoss": 0.8,
+      "CavesBoss": 0.8,
+      "CastleBoss": 0.8,
+      "KroolDonkeyPhase": 0.8,
+      "KroolDiddyPhase": 0.8,
+      "KroolLankyPhase": 0.8,
+      "KroolTinyPhase": 0.8,
+      "KroolChunkyPhase": 0.8
+    },
     "cannons_require_blast": 0.5,
     "cb_rando_enabled": 0.5,
     "cb_rando_list_selected": {
@@ -904,6 +932,20 @@
     "bonus_barrel_auto_complete": 0.1,
     "bonus_barrel_rando": 0.7,
     "boss_location_rando": 0.8,
+    "bosses_selected": {
+      "JapesBoss": 0.8,
+      "AztecBoss": 0.8,
+      "FactoryBoss": 0.8,
+      "GalleonBoss": 0.8,
+      "FungiBoss": 0.8,
+      "CavesBoss": 0.8,
+      "CastleBoss": 0.8,
+      "KroolDonkeyPhase": 0.8,
+      "KroolDiddyPhase": 0.8,
+      "KroolLankyPhase": 0.8,
+      "KroolTinyPhase": 0.8,
+      "KroolChunkyPhase": 0.8
+    },
     "cannons_require_blast": 1,
     "cb_rando_enabled": 0.6,
     "cb_rando_list_selected": {
@@ -1400,6 +1442,20 @@
     "bonus_barrel_auto_complete": 0.1,
     "bonus_barrel_rando": 0.7,
     "boss_location_rando": 0.8,
+    "bosses_selected": {
+      "JapesBoss": 0.8,
+      "AztecBoss": 0.8,
+      "FactoryBoss": 0.8,
+      "GalleonBoss": 0.8,
+      "FungiBoss": 0.8,
+      "CavesBoss": 0.8,
+      "CastleBoss": 0.8,
+      "KroolDonkeyPhase": 0.8,
+      "KroolDiddyPhase": 0.8,
+      "KroolLankyPhase": 0.8,
+      "KroolTinyPhase": 0.8,
+      "KroolChunkyPhase": 0.8
+    },
     "cannons_require_blast": 1,
     "cb_rando_enabled": 0.6,
     "cb_rando_list_selected": {
