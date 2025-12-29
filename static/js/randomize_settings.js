@@ -116,6 +116,10 @@ function random_multi_select_setting(weights_obj) {
 function assign_multi_select_setting(setting_name, options_list) {
     /** Assign a list of values to a multi-select. */
     const selectElem = get_setting_element(setting_name);
+    if (!selectElem) {
+        console.warn(`Setting element not found: ${setting_name}`);
+        return;
+    }
     if (selectElem.tagName == "SELECT") {
         // Regular Multi-select
         for (let i = 0; i < selectElem.options.length; i++) {
@@ -125,8 +129,18 @@ function assign_multi_select_setting(setting_name, options_list) {
     } else {
         // Dropdown Multiselect
         const checkboxes = Array.from(selectElem.getElementsByTagName("input"));
+        let selectedCount = 0;
         for (let cb of checkboxes) {
             cb.checked = options_list.includes(cb.value);
+            if (cb.checked) {
+                selectedCount++;
+            }
+        }
+        // Update the count display directly
+        const baseName = setting_name.endsWith('_selected') ? setting_name.slice(0, -9) : setting_name;
+        const countLabel = document.getElementById(`selectedCount_${baseName}`);
+        if (countLabel) {
+            countLabel.innerText = `${selectedCount} item${selectedCount !== 1 ? 's' : ''} selected`;
         }
     }
 }
@@ -238,8 +252,9 @@ function randomize_settings() {
             // value to the list if the number is's above the provided weight.
             const min_selected = data.min_selected ?? 0;
             let length = -1;
-            while (length >= min_selected) {
-                let randomList = random_multi_select_setting(data.options[parsed_weight_name]);
+            let randomList;
+            while (length < min_selected) {
+                randomList = random_multi_select_setting(data.options[parsed_weight_name]);
                 length = randomList.length;
             }
             randSettings[settingName] = {
@@ -295,7 +310,7 @@ function randomize_settings() {
         randSettings["blocker_text"].value = parseInt((randSettings["blocker_text"].value / 201) * 100);
     }
     console.log(randSettings)
-    if (randSettings["no_healing"].value) {
+    if (randSettings["no_healing"]?.value && randSettings["hard_mode_selected"]?.value) {
         // Disable water is lava if no healing is selected
         randSettings["hard_mode_selected"].value = randSettings["hard_mode_selected"].value.filter(k => k != 'water_is_lava');
     }
@@ -310,12 +325,20 @@ function randomize_settings() {
         const settingType = setting_data.type;
         if (settingType == "bool") {
             const settingElem = get_setting_element(settingName);
+            if (!settingElem) {
+                console.warn(`Setting element not found: ${settingName}`);
+                continue;
+            }
             settingElem.checked = settingVal;
         } else if (settingType == "choice_multiple") {
             assign_multi_select_setting(settingName, settingVal);
         } else if (settingType != "item_rando") {
             // Both numeric and single-select settings work here.
             const settingElem = get_setting_element(settingName);
+            if (!settingElem) {
+                console.warn(`Setting element not found: ${settingName}`);
+                continue;
+            }
             settingElem.value = settingVal;
         }
     }

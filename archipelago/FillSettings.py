@@ -47,6 +47,7 @@ from randomizer.Enums.Settings import (
     TroffSetting,
     WinConditionComplex,
     WrinklyHints,
+    KroolInBossPool,
 )
 from randomizer.Enums.Items import Items as DK64RItems
 from randomizer.Enums.Types import Types
@@ -249,7 +250,6 @@ def get_default_settings() -> dict:
             MiscChangesSelected.move_spring_cabin_rocketbarrel,
         ],
         "more_cutscene_skips": ExtraCutsceneSkips.auto,
-        "no_consumable_upgrades": False,
         "no_healing": False,
         "no_melons": False,
         "open_lobbies": False,
@@ -328,7 +328,10 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     settings_dict["archipelago"] = True
     settings_dict["starting_kongs_count"] = options.starting_kong_count.value
     settings_dict["open_lobbies"] = options.open_lobbies.value
-    settings_dict["krool_in_boss_pool"] = options.krool_in_boss_pool.value
+    if options.krool_in_boss_pool.value:
+        settings_dict["krool_in_boss_pool_v2"] = KroolInBossPool.full_shuffle
+    else:
+        settings_dict["krool_in_boss_pool_v2"] = KroolInBossPool.off
     settings_dict["helm_phase_count"] = options.helm_phase_count.value
     settings_dict["krool_phase_count"] = options.krool_phase_count.value
     settings_dict["level_randomization"] = LevelRandomization.loadingzone if options.loading_zone_rando.value else LevelRandomization.level_order_complex
@@ -342,7 +345,6 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
     settings_dict["medal_requirement"] = options.jetpac_requirement.value
     settings_dict["rareware_gb_fairies"] = options.rareware_gb_fairies.value
     settings_dict["mirror_mode"] = options.mirror_mode.value
-    settings_dict["hard_mode"] = options.hard_mode.value
     settings_dict["key_8_helm"] = options.helm_key_lock.value
     settings_dict["shuffle_helm_location"] = options.shuffle_helm_level_order.value
     settings_dict["mermaid_gb_pearls"] = options.mermaid_gb_pearls.value
@@ -358,6 +360,7 @@ def apply_archipelago_settings(settings_dict: dict, options, multiworld) -> None
         settings_dict["galleon_water"] = GalleonWaterSetting.raised
     else:
         settings_dict["galleon_water"] = GalleonWaterSetting.vanilla
+    settings_dict["no_consumable_upgrades"] = options.remove_bait_potions.value
 
 
 def apply_blocker_settings(settings_dict: dict, options) -> None:
@@ -764,65 +767,28 @@ def apply_minigame_settings(settings_dict: dict, options, multiworld) -> None:
     settings_dict["bonus_barrel_auto_complete"] = options.auto_complete_bonus_barrels.value and options.goal.value != Goal.option_bonuses
     settings_dict["helm_room_bonus_count"] = HelmBonuses(options.helm_room_bonus_count.value)
 
-    # Map crown door and coin door settings
-    crown_door_mapping = {
-        0: HelmDoorItem.vanilla,
-        1: HelmDoorItem.opened,
-        2: HelmDoorItem.medium_random,
-        3: HelmDoorItem.req_gb,
-        4: HelmDoorItem.req_bp,
-        5: HelmDoorItem.req_companycoins,
-        6: HelmDoorItem.req_key,
-        7: HelmDoorItem.req_medal,
-        8: HelmDoorItem.req_crown,
-        9: HelmDoorItem.req_fairy,
-        10: HelmDoorItem.req_rainbowcoin,
-        11: HelmDoorItem.req_bean,
-        12: HelmDoorItem.req_pearl,
-        13: HelmDoorItem.easy_random,
-        14: HelmDoorItem.hard_random,
-    }
-
-    coin_door_mapping = {
-        0: HelmDoorItem.vanilla,
-        1: HelmDoorItem.opened,
-        2: HelmDoorItem.medium_random,
-        3: HelmDoorItem.req_gb,
-        4: HelmDoorItem.req_bp,
-        5: HelmDoorItem.req_companycoins,
-        6: HelmDoorItem.req_key,
-        7: HelmDoorItem.req_medal,
-        8: HelmDoorItem.req_crown,
-        9: HelmDoorItem.req_fairy,
-        10: HelmDoorItem.req_rainbowcoin,
-        11: HelmDoorItem.req_bean,
-        12: HelmDoorItem.req_pearl,
-        13: HelmDoorItem.easy_random,
-        14: HelmDoorItem.hard_random,
-    }
-
     # Map door item type to the key name in helm_door_item_count dict
     door_item_to_key = {
-        3: "golden_bananas",  # req_gb
-        4: "blueprints",  # req_bp
-        5: "company_coins",  # req_companycoins
-        6: "keys",  # req_key
-        7: "medals",  # req_medal
-        8: "crowns",  # req_crown
-        9: "fairies",  # req_fairy
-        10: "rainbow_coins",  # req_rainbowcoin
-        11: "bean",  # req_bean
-        12: "pearls",  # req_pearl
+        HelmDoorItem.req_gb: "golden_bananas",
+        HelmDoorItem.req_bp: "blueprints",
+        HelmDoorItem.req_companycoins: "company_coins",
+        HelmDoorItem.req_key: "keys",
+        HelmDoorItem.req_medal: "medals",
+        HelmDoorItem.req_crown: "crowns",
+        HelmDoorItem.req_fairy: "fairies",
+        HelmDoorItem.req_rainbowcoin: "rainbow_coins",
+        HelmDoorItem.req_bean: "bean",
+        HelmDoorItem.req_pearl: "pearls",
     }
 
-    settings_dict["crown_door_item"] = crown_door_mapping.get(options.crown_door_item.value, HelmDoorItem.opened)
+    settings_dict["crown_door_item"] = HelmDoorItem(options.crown_door_item.value)
     # Get count from dict based on selected item, default to 1 if not found
-    crown_item_key = door_item_to_key.get(options.crown_door_item.value)
+    crown_item_key = door_item_to_key.get(settings_dict["crown_door_item"])
     settings_dict["crown_door_item_count"] = options.helm_door_item_count.value.get(crown_item_key, 1) if crown_item_key else 1
 
-    settings_dict["coin_door_item"] = coin_door_mapping.get(options.coin_door_item.value, HelmDoorItem.opened)
+    settings_dict["coin_door_item"] = HelmDoorItem(options.coin_door_item.value)
     # Get count from dict based on selected item, default to 1 if not found
-    coin_item_key = door_item_to_key.get(options.coin_door_item.value)
+    coin_item_key = door_item_to_key.get(settings_dict["coin_door_item"])
     settings_dict["coin_door_item_count"] = options.helm_door_item_count.value.get(coin_item_key, 1) if coin_item_key else 1
 
     if hasattr(multiworld, "generation_is_fake"):

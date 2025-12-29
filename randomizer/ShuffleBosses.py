@@ -43,8 +43,8 @@ def getBosses(settings) -> list:
 def ShuffleBosses(boss_location_rando: bool, settings):
     """Shuffle boss locations."""
     boss_maps = getBosses(settings)
-    if len(boss_maps) < 12:
-        dupe_count = math.ceil(12 / len(boss_maps))
+    if len(boss_maps) < 7:
+        dupe_count = math.ceil(7 / len(boss_maps))
         original_maps = boss_maps.copy()
         for _ in range(dupe_count):
             boss_maps.extend(original_maps)

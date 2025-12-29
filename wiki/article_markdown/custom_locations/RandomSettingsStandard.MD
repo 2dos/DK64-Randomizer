@@ -48,6 +48,19 @@ The generated settings will be of average difficulty. Requirements for B. Locker
 - Auto Complete Bonus Barrels: 30%
 - Bonus Barrel Rando: 70%
 - Boss Location Rando: 80%
+- Bosses Selected: 
+	- Japesboss: 80%
+	- Aztecboss: 80%
+	- Factoryboss: 80%
+	- Galleonboss: 80%
+	- Fungiboss: 80%
+	- Cavesboss: 80%
+	- Castleboss: 80%
+	- Krooldonkeyphase: 80%
+	- Krooldiddyphase: 80%
+	- Kroollankyphase: 80%
+	- Krooltinyphase: 80%
+	- Kroolchunkyphase: 80%
 - DK Phase requires Baboon Blast: 50%
 - Randomize CB Locations: 50%
 - Cb Rando List Selected: 

@@ -492,12 +492,6 @@ class MirrorMode(Toggle):
     display_name = "Mirror Mode"
 
 
-class HardModeEnabled(Toggle):
-    """Determines whether Hard Mode is enabled. Use the yaml option below this to determine which settings you want enabled."""
-
-    display_name = "Hard Mode Enabled"
-
-
 class HardModeSelected(OptionList):
     """If Hard Mode is enabled, determines which Hard Mode settings are included.
 
@@ -1370,6 +1364,16 @@ class GalleonWaterLevel(Choice):
     default = 0
 
 
+class RemoveBaitPotions(Toggle):
+    """If enabled, Ammo Belts and Instrument Upgrades will not be placed in the world.
+
+    You can still start with them.
+    Only recommended to enable this with Loading Zone Rando enabled.
+    """
+
+    display_name = "Remove Bait Potions"
+
+
 @dataclass
 class DK64Options(PerGameCommonOptions):
     """Options for DK64R."""
@@ -1415,7 +1419,6 @@ class DK64Options(PerGameCommonOptions):
     tricks_selected: TricksSelected
     half_medals_in_pool: HalfMedals
     glitches_selected: GlitchesSelected
-    hard_mode: HardModeEnabled
     hard_mode_selected: HardModeSelected
     mirror_mode: MirrorMode
     hints_in_item_pool: HintItemRandomization
@@ -1469,6 +1472,7 @@ class DK64Options(PerGameCommonOptions):
     shop_prices: ShopPrices
     loading_zone_rando: LoadingZoneRando
     galleon_water_level: GalleonWaterLevel
+    remove_bait_potions: RemoveBaitPotions
 
 
 dk64_option_groups: List[OptionGroup] = [
@@ -1567,7 +1571,6 @@ dk64_option_groups: List[OptionGroup] = [
     OptionGroup(
         "Hard Mode",
         [
-            HardModeEnabled,
             HardModeSelected,
             HardBosses,
             MirrorMode,
@@ -1634,6 +1637,7 @@ dk64_option_groups: List[OptionGroup] = [
         "Quality of Life",
         [
             EnableCutscenes,
+            RemoveBaitPotions,
             ReceiveNotifications,
         ],
     ),
