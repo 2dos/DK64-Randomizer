@@ -474,13 +474,14 @@ int cc_enabler_paper(void) {
     for (int i = 0; i < ActorCount; i++) {
         actorData *actor = ActorArray[i];
         if (actor) {
-            if (inShortList(actor->actorType, &ignored_paper_types, sizeof(ignored_paper_types) >> 1)) {
+            if (!inShortList(actor->actorType, &ignored_paper_types, sizeof(ignored_paper_types) >> 1)) {
                 if (actor->render) {
                     actor->render->scale_z = 0.015f;
                 }   
             }
         }
     }
+    return 0;
 }
 
 int cc_disabler_paper(void) {
@@ -494,6 +495,7 @@ int cc_disabler_paper(void) {
             }
         }
     }
+    return 0;
 }
 
 int cc_enabler_time(void) {
