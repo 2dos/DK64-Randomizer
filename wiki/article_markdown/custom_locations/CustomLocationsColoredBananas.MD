@@ -1132,7 +1132,7 @@
 | Behind night ladder on top of giant mushroom | 5 | `self.logic = lambda _: True` | 
 | By battle arena on little outcrop | 5 | `self.logic = lambda _: True` | 
 | Around battle crown platform | 10 | `self.logic = lambda _: True` | 
-| Around Lanky switch on top of giant mushroom | 10 | `(l.handstand and l.islanky) or (l.jetpack and l.isdiddy)` | 
+| Around Lanky switch on top of giant mushroom | 10 | `logic=lambda _: True` | 
 | Path to Rabbit race (2 custom, 3 Lanky) | 5 | `self.logic = lambda _: True` | 
 | On Rabbit's home | 5 | `self.logic = lambda _: True` | 
 | On Guitar pad in W4 area | 5 | `self.logic = lambda _: True` | 
@@ -1169,7 +1169,7 @@
 | Around giant mushroom base (Lanky) | 10 | `self.logic = lambda _: True` | 
 | In entrance to Lanky's attic (Lanky) | 5 | `Events.Night in l.Events` | 
 | Over baboon balloon pad (Lanky) | 5 | `self.logic = lambda _: True` | 
-| On Giant mushroom top switch (Lanky) | 5 | `(l.jetpack and l.isdiddy) or (l.handstand and l.islanky)` | 
+| On Giant mushroom top switch (Lanky) | 5 | `logic=lambda _: True` | 
 | On Rabbit Race instrument pad (Lanky) | 5 | `self.logic = lambda _: True` | 
 | Green tunnel (Tiny) | 1 | `self.logic = lambda _: True` | 
 | Green tunnel (Tiny) | 4 | `l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.CanPhase() or l.CanPhaseswim()` | 
@@ -1219,8 +1219,8 @@
 | Near the ladder before the blast course | 5 | `self.logic = lambda _: True` | 
 | Near the ladder after the blast course | 5 | `self.logic = lambda _: True` | 
 | Near the mushroom night door | 5 | `self.logic = lambda _: True` | 
-| Top of mushroom to zinger bounce room | 5 | `l.handstand` | 
-| Top of mushroom to colored slam room | 5 | `l.handstand` | 
+| Top of mushroom to zinger bounce room | 5 | `logic=lambda _: True` | 
+| Top of mushroom to colored slam room | 5 | `logic=lambda _: True` | 
 | Mushroom rocketbarrel liftoff !! | 15 | `l.jetpack` | 
 | Around the top of mushroom bonus barrel | 10 | `l.jetpack` | 
 | Around the first stump in owl tree area | 10 | `self.logic = lambda _: True` | 
