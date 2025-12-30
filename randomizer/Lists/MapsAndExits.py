@@ -163,6 +163,7 @@ RegionMapList = {
     Regions.MushroomNightDoor: Maps.ForestGiantMushroom,
     Regions.MushroomNightExterior: Maps.FungiForest,
     Regions.MushroomUpperExterior: Maps.FungiForest,
+    Regions.MushroomVeryTopExterior: Maps.FungiForest,
     Regions.MushroomChunkyRoom: Maps.ForestChunkyFaceRoom,
     Regions.MushroomLankyMushroomsRoom: Maps.ForestLankyMushroomsRoom,
     Regions.MushroomLankyZingersRoom: Maps.ForestLankyZingersRoom,
