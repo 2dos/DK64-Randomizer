@@ -997,8 +997,8 @@ KasplatLocationList = {
             xmax=962,
             zmin=974,
             zmax=1063,
-            region=Regions.MushroomUpperExterior,
-            additional_logic=lambda l: l.jetpack or l.handstand,
+            region=Regions.MushroomVeryTopExterior,
+            additional_logic=lambda _: True,
         ),
         KasplatLocation(
             name="Forest Kasplat: On Mill Roof",

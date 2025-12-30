@@ -102,7 +102,7 @@
 | Fungi Forest | Forest Kasplat: Behind Cuckoo Clock | `self.additional_logic = lambda _: True` | 
 | Forest Mill Front | Forest Kasplat: Grinder Room | `self.additional_logic = lambda _: True` | 
 | Fungi Forest | Forest Kasplat: Giant Mushroom Moat | `l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any))` | 
-| Fungi Forest | Forest Kasplat: Giant Mushroom Peak | `l.jetpack or l.handstand` | 
+| Fungi Forest | Forest Kasplat: Giant Mushroom Peak | `additional_logic=lambda _: True` | 
 | Fungi Forest | Forest Kasplat: On Mill Roof | `self.additional_logic = lambda _: True` | 
 | Fungi Forest | Forest Kasplat: Minecart Exit Well | `self.additional_logic = lambda _: True` | 
 | Forest Lanky Mushrooms Room | Forest Kasplat: Lanky Mushroom Slam Room | `self.additional_logic = lambda _: True` | 

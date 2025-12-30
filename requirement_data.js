@@ -312,14 +312,14 @@ const requirement_data = {
                 [Moves.Rocket, Moves.Grape],
                 [Moves.Grape, Moves.CheckOfLegends],
             ]),
-            new Requirement(5, [ // 1 bunch in MushroomUpperExterior
+            new Requirement(5, [ // 1 bunch in MushroomVeryTopExterior
                 [Moves.ClimbingCheck, Moves.Orangstand],
                 [Moves.Rocket, Moves.Orangstand],
                 [Moves.Orangstand, Moves.CheckOfLegends],
             ]),
             new Requirement(15, [ // 1 bunch in MushroomLankyMushroomsRoom; 2 bunches in MushroomLankyZingersRoom
+                [Moves.LevelSlam, Moves.Rocket],
                 [Moves.ClimbingCheck, Moves.LevelSlam, Moves.Orangstand],
-                [Moves.LevelSlam, Moves.Rocket, Moves.Orangstand],
                 [Moves.LevelSlam, Moves.Orangstand, Moves.CheckOfLegends],
             ]),
         ],
