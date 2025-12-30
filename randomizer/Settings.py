@@ -55,6 +55,8 @@ from randomizer.Patching.CoinPlacer import gen_mayhem_coins
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.ShuffleBosses import (
+    BossMapList,
+    KRoolMaps,
     ShuffleBosses,
     ShuffleBossKongs,
     ShuffleKKOPhaseOrder,
@@ -1773,6 +1775,9 @@ class Settings:
                     Maps.CastleBoss,
                 ]
             )
+        # This guard is for backwards compatibility
+        if not self.bosses_selected:
+            self.bosses_selected = BossMapList.copy() + KRoolMaps.copy()
         phases = [x for x in phases if x in self.bosses_selected]
         possible_phases = phases.copy()
         if self.krool_phase_order_rando:
