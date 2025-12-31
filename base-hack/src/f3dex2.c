@@ -103,10 +103,11 @@ Gfx* drawTextContainer(Gfx* dl, int style, float x, float y, char* str, int red,
 	return drawText(dl,style,x,y,str,red,green,blue,opacity);
 }
 
+#define CHAR_LIMIT 0x60
 static char* character_recoloring_str = 0;
 static char use_character_recoloring = 0;
-static char char_color_data[0x40];
-static unsigned char char_opacity_data[0x40];
+static char char_color_data[CHAR_LIMIT];
+static unsigned char char_opacity_data[CHAR_LIMIT];
 
 void setCharacterRecoloring(int output, char* stored_str) {
 	use_character_recoloring = output;
@@ -114,7 +115,7 @@ void setCharacterRecoloring(int output, char* stored_str) {
 }
 
 void wipeTextColorData(void) {
-	for (int i = 0; i < 0x40; i++) {
+	for (int i = 0; i < CHAR_LIMIT; i++) {
 		char_color_data[i] = 0;
 		char_opacity_data[i] = 0xFF;
 	}
