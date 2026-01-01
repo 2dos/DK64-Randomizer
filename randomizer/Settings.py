@@ -1167,7 +1167,7 @@ class Settings:
                         SwitchsanityKong.any: Kongs.any,
                     }
                     bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
-                    include_any = (applied_setting == SwitchsanityKong.random_with_any)
+                    include_any = applied_setting == SwitchsanityKong.random_with_any
                     options = [
                         SwitchsanityKong.donkey,
                         SwitchsanityKong.diddy,

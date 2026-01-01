@@ -603,6 +603,7 @@ export enum SwitchsanityKong {
     chunky = 4,
     random = 5,
     any = 6,
+    random_with_any = 7,
 }
 
 export enum TrainingBarrels {

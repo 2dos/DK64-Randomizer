@@ -543,6 +543,7 @@ class SwitchsanityKong(IntEnum):
     chunky = 4
     random = 5
     any = 6
+    random_with_any = 7
 
 class TrainingBarrels(IntEnum):
     normal = 0
