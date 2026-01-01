@@ -1021,8 +1021,7 @@
     "tiny": 3,
     "chunky": 4,
     "random": 5,
-    "any": 6,
-    "random_with_any": 7
+    "any": 6
   },
 
   /*

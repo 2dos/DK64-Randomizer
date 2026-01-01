@@ -1167,7 +1167,6 @@ class Settings:
                         SwitchsanityKong.any: Kongs.any,
                     }
                     bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
-                    include_any = applied_setting == SwitchsanityKong.random_with_any
                     options = [
                         SwitchsanityKong.donkey,
                         SwitchsanityKong.diddy,
@@ -1175,8 +1174,6 @@ class Settings:
                         SwitchsanityKong.tiny,
                         SwitchsanityKong.chunky,
                     ]
-                    if include_any:
-                        options.append(SwitchsanityKong.any)
                     options = [x for x in options if kong_mapping[x] not in bad_kongs]
                     if slot == Switches.IslesMonkeyport:
                         options = [SwitchsanityKong.donkey, SwitchsanityKong.lanky, SwitchsanityKong.tiny]
@@ -1190,7 +1187,7 @@ class Settings:
                             SwitchsanityKong.tiny,
                             SwitchsanityKong.chunky,
                         ]
-                    if applied_setting in (SwitchsanityKong.random, SwitchsanityKong.random_with_any):
+                    if applied_setting == SwitchsanityKong.random:
                         applied_setting = self.random.choice(options)
                     if slot == Switches.FactoryFreeKong:
                         self.switchsanity_data[slot].kong = Kongs.lanky
