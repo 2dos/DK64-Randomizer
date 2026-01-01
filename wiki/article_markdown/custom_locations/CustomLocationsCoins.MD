@@ -556,7 +556,7 @@
 | Behind the second lowest ladder in the Giant Mushroom Area | 2 | `self.logic = lambda _: True` | 
 | Above the second lowest ladder in the Giant Mushroom Area | 2 | `self.logic = lambda _: True` | 
 | On the entryways to the 3 top rooms in the Giant Mushroom Area | 3 | `self.logic = lambda _: True` | 
-| On the Giant Mushroom top | 12 | `(l.jetpack and l.isdiddy) or (l.islanky and l.handstand)` | 
+| On the Giant Mushroom top | 12 | `logic=lambda _: True` | 
 | On the Rabbit Race roof | 5 | `self.logic = lambda _: True` | 
 | Around the Saxophone pad | 4 | `self.logic = lambda _: True` | 
 | On the stump at the start of the hollow tree area | 2 | `self.logic = lambda _: True` | 

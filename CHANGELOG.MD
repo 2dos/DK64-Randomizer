@@ -1,146 +1,336 @@
-# Version 4.0 First Dev Push notes
-This is the changelog for the initial push of 4.0 into Dev:
+# Version 5.0 First Dev Push notes
+This is the changelog for the initial push of 5.0 into Dev:
 - Below is a list of features that are being pushed to the dev site
 - If you encounter any Bugs, please post your Spoiler log and [BPS](https://dev.dk64randomizer.com/bps_maker) with an explanation of the bug in the #dev-Bug-Reports [Discord Channel](https://discord.dk64randomizer.com).
 
 
 ## CHANGELOG
 ### New Randomizers
-- Chaos B. Lockers
-    - Items other than Golden Bananas will be required to clear the B. Locker. The counts of which are dictated by `Chaos Ratio`
-- Added shop owners in the item pool
-    - These will need to be obtained to purchase items inside the shops. Hints which indicate the level a shopkeeper is in can be obtained by visiting their shop when they have yet to be obtained.
-- Nintendo & Rareware Coins have been split up in the item rando selector
-- K Rool phases have been added into the boss pool, meaning they can appear behind boss doors. Consequently, regular bosses can now appear in the final boss sequence, turning it into a boss gauntlet
-- Added custom races for Castle Car Race
-- Added the ability to collect colored bananas in Isles, which will add 5 extra medals to the game. This is exclusive to CB Rando, and can be changed with the dropdown menu there.
-- Changes to LZR:
-    - Added option to add Helm and Helm Lobby to the loading zone pool
-    - If auto-keys is enabled: K. Lumsy entrances are added to the pool
-    - If kongs are in the Item Rando pool: Tiny Temple and Llama Temple entrances are in the pool
-    - Better Hints have been written
-- Added DK Portal randomizer, which will randomize where the start of the level is. It uses the same pool as custom wrinkly doors and T&S Portals. There's a fair amount of excluded locations to prevent unbeatable scenarios
+- Huge Item Rando revamp
+  - The internal workings of Item Rando has been completely reworked
+  - Internally, instead of a check production a "specific" rainbow coin, it now produces a generic rainbow coin. Same for other items
+- Item Rando Selector Overhaul:
+  - You can now specify pools of items to be shuffled. Therefore, you could say that hints can only go on kasplats, and nothing else.
+  - There is a toggle to split the functionality between "decoupled" and "coupled".
+  - Coupled pairs items & checks together, making for an easier experience.
+  - Decoupled means you can split checks and items, allowing for greater control & customization
+  - There are helper indicators at the top of each pool to indicate how many checks and items are in each pool. If the item count is too high, it will show as red.
+- Added the ability to clone items and checks to be in multiple pools
+  - Cloned items do not adjust the weighting of items to be placed in spots (eg. Splitting blueprints between two pools does not mean that 20 blueprints will be assigned to each pool. It just fills the pools however they can)
+  - As a result of this change, a move icon has also been added, which is the only method you can use to move (without cloning) an item/check to another pool
+  - Moving/Cloning an item/check into a pool which already has that item/check will just remove any duplicates
+- You can now change the total amount of certain item types that can be placed inside a world. Want less golden bananas placed? You can now do that. Want a guaranteed 200 crowns placed into the world because you're the people's champion? Yes you can do that now.
+  - There are a couple restrictions that need to be adhered to:
+  - Certain item types have minimum amounts that can be placed. Golden Bananas must be, at minimum, 40. Medals, Pearls and Fairies must be, at minimum, 1.
+  - You cannot have more than 255 of a certain item type
+  - The total amount of all item types cannot exceed 298
+  - This is to place less pressure on the fill.
+  - If you decide to modify these, be mindful of the impacts on the fill:
+  - Reducing the amount of rainbow coins will drastically increase the likelihood of running into coin fill failures as it cannot find enough coins to buy everything in the worst order
+  - Decreasing GB checks whilst leaving some of the smaller GB check pools unshuffled will run into fill failures if you try to place less GBs than you need for the unshuffled GB checks.
+- Holdable Objects: Breaking a holdable object (boulders, kegs, vases) is now eligible as a check
+- Snide Rewards:
+  - Snide Turn-ins can now be enabled as possible checks
+  - You can adjust the maximum amount of Snide rewards
+    - If max is set to 16, the first 16 blueprints will be randomized while the rest will be forced as GBs
+- Filler Items: You can now specify which items you want to fill the world when the game would otherwise place empty checks
+  - This includes the old options of "Junk Items" and "Ice Traps"
+  - This will also include Banana Fairies, Crowns, Golden Bananas, Rainbow Coins, and Banana Medals
 - Ice Trap Updates:
-	- Added the ability to customize how many ice traps are going to be **ATTEMPTED** to be placed. This takes away from the junk allocation, meaning that a seed with a lot of ice traps will not have a lot of junk (inc. Dropsanity).
-	- Added two new kinds of Ice Traps:
-		- Reverse Controls: Obtaining a "Reverse Controls" ice trap will reverse your controls for about 8 seconds.
-		- Slowing: Obtaining a "Slowing" ice trap will slow the player down to about 50% speed for 8 seconds, and place a lot of goop on the player. Our lawyers have told us to inform you that this green goop is not from K. Rool's toes.
+  - Various updates have been made to Ice Traps
+  -Added an "unlimited" ice trap option. This will place as many ice traps as it can until there's no other location it can place an ice trap
+  - Ice Traps can now look like other items:
+    - Beans
+    - Keys
+	- Fairies
+- Added a handful of new ice trap effects:
+  - Disable A Button
+  - Disable B Button
+  - Disable C-Up Button
+  - Disable Z Button
+  - Get out:
+    - Spawns a get out akin to the Get Out Crowd Control effect. If you don't go into another map within 10 seconds, you die. Disables the start button until the next map load
+  - Dry Trap: Removes all replenishables (ammo, oranges, crystals etc)
+  - Flip Trap: Flips the screen for 8s, akin to the Crowd Control effect.
+  - Ice Floor Trap: Floors will be Slippery for 15 seconds
+  - Paper Trap: Turns the Kongs and Most models in the game into 2D Paper
+  - Animal Buddy Trap: Transforms you into one of Enguarde or Rambi depending on your location
+    - Turning into Rambi will also disable the B button
+  - Added a slip ice trap
+    - Outside of AP, picking up a slip ice trap will start an internal 5-40s timer. Once that timer has expired, and it is safe (in terms of game stability) to do so, the player will slip and the game will spawn a banana peel under the player
+    - Inside AP, the timer mechanic is not present, and will enter the checking whether safe state instantly.
+    - The reasoning for the timer is that items that you pick up usually aren't in places which make the slip trap actually effective.
+  - Rockfall Trap:
+    - Stalactites will rain down upon you for 10 seconds
+  - Disable Tag Trap:
+     - Tags you to a different Kong and then disables Tag Anywhere for 15 seconds
+- Kong Cave Improvements:
+  - Kong Cages can now house more items making it very rare for those cages to have nothing in them
+  - The text produced is the same text as Tiny's. We intent to eventually change this to match the item received
+- Half Medals
+  - Half the medal requirement are now eligible to be checks
+  - If Medal requirement is set to 50, a check will be placed on 25 Colored Bananas
+  - As a result, the medal icon on the DPad HUD has been reworked. It will now obey the following rules:
+    - If you have collected enough CBs to give you the medal check, it will show you a full opaque medal, as usual
+    - If you have less than that, it will show the amount of CBs required to obtain the next medal reward (be it regular medal or half-medal)
+- Race Coin Rando: Race coins will be placed around the world instead of races.
+  - You will have to pick up enough of them to beat the a race.
+  - Any minecart section gets auto-completed upon entering the course with enough coins.
+  - Races will require you to still beat the opponent.
+  - Obtaining a race reward does not consume coins.
+- Win Condition overhaul:
+  - Beat K. Rool has now been decoupled from the wincons meaning now you can select any wincon + Beat K. Rool
+  - As a result, K. Rool's ship will spawns only after fulfilling the original wincon
+     - eg. Wincon of 8 medals will spawn the ship at 8 medals rather than 8 keys
+- New Wincons:
+  - Krool's Challenge:
+    - Accept K. Rool's Challenge and Collect every key, blueprint and beat all his bosses and bonus barrels and then face K. Rool in the 5 phase ring
+- Beat x bonus barrels
+- Beat x bosses
+- Kill the Rabbit:
+  - Kill the rabbit in Chunky's 5 Door Igloo. Turn it to Ash. Simple as that
+  - Along with this, all instances of the letter "R" in hints will be replaced with the letter "W"
+- Acquire Keys 3 and 8
+  - Added to remove the Vanilla Ship Requirements setting
+- Tooie-Style Shops:
+  - Makes shops not cost any money. They will still require some amount of coins to purchase the item, but your coins will no longer be removed from you.
 
 ### Others
-- A statistics screen has been added to the end sequence, which displays:
-	- % time played as each of the 5 kongs
-	- Amount of tags performed
-	- Amount of photos taken
-	- Amount of times caught by kops
-	- Amount of enemies killed
-- Added functionality to make enemies in crowns decrease the timer, depending on what enemies are killed. Shockwave will nullify almost all bonus you receive from killing, so killing them without shockwave is always a better idea.
-- Oranges have been enabled in crowns
-- You can now specify the exact amount of pearls to spawn Mermaid GB
-- Added an option to change the amount of bonus barrels per room that you need to complete in order to defeat a helm room. This comes with the following options:
-	- Two: Vanilla behavior
-	- One: The right-most barrel in each room will be completed
-	- None: Playing the instrument pad will play the room shutdown cutscene
-- Added Moontail glitched logic
-- Hard Mode changes:
-    - Hard bosses has been separated from Hard Mode again, with the ability to select the specific changes you want regarding bosses to be enabled
-    - Added `Shuffled Jetpac Enemies`, so that a level will utilize the enemies from a different level
-    - Added `Lower Max Refill Amounts`, so that you will have to think harder on using your resources more efficiently
-    - Added `Strict Helm Timer`, which will make the base start time of Hideout Helm 0 minutes instead of 10
-	- Added `Angry Caves`, which makes Caves rockfall constant, resulting in harder navigation of Caves. This takes priority over the `Calm Caves` QoL option.
-    - Added `Donk in the Dark World` and `Donk in the Sky`, which will make traversing the game harder and require you to try and remember how the game looks.
-        - `Donk in the Dark World` will apply the challenge of Fungi Dark Attic to the entire game (Excl. Japes Main area, Factory Testing and Factory Production room for performance reasons)
-        - `Donk in the Sky` will disable level geometry rendering.
-        - Enabling both will enable the secret `Memory Challenge` option, where some maps use Dark World and some maps use Sky.
-- Added the ability to start the game in Training Grounds, with the need to complete 4 minigames to unlock the training moves.
-- Changes to hints:
-    - Added "Freeing Kongs" as a path endpoint which can be hinted.
-	- You will no longer see "Troff 'n' Scoff" path hints. Instead, they have been baked into the medal rewards region. The name of the medal rewards region in hints has been altered to make this a bit clearer.
+- New Logic Options
+  - Minimal Logic:, which is basically no logic, but with a couple minor safeguards to prevent bricked seeds with common failpoints
+    - Key 5 can't be in Level 7 (Outside of LZR)
+    - Kongs can't be in their own shops or medal checks
+    - Blast cannot be inside a blast course/Arcade R2
+- Advanced Glitchless Logic:
+  - You can now select certain tricks to be enabled/disabled with AGL
+    - Monkey Maneuvers: The usual stuff in the old setting
+    - Formerly known as "Advanced Platforming". Renamed to prevent confusion with Archipelago
+    - Hard Shooting: Used to be in the difficulty section. Has been moved
+    - Slope Resets: Using kong ground attacks to climb steep slopes
+    - Advanced Grenading: Allows you to do the following checks:
+      - Kill Donkey Cabin with just oranges
+      - Change time of day with oranges
+      - Japes Painting Room/Painting Room Fairy with oranges
+- Switchsanity Overhaul:
+  - Greater Control: For each switch which gets randomized, it allows you to select a particular switch for it to end up as, or you can randomize it should you so wish.
+  - Kong Unlock Switches: Kong unlock switches being randomized are no longer part of Kong Rando and have been moved to Switchsanity.
+- 8-bit Bonuses: Added an "Arcade" Category to the minigames multiselector, which can give you any of the 5 minigames:
+  - DK Arcade: 25m
+  - DK Arcade: 50m
+  - DK Arcade: 75m
+  - DK Arcade: 100m
+  - Jetpac: Build the Rocket
+- Fast Balloons:
+  - A new difficulty option which speeds up balloons by a factor of 4 making it harder to land shots.
+- B. Locker Difficulty:
+  - Allows you to select how hard you want the progression of B. Locker amounts to be relative to the amount of GBs/whatever item the B. Locker requires you can obtain.
+- Customizable Progressive Slam Switches:
+  - Allows you to select the slam strength of each level. Want more levels with blue slam? You can customize this to your heart's desire
+- Jetpac Platform Rando:
+  - Jetpac platforms can now be in random positions
+- Kremling Kapture now has actual logic
+- Blueprints now no longer can only be on Kong locked checks
+  - You can find Blueprints on locations such as Dirt Patches and Fairies
+  - If a blueprint does roll on a Kong check, the blueprint will be for whoever's check it's on
+- The dartboard order is now part of random puzzle solutions. It will pick any 6-long random sequence of the 8 sprites, including repeating sprites.
+- Rainbow coins can now be on fairies
+- Added a bunch (hehe) of new custom colored banana locations in all the levels, so keep your eyes peeled
+- Added 6 more Krem Kap characters to the Kremling Kapture Wincon
+  - The Fairy Queen
+  - Ice Tomato
+  - Mermaid
+  - Llama
+  - Mechfish
+  - Seal
+- Added "Alternate Minecart Mayhem":
+  - Minecart Mayhem becomes a coin collection challenge instead of an endurance challenge.
+  - Each difficulty of Minecart Mayhem has 15 randomly-placed coins across the track
+  - Coins are randomly placed to prevent Mayhem from becoming a "solved" minigame. Promoting on-the-fly thinking and strategizing
+  - Each difficulty requires a different amount of coins, ranging from 10 to 15
+  - There is no timer for this minigame. We decided against it since the TNT minecarts offer sufficient motivation to not dawdle
+- 4 new kops have been added to the game with new effects
+  - Disable A & Disable Z:
+    - Disables those buttons for 20 seconds. Carries through loading zones
+  - Tag + Disable Tag Anywhere:
+    - Tags to a different kong that you own, then disables tag anywhere for 30 seconds, carries through loading zones
+  - Get Out:
+    - Spawns the get out guy and disables your start button. You must get to another map before the time runs out otherwise you will die
+  - Each of the 4 new kops will have a different colored shirt (and subtly will have a different light color)
+    - Disable A/Z: Orange
+    - Tag & Disable TA: Cyan
+    - Get Out: Black
+  - All 4 of the new kops (plus the original) are selectable individually on the enemy rando selector. That means that if you do not like an effect, but like some of the others, you can just turn off the ones you do not like
+  - Regardless of how many kop effects you select, it does not impact the balancing of kops (unless you have them completely turned off, of course). You will still get roughly the same amount of kops placed in your seed as you would have beforehand.
+- Added the warps between the factory storage area and the factory arcade tunnel as valid loading zones for LZR
+- Added the ability to have random starting location only be in Isles
+- Decoupled the Roman Numeral Gates and Punch Gates in Helm from Helm start setting
+  - The 2 barriers have been moved to removable barriers meaning you can now do Helm Skip Start with either the Roman Numeral Gates or the Punch Gates still intact
+- Changed Krool in Boss Pool Setting
+  - Now instead of it being a boolean, its now a choice between off, Krool Only, and Full Shuffle
+  - "Off": Krool Bosses stay in their own pool, and T&S Bosses stay in their own pool
+  - "Krool Only": Krool Bosses can appear in T&S Bosses, but T&S Bosses stay in their own pool
+  - "Full Shuffle": Krool Bosses and T&S Bosses can be shuffled between each other
 
 ### Quality of life changes
-- Dirt patches have been added to item previews
-- The "pad rising" cutscene in Castle Lanky Dungeon will now play if Item Rando is enabled to show the reward.
-- Bonus Minigames will now display the difficulty of the minigame below it
-- The lives mechanic has been removed from DK Arcade
-- Removed the troll flame from DK Arcade 75m
+- The cooldown timers for the following events have been reduced
+  - Being able to slam the switch in Thornvine barn after destroying the box
+  - Being able to re-slam the breakable panel in Japes (that leads to the underground)
+  - The Kegs GB in Fungi Forest Mills becoming tangible
+- Diddy's Cage will now tell you which Kong is the Freeing Kong
+- Removed the cutscene and the 10 second timer for the 2 Lanky Mushroom Doors opening
+  - Also both doors will remain permanently opened after slamming the switch
 
-### Fixes
-- Fairies can now have the bean, pearls, junk, medals and company coins. All of these 3 have been turned into 3D Models when an actor
-- Race hoops are now 3D models, making them easier to judge when you have flown through it
-- Crowns can now be on Helm Medals and Key 8 checks, as this will no longer crash the game
-- Helm Medal checks will no longer be able to be obtained early by clipping into the lazer field
-- Cannon Game will now reset to it's default position upon failing the minigame or dispensing 5 shots
-- The following enemies will no longer damage the player upon trying to shockwave them:
-	- Purple Klaptraps
-	- Red Klaptraps
-	- Zingers
-	- Robo-Zingers
-	- Bats
-- Spider Boss fight room no longer has the `pickups_respawn` attribute, meaning that bizarre effects will no longer happen
-- Kabooms that are placed via enemy rando will now explode within a timely manner (4.67s), rather than potentially taking 18 minutes to do so.
-- The slam switch on the K. Rool Ship in Galleon will now respond to `Progressive Switch Strength`
-- The wind tower in Castle will now allow you to stay at the top after exiting the bonus barrel.
 
 ### Cosmetic-adjacent changes
-- Added the ability for multiple kongs to play as Krusha, and added the ability to play as K Rool (both costumes), Cranky (DK only) and Candy (Tiny only). Disco Chunky is still a cosmetic setting, but will only be available to enable if you have Chunky in his default costume.
-- Added ability to specify a specific transition spin image, using the transition editor: https://theballaam96.github.io/transition_editor
-- In Chunky Phase, chunky will now be translucent during the punch sequence
-- Dirt patches have been made easier to distinguish (no item preview)
-- "Dark Mode Textboxes" has been changed to "Dark Mode UI", and will also make the D-Pad visual dark
-- Added option to display the song name on-screen when it starts playing
-- Added big head and small head mode (thanks to GL for help with this)
-- Added color swaps to the following objects and sprites:
-	- Jetman
-	- Golden Bananas (And consequently ice traps, which are a hue shift on the new banana color)
-	- Shockwave particles
-	- Fireball/Fire Sprites (Disabled with colorblind mode)
-- Added color swaps to enemies and other NPCs:
-	- Affected by "Random" color swaps:
-		- Klobbers *(Also affects some regular barrels)*
-		- Kabooms *(Also affects some regular TNT barrels)*
-		- Klump (Attire)
-		- Kosha (Just the body)
-		- Robots
-		- K. Rool (Clothes, Gloves, Toes)
-		- Ghosts (Kritter-in-a-sheet)
-		- Funky and Candy
-		- Both beavers
-		- Kasplats
-	- Affected by just "Extreme" color swaps:
-		- Kosha (Club and Helmet)
-		- Kremlings
-		- Rabbit
-		- Snakes (Teetering Turtle Trouble)
-		- K. Rool (Skin, Crown, Belt emblem)
-		- Klump (Skin)
-- Added model swaps to the following objects:
-	- The kremlings that burp in the piano minigame in Frantic Factory
-	- The spotlight fish in Galleon
-- Crowns (excl. "Forest Fracas") will now have random names
-- Added "Keep Vanilla Song Locations" option
-- The background of the pause menu has been overhauled to remove the blurry background and change it to a simple darkening effect, making it easier on the eyes, more modern and less taxing on system resources
-- The numbers in Number Game in Factory will utilize random colors if "Random Misc Cosmetics" is on
-- The DK Portal and the transform/tag barrel underside textures have been updated to the updated DK64 Randomizer logo
+- Disco Donkey: A minor reskin of Donkey to utilize Chunky's disco outfit similar to [DitzyFlama's DK Rap Videos](https://www.youtube.com/watch?v=3qkk55G6e2w)
+- Disable Flavor Text: Disables any stylistic rewording of item names for certain item previews.
+  - The seal is currently the only character with an item preview who utilizes custom flavor text. So this would disable his pirate names and instead just say the name in plain form.
+  - There might be other NPCs who utilize flavor text in the future which this setting would impact.
+- Greater Control over cosmetic changes: Anything which changes the color of an object in the world will now be part of the "random colors" dropdown multiselector, with various items in that multiselector for categories of objects you wish to change the color of:
+  - Enemies:
+  - Bosses
+  - Playable Characters
+  - Friendly NPCs
+  - Fire
+  - Items
+  - Barrels & Boulders
+  - Particles
+  - Misc Objects
+  - Environment
+- More Color Changes: More things in the game will change color:
+  - Pufftoss
+  - Pufftup
+  - Sparkles
+  - Star Flares
+  - Rims of Slam Switches
+- Win Condition Music: Speeds up the music when 1 item away from beating the seed
+  - Only works for "Collect x item"-based win conditions, when you have collected x-1 of that item.
+  - If Beat K. Rool is enabled, music speed up will happen when K. Rool's Ship is spawned
+- Added custom cosmetic images that can be used in Batty Barrel Bandit, which can be defined by adding png files to /textures/reels/ in your cosmetic zip file
+- Implemented rainbow ammo
+  - This will cycle the ammo color between the color range. A full cycle will take roughly 50 seconds
+- The bean now spins
+- Skyboxes (with random skyboxes enabled) utilize a better blending algorithm. As such, there is now a gradient to them
+- Added color rando for the rails and walls of Minecart Mayhem
+- Added a setting to make sure there's always some music playing in Isles. With this setting enabled, former dead spots will now play whichever track it was playing, but not the Krem Isle song (technical reasons)
+- The icon for the DPad has been improved thanks to ItsMirror
+- Added support for cosmetic packs to have custom coin sprites inside:
+  - To add coin sprites to your pack, place the frames of your gif in textures/items/
+  - The frames MUST be named {name}{frame}.png, where frame starts at 0. For example:
+  - Valid: note0.png, note1.png, note2.png, note3.png, note4.png, note5.png
+  - All names start with the same name, and the frame indicated
+  - Invalid: note0.png, note1.png, note3.png, note5.png
+  - Frames 2 and 4 are missing, so this would get truncated down to just using frames 0 and 1
+  - Invalid: donkey.png, donkey_slight_tilt.png, donkey_bigger_tilt.png
+  - These don't end with numbers, so would get omitted from any detection
+  - You can have multiple sets of gif frames in your items folder. Just make sure that the name before the numbers is different for your sets
+  - All 5 coins will use the same sprite set, just with different colors
+- Added a cosmetic option to change the central circle color for move pads, instrument pads and the barrel color for transform barrels to match the kong's color
+- Added a cosmetic option to use a pool of songs for bosses and bonus minigames to reduce some repetition with smaller bonus minigame pools or boss pools, or a standard K Rool endgame sequence.
+
 
 ### Misc
-- Irondonk now plays the game over cutscene upon losing all 5 kongs
-- Potion icon has been updated
-- 3D Melon model has been updated
-- Added Snap to the end sequence
-- The option for native widescreen has been removed (Too much strain on the game)
+- Disable Racing Patches: Disables any in-game patches made for the intention of better competitive racing. This currently disables:
+  - Patches for sprintless Rabbit Race
+  - The door to level 3 (normally Factory in vanilla) being solid
+  - Patches for chasm jump
+  - Patches for twirlless "Floor is Lava" Helm minigame
+- Random Check Requirements:
+  - The checks which require you to obtain x amount of a certain item can now be randomized outside of 'Random Settings'.
+- More menu options:
+  - Added "Anamorphic Widescreen" and "Sound Type" to cosmetic settings
+- Sniper Ammo:
+  - If there are 4 ammo pellets spawned, and you attempt to shoot a 5th after the oldest ammo pellet has exceeded the lifespan of a standard ammo shot (but not the extended sniper life), then the oldest ammo pellet will be deleted.
+- Less Fragile Boulders:
+  - If you throw a boulder and it lands on the ground, it will no longer be destroyed
+  - To destroy a boulder, throw it against a wall
+- Barrel Shuffle Changes:
+  - More Balanced: Minigame barrels are now distributed more evenly, meaning that you're more likely to get a more balanced distribution of minigames across the seed
+  - Every game is a Helm Minigame: The concept of "Helm Banned Minigames" is now gone.
+  - This was very much a concern of v1.0 where you'd require Helm minigames to beat the seed but not regular bonuses as they always contained GBs. So, we wanted to prevent Beaver Bother being required to beat a seed. Now that this consideration isn't exclusive to Helm, it felt like the right time to remove it.
+- More Credits Statistics:
+  - Some more statistics will now show up on the end credits
+    - The amount of times trapped by an ice trap
+    - The amount of deaths
+- Pause Screen:
+  - Added Shop Checks: The pause menu will now show you how many shop checks have been completed in each level.
+- Pause Screen:
+  - Special Items: The pause menu item locations screen will now show the locations that you obtained the Bean and both company coins
+- Potion Graphic:
+  - Collecting a potion from a wrinkly door or medal check will now show a potion graphic instead of the shopkeeper's face
+- Wrinkly Check Indicator:
+  - Upon obtaining the hint/item from a wrinkly door, the wrinkly face on the door will change to a checkmark indicating that you no longer need that door.
+- Wrinkly Text:
+  - If hints are in the item pool, Wrinkly will now give some special item-specific text upon opening a hint door to receive an item.
+- Japes Invisible Film has been moved so it's no longer invisible
+- Dusk Lighting:
+  - If "Dusk" is selected as the Fungi Time of Day, the lighting in Fungi will reflect that by having a yellow-ish tint to it.
+- Reflections:
+  - With the "Reduced Lag" QoL option, floor-based reflections have been disabled everywhere outside of the Ballroom.
+- Key Subtitles:
+  - Picking up a key will now produce a subtitle indicating what levels that key opens
+- Minigame Shuffling:
+  - Shuffler logic is slightly improved to generate more balanced seeds in terms of minigame distribution
+- Optimizations:
+ - Several optimizations have gone into the game to make the Randomizer run better and better for future changes
+- Changed the color of the "Free Kongs" path endpoint from gold to pale blue
+- Hint regions with the word "and" in them will replace that "and" with an ampersand
+- `Research and Development Area` has been reworded to `R&D Area`
+- `Frantic Factory Start` has been renamed to `Frantic Factory Foyer`
+- Shop Regions can no longer be hinted foolish
+- Kops can no longer logically be killed with shockwave
+- Added `Green Bean` to End Credit Sequence
+- Added internal support for spoiler hints to the ROM. If spoiler hints are enabled, IGT will no longer show on the level progress screens on the pause menu. Instead, it will show the amount of remaining points left for that level
+- If you have a win con based around getting a certain amount of items, you may receive scouring hints which hint towards that item
+- 75m is no longer excluded from fast arcade
+  - This may not be a permanent change. This is just something we're trialing out to see how it goes.
+- Added a new setting "No Consumable Upgrades". This toggle prevents Ammo Belts and Instrument Upgrades from being placed during the fill (You can still start with them)
+- Added the ability to restrict the boss pool for bosses which can be placed within a seed.
+  - If the boss pool is smaller than the total amount of bosses that you would fight in a seed (`7 + k_rool_phase_count`), then you will see duplicate bosses in your seed
 
-### Plandomizer
-- Added ability to plando custom locations for objects
 
 ### Site Changes
-- The spoiler log display on the website has been completely reformatted
-- The site has been ported to boostrap 5.3.3 (from 5.1). This will mostly result in changes that you don't recognize. The major change as a result of this is that the sliders on the progression tab have been changed as our old sliders only supported bootstrap 3 and 4, and just so happened to work on 5.1.
-- Various events on the site will produce a toast providing the user feedback on what is happening.
-- `Complex Level Order` has been merged into the `Entrance Randomizer` selector
-- Galleon shipwreck gates remaining open is now in the `Misc Changes` selector rather than the `Removed Barriers` selector.
+- `Key 8 Required` has been renamed to `Don't Start with Key 8`
+- `Keys Required to Beat K. Rool` has been changed to `Number of Starting Keys`
+  - In addition, the slider now properly reflects the amount of starting keys (2 will actually give you 2 keys)
+- Added Advanced ROM Header to the  Generate from Patch File tab
+- FTA has been changed from the dropdown series of options to just a toggle
+  - In other words, FTA no blueprints is no longer an option
+  - Justification: The only reason the middle ground option even existed in the first place was because there were some technical oddities with FTA on blueprints, and we wanted that option there in case we wanted to do some stuff which required FTA but resulted in something too complex for blueprints. This is no longer a consideration and helps streamline stuff a lot
+- Several changes to the way "Golden Banana Checks" can be shuffled with the item selector
+  - The concept of "Tough Bananas" is now gone. This ended up being way too subjective
+  - Golden Banana checks have been split up into 4 subtypes:
+  - Regular Golden Banana Checks: Everything excluding the special categories
+  - Minecarts & Races: All minecart rides (Note: Not Minecart Mayhem) and race golden banana checks
+  - Enemy Gauntlet Checks: All golden banana checks that require you to defeat some amount of enemies. Some surprising ones which you might not immediately think of include:
+    - Fungi Apple GB
+    - Castle Library GB
+    - Caves Lanky Igloo
+    - Snide Rewards
+  - The Item selector will now allow you to have any/all of the smaller Golden Banana check categories unshuffled, whilst having GB Checks and items shuffled as well. It will just place less GBs.
+  - The hint score is back and improved over the last iteration. It's also actually in action as opposed to being a theory. New to the score is that Scouring, Entrance, and Kong hints are now all accounted for in the score to varying degrees.
+  - What this means for your hints:
+    - Scouring hints now try to hint regions that contain your most unhinted items (based on the score).
+    - Your last WotH hint is targeting the least hinted location up to that point (based on the score). This is denoted in your spoiler log with an asterisk at the end of this hint.
+- Added a toggle that allow some customization options for Krusha randomization.
+  - You can still manually edit each Kong to either use Krusha or the Kong
+  - You can ask the game to randomly replace one of the Kongs with Krusha
+  - You can ask the game to randomly replace each kong with Krusha
 
-### Technical Changes
-- Lots of internal code cleanup
-- Converted all display list modifications to using f3dex2 macros
-- `pointer_addresses.json` has been vastly shrunk to be quicker on site loading
-- Boss doors which have 0 CBs as the unlock condition will now employ a less hacky way of doing this without crashing the game. This fixes a few bugs which occurred as a result of this.
-- More settings have been dumped to the spoiler. A lot of internal changes have been made to best facilitate trackers that aim to support 4.0 during dev.
+### Fixes
+- The enemy in Lanky's Sprint cabin now takes into account it being an instrument restricted region
+- Added moonkick logic for the Vines training barrel
+- Fixed issue where Sky World would not work
+- Fixed a bug with Rambi arena where it would be possible to win if you failed with a low score remaining under very specific conditions.
+- Potions have been recolored to be easier to tell, notably with Lanky's and Tiny's colors
+  - Other items have not been changed yet. This will be done pending feedback from playtesting the potion colors
+  - This won't fix every situation of not being able to tell (nor is it really feasible to) due to DK64's colored lighting. However, this should make it notably easier to tell the difference
+- Fixed a vanilla bug that would cause the game to sometimes freeze when the sound player would catch a break after being overloaded with events.
+- The Lanky bunch in Galleon on the Trombone Pad now requires Diving or Lowered Water
+- Added some logically missing vanilla coins
+- Fixed logic for the 3 coins behind the Aztec DK Kasplat Stone Door
+- Pufftoss can no longer be the final phase of the final boss sequence
+  - This is to prevent any crashing issues
+- Fixed a bug where Helm stars could sometimes be placed out-of-bounds
+- Acquiring Fairy Camera will now start you with some film
+- Fixed issue where if both DK Portals and starting locations are randomized, if starting location was set to a DK portal, it now spawns you at the portal rather than the vanilla entrance

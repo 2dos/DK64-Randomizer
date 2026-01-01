@@ -1546,7 +1546,7 @@ void exitBoss(void) {
 		reference_map = MAP_KROOLTINY;
 	}
 	for (int i = 0; i < 5; i++) {
-		if (Rando.k_rool_order[i] == reference_map) {
+		if (getWorld(CurrentMap, 0) > LEVEL_CASTLE) {
 			initiateTransition(MAP_ISLES, 0xC);
 			return;
 		}
