@@ -353,6 +353,11 @@
                 <option id="random" {% if default == "random" %}selected{% endif %} value="random">
                     Random
                 </option>
+                {% if subtype != "free_tiny" and subtype != "mport_to_helm" and subtype != "kong" %}
+                    <option id="random_with_any" {% if default == "random_with_any" %}selected{% endif %} value="random_with_any">
+                        Random (incl. Any)
+                    </option>
+                {% endif %}
             </select>
         </div>
     </div>
