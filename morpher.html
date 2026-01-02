@@ -746,6 +746,10 @@
                         "KroolChunkyPhase",
                     ];
                 }
+                if (sel_version_num < numericVersion("5.8.10")) {
+                    console.log("Porting the ice trap model variable to the new value.")
+                    setting_data.ice_trap_model_v2 = setting_data.ice_trap_model;
+                }
                 // Update to include all unhandled options to unsorted
                 const all_valid_items = Object.keys(output_json.ItemRandoListSelected);
                 let mentioned_items = [];

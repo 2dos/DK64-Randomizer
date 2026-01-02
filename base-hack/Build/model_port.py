@@ -668,7 +668,7 @@ def loadNewModels():
     # Misc
     portModelTwoToActor(0x198, "", "bean", 0x68, True, 1.0)
     portModelTwoToActor(0x1B4, "", "pearl", 0x68, True, 1.0)
-    portModelTwoToActor(0x90, "", "medal", 0x68, True, 1.0)
+    portModelTwoToActor(0, "updated_medal.bin", "medal", 0x68, True, 1.0)
     portModelTwoToActor(0, "nintendo_coin_om2.bin", "nintendo_coin", 0x68, True, 1.0)
     portModelTwoToActor(0, "rareware_coin_om2.bin", "rareware_coin", 0x68, True, 1.0)
     createMelon()

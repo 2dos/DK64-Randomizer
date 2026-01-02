@@ -480,6 +480,7 @@ file_dict = [
         source_file="assets/displays/fake_key_shine.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
+        target_compressed_size=2 * 32 * 32,
     ),
     File(
         name="Fake Key Texture (OM2)",
@@ -488,6 +489,7 @@ file_dict = [
         source_file="assets/displays/fake_key_shine_palette.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
+        target_compressed_size=64,
     ),
     File(
         name="Static Gold Shine Texture (OM2)",
@@ -908,8 +910,28 @@ new_coin_sfx = "assets/music/coin_sfx.bin"
 if os.path.exists(new_coin_sfx):
     os.remove(new_coin_sfx)
 shutil.copyfile(base_coin_sfx, new_coin_sfx)
+# base_fake_fairy_sfx = "assets/music/fake_fairy.dk64song"
+# new_fake_fairy_sfx = "assets/music/fake_fairy.bin"
+# if os.path.exists(new_fake_fairy_sfx):
+#     os.remove(new_fake_fairy_sfx)
+# shutil.copyfile(base_fake_fairy_sfx, new_fake_fairy_sfx)
 
 map_replacements = []
+# Gen fake fairy song
+with open(ROMName, "rb") as fh:
+    wrinkly_f = ROMPointerFile(fh, TableNames.MusicMIDI, 66)
+    fh.seek(wrinkly_f.start)
+    dec = zlib.decompress(fh.read(wrinkly_f.size), 15 + 32)
+    with open("assets/music/fake_fairy.bin", "wb") as fg:
+        fg.write(dec)
+with open("assets/music/fake_fairy.bin", "r+b") as fg:
+    fg.seek(0x40)
+    div = int.from_bytes(fg.read(4), "big")
+    div = int(div * 0.6)
+    fg.seek(0x40)
+    fg.write(div.to_bytes(4, "big"))
+
+
 song_replacements = [
     {"name": "baboon_balloon", "index": 107, "bps": True},
     {"name": "bonus_minigames", "index": 8, "bps": True},
@@ -921,6 +943,7 @@ song_replacements = [
     # {"name": "klumsy_celebration", "index": 125, "bps": True},
     {"name": "coin_sfx", "index": 7, "bps": False},
     {"name": "intro_story", "index": 122, "bps": True},
+    {"name": "fake_fairy", "index": 175, "bps": False},
 ]
 changed_song_indexes = []
 
