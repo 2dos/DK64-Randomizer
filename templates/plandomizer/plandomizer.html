@@ -88,6 +88,16 @@
                 aria-selected="false">
             <p class="select-title">General</p>
         </button>
+        <button class="nav-link nav-item plando-pill"
+                id="nav-plando-items-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#nav-plando-items"
+                type="button"
+                role="tab"
+                aria-controls="nav-plando-items"
+                aria-selected="false">
+            <p class="select-title">Item Placement</p>
+        </button>
         {% for panelName, panel in plando_panels %}
             <button class="nav-link nav-item plando-pill"
                     id="nav-plando-{{panelName}}-tab"
@@ -108,19 +118,14 @@
     <div class="tab-content" id="nav-tabContent">
         {% include 'plandomizer/plandomizer_introduction.html' %}
         {% include 'plandomizer/plandomizer_general.html' %}
+        {% include 'plandomizer/plandomizer_levels.html' %}
         {% for panelName, panel in plando_panels %}
-            {% if panelName == "Shops" %}
-                {% include 'plandomizer/plandomizer_shops.html' %}
-            {% elif panelName == "Switches" %}
-                {% include 'plandomizer/plandomizer_switches.html' %}
-            {% elif panelName == "Locations" %}
+            {% if panelName == "Locations" %}
                 {% include 'plandomizer/plandomizer_locations.html' %}
             {% elif panelName == "Minigames" %}
                 {% include 'plandomizer/plandomizer_minigames.html' %}
             {% elif panelName == "Hints" %}
                 {% include 'plandomizer/plandomizer_hints.html' %}
-            {% else %}
-                {% include 'plandomizer/plandomizer_levels.html' %}
             {% endif %}
         {% endfor %}
     </div>

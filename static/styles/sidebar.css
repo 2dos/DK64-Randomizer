@@ -1,7 +1,7 @@
-.fa-2x {
+#rando_tabs .fa-2x {
     font-size: 2em;
 }
-.svg-inline--fa {
+#rando_tabs .svg-inline--fa {
     position: relative;
     display: table-cell;
     width: 60px;

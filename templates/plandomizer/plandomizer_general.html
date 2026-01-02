@@ -52,18 +52,10 @@
                 <p class="select-title">Spawn Location</p>
                 <select name="plando_starting_exit"
                         id="plando_starting_exit"
-                        class="form-select center-div"
+                        class="form-select center-div plando-load-transitions plando-inc-randomize"
                         aria-label="Spawn Location"
                         data-toggle="tooltip"
                         title="Choose the spawn location when starting the game.">
-                    <option selected value="">
-                        -- Randomize --
-                    </option>
-                    {% for spawn in plando_spawns %}
-                        <option value="{{spawn["value"]}}">
-                            {{spawn["name"]}}
-                        </option>
-                    {% endfor %}
                 </select>
             </div>
             <div class="flex-container">
@@ -77,28 +69,10 @@
                          title>
                         <select name="plando_starting_kongs_selected"
                                 id="plando_starting_kongs_selected"
-                                class="form-select multi-select"
+                                class="form-select multi-select plando-load-kongs plando-inc-randomize"
                                 aria-label="Starting Kongs"
                                 multiple
                                 size="6">
-                            <option selected value="">
-                                Random Kong(s)
-                            </option>
-                            <option value="donkey">
-                                Donkey
-                            </option>
-                            <option value="diddy">
-                                Diddy
-                            </option>
-                            <option value="lanky">
-                                Lanky
-                            </option>
-                            <option value="tiny">
-                                Tiny
-                            </option>
-                            <option value="chunky">
-                                Chunky
-                            </option>
                         </select>
                     </div>
                 </div>
@@ -114,38 +88,11 @@
                              title>
                             <select id="plando_kong_rescue_{{kong}}"
                                     name="plando_kong_rescue_{{kong}}"
-                                    class="form-select order-select">
-                                <option value="" selected">
-                                    -- Randomize --
-                                </option>
-                                {% if kong != "tiny" %}
-                                    <option value="donkey">
-                                        Donkey
-                                    </option>
-                                {% endif %}
-                                    <option value="diddy">
-                                        Diddy
-                                    </option>
-                                {% if kong != "tiny" %}
-                                    <option value="lanky">
-                                        Lanky
-                                    </option>
-                                {% endif %}
-                                {% if kong != "tiny" %}
-                                    <option value="tiny">
-                                        Tiny
-                                    </option>
-                                {% endif %}
-                                    <option value="chunky">
-                                        Chunky
-                                    </option>
+                                    class="form-select order-select plando-load-kongs plando-inc-randomize">
                             </select>
                         </div>
                     </label>
                 {% endfor %}
-            </div>
-            <div style="font-style: italic;">
-                More plando settings in the works!
             </div>
             <hr>
             <h2 class="title">Custom Locations</h2>
@@ -261,34 +208,7 @@
                              title>
                             <select id="plando_level_order_{{i}}"
                                     name="plando_level_order_{{i}}"
-                                    class="form-select order-select">
-                                <option value="" selected">
-                                    -- Randomize --
-                                </option>
-                                <option value="JungleJapes">
-                                    Jungle Japes
-                                </option>
-                                <option value="AngryAztec">
-                                    Angry Aztec
-                                </option>
-                                <option value="FranticFactory">
-                                    Frantic Factory
-                                </option>
-                                <option value="GloomyGalleon">
-                                    Gloomy Galleon
-                                </option>
-                                <option value="FungiForest">
-                                    Fungi Forest
-                                </option>
-                                <option value="CrystalCaves">
-                                    Crystal Caves
-                                </option>
-                                <option value="CreepyCastle">
-                                    Creepy Castle
-                                </option>
-                                <option value="HideoutHelm">
-                                    Hideout Helm
-                                </option>
+                                    class="form-select order-select plando-load-levels plando-inc-randomize">
                             </select>
                         </div>
                     </label>
@@ -305,21 +225,7 @@
                              title>
                             <select id="plando_krool_order_{{i}}"
                                     name="plando_krool_order_{{i}}"
-                                    class="form-select order-select">
-                                <option value="" selected">
-                                    -- Randomize --
-                                </option>
-                                {% for phase in plando_phases %}
-                                  <option value="{{phase["value"]}}"
-                                  {% if "Boss" in phase["value"] %}
-                                    class="plando-tns-boss"
-                                  {% else %}
-                                    class="plando-krool-phase"
-                                  {% endif %}
-                                  >
-                                    {{phase["name"]}}
-                                  </option>
-                                {% endfor %}
+                                    class="form-select order-select plando-load-bosses plando-inc-randomize">
                             </select>
                         </div>
                     </label>
@@ -339,21 +245,7 @@
                              title>
                             <select id="plando_boss_order_{{i}}"
                                     name="plando_boss_order_{{i}}"
-                                    class="form-select order-select">
-                                <option value="" selected">
-                                    -- Randomize --
-                                </option>
-                                {% for phase in plando_phases %}
-                                  <option value="{{phase["value"]}}"
-                                  {% if "Boss" in phase["value"] %}
-                                    class="plando-krool-phase"
-                                  {% else %}
-                                    class="plando-tns-boss"
-                                  {% endif %}
-                                  >
-                                    {{phase["name"]}}
-                                  </option>
-                                {% endfor %}
+                                    class="form-select order-select plando-load-bosses plando-inc-randomize">
                             </select>
                         </div>
                         <div id="plando_boss_kong_{{i}}_wrapper"
@@ -361,25 +253,7 @@
                              title>
                             <select id="plando_boss_kong_{{i}}"
                                     name="plando_boss_kong_{{i}}"
-                                    class="form-select order-select">
-                                <option value="" selected">
-                                    -- Randomize --
-                                </option>
-                                <option value="donkey">
-                                    Donkey
-                                </option>
-                                <option value="diddy">
-                                    Diddy
-                                </option>
-                                <option value="lanky">
-                                    Lanky
-                                </option>
-                                <option value="tiny">
-                                    Tiny
-                                </option>
-                                <option value="chunky">
-                                    Chunky
-                                </option>
+                                    class="form-select order-select plando-load-kongs plando-inc-randomize">
                             </select>
                         </div>
                     </label>
@@ -396,25 +270,7 @@
                              title>
                             <select id="plando_helm_order_{{i}}"
                                     name="plando_helm_order_{{i}}"
-                                    class="form-select order-select">
-                                <option value="" selected">
-                                    -- Randomize --
-                                </option>
-                                <option value="donkey">
-                                    Donkey
-                                </option>
-                                <option value="diddy">
-                                    Diddy
-                                </option>
-                                <option value="lanky">
-                                    Lanky
-                                </option>
-                                <option value="tiny">
-                                    Tiny
-                                </option>
-                                <option value="chunky">
-                                    Chunky
-                                </option>
+                                    class="form-select order-select plando-load-kongs plando-inc-randomize">
                             </select>
                         </div>
                     </label>

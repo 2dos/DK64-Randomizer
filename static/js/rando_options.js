@@ -669,22 +669,22 @@ async function enable_plandomizer() {
   const plandoTab = document.getElementById("nav-plando-tab");
   if (document.getElementById("enable_plandomizer").checked) {
     // Open up a Modal stating that we're loading the Plando tab
-    if (!enabled_plando){
-      $("#plando-modal").modal("show");    
-      try {
-        await setup_pyodide();
-      } catch (error) {
-        console.log("Error setting up Pyodide:", error);
-      }
-      try{
-        // Load ui.__init__.py
-        await run_python_file("ui/__init__.py");
-        enabled_plando = true;
-      }
-      catch (error) {
-        console.log("Error running ui/__init__.py:", error);
-      }
-    }
+    // if (!enabled_plando){
+    //   $("#plando-modal").modal("show");    
+    //   try {
+    //     await setup_pyodide();
+    //   } catch (error) {
+    //     console.log("Error setting up Pyodide:", error);
+    //   }
+    //   try{
+    //     // Load ui.__init__.py
+    //     await run_python_file("ui/__init__.py");
+    //     enabled_plando = true;
+    //   }
+    //   catch (error) {
+    //     console.log("Error running ui/__init__.py:", error);
+    //   }
+    // }
     plandoTab.removeAttribute("hidden");
     $("#plando-modal").modal("hide");
   } else {
@@ -874,16 +874,20 @@ function plando_disable_isles_medals(evt) {
   if (cbShuffle !== "on_with_isles") {
     for (const kong of kongs) {
       const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
-      kongIsleElem.setAttribute("disabled", "disabled");
-      kongIsleElem.value = "";
-      const tooltip = "To assign a reward here, Isles CBs must be shuffled.";
-      kongIsleElem.parentElement.setAttribute("data-bs-original-title", tooltip);
+      if (kongIsleElem) {
+        kongIsleElem.setAttribute("disabled", "disabled");
+        kongIsleElem.value = "";
+        const tooltip = "To assign a reward here, Isles CBs must be shuffled.";
+        kongIsleElem.parentElement.setAttribute("data-bs-original-title", tooltip);
+      }
     }
   } else {
     for (const kong of kongs) {
       const kongIsleElem = document.getElementById(`plando_Isles${kong}Medal_item`);
-      kongIsleElem.removeAttribute("disabled");
-      kongIsleElem.parentElement.setAttribute("data-bs-original-title", "");
+      if (kongIsleElem) {
+        kongIsleElem.removeAttribute("disabled");
+        kongIsleElem.parentElement.setAttribute("data-bs-original-title", "");
+      }
     }
   }
 }

@@ -142,30 +142,6 @@ def isMinigameLocation(locationEnum: Locations) -> bool:
 
 
 PlandomizerPanels = {
-    "DKIsles": {"name": "D.K. Isles", "locations": createPlannableKongObj()},
-    "JungleJapes": {"name": "Jungle Japes", "locations": createPlannableKongObj()},
-    "AngryAztec": {"name": "Angry Aztec", "locations": createPlannableKongObj()},
-    "FranticFactory": {"name": "Frantic Factory", "locations": createPlannableKongObj()},
-    "GloomyGalleon": {"name": "Gloomy Galleon", "locations": createPlannableKongObj()},
-    "FungiForest": {"name": "Fungi Forest", "locations": createPlannableKongObj()},
-    "CrystalCaves": {"name": "Crystal Caves", "locations": createPlannableKongObj()},
-    "CreepyCastle": {"name": "Creepy Castle", "locations": createPlannableKongObj()},
-    "HideoutHelm": {"name": "Hideout Helm", "locations": {"All Kongs": [], "Medals": [], "Enemies": []}},
-    # Shops, minigames and hints are grouped by level, not by Kong.
-    "Shops": {
-        "name": "Shops",
-        "levels": createPlannableLevelObj(include_isles=True),
-    },
-    "Snide": {
-        "name": "Snide HQ",
-        "locations": {
-            "All Kongs": [],
-        },
-    },
-    "Switches": {
-        "name": "Switches",
-        "locations": [],
-    },
     # "Blueprints": {
     #    "name": "Blueprints",
     #    "locations": createPlannableKongObj()
@@ -242,29 +218,8 @@ for locationEnum, locationObj in LocationList.items():
         levelName = locationObj.level.name
         PlandomizerPanels["Hints"]["levels"][levelName]["locations"].append(locationJson)
         HintLocationList.append(locationEnum.name)
-    elif locationObj.type == Types.Shop:
-        levelName = locationObj.level.name
-        PlandomizerPanels["Shops"]["levels"][levelName]["locations"].append(locationJson)
-        ShopLocationList.append(locationEnum.name)
-        # Add this to the ShopLocationKongMap, which will be used for validation.
-        vendor = locationObj.vendor.name
-        if locationObj.kong == Kongs.any:
-            ShopLocationKongMap[levelName][vendor]["shared"] = {"name": locationEnum.name, "value": locationObj}
-        else:
-            ShopLocationKongMap[levelName][vendor]["individual"].append({"name": locationEnum.name, "value": locationObj})
-    elif locationObj.level == Levels.Shops:
-        # This is the Rareware coin.
-        PlandomizerPanels["Shops"]["levels"]["DKIsles"]["locations"].append(locationJson)
-        ShopLocationList.append(locationEnum.name)
     else:
         levelName = locationObj.level.name
-        if locationObj.level == Levels.HideoutHelm and locationObj.type == Types.Medal:
-            PlandomizerPanels[levelName]["locations"]["Medals"].append(locationJson)
-        elif locationObj.type == Types.Enemies:
-            PlandomizerPanels[levelName]["locations"]["Enemies"].append(locationJson)
-        else:
-            PlandomizerPanels[levelName]["locations"][kongString].append(locationJson)
-        ItemLocationList.append(locationEnum.name)
 
         # We need to keep track of locations for dirt patches, fairies, arenas,
         # melon crates, and Kasplats.
@@ -1044,79 +999,3 @@ for level, doorList in door_locations.items():
             TnsDoorLocationOptions[level.name].append(door.name)
 PlannableCustomLocations["WrinklyDoor"] = WrinklyDoorLocationOptions
 PlannableCustomLocations["TnsPortal"] = TnsDoorLocationOptions
-
-############
-# SWITCHES #
-############
-
-# A map of switch locations to vanilla values.
-SwitchVanillaMap = {}
-
-# Each SwitchType gets its own list, as well as two switch locations that are
-# exceptional cases.
-PlannableSwitches = {
-    SwitchType.GunSwitch.name: [],
-    SwitchType.InstrumentPad.name: [],
-    SwitchType.MiscActivator.name: [],
-    SwitchType.PadMove.name: [],
-    SwitchType.SlamSwitch.name: [],
-    Switches.IslesHelmLobbyGone.name: [],
-    Switches.IslesMonkeyport.name: [],
-}
-
-for switchEnum, switchInfo in SwitchData.items():
-    jsonValue = {
-        "name": switchInfo.name,
-        "switch_loc": switchEnum.name,
-        "switch_type": switchInfo.switch_type.name,
-        "vanilla_value": switchInfo.kong.name,
-    }
-    if switchEnum == Switches.IslesHelmLobbyGone:
-        jsonValue["vanilla_value"] = f"{switchInfo.kong.name};{switchInfo.switch_type.name}"
-    SwitchVanillaMap[switchEnum.name] = jsonValue["vanilla_value"]
-    PlandomizerPanels["Switches"]["locations"].append(jsonValue)
-
-for switchType in [
-    SwitchType.GunSwitch,
-    SwitchType.InstrumentPad,
-    SwitchType.MiscActivator,
-    SwitchType.PadMove,
-    SwitchType.SlamSwitch,
-]:
-    for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]:
-        switchName = GetSwitchName(switchType, kong)
-        PlannableSwitches[switchType.name].append(
-            {
-                "name": switchName,
-                "value": kong.name,
-            }
-        )
-        # Handle the two exceptions.
-        if switchType == SwitchType.PadMove and kong not in [Kongs.diddy, Kongs.chunky]:
-            PlannableSwitches[Switches.IslesMonkeyport.name].append(
-                {
-                    "name": switchName,
-                    "value": kong.name,
-                }
-            )
-        if switchType == SwitchType.PadMove and kong == Kongs.chunky:
-            PlannableSwitches[Switches.IslesHelmLobbyGone.name].append(
-                {
-                    "name": switchName,
-                    "value": f"{kong.name};{switchType.name}",
-                }
-            )
-        if switchType == SwitchType.MiscActivator and kong in [Kongs.donkey, Kongs.diddy]:
-            PlannableSwitches[Switches.IslesHelmLobbyGone.name].append(
-                {
-                    "name": switchName,
-                    "value": f"{kong.name};{switchType.name}",
-                }
-            )
-        if switchType == SwitchType.InstrumentPad:
-            PlannableSwitches[Switches.IslesHelmLobbyGone.name].append(
-                {
-                    "name": switchName,
-                    "value": f"{kong.name};{switchType.name}",
-                }
-            )
