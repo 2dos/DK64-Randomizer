@@ -1173,7 +1173,6 @@ class Settings:
                         SwitchsanityKong.lanky,
                         SwitchsanityKong.tiny,
                         SwitchsanityKong.chunky,
-                        SwitchsanityKong.any,
                     ]
                     options = [x for x in options if kong_mapping[x] not in bad_kongs]
                     if slot == Switches.IslesMonkeyport:
