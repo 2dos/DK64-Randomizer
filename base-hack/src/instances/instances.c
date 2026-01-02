@@ -1000,8 +1000,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (!checkFlag(223, FLAGTYPE_PERMANENT)) {
 								setPermFlag(223);
 							}
-							behaviour_pointer->current_state = 2;
-							behaviour_pointer->next_state = 2;
+							hideObject(behaviour_pointer);
+							behaviour_pointer->unk_70 = 0;
+							behaviour_pointer->unk_71 = 0;
+							setScriptRunState(behaviour_pointer, RUNSTATE_PAUSED, 0);
 						} else {
 							PlayCutsceneFromModelTwoScript(behaviour_pointer, 1,1,0);
 						}
