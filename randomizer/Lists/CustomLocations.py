@@ -295,7 +295,7 @@ CustomLocations = {
             max_size=56,
             logic_region=Regions.JapesPaintingRoomHill,
             group=1,
-            banned_types=[LocationTypes.MelonCrate],
+            banned_types=[LocationTypes.MelonCrate, LocationTypes.Bananaport],
         ),
         CustomLocation(
             map=Maps.JungleJapes,
