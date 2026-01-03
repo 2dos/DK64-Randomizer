@@ -231,9 +231,6 @@ def getImageFromAddress(ROM_COPY: Union[LocalROM, ROM], rom_address: int, width:
 
 def getImageFile(ROM_COPY: Union[LocalROM, ROM], table_index: TableNames, file_index: int, compressed: bool, width: int, height: int, format: TextureFormat):
     """Grab image from file."""
-    if "PYTEST_CURRENT_TEST" in os.environ:
-        return Image.new(mode="RGBA", size=(width, height), color=(255, 0, 0, 255))
-
     file_start = getPointerLocation(table_index, file_index)
     file_end = getPointerLocation(table_index, file_index + 1)
     file_size = file_end - file_start
