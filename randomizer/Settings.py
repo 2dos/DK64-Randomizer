@@ -1713,7 +1713,7 @@ class Settings:
                 ):
                     self.item_pool_info[pool_index].is_shuffled = False
             self.shuffled_location_types = list(set(self.shuffled_location_types))
-            
+
             # If training moves are not in any shuffled pool, add them to guaranteed_starting_moves
             if Types.TrainingBarrel not in self.shuffled_location_types:
                 training_barrel_items = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels]
@@ -1721,7 +1721,7 @@ class Settings:
                     if tb_item not in guaranteed_starting_moves:
                         guaranteed_starting_moves.append(tb_item)
                 self.training_barrels = TrainingBarrels.normal
-            
+
             self.enemy_drop_rando = Types.Enemies in self.shuffled_location_types
             if Types.Shop in self.shuffled_location_types:
                 self.move_rando = MoveRando.item_shuffle
