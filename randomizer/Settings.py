@@ -1673,9 +1673,14 @@ class Settings:
                         if item_type == Types.Cranky:
                             item_types = [sk for sk in [Types.Cranky, Types.Snide, Types.Candy, Types.Funky] if shopkeeper_type_mapping[sk] not in guaranteed_starting_moves]
                         elif item_type == Types.TrainingBarrel:
-                            item_types = [Types.TrainingBarrel, Types.PreGivenMove]
-                            if self.climbing_status != ClimbingStatus.normal:
-                                item_types.append(Types.Climbing)
+                            # Only include TrainingBarrel type if training moves aren't all guaranteed starting moves
+                            training_barrel_items = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels]
+                            if all(tb_item in guaranteed_starting_moves for tb_item in training_barrel_items):
+                                item_types = []
+                            else:
+                                item_types = [Types.TrainingBarrel, Types.PreGivenMove]
+                                if self.climbing_status != ClimbingStatus.normal:
+                                    item_types.append(Types.Climbing)
                         elif item_type == Types.Medal and IsItemSelected(self.cb_rando_enabled, self.cb_rando_list_selected, Levels.DKIsles):
                             item_types = [Types.Medal, Types.IslesMedal]
                         for x in selector_types:
@@ -1708,6 +1713,15 @@ class Settings:
                 ):
                     self.item_pool_info[pool_index].is_shuffled = False
             self.shuffled_location_types = list(set(self.shuffled_location_types))
+
+            # If training moves are not in any shuffled pool, add them to guaranteed_starting_moves
+            if Types.TrainingBarrel not in self.shuffled_location_types:
+                training_barrel_items = [Items.Vines, Items.Swim, Items.Oranges, Items.Barrels]
+                for tb_item in training_barrel_items:
+                    if tb_item not in guaranteed_starting_moves:
+                        guaranteed_starting_moves.append(tb_item)
+                self.training_barrels = TrainingBarrels.normal
+
             self.enemy_drop_rando = Types.Enemies in self.shuffled_location_types
             if Types.Shop in self.shuffled_location_types:
                 self.move_rando = MoveRando.item_shuffle
@@ -2645,7 +2659,7 @@ class Settings:
                 if Types.Shockwave in self.shuffled_location_types:
                     locations_excluding_kong_shops.append(Locations.CameraAndShockwave)
                     self.valid_locations[Types.Shockwave] = locations_excluding_kong_shops.copy()
-                if Types.TrainingBarrel in self.shuffled_location_types:
+                if Types.TrainingBarrel in self.shuffled_location_types or self.training_barrels != TrainingBarrels.normal:
                     self.valid_locations[Types.TrainingBarrel] = locations_excluding_kong_shops.copy()
                 if Types.Climbing in self.shuffled_location_types:
                     self.valid_locations[Types.Climbing] = locations_excluding_kong_shops.copy()

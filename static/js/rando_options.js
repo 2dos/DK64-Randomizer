@@ -1074,6 +1074,7 @@ function unshuffled_pool_list_changed(evt) {
   let shopsInPool = true;
   let shockwaveInPool = true;
   let shopownersInPool = true;
+  let trainingMovesInPool = true;
 
   const unshuffled_pool = document.getElementById(`item_rando_list_0`);
     const types_in_pool = unshuffled_pool.getElementsByTagName("li");
@@ -1087,10 +1088,17 @@ function unshuffled_pool_list_changed(evt) {
         if (types_in_pool[i].getAttribute("value") == "shopowners") {
             shopownersInPool = false;
         }
+        if (types_in_pool[i].getAttribute("value") == "trainingmoves") {
+            trainingMovesInPool = false;
+        }
     }
 
   let camera_option = document.getElementById("starting_move_52");
   let shockwave_option = document.getElementById("starting_move_53");
+  let vines_option = document.getElementById("starting_move_8");
+  let swim_option = document.getElementById("starting_move_9");
+  let oranges_option = document.getElementById("starting_move_10");
+  let barrels_option = document.getElementById("starting_move_11");
   let cranky_option = document.getElementById("starting_move_92");
   let funky_option = document.getElementById("starting_move_93");
   let candy_option = document.getElementById("starting_move_94");
@@ -1106,6 +1114,18 @@ function unshuffled_pool_list_changed(evt) {
     else {
       camera_option.removeAttribute("hidden");
       shockwave_option.removeAttribute("hidden");
+    }
+    if (!trainingMovesInPool) {
+      vines_option.setAttribute("hidden", "hidden");
+      swim_option.setAttribute("hidden", "hidden");
+      oranges_option.setAttribute("hidden", "hidden");
+      barrels_option.setAttribute("hidden", "hidden");
+    }
+    else {
+      vines_option.removeAttribute("hidden");
+      swim_option.removeAttribute("hidden");
+      oranges_option.removeAttribute("hidden");
+      barrels_option.removeAttribute("hidden");
     }
     if (!shopownersInPool) {
       cranky_option.setAttribute("hidden", "hidden");
