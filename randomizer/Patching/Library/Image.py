@@ -1,6 +1,5 @@
 """Image modification library functions."""
 
-import os
 import zlib
 import random
 import gzip
