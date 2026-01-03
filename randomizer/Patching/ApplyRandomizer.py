@@ -67,7 +67,6 @@ from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.Library.Generic import setItemReferenceName, addNewScript, IsItemSelected, getProgHintBarrierItem, getHintRequirementBatch, IsDDMSSelected
 from randomizer.Patching.Library.Assets import CompTextFiles, ItemPreview
-from randomizer.Patching.Library.Image import getImageFile
 from randomizer.Patching.MiscSetupChanges import (
     randomize_setup,
     updateKrushaMoveNames,
