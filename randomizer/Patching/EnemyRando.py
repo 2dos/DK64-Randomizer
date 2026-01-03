@@ -559,6 +559,7 @@ def writeEnemy(spoiler, ROM_COPY: LocalROM, cont_map_spawner_address: int, new_e
                     new_speed = 255
                 ROM_COPY.seek(cont_map_spawner_address + spawner.offset + speed_offset)
                 ROM_COPY.writeMultipleBytes(new_speed, 1)
+        #Cap Klobber Speed
         if new_enemy_id == Enemies.Klobber:
             for speed_offset in [0xC, 0xD]:
                 ROM_COPY.seek(cont_map_spawner_address + spawner.offset + speed_offset)
